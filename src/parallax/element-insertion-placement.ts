@@ -62,7 +62,14 @@ function projectedObstructions(volumes: readonly Volume[], frame: Transform, hei
 /** Adapt an exact rectangular footprint to the canonical solver's 4:3 plane footprint.
  * Only private plane coordinates are rescaled; real candidates and room geometry stay unchanged.
  */
-function fitRectangle(surface: Candidate, preferred: Point, width: number, depth: number, exclusions: Rectangle[]) {
+function fitRectangle(
+  surface: Candidate,
+  preferred: Point,
+  width: number,
+  depth: number,
+  exclusions: Rectangle[],
+  search: boolean,
+) {
   const frame = { position: surface.position, rotation: surfaceFrameRotation(surface), scale: 1 };
   const local = composeTransform(inverseTransform(frame), { ...identityTransform(), position: preferred }).position;
   const paddedWidth = width + gap * 2,
@@ -79,6 +86,7 @@ function fitRectangle(surface: Candidate, preferred: Point, width: number, depth
     { ...identityTransform(), position: { x: local.x, y: local.y * yScale, z: 0 } },
     virtual,
     paddedWidth,
+    search,
   );
   return fit
     ? {
@@ -99,6 +107,8 @@ export function planPhysicalAssetInsertion(input: {
   environment: PreviewEnvironment;
   preferredPosition?: Point;
   preferredSurfaceId?: string;
+  exactPreferredPosition?: boolean;
+  widthMeters?: number;
 }): PhysicalInsertionPlan {
   const { draft, modelId, environment } = input;
   if (draft.content.adaptive)
@@ -122,6 +132,9 @@ export function planPhysicalAssetInsertion(input: {
 
   const model = physicalAssets.find((a) => a.id === modelId);
   if (!model) throw new Error("Unknown physical asset.");
+  const scale = input.widthMeters === undefined ? 1 : input.widthMeters / model.dimensions[0];
+  if (!Number.isFinite(scale) || scale <= 0) throw new Error("The physical asset width is invalid.");
+  const dimensions = model.dimensions.map((dimension) => dimension * scale) as [number, number, number];
   if (
     draft.content.entities.some(
       (entity) => entity.element?.kind === "PHYSICAL_ASSET" && entity.element.articulation > 0,
@@ -183,27 +196,28 @@ export function planPhysicalAssetInsertion(input: {
     const volumes: Volume[] = [...roomVolumes.filter((part) => part.id !== surface.id), ...occupied];
     const exclusions = [
       ...(surface.exclusions ?? []),
-      ...projectedObstructions(volumes, frame, wall ? model.dimensions[2] : model.dimensions[1]),
+      ...projectedObstructions(volumes, frame, wall ? dimensions[2] : dimensions[1]),
     ];
     const fit = fitRectangle(
       surface,
       preferred,
-      model.dimensions[0],
-      wall ? model.dimensions[1] : model.dimensions[2],
+      dimensions[0],
+      wall ? dimensions[1] : dimensions[2],
       exclusions,
+      !input.exactPreferredPosition,
     );
     if (!fit) continue;
     const transform = composeTransform(fit.frame, {
       position: {
         x: fit.center.x,
-        y: fit.center.y - (wall ? model.dimensions[1] / 2 : 0),
-        z: lift + (wall ? model.dimensions[2] / 2 : 0),
+        y: fit.center.y - (wall ? dimensions[1] / 2 : 0),
+        z: lift + (wall ? dimensions[2] / 2 : 0),
       },
       rotation: wall ? identityTransform().rotation : { x: Math.SQRT1_2, y: 0, z: 0, w: Math.SQRT1_2 },
       scale: 1,
     });
     if (
-      corners(model.dimensions, transform, true).some(
+      corners(dimensions, transform, true).some(
         (p) => Math.abs(p.x) > environment.width / 2 - gap + 1e-6 || Math.abs(p.z) > environment.depth / 2 - gap + 1e-6,
       )
     )

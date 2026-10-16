@@ -1,0 +1,79 @@
+{
+  "kind": "PRE_SOURCE_SECOND_SUPPLEMENT_VISUAL_NOTES",
+  "createdUTC": "2026-10-15T17:49:43.336985+00:00",
+  "source": "db461f20161f1794fc81a555dc0602779b9049af",
+  "productSource": "9efdfc89186b112812f387de1423365d0dcf9405",
+  "manifestSHA256": "132e7e41b4a2d447a0ad9b231fe6a600f0b94a2b12ea473d6583d26e96696f4b",
+  "files": [
+    {
+      "path": "browser.original.log",
+      "originalPath": "tmp/root-package-review-db461f20161f.log",
+      "bytes": 47038,
+      "sha256": "8bf5575c6a4b88420c5a28d4a19de8136b5133059e6f95ac0101d806bfdeaec4"
+    },
+    {
+      "path": "browser-runtime.original.json",
+      "originalPath": "artifacts/sounding-line/browser-runtime.json",
+      "bytes": 1316,
+      "sha256": "b7b861166a6b1278314ea7c29741b868e39ce54a29bac41e5cf127c76d4309d7"
+    },
+    {
+      "path": "browser-suite-profile.original.json",
+      "originalPath": "artifacts/sounding-line/browser-suite-profile.json",
+      "bytes": 411,
+      "sha256": "9e072b24c5e6270b6095b38a6ce25939ab91d7336b5f170ec5fe6bd03b776a18"
+    },
+    {
+      "path": "r000.json",
+      "originalPath": "artifacts/root-package-review-db461f20161f/.last-run.json",
+      "bytes": 45,
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903"
+    },
+    {
+      "path": "r001.png",
+      "originalPath": "artifacts/root-package-review-db461f20161f/parallax-spatial-community-efd06-d-Creator-s-Effects-Library-chromium/effect-installed-desktop.png",
+      "bytes": 202296,
+      "sha256": "b33ad2d1c12f7b4a3686b4c75e6baae4a4df6596bcbeb37c82208aabb21cb3c4"
+    },
+    {
+      "path": "r002.png",
+      "originalPath": "artifacts/root-package-review-db461f20161f/parallax-spatial-community-efd06-d-Creator-s-Effects-Library-chromium/effect-package-review-desktop.png",
+      "bytes": 86462,
+      "sha256": "ea9e1e3aef5595aed34fd0e1326b56390deeb1a14c081d1154a4b9e688a22ddd"
+    },
+    {
+      "path": "r003.png",
+      "originalPath": "artifacts/root-package-review-db461f20161f/parallax-spatial-community-efd06-d-Creator-s-Effects-Library-chromium/effect-package-review-phone.png",
+      "bytes": 44576,
+      "sha256": "053cf448dfbddb2433c7fddca665ac5aaa107f7bf3645f70fb96634c7ddc90a3"
+    },
+    {
+      "path": "r004.png",
+      "originalPath": "artifacts/root-package-review-db461f20161f/parallax-spatial-community-efd06-d-Creator-s-Effects-Library-chromium/effect-package-review.png",
+      "bytes": 11390,
+      "sha256": "638ef131f2d5a2410115521272da5e7a47b4efee3cde86c7dbc0b3b61b4f5621"
+    },
+    {
+      "path": "r005.webm",
+      "originalPath": "artifacts/root-package-review-db461f20161f/parallax-spatial-community-efd06-d-Creator-s-Effects-Library-chromium/video.webm",
+      "bytes": 412714,
+      "sha256": "b05ae56733319ccd59583c3521ea1c47a4262db7ef2b147af1309f09316e9e53"
+    },
+    {
+      "path": "a000.json",
+      "originalPath": "artifacts/parallax-a1/browser/db461f20161f/run.json",
+      "bytes": 610,
+      "sha256": "2d706f0794bc29d16e0f38bcf34e29af00542872183ee3d6eda6830b1e9d8c01"
+    }
+  ],
+  "method": "All4nativePNG originals and all5timestampedcontact sheets fromcomplete8.68sCreatorvideo inspected beforecurrenttest/implementation/receiptcontents. Every3rdnative25fpsframe+endpoint=73/217frames,0–8.64s,maxgap.12s. Notrealtime/everyencodedframe. Nativevideo800x450,contactsheetframe490x275.",
+  "observations": [
+    "r002desktopfullwizardStep5 hasfocusedopenedsummary3definitions;Softmistatmosphere,Behaviortimer→show,Animationopacity2keyframes allreadableabovefooter. Contentpreviewcardtop partlyscrolled,notmissinglist.",
+    "r003390x844phonescroll positionshowsallthreefullcards betweeny285–537,credits below,optional sanitizedpackage,uncheckedreviewacknowledgement y647 anddisabledSubmit fixedfooterstarting~738. No rowtext clipping;allthreeentries visibletogetherbeforesubmission. Summarycontrolaboveviewportatthisscrollposition;earlierdesktop/recordingtogglecoverscontrol.",
+    "r004croppedlist corroboratesthreeentriesonly. r001installedEffectselectedwithread-onlyLibrary/separateprivatecanvasstill;noinstallerchronology.",
+    "Video0–.72blank;.84–1.44OpeningStudio;1.56–2.04Studio/canvasloading;2.16–2.4room;2.52Libraryopens;2.88Effectstab;3.0–3.24selectedEffectdetails;3.36wizardSource;3.48–3.60description;3.72rights;3.84checkedrights/reviewing;3.96review;4.08collapsedsummary;4.20focusedcollapsed;4.32openedthreeentries;4.44desktop;4.56–4.68phoneviewport/screenshottransition;4.8desktoprestoredreview/ackunchecked;4.92ackchecked;5.04–8.64Submittedmoderationstate.",
+    "ReturntoSpatialStudio buttonvisiblethroughlaststatebutunclicked. No proofreturnfocus/canonicaldatasurvivalfromthisfocusedflow;thismustremainhonestboundedlimitation. No newlistproductbehaviorrequiresclaimingwholecontractreturnacceptance.",
+    "No confirmedblocking/materialnonblockingvisualdefect. OriginalCOMMUNITYPACKAGE-EVIDENCE-01phone/nonemptybehavior/listcontext/Creatorchronology portionsnowvisuallysupported;exactkeys,viewportassertionsandserveradmitted/installedmetadataawaitpinnedtest/receiptcorroboration.",
+    "Nofullnumericbehaviorparameters/keyframevaluehumanreview,largeall-contentlists,phonestandardskeyboard/touch/light/reducedmotioncomparisons,actualaudio/effectfidelity orphysicalAR acceptance. Earlier9ef/7d originalsretained."
+  ]
+}

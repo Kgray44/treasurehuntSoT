@@ -387,6 +387,109 @@
       }
     },
     {
+      "id": "parallax.sc00b.inspector.experience",
+      "name": "Contextual Spatial Inspector authoring and scene return",
+      "authority": "project-parallax",
+      "owners": ["project-parallax"],
+      "critical": true,
+      "experience": {
+        "persona": "A Creator editing a spatial scene with an ordinary object selected",
+        "objective": "Find common object edits, spatial relationships and scene settings without losing selection or authored data",
+        "visibleOutcome": "Properties, Spatial context and Scene settings each show real controls; Guided, Standard and Engineering change presentation depth while canonical edits remain reversible and saved",
+        "integrationOwner": "Parallax Spatial Studio Inspector",
+        "systems": ["project-parallax"],
+        "sourcePaths": ["src/components/studio/parallax", "src/app/studio/parallax"],
+        "projectionPaths": ["src/parallax/authoring.ts", "src/parallax/workspace-layout.ts", "src/parallax/element-authoring.ts", "src/parallax/environment-authoring.ts"],
+        "entryPoint": "/studio/library",
+        "states": ["SCENE", "PROPERTIES", "CONTEXT", "INVALID_SELECTION", "RESTORED_SELECTION", "RETURNED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["CREATOR"],
+        "accessibility": "Rail destinations and fields work by keyboard with visible focus; readable controls and the Guided fallback retain meaning with reduced motion.",
+        "fallback": "When the 3D renderer is unavailable, scene and object content remain readable through the Inspector and the same owned draft history.",
+        "navigation": "Creator Library opens Spatial Studio; Scene Hierarchy selects an object; the right rail switches between properties, spatial context and scene settings; the Creator returns to the Library.",
+        "designTarget": "Use an identity-led Inspector with immediate object actions, a compact stack of common controls, contextual placement and relationship tools, technical precision at Engineering depth, and three purposeful rail destinations with clear active state.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted hierarchy and coherent shell provide a standard for clearly differentiated destinations.",
+            "preserve": "Readable navigation, an explicit active destination and a focused content hierarchy."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted constrained layout preserves navigation and readable controls.",
+            "preserve": "Accessible mobile hierarchy and reliable contextual navigation."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-studio-library", "screen-page-studio"],
+        "homeportJourneyIds": ["B"],
+        "browserTests": ["tests/e2e/parallax-sc00b-combined.spec.ts"],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "limitations": [
+          "Typed effects and room geometry are Web Studio previews; native Player alternatives, physical AR, real-room accuracy and owner product acceptance require separate proof."
+        ],
+        "roleSetup": {
+          "CREATOR": {
+            "entryPoint": "/sign-in?returnTo=%2Fstudio%2Flibrary",
+            "steps": [
+              { "action": "fill", "role": "textbox", "name": "Email or Player name", "value": "parallax-review-creator@example.test" },
+              { "action": "fill", "role": "textbox", "name": "Password", "value": "Synthetic-Parallax-Review-2026!" },
+              { "action": "click", "role": "button", "name": "Sign in" }
+            ],
+            "witness": { "role": "heading", "name": "Voyagewright Studio", "text": "Voyagewright Studio" }
+          }
+        },
+        "motion": {
+          "measurement": "Visible rail action to rendered contextual Inspector heading",
+          "feedbackBudgetMs": 3000
+        },
+        "journeys": [
+          {
+            "id": "creator-inspector-context-and-return",
+            "roles": ["CREATOR"],
+            "outcome": "A Creator enters the actual Inspector, travels across all three rail destinations with the same object selected and returns to the Creator Library",
+            "steps": [
+              { "action": "click", "role": "link", "name": "Spatial Studio" },
+              { "action": "click", "role": "button", "name": "Open Scene Hierarchy" },
+              { "action": "click", "role": "button", "name": "Desk Map parchment" },
+              { "action": "click", "role": "button", "name": "Open scene settings" },
+              { "action": "assert", "role": "heading", "name": "Scene settings", "text": "Scene settings", "path": "/studio/parallax", "state": "SCENE", "kind": "outcome", "meaning": "Scene fallback, Library and version controls have a real rail destination while object selection is retained.", "feedbackBoundary": true },
+              { "action": "click", "role": "button", "name": "Open object properties" },
+              { "action": "assert", "role": "complementary", "name": "Spatial inspector", "text": "Edit what this item is", "path": "/studio/parallax", "state": "PROPERTIES", "kind": "outcome", "meaning": "The selected object's common edits and quick actions return without reselecting it.", "feedbackBoundary": true },
+              { "action": "click", "role": "button", "name": "Open spatial context" },
+              { "action": "assert", "role": "heading", "name": "Spatial context", "text": "Spatial context", "path": "/studio/parallax", "state": "CONTEXT", "kind": "outcome", "meaning": "Placement, relationships and behavior links are available for the same selected object.", "feedbackBoundary": true },
+              { "action": "click", "role": "link", "name": "← Creator Studio" },
+              { "action": "assert", "role": "heading", "name": "Voyagewright Studio", "text": "Voyagewright Studio", "path": "/studio/library", "state": "RETURNED", "returnPath": true }
+            ]
+          },
+          {
+            "id": "creator-inspector-removal-recovery-and-return",
+            "roles": ["CREATOR"],
+            "outcome": "A Creator sees an explicit unavailable selection after deletion, restores the object through Undo and returns to the Library",
+            "steps": [
+              { "action": "click", "role": "link", "name": "Spatial Studio" },
+              { "action": "click", "role": "button", "name": "Open Scene Hierarchy" },
+              { "action": "click", "role": "button", "name": "Desk Map parchment" },
+              { "action": "click", "role": "button", "name": "Open object properties" },
+              { "action": "click", "role": "button", "name": "Duplicate" },
+              { "action": "click", "role": "button", "name": "Delete" },
+              { "action": "assert", "role": "region", "name": "Unavailable selection", "text": "Selection unavailable", "path": "/studio/parallax", "state": "INVALID_SELECTION", "kind": "outcome", "meaning": "A removed object is identified as unavailable instead of silently showing unrelated scene controls.", "feedbackBoundary": true },
+              { "action": "click", "role": "button", "name": "Undo last edit" },
+              { "action": "assert", "role": "complementary", "name": "Spatial inspector", "text": "Edit what this item is", "path": "/studio/parallax", "state": "RESTORED_SELECTION", "kind": "outcome", "meaning": "Undo restores the selected object's editable Inspector without changing selection identity.", "feedbackBoundary": true },
+              { "action": "click", "role": "link", "name": "← Creator Studio" },
+              { "action": "assert", "role": "heading", "name": "Voyagewright Studio", "text": "Voyagewright Studio", "path": "/studio/library", "state": "RETURNED", "returnPath": true }
+            ]
+          }
+        ]
+      }
+    },
+    {
       "id": "parallax.floating-controls.experience",
       "name": "Floating Spatial Assistant controls and Creator continuity",
       "authority": "one-voyage",
@@ -5942,7 +6045,7 @@
               },
               {
                 "action": "assert",
-                "role": "status",
+                "role": "main",
                 "name": "",
                 "text": "Reusable asset definition and immutable version saved; source scene unchanged",
                 "state": "ASSET_SAVED",
@@ -5954,33 +6057,65 @@
               {
                 "action": "click",
                 "role": "button",
-                "name": "Open Saved Spatial Items"
+                "name": "Expand Spatial Library"
+              },
+              {
+                "action": "click",
+                "role": "tab",
+                "name": "Assets"
+              },
+              {
+                "action": "fill",
+                "role": "searchbox",
+                "name": "Search assets",
+                "value": "Reusable review clue"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Inspect Reusable review clue"
               },
               {
                 "action": "assert",
-                "role": "region",
-                "name": "Saved spatial definitions",
-                "text": "Reusable review clue",
+                "role": "complementary",
+                "name": "Reusable review clue details",
+                "text": "Private Library",
                 "state": "LIBRARY_READY",
                 "path": "/studio/parallax",
                 "kind": "outcome",
-                "meaning": "The separate definition is discoverable in the canonical Saved library with its release and authored metadata.",
+                "meaning": "The separate owned definition and its release are discoverable through the canonical expanded Library.",
                 "feedbackBoundary": true
               },
               {
                 "action": "click",
                 "role": "button",
-                "name": "Add to current scene"
+                "name": "Place in Scene"
               },
               {
                 "action": "assert",
-                "role": "status",
+                "role": "button",
+                "name": "Cancel placement",
+                "text": "Cancel placement",
+                "state": "PLACEMENT_PREVIEW",
+                "path": "/studio/parallax",
+                "kind": "outcome",
+                "meaning": "The immutable asset waits in the viewport for a reviewed surface choice; no Scene copy exists yet.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Floor"
+              },
+              {
+                "action": "assert",
+                "role": "main",
                 "name": "",
-                "text": "Independent asset copy added and saved; its definition is unchanged",
+                "text": "Independent released copy added",
                 "state": "INSTANCE_SAVED",
                 "path": "/studio/parallax",
                 "kind": "outcome",
-                "meaning": "The owned immutable asset becomes an ordinary independently editable scene copy through history and persistence.",
+                "meaning": "The owned immutable asset becomes an independently editable Scene copy through ordinary history and persistence.",
                 "feedbackBoundary": true
               },
               {

@@ -8,7 +8,32 @@ last_reviewed: 2026-10-15
 
 # Build a spatial experience
 
-In the SC-07A implementation candidate, a Creator-owned item saved to the private Spatial Library can open **Publish to Community…** from its selected details, including saved procedural Effects in **Effects** and owned reusable Compositions in **Compositions**. Choose an immutable Environment version first when publishing a room. The guided dialog shows the saved revision, then collects listing details, a configured license, credits and rights acknowledgment. A Scene includes its pinned Environment in the server-reviewed package, and validated animation tracks remain in released Effects and Compositions. The review names the saved item and any required pinned Environment; a standalone Environment is shown as the selected immutable source. Technical package paths are available under **Inspect the sanitized package**. During package review, expand **Inspect included effects and behavior** to read the server-reviewed effect, behavior-rule and animation-track definitions. Inspect the sanitized package and its privacy warning before explicitly submitting. A pending release requires separate Community moderation before its public listing can be installed. **Open in Spatial Studio** selects the pinned, read-only release in Library; the visible canvas is a separate private working Scene. An installed saved Asset or Composition whose pinned license permits modification offers **Add credited copy** or **Add credited composition** for a separate private Scene, even when an older saved Asset has no generated reusable marker; the installed release remains read-only. A license that forbids modification disables that Scene-copy action. The receiving Scene retains the source version. Exporting a new self-contained Asset from placed reusable content is refused when its source lineage cannot be carried. Unsupported binary assets, photo-derived rooms, unverifiable remixes and placed reusable assets without verified source licenses and pinned package dependencies are refused. See the [combined SC-07A owner review route](SC_07A_Combined_Adaptation_20261015.md). Protected acceptance remains pending.
+In the SC-00C expanded Library candidate, use **Expand ↗** in the compact
+left Library to browse the same content in a larger floating workspace. The
+current category, search, filters and selected item remain when you close and
+reopen it. Source, Show and Sort sit above the desktop gallery; Scene browsing
+keeps Environment in that toolbar. Open Filters on a phone. The item panel
+shows its source and available actions. Scroll long
+details to reach the remaining actions. For a physical or saved Asset,
+**Place in Scene** returns to the viewport: point to a clear
+compatible surface or choose one of the named surfaces with the keyboard,
+then confirm. **Cancel placement** leaves the Scene untouched, including when
+an insertion request is still loading; an invalid point keeps placement
+active. A saved physical model must fit its full height and depth on the
+selected support. Assemblies with multiple physical models ask for reviewed
+placement. The selected object can be undone and redone.
+Saved copies retain their chosen immutable version. An installed Asset offers
+placement only when its pinned license permits an editable credited copy.
+Scenes and Environments open their own editing flows. **Create Scene from
+Environment** and **Duplicate Scene** open Scene Manager with the chosen
+source. The expanded view can inspect one selected physical model in 3D.
+Community publication and installed release permissions use their existing
+Harborlight paths. For an owned saved item, both Library sizes show whether its
+selected version is still private or has a Community listing; closing the
+publishing dialog refreshes that status. This candidate awaits final protected
+and owner acceptance.
+
+In the SC-07A implementation candidate, a Creator-owned item saved to the private Spatial Library can open **Publish to Community…** from its selected details, including saved procedural Effects in **Effects** and owned reusable Compositions in **Compositions**. Choose an immutable Environment version first when publishing a room. The guided dialog shows the saved revision, then collects listing details, a configured license, credits and rights acknowledgment. A Scene includes its pinned Environment in the server-reviewed package, and validated animation tracks remain in released Effects and Compositions. The review names the saved item and any required pinned Environment; a standalone Environment is shown as the selected immutable source. Technical package paths are available under **Inspect the sanitized package**. During package review, expand **Inspect included effects and behavior** to read the server-reviewed effect, behavior-rule and animation-track definitions. Inspect the sanitized package and its privacy warning before explicitly submitting. A pending release requires separate Community moderation before its public listing can be installed. **Open in Spatial Studio** selects the pinned, read-only release in Library; the visible canvas is a separate private working Scene. An installed saved Asset or Composition whose pinned license permits modification offers **Place in Scene** or **Add credited composition** for a separate private Scene, even when an older saved Asset has no generated reusable marker; the installed release remains read-only. A license that forbids modification disables that Scene-copy action. The receiving Scene retains the source version. Exporting a new self-contained Asset from placed reusable content is refused when its source lineage cannot be carried. Unsupported binary assets, photo-derived rooms, unverifiable remixes and placed reusable assets without verified source licenses and pinned package dependencies are refused. See the [combined SC-07A owner review route](SC_07A_Combined_Adaptation_20261015.md). Protected acceptance remains pending.
 
 A saved Scene without a pinned Environment is still shown in the Scenes Library, but its self-contained Community release is a **Spatial asset**. The publishing dialog explains this before Continue and again at server package review. Only a Scene with a pinned Environment can publish as a Spatial Scene. The released asset installs as an asset, not as an Environment-bound Scene.
 
@@ -16,6 +41,13 @@ The first publishing step labels the saved source as a Spatial asset, Scene, Env
 
 For measured AI costs, model selection, room-validation behavior and built-in instructions, see the
 [user development overview](Spatial_Studio_User_Development_Overview.md).
+
+In the local Chronicle Lens browser-AR prototype, two-view alignment checks each
+second-view corner as you tap. If one does not match, retry that corner; earlier
+valid taps remain while the tracking map is valid. **Tracking details** shows a
+short local event history that you can explicitly copy when reporting a problem.
+It contains no photographs or room coordinates. Lost maps require new alignment;
+successful physical iPhone alignment is still unqualified.
 
 In the current Library integration candidate, choose **Assets**, **Environments**
 or **Scenes** in the same panel; **Compositions** and **Effects** appear when their
@@ -30,6 +62,10 @@ An Environment card's **View associated Scenes** action filters the Scenes list 
 its saved definition. A Scene's details name that Environment and offer **View
 Environment**; **Open original** edits the selected Scene. Switching to Scene
 Graph and back to Library keeps the current content category and parent filter.
+
+In the loading candidate, version history fetches the selected definition's
+snapshots as needed. A failed or conflicting fetch leaves your current working
+Scene intact and shows an error; refresh the Library entry before retrying.
 The SC-01 integration candidate adds **Manage Scenes** beside the shared
 Environment and active Scene. Choose a saved Environment version, create a Scene
 from its baseline, or duplicate an existing Scene. The gallery keeps names,
@@ -130,11 +166,18 @@ The [Phase 3 implementation](Phase_3_Implementation.md) and [refined workstation
 - Select an object in the scene or hierarchy. Choose **Move**, **Rotate** or **Scale** to use its gizmo. Drag empty space to orbit, Ctrl-drag or middle-drag to pan and scroll to zoom. Plan and elevation views help inspect placement; precise inspector controls and keyboard movement remain available.
 - Collapse the library or inspector to enlarge the viewport. Resize a dock from its edge, or focus the separator and use arrow keys.
 - In the [workspace refinement candidate](Phase_3_Workspace_Refinement.md), choose Spatial Editing, Scene Construction, Behavior Authoring or Focus / Immersive from **Workspace layout**. The left icon rail opens Library, Hierarchy and Saved sections. The Inspector exposes contextual accordion sections; the bottom strip opens Timeline, Simulation, Diagnostics or Events. Drag a dock edge or use its separator arrow keys. **Reset Workspace Layout** restores the default; presentation preferences never edit the scene.
+
 - **Ask Parallax** opens floating assistance; **Dock assistance** overlays it on the scene. Drag the floating title to move the window and any edge or corner to resize it; focused handles also accept arrow keys and Shift for larger steps. The composer stays at the bottom. The default command bar stays compact. **Scene actions** contains Drydock validation and immutable version creation, and **Library, reuse & publication** contains library metadata and Chronicle attachment.
 - Enter a supported placement instruction in spatial assistance. **Preview placement** shows the proposed scene without saving it; inspect the result, then approve or discard. Unsupported instructions explain their limits. Provider availability is explicit; supported phrase rules remain available without AI.
 - For adaptive objects, **Move** highlights safe synthetic surfaces. Choosing one edits the surface/context intent; the resolver continues to enforce clearance, reach and safety rules. Compare environments before publishing.
 - Author visual state changes in the timeline. Drag an event or use its arrow keys to change the delay; seek and play to inspect the result. Expand **Sequence properties & simulation** for trigger, target and simulation controls.
 - Use Guided preview to inspect the same authored clue without camera or precision movement. Synthetic scenes and confidence overlays do not establish real AR tracking or physical qualification. Optional field feedback retains only consented bounded metadata; automatic room-image upload is disabled.
+
+The isolated [SC-00B combined Inspector candidate](SC00B_Combined_Inspector_Review_20261015.md) gives the far-right rail three real destinations: **Properties** for the selected item's common edits, **Spatial context** for placement and relationships, and **Scene settings** for room presentation, fallback, reuse and versions. **Guided** emphasizes viewport actions, **Standard** adds common precise controls, and **Engineering** exposes technical coordinates and diagnostics. Standard retains the saved `Detailed` preference value. A mode or rail change keeps the working scene and selection. Room feature **Properties** shows the selected feature and direct corrections; **Spatial context** shows support, nearby room features, linked exclusions and room tools. Missing and unapplied preview selections keep a working return to selection details from the Scene rail. Group and typed light/effect/audio controls follow their own selection context. Seven synthetic browser journeys pass on the combined SC-02 root source; independent local review found no actionable issue in the inspected merged packet. The owner accepted the preceding visual packet; review of the corrected source and protected full-plan capture remain open.
+
+For a selected room feature, Guided offers **Move** and **Resize in scene**, plus **Rotate** where it applies, beside the feature's name and type. Standard exposes dimensions and rotation; Engineering adds exact feature position and provenance. Room dimensions and construction operations remain in **Environment tools & dimensions**. Changing depth does not change the room or its selected feature.
+
+Selecting a floor, wall, or ceiling shows its support-surface context. Its structural type stays fixed; the whole floor cannot be removed or rebuilt. Removing an editable furniture feature keeps its missing selection visible until you choose another feature or Undo restores it. Choosing an asset from the Scene graph or Timeline leaves room editing and opens that asset's Properties; this also works after a room feature is removed. Choosing **Edit room features** from an asset clears the asset selection and shows only room controls.
 
 The canonical publication and library workflow remains:
 
@@ -309,14 +352,17 @@ creates a separate definition and an immutable version; the source scene stays
 unchanged. Dependencies on objects outside the group or on protected media must
 be resolved before export. Export and insertion require manual placement.
 
-Open **Saved** from the left rail. Filter by scenes, reusable objects, assemblies,
-templates or recent items; search by name, description, classification or tag.
-The preview is a labeled schematic of authored bounds. **Add to current scene**
-copies the latest released asset into the current scene. Edit and save that
-instance with the ordinary Inspector; those edits affect only this scene.
-**Open** edits the original definition. Create another immutable version when
-you want later insertions to use definition changes. Earlier copies retain their
-stored data and version origin.
+Open **Library → Assets** from the left rail or the expanded Library. Search
+by name or classification and select the saved definition to inspect its
+chosen immutable version. **Place in Scene** returns to the viewport with a
+surface preview. Choose a clear compatible surface, or cancel without adding
+anything. Edit and save the placed copy with the ordinary Inspector; those
+edits affect only this Scene. **Open original** edits the definition. Create
+another immutable version when later copies should use definition changes.
+Earlier copies retain their stored data and version origin.
+Single saved physical models retain their authored size and animation path
+when placed. A saved physical assembly with additional parts needs reviewed
+placement; the automatic action explains this and inserts nothing.
 
 **Create new scene from this** copies an entire scene, including room geometry,
 behaviors and animation. **Archive** removes another definition from Saved
@@ -462,3 +508,6 @@ The active PR #722 candidate autosaves a stable working definition without addin
 Environments are now independent definitions. Creating/editing/reconstructing one does not manufacture a Scene. Using a room in a Scene records an independent snapshot; editing the original does not update other Scenes or Chronicles. The Inspector distinguishes original definitions and placed instances. Conflicting saves retain pending work and require review or an explicit named copy. See [lifecycle details and verification boundaries](Spatial_Library_Lifecycle_20261014.md).
 
 The original instruction/model measurements above remain historical. The [room instruction continuation](reference/Room_Instruction_Continuation_20261014.md) adds explicit rotated-frame seating offsets and returned-support requirements. A prompt adjustment alone does not prove improved reconstruction fidelity.
+
+
+In Engineering, a selected Spot light also exposes numeric pitch and roll to aim its local forward direction precisely; the same transform edit path serves the viewport rotation tool. Ambient light fills the whole scene, so its Inspector omits ineffective placement, size and rotation controls. Scene identity and fallback stay visible in Guided, while Library, reuse and publication starts collapsed there and opens by default in Standard and Engineering. A locked object's accessible description stays readable and becomes editable after Unlock.

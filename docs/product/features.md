@@ -46,6 +46,8 @@ flowing phone controls. Ten local production journeys and the separate
 synthetic development photo workflow pass. The owner accepted these exact UI
 refinements; full overhaul qualification and protected integration remain open.
 
+An isolated [Spatial Inspector refit candidate](../../Development_Docs/Projects/Project_Parallax/SC00B_Combined_Inspector_Review_20261015.md) groups selected-item Properties, Spatial context and Scene settings in three authoring depths. Room features show direct Guided actions and separate support/nearby context; missing or unapplied selections retain a route back to their details. Asset selection from a room feature or Timeline returns to asset Properties; entering room editing clears asset controls. Seven synthetic browser journeys, a focused Assistant preview and eight local desktop/phone semantic contexts pass on corrected SC-02 root source `79348a8f`. Precise Spot direction, truthful Ambient controls, Scene depth and locked accessibility are covered; independent local review found no Inspector blocker. The owner accepted the preceding visual packet; corrected-source review and protected full-plan qualification remain open.
+
 The full Spatial Studio overhaul is in progress in an isolated candidate. It adds entity keyframes, renderer diagnostics/recovery, camera/clamping controls, editable semantic room features, versioned reusable objects/assemblies, independent scene copies and explicit simulation results. Bounded room, library and simulation browser journeys provide development evidence. The protected photo candidate now previews actual room geometry before saved Apply, refines shared features and withdraws permissions through reload in an isolated development fixture. Shared wall openings and saved-render Assistant feedback extend the candidate. Comprehensive cross-device acceptance, live photo accuracy, production private-provider readiness, production asset/material quality and the complete A–P workflow remain open. [Active checkpoint](../../Development_Docs/Projects/Project_Parallax/Spatial_Studio_Overhaul_20261012.md).
 
 The continuing Studio candidate also supports inline asset rename, temporary
@@ -146,6 +148,59 @@ Protected integration still requires the separately owned Crossdeck continuity
 design; this is a branch checkpoint rather than mainline availability.
 
 Parallax candidate environment setup: Library → Environments offers a plus entry for independent existing-room copies, an editable empty shell and one/two-photo reconstruction with private thumbnails, progress/cancel and actual 3D proposal review. This candidate preserves source environments and saves reviewed geometry through the existing services. Bounded development journeys, independent review and owner presentation acceptance pass. Live reconstruction fidelity and production/browser-AR readiness remain separate pending gates.
+
+## SC-00C expanded Library candidate
+
+The SC-00C expanded Library candidate keeps the compact left Library and adds
+a floating desktop workspace and full-screen phone view over the same paged
+catalog. A selected physical item has a bounded interactive 3D inspector and
+an explicit surface-placement return to the Scene. Scene and Environment
+creation/duplication remain in SC-01 Scene Manager; the selected owned item's
+private or published status comes from Harborlight in both Library sizes.
+Saved Assets also return to the viewport for checked placement from either
+Library size. Cancellation, including during a pending insertion request,
+and an invalid point add no copy. Physical saved models use full-volume
+support fitting, while physical assemblies with extra parts request reviewed placement;
+a licensed installed Asset keeps its pinned source and credited-copy
+permissions.
+The latest source repair also preserves an authored physical root's rendered
+scale and animation during placement. Physical assemblies with additional
+parts request reviewed placement because their complete geometry cannot yet
+be checked automatically. Independent rereview and fresh browser proof for
+that repair were pending at this checkpoint.
+The follow-on keyboard path uses the same physical fit planner as pointer
+placement, including a saved model's resolved scale; fresh browser proof
+and independent rereview of that follow-on were pending before the focused
+follow-through below.
+Focused exact-source production Chromium follow-through now passes **3/3**
+for scaled keyboard/pointer placement with rendered root playback, delayed
+Cancel/private placement and licensed installed reuse. Protected experience
+qualification and owner acceptance remain pending.
+Source, Show and Sort use a compact toolbar above the
+desktop gallery, with Environment alongside them while browsing Scenes, and a
+phone Filters control. Twenty-five combined production-browser journeys and a
+separate 2,000-Scene scale journey pass on the [current local product source](../../Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md).
+Independent capture review found no remaining concrete blocker in
+the captured states.
+Four later focused browser cases verify owned Environment/Scene actions,
+installed-license permissions across both presentations and retained Studio
+selection and Undo after placement. The detail panel scrolls to lower actions.
+The current-head main/Harborlight integration passes 25/25 combined
+production-browser cases on its recorded local source. Crossdeck continuity
+design is still required for protected experience qualification.
+Protected experience qualification remains pending.
+
+The latest draft also combines current Parallax root with SC-07A and SC-00C.
+Its [exact-source browser evidence](../../Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md)
+passes 25/25 Library and Community journeys and a separate 2,000-Scene scale
+case after a test locator was updated for Parallax's collapsed Scene reuse
+section. This remains a local candidate.
+
+The later saved-Asset correction passes a separate **2/2** production-browser
+run for private and installed releases on test source `5acf6fa60826`. It
+preserves the chosen immutable version, selection, Undo/Redo and Library
+browsing context. The prior 25-case and scale runs remain bound to their
+recorded earlier source; protected and owner acceptance remain open.
 
 ## SC-02 browser authoring preview
 

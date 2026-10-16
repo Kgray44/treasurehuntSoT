@@ -1,0 +1,33 @@
+{
+  "source": "0e77274a9ee9f4af4eadf766855376d7efd4ec73",
+  "recordType": "Builder summary of observed command results; not an independent or protected receipt",
+  "focused": {
+    "runner": "vitest4.1.11",
+    "files": 8,
+    "tests": 93,
+    "outcome": "PASS",
+    "durationSeconds": 119.49,
+    "paths": [
+      "src/community/spatial-package.test.ts",
+      "src/components/studio/parallax/SpatialStudio.test.tsx",
+      "src/components/studio/parallax/SpatialContentLibrary.test.tsx",
+      "src/components/player/parallax/BrowserRoomView.test.tsx",
+      "src/components/studio/parallax/readSpatialLibraryItem.test.ts",
+      "src/parallax/spatial-library-bootstrap.test.ts",
+      "src/parallax/spatial-catalog-read-projection.test.ts",
+      "src/parallax/spatial-content-catalog.test.ts"
+    ]
+  },
+  "scopedLint": "PASS",
+  "docsValidate": "PASS",
+  "featuresSync": "PASS",
+  "featuresValidate": "PASS",
+  "paidOpenAICalls": 0,
+  "remainingGates": [
+    "complete Product Experience planner buffer blocker",
+    "protected R2/#721 integration window hold",
+    "physical iPhone tracking and alignment unqualified",
+    "whole Studio/owner acceptance remains separate"
+  ],
+  "browserResult": "16 PASS on exact0e source; Inspector/Library10PASS and independent media review remain bound to79ea"
+}

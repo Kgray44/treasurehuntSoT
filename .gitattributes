@@ -19,12 +19,25 @@ Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-catalog-scal
 Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/** -text
 Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-direct-library/keyboard-context/*.log.txt -text whitespace=-blank-at-eol,-blank-at-eof
 Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-pr736-final/*.log.txt -text whitespace=-blank-at-eol,-blank-at-eof
+# Original local tracker diagnostics, failed attempts and rendered recovery evidence.
+Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# Source-bound loading captures and original runtime receipts.
+Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# The original build progress output includes padding; preserve its bytes.
+Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/browser.log -text whitespace=-blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/development-checks/*.log -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
 Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/** -text whitespace=-blank-at-eol,-blank-at-eof
 Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-source-labels/** -text whitespace=-blank-at-eol,-blank-at-eof
-
 Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-proposal-20261015/current-policy-regression.original.log -text -whitespace
 Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-control-plane-20261015/*.original.log -text -whitespace
 Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/** -text
+# Retain original inherited build progress padding in source-bound receipts.
+Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/** -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-collection-filter/*.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-natural-entry/*.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-update-release/*.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-motion-lineage/*.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+# Preserve immutable Crossdeck review source material.
 Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r3-owner-decision-proposal-20261015/review3/*.original.raw.txt -text -whitespace
 Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r3-owner-decision-proposal-20261015/consumer-seam-confirmation.original.raw.txt -text -whitespace
 Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r3-review-cancellation-20261015/*.original.raw.txt -text -whitespace

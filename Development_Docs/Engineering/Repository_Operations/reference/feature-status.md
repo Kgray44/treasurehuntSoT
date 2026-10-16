@@ -10,6 +10,123 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 
 # Feature status
 
+The latest local root `7c7724970ce8` adds consistent compact/expanded selected
+publication status. Twenty component checks and three focused production-browser
+journeys pass with production build/full TypeScript and owned cleanup. Independent
+rendered review finds no blocker in observed private-status presentation; live
+published status, Publisher-close refresh and phone saved-status remain
+unqualified. The owner's separate 25-case and
+2,000-Scene receipts retain their exact source; no protected availability or
+physical AR acceptance is promoted.
+
+The preceding local root at product source `1170f2217084` adds checked saved-Asset
+reuse and clearer pinned package labels. Its 175 focused checks and production
+build/full TypeScript pass. The affected browser run remains 17 passes and one
+failed hidden-control assertion; test-only `1f62befd2f74` passes the separately
+recaptured phone filter/recovery case. Independent rendered review verifies this
+bounded increment, including actual installed Asset and Composition copies and
+phone Asset Source/Show/Sort. Phone Scene Environment filtering, whole Studio
+acceptance and physical AR remain unqualified. Current R3/#721 protection and
+the planner buffer blocker still hold integration; no mainline availability is
+promoted. The [combined record](../../../Projects/Project_Parallax/Root_Coexistence_20261015.md)
+retains the original failed receipt, sources and review limits.
+
+The Parallax root coexistence candidate has source-bound local integration proof
+for the expanded Library, contextual Inspector, selected-release loading and
+Community motion/rights correction. A later root adds readable package-review
+definitions and passes 19/19 local production-browser cases; the prior 16-case
+run and Inspector/Library media retain their own source identities.
+The [combined record](../../../Projects/Project_Parallax/Root_Coexistence_20261015.md)
+keeps the planner buffer blocker, historical protected R2/#721 hold and failed physical
+iPhone alignment separate. Mainline feature availability is unchanged.
+
+The subsequent root freeze `e43a1890a7c9` adopts the compact Environment
+filter and exact-pinned-license Community reuse with main `aaef39a57`. It passes
+30/30 isolated production Chromium cases and 174 focused authoring, package,
+catalog and Library checks. Test-only `bce938ab7` adds a passing recorded
+second-Creator Composition-copy journey. Independent rendered review and
+protected integration remain separate; these results do not promote mainline
+availability or qualify physical AR.
+
+SC-00C's expanded Library is a local implementation candidate. Compact and
+expanded browsing use one catalog/selection owner; physical Place in Scene
+stages checked surface placement, while Scene/Environment creation and
+duplication enter SC-01 Scene Manager. The first integrated synthetic browser
+journeys passed. The final local candidate places Source, Show and Sort above
+the gallery and passes 22 combined production-browser journeys after the latest
+Harborlight/Parallax merge. An independent capture re-review found no remaining
+concrete blocker in the captured states. The [checkpoint](../../../Projects/Project_Parallax/SC_00C_Expanded_Library_20261015.md)
+records evidence tiers. Cataloged mainline availability is unchanged.
+
+The final local SC-00C toolbar refinement at `780b8a76dc3c` keeps the
+Scene Environment filter in the compact top row. The exact-source
+2,000-Scene layout journey and 25/25 combined production-browser suite pass;
+protected experience qualification and owner acceptance remain pending.
+
+On later SC-00C product source `f82d1b93d285`, compact and expanded selected
+details show the same owner-scoped private or Community-listed status. A fresh
+25/25 production Chromium suite and separate 2,000-Scene scale case pass on
+that source. The [evidence](../../../Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md)
+remains local candidate proof; mainline availability is unchanged.
+
+The current Parallax-root/SC-07A/SC-00C merge passes **25/25** combined
+production Chromium journeys on `7815431f871e`, with a separate **1/1**
+2,000-Scene scale pass on test-only continuation `e7d0e8a8314c`. The
+[source-bound evidence](../../../Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md)
+retains the first outdated test-locator failure. Mainline availability and
+protected acceptance are unchanged.
+
+The saved-Asset follow-on stages owned and licensed installed copies through
+the same viewport surface choice in compact and expanded Library. A fresh
+**2/2** production-browser run on test source `5acf6fa60826` checks
+cancellation, invalid-point feedback, pinned copy lineage, Undo/Redo and
+browsing continuity. The [failed first placement and passing receipts](../../../Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md)
+remain local evidence; mainline availability is unchanged.
+
+Repair source `943907017` adds a live attempt guard for cancellation during
+asynchronous saved-Asset insertion, full-volume physical support fitting,
+and hierarchy-preserving schematic placement. The focused suites pass
+**59/59** and fresh isolated private/installed browser journeys pass **2/2**,
+including a deliberately delayed canceled response. The [source-bound
+receipt](../../../Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md)
+does not change mainline availability or protected acceptance.
+
+The final local SC-00C/SC-07A merge source `8840a4bc2c09` passes
+**15/15** Library/Community and **11/11** lifecycle/drag production Chromium
+cases on separate fresh databases, and a separate **1/1** 2,000-Scene scale
+case. [Receipts and captures](../../../Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md)
+are source-bound. Protected qualification and mainline availability remain
+unchanged.
+
+Subsequent SC-00C source `c5b977c81` addresses independent source-review
+findings for saved physical scale, unchecked multi-part assemblies and root
+animation after surface reanchoring. Five focused suites pass **78/78**.
+Physical assemblies with additional parts now require reviewed placement;
+the previous browser receipts remain bound to earlier source, and independent
+rereview plus new browser proof were pending at this checkpoint. Cataloged availability is unchanged.
+Follow-on source `9491faf6a` routes keyboard search for saved physical
+models directly through the full rendered-size planner. A scaled-down model
+on a small clear table now has keyboard/pointer parity in the focused test;
+five suites pass **79/79**. Independent rereview and new browser proof follow
+in the next checkpoint.
+
+Test source `7ac7594e665e` adds rendered playback proof on unchanged
+placement product code. A fresh isolated production Chromium run passes
+**3/3** scaled keyboard/pointer, delayed Cancel/private placement and
+installed Asset reuse journeys; capture and cleanup pass. The [source-bound
+receipts](../../../Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md)
+do not change protected or cataloged availability.
+
+A later four-case exact-source run also covers owned Environment/Scene
+relationships through Scene Manager, installed Community license and
+read-only permissions in both Library views, and retained Studio state after
+expanded placement. Long detail panels now expose their lower actions by
+scrolling. Protected qualification and owner acceptance remain open.
+
+The current-head local merge of main and SC-07A passes 25/25 combined
+production-browser cases on exact source `09bd7c9e1fe2`, with a separate
+14/14 expanded/Community run. Its protected experience plan still requires
+the separately owned Crossdeck Phase 2 continuity design.
 The SC-07A draft now labels the selected saved source type and revision in the Content step. Eleven exact-source production Chromium journeys passed at `e19d7d7a89d9ea05b90836798f863161badf933b`, with [desktop Scene and mobile Asset captures](../../../Projects/Project_Parallax/evidence/sc-07a/20261015-source-labels/README.md). Separate independent Product Experience review and protected integration remain pending; mainline availability is unchanged.
 
 SC-07A's [combined publishing candidate](../../../Projects/Project_Parallax/SC_07A_Combined_Adaptation_20261015.md) is in validation. The saved-source, exact package, moderation and installed Library path has focused isolated backend and direct browser proof on the combined SC-07A + SC-00C source. Eleven direct production Chromium cases passed on exact browser-test source `0278b263b`, including public Profile recovery for an asset and version-pinned Environment, plus Effect and Composition publication and installation. Package review shows the resolved effects, behavior rules and animation tracks. The package retains validated animation tracks, while unresolved placed reusable asset lineage is visibly refused. The read-only Library return has independent narrow re-review. Formal Product Experience capture and protected integration remain blocked by the separately owned Crossdeck Phase 2 continuity intent. Mainline feature availability is unchanged.
@@ -32,6 +149,12 @@ observations; Community publication, final combined acceptance and protected
 integration remain pending. The measured full Studio response remains a scale
 limit. See the [acceptance audit](../../../Projects/Project_Parallax/SC_00C_Acceptance_Audit_20261015.md).
 
+Parallax's bounded release-loading correction is an unaccepted performance
+candidate, preserving existing working/version/pin capabilities. Focused checks,
+the root-only 2,000-Scene browser case and bounded independent reviews pass;
+newer combined-candidate and protected acceptance remain pending in the
+[root assessment](../../../Projects/Project_Parallax/SC02_Root_Integration.md#bounded-immutable-release-loading-candidate).
+
 SC-01's [canonical Studio handoff](../../../Projects/Project_Parallax/SC_01_Studio_Integration_20261015.md)
 implements explicit Environment versions shared by independent working Scenes,
 Scene Manager, distinct shared editing and built-in copying, comparison and future
@@ -42,6 +165,17 @@ Later root consumer integration, independent visual acceptance and protected
 integration remain pending.
 Historical empty-geometry presets are explained explicitly. This
 unaccepted candidate does not change cataloged availability.
+
+The SC-00B contextual Inspector candidate in draft PR #734 has seven passing
+synthetic production-browser journeys and one focused Assistant preview journey
+at `79348a8f` on the advanced SC-02 root source. Room-feature-to-asset and direct Timeline selection handoffs now
+exit room editing and show the chosen asset; entering room editing clears the
+previous asset's controls. Eight local semantic desktop/phone contexts pass on
+the exact merged source; independent local review found no remaining actionable
+Inspector or rail blocker in the inspected captures. The owner accepted the
+preceding `6d3d2024` visual packet; review of the corrected source, the inherited
+Crossdeck protected full-plan gate and protected qualification remain open; cataloged mainline availability is unchanged. See the
+[Inspector review](../../../Projects/Project_Parallax/SC00B_Combined_Inspector_Review_20261015.md).
 
 The additive Environment compatibility bridge is implemented in PR #722's isolated
 candidate. It preserves exact legacy/rich releases and lossless room geometry,
@@ -61,6 +195,9 @@ tracking-loss feedback; they do not resolve tracker/device qualification. See th
 [phone findings](../../../Projects/Project_Parallax/Two_Room_Phone_Readiness_20261014.md#owner-phone-findings-and-bounded-recovery-correction).
 Follow-up camera tap-mapping and bounded calibration recovery corrections have
 35 focused checks. They do not qualify physical tracking or automatic edge detection.
+Individual second-view retries and bounded local event diagnostics subsequently
+pass 33 focused checks across five files. They preserve existing admission gates;
+the physical failure remains unresolved.
 
 The [two-room Parallax checkpoint](../../../Projects/Project_Parallax/Two_Room_Phone_Readiness_20261014.md)
 records candidate reconstruction corrections and separate canonical private
@@ -192,6 +329,14 @@ selected-object Inspector hierarchy and progressively disclosed help. Candidate
 development photo workflow; the owner accepted these exact UI refinements.
 The ordinary Crossdeck continuity design gate remains open. This is not
 mainline availability or full overhaul/physical acceptance.
+
+The SC-00B contextual Inspector and three-destination right rail are an isolated
+integration candidate. Guided, Standard (persisted `DETAILED`) and Engineering
+present different depths over the same authored scene. Seven synthetic browser
+journeys and eight local semantic contexts pass with the root-based SC-01 Scene
+Manager host, including desktop and phone Library return. The [capability matrix and review captures](../../../Projects/Project_Parallax/SC00B_Combined_Inspector_Review_20261015.md)
+preserve the current proof and open final-source, protected visual and owner
+acceptance boundaries.
 
 The continuing isolated candidate additionally verifies semantic table/window
 placement, named ambiguity, safe visible cancellation and provider failure.

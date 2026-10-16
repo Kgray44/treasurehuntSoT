@@ -8,7 +8,6 @@ import { draftSchema } from "@/parallax/authoring";
 import { spatialId, spatialMomentSchema } from "@/parallax/contracts";
 import {
   saveSpatialDraft,
-  listSpatialItems,
   releaseSpatialVersion,
   attachSpatialVersion,
   restoreSpatialAttachment,
@@ -39,6 +38,7 @@ import { environmentReferenceSchema } from "@/parallax/environment-reference";
 import { listCompatibleEnvironments } from "@/parallax/environment-library-compatibility";
 import { compareScenes } from "@/parallax/scene-comparison";
 import { spatialLibraryKind } from "@/parallax/reusable-assets";
+import { readOwnedSpatialCatalogItem } from "@/parallax/spatial-catalog-page-service";
 import { legacyEnvironmentWorkingSchema } from "@/parallax/legacy-environment-working-contracts";
 import {
   compactCatalogQuerySchema,
@@ -310,7 +310,7 @@ export async function GET(request: Request) {
       {
         csrfToken: session.csrfToken,
         layoutScope: session.accountId,
-        ...(await spatialLibraryInventory(session.accountId)),
+        ...(await spatialLibraryInventory(session.accountId, { releaseContent: "INDEX_ONLY" })),
         chronicle,
         aiAvailable: provider.configured && usage.enabled,
         aiConfigured: provider.configured,
@@ -358,18 +358,16 @@ export async function POST(request: Request) {
     if ("draft" in input && input.draft) await assertSpatialDraftAccess(input.draft);
     switch (input.action) {
       case "ENVIRONMENT_CATALOG": {
-        const inventory = await spatialLibraryInventory(session.accountId);
+        const inventory = await spatialLibraryInventory(session.accountId, { releaseContent: "INDEX_ONLY" });
         return NextResponse.json(
           { catalog: await listCompatibleEnvironments(session.accountId, undefined, inventory.environments) },
           { headers },
         );
       }
       case "SCENE_COMPARE": {
-        const target = (await listSpatialItems(session.accountId)).find(
-          (item) =>
-            item.id === input.targetDefinitionId && !item.archived && spatialLibraryKind(item.draft) === "SCENES",
-        );
-        if (!target) throw new Error("This Scene is unavailable to this Creator.");
+        const target = await readOwnedSpatialCatalogItem(session.accountId, input.targetDefinitionId);
+        if (!target || target.archived || spatialLibraryKind(target.draft) !== "SCENES")
+          throw new Error("This Scene is unavailable to this Creator.");
         return NextResponse.json(compareScenes(input.draft, target.draft), { headers });
       }
       case "LEGACY_ENVIRONMENT_BEGIN": {

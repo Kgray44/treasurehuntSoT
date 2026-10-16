@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { SpatialDraft } from "@/parallax/authoring";
 import type { SpatialLibraryRecord } from "@/parallax/library-service";
+import { spatialReleaseIndex } from "@/parallax/library-release-index";
 import type { CompatibleEnvironmentRecord } from "@/parallax/environment-library-compatibility";
 import { spatialLibraryKind } from "@/parallax/reusable-assets";
 import {
@@ -19,6 +20,7 @@ type Props = {
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   preferredEnvironmentId?: string;
+  preferredSceneId?: string;
   catalogLoading?: boolean;
   catalogError?: string;
   saveError?: string;
@@ -151,9 +153,13 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
       "",
   );
   const [versionId, setVersionId] = useState("");
-  const [name, setName] = useState("New Scene"),
+  const [name, setName] = useState(
+      props.preferredSceneId
+        ? `${props.items.find((item) => item.id === props.preferredSceneId)?.draft.content.title ?? "Scene"} copy`
+        : "New Scene",
+    ),
     [description, setDescription] = useState("");
-  const [sourceId, setSourceId] = useState(""),
+  const [sourceId, setSourceId] = useState(props.preferredSceneId ?? ""),
     [startingContent, setStartingContent] = useState("BASELINE");
   const [rename, setRename] = useState(props.draft.content.title);
   const [compareId, setCompareId] = useState("");
@@ -477,7 +483,8 @@ function SceneManagerDialog(props: Props & { close: () => void }) {
                         "Authored objects and behaviors in this shared Environment."}
                     </p>
                     <span>
-                      {scene.content.entities.length} objects · {item.releases.length} immutable Scene versions ·{" "}
+                      {scene.content.entities.length} objects · {spatialReleaseIndex(item).length} immutable Scene
+                      versions ·{" "}
                       {scene.content.environment
                         ? "Environment version " + scene.content.environment.revision
                         : "Working snapshot"}

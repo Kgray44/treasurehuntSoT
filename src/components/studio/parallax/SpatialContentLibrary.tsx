@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { createPortal } from "react-dom";
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
+import { z } from "zod";
 import type { SpatialLibraryRecord } from "@/parallax/library-service";
 import {
   projectEnvironmentForSpatialLibrary,
@@ -26,6 +27,8 @@ import {
   type SpatialContentOrigin,
 } from "@/parallax/spatial-content-catalog";
 import { AssetPreview } from "./SpatialAssetBrowser";
+import { modelIds, type ModelId } from "@/parallax/asset-catalog";
+import { SpatialAssetInspector3D } from "./SpatialAssetInspector3D";
 import { SpatialCommunityPublisher } from "./SpatialCommunityPublisher";
 import styles from "./SpatialContentLibrary.module.css";
 
@@ -54,7 +57,21 @@ type CatalogPage = {
 type ExactCatalogItem =
   | { kind: "SPATIAL"; record: SpatialLibraryRecord; summary?: SpatialCatalogProviderEntry }
   | { kind: "ENVIRONMENT"; record: CompatibleEnvironmentRecord; summary?: SpatialCatalogProviderEntry };
+const publicationListingsSchema = z.object({
+  listings: z.array(
+    z.object({
+      id: z.string(),
+      title: z.string(),
+      publicationStatus: z.string(),
+      semanticVersion: z.string(),
+    }),
+  ),
+});
 type Props = {
+  expanded?: boolean;
+  onExpand?: () => void;
+  onCollapse?: () => void;
+  onPlacePreset?: (preset: string) => void;
   items: SpatialLibraryRecord[];
   environments: EnvironmentCatalogItem[];
   catalogMode?: "FULL" | "PAGED";
@@ -72,11 +89,13 @@ type Props = {
   onInsertPreset: (preset: string) => void;
   onDragPreset?: (preset: string | null) => void;
   onOpenScene: (record: SpatialLibraryRecord) => void;
+  onDuplicateScene?: (record: SpatialLibraryRecord) => void;
   onManageScene: (record: SpatialLibraryRecord, mode: ManageMode) => void;
   onSaveScene: (record: SpatialLibraryRecord) => void;
   onArchiveScene: (record: SpatialLibraryRecord, archive: boolean) => void;
   onUseSaved: (record: SpatialLibraryRecord, versionId: string) => void;
   onOpenEnvironment: (item: EnvironmentCatalogItem) => void;
+  onCreateSceneFromEnvironment?: (item: EnvironmentCatalogItem) => void;
   onManageEnvironment: (item: EnvironmentCatalogItem, mode: ManageMode) => void;
   onSaveEnvironment: (item: EnvironmentCatalogItem) => void;
   onArchiveEnvironment: (item: EnvironmentCatalogItem, archive: boolean) => void;
@@ -221,6 +240,9 @@ export function SpatialContentLibrary(props: Props) {
   const [localKind, setLocalKind] = useState<SpatialContentKind>(props.initialKind ?? "ASSETS");
   const kind = props.kind ?? localKind;
   const filtersId = useId();
+  const kindTabsId = useId();
+  const kindPanelId = useId();
+  const selectedDetailsRef = useRef<HTMLElement>(null);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [collection, setCollection] = useState("");
@@ -248,6 +270,12 @@ export function SpatialContentLibrary(props: Props) {
     knownLimit: string | null;
     returnFocus: HTMLElement;
   } | null>(null);
+  const [publicationRead, setPublicationRead] = useState<{
+    key: string;
+    status: "READY" | "LOADING" | "ERROR";
+    listings: z.infer<typeof publicationListingsSchema>["listings"];
+  } | null>(null);
+  const [publicationReload, setPublicationReload] = useState(0);
   const paged = props.catalogMode === "PAGED";
   const [catalogPage, setCatalogPage] = useState<(CatalogPage & { queryKey: string }) | null>(null);
   const [catalogLoading, setCatalogLoading] = useState(false);
@@ -421,6 +449,14 @@ export function SpatialContentLibrary(props: Props) {
     const projected = buildSpatialContentCatalog([], [environment]).find((item) => item.id === selectedId);
     return { ...projected, ...contextFields(projected), environment } as SpatialContentEntry;
   }, [entries, selectedId, kind, paged, exactSelection, selectionContext, props.environments]);
+  useEffect(() => {
+    if (!props.expanded || !selected || !window.matchMedia?.("(max-width: 760px)").matches) return;
+    const frame = requestAnimationFrame(() => selectedDetailsRef.current?.scrollIntoView?.({ block: "start" }));
+    return () => cancelAnimationFrame(frame);
+  }, [props.expanded, selected?.id]);
+  const selectedModelId = selected?.preset?.startsWith("sc02:") ? selected.preset.slice(5) : null;
+  const inspectableModelId =
+    selectedModelId && modelIds.includes(selectedModelId as ModelId) ? (selectedModelId as ModelId) : null;
   const kindEntries = entries.filter((item) => item.kind === kind && !item.archived);
   const availableOrigins = paged
     ? (catalogPage?.availableOrigins ?? [])
@@ -506,6 +542,38 @@ export function SpatialContentLibrary(props: Props) {
       : canPublishEnvironment && environment && environmentVersion
         ? knownEnvironmentPublicationLimit(environment.record, environmentVersion.versionId)
         : null;
+  const publicationSource: SpatialSource | null =
+    canPublishScene && scene
+      ? { kind: scene.draft.content.environment ? "SCENE" : "ASSET", id: scene.id, revision: scene.revision }
+      : canPublishEnvironment && environment && environmentVersion && environment.record.revision
+        ? {
+            kind: "ENVIRONMENT",
+            id: environment.id,
+            revision: environment.record.revision,
+            versionId: environmentVersion.versionId,
+          }
+        : null;
+  const publicationKey = publicationSource ? JSON.stringify(publicationSource) : "";
+  useEffect(() => {
+    if (!publicationKey) return;
+    const controller = new AbortController();
+    const source = JSON.parse(publicationKey) as SpatialSource;
+    const query = new URLSearchParams({ kind: source.kind, id: source.id, revision: String(source.revision) });
+    if (source.kind === "ENVIRONMENT") query.set("versionId", source.versionId);
+    queueMicrotask(() => setPublicationRead({ key: publicationKey, status: "LOADING", listings: [] }));
+    void fetch(`/api/community/spatial-publication/licenses?${query}`, { cache: "no-store", signal: controller.signal })
+      .then(async (response) => {
+        if (!response.ok) throw new Error("Publication status could not load.");
+        return publicationListingsSchema.parse(await response.json()).listings;
+      })
+      .then((listings) => {
+        if (!controller.signal.aborted) setPublicationRead({ key: publicationKey, status: "READY", listings });
+      })
+      .catch(() => {
+        if (!controller.signal.aborted) setPublicationRead({ key: publicationKey, status: "ERROR", listings: [] });
+      });
+    return () => controller.abort();
+  }, [publicationKey, publicationReload]);
   const openPublication = (returnFocus: HTMLElement) => {
     if (!selected) return;
     if (canPublishScene && scene) {
@@ -555,20 +623,61 @@ export function SpatialContentLibrary(props: Props) {
     }
   };
   return (
-    <section className={styles.library} aria-label="Spatial content library">
+    <section
+      className={styles.library}
+      data-expanded={props.expanded || undefined}
+      aria-label="Spatial content library"
+    >
       <div className={styles.heading}>
         <div>
           <small>PARALLAX / LIBRARY</small>
-          <h3>Spatial content</h3>
+          <h3>{props.expanded ? "Spatial Library" : "Spatial content"}</h3>
         </div>
-        <span>
-          {paged ? (activeCatalogPage?.total ?? 0) : matching.length}{" "}
-          {(paged ? (activeCatalogPage?.total ?? 0) : matching.length) === 1 ? "item" : "items"}
-        </span>
+        <div className={styles.headingActions}>
+          <span>
+            {paged ? (activeCatalogPage?.total ?? 0) : matching.length}{" "}
+            {(paged ? (activeCatalogPage?.total ?? 0) : matching.length) === 1 ? "item" : "items"}
+          </span>
+          {props.expanded ? (
+            <button type="button" aria-label="Close expanded Spatial Library" onClick={props.onCollapse}>
+              ✕
+            </button>
+          ) : (
+            <button type="button" aria-label="Expand Spatial Library" onClick={props.onExpand}>
+              Expand ↗
+            </button>
+          )}
+        </div>
       </div>
-      <div className={styles.kinds} role="tablist" aria-label="Library content type">
+      <div
+        className={styles.kinds}
+        role="tablist"
+        aria-label="Library content type"
+        onKeyDown={(event) => {
+          const tabs = Array.from(event.currentTarget.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+          const index = tabs.indexOf(event.target as HTMLButtonElement);
+          if (index < 0) return;
+          let next = index;
+          if (event.key === "ArrowRight" || event.key === "ArrowDown") next = (index + 1) % tabs.length;
+          else if (event.key === "ArrowLeft" || event.key === "ArrowUp") next = (index - 1 + tabs.length) % tabs.length;
+          else if (event.key === "Home") next = 0;
+          else if (event.key === "End") next = tabs.length - 1;
+          else return;
+          event.preventDefault();
+          chooseKind(visibleKinds[next]);
+          tabs[next].focus();
+        }}
+      >
         {visibleKinds.map((category) => (
-          <button key={category} role="tab" aria-selected={kind === category} onClick={() => chooseKind(category)}>
+          <button
+            key={category}
+            id={`${kindTabsId}-${category}`}
+            role="tab"
+            aria-selected={kind === category}
+            aria-controls={kindPanelId}
+            tabIndex={kind === category ? 0 : -1}
+            onClick={() => chooseKind(category)}
+          >
             {categoryNames[category]}
           </button>
         ))}
@@ -672,6 +781,26 @@ export function SpatialContentLibrary(props: Props) {
                 <option value="RECENT">Recently updated</option>
               </select>
             </label>
+            {kind === "SCENES" && props.environments.length > 0 && (
+              <label className={styles.environmentFilter}>
+                Environment
+                <select
+                  value={environmentId}
+                  onChange={(event) => {
+                    setEnvironmentId(event.target.value);
+                    setCollection("");
+                    setLimit(48);
+                  }}
+                >
+                  <option value="">All Environments</option>
+                  {props.environments.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            )}
             <div className={styles.view} role="group" aria-label="Library view">
               <button aria-pressed={view === "GRID"} onClick={() => setView("GRID")}>
                 Grid
@@ -681,63 +810,54 @@ export function SpatialContentLibrary(props: Props) {
               </button>
             </div>
           </div>
-          {kind === "SCENES" && props.environments.length > 0 && (
-            <label className={styles.environmentFilter}>
-              Environment
-              <select
-                value={environmentId}
-                onChange={(event) => {
-                  setEnvironmentId(event.target.value);
-                  setCollection("");
-                  setLimit(48);
-                }}
-              >
-                <option value="">All Environments</option>
-                {props.environments.map((item) => (
-                  <option key={item.id} value={item.id}>
-                    {item.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-          )}
         </div>
       </div>
-      {kind === "ENVIRONMENTS" && (
-        <>
-          <button onClick={props.onCreateEnvironment} disabled={props.busy}>
-            Create Environment
-          </button>
-          {props.environmentError && (
-            <p role="alert" className={styles.blocked}>
-              {props.environmentError}{" "}
-              {props.onRetryEnvironments && <button onClick={props.onRetryEnvironments}>Retry catalog</button>}
-            </p>
-          )}
-        </>
-      )}
-      {paged && catalogError && (
-        <p role="alert" className={styles.blocked}>
-          {catalogError} <button onClick={() => setCatalogReload((value) => value + 1)}>Refresh results</button>
-        </p>
-      )}
-      {catalogPending && (
-        <p role="status" className={styles.metadata}>
-          Loading Library results…
-        </p>
-      )}
-      {paged && selectedId && detailLoading && (
-        <p role="status" className={styles.metadata}>
-          Loading verified item details…
-        </p>
-      )}
-      {paged && selectedId && detailError && (
-        <p role="alert" className={styles.blocked}>
-          {detailError} <button onClick={() => setSelectedId("")}>Close details</button>
-        </p>
-      )}
+      <div className={styles.notices}>
+        {kind === "ENVIRONMENTS" && (
+          <>
+            <button onClick={props.onCreateEnvironment} disabled={props.busy}>
+              Create Environment
+            </button>
+            {props.environmentError && (
+              <p role="alert" className={styles.blocked}>
+                {props.environmentError}{" "}
+                {props.onRetryEnvironments && <button onClick={props.onRetryEnvironments}>Retry catalog</button>}
+              </p>
+            )}
+          </>
+        )}
+        {paged && catalogError && (
+          <p role="alert" className={styles.blocked}>
+            {catalogError} <button onClick={() => setCatalogReload((value) => value + 1)}>Refresh results</button>
+          </p>
+        )}
+        {catalogPending && (
+          <p role="status" className={styles.metadata}>
+            Loading Library results…
+          </p>
+        )}
+        {paged && selectedId && detailLoading && (
+          <p role="status" className={styles.metadata}>
+            Loading verified item details…
+          </p>
+        )}
+        {paged && selectedId && detailError && (
+          <p role="alert" className={styles.blocked}>
+            {detailError} <button onClick={() => setSelectedId("")}>Close details</button>
+          </p>
+        )}
+      </div>
       {selected && (
-        <aside className={styles.details} aria-label={`${selected.name} details`}>
+        <aside ref={selectedDetailsRef} className={styles.details} aria-label={`${selected.name} details`}>
+          {props.expanded && (
+            <div className={styles.detailArtwork}>
+              {inspectableModelId ? (
+                <SpatialAssetInspector3D id={inspectableModelId} name={selected.name} thumbnail={selected.thumbnail} />
+              ) : (
+                <Artwork item={selected} />
+              )}
+            </div>
+          )}
           <div className={styles.detailHeader}>
             <strong>{selected.name}</strong>
             <button aria-label="Close item details" onClick={() => setSelectedId("")}>
@@ -748,6 +868,30 @@ export function SpatialContentLibrary(props: Props) {
           <p className={styles.metadata}>
             {installedReadOnly ? originNames.INSTALLED : originNames[selected.origin]} · {selected.family}
           </p>
+          {publicationSource && publicationRead?.key === publicationKey && (
+            <div className={styles.publicationState} aria-live="polite">
+              {publicationRead.status === "LOADING" && <span>Checking Community publication…</span>}
+              {publicationRead.status === "ERROR" && (
+                <span>
+                  Publication status unavailable.{" "}
+                  <button onClick={() => setPublicationReload((value) => value + 1)}>Retry status</button>
+                </span>
+              )}
+              {publicationRead.status === "READY" &&
+                (publicationRead.listings.length ? (
+                  publicationRead.listings.map((listing) => (
+                    <p key={listing.id}>
+                      {listing.publicationStatus === "PUBLISHED"
+                        ? "Published in Community"
+                        : `Community ${listing.publicationStatus.toLowerCase().replaceAll("_", " ")}`}{" "}
+                      · {listing.title} · v{listing.semanticVersion}
+                    </p>
+                  ))
+                ) : (
+                  <span>Private creation · no Community listing</span>
+                ))}
+            </div>
+          )}
           {installedReadOnly && (
             <p className={styles.metadata}>
               Installed Community content is read-only. Its pinned release remains separate from private creations.
@@ -880,10 +1024,15 @@ export function SpatialContentLibrary(props: Props) {
             )}
             {selected.preset && (
               <button
+                className={props.expanded && selected.preset.startsWith("sc02:") ? styles.placeAction : undefined}
                 disabled={props.busy || Boolean(selected.blocked)}
-                onClick={() => props.onInsertPreset(selected.preset!)}
+                onClick={() =>
+                  props.expanded && selected.preset!.startsWith("sc02:") && props.onPlacePreset
+                    ? props.onPlacePreset(selected.preset!)
+                    : props.onInsertPreset(selected.preset!)
+                }
               >
-                Add to active Scene
+                {props.expanded && selected.preset.startsWith("sc02:") ? "Place in Scene" : "Add to active Scene"}
               </button>
             )}
             {scene && !selected.archived && (
@@ -896,6 +1045,11 @@ export function SpatialContentLibrary(props: Props) {
                     <button disabled={props.busy} onClick={() => props.onManageScene(scene, "SAVE_AS")}>
                       Create independent copy
                     </button>
+                    {props.expanded && props.onDuplicateScene && selected.kind === "SCENES" && (
+                      <button disabled={props.busy} onClick={() => props.onDuplicateScene!(scene)}>
+                        Duplicate Scene…
+                      </button>
+                    )}
                   </>
                 )}
                 {selected.kind === "SCENES" && sceneEnvironmentIdentity(scene) && (
@@ -913,13 +1067,15 @@ export function SpatialContentLibrary(props: Props) {
                     }
                     onClick={() => props.onUseSaved(scene, chosenVersion ?? scene.releases[0]?.id ?? "")}
                   >
-                    {savedComposition
-                      ? installedReadOnly
-                        ? "Add credited composition"
-                        : "Add saved composition"
-                      : installedReadOnly
-                        ? "Add credited copy"
-                        : "Add released copy"}
+                    {selected.kind === "ASSETS"
+                      ? "Place in Scene"
+                      : savedComposition
+                        ? installedReadOnly
+                          ? "Add credited composition"
+                          : "Add saved composition"
+                        : installedReadOnly
+                          ? "Add credited copy"
+                          : "Add released copy"}
                   </button>
                 )}
               </>
@@ -946,6 +1102,11 @@ export function SpatialContentLibrary(props: Props) {
                   </button>
                 )}
                 <button onClick={() => showScenes(environment.id)}>View associated Scenes</button>
+                {props.expanded && props.onCreateSceneFromEnvironment && environment.immutableVersions.length > 0 && (
+                  <button disabled={props.busy} onClick={() => props.onCreateSceneFromEnvironment!(environment)}>
+                    Create Scene from Environment…
+                  </button>
+                )}
               </>
             )}
             {environment && !selected.archived && legacy && !installedReadOnly && (
@@ -966,6 +1127,11 @@ export function SpatialContentLibrary(props: Props) {
                   </button>
                 )}
                 <button onClick={() => showScenes(environment.id)}>View associated Scenes</button>
+                {props.expanded && props.onCreateSceneFromEnvironment && environment.immutableVersions.length > 0 && (
+                  <button disabled={props.busy} onClick={() => props.onCreateSceneFromEnvironment!(environment)}>
+                    Create Scene from Environment…
+                  </button>
+                )}
               </>
             )}
             {scene && !selected.archived && !installedReadOnly && selected.saveState !== "SAVED" && (
@@ -1037,7 +1203,19 @@ export function SpatialContentLibrary(props: Props) {
           )}
         </aside>
       )}
-      <div className={styles.results} data-view={view}>
+      {props.expanded && !selected && (
+        <aside className={styles.emptyDetails} aria-label="Library item details">
+          <strong>Inspect your next addition</strong>
+          <p>Select a Library item to see its source, permissions, relationships and available actions.</p>
+        </aside>
+      )}
+      <div
+        className={styles.results}
+        id={kindPanelId}
+        role="tabpanel"
+        aria-labelledby={`${kindTabsId}-${kind}`}
+        data-view={view}
+      >
         {(paged ? matching : matching.slice(0, limit)).map((item) => (
           <article
             key={item.id}
@@ -1077,9 +1255,13 @@ export function SpatialContentLibrary(props: Props) {
                 {item.preset && (
                   <button
                     disabled={props.busy || Boolean(item.blocked)}
-                    onClick={() => props.onInsertPreset(item.preset!)}
+                    onClick={() =>
+                      props.expanded && item.preset!.startsWith("sc02:") && props.onPlacePreset
+                        ? props.onPlacePreset(item.preset!)
+                        : props.onInsertPreset(item.preset!)
+                    }
                   >
-                    Add to Scene
+                    {props.expanded && item.preset.startsWith("sc02:") ? "Place in Scene" : "Add to Scene"}
                   </button>
                 )}
                 {item.scene && !item.scene.readOnly && item.origin !== "INSTALLED" && !item.archived && (
@@ -1142,7 +1324,10 @@ export function SpatialContentLibrary(props: Props) {
           <SpatialCommunityPublisher
             {...publication}
             csrfToken={props.csrfToken ?? (() => "")}
-            onClose={() => setPublication(null)}
+            onClose={() => {
+              setPublication(null);
+              setPublicationReload((value) => value + 1);
+            }}
           />,
           document.body,
         )}
