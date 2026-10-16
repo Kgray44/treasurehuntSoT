@@ -1782,12 +1782,14 @@ export function recognizeExceptionExecution({ root, baseSha, candidateSha, envir
   try {
     r3Family = r3SourceFingerprint([...candidateInventory]) === CROSSDECK_R3.maskedSrcDigest;
   } catch {}
+  // Contract identity belongs to this candidate, not to each historical row.
+  // Retain the exact predicate while keeping the existing bounded Git reader.
+  const ids = present(root, candidateSha, "testing/contracts.json")
+    ? (json(root, candidateSha, "testing/contracts.json").contracts ?? []).map((value) => value.id)
+    : [];
+  const refit = ids.includes("crossdeck.refit.companion") || ids.includes("crossdeck.refit.published-lens");
   return records.some((record) => {
     const marker = campaignHistoryMarker(record, candidateInventory, candidatePaths);
-    const ids = present(root, candidateSha, "testing/contracts.json")
-      ? (json(root, candidateSha, "testing/contracts.json").contracts ?? []).map((value) => value.id)
-      : [];
-    const refit = ids.includes("crossdeck.refit.companion") || ids.includes("crossdeck.refit.published-lens");
     const frozen =
       record.frozenTrees?.src &&
       present(root, candidateSha, "src") &&

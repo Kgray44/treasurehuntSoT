@@ -63,6 +63,12 @@ publication/indexes and older chain, totaling fourteen exact predecessor runs.
 One bounded shared transport client handles the entire walk; unknown additional
 campaign invocations fail admission. Retirement cannot reactivate R10 or older.
 
+The coherent eleven-row copied-source guard initially made122 Git reads against
+the unchanged120-read/20-second limit. Candidate contract identity is now read
+once and reused across historical rows; all denial predicates and the original
+regression limit remain unchanged. The failed local result is retained as
+nonaccepting evidence, separate from subsequent frozen-source qualification.
+
 ## Historical review bridge and current proof
 
 Original R8 preparation18, capture, review7/submission3 remain bound to base
