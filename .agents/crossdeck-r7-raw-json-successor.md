@@ -1,12 +1,17 @@
 ---
 title: Crossdeck R7 finite navigation and raw JSON successor
 audience: automation
-status: current
+status: historical-consumed
 canonical_for: crossdeck-r7-finite-successor-context-20261016
 last_reviewed: 2026-10-16
 ---
 
 # Install before consumer execution
+
+R7 is consumed: its local proof passed, then preparation17 failed. Preserve both
+outcomes. Continue only through the separately installed
+[R8 context](crossdeck-r8-restored-chart-successor.md); the original R7 allowance
+below cannot be replayed.
 
 Use the [engineering record](../Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R7_Finite_Successor_20261016.md).
 Profile: infrastructure, UNATTENDED_CONTINUATION. Standing owner permission

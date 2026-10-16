@@ -1,12 +1,16 @@
 ---
 title: Crossdeck R7 finite navigation and raw JSON successor
 audience: engineering
-status: current
+status: historical-consumed
 canonical_for: sounding-line-crossdeck-r7-finite-successor-20261016
 last_reviewed: 2026-10-16
 ---
 
 # Diagnosed failure and exact correction
+
+R7 local proof subsequently passed and preparation17 failed. Both consumed
+outcomes remain preserved. The separate [R8 record](Project_Sounding_Line_Crossdeck_R8_Finite_Successor_20261016.md)
+governs the next diagnosed successor; this original grant is historical.
 
 The R6 local preflight consumed its one parent and one child on protected base
 `ed96ead50e31553b1779c08284b022047d5edd8d`, candidate

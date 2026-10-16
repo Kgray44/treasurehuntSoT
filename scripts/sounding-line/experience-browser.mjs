@@ -19,6 +19,7 @@ import {
   CROSSDECK_R3,
   CROSSDECK_R6,
   CROSSDECK_R7,
+  CROSSDECK_R8,
 } from "./experience-exception.mjs";
 import {
   experienceDigest,
@@ -333,11 +334,13 @@ export async function captureProductExperience({ root, plan, baseURL, outputDire
       phase:
         plan.localProof === CROSSDECK_R3.id
           ? `r3-local-render-${plan.localProofMotionMode}`
-          : plan.localProof === CROSSDECK_R7.id
-            ? "r7-local-render"
-            : plan.localProof === CROSSDECK_R6.id
-              ? "r6-local-render"
-              : "render",
+          : plan.localProof === CROSSDECK_R8.id
+            ? "r8-local-render"
+            : plan.localProof === CROSSDECK_R7.id
+              ? "r7-local-render"
+              : plan.localProof === CROSSDECK_R6.id
+                ? "r6-local-render"
+                : "render",
       plan,
       runId: Number(process.env.GITHUB_RUN_ID),
     });

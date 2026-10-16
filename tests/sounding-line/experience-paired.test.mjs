@@ -29,6 +29,7 @@ import { verifyTrustedExperienceAttestation } from "../../scripts/sounding-line/
 import {
   r6LocalMarkerPath,
   r7LocalMarkerPath,
+  r8LocalMarkerPath,
   inspectCampaignBeforeLocalProof,
   recognizeExceptionExecution,
 } from "../../scripts/sounding-line/experience-exception.mjs";
@@ -36,6 +37,17 @@ import { CROSSDECK_R6, validateR6LocalReceipt } from "../../scripts/sounding-lin
 import { runR6LocalProof } from "../../scripts/sounding-line/experience-r6-local-proof.mjs";
 import { CROSSDECK_R7, validateR7LocalReceipt } from "../../scripts/sounding-line/experience-r7.mjs";
 import { runR7LocalProof, validateR7PriorLocalMarker } from "../../scripts/sounding-line/experience-r7-local-proof.mjs";
+
+import {
+  CROSSDECK_R8,
+  validateR8LocalReceipt,
+  validateR8FormattingInputs,
+} from "../../scripts/sounding-line/experience-r8.mjs";
+import {
+  runR8LocalProof,
+  validateR8PriorLocalMarker,
+  validateR8PriorMarkerDigests,
+} from "../../scripts/sounding-line/experience-r8-local-proof.mjs";
 
 test("formatter preserves only exact paired originals while checking nearby metadata in ordinary and release modes", async (t) => {
   const root = mkdtempSync(path.join(tmpdir(), "paired-format-"));
@@ -66,7 +78,11 @@ test("formatter preserves only exact paired originals while checking nearby meta
       sidecars.map((file) => `${dir}/${file}`),
     ),
   ];
-  assert.equal(rawPaths.length, 25);
+  rawPaths.push(
+    `${evidence}/r8-verification-20261016/paired-local-proof.json`,
+    ...sidecars.map((file) => `${evidence}/r8-verification-20261016/paired-local-execution/generic/paired/${file}`),
+  );
+  assert.equal(rawPaths.length, 36);
   const declared = ignore
     .toString()
     .split(/\r?\n/u)
@@ -85,7 +101,7 @@ test("formatter preserves only exact paired originals while checking nearby meta
     `${canonical}/refit-recovery/other.json`,
     `${canonical}/other-case/paired-witness.json`,
     `${old}/paired-local-proof.copy.json`,
-    `${evidence}/r8-verification-20261016/paired-local-proof.json`,
+    `${evidence}/r9-verification-20261016/paired-local-proof.json`,
     `nested/${canonical}/refit-recovery/paired-witness.json`,
     "testing/contracts.json",
     "testing/product-experience-exceptions.json",
@@ -511,6 +527,7 @@ test("trusted capture and review bind paired claims even when original media ide
 for (const [grant, markerFor, runProof, validateReceipt] of [
   [CROSSDECK_R6, r6LocalMarkerPath, runR6LocalProof, validateR6LocalReceipt],
   [CROSSDECK_R7, r7LocalMarkerPath, runR7LocalProof, validateR7LocalReceipt],
+  [CROSSDECK_R8, r8LocalMarkerPath, runR8LocalProof, validateR8LocalReceipt],
 ])
   test(`${grant.id} local parent is consumed before replay and failure cannot reset it through another candidate or worktree`, async (t) => {
     const f = fixture(t);
@@ -534,6 +551,15 @@ for (const [grant, markerFor, runProof, validateReceipt] of [
       /EEXIST/u,
     );
     assert.equal(replays, 1);
+    for (const status of ["STARTED", "PASS"]) {
+      const consumed = JSON.parse(readFileSync(markerPath));
+      writeFileSync(markerPath, JSON.stringify({ ...consumed, status }));
+      await assert.rejects(
+        () => runProof({ root: f.root, baseSha: f.plan.baseSha, candidateSha: f.plan.candidateSha, admit, replay }),
+        /EEXIST/u,
+      );
+      assert.equal(replays, 1);
+    }
     const sibling = path.join(f.root, "owned-sibling");
     f.git("worktree", "add", "--detach", sibling, "HEAD");
     assert.equal(markerFor(sibling), markerPath);
@@ -690,5 +716,58 @@ test("history inventories each immutable candidate once while preserving directo
   } finally {
     if (inherited === undefined) delete process.env.GIT_TRACE;
     else process.env.GIT_TRACE = inherited;
+  }
+});
+
+test("R8 requires both consumed original markers and rejects copied R7 success", (t) => {
+  const f = fixture(t);
+  assert.throws(() => validateR8PriorLocalMarker(f.root), /ENOENT/u);
+  mkdirSync(path.dirname(r6LocalMarkerPath(f.root)), { recursive: true });
+  const prior = Buffer.from(JSON.stringify({ status: "FAIL" }));
+  writeFileSync(r6LocalMarkerPath(f.root), prior);
+  assert.throws(() => validateR8PriorLocalMarker(f.root), /ENOENT/u);
+  writeFileSync(r7LocalMarkerPath(f.root), JSON.stringify({ status: "PASS" }));
+  assert.throws(() => validateR8PriorLocalMarker(f.root), /CONSUMED_PRIOR_MARKER_CHANGED/u);
+  assert.deepEqual(readFileSync(r6LocalMarkerPath(f.root)), prior);
+  assert.throws(() => readFileSync(r8LocalMarkerPath(f.root)), /ENOENT/u);
+  const valid = [CROSSDECK_R7.predecessor.originalMarkerSha256, CROSSDECK_R8.predecessor.originalMarkerSha256];
+  validateR8PriorMarkerDigests(valid);
+  for (const altered of [["changed", valid[1]], [valid[0], "changed"], [valid[0]], [valid[1], valid[0]]])
+    assert.throws(() => validateR8PriorMarkerDigests(altered), /CONSUMED_PRIOR_MARKER_CHANGED/u);
+  assert.throws(
+    () => validateR8LocalReceipt({ status: "PASS", exceptionId: CROSSDECK_R7.id }, f.plan),
+    /LOCAL_PROOF_MISSING_OR_CHANGED/u,
+  );
+});
+
+test("R8 exact formatter inventory rejects configs, aliases, deletions and changed modes", () => {
+  const base = new Map([
+    [".prettierignore", "100644 blob ignore"],
+    [".gitignore", "100644 blob gitignore"],
+    [".prettierrc.json", "100644 blob config"],
+  ]);
+  validateR8FormattingInputs(base, new Map(base));
+  for (const name of [
+    ".prettierrc",
+    ".PRETTIERRC",
+    ".editorconfig",
+    ".EDITORCONFIG",
+    "prettier.config.mjs",
+    "package.json",
+    "package.yaml",
+  ]) {
+    const changed = new Map(base);
+    changed.set(`Development_Docs/Testing/Product_Experience/${name}`, "100644 blob closer-config");
+    assert.throws(() => validateR8FormattingInputs(base, changed), /R8_FORMATTING_INPUT_CHANGED/u);
+  }
+  for (const file of base.keys()) {
+    const deleted = new Map(base);
+    deleted.delete(file);
+    assert.throws(() => validateR8FormattingInputs(base, deleted), /R8_FORMATTING_INPUT_CHANGED/u);
+    for (const mode of ["100755", "120000", "160000"]) {
+      const changed = new Map(base);
+      changed.set(file, `${mode} blob ${base.get(file).split(" ").at(-1)}`);
+      assert.throws(() => validateR8FormattingInputs(base, changed), /R8_FORMATTING_INPUT_CHANGED/u);
+    }
   }
 });

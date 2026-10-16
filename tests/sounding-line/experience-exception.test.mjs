@@ -14,6 +14,7 @@ import {
   CROSSDECK_R5,
   CROSSDECK_R6,
   CROSSDECK_R7,
+  CROSSDECK_R8,
   bindExperienceException,
   campaignRelated,
   claimExceptionPhase,
@@ -2123,6 +2124,180 @@ const r7Template = JSON.parse(
   readFileSync(path.join(repo, "testing/product-experience-exceptions.json"), "utf8"),
 ).exceptions.find((r) => r.id === CROSSDECK_R7.id);
 
+const r8Template = JSON.parse(
+  readFileSync(path.join(repo, "testing/product-experience-exceptions.json")),
+).exceptions.find((r) => r.id === CROSSDECK_R8.id);
+
+test("R8 keeps R7 local PASS and consumed preparation17 FAIL while granting fresh finite ordinals", () => {
+  const records = [
+    template,
+    successorTemplate,
+    r3Template,
+    r4Template,
+    r5Template,
+    r6Template,
+    r7Template,
+    structuredClone(r8Template),
+  ];
+  validateExceptionRecord(records[7], new Date("2026-10-16T12:00:00Z"));
+  assert.deepEqual(selectTrustedExceptions(records), [records[7]]);
+  assert.equal(hash(r7Template), CROSSDECK_R8.predecessorDigest);
+  assert.equal(r8Template.immutableHistory.length, 1099);
+  assert.deepEqual(r8Template.immutableHistory.slice(0, 475), r7Template.immutableHistory);
+  assert.deepEqual(r8Template.executionBudget, r7Template.executionBudget);
+  assert.equal(r8Template.expiresAt, r7Template.expiresAt);
+  assert.equal(r8Template.predecessor.localStatus, "PASS");
+  assert.equal(r8Template.predecessor.preparationStatus, "FAIL");
+  assert.equal(r8Template.attemptHistory.nextPreparationAttemptTotal, 18);
+  assert.equal(r8Template.attemptHistory.nextPairedLocalProofInvocationTotal, 3);
+  assert.equal(r8Template.attemptHistory.remainingIndependentReviewOrdinal, 7);
+  assert.equal(r8Template.attemptHistory.nextAuthenticatedReviewDispatchTotal, 3);
+  assert.equal(r8Template.attemptHistory.nextOrdinaryDispatchTotal, 2);
+  for (const change of [
+    (r) => r.immutableHistory.pop(),
+    (r) => r.executionBudget.reruns++,
+    (r) => r.attemptHistory.nextPreparationAttemptTotal--,
+    (r) => (r.predecessor.localStatus = "FAIL"),
+    (r) => (r.predecessor.preparationStatus = "PASS"),
+    (r) => (r.expiresAt = "2026-10-23T23:59:59Z"),
+  ]) {
+    const altered = structuredClone(r8Template);
+    change(altered);
+    assert.throws(() => validateExceptionRecord(altered, new Date("2026-10-16T12:00:00Z")), /R8_RECORD_CHANGED/u);
+  }
+  records[7].status = "RETIRED";
+  assert.deepEqual(selectTrustedExceptions(records), []);
+  records[6] = { ...records[6], status: "RETIRED" };
+  assert.throws(() => selectTrustedExceptions(records), /R8_PREDECESSOR_REGISTRY_CHANGED/u);
+});
+test("R8 identical-source checkout is unrelated unless the explicit consumer PR matches", () => {
+  const same = "a".repeat(40);
+  for (const prNumber of [undefined, 741])
+    assert.equal(
+      campaignRelated({ root: "unused", baseSha: same, candidateSha: same, record: r8Template, prNumber }),
+      false,
+    );
+  assert.equal(
+    campaignRelated({ root: "unused", baseSha: same, candidateSha: same, record: r8Template, prNumber: 721 }),
+    true,
+  );
+});
+async function r8ApiFixture(t) {
+  const f = await r7ApiFixture(t),
+    p = CROSSDECK_R8.predecessor;
+  const packet = JSON.parse(
+    readFileSync(
+      path.join(
+        repo,
+        "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r8-readiness-20261016/r7-custody-observation.json",
+      ),
+    ),
+  );
+  f.commits.set(p.baseSha, structuredClone(f.commits.get(f.plan.baseSha)));
+  const { commitSha, ...payload } = packet;
+  const created = await f.store.create("prepare", payload);
+  f.commits.set(commitSha, structuredClone(f.commits.get(created.commitSha)));
+  f.refs.set(`refs/tags/${p.namespace}/prepare`, { object: { type: "commit", sha: commitSha } });
+  f.commits.set(p.candidateSha, { tree: { sha: p.candidateTree } });
+  f.runs.set(
+    p.runId,
+    remoteRun(
+      {
+        ...runIdentity(p, p.runId, "workflow_dispatch", "capture"),
+        createdAt: p.createdAt,
+        workflowId: p.workflowId,
+        headSha: p.baseSha,
+        headBranch: "main",
+      },
+      "completed",
+      "failure",
+    ),
+  );
+  for (const a of p.artifacts)
+    f.artifacts.set(a.id, {
+      id: a.id,
+      digest: a.digest,
+      size_in_bytes: a.size,
+      workflow_run: { id: p.runId, head_sha: p.baseSha },
+    });
+  const indexes = new Map(
+    [p.failureIndexPath, p.localProofIndexPath].map((file) => [
+      file,
+      execFileSync("git", ["show", `${p.failureCommit}:${file}`], { cwd: repo, maxBuffer: 64 * 1024 * 1024 }),
+    ]),
+  );
+  const request = async (endpoint, method, body) => {
+    if (endpoint === `git/commits/${p.failureCommit}`) return { tree: { sha: "r8-preservation-tree" } };
+    if (endpoint === "git/trees/r8-preservation-tree?recursive=1")
+      return {
+        truncated: false,
+        tree: [...indexes.keys()].map((file) => ({ path: file, type: "blob", mode: "100644", sha: file })),
+      };
+    if (endpoint.startsWith("git/blobs/") && indexes.has(endpoint.slice(10)))
+      return { content: indexes.get(endpoint.slice(10)).toString("base64") };
+    return f.request(endpoint, method, body);
+  };
+  const current = { ...f.current, runId: 38890000000, createdAt: "2026-10-16T12:00:00Z" };
+  f.runs.delete(f.current.runId);
+  f.runs.set(current.runId, remoteRun(current));
+  f.operations.length = 0;
+  return {
+    ...f,
+    record: r8Template,
+    plan: { ...f.plan, exception: recordBinding(r8Template) },
+    current,
+    request,
+    priorStore: f.store,
+    store: exceptionStore({ record: r8Template, request }),
+    now: new Date(current.createdAt),
+    indexes,
+  };
+}
+test("R8 preserves exact R7 reservation, failed run, artifacts and both indexes before any custody write", async (t) => {
+  const f = await r8ApiFixture(t),
+    p = CROSSDECK_R8.predecessor;
+  assert.equal((await validateSuccessorPredecessor(f)).length, 9);
+  for (const file of f.indexes.keys()) {
+    const bytes = f.indexes.get(file);
+    f.indexes.set(file, Buffer.from("changed original"));
+    await assert.rejects(() => validateSuccessorPredecessor(f), /R8_PRESERVATION_INDEX_CHANGED/u);
+    f.indexes.set(file, bytes);
+  }
+  for (const key of ["run_attempt", "event", "conclusion"]) {
+    const run = f.runs.get(p.runId),
+      prior = run[key];
+    run[key] = key === "run_attempt" ? 2 : "changed";
+    await assert.rejects(() => validateSuccessorPredecessor(f), /PREDECESSOR_RUN_CHANGED/u);
+    run[key] = prior;
+  }
+  for (const a of p.artifacts) {
+    const value = f.artifacts.get(a.id),
+      prior = value.digest;
+    value.digest = "changed";
+    await assert.rejects(() => validateSuccessorPredecessor(f), /PREDECESSOR_ARTIFACT_CHANGED/u);
+    value.digest = prior;
+  }
+  const reservationRef = `refs/tags/${p.namespace}/prepare`;
+  const savedRef = f.refs.get(reservationRef);
+  f.refs.delete(reservationRef);
+  await assert.rejects(() => validateSuccessorPredecessor(f), /PREDECESSOR_RESERVATION_CHANGED/u);
+  f.refs.set(reservationRef, savedRef);
+  const tree = f.trees.get(f.commits.get(p.prepareCommit).tree.sha);
+  const entry = tree.tree.find((e) => e.path === ".sounding-line-exception-reservation.json");
+  const originalBlob = await f.request(`git/blobs/${entry.sha}`);
+  const originalContent = originalBlob.content;
+  const changed = JSON.parse(Buffer.from(originalBlob.content, "base64"));
+  changed.attemptHistory.status = "changed payload";
+  originalBlob.content = Buffer.from(JSON.stringify(changed)).toString("base64");
+  await assert.rejects(() => validateSuccessorPredecessor(f), /R8_PREDECESSOR_PREPARE_CHANGED/u);
+  originalBlob.content = originalContent;
+  assert(f.operations.every((o) => o.method === "GET"));
+  await f.priorStore.create("review7", { binding: exceptionBinding(f.plan), unexpected: true });
+  const writes = f.operations.filter((o) => o.method !== "GET").length;
+  await assert.rejects(() => validateSuccessorPredecessor(f), /R8_PREDECESSOR_CONSUMPTION_CHANGED/u);
+  assert.equal(f.operations.filter((o) => o.method !== "GET").length, writes);
+});
+
 test("R7 preserves consumed R6 and every predecessor while granting only a separate finite successor", () => {
   const records = [
     template,
@@ -2752,7 +2927,7 @@ test("custody-only diagnostic has no finalization path and preserves ordinary pr
   );
 });
 
-for (const record of [r4Template, r5Template, r6Template, r7Template])
+for (const record of [r4Template, r5Template, r6Template, r7Template, r8Template])
   test(`R${record.version} freezes accepted product, contracts, targeted tests and history while custody probe verifies real Git lineage`, async (t) => {
     const root = mkdtempSync(path.join(repo, "artifacts/r4-admission-"));
     t.after(() => rmSync(root, { recursive: true, force: true }));
@@ -2776,8 +2951,8 @@ for (const record of [r4Template, r5Template, r6Template, r7Template])
     const commit = (parent) => git(["commit-tree", git(["write-tree"]), "-p", parent, "-m", "R4 fixture"]);
     const head = execFileSync("git", ["rev-parse", "HEAD"], { cwd: repo, encoding: "utf8" }).trim();
     git(["read-tree", head]);
-    if (record.version === 7) {
-      put(".prettierignore", readFileSync(path.join(repo, ".prettierignore")));
+    if (record.version >= 7) {
+      put(".prettierignore", execFileSync("git", ["show", record.frozenBlobs[".prettierignore"]], { cwd: repo }));
       put(".prettierrc.json", readFileSync(path.join(repo, ".prettierrc.json")));
     }
     put(
@@ -2791,7 +2966,8 @@ for (const record of [r4Template, r5Template, r6Template, r7Template])
           r4Template,
           ...(record.version >= 5 ? [r5Template] : []),
           ...(record.version >= 6 ? [r6Template] : []),
-          ...(record.version === 7 ? [r7Template] : []),
+          ...(record.version >= 7 ? [r7Template] : []),
+          ...(record.version >= 8 ? [r8Template] : []),
         ],
       }),
     );
@@ -2826,8 +3002,10 @@ for (const record of [r4Template, r5Template, r6Template, r7Template])
     git(["update-index", "--index-info"], overlay + "\n");
     for (const e of record.protectedBaseRuntimeOverrides)
       git(["update-index", "--add", "--cacheinfo", `${e.mode},${e.blob},${e.path}`]);
-    for (const e of record.immutableHistory)
-      git(["update-index", "--add", "--cacheinfo", `100644,${e.blob},${e.path}`]);
+    git(
+      ["update-index", "--index-info"],
+      record.immutableHistory.map((e) => `100644 blob ${e.blob}\t${e.path}\n`).join(""),
+    );
     const candidateSha = commit(baseSha);
     const plan = {
       applicable: true,
@@ -2899,7 +3077,7 @@ for (const record of [r4Template, r5Template, r6Template, r7Template])
       }
     }
     if (record.version >= 6) {
-      const api = await (record.version === 7 ? r7ApiFixture : r6ApiFixture)(t);
+      const api = await (record.version === 8 ? r8ApiFixture : record.version === 7 ? r7ApiFixture : r6ApiFixture)(t);
       const guardedPlan = { ...plan, baseSha, candidateSha, exception: recordBinding(record) };
       const current = {
         ...api.current,
