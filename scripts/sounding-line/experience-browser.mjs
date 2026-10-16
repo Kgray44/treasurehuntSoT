@@ -13,7 +13,13 @@ import {
   createBrowserDiagnosticSession,
 } from "./browser-diagnostics.mjs";
 import { producePairedEvidence, sealPairedRuntime, validatePairedEvidence } from "./experience-paired.mjs";
-import { assertExceptionExecution, claimExceptionPhase, CROSSDECK_R3, CROSSDECK_R6 } from "./experience-exception.mjs";
+import {
+  assertExceptionExecution,
+  claimExceptionPhase,
+  CROSSDECK_R3,
+  CROSSDECK_R6,
+  CROSSDECK_R7,
+} from "./experience-exception.mjs";
 import {
   experienceDigest,
   planProductExperience,
@@ -327,9 +333,11 @@ export async function captureProductExperience({ root, plan, baseURL, outputDire
       phase:
         plan.localProof === CROSSDECK_R3.id
           ? `r3-local-render-${plan.localProofMotionMode}`
-          : plan.localProof === CROSSDECK_R6.id
-            ? "r6-local-render"
-            : "render",
+          : plan.localProof === CROSSDECK_R7.id
+            ? "r7-local-render"
+            : plan.localProof === CROSSDECK_R6.id
+              ? "r6-local-render"
+              : "render",
       plan,
       runId: Number(process.env.GITHUB_RUN_ID),
     });
