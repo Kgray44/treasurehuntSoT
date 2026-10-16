@@ -2168,11 +2168,11 @@ test("R7 preserves consumed R6 and every predecessor while granting only a separ
   assert.throws(() => validateExceptionRecord(r7Template, new Date(r7Template.expiresAt)), /EXPIRED/u);
 });
 
-test("R7 preserves the original R6 failure index and eight consumed runs before any custody write", async (t) => {
+async function r7ApiFixture(t) {
   const f = await r6ApiFixture(t),
     p = CROSSDECK_R7.predecessor;
   const bytes = execFileSync("git", ["show", `${p.failureCommit}:${p.failureIndexPath}`], { cwd: repo });
-  let observedBytes = bytes;
+  const observation = { bytes };
   const request = async (endpoint, method, body) => {
     if (endpoint === `git/commits/${p.failureCommit}`) return { tree: { sha: "r7-failure-tree" } };
     if (endpoint === "git/trees/r7-failure-tree?recursive=1")
@@ -2180,18 +2180,35 @@ test("R7 preserves the original R6 failure index and eight consumed runs before 
         truncated: false,
         tree: [{ path: p.failureIndexPath, type: "blob", mode: "100644", sha: "failure-index" }],
       };
-    if (endpoint === "git/blobs/failure-index") return { content: observedBytes.toString("base64") };
+    if (endpoint === "git/blobs/failure-index") return { content: observation.bytes.toString("base64") };
     return f.request(endpoint, method, body);
   };
-  const args = { ...f, record: r7Template, request, now: new Date("2026-10-16T08:00:00Z") };
+  const current = { ...f.current, runId: 38872000000, createdAt: "2026-10-16T08:00:00Z" };
+  f.runs.delete(f.current.runId);
+  f.runs.set(current.runId, remoteRun(current));
+  return {
+    ...f,
+    record: r7Template,
+    plan: { ...f.plan, exception: recordBinding(r7Template) },
+    request,
+    current,
+    now: new Date("2026-10-16T08:00:00Z"),
+    priorStore: f.store,
+    store: exceptionStore({ record: r7Template, request }),
+    observation,
+  };
+}
+test("R7 preserves the original R6 failure index and eight consumed runs before any custody write", async (t) => {
+  const args = await r7ApiFixture(t);
   assert.equal((await validateSuccessorPredecessor(args)).length, 8);
-  observedBytes = Buffer.from("changed failure verdict");
+  const bytes = args.observation.bytes;
+  args.observation.bytes = Buffer.from("changed failure verdict");
   await assert.rejects(() => validateSuccessorPredecessor(args), /R7_FAILURE_INDEX_CHANGED/u);
-  observedBytes = bytes;
-  await f.store.create("prepare", { unexpectedR6Reservation: true });
-  const writes = f.operations.filter((o) => o.method !== "GET").length;
+  args.observation.bytes = bytes;
+  await args.priorStore.create("prepare", { binding: exceptionBinding(args.plan), unexpectedR6Reservation: true });
+  const writes = args.operations.filter((o) => o.method !== "GET").length;
   await assert.rejects(() => validateSuccessorPredecessor(args), /R7_PREDECESSOR_CONSUMPTION_CHANGED/u);
-  assert.equal(f.operations.filter((o) => o.method !== "GET").length, writes);
+  assert.equal(args.operations.filter((o) => o.method !== "GET").length, writes);
 });
 async function r6ApiFixture(t) {
   const f = await r5ApiFixture(t),
@@ -2881,8 +2898,8 @@ for (const record of [r4Template, r5Template, r6Template, r7Template])
         assert.throws(() => bind(commit(baseSha)), /FORMATTING_INPUT_CHANGED|FROZEN_CONFIGURATION_CHANGED/u, mode);
       }
     }
-    if (record.version === 6) {
-      const api = await r6ApiFixture(t);
+    if (record.version >= 6) {
+      const api = await (record.version === 7 ? r7ApiFixture : r6ApiFixture)(t);
       const guardedPlan = { ...plan, baseSha, candidateSha, exception: recordBinding(record) };
       const current = {
         ...api.current,
