@@ -31,6 +31,18 @@ import {
   assertR8FormatMode,
   validateR8FormatCustody,
 } from "./experience-r8-format.mjs";
+import {
+  CROSSDECK_R9,
+  validateR9Record,
+  assertR9Mode,
+  bindR9Reconciliation,
+  pendingR9Reconciliation,
+  r9HistoricalEvidencePlan,
+  validateR9HistoricalCustody,
+  r9HistoryRunMatches,
+  validateR9FinalDecision,
+} from "./experience-r9.mjs";
+export { CROSSDECK_R9 } from "./experience-r9.mjs";
 
 export const EXCEPTION_REGISTRY = "testing/product-experience-exceptions.json";
 // Recognition survives retirement/removal of a grant. It never grants admission.
@@ -154,6 +166,16 @@ function r3FamilyRelated(root, candidateSha) {
   }
 }
 export function selectTrustedExceptions(records) {
+  const r9 = records.filter((r) => r.id === CROSSDECK_R9.id);
+  if (r9.length) {
+    if (r9.length !== 1 || records.length !== 9) fail("R9_PREDECESSOR_REGISTRY_CHANGED");
+    validateR9Record(r9[0]);
+    const prior = records.filter((r) => r.id !== CROSSDECK_R9.id);
+    selectTrustedExceptions(prior);
+    if (digest(prior.find((r) => r.id === CROSSDECK_R8.id)) !== r9[0].predecessor.recordDigest)
+      fail("R9_PREDECESSOR_REGISTRY_CHANGED");
+    return r9.filter((r) => r.status === "ACTIVE");
+  }
   const r8 = records.filter((r) => r.id === CROSSDECK_R8.id);
   if (r8.length) {
     if (
@@ -348,6 +370,11 @@ export function campaignRelated({ root, baseSha, candidateSha, record, prNumber 
   );
 }
 export function validateExceptionRecord(record, now = new Date()) {
+  if (record?.id === CROSSDECK_R9.id) {
+    validateR9Record(record);
+    if (now.getTime() >= Date.parse(record.expiresAt)) fail("EXPIRED");
+    return;
+  }
   if (record?.id === CROSSDECK_R8.id) {
     validateR8Record(record);
     if (now.getTime() >= Date.parse(record.expiresAt)) fail("EXPIRED");
@@ -440,7 +467,10 @@ export function bindExperienceException({ root, baseSha, candidateSha, plan, prN
   if (records.length !== 1) fail("AMBIGUOUS_CAMPAIGN");
   const record = records[0];
   validateExceptionRecord(record, now);
-  const nonExecutingReconciliation = bindR8FormatReconciliation({ root, baseSha, candidateSha, plan, record });
+  const nonExecutingReconciliation =
+    record.id === CROSSDECK_R9.id
+      ? bindR9Reconciliation({ root, baseSha, candidateSha, plan, record })
+      : bindR8FormatReconciliation({ root, baseSha, candidateSha, plan, record });
   const r3 = record.id === CROSSDECK_R3.id;
   for (const [file, tree] of Object.entries(record.frozenTrees))
     if (!(r3 && file === "src") && identity(root, candidateSha, file) !== tree) fail("FROZEN_PRODUCT_CHANGED");
@@ -462,7 +492,7 @@ export function bindExperienceException({ root, baseSha, candidateSha, plan, prN
   for (const [file, metadata] of reference) if (/^(?:src|public|prisma)\//u.test(file)) expected.set(file, metadata);
   for (const { path: file, mode, blob } of record.protectedBaseRuntimeOverrides)
     expected.set(file, `${mode} blob ${blob}`);
-  if (record.id === CROSSDECK_R8.id) validateR8FormattingInputs(expected, candidate);
+  if ([CROSSDECK_R8.id, CROSSDECK_R9.id].includes(record.id)) validateR8FormattingInputs(expected, candidate);
   if (record.id === CROSSDECK_R7.id) validateR7FormattingInputs(expected, candidate);
   if (r3) {
     validateR3Contracts(
@@ -486,7 +516,7 @@ export function bindExperienceException({ root, baseSha, candidateSha, plan, prN
     // Reuse the already read exact Git inventory instead of spawning twice per
     // preserved file. R8 additionally requires the preserved regular-file mode.
     if (
-      (record.id === CROSSDECK_R8.id && metadata !== `100644 blob ${blob}`) ||
+      ([CROSSDECK_R8.id, CROSSDECK_R9.id].includes(record.id) && metadata !== `100644 blob ${blob}`) ||
       !metadata ||
       metadata.split(" ").at(-1) !== blob
     )
@@ -505,7 +535,7 @@ export function bindExperienceException({ root, baseSha, candidateSha, plan, prN
   if (
     !plan.applicable ||
     (!r3 && plan.contractDigest !== record.contractDigest) ||
-    ([CROSSDECK_R6.id, CROSSDECK_R7.id, CROSSDECK_R8.id].includes(record.id)
+    ([CROSSDECK_R6.id, CROSSDECK_R7.id, CROSSDECK_R8.id, CROSSDECK_R9.id].includes(record.id)
       ? contexts !== 32 || plan.paired?.browserContexts !== 6 || plan.contextCount !== 38
       : contexts !== record.contexts) ||
     digest([...plan.contractIds].sort()) !== digest([...record.contractIds].sort())
@@ -528,6 +558,7 @@ export function recordBinding(record) {
       CROSSDECK_R6.id,
       CROSSDECK_R7.id,
       CROSSDECK_R8.id,
+      CROSSDECK_R9.id,
     ].includes(record.id)
       ? { version: record.version, predecessor: record.predecessor, attemptHistory: record.attemptHistory }
       : {}),
@@ -545,7 +576,7 @@ export function validateExceptionEvidence(plan, evidence, automatedOnly = false)
       if (
         review.iterations !== 11 ||
         review.independentReviewOrdinal !==
-          ([CROSSDECK_R6.id, CROSSDECK_R7.id, CROSSDECK_R8.id].includes(plan.exception.id)
+          ([CROSSDECK_R6.id, CROSSDECK_R7.id, CROSSDECK_R8.id, CROSSDECK_R9.id].includes(plan.exception.id)
             ? 7
             : plan.exception.id === CROSSDECK_R5.id
               ? 6
@@ -690,6 +721,40 @@ export function exceptionStore({ record, request }) {
   }
   return { read, create };
 }
+// Explicit historical evidence view. It cannot read an old qualification slot
+// or create any reservation, and is never a fallback for the current namespace.
+export function historicalExceptionContext({ root, plan, request }) {
+  if (plan.exception?.id !== CROSSDECK_R9.id) {
+    const record = trustedExceptions(root, plan.baseSha).find((value) => value.id === plan.exception?.id);
+    return { record, plan, store: exceptionStore({ record, request }) };
+  }
+  const historical = r9HistoricalEvidencePlan(plan);
+  const record = exceptionRecords(root, plan.baseSha).find((value) => value.id === historical.exception.id);
+  if (!record || digest(record) !== CROSSDECK_R8.recordDigest) fail("R9_HISTORICAL_RECORD_CHANGED");
+  const original = exceptionStore({ record, request });
+  return {
+    record,
+    plan: historical,
+    store: {
+      read(slot) {
+        if (!["prepare", "capture", "review-submit", "review7"].includes(slot)) fail("R9_HISTORICAL_SLOT_FORBIDDEN");
+        return original.read(slot);
+      },
+      create() {
+        fail("R9_HISTORICAL_WRITE_FORBIDDEN");
+      },
+    },
+  };
+}
+async function validateHistoricalExceptionCustody({ root, plan, request }) {
+  if (!plan.exception?.nonExecutingReconciliation) return;
+  if (plan.exception?.id === CROSSDECK_R9.id) {
+    const context = historicalExceptionContext({ root, plan, request });
+    return validateR9HistoricalCustody({ plan, store: context.store, request });
+  }
+  const record = trustedExceptions(root, plan.baseSha).find((value) => value.id === plan.exception?.id);
+  return validateR8FormatCustody({ plan, store: exceptionStore({ record, request }), request });
+}
 export async function validateLiveContext({
   record,
   plan,
@@ -776,10 +841,12 @@ export async function validateSuccessorPredecessor({ record, request, now }) {
       CROSSDECK_R6.id,
       CROSSDECK_R7.id,
       CROSSDECK_R8.id,
+      CROSSDECK_R9.id,
     ].includes(record.id)
   )
     return null;
   validateExceptionRecord(record, now);
+  if (record.id === CROSSDECK_R9.id) return validateR9Predecessors(record, request);
   if (record.id === CROSSDECK_R8.id) return validateR8Predecessors(request);
   if (record.id === CROSSDECK_R7.id) return validateR7Predecessors(request);
   if (record.id === CROSSDECK_R6.id) return validateR6Predecessors(request);
@@ -789,6 +856,57 @@ export async function validateSuccessorPredecessor({ record, request, now }) {
     return validateR3Predecessors(request);
   }
   return validateHistoricalPreparation(record.predecessor, request);
+}
+async function validateR9Predecessors(record, request) {
+  const prior = await validateR8Predecessors(request);
+  const p = record.predecessor;
+  const predecessorStore = exceptionStore({ record: { id: p.id, custody: { namespace: p.namespace } }, request });
+  const qualifier = await predecessorStore.read("qualify");
+  if (!qualifier) fail("R9_CONSUMED_QUALIFICATION_CHANGED");
+  const { commitSha, ...payload } = qualifier;
+  if (
+    commitSha !== p.qualifyCommit ||
+    digest(payload) !== p.qualifyPayloadDigest ||
+    (await predecessorStore.read("qualified"))
+  )
+    fail("R9_CONSUMED_QUALIFICATION_CHANGED");
+  const failed = await request(`actions/runs/${p.runId}`);
+  if (!isExactFailedPredecessor(failed, p)) fail("R9_CONSUMED_RUN_CHANGED");
+  const commit = await request(`git/commits/${p.candidateSha}`);
+  if (commit?.tree?.sha !== p.candidateTree) fail("R9_CONSUMED_TREE_CHANGED");
+  for (const expected of p.artifacts) {
+    const artifact = await request(`actions/artifacts/${expected.id}`);
+    if (
+      artifact?.id !== expected.id ||
+      artifact.expired ||
+      artifact.digest !== expected.digest ||
+      artifact.size_in_bytes !== expected.size ||
+      artifact.workflow_run?.id !== p.runId
+    )
+      fail("R9_FAILURE_ARTIFACT_CHANGED");
+  }
+  const publication = await request(`git/commits/${p.failurePublication}`);
+  if (publication?.tree?.sha !== p.failurePublicationTree) fail("R9_FAILURE_PUBLICATION_CHANGED");
+  const tree = await request(`git/trees/${publication.tree.sha}?recursive=1`);
+  if (!tree || tree.truncated || !Array.isArray(tree.tree)) fail("R9_FAILURE_PUBLICATION_CHANGED");
+  for (const [file, expected] of [
+    [p.failureIndexPath, p.failureIndexSha256],
+    [p.localProofIndexPath, p.localProofIndexSha256],
+  ]) {
+    const entry = tree.tree.find((value) => value.path === file);
+    if (entry?.type !== "blob" || entry.mode !== "100644") fail("R9_PRESERVATION_INDEX_CHANGED");
+    const blob = await request(`git/blobs/${entry.sha}`);
+    const bytes = Buffer.from(blob.content.replaceAll("\n", ""), "base64");
+    if (createHash("sha256").update(bytes).digest("hex") !== expected) fail("R9_PRESERVATION_INDEX_CHANGED");
+  }
+  const readOnlyHistorical = {
+    read(slot) {
+      if (!["prepare", "capture", "review-submit", "review7"].includes(slot)) fail("R9_HISTORICAL_SLOT_FORBIDDEN");
+      return predecessorStore.read(slot);
+    },
+  };
+  const successful = await validateR9HistoricalCustody({ store: readOnlyHistorical, request });
+  return [...prior, ...successful, failed];
 }
 async function validateR8Predecessors(request) {
   const prior = await validateR7Predecessors(request);
@@ -1105,6 +1223,16 @@ async function campaignHistory({ root, record, plan, mode, run, request, now, pr
   }
   for (const item of all.values()) {
     if (predecessors.some((p) => item.id === p.id)) {
+      if (record.id === CROSSDECK_R9.id) {
+        if (
+          !r9HistoryRunMatches(
+            item,
+            predecessors.find((value) => value.id === item.id),
+          )
+        )
+          fail("PREDECESSOR_HISTORY_CHANGED");
+        continue;
+      }
       const expectedPredecessor = [
         CROSSDECK_R2.predecessor,
         CROSSDECK_R3.predecessor,
@@ -1171,6 +1299,7 @@ async function campaignHistory({ root, record, plan, mode, run, request, now, pr
   };
 }
 export async function reserveExceptionStage({ root, record, plan, mode, run, store, request, now }) {
+  assertR9Mode(plan, mode);
   assertR8FormatMode(plan, mode);
   if (await store.read("qualify")) fail("QUALIFICATION_ALREADY_CONSUMED");
   if (mode === "verify") return;
@@ -1266,7 +1395,7 @@ export async function reserveExceptionStage({ root, record, plan, mode, run, sto
       candidateTree: git(root, "rev-parse", candidateSha + "^{tree}"),
       status: "ONE_ORDINARY_INVOCATION_RESERVED_VALIDATION_PENDING",
     });
-    await validateR8FormatCustody({ plan, store, request });
+    await validateHistoricalExceptionCustody({ root, plan, request });
   }
   if (mode === "review") {
     await requireSuccessfulReservation({ store, slot: "prepare", plan, request });
@@ -1300,23 +1429,28 @@ export async function requireSuccessfulReservation({ store, slot, plan, request 
     fail("RESERVED_RUN_NOT_SUCCESSFUL");
   return reservation;
 }
-export async function verifyExceptionAttestation({ root, plan, evidence, capture, review, request, now }) {
+export async function verifyExceptionAttestation({
+  root,
+  plan,
+  evidence,
+  capture,
+  review,
+  request,
+  now,
+  createRequest = githubRequest,
+}) {
   if (!plan.exception) return null;
   const actualPlan = plan;
+  const currentRecord = trustedExceptions(root, plan.baseSha).find((value) => value.id === plan.exception.id);
+  const api = request ?? createRequest(currentRecord.repository);
+  const context = historicalExceptionContext({ root, plan, request: api });
   if (plan.exception.nonExecutingReconciliation) {
-    const currentRecord = trustedExceptions(root, plan.baseSha).find((value) => value.id === plan.exception.id);
-    const api = request ?? githubRequest(currentRecord.repository);
-    await validateR8FormatCustody({
-      plan,
-      store: exceptionStore({ record: currentRecord, request: api }),
-      request: api,
-    });
+    await validateHistoricalExceptionCustody({ root, plan, request: api });
     plan = r8FormatEvidencePlan(plan);
   }
-  const record = trustedExceptions(root, plan.baseSha).find((value) => value.id === plan.exception.id);
+  const record = context.record;
   validateExceptionRecord(record, now);
-  const api = request ?? githubRequest(record.repository);
-  const store = exceptionStore({ record, request: api });
+  const store = context.store;
   const prepare = await requireSuccessfulReservation({ store, slot: "prepare", plan, request: api });
   const captureSeal = await store.read("capture");
   const reviewSlot = `review${record.remainingIndependentReviewOrdinal}`;
@@ -1486,7 +1620,7 @@ export async function assertExceptionExecution({
     actual.exception.nonExecutingReconciliation &&
     (environment.SOUNDING_LINE_EXCEPTION_PHASE !== "qualify" ||
       plan.localProof ||
-      Object.keys(environment).some((key) => /^SOUNDING_LINE_R[3-8]_LOCAL_LEASE$/u.test(key) && environment[key]))
+      Object.keys(environment).some((key) => /^SOUNDING_LINE_R[3-9]_LOCAL_LEASE$/u.test(key) && environment[key]))
   )
     fail("R8_FORMAT_EXECUTION_FORBIDDEN");
   if (environment.SOUNDING_LINE_R8_LOCAL_LEASE) {
@@ -1598,7 +1732,7 @@ export async function assertExceptionExecution({
     });
   const api = request ?? githubRequest(record.repository);
   await validateLiveContext({ record, plan, request: api, environment });
-  await validateR8FormatCustody({ plan, store: exceptionStore({ record, request: api }), request: api });
+  await validateHistoricalExceptionCustody({ root, plan, request: api });
   const reservation = await exceptionStore({ record, request: api }).read(phase);
   if (
     !reservation ||
@@ -1609,7 +1743,10 @@ export async function assertExceptionExecution({
     fail("EXECUTION_RESERVATION_MISSING");
   if (kind === "experience" && phase === "qualify" && !existsSync(phasePath(root, "technical-complete")))
     fail("TECHNICAL_VERIFICATION_NOT_COMPLETE");
-  const prepare = phase === "prepare" ? reservation : await exceptionStore({ record, request: api }).read("prepare");
+  const prepare =
+    phase === "prepare"
+      ? reservation
+      : await historicalExceptionContext({ root, plan, request: api }).store.read("prepare");
   return claimExceptionPhase({
     root,
     phase: phaseName,
@@ -1624,6 +1761,7 @@ export async function assertExceptionExecution({
       CROSSDECK_R6.id,
       CROSSDECK_R7.id,
       CROSSDECK_R8.id,
+      CROSSDECK_R9.id,
     ].includes(record.id)
       ? {
           executionHistory: {
@@ -1685,6 +1823,39 @@ export function markExceptionTechnicalComplete(root, plan) {
     claimExceptionPhase({ root, phase: "technical-complete", plan, runId: Number(process.env.GITHUB_RUN_ID) });
 }
 
+export async function sealExceptionQualification({ root, record, plan, ordinary, run, store, decision }) {
+  const qualification = await store.read("qualify");
+  if (
+    !qualification ||
+    digest(qualification.binding) !== digest(exceptionBinding(plan)) ||
+    digest(qualification.run) !== digest(run) ||
+    qualification.candidateSha !== plan.candidateSha ||
+    decision.decision !== "PASS" ||
+    decision.baseSha !== plan.baseSha ||
+    decision.candidateSha !== plan.candidateSha ||
+    decision.candidateTree !== git(root, "rev-parse", `${plan.candidateSha}^{tree}`) ||
+    decision.candidateTree !== qualification.candidateTree ||
+    decision.productExperienceDecision?.status !== "PASS" ||
+    decision.productExperienceReplay?.status !== "PASS" ||
+    decision.productExperienceReplay?.sourceDigest !== plan.sourceDigest ||
+    decision.productExperience?.trustedAttestation?.status !== "PASS" ||
+    digest(decision.productExperience?.exception) !== digest(plan.exception)
+  )
+    fail("FINAL_DECISION_MISMATCH");
+  if (record.id === CROSSDECK_R9.id) {
+    const { verificationObligationGroups } = await import("./ordinary.mjs");
+    validateR9FinalDecision({ plan, ordinary, record, decision, groups: verificationObligationGroups(ordinary) });
+  }
+  return store.create("qualified", {
+    binding: exceptionBinding(plan),
+    run,
+    candidateSha: plan.candidateSha,
+    candidateTree: decision.candidateTree,
+    decisionDigest: digest(decision),
+    status: "QUALIFIED_JOB_PASS_AWAITING_WHOLE_WORKFLOW_CONCLUSION",
+  });
+}
+
 async function main() {
   const options = Object.fromEntries(
     process.argv.slice(2).reduce((pairs, value, index, values) => {
@@ -1720,6 +1891,7 @@ async function main() {
   const request = githubRequest(record.repository);
   const mode = event.inputs?.experience_mode ?? "ordinary";
   if (!["ordinary", "capture", "review", "verify"].includes(mode)) fail("MODE_FORBIDDEN");
+  assertR9Mode({ exception: { id: record.id } }, mode);
   // Reserve before validation/downloads/setup can fail or be cancelled. The raw
   // source identity is an observation; it grants no admission until the complete
   // protected plan and all normal evidence gates subsequently validate it.
@@ -1738,7 +1910,10 @@ async function main() {
         : record.contractDigest,
     exception: recordBinding(record),
   };
-  const reconciliation = pendingR8FormatReconciliation({ root, baseSha, plan: pendingPlan, record });
+  const reconciliation =
+    record.id === CROSSDECK_R9.id
+      ? pendingR9Reconciliation({ root, baseSha, plan: pendingPlan, record })
+      : pendingR8FormatReconciliation({ root, baseSha, plan: pendingPlan, record });
   if (reconciliation) pendingPlan.exception.nonExecutingReconciliation = reconciliation;
   assertR8FormatMode(pendingPlan, mode);
   const run = await validateLiveContext({
@@ -1759,36 +1934,18 @@ async function main() {
   )
     fail("TARGET_OR_SELECTED_SCOPE_CHANGED");
   if (options.operation === "seal") {
-    const qualification = await store.read("qualify");
     const decision = JSON.parse(readFileSync(options.decision, "utf8"));
-    if (
-      !qualification ||
-      qualification.run.runId !== run.runId ||
-      qualification.candidateSha !== candidateSha ||
-      decision.decision !== "PASS" ||
-      decision.baseSha !== baseSha ||
-      decision.candidateSha !== candidateSha ||
-      decision.candidateTree !== git(root, "rev-parse", `${candidateSha}^{tree}`) ||
-      decision.candidateTree !== qualification.candidateTree ||
-      decision.productExperienceDecision?.status !== "PASS" ||
-      decision.productExperienceReplay?.status !== "PASS" ||
-      decision.productExperienceReplay?.sourceDigest !== plan.sourceDigest ||
-      decision.productExperience?.trustedAttestation?.status !== "PASS" ||
-      digest(decision.productExperience?.exception) !== digest(plan.exception)
-    )
-      fail("FINAL_DECISION_MISMATCH");
-    await store.create("qualified", {
-      binding,
-      run,
-      candidateSha,
-      candidateTree: decision.candidateTree,
-      decisionDigest: digest(decision),
-      status: "QUALIFIED_JOB_PASS_AWAITING_WHOLE_WORKFLOW_CONCLUSION",
-    });
+    await sealExceptionQualification({ root, record, plan, ordinary, run, store, decision });
   } else if (mode === "capture") {
     // The reservation is already durable; a failed remainder is never refunded.
   } else {
-    const prepare = await requireSuccessfulReservation({ store, slot: "prepare", plan, request });
+    const historicalContext = historicalExceptionContext({ root, plan, request });
+    const prepare = await requireSuccessfulReservation({
+      store: historicalContext.store,
+      slot: "prepare",
+      plan: historicalContext.plan,
+      request,
+    });
     const evidenceRoot = path.resolve(options.evidence ?? root);
     const evidence = await validateExceptionSubmissionEvidence({ root, plan, mode, candidateSha, evidenceRoot });
     if (mode === "review") {
