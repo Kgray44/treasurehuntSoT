@@ -577,6 +577,7 @@ async function semanticSnapshot(root, candidateSha) {
     exceptionSource,
     exceptionPolicy,
     r8FormatSource,
+    r9Source,
   ] = await Promise.all([
     readFile(modulePath, "utf8"),
     readFile(evidencePath, "utf8"),
@@ -586,6 +587,7 @@ async function semanticSnapshot(root, candidateSha) {
     readFile(path.join(path.dirname(modulePath), "experience-exception.mjs"), "utf8"),
     Promise.resolve(revisionJson(root, candidateSha, "testing/product-experience-exceptions.json", true)),
     readFile(path.join(path.dirname(modulePath), "experience-r8-format.mjs"), "utf8"),
+    readFile(path.join(path.dirname(modulePath), "experience-r9.mjs"), "utf8"),
   ]);
   return {
     root,
@@ -601,6 +603,7 @@ async function semanticSnapshot(root, candidateSha) {
       exceptionSource,
       exceptionPolicy,
       r8FormatSource,
+      r9Source,
       version: EVIDENCE_VERSION,
     }),
     environmentClass: process.env.GITHUB_ACTIONS === "true" ? "github-actions" : "local",

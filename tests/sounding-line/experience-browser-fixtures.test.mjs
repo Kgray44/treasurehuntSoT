@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { createHash, randomUUID } from "node:crypto";
 import { createServer } from "node:http";
-import { mkdtemp, rm, readFile, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, rm, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -13,6 +13,17 @@ import { experienceDigest, validateExperienceEvidence } from "../../scripts/soun
 // Deliberately deficient, task-owned rendered fixtures. Never edit production UI.
 const shell = (body) =>
   `<!doctype html><html lang="en"><head><title>Experience fixture</title><style>body{font:18px system-ui;margin:24px;max-width:800px}a,button{display:inline-block;padding:14px}:focus-visible{outline:3px solid #164fc0}</style></head><body><main>${body}</main></body></html>`;
+
+async function syntheticCaptureWorkspace(prefix) {
+  // These servers render synthetic HTML, never the repository's campaign source.
+  // An owned non-Git root keeps that boundary explicit while dependencies resolve
+  // through the repository's ancestor node_modules directory.
+  const parent = path.join(process.cwd(), "artifacts");
+  await mkdir(parent, { recursive: true });
+  const workspace = await mkdtemp(path.join(parent, prefix));
+  assert.equal(path.dirname(workspace), parent);
+  return workspace;
+}
 
 test("unobscured continuation rejects a keyboard-usable covered action in both motion modes", async () => {
   const root = await mkdtemp(path.join(tmpdir(), "experience-unobscured-"));
@@ -124,8 +135,9 @@ test(
   "cached sign-in preserves fresh device and purpose setup across normal and reduced contexts",
   { timeout: 120000 },
   async () => {
-    const workspace = process.cwd();
-    const output = `artifacts/experience-context-setup-${process.pid}`;
+    const repository = process.cwd();
+    const workspace = await syntheticCaptureWorkspace("experience-context-setup-");
+    const output = "capture";
     const observations = {
       logins: [],
       registrations: [],
@@ -316,7 +328,7 @@ test(
       applicable: true,
       contracts,
       contractIds: contracts.map((c) => c.id),
-      baseSha: execFileSync("git", ["rev-parse", "HEAD"], { cwd: workspace, encoding: "utf8" }).trim(),
+      baseSha: execFileSync("git", ["rev-parse", "HEAD"], { cwd: repository, encoding: "utf8" }).trim(),
       sourceDigest: createHash("sha256")
         .update(await readFile(new URL("../../scripts/sounding-line/experience-browser.mjs", import.meta.url)))
         .update(await readFile(new URL(import.meta.url)))
@@ -364,19 +376,19 @@ test(
           2,
         ) + "\n",
       );
-      console.log(`SOURCE_BOUND_SETUP_FIXTURE ${output}`);
+      console.log(`SOURCE_BOUND_SETUP_FIXTURE ${path.relative(repository, path.join(workspace, output))}`);
     } finally {
       await new Promise((resolve) => server.close(resolve));
       if (process.env.SOUNDING_LINE_RETAIN_SETUP_FIXTURE_EVIDENCE !== "1")
-        await rm(path.join(workspace, output), { recursive: true, force: true });
+        await rm(workspace, { recursive: true, force: true });
     }
   },
 );
 test("real browser rejects A–G deficient outcomes and captures a valid journey", { timeout: 120000 }, async (t) => {
   const root = await mkdtemp(path.join(tmpdir(), "experience-rendered-"));
-  // capture resolves the real repository's browser dependencies.
-  const workspace = process.cwd();
-  const output = `artifacts/experience-fixtures-${process.pid}`;
+  const repository = process.cwd();
+  const workspace = await syntheticCaptureWorkspace("experience-fixtures-");
+  const output = "capture";
   const server = createServer((request, response) => {
     const url = new URL(request.url, "http://localhost");
     const scenario = url.searchParams.get("case") ?? "positive";
@@ -480,7 +492,7 @@ test("real browser rejects A–G deficient outcomes and captures a valid journey
       applicable: true,
       contracts: [contract],
       contractIds: [contract.id],
-      baseSha: execFileSync("git", ["rev-parse", "HEAD"], { cwd: workspace, encoding: "utf8" }).trim(),
+      baseSha: execFileSync("git", ["rev-parse", "HEAD"], { cwd: repository, encoding: "utf8" }).trim(),
       sourceDigest: "b".repeat(64),
       contractDigest: experienceDigest([contract]),
     };
@@ -506,7 +518,7 @@ test("real browser rejects A–G deficient outcomes and captures a valid journey
     await browser.close();
     await new Promise((resolve) => server.close(resolve));
     await rm(root, { recursive: true, force: true });
-    await rm(path.join(workspace, output), { recursive: true, force: true });
+    await rm(workspace, { recursive: true, force: true });
   }
 });
 
