@@ -905,6 +905,7 @@ test("copied product trees and refit identities cannot evade direct execution gu
         }),
       expected,
     );
+    const trace = path.join(f.root, `guard-${expected.source}.trace`);
     const suite = spawnSync(
       process.execPath,
       [
@@ -920,10 +921,17 @@ test("copied product trees and refit identities cannot evade direct execution gu
         "--",
         "tests/e2e/crossdeck.spec.ts",
       ],
-      { encoding: "utf8", timeout: 20000, env: { ...process.env, SOUNDING_LINE_BASE_SHA: f.baseSha } },
+      {
+        encoding: "utf8",
+        timeout: 20000,
+        env: { ...process.env, SOUNDING_LINE_BASE_SHA: f.baseSha, GIT_TRACE: trace.replaceAll("\\", "/") },
+      },
     );
+    assert.ifError(suite.error);
     assert.notEqual(suite.status, 0);
     assert.match(suite.stderr, expected);
+    const gitCalls = (readFileSync(trace, "utf8").match(/built-in: git /gu) ?? []).length;
+    assert(gitCalls <= 120, `direct guard must stay bounded across installed history records; observed ${gitCalls}`);
     if (expected.source.includes("HISTORY_CHANGED")) {
       f.write("src/product.ts", "copied and changed");
       f.write("testing/contracts.json", { contracts: [{ id: "crossdeck.refit.companion" }] });

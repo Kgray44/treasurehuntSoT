@@ -118,6 +118,17 @@ caches its relation within that history audit. All file/directory markers,
 malformed/unknown history rejection and execution accounting stay intact. A real
 Git trace regression bounds the subprocess count for repeated unrelated heads.
 
+The next full matrix completed216/217: the copied-source direct guard exceeded
+its existing20-second child deadline while looking up installed historical markers
+one at a time. An isolated Git trace reproduced1212 Git calls, including1071 tree
+lookups before the child was stopped. The direct recognizer now also inventories
+the immutable candidate once. All installed, candidate and base records remain
+denial signals, including retired records, directory markers and changed marker
+bytes. The copied-source test now asserts absence of child errors and at most120
+Git calls without increasing its deadline. It passed, as did all nine paired/history
+tests. The failed full matrix and reproduction remain preserved; a new exact-source
+review and full matrix are required before the next protected qualification.
+
 The maintenance PR's exact-source independent review, full focused regression
 result, protected Linux Mainline Decision, protected merge and accepted-main
 handoff establish integration. This engineering record cannot substitute for those

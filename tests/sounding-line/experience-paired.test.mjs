@@ -28,6 +28,7 @@ import { verifyTrustedExperienceAttestation } from "../../scripts/sounding-line/
 import {
   r6LocalMarkerPath,
   inspectCampaignBeforeLocalProof,
+  recognizeExceptionExecution,
 } from "../../scripts/sounding-line/experience-exception.mjs";
 import { CROSSDECK_R6, validateR6LocalReceipt } from "../../scripts/sounding-line/experience-r6.mjs";
 import { runR6LocalProof } from "../../scripts/sounding-line/experience-r6-local-proof.mjs";
@@ -472,6 +473,46 @@ test("history inventories each immutable candidate once while preserving directo
       /LOCAL_HISTORY_EXECUTION_ALREADY_CONSUMED/u,
     );
     assert(calls.every((c) => c.method === "GET"));
+    assert.equal(
+      recognizeExceptionExecution({
+        root: f.root,
+        baseSha: f.plan.baseSha,
+        candidateSha: f.plan.candidateSha,
+        environment: {},
+      }),
+      false,
+    );
+    mkdirSync(path.join(f.root, "testing"));
+    writeFileSync(
+      path.join(f.root, "testing/product-experience-exceptions.json"),
+      JSON.stringify({
+        version: 1,
+        exceptions: [
+          {
+            ...record,
+            status: "RETIRED",
+            immutableHistory: [{ path: "scripts", blob: "f".repeat(40) }],
+          },
+        ],
+      }),
+    );
+    f.git("add", "testing");
+    f.git("commit", "-m", "retired directory marker remains a denial signal");
+    for (const changeMarkerBytes of [false, true]) {
+      if (changeMarkerBytes) {
+        writeFileSync(path.join(f.root, "scripts/runtime.mjs"), "// changed marker bytes\n");
+        f.git("commit", "-am", "changed marker bytes cannot erase recognition");
+      }
+      assert.equal(
+        recognizeExceptionExecution({
+          root: f.root,
+          baseSha: f.plan.baseSha,
+          candidateSha: f.git("rev-parse", "HEAD"),
+          environment: {},
+        }),
+        true,
+      );
+    }
   } finally {
     if (inherited === undefined) delete process.env.GIT_TRACE;
     else process.env.GIT_TRACE = inherited;

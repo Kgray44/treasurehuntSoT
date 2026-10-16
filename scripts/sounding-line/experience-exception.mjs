@@ -120,6 +120,15 @@ function entries(root, revision) {
       }),
   );
 }
+function treePaths(inventory) {
+  const paths = new Set(inventory.keys());
+  // Recursive ls-tree lists leaves; retain directory markers as presence signals.
+  for (const file of inventory.keys()) {
+    const parts = file.split("/");
+    for (let end = 1; end < parts.length; end++) paths.add(parts.slice(0, end).join("/"));
+  }
+  return paths;
+}
 export function exceptionRecords(root, baseSha) {
   if (!present(root, baseSha, EXCEPTION_REGISTRY)) return [];
   const registry = json(root, baseSha, EXCEPTION_REGISTRY);
@@ -908,13 +917,9 @@ async function campaignHistory({ root, record, plan, mode, run, request, now, pr
     try {
       git(root, "cat-file", "-e", `${candidate}^{commit}`);
       const inventory = entries(root, candidate);
-      const paths = new Set(inventory.keys());
       // One immutable tree read covers every historical path, including directory
       // markers, rather than spawning a Git process for each path/run pair.
-      for (const file of inventory.keys()) {
-        const parts = file.split("/");
-        for (let end = 1; end < parts.length; end++) paths.add(parts.slice(0, end).join("/"));
-      }
+      const paths = treePaths(inventory);
       if (r3SourceFingerprint([...inventory]) === CROSSDECK_R3.maskedSrcDigest) return true;
       if (record.immutableHistory.some(({ path: file }) => paths.has(file))) return true;
       if (record.frozenTrees?.src && paths.has("src") && identity(root, candidate, "src") === record.frozenTrees.src)
@@ -1205,9 +1210,12 @@ export function recognizeExceptionExecution({ root, baseSha, candidateSha, envir
   } catch {
     protectedBase = null;
   }
+  // Installed and retired records are all denial signals. Inventory this exact
+  // candidate once rather than asking Git about each absent historical marker.
+  const candidatePaths = treePaths(entries(root, candidateSha));
   return records.some((record) => {
     const r3Family = r3FamilyRelated(root, candidateSha);
-    const marker = record.immutableHistory.some(({ path: file }) => present(root, candidateSha, file));
+    const marker = record.immutableHistory.some(({ path: file }) => candidatePaths.has(file));
     const ids = present(root, candidateSha, "testing/contracts.json")
       ? (json(root, candidateSha, "testing/contracts.json").contracts ?? []).map((value) => value.id)
       : [];
