@@ -8,6 +8,8 @@ last_reviewed: 2026-10-15
 
 # Current status
 
+The SC-07A draft explains when an unassociated saved Scene will publish and install as a Spatial asset. Its first wizard step makes that type visible above the fixed footer, and server package review repeats it before submission. An independent reviewer resolved the desktop discoverability finding on the [exact combined local browser record](../../../Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/README.md): 16/16 publishing and expanded Library journeys, one 2,000-Scene scale case, and four compact Library/drag cases passed on `8f1e87ac25602b9bf2291e73c0174eddc11509ad`. This local three-way candidate includes separate draft Crossdeck and Parallax work; protected qualification and owner acceptance remain open.
+
 The latest local Parallax root `7c7724970ce8` adopts consistent selected-item
 Community/private status in compact and expanded Library details. It passes
 20 component checks and three focused production-browser journeys, with build,
