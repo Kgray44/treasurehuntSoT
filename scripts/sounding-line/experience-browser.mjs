@@ -6,13 +6,21 @@ import { fileURLToPath } from "node:url";
 import { createRequire } from "node:module";
 import { runBrowserAuthority, writeBrowserReceiptAndExit } from "./browser-authority.mjs";
 import { browserSuiteProfiles } from "./browser-suite-profiles.mjs";
-import { BROWSER_DIAGNOSTIC_CONTEXT, writeBrowserDiagnosticReceipt } from "./browser-diagnostics.mjs";
-import { assertExceptionExecution, claimExceptionPhase, CROSSDECK_R3 } from "./experience-exception.mjs";
+import {
+  BROWSER_DIAGNOSTIC_CONTEXT,
+  writeBrowserDiagnosticReceipt,
+  readBrowserDiagnosticReceipt,
+  createBrowserDiagnosticSession,
+} from "./browser-diagnostics.mjs";
+import { producePairedEvidence, sealPairedRuntime, validatePairedEvidence } from "./experience-paired.mjs";
+import { assertExceptionExecution, claimExceptionPhase, CROSSDECK_R3, CROSSDECK_R6 } from "./experience-exception.mjs";
 import {
   experienceDigest,
   planProductExperience,
   REVIEW_DIMENSIONS,
   validateExperienceEvidence,
+  validateExperienceArtifacts,
+  artifactBytes,
   revisionJson,
 } from "./product-experience.mjs";
 
@@ -316,7 +324,12 @@ export async function captureProductExperience({ root, plan, baseURL, outputDire
   if (exceptionLease)
     claimExceptionPhase({
       root,
-      phase: plan.localProof === CROSSDECK_R3.id ? `r3-local-render-${plan.localProofMotionMode}` : "render",
+      phase:
+        plan.localProof === CROSSDECK_R3.id
+          ? `r3-local-render-${plan.localProofMotionMode}`
+          : plan.localProof === CROSSDECK_R6.id
+            ? "r6-local-render"
+            : "render",
       plan,
       runId: Number(process.env.GITHUB_RUN_ID),
     });
@@ -330,7 +343,7 @@ export async function captureProductExperience({ root, plan, baseURL, outputDire
   const artifactRoot = path.resolve(root, outputDirectory);
   if (!artifactRoot.startsWith(path.resolve(root) + path.sep)) fail("ARTIFACT_PATH_INVALID");
   await mkdir(artifactRoot, { recursive: true });
-  const browser = await chromium.launch({ headless: true });
+  const browser = plan.pairedOnly ? null : await chromium.launch({ headless: true });
   const evidence = {
     version: 1,
     baseSha: plan.baseSha,
@@ -346,7 +359,7 @@ export async function captureProductExperience({ root, plan, baseURL, outputDire
   };
   const authenticatedStates = new Map();
   try {
-    for (const contract of plan.contracts) {
+    for (const contract of plan.pairedOnly ? [] : plan.contracts) {
       for (const device of contract.experience.devices) {
         if (!EXPERIENCE_VIEWPORTS[device]) fail("VIEWPORT_UNSUPPORTED");
         for (const journey of contract.experience.journeys) {
@@ -515,9 +528,18 @@ export async function captureProductExperience({ root, plan, baseURL, outputDire
       }
     }
   } finally {
-    await browser.close();
+    await browser?.close();
+  }
+  const paired = await producePairedEvidence({ root, plan, baseURL, outputDirectory });
+  if (paired) {
+    evidence.artifacts.push(...paired.artifacts);
+    evidence.pairedEvidence = paired.pairedEvidence;
   }
   await writeFile(path.join(artifactRoot, "capture.json"), JSON.stringify(evidence, null, 2) + "\n");
+  await writeExperienceReviewPackets({ plan, evidence, artifactRoot });
+  return evidence;
+}
+export async function writeExperienceReviewPackets({ plan, evidence, artifactRoot }) {
   for (const contract of plan.contracts) {
     const artifacts = evidence.artifacts.filter((artifact) => artifact.contractId === contract.id);
     const packet = {
@@ -525,10 +547,12 @@ export async function captureProductExperience({ root, plan, baseURL, outputDire
       contract,
       sourceDigest: plan.sourceDigest,
       artifacts,
+      ...(contract.experience.pairedEvidence ? { pairedEvidence: evidence.pairedEvidence } : {}),
       packetDigest: experienceDigest({
         sourceDigest: plan.sourceDigest,
         contract,
         artifacts: artifacts.map(({ id, sha256 }) => ({ id, sha256 })),
+        ...(contract.experience.pairedEvidence ? { pairedEvidence: evidence.pairedEvidence } : {}),
       }),
       instructions:
         "Inspect rendered images and recordings before source. Record concrete evidence for every dimension. Builder rationale is intentionally excluded. Return review JSON; do not infer owner acceptance.",
@@ -540,7 +564,6 @@ export async function captureProductExperience({ root, plan, baseURL, outputDire
       JSON.stringify(packet, null, 2) + "\n",
     );
   }
-  return evidence;
 }
 
 async function main() {
@@ -613,11 +636,19 @@ export async function runTrustedExperienceReplay({ root, plan, environment, vali
     claim: true,
   });
   if (!plan.applicable) return { status: "NOT_APPLICABLE" };
+  if (plan.paired)
+    diagnostics ??= createBrowserDiagnosticSession(root, {
+      baseSha: plan.baseSha,
+      candidateSha: plan.candidateSha,
+      planDigest: experienceDigest(plan),
+    });
   diagnostics?.clearScope();
   const replayPath = path.join(root, "artifacts/sounding-line/product-experience-plan.json");
   await mkdir(path.dirname(replayPath), { recursive: true });
   await writeFile(replayPath, JSON.stringify(plan));
-  const profiles = [...new Set(plan.contracts.map((contract) => contract.experience.fixtureProfile ?? "generic"))];
+  const profiles = plan.pairedOnly
+    ? ["generic"]
+    : [...new Set(plan.contracts.map((contract) => contract.experience.fixtureProfile ?? "generic"))];
   const isolatedEnvironment = { ...process.env, ...environment };
   if (exceptionLease) isolatedEnvironment.SOUNDING_LINE_EXCEPTION_LEASE = exceptionLease.lease;
   delete isolatedEnvironment[BROWSER_DIAGNOSTIC_CONTEXT];
@@ -674,6 +705,24 @@ export async function runTrustedExperienceReplay({ root, plan, environment, vali
     );
     if (result.status !== 0) fail("TRUSTED_REPLAY_FAILED");
     const captured = JSON.parse(await readFile(path.join(root, outputDirectory, "capture.json"), "utf8"));
+    if (captured.pairedEvidence) {
+      if (combined.pairedEvidence) fail("PAIRED_DUPLICATE_EXECUTION");
+      const receiptEnvironment = { ...process.env, ...diagnosticEnvironment };
+      await sealPairedRuntime({
+        root,
+        evidence: captured,
+        outputDirectory,
+        runtime: await readBrowserDiagnosticReceipt(root, "browser-runtime.json", receiptEnvironment),
+        profile: await readBrowserDiagnosticReceipt(root, "browser-suite-profile.json", receiptEnvironment),
+      });
+      combined.pairedEvidence = captured.pairedEvidence;
+      await writeFile(path.join(root, outputDirectory, "capture.json"), JSON.stringify(captured, null, 2) + "\n");
+      await writeExperienceReviewPackets({
+        plan: scopedPlan,
+        evidence: captured,
+        artifactRoot: path.join(root, outputDirectory),
+      });
+    }
     combined.artifacts.push(...captured.artifacts);
     combined.journeys.push(...captured.journeys);
   }
@@ -682,7 +731,14 @@ export async function runTrustedExperienceReplay({ root, plan, environment, vali
     plan.outputDirectory ?? "artifacts/sounding-line/product-experience-replay",
     "capture.json",
   );
+  // Capture preparation deliberately omits human review validation. Paired case
+  // completeness and terminal cleanup are still mandatory before publication.
+  if (plan.paired) {
+    validateExperienceArtifacts({ root, plan, evidence: combined });
+    validatePairedEvidence({ root, plan, evidence: combined, read: (file) => artifactBytes({ root, file }) });
+  }
   await writeFile(capturePath, JSON.stringify(combined, null, 2) + "\n");
+  await writeExperienceReviewPackets({ plan, evidence: combined, artifactRoot: path.dirname(capturePath) });
   if (validateReplay) {
     combined.reviews = plan.evidencePath
       ? (revisionJson(root, plan.candidateSha, plan.evidencePath, true)?.reviews ?? [])

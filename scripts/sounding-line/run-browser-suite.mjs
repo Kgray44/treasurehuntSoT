@@ -43,9 +43,10 @@ if (
 const exceptionPlan = await exceptionSuitePlan({ root, candidateSha });
 if (exceptionPlan) {
   if (options["experience-plan"]) {
-    const guardedPlan = process.env.SOUNDING_LINE_R3_LOCAL_LEASE
-      ? JSON.parse(await readFile(options["experience-plan"], "utf8"))
-      : exceptionPlan;
+    const guardedPlan =
+      process.env.SOUNDING_LINE_R3_LOCAL_LEASE || process.env.SOUNDING_LINE_R6_LOCAL_LEASE
+        ? JSON.parse(await readFile(options["experience-plan"], "utf8"))
+        : exceptionPlan;
     await assertExceptionExecution({ root, plan: guardedPlan, kind: "experience" });
   } else {
     const record = trustedExceptions(root, exceptionPlan.baseSha).find(

@@ -4,6 +4,7 @@ import { readFileSync, realpathSync } from "node:fs";
 import path from "node:path";
 import { inflateSync } from "node:zlib";
 import { bindExperienceException, validateExceptionEvidence } from "./experience-exception.mjs";
+import { planPairedEvidence, validatePairedEvidence } from "./experience-paired.mjs";
 
 // This module is loaded alongside the protected-main Sounding Line verifier.
 // Candidate declarations can add obligations, never remove trusted obligations.
@@ -60,7 +61,7 @@ function crc32(bytes) {
   }
   return (crc ^ 0xffffffff) >>> 0;
 }
-function validScreenshot(bytes) {
+function validScreenshot(bytes, minimumHeight = 400) {
   try {
     if (!bytes.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))) return false;
     let offset = 8;
@@ -92,7 +93,7 @@ function validScreenshot(bytes) {
       return false;
     const width = header.readUInt32BE(0);
     const height = header.readUInt32BE(4);
-    if (width < 320 || height < 400 || width > 10000 || height > 50000) return false;
+    if (width < 320 || height < minimumHeight || width > 10000 || height > 50000) return false;
     return (
       inflateSync(Buffer.concat(data), { maxOutputLength: 128 * 1024 * 1024 }).length ===
       (width * (header[9] === 6 ? 4 : 3) + 1) * height
@@ -450,7 +451,7 @@ export function mergeExperienceContracts(trustedContracts, candidateContracts) {
         fail("TRUSTED_OBLIGATION_CHANGED", `${contract.id}.roleSetup.${role}`);
       experience.roleSetup[role] = setup;
     }
-    for (const key of ["motion", "continuity"]) {
+    for (const key of ["motion", "continuity", "pairedEvidence"]) {
       if (!baseline[key] && proposed[key]) experience[key] = proposed[key];
       else if (baseline[key] && proposed[key] && experienceDigest(baseline[key]) !== experienceDigest(proposed[key]))
         fail("TRUSTED_OBLIGATION_CHANGED", `${contract.id}.${key}`);
@@ -549,6 +550,7 @@ function unboundProductExperiencePlan({ root, baseSha, candidateSha, changedPath
   if (result.applicable && !result.contractIds.length) fail("UNREGISTERED_SURFACE", result.affectedSurfaces.join(","));
   if (!result.applicable) return result;
   const selected = contracts.filter((contract) => result.contractIds.includes(contract.id));
+  const paired = planPairedEvidence(selected);
   for (const contract of selected) registryBindings(root, baseSha, policy, contract);
   const uncovered = consumers.surfaces.filter(
     (file) => !selected.some((contract) => matches(file, contract.experience.sourcePaths)),
@@ -557,6 +559,27 @@ function unboundProductExperiencePlan({ root, baseSha, candidateSha, changedPath
   return {
     ...result,
     contracts: selected,
+    ...(paired
+      ? {
+          paired,
+          candidateTree: git(root, ["rev-parse", `${candidateSha}^{tree}`]).trim(),
+          genericContextCount: selected.reduce(
+            (n, c) =>
+              n +
+              c.experience.devices.length *
+                c.experience.journeys.reduce((m, j) => m + j.roles.length * (c.experience.motion ? 2 : 1), 0),
+            0,
+          ),
+          contextCount:
+            selected.reduce(
+              (n, c) =>
+                n +
+                c.experience.devices.length *
+                  c.experience.journeys.reduce((m, j) => m + j.roles.length * (c.experience.motion ? 2 : 1), 0),
+              0,
+            ) + paired.browserContexts,
+        }
+      : {}),
     evidencePath: policy.evidencePath,
     baseSha,
     candidateSha,
@@ -600,7 +623,7 @@ export function repairDisposition({ findings, iterations, previousBlockingCount,
     preserveRequirements: true,
   };
 }
-function artifactBytes({ root, revision, file }) {
+export function artifactBytes({ root, revision, file }) {
   if (typeof file !== "string" || path.posix.isAbsolute(file) || file.includes("\\") || file.split("/").includes(".."))
     fail("ARTIFACT_PATH_INVALID");
   if (revision) {
@@ -612,6 +635,36 @@ function artifactBytes({ root, revision, file }) {
   const resolved = realpathSync(path.join(rootPath, file));
   if (!resolved.startsWith(rootPath + path.sep)) fail("ARTIFACT_PATH_INVALID");
   return readFileSync(resolved);
+}
+export function validateExperienceArtifacts({ plan, evidence, root, revision, readArtifact = artifactBytes }) {
+  if (!Array.isArray(evidence?.artifacts) || !evidence.artifacts.length) fail("VISUAL_EVIDENCE_INCOMPLETE");
+  const artifacts = new Map();
+  for (const artifact of evidence.artifacts) {
+    if (artifacts.has(artifact.id) || !digestPattern.test(artifact.sha256 ?? "")) fail("ARTIFACT_IDENTITY_INVALID");
+    const bytes = readArtifact({ root, revision, file: artifact.path });
+    if (createHash("sha256").update(bytes).digest("hex") !== artifact.sha256)
+      fail("ARTIFACT_DIGEST_MISMATCH", artifact.id);
+    const pairedLandscape =
+      plan?.paired?.contractIds?.includes(artifact.contractId) &&
+      artifact.device === "MOBILE" &&
+      ["PAIRED_crossdeck-pair-normal", "PAIRED_crossdeck-pair-reduced"].includes(artifact.state) &&
+      path.posix.basename(artifact.path) === "15-phone-landscape.png" &&
+      artifact.viewport?.width === 844 &&
+      artifact.viewport?.height === 390;
+    if (artifact.type === "screenshot" && !validScreenshot(bytes, pairedLandscape ? 390 : 400))
+      fail("SCREENSHOT_INVALID", artifact.id);
+    if (
+      artifact.type === "recording" &&
+      (bytes.length < 128 ||
+        !bytes.subarray(0, 4).equals(Buffer.from([26, 69, 223, 163])) ||
+        !bytes.includes(Buffer.from("webm")))
+    )
+      fail("RECORDING_INVALID", artifact.id);
+    if (!new Set(["screenshot", "recording", "trace"]).has(artifact.type) || artifact.origin !== "ACTUAL_APPLICATION")
+      fail("ARTIFACT_ORIGIN_INVALID", artifact.id);
+    artifacts.set(artifact.id, artifact);
+  }
+  return artifacts;
 }
 export function validateExperienceEvidence({
   plan,
@@ -634,24 +687,13 @@ export function validateExperienceEvidence({
     fail("EVIDENCE_SOURCE_MISMATCH");
   if (!list(evidence.artifacts) || (!automatedOnly && !list(evidence.reviews)) || !list(evidence.journeys))
     fail("VISUAL_EVIDENCE_INCOMPLETE");
-  const artifacts = new Map();
-  for (const artifact of evidence.artifacts) {
-    if (artifacts.has(artifact.id) || !digestPattern.test(artifact.sha256 ?? "")) fail("ARTIFACT_IDENTITY_INVALID");
-    const bytes = readArtifact({ root, revision, file: artifact.path });
-    if (createHash("sha256").update(bytes).digest("hex") !== artifact.sha256)
-      fail("ARTIFACT_DIGEST_MISMATCH", artifact.id);
-    if (artifact.type === "screenshot" && !validScreenshot(bytes)) fail("SCREENSHOT_INVALID", artifact.id);
-    if (
-      artifact.type === "recording" &&
-      (bytes.length < 128 ||
-        !bytes.subarray(0, 4).equals(Buffer.from([26, 69, 223, 163])) ||
-        !bytes.includes(Buffer.from("webm")))
-    )
-      fail("RECORDING_INVALID", artifact.id);
-    if (!new Set(["screenshot", "recording", "trace"]).has(artifact.type) || artifact.origin !== "ACTUAL_APPLICATION")
-      fail("ARTIFACT_ORIGIN_INVALID", artifact.id);
-    artifacts.set(artifact.id, artifact);
-  }
+  const artifacts = validateExperienceArtifacts({ plan, evidence, root, revision, readArtifact });
+  validatePairedEvidence({
+    root: baselineRoot,
+    plan,
+    evidence,
+    read: (file) => readArtifact({ root, revision, file }),
+  });
   for (const contract of plan.contracts) {
     const experience = contract.experience;
     const captures = evidence.artifacts.filter((artifact) => artifact.contractId === contract.id);
@@ -770,6 +812,7 @@ export function validateExperienceEvidence({
         sourceDigest: plan.sourceDigest,
         contract,
         artifacts: captures.map(({ id, sha256 }) => ({ id, sha256 })),
+        ...(contract.experience.pairedEvidence ? { pairedEvidence: evidence.pairedEvidence } : {}),
       })
     )
       fail("REVIEW_PACKET_MISMATCH", contract.id);

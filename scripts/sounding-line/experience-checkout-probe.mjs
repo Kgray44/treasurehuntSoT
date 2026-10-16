@@ -2,7 +2,13 @@
 import { execFileSync } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { trustedExceptions, campaignRelated, CROSSDECK_R4, CROSSDECK_R5 } from "./experience-exception.mjs";
+import {
+  trustedExceptions,
+  campaignRelated,
+  CROSSDECK_R4,
+  CROSSDECK_R5,
+  CROSSDECK_R6,
+} from "./experience-exception.mjs";
 
 export function checkoutProbe({ root, baseSha, candidateSha, environment = process.env }) {
   const fail = () => {
@@ -30,7 +36,11 @@ export function checkoutProbe({ root, baseSha, candidateSha, environment = proce
     )
   )
     fail();
-  const expected = records.some((r) => r.id === CROSSDECK_R5.id) ? CROSSDECK_R5 : CROSSDECK_R4;
+  const expected = records.some((r) => r.id === CROSSDECK_R6.id)
+    ? CROSSDECK_R6
+    : records.some((r) => r.id === CROSSDECK_R5.id)
+      ? CROSSDECK_R5
+      : CROSSDECK_R4;
   const record = records.find((r) => r.id === expected.id);
   if (!record || record.frozenReferenceSha !== expected.frozenReferenceSha) fail();
   git("merge-base", "--is-ancestor", record.predecessor.candidateSha, record.frozenReferenceSha);
