@@ -4,6 +4,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createRequire } from "node:module";
+import { withVerificationStage, observeVerificationFailure } from "./verification-diagnostics.mjs";
 import { runBrowserAuthority, writeBrowserReceiptAndExit } from "./browser-authority.mjs";
 import { browserSuiteProfiles } from "./browser-suite-profiles.mjs";
 import {
@@ -646,13 +647,15 @@ async function main() {
   );
 }
 export async function runTrustedExperienceReplay({ root, plan, environment, validateReplay = true, diagnostics }) {
-  const exceptionLease = await assertExceptionExecution({
-    root,
-    plan,
-    kind: "experience",
-    environment: { ...process.env, ...environment },
-    claim: true,
-  });
+  const exceptionLease = await withVerificationStage("REPLAY_ADMISSION", () =>
+    assertExceptionExecution({
+      root,
+      plan,
+      kind: "experience",
+      environment: { ...process.env, ...environment },
+      claim: true,
+    }),
+  );
   if (!plan.applicable) return { status: "NOT_APPLICABLE" };
   if (plan.paired)
     diagnostics ??= createBrowserDiagnosticSession(root, {
@@ -662,8 +665,8 @@ export async function runTrustedExperienceReplay({ root, plan, environment, vali
     });
   diagnostics?.clearScope();
   const replayPath = path.join(root, "artifacts/sounding-line/product-experience-plan.json");
-  await mkdir(path.dirname(replayPath), { recursive: true });
-  await writeFile(replayPath, JSON.stringify(plan));
+  await withVerificationStage("REPLAY_PLAN_DIRECTORY", () => mkdir(path.dirname(replayPath), { recursive: true }));
+  await withVerificationStage("REPLAY_PLAN_WRITE", () => writeFile(replayPath, JSON.stringify(plan)));
   const profiles = plan.pairedOnly
     ? ["generic"]
     : [...new Set(plan.contracts.map((contract) => contract.experience.fixtureProfile ?? "generic"))];
@@ -697,49 +700,64 @@ export async function runTrustedExperienceReplay({ root, plan, environment, vali
       outputDirectory,
       contracts: plan.contracts.filter((contract) => (contract.experience.fixtureProfile ?? "generic") === profile),
     };
-    await writeFile(replayPath, JSON.stringify(scopedPlan));
+    await withVerificationStage("REPLAY_PROFILE_PLAN_WRITE", () => writeFile(replayPath, JSON.stringify(scopedPlan)));
     const databaseUrl = experienceDatabaseUrl(root, plan.candidateSha, profile);
     isolatedFixtures.push({ profile, databaseSha256: digest(databaseUrl) });
-    const result = spawnSync(
-      process.execPath,
-      [
-        path.join(path.dirname(fileURLToPath(import.meta.url)), "run-browser-suite.mjs"),
-        "--profile",
-        profile,
-        "--candidate",
-        plan.candidateSha,
-        "--database-url",
-        databaseUrl,
-        "--experience-plan",
-        replayPath,
-        "--experience-runner",
-        fileURLToPath(import.meta.url),
-      ],
-      {
-        cwd: root,
-        env: { ...isolatedEnvironment, ...diagnosticEnvironment },
-        stdio: "inherit",
-      },
+    const result = await withVerificationStage("REPLAY_PROFILE_PROCESS", () =>
+      spawnSync(
+        process.execPath,
+        [
+          path.join(path.dirname(fileURLToPath(import.meta.url)), "run-browser-suite.mjs"),
+          "--profile",
+          profile,
+          "--candidate",
+          plan.candidateSha,
+          "--database-url",
+          databaseUrl,
+          "--experience-plan",
+          replayPath,
+          "--experience-runner",
+          fileURLToPath(import.meta.url),
+        ],
+        {
+          cwd: root,
+          env: { ...isolatedEnvironment, ...diagnosticEnvironment },
+          stdio: "inherit",
+        },
+      ),
     );
-    if (result.status !== 0) fail("TRUSTED_REPLAY_FAILED");
-    const captured = JSON.parse(await readFile(path.join(root, outputDirectory, "capture.json"), "utf8"));
+    if (result.status !== 0)
+      throw observeVerificationFailure(
+        "REPLAY_PROFILE_PROCESS",
+        new Error("PRODUCT_EXPERIENCE_TRUSTED_REPLAY_FAILED"),
+        { cause: result.error ?? result },
+      );
+    const captured = await withVerificationStage("REPLAY_CAPTURE_READ", async () =>
+      JSON.parse(await readFile(path.join(root, outputDirectory, "capture.json"), "utf8")),
+    );
     if (captured.pairedEvidence) {
       if (combined.pairedEvidence) fail("PAIRED_DUPLICATE_EXECUTION");
       const receiptEnvironment = { ...process.env, ...diagnosticEnvironment };
-      await sealPairedRuntime({
-        root,
-        evidence: captured,
-        outputDirectory,
-        runtime: await readBrowserDiagnosticReceipt(root, "browser-runtime.json", receiptEnvironment),
-        profile: await readBrowserDiagnosticReceipt(root, "browser-suite-profile.json", receiptEnvironment),
-      });
+      await withVerificationStage("REPLAY_PAIRED_SEAL", async () =>
+        sealPairedRuntime({
+          root,
+          evidence: captured,
+          outputDirectory,
+          runtime: await readBrowserDiagnosticReceipt(root, "browser-runtime.json", receiptEnvironment),
+          profile: await readBrowserDiagnosticReceipt(root, "browser-suite-profile.json", receiptEnvironment),
+        }),
+      );
       combined.pairedEvidence = captured.pairedEvidence;
-      await writeFile(path.join(root, outputDirectory, "capture.json"), JSON.stringify(captured, null, 2) + "\n");
-      await writeExperienceReviewPackets({
-        plan: scopedPlan,
-        evidence: captured,
-        artifactRoot: path.join(root, outputDirectory),
-      });
+      await withVerificationStage("REPLAY_CAPTURE_WRITE", () =>
+        writeFile(path.join(root, outputDirectory, "capture.json"), JSON.stringify(captured, null, 2) + "\n"),
+      );
+      await withVerificationStage("REPLAY_PAIRED_PACKETS", () =>
+        writeExperienceReviewPackets({
+          plan: scopedPlan,
+          evidence: captured,
+          artifactRoot: path.join(root, outputDirectory),
+        }),
+      );
     }
     combined.artifacts.push(...captured.artifacts);
     combined.journeys.push(...captured.journeys);
@@ -752,16 +770,24 @@ export async function runTrustedExperienceReplay({ root, plan, environment, vali
   // Capture preparation deliberately omits human review validation. Paired case
   // completeness and terminal cleanup are still mandatory before publication.
   if (plan.paired) {
-    validateExperienceArtifacts({ root, plan, evidence: combined });
-    validatePairedEvidence({ root, plan, evidence: combined, read: (file) => artifactBytes({ root, file }) });
+    await withVerificationStage("REPLAY_PAIRED_VALIDATE", () => {
+      validateExperienceArtifacts({ root, plan, evidence: combined });
+      validatePairedEvidence({ root, plan, evidence: combined, read: (file) => artifactBytes({ root, file }) });
+    });
   }
-  await writeFile(capturePath, JSON.stringify(combined, null, 2) + "\n");
-  await writeExperienceReviewPackets({ plan, evidence: combined, artifactRoot: path.dirname(capturePath) });
+  await withVerificationStage("REPLAY_CAPTURE_WRITE", () =>
+    writeFile(capturePath, JSON.stringify(combined, null, 2) + "\n"),
+  );
+  await withVerificationStage("REPLAY_REVIEW_PACKETS", () =>
+    writeExperienceReviewPackets({ plan, evidence: combined, artifactRoot: path.dirname(capturePath) }),
+  );
   if (validateReplay) {
     combined.reviews = plan.evidencePath
       ? (revisionJson(root, plan.candidateSha, plan.evidencePath, true)?.reviews ?? [])
       : [];
-    validateExperienceEvidence({ root, plan, evidence: combined, automatedOnly: true });
+    await withVerificationStage("REPLAY_EVIDENCE_VALIDATE", () =>
+      validateExperienceEvidence({ root, plan, evidence: combined, automatedOnly: true }),
+    );
   }
   return {
     status: "PASS",

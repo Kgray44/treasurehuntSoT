@@ -27,6 +27,7 @@ import { verifyTrustedExperienceAttestation } from "./experience-attestation.mjs
 import { revisionJson } from "./product-experience.mjs";
 import { assertExceptionExecution, markExceptionTechnicalComplete } from "./experience-exception.mjs";
 import { BROWSER_DIAGNOSTIC_CONTEXT, createBrowserDiagnosticSession } from "./browser-diagnostics.mjs";
+import { withVerificationStage, verificationFailureObservation } from "./verification-diagnostics.mjs";
 
 const sha = /^[a-f0-9]{40}$/u;
 const productRoots = new Set(["app", "components", "src", "lib", "prisma", "public", "styles"]);
@@ -1296,6 +1297,43 @@ export function exceptionCommandRunner(plan, runCommand, authorize = assertExcep
   };
 }
 
+export async function completeOrdinaryVerification({
+  root,
+  plan,
+  result,
+  verification,
+  diagnostics,
+  verifyExperience = verifyProductExperience,
+  replay = runTrustedExperienceReplay,
+}) {
+  // Verification has returned, so retain its observations even if a later stage fails.
+  // These fields do not change the overall FAIL decision or qualify a replay.
+  result.timing.commands = verification.timings;
+  result.evidenceReconciliation = {
+    evidenceVersion: EVIDENCE_VERSION,
+    obligations: verification.obligations,
+    reconciliation: verification.reconciliation,
+    finalization: verification.finalization,
+    requiredObligations: verification.finalization.requiredObligations,
+    freshObligations: verification.freshObligations,
+    commandsAvoided: verification.commandsAvoided,
+    avoidedDurationMs: verification.avoidedDurationMs,
+  };
+  await withVerificationStage("TECHNICAL_COMPLETE", () => markExceptionTechnicalComplete(root, plan.productExperience));
+  if (plan.productExperience.applicable) diagnostics.clearScope();
+  result.productExperienceDecision = await withVerificationStage("HISTORICAL_EXPERIENCE", () =>
+    verifyExperience(root, plan.candidateSha, plan.productExperience),
+  );
+  result.productExperienceReplay = await withVerificationStage("EXPERIENCE_REPLAY", () =>
+    replay({
+      root,
+      plan: plan.productExperience,
+      environment: verificationEnvironment(plan, process.execPath, ["scripts/sounding-line/browser-authority.mjs"]),
+      diagnostics,
+    }),
+  );
+}
+
 async function main() {
   const options = Object.fromEntries(
     process.argv.slice(2).reduce((pairs, value, index, values) => {
@@ -1314,11 +1352,13 @@ async function main() {
   let result;
   let diagnostics;
   try {
-    plan = await buildPlan({ root, baseSha, candidateSha, mode });
+    plan = await withVerificationStage("CLASSIFICATION", () => buildPlan({ root, baseSha, candidateSha, mode }));
     if (plan.productExperience.exception && mode !== "ordinary")
       throw new Error("PRODUCT_EXPERIENCE_EXCEPTION_RELEASE_FORBIDDEN");
     const exceptionLease = plan.productExperience.applicable
-      ? await assertExceptionExecution({ root, plan: plan.productExperience, kind: "ordinary", claim: true })
+      ? await withVerificationStage("ORDINARY_ADMISSION", () =>
+          assertExceptionExecution({ root, plan: plan.productExperience, kind: "ordinary", claim: true }),
+        )
       : null;
     if (exceptionLease) {
       process.env.SOUNDING_LINE_EXCEPTION_ORDINARY_LEASE = exceptionLease.lease;
@@ -1333,31 +1373,14 @@ async function main() {
       decision: "FAIL",
     };
     diagnostics = createBrowserDiagnosticSession(root, { baseSha, candidateSha, planDigest: result.planDigest });
-    const verification = await runReconciledVerification(
-      root,
-      plan,
-      exceptionCommandRunner(plan.productExperience, browserDiagnosticRunner(diagnostics)),
+    const verification = await withVerificationStage("TECHNICAL_VERIFICATION", () =>
+      runReconciledVerification(
+        root,
+        plan,
+        exceptionCommandRunner(plan.productExperience, browserDiagnosticRunner(diagnostics)),
+      ),
     );
-    markExceptionTechnicalComplete(root, plan.productExperience);
-    if (plan.productExperience.applicable) diagnostics.clearScope();
-    result.productExperienceDecision = verifyProductExperience(root, candidateSha, plan.productExperience);
-    result.productExperienceReplay = await runTrustedExperienceReplay({
-      root,
-      plan: plan.productExperience,
-      environment: verificationEnvironment(plan, process.execPath, ["scripts/sounding-line/browser-authority.mjs"]),
-      diagnostics,
-    });
-    result.timing.commands = verification.timings;
-    result.evidenceReconciliation = {
-      evidenceVersion: EVIDENCE_VERSION,
-      obligations: verification.obligations,
-      reconciliation: verification.reconciliation,
-      finalization: verification.finalization,
-      requiredObligations: verification.finalization.requiredObligations,
-      freshObligations: verification.freshObligations,
-      commandsAvoided: verification.commandsAvoided,
-      avoidedDurationMs: verification.avoidedDurationMs,
-    };
+    await completeOrdinaryVerification({ root, plan, result, verification, diagnostics });
     const browserDiagnostics = await diagnostics.read();
     result.browserQualification = browserDiagnostics.runtime;
     result.browserSuiteProfile = browserDiagnostics.profile;
@@ -1378,6 +1401,7 @@ async function main() {
       decision: "FAIL",
     };
     result.error = sanitizedFailureCode(error);
+    result.failureObservation = verificationFailureObservation(error);
     result.failureCategory = failureCategoryFor(error);
     result.timing.commands = error?.soundingLineTimings ?? result.timing.commands;
     const browserDiagnostics = await diagnostics?.read();
