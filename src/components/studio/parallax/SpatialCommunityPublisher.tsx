@@ -98,6 +98,16 @@ export function SpatialCommunityPublisher({
   const requiresEnvironmentPrivacy = source.kind !== "ASSET";
   const hasEnvironmentDependency = source.kind === "SCENE";
   const savedScenePublishesAsAsset = category === "SCENES" && source.kind === "ASSET";
+  const savedSourceType =
+    category === "ASSETS"
+      ? "SPATIAL ASSET"
+      : category === "SCENES"
+        ? "SPATIAL SCENE"
+        : category === "EFFECTS"
+          ? "SPATIAL EFFECT"
+          : category === "COMPOSITIONS"
+            ? "SPATIAL COMPOSITION"
+            : "SPATIAL ENVIRONMENT";
   const sourceVersionId = source.kind === "ENVIRONMENT" ? source.versionId : null;
   useEffect(() => {
     openingControl.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
@@ -378,7 +388,7 @@ export function SpatialCommunityPublisher({
                       to return here after saving it.
                     </p>
                   )}
-                  <span className={styles.eyebrow}>SAVED SOURCE · REVISION {source.revision}</span>
+                  <span className={styles.eyebrow}>SAVED {savedSourceType} · REVISION {source.revision}</span>
                   <h3>{sourceTitle}</h3>
                   <p>{detail}</p>
                   {savedScenePublishesAsAsset && (

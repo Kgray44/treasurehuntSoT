@@ -37,6 +37,8 @@ In the SC-07A implementation candidate, a Creator-owned item saved to the privat
 
 A saved Scene without a pinned Environment is still shown in the Scenes Library, but its self-contained Community release is a **Spatial asset**. The publishing dialog explains this before Continue and again at server package review. Only a Scene with a pinned Environment can publish as a Spatial Scene. The released asset installs as an asset, not as an Environment-bound Scene.
 
+The first publishing step labels the saved source as a Spatial asset, Scene, Environment, effect or composition, with its exact revision above the private preview.
+
 For measured AI costs, model selection, room-validation behavior and built-in instructions, see the
 [user development overview](Spatial_Studio_User_Development_Overview.md).
 

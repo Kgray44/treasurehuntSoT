@@ -23,6 +23,8 @@ Spatial `collection` is a free-text organizer, while a Harborlight Community col
 
 ## Owner review journey
 
+On the Content step, check that the saved source type and exact revision are named above the private preview. For a saved Scene without a pinned Environment, the source type remains Scene while its Community release type is Spatial asset.
+
 1. In Spatial Studio, save the item to the private Library. Check that no Community listing appeared. If the Creator lacks a public Profile, open **Publish to Community…**, confirm Continue is blocked, use **Set up public Profile**, save a public handle, and confirm the return to this exact saved item before reopening the wizard. For an Environment, confirm the selected immutable version is restored as well.
 2. Select its Library card and choose **Publish to Community…**. The single dialog shows the exact saved source revision and a private preview. If a saved Scene has no pinned Environment, confirm the Content step and server review both explain that its self-contained Community release is a Spatial asset.
 3. Enter description and tags; inspect the included dependency set and choose a configured redistribution license and credits.
@@ -131,6 +133,10 @@ The formal Product Experience planner on SC-07A's R4-main merge `bbaf7f13646ff25
 On that merged branch, TypeScript, documentation validation and all 51 focused Product Experience authority tests passed. The broader `test:sounding-line` run passed 190/192. Its two R3/R4 Git-admission fixture tests failed with `PRODUCT_EXPERIENCE_EXCEPTION_FROZEN_PRODUCT_CHANGED`: each builds a synthetic base from the current SC-07A branch, then overlays the frozen Crossdeck runtime entries without removing SC-07A-only source files. The strict frozen-product guard was not changed or waived. This branch-local suite is therefore not wholly green, and the result does not qualify SC-07A or replace the protected R4 authority decision.
 
 The coordinated [SC-00C Library PR #739](https://github.com/Kgray44/treasurehuntSoT/pull/739) remains a separate draft. Its pushed handoff `8053bda101c0785c724b35cc2370399ee7953c8f` contains SC-07A's unchanged product and browser-test source. Bounded independent source rereview resolved the reported saved physical scale, root animation and keyboard presearch findings on repair commits `c5b977c81f757355783f0f32100d32333f380905` and `9491faf6a6183fc27c79d6aeb98a844d3256e503`. Final test source `7ac7594e665ef1a3d2c5e2c4bf33c0133139ce65` passed three isolated production Chromium journeys: delayed Cancel and private saved placement, installed Harborlight Asset return, and scaled keyboard/pointer placement with rendered root movement. Capture and task-owned cleanup report PASS. The [source-bound record](https://github.com/Kgray44/treasurehuntSoT/blob/8053bda101c0785c724b35cc2370399ee7953c8f/Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/README.md) retains the earlier failed synthetic fixture and passing corrected run. The previous 26-case Library and Community pass plus 2,000-Scene case remain bound to their earlier source; this focused result does not replace a complete browser rerun or protected qualification.
+
+## Later saved source type label correction
+
+The later [saved source type label record](evidence/sc-07a/20261015-source-labels/README.md) binds all eleven direct production Chromium journeys to SC-07A source `e19d7d7a89d9ea05b90836798f863161badf933b`. The Content step labels each saved type and exact revision; desktop Scene and mobile Asset screenshots were inspected. This is a separate local branch run, not a rerun of the earlier three-way R6 candidate or independent Product Experience acceptance.
 
 ## Current combined R6 local rehearsal
 
