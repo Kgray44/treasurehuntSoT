@@ -17,6 +17,9 @@ import { validate as validateDocumentation } from "../../scripts/validate-docume
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
+// The canonical Sounding Line command lists this entry point explicitly.
+// Register the dedicated R9 checks here so protected runs always execute them.
+import "./experience-r9.test.mjs";
 import { createCustodyRequest } from "../../scripts/sounding-line/custody-transport.mjs";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import {
