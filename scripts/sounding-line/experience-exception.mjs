@@ -1544,9 +1544,13 @@ export function recognizeExceptionExecution({ root, baseSha, candidateSha, envir
   }
   // Installed and retired records are all denial signals. Inventory this exact
   // candidate once rather than asking Git about each absent historical marker.
-  const candidatePaths = treePaths(entries(root, candidateSha));
+  const candidateInventory = entries(root, candidateSha);
+  const candidatePaths = treePaths(candidateInventory);
+  let r3Family = false;
+  try {
+    r3Family = r3SourceFingerprint([...candidateInventory]) === CROSSDECK_R3.maskedSrcDigest;
+  } catch {}
   return records.some((record) => {
-    const r3Family = r3FamilyRelated(root, candidateSha);
     const marker = record.immutableHistory.some(({ path: file }) => candidatePaths.has(file));
     const ids = present(root, candidateSha, "testing/contracts.json")
       ? (json(root, candidateSha, "testing/contracts.json").contracts ?? []).map((value) => value.id)

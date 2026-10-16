@@ -76,6 +76,13 @@ old qualify/qualified reads and every write. R9 alone owns current qualify and
 qualified. No fallback between stores exists. One shared bounded custody client
 flows through predecessor validation and nested attestation.
 
+The direct execution guard reuses its already-read immutable candidate inventory
+for the R3-family fingerprint within each invocation. All installed/retired,
+copied-product, refit, history and ancestry denial signals remain present. The
+unchanged120-operation/20-second regression caught123 operations on the initial
+nine-record tree; the original failure is retained, and the same bound is rerun
+after this scoped reuse correction.
+
 The actual repaired candidate must freshly execute all six technical suites and
 38 experience contexts before canonical finalizer/Mainline acceptance. Automated
 replay, leases, source identity, current reservation and final decision stay on

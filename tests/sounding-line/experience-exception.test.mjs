@@ -1584,6 +1584,15 @@ test("copied product trees and refit identities cannot evade direct execution gu
     assert.match(suite.stderr, expected);
     const gitCalls = (readFileSync(trace, "utf8").match(/built-in: git /gu) ?? []).length;
     assert(gitCalls <= 120, `direct guard must stay bounded across installed history records; observed ${gitCalls}`);
+    t.diagnostic(
+      JSON.stringify({
+        classification: "DIRECT_EXECUTION_DENIAL_GUARD",
+        expected: expected.source,
+        gitOperations: gitCalls,
+        maximumGitOperations: 120,
+        timeoutMs: 20000,
+      }),
+    );
     if (expected.source.includes("HISTORY_CHANGED")) {
       f.write("src/product.ts", "copied and changed");
       f.write("testing/contracts.json", { contracts: [{ id: "crossdeck.refit.companion" }] });
