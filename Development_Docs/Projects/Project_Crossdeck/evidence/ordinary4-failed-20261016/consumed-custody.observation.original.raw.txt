@@ -1,0 +1,512 @@
+{
+  "classification": "NORMALIZED_GET_ONLY_TERMINAL_CUSTODY_OBSERVATION_NOT_RAW_HTTP",
+  "qualify": {
+    "version": 1,
+    "exceptionId": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R10",
+    "binding": {
+      "exception": {
+        "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R10",
+        "recordDigest": "5c5bd94f499b0eef58d30bef254e7ea8a5a4933d6b6c294b70884510494b28d0",
+        "frozenReferenceSha": "856c1288123e33ad655b876294888f46841edb07",
+        "priorRepairRecaptureAttempts": 11,
+        "independentReviewOrdinal": 7,
+        "version": 10,
+        "predecessor": {
+          "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R9",
+          "namespace": "sounding-line-exceptions/PE-X-CROSSDECK-FINAL-VERIFY-20261015-R9",
+          "recordDigest": "98eb3896230f55de1b9c07383c0def7200a2a3d22c95039e79a23ec174746e2b",
+          "campaignEpoch": "2026-10-15T13:54Z",
+          "qualifyCommit": "e24188d5654921f7ffc91c69d6d8be12d7d40ece",
+          "qualifyPayloadDigest": "22da785317e514446297ada68a7fca0ad83c1c1198dc8da55ca69f1f3bd9e306",
+          "runId": 38948434772,
+          "runAttempt": 1,
+          "workflowId": 341545080,
+          "createdAt": "2026-10-16T18:34:52Z",
+          "conclusion": "failure",
+          "mode": "ordinary",
+          "event": "pull_request_target",
+          "headSha": "7241f5a8a5965d67882a0b205601eba3087ddef5",
+          "headBranch": "codex/crossdeck-experience-refit",
+          "baseSha": "2e2efa5b8b02e9e5dd0bb0b15d9b23c2f694d7ed",
+          "candidateSha": "7241f5a8a5965d67882a0b205601eba3087ddef5",
+          "candidateTree": "28e172e042953fbf8d1bac697f9ad273ce1c637b",
+          "sourceDigest": "8c4a27ed0a7368b56a1552d11fcc0006cb7bb348af18504480c7678c5647fa3f",
+          "contractDigest": "33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274",
+          "artifacts": [
+            {
+              "id": 12068487536,
+              "size": 119107,
+              "digest": "sha256:3c3bf79e45d7235bbca961243484482bd83aef3c203aa6b4d1e5eeed78526804"
+            }
+          ],
+          "failurePublication": "856c1288123e33ad655b876294888f46841edb07",
+          "failurePublicationTree": "c538dc80ea6f1bb0b78ebfc1a70c58c528b4e531",
+          "failureIndexPath": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary3-failed-20261016/preservation-index.json",
+          "failureIndexSha256": "a2c8ae4bf55dea299d8b6bacc9e59ca722170c9648e1390c0c53c60ea4c102ce",
+          "authorityPreservationIndexPath": "Development_Docs/Projects/Project_Crossdeck/evidence/r9-verification-20261016/preservation-index.json",
+          "authorityPreservationIndexSha256": "77f7173de2bcca6e9713fb2bd40f8214f038a90d1d8e0df120c6b1a16ac2689b",
+          "qualifiedMustBeAbsent": true
+        },
+        "attemptHistory": {
+          "version": 10,
+          "priorRepairRecaptureAttempts": 11,
+          "failedVerificationPreparations": 2,
+          "successfulBlockedVerificationPreparations": 2,
+          "successfulAcceptedVerificationPreparations": 3,
+          "totalPriorExecutedAttempts": 18,
+          "nextPreparationAttemptTotal": null,
+          "completedIndependentReviews": 7,
+          "remainingIndependentReviewOrdinal": 7,
+          "boundedProductRepairsCompletedSeparately": 1,
+          "targetedLocalProofInvocationsCompletedSeparately": 1,
+          "targetedLocalChildReplaysCompletedSeparately": 2,
+          "priorAuthenticatedReviewDispatches": 3,
+          "priorAuthenticatedReviewCancellations": 1,
+          "nextAuthenticatedReviewDispatchTotal": null,
+          "priorOrdinaryDispatches": 3,
+          "priorOrdinaryFailures": 3,
+          "nextOrdinaryDispatchTotal": 4,
+          "pairedLocalProofInvocationsCompletedSeparately": 3,
+          "nextPairedLocalProofInvocationTotal": null,
+          "nextPairedLocalCaseExecutions": 0,
+          "pairedLocalChildReplaysCompletedSeparately": 3,
+          "pairedLocalProofFailuresCompletedSeparately": 1,
+          "priorPairedLocalCaseAccounting": {
+            "r6": {
+              "normal": "FAILED",
+              "reduced": "SKIPPED_NOT_EXECUTED",
+              "adverse": "PASSED",
+              "executedCases": 2,
+              "pairedCaseExecutions": null,
+              "participatingBrowserContexts": null,
+              "retries": 0
+            },
+            "r7": {
+              "normal": "PASSED",
+              "reduced": "PASSED",
+              "adverse": "PASSED",
+              "pairedCaseExecutions": 3,
+              "participatingBrowserContexts": 6,
+              "retries": 0
+            },
+            "r8": {
+              "normal": "PASSED",
+              "reduced": "PASSED",
+              "adverse": "PASSED",
+              "pairedCaseExecutions": 3,
+              "participatingBrowserContexts": 6,
+              "retries": 0
+            }
+          },
+          "pairedLocalProofPassesCompletedSeparately": 2
+        },
+        "nonExecutingReconciliation": {
+          "version": 1,
+          "id": "PE-R10-ORDINARY-ONLY-BRIDGE-20261016",
+          "recordDigest": "0142e1726429196b3fb3c000970d4dc9a98f82a92c32a6b29bcd5bb3e9e0888f",
+          "originalBaseSha": "151417a772c1bcde4e5c7f256302b803d25d40da",
+          "originalSourceDigest": "6d8ebc54902e7bce42a73c1e92d2ad6bc3465f94a1632c04559112bd3afee0ba",
+          "originalPublicationCandidateSha": "4e365e82fda3f272ca6fc2fec61b599b07746834",
+          "currentBaseSha": "b7935ad2f68a278ef49f0618ec3b72263b0fb8b9",
+          "currentSourceDigest": "6f065402d448c4330a2f70f4048551de9fc89c37e0c95eae70bcb7553f269b10",
+          "overlay": [
+            {
+              "path": ".agents/README.md",
+              "oldMode": "100644",
+              "oldBlob": "55b6e4c2f9d9263a73abc26a7ade21ab3d87a223",
+              "newMode": "100644",
+              "newBlob": "643f44b906ba849bad7f99b69aae3ad8870ec94f"
+            },
+            {
+              "path": ".agents/crossdeck-r10-ordinary-only.md",
+              "oldMode": null,
+              "oldBlob": null,
+              "newMode": "100644",
+              "newBlob": "9b068e68a9203499410632b35aaf66c3772c80e3"
+            },
+            {
+              "path": ".agents/crossdeck-r8-historical-format.md",
+              "oldMode": null,
+              "oldBlob": null,
+              "newMode": "100644",
+              "newBlob": "d3207cd8623313991de7c3a8687b658a8fb9d9bb"
+            },
+            {
+              "path": ".agents/crossdeck-r9-ordinary-only.md",
+              "oldMode": null,
+              "oldBlob": null,
+              "newMode": "100644",
+              "newBlob": "59e594bffd595be271cdeb3ed89eb5dbe41137be"
+            },
+            {
+              "path": ".agents/git-output-buffer-repair.md",
+              "oldMode": null,
+              "oldBlob": null,
+              "newMode": "100644",
+              "newBlob": "0fb9ff1046fc5da47272583bed089e1541e20715"
+            },
+            {
+              "path": ".agents/ordinary-test-context-repair.md",
+              "oldMode": null,
+              "oldBlob": null,
+              "newMode": "100644",
+              "newBlob": "47959e2bed611153477dd6b9d10341f83d683d92"
+            },
+            {
+              "path": ".github/workflows/sounding-line-ordinary.yml",
+              "oldMode": "100644",
+              "oldBlob": "d928357508ad60799812fa8f45707983888dbd70",
+              "newMode": "100644",
+              "newBlob": "d7c4a820a1c4c5e9dcf6f181c4a74c7528c2c7b3"
+            },
+            {
+              "path": ".prettierignore",
+              "oldMode": "100644",
+              "oldBlob": "060d552e1efc8fa1186b04b5ff97355a9386faa3",
+              "newMode": "100644",
+              "newBlob": "d21c485a0c9996cafbd53dde2ab76d0abaa779b4"
+            },
+            {
+              "path": "Development_Docs/Engineering/Crossdeck_R8_Historical_Format_Reconciliation.md",
+              "oldMode": null,
+              "oldBlob": null,
+              "newMode": "100644",
+              "newBlob": "9d725dcc8e10f003c69be07a02398b2b6c103910"
+            },
+            {
+              "path": "Development_Docs/Engineering/Experience_Changed_Path_Buffer_Repair.md",
+              "oldMode": null,
+              "oldBlob": null,
+              "newMode": "100644",
+              "newBlob": "b8b4d0813dc52bcf70878958a814fcd4ea93cdbe"
+            },
+            {
+              "path": "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
+              "oldMode": "100644",
+              "oldBlob": "466dc8f094cbda15ac891478a7ea4f0eaf78b071",
+              "newMode": "100644",
+              "newBlob": "8f0e812ca3b3cb97d1dabf9684972188570c31d2"
+            },
+            {
+              "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R10_Ordinary_Only_20261016.md",
+              "oldMode": null,
+              "oldBlob": null,
+              "newMode": "100644",
+              "newBlob": "1a89442e451342d56e59cc6b02ad7a05f5e37343"
+            },
+            {
+              "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R9_Ordinary_Only_20261016.md",
+              "oldMode": null,
+              "oldBlob": null,
+              "newMode": "100644",
+              "newBlob": "0d3aa2e0392d8eba7fa7732f6cd10c3cf2a1b77b"
+            },
+            {
+              "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Neutral_Test_Context_Repair_20261016.md",
+              "oldMode": null,
+              "oldBlob": null,
+              "newMode": "100644",
+              "newBlob": "c4f6b4c0080a1bd66bfb534f722d16730f412c2f"
+            },
+            {
+              "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r10-ordinary-only-20261016/r9-consumed-frozen-publication.derived.json",
+              "oldMode": null,
+              "oldBlob": null,
+              "newMode": "100644",
+              "newBlob": "ac5b25157cde65c34b579eb5503785bf830e028e"
+            },
+            {
+              "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r9-ordinary-only-20261016/r8-custody-read-only.original.raw.txt",
+              "oldMode": null,
+              "oldBlob": null,
+              "newMode": "100644",
+              "newBlob": "ca4fd6de108e200a40df99f512d70f49ef2004fb"
+            },
+            {
+              "path": "Development_Docs/Testing/Product_Experience/README.md",
+              "oldMode": "100644",
+              "oldBlob": "b9d7c1a786f67edbc85d1a183113cd2286614508",
+              "newMode": "100644",
+              "newBlob": "f6b4c7fe2a6ebbb5c8c1b233e4f1821f7936ae53"
+            },
+            {
+              "path": "Development_Docs/document-index.json",
+              "oldMode": "100644",
+              "oldBlob": "62a34a16c684a5323dfbb49a992c31e6483b5ced",
+              "newMode": "100644",
+              "newBlob": "f9d12d8b21a7f604dae73d9d879e71aa2f318307"
+            },
+            {
+              "path": "scripts/sounding-line/experience-attestation.mjs",
+              "oldMode": "100644",
+              "oldBlob": "4dd55317623762d927412ace1d215e12e10b83e5",
+              "newMode": "100644",
+              "newBlob": "6f1a9e061b69264955e912dc6ee58e16f36c4a0a"
+            },
+            {
+              "path": "scripts/sounding-line/experience-browser.mjs",
+              "oldMode": "100644",
+              "oldBlob": "f13c9e1e37a6a651cca14144315a21207276770e",
+              "newMode": "100644",
+              "newBlob": "42e3a72bdfc5ecf55200c53ef6c4ab94d9cb8ceb"
+            },
+            {
+              "path": "scripts/sounding-line/experience-checkout-probe.mjs",
+              "oldMode": "100644",
+              "oldBlob": "357b1d601d3e504d984b6848ba15a584509a5456",
+              "newMode": "100644",
+              "newBlob": "4809c8ae965d3bdd608842481167c22ee4b821d3"
+            },
+            {
+              "path": "scripts/sounding-line/experience-exception.mjs",
+              "oldMode": "100644",
+              "oldBlob": "ab6bfd80a294e69838912f62b0fbc5574107e02e",
+              "newMode": "100644",
+              "newBlob": "81820ec8b8553c173c98b21ae70dacf77155f152"
+            },
+            {
+              "path": "scripts/sounding-line/experience-paired.mjs",
+              "oldMode": "100644",
+              "oldBlob": "64a85160f5dcea10de8774f6fac9510e3cb45f34",
+              "newMode": "100644",
+              "newBlob": "a8d45b8e4849fd737dc9492642c990b8317645d0"
+            },
+            {
+              "path": "scripts/sounding-line/experience-prepare.mjs",
+              "oldMode": "100644",
+              "oldBlob": "b09e0c37a26774fd6b5cb6bb0031eba7bb78b46e",
+              "newMode": "100644",
+              "newBlob": "3b68b870e4c1089ed8ce60441d183abc4dfd0030"
+            },
+            {
+              "path": "scripts/sounding-line/experience-r10.mjs",
+              "oldMode": null,
+              "oldBlob": null,
+              "newMode": "100644",
+              "newBlob": "a94616efeae55a51993b627576ba9ee6caf0c78c"
+            },
+            {
+              "path": "scripts/sounding-line/experience-r8-format.mjs",
+              "oldMode": null,
+              "oldBlob": null,
+              "newMode": "100644",
+              "newBlob": "d911ebf2b16a5466ef9c59a00d3bd671f668f2fa"
+            },
+            {
+              "path": "scripts/sounding-line/experience-r9.mjs",
+              "oldMode": null,
+              "oldBlob": null,
+              "newMode": "100644",
+              "newBlob": "2e11c150442866076d9f8db1a9db784f08491981"
+            },
+            {
+              "path": "scripts/sounding-line/ordinary.mjs",
+              "oldMode": "100644",
+              "oldBlob": "09e5d7ac0a391dca2fd67fee17585e231cb0e32a",
+              "newMode": "100644",
+              "newBlob": "b3003984297c6b51e75b1ccb129e05b26f7a65ac"
+            },
+            {
+              "path": "scripts/sounding-line/product-experience.mjs",
+              "oldMode": "100644",
+              "oldBlob": "a32d21e6b564171245c6d05b277e0b23b7629e36",
+              "newMode": "100644",
+              "newBlob": "a9ffaa8ff1b4466e6013ee05d28c8fcbb0c77508"
+            },
+            {
+              "path": "tests/sounding-line/browser-diagnostics.test.mjs",
+              "oldMode": "100644",
+              "oldBlob": "48d0805e1dc3c93407c94c3b0a51762c299b171e",
+              "newMode": "100644",
+              "newBlob": "3c126c01bfa8456f7c4480fda589a3c45046cae2"
+            },
+            {
+              "path": "tests/sounding-line/experience-browser-fixtures.test.mjs",
+              "oldMode": "100644",
+              "oldBlob": "d8d110a46c89a313f018435545d42cefdebbbf06",
+              "newMode": "100644",
+              "newBlob": "04ce1173e9f30ea64a8179b5c7e4a68e3fb2fc30"
+            },
+            {
+              "path": "tests/sounding-line/experience-exception.test.mjs",
+              "oldMode": "100644",
+              "oldBlob": "813584d63ce944e8d0f93be5d4a90e903c84c496",
+              "newMode": "100644",
+              "newBlob": "e8b789f36a931283c315f7af416c3d5748b3e5a6"
+            },
+            {
+              "path": "tests/sounding-line/experience-r10.test.mjs",
+              "oldMode": null,
+              "oldBlob": null,
+              "newMode": "100644",
+              "newBlob": "012823f41588146e928fc13ed61858fee944dac5"
+            },
+            {
+              "path": "tests/sounding-line/experience-r9.test.mjs",
+              "oldMode": null,
+              "oldBlob": null,
+              "newMode": "100644",
+              "newBlob": "a54320490266a1a1cbc1bab115a255f1ab222e5d"
+            },
+            {
+              "path": "tests/sounding-line/fixtures/r8-format-originals.json",
+              "oldMode": null,
+              "oldBlob": null,
+              "newMode": "100644",
+              "newBlob": "8336e08fdeef6117d987e22114fb6b2f34e4aaa9"
+            },
+            {
+              "path": "tests/sounding-line/ordinary-consumer-policy.test.mjs",
+              "oldMode": null,
+              "oldBlob": null,
+              "newMode": "100644",
+              "newBlob": "3d5606e2ef1bb789a20a0107702275d467a891b9"
+            },
+            {
+              "path": "tests/sounding-line/ordinary.test.mjs",
+              "oldMode": "100644",
+              "oldBlob": "bf89b2b6a3c8d2b2947517bdd453419c9d33d19d",
+              "newMode": "100644",
+              "newBlob": "dfbe43ac780289e76ab79ac885f4b8edf29417bc"
+            },
+            {
+              "path": "tests/sounding-line/product-experience.test.mjs",
+              "oldMode": "100644",
+              "oldBlob": "8f72331bfd02a0c1f29cfce226e7b8a802e513ce",
+              "newMode": "100644",
+              "newBlob": "7b0b33f90dfcac3f33ffe23c2444057155795da3"
+            }
+          ],
+          "historicalException": {
+            "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R8",
+            "recordDigest": "ecbd09233751b59bd4d5b5d29ec505789944f8a87f4627feaf559461dfde7e37",
+            "frozenReferenceSha": "d2ce2f29f3c86dd62e673000befc90fc39835d50",
+            "priorRepairRecaptureAttempts": 11,
+            "independentReviewOrdinal": 7,
+            "version": 8,
+            "predecessor": {
+              "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R7",
+              "namespace": "sounding-line-exceptions/PE-X-CROSSDECK-FINAL-VERIFY-20261015-R7",
+              "recordDigest": "5073e5c04e60985cfd1f0fcce1f3f9a11fdffe5bb2d29cf269aa3a6356e6e851",
+              "campaignEpoch": "2026-10-15T13:54Z",
+              "prepareCommit": "dd8c3856c097b5c1154e29396f0c959e38c2a076",
+              "preparePayloadDigest": "50f4243825efbe174d4edc69a73c9c771109b092bdc5cf5e280f60279e78dadf",
+              "runId": 38880737676,
+              "runAttempt": 1,
+              "workflowId": 341545080,
+              "createdAt": "2026-10-16T09:28:52Z",
+              "conclusion": "failure",
+              "baseSha": "ce862a4a349b92faa11beaef50555abcb1a35be8",
+              "candidateSha": "0dd0847458dedaab3b5b1d0f5b4b73fe78aaa087",
+              "candidateTree": "bb030c5a449081d51cf2e5d7cfe692c7288b541e",
+              "sourceDigest": "91769eb493df857300b454939e1e2004338e10b12991b8651a18dedc14ba3be0",
+              "contractDigest": "33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274",
+              "independentReviewsCompleted": 6,
+              "reservedIndependentReviewOrdinal": 7,
+              "artifacts": [
+                {
+                  "id": 12038770189,
+                  "size": 49279,
+                  "digest": "sha256:7dbd634e95d42b7f6d5257cbc02a4346464e6de0027438de58d5d37488a3b8b7"
+                },
+                {
+                  "id": 12037519792,
+                  "size": 1388686658,
+                  "digest": "sha256:2647f25006cea85efd5f127d31dec7e96968a259436c6c15ff6daa12ff4a88ee"
+                }
+              ],
+              "failureCommit": "18529e44b28d8b64eb190fbf8b8a23476ba5707a",
+              "failureIndexPath": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-failed-preparation17-20261016/failed-preparation-index.json",
+              "failureIndexSha256": "d9db9f58a492d3a78f2ff98b3b0083461a178ef6fcad31ea09a78da7225b1029",
+              "localProofIndexPath": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-proof-index.json",
+              "localProofIndexSha256": "b5b164a5643a95abe77bf6b8c521c8b711c1b027b1504dee41147892334d4eaa",
+              "originalMarkerSha256": "0e1cbde32958b1c867159f4f65947a82204f108d12f5f2452c967d1d70b942b4",
+              "localStatus": "PASS",
+              "localProofInvocations": 1,
+              "childReplayInvocations": 1,
+              "pairedCaseExecutions": 3,
+              "participatingBrowserContexts": 6,
+              "preparationStatus": "FAIL",
+              "preparationInvocations": 1,
+              "preparationPairedPassed": 2,
+              "preparationPairedFailed": 1,
+              "preparationPairedSkipped": 0,
+              "completeCaptureManifestIssued": false,
+              "reviewStarted": false,
+              "authenticatedSubmissionStarted": false,
+              "ordinaryStarted": false
+            },
+            "attemptHistory": {
+              "version": 8,
+              "priorRepairRecaptureAttempts": 11,
+              "failedVerificationPreparations": 2,
+              "successfulBlockedVerificationPreparations": 2,
+              "successfulAcceptedVerificationPreparations": 2,
+              "totalPriorExecutedAttempts": 17,
+              "nextPreparationAttemptTotal": 18,
+              "completedIndependentReviews": 6,
+              "remainingIndependentReviewOrdinal": 7,
+              "boundedProductRepairsCompletedSeparately": 1,
+              "targetedLocalProofInvocationsCompletedSeparately": 1,
+              "targetedLocalChildReplaysCompletedSeparately": 2,
+              "priorAuthenticatedReviewDispatches": 2,
+              "priorAuthenticatedReviewCancellations": 1,
+              "nextAuthenticatedReviewDispatchTotal": 3,
+              "priorOrdinaryDispatches": 1,
+              "priorOrdinaryFailures": 1,
+              "nextOrdinaryDispatchTotal": 2,
+              "pairedLocalProofInvocationsCompletedSeparately": 2,
+              "nextPairedLocalProofInvocationTotal": 3,
+              "nextPairedLocalCaseExecutions": 3,
+              "pairedLocalChildReplaysCompletedSeparately": 2,
+              "pairedLocalProofFailuresCompletedSeparately": 1,
+              "priorPairedLocalCaseAccounting": {
+                "r6": {
+                  "normal": "FAILED",
+                  "reduced": "SKIPPED_NOT_EXECUTED",
+                  "adverse": "PASSED",
+                  "executedCases": 2,
+                  "pairedCaseExecutions": null,
+                  "participatingBrowserContexts": null,
+                  "retries": 0
+                },
+                "r7": {
+                  "normal": "PASSED",
+                  "reduced": "PASSED",
+                  "adverse": "PASSED",
+                  "pairedCaseExecutions": 3,
+                  "participatingBrowserContexts": 6,
+                  "retries": 0
+                }
+              },
+              "pairedLocalProofPassesCompletedSeparately": 1
+            }
+          }
+        }
+      },
+      "baseSha": "b7935ad2f68a278ef49f0618ec3b72263b0fb8b9",
+      "sourceDigest": "6f065402d448c4330a2f70f4048551de9fc89c37e0c95eae70bcb7553f269b10",
+      "contractDigest": "33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274"
+    },
+    "run": {
+      "runId": 38968131415,
+      "runAttempt": 1,
+      "actor": "Kgray44",
+      "workflowPath": ".github/workflows/sounding-line-ordinary.yml",
+      "event": "pull_request_target",
+      "headSha": "c9dc54c16bccc93f26bebfb531f1c2471b9fc4d4",
+      "headBranch": "codex/crossdeck-experience-refit",
+      "createdAt": "2026-10-16T21:15:45Z",
+      "workflowId": 341545080,
+      "displayTitle": "Sounding Line finite 1 ordinary 721 c9dc54c16bccc93f26bebfb531f1c2471b9fc4d4 active"
+    },
+    "candidateSha": "c9dc54c16bccc93f26bebfb531f1c2471b9fc4d4",
+    "candidateTree": "1df0408c983b95f9fe7ee5e23b3a46c23cf2acd7",
+    "status": "ONE_ORDINARY_INVOCATION_RESERVED_VALIDATION_PENDING",
+    "commitSha": "e414624dd6b3901b360729ae024cd181fd42396f"
+  },
+  "qualified": null,
+  "gets": 7,
+  "writes": 0,
+  "observedAtUtc": "2026-10-16T21:54:10.232Z"
+}

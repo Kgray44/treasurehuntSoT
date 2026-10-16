@@ -8,6 +8,10 @@ last_reviewed: 2026-10-16
 
 # Crossdeck refit efficiency measurements
 
+## Current consumed ordinary4 accounting
+
+Whole run38968131415 failed in 1762s. Technical Chromium reported38 passing tests in8.2m and cleanup PASS. Historical Product Experience projection passed; current replay has no result. Empty final command timings are incomplete reporting, not zero execution. The [disposition](Ordinary4_Disposition_20261016.md) binds exact source, hosted logs and consumed custody. Earlier records remain unchanged. Input/cached/output/total tokens, credits, dollars and per-agent totals remain UNAVAILABLE. No missing usage is converted to zero.
+
 ## R10 infrastructure and final qualification accounting
 
 Accepted neutral repair #751 passed the whole protected Linux workflow in 573s with254 policy tests and13 rendered fixtures, followed by69 landed focused checks in 38.617s. Its actual seven-entry frozen-consumer source fixture passed254/254 in 696.202s. The earlier source-policy250/254 failure (717.930s) and incomplete780.026s child timeout remain nonaccepting and preserved. They made no consumer invocation.

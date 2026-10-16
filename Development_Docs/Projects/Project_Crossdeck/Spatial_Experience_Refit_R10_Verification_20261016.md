@@ -1,12 +1,18 @@
 ---
 title: Crossdeck R10 source and final qualification contract
 audience: product-engineering
-status: prequalification-publication-contract
+status: qualification-failed-replay-entry
 canonical_for: crossdeck-refit-r10-verification-20261016
 last_reviewed: 2026-10-16
 ---
 
 # Current source and preserved experience
+
+## Consumed ordinary4 outcome
+
+Consumed ordinary4 [run 38968131415](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38968131415) failed after technical verification. The actual browser log records38 passing tests and cleanup PASS; current Experience replay has no result. [The source-bound failure disposition](Ordinary4_Disposition_20261016.md) preserves originals and the exact diagnostic boundary. PR #721 is draft, unqualified and unmerged; R10 remains spent. The same authority owner is diagnosing a bounded correction before any properly protected successor.
+
+The publication contract below describes the prequalification state and supplies no authority to repeat R10.
 
 This engineering document records the prequalification publication contract. [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721), its actual protected ordinary decision and exact R10 qualified seal carry the final outcome and head/tree identity. This frozen document claims no future qualification or owner acceptance.
 

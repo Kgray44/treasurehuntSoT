@@ -6,7 +6,13 @@ canonical_for: crossdeck-refit-publication-checkpoint-20261012
 last_reviewed: 2026-10-16
 ---
 
-## Current R10 ordinary4 qualification contract
+## Current consumed ordinary4 failure
+
+Read the [disposition](../Development_Docs/Projects/Project_Crossdeck/Ordinary4_Disposition_20261016.md), actual PR721 and live custody. Run38968131415 is consumed FAIL on c9/tree1df/baseb793/source6f; R10qualifye414624dd6b3901b360729ae024cd181fd42396f, payload147f76e9447c1812a2998caa4d1a4a9186af60baabf5964571640b78ce8ade48, qualifiedNULL. PR721 is DRAFT. Preserve all original output, source/media/review, old failures, incomplete nulls and three private markers. Do not rerun/reset/refund/ready/dispatch/merge R10.
+
+Actual technical log38PASS/cleanupPASS and historical PEprojectionPASS do not qualify the whole run. Current replay is absent; timingcommands[] means incomplete reporting. Last labelled Prisma output belongs to ordinary verification. Exact cause and replay-child launch are unproven. Existing authorized authority owner diagnoses with inert/GET-only checks, then provides a bounded correction and separately reviewed/protected/landed finite successor. Standing owner completion authorization persists without routine KG questions; no new product proof/capture/review/provider execution is granted here. Preserve six-fresh-technical/38-current-PE/finalizer/wholeworkflow/seal/strictmerge/landedsmoke gates.
+
+## Historical R10 ordinary4 qualification contract
 
 Read installed [R10 guidance](crossdeck-r10-ordinary-only.md), the [current consumer record](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R10_Verification_20261016.md), actual PR721 and live R10 custody before acting. Accepted mainb7935ad2f68a278ef49f0618ec3b72263b0fb8b9; record5c5bd94f499b0eef58d30bef254e7ea8a5a4933d6b6c294b70884510494b28d0; bridge0142e1726429196b3fb3c000970d4dc9a98f82a92c32a6b29bcd5bb3e9e0888f; current source6f065402d448c4330a2f70f4048551de9fc89c37e0c95eae70bcb7553f269b10. Standing owner completion authorization persists; no routine permission question. Every older section below is historical and supplies no execution authority.
 
