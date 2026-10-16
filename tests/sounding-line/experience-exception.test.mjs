@@ -165,9 +165,14 @@ if (process.env.SOUNDING_LINE_R8_FORMAT_SOURCE_FIXTURE)
           .records)
           if (mergedPaths.has(entry.path)) assert(paths.has(entry.path), `Union inventory lost ${entry.path}`);
           else assert(originalPaths.has(entry.path) && !sourcePaths.has(entry.path), `Maintenance lost ${entry.path}`);
-      const matrix = new Set(
-        readFileSync(path.join(checkout, R8_FORMAT_REGENERATED_METADATA[1]), "utf8").trim().split(/\r?\n/u),
-      );
+      const matrixRows = readFileSync(path.join(checkout, R8_FORMAT_REGENERATED_METADATA[1]), "utf8")
+        .trim()
+        .split(/\r?\n/u);
+      const matrix = new Set(matrixRows);
+      assert.equal(matrix.size, matrixRows.length, "Duplicate migration rows");
+      const oldPaths = matrixRows.slice(1).map((row) => row.match(/^"((?:[^"]|"")*)",/u)?.[1]);
+      assert(oldPaths.every((file) => typeof file === "string"));
+      assert.equal(new Set(oldPaths).size, oldPaths.length, "Duplicate or conflicting migration paths");
       const renamed = new Map(
         invoke(checkout, ["diff", "--name-status", "-M", baseSha, "--"])
           .split(/\r?\n/u)
