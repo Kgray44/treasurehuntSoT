@@ -102,8 +102,7 @@ export function ReachLaboratory({
     timing = useRef(new ReachTiming());
   const epoch = useRef(1),
     lastObservation = useRef<HandObservation | null>(null),
-    lastUI = useRef(0),
-    lastGuidance = useRef({ value: "", at: 0 });
+    lastUI = useRef(0);
   const trial = useRef<Trial | null>(null),
     calibrationRef = useRef<Calibration | null>(null),
     sourceRef = useRef<Source>("OFF"),
@@ -231,6 +230,7 @@ export function ReachLaboratory({
       lastObservation.current = o;
       if (o.evidenceTier !== "D0") timing.current.observe(o);
       const ready = selector.current.update(o);
+      const eligibilityChanged = readyRef.current.eligible !== ready.eligible;
       readyRef.current = ready;
       visual.current.observation = o;
       visual.current.activeTrack = ready.hand?.trackId ?? null;
@@ -240,17 +240,13 @@ export function ReachLaboratory({
         );
         log("CONTEXT_CHANGED");
       }
-      // Visual guidance settles; fresh anatomy and recovery determine eligibility.
-      if (lastGuidance.current.value !== ready.condition) lastGuidance.current = { value: ready.condition, at: now };
-      if (now - lastUI.current >= 120) {
+      // Keep guidance, posture and eligibility from the same observation. A
+      // paused collection must never retain a settled "ready" headline.
+      if (eligibilityChanged || now - lastUI.current >= 120) {
         lastUI.current = now;
         setHands(o.hands);
         setFrameSize({ frameWidth: o.frameWidth, frameHeight: o.frameHeight });
-        setReadiness((previous) =>
-          lastGuidance.current.value === ready.condition && now - lastGuidance.current.at >= 180
-            ? ready
-            : { ...previous, detectedCount: ready.detectedCount, hand: ready.hand, eligible: ready.eligible },
-        );
+        setReadiness(ready);
       }
       const t = trial.current;
       if (!ready.eligible || !ready.hand) {
@@ -1140,6 +1136,46 @@ export function ReachLaboratory({
           )}
           {step === "RESULTS" && (
             <>
+              <div className={styles.actions}>
+                {calibration?.status === "VALIDATED" ? (
+                  <button
+                    className={styles.primary}
+                    onClick={() => {
+                      advance("PLAYGROUND");
+                      setMessage("Explore freely. No application actions are triggered by pointing.");
+                    }}
+                  >
+                    Open pointing playground
+                  </button>
+                ) : (
+                  calibration && (
+                    <button className={styles.primary} onClick={() => begin("VALIDATION")}>
+                      {calibration.status === "FAILED" ? "Retry independent check" : "Check five new targets"}
+                    </button>
+                  )
+                )}
+                <button
+                  onClick={() => {
+                    invalidate();
+                    advance("PREPARE");
+                    setMessage("Adjust your camera if needed, then begin a fresh setup.");
+                  }}
+                >
+                  Recalibrate
+                </button>
+                {pointingMode === "ABSOLUTE" && calibration?.status !== "VALIDATED" && (
+                  <button
+                    onClick={() => {
+                      invalidate();
+                      setPointingMode("RELATIVE");
+                      advance("PREPARE");
+                      setMessage("Relative movement uses hand displacement. Start its separate setup.");
+                    }}
+                  >
+                    Try relative movement
+                  </button>
+                )}
+              </div>
               <dl className={styles.results}>
                 <div>
                   <dt>
@@ -1191,46 +1227,6 @@ export function ReachLaboratory({
                     ? "This checks movement control. It does not measure where you physically point."
                     : "This result applies to this session and setup. Real webcam qualification is still separate."}
               </p>
-              <div className={styles.actions}>
-                {calibration?.status === "VALIDATED" ? (
-                  <button
-                    className={styles.primary}
-                    onClick={() => {
-                      advance("PLAYGROUND");
-                      setMessage("Explore freely. No application actions are triggered by pointing.");
-                    }}
-                  >
-                    Open pointing playground
-                  </button>
-                ) : (
-                  calibration && (
-                    <button className={styles.primary} onClick={() => begin("VALIDATION")}>
-                      {calibration.status === "FAILED" ? "Retry independent check" : "Check five new targets"}
-                    </button>
-                  )
-                )}
-                <button
-                  onClick={() => {
-                    invalidate();
-                    advance("PREPARE");
-                    setMessage("Adjust your camera if needed, then begin a fresh setup.");
-                  }}
-                >
-                  Recalibrate
-                </button>
-                {pointingMode === "ABSOLUTE" && calibration?.status !== "VALIDATED" && (
-                  <button
-                    onClick={() => {
-                      invalidate();
-                      setPointingMode("RELATIVE");
-                      advance("PREPARE");
-                      setMessage("Relative movement uses hand displacement. Start its separate setup.");
-                    }}
-                  >
-                    Try relative movement
-                  </button>
-                )}
-              </div>
             </>
           )}
           {step === "PLAYGROUND" && (

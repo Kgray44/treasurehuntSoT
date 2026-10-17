@@ -26,6 +26,9 @@ test("a completed failed check explains the accuracy limit and keeps setup inste
   await page.waitForTimeout(150);
   await page.getByLabel("Demo tracking condition").selectOption("POSTURE");
   await expect(page.getByRole("status", { name: "Pointer feedback" })).toContainText("Last seen pointer");
+  await expect(page.getByRole("status", { name: "Reach status" })).toContainText("Extend your index finger");
+  await expect(page.getByRole("status", { name: "Reach status" })).not.toContainText("Your hand is ready");
+  await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({ path: testInfo.outputPath("D0-last-seen-during-check.png"), fullPage: true });
   await page.getByLabel("Demo tracking condition").selectOption("NONE");
   await targets(5, true);
@@ -37,6 +40,7 @@ test("a completed failed check explains the accuracy limit and keeps setup inste
   await expect(page.getByRole("button", { name: "Retry independent check" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Open pointing playground" })).toHaveCount(0);
   await expect(page.getByLabel("Target 1 of 5", { exact: true })).toHaveCount(0);
+  await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({ path: testInfo.outputPath("D0-failed-check-explained.png"), fullPage: true });
   await page.getByRole("button", { name: "Stop session", exact: true }).click();
 });
