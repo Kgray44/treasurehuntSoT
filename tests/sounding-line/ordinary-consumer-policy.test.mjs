@@ -36,6 +36,11 @@ import {
   r12HistoricalEvidencePlan,
   R12_REGENERATED,
 } from "../../scripts/sounding-line/experience-r12.mjs";
+import {
+  CROSSDECK_R13,
+  r13HistoricalEvidencePlan,
+  R13_REGENERATED,
+} from "../../scripts/sounding-line/experience-r13.mjs";
 import { generateDocumentIndex } from "../../scripts/generate-document-index.mjs";
 import { validate as validateDocumentation } from "../../scripts/validate-documentation.mjs";
 import { r9HistoricalEvidencePlan } from "../../scripts/sounding-line/experience-r9.mjs";
@@ -44,12 +49,54 @@ const fixtureFlag = "SOUNDING_LINE_ORDINARY_CONSUMER_POLICY_FIXTURE";
 const mergedFixtureFlag = "SOUNDING_LINE_R10_CONSUMER_POLICY_FIXTURE";
 const r11FixtureFlag = "SOUNDING_LINE_R11_CONSUMER_POLICY_FIXTURE";
 const r12FixtureFlag = "SOUNDING_LINE_R12_CONSUMER_POLICY_FIXTURE";
-const mergedPolicy = process.env[r12FixtureFlag]
-  ? { name: "R12", record: CROSSDECK_R12, regenerated: R12_REGENERATED, historical: r12HistoricalEvidencePlan }
-  : process.env[r11FixtureFlag]
-    ? { name: "R11", record: CROSSDECK_R11, regenerated: R11_REGENERATED, historical: r11HistoricalEvidencePlan }
-    : { name: "R10", record: CROSSDECK_R10, regenerated: R10_REGENERATED, historical: r10HistoricalEvidencePlan };
-const policyEnv = (suffix) => process.env[`SOUNDING_LINE_${mergedPolicy.name}_POLICY_${suffix}`];
+const r13FixtureFlag = "SOUNDING_LINE_R13_CONSUMER_POLICY_FIXTURE";
+function mergedPolicyFor(environment) {
+  if (environment[r13FixtureFlag])
+    return { name: "R13", record: CROSSDECK_R13, regenerated: R13_REGENERATED, historical: r13HistoricalEvidencePlan };
+  if (environment[r12FixtureFlag])
+    return { name: "R12", record: CROSSDECK_R12, regenerated: R12_REGENERATED, historical: r12HistoricalEvidencePlan };
+  if (environment[r11FixtureFlag])
+    return { name: "R11", record: CROSSDECK_R11, regenerated: R11_REGENERATED, historical: r11HistoricalEvidencePlan };
+  return { name: "R10", record: CROSSDECK_R10, regenerated: R10_REGENERATED, historical: r10HistoricalEvidencePlan };
+}
+function mergedPolicyConfiguration(policy, environment) {
+  const value = (suffix) => environment[`SOUNDING_LINE_${policy.name}_POLICY_${suffix}`];
+  const actualCandidate = value("CANDIDATE_SHA");
+  if (policy.name === "R13") {
+    assert.match(value("BASE_SHA") ?? "", /^[a-f0-9]{40}$/u, "R13 requires an exact actual policy base SHA");
+    assert.match(
+      actualCandidate ?? "",
+      /^[a-f0-9]{40}$/u,
+      "R13 requires the actual frozen consumer SHA; no test overlay or prospective-source fallback",
+    );
+    assert(value("OUTPUT"), "R13 requires a retained external policy output directory");
+  } else if (policy.name === "R12")
+    assert(actualCandidate, "R12 requires the actual corrected frozen consumer; a test overlay is forbidden");
+  return { baseRef: value("BASE_SHA") ?? "HEAD", actualCandidate, output: value("OUTPUT") };
+}
+const mergedPolicy = mergedPolicyFor(process.env);
+const registeredPolicyEntries = [
+  "tests/sounding-line/ordinary.test.mjs",
+  "tests/sounding-line/product-experience.test.mjs",
+  "tests/sounding-line/experience-attestation.test.mjs",
+  "tests/sounding-line/capture-lifecycle.test.mjs",
+  "tests/sounding-line/browser-diagnostics.test.mjs",
+  "tests/sounding-line/experience-exception.test.mjs",
+  "tests/sounding-line/experience-paired.test.mjs",
+];
+function registeredPolicyArguments(registration, policy) {
+  assert.match(registration, /^node --test(?: tests\/sounding-line\/[\w.-]+\.mjs)+$/u);
+  const args = registration.split(/\s+/u).slice(1);
+  const entries = args.filter((arg) => arg.endsWith(".mjs"));
+  assert.equal(entries.length, 7);
+  if (policy.name === "R13")
+    assert.deepEqual(
+      entries,
+      registeredPolicyEntries,
+      "R13 must execute all seven exact canonical policy entries once",
+    );
+  return args;
+}
 const frozen = {
   head: "7241f5a8a5965d67882a0b205601eba3087ddef5",
   tree: "28e172e042953fbf8d1bac697f9ad273ce1c637b",
@@ -109,21 +156,25 @@ function ownedControlOutputs(root) {
     });
 }
 
-if (process.env[mergedFixtureFlag] || process.env[r11FixtureFlag] || process.env[r12FixtureFlag])
+if (
+  process.env[mergedFixtureFlag] ||
+  process.env[r11FixtureFlag] ||
+  process.env[r12FixtureFlag] ||
+  process.env[r13FixtureFlag]
+)
   test(
     `${mergedPolicy.name} actual merged consumer executes all registered policy without consumer qualification`,
     { timeout: 1500000 },
     async (t) => {
       const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
-      const baseSha = sourceGit(repo, ["rev-parse", policyEnv("BASE_SHA") ?? "HEAD"]);
-      const actualCandidate = policyEnv("CANDIDATE_SHA");
-      if (mergedPolicy.name === "R12")
-        assert(actualCandidate, "R12 requires the actual corrected frozen consumer; a test overlay is forbidden");
+      const configuration = mergedPolicyConfiguration(mergedPolicy, process.env);
+      const baseSha = sourceGit(repo, ["rev-parse", configuration.baseRef]);
+      const actualCandidate = configuration.actualCandidate;
       const owned = mkdtempSync(path.join(tmpdir(), `${mergedPolicy.name.toLowerCase()}-consumer-policy-`));
       assert(owned.startsWith(path.resolve(tmpdir()) + path.sep));
       const checkout = path.join(owned, "checkout");
-      assert(policyEnv("OUTPUT"), "Retained external output is required");
-      const proof = path.resolve(policyEnv("OUTPUT"));
+      assert(configuration.output, "Retained external output is required");
+      const proof = path.resolve(configuration.output);
       assert(proof !== owned && !proof.startsWith(owned + path.sep));
       assert(!existsSync(proof), "Retained evidence cannot be overwritten");
       mkdirSync(proof, { recursive: true });
@@ -218,9 +269,7 @@ if (process.env[mergedFixtureFlag] || process.env[r11FixtureFlag] || process.env
       const registration = JSON.parse(readFileSync(path.join(checkout, "package.json"), "utf8")).scripts[
         "test:sounding-line"
       ];
-      assert.match(registration, /^node --test(?: tests\/sounding-line\/[\w.-]+\.mjs)+$/u);
-      const policyArgs = registration.split(/\s+/u).slice(1);
-      assert.equal(policyArgs.filter((arg) => arg.endsWith(".mjs")).length, 7);
+      const policyArgs = registeredPolicyArguments(registration, mergedPolicy);
       const manifest = policySourceManifest(checkout, candidateSha);
       const manifestBytes = JSON.stringify(manifest, null, 2) + "\n";
       writeFileSync(path.join(proof, "runtime-test-config.manifest.json"), manifestBytes, { flag: "wx" });
@@ -234,7 +283,9 @@ if (process.env[mergedFixtureFlag] || process.env[r11FixtureFlag] || process.env
       const tuple = {
         classification: "REAL_MERGED_SOURCE_POLICY_ONLY_NOT_QUALIFICATION",
         fixtureMode: actualCandidate
-          ? "ACTUAL_FROZEN_OWNER_HEAD"
+          ? mergedPolicy.name === "R13"
+            ? "ACTUAL_FROZEN_MERGED_SOURCE_COMMIT_NOT_REMOTE_OWNER_HEAD"
+            : "ACTUAL_FROZEN_OWNER_HEAD"
           : `PROSPECTIVE_REAL_MERGE_OF_FROZEN_${mergedPolicy.record.frozenReferenceSha}_AND_${mergedPolicy.name}`,
         driverSourceHead: sourceGit(repo, ["rev-parse", "HEAD"]),
         baseSha,
@@ -312,6 +363,43 @@ if (process.env[mergedFixtureFlag] || process.env[r11FixtureFlag] || process.env
     },
   );
 
+function policyChildEnvironment(plan, ambient = process.env) {
+  // Preserve executable lookup and owned temporary/cache locations without
+  // borrowing credentials, a live lease or recursive fixture flags.
+  const operational = Object.fromEntries(
+    Object.entries(ambient).filter(([name]) =>
+      /^(?:PATH|SYSTEMROOT|WINDIR|COMSPEC|PATHEXT|TEMP|TMP|TMPDIR|NPM_CONFIG_CACHE|PLAYWRIGHT_BROWSERS_PATH|XDG_CACHE_HOME|COREPACK_HOME)$/iu.test(
+        name,
+      ),
+    ),
+  );
+  const environment = {
+    ...operational,
+    SOUNDING_LINE_PR_NUMBER: "721",
+    SOUNDING_LINE_EXCEPTION_PHASE: "qualify",
+    GITHUB_ACTIONS: "true",
+    SOUNDING_LINE_EXCEPTION_LEASE: "synthetic-policy-only-no-authority",
+    SOUNDING_LINE_EXCEPTION_ORDINARY_LEASE: "synthetic-policy-only-no-authority",
+    GITHUB_RUN_ID: "99999000001",
+    GITHUB_RUN_ATTEMPT: "1",
+    GITHUB_JOB: "final-check",
+    GITHUB_SHA: plan.baseSha,
+    GITHUB_REF: "refs/heads/main",
+    SOUNDING_LINE_BASE_SHA: plan.baseSha,
+  };
+  for (const name of [
+    fixtureFlag,
+    mergedFixtureFlag,
+    r11FixtureFlag,
+    r12FixtureFlag,
+    r13FixtureFlag,
+    "GH_TOKEN",
+    "GITHUB_TOKEN",
+  ])
+    delete environment[name];
+  return { operational, environment };
+}
+
 function executePolicySchedule({ checkout, plan, proof, policyArgs }) {
   const store = path.join(checkout, "artifacts/sounding-line/evidence-store");
   mkdirSync(store, { recursive: true });
@@ -332,31 +420,7 @@ function executePolicySchedule({ checkout, plan, proof, policyArgs }) {
     }
     assert.equal(command, process.execPath);
     assert.equal(executions.length, 0);
-    // Preserve executable lookup and owned temporary/cache locations without
-    // borrowing credentials, a live lease or recursive fixture flags.
-    const operational = Object.fromEntries(
-      Object.entries(process.env).filter(([name]) =>
-        /^(?:PATH|SYSTEMROOT|WINDIR|COMSPEC|PATHEXT|TEMP|TMP|TMPDIR|NPM_CONFIG_CACHE|PLAYWRIGHT_BROWSERS_PATH|XDG_CACHE_HOME|COREPACK_HOME)$/iu.test(
-          name,
-        ),
-      ),
-    );
-    const environment = {
-      ...operational,
-      SOUNDING_LINE_PR_NUMBER: "721",
-      SOUNDING_LINE_EXCEPTION_PHASE: "qualify",
-      GITHUB_ACTIONS: "true",
-      SOUNDING_LINE_EXCEPTION_LEASE: "synthetic-policy-only-no-authority",
-      SOUNDING_LINE_EXCEPTION_ORDINARY_LEASE: "synthetic-policy-only-no-authority",
-      GITHUB_RUN_ID: "99999000001",
-      GITHUB_RUN_ATTEMPT: "1",
-      GITHUB_JOB: "final-check",
-      GITHUB_SHA: plan.baseSha,
-      GITHUB_REF: "refs/heads/main",
-      SOUNDING_LINE_BASE_SHA: plan.baseSha,
-    };
-    for (const name of [fixtureFlag, mergedFixtureFlag, r11FixtureFlag, r12FixtureFlag, "GH_TOKEN", "GITHUB_TOKEN"])
-      delete environment[name];
+    const { operational, environment } = policyChildEnvironment(plan);
     // TAP is declaration ordered and can conceal progress in later files.
     // Retain immediate execution events independently without changing tests.
     const reporter = path.join(proof, "policy-progress-reporter.mjs");
@@ -439,6 +503,80 @@ counts: data.counts }) + "\\n");
   assert.deepEqual(readdirSync(store), []);
   return { executions, mocked };
 }
+
+test("R13 source-policy fixture requires actual frozen inputs and strips recursive authority from its policy child", () => {
+  const baseSha = "a".repeat(40);
+  const candidateSha = "b".repeat(40);
+  const input = {
+    [r13FixtureFlag]: "1",
+    SOUNDING_LINE_R13_POLICY_BASE_SHA: baseSha,
+    SOUNDING_LINE_R13_POLICY_CANDIDATE_SHA: candidateSha,
+    SOUNDING_LINE_R13_POLICY_OUTPUT: path.join(tmpdir(), "r13-policy-unit-no-output-created"),
+  };
+  const policy = mergedPolicyFor(input);
+  assert.equal(policy.name, "R13");
+  assert.equal(policy.record, CROSSDECK_R13);
+  assert.equal(policy.historical, r13HistoricalEvidencePlan);
+  assert.equal(policy.regenerated, R13_REGENERATED);
+  const registration = `node --test ${registeredPolicyEntries.join(" ")}`;
+  assert.deepEqual(registeredPolicyArguments(registration, policy), ["--test", ...registeredPolicyEntries]);
+  assert.throws(
+    () =>
+      registeredPolicyArguments(registration.replace(registeredPolicyEntries[6], registeredPolicyEntries[0]), policy),
+    /all seven exact canonical policy entries once/u,
+  );
+  assert.throws(() => registeredPolicyArguments("node scripts/sounding-line/ordinary.mjs", policy));
+  assert.deepEqual(mergedPolicyConfiguration(policy, input), {
+    baseRef: baseSha,
+    actualCandidate: candidateSha,
+    output: input.SOUNDING_LINE_R13_POLICY_OUTPUT,
+  });
+  for (const [key, invalid] of [
+    ["SOUNDING_LINE_R13_POLICY_BASE_SHA", undefined],
+    ["SOUNDING_LINE_R13_POLICY_BASE_SHA", "HEAD"],
+    ["SOUNDING_LINE_R13_POLICY_CANDIDATE_SHA", undefined],
+    ["SOUNDING_LINE_R13_POLICY_CANDIDATE_SHA", "origin/consumer"],
+    ["SOUNDING_LINE_R13_POLICY_OUTPUT", undefined],
+  ])
+    assert.throws(() => mergedPolicyConfiguration(policy, { ...input, [key]: invalid }), /R13 requires/u);
+  // Existing R12 selection and its required actual-candidate semantics remain independent.
+  const previous = mergedPolicyFor({ [r12FixtureFlag]: "1" });
+  assert.equal(previous.record, CROSSDECK_R12);
+  assert.throws(() => mergedPolicyConfiguration(previous, {}), /R12 requires the actual corrected frozen consumer/u);
+  const { operational, environment } = policyChildEnvironment(
+    { baseSha },
+    {
+      ...input,
+      [fixtureFlag]: "1",
+      [mergedFixtureFlag]: "1",
+      [r11FixtureFlag]: "1",
+      [r12FixtureFlag]: "1",
+      PATH: "synthetic-executable-lookup",
+      GH_TOKEN: "synthetic-secret-never-forward",
+      GITHUB_TOKEN: "synthetic-secret-never-forward",
+      SOUNDING_LINE_EXCEPTION_LEASE: "synthetic-live-lease-never-forward",
+      SOUNDING_LINE_EXCEPTION_ORDINARY_LEASE: "synthetic-live-lease-never-forward",
+    },
+  );
+  assert.deepEqual(operational, { PATH: "synthetic-executable-lookup" });
+  for (const key of [
+    ...Object.keys(input),
+    fixtureFlag,
+    mergedFixtureFlag,
+    r11FixtureFlag,
+    r12FixtureFlag,
+    "GH_TOKEN",
+    "GITHUB_TOKEN",
+  ])
+    assert.equal(Object.hasOwn(environment, key), false, `Policy child inherited ${key}`);
+  assert.equal(environment.SOUNDING_LINE_EXCEPTION_LEASE, "synthetic-policy-only-no-authority");
+  assert.equal(environment.SOUNDING_LINE_EXCEPTION_ORDINARY_LEASE, "synthetic-policy-only-no-authority");
+  assert.equal(environment.SOUNDING_LINE_PR_NUMBER, "721");
+  assert.equal(environment.SOUNDING_LINE_EXCEPTION_PHASE, "qualify");
+  assert.equal(environment.GITHUB_JOB, "final-check");
+  assert.equal(environment.GITHUB_SHA, baseSha);
+  assert.equal(environment.SOUNDING_LINE_BASE_SHA, baseSha);
+});
 
 if (process.env[fixtureFlag])
   test(

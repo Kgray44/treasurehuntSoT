@@ -3123,6 +3123,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r13-setup-successor-20261017/r12-consumed-local-setup.derived.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r2-authority-amendment-20261015/local-validation.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -3388,6 +3394,12 @@
     },
     {
       "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R12_Diagnosed_Continuation_20261017.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R13_Setup_Readiness_Successor_20261017.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

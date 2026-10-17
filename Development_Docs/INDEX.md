@@ -44,6 +44,7 @@ Use [document-index.json](document-index.json) for complete path-level classific
 ## Current project references
 
 - [Crossdeck R12 finite diagnosed continuation](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R12_Diagnosed_Continuation_20261017.md)
+- [Crossdeck R13 finite setup readiness successor](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R13_Setup_Readiness_Successor_20261017.md)
 - [Sounding Line capture helper lifecycle repair](Programs/Sounding_Line/Project_Sounding_Line_Capture_Lifecycle_Repair_Record.md)
 - [Sounding Line browser receipt diagnostic correction](Programs/Sounding_Line/Project_Sounding_Line_Browser_Receipt_Diagnostic_Record.md)
 - [Sounding Line replay failure observations and completed verification retention](Programs/Sounding_Line/Project_Sounding_Line_Replay_Failure_Diagnostics_20261016.md)

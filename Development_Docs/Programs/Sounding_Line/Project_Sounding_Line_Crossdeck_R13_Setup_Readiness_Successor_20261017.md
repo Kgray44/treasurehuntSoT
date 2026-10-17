@@ -1,0 +1,131 @@
+---
+title: Crossdeck R13 finite setup readiness successor
+audience: engineering
+status: prepared-awaiting-protected-installation
+canonical_for: sounding-line-crossdeck-r13-setup-readiness-successor-20261017
+last_reviewed: 2026-10-17
+---
+
+# Preserved local failure
+
+Protected #755 installed R12 at accepted main
+e85ceda26a3770dfb2b01f2afd916e45761a5d9e, tree
+12d7b85ae60250f0dcfabd53ffdee10f59d6b2d1. Installer run38991088887 and
+Mainline Decision succeeded. Existing draft #721 adopted that authority by a
+normal merge atd30efd8b92f7f3354def9e9262f222e58b040e74. The product correction
+remains the independently reviewed phase2 test blob
+68d861d7e4c819f3855cbcd3cbd8636afb1a034a; no further product or test change is
+proposed.
+
+The installed R12 original entry admitted exact candidate
+53601e9e386bb4f1062719befc77b7778b9e4430, tree
+85e9accc1d273d0f649119380d775df41e6dcf0a, source digest
+3e69c2306442758edca417fdb478f1a61e009f1cbc82d584bcad6e760257df0f.
+Its shared-Git reservation began2026-10-17T02:00:01.208Z; setup failed
+at02:00:19.045Z. One invocation and zero cases were observed. Receipt and marker
+retain FAIL / EXECUTION_UNKNOWN, zero product captures/reviews/provider calls,
+zero media, zero retries/repeats and cleanup PASS. Browser, Device Lab and replay
+were never reached. Corrected and ordinary6 were not started.
+
+The exact failure was the Prisma generate checksum HTTPS request for engine
+c2990dca591cba766e3b7ef5d9e8a84796e47ab7 on debian-openssl-3.0.x. Raw stderr
+contains an empty reason; a certificate, TLS, network or provider subcause is
+unproved. Static inspection establishes that the generator target under
+node_modules/prisma was absent, although the same verified engine existed under
+node_modules/@prisma/engines. The official uncompressed checksums match those
+binary bytes. Prior static ELF checks did not establish successful generation;
+they remain preserved observations rather than readiness acceptance.
+
+The independent preservation audit verified all2,589 source files and12 exact
+raw/local outputs, matching marker/receipt copies and unchanged tracked source.
+All six R12 remote custody slots were absent in the read-only observation
+at2026-10-17T02:03:15.787Z. This time-bounded observation performs no writes and
+does not replace fresh admission. The failure publication distinguishes raw
+outputs, author-derived observations and independent assessment. No original
+bytes, timestamps, markers or receipt outcomes are rewritten.
+
+# Authority and readiness
+
+The owner's standing completion authorization permits necessary narrow fixes,
+independent review, pushes and protected merges. The remote continuation
+delegation preserves sole cloud ownership and native holds. Later steering
+requires complete dependency setup validation in the same isolated child before
+any successor execution allowance, without governed product journeys, integrity
+bypasses or network restriction changes. This engineering record relays those
+instructions; it does not claim a new verbatim approval or native reread.
+
+R13 appends record13 and bridge6. All twelve prior records, five bridges and
+1,255 existing immutable file bindings remain literal and ordered. The campaign
+epoch and2026-10-22T23:59:59Z expiry remain fixed. R12's local original is spent;
+unused R12 corrected/ordinary grants become inaccessible. No historical grant
+is revived. The same fifteen authenticated remote predecessors remain required;
+the local setup failure is not represented as a new GitHub qualification run.
+Five remote ordinary failures remain consumed and the next ordinal stays6.
+
+The new failure publication is the current frozen ancestry reference. The
+separate reviewed product reference remains675208e7eee81d23abb71bc189afc1289d02409a,
+which binds the original ba77b2f test and its reviewed correction to68d861d.
+Historical normalization retains the original R8 product reference and exact
+cumulative infrastructure overlay. No product/configuration/contract/media
+rewrite or old qualification fallback is admitted.
+
+The protected readiness prerequisite uses fixed commands and the same sanitized
+environment as the technical child. It verifies locked dependency identities,
+official Prisma engines/checksums and both CLI/generator locations, native
+compatibility, browser availability and system libraries. It validates the
+complete isolated generic setup before a trial can be consumed. Any bounded
+browser infrastructure check opens no product journey and creates no capture.
+Readiness retains exact source/environment/dependency/command/output/cleanup
+bindings. Readiness and case reuse the sealed sanitized profile and owned
+database context, with different fixed lease, diagnostic and report control
+metadata. This does not claim identical raw process environments. Failure
+blocks the case; correction of dependency provisioning does not reset a spent
+marker or authorize broader execution. No caller-supplied command, profile,
+provider, proxy or integrity-relaxation switch is added.
+There are at most three infrastructure readiness attempts per stage, each with
+create-only markers and preserved raw outputs. None executes a product journey
+or consumes the focused case. A later failed or nonterminal attempt blocks use
+of an earlier PASS. This bounded prerequisite budget does not refund any R12 or
+remote ordinary attempt.
+
+The installed `scripts/sounding-line/experience-r13-technical-proof.mjs` entry
+accepts `check|preflight|run <owned-root> <accepted-base-sha> <exact-candidate-sha> original|corrected`.
+Check performs read-only source/history admission, preflight performs the fixed
+infrastructure procedure, and run reserves the one-case stage only after current
+readiness succeeds. No older entry or direct suite invocation supplies authority.
+
+# Qualification remains required
+
+After independent review and protected installation, use distinct R13 operator
+markers/lease/publication for one original and one corrected exact
+crossdeck.surface-handoff case. Complete readiness is required before each
+reservation. Each governed slot is spent before its setup; cancellation, setup
+failure or unknown proof consumes it. Zero retries and one repetition remain.
+Original PASS is nonreproduction. Corrected must PASS with all existing
+assertions and cleanup. Publish and independently review both complete valid
+one-case proofs before ordinary6. Keep the mandatory technical screenshot if
+reached; it is not a Product Experience capture campaign.
+
+The source-only actual C13 plus frozen-consumer fixture must run all seven
+canonical policy entries without a test overlay. Preserve full tracked/source
+working-byte inventories, obligations, commands, inert environment, TAP,
+progress, terminal results and unchanged owned outputs. Application/database/
+browser/replay/capture/live custody execution is excluded from that fixture.
+Synthetic policy tests may own loopback processes, fake phases and memory stores.
+Policy success is not product acceptance.
+
+Then adopt accepted authority into existing #721 through normal history,
+freeze exact source/base/head, perform default true-loader planning, full
+obligation inventory and current authenticated history admission. One ordinary6
+must execute all six technical suites and38 Experience contexts, all eight
+obligations, the canonical finalizer and exact R13 qualified seal. Require whole
+workflow/Mainline success and a matched-head protected merge, followed by bounded
+noncapturing landed product verification. Original review7 and authenticated
+submission3 remain accepted historical evidence. Product Experience preparation,
+capture, review, submission, verify, local replay, product repair, provider,
+rerun and refund budgets remain zero. No physical/provider/owner acceptance is
+inferred. Existing #722 and dependent spatial integration stay held until the
+landed check passes.
+
+Active automation guidance is the [R13 context](../../../.agents/crossdeck-r13-setup-successor.md).
+This adds no product capability and claims no product catalog promotion.
