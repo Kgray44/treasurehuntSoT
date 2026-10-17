@@ -57,7 +57,7 @@ test("Creator authors actual material fading, recovers a transparent object and 
   await editor.getByLabel("OPACITY keyframe 2 seconds", { exact: true }).fill("4");
   await editor.getByLabel("OPACITY keyframe 2 seconds", { exact: true }).press("Tab");
   await expect(editor).toContainText("At zero it is transparent");
-  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await saveCurrentWorkingDraft(page);
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
   const saved = (await listSpatialItems(account.id)).find(
     (item) => item.draft.content.definitionId === draft.content.definitionId,

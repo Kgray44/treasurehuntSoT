@@ -134,7 +134,7 @@ test("Creator clicks a graph title, edits a selected pose, resizes unobstructed 
   const second = await sample();
   await page.getByRole("button", { name: "Pause timeline", exact: true }).click();
   await page.screenshot({ path: `${root}/cinematic-second-take.png` });
-  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await saveCurrentWorkingDraft(page);
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
   const saved = (await listSpatialItems(account.id))[0].draft;
   expect(saved.content.studio!.animationTracks![0].interpolation).toBe("CINEMATIC");

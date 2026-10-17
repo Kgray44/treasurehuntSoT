@@ -80,7 +80,7 @@ test("Creator authors a delayed interaction, sees matching and unmatched outcome
   await simulation.getByRole("button", { name: "Reset simulation", exact: true }).click();
   await expect.poll(async () => (await receipt())[0].status).toBe("IN_VIEW");
   await page.screenshot({ path: `${root}/simulation-reset.png` });
-  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await saveCurrentWorkingDraft(page);
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
   const saved = (await listSpatialItems(account.id))[0].draft;
   expect(saved.content.studio!.behaviors[0]).toMatchObject({ trigger: "INSPECT", action: "HIDE", delayMs: 1000 });

@@ -63,7 +63,7 @@ test("Environment zones use real gizmos, retain edits and deletion, and disappea
   const receipt = async () =>
     JSON.parse((await host.getAttribute("data-room-receipt"))!) as { id: string; min: number[]; max: number[] }[];
   const save = async () => {
-    await page.getByRole("button", { name: "Save draft", exact: true }).click();
+    await saveCurrentWorkingDraft(page);
     await expect(page.getByRole("status")).toHaveText("Working draft saved");
   };
   const currentRoom = async () =>

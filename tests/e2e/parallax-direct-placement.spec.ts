@@ -129,7 +129,7 @@ test("Creator sees a receiving surface during real dragging, clamps on release, 
   await page.getByRole("button", { name: "Redo", exact: true }).click();
   await expect.poll(async () => (await selectedReceipt()).position[1]).toBeCloseTo(free.position[1], 4);
   await page.getByRole("button", { name: "Undo", exact: true }).click();
-  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await saveCurrentWorkingDraft(page);
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
   const saved = (await listSpatialItems(account.id)).find(
     (item) => item.draft.content.definitionId === draft.content.definitionId,

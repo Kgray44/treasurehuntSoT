@@ -1,4 +1,8 @@
-import { openOwnedSceneFromCurrentLibrary, closeCurrentLibrary } from "./fixtures/parallax-current-library";
+import {
+  openOwnedSceneFromCurrentLibrary,
+  closeCurrentLibrary,
+  saveCurrentWorkingDraft,
+} from "./fixtures/parallax-current-library";
 import { test, expect } from "@playwright/test";
 import { mkdir } from "node:fs/promises";
 import { db } from "../../src/lib/db";
@@ -118,7 +122,7 @@ test("Creator edits, renders, scrubs, plays and reloads real object keyframes, t
   await expect.poll(async () => (await receipt())[0].status).toBe("HIDDEN");
   await page.getByRole("button", { name: "Reset simulation", exact: true }).click();
   await expect.poll(async () => (await receipt())[0].status).not.toBe("HIDDEN");
-  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await saveCurrentWorkingDraft(page);
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
   const saved = (await listSpatialItems(account.id))[0].draft;
   expect(saved.content.studio!.animationTracks![0].keyframes[1].value).toMatchObject({ x: 1.2 });
@@ -155,7 +159,7 @@ test("Middle and Ctrl drag use the same camera pan and renderer recovery retains
   const canvas = page.getByRole("region", { name: "Spatial canvas", exact: true }),
     host = canvas.locator('[data-renderer="READY"]');
   await expect(host.locator("canvas")).toBeVisible();
-  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await saveCurrentWorkingDraft(page);
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
   const saved = (await listSpatialItems(account.id))[0].draft;
   const pan = async (button: "left" | "middle", ctrl: boolean) => {

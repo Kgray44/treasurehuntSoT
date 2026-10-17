@@ -81,7 +81,7 @@ test("Creator follows exact construction findings, corrects wall orientation and
     await editor.getByLabel(label, { exact: true }).press("Tab");
   }
   await expect(checks).toContainText("No findings within these checks");
-  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await saveCurrentWorkingDraft(page);
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
   const saved = (await listSpatialItems(account.id))[0].draft;
   expect(saved.content.studio!.environment!.features.find((feature) => feature.id === wall.id)!.yawDegrees).toBe(180);

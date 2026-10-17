@@ -35,3 +35,9 @@ export async function closeCurrentLibrary(page: Page) {
   const toggle = page.getByRole("button", { name: "Open Library", exact: true });
   if ((await toggle.getAttribute("aria-pressed")) === "true") await toggle.click();
 }
+
+/** Persist the working draft through its actual command, without creating Library membership. */
+export async function saveCurrentWorkingDraft(page: Page) {
+  await page.getByRole("heading", { name: "Parallax", exact: true }).click({ button: "right" });
+  await page.getByRole("menuitem", { name: "Save draft", exact: true }).click();
+}

@@ -72,7 +72,7 @@ test("Clicking visible room surfaces places the selected asset without opening S
   await expect.poll(async () => (await pose()).rotation).not.toEqual(table.rotation);
   await page.getByRole("button", { name: "Undo", exact: true }).first().click();
   await expect.poll(async () => (await pose()).position).toEqual(table.position);
-  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await saveCurrentWorkingDraft(page);
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
   const saved = (await listSpatialItems(account.id))[0].draft;
   expect(saved.content.studio!.surfacePreviewFrames!.some((frame) => frame.surfaceId === "table-left")).toBe(true);

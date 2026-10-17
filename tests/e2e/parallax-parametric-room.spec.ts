@@ -109,7 +109,7 @@ test("Creator adds and rebuilds actual furniture, protects a bound desk, correct
   await expect(editor).toContainText("width 1.95 m");
   await editor.getByText(/Scale reference:/).scrollIntoViewIfNeeded();
   await page.screenshot({ path: `${root}/parametric-known-measurement.png` });
-  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await saveCurrentWorkingDraft(page);
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
   const saved = (await listSpatialItems(account.id))[0].draft;
   expect(saved.content.studio!.environment!.width).toBeCloseTo(6);
@@ -133,7 +133,7 @@ test("Creator adds and rebuilds actual furniture, protects a bound desk, correct
   await page.screenshot({ path: `${root}/parametric-phone-feature.png` });
   await editor.getByLabel("Feature name", { exact: true }).fill("Window reading sofa");
   await editor.getByLabel("Feature name", { exact: true }).press("Tab");
-  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await saveCurrentWorkingDraft(page);
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
   const phoneSaved = (await listSpatialItems(account.id))[0].draft;
   await page.reload();
