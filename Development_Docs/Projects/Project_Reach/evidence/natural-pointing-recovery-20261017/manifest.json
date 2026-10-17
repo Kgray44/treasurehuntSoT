@@ -1,0 +1,199 @@
+{
+  "version": 1,
+  "role": "DEVELOPMENT_ONLY",
+  "qualification": false,
+  "implementationCommit": "86c679fedee8db0b887e68901eb8770f4078df54",
+  "protectedBase": "56b700bc2a45bee3ef2cdb5416439bae964f2233",
+  "branch": "codex/reach-natural-calibration-20261017",
+  "sourceFiles": [
+    {
+      "path": "src/reach/ReachLaboratory.tsx",
+      "sha256": "489ca371949ba48363a284b93062cdf9c266843c5f3313936d755b55d4921a1d"
+    },
+    {
+      "path": "src/reach/acquisition.test.ts",
+      "sha256": "bcd6cac70d3ea39d5b58cc0766993aec2684e3ec0df7ce2937faeb2cc3bd2c35"
+    },
+    {
+      "path": "src/reach/calibration.ts",
+      "sha256": "a8433feddbfdebff12777036ac6d2e55cc969007e002723d5435b155d3ca18f3"
+    },
+    {
+      "path": "src/reach/coordinates.ts",
+      "sha256": "882b2d22ba6e12a77b6ac4883517faa30d3b649b4682eb74e03a97eec04be842"
+    },
+    {
+      "path": "src/reach/foundation.test.ts",
+      "sha256": "b87cdf8b7be1eba46e1b7d0123b160cbecdc66fee316e88bf34dd00b17c05616"
+    },
+    {
+      "path": "src/reach/observation.ts",
+      "sha256": "9570090f14cafd69c8ed70cbe588088142234dabbd792ae0c2d9b93b9fddcbfa"
+    },
+    {
+      "path": "src/reach/pointing-geometry.test.ts",
+      "sha256": "a2484768625dbb8be2f24e16b00c73a36c7cddc4ffe44db0c678702af47aaa83"
+    },
+    {
+      "path": "src/reach/provider-recovery.test.ts",
+      "sha256": "0e317a76c4c32aee8dd51a1ab80fc6defa785acda71f1195c1de8fb1f0a476cf"
+    },
+    {
+      "path": "src/reach/readiness-recovery.test.ts",
+      "sha256": "6617d9d19650008ceeb9757f35b20f09cad6430b88d69f0e0b2c570ce531d0c0"
+    },
+    {
+      "path": "src/reach/sample-recovery.test.ts",
+      "sha256": "d414444598a28b25d4ff2ab3d8ca885d41bc68998711e762120c718efb31da4b"
+    },
+    {
+      "path": "src/reach/sample-window.ts",
+      "sha256": "2db9f6e237c4eeb506deffb4382490c8b43ba4ed515e8b63c9c495b1eb06bb4d"
+    },
+    {
+      "path": "src/watchglass/hand-geometry.ts",
+      "sha256": "a4d6dd17f311f2406b76df2aaffc19bcd85653c9f562d0bb5c34ee88039ab423"
+    },
+    {
+      "path": "src/watchglass/hand-posture.ts",
+      "sha256": "5d017e82bade6e6dff62f49046cd33ac460a69446163ec7606b5ea9b71c725e4"
+    },
+    {
+      "path": "src/watchglass/hand-provider.ts",
+      "sha256": "557967e70150db12150caefd419f7ed5f4ba9d94c02e1351e87b53df0075be2e"
+    },
+    {
+      "path": "testing/contracts.json",
+      "sha256": "6a170bfa778d3f544ce04d34b695da0ac6d1647f1251d232d22cf62e79cd0480"
+    },
+    {
+      "path": "tests/e2e/fixtures/reach/pointing-poses.ts",
+      "sha256": "d71b8279eb8fff9d13b0b1b380ebe17a2f3dc6b05e0613ed60cd53f5ee840651"
+    },
+    {
+      "path": "tests/e2e/reach-laboratory.spec.ts",
+      "sha256": "9ef72d4d95a50e8f9e2d8f0fd25ca2db8a9c232ef313fb49d0e712aad8c0128b"
+    },
+    {
+      "path": "tests/e2e/reach-recovery.spec.ts",
+      "sha256": "2ab48153a4c56a46e5bf46065841c03921ff99537d4f69ea6aee1fd937c1a1a7"
+    }
+  ],
+  "sourceWorkingTreeMatchesCommit": true,
+  "browser": {
+    "runtime": "Microsoft Edge, isolated headless contexts",
+    "passed": 12,
+    "failed": 0,
+    "skipped": 0,
+    "durationMs": 244673.11500000002
+  },
+  "unit": {
+    "passed": 93,
+    "failed": 0
+  },
+  "checks": {
+    "scopedEslint": "PASS",
+    "typescriptNoEmit": "PASS",
+    "documentation": "PASS",
+    "featureCatalog": "PASS_NO_CHANGE_REQUIRED"
+  },
+  "realWebcam": {
+    "boundary": "Hardware camera/worker/model startup and cleanup only; physical pointing accuracy not established",
+    "completedAt": "2026-10-17T19:17:03.332Z",
+    "width": 640,
+    "height": 480,
+    "frameRate": 30,
+    "pageErrors": [],
+    "assets": [
+      {
+        "path": "/reach/hand-worker.js",
+        "status": 200
+      },
+      {
+        "path": "/reach/vendor/vision_bundle.js",
+        "status": 200
+      },
+      {
+        "path": "/reach/vendor/hand_landmarker.task",
+        "status": 200
+      },
+      {
+        "path": "/reach/vendor/wasm/vision_wasm_internal.js",
+        "status": 200
+      },
+      {
+        "path": "/reach/vendor/wasm/vision_wasm_internal.wasm",
+        "status": 200
+      }
+    ],
+    "stopped": true
+  },
+  "preservedPipelinePaths": [
+    "src/sextant",
+    "src/reach/browser-runtime.ts",
+    "src/reach/ReachStage.tsx",
+    "src/reach/visualization.ts",
+    "public/reach",
+    "package-lock.json"
+  ],
+  "physicalRetest": "PENDING",
+  "protectedIntegration": "NOT_REQUESTED_OR_PERFORMED",
+  "artifacts": [
+    {
+      "path": "D0-relaxed-point.png",
+      "tier": "D0_ANALYTIC_REPLAY",
+      "sha256": "7ad578dadca557c64453194790dc96182e4f78373ddb80661069f6806ef62ec9"
+    },
+    {
+      "path": "D0-foreshortened-point.png",
+      "tier": "D0_ANALYTIC_REPLAY",
+      "sha256": "e009b54995ce0aa2e589400749a32f12447d60c85b151b2c2f1a790c956007d0"
+    },
+    {
+      "path": "D0-posture-interruption.png",
+      "tier": "D0_ANALYTIC_REPLAY",
+      "sha256": "3ed238079fbbfcd5180ebf8cb2726895fddaa1bd1046bbffd17a4c324d3d2e82"
+    },
+    {
+      "path": "D0-brief-occlusion.png",
+      "tier": "D0_ANALYTIC_REPLAY",
+      "sha256": "540c9e3525f4fc008da4ecf58140dbbe865103227149dd2690e2754980065636"
+    },
+    {
+      "path": "D0-recovered-saved-targets.png",
+      "tier": "D0_ANALYTIC_REPLAY",
+      "sha256": "12080dc2a23c7083d553ce7e3f521ad48adc6f903ef28a1214eac7a3a255d21c"
+    },
+    {
+      "path": "D0-context-invalidation.png",
+      "tier": "D0_ANALYTIC_REPLAY",
+      "sha256": "3167b0d7f7b07e25756ffba8100a66ede50099b153fca33f962869ba73b1d0a6"
+    },
+    {
+      "path": "D0-mobile-posture-interruption.png",
+      "tier": "D0_GUIDED_DEMO",
+      "sha256": "a206ba8a6ca385e2c5f5238cfa8ba94d5718f30dcad0293f2289846a81a7b02d"
+    },
+    {
+      "path": "D0-mobile-tracking-interruption.png",
+      "tier": "D0_GUIDED_DEMO",
+      "sha256": "c369b9fbe56fcf3313831f41ea959241780b48f934ef09ed858d00c5d800e5cd"
+    },
+    {
+      "path": "viewport-invalidation.png",
+      "tier": "D0_GUIDED_DEMO",
+      "sha256": "b3a7d9d0a964397b2c617b5f30421304414b23cb28040f66418e088eb9f7043a"
+    },
+    {
+      "path": "worker-independent-results-viewport.png",
+      "tier": "D1_PHOTOGRAPHIC_WORKER",
+      "sha256": "8e06738572cfd31ecca94e9e57bbb953cefcf6360c06751b516d039b3148255d"
+    },
+    {
+      "path": "worker-relative-results-viewport.png",
+      "tier": "D1_PHOTOGRAPHIC_WORKER",
+      "sha256": "944e8fcb5e2b4f5512a3c5ef7580b2c6823fcf0654a8d54f60c2715b06a620ec"
+    }
+  ],
+  "createdAt": "2026-10-17T19:26:40.268Z"
+}

@@ -18,6 +18,7 @@ last_reviewed: 2026-10-12
 
 ### Corrected
 
+- Reach's [local natural pointing/recovery correction](Development_Docs/Projects/Project_Reach/Natural_Pointing_Recovery_20261017.md) preserves the working camera/model/rendering pipeline, adds relaxed inferred-3D posture, buffers interrupted holds without crediting paused time, and keeps independent accuracy checks unchanged. Another physical trial and protected integration remain pending.
 - Reach refits hand interpretation, active-hand continuity, dropout-tolerant acquisition and the staged responsive laboratory. Relative movement has separate setup and held-out cursor checks; experimental absolute pointing retains independent raw accuracy gating. [The refit record](Development_Docs/Projects/Project_Reach/Recognition_Calibration_Experience_Refit_20261011.md) preserves rendered/software proof and remaining physical/owner gates.
 - Floating Spatial Assistant supports dragging its title and resizing from every edge and corner, with keyboard alternatives and account-scoped window preferences. The composer stays at the bottom; viewport changes keep the window reachable without editing the scene.
 

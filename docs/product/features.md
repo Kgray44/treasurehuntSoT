@@ -3,7 +3,7 @@ title: Voyagewright features
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-17
 ---
 
 # Voyagewright features
@@ -16,7 +16,7 @@ Parallax Phase 3 is software-qualified on protected main through PR #711: semant
 
 The authorized internal [Spatial Chronicle Pilot](../../Development_Docs/Projects/Spatial_Chronicle_Pilot/README.md) combines a fictional published adventure with a guided device, Spatial Studio and Reach owner session. Its source is in qualification; complete automated and physical/owner acceptance remain separate. It is gated to a task-owned synthetic environment.
 
-The [Reach laboratory](../user/hand-laboratory.md) separates detected joints, active-hand continuity, pointing posture and calibration readiness. Guided acquisition and held-out checks support separately labeled relative cursor movement and experimental absolute pointing, followed by a bounded playground. The [refit record](../../Development_Docs/Projects/Project_Reach/Recognition_Calibration_Experience_Refit_20261011.md) tracks software/rendered qualification. Physical accuracy and owner Phase 1 acceptance remain pending; selection, manipulation and handoff are outside this preview.
+The [Reach laboratory](../user/hand-laboratory.md) separates detected joints, active-hand continuity, pointing posture and calibration readiness. Guided acquisition and held-out checks support separately labeled relative cursor movement and experimental absolute pointing, followed by a bounded playground. The [refit record](../../Development_Docs/Projects/Project_Reach/Recognition_Calibration_Experience_Refit_20261011.md) tracks software/rendered qualification. A [local development correction](../../Development_Docs/Projects/Project_Reach/Natural_Pointing_Recovery_20261017.md) adds relaxed inferred-3D posture and buffered recovery for another physical trial. Physical accuracy and owner Phase 1 acceptance remain pending; selection, manipulation and handoff are outside this preview.
 
 Sextant Phase 3 field/media/nearby context, Crossdeck Phase 2 durable presentation/manual handoff and Parallax Phase 2 Spatial Studio are implemented on protected main through PRs #701, #699 and #698. Connected Crossdeck screens can receive committed-change hints and reconcile the authorized current view; transfer acceptance and recovery retain their existing rules. The [boundary correction receipt](../../Development_Docs/Engineering/Device_Lab/Sextant_Parallax_Correction_Receipt.md) tracks scoped compatibility repairs. Native camera/tracking availability is capability-dependent; software status does not close physical-device, field or owner acceptance gates.
 

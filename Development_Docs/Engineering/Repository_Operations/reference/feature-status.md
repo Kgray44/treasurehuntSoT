@@ -3,7 +3,7 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-17
 ---
 
 The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.md) is an isolated synthetic implementation in qualification. It exercises accepted platform contracts; its combined physical/owner session remains pending and it does not promote later spatial phases.
@@ -16,7 +16,7 @@ Owner-requested A1 corrections are integrated through protected PR #717 at `b078
 
 Parallax Phase 3 is software-qualified and integrated through protected PR #711 at `0327eeb7`. Semantic staging, scoped logical decisions, optional metadata calibration, discovery recovery and the refined 3D workstation passed ordinary Sounding Line and landed smoke. The [implementation record](../../../Projects/Project_Parallax/Phase_3_Implementation.md) reconciles requirements and evidence; [final refinement approval](../../../Projects/Project_Parallax/Phase_3_Workspace_Refinement.md) binds `592217e3` on 2026-10-11. Catalog FT-B111 records mainline availability. Physical accuracy, shared physical alignment and live AI-provider quality remain separate gates.
 
-Reach Phase 1's observation/calibration laboratory is an integrated foundation preview through protected PR #697; physical qualification remains pending. See the [phase record](../../../Projects/Project_Reach/Project_Reach_Phase_1_Implementation_and_Validation_Record.md); no Phase 2 action capability is claimed.
+Reach Phase 1's observation/calibration laboratory is an integrated foundation preview through protected PR #697; physical qualification remains pending. See the [phase record](../../../Projects/Project_Reach/Project_Reach_Phase_1_Implementation_and_Validation_Record.md) and the [local natural pointing/recovery development correction](../../../Projects/Project_Reach/Natural_Pointing_Recovery_20261017.md); no Phase 2 action capability is claimed.
 
 Sextant Phase 3 field/media/nearby context, Crossdeck Phase 2 durable presentation/manual handoff and Parallax Phase 2 Spatial Studio are implemented on protected main through PRs #701, #699 and #698. The [boundary correction receipt](../../Device_Lab/Sextant_Parallax_Correction_Receipt.md) tracks scoped compatibility repairs. Native camera/tracking availability is capability-dependent; software status does not close physical-device, field or owner acceptance gates. The event-transport correction preserves existing Crossdeck capability and One Voyage ownership; its [validation record](../../../Projects/Project_Crossdeck/Realtime_Transport_20261011.md) records integration separately.
 

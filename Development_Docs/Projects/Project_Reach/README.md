@@ -3,7 +3,7 @@ title: Project Reach engineering home
 audience: product-engineering
 status: integrated-foundation-preview
 canonical_for: project-reach-engineering-home
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-17
 ---
 
 # Project Reach engineering home
@@ -11,6 +11,8 @@ last_reviewed: 2026-10-11
 Reach is Voyagewright's reusable browser-first spatial interaction and intent system. Phase 1's browser hand laboratory, observation/coordinate foundation and independent calibration workflow are integrated as a foundation preview through [PR #697](https://github.com/Kgray44/treasurehuntSoT/pull/697), main commit `7284b0dfaa31037d074d27df0f27b968f3977000`, after the [required Mainline Decision](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38113725340) passed. Landed source/asset verification passed. Physical webcam and held-out calibration, accuracy, jitter, exposure-to-visible latency, ergonomics and owner acceptance remain open; full Phase 1 is not accepted. See the [implementation and validation record](Project_Reach_Phase_1_Implementation_and_Validation_Record.md). Later-phase target acquisition, selection, manipulation and owner integrations are not implemented by this phase.
 
 ## Effective governing sources
+
+The [natural pointing and recovery development preview](Natural_Pointing_Recovery_20261017.md) responds to the owner's physical feedback with buffered holds, relaxed inferred-3D posture and bounded reacquisition. It awaits a new physical trial and is not protected integration or full qualification.
 
 The [recognition, calibration and experience refit](Recognition_Calibration_Experience_Refit_20261011.md) revises interpretation and the laboratory: detected hands remain distinct from posture/eligibility, an active hand can coexist with an incidental hand, stable acquisition survives brief interruptions, and relative movement has a separate setup and independent cursor check. Its record tracks qualification, rendered review and the remaining owner/physical walkthrough. The older Phase 1 record describes its original frozen protocol.
 
