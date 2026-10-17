@@ -830,7 +830,14 @@ export function ReachLaboratory({
             )}
           </div>
         )}
-        <div ref={plane} tabIndex={-1} className={styles.plane} hidden={!showPlane} aria-label="Pointing practice area">
+        <div
+          ref={plane}
+          role="group"
+          tabIndex={-1}
+          className={styles.plane}
+          hidden={!showPlane}
+          aria-label="Pointing practice area"
+        >
           <div className={styles.planeHeader}>
             <span>
               {step === "PLAYGROUND"
@@ -895,7 +902,7 @@ export function ReachLaboratory({
                   : `${paused ? "Paused" : readiness.eligible ? progress : readiness.guidance} · ${Math.round((acquisition?.progress ?? 0) * 100)}%`}
           </div>
         </div>
-        <aside className={styles.guide} aria-label="Reach guidance">
+        <section className={styles.guide} aria-label="Reach guidance">
           <p className={styles.eyebrow}>
             {training
               ? `${step === "TRAINING" ? "CALIBRATION" : "INDEPENDENT CHECK"} / ${completed + 1} OF ${total}`
@@ -1271,7 +1278,7 @@ export function ReachLaboratory({
               </ul>
             </div>
           </details>
-        </aside>
+        </section>
       </div>
       {source === "DEMO" && (
         <details className={styles.demoControls} open>

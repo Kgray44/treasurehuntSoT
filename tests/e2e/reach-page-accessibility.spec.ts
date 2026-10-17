@@ -276,6 +276,9 @@ for (const viewport of viewports) {
           "Choose a Voyage or enter the code from your other screen.",
         );
         await expect(page.getByRole("link", { name: "Sign in to connect", exact: true })).toHaveCount(0);
+        await expect(
+          page.getByRole("button", { name: "Reach accessibility synthetic navigator", exact: true }),
+        ).toBeVisible();
         await auditWholePage(page, info, "PAIR_SIGNED_IN_EMPTY");
       } finally {
         try {
