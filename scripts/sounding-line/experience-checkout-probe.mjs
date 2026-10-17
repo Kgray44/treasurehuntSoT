@@ -13,6 +13,7 @@ import {
   CROSSDECK_R9,
   CROSSDECK_R10,
   CROSSDECK_R11,
+  CROSSDECK_R12,
 } from "./experience-exception.mjs";
 
 export function checkoutProbe({ root, baseSha, candidateSha, environment = process.env }) {
@@ -41,21 +42,23 @@ export function checkoutProbe({ root, baseSha, candidateSha, environment = proce
     )
   )
     fail();
-  const expected = records.some((r) => r.id === CROSSDECK_R11.id)
-    ? CROSSDECK_R11
-    : records.some((r) => r.id === CROSSDECK_R10.id)
-      ? CROSSDECK_R10
-      : records.some((r) => r.id === CROSSDECK_R9.id)
-        ? CROSSDECK_R9
-        : records.some((r) => r.id === CROSSDECK_R8.id)
-          ? CROSSDECK_R8
-          : records.some((r) => r.id === CROSSDECK_R7.id)
-            ? CROSSDECK_R7
-            : records.some((r) => r.id === CROSSDECK_R6.id)
-              ? CROSSDECK_R6
-              : records.some((r) => r.id === CROSSDECK_R5.id)
-                ? CROSSDECK_R5
-                : CROSSDECK_R4;
+  const expected = records.some((r) => r.id === CROSSDECK_R12.id)
+    ? CROSSDECK_R12
+    : records.some((r) => r.id === CROSSDECK_R11.id)
+      ? CROSSDECK_R11
+      : records.some((r) => r.id === CROSSDECK_R10.id)
+        ? CROSSDECK_R10
+        : records.some((r) => r.id === CROSSDECK_R9.id)
+          ? CROSSDECK_R9
+          : records.some((r) => r.id === CROSSDECK_R8.id)
+            ? CROSSDECK_R8
+            : records.some((r) => r.id === CROSSDECK_R7.id)
+              ? CROSSDECK_R7
+              : records.some((r) => r.id === CROSSDECK_R6.id)
+                ? CROSSDECK_R6
+                : records.some((r) => r.id === CROSSDECK_R5.id)
+                  ? CROSSDECK_R5
+                  : CROSSDECK_R4;
   const record = records.find((r) => r.id === expected.id);
   if (!record || record.frozenReferenceSha !== expected.frozenReferenceSha) fail();
   git("merge-base", "--is-ancestor", record.predecessor.candidateSha, record.frozenReferenceSha);

@@ -30,7 +30,14 @@ import {
 import { verificationObligationGroups } from "../../scripts/sounding-line/ordinary.mjs";
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
-const registry = JSON.parse(readFileSync(path.join(repo, "testing/product-experience-exceptions.json"), "utf8"));
+const installedRegistry = JSON.parse(
+  readFileSync(path.join(repo, "testing/product-experience-exceptions.json"), "utf8"),
+);
+const registry = {
+  ...installedRegistry,
+  exceptions: installedRegistry.exceptions.slice(0, 11),
+  reconciliations: installedRegistry.reconciliations.slice(0, 4),
+};
 const record = registry.exceptions.find((entry) => entry.id === CROSSDECK_R11.id);
 const snapshot = JSON.parse(
   readFileSync(
