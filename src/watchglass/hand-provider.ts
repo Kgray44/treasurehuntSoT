@@ -12,7 +12,109 @@ export const handModel = {
 } as const;
 type Landmark = { x: number; y: number; z: number };
 export type HandResult = { landmarks: Landmark[][]; handedness: { categoryName: string; score: number }[][] };
-type Track = { id: number; center: { x: number; y: number }; at: number; scale: number | null };
+type PalmCenter = { x: number; y: number };
+type PalmCapture = { center: PalmCenter; at: number; scale: number };
+type Track = { id: number; center: PalmCenter; at: number; scale: number | null; recent: PalmCapture[] };
+type ObservedHand = HandObservation["hands"][number];
+const palmIndices = [0, 5, 9, 17] as const;
+const handBones = [
+  [0, 1],
+  [1, 2],
+  [2, 3],
+  [3, 4],
+  [0, 5],
+  [5, 6],
+  [6, 7],
+  [7, 8],
+  [0, 9],
+  [9, 10],
+  [10, 11],
+  [11, 12],
+  [0, 13],
+  [13, 14],
+  [14, 15],
+  [15, 16],
+  [0, 17],
+  [17, 18],
+  [18, 19],
+  [19, 20],
+] as const;
+const palmCenter = (hand: ObservedHand) => {
+  const visible = palmIndices.map((i) => hand.landmarks[i]).filter((p) => p.valid);
+  return {
+    x: visible.reduce((sum, p) => sum + p.x, 0) / visible.length,
+    y: visible.reduce((sum, p) => sum + p.y, 0) / visible.length,
+  };
+};
+/** Suppress only near-identical visible hypotheses, never infer identity from handedness. */
+function duplicateHypotheses(a: ObservedHand, b: ObservedHand, aspect: number) {
+  // These scores describe handedness classification, not presence, tracking,
+  // posture, or confidence that two physical hands are the same hand.
+  if (
+    a.handedness === "UNKNOWN" ||
+    a.handedness !== b.handedness ||
+    a.handednessConfidence === null ||
+    b.handednessConfidence === null ||
+    a.handednessConfidence < 0.8 ||
+    b.handednessConfidence < 0.8 ||
+    a.landmarks.some((p, i) => p.valid !== b.landmarks[i].valid) ||
+    ![5, 6, 7, 8, 9, 17].every((i) => a.landmarks[i].valid)
+  )
+    return false;
+  const visible = a.landmarks.flatMap((p, i) => (p.valid ? [i] : []));
+  if (visible.length < 15) return false;
+  const points = [a, b].map((hand) =>
+    hand.landmarks.map((p) => ({ x: p.x, y: p.y * aspect, z: p.z - hand.landmarks[5].z })),
+  );
+  const spans = points.map((hand) => Math.hypot(hand[5].x - hand[17].x, hand[5].y - hand[17].y));
+  const span = (spans[0] + spans[1]) / 2;
+  if (Math.min(...spans) < 0.025 || Math.abs(spans[0] - spans[1]) / span > 0.05) return false;
+  const centers = [palmCenter(a), palmCenter(b)];
+  if (Math.hypot(centers[0].x - centers[1].x, (centers[0].y - centers[1].y) * aspect) / span > 0.06) return false;
+  const xyErrors = visible.map(
+    (i) => Math.hypot(points[0][i].x - points[1][i].x, points[0][i].y - points[1][i].y) / span,
+  );
+  const zErrors = visible.map((i) => Math.abs(points[0][i].z - points[1][i].z) / span);
+  const rms = (values: number[]) => Math.sqrt(values.reduce((sum, value) => sum + value * value, 0) / values.length);
+  if (Math.max(...xyErrors) > 0.08 || rms(xyErrors) > 0.04 || Math.max(...zErrors) > 0.12 || rms(zErrors) > 0.06)
+    return false;
+  const visibleBones = handBones.filter(([base, tip]) => a.landmarks[base].valid && a.landmarks[tip].valid);
+  if (visibleBones.length < 10) return false;
+  return visibleBones.every(([base, tip]) => {
+    const vectors = points.map((hand) => ({
+      x: hand[tip].x - hand[base].x,
+      y: hand[tip].y - hand[base].y,
+      z: hand[tip].z - hand[base].z,
+    }));
+    const lengths = vectors.map((v) => Math.hypot(v.x, v.y, v.z));
+    return (
+      Math.hypot(vectors[0].x - vectors[1].x, vectors[0].y - vectors[1].y, vectors[0].z - vectors[1].z) / span <=
+        0.05 && Math.abs(lengths[0] - lengths[1]) / Math.max(span * 0.1, ...lengths) <= 0.1
+    );
+  });
+}
+function preferredHypothesis(a: ObservedHand, b: ObservedHand, prior?: Track) {
+  if (prior) {
+    const centers = [palmCenter(a), palmCenter(b)];
+    const distances = centers.map((center) => Math.hypot(center.x - prior.center.x, center.y - prior.center.y));
+    if (Math.abs(distances[0] - distances[1]) > 1e-9) return distances[0] < distances[1] ? 0 : 1;
+  }
+  // Keep ties independent of provider array order or fabricated probabilities.
+  for (let i = 0; i < 21; i++)
+    if (a.landmarks[i].valid)
+      for (const axis of ["x", "y", "z"] as const) {
+        const difference = a.landmarks[i][axis] - b.landmarks[i][axis];
+        if (difference !== 0) return difference < 0 ? 0 : 1;
+      }
+  return 0;
+}
+const motionContinuity = {
+  maximumGapMs: 200,
+  maximumSpeed: 4,
+  maximumStep: 0.24,
+  maximumPredictionError: 0.07,
+  maximumScaleRatio: 1.2,
+} as const;
 /** A bounded recovery opportunity, never evidence of identity while a hand is absent. */
 export const HAND_CONTINUITY_GRACE_MS = 1200;
 /** Local spatial continuity only. Crossings and long gaps create a new generation, never biometric identity. */
@@ -32,6 +134,7 @@ export class BrowserHandAdapter {
     if (!Number.isFinite(capture) || !Number.isFinite(inference) || capture <= this.capture || inference < capture)
       throw new Error("HAND_PROVIDER_CLOCK_INVALID");
     this.capture = capture;
+    const eligibleTracks = this.tracks.filter((t) => capture - t.at <= HAND_CONTINUITY_GRACE_MS);
     const hands = result.landmarks.slice(0, 2).map((points, i) => {
       const landmarks = Array.from({ length: 21 }, (_, j) => {
         const p = points[j];
@@ -60,12 +163,19 @@ export class BrowserHandAdapter {
         uncertainty: null,
       };
     });
+    // Known separate tracks remain unresolved overlap. Otherwise only stringent
+    // observed-pose agreement can suppress a duplicated model hypothesis.
+    if (hands.length === 2 && eligibleTracks.length <= 1 && duplicateHypotheses(hands[0], hands[1], height / width)) {
+      const preferred = preferredHypothesis(hands[0], hands[1], eligibleTracks[0]);
+      hands.splice(preferred === 0 ? 1 : 0, 1);
+    }
     const centers = hands.map((h) => {
       const palm = [0, 5, 9, 17].map((i) => h.landmarks[i]).filter((p) => p.valid);
       return palm.length >= 3
         ? { x: palm.reduce((s, p) => s + p.x, 0) / palm.length, y: palm.reduce((s, p) => s + p.y, 0) / palm.length }
         : null;
     });
+    const reliablePalm = hands.map((h) => [0, 5, 9, 17].every((i) => h.landmarks[i].valid));
     // Track association uses palm evidence only. An uncertain index tip or a
     // temporarily ineligible point must not manufacture a different identity.
     const scales = hands.map((h) =>
@@ -76,7 +186,6 @@ export class BrowserHandAdapter {
     // Keep the last observed location briefly through an occlusion. The record's
     // timestamp is not refreshed until a hand passes the existing spatial match;
     // ambiguity, a jump, or expiry still produces a fresh local generation.
-    const eligibleTracks = this.tracks.filter((t) => capture - t.at <= HAND_CONTINUITY_GRACE_MS);
     const costs = centers.map((center, i) =>
       eligibleTracks.map((t) =>
         center
@@ -85,13 +194,55 @@ export class BrowserHandAdapter {
           : Infinity,
       ),
     );
+    // Recent coherent motion can cross the static association radius between
+    // frames. Extrapolation is deliberately short, capped, and available only
+    // from two fully observed palms; it is not identity evidence after loss.
+    const predictedCosts = centers.map((center, i) =>
+      eligibleTracks.map((track) => {
+        if (!center || !reliablePalm[i] || track.recent.length !== 2) return Infinity;
+        const [previous, last] = track.recent;
+        const historyMs = last.at - previous.at,
+          gapMs = capture - last.at;
+        // An extrapolated position cannot compensate for a sudden anatomical
+        // scale change. Require coherent observed palm spans across the whole
+        // short history; ordinary spatial matching remains unchanged.
+        const spans = [previous.scale, last.scale, scales[i]!];
+        const step = Math.hypot(center.x - track.center.x, center.y - track.center.y);
+        if (
+          historyMs <= 0 ||
+          historyMs > motionContinuity.maximumGapMs ||
+          gapMs <= 0 ||
+          gapMs > motionContinuity.maximumGapMs ||
+          step > motionContinuity.maximumStep ||
+          Math.min(...spans) < 0.025 ||
+          Math.max(...spans) / Math.min(...spans) > motionContinuity.maximumScaleRatio
+        )
+          return Infinity;
+        const vx = ((last.center.x - previous.center.x) * 1000) / historyMs,
+          vy = ((last.center.y - previous.center.y) * 1000) / historyMs;
+        const speed = Math.hypot(vx, vy);
+        const cap = speed > motionContinuity.maximumSpeed ? motionContinuity.maximumSpeed / speed : 1;
+        const predictionError = Math.hypot(
+          center.x - (last.center.x + (vx * cap * gapMs) / 1000),
+          center.y - (last.center.y + (vy * cap * gapMs) / 1000),
+        );
+        if (predictionError > motionContinuity.maximumPredictionError) return Infinity;
+        return (
+          predictionError + (scales[i] !== null && track.scale !== null ? Math.abs(scales[i]! - track.scale) * 0.25 : 0)
+        );
+      }),
+    );
     const crossing =
       centers.length === 2 &&
       centers[0] &&
       centers[1] &&
       Math.hypot(centers[0].x - centers[1].x, centers[0].y - centers[1].y) < 0.09;
-    const assignments = costs.map((row) => {
-      const ranked = row.map((cost, index) => ({ cost, index })).sort((a, b) => a.cost - b.cost);
+    const assignments = costs.map((row, i) => {
+      let ranked = row.map((cost, index) => ({ cost, index })).sort((a, b) => a.cost - b.cost);
+      // Preserve ordinary spatial association and its existing ambiguity gate.
+      // Prediction extends an unmatched trajectory; it cannot break a raw tie.
+      if (!ranked.length || ranked[0].cost > 0.14)
+        ranked = predictedCosts[i].map((cost, index) => ({ cost, index })).sort((a, b) => a.cost - b.cost);
       if (!ranked.length || ranked[0].cost > 0.14) return -1;
       if (ranked[1] && ranked[1].cost - ranked[0].cost < 0.035) return -2;
       return ranked[0].index;
@@ -117,13 +268,24 @@ export class BrowserHandAdapter {
           center: centers[i]!,
           at: capture,
           scale: scales[i] ?? prior?.scale ?? null,
+          recent: reliablePalm[i]
+            ? [
+                ...(prior?.recent.filter((sample) => capture - sample.at <= motionContinuity.maximumGapMs) ?? []),
+                { center: centers[i]!, at: capture, scale: scales[i]! },
+              ].slice(-2)
+            : [],
         });
     });
     // A different visible hand does not prove that an occluded hand vanished.
     // Actual crossing/assignment ambiguity still retires unmatched records.
     this.tracks = associationAmbiguous
       ? next
-      : [...next, ...eligibleTracks.filter((track) => !next.some((matched) => matched.id === track.id))];
+      : [
+          ...next,
+          ...eligibleTracks
+            .filter((track) => !next.some((matched) => matched.id === track.id))
+            .map((track) => ({ ...track, recent: [] })),
+        ];
     const rawTracked = hands.some((h) => assessHand(h, { frameWidth: width, frameHeight: height }).validCount >= 16);
     return {
       observationVersion: 1,

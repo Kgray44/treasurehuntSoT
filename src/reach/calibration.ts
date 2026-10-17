@@ -58,6 +58,19 @@ export const sampleEvidencePolicy = {
   minimumEvidenceMs: 600,
   minimumSamples: 15,
 } as const;
+export type CalibrationValidationSummary = {
+  reason: "ACCURACY_REQUIREMENT_MET" | "HELD_OUT_ERROR_EXCEEDS_LIMIT";
+  p95DiagonalFraction: number;
+  p95LimitDiagonalFraction: number;
+  maximumErrorDiagonalFraction: number;
+  /** Jitter and maximum error are diagnostics, not additional pass/fail gates. */
+  jitterP95DiagonalFraction: number;
+  jitterLimitDiagonalFraction: null;
+  maximumErrorLimitDiagonalFraction: null;
+  targetCount: number;
+  sampleCount: number;
+  worstTarget: { target: Point; p95DiagonalFraction: number };
+};
 export type Calibration = {
   version: 1;
   id: string;
@@ -73,6 +86,7 @@ export type Calibration = {
   validationErrors: number[];
   validationEdgeErrors: number[];
   validationP95: number | null;
+  validationSummary?: CalibrationValidationSummary;
   status: "VALIDATION_REQUIRED" | "FAILED" | "VALIDATED";
   uncertaintyRadius: number | null;
   supportedRegion: { min: number; max: number };
@@ -341,13 +355,37 @@ export function validateCalibration(c: Calibration, groups: CalibrationSample[][
       }),
     );
   const p95 = percentile(errors, 0.95)!;
+  const jitterP95 = sampleJitter(c, groups);
+  const p95Limit = 0.03;
+  const passed = p95 <= p95Limit;
+  const targetErrors = groups.map((group) => ({
+    target: { ...group[0].target },
+    p95DiagonalFraction: percentile(
+      group.map((sample) => diagonalError(c, predict(c, sample.features), sample.target)),
+      0.95,
+    )!,
+  }));
   return {
     ...c,
     validationErrors: errors,
     validationEdgeErrors: edgeErrors,
     validationP95: p95,
-    validationJitterP95: sampleJitter(c, groups),
-    status: p95 <= 0.03 ? "VALIDATED" : "FAILED",
+    validationJitterP95: jitterP95,
+    validationSummary: {
+      reason: passed ? "ACCURACY_REQUIREMENT_MET" : "HELD_OUT_ERROR_EXCEEDS_LIMIT",
+      p95DiagonalFraction: p95,
+      p95LimitDiagonalFraction: p95Limit,
+      maximumErrorDiagonalFraction: Math.max(...errors),
+      jitterP95DiagonalFraction: jitterP95,
+      jitterLimitDiagonalFraction: null,
+      maximumErrorLimitDiagonalFraction: null,
+      targetCount: groups.length,
+      sampleCount: errors.length,
+      worstTarget: targetErrors.reduce((worst, target) =>
+        target.p95DiagonalFraction > worst.p95DiagonalFraction ? target : worst,
+      ),
+    },
+    status: passed ? "VALIDATED" : "FAILED",
     // Empirical held-out radius in CSS pixels; this is not a model confidence interval.
     uncertaintyRadius: p95 * Math.hypot(c.binding.viewportWidth, c.binding.viewportHeight),
   };

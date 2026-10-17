@@ -23,13 +23,48 @@ export function handGeometry(hand: Hand, frame?: GeometryFrame) {
   if (!Number.isFinite(aspect) || aspect <= 0) throw new Error("HAND_GEOMETRY_FRAME_INVALID");
   const points = hand.landmarks.map((p) => ({ ...p, y: p.y * aspect }));
   const across = subtract(points[17], points[5]);
-  const forward = subtract(points[9], points[0]);
-  const normal = cross(across, forward);
   const scale = vectorLength(across);
+  const middle = subtract(points[9], points[5]);
+  const along = dot(middle, across) / Math.max(1e-9, scale * scale);
+  const arch = {
+    x: middle.x - across.x * along,
+    y: middle.y - across.y * along,
+    z: middle.z - across.z * along,
+  };
+  const archRatio = vectorLength(arch) / Math.max(1e-9, scale);
+  // A missing wrist must never become an invented origin. A visibly curved
+  // knuckle row can supply palm orientation. Otherwise the observed index and
+  // palm span can support finger relationships without claiming a palm normal.
+  const knuckleSupport =
+    [5, 9, 17].every((index) => points[index].valid) &&
+    along >= 0.15 &&
+    along <= 0.85 &&
+    archRatio >= 0.08 &&
+    archRatio <= 0.5;
+  const indexProximal = subtract(points[6], points[5]);
+  const indexPlane = vectorLength(cross(across, indexProximal)) / Math.max(1e-9, scale * vectorLength(indexProximal));
+  const fingerSupport =
+    [5, 6, 7, 8, 17].every((index) => points[index].valid) &&
+    vectorLength(indexProximal) >= scale * 0.1 &&
+    vectorLength(indexProximal) <= scale * 1.5 &&
+    indexPlane >= 0.15;
+  const palmBasis = points[0].valid
+    ? ("WRIST" as const)
+    : knuckleSupport
+      ? ("KNUCKLE_ARCH" as const)
+      : fingerSupport
+        ? ("FINGER_RELATIONS" as const)
+        : ("UNAVAILABLE" as const);
+  const forward =
+    palmBasis === "WRIST" ? subtract(points[9], points[0]) : palmBasis === "KNUCKLE_ARCH" ? arch : indexProximal;
+  const normal = cross(across, forward);
   const palmLength = vectorLength(forward);
   const projectedPalm = Math.max(Math.hypot(across.x, across.y), Math.hypot(forward.x, forward.y));
   const palmArea = vectorLength(normal) / Math.max(1e-9, scale * palmLength);
-  const palmFacing = Math.abs(normal.z) / Math.max(1e-9, vectorLength(normal));
+  const palmFacing =
+    palmBasis === "WRIST" || palmBasis === "KNUCKLE_ARCH"
+      ? Math.abs(normal.z) / Math.max(1e-9, vectorLength(normal))
+      : null;
   function finger(base: number) {
     const ids = [base, base + 1, base + 2, base + 3];
     if (ids.some((i) => !points[i]?.valid)) return null;
@@ -52,5 +87,5 @@ export function handGeometry(hand: Hand, frame?: GeometryFrame) {
       dipAlignment: cosine(middle, distal),
     };
   }
-  return { points, aspect, scale, forward, palmLength, projectedPalm, palmArea, palmFacing, finger };
+  return { points, aspect, scale, forward, palmLength, projectedPalm, palmArea, palmFacing, palmBasis, finger };
 }

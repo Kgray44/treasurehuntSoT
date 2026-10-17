@@ -303,6 +303,32 @@
   font-weight: 600;
   color: #e8f7ee;
 }
+.pointerNotice {
+  position: absolute;
+  z-index: 4;
+  bottom: 3.5rem;
+  left: 1rem;
+  right: 1rem;
+  padding: 0.6rem 0.8rem;
+  margin: 0;
+  color: var(--reach-ink);
+  background: #172923ed;
+  border: 1px solid var(--reach-line);
+  border-radius: 8px;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  pointer-events: none;
+}
+.validationExplanation {
+  border-left: 2px solid var(--reach-gold);
+  padding: 0.7rem 0.9rem;
+  background: #1b302b;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+.validationExplanation p:last-child {
+  margin-bottom: 0;
+}
 .guide .sessionMessage {
   font-size: 0.78rem;
   color: var(--reach-gold);

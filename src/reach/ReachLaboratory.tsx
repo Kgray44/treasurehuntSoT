@@ -21,6 +21,7 @@ import { PointFilter, pointingFeatures, type Point } from "./coordinates";
 import { aggregateCalibrationExport } from "./privacy";
 import { ActiveHandSelector, type HandObservation, type ReachReadiness } from "./observation";
 import { SampleWindow, type Acquisition } from "./sample-window";
+import { PointerContinuity, outsideCalibratedRange } from "./pointer-continuity";
 import { syntheticObservation } from "./synthetic";
 import { ReachStage } from "./ReachStage";
 import { ReachTiming, type ReachVisualFrame } from "./visualization";
@@ -64,6 +65,10 @@ const cameraMessages: Record<string, string> = {
   STALE_OR_INVALID_OBSERVATION: "Waiting for fresh tracking",
 };
 const percent = (value: number | undefined | null) => (value == null ? "Not measured" : `${(value * 100).toFixed(2)}%`);
+const checkedError = (value: number | undefined | null, limit = 0.03) =>
+  value != null && value > limit && percent(value) === percent(limit)
+    ? `${percent(value)} (rounded; just above the limit)`
+    : percent(value);
 const emptyFrame = (): ReachVisualFrame => ({
   observation: null,
   activeTrack: null,
@@ -92,6 +97,7 @@ export function ReachLaboratory({
     runtime = useRef<ReachBrowserRuntime | null>(null);
   const selector = useRef(new ActiveHandSelector()),
     filter = useRef(new PointFilter()),
+    pointerContinuity = useRef(new PointerContinuity()),
     visual = useRef<ReachVisualFrame>(emptyFrame()),
     timing = useRef(new ReachTiming());
   const epoch = useRef(1),
@@ -122,6 +128,7 @@ export function ReachLaboratory({
     [demoHolding, setDemoHolding] = useState(false),
     [paused, setPaused] = useState(false);
   const [message, setMessage] = useState("A little movement. A new way to explore."),
+    [pointerMessage, setPointerMessage] = useState(""),
     [overlay, setOverlay] = useState(false),
     [exportConsent, setExportConsent] = useState(false);
   const [point, setPoint] = useState<Point>({ x: 0.5, y: 0.5 }),
@@ -153,6 +160,14 @@ export function ReachLaboratory({
       setLogEntries((entries) => [...entries.slice(-49), { at: Math.round(performance.now()), reason }]),
     [],
   );
+  const retainPointer = useCallback((now: number, reason: string, allow = true) => {
+    const c = calibrationRef.current;
+    const lastSeen = allow && c ? pointerContinuity.current.hold(now, JSON.stringify(c.binding)) : null;
+    if (!allow) pointerContinuity.current.reset();
+    visual.current.lastSeen = lastSeen;
+    if (trial.current?.stage === "VALIDATION" || stepRef.current === "PLAYGROUND")
+      setPointerMessage(lastSeen ? `${reason} Last seen pointer.` : reason);
+  }, []);
   const invalidate = useCallback(
     (reason?: string) => {
       trial.current = null;
@@ -162,6 +177,9 @@ export function ReachLaboratory({
       setAcquisition(null);
       setPaused(false);
       filter.current.reset();
+      pointerContinuity.current.reset();
+      setPointerMessage("");
+      visual.current.lastSeen = null;
       visual.current.raw = null;
       visual.current.filtered = null;
       visual.current.uncertainty = null;
@@ -238,7 +256,11 @@ export function ReachLaboratory({
       if (!ready.eligible || !ready.hand) {
         visual.current.raw = null;
         visual.current.filtered = null;
-        filter.current.reset();
+        retainPointer(
+          now,
+          `${ready.guidance} Collection paused.`,
+          !["AMBIGUOUS", "CHOOSE_HAND"].includes(ready.condition),
+        );
         if (t?.window && !t.paused) {
           const progress = t.window.pause(now);
           if (now - lastUI.current < 10) setAcquisition(progress);
@@ -256,6 +278,9 @@ export function ReachLaboratory({
       try {
         features = pointingFeatures(ready.hand, o);
       } catch {
+        visual.current.raw = null;
+        visual.current.filtered = null;
+        retainPointer(now, "Index geometry is uncertain. Collection paused.");
         if (t?.window && !t.paused) setAcquisition(t.window.pause(o.monotonicCaptureTime));
         return;
       }
@@ -291,7 +316,7 @@ export function ReachLaboratory({
                   ? "Setup collected. Now check five new targets independently."
                   : fitted.status === "VALIDATED"
                     ? "Your independent check passed for this session."
-                    : "The independent check needs improvement. Your hand is still tracked.",
+                    : `All five check targets were recorded. The 95th-percentile error ${checkedError(fitted.validationP95)} exceeded the ${percent(fitted.validationSummary?.p95LimitDiagonalFraction ?? 0.03)} accuracy limit. Your setup is kept.`,
               );
               log(t.stage === "TRAINING" ? "FIT_COMPLETE" : `VALIDATION_${fitted.status}`);
             } else {
@@ -329,6 +354,24 @@ export function ReachLaboratory({
         : null;
       visual.current.raw = estimate;
       visual.current.filtered = estimate ? filter.current.update(estimate, o.monotonicCaptureTime) : null;
+      if (visual.current.filtered) {
+        // A display spike hold is not a new accepted position. Its memory must
+        // expire from the accepted estimate's clock rather than each bad input.
+        pointerContinuity.current.observe(
+          visual.current.filtered,
+          filter.current.acceptedCaptureTime!,
+          JSON.stringify(binding),
+        );
+        visual.current.lastSeen = null;
+        setPointerMessage("");
+      } else if (current && (isValidation || stepRef.current === "PLAYGROUND")) {
+        retainPointer(
+          now,
+          outsideCalibratedRange(current, features)
+            ? "Point recognized · outside this setup’s tested range. Move back toward your calibrated area."
+            : "Pointer estimate unavailable. Your hand is still tracked.",
+        );
+      }
       visual.current.uncertainty = isValidation ? null : (current?.uncertaintyRadius ?? null);
       visual.current.previewEstimate = !!isValidation;
     };
@@ -416,6 +459,7 @@ export function ReachLaboratory({
       if (o && now - o.monotonicCaptureTime > 150) {
         visual.current.raw = null;
         visual.current.filtered = null;
+        retainPointer(now, "Waiting for fresh tracking. Collection paused.");
         readyRef.current = { ...readyRef.current, eligible: false };
         setReadiness((previous) => ({
           ...previous,
@@ -435,7 +479,7 @@ export function ReachLaboratory({
       clearInterval(freshness);
       clearInterval(diagnostics);
     };
-  }, [source, invalidate, log]);
+  }, [source, invalidate, log, retainPointer]);
   useEffect(() => {
     demoPoint.current = point;
   }, [point]);
@@ -562,6 +606,9 @@ export function ReachLaboratory({
     setDemoHolding(false);
     setAcquisition(null);
     filter.current.reset();
+    pointerContinuity.current.reset();
+    visual.current.lastSeen = null;
+    setPointerMessage("");
     advance(stage);
     setMessage(
       stage === "VALIDATION"
@@ -765,7 +812,7 @@ export function ReachLaboratory({
             </strong>
             <span>
               {readiness.hand
-                ? `${readiness.hand.handedness === "UNKNOWN" ? "Active" : readiness.hand.handedness === "LEFT" ? "Left" : "Right"} hand · ${assessment?.landmarkQuality === "TRACKED" ? "joints tracked" : "some joints hidden"}`
+                ? `${readiness.hand.handedness === "UNKNOWN" ? "Active" : readiness.hand.handedness === "LEFT" ? "Left" : "Right"} hand · ${assessment?.partialFraming ? "partial hand · wrist optional" : assessment?.landmarkQuality === "TRACKED" ? "joints tracked" : "some joints hidden"}`
                 : "Keep your palm and index finger in view"}
             </span>
           </div>
@@ -879,9 +926,16 @@ export function ReachLaboratory({
               <p>
                 {calibration?.status === "VALIDATED"
                   ? "Your pointer is ready to explore this area."
-                  : "A successful setup still needs an independent check."}
+                  : calibration?.status === "FAILED"
+                    ? `All five targets were checked. The 95th-percentile error ${checkedError(calibration.validationP95)} exceeded the 3.00% accuracy limit. Your setup is kept.`
+                    : "A successful setup still needs an independent check."}
               </p>
             </div>
+          )}
+          {pointerMessage && (step === "VALIDATION" || step === "PLAYGROUND") && (
+            <p className={styles.pointerNotice} role="status" aria-label="Pointer feedback">
+              {pointerMessage}
+            </p>
           )}
           <div className={styles.planeCaption}>
             {step === "PLAYGROUND"
@@ -941,8 +995,13 @@ export function ReachLaboratory({
             </strong>
             {source !== "OFF" && (
               <span>
-                {readiness.detectedCount} detected · {assessment?.framed ? "Hand framed" : "Framing needs attention"} ·{" "}
-                {assessment?.pointing ? "Point recognized" : "Point not yet recognized"} ·{" "}
+                {readiness.detectedCount} detected ·{" "}
+                {assessment?.framed
+                  ? assessment.partialFraming
+                    ? "Enough fingers visible"
+                    : "Hand framed"
+                  : "Framing needs attention"}{" "}
+                · {assessment?.pointing ? "Point recognized" : "Point not yet recognized"} ·{" "}
                 {readiness.eligible ? "Eligible for collection" : "Collection waiting"}
               </span>
             )}
@@ -1106,6 +1165,25 @@ export function ReachLaboratory({
                   </dd>
                 </div>
               </dl>
+              {calibration?.validationSummary && (
+                <div className={styles.validationExplanation} role="note" aria-label="Independent check explanation">
+                  <strong>
+                    {calibration.status === "FAILED" ? "Why another check is offered" : "Why this check passed"}
+                  </strong>
+                  <p>
+                    All {calibration.validationSummary.targetCount} check targets were recorded. Your 95th-percentile
+                    error was {checkedError(calibration.validationSummary.p95DiagonalFraction)} of the pointing area’s
+                    diagonal; the required limit is {percent(calibration.validationSummary.p95LimitDiagonalFraction)}.
+                  </p>
+                  <p>
+                    Your setup is kept. These check targets did not change its fit.
+                    {calibration.status === "FAILED"
+                      ? " Retry the check if you missed a target. Recalibrate if the pointer consistently misses, or use relative movement for a more comfortable starting point."
+                      : " You can now explore the playground."}
+                  </p>
+                  <p>Steady-hold movement is shown separately as a diagnostic; it is not an extra pass/fail rule.</p>
+                </div>
+              )}
               <p className={styles.hint}>
                 {source === "DEMO"
                   ? "Demo results only. They do not establish webcam accuracy."
@@ -1196,7 +1274,8 @@ export function ReachLaboratory({
                 Show raw pointer alongside filtered pointer
               </label>
               <p className={styles.hint}>
-                The shaded area shows measured held-out error, not model confidence. Tracking loss hides the pointer.
+                The shaded area shows measured held-out error, not model confidence. Brief uncertainty shows a fading,
+                dashed last-seen marker; it never counts as a new sample.
               </p>
             </>
           )}

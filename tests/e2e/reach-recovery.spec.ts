@@ -1,6 +1,45 @@
 // @sounding-line-registration owner=reach suite=browser.reach contracts=reach.phase1.foundation
 import { expect, test } from "@playwright/test";
-import { pointingPose } from "./fixtures/reach/pointing-poses";
+import { pointingPose, pointingTransitionPose } from "./fixtures/reach/pointing-poses";
+
+test("a completed failed check explains the accuracy limit and keeps setup instead of silently repeating", async ({
+  page,
+}, testInfo) => {
+  await page.goto("/devices/reach");
+  await page.getByRole("button", { name: "Explore guided demo" }).click();
+  await expect(page.getByRole("button", { name: "Set up relative movement" })).toBeEnabled();
+  await page.getByRole("button", { name: "Set up relative movement" }).click();
+  const targets = async (count: number, bias = false) => {
+    for (let i = 0; i < count; i++) {
+      await expect(page.getByLabel(`Target ${i + 1} of ${count}`, { exact: true })).toBeVisible();
+      await page.getByRole("button", { name: "Move demo hand to target" }).click();
+      if (bias)
+        for (let n = 0; n < 13; n++)
+          await page.getByRole("slider", { name: "Demo x", exact: true }).press("ArrowRight");
+      if (i < count - 1) await expect(page.getByLabel(`Target ${i + 2} of ${count}`, { exact: true })).toBeVisible();
+    }
+    await expect(page.getByRole("button", { name: "Recalibrate", exact: true })).toBeVisible();
+  };
+  await targets(5);
+  await page.getByRole("button", { name: "Check five new targets" }).click();
+  await page.getByRole("button", { name: "Move demo hand to target" }).click();
+  await page.waitForTimeout(150);
+  await page.getByLabel("Demo tracking condition").selectOption("POSTURE");
+  await expect(page.getByRole("status", { name: "Pointer feedback" })).toContainText("Last seen pointer");
+  await page.screenshot({ path: testInfo.outputPath("D0-last-seen-during-check.png"), fullPage: true });
+  await page.getByLabel("Demo tracking condition").selectOption("NONE");
+  await targets(5, true);
+  const explanation = page.getByRole("note", { name: "Independent check explanation" });
+  await expect(explanation).toContainText("All 5 check targets were recorded");
+  await expect(explanation).toContainText("3.00%");
+  await expect(explanation).toContainText("Your setup is kept");
+  await expect(explanation).toContainText("Why another check is offered");
+  await expect(page.getByRole("button", { name: "Retry independent check" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Open pointing playground" })).toHaveCount(0);
+  await expect(page.getByLabel("Target 1 of 5", { exact: true })).toHaveCount(0);
+  await page.screenshot({ path: testInfo.outputPath("D0-failed-check-explained.png"), fullPage: true });
+  await page.getByRole("button", { name: "Stop session", exact: true }).click();
+});
 
 test("mobile interruptions keep the reason and saved targets beside the active target", async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 390, height: 844 });
@@ -42,58 +81,89 @@ test("D0 controlled poses recover in the actual laboratory without losing comple
   const poses = {
     RELAXED: pointingPose(),
     DEPTH: pointingPose({ indexBends: [0, 10, 20], depthAngle: 85 }),
+    DIRECT: pointingPose().map((point, i, points) =>
+      i >= 6 && i <= 8 ? { ...points[5], z: points[5].z - [0.035, 0.06, 0.08][i - 6] } : point,
+    ),
+    BOTTOM: pointingPose().map((point) => ({ ...point, y: point.y + 0.38 })),
     OPEN: pointingPose({ otherBends: [0, 35, 65] }),
     CURL: pointingPose({ indexBends: [0, 100, 150] }),
   };
   // Explicit analytic D0 replay after worker inference, never physical accuracy
   // evidence. Camera capture/lifecycle, adapter, selector and lab are real code.
-  await page.addInitScript((poses) => {
-    const replay = { pose: "RELAXED", hidden: false, outlier: false, observations: 0 };
-    Object.assign(window, { reachPoseReplay: replay });
-    Object.defineProperty(navigator.mediaDevices, "getUserMedia", {
-      value: async (options: MediaStreamConstraints) => {
-        if (options.audio !== false) throw new Error("MICROPHONE_REQUESTED");
-        const canvas = document.createElement("canvas");
-        canvas.width = 640;
-        canvas.height = 480;
-        const context = canvas.getContext("2d")!;
-        const draw = () => {
-          context.fillStyle = "#c7c7bf";
-          context.fillRect(0, 0, 640, 480);
-        };
-        draw();
-        const timer = setInterval(draw, 40);
-        const stream = canvas.captureStream(25);
-        for (const track of stream.getTracks()) {
-          const stop = track.stop.bind(track);
-          track.stop = () => {
-            clearInterval(timer);
-            stop();
+  const sweepPoses = Array.from({ length: 61 }, (_, i) => pointingTransitionPose(i / 60, i * 0.31));
+  await page.addInitScript(
+    ({ poses, sweepPoses }) => {
+      const replay = {
+        pose: "RELAXED",
+        sweepIndex: 0,
+        hidden: false,
+        outlier: false,
+        duplicate: false,
+        observations: 0,
+      };
+      Object.assign(window, { reachPoseReplay: replay });
+      Object.defineProperty(navigator.mediaDevices, "getUserMedia", {
+        value: async (options: MediaStreamConstraints) => {
+          if (options.audio !== false) throw new Error("MICROPHONE_REQUESTED");
+          const canvas = document.createElement("canvas");
+          canvas.width = 640;
+          canvas.height = 480;
+          const context = canvas.getContext("2d")!;
+          const draw = () => {
+            context.fillStyle = "#c7c7bf";
+            context.fillRect(0, 0, 640, 480);
           };
+          draw();
+          const timer = setInterval(draw, 40);
+          const stream = canvas.captureStream(25);
+          for (const track of stream.getTracks()) {
+            const stop = track.stop.bind(track);
+            track.stop = () => {
+              clearInterval(timer);
+              stop();
+            };
+          }
+          return stream;
+        },
+      });
+      const OriginalWorker = window.Worker;
+      window.Worker = class extends OriginalWorker {
+        constructor(url: string | URL, options?: WorkerOptions) {
+          super(url, options);
+          this.addEventListener("message", (event) => {
+            if (event.data.type !== "RESULT") return;
+            replay.observations++;
+            const source =
+              replay.pose === "SWEEP" ? sweepPoses[replay.sweepIndex] : poses[replay.pose as keyof typeof poses];
+            const points = source.map((p) => ({
+              ...p,
+              x: p.x + (replay.outlier ? 0.07 : 0),
+            }));
+            event.data.result = {
+              landmarks: replay.hidden
+                ? []
+                : replay.duplicate
+                  ? [points, points.map((point) => ({ ...point, x: point.x + 0.0002 }))]
+                  : [points],
+              handedness: replay.hidden
+                ? []
+                : replay.duplicate
+                  ? [[{ categoryName: "Right", score: 0.95 }], [{ categoryName: "Right", score: 0.95 }]]
+                  : [[{ categoryName: "Right", score: 0.95 }]],
+            };
+          });
         }
-        return stream;
-      },
-    });
-    const OriginalWorker = window.Worker;
-    window.Worker = class extends OriginalWorker {
-      constructor(url: string | URL, options?: WorkerOptions) {
-        super(url, options);
-        this.addEventListener("message", (event) => {
-          if (event.data.type !== "RESULT") return;
-          replay.observations++;
-          const points = poses[replay.pose as keyof typeof poses].map((p) => ({
-            ...p,
-            x: p.x + (replay.outlier ? 0.07 : 0),
-          }));
-          event.data.result = {
-            landmarks: replay.hidden ? [] : [points],
-            handedness: replay.hidden ? [] : [[{ categoryName: "Right", score: 0.95 }]],
-          };
-        });
-      }
-    };
-  }, poses);
-  const replay = async (value: { pose?: string; hidden?: boolean; outlier?: boolean }) =>
+      };
+    },
+    { poses, sweepPoses },
+  );
+  const replay = async (value: {
+    pose?: string;
+    sweepIndex?: number;
+    hidden?: boolean;
+    outlier?: boolean;
+    duplicate?: boolean;
+  }) =>
     page.evaluate((value) => {
       Object.assign((window as unknown as { reachPoseReplay: object }).reachPoseReplay, value);
     }, value);
@@ -102,10 +172,59 @@ test("D0 controlled poses recover in the actual laboratory without losing comple
   await page.getByRole("button", { name: "Enable live camera" }).click();
   await expect(status).toContainText("Your hand is ready", { timeout: 30000 });
   await page.screenshot({ path: testInfo.outputPath("D0-relaxed-point.png"), fullPage: true });
+  await replay({ duplicate: true });
+  await expect(status).toContainText("1 detected");
+  await expect(status).toContainText("Eligible for collection");
+  await page.waitForTimeout(500);
+  await expect(page.getByText("1 hand detected", { exact: true })).toBeVisible();
+  await page.screenshot({ path: testInfo.outputPath("D0-duplicate-suppressed.png"), fullPage: true });
+  await replay({ duplicate: false, pose: "DIRECT" });
+  await expect(status).toContainText("Eligible for collection");
+  await expect(status).toContainText("Index aimed toward the camera");
+  await page.screenshot({ path: testInfo.outputPath("D0-direct-camera-point.png"), fullPage: true });
+  await replay({ pose: "BOTTOM" });
+  await expect(status).toContainText("Enough fingers visible");
+  await expect(status).toContainText("Eligible for collection");
+  await page.screenshot({ path: testInfo.outputPath("D0-bottom-wrist-outside.png"), fullPage: true });
   await replay({ pose: "DEPTH" });
   await expect(status).toContainText("Index aimed toward the camera");
   await expect(status).toContainText("Eligible for collection");
   await page.screenshot({ path: testInfo.outputPath("D0-foreshortened-point.png"), fullPage: true });
+  await replay({ pose: "SWEEP", sweepIndex: 0 });
+  await expect(status).toContainText("Enough fingers visible");
+  await expect(status).toContainText("Eligible for collection");
+  // A continuous noisy bottom/end-on -> top/side-on -> bottom sweep runs
+  // against the real worker lifecycle, adapter, selector and readiness UI.
+  // Only the returned landmark fixture is analytic; this is not physical proof.
+  const sweep = await status.evaluate(async (element) => {
+    const state = (window as unknown as { reachPoseReplay: { sweepIndex: number; observations: number } })
+      .reachPoseReplay;
+    const before = state.observations;
+    const feedback: string[] = [];
+    const observer = new MutationObserver(() => feedback.push(element.textContent ?? ""));
+    observer.observe(element, { childList: true, subtree: true, characterData: true });
+    for (const index of [
+      ...Array.from({ length: 60 }, (_, i) => i + 1),
+      ...Array.from({ length: 60 }, (_, i) => 59 - i),
+    ]) {
+      state.sweepIndex = index;
+      await new Promise((resolve) => setTimeout(resolve, 60));
+      feedback.push(element.textContent ?? "");
+    }
+    observer.disconnect();
+    return {
+      frames: state.observations - before,
+      samples: feedback.length,
+      interruptions: feedback.filter((text) => !text.includes("Eligible for collection")),
+    };
+  });
+  expect(sweep.frames).toBeGreaterThan(60);
+  expect(sweep.interruptions).toEqual([]);
+  await testInfo.attach("D0-continuous-sweep.json", {
+    body: JSON.stringify(sweep, null, 2),
+    contentType: "application/json",
+  });
+  await page.screenshot({ path: testInfo.outputPath("D0-continuous-sweep.png"), fullPage: true });
   await replay({ pose: "OPEN" });
   await expect(status).toContainText("Point not yet recognized");
   await expect(page.getByRole("button", { name: "Set up relative movement" })).toBeDisabled();

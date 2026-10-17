@@ -30,6 +30,7 @@ export type ReachVisualFrame = {
   filtered: Point | null;
   uncertainty: number | null;
   previewEstimate: boolean;
+  lastSeen?: { point: Point; capturedAt: number } | null;
 };
 /** CSS contain transform shared by the video and overlay, independent of device pixel ratio. */
 export function containedFrame(width: number, height: number, frameWidth: number, frameHeight: number) {

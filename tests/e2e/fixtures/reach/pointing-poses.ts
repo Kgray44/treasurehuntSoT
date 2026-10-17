@@ -54,3 +54,40 @@ export function pointingPose({
     };
   });
 }
+
+/**
+ * Analytic D0 movement: end-on near the bottom, then side-on near the top.
+ * The palm never rotates. Raw out-of-image wrist coordinates are intentional;
+ * a browser replay must pass these through normal provider validity handling.
+ */
+export function pointingTransitionPose(progress: number, noisePhase?: number): Landmark[] {
+  if (
+    !Number.isFinite(progress) ||
+    progress < 0 ||
+    progress > 1 ||
+    (noisePhase !== undefined && !Number.isFinite(noisePhase))
+  )
+    throw new Error("POINTING_TRANSITION_FIXTURE_INVALID");
+  const aspect = 0.75;
+  const points = pointingPose();
+  const bodyY = 0.86 - progress * 0.61;
+  for (const point of points) point.y += bodyY - 0.5;
+  const angle = ((1 - progress) * Math.PI) / 2;
+  for (const [offset, index] of [6, 7, 8].entries()) {
+    const prior = points[index - 1];
+    const bend = angle + ([0, 12, 25][offset] * Math.PI) / 180;
+    const length = [0.035, 0.025, 0.02][offset];
+    points[index] = {
+      x: prior.x,
+      y: prior.y - (Math.cos(bend) * length) / aspect,
+      z: prior.z - Math.sin(bend) * length,
+      valid: true,
+    };
+  }
+  return points.map((point, index) => {
+    const x = point.x + (noisePhase === undefined ? 0 : Math.sin(noisePhase + index * 0.37) * 0.0007);
+    const y = point.y + (noisePhase === undefined ? 0 : Math.cos(noisePhase * 0.7 + index * 0.27) * 0.0006);
+    const z = point.z + (noisePhase === undefined ? 0 : Math.sin(noisePhase * 0.9 + index * 0.31) * 0.0008);
+    return { x, y, z, valid: x >= 0 && x <= 1 && y >= 0 && y <= 1 };
+  });
+}

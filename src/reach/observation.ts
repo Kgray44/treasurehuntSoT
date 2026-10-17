@@ -87,6 +87,14 @@ export class ActiveHandSelector {
   private manual: string | null = null;
   private interrupted = false;
   private readySince: number | null = null;
+  private establishedReady = false;
+  private softPauseAt: number | null = null;
+  private requireRecovery() {
+    this.interrupted = true;
+    this.readySince = null;
+    this.establishedReady = false;
+    this.softPauseAt = null;
+  }
   choose(trackId: string | null) {
     this.manual = trackId;
     this.active = null;
@@ -94,6 +102,8 @@ export class ActiveHandSelector {
     this.candidate = null;
     this.readySince = null;
     this.interrupted = false;
+    this.establishedReady = false;
+    this.softPauseAt = null;
   }
   reset() {
     this.active = null;
@@ -104,6 +114,8 @@ export class ActiveHandSelector {
     this.lastSeen = -Infinity;
     this.readySince = null;
     this.interrupted = false;
+    this.establishedReady = false;
+    this.softPauseAt = null;
   }
   update(o: HandObservation): ReachReadiness {
     const at = o.monotonicCaptureTime;
@@ -122,19 +134,16 @@ export class ActiveHandSelector {
     // An uncertain frame pauses output immediately, but is not evidence of a
     // different hand. Only a confirmed new binding may invalidate saved work.
     if (["MODEL_FAILURE", "INTERRUPTED"].includes(o.reason)) {
-      this.interrupted = true;
-      this.readySince = null;
+      this.requireRecovery();
       return result("RECOVERING");
     }
     if (o.hands.some((h) => h.continuity === "AMBIGUOUS")) {
-      this.interrupted = true;
-      this.readySince = null;
+      this.requireRecovery();
       return result("AMBIGUOUS");
     }
     let hand = o.hands.find((h) => h.trackId === this.active && h.trackGeneration === this.activeGeneration);
     if (this.active && !hand) {
-      this.interrupted = true;
-      this.readySince = null;
+      this.requireRecovery();
       // Absence alone never clears a calibration. A replacement must settle
       // below; its original provider identity/generation is never rewritten.
       if (!o.hands.length || at - this.lastSeen <= HAND_CONTINUITY_GRACE_MS) {
@@ -161,10 +170,11 @@ export class ActiveHandSelector {
       this.activeGeneration = hand.trackGeneration;
       this.interrupted = false;
       this.readySince = at;
+      this.establishedReady = false;
+      this.softPauseAt = null;
     }
     if (at - this.lastSeen > 300 && this.lastSeen !== -Infinity) {
-      this.interrupted = true;
-      this.readySince = null;
+      this.requireRecovery();
     }
     this.lastSeen = at;
     const quality = assessHand(hand, o);
@@ -177,17 +187,23 @@ export class ActiveHandSelector {
             ? "POSTURE"
             : "READY";
     if (condition !== "READY") {
-      this.interrupted = true;
-      this.readySince = null;
+      this.softPauseAt ??= at;
+      // A brief posture/framing dip stops collection on that frame, while the
+      // same fresh local track keeps its established readiness. Repeated good
+      // frames must not be starved by an isolated imperfect frame.
+      if (!this.establishedReady || this.interrupted || at - this.softPauseAt >= 180) this.requireRecovery();
       return result(condition, hand);
     }
-    // Bad/unknown frames never sample. Require a short run of fresh good
-    // anatomy after an interruption rather than bouncing eligibility per frame.
+    if (this.softPauseAt !== null && at - this.softPauseAt >= 180) this.requireRecovery();
+    this.softPauseAt = null;
+    // Actual tracking loss, ambiguity and sustained ineligibility require fresh
+    // settling. The bad frames above are never eligible, even within the grace.
     if (this.interrupted) {
       this.readySince ??= at;
       if (at - this.readySince < 120) return result("ACQUIRING", hand);
     }
     this.interrupted = false;
+    this.establishedReady = true;
     return result("READY", hand);
   }
 }

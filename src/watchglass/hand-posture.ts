@@ -1,7 +1,9 @@
 import type { HandObservation } from "./hand-observation";
 import { cosine, dot, handGeometry, subtract, vectorLength, type GeometryFrame } from "./hand-geometry";
 type Hand = HandObservation["hands"][number];
-export const pointingLandmarks = [0, 5, 6, 7, 8, 9, 17] as const;
+// Calibration features require the complete index and the observed palm span.
+// The wrist is orientation support, not a pointing feature or a framing target.
+export const pointingLandmarks = [5, 6, 7, 8, 9, 17] as const;
 /** Geometric posture evidence, not model confidence or a probability of intent. */
 export function assessHand(hand: Hand, frame?: GeometryFrame) {
   const points = hand.landmarks;
@@ -18,18 +20,22 @@ export function assessHand(hand: Hand, frame?: GeometryFrame) {
   // still form a coherent palm. Depth alone cannot rescue a tiny/collapsed hand.
   const geometry =
     requiredValid &&
+    shape.palmBasis !== "UNAVAILABLE" &&
     shape.scale >= 0.035 &&
     shape.scale <= 0.65 &&
-    shape.palmLength >= shape.scale * 0.3 &&
-    shape.palmLength <= shape.scale * 3 &&
+    (shape.palmBasis !== "WRIST" || (shape.palmLength >= shape.scale * 0.3 && shape.palmLength <= shape.scale * 3)) &&
     shape.projectedPalm >= 0.025 &&
     shape.palmArea >= 0.15;
   let pointing = false;
   let pointingEvidence: "DISTINCT" | "MARGINAL" | "NONE" = "NONE";
   let posture: "POINT" | "OPEN" | "BENT" | "UNKNOWN" = "UNKNOWN";
   let depthDominant = false;
+  let partialFingerSupport = false;
   if (geometry) {
     const index = shape.finger(5)!;
+    // A knuckle arch supplies a plane, not a reliable wrist-to-finger direction.
+    // With no wrist, evaluate pointing against observed finger relationships.
+    const anatomyForward = shape.palmBasis === "WRIST" ? shape.forward : index.proximal;
     depthDominant = Math.abs(index.axis.z) > Math.hypot(index.axis.x, index.axis.y);
     const anatomical =
       index.chain >= shape.scale * 0.45 &&
@@ -41,7 +47,7 @@ export function assessHand(hand: Hand, frame?: GeometryFrame) {
       index.lengths[1] <= index.lengths[0] * 1.4 &&
       index.lengths[2] >= index.lengths[0] * 0.18 &&
       index.lengths[2] <= index.lengths[0] * 1.2 &&
-      cosine(index.proximal, shape.forward) >= -0.35;
+      cosine(index.proximal, anatomyForward) >= -0.35;
     // A comfortable bend is evidence of pointing. A folded-back or collapsed
     // joint is not; the endpoint distance alone cannot tell these apart.
     const extended = anatomical && index.straightness >= 0.78 && index.pipAlignment >= 0.2 && index.dipAlignment >= 0;
@@ -57,6 +63,25 @@ export function assessHand(hand: Hand, frame?: GeometryFrame) {
           finger.lengths.every((length) => length >= shape.scale * 0.04),
       )
       .filter((finger) => finger !== null);
+    // A clipped non-index tip is positive relaxed-finger evidence only if the
+    // remaining observed PIP visibly bends. Straight cropped fingers remain
+    // unknown, so cropping an open palm cannot manufacture pointing intent.
+    const partialRelaxed = [9, 13, 17].filter((base) => {
+      if (points[base + 3].valid || [base, base + 1, base + 2].some((index) => !points[index].valid)) return false;
+      const proximal = subtract(shape.points[base + 1], shape.points[base]);
+      const middle = subtract(shape.points[base + 2], shape.points[base + 1]);
+      const a = vectorLength(proximal),
+        b = vectorLength(middle);
+      return (
+        a >= shape.scale * 0.1 &&
+        a <= shape.scale * 1.5 &&
+        b >= shape.scale * 0.04 &&
+        b >= a * 0.22 &&
+        b <= a * 1.4 &&
+        cosine(proximal, middle) <= 0.45
+      );
+    }).length;
+    partialFingerSupport = partialRelaxed > 0;
     const open = others.filter(
       (finger) =>
         finger.chain >= shape.scale * 0.55 &&
@@ -80,20 +105,32 @@ export function assessHand(hand: Hand, frame?: GeometryFrame) {
         finger.straightness >= 0.96 &&
         finger.pipAlignment >= 0.85 &&
         finger.dipAlignment >= 0.85 &&
-        cosine(finger.axis, shape.forward) >= 0.2 &&
+        (cosine(finger.axis, anatomyForward) >= 0.2 || (depthDominant && cosine(finger.axis, index.axis) >= 0.8)) &&
         cosine(finger.axis, index.axis) >= 0.35,
     );
-    const distinct = others.length >= 2 && open < 2 && similar < 2 && !pinched && !competing;
+    const distinct = others.length + partialRelaxed >= 2 && open < 2 && similar < 2 && !pinched && !competing;
     pointing = extended && distinct;
     pointingEvidence = pointing ? "DISTINCT" : marginal && distinct ? "MARGINAL" : "NONE";
     posture = pointing ? "POINT" : open >= 2 || similar >= 2 ? "OPEN" : anatomical ? "BENT" : "UNKNOWN";
   }
+  const wristAtEdge =
+    points[0].valid && (points[0].x <= 0.015 || points[0].x >= 0.985 || points[0].y <= 0.015 || points[0].y >= 0.985);
+  const partialFramingReason = !points[0].valid
+    ? ("WRIST_UNAVAILABLE" as const)
+    : wristAtEdge
+      ? ("WRIST_AT_EDGE" as const)
+      : partialFingerSupport
+        ? ("FOLDED_FINGERS_PARTIAL" as const)
+        : null;
   return {
     detected: validCount > 0,
     validCount,
     requiredValid,
     framed,
     geometry,
+    partialFraming: partialFramingReason !== null,
+    partialFramingReason,
+    palmBasis: shape.palmBasis,
     pointing,
     pointingEvidence,
     posture,

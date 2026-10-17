@@ -97,6 +97,26 @@ export function ReachStage({ frame, timings, kind, demo = false, overlay = false
         context.arc(x, y, 3, 0, Math.PI * 2);
         context.fill();
       }
+      if (kind === "POINTER" && !(fresh && value.filtered) && value.lastSeen) {
+        const age = at - value.lastSeen.capturedAt;
+        if (age >= 0 && age <= 450) {
+          const x = value.lastSeen.point.x * width,
+            y = value.lastSeen.point.y * height;
+          context.globalAlpha = 0.55 * (1 - age / 450);
+          context.strokeStyle = "#d5d8d2";
+          context.lineWidth = 2;
+          context.setLineDash([4, 4]);
+          context.beginPath();
+          context.arc(x, y, 14, 0, Math.PI * 2);
+          context.stroke();
+          context.setLineDash([]);
+          context.fillStyle = "#d5d8d2";
+          context.font = "11px sans-serif";
+          context.textAlign = "center";
+          context.fillText("Last seen", x, y + 30);
+          context.globalAlpha = 1;
+        }
+      }
       if (kind === "CAMERA" && !demo && fresh) timings.current.render(at, o.monotonicCaptureTime);
       animation = requestAnimationFrame(draw);
     };
