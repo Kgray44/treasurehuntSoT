@@ -1623,6 +1623,7 @@ test("ordinary admission has no orchestration or generated-state prerequisites",
     "sounding-line-control-plane.yml",
     "sounding-line-exhaustive-release.yml",
     "sounding-line-ordinary.yml",
+    "sounding-line-replay-admission-diagnostic.yml",
   ]);
   assert.equal(scripts.test, "vitest run");
   for (const key of Object.keys(scripts))
@@ -1640,6 +1641,22 @@ test("ordinary admission has no orchestration or generated-state prerequisites",
     controlPlaneWorkflow,
     /pull_request_target|nightwatch|bosun|baseline|deepwater|feature catalog|P34|maintenance|train/iu,
   );
+  const sourceDiagnosticWorkflow = readFileSync(
+    ".github/workflows/sounding-line-replay-admission-diagnostic.yml",
+    "utf8",
+  );
+  assert.match(sourceDiagnosticWorkflow, /on:\n  workflow_dispatch:\n\npermissions:\n/u);
+  assert.doesNotMatch(
+    sourceDiagnosticWorkflow,
+    /pull_request_target|workflow_call|schedule:|inputs:|Mainline Decision|--mode ordinary|experience-exception\.mjs|browser-authority\.mjs|run-browser-suite\.mjs/u,
+  );
+  assert.equal((sourceDiagnosticWorkflow.match(/contents: write/gu) ?? []).length, 1);
+  const sourceJob = sourceDiagnosticWorkflow.split("\n  source-diagnostic:\n")[1];
+  assert.ok(sourceJob, "the diagnostic source job is explicit and separate");
+  assert.match(sourceJob, /needs: reserve-diagnostic/u);
+  assert.match(sourceJob, /contents: read/u);
+  assert.doesNotMatch(sourceJob, /contents: write/u);
+  assert.doesNotMatch(ordinaryWorkflow, /replay-admission-source-diagnostic|source-diagnostic|reserve-diagnostic/u);
 });
 
 test("trusted PR routing produces one strict decision for ordinary and control-plane candidates", () => {
