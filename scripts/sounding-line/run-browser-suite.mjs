@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
-import { mkdir, rm, readFile } from "node:fs/promises";
+import { mkdir, rm, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 import { execFileSync } from "node:child_process";
@@ -19,6 +19,17 @@ import {
   writeBrowserDiagnosticReceipt,
 } from "./browser-diagnostics.mjs";
 import { assertR12TechnicalSource, requireR12TechnicalSuite } from "./experience-r12-technical-proof.mjs";
+import {
+  assertR13TechnicalSource,
+  requireR13TechnicalSuite,
+  requireR13DependencyReadinessSuite,
+  r13CaseProfileContext,
+} from "./experience-r13-technical-proof.mjs";
+import {
+  sealReadinessProfileContext,
+  runNativeDependencyChecks,
+  runBrowserDependencyProbe,
+} from "./experience-dependency-readiness.mjs";
 
 const separator = process.argv.indexOf("--");
 const options = Object.fromEntries(
@@ -37,16 +48,23 @@ if (
   !profile ||
   !/^[a-f0-9]{40}$/u.test(candidateSha ?? "") ||
   !databaseUrl ||
-  (!browserTests.length && !options["experience-plan"])
+  (!browserTests.length && !options["experience-plan"] && !options["r13-dependency-readiness"])
 )
   throw new Error("SOUNDING_LINE_SUITE_FIXTURE_CONTRACT_UNSATISFIED:INVALID_PROFILE_INVOCATION");
 
 // This exact one-case diagnostic grant is independent of the normal six-file
 // technical allowance. Its create-only launch reservation precedes all setup.
+const readiness = options["r13-dependency-readiness"]
+  ? await requireR13DependencyReadinessSuite({ root, candidateSha, options, browserTests, argv: process.argv.slice(2) })
+  : null;
+const r13Technical = options["r13-technical-proof"]
+  ? await requireR13TechnicalSuite({ root, candidateSha, options, browserTests, argv: process.argv.slice(2) })
+  : null;
 const r12Technical = options["r12-technical-proof"]
   ? await requireR12TechnicalSuite({ root, candidateSha, options, browserTests, argv: process.argv.slice(2) })
   : null;
-const exceptionPlan = r12Technical ? null : await exceptionSuitePlan({ root, candidateSha });
+const exceptionPlan =
+  r12Technical || r13Technical || readiness ? null : await exceptionSuitePlan({ root, candidateSha });
 if (exceptionPlan) {
   if (options["experience-plan"]) {
     const guardedPlan =
@@ -78,9 +96,18 @@ if (exceptionPlan) {
 
 const artifactRoot = path.join(root, "artifacts", "sounding-line");
 const receiptPaths = browserReceiptPaths(root);
-const environment = profileEnvironment({ profileId: profile.id, candidateSha, databaseUrl });
+// R13 reuses the exact private profile context created by its successful bounded
+// infrastructure attempt. The ordinary suite still reruns every setup command.
+const environment = r13Technical
+  ? await r13CaseProfileContext({ root, marker: r13Technical })
+  : profileEnvironment({ profileId: profile.id, candidateSha, databaseUrl });
+if (readiness) sealReadinessProfileContext({ attempt: readiness, profileEnvironment: environment });
+const setupSteps = [];
+let setupStatus = "FAIL";
 
 try {
+  if (readiness)
+    await runNativeDependencyChecks({ attempt: readiness, environment: { ...process.env, ...environment } });
   if (receiptPaths && !receiptPaths.binding) {
     await rm(receiptPaths.runtime, { force: true });
     await rm(receiptPaths.profile, { force: true });
@@ -103,7 +130,9 @@ try {
   if (profile.seed) run(process.execPath, ["node_modules/tsx/dist/cli.mjs", "prisma/seed.ts"], environment);
   for (const preparer of profile.preparers ?? []) run(process.execPath, preparerArguments(preparer), environment);
   ensureProductionBuild();
-  if (options["experience-plan"]) {
+  if (readiness) {
+    await runBrowserDependencyProbe({ attempt: readiness, environment: { ...process.env, ...environment } });
+  } else if (options["experience-plan"]) {
     if (!options["experience-runner"]) throw new Error("PRODUCT_EXPERIENCE_TRUSTED_RUNNER_REQUIRED");
     // Candidate build/setup must not mutate either the checked-out product or
     // the separately checked-out protected helper before evidence execution.
@@ -120,6 +149,12 @@ try {
     );
   } else {
     if (r12Technical) assertR12TechnicalSource(root, r12Technical);
+    if (r13Technical) {
+      assertR13TechnicalSource(root, r13Technical);
+      // Repeated setup must preserve the exact dependency/context state proved
+      // by readiness before the single product case can launch.
+      await r13CaseProfileContext({ root, marker: r13Technical });
+    }
     run(
       process.execPath,
       [
@@ -135,8 +170,10 @@ try {
       environment,
     );
   }
-  await writeReceipt({ status: "PASS", failureCategory: null });
+  setupStatus = "PASS";
+  if (!readiness) await writeReceipt({ status: "PASS", failureCategory: null });
 } catch (error) {
+  if (readiness) throw error;
   const runtimeReceipt = await readBrowserReceipt();
   await writeReceipt(
     runtimeReceipt
@@ -148,6 +185,13 @@ try {
         },
   );
   throw error;
+} finally {
+  if (readiness)
+    await writeFile(
+      readiness.paths.setupReceipt,
+      JSON.stringify({ version: 1, status: setupStatus, steps: setupSteps }, null, 2) + "\n",
+      { flag: "wx" },
+    );
 }
 
 function ensureProductionBuild() {
@@ -229,7 +273,28 @@ function run(command, argumentsList, env) {
     env: { ...process.env, ...env },
     stdio: "inherit",
     windowsHide: true,
+    ...(readiness
+      ? { timeout: argumentsList[0] === "node_modules/next/dist/bin/next" ? 900000 : 120000, killSignal: "SIGTERM" }
+      : {}),
   });
+  if (readiness) {
+    const fixedIds = [
+      "prisma-generate",
+      "sqlite-bootstrap",
+      "seed",
+      "migrate-legacy-companion",
+      "prepare-validation-isolation",
+      "next-build",
+    ];
+    setupSteps.push({
+      id: fixedIds[setupSteps.length],
+      status: !result.error && result.status === 0 ? "PASS" : "FAIL",
+      command,
+      arguments: argumentsList,
+      exitCode: result.status,
+      error: result.error ? { code: result.error.code ?? null, message: result.error.message } : null,
+    });
+  }
   if (result.error) throw result.error;
   if (result.status !== 0) throw new Error(`SOUNDING_LINE_SUITE_PROFILE_COMMAND_FAILED:${profile.id}`);
 }

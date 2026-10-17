@@ -24,6 +24,9 @@ import "./experience-r10.test.mjs";
 import "./experience-r11.test.mjs";
 import "./experience-r12.test.mjs";
 import "./experience-r12-technical-proof.test.mjs";
+import "./experience-r13.test.mjs";
+import "./experience-r13-technical-proof.test.mjs";
+import "./experience-dependency-readiness.test.mjs";
 import { createCustodyRequest } from "../../scripts/sounding-line/custody-transport.mjs";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import {
@@ -56,6 +59,7 @@ import {
   CROSSDECK_R10,
   CROSSDECK_R11,
   CROSSDECK_R12,
+  CROSSDECK_R13,
   bindExperienceException,
   assertExceptionExecution,
   campaignRelated,
@@ -73,6 +77,7 @@ import {
   validateLiveContext,
   verifyExceptionAttestation,
   selectTrustedExceptions,
+  trustedExceptions,
   recordBinding,
   recognizeExceptionExecution,
   historicalExceptionContext,
@@ -105,6 +110,7 @@ import {
   pendingR12Reconciliation,
   r12HistoricalEvidencePlan,
 } from "../../scripts/sounding-line/experience-r12.mjs";
+import { R13_OVERLAY_PATHS, pendingR13Reconciliation } from "../../scripts/sounding-line/experience-r13.mjs";
 import { checkoutProbe } from "../../scripts/sounding-line/experience-checkout-probe.mjs";
 import { verifyTrustedExperienceAttestation } from "../../scripts/sounding-line/experience-attestation.mjs";
 import {
@@ -2663,6 +2669,9 @@ test("R3 Git admission permits only the bounded repair and freezes every other r
     "testing/product-experience-exceptions.json",
     JSON.stringify({ version: 1, exceptions: [template, successorTemplate, r3Template] }),
   );
+  // This synthetic base predates R13; its three historical grants must not
+  // inherit the installed-source sentinel from the current repository tree.
+  run(["update-index", "--force-remove", "scripts/sounding-line/experience-r13.mjs"]);
   const baseSha = commit(baseInput);
   const original = JSON.parse(run(["show", `${CROSSDECK_R3.blockedCandidate}:testing/contracts.json`]));
   const contracts = structuredClone(original);
@@ -3464,6 +3473,133 @@ async function r12ApiFixture(t, supplied) {
     now: new Date(current.createdAt),
   };
 }
+
+const r13Template = JSON.parse(
+  readFileSync(path.join(repo, "testing/product-experience-exceptions.json"), "utf8"),
+).exceptions.find((record) => record.id === CROSSDECK_R13.id);
+async function r13ApiFixture(t) {
+  const f = await r12ApiFixture(t);
+  const p = r13Template.predecessor;
+  const indexes = new Map(
+    [p.failureIndexPath, p.receiptPath].map((file) => [
+      file,
+      execFileSync("git", ["show", `${p.failurePublication}:${file}`], { cwd: repo, maxBuffer: 64 * 1024 * 1024 }),
+    ]),
+  );
+  const request = async (endpoint, method, body) => {
+    if (endpoint === `git/commits/${p.failurePublication}`) return { tree: { sha: p.failurePublicationTree } };
+    if (endpoint === `git/trees/${p.failurePublicationTree}?recursive=1`)
+      return {
+        truncated: false,
+        tree: [...indexes.keys()].map((file) => ({ path: file, mode: "100644", type: "blob", sha: file })),
+      };
+    if (endpoint.startsWith("git/blobs/") && indexes.has(endpoint.slice(10)))
+      return { content: indexes.get(endpoint.slice(10)).toString("base64") };
+    return f.request(endpoint, method, body);
+  };
+  const registry = JSON.parse(readFileSync(path.join(repo, "testing/product-experience-exceptions.json"), "utf8"));
+  const bridge = {
+    version: 1,
+    id: CROSSDECK_R13.bridgeId,
+    status: "ACTIVE",
+    exceptionId: CROSSDECK_R13.id,
+    recordDigest: CROSSDECK_R13.recordDigest,
+    overlay: R13_OVERLAY_PATHS.map((file) => ({
+      path: file,
+      oldMode: null,
+      oldBlob: null,
+      newMode: "100644",
+      newBlob: "b".repeat(40),
+    })),
+  };
+  registry.reconciliations = [...registry.reconciliations.slice(0, 5), bridge];
+  f.write("testing/product-experience-exceptions.json", registry);
+  const baseSha = f.commit();
+  f.write("fixture-publication.md", "Synthetic R13 publication\n");
+  const candidateSha = f.commit();
+  const plan = { ...f.plan, baseSha, candidateSha, exception: recordBinding(r13Template) };
+  plan.exception.nonExecutingReconciliation = pendingR13Reconciliation({
+    root: f.root,
+    baseSha,
+    plan,
+    record: r13Template,
+  });
+  f.commits.set(baseSha, structuredClone(f.commits.get(f.plan.baseSha)));
+  const current = {
+    ...f.current,
+    runId: 39999500000,
+    createdAt: "2026-10-17T06:00:00Z",
+    headSha: candidateSha,
+    displayTitle: `Sounding Line finite 1 ordinary 721 ${candidateSha} active`,
+  };
+  f.runs.delete(f.current.runId);
+  f.runs.set(current.runId, remoteRun(current));
+  f.refs.set("refs/heads/main", { object: { sha: baseSha } });
+  f.operations.length = 0;
+  return {
+    ...f,
+    record: r13Template,
+    plan,
+    current,
+    request,
+    indexes,
+    store: exceptionStore({ record: r13Template, request }),
+    now: new Date(current.createdAt),
+  };
+}
+
+test("R13 preserves fifteen remote predecessors and the distinct spent local setup before writes", async (t) => {
+  const f = await r13ApiFixture(t);
+  assert.equal((await validateSuccessorPredecessor(f)).length, 15);
+  for (const file of [r13Template.predecessor.failureIndexPath, r13Template.predecessor.receiptPath]) {
+    const saved = f.indexes.get(file);
+    f.indexes.set(file, Buffer.from("changed local original"));
+    await assert.rejects(() => validateSuccessorPredecessor(f), /R13_PRESERVED_LOCAL_ATTEMPT_CHANGED/u);
+    f.indexes.set(file, saved);
+  }
+  const oldStore = exceptionStore({ record: r12Template, request: f.request });
+  await oldStore.create("qualify", {
+    binding: exceptionBinding(f.plan),
+    classification: "unlisted old R12 authority",
+  });
+  await assert.rejects(() => validateSuccessorPredecessor(f), /R13_OLD_R12_AUTHORITY_CONSUMED/u);
+});
+
+test("R13 installed source denies a removed grant and retirement never restores R12", async (t) => {
+  const f = await r13ApiFixture(t);
+  const registry = JSON.parse(readFileSync(path.join(repo, "testing/product-experience-exceptions.json"), "utf8"));
+  f.write("scripts/sounding-line/experience-r13.mjs", "// Source-presence marker only; no module execution\n");
+  const removed = {
+    ...registry,
+    exceptions: registry.exceptions.slice(0, 12),
+    reconciliations: registry.reconciliations.slice(0, 5),
+  };
+  f.write("testing/product-experience-exceptions.json", removed);
+  const removedBase = f.commit();
+  assert.throws(() => trustedExceptions(f.root, removedBase), /R13_REGISTRY_CHANGED/u);
+  registry.exceptions.at(-1).status = "RETIRED";
+  f.write("testing/product-experience-exceptions.json", registry);
+  const retiredBase = f.commit();
+  assert.deepEqual(trustedExceptions(f.root, retiredBase), []);
+});
+
+test("R13 old local failure cannot stand in for new supporting proofs or waive product replay", async (t) => {
+  const f = await r13ApiFixture(t);
+  f.operations.length = 0;
+  for (const mode of ["capture", "review", "verify", "local", "prepare"])
+    await assert.rejects(() => reserveExceptionStage({ ...f, run: f.current, mode }), /R13_MODE_FORBIDDEN/u);
+  await assert.rejects(
+    () => reserveExceptionStage({ ...f, run: f.current, mode: "ordinary" }),
+    /R13_FOCUSED_PUBLICATION_MISSING/u,
+  );
+  assert.deepEqual(f.operations, []);
+  const extra = { ...f.current, runId: f.current.runId - 2, createdAt: "2026-10-17T05:59:00Z" };
+  f.runs.set(extra.runId, remoteRun(extra));
+  await assert.rejects(
+    () => requireFirstCampaignRun({ ...f, mode: "ordinary", run: f.current }),
+    /R13_UNLISTED_CAMPAIGN_RUN/u,
+  );
+});
 
 test("R12 authenticates fifteen exact predecessors and preserves ordinary5 failure before writes", async (t) => {
   const f = await r12ApiFixture(t);
