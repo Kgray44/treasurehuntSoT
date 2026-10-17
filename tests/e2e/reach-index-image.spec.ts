@@ -457,8 +457,8 @@ test("D0 live setup opens empty before pointing and binds its first fresh source
   const phases: object[] = [];
   for (const mode of ["RELATIVE", "ABSOLUTE"] as const) {
     await page.goto("/devices/reach");
-    if (mode === "ABSOLUTE") await page.getByRole("radio", { name: /Absolute pointing/ }).check();
     await page.getByRole("button", { name: "Enable live camera", exact: true }).click();
+    if (mode === "ABSOLUTE") await page.getByRole("radio", { name: /Absolute pointing/ }).check();
     await expect
       .poll(() =>
         page.evaluate(
@@ -639,7 +639,6 @@ test("D0 display staleness between timely delayed captures preserves evidence wh
     .map((frame) => frame.reply - frame.capture);
   expect(ages.length).toBe(captures.length);
   expect(ages.every((age) => age >= 119 && age <= 150)).toBe(true);
-  expect(Math.max(...intervals)).toBeLessThanOrEqual(250);
   const generation = await root(page).getAttribute("data-image-track-generation");
   await configure(page, { model: "OPEN" });
   await page.waitForFunction(() =>
@@ -683,6 +682,7 @@ test("D0 display staleness between timely delayed captures preserves evidence wh
     ),
     contentType: "application/json",
   });
+  expect(Math.max(...intervals)).toBeLessThanOrEqual(250);
   await page.getByRole("button", { name: "Stop camera & clear session", exact: true }).click();
 });
 
@@ -906,13 +906,35 @@ test("D0 full-hand authority pauses conflicts without changing image coordinates
   await configure(page, { model: "INDEX" });
   await sameSourceTracking();
   await record("one-wrong-digit-return-pauses-then-fallback-recovers-without-reset");
-  await configure(page, { model: "OPEN" });
+  const savedBeforeSwitch = await page.evaluate(() => {
+    const saved = Number(document.body.textContent?.match(/(\d+) of 5 targets saved\./)?.[1] ?? -1);
+    (window as unknown as { reachIndexImageFixture: { model: string } }).reachIndexImageFixture.model = "OPEN";
+    return saved;
+  });
+  expect(savedBeforeSwitch).toBeGreaterThanOrEqual(1);
   await blocked("FULL_HAND_CONTRARY_CONFIRMED");
-  await expect(page.getByLabel("Target 2 of 5", { exact: true })).toBeVisible();
-  await expect(page.getByText(/1 of 5 targets saved/)).toBeVisible();
+  const savedBeforeContrary = await page.evaluate(() => ({
+    targetLabel: document.querySelector('[aria-label^="Target "][aria-label$=" of 5"]')?.getAttribute("aria-label"),
+    saved: Number(document.body.textContent?.match(/(\d+) of 5 targets saved\./)?.[1] ?? -1),
+    acquisition: document.querySelector<HTMLProgressElement>('[aria-label="Current target acquisition"]')?.value,
+  }));
+  expect(savedBeforeContrary.saved).toBeGreaterThanOrEqual(savedBeforeSwitch);
+  expect(savedBeforeContrary.targetLabel).toBe(`Target ${savedBeforeContrary.saved + 1} of 5`);
+  expect(Number.isFinite(savedBeforeContrary.acquisition)).toBe(true);
+  await page.waitForTimeout(400);
+  await expect(page.getByLabel(savedBeforeContrary.targetLabel!, { exact: true })).toBeVisible();
+  await expect(page.getByText(`${savedBeforeContrary.saved} of 5 targets saved.`, { exact: false })).toBeVisible();
+  const contraryProgress = Number(
+    await page.getByLabel("Current target acquisition", { exact: true }).getAttribute("value"),
+  );
+  expect(Number.isFinite(contraryProgress)).toBe(true);
+  expect(contraryProgress).toBeLessThanOrEqual(savedBeforeContrary.acquisition!);
+  await expect(root(page)).toHaveAttribute("data-image-track-generation", generation!);
+  await expect(root(page)).not.toHaveAttribute("data-reach-readiness", "READY");
+  await expect(page.getByRole("alert", { name: "Setup ended", exact: true })).toHaveCount(0);
   await record("sustained-compatible-full-hand-negative-confirms-before-latching");
   await page.screenshot({ path: testInfo.outputPath("D0-full-hand-contrary-saved-target.png"), fullPage: false });
-  await expect(page.getByLabel("Target 2 of 5", { exact: true })).toBeVisible();
+  await expect(page.getByLabel(savedBeforeContrary.targetLabel!, { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Pause calibration", exact: true }).click();
   const beforePreviewMove = Number(await root(page).getAttribute("data-image-capture-time"));
   await configure(page, { x: 126 });
@@ -932,8 +954,8 @@ test("D0 full-hand authority pauses conflicts without changing image coordinates
   await record("partial-index-does-not-erase-visible-contrary");
   await configure(page, { model: "FULL", x: 120 });
   await sameSourceTracking("FULL_HAND_POINT_CONFIRMED");
-  await expect(page.getByLabel("Target 2 of 5", { exact: true })).toBeVisible();
-  await expect(page.getByText(/1 of 5 targets saved/)).toBeVisible();
+  await expect(page.getByLabel(savedBeforeContrary.targetLabel!, { exact: true })).toBeVisible();
+  await expect(page.getByText(`${savedBeforeContrary.saved} of 5 targets saved.`, { exact: false })).toBeVisible();
   await expect(page.getByRole("alert", { name: "Setup ended", exact: true })).toHaveCount(0);
   await record("compatible-full-hand-recovers-same-image-position");
   await page.screenshot({ path: testInfo.outputPath("D0-full-hand-confirmed-image-position.png"), fullPage: false });
@@ -969,7 +991,13 @@ test("D0 full-hand authority pauses conflicts without changing image coordinates
   await record("explicit-new-hint-allowed-only-when-full-hand-unavailable");
   await testInfo.attach("D0-index-image-authority-metrics.json", {
     body: JSON.stringify(
-      { evidence: "PUBLIC_ANALYTIC_CAMERA_AND_FAKE_FULL_HAND_MODEL", singleWrongReturn, phases },
+      {
+        evidence: "PUBLIC_ANALYTIC_CAMERA_AND_FAKE_FULL_HAND_MODEL",
+        singleWrongReturn,
+        savedBeforeSwitch,
+        savedBeforeContrary,
+        phases,
+      },
       null,
       2,
     ),
