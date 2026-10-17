@@ -3,7 +3,7 @@ title: Parallax Spatial Studio Creator guide
 audience: creators
 status: current
 canonical_for: parallax-spatial-studio-guide
-last_reviewed: 2026-10-12
+last_reviewed: 2026-10-14
 ---
 
 # Build a spatial experience
@@ -52,3 +52,11 @@ Players can decline optional feedback and continue normally. The consent explana
 Open Field Quality for an owned definition. Simulation and physical reports appear separately. Review eligible feedback against the current draft, make a bounded recipe adjustment and acknowledge Creator Reviewed before Calibrated. Changing the recipe invalidates the old acknowledgement. A stale or concurrent review must be refreshed. Verified requires later independent eligible reports for the calibrated released version; it is not a physical AR certification label.
 
 Create a new immutable Spatial Library version and attach that exact version before the Chronicle's normal validation, Suite and publication review. Earlier published versions remain unchanged. Feedback withdrawal deletes the original retained report; already published reviewed recipes may remain without that report.
+
+## Reuse one Environment across Scenes
+
+In the SC-01 candidate, the strip above the canvas identifies the active Scene and its pinned Environment revision. Open **Manage Scenes** to create an Environment, create independent Scenes from its baseline, duplicate a Scene, rename, archive, save, preview or compare. The gallery lists the Scenes belonging to the selected Environment. Choose a saved or built-in Environment, create a new one, or import reviewed reconstruction metadata. Duplication from another Scene preserves that source Scene’s Environment. Each Scene keeps its own objects, transforms, visibility and behaviors. The context strip marks unsaved Scene changes; **Scene identity & immutable versions** reveals saved identity and pinned revision details.
+
+Use **Edit Environment** for shared room dimensions, furniture, architecture and semantic features. Built-in Environments open as owned copies. Saving creates a new Environment revision; existing Scenes keep their prior pins. Open **Review Environment impact**, inspect the changes and affected placements, then update each working Scene deliberately. Undo restores the previous association. Released Scene versions and existing Chronicle bindings remain unchanged.
+
+Environment editing has its own Undo/Redo and explicit Save/Discard controls. Scene edits use the ordinary Studio history and save queue. The [SC-01 implementation record](SC_01_Environment_and_Scene_Manager.md) tracks browser and integration qualification; synthetic previews do not establish physical room or AR accuracy.

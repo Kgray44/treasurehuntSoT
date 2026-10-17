@@ -334,6 +334,8 @@ export function editSpatialDraft(input: SpatialDraft, edit: Edit): SpatialDraft 
       );
       studio.assets = studio.assets.filter((a) => a.entityId !== entity.id);
       studio.visionReferences = studio.visionReferences.filter((a) => a.entityId !== entity.id);
+      if (next.content.environmentPlacements)
+        next.content.environmentPlacements = next.content.environmentPlacements.filter((p) => p.entityId !== entity.id);
       if (next.content.adaptive) {
         const adaptive = next.content.adaptive;
         adaptive.recipes = adaptive.recipes.filter((r) => r.entityId !== entity.id);
