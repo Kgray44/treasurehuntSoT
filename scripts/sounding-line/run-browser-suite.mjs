@@ -31,6 +31,14 @@ import {
   runBrowserDependencyProbe,
 } from "./experience-dependency-readiness.mjs";
 
+import {
+  requirePosttechnicalDiagnosticSuite,
+  assertPosttechnicalSources,
+  capturePosttechnicalSuiteEvidence,
+  scrubPosttechnicalSuiteEnvironment,
+  POSTTECHNICAL_POLICY,
+} from "./replay-posttechnical-suite.mjs";
+
 const separator = process.argv.indexOf("--");
 const options = Object.fromEntries(
   process.argv.slice(2, separator === -1 ? undefined : separator).reduce((pairs, value, index, values) => {
@@ -52,6 +60,18 @@ if (
 )
   throw new Error("SOUNDING_LINE_SUITE_FIXTURE_CONTRACT_UNSATISFIED:INVALID_PROFILE_INVOCATION");
 
+// This distinct finite route validates its own private permission before any
+// existing consumer selector. Invalid requests never fall through to old grants.
+const posttechnical = options["posttechnical-diagnostic"]
+  ? await requirePosttechnicalDiagnosticSuite({
+      root,
+      candidateSha,
+      options,
+      browserTests,
+      argv: process.argv.slice(2),
+    })
+  : null;
+
 // This exact one-case diagnostic grant is independent of the normal six-file
 // technical allowance. Its create-only launch reservation precedes all setup.
 const readiness = options["r13-dependency-readiness"]
@@ -64,7 +84,7 @@ const r12Technical = options["r12-technical-proof"]
   ? await requireR12TechnicalSuite({ root, candidateSha, options, browserTests, argv: process.argv.slice(2) })
   : null;
 const exceptionPlan =
-  r12Technical || r13Technical || readiness ? null : await exceptionSuitePlan({ root, candidateSha });
+  r12Technical || r13Technical || readiness || posttechnical ? null : await exceptionSuitePlan({ root, candidateSha });
 if (exceptionPlan) {
   if (options["experience-plan"]) {
     const guardedPlan =
@@ -101,6 +121,7 @@ const receiptPaths = browserReceiptPaths(root);
 const environment = r13Technical
   ? await r13CaseProfileContext({ root, marker: r13Technical })
   : profileEnvironment({ profileId: profile.id, candidateSha, databaseUrl });
+if (posttechnical) Object.assign(environment, posttechnical.environment);
 if (readiness) sealReadinessProfileContext({ attempt: readiness, profileEnvironment: environment });
 const setupSteps = [];
 let setupStatus = "FAIL";
@@ -155,6 +176,7 @@ try {
       // by readiness before the single product case can launch.
       await r13CaseProfileContext({ root, marker: r13Technical });
     }
+    if (posttechnical) assertPosttechnicalSources(posttechnical.marker);
     run(
       process.execPath,
       [
@@ -164,6 +186,7 @@ try {
         "--",
         ...browserTests,
         ...(profile.browserArguments ?? []),
+        ...(posttechnical?.browserArguments ?? []),
         "--project",
         profile.browserProject ?? "chromium",
       ],
@@ -186,6 +209,7 @@ try {
   );
   throw error;
 } finally {
+  if (posttechnical) capturePosttechnicalSuiteEvidence({ context: posttechnical, root, status: setupStatus });
   if (readiness)
     await writeFile(
       readiness.paths.setupReceipt,
@@ -275,6 +299,13 @@ function run(command, argumentsList, env) {
     windowsHide: true,
     ...(readiness
       ? { timeout: argumentsList[0] === "node_modules/next/dist/bin/next" ? 900000 : 120000, killSignal: "SIGTERM" }
+      : {}),
+    ...(posttechnical
+      ? {
+          env: scrubPosttechnicalSuiteEnvironment({ ...process.env, ...env }),
+          timeout: POSTTECHNICAL_POLICY.commandMs,
+          killSignal: "SIGTERM",
+        }
       : {}),
   });
   if (readiness) {

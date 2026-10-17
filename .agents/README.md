@@ -19,6 +19,7 @@ not authorize restarting a completed phase.
 - [Sounding Line replay failure diagnostic repair](replay-failure-diagnostics.md)
 - [Replay admission Git failure observations](replay-admission-git-diagnostics.md)
 - [Crossdeck ordinary6 finite hosted source diagnostic](crossdeck-ordinary6-source-diagnostic.md)
+- [Crossdeck ordinary6 finite posttechnical diagnostic](crossdeck-ordinary6-posttechnical-diagnostic.md)
 - [Experience context setup replay repair context](experience-context-setup-repair.md)
 - [Crossdeck finite final-verification implementation context](crossdeck-final-verification-proposal.md)
 - [Crossdeck R2 authority amendment context](crossdeck-r2-final-verification.md)
