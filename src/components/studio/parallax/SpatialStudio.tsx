@@ -4085,7 +4085,7 @@ export function SpatialStudio({
                             ? "Unapplied proposal"
                             : "Scene overview"}
             </small>
-            <strong>
+            <h3>
               {activeInspectorView === "SCENE"
                 ? draft.content.title
                 : groupActive
@@ -4097,7 +4097,7 @@ export function SpatialStudio({
                       : roomEditing
                         ? (draft.content.studio?.environment?.name ?? "Room features")
                         : (currentEntity?.name ?? previewEntity?.name ?? draft.content.title)}
-            </strong>
+            </h3>
             <p>
               {activeInspectorView === "CONTEXT"
                 ? selectedRoomFeature || roomEditing

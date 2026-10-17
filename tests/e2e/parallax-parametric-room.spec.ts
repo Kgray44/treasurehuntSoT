@@ -47,6 +47,7 @@ test("Creator adds and rebuilds actual furniture, protects a bound desk, correct
   const canvas = page.getByRole("region", { name: "Spatial canvas", exact: true });
   const host = canvas.locator('[data-renderer="READY"]');
   await expect(host.locator("canvas")).toBeVisible();
+  await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("ENGINEERING");
   const receipt = async () =>
     JSON.parse((await host.getAttribute("data-room-receipt"))!) as {
       id: string;
@@ -58,9 +59,10 @@ test("Creator adds and rebuilds actual furniture, protects a bound desk, correct
     (JSON.parse((await host.getAttribute("data-scene-receipt"))!) as { position: number[] }[])[0].position[1];
   await page.getByRole("button", { name: "Edit room features", exact: true }).click();
   const editor = page.getByRole("region", { name: "Room feature editor", exact: true });
-  await editor.getByText("Add room features", { exact: true }).click();
-  await editor.getByLabel("New room feature type", { exact: true }).selectOption("CHAIR");
-  await editor.getByRole("button", { name: "Add room feature", exact: true }).click();
+  await page.getByRole("button", { name: "Open spatial context", exact: true }).click();
+  const spatialContext = page.getByRole("region", { name: "Room spatial context", exact: true });
+  await spatialContext.getByLabel("New room feature type", { exact: true }).selectOption("CHAIR");
+  await spatialContext.getByRole("button", { name: "Add room feature", exact: true }).click();
   const featureId = await editor.getByLabel("Room feature", { exact: true }).inputValue();
   const partCount = async () => (await receipt()).find((r) => r.id === featureId)?.partIds.length ?? 0;
   await expect.poll(partCount).toBe(6);
@@ -71,7 +73,6 @@ test("Creator adds and rebuilds actual furniture, protects a bound desk, correct
   await editor.getByLabel("Feature name", { exact: true }).fill("Reading seat");
   await editor.getByLabel("Feature name", { exact: true }).press("Tab");
   await editor.getByLabel("Room feature classification", { exact: true }).selectOption("SOFA");
-  await editor.getByText("Correct or remove this feature", { exact: true }).click();
   await editor.getByRole("button", { name: "Rebuild generic feature shape", exact: true }).click();
   await expect.poll(partCount).toBe(9);
   await editor.getByLabel("Feature width (m)", { exact: true }).fill("1.5");
@@ -127,6 +128,8 @@ test("Creator adds and rebuilds actual furniture, protects a bound desk, correct
   await canvas.getByRole("button", { name: "Reset view", exact: true }).click();
   await page.screenshot({ path: `${root}/parametric-restored-room.png` });
   await page.setViewportSize({ width: 390, height: 844 });
+  if (!(await page.getByRole("button", { name: "Edit room features", exact: true }).isVisible()))
+    await page.getByText("View & audio", { exact: true }).click();
   await page.getByRole("button", { name: "Edit room features", exact: true }).click();
   await editor.getByLabel("Room feature", { exact: true }).selectOption(featureId);
   await editor.getByLabel("Feature name", { exact: true }).focus();
@@ -139,6 +142,8 @@ test("Creator adds and rebuilds actual furniture, protects a bound desk, correct
   await page.reload();
   await expect(host.locator("canvas")).toBeVisible();
   expect((await listSpatialItems(account.id))[0].draft).toEqual(phoneSaved);
+  if (!(await page.getByRole("button", { name: "Edit room features", exact: true }).isVisible()))
+    await page.getByText("View & audio", { exact: true }).click();
   await page.getByRole("button", { name: "Edit room features", exact: true }).click();
   await editor.getByLabel("Room feature", { exact: true }).selectOption(featureId);
   await expect(editor.getByLabel("Feature name", { exact: true })).toHaveValue("Window reading sofa");

@@ -1,4 +1,5 @@
-import { expect, type Page } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
+import { writeFile } from "node:fs/promises";
 
 /** Open an owned fixture through the actual Library; this never changes its save membership. */
 export async function openOwnedSceneFromCurrentLibrary(
@@ -39,5 +40,10 @@ export async function closeCurrentLibrary(page: Page) {
 /** Persist the working draft through its actual command, without creating Library membership. */
 export async function saveCurrentWorkingDraft(page: Page) {
   await page.getByRole("heading", { name: "Parallax", exact: true }).click({ button: "right" });
-  await page.getByRole("menuitem", { name: "Save draft", exact: true }).click();
+  try {
+    await page.getByRole("menuitem", { name: "Save draft", exact: true }).click();
+  } catch (error) {
+    await writeFile(test.info().outputPath("header-menu-events.json"), JSON.stringify(await page.evaluate(() => (window as typeof window & { __parallaxMenuEvents?: unknown[] }).__parallaxMenuEvents ?? []), null, 2));
+    throw error;
+  }
 }

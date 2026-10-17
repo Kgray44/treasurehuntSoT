@@ -59,7 +59,9 @@ test("Environment zones use real gizmos, retain edits and deletion, and disappea
   await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("ENGINEERING");
   await page.getByRole("button", { name: "Edit room features", exact: true }).click();
   const editor = page.getByRole("region", { name: "Room feature editor", exact: true });
-  await editor.getByRole("button", { name: /Exclusion zones ·/ }).click();
+  const spatialContext = page.getByRole("region", { name: "Room spatial context", exact: true });
+  await page.getByRole("button", { name: "Open spatial context", exact: true }).click();
+  await spatialContext.getByRole("button", { name: /Exclusion zones ·/ }).click();
   const receipt = async () =>
     JSON.parse((await host.getAttribute("data-room-receipt"))!) as { id: string; min: number[]; max: number[] }[];
   const save = async () => {
@@ -80,7 +82,7 @@ test("Environment zones use real gizmos, retain edits and deletion, and disappea
   await expect.poll(async () => (await receipt()).some((entry) => entry.id === automatic.id)).toBe(true);
   await page.screenshot({ path: `${root}/exclusion-automatic.png` });
 
-  await editor.getByRole("button", { name: "Add exclusion zone", exact: true }).click();
+  await spatialContext.getByRole("button", { name: "Add exclusion zone", exact: true }).click();
   await editor.getByRole("textbox", { name: "Feature name", exact: true }).fill("Reserved workspace");
   await editor.getByRole("textbox", { name: "Feature name", exact: true }).press("Tab");
   const change = async (name: string, value: string) => {
@@ -131,7 +133,6 @@ test("Environment zones use real gizmos, retain edits and deletion, and disappea
   await expect(editor.getByRole("spinbutton", { name: "Feature width (m)", exact: true })).toHaveValue("0.7");
   await expect(editor.getByRole("spinbutton", { name: "Feature rotation (degrees)", exact: true })).toHaveValue("35");
   await editor.getByRole("combobox", { name: "Room feature", exact: true }).selectOption(automatic.id);
-  await editor.getByRole("button", { name: "Correct or remove this feature", exact: true }).click();
   await editor.getByRole("button", { name: "Remove room feature", exact: true }).click();
   await save();
   expect((await currentRoom()).features.some((feature) => feature.id === automatic.id)).toBe(false);
@@ -157,7 +158,7 @@ test("Environment zones use real gizmos, retain edits and deletion, and disappea
   await expect.poll(async () => (await receipt()).some((entry) => entry.id === manual.id)).toBe(true);
   await page.screenshot({ path: `${root}/exclusion-light-reduced-motion.png` });
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.getByRole("button", { name: "Open contextual Inspector", exact: true }).click();
+  await page.getByRole("button", { name: "Open object properties", exact: true }).click();
   await expect(
     page
       .getByRole("complementary", { name: "Spatial inspector", exact: true })

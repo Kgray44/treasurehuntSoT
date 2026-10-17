@@ -3582,8 +3582,11 @@
   letter-spacing: 0.09em;
   text-transform: uppercase;
 }
-.inspectorHero > strong {
+.inspectorHero > h3 {
   display: block;
+  margin: 0;
+  font-family: inherit;
+  font-weight: 700;
   color: var(--studio-text);
   font-size: 17px;
   line-height: 1.25;
