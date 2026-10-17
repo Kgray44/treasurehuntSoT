@@ -8,6 +8,8 @@ last_reviewed: 2026-10-17
 
 # Changelog
 
+- Parallax source `3dedbb9cd10e` fixes a context-menu opener escaping into a focusable outer page wrapper, restores selected-item heading semantics and migrates three remaining Inspector test entries. All 208 original criteria remain; [4/4 focused and 11/11 combined local production-browser cases pass](Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/README.md), with fresh 370 px phone canvas evidence and independent local rendered review. Earlier failures remain retained; protected and physical AR acceptance are separate.
+
 - Parallax local correction preserves a 370 px phone canvas, updates the cinematic/construction journeys to the current Inspector and adopts the exact SC-00C Library card menu handoff. Separate local rendered reviews cover phone layout and Library menus. [All original failures and follow-up results](Development_Docs/Projects/Project_Parallax/evidence/library-entry-repair-20261017/README.md) remain visible: combined uninstrumented source is 7/11, diagnostic source is 8/11; header-menu reliability, remaining Inspector migrations, physical Safari and protected qualification are still open.
 
 - SC-00B current contextual Inspector source `6bea2130` has source-bound seven-journey production-browser, Assistant preview and eight-context local diagnostic records. The owner accepted this exact-source visual/usability packet. Root now preserves its original artifacts and approval; protected integration remains pending. The [current review](Development_Docs/Projects/Project_Parallax/SC00B_Combined_Inspector_Review_20261015.md#current-contextual-source-review) distinguishes local diagnostic fields from human approval.

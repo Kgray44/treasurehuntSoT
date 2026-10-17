@@ -1,0 +1,509 @@
+{
+  "schemaVersion": 1,
+  "reviewType": "independent-local-rendered-experience-review-addendum",
+  "reviewerContext": "isolated subagent /root/isolated_phone_review; separate current-source Library addendum",
+  "source": "3dedbb9cd10e548d10d58bddef6d48c1823f54e5",
+  "createdAt": "2026-10-17T16:06:53.293111+00:00",
+  "objective": "Creator opens bounded readable Library menus, inserts through normal command with Undo, cannot Archive active Scene, restores focus with Escape and dismisses on deliberate Library scroll, and returns from expanded Light/reduced-motion phone Library to an actually visible explicit placement preview without silent application.",
+  "scope": "Current-source Library consumer only. Previous 41b/673 review acceptance is not rebound; prior four-path 3ded review is unchanged. The combined eleven-case result is aggregate supporting evidence only.",
+  "reviewOrder": "All four current PNGs and complete-duration current Library video samples were inspected before layout/run/test receipts. No source or builder rationale was inspected.",
+  "result": "NO_ACTIONABLE_FINDING_WITHIN_FINITE_REVIEW_SCOPE",
+  "actionableFindings": [],
+  "inspectedMedia": [
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160259-9774ee39\\originals\\sc00c-media\\built-in-context-desktop.png",
+      "sha256": "6c05fcc8a1a033437e4cc32c7800cfedeef45c81d4aa7538eb84a2415670647f"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160259-9774ee39\\originals\\sc00c-media\\context-placement-preview-phone.png",
+      "sha256": "fdfbf6e93a2fb05a60f8b15d2af93857613c4435f8534d3aaa6c1f63d43cbf21"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160259-9774ee39\\originals\\sc00c-media\\current-scene-context-desktop.png",
+      "sha256": "7de5853c57928647ad508e1c805106e8d16ffcd4c4f092963277408f4b8f1e35"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160259-9774ee39\\originals\\sc00c-media\\expanded-phone-context-light-reduced.png",
+      "sha256": "143300972efb5deb5aa1f50e51b486fce49c6e1b3c17a15dbb6d2ca4db82573d"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160259-9774ee39\\originals\\test-results\\parallax-sc00c-library-con-f5869-oard-focus-and-phone-bounds-chromium\\video.webm",
+      "sha256": "02b5263111f02ff25825adccd8fe8fdf990c6b7f73154e9e09deffbeb07d1edd"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160259-9774ee39\\originals\\run-artifacts\\animation-phone-layout.json",
+      "sha256": "2dfd0496e996522f970650c4d6ac9c945507aaae6e741485dab726a82613bea7"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160259-9774ee39\\originals\\run-artifacts\\run.json",
+      "sha256": "c59c54ebd9d8b7d203c4f729dae78c074655b045e75f38a2e7daa483cf6ba521"
+    },
+    {
+      "path": "D:\\CodexTemp\\parallax-cohort-prep-20261016\\local-entry-proof-20261017T160259-9774ee39\\playwright-results.json",
+      "sha256": "5fda3a2e627e28cd5463e75636f27b74ec8df2620e3bfc3ec37bf3a9f3b7c166"
+    }
+  ],
+  "samplingCoverage": {
+    "fps": 25,
+    "durationSeconds": 6.92,
+    "decodedFrames": 173,
+    "sampledFrames": [
+      1,
+      3,
+      5,
+      7,
+      9,
+      11,
+      13,
+      15,
+      17,
+      19,
+      21,
+      23,
+      25,
+      27,
+      29,
+      31,
+      33,
+      35,
+      37,
+      39,
+      41,
+      43,
+      45,
+      47,
+      49,
+      51,
+      53,
+      55,
+      57,
+      59,
+      61,
+      63,
+      65,
+      67,
+      69,
+      71,
+      73,
+      75,
+      77,
+      79,
+      81,
+      83,
+      85,
+      87,
+      89,
+      91,
+      93,
+      95,
+      97,
+      99,
+      101,
+      103,
+      105,
+      107,
+      109,
+      111,
+      113,
+      115,
+      117,
+      119,
+      121,
+      123,
+      125,
+      127,
+      129,
+      131,
+      133,
+      135,
+      137,
+      139,
+      141,
+      143,
+      145,
+      147,
+      149,
+      151,
+      153,
+      155,
+      157,
+      159,
+      161,
+      163,
+      165,
+      167,
+      169,
+      171,
+      173
+    ],
+    "sampledTimesSeconds": [
+      0.0,
+      0.08,
+      0.16,
+      0.24,
+      0.32,
+      0.4,
+      0.48,
+      0.56,
+      0.64,
+      0.72,
+      0.8,
+      0.88,
+      0.96,
+      1.04,
+      1.12,
+      1.2,
+      1.28,
+      1.36,
+      1.44,
+      1.52,
+      1.6,
+      1.68,
+      1.76,
+      1.84,
+      1.92,
+      2.0,
+      2.08,
+      2.16,
+      2.24,
+      2.32,
+      2.4,
+      2.48,
+      2.56,
+      2.64,
+      2.72,
+      2.8,
+      2.88,
+      2.96,
+      3.04,
+      3.12,
+      3.2,
+      3.28,
+      3.36,
+      3.44,
+      3.52,
+      3.6,
+      3.68,
+      3.76,
+      3.84,
+      3.92,
+      4.0,
+      4.08,
+      4.16,
+      4.24,
+      4.32,
+      4.4,
+      4.48,
+      4.56,
+      4.64,
+      4.72,
+      4.8,
+      4.88,
+      4.96,
+      5.04,
+      5.12,
+      5.2,
+      5.28,
+      5.36,
+      5.44,
+      5.52,
+      5.6,
+      5.68,
+      5.76,
+      5.84,
+      5.92,
+      6.0,
+      6.08,
+      6.16,
+      6.24,
+      6.32,
+      6.4,
+      6.48,
+      6.56,
+      6.64,
+      6.72,
+      6.8,
+      6.88
+    ],
+    "cadenceSeconds": 0.08,
+    "sampleCount": 87
+  },
+  "samplingMethod": "Decoded all 173 frames of the 25fps 6.92-second recording. Visually inspected every second frame, 87 samples at 0.08-second cadence from 0.00 to 6.88s inclusive; both endpoints included. Native-size PNGs supply full-size text detail.",
+  "dimensionObservations": [
+    {
+      "dimension": "composition",
+      "observation": "Current desktop menus sit adjacent to their Library cards and remain within the bottom edge. The expanded phone Library presents a compact menu directly below Writing desk. The phone return shows room geometry and a pending placement prompt inside the Scene viewport.",
+      "evidence": [
+        "built-in-context-desktop.png",
+        "current-scene-context-desktop.png",
+        "expanded-phone-context-light-reduced.png",
+        "context-placement-preview-phone.png"
+      ],
+      "unobserved": "Other anchor positions, arbitrary action counts, and alternate overlay combinations are not covered.",
+      "actionableFinding": false
+    },
+    {
+      "dimension": "hierarchy",
+      "observation": "Card title leads each menu, followed by Preview details and the contextual insertion/place or disabled Archive action. On phone the placement prompt names Writing desk before surface instructions and Floor/Cancel controls. The menu therefore identifies its object before asking for an action.",
+      "evidence": [
+        "built-in-context-desktop.png",
+        "expanded-phone-context-light-reduced.png",
+        "context-placement-preview-phone.png"
+      ],
+      "unobserved": "Long or translated names and other Library entity types are unobserved.",
+      "actionableFinding": false
+    },
+    {
+      "dimension": "typography",
+      "observation": "Menu titles, action text, and placement instructions are readable in the native PNGs. Writing desk and Context menu working Scene fit without text overlap. The phone prompt wraps instructions into bounded lines.",
+      "evidence": [
+        "expanded-phone-context-light-reduced.png",
+        "current-scene-context-desktop.png",
+        "context-placement-preview-phone.png"
+      ],
+      "unobserved": "No text zoom, localization, fallback-font, or quantitative readability assessment.",
+      "actionableFinding": false
+    },
+    {
+      "dimension": "spacing",
+      "observation": "The current phone menu separates its title and two action rows with visible padding; the focused row outline stays inside the menu. Floor and Cancel placement remain separated and fit the prompt. Desktop menu rows remain fully visible above the screen edge.",
+      "evidence": [
+        "expanded-phone-context-light-reduced.png",
+        "context-placement-preview-phone.png",
+        "built-in-context-desktop.png"
+      ],
+      "unobserved": "Physical touch comfort, enlarged fonts, and every edge anchor were not tested.",
+      "actionableFinding": false
+    },
+    {
+      "dimension": "controls",
+      "observation": "Current asset menus expose Preview details with Add to scene or Place in Scene. Current-Scene Archive is visibly disabled. The recorded desktop sequence changes selection after insertion and reaches the missing-selection state after Undo. Phone placement explicitly waits for a surface choice and offers cancellation.",
+      "evidence": [
+        "built-in-context-desktop.png",
+        "current-scene-context-desktop.png",
+        "expanded-phone-context-light-reduced.png",
+        "context-placement-preview-phone.png",
+        "video-sheet2.jpg",
+        "video-sheet3.jpg"
+      ],
+      "unobserved": "Pixels do not prove canonical command internals, disabled-event handling, actual touch success, or final placement/cancellation semantics.",
+      "actionableFinding": false
+    },
+    {
+      "dimension": "contrast",
+      "observation": "The dark desktop menus maintain readable light action text, while Light phone menus show dark text with a strong blue/teal focused-row outline. Archive appears muted relative to Preview details. Prompt text remains distinct from its white surface and room behind it.",
+      "evidence": [
+        "current-scene-context-desktop.png",
+        "expanded-phone-context-light-reduced.png",
+        "context-placement-preview-phone.png"
+      ],
+      "unobserved": "No numerical contrast computation, color-vision simulation, or brightness study.",
+      "actionableFinding": false
+    },
+    {
+      "dimension": "consistency",
+      "observation": "The current menus preserve Studio panel borders, rounded corners, icon alignment, and existing dark/Light palettes. Expanded phone Library closes back into the same Light Scene workspace with the selected-object strip and compact toolbar intact.",
+      "evidence": [
+        "built-in-context-desktop.png",
+        "expanded-phone-context-light-reduced.png",
+        "context-placement-preview-phone.png"
+      ],
+      "unobserved": "This is not a whole-Library or whole-Studio design audit.",
+      "actionableFinding": false
+    },
+    {
+      "dimension": "states",
+      "observation": "Current-source evidence shows loaded card, open menu, focused row, disabled Archive, inserted selection, Undo-related missing selection, phone search loading, expanded Library, and explicit pending placement over rendered geometry. No silent final placement is visible when returning from the expanded Library.",
+      "evidence": [
+        "current-scene-context-desktop.png",
+        "expanded-phone-context-light-reduced.png",
+        "context-placement-preview-phone.png",
+        "video-sheet2.jpg",
+        "video-sheet3.jpg",
+        "video-sheet4.jpg",
+        "video-sheet5.jpg"
+      ],
+      "unobserved": "Failed search/insertion, permissions errors, item disappearance during menu interaction, and save/renderer failures are not supplied.",
+      "actionableFinding": false
+    },
+    {
+      "dimension": "responsive",
+      "observation": "At 390x844 the expanded phone menu and both actions are fully visible. Placement returns to a rendered room with a prompt bounded by the central canvas. The fresh same-source layout receipt reports canvas 294x370, selection card 294x48.5, and zero horizontal document overflow. This is current 3ded evidence, not a rebound 41b receipt.",
+      "evidence": [
+        "expanded-phone-context-light-reduced.png",
+        "context-placement-preview-phone.png",
+        "animation-phone-layout.json",
+        "video-sheet4.jpg",
+        "video-sheet5.jpg"
+      ],
+      "unobserved": "The measurement is from the current animation phone path, not a live measurement of every Library state. No physical Safari/iPhone, landscape, onscreen keyboard, dynamic chrome, or broader breakpoint qualification.",
+      "actionableFinding": false
+    },
+    {
+      "dimension": "keyboard",
+      "observation": "The phone menu visibly has a focused Preview details row. The placement prompt offers a keyboard surface-choice path. The matching current Chromium Library case passes and names keyboard focus in its title, providing aggregate supporting coverage.",
+      "evidence": [
+        "expanded-phone-context-light-reduced.png",
+        "context-placement-preview-phone.png",
+        "playwright-results.json: parallax-sc00c-library-context-menu.spec.ts"
+      ],
+      "unobserved": "The reviewer did not inspect test source or input events, so full traversal/activation, precise Escape semantics, accessible names, and all-keyboard completion are not independently established.",
+      "actionableFinding": false
+    },
+    {
+      "dimension": "focus",
+      "observation": "The current phone menu renders a strong focus outline around Preview details. Around 3.4-3.7s, desktop samples show the active Scene card outline and menu/dismissed states. The phone search field also shows a distinct active state before opening its menu.",
+      "evidence": [
+        "expanded-phone-context-light-reduced.png",
+        "video-sheet3.jpg",
+        "video-sheet4.jpg"
+      ],
+      "unobserved": "No input-event overlay identifies the exact key or focus-restoration cause. Tab order, Escape-to-trigger restoration, focus traps, and post-cancel focus are limited to aggregate test support.",
+      "actionableFinding": false
+    },
+    {
+      "dimension": "feedback",
+      "observation": "Each menu names its target. Muted Archive communicates an unavailable current-Scene operation. The post-Undo inspector explains missing selection and offers a remaining item/Scene-settings route. The phone Place Writing desk prompt communicates pending placement and shows Cancel placement.",
+      "evidence": [
+        "current-scene-context-desktop.png",
+        "context-placement-preview-phone.png",
+        "video-sheet2.jpg"
+      ],
+      "unobserved": "Screen-reader announcements, failure notifications, and an accessible explanation for disabled Archive are unobserved.",
+      "actionableFinding": false
+    },
+    {
+      "dimension": "motion",
+      "observation": "The entire 6.92s current recording was inspected at 0.08s cadence, including initial load, menu open/dismiss, insert/Undo state changes, Light phone resize, expanded Library/search/menu, and return to visible pending placement. The final phone state remains settled and readable in the supplied reduced-motion segment.",
+      "evidence": [
+        "video-sheet1.jpg",
+        "video-sheet2.jpg",
+        "video-sheet3.jpg",
+        "video-sheet4.jpg",
+        "video-sheet5.jpg",
+        "expanded-phone-context-light-reduced.png",
+        "context-placement-preview-phone.png"
+      ],
+      "unobserved": "Every-other-frame sampling cannot exclude sub-80ms artifacts or prove smoothness, physical-device performance, subjective motion comfort, or OS reduced-motion compliance.",
+      "actionableFinding": false
+    },
+    {
+      "dimension": "continuity",
+      "observation": "The desktop remains in Context menu working Scene through asset and current-Scene menus. Expanded phone Library returns to the same rendered room with Floating Compass still identified and an explicit Writing desk placement prompt. This preserves visible Scene context while waiting for a placement choice.",
+      "evidence": [
+        "built-in-context-desktop.png",
+        "current-scene-context-desktop.png",
+        "context-placement-preview-phone.png",
+        "video-sheet5.jpg"
+      ],
+      "unobserved": "The footage alone cannot identify deliberate-scroll causality, exact command history state, cancellation persistence, or database continuity.",
+      "actionableFinding": false
+    },
+    {
+      "dimension": "complexity",
+      "observation": "Menus expose only the relevant details/context action, and the active Scene exposes an unavailable Archive state rather than an enabled destructive step. The phone return asks for a floor surface with cancellation without introducing coordinate fields or another editor.",
+      "evidence": [
+        "built-in-context-desktop.png",
+        "current-scene-context-desktop.png",
+        "expanded-phone-context-light-reduced.png",
+        "context-placement-preview-phone.png"
+      ],
+      "unobserved": "Novice discoverability, all card categories, and unrelated Studio complexity are outside the finite review.",
+      "actionableFinding": false
+    },
+    {
+      "dimension": "role-outcomes",
+      "observation": "The current synthetic Creator path visually reaches readable bounded desktop/phone Library menus, visible active-Scene Archive protection, insertion/Undo states, and explicit phone placement over an actually rendered room. The current Library test passes; the combined local result file reports eleven passed with no skipped results. Only this Library consumer receives rendered critique here.",
+      "evidence": [
+        "built-in-context-desktop.png",
+        "current-scene-context-desktop.png",
+        "expanded-phone-context-light-reduced.png",
+        "context-placement-preview-phone.png",
+        "video-sheet2.jpg",
+        "video-sheet5.jpg",
+        "playwright-results.json"
+      ],
+      "unobserved": "Local critique/test outcomes do not confer trusted capture, protected qualification, owner acceptance, full keyboard success, physical-device proof, or whole-Studio acceptance.",
+      "actionableFinding": false
+    },
+    {
+      "dimension": "fallbacks",
+      "observation": "Pending placement supplies visible Cancel placement and a Floor surface option. The Undo-related missing-selection state explains the absent item and offers remaining selection/Scene-settings paths. Current-Scene protection avoids presenting Archive as an enabled operation.",
+      "evidence": [
+        "context-placement-preview-phone.png",
+        "current-scene-context-desktop.png",
+        "video-sheet2.jpg"
+      ],
+      "unobserved": "Renderer failure, offline behavior, absent surface, retry failure, assistive fallback, and cancel completion were not observed.",
+      "actionableFinding": false
+    }
+  ],
+  "supportingLibraryTestOutcome": [
+    {
+      "title": "Library card menus preserve insertion, current-Scene protection, keyboard focus and phone bounds",
+      "file": "parallax-sc00c-library-context-menu.spec.ts",
+      "ok": true,
+      "tests": [
+        {
+          "expectedStatus": "passed",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "duration": 5093,
+              "errors": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "aggregateLocalResultCounts": {
+    "passed": 11
+  },
+  "freshSameSourcePhoneLayoutReceipt": {
+    "source": "3dedbb9cd10e548d10d58bddef6d48c1823f54e5",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "canvas": {
+      "x": 51,
+      "y": 65,
+      "width": 294,
+      "height": 370
+    },
+    "selectionCard": {
+      "x": 51,
+      "y": 438,
+      "width": 294,
+      "height": 48.5
+    },
+    "horizontalOverflow": 0,
+    "sceneScrollers": [
+      {
+        "height": 932,
+        "contentHeight": 932,
+        "scrollTop": 0
+      }
+    ]
+  },
+  "limitations": [
+    "Independent local rendered critique only, not trusted capture, Sounding Line/protected qualification, physical validation, or owner acceptance.",
+    "Only the Library consumer is visually reviewed in this addendum; eleven-case pass is not eleven-case rendered acceptance.",
+    "Keyboard/focus/scroll causality receives aggregate test support, but input-event identity, semantic accessibility, and full keyboard completion were not independently observed.",
+    "No physical iPhone/Safari, AR, GPU, real-person usability, or whole-Studio claim.",
+    "Source-bound supplied run/layout receipts are supporting evidence; reviewer did not build or independently attest the source.",
+    "Source-clean/owned cleanup PASS is supplied by the parent; cleanup internals were not independently inspected.",
+    "No repository edits, source reads, server launch, protected operation, or native-chat contact.",
+    "Fresh 3ded animation phone dimensions are supporting same-source measurements, not a measurement of every Library overlay state."
+  ],
+  "reviewArtifacts": [
+    "D:\\CodexTemp\\parallax-cohort-prep-20261016\\library-menu-review-3ded\\video-sheet1.jpg",
+    "D:\\CodexTemp\\parallax-cohort-prep-20261016\\library-menu-review-3ded\\video-sheet2.jpg",
+    "D:\\CodexTemp\\parallax-cohort-prep-20261016\\library-menu-review-3ded\\video-sheet3.jpg",
+    "D:\\CodexTemp\\parallax-cohort-prep-20261016\\library-menu-review-3ded\\video-sheet4.jpg",
+    "D:\\CodexTemp\\parallax-cohort-prep-20261016\\library-menu-review-3ded\\video-sheet5.jpg",
+    "D:\\CodexTemp\\parallax-cohort-prep-20261016\\library-menu-review-3ded\\sampling.json"
+  ]
+}

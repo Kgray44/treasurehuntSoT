@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "candidate": "43171b3a6bdd0e863cb56f6dd52b55161429aaa3",
+  "tree": "f0f86ca57e64e7320160666ab36fde1b4178a00d",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-17T15:58:23.319Z",
+  "finishedAt": "2026-10-17T16:00:51.796Z",
+  "exitCode": 1,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "parallax-construction-chec-501d6-ale-through-save-and-reload-chromium-video.webm",
+      "sha256": "92beec37e4063c01adf9414c13fac848aac95c4a0ba390f4e002b4fe70c9c09c"
+    },
+    {
+      "file": "parallax-direct-placement--92746-ts-directly-in-the-viewport-chromium-video.webm",
+      "sha256": "5097aaa3bb63c306bd86e898c2a70390950d08fc43ee4af44e3480aee601081a"
+    },
+    {
+      "file": "parallax-exclusion-zones-E-18a6b-om-ordinary-scene-rendering-chromium-video.webm",
+      "sha256": "4b695fa199f21b3f3163fb3a3b600957df63056adf6f49bdd5fbdde662fed137"
+    },
+    {
+      "file": "parallax-parametric-room-C-8f9ca-ough-reload-and-phone-edits-chromium-video.webm",
+      "sha256": "def30cea9531e2d625ce72a4571a61ee2ea59a63344431bd7f026f8e35ec50d7"
+    }
+  ]
+}

@@ -8619,6 +8619,246 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/evidence-manifest.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/four-path-static.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/independent-library-review/independent-local-review.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/independent-library-review/sampling.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/independent-local-review/independent-local-review.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/independent-local-review/sampling.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/local-entry-proof-20261017T155823-d4f53cfa/invocation.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/local-entry-proof-20261017T155823-d4f53cfa/native-originals-manifest.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/local-entry-proof-20261017T155823-d4f53cfa/originals/browser-runtime.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/local-entry-proof-20261017T155823-d4f53cfa/originals/browser-suite-profile.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/local-entry-proof-20261017T155823-d4f53cfa/originals/run-artifacts/direct-placement-proof.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/local-entry-proof-20261017T155823-d4f53cfa/originals/run-artifacts/parallax-construction-chec-501d6-ale-through-save-and-reload-chromium-error-context.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/local-entry-proof-20261017T155823-d4f53cfa/originals/run-artifacts/parallax-exclusion-zones-E-18a6b-om-ordinary-scene-rendering-chromium-error-context.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/local-entry-proof-20261017T155823-d4f53cfa/originals/run-artifacts/run.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/local-entry-proof-20261017T155823-d4f53cfa/originals/test-results/.last-run.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/local-entry-proof-20261017T155823-d4f53cfa/originals/test-results/parallax-construction-chec-501d6-ale-through-save-and-reload-chromium/error-context.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/local-entry-proof-20261017T155823-d4f53cfa/originals/test-results/parallax-construction-chec-501d6-ale-through-save-and-reload-chromium/header-menu-events.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/local-entry-proof-20261017T155823-d4f53cfa/originals/test-results/parallax-exclusion-zones-E-18a6b-om-ordinary-scene-rendering-chromium/error-context.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/local-entry-proof-20261017T155823-d4f53cfa/originals/test-results/parallax-exclusion-zones-E-18a6b-om-ordinary-scene-rendering-chromium/header-menu-events.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/local-entry-proof-20261017T155823-d4f53cfa/playwright-results.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/local-entry-proof-20261017T160140-dbffe535/invocation.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/local-entry-proof-20261017T160140-dbffe535/native-originals-manifest.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/local-entry-proof-20261017T160140-dbffe535/originals/browser-runtime.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/local-entry-proof-20261017T160140-dbffe535/originals/browser-suite-profile.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/local-entry-proof-20261017T160140-dbffe535/originals/run-artifacts/direct-placement-proof.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/local-entry-proof-20261017T160140-dbffe535/originals/run-artifacts/run.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/local-entry-proof-20261017T160140-dbffe535/originals/test-results/.last-run.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/local-entry-proof-20261017T160140-dbffe535/playwright-results.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/local-entry-proof-20261017T160259-9774ee39/invocation.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/local-entry-proof-20261017T160259-9774ee39/native-originals-manifest.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/local-entry-proof-20261017T160259-9774ee39/originals/browser-runtime.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/local-entry-proof-20261017T160259-9774ee39/originals/browser-suite-profile.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/local-entry-proof-20261017T160259-9774ee39/originals/run-artifacts/animation-phone-layout.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/local-entry-proof-20261017T160259-9774ee39/originals/run-artifacts/cinematic-renderer-proof.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/local-entry-proof-20261017T160259-9774ee39/originals/run-artifacts/direct-placement-proof.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/local-entry-proof-20261017T160259-9774ee39/originals/run-artifacts/opacity-actual-material-proof.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/local-entry-proof-20261017T160259-9774ee39/originals/run-artifacts/run.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/local-entry-proof-20261017T160259-9774ee39/originals/test-results/.last-run.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/local-entry-proof-20261017T160259-9774ee39/playwright-results.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/README.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/library-entry-migration-20261017/diagnostics.json",
       "record_type": "program-record",
       "status": "preserved",

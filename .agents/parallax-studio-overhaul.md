@@ -178,3 +178,14 @@ criteria remain intact. Three additional retired Inspector entries remain
 unmigrated. Temporary settlement/instrumentation is removed; do not iterate
 speculative menu repairs or promote local reviews to protected/physical proof.
 The current upright steady/no-error phone report remains failed and unknown.
+
+The coordinator then explicitly authorized the exact four remaining paths.
+Current source 3dedbb9cd10e captures/fixes the escaped context-menu opener and
+migrates the three additional Inspector entries, preserving all 208 original
+criteria. Uninstrumented focused 4/4 and combined 11/11 local browser proof pass;
+current phone measurements and finite independent local reviews are retained.
+The diagnostic source and all prior failed receipts remain unchanged; temporary
+instrumentation is removed. This closes those four local paths only. Keep the
+#721 protected integration hold, sole cloud Crossdeck ownership and unqualified
+physical iPhone/calibration/plane boundaries. No paid calls or shared pilot
+restart are authorized by this corrective verification.

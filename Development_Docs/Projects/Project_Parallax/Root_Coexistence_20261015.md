@@ -1003,3 +1003,35 @@ GitHub still reports #721 open/draft at `43b5f4d55b6a` with no merge. Protected
 #722 capture, qualification, accepted-base reconciliation and merge stay held;
 the designated cloud owner alone executes Crossdeck/Reach/workflow work. No
 paid calls or Feature Catalog availability promotion occur in this correction.
+
+## Exact four-path correction, 2026-10-17
+
+The coordinator authorized the four remaining paths after the partial checkpoint.
+The [current record](evidence/four-path-correction-20261017/README.md) captures
+the actual header failure at `43171b3a6bdd`: nearest-focusable lookup escaped
+the header into the outer page wrapper, omitted the Studio scrollport from its
+snapshot, and dismissed on a queued one-pixel scroll. Bounded opener lookup and
+a focusable header correct that sequence without a timing guard. A new queued-
+scroll regression fails before the repair and all three menu tests pass after.
+Actual subsequent scrolling and Escape focus remain covered.
+
+Three further Inspector entries now use current Properties/Spatial context and
+Engineering; selected-item heading semantics are restored without changing the
+visual title styling. All 208 original matcher signatures, arguments and order
+remain intact. Source `3dedbb9cd10e548d10d58bddef6d48c1823f54e5` passes **4/4**
+focused and **11/11** combined cases, with no skips or not-run cases. Production
+builds, TypeScript, source-clean binding and owned cleanup pass. The fresh phone
+receipt measures 370 px canvas, 48.5 px selection card and zero horizontal
+overflow at 390×844. Exact SC-00C component/test blobs remain unchanged.
+
+Independent current-source local reviews inspect 23 focused screenshots/four
+recordings and four Library screenshots/one recording. They record no actionable
+bounded finding; current phone measurements come from the new combined receipt,
+not old evidence. All failed/instrumented sources and the original diagnostic
+events remain intact. Temporary instrumentation is removed. These results close
+the named local correction paths, not whole-Studio acceptance.
+
+Read-only #721 still reports open/draft at `43b5f4d55b6a`, with no merge. No
+protected capture, qualification, mainline reconciliation, merge, Crossdeck
+execution, paid inference, private-state copying or shared pilot restart occurs.
+Actual iPhone calibration and detected surfaces remain UNQUALIFIED.

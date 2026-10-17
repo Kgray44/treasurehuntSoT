@@ -206,3 +206,20 @@ The #721 hold and sole cloud Crossdeck execution owner remain unchanged. The
 phone was upright and steady; physical alignment still failed without error.
 No admitted provider planes, running 3130 pilot, paid inference, private-state
 copying, shared runtime restart, mainline reconciliation or merge is claimed.
+
+## Four authorized paths locally verified, 2026-10-17
+
+The [current four-path record](evidence/four-path-correction-20261017/README.md)
+retains the preceding partial checkpoint and adds a captured failure on `431`,
+the bounded opener repair and current Inspector navigation. Source `3dedbb9cd10e`
+passes 4/4 focused and 11/11 combined cases without instrumentation or timing
+guards, skips, weakened outcomes or changed original 208 matcher criteria. The
+regression is red before the repair and all three menu tests pass afterward.
+The current phone receipt confirms 370 px canvas and zero horizontal overflow.
+Independent local rendered reviews report no actionable bounded findings.
+
+SC-00C's exact component/test handoff remains unchanged. Whole-Studio acceptance,
+protected capture/qualification and mainline reconciliation/merge remain held
+behind #721's accepted landing. The cloud owner retains sole Crossdeck/systemic
+execution. Actual Safari calibration and admitted planes remain UNQUALIFIED;
+no paid call, private-state copying or shared phone runtime change occurs.
