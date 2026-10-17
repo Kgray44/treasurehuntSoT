@@ -5,6 +5,7 @@ import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createCustodyRequest } from "./custody-transport.mjs";
+import { observeVerificationFailure } from "./verification-diagnostics.mjs";
 import {
   CROSSDECK_R3,
   validateR3Record,
@@ -54,27 +55,43 @@ import {
   validateR10FinalDecision,
 } from "./experience-r10.mjs";
 export { CROSSDECK_R10 } from "./experience-r10.mjs";
+import {
+  CROSSDECK_R11,
+  validateR11Record,
+  assertR11Mode,
+  bindR11Reconciliation,
+  pendingR11Reconciliation,
+  r11HistoricalEvidencePlan,
+  validateR11HistoricalCustody,
+  validateR11FinalDecision,
+} from "./experience-r11.mjs";
+export { CROSSDECK_R11 } from "./experience-r11.mjs";
 
 // These finite successors share canonical execution/finalization. Dispatch only
 // exact, separately bound records; historical records never become fallback grants.
 function ordinaryOnly(id) {
-  return id === CROSSDECK_R9.id || id === CROSSDECK_R10.id;
+  return id === CROSSDECK_R9.id || id === CROSSDECK_R10.id || id === CROSSDECK_R11.id;
 }
 function validateOrdinaryOnlyRecord(record) {
+  if (record.id === CROSSDECK_R11.id) return validateR11Record(record);
   return (record.id === CROSSDECK_R10.id ? validateR10Record : validateR9Record)(record);
 }
 function bindOrdinaryOnlyReconciliation(options) {
+  if (options.record.id === CROSSDECK_R11.id) return bindR11Reconciliation(options);
   return (options.record.id === CROSSDECK_R10.id ? bindR10Reconciliation : bindR9Reconciliation)(options);
 }
 function pendingOrdinaryOnlyReconciliation(options) {
+  if (options.record.id === CROSSDECK_R11.id) return pendingR11Reconciliation(options);
   return (options.record.id === CROSSDECK_R10.id ? pendingR10Reconciliation : pendingR9Reconciliation)(options);
 }
 function ordinaryOnlyHistoricalPlan(plan) {
+  if (plan.exception.id === CROSSDECK_R11.id) return r11HistoricalEvidencePlan(plan);
   return (plan.exception.id === CROSSDECK_R10.id ? r10HistoricalEvidencePlan : r9HistoricalEvidencePlan)(plan);
 }
 function assertOrdinaryOnlyMode(plan, mode) {
   assertR9Mode(plan, mode);
   assertR10Mode(plan, mode);
+  assertR11Mode(plan, mode);
 }
 
 export const EXCEPTION_REGISTRY = "testing/product-experience-exceptions.json";
@@ -209,6 +226,16 @@ function r3FamilyRelated(root, candidateSha) {
   }
 }
 export function selectTrustedExceptions(records) {
+  const r11 = records.filter((r) => r.id === CROSSDECK_R11.id);
+  if (r11.length) {
+    if (r11.length !== 1 || records.length !== 11) fail("R11_PREDECESSOR_REGISTRY_CHANGED");
+    validateR11Record(r11[0]);
+    const prior = records.filter((r) => r.id !== CROSSDECK_R11.id);
+    selectTrustedExceptions(prior);
+    if (digest(prior.find((r) => r.id === CROSSDECK_R10.id)) !== r11[0].predecessor.recordDigest)
+      fail("R11_PREDECESSOR_REGISTRY_CHANGED");
+    return r11.filter((r) => r.status === "ACTIVE");
+  }
   const r10 = records.filter((r) => r.id === CROSSDECK_R10.id);
   if (r10.length) {
     if (r10.length !== 1 || records.length !== 10) fail("R10_PREDECESSOR_REGISTRY_CHANGED");
@@ -551,7 +578,7 @@ export function bindExperienceException({ root, baseSha, candidateSha, plan, prN
   for (const [file, metadata] of reference) if (/^(?:src|public|prisma)\//u.test(file)) expected.set(file, metadata);
   for (const { path: file, mode, blob } of record.protectedBaseRuntimeOverrides)
     expected.set(file, `${mode} blob ${blob}`);
-  if ([CROSSDECK_R8.id, CROSSDECK_R9.id, CROSSDECK_R10.id].includes(record.id))
+  if ([CROSSDECK_R8.id, CROSSDECK_R9.id, CROSSDECK_R10.id, CROSSDECK_R11.id].includes(record.id))
     validateR8FormattingInputs(expected, candidate);
   if (record.id === CROSSDECK_R7.id) validateR7FormattingInputs(expected, candidate);
   if (r3) {
@@ -576,7 +603,7 @@ export function bindExperienceException({ root, baseSha, candidateSha, plan, prN
     // Reuse the already read exact Git inventory instead of spawning twice per
     // preserved file. R8 additionally requires the preserved regular-file mode.
     if (
-      ([CROSSDECK_R8.id, CROSSDECK_R9.id, CROSSDECK_R10.id].includes(record.id) &&
+      ([CROSSDECK_R8.id, CROSSDECK_R9.id, CROSSDECK_R10.id, CROSSDECK_R11.id].includes(record.id) &&
         metadata !== `100644 blob ${blob}`) ||
       !metadata ||
       metadata.split(" ").at(-1) !== blob
@@ -596,7 +623,9 @@ export function bindExperienceException({ root, baseSha, candidateSha, plan, prN
   if (
     !plan.applicable ||
     (!r3 && plan.contractDigest !== record.contractDigest) ||
-    ([CROSSDECK_R6.id, CROSSDECK_R7.id, CROSSDECK_R8.id, CROSSDECK_R9.id, CROSSDECK_R10.id].includes(record.id)
+    ([CROSSDECK_R6.id, CROSSDECK_R7.id, CROSSDECK_R8.id, CROSSDECK_R9.id, CROSSDECK_R10.id, CROSSDECK_R11.id].includes(
+      record.id,
+    )
       ? contexts !== 32 || plan.paired?.browserContexts !== 6 || plan.contextCount !== 38
       : contexts !== record.contexts) ||
     digest([...plan.contractIds].sort()) !== digest([...record.contractIds].sort())
@@ -621,6 +650,7 @@ export function recordBinding(record) {
       CROSSDECK_R8.id,
       CROSSDECK_R9.id,
       CROSSDECK_R10.id,
+      CROSSDECK_R11.id,
     ].includes(record.id)
       ? { version: record.version, predecessor: record.predecessor, attemptHistory: record.attemptHistory }
       : {}),
@@ -638,9 +668,14 @@ export function validateExceptionEvidence(plan, evidence, automatedOnly = false)
       if (
         review.iterations !== 11 ||
         review.independentReviewOrdinal !==
-          ([CROSSDECK_R6.id, CROSSDECK_R7.id, CROSSDECK_R8.id, CROSSDECK_R9.id, CROSSDECK_R10.id].includes(
-            plan.exception.id,
-          )
+          ([
+            CROSSDECK_R6.id,
+            CROSSDECK_R7.id,
+            CROSSDECK_R8.id,
+            CROSSDECK_R9.id,
+            CROSSDECK_R10.id,
+            CROSSDECK_R11.id,
+          ].includes(plan.exception.id)
             ? 7
             : plan.exception.id === CROSSDECK_R5.id
               ? 6
@@ -814,7 +849,13 @@ async function validateHistoricalExceptionCustody({ root, plan, request }) {
   if (!plan.exception?.nonExecutingReconciliation) return;
   if (ordinaryOnly(plan.exception?.id)) {
     const context = historicalExceptionContext({ root, plan, request });
-    return (plan.exception.id === CROSSDECK_R10.id ? validateR10HistoricalCustody : validateR9HistoricalCustody)({
+    return (
+      plan.exception.id === CROSSDECK_R11.id
+        ? validateR11HistoricalCustody
+        : plan.exception.id === CROSSDECK_R10.id
+          ? validateR10HistoricalCustody
+          : validateR9HistoricalCustody
+    )({
       plan,
       store: context.store,
       request,
@@ -911,10 +952,12 @@ export async function validateSuccessorPredecessor({ record, request, now }) {
       CROSSDECK_R8.id,
       CROSSDECK_R9.id,
       CROSSDECK_R10.id,
+      CROSSDECK_R11.id,
     ].includes(record.id)
   )
     return null;
   validateExceptionRecord(record, now);
+  if (record.id === CROSSDECK_R11.id) return validateR11Predecessors(record, request);
   if (record.id === CROSSDECK_R10.id) return validateR10Predecessors(record, request);
   if (record.id === CROSSDECK_R9.id) return validateR9Predecessors(record, request);
   if (record.id === CROSSDECK_R8.id) return validateR8Predecessors(request);
@@ -926,6 +969,56 @@ export async function validateSuccessorPredecessor({ record, request, now }) {
     return validateR3Predecessors(request);
   }
   return validateHistoricalPreparation(record.predecessor, request);
+}
+
+async function validateR11Predecessors(record, request) {
+  const p = record.predecessor;
+  const store = exceptionStore({ record: { id: p.id, custody: { namespace: p.namespace } }, request });
+  const qualifier = await store.read("qualify");
+  if (!qualifier) fail("R11_CONSUMED_QUALIFICATION_CHANGED");
+  const { commitSha, ...payload } = qualifier;
+  if (
+    commitSha !== p.qualifyCommit ||
+    digest(payload) !== p.qualifyPayloadDigest ||
+    (await store.read("qualified")) ||
+    qualifier.binding?.exception?.id !== CROSSDECK_R10.id ||
+    qualifier.binding.exception.recordDigest !== CROSSDECK_R10.recordDigest
+  )
+    fail("R11_CONSUMED_QUALIFICATION_CHANGED");
+  r10HistoricalEvidencePlan(qualifier.binding);
+  // The immutable, hash-pinned consumed R10 payload contains its exact R8
+  // predecessor binding. Reuse that canonical predecessor walk and shared client.
+  const prior = await validateR10Predecessors({ predecessor: qualifier.binding.exception.predecessor }, request);
+  const failed = await request(`actions/runs/${p.runId}`);
+  if (!isExactFailedPredecessor(failed, p)) fail("R11_CONSUMED_RUN_CHANGED");
+  const commit = await request(`git/commits/${p.candidateSha}`);
+  if (commit?.tree?.sha !== p.candidateTree) fail("R11_CONSUMED_TREE_CHANGED");
+  for (const expected of p.artifacts) {
+    const artifact = await request(`actions/artifacts/${expected.id}`);
+    if (
+      artifact?.id !== expected.id ||
+      artifact.expired ||
+      artifact.digest !== expected.digest ||
+      artifact.size_in_bytes !== expected.size ||
+      artifact.workflow_run?.id !== p.runId
+    )
+      fail("R11_FAILURE_ARTIFACT_CHANGED");
+  }
+  const publication = await request(`git/commits/${p.failurePublication}`);
+  if (publication?.tree?.sha !== p.failurePublicationTree) fail("R11_FAILURE_PUBLICATION_CHANGED");
+  const tree = await request(`git/trees/${publication.tree.sha}?recursive=1`);
+  if (!tree || tree.truncated || !Array.isArray(tree.tree)) fail("R11_FAILURE_PUBLICATION_CHANGED");
+  for (const [file, expected] of [
+    [p.failureIndexPath, p.failureIndexSha256],
+    [p.authorityPreservationIndexPath, p.authorityPreservationIndexSha256],
+  ]) {
+    const entry = tree.tree.find((value) => value.path === file);
+    if (entry?.type !== "blob" || entry.mode !== "100644") fail("R11_PRESERVATION_INDEX_CHANGED");
+    const blob = await request(`git/blobs/${entry.sha}`);
+    const bytes = Buffer.from(blob.content.replaceAll("\n", ""), "base64");
+    if (createHash("sha256").update(bytes).digest("hex") !== expected) fail("R11_PRESERVATION_INDEX_CHANGED");
+  }
+  return [...prior, failed];
 }
 
 async function validateR10Predecessors(record, request) {
@@ -1411,6 +1504,10 @@ async function campaignHistory({ root, record, plan, mode, run, request, now, pr
       Date.parse(item.created_at) < Date.parse(run.createdAt) ||
       (item.created_at === run.createdAt && item.id < run.runId);
     if (preflight) fail("LOCAL_HISTORY_EXECUTION_ALREADY_CONSUMED");
+    // R11 has no preparatory execution allowance. Its exact authenticated
+    // predecessors were handled above; any other active campaign run consumes
+    // the finite boundary, including successful cross-mode work.
+    if (record.id === CROSSDECK_R11.id && item.id !== run.runId) fail("R11_UNLISTED_CAMPAIGN_RUN");
     if (earlier) {
       if (title[1] === mode) fail("EARLIER_ATTEMPT_CONSUMED");
       if (item.status !== "completed" || item.conclusion !== "success") fail("EARLIER_CAMPAIGN_FAILURE");
@@ -1621,7 +1718,11 @@ export function claimExceptionPhase({
   preparationReservation,
   executionHistory,
 }) {
-  mkdirSync(path.dirname(phasePath(root, phase)), { recursive: true });
+  try {
+    mkdirSync(path.dirname(phasePath(root, phase)), { recursive: true });
+  } catch (error) {
+    throw observeVerificationFailure("PHASE_DIRECTORY", error, { phase });
+  }
   const value = {
     binding: exceptionBinding(plan),
     phase,
@@ -1633,8 +1734,12 @@ export function claimExceptionPhase({
   };
   try {
     writeFileSync(phasePath(root, phase), JSON.stringify(value), { flag: "wx" });
-  } catch {
-    fail("EXECUTION_PHASE_ALREADY_CONSUMED");
+  } catch (cause) {
+    throw observeVerificationFailure(
+      "PHASE_CREATE",
+      new Error("PRODUCT_EXPERIENCE_EXCEPTION_EXECUTION_PHASE_ALREADY_CONSUMED"),
+      { cause, phase },
+    );
   }
   return value;
 }
@@ -1677,12 +1782,14 @@ export function recognizeExceptionExecution({ root, baseSha, candidateSha, envir
   try {
     r3Family = r3SourceFingerprint([...candidateInventory]) === CROSSDECK_R3.maskedSrcDigest;
   } catch {}
+  // Contract identity belongs to this candidate, not to each historical row.
+  // Retain the exact predicate while keeping the existing bounded Git reader.
+  const ids = present(root, candidateSha, "testing/contracts.json")
+    ? (json(root, candidateSha, "testing/contracts.json").contracts ?? []).map((value) => value.id)
+    : [];
+  const refit = ids.includes("crossdeck.refit.companion") || ids.includes("crossdeck.refit.published-lens");
   return records.some((record) => {
     const marker = campaignHistoryMarker(record, candidateInventory, candidatePaths);
-    const ids = present(root, candidateSha, "testing/contracts.json")
-      ? (json(root, candidateSha, "testing/contracts.json").contracts ?? []).map((value) => value.id)
-      : [];
-    const refit = ids.includes("crossdeck.refit.companion") || ids.includes("crossdeck.refit.published-lens");
     const frozen =
       record.frozenTrees?.src &&
       present(root, candidateSha, "src") &&
@@ -1757,7 +1864,7 @@ export async function assertExceptionExecution({
     (environment.SOUNDING_LINE_EXCEPTION_PHASE !== "qualify" ||
       plan.localProof ||
       Object.keys(environment).some(
-        (key) => /^SOUNDING_LINE_R(?:[3-9]|10)_LOCAL_LEASE$/u.test(key) && environment[key],
+        (key) => /^SOUNDING_LINE_R(?:[3-9]|10|11)_LOCAL_LEASE$/u.test(key) && environment[key],
       ))
   )
     fail("R8_FORMAT_EXECUTION_FORBIDDEN");
@@ -1901,6 +2008,7 @@ export async function assertExceptionExecution({
       CROSSDECK_R8.id,
       CROSSDECK_R9.id,
       CROSSDECK_R10.id,
+      CROSSDECK_R11.id,
     ].includes(record.id)
       ? {
           executionHistory: {
@@ -1988,7 +2096,11 @@ export async function sealExceptionQualification({ root, record, plan, ordinary,
     fail("FINAL_DECISION_MISMATCH");
   if (ordinaryOnly(record.id)) {
     const { verificationObligationGroups } = await import("./ordinary.mjs");
-    (record.id === CROSSDECK_R10.id ? validateR10FinalDecision : validateR9FinalDecision)({
+    (record.id === CROSSDECK_R11.id
+      ? validateR11FinalDecision
+      : record.id === CROSSDECK_R10.id
+        ? validateR10FinalDecision
+        : validateR9FinalDecision)({
       plan,
       ordinary,
       record,

@@ -8,6 +8,10 @@ last_reviewed: 2026-10-16
 
 # Crossdeck refit efficiency measurements
 
+## R11 accepted authority and pending final verification
+
+Protected diagnostic repair #753 passed 270 policy and 13 rendered-fixture checks. R11 authority #754 passed 283 policy and 13 rendered-fixture checks in whole Linux run 38983509943. The owner-reviewed prospective real source merge passed 283/283 policy tests; the consumer independently matched its exact tree, 9,578 tracked bindings, 2,569 working executable/configuration bytes, 1,242 immutable pins, original evidence and unchanged product trees. These are separate infrastructure/source results, not current Product Experience replay or ordinary5 qualification. The single ordinary5, protected merge and landed smoke remain pending. Original ordinary4's 38 passing technical cases and whole failure stay separately accounted for below. Task input/cached/output/total tokens, credits, dollars and per-agent costs remain UNAVAILABLE, never zero.
+
 ## Current consumed ordinary4 accounting
 
 Whole run38968131415 failed in 1762s. Technical Chromium reported38 passing tests in8.2m and cleanup PASS. Historical Product Experience projection passed; current replay has no result. Empty final command timings are incomplete reporting, not zero execution. The [disposition](Ordinary4_Disposition_20261016.md) binds exact source, hosted logs and consumed custody. Earlier records remain unchanged. Input/cached/output/total tokens, credits, dollars and per-agent totals remain UNAVAILABLE. No missing usage is converted to zero.

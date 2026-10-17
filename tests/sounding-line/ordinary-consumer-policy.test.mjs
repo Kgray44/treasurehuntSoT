@@ -26,12 +26,22 @@ import {
   r10HistoricalEvidencePlan,
   R10_REGENERATED,
 } from "../../scripts/sounding-line/experience-r10.mjs";
+import {
+  CROSSDECK_R11,
+  r11HistoricalEvidencePlan,
+  R11_REGENERATED,
+} from "../../scripts/sounding-line/experience-r11.mjs";
 import { generateDocumentIndex } from "../../scripts/generate-document-index.mjs";
 import { validate as validateDocumentation } from "../../scripts/validate-documentation.mjs";
 import { r9HistoricalEvidencePlan } from "../../scripts/sounding-line/experience-r9.mjs";
 
 const fixtureFlag = "SOUNDING_LINE_ORDINARY_CONSUMER_POLICY_FIXTURE";
 const mergedFixtureFlag = "SOUNDING_LINE_R10_CONSUMER_POLICY_FIXTURE";
+const r11FixtureFlag = "SOUNDING_LINE_R11_CONSUMER_POLICY_FIXTURE";
+const mergedPolicy = process.env[r11FixtureFlag]
+  ? { name: "R11", record: CROSSDECK_R11, regenerated: R11_REGENERATED, historical: r11HistoricalEvidencePlan }
+  : { name: "R10", record: CROSSDECK_R10, regenerated: R10_REGENERATED, historical: r10HistoricalEvidencePlan };
+const policyEnv = (suffix) => process.env[`SOUNDING_LINE_${mergedPolicy.name}_POLICY_${suffix}`];
 const frozen = {
   head: "7241f5a8a5965d67882a0b205601eba3087ddef5",
   tree: "28e172e042953fbf8d1bac697f9ad273ce1c637b",
@@ -77,19 +87,33 @@ function policySourceManifest(root, revision) {
   return { classification: "COMPLETE_TRACKED_RUNTIME_TEST_CONFIG_WORKING_BYTE_BINDINGS", entries };
 }
 
-if (process.env[mergedFixtureFlag])
+function ownedControlOutputs(root) {
+  const directory = path.join(root, "artifacts/sounding-line");
+  if (!existsSync(directory)) return [];
+  return readdirSync(directory)
+    .filter((file) => /^exception-.*\.json$/u.test(file) || file === "product-experience-plan.json")
+    .sort()
+    .map((file) => {
+      const absolute = path.join(directory, file);
+      assert(lstatSync(absolute).isFile() && !lstatSync(absolute).isSymbolicLink());
+      const bytes = readFileSync(absolute);
+      return { path: `artifacts/sounding-line/${file}`, bytes: bytes.length, sha256: hash(bytes) };
+    });
+}
+
+if (process.env[mergedFixtureFlag] || process.env[r11FixtureFlag])
   test(
-    "R10 actual merged consumer executes all registered policy without consumer qualification",
+    `${mergedPolicy.name} actual merged consumer executes all registered policy without consumer qualification`,
     { timeout: 1500000 },
     async (t) => {
       const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
-      const baseSha = sourceGit(repo, ["rev-parse", process.env.SOUNDING_LINE_R10_POLICY_BASE_SHA ?? "HEAD"]);
-      const actualCandidate = process.env.SOUNDING_LINE_R10_POLICY_CANDIDATE_SHA;
-      const owned = mkdtempSync(path.join(tmpdir(), "r10-consumer-policy-"));
+      const baseSha = sourceGit(repo, ["rev-parse", policyEnv("BASE_SHA") ?? "HEAD"]);
+      const actualCandidate = policyEnv("CANDIDATE_SHA");
+      const owned = mkdtempSync(path.join(tmpdir(), `${mergedPolicy.name.toLowerCase()}-consumer-policy-`));
       assert(owned.startsWith(path.resolve(tmpdir()) + path.sep));
       const checkout = path.join(owned, "checkout");
-      assert(process.env.SOUNDING_LINE_R10_POLICY_OUTPUT, "Retained external output is required");
-      const proof = path.resolve(process.env.SOUNDING_LINE_R10_POLICY_OUTPUT);
+      assert(policyEnv("OUTPUT"), "Retained external output is required");
+      const proof = path.resolve(policyEnv("OUTPUT"));
       assert(proof !== owned && !proof.startsWith(owned + path.sep));
       assert(!existsSync(proof), "Retained evidence cannot be overwritten");
       mkdirSync(proof, { recursive: true });
@@ -110,25 +134,29 @@ if (process.env[mergedFixtureFlag])
             "-p",
             baseSha,
             "-p",
-            CROSSDECK_R10.frozenReferenceSha,
+            mergedPolicy.record.frozenReferenceSha,
           ],
-          { input: "Source-only R10 merged policy fixture; no qualification\n" },
+          { input: `Source-only ${mergedPolicy.name} merged policy fixture; no qualification\n` },
         );
       let candidateSha;
       if (actualCandidate) candidateSha = sourceGit(repo, ["rev-parse", actualCandidate]);
       else {
-        const merge = spawnSync("git", ["merge-tree", "--write-tree", baseSha, CROSSDECK_R10.frozenReferenceSha], {
-          cwd: repo,
-          encoding: "utf8",
-          maxBuffer: 64 * 1024 * 1024,
-        });
+        const merge = spawnSync(
+          "git",
+          ["merge-tree", "--write-tree", baseSha, mergedPolicy.record.frozenReferenceSha],
+          {
+            cwd: repo,
+            encoding: "utf8",
+            maxBuffer: 64 * 1024 * 1024,
+          },
+        );
         assert.ifError(merge.error);
         assert([0, 1].includes(merge.status), merge.stderr);
         const tree = merge.stdout.split(/\r?\n/u)[0];
         assert.match(tree, /^[a-f0-9]{40}$/u);
         const conflicts = [...merge.stdout.matchAll(/^\d{6} [a-f0-9]{40} [123]\t(.+)$/gmu)].map((match) => match[1]);
         assert(
-          conflicts.every((file) => R10_REGENERATED.includes(file)),
+          conflicts.every((file) => mergedPolicy.regenerated.includes(file)),
           merge.stdout,
         );
         assert(merge.status === 0 || conflicts.length > 0, "Unidentified merge conflict");
@@ -141,7 +169,7 @@ if (process.env[mergedFixtureFlag])
         // source is the real merge; no repaired test overlay is applied here.
         await generateDocumentIndex({ root: checkout, baseRef: baseSha });
         assert.deepEqual(await validateDocumentation(checkout), []);
-        sourceGit(checkout, ["add", "--", ...R10_REGENERATED]);
+        sourceGit(checkout, ["add", "--", ...mergedPolicy.regenerated]);
         candidateSha = commitTree(sourceGit(checkout, ["write-tree"]));
         sourceGit(checkout, ["-c", "core.longpaths=true", "reset", "--hard", candidateSha]);
       }
@@ -159,14 +187,18 @@ if (process.env[mergedFixtureFlag])
       // gate deliberately does not download history or claim an execution phase.
       const plan = await buildPlan({ root: checkout, baseSha, candidateSha, experienceEvidenceRequired: false });
       const experience = plan.productExperience;
-      assert.equal(experience.exception.id, CROSSDECK_R10.id);
+      assert.equal(experience.exception.id, mergedPolicy.record.id);
       assert.equal(experience.contextCount, 38);
       const record = JSON.parse(
         readFileSync(path.join(checkout, "testing/product-experience-exceptions.json"), "utf8"),
-      ).exceptions.find((entry) => entry.id === CROSSDECK_R10.id);
+      ).exceptions.find((entry) => entry.id === mergedPolicy.record.id);
+      assert.deepEqual(experience.contractIds, record.contractIds);
+      assert.equal(experience.contractDigest, record.contractDigest);
+      assert.equal(experience.genericContextCount, 32);
+      assert.equal(experience.paired.browserContexts, 6);
       assert.deepEqual(plan.selected.browserTests, record.requiredTechnicalBrowserTests);
       assert.equal(plan.selected.browserTests.length, 6);
-      const historical = r10HistoricalEvidencePlan(experience);
+      const historical = mergedPolicy.historical(experience);
       assert.equal(historical.baseSha, "151417a772c1bcde4e5c7f256302b803d25d40da");
       assert.equal(historical.sourceDigest, "6d8ebc54902e7bce42a73c1e92d2ad6bc3465f94a1632c04559112bd3afee0ba");
       assert.equal(historical.exception.id, "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R8");
@@ -185,9 +217,15 @@ if (process.env[mergedFixtureFlag])
       writeFileSync(path.join(proof, "complete-obligations.json"), JSON.stringify(obligations, null, 2) + "\n", {
         flag: "wx",
       });
+      const inventory = sourceGit(checkout, ["ls-tree", "-rz", candidateSha]);
+      writeFileSync(path.join(proof, "complete-tracked-inventory.nul.txt"), inventory, { flag: "wx" });
+      const beforeOutputs = ownedControlOutputs(checkout);
+      assert.deepEqual(beforeOutputs, [], "Source fixture starts without phase or plan outputs");
       const tuple = {
         classification: "REAL_MERGED_SOURCE_POLICY_ONLY_NOT_QUALIFICATION",
-        fixtureMode: actualCandidate ? "ACTUAL_FROZEN_OWNER_HEAD" : "PROSPECTIVE_REAL_MERGE_OF_FROZEN_856C_AND_R10",
+        fixtureMode: actualCandidate
+          ? "ACTUAL_FROZEN_OWNER_HEAD"
+          : `PROSPECTIVE_REAL_MERGE_OF_FROZEN_${mergedPolicy.record.frozenReferenceSha}_AND_${mergedPolicy.name}`,
         driverSourceHead: sourceGit(repo, ["rev-parse", "HEAD"]),
         baseSha,
         candidateSha,
@@ -197,6 +235,8 @@ if (process.env[mergedFixtureFlag])
         exception: experience.exception,
         sourceManifestSha256: hash(manifestBytes),
         sourceManifestEntries: manifest.entries.length,
+        completeTrackedInventorySha256: hash(inventory),
+        completeTrackedInventoryEntries: inventory.split("\0").filter(Boolean).length,
         completeObligationGroups: obligations.map((entry) => entry.id),
         policyRegistration: registration,
         historicalProjection: historical,
@@ -204,6 +244,21 @@ if (process.env[mergedFixtureFlag])
       };
       writeFileSync(path.join(proof, "source-tuple.json"), JSON.stringify(tuple, null, 2) + "\n", { flag: "wx" });
       const { executions, mocked } = executePolicySchedule({ checkout, plan, proof, policyArgs });
+      const afterOutputs = ownedControlOutputs(checkout);
+      assert.deepEqual(afterOutputs, beforeOutputs, "Policy-only execution changed owned phase or plan outputs");
+      writeFileSync(
+        path.join(proof, "owned-control-output-invariant.json"),
+        JSON.stringify(
+          {
+            classification: "OWNED_CHECKOUT_PHASE_AND_PLAN_OUTPUTS_UNCHANGED",
+            before: beforeOutputs,
+            after: afterOutputs,
+          },
+          null,
+          2,
+        ) + "\n",
+        { flag: "wx" },
+      );
       assert.equal(
         hash(JSON.stringify(policySourceManifest(checkout, candidateSha), null, 2) + "\n"),
         hash(manifestBytes),
@@ -290,7 +345,8 @@ function executePolicySchedule({ checkout, plan, proof, policyArgs }) {
       GITHUB_REF: "refs/heads/main",
       SOUNDING_LINE_BASE_SHA: plan.baseSha,
     };
-    for (const name of [fixtureFlag, mergedFixtureFlag, "GH_TOKEN", "GITHUB_TOKEN"]) delete environment[name];
+    for (const name of [fixtureFlag, mergedFixtureFlag, r11FixtureFlag, "GH_TOKEN", "GITHUB_TOKEN"])
+      delete environment[name];
     // TAP is declaration ordered and can conceal progress in later files.
     // Retain immediate execution events independently without changing tests.
     const reporter = path.join(proof, "policy-progress-reporter.mjs");

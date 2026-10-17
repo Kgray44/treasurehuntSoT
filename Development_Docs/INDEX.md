@@ -45,6 +45,7 @@ Use [document-index.json](document-index.json) for complete path-level classific
 
 - [Sounding Line capture helper lifecycle repair](Programs/Sounding_Line/Project_Sounding_Line_Capture_Lifecycle_Repair_Record.md)
 - [Sounding Line browser receipt diagnostic correction](Programs/Sounding_Line/Project_Sounding_Line_Browser_Receipt_Diagnostic_Record.md)
+- [Sounding Line replay failure observations and completed verification retention](Programs/Sounding_Line/Project_Sounding_Line_Replay_Failure_Diagnostics_20261016.md)
 - [Crossdeck final-verification activation review](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_Final_Verification_Activation_Review_20261015.md)
 - [Crossdeck finite final-verification dispatch audit](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_Final_Verification_Dispatch_Audit_20261015.md)
 - [Crossdeck finite final-verification control plane](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_Final_Verification_Proposal_20261015.md)
@@ -72,6 +73,7 @@ Use [document-index.json](document-index.json) for complete path-level classific
 - [Project Sextant](Projects/Project_Sextant/README.md)
 - [Project Parallax](Projects/Project_Parallax/README.md)
 - [Project Crossdeck](Projects/Project_Crossdeck/README.md)
+- [Crossdeck R11 final candidate and accepted authority](Projects/Project_Crossdeck/Spatial_Experience_Refit_R11_Verification_20261017.md)
 - [Crossdeck R2 capture and final-review blocker](Projects/Project_Crossdeck/Spatial_Experience_Refit_R2_Verification_20261015.md)
 - [Crossdeck R3 phone-return repair and verification](Projects/Project_Crossdeck/Spatial_Experience_Refit_R3_Verification_20261015.md)
 

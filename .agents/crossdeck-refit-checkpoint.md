@@ -3,8 +3,12 @@ title: Crossdeck refit publication checkpoint
 audience: automation
 status: current
 canonical_for: crossdeck-refit-publication-checkpoint-20261012
-last_reviewed: 2026-10-16
+last_reviewed: 2026-10-17
 ---
+
+## Current R11 final candidate
+
+Accepted #753 diagnostic repair and #754 R11 ordinary-only successor landed on protected main `a16c5807657786d614ef4c5b8942daa740b2dfdf`. Read the [R11 consumer record](../Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R11_Verification_20261017.md), [installed authority](crossdeck-r11-ordinary-only.md), PR #721 and live custody. Main was cleanly merged into the existing draft; before publication the exact staged tree matched owner-reviewed `8814a5374b18d0eee3e058bb3e8ebd0a9db390e8`. Independent complete source/pin/evidence checks passed. Current source digest `3e69c2306442758edca417fdb478f1a61e009f1cbc82d584bcad6e760257df0f`, contract digest `33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274`; 283/283 real merged policy tests are source proof only. R11 record `6304b4a65189531815b18fd8cb1e2afa12cdb2602a2b972d807a07d58d225b12`, bridge `e02b730728d4657c4ad1ac12d7bee2f054353525f00cfb0a33687b3274b65aa7`. Original R8 capture/review, consumed R10 and earlier history remain unchanged. Before the one ordinary5, freeze final publication, run actual default true-loader/eight-group/full-history GET-only admission on exact final head, then claim only through protected ready. Six fresh technical suites, 38 current Experience contexts, exact qualified seal, whole workflow/Mainline PASS, strict matched-head merge and bounded noncapturing landed smoke remain required. No new capture/review/local product proof/provider/retry/refund. Expiry `2026-10-22T23:59:59Z`. Historical sections below supply no R11 execution authority.
 
 ## Current consumed ordinary4 failure
 

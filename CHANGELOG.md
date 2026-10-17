@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-10-16
+last_reviewed: 2026-10-17
 ---
 
 # Changelog
@@ -18,7 +18,7 @@ last_reviewed: 2026-10-16
 
 ### Corrected
 
-- Crossdeck refit candidate adds contextual QR/code connection from the active Chronicle, supported companion purposes, distinct browser Guided Lens/Chart/Journal/artifact/crew views, natural send/receive controls and recoverable continuation. Original protected capture, seven-contract /119-judgment independent review and authenticated submission passed. The [R10 contract](Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R10_Verification_20261016.md) binds the preserved experience and accepted policy repairs to the current source; [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) records actual final protected qualification and integration. Earlier consumed failures remain unchanged. Physical/native and owner acceptance remain separate. Ordinary4 failed after technical verification; current replay and whole qualification remain incomplete. The [consumed disposition](Development_Docs/Projects/Project_Crossdeck/Ordinary4_Disposition_20261016.md) preserves originals while the existing authority owner diagnoses the correction.
+- Crossdeck refit candidate adds contextual QR/code connection from the active Chronicle, supported companion purposes, distinct browser Guided Lens/Chart/Journal/artifact/crew views, natural send/receive controls and recoverable continuation. Original protected capture, seven-contract/119-judgment independent review and authenticated submission passed. The [R11 source record](Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R11_Verification_20261017.md) binds the preserved experience and protected authority #754 to the current source; [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) remains draft and unqualified pending its one finite ordinary5, protected merge and landed smoke. Earlier consumed failures, including [ordinary4](Development_Docs/Projects/Project_Crossdeck/Ordinary4_Disposition_20261016.md), remain unchanged. Physical/native and owner acceptance remain separate.
 
 - Reach refits hand interpretation, active-hand continuity, dropout-tolerant acquisition and the staged responsive laboratory. Relative movement has separate setup and held-out cursor checks; experimental absolute pointing retains independent raw accuracy gating. [The refit record](Development_Docs/Projects/Project_Reach/Recognition_Calibration_Experience_Refit_20261011.md) preserves rendered/software proof and remaining physical/owner gates.
 - Floating Spatial Assistant supports dragging its title and resizing from every edge and corner, with keyboard alternatives and account-scoped window preferences. The composer stays at the bottom; viewport changes keep the window reachable without editing the scene.
