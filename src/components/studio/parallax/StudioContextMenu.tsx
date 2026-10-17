@@ -136,7 +136,7 @@ export function useStudioContextMenu() {
       bounds = menu.getBoundingClientRect();
     menu.style.left = `${Math.max(8, Math.min(state.x, innerWidth - bounds.width - 8))}px`;
     menu.style.top = `${Math.max(8, Math.min(state.y, innerHeight - bounds.height - 8))}px`;
-    (menu.querySelector<HTMLButtonElement>("button:not(:disabled)") ?? menu).focus();
+    (menu.querySelector<HTMLButtonElement>("button:not(:disabled)") ?? menu).focus({ preventScroll: true });
   }, [state]);
   useEffect(() => {
     if (!state) return;
