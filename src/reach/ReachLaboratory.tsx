@@ -577,6 +577,7 @@ export function ReachLaboratory({
           );
         if (!["READY", "MODEL_STARTING", "REQUESTING", "STALE_OR_INVALID_OBSERVATION"].includes(state)) {
           lastObservation.current = null;
+          setInferenceBackend(undefined);
           lastIndexObservation.current = null;
           indexReadiness.current.reset();
           setIndexState(null);
