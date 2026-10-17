@@ -1825,8 +1825,9 @@ test("v1.4 evidence reconciliation preserves, invalidates, falls back, and final
     assert.equal(first.result.freshObligations, first.result.finalization.requiredObligations);
 
     const preserved = await runReconciliation(root, plan);
-    assert.equal(preserved.calls.length, 0);
-    assert.ok(preserved.result.reconciliation.every((entry) => entry.disposition === "PRESERVED"));
+    assert.deepEqual(preserved.calls, [["npm", ["run", "db:generate"]]]);
+    assert.ok(preserved.result.reconciliation.some((entry) => entry.disposition === "PRESERVED"));
+    assert.ok(preserved.result.reconciliation.some((entry) => entry.reasonCodes.includes("SETUP_OUTPUT_NOT_ATTESTED")));
     assert.equal(preserved.result.finalization.remainder.length, 0);
 
     writeFileSync(path.join(root, "Development_Docs/second-guide.md"), "# Second guide\n");

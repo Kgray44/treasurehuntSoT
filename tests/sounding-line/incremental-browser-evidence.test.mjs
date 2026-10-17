@@ -87,6 +87,18 @@ async function fixture(action) {
 function browserPlan(plan) {
   return { ...plan, buildRequired: true, selected: { unitTests: [], browserTests: ["tests/e2e/reach.spec.ts"] } };
 }
+async function runtimeUnitGroup(root, plan) {
+  put(root, "src/reach/closure.test.ts", "import './runtime';\n");
+  const candidateSha = commit(root);
+  return (
+    await buildEvidenceObligations(root, {
+      ...plan,
+      candidateSha,
+      databaseUrl: soundingLineDatabaseUrl(candidateSha),
+      selected: { unitTests: ["src/reach/closure.test.ts"], browserTests: [] },
+    })
+  ).find((entry) => entry.kind === "unit");
+}
 function checkpoints(directory) {
   return readdirSync(directory)
     .sort()
@@ -232,7 +244,7 @@ test("cancellation inside a multi-command browser group never checkpoints its pa
 for (const corruptFingerprint of [false, true])
   test(`restored ${corruptFingerprint ? "forged fingerprint" : "self-hashed receipt without producer proof"} runs fresh`, async () => {
     await fixture(async ({ root, plan }) => {
-      const obligation = (await buildEvidenceObligations(root, plan))[0];
+      const obligation = (await buildEvidenceObligations(root, plan)).find((entry) => !entry.reuseIndeterminate);
       const fingerprint = structuredClone(obligation.fingerprint);
       if (corruptFingerprint) fingerprint.semanticClosureDigest = "f".repeat(64);
       const store = new FileEvidenceStore(path.join(root, "artifacts/sounding-line/evidence-store"));
@@ -250,7 +262,7 @@ for (const corruptFingerprint of [false, true])
         calls++;
       });
       assert(calls > 0);
-      const entry = result.reconciliation[0];
+      const entry = result.reconciliation.find((item) => item.obligationId === obligation.id);
       assert.equal(entry.disposition, "CONSERVATIVE_FALLBACK");
       assert(
         entry.reasonCodes.includes(
@@ -268,12 +280,154 @@ for (const corruptFingerprint of [false, true])
 test("trusted parent observations remain reusable with exact fingerprints and finalizer closure", async () => {
   await fixture(async ({ root, plan }) => {
     await runReconciledVerification(root, plan, () => {});
-    let calls = 0;
-    const result = await runReconciledVerification(root, plan, () => {
-      calls++;
+    const calls = [];
+    const result = await runReconciledVerification(root, plan, (_root, command, args) => {
+      calls.push([command, args]);
     });
-    assert.equal(calls, 0);
-    assert(result.reconciliation.every((entry) => entry.disposition === "PRESERVED"));
+    assert.deepEqual(calls, [["npm", ["run", "db:generate"]]]);
+    assert(result.reconciliation.some((entry) => entry.disposition === "PRESERVED"));
+    const setup = result.reconciliation.find((entry) => entry.commandsAvoided.length === 0);
+    assert.deepEqual(setup.reasonCodes, ["SETUP_OUTPUT_NOT_ATTESTED"]);
+    assert.equal(setup.freshExecuted, true);
+    assert.equal(result.finalization.decision, "PASS");
+  });
+});
+
+test("runtime generation and standalone build stay fresh and bind Prisma plus runner inputs", async () => {
+  await fixture(async ({ root, plan }) => {
+    const p = { ...plan, buildRequired: true };
+    const obligations = await buildEvidenceObligations(root, p);
+    const setup = obligations.filter((entry) => entry.reuseReason === "SETUP_OUTPUT_NOT_ATTESTED");
+    assert.equal(setup.length, 2);
+    for (const group of setup) {
+      assert.equal(group.reuseIndeterminate, true);
+      assert(
+        group.fingerprint.semanticClosureMembers.some((entry) => entry.startsWith("prisma/schema.sqlite.prisma@")),
+      );
+      assert.notEqual(group.fingerprint.schemaDigest, null);
+      assert.notEqual(group.fingerprint.fixtureDigest, null);
+    }
+    await runReconciledVerification(root, p, () => {});
+    const executed = [];
+    const second = await runReconciledVerification(root, p, (_root, command, args) => executed.push([command, args]));
+    assert.deepEqual(executed, [
+      ["npm", ["run", "db:generate"]],
+      ["npm", ["run", "build"]],
+    ]);
+    assert.equal(second.finalization.decision, "PASS");
+    assert(
+      second.reconciliation
+        .filter((entry) => entry.freshExecuted)
+        .every((entry) => entry.reasonCodes.includes("SETUP_OUTPUT_NOT_ATTESTED")),
+    );
+  });
+});
+
+for (const source of [
+  "export const mode = process.env.PUBLIC_FIXTURE_MODE;\n",
+  "export const mode = process['env'].PUBLIC_FIXTURE_MODE;\n",
+  "export const mode = import.meta.env.PUBLIC_FIXTURE_MODE;\n",
+])
+  test("unbound environment input keeps unit proof fresh: " + source.trim(), async () => {
+    await fixture(async ({ root, plan }) => {
+      put(root, "src/reach/runtime.ts", source);
+      put(root, "src/reach/runtime.test.ts", "import './runtime';\n");
+      const candidateSha = commit(root);
+      const group = (
+        await buildEvidenceObligations(root, {
+          ...plan,
+          candidateSha,
+          databaseUrl: soundingLineDatabaseUrl(candidateSha),
+          selected: { unitTests: ["src/reach/runtime.test.ts"], browserTests: [] },
+        })
+      ).find((entry) => entry.kind === "unit");
+      assert.equal(group.reuseIndeterminate, true);
+    });
+  });
+
+for (const source of [
+  "import { readFileSync as load } from 'node:fs'; export const value = load(inputPath);\n",
+  "const runtime = globalThis; export const value = runtime['pro' + 'cess'].env.INPUT;\n",
+])
+  test("aliased external runtime inputs cannot become reusable proof: " + source.slice(0, 45), async () => {
+    await fixture(async ({ root, plan }) => {
+      put(root, "src/reach/runtime.ts", source);
+      const group = await runtimeUnitGroup(root, plan);
+      assert.equal(group.reuseIndeterminate, true);
+    });
+  });
+
+test("typecheck includes imported runtime JSON outside product prefixes", async () => {
+  await fixture(async ({ root, plan }) => {
+    const before = (await buildEvidenceObligations(root, plan)).find((entry) =>
+      entry.commandLabels.some((label) => label.includes("tsc --noEmit")),
+    );
+    assert(
+      before.fingerprint.semanticClosureMembers.some((entry) =>
+        entry.startsWith("Development_Docs/Runtime/registry.json@"),
+      ),
+    );
+    put(root, "Development_Docs/Runtime/registry.json", '{"ready":"changed type"}\n');
+    const candidateSha = commit(root);
+    const after = (
+      await buildEvidenceObligations(root, {
+        ...plan,
+        candidateSha,
+        databaseUrl: soundingLineDatabaseUrl(candidateSha),
+      })
+    ).find((entry) => entry.id === before.id);
+    assert.notEqual(before.fingerprint.fingerprintDigest, after.fingerprint.fingerprintDigest);
+  });
+});
+
+test("migration source closure includes imported data outside script prefixes", async () => {
+  await fixture(async ({ root, plan }) => {
+    put(
+      root,
+      "scripts/rehearse-fixture.ts",
+      "import data from '../Development_Docs/Runtime/registry.json';\nvoid data;\n",
+    );
+    const candidateSha = commit(root);
+    const p = {
+      ...plan,
+      candidateSha,
+      databaseUrl: soundingLineDatabaseUrl(candidateSha),
+      migrationScripts: ["scripts/rehearse-fixture.ts"],
+    };
+    const before = (await buildEvidenceObligations(root, p)).find((entry) => entry.kind === "migration");
+    assert(
+      before.fingerprint.semanticClosureMembers.some((entry) =>
+        entry.startsWith("Development_Docs/Runtime/registry.json@"),
+      ),
+    );
+    put(root, "Development_Docs/Runtime/registry.json", '{"ready":false}\n');
+    const next = commit(root);
+    const after = (
+      await buildEvidenceObligations(root, { ...p, candidateSha: next, databaseUrl: soundingLineDatabaseUrl(next) })
+    ).find((entry) => entry.id === before.id);
+    assert.notEqual(before.fingerprint.fingerprintDigest, after.fingerprint.fingerprintDigest);
+  });
+});
+
+test("current policy verification stays fresh even with genuine same-parent evidence", async () => {
+  await fixture(async ({ root, plan }) => {
+    put(root, "tests/sounding-line/ordinary.test.mjs", "export {};\n");
+    const candidateSha = commit(root);
+    const p = {
+      ...plan,
+      candidateSha,
+      databaseUrl: soundingLineDatabaseUrl(candidateSha),
+      registrationValidationRequired: true,
+    };
+    await runReconciledVerification(root, p, () => {});
+    const calls = [];
+    const result = await runReconciledVerification(root, p, (_root, command, args) => calls.push([command, args]));
+    assert(calls.some(([command, args]) => command === process.execPath && args[0] === "--test"));
+    const current = result.reconciliation.find((entry) =>
+      entry.reasonCodes.includes("CURRENT_POLICY_VERIFICATION_REQUIRED"),
+    );
+    assert.equal(current.freshExecuted, true);
+    assert.deepEqual(current.commandsAvoided, []);
     assert.equal(result.finalization.decision, "PASS");
   });
 });
@@ -306,17 +460,11 @@ test("same-root local CLI leaves checkpoint export disabled without forbidding v
   });
 });
 
-test("computed runtime import leaves build closure indeterminate", async () => {
+test("computed runtime import leaves unit closure indeterminate", async () => {
   await fixture(async ({ root, plan }) => {
     put(root, "src/reach/runtime.ts", "const target = './runtime-data';\nvoid import(target);\n");
-    const candidateSha = commit(root);
-    const groups = await buildEvidenceObligations(root, {
-      ...plan,
-      candidateSha,
-      databaseUrl: soundingLineDatabaseUrl(candidateSha),
-      buildRequired: true,
-    });
-    assert.equal(groups.find((group) => group.kind === "build").reuseIndeterminate, true);
+    const group = await runtimeUnitGroup(root, plan);
+    assert.equal(group.reuseIndeterminate, true);
   });
 });
 
@@ -330,15 +478,7 @@ for (const expression of [
       put(root, "Development_Docs/Runtime/known.ts", "export {};\n");
       put(root, "Development_Docs/Runtime/known-extra.ts", "export const extra = true;\n");
       put(root, "src/reach/runtime.ts", "const suffix = '-extra'; void " + expression + ";\n");
-      const candidateSha = commit(root);
-      const group = (
-        await buildEvidenceObligations(root, {
-          ...plan,
-          candidateSha,
-          databaseUrl: soundingLineDatabaseUrl(candidateSha),
-          buildRequired: true,
-        })
-      ).find((entry) => entry.kind === "build");
+      const group = await runtimeUnitGroup(root, plan);
       assert.equal(group.reuseIndeterminate, true);
     });
   });
@@ -347,15 +487,7 @@ test("a complete static quoted call includes its outside-prefix source without f
   await fixture(async ({ root, plan }) => {
     put(root, "Development_Docs/Runtime/known.ts", "export {};\n");
     put(root, "src/reach/runtime.ts", "void import('../../Development_Docs/Runtime/known');\n");
-    const candidateSha = commit(root);
-    const group = (
-      await buildEvidenceObligations(root, {
-        ...plan,
-        candidateSha,
-        databaseUrl: soundingLineDatabaseUrl(candidateSha),
-        buildRequired: true,
-      })
-    ).find((entry) => entry.kind === "build");
+    const group = await runtimeUnitGroup(root, plan);
     assert.equal(group.reuseIndeterminate, false);
     assert(
       group.fingerprint.semanticClosureMembers.some((entry) => entry.startsWith("Development_Docs/Runtime/known.ts@")),
@@ -371,15 +503,7 @@ for (const source of [
   test("template or filesystem runtime inputs conservatively invalidate reuse: " + source.slice(0, 35), async () => {
     await fixture(async ({ root, plan }) => {
       put(root, "src/reach/runtime.ts", source);
-      const candidateSha = commit(root);
-      const group = (
-        await buildEvidenceObligations(root, {
-          ...plan,
-          candidateSha,
-          databaseUrl: soundingLineDatabaseUrl(candidateSha),
-          buildRequired: true,
-        })
-      ).find((entry) => entry.kind === "build");
+      const group = await runtimeUnitGroup(root, plan);
       assert.equal(group.reuseIndeterminate, true);
       if (source.includes("readFileSync('Development_Docs/"))
         assert(
