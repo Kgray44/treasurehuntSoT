@@ -3,7 +3,7 @@ title: SC-00C expanded Spatial Library implementation checkpoint
 audience: product-engineering
 status: implementation-in-validation
 canonical_for: sc-00c-expanded-spatial-library-20261015
-last_reviewed: 2026-10-15
+last_reviewed: 2026-10-17
 ---
 
 # Expanded Spatial Library
@@ -256,3 +256,17 @@ and reuse journeys. The first scaled browser fixture failed due to an
 unrelated Scene object occupying the table; its receipt is preserved beside
 the corrected pass. [Source-bound evidence](evidence/sc-00c/20261015-expanded-library/README.md)
 keeps protected Product Experience and owner acceptance open.
+
+## Library card actions and phone viewport return
+
+Later isolated source `f7b0737acc2d` adds card context actions through the
+existing Studio menu and canonical Library callbacks. Right-click and
+Shift+F10 expose preview and the applicable Asset insertion or Scene Archive
+action; the active working Scene's Archive stays disabled. A queued Library
+scroll notification no longer closes a newly opened menu, while actual later
+scrolling still dismisses it. On narrow screens, choosing **Place in Scene**
+closes the compact Library and reveals the placement preview in the viewport.
+The [focused source-bound record](evidence/sc-00c/20261017-library-context-menu-f7b0737a/README.md)
+passes one production Chromium journey covering these interactions, including
+Undo, keyboard focus, light theme and reduced motion. Root combined replay,
+protected qualification and owner acceptance remain separate.

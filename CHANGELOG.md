@@ -3,11 +3,12 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-10-15
+last_reviewed: 2026-10-17
 ---
 
 # Changelog
 
+- SC-00C local candidate `f7b0737acc2d` adds right-click and Shift+F10 Library card actions through existing insertion and lifecycle paths. A shared Studio menu correction ignores already-settled scroll notifications while retaining dismissal on new scrolling; phone placement from the expanded Library now reveals the viewport. [One focused production Chromium journey](Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261017-library-context-menu-f7b0737a/README.md) passes on isolated source. Parallax root replay and protected qualification remain open.
 - SC-00B corrective Inspector source `79348a8f` adds Engineering pitch/roll for precise Spot direction, removes ineffective Ambient pose controls, gives Scene settings distinct depth, and disables the accessible-description edit while locked. Seven isolated production Chromium journeys, a focused Assistant preview and eight local semantic contexts pass on this exact source; the owner accepted the preceding visual packet and the corrected source awaits review. [The updated packet](Development_Docs/Projects/Project_Parallax/SC00B_Combined_Inspector_Review_20261015.md#current-corrective-source-and-owner-review) keeps protected qualification separate.
 - Active Parallax overhaul branch: new Ghost Footprint Trail presets use modeled boot soles and cut-out tread, lie flat inside the reference room, and preserve left/right handedness through duplication and reusable assets. Saved legacy poses are preserved. Seven focused production journeys pass at81151c15; independent review resolves the earlier primitive footprint concern while keeping full-scene concurrent editing and hardware qualification unclaimed.
 

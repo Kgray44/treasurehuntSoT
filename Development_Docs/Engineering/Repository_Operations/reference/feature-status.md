@@ -3,12 +3,14 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-10-15
+last_reviewed: 2026-10-17
 ---
 
 The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.md) is an isolated synthetic implementation in qualification. It exercises accepted platform contracts; its combined physical/owner session remains pending and it does not promote later spatial phases.
 
 # Feature status
+
+SC-00C card context actions and the narrow-screen viewport return have a [1/1 focused local production-browser pass](../../../Projects/Project_Parallax/evidence/sc-00c/20261017-library-context-menu-f7b0737a/README.md) on `f7b0737acc2d`. This is a corrective candidate awaiting combined Parallax replay, with no new mainline availability or Feature Catalog entry.
 
 The local SC-00C/SC-07A/Parallax root source `d2b59c98cbd2` passes [27/27 production Chromium Library, placement, lifecycle and Community journeys plus a separate 1/1 2,000-Scene scale case](../../../Projects/Project_Parallax/evidence/sc-00c/20261016-root-rehearsal-d2b59c98/README.md). Compact and expanded Library use the same saved content and checked placement paths; the expanded desktop filters sit above the gallery. The repeated whole-Studio bootstrap is 6,626,373 bytes locally. This source is an unpushed rehearsal, and protected/mainline availability, physical-device proof and owner acceptance remain open.
 

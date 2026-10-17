@@ -3,7 +3,7 @@ title: Project Parallax engineering home
 audience: product-engineering
 status: phase-3-software-qualified-mainline
 canonical_for: project-parallax-engineering-home
-last_reviewed: 2026-10-15
+last_reviewed: 2026-10-17
 ---
 
 # Project Parallax
@@ -29,6 +29,7 @@ Its governing promise is simple even though the machinery behind it is emphatica
 - [SC-00C expanded Spatial Library checkpoint](SC_00C_Expanded_Library_20261015.md) records the shared compact/expanded view, staged surface placement, Scene Manager actions and validation boundary.
 - [SC-00C expanded Library browser evidence](evidence/sc-00c/20261015-expanded-library/README.md) retains source-bound responsive captures, recordings, direct browser receipts, independent reviews and the current SC-07A rehearsal link.
 - [Current SC-00C, SC-07A and Parallax root browser rehearsal](evidence/sc-00c/20261016-root-rehearsal-d2b59c98/README.md) records 27 combined production Chromium journeys, a separate 2,000-Scene scale case, inspected native captures and remaining protected gates on exact local source.
+- [SC-00C Library card actions and phone viewport return](evidence/sc-00c/20261017-library-context-menu-f7b0737a/README.md) records the unguarded pointer/keyboard menu, real-scroll dismissal and visible narrow-screen placement preview on isolated local source.
 - [SC-00C acceptance audit](SC_00C_Acceptance_Audit_20261015.md) maps the 12 requested journeys to evidence and remaining qualification gates.
 - [SC-00C/SC-07A final draft browser evidence](evidence/sc-00c/20261015-pr736-final/README.md) binds the integrated browser suites and 2,000-Scene observations to one draft source.
 - [SC-07A combined source adaptation](SC_07A_Combined_Adaptation_20261015.md) records saved-source publication, exact Environment pins, Harborlight package and install boundaries, and the owner review route.

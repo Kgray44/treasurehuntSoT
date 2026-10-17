@@ -3,7 +3,7 @@ title: Parallax Spatial Studio Creator guide
 audience: creators
 status: current
 canonical_for: parallax-spatial-studio-guide
-last_reviewed: 2026-10-15
+last_reviewed: 2026-10-17
 ---
 
 # Build a spatial experience
@@ -14,10 +14,14 @@ current category, search, filters and selected item remain when you close and
 reopen it. Source, Show and Sort sit above the desktop gallery; Scene browsing
 keeps Environment in that toolbar. Open Filters on a phone. The item panel
 shows its source and available actions. Scroll long
-details to reach the remaining actions. For a physical or saved Asset,
+details to reach the remaining actions. Right-click a Library card, or focus
+it and press Shift+F10, for the same contextual actions. Escape returns focus
+to the card; scrolling the Library closes its open menu. The active Scene
+cannot be archived from that menu. For a physical or saved Asset,
 **Place in Scene** returns to the viewport: point to a clear
 compatible surface or choose one of the named surfaces with the keyboard,
-then confirm. **Cancel placement** leaves the Scene untouched, including when
+then confirm. On a phone, the viewport comes into view when placement begins.
+**Cancel placement** leaves the Scene untouched, including when
 an insertion request is still loading; an invalid point keeps placement
 active. A saved physical model must fit its full height and depth on the
 selected support. Assemblies with multiple physical models ask for reviewed

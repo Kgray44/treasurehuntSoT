@@ -3,10 +3,12 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-10-15
+last_reviewed: 2026-10-17
 ---
 
 # Current status
+
+An isolated SC-00C corrective candidate `f7b0737acc2d` passes a [focused production Chromium Library card journey](../../../Projects/Project_Parallax/evidence/sc-00c/20261017-library-context-menu-f7b0737a/README.md): unguarded right-click and Shift+F10 actions, active-Scene Archive protection, real-scroll dismissal, and a visible phone placement preview. This result awaits replay on the current combined Parallax root source and does not change protected or mainline status.
 
 Current local SC-00C draft PR #739 includes SC-07A PR #736 head and is mergeable against it. The unpushed Parallax root rehearsal `d2b59c98cbd2` combines that draft with root PR #722. Its [exact-source browser record](../../../Projects/Project_Parallax/evidence/sc-00c/20261016-root-rehearsal-d2b59c98/README.md) reports 27/27 Library, placement, lifecycle and Community journeys plus a separate 1/1 2,000-Scene case, with production builds and owned capture/cleanup passing. The expanded desktop Source, Show and Sort controls remain in a slim row above the gallery. The whole-Studio bootstrap measures 6,626,373 bytes locally. Protected qualification, physical-device and owner acceptance remain open.
 

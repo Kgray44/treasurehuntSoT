@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "sourceSha": "f7b0737acc2dccc46a87770ec7bfd02ebf28f09c",
+  "files": [
+    {
+      "name": "browser-runtime.json",
+      "bytes": 1315,
+      "sha256": "bf46ddc3dee9e2c0b0e6646cc26dd709a11142173e32b95fd3dd285c46c08c55"
+    },
+    {
+      "name": "browser-suite-profile.json",
+      "bytes": 217,
+      "sha256": "8e9bc58c4017249a446780dab652ad56c34e2c943f645e73b76c4682c4885094"
+    },
+    {
+      "name": "browser.original.log.txt",
+      "bytes": 46895,
+      "sha256": "8aa08c2291b7958a6997a56182b4e614a20fd459e91ed81284f5c14828046c97"
+    },
+    {
+      "name": "browser.scroll-diagnostic.log.txt",
+      "bytes": 51790,
+      "sha256": "c21f717a2bc8254b0ec4eaf971b32cb5e1610c79ac7335b4317cc9143e01144c"
+    },
+    {
+      "name": "built-in-context-desktop.png",
+      "bytes": 311719,
+      "sha256": "dc640226a0258e387401261b816b4e99ee9874d2514b55acd3c4a7dabe0d8d38"
+    },
+    {
+      "name": "context-placement-preview-phone.png",
+      "bytes": 109886,
+      "sha256": "818a6e25a3827d84e8bbdb0c48f4690158216d3597afd2b233ae359f0f53d7dc"
+    },
+    {
+      "name": "current-scene-context-desktop.png",
+      "bytes": 304589,
+      "sha256": "4b8cb7f93467f88095aea1a984084fb22baf40b653515c47e695d3135478308a"
+    },
+    {
+      "name": "expanded-phone-context-light-reduced.png",
+      "bytes": 35907,
+      "sha256": "ebaa9ac6d069791aff77374ee01e0741e9eb9fc1b96b965d7c05e257b30ee48c"
+    },
+    {
+      "name": "journey.webm",
+      "bytes": 438420,
+      "sha256": "13c3675f02e770d3fdd416ea72cccbfe549c8d59d948eb8130c6fda7017f8897"
+    },
+    {
+      "name": "README.md",
+      "bytes": 2591,
+      "sha256": "da059a3797b66d42df843537d680d2f928077d43b8da4aa3796fb76589235490"
+    }
+  ]
+}
