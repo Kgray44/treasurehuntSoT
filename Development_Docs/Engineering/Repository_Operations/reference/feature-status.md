@@ -3,12 +3,16 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-10-15
+last_reviewed: 2026-10-17
 ---
 
 The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.md) is an isolated synthetic implementation in qualification. It exercises accepted platform contracts; its combined physical/owner session remains pending and it does not promote later spatial phases.
 
 # Feature status
+
+Parallax's [phone/Inspector/Library correction](../../../Projects/Project_Parallax/evidence/library-entry-repair-20261017/README.md) is partial verification. The 370 px phone canvas and adopted Library menu journey pass locally; the full uninstrumented eleven-case batch has four failures, while diagnostic source has three. The header-menu race and further Inspector test migrations remain open. These ordinary corrections do not promote a Feature Catalog capability or availability. Failed physical Safari alignment and the #721 protected dependency hold remain separate.
+
+SC-00C card context actions and the narrow-screen viewport return have a [1/1 focused local production-browser pass](../../../Projects/Project_Parallax/evidence/sc-00c/20261017-library-context-menu-f7b0737a/README.md) on `f7b0737acc2d`. This is a corrective candidate awaiting combined Parallax replay, with no new mainline availability or Feature Catalog entry.
 
 Root freeze `e93d1e885a33` locally adopts reviewed saved-Asset placement from
 `2197c864`. Bounded source review resolves cancellation, scale, parent/root

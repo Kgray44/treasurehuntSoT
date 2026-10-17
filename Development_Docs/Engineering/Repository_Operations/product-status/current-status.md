@@ -3,10 +3,14 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-10-15
+last_reviewed: 2026-10-17
 ---
 
 # Current status
+
+The [bounded Parallax root correction](../../../Projects/Project_Parallax/evidence/library-entry-repair-20261017/README.md) restores the phone canvas minimum and migrates cinematic/construction Inspector entry while retaining all 208 original criteria. Exact SC-00C Library card source is adopted and its case passes in the combined root. Uninstrumented combined source has 7/11 passes; temporary diagnostic source has 8/11 with three further retired Inspector entries failing. Intermittent header Save draft dismissal remains open despite passing diagnostic reruns. Separate phone-layout and Library-menu local reviews find no actionable issue within their finite scopes. Whole-Studio, physical Safari and protected acceptance remain incomplete; no new mainline availability is claimed.
+
+An isolated SC-00C corrective candidate `f7b0737acc2d` passes a [focused production Chromium Library card journey](../../../Projects/Project_Parallax/evidence/sc-00c/20261017-library-context-menu-f7b0737a/README.md): unguarded right-click and Shift+F10 actions, active-Scene Archive protection, real-scroll dismissal, and a visible phone placement preview. This result awaits replay on the current combined Parallax root source and does not change protected or mainline status.
 
 The local Parallax candidate adopts repaired SC-00C handoff `2197c864d1bb`
 after bounded source and final media review. Cancellation, scaled physical

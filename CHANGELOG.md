@@ -3,13 +3,17 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-10-15
+last_reviewed: 2026-10-17
 ---
 
 # Changelog
 
+- Parallax local correction preserves a 370 px phone canvas, updates the cinematic/construction journeys to the current Inspector and adopts the exact SC-00C Library card menu handoff. Separate local rendered reviews cover phone layout and Library menus. [All original failures and follow-up results](Development_Docs/Projects/Project_Parallax/evidence/library-entry-repair-20261017/README.md) remain visible: combined uninstrumented source is 7/11, diagnostic source is 8/11; header-menu reliability, remaining Inspector migrations, physical Safari and protected qualification are still open.
+
 - SC-00B current contextual Inspector source `6bea2130` has source-bound seven-journey production-browser, Assistant preview and eight-context local diagnostic records. The owner accepted this exact-source visual/usability packet. Root now preserves its original artifacts and approval; protected integration remains pending. The [current review](Development_Docs/Projects/Project_Parallax/SC00B_Combined_Inspector_Review_20261015.md#current-contextual-source-review) distinguishes local diagnostic fields from human approval.
 - The prepared #722 pickup adds explicit saved source types and explains why a saved Scene without a pinned Environment publishes its self-contained content as a Spatial asset. Enriched Community journeys retain the prior assertions and require this explanation before publication. Fresh combined-source review and protected qualification remain pending.
+- SC-00C local candidate `f7b0737acc2d` adds right-click and Shift+F10 Library card actions through existing insertion and lifecycle paths. A shared Studio menu correction ignores already-settled scroll notifications while retaining dismissal on new scrolling; phone placement from the expanded Library now reveals the viewport. [One focused production Chromium journey](Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261017-library-context-menu-f7b0737a/README.md) passes on isolated source. Parallax root replay and protected qualification remain open.
+
 - Active Parallax overhaul branch: new Ghost Footprint Trail presets use modeled boot soles and cut-out tread, lie flat inside the reference room, and preserve left/right handedness through duplication and reusable assets. Saved legacy poses are preserved. Seven focused production journeys pass at81151c15; independent review resolves the earlier primitive footprint concern while keeping full-scene concurrent editing and hardware qualification unclaimed.
 
 - Corrected Landfall Phase 2 closure gaps through protected PR #671: embedded canonical Living Charts, arrival-gated observation responses, durable encrypted offline reload/reconciliation and first-party imagery, foreground field-test cleanup, persistent Captain conflict feedback, and responsive/keyboard accessibility acceptance. Exact-head hosted qualification and landed smoke passed; permanent evidence and external boundaries are recorded in the Landfall final closure record.

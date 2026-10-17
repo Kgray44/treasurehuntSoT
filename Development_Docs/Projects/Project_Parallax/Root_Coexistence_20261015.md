@@ -970,3 +970,36 @@ The separate five-file/30-test phone software check belongs to `7defbf27734b`.
 The tested files are unchanged in the later correction, but the receipt is not
 rebound. Real iPhone tracking, detected surfaces, room alignment and physical
 acceptance remain unqualified. No paid inference or private-state copying occurs.
+
+## Bounded phone and Inspector follow-through, 2026-10-17
+
+The [follow-up evidence](evidence/library-entry-repair-20261017/README.md)
+preserves nine further isolated attempts and all 208 original matcher criteria.
+The phone canvas meets the unchanged 370 px minimum with no horizontal document
+overflow. Cinematic and construction enter the actual Engineering/Properties/
+Spatial context controls. All nine Library entry specs are applied and exercised;
+their complete outcomes are not all passing.
+
+Root adopts only the exact SC-00C component/test blobs from `f7b0737acc2d`, and
+its raw evidence from final owner package `c361d36ce04f`. Shared menu/phone-return
+code remains root-owned. Uninstrumented combined source `673abb39e44c` has
+7/11 passes and four failures, with no unexecuted cases; diagnostic-only source
+`b96d78364ff3` has 8/11 passes and three failures. The latter does not resolve the
+intermittent header Save draft menu disappearance. Three further retired
+Inspector entries remain in direct-placement, exclusions and parametric-room
+tests. A temporary test settlement and subsequent event instrumentation are
+both removed; source `ca4cd57b1` has the exact same committed tree as `673abb39e`.
+
+Separate independent local reviews inspect the 41b phone layout and 673 Library
+menu/viewport return, with no actionable findings within those finite scopes.
+The source-bound originals, 23 screenshots, five recordings, sampling manifests
+and contact sheets remain distinct. These are not trusted protected capture or
+owner/physical acceptance. The latest three-file mocked tracking check passes
+26 tests without admitting missing detected planes. The prior 3130 listener is
+absent; no shared user runtime or private state is changed. The upright steady
+phone/no-error report remains an unexplained failed physical session.
+
+GitHub still reports #721 open/draft at `43b5f4d55b6a` with no merge. Protected
+#722 capture, qualification, accepted-base reconciliation and merge stay held;
+the designated cloud owner alone executes Crossdeck/Reach/workflow work. No
+paid calls or Feature Catalog availability promotion occur in this correction.

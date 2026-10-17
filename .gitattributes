@@ -47,3 +47,7 @@ Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea
 Development_Docs/Projects/Project_Parallax/evidence/cohort-preparation-20261016/*.original.* -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
 # Original local test diagnostics must retain their byte identity on Windows.
 Development_Docs/Projects/Project_Parallax/evidence/library-entry-migration-20261017/** -text -whitespace
+
+# Preserve original local correction receipts and exact SC-00C evidence bytes.
+Development_Docs/Projects/Project_Parallax/evidence/library-entry-repair-20261017/** -text -whitespace
+Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261017-library-context-menu-f7b0737a/** -text -whitespace

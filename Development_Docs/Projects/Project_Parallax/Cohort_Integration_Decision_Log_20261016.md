@@ -184,3 +184,25 @@ the release trigger. A progress message to the coordinator returned the native
 AbsolutePathBuf error again; it is not claimed delivered. This written record
 and root handoff preserve the actual state. Physical Safari tracking and plane
 detection remain unqualified; no paid inference occurs.
+
+## Bounded root correction and exact Library pickup, 2026-10-17
+
+The [current corrective record](evidence/library-entry-repair-20261017/README.md)
+retains nine additional attempts, exact SC-00C blobs/evidence and separate local
+rendered reviews. Phone canvas minimum and two original Inspector entries are
+corrected with all 208 original criteria intact. The nine-entry migration is
+applied and all ten original cases execute. Uninstrumented combined source `673`
+has 7/11 passes; diagnostic source `b96` has 8/11. Neither is a complete Studio pass.
+The header Save draft race and three further retired Inspector entries remain
+open. Test timing settlement and diagnostics are removed; no third speculative
+menu correction or acceptance weakening follows a passing diagnostic rerun.
+
+SC-00C's final component/test blobs are adopted from `f7`; evidence bytes come from
+`c361` after scoped attributes preserve original Windows log bytes. Four human
+document conflicts preserve root text and only the new owner additions; older
+unadopted owner status was not imported. Source `ca4` has the same tree as `673`.
+These are ordinary corrective/partial changes, with no Feature Catalog entry.
+The #721 hold and sole cloud Crossdeck execution owner remain unchanged. The
+phone was upright and steady; physical alignment still failed without error.
+No admitted provider planes, running 3130 pilot, paid inference, private-state
+copying, shared runtime restart, mainline reconciliation or merge is claimed.

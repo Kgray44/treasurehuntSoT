@@ -169,3 +169,12 @@ no shared CSS/interface overlap and cleared a phone-only canvas CSS correction.
 Keep all 208 original matcher criteria and failed receipts. Recheck actual phone
 rendering and obtain independent local review; this remains separate from the
 held protected capture/qualification and the failed real-device AR journey.
+
+The bounded follow-through retains all nine subsequent attempts and the
+intermittent header-menu failure; diagnostic passes do not resolve it. Exact
+SC-00C Library component/test blobs from f7 and evidence from c361 are adopted
+without replaying owner history. The phone canvas is 370 px; all 208 matcher
+criteria remain intact. Three additional retired Inspector entries remain
+unmigrated. Temporary settlement/instrumentation is removed; do not iterate
+speculative menu repairs or promote local reviews to protected/physical proof.
+The current upright steady/no-error phone report remains failed and unknown.

@@ -1,0 +1,62 @@
+{
+  "source": "c361d36ce04ffd9345c0bbcf98e09adf98637921",
+  "proofSource": "f7b0737acc2dccc46a87770ec7bfd02ebf28f09c",
+  "historyReplayed": false,
+  "files": [
+    {
+      "file": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261017-library-context-menu-f7b0737a/README.md",
+      "blob": "95a2b566bc543ca64403b48c7a20e861f33f190b",
+      "bytes": 2591
+    },
+    {
+      "file": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261017-library-context-menu-f7b0737a/browser-runtime.json",
+      "blob": "73b8133f3c5bdb0bb770cb11c9685b49fdebe6bc",
+      "bytes": 1315
+    },
+    {
+      "file": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261017-library-context-menu-f7b0737a/browser-suite-profile.json",
+      "blob": "73b4c8c3960094ebc501cf5d14d950da769c6ce1",
+      "bytes": 217
+    },
+    {
+      "file": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261017-library-context-menu-f7b0737a/browser.original.log.txt",
+      "blob": "232f97317f2b427089fb4005de21b66eede887c2",
+      "bytes": 46895
+    },
+    {
+      "file": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261017-library-context-menu-f7b0737a/browser.scroll-diagnostic.log.txt",
+      "blob": "cc91126a305f86117902be60ba17d3cec1996937",
+      "bytes": 51790
+    },
+    {
+      "file": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261017-library-context-menu-f7b0737a/built-in-context-desktop.png",
+      "blob": "63b363e8e2f429b8e13ea1607e494cc90d913877",
+      "bytes": 311719
+    },
+    {
+      "file": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261017-library-context-menu-f7b0737a/context-placement-preview-phone.png",
+      "blob": "1436d7735972bca58bb7ef118e585f5dad3e2a79",
+      "bytes": 109886
+    },
+    {
+      "file": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261017-library-context-menu-f7b0737a/current-scene-context-desktop.png",
+      "blob": "357e12be3854c2a662211f7a7e4598a1de43f442",
+      "bytes": 304589
+    },
+    {
+      "file": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261017-library-context-menu-f7b0737a/expanded-phone-context-light-reduced.png",
+      "blob": "cf16a75ea4db90d6a052d909748463f376259b75",
+      "bytes": 35907
+    },
+    {
+      "file": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261017-library-context-menu-f7b0737a/journey.webm",
+      "blob": "a1d3e77f2699a602f6bf5a182149e7d11f5e7962",
+      "bytes": 438420
+    },
+    {
+      "file": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261017-library-context-menu-f7b0737a/manifest.json",
+      "blob": "0adc4f9093d2bb395bb93ee2a641ec584de6494d",
+      "bytes": 1771
+    }
+  ]
+}

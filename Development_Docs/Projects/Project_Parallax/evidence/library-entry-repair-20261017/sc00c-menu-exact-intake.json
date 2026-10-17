@@ -1,0 +1,17 @@
+{
+  "source": "f7b0737acc2dccc46a87770ec7bfd02ebf28f09c",
+  "rootParent": "9d2526ba9f6e57ee08a5a3314c3d998ef422d087",
+  "historyReplayed": false,
+  "files": [
+    {
+      "file": "src/components/studio/parallax/SpatialContentLibrary.tsx",
+      "blob": "821277cd27bef3de6ef522b77465ed61c77e4e2c",
+      "bytes": 58908
+    },
+    {
+      "file": "tests/e2e/parallax-sc00c-library-context-menu.spec.ts",
+      "blob": "ac1f50aebfd540d57bf21997fe52c7d8ec40a856",
+      "bytes": 7000
+    }
+  ]
+}

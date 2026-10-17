@@ -3,10 +3,17 @@ title: SC-00C Spatial Library acceptance audit
 audience: product-engineering
 status: implementation-in-validation
 canonical_for: sc-00c-spatial-library-acceptance-audit
-last_reviewed: 2026-10-15
+last_reviewed: 2026-10-17
 ---
 
 # Spatial Library acceptance audit
+
+The later [SC-00C card-action and phone-return record](evidence/sc-00c/20261017-library-context-menu-f7b0737a/README.md)
+adds one passing local production-browser journey on source `f7b0737acc2d`.
+It covers unguarded pointer and keyboard menus, canonical insertion and Undo,
+active-Scene Archive protection, real-scroll dismissal and a placement preview
+inside the 390 px viewport. This focused correction awaits replay in the final
+combined Parallax candidate and does not change the protected acceptance gate.
 
 This audit maps the 12 requested journeys to rendered evidence and separates
 local software proof from protected qualification and owner acceptance. The
