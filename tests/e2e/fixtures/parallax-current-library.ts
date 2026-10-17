@@ -38,12 +38,6 @@ export async function closeCurrentLibrary(page: Page) {
 
 /** Persist the working draft through its actual command, without creating Library membership. */
 export async function saveCurrentWorkingDraft(page: Page) {
-  const heading = page.getByRole("heading", { name: "Parallax", exact: true });
-  await heading.scrollIntoViewIfNeeded();
-  // Scrolling intentionally dismisses menus. Finish it before opening this one.
-  await page.evaluate(
-    () => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))),
-  );
-  await heading.click({ button: "right" });
+  await page.getByRole("heading", { name: "Parallax", exact: true }).click({ button: "right" });
   await page.getByRole("menuitem", { name: "Save draft", exact: true }).click();
 }
