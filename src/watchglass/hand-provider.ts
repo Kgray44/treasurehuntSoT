@@ -1,8 +1,9 @@
 import type { HandObservation } from "./hand-observation";
 import { assessHand } from "./hand-posture";
+import { indexGeometry } from "./index-geometry";
 export const handModel = {
   providerId: "watchglass.hand-observation",
-  providerVersion: "1.2.0",
+  providerVersion: "1.3.0",
   modelId: "mediapipe.hand-landmarker.float16",
   modelVersion: "1",
   modelDigest: "fbc2a30080c3c557093b5ddfc334698132eb341044ccee322ccf8bcf3607cde1",
@@ -12,20 +13,20 @@ export const handModel = {
 } as const;
 type Landmark = { x: number; y: number; z: number };
 export type HandResult = { landmarks: Landmark[][]; handedness: { categoryName: string; score: number }[][] };
-type PalmCenter = { x: number; y: number };
-type PalmCapture = { center: PalmCenter; at: number; inferredSpan: number };
-type PalmSnapshot = (PalmCenter | null)[];
+type IndexCenter = { x: number; y: number };
+type IndexCapture = { center: IndexCenter; at: number; inferredSpan: number };
+type IndexSnapshot = (IndexCenter | null)[];
 type Track = {
   id: number;
-  center: PalmCenter;
-  palm: PalmSnapshot;
+  center: IndexCenter;
+  index: IndexSnapshot;
   at: number;
   scale: number | null;
-  recent: PalmCapture[];
+  recent: IndexCapture[];
   established: boolean;
 };
 type ObservedHand = HandObservation["hands"][number];
-const palmIndices = [0, 5, 9, 17] as const;
+const associationIndices = [5, 6, 7, 8] as const;
 const handBones = [
   [0, 1],
   [1, 2],
@@ -48,27 +49,32 @@ const handBones = [
   [18, 19],
   [19, 20],
 ] as const;
-const palmCenter = (hand: ObservedHand) => {
-  // A fixed knuckle reference avoids inventing motion as an optional wrist
-  // enters or leaves the camera image.
-  const visible = [5, 9, 17].map((i) => hand.landmarks[i]);
+const indexCenter = (hand: ObservedHand) => {
+  // The same observed index chain remains the reference when the rest of the
+  // hand enters or leaves view. No inferred palm or missing joint is invented.
+  const visible = associationIndices.map((i) => hand.landmarks[i]);
   return {
     x: visible.reduce((sum, p) => sum + p.x, 0) / visible.length,
     y: visible.reduce((sum, p) => sum + p.y, 0) / visible.length,
   };
 };
-const observedPalm = (hand: ObservedHand): PalmSnapshot =>
-  palmIndices.map((i) => (hand.landmarks[i].valid ? { x: hand.landmarks[i].x, y: hand.landmarks[i].y } : null));
-function palmDisplacement(current: PalmSnapshot, previous: PalmSnapshot) {
-  const core = [1, 2, 3];
-  const common = core.every((i) => current[i] && previous[i])
-    ? core
-    : [0, 1, 2, 3].filter((i) => current[i] && previous[i]);
+const observedIndex = (hand: ObservedHand): IndexSnapshot =>
+  associationIndices.map((i) => (hand.landmarks[i].valid ? { x: hand.landmarks[i].x, y: hand.landmarks[i].y } : null));
+function indexDisplacement(current: IndexSnapshot, previous: IndexSnapshot) {
+  const common = [0, 1, 2, 3].filter((i) => current[i] && previous[i]);
   if (common.length < 3) return Infinity;
   return Math.hypot(
     common.reduce((sum, i) => sum + current[i]!.x - previous[i]!.x, 0) / common.length,
     common.reduce((sum, i) => sum + current[i]!.y - previous[i]!.y, 0) / common.length,
   );
+}
+function indexChain(hand: ObservedHand, aspect: number): number | null {
+  if (!associationIndices.every((i) => hand.landmarks[i].valid)) return null;
+  return [5, 6, 7].reduce((sum, i) => {
+    const a = hand.landmarks[i],
+      b = hand.landmarks[i + 1];
+    return sum + Math.hypot(b.x - a.x, (b.y - a.y) * aspect, b.z - a.z);
+  }, 0);
 }
 /** Suppress only near-identical visible hypotheses, never infer identity from handedness. */
 function duplicateHypotheses(a: ObservedHand, b: ObservedHand, aspect: number) {
@@ -93,7 +99,7 @@ function duplicateHypotheses(a: ObservedHand, b: ObservedHand, aspect: number) {
   const spans = points.map((hand) => Math.hypot(hand[5].x - hand[17].x, hand[5].y - hand[17].y));
   const span = (spans[0] + spans[1]) / 2;
   if (Math.min(...spans) < 0.025 || Math.abs(spans[0] - spans[1]) / span > 0.05) return false;
-  const centers = [palmCenter(a), palmCenter(b)];
+  const centers = [indexCenter(a), indexCenter(b)];
   if (Math.hypot(centers[0].x - centers[1].x, (centers[0].y - centers[1].y) * aspect) / span > 0.06) return false;
   const xyErrors = visible.map(
     (i) => Math.hypot(points[0][i].x - points[1][i].x, points[0][i].y - points[1][i].y) / span,
@@ -122,7 +128,7 @@ function duplicateHypotheses(a: ObservedHand, b: ObservedHand, aspect: number) {
 }
 function preferredHypothesis(a: ObservedHand, b: ObservedHand, prior?: Track) {
   if (prior) {
-    const centers = [palmCenter(a), palmCenter(b)];
+    const centers = [indexCenter(a), indexCenter(b)];
     const distances = centers.map((center) => Math.hypot(center.x - prior.center.x, center.y - prior.center.y));
     if (Math.abs(distances[0] - distances[1]) > 1e-9) return distances[0] < distances[1] ? 0 : 1;
   }
@@ -199,6 +205,7 @@ export class BrowserHandAdapter {
         handednessConfidence:
           Number.isFinite(category?.score) && category.score >= 0 && category.score <= 1 ? category.score : null,
         coordinateFrame: "CAMERA_IMAGE_NORMALIZED" as const,
+        associationBasis: "INDEX_CHAIN_V1" as const,
         landmarks,
         ...(offImageFingerLandmarks.length ? { offImageFingerLandmarks } : {}),
         presenceScore: null,
@@ -214,50 +221,53 @@ export class BrowserHandAdapter {
       const preferred = preferredHypothesis(hands[0], hands[1], eligibleTracks[0]);
       hands.splice(preferred === 0 ? 1 : 0, 1);
     }
-    const reliablePalm = hands.map((h) => [5, 9, 17].every((i) => h.landmarks[i].valid));
-    const palms = hands.map(observedPalm);
+    const inferredSpans = hands.map((h) => indexChain(h, height / width));
+    const reliableIndex = hands.map(
+      (h, i) =>
+        indexGeometry(h, { frameWidth: width, frameHeight: height }).geometry &&
+        inferredSpans[i] !== null &&
+        inferredSpans[i]! >= 0.012 &&
+        inferredSpans[i]! <= 1,
+    );
+    const indices = hands.map(observedIndex);
     const centers = hands.map((h, i) => {
-      if (reliablePalm[i]) return palmCenter(h);
-      const palm = [0, 5, 9, 17].map((i) => h.landmarks[i]).filter((p) => p.valid);
-      return palm.length >= 3
-        ? { x: palm.reduce((s, p) => s + p.x, 0) / palm.length, y: palm.reduce((s, p) => s + p.y, 0) / palm.length }
-        : null;
+      if (reliableIndex[i]) return indexCenter(h);
+      const index = associationIndices.map((j) => h.landmarks[j]).filter((p) => p.valid);
+      // Four present but malformed joints must never masquerade as a partial
+      // chain. Three actual joints can confirm an incumbent only when they
+      // retain nondegenerate 3D structure; end-on XY overlap is still allowed.
+      if (index.length !== 3) return null;
+      const segments = index.slice(1).map((point, j) => {
+        const prior = index[j];
+        return Math.hypot(point.x - prior.x, ((point.y - prior.y) * height) / width, point.z - prior.z);
+      });
+      const partialChain = segments.reduce((sum, segment) => sum + segment, 0);
+      if (segments.some((segment) => segment < 0.001) || partialChain < 0.006 || partialChain > 1) return null;
+      return {
+        x: index.reduce((s, p) => s + p.x, 0) / index.length,
+        y: index.reduce((s, p) => s + p.y, 0) / index.length,
+      };
     });
-    // Track association uses palm evidence only. An uncertain index tip or a
-    // temporarily ineligible point must not manufacture a different identity.
-    const scales = hands.map((h) =>
-      h.landmarks[5].valid && h.landmarks[17].valid
-        ? Math.hypot(h.landmarks[5].x - h.landmarks[17].x, h.landmarks[5].y - h.landmarks[17].y)
-        : null,
-    );
-    // Aspect-corrected image coordinates and relative inferred depth keep the
-    // same palm span through yaw. This is shape coherence, never metric size.
-    const inferredSpans = hands.map((h) =>
-      h.landmarks[5].valid && h.landmarks[17].valid
-        ? Math.hypot(
-            h.landmarks[5].x - h.landmarks[17].x,
-            ((h.landmarks[5].y - h.landmarks[17].y) * height) / width,
-            h.landmarks[5].z - h.landmarks[17].z,
-          )
-        : null,
-    );
+    // The fixed observed index reference is independent of pointing intent.
+    // Its inferred 3D chain scale is not shortened by end-on projection.
+    const scales = inferredSpans;
     // Keep the last observed location briefly through an occlusion. The record's
     // timestamp is not refreshed until a hand passes the existing spatial match.
     // Ambiguous output is never evidence that a retained record was observed.
     const costs = centers.map((center, i) =>
       eligibleTracks.map((t) =>
         center
-          ? palmDisplacement(palms[i], t.palm) +
+          ? indexDisplacement(indices[i], t.index) +
             (scales[i] !== null && t.scale !== null ? Math.abs(scales[i]! - t.scale) * 0.25 : 0)
           : Infinity,
       ),
     );
     // Recent coherent motion can cross the static association radius between
     // frames. Extrapolation is deliberately short, capped, and available only
-    // from two observed core-knuckle references; it is not identity evidence after loss.
+    // from two observed index-chain references; it is not identity evidence after loss.
     const predictedCosts = centers.map((center, i) =>
       eligibleTracks.map((track) => {
-        if (!center || !reliablePalm[i] || track.recent.length !== 2) return Infinity;
+        if (!center || !reliableIndex[i] || track.recent.length !== 2) return Infinity;
         const [previous, last] = track.recent;
         const historyMs = last.at - previous.at,
           gapMs = capture - last.at;
@@ -272,7 +282,7 @@ export class BrowserHandAdapter {
           gapMs <= 0 ||
           gapMs > motionContinuity.maximumGapMs ||
           step > motionContinuity.maximumStep ||
-          Math.min(...spans) < 0.025 ||
+          Math.min(...spans) < 0.012 ||
           Math.max(...spans) / Math.min(...spans) > motionContinuity.maximumScaleRatio
         )
           return Infinity;
@@ -290,11 +300,23 @@ export class BrowserHandAdapter {
         );
       }),
     );
+    // Even a malformed hypothesis can make an overlapping observation
+    // ambiguous. These means are used only to abstain; they never associate a
+    // track, supply prediction history or refresh an incumbent's timestamp.
+    const overlapCenters = hands.map((hand) => {
+      const visible = associationIndices.map((index) => hand.landmarks[index]).filter((point) => point.valid);
+      return visible.length >= 3
+        ? {
+            x: visible.reduce((sum, point) => sum + point.x, 0) / visible.length,
+            y: visible.reduce((sum, point) => sum + point.y, 0) / visible.length,
+          }
+        : null;
+    });
     const crossing =
-      centers.length === 2 &&
-      centers[0] &&
-      centers[1] &&
-      Math.hypot(centers[0].x - centers[1].x, centers[0].y - centers[1].y) < 0.09;
+      overlapCenters.length === 2 &&
+      overlapCenters[0] &&
+      overlapCenters[1] &&
+      Math.hypot(overlapCenters[0].x - overlapCenters[1].x, overlapCenters[0].y - overlapCenters[1].y) < 0.09;
     const assignments = costs.map((row, i) => {
       let ranked = row.map((cost, index) => ({ cost, index })).sort((a, b) => a.cost - b.cost);
       // Preserve ordinary spatial association and its existing ambiguity gate.
@@ -312,9 +334,9 @@ export class BrowserHandAdapter {
     );
     const next: Track[] = [];
     hands.forEach((hand, i) => {
-      // A partial palm cannot establish a new usable track. Preserve prior
-      // records without refreshing them so the original palm may recover.
-      const ambiguous = associationAmbiguous || centers[i] === null || (!reliablePalm[i] && assignments[i] < 0);
+      // A partial index cannot establish a new track. Three common observed
+      // joints may confirm an incumbent without replacing its fixed reference.
+      const ambiguous = associationAmbiguous || centers[i] === null || (!reliableIndex[i] && assignments[i] < 0);
       const prior = !ambiguous && assignments[i] >= 0 ? eligibleTracks[assignments[i]] : null;
       const id = prior?.id ?? ++this.generation;
       hand.trackId = `local-${id}`;
@@ -326,17 +348,15 @@ export class BrowserHandAdapter {
       if (centers[i] && !ambiguous)
         next.push({
           id,
-          // A matched partial palm can confirm raw local continuity without
-          // replacing the core reference or supplying prediction history.
-          center: reliablePalm[i] ? centers[i]! : prior!.center,
-          palm: reliablePalm[i] ? palms[i] : prior!.palm,
+          center: reliableIndex[i] ? centers[i]! : prior!.center,
+          index: reliableIndex[i] ? indices[i] : prior!.index,
           at: capture,
-          scale: reliablePalm[i] ? (scales[i] ?? prior?.scale ?? null) : prior!.scale,
+          scale: reliableIndex[i] ? (scales[i] ?? prior?.scale ?? null) : prior!.scale,
           // A second hypothesis beside an existing hand must be observed again
           // unambiguously before it can survive absence and compete later.
           // This is temporal association evidence, never model confidence.
-          established: prior ? prior.established || reliablePalm[i] : !establishedMatched,
-          recent: reliablePalm[i]
+          established: prior ? prior.established || reliableIndex[i] : !establishedMatched,
+          recent: reliableIndex[i]
             ? [
                 ...(prior?.recent.filter((sample) => capture - sample.at <= motionContinuity.maximumGapMs) ?? []),
                 { center: centers[i]!, at: capture, inferredSpan: inferredSpans[i]! },

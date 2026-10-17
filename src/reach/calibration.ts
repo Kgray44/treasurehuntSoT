@@ -1,6 +1,15 @@
 import type { Point } from "./coordinates";
 import { usableHand, type HandObservation } from "./observation";
-import { pointingFeatures } from "./coordinates";
+import {
+  pointingFeatures,
+  REACH_ASSOCIATION_BASIS,
+  REACH_FEATURE_PROFILE,
+  REACH_RELATIVE_ASSOCIATION_BASIS,
+  REACH_RELATIVE_FEATURE_PROFILE,
+} from "./coordinates";
+export const REACH_ABSOLUTE_MAPPING = "INDEX_TIP_AXIS_RIDGE_V1" as const;
+export const REACH_RELATIVE_MAPPING = "INDEX_TIP_DISPLACEMENT_V2" as const;
+export type CalibrationMapping = typeof REACH_ABSOLUTE_MAPPING | typeof REACH_RELATIVE_MAPPING;
 export const calibrationLayout = {
   version: 1,
   training: [0.1, 0.5, 0.9].flatMap((y) => [0.1, 0.5, 0.9].map((x) => ({ x, y }))),
@@ -29,7 +38,7 @@ export const relativeLayout = {
     "Move your hand comfortably downward.",
   ],
 };
-export type CalibrationBinding = {
+type CalibrationSourceBinding = {
   providerId: string;
   modelDigest: string;
   providerGeneration: number;
@@ -44,6 +53,42 @@ export type CalibrationBinding = {
   trackGeneration: number;
   evidenceTier: HandObservation["evidenceTier"];
 };
+export type AbsoluteCalibrationBinding = CalibrationSourceBinding & {
+  featureProfile: typeof REACH_FEATURE_PROFILE;
+  associationBasis: typeof REACH_ASSOCIATION_BASIS;
+};
+export type RelativeCalibrationBinding = CalibrationSourceBinding & {
+  featureProfile: typeof REACH_RELATIVE_FEATURE_PROFILE;
+  associationBasis: typeof REACH_RELATIVE_ASSOCIATION_BASIS;
+};
+export type CalibrationBinding = AbsoluteCalibrationBinding | RelativeCalibrationBinding;
+/** Old bindings are never upgraded merely because their other fields match. */
+export function isCurrentReachBinding(binding: unknown, mode?: "ABSOLUTE" | "RELATIVE"): binding is CalibrationBinding {
+  if (!binding || typeof binding !== "object") return false;
+  const profile = binding as Partial<CalibrationBinding>;
+  const absolute =
+    profile.featureProfile === REACH_FEATURE_PROFILE && profile.associationBasis === REACH_ASSOCIATION_BASIS;
+  const relative =
+    profile.featureProfile === REACH_RELATIVE_FEATURE_PROFILE &&
+    profile.associationBasis === REACH_RELATIVE_ASSOCIATION_BASIS;
+  return mode === "ABSOLUTE" ? absolute : mode === "RELATIVE" ? relative : absolute || relative;
+}
+export function assertCurrentReachBinding(
+  binding: unknown,
+  mode?: "ABSOLUTE" | "RELATIVE",
+): asserts binding is CalibrationBinding {
+  if (!isCurrentReachBinding(binding, mode)) throw new Error("REACH_FEATURE_PROFILE_MISMATCH");
+}
+export function isRelativeCalibrationMapping(mapping: unknown): mapping is typeof REACH_RELATIVE_MAPPING {
+  return mapping === REACH_RELATIVE_MAPPING;
+}
+export function isCurrentCalibration(c: Calibration): boolean {
+  return (
+    c.version === 1 &&
+    ((c.mapping === REACH_ABSOLUTE_MAPPING && isCurrentReachBinding(c.binding, "ABSOLUTE")) ||
+      (c.mapping === REACH_RELATIVE_MAPPING && isCurrentReachBinding(c.binding, "RELATIVE")))
+  );
+}
 export type CalibrationSample = {
   target: Point;
   features: number[];
@@ -74,7 +119,7 @@ export type CalibrationValidationSummary = {
 export type Calibration = {
   version: 1;
   id: string;
-  mapping: "INDEX_AXIS_RIDGE_V2" | "RELATIVE_DISPLACEMENT_V1";
+  mapping: CalibrationMapping;
   binding: CalibrationBinding;
   createdAt: number;
   expiresAt: number;
@@ -131,6 +176,20 @@ function validSample(sample: CalibrationSample) {
     sample.features[0] === 1
   );
 }
+/** The image-only profile cannot carry a model-derived axis or hidden position. */
+export function isRelativeImageFeatureVector(features: number[]): boolean {
+  return (
+    features.length === 5 &&
+    features.every(Number.isFinite) &&
+    features[0] === 1 &&
+    features[1] >= 0 &&
+    features[1] <= 1 &&
+    features[2] >= 0 &&
+    features[2] <= 1 &&
+    features[3] === 0 &&
+    features[4] === 0
+  );
+}
 /** Returns real observed evidence time, excluding paused, rejected and reacquisition intervals. */
 export function sampleEvidenceDuration(samples: CalibrationSample[]): number | null {
   if (!samples.length) return 0;
@@ -182,6 +241,7 @@ export function stableMovementSamples(samples: CalibrationSample[]) {
   );
 }
 export function fitCalibration(groups: CalibrationSample[][], binding: CalibrationBinding, now: number): Calibration {
+  assertCurrentReachBinding(binding, "ABSOLUTE");
   if (
     !Number.isFinite(now) ||
     !Number.isFinite(binding.viewportWidth) ||
@@ -220,7 +280,7 @@ export function fitCalibration(groups: CalibrationSample[][], binding: Calibrati
   const c: Calibration = {
     version: 1,
     id: crypto.randomUUID(),
-    mapping: "INDEX_AXIS_RIDGE_V2",
+    mapping: REACH_ABSOLUTE_MAPPING,
     binding: structuredClone(binding),
     createdAt: now,
     expiresAt: now + 30 * 60 * 1000,
@@ -263,6 +323,7 @@ export function fitRelativeCalibration(
   binding: CalibrationBinding,
   now: number,
 ): Calibration {
+  assertCurrentReachBinding(binding, "RELATIVE");
   if (
     !Number.isFinite(now) ||
     !Number.isFinite(binding.viewportWidth) ||
@@ -273,6 +334,7 @@ export function fitRelativeCalibration(
     groups.some(
       (g, i) =>
         !stableMovementSamples(g) ||
+        g.some((sample) => !isRelativeImageFeatureVector(sample.features)) ||
         g.some((s) => s.target.x !== relativeLayout.training[i].x || s.target.y !== relativeLayout.training[i].y),
     )
   )
@@ -298,7 +360,7 @@ export function fitRelativeCalibration(
   const c: Calibration = {
     version: 1,
     id: crypto.randomUUID(),
-    mapping: "RELATIVE_DISPLACEMENT_V1",
+    mapping: REACH_RELATIVE_MAPPING,
     binding: structuredClone(binding),
     createdAt: now,
     expiresAt: now + 30 * 60 * 1000,
@@ -323,9 +385,16 @@ export function fitRelativeCalibration(
   return c;
 }
 export function validateCalibration(c: Calibration, groups: CalibrationSample[][]): Calibration {
+  assertCurrentReachBinding(c.binding);
+  if (!isCurrentCalibration(c)) throw new Error("CALIBRATION_MAPPING_UNSUPPORTED");
   if (
     groups.length !== 5 ||
-    groups.some((g) => !(c.mapping === "RELATIVE_DISPLACEMENT_V1" ? stableMovementSamples(g) : stableSamples(g)))
+    groups.some(
+      (g) =>
+        !(isRelativeCalibrationMapping(c.mapping)
+          ? stableMovementSamples(g) && g.every((sample) => isRelativeImageFeatureVector(sample.features))
+          : stableSamples(g)),
+    )
   )
     throw new Error("CALIBRATION_VALIDATION_INCOMPLETE");
   const seen = new Set<string>();
@@ -397,16 +466,20 @@ export function calibratedPoint(
   now: number,
 ): Point | null {
   if (
+    !isCurrentCalibration(c) ||
+    !isCurrentReachBinding(binding) ||
     !Number.isFinite(now) ||
     now < c.createdAt ||
     c.status !== "VALIDATED" ||
     now >= c.expiresAt ||
     Object.entries(c.binding).some(([k, v]) => binding[k as keyof CalibrationBinding] !== v) ||
     features.length !== 5 ||
+    features[0] !== 1 ||
+    (isRelativeCalibrationMapping(c.mapping) && !isRelativeImageFeatureVector(features)) ||
     features.some(
       (v, i) =>
         !Number.isFinite(v) ||
-        ((c.mapping !== "RELATIVE_DISPLACEMENT_V1" || i < 3) &&
+        ((!isRelativeCalibrationMapping(c.mapping) || i < 3) &&
           (v < c.featureBounds[i].min - 0.02 || v > c.featureBounds[i].max + 0.02)),
     )
   )
@@ -421,6 +494,8 @@ export function calibratedPoint(
 }
 /** Absolute estimates stay local to the calibrated laboratory plane. No action or target semantics. */
 export function estimatedPoint(c: Calibration, observation: HandObservation, binding: CalibrationBinding, now: number) {
+  if (!isCurrentCalibration(c) || c.mapping !== REACH_ABSOLUTE_MAPPING || !isCurrentReachBinding(binding, "ABSOLUTE"))
+    return null;
   const hand = usableHand(observation, binding.trackId);
   const ageMs = now - observation.monotonicCaptureTime;
   if (
@@ -444,7 +519,7 @@ export function estimatedPoint(c: Calibration, observation: HandObservation, bin
     ? {
         ...point,
         coordinateFrame: "CALIBRATED_PLANE_NORMALIZED" as const,
-        mode: c.mapping === "RELATIVE_DISPLACEMENT_V1" ? ("RELATIVE_CONTROL" as const) : ("ABSOLUTE_ESTIMATE" as const),
+        mode: "ABSOLUTE_ESTIMATE" as const,
         observationId: observation.observationId,
         calibrationId: c.id,
         viewportEpoch: binding.viewportEpoch,

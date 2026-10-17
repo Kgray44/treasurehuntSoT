@@ -12,19 +12,32 @@ import {
   fitRelativeCalibration,
   validateCalibration,
   estimatedPoint,
+  calibratedPoint,
+  REACH_ABSOLUTE_MAPPING,
   percentile,
   type Calibration,
   type CalibrationBinding,
   type CalibrationSample,
 } from "./calibration";
-import { PointFilter, pointingFeatures, type Point } from "./coordinates";
+import {
+  PointFilter,
+  pointingFeatures,
+  relativeIndexFeatures,
+  type Point,
+  REACH_FEATURE_PROFILE,
+  REACH_ASSOCIATION_BASIS,
+  REACH_RELATIVE_FEATURE_PROFILE,
+  REACH_RELATIVE_ASSOCIATION_BASIS,
+} from "./coordinates";
+import { indexImageAlgorithm, type IndexImageObservation } from "./index-image-tracker";
+import { IndexImageReadiness } from "./index-image-readiness";
 import { aggregateCalibrationExport } from "./privacy";
 import { ActiveHandSelector, type HandObservation, type ReachReadiness } from "./observation";
 import { SampleWindow, type Acquisition } from "./sample-window";
 import { PointerContinuity, outsideCalibratedRange } from "./pointer-continuity";
 import { syntheticObservation } from "./synthetic";
 import { ReachStage } from "./ReachStage";
-import { ReachTiming, type ReachVisualFrame } from "./visualization";
+import { ReachTiming, containedFrame, type ReachVisualFrame } from "./visualization";
 import styles from "./ReachLaboratory.module.css";
 type Source = "OFF" | "LIVE" | "DEMO";
 type Step = "PREPARE" | "TRAINING" | "VALIDATION" | "RESULTS" | "PLAYGROUND";
@@ -79,6 +92,11 @@ const emptyFrame = (): ReachVisualFrame => ({
 });
 const timingSnapshot = (value: ReachTiming) => ({
   observations: value.inference.length,
+  captureHz: value.captureIntervals.length
+    ? 1000 /
+      (value.captureIntervals.slice(-60).reduce((sum, interval) => sum + interval, 0) /
+        Math.min(60, value.captureIntervals.length))
+    : null,
   capture: percentile(value.captureIntervals, 0.95),
   inference: percentile(value.inference, 0.95),
   submission: percentile(value.submissionAge, 0.95),
@@ -104,11 +122,16 @@ export function ReachLaboratory({
     timing = useRef(new ReachTiming());
   const epoch = useRef(1),
     lastObservation = useRef<HandObservation | null>(null),
+    lastIndexObservation = useRef<IndexImageObservation | null>(null),
+    indexReadiness = useRef(new IndexImageReadiness()),
+    lastIndexUI = useRef(0),
+    lastControlUI = useRef(0),
     lastUI = useRef(0);
   const trial = useRef<Trial | null>(null),
     calibrationRef = useRef<Calibration | null>(null),
     sourceRef = useRef<Source>("OFF"),
     stepRef = useRef<Step>("PREPARE");
+  const modeRef = useRef<PointingMode>("RELATIVE");
   const readyRef = useRef(initialReadiness),
     demoPoint = useRef<Point>({ x: 0.5, y: 0.5 }),
     demoGeneration = useRef(0),
@@ -120,6 +143,10 @@ export function ReachLaboratory({
     [readiness, setReadiness] = useState(initialReadiness),
     [hands, setHands] = useState<HandObservation["hands"]>([]);
   const [frameSize, setFrameSize] = useState<Pick<HandObservation, "frameWidth" | "frameHeight">>();
+  const [indexState, setIndexState] = useState<IndexImageObservation | null>(null),
+    [indexStale, setIndexStale] = useState(false),
+    [markFinger, setMarkFinger] = useState(false),
+    [seedPoint, setSeedPoint] = useState<Point>({ x: 0.5, y: 0.5 });
   const [mirror, setMirror] = useState(true),
     [calibration, setCalibration] = useState<Calibration | null>(null),
     [target, setTarget] = useState<Point | null>(null);
@@ -138,6 +165,13 @@ export function ReachLaboratory({
     [practiceTarget, setPracticeTarget] = useState<Point | null>(null);
   const [logEntries, setLogEntries] = useState<{ at: number; reason: string }[]>([]),
     [metrics, setMetrics] = useState(() => timingSnapshot(new ReachTiming()));
+  const [pacing, setPacing] = useState<{
+    focused: boolean;
+    targetHz: number;
+    smoothedTotalMs: number | null;
+    smoothedMainThreadMs: number | null;
+    smoothedTimerLatenessMs: number | null;
+  } | null>(null);
   const demoFaultRef = useRef(demoFault);
   useEffect(() => {
     demoFaultRef.current = demoFault;
@@ -206,6 +240,11 @@ export function ReachLaboratory({
     advance("PREPARE");
     visual.current = emptyFrame();
     lastObservation.current = null;
+    lastIndexObservation.current = null;
+    indexReadiness.current.reset();
+    setIndexState(null);
+    setIndexStale(false);
+    setMarkFinger(false);
     selector.current.reset();
     readyRef.current = initialReadiness;
     setReadiness(initialReadiness);
@@ -214,11 +253,34 @@ export function ReachLaboratory({
     aggregates.current = [];
     timing.current.reset();
     setMetrics(timingSnapshot(timing.current));
+    setPacing(null);
     setExportConsent(false);
     setPracticeTarget(null);
     setMessage("Your camera is off and session calibration is cleared.");
   }, [advance, changeSource, invalidate]);
+  const changePointingMode = (next: PointingMode) => {
+    modeRef.current = next;
+    setPointingMode(next);
+    runtime.current?.setIndexTrackingEnabled(next === "RELATIVE");
+    indexReadiness.current.reset();
+    lastIndexObservation.current = null;
+    setIndexState(null);
+    setIndexStale(false);
+    const waiting: ReachReadiness = {
+      ...initialReadiness,
+      detectedCount: lastObservation.current?.hands.length ?? 0,
+      condition: "ACQUIRING",
+      guidance:
+        next === "RELATIVE"
+          ? "Waiting for fresh fingertip image tracking to settle."
+          : "Waiting for fresh index geometry to settle.",
+    };
+    readyRef.current = waiting;
+    setReadiness(waiting);
+  };
   const bindingFor = (o: HandObservation, hand: HandObservation["hands"][number]): CalibrationBinding => ({
+    featureProfile: REACH_FEATURE_PROFILE,
+    associationBasis: REACH_ASSOCIATION_BASIS,
     providerId: o.providerId,
     modelDigest: o.modelDigest,
     providerGeneration: o.providerGeneration,
@@ -233,61 +295,25 @@ export function ReachLaboratory({
     trackGeneration: hand.trackGeneration,
     evidenceTier: o.evidenceTier,
   });
-  const accept = useRef<(o: HandObservation) => void>(() => {});
+  const consumeControl = useRef<
+    (features: number[], at: number, binding: CalibrationBinding, observation?: HandObservation) => void
+  >(() => {});
+  const pauseControl = (now: number, guidance: string) => {
+    visual.current.raw = null;
+    visual.current.filtered = null;
+    retainPointer(now, guidance);
+    const t = trial.current;
+    if (t?.window && !t.paused) setAcquisition(t.window.pause(now));
+  };
   useEffect(() => {
-    accept.current = (o) => {
+    modeRef.current = pointingMode;
+    consumeControl.current = (features, at, binding, observation) => {
       const now = performance.now();
-      lastObservation.current = o;
-      if (o.evidenceTier !== "D0") timing.current.observe(o);
-      const ready = selector.current.update(o);
-      const eligibilityChanged = readyRef.current.eligible !== ready.eligible;
-      readyRef.current = ready;
-      visual.current.observation = o;
-      visual.current.activeTrack = ready.hand?.trackId ?? null;
-      if (ready.changed && (trial.current || calibrationRef.current)) {
-        invalidate(
-          "We can no longer confirm the same hand and camera setup. Set up again so samples stay tied to one hand.",
-        );
-        log("CONTEXT_CHANGED");
-      }
-      // Keep guidance, posture and eligibility from the same observation. A
-      // paused collection must never retain a settled "ready" headline.
-      if (eligibilityChanged || now - lastUI.current >= 120) {
-        lastUI.current = now;
-        setHands(o.hands);
-        setFrameSize({ frameWidth: o.frameWidth, frameHeight: o.frameHeight });
-        setReadiness(ready);
-      }
       const t = trial.current;
-      if (!ready.eligible || !ready.hand) {
-        visual.current.raw = null;
-        visual.current.filtered = null;
-        retainPointer(
-          now,
-          `${ready.guidance} Collection paused.`,
-          !["AMBIGUOUS", "CHOOSE_HAND"].includes(ready.condition),
-        );
-        if (t?.window && !t.paused) {
-          const progress = t.window.pause(now);
-          if (now - lastUI.current < 10) setAcquisition(progress);
-        }
-        return;
-      }
-      const binding = bindingFor(o, ready.hand);
-      const c = calibrationRef.current;
-      if (c && Object.entries(c.binding).some(([k, v]) => binding[k as keyof CalibrationBinding] !== v)) {
-        invalidate("Your pointing area changed. Set up again for this view.");
+      const incumbent = calibrationRef.current?.binding ?? t?.binding;
+      if (incumbent && Object.entries(incumbent).some(([k, v]) => binding[k as keyof CalibrationBinding] !== v)) {
+        invalidate("The tracked fingertip, camera or pointing area changed. Begin a fresh setup.");
         log("CALIBRATION_BINDING_CHANGED");
-        return;
-      }
-      let features: number[];
-      try {
-        features = pointingFeatures(ready.hand, o);
-      } catch {
-        visual.current.raw = null;
-        visual.current.filtered = null;
-        retainPointer(now, "Index geometry is uncertain. Collection paused.");
-        if (t?.window && !t.paused) setAcquisition(t.window.pause(o.monotonicCaptureTime));
         return;
       }
       if (t && !t.paused && now >= t.after && (sourceRef.current !== "DEMO" || t.demoTargetReady)) {
@@ -296,8 +322,11 @@ export function ReachLaboratory({
         try {
           t.binding ??= binding;
           t.window ??= new SampleWindow(t.binding, t.order[t.groups.length], t.mode);
-          const progress = t.window.push(features, o.monotonicCaptureTime, binding);
-          if (now - lastUI.current < 10 || progress.samples) setAcquisition(progress);
+          const progress = t.window.push(features, at, binding);
+          if (now - lastControlUI.current >= 80 || progress.samples) {
+            lastControlUI.current = now;
+            setAcquisition(progress);
+          }
           if (progress.samples) {
             timing.current.push(timing.current.acquisition, now - t.acquiredAt);
             t.groups.push(progress.samples);
@@ -355,11 +384,16 @@ export function ReachLaboratory({
       const current = calibrationRef.current;
       // A validation preview is explicitly provisional. It cannot make calibration valid.
       const isValidation = trial.current?.stage === "VALIDATION";
-      const estimate = current
-        ? estimatedPoint(isValidation ? { ...current, status: "VALIDATED" } : current, o, binding, now)
+      const preview = current && (isValidation ? { ...current, status: "VALIDATED" as const } : current);
+      const estimate = preview
+        ? binding.featureProfile === REACH_RELATIVE_FEATURE_PROFILE
+          ? calibratedPoint(preview, features, binding, now)
+          : observation
+            ? estimatedPoint(preview, observation, binding, now)
+            : null
         : null;
       visual.current.raw = estimate;
-      visual.current.filtered = estimate ? filter.current.update(estimate, o.monotonicCaptureTime) : null;
+      visual.current.filtered = estimate ? filter.current.update(estimate, at) : null;
       if (visual.current.filtered) {
         // A display spike hold is not a new accepted position. Its memory must
         // expire from the accepted estimate's clock rather than each bad input.
@@ -382,6 +416,130 @@ export function ReachLaboratory({
       visual.current.previewEstimate = !!isValidation;
     };
   });
+  const imageBindingFor = (o: IndexImageObservation): CalibrationBinding => ({
+    featureProfile: REACH_RELATIVE_FEATURE_PROFILE,
+    associationBasis: REACH_RELATIVE_ASSOCIATION_BASIS,
+    providerId: sourceRef.current === "DEMO" ? "reach.demo.index-image" : o.providerId,
+    modelDigest: o.algorithmDigest,
+    providerGeneration: o.providerGeneration,
+    cameraLeaseId: o.cameraLeaseId,
+    cameraFrameVersion: o.cameraFrameVersion,
+    viewportEpoch: epoch.current,
+    viewportWidth: plane.current?.clientWidth ?? 1,
+    viewportHeight: plane.current?.clientHeight ?? 1,
+    mirror: o.mirrorTransform === "PREVIEW_X",
+    orientation: o.orientation,
+    trackId: o.trackId!,
+    trackGeneration: o.trackGeneration,
+    evidenceTier: sourceRef.current === "DEMO" ? "D0" : "UNQUALIFIED",
+  });
+  const acceptIndex = useRef<(o: IndexImageObservation) => void>(() => {});
+  useEffect(() => {
+    acceptIndex.current = (o) => {
+      const age = performance.now() - o.monotonicCaptureTime;
+      if (age < 0 || age > 150) {
+        indexReadiness.current.pause();
+        if (modeRef.current === "RELATIVE")
+          pauseControl(performance.now(), "Waiting for fresh fingertip tracking. Collection paused.");
+        return;
+      }
+      lastIndexObservation.current = o;
+      setIndexStale(false);
+      const next = indexReadiness.current.update(o);
+      if (modeRef.current !== "RELATIVE") return;
+      const ready: ReachReadiness = {
+        detectedCount: lastObservation.current?.hands.length ?? 0,
+        hand: null,
+        eligible: next.eligible,
+        changed: next.changed,
+        condition:
+          next.condition === "UNSEEDED"
+            ? "NO_HAND"
+            : next.condition === "UNCERTAIN" || next.condition === "LOST"
+              ? "RECOVERING"
+              : next.condition,
+        guidance: next.guidance,
+      };
+      readyRef.current = ready;
+      if (next.changed && (trial.current || calibrationRef.current)) {
+        invalidate("A new fingertip was selected or the camera changed. Begin a fresh setup for this track.");
+        log("INDEX_IMAGE_CONTEXT_CHANGED");
+      }
+      if (performance.now() - lastIndexUI.current >= 80 || next.changed || !next.eligible) {
+        lastIndexUI.current = performance.now();
+        setIndexState(o);
+        setFrameSize({ frameWidth: o.frameWidth, frameHeight: o.frameHeight });
+        setReadiness(ready);
+      }
+      if (!next.eligible || !o.point) {
+        pauseControl(performance.now(), next.guidance);
+        return;
+      }
+      consumeControl.current(relativeIndexFeatures(o.point), o.monotonicCaptureTime, imageBindingFor(o));
+    };
+  });
+  const accept = useRef<(o: HandObservation) => void>(() => {});
+  useEffect(() => {
+    accept.current = (o) => {
+      const now = performance.now();
+      lastObservation.current = o;
+      if (o.evidenceTier !== "D0") timing.current.observe(o);
+      const ready = selector.current.update(o);
+      const imageMode = modeRef.current === "RELATIVE";
+      const eligibilityChanged = readyRef.current.eligible !== ready.eligible;
+      if (!imageMode) readyRef.current = ready;
+      visual.current.observation = o;
+      visual.current.activeTrack = ready.hand?.trackId ?? null;
+      if (!imageMode && ready.changed && (trial.current || calibrationRef.current)) {
+        invalidate(
+          "We can no longer confirm the same hand and camera setup. Set up again so samples stay tied to one hand.",
+        );
+        log("CONTEXT_CHANGED");
+      }
+      // Keep guidance, posture and eligibility from the same observation. A
+      // paused collection must never retain a settled "ready" headline.
+      if (eligibilityChanged || now - lastUI.current >= 120) {
+        lastUI.current = now;
+        setHands(o.hands);
+        setFrameSize({ frameWidth: o.frameWidth, frameHeight: o.frameHeight });
+        if (!imageMode) setReadiness(ready);
+      }
+      if (imageMode) return;
+      const t = trial.current;
+      if (!ready.eligible || !ready.hand) {
+        visual.current.raw = null;
+        visual.current.filtered = null;
+        retainPointer(
+          now,
+          `${ready.guidance} Collection paused.`,
+          !["AMBIGUOUS", "CHOOSE_HAND"].includes(ready.condition),
+        );
+        if (t?.window && !t.paused) {
+          const progress = t.window.pause(now);
+          if (now - lastUI.current < 10) setAcquisition(progress);
+        }
+        return;
+      }
+      const binding = bindingFor(o, ready.hand);
+      const c = calibrationRef.current;
+      if (c && Object.entries(c.binding).some(([k, v]) => binding[k as keyof CalibrationBinding] !== v)) {
+        invalidate("Your pointing area changed. Set up again for this view.");
+        log("CALIBRATION_BINDING_CHANGED");
+        return;
+      }
+      let features: number[];
+      try {
+        features = pointingFeatures(ready.hand, o);
+      } catch {
+        visual.current.raw = null;
+        visual.current.filtered = null;
+        retainPointer(now, "Index geometry is uncertain. Collection paused.");
+        if (t?.window && !t.paused) setAcquisition(t.window.pause(o.monotonicCaptureTime));
+        return;
+      }
+      consumeControl.current(features, o.monotonicCaptureTime, binding, o);
+    };
+  });
   useEffect(() => {
     const r = new ReachBrowserRuntime(
       video.current!,
@@ -391,11 +549,16 @@ export function ReachLaboratory({
         if (state === "READY")
           setMessage((previous) =>
             previous.startsWith("Allow camera access")
-              ? "Camera ready. Keep your palm and index finger comfortably in view."
+              ? "Camera ready. Show a relaxed index point to start finger tracking."
               : previous,
           );
         if (!["READY", "MODEL_STARTING", "REQUESTING", "STALE_OR_INVALID_OBSERVATION"].includes(state)) {
           lastObservation.current = null;
+          lastIndexObservation.current = null;
+          indexReadiness.current.reset();
+          setIndexState(null);
+          setIndexStale(false);
+          setMarkFinger(false);
           visual.current = emptyFrame();
           selector.current.reset();
           readyRef.current = initialReadiness;
@@ -413,6 +576,9 @@ export function ReachLaboratory({
           }
         }
       },
+      undefined,
+      undefined,
+      (o) => acceptIndex.current(o),
     );
     runtime.current = r;
     let lastSize = "";
@@ -430,7 +596,7 @@ export function ReachLaboratory({
       const position = rect ? `${Math.round(rect.left)}:${Math.round(rect.top)}` : "";
       const absoluteLive =
         sourceRef.current === "LIVE" &&
-        (trial.current?.mode === "ABSOLUTE" || calibrationRef.current?.mapping === "INDEX_AXIS_RIDGE_V2");
+        (trial.current?.mode === "ABSOLUTE" || calibrationRef.current?.mapping === REACH_ABSOLUTE_MAPPING);
       if (
         absoluteLive &&
         lastPosition &&
@@ -460,9 +626,13 @@ export function ReachLaboratory({
   useEffect(() => {
     if (source === "OFF") return;
     const freshness = setInterval(() => {
-      const o = lastObservation.current,
+      const o = modeRef.current === "RELATIVE" ? lastIndexObservation.current : lastObservation.current,
         now = performance.now();
       if (o && now - o.monotonicCaptureTime > 150) {
+        if (modeRef.current === "RELATIVE") {
+          indexReadiness.current.pause();
+          setIndexStale(true);
+        }
         visual.current.raw = null;
         visual.current.filtered = null;
         retainPointer(now, "Waiting for fresh tracking. Collection paused.");
@@ -480,7 +650,10 @@ export function ReachLaboratory({
         log("CALIBRATION_EXPIRED");
       }
     }, 100);
-    const diagnostics = setInterval(() => setMetrics(timingSnapshot(timing.current)), 1000);
+    const diagnostics = setInterval(() => {
+      setMetrics(timingSnapshot(timing.current));
+      setPacing(runtime.current?.trackingPacing() ?? null);
+    }, 1000);
     return () => {
       clearInterval(freshness);
       clearInterval(diagnostics);
@@ -517,14 +690,46 @@ export function ReachLaboratory({
         o.reason = "MULTIPLE_HANDS";
       }
       if (demoFaultRef.current === "EDGE") {
-        o.hands[0].landmarks[8].x = 0.995;
+        o.hands[0].landmarks[8].x = 1.005;
+        o.hands[0].landmarks[8].valid = false;
         o.reason = "LOW_VISIBILITY";
       }
       if (demoFaultRef.current === "POSTURE") {
-        o.hands[0].landmarks[8] = { ...o.hands[0].landmarks[5] };
+        const base = o.hands[0].landmarks[5];
+        o.hands[0].landmarks[6] = { ...base, y: base.y - 0.04 };
+        o.hands[0].landmarks[7] = { ...base, y: base.y - 0.025, z: base.z + 0.025 };
+        o.hands[0].landmarks[8] = { ...base, y: base.y - 0.005, z: base.z + 0.025 };
         o.hands[0].pose = "UNKNOWN";
       }
       accept.current(o);
+      if (modeRef.current === "RELATIVE") {
+        const tracked = demoFaultRef.current === "NONE";
+        acceptIndex.current({
+          observationVersion: 1,
+          providerId: indexImageAlgorithm.providerId,
+          providerVersion: indexImageAlgorithm.providerVersion,
+          algorithmDigest: indexImageAlgorithm.algorithmDigest,
+          providerGeneration: generation,
+          cameraLeaseId: o.cameraLeaseId,
+          cameraFrameVersion: o.cameraFrameVersion,
+          mirrorTransform: o.mirrorTransform,
+          orientation: 0,
+          frameWidth: o.frameWidth,
+          frameHeight: o.frameHeight,
+          sequence: o.sequence,
+          monotonicCaptureTime: now,
+          monotonicInferenceTime: now,
+          trackId: "demo-image-index",
+          trackGeneration: generation,
+          point: tracked ? { ...demoPoint.current } : null,
+          state: tracked ? "TRACKING" : "UNCERTAIN",
+          modelAgreement: "UNAVAILABLE",
+          anchorSource: "MANUAL_HINT",
+          quality: { correlation: null, separation: null, texture: null, forwardBackwardErrorPixels: null },
+          uncertaintyRadiusPixels: null,
+          reason: "D0_SIMULATED_IMAGE_POSITION",
+        });
+      }
     }, 50);
     const suspend = () => {
       clearInterval(timer);
@@ -570,7 +775,17 @@ export function ReachLaboratory({
       age <= 300 &&
       posture?.pointing &&
       posture.framed;
-    if (stage === "TRAINING" && ((!readiness.eligible && !recentPoint) || !observation)) {
+    const image = lastIndexObservation.current;
+    const imageFresh =
+      image?.state === "TRACKING" &&
+      image.point &&
+      performance.now() - image.monotonicCaptureTime >= 0 &&
+      performance.now() - image.monotonicCaptureTime <= 150 &&
+      readiness.eligible;
+    if (
+      stage === "TRAINING" &&
+      (pointingMode === "RELATIVE" ? !imageFresh : (!readiness.eligible && !recentPoint) || !observation)
+    ) {
       setMessage(readyRef.current.guidance);
       return;
     }
@@ -652,14 +867,23 @@ export function ReachLaboratory({
   const exportMetrics = () => {
     if (!exportConsent) return;
     const o = lastObservation.current;
+    const image = lastIndexObservation.current;
     const data = {
       version: 2,
       source,
       pointingMode,
       evidenceTier: source === "DEMO" ? "D0" : "UNQUALIFIED_LIVE_CAMERA",
-      provider: o
-        ? { id: o.providerId, version: o.providerVersion, modelId: o.modelId, modelDigest: o.modelDigest }
-        : null,
+      provider:
+        pointingMode === "RELATIVE" && image
+          ? {
+              id: source === "DEMO" ? "reach.demo.index-image" : image.providerId,
+              version: image.providerVersion,
+              algorithm: indexImageAlgorithm.algorithm,
+              algorithmDigest: image.algorithmDigest,
+            }
+          : o
+            ? { id: o.providerId, version: o.providerVersion, modelId: o.modelId, modelDigest: o.modelDigest }
+            : null,
       calibration: aggregateCalibrationExport(calibrationRef.current, true),
       trialAggregates: aggregates.current,
       timing: {
@@ -670,6 +894,8 @@ export function ReachLaboratory({
         canvasSubmissionAgeP95Ms: percentile(timing.current.submissionAge, 0.95),
         visualizationIntervalP95Ms: percentile(timing.current.visualizationIntervals, 0.95),
         acquisitionMs: timing.current.acquisition,
+        recentModelCaptureHz: metrics.captureHz,
+        adaptivePacing: pacing,
       },
       snapping: "DISABLED_PHASE_1",
       physicalQualification: "PENDING",
@@ -730,6 +956,15 @@ export function ReachLaboratory({
       setDemoHolding(true);
     }
   };
+  const markVisibleFinger = (point: Point) => {
+    const accepted = runtime.current?.seedIndex(point);
+    setMarkFinger(false);
+    setMessage(
+      accepted
+        ? "Fingertip hint selected. Hold briefly while image tracking settles. Selecting a new fingertip requires a fresh setup."
+        : "The camera is not ready for a fingertip hint. Enable it and try again.",
+    );
+  };
   return (
     <section
       className={styles.lab}
@@ -740,6 +975,11 @@ export function ReachLaboratory({
       data-reach-session="local-private"
       data-reach-authority="laboratory-only"
       data-reach-readiness={readiness.condition}
+      data-image-state={indexStale ? "STALE" : (indexState?.state ?? "UNSEEDED")}
+      data-image-track-generation={indexState?.trackGeneration ?? 0}
+      data-image-model-agreement={indexState?.modelAgreement ?? "UNAVAILABLE"}
+      data-image-capture-time={indexState?.monotonicCaptureTime ?? ""}
+      data-image-inference-time={indexState?.monotonicInferenceTime ?? ""}
     >
       <header className={styles.header}>
         <div>
@@ -796,7 +1036,71 @@ export function ReachLaboratory({
                 demo={source === "DEMO"}
                 active={source !== "OFF"}
               />
+              {source === "LIVE" && pointingMode === "RELATIVE" && !indexStale && indexState?.point && (
+                <svg
+                  className={styles.fingerOverlay}
+                  viewBox={`0 0 ${indexState.frameWidth} ${indexState.frameHeight}`}
+                  aria-label="Finger image position"
+                >
+                  <circle
+                    cx={indexState.point.x * indexState.frameWidth}
+                    cy={indexState.point.y * indexState.frameHeight}
+                    r="9"
+                  />
+                </svg>
+              )}
             </div>
+            {markFinger && (
+              <button
+                autoFocus
+                className={styles.fingerPicker}
+                aria-label="Mark visible fingertip in camera. Click it, or use arrow keys and Enter. Escape cancels."
+                onClick={(event) => {
+                  const rect = event.currentTarget.getBoundingClientRect();
+                  const width = video.current?.videoWidth ?? 0;
+                  const height = video.current?.videoHeight ?? 0;
+                  if (!width || !height) return;
+                  const fit = containedFrame(rect.width, rect.height, width, height);
+                  const x = (event.clientX - rect.left - fit.x) / fit.width;
+                  const y = (event.clientY - rect.top - fit.y) / fit.height;
+                  if (x < 0 || x > 1 || y < 0 || y > 1) return;
+                  markVisibleFinger({ x: mirror ? 1 - x : x, y });
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === "Escape") {
+                    setMarkFinger(false);
+                    return;
+                  }
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    markVisibleFinger({ x: mirror ? 1 - seedPoint.x : seedPoint.x, y: seedPoint.y });
+                    return;
+                  }
+                  if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(event.key)) return;
+                  event.preventDefault();
+                  setSeedPoint((p) => ({
+                    x: Math.max(
+                      0,
+                      Math.min(1, p.x + (event.key === "ArrowRight" ? 0.01 : event.key === "ArrowLeft" ? -0.01 : 0)),
+                    ),
+                    y: Math.max(
+                      0,
+                      Math.min(1, p.y + (event.key === "ArrowDown" ? 0.01 : event.key === "ArrowUp" ? -0.01 : 0)),
+                    ),
+                  }));
+                }}
+              >
+                <svg
+                  viewBox={`0 0 ${frameSize?.frameWidth ?? 640} ${frameSize?.frameHeight ?? 480}`}
+                  aria-hidden="true"
+                >
+                  <path
+                    d={`M ${seedPoint.x * (frameSize?.frameWidth ?? 640) - 12} ${seedPoint.y * (frameSize?.frameHeight ?? 480)} h 24 M ${seedPoint.x * (frameSize?.frameWidth ?? 640)} ${seedPoint.y * (frameSize?.frameHeight ?? 480) - 12} v 24`}
+                  />
+                </svg>
+                <span>Mark your fingertip · arrows + Enter · Esc to cancel</span>
+              </button>
+            )}
             {source === "OFF" && (
               <div className={styles.cameraPlaceholder}>
                 <span className={styles.handIcon} aria-hidden="true">
@@ -818,20 +1122,36 @@ export function ReachLaboratory({
           </div>
           <div className={styles.cameraCaption}>
             <strong>
-              {readiness.detectedCount
-                ? `${readiness.detectedCount} hand${readiness.detectedCount === 1 ? "" : "s"} detected`
-                : source === "OFF"
-                  ? "Ready when you are"
-                  : "Show your hand"}
+              {pointingMode === "RELATIVE" && indexStale
+                ? "Waiting for fresh fingertip tracking"
+                : pointingMode === "RELATIVE" && !indexStale && indexState?.state === "TRACKING"
+                  ? "Finger image tracking"
+                  : readiness.detectedCount
+                    ? `${readiness.detectedCount} hand${readiness.detectedCount === 1 ? "" : "s"} detected`
+                    : source === "OFF"
+                      ? "Ready when you are"
+                      : "Show your hand"}
             </strong>
             <span>
               {readiness.hand
                 ? `${readiness.hand.handedness === "UNKNOWN" ? "Active" : readiness.hand.handedness === "LEFT" ? "Left" : "Right"} hand · ${assessment?.offImageFingerSupport ? "partial hand · some fingers inferred" : assessment?.partialFraming ? "partial hand · wrist optional" : assessment?.landmarkQuality === "TRACKED" ? "joints tracked" : "some joints hidden"}`
-                : "Keep your palm and index finger in view"}
+                : pointingMode === "RELATIVE" && !indexStale && indexState?.state === "TRACKING"
+                  ? "Following your fingertip · hand model may be out of view"
+                  : "Show an index point, or mark a visible fingertip below"}
             </span>
           </div>
           {source !== "OFF" && (
             <div className={styles.cameraTools}>
+              {source === "LIVE" && status === "READY" && pointingMode === "RELATIVE" && (
+                <button
+                  onClick={() => {
+                    setSeedPoint({ x: 0.5, y: 0.5 });
+                    setMarkFinger((value) => !value);
+                  }}
+                >
+                  {markFinger ? "Cancel fingertip hint" : "Track visible fingertip"}
+                </button>
+              )}
               <button
                 onClick={() => {
                   const next = !mirror;
@@ -844,6 +1164,13 @@ export function ReachLaboratory({
               </button>
               <button onClick={stop}>Stop camera & clear session</button>
             </div>
+          )}
+          {source === "LIVE" && pointingMode === "RELATIVE" && (
+            <p className={styles.fingerHelp}>
+              Show a relaxed index point to start. If only the finger is visible, choose “Track visible fingertip” and
+              mark its tip. This hint follows its appearance; it cannot identify a finger from appearance alone. A gold
+              ring shows the image track.
+            </p>
           )}
         </div>
         {showPlane && (
@@ -1010,15 +1337,24 @@ export function ReachLaboratory({
             {source !== "OFF" && (
               <span>
                 {readiness.detectedCount} detected ·{" "}
-                {assessment?.framed
-                  ? assessment.offImageFingerSupport
-                    ? "Index and knuckles visible"
-                    : assessment.partialFraming
-                      ? "Required joints visible"
-                      : "Hand framed"
-                  : "Framing needs attention"}{" "}
-                · {assessment?.pointing ? "Point recognized" : "Point not yet recognized"} ·{" "}
-                {readiness.eligible ? "Eligible for collection" : "Collection waiting"}
+                {pointingMode === "RELATIVE"
+                  ? !indexStale && indexState?.state === "TRACKING"
+                    ? "Fingertip appearance tracked"
+                    : "Fingertip appearance uncertain"
+                  : assessment?.framed
+                    ? assessment.offImageFingerSupport
+                      ? "Index and knuckles visible"
+                      : assessment.partialFraming
+                        ? "Required joints visible"
+                        : "Hand framed"
+                    : "Framing needs attention"}{" "}
+                ·{" "}
+                {pointingMode === "RELATIVE"
+                  ? "Relative image control"
+                  : assessment?.pointing
+                    ? "Point recognized"
+                    : "Point not yet recognized"}{" "}
+                · {readiness.eligible ? "Eligible for collection" : "Collection waiting"}
               </span>
             )}
             {source === "LIVE" && assessment?.depthDominant && (
@@ -1026,10 +1362,10 @@ export function ReachLaboratory({
                 Index aimed toward the camera. Depth is inferred; the independent check still measures accuracy.
               </span>
             )}
-            {source === "LIVE" && assessment?.offImageFingerSupport && (
+            {source === "LIVE" && assessment?.intentEvidence === "HEURISTIC_INDEX_ONLY" && (
               <span>
-                Some cropped fingers are estimated by the model. Your index and knuckles must remain visible; pointing
-                is still checked against the other fingers.
+                Index-only pointing is tentative. Hidden fingers cannot confirm intent; clearly conflicting visible
+                gestures pause collection.
               </span>
             )}
             {source === "LIVE" && assessment?.indexTracked && !readiness.eligible && (
@@ -1052,7 +1388,7 @@ export function ReachLaboratory({
               {" · video and landmark trace; no calibration fit"}
             </p>
           )}
-          {hands.length > 1 && (
+          {hands.length > 1 && pointingMode === "ABSOLUTE" && (
             <div className={styles.handChoice}>
               <span>Active hand</span>
               {hands.map((hand, i) => (
@@ -1094,7 +1430,7 @@ export function ReachLaboratory({
                         checked={pointingMode === "RELATIVE"}
                         onChange={() => {
                           invalidate();
-                          setPointingMode("RELATIVE");
+                          changePointingMode("RELATIVE");
                         }}
                       />
                       <span>
@@ -1112,7 +1448,7 @@ export function ReachLaboratory({
                         checked={pointingMode === "ABSOLUTE"}
                         onChange={() => {
                           invalidate();
-                          setPointingMode("ABSOLUTE");
+                          changePointingMode("ABSOLUTE");
                         }}
                       />
                       <span>
@@ -1128,7 +1464,9 @@ export function ReachLaboratory({
                   </button>
                   {!readiness.eligible && (
                     <p className={styles.hint}>
-                      The next step unlocks when your active hand is framed and your point is recognized.
+                      {pointingMode === "RELATIVE"
+                        ? "The next step unlocks when fresh fingertip image tracking settles. Show a relaxed point or mark its visible tip."
+                        : "The next step unlocks when your index geometry and pointing intent are recognized."}
                     </p>
                   )}
                 </>
@@ -1209,7 +1547,7 @@ export function ReachLaboratory({
                   <button
                     onClick={() => {
                       invalidate();
-                      setPointingMode("RELATIVE");
+                      changePointingMode("RELATIVE");
                       advance("PREPARE");
                       setMessage("Relative movement uses hand displacement. Start its separate setup.");
                     }}
@@ -1339,6 +1677,21 @@ export function ReachLaboratory({
                   <dd>{metrics.capture?.toFixed(1) ?? "—"} ms</dd>
                 </div>
                 <div>
+                  <dt>Recent hand-model updates</dt>
+                  <dd>{metrics.captureHz?.toFixed(1) ?? "—"} / second</dd>
+                </div>
+                <div>
+                  <dt>Adaptive capture target</dt>
+                  <dd>
+                    {pacing?.targetHz.toFixed(1) ?? "—"} / second{" "}
+                    {pacing ? (pacing.focused ? "· focused" : "· reduced while unfocused") : ""}
+                  </dd>
+                </div>
+                <div>
+                  <dt>Main-thread tracking work</dt>
+                  <dd>{pacing?.smoothedMainThreadMs?.toFixed(1) ?? "—"} ms / frame</dd>
+                </div>
+                <div>
                   <dt>Capture → inference p95</dt>
                   <dd>{metrics.inference?.toFixed(1) ?? "—"} ms</dd>
                 </div>
@@ -1355,6 +1708,11 @@ export function ReachLaboratory({
                 Software capture begins at frame bitmap acquisition. Canvas submission ends at drawing commands; this
                 excludes sensor exposure, compositor presentation and display scanout. Synthetic timing is not inference
                 performance.
+              </p>
+              <p>
+                Capture adapts to processing time and event-loop pressure, with one inference in flight. The target is a
+                ceiling, not a guaranteed camera rate. Visible unfocused pages slow down; hiding the page stops the
+                camera. These signals do not measure total system CPU use.
               </p>
               <p>
                 Calibration: {calibration?.mapping ?? "none"} · {calibration?.status ?? "REQUIRED"} · no target snapping

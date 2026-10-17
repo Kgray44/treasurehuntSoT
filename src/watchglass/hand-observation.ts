@@ -49,6 +49,7 @@ export const handObservationSchema = z.strictObject({
           handedness: z.enum(["LEFT", "RIGHT", "UNKNOWN"]),
           handednessConfidence: score,
           coordinateFrame: z.literal("CAMERA_IMAGE_NORMALIZED"),
+          associationBasis: z.literal("INDEX_CHAIN_V1").optional(),
           landmarks: z.array(landmark).length(21),
           offImageFingerLandmarks: z
             .array(offImageFingerLandmark)

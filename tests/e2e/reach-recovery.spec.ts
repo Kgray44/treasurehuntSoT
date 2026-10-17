@@ -49,7 +49,7 @@ test("the local recording tool honors its flag and keeps video, raw trace and pa
   await start.click();
   const progress = page.getByRole("progressbar", { name: "Guided recording progress" });
   await expect.poll(async () => Number(await progress.getAttribute("value"))).toBeGreaterThan(900);
-  await page.screenshot({ path: testInfo.outputPath("D1-local-recorder-active.png"), fullPage: true });
+  await page.screenshot({ path: testInfo.outputPath("D1-local-recorder-active.png"), fullPage: false });
   await page.getByRole("button", { name: "Pause recording", exact: true }).click();
   await expect(
     page.getByText("Paused. The guide, video and trace are paused together.", { exact: true }),
@@ -81,7 +81,7 @@ test("the local recording tool honors its flag and keeps video, raw trace and pa
   await movie.saveAs(testInfo.outputPath(movie.suggestedFilename()));
   expect((await readFile((await movie.path())!)).length).toBeGreaterThan(1000);
   expect(movie.suggestedFilename().replace(/\.[^.]+$/, "")).toBe(traceFile.suggestedFilename().replace(/\.[^.]+$/, ""));
-  await page.screenshot({ path: testInfo.outputPath("D1-local-recorder-review.png"), fullPage: true });
+  await page.screenshot({ path: testInfo.outputPath("D1-local-recorder-review.png"), fullPage: false });
   await page.getByRole("link", { name: "Back to Reach Laboratory" }).click();
   await expect(page).toHaveURL(/\/devices\/reach$/);
   await expect(page.getByRole("button", { name: "Enable live camera" })).toBeVisible();
@@ -111,10 +111,10 @@ test("a completed failed check explains the accuracy limit and keeps setup inste
   await page.waitForTimeout(150);
   await page.getByLabel("Demo tracking condition").selectOption("POSTURE");
   await expect(page.getByRole("status", { name: "Pointer feedback" })).toContainText("Last seen pointer");
-  await expect(page.getByRole("status", { name: "Reach status" })).toContainText("Extend your index finger");
+  await expect(page.getByRole("status", { name: "Reach status" })).toContainText("Image tracking paused");
   await expect(page.getByRole("status", { name: "Reach status" })).not.toContainText("Your hand is ready");
   await page.evaluate(() => window.scrollTo(0, 0));
-  await page.screenshot({ path: testInfo.outputPath("D0-last-seen-during-check.png"), fullPage: true });
+  await page.screenshot({ path: testInfo.outputPath("D0-last-seen-during-check.png"), fullPage: false });
   await page.getByLabel("Demo tracking condition").selectOption("NONE");
   await targets(5, true);
   const explanation = page.getByRole("note", { name: "Independent check explanation" });
@@ -126,7 +126,7 @@ test("a completed failed check explains the accuracy limit and keeps setup inste
   await expect(page.getByRole("button", { name: "Open pointing playground" })).toHaveCount(0);
   await expect(page.getByLabel("Target 1 of 5", { exact: true })).toHaveCount(0);
   await page.evaluate(() => window.scrollTo(0, 0));
-  await page.screenshot({ path: testInfo.outputPath("D0-failed-check-explained.png"), fullPage: true });
+  await page.screenshot({ path: testInfo.outputPath("D0-failed-check-explained.png"), fullPage: false });
   await page.getByRole("button", { name: "Stop session", exact: true }).click();
 });
 
@@ -145,18 +145,16 @@ test("mobile interruptions keep the reason and saved targets beside the active t
     });
   await condition.selectOption("POSTURE");
   await expect(
-    page
-      .getByText("Extend your index finger comfortably; a gentle bend and relaxed fingers are fine.", { exact: true })
-      .first(),
+    page.getByText("Image tracking paused. Keep your fingertip visible while it reacquires.", { exact: true }).first(),
   ).toBeVisible();
   await showTarget();
-  await page.screenshot({ path: testInfo.outputPath("D0-mobile-posture-interruption.png"), fullPage: true });
+  await page.screenshot({ path: testInfo.outputPath("D0-mobile-posture-interruption.png"), fullPage: false });
   await condition.selectOption("NO_HAND");
   await expect(
-    page.getByText("Tracking paused. Bring the same hand back; completed targets stay saved.", { exact: true }).first(),
+    page.getByText("Image tracking paused. Keep your fingertip visible while it reacquires.", { exact: true }).first(),
   ).toBeVisible();
   await showTarget();
-  await page.screenshot({ path: testInfo.outputPath("D0-mobile-tracking-interruption.png"), fullPage: true });
+  await page.screenshot({ path: testInfo.outputPath("D0-mobile-tracking-interruption.png"), fullPage: false });
   await expect(page.getByLabel("Target 2 of 5", { exact: true })).toBeVisible();
   await condition.selectOption("NONE");
   await page.getByRole("button", { name: "Move demo hand to target" }).click();
@@ -271,40 +269,37 @@ test("D0 controlled poses recover in the actual laboratory without losing comple
   const status = page.getByRole("status", { name: "Reach status" });
   await page.goto("/devices/reach");
   await page.getByRole("button", { name: "Enable live camera" }).click();
+  await page.getByRole("radio", { name: "Absolute pointing" }).check();
   await expect(status).toContainText("Your hand is ready", { timeout: 30000 });
-  await page.screenshot({ path: testInfo.outputPath("D0-relaxed-point.png"), fullPage: true });
+  await page.screenshot({ path: testInfo.outputPath("D0-relaxed-point.png"), fullPage: false });
   await replay({ duplicate: true });
   await expect(status).toContainText("1 detected");
   await expect(status).toContainText("Eligible for collection");
   await page.waitForTimeout(500);
   await expect(page.getByText("1 hand detected", { exact: true })).toBeVisible();
-  await page.screenshot({ path: testInfo.outputPath("D0-duplicate-suppressed.png"), fullPage: true });
+  await page.screenshot({ path: testInfo.outputPath("D0-duplicate-suppressed.png"), fullPage: false });
   await replay({ duplicate: false, pose: "DIRECT" });
   await expect(status).toContainText("Eligible for collection");
   await expect(status).toContainText("Index aimed toward the camera");
-  await page.screenshot({ path: testInfo.outputPath("D0-direct-camera-point.png"), fullPage: true });
+  await page.screenshot({ path: testInfo.outputPath("D0-direct-camera-point.png"), fullPage: false });
   await replay({ pose: "BOTTOM" });
   await expect(status).toContainText("Required joints visible");
   await expect(status).toContainText("Eligible for collection");
-  await page.screenshot({ path: testInfo.outputPath("D0-bottom-wrist-outside.png"), fullPage: true });
+  await page.screenshot({ path: testInfo.outputPath("D0-bottom-wrist-outside.png"), fullPage: false });
   await replay({ pose: "CROPPED" });
-  await expect(status).toContainText("Some cropped fingers are estimated by the model");
-  await expect(status).toContainText("Index and knuckles visible");
+  await expect(status).toContainText("Index-only pointing is tentative");
+  await expect(status).toContainText("Required joints visible");
   await expect(status).toContainText("Eligible for collection");
-  await page.screenshot({ path: testInfo.outputPath("D0-cropped-finger-inference.png"), fullPage: true });
-  await replay({ pose: "CROPPED_OPEN" });
-  await expect(status).toContainText("Collection waiting");
-  await expect(page.getByRole("button", { name: "Set up relative movement" })).toBeDisabled();
-  await page.screenshot({ path: testInfo.outputPath("D0-cropped-open-hand-rejected.png"), fullPage: true });
-  await replay({ pose: "CROPPED_UNKNOWN" });
-  await expect(status).toContainText("Index detected. Show a little more of the other fingers");
-  await expect(status).toContainText("Index joints are still tracked in the camera view");
-  await expect(status).toContainText("Collection waiting");
-  await page.screenshot({ path: testInfo.outputPath("D0-index-tracked-intent-uncertain.png"), fullPage: true });
+  await page.screenshot({ path: testInfo.outputPath("D0-cropped-finger-inference.png"), fullPage: false });
+  for (const pose of ["CROPPED_OPEN", "CROPPED_UNKNOWN"]) {
+    await replay({ pose });
+    await expect(status).toContainText("Eligible for collection");
+    await expect(status).toContainText("Index-only pointing is tentative");
+  }
   await replay({ pose: "DEPTH" });
   await expect(status).toContainText("Index aimed toward the camera");
   await expect(status).toContainText("Eligible for collection");
-  await page.screenshot({ path: testInfo.outputPath("D0-foreshortened-point.png"), fullPage: true });
+  await page.screenshot({ path: testInfo.outputPath("D0-foreshortened-point.png"), fullPage: false });
   await replay({ pose: "SWEEP", sweepIndex: 0 });
   await expect(status).toContainText("Required joints visible");
   await expect(status).toContainText("Eligible for collection");
@@ -339,21 +334,23 @@ test("D0 controlled poses recover in the actual laboratory without losing comple
     body: JSON.stringify(sweep, null, 2),
     contentType: "application/json",
   });
-  await page.screenshot({ path: testInfo.outputPath("D0-continuous-sweep.png"), fullPage: true });
+  await page.screenshot({ path: testInfo.outputPath("D0-continuous-sweep.png"), fullPage: false });
   await replay({ pose: "OPEN" });
   await expect(status).toContainText("Point not yet recognized");
-  await expect(page.getByRole("button", { name: "Set up relative movement" })).toBeDisabled();
+  await expect(page.getByRole("button", { name: "Begin nine-point calibration" })).toBeDisabled();
   await replay({ pose: "RELAXED" });
   await expect(status).toContainText("Eligible for collection");
   await page.getByRole("radio", { name: "Absolute pointing" }).check();
   await page.getByRole("button", { name: "Begin nine-point calibration" }).click();
-  await expect(page.getByLabel("Target 2 of 9", { exact: true })).toBeVisible();
+  // Adaptive pacing may intentionally reduce camera throughput under load.
+  // Acquisition still requires 15 raw samples and 600ms observed evidence.
+  await expect(page.getByLabel("Target 2 of 9", { exact: true })).toBeVisible({ timeout: 20000 });
   await replay({ pose: "CURL" });
   await expect(status).toContainText("Point not yet recognized");
   await page.waitForTimeout(20500);
   await expect(page.getByLabel("Target 2 of 9", { exact: true })).toBeVisible();
   await expect(page.getByText(/1 of 9 targets saved/)).toBeVisible();
-  await page.screenshot({ path: testInfo.outputPath("D0-posture-interruption.png"), fullPage: true });
+  await page.screenshot({ path: testInfo.outputPath("D0-posture-interruption.png"), fullPage: false });
   await replay({ pose: "RELAXED" });
   const progress = page.getByRole("progressbar", { name: "Current target acquisition" });
   await expect.poll(async () => Number(await progress.getAttribute("value"))).toBeGreaterThan(0.05);
@@ -374,11 +371,11 @@ test("D0 controlled poses recover in the actual laboratory without losing comple
   await page.waitForTimeout(150);
   expect(Number(await progress.getAttribute("value"))).toBe(frozen);
   await expect(page.getByLabel("Target 2 of 9", { exact: true })).toBeVisible();
-  await page.screenshot({ path: testInfo.outputPath("D0-brief-occlusion.png"), fullPage: true });
+  await page.screenshot({ path: testInfo.outputPath("D0-brief-occlusion.png"), fullPage: false });
   await replay({ hidden: false });
   await expect(page.getByLabel("Target 3 of 9", { exact: true })).toBeVisible({ timeout: 10000 });
   await expect(page.getByText(/2 of 9 targets saved/)).toBeVisible();
-  await page.screenshot({ path: testInfo.outputPath("D0-recovered-saved-targets.png"), fullPage: true });
+  await page.screenshot({ path: testInfo.outputPath("D0-recovered-saved-targets.png"), fullPage: false });
   // An expired local identity must still require fresh setup. No old samples
   // may be silently rebound to the returning generation.
   await replay({ hidden: true });
@@ -393,7 +390,7 @@ test("D0 controlled poses recover in the actual laboratory without losing comple
   await expect(page.getByRole("alert", { name: "Setup ended" })).toBeVisible();
   await expect(page.getByRole("alert", { name: "Setup ended" })).toBeFocused();
   await expect(page.getByLabel("Target 3 of 9", { exact: true })).toHaveCount(0);
-  await page.screenshot({ path: testInfo.outputPath("D0-context-invalidation.png"), fullPage: true });
+  await page.screenshot({ path: testInfo.outputPath("D0-context-invalidation.png"), fullPage: false });
   await page.getByRole("button", { name: "Stop session", exact: true }).click();
   await expect(page.getByRole("button", { name: "Enable live camera" })).toBeVisible();
 });

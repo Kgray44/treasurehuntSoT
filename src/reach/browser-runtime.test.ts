@@ -58,6 +58,7 @@ function setup(rawInference?: (frame: RawHandInference) => void) {
     srcObject: null,
     readyState: 4,
     currentTime: 1.25,
+    getVideoPlaybackQuality: () => ({ totalVideoFrames: 1, droppedVideoFrames: 0 }),
     videoWidth: 640,
     videoHeight: 480,
   } as unknown as HTMLVideoElement;

@@ -108,7 +108,7 @@ describe("source-bound calibration evidence recovery", () => {
   });
   it("preserves independent validation and the established 3 percent error limit", () => {
     const calibration = fitCalibration(calibrationGroups(), syntheticBinding, 1000);
-    expect(calibration.mapping).toBe("INDEX_AXIS_RIDGE_V2");
+    expect(calibration.mapping).toBe("INDEX_TIP_AXIS_RIDGE_V1");
     expect(calibration.status).toBe("VALIDATION_REQUIRED");
     expect(validateCalibration(calibration, calibrationGroups(calibrationLayout.validation, 0.15)).status).toBe(
       "FAILED",

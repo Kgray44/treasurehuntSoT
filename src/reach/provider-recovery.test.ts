@@ -51,7 +51,7 @@ describe("bounded local hand continuity through brief occlusion", () => {
     expect(next.continuity).toBe("ACQUIRED");
   });
 
-  it("keeps palm identity through one uncertain index tip and its restoration", () => {
+  it("keeps index-chain identity through one uncertain tip and its restoration", () => {
     const adapter = new BrowserHandAdapter(binding);
     const first = adapter.envelope(resultAt(), 100, 105, 640, 480).hands[0];
     const partial = resultAt();
@@ -89,7 +89,7 @@ describe("bounded local hand continuity through brief occlusion", () => {
     });
   });
 
-  it("uses an observed palm center without inventing a scale when a palm edge is uncertain", () => {
+  it("uses three common index joints without inventing a complete-chain scale", () => {
     const adapter = new BrowserHandAdapter(binding);
     const first = adapter.envelope(resultAt(), 100, 105, 640, 480).hands[0];
     const partial = resultAt();
@@ -100,7 +100,7 @@ describe("bounded local hand continuity through brief occlusion", () => {
     expect(recovered.trackId).toBe(first.trackId);
   });
 
-  it("does not replace the core reference with a partial palm before the wrist disappears", () => {
+  it("does not replace the fixed index reference with a partial chain before the wrist disappears", () => {
     const adapter = new BrowserHandAdapter(binding);
     const first = adapter.envelope(resultAt(), 100, 105, 640, 480).hands[0];
     const partial = resultAt();
@@ -111,13 +111,14 @@ describe("bounded local hand continuity through brief occlusion", () => {
     expect(adapter.envelope(withoutWrist, 300, 305, 640, 480).hands[0].trackId).toBe(first.trackId);
   });
 
-  it("abstains on too few common palm anchors without poisoning the prior core reference", () => {
+  it("abstains on too few common index anchors without poisoning the prior reference", () => {
     const adapter = new BrowserHandAdapter(binding);
     const withoutWrist = resultAt();
     withoutWrist.landmarks[0][0] = { ...withoutWrist.landmarks[0][0], y: 1.1 };
     const first = adapter.envelope(withoutWrist, 100, 105, 640, 480).hands[0];
     const differentPartial = resultAt();
-    differentPartial.landmarks[0][5] = { ...differentPartial.landmarks[0][5], x: -1 };
+    for (const index of [5, 6])
+      differentPartial.landmarks[0][index] = { ...differentPartial.landmarks[0][index], x: -1 };
     expect(adapter.envelope(differentPartial, 200, 205, 640, 480).hands[0].continuity).toBe("AMBIGUOUS");
     expect(adapter.envelope(withoutWrist, 300, 305, 640, 480).hands[0]).toMatchObject({
       trackId: first.trackId,
@@ -125,11 +126,11 @@ describe("bounded local hand continuity through brief occlusion", () => {
     });
   });
 
-  it("pauses an insufficient palm frame and recovers its unrefreshed prior track", () => {
+  it("pauses an insufficient index frame and recovers its unrefreshed prior track", () => {
     const adapter = new BrowserHandAdapter(binding);
     const first = adapter.envelope(resultAt(), 100, 105, 640, 480).hands[0];
     const partial = resultAt();
-    for (const index of [0, 5]) partial.landmarks[0][index] = { ...partial.landmarks[0][index], x: -1 };
+    for (const index of [5, 6]) partial.landmarks[0][index] = { ...partial.landmarks[0][index], x: -1 };
     for (const at of [200, 500, 800]) {
       const uncertain = adapter.envelope(partial, at, at + 5, 640, 480).hands[0];
       expect(uncertain.continuity).toBe("AMBIGUOUS");
@@ -143,11 +144,11 @@ describe("bounded local hand continuity through brief occlusion", () => {
     });
   });
 
-  it("does not refresh a missing palm through repeated partial frames", () => {
+  it("does not refresh an index reference through repeated frames with fewer than three index anchors", () => {
     const adapter = new BrowserHandAdapter(binding);
     const first = adapter.envelope(resultAt(), 100, 105, 640, 480).hands[0];
     const partial = resultAt();
-    for (const index of [0, 5]) partial.landmarks[0][index] = { ...partial.landmarks[0][index], x: -1 };
+    for (const index of [5, 6]) partial.landmarks[0][index] = { ...partial.landmarks[0][index], x: -1 };
     for (const at of [200, 500, 800, 1100, 1350]) adapter.envelope(partial, at, at + 5, 640, 480);
     const recovered = adapter.envelope(resultAt(), 1400, 1405, 640, 480).hands[0];
     expect(recovered.trackId).not.toBe(first.trackId);
@@ -180,7 +181,7 @@ describe("bounded local hand continuity through brief occlusion", () => {
   });
 });
 
-describe("bounded recent-motion palm association", () => {
+describe("bounded recent-motion index association", () => {
   const scaledResultAt = (x: number, factor: number) => {
     const landmarks = handAt(x);
     const palm = [0, 5, 9, 17].map((i) => landmarks[i]);
@@ -218,7 +219,7 @@ describe("bounded recent-motion palm association", () => {
     }
   });
 
-  it("requires two prior reliable palm centers before extending the static radius", () => {
+  it("requires two prior reliable index centers before extending the static radius", () => {
     const adapter = new BrowserHandAdapter(binding);
     const first = adapter.envelope(resultAt(0.2), 100, 105, 640, 480).hands[0];
     const next = adapter.envelope(resultAt(0.36), 150, 155, 640, 480).hands[0];
@@ -286,12 +287,12 @@ describe("bounded recent-motion palm association", () => {
     expect(next.continuity).toBe("CONTINUOUS");
   });
 
-  it("preserves the existing ordinary spatial matcher without using prediction", () => {
+  it("rejects a fivefold anatomical index blowup under the fixed index reference", () => {
     const adapter = new BrowserHandAdapter(binding);
     const first = adapter.envelope(scaledResultAt(0.48, 1), 100, 105, 640, 480).hands[0];
     const next = adapter.envelope(scaledResultAt(0.48, 5), 150, 155, 640, 480).hands[0];
-    expect(next.trackId).toBe(first.trackId);
-    expect(next.continuity).toBe("CONTINUOUS");
+    expect(next.trackId).not.toBe(first.trackId);
+    expect(next.continuity).toBe("ACQUIRED");
   });
 
   it("rejects an abrupt direction change outside the original spatial radius", () => {
@@ -339,12 +340,12 @@ describe("bounded recent-motion palm association", () => {
     expect(next.trackId).not.toBe(first.trackId);
   });
 
-  it("does not derive motion from an insufficient palm observation", () => {
+  it("does not derive motion from an insufficient index observation", () => {
     const adapter = new BrowserHandAdapter(binding);
     const first = adapter.envelope(resultAt(0.2), 100, 105, 640, 480).hands[0];
     adapter.envelope(resultAt(0.32), 150, 155, 640, 480);
     const partial = resultAt(0.32);
-    for (const index of [0, 5]) partial.landmarks[0][index] = { ...partial.landmarks[0][index], x: -1 };
+    for (const index of [5, 6]) partial.landmarks[0][index] = { ...partial.landmarks[0][index], x: -1 };
     expect(adapter.envelope(partial, 175, 180, 640, 480).hands[0].continuity).toBe("AMBIGUOUS");
     const next = adapter.envelope(resultAt(0.48), 200, 205, 640, 480).hands[0];
     expect(next.trackId).not.toBe(first.trackId);

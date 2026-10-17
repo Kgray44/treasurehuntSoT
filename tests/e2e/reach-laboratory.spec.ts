@@ -9,7 +9,7 @@ async function demo(page: Page, mode: "ABSOLUTE" | "RELATIVE" = "ABSOLUTE") {
   await page.getByRole("link", { name: "Find the Hand interaction laboratory" }).click();
   await expect(page.getByRole("heading", { name: "Find your point." })).toBeVisible();
   await page.getByRole("button", { name: "Explore guided demo" }).click();
-  await expect(status(page)).toContainText("Your hand is ready");
+  await expect(status(page)).toContainText("Your fingertip is ready");
   if (mode === "ABSOLUTE") await page.getByRole("radio", { name: /Absolute pointing/ }).check();
 }
 async function targets(page: Page, count: number) {
@@ -256,6 +256,7 @@ test("photographic video through the actual worker tracks noise, motion, partial
   await fakeCamera(page, photograph);
   await page.goto("/devices/reach");
   await page.getByRole("button", { name: "Enable live camera" }).click();
+  await page.getByRole("radio", { name: /Absolute pointing/ }).check();
   await expect(status(page)).toContainText("Your hand is ready", { timeout: 30000 });
   // Readiness now updates without the old visual debounce. Independently wait
   // for the worker evidence count instead of relying on that UI delay.
@@ -336,7 +337,7 @@ test("camera denial has a useful retry and conventional demonstration", async ({
   await expect(status(page)).toContainText("Camera access was declined");
   await shot(page, "camera-denied");
   await page.getByRole("button", { name: "Explore guided demo" }).click();
-  await expect(status(page)).toContainText("Your hand is ready");
+  await expect(status(page)).toContainText("Your fingertip is ready");
 });
 test("viewport changes invalidate the fit and preserve camera availability; safe return excludes external URLs", async ({
   page,
@@ -365,6 +366,7 @@ test("photographic worker completes nine real-landmark holds and five independen
   await fakeCamera(page, await readFile("tests/e2e/fixtures/reach/pointing_up.jpg"));
   await page.goto("/devices/reach");
   await page.getByRole("button", { name: "Enable live camera" }).click();
+  await page.getByRole("radio", { name: /Absolute pointing/ }).check();
   await expect(status(page)).toContainText("Your hand is ready", { timeout: 30000 });
   await page.getByRole("radio", { name: /Absolute pointing/ }).check();
   const readMetrics = async () => {
@@ -431,7 +433,7 @@ test("photographic worker completes nine real-landmark holds and five independen
   await holdTargets(5, "VALIDATION");
   await shot(page, "worker-independent-results", true);
   const absolute = await readMetrics();
-  expect(absolute.calibration.mapping).toBe("INDEX_AXIS_RIDGE_V2");
+  expect(absolute.calibration.mapping).toBe("INDEX_TIP_AXIS_RIDGE_V1");
   // Aggregate counts are raw samples; the visible target loop proves hold counts.
   expect(absolute.calibration.trainingCount).toBeGreaterThanOrEqual(9 * 15);
   expect(absolute.calibration.validationCount).toBeGreaterThanOrEqual(5 * 15);
@@ -454,7 +456,7 @@ test("photographic worker completes nine real-landmark holds and five independen
   await page.getByRole("button", { name: "Open pointing playground" }).click();
   const metrics = await readMetrics();
   expect(metrics.calibration.status).toBe("VALIDATED");
-  expect(metrics.calibration.mapping).toBe("RELATIVE_DISPLACEMENT_V1");
+  expect(metrics.calibration.mapping).toBe("INDEX_TIP_DISPLACEMENT_V2");
   expect(metrics.trialAggregates).toHaveLength(4);
   expect(metrics.timing.acquisitionMs).toHaveLength(24);
   expect(metrics.timing.inferenceCount).toBeGreaterThanOrEqual(15 * 24);

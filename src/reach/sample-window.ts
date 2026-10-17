@@ -3,6 +3,8 @@ import {
   sampleEvidencePolicy,
   stableSamples,
   stableMovementSamples,
+  assertCurrentReachBinding,
+  isRelativeImageFeatureVector,
   type CalibrationSample,
   type CalibrationBinding,
 } from "./calibration";
@@ -14,6 +16,8 @@ export type Acquisition = {
   rejected: number;
 };
 const median = (values: number[]) => [...values].sort((a, b) => a - b)[Math.floor(values.length / 2)];
+/** Retain about 1.5 seconds at the adaptive ceiling, within the existing 5-second clock bound. */
+export const sampleWindowCapacity = { supportedMaximumHz: 60, retainedSamples: 90 } as const;
 /** Bounded, source-bound evidence. Interruptions freeze progress; resumed evidence must agree spatially. */
 export class SampleWindow {
   private samples: CalibrationSample[] = [];
@@ -26,7 +30,9 @@ export class SampleWindow {
     readonly binding: CalibrationBinding,
     readonly target: Point,
     readonly mode: "ABSOLUTE" | "RELATIVE" = "ABSOLUTE",
-  ) {}
+  ) {
+    assertCurrentReachBinding(binding, mode);
+  }
   private result(state: Acquisition["state"], accepted: CalibrationSample[] | null = null): Acquisition {
     const duration = sampleEvidenceDuration(this.samples) ?? 0;
     return {
@@ -52,7 +58,9 @@ export class SampleWindow {
       this.reset();
       return true;
     }
-    this.samples = this.samples.filter((s) => at - s.at <= sampleEvidencePolicy.maximumWindowMs).slice(-30);
+    this.samples = this.samples
+      .filter((s) => at - s.at <= sampleEvidencePolicy.maximumWindowMs)
+      .slice(-sampleWindowCapacity.retainedSamples);
     return false;
   }
   pause(at: number) {
@@ -81,6 +89,8 @@ export class SampleWindow {
     return features.every((value, i) => Math.abs(value - median(samples.map((s) => s.features[i]))) <= limits[i]);
   }
   push(features: number[], at: number, binding: CalibrationBinding): Acquisition {
+    assertCurrentReachBinding(this.binding, this.mode);
+    assertCurrentReachBinding(binding, this.mode);
     if (Object.entries(this.binding).some(([k, v]) => binding[k as keyof CalibrationBinding] !== v))
       throw new Error("SAMPLE_CONTEXT_CHANGED");
     if (
@@ -88,6 +98,7 @@ export class SampleWindow {
       at <= this.lastInput ||
       features.length !== 5 ||
       features[0] !== 1 ||
+      (this.mode === "RELATIVE" && !isRelativeImageFeatureVector(features)) ||
       features.some((v) => !Number.isFinite(v))
     )
       throw new Error("SAMPLE_INVALID_OR_REORDERED");
@@ -109,7 +120,7 @@ export class SampleWindow {
       )
         this.candidate = [];
       this.candidate.push(sample);
-      this.candidate = this.candidate.slice(-30);
+      this.candidate = this.candidate.slice(-sampleWindowCapacity.retainedSamples);
       // A deliberate new hold replaces only this unfinished target after sustained, coherent evidence.
       if (this.candidate.length < 5 || at - this.candidate[0].at < 450) return this.result("MOVING");
       this.samples = this.candidate;
@@ -126,7 +137,9 @@ export class SampleWindow {
       this.interrupted = false;
     }
     this.lastAccepted = at;
-    this.samples = this.samples.filter((s) => at - s.at <= sampleEvidencePolicy.maximumWindowMs).slice(-30);
+    this.samples = this.samples
+      .filter((s) => at - s.at <= sampleEvidencePolicy.maximumWindowMs)
+      .slice(-sampleWindowCapacity.retainedSamples);
     if ((this.mode === "RELATIVE" ? stableMovementSamples : stableSamples)(this.samples))
       return this.result(
         "ACCEPTED",

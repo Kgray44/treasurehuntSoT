@@ -189,7 +189,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Creator Studio"
+                "name": "\u2190 Creator Studio"
               },
               {
                 "action": "assert",
@@ -411,7 +411,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Creator Studio"
+                "name": "\u2190 Creator Studio"
               },
               {
                 "action": "assert",
@@ -4228,14 +4228,18 @@
           "RELATIVE_VALIDATION",
           "RELATIVE_RESULTS",
           "CAMERA_UNAVAILABLE",
-          "RETURNED"
+          "RETURNED",
+          "INDEX_IMAGE_TRACKING",
+          "FINGERTIP_HINT",
+          "STALE_IMAGE_TRACK",
+          "ADAPTIVE_PACING"
         ],
         "devices": ["DESKTOP", "MOBILE"],
         "roles": ["ANONYMOUS"],
-        "accessibility": "Keyboard, touch and ordinary buttons operate setup, pause, retry, deletion, export and return. A disclosed guided demo explains the full flow without a camera.",
+        "accessibility": "Keyboard, touch and ordinary buttons operate setup, pause, retry, deletion, export and return. A visible fingertip can be marked with a click or an arrow-key crosshair confirmed by Enter; Escape cancels. A disclosed guided demo explains the full flow without a camera.",
         "fallback": "Camera failure gives a plain-language explanation, retry and a guided conventional demonstration. All Voyagewright navigation remains conventional.",
         "navigation": "Existing device connections link opens Reach; the visible return clears owned camera resources and restores device connections; safe contextual return is accepted.",
-        "designTarget": "One continuous instrument workspace with a large registered camera stage, restrained brass and sea-green hierarchy, staged target plane, contextual guidance, visible progress and deliberately disclosed diagnostics. Mobile preparation prioritizes the camera and calibration prioritizes the target. Distinguish tracking, posture eligibility, actual collection, frozen interrupted progress, fresh reacquisition and genuine setup invalidation. Preserve completed targets across same-context pauses; relaxed and camera-facing index points use inferred 3D anatomy with honest uncertainty.",
+        "designTarget": "One continuous instrument workspace with a large registered camera stage, restrained brass and sea-green hierarchy, staged target plane, contextual guidance, visible progress and deliberately disclosed diagnostics. Mobile preparation prioritizes the camera and calibration prioritizes the target. Distinguish tracking, posture eligibility, actual collection, frozen interrupted progress, fresh reacquisition and genuine setup invalidation. Preserve completed targets across same-context pauses; relaxed and camera-facing index points use inferred 3D anatomy with honest uncertainty. Keep observed model joints distinct from the gold fingertip appearance track. Relative control uses one image feature profile throughout setup, independent checks and practice; full-hand/model return cannot replace a good image track. Clearly label manual appearance hints, fresh tracking, stale delivery and genuine source changes. Processing adapts to measured pressure; visible unfocused pages slow and hidden pages stop.",
         "references": [
           {
             "family": "Gateway / public entry",
@@ -4256,7 +4260,12 @@
         ],
         "homeportScreenIds": [],
         "homeportJourneyIds": [],
-        "browserTests": ["tests/e2e/reach-laboratory.spec.ts", "tests/e2e/reach-recovery.spec.ts"],
+        "browserTests": [
+          "tests/e2e/reach-laboratory.spec.ts",
+          "tests/e2e/reach-recovery.spec.ts",
+          "tests/e2e/reach-index-image.spec.ts",
+          "tests/e2e/reach-recorder-readiness.spec.ts"
+        ],
         "fixtureProfile": "generic",
         "recordingRequired": true,
         "motion": {
@@ -4278,7 +4287,8 @@
           "D0 and photographic D1 replay do not establish real-person webcam accuracy, field ergonomics or owner acceptance.",
           "Absolute empirical RGB pointing is experimental and must pass held-out validation for the current setup; relative cursor control has distinct setup and claims.",
           "Camera movement can be undetectable. Calibration is session-only and must be repeated after placement, identity or geometry changes.",
-          "Phase 2 target selection, Phase 3 manipulation and Crossdeck Air Handoff are not implemented by this laboratory."
+          "Phase 2 target selection, Phase 3 manipulation and Crossdeck Air Handoff are not implemented by this laboratory.",
+          "Index-only intent is heuristic. Manual fingertip hints select appearance, not an automatic finger classifier. Blur, edge clipping, repeated texture, occlusion and unverified monocular anatomy may pause tracking; physical robustness remains pending."
         ],
         "resolvedDebtIds": ["PE-DEBT-REACH-STAGES"],
         "journeys": [
@@ -4311,10 +4321,10 @@
                 "action": "assert",
                 "role": "status",
                 "name": "Reach status",
-                "text": "Your hand is ready",
+                "text": "Your fingertip is ready",
                 "path": "/devices/reach",
                 "kind": "outcome",
-                "meaning": "The user sees a clearly disclosed simulated hand, distinct detection and posture readiness.",
+                "meaning": "The user sees a clearly disclosed simulated image-position source, distinct model joints and eligible relative tracking.",
                 "state": "TRACKING",
                 "feedbackBoundary": true
               },
@@ -4595,7 +4605,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Device connections"
+                "name": "\u2190 Device connections"
               },
               {
                 "action": "assert",
@@ -4637,10 +4647,10 @@
                 "action": "assert",
                 "role": "status",
                 "name": "Reach status",
-                "text": "Your hand is ready",
+                "text": "Your fingertip is ready",
                 "path": "/devices/reach",
                 "kind": "outcome",
-                "meaning": "The user sees a clearly disclosed simulated hand, distinct detection and posture readiness.",
+                "meaning": "The user sees a clearly disclosed simulated image-position source, distinct model joints and eligible relative tracking.",
                 "state": "TRACKING",
                 "feedbackBoundary": true
               },
@@ -4792,7 +4802,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Device connections"
+                "name": "\u2190 Device connections"
               },
               {
                 "action": "assert",
@@ -4849,17 +4859,17 @@
                 "action": "assert",
                 "role": "status",
                 "name": "Reach status",
-                "text": "Your hand is ready",
+                "text": "Your fingertip is ready",
                 "path": "/devices/reach",
                 "kind": "outcome",
-                "meaning": "The user sees a clearly disclosed simulated hand, distinct detection and posture readiness.",
+                "meaning": "The user sees a clearly disclosed simulated image-position source, distinct model joints and eligible relative tracking.",
                 "state": "TRACKING",
                 "feedbackBoundary": true
               },
               {
                 "action": "click",
                 "role": "link",
-                "name": "← Device connections"
+                "name": "\u2190 Device connections"
               },
               {
                 "action": "assert",

@@ -55,6 +55,7 @@ export function ReachPoseRecorder() {
   const timings = useRef(new ReachTiming());
   const [status, setStatus] = useState("DISABLED"),
     [phase, setPhase] = useState<Phase>("IDLE");
+  const [captureReady, setCaptureReady] = useState(false);
   const [view, setView] = useState(firstView),
     [error, setError] = useState("");
   const [download, setDownload] = useState<Download | null>(null),
@@ -108,9 +109,13 @@ export function ReachPoseRecorder() {
         frame.current.observation = observation;
         frame.current.activeTrack = observation.hands[0]?.trackId ?? null;
         timings.current.observe(observation);
+        if (mounted.current) setCaptureReady(true);
       },
       (next) => {
-        if (mounted.current) setStatus(next);
+        if (mounted.current) {
+          setStatus(next);
+          if (!["READY", "STALE_OR_INVALID_OBSERVATION"].includes(next)) setCaptureReady(false);
+        }
         if (!["DISABLED", "READY", "MODEL_STARTING", "REQUESTING", "STALE_OR_INVALID_OBSERVATION"].includes(next))
           stopRef.current(next);
       },
@@ -171,7 +176,14 @@ export function ReachPoseRecorder() {
     if (phaseRef.current !== "IDLE" || saved.current) return;
     const sourceVideo = video.current,
       sourceOverlay = stage.current?.querySelector("canvas");
-    if (!sourceVideo || sourceVideo.readyState < 2 || !sourceVideo.srcObject || status !== "READY" || !sourceOverlay) {
+    if (
+      !sourceVideo ||
+      sourceVideo.readyState < 2 ||
+      !sourceVideo.srcObject ||
+      status !== "READY" ||
+      !captureReady ||
+      !sourceOverlay
+    ) {
       setError("Enable the camera and wait for live tracking before recording.");
       return;
     }
@@ -421,7 +433,7 @@ export function ReachPoseRecorder() {
               ? download?.video
                 ? "Saved diagnostic recording · camera and hand overlay · no microphone"
                 : "Diagnostic video is unavailable. The partial trace remains available in the review controls."
-              : `Camera: ${status.replaceAll("_", " ").toLowerCase()} · mirrored preview · no microphone`}
+              : `Camera: ${status === "READY" && !captureReady ? "waiting for tracking" : status.replaceAll("_", " ").toLowerCase()} · mirrored preview · no microphone`}
           </p>
         </section>
         <section className={styles.controls}>
@@ -499,7 +511,7 @@ export function ReachPoseRecorder() {
                 </button>
               )}
               {phase === "IDLE" && (
-                <button disabled={status !== "READY"} onClick={start}>
+                <button disabled={status !== "READY" || !captureReady} onClick={start}>
                   Start guided video + trace recording
                 </button>
               )}

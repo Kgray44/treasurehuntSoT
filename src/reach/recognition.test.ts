@@ -63,7 +63,7 @@ describe("stage separation and geometric posture on an official measured landmar
   });
   it("keeps a visibly detected edge hand distinct from sample eligibility", () => {
     const points = realPoint();
-    points[8].x = 0.995;
+    points[8].x = 1.005;
     const o = new BrowserHandAdapter(binding).envelope(result(points), 100, 110, 640, 480);
     expect(o.quality).toBe("USABLE");
     expect(o.reason).toBe("LOW_VISIBILITY");

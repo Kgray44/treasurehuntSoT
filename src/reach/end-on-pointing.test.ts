@@ -74,7 +74,7 @@ describe("camera-directed index overlapping the palm in the image", () => {
     hooked.landmarks[8].z = -0.04;
     expect(assessHand(hooked, frame).pointing).toBe(false);
   });
-  it("rejects open fingers in the image plane or all directed end-on", () => {
+  it("rejects projected open fingers while treating depth-overlapping fingers as uncertain", () => {
     const open = endOnHand(),
       extended = pointingPose({ otherBends: [0, 5, 10] });
     for (const index of [10, 11, 12, 14, 15, 16, 18, 19, 20]) open.landmarks[index] = extended[index];
@@ -83,13 +83,13 @@ describe("camera-directed index overlapping the palm in the image", () => {
     for (const base of [9, 13, 17])
       for (const [offset, index] of [base + 1, base + 2, base + 3].entries())
         allEndOn.landmarks[index] = { ...allEndOn.landmarks[base], z: -[0.035, 0.06, 0.08][offset] };
-    expect(assessHand(allEndOn, frame).pointing).toBe(false);
+    expect(assessHand(allEndOn, frame)).toMatchObject({ pointing: true, intentEvidence: "HEURISTIC_INDEX_ONLY" });
   });
-  it("rejects a competing fully extended middle finger also directed toward the camera", () => {
+  it("does not claim a competing finger from an entirely depth-overlapping model chain", () => {
     const hand = endOnHand();
     for (const [offset, index] of [10, 11, 12].entries())
       hand.landmarks[index] = { ...hand.landmarks[9], z: -[0.035, 0.06, 0.08][offset] };
-    expect(assessHand(hand, frame).pointing).toBe(false);
+    expect(assessHand(hand, frame)).toMatchObject({ pointing: true, intentEvidence: "HEURISTIC_INDEX_ONLY" });
   });
   it("rejects a visible thumb/index pinch at the end-on index tip", () => {
     const hand = endOnHand();

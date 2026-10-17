@@ -10,11 +10,11 @@ function readySelector() {
   expect(selector.update(frame(350))).toMatchObject({ eligible: true, changed: false });
   return selector;
 }
-it("pauses an imperfect posture frame and immediately resumes established fresh anatomy", () => {
+it("pauses a degenerate index frame and immediately resumes established fresh anatomy", () => {
   const selector = readySelector();
   const bad = frame(400);
   bad.hands[0].landmarks[8] = { ...bad.hands[0].landmarks[5] };
-  expect(selector.update(bad)).toMatchObject({ eligible: false, changed: false, condition: "POSTURE" });
+  expect(selector.update(bad)).toMatchObject({ eligible: false, changed: false, condition: "GEOMETRY" });
   expect(selector.update(frame(450))).toMatchObject({ eligible: true, changed: false, condition: "READY" });
 });
 it("does not starve good evidence when isolated imperfect frames recur during movement", () => {

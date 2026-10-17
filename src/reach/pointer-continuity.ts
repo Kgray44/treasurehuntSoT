@@ -1,4 +1,4 @@
-import type { Calibration } from "./calibration";
+import { isRelativeCalibrationMapping, type Calibration } from "./calibration";
 import type { Point } from "./coordinates";
 
 export type LastSeenPointer = { point: Point; capturedAt: number };
@@ -42,7 +42,7 @@ export function outsideCalibratedRange(c: Calibration, features: number[]): bool
   if (
     features.some(
       (value, i) =>
-        (c.mapping !== "RELATIVE_DISPLACEMENT_V1" || i < 3) &&
+        (!isRelativeCalibrationMapping(c.mapping) || i < 3) &&
         (value < c.featureBounds[i].min - 0.02 || value > c.featureBounds[i].max + 0.02),
     )
   )

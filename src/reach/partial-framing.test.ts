@@ -71,10 +71,10 @@ describe("partial hand framing keeps observed pointing evidence", () => {
     });
     expect(pointingFeatures(partial, frame)).toEqual(pointingFeatures(analyticHand(), frame));
   });
-  it("does not invent support from a collapsed palm span or index plane", () => {
+  it("does not require a palm span or palm plane for an observed index chain", () => {
     const partial = unavailable(analyticHand(), 0);
     partial.landmarks[17] = { ...partial.landmarks[5] };
-    expect(assessHand(partial, frame).pointing).toBe(false);
+    expect(assessHand(partial, frame).pointing).toBe(true);
     const flat = unavailable(analyticHand(), 0);
     for (const [offset, index] of [6, 7, 8].entries()) {
       const base = flat.landmarks[5],
@@ -86,7 +86,7 @@ describe("partial hand framing keeps observed pointing evidence", () => {
         z: base.z + ((palm.z - base.z) * (offset + 1)) / 4,
       };
     }
-    expect(assessHand(flat, frame)).toMatchObject({ geometry: false, pointing: false, palmBasis: "UNAVAILABLE" });
+    expect(assessHand(flat, frame)).toMatchObject({ geometry: true, pointing: true, palmBasis: "UNAVAILABLE" });
   });
   it("does not let the direction of a small visible knuckle arch impose an imaginary wrist position", () => {
     const partial = unavailable(analyticHand(), 0);
@@ -111,33 +111,30 @@ describe("partial hand framing keeps observed pointing evidence", () => {
     expect(assessHand(partial, frame)).toMatchObject({
       pointing: true,
       partialFraming: true,
-      partialFramingReason: "FOLDED_FINGERS_PARTIAL",
+      partialFramingReason: "NON_INDEX_UNAVAILABLE",
     });
     expect(pointingFeatures(partial, frame)).toEqual(pointingFeatures(full, frame));
   });
   it.each([{ otherBends: [0, 5, 10] }, { otherBends: [0, 35, 65] }])(
-    "does not turn cropped straight or softly open fingers into relaxed evidence: %j",
+    "uses an explicit index-only heuristic when cropped fingers cannot establish a visible open palm: %j",
     ({ otherBends }) => {
       const partial = unavailable(analyticHand(otherBends), 12, 16, 20);
-      expect(assessHand(partial, frame).pointing).toBe(false);
+      expect(assessHand(partial, frame)).toMatchObject({ pointing: true, intentEvidence: "HEURISTIC_INDEX_ONLY" });
       unavailable(partial, 0);
-      expect(assessHand(partial, frame).pointing).toBe(false);
+      expect(assessHand(partial, frame)).toMatchObject({ pointing: true, intentEvidence: "HEURISTIC_INDEX_ONLY" });
     },
   );
-  it("still requires observed non-index joints to establish distinct index intent", () => {
+  it("allows the observed index when non-index joints are missing", () => {
     const partial = unavailable(analyticHand(), 12, 16, 18, 14);
-    expect(assessHand(partial, frame).pointing).toBe(false);
+    expect(assessHand(partial, frame)).toMatchObject({ pointing: true, intentEvidence: "HEURISTIC_INDEX_ONLY" });
   });
-  it.each([5, 6, 7, 8, 9, 17])(
-    "never treats missing required index or palm landmark %s as recoverable framing",
-    (index) => {
-      const partial = unavailable(officialHand(), index);
-      expect(assessHand(partial, fixtureFrame)).toMatchObject({ requiredValid: false, framed: false, pointing: false });
-    },
-  );
-  it.each([5, 6, 7, 8, 9, 17])("keeps required landmark %s away from a clipped boundary", (index) => {
+  it.each([5, 6, 7, 8])("never treats missing required index landmark %s as recoverable framing", (index) => {
+    const partial = unavailable(officialHand(), index);
+    expect(assessHand(partial, fixtureFrame)).toMatchObject({ requiredValid: false, framed: false, pointing: false });
+  });
+  it.each([5, 6, 7, 8])("allows observed index landmark %s near the image boundary", (index) => {
     const partial = officialHand();
     partial.landmarks[index].y = 0.995;
-    expect(assessHand(partial, fixtureFrame).framed).toBe(false);
+    expect(assessHand(partial, fixtureFrame).framed).toBe(true);
   });
 });

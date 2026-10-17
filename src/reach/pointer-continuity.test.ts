@@ -2,14 +2,8 @@
 import { expect, it } from "vitest";
 import { PointerContinuity, outsideCalibratedRange } from "./pointer-continuity";
 import { PointFilter } from "./coordinates";
-import {
-  calibratedPoint,
-  fitRelativeCalibration,
-  relativeLayout,
-  validateCalibration,
-  calibrationLayout,
-} from "./calibration";
-import { calibrationGroups, syntheticBinding } from "./foundation-scenarios";
+import { calibratedPoint, fitRelativeCalibration, validateCalibration, calibrationLayout } from "./calibration";
+import { relativeCalibrationGroups, syntheticRelativeBinding } from "./foundation-scenarios";
 
 it("keeps a distinctly last-seen display for at most 450ms, without inventing motion", () => {
   const memory = new PointerContinuity();
@@ -38,11 +32,11 @@ it("keeps a visible point and confirms a fresh large movement on the next cohere
 });
 it("explains out-of-range tracking without making the calibrated pointer valid", () => {
   const c = validateCalibration(
-    fitRelativeCalibration(calibrationGroups(relativeLayout.training), syntheticBinding, 1000),
-    calibrationGroups(calibrationLayout.validation),
+    fitRelativeCalibration(relativeCalibrationGroups(), syntheticRelativeBinding, 1000),
+    relativeCalibrationGroups(calibrationLayout.validation),
   );
   const features = [1, 1, 0.5, 0, 0];
   expect(outsideCalibratedRange(c, features)).toBe(true);
-  expect(calibratedPoint(c, features, syntheticBinding, 1100)).toBeNull();
+  expect(calibratedPoint(c, features, syntheticRelativeBinding, 1100)).toBeNull();
   expect(outsideCalibratedRange(c, [1, 0.5, 0.5, 0, 0])).toBe(false);
 });

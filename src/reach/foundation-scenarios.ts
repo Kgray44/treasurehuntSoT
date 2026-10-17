@@ -8,8 +8,18 @@ import {
   validateCalibration,
   type CalibrationBinding,
   type CalibrationSample,
+  type RelativeCalibrationBinding,
 } from "./calibration";
-import { imageToViewport, pointingFeatures, PointFilter } from "./coordinates";
+import {
+  imageToViewport,
+  pointingFeatures,
+  PointFilter,
+  REACH_ASSOCIATION_BASIS,
+  REACH_FEATURE_PROFILE,
+  REACH_RELATIVE_ASSOCIATION_BASIS,
+  REACH_RELATIVE_FEATURE_PROFILE,
+  relativeIndexFeatures,
+} from "./coordinates";
 import { ActiveHandSelector, ObservationGate, usableHand } from "./observation";
 import { SampleWindow } from "./sample-window";
 import { syntheticObservation } from "./synthetic";
@@ -27,6 +37,8 @@ const check = (condition: boolean) => {
   if (!condition) throw new Error("REACH_D0_ASSERTION_FAILED");
 };
 export const syntheticBinding: CalibrationBinding = {
+  featureProfile: REACH_FEATURE_PROFILE,
+  associationBasis: REACH_ASSOCIATION_BASIS,
   providerId: "watchglass.synthetic-hand",
   modelDigest: "a".repeat(64),
   providerGeneration: 1,
@@ -41,13 +53,27 @@ export const syntheticBinding: CalibrationBinding = {
   trackGeneration: 1,
   evidenceTier: "D0",
 };
+export const syntheticRelativeBinding: RelativeCalibrationBinding = {
+  ...syntheticBinding,
+  featureProfile: REACH_RELATIVE_FEATURE_PROFILE,
+  associationBasis: REACH_RELATIVE_ASSOCIATION_BASIS,
+  providerId: "reach.synthetic-index-image",
+  modelDigest: "b".repeat(64),
+  trackId: "synthetic-image-index-1",
+};
 export function calibrationGroups(targets = calibrationLayout.training, bias = 0): CalibrationSample[][] {
+  return targets.map((target) =>
+    Array.from({ length: 16 }, (_, i) => {
+      const observation = syntheticObservation({ x: target.x + bias, y: target.y + bias }, i, 100 + i * 50);
+      return { target, features: pointingFeatures(observation.hands[0], observation), at: 100 + i * 50 };
+    }),
+  );
+}
+export function relativeCalibrationGroups(targets = relativeLayout.training, bias = 0): CalibrationSample[][] {
   return targets.map((target) =>
     Array.from({ length: 16 }, (_, i) => ({
       target,
-      features: pointingFeatures(
-        syntheticObservation({ x: target.x + bias, y: target.y + bias }, i, 100 + i * 50).hands[0],
-      ),
+      features: relativeIndexFeatures({ x: target.x + bias, y: target.y + bias }),
       at: 100 + i * 50,
     })),
   );
@@ -73,7 +99,8 @@ function rejects(action: () => unknown) {
 export async function runPhase1Oracle(suffix: (typeof phase1ScenarioIds)[number]) {
   const c = fitCalibration(calibrationGroups(), syntheticBinding, 1000);
   const valid = validateCalibration(c, calibrationGroups(calibrationLayout.validation));
-  const centerFeatures = pointingFeatures(syntheticObservation({ x: 0.5, y: 0.5 }, 0, 1100).hands[0]);
+  const centerObservation = syntheticObservation({ x: 0.5, y: 0.5 }, 0, 1100);
+  const centerFeatures = pointingFeatures(centerObservation.hands[0], centerObservation);
   check(calibratedPoint(valid, centerFeatures, syntheticBinding, 1101) !== null);
   if (suffix === "calibration-held-out-validation") {
     check(c.status === "VALIDATION_REQUIRED" && c.validationErrors.length === 0);
@@ -96,10 +123,14 @@ export async function runPhase1Oracle(suffix: (typeof phase1ScenarioIds)[number]
       accepted ||= !!window.push(features, 500 + i * 50, syntheticBinding).samples;
     }
     check(accepted);
-    const relative = fitRelativeCalibration(calibrationGroups(relativeLayout.training), syntheticBinding, 1000);
+    const relative = fitRelativeCalibration(relativeCalibrationGroups(), syntheticRelativeBinding, 1000);
     check(relative.status === "VALIDATION_REQUIRED");
-    check(validateCalibration(relative, calibrationGroups(calibrationLayout.validation)).status === "VALIDATED");
-    check(validateCalibration(relative, calibrationGroups(calibrationLayout.validation, 0.2)).status === "FAILED");
+    check(
+      validateCalibration(relative, relativeCalibrationGroups(calibrationLayout.validation)).status === "VALIDATED",
+    );
+    check(
+      validateCalibration(relative, relativeCalibrationGroups(calibrationLayout.validation, 0.2)).status === "FAILED",
+    );
   }
   if (suffix === "mirror-and-frame-epochs") {
     const viewport = { width: 800, height: 600, offsetX: 10, offsetY: 20, scale: 2, epoch: 1 };

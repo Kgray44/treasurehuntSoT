@@ -1,5 +1,10 @@
 import type { HandObservation } from "./observation";
-import { handGeometry, type GeometryFrame } from "@/watchglass/hand-geometry";
+import type { GeometryFrame } from "@/watchglass/hand-geometry";
+import { indexGeometry } from "@/watchglass/index-geometry";
+export const REACH_FEATURE_PROFILE = "INDEX_TIP_AXIS_V1" as const;
+export const REACH_ASSOCIATION_BASIS = "INDEX_CHAIN_V1" as const;
+export const REACH_RELATIVE_FEATURE_PROFILE = "INDEX_TIP_IMAGE_V1" as const;
+export const REACH_RELATIVE_ASSOCIATION_BASIS = "INDEX_IMAGE_TRACK_V1" as const;
 export type Point = { x: number; y: number };
 export type Viewport = {
   width: number;
@@ -27,31 +32,21 @@ export function imageToViewport(point: Point, viewport: Viewport, mirror: boolea
   };
 }
 /**
- * V2 empirical camera-relative index features. The complete joint chord and
- * inferred 3D palm width avoid a short 2D distal segment masquerading as curl.
- * Relative z bounds depth-facing slopes; it is never metric depth or a screen
- * intersection. Independent per-context held-out validation remains required.
+ * Empirical index-only camera features: observed tip plus the unit 3D index
+ * chord. No palm landmark or inferred off-image joint can supply these values.
+ * Relative z is monocular inference, never metric depth or a screen ray.
+ * This profile requires fresh independent calibration; legacy fits are invalid.
  */
 export function pointingFeatures(hand: HandObservation["hands"][number], frame?: GeometryFrame): number[] {
-  const shape = handGeometry(hand, frame);
-  const index = shape.finger(5);
-  if (
-    !index ||
-    !hand.landmarks[17].valid ||
-    shape.scale < 0.035 ||
-    index.reach < shape.scale * 0.2 ||
-    index.chain > shape.scale * 3.5
-  )
-    throw new Error("POINT_AXIS_DEGENERATE");
-  const denominator = shape.scale + Math.abs(index.axis.z);
-  const base = hand.landmarks[5];
-  return [
-    1,
-    base.x,
-    base.y,
-    ((2 / 3) * index.axis.x) / denominator,
-    ((2 / 3) * index.axis.y) / denominator / shape.aspect,
-  ];
+  const index = indexGeometry(hand, frame);
+  if (!index.complete || !index.geometry || !index.tip || index.reach <= 1e-5) throw new Error("POINT_AXIS_DEGENERATE");
+  return [1, index.tip.x, index.tip.y, index.axis.x / index.reach, index.axis.y / index.reach / index.aspect];
+}
+/** A fresh image track supplies only observed 2D position, never an invented axis. */
+export function relativeIndexFeatures(point: Point): number[] {
+  if (![point.x, point.y].every(Number.isFinite) || point.x < 0 || point.x > 1 || point.y < 0 || point.y > 1)
+    throw new Error("INDEX_IMAGE_POINT_INVALID");
+  return [1, point.x, point.y, 0, 0];
 }
 export class PointFilter {
   private point: Point | null = null;

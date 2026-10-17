@@ -1,13 +1,17 @@
 // @sounding-line-registration owner=reach suite=unit.reach contracts=reach.phase1.foundation
 import { expect, it } from "vitest";
 import { SampleWindow } from "./sample-window";
-import { calibrationGroups, syntheticBinding } from "./foundation-scenarios";
+import {
+  calibrationGroups,
+  relativeCalibrationGroups,
+  syntheticBinding,
+  syntheticRelativeBinding,
+} from "./foundation-scenarios";
 import {
   calibratedPoint,
   calibrationLayout,
   fitCalibration,
   fitRelativeCalibration,
-  relativeLayout,
   validateCalibration,
 } from "./calibration";
 import { containedFrame } from "./visualization";
@@ -69,20 +73,20 @@ it("rejects NaNs, replayed timestamps and degenerate training coverage", () => {
   expect(() => fitCalibration(groups, syntheticBinding, 1000)).toThrow("CALIBRATION_INSUFFICIENT_COVERAGE");
 });
 it("qualifies relative movement separately and cannot pass the absolute pointing claim", () => {
-  const c = fitRelativeCalibration(calibrationGroups(relativeLayout.training), syntheticBinding, 1000);
-  expect(c.mapping).toBe("RELATIVE_DISPLACEMENT_V1");
+  const c = fitRelativeCalibration(relativeCalibrationGroups(), syntheticRelativeBinding, 1000);
+  expect(c.mapping).toBe("INDEX_TIP_DISPLACEMENT_V2");
   expect(c.status).toBe("VALIDATION_REQUIRED");
-  const checked = validateCalibration(c, calibrationGroups(calibrationLayout.validation));
+  const checked = validateCalibration(c, relativeCalibrationGroups(calibrationLayout.validation));
   expect(checked.status).toBe("VALIDATED");
-  expect(calibratedPoint(checked, features, syntheticBinding, 1100)).not.toBeNull();
-  expect(validateCalibration(c, calibrationGroups(calibrationLayout.validation, 0.15)).status).toBe("FAILED");
-  const short = calibrationGroups(relativeLayout.training);
+  expect(calibratedPoint(checked, [1, 0.5, 0.5, 0, 0], syntheticRelativeBinding, 1100)).not.toBeNull();
+  expect(validateCalibration(c, relativeCalibrationGroups(calibrationLayout.validation, 0.15)).status).toBe("FAILED");
+  const short = relativeCalibrationGroups();
   for (const group of short)
     for (const s of group) {
       s.features[1] = 0.5;
       s.features[2] = 0.5;
     }
-  expect(() => fitRelativeCalibration(short, syntheticBinding, 1000)).toThrow("RELATIVE_MOVEMENT_TOO_SMALL");
+  expect(() => fitRelativeCalibration(short, syntheticRelativeBinding, 1000)).toThrow("RELATIVE_MOVEMENT_TOO_SMALL");
 });
 it("keeps camera overlay registration correct across letterboxing and scaling", () => {
   const wide = containedFrame(800, 400, 640, 480);

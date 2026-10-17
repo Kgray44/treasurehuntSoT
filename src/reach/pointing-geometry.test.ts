@@ -63,10 +63,10 @@ describe("natural pointing anatomy and inferred depth geometry", () => {
   ])("rejects open/ambiguous hands and folded-back joints: %j", (pose) => {
     expect(assessHand(hand(pose), frame).pointing).toBe(false);
   });
-  it("does not infer clear intent when most other finger evidence is hidden or the fingertips pinch", () => {
+  it("uses the index-only heuristic when other fingers are hidden, while rejecting a visible pinch", () => {
     const missing = hand();
     for (const index of [10, 14]) missing.landmarks[index].valid = false;
-    expect(assessHand(missing, frame).pointing).toBe(false);
+    expect(assessHand(missing, frame)).toMatchObject({ pointing: true, intentEvidence: "HEURISTIC_INDEX_ONLY" });
     const pinch = hand();
     pinch.landmarks[4] = { ...pinch.landmarks[8] };
     expect(assessHand(pinch, frame).pointing).toBe(false);
@@ -77,11 +77,11 @@ describe("natural pointing anatomy and inferred depth geometry", () => {
     for (const index of [10, 11, 12]) twoFingers.landmarks[index] = extended[index];
     expect(assessHand(twoFingers, frame).pointing).toBe(false);
   });
-  it("does not treat collapsed non-index joints as trustworthy evidence of curled fingers", () => {
+  it("does not let collapsed non-index estimates override the coherent index", () => {
     const collapsed = hand();
     for (const base of [9, 13])
       for (const index of [1, 2, 3]) collapsed.landmarks[base + index] = { ...collapsed.landmarks[base] };
-    expect(assessHand(collapsed, frame).pointing).toBe(false);
+    expect(assessHand(collapsed, frame)).toMatchObject({ pointing: true, intentEvidence: "HEURISTIC_INDEX_ONLY" });
   });
   it("does not rescue invalid/collapsed index geometry from inferred depth", () => {
     const collapsed = hand({ depthAngle: 80 });
@@ -91,7 +91,7 @@ describe("natural pointing anatomy and inferred depth geometry", () => {
     missing.landmarks[8].valid = false;
     expect(() => pointingFeatures(missing, frame)).toThrow("POINT_AXIS_DEGENERATE");
   });
-  it("keeps source features unmirrored and translation/scale invariant apart from MCP position", () => {
+  it("keeps source features unmirrored and translation/scale invariant apart from observed tip position", () => {
     const original = hand({ depthAngle: 60 });
     const moved = structuredClone(original);
     moved.landmarks = moved.landmarks.map((p) => ({
@@ -102,8 +102,8 @@ describe("natural pointing anatomy and inferred depth geometry", () => {
     }));
     const a = pointingFeatures(original, frame),
       b = pointingFeatures(moved, frame);
-    expect(b[1]).toBeCloseTo(0.5);
-    expect(b[2]).toBeCloseTo(0.55);
+    expect(b[1]).toBe(moved.landmarks[8].x);
+    expect(b[2]).toBe(moved.landmarks[8].y);
     expect(b[3]).toBeCloseTo(a[3]);
     expect(b[4]).toBeCloseTo(a[4]);
   });
