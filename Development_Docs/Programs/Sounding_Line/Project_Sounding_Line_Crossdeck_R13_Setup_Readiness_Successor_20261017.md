@@ -94,6 +94,16 @@ Check performs read-only source/history admission, preflight performs the fixed
 infrastructure procedure, and run reserves the one-case stage only after current
 readiness succeeds. No older entry or direct suite invocation supplies authority.
 
+Source-only C13 plus F13 composition exposed a second tooling defect before any
+readiness or case: the complete Git file list exceeded the documentation
+generator's default 1 MiB child-process buffer and failed with ENOBUFS. The
+failed command, partial metadata and complete list are retained separately.
+R13's exact infrastructure overlay also pins the generator's three Git reads
+with a bounded 64 MiB buffer. Enumeration, classification, inventory contents
+and all acceptance requirements stay unchanged. The complete real source merge
+must regenerate both canonical inventories and pass the actual source-policy
+fixture; partial output is never acceptance.
+
 # Qualification remains required
 
 After independent review and protected installation, use distinct R13 operator

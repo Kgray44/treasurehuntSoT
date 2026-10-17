@@ -57599,7 +57599,7 @@
           "oldMode": null,
           "oldBlob": null,
           "newMode": "100644",
-          "newBlob": "51f1b3687b4419064d652eacfc42d49ab4ba8bcc"
+          "newBlob": "b20ef34d19020243ca5fd56b855dbc14874f12c0"
         },
         {
           "path": ".agents/crossdeck-r8-historical-format.md",
@@ -57704,7 +57704,7 @@
           "oldMode": null,
           "oldBlob": null,
           "newMode": "100644",
-          "newBlob": "cb1b55f42144bc89d21b1cfe363ce1fdc055cf2b"
+          "newBlob": "f5b34f033bd7fccd6d9577804e1ffc278c8e1f0b"
         },
         {
           "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R9_Ordinary_Only_20261016.md",
@@ -57775,6 +57775,13 @@
           "oldBlob": "62a34a16c684a5323dfbb49a992c31e6483b5ced",
           "newMode": "100644",
           "newBlob": "292e606683417fa75ac72b729747d5eeb11b8a50"
+        },
+        {
+          "path": "scripts/generate-document-index.mjs",
+          "oldMode": "100644",
+          "oldBlob": "7693466313656128603a37cb26a3c496fd801daf",
+          "newMode": "100644",
+          "newBlob": "73a407e3d91253a8abc34f97541b44258476b161"
         },
         {
           "path": "scripts/sounding-line/experience-attestation.mjs",
@@ -57872,7 +57879,7 @@
           "oldMode": null,
           "oldBlob": null,
           "newMode": "100644",
-          "newBlob": "de6d7cc76b3909c9f30569001365279f9d5b1f90"
+          "newBlob": "aad8b3c58311051105789a98ceacb12bc756facf"
         },
         {
           "path": "scripts/sounding-line/experience-r8-format.mjs",

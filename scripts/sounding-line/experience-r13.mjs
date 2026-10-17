@@ -82,6 +82,7 @@ export const R13_OVERLAY_PATHS = [
   "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r9-ordinary-only-20261016/r8-custody-read-only.original.raw.txt",
   "Development_Docs/Testing/Product_Experience/README.md",
   "Development_Docs/document-index.json",
+  "scripts/generate-document-index.mjs",
   "scripts/sounding-line/experience-attestation.mjs",
   "scripts/sounding-line/experience-browser.mjs",
   "scripts/sounding-line/experience-checkout-probe.mjs",

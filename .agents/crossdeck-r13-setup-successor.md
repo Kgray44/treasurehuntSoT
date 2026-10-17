@@ -54,6 +54,11 @@ Check is read-only admission. Preflight is the bounded infrastructure procedure.
 Run requires current readiness before reserving the one-case stage. An older
 entry or direct suite invocation creates no authority.
 
+The full candidate inventory exceeded the documentation generator's former
+default Git output buffer during source-only composition. R13 pins the narrow
+64 MiB reader correction for its three complete Git reads. Preserve that failed
+composition; no file list or inventory is truncated to make validation pass.
+
 Only after independent source review, source-only policy proof and protected
 installation may the R13 original and corrected cases run. Each owns one exact
 crossdeck.surface-handoff execution, Chromium, one worker, zero retries and one
