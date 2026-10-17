@@ -569,6 +569,123 @@ test("D0 live setup opens empty before pointing and binds its first fresh source
   });
 });
 
+test("D0 display staleness between timely delayed captures preserves evidence while contrary frames pause it", async ({
+  page,
+}, testInfo) => {
+  test.setTimeout(90000);
+  await installFixture(page);
+  await page.goto("/devices/reach");
+  await configure(page, { replyDelayMs: 120 });
+  await page.getByRole("button", { name: "Enable live camera", exact: true }).click();
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () =>
+          (window as unknown as { reachIndexImageFixture: { frames: unknown[] } }).reachIndexImageFixture.frames.length,
+      ),
+    )
+    .toBeGreaterThanOrEqual(5);
+  await page.evaluate(() => {
+    const section = document.querySelector<HTMLElement>("section[data-image-state]")!;
+    const records: object[] = [];
+    const record = () => {
+      records.push({
+        at: performance.now(),
+        state: section.dataset.imageState,
+        reason: section.dataset.imageReason,
+        capture: Number(section.dataset.imageCaptureTime),
+        generation: section.dataset.imageTrackGeneration,
+        progress:
+          document.querySelector<HTMLProgressElement>('[aria-label="Current target acquisition"]')?.value ?? null,
+        gold: !!section.querySelector('svg[aria-label="Finger image position"]'),
+        target1: !!section.querySelector('[aria-label="Target 1 of 5"]'),
+      });
+      if (records.length > 600) records.shift();
+    };
+    const observer = new MutationObserver(record);
+    observer.observe(section, { attributes: true, subtree: true, childList: true });
+    Object.assign(window, { reachDisplayClockProbe: { records, observer } });
+    record();
+  });
+  await page.getByRole("button", { name: "Set up relative movement", exact: true }).click();
+  await expect(page.getByLabel("Target 2 of 5", { exact: true })).toBeVisible({ timeout: 20000 });
+  const beforeContrary = await page.evaluate(() => {
+    const probe = (
+      window as unknown as {
+        reachDisplayClockProbe: {
+          records: { state: string; capture: number; progress: number | null; gold: boolean; target1: boolean }[];
+          observer: MutationObserver;
+        };
+      }
+    ).reachDisplayClockProbe;
+    probe.observer.disconnect();
+    const fixture = (window as unknown as { reachIndexImageFixture: { frames: { capture: number; reply: number }[] } })
+      .reachIndexImageFixture;
+    return { records: probe.records, workerFrames: fixture.frames };
+  });
+  const collecting = beforeContrary.records.filter((row) => row.target1);
+  const stale = collecting.filter((row) => row.state === "STALE");
+  expect(stale.length).toBeGreaterThan(0);
+  expect(stale.every((row) => !row.gold)).toBe(true);
+  expect(stale.some((row) => Number(row.progress) > 0)).toBe(true);
+  const captures = [...new Set(collecting.filter((row) => row.state === "TRACKING").map((row) => row.capture))]
+    .filter((value) => value > 0)
+    .sort((a, b) => a - b);
+  expect(captures.length).toBeGreaterThanOrEqual(15);
+  const intervals = captures.slice(1).map((value, index) => value - captures[index]);
+  const ages = captures
+    .map((capture) => beforeContrary.workerFrames.find((frame) => frame.capture === capture))
+    .filter((frame) => frame !== undefined)
+    .map((frame) => frame.reply - frame.capture);
+  expect(ages.length).toBe(captures.length);
+  expect(ages.every((age) => age >= 119 && age <= 150)).toBe(true);
+  expect(Math.max(...intervals)).toBeLessThanOrEqual(250);
+  const generation = await root(page).getAttribute("data-image-track-generation");
+  await configure(page, { model: "OPEN" });
+  await page.waitForFunction(() =>
+    document
+      .querySelector<HTMLElement>("section[data-image-state]")
+      ?.dataset.imageReason?.startsWith("FULL_HAND_CONTRARY_"),
+  );
+  await page.waitForTimeout(800);
+  await expect(page.getByLabel("Target 2 of 5", { exact: true })).toBeVisible();
+  await expect(page.getByText(/1 of 5 targets saved/)).toBeVisible();
+  await expect(page.getByLabel("Current target acquisition", { exact: true })).toHaveAttribute("value", "0");
+  await expect(root(page)).not.toHaveAttribute("data-reach-readiness", "READY");
+  await expect(page.locator('svg[aria-label="Finger image position"]')).toHaveCount(0);
+  await configure(page, { model: "FULL" });
+  await expect
+    .poll(
+      async () => Number(await page.getByLabel("Current target acquisition", { exact: true }).getAttribute("value")),
+      { timeout: 12000 },
+    )
+    .toBeGreaterThan(0);
+  await page.getByRole("button", { name: "Pause calibration", exact: true }).click();
+  await expect(page.getByLabel("Target 2 of 5", { exact: true })).toBeVisible();
+  await expect(root(page)).toHaveAttribute("data-image-track-generation", generation!);
+  await expect(page.getByRole("alert", { name: "Setup ended", exact: true })).toHaveCount(0);
+  await page.screenshot({ path: testInfo.outputPath("D0-delayed-fresh-captures-saved-target.png"), fullPage: false });
+  await testInfo.attach("D0-index-image-display-clock-metrics.json", {
+    body: JSON.stringify(
+      {
+        evidence: "PUBLIC_ANALYTIC_CAMERA_FAKE_WORKER_WITH_INTENTIONAL_120MS_REPLY",
+        beforeContrary,
+        acceptedUiCaptureCount: captures.length,
+        maximumObservedCaptureIntervalMs: Math.max(...intervals),
+        acceptedReplyAgesMs: ages,
+        staleDisplayEvents: stale.length,
+        contraryPoseExplicitlyPaused: true,
+        sameImageGenerationAfterRecovery: generation,
+        physicalLatencyQualified: false,
+      },
+      null,
+      2,
+    ),
+    contentType: "application/json",
+  });
+  await page.getByRole("button", { name: "Stop camera & clear session", exact: true }).click();
+});
+
 test("D0 manual image-only hints support mirrored click and natural keyboard while ambiguous pixels abstain", async ({
   page,
 }, testInfo) => {

@@ -39,6 +39,7 @@ export class ReachBrowserRuntime {
   private imageContext: OffscreenCanvasRenderingContext2D | null = null;
   private preparedImage: { token: IndexImagePreparedToken; tracker: IndexImageTracker; hint: IndexHint | null } | null =
     null;
+  private pendingImageCapture: number | null = null;
   private videoFrameCallback: number | undefined;
   private indexEnabled = false;
   private pendingIndexHint: IndexHint | null = null;
@@ -86,6 +87,7 @@ export class ReachBrowserRuntime {
       this.imageCanvas = null;
       this.imageContext = null;
       this.preparedImage = null;
+      this.pendingImageCapture = null;
       this.pendingIndexHint = null;
     }
   }
@@ -241,6 +243,7 @@ export class ReachBrowserRuntime {
             imageCaptureCost = 0;
             let imageSize: { width: number; height: number } | null = null;
             if (this.indexObserve && this.indexEnabled) {
+              this.pendingImageCapture = capture;
               try {
                 const maximum = indexImageAlgorithmDescriptor.policy.maximumAnalysisDimension;
                 const ratio = Math.min(1, maximum / width, maximum / height);
@@ -372,14 +375,19 @@ export class ReachBrowserRuntime {
             this.status("STALE_OR_INVALID_OBSERVATION");
           }
           const prepared = this.preparedImage;
-          if (this.indexObserve && this.indexEnabled && this.imageTracker && imageGate && prepared) {
+          if (this.indexObserve && this.indexEnabled && this.pendingImageCapture !== null) {
+            let imageAccepted = false;
             try {
               const received = performance.now();
               // Never relabel a stale model image or an older in-flight image
               // as a fresh response to an explicit selection.
               if (
                 observation &&
+                this.imageTracker &&
+                imageGate &&
+                prepared &&
                 prepared.tracker === this.imageTracker &&
+                this.pendingImageCapture === data.capture &&
                 prepared.token.capture === data.capture &&
                 received - prepared.token.capture <= 150 &&
                 prepared.hint === this.pendingIndexHint
@@ -393,6 +401,7 @@ export class ReachBrowserRuntime {
                   { ...tracked, sequence: imageSequence++, monotonicInferenceTime: performance.now() },
                   performance.now(),
                 );
+                imageAccepted = true;
                 try {
                   this.indexObserve(accepted);
                 } catch {
@@ -400,10 +409,12 @@ export class ReachBrowserRuntime {
                 }
               }
             } catch {
-              // Image uncertainty is separate from worker/model lifecycle.
+              // A rejected capture pauses evidence without closing the model.
             }
-            prepared.tracker.discard(prepared.token);
+            if (!imageAccepted) this.status("STALE_OR_INVALID_OBSERVATION");
+            prepared?.tracker.discard(prepared.token);
             this.preparedImage = null;
+            this.pendingImageCapture = null;
           }
           const completed = performance.now();
           if (data.capture === lastCapture)
@@ -452,6 +463,7 @@ export class ReachBrowserRuntime {
     this.imageCanvas = null;
     this.imageContext = null;
     this.preparedImage = null;
+    this.pendingImageCapture = null;
     this.pendingIndexHint = null;
     this.pacer = null;
     this.video.pause();

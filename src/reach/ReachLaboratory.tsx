@@ -314,13 +314,16 @@ export function ReachLaboratory({
   const consumeControl = useRef<
     (features: number[], at: number, binding: CalibrationBinding, observation?: HandObservation) => void
   >(() => {});
-  const pauseControl = (now: number, guidance: string) => {
-    visual.current.raw = null;
-    visual.current.filtered = null;
-    retainPointer(now, guidance);
-    const t = trial.current;
-    if (t?.window && !t.paused) setAcquisition(t.window.pause(now));
-  };
+  const pauseControl = useCallback(
+    (now: number, guidance: string) => {
+      visual.current.raw = null;
+      visual.current.filtered = null;
+      retainPointer(now, guidance);
+      const t = trial.current;
+      if (t?.window && !t.paused) setAcquisition(t.window.pause(now));
+    },
+    [retainPointer],
+  );
   useEffect(() => {
     modeRef.current = pointingMode;
     consumeControl.current = (features, at, binding, observation) => {
@@ -575,6 +578,21 @@ export function ReachLaboratory({
               ? "Camera ready. Show a relaxed index point to start finger tracking."
               : previous,
           );
+        if (state === "STALE_OR_INVALID_OBSERVATION") {
+          const now = performance.now();
+          if (modeRef.current === "RELATIVE") {
+            indexReadiness.current.pause();
+            setIndexStale(true);
+          }
+          pauseControl(now, "Waiting for fresh tracking. Collection paused.");
+          readyRef.current = { ...readyRef.current, eligible: false };
+          setReadiness((previous) => ({
+            ...previous,
+            eligible: false,
+            condition: "RECOVERING",
+            guidance: "Waiting for fresh tracking. Hold here briefly.",
+          }));
+        }
         if (!["READY", "MODEL_STARTING", "REQUESTING", "STALE_OR_INVALID_OBSERVATION"].includes(state)) {
           lastObservation.current = null;
           setInferenceBackend(undefined);
@@ -647,17 +665,14 @@ export function ReachLaboratory({
       window.visualViewport?.removeEventListener("resize", changed);
       window.visualViewport?.removeEventListener("scroll", changed);
     };
-  }, [advance, changeSource, invalidate, trialEntryReady]);
+  }, [advance, changeSource, invalidate, pauseControl, trialEntryReady]);
   useEffect(() => {
     if (source === "OFF") return;
     const freshness = setInterval(() => {
       const o = modeRef.current === "RELATIVE" ? lastIndexObservation.current : lastObservation.current,
         now = performance.now();
       if (o && now - o.monotonicCaptureTime > 150) {
-        if (modeRef.current === "RELATIVE") {
-          indexReadiness.current.pause();
-          setIndexStale(true);
-        }
+        if (modeRef.current === "RELATIVE") setIndexStale(true);
         visual.current.raw = null;
         visual.current.filtered = null;
         retainPointer(now, "Waiting for fresh tracking. Collection paused.");
@@ -668,7 +683,9 @@ export function ReachLaboratory({
           condition: "RECOVERING",
           guidance: "Waiting for fresh tracking. Hold here briefly.",
         }));
-        if (trial.current?.window && !trial.current.paused) setAcquisition(trial.current.window.pause(now));
+        // Display/action freshness is measured now. Evidence continuity uses
+        // accepted capture clocks; only an actual rejected/ineligible capture
+        // pauses its window (and long capture gaps are handled by the window).
       }
       if (calibrationRef.current && now >= calibrationRef.current.expiresAt) {
         invalidate("Your session calibration expired. Set up again to continue.");

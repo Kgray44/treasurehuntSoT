@@ -4,6 +4,7 @@ import { ReachBrowserRuntime, type IndexImageObservation } from "./browser-runti
 import type { HandResult } from "@/watchglass/hand-provider";
 import { pointingPose } from "../../tests/e2e/fixtures/reach/pointing-poses";
 import { IndexImageTracker } from "./index-image-tracker";
+import { IndexImageObservationGate } from "./index-image-observation";
 
 type Bitmap = { rgba: Uint8ClampedArray; close: ReturnType<typeof vi.fn> };
 type FrameMessage = { type: "FRAME"; generation: number; capture: number; bitmap: Bitmap };
@@ -35,6 +36,7 @@ function setup(
     callbackCostMs?: number;
     frameCallbacks?: boolean;
     backend?: "CPU_WASM" | "GPU_WEBGL";
+    imageFailure?: "DRAW" | "READBACK";
   } = {},
 ) {
   vi.useFakeTimers();
@@ -59,10 +61,12 @@ function setup(
         contexts.push(state);
         return {
           drawImage(bitmap: Bitmap) {
+            if (options.imageFailure === "DRAW") throw new Error("DRAW_FAILED");
             state.bitmap = bitmap;
             drawn.push(bitmap);
           },
           getImageData() {
+            if (options.imageFailure === "READBACK") throw new Error("READBACK_FAILED");
             events.push("PIXEL_READBACK");
             now += options.imageCostMs ?? 0;
             return { data: state.bitmap!.rgba };
@@ -265,6 +269,44 @@ describe("runtime image source integration", () => {
     expect(s.observe).not.toHaveBeenCalled();
     expect(complete).not.toHaveBeenCalled();
     expect(s.image).not.toHaveBeenCalled();
+    expect(s.status).toHaveBeenLastCalledWith("STALE_OR_INVALID_OBSERVATION");
+  });
+  it.each(["DRAW", "READBACK", "PREPARE", "COMPLETE", "GATE"] as const)(
+    "signals an actual %s image rejection even when the paired hand result is valid",
+    async (failure) => {
+      if (failure === "PREPARE")
+        vi.spyOn(IndexImageTracker.prototype, "prepare").mockImplementationOnce(() => {
+          throw new Error("PREPARE_FAILED");
+        });
+      if (failure === "COMPLETE")
+        vi.spyOn(IndexImageTracker.prototype, "complete").mockImplementationOnce(() => {
+          throw new Error("COMPLETE_FAILED");
+        });
+      if (failure === "GATE")
+        vi.spyOn(IndexImageObservationGate.prototype, "accept").mockImplementationOnce(() => {
+          throw new Error("GATE_FAILED");
+        });
+      const s = setup({ imageFailure: failure === "DRAW" || failure === "READBACK" ? failure : undefined });
+      await s.start();
+      await s.advance(10);
+      s.result();
+      expect(s.observe).toHaveBeenCalledOnce();
+      expect(s.image).not.toHaveBeenCalled();
+      expect(s.status).toHaveBeenLastCalledWith("STALE_OR_INVALID_OBSERVATION");
+      expect(s.runtime.resources().workers).toBe(1);
+    },
+  );
+  it("keeps a fresh accepted image source valid when an optional consumer throws", async () => {
+    const s = setup();
+    await s.start();
+    s.image.mockImplementationOnce(() => {
+      throw new Error("CONSUMER_FAILED");
+    });
+    await s.advance(120);
+    s.result();
+    expect(s.image).toHaveBeenCalledOnce();
+    expect(s.image.mock.calls[0][0].monotonicCaptureTime).toBe(100);
+    expect(s.status).toHaveBeenLastCalledWith("READY");
   });
   it("wakes on a fresh presentation after a due capture found no frame, without another full interval", async () => {
     const s = setup({ frameCallbacks: true });
@@ -468,6 +510,7 @@ describe("runtime image source integration", () => {
     await s.advance(5);
     s.result();
     expect(s.image).not.toHaveBeenCalled();
+    expect(s.status).toHaveBeenLastCalledWith("STALE_OR_INVALID_OBSERVATION");
     s.freshFrame();
     await s.advance(7);
     expect(worker.frames).toHaveLength(2);
@@ -508,6 +551,7 @@ describe("runtime image source integration", () => {
     await s.advance(10);
     s.result(worker.frames[0].capture - 1);
     expect(s.image).not.toHaveBeenCalled();
+    expect(s.status).toHaveBeenLastCalledWith("STALE_OR_INVALID_OBSERVATION");
   });
 
   it("publishes fresh uncertainty with no held point when image evidence disappears", async () => {
@@ -530,6 +574,7 @@ describe("runtime image source integration", () => {
       matchedPoint?: { x: number; y: number } | null;
     };
     expect(uncertain.matchedPoint ?? null).toBeNull();
+    expect(s.status).toHaveBeenLastCalledWith("READY");
   });
 
   it("measures capture-to-completion and both main-thread phases without relabeling capture time", async () => {
@@ -668,6 +713,17 @@ describe("runtime image source integration", () => {
     expect(s.contexts).toHaveLength(0);
     expect(s.observe).toHaveBeenCalledOnce();
     expect(s.image).not.toHaveBeenCalled();
+    expect(s.status).toHaveBeenLastCalledWith("READY");
+  });
+  it("does not report a retired image attempt as a rejection in the new absolute mode", async () => {
+    const s = setup();
+    await s.start();
+    s.runtime.setIndexTrackingEnabled(false);
+    await s.advance(10);
+    s.result();
+    expect(s.observe).toHaveBeenCalledOnce();
+    expect(s.image).not.toHaveBeenCalled();
+    expect(s.status).toHaveBeenLastCalledWith("READY");
   });
 
   it("keeps the image envelope clock monotonic when relative image work is disabled and re-enabled", async () => {

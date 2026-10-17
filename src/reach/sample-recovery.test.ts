@@ -52,6 +52,40 @@ describe("source-bound calibration evidence recovery", () => {
     expect(window.push(features, 550, syntheticBinding)).toMatchObject({ state: "COLLECTING", samples: null });
     expect(() => window.push(features, 550, syntheticBinding)).toThrow("SAMPLE_INVALID_OR_REORDERED");
   });
+  it("collects bounded capture evidence from fresh 120ms-old deliveries spaced 200ms apart", () => {
+    const window = new SampleWindow(syntheticBinding, target);
+    let result;
+    for (let i = 0; i < 15; ++i) {
+      const capture = 100 + i * 200;
+      const received = capture + 120;
+      // Each source delivery is fresh. Its display can expire before the next
+      // delivery without creating an observed bad capture in this window.
+      expect(received - capture).toBeLessThanOrEqual(150);
+      expect(received + 50 - capture).toBeGreaterThan(150);
+      result = window.push(features, capture, syntheticBinding);
+    }
+    expect(result!.state).toBe("ACCEPTED");
+    expect(result!.samples).toHaveLength(15);
+    // Existing policy caps each200ms source interval to100ms of evidence.
+    expect(sampleEvidenceDuration(result!.samples!)).toBe(1400);
+    expect(result!.samples!.every((sample) => sample.continuitySegment === 0)).toBe(true);
+  });
+  it("does not credit intervals containing an actual rejected capture, even when the next delivery is fresh", () => {
+    const window = new SampleWindow(syntheticBinding, target);
+    let result = window.push(features, 100, syntheticBinding);
+    for (let i = 1; i < 15; ++i) {
+      const capture = 100 + i * 200;
+      window.pause(capture - 30);
+      result = window.push(features, capture, syntheticBinding);
+    }
+    expect(result).toMatchObject({ progress: 0, samples: null });
+    // Recovery adds only new, uninterrupted source intervals. Earlier saved
+    // samples and all explicit interruptions remain bounded and uncredited.
+    for (let i = 15; i <= 20; ++i) result = window.push(features, 100 + i * 200, syntheticBinding);
+    expect(result.state).toBe("ACCEPTED");
+    expect(sampleEvidenceDuration(result.samples!)).toBe(600);
+    expect(result.samples![14].continuitySegment).toBe(14);
+  });
   it("retains useful evidence through three bad frames and never includes their features or elapsed time", () => {
     const window = new SampleWindow(syntheticBinding, target);
     const before = seed(window);
