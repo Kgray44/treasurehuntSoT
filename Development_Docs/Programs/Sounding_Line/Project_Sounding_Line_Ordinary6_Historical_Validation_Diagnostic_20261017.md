@@ -344,3 +344,32 @@ all actual installation, landed, fresh prelaunch and dispatch facts remain pendi
 No future diagnostic outcome or Crossdeck acceptance is claimed.
 
 [Automation context](../../../.agents/crossdeck-ordinary6-historical-validation-diagnostic.md).
+
+# Actual closed successor and explicit R14 disposition
+
+Protected PR763 installed the reviewed contract successor at
+`ba27c3395da43c54c1f90d7f18e2ce07f7523fd4` with tree
+`dda5ad199694b2a19db4578f8d8ff6565a3d8cdc`. Installer39028496854 and Mainline
+117385910211 succeeded; independent actual-merge/landed authority receipt SHA256
+is`35d11e2114fd4c45b860b415eec135ea7544e11c17d9ed84c2591f900aab7bdb`.
+
+The sole successor39029933491/attempt1 completed successfully as a workflow.
+Its immutable reservation is`e0303182267eb7ac4a731a2e0bf1f5a97c545536`.
+Original evidence artifact12099674307 ZIP SHA256 is
+`d3d19e04db429c5f56fce604aeb1ded179016a0f3d93e8704a3f8874d0de3f88`;
+ciphertext SHA256 is`c98eb38fb6269781cb4e560d97f914a6833712bc85f86521dcf5bc982359cb6c`.
+Owner-key authentication verified12 members/5,161,409 raw bytes. Independent
+semantic/causal review SHA256
+`8224d07cf8a40cba490567f905ec2cb3edbd2034eea59949e57d88d7ca75ab05`
+establishes one historical validation PASS, then one source prefix/all nine
+milestones, no observed Git throw and closed/reaped worker streams. It remains
+NOT_REPRODUCED / DIAGNOSTIC_INCOMPLETE, with no original-cause or qualification
+claim. Original ordinary6 cause remains UNKNOWN.
+
+The delegated cloud owner explicitly replaces this diagnostic-plan causal process
+prerequisite under standing owner authorization and the latest parent direction
+through the separate[R14 disposition](Project_Sounding_Line_Crossdeck_R14_Instrumented_Qualification_20261017.md).
+Only its independently reviewed, normally protected finite installation may
+authorize the new complete qualification. This closed diagnostic grant remains
+spent; every old failure and mandatory product/browser/custody/seal/whole/
+Mainline/protected-merge/landed gate is preserved.

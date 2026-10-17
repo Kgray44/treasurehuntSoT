@@ -190,3 +190,22 @@ Mainline/protected-merge/landed gates. Keep #721 draft E/stored base B3, #722 dr
 `6a6fbd733514a58ad8ade4023ada81720dc461a2`, and dependent spatial integration held.
 
 [Engineering record](../Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Ordinary6_Historical_Validation_Diagnostic_20261017.md).
+
+# Closed investigation and explicit successor disposition
+
+The contract successor39029933491 completed its sole execution at protected main
+`ba27c3395da43c54c1f90d7f18e2ce07f7523fd4`. Independent provenance and owner-key
+authenticated semantic review establish one historical validation PASS, one
+source prefix/all nine milestones, no observed Git throw and closed/reaped
+streams. The result remains NOT_REPRODUCED / DIAGNOSTIC_INCOMPLETE. Original
+ordinary6 cause remains UNKNOWN; no consumer qualification follows from this run.
+
+The delegated cloud owner explicitly revises the diagnostic-plan causal process
+prerequisite under standing owner authorization and the parent's direction to
+evaluate one instrumented complete attempt without an established historical
+cause. The separate [R14 context](crossdeck-r14-instrumented-qualification.md)
+records that executive disposition. It takes effect only through R14's independent
+review, normal protected installation and landed authority verification. It
+reopens no spent slot and preserves every product/browser/seal/whole/Mainline/
+protected-merge/landed gate. This diagnostic authority remains spent and grants
+no automatic new diagnostic or ordinary.

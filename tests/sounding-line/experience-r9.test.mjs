@@ -434,7 +434,11 @@ test("R9 campaign sealing budget changes only the finite Mainline job deadline",
     cwd: repo,
     encoding: "utf8",
   });
-  const current = readFileSync(path.join(repo, file), "utf8");
+  // This historical deadline assertion uses the exact protected pre-R14 workflow.
+  const current = execFileSync("git", ["show", `ba27c3395da43c54c1f90d7f18e2ce07f7523fd4:${file}`], {
+    cwd: repo,
+    encoding: "utf8",
+  });
   assert.equal(
     current.replace(/(  mainline-decision:[\s\S]*?    timeout-minutes: )15/u, (_match, prefix) => prefix + "5"),
     previous,
