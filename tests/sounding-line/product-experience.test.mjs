@@ -19,6 +19,7 @@ import {
   verificationObligationGroups,
 } from "../../scripts/sounding-line/ordinary.mjs";
 import { validateExceptionSubmissionEvidence } from "../../scripts/sounding-line/experience-exception.mjs";
+import { verifyTrustedExperienceAttestation } from "../../scripts/sounding-line/experience-attestation.mjs";
 import {
   affectedConsumers,
   classifyExperience,
@@ -673,6 +674,274 @@ test("ordinary accepted reviews retain their existing one-through-three boundary
   const fixture = experienceFixture();
   fixture.evidence.reviews[0].iterations = 4;
   assert.throws(() => fixture.validate(), /PRODUCT_EXPERIENCE_REVIEW_UNRESOLVED/u);
+});
+
+const isolatedContinuationContexts = new WeakSet();
+function continuationFixture(
+  t,
+  {
+    candidateOnly = false,
+    changeRecord,
+    changePrevious,
+    changeCandidateHistory = false,
+    unrelatedCandidate = false,
+  } = {},
+) {
+  if (!isolatedContinuationContexts.has(t)) {
+    isolatedContinuationContexts.add(t);
+    const names = [
+      "GITHUB_ACTIONS",
+      "GITHUB_EVENT_PATH",
+      "GITHUB_EVENT_NAME",
+      "GITHUB_REPOSITORY",
+      "GITHUB_SHA",
+      "GITHUB_REF",
+      "SOUNDING_LINE_PR_NUMBER",
+    ];
+    const saved = Object.fromEntries(names.map((name) => [name, process.env[name]]));
+    for (const name of names) delete process.env[name];
+    t.after(() => {
+      for (const name of names) {
+        if (saved[name] === undefined) delete process.env[name];
+        else process.env[name] = saved[name];
+      }
+    });
+  }
+  const f = experienceFixture();
+  const root = mkdtempSync(path.join(tmpdir(), "experience-continuation-"));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  mkdirSync(path.join(root, "testing"));
+  mkdirSync(path.join(root, "src/lens"), { recursive: true });
+  mkdirSync(path.join(root, "Development_Docs/Engineering"), { recursive: true });
+  const registry = {
+    contracts: [f.contract],
+    experiencePolicy: {
+      version: 1,
+      evidencePath: "Development_Docs/Testing/Product_Experience/candidate-review.json",
+      attestationPolicy: { required: true, trustedReviewActors: ["Fixture"] },
+    },
+  };
+  const saveRegistry = () => writeFileSync(path.join(root, "testing/contracts.json"), JSON.stringify(registry));
+  saveRegistry();
+  writeFileSync(path.join(root, "src/lens/Lens.tsx"), "export const Lens = () => <main>Lens</main>;\n");
+  git(root, ["init", "--quiet"]);
+  git(root, ["config", "user.email", "fixture@example.invalid"]);
+  git(root, ["config", "user.name", "Fixture"]);
+  const commit = (message) => {
+    git(root, ["add", "."]);
+    git(root, ["commit", "--quiet", "-m", message]);
+    return git(root, ["rev-parse", "HEAD"]);
+  };
+  const ancestorCandidate = commit("prior blocked candidate");
+  const previous = {
+    status: "BLOCKED",
+    iterations: 3,
+    repairAction: "BLOCK_WITH_EVIDENCE",
+    contractId: f.contract.id,
+    candidateSha: ancestorCandidate,
+    baseSha: ancestorCandidate,
+    sourceDigest: "b".repeat(64),
+    contractDigest: experienceDigest([f.contract]),
+    findings: ["landmark", "heading"].map((id) => ({
+      id,
+      contractId: f.contract.id,
+      classification: "ACCESSIBILITY_DEFECT",
+      disposition: "UNRESOLVED",
+    })),
+  };
+  changePrevious?.(previous);
+  const historyPath = "Development_Docs/Engineering/blocked-review.json";
+  const historyBytes = Buffer.from(JSON.stringify(previous));
+  writeFileSync(path.join(root, historyPath), historyBytes);
+  const record = {
+    id: "fixture-review-4",
+    repository: "Kgray44/treasurehuntSoT",
+    prNumber: 766,
+    contractId: f.contract.id,
+    ancestorCandidate,
+    blockedReview: { path: historyPath, sha256: createHash("sha256").update(historyBytes).digest("hex") },
+  };
+  changeRecord?.(record);
+  if (!candidateOnly) registry.experiencePolicy.reviewContinuation = record;
+  saveRegistry();
+  const baseSha = commit("protected continuation authority");
+  if (unrelatedCandidate) git(root, ["checkout", "--quiet", "--orphan", "unrelated-candidate"]);
+  if (candidateOnly) registry.experiencePolicy.reviewContinuation = record;
+  saveRegistry();
+  if (changeCandidateHistory) writeFileSync(path.join(root, historyPath), "candidate rewrote historical review\n");
+  writeFileSync(path.join(root, "src/lens/Lens.tsx"), "export const Lens = () => <main>Repaired Lens</main>;\n");
+  const candidateSha = commit("current repaired candidate");
+  const plan = (options = {}) =>
+    planProductExperience({
+      root,
+      baseSha,
+      candidateSha,
+      prNumber: 766,
+      changedPaths: ["src/lens/Lens.tsx"],
+      ...options,
+    });
+  const install = (value = plan()) => {
+    Object.assign(f.plan, value);
+    for (const key of ["baseSha", "sourceDigest", "contractDigest"]) f.evidence[key] = f.plan[key];
+    const review = f.evidence.reviews[0];
+    review.packetDigest = experienceDigest({
+      sourceDigest: f.plan.sourceDigest,
+      contract: value.contracts[0],
+      artifacts: f.evidence.artifacts.map(({ id, sha256 }) => ({ id, sha256 })),
+    });
+    review.iterations = 4;
+    if (value.reviewContinuation) {
+      const c = value.reviewContinuation;
+      review.continuation = {
+        id: c.id,
+        policyDigest: c.policyDigest,
+        prNumber: c.prNumber,
+        previousReviewSha256: c.previousReviewSha256,
+        iterations: 4,
+        baseSha: value.baseSha,
+        sourceDigest: value.sourceDigest,
+      };
+      review.findings = c.previousFindings.map((finding) => ({
+        ...finding,
+        contractId: f.contract.id,
+        observation: "The prior semantic defect is evidenced in the preserved third review",
+        evidenceIds: ["MOBILE-READY"],
+        disposition: "RESOLVED",
+        repairEvidenceIds: ["MOBILE-READY"],
+        resolution: "Current rendered and keyboard evidence demonstrates the corrected semantics",
+      }));
+    }
+    return f;
+  };
+  return { ...f, root, planCurrent: plan, install, baseSha, candidateSha, record };
+}
+
+test("protected continuation permits only cumulative fourth review with retained resolved findings", (t) => {
+  const f = continuationFixture(t);
+  const current = f.install();
+  assert.equal(current.validate().status, "PASS");
+  const review = current.evidence.reviews[0];
+  for (const iterations of [1, 3, 5]) {
+    review.iterations = iterations;
+    assert.throws(() => current.validate(), /REVIEW_UNRESOLVED/u);
+  }
+  review.iterations = 4;
+  review.findings[0].disposition = "UNRESOLVED";
+  assert.equal(repairDisposition({ findings: review.findings, iterations: 4 }).action, "BLOCK_WITH_EVIDENCE");
+  assert.throws(() => current.validate(), /BLOCKING_FINDING/u);
+});
+
+test("candidate policy cannot grant a continuation and another PR retains the default cap", (t) => {
+  for (const options of [{ candidateOnly: true }, {}]) {
+    const f = continuationFixture(t, options);
+    const plan = f.planCurrent(options.candidateOnly ? {} : { prNumber: 767 });
+    assert.equal(plan.reviewContinuation, undefined);
+    assert.throws(() => f.install(plan).validate(), /REVIEW_UNRESOLVED/u);
+  }
+  const wrongContract = continuationFixture(t, {
+    changeRecord: (r) => {
+      r.contractId = "another-contract";
+    },
+  });
+  assert.equal(wrongContract.planCurrent().reviewContinuation, undefined);
+  assert.throws(() => wrongContract.install().validate(), /REVIEW_UNRESOLVED/u);
+});
+
+test("continuation requires exact protected historical bytes and matching prior contract", (t) => {
+  const wrongHash = continuationFixture(t, {
+    changeRecord: (r) => {
+      r.blockedReview.sha256 = "0".repeat(64);
+    },
+  });
+  assert.throws(() => wrongHash.planCurrent(), /REVIEW_CONTINUATION_HISTORY_MISMATCH/u);
+  const rewritten = continuationFixture(t, { changeCandidateHistory: true });
+  assert.throws(() => rewritten.planCurrent(), /REVIEW_CONTINUATION_HISTORY_MISMATCH/u);
+  const wrongContract = continuationFixture(t, {
+    changePrevious: (p) => {
+      p.contractId = "another-contract";
+    },
+  });
+  assert.throws(() => wrongContract.planCurrent(), /REVIEW_CONTINUATION_HISTORY_INVALID/u);
+  const unrelated = continuationFixture(t, { unrelatedCandidate: true });
+  assert.throws(
+    () => unrelated.planCurrent(),
+    (error) => error.status === 1 && error.message.includes("--is-ancestor"),
+  );
+});
+
+test("fourth review cannot drop or downgrade prior findings or borrow stale current binding", (t) => {
+  const f = continuationFixture(t);
+  for (const mutate of [
+    (r) => {
+      r.findings.pop();
+    },
+    (r) => {
+      r.findings[0].classification = "MINOR_POLISH";
+    },
+    (r) => {
+      r.findings.push({ ...r.findings[0], classification: "MINOR_POLISH" });
+    },
+    (r) => {
+      r.continuation.previousReviewSha256 = "0".repeat(64);
+    },
+    (r) => {
+      r.continuation.sourceDigest = "0".repeat(64);
+    },
+    (r) => {
+      r.continuation.baseSha = "0".repeat(40);
+    },
+    (r) => {
+      delete r.continuation;
+    },
+  ]) {
+    const current = f.install();
+    mutate(current.evidence.reviews[0]);
+    assert.throws(() => current.validate(), /REVIEW_CONTINUATION_BINDING_MISMATCH/u);
+  }
+  const current = f.install();
+  delete current.evidence.reviews[0].findings[0].repairEvidenceIds;
+  assert.throws(() => current.validate(), /REPAIR_EVIDENCE_MISSING/u);
+});
+
+test("continuation uses ambient preparation PR context and checks actual hosted source identities", (t) => {
+  const f = continuationFixture(t);
+  const eventPath = path.join(f.root, "hosted-event.json");
+  Object.assign(process.env, {
+    GITHUB_ACTIONS: "true",
+    GITHUB_EVENT_PATH: eventPath,
+    GITHUB_EVENT_NAME: "workflow_dispatch",
+    GITHUB_REPOSITORY: f.record.repository,
+    GITHUB_SHA: f.baseSha,
+    GITHUB_REF: "refs/heads/main",
+    SOUNDING_LINE_PR_NUMBER: "766",
+  });
+  const inputs = { pr_number: "766", base_sha: f.baseSha, candidate_sha: f.candidateSha };
+  writeFileSync(eventPath, JSON.stringify({ inputs }));
+  assert.equal(f.planCurrent({ prNumber: undefined }).reviewContinuation.prNumber, 766);
+  for (const change of [{ pr_number: "767" }, { base_sha: "0".repeat(40) }, { candidate_sha: "0".repeat(40) }]) {
+    writeFileSync(eventPath, JSON.stringify({ inputs: { ...inputs, ...change } }));
+    assert.throws(() => f.planCurrent(), /REVIEW_CONTINUATION_CONTEXT_MISMATCH/u);
+  }
+  process.env.GITHUB_EVENT_NAME = "pull_request_target";
+  const pull = {
+    number: 766,
+    base: { sha: f.baseSha, repo: { full_name: f.record.repository } },
+    head: { sha: f.candidateSha },
+  };
+  writeFileSync(eventPath, JSON.stringify({ pull_request: pull }));
+  assert.equal(f.planCurrent().reviewContinuation.prNumber, 766);
+  process.env.GITHUB_REPOSITORY = "another/repository";
+  assert.throws(() => f.planCurrent(), /REVIEW_CONTINUATION_CONTEXT_MISMATCH/u);
+});
+
+test("valid fourth content review still requires the unmodified real trusted-artifact loader", async (t) => {
+  const f = continuationFixture(t);
+  const current = f.install();
+  assert.equal(current.validate().status, "PASS");
+  await assert.rejects(
+    verifyTrustedExperienceAttestation({ root: f.root, plan: current.plan, evidence: current.evidence }),
+    /TRUSTED_ATTESTATION_REQUIRED/u,
+  );
 });
 
 test("new campaign or claimed owner metadata cannot rebase truthful aggregate eleven under current authority", () => {

@@ -1,0 +1,437 @@
+{
+  "schema": "reach.pr766.current-independent-rendered-review.v1",
+  "contractId": "reach.phase1.foundation",
+  "builderContext": "pr766-root-execution-owner",
+  "reviewerContext": "pr766-current-base-independent-rendered-review",
+  "participantContexts": [
+    "pr766-root-execution-owner",
+    "pr766-current-base-independent-rendered-review",
+    "pr766-current-trace-accessibility-timing-review"
+  ],
+  "independence": "SEPARATE_CONTEXT",
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "inspectionOrderDetail": "Current bounded packet/contracts first; all current screenshots and chronological recording samples next; exact candidate setup regression test source only afterward. Implementation source and builder rationale were not inspected.",
+  "packetDigest": "a4391b30012a35d53fbf9927b4991f9ecd43511fd37f20ba2a70be8937e0a5fe",
+  "sourceDigest": "e7d21a9e311a14ab3545f646d2e16fbd763ed3a8b752e745b600f491c04ece31",
+  "contractDigest": "3b96787fb1b9ef58b92717cf6559217899697fe876edddc7f3b0f7731eeab9d9",
+  "candidateSha": "c88fdfeb49c1ae593e19f4b3a714fd731f8d76ff",
+  "baseSha": "d6e9e57d65eac3efc72223725e8e6bc462b40ccd",
+  "iterations": 3,
+  "iterationsMeaning": "Current capture is third capture in the continuation. This reviewer did not inspect prior reports/media and makes no historical finding-resolution claim.",
+  "status": "BLOCKED",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "qualification": false,
+  "completionClaims": [],
+  "dimensions": {
+    "composition": {
+      "observation": "The desktop preparation view gives the registered hand stage most of the width and places guidance beside it within one instrument workspace. During calibration the target plane takes the large left region and the camera becomes a compact supporting preview. At 390px the camera leads preparation, then the target and its controls lead calibration; the shell remains recognizable.",
+      "evidenceIds": [
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRAINING-7",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-WELCOME-1",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-TRAINING-7"
+      ]
+    },
+    "hierarchy": {
+      "observation": "The four Prepare/Calibrate/Check/Explore stages establish the task order. Relative movement is labeled Recommended and absolute pointing Experimental. Nine completed training targets lead to Independent check required rather than a success claim; only the five new targets lead to Independent check passed and the playground action.",
+      "evidenceIds": [
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-FIT_READY-28",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RESULTS-40",
+        "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RELATIVE_RESULTS-27"
+      ]
+    },
+    "typography": {
+      "observation": "Large cream serif titles distinguish the current purpose from compact sans-serif instructions and buttons; small instrument labels use a distinct technical face. Original-size desktop and mobile captures keep the instructions and target counts readable without clipped labels. The long mobile status wraps within its panel.",
+      "evidenceIds": [
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRAINING-7",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-PAUSED-9",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-CAMERA_UNAVAILABLE-3"
+      ],
+      "inspectionLimit": "This is visual reading of the captured viewports, not a text-zoom or all-font-settings audit."
+    },
+    "spacing": {
+      "observation": "Desktop gutters separate target, camera and guidance without splitting the task into unrelated cards. Narrow calibration captures retain a square target followed by separated action rows; Pause/Resume, retry and cancellation controls do not overlap. Preparation actions and some session detail require vertical scrolling on mobile, consistent with the camera-first preparation composition.",
+      "evidenceIds": [
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRAINING-7",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-TRAINING-7",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-PAUSED-9",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-CAMERA_UNAVAILABLE-3"
+      ],
+      "inspectionLimit": "PNGs are viewport captures, not full-page captures; recording samples and traced control outcomes supplement off-screen content."
+    },
+    "controls": {
+      "observation": "Named conventional controls expose explicit setup, Pause/Resume, retry/cancel, independent check and practice actions. Actual current traces activate Begin nine-point calibration with Enter (desktop normal call@204), and show the expected Target 1 of 9 at call@208. Radio and tracking-condition choices have visible selection states; the demo condition selector stays distinct from the pointing surface.",
+      "evidenceIds": [
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-PAUSED-9",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-TRAINING-7",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55"
+      ],
+      "inspectionLimit": "Retry live camera, deletion and export are outside the selected three journeys and were not activated; physical touch input was not exercised."
+    },
+    "contrast": {
+      "observation": "Cream primary copy, brass action fills/focus outlines and mint hand/pointer marks remain distinguishable against the dark green panels in the original captures. Readiness and adverse conditions include explicit text, not color alone. Secondary grid lines and technical labels are quieter than the task instructions.",
+      "evidenceIds": [
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRAINING-7",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RESULTS-40"
+      ],
+      "inspectionLimit": "No numeric contrast certification is claimed. All 96 trace audits retain color-contrast incomplete checks; axeSerious=[] is not a complete contrast pass."
+    },
+    "consistency": {
+      "observation": "The cream serif headings, dark sea-green surfaces, restrained brass borders and visible account/navigation shell follow the two accepted Gateway visual references inspected from exact C88. Reach uses a task-focused instrument composition while retaining the recognizable header. Normal and reduced-motion captures retain the same hierarchy and available controls.",
+      "evidenceIds": [
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-WELCOME-1",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-TRAINING-7",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-TRAINING-7"
+      ]
+    },
+    "states": {
+      "observation": "All 15 declared states appear in each desktop/mobile and normal/reduced matrix, with 21 screenshots per device/motion pair across the three journeys. The current ordered trace reconciliation covers 392/392 selected steps (58 absolute, 32 relative and 8 fallback, each in four contexts), including pause/resume, 2 detected, detected-but-ineligible center guidance and return. There is no missing selected state or step.",
+      "evidenceIds": [
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-trace",
+        "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-trace",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-trace",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-MULTIPLE_HANDS-49",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55"
+      ],
+      "inspectionLimit": "This does not expand the selected journeys into successful real-camera, export/deletion or every diagnostic-control coverage."
+    },
+    "responsive": {
+      "observation": "At 1440x900 the target and guidance can coexist side by side. At 390x844 preparation gives the camera priority and calibration promotes a nearly full-width target, progress message and ordinary action rows. Both motion preferences preserve that structure. The selected narrow flows complete and return without recorded horizontal overflow.",
+      "evidenceIds": [
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRAINING-7",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-WELCOME-1",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-TRAINING-7",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-VALIDATION-30"
+      ],
+      "inspectionLimit": "Only the captured 1440x900 and 390x844 viewports are reviewed; no landscape, device-hardware or physical-touch claim is made."
+    },
+    "keyboard": {
+      "observation": "All 12 traces contain conventional keyboard traversal and Enter activation of the selected named controls: 188 targeted Enter activations, 512 Tabs, plus the specified radio/combobox keys. Begin setup itself is an Enter activation, not a pointer click. Selected absolute, relative and fallback journeys complete with no recorded action errors.",
+      "evidenceIds": [
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-trace",
+        "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-trace",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-trace"
+      ],
+      "inspectionLimit": "Locator.press may itself focus its target. Tab sequences and selected visible rings support keyboard operability, but do not independently prove every intermediate tab stop or every control outside the selected journeys."
+    },
+    "focus": {
+      "observation": "The welcome heading, calibration target region, Resume calibration button and tracking-condition combobox show a clear brass/cream outline at captured focus points. The pause-to-resume change remains visible, and the selected keyboard journeys finish. The recordings show a stable target workspace rather than a hidden modal trap.",
+      "evidenceIds": [
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRAINING-7",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-PAUSED-9",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-trace"
+      ],
+      "inspectionLimit": "Trace evaluation return values do not reconstruct full focus history. Forward-only traversal takes 20 desktop/16 mobile Tabs after resume and practice-target creation before the next demo move; this is a traversal burden observation, not proof of lost focus. Screen-reader landmark/heading risks are recorded as findings."
+    },
+    "feedback": {
+      "observation": "The visible status separates a detected hand, framing and point recognition. In the adverse view, 1 detected and Point recognized coexist with Framing needs attention and Move your hand slightly toward the center, avoiding the misleading detection-equals-eligibility claim. Saved-target counts, collection progress and paused guidance explain current work. Training completion explicitly requests a fresh independent check.",
+      "evidenceIds": [
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-FIT_READY-28",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-PAUSED-9"
+      ],
+      "inspectionLimit": "The additional C88 current-readiness/polite-guidance/no-queue semantics have six passing D0 ReactDOM regressions, separate from native browser evidence; captured setup activation occurs after demo readiness."
+    },
+    "motion": {
+      "observation": "Chronological decoded frames from all 12 current recordings show target progression, hold progress, pause/resume, independent check, practice and return in both motion preferences. The trace audit matches 172 action-to-rendered-outcome confirmations; all are below 5000ms, with a maximum 1831.360ms in absolute desktop reduced motion (call@1885 to call@1889). Marked demo-readiness metadata is approximately 831–863ms and is not presented as the whole-flow maximum.",
+      "evidenceIds": [
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-recording",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-recording",
+        "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-recording",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-trace"
+      ],
+      "inspectionLimit": "Recordings were inspected through approximately one-frame-per-second chronological samples, supplemented by original PNGs and trace timing. This does not certify frame-level smoothness, camera exposure, inference latency or physical pointing accuracy."
+    },
+    "continuity": {
+      "observation": "The natural Device connections link opens the workspace, and the visible return restores /devices/pair in all selected runs. The Voyagewright home link remains / before, during and after outcomes, with the account/header shell retained. Actual context responses remain anonymous and the application route sequence is /devices/pair to /devices/reach to /devices/pair.",
+      "evidenceIds": [
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-trace",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-57",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-57"
+      ],
+      "inspectionLimit": "Anonymous local-origin continuity is established. Signed-in progression and release of a successfully acquired physical camera are not exercised; no ownership transfer or such cleanup proof is inferred."
+    },
+    "complexity": {
+      "observation": "One current task dominates: prepare a hand, collect targets, independently check, then practice. Recommended relative movement and Experimental absolute pointing are clearly described alternatives. Diagnostics/privacy stay collapsed in the captured core states, while guided-demo controls are disclosed separately and say that the walkthrough cannot prove physical accuracy.",
+      "evidenceIds": [
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRAINING-7",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-PLAYGROUND-42",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55"
+      ]
+    },
+    "role-outcomes": {
+      "observation": "The anonymous persona completes all three selected journeys across both devices and motion modes. Absolute setup is followed by five new independent targets; relative setup checks cursor control and labels its result accordingly. Result screens disclose Demo results only and do not establish webcam accuracy, and playground text says pointing does not activate Voyagewright objects.",
+      "evidenceIds": [
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+        "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-trace",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RESULTS-40",
+        "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RELATIVE_RESULTS-27",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-PLAYGROUND-42"
+      ],
+      "inspectionLimit": "No authenticated Creator/Player progression, real-person webcam accuracy, Phase 2/3 manipulation, Crossdeck handoff or owner acceptance is established."
+    },
+    "fallbacks": {
+      "observation": "Camera failure remains in the same workspace with The camera could not start, explicit Retry live camera and Explore guided demo controls. The selected fallback trace then enters the disclosed simulated experience and returns conventionally. Mobile and desktop captures retain readable fallback controls rather than a blank permission failure.",
+      "evidenceIds": [
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-CAMERA_UNAVAILABLE-3",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-CAMERA_UNAVAILABLE-3",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-TRACKING-5",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-trace"
+      ],
+      "inspectionLimit": "The selected recovery chooses guided demo; it does not activate retry or demonstrate successful camera acquisition. No screen-reader end-to-end run is claimed."
+    }
+  },
+  "findings": [
+    {
+      "id": "REACH-C3-A11Y-LANDMARK",
+      "classification": "ACCESSIBILITY_DEFECT",
+      "contractId": "reach.phase1.foundation",
+      "disposition": "UNRESOLVED",
+      "observation": "The current raw axe result reports moderate landmark-complementary-is-top-level on aside[aria-label=\"Reach guidance\"] at /devices/reach (absolute desktop normal trace call@96). The complementary guidance landmark is nested inside another landmark. This is a current semantic defect and may weaken screen-reader landmark navigation.",
+      "evidenceIds": ["reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-trace"],
+      "severityRationale": "The raw trace confirms a complementary guidance landmark nested contrary to the required landmark structure on the Reach destination. Correct semantic landmarks are an explicit mandatory requirement, so moderate axe impact and successful visual/keyboard completion do not make this cosmetic. No protected rendered-confirmed scoped debt exemption is present in the current plan. Baseline status and actual assistive-technology task impact were not established; neither uncertainty waives the confirmed semantic violation.",
+      "suggestedRepair": "Use an appropriate non-landmark guidance container or place the complementary landmark at the correct landmark level while preserving its accessible name and content.",
+      "severity": "Moderate automated impact; blocking mandatory semantic accessibility violation.",
+      "governingRequirement": {
+        "path": "Development_Docs/Governance/Voyagewright_Global_Product_Governance_Standard.md",
+        "revision": "d6e9e57d65eac3efc72223725e8e6bc462b40ccd",
+        "section": "15.3 Accessibility",
+        "requirement": "Every destination and journey must remain usable by keyboard and screen reader; semantic headings and landmarks are required."
+      },
+      "resolutionRequired": "Remain unresolved in this bounded review. Root must report the blocker; this review does not authorize fixes, another capture, publication, authentication or integration."
+    },
+    {
+      "id": "REACH-C3-RETURN-HEADING",
+      "classification": "ACCESSIBILITY_DEFECT",
+      "contractId": "reach.phase1.foundation",
+      "disposition": "UNRESOLVED",
+      "observation": "The current raw axe result reports moderate page-has-heading-one on the returned /devices/pair document (absolute desktop normal trace call@1194). The anonymous returned page lacks an H1, which can weaken page-orientation and heading navigation for screen-reader users.",
+      "evidenceIds": [
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-57",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-57"
+      ],
+      "severityRationale": "The raw trace confirms no level-one heading on the selected return destination. Semantic headings are an explicit mandatory requirement, so visible return success and lack of an observed screen-reader obstruction cannot make this cosmetic. No protected rendered-confirmed scoped debt exemption is present in the current plan. The current destination fails the required heading structure even though the selected conventional return step completes.",
+      "suggestedRepair": "Give the returned device-connections page an appropriate level-one heading without changing its existing destinations.",
+      "severity": "Moderate automated impact; blocking mandatory semantic accessibility violation.",
+      "governingRequirement": {
+        "path": "Development_Docs/Governance/Voyagewright_Global_Product_Governance_Standard.md",
+        "revision": "d6e9e57d65eac3efc72223725e8e6bc462b40ccd",
+        "section": "15.3 Accessibility",
+        "requirement": "Every destination and journey must remain usable by keyboard and screen reader; semantic headings and landmarks are required."
+      },
+      "resolutionRequired": "Remain unresolved in this bounded review. Root must report the blocker; this review does not authorize fixes, another capture, publication, authentication or integration."
+    }
+  ],
+  "blockingFindingIds": ["REACH-C3-A11Y-LANDMARK", "REACH-C3-RETURN-HEADING"],
+  "repairAction": "BLOCK_WITH_EVIDENCE",
+  "reviewBoundary": {
+    "selectedJourneys": [
+      {
+        "id": "absolute-calibration-and-recovery",
+        "stepsPerContext": 58,
+        "contexts": 4,
+        "coveredSteps": 232
+      },
+      {
+        "id": "relative-movement-and-check",
+        "stepsPerContext": 32,
+        "contexts": 4,
+        "coveredSteps": 128
+      },
+      {
+        "id": "camera-unavailability-and-conventional-recovery",
+        "stepsPerContext": 8,
+        "contexts": 4,
+        "coveredSteps": 32
+      }
+    ],
+    "stepCoverage": {
+      "required": 392,
+      "covered": 392,
+      "missing": [],
+      "inputSemantics": "Contract click actions are exercised by Enter activation of the same named controls; no physical pointer-click/touch claim."
+    },
+    "requiredStates": [
+      "WELCOME",
+      "TRACKING",
+      "TRAINING",
+      "PAUSED",
+      "FIT_READY",
+      "VALIDATION",
+      "RESULTS",
+      "PLAYGROUND",
+      "MULTIPLE_HANDS",
+      "DETECTED_INELIGIBLE",
+      "RELATIVE_TRAINING",
+      "RELATIVE_VALIDATION",
+      "RELATIVE_RESULTS",
+      "CAMERA_UNAVAILABLE",
+      "RETURNED"
+    ],
+    "stateCoverage": "All 15 required states appear in each of the four device/motion matrices; 84 screenshots across 12 contexts.",
+    "captureCounts": {
+      "contexts": 12,
+      "screenshots": 84,
+      "recordings": 12,
+      "traces": 12,
+      "allReferencedMediaSha256Verified": 108
+    },
+    "viewports": [
+      {
+        "device": "DESKTOP",
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "device": "MOBILE",
+        "width": 390,
+        "height": 844
+      }
+    ],
+    "recordingInspection": "Decoded chronological approximately 1fps frame samples from every current recording, original-size selected PNGs, context contact sheets and actual trace actions/outcomes. No continuous-playback or frame-by-frame smoothness claim.",
+    "timing": {
+      "budgetMs": 5000,
+      "matchedTransitions": 172,
+      "maxObservedConfirmationMs": 1831.36,
+      "maximumEvidenceId": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+      "maximumActionCall": "call@1885",
+      "maximumOutcomeCall": "call@1889",
+      "meaning": "Observed input-to-visible assertion confirmation, not exposure, inference or physical accuracy."
+    },
+    "accessibility": "All 12 selected journeys have native keyboard evidence, but mandatory semantic accessibility defects block acceptance. Current raw moderate landmark/heading violations are classified ACCESSIBILITY_DEFECT. Unresolved/incomplete contrast, video-caption and aria-prohibited-attr checks are not passes; no blanket WCAG or screen-reader acceptance is claimed.",
+    "supplementalCandidateContract": {
+      "path": "testing/contracts.json",
+      "revision": "c88fdfeb49c1ae593e19f4b3a714fd731f8d76ff",
+      "field": "reach.phase1.foundation.experience.accessibility",
+      "obligation": "The setup request remains operable by keyboard and touch; activation checks current readiness, either opens setup under the existing guards or keeps preparation visible with polite live guidance, and never queues an automatic start.",
+      "bindingExplanation": "The protected baseline scalar accessibility text is retained in the immutable merged packet. The candidate append is reviewed as a supplemental source-bound obligation; the packet and digest are unchanged.",
+      "evidenceAssessment": "Actual browser traces show Enter activation of Begin setup after demo readiness. Six exact-candidate D0 ReactDOM tests pass for native HTMLElement.click delivery at observation ages 200/300ms, rejection at 301ms, no-hand/posture/two-hand current guidance and explicit second activation after recovery. Those tests support guard semantics without claiming native timed-staleness or physical-touch trials."
+    },
+    "broaderUnexercisedControls": [
+      "Retry live camera activation",
+      "deletion",
+      "export",
+      "successful live camera acquisition/resource release",
+      "physical touch input",
+      "native browser precisely timed readiness/identity/no-queue fault trials"
+    ],
+    "notEstablished": [
+      "Real-person camera accuracy or field ergonomics",
+      "authenticated Creator/Player progression",
+      "every intermediate focus stop or screen-reader navigation",
+      "all viewport sizes or device hardware",
+      "Phase 2 target activation, Phase 3 manipulation or Crossdeck Air Handoff",
+      "owner PRODUCT_ACCEPTED",
+      "ordinary Sounding Line qualification, integration or landed-tree verification"
+    ],
+    "remainingIntegrationRequirement": "Rendered acceptance is blocked. Root must preserve and report these findings within the existing iteration/no-progress stop. Unchanged current browser/default technical verification and ordinary protected qualification remain mandatory for any later authorized successor; this report is not whole functional qualification.",
+    "repairIterationBoundary": "Two confirmed blocking findings remain at iteration 3. BLOCK_WITH_EVIDENCE applies. No further repair/capture loop, authenticated acceptance, PR Ready transition or integration is authorized by this review.",
+    "observedScope": "The current source-bound D0 experience for all three selected anonymous contract journeys, both declared devices and normal/reduced motion. No required selected step or state is missing. Journey completion does not discharge the confirmed semantic accessibility obligations."
+  },
+  "acceptedReferences": [
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+      "readRevision": "c88fdfeb49c1ae593e19f4b3a714fd731f8d76ff",
+      "sha256": "4c1c6c44de8007dec2a05fda240249f4e87b56b7b6f7fe2335323f2e7f5cc024",
+      "declaredSourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+      "declaredSourceByteVerification": "NOT_ESTABLISHED_PATH_NOT_PRESENT",
+      "comparisonAuthority": "Both declared reference paths were checked read-only at the declared source SHA; neither path is present there. Accepted reference bytes were inspected from exact C88 as authorized; no byte-equality claim at the declared capture-source SHA."
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+      "readRevision": "c88fdfeb49c1ae593e19f4b3a714fd731f8d76ff",
+      "sha256": "661f40c43a7dc7a3f55376675a282e1c10a6562b284235f2be93fb733a0e7477",
+      "declaredSourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+      "declaredSourceByteVerification": "NOT_ESTABLISHED_PATH_NOT_PRESENT",
+      "comparisonAuthority": "Both declared reference paths were checked read-only at the declared source SHA; neither path is present there. Accepted reference bytes were inspected from exact C88 as authorized; no byte-equality claim at the declared capture-source SHA."
+    }
+  ],
+  "supportingTechnicalEvidence": {
+    "testPath": "src/reach/ReachLaboratory.setup.test.tsx",
+    "candidateSha": "c88fdfeb49c1ae593e19f4b3a714fd731f8d76ff",
+    "testFileSHA256": "16695df0337f47bf2e5d59ba42a69db641f123fced09117e34fa1a1376259427",
+    "componentSHA256": "41fbff6995a428e8c4b5dd7db40710c3820b66477f2dc426bd61dfd6a0149ecb",
+    "result": "6/6 PASS; exit 0",
+    "receiptSHA256": "c4c42d2a4dfe68bca8eafbefb13a788d93985f489f45543147ebbd08611648c2",
+    "methodLimit": "D0 ReactDOM/jsdom with fake timers/performance and layout/media stubs; implementation source not inspected; not a native-browser fault trial."
+  },
+  "decision": "All selected journey steps and required states are evidenced, but confirmed mandatory semantic accessibility defects prevent rendered acceptance. Iteration 3 requires stopping with evidence rather than another repair/capture loop.",
+  "accessibilityAuditSummary": {
+    "auditCount": 96,
+    "currentViolations": [
+      {
+        "rule": "landmark-complementary-is-top-level",
+        "impact": "moderate",
+        "auditOccurrences": 72
+      },
+      {
+        "rule": "page-has-heading-one",
+        "impact": "moderate",
+        "auditOccurrences": 24
+      }
+    ],
+    "incompleteChecks": [
+      {
+        "rule": "color-contrast",
+        "reportedImpact": "serious",
+        "auditOccurrences": 96,
+        "meaning": "Unresolved automated check; neither a confirmed violation nor a pass."
+      },
+      {
+        "rule": "video-caption",
+        "reportedImpact": "critical",
+        "auditOccurrences": 72,
+        "meaning": "Unresolved automated check; neither a confirmed violation nor a pass."
+      },
+      {
+        "rule": "aria-prohibited-attr",
+        "reportedImpact": "serious",
+        "auditOccurrences": 44,
+        "meaning": "Unresolved automated check; neither a confirmed violation nor a pass."
+      }
+    ],
+    "evidenceIds": [
+      "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+      "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-trace"
+    ],
+    "risk": "Heading and landmark defects can impair screen-reader orientation/navigation. Incomplete contrast checks require additional evaluation; the current axeSerious empty lists omit moderate violations and do not establish full accessibility.",
+    "filterImplementation": "Not inspected; actual capture/raw trace data demonstrates omission of moderate results without proving the exact filtering implementation."
+  },
+  "governingAuthorities": [
+    {
+      "path": "Development_Docs/Governance/Voyagewright_Global_Product_Governance_Standard.md",
+      "revision": "d6e9e57d65eac3efc72223725e8e6bc462b40ccd",
+      "sections": ["14.1 Visual Quality Is a Completion Gate", "15.3 Accessibility"],
+      "effect": "Visual design and accessibility are both mandatory; semantic headings and landmarks are required."
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/README.md",
+      "revision": "d6e9e57d65eac3efc72223725e8e6bc462b40ccd",
+      "sections": ["Capture, critique, repair and submission", "Debt and acceptance"],
+      "effect": "Use executable severity classes; confirmed blocking defects require repair/recapture/re-review within the three-iteration/no-progress bound. No qualifying baseline debt was established here."
+    },
+    {
+      "path": "scripts/sounding-line/product-experience.mjs",
+      "revision": "d6e9e57d65eac3efc72223725e8e6bc462b40ccd",
+      "symbols": ["FINDING_CLASSES", "repairDisposition"],
+      "effect": "ACCESSIBILITY_DEFECT is a blocking class; only MINOR_POLISH, SUBJECTIVE_DESIGN_OPPORTUNITY and ACCEPTED_REFERENCE_QUALITY are nonblocking. At iteration 3 unresolved blockers require BLOCK_WITH_EVIDENCE."
+    }
+  ]
+}

@@ -61,6 +61,16 @@ domain owners retain their canonical data and progression authority.
    `VERIFY_FINAL_EVIDENCE`, or `BLOCK_WITH_EVIDENCE`. Stop repeated repair at
    three iterations or no material progress and report the unresolved finding.
    Do not hide controls, downgrade contracts or suppress evidence to pass.
+   A later owner-directed continuation may be installed through a separate
+   reviewed, protected source amendment. The protected-base
+   `experiencePolicy.reviewContinuation` record authorizes only the named PR
+   and contract's next cumulative review, iteration four, retaining the exact
+   blocked third review and its finding IDs. Candidate declarations cannot
+   grant this authority. Both previous findings must be resolved with current
+   repair evidence; any unresolved fourth review stops with evidence, and a
+   fifth review remains unauthorized. This is not a new round or a runtime
+   exception. Fresh source-bound capture, independent review, authenticated
+   submission, replay and ordinary protected verification remain required.
 7. Assemble source-bound capture/review evidence at
    `Development_Docs/Testing/Product_Experience/candidate-review.json`.
    Commit the actual referenced artifacts. Record substantive dimensions,
