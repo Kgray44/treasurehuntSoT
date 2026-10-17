@@ -97,7 +97,9 @@ export function ReachPoseRecorder() {
       }
     }
   };
-  stopRef.current = stopRecording;
+  useEffect(() => {
+    stopRef.current = stopRecording;
+  });
   useEffect(() => {
     mounted.current = true;
     const r = new ReachBrowserRuntime(
@@ -375,6 +377,7 @@ export function ReachPoseRecorder() {
     }
   };
   const busy = ["RECORDING", "PAUSED", "FINISHING"].includes(phase);
+  const reviewing = phase === "REVIEW";
   const stepIndex = poseRecordingSteps.findIndex((step) => step.id === view.step.id);
   const promptTarget = "target" in view.step ? view.step.target : { x: 0.5, y: 0.5 };
   return (
@@ -389,7 +392,8 @@ export function ReachPoseRecorder() {
       </header>
       <div className={styles.layout}>
         <section>
-          <div ref={stage} className={styles.stage} style={{ aspectRatio: frameAspect }}>
+          {/* The runtime retains this capture element; hide it during review without unmounting it. */}
+          <div ref={stage} className={styles.stage} style={{ aspectRatio: frameAspect }} hidden={reviewing}>
             <div className={styles.mirrored}>
               <video
                 ref={video}
@@ -403,10 +407,7 @@ export function ReachPoseRecorder() {
               <ReachStage frame={frame} timings={timings} kind="CAMERA" />
             </div>
           </div>
-          <p className={styles.cameraStatus}>
-            Camera: {status.replaceAll("_", " ").toLowerCase()} · mirrored preview · no microphone
-          </p>
-          {download?.video && (
+          {reviewing && download?.video && (
             <video
               className={styles.review}
               src={download.video}
@@ -415,12 +416,21 @@ export function ReachPoseRecorder() {
               aria-label="Review local diagnostic recording"
             />
           )}
+          <p className={styles.cameraStatus}>
+            {reviewing
+              ? download?.video
+                ? "Saved diagnostic recording · camera and hand overlay · no microphone"
+                : "Diagnostic video is unavailable. The partial trace remains available in the review controls."
+              : `Camera: ${status.replaceAll("_", " ").toLowerCase()} · mirrored preview · no microphone`}
+          </p>
         </section>
         <section className={styles.controls}>
           <p className={styles.eyebrow}>
-            {phase === "RECORDING" || phase === "PAUSED"
-              ? `Step ${stepIndex + 1} of ${poseRecordingSteps.length}`
-              : "Guided recording"}
+            {reviewing
+              ? "Saved recording"
+              : phase === "RECORDING" || phase === "PAUSED"
+                ? `Step ${stepIndex + 1} of ${poseRecordingSteps.length}`
+                : "Guided recording"}
           </p>
           <h2>
             {phase === "REVIEW"
@@ -429,55 +439,6 @@ export function ReachPoseRecorder() {
                 ? "Finishing the video…"
                 : view.step.prompt}
           </h2>
-          <p aria-live="polite">
-            {phase === "PAUSED"
-              ? "Paused. The guide, video and trace are paused together."
-              : phase === "RECORDING"
-                ? `${Math.floor(view.elapsedMs / 1000)} of ${poseRecordingDurationMs / 1000} seconds · ${view.frames} raw results recorded`
-                : "No setup is fitted or validated here. Missing hands, clipped wrists and uncertain frames are retained."}
-          </p>
-          <progress aria-label="Guided recording progress" max={poseRecordingDurationMs} value={view.elapsedMs} />
-          <div
-            className={styles.guidePlane}
-            role="img"
-            aria-label={`Prompt position: ${view.step.id.replaceAll("_", " ").toLowerCase()}; no calibration fit`}
-          >
-            <span
-              className={styles.targetDot}
-              style={{ left: `${promptTarget.x * 100}%`, top: `${promptTarget.y * 100}%` }}
-            />
-          </div>
-          <p className={styles.cameraStatus}>Prompt position only · no fit or pointing eligibility gate</p>
-          {error && (
-            <p className={styles.error} role="alert">
-              {error}
-            </p>
-          )}
-          <div className={styles.actions}>
-            {!busy && status !== "READY" && (
-              <button
-                onClick={() => {
-                  setError("");
-                  void runtime.current?.start(true, true);
-                }}
-              >
-                Enable camera preview
-              </button>
-            )}
-            {phase === "IDLE" && (
-              <button disabled={status !== "READY"} onClick={start}>
-                Start guided video + trace recording
-              </button>
-            )}
-            {(phase === "RECORDING" || phase === "PAUSED") && (
-              <>
-                <button onClick={pause}>{phase === "PAUSED" ? "Resume recording" : "Pause recording"}</button>
-                <button onClick={() => stopRecording()}>Stop & review</button>
-                <button onClick={() => stopRecording("CANCELLED", true)}>Cancel & delete recording</button>
-              </>
-            )}
-            {!busy && status !== "DISABLED" && <button onClick={() => runtime.current?.stop()}>Stop camera</button>}
-          </div>
           {download && (
             <div className={styles.downloads}>
               <p>
@@ -495,6 +456,61 @@ export function ReachPoseRecorder() {
                 </a>
                 <button onClick={clearRecording}>Delete recording from this page</button>
               </div>
+            </div>
+          )}
+          {!reviewing && (
+            <>
+              <p aria-live="polite">
+                {phase === "PAUSED"
+                  ? "Paused. The guide, video and trace are paused together."
+                  : phase === "RECORDING"
+                    ? `${Math.floor(view.elapsedMs / 1000)} of ${poseRecordingDurationMs / 1000} seconds · ${view.frames} raw results recorded`
+                    : "No setup is fitted or validated here. Missing hands, clipped wrists and uncertain frames are retained."}
+              </p>
+              <progress aria-label="Guided recording progress" max={poseRecordingDurationMs} value={view.elapsedMs} />
+              <div
+                className={styles.guidePlane}
+                role="img"
+                aria-label={`Prompt position: ${view.step.id.replaceAll("_", " ").toLowerCase()}; no calibration fit`}
+              >
+                <span
+                  className={styles.targetDot}
+                  style={{ left: `${promptTarget.x * 100}%`, top: `${promptTarget.y * 100}%` }}
+                />
+              </div>
+              <p className={styles.cameraStatus}>Prompt position only · no fit or pointing eligibility gate</p>
+            </>
+          )}
+          {error && (
+            <p className={styles.error} role="alert">
+              {error}
+            </p>
+          )}
+          {!reviewing && (
+            <div className={styles.actions}>
+              {!busy && status !== "READY" && (
+                <button
+                  onClick={() => {
+                    setError("");
+                    void runtime.current?.start(true, true);
+                  }}
+                >
+                  Enable camera preview
+                </button>
+              )}
+              {phase === "IDLE" && (
+                <button disabled={status !== "READY"} onClick={start}>
+                  Start guided video + trace recording
+                </button>
+              )}
+              {(phase === "RECORDING" || phase === "PAUSED") && (
+                <>
+                  <button onClick={pause}>{phase === "PAUSED" ? "Resume recording" : "Pause recording"}</button>
+                  <button onClick={() => stopRecording()}>Stop & review</button>
+                  <button onClick={() => stopRecording("CANCELLED", true)}>Cancel & delete recording</button>
+                </>
+              )}
+              {!busy && status !== "DISABLED" && <button onClick={() => runtime.current?.stop()}>Stop camera</button>}
             </div>
           )}
           <aside className={styles.privacy}>

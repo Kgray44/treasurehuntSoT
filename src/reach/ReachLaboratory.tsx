@@ -826,7 +826,7 @@ export function ReachLaboratory({
             </strong>
             <span>
               {readiness.hand
-                ? `${readiness.hand.handedness === "UNKNOWN" ? "Active" : readiness.hand.handedness === "LEFT" ? "Left" : "Right"} hand · ${assessment?.partialFraming ? "partial hand · wrist optional" : assessment?.landmarkQuality === "TRACKED" ? "joints tracked" : "some joints hidden"}`
+                ? `${readiness.hand.handedness === "UNKNOWN" ? "Active" : readiness.hand.handedness === "LEFT" ? "Left" : "Right"} hand · ${assessment?.offImageFingerSupport ? "partial hand · some fingers inferred" : assessment?.partialFraming ? "partial hand · wrist optional" : assessment?.landmarkQuality === "TRACKED" ? "joints tracked" : "some joints hidden"}`
                 : "Keep your palm and index finger in view"}
             </span>
           </div>
@@ -1011,9 +1011,11 @@ export function ReachLaboratory({
               <span>
                 {readiness.detectedCount} detected ·{" "}
                 {assessment?.framed
-                  ? assessment.partialFraming
-                    ? "Enough fingers visible"
-                    : "Hand framed"
+                  ? assessment.offImageFingerSupport
+                    ? "Index and knuckles visible"
+                    : assessment.partialFraming
+                      ? "Required joints visible"
+                      : "Hand framed"
                   : "Framing needs attention"}{" "}
                 · {assessment?.pointing ? "Point recognized" : "Point not yet recognized"} ·{" "}
                 {readiness.eligible ? "Eligible for collection" : "Collection waiting"}
@@ -1022,6 +1024,18 @@ export function ReachLaboratory({
             {source === "LIVE" && assessment?.depthDominant && (
               <span>
                 Index aimed toward the camera. Depth is inferred; the independent check still measures accuracy.
+              </span>
+            )}
+            {source === "LIVE" && assessment?.offImageFingerSupport && (
+              <span>
+                Some cropped fingers are estimated by the model. Your index and knuckles must remain visible; pointing
+                is still checked against the other fingers.
+              </span>
+            )}
+            {source === "LIVE" && assessment?.indexTracked && !readiness.eligible && (
+              <span>
+                Index joints are still tracked in the camera view. Pointing is tentative; collection is paused until
+                enough anatomy is available.
               </span>
             )}
           </div>

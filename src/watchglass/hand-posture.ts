@@ -16,6 +16,17 @@ export function assessHand(hand: Hand, frame?: GeometryFrame) {
       return p.x > 0.015 && p.x < 0.985 && p.y > 0.015 && p.y < 0.985;
     });
   const shape = handGeometry(hand, frame);
+  const observedIndex = shape.finger(5);
+  // Visible joint tracking is weaker than pointing intent. This remains useful
+  // for camera feedback when palm evidence cannot support a calibration sample.
+  const indexTracked =
+    [5, 6, 7, 8].every((i) => points[i]?.valid) &&
+    observedIndex !== null &&
+    observedIndex.lengths.every((length) => length > 1e-5) &&
+    observedIndex.lengths[1] >= observedIndex.lengths[0] * 0.22 &&
+    observedIndex.lengths[1] <= observedIndex.lengths[0] * 1.4 &&
+    observedIndex.lengths[2] >= observedIndex.lengths[0] * 0.18 &&
+    observedIndex.lengths[2] <= observedIndex.lengths[0] * 1.2;
   // A narrow projected palm is usable if its inferred depth and visible wrist
   // still form a coherent palm. Depth alone cannot rescue a tiny/collapsed hand.
   const geometry =
@@ -31,8 +42,10 @@ export function assessHand(hand: Hand, frame?: GeometryFrame) {
   let posture: "POINT" | "OPEN" | "BENT" | "UNKNOWN" = "UNKNOWN";
   let depthDominant = false;
   let partialFingerSupport = false;
+  let offImageFingerSupport = false;
+  let insufficientFingerEvidence = false;
   if (geometry) {
-    const index = shape.finger(5)!;
+    const index = observedIndex!;
     // A knuckle arch supplies a plane, not a reliable wrist-to-finger direction.
     // With no wrist, evaluate pointing against observed finger relationships.
     const anatomyForward = shape.palmBasis === "WRIST" ? shape.forward : index.proximal;
@@ -54,7 +67,9 @@ export function assessHand(hand: Hand, frame?: GeometryFrame) {
     const marginal =
       anatomical && index.straightness >= 0.7 && index.pipAlignment >= -0.1 && index.dipAlignment >= -0.1;
     const others = [9, 13, 17]
-      .map(shape.finger)
+      // Only non-index relationships may use the bounded auxiliary estimate.
+      // All calibration features and framing still require observed index/core.
+      .map((base) => shape.finger(base, true))
       .filter(
         (finger) =>
           finger !== null &&
@@ -63,10 +78,12 @@ export function assessHand(hand: Hand, frame?: GeometryFrame) {
           finger.lengths.every((length) => length >= shape.scale * 0.04),
       )
       .filter((finger) => finger !== null);
+    offImageFingerSupport = others.some((finger) => finger.inferredOffImage);
     // A clipped non-index tip is positive relaxed-finger evidence only if the
     // remaining observed PIP visibly bends. Straight cropped fingers remain
     // unknown, so cropping an open palm cannot manufacture pointing intent.
     const partialRelaxed = [9, 13, 17].filter((base) => {
+      if (others.some((finger) => finger.base === base)) return false;
       if (points[base + 3].valid || [base, base + 1, base + 2].some((index) => !points[index].valid)) return false;
       const proximal = subtract(shape.points[base + 1], shape.points[base]);
       const middle = subtract(shape.points[base + 2], shape.points[base + 1]);
@@ -109,6 +126,7 @@ export function assessHand(hand: Hand, frame?: GeometryFrame) {
         cosine(finger.axis, index.axis) >= 0.35,
     );
     const distinct = others.length + partialRelaxed >= 2 && open < 2 && similar < 2 && !pinched && !competing;
+    insufficientFingerEvidence = extended && others.length + partialRelaxed < 2;
     pointing = extended && distinct;
     pointingEvidence = pointing ? "DISTINCT" : marginal && distinct ? "MARGINAL" : "NONE";
     posture = pointing ? "POINT" : open >= 2 || similar >= 2 ? "OPEN" : anatomical ? "BENT" : "UNKNOWN";
@@ -119,11 +137,14 @@ export function assessHand(hand: Hand, frame?: GeometryFrame) {
     ? ("WRIST_UNAVAILABLE" as const)
     : wristAtEdge
       ? ("WRIST_AT_EDGE" as const)
-      : partialFingerSupport
-        ? ("FOLDED_FINGERS_PARTIAL" as const)
-        : null;
+      : offImageFingerSupport
+        ? ("NON_INDEX_INFERRED_OFF_IMAGE" as const)
+        : partialFingerSupport
+          ? ("FOLDED_FINGERS_PARTIAL" as const)
+          : null;
   return {
     detected: validCount > 0,
+    indexTracked,
     validCount,
     requiredValid,
     framed,
@@ -135,6 +156,8 @@ export function assessHand(hand: Hand, frame?: GeometryFrame) {
     pointingEvidence,
     posture,
     depthDominant,
+    offImageFingerSupport,
+    insufficientFingerEvidence,
     palmFacing: geometry ? shape.palmFacing : null,
     depthEvidence: "MONOCULAR_INFERRED" as const,
     landmarkQuality: validCount >= 16 ? ("TRACKED" as const) : ("PARTIAL" as const),

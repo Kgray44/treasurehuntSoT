@@ -22,6 +22,7 @@ type Track = {
   at: number;
   scale: number | null;
   recent: PalmCapture[];
+  established: boolean;
 };
 type ObservedHand = HandObservation["hands"][number];
 const palmIndices = [0, 5, 9, 17] as const;
@@ -169,6 +170,21 @@ export class BrowserHandAdapter {
         const valid = !!p && [p.x, p.y, p.z].every(Number.isFinite) && p.x >= 0 && p.x <= 1 && p.y >= 0 && p.y <= 1;
         return { x: valid ? p.x : 0, y: valid ? p.y : 0, z: valid ? p.z : 0, valid };
       });
+      // Keep bounded raw inference for secondary-finger posture assessment only.
+      // It never makes an out-of-image point observed, or rescues index/core
+      // geometry used by tracking, calibration, and pointing features.
+      const offImageFingerLandmarks = [10, 11, 12, 13, 14, 15, 16, 18, 19, 20].flatMap((index) => {
+        const point = points[index];
+        return point &&
+          [point.x, point.y, point.z].every(Number.isFinite) &&
+          point.x >= -0.15 &&
+          point.x <= 1.15 &&
+          point.y >= -0.15 &&
+          point.y <= 1.15 &&
+          (point.x < 0 || point.x > 1 || point.y < 0 || point.y > 1)
+          ? [{ index, x: point.x, y: point.y, z: point.z }]
+          : [];
+      });
       const category = result.handedness[i]?.[0];
       return {
         trackId: "pending",
@@ -184,6 +200,7 @@ export class BrowserHandAdapter {
           Number.isFinite(category?.score) && category.score >= 0 && category.score <= 1 ? category.score : null,
         coordinateFrame: "CAMERA_IMAGE_NORMALIZED" as const,
         landmarks,
+        ...(offImageFingerLandmarks.length ? { offImageFingerLandmarks } : {}),
         presenceScore: null,
         trackingScore: null,
         occluded: false,
@@ -225,8 +242,8 @@ export class BrowserHandAdapter {
         : null,
     );
     // Keep the last observed location briefly through an occlusion. The record's
-    // timestamp is not refreshed until a hand passes the existing spatial match;
-    // ambiguity, a jump, or expiry still produces a fresh local generation.
+    // timestamp is not refreshed until a hand passes the existing spatial match.
+    // Ambiguous output is never evidence that a retained record was observed.
     const costs = centers.map((center, i) =>
       eligibleTracks.map((t) =>
         center
@@ -290,16 +307,14 @@ export class BrowserHandAdapter {
     });
     const collision = assignments.length === 2 && assignments[0] >= 0 && assignments[0] === assignments[1];
     const associationAmbiguous = !!crossing || collision || assignments.includes(-2);
+    const establishedMatched = assignments.some(
+      (assignment) => !associationAmbiguous && assignment >= 0 && eligibleTracks[assignment].established,
+    );
     const next: Track[] = [];
     hands.forEach((hand, i) => {
       // A partial palm cannot establish a new usable track. Preserve prior
       // records without refreshing them so the original palm may recover.
-      const ambiguous =
-        !!crossing ||
-        collision ||
-        assignments[i] === -2 ||
-        centers[i] === null ||
-        (!reliablePalm[i] && assignments[i] < 0);
+      const ambiguous = associationAmbiguous || centers[i] === null || (!reliablePalm[i] && assignments[i] < 0);
       const prior = !ambiguous && assignments[i] >= 0 ? eligibleTracks[assignments[i]] : null;
       const id = prior?.id ?? ++this.generation;
       hand.trackId = `local-${id}`;
@@ -317,6 +332,10 @@ export class BrowserHandAdapter {
           palm: reliablePalm[i] ? palms[i] : prior!.palm,
           at: capture,
           scale: reliablePalm[i] ? (scales[i] ?? prior?.scale ?? null) : prior!.scale,
+          // A second hypothesis beside an existing hand must be observed again
+          // unambiguously before it can survive absence and compete later.
+          // This is temporal association evidence, never model confidence.
+          established: prior ? prior.established || reliablePalm[i] : !establishedMatched,
           recent: reliablePalm[i]
             ? [
                 ...(prior?.recent.filter((sample) => capture - sample.at <= motionContinuity.maximumGapMs) ?? []),
@@ -325,16 +344,17 @@ export class BrowserHandAdapter {
             : [],
         });
     });
-    // A different visible hand does not prove that an occluded hand vanished.
-    // Actual crossing/assignment ambiguity still retires unmatched records.
-    this.tracks = associationAmbiguous
-      ? next
-      : [
-          ...next,
-          ...eligibleTracks
-            .filter((track) => !next.some((matched) => matched.id === track.id))
-            .map((track) => ({ ...track, recent: [] })),
-        ];
+    // A temporary extra hypothesis cannot erase a lone established history.
+    // Retain its last reliable location/time, never the ambiguous hypotheses;
+    // reacquisition still needs the ordinary spatial gate within the same grace.
+    // Crossing or a tie between two established histories remains irreversible.
+    const retainEstablished = !associationAmbiguous || eligibleTracks.filter((track) => track.established).length === 1;
+    this.tracks = [
+      ...next,
+      ...eligibleTracks
+        .filter((track) => retainEstablished && track.established && !next.some((matched) => matched.id === track.id))
+        .map((track) => ({ ...track, recent: [] })),
+    ];
     const rawTracked = hands.some((h) => assessHand(h, { frameWidth: width, frameHeight: height }).validCount >= 16);
     return {
       observationVersion: 1,

@@ -22,6 +22,30 @@ export function handGeometry(hand: Hand, frame?: GeometryFrame) {
   const aspect = frame ? frame.frameHeight / frame.frameWidth : 1;
   if (!Number.isFinite(aspect) || aspect <= 0) throw new Error("HAND_GEOMETRY_FRAME_INVALID");
   const points = hand.landmarks.map((p) => ({ ...p, y: p.y * aspect }));
+  const auxiliary = hand.offImageFingerLandmarks ?? [];
+  // Invalid auxiliary data cannot supply evidence even to direct callers that
+  // have not passed through the observation schema. Existing observed points
+  // always take precedence, and an estimate never repairs a required landmark.
+  const auxiliaryValid =
+    auxiliary.length <= 12 &&
+    new Set(auxiliary.map((point) => point.index)).size === auxiliary.length &&
+    auxiliary.every(
+      (point) =>
+        Number.isInteger(point.index) &&
+        point.index >= 10 &&
+        point.index <= 20 &&
+        point.index !== 17 &&
+        !points[point.index].valid &&
+        [point.x, point.y, point.z].every(Number.isFinite) &&
+        point.x >= -0.15 &&
+        point.x <= 1.15 &&
+        point.y >= -0.15 &&
+        point.y <= 1.15 &&
+        (point.x < 0 || point.x > 1 || point.y < 0 || point.y > 1),
+    );
+  const inferred = new Map(
+    auxiliaryValid ? auxiliary.map((point) => [point.index, { ...point, y: point.y * aspect }]) : [],
+  );
   const across = subtract(points[17], points[5]);
   const scale = vectorLength(across);
   const middle = subtract(points[9], points[5]);
@@ -65,10 +89,13 @@ export function handGeometry(hand: Hand, frame?: GeometryFrame) {
     palmBasis === "WRIST" || palmBasis === "KNUCKLE_ARCH"
       ? Math.abs(normal.z) / Math.max(1e-9, vectorLength(normal))
       : null;
-  function finger(base: number) {
+  function finger(base: number, allowOffImage = false) {
     const ids = [base, base + 1, base + 2, base + 3];
-    if (ids.some((i) => !points[i]?.valid)) return null;
-    const [a, b, c, d] = ids.map((i) => points[i]);
+    const joints = ids.map((i) =>
+      points[i]?.valid ? points[i] : allowOffImage && base >= 9 ? inferred.get(i) : undefined,
+    );
+    if (joints.some((point) => point === undefined)) return null;
+    const [a, b, c, d] = joints as Vector3[];
     const proximal = subtract(b, a);
     const middle = subtract(c, b);
     const distal = subtract(d, c);
@@ -77,6 +104,8 @@ export function handGeometry(hand: Hand, frame?: GeometryFrame) {
     const chain = lengths.reduce((sum, length) => sum + length, 0);
     const reach = vectorLength(axis);
     return {
+      base,
+      inferredOffImage: ids.some((i) => !points[i]?.valid),
       axis,
       proximal,
       chain,

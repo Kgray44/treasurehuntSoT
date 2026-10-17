@@ -174,6 +174,18 @@ test("D0 controlled poses recover in the actual laboratory without losing comple
       i >= 6 && i <= 8 ? { ...points[5], z: points[5].z - [0.035, 0.06, 0.08][i - 6] } : point,
     ),
     BOTTOM: pointingPose().map((point) => ({ ...point, y: point.y + 0.38 })),
+    CROPPED: pointingPose({ indexBends: [0, 5, 10], depthAngle: 90 }).map((point) => ({
+      ...point,
+      y: point.y + 0.47,
+    })),
+    CROPPED_OPEN: pointingPose({ indexBends: [0, 5, 10], otherBends: [0, 5, 10], depthAngle: 90 }).map((point) => ({
+      ...point,
+      y: point.y + 0.47,
+    })),
+    CROPPED_UNKNOWN: pointingPose({ indexBends: [0, 5, 10], depthAngle: 90 }).map((point, index) => ({
+      ...point,
+      y: [10, 11, 12, 14, 15, 16, 18, 19, 20].includes(index) ? 1.3 : point.y + 0.47,
+    })),
     OPEN: pointingPose({ otherBends: [0, 35, 65] }),
     CURL: pointingPose({ indexBends: [0, 100, 150] }),
   };
@@ -272,15 +284,29 @@ test("D0 controlled poses recover in the actual laboratory without losing comple
   await expect(status).toContainText("Index aimed toward the camera");
   await page.screenshot({ path: testInfo.outputPath("D0-direct-camera-point.png"), fullPage: true });
   await replay({ pose: "BOTTOM" });
-  await expect(status).toContainText("Enough fingers visible");
+  await expect(status).toContainText("Required joints visible");
   await expect(status).toContainText("Eligible for collection");
   await page.screenshot({ path: testInfo.outputPath("D0-bottom-wrist-outside.png"), fullPage: true });
+  await replay({ pose: "CROPPED" });
+  await expect(status).toContainText("Some cropped fingers are estimated by the model");
+  await expect(status).toContainText("Index and knuckles visible");
+  await expect(status).toContainText("Eligible for collection");
+  await page.screenshot({ path: testInfo.outputPath("D0-cropped-finger-inference.png"), fullPage: true });
+  await replay({ pose: "CROPPED_OPEN" });
+  await expect(status).toContainText("Collection waiting");
+  await expect(page.getByRole("button", { name: "Set up relative movement" })).toBeDisabled();
+  await page.screenshot({ path: testInfo.outputPath("D0-cropped-open-hand-rejected.png"), fullPage: true });
+  await replay({ pose: "CROPPED_UNKNOWN" });
+  await expect(status).toContainText("Index detected. Show a little more of the other fingers");
+  await expect(status).toContainText("Index joints are still tracked in the camera view");
+  await expect(status).toContainText("Collection waiting");
+  await page.screenshot({ path: testInfo.outputPath("D0-index-tracked-intent-uncertain.png"), fullPage: true });
   await replay({ pose: "DEPTH" });
   await expect(status).toContainText("Index aimed toward the camera");
   await expect(status).toContainText("Eligible for collection");
   await page.screenshot({ path: testInfo.outputPath("D0-foreshortened-point.png"), fullPage: true });
   await replay({ pose: "SWEEP", sweepIndex: 0 });
-  await expect(status).toContainText("Enough fingers visible");
+  await expect(status).toContainText("Required joints visible");
   await expect(status).toContainText("Eligible for collection");
   // A continuous noisy bottom/end-on -> top/side-on -> bottom sweep runs
   // against the real worker lifecycle, adapter, selector and readiness UI.

@@ -192,7 +192,14 @@ export class ActiveHandSelector {
       // same fresh local track keeps its established readiness. Repeated good
       // frames must not be starved by an isolated imperfect frame.
       if (!this.establishedReady || this.interrupted || at - this.softPauseAt >= 180) this.requireRecovery();
-      return result(condition, hand);
+      const paused = result(condition, hand);
+      if (condition === "POSTURE" && quality.insufficientFingerEvidence)
+        paused.guidance = "Index detected. Show a little more of the other fingers so pointing can be confirmed.";
+      else if (condition === "POSTURE" && quality.offImageFingerSupport && quality.indexTracked)
+        paused.guidance = "Index detected. Cropped-finger estimates are uncertain; show a little more of the hand.";
+      else if (condition === "FRAMING" && quality.indexTracked && !quality.requiredValid)
+        paused.guidance = "Index detected. Bring the knuckles into view so the pointing position can be measured.";
+      return paused;
     }
     if (this.softPauseAt !== null && at - this.softPauseAt >= 180) this.requireRecovery();
     this.softPauseAt = null;

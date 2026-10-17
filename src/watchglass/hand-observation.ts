@@ -6,6 +6,20 @@ const landmark = z.strictObject({
   z: z.number().finite(),
   valid: z.boolean(),
 });
+/** Auxiliary monocular estimates beyond the image, never observed landmarks. */
+const offImageFingerLandmark = z
+  .strictObject({
+    index: z
+      .number()
+      .int()
+      .min(10)
+      .max(20)
+      .refine((index) => index !== 17),
+    x: z.number().finite().min(-0.15).max(1.15),
+    y: z.number().finite().min(-0.15).max(1.15),
+    z: z.number().finite(),
+  })
+  .refine((point) => point.x < 0 || point.x > 1 || point.y < 0 || point.y > 1);
 export const handObservationSchema = z.strictObject({
   observationVersion: z.literal(1),
   providerId: z.string().min(1),
@@ -27,20 +41,30 @@ export const handObservationSchema = z.strictObject({
   evidenceTier: z.enum(["UNQUALIFIED", "D0", "D1", "D4", "D5"]),
   hands: z
     .array(
-      z.strictObject({
-        trackId: z.string().min(1),
-        trackGeneration: z.number().int().positive(),
-        continuity: z.enum(["ACQUIRED", "CONTINUOUS", "AMBIGUOUS"]).optional(),
-        handedness: z.enum(["LEFT", "RIGHT", "UNKNOWN"]),
-        handednessConfidence: score,
-        coordinateFrame: z.literal("CAMERA_IMAGE_NORMALIZED"),
-        landmarks: z.array(landmark).length(21),
-        presenceScore: score,
-        trackingScore: score,
-        occluded: z.boolean(),
-        pose: z.enum(["POINT_CANDIDATE", "UNKNOWN"]),
-        uncertainty: z.number().finite().nonnegative().nullable(),
-      }),
+      z
+        .strictObject({
+          trackId: z.string().min(1),
+          trackGeneration: z.number().int().positive(),
+          continuity: z.enum(["ACQUIRED", "CONTINUOUS", "AMBIGUOUS"]).optional(),
+          handedness: z.enum(["LEFT", "RIGHT", "UNKNOWN"]),
+          handednessConfidence: score,
+          coordinateFrame: z.literal("CAMERA_IMAGE_NORMALIZED"),
+          landmarks: z.array(landmark).length(21),
+          offImageFingerLandmarks: z
+            .array(offImageFingerLandmark)
+            .max(12)
+            .refine((points) => new Set(points.map((point) => point.index)).size === points.length)
+            .optional(),
+          presenceScore: score,
+          trackingScore: score,
+          occluded: z.boolean(),
+          pose: z.enum(["POINT_CANDIDATE", "UNKNOWN"]),
+          uncertainty: z.number().finite().nonnegative().nullable(),
+        })
+        .refine(
+          (hand) =>
+            hand.offImageFingerLandmarks?.every((point) => hand.landmarks[point.index]?.valid === false) ?? true,
+        ),
     )
     .max(2),
   quality: z.enum(["USABLE", "LOW", "UNKNOWN"]),
