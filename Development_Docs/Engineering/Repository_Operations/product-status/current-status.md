@@ -3,10 +3,12 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-15
 ---
 
 # Current status
+
+SC-00B is an owned Spatial Studio Inspector refit candidate, not protected-main capability. The [property matrix](../../../Projects/Project_Parallax/SC00B_Property_Capability_Matrix.md) tracks preservation, explicit unavailable/preview selection states, live slider previews with one history commit, and pending SC-01/SC-02 model reconciliation. Combined-source proof and owner review are still required.
 
 Parallax A1 is software-qualified on main through protected PR #710 at `ee8caa83`, after ordinary Sounding Line PASS and 118 landed smoke checks. Spatial Studio provides reviewed natural-language proposals, actual canvas preview, atomic saved Apply and ordinary history with adaptive ownership preserved. Admiralty supplies durable AI accounting and global policy; per-user controls use the existing People dossier. Five production-browser journeys pass, and six authorized live calls returned validated structured responses with settled usage. Catalog FT-B112 records availability with assistance disabled by default. The owner accepted the later revised presentation; finite model testing and physical quality retain their stated limits; see the [implementation record](../../../Projects/Project_Parallax/Parallax_A1_Implementation_and_Qualification.md).
 

@@ -81,7 +81,7 @@ test("Remote Creator stages, publishes and reopens an adaptive multi-object Chro
     await expect(page.getByRole("heading", { name: "Desk Map", level: 1 })).toBeVisible();
     await expect(page.getByLabel("Authoring mode")).toHaveValue("GUIDED");
     await mkdir("artifacts/parallax-phase3/browser", { recursive: true });
-    await page.getByText("Spatial Placement & grouping", { exact: true }).click();
+    await page.getByRole("button", { name: "Open spatial context" }).click();
     await page.getByRole("button", { name: "Author remotely", exact: true }).click();
     await page
       .getByLabel("Semantic placement goal")
@@ -96,14 +96,18 @@ test("Remote Creator stages, publishes and reopens an adaptive multi-object Chro
       .getByRole("region", { name: "Scene graph" })
       .getByRole("button", { name: "◇ Desk Map copy", exact: true })
       .click();
+    await page.getByRole("button", { name: "Open object properties" }).click();
     await page.getByLabel("Object name", { exact: true }).fill("Captain's journal");
+    await page.getByRole("button", { name: "Open spatial context" }).click();
     await page.getByLabel("Semantic surface").selectOption("DESK");
     await page.getByRole("button", { name: "Duplicate", exact: true }).click();
     await page
       .getByRole("region", { name: "Scene graph" })
       .getByRole("button", { name: "◇ Captain's journal copy", exact: true })
       .click();
+    await page.getByRole("button", { name: "Open object properties" }).click();
     await page.getByLabel("Object name", { exact: true }).fill("Hidden writing");
+    await page.getByRole("button", { name: "Open spatial context" }).click();
     await page.getByLabel("Semantic surface").selectOption("WALL");
     await page.getByLabel("Nearby context").selectOption("ANY");
     for (const mode of ["GUIDED", "DETAILED", "ENGINEERING"]) {
@@ -111,7 +115,7 @@ test("Remote Creator stages, publishes and reopens an adaptive multi-object Chro
       await page.screenshot({ path: `artifacts/parallax-phase3/browser/studio-desktop-${mode}.png`, fullPage: true });
     }
     await page.getByLabel("Authoring mode").selectOption("GUIDED");
-    await page.getByText("Spatial Placement & grouping", { exact: true }).click();
+    await page.getByRole("button", { name: "Open spatial context" }).click();
     await page.getByLabel("Environment", { exact: true }).selectOption("living-room");
     await expect(page.getByRole("region", { name: "Spatial canvas" })).toContainText("Living room");
     await page.screenshot({ path: "artifacts/parallax-phase3/browser/living-room.png", fullPage: true });
@@ -129,9 +133,11 @@ test("Remote Creator stages, publishes and reopens an adaptive multi-object Chro
     await page.getByLabel("Maximum unguided seconds").fill("3");
     await page.getByText("Calibration and field quality", { exact: true }).click();
     await page.getByLabel("Offer optional metadata field observations").check();
-    await page.getByText("Library, reuse & publication", { exact: true }).click();
+    await page.getByRole("button", { name: "Open scene settings" }).click();
     await page.getByLabel("Experience title").fill("Captain's reusable map");
+    await page.getByRole("button", { name: "Open object properties" }).click();
     await page.getByLabel("Clue or message").fill("The northern harbor is your next bearing.");
+    await page.getByRole("button", { name: "Open scene settings" }).click();
     await page.getByRole("button", { name: "Save to Spatial Library", exact: true }).click();
     await page.getByRole("button", { name: "Save draft", exact: true }).click();
     await expect(page.getByRole("status")).toHaveText("Working draft saved");
@@ -206,8 +212,7 @@ test("Remote Creator stages, publishes and reopens an adaptive multi-object Chro
     );
     await expect(page.getByLabel("Clue or message")).toHaveValue("The northern harbor is your next bearing.");
     await page.getByLabel("Workspace layout").selectOption("SPATIAL");
-    const publicationSection = page.getByText("Library, reuse & publication", { exact: true });
-    if ((await publicationSection.locator("..").getAttribute("open")) === null) await publicationSection.click();
+    await page.getByRole("button", { name: "Open scene settings" }).click();
     await expect(page.getByRole("button", { name: /v1.0.0/ })).toBeVisible();
     const play = await startTaleSession(source.tale.slug, {
       accountId: player.id,
@@ -276,7 +281,7 @@ test("Remote Creator stages, publishes and reopens an adaptive multi-object Chro
     await authenticateClosure(context, account, baseURL!);
     await page.goto(`/studio/parallax?chronicle=${tale.id}&definition=${capsule.definition.id}&block=${blockId}`);
     await page.getByLabel("Workspace layout").selectOption("SPATIAL");
-    await page.getByText("Spatial Placement & grouping", { exact: true }).click();
+    await page.getByRole("button", { name: "Open spatial context" }).click();
     await page.getByLabel("Nearby context").selectOption("ANY");
     await page.getByText("Field quality and Creator calibration review", { exact: true }).click();
     await page.getByRole("button", { name: "Load field quality", exact: true }).click();
@@ -291,7 +296,7 @@ test("Remote Creator stages, publishes and reopens an adaptive multi-object Chro
     await page.getByText("Scene actions", { exact: true }).click();
     await page.getByRole("button", { name: "Create immutable version", exact: true }).click();
     await expect(page.getByRole("status")).toContainText("Immutable version created");
-    await page.getByText("Library, reuse & publication", { exact: true }).click();
+    await page.getByRole("button", { name: "Open scene settings" }).click();
     await page.getByLabel("Attach to Passage").selectOption(blockId);
     await page.getByRole("button", { name: "Attach exact version", exact: true }).click();
     await expect(page.getByRole("status")).toContainText("Pinned spatial version attached");
@@ -312,8 +317,7 @@ test("Remote Creator stages, publishes and reopens an adaptive multi-object Chro
     ).toBe(capsule.version.checksum);
     await page.reload();
     await expect(page.getByLabel("Clue or message")).toHaveValue("The northern harbor is your next bearing.");
-    const placementSection = page.getByText("Spatial Placement & grouping", { exact: true });
-    if ((await placementSection.locator("..").getAttribute("open")) === null) await placementSection.click();
+    await page.getByRole("button", { name: "Open spatial context" }).click();
     await expect(page.getByLabel("Authoring approach")).toHaveValue("EVIDENCE_CALIBRATED");
     await page.goto(`/studio/tales/${tale.id}`);
     await page.getByRole("button", { name: "Validate Chronicle", exact: true }).click();

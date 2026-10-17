@@ -245,7 +245,7 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
     widthMeters: 0.45,
   });
   await page.getByRole("button", { name: "Close assistance", exact: true }).click();
-  await page.getByText("Library, reuse & publication", { exact: true }).click();
+  await page.getByRole("button", { name: "Open scene settings" }).click();
   await page.getByRole("button", { name: "Save to Spatial Library", exact: true }).click();
   await page.getByText("Scene actions", { exact: true }).click();
   await page.getByRole("button", { name: "Validate in Drydock", exact: true }).click();
@@ -264,8 +264,7 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
   );
   await expect(page.getByLabel("Clue or message")).toHaveValue("Follow the northern harbor bearing.");
   await page.getByLabel("Workspace layout").selectOption("SPATIAL");
-  const library = page.getByText("Library, reuse & publication", { exact: true });
-  if ((await library.locator("..").getAttribute("open")) === null) await library.click();
+  await page.getByRole("button", { name: "Open scene settings" }).click();
   await page.getByRole("button", { name: /v1.0.0 · 2 objects/ }).click();
   await expect(page.getByText(`Pinned ${pin.slice(0, 16)}…`, { exact: true })).toBeVisible();
   expect({

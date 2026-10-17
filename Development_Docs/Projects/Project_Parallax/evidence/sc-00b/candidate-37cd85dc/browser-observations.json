@@ -1,0 +1,32 @@
+{
+  "captures": [
+    "artifacts/parallax-sc00b-inspector/parchment-guided.png",
+    "artifacts/parallax-sc00b-inspector/parchment-standard.png",
+    "artifacts/parallax-sc00b-inspector/parchment-engineering.png",
+    "artifacts/parallax-sc00b-inspector/marker-guided.png",
+    "artifacts/parallax-sc00b-inspector/marker-standard.png",
+    "artifacts/parallax-sc00b-inspector/marker-engineering.png",
+    "artifacts/parallax-sc00b-inspector/text-guided.png",
+    "artifacts/parallax-sc00b-inspector/text-standard.png",
+    "artifacts/parallax-sc00b-inspector/text-engineering.png",
+    "artifacts/parallax-sc00b-inspector/text-spatial-context.png",
+    "artifacts/parallax-sc00b-inspector/group-and-timeline.png",
+    "artifacts/parallax-sc00b-inspector/empty-selection.png",
+    "artifacts/parallax-sc00b-inspector/light-scene-settings-reduced-motion.png",
+    "artifacts/parallax-sc00b-inspector/light-mobile-scene-settings.png"
+  ],
+  "selectionTypes": [
+    "PARCHMENT",
+    "MARKER",
+    "TEXT",
+    "GROUP_RELATION",
+    "SCENE",
+    "EMPTY"
+  ],
+  "depths": [
+    "GUIDED",
+    "DETAILED",
+    "ENGINEERING"
+  ],
+  "accessibility": "NO_SERIOUS_OR_CRITICAL"
+}

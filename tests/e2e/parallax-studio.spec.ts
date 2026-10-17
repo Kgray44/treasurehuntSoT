@@ -73,9 +73,11 @@ test("Creator builds, versions, attaches, publishes and reopens a spatial moment
     await page.goto(`/studio/parallax?chronicle=${tale.id}&block=${blockId}`);
     await expect(page.getByRole("heading", { name: "Desk Map", level: 1 })).toBeVisible();
     await expect(page.getByLabel("Authoring mode")).toHaveValue("GUIDED");
-    await page.getByText("Library, reuse & publication", { exact: true }).click();
+    await page.getByRole("button", { name: "Open scene settings" }).click();
     await page.getByLabel("Experience title").fill("Captain's reusable map");
+    await page.getByRole("button", { name: "Open object properties" }).click();
     await page.getByLabel("Clue or message").fill("The northern harbor is your next bearing.");
+    await page.getByRole("button", { name: "Open scene settings" }).click();
     await page.getByRole("button", { name: "Save to Spatial Library", exact: true }).click();
     await page.getByRole("button", { name: "Save draft", exact: true }).click();
     await expect(page.getByRole("status")).toHaveText("Working draft saved");
@@ -147,8 +149,7 @@ test("Creator builds, versions, attaches, publishes and reopens a spatial moment
     );
     await expect(page.getByLabel("Clue or message")).toHaveValue("The northern harbor is your next bearing.");
     await page.getByLabel("Workspace layout").selectOption("SPATIAL");
-    const publicationSection = page.getByText("Library, reuse & publication", { exact: true });
-    if ((await publicationSection.locator("..").getAttribute("open")) === null) await publicationSection.click();
+    await page.getByRole("button", { name: "Open scene settings" }).click();
     await expect(page.getByRole("button", { name: /v1.0.0/ })).toBeVisible();
   } finally {
     // The guarded generic runner owns this disposable database. Keep immutable

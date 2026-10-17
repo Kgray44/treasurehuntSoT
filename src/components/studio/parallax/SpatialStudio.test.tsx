@@ -3,6 +3,7 @@ import { cleanup, fireEvent, render as renderUI, screen, waitFor, within } from 
 import type { ReactElement } from "react";
 import { AnimationProvider } from "@/animation/director/AnimationProvider";
 import { webcrypto } from "node:crypto";
+import { Euler, Quaternion } from "three";
 import {
   assistantSceneDigest,
   materializeAssistantProposal,
@@ -12,6 +13,7 @@ import type { SpatialDraft } from "@/parallax/authoring";
 import { SpatialStudio } from "./SpatialStudio";
 import { createSpatialDraft, draftSchema } from "@/parallax/authoring";
 let calls: Record<string, unknown>[];
+let fixtureDraft: SpatialDraft;
 const render = (ui: ReactElement) => renderUI(ui, { wrapper: AnimationProvider });
 beforeEach(() => {
   window.history.replaceState(null, "", "/");
@@ -24,7 +26,7 @@ beforeEach(() => {
     "matchMedia",
     vi.fn(() => ({ matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn() })),
   );
-  const draft = createSpatialDraft("owned", "Desk Map", "chronicle");
+  fixtureDraft = createSpatialDraft("owned", "Desk Map", "chronicle");
   vi.stubGlobal(
     "fetch",
     vi.fn(async (_url, options) => {
@@ -46,7 +48,7 @@ beforeEach(() => {
               nearingLimit: false,
             },
             items: [
-              { id: "owned", revision: 1, draft, releases: [], usageCount: 0, updatedAt: new Date().toISOString() },
+              { id: "owned", revision: 1, draft: fixtureDraft, releases: [], usageCount: 0, updatedAt: new Date().toISOString() },
             ],
             chronicle: {
               id: "chronicle",
@@ -201,8 +203,8 @@ it("opens Guided mode with canvas/library/timeline and keeps mode changes out of
 it("records manual transforms as reversible edits and serializes autosave", async () => {
   render(<SpatialStudio chronicleId="chronicle" definitionId="owned" />);
   await screen.findByRole("heading", { name: "Desk Map", level: 1 });
-  fireEvent.click(screen.getByText("Transform", { exact: true }));
   fireEvent.change(screen.getByLabelText("Object width in meters"), { target: { value: "0.6" } });
+  fireEvent.blur(screen.getByLabelText("Object width in meters"));
   fireEvent.click(screen.getByRole("button", { name: "Save draft" }));
   await waitFor(() => expect(calls.some((c) => c.action === "SAVE")).toBe(true));
   expect(
@@ -213,6 +215,109 @@ it("records manual transforms as reversible edits and serializes autosave", asyn
   expect(screen.getByLabelText("Object width in meters")).toHaveValue(0.5);
   fireEvent.click(screen.getByRole("button", { name: "Redo" }));
   expect(screen.getByLabelText("Object width in meters")).toHaveValue(0.6);
+});
+it("previews a scale gesture without filling Undo with intermediate samples", async () => {
+  render(<SpatialStudio definitionId="owned" />);
+  await screen.findByRole("heading", { name: "Desk Map", level: 1 });
+  fireEvent.change(screen.getByLabelText("Authoring mode"), { target: { value: "DETAILED" } });
+  const slider = screen.getByRole("slider", { name: "Object scale" });
+  const undoButton = screen.getByRole("button", { name: "Undo" });
+  expect(undoButton).toBeDisabled();
+  fireEvent.pointerDown(slider);
+  fireEvent.change(slider, { target: { value: "1.5" } });
+  fireEvent.change(slider, { target: { value: "1.75" } });
+  expect(screen.getByLabelText("Object scale numeric value")).toHaveValue(1.75);
+  expect(undoButton).toBeDisabled();
+  fireEvent.pointerUp(slider);
+  expect(undoButton).toBeEnabled();
+  fireEvent.click(undoButton);
+  expect(screen.getByLabelText("Object scale numeric value")).toHaveValue(1);
+  expect(undoButton).toBeDisabled();
+});
+it("keeps three meaningful Inspector destinations and preserves the Standard preference", async () => {
+  render(<SpatialStudio definitionId="owned" />);
+  await screen.findByRole("heading", { name: "Desk Map", level: 1 });
+  fireEvent.change(screen.getByLabelText("Authoring mode"), { target: { value: "DETAILED" } });
+  expect(screen.getByRole("option", { name: "Standard" })).toBeInTheDocument();
+  expect(sessionStorage.getItem("parallax.authoring-mode")).toBe("DETAILED");
+  fireEvent.click(screen.getByRole("button", { name: "Open spatial context" }));
+  expect(screen.getByRole("button", { name: "Open spatial context" })).toHaveAttribute("aria-pressed", "true");
+  expect(screen.getByRole("heading", { name: "Placement & relationships" })).toBeVisible();
+  fireEvent.click(screen.getByRole("button", { name: "Open scene settings" }));
+  expect(screen.getByLabelText("Experience title")).toBeVisible();
+  fireEvent.click(screen.getByRole("button", { name: "Open object properties" }));
+  expect(screen.getByLabelText("Object width in meters")).toBeVisible();
+  expect(calls).toEqual([]);
+  fireEvent.click(screen.getByRole("button", { name: "Clear selection" }));
+  expect(screen.getByRole("region", { name: "Scene overview" })).toBeVisible();
+  expect(screen.getByRole("button", { name: "Open spatial context" })).toBeDisabled();
+  fireEvent.click(
+    within(screen.getByRole("region", { name: "Scene overview" })).getByRole("button", { name: "Desk Map" }),
+  );
+  expect(screen.getByLabelText("Object width in meters")).toBeVisible();
+  fireEvent.click(screen.getByRole("button", { name: "Lock" }));
+  expect(screen.getByLabelText("Object width in meters")).toBeDisabled();
+  fireEvent.click(screen.getByRole("button", { name: "Unlock" }));
+  expect(screen.getByLabelText("Object width in meters")).toBeEnabled();
+});
+it("explains a missing selection and restores its Inspector after Undo", async () => {
+  render(<SpatialStudio definitionId="owned" />);
+  await screen.findByRole("heading", { name: "Desk Map", level: 1 });
+  fireEvent.click(screen.getByRole("button", { name: "Duplicate" }));
+  fireEvent.click(screen.getByRole("button", { name: "Delete" }));
+  expect(screen.getByRole("heading", { name: "Selection unavailable" })).toBeVisible();
+  expect(screen.getByRole("region", { name: "Unavailable selection" })).toBeVisible();
+  expect(screen.getByRole("button", { name: "Open object properties" })).toBeDisabled();
+  fireEvent.click(screen.getByRole("button", { name: "Undo" }));
+  expect(screen.getByRole("heading", { name: "Properties" })).toBeVisible();
+  expect(screen.getByLabelText("Object width in meters")).toBeVisible();
+  fireEvent.click(screen.getByRole("button", { name: "Redo" }));
+  expect(screen.getByRole("heading", { name: "Selection unavailable" })).toBeVisible();
+  fireEvent.click(within(screen.getByRole("region", { name: "Unavailable selection" })).getByRole("button", { name: "Open scene settings" }));
+  expect(screen.getByRole("region", { name: "Scene overview" })).toBeVisible();
+});
+it("commits a complete precision value while preserving the other transform axes", async () => {
+  fixtureDraft.content.entities[0].transform.position = { x: 0.2, y: 0.37, z: -0.91 };
+  render(<SpatialStudio definitionId="owned" />);
+  await screen.findByRole("heading", { name: "Desk Map", level: 1 });
+  fireEvent.change(screen.getByLabelText("Authoring mode"), { target: { value: "ENGINEERING" } });
+  const x = screen.getByLabelText("Position x");
+  fireEvent.change(x, { target: { value: "" } });
+  fireEvent.blur(x);
+  expect(x).toHaveValue(0.2);
+  fireEvent.change(x, { target: { value: "0.45" } });
+  fireEvent.blur(x);
+  expect(x).toHaveValue(0.45);
+  expect(screen.getByLabelText("Position y")).toHaveValue(0.37);
+  expect(screen.getByLabelText("Position z")).toHaveValue(-0.91);
+  fireEvent.click(screen.getByRole("button", { name: "Undo" }));
+  expect(x).toHaveValue(0.2);
+  expect(screen.getByLabelText("Position y")).toHaveValue(0.37);
+  expect(screen.getByLabelText("Position z")).toHaveValue(-0.91);
+});
+it("changes yaw without erasing an object's pitch and roll", async () => {
+  const original = new Euler(0.28, 0.36, -0.19, "YXZ");
+  const rotation = new Quaternion().setFromEuler(original);
+  fixtureDraft.content.entities[0].transform.rotation = {
+    x: rotation.x,
+    y: rotation.y,
+    z: rotation.z,
+    w: rotation.w,
+  };
+  render(<SpatialStudio definitionId="owned" />);
+  await screen.findByRole("heading", { name: "Desk Map", level: 1 });
+  fireEvent.change(screen.getByLabelText("Authoring mode"), { target: { value: "DETAILED" } });
+  const yaw = screen.getByLabelText("Object rotation in degrees");
+  fireEvent.change(yaw, { target: { value: "75" } });
+  fireEvent.keyUp(yaw, { key: "ArrowRight" });
+  fireEvent.click(screen.getByRole("button", { name: "Save draft" }));
+  await waitFor(() => expect(calls.some((call) => call.action === "SAVE")).toBe(true));
+  const saved = calls.find((call) => call.action === "SAVE")!.draft as SpatialDraft;
+  const next = saved.content.entities[0].transform.rotation;
+  const angles = new Euler().setFromQuaternion(new Quaternion(next.x, next.y, next.z, next.w), "YXZ");
+  expect(angles.x).toBeCloseTo(original.x, 5);
+  expect(angles.y).toBeCloseTo((75 * Math.PI) / 180, 5);
+  expect(angles.z).toBeCloseTo(original.z, 5);
 });
 it("keeps layout switches and panel preferences out of canonical edits and retains tab state", async () => {
   render(<SpatialStudio definitionId="owned" />);
@@ -270,7 +375,6 @@ it("mounts the real port, previews without saving, installs one acknowledged his
   const fixture = assistantHTTPFixture();
   render(<SpatialStudio definitionId="owned" />);
   await screen.findByRole("heading", { name: "Desk Map", level: 1 });
-  fireEvent.click(screen.getByText("Transform", { exact: true }));
   fireEvent.click(screen.getByRole("button", { name: /Ask Parallax/ }));
   const panel = within(screen.getByRole("region", { name: "Spatial Assistant" }));
   fireEvent.change(panel.getByLabelText("Describe your spatial idea"), {
@@ -302,7 +406,6 @@ it("rejects a mounted late response after a manual edit and byte-identical undo"
   const fixture = assistantHTTPFixture(true);
   render(<SpatialStudio definitionId="owned" />);
   await screen.findByRole("heading", { name: "Desk Map", level: 1 });
-  fireEvent.click(screen.getByText("Transform", { exact: true }));
   fireEvent.click(screen.getByRole("button", { name: /Ask Parallax/ }));
   const panel = within(screen.getByRole("region", { name: "Spatial Assistant" }));
   fireEvent.change(panel.getByLabelText("Describe your spatial idea"), { target: { value: "Make the map smaller." } });
@@ -310,6 +413,7 @@ it("rejects a mounted late response after a manual edit and byte-identical undo"
   await waitFor(() => expect(calls.some((call) => call.action === "AI")).toBe(true));
   const submitted = calls.find((call) => call.action === "AI")!;
   fireEvent.change(screen.getByLabelText("Object width in meters"), { target: { value: "0.6" } });
+  fireEvent.blur(screen.getByLabelText("Object width in meters"));
   fireEvent.click(screen.getAllByRole("button", { name: "Undo" })[0]);
   expect(screen.getByLabelText("Object width in meters")).toHaveValue(0.5);
   fixture.release();
@@ -333,6 +437,9 @@ it("locates a proposed object in the real preview without erasing it on selectio
   fireEvent.click(panel.getByRole("button", { name: /Send idea/ }));
   await panel.findByRole("button", { name: "Apply all changes" });
   fireEvent.click(panel.getByRole("button", { name: "Locate object" }));
+  expect(await screen.findByRole("heading", { name: "Preview selection" })).toBeVisible();
+  expect(screen.getByRole("region", { name: "Preview selection" })).toBeVisible();
+  expect(screen.queryByRole("heading", { name: "Selection unavailable" })).toBeNull();
   const canvas = within(screen.getByRole("region", { name: "Spatial canvas" }));
   await canvas.findByRole("button", { name: /^Proposed note\./ });
   expect(fixture.readSaved().draft.content.entities).toHaveLength(1);

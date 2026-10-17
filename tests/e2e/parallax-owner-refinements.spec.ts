@@ -72,7 +72,7 @@ test("owner refinements: coherent Studio themes, overlay assistance and populate
     .getByRole("region", { name: "Spatial asset browser" })
     .getByRole("button", { name: "Peeking Letter", exact: false })
     .click();
-  await expect(inspector.getByRole("heading", { name: "Peeking Letter", exact: true })).toBeVisible();
+  await expect(inspector.getByText("Peeking Letter", { exact: true })).toBeVisible();
   await inspector.getByLabel("Object name", { exact: true }).fill("Owner review letter");
   await page.getByRole("tab", { name: "Hierarchy", exact: true }).click();
   const graph = page.getByRole("region", { name: "Scene graph" });
@@ -125,9 +125,9 @@ test("owner refinements: coherent Studio themes, overlay assistance and populate
         page.getByRole("button", { name: /Owner review letter: highlight 1200 milliseconds/ }),
       ).toBeVisible();
       if (mode !== "ENGINEERING") await expect(inspector.getByLabel("Object name", { exact: true })).toBeVisible();
-      if (mode === "GUIDED") await expect(inspector.getByText("Appearance / layers", { exact: true })).toBeHidden();
+      if (mode === "GUIDED") await expect(inspector.getByText("Appearance & layers", { exact: true })).toBeHidden();
       if (mode === "ENGINEERING") await expect(inspector.getByLabel("Position x", { exact: true })).toBeVisible();
-      else await expect(inspector.getByText("Advanced / Engineering", { exact: true })).toBeHidden();
+      else await expect(inspector.getByText("Exact transform & anchor", { exact: true })).toBeHidden();
       await page.screenshot({
         path: `${root}/owner-populated-${theme.toLowerCase()}-${mode.toLowerCase()}.png`,
         fullPage: true,
@@ -147,9 +147,9 @@ test("owner refinements: coherent Studio themes, overlay assistance and populate
     }
     await selectBottom("Timeline");
     await page.getByLabel("Authoring mode").selectOption("DETAILED");
-    for (const title of ["Appearance / layers", "Interactions", "Accessibility & Fallback"]) {
-      const summary = inspector.getByText(title, { exact: true });
-      if (!(await summary.evaluate((element) => element.parentElement?.hasAttribute("open")))) await summary.click();
+    await page.getByRole("button", { name: "Open object properties" }).click();
+    for (const title of ["Appearance & layers", "Interactions", "Accessibility"]) {
+      await expect(inspector.getByRole("heading", { name: title, exact: true })).toBeVisible();
     }
     await page.getByRole("tab", { name: "Library", exact: true }).click();
     await page.screenshot({ path: `${root}/owner-library-and-inspector-${theme.toLowerCase()}.png`, fullPage: true });

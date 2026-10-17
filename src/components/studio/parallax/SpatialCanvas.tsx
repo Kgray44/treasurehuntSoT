@@ -23,6 +23,7 @@ export function SpatialCanvas(props: {
   environmentId: string;
   timeMs: number;
   inputs: SpatialInput[];
+  command?: { sequence: number; kind: "FRAME" | "TOOL"; tool?: "translate" | "rotate" | "scale" } | null;
 }) {
   const { draft, selectedId, onSelect, onPreset, mode, preview, environmentId, timeMs, inputs } = props;
   const host = useRef<HTMLDivElement>(null),
@@ -38,6 +39,14 @@ export function SpatialCanvas(props: {
     [overlays, setOverlays] = useState(false);
   const [view, setView] = useState("perspective"),
     [feedback, setFeedback] = useState("Select an object to begin.");
+  useEffect(() => {
+    if (props.command?.kind === "FRAME" && rendererState === "READY") engine.current?.view("selection");
+    if (props.command?.kind === "TOOL" && props.command.tool) {
+      const requestedTool = props.command.tool;
+      const frame = requestAnimationFrame(() => setTool(requestedTool));
+      return () => cancelAnimationFrame(frame);
+    }
+  }, [props.command, rendererState]);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   useEffect(() => {
     const root = document.documentElement;
@@ -138,14 +147,19 @@ export function SpatialCanvas(props: {
   useEffect(() => {
     engine.current?.update({
       theme,
-      objects: draft.content.entities.map((entity) => ({
-        entity,
-        world: resolvedWorld(entity.id),
-        visible: states[entity.id].visible,
-        highlighted: states[entity.id].highlighted || (props.highlightedEntityIds?.includes(entity.id) ?? false),
-        selectable: states[entity.id].selectable,
-        locked: draft.content.studio?.layers.find((l) => l.entityId === entity.id)?.locked ?? false,
-      })),
+      objects: draft.content.entities.map((entity) => {
+        const layer = draft.content.studio?.layers.find((item) => item.entityId === entity.id);
+        const audienceVisible =
+          preview === "EDITOR" ? layer?.audience !== "RUNTIME_ONLY" : layer?.audience !== "EDITOR_ONLY";
+        return {
+          entity,
+          world: resolvedWorld(entity.id),
+          visible: states[entity.id].visible && (layer?.visible ?? true) && audienceVisible,
+          highlighted: states[entity.id].highlighted || (props.highlightedEntityIds?.includes(entity.id) ?? false),
+          selectable: states[entity.id].selectable && (layer?.selectable ?? true),
+          locked: layer?.locked ?? false,
+        };
+      }),
       candidates: evidence.candidates,
       selected: selectedId,
       environment,
