@@ -92,6 +92,8 @@ type Menu = {
   y: number;
   trigger: HTMLElement;
   palette: CSSProperties;
+  scrollPositions: Map<Element, { left: number; top: number }>;
+  windowScroll: { x: number; y: number };
 };
 /** Context actions use the same editor commands as visible controls. No hidden mutations. */
 export function useStudioContextMenu() {
@@ -106,7 +108,19 @@ export function useStudioContextMenu() {
       palette: Record<string, string> = {};
     for (const name of ["panel", "border", "text", "muted", "hover", "focus", "danger", "shadow"])
       palette[`--studio-${name}`] = computed.getPropertyValue(`--studio-${name}`);
-    setState({ title, actions, x, y, trigger, palette: palette as CSSProperties });
+    const scrollPositions = new Map<Element, { left: number; top: number }>();
+    for (let element: Element | null = trigger; element; element = element.parentElement)
+      scrollPositions.set(element, { left: element.scrollLeft, top: element.scrollTop });
+    setState({
+      title,
+      actions,
+      x,
+      y,
+      trigger,
+      palette: palette as CSSProperties,
+      scrollPositions,
+      windowScroll: { x: window.scrollX, y: window.scrollY },
+    });
   };
   const open = (
     event: MouseEvent<HTMLElement> | KeyboardEvent<HTMLElement>,
@@ -143,13 +157,28 @@ export function useStudioContextMenu() {
     const outside = (event: Event) => {
       if (!ref.current?.contains(event.target as Node)) setState(null);
     };
+    const scroll = (event: Event) => {
+      // A scroll used to reveal the trigger can be delivered after the menu opens.
+      // Dismiss for a new movement, not a notification of the already captured position.
+      if (
+        event.target === document &&
+        window.scrollX === state.windowScroll.x &&
+        window.scrollY === state.windowScroll.y
+      )
+        return;
+      if (event.target instanceof Element) {
+        const openedAt = state.scrollPositions.get(event.target);
+        if (openedAt && event.target.scrollLeft === openedAt.left && event.target.scrollTop === openedAt.top) return;
+      }
+      outside(event);
+    };
     const dismiss = () => setState(null);
     document.addEventListener("pointerdown", outside, true);
-    document.addEventListener("scroll", outside, true);
+    document.addEventListener("scroll", scroll, true);
     window.addEventListener("resize", dismiss);
     return () => {
       document.removeEventListener("pointerdown", outside, true);
-      document.removeEventListener("scroll", outside, true);
+      document.removeEventListener("scroll", scroll, true);
       window.removeEventListener("resize", dismiss);
     };
   }, [state]);
