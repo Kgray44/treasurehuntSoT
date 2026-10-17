@@ -1,7 +1,7 @@
 ---
 title: Crossdeck ordinary6 finite posttechnical replay diagnostic
 audience: engineering
-status: prepared-awaiting-protected-installation
+status: consumed-incomplete
 canonical_for: crossdeck-ordinary6-finite-posttechnical-replay-diagnostic
 last_reviewed: 2026-10-17
 ---
@@ -245,6 +245,96 @@ integration remain held. Crossdeck still needs current replay, canonical
 obligations/finalizer, exact qualified seal, whole workflow/Mainline, normal
 expected-head protected merge and bounded actual landed product verification.
 
-Implementation, synthetic validation, normal protected installer/whole/Mainline,
-actual landed review and fresh prelaunch evidence are pending in this prepared
-record. Preparation and static design review do not grant a dispatch.
+The preceding design was prepared before execution. The actual installation and
+consumed result below supersede its preparation status. An observability repair
+does not grant another dispatch.
+
+# Actual installation, consumed result and command evidence repair
+
+[PR760](https://github.com/Kgray44/treasurehuntSoT/pull/760) landed at
+`30c64393ab8ca8ee00d63fcf3c59ac8053be31bf`, tree
+`42d161601caf94c30c0d5effc606881560b0c0d4`, with ordered parents D
+`63188aa225e69a807eb078f1df14e92f7a536da1` and reviewed installer
+`e7dc0bb46313a46e2f7c5fa89295b48c2e353825`. The normal installer
+[run39016566278](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39016566278),
+attempt2, completed whole SUCCESS with Mainline117355530995/app15368. It passed
+376 policy tests,13 neutral rendered fixtures, type/lint/privacy/docs and nine
+feature tests. Its first attempt was cancelled by the15-minute custody checkout
+deadline before setup, finite reservation or consumer execution; the one normal
+neutral-installer retry preserved the same source/base and that failure.
+Independent actual landed checks passed56 focused diagnostics, one inventory
+test,13 neutral rendered fixtures, docs and nine feature tests, with all twelve
+reviewed source files unchanged. Consumer verification and sealing were skipped.
+
+Fresh independent installation/prelaunch review and complete zero-history/unused
+slot checks preceded exactly one ref-only manual POST, acknowledged HTTP204 at
+08:55:46Z. The actual
+[diagnostic39019200508](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39019200508)
+ran on the exact landed source, workflow387494161, suite105745288424, main,
+owner/trigger Kgray44 and attempt1. It completed FAILURE at09:23:01Z. Reservation
+`65524b9cbf9d1931e58634d737395a344a604b34` remains consumed; no rerun or refund
+occurred. Reservation job117357424400 passed. Worker117357588316 failed its
+diagnostic step and successfully uploaded its closed, encrypted partial evidence.
+
+| Preserved actual evidence                     | Bytes / SHA256                                                                |
+| --------------------------------------------- | ----------------------------------------------------------------------------- |
+| Evidence artifact12096553092, original ZIP    | 8890323 / `49e26a6cfc6406ee4afa5208ae33060af0d47b7550c5891cbd9897a785ba8c9d`  |
+| Reservation artifact12096315309, original ZIP | 918 / `46ff9197d3d864cc929fe61c66f42353f51ef35b79d4a3654892c7d43b794c96`      |
+| reproduction.json                             | 5729 / `92237df36cbb5ddf066ad70abca8acc697d37eb66d6e90c17b719fd93f199af9`     |
+| private-evidence.encrypted                    | 11800478 / `91fd32b8c7be68e5d705448acac96d033ed55b247c659ce84772e605e0186d35` |
+
+Both original ZIP hashes match authenticated GitHub artifact digests. Independent
+provenance review bound the exact run/jobs/source and create-only remote
+reservation. Owner-held-key authentication then recovered13 original members,
+6634002 raw bytes, without exposing plaintext or the private key publicly. The
+original ordinary6 ZIP and decision matched their fixed historical hashes.
+
+The actual result is EXECUTION_UNKNOWN / DIAGNOSTIC_INCOMPLETE. Three initial
+setup commands ran; technicalCommandsStarted=6 and technicalCommandsCompleted=5.
+The four retained canonical FRESH/PASSED receipts cover three preflights and the
+unit group containing both Vitest batches. Command6 is the unchanged original
+Node executable with `--test tests/sounding-line/ordinary.test.mjs`. The generic
+technical browser command and source prefix were not reached. Chromium process,
+case and capture counts remain unmeasured; encrypted collector completeness does
+not mean workload, media or product acceptance. Outer closure passed with direct
+worker exit1, descendants reaped and streams closed, without supervisor timeout,
+log truncation or I/O/result corruption.
+
+The fresh receipt fingerprints differ from the historical originals only in
+`soundingLinePolicyDigest` and its resulting `fingerprintDigest`. Preserve this
+observed reconstruction difference; full historical fingerprint equality is not
+claimed.
+
+The available logs do not prove why command6 failed to complete normally. Its
+15-minute inner deadline is compatible with elapsed time, but timeout versus
+signal/spawn failure cannot be recovered: the worker collapsed available child
+error/signal to WORKER_UNKNOWN, and the existing private started/terminal files
+were not observational bundle members. The preceding Vite close warning cannot
+be assigned to command6 or promoted to the cause. No assertion establishes the
+original REPLAY_ADMISSION cause.
+
+The original ordinary6 timing records3738ms/PASS for this policy obligation. Its
+executor inherited stdio without an explicit per-command timeout. The diagnostic
+adds the15-minute command cap and ignored stdin. These are reconstruction
+differences, not proof that a deadline explains the failed invocation or that a
+particular nested test was waiting. The observability repair preserves those
+existing diagnostic settings.
+
+The narrow repair retains one separate bounded observational member,
+`private/command-executions.original.jsonl`, populated from existing execution
+variables. Record STARTED/TERMINAL for only the fixed three setup and twelve
+technical commands, at most30 records and within the unchanged16MiB private-log
+cap. Preserve actual executable/argv/cwd, fixed spawn settings, start/elapsed
+time, nullable status/signal and available original error fields. Do not collect
+environment, nonce, leases, counter contents or arbitrary private filenames.
+Keep create-only execution counters unchanged and excluded. Retain partial
+observations honestly; failed logging remains incomplete and cannot mask the
+original failure. Publish only a safe failed-command projection without raw
+arguments, paths, messages or stacks. The private extractor must accept exactly
+this additional observational filename and continue rejecting counter stores.
+
+Existing workload, deadlines, evidence caps, encryption, source/ownership guards,
+publication proof and all consumed budgets remain unchanged. This observability
+repair alone funds no execution. Independently assess the actual result and any
+new finite scope before further execution. #721 remains draft at E, qualified is
+absent, the original cause remains unknown, and existing #722/spatial stay held.

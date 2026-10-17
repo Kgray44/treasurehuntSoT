@@ -1,7 +1,7 @@
 ---
 title: Crossdeck ordinary6 finite posttechnical diagnostic context
 audience: automation
-status: prepared-awaiting-protected-installation
+status: consumed-incomplete
 canonical_for: crossdeck-ordinary6-finite-posttechnical-diagnostic-context
 last_reviewed: 2026-10-17
 ---
@@ -27,7 +27,50 @@ posttechnical workload state. It explicitly permits real new technical/product
 execution; it creates no ordinary retry or consumer qualification permission.
 The cause-establishment requirement before another ordinary trial remains.
 
-# One finite technical workload, then same-process source observation
+# Actual consumed result and observability repair
+
+PR760 installed the diagnostic through the normal protected route at
+`30c64393ab8ca8ee00d63fcf3c59ac8053be31bf`. Its protected installer run39016566278,
+attempt2, whole workflow and Mainline117355530995 passed. Independent actual
+landed neutral verification also passed; none of these results qualified #721.
+
+The sole diagnostic39019200508 completed FAILURE on 2026-10-17 at09:23:01Z.
+Reservation `65524b9cbf9d1931e58634d737395a344a604b34` is consumed. Its authenticated
+private result is EXECUTION_UNKNOWN / DIAGNOSTIC_INCOMPLETE: three initial setup
+commands ran, six technical commands were entered and five completed. The four
+retained fresh canonical receipts cover the three preflights and both unit
+batches. Their fingerprints differ from the historical originals only in
+soundingLinePolicyDigest and the resulting fingerprintDigest. Preserve this
+reconstruction difference; do not claim full historical fingerprint equality.
+Ordinal6 is the unchanged Node ordinary-policy test command. The generic
+technical browser command and source prefix were not reached; actual Chromium
+process counts remain unmeasured. Outer worker cleanup passed without supervisor
+timeout or log truncation. Original replay cause remains unknown.
+
+The worker discarded the available inner child error details, and its existing
+started/terminal files were excluded with private counter stores. The retained
+logs cannot distinguish an inner deadline, signal or spawn failure. A preceding
+Vite close warning does not establish the cause of ordinal6.
+The original ordinary6 policy command passed in3738ms. Its executor had no
+explicit per-command timeout; the diagnostic adds a15-minute cap and ignores
+stdin. Preserve these reconstruction differences without treating the cap as a
+proved explanation of the failed invocation.
+
+The narrow repair adds one bounded observational evidence member,
+`private/command-executions.original.jsonl`. It records command start/termination,
+the actual fixed invocation and available original child error/status/signal and
+timing. It contains no environment, nonce, lease or counter contents. The actual
+execution counters remain private and excluded. Only a safe failed-command
+projection may enter the public summary; raw paths, arguments, messages and
+stacks stay encrypted. Keep existing command deadlines, workload, ownership,
+cleanup/publication guards and evidence caps unchanged. Retention failure stays
+incomplete. This repair grants no dispatch, retry, refund or new ordinary trial.
+
+# Consumed finite workload contract
+
+The following preserves the scope of the consumed invocation. Do not dispatch or
+rerun this diagnostic again. Further execution needs separately reviewed finite
+authority; installing an observability repair does not supply it.
 
 Use only the installed standalone
 `.github/workflows/sounding-line-replay-posttechnical-diagnostic.yml`, main,
