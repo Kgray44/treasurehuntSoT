@@ -127,8 +127,7 @@ const setupSteps = [];
 let setupStatus = "FAIL";
 
 try {
-  if (readiness)
-    await runNativeDependencyChecks({ attempt: readiness, environment: { ...process.env, ...environment } });
+  if (readiness) await runNativeDependencyChecks({ attempt: readiness, environment: productEnvironment(environment) });
   if (receiptPaths && !receiptPaths.binding) {
     await rm(receiptPaths.runtime, { force: true });
     await rm(receiptPaths.profile, { force: true });
@@ -152,7 +151,7 @@ try {
   for (const preparer of profile.preparers ?? []) run(process.execPath, preparerArguments(preparer), environment);
   ensureProductionBuild();
   if (readiness) {
-    await runBrowserDependencyProbe({ attempt: readiness, environment: { ...process.env, ...environment } });
+    await runBrowserDependencyProbe({ attempt: readiness, environment: productEnvironment(environment) });
   } else if (options["experience-plan"]) {
     if (!options["experience-runner"]) throw new Error("PRODUCT_EXPERIENCE_TRUSTED_RUNNER_REQUIRED");
     // Candidate build/setup must not mutate either the checked-out product or
@@ -180,7 +179,7 @@ try {
     run(
       process.execPath,
       [
-        "scripts/sounding-line/browser-authority.mjs",
+        fileURLToPath(new URL("./browser-authority.mjs", import.meta.url)),
         ...profile.fixtureArguments.flatMap((argument) => ["--fixture", argument]),
         ...(profile.fixtureProject ? ["--fixture-project", profile.fixtureProject] : []),
         "--",
@@ -291,10 +290,25 @@ function taskOwnedProductionHttpEnvironment(profileId, sha) {
   return environment;
 }
 
+function productEnvironment(env) {
+  const result = { ...process.env, ...env };
+  delete result.GITHUB_OUTPUT;
+  delete result.SOUNDING_LINE_PRIVATE_FAILURE_PUBLICATION_NONCE;
+  return result;
+}
+
 function run(command, argumentsList, env) {
+  const childEnvironment = { ...process.env, ...env };
+  if (
+    command !== process.execPath ||
+    argumentsList[0] !== fileURLToPath(new URL("./browser-authority.mjs", import.meta.url))
+  ) {
+    delete childEnvironment.GITHUB_OUTPUT;
+    delete childEnvironment.SOUNDING_LINE_PRIVATE_FAILURE_PUBLICATION_NONCE;
+  }
   const result = spawnSync(command, argumentsList, {
     cwd: root,
-    env: { ...process.env, ...env },
+    env: childEnvironment,
     stdio: "inherit",
     windowsHide: true,
     ...(readiness
@@ -302,7 +316,7 @@ function run(command, argumentsList, env) {
       : {}),
     ...(posttechnical
       ? {
-          env: scrubPosttechnicalSuiteEnvironment({ ...process.env, ...env }),
+          env: scrubPosttechnicalSuiteEnvironment(childEnvironment),
           timeout: POSTTECHNICAL_POLICY.commandMs,
           killSignal: "SIGTERM",
         }

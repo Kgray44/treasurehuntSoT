@@ -5,7 +5,9 @@ import { createServer } from "node:net";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { bounded, observeProcess, processExit, spawnOwnedProcess, stopOwnedProcess } from "./owned-process.mjs";
-import { writeBrowserDiagnosticReceipt } from "./browser-diagnostics.mjs";
+import { browserReceiptPaths, writeBrowserDiagnosticReceipt } from "./browser-diagnostics.mjs";
+import { createPublishableBrowserFailureRetention } from "./private-browser-failure-publication.mjs";
+import { createBrowserFailurePublicationOutput } from "./private-browser-failure-output.mjs";
 
 const readinessIntervalMs = 250;
 const readinessTimeoutMs = 120_000;
@@ -288,6 +290,7 @@ export async function runBrowserAuthority({
   signal,
   executionTimeoutMs = 15 * 60_000,
   cleanupOptions,
+  onPrivateFailurePublication,
 }) {
   const diagnosticStartedAt = performance.now();
   const progress = (event, fields) => authorityDiagnostic(diagnosticStartedAt, event, fields);
@@ -296,6 +299,10 @@ export async function runBrowserAuthority({
   const serverPort = useTaskOwnedCookieAdapter ? await availablePort() : browserPort;
   const baseURL = `http://127.0.0.1:${browserPort}`;
   const serverBaseURL = `http://127.0.0.1:${serverPort}`;
+  // The trusted host retains workflow outputs; product children never receive it.
+  const childEnvironment = { ...environment };
+  delete childEnvironment.GITHUB_OUTPUT;
+  delete childEnvironment.SOUNDING_LINE_PRIVATE_FAILURE_PUBLICATION_NONCE;
   const outputDirectory = environment.NEXT_DIST_DIR ?? ".next";
   const serverArguments = configuredServerArguments ?? [
     "node_modules/next/dist/bin/next",
@@ -320,6 +327,28 @@ export async function runBrowserAuthority({
   let failureCategory = null;
   let failureCodeValue = null;
   const lifecycle = { capture: "NOT_STARTED", fixture: "NOT_STARTED", cleanup: null };
+  const privateFailureSessions = new Map();
+  const preparePrivateFailure = (phase) => {
+    try {
+      const binding = browserReceiptPaths(root, environment)?.binding;
+      if (!binding) return null;
+      const session = createPublishableBrowserFailureRetention({
+        root,
+        binding,
+        onPublication: onPrivateFailurePublication,
+      });
+      privateFailureSessions.set(phase, session);
+      return session;
+    } catch {
+      lifecycle.privateFailureDiagnostics ??= {};
+      lifecycle.privateFailureDiagnostics[phase] = {
+        retention: "INCOMPLETE",
+        issues: ["SETUP_FAILED"],
+        qualification: false,
+      };
+      return null;
+    }
+  };
   const cancellation = new AbortController();
   const cancel = () => cancellation.abort(new Error("SOUNDING_LINE_INFRASTRUCTURE_RUNTIME_FAILURE:CANCELLED"));
   const executionTimer = setTimeout(
@@ -353,7 +382,7 @@ export async function runBrowserAuthority({
     });
     server = start(process.execPath, serverArguments, {
       root,
-      env: { ...environment, PLAYWRIGHT_BASE_URL: baseURL, NEXT_TELEMETRY_DISABLED: "1" },
+      env: { ...childEnvironment, PLAYWRIGHT_BASE_URL: baseURL, NEXT_TELEMETRY_DISABLED: "1" },
     });
     timings.serverPreparationMs = now() - serverStartedAt;
     progress("readiness.backend.start", { child: server });
@@ -373,17 +402,26 @@ export async function runBrowserAuthority({
     }
     if (fixtureArguments.length) {
       progress("fixture.start");
+      const privateFixture = preparePrivateFailure("fixture");
       fixture = start(
         process.execPath,
-        ["node_modules/@playwright/test/cli.js", "test", ...fixtureArguments, "--project", fixtureProject],
+        [
+          "node_modules/@playwright/test/cli.js",
+          "test",
+          ...fixtureArguments,
+          "--project",
+          fixtureProject,
+          ...(privateFixture ? ["--output", privateFixture.resultsDirectory] : []),
+        ],
         {
           root,
           env: {
-            ...environment,
+            ...childEnvironment,
             FOREVER_PLAYWRIGHT_EXTERNAL_SERVER: "1",
             PLAYWRIGHT_BASE_URL: baseURL,
             SOUNDING_LINE_BROWSER_AUTHORITY: "1",
             SOUNDING_LINE_BROWSER_FIXTURE_SETUP: "1",
+            ...(privateFixture?.environment ?? {}),
           },
         },
       );
@@ -408,16 +446,24 @@ export async function runBrowserAuthority({
     }
     const browserStartedAt = now();
     progress("capture-child.start");
+    // Custom supervision test scripts are not Playwright CLI invocations.
+    const privateBrowser = browserScriptArguments ? null : preparePrivateFailure("browser");
     browser = start(
       process.execPath,
-      browserScriptArguments ?? ["node_modules/@playwright/test/cli.js", "test", ...browserArguments],
+      browserScriptArguments ?? [
+        "node_modules/@playwright/test/cli.js",
+        "test",
+        ...browserArguments,
+        ...(privateBrowser ? ["--output", privateBrowser.resultsDirectory] : []),
+      ],
       {
         root,
         env: {
-          ...environment,
+          ...childEnvironment,
           FOREVER_PLAYWRIGHT_EXTERNAL_SERVER: "1",
           PLAYWRIGHT_BASE_URL: baseURL,
           SOUNDING_LINE_BROWSER_AUTHORITY: "1",
+          ...(privateBrowser?.environment ?? {}),
         },
       },
     );
@@ -483,6 +529,32 @@ export async function runBrowserAuthority({
           ? "PASS"
           : "FAIL",
     };
+    for (const [phase, child, cleanup] of [
+      ["fixture", fixture, fixtureCleanup],
+      ["browser", browser, browserCleanup],
+    ]) {
+      const session = privateFailureSessions.get(phase);
+      if (!session) continue;
+      lifecycle.privateFailureDiagnostics ??= {};
+      try {
+        const workerClosed = cleanup.treeReaped === true && cleanup.streamsClosed === true;
+        const exit =
+          child && workerClosed
+            ? await bounded(() => processExit(child), 2000, "SOUNDING_LINE_PRIVATE_FAILURE_EXIT_UNAVAILABLE")
+            : { code: null, signal: null };
+        lifecycle.privateFailureDiagnostics[phase] = session.complete({
+          exitCode: exit.code,
+          signal: exit.signal,
+          workerClosed,
+        });
+      } catch {
+        lifecycle.privateFailureDiagnostics[phase] = {
+          retention: "INCOMPLETE",
+          issues: ["COLLECTION_FAILED"],
+          qualification: false,
+        };
+      }
+    }
     progress("cleanup.browser.result", { child: browser, childCleanup: true, cleanupResult: browserCleanup });
     progress("cleanup.proxy.result", { proxy, proxyCleanup: true });
     progress("cleanup.server.result", { child: server, childCleanup: true, cleanupResult: serverCleanup });
@@ -532,13 +604,20 @@ async function main() {
     if (process.argv[index] === "--fixture-project" && process.argv[index + 1])
       fixtureProject = process.argv[index + 1];
   }
+  const publicationOutput = createBrowserFailurePublicationOutput({
+    outputFile: process.env.GITHUB_OUTPUT,
+    nonce: process.env.SOUNDING_LINE_PRIVATE_FAILURE_PUBLICATION_NONCE,
+  });
+  if (!publicationOutput.initialized) throw new Error("SOUNDING_LINE_PRIVATE_PUBLICATION_OUTPUT_INITIALIZATION_FAILED");
   const receipt = await runBrowserAuthority({
     root,
+    onPrivateFailurePublication: publicationOutput.capture,
     fixtureArguments,
     fixtureProject,
     browserArguments: process.argv.slice(separator + 1),
     port: browserPortFromEnvironment(process.env),
   });
+  publicationOutput.finish({ failed: Boolean(receipt.failureCategory) });
   await writeBrowserDiagnosticReceipt(root, "browser-runtime.json", receipt);
   await writeBrowserReceiptAndExit(receipt);
 }
