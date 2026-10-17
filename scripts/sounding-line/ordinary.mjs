@@ -28,6 +28,8 @@ import { revisionJson } from "./product-experience.mjs";
 import { assertExceptionExecution, markExceptionTechnicalComplete } from "./experience-exception.mjs";
 import { BROWSER_DIAGNOSTIC_CONTEXT, createBrowserDiagnosticSession } from "./browser-diagnostics.mjs";
 import { withVerificationStage, verificationFailureObservation } from "./verification-diagnostics.mjs";
+import { withSourceDiagnosticCapture } from "./source-diagnostics.mjs";
+import { createR14Observation } from "./experience-r14-observability.mjs";
 
 const sha = /^[a-f0-9]{40}$/u;
 const productRoots = new Set(["app", "components", "src", "lib", "prisma", "public", "styles"]);
@@ -1351,6 +1353,7 @@ async function main() {
   let plan;
   let result;
   let diagnostics;
+  let r14Observation;
   try {
     plan = await withVerificationStage("CLASSIFICATION", () => buildPlan({ root, baseSha, candidateSha, mode }));
     if (plan.productExperience.exception && mode !== "ordinary")
@@ -1373,14 +1376,19 @@ async function main() {
       decision: "FAIL",
     };
     diagnostics = createBrowserDiagnosticSession(root, { baseSha, candidateSha, planDigest: result.planDigest });
-    const verification = await withVerificationStage("TECHNICAL_VERIFICATION", () =>
-      runReconciledVerification(
-        root,
-        plan,
-        exceptionCommandRunner(plan.productExperience, browserDiagnosticRunner(diagnostics)),
-      ),
-    );
-    await completeOrdinaryVerification({ root, plan, result, verification, diagnostics });
+    r14Observation = createR14Observation({ root, plan: plan.productExperience });
+    const verify = async () => {
+      const verification = await withVerificationStage("TECHNICAL_VERIFICATION", () =>
+        runReconciledVerification(
+          root,
+          plan,
+          exceptionCommandRunner(plan.productExperience, browserDiagnosticRunner(diagnostics)),
+        ),
+      );
+      await completeOrdinaryVerification({ root, plan, result, verification, diagnostics });
+    };
+    if (r14Observation) await withSourceDiagnosticCapture(r14Observation, verify);
+    else await verify();
     const browserDiagnostics = await diagnostics.read();
     result.browserQualification = browserDiagnostics.runtime;
     result.browserSuiteProfile = browserDiagnostics.profile;
@@ -1390,6 +1398,7 @@ async function main() {
       result.failureCategory = result.browserSuiteProfile.failureCategory;
     result.decision = "PASS";
   } catch (error) {
+    r14Observation?.rememberFinalFailure(error);
     result ??= {
       version: 1,
       authority: "SOUNDING_LINE",
@@ -1411,6 +1420,18 @@ async function main() {
       result.failureCategory = result.browserQualification.failureCategory;
     if (result.browserSuiteProfile?.failureCategory)
       result.failureCategory = result.browserSuiteProfile.failureCategory;
+  }
+  if (r14Observation) {
+    try {
+      result.r14Observation = await r14Observation.finish();
+    } catch {
+      result.r14Observation = { status: "EVIDENCE_LOSS", evidenceLoss: true };
+    }
+    if (result.r14Observation.status !== "COMPLETE" && result.decision === "PASS") {
+      result.decision = "FAIL";
+      result.error = "SOUNDING_LINE_R14_OBSERVATION_INCOMPLETE";
+      result.failureCategory = "EXECUTION_UNKNOWN";
+    }
   }
   result.completedAt = new Date().toISOString();
   await mkdir(path.join(root, "artifacts", "sounding-line"), { recursive: true });

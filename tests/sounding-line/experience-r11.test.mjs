@@ -455,7 +455,12 @@ test("R11 preserves the complete accepted workflow and finite deadlines", () => 
     cwd: repo,
     encoding: "utf8",
   });
-  assert.equal(readFileSync(path.join(repo, file), "utf8"), accepted);
+  // This historical assertion uses the exact protected pre-R14 workflow.
+  const historical = execFileSync("git", ["show", `ba27c3395da43c54c1f90d7f18e2ce07f7523fd4:${file}`], {
+    cwd: repo,
+    encoding: "utf8",
+  });
+  assert.equal(historical, accepted);
 });
 
 test("R11 registry appends one grant and one bridge without changing the original ten rows or three reconciliations", () => {

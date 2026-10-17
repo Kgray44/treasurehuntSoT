@@ -13,6 +13,7 @@ import { CROSSDECK_R10, r10HistoricalEvidencePlan } from "./experience-r10.mjs";
 import { CROSSDECK_R11, r11HistoricalEvidencePlan } from "./experience-r11.mjs";
 import { CROSSDECK_R12, r12HistoricalEvidencePlan } from "./experience-r12.mjs";
 import { CROSSDECK_R13, r13HistoricalEvidencePlan } from "./experience-r13.mjs";
+import { CROSSDECK_R14, r14HistoricalEvidencePlan } from "./experience-r14.mjs";
 
 export const R8_FORMAT = Object.freeze({
   id: "PE-R8-HISTORICAL-FORMAT-20261016",
@@ -317,6 +318,7 @@ export function bindR8FormatReconciliation({ root, baseSha, candidateSha, plan, 
 }
 
 export function r8FormatEvidencePlan(plan) {
+  if (plan.exception?.id === CROSSDECK_R14.id) return r14HistoricalEvidencePlan(plan);
   if (plan.exception?.id === CROSSDECK_R13.id) return r13HistoricalEvidencePlan(plan);
   if (plan.exception?.id === CROSSDECK_R12.id) return r12HistoricalEvidencePlan(plan);
   if (plan.exception?.id === CROSSDECK_R11.id) return r11HistoricalEvidencePlan(plan);
@@ -364,6 +366,11 @@ export function r8FormatEvidencePlan(plan) {
 }
 
 export function assertR8FormatMode(plan, mode) {
+  if (plan.exception?.id === CROSSDECK_R14.id) {
+    r14HistoricalEvidencePlan(plan);
+    if (!["ordinary", "qualify"].includes(mode)) fail("EXECUTION_FORBIDDEN");
+    return;
+  }
   if (plan.exception?.id === CROSSDECK_R13.id) {
     r13HistoricalEvidencePlan(plan);
     if (!["ordinary", "qualify"].includes(mode)) fail("EXECUTION_FORBIDDEN");

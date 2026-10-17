@@ -61,6 +61,7 @@ const metadataFiles = new Map([
   ["Development_Docs/Testing/Product_Experience/README.md", "EXPERIENCE_README"],
 ]);
 const scope = new AsyncLocalStorage();
+const privateCapture = new AsyncLocalStorage();
 const failures = new WeakMap();
 const object = (value) => value !== null && ["object", "function"].includes(typeof value);
 const hash = (value) => createHash("sha256").update(value).digest("hex");
@@ -174,6 +175,11 @@ export function withReplayAdmissionSubstage(substage, operation) {
 export function withReplayAdmissionScope(operation) {
   return scope.run({ substage: "ENTRY" }, () => withReplayAdmissionSubstage("ENTRY", operation));
 }
+// An installed ordinary verifier may retain private observations. This supplies no
+// admission, command selection or execution grant; historical callers are unchanged.
+export function withSourceDiagnosticCapture(capture, operation) {
+  return privateCapture.run(capture, operation);
+}
 export function inheritSourceFailure(cause, error) {
   if (object(cause) && object(error) && failures.has(cause) && !failures.has(error))
     failures.set(error, failures.get(cause));
@@ -262,12 +268,31 @@ function metadataBinding(metadata) {
   };
 }
 export function sourceDiagnosticGit(component, args, options = {}, metadata) {
-  if (!scope.getStore() || !supportedRead(component, args, options, metadata))
+  const capture = scope.getStore() ? privateCapture.getStore() : null;
+  // The hosted history reader catches this exact local probe and may recover
+  // remotely. Retain its private error before that catch; keep the older public
+  // sanitized-observation matcher and all historical callers unchanged.
+  const privateCommitProbe =
+    capture &&
+    component === "EXPERIENCE_EXCEPTION" &&
+    Array.isArray(args) &&
+    args.length === 3 &&
+    args[0] === "cat-file" &&
+    args[1] === "-e" &&
+    /^[a-f0-9]{40}\^\{commit\}$/u.test(args[2]) &&
+    typeof options.cwd === "string" &&
+    path.isAbsolute(options.cwd) &&
+    options.env === undefined &&
+    !options.shell &&
+    JSON.stringify(options.stdio) === '["ignore","pipe","ignore"]';
+  if (!scope.getStore() || !supportedRead(component, args, options, metadata)) {
+    if (privateCommitProbe) return capture.executeGitRead(execFileSync, args, options);
     return execFileSync("git", args, options);
+  }
   // Preserve every child option, including historically discarded stderr. Missing
   // output is reported unavailable; capture must not introduce a maxBuffer failure.
   try {
-    return execFileSync("git", args, options);
+    return capture ? capture.executeGitRead(execFileSync, args, options) : execFileSync("git", args, options);
   } catch (error) {
     try {
       const operation = operationIdentity(args);
