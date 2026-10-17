@@ -37,8 +37,6 @@ test("Library card menus preserve insertion, current-Scene protection, keyboard 
   await library.getByRole("searchbox").fill("Peeking Letter");
   const asset = library.getByRole("button", { name: "Inspect Peeking Letter", exact: true });
   await expect(asset).toBeVisible();
-  await asset.scrollIntoViewIfNeeded();
-  await page.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
   await asset.click({ button: "right" });
   const assetMenu = page.getByRole("menu", { name: "Peeking Letter actions", exact: true });
   await expect(assetMenu.getByRole("menuitem", { name: "Add to scene", exact: true })).toBeVisible();
@@ -56,8 +54,6 @@ test("Library card menus preserve insertion, current-Scene protection, keyboard 
   await library.getByRole("searchbox").fill(scene.content.title);
   const currentScene = library.getByRole("button", { name: `Inspect ${scene.content.title}`, exact: true });
   await expect(currentScene).toBeVisible();
-  await currentScene.scrollIntoViewIfNeeded();
-  await page.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
   await currentScene.click({ button: "right" });
   const sceneMenu = page.getByRole("menu", { name: `${scene.content.title} actions`, exact: true });
   await expect(sceneMenu.getByRole("menuitem", { name: "Archive", exact: true })).toBeDisabled();
@@ -98,6 +94,7 @@ test("Library card menus preserve insertion, current-Scene protection, keyboard 
   await deskMenu.getByRole("menuitem", { name: "Place in Scene", exact: true }).click();
   await expect(dialog).toBeHidden();
   await expect(page.getByLabel("Place Writing desk in Scene")).toBeVisible();
+  await expect(page.getByLabel("Place Writing desk in Scene")).toBeInViewport();
   await expect(page.getByRole("button", { name: "Undo", exact: true }).first()).toBeDisabled();
   await page.screenshot({ path: `${evidence}/context-placement-preview-phone.png`, fullPage: true });
 });
