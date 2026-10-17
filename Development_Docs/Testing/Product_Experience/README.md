@@ -108,6 +108,11 @@ The [Crossdeck R12 diagnosed continuation](../../Programs/Sounding_Line/Project_
 preserves failed ordinary5 and original review7/submission3. Its two bounded
 technical cases are supporting proof; current whole qualification is mandatory.
 
+The [Crossdeck R13 setup readiness successor](../../Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R13_Setup_Readiness_Successor_20261017.md)
+preserves R12's spent setup failure and requires complete isolated dependency
+readiness before any new technical trial. It retains the same current whole
+qualification and historical review boundaries.
+
 The [Homeport ledger](../../Projects/Project_Homeport/Homeport_Nonconformity_Ledger.csv)
 retains owner-reported spatial deficiencies and accountable repair paths.
 Owner reports are not rendered-confirmed waivers. A protected `RENDERED_CONFIRMED`

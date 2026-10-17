@@ -3123,6 +3123,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r13-setup-successor-20261017/r12-consumed-local-setup.derived.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r2-authority-amendment-20261015/local-validation.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -3388,6 +3394,12 @@
     },
     {
       "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R12_Diagnosed_Continuation_20261017.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R13_Setup_Readiness_Successor_20261017.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -5632,6 +5644,228 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r11-verification-20261017/accepted-authority-preservation-index.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/absence-and-accounting.observation.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/canonical-original-receipt.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/checksum-fetch-environment-probe/node-get-environment-probe.receipt.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/checksum-fetch-environment-probe/ordinary-configured-proxy-and-trust.stdout.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/checksum-fetch-environment-probe/ordinary-configured-trust-probe.receipt.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/checksum-fetch-environment-probe/ordinary-supported-proxy-context.stdout.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/checksum-fetch-environment-probe/sanitized-profile-equivalent.stdout.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/Disposition.proposed.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/entry/original.entry.terminal.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/independent-preservation-audit/assessment.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/independent-preservation-audit/preservation-index.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/original-common-git-markers/crossdeck-r12-focused-original-launch.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/original-common-git-markers/crossdeck-r12-focused-original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/original-focused-publication/browser-suite-profile.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/original-focused-publication/launch-marker.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/original-focused-publication/marker.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/original-focused-publication/preservation-index.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/original-focused-publication/receipt.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/original-focused-publication/source-manifest.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/postfailure-custody.observation.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/preservation-index.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/prior-read-only-admission-failures/r12-corrected.check.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/prior-read-only-admission-failures/r12-original.check.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/prior-read-only-admission-failures/refreshed/original.check.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/prior-read-only-admission-failures/refreshed/original.terminal.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/read-only-admission/r12-corrected-held-context.check.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/read-only-admission/r12-original-held-context.check.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/static-prerequisite-diagnosis/cacheEligibility.source-excerpt.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/static-prerequisite-diagnosis/cacheLogicalName.source-excerpt.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/static-prerequisite-diagnosis/cacheRoot.source-excerpt.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/static-prerequisite-diagnosis/cacheSidecarWriter.source-excerpt.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/static-prerequisite-diagnosis/checksumFetch.source-excerpt.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/static-prerequisite-diagnosis/generationCommand.source-excerpt.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/static-prerequisite-diagnosis/generatorTarget.source-excerpt.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/static-prerequisite-diagnosis/independent-review.receipt.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/static-prerequisite-diagnosis/official-checksums.receipt.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/static-prerequisite-diagnosis/static-diagnosis.receipt.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
