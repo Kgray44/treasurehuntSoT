@@ -1,6 +1,6 @@
 // Nonexecuting reconciliation of one already captured/reviewed R8 source.
 // Custody and every execution allowance remain in the original R8 namespace.
-import { execFileSync } from "node:child_process";
+import { sourceDiagnosticGit } from "./source-diagnostics.mjs";
 import { createHash } from "node:crypto";
 import { existsSync, lstatSync, readFileSync, mkdtempSync, writeFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -13,6 +13,7 @@ import { CROSSDECK_R10, r10HistoricalEvidencePlan } from "./experience-r10.mjs";
 import { CROSSDECK_R11, r11HistoricalEvidencePlan } from "./experience-r11.mjs";
 import { CROSSDECK_R12, r12HistoricalEvidencePlan } from "./experience-r12.mjs";
 import { CROSSDECK_R13, r13HistoricalEvidencePlan } from "./experience-r13.mjs";
+import { CROSSDECK_R14, r14HistoricalEvidencePlan } from "./experience-r14.mjs";
 
 export const R8_FORMAT = Object.freeze({
   id: "PE-R8-HISTORICAL-FORMAT-20261016",
@@ -97,7 +98,7 @@ const fail = (code) => {
   throw new Error(`PRODUCT_EXPERIENCE_R8_FORMAT_${code}`);
 };
 const git = (root, args, binary = false) =>
-  execFileSync("git", args, {
+  sourceDiagnosticGit("R8_FORMAT", args, {
     cwd: root,
     encoding: binary ? null : "utf8",
     maxBuffer: 64 * 1024 * 1024,
@@ -209,12 +210,17 @@ export function validateR8FormatMergedMetadata({ root, baseSha, candidateSha }) 
       writeFileSync(current, git(root, ["show", `${baseSha}:${file}`], true));
       writeFileSync(base, git(root, ["show", `${R8_FORMAT.baseSha}:${file}`], true));
       writeFileSync(other, git(root, ["show", `${R8_FORMAT.publicationCandidateSha}:${file}`], true));
-      const merged = execFileSync("git", ["merge-file", "--stdout", current, base, other], {
-        cwd: root,
-        maxBuffer: 64 * 1024 * 1024,
-        timeout: 5000,
-        stdio: ["ignore", "pipe", "ignore"],
-      });
+      const merged = sourceDiagnosticGit(
+        "R8_FORMAT",
+        ["merge-file", "--stdout", current, base, other],
+        {
+          cwd: root,
+          maxBuffer: 64 * 1024 * 1024,
+          timeout: 5000,
+          stdio: ["ignore", "pipe", "ignore"],
+        },
+        { file, revisions: [baseSha, R8_FORMAT.baseSha, R8_FORMAT.publicationCandidateSha] },
+      );
       const blob = createHash("sha1").update(`blob ${merged.length}\0`).update(merged).digest("hex");
       if (git(root, ["rev-parse", `${candidateSha}:${file}`]).trim() !== blob) fail("MERGED_METADATA_CHANGED");
     } finally {
@@ -312,6 +318,7 @@ export function bindR8FormatReconciliation({ root, baseSha, candidateSha, plan, 
 }
 
 export function r8FormatEvidencePlan(plan) {
+  if (plan.exception?.id === CROSSDECK_R14.id) return r14HistoricalEvidencePlan(plan);
   if (plan.exception?.id === CROSSDECK_R13.id) return r13HistoricalEvidencePlan(plan);
   if (plan.exception?.id === CROSSDECK_R12.id) return r12HistoricalEvidencePlan(plan);
   if (plan.exception?.id === CROSSDECK_R11.id) return r11HistoricalEvidencePlan(plan);
@@ -359,6 +366,11 @@ export function r8FormatEvidencePlan(plan) {
 }
 
 export function assertR8FormatMode(plan, mode) {
+  if (plan.exception?.id === CROSSDECK_R14.id) {
+    r14HistoricalEvidencePlan(plan);
+    if (!["ordinary", "qualify"].includes(mode)) fail("EXECUTION_FORBIDDEN");
+    return;
+  }
   if (plan.exception?.id === CROSSDECK_R13.id) {
     r13HistoricalEvidencePlan(plan);
     if (!["ordinary", "qualify"].includes(mode)) fail("EXECUTION_FORBIDDEN");

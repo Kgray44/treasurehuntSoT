@@ -1,5 +1,5 @@
 // Shared mechanics for two exact, protected diagnosed-continuation adapters.
-import { execFileSync } from "node:child_process";
+import { sourceDiagnosticGit } from "./source-diagnostics.mjs";
 import { createHash } from "node:crypto";
 import { readFileSync, lstatSync, mkdtempSync, writeFileSync, rmSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -40,7 +40,7 @@ export function createDiagnosedContinuation(profile) {
     throw new Error(`PRODUCT_EXPERIENCE_EXCEPTION_${profile.version}_${code}`);
   };
   const git = (root, args, binary = false) =>
-    execFileSync("git", args, {
+    sourceDiagnosticGit("DIAGNOSED_CONTINUATION", args, {
       cwd: root,
       encoding: binary ? null : "utf8",
       maxBuffer: 64 * 1024 * 1024,
@@ -234,12 +234,24 @@ export function createDiagnosedContinuation(profile) {
           CROSSDECK_R12.frozenReferenceSha,
         ].entries())
           writeFileSync(files[index], git(root, ["show", `${revision}:${file}`], true));
-        const merged = execFileSync("git", ["merge-file", "--stdout", ...files], {
-          cwd: root,
-          maxBuffer: 64 * 1024 * 1024,
-          timeout: 5000,
-          stdio: ["ignore", "pipe", "ignore"],
-        });
+        const merged = sourceDiagnosticGit(
+          "DIAGNOSED_CONTINUATION",
+          ["merge-file", "--stdout", ...files],
+          {
+            cwd: root,
+            maxBuffer: 64 * 1024 * 1024,
+            timeout: 5000,
+            stdio: ["ignore", "pipe", "ignore"],
+          },
+          {
+            file,
+            revisions: [
+              baseSha,
+              profile.metadataMergeBaseSha ?? R12_FOCUSED.original.baseSha,
+              CROSSDECK_R12.frozenReferenceSha,
+            ],
+          },
+        );
         const blob = createHash("sha1").update(`blob ${merged.length}\0`).update(merged).digest("hex");
         if (git(root, ["rev-parse", `${candidateSha}:${file}`]).trim() !== blob) fail("MERGED_METADATA_CHANGED");
       } finally {

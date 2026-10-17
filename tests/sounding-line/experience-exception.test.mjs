@@ -2669,9 +2669,14 @@ test("R3 Git admission permits only the bounded repair and freezes every other r
     "testing/product-experience-exceptions.json",
     JSON.stringify({ version: 1, exceptions: [template, successorTemplate, r3Template] }),
   );
-  // This synthetic base predates R13; its three historical grants must not
+  // This synthetic base predates R13 and R14; its three historical grants must not
   // inherit the installed-source sentinel from the current repository tree.
-  run(["update-index", "--force-remove", "scripts/sounding-line/experience-r13.mjs"]);
+  run([
+    "update-index",
+    "--force-remove",
+    "scripts/sounding-line/experience-r13.mjs",
+    "scripts/sounding-line/experience-r14.mjs",
+  ]);
   const baseSha = commit(baseInput);
   const original = JSON.parse(run(["show", `${CROSSDECK_R3.blockedCandidate}:testing/contracts.json`]));
   const contracts = structuredClone(original);
@@ -3474,9 +3479,16 @@ async function r12ApiFixture(t, supplied) {
   };
 }
 
-const r13Template = JSON.parse(
-  readFileSync(path.join(repo, "testing/product-experience-exceptions.json"), "utf8"),
-).exceptions.find((record) => record.id === CROSSDECK_R13.id);
+function r13RegistryFixture() {
+  const installed = JSON.parse(readFileSync(path.join(repo, "testing/product-experience-exceptions.json"), "utf8"));
+  // These fixtures exercise the historical R13 authority, before R14 existed.
+  return {
+    ...installed,
+    exceptions: installed.exceptions.slice(0, 13),
+    reconciliations: installed.reconciliations.slice(0, 6),
+  };
+}
+const r13Template = r13RegistryFixture().exceptions.find((record) => record.id === CROSSDECK_R13.id);
 async function r13ApiFixture(t) {
   const f = await r12ApiFixture(t);
   const p = r13Template.predecessor;
@@ -3497,7 +3509,7 @@ async function r13ApiFixture(t) {
       return { content: indexes.get(endpoint.slice(10)).toString("base64") };
     return f.request(endpoint, method, body);
   };
-  const registry = JSON.parse(readFileSync(path.join(repo, "testing/product-experience-exceptions.json"), "utf8"));
+  const registry = r13RegistryFixture();
   const bridge = {
     version: 1,
     id: CROSSDECK_R13.bridgeId,
@@ -3567,7 +3579,7 @@ test("R13 preserves fifteen remote predecessors and the distinct spent local set
 
 test("R13 installed source denies a removed grant and retirement never restores R12", async (t) => {
   const f = await r13ApiFixture(t);
-  const registry = JSON.parse(readFileSync(path.join(repo, "testing/product-experience-exceptions.json"), "utf8"));
+  const registry = r13RegistryFixture();
   f.write("scripts/sounding-line/experience-r13.mjs", "// Source-presence marker only; no module execution\n");
   const removed = {
     ...registry,

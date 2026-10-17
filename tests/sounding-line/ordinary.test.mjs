@@ -1623,6 +1623,9 @@ test("ordinary admission has no orchestration or generated-state prerequisites",
     "sounding-line-control-plane.yml",
     "sounding-line-exhaustive-release.yml",
     "sounding-line-ordinary.yml",
+    "sounding-line-replay-admission-diagnostic.yml",
+    "sounding-line-replay-historical-validation-diagnostic.yml",
+    "sounding-line-replay-posttechnical-diagnostic.yml",
   ]);
   assert.equal(scripts.test, "vitest run");
   for (const key of Object.keys(scripts))
@@ -1640,6 +1643,136 @@ test("ordinary admission has no orchestration or generated-state prerequisites",
     controlPlaneWorkflow,
     /pull_request_target|nightwatch|bosun|baseline|deepwater|feature catalog|P34|maintenance|train/iu,
   );
+  const sourceDiagnosticWorkflow = readFileSync(
+    ".github/workflows/sounding-line-replay-admission-diagnostic.yml",
+    "utf8",
+  );
+  assert.match(sourceDiagnosticWorkflow, /on:\n  workflow_dispatch:\n\npermissions:\n/u);
+  assert.doesNotMatch(
+    sourceDiagnosticWorkflow,
+    /pull_request_target|workflow_call|schedule:|inputs:|Mainline Decision|--mode ordinary|experience-exception\.mjs|browser-authority\.mjs|run-browser-suite\.mjs/u,
+  );
+  assert.equal((sourceDiagnosticWorkflow.match(/contents: write/gu) ?? []).length, 1);
+  const sourceJob = sourceDiagnosticWorkflow.split("\n  source-diagnostic:\n")[1];
+  assert.ok(sourceJob, "the diagnostic source job is explicit and separate");
+  assert.match(sourceJob, /needs: reserve-diagnostic/u);
+  assert.match(sourceJob, /contents: read/u);
+  assert.doesNotMatch(sourceJob, /contents: write/u);
+  assert.doesNotMatch(ordinaryWorkflow, /replay-admission-source-diagnostic|source-diagnostic|reserve-diagnostic/u);
+  const posttechnicalWorkflow = readFileSync(
+    ".github/workflows/sounding-line-replay-posttechnical-diagnostic.yml",
+    "utf8",
+  );
+  assert.match(posttechnicalWorkflow, /on:\n  workflow_dispatch:\n\npermissions:\n/u);
+  assert.doesNotMatch(
+    posttechnicalWorkflow,
+    /pull_request_target|workflow_call|schedule:|inputs:|Mainline Decision|--mode ordinary|actions\/cache/u,
+  );
+  assert.equal((posttechnicalWorkflow.match(/contents: write/gu) ?? []).length, 1);
+  assert.equal((posttechnicalWorkflow.match(/node-version: 24\.19\.0/gu) ?? []).length, 2);
+  const posttechnicalJobs = posttechnicalWorkflow.split("\njobs:\n")[1];
+  assert.deepEqual(
+    [...posttechnicalJobs.matchAll(/^  ([a-z-]+):$/gmu)].map((match) => match[1]),
+    ["reserve-diagnostic", "posttechnical-diagnostic"],
+  );
+  const exactDiagnosticGuard =
+    "    if: ${{ github.event_name == 'workflow_dispatch' && github.repository == 'Kgray44/treasurehuntSoT' && github.ref == 'refs/heads/main' && github.actor == 'Kgray44' && github.triggering_actor == 'Kgray44' && github.run_attempt == 1 }}";
+  assert.equal(posttechnicalWorkflow.split(exactDiagnosticGuard).length - 1, 2);
+  assert.equal((posttechnicalWorkflow.match(/uses: actions\/upload-artifact@/gu) ?? []).length, 2);
+  const reservationJob = posttechnicalJobs.split("\n  posttechnical-diagnostic:\n")[0];
+  const reservationUpload = reservationJob.split("      - uses: actions/upload-artifact@v4\n");
+  assert.equal(reservationUpload.length, 2);
+  assert.deepEqual(
+    [...reservationUpload[1].matchAll(/^          path: (.+)$/gmu)].map((match) => match[1]),
+    ["receipts/reservation.json"],
+  );
+  const workloadJob = posttechnicalWorkflow.split("\n  posttechnical-diagnostic:\n")[1];
+  assert.ok(workloadJob, "the finite technical product diagnostic has its own job");
+  assert.match(workloadJob, /needs: reserve-diagnostic/u);
+  assert.match(workloadJob, /contents: read/u);
+  assert.doesNotMatch(workloadJob, /contents: write/u);
+  const workloadUpload = workloadJob.split("      - uses: actions/upload-artifact@v4\n");
+  assert.equal(workloadUpload.length, 2);
+  assert.match(workloadJob, /id: diagnose\n/u);
+  assert.match(
+    workloadUpload[1],
+    /^        if: \$\{\{ always\(\) && steps\.diagnose\.outputs\.evidence_safe == 'true' \}\}\n/u,
+  );
+  assert.deepEqual(
+    [...workloadUpload[1].matchAll(/^          path: (.+)$/gmu)].map((match) => match[1]),
+    ["|"],
+  );
+  assert.match(
+    workloadJob,
+    /path: \|\n            receipts\/reproduction\.json\n            receipts\/private-evidence\.encrypted\n          if-no-files-found:/u,
+  );
+  assert.doesNotMatch(ordinaryWorkflow, /replay-posttechnical-diagnostic|posttechnical-diagnostic/u);
+  const historicalValidationWorkflow = readFileSync(
+    ".github/workflows/sounding-line-replay-historical-validation-diagnostic.yml",
+    "utf8",
+  );
+  assert.match(historicalValidationWorkflow, /on:\n  workflow_dispatch:\n\npermissions:\n/u);
+  assert.doesNotMatch(
+    historicalValidationWorkflow,
+    /pull_request_target|workflow_call|schedule:|inputs:|Mainline Decision|--mode ordinary|actions\/cache|replay-posttechnical-diagnostic\.mjs|npm |npx |experience-exception\.mjs|browser-authority\.mjs|run-browser-suite\.mjs/u,
+  );
+  assert.equal((historicalValidationWorkflow.match(/contents: write/gu) ?? []).length, 1);
+  assert.equal((historicalValidationWorkflow.match(/node-version: 24\.19\.0/gu) ?? []).length, 2);
+  assert.deepEqual(
+    [...historicalValidationWorkflow.matchAll(/^    timeout-minutes: (\d+)$/gmu)].map((match) => Number(match[1])),
+    [5, 15],
+  );
+  assert.equal(historicalValidationWorkflow.split(exactDiagnosticGuard).length - 1, 2);
+  const historicalValidationJobs = historicalValidationWorkflow.split("\njobs:\n")[1];
+  assert.deepEqual(
+    [...historicalValidationJobs.matchAll(/^  ([a-z-]+):$/gmu)].map((match) => match[1]),
+    ["reserve-diagnostic", "historical-validation-diagnostic"],
+  );
+  const [historicalReservationJob, historicalValidationJob] = historicalValidationJobs.split(
+    "\n  historical-validation-diagnostic:\n",
+  );
+  assert.match(historicalReservationJob, /reservation: \$\{\{ steps\.reserve\.outputs\.reservation \}\}/u);
+  assert.match(historicalValidationJob, /needs: reserve-diagnostic/u);
+  assert.match(historicalValidationJob, /contents: read/u);
+  assert.doesNotMatch(historicalValidationJob, /contents: write/u);
+  assert.deepEqual(
+    [...historicalValidationWorkflow.matchAll(/^        run: (.+)$/gmu)].map((match) => match[1]),
+    [
+      'node installer/scripts/sounding-line/replay-historical-validation-diagnostic.mjs reserve --installer "$GITHUB_WORKSPACE/installer" --output "$GITHUB_WORKSPACE/receipts/reservation.json"',
+      'node installer/scripts/sounding-line/replay-historical-validation-diagnostic.mjs diagnose --installer "$GITHUB_WORKSPACE/installer" --authority "$GITHUB_WORKSPACE/authority" --candidate "$GITHUB_WORKSPACE/candidate" --reservation "$DIAGNOSTIC_RESERVATION" --output "$GITHUB_WORKSPACE/receipts/reproduction.json"',
+    ],
+  );
+  assert.deepEqual(
+    [
+      ...historicalValidationWorkflow.matchAll(
+        /^          ref: (.+)\n          path: (.+)\n          fetch-depth: (\d)\n          persist-credentials: false$/gmu,
+      ),
+    ].map((match) => match.slice(1)),
+    [
+      ["${{ github.sha }}", "installer", "1"],
+      ["${{ github.sha }}", "installer", "1"],
+      ["24fb189a90435ccb6021b63fd6953603ae090bc0", "authority", "1"],
+      ["7681d297f281ab03f30b4224b8288b7c942024c6", "candidate", "0"],
+    ],
+  );
+  const historicalReservationUpload = historicalReservationJob.split("      - uses: actions/upload-artifact@v4\n");
+  assert.equal(historicalReservationUpload.length, 2);
+  assert.deepEqual(
+    [...historicalReservationUpload[1].matchAll(/^          path: (.+)$/gmu)].map((match) => match[1]),
+    ["receipts/reservation.json"],
+  );
+  const historicalValidationUpload = historicalValidationJob.split("      - uses: actions/upload-artifact@v4\n");
+  assert.equal(historicalValidationUpload.length, 2);
+  assert.match(historicalValidationJob, /id: diagnose\n/u);
+  assert.match(
+    historicalValidationUpload[1],
+    /^        if: \$\{\{ always\(\) && steps\.diagnose\.outputs\.evidence_safe == 'true' \}\}\n/u,
+  );
+  assert.match(
+    historicalValidationUpload[1],
+    /path: \|\n            receipts\/reproduction\.json\n            receipts\/private-evidence\.encrypted\n          if-no-files-found:/u,
+  );
+  assert.doesNotMatch(ordinaryWorkflow, /historical-validation-diagnostic/u);
 });
 
 test("trusted PR routing produces one strict decision for ordinary and control-plane candidates", () => {

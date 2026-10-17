@@ -6,6 +6,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createCustodyRequest } from "./custody-transport.mjs";
 import { observeVerificationFailure } from "./verification-diagnostics.mjs";
+import { sourceDiagnosticGit, withReplayAdmissionSubstage } from "./source-diagnostics.mjs";
+import { validateR14ObservationCiphertext } from "./experience-r14-observability.mjs";
 import {
   CROSSDECK_R3,
   validateR3Record,
@@ -90,8 +92,21 @@ import {
   validateR13FinalDecision,
   validateR13PublishedTechnicalProof,
 } from "./experience-r13.mjs";
+import {
+  CROSSDECK_R14,
+  validateR14Record,
+  validateR14Registry,
+  assertR14Mode,
+  bindR14Reconciliation,
+  pendingR14Reconciliation,
+  r14HistoricalEvidencePlan,
+  validateR14HistoricalCustody,
+  validateR14FinalDecision,
+  validateR14PublishedTechnicalProof,
+} from "./experience-r14.mjs";
 export { CROSSDECK_R12 } from "./experience-r12.mjs";
 export { CROSSDECK_R13 } from "./experience-r13.mjs";
+export { CROSSDECK_R14 } from "./experience-r14.mjs";
 
 // These finite successors share canonical execution/finalization. Dispatch only
 // exact, separately bound records; historical records never become fallback grants.
@@ -101,28 +116,33 @@ function ordinaryOnly(id) {
     id === CROSSDECK_R10.id ||
     id === CROSSDECK_R11.id ||
     id === CROSSDECK_R12.id ||
-    id === CROSSDECK_R13.id
+    id === CROSSDECK_R13.id ||
+    id === CROSSDECK_R14.id
   );
 }
 function validateOrdinaryOnlyRecord(record) {
+  if (record.id === CROSSDECK_R14.id) return validateR14Record(record);
   if (record.id === CROSSDECK_R13.id) return validateR13Record(record);
   if (record.id === CROSSDECK_R12.id) return validateR12Record(record);
   if (record.id === CROSSDECK_R11.id) return validateR11Record(record);
   return (record.id === CROSSDECK_R10.id ? validateR10Record : validateR9Record)(record);
 }
 function bindOrdinaryOnlyReconciliation(options) {
+  if (options.record.id === CROSSDECK_R14.id) return bindR14Reconciliation(options);
   if (options.record.id === CROSSDECK_R13.id) return bindR13Reconciliation(options);
   if (options.record.id === CROSSDECK_R12.id) return bindR12Reconciliation(options);
   if (options.record.id === CROSSDECK_R11.id) return bindR11Reconciliation(options);
   return (options.record.id === CROSSDECK_R10.id ? bindR10Reconciliation : bindR9Reconciliation)(options);
 }
 function pendingOrdinaryOnlyReconciliation(options) {
+  if (options.record.id === CROSSDECK_R14.id) return pendingR14Reconciliation(options);
   if (options.record.id === CROSSDECK_R13.id) return pendingR13Reconciliation(options);
   if (options.record.id === CROSSDECK_R12.id) return pendingR12Reconciliation(options);
   if (options.record.id === CROSSDECK_R11.id) return pendingR11Reconciliation(options);
   return (options.record.id === CROSSDECK_R10.id ? pendingR10Reconciliation : pendingR9Reconciliation)(options);
 }
 function ordinaryOnlyHistoricalPlan(plan) {
+  if (plan.exception.id === CROSSDECK_R14.id) return r14HistoricalEvidencePlan(plan);
   if (plan.exception.id === CROSSDECK_R13.id) return r13HistoricalEvidencePlan(plan);
   if (plan.exception.id === CROSSDECK_R12.id) return r12HistoricalEvidencePlan(plan);
   if (plan.exception.id === CROSSDECK_R11.id) return r11HistoricalEvidencePlan(plan);
@@ -134,6 +154,7 @@ function assertOrdinaryOnlyMode(plan, mode) {
   assertR11Mode(plan, mode);
   assertR12Mode(plan, mode);
   assertR13Mode(plan, mode);
+  assertR14Mode(plan, mode);
 }
 
 export const EXCEPTION_REGISTRY = "testing/product-experience-exceptions.json";
@@ -212,7 +233,7 @@ const fail = (code) => {
   throw new Error(`PRODUCT_EXPERIENCE_EXCEPTION_${code}`);
 };
 const git = (root, ...args) =>
-  execFileSync("git", args, {
+  sourceDiagnosticGit("EXPERIENCE_EXCEPTION", args, {
     cwd: root,
     encoding: "utf8",
     stdio: ["ignore", "pipe", "ignore"],
@@ -268,6 +289,20 @@ function r3FamilyRelated(root, candidateSha) {
   }
 }
 export function selectTrustedExceptions(records) {
+  const r14 = records.filter((r) => r.id === CROSSDECK_R14.id);
+  if (r14.length) {
+    if (r14.length !== 1 || records.length !== 14) fail("R14_PREDECESSOR_REGISTRY_CHANGED");
+    validateR14Record(r14[0]);
+    const prior = records.filter((r) => r.id !== CROSSDECK_R14.id);
+    selectTrustedExceptions(prior);
+    const old = prior.find((r) => r.id === CROSSDECK_R13.id);
+    if (
+      digest(old) !== r14[0].predecessor.recordDigest ||
+      digest(old.remotePredecessor) !== digest(r14[0].inheritedRemotePredecessor)
+    )
+      fail("R14_PREDECESSOR_REGISTRY_CHANGED");
+    return r14.filter((r) => r.status === "ACTIVE");
+  }
   const r13 = records.filter((r) => r.id === CROSSDECK_R13.id);
   if (r13.length) {
     if (r13.length !== 1 || records.length !== 13) fail("R13_PREDECESSOR_REGISTRY_CHANGED");
@@ -481,9 +516,11 @@ export function selectTrustedExceptions(records) {
   return records.filter((record) => record.status === "ACTIVE");
 }
 export const trustedExceptions = (root, baseSha) => {
-  // Installed R13 code cannot reactivate old rows by removing the newest grant.
+  // The adapter at the requested base cannot reactivate an older grant by removal.
   // Historical bases without this protected adapter retain their exact readers.
-  if (present(root, baseSha, "scripts/sounding-line/experience-r13.mjs"))
+  if (present(root, baseSha, "scripts/sounding-line/experience-r14.mjs"))
+    validateR14Registry(json(root, baseSha, EXCEPTION_REGISTRY));
+  else if (present(root, baseSha, "scripts/sounding-line/experience-r13.mjs"))
     validateR13Registry(json(root, baseSha, EXCEPTION_REGISTRY));
   return selectTrustedExceptions(exceptionRecords(root, baseSha));
 };
@@ -651,9 +688,15 @@ export function bindExperienceException({ root, baseSha, candidateSha, plan, prN
   for (const { path: file, mode, blob } of record.protectedBaseRuntimeOverrides)
     expected.set(file, `${mode} blob ${blob}`);
   if (
-    [CROSSDECK_R8.id, CROSSDECK_R9.id, CROSSDECK_R10.id, CROSSDECK_R11.id, CROSSDECK_R12.id, CROSSDECK_R13.id].includes(
-      record.id,
-    )
+    [
+      CROSSDECK_R8.id,
+      CROSSDECK_R9.id,
+      CROSSDECK_R10.id,
+      CROSSDECK_R11.id,
+      CROSSDECK_R12.id,
+      CROSSDECK_R13.id,
+      CROSSDECK_R14.id,
+    ].includes(record.id)
   )
     validateR8FormattingInputs(expected, candidate);
   if (record.id === CROSSDECK_R7.id) validateR7FormattingInputs(expected, candidate);
@@ -686,6 +729,7 @@ export function bindExperienceException({ root, baseSha, candidateSha, plan, prN
         CROSSDECK_R11.id,
         CROSSDECK_R12.id,
         CROSSDECK_R13.id,
+        CROSSDECK_R14.id,
       ].includes(record.id) &&
         metadata !== `100644 blob ${blob}`) ||
       !metadata ||
@@ -715,6 +759,7 @@ export function bindExperienceException({ root, baseSha, candidateSha, plan, prN
       CROSSDECK_R11.id,
       CROSSDECK_R12.id,
       CROSSDECK_R13.id,
+      CROSSDECK_R14.id,
     ].includes(record.id)
       ? contexts !== 32 || plan.paired?.browserContexts !== 6 || plan.contextCount !== 38
       : contexts !== record.contexts) ||
@@ -743,9 +788,11 @@ export function recordBinding(record) {
       CROSSDECK_R11.id,
       CROSSDECK_R12.id,
       CROSSDECK_R13.id,
+      CROSSDECK_R14.id,
     ].includes(record.id)
       ? { version: record.version, predecessor: record.predecessor, attemptHistory: record.attemptHistory }
       : {}),
+    ...(record.id === CROSSDECK_R14.id ? { inheritedRemotePredecessor: record.inheritedRemotePredecessor } : {}),
   };
 }
 export function validateExceptionEvidence(plan, evidence, automatedOnly = false) {
@@ -769,6 +816,7 @@ export function validateExceptionEvidence(plan, evidence, automatedOnly = false)
             CROSSDECK_R11.id,
             CROSSDECK_R12.id,
             CROSSDECK_R13.id,
+            CROSSDECK_R14.id,
           ].includes(plan.exception.id)
             ? 7
             : plan.exception.id === CROSSDECK_R5.id
@@ -944,15 +992,17 @@ async function validateHistoricalExceptionCustody({ root, plan, request }) {
   if (ordinaryOnly(plan.exception?.id)) {
     const context = historicalExceptionContext({ root, plan, request });
     return (
-      plan.exception.id === CROSSDECK_R13.id
-        ? validateR13HistoricalCustody
-        : plan.exception.id === CROSSDECK_R12.id
-          ? validateR12HistoricalCustody
-          : plan.exception.id === CROSSDECK_R11.id
-            ? validateR11HistoricalCustody
-            : plan.exception.id === CROSSDECK_R10.id
-              ? validateR10HistoricalCustody
-              : validateR9HistoricalCustody
+      plan.exception.id === CROSSDECK_R14.id
+        ? validateR14HistoricalCustody
+        : plan.exception.id === CROSSDECK_R13.id
+          ? validateR13HistoricalCustody
+          : plan.exception.id === CROSSDECK_R12.id
+            ? validateR12HistoricalCustody
+            : plan.exception.id === CROSSDECK_R11.id
+              ? validateR11HistoricalCustody
+              : plan.exception.id === CROSSDECK_R10.id
+                ? validateR10HistoricalCustody
+                : validateR9HistoricalCustody
     )({
       plan,
       store: context.store,
@@ -1053,10 +1103,12 @@ export async function validateSuccessorPredecessor({ record, request, now }) {
       CROSSDECK_R11.id,
       CROSSDECK_R12.id,
       CROSSDECK_R13.id,
+      CROSSDECK_R14.id,
     ].includes(record.id)
   )
     return null;
   validateExceptionRecord(record, now);
+  if (record.id === CROSSDECK_R14.id) return validateR14Predecessors(record, request);
   if (record.id === CROSSDECK_R13.id) return validateR13Predecessors(record, request);
   if (record.id === CROSSDECK_R12.id) return validateR12Predecessors(record, request);
   if (record.id === CROSSDECK_R11.id) return validateR11Predecessors(record, request);
@@ -1071,6 +1123,76 @@ export async function validateSuccessorPredecessor({ record, request, now }) {
     return validateR3Predecessors(request);
   }
   return validateHistoricalPreparation(record.predecessor, request);
+}
+
+async function validateR14Predecessors(record, request) {
+  const p = record.predecessor;
+  if (
+    p.id !== CROSSDECK_R13.id ||
+    p.recordDigest !== CROSSDECK_R13.recordDigest ||
+    p.namespace !== `sounding-line-exceptions/${CROSSDECK_R13.id}`
+  )
+    fail("R14_CONSUMED_QUALIFICATION_CHANGED");
+  const store = exceptionStore({ record: { id: p.id, custody: { namespace: p.namespace } }, request });
+  const qualifier = await store.read("qualify");
+  if (!qualifier) fail("R14_CONSUMED_QUALIFICATION_CHANGED");
+  const { commitSha, ...payload } = qualifier;
+  if (
+    commitSha !== p.qualifyCommit ||
+    digest(payload) !== p.qualifyPayloadDigest ||
+    (await store.read("qualified")) ||
+    qualifier.binding?.exception?.id !== CROSSDECK_R13.id ||
+    qualifier.binding.exception.recordDigest !== CROSSDECK_R13.recordDigest ||
+    qualifier.binding.baseSha !== p.baseSha ||
+    qualifier.binding.sourceDigest !== p.sourceDigest ||
+    qualifier.binding.contractDigest !== p.contractDigest ||
+    qualifier.candidateSha !== p.candidateSha ||
+    qualifier.candidateTree !== p.candidateTree ||
+    qualifier.run?.runId !== p.runId ||
+    qualifier.run.runAttempt !== p.runAttempt ||
+    qualifier.run.workflowId !== p.workflowId ||
+    qualifier.run.workflowPath !== workflowPath ||
+    qualifier.run.actor !== record.ownerApproval.actor ||
+    qualifier.run.createdAt !== p.createdAt ||
+    qualifier.run.event !== p.event ||
+    qualifier.run.headSha !== p.headSha ||
+    qualifier.run.headBranch !== p.headBranch ||
+    qualifier.run.displayTitle !== `Sounding Line finite 1 ordinary 721 ${p.candidateSha} active`
+  )
+    fail("R14_CONSUMED_QUALIFICATION_CHANGED");
+  r13HistoricalEvidencePlan(qualifier.binding);
+  // The authenticated R13 qualifier carries its exact R12 local predecessor.
+  // Its separately pinned inherited remote R11 binding preserves the full walk.
+  const prior = await validateR13Predecessors(
+    {
+      predecessor: qualifier.binding.exception.predecessor,
+      remotePredecessor: record.inheritedRemotePredecessor,
+    },
+    request,
+  );
+  const failed = await request(`actions/runs/${p.runId}`);
+  if (
+    !isExactFailedPredecessor(failed, p) ||
+    failed.check_suite_id !== p.checkSuiteId ||
+    failed.repository?.full_name !== record.repository
+  )
+    fail("R14_CONSUMED_RUN_CHANGED");
+  const commit = await request(`git/commits/${p.candidateSha}`);
+  if (commit?.tree?.sha !== p.candidateTree) fail("R14_CONSUMED_TREE_CHANGED");
+  for (const expected of p.artifacts) {
+    const artifact = await request(`actions/artifacts/${expected.id}`);
+    if (
+      artifact?.id !== expected.id ||
+      artifact.expired !== false ||
+      artifact.digest !== expected.digest ||
+      artifact.size_in_bytes !== expected.size ||
+      artifact.workflow_run?.id !== p.runId
+    )
+      fail("R14_FAILURE_ARTIFACT_CHANGED");
+  }
+  if (prior.length !== 15 || new Set([...prior, failed].map((value) => value.id)).size !== 16)
+    fail("R14_PREDECESSOR_HISTORY_CHANGED");
+  return [...prior, failed];
 }
 
 async function validateR13Predecessors(record, request) {
@@ -1660,7 +1782,10 @@ async function campaignHistory({ root, record, plan, mode, run, request, now, pr
           !r9HistoryRunMatches(
             item,
             predecessors.find((value) => value.id === item.id),
-          )
+          ) ||
+          (record.id === CROSSDECK_R14.id &&
+            item.id === record.predecessor.runId &&
+            item.check_suite_id !== record.predecessor.checkSuiteId)
         )
           fail("PREDECESSOR_HISTORY_CHANGED");
         continue;
@@ -1719,6 +1844,7 @@ async function campaignHistory({ root, record, plan, mode, run, request, now, pr
     // R11 has no preparatory execution allowance. Its exact authenticated
     // predecessors were handled above; any other active campaign run consumes
     // the finite boundary, including successful cross-mode work.
+    if (record.id === CROSSDECK_R14.id && item.id !== run.runId) fail("R14_UNLISTED_CAMPAIGN_RUN");
     if (record.id === CROSSDECK_R13.id && item.id !== run.runId) fail("R13_UNLISTED_CAMPAIGN_RUN");
     if (record.id === CROSSDECK_R12.id && item.id !== run.runId) fail("R12_UNLISTED_CAMPAIGN_RUN");
     if (record.id === CROSSDECK_R11.id && item.id !== run.runId) fail("R11_UNLISTED_CAMPAIGN_RUN");
@@ -1744,6 +1870,8 @@ export async function reserveExceptionStage({ root, record, plan, mode, run, sto
   }
   assertOrdinaryOnlyMode(plan, mode);
   assertR8FormatMode(plan, mode);
+  if (record.id === CROSSDECK_R14.id)
+    await validateR14PublishedTechnicalProof({ root, candidateSha: plan.candidateSha, plan, record });
   if (record.id === CROSSDECK_R13.id)
     await validateR13PublishedTechnicalProof({ root, candidateSha: plan.candidateSha, plan, record });
   if (record.id === CROSSDECK_R12.id)
@@ -2038,209 +2166,249 @@ export async function assertExceptionExecution({
 }) {
   // Rebuild from immutable source. A supplied plan or environment can never create permission.
   if (!existsSync(path.join(root, ".git")) && !plan.exception) return null;
-  if (
-    !recognizeExceptionExecution({
+  const recognized = withReplayAdmissionSubstage("SOURCE_RECOGNITION", () => {
+    const value = recognizeExceptionExecution({
       root,
       baseSha: plan.baseSha,
       candidateSha: git(root, "rev-parse", "HEAD"),
       environment,
-    })
-  ) {
-    if (plan.exception) fail("UNTRUSTED_EXECUTION_CLAIM");
-    return null;
-  }
-  if (!plan.baseSha || !plan.candidateSha) {
-    fail("EXECUTION_PLAN_CHANGED");
-  }
-  const records = trustedExceptions(root, plan.baseSha);
-  const related = records.some((record) =>
-    campaignRelated({
+    });
+    if (!value && plan.exception) fail("UNTRUSTED_EXECUTION_CLAIM");
+    return value;
+  });
+  if (!recognized) return null;
+  withReplayAdmissionSubstage("PLAN_INPUT", () => {
+    if (!plan.baseSha || !plan.candidateSha) fail("EXECUTION_PLAN_CHANGED");
+  });
+  const records = withReplayAdmissionSubstage("REGISTRY_READ", () => trustedExceptions(root, plan.baseSha));
+  const related = withReplayAdmissionSubstage("CAMPAIGN_RELATION", () =>
+    records.some((record) =>
+      campaignRelated({
+        root,
+        baseSha: plan.baseSha,
+        candidateSha: plan.candidateSha,
+        record,
+        prNumber: environment.SOUNDING_LINE_PR_NUMBER,
+      }),
+    ),
+  );
+  withReplayAdmissionSubstage("CAMPAIGN_RELATION", () => {
+    if (!related) fail("INSTALLED_PROTECTED_BASE_REQUIRED");
+  });
+  const { planProductExperience } = await withReplayAdmissionSubstage(
+    "PLAN_REBUILD",
+    () => import("./product-experience.mjs"),
+  );
+  const candidateSha = withReplayAdmissionSubstage("HEAD_CHECK", () => {
+    const candidate = git(root, "rev-parse", "HEAD");
+    if (candidate !== plan.candidateSha) fail("EXECUTION_HEAD_CHANGED");
+    return candidate;
+  });
+  const actual = withReplayAdmissionSubstage("PLAN_REBUILD", () => {
+    const changedPaths = git(root, "diff", "--name-only", "--no-renames", plan.baseSha, candidateSha).split(/\r?\n/u);
+    const value = planProductExperience({
       root,
       baseSha: plan.baseSha,
-      candidateSha: plan.candidateSha,
-      record,
+      candidateSha,
+      changedPaths,
       prNumber: environment.SOUNDING_LINE_PR_NUMBER,
-    }),
-  );
-  if (!related) {
-    fail("INSTALLED_PROTECTED_BASE_REQUIRED");
-  }
-  const { planProductExperience } = await import("./product-experience.mjs");
-  const candidateSha = git(root, "rev-parse", "HEAD");
-  if (candidateSha !== plan.candidateSha) fail("EXECUTION_HEAD_CHANGED");
-  const changedPaths = git(root, "diff", "--name-only", "--no-renames", plan.baseSha, candidateSha).split(/\r?\n/u);
-  const actual = planProductExperience({
-    root,
-    baseSha: plan.baseSha,
-    candidateSha,
-    changedPaths,
-    prNumber: environment.SOUNDING_LINE_PR_NUMBER,
-  });
-  if (!actual.exception) fail("APPROVAL_MISSING_OR_INACTIVE");
-  if (
-    actual.exception.nonExecutingReconciliation &&
-    (environment.SOUNDING_LINE_EXCEPTION_PHASE !== "qualify" ||
-      plan.localProof ||
-      Object.keys(environment).some(
-        (key) => /^SOUNDING_LINE_R(?:[3-9]|10|11|12)_LOCAL_LEASE$/u.test(key) && environment[key],
-      ))
-  )
-    fail("R8_FORMAT_EXECUTION_FORBIDDEN");
-  if (environment.SOUNDING_LINE_R8_LOCAL_LEASE) {
-    if (kind !== "experience" || environment.GITHUB_ACTIONS === "true" || actual.exception.id !== CROSSDECK_R8.id)
-      fail("R8_LOCAL_PROOF_SCOPE_CHANGED");
-    const marker = JSON.parse(readFileSync(r8LocalMarkerPath(root), "utf8"));
-    if (
-      marker.status !== "STARTED" ||
-      marker.lease !== environment.SOUNDING_LINE_R8_LOCAL_LEASE ||
-      marker.candidateSha !== candidateSha ||
-      digest(marker.binding) !== digest(exceptionBinding(actual))
-    )
-      fail("R8_LOCAL_PROOF_CONSUMED_OR_CHANGED");
-    try {
-      process.kill(marker.ownerPid, 0);
-    } catch {
-      fail("R8_LOCAL_PROOF_OWNER_EXITED");
-    }
-    if (plan.localProof !== CROSSDECK_R8.id || plan.pairedOnly !== true) fail("R8_LOCAL_PROOF_SCOPE_CHANGED");
-    validateExceptionExecutionPlan(r8LocalPlan(actual), plan);
-    if (claim) claimExceptionPhase({ root, phase: "r8-local-launch", plan, runId: 0 });
-    return { ...marker, preparationReservation: "LOCAL_PROOF_NOT_PROTECTED_PREPARATION" };
-  }
-  if (environment.SOUNDING_LINE_R7_LOCAL_LEASE) {
-    if (kind !== "experience" || environment.GITHUB_ACTIONS === "true" || actual.exception.id !== CROSSDECK_R7.id)
-      fail("R7_LOCAL_PROOF_SCOPE_CHANGED");
-    const marker = JSON.parse(readFileSync(r7LocalMarkerPath(root), "utf8"));
-    if (
-      marker.status !== "STARTED" ||
-      marker.lease !== environment.SOUNDING_LINE_R7_LOCAL_LEASE ||
-      marker.candidateSha !== candidateSha ||
-      digest(marker.binding) !== digest(exceptionBinding(actual))
-    )
-      fail("R7_LOCAL_PROOF_CONSUMED_OR_CHANGED");
-    try {
-      process.kill(marker.ownerPid, 0);
-    } catch {
-      fail("R7_LOCAL_PROOF_OWNER_EXITED");
-    }
-    if (plan.localProof !== CROSSDECK_R7.id || plan.pairedOnly !== true) fail("R7_LOCAL_PROOF_SCOPE_CHANGED");
-    validateExceptionExecutionPlan(r7LocalPlan(actual), plan);
-    if (claim) claimExceptionPhase({ root, phase: "r7-local-launch", plan, runId: 0 });
-    return { ...marker, preparationReservation: "LOCAL_PROOF_NOT_PROTECTED_PREPARATION" };
-  }
-  if (environment.SOUNDING_LINE_R6_LOCAL_LEASE) {
-    if (kind !== "experience" || environment.GITHUB_ACTIONS === "true" || actual.exception.id !== CROSSDECK_R6.id)
-      fail("R6_LOCAL_PROOF_SCOPE_CHANGED");
-    const marker = JSON.parse(readFileSync(r6LocalMarkerPath(root), "utf8"));
-    if (
-      marker.status !== "STARTED" ||
-      marker.lease !== environment.SOUNDING_LINE_R6_LOCAL_LEASE ||
-      marker.candidateSha !== candidateSha ||
-      digest(marker.binding) !== digest(exceptionBinding(actual))
-    )
-      fail("R6_LOCAL_PROOF_CONSUMED_OR_CHANGED");
-    try {
-      process.kill(marker.ownerPid, 0);
-    } catch {
-      fail("R6_LOCAL_PROOF_OWNER_EXITED");
-    }
-    if (plan.localProof !== CROSSDECK_R6.id || plan.pairedOnly !== true) fail("R6_LOCAL_PROOF_SCOPE_CHANGED");
-    validateExceptionExecutionPlan(r6LocalPlan(actual), plan);
-    if (claim) claimExceptionPhase({ root, phase: "r6-local-launch", plan, runId: 0 });
-    return { ...marker, preparationReservation: "LOCAL_PROOF_NOT_PROTECTED_PREPARATION" };
-  }
-  if (environment.SOUNDING_LINE_R3_LOCAL_LEASE) {
-    if (kind !== "experience" || environment.GITHUB_ACTIONS === "true" || actual.exception.id !== CROSSDECK_R3.id)
-      fail("R3_LOCAL_PROOF_SCOPE_CHANGED");
-    const marker = JSON.parse(readFileSync(r3LocalMarkerPath(root), "utf8"));
-    if (
-      marker.status !== "STARTED" ||
-      marker.lease !== environment.SOUNDING_LINE_R3_LOCAL_LEASE ||
-      digest(marker.binding) !== digest(exceptionBinding(actual))
-    )
-      fail("R3_LOCAL_PROOF_CONSUMED_OR_CHANGED");
-    try {
-      process.kill(marker.ownerPid, 0);
-    } catch {
-      fail("R3_LOCAL_PROOF_OWNER_EXITED");
-    }
-    if (plan.localProof !== CROSSDECK_R3.id || !["NORMAL", "REDUCED"].includes(plan.localProofMotionMode))
-      fail("R3_LOCAL_PROOF_SCOPE_CHANGED");
-    validateExceptionExecutionPlan(r3LocalPlan(actual, plan.localProofMotionMode), plan);
-    if (claim) claimExceptionPhase({ root, phase: `r3-local-launch-${plan.localProofMotionMode}`, plan, runId: 0 });
-    return { ...marker, preparationReservation: "LOCAL_PROOF_NOT_PROTECTED_PREPARATION" };
-  }
-  validateExceptionExecutionPlan(plan, actual);
-  const record = trustedExceptions(root, plan.baseSha).find((value) => value.id === actual.exception.id);
-  const phase = environment.SOUNDING_LINE_EXCEPTION_PHASE;
-  if (
-    !["prepare", "qualify"].includes(phase) ||
-    (kind !== "experience" && phase !== "qualify") ||
-    environment.GITHUB_ACTIONS !== "true" ||
-    environment.GITHUB_RUN_ATTEMPT !== "1" ||
-    environment.GITHUB_JOB !== (phase === "prepare" ? "experience-preparation" : "final-check")
-  )
-    fail("EXECUTION_PHASE_FORBIDDEN");
-  const phaseName = kind === "ordinary" ? "ordinary" : kind === "technical" ? "technical" : "experience";
-  if (!claim) return requireExceptionPhase({ root, phase: phaseName, plan, environment });
-  if (kind === "technical")
-    requireExceptionPhase({
-      root,
-      phase: "ordinary",
-      plan,
-      environment: {
-        ...environment,
-        SOUNDING_LINE_EXCEPTION_LEASE: environment.SOUNDING_LINE_EXCEPTION_ORDINARY_LEASE,
-      },
     });
-  const api = request ?? githubRequest(record.repository);
-  await validateLiveContext({ record, plan, request: api, environment });
-  await validateHistoricalExceptionCustody({ root, plan, request: api });
-  const reservation = await exceptionStore({ record, request: api }).read(phase);
-  if (
-    !reservation ||
-    digest(reservation.binding) !== digest(exceptionBinding(plan)) ||
-    reservation.run.runId !== Number(environment.GITHUB_RUN_ID) ||
-    (phase === "qualify" && reservation.candidateSha !== candidateSha)
-  )
-    fail("EXECUTION_RESERVATION_MISSING");
-  if (kind === "experience" && phase === "qualify" && !existsSync(phasePath(root, "technical-complete")))
-    fail("TECHNICAL_VERIFICATION_NOT_COMPLETE");
+    if (!value.exception) fail("APPROVAL_MISSING_OR_INACTIVE");
+    return value;
+  });
+  withReplayAdmissionSubstage("EXECUTOR_CONTEXT", () => {
+    if (
+      actual.exception.nonExecutingReconciliation &&
+      (environment.SOUNDING_LINE_EXCEPTION_PHASE !== "qualify" ||
+        plan.localProof ||
+        Object.keys(environment).some(
+          (key) => /^SOUNDING_LINE_R(?:[3-9]|10|11|12)_LOCAL_LEASE$/u.test(key) && environment[key],
+        ))
+    )
+      fail("R8_FORMAT_EXECUTION_FORBIDDEN");
+  });
+  const localLease = withReplayAdmissionSubstage("LOCAL_LEASE", () => {
+    if (environment.SOUNDING_LINE_R8_LOCAL_LEASE) {
+      if (kind !== "experience" || environment.GITHUB_ACTIONS === "true" || actual.exception.id !== CROSSDECK_R8.id)
+        fail("R8_LOCAL_PROOF_SCOPE_CHANGED");
+      const marker = JSON.parse(readFileSync(r8LocalMarkerPath(root), "utf8"));
+      if (
+        marker.status !== "STARTED" ||
+        marker.lease !== environment.SOUNDING_LINE_R8_LOCAL_LEASE ||
+        marker.candidateSha !== candidateSha ||
+        digest(marker.binding) !== digest(exceptionBinding(actual))
+      )
+        fail("R8_LOCAL_PROOF_CONSUMED_OR_CHANGED");
+      try {
+        process.kill(marker.ownerPid, 0);
+      } catch {
+        fail("R8_LOCAL_PROOF_OWNER_EXITED");
+      }
+      if (plan.localProof !== CROSSDECK_R8.id || plan.pairedOnly !== true) fail("R8_LOCAL_PROOF_SCOPE_CHANGED");
+      validateExceptionExecutionPlan(r8LocalPlan(actual), plan);
+      if (claim) claimExceptionPhase({ root, phase: "r8-local-launch", plan, runId: 0 });
+      return { ...marker, preparationReservation: "LOCAL_PROOF_NOT_PROTECTED_PREPARATION" };
+    }
+    if (environment.SOUNDING_LINE_R7_LOCAL_LEASE) {
+      if (kind !== "experience" || environment.GITHUB_ACTIONS === "true" || actual.exception.id !== CROSSDECK_R7.id)
+        fail("R7_LOCAL_PROOF_SCOPE_CHANGED");
+      const marker = JSON.parse(readFileSync(r7LocalMarkerPath(root), "utf8"));
+      if (
+        marker.status !== "STARTED" ||
+        marker.lease !== environment.SOUNDING_LINE_R7_LOCAL_LEASE ||
+        marker.candidateSha !== candidateSha ||
+        digest(marker.binding) !== digest(exceptionBinding(actual))
+      )
+        fail("R7_LOCAL_PROOF_CONSUMED_OR_CHANGED");
+      try {
+        process.kill(marker.ownerPid, 0);
+      } catch {
+        fail("R7_LOCAL_PROOF_OWNER_EXITED");
+      }
+      if (plan.localProof !== CROSSDECK_R7.id || plan.pairedOnly !== true) fail("R7_LOCAL_PROOF_SCOPE_CHANGED");
+      validateExceptionExecutionPlan(r7LocalPlan(actual), plan);
+      if (claim) claimExceptionPhase({ root, phase: "r7-local-launch", plan, runId: 0 });
+      return { ...marker, preparationReservation: "LOCAL_PROOF_NOT_PROTECTED_PREPARATION" };
+    }
+    if (environment.SOUNDING_LINE_R6_LOCAL_LEASE) {
+      if (kind !== "experience" || environment.GITHUB_ACTIONS === "true" || actual.exception.id !== CROSSDECK_R6.id)
+        fail("R6_LOCAL_PROOF_SCOPE_CHANGED");
+      const marker = JSON.parse(readFileSync(r6LocalMarkerPath(root), "utf8"));
+      if (
+        marker.status !== "STARTED" ||
+        marker.lease !== environment.SOUNDING_LINE_R6_LOCAL_LEASE ||
+        marker.candidateSha !== candidateSha ||
+        digest(marker.binding) !== digest(exceptionBinding(actual))
+      )
+        fail("R6_LOCAL_PROOF_CONSUMED_OR_CHANGED");
+      try {
+        process.kill(marker.ownerPid, 0);
+      } catch {
+        fail("R6_LOCAL_PROOF_OWNER_EXITED");
+      }
+      if (plan.localProof !== CROSSDECK_R6.id || plan.pairedOnly !== true) fail("R6_LOCAL_PROOF_SCOPE_CHANGED");
+      validateExceptionExecutionPlan(r6LocalPlan(actual), plan);
+      if (claim) claimExceptionPhase({ root, phase: "r6-local-launch", plan, runId: 0 });
+      return { ...marker, preparationReservation: "LOCAL_PROOF_NOT_PROTECTED_PREPARATION" };
+    }
+    if (environment.SOUNDING_LINE_R3_LOCAL_LEASE) {
+      if (kind !== "experience" || environment.GITHUB_ACTIONS === "true" || actual.exception.id !== CROSSDECK_R3.id)
+        fail("R3_LOCAL_PROOF_SCOPE_CHANGED");
+      const marker = JSON.parse(readFileSync(r3LocalMarkerPath(root), "utf8"));
+      if (
+        marker.status !== "STARTED" ||
+        marker.lease !== environment.SOUNDING_LINE_R3_LOCAL_LEASE ||
+        digest(marker.binding) !== digest(exceptionBinding(actual))
+      )
+        fail("R3_LOCAL_PROOF_CONSUMED_OR_CHANGED");
+      try {
+        process.kill(marker.ownerPid, 0);
+      } catch {
+        fail("R3_LOCAL_PROOF_OWNER_EXITED");
+      }
+      if (plan.localProof !== CROSSDECK_R3.id || !["NORMAL", "REDUCED"].includes(plan.localProofMotionMode))
+        fail("R3_LOCAL_PROOF_SCOPE_CHANGED");
+      validateExceptionExecutionPlan(r3LocalPlan(actual, plan.localProofMotionMode), plan);
+      if (claim) claimExceptionPhase({ root, phase: `r3-local-launch-${plan.localProofMotionMode}`, plan, runId: 0 });
+      return { ...marker, preparationReservation: "LOCAL_PROOF_NOT_PROTECTED_PREPARATION" };
+    }
+    return null;
+  });
+  if (localLease) return localLease;
+  withReplayAdmissionSubstage("PLAN_COMPARE", () => validateExceptionExecutionPlan(plan, actual));
+  const record = withReplayAdmissionSubstage("REGISTRY_READ", () =>
+    trustedExceptions(root, plan.baseSha).find((value) => value.id === actual.exception.id),
+  );
+  const phase = environment.SOUNDING_LINE_EXCEPTION_PHASE;
+  withReplayAdmissionSubstage("EXECUTOR_CONTEXT", () => {
+    if (
+      !["prepare", "qualify"].includes(phase) ||
+      (kind !== "experience" && phase !== "qualify") ||
+      environment.GITHUB_ACTIONS !== "true" ||
+      environment.GITHUB_RUN_ATTEMPT !== "1" ||
+      environment.GITHUB_JOB !== (phase === "prepare" ? "experience-preparation" : "final-check")
+    )
+      fail("EXECUTION_PHASE_FORBIDDEN");
+  });
+  const phaseName = kind === "ordinary" ? "ordinary" : kind === "technical" ? "technical" : "experience";
+  if (!claim)
+    return withReplayAdmissionSubstage("ORDINARY_LEASE", () =>
+      requireExceptionPhase({ root, phase: phaseName, plan, environment }),
+    );
+  if (kind === "technical")
+    withReplayAdmissionSubstage("ORDINARY_LEASE", () =>
+      requireExceptionPhase({
+        root,
+        phase: "ordinary",
+        plan,
+        environment: {
+          ...environment,
+          SOUNDING_LINE_EXCEPTION_LEASE: environment.SOUNDING_LINE_EXCEPTION_ORDINARY_LEASE,
+        },
+      }),
+    );
+  const api = withReplayAdmissionSubstage("CUSTODY_REQUEST", () => request ?? githubRequest(record.repository));
+  await withReplayAdmissionSubstage("LIVE_CONTEXT", () =>
+    validateLiveContext({ record, plan, request: api, environment }),
+  );
+  await withReplayAdmissionSubstage("HISTORICAL_CUSTODY", () =>
+    validateHistoricalExceptionCustody({ root, plan, request: api }),
+  );
+  const reservation = await withReplayAdmissionSubstage("RESERVATION", async () => {
+    const reservation = await exceptionStore({ record, request: api }).read(phase);
+    if (
+      !reservation ||
+      digest(reservation.binding) !== digest(exceptionBinding(plan)) ||
+      reservation.run.runId !== Number(environment.GITHUB_RUN_ID) ||
+      (phase === "qualify" && reservation.candidateSha !== candidateSha)
+    )
+      fail("EXECUTION_RESERVATION_MISSING");
+    return reservation;
+  });
+  withReplayAdmissionSubstage("TECHNICAL_COMPLETE", () => {
+    if (kind === "experience" && phase === "qualify" && !existsSync(phasePath(root, "technical-complete")))
+      fail("TECHNICAL_VERIFICATION_NOT_COMPLETE");
+  });
   const prepare =
     phase === "prepare"
       ? reservation
-      : await historicalExceptionContext({ root, plan, request: api }).store.read("prepare");
-  return claimExceptionPhase({
-    root,
-    phase: phaseName,
-    plan,
-    runId: Number(environment.GITHUB_RUN_ID),
-    preparationReservation: prepare.commitSha,
-    ...([
-      CROSSDECK_R2.id,
-      CROSSDECK_R3.id,
-      CROSSDECK_R4.id,
-      CROSSDECK_R5.id,
-      CROSSDECK_R6.id,
-      CROSSDECK_R7.id,
-      CROSSDECK_R8.id,
-      CROSSDECK_R9.id,
-      CROSSDECK_R10.id,
-      CROSSDECK_R11.id,
-      CROSSDECK_R12.id,
-      CROSSDECK_R13.id,
-    ].includes(record.id)
-      ? {
-          executionHistory: {
-            ...record.attemptHistory,
-            stage: phase,
-            ...(phase === "prepare"
-              ? { executedAttemptsIncludingThisPreparation: record.attemptHistory.nextPreparationAttemptTotal }
-              : {}),
-          },
-        }
-      : {}),
-  });
+      : await withReplayAdmissionSubstage("HISTORICAL_PREPARE", () =>
+          historicalExceptionContext({ root, plan, request: api }).store.read("prepare"),
+        );
+  return withReplayAdmissionSubstage("PHASE_CLAIM", () =>
+    claimExceptionPhase({
+      root,
+      phase: phaseName,
+      plan,
+      runId: Number(environment.GITHUB_RUN_ID),
+      preparationReservation: prepare.commitSha,
+      ...([
+        CROSSDECK_R2.id,
+        CROSSDECK_R3.id,
+        CROSSDECK_R4.id,
+        CROSSDECK_R5.id,
+        CROSSDECK_R6.id,
+        CROSSDECK_R7.id,
+        CROSSDECK_R8.id,
+        CROSSDECK_R9.id,
+        CROSSDECK_R10.id,
+        CROSSDECK_R11.id,
+        CROSSDECK_R12.id,
+        CROSSDECK_R13.id,
+        CROSSDECK_R14.id,
+      ].includes(record.id)
+        ? {
+            executionHistory: {
+              ...record.attemptHistory,
+              stage: phase,
+              ...(phase === "prepare"
+                ? { executedAttemptsIncludingThisPreparation: record.attemptHistory.nextPreparationAttemptTotal }
+                : {}),
+            },
+          }
+        : {}),
+    }),
+  );
 }
 export function r3LocalMarkerPath(root) {
   return path.join(
@@ -2290,12 +2458,23 @@ export function markExceptionTechnicalComplete(root, plan) {
     claimExceptionPhase({ root, phase: "technical-complete", plan, runId: Number(process.env.GITHUB_RUN_ID) });
 }
 
-export async function sealExceptionQualification({ root, record, plan, ordinary, run, store, decision }) {
+export async function sealExceptionQualification({
+  root,
+  record,
+  plan,
+  ordinary,
+  run,
+  store,
+  decision,
+  observationFile,
+}) {
   if (record?.id !== plan.exception?.id) fail("QUALIFICATION_RECORD_CHANGED");
   if (ordinaryOnly(record.id)) {
     validateOrdinaryOnlyRecord(record);
     if (record.status !== "ACTIVE") fail("R9_STAGE_RECORD_INACTIVE");
   }
+  if (record.id === CROSSDECK_R14.id)
+    await validateR14PublishedTechnicalProof({ root, candidateSha: plan.candidateSha, plan, record });
   if (record.id === CROSSDECK_R13.id)
     await validateR13PublishedTechnicalProof({ root, candidateSha: plan.candidateSha, plan, record });
   if (record.id === CROSSDECK_R12.id)
@@ -2320,22 +2499,27 @@ export async function sealExceptionQualification({ root, record, plan, ordinary,
     fail("FINAL_DECISION_MISMATCH");
   if (ordinaryOnly(record.id)) {
     const { verificationObligationGroups } = await import("./ordinary.mjs");
-    (record.id === CROSSDECK_R13.id
-      ? validateR13FinalDecision
-      : record.id === CROSSDECK_R12.id
-        ? validateR12FinalDecision
-        : record.id === CROSSDECK_R11.id
-          ? validateR11FinalDecision
-          : record.id === CROSSDECK_R10.id
-            ? validateR10FinalDecision
-            : validateR9FinalDecision)({
+    (record.id === CROSSDECK_R14.id
+      ? validateR14FinalDecision
+      : record.id === CROSSDECK_R13.id
+        ? validateR13FinalDecision
+        : record.id === CROSSDECK_R12.id
+          ? validateR12FinalDecision
+          : record.id === CROSSDECK_R11.id
+            ? validateR11FinalDecision
+            : record.id === CROSSDECK_R10.id
+              ? validateR10FinalDecision
+              : validateR9FinalDecision)({
       plan,
       ordinary,
       record,
       decision,
       groups: verificationObligationGroups(ordinary),
+      ...(record.id === CROSSDECK_R14.id ? { run } : {}),
     });
   }
+  if (record.id === CROSSDECK_R14.id)
+    validateR14ObservationCiphertext({ file: observationFile, observation: decision.r14Observation });
   return store.create("qualified", {
     binding: exceptionBinding(plan),
     run,
@@ -2424,7 +2608,18 @@ async function main() {
     fail("TARGET_OR_SELECTED_SCOPE_CHANGED");
   if (options.operation === "seal") {
     const decision = JSON.parse(readFileSync(options.decision, "utf8"));
-    await sealExceptionQualification({ root, record, plan, ordinary, run, store, decision });
+    await sealExceptionQualification({
+      root,
+      record,
+      plan,
+      ordinary,
+      run,
+      store,
+      decision,
+      ...(record.id === CROSSDECK_R14.id
+        ? { observationFile: path.join(path.dirname(path.resolve(options.decision)), "r14-observation.encrypted") }
+        : {}),
+    });
   } else if (mode === "capture") {
     // The reservation is already durable; a failed remainder is never refunded.
   } else {
