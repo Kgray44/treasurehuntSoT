@@ -257,7 +257,9 @@ test("photographic video through the actual worker tracks noise, motion, partial
   await page.goto("/devices/reach");
   await page.getByRole("button", { name: "Enable live camera" }).click();
   await expect(status(page)).toContainText("Your hand is ready", { timeout: 30000 });
-  expect((await telemetry(page)).observations).toBeGreaterThan(3);
+  // Readiness now updates without the old visual debounce. Independently wait
+  // for the worker evidence count instead of relying on that UI delay.
+  await expect.poll(async () => (await telemetry(page)).observations).toBeGreaterThan(3);
   await shot(page, "worker-photographic-tracking");
   await page.evaluate(() => {
     const t = (window as unknown as { reachTelemetry: { condition: string; x: number } }).reachTelemetry;
