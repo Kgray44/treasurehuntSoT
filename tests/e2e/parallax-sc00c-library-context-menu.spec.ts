@@ -26,7 +26,7 @@ test("Library card menus preserve insertion, current-Scene protection, keyboard 
   scene.content.title = "Context menu working Scene";
   await saveSpatialDraft(account.id, scene, 0);
   await authenticateClosure(context, account, baseURL!);
-  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(`/studio/parallax?definition=${scene.content.definitionId}`);
   await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("ENGINEERING");
   const renderer = page.getByRole("region", { name: "Spatial canvas", exact: true }).locator('[data-renderer="READY"]');
