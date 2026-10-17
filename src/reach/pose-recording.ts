@@ -120,6 +120,7 @@ export type PoseTraceFrame = {
   width: number | null;
   height: number | null;
   mirror: boolean;
+  inferenceBackend: RawHandInference["inferenceBackend"] | null;
   timingFlags: string[];
   hands: { landmarks: RawPoint[]; handedness: "LEFT" | "RIGHT" | "UNKNOWN"; handednessScore: number | null }[];
   rawHandCount: number;
@@ -295,6 +296,7 @@ export class PoseRecordingSession {
       width: finite(input.width),
       height: finite(input.height),
       mirror: input.mirror === true,
+      inferenceBackend: input.inferenceBackend ?? null,
       timingFlags: flags,
       ...snapshotResult(input.result),
     };
@@ -318,7 +320,10 @@ export class PoseRecordingSession {
       intentLabels: "PROMPTS_ONLY_NOT_VERIFIED_GROUND_TRUTH",
       coordinates: "RAW_UNMIRRORED_CAMERA_NORMALIZED_XY_AND_MONOCULAR_RELATIVE_Z",
       missingCoordinates: "NULL_NOT_FABRICATED_ZERO",
-      model: { ...handModel },
+      model: {
+        ...handModel,
+        inferenceBackendsUsed: [...new Set(this.frames.map((frame) => frame.inferenceBackend).filter(Boolean))],
+      },
       video: {
         kind: "CAMERA_PLUS_EXISTING_RENDERED_TRACE_AND_PROMPT",
         requestedFps: 20,

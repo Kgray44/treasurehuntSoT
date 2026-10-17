@@ -1,4 +1,6 @@
 import { z } from "zod";
+export const handInferenceBackendSchema = z.enum(["CPU_WASM", "GPU_WEBGL"]);
+export type HandInferenceBackend = z.infer<typeof handInferenceBackendSchema>;
 const score = z.number().finite().min(0).max(1).nullable();
 const landmark = z.strictObject({
   x: z.number().finite().min(0).max(1),
@@ -27,6 +29,7 @@ export const handObservationSchema = z.strictObject({
   modelId: z.string().min(1),
   modelVersion: z.string().min(1),
   modelDigest: z.string().regex(/^[a-f0-9]{64}$/),
+  inferenceBackend: handInferenceBackendSchema.optional(),
   providerGeneration: z.number().int().positive(),
   observationId: z.string().min(1),
   sequence: z.number().int().nonnegative(),

@@ -1,10 +1,10 @@
 import { BrowserCameraBroker } from "@/sextant/camera";
-import { BrowserHandAdapter } from "@/watchglass/hand-provider";
+import { BrowserHandAdapter, type HandInferenceBackend } from "@/watchglass/hand-provider";
 import { ObservationGate, type HandObservation } from "./observation";
 import {
   IndexImageTracker,
   indexImageAlgorithmDescriptor,
-  type IndexGrayFrame,
+  type IndexImagePreparedToken,
   type IndexImageObservation,
 } from "./index-image-tracker";
 import { IndexImageObservationGate } from "./index-image-observation";
@@ -21,7 +21,9 @@ export type RawHandInference = {
   width: number;
   height: number;
   mirror: boolean;
+  inferenceBackend?: HandInferenceBackend;
 };
+type IndexHint = { point: { x: number; y: number }; requestedAt: number };
 export class ReachBrowserRuntime {
   readonly camera: BrowserCameraBroker;
   private generation = 0;
@@ -35,10 +37,11 @@ export class ReachBrowserRuntime {
   private imageTracker: IndexImageTracker | null = null;
   private imageCanvas: OffscreenCanvas | null = null;
   private imageContext: OffscreenCanvasRenderingContext2D | null = null;
-  private imageFrame: IndexGrayFrame | null = null;
+  private preparedImage: { token: IndexImagePreparedToken; tracker: IndexImageTracker; hint: IndexHint | null } | null =
+    null;
   private videoFrameCallback: number | undefined;
   private indexEnabled = false;
-  private pendingIndexHint: { point: { x: number; y: number }; requestedAt: number } | null = null;
+  private pendingIndexHint: IndexHint | null = null;
   constructor(
     private video: HTMLVideoElement,
     private observe: (o: HandObservation) => void,
@@ -67,6 +70,8 @@ export class ReachBrowserRuntime {
     )
       return false;
     // Use the next actual capture, never a new hint on an older in-flight image.
+    if (this.preparedImage) this.preparedImage.tracker.discard(this.preparedImage.token);
+    this.preparedImage = null;
     this.pendingIndexHint = { point: { ...point }, requestedAt: performance.now() };
     return true;
   }
@@ -80,7 +85,7 @@ export class ReachBrowserRuntime {
       this.imageTracker = null;
       this.imageCanvas = null;
       this.imageContext = null;
-      this.imageFrame = null;
+      this.preparedImage = null;
       this.pendingIndexHint = null;
     }
   }
@@ -148,7 +153,9 @@ export class ReachBrowserRuntime {
         cameraFrameVersion: lease.generation,
         mirrorTransform: mirror ? ("PREVIEW_X" as const) : ("NONE" as const),
       };
-      const adapter = new BrowserHandAdapter(binding);
+      let adapter: BrowserHandAdapter | null = null;
+      let backend: HandInferenceBackend | null = null;
+      let legacyBackend = false;
       const gate = new ObservationGate({ ...binding, orientation: 0 });
       const imageGate = this.indexObserve ? new IndexImageObservationGate({ ...binding, orientation: 0 }) : null;
       const worker = new Worker("/reach/hand-worker.js");
@@ -159,6 +166,8 @@ export class ReachBrowserRuntime {
       let lastVideoFrame = 0;
       let presentedFrame = 0;
       let presentedMediaTime = -1;
+      let workerReady = false;
+      let wakeFreshFrame = () => {};
       const usesPresentedCallbacks = typeof this.video.requestVideoFrameCallback === "function";
       if (usesPresentedCallbacks) {
         const presented = (_at: number, metadata: VideoFrameCallbackMetadata) => {
@@ -170,6 +179,7 @@ export class ReachBrowserRuntime {
           ) {
             presentedFrame = metadata.presentedFrames;
             presentedMediaTime = metadata.mediaTime;
+            wakeFreshFrame();
           }
           this.videoFrameCallback = this.video.requestVideoFrameCallback(presented);
         };
@@ -186,19 +196,24 @@ export class ReachBrowserRuntime {
       let lastCapture = -Infinity;
       let imageCaptureCost = 0;
       let imageSequence = 0;
+      let captureDue: number | null = null;
       const schedule = () => {
+        clearTimeout(this.timer);
         const now = performance.now(),
           delay = pacer.nextDelay(now, lastCapture),
           expected = now + delay;
+        captureDue = expected;
         // One in-flight inference supplies backpressure. The measured main-
         // thread/total latency budget adapts the ceiling without a fixed idle.
         this.timer = setTimeout(() => {
+          captureDue = null;
           pacer.recordTimerLateness(expected, performance.now());
           void pump();
         }, delay);
       };
       const pump = async () => {
-        if (!this.active || generation !== this.generation) return;
+        if (!this.active || generation !== this.generation || !workerReady || this.inFlight) return;
+        this.timer = undefined;
         const identity = frameIdentity();
         if (identity.frame < lastVideoFrame) {
           fail("FRAME_IDENTITY_RESTARTED");
@@ -222,8 +237,10 @@ export class ReachBrowserRuntime {
               bitmap.close();
               return;
             }
+            const imageStarted = performance.now();
+            imageCaptureCost = 0;
+            let imageSize: { width: number; height: number } | null = null;
             if (this.indexObserve && this.indexEnabled) {
-              const imageStarted = performance.now();
               try {
                 const maximum = indexImageAlgorithmDescriptor.policy.maximumAnalysisDimension;
                 const ratio = Math.min(1, maximum / width, maximum / height);
@@ -238,41 +255,83 @@ export class ReachBrowserRuntime {
                   // This exact bitmap goes to the model below. Its clean pixels
                   // and model capture clock stay paired until RESULT arrives.
                   this.imageContext.drawImage(bitmap, 0, 0, imageWidth, imageHeight);
-                  const rgba = this.imageContext.getImageData(0, 0, imageWidth, imageHeight).data;
-                  const gray = new Uint8Array(imageWidth * imageHeight);
-                  for (let i = 0; i < gray.length; ++i)
-                    gray[i] = (rgba[i * 4] * 77 + rgba[i * 4 + 1] * 150 + rgba[i * 4 + 2] * 29) >> 8;
-                  this.imageFrame = { data: gray, width: imageWidth, height: imageHeight, capture, received: capture };
+                  imageSize = { width: imageWidth, height: imageHeight };
                 }
               } catch {
                 // Optional image evidence cannot interrupt the hand pipeline.
-                this.imageFrame = null;
+                this.preparedImage = null;
               }
-              imageCaptureCost = performance.now() - imageStarted;
             }
             worker.postMessage({ type: "FRAME", bitmap, capture, generation }, [bitmap]);
             this.timer = setTimeout(() => fail("INFERENCE_TIMEOUT"), 3000);
+            if (imageSize && this.imageContext && this.imageTracker) {
+              try {
+                // The canvas already owns the exact transferred bitmap pixels.
+                // Readback and NCC can overlap worker inference; only the paired
+                // RESULT may commit identity, authority or an actionable point.
+                const rgba = this.imageContext.getImageData(0, 0, imageSize.width, imageSize.height).data;
+                const gray = new Uint8Array(imageSize.width * imageSize.height);
+                for (let i = 0; i < gray.length; ++i)
+                  gray[i] = (rgba[i * 4] * 77 + rgba[i * 4 + 1] * 150 + rgba[i * 4 + 2] * 29) >> 8;
+                const hint = this.pendingIndexHint;
+                if (!hint || capture >= hint.requestedAt) {
+                  const token = this.imageTracker.prepare(
+                    { data: gray, ...imageSize, capture, received: performance.now() },
+                    hint?.point,
+                  );
+                  this.preparedImage = { token, tracker: this.imageTracker, hint };
+                }
+              } catch {
+                this.imageTracker.discard();
+                this.preparedImage = null;
+              }
+              imageCaptureCost = performance.now() - imageStarted;
+            }
           } catch {
             fail("FRAME_FAILURE");
           }
-        } else {
+        } else if (!usesPresentedCallbacks) {
           const now = performance.now(),
             delay = Math.max(8, pacer.intervalMs, pacer.nextDelay(now, lastCapture)),
             expected = now + delay;
+          captureDue = expected;
           this.timer = setTimeout(() => {
+            captureDue = null;
             pacer.recordTimerLateness(expected, performance.now());
             void pump();
           }, delay);
         }
       };
+      wakeFreshFrame = () => {
+        if (!this.active || generation !== this.generation || !workerReady || this.inFlight) return;
+        if (presentedFrame === lastVideoFrame) return;
+        if (captureDue !== null && performance.now() > captureDue)
+          pacer.recordTimerLateness(captureDue, performance.now());
+        // A due capture that found no frame waits for the presentation event,
+        // rather than sleeping another whole capture interval.
+        schedule();
+      };
       worker.onmessage = ({ data }) => {
         if (!this.active || generation !== this.generation || data.generation !== generation) return;
         if (data.type === "READY") {
+          const selected = data.backend ?? "CPU_WASM";
+          if (workerReady || selected !== "CPU_WASM") {
+            fail("MODEL_BACKEND_CHANGED");
+            return;
+          }
+          backend = selected;
+          legacyBackend = data.backend === undefined;
+          adapter = new BrowserHandAdapter(binding, "UNQUALIFIED", selected);
+          workerReady = true;
           clearTimeout(this.startup);
           this.startup = undefined;
           this.status("READY");
           void pump();
         } else if (data.type === "RESULT") {
+          if (!adapter || !backend || (data.backend ?? (legacyBackend ? "CPU_WASM" : null)) !== backend) {
+            fail("MODEL_BACKEND_CHANGED");
+            return;
+          }
           const resultStarted = performance.now();
           clearTimeout(this.timer);
           this.timer = undefined;
@@ -290,6 +349,7 @@ export class ReachBrowserRuntime {
               width: data.width,
               height: data.height,
               mirror,
+              inferenceBackend: backend,
             });
           } catch {
             // Optional local diagnostics must not interrupt inference.
@@ -311,20 +371,22 @@ export class ReachBrowserRuntime {
           } catch {
             this.status("STALE_OR_INVALID_OBSERVATION");
           }
-          if (this.indexObserve && this.indexEnabled && this.imageTracker && imageGate && this.imageFrame) {
+          const prepared = this.preparedImage;
+          if (this.indexObserve && this.indexEnabled && this.imageTracker && imageGate && prepared) {
             try {
               const received = performance.now();
               // Never relabel a stale model image or an older in-flight image
               // as a fresh response to an explicit selection.
               if (
-                this.imageFrame.capture === data.capture &&
-                received - this.imageFrame.capture <= 150 &&
-                (!this.pendingIndexHint || this.imageFrame.capture >= this.pendingIndexHint.requestedAt)
+                observation &&
+                prepared.tracker === this.imageTracker &&
+                prepared.token.capture === data.capture &&
+                received - prepared.token.capture <= 150 &&
+                prepared.hint === this.pendingIndexHint
               ) {
                 const model = selectIndexModelAnchor(observation);
-                const hint = this.pendingIndexHint?.point;
+                const tracked = this.imageTracker.complete(prepared.token, model, () => performance.now());
                 this.pendingIndexHint = null;
-                const tracked = this.imageTracker.update({ ...this.imageFrame, received }, model, hint);
                 // Processing completion is current; capture remains the original
                 // bitmap time. Gate independently enforces the150ms age limit.
                 const accepted = imageGate.accept(
@@ -340,7 +402,8 @@ export class ReachBrowserRuntime {
             } catch {
               // Image uncertainty is separate from worker/model lifecycle.
             }
-            this.imageFrame = null;
+            prepared.tracker.discard(prepared.token);
+            this.preparedImage = null;
           }
           const completed = performance.now();
           if (data.capture === lastCapture)
@@ -388,7 +451,7 @@ export class ReachBrowserRuntime {
     this.imageTracker = null;
     this.imageCanvas = null;
     this.imageContext = null;
-    this.imageFrame = null;
+    this.preparedImage = null;
     this.pendingIndexHint = null;
     this.pacer = null;
     this.video.pause();

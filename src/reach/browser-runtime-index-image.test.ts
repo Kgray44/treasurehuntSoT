@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { ReachBrowserRuntime, type IndexImageObservation } from "./browser-runtime";
 import type { HandResult } from "@/watchglass/hand-provider";
 import { pointingPose } from "../../tests/e2e/fixtures/reach/pointing-poses";
+import { IndexImageTracker } from "./index-image-tracker";
 
 type Bitmap = { rgba: Uint8ClampedArray; close: ReturnType<typeof vi.fn> };
 type FrameMessage = { type: "FRAME"; generation: number; capture: number; bitmap: Bitmap };
@@ -33,6 +34,7 @@ function setup(
     imageCostMs?: number;
     callbackCostMs?: number;
     frameCallbacks?: boolean;
+    backend?: "CPU_WASM" | "GPU_WEBGL";
   } = {},
 ) {
   vi.useFakeTimers();
@@ -43,6 +45,7 @@ function setup(
   vi.spyOn(document, "hasFocus").mockReturnValue(options.focused ?? true);
   vi.stubGlobal("isSecureContext", true);
   const drawn: Bitmap[] = [];
+  const events: string[] = [];
   const contexts: { bitmap: Bitmap | null }[] = [];
   vi.stubGlobal(
     "OffscreenCanvas",
@@ -60,6 +63,7 @@ function setup(
             drawn.push(bitmap);
           },
           getImageData() {
+            events.push("PIXEL_READBACK");
             now += options.imageCostMs ?? 0;
             return { data: state.bitmap!.rgba };
           },
@@ -130,6 +134,7 @@ function setup(
       postMessage(message: { type: string; generation: number }, transfer: unknown[] = []) {
         if (message.type === "INIT") this.generation = message.generation;
         if (message.type === "FRAME") {
+          events.push("WORKER_FRAME_POSTED");
           this.frames.push(message as FrameMessage);
           this.transfers.push(transfer);
         }
@@ -175,6 +180,7 @@ function setup(
     bitmap,
     drawn,
     contexts,
+    events,
     hint,
     presented,
     cancelVideoFrame,
@@ -184,7 +190,13 @@ function setup(
       if (seed) expect(runtime.seedIndex(hint)).toBe(true);
       if (options.frameCallbacks) presented(1, video.currentTime);
       const worker = workers.at(-1)!;
-      worker.onmessage!({ data: { type: "READY", generation: worker.generation } } as MessageEvent);
+      worker.onmessage!({
+        data: {
+          type: "READY",
+          generation: worker.generation,
+          ...(options.backend ? { backend: options.backend } : {}),
+        },
+      } as MessageEvent);
       await Promise.resolve();
       if (expectFrame) expect(worker.frames).toHaveLength(1);
       return worker;
@@ -208,6 +220,7 @@ function setup(
           width: 320,
           height: 240,
           result: { landmarks, handedness: landmarks.map(() => [{ categoryName: "Right", score: 0.99 }]) },
+          ...(options.backend ? { backend: options.backend } : {}),
         },
       } as MessageEvent);
     },
@@ -219,6 +232,96 @@ function setup(
 }
 
 describe("runtime image source integration", () => {
+  it("prepares clean optical candidates after posting the exact worker bitmap but commits only its paired result", async () => {
+    const prepare = vi.spyOn(IndexImageTracker.prototype, "prepare");
+    const complete = vi.spyOn(IndexImageTracker.prototype, "complete");
+    const s = setup();
+    const worker = await s.start();
+    expect(s.events).toEqual(["WORKER_FRAME_POSTED", "PIXEL_READBACK"]);
+    expect(prepare).toHaveBeenCalledOnce();
+    expect(complete).not.toHaveBeenCalled();
+    expect(s.image).not.toHaveBeenCalled();
+    await s.advance(10);
+    s.result();
+    expect(complete).toHaveBeenCalledOnce();
+    expect(s.image.mock.calls[0][0].monotonicCaptureTime).toBe(worker.frames[0].capture);
+  });
+  it("does not treat a malformed hand envelope as model-unavailable image authority", async () => {
+    const complete = vi.spyOn(IndexImageTracker.prototype, "complete");
+    const s = setup();
+    const worker = await s.start();
+    await s.advance(10);
+    worker.onmessage!({
+      data: {
+        type: "RESULT",
+        generation: worker.generation,
+        capture: worker.frames[0].capture,
+        inferenceTime: NaN,
+        width: 320,
+        height: 240,
+        result: { landmarks: [], handedness: [] },
+      },
+    } as MessageEvent);
+    expect(s.observe).not.toHaveBeenCalled();
+    expect(complete).not.toHaveBeenCalled();
+    expect(s.image).not.toHaveBeenCalled();
+  });
+  it("wakes on a fresh presentation after a due capture found no frame, without another full interval", async () => {
+    const s = setup({ frameCallbacks: true });
+    const worker = await s.start();
+    await s.advance(10);
+    s.result();
+    await s.advance(7);
+    expect(worker.frames).toHaveLength(1);
+    expect(s.runtime.resources().timers).toBe(0);
+    await s.advance(3);
+    s.presented(2, 1.1);
+    await s.advance(1);
+    expect(worker.frames).toHaveLength(2);
+    expect(worker.frames[1].capture - worker.frames[0].capture).toBeLessThan(25);
+  });
+  it("never wakes a second inference while the current worker result is pending", async () => {
+    const s = setup({ frameCallbacks: true });
+    const worker = await s.start();
+    for (let frame = 2; frame <= 5; ++frame) {
+      await s.advance(20);
+      s.presented(frame, frame / 30);
+      await s.advance(1);
+    }
+    expect(worker.frames).toHaveLength(1);
+    s.result();
+    await s.advance(1);
+    expect(worker.frames).toHaveLength(2);
+  });
+  it("keeps the visible-unfocused ceiling when a fresh presentation wakes the loop", async () => {
+    const s = setup({ frameCallbacks: true, focused: false });
+    const worker = await s.start();
+    await s.advance(10);
+    s.result();
+    s.presented(2, 1.1);
+    await s.advance(114);
+    expect(worker.frames).toHaveLength(1);
+    await s.advance(1);
+    expect(worker.frames).toHaveLength(2);
+  });
+  it("binds actual CPU results and rejects a backend switch", async () => {
+    const s = setup({ backend: "CPU_WASM" });
+    const worker = await s.start();
+    await s.advance(10);
+    s.result();
+    expect(s.observe.mock.calls[0][0].inferenceBackend).toBe("CPU_WASM");
+    worker.onmessage!({
+      data: { type: "RESULT", generation: worker.generation, backend: "GPU_WEBGL" },
+    } as MessageEvent);
+    expect(s.status).toHaveBeenLastCalledWith("MODEL_BACKEND_CHANGED");
+    expect(s.runtime.resources()).toEqual({ tracks: 0, workers: 0, timers: 0 });
+  });
+  it("rejects an unsupported GPU startup instead of silently changing the accepted model pipeline", async () => {
+    const s = setup({ backend: "GPU_WEBGL" });
+    await s.start(true, false);
+    expect(s.status).toHaveBeenLastCalledWith("MODEL_BACKEND_CHANGED");
+    expect(s.runtime.resources()).toEqual({ tracks: 0, workers: 0, timers: 0 });
+  });
   function modelPose(point: { x: number; y: number }, options: Parameters<typeof pointingPose>[0] = {}) {
     const pose = pointingPose(options);
     const dx = point.x - pose[8].x,

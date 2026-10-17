@@ -23,12 +23,12 @@ describe("adaptive local tracking pacing", () => {
     expect(pacer.diagnostics.smoothedTotalMs).toBe(4);
   });
 
-  it("reserves processing headroom under slower model completions", () => {
+  it("does not add idle time to a serialized slower worker completion", () => {
     const pacer = new ReachTrackingPacer();
     pacer.recordCompleted(0, 90, 3);
     expect(pacer.intervalMs).toBeGreaterThanOrEqual(90 / reachTrackingPacingPolicy.maximumProcessingDuty);
-    expect(pacer.nextDelay(90, 0)).toBeGreaterThanOrEqual(30);
-    expect(pacer.targetHz).toBeLessThan(10);
+    expect(pacer.nextDelay(90, 0)).toBe(0);
+    expect(pacer.targetHz).toBeCloseTo(1000 / 90);
   });
 
   it("bounds measured main-thread CV duty independently of worker speed", () => {
@@ -42,7 +42,7 @@ describe("adaptive local tracking pacing", () => {
   it("reduces work immediately on a spike and increases speed by at most the bounded recovery step", () => {
     const pacer = new ReachTrackingPacer();
     pacer.recordCompleted(0, 100, 30);
-    expect(pacer.intervalMs).toBeGreaterThanOrEqual(100 / 0.75);
+    expect(pacer.intervalMs).toBeGreaterThanOrEqual(100);
     let previous = pacer.intervalMs;
     for (let i = 1; i <= 80; i++) {
       pacer.recordTimerLateness(i * 200, i * 200);
@@ -86,7 +86,7 @@ describe("adaptive local tracking pacing", () => {
     const pacer = new ReachTrackingPacer();
     pacer.setFocused(false);
     pacer.recordCompleted(0, 300, 100);
-    expect(pacer.intervalMs).toBeGreaterThanOrEqual(400);
+    expect(pacer.intervalMs).toBeGreaterThanOrEqual(100 / 0.3);
     expect(pacer.targetHz).toBeLessThan(8);
   });
 
@@ -141,7 +141,7 @@ describe("adaptive local tracking pacing", () => {
 
   it("rejects overflowing duration calculations and treats an early timer as zero lateness", () => {
     const pacer = new ReachTrackingPacer();
-    expect(() => pacer.recordCompleted(0, Number.MAX_VALUE, 0)).toThrow("REACH_PACER_DURATION_INVALID");
+    expect(() => pacer.recordCompleted(0, Number.MAX_VALUE, Number.MAX_VALUE)).toThrow("REACH_PACER_DURATION_INVALID");
     expect(() => pacer.recordTimerLateness(0, Number.MAX_VALUE)).toThrow("REACH_PACER_DURATION_INVALID");
     expect(pacer.targetHz).toBeCloseTo(60);
     pacer.recordTimerLateness(20, 19);
@@ -161,7 +161,7 @@ describe("adaptive local tracking pacing", () => {
       const interval = next - capture;
       expect(next).toBeGreaterThanOrEqual(completed);
       expect(interval).toBeGreaterThanOrEqual(1000 / 60);
-      expect(total / interval).toBeLessThanOrEqual(0.75 + 1e-9);
+      expect(total / interval).toBeLessThanOrEqual(reachTrackingPacingPolicy.maximumProcessingDuty + 1e-9);
       expect(main / interval).toBeLessThanOrEqual(0.3 + 1e-9);
       capture = next;
     }

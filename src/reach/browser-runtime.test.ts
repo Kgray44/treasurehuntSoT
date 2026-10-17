@@ -132,10 +132,21 @@ it.each([false, true])(
         width: 640,
         height: 480,
         mirror: true,
+        inferenceBackend: "CPU_WASM",
         videoTime: 1.25,
       });
       expect(Object.keys(capture.mock.calls[0][0]).sort()).toEqual(
-        ["result", "capture", "inference", "received", "videoTime", "width", "height", "mirror"].sort(),
+        [
+          "result",
+          "capture",
+          "inference",
+          "received",
+          "videoTime",
+          "width",
+          "height",
+          "mirror",
+          "inferenceBackend",
+        ].sort(),
       );
       expect(s.observe).toHaveBeenCalledOnce();
       expect(s.status).toHaveBeenLastCalledWith("READY");
@@ -154,6 +165,7 @@ it("records stale raw results for diagnosis without making them eligible, and ig
     await start;
     const worker = s.workers[0],
       now = performance.now();
+    worker.onmessage!({ data: { type: "READY", generation: worker.generation } } as MessageEvent);
     const data = {
       type: "RESULT",
       generation: worker.generation,

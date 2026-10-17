@@ -2,7 +2,9 @@ export const reachTrackingPacingPolicy = {
   maximumFocusedHz: 60,
   maximumUnfocusedHz: 8,
   maximumMainThreadDuty: 0.3,
-  maximumProcessingDuty: 0.75,
+  // One inference in flight already bounds worker work. Elapsed worker time
+  // includes scheduler waits under load and must not add a second idle budget.
+  maximumProcessingDuty: 1,
   maximumRecoveryFraction: 0.1,
   timerToleranceMs: 2,
 } as const;

@@ -63,7 +63,186 @@ function changedAppearance(amount: number, at: number, clone = false): IndexGray
   }
   return original;
 }
+function deformingImage(x: number, y: number, at: number, angle: number, amount: number): IndexGrayFrame {
+  const data = new Uint8Array(160 * 120).fill(30),
+    radians = (angle * Math.PI) / 180;
+  const c = Math.cos(radians),
+    s = Math.sin(radians);
+  const tex = (u: number, v: number, seed: number) => 45 + ((u * 73 + v * 127 + u * v * 19 + seed * 41 + 100000) % 135);
+  const sample = (u: number, v: number, seed: number) => {
+    if (Math.abs(u) > 10 || Math.abs(v) > 10) return 30;
+    const a = Math.floor(u),
+      b = Math.floor(v),
+      fx = u - a,
+      fy = v - b;
+    return (
+      (tex(a, b, seed) * (1 - fx) + tex(a + 1, b, seed) * fx) * (1 - fy) +
+      (tex(a, b + 1, seed) * (1 - fx) + tex(a + 1, b + 1, seed) * fx) * fy
+    );
+  };
+  for (let dy = -14; dy <= 14; ++dy)
+    for (let dx = -14; dx <= 14; ++dx) {
+      const u = c * dx + s * dy,
+        v = -s * dx + c * dy;
+      data[(y + dy) * 160 + x + dx] = Math.round(sample(u, v, 0) * (1 - amount) + sample(u, v, 19) * amount);
+    }
+  return { data, width: 160, height: 120, capture: at, received: at + 5 };
+}
 describe("independent image fingertip evidence", () => {
+  it("prepares pixels without keeping an identity alive or exposing an actionable observation", () => {
+    const tracker = new IndexImageTracker(binding);
+    tracker.update(image(60, 60, 100), null, point(60, 60));
+    const token = tracker.prepare(image(62, 60, 200));
+    expect(token).toEqual({ capture: 200 });
+    expect(token).not.toHaveProperty("point");
+    expect(() => tracker.prepare(image(64, 60, 233))).toThrow("ALREADY_PENDING");
+    expect(tracker.discard({ capture: 200 })).toBe(false);
+    expect(tracker.discard(token)).toBe(true);
+    expect(() => tracker.complete(token, null, 215)).toThrow("PREPARED_CAPTURE_INVALID");
+    expect(() => tracker.prepare(image(60, 60, 200))).toThrow("INVALID_OR_STALE");
+    expect(tracker.update(image(60, 60, 1301))).toMatchObject({
+      state: "LOST",
+      trackId: null,
+      reason: "IMAGE_CONTINUITY_EXPIRED",
+    });
+  });
+  it("commits prepared pixels only with the same frame's full-hand decision", () => {
+    const tracker = new IndexImageTracker(binding);
+    const seed = tracker.update(image(60, 60, 100), null, point(60, 60));
+    const pixels = image(62, 60, 133),
+      token = tracker.prepare(pixels);
+    pixels.data.fill(0); // Caller mutation cannot alter the owned prepared image.
+    expect(tracker.complete(token, full("CONTRARY", 62, 60), 150)).toMatchObject({
+      state: "UNCERTAIN",
+      point: null,
+      matchedPoint: point(62, 60),
+      trackId: seed.trackId,
+      reason: "FULL_HAND_CONTRARY_PENDING",
+      monotonicCaptureTime: 133,
+      monotonicInferenceTime: 150,
+    });
+    expect(() => tracker.complete(token, null, 155)).toThrow("PREPARED_CAPTURE_INVALID");
+    expect(tracker.update(image(64, 60, 166))).toMatchObject({
+      state: "TRACKING",
+      trackId: seed.trackId,
+      point: point(64, 60),
+    });
+  });
+  it("rolls back all acceptance and authority clocks when finalization crosses the150ms boundary", () => {
+    const tracker = new IndexImageTracker(binding);
+    const seed = tracker.update(image(60, 60, 100), null, point(60, 60));
+    expect(tracker.complete(tracker.prepare(image(62, 60, 200)), null, 350)).toMatchObject({
+      point: point(62, 60),
+      sequence: 1,
+      trackId: seed.trackId,
+    });
+    const token = tracker.prepare(image(64, 60, 400));
+    let call = 0;
+    expect(() => tracker.complete(token, full("CONTRARY", 64, 60), () => (++call === 1 ? 500 : 551))).toThrow(
+      "INVALID_OR_STALE",
+    );
+    expect(tracker.update(image(62, 60, 433))).toMatchObject({ state: "TRACKING", sequence: 2, trackId: seed.trackId });
+    // A stale attempted seed must not create an identity visible afterward.
+    const cold = new IndexImageTracker(binding),
+      coldToken = cold.prepare(image(60, 60, 100), point(60, 60));
+    let coldCall = 0;
+    expect(() => cold.complete(coldToken, null, () => (++coldCall === 1 ? 110 : 251))).toThrow("INVALID_OR_STALE");
+    expect(cold.update(image(60, 60, 133))).toMatchObject({ state: "UNSEEDED", trackId: null, sequence: 0 });
+  });
+  it("does not let a reset or expired source finalize an older prepared frame", () => {
+    const tracker = new IndexImageTracker(binding);
+    const token = tracker.prepare(image(60, 60, 100), point(60, 60));
+    tracker.reset();
+    expect(() => tracker.complete(token, null, 110)).toThrow("PREPARED_CAPTURE_INVALID");
+    expect(() => tracker.prepare(image(60, 60, 100))).toThrow("INVALID_OR_STALE");
+    const fresh = tracker.prepare(image(60, 60, 133), point(60, 60));
+    expect(() => tracker.complete(fresh, null, 284)).toThrow("INVALID_OR_STALE");
+    expect(tracker.update(image(60, 60, 166))).toMatchObject({ state: "UNSEEDED", trackId: null });
+  });
+  it("supports a long changing pose only through tight source-scoped full-hand confirmation, without coordinate rebinding", () => {
+    const tracker = new IndexImageTracker(binding);
+    const seed = tracker.update(deformingImage(60, 60, 100, 0, 0), null, point(60, 60));
+    for (let i = 1; i <= 65; ++i) {
+      const x = 60 + Math.round(Math.sin(i / 12) * 6),
+        y = 60 + Math.round(Math.cos(i / 12) * 3) - 3;
+      const observed = tracker.update(
+        deformingImage(x, y, 100 + i * 80, i * 0.3, Math.min(0.85, i * 0.018)),
+        full("POINT", x, y),
+      );
+      expect(observed).toMatchObject({ state: "TRACKING", point: point(x, y), trackId: seed.trackId });
+    }
+  });
+  for (const condition of [
+    "UNAVAILABLE",
+    "WRONG",
+    "WEAK",
+    "SOURCE",
+    "CONTRARY",
+    "AMBIGUOUS",
+    "ONE_TIGHT_FRAME",
+  ] as const)
+    it(`does not renew unsupported appearance from ${condition} evidence`, () => {
+      const tracker = new IndexImageTracker(binding);
+      const seed = tracker.update(deformingImage(60, 60, 100, 0, 0), null, point(60, 60));
+      let observed = seed;
+      for (let i = 1; i <= 40; ++i) {
+        const x = 60 + Math.round(Math.sin(i / 12) * 6),
+          y = 60 + Math.round(Math.cos(i / 12) * 3) - 3;
+        const offset =
+          condition === "WRONG" ? 12 : condition === "WEAK" || (condition === "ONE_TIGHT_FRAME" && i !== 28) ? 5 : 0;
+        const model =
+          condition === "UNAVAILABLE"
+            ? undefined
+            : condition === "AMBIGUOUS"
+              ? { point: null, pointing: false, contrary: false, authority: "AMBIGUOUS" as const }
+              : full(
+                  condition === "CONTRARY" ? "CONTRARY" : "POINT",
+                  x + offset,
+                  y,
+                  condition === "SOURCE" ? `source-${i}` : "full-model-A",
+                );
+        observed = tracker.update(deformingImage(x, y, 100 + i * 80, i * 0.3, Math.min(0.85, i * 0.018)), model);
+      }
+      expect(observed).toMatchObject({ point: null, trackId: seed.trackId, reason: "IMAGE_REFERENCE_EXPIRED" });
+    });
+  for (const interruption of ["MISSING", "NEGATIVE", "AMBIGUOUS", "BAD_IMAGE"] as const)
+    it(`clears tight appearance-refresh evidence on intermittent ${interruption}`, () => {
+      const tracker = new IndexImageTracker(binding);
+      const seed = tracker.update(deformingImage(60, 60, 100, 0, 0), null, point(60, 60));
+      let observed = seed;
+      for (let i = 1; i <= 40; ++i) {
+        const interrupt = i % 3 === 0;
+        const model =
+          interrupt && interruption === "MISSING"
+            ? undefined
+            : interrupt && interruption === "AMBIGUOUS"
+              ? { point: null, pointing: false, contrary: false, authority: "AMBIGUOUS" as const }
+              : full(interrupt && interruption === "NEGATIVE" ? "CONTRARY" : "POINT", 60, 60);
+        const frame =
+          interrupt && interruption === "BAD_IMAGE"
+            ? image(60, 60, 100 + i * 80, { blank: true })
+            : deformingImage(60, 60, 100 + i * 80, i * 0.3, Math.min(0.85, i * 0.018));
+        observed = tracker.update(frame, model);
+      }
+      expect(observed).toMatchObject({ point: null, trackId: seed.trackId, reason: "IMAGE_REFERENCE_EXPIRED" });
+    });
+  it("does not collect reference support across model evidence gaps above250ms", () => {
+    const tracker = new IndexImageTracker(binding);
+    const seed = tracker.update(deformingImage(60, 60, 100, 0, 0), null, point(60, 60));
+    let expired = false;
+    for (let i = 1; i <= 40; ++i) {
+      const observed = tracker.update(
+        deformingImage(60, 60, 100 + i * 300, i * 0.3, Math.min(0.85, i * 0.018)),
+        full("POINT", 60, 60),
+      );
+      if (observed.reason === "IMAGE_REFERENCE_EXPIRED") {
+        expect(observed).toMatchObject({ point: null, trackId: seed.trackId });
+        expired = true;
+        break;
+      }
+    }
+    expect(expired).toBe(true);
+  });
   it("prevents cumulative walk on a fractionally resampled public photograph trajectory and return to center", async () => {
     const decoded = await sharp(resolve("tests/e2e/fixtures/reach/pointing_up.jpg"))
       .removeAlpha()
@@ -103,11 +282,20 @@ describe("independent image fingertip evidence", () => {
       return { data, width: 320, height: 240, capture: at, received: at + 10 };
     };
     const tracker = new IndexImageTracker({ ...binding, frameWidth: 640, frameHeight: 480 });
+    const supported = new IndexImageTracker({ ...binding, frameWidth: 640, frameHeight: 480 });
+    const modelAt = (dx: number, dy: number) => ({
+      point: { x: (153 + dx / 2) / 319, y: (59 + dy / 2) / 239 },
+      pointing: true,
+      contrary: false,
+      authority: "POINT" as const,
+      authoritySource: "photographic-full-point",
+    });
     let at = 100,
       draw = 0,
       dx = -40,
       dy = 30;
     const seed = tracker.update(frame(dx, dy, at, draw++), null, { x: 133 / 319, y: 74 / 239 });
+    const supportedSeed = supported.update(frame(dx, dy, at, draw - 1), modelAt(dx, dy), { x: 133 / 319, y: 74 / 239 });
     // Includes training positions, independent locations, and a closed loop.
     for (const [goalX, goalY] of [
       [0, 0],
@@ -125,21 +313,33 @@ describe("independent image fingertip evidence", () => {
       const steps = Math.max(1, Math.ceil(Math.max(Math.abs(goalX - dx), Math.abs(goalY - dy)) / 8));
       const start = { x: dx, y: dy };
       let observed = seed;
+      let observedSupported = supportedSeed;
       for (let elapsed = 50; elapsed <= steps * 40 + 1400; elapsed += 50) {
         const progress = Math.min(steps, Math.floor(elapsed / 40)) / steps;
         dx = start.x + (goalX - start.x) * progress;
         dy = start.y + (goalY - start.y) * progress;
-        observed = tracker.update(frame(dx, dy, (at += 50), draw++));
+        const pixels = frame(dx, dy, (at += 50), draw++);
+        observed = tracker.update(pixels);
+        observedSupported = supported.update(pixels, modelAt(dx, dy));
       }
       expect(observed).toMatchObject({ state: "TRACKING", trackId: seed.trackId });
+      expect(observedSupported).toMatchObject({ state: "TRACKING", trackId: supportedSeed.trackId });
       expect(
         Math.hypot(observed.point!.x * 319 - (153 + goalX / 2), observed.point!.y * 239 - (59 + goalY / 2)),
+      ).toBeLessThanOrEqual(1.5);
+      expect(
+        Math.hypot(
+          observedSupported.point!.x * 319 - (153 + goalX / 2),
+          observedSupported.point!.y * 239 - (59 + goalY / 2),
+        ),
       ).toBeLessThanOrEqual(1.5);
     }
   }, 20000);
   it("permits bounded model-free pose adaptation but does not let adaptive-only evidence walk indefinitely", () => {
     const tracker = new IndexImageTracker(binding);
+    const lateSupport = new IndexImageTracker(binding);
     const seed = tracker.update(changedAppearance(0, 100), null, point(60, 60));
+    const lateSeed = lateSupport.update(changedAppearance(0, 100), null, point(60, 60));
     let observed = seed;
     let lastReferenceAt = 100;
     for (let i = 1; i <= 30; ++i) {
@@ -150,11 +350,21 @@ describe("independent image fingertip evidence", () => {
       referenceProbe.update(changedAppearance(0, 100), null, point(60, 60));
       if (referenceProbe.update(changedAppearance(i * 0.03, at)).point) lastReferenceAt = at;
       observed = tracker.update(changedAppearance(i * 0.03, at));
+      lateSupport.update(changedAppearance(i * 0.03, at));
     }
     expect(observed).toMatchObject({ state: "TRACKING", trackId: seed.trackId, point: point(60, 60) });
     const direct = new IndexImageTracker(binding);
     direct.update(changedAppearance(0, 100), null, point(60, 60));
     expect(direct.update(changedAppearance(0.9, 133)).point).toBeNull();
+    // Even three tightly agreeing full-hand frames cannot revive unsupported
+    // reference age when their confirming third frame arrives at1201ms.
+    lateSupport.update(changedAppearance(0.9, lastReferenceAt + 1000), full("POINT", 60, 60));
+    lateSupport.update(changedAppearance(0.9, lastReferenceAt + 1100), full("POINT", 60, 60));
+    expect(lateSupport.update(changedAppearance(0.9, lastReferenceAt + 1201), full("POINT", 60, 60))).toMatchObject({
+      point: null,
+      trackId: lateSeed.trackId,
+      reason: "IMAGE_REFERENCE_EXPIRED",
+    });
     expect(tracker.update(changedAppearance(0.9, lastReferenceAt + 1200))).toMatchObject({
       state: "TRACKING",
       trackId: seed.trackId,
@@ -176,8 +386,8 @@ describe("independent image fingertip evidence", () => {
     const tracker = new IndexImageTracker(binding);
     const seed = tracker.update(changedAppearance(0, 100), null, point(60, 60));
     for (let i = 1; i <= 10; ++i)
-      expect(tracker.update(changedAppearance(i * 0.03, 100 + i * 33)).state).toBe("TRACKING");
-    expect(tracker.update(changedAppearance(0.3, 463, true))).toMatchObject({
+      expect(tracker.update(changedAppearance(i * 0.03, 100 + i * 33), full("POINT", 60, 60)).state).toBe("TRACKING");
+    expect(tracker.update(changedAppearance(0.3, 463, true), full("POINT", 60, 60))).toMatchObject({
       state: "UNCERTAIN",
       point: null,
       matchedPoint: null,

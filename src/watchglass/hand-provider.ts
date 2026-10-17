@@ -1,14 +1,16 @@
-import type { HandObservation } from "./hand-observation";
+import type { HandInferenceBackend, HandObservation } from "./hand-observation";
+export type { HandInferenceBackend } from "./hand-observation";
 import { assessHand } from "./hand-posture";
 import { indexGeometry } from "./index-geometry";
 export const handModel = {
   providerId: "watchglass.hand-observation",
-  providerVersion: "1.3.0",
+  providerVersion: "1.4.0",
   modelId: "mediapipe.hand-landmarker.float16",
   modelVersion: "1",
   modelDigest: "fbc2a30080c3c557093b5ddfc334698132eb341044ccee322ccf8bcf3607cde1",
   runtimeVersion: "0.10.32",
-  backend: "CPU_WASM",
+  preferredBackend: "CPU_WASM",
+  supportedBackends: ["CPU_WASM"],
   maxHands: 2,
 } as const;
 type Landmark = { x: number; y: number; z: number };
@@ -164,6 +166,7 @@ export class BrowserHandAdapter {
       "providerGeneration" | "cameraLeaseId" | "cameraFrameVersion" | "mirrorTransform"
     >,
     private tier: HandObservation["evidenceTier"] = "UNQUALIFIED",
+    private readonly backend: HandInferenceBackend = "CPU_WASM",
   ) {}
   envelope(result: HandResult, capture: number, inference: number, width: number, height: number): HandObservation {
     if (!Number.isFinite(capture) || !Number.isFinite(inference) || capture <= this.capture || inference < capture)
@@ -384,6 +387,7 @@ export class BrowserHandAdapter {
       modelId: handModel.modelId,
       modelVersion: handModel.modelVersion,
       modelDigest: handModel.modelDigest,
+      inferenceBackend: this.backend,
       observationId: `observation-${this.sequence}`,
       sequence: this.sequence++,
       monotonicCaptureTime: capture,

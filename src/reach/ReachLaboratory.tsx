@@ -145,6 +145,7 @@ export function ReachLaboratory({
     [entryReady, setEntryReady] = useState(false),
     [hands, setHands] = useState<HandObservation["hands"]>([]);
   const [frameSize, setFrameSize] = useState<Pick<HandObservation, "frameWidth" | "frameHeight">>();
+  const [inferenceBackend, setInferenceBackend] = useState<HandObservation["inferenceBackend"]>();
   const [indexState, setIndexState] = useState<IndexImageObservation | null>(null),
     [indexStale, setIndexStale] = useState(false),
     [markFinger, setMarkFinger] = useState(false),
@@ -254,6 +255,7 @@ export function ReachLaboratory({
     advance("PREPARE");
     visual.current = emptyFrame();
     lastObservation.current = null;
+    setInferenceBackend(undefined);
     lastIndexObservation.current = null;
     indexReadiness.current.reset();
     setIndexState(null);
@@ -500,6 +502,7 @@ export function ReachLaboratory({
     accept.current = (o) => {
       const now = performance.now();
       lastObservation.current = o;
+      setInferenceBackend(o.inferenceBackend);
       if (o.evidenceTier !== "D0") timing.current.observe(o);
       const ready = selector.current.update(o);
       const imageMode = modeRef.current === "RELATIVE";
@@ -871,6 +874,7 @@ export function ReachLaboratory({
       version: 2,
       source,
       pointingMode,
+      inferenceBackend: source === "LIVE" ? (o?.inferenceBackend ?? "CPU_WASM") : null,
       evidenceTier: source === "DEMO" ? "D0" : "UNQUALIFIED_LIVE_CAMERA",
       provider:
         pointingMode === "RELATIVE" && image
@@ -1696,6 +1700,18 @@ export function ReachLaboratory({
                 <div>
                   <dt>Inference observations</dt>
                   <dd>{metrics.observations}</dd>
+                </div>
+                <div>
+                  <dt>Model processing</dt>
+                  <dd>
+                    {source === "DEMO"
+                      ? "Guided simulation"
+                      : inferenceBackend
+                        ? inferenceBackend === "GPU_WEBGL"
+                          ? "GPU accelerated"
+                          : "CPU (WASM)"
+                        : "Waiting for camera"}
+                  </dd>
                 </div>
                 <div>
                   <dt>Capture interval p95</dt>

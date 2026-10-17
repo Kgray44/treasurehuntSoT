@@ -4,6 +4,7 @@ var exports = {};
 importScripts("./vendor/vision_bundle.js");
 const { FilesetResolver, HandLandmarker } = exports;
 let detector = null;
+const backend = "CPU_WASM";
 let generation = 0;
 let stage = "RUNTIME_LOAD";
 self.onmessage = async ({ data }) => {
@@ -32,7 +33,7 @@ self.onmessage = async ({ data }) => {
         minHandPresenceConfidence: 0.6,
         minTrackingConfidence: 0.6,
       });
-      self.postMessage({ type: "READY", generation });
+      self.postMessage({ type: "READY", generation, backend });
     } catch {
       self.postMessage({ type: "ERROR", generation, reason: stage });
     }
@@ -44,6 +45,7 @@ self.onmessage = async ({ data }) => {
       self.postMessage({
         type: "RESULT",
         generation,
+        backend,
         capture: data.capture,
         inferenceTime: performance.timeOrigin + performance.now(),
         result: { landmarks: result.landmarks, handedness: result.handedness },
