@@ -37,6 +37,13 @@ import { createR14Observation } from "./experience-r14-observability.mjs";
 import { authenticateCompletedEvidence, authenticatedCompletedReceipt } from "./authenticated-completed-evidence.mjs";
 
 const sha = /^[a-f0-9]{40}$/u;
+const protectedBrowserScripts = new Map([
+  ["scripts/sounding-line/run-browser-suite.mjs", fileURLToPath(new URL("./run-browser-suite.mjs", import.meta.url))],
+  ["scripts/sounding-line/browser-authority.mjs", fileURLToPath(new URL("./browser-authority.mjs", import.meta.url))],
+]);
+function isProtectedBrowserHost(command, argumentsList) {
+  return command === process.execPath && [...protectedBrowserScripts.values()].includes(argumentsList[0]);
+}
 const productRoots = new Set(["app", "components", "src", "lib", "prisma", "public", "styles"]);
 const aliases = new Map([
   ["community", ["harborlight"]],
@@ -1197,6 +1204,10 @@ export function run(root, command, argumentsList, { env = {}, ...options } = {})
   if (!Object.hasOwn(env, BROWSER_DIAGNOSTIC_CONTEXT)) delete candidateEnvironment[BROWSER_DIAGNOSTIC_CONTEXT];
   delete candidateEnvironment.GH_TOKEN;
   delete candidateEnvironment.GITHUB_TOKEN;
+  if (!isProtectedBrowserHost(command, argumentsList)) {
+    delete candidateEnvironment.GITHUB_OUTPUT;
+    delete candidateEnvironment.SOUNDING_LINE_PRIVATE_FAILURE_PUBLICATION_NONCE;
+  }
   execFileSync(command, argumentsList, {
     cwd: root,
     stdio: "inherit",
@@ -1665,7 +1676,9 @@ export function browserDiagnosticRunner(diagnostics, runCommand = run) {
     const browserCommand =
       ["scripts/sounding-line/browser-authority.mjs", "scripts/sounding-line/run-browser-suite.mjs"].includes(script) ||
       /^scripts\/(?:admiralty|tideglass|homeport)\/run-.*(?:journeys|e2e)/u.test(script);
-    return runCommand(root, command, argumentsList, {
+    const protectedScript = command === process.execPath ? protectedBrowserScripts.get(script) : undefined;
+    const executionArguments = protectedScript ? [protectedScript, ...argumentsList.slice(1)] : argumentsList;
+    return runCommand(root, command, executionArguments, {
       ...options,
       env: { ...options.env, ...(browserCommand ? context : {}) },
     });
