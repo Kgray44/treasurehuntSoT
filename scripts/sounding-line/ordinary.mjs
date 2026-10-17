@@ -3,8 +3,8 @@
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { validateR8RawOriginals } from "./experience-r8-format.mjs";
-import { existsSync } from "node:fs";
-import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
+import { existsSync, realpathSync } from "node:fs";
+import { lstat, mkdir, mkdtemp, readFile, readdir, realpath, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
@@ -12,9 +12,12 @@ import {
   EVIDENCE_VERSION,
   FileEvidenceStore,
   createEvidenceFingerprint,
+  canonicalJson,
+  compareEvidenceFingerprints,
   digest as evidenceDigest,
   digestFileEntries,
   finalizeEvidence,
+  verifyReceipt,
 } from "./evidence.mjs";
 import {
   browserSuiteProfiles,
@@ -356,18 +359,25 @@ export function boundedVitestCommands(unitTests) {
 }
 
 function normalizedCommand(plan, command, argumentsList) {
-  const candidateToken = plan.candidateSha.slice(0, 12);
-  const normalize = (value) =>
-    value
-      .replaceAll(plan.databaseUrl, "file:./.sounding-line-CANDIDATE.sqlite")
-      .replaceAll(candidateToken, "CANDIDATE");
-  return { command: normalize(command), arguments: argumentsList.map(normalize) };
+  const databases = new Map([
+    [plan.databaseUrl, "file:./.sounding-line-CANDIDATE.sqlite"],
+    ...Object.keys(browserSuiteProfiles).map((profile) => [
+      suiteDatabaseUrl(plan.candidateSha, profile),
+      `file:./.sounding-line-CANDIDATE-${profile}.sqlite`,
+    ]),
+  ]);
+  const normalize = (value) => {
+    if (value === plan.candidateSha) return "CANDIDATE";
+    return databases.get(value) ?? value;
+  };
+  return { command, arguments: argumentsList.map(normalize) };
 }
 
 function browserEvidenceCommand(command, argumentsList) {
   const script = argumentsList[0] ?? "";
   return (
     verificationPhase(command, argumentsList) === "browser-authority" ||
+    verificationPhase(command, argumentsList) === "suite-fixture-preflight" ||
     verificationPhase(command, argumentsList) === "browser-server-preparation" ||
     (command === "npx" &&
       argumentsList.includes("prisma") &&
@@ -487,6 +497,22 @@ function staticSourceClosure(snapshot, seeds) {
       unknown = true;
       continue;
     }
+    // Unresolved computed imports/filesystem inputs cannot establish a reusable
+    // semantic closure merely because their caller lives under src/.
+    if (
+      /\b(?:import|require)\s*\((?!\s*(?:"[^"\\\r\n]*"|'[^'\\\r\n]*')\s*\))/u.test(contents) ||
+      /\b(?:import|require)\s*\//u.test(contents) ||
+      /\b(?:readFile(?:Sync)?|readdir(?:Sync)?|createReadStream)\s*\(/u.test(contents)
+    )
+      unknown = true;
+    for (const match of contents.matchAll(
+      /\b(?:readFile(?:Sync)?|readdir(?:Sync)?|createReadStream)\s*\(\s*(["'])([^"']+)\1/gu,
+    )) {
+      const input = path.posix.normalize(match[2]);
+      if (snapshot.byPath.has(input) && !visited.has(input)) queue.push(input);
+      // CWD and non-file APIs are not inferred from a string alone. Their
+      // literal tracked bytes are included, while reuse remains indeterminate.
+    }
     for (const specifier of extractModuleSpecifiers(contents)) {
       const resolved = resolveSourceImport(snapshot, file, specifier);
       if (resolved.unknown) unknown = true;
@@ -542,7 +568,20 @@ function evidenceClosure(snapshot, group, plan) {
     entries = closure.entries;
     unknown = closure.unknown;
   } else if (group.kind === "browser" || group.kind === "build") {
+    // Browser setup and tests can read public models, photographic fixtures and
+    // runtime files without importing them. Keep this conservative closure until
+    // an independently reviewed narrower dependency proof exists.
     entries = prefixEntries(snapshot, ["src/", "app/", "components/", "lib/", "public/", "styles/", "prisma/"]);
+    const runtimeImports = staticSourceClosure(
+      snapshot,
+      entries.map((entry) => entry.path),
+    );
+    // Runtime imports can legitimately leave product prefixes, including JSON
+    // registries under Development_Docs. Their bytes are product dependencies.
+    entries.push(...runtimeImports.entries);
+    unknown ||= runtimeImports.unknown;
+    if (group.kind === "browser")
+      entries.push(...prefixEntries(snapshot, ["scripts/", "tests/e2e/", "tests/config/", "testing/"]));
   } else if (group.kind === "migration") {
     entries = prefixEntries(snapshot, ["prisma/", "scripts/"]);
   } else if (group.commandLabels.some((label) => label.includes("private-content/scan"))) {
@@ -597,6 +636,10 @@ async function semanticSnapshot(root, candidateSha) {
     candidateSha,
     entries,
     byPath: new Map(entries.map((entry) => [entry.path, entry])),
+    // Pure unit execution uses the actual verifier/evidence semantic engine.
+    // Campaign admission/review/custody is recomputed separately for every plan;
+    // unrelated exception-registry rows are not unit execution dependencies.
+    unitEvidencePolicyIdentity: evidenceDigest({ ordinarySource, evidenceSource, version: EVIDENCE_VERSION }),
     authorityIdentity: evidenceDigest({
       ordinarySource,
       evidenceSource,
@@ -662,23 +705,215 @@ export async function buildEvidenceObligations(root, plan) {
       }),
       browserIdentity: group.kind === "browser" ? browserIdentity(snapshot) : null,
       environmentClass: snapshot.environmentClass,
-      soundingLinePolicyDigest: snapshot.authorityIdentity,
-      authorityIdentity: "SOUNDING_LINE_DIRECT_V14",
+      soundingLinePolicyDigest:
+        group.kind === "unit" ? snapshot.unitEvidencePolicyIdentity : snapshot.authorityIdentity,
+      authorityIdentity: "SOUNDING_LINE_DIRECT_V14_BROWSER_CLOSURE_2",
       inapplicableDependencyClasses,
     });
-    return { ...group, fingerprint, reuseIndeterminate: closure.unknown || tests.unknown || fixtures.unknown };
+    return {
+      ...group,
+      fingerprint,
+      // The owned browser profile still inherits ambient process environment.
+      // Do not claim reusable browser proof until producer/runtime provenance is
+      // independently authenticated; complete source closure alone is insufficient.
+      reuseIndeterminate: closure.unknown || tests.unknown || fixtures.unknown || group.kind === "browser",
+      ...(group.kind === "browser" ? { reuseReason: "BROWSER_RUNTIME_PROVENANCE_UNAUTHENTICATED" } : {}),
+    };
   });
 }
 
-export async function runReconciledVerification(root, plan, runCommand = run) {
+// This memory is populated only after this trusted parent observes every
+// command of a whole obligation pass. A self-hashed restored cache is not proof
+// that an accepted producer observed that outcome.
+const parentObservedReceipts = new Map();
+
+function parentConstructedReceipt(payload) {
+  const identity = evidenceDigest({
+    candidateSha: payload.candidateSha,
+    obligationId: payload.obligationId,
+    fingerprintDigest: payload.fingerprint.fingerprintDigest,
+    disposition: payload.disposition,
+    originalReceiptId: payload.originalReceiptId ?? null,
+  });
+  const unsigned = {
+    version: EVIDENCE_VERSION,
+    kind: "sounding-line-evidence-receipt",
+    immutable: true,
+    id: `sl14-${identity.slice(0, 32)}`,
+    ...payload,
+  };
+  return { ...unsigned, receiptDigest: evidenceDigest(unsigned) };
+}
+
+function assertExactParentReceipt(receipt, payload) {
+  if (canonicalJson(receipt) !== canonicalJson(parentConstructedReceipt(payload)))
+    throw new Error("SOUNDING_LINE_COMPLETED_EVIDENCE_RECEIPT_CHANGED");
+}
+
+function rememberObservedReceipt(root, receipt) {
+  const key = `${path.resolve(root)}:${receipt.receiptDigest}`;
+  parentObservedReceipts.set(key, canonicalJson(receipt));
+}
+
+function parentObservedResolution(root, obligation, candidateSha) {
+  const prefix = `${path.resolve(root)}:`;
+  let prior = null;
+  for (const [key, encoded] of parentObservedReceipts) {
+    if (!key.startsWith(prefix)) continue;
+    const receipt = JSON.parse(encoded);
+    if (receipt.obligationId !== obligation.id) continue;
+    prior = receipt;
+    if (reusableReceiptDisposition(root, receipt, obligation.fingerprint)) continue;
+    return {
+      disposition: receipt.candidateSha === candidateSha ? "PRESERVED" : "REBOUND",
+      reasonCodes: ["TRUSTED_PARENT_OBSERVED_SEMANTIC_FINGERPRINT_MATCH"],
+      receipt,
+    };
+  }
+  return prior
+    ? {
+        ...compareEvidenceFingerprints({
+          prior: prior.fingerprint,
+          current: obligation.fingerprint,
+          priorReceiptId: prior.id,
+        }),
+        receipt: null,
+      }
+    : null;
+}
+
+function reusableReceiptDisposition(root, receipt, fingerprint) {
+  if (!verifyReceipt(receipt).valid) return "EVIDENCE_INTEGRITY_FAILURE";
+  let actual;
+  try {
+    actual = createEvidenceFingerprint(receipt.fingerprint);
+  } catch {
+    return "EVIDENCE_FINGERPRINT_INVALID";
+  }
+  if (
+    canonicalJson(actual) !== canonicalJson(receipt.fingerprint) ||
+    compareEvidenceFingerprints({ prior: actual, current: fingerprint }).disposition !== "PRESERVED"
+  )
+    return "EVIDENCE_FINGERPRINT_INVALID";
+  if (parentObservedReceipts.get(`${path.resolve(root)}:${receipt.receiptDigest}`) !== canonicalJson(receipt))
+    return "EVIDENCE_PRODUCER_UNAUTHENTICATED";
+  return null;
+}
+
+export function completedEvidenceDirectory(
+  root,
+  authorityRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../.."),
+) {
+  const candidate = realpathSync(root);
+  const authority = realpathSync(authorityRoot);
+  const relative = path.relative(candidate, authority);
+  // Same-root local verification stays valid, but cannot label a directory in
+  // the candidate as an independent protected-authority export.
+  if (!relative.startsWith(`..${path.sep}`) && relative !== "..") return undefined;
+  return path.join(authority, "artifacts", "sounding-line", "completed-evidence");
+}
+
+export function completedEvidenceEnvironmentClass(plan, environment = process.env) {
+  const developmentRole = [environment.SOUNDING_LINE_ROLE, environment.SOUNDING_LINE_EXECUTION_ROLE].includes(
+    "DEVELOPMENT_ONLY",
+  );
+  const diagnosticLease = Object.entries(environment).some(
+    ([key, value]) => value && /(?:DIAGNOSTIC|POSTTECHNICAL|HISTORICAL_VALIDATION).*LEASE$/u.test(key),
+  );
+  return plan.mode === "ordinary" &&
+    environment.SOUNDING_LINE_EVIDENCE_PURPOSE === "PROTECTED_FINAL_VERIFICATION" &&
+    environment.GITHUB_ACTIONS === "true" &&
+    environment.GITHUB_REPOSITORY === "Kgray44/treasurehuntSoT" &&
+    environment.GITHUB_JOB === "final-check" &&
+    environment.GITHUB_EVENT_NAME === "pull_request_target" &&
+    environment.GITHUB_WORKFLOW_REF ===
+      "Kgray44/treasurehuntSoT/.github/workflows/sounding-line-ordinary.yml@refs/heads/main" &&
+    !developmentRole &&
+    !diagnosticLease
+    ? "github-actions-nonbrowser-controlled"
+    : "UNSUPPORTED";
+}
+
+async function completedEvidenceCheckpoint(root, plan, planDigest, directory) {
+  if (!directory) return null;
+  const target = path.resolve(directory);
+  const relative = path.relative(await realpath(root), target);
+  if (!relative.startsWith(`..${path.sep}`) && relative !== "..")
+    throw new Error("SOUNDING_LINE_COMPLETED_EVIDENCE_MUST_BE_OUTSIDE_CANDIDATE");
+  await mkdir(path.dirname(target), { recursive: true });
+  if ((await realpath(path.dirname(target))) !== path.dirname(target))
+    throw new Error("SOUNDING_LINE_COMPLETED_EVIDENCE_PARENT_SYMLINK");
+  await mkdir(target, { mode: 0o700 });
+  const st = await lstat(target);
+  if (!st.isDirectory() || st.isSymbolicLink()) throw new Error("SOUNDING_LINE_COMPLETED_EVIDENCE_ROOT_INVALID");
+  const authorityRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
+  const publicNumber = (value) =>
+    /^[1-9][0-9]*$/u.test(value ?? "") && Number.isSafeInteger(Number(value)) ? Number(value) : null;
+  const producerObservation = {
+    authentication: "UNAUTHENTICATED_OBSERVED_METADATA",
+    environmentClass: completedEvidenceEnvironmentClass(plan),
+    repository: process.env.GITHUB_REPOSITORY ?? null,
+    runId: publicNumber(process.env.GITHUB_RUN_ID),
+    runAttempt: publicNumber(process.env.GITHUB_RUN_ATTEMPT),
+    workflowRef: process.env.GITHUB_WORKFLOW_REF ?? null,
+    workflowSha: process.env.GITHUB_WORKFLOW_SHA ?? null,
+    event: process.env.GITHUB_EVENT_NAME ?? null,
+    job: process.env.GITHUB_JOB ?? null,
+    authoritySha: git(authorityRoot, ["rev-parse", "HEAD"]),
+    authorityModuleSha256: createHash("sha256")
+      .update(await readFile(fileURLToPath(import.meta.url)))
+      .digest("hex"),
+    candidateTree: git(root, ["rev-parse", `${plan.candidateSha}^{tree}`]),
+    sourceDigest: plan.productExperience?.sourceDigest ?? null,
+  };
+  let sequence = 0;
+  return async (receipts) => {
+    const entries = receipts.map((receipt) => {
+      if (parentObservedReceipts.get(`${path.resolve(root)}:${receipt.receiptDigest}`) !== canonicalJson(receipt))
+        throw new Error("SOUNDING_LINE_COMPLETED_EVIDENCE_NOT_PARENT_OBSERVED");
+      return JSON.parse(canonicalJson(receipt));
+    });
+    // Each create-only checkpoint is a completed prefix. A later failure or
+    // cancellation does not change it into final qualification or a partial PASS.
+    const checkpoint = {
+      version: 1,
+      kind: "sounding-line-completed-obligation-checkpoint",
+      authentication: "RETENTION_ONLY_NO_AUTHENTICATED_PRODUCER",
+      candidateSha: plan.candidateSha,
+      baseSha: plan.baseSha,
+      planDigest,
+      producerObservation,
+      completedWholeObligations: entries.length,
+      receipts: entries,
+      wholeVerificationPassed: false,
+      qualification: false,
+    };
+    await writeFile(
+      path.join(target, `checkpoint-${String(++sequence).padStart(4, "0")}.json`),
+      `${canonicalJson(checkpoint)}\n`,
+      { flag: "wx", mode: 0o600 },
+    );
+  };
+}
+
+export async function runReconciledVerification(root, plan, runCommand = run, { completedEvidenceRoot } = {}) {
+  if (git(root, ["rev-parse", "HEAD"]) !== plan.candidateSha)
+    throw new Error("SOUNDING_LINE_COMPLETED_EVIDENCE_HEAD_CHANGED");
+  git(root, ["diff", "--exit-code", "HEAD", "--"]);
   const obligations = await buildEvidenceObligations(root, plan);
   const store = new FileEvidenceStore(path.join(root, "artifacts", "sounding-line", "evidence-store"));
+  const observedRoot = path.join(root, "artifacts", "sounding-line", "parent-observed-evidence");
+  await mkdir(observedRoot, { recursive: true });
+  // Never overwrite or promote a restored, candidate-writable receipt. Fresh
+  // observations use a new ledger; historical/cache bytes remain untouched.
+  const observedStore = new FileEvidenceStore(await mkdtemp(path.join(observedRoot, "observation-")));
   const planDigest = evidenceDigest({
     mode: plan.mode,
     baseSha: plan.baseSha,
     candidateSha: plan.candidateSha,
     obligations: obligations.map((entry) => entry.id),
   });
+  const checkpoint = await completedEvidenceCheckpoint(root, plan, planDigest, completedEvidenceRoot);
   const receipts = [];
   const reconciliation = [];
   const timings = [];
@@ -689,16 +924,18 @@ export async function runReconciledVerification(root, plan, runCommand = run) {
     else if (obligation.reuseIndeterminate)
       resolution = {
         disposition: "CONSERVATIVE_FALLBACK",
-        reasonCodes: ["SEMANTIC_CLOSURE_INDETERMINATE"],
+        reasonCodes: [obligation.reuseReason ?? "SEMANTIC_CLOSURE_INDETERMINATE"],
         receipt: null,
       };
     else {
       try {
-        resolution = await store.findReusable({
-          obligationId: obligation.id,
-          candidateSha: plan.candidateSha,
-          fingerprint: obligation.fingerprint,
-        });
+        resolution =
+          parentObservedResolution(root, obligation, plan.candidateSha) ??
+          (await store.findReusable({
+            obligationId: obligation.id,
+            candidateSha: plan.candidateSha,
+            fingerprint: obligation.fingerprint,
+          }));
       } catch {
         resolution = {
           disposition: "CONSERVATIVE_FALLBACK",
@@ -708,10 +945,14 @@ export async function runReconciledVerification(root, plan, runCommand = run) {
       }
     }
     if (["PRESERVED", "REBOUND"].includes(resolution.disposition) && resolution.receipt) {
+      const denial = reusableReceiptDisposition(root, resolution.receipt, obligation.fingerprint);
+      if (denial) resolution = { disposition: "CONSERVATIVE_FALLBACK", reasonCodes: [denial], receipt: null };
+    }
+    if (["PRESERVED", "REBOUND"].includes(resolution.disposition) && resolution.receipt) {
       const receipt =
         resolution.disposition === "PRESERVED"
           ? resolution.receipt
-          : await store.rebind({
+          : await observedStore.rebind({
               sourceReceipt: resolution.receipt,
               candidateSha: plan.candidateSha,
               obligationId: obligation.id,
@@ -720,7 +961,38 @@ export async function runReconciledVerification(root, plan, runCommand = run) {
               commands: obligation.commandLabels,
               decision: resolution,
             });
+      if (resolution.disposition === "REBOUND") {
+        const source = resolution.receipt;
+        const identity = {
+          originalReceiptId: source.id,
+          priorFingerprintDigest: source.fingerprint.fingerprintDigest,
+          currentFingerprintDigest: obligation.fingerprint.fingerprintDigest,
+          disposition: resolution.disposition,
+        };
+        assertExactParentReceipt(receipt, {
+          candidateSha: plan.candidateSha,
+          obligationId: obligation.id,
+          fingerprint: obligation.fingerprint,
+          planDigest,
+          commands: obligation.commandLabels,
+          durationMs: source.durationMs ?? null,
+          authorityVersion: EVIDENCE_VERSION,
+          producer: "SOUNDING_LINE_DIRECT",
+          result: "PASSED",
+          disposition: resolution.disposition,
+          originalReceiptId: source.id,
+          lineage: {
+            version: EVIDENCE_VERSION,
+            immutable: true,
+            ...identity,
+            reasonCodes: resolution.reasonCodes,
+            lineageDigest: evidenceDigest(identity),
+          },
+        });
+      }
+      rememberObservedReceipt(root, receipt);
       receipts.push(receipt);
+      if (checkpoint) await checkpoint(receipts);
       reconciliation.push({
         obligationId: obligation.id,
         disposition: resolution.disposition,
@@ -737,7 +1009,10 @@ export async function runReconciledVerification(root, plan, runCommand = run) {
       for (const [command, argumentsList] of obligation.commands)
         await runCommand(root, command, argumentsList, { env: verificationEnvironment(plan, command, argumentsList) });
       const durationMs = Date.now() - startedAt;
-      const receipt = await store.writeFresh({
+      if (git(root, ["rev-parse", "HEAD"]) !== plan.candidateSha)
+        throw new Error("SOUNDING_LINE_COMPLETED_EVIDENCE_HEAD_CHANGED");
+      git(root, ["diff", "--exit-code", "HEAD", "--"]);
+      const receipt = await observedStore.writeFresh({
         candidateSha: plan.candidateSha,
         obligationId: obligation.id,
         fingerprint: obligation.fingerprint,
@@ -745,7 +1020,22 @@ export async function runReconciledVerification(root, plan, runCommand = run) {
         commands: obligation.commandLabels,
         durationMs,
       });
+      assertExactParentReceipt(receipt, {
+        candidateSha: plan.candidateSha,
+        obligationId: obligation.id,
+        fingerprint: obligation.fingerprint,
+        planDigest,
+        commands: obligation.commandLabels,
+        durationMs,
+        authorityVersion: EVIDENCE_VERSION,
+        producer: "SOUNDING_LINE_DIRECT",
+        result: "PASSED",
+        disposition: "FRESH",
+        originalReceiptId: null,
+      });
+      rememberObservedReceipt(root, receipt);
       receipts.push(receipt);
+      if (checkpoint) await checkpoint(receipts);
       reconciliation.push({
         obligationId: obligation.id,
         disposition: resolution.disposition,
@@ -1383,6 +1673,7 @@ async function main() {
           root,
           plan,
           exceptionCommandRunner(plan.productExperience, browserDiagnosticRunner(diagnostics)),
+          { completedEvidenceRoot: completedEvidenceDirectory(root) },
         ),
       );
       await completeOrdinaryVerification({ root, plan, result, verification, diagnostics });

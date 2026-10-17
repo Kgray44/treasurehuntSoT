@@ -7,6 +7,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
 import "./ordinary-consumer-policy.test.mjs";
+import "./incremental-browser-evidence.test.mjs";
 import { splitMigrationStatements } from "../../scripts/sounding-line/sqlite-bootstrap.mjs";
 import {
   assertBrowserAuthorityTopology,
@@ -178,6 +179,7 @@ function commit(root, message) {
 function evidenceFixture() {
   const root = mkdtempSync(path.join(tmpdir(), "sounding-line-evidence-"));
   const files = {
+    ".gitignore": "artifacts/\n",
     "package.json": `${JSON.stringify(basePackage, null, 2)}\n`,
     "package-lock.json": `${JSON.stringify({ name: "evidence-fixture", lockfileVersion: 3, packages: {} }, null, 2)}\n`,
     "tsconfig.json": '{"compilerOptions":{"baseUrl":".","paths":{"@/*":["src/*"]}}}\n',
@@ -1784,11 +1786,20 @@ test("trusted PR routing produces one strict decision for ordinary and control-p
   assert.match(ordinaryWorkflow, /mode: "ordinary"/u);
   assert.match(ordinaryWorkflow, /kind=ordinary/u);
   assert.match(ordinaryWorkflow, /browser_required=\$\{plan\.browserRequired\}/u);
-  assert.match(ordinaryWorkflow, /Restore reusable ordinary evidence/u);
-  assert.match(ordinaryWorkflow, /actions\/cache\/restore@v4/u);
-  assert.match(ordinaryWorkflow, /Persist passing reusable ordinary evidence/u);
-  assert.match(ordinaryWorkflow, /actions\/cache\/save@v4/u);
-  assert.match(ordinaryWorkflow, /scripts\/sounding-line\/evidence\.mjs/u);
+  const completed = ordinaryWorkflow
+    .split(/\n      - /u)
+    .find((step) => step.includes("sounding-line-completed-evidence-"));
+  assert(completed, "retain completed whole-obligation checkpoints independently of later verifier outcome");
+  assert.match(completed, /if:.*always\(\)/u);
+  assert.match(completed, /steps\.route\.outputs\.kind == 'ordinary'/u);
+  assert.match(
+    completed,
+    /sounding-line-completed-evidence-\$\{\{ github\.run_id \}\}-\$\{\{ github\.run_attempt \}\}/u,
+  );
+  assert.match(completed, /authority\/artifacts\/sounding-line\/completed-evidence\/checkpoint-\*\.json/u);
+  assert.doesNotMatch(completed, /ordinary-verifier\.outcome == 'success'/u);
+  assert.doesNotMatch(ordinaryWorkflow, /actions\/cache\/(?:restore|save)@v4/u);
+  assert.doesNotMatch(completed, /candidate\/artifacts\/sounding-line\/evidence-store/u);
   assert.match(ordinaryWorkflow, /kind=control-plane/u);
   assert.match(
     ordinaryWorkflow,
@@ -1885,14 +1896,19 @@ test("v1.4 evidence reconciliation preserves, invalidates, falls back, and final
     );
 
     const storeRoot = path.join(root, "artifacts", "sounding-line", "evidence-store", "receipts");
+    mkdirSync(storeRoot, { recursive: true });
     writeFileSync(path.join(storeRoot, "corrupt.json"), "not json\n");
     const corrupt = await runReconciliation(root, plan);
-    assert.ok(corrupt.result.reconciliation.every((entry) => entry.disposition === "CONSERVATIVE_FALLBACK"));
+    assert.ok(corrupt.result.reconciliation.some((entry) => entry.disposition === "CONSERVATIVE_FALLBACK"));
+    assert.ok(
+      corrupt.result.reconciliation.some((entry) => entry.disposition === "PRESERVED"),
+      "untrusted cache corruption cannot erase genuine unchanged observations in the trusted parent",
+    );
     assert.ok(corrupt.calls.length > 0);
   });
 });
 
-test("v1.4 evidence rebinds a browser obligation across an unrelated base advance and keeps release exhaustive", async () => {
+test("v1.4 keeps browser evidence fresh without runtime provenance and release exhaustive", async () => {
   await withEvidenceFixture(async ({ root, baseSha }) => {
     writeFileSync(path.join(root, "src/product.ts"), "export const product = 'candidate browser behavior';\n");
     const firstCandidate = commit(root, "browser candidate on original base");
@@ -1916,15 +1932,13 @@ test("v1.4 evidence rebinds a browser obligation across an unrelated base advanc
     });
     const rebound = await runReconciliation(root, reboundPlan);
     const browser = rebound.result.reconciliation.find((entry) => entry.obligationId.startsWith("browser."));
-    assert.equal(browser?.disposition, "REBOUND");
-    assert.equal(browser?.freshExecuted, false);
+    assert.equal(browser?.disposition, "CONSERVATIVE_FALLBACK");
+    assert.equal(browser?.freshExecuted, true);
+    assert(browser.reasonCodes.includes("BROWSER_RUNTIME_PROVENANCE_UNAUTHENTICATED"));
     assert.equal(rebound.result.finalization.decision, "PASS");
-    assert.equal(rebound.result.finalization.requiredObligations, 8);
-    assert.equal(rebound.result.freshObligations, 2);
-    assert.equal(rebound.result.finalization.counts.REBOUND, 6);
-    assert.equal(rebound.result.finalization.counts.INVALIDATED, 1);
-    assert.equal(rebound.result.commandsAvoided.length, 7);
-    assert.ok(rebound.result.avoidedDurationMs >= (freshBrowserReceipt?.durationMs ?? Infinity));
+    assert.equal(rebound.result.finalization.requiredObligations, verificationObligationGroups(reboundPlan).length);
+    assert(rebound.result.reconciliation.some((entry) => entry.disposition === "REBOUND"));
+    assert(rebound.result.freshObligations > 0);
 
     const releasePlan = await buildPlan({
       prNumber: 0,
