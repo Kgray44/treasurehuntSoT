@@ -1,0 +1,22 @@
+{
+  "classification": "READ_ONLY_R12_FOCUSED_TECHNICAL_ADMISSION_NO_EXECUTION",
+  "status": "PASS",
+  "stage": "original",
+  "baseSha": "e85ceda26a3770dfb2b01f2afd916e45761a5d9e",
+  "candidateSha": "53601e9e386bb4f1062719befc77b7778b9e4430",
+  "candidateTree": "85e9accc1d273d0f649119380d775df41e6dcf0a",
+  "sourceDigest": "3e69c2306442758edca417fdb478f1a61e009f1cbc82d584bcad6e760257df0f",
+  "contractDigest": "33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274",
+  "recordDigest": "9d140072d1cd31a363bf667380b1298eb1b8a9ef0489eb0be564922f85f5239c",
+  "spec": "tests/e2e/crossdeck-phase2.spec.ts",
+  "title": "crossdeck.surface-handoff",
+  "history": {
+    "status": "PASS",
+    "observedRuns": 162,
+    "preservedPredecessorRuns": 15,
+    "throughUtc": "2026-10-17T01:53:51.928Z",
+    "custodyWrites": 0
+  },
+  "custodyWrites": 0,
+  "executions": 0
+}
