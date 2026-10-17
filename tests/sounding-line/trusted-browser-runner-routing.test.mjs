@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -186,7 +186,7 @@ test("an existing exception denial stops before routing or scope creation", asyn
 });
 
 test("first failed browser profile stops before the later selected profile", async () => {
-  await withExecutors(async ({ candidate, ordinary, diagnostics }) => {
+  await withExecutors(async ({ owner, authority, candidate, ordinary, diagnostics, scopes }) => {
     const git = (...args) =>
       execFileSync("git", args, { cwd: candidate, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
     put(candidate, ".gitignore", "artifacts/\n");
@@ -198,6 +198,16 @@ test("first failed browser profile stops before the later selected profile", asy
     git("add", ".");
     git("commit", "--quiet", "-m", "inert candidate source");
     const candidateSha = git("rev-parse", "HEAD");
+    // Checkpoint export observes the protected module's Git identity as well as
+    // the candidate. This owned repository contains only inert copied source.
+    for (const args of [
+      ["init", "--quiet"],
+      ["config", "user.name", "Inert routing fixture"],
+      ["config", "user.email", "fixture@example.invalid"],
+      ["add", "."],
+      ["commit", "--quiet", "-m", "inert authority source"],
+    ])
+      execFileSync("git", args, { cwd: authority, stdio: ["ignore", "pipe", "pipe"] });
     const plan = {
       mode: "ordinary",
       candidateSha,
@@ -214,20 +224,98 @@ test("first failed browser profile stops before the later selected profile", asy
       migrationScripts: [],
       registrationValidationRequired: false,
     };
-    const group = ordinary.verificationObligationGroups(plan).find((entry) => entry.kind === "browser");
-    assert.equal(
-      group.commands.filter(([, args]) => args[0] === "scripts/sounding-line/run-browser-suite.mjs").length,
-      2,
+    const groups = ordinary.verificationObligationGroups(plan),
+      canonicalGroups = structuredClone(groups);
+    const script = "scripts/sounding-line/run-browser-suite.mjs";
+    const wrappers = groups.filter((entry) =>
+      entry.commands.some(([command, args]) => command === process.execPath && args[0] === script),
     );
-    const failure = new Error("INERT_CURRENT_PROFILE_FAILURE");
-    const profiles = [];
-    const runner = ordinary.browserDiagnosticRunner(diagnostics, (_cwd, _command, args) => {
+    assert.equal(wrappers.length, 2, "both selected whole suites retain distinct standalone obligations");
+    assert(wrappers.every((entry) => entry.kind === "preflight" && entry.commands.length === 1));
+    assert.equal(new Set(wrappers.map((entry) => entry.id)).size, 2);
+    assert.deepEqual(
+      wrappers.map((entry) => {
+        const args = entry.commands[0][1];
+        return args[args.indexOf("--profile") + 1];
+      }),
+      ["harborlight-phase2", "generic"],
+    );
+    const tail = groups.find((entry) => entry.kind === "browser");
+    assert(groups.indexOf(wrappers[0]) < groups.indexOf(wrappers[1]));
+    assert(
+      groups.indexOf(wrappers[1]) < groups.indexOf(tail),
+      "legacy whole suites precede the final build/Prisma tail",
+    );
+    assert.deepEqual(
+      tail.commands.map(([, args]) => args[0]),
+      ["run", "--no-install"],
+    );
+    const expectedPrefix = groups.slice(0, groups.indexOf(wrappers[0])).map((entry) => entry.id);
+    const expectedExecuted = groups
+      .slice(0, groups.indexOf(wrappers[0]) + 1)
+      .flatMap((entry) => entry.commands)
+      .map(([command, args]) => [
+        command,
+        args[0] === script ? [path.join(authority, script), ...args.slice(1)] : args,
+      ]);
+    const failure = new Error("INERT_CURRENT_PROFILE_FAILURE"),
+      calls = [],
+      profiles = [],
+      callbackCleanup = [];
+    let returned = false;
+    const output = path.join(owner, "completed-prefix");
+    const runner = ordinary.browserDiagnosticRunner(diagnostics, async (cwd, command, args, options) => {
+      calls.push([command, [...args]]);
+      assert.equal(cwd, candidate);
       if (path.basename(args[0]) !== "run-browser-suite.mjs") return;
-      profiles.push(args[args.indexOf("--profile") + 1]);
-      throw failure;
+      assert.equal(command, process.execPath);
+      assert.equal(args[0], path.join(authority, script), "actual execution uses the protected sibling");
+      assert.equal(options.env[contextKey], `owned-context-${calls.length}`);
+      const profile = args[args.indexOf("--profile") + 1];
+      profiles.push(profile);
+      // This inert callback proves scheduler await/finally ordering only.
+      // Real owned-process cleanup is covered by the separate lifecycle tests.
+      try {
+        await Promise.resolve();
+        throw failure;
+      } finally {
+        callbackCleanup.push(profile);
+      }
     });
-    await assert.rejects(ordinary.runReconciledVerification(candidate, plan, runner), (error) => error === failure);
-    assert.deepEqual(profiles, ["harborlight-phase2"], "later generic profile must not run after current failure");
+    await assert.rejects(
+      async () => {
+        await ordinary.runReconciledVerification(candidate, plan, runner, { completedEvidenceRoot: output });
+        returned = true;
+      },
+      (error) => error === failure,
+    );
+    assert.deepEqual(calls, expectedExecuted, "the failed first whole suite stops every later command");
+    assert.deepEqual(profiles, ["harborlight-phase2"], "the later generic whole suite never starts");
+    assert.deepEqual(callbackCleanup, profiles, "runner finally completes before failure propagation");
+    assert.equal(scopes(), calls.length);
+    assert.equal(returned, false, "failure produces no canonical finalization result");
+    assert(!calls.some(([command, args]) => command === "npm" && args.join(" ") === "run build"));
+    assert(!calls.some(([, args]) => args.includes("prisma") && args.includes("generate")));
+    const saved = readdirSync(output)
+      .sort()
+      .map((name) => JSON.parse(readFileSync(path.join(output, name), "utf8")));
+    assert.equal(saved.length, expectedPrefix.length);
+    assert(saved.length > 0);
+    for (const [index, checkpoint] of saved.entries()) {
+      assert.deepEqual(
+        checkpoint.receipts.map((receipt) => receipt.obligationId),
+        expectedPrefix.slice(0, index + 1),
+      );
+      assert.equal(checkpoint.completedWholeObligations, index + 1);
+      assert.equal(checkpoint.wholeVerificationPassed, false);
+      assert.equal(checkpoint.qualification, false);
+    }
+    assert.deepEqual(
+      saved.at(-1).receipts.map((receipt) => receipt.obligationId),
+      expectedPrefix,
+    );
+    assert.equal(failure.soundingLineTimings.at(-1).obligationId, wrappers[0].id);
     assert.equal(failure.soundingLineTimings.at(-1).status, "FAIL");
+    assert.deepEqual(groups, canonicalGroups, "canonical command labels and identities are never rewritten");
   });
 });
