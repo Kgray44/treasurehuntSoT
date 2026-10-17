@@ -215,6 +215,11 @@ for (const scenarioId of ["crossdeck.surface-handoff", "crossdeck.phone-disconne
               requestedAt: reverseRequestedAt,
               visibleAt: Date.now(),
             });
+            // A mirrored Chart may reopen its modal while the reverse offer arrives.
+            // Return through the visible drawer control before using the transfer toolbar.
+            const reverseSourceDrawer = d.getByRole("button", { name: "Close journal tool drawer", exact: true });
+            if (await reverseSourceDrawer.isVisible()) await reverseSourceDrawer.click();
+            await expect(d.locator(".journal-objects-drawer")).toBeHidden();
             await sending.getByRole("button", { name: /^Receive / }).click();
             await expect(d.locator(".journal-objects-drawer.open [data-landfall-player-chart]:visible")).toBeVisible();
             await expect

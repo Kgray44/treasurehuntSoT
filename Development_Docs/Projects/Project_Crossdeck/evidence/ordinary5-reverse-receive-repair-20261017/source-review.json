@@ -1,0 +1,21 @@
+{
+  "classification": "INDEPENDENT_SOURCE_REVIEW_NOT_RUNTIME_ACCEPTANCE",
+  "reviewerContext": "/root/qualification_audit",
+  "builderContext": "/root",
+  "sourceCandidate": "53601e9e386bb4f1062719befc77b7778b9e4430",
+  "path": "tests/e2e/crossdeck-phase2.spec.ts",
+  "oldBlob": "ba77b2faf27e6e44af8db2fbd577bd3b4f9c589a",
+  "newBlob": "68d861d7e4c819f3855cbcd3cbd8636afb1a034a",
+  "newSha256": "d61b51d135b0a91d83b42ee6f01e6f455682aeb257e9d6ba1745fce39aed5e76",
+  "reviewRecordDigest": "cb7c87c702fc137bd00a921e8bb6f554526c9dc02ff962b3b8c5d03e1e101093",
+  "status": "APPROVED_SOURCE_PENDING_FOCUSED_AND_PROTECTED_QUALIFICATION",
+  "addedLines": 5,
+  "removedLines": 0,
+  "originalAssertionsPreserved": 42,
+  "newAssertions": 1,
+  "forceClick": false,
+  "timeoutsChanged": false,
+  "productOrCssChanged": false,
+  "mandatoryTechnicalMediaPreserved": true,
+  "findings": []
+}
