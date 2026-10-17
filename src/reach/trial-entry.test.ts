@@ -1,103 +1,51 @@
 // @sounding-line-registration owner=reach suite=unit.reach contracts=reach.phase1.foundation
 import { describe, expect, it } from "vitest";
-import { canOpenReachTrial, trialEntryGraceMs } from "./trial-entry";
+import { canOpenReachTrial } from "./trial-entry";
+import { ActiveHandSelector, ObservationGate } from "./observation";
 import { syntheticObservation } from "./synthetic";
-import { indexImageAlgorithm, type IndexImageObservation } from "./index-image-tracker";
-import type { ReachReadiness } from "./observation";
 
-function input(mode: "ABSOLUTE" | "RELATIVE" = "ABSOLUTE") {
-  const observation = syntheticObservation({ x: 0.5, y: 0.5 }, 1, 1000);
-  const readiness: ReachReadiness = {
-    detectedCount: 1,
-    hand: mode === "ABSOLUTE" ? observation.hands[0] : null,
-    eligible: false,
-    changed: false,
-    condition: "READY",
-    guidance: "Collection waits for fresh tracking.",
-  };
-  const imageObservation: IndexImageObservation = {
-    observationVersion: 1,
-    providerId: indexImageAlgorithm.providerId,
-    providerVersion: indexImageAlgorithm.providerVersion,
-    algorithmDigest: indexImageAlgorithm.algorithmDigest,
-    providerGeneration: 1,
-    cameraLeaseId: "image-entry-test",
-    cameraFrameVersion: 1,
-    frameWidth: 640,
-    frameHeight: 480,
-    mirrorTransform: "NONE",
-    orientation: 0,
-    sequence: 1,
-    monotonicCaptureTime: 1000,
-    monotonicInferenceTime: 1020,
-    trackId: "image-entry-1",
-    trackGeneration: 1,
-    point: { x: 0.5, y: 0.5 },
-    state: "TRACKING",
-    modelAgreement: "UNAVAILABLE",
-    anchorSource: "MANUAL_HINT",
-    quality: { correlation: null, separation: null, texture: null, forwardBackwardErrorPixels: null },
-    uncertaintyRadiusPixels: null,
-    reason: "IMAGE_MATCH",
-  };
-  return { mode, source: "LIVE" as const, readiness, observation, imageObservation, now: 1200 };
-}
-
-describe("bounded target entry separate from sample eligibility", () => {
-  it.each(["ABSOLUTE", "RELATIVE"] as const)("opens %s at200ms without crediting collection eligibility", (mode) => {
-    const state = input(mode);
-    expect(canOpenReachTrial(state)).toBe(true);
-    expect(state.readiness.eligible).toBe(false);
+const live = { source: "LIVE" as const, sessionStatus: "READY", workerAvailable: true };
+describe("session entry separate from fresh sample eligibility", () => {
+  it.each(["READY", "STALE_OR_INVALID_OBSERVATION"])(
+    "opens an empty trial while the started model is%s",
+    (sessionStatus) => {
+      expect(canOpenReachTrial({ ...live, sessionStatus })).toBe(true);
+    },
+  );
+  it("does not require a model or recognized posture for an active guided demo", () => {
+    expect(canOpenReachTrial({ source: "DEMO", sessionStatus: "DEMO", workerAvailable: false })).toBe(true);
   });
-  it.each(["ABSOLUTE", "RELATIVE"] as const)("bounds %s entry to0..300ms even if eligibility is stale", (mode) => {
-    const state = input(mode);
-    for (const age of [0, 150, trialEntryGraceMs]) expect(canOpenReachTrial({ ...state, now: 1000 + age })).toBe(true);
-    state.readiness.eligible = true;
-    for (const age of [-1, trialEntryGraceMs + 1, Infinity, NaN])
-      expect(canOpenReachTrial({ ...state, now: 1000 + age })).toBe(false);
+  it("blocks an absent camera worker and camera-ready startup before model initialization", () => {
+    expect(canOpenReachTrial({ ...live, source: "OFF" })).toBe(false);
+    expect(canOpenReachTrial({ ...live, workerAvailable: false })).toBe(false);
+    expect(canOpenReachTrial({ ...live, sessionStatus: "MODEL_STARTING" })).toBe(false);
   });
-  it.each(["ABSOLUTE", "RELATIVE"] as const)("blocks %s mode/source changes and lost readiness immediately", (mode) => {
-    const state = input(mode);
-    expect(canOpenReachTrial({ ...state, source: "OFF" })).toBe(false);
-    expect(canOpenReachTrial({ ...state, readiness: { ...state.readiness, changed: true } })).toBe(false);
-    for (const condition of ["ACQUIRING", "RECOVERING", "AMBIGUOUS", "POSTURE", "NO_HAND"] as const)
-      expect(canOpenReachTrial({ ...state, readiness: { ...state.readiness, condition } })).toBe(false);
+  it.each(["DISABLED", "REQUESTING", "PERMISSION_DENIED", "CAMERA_BUSY", "SUSPENDED", "MODEL_FAILURE", "ERROR"])(
+    "blocks%s camera/model sessions",
+    (sessionStatus) => {
+      expect(canOpenReachTrial({ ...live, sessionStatus })).toBe(false);
+    },
+  );
+  it("can open while the unchanged150ms source gate rejects stale observations", () => {
+    const observation = syntheticObservation({ x: 0.5, y: 0.5 }, 1, 1000);
+    const gate = new ObservationGate({
+      providerGeneration: observation.providerGeneration,
+      cameraLeaseId: observation.cameraLeaseId,
+      cameraFrameVersion: observation.cameraFrameVersion,
+      orientation: observation.orientation,
+      mirrorTransform: observation.mirrorTransform,
+    });
+    expect(canOpenReachTrial({ ...live, sessionStatus: "STALE_OR_INVALID_OBSERVATION" })).toBe(true);
+    expect(() => gate.accept(observation, 1301)).toThrow("FRESHNESS");
   });
-  it("does not borrow relative readiness for absolute entry or absolute readiness for a new image mode", () => {
-    expect(canOpenReachTrial({ ...input("RELATIVE"), mode: "ABSOLUTE" })).toBe(false);
-    expect(canOpenReachTrial({ ...input(), mode: "RELATIVE", imageObservation: null })).toBe(false);
-  });
-  it("blocks contrary, ambiguous and missing image points without using a paused match", () => {
-    const state = input("RELATIVE");
-    for (const imageState of ["UNCERTAIN", "LOST", "UNSEEDED"] as const)
-      expect(
-        canOpenReachTrial({
-          ...state,
-          imageObservation: {
-            ...state.imageObservation,
-            state: imageState,
-            point: null,
-            matchedPoint: { x: 0.5, y: 0.5 },
-          },
-        }),
-      ).toBe(false);
-    expect(canOpenReachTrial({ ...state, imageObservation: { ...state.imageObservation, point: null } })).toBe(false);
-  });
-  it("blocks missing, changed, ambiguous or invalid absolute index anatomy immediately", () => {
-    for (const fault of ["missing", "new-track", "ambiguous", "invalid-index", "open-hand", "interrupted"] as const) {
-      const state = input();
-      if (fault === "missing") state.observation.hands = [];
-      if (fault === "new-track") state.observation.hands[0] = { ...state.observation.hands[0], trackGeneration: 2 };
-      if (fault === "ambiguous") state.observation.hands[0].continuity = "AMBIGUOUS";
-      if (fault === "invalid-index") state.observation.hands[0].landmarks[8].valid = false;
-      if (fault === "open-hand") {
-        const landmarks = state.observation.hands[0].landmarks;
-        for (const base of [9, 13, 17])
-          for (let joint = 1; joint <= 3; ++joint)
-            landmarks[base + joint] = { ...landmarks[base], y: landmarks[base].y - 0.02 * joint };
-      }
-      if (fault === "interrupted") state.observation.reason = "INTERRUPTED";
-      expect(canOpenReachTrial(state)).toBe(false);
-    }
+  it("can open while a newly invalid index remains ineligible for collection", () => {
+    const selector = new ActiveHandSelector();
+    const frame = (at: number) => syntheticObservation({ x: 0.5, y: 0.5 }, at, at);
+    selector.update(frame(100));
+    expect(selector.update(frame(350)).eligible).toBe(true);
+    const bad = frame(400);
+    bad.hands[0].landmarks[8].valid = false;
+    expect(selector.update(bad).eligible).toBe(false);
+    expect(canOpenReachTrial(live)).toBe(true);
   });
 });

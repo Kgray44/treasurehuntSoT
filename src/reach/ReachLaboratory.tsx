@@ -133,6 +133,7 @@ export function ReachLaboratory({
     sourceRef = useRef<Source>("OFF"),
     stepRef = useRef<Step>("PREPARE");
   const modeRef = useRef<PointingMode>("RELATIVE");
+  const sessionStatus = useRef("DISABLED");
   const readyRef = useRef(initialReadiness),
     demoPoint = useRef<Point>({ x: 0.5, y: 0.5 }),
     demoGeneration = useRef(0),
@@ -176,14 +177,11 @@ export function ReachLaboratory({
     smoothedTimerLatenessMs: number | null;
   } | null>(null);
   const trialEntryReady = useCallback(
-    (now: number) =>
+    () =>
       canOpenReachTrial({
-        mode: modeRef.current,
         source: sourceRef.current,
-        readiness: readyRef.current,
-        observation: lastObservation.current,
-        imageObservation: lastIndexObservation.current,
-        now,
+        sessionStatus: sessionStatus.current,
+        workerAvailable: runtime.current?.resources().workers === 1,
       }),
     [],
   );
@@ -294,7 +292,7 @@ export function ReachLaboratory({
     };
     readyRef.current = waiting;
     setReadiness(waiting);
-    setEntryReady(false);
+    setEntryReady(trialEntryReady());
   };
   const bindingFor = (o: HandObservation, hand: HandObservation["hands"][number]): CalibrationBinding => ({
     featureProfile: REACH_FEATURE_PROFILE,
@@ -479,8 +477,8 @@ export function ReachLaboratory({
         guidance: next.guidance,
       };
       readyRef.current = ready;
-      setEntryReady(trialEntryReady(performance.now()));
-      if (next.changed && (trial.current || calibrationRef.current)) {
+      setEntryReady(trialEntryReady());
+      if (next.changed && (trial.current?.binding || calibrationRef.current)) {
         invalidate("A new fingertip was selected or the camera changed. Begin a fresh setup for this track.");
         log("INDEX_IMAGE_CONTEXT_CHANGED");
       }
@@ -509,11 +507,11 @@ export function ReachLaboratory({
       const eligibilityChanged = readyRef.current.eligible !== ready.eligible;
       if (!imageMode) {
         readyRef.current = ready;
-        setEntryReady(trialEntryReady(now));
+        setEntryReady(trialEntryReady());
       }
       visual.current.observation = o;
       visual.current.activeTrack = ready.hand?.trackId ?? null;
-      if (!imageMode && ready.changed && (trial.current || calibrationRef.current)) {
+      if (!imageMode && ready.changed && (trial.current?.binding || calibrationRef.current)) {
         invalidate(
           "We can no longer confirm the same hand and camera setup. Set up again so samples stay tied to one hand.",
         );
@@ -568,7 +566,9 @@ export function ReachLaboratory({
       video.current!,
       (o) => accept.current(o),
       (state) => {
+        sessionStatus.current = state;
         setStatus(state);
+        setEntryReady(trialEntryReady());
         if (state === "READY")
           setMessage((previous) =>
             previous.startsWith("Allow camera access")
@@ -647,7 +647,7 @@ export function ReachLaboratory({
       window.visualViewport?.removeEventListener("resize", changed);
       window.visualViewport?.removeEventListener("scroll", changed);
     };
-  }, [advance, changeSource, invalidate]);
+  }, [advance, changeSource, invalidate, trialEntryReady]);
   useEffect(() => {
     if (source === "OFF") return;
     const freshness = setInterval(() => {
@@ -674,7 +674,7 @@ export function ReachLaboratory({
         invalidate("Your session calibration expired. Set up again to continue.");
         log("CALIBRATION_EXPIRED");
       }
-      setEntryReady(trialEntryReady(now));
+      setEntryReady(trialEntryReady());
     }, 100);
     const diagnostics = setInterval(() => {
       setMetrics(timingSnapshot(timing.current));
@@ -777,7 +777,9 @@ export function ReachLaboratory({
   const startDemo = () => {
     stop();
     changeSource("DEMO");
+    sessionStatus.current = "DEMO";
     setStatus("DEMO");
+    setEntryReady(trialEntryReady());
     setDemoFault("NONE");
     setMessage("Guided demo: the hand is simulated. Camera accuracy is not measured.");
   };
@@ -788,7 +790,7 @@ export function ReachLaboratory({
     void runtime.current?.start(true, mirror);
   };
   const begin = (stage: Trial["stage"]) => {
-    if (stage === "TRAINING" && !trialEntryReady(performance.now())) {
+    if (stage === "TRAINING" && !trialEntryReady()) {
       setMessage(readyRef.current.guidance);
       return;
     }
@@ -1395,12 +1397,12 @@ export function ReachLaboratory({
                 gestures pause collection.
               </span>
             )}
-            {source === "LIVE" && assessment?.indexTracked && !readiness.eligible && (
-              <span>
-                Index joints are still tracked in the camera view. Pointing is tentative; collection is paused until
-                enough anatomy is available.
-              </span>
-            )}
+            {source === "LIVE" &&
+              pointingMode === "ABSOLUTE" &&
+              assessment?.indexTracked &&
+              readiness.condition === "GEOMETRY" && (
+                <span>Index joints are detected; pointing geometry needs to settle. Collection is paused.</span>
+              )}
           </div>
           {!setupInvalidation && (
             <p className={styles.sessionMessage} aria-live="polite">
@@ -1489,14 +1491,12 @@ export function ReachLaboratory({
                   <button className={styles.primary} disabled={!entryReady} onClick={() => begin("TRAINING")}>
                     {pointingMode === "ABSOLUTE" ? "Begin nine-point calibration" : "Set up relative movement"}
                   </button>
-                  {entryReady && !readiness.eligible && (
-                    <p className={styles.hint}>Collection waits for fresh tracking.</p>
+                  {entryReady && (
+                    <p className={styles.hint}>Setup can begin now. Collection waits for fresh eligible tracking.</p>
                   )}
                   {!entryReady && (
                     <p className={styles.hint}>
-                      {pointingMode === "RELATIVE"
-                        ? "The next step unlocks when fresh fingertip image tracking settles. Show a relaxed point or mark its visible tip."
-                        : "The next step unlocks when your index geometry and pointing intent are recognized."}
+                      Waiting for the camera and hand model to start. Tracking can settle after setup begins.
                     </p>
                   )}
                 </>

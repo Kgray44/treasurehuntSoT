@@ -337,7 +337,7 @@ test("D0 controlled poses recover in the actual laboratory without losing comple
   await page.screenshot({ path: testInfo.outputPath("D0-continuous-sweep.png"), fullPage: false });
   await replay({ pose: "OPEN" });
   await expect(status).toContainText("Point not yet recognized");
-  await expect(page.getByRole("button", { name: "Begin nine-point calibration" })).toBeDisabled();
+  await expect(page.getByRole("button", { name: "Begin nine-point calibration" })).toBeEnabled();
   await replay({ pose: "RELAXED" });
   await expect(status).toContainText("Eligible for collection");
   await page.getByRole("radio", { name: "Absolute pointing" }).check();

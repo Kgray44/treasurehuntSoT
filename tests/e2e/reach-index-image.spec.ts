@@ -179,8 +179,19 @@ async function configure(
   );
 }
 const root = (page: Page) => page.locator("section[data-image-state]");
-const ready = (page: Page) =>
-  expect(page.getByRole("button", { name: "Set up relative movement", exact: true })).toBeEnabled({ timeout: 30000 });
+const ready = async (page: Page) => {
+  await expect(root(page)).toHaveAttribute("data-image-state", "TRACKING", { timeout: 30000 });
+  await expect(root(page)).toHaveAttribute("data-reach-readiness", "READY");
+  await expect(page.getByRole("button", { name: "Set up relative movement", exact: true })).toBeEnabled();
+};
+const unavailable = async (page: Page) => {
+  await expect(root(page)).not.toHaveAttribute("data-image-state", "TRACKING");
+  await expect(root(page)).not.toHaveAttribute("data-reach-readiness", "READY");
+  await expect(page.locator('svg[aria-label="Finger image position"]')).toHaveCount(0);
+  await expect(root(page)).toHaveAttribute("data-step", "PREPARE");
+  await expect(page.locator('[data-calibration-target="true"]')).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Set up relative movement", exact: true })).toBeEnabled();
+};
 async function markByClick(page: Page, x: number, y: number, mirrored: boolean) {
   await page.getByRole("button", { name: "Track visible fingertip", exact: true }).click();
   const picker = page.getByRole("button", { name: /^Mark visible fingertip in camera/ });
@@ -438,6 +449,126 @@ test("D0 image-relative control follows fresh appearance through model failure, 
   await page.getByRole("button", { name: "Stop camera & clear session", exact: true }).click();
 });
 
+test("D0 live setup opens empty before pointing and binds its first fresh source without restarting", async ({
+  page,
+}, testInfo) => {
+  test.setTimeout(90000);
+  await installFixture(page, "NONE");
+  const phases: object[] = [];
+  for (const mode of ["RELATIVE", "ABSOLUTE"] as const) {
+    await page.goto("/devices/reach");
+    if (mode === "ABSOLUTE") await page.getByRole("radio", { name: /Absolute pointing/ }).check();
+    await page.getByRole("button", { name: "Enable live camera", exact: true }).click();
+    await expect
+      .poll(() =>
+        page.evaluate(
+          () =>
+            (window as unknown as { reachIndexImageFixture: { frames: unknown[] } }).reachIndexImageFixture.frames
+              .length,
+        ),
+      )
+      .toBeGreaterThan(0);
+    if (mode === "RELATIVE") {
+      // Preserve a real previous signature, then let it expire before setup.
+      await configure(page, { model: "FULL" });
+      await ready(page);
+      await configure(page, { model: "NONE", blank: true });
+      await expect(root(page)).toHaveAttribute("data-image-state", "UNSEEDED", { timeout: 10000 });
+    }
+    await expect(root(page)).not.toHaveAttribute("data-reach-readiness", "READY");
+    const count = mode === "RELATIVE" ? 5 : 9;
+    const start = page.getByRole("button", {
+      name: mode === "RELATIVE" ? "Set up relative movement" : "Begin nine-point calibration",
+      exact: true,
+    });
+    await expect(start).toBeEnabled();
+    await start.click();
+    await expect(page.getByLabel(`Target 1 of ${count}`, { exact: true })).toBeVisible();
+    await expect(page.getByLabel("Current target acquisition", { exact: true })).toHaveAttribute("value", "0");
+    // A bad/interrupted model return cannot invalidate an unbound trial.
+    await configure(page, { model: "WRONG_ONCE", blank: true });
+    await expect
+      .poll(() =>
+        page.evaluate(
+          () =>
+            (
+              window as unknown as { reachIndexImageFixture: { modelFrames: { mode: string }[] } }
+            ).reachIndexImageFixture.modelFrames.filter((frame) => frame.mode === "WRONG_ONCE").length,
+        ),
+      )
+      .toBe(1);
+    await page.waitForTimeout(400);
+    await expect(page.getByLabel(`Target 1 of ${count}`, { exact: true })).toBeVisible();
+    await expect(page.getByLabel("Current target acquisition", { exact: true })).toHaveAttribute("value", "0");
+    await expect(page.getByText(`0 of ${count} targets saved.`, { exact: false })).toBeVisible();
+    await expect(page.getByRole("alert", { name: "Setup ended", exact: true })).toHaveCount(0);
+    const firstFresh = await page.evaluate(
+      ({ mode, count }) =>
+        new Promise<object>((resolve, reject) => {
+          const section = document.querySelector<HTMLElement>("section[data-image-state]")!;
+          const fixture = (window as unknown as { reachIndexImageFixture: { model: string; blank: boolean } })
+            .reachIndexImageFixture;
+          const observer = new MutationObserver(check);
+          const timer = setTimeout(() => {
+            observer.disconnect();
+            reject(new Error("FIRST_FRESH_SOURCE_DID_NOT_ENTER_EMPTY_TARGET"));
+          }, 12000);
+          function check() {
+            if (section.dataset.reachReadiness !== "READY") return;
+            const target = document.querySelector(`[aria-label="Target 1 of ${count}"]`);
+            const value = document.querySelector<HTMLProgressElement>(
+              '[aria-label="Current target acquisition"]',
+            )?.value;
+            if (!value || value <= 0) return;
+            const setupEnded = !!document.querySelector('[role="alert"][aria-label="Setup ended"]');
+            observer.disconnect();
+            clearTimeout(timer);
+            resolve({
+              mode,
+              firstFreshAt: performance.now(),
+              step: section.dataset.step,
+              firstTargetPresent: !!target,
+              acquisition: value,
+              savedZero: document.body.textContent!.includes(`0 of ${count} targets saved.`),
+              setupEnded,
+              imageState: section.dataset.imageState,
+              imageGeneration: section.dataset.imageTrackGeneration,
+            });
+          }
+          observer.observe(section, { attributes: true, childList: true, subtree: true });
+          fixture.model = "FULL";
+          fixture.blank = false;
+          check();
+        }),
+      { mode, count },
+    );
+    expect(firstFresh).toMatchObject({
+      mode,
+      step: "TRAINING",
+      firstTargetPresent: true,
+      savedZero: true,
+      setupEnded: false,
+    });
+    expect((firstFresh as { acquisition: number }).acquisition).toBeGreaterThan(0);
+    phases.push(firstFresh);
+    await page.getByRole("button", { name: "Pause calibration", exact: true }).click();
+    await expect(page.getByRole("alert", { name: "Setup ended", exact: true })).toHaveCount(0);
+    await page.screenshot({
+      path: testInfo.outputPath(`D0-unbound-${mode.toLowerCase()}-first-point.png`),
+      fullPage: false,
+    });
+    await page.getByRole("button", { name: "Stop camera & clear session", exact: true }).click();
+  }
+  await testInfo.attach("D0-index-image-empty-setup-metrics.json", {
+    body: JSON.stringify(
+      { evidence: "PUBLIC_ANALYTIC_CAMERA_AND_FAKE_WORKER", phases, qualification: "D0_ONLY_NOT_PHYSICAL" },
+      null,
+      2,
+    ),
+    contentType: "application/json",
+  });
+});
+
 test("D0 manual image-only hints support mirrored click and natural keyboard while ambiguous pixels abstain", async ({
   page,
 }, testInfo) => {
@@ -454,7 +585,7 @@ test("D0 manual image-only hints support mirrored click and natural keyboard whi
   if (initialHint.capture === 0) expect(initialHint.hintAvailable).toBe(false);
   await expect.poll(async () => Number(await root(page).getAttribute("data-image-capture-time"))).toBeGreaterThan(0);
   await expect(page.getByRole("button", { name: "Track visible fingertip", exact: true })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Set up relative movement", exact: true })).toBeDisabled();
+  await unavailable(page);
   await markByClick(page, 120, 120, true);
   await ready(page);
   await expect(page.locator('svg[aria-label="Finger image position"] circle')).toHaveAttribute("cx", /\d/);
@@ -462,10 +593,10 @@ test("D0 manual image-only hints support mirrored click and natural keyboard whi
   await expect(root(page)).not.toHaveAttribute("data-image-state", "TRACKING");
   await page.screenshot({ path: testInfo.outputPath("D0-image-only-occlusion.png"), fullPage: false });
   await markByClick(page, 120, 120, true);
-  await expect(page.getByRole("button", { name: "Set up relative movement", exact: true })).toBeDisabled();
+  await unavailable(page);
   await configure(page, { blank: false, repeated: true });
   await markByClick(page, 120, 120, true);
-  await expect(page.getByRole("button", { name: "Set up relative movement", exact: true })).toBeDisabled();
+  await unavailable(page);
   await configure(page, { repeated: false, x: 182, y: 129 });
   await page.getByRole("button", { name: "Use natural preview", exact: true }).click();
   await page.getByRole("button", { name: "Enable live camera", exact: true }).click();
@@ -573,7 +704,7 @@ test("D0 manual image-only hints support mirrored click and natural keyboard whi
     }
   });
   await expect(root(page)).not.toHaveAttribute("data-image-state", "TRACKING");
-  await expect(page.getByRole("button", { name: "Set up relative movement", exact: true })).toBeDisabled();
+  await unavailable(page);
   await page.getByRole("button", { name: "Stop camera & clear session", exact: true }).click();
 });
 
@@ -706,7 +837,7 @@ test("D0 full-hand authority pauses conflicts without changing image coordinates
   await markByClick(page, 120, 120, true);
   await expect(root(page)).not.toHaveAttribute("data-image-track-generation", generation!);
   await blocked(/^FULL_HAND_CONTRARY_(PENDING|CONFIRMED)$/);
-  await expect(page.getByRole("button", { name: "Set up relative movement", exact: true })).toBeDisabled();
+  await unavailable(page);
   await record("manual-hint-cannot-bypass-visible-open-hand");
   await page.screenshot({
     path: testInfo.outputPath("D0-full-hand-contrary-manual-hint-blocked.png"),

@@ -18,19 +18,50 @@ export function ReachStage({ frame, timings, kind, demo = false, overlay = false
     const context = el.getContext("2d");
     if (!context) return;
     let animation = 0;
+    let previous: unknown[] | null = null;
     const draw = (at: number) => {
       const width = el.clientWidth,
         height = el.clientHeight,
         dpr = Math.min(2, window.devicePixelRatio || 1);
-      if (el.width !== Math.round(width * dpr) || el.height !== Math.round(height * dpr)) {
+      const value = frame.current,
+        o = value.observation;
+      const fresh = o && at - o.monotonicCaptureTime >= 0 && at - o.monotonicCaptureTime <= 150;
+      const cameraPhase = !o ? 0 : fresh ? 1 : at - o.monotonicCaptureTime <= 450 ? 2 : 0;
+      const ghostAge = value.lastSeen ? at - value.lastSeen.capturedAt : -1;
+      const fading = kind === "POINTER" && !(fresh && value.filtered) && ghostAge >= 0 && ghostAge <= 450;
+      // The ref is mutated in place. Snapshot primitives rather than retaining
+      // its object; only the observation itself is an immutable input envelope.
+      const current =
+        kind === "CAMERA"
+          ? [width, height, dpr, o, value.activeTrack, cameraPhase]
+          : [
+              width,
+              height,
+              dpr,
+              !!fresh,
+              value.filtered?.x,
+              value.filtered?.y,
+              overlay ? value.raw?.x : null,
+              overlay ? value.raw?.y : null,
+              value.uncertainty,
+              value.previewEstimate,
+              value.lastSeen?.point.x,
+              value.lastSeen?.point.y,
+              value.lastSeen?.capturedAt,
+              fading,
+            ];
+      const resized = el.width !== Math.round(width * dpr) || el.height !== Math.round(height * dpr);
+      if (!resized && !fading && previous?.every((item, i) => Object.is(item, current[i]))) {
+        animation = requestAnimationFrame(draw);
+        return;
+      }
+      previous = current;
+      if (resized) {
         el.width = Math.round(width * dpr);
         el.height = Math.round(height * dpr);
       }
       context.setTransform(dpr, 0, 0, dpr, 0, 0);
       context.clearRect(0, 0, width, height);
-      const value = frame.current,
-        o = value.observation;
-      const fresh = o && at - o.monotonicCaptureTime >= 0 && at - o.monotonicCaptureTime <= 150;
       if (kind === "CAMERA" && o && (fresh || at - o.monotonicCaptureTime <= 450)) {
         const rect = containedFrame(width, height, o.frameWidth, o.frameHeight);
         context.globalAlpha = fresh ? 1 : 0.3;
@@ -117,6 +148,7 @@ export function ReachStage({ frame, timings, kind, demo = false, overlay = false
           context.globalAlpha = 1;
         }
       }
+      // Measures actual canvas submissions, not repeated RAFs of one capture.
       if (kind === "CAMERA" && !demo && fresh) timings.current.render(at, o.monotonicCaptureTime);
       animation = requestAnimationFrame(draw);
     };
