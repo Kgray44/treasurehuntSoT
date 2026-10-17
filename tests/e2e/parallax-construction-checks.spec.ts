@@ -99,6 +99,8 @@ test("Creator follows exact construction findings, corrects wall orientation and
   );
   await page.reload();
   await expect(host.locator("canvas")).toBeVisible();
+  if (!(await page.getByRole("button", { name: "Edit room features", exact: true }).isVisible()))
+    await page.getByText("View & audio", { exact: true }).click();
   await page.getByRole("button", { name: "Edit room features", exact: true }).click();
   await showChecks();
   await expect(checks).toContainText("No findings within these checks");

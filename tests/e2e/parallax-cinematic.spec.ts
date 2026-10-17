@@ -154,6 +154,7 @@ test("Creator clicks a graph title, edits a selected pose, resizes unobstructed 
   const room = page.getByRole("region", { name: "Room feature editor", exact: true });
   await expect(room.getByLabel("Room feature", { exact: true })).toBeFocused();
   await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("ENGINEERING");
+  await room.getByLabel("Room feature", { exact: true }).selectOption("reference-desk");
   await room.getByLabel("Feature x (m)", { exact: true }).fill("0.4");
   await room.getByLabel("Feature x (m)", { exact: true }).press("Tab");
   await page.screenshot({ path: `${root}/room-edit-controls-open-after-click.png` });
