@@ -24,9 +24,18 @@ export const indexImageAlgorithmDescriptor = {
     minimumGridDimension: 20,
     maximumGridDimension: 640,
     maximumAnalysisDimension: 320,
+    maximumAdaptiveOnlyMs: 1200,
+    maximumReferenceDisagreement: 2,
   },
   searchDomain: "PREVIOUS_AND_PREDICTED_SQUARE_UNION",
-  templateUpdate: "LAST_ACCEPTED_IMAGE_PATCH",
+  templateUpdate: {
+    reference: "IMMUTABLE_SEED_PATCH_AND_FRAME_UNTIL_NEW_IDENTITY",
+    adaptive: "LAST_ACCEPTED_IMAGE_PATCH",
+    selection: "PREFER_FULL_QUALITY_REFERENCE_WITH_BOUNDED_ADAPTIVE_FALLBACK",
+    consistency: "ABSTAIN_WHEN_BOTH_FULL_QUALITY_MATCHES_DISAGREE",
+    reverse: "REFERENCE_TO_SEED_AND_ADAPTIVE_TO_PREVIOUS_ACCEPTED_FRAME",
+    refresh: "NO_AUTOMATIC_REFERENCE_REFRESH_OR_MODEL_COORDINATE_SNAP",
+  },
   modelContrary: "LATCH_UNTIL_COHERENT_POINT_OR_NEW_HINT",
   wholeHandAuthority: {
     version: 2,
@@ -47,7 +56,7 @@ export const indexImageAlgorithm = {
   providerId: "watchglass.index-image",
   providerVersion: "1",
   algorithm: "BOUNDED_PHOTOMETRIC_NCC_V1",
-  algorithmDigest: "b48867498df1d561f103eaeb1351a9c039597a08244ec8ac28d1211bb2359783",
+  algorithmDigest: "fbde35c0b737cd4da2211127d6f992f4b4c2573bfbd68e111b82773365f98f2b",
 } as const;
 export type IndexImageBinding = {
   providerGeneration: number;
@@ -208,6 +217,8 @@ export class IndexImageTracker {
   private acceptedAt = -Infinity;
   private previous: IndexGrayFrame | null = null;
   private template: Patch | null = null;
+  private reference: { template: Patch; frame: IndexGrayFrame; point: Point } | null = null;
+  private lastReferenceAt = -Infinity;
   private point: Point | null = null;
   private velocity: Point = { x: 0, y: 0 };
   private trackId: string | null = null;
@@ -231,6 +242,8 @@ export class IndexImageTracker {
   reset() {
     this.previous = null;
     this.template = null;
+    this.reference = null;
+    this.lastReferenceAt = -Infinity;
     this.point = null;
     this.velocity = { x: 0, y: 0 };
     this.acceptedAt = -Infinity;
@@ -303,6 +316,8 @@ export class IndexImageTracker {
     if (this.grid && (this.grid.width !== frame.width || this.grid.height !== frame.height)) {
       this.previous = null;
       this.template = null;
+      this.reference = null;
+      this.lastReferenceAt = -Infinity;
       this.point = null;
       this.authorityCandidate = null;
       return result("LOST", "FRAME_GRID_CHANGED");
@@ -378,6 +393,8 @@ export class IndexImageTracker {
       this.point = center;
       this.template = initial;
       this.previous = { ...frame, data: frame.data.slice() };
+      this.reference = { template: initial, frame: this.previous, point: { ...center } };
+      this.lastReferenceAt = frame.capture;
       this.acceptedAt = frame.capture;
       this.velocity = { x: 0, y: 0 };
       this.failures = 0;
@@ -400,7 +417,7 @@ export class IndexImageTracker {
         2 * scale,
       );
     }
-    if (!this.point || !this.template || !this.previous)
+    if (!this.point || !this.template || !this.previous || !this.reference)
       return result(
         this.anchorSource || expired ? "LOST" : "UNSEEDED",
         expired ? "IMAGE_CONTINUITY_EXPIRED" : this.anchorSource ? "REANCHOR_REQUIRED" : "SHOW_INDEX_OR_SELECT_TIP",
@@ -413,27 +430,57 @@ export class IndexImageTracker {
       x: this.point.x + prediction.x * predictionCap,
       y: this.point.y + prediction.y * predictionCap,
     };
-    const found = search(frame, this.template, predicted, policy.search, this.searchScores, this.point);
-    quality.correlation = found?.correlation ?? null;
-    quality.separation = found?.separation ?? null;
     const reject = (reason: string) => {
       this.authorityCandidate = null;
       ++this.failures;
       return result(this.failures >= 2 ? "LOST" : "UNCERTAIN", reason);
     };
-    if (!found || found.correlation < policy.minimumCorrelation) return reject("APPEARANCE_MISMATCH");
-    if (found.separation < policy.minimumSeparation) return reject("APPEARANCE_AMBIGUOUS");
-    if (Math.hypot(found.point.x - this.point.x, found.point.y - this.point.y) > policy.maximumMotionStep)
-      return reject("IMAGE_MOTION_TOO_LARGE");
-    const current = patch(frame, found.point, this.template.radius);
-    quality.texture = current?.deviation ?? null;
-    if (!current || current.deviation < policy.minimumTexture || current.structure < policy.minimumStructure)
-      return reject("IMAGE_TEXTURE_UNSUITABLE");
-    const reverse = search(this.previous, current, this.point, policy.reverseSearch, this.reverseScores);
-    const backward = reverse ? Math.hypot(reverse.point.x - this.point.x, reverse.point.y - this.point.y) : Infinity;
-    quality.forwardBackwardErrorPixels = Number.isFinite(backward) ? backward * scale : null;
-    if (!reverse || reverse.correlation < policy.minimumCorrelation || backward > policy.maximumForwardBackward)
-      return reject("FORWARD_BACKWARD_DISAGREEMENT");
+    // Registration against a newly rounded patch on every frame can accumulate
+    // tiny resampling errors. Keep the original appearance/coordinate reference,
+    // while permitting a short, explicitly bounded adaptation to changing pose.
+    const previousPoint = this.point;
+    const evaluate = (template: Patch, history: IndexGrayFrame, origin: Point) => {
+      const found = search(frame, template, predicted, policy.search, this.searchScores, previousPoint);
+      const currentQuality: IndexImageObservation["quality"] = {
+        correlation: found?.correlation ?? null,
+        separation: found?.separation ?? null,
+        texture: null,
+        forwardBackwardErrorPixels: null,
+      };
+      const failed = (reason: string) => ({ accepted: null, reason, quality: currentQuality });
+      if (!found || found.correlation < policy.minimumCorrelation) return failed("APPEARANCE_MISMATCH");
+      if (found.separation < policy.minimumSeparation) return failed("APPEARANCE_AMBIGUOUS");
+      if (Math.hypot(found.point.x - previousPoint.x, found.point.y - previousPoint.y) > policy.maximumMotionStep)
+        return failed("IMAGE_MOTION_TOO_LARGE");
+      const current = patch(frame, found.point, template.radius);
+      currentQuality.texture = current?.deviation ?? null;
+      if (!current || current.deviation < policy.minimumTexture || current.structure < policy.minimumStructure)
+        return failed("IMAGE_TEXTURE_UNSUITABLE");
+      const reverse = search(history, current, origin, policy.reverseSearch, this.reverseScores);
+      const backward = reverse ? Math.hypot(reverse.point.x - origin.x, reverse.point.y - origin.y) : Infinity;
+      currentQuality.forwardBackwardErrorPixels = Number.isFinite(backward) ? backward * scale : null;
+      if (!reverse || reverse.correlation < policy.minimumCorrelation || backward > policy.maximumForwardBackward)
+        return failed("FORWARD_BACKWARD_DISAGREEMENT");
+      return { accepted: { found, current, backward }, reason: null, quality: currentQuality };
+    };
+    const stable = evaluate(this.reference.template, this.reference.frame, this.reference.point);
+    const adaptive = evaluate(this.template, this.previous, previousPoint);
+    const selected = stable.accepted ? stable : adaptive;
+    Object.assign(quality, selected.quality);
+    if (
+      stable.accepted &&
+      adaptive.accepted &&
+      Math.hypot(
+        stable.accepted.found.point.x - adaptive.accepted.found.point.x,
+        stable.accepted.found.point.y - adaptive.accepted.found.point.y,
+      ) > policy.maximumReferenceDisagreement
+    )
+      return reject("IMAGE_REFERENCE_CONFLICT");
+    if (!selected.accepted) return reject(selected.reason!);
+    if (!stable.accepted && frame.capture - this.lastReferenceAt > policy.maximumAdaptiveOnlyMs)
+      return reject("IMAGE_REFERENCE_EXPIRED");
+    const { found, current, backward } = selected.accepted;
+    if (stable.accepted) this.lastReferenceAt = frame.capture;
     modelAgreement = modelPoint
       ? Math.hypot(found.point.x - modelPoint.x, found.point.y - modelPoint.y) <= policy.modelAgreementRadius
         ? "AGREE"

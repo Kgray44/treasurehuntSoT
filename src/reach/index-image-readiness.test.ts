@@ -258,6 +258,8 @@ describe("image-tip readiness", () => {
 });
 
 it.each([
+  ["IMAGE_REFERENCE_CONFLICT", "appearance matches disagree"],
+  ["IMAGE_REFERENCE_EXPIRED", "fresh setup"],
   ["FULL_HAND_POINT_PENDING", "image remains tracked"],
   ["FULL_HAND_CONTRARY", "not pointing"],
   ["FULL_HAND_CONTRARY_PENDING", "dashed ring"],
@@ -269,7 +271,12 @@ it.each([
   const selector = new IndexImageReadiness();
   expect(establish(selector).eligible).toBe(true);
   const paused = selector.update(
-    frame(300, { state: "UNCERTAIN", point: null, matchedPoint: { x: 0.4, y: 0.6 }, reason }),
+    frame(300, {
+      state: "UNCERTAIN",
+      point: null,
+      matchedPoint: reason.startsWith("FULL_HAND_") ? { x: 0.4, y: 0.6 } : null,
+      reason,
+    }),
   );
   expect(paused).toMatchObject({ eligible: false, changed: false, condition: "UNCERTAIN" });
   expect(paused.guidance).toContain(expected);

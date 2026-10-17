@@ -1,6 +1,8 @@
 // @sounding-line-registration owner=reach suite=unit.reach contracts=reach.phase1.foundation
 import { describe, expect, it } from "vitest";
 import { createHash } from "node:crypto";
+import sharp from "sharp";
+import { resolve } from "node:path";
 import {
   IndexImageTracker,
   indexImageAlgorithm,
@@ -49,7 +51,145 @@ function image(
   if (options.repeated) draw(x + 20, y);
   return { data, width, height, capture: at, received: at + 15 };
 }
+function changedAppearance(amount: number, at: number, clone = false): IndexGrayFrame {
+  const original = image(60, 60, at),
+    changed = image(60, 60, at, { unrelated: true });
+  for (let i = 0; i < original.data.length; ++i)
+    original.data[i] = Math.round(original.data[i] * (1 - amount) + changed.data[i] * amount);
+  if (clone) {
+    const duplicate = image(80, 60, at);
+    for (let y = 50; y <= 70; ++y)
+      for (let x = 70; x <= 90; ++x) original.data[y * original.width + x] = duplicate.data[y * original.width + x];
+  }
+  return original;
+}
 describe("independent image fingertip evidence", () => {
+  it("prevents cumulative walk on a fractionally resampled public photograph trajectory and return to center", async () => {
+    const decoded = await sharp(resolve("tests/e2e/fixtures/reach/pointing_up.jpg"))
+      .removeAlpha()
+      .raw()
+      .toBuffer({ resolveWithObject: true });
+    const { width: w, height: h, channels } = decoded.info;
+    const gray = new Float32Array(w * h);
+    for (let i = 0; i < gray.length; ++i)
+      gray[i] =
+        (77 * decoded.data[i * channels] + 150 * decoded.data[i * channels + 1] + 29 * decoded.data[i * channels + 2]) /
+        256;
+    const background = (77 * 199 + 150 * 199 + 29 * 191) / 256;
+    const frame = (dx: number, dy: number, at: number, draw: number): IndexGrayFrame => {
+      const data = new Uint8Array(320 * 240),
+        left = 180 + dx + Math.sin(draw * 1.7) * 0.7,
+        top = 50 + dy;
+      const pixel = (x: number, y: number) => {
+        if (x + 0.5 < left || x + 0.5 >= left + 260 || y + 0.5 < top || y + 0.5 >= top + 350) return background;
+        const u = Math.max(0, Math.min(w - 1, ((x + 0.5 - left) * w) / 260 - 0.5));
+        const v = Math.max(0, Math.min(h - 1, ((y + 0.5 - top) * h) / 350 - 0.5));
+        const x0 = Math.floor(u),
+          y0 = Math.floor(v),
+          x1 = Math.min(w - 1, x0 + 1),
+          y1 = Math.min(h - 1, y0 + 1),
+          fx = u - x0,
+          fy = v - y0;
+        return (
+          (gray[y0 * w + x0] * (1 - fx) + gray[y0 * w + x1] * fx) * (1 - fy) +
+          (gray[y1 * w + x0] * (1 - fx) + gray[y1 * w + x1] * fx) * fy
+        );
+      };
+      for (let y = 0; y < 240; ++y)
+        for (let x = 0; x < 320; ++x)
+          data[y * 320 + x] = Math.round(
+            (pixel(2 * x, 2 * y) + pixel(2 * x + 1, 2 * y) + pixel(2 * x, 2 * y + 1) + pixel(2 * x + 1, 2 * y + 1)) / 4,
+          );
+      return { data, width: 320, height: 240, capture: at, received: at + 10 };
+    };
+    const tracker = new IndexImageTracker({ ...binding, frameWidth: 640, frameHeight: 480 });
+    let at = 100,
+      draw = 0,
+      dx = -40,
+      dy = 30;
+    const seed = tracker.update(frame(dx, dy, at, draw++), null, { x: 133 / 319, y: 74 / 239 });
+    // Includes training positions, independent locations, and a closed loop.
+    for (const [goalX, goalY] of [
+      [0, 0],
+      [-64, 0],
+      [64, 0],
+      [0, -48],
+      [0, 48],
+      [-40, 30],
+      [-40, -30],
+      [40, 30],
+      [40, -30],
+      [0, -24],
+      [0, 0],
+    ]) {
+      const steps = Math.max(1, Math.ceil(Math.max(Math.abs(goalX - dx), Math.abs(goalY - dy)) / 8));
+      const start = { x: dx, y: dy };
+      let observed = seed;
+      for (let elapsed = 50; elapsed <= steps * 40 + 1400; elapsed += 50) {
+        const progress = Math.min(steps, Math.floor(elapsed / 40)) / steps;
+        dx = start.x + (goalX - start.x) * progress;
+        dy = start.y + (goalY - start.y) * progress;
+        observed = tracker.update(frame(dx, dy, (at += 50), draw++));
+      }
+      expect(observed).toMatchObject({ state: "TRACKING", trackId: seed.trackId });
+      expect(
+        Math.hypot(observed.point!.x * 319 - (153 + goalX / 2), observed.point!.y * 239 - (59 + goalY / 2)),
+      ).toBeLessThanOrEqual(1.5);
+    }
+  }, 20000);
+  it("permits bounded model-free pose adaptation but does not let adaptive-only evidence walk indefinitely", () => {
+    const tracker = new IndexImageTracker(binding);
+    const seed = tracker.update(changedAppearance(0, 100), null, point(60, 60));
+    let observed = seed;
+    let lastReferenceAt = 100;
+    for (let i = 1; i <= 30; ++i) {
+      const at = 100 + i * 10;
+      // A fresh seed's first comparison has identical reference/adaptive
+      // templates, independently identifying the final supported reference.
+      const referenceProbe = new IndexImageTracker(binding);
+      referenceProbe.update(changedAppearance(0, 100), null, point(60, 60));
+      if (referenceProbe.update(changedAppearance(i * 0.03, at)).point) lastReferenceAt = at;
+      observed = tracker.update(changedAppearance(i * 0.03, at));
+    }
+    expect(observed).toMatchObject({ state: "TRACKING", trackId: seed.trackId, point: point(60, 60) });
+    const direct = new IndexImageTracker(binding);
+    direct.update(changedAppearance(0, 100), null, point(60, 60));
+    expect(direct.update(changedAppearance(0.9, 133)).point).toBeNull();
+    expect(tracker.update(changedAppearance(0.9, lastReferenceAt + 1200))).toMatchObject({
+      state: "TRACKING",
+      trackId: seed.trackId,
+    });
+    observed = tracker.update(changedAppearance(0.9, lastReferenceAt + 1201));
+    expect(observed).toMatchObject({ point: null, reason: "IMAGE_REFERENCE_EXPIRED", trackId: seed.trackId });
+    // An accepted adaptive frame at the boundary did not renew reference age.
+    expect(tracker.update(changedAppearance(0.9, lastReferenceAt + 1202))).toMatchObject({
+      point: null,
+      reason: "IMAGE_REFERENCE_EXPIRED",
+    });
+    expect(tracker.update(changedAppearance(0, lastReferenceAt + 1203))).toMatchObject({
+      state: "TRACKING",
+      point: point(60, 60),
+      trackId: seed.trackId,
+    });
+  });
+  it("abstains when an original-appearance clone disagrees with the strong adaptive identity", () => {
+    const tracker = new IndexImageTracker(binding);
+    const seed = tracker.update(changedAppearance(0, 100), null, point(60, 60));
+    for (let i = 1; i <= 10; ++i)
+      expect(tracker.update(changedAppearance(i * 0.03, 100 + i * 33)).state).toBe("TRACKING");
+    expect(tracker.update(changedAppearance(0.3, 463, true))).toMatchObject({
+      state: "UNCERTAIN",
+      point: null,
+      matchedPoint: null,
+      reason: "IMAGE_REFERENCE_CONFLICT",
+      trackId: seed.trackId,
+    });
+    expect(tracker.update(changedAppearance(0.3, 496))).toMatchObject({
+      state: "TRACKING",
+      point: point(60, 60),
+      trackId: seed.trackId,
+    });
+  });
   it("binds algorithm identity to the explicit policy descriptor, rather than ML weights or confidence", () => {
     expect(createHash("sha256").update(JSON.stringify(indexImageAlgorithmDescriptor)).digest("hex")).toBe(
       indexImageAlgorithm.algorithmDigest,

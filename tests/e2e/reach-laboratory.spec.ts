@@ -22,15 +22,14 @@ async function targets(page: Page, count: number) {
   }
   await expect(page.getByRole("button", { name: "Recalibrate", exact: true })).toBeVisible({ timeout: 7000 });
 }
-async function shot(page: Page, name: string, preserveView = false) {
+async function shot(page: Page, name: string) {
   if (process.env.REACH_CAPTURE_ROOT) {
     await mkdir(process.env.REACH_CAPTURE_ROOT, { recursive: true });
-    await page.screenshot({ path: path.join(process.env.REACH_CAPTURE_ROOT, `${name}-viewport.png`) });
-    if (preserveView) return;
-    await page.evaluate(() => window.scrollTo(0, 0));
-    await page.screenshot({ path: path.join(process.env.REACH_CAPTURE_ROOT, `${name}.png`), fullPage: true });
+    // Active camera/calibration evidence must not resize or scroll its viewport.
+    await page.screenshot({ path: path.join(process.env.REACH_CAPTURE_ROOT, `${name}-viewport.png`), fullPage: false });
   }
 }
+
 for (const viewport of [
   { width: 1280, height: 800, name: "laptop" },
   { width: 390, height: 844, name: "mobile" },
@@ -370,6 +369,27 @@ test("photographic worker completes nine real-landmark holds and five independen
   await page.getByRole("radio", { name: /Absolute pointing/ }).check();
   await expect(status(page)).toContainText("Your hand is ready", { timeout: 30000 });
   await page.getByRole("radio", { name: /Absolute pointing/ }).check();
+  const photographicHolds: object[] = [];
+  const imageSnapshot = async (stage: string, index: number, target: { x: number; y: number }, boundary: string) => {
+    photographicHolds.push(
+      await page.locator("section[data-image-state]").evaluate(
+        (section, context) => {
+          const element = section as HTMLElement;
+          const circle = section.querySelector('svg[aria-label="Finger image position"] circle');
+          return {
+            ...context,
+            at: performance.now(),
+            imageState: element.dataset.imageState,
+            reason: element.dataset.imageReason,
+            generation: element.dataset.imageTrackGeneration,
+            imageCapture: element.dataset.imageCaptureTime,
+            tip: circle ? { x: Number(circle.getAttribute("cx")), y: Number(circle.getAttribute("cy")) } : null,
+          };
+        },
+        { stage, index, target, boundary },
+      ),
+    );
+  };
   const readMetrics = async () => {
     const summary = page.getByText("Session diagnostics & privacy", { exact: true });
     if (!(await summary.locator("..").evaluate((element) => element.hasAttribute("open")))) await summary.click();
@@ -400,6 +420,7 @@ test("photographic worker completes nine real-landmark holds and five independen
           await new Promise((resolve) => setTimeout(resolve, 40));
         }
       }, point);
+      await imageSnapshot(stage, index, point, "motion-complete");
       if (stage === "TRAINING" && index === 2) {
         await page.evaluate(() => {
           (window as unknown as { reachTelemetry: { condition: string } }).reachTelemetry.condition = "TWO";
@@ -420,6 +441,11 @@ test("photographic worker completes nine real-landmark holds and five independen
           timeout: 20000,
         });
       else await expect(page.getByRole("button", { name: "Recalibrate", exact: true })).toBeVisible({ timeout: 20000 });
+      await imageSnapshot(stage, index, point, "target-saved");
+      await writeFile(
+        testInfo.outputPath("photographic-hold-image-points.json"),
+        JSON.stringify(photographicHolds, null, 2),
+      );
       await page.evaluate(() => {
         (window as unknown as { reachTelemetry: { condition: string } }).reachTelemetry.condition = "POINT";
       });
@@ -429,10 +455,10 @@ test("photographic worker completes nine real-landmark holds and five independen
   await holdTargets(9, "TRAINING");
   await expect(page.getByRole("button", { name: "Open pointing playground" })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Check five new targets" })).toBeEnabled();
-  await shot(page, "worker-nine-target-fit", true);
+  await shot(page, "worker-nine-target-fit");
   await page.getByRole("button", { name: "Check five new targets" }).click();
   await holdTargets(5, "VALIDATION");
-  await shot(page, "worker-independent-results", true);
+  await shot(page, "worker-independent-results");
   const absolute = await readMetrics();
   expect(absolute.calibration.mapping).toBe("INDEX_TIP_AXIS_RIDGE_V1");
   // Aggregate counts are raw samples; the visible target loop proves hold counts.
@@ -452,8 +478,14 @@ test("photographic worker completes nine real-landmark holds and five independen
   await holdTargets(5, "RELATIVE_TRAINING");
   await page.getByRole("button", { name: "Check five new targets" }).click();
   await holdTargets(5, "RELATIVE_VALIDATION");
+  const relativeResult = await readMetrics();
+  await writeFile(
+    testInfo.outputPath("photographic-relative-check-result.json"),
+    JSON.stringify(relativeResult, null, 2),
+  );
+  expect(relativeResult.calibration.rawValidationP95DiagonalFraction).toBeLessThanOrEqual(0.03);
   await expect(page.getByText("Your independent check passed for this session.", { exact: true })).toBeVisible();
-  await shot(page, "worker-relative-results", true);
+  await shot(page, "worker-relative-results");
   await page.getByRole("button", { name: "Open pointing playground" }).click();
   const metrics = await readMetrics();
   expect(metrics.calibration.status).toBe("VALIDATED");

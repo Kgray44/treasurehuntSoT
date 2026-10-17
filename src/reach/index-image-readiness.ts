@@ -16,6 +16,10 @@ const guidance: Record<IndexImageReadinessResult["condition"], string> = {
   LOST: "Fingertip tracking paused. Bring your finger back into view.",
 };
 const postureGuidance: Record<string, string> = {
+  IMAGE_REFERENCE_CONFLICT:
+    "Fingertip appearance matches disagree. Tracking is paused to avoid a jump; keep the same fingertip visible while it reacquires. Saved targets are kept.",
+  IMAGE_REFERENCE_EXPIRED:
+    "The fingertip appearance has changed too much to preserve its position. Return to the original appearance, or mark the visible fingertip for a fresh setup.",
   FULL_HAND_POINT_PENDING:
     "Full-hand pointing evidence is settling. The fingertip image remains tracked; saved targets are kept.",
   COHERENT_MODEL_CONTRARY:
