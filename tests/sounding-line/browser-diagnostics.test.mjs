@@ -1674,6 +1674,468 @@ test("private evidence collector excludes lease, counters and databases and reje
   );
 });
 
+test("posttechnical command observation retains the exact failing child privately through authenticated encryption", async (t) => {
+  const root = await fixture(t);
+  await mkdir(path.join(root, "private"), { mode: 0o700 });
+  const args = ["--test", "tests/sounding-line/ordinary.test.mjs", "PRIVATE_ARGV"],
+    environment = { PRIVATE_TOKEN: "PRIVATE_ENVIRONMENT" },
+    command = "/PRIVATE/node",
+    error = Object.assign(new Error("PRIVATE_ORIGINAL_MESSAGE"), {
+      code: "ETIMEDOUT",
+      errno: -110,
+      syscall: "spawnSync /PRIVATE/node",
+      status: null,
+      signal: "SIGTERM",
+      pid: 314,
+      path: command,
+      spawnargs: args,
+    }),
+    result = {},
+    execution = { runId: 123, installerSha: "a".repeat(40) };
+  let calls = 0;
+  const runner = posttechnicalController.createPosttechnicalCommandExecutor({
+    workspace: root,
+    execution,
+    result,
+    spawnImpl(actualCommand, actualArgs, options) {
+      calls++;
+      assert.equal(actualCommand, command);
+      assert.equal(actualArgs, args);
+      assert.deepEqual(options, {
+        cwd: path.join(root, "candidate"),
+        env: environment,
+        stdio: ["ignore", "inherit", "inherit"],
+        timeout: posttechnical.POSTTECHNICAL_POLICY.commandMs,
+        killSignal: "SIGTERM",
+        windowsHide: true,
+      });
+      return { error, status: null, signal: "SIGTERM", pid: 314, stdout: null, stderr: null };
+    },
+  });
+  try {
+    assert.throws(() => runner.execute(command, args, environment, "technical", 6), /WORKER_UNKNOWN/u);
+  } finally {
+    runner.close();
+  }
+  assert.equal(calls, 1);
+  assert.equal(runner.state.records, 2);
+  assert.equal(runner.state.evidenceLoss, false);
+  const journal = await readFile(path.join(root, "private/command-executions.original.jsonl")),
+    [started, terminal] = journal.toString().trimEnd().split("\n").map(JSON.parse);
+  assert.equal(started.event, "STARTED");
+  assert.equal(terminal.event, "TERMINAL");
+  assert.equal(terminal.phase, "technical");
+  assert.equal(terminal.ordinal, 6);
+  assert.equal(terminal.runId, execution.runId);
+  assert.equal(terminal.installerSha, execution.installerSha);
+  assert.equal(terminal.executable, command);
+  assert.deepEqual(terminal.argv, args);
+  assert.equal(terminal.cwd, path.join(root, "candidate"));
+  assert.match(terminal.startedAt, /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\.\d{3}Z$/u);
+  assert.equal(terminal.elapsedMs >= 0, true);
+  assert.equal(terminal.errorSource, "CHILD_ERROR");
+  assert.deepEqual(terminal.error, {
+    available: true,
+    name: error.name,
+    message: error.message,
+    stack: error.stack,
+    code: error.code,
+    errno: error.errno,
+    syscall: error.syscall,
+    status: null,
+    signal: error.signal,
+    pid: error.pid,
+    path: error.path,
+    spawnargs: args,
+  });
+  assert.equal(terminal.exitCode, null);
+  assert.equal(terminal.signal, "SIGTERM");
+  assert.equal(terminal.pid, 314);
+  assert.deepEqual(terminal.stdout, { available: false });
+  assert.deepEqual(terminal.stderr, { available: false });
+  assert.equal(journal.includes(Buffer.from("PRIVATE_ENVIRONMENT")), false);
+  const { stat } = await import("node:fs/promises");
+  assert.equal((await stat(path.join(root, "private/command-executions.original.jsonl"))).mode & 0o777, 0o600);
+  const evidence = posttechnicalController.collectPosttechnicalEvidence({ workspace: root });
+  assert.deepEqual(
+    evidence.members.map((member) => member.name),
+    ["private/command-executions.original.jsonl"],
+  );
+  const keys = posttechnicalCrypto.generateKeyPairSync("rsa", { modulusLength: 2048 }),
+    encrypted = posttechnicalController.sealPosttechnicalEvidence({
+      files: evidence.members,
+      aad: { version: 1 },
+      publicKey: keys.publicKey,
+    }),
+    decoded = decryptSyntheticEnvelope(encrypted, keys.privateKey);
+  assert.deepEqual(Buffer.from(decoded.files[0].content, "base64"), journal);
+  assert.equal(encrypted.includes(Buffer.from("PRIVATE_ORIGINAL_MESSAGE")), false);
+  const summary = {
+    version: 1,
+    diagnosticId: posttechnical.POSTTECHNICAL_POLICY.id,
+    policyDigest: posttechnical.posttechnicalPolicyDigest,
+    status: "EXECUTION_UNKNOWN",
+    completeness: "DIAGNOSTIC_INCOMPLETE",
+    qualification: false,
+    originalCauseClaim: false,
+    grantsConsumerTrial: false,
+    worker: { result },
+  };
+  assert.equal(posttechnicalController.validatePosttechnicalPublicReceipt(summary), summary);
+  assert.deepEqual(Object.keys(result.failedCommand).sort(), [
+    "argvDigest",
+    "durationMs",
+    "errorCode",
+    "exitCode",
+    "ordinal",
+    "phase",
+    "signal",
+  ]);
+  assert.equal(result.failedCommand.errorCode, "ETIMEDOUT");
+  assert.equal(result.failedCommand.argvDigest, posttechnical.posttechnicalDigest(args));
+  assert.equal(JSON.stringify(summary).includes("PRIVATE"), false);
+  assert.equal(JSON.stringify(summary).includes(root), false);
+  for (const changed of [
+    { ...result.failedCommand, phase: "SOURCE_RECOGNITION" },
+    { ...result.failedCommand, ordinal: 13 },
+    { ...result.failedCommand, errorCode: "PRIVATE_ERROR" },
+    { ...result.failedCommand, signal: "PRIVATE_SIGNAL" },
+    { ...result.failedCommand, argv: args },
+    { ...result.failedCommand, durationMs: -1 },
+  ])
+    assert.throws(
+      () =>
+        posttechnicalController.validatePosttechnicalPublicReceipt({
+          ...summary,
+          worker: { result: { failedCommand: changed } },
+        }),
+      /RESULT_INVALID/u,
+    );
+});
+
+test("posttechnical child outcomes distinguish observed nonzero exits from uncertain completion without inferring a cause", async (t) => {
+  const cases = [
+    {
+      child: { status: 7, signal: null, pid: 31 },
+      phase: "setup",
+      failure: "SETUP_COMMAND_FAILED",
+      exitCode: 7,
+      signal: null,
+      errorCode: null,
+    },
+    {
+      child: { status: 1, signal: null, pid: 32 },
+      phase: "technical",
+      failure: "TECHNICAL_COMMAND_FAILED",
+      exitCode: 1,
+      signal: null,
+      errorCode: null,
+    },
+    {
+      child: { status: null, signal: "SIGKILL", pid: 33 },
+      phase: "technical",
+      failure: "WORKER_UNKNOWN",
+      exitCode: null,
+      signal: "SIGKILL",
+      errorCode: null,
+    },
+    {
+      child: { status: null, signal: null, pid: 34 },
+      phase: "technical",
+      failure: "WORKER_UNKNOWN",
+      exitCode: null,
+      signal: null,
+      errorCode: null,
+    },
+    {
+      child: { status: null, error: Object.assign(new Error("PRIVATE_UNKNOWN_CODE"), { code: "PRIVATE_CODE" }) },
+      phase: "technical",
+      failure: "WORKER_UNKNOWN",
+      exitCode: null,
+      signal: null,
+      errorCode: "UNKNOWN",
+    },
+    {
+      thrown: Object.assign(new Error("PRIVATE_SPAWN_THROW"), { code: "ENOENT" }),
+      phase: "setup",
+      failure: "WORKER_UNKNOWN",
+      exitCode: null,
+      signal: null,
+      errorCode: "ENOENT",
+    },
+  ];
+  for (const value of cases) {
+    const root = await fixture(t);
+    await mkdir(path.join(root, "private"), { mode: 0o700 });
+    const result = {},
+      runner = posttechnicalController.createPosttechnicalCommandExecutor({
+        workspace: root,
+        execution: { runId: 123, installerSha: "a".repeat(40) },
+        result,
+        spawnImpl() {
+          if (value.thrown) throw value.thrown;
+          return value.child;
+        },
+      });
+    try {
+      assert.throws(
+        () => runner.execute("synthetic-command", ["PRIVATE_ARGV"], {}, value.phase, 1),
+        new RegExp(value.failure, "u"),
+      );
+    } finally {
+      runner.close();
+    }
+    assert.equal(result.failedCommand.exitCode, value.exitCode);
+    assert.equal(result.failedCommand.signal, value.signal);
+    assert.equal(result.failedCommand.errorCode, value.errorCode);
+    assert.equal(JSON.stringify(result).includes("PRIVATE"), false);
+    const terminal = (await readFile(path.join(root, "private/command-executions.original.jsonl"), "utf8"))
+      .trimEnd()
+      .split("\n")
+      .map(JSON.parse)[1];
+    assert.equal(terminal.error.available, Boolean(value.child?.error || value.thrown));
+    assert.equal(terminal.errorSource, value.thrown ? "SPAWN_THROW" : value.child.error ? "CHILD_ERROR" : "NONE");
+    assert.equal(terminal.elapsedMs, result.failedCommand.durationMs);
+  }
+});
+
+test("command evidence keeps partial authenticated bytes and excludes every counter and unlisted private sibling", async (t) => {
+  const root = await fixture(t);
+  await mkdir(path.join(root, "private"), { mode: 0o700 });
+  assert.deepEqual(posttechnicalController.collectPosttechnicalEvidence({ workspace: root }).members, []);
+  const partial = Buffer.from('{"event":"STARTED","ordinal":6}\n{"event":"TERMINAL"');
+  await writeFile(path.join(root, "private/command-executions.original.jsonl"), partial, { mode: 0o600 });
+  for (const [phase, count] of [
+    ["setup", 3],
+    ["technical", 12],
+  ])
+    for (let ordinal = 1; ordinal <= count; ordinal++)
+      for (const event of ["started", "terminal"])
+        await writeFile(path.join(root, "private", `${phase}-${ordinal}-${event}.json`), "PRIVATE_COUNTER", {
+          mode: 0o600,
+        });
+  for (const name of ["command-executions.other.jsonl", "command-executions.original.jsonl.backup", "suite-lease.json"])
+    await writeFile(path.join(root, "private", name), "PRIVATE_CAPABILITY", { mode: 0o600 });
+  const evidence = posttechnicalController.collectPosttechnicalEvidence({ workspace: root });
+  assert.deepEqual(
+    evidence.members.map((member) => member.name),
+    ["private/command-executions.original.jsonl"],
+  );
+  assert.deepEqual(evidence.members[0].bytes, partial);
+  const keys = posttechnicalCrypto.generateKeyPairSync("rsa", { modulusLength: 2048 }),
+    encrypted = posttechnicalController.sealPosttechnicalEvidence({
+      files: evidence.members,
+      aad: { version: 1 },
+      publicKey: keys.publicKey,
+    });
+  assert.deepEqual(
+    Buffer.from(decryptSyntheticEnvelope(encrypted, keys.privateKey).files[0].content, "base64"),
+    partial,
+  );
+  assert.throws(
+    () =>
+      posttechnicalController.collectPosttechnicalEvidence({
+        workspace: root,
+        limits: { jsonBytes: partial.length - 1 },
+      }),
+    /EVIDENCE_PATH_INVALID/u,
+  );
+  const { link, unlink, symlink } = await import("node:fs/promises"),
+    journal = path.join(root, "private/command-executions.original.jsonl"),
+    alias = path.join(root, "private/journal-hardlink");
+  await link(journal, alias);
+  assert.throws(
+    () => posttechnicalController.collectPosttechnicalEvidence({ workspace: root }),
+    /EVIDENCE_PATH_INVALID/u,
+  );
+  await unlink(alias);
+  await unlink(journal);
+  await symlink(path.join(root, "private/suite-lease.json"), journal);
+  assert.throws(() => posttechnicalController.collectPosttechnicalEvidence({ workspace: root }), { code: "ELOOP" });
+});
+
+test("command journal is create-only and bounded, and unavailable error metadata cannot claim completion", async (t) => {
+  for (const failure of ["started-cap", "terminal-cap", "error-getter"]) {
+    const root = await fixture(t);
+    await mkdir(path.join(root, "private"), { mode: 0o700 });
+    let calls = 0;
+    const error = new Error("PRIVATE_ORIGINAL_MESSAGE"),
+      result = {};
+    if (failure === "terminal-cap") error.stack = "PRIVATE_STACK".repeat(1000);
+    if (failure === "error-getter")
+      Object.defineProperty(error, "stack", {
+        get() {
+          throw new Error("PRIVATE_GETTER");
+        },
+      });
+    const runner = posttechnicalController.createPosttechnicalCommandExecutor({
+      workspace: root,
+      execution: { runId: 123, installerSha: "a".repeat(40) },
+      result,
+      maximumBytes: failure === "started-cap" ? 1 : failure === "terminal-cap" ? 4096 : undefined,
+      spawnImpl() {
+        calls++;
+        return { error, status: null, signal: "SIGTERM", pid: 35 };
+      },
+    });
+    try {
+      assert.throws(
+        () => runner.execute("synthetic-command", ["PRIVATE_ARGV"], {}, "technical", 6),
+        failure === "started-cap" ? /RAW_EVIDENCE_LOSS/u : /WORKER_UNKNOWN/u,
+      );
+    } finally {
+      runner.close();
+    }
+    assert.equal(runner.state.evidenceLoss, true);
+    assert.equal(calls, failure === "started-cap" ? 0 : 1);
+    assert.equal(runner.state.records, failure === "started-cap" ? 0 : 1);
+    if (calls) {
+      assert.equal(result.failedCommand.exitCode, null);
+      assert.equal(result.failedCommand.signal, "SIGTERM");
+    }
+    const journal = await readFile(path.join(root, "private/command-executions.original.jsonl"));
+    assert.equal(
+      journal.length <=
+        (failure === "started-cap"
+          ? 1
+          : failure === "terminal-cap"
+            ? 4096
+            : posttechnical.POSTTECHNICAL_POLICY.reportLimit),
+      true,
+    );
+    assert.throws(
+      () => posttechnicalController.createPosttechnicalCommandExecutor({ workspace: root, execution: {}, result: {} }),
+      /RAW_EVIDENCE_LOSS/u,
+    );
+    assert.deepEqual(await readFile(path.join(root, "private/command-executions.original.jsonl")), journal);
+  }
+});
+
+test("command journal write and close uncertainty is explicit while the observed child outcome stays intact", async (t) => {
+  const fileSystem = await import("node:fs");
+  for (const failure of ["terminal-write", "close"]) {
+    const root = await fixture(t);
+    await mkdir(path.join(root, "private"), { mode: 0o700 });
+    let writes = 0,
+      calls = 0;
+    const result = {},
+      runner = posttechnicalController.createPosttechnicalCommandExecutor({
+        workspace: root,
+        execution: { runId: 123, installerSha: "a".repeat(40) },
+        result,
+        spawnImpl() {
+          calls++;
+          return { status: failure === "close" ? 0 : 3, signal: null, pid: 41 };
+        },
+        fileImplementation: {
+          openSync: fileSystem.openSync,
+          writeSync(descriptor, bytes, offset, length) {
+            if (++writes === 2 && failure === "terminal-write") {
+              fileSystem.writeSync(descriptor, bytes, offset, 17);
+              throw Object.assign(new Error("PRIVATE_WRITE_FAILURE"), { code: "EIO" });
+            }
+            return fileSystem.writeSync(descriptor, bytes, offset, length);
+          },
+          closeSync(descriptor) {
+            fileSystem.closeSync(descriptor);
+            if (failure === "close") throw new Error("PRIVATE_CLOSE_FAILURE");
+          },
+        },
+      });
+    if (failure === "terminal-write")
+      assert.throws(
+        () => runner.execute("synthetic-command", ["PRIVATE_ARGV"], {}, "technical", 6),
+        /TECHNICAL_COMMAND_FAILED/u,
+      );
+    else runner.execute("synthetic-command", ["PRIVATE_ARGV"], {}, "technical", 6);
+    runner.close();
+    assert.equal(calls, 1);
+    assert.equal(runner.state.evidenceLoss, true);
+    assert.equal(result.failedCommand?.exitCode, failure === "terminal-write" ? 3 : undefined);
+    const collected = posttechnicalController.collectPosttechnicalEvidence({ workspace: root });
+    assert.equal(collected.members.length, 1);
+    const journal = collected.members[0].bytes;
+    assert.equal(journal.length, runner.state.bytes + (failure === "terminal-write" ? 17 : 0));
+    assert.equal(runner.state.records, failure === "terminal-write" ? 1 : 2);
+    assert.equal(journal.includes(Buffer.from("PRIVATE_WRITE_FAILURE")), false);
+    assert.equal(journal.includes(Buffer.from("PRIVATE_CLOSE_FAILURE")), false);
+  }
+});
+
+test("legacy terminal counter failure preserves the full observed child journal and original outcome without overwriting counters", async (t) => {
+  const error = Object.assign(new Error("PRIVATE_ORIGINAL_CHILD_FAILURE"), {
+    code: "ETIMEDOUT",
+    errno: -110,
+    syscall: "spawnSync synthetic-command",
+    path: "synthetic-command",
+    spawnargs: ["PRIVATE_ARGV"],
+  });
+  for (const value of [
+    { child: { error, status: null, signal: "SIGTERM", pid: 51 }, expected: "WORKER_UNKNOWN" },
+    { child: { status: 3, signal: null, pid: 52 }, expected: "TECHNICAL_COMMAND_FAILED" },
+    { child: { status: 0, signal: null, pid: 53 }, expected: "RAW_EVIDENCE_LOSS" },
+  ]) {
+    const root = await fixture(t);
+    await mkdir(path.join(root, "private"), { mode: 0o700 });
+    const counter = path.join(root, "private/technical-6-terminal.json"),
+      existingCounter = Buffer.from('{"PRIVATE_EXISTING_COUNTER":"must remain unchanged"}\n');
+    await writeFile(counter, existingCounter, { mode: 0o600, flag: "wx" });
+    let calls = 0;
+    const result = {},
+      runner = posttechnicalController.createPosttechnicalCommandExecutor({
+        workspace: root,
+        execution: { runId: 123, installerSha: "a".repeat(40) },
+        result,
+        spawnImpl() {
+          calls++;
+          return value.child;
+        },
+      });
+    try {
+      assert.throws(
+        () => runner.execute("synthetic-command", ["PRIVATE_ARGV"], {}, "technical", 6),
+        new RegExp(value.expected, "u"),
+      );
+    } finally {
+      runner.close();
+    }
+    assert.equal(calls, 1);
+    assert.equal(runner.state.evidenceLoss, true);
+    assert.equal(runner.state.records, 2);
+    assert.deepEqual(await readFile(counter), existingCounter);
+    const evidence = posttechnicalController.collectPosttechnicalEvidence({ workspace: root });
+    assert.deepEqual(
+      evidence.members.map((member) => member.name),
+      ["private/command-executions.original.jsonl"],
+    );
+    const [started, terminal] = evidence.members[0].bytes.toString().trimEnd().split("\n").map(JSON.parse);
+    assert.equal(started.event, "STARTED");
+    assert.equal(terminal.event, "TERMINAL");
+    assert.equal(terminal.exitCode, value.child.status);
+    assert.equal(terminal.signal, value.child.signal);
+    assert.equal(terminal.pid, value.child.pid);
+    assert.deepEqual(terminal.argv, ["PRIVATE_ARGV"]);
+    assert.equal(terminal.error.available, Boolean(value.child.error));
+    assert.equal(terminal.status, value.child.status === 0 ? "PASS" : "FAIL");
+    if (value.child.error) {
+      assert.equal(terminal.error.name, error.name);
+      assert.equal(terminal.error.message, error.message);
+      assert.equal(terminal.error.stack, error.stack);
+      assert.equal(terminal.error.code, error.code);
+      assert.equal(terminal.error.errno, error.errno);
+      assert.equal(terminal.error.syscall, error.syscall);
+      assert.equal(terminal.error.path, error.path);
+      assert.deepEqual(terminal.error.spawnargs, error.spawnargs);
+    }
+    if (value.child.status === 0) assert.equal(result.failedCommand, undefined);
+    else {
+      assert.equal(result.failedCommand.exitCode, value.child.status);
+      assert.equal(result.failedCommand.signal, value.child.signal);
+      assert.equal(JSON.stringify(result).includes("PRIVATE"), false);
+    }
+  }
+});
+
 test("posttechnical private suite lease binds exact argv, direct parent and nonce and has one create-only start", async (t) => {
   const root = await fixture(t);
   await mkdir(path.join(root, "private"), { mode: 0o700 });

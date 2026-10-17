@@ -426,6 +426,204 @@ export function createPosttechnicalGitExceptionLog(
     },
   };
 }
+const commandErrorCodes = new Set(
+  "EACCES EPERM EBUSY EEXIST EISDIR EMFILE ENFILE ENOENT ENOSPC ENOMEM ENOTDIR ENOBUFS ETIMEDOUT EIO EROFS ENAMETOOLONG ERR_FS_FILE_TOO_LARGE ERR_STRING_TOO_LONG ERR_OUT_OF_RANGE ERR_INVALID_ARG_TYPE".split(
+    " ",
+  ),
+);
+const commandSignals = new Set("SIGTERM SIGKILL SIGINT SIGABRT SIGSEGV SIGPIPE SIGHUP SIGQUIT".split(" "));
+export function createPosttechnicalCommandExecutor({
+  workspace,
+  execution,
+  result,
+  spawnImpl = spawnSync,
+  fileImplementation = { openSync, writeSync, closeSync },
+  maximumBytes = P.reportLimit,
+}) {
+  requireValue(
+    Number.isSafeInteger(maximumBytes) && maximumBytes > 0 && maximumBytes <= P.reportLimit,
+    "RAW_EVIDENCE_LOSS",
+  );
+  const paths = posttechnicalPrivatePaths(workspace),
+    candidate = path.join(workspace, "candidate"),
+    state = { records: 0, bytes: 0, evidenceLoss: false };
+  let descriptor;
+  try {
+    descriptor = fileImplementation.openSync(
+      path.join(paths.directory, "command-executions.original.jsonl"),
+      fsConstants.O_WRONLY | fsConstants.O_CREAT | fsConstants.O_EXCL | fsConstants.O_NOFOLLOW,
+      0o600,
+    );
+  } catch {
+    fail("RAW_EVIDENCE_LOSS");
+  }
+  let closed = false;
+  const record = (value) => {
+    try {
+      requireValue(!closed && state.records < 30, "RAW_EVIDENCE_LOSS");
+      const bytes = Buffer.from(JSON.stringify(value) + "\n");
+      requireValue(state.bytes + bytes.length <= maximumBytes, "RAW_EVIDENCE_LOSS");
+      let offset = 0;
+      while (offset < bytes.length) {
+        const written = fileImplementation.writeSync(descriptor, bytes, offset, bytes.length - offset);
+        requireValue(written > 0, "RAW_EVIDENCE_LOSS");
+        offset += written;
+      }
+      state.bytes += bytes.length;
+      state.records++;
+    } catch {
+      state.evidenceLoss = true;
+      fail("RAW_EVIDENCE_LOSS");
+    }
+  };
+  const originalError = (error) => {
+    const value = { available: error !== null && error !== undefined };
+    for (const key of ["name", "message", "stack", "code", "errno", "syscall", "status", "signal", "pid", "path"]) {
+      const field = error?.[key];
+      requireValue(typeof field !== "string" || Buffer.byteLength(field) <= maximumBytes, "RAW_EVIDENCE_LOSS");
+      value[key] = typeof field === "string" || (typeof field === "number" && Number.isFinite(field)) ? field : null;
+    }
+    const spawnargs = error?.spawnargs;
+    requireValue(
+      spawnargs === null ||
+        spawnargs === undefined ||
+        (Array.isArray(spawnargs) &&
+          spawnargs.every((entry) => typeof entry === "string" && Buffer.byteLength(entry) <= maximumBytes)),
+      "RAW_EVIDENCE_LOSS",
+    );
+    value.spawnargs = spawnargs ?? null;
+    return value;
+  };
+  const errorCode = (error) => {
+    if (!error) return null;
+    try {
+      const code = error.code;
+      return code === null || code === undefined ? null : commandErrorCodes.has(code) ? code : "UNKNOWN";
+    } catch {
+      state.evidenceLoss = true;
+      return "UNKNOWN";
+    }
+  };
+  return {
+    state,
+    execute(command, args, env, phase, ordinal) {
+      requireValue(
+        (phase === "setup" || phase === "technical") &&
+          Number.isInteger(ordinal) &&
+          ordinal >= 1 &&
+          ordinal <= (phase === "setup" ? 3 : 12) &&
+          typeof command === "string" &&
+          Array.isArray(args) &&
+          args.every((entry) => typeof entry === "string"),
+        "COMMAND_CHANGED",
+      );
+      const startedAt = new Date().toISOString(),
+        options = {
+          cwd: candidate,
+          env,
+          stdio: ["ignore", "inherit", "inherit"],
+          timeout: P.commandMs,
+          killSignal: "SIGTERM",
+          windowsHide: true,
+        },
+        observation = {
+          version: 1,
+          diagnosticId: P.id,
+          policyDigest: posttechnicalPolicyDigest,
+          runId: execution.runId,
+          installerSha: execution.installerSha,
+          candidateSha: W.candidate,
+          coordinatorPid: process.pid,
+          phase,
+          ordinal,
+          executable: command,
+          argv: args,
+          cwd: candidate,
+          options: {
+            stdio: [...options.stdio],
+            timeout: options.timeout,
+            killSignal: options.killSignal,
+            windowsHide: options.windowsHide,
+          },
+          startedAt,
+        };
+      writePosttechnicalPrivate(path.join(paths.directory, `${phase}-${ordinal}-started.json`), {
+        version: 1,
+        ordinal,
+        phase,
+        coordinatorPid: process.pid,
+        argvDigest: digest(args),
+        status: "STARTED",
+      });
+      record({ ...observation, event: "STARTED" });
+      const started = process.hrtime.bigint();
+      let child,
+        errorSource = "NONE";
+      try {
+        child = spawnImpl(command, args, options);
+        if (child.error) errorSource = "CHILD_ERROR";
+      } catch (error) {
+        child = { error };
+        errorSource = "SPAWN_THROW";
+      }
+      const elapsedMs = Number(process.hrtime.bigint() - started) / 1e6,
+        terminal = {
+          version: 1,
+          ordinal,
+          phase,
+          exitCode: Number.isInteger(child.status) ? child.status : null,
+          signal: typeof child.signal === "string" ? child.signal : null,
+          status: !child.error && child.status === 0 ? "PASS" : "FAIL",
+        };
+      if (child.error || child.signal || child.status !== 0)
+        result.failedCommand = {
+          phase,
+          ordinal,
+          argvDigest: digest(args),
+          exitCode: Number.isInteger(child.status) && child.status >= 0 ? child.status : null,
+          signal:
+            typeof child.signal === "string" ? (commandSignals.has(child.signal) ? child.signal : "UNKNOWN") : null,
+          errorCode: errorCode(child.error),
+          durationMs: elapsedMs,
+        };
+      try {
+        record({
+          ...observation,
+          event: "TERMINAL",
+          elapsedMs,
+          status: child.error || child.signal || child.status !== 0 ? "FAIL" : "PASS",
+          exitCode: terminal.exitCode,
+          signal: terminal.signal,
+          pid: Number.isInteger(child.pid) ? child.pid : null,
+          errorSource,
+          error: originalError(child.error),
+          // Inherited streams remain in the controller's existing private raw logs.
+          stdout: { available: false },
+          stderr: { available: false },
+        });
+      } catch {
+        state.evidenceLoss = true;
+      }
+      try {
+        writePosttechnicalPrivate(path.join(paths.directory, `${phase}-${ordinal}-terminal.json`), terminal);
+      } catch {
+        state.evidenceLoss = true;
+      }
+      if (child.error || child.signal || !Number.isInteger(child.status)) fail("WORKER_UNKNOWN");
+      requireValue(child.status === 0, phase === "setup" ? "SETUP_COMMAND_FAILED" : "TECHNICAL_COMMAND_FAILED");
+      if (state.evidenceLoss) fail("RAW_EVIDENCE_LOSS");
+    },
+    close() {
+      if (closed) return;
+      closed = true;
+      try {
+        fileImplementation.closeSync(descriptor);
+      } catch {
+        state.evidenceLoss = true;
+      }
+    },
+  };
+}
 export async function runPosttechnicalWorker() {
   process.umask(0o077);
   const workspace = process.env.GITHUB_WORKSPACE,
@@ -453,6 +651,7 @@ export async function runPosttechnicalWorker() {
     actualChromiumLaunches: null,
     stages: [],
   };
+  let commandExecution;
   try {
     requireValue(
       !Object.keys(process.env).some((key) =>
@@ -503,35 +702,8 @@ export async function runPosttechnicalWorker() {
       sources: { candidate: posttechnicalSnapshot(input.candidate), installer: posttechnicalSnapshot(input.installer) },
     };
     writePosttechnicalPrivate(privatePaths.lease, marker);
-    const execute = (command, args, env, phase, ordinal) => {
-      writePosttechnicalPrivate(path.join(privatePaths.directory, `${phase}-${ordinal}-started.json`), {
-        version: 1,
-        ordinal,
-        phase,
-        coordinatorPid: process.pid,
-        argvDigest: digest(args),
-        status: "STARTED",
-      });
-      const child = spawnSync(command, args, {
-        cwd: input.candidate,
-        env,
-        stdio: ["ignore", "inherit", "inherit"],
-        timeout: P.commandMs,
-        killSignal: "SIGTERM",
-        windowsHide: true,
-      });
-      const terminal = {
-        version: 1,
-        ordinal,
-        phase,
-        exitCode: Number.isInteger(child.status) ? child.status : null,
-        signal: typeof child.signal === "string" ? child.signal : null,
-        status: !child.error && child.status === 0 ? "PASS" : "FAIL",
-      };
-      writePosttechnicalPrivate(path.join(privatePaths.directory, `${phase}-${ordinal}-terminal.json`), terminal);
-      if (child.error || child.signal) fail("WORKER_UNKNOWN");
-      requireValue(child.status === 0, phase === "setup" ? "SETUP_COMMAND_FAILED" : "TECHNICAL_COMMAND_FAILED");
-    };
+    commandExecution = createPosttechnicalCommandExecutor({ workspace, execution: input.execution, result });
+    const { execute } = commandExecution;
     for (const [index, [command, args]] of P.setup.entries()) {
       result.initialDependencySetupExecutions++;
       execute(command, args, { ...process.env }, "setup", index + 1);
@@ -600,6 +772,8 @@ export async function runPosttechnicalWorker() {
       JSON.stringify(verification),
       { flag: "wx", mode: 0o600 },
     );
+    commandExecution.close();
+    if (commandExecution.state.evidenceLoss) fail("RAW_EVIDENCE_LOSS");
     result.stages.push("FRESH_TECHNICAL_FINALIZATION_COMPLETE");
     assertPosttechnicalSources(marker);
     const sourceObservation = createPosttechnicalGitExceptionLog(privatePaths.directory);
@@ -640,6 +814,15 @@ export async function runPosttechnicalWorker() {
       : "TECHNICAL_DIAGNOSTIC_INCOMPLETE";
     process.exitCode = 1;
   } finally {
+    if (commandExecution) {
+      commandExecution.close();
+      result.commandExecutionEvidence = commandExecution.state;
+      if (commandExecution.state.evidenceLoss) {
+        result.failure ??= "RAW_EVIDENCE_LOSS";
+        result.status = "EXECUTION_UNKNOWN";
+        process.exitCode = 1;
+      }
+    }
     writePosttechnicalPrivate(privatePaths.result, result);
   }
   return result;
@@ -992,6 +1175,7 @@ export function collectPosttechnicalEvidence({ workspace, requireMandatory = fal
     "worker.stderr.log",
     "worker-result.json",
     "git-exceptions.original.jsonl",
+    "command-executions.original.jsonl",
     "playwright-report.json",
     "browser-runtime.original.json",
     "browser-profile.original.json",
@@ -1084,11 +1268,11 @@ const publicReceiptStrings = new Set(
     " ",
   ),
 );
-for (const key of "closureProven savedRawLogBytes incomplete logTruncated timedOut ioFailed resultInvalid sourceExceptionEvidence observedGitThrows records evidenceLoss restoreVerified nestedGenericSetupCommands actualChromiumLaunches missingMandatoryCount evidenceLimits rawByteCap fileCountCap individualFileByteCap jsonByteCap envelopeByteCap nameByteCap depthCap".split(
+for (const key of "closureProven savedRawLogBytes incomplete logTruncated timedOut ioFailed resultInvalid sourceExceptionEvidence observedGitThrows records evidenceLoss restoreVerified nestedGenericSetupCommands actualChromiumLaunches missingMandatoryCount evidenceLimits rawByteCap fileCountCap individualFileByteCap jsonByteCap envelopeByteCap nameByteCap depthCap failedCommand ordinal argvDigest errorCode durationMs commandExecutionEvidence".split(
   " ",
 ))
   publicReceiptKeys.add(key);
-for (const value of ["NOT_SEPARATELY_MEASURED", "RAW_EVIDENCE_LOSS", "EVIDENCE_INCOMPLETE"])
+for (const value of ["NOT_SEPARATELY_MEASURED", "RAW_EVIDENCE_LOSS", "EVIDENCE_INCOMPLETE", "setup", "technical"])
   publicReceiptStrings.add(value);
 publicReceiptStrings.add(P.id);
 publicReceiptStrings.add("");
@@ -1137,6 +1321,26 @@ export function validatePosttechnicalPublicReceipt(summary) {
     requireValue(value && typeof value === "object", "RESULT_INVALID");
     for (const [key, entry] of Object.entries(value)) {
       requireValue(publicReceiptKeys.has(key), "RESULT_INVALID");
+      if (key === "failedCommand")
+        requireValue(
+          entry &&
+            Object.keys(entry).length === 7 &&
+            ["phase", "ordinal", "argvDigest", "exitCode", "signal", "errorCode", "durationMs"].every((field) =>
+              Object.hasOwn(entry, field),
+            ) &&
+            ["setup", "technical"].includes(entry.phase) &&
+            Number.isInteger(entry.ordinal) &&
+            entry.ordinal >= 1 &&
+            entry.ordinal <= (entry.phase === "setup" ? 3 : 12) &&
+            typeof entry.argvDigest === "string" &&
+            /^[a-f0-9]{64}$/u.test(entry.argvDigest) &&
+            (entry.exitCode === null || (Number.isInteger(entry.exitCode) && entry.exitCode >= 0)) &&
+            (entry.signal === null || entry.signal === "UNKNOWN" || commandSignals.has(entry.signal)) &&
+            (entry.errorCode === null || entry.errorCode === "UNKNOWN" || commandErrorCodes.has(entry.errorCode)) &&
+            Number.isFinite(entry.durationMs) &&
+            entry.durationMs >= 0,
+          "RESULT_INVALID",
+        );
       walk(entry, depth + 1);
     }
   };
