@@ -1,7 +1,7 @@
 ---
 title: Crossdeck R13 setup readiness successor context
 audience: automation
-status: prepared-awaiting-protected-installation
+status: active-readiness-repair-prepared
 canonical_for: crossdeck-r13-setup-readiness-successor-context
 last_reviewed: 2026-10-17
 ---
@@ -23,6 +23,31 @@ were absent in the2026-10-17T02:03:15.787Z read-only observation. Admission must
 recheck them and the complete authenticated predecessor history.
 
 # Protected finite successor
+
+Protected #756 installed R13 at main
+986aa0002711a43b425600f03803fae3d5b9906f. Its protected run38998432085 and
+Mainline check117297928473 succeeded. Landed authority checks and the independent
+history audit passed. Draft #721 adopted that exact authority at
+48ab65a7787520de455ffbe945c7c24de2f2d538; this is not product qualification.
+
+Original readiness attempt1 ended UNKNOWN at2026-10-17T03:44:06Z. All six
+individual setup commands and four native checks passed; aggregate setup status
+is FAIL. Browser metadata rejected the normal `/etc/os-release` symlink before
+launching Chromium. Dependency inventory rejected the locked npm `bridgewatch`
+workspace link. Cleanup passed, and no focused case was reserved. Preserve all
+original marker, launch, receipt and raw output bytes. Receipt SHA256 is
+3af4cdab910710fe31dae54de5d96a5cbc5f1b041cf06986f5664cf1a805f53b.
+
+The narrow collector repair must be independently reviewed and installed through
+normal protection before another preflight. Resolve and retain the fixed system
+metadata identity; keep generic regular-file and dependency containment checks.
+The two proof roots may own regular copies of the exact57 tracked workspace files
+in their dependency directories. This static provisioning runs no setup or case.
+Carry forward only the exact hash-pinned failed original attempt1 across the
+accepted authority update. It still counts against the unchanged three-per-stage
+and six-total readiness limits. Every new attempt and latest PASS must bind the
+current accepted authority and exact candidate. No record, case, ordinary or
+history allowance is reset or refunded.
 
 R13 preserves the twelve prior records, five bridges and1,255 prior immutable
 file bindings, the original campaign epoch and2026-10-22T23:59:59Z expiry. It
