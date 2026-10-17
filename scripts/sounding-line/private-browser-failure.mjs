@@ -22,7 +22,7 @@ export const PRIVATE_BROWSER_FAILURE_CONTEXT = "SOUNDING_LINE_PRIVATE_BROWSER_FA
 export const BROWSER_FAILURE_LIMITS = Object.freeze({
   files: 128,
   rawBytes: 64 * 1024 * 1024,
-  fileBytes: 32 * 1024 * 1024,
+  fileBytes: 64 * 1024 * 1024,
   manifestBytes: 1024 * 1024,
   depth: 8,
 });

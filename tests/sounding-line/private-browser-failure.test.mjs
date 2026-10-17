@@ -10,6 +10,7 @@ import {
   randomUUID,
 } from "node:crypto";
 import {
+  copyFileSync,
   existsSync,
   linkSync,
   lstatSync,
@@ -400,4 +401,158 @@ test("cleanup requires exact canonical session, complete coverage, unchanged byt
     { upload: "SUCCEEDED", cleanup: "RAW_REMOVED_AFTER_UPLOAD" },
   );
   assert.equal(existsSync(f.session.resultsDirectory), false);
+});
+
+const observedTraceBytes = 34_005_398;
+function observedBrowserAttachments(f) {
+  const actualDirectory = process.env.SOUNDING_LINE_TEST_ORIGINAL_BROWSER_FAILURE_DIRECTORY;
+  const files = [
+    { kind: "screenshot", name: "test-failed-1.png" },
+    { kind: "video", name: "video.webm" },
+    { kind: "trace", name: "trace.zip" },
+    { kind: "error-context", name: "error-context.md" },
+  ];
+  const records = [];
+  for (const file of files) {
+    const destination = path.join(f.session.resultsDirectory, file.name);
+    if (actualDirectory) copyFileSync(path.join(actualDirectory, file.name), destination);
+    else
+      writeFileSync(
+        destination,
+        file.kind === "trace" ? Buffer.alloc(observedTraceBytes) : `INERT_OBSERVED_SIZE_BOUNDARY_${file.kind}`,
+      );
+    const bytes = readFileSync(destination);
+    records.push({
+      failureId: fixtureFailure.id,
+      status: "failed",
+      kind: file.kind,
+      path: file.name,
+      bytes: bytes.length,
+      sha256: hash(bytes),
+    });
+  }
+  assert.equal(
+    records.find((record) => record.kind === "trace").bytes,
+    observedTraceBytes,
+    "exact observed browser-generated trace size",
+  );
+  return {
+    origin: actualDirectory ? "ACTUAL_F_FOCUSED_BROWSER_FAILURE_FILES" : "INERT_EXACT_OBSERVED_TRACE_SIZE_BOUNDARY",
+    records,
+  };
+}
+function observedManifest(f, records) {
+  manifest(
+    f,
+    records.map(({ failureId, status, kind, path }) => ({ failureId, status, kind, path })),
+  );
+}
+test("observed 34005398-byte browser trace crosses old 32 MiB limit and retains exact four-file hashes at 64 MiB", async (t) => {
+  const f = await fixture(t),
+    observed = observedBrowserAttachments(f);
+  assert.equal(f.api.BROWSER_FAILURE_LIMITS.fileBytes, 64 * 1024 * 1024);
+  assert.equal(f.api.BROWSER_FAILURE_LIMITS.rawBytes, 64 * 1024 * 1024, "aggregate cap is unchanged");
+  assert(observed.records.reduce((total, record) => total + record.bytes, 0) < f.api.BROWSER_FAILURE_LIMITS.rawBytes);
+  observedManifest(f, observed.records);
+  const receipt = finish(f);
+  assert.equal(receipt.retention, "COMPLETE");
+  assert.equal(receipt.worker.exitCode, 1);
+  const { plaintext } = decrypt(f);
+  assert.equal(plaintext.inventory.length, 4);
+  assert.equal(plaintext.files.length, 5);
+  for (const record of observed.records) {
+    const member = plaintext.files.find((file) => file.name === `private/results/${record.path}`);
+    assert(member);
+    assert.equal(member.bytes, record.bytes);
+    assert.equal(member.sha256, record.sha256);
+  }
+  const current = readFileSync(path.join(f.root, "private-browser-failure.mjs"), "utf8");
+  const old = current.replace("fileBytes: 64 * 1024 * 1024,", "fileBytes: 32 * 1024 * 1024,");
+  assert.notEqual(old, current);
+  assert.equal(
+    old.replace("fileBytes: 32 * 1024 * 1024,", "fileBytes: 64 * 1024 * 1024,"),
+    current,
+    "old-limit control changes exactly the one bound",
+  );
+  const oldModule = path.join(f.root, "old-file-limit-control.mjs");
+  writeFileSync(oldModule, old);
+  const oldApi = await import(pathToFileURL(oldModule).href),
+    oldSession = oldApi.createBrowserFailureRetention({ root: f.root, binding: f.context.binding });
+  const oldContext = JSON.parse(oldSession.environment[oldApi.PRIVATE_BROWSER_FAILURE_CONTEXT]);
+  for (const record of observed.records)
+    copyFileSync(
+      path.join(f.session.resultsDirectory, record.path),
+      path.join(oldSession.resultsDirectory, record.path),
+    );
+  oldApi.writeBrowserFailureManifest(
+    oldContext,
+    observed.records.map(({ failureId, status, kind, path }) => ({ failureId, status, kind, path })),
+    false,
+    [fixtureFailure],
+  );
+  const oldReceipt = oldSession.complete({ exitCode: 1, signal: null, workerClosed: true });
+  assert.equal(oldReceipt.retention, "INCOMPLETE");
+  assert(oldReceipt.issues.includes("LIMIT"));
+  assert(oldReceipt.issues.includes("MISSING_TRACE"));
+  const oldInventory = JSON.parse(readFileSync(path.join(oldSession.directory, "cleanup.private.json"))).files;
+  assert.equal(oldInventory.length, 3);
+  assert.equal(
+    oldInventory.some((record) => record.path === "trace.zip"),
+    false,
+  );
+  if (process.env.SOUNDING_LINE_TEST_RECEIPTS_DIRECTORY) {
+    const destination = path.join(
+      process.env.SOUNDING_LINE_TEST_RECEIPTS_DIRECTORY,
+      "observed-file-limit-boundary.actual.private.json",
+    );
+    writeFileSync(
+      destination,
+      JSON.stringify(
+        {
+          version: 1,
+          origin: observed.origin,
+          sourceHelperSha256: hash(
+            readFileSync(path.join(sourceRoot, "scripts/sounding-line/private-browser-failure.mjs")),
+          ),
+          files: observed.records,
+          oldLimit: 32 * 1024 * 1024,
+          newLimit: f.api.BROWSER_FAILURE_LIMITS.fileBytes,
+          aggregateLimit: f.api.BROWSER_FAILURE_LIMITS.rawBytes,
+          oldReceipt,
+          newReceipt: receipt,
+          generatedTransportKeyOnly: true,
+          actualOwnerKeyRead: false,
+          authenticatedGeneratedKeyRoundtripAllFourFiles: true,
+          productAcceptance: false,
+        },
+        null,
+        2,
+      ) + "\n",
+      { mode: 0o600 },
+    );
+  }
+});
+test("observed-size trace pairs remain bounded by the unchanged 64 MiB aggregate cap", async (t) => {
+  const f = await fixture(t),
+    observed = observedBrowserAttachments(f),
+    trace = observed.records.find((record) => record.kind === "trace");
+  copyFileSync(
+    path.join(f.session.resultsDirectory, trace.path),
+    path.join(f.session.resultsDirectory, "second-trace.zip"),
+  );
+  observedManifest(f, [...observed.records, { ...trace, path: "second-trace.zip" }]);
+  const receipt = finish(f);
+  assert.equal(receipt.worker.exitCode, 1);
+  assert.equal(receipt.retention, "INCOMPLETE");
+  assert(receipt.issues.includes("LIMIT"));
+  const inventory = JSON.parse(readFileSync(path.join(f.session.directory, "cleanup.private.json"))).files;
+  assert.equal(inventory.length, 4);
+  assert.equal(
+    inventory.some((record) => record.path === "second-trace.zip"),
+    false,
+  );
+  assert(
+    existsSync(path.join(f.session.resultsDirectory, "second-trace.zip")),
+    "rejected original is preserved privately",
+  );
 });
