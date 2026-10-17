@@ -3,12 +3,60 @@ title: Project Crossdeck engineering home
 audience: product-engineering
 status: governing-baseline
 canonical_for: project-crossdeck-engineering-home
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-17
 ---
 
 # Project Crossdeck
 
 **The Multi-Surface Chronicle Experience System**
+
+The [R11 final candidate](Spatial_Experience_Refit_R11_Verification_20261017.md) preserves the complete Crossdeck experience and adopts the separately protected [R11 successor #754](https://github.com/Kgray44/treasurehuntSoT/pull/754) on main `a16c5807`. The accepted source repair [#753](https://github.com/Kgray44/treasurehuntSoT/pull/753) improves replay-failure diagnostics without inventing a cause for the earlier failure. The reviewed real merge matches all executable/configuration source and original evidence bindings. [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) is still draft, unqualified and unmerged; one finite ordinary5, its current replay and qualified seal, protected merge and landed smoke remain pending.
+
+Consumed ordinary4 [run 38968131415](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38968131415) failed after technical verification. The actual browser log records 38 passing tests and cleanup PASS; current Experience replay has no result. [The source-bound failure disposition](Ordinary4_Disposition_20261016.md) preserves originals and the exact diagnostic boundary. R10 remains spent with no qualified seal.
+
+The historical [R10 source and qualification contract](Spatial_Experience_Refit_R10_Verification_20261016.md) is the current frozen refit continuation, based on accepted protected main `b7935ad2f68a278ef49f0618ec3b72263b0fb8b9`. [PR #751](https://github.com/Kgray44/treasurehuntSoT/pull/751) repaired synthetic policy context; [PR #752](https://github.com/Kgray44/treasurehuntSoT/pull/752) installed one ordinary4 while preserving original capture, review and every consumed failure. [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721), its protected decision and exact qualified seal carry the actual final verification and integration outcome. This publication contract claims no future result. The [phone walkthrough](Spatial_Experience_Refit_Owner_Walkthrough_20261016.md) and [actual gallery](evidence/r8-verification-20261016/gallery/README.md) describe the experience. The consumed [ordinary3 failure](Ordinary3_Disposition_20261016.md) remains unchanged.
+
+The historical [R9 record](Spatial_Experience_Refit_R9_Verification_20261016.md) retains accepted base2e2efa5b8b02e9e5dd0bb0b15d9b23c2f694d7ed, one spent ordinary3 and its original evidence bridge. [Ordinary3 run38948434772](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38948434772) failed in synthetic planner tests before product build or browser replay. R9qualifye24188d5654921f7ffc91c69d6d8be12d7d40ece remains consumed with no qualified seal. Earlier records and failures below are historical; none authorizes another invocation.
+
+The [R8 verification record](Spatial_Experience_Refit_R8_Verification_20261016.md)
+binds the separately reviewed and protected readiness successor installed by
+[PR #747](https://github.com/Kgray44/treasurehuntSoT/pull/747) at main `151417a7`.
+The corrected consumer and all 1,099 earlier evidence paths remain frozen.
+Fresh admission, the one local three-case/six-context proof and whole protected
+preparation18 passed, with raw media and successful owned cleanup preserved.
+The [fresh gallery](evidence/r8-verification-20261016/gallery/README.md) links actual
+paired-device captures. Fresh independent review7 accepted all seven contracts
+and 119 dimensions, with one mobile header-density polish concern across three
+contracts. Authenticated submission3 passed; [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) records exact final qualification and protected integration. The [phone walkthrough](Spatial_Experience_Refit_Owner_Walkthrough_20261016.md) describes entry, supported purposes and limits. R7 and earlier outcomes below remain preserved history.
+
+The historical ordinary2 candidate used protected main `43340791355526fb31fe2dbf9274eb8632589b30` from [PR #748](https://github.com/Kgray44/treasurehuntSoT/pull/748). Its [R8 reconciliation](Spatial_Experience_Refit_R8_Verification_20261016.md#final-qualification-base-reconciliation) and consumed failure remain preserved. The [R9 record](Spatial_Experience_Refit_R9_Verification_20261016.md) describes the accepted current base and separate once-only qualification.
+
+The [R7 verification record](Spatial_Experience_Refit_R7_Verification_20261016.md)
+records the separately reviewed and protected finite successor installed by
+[PR #746](https://github.com/Kgray44/treasurehuntSoT/pull/746) at main `ce862a4a`.
+Its consumer inputs preserve all 475 history bindings and the original R6 failed
+marker. Fresh accepted-base/head admission and the single local three-case /
+six-context proof passed, with original media and cleanup receipts preserved.
+Protected preparation17 then failed REDUCED restored-drawer readiness and is
+consumed. The [source-bound disposition](R7_Preparation17_Disposition_20261016.md)
+preserves both immutable artifact ZIP identities, partial media and the exact
+trace diagnosis. Separate product review7 and protected qualification remain
+unstarted; PR #721 remains draft and unqualified. The R6 and earlier results below
+remain historical with their original outcomes.
+
+The [R6 verification record](Spatial_Experience_Refit_R6_Verification_20261016.md) preserves the consumed failed local preflight on accepted main `ed96ead5`. NORMAL reached actual continuation but failed the added visible-leaf assertion, REDUCED skipped, and the adverse case passed; all later stages remained unstarted. The [source-bound disposition](R6_Local_Preflight_Disposition_20261016.md) records the missing reading/drawer navigation and raw JSON formatting conflict, unchanged originals and successful owned cleanup. All 405 earlier bindings and 228 R5 archived media remain preserved. A separately reviewed/protected finite successor is required; [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) remains draft and unqualified. Physical/native and owner acceptance remain separate.
+
+The historical [R5 verification record](Spatial_Experience_Refit_R5_Verification_20261015.md) preserves capture16 SUCCESS and final review6: five contracts accepted, two BLOCKED for insufficient fresh joining and transfer/recovery evidence. The [R5 gallery](evidence/r5-verification-20261015/gallery/README.md) links actual historical screenshots. The original verdict and all packet/media bytes remain unchanged.
+
+The historical [R4 verification record](Spatial_Experience_Refit_R4_Verification_20261015.md) preserves protected preparation FIFTEEN, independent review FIVE accepting all seven contracts / 119 dimensions and authenticated review 38820570426 against main `a2495fd1`. Ordinary38822426167 then failed during custody before product verification; it remains consumed, with zero artifacts and no qualification seal. R3/R2 outcomes below remain preserved history.
+
+The [R3 phone-return repair and finite verification](Spatial_Experience_Refit_R3_Verification_20261015.md)
+records the owner-authorized bounded correction under accepted PR #740,
+fresh protected capture and independent review four accepting all seven contracts.
+[PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) records exact protected
+qualification and integration. Authenticated review timed out during checkout,
+so qualification and merge remain blocked. Owner and physical acceptance remain separate;
+the R2 blocker below is preserved historical evidence.
 
 Project Crossdeck is Voyagewright's canonical owner for one-person/multi-surface Chronicle participation: secure pairing, surface identity and roles, synchronized presentation, focus and interaction custody, manual and gesture-driven handoff, disconnect/reconnect, and fluid movement of Chronicle experiences between a person's authorized devices.
 
@@ -84,6 +132,17 @@ Air Handoff is a preferred high-delight interaction, never the only interaction.
 
 ## Current implementation status
 
+The historical [R2 source-bound final verification](Spatial_Experience_Refit_R2_Verification_20261015.md) records successful protected capture of all seven contracts / 32 contexts and final independent review 3, which blocked the phone Journal return. Its original notice obstruction and blocked report remain unchanged history. The historical R3 record binds the bounded repair and accepted review four; R4 preserves accepted review five and the subsequent custody failure; R5 preserves blocked review6 and R6 preserves the consumed local failure. The R8 record above governs current verification. Owner and physical acceptance remain separate.
+
+The [2026-10-15 protected-main reconciliation and consumer interface](Spatial_Experience_Refit_Mainline_Reconciliation_20261015.md) records accepted PR #724 integration, complete executable Crossdeck contracts, 44 focused checks and the remaining source-bound acceptance decision. The eleven-attempt history remains explicit; the refit is not protected-accepted.
+
+The [spatial experience refit](Spatial_Experience_Refit_20261011.md) is a current
+local candidate: contextual connection from the Chronicle and real Lens, Chart,
+Journal and artifact companion presentations. Its baseline findings, domain
+ownership, canonical UI replay and outstanding qualification/owner gates
+remain explicit. The [task efficiency ledger](Spatial_Experience_Refit_Efficiency_20261011.md)
+records observed counters separately from acceptance.
+
 **Phase 1 implementation: Lay the Gangway.**
 
 The [Phase 1 implementation record](Phase_1_Implementation_Record.md) documents secure pairing, canonical surface participation, roles, capability projection, lifecycle, removal, software tests and shared Device Lab D0/D1 evidence. Protected-main qualification and owner product acceptance are separate recorded gates.
@@ -157,3 +216,7 @@ Read the preserved authority above with the [current Reach integration amendment
 ## Committed-change transport closure
 
 The [realtime design and measurements](Realtime_Transport_20261011.md) and [protected integration closure](Realtime_Transport_Protected_Closure_20261011.md) record PR #706, exact-source acceptance and landed D0/D1 verification. Production, physical and owner acceptance remain separate gates.
+
+The [finite final-verification and storage record](Spatial_Experience_Refit_Final_Verification_20261015.md) binds accepted PR #731, the unchanged frozen product, the complete historical snapshot and the pending one-use consumer sequence.
+
+The [R2 finite verification record](Spatial_Experience_Refit_R2_Verification_20261015.md) binds the distinct approved successor to accepted main, preserved failed history and fresh source-bound evidence.

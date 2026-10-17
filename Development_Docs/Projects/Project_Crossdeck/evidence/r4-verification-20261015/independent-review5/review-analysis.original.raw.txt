@@ -1,0 +1,383 @@
+{
+  "classification": "INDEPENDENT_PRODUCT_EXPERIENCE_REVIEW_ANALYSIS",
+  "reviewerContext": "/root/final_product_review_5",
+  "builderContext": "/root",
+  "independence": "SEPARATE_CONTEXT",
+  "independentReviewOrdinal": 5,
+  "iterations": 11,
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "sourceIdentity": {
+    "baseSha": "a2495fd14efd5ade67832e18fd260f32da98b3b2",
+    "candidateSha": "19687c12e20ef69e6519903b14e56a145df2d7e7",
+    "candidateTree": "b8df76fca5532a71799f052ed74f1129c0311429",
+    "sourceDigest": "4446bc23b1393a4d762a007a21b62d96980a8b9949e4f7741ae51617d07319b5",
+    "contractDigest": "4ee636786ea5b2fedd375c3567441f151caa668d98934b01e98161c4c88c44ec",
+    "frozenReference": "97cdcad1b60210efef07ac3bcbe407abda936baf",
+    "productSrcTree": "4eb7fe5f50a039ae5434822892ae761f92eabec7",
+    "frozenReferenceSrcTree": "4eb7fe5f50a039ae5434822892ae761f92eabec7",
+    "productSrcEqual": true,
+    "frozenRegistryAndTargetedSpecifications": [
+      {
+        "path": "testing/contracts.json",
+        "candidateGitBlob": "eb8324379b3348cacf9e2ecbd592c5899ee5a63b",
+        "referenceGitBlob": "eb8324379b3348cacf9e2ecbd592c5899ee5a63b",
+        "equal": true,
+        "inspection": "Read-only Git object identity comparison; targeted tests were not executed or used as the experience verdict."
+      },
+      {
+        "path": "tests/e2e/crossdeck-experience-refit.spec.ts",
+        "candidateGitBlob": "96b86fcfcd97218aefce740e1bad758726c84dcb",
+        "referenceGitBlob": "96b86fcfcd97218aefce740e1bad758726c84dcb",
+        "equal": true,
+        "inspection": "Read-only Git object identity comparison; targeted tests were not executed or used as the experience verdict."
+      },
+      {
+        "path": "tests/e2e/crossdeck-refit-recovery.spec.ts",
+        "candidateGitBlob": "884bab36709894d234f2307c37bc5ba9ed8152ef",
+        "referenceGitBlob": "884bab36709894d234f2307c37bc5ba9ed8152ef",
+        "equal": true,
+        "inspection": "Read-only Git object identity comparison; targeted tests were not executed or used as the experience verdict."
+      },
+      {
+        "path": "tests/e2e/reach-laboratory.spec.ts",
+        "candidateGitBlob": "4b227802acc7e676b748b94eb65ddf6532ba121b",
+        "referenceGitBlob": "4b227802acc7e676b748b94eb65ddf6532ba121b",
+        "equal": true,
+        "inspection": "Read-only Git object identity comparison; targeted tests were not executed or used as the experience verdict."
+      },
+      {
+        "path": "tests/e2e/homeport-phase2.spec.ts",
+        "candidateGitBlob": "a6e74a12f0b00cfd68d1d676fe15370ca8e5f1b1",
+        "referenceGitBlob": "a6e74a12f0b00cfd68d1d676fe15370ca8e5f1b1",
+        "equal": true,
+        "inspection": "Read-only Git object identity comparison; targeted tests were not executed or used as the experience verdict."
+      }
+    ]
+  },
+  "decision": {
+    "contracts": 7,
+    "accepted": 7,
+    "blocked": 0,
+    "dimensionJudgments": 119,
+    "acceptedReferenceQualityFindings": 7,
+    "openMinorPolishFindings": 1,
+    "currentMandatoryBlockingFindings": 0,
+    "basis": "Independent inspection of meaningful rendered content, real recorded interactions, complete chronological timelines, context/focus/return and recovery. Green producer validation, source role labels and DOM existence were supporting facts rather than the verdict."
+  },
+  "currentOpenPolish": {
+    "findingId": "IR5-LENS-DESKTOP-EDGE-CLEARANCE",
+    "classification": "MINOR_POLISH",
+    "assessment": "The desktop lower Journal return has right-edge tabs partly overlapping the far-right edge of Open Chronicle Lens. The label, broad action area and focus remain usable, and successful operation is recorded. This is open visual separation polish, not a required task failure, resolved mandatory issue or baseline-debt waiver."
+  },
+  "substantiveObservations": [
+    {
+      "topic": "Released purpose outcomes",
+      "assessment": "Lens contains the released northern-light Captain note and entity-specific inspection response. Journal contains the full Follow the lanterns prose with reading-size control. Chart contains Imaginary Isles, Secret Isle and actual sparse authored geometry. Artifact contains The brass compass and its specific released description; the illustration is simple, but content is not merely a purpose label."
+    },
+    {
+      "topic": "Motion and readable fallback",
+      "assessment": "Normal Journal openings can settle into The animated opening could not finish, with explicit readable Journal/page-turning readiness; reduced motion retains the task through its own readable fallback. This review accepts useful disclosed fallback behavior, not flawless cinematic motion."
+    },
+    {
+      "topic": "Connection feedback and errors",
+      "assessment": "Short reconnecting and rate-limited event-stream observations are present in setup. Ready content and in-sync outcomes recover in the selected timelines. Anonymous 401 observations do not establish an authorized-surface failure. No network-error-free or remote-sync-correctness claim is made."
+    },
+    {
+      "topic": "Reach confidence",
+      "assessment": "Collection, pause/resume, independent held-out check, local practice, camera failure, multiple hands and ineligible framing have distinct useful states. Demo evidence and experimental absolute pointing are visible qualifications. No physical accuracy claim is promoted from a simulated passed check."
+    },
+    {
+      "topic": "Fresh return versus continuation",
+      "assessment": "Actual context exit and Continue adventure re-entry are captured. Returned Continue Voyage is visible and trial-clickable in both fresh phone modes. Actual Continue Voyage activation and cd17 persistence are only in the older historical support, described separately."
+    }
+  ],
+  "historicalSupportingAssessment": {
+    "classification": "HISTORICAL_SUPPORT_ONLY_NOT_FRESH_R4_QUALIFICATION",
+    "freshDimensionEvidenceIdsUsed": false,
+    "identity": {
+      "classification": "OPERATOR_LOCAL_ONE_USE_NOT_AUTHENTICATED_CUSTODY",
+      "exceptionId": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R3",
+      "recordDigest": "c05352f82f8e00f0911c8a24f5081185f839c190b475074fcc2c89e305395df9",
+      "baseSha": "73ed4b380c764c32ee35f40e4dad7dfddbbb7e58",
+      "candidateSha": "01ea09f3f7984251c8de409e577cf7380e40813b",
+      "sourceDigest": "5154d0703cae427ef1ac559b3f1affabce65278105b84859a5f7c5edaf347f18",
+      "contractDigest": "4ee636786ea5b2fedd375c3567441f151caa668d98934b01e98161c4c88c44ec",
+      "completedAt": "2026-10-15T19:50:10.407Z"
+    },
+    "distinctDatabaseIdentities": [
+      {
+        "profile": "generic",
+        "databaseSha256": "01962dddb36e0880a0639d4957ea0dd5ef6732d255925e81af07b4bec4bae26a",
+        "motionMode": "NORMAL"
+      },
+      {
+        "profile": "generic",
+        "databaseSha256": "15fab0d25c973d399bc21360e56bbfbf0aae5dc392c63288691736e928859a35",
+        "motionMode": "REDUCED"
+      }
+    ],
+    "observedActualActions": [
+      {
+        "originalId": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-trace",
+        "motionMode": "NORMAL",
+        "actions": [
+          {
+            "method": "click",
+            "params": {
+              "selector": "internal:role=button[name=\"Continue Voyage\"s]",
+              "strict": true,
+              "timeout": 5000,
+              "trial": true
+            },
+            "traceStartTime": 24279.793
+          },
+          {
+            "method": "press",
+            "params": {
+              "selector": "internal:role=button[name=\"Continue Voyage\"s]",
+              "strict": true,
+              "key": "Enter",
+              "timeout": 30000
+            },
+            "traceStartTime": 24828.903
+          }
+        ]
+      },
+      {
+        "originalId": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-trace",
+        "motionMode": "REDUCED",
+        "actions": [
+          {
+            "method": "click",
+            "params": {
+              "selector": "internal:role=button[name=\"Continue Voyage\"s]",
+              "strict": true,
+              "timeout": 5000,
+              "trial": true
+            },
+            "traceStartTime": 13983.549
+          },
+          {
+            "method": "press",
+            "params": {
+              "selector": "internal:role=button[name=\"Continue Voyage\"s]",
+              "strict": true,
+              "key": "Enter",
+              "timeout": 30000
+            },
+            "traceStartTime": 14474.423
+          }
+        ]
+      }
+    ],
+    "persistedOutcomes": [
+      {
+        "motionMode": "NORMAL",
+        "databaseIdentitySha256": "01962dddb36e0880a0639d4957ea0dd5ef6732d255925e81af07b4bec4bae26a",
+        "canonicalVoyage": {
+          "id": "00000000-0000-4000-8000-00000000cd11",
+          "currentBlockId": "00000000-0000-4000-8000-00000000cd17",
+          "currentSequence": 7,
+          "status": "ACTIVE",
+          "publishedVersionId": "00000000-0000-4000-8000-00000000cd12"
+        },
+        "access": "SQLITE_READ_ONLY_AFTER_BROWSER_CLEANUP"
+      },
+      {
+        "motionMode": "REDUCED",
+        "databaseIdentitySha256": "15fab0d25c973d399bc21360e56bbfbf0aae5dc392c63288691736e928859a35",
+        "canonicalVoyage": {
+          "id": "00000000-0000-4000-8000-00000000cd11",
+          "currentBlockId": "00000000-0000-4000-8000-00000000cd17",
+          "currentSequence": 7,
+          "status": "ACTIVE",
+          "publishedVersionId": "00000000-0000-4000-8000-00000000cd12"
+        },
+        "access": "SQLITE_READ_ONLY_AFTER_BROWSER_CLEANUP"
+      }
+    ],
+    "filesInspected": [
+      {
+        "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/targeted-local-proof.json",
+        "bytes": 15070,
+        "sha256": "64a09e74d096b9474bdcfd5b1bec7b56a635671a7c4adebe98cb61cdb5071949",
+        "inspection": "Read metadata, two journey outcomes and fixture identities after fresh experience inspection"
+      },
+      {
+        "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/persisted-continuation-postcheck.json",
+        "bytes": 1647,
+        "sha256": "f4dce7dbffe588b5be86ef714522dfa8679c1205351db19ba2ea5ad1f4cf5470",
+        "inspection": "Read both read-only persisted cd17 observations after fresh experience inspection"
+      },
+      {
+        "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/targeted-media/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-10.png",
+        "bytes": 210572,
+        "sha256": "759ca40abba71ba35a9e7fa491ca049795ae6baa606fb21a447f1c38e8871672",
+        "inspection": "Opened visually; Voyage complete objective shown in each motion mode"
+      },
+      {
+        "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/targeted-media/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL.trace.zip",
+        "bytes": 12137921,
+        "sha256": "f0a64a914b0ec808adf36727b9b4fcc7e100bfaaa4d752b74efa671f631ea6c1",
+        "inspection": "Read recorded action stream for trial and actual Continue Voyage Enter; not a new replay"
+      },
+      {
+        "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/targeted-media/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-RETURNED-10.png",
+        "bytes": 168441,
+        "sha256": "93fbd3197049d8eca8d1f1eb5b3908c3009fd739e52c2f0091cb70d27d4e04ee",
+        "inspection": "Opened visually; Voyage complete objective shown in each motion mode"
+      },
+      {
+        "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/targeted-media/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED.trace.zip",
+        "bytes": 9982298,
+        "sha256": "8cd9f7067ed66cea85866fb29fabcd6e1afe9c15edf88a252ef82382396c0df3",
+        "inspection": "Read recorded action stream for trial and actual Continue Voyage Enter; not a new replay"
+      }
+    ],
+    "assessment": "The old NORMAL and REDUCED traces each contain a trial click followed by actual Enter on Continue Voyage. The two returned screenshots visibly show Voyage complete. The separate read-only postcheck records cd17/currentSequence 7 in two different owned database identities. This is substantive supporting historical proof of actual continuation, not a fresh activation in preparation FIFTEEN or qualification on base a2495fd. The normal historical screenshot can still show the old passage while its objective has advanced; the postcheck is the separate persisted-outcome observation.",
+    "limits": [
+      "Older base/candidate/source than the R4 capture; no new activation or replay performed by this reviewer.",
+      "The historical recordings, other historical screenshot states and original raw text were not temporally inspected by this reviewer; no full historical-media review is claimed.",
+      "The two historical databases were not opened by this reviewer; the persisted JSON is a preserved read-only postcheck report, not an independent new database query.",
+      "No old local ID is used in any fresh contract dimension or finding."
+    ]
+  },
+  "acceptedReferenceImages": [
+    {
+      "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+      "bytes": 676078,
+      "sha256": "4c1c6c44de8007dec2a05fda240249f4e87b56b7b6f7fe2335323f2e7f5cc024",
+      "inspection": "Opened visually during experience-first inspection",
+      "use": "Desktop dark teal/brass composition, shell identity and serif hierarchy; not an exact content/layout template"
+    },
+    {
+      "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+      "bytes": 336360,
+      "sha256": "661f40c43a7dc7a3f55376675a282e1c10a6562b284235f2be93fb733a0e7477",
+      "inspection": "Opened visually during experience-first inspection",
+      "use": "Narrow shell/material/hierarchy reference; not proof of companion or Reach behavior"
+    },
+    {
+      "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
+      "bytes": 572176,
+      "sha256": "12ae1399d658c90d08417354d697df56ab0ac3b918d679bd4a9f6083a86508b6",
+      "inspection": "Opened visually during experience-first inspection",
+      "use": "Desktop parchment, dark ink and account task hierarchy"
+    },
+    {
+      "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png",
+      "bytes": 180692,
+      "sha256": "e052348f01efb6dc4f5ac46bef64371895c2133f70df634e3cedd376b4bee8a1",
+      "inspection": "Opened visually during experience-first inspection",
+      "use": "Mobile sign-in parchment and readable task hierarchy"
+    }
+  ],
+  "sourceCorroboration": [
+    {
+      "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/src/components/crossdeck/CrossdeckCompanion.tsx",
+      "bytes": 21465,
+      "sha256": "5ead5ddb250de06b5ca2572d69ee50d4bd164e5496fcaf8b5dc38407ba63103f",
+      "reviewedSections": "35-515: released-content projection, Journal/chart/artifact consumers, purpose choices, focus handoff, authorized context and returns"
+    },
+    {
+      "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/src/components/crossdeck/CrossdeckCompanionGateway.tsx",
+      "bytes": 3023,
+      "sha256": "a379920517d9bea2784a3c64169792c57435bf3b6a0ba3409b40a59eb899962b",
+      "reviewedSections": "1-210: authorized surface and same-Voyage gating, signed-out reconnect and separate shared surface"
+    },
+    {
+      "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/src/components/crossdeck/CrossdeckDevices.tsx",
+      "bytes": 21291,
+      "sha256": "2255b42466ef0364029ba01e3b9a81bdeeca4c7e8d78ee75896c8174f042eb37",
+      "reviewedSections": "190-365: contextual connection, QR/code, native dialog and trigger-focus restoration"
+    },
+    {
+      "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/src/components/crossdeck/CrossdeckDevices.module.css",
+      "bytes": 9572,
+      "sha256": "ef96a8d33d3d45c396c3782fb2bb7e0e50b39015c699f8d3222ab7e06b0acdf5",
+      "reviewedSections": "120-265: dialog sizing, overflow, QR and action sizing"
+    },
+    {
+      "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/src/components/player/parallax/ChronicleLens.tsx",
+      "bytes": 22509,
+      "sha256": "26db75a4b5f73c974815f72d776fe576d48ca346c1361a64246db3cf0a9052f7",
+      "reviewedSections": "185-410: immutable published moment, guided/native availability, interaction feedback, cleanup and focus return"
+    },
+    {
+      "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/src/components/player/journal/ChronicleJournalSession.tsx",
+      "bytes": 68371,
+      "sha256": "6d592143bda083148da034f1eed8b07587d06967f7ee6fb47531c5bcc5e01e9f",
+      "reviewedSections": "Selected tool/objective/inert matches and 1480-1550: Journal tool availability and canonical context integration"
+    },
+    {
+      "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/src/styles/chronicle.css",
+      "bytes": 52325,
+      "sha256": "1177316e2b4b6b46ebeab620f9e830983e87e19f0c7097e65e1038b6cfc588a1",
+      "reviewedSections": "2008-2122: narrow-viewport tools, objective, tab positions and bottom clearance"
+    },
+    {
+      "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/src/components/platform/PlayerSignIn.module.css",
+      "bytes": 286,
+      "sha256": "ef0d2bd8fa0652ff8f449b031f3d24491554bbf682e69619284cce19bff29884",
+      "reviewedSections": "Final 85 lines: parchment prose and link contrast"
+    },
+    {
+      "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/src/app/player/sign-in/page.tsx",
+      "bytes": 1348,
+      "sha256": "ea9152c291f97a968041a660fb67f6ca7c396ccdff6c598a5985c7d1b614cb87",
+      "reviewedSections": "1-90: canonical account capability and safe return"
+    },
+    {
+      "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/src/homeport/return-to.ts",
+      "bytes": 1995,
+      "sha256": "ed70fb9246d741e6d7cfd8edbe916311d44e87e7ef7fbc43a11a40b2f5ec3c19",
+      "reviewedSections": "1-120: local and capability-authorized return destination handling"
+    },
+    {
+      "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/src/components/shell/ProductShell.tsx",
+      "bytes": 24633,
+      "sha256": "d684ef9d71fa4f49fbb7d0c46aded8503a726d239935965ca7344c521d788a85",
+      "reviewedSections": "Selected focus/route/inert matches and 155-185: overlay cleanup and keyboard handoff"
+    },
+    {
+      "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/src/crossdeck/experiences.ts",
+      "bytes": 3683,
+      "sha256": "8aaa834807f448b390fd0a3dde0cf6c59e0bfa574a96b0a6a4dfe582b935921a",
+      "reviewedSections": "1-92: human purpose labels, availability/reasons and advanced disclosure"
+    },
+    {
+      "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/src/reach/ReachLaboratory.tsx",
+      "bytes": 54750,
+      "sha256": "0e1af7b1ce63023b5858793ee1876efbc0f15a4957f2073bcf0ef1579cfeaa25",
+      "reviewedSections": "Selected stage/recovery matches; 245-298 and 735-815 actually read in final narrow corroboration: sample collection, independent check, explicit demo and mobile task guidance"
+    },
+    {
+      "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/scripts/sounding-line/product-experience.mjs",
+      "bytes": 36834,
+      "sha256": "9ef133bb3ded071205b5e418488f366d41fdf4afb0721b4dc4d457960acee5c0",
+      "reviewedSections": "1-115, 730-830, final export region and finding/disposition matches: dimension/finding schema and packet digest export; imported pure experienceDigest only"
+    },
+    {
+      "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/scripts/sounding-line/experience-browser.mjs",
+      "bytes": 32054,
+      "sha256": "d6c77e2f0739bc1ac4449e187d2440de0e21bb1f2e3aeef624c487cdff9119b5",
+      "reviewedSections": "495-550: original packet binding formula and ordered captures"
+    }
+  ],
+  "scopeAndUnprovedClaims": [
+    "No application, browser, capture, fixture, tests, repository validator workflow or provider call was run by this reviewer. Report-authoring scripts, image/video decoding, read-only Git identity inspection and digest/hash calculations only.",
+    "Single-context captures show connection guidance, same-Voyage purpose content, local feedback and safe returns. Actual two-context pairing, acknowledged handoff, revocation and restricted shared-display privacy remain a later mandatory technical gate.",
+    "Fresh mobile returned Continue Voyage was viewport-visible and trial-clicked in NORMAL and REDUCED. Trial clicks do not activate continuation. No fresh cd17 or persistent progression is inferred.",
+    "Older actual continuation is historical supporting proof on a different base/source; it does not replace fresh R4 qualification or establish current-base continuation.",
+    "Camera-free Guided Lens and camera-off Reach demo results do not establish live camera accuracy, native AR, real-person pointing, physical-phone behavior, actual scanning, native capabilities or field ergonomics.",
+    "Canonical account navigation was inspected, not successful account login, recovery email delivery or live external provider authentication.",
+    "No hosted/deployment, owner/KG acceptance, physical hardware acceptance or live-provider proof is claimed.",
+    "Temporal inspection used all complete 2 fps diagnostic timelines plus every native frame in five targeted windows. It was not real-time human playback of every 25 fps frame of all 32 videos. Output-rate sample timestamps are approximate; targeted windows are decoded temporal ranges, not invented new original evidence.",
+    "Trace inspection covers recorded action/navigation/keyboard/timing/console streams and their rendered outcomes; frame-snapshot references were not reconstructed into a complete DOM, and no full backend correctness or network-custody audit is claimed.",
+    "Captured contrast and focus are visual judgments supported by rendered originals and producer observations; no new assistive-technology, zoom, colorimeter or physical accessibility session was run."
+  ],
+  "priorVerdictsOrBuilderDesignRationaleInspected": false,
+  "ownerAcceptance": "NOT_CLAIMED",
+  "physicalHardwareAcceptance": "NOT_CLAIMED",
+  "featureCatalog": "NO CHANGE REQUIRED - independent inspection reports only; no repository or product changes"
+}

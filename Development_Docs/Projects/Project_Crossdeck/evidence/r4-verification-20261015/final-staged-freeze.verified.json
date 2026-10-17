@@ -1,0 +1,18 @@
+{
+  "status": "PASS_STAGED_FROZEN_PRODUCT_AND_HISTORY_ONLY",
+  "stagedTree": "f15d839b3765476242d7770bc819bbc13d189f6c",
+  "baseSha": "a2495fd14efd5ade67832e18fd260f32da98b3b2",
+  "recordId": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R4",
+  "recordDigest": "3b4e21f9b75689a7e88f0e4ea7ba450b46d71fd9b6fe9a9852ac9836f212434d",
+  "frozenTrees": 3,
+  "frozenBlobs": 5,
+  "immutableHistory": 68,
+  "originalR3Files": 228,
+  "originalR3Bytes": 478260212,
+  "originalR3ReportUnchanged": true,
+  "earlierArchivesUnchanged": true,
+  "productRepairs": 0,
+  "localProofInvocations": 0,
+  "captureDispatches": 1,
+  "ownerAcceptance": "NOT_CLAIMED"
+}

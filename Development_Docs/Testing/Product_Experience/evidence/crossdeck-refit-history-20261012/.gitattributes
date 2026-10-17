@@ -1,0 +1,2 @@
+# Historical runtime logs retain their captured bytes and manifest checksums.
+*.log -text

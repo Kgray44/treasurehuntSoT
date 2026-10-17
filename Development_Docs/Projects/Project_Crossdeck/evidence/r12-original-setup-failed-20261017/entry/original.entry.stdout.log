@@ -1,0 +1,66 @@
+Prisma schema loaded from prisma/schema.sqlite.prisma
+{
+  "version": 1,
+  "classification": "OPERATOR_LOCAL_ONE_USE_TECHNICAL_DIAGNOSTIC_NOT_AUTHENTICATED_CUSTODY",
+  "exceptionId": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R12",
+  "stage": "original",
+  "status": "FAIL",
+  "baseSha": "e85ceda26a3770dfb2b01f2afd916e45761a5d9e",
+  "candidateSha": "53601e9e386bb4f1062719befc77b7778b9e4430",
+  "candidateTree": "85e9accc1d273d0f649119380d775df41e6dcf0a",
+  "sourceDigest": "3e69c2306442758edca417fdb478f1a61e009f1cbc82d584bcad6e760257df0f",
+  "contractDigest": "33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274",
+  "recordDigest": "9d140072d1cd31a363bf667380b1298eb1b8a9ef0489eb0be564922f85f5239c",
+  "spec": "tests/e2e/crossdeck-phase2.spec.ts",
+  "title": "crossdeck.surface-handoff",
+  "invocations": 1,
+  "caseExecutions": 0,
+  "retries": 0,
+  "repeatEachIndex": 0,
+  "additionalRepeats": 0,
+  "productCaptures": 0,
+  "productReviews": 0,
+  "providerCalls": 0,
+  "files": {
+    "sourceManifest": {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-verification-20261017/focused-technical/original/source-manifest.json",
+      "sha256": "c761bc1062745a4465f78b79125ee858b27130f4131f89b88d4eeee778635027"
+    },
+    "report": null,
+    "runtimeReceipt": null,
+    "profileReceipt": {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-verification-20261017/focused-technical/original/browser-suite-profile.json",
+      "sha256": "6d906c2d0320c4727f257b8a7e93f6c9fea893006cc50ad20d22e9608cc34bff"
+    },
+    "deviceLabReceipt": null,
+    "marker": {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-verification-20261017/focused-technical/original/marker.json",
+      "sha256": "6fdb259876c45b0ea3c9c23ceff177dbb1fa9f00c58b7bf5721bb35ce2e0a803"
+    },
+    "launchMarker": {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-verification-20261017/focused-technical/original/launch-marker.json",
+      "sha256": "86ec9038392837f4dca639a4b0d6f5e0d58b267b894bdf796013d18cf795c238"
+    }
+  },
+  "media": [],
+  "outcome": "EXECUTION_UNKNOWN",
+  "startedAt": "2026-10-17T02:00:01.208Z",
+  "limitation": "Operator common-Git accounting is not authenticated global execution custody. Preserve both stage markers and all partial output. No reset, retry or raw-launch bypass.",
+  "execution": {
+    "exitCode": 1,
+    "cancelled": false,
+    "cleanup": {
+      "status": "PASS",
+      "directExitObserved": true,
+      "exitCode": 1,
+      "signal": null,
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": false,
+      "payloadExitCode": 1,
+      "elapsedMs": 3,
+      "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+    }
+  },
+  "completedAt": "2026-10-17T02:00:19.045Z"
+}

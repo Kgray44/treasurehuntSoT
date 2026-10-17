@@ -1428,41 +1428,49 @@ Creators author versioned physical and virtual Living Charts with protected cont
 
 ---
 
-## FT-045 - Crossdeck surface participation foundation
+## FT-045 - Crossdeck connected Chronicle experiences
 
 **Status:** MAINLINE
-**Program or subsystem:** Project Crossdeck Phase 1 — Lay the Gangway
+**Program or subsystem:** Project Crossdeck participation, continuity and experience refit
 
-One canonical Player can connect several signed-in browser surfaces to the same Voyage using scoped one-time QR/code pairing, visible device roles, privacy-safe capability projection, bounded presence and revocable participation.
+Connect a phone from the active Chronicle, choose a supported companion purpose, send released content and continue or recover within the same authorized Voyage. Personal Harbor retains device administration; companions provide distinct Lens, Chart, Journal, artifact and restricted crew presentations.
 
 ### Important subfeatures
 
-- Durable AccountSession and membership-bound surface participation without duplicate identity or progression
-- Hashed expiring one-time QR/code challenges with atomic receiver creation and source confirmation
-- Presentation roles with Captain authority checks and honest unavailable Creator preview
-- Sextant capability projection preserves unknown, unavailable and denied states
-- Lifecycle heartbeats, stale-device exclusion, removal and live parent-session revocation checks
-- Personal Harbor and Journal device discovery with responsive keyboard-accessible controls
-- Shared Device Lab D0 service/database and D1 desktop/mobile browser scenario adapters
+- Contextual short-lived QR/code connection inside the Chronicle with canonical same-account participation
+- Useful companion purposes and switching without repeating pairing, with explicit content and capability availability
+- Parallax-owned published spatial clues in a distinct browser Guided View Lens, with truthful camera/native capability boundaries
+- Landfall Chart, Journal reading, released artifact and restricted crew presentations preserve their owning domains
+- Durable send/receive interaction with truthful pending states, rendered acknowledgement, cancellation and recovery
+- Private-send confirmation, crew restrictions, surface revocation and canonical One Voyage progression checks
+- Event-driven connected-view reconciliation and safe reconnect retain existing synchronization authority
+- Responsive desktop, phone, landscape and medium-viewport navigation with keyboard, touch and reduced motion support
+- Personal Harbor retains recognized devices, labels, preferences and session security
 
 ### Primary surfaces
 
-`/account/devices`, `/devices/pair`, `/api/crossdeck`, `src/components/player/journal/ChronicleJournalSession.tsx`
+`/account/devices`, `/devices/pair`, `/devices/companion`, `/api/crossdeck`, `src/components/player/journal/ChronicleJournalSession.tsx`, `src/components/crossdeck/CrossdeckCompanion.tsx`
 
 ### Meaningful limitations
 
-- Synchronization, focus/custody, content handoff and Air Handoff belong to later phases.
-- Chronicle Lens spatial rendering remains Parallax-owned and is not implemented by a role label.
-- D1 browser emulation is distinct from D4 real hardware and D5 field qualification.
-- Product-owner live walkthrough acceptance is separate from software qualification.
+- Camera-gesture Air Handoff and later Crossdeck phases remain outside this refit.
+- Browser Guided View does not establish world-tracked camera AR; native spatial behavior remains Parallax-owned and capability-dependent.
+- Atmosphere, Captain companion, Accessibility companion and Creator preview do not yet provide dedicated device experiences; their existing owning tools retain their current availability.
+- Isolated persisted synthetic Voyages and browser emulation are distinct from physical-device, field and assistive-technology qualification.
+- Product-owner live walkthrough acceptance remains separate from software qualification.
 
 ### Evidence
 
 - path: `src/crossdeck/service.ts`
+- path: `src/components/crossdeck/CrossdeckCompanion.tsx`
 - test: `src/crossdeck/service.test.ts`
-- test: `src/app/api/crossdeck/route.test.ts`
-- test: `tests/e2e/crossdeck-phase1.spec.ts`
-- path: `Development_Docs/Projects/Project_Crossdeck/Phase_1_Implementation_Record.md`
+- test: `tests/e2e/crossdeck-experience-refit.spec.ts`
+- test: `tests/e2e/crossdeck-refit-recovery.spec.ts`
+- path: `Development_Docs/Projects/Project_Crossdeck/README.md`
+- path: `Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R8_Verification_20261016.md`
+- path: `Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_Owner_Walkthrough_20261016.md`
+- path: `Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R9_Verification_20261016.md`
+- path: `Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R10_Verification_20261016.md`
 
 ---
 

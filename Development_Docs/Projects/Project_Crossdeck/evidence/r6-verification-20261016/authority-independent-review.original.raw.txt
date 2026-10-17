@@ -1,0 +1,361 @@
+{
+  "schemaVersion": 1,
+  "reviewType": "INDEPENDENT_EXACT_COMMIT_AUTHORITY_MAINTENANCE_REVIEW",
+  "status": "APPROVED",
+  "reviewedAtUtc": "2026-10-16T06:08:54.933Z",
+  "repository": "D:\\CodexRepos\\treasurehunt-sounding-line-maintenance-20261015",
+  "baseCommit": "f935ab3efd6eb5943cdea8a08f65c9cf55c45d95",
+  "reviewedTree": "0bbaa44d314e7bdf54c58ce8e8110348b58fa3c9",
+  "commitApproved": "cbdb8b0596f8377a2caaacc39db00a97d8f37b1f",
+  "blockingFindings": [],
+  "sourceManifestSha256": "0b0bffc719e7c61f3e483890a4aad696956ec989e3fa9db55448f6c79a49d223",
+  "sourceBindings": [
+    {
+      "path": ".agents/README.md",
+      "sha256": "803c2467a3a93f2d09348ae6ec63f3ab4df6a74f34ff98feeb14263a8840bdf6"
+    },
+    {
+      "path": ".agents/crossdeck-r6-paired-evidence.md",
+      "sha256": "da3f3ebde1e04a04af39b886ef8947680b984c32e65db6f1921169087fde79f7"
+    },
+    {
+      "path": "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
+      "sha256": "6583a28f33e223834a23b84b7c471fe12ec4f7b10673ff8bce6091e84b8376d6"
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R6_Paired_Evidence_20261016.md",
+      "sha256": "509d54238233f95b56c37b97223c33d1783168a9892477832ca84e33a65d09c7"
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r6-paired-20261016/design-review.original.json",
+      "sha256": "3dcdf0e4d72253384aa1c33e9aff08ce9ec033bc15935725549ee44488068a86"
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r6-paired-20261016/r5-custody.original.json",
+      "sha256": "4d65573f1f2bf57ec427d5b406c81bffe8a15fd3ceb7f6f01a329df3a9987e42"
+    },
+    {
+      "path": "Development_Docs/document-index.json",
+      "sha256": "65643a655c64711f02a199c3d47ed29e96035863eb7650817a133154a055fa90"
+    },
+    {
+      "path": "package.json",
+      "sha256": "711a98f90f2963fd67f7cb41249fa35a4752b71f9f2b02e7ddbca20f2c4b4055"
+    },
+    {
+      "path": "scripts/sounding-line/experience-attestation.mjs",
+      "sha256": "fa09f07edafa97c058e618d3df0f8c3dea33047c1fccf088a060f8b1fdc9779a"
+    },
+    {
+      "path": "scripts/sounding-line/experience-browser.mjs",
+      "sha256": "c84bcafd520402c15f837089f20a22413f1f1cbe0cf49bd16bd000f76b31d895"
+    },
+    {
+      "path": "scripts/sounding-line/experience-checkout-probe.mjs",
+      "sha256": "72addb75e4fc75e3d8fc498a58b1dc8c766eead0d4d7af1938b4c17b95ddbc69"
+    },
+    {
+      "path": "scripts/sounding-line/experience-exception.mjs",
+      "sha256": "90a3b460328d5ef6675db69f43ebdfdbeb930126b8ce8ee2b796d5eeb3c5bef5"
+    },
+    {
+      "path": "scripts/sounding-line/experience-paired.mjs",
+      "sha256": "4aab547be5b983bff30d9aad375f65bb56497bbe433ad978ff612cfcc4e35179"
+    },
+    {
+      "path": "scripts/sounding-line/experience-prepare.mjs",
+      "sha256": "d9038b58141c3cd11c5ac6719bedbfd851098f51c55f1412b8c04053f4887a35"
+    },
+    {
+      "path": "scripts/sounding-line/experience-r6-local-proof.mjs",
+      "sha256": "ea9ae36b2b4506318d942f96de213c1d14a9f049e67a7d35f4b2674eae4ec0c1"
+    },
+    {
+      "path": "scripts/sounding-line/experience-r6.mjs",
+      "sha256": "a7dbb481d6e78956ffa34490cb373794e57930716ecb26216c7ddd9847567a0b"
+    },
+    {
+      "path": "scripts/sounding-line/product-experience.mjs",
+      "sha256": "66129bb57ba6b5e6cfcfb19c8a03e1449bb3ee205f41ba29cce830d42acb21ac"
+    },
+    {
+      "path": "scripts/sounding-line/run-browser-suite.mjs",
+      "sha256": "004e950f32555d404f9bc09aea182f59358cdd056687f7e881d8942bc6f926bd"
+    },
+    {
+      "path": "testing/product-experience-exceptions.json",
+      "sha256": "bbe470f652192710e27e6674916c817e9497756c56016cda7cf790ebb3b555d1"
+    },
+    {
+      "path": "tests/sounding-line/experience-exception.test.mjs",
+      "sha256": "e3fd49da2ed7b341edc632fecc67009241eae96d5d8ec96091f609eb72339b74"
+    },
+    {
+      "path": "tests/sounding-line/experience-paired.test.mjs",
+      "sha256": "3b6c88c535f8f715ac5ed02beb753ad51893145e15a0c72617492c5cd7a3bbf4"
+    }
+  ],
+  "unchangedWorkflow": {
+    "path": ".github/workflows/sounding-line-ordinary.yml",
+    "sha256": "18f3b7f475d1fd03851559c1eb52591247ab74bb5d37cba1cf914e90e8dc57b4",
+    "unchangedFromBase": true
+  },
+  "consumerSource": {
+    "commit": "e41cf0bd14854a5f2bf1119533aecfb7a9d4a5af",
+    "tree": "8b734e34120a44d1217d67b92d089164367c0561",
+    "sourceBindings": [
+      {
+        "path": "testing/contracts.json",
+        "blob": "d47050cff8f3cd87a75ea5dd0665ef2247a0158c",
+        "actualBlob": "d47050cff8f3cd87a75ea5dd0665ef2247a0158c",
+        "sha256": "071321d4864220b0f072ab892dfd23efe6e8765f43571c72f9417cf12c23dced"
+      },
+      {
+        "path": "tests/e2e/crossdeck-experience-refit.spec.ts",
+        "blob": "de38e4dc516df1e0891993630292a41bc0757662",
+        "actualBlob": "de38e4dc516df1e0891993630292a41bc0757662",
+        "sha256": "bedfe0ca587518f025eb2d8575c40a87ff12124773a19de57cd4487aec31dfdd"
+      },
+      {
+        "path": "tests/e2e/crossdeck-refit-recovery.spec.ts",
+        "blob": "dfc2b29798b562e70ba063dc78cb54465b76d20f",
+        "actualBlob": "dfc2b29798b562e70ba063dc78cb54465b76d20f",
+        "sha256": "694cd2a94ff945119e26635e6c501300ba87409682039b2cd990aab29c6d2beb"
+      }
+    ],
+    "scopeAssessment": "Exact two paired contract annotations and two existing paired specs; prior assertions retained; only expected currentSequence assertion changes after added actual Continue. No product/runtime/config/dependency edit in consumer scope."
+  },
+  "authority": {
+    "recordDigest": "11b5fef74f3944ea6cb95b6afdb29c8ec125deda1e3a8a1ebbdc83014b70e787",
+    "canonicalContractDigest": "33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274",
+    "canonicalContractDigestIndependentlyRecomputed": true,
+    "priorRecordBindings": [
+      {
+        "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015",
+        "sha256": "bf11c0852ca133e6446216d1268c091d2fb4a7c2535523a5921253883ec050b0",
+        "unchanged": true
+      },
+      {
+        "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R2",
+        "sha256": "857a5b7f19442cdc7b6ab522ac2382d2f20143b21fb9b5c67b271140b4313fe8",
+        "unchanged": true
+      },
+      {
+        "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R3",
+        "sha256": "c05352f82f8e00f0911c8a24f5081185f839c190b475074fcc2c89e305395df9",
+        "unchanged": true
+      },
+      {
+        "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R4",
+        "sha256": "3b4e21f9b75689a7e88f0e4ea7ba450b46d71fd9b6fe9a9852ac9836f212434d",
+        "unchanged": true
+      },
+      {
+        "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R5",
+        "sha256": "f7cc69e66e577c06cdd2f87ba10f99c98841c6172b08ca837e6a6a0da3cd3bd4",
+        "unchanged": true
+      }
+    ],
+    "immutableHistoryEntries": 405,
+    "oldHistoryPreserved": true,
+    "r5ArchivedMediaEntries": 228,
+    "expiry": "2026-10-22T23:59:59Z",
+    "originalCampaignEpoch": "2026-10-15T13:54Z",
+    "preparationOrdinal": 17,
+    "independentReviewOrdinal": 7,
+    "nextAuthenticatedReviewDispatchOrdinal": 3,
+    "nextOrdinaryDispatchOrdinal": 2,
+    "localProofInvocations": 1,
+    "localProofPairedCases": 3,
+    "localProofContexts": 6,
+    "fullPassGenericContexts": 32,
+    "fullPassPairedContexts": 6,
+    "fullPassTotalContexts": 38,
+    "ordinaryTechnicalSuites": 6,
+    "standingPermissionInterpretation": "Future diagnosed finite successors may be prepared under reported coordinator-verified owner permission; no generic runtime retry, reset, refund, expiry extension or automatic unused predecessor slot reuse.",
+    "permissionProvenance": "Review relies on the delegating parent/coordinator verified relay; no new native human readback claimed."
+  },
+  "reviewedBoundaries": [
+    "Fail-closed exact R6 selection/digest/retirement; predecessor records byte-equivalent and prior consumed lineage retained",
+    "Frozen product/runtime/test/config/contract admission; exact consumer three blobs and canonical seven-contract digest",
+    "Complete bounded history inventory before local marker; fixed common-Git grant-ID marker consumed before replay and retained on STARTED/FAIL",
+    "Local-only paired plan cannot relabel full render phase because pairedOnly/localProof/localProofMotionMode are compared",
+    "Executed candidate SHA/tree retained; publication descendant may change only allowed documentation/index/evidence paths with base/source/contracts fixed",
+    "Three successful no-retry Chromium paired cases, disjoint per-context raw media and bound viewport/motion/PNG dimensions",
+    "Successful case witness emitted after trace/context/video/fixture cleanup; runtime/profile terminal cleanup joined after owned authority returns",
+    "Paired completeness/media validation unconditional before replay publication even validateReplay:false",
+    "Paired state included in both review packets, packet digests, capture equality, review seal and trusted attestation",
+    "Canonical ordinary technical six suites retained; no workflow, contents permission, attestation-policy or branch-protection change"
+  ],
+  "independentValidation": [
+    {
+      "command": "node --test --test-name-pattern=\"history inventories each immutable candidate\" tests/sounding-line/experience-paired.test.mjs",
+      "result": "PASS",
+      "tests": 1,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "durationMs": 7186.8021,
+      "scope": "Synthetic fixture plus actual temporary Git trace: bounded repeated-head history inventory, unrelated direct recognition false, retired directory marker true, changed marker bytes still recognized",
+      "environment": "D-only artifacts/r6-review-temp and artifacts/r5-npm-cache"
+    }
+  ],
+  "pending": [
+    {
+      "check": "Existing protected Linux ordinary maintenance qualification and accepted-main noncapturing verification",
+      "status": "NOT_PERFORMED_BY_THIS_REVIEW"
+    },
+    {
+      "check": "Consumer local preflight/capture17/independent product review7/authenticated submission/ordinary replay",
+      "status": "NOT_PERFORMED_AND_NOT_APPROVED_BY_THIS_RECEIPT"
+    }
+  ],
+  "limitations": [
+    "Local common-Git one-use accounting is operator accounting, not authenticated global invocation proof.",
+    "Synthetic tests and source review do not establish actual Crossdeck paired product behavior, consumer acceptance, physical device proof, or owner acceptance."
+  ],
+  "sourceEditsByReviewer": false,
+  "workflowOrConsumerExecutionByReviewer": false,
+  "featureCatalog": "NO CHANGE REQUIRED",
+  "reviewedCommit": "cbdb8b0596f8377a2caaacc39db00a97d8f37b1f",
+  "priorTreeReview": {
+    "path": "artifacts/r6-authority-tree-review.json",
+    "sha256": "44051ad2acbb3193dc7c5f5fd274c46ec5da2b1f52017c2afa534064ea929833",
+    "status": "TREE_REVIEW_PASS_COMMIT_APPROVAL_PENDING",
+    "reviewedTree": "eb765af60e08f43a04d02f67fe40249f5be396d6"
+  },
+  "workingTreeClean": true,
+  "approvalScope": "Approve exact-source R6 maintenance authority implementation at this commit/tree for maintenance PR publication and its existing protected qualification path. This receipt does not establish protected Linux qualification, installation, merge, consumer execution, independent Product Experience review, physical proof, or owner acceptance. All old receipts and historical failures/cancellations retain their original identities and dispositions.",
+  "previousApproval": {
+    "commit": "28944e661b8a611748d380c9dc0ff85553f42cc6",
+    "tree": "eb765af60e08f43a04d02f67fe40249f5be396d6",
+    "path": "artifacts/r6-authority-review-final.json",
+    "sha256": "5e61813ad178bc0e80c8c2f3b8fcfb86ec1b081f5b5888514dd51cd9f75b439c"
+  },
+  "deltaFromPreviousApproval": [
+    "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R6_Paired_Evidence_20261016.md",
+    "scripts/sounding-line/experience-exception.mjs",
+    "tests/sounding-line/experience-paired.test.mjs"
+  ],
+  "deltaAssessment": {
+    "performanceOnly": true,
+    "sharedTreePathsExtraction": "Same complete leaf/path-prefix construction as v2 history inventory",
+    "directRecognition": "One candidate marker inventory reused across all installed/candidate/base rows; row sources and original PR/base/refit/frozen/masked-source/ancestry Boolean terms retained",
+    "markerContent": "Presence remains a denial signal independent of file mode/blob contents; directory prefixes preserved",
+    "errors": "Candidate inventory exceptions propagate and block; no exception swallowed into unrelated/no-campaign result",
+    "permissionAndAccounting": "Registry, budgets, expiry, all prior records, protected workflow and custody permissions unchanged",
+    "deadline": "Copied-source child timeout remains20000ms; assert.ifError distinguishes timeout/infrastructure failure before stderr assertion"
+  },
+  "previousFullSuiteValidation": {
+    "command": "npm run test:sounding-line",
+    "result": "PASS",
+    "observed": "Final local log inspected independently; full invocation performed by implementation owner, not rerun by reviewer",
+    "logPath": "artifacts/r6-full-regressions.log",
+    "logSha256": "8c41e9f60ca3484dd5c316b1421249bda7176370e388fdae0393a2d26b58c692",
+    "logBytes": 78831,
+    "metrics": {
+      "tests": 216,
+      "pass": 216,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "duration_ms": 546795.0445
+    },
+    "sourceBinding": "Implementation owner reported stable source; final commit tree and all reviewed source bindings are identical to the reviewed staged tree"
+  },
+  "fullSuiteValidation": {
+    "command": "npm run test:sounding-line",
+    "result": "PASS",
+    "observed": "Completed local log inspected independently; full invocation performed by implementation owner, not rerun by reviewer",
+    "reportedExitCode": 0,
+    "logPath": "artifacts/r6-full-regressions-v3.log",
+    "logSha256": "ecc818a3f9ff2751c0c19c785cc113629b61636dc1706276fcc92ed6810361c9",
+    "logBytes": 78912,
+    "metrics": {
+      "tests": 217,
+      "pass": 217,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "duration_ms": 683659.9543
+    },
+    "sourceBinding": "Implementation owner reported unchanged source throughout; independently verified final HEAD/tree, clean checkout and exact reviewed source-manifest equality"
+  },
+  "priorV2Review": {
+    "commit": "f9b3b3f33a96ef1e2f71e530ecaa76469d80195c",
+    "tree": "4e9b17533cc2c8291c125674b2f923389a347990",
+    "path": "artifacts/r6-authority-tree-review-v2.json",
+    "sha256": "8fcfbfb394cb9402599f5eee1ebd8e3e52a9430d56978a8333ef813e1ee406c9",
+    "status": "TREE_REVIEW_PASS_FULL_SUITE_PENDING"
+  },
+  "deltaFromPreviousTreeReview": [
+    "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R6_Paired_Evidence_20261016.md",
+    "scripts/sounding-line/experience-exception.mjs",
+    "tests/sounding-line/experience-exception.test.mjs",
+    "tests/sounding-line/experience-paired.test.mjs"
+  ],
+  "observedImplementationOwnerValidation": [
+    {
+      "path": "artifacts/r6-direct-guard-after.log",
+      "sha256": "8ec7a924ba83c316d15f416a79d21a9f4666b04b56c9a596a997524927f3c685",
+      "bytes": 222,
+      "result": "PASS",
+      "tests": 1,
+      "testDurationMs": 20436.7535,
+      "scope": "Two copied-source child denials with unchanged20s per-child deadline and actual Git-call bound"
+    },
+    {
+      "path": "artifacts/r6-paired-v3.log",
+      "sha256": "7358a9f0beb0325c6bb28a0273a672013971e55c1eba6ec993ad0184771aa08c",
+      "bytes": 1194,
+      "result": "PASS",
+      "tests": 9,
+      "durationMs": 12519.1756
+    }
+  ],
+  "failedV2Validation": {
+    "path": "artifacts/r6-full-regressions-v2.log",
+    "sha256": "9436812a70ddf28c9289a75769456c2c7770e3eefde786ed5848f221a00c7176",
+    "bytes": 79712,
+    "result": "FAIL",
+    "tests": 217,
+    "pass": 216,
+    "fail": 1,
+    "reason": "Copied-source child reached spawnSync20s timeout before expected HISTORY_CHANGED diagnostic; source corrected in this delta; historical failure remains preserved"
+  },
+  "readOnlyAuditV3": {
+    "path": "artifacts/r6-read-only-chain-v3.json",
+    "sha256": "da776a78fb1c08487864acc9a3509190ce4d450432c23008fa0688050dd5a664",
+    "status": "PASS",
+    "observedSummary": {
+      "classification": "READ_ONLY_PROPOSED_AUTHORITY_CHAIN_AND_HISTORY_AUDIT_NOT_EXECUTION",
+      "status": "PASS",
+      "maintenanceCandidate": "cbdb8b0596f8377a2caaacc39db00a97d8f37b1f",
+      "maintenanceTree": "0bbaa44d314e7bdf54c58ce8e8110348b58fa3c9",
+      "recordId": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R6",
+      "history": {
+        "status": "PASS",
+        "observedRuns": 110,
+        "preservedPredecessorRuns": 8,
+        "throughUtc": "2026-10-16T05:56:20.251Z",
+        "custodyWrites": 0
+      },
+      "reads": 161,
+      "writes": 0,
+      "executions": 0,
+      "elapsedMs": 62010
+    },
+    "embeddedCandidateAndTreeMatchReviewedSource": true,
+    "reviewerReissuedLiveApiAudit": false,
+    "limitation": "A read-only chain/history audit is not protected Linux qualification, installed authority, Product Experience execution or acceptance."
+  },
+  "priorV3TreeReview": {
+    "path": "artifacts/r6-authority-tree-review-v3.json",
+    "sha256": "b6be476841839dd308ca7fa4f5430f904b13c8632af78f042592d0849c9d6a89",
+    "commit": "cbdb8b0596f8377a2caaacc39db00a97d8f37b1f",
+    "tree": "0bbaa44d314e7bdf54c58ce8e8110348b58fa3c9",
+    "status": "TREE_REVIEW_PASS_FULL_SUITE_PENDING"
+  }
+}

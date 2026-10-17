@@ -6,6 +6,9 @@ import { ParallaxJournalProvider, ChronicleLensEntry } from "@/components/player
 import { CrossdeckDevices } from "@/components/crossdeck/CrossdeckDevices";
 import { CrossdeckHandoff } from "@/components/crossdeck/CrossdeckHandoff";
 import { CrossdeckContinuityProvider } from "@/components/crossdeck/CrossdeckContinuity";
+import { CrossdeckCompanion } from "@/components/crossdeck/CrossdeckCompanion";
+import type { CrossdeckConnection } from "@/components/crossdeck/useCrossdeckSession";
+import { VoyageContext, type VoyageContextData } from "@/components/crossdeck/VoyageContext";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { AudioCuePlayer } from "@/animation/core/audio-cues";
@@ -51,7 +54,7 @@ import { platformCopy } from "@/language/platform-copy";
 import { playerCopy } from "@/language/player-copy";
 import { membershipPresenceDeviceId } from "@/platform/presence-client";
 
-type SessionState = {
+export type SessionState = {
   csrfToken?: string;
   session: {
     id: string;
@@ -81,7 +84,7 @@ type SessionState = {
 };
 
 type ProgressionEvent = { id: string; eventType: string; sequence: number; createdAt: string };
-type ConnectionState = "connecting" | "live" | "reconnecting" | "offline" | "revoked" | "archived";
+export type ConnectionState = "connecting" | "live" | "reconnecting" | "offline" | "revoked" | "archived";
 
 type JournalTeardown = () => void;
 
@@ -215,20 +218,24 @@ type ChronicleJournalSessionProps = Readonly<{
   sessionId: string;
   identitySession?: boolean;
   instruments?: React.ReactNode;
+  companion?: CrossdeckConnection;
 }>;
 
 export function ChronicleJournalSession({
   sessionId,
   identitySession = false,
   instruments,
+  companion,
 }: ChronicleJournalSessionProps) {
+  const identityKey = `${companion ? "companion" : identitySession ? "identity" : "compatibility"}:${sessionId}`;
   return (
-    <CrossdeckContinuityProvider key={`${identitySession ? "identity" : "compatibility"}:${sessionId}`}>
+    <CrossdeckContinuityProvider key={identityKey}>
       <ChronicleJournalSessionIdentity
-        key={`${identitySession ? "identity" : "compatibility"}:${sessionId}`}
+        key={identityKey}
         sessionId={sessionId}
         identitySession={identitySession}
         instruments={instruments}
+        companion={companion}
       />
     </CrossdeckContinuityProvider>
   );
@@ -238,7 +245,9 @@ function ChronicleJournalSessionIdentity({
   sessionId,
   identitySession = false,
   instruments,
+  companion,
 }: ChronicleJournalSessionProps) {
+  const companionMode = Boolean(companion);
   const root = useRef<HTMLElement>(null);
   const book = useRef<PageFlipBookHandle>(null);
   const journalHeading = useRef<HTMLHeadingElement>(null);
@@ -272,6 +281,8 @@ function ChronicleJournalSessionIdentity({
   const [pendingEvent, setPendingEvent] = useState<ProgressionEvent | null>(null);
   const [newContent, setNewContent] = useState(false);
   const [liveNotice, setLiveNotice] = useState("");
+  const [lensPresented, setLensPresented] = useState(false);
+  const [connectionPresented, setConnectionPresented] = useState(false);
   const [answer, setAnswer] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -350,6 +361,11 @@ function ChronicleJournalSessionIdentity({
         if (request.registry.isDisposed()) return null;
         if (!response.ok) {
           setError(body.error ?? "This Voyage Journal could not be opened. Your progress has not changed. Try again.");
+          if (companionMode && [401, 403, 404].includes(response.status)) {
+            stateRef.current = null;
+            setState(null);
+            setConnection("revoked");
+          }
           return null;
         }
         stateRef.current = body;
@@ -363,12 +379,17 @@ function ChronicleJournalSessionIdentity({
         return body;
       } catch (cause) {
         if (request.controller.signal.aborted) return null;
+        if (companionMode) {
+          setConnection(navigator.onLine === false ? "offline" : "reconnecting");
+          setError("Your connection was interrupted. Reconnect to check the current Voyage.");
+          return null;
+        }
         throw cause;
       } finally {
         request.release();
       }
     },
-    [sessionId, trackedRequest],
+    [companionMode, sessionId, trackedRequest],
   );
 
   useEffect(() => {
@@ -436,6 +457,12 @@ function ChronicleJournalSessionIdentity({
 
   useEffect(() => {
     const registry = teardownRegistry.current;
+    if (companionMode) {
+      queueMicrotask(() => {
+        if (!registry.isDisposed()) setReadingReady(true);
+      });
+      return;
+    }
     let cancelled = false;
     let cancelRequest: (() => void) | null = null;
     void (async () => {
@@ -480,10 +507,11 @@ function ChronicleJournalSessionIdentity({
       cancelRequest?.();
       cancelRequest = null;
     };
-  }, [identitySession, sessionId, trackedRequest]);
+  }, [companionMode, identitySession, sessionId, trackedRequest]);
 
   const saveReading = useCallback(
     (patch: PlayerJournalReadingStateInput) => {
+      if (companionMode) return;
       const next: PlayerJournalReadingState = {
         ...readingRef.current,
         ...patch,
@@ -509,7 +537,7 @@ function ChronicleJournalSessionIdentity({
           .finally(request.release);
       } else localStorage.setItem(`chronicle-journal:${sessionId}`, JSON.stringify(next));
     },
-    [identitySession, sessionId, trackedRequest],
+    [companionMode, identitySession, sessionId, trackedRequest],
   );
 
   const settleJournalReady = useCallback(
@@ -725,6 +753,10 @@ function ChronicleJournalSessionIdentity({
       if (registry.isDisposed()) return;
       setConnection("revoked");
       setError("");
+      if (companionMode) {
+        stateRef.current = null;
+        setState(null);
+      }
       closeSource();
     }
     function progression(message: Event) {
@@ -751,7 +783,7 @@ function ChronicleJournalSessionIdentity({
       closeSource();
       release();
     };
-  }, [archiveMode, liveReady, load, sessionId]);
+  }, [archiveMode, companionMode, liveReady, load, sessionId]);
 
   useEffect(() => {
     if (connection === "live" || connection === "revoked" || !liveReady || archiveMode) return;
@@ -812,13 +844,14 @@ function ChronicleJournalSessionIdentity({
   );
 
   useEffect(() => {
-    if (!pages.length || initializedPage.current) return;
+    if (companionMode || !pages.length || initializedPage.current) return;
     initializedPage.current = true;
     setCurrentPage(initialPage);
     followingCurrent.current = pages[initialPage]?.blockId === state?.journal.currentBlockId;
-  }, [initialPage, pages, state?.journal.currentBlockId]);
+  }, [companionMode, initialPage, pages, state?.journal.currentBlockId]);
 
   useEffect(() => {
+    if (companionMode) return;
     if (!motionPolicyReady || !state || !readingReady || !root.current || initializedOpening.current) return;
     const registry = teardownRegistry.current;
     initializedOpening.current = true;
@@ -833,7 +866,7 @@ function ChronicleJournalSessionIdentity({
         if (!registry.isDisposed()) void startOpening(policy);
       });
     }
-  }, [archiveMode, mode, motionPolicyReady, reading.hasOpened, readingReady, startOpening, state]);
+  }, [archiveMode, companionMode, mode, motionPolicyReady, reading.hasOpened, readingReady, startOpening, state]);
 
   useEffect(() => {
     if (openingMode.current === mode) return;
@@ -848,22 +881,35 @@ function ChronicleJournalSessionIdentity({
       return;
     }
     processedSequence.current = pendingEvent.sequence;
+    if (companionMode) {
+      const label = eventLabel(pendingEvent.eventType, state);
+      const registry = teardownRegistry.current;
+      queueMicrotask(() => {
+        if (registry.isDisposed()) return;
+        setLiveNotice(label);
+        setPendingEvent((current) => (current?.sequence === pendingEvent.sequence ? null : current));
+      });
+      return;
+    }
     const target = pageIndexForJournalBlock(pages, state.journal.currentBlockId);
     const currentBlockId = pages[currentPage]?.blockId ?? null;
     const targetBlockId = pages[target]?.blockId ?? null;
     const label = eventLabel(pendingEvent.eventType, state);
     const registry = teardownRegistry.current;
-    setLiveNotice("");
     queueMicrotask(() => {
-      if (!registry.isDisposed()) setLiveNotice(label);
+      if (!registry.isDisposed()) flushSync(() => setLiveNotice(""));
+    });
+    queueMicrotask(() => {
+      if (registry.isDisposed()) return;
+      setLiveNotice(label);
+      setPendingEvent((current) => (current?.sequence === pendingEvent.sequence ? null : current));
     });
     if (followingCurrent.current || currentBlockId === targetBlockId) {
       if (target !== currentPage) book.current?.flipTo(target);
       setNewContent(false);
     } else setNewContent(true);
     saveReading({ lastEventSequence: pendingEvent.sequence });
-    setPendingEvent(null);
-  }, [currentPage, pages, pendingEvent, saveReading, state]);
+  }, [companionMode, currentPage, pages, pendingEvent, saveReading, state]);
 
   useEffect(() => {
     const journalRoot = root.current;
@@ -994,9 +1040,19 @@ function ChronicleJournalSessionIdentity({
   if (!state || !readingReady)
     return (
       <JournalStatus
-        title="Opening Voyage Journal"
-        message={error || "Loading the current Passage..."}
-        error={Boolean(error)}
+        title={
+          companionMode
+            ? connection === "revoked"
+              ? "Voyage access ended"
+              : "Opening your companion"
+            : "Opening Voyage Journal"
+        }
+        message={
+          companionMode && connection === "revoked"
+            ? "Return to your Chronicle Library to choose an available Voyage."
+            : error || "Loading the current Passage..."
+        }
+        error={Boolean(error) || connection === "revoked"}
         motionMode={mode}
         motionLevel={motionPolicy.level}
       />
@@ -1004,7 +1060,35 @@ function ChronicleJournalSessionIdentity({
 
   const journalReady = isJournalInteractive(openingPhase);
   const openingActive = !journalReady;
+  const openingFeedback =
+    openingNotice && (journalReady || openingOutcome === "aborted") ? (
+      <p
+        className="journal-opening-status journal-degradation-note"
+        role={openingOutcome === "failure" ? "alert" : "status"}
+      >
+        {openingNotice}
+      </p>
+    ) : null;
+  const voyageContext: VoyageContextData = {
+    voyageId: state.session.id,
+    versionId: state.session.versionId,
+    title: state.tale.title,
+  };
   const currentBlock = findCurrentBlock(state.journal);
+  if (companion)
+    return (
+      <CrossdeckCompanion
+        state={state}
+        blocks={contextBlocks}
+        assets={state.assets}
+        mode={mode}
+        connection={companion}
+        liveConnection={connection}
+        liveNotice={liveNotice}
+        error={error}
+        onRefresh={() => void load()}
+      />
+    );
   const choices =
     currentBlock &&
     ["choice", "locationChoice"].includes(currentBlock.blockType) &&
@@ -1046,6 +1130,8 @@ function ChronicleJournalSessionIdentity({
     >
       <main
         ref={root}
+        data-experience-voyage={state.session.id}
+        data-experience-version={state.session.versionId}
         className={`voyage-shell chronicle-journal-shell mode-${state.journal.mode}`}
         data-journal-phase={openingPhase}
         data-journal-opening-outcome={openingOutcome}
@@ -1073,13 +1159,23 @@ function ChronicleJournalSessionIdentity({
           aria-hidden={openingActive}
           inert={openingActive ? true : undefined}
         >
-          <div>
+          <div
+            aria-hidden={lensPresented || connectionPresented}
+            inert={lensPresented || connectionPresented ? true : undefined}
+          >
             <Link href="/player/library">← {platformCopy.chronicleLibrary.value}</Link>
             <p className="eyebrow">{historical ? "Voyage Record" : (state.chapter?.title ?? "Active Voyage")}</p>
-            <h1>{state.tale.title}</h1>
+            <VoyageContext voyage={voyageContext} heading />
           </div>
           <div className="journal-session-tools">
-            {state.csrfToken && <CrossdeckDevices initialVoyage={sessionId} compact />}
+            {state.csrfToken && (
+              <CrossdeckDevices
+                initialVoyage={sessionId}
+                compact
+                voyageContext={voyageContext}
+                onPresentationChange={setConnectionPresented}
+              />
+            )}
             {state.csrfToken && (
               <CrossdeckHandoff
                 voyageId={sessionId}
@@ -1206,6 +1302,7 @@ function ChronicleJournalSessionIdentity({
                 : "The Captain releases each Passage for this Voyage."}
             </p>
           </header>
+          {journalReady && openingFeedback}
           <PhysicalJournalBook
             ref={book}
             pages={flipPages}
@@ -1278,7 +1375,12 @@ function ChronicleJournalSessionIdentity({
             <h2 id="journal-opening-heading" className="sr-only">
               Open the voyage journal
             </h2>
-            <button className="wax-open" onClick={(event) => void openJournal(event.currentTarget)}>
+            {openingPhase === "ENTRY_IDLE" && <VoyageContext voyage={voyageContext} />}
+            <button
+              className="wax-open"
+              aria-label="Open the journal"
+              onClick={(event) => void openJournal(event.currentTarget)}
+            >
               <span>✦</span>
               <strong>Open the journal</strong>
               <small>{reading.hasOpened ? "Return to your place" : platformCopy.beginVoyage.value}</small>
@@ -1295,6 +1397,7 @@ function ChronicleJournalSessionIdentity({
             aria-label="Journal opening in progress"
             tabIndex={-1}
           >
+            <VoyageContext voyage={voyageContext} />
             <span>{openingLabel(openingPhase)}</span>
             {openingNotice && openingOutcome === "failure" && <p role="alert">{openingNotice}</p>}
             <button onClick={skipOpening}>Skip ceremony</button>
@@ -1302,14 +1405,7 @@ function ChronicleJournalSessionIdentity({
             <Link href="/player/library">Return to {platformCopy.chronicleLibrary.value}</Link>
           </div>
         )}
-        {openingNotice && (journalReady || openingOutcome === "aborted") && (
-          <p
-            className="journal-opening-status journal-degradation-note"
-            role={openingOutcome === "failure" ? "alert" : "status"}
-          >
-            {openingNotice}
-          </p>
-        )}
+        {!journalReady && openingFeedback}
 
         {readyReceipt && readyReceipt.reason !== "completed" ? (
           <aside className="journal-technical-details" aria-label="Journal presentation details">
@@ -1434,7 +1530,12 @@ function ChronicleJournalSessionIdentity({
         ) : null}
 
         {journalReady && spatialBlocks.length > 0 && (
-          <ParallaxJournalProvider sessionId={sessionId} csrfToken={state.csrfToken ?? ""}>
+          <ParallaxJournalProvider
+            sessionId={sessionId}
+            csrfToken={state.csrfToken ?? ""}
+            voyageContext={voyageContext}
+            onLensPresentationChange={setLensPresented}
+          >
             <section aria-label="Spatial moments in your released passages">
               {spatialBlocks.map((block) => (
                 <ChronicleLensEntry

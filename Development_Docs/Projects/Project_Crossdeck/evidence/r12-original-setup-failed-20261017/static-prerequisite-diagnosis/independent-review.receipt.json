@@ -1,0 +1,266 @@
+{
+  "classification": "INDEPENDENT_STATIC_PRISMA_OFFICIAL_ARTIFACT_AND_TARGET_REVIEW_NOT_DEPENDENCY_READINESS_OR_EXECUTION",
+  "createdAt": "2026-10-17T02:09:24.262Z",
+  "reviewerTask": "/root/r12_core_review",
+  "staticVerdict": "PASS_WITH_EXPLICIT_PRECONDITIONS",
+  "actualDependencyReadiness": "NOT_ESTABLISHED_PENDING_ACCEPTED_R13_NONJOURNEY_PREFLIGHT",
+  "scope": {
+    "candidateSha": "53601e9e386bb4f1062719befc77b7778b9e4430",
+    "failedWorkspace": "/workspace/crossdeck-r12-original-proof",
+    "packageVersion": "6.19.3",
+    "engineVersion": "c2990dca591cba766e3b7ef5d9e8a84796e47ab7",
+    "platform": "debian-openssl-3.0.x"
+  },
+  "sourceInputs": [
+    {
+      "path": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/static-diagnosis.receipt.json",
+      "bytes": 11129,
+      "sha256": "6cc8e69038a2b0d72e596d62ffe72681018b76ccac05c149b456cf7c88d52191"
+    },
+    {
+      "path": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/official-checksums.receipt.json",
+      "bytes": 4433,
+      "sha256": "813fee40f10af674532b39415139fcfec3be4d79b60ca89431646e57cacc6c75"
+    },
+    {
+      "path": "/workspace/crossdeck-r12-original-proof/node_modules/prisma/build/index.js",
+      "bytes": 2809306,
+      "sha256": "c2a77456b70e8ba1e640e122824ed694433828a7c0d76ff3db7fc376b4b0e1a0"
+    },
+    {
+      "path": "/workspace/crossdeck-r12-original-proof/node_modules/@prisma/client/generator-build/index.js",
+      "bytes": 624802,
+      "sha256": "b504707b44017c90f90bd74b9eddeb0d07bd13491bbb33e29ef2c3d9d898121c"
+    },
+    {
+      "path": "/workspace/crossdeck-r12-original-proof/node_modules/@prisma/fetch-engine/dist/chunk-4C3J5AMP.js",
+      "bytes": 85380,
+      "sha256": "c8bb38b183c34e8772c08cea2fe2d310b974957def07c2e6a1d68ab07220c03a"
+    },
+    {
+      "path": "/workspace/crossdeck-r12-original-proof/node_modules/@prisma/fetch-engine/dist/chunk-LONQL55G.js",
+      "bytes": 82527,
+      "sha256": "6ffe565efe92e9fb75b96b10b2590c3f6345fd807ff5d38a0d54feef4c53721d"
+    },
+    {
+      "path": "/workspace/crossdeck-r12-original-proof/node_modules/@prisma/fetch-engine/dist/chunk-CY52DY2B.js",
+      "bytes": 397843,
+      "sha256": "0486aa9fbe22f00d66f7ea3130ed34aef4c2fcdbd416f7796632bbbf8f741858"
+    },
+    {
+      "path": "/workspace/crossdeck-r12-original-proof/node_modules/@prisma/engines/dist/index.js",
+      "bytes": 5647,
+      "sha256": "081a5337dc0bdfc04804b7c71971e7f29526d737097c34a83440c95c2523d4e7"
+    },
+    {
+      "path": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/generatorTarget.source-excerpt.txt",
+      "bytes": 2009,
+      "sha256": "21dd2c26bc53e4c449e6629143a9fbd0da250e81b63f225063626ff672abce5c"
+    },
+    {
+      "path": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/generationCommand.source-excerpt.txt",
+      "bytes": 391,
+      "sha256": "4670b200d04a92d5914c926318520ccba33ac39bd0ce50cdc1aef0f13a268c2d"
+    },
+    {
+      "path": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/cacheEligibility.source-excerpt.txt",
+      "bytes": 2548,
+      "sha256": "b89728b1f83c8c10f27281cd84640b20ff352d595f06f7bb9aca8480f263e0ab"
+    },
+    {
+      "path": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/cacheLogicalName.source-excerpt.txt",
+      "bytes": 536,
+      "sha256": "3f076eaaa0693a4c2d23e3cc277213d5ce666ea649729b42ddc046d5d4c36d93"
+    },
+    {
+      "path": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/cacheSidecarWriter.source-excerpt.txt",
+      "bytes": 869,
+      "sha256": "86dd352530adb2650147a7016d527da8b22156ddf38b9234a7247a4878b1a275"
+    },
+    {
+      "path": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/cacheRoot.source-excerpt.txt",
+      "bytes": 1259,
+      "sha256": "9451ae69ce1b5535966b4d2597e6d4239da425cce7fdb41b127bb2ca016728af"
+    },
+    {
+      "path": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/checksumFetch.source-excerpt.txt",
+      "bytes": 1242,
+      "sha256": "496c070c303f676dc40e74ca68a8090b1fbb2835c5dcb414027015e20bd6e7a1"
+    },
+    {
+      "path": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/libquery_engine.so.node.sha256",
+      "bytes": 113,
+      "sha256": "95e49796dfbbcc4ba9885791817583a544f551f12240469002f5d0ad853b3069"
+    },
+    {
+      "path": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/libquery_engine.so.node.gz.sha256",
+      "bytes": 116,
+      "sha256": "bd759e3c7e9c0c585685fc819c70cba3731911dd744574d330423e67ab90529d"
+    },
+    {
+      "path": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/schema-engine.sha256",
+      "bytes": 103,
+      "sha256": "f58bc06d0cf7e8af6610a0c0eefd8f82ad2ea53cc9194f7e503f7161d7b0dcd1"
+    },
+    {
+      "path": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/schema-engine.gz.sha256",
+      "bytes": 106,
+      "sha256": "1c8c182bf52980282c38d1977bf854feb4eb295b758013169e39aa5891b37001"
+    }
+  ],
+  "packages": [
+    {
+      "name": "prisma",
+      "version": "6.19.3",
+      "path": "/workspace/crossdeck-r12-original-proof/node_modules/prisma/package.json",
+      "bytes": 4684,
+      "sha256": "640c40516faa0c333995d0e22cf9e09815c3d7f80ef71ac793283d2c9cac41be"
+    },
+    {
+      "name": "@prisma/client",
+      "version": "6.19.3",
+      "path": "/workspace/crossdeck-r12-original-proof/node_modules/@prisma/client/package.json",
+      "bytes": 10040,
+      "sha256": "219e507d9671f4d8bcf6161274201015bd97aaaff76eb464b8de7ab624f1beba"
+    },
+    {
+      "name": "@prisma/engines",
+      "version": "6.19.3",
+      "path": "/workspace/crossdeck-r12-original-proof/node_modules/@prisma/engines/package.json",
+      "bytes": 1075,
+      "sha256": "9a37d6e75fb63c0f5cf93cb238054405668a5ef24a7fb770869129c1854ecc57"
+    },
+    {
+      "name": "@prisma/fetch-engine",
+      "version": "6.19.3",
+      "path": "/workspace/crossdeck-r12-original-proof/node_modules/@prisma/fetch-engine/package.json",
+      "bytes": 1414,
+      "sha256": "26b719404f0ecc2303d03a703ea8569969684f5892cf78fe1a1bdb6bfc827401"
+    },
+    {
+      "name": "@prisma/engines-version",
+      "version": "7.1.1-3.c2990dca591cba766e3b7ef5d9e8a84796e47ab7",
+      "path": "/workspace/crossdeck-r12-original-proof/node_modules/@prisma/engines-version/package.json",
+      "bytes": 635,
+      "sha256": "9f367c6ab7af589f028ee00eefaa14e5ba97c0b6e704e5682413598dbbdf4478"
+    }
+  ],
+  "independentOfficialChecksumReads": {
+    "initialDefaultUserAgentResult": "HTTP_403_FORBIDDEN_NO_ARTIFACT_WRITE",
+    "successfulRequestUserAgent": "Crossdeck-dependency-checksum-audit/1.0",
+    "successfulHttpsGets": [
+      {
+        "url": "https://binaries.prisma.sh/all_commits/c2990dca591cba766e3b7ef5d9e8a84796e47ab7/debian-openssl-3.0.x/libquery_engine.so.node.sha256",
+        "status": 200,
+        "rawBytes": 113,
+        "rawSha256": "95e49796dfbbcc4ba9885791817583a544f551f12240469002f5d0ad853b3069",
+        "publishedSha256": "a2924eab1c78a0a7bb67edac5738939fa10589ef073af5542f53812a22e4a7d8",
+        "retainedBytesIdentical": true
+      },
+      {
+        "url": "https://binaries.prisma.sh/all_commits/c2990dca591cba766e3b7ef5d9e8a84796e47ab7/debian-openssl-3.0.x/libquery_engine.so.node.gz.sha256",
+        "status": 200,
+        "rawBytes": 116,
+        "rawSha256": "bd759e3c7e9c0c585685fc819c70cba3731911dd744574d330423e67ab90529d",
+        "publishedSha256": "d380872cc8a17310c6ebb249dc000f4fcbfbbd51ddc36beb57b1ed0c54c6d610",
+        "retainedBytesIdentical": true
+      },
+      {
+        "url": "https://binaries.prisma.sh/all_commits/c2990dca591cba766e3b7ef5d9e8a84796e47ab7/debian-openssl-3.0.x/schema-engine.sha256",
+        "status": 200,
+        "rawBytes": 103,
+        "rawSha256": "f58bc06d0cf7e8af6610a0c0eefd8f82ad2ea53cc9194f7e503f7161d7b0dcd1",
+        "publishedSha256": "5d42b181631fd20bb0ecc5abcdba72575e7f467a0d52f4d5ef1ff28f0c74e6e9",
+        "retainedBytesIdentical": true
+      },
+      {
+        "url": "https://binaries.prisma.sh/all_commits/c2990dca591cba766e3b7ef5d9e8a84796e47ab7/debian-openssl-3.0.x/schema-engine.gz.sha256",
+        "status": 200,
+        "rawBytes": 106,
+        "rawSha256": "1c8c182bf52980282c38d1977bf854feb4eb295b758013169e39aa5891b37001",
+        "publishedSha256": "6c1dfdfe34538487b088fd21b3152147e1bd3c9d0c00b4fc6ecae40ceba83d8a",
+        "retainedBytesIdentical": true
+      }
+    ],
+    "tlsVerification": "DEFAULT_ENABLED_NO_CUSTOM_TLS_OR_AUTH"
+  },
+  "artifactComparisons": [
+    {
+      "path": "/workspace/crossdeck-r12-original-proof/node_modules/@prisma/engines/libquery_engine-debian-openssl-3.0.x.so.node",
+      "bytes": 17547808,
+      "sha256": "a2924eab1c78a0a7bb67edac5738939fa10589ef073af5542f53812a22e4a7d8",
+      "officialChecksum": "a2924eab1c78a0a7bb67edac5738939fa10589ef073af5542f53812a22e4a7d8",
+      "matches": true,
+      "independentlyRehashed": true
+    },
+    {
+      "path": "/workspace/crossdeck-r12-original-proof/node_modules/@prisma/engines/schema-engine-debian-openssl-3.0.x",
+      "bytes": 19631784,
+      "sha256": "5d42b181631fd20bb0ecc5abcdba72575e7f467a0d52f4d5ef1ff28f0c74e6e9",
+      "officialChecksum": "5d42b181631fd20bb0ecc5abcdba72575e7f467a0d52f4d5ef1ff28f0c74e6e9",
+      "matches": true,
+      "independentlyRehashed": true
+    }
+  ],
+  "sourceFindings": [
+    "Locked prisma/client/engines/fetch-engine versions are 6.19.3 and engines-version pins c2990dca591cba766e3b7ef5d9e8a84796e47ab7.",
+    "The failed original workspace contains both official-hash @prisma/engines native artifacts, but both node_modules/prisma generator targets are absent. Integration helper dependency state is distinct and is not evidence of original-workspace readiness.",
+    "CLI ensureNeededBinariesExist targets node_modules/@prisma/engines; bundled generate getBinaryPathsByVersion gle targets node_modules/prisma for this same-version generator.",
+    "All six bound code-source hashes and seven excerpt hashes match. Excerpt bodies after removing appended presentation LF match their declared raw UTF8 byte offsets; they are not verbatim full-file byte slices including that appended LF.",
+    "Cache-hit eligibility requires the logical cache binary plus an exact lowercase 64-byte checksum sidecar without filename, whitespace or newline. Raw official checksum response text cannot be used directly as the cache sidecar.",
+    "An existing invalid cache can force download even with an existing valid target. Target-only native-version fallback invokes native code and is not a statically established readiness guarantee.",
+    "The downloader validates compressed and decompressed published hashes when downloading archives. Existing raw binaries are independently equal to the corresponding official uncompressed hashes; gzip checksum files alone do not prove a downloaded gzip artifact.",
+    "Linux default cache is os.homedir()/.cache/prisma/master/<engineVersion>/<platform>; R12 sanitizer strips XDG_CACHE_HOME. A fixed alternate cache setting requires separately reviewed R13 authority and exact environment binding."
+  ],
+  "futureProvisioningPreconditions": [
+    "Preserve the failed R12 outputs, common-Git stage/launch markers and consumed accounting; do not retry R12.",
+    "A newly authorized R13 isolated workspace must pin lockfile/package/code versions, exact platform and all official artifact hashes before provisioning.",
+    "Provision only verified official raw binaries into both expected package directories, preserving suitable permissions, or use the supported authenticated download with full checksums; no application, source, dependency version or configuration patch.",
+    "For deterministic offline cache-hit routing, provision and independently verify both logical cache binaries and exact no-newline checksum sidecars in the actually resolved accessible cache. Detect and reject absent, unreadable, mismatched, symlinked or stale artifacts instead of skipping integrity.",
+    "No PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING, skipCacheIntegrityCheck, custom engine override, mirror override, version override, no-engine switch, ambient credential/proxy expansion or TLS bypass.",
+    "Before any successor case slot, an accepted bounded nonjourney readiness harness must prove Prisma generation/native prerequisites and real Chromium executable/system-library readiness in the same isolated child and exact sanitized environment; source, dependency, environment and cleanup evidence must be bound and independently reviewed.",
+    "That readiness harness may not start the product application, touch a database, navigate product journeys, capture media, reserve product/case custody, or reinterpret setup evidence as product qualification. Actual runtime proof has not been performed by this reviewer."
+  ],
+  "preservedOriginalInputs": [
+    {
+      "path": "/workspace/crossdeck-cloud-receipts/r12-original.entry.stdout.log",
+      "bytes": 2781,
+      "sha256": "3fcfe20b7fc895851633cc8f9743fe1eff5dc5b5960f80c6de36642a2e427e39"
+    },
+    {
+      "path": "/workspace/crossdeck-cloud-receipts/r12-original.entry.stderr.log",
+      "bytes": 689,
+      "sha256": "4b67e4f6fb095764f7ac309803c314178ebbd4443ee97ff552b7611b09bc7211"
+    },
+    {
+      "path": "/workspace/crossdeck-cloud-receipts/r12-original.entry.terminal.json",
+      "bytes": 692,
+      "sha256": "25140c271c8f8925d5dd7ca31e0deccd6b8648fc604bfa0b7b9f33aa2072b4f2"
+    },
+    {
+      "path": "/workspace/crossdeck-cloud-source/.git/sounding-line/crossdeck-r12-focused-original.json",
+      "bytes": 1063,
+      "sha256": "6fdb259876c45b0ea3c9c23ceff177dbb1fa9f00c58b7bf5721bb35ce2e0a803"
+    },
+    {
+      "path": "/workspace/crossdeck-cloud-source/.git/sounding-line/crossdeck-r12-focused-original-launch.json",
+      "bytes": 439,
+      "sha256": "86ec9038392837f4dca639a4b0d6f5e0d58b267b894bdf796013d18cf795c238"
+    }
+  ],
+  "reviewerActions": {
+    "engineCli": 0,
+    "nativeLibraryLoads": 0,
+    "prismaGenerate": 0,
+    "build": 0,
+    "database": 0,
+    "browser": 0,
+    "custody": 0,
+    "sourceRuntimeConfigurationMutations": 0,
+    "artifactWrites": "THIS_CREATE_ONLY_EXTERNAL_REVIEW_RECEIPT"
+  },
+  "remainingBlockers": [
+    "R13 nonjourney preflight boundary/source contract must be reviewed and accepted.",
+    "Actual same-child sanitized-environment dependency readiness remains unproven; static hashes/ELF metadata alone do not accept it."
+  ]
+}

@@ -1,0 +1,473 @@
+{
+  "classification": "Non-capturing full-repository formatting diagnostic; publication files are formatted separately",
+  "status": "FAIL_PREEXISTING_UNMODIFIED_FILES",
+  "fullRepositoryFormatCheckExit": 1,
+  "warnedFiles": 66,
+  "warnedFilesChangedByThisPublication": 0,
+  "unchangedFromProtectedBase": 63,
+  "files": [
+    {
+      "path": "bridgewatch/test/registry.test.ts",
+      "headBlob": "0dceb94819c59a6cc55849c3df0e4547cbc6eeb1",
+      "stagedBlob": "0dceb94819c59a6cc55849c3df0e4547cbc6eeb1",
+      "protectedBaseBlob": "0dceb94819c59a6cc55849c3df0e4547cbc6eeb1",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "Development_Docs/Features/catalog/bridgewatch.json",
+      "headBlob": "bde2575b94c7abf0fe5acf171646b01a9e16a6d0",
+      "stagedBlob": "bde2575b94c7abf0fe5acf171646b01a9e16a6d0",
+      "protectedBaseBlob": "bde2575b94c7abf0fe5acf171646b01a9e16a6d0",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "Development_Docs/Features/catalog/security-operations.json",
+      "headBlob": "9df947c75cc9ccb580a527823d96e4128b2a876d",
+      "stagedBlob": "9df947c75cc9ccb580a527823d96e4128b2a876d",
+      "protectedBaseBlob": "9df947c75cc9ccb580a527823d96e4128b2a876d",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "Development_Docs/Features/catalog/wakebook.json",
+      "headBlob": "e29469ea53807e77f9e2e09711a1c8b7b1b69d73",
+      "stagedBlob": "e29469ea53807e77f9e2e09711a1c8b7b1b69d73",
+      "protectedBaseBlob": "e29469ea53807e77f9e2e09711a1c8b7b1b69d73",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "Development_Docs/Features/catalog/wayfarer.json",
+      "headBlob": "232c967636982ba5175b50f8390b6e5602090420",
+      "stagedBlob": "232c967636982ba5175b50f8390b6e5602090420",
+      "protectedBaseBlob": "232c967636982ba5175b50f8390b6e5602090420",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "Development_Docs/Governing/ADR-EGS-001_Engineering_Governance_Simplification.md",
+      "headBlob": "ac28d97a0c8a9cbe2f6092a041eb7ad16c60b0ef",
+      "stagedBlob": "ac28d97a0c8a9cbe2f6092a041eb7ad16c60b0ef",
+      "protectedBaseBlob": "ac28d97a0c8a9cbe2f6092a041eb7ad16c60b0ef",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Figurehead_Spatial_Presence_Integration_Amendment_v1.0.md",
+      "headBlob": "107b9558d43541f502f5b1a13f69e833417462f3",
+      "stagedBlob": "107b9558d43541f502f5b1a13f69e833417462f3",
+      "protectedBaseBlob": "107b9558d43541f502f5b1a13f69e833417462f3",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Landfall_Governing_Amendment_v1.2_Spatial_Ownership_and_Integration_Boundaries.md",
+      "headBlob": "6b2fc17b86c33e5ab9268f09260f6c4521a53158",
+      "stagedBlob": "6b2fc17b86c33e5ab9268f09260f6c4521a53158",
+      "protectedBaseBlob": "6b2fc17b86c33e5ab9268f09260f6c4521a53158",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Sextant_Device_Context_and_Hardware_Capability_System_Governing_Document_v1.0.md",
+      "headBlob": "a578cd284d90c98a9df9f08e6066b31994f1b320",
+      "stagedBlob": "a578cd284d90c98a9df9f08e6066b31994f1b320",
+      "protectedBaseBlob": "a578cd284d90c98a9df9f08e6066b31994f1b320",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Storytide_Spatial_and_Multi_Surface_Integration_Amendment_v1.0.md",
+      "headBlob": "66e4d961fec586b0acf3a3d2668e88f22b347ab7",
+      "stagedBlob": "66e4d961fec586b0acf3a3d2668e88f22b347ab7",
+      "protectedBaseBlob": "66e4d961fec586b0acf3a3d2668e88f22b347ab7",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Wakebook_Governing_Amendment_v1.1_Spatial_Memories_and_AR_Capture.md",
+      "headBlob": "54103ca7f5dfd1ea958866f3209eb3062b07c8fb",
+      "stagedBlob": "54103ca7f5dfd1ea958866f3209eb3062b07c8fb",
+      "protectedBaseBlob": "54103ca7f5dfd1ea958866f3209eb3062b07c8fb",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Watchglass_Spatial_Perception_Integration_Amendment_v1.0.md",
+      "headBlob": "0eb3fa5a69d40271f0830cdfc4d3a7cd183a8167",
+      "stagedBlob": "0eb3fa5a69d40271f0830cdfc4d3a7cd183a8167",
+      "protectedBaseBlob": "0eb3fa5a69d40271f0830cdfc4d3a7cd183a8167",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "Development_Docs/Governing/Voyagewright_Spatial_Experience_Architecture_Governing_Document_v1.0.md",
+      "headBlob": "80cff582d2474bd9e6cc28f2cd1c1d24bbfb8237",
+      "stagedBlob": "80cff582d2474bd9e6cc28f2cd1c1d24bbfb8237",
+      "protectedBaseBlob": "80cff582d2474bd9e6cc28f2cd1c1d24bbfb8237",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "Development_Docs/Programs/Bridgewatch/Project_Bridgewatch_v1.2_Data_Fidelity_and_Capability_Audit.md",
+      "headBlob": "17b3a4d2a61100398205be955160a44c02c853b4",
+      "stagedBlob": "17b3a4d2a61100398205be955160a44c02c853b4",
+      "protectedBaseBlob": "17b3a4d2a61100398205be955160a44c02c853b4",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "Development_Docs/Programs/Deepwater/reports/Project_Deepwater_Phase_5_Drift_Baseline.json",
+      "headBlob": "bb1ec139d73e6f4c1de2fc0ebeb71495898ed7ae",
+      "stagedBlob": "bb1ec139d73e6f4c1de2fc0ebeb71495898ed7ae",
+      "protectedBaseBlob": "bb1ec139d73e6f4c1de2fc0ebeb71495898ed7ae",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "Development_Docs/Programs/Project_Trim/Project_Trim_Phase_4_Accepted_Capsule.json",
+      "headBlob": "8523dcd23434ab6537e4a151a78909d36a75b26e",
+      "stagedBlob": "8523dcd23434ab6537e4a151a78909d36a75b26e",
+      "protectedBaseBlob": "8523dcd23434ab6537e4a151a78909d36a75b26e",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "Development_Docs/Programs/Sealed_Hold/Project_Sealed_Hold_Phase_4_Implementation_Manifest.md",
+      "headBlob": "7516b0d49aad8886f0be1943b695cdf5921d5f7f",
+      "stagedBlob": "7516b0d49aad8886f0be1943b695cdf5921d5f7f",
+      "protectedBaseBlob": "7516b0d49aad8886f0be1943b695cdf5921d5f7f",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/local-validation.json",
+      "headBlob": "dcab4cd7c6dd3666e9cc9058ba34fe86e7725e12",
+      "stagedBlob": "dcab4cd7c6dd3666e9cc9058ba34fe86e7725e12",
+      "protectedBaseBlob": "dcab4cd7c6dd3666e9cc9058ba34fe86e7725e12",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-dispatch-audit-20261015/exception.amended.proposed.json",
+      "headBlob": "af44417532ba7ed69f4cf00c37b51191cc050dd9",
+      "stagedBlob": "af44417532ba7ed69f4cf00c37b51191cc050dd9",
+      "protectedBaseBlob": "af44417532ba7ed69f4cf00c37b51191cc050dd9",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r2-owner-decision-proposal-20261015/inactive-proposal.snapshot.json",
+      "headBlob": "860bb721f88385dde995322a77aac7e55a35190d",
+      "stagedBlob": "860bb721f88385dde995322a77aac7e55a35190d",
+      "protectedBaseBlob": "860bb721f88385dde995322a77aac7e55a35190d",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r3-owner-decision-proposal-20261015/inactive-proposal.json",
+      "headBlob": "a598199fa6c40afd98b34882577bd8e5007c9639",
+      "stagedBlob": "a598199fa6c40afd98b34882577bd8e5007c9639",
+      "protectedBaseBlob": "a598199fa6c40afd98b34882577bd8e5007c9639",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r3-owner-decision-proposal-20261015/scope-binding.json",
+      "headBlob": "8a50c7ce1777f07ea461ed07d102c2a449ee66c0",
+      "stagedBlob": "8a50c7ce1777f07ea461ed07d102c2a449ee66c0",
+      "protectedBaseBlob": "8a50c7ce1777f07ea461ed07d102c2a449ee66c0",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Sounding_Line_Root_Maintenance_Impact_Declaration.json",
+      "headBlob": "63754cac05c52d1f2b68c859e371e5960cc3c3f6",
+      "stagedBlob": "63754cac05c52d1f2b68c859e371e5960cc3c3f6",
+      "protectedBaseBlob": "63754cac05c52d1f2b68c859e371e5960cc3c3f6",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Active_Phase_Registration.json",
+      "headBlob": "5434d6dfbcd19480d4a22bca52b9ccee7acf51cb",
+      "stagedBlob": "5434d6dfbcd19480d4a22bca52b9ccee7acf51cb",
+      "protectedBaseBlob": "5434d6dfbcd19480d4a22bca52b9ccee7acf51cb",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "Development_Docs/Projects/Project Drydock/Project_Drydock_Phase_3_Completion_Receipt.md",
+      "headBlob": "acc576cc49948b28e14995dad36bc1be2b0d943b",
+      "stagedBlob": "acc576cc49948b28e14995dad36bc1be2b0d943b",
+      "protectedBaseBlob": "acc576cc49948b28e14995dad36bc1be2b0d943b",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/final-verification-20261015/failed-capture-inventory.json",
+      "headBlob": "0a9c1e3e07789439ad2ec16068e2eefd0fd579a7",
+      "stagedBlob": "0a9c1e3e07789439ad2ec16068e2eefd0fd579a7",
+      "protectedBaseBlob": null,
+      "unchangedFromProtectedBase": false
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/final-verification-20261015/normal-reduced-server-diagnosis.json",
+      "headBlob": "d461a9a0d029544ba7ec06ad9717a03544fc5275",
+      "stagedBlob": "d461a9a0d029544ba7ec06ad9717a03544fc5275",
+      "protectedBaseBlob": null,
+      "unchangedFromProtectedBase": false
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/final-verification-20261015/preparation-failure.json",
+      "headBlob": "a9ed036b81a4fedf3a8fbac523f8a368d292c3ba",
+      "stagedBlob": "a9ed036b81a4fedf3a8fbac523f8a368d292c3ba",
+      "protectedBaseBlob": null,
+      "unchangedFromProtectedBase": false
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Nightwatch/Project_Bosun_B1_1_Live_Repair_Integration_Implementation_Record.md",
+      "headBlob": "2358d26ee0ef89f756ebd699acca08de589b7fb6",
+      "stagedBlob": "2358d26ee0ef89f756ebd699acca08de589b7fb6",
+      "protectedBaseBlob": "2358d26ee0ef89f756ebd699acca08de589b7fb6",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_B1_2_Baseline_Certification_Design_Record.md",
+      "headBlob": "14c1acb737f91fc177bd7ee8d8adcd82966f8723",
+      "stagedBlob": "14c1acb737f91fc177bd7ee8d8adcd82966f8723",
+      "protectedBaseBlob": "14c1acb737f91fc177bd7ee8d8adcd82966f8723",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Nightwatch/Project_Nightwatch_Increment_A1_Atomic_Acceptance_Sequencer_Implementation_Record.md",
+      "headBlob": "6a2449bc3704883b53efe322a03a85986ece41c3",
+      "stagedBlob": "6a2449bc3704883b53efe322a03a85986ece41c3",
+      "protectedBaseBlob": "6a2449bc3704883b53efe322a03a85986ece41c3",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Wakebook/Project_Wakebook_Phase_1_Owner_Walkthrough.md",
+      "headBlob": "310edbecc51e1dc47792af4e1023a46de069e4f0",
+      "stagedBlob": "310edbecc51e1dc47792af4e1023a46de069e4f0",
+      "protectedBaseBlob": "310edbecc51e1dc47792af4e1023a46de069e4f0",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/local-93f1cc80584c/generic/homeport.transition.auth-routes-review-packet.json",
+      "headBlob": "45de55a48232677ef8005ae9a639183c25b37b0b",
+      "stagedBlob": "45de55a48232677ef8005ae9a639183c25b37b0b",
+      "protectedBaseBlob": "45de55a48232677ef8005ae9a639183c25b37b0b",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/local-93f1cc80584c/local-review.json",
+      "headBlob": "d62ca5b574d088bba3150a3df7e6dffdc0ed7866",
+      "stagedBlob": "d62ca5b574d088bba3150a3df7e6dffdc0ed7866",
+      "protectedBaseBlob": "d62ca5b574d088bba3150a3df7e6dffdc0ed7866",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "Development_Docs/Testing/README.md",
+      "headBlob": "422d85dca27c61ea029ab90e571ac408978594d5",
+      "stagedBlob": "422d85dca27c61ea029ab90e571ac408978594d5",
+      "protectedBaseBlob": "422d85dca27c61ea029ab90e571ac408978594d5",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "scripts/admiralty/run-phase1-journeys.mjs",
+      "headBlob": "03cf8677e57ae5cff5e3eced2f4856882cc52250",
+      "stagedBlob": "03cf8677e57ae5cff5e3eced2f4856882cc52250",
+      "protectedBaseBlob": "03cf8677e57ae5cff5e3eced2f4856882cc52250",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "scripts/admiralty/run-phase2-journeys.mjs",
+      "headBlob": "bd2de1d4ff0c87f1299627d057226052824819e1",
+      "stagedBlob": "bd2de1d4ff0c87f1299627d057226052824819e1",
+      "protectedBaseBlob": "bd2de1d4ff0c87f1299627d057226052824819e1",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "scripts/admiralty/run-support-pilot-s2-journeys.mjs",
+      "headBlob": "64991fe8afabc9f62fe8917282075297f80c41fa",
+      "stagedBlob": "64991fe8afabc9f62fe8917282075297f80c41fa",
+      "protectedBaseBlob": "64991fe8afabc9f62fe8917282075297f80c41fa",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "scripts/admiralty/run-support-pilot-s3-journeys.mjs",
+      "headBlob": "cf15633159e6f729d5ba8d6e98225e2e70c8dd74",
+      "stagedBlob": "cf15633159e6f729d5ba8d6e98225e2e70c8dd74",
+      "protectedBaseBlob": "cf15633159e6f729d5ba8d6e98225e2e70c8dd74",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "scripts/generate-document-index.mjs",
+      "headBlob": "7693466313656128603a37cb26a3c496fd801daf",
+      "stagedBlob": "7693466313656128603a37cb26a3c496fd801daf",
+      "protectedBaseBlob": "7693466313656128603a37cb26a3c496fd801daf",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "scripts/helm/run-a2-journeys.mjs",
+      "headBlob": "e5f276ec57fcb36974f08b6a79e307a60c42fea5",
+      "stagedBlob": "e5f276ec57fcb36974f08b6a79e307a60c42fea5",
+      "protectedBaseBlob": "e5f276ec57fcb36974f08b6a79e307a60c42fea5",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "scripts/homeport/apply-phase3-inventory-updates.mjs",
+      "headBlob": "8ac90713d10b65ac7f2a3315776768d0449abdaa",
+      "stagedBlob": "8ac90713d10b65ac7f2a3315776768d0449abdaa",
+      "protectedBaseBlob": "8ac90713d10b65ac7f2a3315776768d0449abdaa",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "scripts/homeport/run-phase7-owner-correction-round1-journeys.mjs",
+      "headBlob": "67a782e922a39cfc68b0bfe67b91a3884867a6af",
+      "stagedBlob": "67a782e922a39cfc68b0bfe67b91a3884867a6af",
+      "protectedBaseBlob": "67a782e922a39cfc68b0bfe67b91a3884867a6af",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "scripts/homeport/run-phase7-owner-correction-round2-journeys.mjs",
+      "headBlob": "0485cd74295d963697a8d8d1d68fcf26eea3f94d",
+      "stagedBlob": "0485cd74295d963697a8d8d1d68fcf26eea3f94d",
+      "protectedBaseBlob": "0485cd74295d963697a8d8d1d68fcf26eea3f94d",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "scripts/homeport/run-phase7-owner-correction-round3-journeys.mjs",
+      "headBlob": "4a94f698de2eeb6424fb65b5c208947b12a20e3e",
+      "stagedBlob": "4a94f698de2eeb6424fb65b5c208947b12a20e3e",
+      "protectedBaseBlob": "4a94f698de2eeb6424fb65b5c208947b12a20e3e",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "scripts/shipwright/run-phase2-journeys.mjs",
+      "headBlob": "366a3658796ad929418df321725835874af80203",
+      "stagedBlob": "366a3658796ad929418df321725835874af80203",
+      "protectedBaseBlob": "366a3658796ad929418df321725835874af80203",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "scripts/sounding-line/prepare-harborlight-fixture.ts",
+      "headBlob": "7542ec4e108f71e5ea55b078141f2730dbd12f44",
+      "stagedBlob": "7542ec4e108f71e5ea55b078141f2730dbd12f44",
+      "protectedBaseBlob": "7542ec4e108f71e5ea55b078141f2730dbd12f44",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "scripts/tideglass/run-phase3-journeys.mjs",
+      "headBlob": "8cd6485a7a0474080124883e8a99c8b7aa03b09e",
+      "stagedBlob": "8cd6485a7a0474080124883e8a99c8b7aa03b09e",
+      "protectedBaseBlob": "8cd6485a7a0474080124883e8a99c8b7aa03b09e",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "scripts/validate-documentation.mjs",
+      "headBlob": "7edcf51060f657c54c5592574774c7264bd7ec75",
+      "stagedBlob": "7edcf51060f657c54c5592574774c7264bd7ec75",
+      "protectedBaseBlob": "7edcf51060f657c54c5592574774c7264bd7ec75",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "testing/control-plane-repair-routes.json",
+      "headBlob": "a61abedc03b182181ceddbec16008d75e3b509dd",
+      "stagedBlob": "a61abedc03b182181ceddbec16008d75e3b509dd",
+      "protectedBaseBlob": "a61abedc03b182181ceddbec16008d75e3b509dd",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "testing/product-experience-exceptions.json",
+      "headBlob": "dcb47db8f2bfb24a3c80f6016c481a7ef30763b4",
+      "stagedBlob": "dcb47db8f2bfb24a3c80f6016c481a7ef30763b4",
+      "protectedBaseBlob": "dcb47db8f2bfb24a3c80f6016c481a7ef30763b4",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "testing/root-maintenance-policy.json",
+      "headBlob": "15170bf86d9d224daea3264e07b7d7e9be3562c3",
+      "stagedBlob": "15170bf86d9d224daea3264e07b7d7e9be3562c3",
+      "protectedBaseBlob": "15170bf86d9d224daea3264e07b7d7e9be3562c3",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "testing/test-registration.schema.json",
+      "headBlob": "5f2d128a552aff44bf69b2a18a936f9dacece46d",
+      "stagedBlob": "5f2d128a552aff44bf69b2a18a936f9dacece46d",
+      "protectedBaseBlob": "5f2d128a552aff44bf69b2a18a936f9dacece46d",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "testing/test-registrations/egs-bosun-public-lifecycle.json",
+      "headBlob": "9456f940cee6faefeb0f00bc17a60a0288232bd5",
+      "stagedBlob": "9456f940cee6faefeb0f00bc17a60a0288232bd5",
+      "protectedBaseBlob": "9456f940cee6faefeb0f00bc17a60a0288232bd5",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "testing/test-registrations/egs-break-glass.json",
+      "headBlob": "2528dcc7feebf9fe723fd3d3b27ab3be48b518dd",
+      "stagedBlob": "2528dcc7feebf9fe723fd3d3b27ab3be48b518dd",
+      "protectedBaseBlob": "2528dcc7feebf9fe723fd3d3b27ab3be48b518dd",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "testing/test-registrations/egs-control-authorization.json",
+      "headBlob": "561f7c47078e8c94defb946d0984c5e51e47aec6",
+      "stagedBlob": "561f7c47078e8c94defb946d0984c5e51e47aec6",
+      "protectedBaseBlob": "561f7c47078e8c94defb946d0984c5e51e47aec6",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "testing/test-registrations/egs-control-binding.json",
+      "headBlob": "f3b5c3806497bf9d382677bdf1ae574f2db6c7d3",
+      "stagedBlob": "f3b5c3806497bf9d382677bdf1ae574f2db6c7d3",
+      "protectedBaseBlob": "f3b5c3806497bf9d382677bdf1ae574f2db6c7d3",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "testing/test-registrations/egs-declaration-fail-closed.json",
+      "headBlob": "0a6609799f0ec691fa2299cd13a45d558ce207f0",
+      "stagedBlob": "0a6609799f0ec691fa2299cd13a45d558ce207f0",
+      "protectedBaseBlob": "0a6609799f0ec691fa2299cd13a45d558ce207f0",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "testing/test-registrations/egs-declaration-valid.json",
+      "headBlob": "f45905bb212010502b4529ae9f90272f62cd6d99",
+      "stagedBlob": "f45905bb212010502b4529ae9f90272f62cd6d99",
+      "protectedBaseBlob": "f45905bb212010502b4529ae9f90272f62cd6d99",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "testing/test-registrations/egs-github-mainline-dispatch.json",
+      "headBlob": "84be04da04732d4675612a1cc8e1a4001062d07b",
+      "stagedBlob": "84be04da04732d4675612a1cc8e1a4001062d07b",
+      "protectedBaseBlob": "84be04da04732d4675612a1cc8e1a4001062d07b",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "testing/test-registrations/egs-impact-selection.json",
+      "headBlob": "dd63628887b2dd9e6a4c6a2daf35171874cc3fbf",
+      "stagedBlob": "dd63628887b2dd9e6a4c6a2daf35171874cc3fbf",
+      "protectedBaseBlob": "dd63628887b2dd9e6a4c6a2daf35171874cc3fbf",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "testing/test-registrations/egs-nightwatch-lifecycle.json",
+      "headBlob": "bdaf9ae0bb7cf70fe43c7f163384adfe3d377e77",
+      "stagedBlob": "bdaf9ae0bb7cf70fe43c7f163384adfe3d377e77",
+      "protectedBaseBlob": "bdaf9ae0bb7cf70fe43c7f163384adfe3d377e77",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "testing/test-registrations/egs-nightwatch-mainline-train.json",
+      "headBlob": "935cdb4ab3377b5b32aa47a55c7209aa85174100",
+      "stagedBlob": "935cdb4ab3377b5b32aa47a55c7209aa85174100",
+      "protectedBaseBlob": "935cdb4ab3377b5b32aa47a55c7209aa85174100",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "testing/test-registrations/egs-ordinary-bosun.json",
+      "headBlob": "f55390c06b12a362f3b45584a84d956c84556734",
+      "stagedBlob": "f55390c06b12a362f3b45584a84d956c84556734",
+      "protectedBaseBlob": "f55390c06b12a362f3b45584a84d956c84556734",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "tests/admiralty/support-pilot-s1/run-journeys.mjs",
+      "headBlob": "9901a784600d0d1861c154ab0aabf58ebd72c077",
+      "stagedBlob": "9901a784600d0d1861c154ab0aabf58ebd72c077",
+      "protectedBaseBlob": "9901a784600d0d1861c154ab0aabf58ebd72c077",
+      "unchangedFromProtectedBase": true
+    },
+    {
+      "path": "tests/e2e/fixtures/run-shipwright-phase3-journeys.mjs",
+      "headBlob": "0b9bf6d22c4d30f35f1773ae31debe56920c8488",
+      "stagedBlob": "0b9bf6d22c4d30f35f1773ae31debe56920c8488",
+      "protectedBaseBlob": "0b9bf6d22c4d30f35f1773ae31debe56920c8488",
+      "unchangedFromProtectedBase": true
+    }
+  ],
+  "sourceRepairOrFormattingApplied": false
+}

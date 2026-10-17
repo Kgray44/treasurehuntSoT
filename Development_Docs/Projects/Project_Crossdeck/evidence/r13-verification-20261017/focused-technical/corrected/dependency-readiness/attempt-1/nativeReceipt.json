@@ -1,0 +1,133 @@
+{
+  "version": 1,
+  "binding": {
+    "version": 1,
+    "exceptionId": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R13",
+    "recordDigest": "a6689ebab490ed81f313cf4bc5e2e597181c012ad43645120698b2faef097359",
+    "baseSha": "24fb189a90435ccb6021b63fd6953603ae090bc0",
+    "candidateSha": "3037e3f6c2ae517e160cf5982f8a03b87672bdf3",
+    "candidateTree": "4bdad60f1c08e7bbac7b3606b1dbfa5126c00a9c",
+    "sourceDigest": "a63073cbf3850900c91a25979467bb68f3930812e23af3f6daab00b21ab5d17a",
+    "contractDigest": "33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274",
+    "sourceManifestSha256": "9078f192a0480cb7898513c9e6c724d8694a3cba91d0c0b31e7005aafb0181d2",
+    "environmentDigest": "f2c53a7e67ec5d127393ceed487510edab2a3a225b1bf83dcddd74ee24f58a9c",
+    "stage": "corrected",
+    "manifestSha256": "929d1963b17a78306df6d4822ed51dca8578061ef2b6d9c3ce9db195f3d9d624",
+    "attempt": 1,
+    "lease": "c529efa2-ee2f-46ad-99e3-5adcd35d5988"
+  },
+  "classification": "FINITE_INFRASTRUCTURE_READINESS_NO_PRODUCT_JOURNEYS",
+  "status": "PASS",
+  "startedAt": "2026-10-17T04:26:49.601Z",
+  "inventory": {
+    "packages": [
+      {
+        "name": "prisma",
+        "version": "6.19.3",
+        "path": "/workspace/crossdeck-cloud-repair/node_modules/prisma/package.json",
+        "sha256": "640c40516faa0c333995d0e22cf9e09815c3d7f80ef71ac793283d2c9cac41be"
+      },
+      {
+        "name": "@prisma/client",
+        "version": "6.19.3",
+        "path": "/workspace/crossdeck-cloud-repair/node_modules/@prisma/client/package.json",
+        "sha256": "219e507d9671f4d8bcf6161274201015bd97aaaff76eb464b8de7ab624f1beba"
+      },
+      {
+        "name": "@prisma/engines",
+        "version": "6.19.3",
+        "path": "/workspace/crossdeck-cloud-repair/node_modules/@prisma/engines/package.json",
+        "sha256": "9a37d6e75fb63c0f5cf93cb238054405668a5ef24a7fb770869129c1854ecc57"
+      },
+      {
+        "name": "@prisma/engines-version",
+        "path": "/workspace/crossdeck-cloud-repair/node_modules/@prisma/engines-version/package.json",
+        "sha256": "9f367c6ab7af589f028ee00eefaa14e5ba97c0b6e704e5682413598dbbdf4478"
+      }
+    ],
+    "engines": [
+      {
+        "name": "libquery-engine",
+        "path": "/workspace/crossdeck-cloud-repair/node_modules/@prisma/engines/libquery_engine-debian-openssl-3.0.x.so.node",
+        "sha256": "a2924eab1c78a0a7bb67edac5738939fa10589ef073af5542f53812a22e4a7d8"
+      },
+      {
+        "name": "schema-engine",
+        "path": "/workspace/crossdeck-cloud-repair/node_modules/@prisma/engines/schema-engine-debian-openssl-3.0.x",
+        "sha256": "5d42b181631fd20bb0ecc5abcdba72575e7f467a0d52f4d5ef1ff28f0c74e6e9"
+      },
+      {
+        "name": "libquery-engine",
+        "path": "/workspace/crossdeck-cloud-repair/node_modules/prisma/libquery_engine-debian-openssl-3.0.x.so.node",
+        "sha256": "a2924eab1c78a0a7bb67edac5738939fa10589ef073af5542f53812a22e4a7d8"
+      },
+      {
+        "name": "schema-engine",
+        "path": "/workspace/crossdeck-cloud-repair/node_modules/prisma/schema-engine-debian-openssl-3.0.x",
+        "sha256": "5d42b181631fd20bb0ecc5abcdba72575e7f467a0d52f4d5ef1ff28f0c74e6e9"
+      }
+    ],
+    "cache": [
+      {
+        "name": "libquery-engine",
+        "path": "/home/agent/.cache/prisma/master/c2990dca591cba766e3b7ef5d9e8a84796e47ab7/debian-openssl-3.0.x/libquery-engine",
+        "status": "ABSENT"
+      },
+      {
+        "name": "schema-engine",
+        "path": "/home/agent/.cache/prisma/master/c2990dca591cba766e3b7ef5d9e8a84796e47ab7/debian-openssl-3.0.x/schema-engine",
+        "status": "ABSENT"
+      }
+    ],
+    "lockBlob": "fca84d3ab68ff77c013554e5eb9531cb3f7b11c2",
+    "engineVersion": "c2990dca591cba766e3b7ef5d9e8a84796e47ab7",
+    "platform": "debian-openssl-3.0.x"
+  },
+  "versions": [
+    {
+      "name": "libquery-engine",
+      "path": "/workspace/crossdeck-cloud-repair/node_modules/@prisma/engines/libquery_engine-debian-openssl-3.0.x.so.node",
+      "version": "c2990dca591cba766e3b7ef5d9e8a84796e47ab7",
+      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "arguments": [
+        "-e",
+        "const engine = require(process.argv[1]); process.stdout.write(JSON.stringify({commit: engine.version().commit}) + \"\\n\");",
+        "/workspace/crossdeck-cloud-repair/node_modules/@prisma/engines/libquery_engine-debian-openssl-3.0.x.so.node"
+      ],
+      "stdout": "{\"commit\":\"c2990dca591cba766e3b7ef5d9e8a84796e47ab7\"}"
+    },
+    {
+      "name": "schema-engine",
+      "path": "/workspace/crossdeck-cloud-repair/node_modules/@prisma/engines/schema-engine-debian-openssl-3.0.x",
+      "version": "schema-engine-cli c2990dca591cba766e3b7ef5d9e8a84796e47ab7",
+      "command": "/workspace/crossdeck-cloud-repair/node_modules/@prisma/engines/schema-engine-debian-openssl-3.0.x",
+      "arguments": [
+        "--version"
+      ],
+      "stdout": "schema-engine-cli c2990dca591cba766e3b7ef5d9e8a84796e47ab7"
+    },
+    {
+      "name": "libquery-engine",
+      "path": "/workspace/crossdeck-cloud-repair/node_modules/prisma/libquery_engine-debian-openssl-3.0.x.so.node",
+      "version": "c2990dca591cba766e3b7ef5d9e8a84796e47ab7",
+      "command": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "arguments": [
+        "-e",
+        "const engine = require(process.argv[1]); process.stdout.write(JSON.stringify({commit: engine.version().commit}) + \"\\n\");",
+        "/workspace/crossdeck-cloud-repair/node_modules/prisma/libquery_engine-debian-openssl-3.0.x.so.node"
+      ],
+      "stdout": "{\"commit\":\"c2990dca591cba766e3b7ef5d9e8a84796e47ab7\"}"
+    },
+    {
+      "name": "schema-engine",
+      "path": "/workspace/crossdeck-cloud-repair/node_modules/prisma/schema-engine-debian-openssl-3.0.x",
+      "version": "schema-engine-cli c2990dca591cba766e3b7ef5d9e8a84796e47ab7",
+      "command": "/workspace/crossdeck-cloud-repair/node_modules/prisma/schema-engine-debian-openssl-3.0.x",
+      "arguments": [
+        "--version"
+      ],
+      "stdout": "schema-engine-cli c2990dca591cba766e3b7ef5d9e8a84796e47ab7"
+    }
+  ],
+  "completedAt": "2026-10-17T04:26:49.992Z"
+}

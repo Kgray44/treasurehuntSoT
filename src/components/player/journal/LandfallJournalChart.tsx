@@ -83,6 +83,7 @@ function useLandfallController({
   loadEnabled = enabled,
   revision,
   passages = emptyPassages,
+  onAvailabilityChange,
 }: {
   sessionId: string;
   publishedVersionId: string;
@@ -94,6 +95,7 @@ function useLandfallController({
   loadEnabled?: boolean;
   revision: number;
   passages?: PlayerJournalBlock[];
+  onAvailabilityChange?: (available: boolean) => void;
 }) {
   const [bootstrap, setBootstrap] = useState<PlayerLandfallBootstrap | null>(null);
   const [message, setMessage] = useState("Loading Voyage Chart…");
@@ -116,6 +118,10 @@ function useLandfallController({
   const pendingEvidence = useRef<PlayerLandfallEvidence | null>(null);
   const initialReconcileAttempted = useRef(false);
   const loadAbort = useRef<AbortController | null>(null);
+
+  useEffect(() => {
+    onAvailabilityChange?.(Boolean(bootstrap));
+  }, [bootstrap, onAvailabilityChange]);
 
   useEffect(() => {
     if (!loadEnabled) return;
@@ -714,9 +720,17 @@ export function LandfallJournalProvider({
 
 export function LandfallJournalChart({
   readOnly = false,
+  presentationOnly = false,
+  compact = false,
   worldspaceId,
   blockId,
-}: { readOnly?: boolean; worldspaceId?: string; blockId?: string } = {}) {
+}: {
+  readOnly?: boolean;
+  presentationOnly?: boolean;
+  compact?: boolean;
+  worldspaceId?: string;
+  blockId?: string;
+} = {}) {
   const controller = useContext(LandfallControllerContext);
   const bridge = useCrossdeckContinuity();
   const chartContinuity = useRef<Continuity>({});
@@ -815,10 +829,10 @@ export function LandfallJournalChart({
     csrfToken,
   } = controller;
   const bootstrap = readOnly && blockId ? historicalChart : currentBootstrap;
-  const position = readOnly ? null : livePosition;
+  const position = readOnly || presentationOnly ? null : livePosition;
   if (!bootstrap)
     return (
-      <p role="status">
+      <p className="journal-chart-placeholder" role="status">
         {readOnly && blockId
           ? "Loading the released historical Chart. A connection is needed if this snapshot was not prepared."
           : message}
@@ -827,7 +841,7 @@ export function LandfallJournalChart({
   const worldspace = bootstrap.runtimeDefinition.worldspaces[0];
   if (worldspaceId && worldspaceId !== worldspace.id)
     return (
-      <p role="status">
+      <p className="journal-chart-placeholder" role="status">
         This Passage’s Worldspace is not currently released. The current Voyage Chart remains available in the Map
         drawer.
       </p>
@@ -859,8 +873,81 @@ export function LandfallJournalChart({
   const landmark = bootstrap.runtimeDefinition.context?.landmarks.find(
     (item) => item.id === activeWaypoint?.landmarkId,
   );
+  const chart = (
+    <VoyageChart
+      mode={mode}
+      landfallScene={searchedScene}
+      onLandfallCameraChange={(camera) => {
+        chartContinuity.current = { ...chartContinuity.current, camera };
+        bridge?.changes.dispatchEvent(new Event("change"));
+      }}
+      landfallPosition={!viewingMap || viewingMap.id === bootstrap.scene.mapId ? position : null}
+    />
+  );
+  const pausedStatus = bootstrap.paused ? (
+    <p role="status">The Captain paused Landfall progression. Current chart details remain readable.</p>
+  ) : null;
+  const passiveStatus =
+    presentationOnly && !isHistorical ? (
+      <p>This companion follows the current Chart. Arrival controls stay on the controlling device.</p>
+    ) : null;
+  const offlineTools = (
+    <>
+      <p>
+        Offline chart: {availability ? "saved" : "restored or preparing"}. First-party map assets:{" "}
+        {availability?.firstPartyAssets.toLowerCase() ?? "see map availability"}.
+        {bootstrap.scene.renderer === "MAPLIBRE_STYLE"
+          ? " External map tiles require a connection and are unavailable offline."
+          : " This authored chart does not need external tiles."}
+        {availability &&
+          ` Last synchronized sequence ${availability.sequence} at ${new Date(availability.synchronizedAt).toLocaleTimeString()}. Offline shell: ${availability.shell === "READY" ? "prepared" : "requires connection until prepared"}. Pending evidence: ${availability.pendingEvidence}.`}
+      </p>
+      {!compact && pausedStatus}
+      {!compact && passiveStatus}
+      {!readOnly && !presentationOnly && !bootstrap.replayOnly && (
+        <LandfallOfflineRegionPanel
+          sessionId={bootstrap.sessionId}
+          publishedVersionId={bootstrap.publishedVersionId}
+          sequence={bootstrap.currentSequence}
+          csrfToken={csrfToken}
+        />
+      )}
+      {!readOnly &&
+        !presentationOnly &&
+        !bootstrap.replayOnly &&
+        worldspace.kind === "PHYSICAL" &&
+        worldspace.observationPolicy.allowedSources.includes("NATIVE_LOCATION") && (
+          <LandfallBackgroundPanel
+            key={JSON.stringify([
+              bootstrap.sessionId,
+              bootstrap.publishedVersionId,
+              bootstrap.currentSequence,
+              bootstrap.activeWaypointId,
+            ])}
+            sessionId={bootstrap.sessionId}
+            csrfToken={csrfToken}
+          />
+        )}
+      {!readOnly && !presentationOnly && !bootstrap.replayOnly && worldspace.kind === "PHYSICAL" && (
+        <LandfallNearbyPanel bootstrap={bootstrap} csrfToken={csrfToken} />
+      )}
+      {!readOnly && !presentationOnly && !bootstrap.replayOnly && worldspace.kind === "PHYSICAL" && (
+        <LandfallBlePanel bootstrap={bootstrap} />
+      )}
+      {!readOnly && !presentationOnly && !bootstrap.replayOnly && worldspace.kind === "PHYSICAL" && (
+        <LandfallInstallationPanel bootstrap={bootstrap} csrfToken={csrfToken} />
+      )}
+      {!readOnly && !presentationOnly && !bootstrap.replayOnly && worldspace.kind === "PHYSICAL" && (
+        <LandfallOnlineDataPanel bootstrap={bootstrap} csrfToken={csrfToken} position={position} />
+      )}
+    </>
+  );
   return (
-    <div className="landfall-journal-chart" data-landfall-player-chart data-worldspace-kind={worldspace.kind}>
+    <div
+      className={`landfall-journal-chart${compact ? " landfall-chart-compact" : ""}`}
+      data-landfall-player-chart
+      data-worldspace-kind={worldspace.kind}
+    >
       <p>{bootstrap.worldspaceName}</p>
       {(bootstrap.replayOnly || readOnly) && (
         <p>Historical Landfall chart. Replay is presentation only and never requests location or changes progress.</p>
@@ -871,6 +958,7 @@ export function LandfallJournalChart({
           {activeWaypoint ? (activeWaypoint.visibility.publicLabel ?? activeWaypoint.name) : "No released location"}
         </p>
       )}
+      {compact && chart}
       {activeWaypoint?.description && <p>{activeWaypoint.description}</p>}
       {activeWaypoint?.guidance?.clue && <p>{activeWaypoint.guidance.clue}</p>}
       {activeWaypoint?.guidance?.nearbyClue &&
@@ -894,52 +982,15 @@ export function LandfallJournalChart({
               : ""}
           </p>
         )}
-      <p>
-        Offline chart: {availability ? "saved" : "restored or preparing"}. First-party map assets:{" "}
-        {availability?.firstPartyAssets.toLowerCase() ?? "see map availability"}.
-        {bootstrap.scene.renderer === "MAPLIBRE_STYLE"
-          ? " External map tiles require a connection and are unavailable offline."
-          : " This authored chart does not need external tiles."}
-        {availability &&
-          ` Last synchronized sequence ${availability.sequence} at ${new Date(availability.synchronizedAt).toLocaleTimeString()}. Offline shell: ${availability.shell === "READY" ? "prepared" : "requires connection until prepared"}. Pending evidence: ${availability.pendingEvidence}.`}
-      </p>
-      {bootstrap.paused && (
-        <p role="status">The Captain paused Landfall progression. Current chart details remain readable.</p>
-      )}
-      {!readOnly && !bootstrap.replayOnly && (
-        <LandfallOfflineRegionPanel
-          sessionId={bootstrap.sessionId}
-          publishedVersionId={bootstrap.publishedVersionId}
-          sequence={bootstrap.currentSequence}
-          csrfToken={csrfToken}
-        />
-      )}
-      {!readOnly &&
-        !bootstrap.replayOnly &&
-        worldspace.kind === "PHYSICAL" &&
-        worldspace.observationPolicy.allowedSources.includes("NATIVE_LOCATION") && (
-          <LandfallBackgroundPanel
-            key={JSON.stringify([
-              bootstrap.sessionId,
-              bootstrap.publishedVersionId,
-              bootstrap.currentSequence,
-              bootstrap.activeWaypointId,
-            ])}
-            sessionId={bootstrap.sessionId}
-            csrfToken={csrfToken}
-          />
-        )}
-      {!readOnly && !bootstrap.replayOnly && worldspace.kind === "PHYSICAL" && (
-        <LandfallNearbyPanel bootstrap={bootstrap} csrfToken={csrfToken} />
-      )}
-      {!readOnly && !bootstrap.replayOnly && worldspace.kind === "PHYSICAL" && (
-        <LandfallBlePanel bootstrap={bootstrap} />
-      )}
-      {!readOnly && !bootstrap.replayOnly && worldspace.kind === "PHYSICAL" && (
-        <LandfallInstallationPanel bootstrap={bootstrap} csrfToken={csrfToken} />
-      )}
-      {!readOnly && !bootstrap.replayOnly && worldspace.kind === "PHYSICAL" && (
-        <LandfallOnlineDataPanel bootstrap={bootstrap} csrfToken={csrfToken} position={position} />
+      {compact && pausedStatus}
+      {compact && passiveStatus}
+      {compact ? (
+        <details className="landfall-chart-details">
+          <summary>Offline chart and device options</summary>
+          {offlineTools}
+        </details>
+      ) : (
+        offlineTools
       )}
       {activeRoute && (
         <section aria-label="Route progress">
@@ -1005,46 +1056,51 @@ export function LandfallJournalChart({
         }}
         onClear={() => setSelectedPlace(null)}
       />
-      <VoyageChart
-        mode={mode}
-        landfallScene={searchedScene}
-        onLandfallCameraChange={(camera) => {
-          chartContinuity.current = { ...chartContinuity.current, camera };
-          bridge?.changes.dispatchEvent(new Event("change"));
-        }}
-        landfallPosition={!viewingMap || viewingMap.id === bootstrap.scene.mapId ? position : null}
-      />
-      {bootstrap.runtimeDefinition.context && worldspace.kind === "PHYSICAL" && !isHistorical && !bootstrap.paused && (
-        <>
-          <button type="button" onClick={() => void toggleContext()}>
-            {contextTracking ? "Stop motion and heading hints" : "Allow motion and heading hints"}
-          </button>
-          <p role="status">
-            {contextMessage} These hints are temporary; bounded recent hints may qualify an online landmark check. They
-            do not establish an exact room or object.
-          </p>
-        </>
-      )}
-      {landmark && worldspace.kind === "PHYSICAL" && activeWaypoint && !isHistorical && !bootstrap.paused && (
-        <LandfallLandmarkPanel
-          sessionId={bootstrap.sessionId}
-          publishedVersionId={bootstrap.publishedVersionId}
-          expectedSequence={bootstrap.currentSequence}
-          csrfToken={csrfToken}
-          worldspaceId={worldspace.id}
-          waypointId={activeWaypoint.id}
-          landmark={landmark}
-          observations={observations}
-          eligible={Boolean(contextSnapshot?.eligibleLandmarkIds.includes(landmark.id))}
-          historical={isHistorical || !acquisitionEnabled}
-          onVerified={confirmLandmark}
-        />
-      )}
+      {!compact && chart}
+      {bootstrap.runtimeDefinition.context &&
+        worldspace.kind === "PHYSICAL" &&
+        !isHistorical &&
+        !presentationOnly &&
+        !bootstrap.paused && (
+          <>
+            <button type="button" onClick={() => void toggleContext()}>
+              {contextTracking ? "Stop motion and heading hints" : "Allow motion and heading hints"}
+            </button>
+            <p role="status">
+              {contextMessage} These hints are temporary; bounded recent hints may qualify an online landmark check.
+              They do not establish an exact room or object.
+            </p>
+          </>
+        )}
+      {landmark &&
+        worldspace.kind === "PHYSICAL" &&
+        activeWaypoint &&
+        !isHistorical &&
+        !presentationOnly &&
+        !bootstrap.paused && (
+          <LandfallLandmarkPanel
+            sessionId={bootstrap.sessionId}
+            publishedVersionId={bootstrap.publishedVersionId}
+            expectedSequence={bootstrap.currentSequence}
+            csrfToken={csrfToken}
+            worldspaceId={worldspace.id}
+            waypointId={activeWaypoint.id}
+            landmark={landmark}
+            observations={observations}
+            eligible={Boolean(contextSnapshot?.eligibleLandmarkIds.includes(landmark.id))}
+            historical={isHistorical || presentationOnly || !acquisitionEnabled}
+            onVerified={confirmLandmark}
+          />
+        )}
       {activeWaypoint && activeWaypoint.fallback.mode !== "NONE" && (
         <p>
           Fallback:{" "}
           {activeWaypoint.fallback.mode === "PLAYER"
-            ? "Use Confirm arrival myself when you have checked the objective."
+            ? isHistorical
+              ? "Historical Charts are read-only. Use the current Chart on the controlling device to check arrival."
+              : presentationOnly
+                ? "Confirm arrival on the controlling device when you have checked the objective."
+                : "Use Confirm arrival myself when you have checked the objective."
             : activeWaypoint.fallback.mode === "CAPTAIN"
               ? "Ask your Captain to verify arrival using the configured Captain action."
               : "Use the alternate waypoint provided by your Captain."}
@@ -1056,6 +1112,7 @@ export function LandfallJournalChart({
         bootstrap.activeWaypointId &&
         !bootstrap.paused &&
         !bootstrap.replayOnly &&
+        !presentationOnly &&
         !readOnly && (
           <button type="button" onClick={tracking ? stop : start}>
             {tracking ? "Stop using my location" : "Use my location"}
@@ -1067,6 +1124,7 @@ export function LandfallJournalChart({
         worldspace.observationPolicy.allowedSources.includes("PLAYER_CONFIRMATION") &&
         !bootstrap.paused &&
         !bootstrap.replayOnly &&
+        !presentationOnly &&
         !readOnly && (
           <button
             type="button"
@@ -1088,6 +1146,7 @@ export function LandfallJournalChart({
         position?.confidence === "LIKELY_INSIDE" &&
         !bootstrap.paused &&
         !bootstrap.replayOnly &&
+        !presentationOnly &&
         !readOnly && (
           <button type="button" onClick={() => void confirmFallback(true)}>
             Check location and my confirmation together

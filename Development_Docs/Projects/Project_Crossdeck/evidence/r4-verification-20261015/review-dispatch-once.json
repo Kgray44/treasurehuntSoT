@@ -1,0 +1,13 @@
+{
+  "classification": "One-shot authenticated independent review FIVE; no automatic retry",
+  "state": "CLI_DISPATCH_RETURNED_SUCCESS_RUN_READBACK_REQUIRED",
+  "startedAt": "2026-10-15T22:57:39.974Z",
+  "baseSha": "a2495fd14efd5ade67832e18fd260f32da98b3b2",
+  "candidateSha": "19687c12e20ef69e6519903b14e56a145df2d7e7",
+  "evidenceRef": "9f59705ad7525936d19dd63a86b5f9fe58cd7810",
+  "evidenceCustodyRef": "refs/notes/codex/crossdeck-review5-evidence-38814444774",
+  "mode": "review",
+  "attempts": 1,
+  "completedAt": "2026-10-15T22:57:41.641Z",
+  "output": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38820570426"
+}

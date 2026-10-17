@@ -1,0 +1,36 @@
+{
+  "classification": "EQUIVALENT_NODE_HTTPS_GET_WITH_PRISMA_PROXY_AGENT_NOT_EXPOSED_BUNDLED_FETCH",
+  "url": "https://binaries.prisma.sh/all_commits/c2990dca591cba766e3b7ef5d9e8a84796e47ab7/debian-openssl-3.0.x/libquery_engine.so.node.sha256",
+  "startedAt": "2026-10-17T02:11:09.668Z",
+  "nodeVersion": "v24.19.0",
+  "proxyAgentClass": "HttpsProxyAgent2",
+  "proxyEnvironmentKeysPresent": [
+    "HTTPS_PROXY",
+    "HTTP_PROXY",
+    "NO_PROXY",
+    "https_proxy",
+    "http_proxy",
+    "no_proxy"
+  ],
+  "credentialEnvironmentPresent": false,
+  "requestHeaders": {
+    "User-Agent": "node-fetch",
+    "Accept": "*/*",
+    "Accept-Encoding": "gzip,deflate,br"
+  },
+  "probeDeadlineMs": 20000,
+  "error": {
+    "name": "Error",
+    "message": "self-signed certificate in certificate chain",
+    "code": "SELF_SIGNED_CERT_IN_CHAIN",
+    "errno": null,
+    "syscall": null,
+    "address": null,
+    "port": null,
+    "stack": "Error: self-signed certificate in certificate chain\n    at TLSSocket.onConnectSecure (node:internal/tls/wrap:1768:34)\n    at TLSSocket.emit (node:events:509:28)\n    at TLSSocket._finishInit (node:internal/tls/wrap:1203:8)\n    at ssl.onhandshakedone (node:internal/tls/wrap:984:12)",
+    "cause": null
+  },
+  "elapsedMs": 111,
+  "completedAt": "2026-10-17T02:11:09.778Z",
+  "probeDeadlineReached": false
+}

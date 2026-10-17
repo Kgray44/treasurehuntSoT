@@ -14,6 +14,7 @@ retains its own task scope, ownership and evidence boundaries; older packets do
 not authorize restarting a completed phase.
 
 - [Automatic Product Experience Engineering workflow](product-experience-workflow.md)
+- [Crossdeck refit publication checkpoint](crossdeck-refit-checkpoint.md)
 - [Sounding Line capture lifecycle repair context](capture-lifecycle-repair.md)
 - [Sounding Line browser receipt diagnostic context](browser-receipt-diagnostics.md)
 - [Sounding Line replay failure diagnostic repair](replay-failure-diagnostics.md)

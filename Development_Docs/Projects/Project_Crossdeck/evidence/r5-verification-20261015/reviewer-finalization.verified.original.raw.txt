@@ -1,0 +1,51 @@
+{
+  "classification": "Actual immutable independent review6 verification; BLOCKED is preserved and is not authenticated acceptance",
+  "status": "BLOCKED_VERIFIED",
+  "finalizedAt": "2026-10-16T03:20:24.460978+00:00",
+  "reviewerContext": "/root/final_product_review_6",
+  "manifestSha256": "12227eeb5ecd07fb2fdf49d3d9abc44695a71465c97c172eef37b897f246c6b7",
+  "reviewsSha256": "5df4089fc8bfa13bf33b8f4935ab329b0b602b3bcbc25398033df9926b41473d",
+  "receiptSha256": "8d35577cb62400024bf41855673a98aaee50f077c15bbc0f03cfbdbc08ecd53a",
+  "sourceIdentity": {
+    "baseSha": "f935ab3efd6eb5943cdea8a08f65c9cf55c45d95",
+    "candidateSha": "6dcabd5401b22e606e13a2b92202d15f8e3176e1",
+    "candidateTree": "45ad546f23e0070c842589a95edd6c940532dbe5",
+    "sourceDigest": "36990c15e7d48386b4b213b103f91dc8e608e8b3638c50e878e002d50451ff4e",
+    "contractDigest": "4ee636786ea5b2fedd375c3567441f151caa668d98934b01e98161c4c88c44ec",
+    "r5Digest": "f7cc69e66e577c06cdd2f87ba10f99c98841c6172b08ca837e6a6a0da3cd3bd4",
+    "captureRunId": 38840988544,
+    "captureAttempt": 1,
+    "captureWholeConclusion": "SUCCESS",
+    "captureArtifactId": 12021599252,
+    "captureArtifactSha256": "53ec81bd7ddc6a3264bb4066681e4ee3d12bea8684a43bdadfafd512fa79c762",
+    "actualPreparationSha": "1aa1ade9330b83b9d789a3b15b1e1d4ac7a15446",
+    "installedCaptureProvenance": "PASS supplied by coordinator; origin/automated replay only"
+  },
+  "contracts": 7,
+  "acceptedContracts": 5,
+  "blockedContracts": 2,
+  "dimensions": 119,
+  "blockingEvidenceFindings": [
+    {
+      "id": "PE-R6-CROSSDECK-CONNECTION-EVIDENCE-01",
+      "contractId": "crossdeck.phase2.continuity",
+      "classification": "EVIDENCE_INSUFFICIENT",
+      "disposition": "BLOCK_WITH_EVIDENCE",
+      "requiredOutcome": "Fresh source-bound evidence of an authorized second screen claiming the contextual challenge, both screens confirming the same Voyage/edition, plus safe adverse joining/access/privacy recovery."
+    },
+    {
+      "id": "PE-R6-CROSSDECK-TRANSFER-EVIDENCE-01",
+      "contractId": "crossdeck.refit.companion",
+      "classification": "EVIDENCE_INSUFFICIENT",
+      "disposition": "BLOCK_WITH_EVIDENCE",
+      "requiredOutcome": "Fresh source-bound sender and receiver interaction evidence for meaningful content and honest offer/pending/acknowledged completion, together with safe refusal/interruption/recovery/privacy outcomes."
+    }
+  ],
+  "demonstratedProductDefects": 0,
+  "canonicalRejection": "PRODUCT_EXPERIENCE_EXCEPTION_NEW_BLOCKING_FINDING",
+  "originalArtifactAndJourneyArraysUnchanged": true,
+  "authenticatedSubmissions": 0,
+  "ordinaryDispatches": 0,
+  "ownerAcceptance": "NOT_CLAIMED",
+  "physicalNativeAcceptance": "NOT_CLAIMED"
+}

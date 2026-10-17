@@ -127,6 +127,7 @@ Implementation, contract validation, integration, visual completion, journey
 validation, readiness for walkthrough and PRODUCT_ACCEPTED remain separate.
 AI/browser qualification cannot grant owner acceptance or physical-device proof.
 
-See the [campaign evidence](Campaign_Evidence.md) and run
+See the [activation closure](Activation_Closure.md),
+[campaign evidence](Campaign_Evidence.md), and run
 `npm run experience:test`, `npm run experience:test:browser`, and the existing
 `npm run test:sounding-line` for focused regression.

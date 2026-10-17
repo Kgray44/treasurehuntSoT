@@ -1,0 +1,532 @@
+{
+  "classification": "CONSUMED_FAILED_R6_PREFLIGHT_ORIGINALS_NOT_ACCEPTANCE",
+  "status": "FAIL",
+  "executedBinding": {
+    "baseSha": "ed96ead50e31553b1779c08284b022047d5edd8d",
+    "candidateSha": "e46f0b7532daf14d6905aa4f143d2fbf8b583741",
+    "candidateTree": "159a7c163324e40e46bfb988c4dd317d1aae76ae",
+    "sourceDigest": "bd42aacf62c5dc90d0ebfdd7a446705dab77a3bc2b5784272fe3f7c5ece6ff46",
+    "contractDigest": "33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274",
+    "recordDigest": "11b5fef74f3944ea6cb95b6afdb29c8ec125deda1e3a8a1ebbdc83014b70e787"
+  },
+  "startedAt": "2026-10-16T07:15:45.283Z",
+  "completedAt": "2026-10-16T07:23:31.716Z",
+  "localProofInvocations": 1,
+  "childReplayInvocations": 1,
+  "reportStats": {
+    "startTime": "2026-10-16T07:22:18.461Z",
+    "duration": 73128.327,
+    "expected": 1,
+    "skipped": 1,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "caseAccounting": {
+    "normal": "FAILED_VISIBLE_COMPLETION_HEADING_ASSERTION_AFTER_CONTINUE_RESPONSE",
+    "reduced": "SKIPPED_BY_EXISTING_SERIAL_GROUP",
+    "adverse": "PASSED_WITH_ORIGINAL_WITNESS",
+    "executedCases": 2,
+    "retries": 0,
+    "aggregateCompletedCaseFields": null
+  },
+  "rawPartialFiles": 52,
+  "rawMedia": {
+    "png": 37,
+    "webm": 7,
+    "trace": 4
+  },
+  "originalFailureCategory": "PRODUCT_FAILURE",
+  "originalFailureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED",
+  "runtimeTimings": {
+    "serverPreparationMs": 18,
+    "serverReadinessMs": 2086,
+    "browserExecutionMs": 143380,
+    "infrastructureFailureWaitMs": 0,
+    "cleanupMs": 37
+  },
+  "cleanup": {
+    "browser": {
+      "status": "PASS",
+      "directExitObserved": true,
+      "exitCode": 1,
+      "signal": null,
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": false,
+      "payloadExitCode": 1,
+      "elapsedMs": 3,
+      "ownership": "WINDOWS_JOB_OBJECT"
+    },
+    "fixture": {
+      "status": "NOT_STARTED",
+      "treeReaped": true,
+      "streamsClosed": true
+    },
+    "server": {
+      "status": "PASS",
+      "directExitObserved": true,
+      "exitCode": 1,
+      "signal": null,
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": true,
+      "payloadExitCode": null,
+      "elapsedMs": 34,
+      "ownership": "WINDOWS_JOB_OBJECT"
+    },
+    "proxy": {
+      "status": "PASS"
+    },
+    "portsReleased": true,
+    "status": "PASS"
+  },
+  "markerOriginalSha256": "9a2e0afb99fd9f20c69e73a79ab1f5669ebb1327ea801fcc07296cc3386e81d6",
+  "originalMarkerRetained": true,
+  "postHeadingDatabaseAssertions": "NOT_EXECUTED",
+  "capture17": "NOT_STARTED",
+  "review7": "NOT_STARTED",
+  "authenticatedSubmission3": "NOT_STARTED",
+  "ordinary2": "NOT_STARTED",
+  "providerAcceptance": "NOT_CLAIMED",
+  "physicalOwnerAcceptance": "NOT_CLAIMED",
+  "entries": [
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/local-failed-runtime.original.raw.txt",
+      "sha256": "00631289fadd9e56ff13177a329e692d7f2a6170c9cf5f79ffa99275a3b4b110",
+      "gitBlob": "c24f9d9eabebefa7311efd10da1789261344835e",
+      "bytes": 1747,
+      "classification": "ORIGINAL_ENGINEERING_RECEIPT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/local-failed-profile.original.raw.txt",
+      "sha256": "6545594026dce8777f959836d03dc0b726260b035fedce08def856aea02b89e1",
+      "gitBlob": "63ad0e6efdb64a640b4f558bfe161e71c4f8da5c",
+      "bytes": 565,
+      "classification": "ORIGINAL_ENGINEERING_RECEIPT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/local-read-only-admission.original.raw.txt",
+      "sha256": "2cefece84ddf70cfb14b565747e59a68eba42456e1fe74b748410806d1fb50e9",
+      "gitBlob": "e1cc8f9384b13b20c0432951c121fff37b01ea8c",
+      "bytes": 3571,
+      "classification": "ORIGINAL_ENGINEERING_RECEIPT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/local-source-freeze.original.raw.txt",
+      "sha256": "e395bd94da738f2efd2c58b15570baa996e51e676eae43c4a2465a97dd8adf53",
+      "gitBlob": "9d2206b2b76c7ee97106f09298dcd5122bbe23ac",
+      "bytes": 2208,
+      "classification": "ORIGINAL_ENGINEERING_RECEIPT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/local-storage-samples.original.raw.txt",
+      "sha256": "a7591243a3d0ade4d955946ec7282db08814baaa59adfa7f359e5f7e82afed07",
+      "gitBlob": "3790ba9c1f7d6c044bbc194020d8e07161f2c7d2",
+      "bytes": 853,
+      "classification": "ORIGINAL_ENGINEERING_RECEIPT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/local-marker-observation.json",
+      "sha256": "45bdfbdd051d895514f199ab84238e94bd5036f9bbc15d8c1832dfd89eff8eb7",
+      "gitBlob": "002376052556335e4439475a77c1828f9e9ac35c",
+      "bytes": 3687,
+      "classification": "DERIVED_ENGINEERING_OBSERVATION"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/playwright-report.json",
+      "sha256": "caa5e9c7f09113c3f41ad50145eb683cd57858ada2dc3384acd70961359ea5e6",
+      "gitBlob": "c2f005c311e49b42d00bcec704864b6f0058a9c5",
+      "bytes": 12658,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/01-chronicle.png",
+      "sha256": "d4c7ddf72e42b777791d988a193253471088120c3856a373695de6b6b6f7c8ba",
+      "gitBlob": "d9f393cc3d1367b162c8fe4e2b63210fd5398ac4",
+      "bytes": 695814,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/02-connect-in-chronicle.png",
+      "sha256": "e57fa96815c8ea2b6d0a7ceeb69f74c447daead9aa33bd92c54a351edd73a821",
+      "gitBlob": "38f72fa68ba90a5a2380074b5f7b81e315624309",
+      "bytes": 206225,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/03-phone-sign-in.png",
+      "sha256": "33f761d2be8a5cf2338a9d4ab5c11146f75568d2a583c880dbd4213796bfc402",
+      "gitBlob": "39a92f32f186657cf85deb7eb6cc8a44225ed412",
+      "bytes": 49992,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/04-journal-companion.png",
+      "sha256": "94e2be19ae554963bf0baa19bfbc529e854dc7c95e0875b5c012a9b1ec17358a",
+      "gitBlob": "5ff768712ea92e20a1e1d4d5956e7676073534e3",
+      "bytes": 80051,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/04-phone-connected.png",
+      "sha256": "7f9ac853103f4b419259c4acb6adee584720e6e9363d621b9f9fe4fafa19005a",
+      "gitBlob": "6e0433787a9e9f2954cb5a4c158dcb97fa576e54",
+      "bytes": 198488,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/05-real-chronicle-lens.png",
+      "sha256": "0dacfc2774e65478f8d2d36e01a23942995858811d57154ae7148968e4c3103c",
+      "gitBlob": "96d76f9816f8e57cc5e81a0e7fecc6159821783c",
+      "bytes": 149228,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/06-dedicated-chart.png",
+      "sha256": "059d64d038c12d0ab4039d9caeb4a26e9d8172ffe16b39644775f24c308235d3",
+      "gitBlob": "7e08705386d8c9f4a6b12c91f1e7571f9aade35d",
+      "bytes": 62986,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/07-artifact.png",
+      "sha256": "fe88aa77d0762b0fa96db50449118c268700d82373eb2787d0a71c9633617765",
+      "gitBlob": "44d4e3137ca4e9af6a4f402d5774bf9c75681afe",
+      "bytes": 74560,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/08-letter.png",
+      "sha256": "54483dd591b6d5f9c980fc9c2f951178063627a0c42f2e5ba941994f084d4e35",
+      "gitBlob": "b8979f8475ae213a885d58ce974628f54dc35638",
+      "bytes": 132959,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/08172cf5510c6fd732c284b39b16edd8.webm",
+      "sha256": "a01f1f009bd152e43625d4f6a50e895c7e252d5a5a7cc2c7263d75293dbe4db8",
+      "gitBlob": "43ed6e464b95f8e038d72a0b6e9cf3f072d5e42e",
+      "bytes": 1382,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/09-receive-offer.png",
+      "sha256": "fcc2c1394c5faaf00415ad92957f16264b723f82550f62d867d97d8d6c1c388a",
+      "gitBlob": "de65fb7f42e773695c094b41e0c76a863be27370",
+      "bytes": 139700,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/09-transfer-pending.png",
+      "sha256": "2235b25ad080be45b20082eb311d44a0baf77c51d7fd2cd0566303c43c0bb070",
+      "gitBlob": "d7a50822580cfe5ec21d617fc3fbf2cc6a2d71ac",
+      "bytes": 816717,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/10-chart-received.png",
+      "sha256": "7a5c747cfe181207ec9d9d70d4c23090c1cdc694078fe32b528a1964decd4a13",
+      "gitBlob": "0e2b3a977fc3369791237c0a2610012551060000",
+      "bytes": 62606,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/10-delivery-acknowledged.png",
+      "sha256": "187351293a2eb1ae8b32050217ac1673446838309f281194e54089b13fc11787",
+      "gitBlob": "1a13002f1f669692fec638740fc8f08d519a1655",
+      "bytes": 833143,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/11-offline.png",
+      "sha256": "e1a848646d7f564d0b48117d23480eac4c6834a115a1c9e331ff1fe433837ab7",
+      "gitBlob": "c77db13e84bdcd786734a383ff0406e6c87a17ad",
+      "bytes": 65409,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/12-reconnected.png",
+      "sha256": "7a5c747cfe181207ec9d9d70d4c23090c1cdc694078fe32b528a1964decd4a13",
+      "gitBlob": "0e2b3a977fc3369791237c0a2610012551060000",
+      "bytes": 62606,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/13-recovered-chart.png",
+      "sha256": "cd88ea8fbb44f641bcdbb88dc285bfdd355fa62457b5cbf572dd3a78ef4017e7",
+      "gitBlob": "153066c55d9e8ffbef3df35524ce4bdd1a32d91b",
+      "bytes": 810258,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/14-medium-chronicle.png",
+      "sha256": "a19b499e1c0c4c43add868d119694ec70e19bbcba58a059d41bec6c29b9902c2",
+      "gitBlob": "4f2737533babbd3cf57e440797854bd2afce5b45",
+      "bytes": 517208,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/15-phone-landscape.png",
+      "sha256": "79d56485b839af2759113d0df400f0f86bb108e600dd5ecb600c69c9f52145b9",
+      "gitBlob": "8d6e87c3fe15bca4028dcc84c1d67e7b3bf4a4ac",
+      "bytes": 77983,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/16-return-to-chronicle.png",
+      "sha256": "d13db51ff8e92d83e92b255ca132c53533c3e14b15bcc6d158e1527817912042",
+      "gitBlob": "a7435598cc605468c675fb4afa0c5d326a550ace",
+      "bytes": 238573,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/77517019d5c2354f2117827ec67e157d.webm",
+      "sha256": "2c618de76e37931549cefccef2414c18b310f3a18d10f8906e8bec6627b2a651",
+      "gitBlob": "9b9fb316e888dd21be6bd8e08a1cb9ea8a74eb3e",
+      "bytes": 2060545,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/c36fa7ec7d15eb79ade6b944fbd5ff81.webm",
+      "sha256": "18c3c788cff35741df6a60c4ef066df4c07504121774aebe5161f30eb3becf64",
+      "gitBlob": "f6f02f933f6b891500c2400fa68de15098b41e3b",
+      "bytes": 1941608,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/dd2f837ea0a2aead0c9bf932034c4120.webm",
+      "sha256": "debf4725f095a47531474471c2af78b8650c4b94e9908c49ece717c58aafeff9",
+      "gitBlob": "30cdb05989c1a520d7b5f71a113eed7f2bc02a9a",
+      "bytes": 1194,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/desktop-trace.zip",
+      "sha256": "3bbcaac5d98489aa611303dd1afbcd6814e73b2fcf5735509c779e43a05a82bd",
+      "gitBlob": "9846f6399cf353ce198b090536b524b0b121369c",
+      "bytes": 8660074,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/f1097c74ea052e2c1fabc56c759b2c7c.webm",
+      "sha256": "3f77285421e218ad94d9012b808cf2e2257919db1c6d6213878a920bffbeb5bd",
+      "gitBlob": "c488c33f1d48dad580e5e5a659b0a29240c03ae2",
+      "bytes": 1450,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/failed-desktop.png",
+      "sha256": "2bcc30cf94d09bee579bc435cacc250b1f5c34e03ba23fb0b4f9cb3c311d3afe",
+      "gitBlob": "148f689288e1efe46e49af9f20793eab0f25e6f4",
+      "bytes": 678503,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/failed-phone.png",
+      "sha256": "76e0392379cb3654ee614d3f2952ef7e594cf6b93c9ac57ec0fccf7ce15f192a",
+      "gitBlob": "c4fca8d626b0c8756b06a3bdd6df535890d3d59a",
+      "bytes": 232007,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/failed-phone.txt",
+      "sha256": "f1ff03242ac5101c8de371ee8318d9153163189dcace738a08b0e68aa0fadbe6",
+      "gitBlob": "d739f9fb9e912745ec54cdd83500ab425fb718ef",
+      "bytes": 2349,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/phone-trace.zip",
+      "sha256": "4fc236761deaa05745d03d9b236e92490df05a673dd7aee682966435628db3fa",
+      "gitBlob": "2c3f6a362948ae3b527518ac058b3ae04f8f446c",
+      "bytes": 6555400,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-recovery/01-pairing-before-cancel.png",
+      "sha256": "d0ea7cb4dc2754a2d6758f364fae4745e74bf1c9324b823923e5bc3f59ea4e15",
+      "gitBlob": "af1499eea9dc6f03deda934b6e562f7234987e65",
+      "bytes": 211021,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-recovery/02-expired-code-refused.png",
+      "sha256": "9c18bbf8b105c4766266f1606755648bccfb25ccd59c6de220372f4f5f0dbcff",
+      "gitBlob": "ced69df92167a7415cfbfd650fc86e09d4f7f8d1",
+      "bytes": 55737,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-recovery/02-paired-phone.png",
+      "sha256": "7d98acb8394818c5c108f7822e8a7be2c72bfbd4b6ff1452253a77523117a9f6",
+      "gitBlob": "f85cafd81f672cb68aeaa01766a2b7fde0262234",
+      "bytes": 80609,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-recovery/02-phone-connected.png",
+      "sha256": "74e59f47d286e9afef6f29048c96f084ec6ee2e1514922c043bbcae8ac8a5a83",
+      "gitBlob": "80b1e5b1792180c39df9af91e5c254cb70724ddc",
+      "bytes": 198507,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-recovery/03-unavailable-purposes.png",
+      "sha256": "2d5495e730e400b3cb788763746ff87cf77019d6717252d0f96849d1593391d4",
+      "gitBlob": "217adcf9a45af5649b6488738a8e25d4f4ebb8d5",
+      "bytes": 77851,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-recovery/04-private-note-confirmation.png",
+      "sha256": "41794dd9a09bfb254f0c15724cb74341079a112b8a69f4714d7c7220cc1cc9a7",
+      "gitBlob": "207594e46e22be6a6baa40a693aeee69cedf3e5e",
+      "bytes": 60328,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-recovery/04e7bba5f71b65137b7366c5585610b8.webm",
+      "sha256": "2a0d9617fe517cb2540c5dc561c87462b9aeecbfe569a3d33f571a5006196e0c",
+      "gitBlob": "094bf6295b22c135d1b442dad62f252360ef3679",
+      "bytes": 1311426,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-recovery/05-canceled-transfer.png",
+      "sha256": "01494c7186d24a05ab913da868b5692fd7cce7e91817bb2c54b9397f9f5b9af8",
+      "gitBlob": "cee794fc55a0f353e7ea1b2d5c57a81a5010db5a",
+      "bytes": 143622,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-recovery/06-declined-transfer.png",
+      "sha256": "55ea9dd78dc5109dbc98bc1b1d160808396a0a35d142a54faeccf7d62496fbbb",
+      "gitBlob": "a9e20f3c1159f6e6b16bfb1600a3fedd894aa129",
+      "bytes": 698418,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-recovery/07-shared-empty-state.png",
+      "sha256": "0bbdc55d1648c72a8534d9348fa61db0ff54692863213a8e4fd5872f1ab24a53",
+      "gitBlob": "27572e7232f956e2f9ffbc0f3ded5aca5ba83762",
+      "bytes": 73499,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-recovery/08-crew-receive-pending.png",
+      "sha256": "4c4d1c0bdc051f22f30d701be49b46b5de3a08f2d9f9b6114eb55d1f9d0fe720",
+      "gitBlob": "7e0f4d3eb7d87d06241fbb40d02bb9a5ad3565be",
+      "bytes": 70225,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-recovery/08-crew-transfer-pending.png",
+      "sha256": "cb31e0f0737bbf6975b045eb96cb6a9f19eb7a7364c78fa4335a871bbcc63f94",
+      "gitBlob": "a88c8ab24b41765c74662fc87c6e7e62d6f54575",
+      "bytes": 816546,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-recovery/08-send-authorized-crew-chart.png",
+      "sha256": "fb3a27562d3b952104d2795f44e4239bc9a8d9e1db076d77d821fa80eee5861a",
+      "gitBlob": "6e96578a17b225c2588e3ff164e15de964ed3c71",
+      "bytes": 212801,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-recovery/09-crew-delivery-acknowledged.png",
+      "sha256": "82a12ca5d8773f6db4dd28922db85e7c1c9fdce17ad806c57bf9408bf5a16635",
+      "gitBlob": "a2c839073d73db791ac383fd9c0ea451b1fbce75",
+      "bytes": 833149,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-recovery/09-restricted-crew-chart-received.png",
+      "sha256": "76f33b3eb2eabef54d6610f7228f37414d18e155e790f05e7af867dee3be3df1",
+      "gitBlob": "7e42e5feac642b101d0a9b1602da7d1afde4d15d",
+      "bytes": 67836,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-recovery/10-authorized-personal-return.png",
+      "sha256": "adad59aed299447b4b58fe946ccce9587d9ac2b8789555708c7995537c716ccd",
+      "gitBlob": "8f0631fcf55daa529ab6d86a5f840d558339870c",
+      "bytes": 132516,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-recovery/11-current-surface-revoked.png",
+      "sha256": "c2a8ccb04b0238df8095f02b2934066b4c2dc7193ae614517d9725922bb85cdd",
+      "gitBlob": "e6fd84b916d39c6d2fd33893cdf5060291c501b6",
+      "bytes": 67959,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-recovery/724fcb0ae3798e6d922765212f1192fd.webm",
+      "sha256": "c2bbd56c8e1873a06f127d153c1914f658fc52d60cefcfa4cced5887184e60f5",
+      "gitBlob": "911bec68d77d015b1095f3664fbb566bce793557",
+      "bytes": 1862606,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-recovery/desktop-trace.zip",
+      "sha256": "ec15b0bc3353c536f10bb0cd722c7b82bd75bc8ae97bbe55a606d759514147e5",
+      "gitBlob": "cf628af369a8d700abb31f6b97badefc8244e218",
+      "bytes": 6026340,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-recovery/observations.json",
+      "sha256": "240880feb6d8587796b7b59ed82fc7dac38b556788ea9e375b8c0b972487f0cd",
+      "gitBlob": "d2dd59f20aa335e0be2d1938d63b4313fb5dfed6",
+      "bytes": 2163,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-recovery/paired-witness.json",
+      "sha256": "bf614ae31a17744cef246828a9aa9e70867833bf755ff3d537f594b373df1f3a",
+      "gitBlob": "e2504e1a85a28937ebb7616a1dc58cdf57bb4a41",
+      "bytes": 4466,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-execution/generic/paired/refit-recovery/phone-trace.zip",
+      "sha256": "b67f43b15eab77e459786d03131b7da9dfa43188945e2284856f2496945c7f24",
+      "gitBlob": "8f906d56b916e5f689dd874b1b8082df7f0f59da",
+      "bytes": 3826931,
+      "classification": "ORIGINAL_PARTIAL_FAILED_PREFLIGHT_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/paired-local-proof.json",
+      "sha256": "35f1426d1968653ef671017b63404346907bb657751ddf013bafe01eafd72b42",
+      "gitBlob": "56b52e18a39a2bc81d4e5da64cebd7d0e7f17089",
+      "bytes": 5082,
+      "classification": "ORIGINAL_CANONICAL_FAILED_LOCAL_RECEIPT"
+    }
+  ],
+  "originalExternalOutputs": [
+    {
+      "name": "local-paired-run.stdout.original.log",
+      "sha256": "15ccd36c6c44a9a92c424a22cb6c76ab7bde6d2a6fecdb868ffca4209a902481",
+      "bytes": 22509,
+      "storage": "ORIGINAL_RETAINED_IN_TASK_OWNED_D_ARTIFACTS",
+      "published": false
+    },
+    {
+      "name": "local-paired-run.stderr.original.log",
+      "sha256": "70be0b66610fa6e138a7c42753a7cf48acd2e7c0742287acc050fcf1b6d38be4",
+      "bytes": 24080,
+      "storage": "ORIGINAL_RETAINED_IN_TASK_OWNED_D_ARTIFACTS",
+      "published": false
+    },
+    {
+      "name": "local-paired-run.intent.json",
+      "sha256": "2f9a235bc912523dc32707951df5a6dfbf277cc8de0f2a068dff49a5d4cfbbd8",
+      "bytes": 654,
+      "storage": "ORIGINAL_RETAINED_IN_TASK_OWNED_D_ARTIFACTS",
+      "published": false
+    }
+  ],
+  "formattingConflict": "Original canonical proof/report/witness JSON fail ordinary Prettier; not reformatted; classification correction pending",
+  "recordedAt": "2026-10-16T07:42:35.964Z"
+}

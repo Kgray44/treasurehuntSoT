@@ -1,0 +1,35 @@
+{
+  "classification": "CURRENT_BASE_SOURCE_BOUND_STORAGE_NO_RUNTIME_EXECUTION",
+  "baseSha": "ed96ead50e31553b1779c08284b022047d5edd8d",
+  "candidateSha": "e46f0b7532daf14d6905aa4f143d2fbf8b583741",
+  "status": "PASS_TWO_SOURCE_BOUND_SAMPLES_ABOVE_STORAGE_FLOORS",
+  "samples": [
+    {
+      "recordedAt": "2026-10-16T07:06:48.0236905Z",
+      "volumes": [
+        {
+          "DriveLetter": "D",
+          "SizeRemaining": 78301970432
+        },
+        {
+          "DriveLetter": "C",
+          "SizeRemaining": 42451673088
+        }
+      ]
+    },
+    {
+      "recordedAt": "2026-10-16T07:12:24.668Z",
+      "volumes": [
+        {
+          "DriveLetter": "C",
+          "SizeRemaining": 42450219008
+        },
+        {
+          "DriveLetter": "D",
+          "SizeRemaining": 78301962240
+        }
+      ]
+    }
+  ],
+  "intervalSeconds": 336.645
+}

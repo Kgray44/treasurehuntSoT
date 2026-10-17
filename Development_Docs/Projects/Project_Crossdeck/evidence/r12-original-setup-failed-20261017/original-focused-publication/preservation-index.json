@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "stage": "original",
+  "files": [
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-verification-20261017/focused-technical/original/browser-suite-profile.json",
+      "sha256": "6d906c2d0320c4727f257b8a7e93f6c9fea893006cc50ad20d22e9608cc34bff"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-verification-20261017/focused-technical/original/launch-marker.json",
+      "sha256": "86ec9038392837f4dca639a4b0d6f5e0d58b267b894bdf796013d18cf795c238"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-verification-20261017/focused-technical/original/marker.json",
+      "sha256": "6fdb259876c45b0ea3c9c23ceff177dbb1fa9f00c58b7bf5721bb35ce2e0a803"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-verification-20261017/focused-technical/original/receipt.json",
+      "sha256": "521f8d93eb65ddccc8149e4aff8f95e4e7df7590b649d406e345f61df9d9a34d"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-verification-20261017/focused-technical/original/source-manifest.json",
+      "sha256": "c761bc1062745a4465f78b79125ee858b27130f4131f89b88d4eeee778635027"
+    }
+  ]
+}

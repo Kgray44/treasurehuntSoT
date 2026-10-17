@@ -1,0 +1,15 @@
+{
+  "classification": "Draft publication only; synchronize must skip all four jobs",
+  "status": "PUBLISHED_EXACT_DRAFT_WAIT_ALL_FOUR_SKIPPED",
+  "candidateSha": "6dcabd5401b22e606e13a2b92202d15f8e3176e1",
+  "baseSha": "f935ab3efd6eb5943cdea8a08f65c9cf55c45d95",
+  "startedAt": "2026-10-16T02:25:25.132Z",
+  "manualWorkflowDispatches": 0,
+  "localHelperTimedOut": true,
+  "originalPushEventuallyPublished": true,
+  "gitPushInvocations": 1,
+  "pushReplayed": false,
+  "verifiedAt": "2026-10-16T02:29:54.609Z",
+  "pullRequestBaseSnapshot": "f935ab3efd6eb5943cdea8a08f65c9cf55c45d95",
+  "actualRemoteBase": "f935ab3efd6eb5943cdea8a08f65c9cf55c45d95"
+}
