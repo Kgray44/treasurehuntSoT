@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "baseSha": "56b700bc2a45bee3ef2cdb5416439bae964f2233",
-  "sourceDigest": "a02784c3df8a98e9613a3711659c8dc0b44fa2936b32c3b009b1e3735d0462ae",
-  "contractDigest": "3b96787fb1b9ef58b92717cf6559217899697fe876edddc7f3b0f7731eeab9d9",
+  "baseSha": "6381fb812ab2c00a60ea8c296256b9a0f5ae5b47",
+  "sourceDigest": "bb6176ebcd887a881b54773d76d7942cc266542142dfee09da44bd9021f39119",
+  "contractDigest": "079febd69a99c2506920afddcd7dc4eaeb6780b9f1a80f6b59f24f1872c529d9",
   "ownerAcceptance": "NOT_CLAIMED",
   "artifacts": [
     {
@@ -68,7 +68,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-VALIDATION-30",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-VALIDATION-30.png",
-      "sha256": "7d923cd762302313aff0291118e051446c9ff374a2464214870bec01970e8cae",
+      "sha256": "a640d50d9cd83ada64b2ef173ec4abb3d5ac8b1a9d8f6f45cae633b0a2c6d642",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -80,7 +80,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RESULTS-40",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RESULTS-40.png",
-      "sha256": "07799dc8158607e5addcb5194f0a03978866f746fbf3a8baca6d84f9ad9cf1a2",
+      "sha256": "5d1b9c9af941c845ecdeb698b48c5d2454330d5ddb3533cea01927d3db7a22e1",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -92,7 +92,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-PLAYGROUND-42",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-PLAYGROUND-42.png",
-      "sha256": "6093f7ff9b34ad0182db7b30bfc2c825fba2d9f2bcbd927528258354c86c59d1",
+      "sha256": "3c2d10d945b82de02278f8f392f2644ef76f135baac89993bf20afb59f203189",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -104,7 +104,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-MULTIPLE_HANDS-49",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-MULTIPLE_HANDS-49.png",
-      "sha256": "8f0dda037dbdfc1d717f4640d3e2472758368e853c49d1566cbdc904dabfb4bf",
+      "sha256": "613c9a46eb0cf6ea5d6a8bc4ac8d90c45be229c42c0ce078a7ddf6f919a9145a",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -116,7 +116,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55.png",
-      "sha256": "11354353d25ea52a37e53e52cb05a728abd24d94feaa2277489c2ef12ec7a92c",
+      "sha256": "cf424ae560044d46243848a69ddb9cec3bd71ec74a7981bc6fc62695e73123dd",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -128,7 +128,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-57",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-57.png",
-      "sha256": "93bb298ae6e13c24d8d08d057d1917aa7f7746f4dd0a70b53a26688f95a3d7d1",
+      "sha256": "8daf084fcbad019cfb6b565c408d24e631c2cc1112008a58d3e1f5e9f23ec975",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -140,7 +140,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL.trace.zip",
-      "sha256": "9bbdd66ecda7511ec1d3072f2471f0155a26aea973625083f6652238cc06324a",
+      "sha256": "6432857ddbb38bf3ecdc5bb9121d14f4fb79158ee8f8997e92efd499227cde25",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -150,8 +150,8 @@
     },
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/209b957b39f869b5aecad4b1ab782314.webm",
-      "sha256": "b6de634d5781fb75b2675f32a62bf49a8cb5de9b17c18ddb987bce8651e5ac20",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/d5bda3cbc34dbcb410b963d12046a109.webm",
+      "sha256": "6fe40714c500c358db13505916d09f593a25a2f7c483252b3e1ba31f19897f58",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -162,7 +162,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-WELCOME-1",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-WELCOME-1.png",
-      "sha256": "a49f98d57841fb4e903891737ebbe12883c5f20c75dcf5fe36c3663de9030e8d",
+      "sha256": "694cd536cba7eaf400ef960bc84ace27cf70e6cdede1af6fb9ce1b5b2ca457ef",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -198,7 +198,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-PAUSED-9",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-PAUSED-9.png",
-      "sha256": "0f6f8de008d003269346d4ca86215d968300b0c3e6c95c742bf7029ec6a1f3b2",
+      "sha256": "f5055a836adba291adc8e1ae7bf5b810a714e056465cbbe43db934a3c97ab852",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -234,7 +234,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-RESULTS-40",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-RESULTS-40.png",
-      "sha256": "8b61d2d1cb01466559fb07ca3e2f4c5056e12e9e3a4fdccbb4b439ef971c9562",
+      "sha256": "11980b938bcfc04bead9a37f595ba741616aa7b36dfce71db93ab7d6af197602",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -246,7 +246,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-PLAYGROUND-42",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-PLAYGROUND-42.png",
-      "sha256": "13232326f9f6dafb484644c7cd45efc2876b5f0d578969bde69bfddcffe946d5",
+      "sha256": "2e089136ad4380b8099168ae3262abafbc1a7fb646c50d8b736a3314a8fb76d4",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -258,7 +258,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-MULTIPLE_HANDS-49",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-MULTIPLE_HANDS-49.png",
-      "sha256": "28a82c21ef6f1be7ee5b63af0d0505192a45ac75f89e8dae4d03336732ab0ba9",
+      "sha256": "8f0dda037dbdfc1d717f4640d3e2472758368e853c49d1566cbdc904dabfb4bf",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -270,7 +270,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-DETECTED_INELIGIBLE-55",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-DETECTED_INELIGIBLE-55.png",
-      "sha256": "361f0630ab224adfdbee519f440c50e29e2e092bb3b5e3777ed6feba9525c7ed",
+      "sha256": "88e634982a5991de8735215fc513b6cc210ad32c76c85ce5e2c8988c70f6a1fd",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -282,7 +282,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-57",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-57.png",
-      "sha256": "93bb298ae6e13c24d8d08d057d1917aa7f7746f4dd0a70b53a26688f95a3d7d1",
+      "sha256": "8daf084fcbad019cfb6b565c408d24e631c2cc1112008a58d3e1f5e9f23ec975",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -294,7 +294,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED.trace.zip",
-      "sha256": "1b2cdb0aea427c7cfa184bf0413bb637b2f8a18c773e01c78a2620c70e155a35",
+      "sha256": "776d9e86fbd6453a70f5b1b59a682248dbfb2ad964d2d0037be22154dabda7a9",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -304,8 +304,8 @@
     },
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/486c1d63de5fe92c23de7d554401c0b3.webm",
-      "sha256": "a52df792a05d3bdbadad391be99ded2783a88c251753b34477f39014250eda79",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/fb95984fb8bd0964be789c188bbb6ed3.webm",
+      "sha256": "cce32a4d69f1a23cd5c1126eb77e58899dd4818bba5f7d32cf0609f5c950ba62",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -340,7 +340,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_TRAINING-5",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_TRAINING-5.png",
-      "sha256": "589cd8bfdc74b2fa8d0804e9e75f2f75c895e5c2fc0e11c1df4cff772bf13a20",
+      "sha256": "62f040f81e6e0f6a919e8f399d2335fa6eb7b60f28ee822c6b2db2d9a6823f91",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -352,7 +352,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_VALIDATION-17",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_VALIDATION-17.png",
-      "sha256": "ace2be01513c9bce1008e5e9d9061b364398c79572ad07b56d153c238f0618fa",
+      "sha256": "448ab9a4eb00b999436f93a35606052e4e798117f1e7d61e150a6bb9530e5aee",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -364,7 +364,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_RESULTS-27",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_RESULTS-27.png",
-      "sha256": "fd034a488da6149c5687dc7fd4121c869d2bd5fc9bbbf2ed8cd4393e9280acbb",
+      "sha256": "ba109baf6141f2b63505e0f8e147a2ce4ddde66459037ed9e763e275a168107d",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -376,7 +376,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RETURNED-31",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RETURNED-31.png",
-      "sha256": "93bb298ae6e13c24d8d08d057d1917aa7f7746f4dd0a70b53a26688f95a3d7d1",
+      "sha256": "8daf084fcbad019cfb6b565c408d24e631c2cc1112008a58d3e1f5e9f23ec975",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -388,7 +388,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL.trace.zip",
-      "sha256": "2cec09bd8d7b7e4a09541db0ed594b4ed739d036060f9b7e2c196862207b58b6",
+      "sha256": "a222c0ad756f461c13e25bd00c6986f855ae94c46eff2dc3c4c5a6beec756e28",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -398,8 +398,8 @@
     },
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/a85a38ad55328151b65853e05b59e3ba.webm",
-      "sha256": "1e7337554164f3bdc3ef7d57fd05ef149cdcf6b0dd6c53ed05a8813ea1855e47",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/111a23ab61ca3b3a6a276f73c0b72536.webm",
+      "sha256": "af653dc43bd6bd75c6124add609a850c387127d89387f9cc35643876e5141686",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -434,7 +434,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-RELATIVE_TRAINING-5",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-RELATIVE_TRAINING-5.png",
-      "sha256": "589cd8bfdc74b2fa8d0804e9e75f2f75c895e5c2fc0e11c1df4cff772bf13a20",
+      "sha256": "62f040f81e6e0f6a919e8f399d2335fa6eb7b60f28ee822c6b2db2d9a6823f91",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -446,7 +446,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-RELATIVE_VALIDATION-17",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-RELATIVE_VALIDATION-17.png",
-      "sha256": "c9f26330142e59b5850491a4ac039f4c7f55c82a322630ed357528a86632ee62",
+      "sha256": "f5ca1c71395223c930cee09e97c0f8c8834c74109df926743f0ad580bab8ca7f",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -458,7 +458,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-RELATIVE_RESULTS-27",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-RELATIVE_RESULTS-27.png",
-      "sha256": "fd034a488da6149c5687dc7fd4121c869d2bd5fc9bbbf2ed8cd4393e9280acbb",
+      "sha256": "d47a96abd71bb2524ea6ddab0a66e15b241687381f976b7b2ee966d9cb6b3de0",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -470,7 +470,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-RETURNED-31",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-RETURNED-31.png",
-      "sha256": "93bb298ae6e13c24d8d08d057d1917aa7f7746f4dd0a70b53a26688f95a3d7d1",
+      "sha256": "8daf084fcbad019cfb6b565c408d24e631c2cc1112008a58d3e1f5e9f23ec975",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -482,7 +482,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED.trace.zip",
-      "sha256": "a3296fe59cb62f6de622bf55c1df543320abdd1cc2650c479ad83517c069ae43",
+      "sha256": "d1f31fa42393fa04a2457219b39c6d72533611c9ebf22fbcb12e3c87d5fa3078",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -492,8 +492,8 @@
     },
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/b70bea371492820d12d2844123757ba1.webm",
-      "sha256": "4f46a7b34766ed0b04e4cbb422f73b658cdafd6c47c3697b89e03f77ac71b746",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/7c3050f7d970215bf987c6776eae55b2.webm",
+      "sha256": "7704eb4d8aed5435926b20cfa7fbc8b3dca7bb41d527522d8cacb0ee58c5c462",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -528,7 +528,7 @@
     {
       "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-TRACKING-5",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-TRACKING-5.png",
-      "sha256": "59f921134e7fdb3b92f7c0f96e199228a12e71456e28c0ff0840cca3e5c35cbd",
+      "sha256": "bcf9ef7dcf810c3abdc553ec2f68bf5f1045b826c6d77c38d230fa47fec6c4a3",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -540,7 +540,7 @@
     {
       "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-7",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-7.png",
-      "sha256": "93bb298ae6e13c24d8d08d057d1917aa7f7746f4dd0a70b53a26688f95a3d7d1",
+      "sha256": "8daf084fcbad019cfb6b565c408d24e631c2cc1112008a58d3e1f5e9f23ec975",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -552,7 +552,7 @@
     {
       "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL.trace.zip",
-      "sha256": "fb1280dc11e5735ebc6053e16f0defd31bfc3c6eb39c392712bc49917af75335",
+      "sha256": "b06ad5d85c68810cb264d44c05047eeb2fc136c88a8016ca5de8b24bb77c4dca",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -562,8 +562,8 @@
     },
     {
       "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/0f859e0dabc79b1e3500a6657db34572.webm",
-      "sha256": "920e4937b724c0d42abb51d450333ca57c717874b02fcd89ffb8b8f1fd96afd8",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/cf8a4d7995fbaa128218bdf04db17d91.webm",
+      "sha256": "545babdb79965bda8d975c751cd1ebbd9ea28c24244ae7087ef15886e456e69c",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -610,7 +610,7 @@
     {
       "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-7",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-7.png",
-      "sha256": "93bb298ae6e13c24d8d08d057d1917aa7f7746f4dd0a70b53a26688f95a3d7d1",
+      "sha256": "8daf084fcbad019cfb6b565c408d24e631c2cc1112008a58d3e1f5e9f23ec975",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -622,7 +622,7 @@
     {
       "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED.trace.zip",
-      "sha256": "93fcc11c0f8d8bfb40d5832d95e0ae66cb444ca67d0a5e0e10854758e5a5c3e0",
+      "sha256": "fee711852eb0bd314db57b69a6c528e129a79ab2ec383d977cc2749df936fb7b",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -632,8 +632,8 @@
     },
     {
       "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/f5165631e82d3f336671ff0ad12d3292.webm",
-      "sha256": "b1649bc3ef3cdfa7002cdd1b540cdbb926f022e4641fe64b69aa37786a8502f6",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/9f85ab80bb1722fc4954460c74f75e43.webm",
+      "sha256": "1feb67038dd29128902997d18ae387246c48fa6f4db50d4633e722866ca38d8b",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -704,7 +704,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-VALIDATION-30",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-VALIDATION-30.png",
-      "sha256": "834d7098578ba200a9b3b182e5f98df0b929c58c141083e5fda85647b68975ef",
+      "sha256": "94bf43f1f8ca5ab31e7645904f48898730af57f7958d0d8ef63588561453b551",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -716,7 +716,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RESULTS-40",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RESULTS-40.png",
-      "sha256": "e0e85ee75c7f0db1c854a3e40cbe74b7a47e5edc92bd1046d5e5721babc344b5",
+      "sha256": "b974aea2dd57788702ea004252ebc8a5b2f9ff976377546d1d24e03589c0aea8",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -728,7 +728,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-PLAYGROUND-42",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-PLAYGROUND-42.png",
-      "sha256": "c19c67501f65e2de961dae3cdc5a42572ee2250a35e74ef3cdf0ceace638cdc7",
+      "sha256": "d2eece7f0bdbc1e62e551d0d592d9dec833395e1b0e01b5dafb4f91f16e58cf6",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -740,7 +740,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-MULTIPLE_HANDS-49",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-MULTIPLE_HANDS-49.png",
-      "sha256": "1f5774c206a22ad981023550c2999aa1cf769253eda9e95c9f0076523a2d6033",
+      "sha256": "24afc63e8f74d2bbace1052be73d05be243b908a559f66458fa5fb8278931bfa",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -752,7 +752,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55.png",
-      "sha256": "cddc281748e26b819c25d0d1e546909896186b804c68f503169f28b6a0216b48",
+      "sha256": "d370c4cdf46ad75121c176442eba9cca01c25e65786977e9ab3d3d02c4e744cf",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -764,7 +764,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-57",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-57.png",
-      "sha256": "68a7438cf0ae609910728682af208f3efd5b788b69331e647ccb1c916647b40a",
+      "sha256": "41adee1b0b68161f05a0580e2c84f717544ec3cb42a9108beedcf8690e306f73",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -776,7 +776,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL.trace.zip",
-      "sha256": "6e4ee19898b7d1a475ed9b6227bd167b96fceaca3e414c059b8ac0fbf9e4d62f",
+      "sha256": "0b09ee9fc6ccd69d5c8eacf6221fe5ceee7ede39cea5f9df0ae3996181df209e",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -786,8 +786,8 @@
     },
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/a370bae42bca5e82b62bc7d5824e962c.webm",
-      "sha256": "dde59a7439094c4f6964a7984707c489e8f464a79e1deeadfdb4797973e47456",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/354a25c1add3760cde3120c7877a5772.webm",
+      "sha256": "0c3a7f262a2f641c68de388c3232764dbd644c44aad194140a3d04e7c7ec8686",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -834,7 +834,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-PAUSED-9",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-PAUSED-9.png",
-      "sha256": "b69acd94a9d548e87dee8289c1333607c1169a0998f8952f9a212cb6ab1bdf20",
+      "sha256": "80d5a44eeeda16227363f516f6499d9025d9caeaab2cbedfc6ee630f879f1573",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -870,7 +870,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-RESULTS-40",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-RESULTS-40.png",
-      "sha256": "bf1d733c709c5320b0feeff08ef4fb5a30d769d22474bf3cf5a5b03b1963ea64",
+      "sha256": "7a3ce92f512d46da102c2e882347b467c7adc0df8c77c5ff5e962d108d86d2fa",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -882,7 +882,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-PLAYGROUND-42",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-PLAYGROUND-42.png",
-      "sha256": "dd1143b0ec28c6aefb023702255a09a788054cf9c24f5375efe61edac4bf88f6",
+      "sha256": "22eae17fe0be5b102da77f3764e143bcc6a448e17e70d12dd62cbf21f4a8fae0",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -894,7 +894,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-MULTIPLE_HANDS-49",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-MULTIPLE_HANDS-49.png",
-      "sha256": "4181a2afe6b64b73abec28753dcbfbafc5bc204579158c33602fc7cdebaad291",
+      "sha256": "5b7f92ed59df5991e646b0a26c0787db40a1b379173c43c894d4bbfa62810ad0",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -906,7 +906,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-DETECTED_INELIGIBLE-55",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-DETECTED_INELIGIBLE-55.png",
-      "sha256": "d83199d9aac83b4887cd4b938e2c4bab5b712c394a357b37ce81234a899c9f4a",
+      "sha256": "8cfec711c2b214bf1a5c0930843ed8971f529ecb231b16fec95f53aed3fee8f5",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -918,7 +918,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-57",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-57.png",
-      "sha256": "68a7438cf0ae609910728682af208f3efd5b788b69331e647ccb1c916647b40a",
+      "sha256": "41adee1b0b68161f05a0580e2c84f717544ec3cb42a9108beedcf8690e306f73",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -930,7 +930,7 @@
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED.trace.zip",
-      "sha256": "62cd905253e598ed61b5aa06f1bac4c08a73e7a91daee4c42b7a13838acbe63c",
+      "sha256": "f09a7ae43c721d34fa96f7e2a1ceb80b61ded3a4a8bec9a807d7386f305fdb64",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -940,8 +940,8 @@
     },
     {
       "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/c10b96bd64bf8ff5a15c3b0f851bcaff.webm",
-      "sha256": "3807cba65dbd1ada8c7dcb738b3c3ed2f664644ddf393cbf4e1d18298c0a9867",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/842a2ce005c87aa5ab6d78767bac368c.webm",
+      "sha256": "99127f71460503fd4272ef38b40349064f0a0b6d66854d72d1645286cd87df8a",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1000,7 +1000,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RELATIVE_RESULTS-27",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RELATIVE_RESULTS-27.png",
-      "sha256": "12a6e7acc131d2135dbc53bbdd7558386c29a35b8296153968e48a4cfadbb620",
+      "sha256": "989bdcb1ce94c127ec29d57d4b00701e54b14ebf02fd8dd6292c237faf9c8749",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1012,7 +1012,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RETURNED-31",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RETURNED-31.png",
-      "sha256": "68a7438cf0ae609910728682af208f3efd5b788b69331e647ccb1c916647b40a",
+      "sha256": "41adee1b0b68161f05a0580e2c84f717544ec3cb42a9108beedcf8690e306f73",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1024,7 +1024,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL.trace.zip",
-      "sha256": "ef8b7fc230acdcce1c734b86a8083e5e5cf9cb011eae64e53f9c1f5e06498c7a",
+      "sha256": "0889664ae6340731696634a699f9690094ef22ebf8908e862c754feb758acdf2",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1034,8 +1034,8 @@
     },
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/10aa1340075e311238b88e8731faaa47.webm",
-      "sha256": "43dd232a732e4eff5edb0b982f5692aa28deb079a36bda14f5960a74eb0fe636",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/fa13a3067ec06c763dd6cddf439c4e4f.webm",
+      "sha256": "9548228ca7f273f85db4de23ddea6fa93a2b3c0f6ad73e0a11e62066c7bac185",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1082,7 +1082,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RELATIVE_VALIDATION-17",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RELATIVE_VALIDATION-17.png",
-      "sha256": "bb0a05f73ebe17b3a1a5216ec61343b6370165df59cd432b900a5472a45459f4",
+      "sha256": "b886ea77c1f5f64507699e602eda72b1f01488b0b89e75b0b62ad5e9866719cf",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1094,7 +1094,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RELATIVE_RESULTS-27",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RELATIVE_RESULTS-27.png",
-      "sha256": "989bdcb1ce94c127ec29d57d4b00701e54b14ebf02fd8dd6292c237faf9c8749",
+      "sha256": "68f640ae4fead9692a03a84433613c1cc7fdeb7890c3f9ccf79af4936762d480",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1106,7 +1106,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RETURNED-31",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RETURNED-31.png",
-      "sha256": "68a7438cf0ae609910728682af208f3efd5b788b69331e647ccb1c916647b40a",
+      "sha256": "41adee1b0b68161f05a0580e2c84f717544ec3cb42a9108beedcf8690e306f73",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1118,7 +1118,7 @@
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED.trace.zip",
-      "sha256": "6f52c68a27847d998bd378faa098d6183df34195c7ed2510be3c6a185ea85e8e",
+      "sha256": "4baf7244fc29316e83c1d465379a40794b7278513529d6c23c9de51591aeb023",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1128,8 +1128,8 @@
     },
     {
       "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/a2ca5fa62eaabb2a2964ccddd6e71087.webm",
-      "sha256": "e96bc84c4e71c13bb73db62a756b7a8ced56bfe25c2a7faf6029b3626f4fd4c9",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/fb01f837806a50b1e1922335ccb97cf9.webm",
+      "sha256": "8a28a0700950c9c49ee3b9c5b5e7b0723064b8d5a4227838ed2aad8706957c2d",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1176,7 +1176,7 @@
     {
       "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-7",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-7.png",
-      "sha256": "68a7438cf0ae609910728682af208f3efd5b788b69331e647ccb1c916647b40a",
+      "sha256": "41adee1b0b68161f05a0580e2c84f717544ec3cb42a9108beedcf8690e306f73",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1188,7 +1188,7 @@
     {
       "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL.trace.zip",
-      "sha256": "b30f41624be4e02b4689d3443dbdd9a107d52dd038c134e2892aecb6939bd484",
+      "sha256": "5f65817b3be52f2f2c174d10c95f1a4a28bd44f534b3db52a343527d540fae82",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1198,8 +1198,8 @@
     },
     {
       "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/f5d1f1c0c57dd605df2518d24250ecfb.webm",
-      "sha256": "1b1018497c2edad756dcd49496392656fa23a18c2990de4b4cbeeacf59b76a62",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/0777714e1505e072ede8d4398c2bd190.webm",
+      "sha256": "e28896ce7ae6be13f92516557a1bfb6b25008f45e17025a43c8cb3be9849a968",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1246,7 +1246,7 @@
     {
       "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-7",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-7.png",
-      "sha256": "68a7438cf0ae609910728682af208f3efd5b788b69331e647ccb1c916647b40a",
+      "sha256": "41adee1b0b68161f05a0580e2c84f717544ec3cb42a9108beedcf8690e306f73",
       "type": "screenshot",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1258,7 +1258,7 @@
     {
       "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-trace",
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED.trace.zip",
-      "sha256": "075a5c256df5b7004c278f4ba789ca22e54d6790e0f01b0d193b27ce91083c6d",
+      "sha256": "b6d9645c002e180832ea2de250be01796ce95da899cdadb7e32962dd5ebe9714",
       "type": "trace",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1268,8 +1268,8 @@
     },
     {
       "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-recording",
-      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/329ad96cc2d8ae612dff6704ff080e0a.webm",
-      "sha256": "a37da61605c18283645d2a4d2a906d5f63bf162edbe81647a4d85c028d36766c",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/a94cc3c516ee8ef1be021e448163e049.webm",
+      "sha256": "6390ba149d3056d01c10a67963317064d85a94386ff5cc2176333acdf4b22cd0",
       "type": "recording",
       "origin": "ACTUAL_APPLICATION",
       "contractId": "reach.phase1.foundation",
@@ -1341,7 +1341,7 @@
           "after": "8a5edab282632443219e051e4ade2d1d5bbc671c781051bf1437897cbdfea0f1"
         }
       ],
-      "feedbackMs": 864.8667340000002,
+      "feedbackMs": 858.2855140000001,
       "measurement": "Visible-control activation to changed rendered readiness or next-stage outcome; software UI feedback only, excluding camera exposure or inference accuracy",
       "accessibility": {
         "keyboard": true,
@@ -1472,7 +1472,7 @@
           "after": "8a5edab282632443219e051e4ade2d1d5bbc671c781051bf1437897cbdfea0f1"
         }
       ],
-      "feedbackMs": 869.265621999999,
+      "feedbackMs": 862.3903309999951,
       "measurement": "Visible-control activation to changed rendered readiness or next-stage outcome; software UI feedback only, excluding camera exposure or inference accuracy",
       "accessibility": {
         "keyboard": true,
@@ -1603,7 +1603,7 @@
           "after": "8a5edab282632443219e051e4ade2d1d5bbc671c781051bf1437897cbdfea0f1"
         }
       ],
-      "feedbackMs": 864.548066000003,
+      "feedbackMs": 869.6337420000054,
       "measurement": "Visible-control activation to changed rendered readiness or next-stage outcome; software UI feedback only, excluding camera exposure or inference accuracy",
       "accessibility": {
         "keyboard": true,
@@ -1709,7 +1709,7 @@
           "after": "8a5edab282632443219e051e4ade2d1d5bbc671c781051bf1437897cbdfea0f1"
         }
       ],
-      "feedbackMs": 863.7222529999999,
+      "feedbackMs": 854.1535129999975,
       "measurement": "Visible-control activation to changed rendered readiness or next-stage outcome; software UI feedback only, excluding camera exposure or inference accuracy",
       "accessibility": {
         "keyboard": true,
@@ -1799,7 +1799,7 @@
           "after": "8a5edab282632443219e051e4ade2d1d5bbc671c781051bf1437897cbdfea0f1"
         }
       ],
-      "feedbackMs": 842.1281949999975,
+      "feedbackMs": 853.7605879999901,
       "measurement": "Visible-control activation to changed rendered readiness or next-stage outcome; software UI feedback only, excluding camera exposure or inference accuracy",
       "accessibility": {
         "keyboard": true,
@@ -1879,7 +1879,7 @@
           "after": "8a5edab282632443219e051e4ade2d1d5bbc671c781051bf1437897cbdfea0f1"
         }
       ],
-      "feedbackMs": 844.0684949999995,
+      "feedbackMs": 852.7780920000077,
       "measurement": "Visible-control activation to changed rendered readiness or next-stage outcome; software UI feedback only, excluding camera exposure or inference accuracy",
       "accessibility": {
         "keyboard": true,
@@ -1975,7 +1975,7 @@
           "after": "8a5edab282632443219e051e4ade2d1d5bbc671c781051bf1437897cbdfea0f1"
         }
       ],
-      "feedbackMs": 854.0399250000191,
+      "feedbackMs": 837.6892459999945,
       "measurement": "Visible-control activation to changed rendered readiness or next-stage outcome; software UI feedback only, excluding camera exposure or inference accuracy",
       "accessibility": {
         "keyboard": true,
@@ -2106,7 +2106,7 @@
           "after": "8a5edab282632443219e051e4ade2d1d5bbc671c781051bf1437897cbdfea0f1"
         }
       ],
-      "feedbackMs": 841.4650149999943,
+      "feedbackMs": 851.9797030000191,
       "measurement": "Visible-control activation to changed rendered readiness or next-stage outcome; software UI feedback only, excluding camera exposure or inference accuracy",
       "accessibility": {
         "keyboard": true,
@@ -2237,7 +2237,7 @@
           "after": "8a5edab282632443219e051e4ade2d1d5bbc671c781051bf1437897cbdfea0f1"
         }
       ],
-      "feedbackMs": 854.178842000023,
+      "feedbackMs": 844.7757480000146,
       "measurement": "Visible-control activation to changed rendered readiness or next-stage outcome; software UI feedback only, excluding camera exposure or inference accuracy",
       "accessibility": {
         "keyboard": true,
@@ -2343,7 +2343,7 @@
           "after": "8a5edab282632443219e051e4ade2d1d5bbc671c781051bf1437897cbdfea0f1"
         }
       ],
-      "feedbackMs": 846.2178740000236,
+      "feedbackMs": 847.345782999997,
       "measurement": "Visible-control activation to changed rendered readiness or next-stage outcome; software UI feedback only, excluding camera exposure or inference accuracy",
       "accessibility": {
         "keyboard": true,
@@ -2433,7 +2433,7 @@
           "after": "8a5edab282632443219e051e4ade2d1d5bbc671c781051bf1437897cbdfea0f1"
         }
       ],
-      "feedbackMs": 842.2353240000084,
+      "feedbackMs": 835.4539630000072,
       "measurement": "Visible-control activation to changed rendered readiness or next-stage outcome; software UI feedback only, excluding camera exposure or inference accuracy",
       "accessibility": {
         "keyboard": true,
@@ -2513,7 +2513,7 @@
           "after": "8a5edab282632443219e051e4ade2d1d5bbc671c781051bf1437897cbdfea0f1"
         }
       ],
-      "feedbackMs": 858.9679519999772,
+      "feedbackMs": 841.2689720000199,
       "measurement": "Visible-control activation to changed rendered readiness or next-stage outcome; software UI feedback only, excluding camera exposure or inference accuracy",
       "accessibility": {
         "keyboard": true,
@@ -2551,332 +2551,354 @@
   "reviews": [
     {
       "contractId": "reach.phase1.foundation",
-      "builderContext": "cloud-root/reach-setup-correction-20261017",
-      "reviewerContext": "/root/reach_pe_rendered_review_766",
-      "participantContexts": [
-        "/root/reach_pe_rendered_review_766",
-        "/root/reach_pe_rendered_review_766/mobile_rendered_c2"
-      ],
+      "builderContext": "pr766-capture4-root-execution-owner",
+      "reviewerContext": "pr766-capture4-independent-rendered-review",
+      "participantContexts": {
+        "rawTraceAccessibility": "pr766-capture4-independent-rendered-review/c4_rawtrace_a11y",
+        "motionTiming": "pr766-capture4-independent-rendered-review/c4_motion_timing",
+        "finalVerdictOwner": "pr766-capture4-independent-rendered-review"
+      },
       "independence": "SEPARATE_CONTEXT",
       "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
-      "packetDigest": "65d1d610fb8a33649d896a3f76f349b0def3e706fdd122294a403c29ef03dfa0",
-      "sourceDigest": "a02784c3df8a98e9613a3711659c8dc0b44fa2936b32c3b009b1e3735d0462ae",
-      "contractDigest": "3b96787fb1b9ef58b92717cf6559217899697fe876edddc7f3b0f7731eeab9d9",
-      "candidateSha": "5d4a80bbdc6391853dd65f269499239d49c3714f",
-      "baseSha": "56b700bc2a45bee3ef2cdb5416439bae964f2233",
-      "iterations": 2,
+      "inspectionOrderDetail": "Read governance/contract and actual M7 reference PNGs first. Inspected all unique current PNGs and initial complete-journey video sequences; fixed first fresh-media observations before opening prior blocked-review substance. Then completed all 12 temporal-media/raw-trace analyses and historical resolution. No app implementation source or builder rationale was read; schema constants/validator, protected policy registry, captured rendered CSS and supplemental execution receipts were read only as bounded evidence. Detailed private provenance is retained separately.",
+      "packetDigest": "2b194415c577fac29b3e99bbb8826c21c10d33802aa106a34991d45b51666dd5",
+      "sourceDigest": "bb6176ebcd887a881b54773d76d7942cc266542142dfee09da44bd9021f39119",
+      "contractDigest": "079febd69a99c2506920afddcd7dc4eaeb6780b9f1a80f6b59f24f1872c529d9",
+      "candidateSha": "f5b9acee460814e36074c529e7f3bf5c83b2f596",
+      "baseSha": "6381fb812ab2c00a60ea8c296256b9a0f5ae5b47",
+      "iterations": 4,
+      "iterationsMeaning": "Cumulative fourth review authorized only for Reach PR766/reach.phase1.foundation by protectedM7 continuation; no reset or fifth iteration.",
+      "continuation": {
+        "id": "reach-pr766-review-4-20261017",
+        "policyDigest": "ddd1a7fa65e5194866088b9a47733f67d3eab2e56594222fccbf8847a9416a5d",
+        "prNumber": 766,
+        "previousReviewSha256": "94b9aa7a35a1d2f525c23bebfde7df9b789eb8842b79ba0f187abadedbb9846f",
+        "iterations": 4,
+        "baseSha": "6381fb812ab2c00a60ea8c296256b9a0f5ae5b47",
+        "sourceDigest": "bb6176ebcd887a881b54773d76d7942cc266542142dfee09da44bd9021f39119"
+      },
       "status": "ACCEPTED",
       "ownerAcceptance": "NOT_CLAIMED",
+      "qualification": false,
+      "completionClaims": [],
       "dimensions": {
         "composition": {
-          "observation": "Preparation stacks the large registered camera panel before the contextual Meet your hand guidance; calibration instead promotes the nearly full-width target plane before the smaller camera preview. The cream/brass/sea-green instrument treatment belongs to the inspected accepted mobile Homeport family while providing a denser task workspace. Desktop preparation presents a broad camera stage beside contextual guidance; calibration promotes a large registered target plane while retaining the smaller camera and instruction column. The inspected accepted desktop Homeport reference shares the same brand/account shell, cream serif hierarchy and sea-green/brass palette.",
+          "observation": "The welcome puts a large registered camera stage beside one guidance column inside a continuous sea-green instrument panel. During calibration the pointing plane becomes the dominant desktop surface, while mobile moves progress and target above the camera. Brass actions and warm serif task headings carry the accepted M7 family without copying its cinematic empty height. The returned parent is deliberately simpler and has a minor alignment opportunity recorded separately.",
           "evidenceIds": [
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRAINING-7",
             "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-WELCOME-1",
             "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-TRAINING-7",
-            "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RELATIVE_TRAINING-5",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRAINING-7"
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-57"
           ]
         },
         "hierarchy": {
-          "observation": "The numbered Prepare / Calibrate / Check / Explore strip and serif task headings separate current stage from instructions. FIT_READY explicitly says Independent check required, and RESULTS only later says Independent check passed. The target-plane message and compact status repeat the outcome at the current scroll position. Desktop FIT_READY leaves measurements Not measured and explicitly requires five new targets; RESULTS then changes to Independent check passed with session metrics and a clear playground action. The target plane repeats the essential outcome separately from diagnostics.",
+          "observation": "Find your point identifies the task; Prepare, Calibrate, Check and Explore identify progress. Nine-target completion explicitly says Independent check required, and a fresh five-target phase precedes Independent check passed. The same distinction survives the mobile compact panel. Camera availability, hand count, framing, posture readiness and the next useful action have separate text rather than a single success badge.",
           "evidenceIds": [
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-FIT_READY-28",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RESULTS-40",
-            "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RELATIVE_RESULTS-27",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3",
             "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-FIT_READY-28",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RESULTS-40"
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-VALIDATION-30",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RESULTS-40",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-FIT_READY-28",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55"
           ]
         },
         "typography": {
-          "observation": "Cream serif display headings remain distinct from muted sans-serif instructions and small monospaced instrument labels. Target numerals, progress text, camera recovery labels, and the two-line pause explanation are legible in the 390 by 844 PNGs. Small secondary captions are visibly subordinate; numeric font-size or contrast compliance is not inferred from pixels. At the supplied desktop geometry, large serif headings separate the task from sans-serif instructions and small instrument/metric captions. Numbered targets remain readable over the grid. No numeric font-size or contrast-compliance claim is inferred.",
+          "observation": "Warm serif display and stage headings are separated from readable sans-serif instructions and small monospaced instrument metadata. At 390px the title, guidance, pause and result messages wrap within their surfaces, and target numbers remain legible. Small plane headers are secondary to the large numbered target and progress text. No task-defining label is visibly truncated in the reviewed PNGs.",
           "evidenceIds": [
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-WELCOME-1",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRAINING-7",
             "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-PAUSED-9",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-VALIDATION-30",
-            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-CAMERA_UNAVAILABLE-3",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-VALIDATION-30",
-            "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_RESULTS-27"
+            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RESULTS-40",
+            "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RELATIVE_RESULTS-27"
           ]
         },
         "spacing": {
-          "observation": "Consistent side gutters, consistent rounded panels, and separated action rows keep the narrow layout orderly. Move demo hand to target / Pause fit together, with Retry / Cancel in a second row. Long pause and simulation disclosures wrap without collisions. Diagnostics and privacy remain separated below the primary task. Desktop target and guidance columns have clear gutters; primary actions and secondary retry/cancel rows stay separated. The current returned desktop link is below the header in all six byte-identical return screenshots. Mobile preparation remains a long scroll, while calibration gives the target and action rows priority.",
+          "observation": "Desktop target and guidance have clear gutters and bounded cards; mobile controls wrap into two rows with readable separation and the target retains a consistent inner area. The five raw partial-overlap contrast cases correspond to readable mobile progress spans and the return paragraph, which I inspected directly. The parent heading/entry link beginning at the viewport edge while its desktop card is inset is nonblocking polish, not an observed obstruction.",
           "evidenceIds": [
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRAINING-7",
             "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-TRAINING-7",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-PAUSED-9",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55",
-            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-CAMERA_UNAVAILABLE-3",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-PAUSED-9",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-57"
+            "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RELATIVE_TRAINING-5",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-57",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-57"
           ]
         },
         "controls": {
-          "observation": "Ordinary buttons expose pause/resume, retry, cancel, camera retry, and guided demo. Pointing mode choices show both a selected radio and explicit Recommended / Experimental labels. The tracking-condition select remains readable with a visible focus ring. The returned laboratory re-entry link is fully visible beneath the fixed header in every current mobile return raster. Desktop controls use consistent plain names and visible primary/secondary treatment. Relative movement is recommended; absolute pointing is experimental. Both mode paths expose pause, retry, recalibrate and a distinct next-stage check. Current return links are visible; successful actionability and keyboard re-entry receive supporting regression-test evidence rather than being inferred solely from pixels.",
+          "observation": "Primary brass buttons, outlined alternatives, native labeled radio choices, the condition select, pause/resume, retry/cancel and visible return remain understandable. The recorded flow actually activates named controls with Enter and uses ArrowDown/Home/Enter for mode and condition changes. The hand-plane interaction stays a disclosed laboratory exercise; ordinary buttons and navigation remain available. No gesture-only gate is introduced in these selected journeys.",
           "evidenceIds": [
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-TRACKING-3",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-PAUSED-9",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55",
-            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-CAMERA_UNAVAILABLE-3",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-57",
             "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3",
             "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-PAUSED-9",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-FIT_READY-28",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-57"
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-MULTIPLE_HANDS-49",
+            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-CAMERA_UNAVAILABLE-3",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-trace"
           ]
         },
         "contrast": {
-          "observation": "Cream task text and brass primary controls stand out against dark sea-green panels; the double focus outline is conspicuous around the target stage, Resume button, and condition select. Amber targets and teal cursor marks remain distinguishable by shape and position as well as color. Grid and perimeter marks are deliberately subtle. This is a rendered legibility judgment, not a measured WCAG ratio claim. Desktop cream text, brass actions/targets and mint tracking cues are visibly distinct from the dark surfaces. Focus outlines stand out on the plane, Resume and tracking-condition select. The faint grid stays subordinate. This is a rendered legibility judgment with no independently measured WCAG ratios.",
+          "observation": "I reviewed every distinct PNG and all 173 incomplete-rule render signatures rather than accepting the serious-only summary. The 96 raw axe results contain no violations at any severity; all 2670 incompletes are retained and adjudicated separately. Conservative captured-dark-style text palettes give 5.9781:1 or greater for mapped text; decorative/redundant symbols and the silent local preview have specific applicability dispositions. Progress, error, eligibility and completion also use text or shape. These are bounded color/render observations, not a certification of unobserved themes, live video backgrounds or all nontext contrast.",
           "evidenceIds": [
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-VALIDATION-30",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-PLAYGROUND-42",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1",
             "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-PAUSED-9",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RESULTS-40",
             "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-VALIDATION-30",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-PAUSED-9",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-MULTIPLE_HANDS-49"
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-trace"
           ]
         },
         "consistency": {
-          "observation": "Both motion modes retain the same header, four-stage strip, rounded instrument frame, highlighted status, and ordinary action pattern. Absolute states retain Absolute estimate / Experimental absolute pointing; relative states consistently use Relative movement / Relative cursor control. Current return screenshots are byte-identical across all six mobile journey/motion contexts. Desktop NORMAL and REDUCED preserve stage names, control ordering, simulation labels and distinct pointing/cursor claims. All six current desktop returns share the same raster with a readable laboratory link, matching the repaired mobile return outcome.",
+          "observation": "The current laboratory shares the accepted M7 reference family: coherent Voyagewright shell, restrained brass, dark sea-green surfaces, warm serif task headings and grouped controls. Normal/reduced and desktop/mobile preserve the same stages and claims. The conventional parent keeps the same brand/navigation and a designed sign-in card, though its edge-aligned heading/link are visually less composed; this is the one minor polish finding.",
           "evidenceIds": [
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-TRAINING-7",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-TRAINING-7",
-            "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RELATIVE_VALIDATION-17",
-            "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RELATIVE_RESULTS-27",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-57",
             "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-WELCOME-1",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-WELCOME-1",
+            "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_RESULTS-27",
             "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-57",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-57"
+            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-57"
           ]
         },
         "states": {
-          "observation": "The inspected current mobile evidence covers welcome, honest simulated tracking, training, paused progress, fit ready, independent validation, results, playground, second-hand context, detected-ineligible guidance, separate relative setup/check/results, unavailable camera, and returned destination. Detected-ineligible switches the prominent guidance to Move your hand slightly toward the center; successful setup alone still requires an independent check. Desktop media also covers all 15 states. It visibly separates 1 detected, Hand framed and Point recognized; the edge condition retains detection but changes framing guidance and removes the actionable pointer. Two-hand context exposes active-hand choices. Setup, held-out check, pass and practice remain distinct.",
+          "observation": "All 15 selected states have current evidence: camera off, disclosed simulated tracking, absolute training, pause, setup-ready, held-out validation, result, playground, multiple hands, detected-but-ineligible framing, relative training/check/result, camera unavailable and return. Pausing retains target/progress and offers Resume. Setup never claims the independent result, edge framing changes guidance and hides the pointer, and camera failure provides retry/demo. The state ledger retains all 84 PNG entries and all 392 contract steps with raw calls.",
           "evidenceIds": [
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-TRACKING-3",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-PAUSED-9",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-FIT_READY-28",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-MULTIPLE_HANDS-49",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55",
-            "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RELATIVE_TRAINING-5",
-            "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RELATIVE_RESULTS-27",
-            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-CAMERA_UNAVAILABLE-3",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-57",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1",
             "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRAINING-7",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-PAUSED-9",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-FIT_READY-28",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-VALIDATION-30",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RESULTS-40",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-PLAYGROUND-42",
             "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-MULTIPLE_HANDS-49",
             "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-FIT_READY-28",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RESULTS-40"
+            "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_TRAINING-5",
+            "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_VALIDATION-17",
+            "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_RESULTS-27",
+            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-CAMERA_UNAVAILABLE-3",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-57"
           ]
         },
         "responsive": {
-          "observation": "At 390 by 844, preparation and calibration use a coherent single column, mode cards and controls wrap within the viewport, and the target remains large enough to inspect. The fixed header leaves the current returned re-entry text fully below its lower edge, preserving the repaired destination navigation. Sticky guidance can occupy the top of a scrolled target panel while the current condition select remains in view. No horizontal clipping of primary controls is visible in the supplied geometry. Desktop keeps a broad target beside a compact preview/guidance column without visible primary-control clipping. The current desktop return and mobile return remain below their respective persistent headers. The supplied viewports support this bounded judgment rather than an exhaustive device matrix.",
+          "observation": "At 1440 × 900 desktop and 390 × 844 mobile all selected text/control groups fit without recorded horizontal overflow. Mobile preparation prioritizes the camera, calibration prioritizes the target and progress, and controls wrap below. Core outer-target circles, numbers and collection arcs remain visible; their soft halos crowd/clip the plane edge and label zone, which is minor density rather than blocked recognition. Mobile viewport recordings are keyboard-driven browser evidence and do not prove physical touch, Safari, wide-tablet or200%zoom behavior.",
           "evidenceIds": [
             "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-WELCOME-1",
             "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-TRAINING-7",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-57",
-            "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RETURNED-31",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRAINING-7",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-57"
+            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-VALIDATION-30",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-RESULTS-40",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-recording",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-recording"
           ]
         },
         "keyboard": {
-          "observation": "Rendered evidence shows conventional focus progression: the welcome task heading receives a visible outline, Pause becomes a focused Resume control, the diagnostics disclosure can be focused, target movement controls remain focused as collection advances, and the tracking-condition select retains focus after its value changes. The recordings demonstrate progress using these conventional controls. Pixels do not establish every key event, full tab order, or screen-reader semantics. Desktop actual media shows a focused Resume button and a tracking-condition select whose value changes while focus stays visible. The unchanged return regression source explicitly follows keyboard navigation to Device connections, checks untouched settled geometry/hit testing, then tabs to and activates re-entry. The independently recorded exact-candidate hosted full-file pass supports that path; its actual case count is unavailable and complete traversal is not claimed.",
+          "observation": "Every selected contract step is matched in order to current raw calls:392 total, no missing or failed calls. The 12contexts contain512 Tab presses,188 targeted Enter activations and the explicit radio/combobox Home/ArrowDown/Enter operations; no click/tap calls occur. Thus conventional keyboard controls execute the selected setup, pause/resume, training, checks, practice, recovery and return. Because targeted locator.press may focus its target, these calls alone do not prove the naturally Tab-selected element at every activation. No universal Tab-order or physical-touch claim is made.",
           "evidenceIds": [
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-WELCOME-1",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-PAUSED-9",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-recording",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-recording",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-PAUSED-9",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-MULTIPLE_HANDS-49",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-recording"
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+            "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-trace",
+            "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-trace",
+            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-trace",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-trace",
+            "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-trace",
+            "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-trace",
+            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-trace",
+            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-trace"
           ]
         },
         "focus": {
-          "observation": "A high-visibility cream/brass double outline marks the welcome heading, target plane, Resume button, diagnostics disclosure, and selected condition control at the relevant captures. The reduced relative recording at 23.32 seconds visibly focuses Device connections immediately before return. At the destination the re-entry link is unobscured, although these captures do not independently show focus subsequently moved onto that destination link. Desktop entry heading, target plane, Resume and condition select have strong outlines in current PNGs. The new rendered destination link is unobscured; media does not directly show subsequent focus onto it. The supporting exact-candidate full-file regression result covers a declaration that tabs to and activates that link after measuring the untouched landing, without independently proving every focused pixel.",
+          "observation": "Current pixels show strong focus outlines on the entry H1, newly active pointing plane, Resume button and condition select, with meaningful stage content visible around them. Raw selected snapshots supply one Reach H1 and a named guidance SECTION region; return supplies a named MAIN and H1. No raw activeElement/:focus evaluator proves exact heading restoration or each preceding Tab selection, so those broader claims are withheld. The prior heading/landmark repairs are independently supported by current semantics, not inferred from focus:true summaries.",
           "evidenceIds": [
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-WELCOME-1",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-TRAINING-7",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-PAUSED-9",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55",
-            "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-recording",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-57",
             "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1",
             "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRAINING-7",
             "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-PAUSED-9",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-57"
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-MULTIPLE_HANDS-49",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-WELCOME-1",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-57",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-trace"
           ]
         },
         "feedback": {
-          "observation": "Training and independent check show saved target counts, collection percentages, Find a comfortable hold / Hold here collecting guidance, and visible arc/progress changes. Pausing replaces the instruction with saved-progress reassurance and Resume. Camera failure exposes The camera could not start plus retry/demo. Settled demo tracking clearly separates detected count, framing, and point recognition, with the simulated-hand disclosure adjacent. Desktop recordings show target numbers advancing, saved counts and collection percentages updating, pause preserving progress, and a required independent check before success. Current capture telemetry ranges from 841.465015 to 869.265622 ms across 12 contexts against the 5000 ms budget; it supports software UI feedback only and was not independently retimed from sampled frames.",
+          "observation": "Hold text, numbered targets, percent/progress bars, pause/resume wording and explicit setup/check results explain what changed. Named Reach status and polite session messages expose readiness and stage meaning in the captured DOM. Raw specific-ready-text bounds are816.588–848.426 ms across12contexts; the original capture metric is835.454–869.634 ms, both below 5,000 ms. Other extracted transition bounds including target collection remain below 1,817 ms. These are software selector-observation bounds, not exposure/inference/display latency. One redundant Next route announcer stays on the parent label in one trace; correct H1/status remain present and actual speech is unrecorded.",
           "evidenceIds": [
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-PAUSED-9",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-TRACKING-3",
-            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-CAMERA_UNAVAILABLE-3",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-recording",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-recording",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-recording",
-            "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-recording",
             "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-PAUSED-9",
             "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-FIT_READY-28",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RESULTS-40"
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RESULTS-40",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-trace"
           ]
         },
         "motion": {
-          "observation": "Meaningful frames from all six current recordings show entry, acquisition/demo readiness, setup/check progress or camera failure, and return. Both motion modes retain the same useful state outcomes. Normal return shows a short compositing transition at 39.5 seconds but the laboratory link is already visible and remains visible through 42.4 seconds; reduced return is settled and unobscured from 39.5 through 42.04 seconds. Sampled frames establish this visible continuity, not instrumented input-to-pixel latency or a complete flashing audit. Meaningful decoded frames from all six current desktop recordings show the same functional outcomes and conventional controls in both motion modes. Short normal compositing transitions settle into a readable destination; reduced mode retains static state clarity. Sampling establishes visible transitions, not full-speed frame pacing or a complete flashing audit.",
+          "observation": "All 12recordings were inspected as timestamped sequential samples, with native fine frames around target movement, brief relative playgrounds, camera failure and return. Normal relative target2 visibly slides left while reduced places it directly; both retain the changing collection arc, bar, percentage and hold text. Normal mobile camera return blends outgoing and destination content for about 0.24 s; reduced returns cleanly. No persistent stalled or misleading stage was observed. This sampled temporal review does not claim that every7709decoded frame was watched in real time or certify all frame pacing.",
           "evidenceIds": [
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-recording",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-recording",
-            "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-recording",
-            "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-recording",
-            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-recording",
-            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-recording",
             "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-recording",
             "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-recording",
             "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-recording",
             "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-recording",
             "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-recording",
-            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-recording"
-          ]
-        },
-        "continuity": {
-          "observation": "The Voyagewright shell, conventional Device connections return, anonymous sign-in destination, footer, and laboratory re-entry remain understandable around the local workspace. All six current return PNG artifacts share one exact raster with the complete re-entry link below the fixed header. Normal absolute samples 39.5 to 42.4 seconds and reduced absolute 39.5 to 42.04 seconds corroborate the repaired visible landing; relative and camera-fallback recordings corroborate their own returns. Resource cleanup and href/origin correctness are outside what pixels alone verify. Desktop return frames and all current returned PNGs retain the conventional device-connections destination, sign-in card, home/account shell and visible laboratory link. Capture continuity hashes additionally support the unchanged Voyagewright home origin. The original capture1 mobile occlusion is absent in current NORMAL and REDUCED PNGs and late recording frames, resolving that specific finding.",
-          "evidenceIds": [
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-57",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-57",
-            "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RETURNED-31",
-            "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RETURNED-31",
-            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-7",
-            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-7",
+            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-recording",
             "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-recording",
             "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-recording",
             "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-recording",
             "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-recording",
             "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-recording",
-            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-recording",
+            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-recording"
+          ]
+        },
+        "continuity": {
+          "observation": "All 12current journeys begin from the visible laboratory link on device connections and return through the visible conventional return control to Connect your device, the laboratory entry and the anonymous sign-in card. The home-origin href digest is unchanged before/outcome/after in all capture receipts. Fine frames show camera-off reset before route completion; resource teardown and exact prior focus/scroll restoration are not proved by pixels. Pairing/progression authority is not claimed by the lab. The 56 raw Crossdeck401console events at anonymous entry/return are disclosed, with no page/call error or blocked Reach outcome.",
+          "evidenceIds": [
             "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-57",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-recording",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-recording"
+            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-57",
+            "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RETURNED-31",
+            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-7",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-recording"
           ]
         },
         "complexity": {
-          "observation": "Progressive disclosure keeps session diagnostics closed while current instructions, target plane, and primary actions stay prominent. Preparation offers an understandable two-mode choice with Relative movement recommended and Absolute pointing experimental. Guided demo controls are disclosed as simulation, and privacy/local-session statements sit below the task instead of adding prerequisites to the flow. Desktop uses progressive disclosure: camera/mode choice, target actions, independent metrics and then practice. Session diagnostics stays collapsed; separate guided-demo controls explicitly say simulation cannot prove physical accuracy. Three result rows remain subordinate to the next action.",
+          "observation": "The default view exposes one immediate camera/demo choice, then a clearly described relative-versus-experimental-absolute choice. Stage-specific controls replace the previous task, the camera becomes compact during calibration, and technical measurements stay behind Session diagnostics & privacy. Plain-language guidance identifies the next useful action. The staged workspace is information-rich without requiring the person to decode diagnostic enums or hidden URLs to complete the selected journeys.",
           "evidenceIds": [
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-TRACKING-3",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-TRAINING-7",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-MULTIPLE_HANDS-49",
-            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-CAMERA_UNAVAILABLE-3",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1",
             "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3",
             "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRAINING-7",
             "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RESULTS-40",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-MULTIPLE_HANDS-49"
+            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-PLAYGROUND-42"
           ]
         },
         "role-outcomes": {
-          "observation": "For the captured anonymous mobile persona, natural device entry reaches a disclosed simulated hand; absolute setup requires nine training targets and a distinct five-target independent check before passing, then reaches practice and condition recovery. Relative control uses its own setup/check and explicitly describes moving the cursor from a comfortable reference. Normal relative playground is visible at 23.9/24.1 seconds, and reduced relative playground at 23.32 seconds, before conventional return. These are laboratory/demo outcomes and do not establish real-camera pointing accuracy or owner acceptance. For the sole contracted anonymous role, desktop media demonstrates natural entry without pairing, a disclosed demo, nine-point absolute setup followed by five held-out targets, separate relative cursor checking, practice, adverse framing guidance and conventional return. Detection is not presented as sufficient eligibility. No real-person webcam accuracy, authenticated role authority or owner PRODUCT_ACCEPTED is inferred.",
+          "observation": "The anonymous persona enters Reach without pairing or granting camera access, performs the disclosed D0 demo, trains 9 absolute or 5 relative positions, completes 5 independent checks, reaches the separate playground and returns. Absolute Pointing error and relative Cursor error use distinct claims; repeated demo/camera-off/accuracy disclaimers prevent 0.00% simulated results being presented as real-person validation. The multiple-hand and framing states keep detection distinct from readiness. Authenticated focus development receipt is supplemental only; no authenticated C4media or owner acceptance is claimed.",
           "evidenceIds": [
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-FIT_READY-28",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RESULTS-40",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-PLAYGROUND-42",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55",
-            "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RELATIVE_RESULTS-27",
-            "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-recording",
-            "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-recording",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-recording",
-            "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_VALIDATION-17",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RESULTS-40",
             "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_RESULTS-27",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-MULTIPLE_HANDS-49",
             "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-57"
+            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-57"
           ]
         },
         "fallbacks": {
-          "observation": "The camera-unavailable state explains The camera could not start in plain language and exposes both Retry live camera and Explore guided demo. Both motion-mode recordings subsequently show the camera-off guided demo gaining a ready hand, preserving conventional mode controls and an unobscured return. Recovery remains explicitly simulated and says camera accuracy is not measured. Desktop camera failure plainly says The camera could not start and exposes Retry live camera beside Explore guided demo. Recovery reaches the ready simulated hand while explicitly saying camera accuracy is not measured, then returns conventionally. Successful physical-camera retry and independent camera-resource cleanup are outside this bounded media evidence.",
+          "observation": "Camera failure truthfully says it could not start and leaves Retry live camera and Explore guided demo available. The recovery recording proceeds into a plainly simulated no-camera hand flow and returns to ordinary navigation. Relative movement is recommended with a distinct cursor-control check, while absolute remains experimental. Conventional controls remain usable when live tracking is unavailable; selected ordinary fallback and return have actual outcomes rather than only button presence. No real-camera failure taxonomy or Safari/device guarantee is inferred.",
           "evidenceIds": [
-            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-CAMERA_UNAVAILABLE-3",
-            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-CAMERA_UNAVAILABLE-3",
-            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-TRACKING-5",
-            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-TRACKING-5",
-            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-recording",
-            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-recording",
             "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-CAMERA_UNAVAILABLE-3",
             "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-TRACKING-5",
-            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-recording"
+            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-CAMERA_UNAVAILABLE-3",
+            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-recording",
+            "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_RESULTS-27"
           ]
         }
       },
       "findings": [
         {
-          "id": "MOBILE-RETURN-HEADER-OCCLUSION",
-          "classification": "INTERACTION_DEFECT",
-          "blocking": false,
-          "disposition": "RESOLVED",
-          "priorCaptureDisposition": "UNRESOLVED_BLOCKING_CAPTURE1",
-          "currentCaptureDisposition": "RESOLVED_BY_CURRENT_RENDERED_EVIDENCE",
-          "observation": "The complete Find the Hand interaction laboratory text now sits below the fixed Voyagewright header in the settled mobile return raster. Its underline and every letter are visible. The same raster is present for all six mobile journey/motion return artifacts. Current normal absolute return samples at 39.5, 40.5, 41.5, and 42.4 seconds retain the visible link; reduced absolute samples at 39.5, 40.5, 41.5, and 42.04 seconds provide the same visible outcome.",
-          "contractBasis": "Natural conventional return must restore the device-connections destination and its visible laboratory re-entry link while preserving readable mobile controls/contextual navigation.",
-          "repairEvidenceIds": [
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-57",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-57",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-recording",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-recording",
-            "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RETURNED-31",
-            "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RETURNED-31",
-            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-7",
-            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-7"
-          ],
-          "currentRepairEvidenceIds": [
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-57",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-57",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-recording",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-recording",
-            "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RETURNED-31",
-            "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RETURNED-31",
-            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-7",
-            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-7"
-          ],
-          "currentRepairFrameEvidenceIds": [
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-recording@39.5s",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-recording@40.5s",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-recording@41.5s",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-recording@42.4s",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-recording@39.5s",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-recording@40.5s",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-recording@41.5s",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-recording@42.04s"
-          ],
-          "resolution": "The current changed-source capture places the full laboratory re-entry link below the persistent header in the settled normal-mobile absolute return PNG and corroborating late recording frames; REDUCED and the other current mobile returns agree. I independently inspected the NORMAL 39.5/42.4 s and REDUCED 39.5/42.04 s decoded frames, in addition to the separate mobile review. Supporting exact-candidate hosted full-file regression evidence records a pass for a declaration checking untouched settled geometry/hit testing and later keyboard re-entry; actual selected case count is unavailable. The original persistent visual navigation occlusion is resolved within the supplied geometry. This does not establish real-camera accuracy, exhaustive keyboard semantics or owner acceptance.",
-          "ownerAcceptance": "NOT_CLAIMED",
+          "id": "REACH-C3-A11Y-LANDMARK",
+          "classification": "ACCESSIBILITY_DEFECT",
           "contractId": "reach.phase1.foundation",
-          "evidenceIds": [
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-57",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-57",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-recording",
-            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-recording",
-            "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RETURNED-31",
-            "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RETURNED-31",
-            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-7",
-            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-7"
+          "disposition": "RESOLVED",
+          "observation": "C3 recorded a nested complementary Reach guidance aside. Current selected-state raw DOM instead contains SECTION aria-label=\"Reach guidance\" within MAIN, with no ASIDE or complementary role; the named SECTION remains an appropriate region. Guidance content and stage instructions remain visibly present. All 96fullcurrentaxe results contain no landmark violation at any severity.",
+          "evidenceIds": ["reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-trace"],
+          "repairEvidenceIds": [
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+            "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-trace",
+            "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-trace",
+            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-trace",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-trace",
+            "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-trace",
+            "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-trace",
+            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-trace",
+            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-trace"
           ],
-          "originallyBlocking": true,
-          "history": {
-            "capture1ReviewSha256": "54e6190fe86e43aa4bc6fe0a95c3366a09e1fb5b0b196e1f02d7be632c8f1450",
-            "capture1PacketDigest": "40747e3a3df9ccb6cab5bd07f7d8a01b3eba8b8cdd3ec9c1c6a3ee7349d5d79d",
-            "capture1SourceDigest": "c55f178c8a88284faf9973342022681ca7843cc0174401a6da347d1396f305a4",
-            "capture1MobileNormalReturnedPngSha256": "1159064fa62d1c55b65ad59eedf3f737ef86c69cf9e318134b7552928de50cc3",
-            "capture1Disposition": "UNRESOLVED_BLOCKING",
-            "capture2Disposition": "RESOLVED",
-            "historicalArtifactsUsedForCurrentAcceptance": false
-          }
+          "resolution": "Fresh C4 actual snapshots across all selected Reach states and all 12trace contexts show the guidance container as a named SECTION region rather than a nested complementary aside. The current raw audit removes the specific landmark-complementary-is-top-level violation without removing guidance. This resolves the exact C3 semantic defect under GP15.3; speech output and universal focus restoration are not inferred.",
+          "previousReviewSha256": "94b9aa7a35a1d2f525c23bebfde7df9b789eb8842b79ba0f187abadedbb9846f"
+        },
+        {
+          "id": "REACH-C3-RETURN-HEADING",
+          "classification": "ACCESSIBILITY_DEFECT",
+          "contractId": "reach.phase1.foundation",
+          "disposition": "RESOLVED",
+          "observation": "C3 recorded no H1 on the returned anonymous device-connections page. Every current RETURNED snapshot contains H1 id=\"device-connections-heading\" tabindex=\"-1\" with Connect your device inside MAIN aria-labelledby=\"device-connections-heading\", followed by the existing sign-in-card H2. Desktop and mobile PNGs visibly show the page heading and existing destinations.",
+          "evidenceIds": [
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-57",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-57",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-trace"
+          ],
+          "repairEvidenceIds": [
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+            "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-trace",
+            "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-trace",
+            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-trace",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-trace",
+            "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-trace",
+            "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-trace",
+            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-trace",
+            "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-trace",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-57",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-57"
+          ],
+          "resolution": "All 12freshreturned-state DOM snapshots provide a semantic level-one page heading and named main; current full axe results no longer report page-has-heading-one. The return still reaches the visible laboratory link and conventional sign-in action. The exact missing-H1 defect is resolved; an H1 tabindex alone is not claimed as proof of focus restoration.",
+          "previousReviewSha256": "94b9aa7a35a1d2f525c23bebfde7df9b789eb8842b79ba0f187abadedbb9846f"
+        },
+        {
+          "id": "REACH-C4-RETURN-SPACING",
+          "classification": "MINOR_POLISH",
+          "contractId": "reach.phase1.foundation",
+          "disposition": "NON_BLOCKING",
+          "observation": "The returned parent places Connect your device and the laboratory entry link at the viewport edge while the desktop sign-in card is inset, so it feels less composed than the laboratory. The heading, link, explanation and sign-in action remain readable and reachable on desktop/mobile.",
+          "evidenceIds": [
+            "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-57",
+            "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-57"
+          ],
+          "severityRationale": "An alignment/visual-rhythm opportunity, with no clipping, misleading state, hidden destination, raw form, semantic violation or demonstrated task obstruction. This is not reclassified baseline debt and is not a waiver of a blocking requirement.",
+          "suggestedRepair": "In future ordinary polish, align the parent heading and entry link with its content container while preserving the current semantic heading and destinations."
         }
       ],
-      "repairAction": "VERIFY_FINAL_EVIDENCE",
-      "reviewBoundary": "Independent current capture2 rendered review. Capture1 review remains unchanged and blocked for its original evidence. Current acceptance is bounded to the supplied anonymous demo/fallback media and supporting regression evidence, not owner PRODUCT_ACCEPTED."
+      "blockingFindingIds": [],
+      "repairDisposition": "VERIFY_FINAL_EVIDENCE",
+      "decision": "ACCEPTED for the bounded current anonymous D0 software rendered experience: the staged camera/demo/calibration/check/playground/fallback/return journey is coherent and truthful across selected desktop/mobile normal/reduced contexts; both historical semantic blockers are resolved. One nonblocking parent-spacing opportunity is recorded. This decision rests on actual rendered and raw semantic evidence, not capture success, screenshot counts or serious-only axe summaries. Authenticated submission, source replay and ordinary protected verification remain with the execution owner.",
+      "reviewBoundary": [
+        "This is cumulative review 4 under the installed M7 continuation, not a reset/new round. Fifth review remains unauthorized. Both exact historicalIDs/classes are preserved and resolved from current evidence.",
+        "ACCEPTED means this bounded independent D0rendered review accepts the selected current contract experience. It is not software qualification, protected integration, release approval, owner PRODUCT_ACCEPTED or a live-camera accuracy claim.",
+        "C4media is anonymous Chromium/Linux at1440x900 and 390 × 844 with normal/reduced modes. No authenticated rendered media, Safari, physical touch, wide-tablet,200%zoom or real-person webcam/field ergonomics proof is claimed.",
+        "512 Tab events and188 targeted Enter activations do not prove each naturally selected Tab target; raw traces contain no activeElement/:focus assertion. Exact focus/scroll restoration and screen-reader speech/announcement queue behavior remain unproven. Visible focus, semantic structure and successful keyboard-operated selected outcomes were reviewed directly.",
+        "One desktop-normal absolute trace retains the parent text in a redundant assertive Next route announcer during Reach. It does not show a new wrong speech event; the correct focused-looking H1, status and polite session content are present. I record this inconsistency without claiming actual screen-reader impact or universal announcement correctness.",
+        "All 96rawaxe results, including72 critical video-caption and2,598 serious color-contrast incomplete nodes, were reviewed with per-node dispositions. Incomplete results remain incomplete raw results; captured-style color bounds and rendered applicability analysis do not manufacture automated passes or certify unobserved themes/live-video backgrounds.",
+        "All84PNG entries are retained;51 unique byte images were directly inspected,33 additional entries are exact SHA256 duplicates. All 12videos were reviewed via 313 one-second source-frame samples plus selected native fine sequences, not continuous real-time observation of all 7,709 frames. The brief relative mobile playground was inspected in fine boundary frames.",
+        "All 108media hashes, producer packet digest and installed continuation policy digest were independently recomputed. Whole archive/server digest and selected CRC intake proofs are attributed to root intake; unselected stale members were not extracted or CRC-claimed.",
+        "The exact protected M7 reference bytes were inspected. Their authorized historical sourceSha may describe pre-publication code source; absence of artifact paths there alone proves neither bad annotation nor unrelated render. Independent historical render lineage is not established.",
+        "Supplemental run 39076467038 shows actual trusted DEV_ONLY PASS/browser exit 0 on 33374b53/M6 with the supplied unchanged-source join. It has no publicly retained individual assertion inventory/executed count and is not inferred as 8 of 8, strict red/green, current M7 rendered evidence or universal focus proof.",
+        "The selected journeys do not exercise every advanced diagnostics export/delete setting; no broader behavioral completion claim is made for those controls or Phase2/3/domain activation."
+      ],
+      "evidenceCoverage": {
+        "currentCaptureRun": 39078134564,
+        "artifactsReviewed": 108,
+        "screenshotEntries": 84,
+        "distinctScreenshotBytes": 51,
+        "recordingsReviewed": 12,
+        "rawTracesReviewed": 12,
+        "selectedStepsMapped": 392,
+        "selectedStates": 15,
+        "dimensions": 17,
+        "rawAxeRuns": 96,
+        "incompleteNodesDispositioned": 2670,
+        "traceEvidenceIds": [
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+          "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-trace",
+          "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-trace",
+          "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+          "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+          "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-trace",
+          "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-trace",
+          "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-trace",
+          "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-trace",
+          "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-trace",
+          "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-trace"
+        ]
+      }
     }
   ],
-  "captureArtifactId": 12112888775,
-  "reviewArtifactId": 12113538701
+  "captureArtifactId": 12118615560,
+  "reviewArtifactId": null
 }
