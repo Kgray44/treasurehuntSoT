@@ -51,6 +51,7 @@ Use [document-index.json](document-index.json) for complete path-level classific
 - [Sounding Line replay admission Git failure observations](Programs/Sounding_Line/Project_Sounding_Line_Replay_Admission_Git_Diagnostics_20261017.md)
 - [Crossdeck ordinary6 finite hosted source diagnostic](Programs/Sounding_Line/Project_Sounding_Line_Ordinary6_Source_Diagnostic_20261017.md)
 - [Crossdeck ordinary6 finite posttechnical replay diagnostic](Programs/Sounding_Line/Project_Sounding_Line_Ordinary6_Posttechnical_Diagnostic_20261017.md)
+- [Crossdeck ordinary6 finite historical-validation diagnostic](Programs/Sounding_Line/Project_Sounding_Line_Ordinary6_Historical_Validation_Diagnostic_20261017.md)
 - [Crossdeck final-verification activation review](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_Final_Verification_Activation_Review_20261015.md)
 - [Crossdeck finite final-verification dispatch audit](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_Final_Verification_Dispatch_Audit_20261015.md)
 - [Crossdeck finite final-verification control plane](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_Final_Verification_Proposal_20261015.md)
