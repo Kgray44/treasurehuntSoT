@@ -8,6 +8,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { inflateRawSync } from "node:zlib";
 import { canonicalJson, createEvidenceFingerprint, digest, verifyReceipt } from "./evidence.mjs";
+// CLI startup awaits intake, so a deferred import would wait on that same startup.
+import { buildEvidenceObligations, completedEvidenceEnvironmentClass } from "./ordinary.mjs";
 
 const REPOSITORY = "Kgray44/treasurehuntSoT";
 const WORKFLOW = ".github/workflows/sounding-line-ordinary.yml";
@@ -718,7 +720,6 @@ export async function authenticateCompletedEvidence({ root, plan, producers, req
   const currentRoot = await realpath(root);
   requireValue(git(currentRoot, ["rev-parse", "HEAD"]).trim() === plan.candidateSha, "CURRENT_HEAD_CHANGED");
   git(currentRoot, ["diff", "--no-ext-diff", "--no-textconv", "--exit-code", "HEAD", "--"]);
-  const { buildEvidenceObligations, completedEvidenceEnvironmentClass } = await import("./ordinary.mjs");
   requireValue(typeof completedEvidenceEnvironmentClass === "function", "CURRENT_AUTHORITY_UNSUPPORTED");
   requireValue(
     completedEvidenceEnvironmentClass(plan) === "github-actions-nonbrowser-controlled",
