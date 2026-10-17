@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-10-16",
+  "generated_at": "2026-10-17",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -8614,6 +8614,66 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/floating-controls/protected-review-attestation.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/library-entry-migration-20261017/diagnostics.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/library-entry-migration-20261017/local-entry-proof-20261017T145424-ef06c3fa/invocation.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/library-entry-migration-20261017/local-entry-proof-20261017T145424-ef06c3fa/native-originals-manifest.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/library-entry-migration-20261017/local-entry-proof-20261017T145424-ef06c3fa/playwright-results.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/library-entry-migration-20261017/local-entry-proof-20261017T145942-d18070e8/invocation.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/library-entry-migration-20261017/local-entry-proof-20261017T145942-d18070e8/native-originals-manifest.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/library-entry-migration-20261017/local-entry-proof-20261017T150215-00ccbc1f/invocation.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/library-entry-migration-20261017/local-entry-proof-20261017T150215-00ccbc1f/native-originals-manifest.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/library-entry-migration-20261017/local-entry-proof-20261017T150215-00ccbc1f/playwright-results.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/library-entry-migration-20261017/README.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

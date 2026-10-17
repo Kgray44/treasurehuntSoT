@@ -3,7 +3,7 @@ title: Spatial cohort integration decision log
 audience: engineering
 status: in-progress
 canonical_for: parallax-cohort-preparation-20261016
-last_reviewed: 2026-10-16
+last_reviewed: 2026-10-17
 ---
 
 # Spatial cohort integration decision log
@@ -158,3 +158,29 @@ result. No virtual result is an actual accepted-base integration.
 The current user confirms upright steady iPhone use and no error after the second
 corner set. This corroborates the retained product-defect report; it supplies no
 physical tracking success.
+
+## Restarted independent correction, 2026-10-17
+
+The coordinator relayed KG's authorization to resume the reviewed nine-spec
+Library entry migration and isolated local proof. The root correction at
+`bc4afd189854` retains all 208 original matcher criteria, working membership,
+canonical definition identity and natural Studio entry. It also opens the
+existing working-draft save command through its header context menu. SC-00C's
+separate Library component/context-menu repair remains independently owned.
+
+The [diagnostic record](evidence/library-entry-migration-20261017/README.md)
+preserves three original attempts: the retired-save-control failures, a missing
+helper-import build failure, and the corrected source's one passing browser
+journey, three failures and six unexecuted cases. Source binding and cleanup are
+valid; local browser acceptance is FAIL. The 361 px phone canvas must meet the
+unchanged 370 px minimum, and two remaining Inspector test entries need migration
+without dropping their outcomes. Full type checking, scoped lint, documentation
+validation and feature sync/validation pass. No Feature Catalog capability or
+availability change is appropriate for this test-only work.
+
+No protected capture, full Crossdeck qualification, mainline reconciliation or
+merge is dispatched. #721's qualified protected landing and landed proof remain
+the release trigger. A progress message to the coordinator returned the native
+AbsolutePathBuf error again; it is not claimed delivered. This written record
+and root handoff preserve the actual state. Physical Safari tracking and plane
+detection remain unqualified; no paid inference occurs.

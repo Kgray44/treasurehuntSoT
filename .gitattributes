@@ -45,3 +45,5 @@ Development_Docs/Projects/Project_Parallax/evidence/sc-00b/assistant-preview-6be
 Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/** -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
 # Preserve new preparation diagnostics without recasting them as runtime proof.
 Development_Docs/Projects/Project_Parallax/evidence/cohort-preparation-20261016/*.original.* -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+# Original local test diagnostics must retain their byte identity on Windows.
+Development_Docs/Projects/Project_Parallax/evidence/library-entry-migration-20261017/** -text -whitespace

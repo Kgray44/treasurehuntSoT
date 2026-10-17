@@ -3,7 +3,7 @@ title: Parallax combined Studio integration and verification
 audience: engineering
 status: in-progress
 canonical_for: parallax-root-coexistence-20261015
-last_reviewed: 2026-10-15
+last_reviewed: 2026-10-17
 ---
 
 # Combined source
@@ -951,3 +951,22 @@ Mocked tracking exercises failure visibility, map changes and per-corner retries
 it does not supply missing provider planes or reproduce the owner's physical
 session. The no-plane provider implementations remain unchanged. This count
 overlaps earlier focused checks and is not added to them.
+
+## Restarted local Library correction, 2026-10-17
+
+The coordinator relayed the owner's restart authorization for the reviewed nine
+Library-entry test migrations and focused local proof. This does not release the
+protected #722/#721 dependency hold or authorize root Crossdeck/workflow changes.
+SC-00C separately owns the Library card context-menu product repair; its files
+remain untouched here. The [local diagnostic record](evidence/library-entry-migration-20261017/README.md)
+retains all three attempts and exact-source outcomes, including the missing-import
+build failure. All 208 original matcher criteria remain intact. The latest
+`bc4afd189854` production browser batch has one pass, three failures and six not-run
+cases. Its failures are a 361 px phone canvas against the unchanged 370 px minimum
+and two old Inspector entry selectors. Do not describe this migration as a
+complete browser pass or suppress the phone requirement.
+
+The separate five-file/30-test phone software check belongs to `7defbf27734b`.
+The tested files are unchanged in the later correction, but the receipt is not
+rebound. Real iPhone tracking, detected surfaces, room alignment and physical
+acceptance remain unqualified. No paid inference or private-state copying occurs.
