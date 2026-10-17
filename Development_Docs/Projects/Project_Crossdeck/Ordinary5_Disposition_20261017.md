@@ -10,17 +10,17 @@ last_reviewed: 2026-10-17
 
 Whole protected [run 38986106986](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38986106986) completed FAILURE at 2026-10-17T00:45:10Z on attempt one. Custody passed; focused verification and Mainline Decision failed; preparation skipped. The ordinary verifier failed during TECHNICAL_VERIFICATION before current Product Experience replay. [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) was returned to draft at the unchanged failed head before any correction publication. It is unqualified and unmerged.
 
-| Binding | Preserved value |
-| --- | --- |
-| Candidate | `53601e9e386bb4f1062719befc77b7778b9e4430` |
-| Tree | `85e9accc1d273d0f649119380d775df41e6dcf0a` |
-| Accepted base | `a16c5807657786d614ef4c5b8942daa740b2dfdf` |
-| Source digest | `3e69c2306442758edca417fdb478f1a61e009f1cbc82d584bcad6e760257df0f` |
-| Contract digest | `33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274` |
-| Plan digest | `8b063d10be78479ab4152fa3b48f1ea9e027931fb1483b07f5bfcbf6f87bddc3` |
-| Consumed R11 qualifier | `59eee4ede94f91a116cc4e0cfcc98c795a62567e` |
+| Binding                  | Preserved value                                                    |
+| ------------------------ | ------------------------------------------------------------------ |
+| Candidate                | `53601e9e386bb4f1062719befc77b7778b9e4430`                         |
+| Tree                     | `85e9accc1d273d0f649119380d775df41e6dcf0a`                         |
+| Accepted base            | `a16c5807657786d614ef4c5b8942daa740b2dfdf`                         |
+| Source digest            | `3e69c2306442758edca417fdb478f1a61e009f1cbc82d584bcad6e760257df0f` |
+| Contract digest          | `33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274` |
+| Plan digest              | `8b063d10be78479ab4152fa3b48f1ea9e027931fb1483b07f5bfcbf6f87bddc3` |
+| Consumed R11 qualifier   | `59eee4ede94f91a116cc4e0cfcc98c795a62567e`                         |
 | Qualifier payload SHA256 | `9bc236444cf2e5df9173fc182580f94600ec96f88a06571a2e5d507ee6f79131` |
-| Decision digest | `c56dd6976d6c56bc8f27711dce4c38edc18dbb0f3e1a4c51b43cca6558103b8c` |
+| Decision digest          | `c56dd6976d6c56bc8f27711dce4c38edc18dbb0f3e1a4c51b43cca6558103b8c` |
 
 The [preservation index](evidence/ordinary5-failed-20261017/preservation-index.json) binds nine original outputs and explicitly classified observations. Original artifact [12083487504](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38986106986/artifacts/12083487504) is 121543 bytes, SHA256 `d43dc5e7998539ffe743ec9cdc278f9f6054ce5d580619e5f3db05f00bf5e269`. The downloaded ZIP and extracted decision retain their exact bytes. API outputs are normalized GET responses, not raw HTTP; the job log is decoded connector text. Author-created observations are labelled. The original failed run, qualifier, prior records and evidence remain unchanged; qualified is absent.
 
