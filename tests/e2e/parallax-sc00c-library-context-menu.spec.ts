@@ -37,7 +37,24 @@ test("Library card menus preserve insertion, current-Scene protection, keyboard 
   await library.getByRole("searchbox").fill("Peeking Letter");
   const asset = library.getByRole("button", { name: "Inspect Peeking Letter", exact: true });
   await expect(asset).toBeVisible();
+  await page.evaluate(() => {
+    const events: string[] = [];
+    (window as Window & { __libraryMenuEvents?: string[] }).__libraryMenuEvents = events;
+    const menuIsPresent = () => Boolean(document.querySelector('[role="menu"][aria-label="Peeking Letter actions"]'));
+    const targetName = (target: EventTarget | null) => target instanceof Element ? `${target.tagName}.${target.className}` : String(target);
+    document.addEventListener("scroll", (event) => events.push(`${performance.now().toFixed(1)} scroll ${targetName(event.target)} menu=${menuIsPresent()}`), true);
+    document.addEventListener("pointerdown", (event) => events.push(`${performance.now().toFixed(1)} pointerdown ${targetName(event.target)} menu=${menuIsPresent()}`), true);
+    window.addEventListener("resize", () => events.push(`${performance.now().toFixed(1)} resize menu=${menuIsPresent()}`));
+    let present = menuIsPresent();
+    new MutationObserver(() => {
+      const next = menuIsPresent();
+      if (next !== present) events.push(`${performance.now().toFixed(1)} menu=${next} active=${targetName(document.activeElement)}`);
+      present = next;
+    }).observe(document.body, { childList: true, subtree: true });
+  });
   await asset.click({ button: "right" });
+  await page.waitForTimeout(250);
+  console.log("LIBRARY_MENU_EVENTS", await page.evaluate(() => (window as Window & { __libraryMenuEvents?: string[] }).__libraryMenuEvents));
   const assetMenu = page.getByRole("menu", { name: "Peeking Letter actions", exact: true });
   await expect(assetMenu.getByRole("menuitem", { name: "Add to scene", exact: true })).toBeVisible();
   await mkdir(evidence, { recursive: true });
