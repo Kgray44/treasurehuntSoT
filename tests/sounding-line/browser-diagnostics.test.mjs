@@ -1313,3 +1313,1090 @@ test("unknown or partial source execution never becomes a known setup failure or
     "EXECUTION_UNKNOWN",
   );
 });
+
+// This separate finite workload authority is tested with synthetic data only.
+// Never run its CLI, original-plan projection, source prefix, package/browser
+// setup, historical workload or real custody/API from these regression fixtures.
+const posttechnical = await import("../../scripts/sounding-line/replay-posttechnical-suite.mjs");
+const posttechnicalController = await import("../../scripts/sounding-line/replay-posttechnical-diagnostic.mjs");
+const posttechnicalCrypto = await import("node:crypto");
+function posttechnicalReportFixture() {
+  const reports = new Map();
+  for (const entry of posttechnical.POSTTECHNICAL_CASES) {
+    let suite = reports.get(entry.spec);
+    if (!suite) {
+      suite = { title: path.basename(entry.spec), file: path.basename(entry.spec), suites: [], specs: [] };
+      reports.set(entry.spec, suite);
+    }
+    for (const title of entry.titlePath.slice(0, -1)) {
+      let nested = suite.suites.find((child) => child.title === title);
+      if (!nested) {
+        nested = { title, file: path.basename(entry.spec), suites: [], specs: [] };
+        suite.suites.push(nested);
+      }
+      suite = nested;
+    }
+    suite.specs.push({
+      title: entry.titlePath.at(-1),
+      file: path.basename(entry.spec),
+      line: entry.sourceLine,
+      column: entry.sourceColumn,
+      tests: [
+        {
+          projectName: "chromium",
+          expectedStatus: "passed",
+          status: "expected",
+          repeatEachIndex: 0,
+          results: [{ retry: 0, status: "passed", errors: [], attachments: [] }],
+        },
+      ],
+    });
+  }
+  return {
+    config: {
+      rootDir: "/synthetic/candidate/tests/e2e",
+      workers: 1,
+      projects: [{ name: "chromium", retries: 0, repeatEach: 1 }],
+    },
+    errors: [],
+    stats: { expected: 38, skipped: 0, unexpected: 0, flaky: 0 },
+    suites: [...reports.values()],
+  };
+}
+
+test("posttechnical report requires all exact source identities and one actual Chromium result each", () => {
+  const report = posttechnicalReportFixture();
+  const summary = posttechnical.validatePosttechnicalBrowserReport(report, { candidate: "/synthetic/candidate" });
+  assert.equal(summary.actualCases, 38);
+  assert.equal(summary.actualSuites, 6);
+  assert.equal(summary.identityDigest, posttechnical.POSTTECHNICAL_POLICY.casesDigest);
+  assert.equal(summary.qualification, false);
+  const first = (value) => value.suites[0].specs[0];
+  for (const mutate of [
+    (value) => {
+      first(value).title += " changed";
+    },
+    (value) => {
+      first(value).line++;
+    },
+    (value) => {
+      first(value).tests[0].projectName = "webkit-mobile";
+    },
+    (value) => {
+      first(value).tests[0].results.push({ retry: 1, status: "passed" });
+    },
+    (value) => {
+      first(value).tests[0].results[0].status = "skipped";
+    },
+    (value) => {
+      first(value).tests[0].status = "flaky";
+    },
+    (value) => {
+      first(value).tests[0].results = { 0: first(value).tests[0].results[0], length: 1 };
+    },
+    (value) => {
+      delete first(value).tests[0].results;
+    },
+    (value) => {
+      first(value).tests[0].results = [];
+    },
+    (value) => {
+      value.config.rootDir = "/foreign/candidate/tests/e2e";
+    },
+    (value) => {
+      first(value).file = "/foreign/candidate/tests/e2e/crossdeck-experience-refit.spec.ts";
+    },
+    (value) => {
+      first(value).file = "../e2e/crossdeck-experience-refit.spec.ts";
+    },
+    (value) => {
+      value.suites[0].specs[1] = structuredClone(first(value));
+    },
+    (value) => {
+      value.stats.skipped = 1;
+    },
+    (value) => {
+      value.config.workers = 2;
+    },
+    (value) => {
+      value.config.projects[0].retries = 1;
+    },
+    (value) => {
+      value.errors.push({ message: "PRIVATE_REPORT_FAILURE" });
+    },
+  ]) {
+    const changed = structuredClone(report);
+    mutate(changed);
+    assert.throws(
+      () => posttechnical.validatePosttechnicalBrowserReport(changed, { candidate: "/synthetic/candidate" }),
+      /REPORT_/u,
+    );
+  }
+});
+
+test("posttechnical runtime and exact command guards cannot broaden a fixed diagnostic", () => {
+  const runtime = {
+    node: "24.19.0",
+    platform: "linux",
+    architecture: "x64",
+    git: "2.55.0",
+    executable: posttechnical.POSTTECHNICAL_WORKLOAD.nodeExecutable,
+  };
+  posttechnical.assertPosttechnicalRuntime(runtime);
+  for (const change of [
+    { node: "24.19.1" },
+    { git: "2.52.0" },
+    { platform: "win32" },
+    { architecture: "arm64" },
+    { executable: "/untrusted/node" },
+  ])
+    assert.throws(() => posttechnical.assertPosttechnicalRuntime({ ...runtime, ...change }), /RUNTIME_CHANGED/u);
+  assert.equal(posttechnical.validatePosttechnicalCommand(1, "npm", ["run", "db:generate"]).executable, "npm");
+  for (const [ordinal, command, args] of [
+    [0, "npm", ["run", "db:generate"]],
+    [2, "npm", ["run", "db:generate"]],
+    [1, "npm", ["run", "build"]],
+    [13, "npm", ["run", "build"]],
+  ])
+    assert.throws(() => posttechnical.validatePosttechnicalCommand(ordinal, command, args), /COMMAND_CHANGED/u);
+});
+
+function posttechnicalApiFixture() {
+  const P = posttechnical.POSTTECHNICAL_POLICY;
+  const environment = {
+    ...sourceDiagnosticEnvironment(),
+    GITHUB_JOB: "reserve-diagnostic",
+    GITHUB_WORKFLOW_REF: `${P.repository}/${P.workflow}@refs/heads/main`,
+  };
+  const api = sourceDiagnosticApi();
+  api.environment = environment;
+  const run = api.responses.get("actions/runs/123456");
+  api.responses.get("pulls/721").base.sha = posttechnical.POSTTECHNICAL_WORKLOAD.base;
+  run.path = P.workflow;
+  run.display_title = P.title;
+  api.responses.get("actions/workflows/55").path = P.workflow;
+  api.responses.get("actions/workflows/55/runs?event=workflow_dispatch&per_page=100&page=1").workflow_runs[0].path =
+    P.workflow;
+  api.responses.set(`actions/runs/${P.priorRun}`, {
+    id: P.priorRun,
+    run_attempt: 1,
+    event: "workflow_dispatch",
+    conclusion: "success",
+    head_sha: "63188aa225e69a807eb078f1df14e92f7a536da1",
+    path: sourceDiagnosticPolicy.workflow,
+    actor: { login: P.actor },
+    triggering_actor: { login: P.actor },
+  });
+  return api;
+}
+
+test("new posttechnical admission authenticates its own finite workflow and consumed predecessor without reusing permission", async () => {
+  const invoke = (api) =>
+    posttechnicalController.validatePosttechnicalExecution({
+      request: api.request,
+      environment: api.environment,
+      job: "reserve-diagnostic",
+      installerSha: api.environment.GITHUB_SHA,
+      now: sourceDiagnosticNow(),
+    });
+  const api = posttechnicalApiFixture();
+  assert.equal((await invoke(api)).policyDigest, posttechnical.posttechnicalPolicyDigest);
+  for (const mutate of [
+    (value) => {
+      value.environment.GITHUB_RUN_ATTEMPT = "2";
+    },
+    (value) => {
+      value.responses.get("actions/runs/123456").display_title = "Sounding Line finite 1 ordinary";
+    },
+    (value) => {
+      value.responses.get("actions/runs/123456").conclusion = "cancelled";
+    },
+    (value) => {
+      value.responses.get("branches/main").protected = false;
+    },
+    (value) => {
+      value.responses.get("pulls/721").draft = false;
+    },
+    (value) => {
+      value.responses.get("pulls/721").base.sha = "b".repeat(40);
+    },
+    (value) => {
+      value.responses.get("actions/workflows/55/runs?event=workflow_dispatch&per_page=100&page=1").total_count = 2;
+    },
+    (value) => {
+      value.responses.get(`actions/runs/${posttechnical.POSTTECHNICAL_POLICY.priorRun}`).conclusion = "failure";
+    },
+  ]) {
+    const changed = posttechnicalApiFixture();
+    mutate(changed);
+    await assert.rejects(invoke(changed), /POSTTECHNICAL_DIAGNOSTIC_/u);
+    assert.equal(
+      changed.calls.some((call) => call.method !== "GET"),
+      false,
+    );
+  }
+});
+
+test("posttechnical child environments cannot carry owner credentials or old/new suite permission into the app", () => {
+  const inherited = {
+    ...sourceDiagnosticEnvironment(),
+    GH_TOKEN: "PRIVATE",
+    GITHUB_TOKEN: "PRIVATE",
+    SOUNDING_LINE_EXCEPTION_PHASE: "qualify",
+    SOUNDING_LINE_R13_LOCAL_LEASE: "PRIVATE",
+    POSTTECHNICAL_SUITE_LEASE: "PRIVATE",
+    NODE_OPTIONS: "PRIVATE",
+    GIT_CONFIG_COUNT: "1",
+  };
+  const worker = posttechnicalController.posttechnicalWorkerEnvironment(inherited, "/synthetic/workspace");
+  assert.equal(worker.CI, "true");
+  assert.equal(worker.GITHUB_JOB, "reserve-diagnostic");
+  assert.equal(
+    Object.keys(worker).some((name) =>
+      /^(?:GH_TOKEN|GITHUB_TOKEN|SOUNDING_LINE_|POSTTECHNICAL_|GIT_|NODE_OPTIONS)/u.test(name),
+    ),
+    false,
+  );
+  const app = posttechnical.scrubPosttechnicalSuiteEnvironment({
+    ...worker,
+    POSTTECHNICAL_SUITE_LEASE: "PRIVATE",
+    SOUNDING_LINE_EXCEPTION_PHASE: "qualify",
+    SOUNDING_LINE_BROWSER_DIAGNOSTIC_CONTEXT: "synthetic-scope",
+    GH_TOKEN: "PRIVATE",
+  });
+  assert.equal(app.POSTTECHNICAL_SUITE_LEASE, undefined);
+  assert.equal(app.GH_TOKEN, undefined);
+  assert.equal(app.SOUNDING_LINE_BROWSER_DIAGNOSTIC_CONTEXT, "synthetic-scope");
+  assert.equal(JSON.stringify(app).includes("PRIVATE"), false);
+});
+
+test("posttechnical finalization rejects reused, skipped or incomplete obligations even with a PASS label", () => {
+  const result = {
+    freshObligations: 8,
+    obligations: posttechnical.POSTTECHNICAL_WORKLOAD.groups.map(([id]) => ({ id })),
+    reconciliation: Array.from({ length: 8 }, () => ({
+      freshExecuted: true,
+      disposition: "FRESH",
+      commandsAvoided: [],
+    })),
+    commandsAvoided: [],
+    finalization: { decision: "PASS", errors: [], remainder: [] },
+  };
+  assert.equal(posttechnicalController.validatePosttechnicalFreshResult(result).qualification, false);
+  for (const mutate of [
+    (value) => {
+      value.freshObligations = 7;
+    },
+    (value) => {
+      value.reconciliation[0].disposition = "PRESERVED";
+    },
+    (value) => {
+      value.reconciliation[0].freshExecuted = false;
+    },
+    (value) => {
+      value.finalization.remainder.push("missing");
+    },
+    (value) => {
+      value.obligations.reverse();
+    },
+  ]) {
+    const changed = structuredClone(result);
+    mutate(changed);
+    assert.throws(
+      () => posttechnicalController.validatePosttechnicalFreshResult(changed),
+      /(?:TECHNICAL_NOT_FRESH_COMPLETE|GROUPS_CHANGED)/u,
+    );
+  }
+});
+
+function decryptSyntheticEnvelope(bytes, privateKey) {
+  const envelope = JSON.parse(bytes),
+    aad = Buffer.from(envelope.aad, "base64"),
+    header = JSON.parse(aad);
+  const key = posttechnicalCrypto.privateDecrypt(
+    {
+      key: privateKey,
+      oaepHash: "sha256",
+      oaepLabel: Buffer.from("VW-POSTTECHNICAL-EVIDENCE-1"),
+      padding: posttechnicalCrypto.constants.RSA_PKCS1_OAEP_PADDING,
+    },
+    Buffer.from(header.wrappedKey, "base64"),
+  );
+  const decipher = posttechnicalCrypto.createDecipheriv("aes-256-gcm", key, Buffer.from(header.nonce, "base64"));
+  decipher.setAAD(aad);
+  decipher.setAuthTag(Buffer.from(envelope.tag, "base64"));
+  return JSON.parse(Buffer.concat([decipher.update(Buffer.from(envelope.ciphertext, "base64")), decipher.final()]));
+}
+
+test("private diagnostic envelope roundtrips exact bytes and authenticates header, payload and tag", () => {
+  const keys = posttechnicalCrypto.generateKeyPairSync("rsa", { modulusLength: 2048 });
+  const files = [{ name: "private/PRIVATE_LOG_NAME.txt", bytes: Buffer.from("PRIVATE_LOG_BYTES\u0000\n") }];
+  const aad = {
+    version: 1,
+    diagnosticId: "SYNTHETIC_ONLY",
+    runId: 123,
+    policyDigest: "a".repeat(64),
+    keyId: "b".repeat(64),
+    installer: "c".repeat(40),
+    candidate: "d".repeat(40),
+    historicalBase: "e".repeat(40),
+  };
+  const bytes = posttechnicalController.sealPosttechnicalEvidence({ files, aad, publicKey: keys.publicKey });
+  assert.equal(bytes.includes(Buffer.from("PRIVATE_LOG")), false);
+  const decoded = decryptSyntheticEnvelope(bytes, keys.privateKey);
+  assert.equal(decoded.files[0].name, files[0].name);
+  assert.deepEqual(Buffer.from(decoded.files[0].content, "base64"), files[0].bytes);
+  assert.equal(decoded.files[0].sha256, createHash("sha256").update(files[0].bytes).digest("hex"));
+  for (const field of ["aad", "ciphertext", "tag"]) {
+    const changed = JSON.parse(bytes),
+      value = Buffer.from(changed[field], "base64");
+    value[0] ^= 1;
+    changed[field] = value.toString("base64");
+    assert.throws(() => decryptSyntheticEnvelope(Buffer.from(JSON.stringify(changed)), keys.privateKey));
+  }
+});
+
+test("private evidence collector excludes lease, counters and databases and rejects symlink escapes", async (t) => {
+  const root = await fixture(t);
+  await mkdir(path.join(root, "private"), { mode: 0o700 });
+  await writeFile(path.join(root, "private/worker.stdout.log"), "synthetic-output", { mode: 0o600 });
+  for (const name of ["suite-lease.json", "setup-1-started.json", "owner.db"])
+    await writeFile(path.join(root, "private", name), "PRIVATE_CAPABILITY", { mode: 0o600 });
+  const evidence = posttechnicalController.collectPosttechnicalEvidence({ workspace: root });
+  assert.equal(evidence.members.length, 1);
+  assert.equal(evidence.members[0].name, "private/worker.stdout.log");
+  const { symlink } = await import("node:fs/promises");
+  await mkdir(path.join(root, "private/html-report"));
+  await symlink(path.join(root, "private/suite-lease.json"), path.join(root, "private/html-report/escape.json"));
+  assert.throws(
+    () => posttechnicalController.collectPosttechnicalEvidence({ workspace: root }),
+    /EVIDENCE_PATH_INVALID/u,
+  );
+});
+
+test("posttechnical private suite lease binds exact argv, direct parent and nonce and has one create-only start", async (t) => {
+  const root = await fixture(t);
+  await mkdir(path.join(root, "private"), { mode: 0o700 });
+  const P = posttechnical.POSTTECHNICAL_POLICY,
+    W = posttechnical.POSTTECHNICAL_WORKLOAD;
+  const paths = posttechnical.posttechnicalPrivatePaths(root),
+    candidate = path.join(root, "candidate");
+  const originalArguments = [
+    "scripts/sounding-line/run-browser-suite.mjs",
+    "--profile",
+    "generic",
+    "--candidate",
+    W.candidate,
+    "--database-url",
+    `file:./artifacts/sounding-line/generic-${W.candidate.slice(0, 12)}/validation-isolated-19700101-000000000-${W.candidate.slice(0, 32)}.db`,
+    "--",
+    ...new Set(posttechnical.POSTTECHNICAL_CASES.map((entry) => entry.spec)),
+  ];
+  const marker = {
+    version: 1,
+    policyDigest: posttechnical.posttechnicalPolicyDigest,
+    diagnosticId: P.id,
+    reservation: "f".repeat(40),
+    nonce: "12345678-1234-1234-1234-123456789abc",
+    coordinatorPid: 1234,
+    candidate,
+    installer: path.join(root, "installer"),
+    installerSha: "a".repeat(40),
+    originalDecisionDigest: W.originalDecisionSha256,
+    commandOrdinal: 8,
+    originalArguments,
+    runId: 123456,
+  };
+  const environment = {
+    ...sourceDiagnosticEnvironment(),
+    GITHUB_JOB: "posttechnical-diagnostic",
+    GITHUB_WORKSPACE: root,
+    GITHUB_WORKFLOW_REF: `${P.repository}/${P.workflow}@refs/heads/main`,
+    CI: "true",
+    POSTTECHNICAL_SUITE_LEASE: marker.nonce,
+  };
+  const argv = posttechnical.posttechnicalSuiteArguments({ candidate, lease: paths.lease, originalArguments });
+  const invoke = (change = {}) =>
+    posttechnical.validatePosttechnicalLease({
+      marker,
+      root: candidate,
+      candidateSha: W.candidate,
+      argv,
+      leasePath: paths.lease,
+      environment,
+      parentPid: 1234,
+      now: sourceDiagnosticNow(),
+      ...change,
+    });
+  assert.equal(invoke().suiteStarted, paths.suiteStarted);
+  for (const change of [
+    { parentPid: 1235 },
+    { argv: [...argv, "--retries", "1"] },
+    { argv: [...argv, "--r13-technical-proof", "corrected"] },
+    { marker: { ...marker, commandOrdinal: 9 } },
+    { environment: { ...environment, POSTTECHNICAL_SUITE_LEASE: "wrong" } },
+    { environment: { ...environment, SOUNDING_LINE_EXCEPTION_PHASE: "qualify" } },
+    { environment: { ...environment, SOUNDING_LINE_R13_TECHNICAL_LEASE: "old" } },
+  ])
+    assert.throws(() => invoke(change), /SUITE_BINDING_CHANGED/u);
+  posttechnical.writePosttechnicalPrivate(paths.suiteStarted, { synthetic: true });
+  assert.throws(() => posttechnical.writePosttechnicalPrivate(paths.suiteStarted, { synthetic: true }), {
+    code: "EEXIST",
+  });
+  assert.deepEqual(posttechnical.readPosttechnicalPrivate(paths.suiteStarted), { synthetic: true });
+});
+
+test("posttechnical ambiguous remote claim write is never retried", async () => {
+  let refWrites = 0;
+  const request = async (endpoint, method = "GET") => {
+    if (method === "GET" && endpoint.startsWith("git/ref/")) return null;
+    if (method === "GET" && endpoint.startsWith("git/commits/")) return { tree: { sha: "b".repeat(40) } };
+    if (method === "POST" && ["git/blobs", "git/trees", "git/commits"].includes(endpoint))
+      return { sha: "c".repeat(40) };
+    if (method === "POST" && endpoint === "git/refs") {
+      refWrites++;
+      throw Error("PRODUCT_EXPERIENCE_EXCEPTION_CUSTODY_WRITE_OUTCOME_UNKNOWN");
+    }
+    assert.fail("unexpected synthetic claim request");
+  };
+  await assert.rejects(
+    posttechnicalController.createPosttechnicalReservation({
+      request,
+      execution: { installerSha: "a".repeat(40), runId: 123456, workflowId: 55 },
+    }),
+    /WRITE_OUTCOME_UNKNOWN/u,
+  );
+  assert.equal(refWrites, 1);
+});
+
+test("posttechnical public summary rejects raw paths, errors and unrecognized data before publication", () => {
+  const P = posttechnical.POSTTECHNICAL_POLICY;
+  const summary = {
+    version: 1,
+    diagnosticId: P.id,
+    policyDigest: posttechnical.posttechnicalPolicyDigest,
+    status: "EXECUTION_UNKNOWN",
+    completeness: "DIAGNOSTIC_INCOMPLETE",
+    qualification: false,
+    originalCauseClaim: false,
+    grantsConsumerTrial: false,
+  };
+  assert.equal(posttechnicalController.validatePosttechnicalPublicReceipt(summary), summary);
+  for (const change of [
+    { privatePath: "/PRIVATE/owner" },
+    { message: "PRIVATE_ERROR" },
+    { status: "https://PRIVATE.example" },
+    { failure: "/PRIVATE/owner" },
+    { qualification: true },
+  ])
+    assert.throws(
+      () => posttechnicalController.validatePosttechnicalPublicReceipt({ ...summary, ...change }),
+      /RESULT_INVALID/u,
+    );
+  const inherited = {
+    ...sourceDiagnosticEnvironment(),
+    GITHUB_OUTPUT: "/PRIVATE/output",
+    GITHUB_ENV: "/PRIVATE/environment",
+    GITHUB_PATH: "/PRIVATE/path",
+    GITHUB_STEP_SUMMARY: "/PRIVATE/summary",
+    GITHUB_STATE: "/PRIVATE/state",
+  };
+  const worker = posttechnicalController.posttechnicalWorkerEnvironment(inherited, "/synthetic/workspace");
+  for (const key of [
+    "GITHUB_OUTPUT",
+    "GITHUB_ENV",
+    "GITHUB_PATH",
+    "GITHUB_STEP_SUMMARY",
+    "GITHUB_STATE",
+    "DATABASE_URL",
+  ])
+    assert.equal(worker[key], undefined);
+  const app = posttechnical.scrubPosttechnicalSuiteEnvironment(inherited);
+  for (const key of ["GITHUB_OUTPUT", "GITHUB_ENV", "GITHUB_PATH", "GITHUB_STEP_SUMMARY", "GITHUB_STATE"])
+    assert.equal(app[key], undefined);
+});
+
+test("artifact publication output requires complete ciphertext, exact safe receipt and proven worker cleanup", async (t) => {
+  const root = await fixture(t),
+    P = posttechnical.POSTTECHNICAL_POLICY,
+    W = posttechnical.POSTTECHNICAL_WORKLOAD;
+  const keys = posttechnicalCrypto.generateKeyPairSync("rsa", { modulusLength: 3072 });
+  const execution = { runId: 123456, installerSha: "a".repeat(40) };
+  const bytes = posttechnicalController.sealPosttechnicalEvidence({
+    files: [{ name: "synthetic/private.log", bytes: Buffer.from("PRIVATE_RAW") }],
+    publicKey: keys.publicKey,
+    aad: {
+      version: 1,
+      diagnosticId: P.id,
+      runId: execution.runId,
+      policyDigest: posttechnical.posttechnicalPolicyDigest,
+      keyId: P.evidenceKeyDigest,
+      installer: execution.installerSha,
+      candidate: W.candidate,
+      historicalBase: W.base,
+      repository: P.repository,
+      runAttempt: 1,
+      job: "posttechnical-diagnostic",
+      originalRun: sourceDiagnosticPolicy.failedRun,
+      originalInputDigest: W.originalDecisionSha256,
+      originalArchiveDigest: sourceDiagnosticPolicy.archiveDigest,
+      originalPlanDigest: P.originalPlanDigest,
+      workloadDigest: W.orderedTuplesSha256,
+    },
+  });
+  const summary = {
+    version: 1,
+    diagnosticId: P.id,
+    policyDigest: posttechnical.posttechnicalPolicyDigest,
+    status: "TECHNICAL_DIAGNOSTIC_INCOMPLETE",
+    completeness: "DIAGNOSTIC_INCOMPLETE",
+    qualification: false,
+    originalCauseClaim: false,
+    grantsConsumerTrial: false,
+    execution,
+    workerStarted: true,
+    worker: { closureProven: true, cleanup: { status: "PASS", treeReaped: true, streamsClosed: true } },
+    encryptedEvidence: {
+      keyId: P.evidenceKeyDigest,
+      format: "VW-POSTTECHNICAL-EVIDENCE-1",
+      ciphertextBytes: bytes.length,
+      ciphertextDigest: createHash("sha256").update(bytes).digest("hex"),
+    },
+  };
+  const summaryFile = path.join(root, "reproduction.json"),
+    encryptedFile = path.join(root, "private-evidence.encrypted"),
+    outputFile = path.join(root, "github-output");
+  await writeFile(summaryFile, JSON.stringify(summary));
+  await writeFile(encryptedFile, bytes);
+  await writeFile(outputFile, "");
+  assert.equal(
+    posttechnicalController.assertPosttechnicalPublication({ summary, summaryFile, encryptedFile, outputFile }),
+    true,
+  );
+  assert.equal(await readFile(outputFile, "utf8"), "evidence_safe=true\n");
+  await writeFile(outputFile, "");
+  assert.throws(
+    () =>
+      posttechnicalController.assertPosttechnicalPublication({
+        summary: { ...summary, worker: { cleanup: { status: "FAIL", treeReaped: false, streamsClosed: false } } },
+        summaryFile,
+        encryptedFile,
+        outputFile,
+      }),
+    /RESULT_INVALID/u,
+  );
+  await writeFile(encryptedFile, bytes.subarray(0, bytes.length - 1));
+  assert.throws(
+    () => posttechnicalController.assertPosttechnicalPublication({ summary, summaryFile, encryptedFile, outputFile }),
+    /RESULT_INVALID/u,
+  );
+  assert.equal(await readFile(outputFile, "utf8"), "");
+});
+
+test("new posttechnical actor, trigger, ref, job and expiry denials happen before any API read", async () => {
+  for (const overrides of [
+    { GITHUB_ACTOR: "other" },
+    { GITHUB_TRIGGERING_ACTOR: "other" },
+    { GITHUB_REF: "refs/heads/candidate" },
+    { GITHUB_JOB: "final-check" },
+  ]) {
+    const api = posttechnicalApiFixture();
+    Object.assign(api.environment, overrides);
+    await assert.rejects(
+      posttechnicalController.validatePosttechnicalExecution({
+        request: api.request,
+        environment: api.environment,
+        job: "reserve-diagnostic",
+        installerSha: api.environment.GITHUB_SHA,
+        now: sourceDiagnosticNow(),
+      }),
+      /EXECUTOR_CHANGED/u,
+    );
+    assert.equal(api.calls.length, 0);
+  }
+  const api = posttechnicalApiFixture();
+  await assert.rejects(
+    posttechnicalController.validatePosttechnicalExecution({
+      request: api.request,
+      environment: api.environment,
+      job: "reserve-diagnostic",
+      installerSha: api.environment.GITHUB_SHA,
+      now: new Date("2026-10-23T00:00:00Z"),
+    }),
+    /EXECUTOR_CHANGED/u,
+  );
+  assert.equal(api.calls.length, 0);
+});
+
+test("foreign lease selector is rejected before reading or parsing a private JSON file", async (t) => {
+  const root = await fixture(t);
+  await mkdir(path.join(root, "private"), { mode: 0o700 });
+  const foreign = path.join(root, "foreign.json");
+  await writeFile(foreign, "MALFORMED_PRIVATE_JSON", { mode: 0o600 });
+  await assert.rejects(
+    posttechnical.requirePosttechnicalDiagnosticSuite({
+      root: path.join(root, "candidate"),
+      candidateSha: posttechnical.POSTTECHNICAL_WORKLOAD.candidate,
+      options: { "posttechnical-diagnostic": foreign },
+      browserTests: [...new Set(posttechnical.POSTTECHNICAL_CASES.map((item) => item.spec))],
+      argv: [],
+      environment: { GITHUB_WORKSPACE: root },
+    }),
+    /PRIVATE_PATH_INVALID/u,
+  );
+  assert.equal(await readFile(foreign, "utf8"), "MALFORMED_PRIVATE_JSON");
+});
+
+test("technical scopes advance but only the exact browser command receives its diagnostic context", () => {
+  for (let ordinal = 1; ordinal <= 12; ordinal++) {
+    const context = { [BROWSER_DIAGNOSTIC_CONTEXT]: `fresh-${ordinal}` };
+    const environment = posttechnicalController.posttechnicalCommandEnvironment({
+      base: { CI: "true", [BROWSER_DIAGNOSTIC_CONTEXT]: "ambient" },
+      overrides: { [BROWSER_DIAGNOSTIC_CONTEXT]: "untrusted-override" },
+      scopeEnvironment: context,
+      ordinal,
+    });
+    assert.equal(
+      environment[BROWSER_DIAGNOSTIC_CONTEXT],
+      ordinal === 8 ? context[BROWSER_DIAGNOSTIC_CONTEXT] : undefined,
+    );
+  }
+});
+
+test("closed partial supervision remains publishable evidence while uncertainty cannot claim execution success", () => {
+  const closure = { status: "PASS", treeReaped: true, streamsClosed: true };
+  for (const change of [{ exceeded: true }, { timedOut: true }, { ioFailed: true }, { resultInvalid: true }]) {
+    const result = posttechnicalController.posttechnicalSupervisionOutcome({
+      exit: { code: 1 },
+      cleanup: closure,
+      counts: [12, 34],
+      saved: [12, 34],
+      result: null,
+      ...change,
+    });
+    assert.equal(result.closureProven, true);
+    assert.equal(result.incomplete, true);
+    assert.deepEqual(result.rawLogBytes, [12, 34]);
+  }
+  const unknown = posttechnicalController.posttechnicalSupervisionOutcome({
+    exit: { code: null },
+    cleanup: { status: "FAIL", treeReaped: false, streamsClosed: false },
+    counts: [1, 2],
+    saved: [1, 2],
+    result: null,
+  });
+  assert.equal(unknown.closureProven, false);
+  assert.equal(unknown.incomplete, true);
+});
+
+test("unsafe source result is retained privately while public fallback is a fresh minimal UNKNOWN", async (t) => {
+  const root = await fixture(t);
+  await mkdir(path.join(root, "private"), { mode: 0o700 });
+  const raw = Buffer.from('{"source":{"message":"PRIVATE_ORIGINAL_GIT_FAILURE"},"malformed":');
+  await writeFile(path.join(root, "private/worker-result.json"), raw, { mode: 0o600 });
+  const collected = posttechnicalController.collectPosttechnicalEvidence({ workspace: root });
+  assert.deepEqual(collected.members.find((member) => member.name === "private/worker-result.json").bytes, raw);
+  const fallback = posttechnicalController.minimalPosttechnicalUnknownReceipt({
+    execution: { runId: 123, installerSha: "a".repeat(40), workflowId: 55 },
+    workerStarted: true,
+    worker: { closureProven: true, result: { source: { raw: "PRIVATE" } } },
+  });
+  assert.equal(fallback.status, "EXECUTION_UNKNOWN");
+  assert.equal(fallback.worker.closureProven, true);
+  assert.equal(JSON.stringify(fallback).includes("PRIVATE"), false);
+  assert.equal(fallback.worker.result, undefined);
+});
+
+test("secure collection rejects hardlinks, symlinks, foreign paths and inexpensive configured caps", async (t) => {
+  const root = await fixture(t);
+  await mkdir(path.join(root, "private"), { mode: 0o700 });
+  const file = path.join(root, "private/worker.stdout.log");
+  await writeFile(file, "1234567890", { mode: 0o600 });
+  assert.equal(posttechnical.securePosttechnicalRead({ file, root, maximum: 10 }).toString(), "1234567890");
+  assert.throws(() => posttechnical.securePosttechnicalRead({ file, root, maximum: 9 }), /EVIDENCE_PATH_INVALID/u);
+  assert.throws(
+    () => posttechnicalController.collectPosttechnicalEvidence({ workspace: root, limits: { rawBytes: 9 } }),
+    /EVIDENCE_/u,
+  );
+  const { link, unlink } = await import("node:fs/promises");
+  const alias = path.join(root, "private/alias.log");
+  await link(file, alias);
+  assert.throws(() => posttechnical.securePosttechnicalRead({ file, root, maximum: 10 }), /EVIDENCE_PATH_INVALID/u);
+  await unlink(alias);
+  await writeFile(path.join(root, "private/worker.stderr.log"), "x", { mode: 0o600 });
+  assert.throws(
+    () => posttechnicalController.collectPosttechnicalEvidence({ workspace: root, limits: { files: 1 } }),
+    /EVIDENCE_LIMIT/u,
+  );
+});
+
+test("Git observer preserves exact this, argument objects, return and thrown identities without an extra call", async () => {
+  const options = Object.freeze({ cwd: "/synthetic/owned", encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }),
+    argv = Object.freeze(["show", "a".repeat(40)]),
+    receiver = {},
+    returned = {};
+  let calls = 0,
+    synchronizations = 0,
+    captured;
+  const implementation = {
+    execFileSync: function (...args) {
+      calls++;
+      assert.equal(this, receiver);
+      assert.equal(args[1], argv);
+      assert.equal(args[2], options);
+      return returned;
+    },
+  };
+  const original = implementation.execFileSync,
+    state = { observedGitThrows: 0, evidenceLoss: false, restoreVerified: false };
+  const value = await posttechnicalController.withPosttechnicalGitExceptionObserver({
+    implementation,
+    synchronize: () => synchronizations++,
+    state,
+    record: () => assert.fail("no failure record expected"),
+    operation: () => implementation.execFileSync.call(receiver, "git", argv, options),
+  });
+  assert.equal(value, returned);
+  assert.equal(calls, 1);
+  assert.equal(synchronizations, 2);
+  assert.equal(implementation.execFileSync, original);
+  assert.equal(state.restoreVerified, true);
+  const failure = Object.freeze(new Error("PRIVATE_SYNTHETIC_FAILURE"));
+  implementation.execFileSync = function (...args) {
+    calls++;
+    assert.equal(this, receiver);
+    assert.equal(args[1], argv);
+    throw failure;
+  };
+  const throwingOriginal = implementation.execFileSync;
+  await assert.rejects(
+    posttechnicalController.withPosttechnicalGitExceptionObserver({
+      implementation,
+      synchronize: () => {},
+      state,
+      record: (record) => {
+        captured = record;
+      },
+      operation: () => implementation.execFileSync.call(receiver, "git", argv, options),
+    }),
+    (error) => error === failure,
+  );
+  assert.equal(captured.error, failure);
+  assert.equal(captured.invocation[2], options);
+  assert.equal(calls, 2);
+  assert.equal(implementation.execFileSync, throwingOriginal);
+});
+
+test("Git observer synchronizes actual builtin imports and logger/bound/restore failures never mask the original", async (t) => {
+  const root = await fixture(t);
+  diagnosticRepository(root);
+  const builtin = await import("node:child_process"),
+    original = builtin.default.execFileSync;
+  const state = { observedGitThrows: 0, evidenceLoss: false, restoreVerified: false };
+  let sameError;
+  await assert.rejects(
+    posttechnicalController.withPosttechnicalGitExceptionObserver({
+      state,
+      record: ({ error }) => {
+        sameError = error;
+        throw Error("synthetic logger failure");
+      },
+      operation: () =>
+        builtin.execFileSync("git", ["show", "0".repeat(40)], { cwd: root, stdio: ["ignore", "pipe", "ignore"] }),
+    }),
+    (error) => error === sameError,
+  );
+  assert.equal(state.observedGitThrows, 1);
+  assert.equal(state.evidenceLoss, true);
+  assert.equal(builtin.execFileSync, original);
+  assert.equal(builtin.default.execFileSync, original);
+  await mkdir(path.join(root, "private"), { mode: 0o700 });
+  const logger = posttechnicalController.createPosttechnicalGitExceptionLog(path.join(root, "private"), {
+    maximumBytes: 1,
+  });
+  const failure = Object.freeze(new Error("PRIVATE_BOUND_FAILURE")),
+    implementation = {
+      execFileSync() {
+        throw failure;
+      },
+    };
+  let sync = 0;
+  await assert.rejects(
+    posttechnicalController.withPosttechnicalGitExceptionObserver({
+      implementation,
+      synchronize: () => {
+        if (++sync === 2) throw Error("synthetic restore failure");
+      },
+      state: logger.state,
+      record: logger.record,
+      operation: () => implementation.execFileSync("git", ["show", "a".repeat(40)], { cwd: root }),
+    }),
+    (error) => error === failure,
+  );
+  logger.close();
+  assert.equal(logger.state.evidenceLoss, true);
+  assert.equal(logger.state.restoreVerified, false);
+});
+
+test("valid JSON context, nonce, wrapped-key and wrong-key mutations fail authenticated decryption", () => {
+  const keys = posttechnicalCrypto.generateKeyPairSync("rsa", { modulusLength: 2048 }),
+    wrong = posttechnicalCrypto.generateKeyPairSync("rsa", { modulusLength: 2048 });
+  const aad = {
+    version: 1,
+    diagnosticId: "SYNTHETIC",
+    repository: "synthetic/repo",
+    runId: 123,
+    runAttempt: 1,
+    job: "synthetic-job",
+    policyDigest: "a".repeat(64),
+    keyId: "b".repeat(64),
+    installer: "c".repeat(40),
+    candidate: "d".repeat(40),
+    historicalBase: "e".repeat(40),
+    originalInputDigest: "f".repeat(64),
+    originalPlanDigest: "1".repeat(64),
+  };
+  const input = {
+    files: [{ name: "synthetic.bin", bytes: Buffer.from([0, 1, 2, 255]) }],
+    aad,
+    publicKey: keys.publicKey,
+  };
+  const first = posttechnicalController.sealPosttechnicalEvidence(input),
+    second = posttechnicalController.sealPosttechnicalEvidence(input);
+  const firstHeader = JSON.parse(Buffer.from(JSON.parse(first).aad, "base64")),
+    secondHeader = JSON.parse(Buffer.from(JSON.parse(second).aad, "base64"));
+  assert.notEqual(firstHeader.nonce, secondHeader.nonce);
+  assert.notEqual(firstHeader.wrappedKey, secondHeader.wrappedKey);
+  for (const field of [
+    "version",
+    "diagnosticId",
+    "repository",
+    "runId",
+    "runAttempt",
+    "job",
+    "policyDigest",
+    "keyId",
+    "installer",
+    "candidate",
+    "historicalBase",
+    "originalInputDigest",
+    "originalPlanDigest",
+    "nonce",
+    "wrappedKey",
+    "algorithms",
+    "plaintextBytes",
+  ]) {
+    const envelope = JSON.parse(first),
+      header = JSON.parse(Buffer.from(envelope.aad, "base64"));
+    if (field === "nonce" || field === "wrappedKey") {
+      const value = Buffer.from(header[field], "base64");
+      value[0] ^= 1;
+      header[field] = value.toString("base64");
+    } else header[field] = typeof header[field] === "number" ? header[field] + 1 : `${header[field]}-changed`;
+    envelope.aad = Buffer.from(JSON.stringify(header)).toString("base64");
+    assert.doesNotThrow(() => JSON.parse(Buffer.from(envelope.aad, "base64")));
+    assert.throws(() => decryptSyntheticEnvelope(Buffer.from(JSON.stringify(envelope)), keys.privateKey));
+  }
+  assert.throws(() => decryptSyntheticEnvelope(first, wrong.privateKey));
+  assert.throws(() =>
+    posttechnicalCrypto.privateDecrypt(
+      {
+        key: keys.privateKey,
+        oaepHash: "sha256",
+        oaepLabel: Buffer.from("WRONG_LABEL"),
+        padding: posttechnicalCrypto.constants.RSA_PKCS1_OAEP_PADDING,
+      },
+      Buffer.from(firstHeader.wrappedKey, "base64"),
+    ),
+  );
+  const multiple = posttechnicalController.sealPosttechnicalEvidence({
+    ...input,
+    files: [{ name: "empty.bin", bytes: Buffer.alloc(0) }, ...input.files],
+  });
+  const roundtrip = decryptSyntheticEnvelope(multiple, keys.privateKey);
+  assert.equal(roundtrip.files.length, 2);
+  for (const member of roundtrip.files) {
+    const bytes = Buffer.from(member.content, "base64");
+    assert.equal(bytes.length, member.bytes);
+    assert.equal(createHash("sha256").update(bytes).digest("hex"), member.sha256);
+  }
+  const empty = posttechnicalController.sealPosttechnicalEvidence({ files: [], aad, publicKey: keys.publicKey });
+  assert.equal(decryptSyntheticEnvelope(empty, keys.privateKey).files.length, 0);
+  for (const limits of [{ rawBytes: 3 }, { files: 1 }, { nameBytes: 2 }, { envelopeBytes: 1 }]) {
+    const files = limits.files ? [...input.files, { name: "second.bin", bytes: Buffer.from("x") }] : input.files;
+    assert.throws(() => posttechnicalController.sealPosttechnicalEvidence({ ...input, files, limits }), /EVIDENCE_/u);
+  }
+});
+
+function newPosttechnicalReservationFixture(execution) {
+  const refs = new Map(),
+    blobs = new Map(),
+    trees = new Map(),
+    commits = new Map(),
+    calls = [];
+  const baseTree = "b".repeat(40);
+  trees.set(baseTree, { tree: [{ path: "src", mode: "040000", type: "tree", sha: "d".repeat(40) }] });
+  commits.set(execution.installerSha, { tree: { sha: baseTree }, parents: [] });
+  const request = async (endpoint, method = "GET", body) => {
+    calls.push({ endpoint, method });
+    if (method === "POST") {
+      const sha = createHash("sha256").update(JSON.stringify(body)).digest("hex").slice(0, 40);
+      if (endpoint === "git/blobs") {
+        blobs.set(sha, { content: Buffer.from(body.content).toString("base64") });
+        return { sha };
+      }
+      if (endpoint === "git/trees") {
+        trees.set(sha, { tree: [...trees.get(body.base_tree).tree, ...body.tree] });
+        return { sha };
+      }
+      if (endpoint === "git/commits") {
+        commits.set(sha, { tree: { sha: body.tree }, parents: body.parents.map((parent) => ({ sha: parent })) });
+        return { sha };
+      }
+      if (endpoint === "git/refs") {
+        assert.equal(body.ref, `refs/tags/${posttechnical.POSTTECHNICAL_POLICY.namespace}/attempt-1`);
+        assert.equal(refs.has(body.ref), false);
+        refs.set(body.ref, { object: { type: "commit", sha: body.sha } });
+        return {};
+      }
+    }
+    if (endpoint.startsWith("git/ref/")) return refs.get(`refs/${endpoint.slice(8)}`) ?? null;
+    if (endpoint.startsWith("git/blobs/")) return blobs.get(endpoint.slice(10));
+    if (endpoint.startsWith("git/trees/")) return trees.get(endpoint.slice(10));
+    if (endpoint.startsWith("git/commits/")) return commits.get(endpoint.slice(12));
+    assert.fail("unlisted synthetic posttechnical reservation request");
+  };
+  return { request, calls, blobs };
+}
+
+test("new namespace occupancy and readonly reservation bindings deny replacement or qualification flags", async () => {
+  const execution = { installerSha: "a".repeat(40), runId: 123456, workflowId: 55 },
+    fixture = newPosttechnicalReservationFixture(execution);
+  const claim = await posttechnicalController.createPosttechnicalReservation({ request: fixture.request, execution });
+  const writes = fixture.calls.filter((call) => call.method !== "GET").length;
+  assert.equal(
+    (
+      await posttechnicalController.readPosttechnicalReservation({
+        request: fixture.request,
+        execution,
+        reservation: claim.commitSha,
+      })
+    ).commitSha,
+    claim.commitSha,
+  );
+  await assert.rejects(
+    posttechnicalController.createPosttechnicalReservation({ request: fixture.request, execution }),
+    /SLOT_CONSUMED/u,
+  );
+  await assert.rejects(
+    posttechnicalController.readPosttechnicalReservation({
+      request: fixture.request,
+      execution: { ...execution, runId: 123457 },
+      reservation: claim.commitSha,
+    }),
+    /RESERVATION_INVALID/u,
+  );
+  await assert.rejects(
+    posttechnicalController.readPosttechnicalReservation({
+      request: fixture.request,
+      execution,
+      reservation: "0".repeat(40),
+    }),
+    /RESERVATION_INVALID/u,
+  );
+  for (const blob of fixture.blobs.values()) {
+    const payload = JSON.parse(Buffer.from(blob.content, "base64"));
+    payload.qualification = true;
+    blob.content = Buffer.from(JSON.stringify(payload)).toString("base64");
+  }
+  await assert.rejects(
+    posttechnicalController.readPosttechnicalReservation({
+      request: fixture.request,
+      execution,
+      reservation: claim.commitSha,
+    }),
+    /RESERVATION_INVALID/u,
+  );
+  assert.equal(fixture.calls.filter((call) => call.method !== "GET").length, writes);
+  assert.equal(fixture.calls.filter((call) => call.method === "POST" && call.endpoint === "git/refs").length, 1);
+});
+
+test("descriptor collection detects a file changed while its exact bytes are being read", async (t) => {
+  const root = await fixture(t),
+    file = path.join(root, "owned.log");
+  await writeFile(file, "original", { mode: 0o600 });
+  const fs = await import("node:fs");
+  let changed = false;
+  assert.throws(
+    () =>
+      posttechnical.securePosttechnicalRead({
+        file,
+        root,
+        maximum: 8,
+        readImpl: (...args) => {
+          const count = fs.readSync(...args);
+          if (!changed) {
+            changed = true;
+            fs.writeFileSync(file, "modified");
+            fs.utimesSync(file, new Date(0), new Date(0));
+          }
+          return count;
+        },
+      }),
+    /EVIDENCE_PATH_INVALID/u,
+  );
+});
+
+test("mandatory media validation needs all fixed outputs and six distinct contained recording files", () => {
+  const workspace = "/synthetic/workspace",
+    outputs = posttechnical.POSTTECHNICAL_OUTPUTS,
+    members = new Map();
+  const png = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]),
+    trace = Buffer.from([80, 75, 3, 4, 0]);
+  for (const relative of outputs.requiredFixedRelativeFilesOnWholeTechnicalSuccess)
+    members.set(
+      `candidate/${relative}`,
+      relative.endsWith(".png") ? png : relative.endsWith(".zip") ? trace : Buffer.from("{}"),
+    );
+  for (const rule of outputs.requiredRecursiveBasenamesOnWholeTechnicalSuccess)
+    for (let i = 0; i < rule.count; i++)
+      members.set(
+        `candidate/${rule.directory}/synthetic-${rule.basename}-${i}/${rule.basename}`,
+        rule.kind === "nonemptyPNG" ? png : Buffer.from("{}"),
+      );
+  for (const rule of outputs.requestedGeneratedVideoRules) {
+    const recordings = {};
+    for (const kind of ["desktop", "phone"]) {
+      const relative = `${rule.directory}/${kind}.webm`;
+      members.set(`candidate/${relative}`, Buffer.from([26, 69, 223, 163]));
+      recordings[kind] = `${workspace}/candidate/${relative}`;
+    }
+    members.set(`candidate/${rule.observationFile}`, Buffer.from(JSON.stringify({ recordings })));
+  }
+  const list = () => [...members].map(([name, bytes]) => ({ name, bytes }));
+  assert.equal(
+    posttechnicalController.validatePosttechnicalRequiredEvidence({ members: list(), workspace }).complete,
+    true,
+  );
+  const missing = `candidate/${outputs.requiredFixedRelativeFilesOnWholeTechnicalSuccess[0]}`;
+  const saved = members.get(missing);
+  members.delete(missing);
+  assert.equal(
+    posttechnicalController.validatePosttechnicalRequiredEvidence({ members: list(), workspace }).complete,
+    false,
+  );
+  members.set(missing, saved);
+  const rule = outputs.requestedGeneratedVideoRules[0];
+  members.set(
+    `candidate/${rule.observationFile}`,
+    Buffer.from(JSON.stringify({ recordings: { desktop: "/FOREIGN/private.webm", phone: "/FOREIGN/private.webm" } })),
+  );
+  assert.equal(
+    posttechnicalController.validatePosttechnicalRequiredEvidence({ members: list(), workspace }).complete,
+    false,
+  );
+  assert.equal(
+    [...members.keys()].some((name) => name.endsWith("paired-witness.json")),
+    false,
+  );
+});
