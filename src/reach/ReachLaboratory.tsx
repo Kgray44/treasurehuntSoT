@@ -690,7 +690,15 @@ export function ReachLaboratory({
           <h1 id="reach-heading">Find your point.</h1>
           <p className={styles.intro}>See your hand. Find a comfortable rhythm. Explore a new way to point.</p>
         </div>
-        <Link href={returnHref} onClick={stop} className={styles.return}>
+        <Link
+          href={returnHref}
+          onClick={stop}
+          scroll={returnHref === "/devices/pair" ? false : undefined}
+          onNavigate={
+            returnHref === "/devices/pair" ? () => window.scrollTo({ top: 0, left: 0, behavior: "instant" }) : undefined
+          }
+          className={styles.return}
+        >
           ← {returnLabel}
         </Link>
         {source !== "OFF" && <button onClick={stop}>Stop session</button>}
