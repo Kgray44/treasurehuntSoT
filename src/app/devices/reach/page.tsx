@@ -7,6 +7,7 @@ export default async function ReachLabPage({ searchParams }: { searchParams: Pro
   return (
     <main>
       <ReachLaboratory
+        localPoseRecording={process.env.REACH_LOCAL_POSE_CAPTURE === "1"}
         returnHref={returnHref}
         returnLabel={returnHref === "/devices/pair" ? "Device connections" : "Back to your Voyage"}
       />

@@ -1,6 +1,91 @@
 // @sounding-line-registration owner=reach suite=browser.reach contracts=reach.phase1.foundation
 import { expect, test } from "@playwright/test";
+import { readFile } from "node:fs/promises";
 import { pointingPose, pointingTransitionPose } from "./fixtures/reach/pointing-poses";
+
+test("the local recording tool honors its flag and keeps video, raw trace and pause local", async ({
+  page,
+}, testInfo) => {
+  if (process.env.REACH_LOCAL_POSE_CAPTURE !== "1") {
+    const response = await page.goto("/devices/reach/record");
+    expect(response?.status()).toBe(404);
+    return;
+  }
+  const photograph = (await readFile("tests/e2e/fixtures/reach/pointing_up.jpg")).toString("base64");
+  await page.addInitScript((photograph) => {
+    Object.defineProperty(navigator.mediaDevices, "getUserMedia", {
+      value: async (options: MediaStreamConstraints) => {
+        if (options.audio !== false) throw new Error("MICROPHONE_REQUESTED");
+        const source = document.createElement("canvas");
+        source.width = 640;
+        source.height = 480;
+        const context = source.getContext("2d")!;
+        const image = new Image();
+        image.src = `data:image/jpeg;base64,${photograph}`;
+        await image.decode();
+        const draw = () => context.drawImage(image, 0, 0, 640, 480);
+        draw();
+        const timer = setInterval(draw, 40),
+          stream = source.captureStream(25);
+        for (const track of stream.getTracks()) {
+          const stop = track.stop.bind(track);
+          track.stop = () => {
+            clearInterval(timer);
+            stop();
+          };
+        }
+        return stream;
+      },
+    });
+  }, photograph);
+  const response = await page.request.get("/devices/reach/record", { headers: { host: "example.invalid" } });
+  expect(response.status()).toBe(404);
+  await page.goto("/devices/reach");
+  await page.getByRole("link", { name: "Record guided poses for local testing" }).click();
+  await expect(page).toHaveURL(/\/devices\/reach\/record$/);
+  await page.getByRole("button", { name: "Enable camera preview" }).click();
+  const start = page.getByRole("button", { name: "Start guided video + trace recording" });
+  await expect(start).toBeEnabled({ timeout: 30000 });
+  await start.click();
+  const progress = page.getByRole("progressbar", { name: "Guided recording progress" });
+  await expect.poll(async () => Number(await progress.getAttribute("value"))).toBeGreaterThan(900);
+  await page.screenshot({ path: testInfo.outputPath("D1-local-recorder-active.png"), fullPage: true });
+  await page.getByRole("button", { name: "Pause recording", exact: true }).click();
+  await expect(
+    page.getByText("Paused. The guide, video and trace are paused together.", { exact: true }),
+  ).toBeVisible();
+  const paused = Number(await progress.getAttribute("value"));
+  await page.waitForTimeout(600);
+  expect(Number(await progress.getAttribute("value"))).toBe(paused);
+  await page.getByRole("button", { name: "Resume recording", exact: true }).click();
+  await expect.poll(async () => Number(await progress.getAttribute("value"))).toBeGreaterThan(paused + 700);
+  await page.getByRole("button", { name: "Stop & review", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Review your local recording" })).toBeVisible();
+  await expect(page.getByLabel("Review local diagnostic recording")).toBeVisible();
+  const tracePromise = page.waitForEvent("download");
+  await page.getByRole("link", { name: "Download landmark trace" }).click();
+  const traceFile = await tracePromise;
+  await traceFile.saveAs(testInfo.outputPath("local-recording.json"));
+  const traceText = await readFile((await traceFile.path())!, "utf8"),
+    trace = JSON.parse(traceText);
+  expect(trace.format).toBe("VOYAGEWRIGHT_LOCAL_POSE_RECORDING");
+  expect(trace.frames.length).toBeGreaterThan(3);
+  expect(trace.pauseEvents.map((e: { event: string }) => e.event)).toEqual(["PAUSE", "RESUME"]);
+  expect(trace.video.audio).toBe(false);
+  expect(trace.physicalAccuracyQualified).toBe(false);
+  for (const forbidden of ["cameraLeaseId", "trackGeneration", "coefficients"])
+    expect(traceText).not.toContain(forbidden);
+  const videoPromise = page.waitForEvent("download");
+  await page.getByRole("link", { name: "Download diagnostic video" }).click();
+  const movie = await videoPromise;
+  await movie.saveAs(testInfo.outputPath(movie.suggestedFilename()));
+  expect((await readFile((await movie.path())!)).length).toBeGreaterThan(1000);
+  expect(movie.suggestedFilename().replace(/\.[^.]+$/, "")).toBe(traceFile.suggestedFilename().replace(/\.[^.]+$/, ""));
+  await page.screenshot({ path: testInfo.outputPath("D1-local-recorder-review.png"), fullPage: true });
+  await page.getByRole("link", { name: "Back to Reach Laboratory" }).click();
+  await expect(page).toHaveURL(/\/devices\/reach$/);
+  await expect(page.getByRole("button", { name: "Enable live camera" })).toBeVisible();
+});
 
 test("a completed failed check explains the accuracy limit and keeps setup instead of silently repeating", async ({
   page,
@@ -279,6 +364,8 @@ test("D0 controlled poses recover in the actual laboratory without losing comple
       { exact: true },
     ),
   ).toBeVisible();
+  await expect(page.getByRole("alert", { name: "Setup ended" })).toBeVisible();
+  await expect(page.getByRole("alert", { name: "Setup ended" })).toBeFocused();
   await expect(page.getByLabel("Target 3 of 9", { exact: true })).toHaveCount(0);
   await page.screenshot({ path: testInfo.outputPath("D0-context-invalidation.png"), fullPage: true });
   await page.getByRole("button", { name: "Stop session", exact: true }).click();

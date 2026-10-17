@@ -15,6 +15,22 @@
 .lab p {
   line-height: 1.6;
 }
+.setupAlert {
+  border: 2px solid var(--reach-gold);
+  border-radius: 12px;
+  background: #302c20;
+  color: var(--reach-ink);
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.25rem;
+  scroll-margin-top: 100px;
+}
+.setupAlert strong {
+  color: var(--reach-gold);
+  font-size: 1.15rem;
+}
+.setupAlert p {
+  margin: 0.4rem 0 0;
+}
 .header {
   display: flex;
   justify-content: space-between;

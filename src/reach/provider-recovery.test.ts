@@ -100,6 +100,31 @@ describe("bounded local hand continuity through brief occlusion", () => {
     expect(recovered.trackId).toBe(first.trackId);
   });
 
+  it("does not replace the core reference with a partial palm before the wrist disappears", () => {
+    const adapter = new BrowserHandAdapter(binding);
+    const first = adapter.envelope(resultAt(), 100, 105, 640, 480).hands[0];
+    const partial = resultAt();
+    partial.landmarks[0][5] = { ...partial.landmarks[0][5], x: -1 };
+    expect(adapter.envelope(partial, 200, 205, 640, 480).hands[0].trackId).toBe(first.trackId);
+    const withoutWrist = resultAt();
+    withoutWrist.landmarks[0][0] = { ...withoutWrist.landmarks[0][0], y: 1.1 };
+    expect(adapter.envelope(withoutWrist, 300, 305, 640, 480).hands[0].trackId).toBe(first.trackId);
+  });
+
+  it("abstains on too few common palm anchors without poisoning the prior core reference", () => {
+    const adapter = new BrowserHandAdapter(binding);
+    const withoutWrist = resultAt();
+    withoutWrist.landmarks[0][0] = { ...withoutWrist.landmarks[0][0], y: 1.1 };
+    const first = adapter.envelope(withoutWrist, 100, 105, 640, 480).hands[0];
+    const differentPartial = resultAt();
+    differentPartial.landmarks[0][5] = { ...differentPartial.landmarks[0][5], x: -1 };
+    expect(adapter.envelope(differentPartial, 200, 205, 640, 480).hands[0].continuity).toBe("AMBIGUOUS");
+    expect(adapter.envelope(withoutWrist, 300, 305, 640, 480).hands[0]).toMatchObject({
+      trackId: first.trackId,
+      continuity: "CONTINUOUS",
+    });
+  });
+
   it("pauses an insufficient palm frame and recovers its unrefreshed prior track", () => {
     const adapter = new BrowserHandAdapter(binding);
     const first = adapter.envelope(resultAt(), 100, 105, 640, 480).hands[0];
@@ -200,6 +225,42 @@ describe("bounded recent-motion palm association", () => {
     expect(next.trackId).not.toBe(first.trackId);
     expect(next.continuity).toBe("ACQUIRED");
   });
+
+  it.each(["WRIST_FLICKER", "DUPLICATE_WRIST_VISIBILITY"])(
+    "preserves one source through 10 fps movement and %s without calibration-context changes",
+    (condition) => {
+      const adapter = new BrowserHandAdapter(binding),
+        selector = new ActiveHandSelector();
+      const right = { categoryName: "Right", score: 0.95 };
+      let originalId: string | undefined;
+      for (let at = 100; at <= 2300; at += 100) {
+        const x = at <= 400 ? 0.2 : at === 500 ? 0.32 : at === 600 ? 0.48 : at === 700 ? 0.64 : 0.8;
+        const input = resultAt(x);
+        if (condition === "WRIST_FLICKER" && at % 200 !== 0) input.landmarks[0][0].y = 1.1;
+        if (condition === "DUPLICATE_WRIST_VISIBILITY" && at === 500) {
+          const clipped = handAt(x);
+          clipped[0].y = 1.1;
+          input.landmarks.push(clipped);
+        }
+        const observation = adapter.envelope(
+          {
+            landmarks: input.landmarks,
+            handedness: input.landmarks.map(() => [right]),
+          },
+          at,
+          at + 5,
+          640,
+          480,
+        );
+        originalId ??= observation.hands[0].trackId;
+        expect(observation.hands).toHaveLength(1);
+        expect(observation.hands[0].trackId).toBe(originalId);
+        const readiness = selector.update(observation);
+        expect(readiness.changed).toBe(false);
+        if (at >= 400) expect(readiness.eligible).toBe(true);
+      }
+    },
+  );
 
   it.each([
     { scales: [1, 1, 5], reason: "five-fold current palm size" },
@@ -392,6 +453,27 @@ describe("conservative duplicate model hypotheses", () => {
     expect(next.hands[0].continuity).toBe("CONTINUOUS");
   });
 
+  it("allows only optional wrist visibility to differ between otherwise agreeing hypotheses", () => {
+    const adapter = new BrowserHandAdapter(binding);
+    const first = adapter.envelope({ landmarks: [handAt()], handedness: [[right]] }, 100, 105, 640, 480).hands[0];
+    const clipped = handAt();
+    clipped[0] = { ...clipped[0], y: 1.1 };
+    const next = adapter.envelope(pair(clipped, handAt()), 150, 155, 640, 480);
+    expect(next.hands).toHaveLength(1);
+    expect(next.hands[0].trackId).toBe(first.trackId);
+    expect(next.hands[0].continuity).toBe("CONTINUOUS");
+    expect(next.hands[0].landmarks[0].valid).toBe(true);
+  });
+
+  it("retains distinct wrist evidence when both wrists are observed", () => {
+    const adapter = new BrowserHandAdapter(binding);
+    const changedWrist = handAt();
+    changedWrist[0] = { ...changedWrist[0], y: changedWrist[0].y + 0.03 };
+    const next = adapter.envelope(pair(changedWrist, handAt()), 100, 105, 640, 480);
+    expect(next.hands).toHaveLength(2);
+    expect(next.hands.every((hand) => hand.continuity === "AMBIGUOUS")).toBe(true);
+  });
+
   it.each(["FINGER_GEOMETRY", "RELATIVE_DEPTH", "PARTIAL_FINGER_GEOMETRY"])(
     "keeps genuinely different overlapping visible evidence ambiguous: %s",
     (kind) => {
@@ -433,7 +515,7 @@ describe("conservative duplicate model hypotheses", () => {
       const input = pair();
       if (kind === "UNKNOWN") input.handedness = [];
       if (kind === "WEAK") input.handedness[1] = [{ ...right, score: 0.79 }];
-      if (kind === "VISIBILITY_MISMATCH") input.landmarks[1][0] = { ...input.landmarks[1][0], y: 1.1 };
+      if (kind === "VISIBILITY_MISMATCH") input.landmarks[1][20] = { ...input.landmarks[1][20], y: 1.1 };
       if (kind === "SPARSE")
         for (const hand of input.landmarks)
           for (const index of [0, 1, 2, 3, 4, 13, 14]) hand[index] = { ...hand[index], x: -1 };

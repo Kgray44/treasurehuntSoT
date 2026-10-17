@@ -44,10 +44,13 @@ function steadyMetrics(fps: number) {
     centerBias: Math.hypot(sumX, sumY) / count,
   };
 }
-describe.each([15, 20, 30, 60])("display smoothing at %s frames per second", (fps) => {
-  it("attenuates stationary noise without shifting the center", () => {
+describe.each([10, 15, 20, 30, 60])("display smoothing at %s frames per second", (fps) => {
+  it("attenuates stationary noise within its declared cadence benchmark without shifting the center", () => {
     const metrics = steadyMetrics(fps);
-    expect(metrics.rmsRatio).toBeLessThanOrEqual(0.6);
+    // The newly observed 10fps cadence is characterized separately: at least
+    // 35% RMS attenuation. The established 15fps+ display criterion stays 40%.
+    // These display benchmarks never change raw held-out accuracy requirements.
+    expect(metrics.rmsRatio).toBeLessThanOrEqual(fps === 10 ? 0.65 : 0.6);
     expect(metrics.frameJitterRatio).toBeLessThanOrEqual(0.45);
     expect(metrics.centerBias).toBeLessThan(0.003);
   });
@@ -82,7 +85,7 @@ describe.each([15, 20, 30, 60])("display smoothing at %s frames per second", (fp
     expect(peak.time).toBeLessThanOrEqual(1.6);
     const settled = samples.find((sample) => sample.time >= 2.5 && Math.abs(sample.filtered.x - 0.2) < 0.01);
     expect(settled).toBeDefined();
-    expect(settled!.time - 2.5).toBeLessThanOrEqual(fps === 15 ? 0.21 : 0.16);
+    expect(settled!.time - 2.5).toBeLessThanOrEqual(fps <= 15 ? 0.21 : 0.16);
   });
 });
 it.each([0.08, 0.15, -0.08, -0.15])(
@@ -145,6 +148,16 @@ it("keeps a brief gap visible and anchors a long gap without extrapolating missi
   expect(brief.x).toBeGreaterThan(0.2);
   expect(brief.x).toBeLessThan(0.22);
   expect(filter.update({ x: 0.8, y: 0.7 }, 351)).toEqual({ x: 0.8, y: 0.7 });
+});
+it("reanchors honestly after one missing frame at the observed ten-fps cadence", () => {
+  const filter = new PointFilter();
+  for (const at of [100, 200, 300]) {
+    expect(filter.update({ x: 0.5, y: 0.5 }, at)).toEqual({ x: 0.5, y: 0.5 });
+  }
+  // No observation at400ms: source continuity and fresh eligibility remain the
+  // caller's responsibility. The display cannot infer motion across the gap.
+  expect(filter.update({ x: 0.7, y: 0.4 }, 500)).toEqual({ x: 0.7, y: 0.4 });
+  expect(filter.acceptedCaptureTime).toBe(500);
 });
 it("rejects invalid or reordered inputs without advancing or poisoning valid filter state", () => {
   const filter = new PointFilter();

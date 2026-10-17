@@ -1,6 +1,17 @@
 import { BrowserCameraBroker } from "@/sextant/camera";
 import { BrowserHandAdapter } from "@/watchglass/hand-provider";
 import { ObservationGate, type HandObservation } from "./observation";
+/** Passive, opt-in input for the local development recorder. No identity or lease data. */
+export type RawHandInference = {
+  result: unknown;
+  capture: number;
+  inference: number;
+  received: number;
+  videoTime: number;
+  width: number;
+  height: number;
+  mirror: boolean;
+};
 export class ReachBrowserRuntime {
   readonly camera: BrowserCameraBroker;
   private generation = 0;
@@ -15,6 +26,7 @@ export class ReachBrowserRuntime {
     private observe: (o: HandObservation) => void,
     private status: (state: string) => void,
     media: Pick<MediaDevices, "getUserMedia"> | null = navigator.mediaDevices ?? null,
+    private rawInference?: (frame: RawHandInference) => void,
   ) {
     this.camera = new BrowserCameraBroker(media, (state) => {
       this.status(state);
@@ -122,6 +134,23 @@ export class ReachBrowserRuntime {
           clearTimeout(this.timer);
           this.timer = undefined;
           this.inFlight = false;
+          // Recording is separate from observation eligibility. Include rejected
+          // raw results so a fixture cannot silently contain only good frames.
+          // A recorder failure must never alter the normal tracking lifecycle.
+          try {
+            this.rawInference?.({
+              result: data.result,
+              capture: data.capture,
+              inference: data.inferenceTime - performance.timeOrigin,
+              received: performance.now(),
+              videoTime: lastVideoTime,
+              width: data.width,
+              height: data.height,
+              mirror,
+            });
+          } catch {
+            // Optional local diagnostics must not interrupt inference.
+          }
           try {
             this.observe(
               gate.accept(

@@ -87,9 +87,11 @@ const timingSnapshot = (value: ReachTiming) => ({
 export function ReachLaboratory({
   returnHref = "/devices/pair",
   returnLabel = "Device connections",
+  localPoseRecording = false,
 }: {
   returnHref?: string;
   returnLabel?: string;
+  localPoseRecording?: boolean;
 }) {
   const video = useRef<HTMLVideoElement>(null),
     workspace = useRef<HTMLDivElement>(null),
@@ -127,6 +129,7 @@ export function ReachLaboratory({
     [demoHolding, setDemoHolding] = useState(false),
     [paused, setPaused] = useState(false);
   const [message, setMessage] = useState("A little movement. A new way to explore."),
+    [setupInvalidation, setSetupInvalidation] = useState<string | null>(null),
     [pointerMessage, setPointerMessage] = useState(""),
     [overlay, setOverlay] = useState(false),
     [exportConsent, setExportConsent] = useState(false);
@@ -167,8 +170,15 @@ export function ReachLaboratory({
     if (trial.current?.stage === "VALIDATION" || stepRef.current === "PLAYGROUND")
       setPointerMessage(lastSeen ? `${reason} Last seen pointer.` : reason);
   }, []);
+  const setupAlert = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!setupInvalidation) return;
+    setupAlert.current?.scrollIntoView({ block: "center", behavior: "instant" });
+    setupAlert.current?.focus({ preventScroll: true });
+  }, [setupInvalidation]);
   const invalidate = useCallback(
     (reason?: string) => {
+      setSetupInvalidation(reason ?? null);
       trial.current = null;
       calibrationRef.current = null;
       setCalibration(null);
@@ -565,6 +575,7 @@ export function ReachLaboratory({
       return;
     }
     if (stage === "VALIDATION" && !calibrationRef.current) return;
+    setSetupInvalidation(null);
     if (stage === "TRAINING") {
       calibrationRef.current = null;
       setCalibration(null);
@@ -759,6 +770,13 @@ export function ReachLaboratory({
           );
         })}
       </ol>
+      {setupInvalidation && (
+        <div ref={setupAlert} tabIndex={-1} className={styles.setupAlert} role="alert" aria-label="Setup ended">
+          <strong>Setup ended</strong>
+          <p>{setupInvalidation}</p>
+          <p>Your camera remains available. Begin a fresh setup when your hand is ready.</p>
+        </div>
+      )}
       <div ref={workspace} className={styles.workspace} data-plane={showPlane} data-training={training}>
         <div className={styles.cameraStage}>
           <div className={styles.stageHeader}>
@@ -1007,9 +1025,19 @@ export function ReachLaboratory({
               </span>
             )}
           </div>
-          <p className={styles.sessionMessage} aria-live="polite">
-            {message}
-          </p>
+          {!setupInvalidation && (
+            <p className={styles.sessionMessage} aria-live="polite">
+              {message}
+            </p>
+          )}
+          {localPoseRecording && step === "PREPARE" && (
+            <p className={styles.hint}>
+              <Link href="/devices/reach/record" onClick={stop}>
+                Record guided poses for local testing
+              </Link>
+              {" · video and landmark trace; no calibration fit"}
+            </p>
+          )}
           {hands.length > 1 && (
             <div className={styles.handChoice}>
               <span>Active hand</span>
