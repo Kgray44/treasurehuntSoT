@@ -104,6 +104,24 @@ and all acceptance requirements stay unchanged. The complete real source merge
 must regenerate both canonical inventories and pass the actual source-policy
 fixture; partial output is never acceptance.
 
+# Exact diagnostic original bytes
+
+A read-only formatter check found four immutable F13 diagnostic originals whose
+bytes do not match the formatter. Their preserved content is not rewritten.
+R13 pins a new exact formatter ignore blob containing only those four literal
+paths and68 literal producer-owned R13 focused/readiness JSON paths. The latter
+cover the two fixed stages, three finite readiness attempts per stage and the
+canonical raw filenames, including their hashed indexes. No wildcard or whole
+directory is ignored. Independently authored review and derived metadata still
+follow normal formatting.
+
+The shared adapter keeps the literal R12 formatter pin and selects a separate
+literal R13 pin solely from its fixed protected version. Accepted/candidate
+formatter equality, all immutable history and all publication hash/manifest
+checks remain required. No product, browser, assertion, finalizer or custody
+requirement changes. Preserve the original failed formatter observation and
+current exact-head installer result; neither qualifies the revised source.
+
 # Qualification remains required
 
 After independent review and protected installation, use distinct R13 operator

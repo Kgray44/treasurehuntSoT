@@ -59,6 +59,12 @@ default Git output buffer during source-only composition. R13 pins the narrow
 64 MiB reader correction for its three complete Git reads. Preserve that failed
 composition; no file list or inventory is truncated to make validation pass.
 
+The exact R13 formatter input preserves four frozen F13 diagnostic originals
+and68 literal producer-owned focused/readiness JSON files. It ignores no
+wildcard/directory and leaves derived/review metadata formatted. The fixed
+R12 formatter pin is unchanged; R13 has its own literal protected pin, with
+accepted/candidate equality and every original-byte/hash check still required.
+
 Only after independent source review, source-only policy proof and protected
 installation may the R13 original and corrected cases run. Each owns one exact
 crossdeck.surface-handoff execution, Chromium, one worker, zero retries and one

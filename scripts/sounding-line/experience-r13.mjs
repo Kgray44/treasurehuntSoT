@@ -4,7 +4,7 @@ import { validateR12Registry, validateR12FailureOriginals } from "./experience-r
 
 export const CROSSDECK_R13 = Object.freeze({
   id: "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R13",
-  recordDigest: "cefa326c89f3f7d8a67246c5d449f702dbec22bc7b291e7889ac008a1f6d563f",
+  recordDigest: "a6689ebab490ed81f313cf4bc5e2e597181c012ad43645120698b2faef097359",
   frozenReferenceSha: "76cd4efd8debea6c80293ce4543cb504f53384d4",
   requiredR12InstallerMainSha: "e85ceda26a3770dfb2b01f2afd916e45761a5d9e",
   reviewedProductSourceReferenceSha: "675208e7eee81d23abb71bc189afc1289d02409a",

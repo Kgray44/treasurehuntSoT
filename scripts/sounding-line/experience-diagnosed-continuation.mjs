@@ -344,7 +344,13 @@ export function createDiagnosedContinuation(profile) {
       productSourceDigest({ entries: [...normalized.values()], contents }) !== R8_FORMAT.sourceDigest
     )
       fail("REVIEWED_SOURCE_CHANGED");
-    if (git(root, ["rev-parse", `${baseSha}:.prettierignore`]).trim() !== "d21c485a0c9996cafbd53dde2ab76d0abaa779b4")
+    // Both protected adapters pin literal formatter inputs; caller/environment
+    // values cannot widen the exact original-byte preservation scope.
+    const acceptedFormatIgnoreBlob =
+      profile.version === "R13"
+        ? "7299ff76331d5d1273543df449a3700f36a53ace"
+        : "d21c485a0c9996cafbd53dde2ab76d0abaa779b4";
+    if (git(root, ["rev-parse", `${baseSha}:.prettierignore`]).trim() !== acceptedFormatIgnoreBlob)
       fail("FORMAT_INPUT_CHANGED");
     validateR8RawOriginals({ root, baseSha, candidateSha });
     validateR9FailureOriginals({

@@ -47817,7 +47817,7 @@
         "next.config.ts": "76a78483839ff606b9706867a5c442857e7a2456",
         "tsconfig.json": "45df8a341097f1492f6947cf685aa94422d852aa",
         "playwright.config.ts": "e43e9912bc263909c58a31ded843a25209761917",
-        ".prettierignore": "d21c485a0c9996cafbd53dde2ab76d0abaa779b4",
+        ".prettierignore": "7299ff76331d5d1273543df449a3700f36a53ace",
         ".prettierrc.json": "caa6777fc4be1e8b422d6ab928fd9220dadcebef",
         ".gitattributes": "5d3f67a9b553f7bb1e8e9f695460a1680ba40744"
       },
@@ -57564,7 +57564,7 @@
       "id": "PE-R13-SETUP-SUCCESSOR-BRIDGE-20261017",
       "status": "ACTIVE",
       "exceptionId": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R13",
-      "recordDigest": "cefa326c89f3f7d8a67246c5d449f702dbec22bc7b291e7889ac008a1f6d563f",
+      "recordDigest": "a6689ebab490ed81f313cf4bc5e2e597181c012ad43645120698b2faef097359",
       "overlay": [
         {
           "path": ".agents/README.md",
@@ -57599,7 +57599,7 @@
           "oldMode": null,
           "oldBlob": null,
           "newMode": "100644",
-          "newBlob": "b20ef34d19020243ca5fd56b855dbc14874f12c0"
+          "newBlob": "85d2a475e17d60510059af103029c740ce70e736"
         },
         {
           "path": ".agents/crossdeck-r8-historical-format.md",
@@ -57648,7 +57648,7 @@
           "oldMode": "100644",
           "oldBlob": "060d552e1efc8fa1186b04b5ff97355a9386faa3",
           "newMode": "100644",
-          "newBlob": "d21c485a0c9996cafbd53dde2ab76d0abaa779b4"
+          "newBlob": "7299ff76331d5d1273543df449a3700f36a53ace"
         },
         {
           "path": "Development_Docs/Engineering/Crossdeck_R8_Historical_Format_Reconciliation.md",
@@ -57704,7 +57704,7 @@
           "oldMode": null,
           "oldBlob": null,
           "newMode": "100644",
-          "newBlob": "f5b34f033bd7fccd6d9577804e1ffc278c8e1f0b"
+          "newBlob": "fcb802b2e8c4bcbd701b8b0e68440d24d00d6f24"
         },
         {
           "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R9_Ordinary_Only_20261016.md",
@@ -57816,7 +57816,7 @@
           "oldMode": null,
           "oldBlob": null,
           "newMode": "100644",
-          "newBlob": "0d0c51c16d2c333beedaae8971d75f112ef4f0ce"
+          "newBlob": "357685511ec60af1dce191bea068982c4d040567"
         },
         {
           "path": "scripts/sounding-line/experience-exception.mjs",
@@ -57879,7 +57879,7 @@
           "oldMode": null,
           "oldBlob": null,
           "newMode": "100644",
-          "newBlob": "aad8b3c58311051105789a98ceacb12bc756facf"
+          "newBlob": "50062d153566d07ce334b1b36349af6e0472c1c5"
         },
         {
           "path": "scripts/sounding-line/experience-r8-format.mjs",
