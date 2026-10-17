@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
 import { constants, createDecipheriv, createHash, generateKeyPairSync, privateDecrypt } from "node:crypto";
 import {
   linkSync,
@@ -15,6 +16,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { PassThrough } from "node:stream";
 import test from "node:test";
+import { pathToFileURL } from "node:url";
 import {
   HISTORICAL_VALIDATION_POLICY as P,
   HISTORICAL_EVIDENCE_MEMBERS,
@@ -24,6 +26,7 @@ import {
   createHistoricalReservation,
   deriveHistoricalInputVector,
   historicalEvidenceContext,
+  historicalInstallerSnapshot,
   historicalPrivatePaths,
   historicalPublicSummary,
   historicalValidationPolicyDigest,
@@ -31,6 +34,7 @@ import {
   projectHistoricalInputVector,
   publishHistoricalWorkerResult,
   readHistoricalReservation,
+  runHistoricalDiagnostic,
   runHistoricalSequence,
   superviseHistoricalWorker,
   validateHistoricalEnvironment,
@@ -44,10 +48,11 @@ import {
   sealPosttechnicalEvidence,
   withPosttechnicalGitExceptionObserver,
 } from "../../scripts/sounding-line/replay-posttechnical-diagnostic.mjs";
+import { posttechnicalSnapshot } from "../../scripts/sounding-line/replay-posttechnical-suite.mjs";
 
 const digest = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const now = () => new Date("2026-10-17T12:00:00Z");
-const execution = { runId: 123456, workflowId: 55, installerSha: "a".repeat(40), runAttempt: 1 };
+const execution = { runId: 123456, workflowId: P.workflowId, installerSha: "a".repeat(40), runAttempt: 1 };
 const clone = (value) => structuredClone(value);
 
 function fixture(t) {
@@ -62,6 +67,92 @@ function put(workspace, name, bytes) {
   writeFileSync(file, bytes, { mode: 0o600 });
   return file;
 }
+
+test("installer guard accepts the exact clean shallow checkout and rejects full, mismatched and dirty fixtures", async (t) => {
+  t.mock.timers.enable({ apis: ["Date"], now: now() });
+  const workspace = fixture(t),
+    repository = path.join(workspace, "repository"),
+    installer = path.join(workspace, "installer");
+  mkdirSync(repository);
+  const git = (root, args) =>
+    execFileSync("git", ["-c", "core.hooksPath=/dev/null", "-c", "commit.gpgsign=false", ...args], {
+      cwd: root,
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "pipe"],
+      env: {
+        PATH: process.env.PATH,
+        GIT_CONFIG_NOSYSTEM: "1",
+        GIT_CONFIG_GLOBAL: "/dev/null",
+        GIT_CONFIG_COUNT: "0",
+        GIT_TERMINAL_PROMPT: "0",
+        GIT_AUTHOR_NAME: "Synthetic Fixture",
+        GIT_AUTHOR_EMAIL: "synthetic@example.invalid",
+        GIT_COMMITTER_NAME: "Synthetic Fixture",
+        GIT_COMMITTER_EMAIL: "synthetic@example.invalid",
+      },
+    }).trim();
+  git(repository, ["init", "--initial-branch=main"]);
+  put(repository, "tracked.txt", "first\n");
+  git(repository, ["add", "tracked.txt"]);
+  git(repository, ["commit", "-m", "synthetic first"]);
+  const previousHead = git(repository, ["rev-parse", "HEAD"]);
+  put(repository, "tracked.txt", "second\n");
+  git(repository, ["add", "tracked.txt"]);
+  git(repository, ["commit", "-m", "synthetic second"]);
+  const installerSha = git(repository, ["rev-parse", "HEAD"]);
+  git(workspace, ["clone", "--depth", "1", "--no-tags", pathToFileURL(repository).href, installer]);
+  assert.equal(statSync(path.join(installer, ".git")).isDirectory(), true);
+  assert.equal(statSync(path.join(installer, ".git/index")).isFile(), true);
+  assert.equal(git(installer, ["rev-parse", "--is-shallow-repository"]), "true");
+  const sharedSnapshot = posttechnicalSnapshot(installer);
+  assert.deepEqual(Object.keys(sharedSnapshot), ["head", "tree", "index", "refs", "status"]);
+  assert.equal(Object.hasOwn(sharedSnapshot, "shallow"), false);
+  assert.deepEqual(historicalInstallerSnapshot(installer, installerSha), sharedSnapshot);
+  assert.equal(git(repository, ["rev-parse", "--is-shallow-repository"]), "false");
+  assert.throws(() => historicalInstallerSnapshot(repository, installerSha), /INSTALLER_CHANGED/u);
+  assert.throws(() => historicalInstallerSnapshot(installer, previousHead), /INSTALLER_CHANGED/u);
+  put(installer, "tracked.txt", "dirty tracked\n");
+  assert.throws(() => historicalInstallerSnapshot(installer, installerSha), /INSTALLER_CHANGED/u);
+  put(installer, "tracked.txt", "second\n");
+  const untracked = put(installer, "untracked.txt", "dirty untracked\n");
+  assert.throws(() => historicalInstallerSnapshot(installer, installerSha), /INSTALLER_CHANGED/u);
+  unlinkSync(untracked);
+  assert.deepEqual(historicalInstallerSnapshot(installer, installerSha), sharedSnapshot);
+  rmSync(path.join(workspace, "private"), { recursive: true });
+  const output = path.join(workspace, "receipts/reservation.json"),
+    sentinel = "PRODUCT_EXPERIENCE_EXCEPTION_TEST_INSTALLER_GUARD_REACHED",
+    originalFetch = globalThis.fetch,
+    originalExitCode = process.exitCode,
+    originalUmask = process.umask(),
+    requests = [];
+  try {
+    globalThis.fetch = async (url, options) => {
+      requests.push({ url, method: options.method });
+      throw new Error(sentinel);
+    };
+    const result = await runHistoricalDiagnostic({
+      mode: "reserve",
+      paths: { workspace, installer, output },
+      environment: { ...environment(), GITHUB_SHA: installerSha, GH_TOKEN: "synthetic-fixture-token" },
+    });
+    assert.deepEqual(requests, [
+      {
+        url: `https://api.github.com/repos/${P.repository}/actions/runs/${execution.runId}`,
+        method: "GET",
+      },
+    ]);
+    assert.equal(result.workerStarted, false);
+    assert.equal(result.failure, "EXECUTION_UNKNOWN");
+    assert.equal(JSON.parse(readFileSync(output)).failure, "EXECUTION_UNKNOWN");
+    assert.equal(JSON.parse(readFileSync(path.join(workspace, "private/fault.original.json"))).message, sentinel);
+    assert.deepEqual(historicalInstallerSnapshot(installer, installerSha), sharedSnapshot);
+  } finally {
+    globalThis.fetch = originalFetch;
+    process.exitCode = originalExitCode;
+    process.umask(originalUmask);
+  }
+});
+
 function sourcePass() {
   return {
     status: "NOT_REPRODUCED",
@@ -354,6 +445,7 @@ function executionFixture() {
   const env = environment();
   const run = {
     id: execution.runId,
+    check_suite_id: 105766005818,
     workflow_id: execution.workflowId,
     run_attempt: 1,
     event: "workflow_dispatch",
@@ -394,11 +486,11 @@ function executionFixture() {
     ],
     [
       `actions/workflows/${execution.workflowId}/runs?per_page=100&page=1`,
-      { total_count: 1, workflow_runs: [clone(run)] },
+      { total_count: 2, workflow_runs: [clone(run), clone(P.previousRun)] },
     ],
     [
       `actions/workflows/${execution.workflowId}/runs?event=workflow_dispatch&per_page=100&page=1`,
-      { total_count: 1, workflow_runs: [clone(run)] },
+      { total_count: 2, workflow_runs: [clone(run), clone(P.previousRun)] },
     ],
   ]);
   const calls = [];
@@ -433,7 +525,7 @@ test("diagnostic rejects changed owner, trigger, job, ref, expiry and inherited 
     /EXECUTOR_CHANGED/u,
   );
 });
-test("mocked execution binds protected main, app 15368, draft historical subject and complete single-dispatch history", async () => {
+test("mocked execution binds protected main, app 15368, draft historical subject and exact predecessor-successor history", async () => {
   const execute = (api) =>
     validateHistoricalExecution({
       ...api,
@@ -465,9 +557,24 @@ test("mocked execution binds protected main, app 15368, draft historical subject
       api.responses.get(`actions/runs/${execution.runId}`).triggering_actor.login = "other";
     },
     (api) => {
+      api.responses.get(`actions/runs/${execution.runId}`).check_suite_id = 0;
+    },
+    (api) => {
+      api.responses.get(`actions/runs/${execution.runId}`).check_suite_id = Number.MAX_SAFE_INTEGER + 1;
+    },
+    (api) => {
+      const foreignWorkflow = execution.workflowId + 1;
+      api.responses.get(`actions/runs/${execution.runId}`).workflow_id = foreignWorkflow;
+      api.responses.set(`actions/workflows/${foreignWorkflow}`, {
+        id: foreignWorkflow,
+        path: P.workflow,
+        state: "active",
+      });
+    },
+    (api) => {
       api.responses.get(
         `actions/workflows/${execution.workflowId}/runs?event=workflow_dispatch&per_page=100&page=1`,
-      ).total_count = 2;
+      ).total_count = 3;
     },
     (api) => {
       api.responses.get(
@@ -476,7 +583,7 @@ test("mocked execution binds protected main, app 15368, draft historical subject
     },
     (api) => {
       const history = api.responses.get(`actions/workflows/${execution.workflowId}/runs?per_page=100&page=1`);
-      history.total_count = 2;
+      history.total_count = 3;
       history.workflow_runs.push({ ...clone(history.workflow_runs[0]), id: execution.runId + 1, event: "schedule" });
     },
     (api) => {
@@ -489,6 +596,124 @@ test("mocked execution binds protected main, app 15368, draft historical subject
     await assert.rejects(execute(api), /(?:PROTECTION|BINDING|HISTORY)_INVALID/u);
     assert.ok(api.calls.every(({ method }) => method === "GET"));
   }
+});
+
+test("successor admission requires the exact two distinct run identities on both history pages", async () => {
+  const execute = (api) =>
+    validateHistoricalExecution({
+      request: api.request,
+      environment: api.environment,
+      installerSha: api.environment.GITHUB_SHA,
+      job: "reserve-diagnostic",
+      now: now(),
+    });
+  const mutations = [
+    [
+      "missing predecessor",
+      (history) => {
+        history.workflow_runs.pop();
+        history.total_count = 1;
+      },
+    ],
+    [
+      "missing successor",
+      (history) => {
+        history.workflow_runs.shift();
+        history.total_count = 1;
+      },
+    ],
+    [
+      "extra run",
+      (history) => {
+        history.workflow_runs.push({ ...clone(history.workflow_runs[0]), id: execution.runId + 1 });
+        history.total_count = 3;
+      },
+    ],
+    [
+      "duplicate predecessor",
+      (history) => {
+        history.workflow_runs[0] = clone(history.workflow_runs[1]);
+      },
+    ],
+    [
+      "duplicate successor",
+      (history) => {
+        history.workflow_runs[1] = clone(history.workflow_runs[0]);
+      },
+    ],
+    [
+      "wrong total count",
+      (history) => {
+        history.total_count = 1;
+      },
+    ],
+    [
+      "missing run array",
+      (history) => {
+        delete history.workflow_runs;
+      },
+    ],
+    [
+      "array-shaped object",
+      (history) => {
+        history.workflow_runs = { ...history.workflow_runs, length: 2 };
+      },
+    ],
+  ];
+  for (const [index, subject] of ["successor", "predecessor"].entries()) {
+    for (const [field, value] of [
+      ["id", index === 0 ? execution.runId + 1 : P.previousRun.id + 1],
+      ["check_suite_id", index === 0 ? P.previousRun.check_suite_id : P.previousRun.check_suite_id + 1],
+      ["run_attempt", 2],
+      ["head_sha", "b".repeat(40)],
+      ["status", "queued"],
+      ["conclusion", "success"],
+      ["display_title", "foreign diagnostic"],
+      ["workflow_id", P.workflowId + 1],
+      ["event", "push"],
+      ["path", ".github/workflows/foreign.yml"],
+      ["head_branch", "foreign"],
+    ])
+      mutations.push([
+        `${subject} ${field}`,
+        (history) => {
+          history.workflow_runs[index][field] = value;
+        },
+      ]);
+    for (const [field, key] of [
+      ["actor", "login"],
+      ["triggering_actor", "login"],
+      ["repository", "full_name"],
+      ["head_repository", "full_name"],
+    ])
+      mutations.push([
+        `${subject} ${field}`,
+        (history) => {
+          history.workflow_runs[index][field][key] = "foreign";
+        },
+      ]);
+  }
+  for (const suffix of ["?per_page=100&page=1", "?event=workflow_dispatch&per_page=100&page=1"]) {
+    const endpoint = `actions/workflows/${P.workflowId}/runs${suffix}`,
+      reversed = executionFixture();
+    reversed.responses.get(endpoint).workflow_runs.reverse();
+    assert.equal((await execute(reversed)).workflowId, P.workflowId);
+    assert.equal(reversed.calls.filter((call) => call.endpoint === endpoint).length, 1);
+    for (const [name, mutate] of mutations) {
+      const api = executionFixture();
+      mutate(api.responses.get(endpoint));
+      await assert.rejects(execute(api), /HISTORY_INVALID/u, `${suffix}: ${name}`);
+      assert.equal(api.calls.filter((call) => call.endpoint === endpoint).length, 1);
+      assert.ok(api.calls.every(({ method }) => method === "GET"));
+    }
+  }
+  const consumed = executionFixture();
+  consumed.environment.GITHUB_RUN_ID = String(P.previousRun.id);
+  consumed.environment.GITHUB_SHA = P.previousRun.head_sha;
+  consumed.responses.set(`actions/runs/${P.previousRun.id}`, clone(P.previousRun));
+  consumed.responses.get("branches/main").commit.sha = P.previousRun.head_sha;
+  await assert.rejects(execute(consumed), /HISTORY_INVALID/u);
+  assert.equal(consumed.calls.length, 0);
 });
 
 function reservationFixture({ ambiguous = false } = {}) {

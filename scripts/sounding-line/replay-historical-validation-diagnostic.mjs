@@ -57,13 +57,31 @@ const sha = (value) => typeof value === "string" && /^[a-f0-9]{40}$/u.test(value
 const same = (left, right) => JSON.stringify(left) === JSON.stringify(right);
 export const HISTORICAL_VALIDATION_POLICY = Object.freeze({
   version: 1,
-  id: "CROSSDECK-ORDINARY6-HISTORICAL-VALIDATION-DIAGNOSTIC-20261017",
-  namespace: "sounding-line-diagnostics/CROSSDECK-ORDINARY6-HISTORICAL-VALIDATION-DIAGNOSTIC-20261017",
+  id: "CROSSDECK-ORDINARY6-HISTORICAL-VALIDATION-CONTRACT-SUCCESSOR-20261017",
+  namespace: "sounding-line-diagnostics/CROSSDECK-ORDINARY6-HISTORICAL-VALIDATION-CONTRACT-SUCCESSOR-20261017",
   slot: "attempt-1",
   repository: ORIGINAL.repository,
   actor: ORIGINAL.actor,
   workflow: ".github/workflows/sounding-line-replay-historical-validation-diagnostic.yml",
-  title: "Sounding Line historical validation diagnostic 1 ordinary6",
+  workflowId: 387562208,
+  title: "Sounding Line historical validation diagnostic 2 ordinary6",
+  previousRun: Object.freeze({
+    id: 39026979523,
+    workflow_id: 387562208,
+    check_suite_id: 105766005817,
+    run_attempt: 1,
+    event: "workflow_dispatch",
+    path: ".github/workflows/sounding-line-replay-historical-validation-diagnostic.yml",
+    head_sha: "2442baaf0879afe15b47cc7ad148a81bca311449",
+    head_branch: "main",
+    display_title: "Sounding Line historical validation diagnostic 1 ordinary6",
+    status: "completed",
+    conclusion: "failure",
+    actor: Object.freeze({ login: ORIGINAL.actor }),
+    triggering_actor: Object.freeze({ login: ORIGINAL.actor }),
+    repository: Object.freeze({ full_name: ORIGINAL.repository }),
+    head_repository: Object.freeze({ full_name: ORIGINAL.repository }),
+  }),
   expiry: "2026-10-22T23:59:59Z",
   workerMs: 10 * 60 * 1000,
   originalSourcePolicyDigest: replaySourceDiagnosticPolicyDigest,
@@ -208,32 +226,51 @@ export function validateHistoricalEnvironment(environment, job, now = new Date()
   );
   return { runId: Number(environment.GITHUB_RUN_ID), installerSha: environment.GITHUB_SHA };
 }
+function historicalRunMatches(run, expected) {
+  return (
+    run &&
+    [
+      "id",
+      "workflow_id",
+      "check_suite_id",
+      "run_attempt",
+      "event",
+      "path",
+      "head_sha",
+      "head_branch",
+      "display_title",
+      "status",
+      "conclusion",
+    ].every((field) => run[field] === expected[field]) &&
+    run.actor?.login === expected.actor.login &&
+    run.triggering_actor?.login === expected.triggering_actor.login &&
+    run.repository?.full_name === expected.repository.full_name &&
+    run.head_repository?.full_name === expected.head_repository.full_name
+  );
+}
 export async function validateHistoricalExecution({ request, environment, job, installerSha, now }) {
   const identity = validateHistoricalEnvironment(environment, job, now);
   requireValue(identity.installerSha === installerSha, "INSTALLER_CHANGED");
+  requireValue(identity.runId !== P.previousRun.id, "HISTORY_INVALID");
   const run = await request(`actions/runs/${identity.runId}`),
-    workflow = await request(`actions/workflows/${run?.workflow_id}`),
+    currentRun = {
+      ...P.previousRun,
+      id: identity.runId,
+      check_suite_id: run?.check_suite_id,
+      head_sha: installerSha,
+      display_title: P.title,
+      status: "in_progress",
+      conclusion: null,
+    };
+  requireValue(
+    Number.isSafeInteger(run?.check_suite_id) && run.check_suite_id > 0 && historicalRunMatches(run, currentRun),
+    "BINDING_INVALID",
+  );
+  const workflow = await request(`actions/workflows/${P.workflowId}`),
     main = await request("branches/main"),
     pr = await request("pulls/721");
   requireValue(
-    run?.id === identity.runId &&
-      run.run_attempt === 1 &&
-      run.event === "workflow_dispatch" &&
-      run.status === "in_progress" &&
-      run.conclusion === null &&
-      run.head_sha === installerSha &&
-      run.head_branch === "main" &&
-      run.path === P.workflow &&
-      run.display_title === P.title &&
-      run.actor?.login === P.actor &&
-      run.triggering_actor?.login === P.actor &&
-      run.repository?.full_name === P.repository &&
-      run.head_repository?.full_name === P.repository &&
-      Number.isSafeInteger(run.workflow_id) &&
-      run.workflow_id > 0 &&
-      workflow?.id === run.workflow_id &&
-      workflow.path === P.workflow &&
-      workflow.state === "active",
+    workflow?.id === P.workflowId && workflow.path === P.workflow && workflow.state === "active",
     "BINDING_INVALID",
   );
   requireValue(
@@ -259,13 +296,11 @@ export async function validateHistoricalExecution({ request, environment, job, i
   for (const suffix of ["?per_page=100&page=1", "?event=workflow_dispatch&per_page=100&page=1"]) {
     const history = await request(`actions/workflows/${workflow.id}/runs${suffix}`);
     requireValue(
-      history?.total_count === 1 &&
-        history.workflow_runs?.length === 1 &&
-        history.workflow_runs[0].id === identity.runId &&
-        history.workflow_runs[0].run_attempt === 1 &&
-        history.workflow_runs[0].head_sha === installerSha &&
-        history.workflow_runs[0].path === P.workflow &&
-        history.workflow_runs[0].event === "workflow_dispatch",
+      history?.total_count === 2 &&
+        Array.isArray(history.workflow_runs) &&
+        history.workflow_runs?.length === 2 &&
+        history.workflow_runs.filter((entry) => historicalRunMatches(entry, P.previousRun)).length === 1 &&
+        history.workflow_runs.filter((entry) => historicalRunMatches(entry, currentRun)).length === 1,
       "HISTORY_INVALID",
     );
   }
@@ -340,6 +375,12 @@ function localGit(root, args, input) {
       GIT_OPTIONAL_LOCKS: "0",
     },
   });
+}
+export function historicalInstallerSnapshot(root, installerSha) {
+  const installer = posttechnicalSnapshot(root),
+    shallow = localGit(root, ["rev-parse", "--is-shallow-repository"]).trim();
+  requireValue(installer.status === "" && installer.head === installerSha && shallow === "true", "INSTALLER_CHANGED");
+  return installer;
 }
 export function projectHistoricalInputVector({ evidenceBytes, evidencePath, metadata }) {
   requireValue(
@@ -1081,11 +1122,7 @@ export async function runHistoricalDiagnostic({ mode, paths, reservation, enviro
       environment,
       mode === "reserve" ? "reserve-diagnostic" : "historical-validation-diagnostic",
     );
-    const installer = posttechnicalSnapshot(owned.installer);
-    requireValue(
-      installer.status === "" && installer.head === environment.GITHUB_SHA && installer.shallow === true,
-      "INSTALLER_CHANGED",
-    );
+    const installer = historicalInstallerSnapshot(owned.installer, environment.GITHUB_SHA);
     mkdirSync(path.join(paths.workspace, "private"), { mode: 0o700 });
     privatePaths = historicalPrivatePaths(paths.workspace);
     reads = createHistoricalJournal(path.join(privatePaths.directory, "control-reads.original.jsonl"));

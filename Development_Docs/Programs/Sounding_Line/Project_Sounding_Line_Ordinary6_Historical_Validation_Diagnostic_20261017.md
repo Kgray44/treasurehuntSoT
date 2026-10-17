@@ -50,6 +50,71 @@ not a proved old cause. Historical module imports were already present in earlie
 workers; imports alone are not a newly reconstructed workload. Original technical
 state, executor, runner image, live admission responses and old phases remain absent.
 
+# Actual consumed setup failure and prospective repair
+
+PR762 installed the diagnostic at `2442baaf0879afe15b47cc7ad148a81bca311449`,
+tree `bb0daefd55932b452f37a4fd83ccd42e7fdfbf59`. Its actual merge/landed audit is
+`f11ec6af4d1910d8e149cf3ddef6a7b62e7b8fa659aa466611d9fcdbbb891f37`.
+One acknowledged dispatch registered
+[run39026979523](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39026979523).
+The run completed FAILURE: reservation job117379818268 failed with
+`INSTALLER_CHANGED`, and worker117379990825 was skipped.
+
+The original safe reservation reports DIAGNOSTIC_SETUP_OR_BINDING_FAILURE /
+DIAGNOSTIC_INCOMPLETE and STOP_CAUSE_REVIEW_REQUIRED. workerStarted=false;
+historical validations started/completed, source prefixes, dependency/technical
+executions, browser/capture commands, replay commands and consumer admissions are
+all0. actualChromiumLaunches is null, not measured zero. No ciphertext was produced
+and no decryption occurred. This result is not historical validation, source
+reproduction, product/browser evidence or the original replay cause.
+
+| Preserved original receipt               | Exact identity                                                     |
+| ---------------------------------------- | ------------------------------------------------------------------ |
+| Server artifact12098647467 ZIP,653 bytes | `0aa28f49ced72db9a810a10ba189569758a703d6e582d75392654f3237d40028` |
+| Sole reservation.json member,802 bytes   | `7e5c1c3e7eaed7f4f42279014d9a6492d7b01a18f67b84a306e42934f9a98713` |
+| Original download/member provenance      | `bcc9ac9e0ee75f4d01dd47dd656fd5025bb6afa4d40078f0b2a6b04f8bddc508` |
+| Original decoded reservation-job log     | `f66edfd9f2c0f1df8c9ebc3d29c1d91cfabdcc0cf642e7e93f769dbc58e7a7a1` |
+| Preserved artifact/claim metadata        | `d4b31203663f4801b369308635b62a9f7d6510b4daaa94e08819a54473a5dee6` |
+| Independent actual failure/claim audit   | `ba5e464da43a6a44f0daf908d84c1bb9c623cf7fa9d3a0a01d9edfba7dbd6a1a` |
+
+Independent audit verified the original authenticated exact claim-ref404 and the
+fail-before-create source order: no claim ref was created. Absence does not make
+the allowance unused or refund it. The actual failure and single workflow-history
+entry close the consumed/blocked grant; no retry, refund, replacement namespace
+or ordinary allowance follows.
+
+Independent source inspection identifies a deterministic new-diagnostic guard
+defect: installed runtime1086 requires installer.shallow===true, but the shared
+posttechnicalSnapshot helper returns no shallow field. The check therefore rejects
+the installer before workload. This is not an established mechanism for the
+original ordinary6 REPLAY_ADMISSION failure.
+
+The narrow runtime/test repair reads the actual installer Git shallow state
+explicitly, preserves existing head/clean checks and the shared snapshot contract,
+and adds real-repository regressions. Independent inert end-to-end producer/consumer
+contract audit passed on2026-10-17, terminal SHA256
+`b6d82ffafef0f0e6988757abc180a00c98484e68ea1b8d89d94ca66cf11e7985`;
+its detailed result is
+`0956b9105903d70558fd49dda337580018ce7aa2185678fa3d882c2bd4bde0e0`.
+It exercised representative actual depth1/full-history checkout modes, real
+snapshot return shapes, repaired production reserve, four in-memory Git custody
+POSTs, fresh read-only claim consumers and one-use denial. External network calls,
+actual grants, historical validations, prefixes, worker launches, key reads and
+crypto operations were0. It did not run full production diagnose, fixed E/B3
+media/input binding, overlay checks, worker supervision or encryption. This audit
+confirms that setup contract only; it does not certify future workload or source.
+
+The parent directive received2026-10-17 at11:10:31Z requires that independent real-repository
+audit before publication and continuation through a lawful execution path under
+standing owner authorization. Its private receipt SHA256 is
+`d04ef35e6acfb27156009f92568c2d9bc4ad89d1c2deb67d42965cd34f064fd5`.
+This prepared amendment combines the narrow guard repair with one explicitly
+distinct successor grant below for normal protected review. Repair alone creates
+no execution permission or refund. Final source review/tests, protected installation,
+independent actual-landed verification and fresh prelaunch remain required; no
+future merge, dispatch or outcome is asserted. The strict cause-before-ordinary
+condition, old budgets and acceptance/dependent holds remain unchanged.
+
 # Fixed inputs and read budget
 
 | Immutable binding                    | Value                                                                                   |
@@ -94,9 +159,12 @@ no retries or extensions. Those new deadlines and metadata-cache
 warming during setup are declared reconstruction differences. Retain actual
 runtime/resource/closure facts; timeout or OOM is consumed UNKNOWN, not old cause.
 
-# Single-use protected authority
+# Consumed single-use authority (historical specification)
 
-| New permission                            | Fixed value                                                                                |
+The following records the consumed grant and its constraints; it grants no further
+invocation.
+
+| Consumed permission                       | Fixed value                                                                                |
 | ----------------------------------------- | ------------------------------------------------------------------------------------------ |
 | ID                                        | `CROSSDECK-ORDINARY6-HISTORICAL-VALIDATION-DIAGNOSTIC-20261017`                            |
 | Namespace                                 | `sounding-line-diagnostics/CROSSDECK-ORDINARY6-HISTORICAL-VALIDATION-DIAGNOSTIC-20261017`  |
@@ -107,25 +175,81 @@ runtime/resource/closure facts; timeout or OOM is consumed UNKNOWN, not old caus
 | Node-only workload                        | One full historical validation; only its PASS permits one same-process fixed source prefix |
 | Acceptance or retry                       | None; failure/setup failure/cancellation/unknown is consumed                               |
 
-Source and synthetic-only reviews precede normal protected installation. Require
-whole installer/Mainline success from app15368, expected-head protected merge,
-independent actual-landed verification and actual workflow ID/source/tree binding.
-Fresh prelaunch requires protected unchanged installed main, complete unfiltered
-and workflow_dispatch histories both0, authenticated new-slot404, current owner/key
-availability, unexpired policy, and held #721/#722 exact identities. Recheck exact
-main/protection immediately before the one workflow-dispatch POST. No guessed future installer/run
-or workflow identity is accepted. Preserve the dispatch acknowledgement and original
-read responses. Never retry an uncertain dispatch or reservation write.
+That consumed policy had SHA256
+`4b9680c1005a03004d2c6973b51ff29e0db53403b589651f38917fa1ae8d82de`.
+It required complete unfiltered/manual histories0 before dispatch and singleton
+current-run history during reserve/worker. Its installation, one dispatch and failed
+run are recorded above. Those old policy/source/run identities remain immutable.
+Its authenticated claim-ref404 provides no refund, retry or replacement authority.
 
-Only reserve has contents-write; it checks complete singleton history and creates
-the separate claim before evidence transfer or workload. One create-only reservation
-sequence may issue the reviewed four Git API POSTs for its blob/tree/commit/ref;
-the single-dispatch cap is not a one-request cap on that claim creation.
-The contents-read worker
-verifies that exact claim. No old consumer/diagnostic store, phase, lease or budget
-can fund it. A collision/unknown result blocks continuation without deletion,
-replacement, refund, rerun or fallback namespace. PR761 is only the preparation
-base; this new workflow still requires its own accepted installation and prelaunch.
+# One distinct contract-successor amendment
+
+| Prospective permission                        | Fixed value                                                                                                                    |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| ID                                            | `CROSSDECK-ORDINARY6-HISTORICAL-VALIDATION-CONTRACT-SUCCESSOR-20261017`                                                        |
+| Namespace                                     | `sounding-line-diagnostics/CROSSDECK-ORDINARY6-HISTORICAL-VALIDATION-CONTRACT-SUCCESSOR-20261017`                              |
+| Slot                                          | `attempt-1`, immutable create-only                                                                                             |
+| Same physical workflow                        | 387562208 / `.github/workflows/sounding-line-replay-historical-validation-diagnostic.yml`                                      |
+| New run title                                 | `Sounding Line historical validation diagnostic 2 ordinary6`                                                                   |
+| Runtime                                       | Same `scripts/sounding-line/replay-historical-validation-diagnostic.mjs`, with the reviewed guard repair and successor binding |
+| Event / ref / actors / attempt                | workflow_dispatch /main /Kgray44 owner and trigger /1                                                                          |
+| Inputs / new workflow-dispatch POSTs / expiry | None /one /2026-10-22T23:59:59Z                                                                                                |
+| Workload / bounds / privacy                   | The unchanged Node-only operation,305-row vector, process order, deadlines, key and caps below                                 |
+| Old allowance                                 | Closed and consumed; no rerun, refund, renamed history or automatic continuation                                               |
+
+This explicit prospective grant reuses the workflow/path/runtime rather than
+duplicating the controller or adding a workflow. It changes only the newly installed
+policy identity/namespace/title and exact history contract, alongside the narrow
+installer guard repair. Its new policy digest, reservation binding and ciphertext
+AAD must bind the successor and actual installed source; there is no policy input
+or environment override. The old policy remains recoverable verbatim at M2; no
+old ID or run is renamed. All other consumed budgets remain closed.
+
+Before dispatch require independent final source/synthetic review, whole normal
+protected installer and Mainline success from app15368, expected-head merge,
+independent actual-landed checks and exact actual installed source/tree/workflow
+bindings. The inert contract audit above does not replace any of these. Fresh
+authenticated prelaunch must prove exact protected unchanged main, owner/key
+availability, expiry, held #721/#722 identities, active workflow387562208/exact path,
+successor-slot404 and both complete unfiltered/manual histories containing only
+the fixed failed predecessor below. Preserve old authenticated claim-ref404 as
+absence, without treating it as unused authority. No guessed future SHA/run/check
+is accepted. Recheck main/protection immediately before the one new dispatch POST.
+
+| Fixed consumed predecessor   | Exact value                                                  |
+| ---------------------------- | ------------------------------------------------------------ |
+| Run / suite                  | 39026979523 /105766005817                                    |
+| Terminal state               | completed /failure                                           |
+| Head                         | `2442baaf0879afe15b47cc7ad148a81bca311449`                   |
+| Workflow / path              | 387562208 /the same workflow path above                      |
+| Ref / event / attempt        | main /workflow_dispatch /1                                   |
+| Owner / triggering actor     | Kgray44 /Kgray44                                             |
+| Repository / head repository | Kgray44/treasurehuntSoT /Kgray44/treasurehuntSoT             |
+| Title                        | `Sounding Line historical validation diagnostic 1 ordinary6` |
+
+During both reserve and read-only worker checks, both complete histories must have
+exactly two distinct members, independent of response ordering: that unchanged
+failed predecessor and the unique current successor. The successor must have the
+new title, actual installed head/current protected main, same exact workflow/path/
+repository/owner identities, workflow_dispatch, run_attempt1, in_progress status
+and null conclusion. Reject all extra, duplicate, partial or rerun histories. The
+historical history0/singleton rule is superseded only for this new successor; no
+generic predecessor or later run is permitted. The fixed predecessor tuple and
+workflow ID must be covered by the new policy digest.
+The direct current run's check_suite_id must be a positive safe integer and equal
+the current entry in both histories. This binds an observed suite; it introduces
+no guessed future ID or new execution, AAD or public-result field.
+
+Create an exclusive new dispatch intent and retain original GET/POST receipts.
+Exactly one workflow-dispatch POST uses ref main and no inputs. Its acknowledgement
+is not execution or acceptance. An uncertain POST is reconciled read-only and never
+retried. Only reserve has contents-write and creates the new claim before transfer
+or work; the one reviewed create-only sequence may issue exactly its Git blob/tree/
+commit/ref POSTs. The contents-read worker verifies that exact new claim. Old
+consumer/diagnostic store methods, phases, leases and budgets supply no permission.
+Collision, setup failure, cancellation, unknown outcome or uncertain write consumes
+or blocks the successor without deletion, retry, refund, extension, replacement
+namespace or another automatic diagnostic. No new ordinary trial is granted.
 
 # Unchanged historical operation, then fixed prefix
 
@@ -214,6 +338,9 @@ product/browser/qualified/whole/Mainline/protected-merge/actual-landed requireme
 #721 stays draft at E with stored base B3; #722 stays draft at
 `6a6fbd733514a58ad8ade4023ada81720dc461a2`; dependent spatial integration stays
 held. This amendment creates no duplicate product task or Crossdeck acceptance.
-Its installation, dispatch and result are pending; none is claimed here.
+The original installation/dispatch/failure remain preserved. The combined guard
+repair and distinct finite successor are prepared for normal protected installation;
+all actual installation, landed, fresh prelaunch and dispatch facts remain pending.
+No future diagnostic outcome or Crossdeck acceptance is claimed.
 
 [Automation context](../../../.agents/crossdeck-ordinary6-historical-validation-diagnostic.md).
