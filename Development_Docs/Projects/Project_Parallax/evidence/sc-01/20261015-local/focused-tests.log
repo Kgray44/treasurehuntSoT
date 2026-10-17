@@ -1,0 +1,13 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 D:/CodexWorktrees/parallax-sc-01
+
+{"level":40,"time":1792037209512,"pid":66192,"hostname":"LimitNotFound","area":"chronicle-api","errorType":"DraftConflictError","errorCode":"DRAFT_CONFLICT","msg":"Voyagewright request rejected"}
+
+ Test Files  5 passed (5)
+      Tests  34 passed (34)
+   Start at  00:06:45
+   Duration  4.07s (transform 2.46s, setup 610ms, import 8.12s, tests 451ms, environment 3.60s)
+

@@ -13,7 +13,11 @@ import {
   attachSpatialVersion,
   restoreSpatialAttachment,
   assertSpatialDraftAccess,
+  archiveSpatialScene,
 } from "@/parallax/library-service";
+import { listEnvironments, saveEnvironment, assertSceneEnvironment } from "@/parallax/environment-service";
+import { environmentContentSchema } from "@/parallax/environment-contracts";
+import { compareScenes } from "@/parallax/scene-comparison";
 import {
   validateSpatialAuthoring,
   simulateSpatialEnvironments,
@@ -30,6 +34,13 @@ import { creatorFieldQuality, reviewCalibration } from "@/parallax/field-service
 import { calibrationReviewInputSchema } from "@/parallax/field-contracts";
 
 const inputSchema = z.discriminatedUnion("action", [
+  z.strictObject({
+    action: z.literal("ENVIRONMENT_SAVE"),
+    environment: environmentContentSchema,
+    revision: z.number().int().min(0),
+  }),
+  z.strictObject({ action: z.literal("SCENE_ARCHIVE"), definitionId: spatialId, revision: z.number().int().min(1) }),
+  z.strictObject({ action: z.literal("SCENE_COMPARE"), draft: draftSchema, targetDefinitionId: spatialId }),
   z.strictObject({ action: z.literal("FIELD_QUALITY"), definitionId: spatialId, draft: draftSchema.optional() }),
   z.strictObject({ action: z.literal("CALIBRATION_REVIEW"), review: calibrationReviewInputSchema, draft: draftSchema }),
   z.strictObject({ action: z.literal("SAVE"), draft: draftSchema, revision: z.number().int().min(0) }),
@@ -119,6 +130,7 @@ export async function GET(request: Request) {
         csrfToken: session.csrfToken,
         layoutScope: session.accountId,
         items: await listSpatialItems(session.accountId),
+        environments: await listEnvironments(session.accountId),
         chronicle,
         aiAvailable: provider.configured && usage.enabled,
         aiConfigured: provider.configured,
@@ -146,6 +158,21 @@ export async function POST(request: Request) {
     const input = inputSchema.parse(raw);
     if ("draft" in input && input.draft) await assertSpatialDraftAccess(input.draft);
     switch (input.action) {
+      case "ENVIRONMENT_SAVE":
+        return NextResponse.json(await saveEnvironment(session.accountId, input.environment, input.revision), {
+          headers,
+        });
+      case "SCENE_ARCHIVE":
+        await archiveSpatialScene(session.accountId, input.definitionId, input.revision);
+        return NextResponse.json({ archived: true }, { headers });
+      case "SCENE_COMPARE": {
+        const target = (await listSpatialItems(session.accountId)).find((i) => i.id === input.targetDefinitionId);
+        if (!target) throw new Error("Comparison Scene unavailable.");
+        await assertSpatialDraftAccess(target.draft);
+        await assertSceneEnvironment(session.accountId, input.draft);
+        await assertSceneEnvironment(session.accountId, target.draft);
+        return NextResponse.json(compareScenes(input.draft, target.draft), { headers });
+      }
       case "FIELD_QUALITY":
         return NextResponse.json(await creatorFieldQuality(session.accountId, input.definitionId, input.draft), {
           headers,

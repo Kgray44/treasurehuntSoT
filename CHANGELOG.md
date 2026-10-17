@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-10-12
+last_reviewed: 2026-10-15
 ---
 
 # Changelog
@@ -11,6 +11,11 @@ last_reviewed: 2026-10-12
 - Corrected Landfall Phase 2 closure gaps through protected PR #671: embedded canonical Living Charts, arrival-gated observation responses, durable encrypted offline reload/reconciliation and first-party imagery, foreground field-test cleanup, persistent Captain conflict feedback, and responsive/keyboard accessibility acceptance. Exact-head hosted qualification and landed smoke passed; permanent evidence and external boundaries are recorded in the Landfall final closure record.
 
 ## Unreleased
+
+### Added
+
+- SC-00C candidate unifies Spatial Studio's Library around Assets, Environments, Scenes, Effects and Compositions, with search, source filtering, saved-content actions and a single left rail. It consumes independently owned SC-01/SC-02 candidates. The [implementation record](Development_Docs/Projects/Project_Parallax/SC_00C_Spatial_Library_Refit.md) tracks qualification and remaining gates.
+- SC-01 candidate: reusable versioned Environments, independent Scene management, comparison and deliberate revision-impact updates in Spatial Studio. [Implementation and validation state](Development_Docs/Projects/Project_Parallax/SC_01_Environment_and_Scene_Manager.md) records passing focused/browser checks and the remaining protected experience-design dependency.
 
 ### Engineering
 
@@ -40,6 +45,8 @@ last_reviewed: 2026-10-12
 - Sextant gesture acquisition refuses incompatible slow delivery before sensor acquisition and cleans all owned leases on failure/abort/interruption. Parallax native scenes use bounded versioned UTF-8 chunks, independent resolved geometry validation and idempotent session-bound termination including Android Back. Existing published checksums, Guided accessibility and One Voyage progression authority are retained. See the [correction receipt](Development_Docs/Engineering/Device_Lab/Sextant_Parallax_Correction_Receipt.md) for qualification and remaining physical/owner gates.
 
 ### Added
+
+- SC-02 adds a versioned original spatial model package, typed lights/effects/audio and editable reusable compositions to the existing Spatial Studio workflow. The [implementation record](Development_Docs/Projects/Project_Parallax/SC02_Assets_and_Effects.md) separates rendered asset quality, Creator journey verification and protected qualification; new elements use Guided presentation in current native/Player adapters.
 
 - Parallax A1 integrates reviewed Spatial Assistant proposals, bounded private follow-up context, shared Windows server credential support and durable Admiralty AI controls through protected PR #710 at `ee8caa83`. Per-user policy uses the existing People dossier. Real canvas preview, atomic saved Apply and ordinary history preserve adaptive ownership; the unmetered legacy network path is retired. Ordinary Sounding Line, five production-browser journeys, six bounded live calls and 118 landed smoke checks pass their recorded software boundaries. Assistance remains disabled by default, and owner visual/full-corpus/physical acceptance remain separate; see the [implementation record](Development_Docs/Projects/Project_Parallax/Parallax_A1_Implementation_and_Qualification.md).
 

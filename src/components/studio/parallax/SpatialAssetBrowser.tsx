@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
+import Image from "next/image";
 import { presetNames } from "@/parallax/authoring";
+import { spatialCatalog } from "@/parallax/element-authoring";
 import styles from "./SpatialStudio.module.css";
 
 export function AssetPreview({ name }: { name: string }) {
@@ -57,7 +59,16 @@ export function SpatialAssetBrowser({
   const categoryOf = (name: string) =>
     name.includes("Trail") ? "Trails" : name.includes("Wall") ? "Writing" : "Objects";
   const names = presetNames.filter(
-    (n) => n.toLowerCase().includes(search.toLowerCase()) && (category === "All" || categoryOf(n) === category),
+    (n) =>
+      n.toLowerCase().includes(search.toLowerCase()) &&
+      (category === "All" || category === "Classic presets" || categoryOf(n) === category),
+  );
+  const [type, setType] = useState("ALL");
+  const catalog = spatialCatalog.filter(
+    (a) =>
+      `${a.name} ${a.description} ${a.family} ${a.type}`.toLowerCase().includes(search.toLowerCase()) &&
+      (category === "All" || a.family === category) &&
+      (type === "ALL" || a.type === type),
   );
   return (
     <section className={styles.assetBrowser} aria-label="Spatial asset browser">
@@ -69,38 +80,105 @@ export function SpatialAssetBrowser({
       </div>
       <input
         aria-label="Search spatial assets"
-        placeholder="Search objects, writing, trails…"
+        placeholder="Search models, lights, effects, audio…"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
       <div className={styles.assetCategories} aria-label="Asset categories">
-        {["All", "Objects", "Writing", "Trails"].map((c) => (
+        {[
+          "All",
+          "Furniture",
+          "Storage",
+          "Nautical Props",
+          "Clue Objects",
+          "Environmental Decor",
+          "Interactive Props",
+          "Lights",
+          "Atmosphere",
+          "Particles",
+          "Projected Effects",
+          "Spatial Audio",
+          "Spatial Phenomena",
+          "Interaction Volumes",
+          "Compositions",
+          "Classic presets",
+        ].map((c) => (
           <button key={c} aria-pressed={category === c} onClick={() => setCategory(c)}>
             {c}
           </button>
         ))}
       </div>
+      <label>
+        Element type
+        <select aria-label="Library element type" value={type} onChange={(e) => setType(e.target.value)}>
+          <option value="ALL">All element types</option>
+          {[...new Set(spatialCatalog.map((a) => a.type))].map((value) => (
+            <option key={value} value={value}>
+              {value.replaceAll("_", " ")}
+            </option>
+          ))}
+        </select>
+      </label>
       <div className={styles.assetGrid}>
-        {names.map((name) => (
+        {catalog.map((asset) => (
           <button
             className={styles.assetCard}
-            key={name}
+            key={asset.id}
+            aria-label={`Add ${asset.name}`}
             draggable
             disabled={busy}
-            onDragStart={(e) => e.dataTransfer.setData("application/parallax-preset", name)}
-            onClick={() => onAdd(name)}
-            title={`Add ${name} to this scene`}
+            onDragStart={(e) => e.dataTransfer.setData("application/parallax-preset", `sc02:${asset.id}`)}
+            onClick={() => onAdd(`sc02:${asset.id}`)}
+            title={`Add ${asset.name}. ${asset.description}`}
           >
-            <AssetPreview name={name} />
-            <strong>{name}</strong>
-            <small>{categoryOf(name)} · built-in</small>
+            {asset.thumbnail ? (
+              <Image src={asset.thumbnail} width={180} height={120} alt="" loading="lazy" unoptimized />
+            ) : (
+              <span className={styles.elementArt} aria-hidden="true">
+                {
+                  (
+                    {
+                      LIGHT: "✧",
+                      ATMOSPHERE: "≋",
+                      PARTICLES: "⁙",
+                      PROJECTED_EFFECT: "◈",
+                      SPATIAL_AUDIO: "♫",
+                      SPATIAL_PHENOMENON: "◎",
+                      INTERACTION_VOLUME: "▧",
+                      COMPOSITION: "✦",
+                    } as Record<string, string>
+                  )[asset.type]
+                }
+              </span>
+            )}
+            <strong>{asset.name}</strong>
+            {"visualBlocker" in asset && asset.visualBlocker && <small>Preview only · visual repair required</small>}
+            <small>
+              {asset.family} · {asset.type.replaceAll("_", " ").toLowerCase()}
+            </small>
           </button>
         ))}
+        {type === "ALL" &&
+          names.map((name) => (
+            <button
+              className={styles.assetCard}
+              key={name}
+              draggable
+              disabled={busy}
+              onDragStart={(e) => e.dataTransfer.setData("application/parallax-preset", name)}
+              onClick={() => onAdd(name)}
+              title={`Add ${name} to this scene`}
+            >
+              <AssetPreview name={name} />
+              <strong>{name}</strong>
+              <small>{categoryOf(name)} · built-in</small>
+            </button>
+          ))}
       </div>
-      {!names.length && <p>No supported assets match this filter.</p>}
+      {!catalog.length && !(type === "ALL" && names.length) && <p>No supported assets match this filter.</p>}
       <small>
-        Add to the scene or drag into the viewport. Imported models, effects and portals require a qualified renderer
-        and are unavailable in this phase.
+        Click or drag to place. Models are original AI-assisted geometry. Compositions remain individually editable; use
+        Save to Spatial Library to reuse an adjusted scene. Native presentation uses Guided View.
       </small>
     </section>
   );

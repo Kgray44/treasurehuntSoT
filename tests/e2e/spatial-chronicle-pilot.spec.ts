@@ -327,11 +327,12 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
       .locator("fieldset")
       .filter({ has: d.locator("legend").getByText("Selected spatial object", { exact: true }) })
       .screenshot({ path: `${evidence}/studio-selected-inspector.png` });
-    await d.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
+    await d.getByRole("button", { name: "Open Spatial Library", exact: true }).click();
+    await d.getByRole("tab", { name: "Scenes", exact: true }).click();
     await d
       .getByRole("complementary", { name: "Spatial Library", exact: true })
       .screenshot({ path: `${evidence}/studio-library.png` });
-    await d.getByRole("tab", { name: "Hierarchy", exact: true }).click();
+    await d.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
     await d
       .getByRole("region", { name: "Scene graph", exact: true })
       .screenshot({ path: `${evidence}/studio-scene-graph.png` });
@@ -340,11 +341,11 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
     await d
       .getByRole("tabpanel", { name: "Timeline", exact: true })
       .screenshot({ path: `${evidence}/studio-behavior-timeline.png` });
-    await d.getByRole("tab", { name: "Saved", exact: true }).click();
-    await d.getByLabel("Search Library", { exact: true }).fill("missing-fictional-archive");
-    await expect(d.getByText("No saved items match. Create and save a spatial moment to begin.")).toBeVisible();
+    await d.getByRole("button", { name: "Open Spatial Library", exact: true }).click();
+    await d.getByLabel("Search scenes", { exact: true }).fill("missing-fictional-archive");
+    await expect(d.getByText("No items match these filters. Clear search or choose another source.")).toBeVisible();
     await capture(d, "studio-library-empty");
-    await d.getByLabel("Search Library", { exact: true }).fill("");
+    await d.getByLabel("Search scenes", { exact: true }).fill("");
     const canvasFrameIntervals = await d.evaluate(
       () =>
         new Promise<number[]>((resolve) => {
