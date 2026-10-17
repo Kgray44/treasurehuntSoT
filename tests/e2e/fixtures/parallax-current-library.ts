@@ -1,4 +1,5 @@
 import { expect, type Page } from "@playwright/test";
+import { mkdir, writeFile } from "node:fs/promises";
 
 /** Open an owned fixture through the actual Library; this never changes its save membership. */
 export async function openOwnedSceneFromCurrentLibrary(
@@ -38,6 +39,31 @@ export async function closeCurrentLibrary(page: Page) {
 
 /** Persist the working draft through its actual command, without creating Library membership. */
 export async function saveCurrentWorkingDraft(page: Page) {
+  await page.evaluate(() => {
+    const events: unknown[] = [];
+    const target = (node: EventTarget | null) => {
+      const el = node instanceof Element ? node : null;
+      return { tag: el?.tagName ?? "document", class: el?.getAttribute("class"), top: el?.scrollTop, left: el?.scrollLeft };
+    };
+    const capture = (event: Event) => {
+      events.push({ at: performance.now(), event: event.type, target: target(event.target), active: target(document.activeElement), menu: !!document.querySelector('[role="menu"]'), y: window.scrollY });
+      if (events.length > 80) events.shift();
+    };
+    for (const name of ["pointerdown", "contextmenu", "scroll", "resize", "focusin"]) document.addEventListener(name, capture, true);
+    const observer = new MutationObserver(() => {
+      const visible = !!document.querySelector('[role="menu"]');
+      if (visible !== previous) { previous = visible; capture(new Event("menu-change")); }
+    });
+    let previous = false;
+    observer.observe(document.body, { childList: true, subtree: true });
+    (window as typeof window & { __localMenuEvents?: unknown[] }).__localMenuEvents = events;
+  });
   await page.getByRole("heading", { name: "Parallax", exact: true }).click({ button: "right" });
-  await page.getByRole("menuitem", { name: "Save draft", exact: true }).click();
+  try {
+    await page.getByRole("menuitem", { name: "Save draft", exact: true }).click();
+  } finally {
+    const root = process.env.PARALLAX_ROOM_BROWSER_OUTPUT!;
+    await mkdir(root, { recursive: true });
+    await writeFile(`${root}/header-menu-events.json`, JSON.stringify(await page.evaluate(() => (window as typeof window & { __localMenuEvents?: unknown[] }).__localMenuEvents), null, 2));
+  }
 }
