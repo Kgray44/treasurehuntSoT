@@ -1,6 +1,6 @@
 // Nonexecuting reconciliation of one already captured/reviewed R8 source.
 // Custody and every execution allowance remain in the original R8 namespace.
-import { execFileSync } from "node:child_process";
+import { sourceDiagnosticGit } from "./source-diagnostics.mjs";
 import { createHash } from "node:crypto";
 import { existsSync, lstatSync, readFileSync, mkdtempSync, writeFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -97,7 +97,7 @@ const fail = (code) => {
   throw new Error(`PRODUCT_EXPERIENCE_R8_FORMAT_${code}`);
 };
 const git = (root, args, binary = false) =>
-  execFileSync("git", args, {
+  sourceDiagnosticGit("R8_FORMAT", args, {
     cwd: root,
     encoding: binary ? null : "utf8",
     maxBuffer: 64 * 1024 * 1024,
@@ -209,12 +209,17 @@ export function validateR8FormatMergedMetadata({ root, baseSha, candidateSha }) 
       writeFileSync(current, git(root, ["show", `${baseSha}:${file}`], true));
       writeFileSync(base, git(root, ["show", `${R8_FORMAT.baseSha}:${file}`], true));
       writeFileSync(other, git(root, ["show", `${R8_FORMAT.publicationCandidateSha}:${file}`], true));
-      const merged = execFileSync("git", ["merge-file", "--stdout", current, base, other], {
-        cwd: root,
-        maxBuffer: 64 * 1024 * 1024,
-        timeout: 5000,
-        stdio: ["ignore", "pipe", "ignore"],
-      });
+      const merged = sourceDiagnosticGit(
+        "R8_FORMAT",
+        ["merge-file", "--stdout", current, base, other],
+        {
+          cwd: root,
+          maxBuffer: 64 * 1024 * 1024,
+          timeout: 5000,
+          stdio: ["ignore", "pipe", "ignore"],
+        },
+        { file, revisions: [baseSha, R8_FORMAT.baseSha, R8_FORMAT.publicationCandidateSha] },
+      );
       const blob = createHash("sha1").update(`blob ${merged.length}\0`).update(merged).digest("hex");
       if (git(root, ["rev-parse", `${candidateSha}:${file}`]).trim() !== blob) fail("MERGED_METADATA_CHANGED");
     } finally {

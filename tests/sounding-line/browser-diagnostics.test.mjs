@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { execFileSync, spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -19,6 +20,12 @@ import {
   sanitizedFailureCode,
 } from "../../scripts/sounding-line/ordinary.mjs";
 import { runTrustedExperienceReplay } from "../../scripts/sounding-line/experience-browser.mjs";
+import { revisionJson, sourceSnapshot } from "../../scripts/sounding-line/product-experience.mjs";
+import {
+  REPLAY_ADMISSION_SUBSTAGES,
+  sourceDiagnosticGit,
+  withReplayAdmissionSubstage,
+} from "../../scripts/sounding-line/source-diagnostics.mjs";
 import {
   claimExceptionPhase,
   exceptionBinding,
@@ -518,4 +525,299 @@ test("owned phase mkdir and create-only serialization preserve binding and exist
       return true;
     },
   );
+});
+
+function diagnosticRepository(root) {
+  const git = (...args) =>
+    execFileSync("git", args, { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
+  git("init", "--quiet", "--initial-branch=main");
+  git("config", "user.name", "Synthetic Diagnostic");
+  git("config", "user.email", "synthetic@example.invalid");
+  git("commit", "--quiet", "--allow-empty", "-m", "first");
+  const first = git("rev-parse", "HEAD");
+  git("commit", "--quiet", "--allow-empty", "-m", "second");
+  return { git, first, second: git("rev-parse", "HEAD") };
+}
+async function admissionFailure(substage, operation) {
+  let original;
+  await assert.rejects(
+    withVerificationStage("REPLAY_ADMISSION", () =>
+      withReplayAdmissionSubstage(substage, () => {
+        try {
+          return operation();
+        } catch (error) {
+          original = error;
+          Object.freeze(error);
+          throw error;
+        }
+      }),
+    ),
+    (error) => error === original,
+  );
+  return original;
+}
+
+test("actual Git ancestry failure retains fixed identity and validated revisions without raw arguments", async (t) => {
+  const root = await fixture(t);
+  const { first, second } = diagnosticRepository(root);
+  const args = ["merge-base", "--is-ancestor", second, first];
+  const error = await admissionFailure("PLAN_REBUILD", () =>
+    sourceDiagnosticGit("DIAGNOSED_CONTINUATION", args, {
+      cwd: root,
+      encoding: "utf8",
+      maxBuffer: 64 * 1024 * 1024,
+      stdio: ["ignore", "pipe", "ignore"],
+    }),
+  );
+  const observed = verificationFailureObservation(error);
+  assert.equal(error.status, 1);
+  assert.equal(observed.stage, "REPLAY_ADMISSION");
+  assert.equal(observed.replayAdmission.substage, "PLAN_REBUILD");
+  const git = observed.replayAdmission.git;
+  assert.equal(git.component, "DIAGNOSED_CONTINUATION");
+  assert.equal(git.operation, "ANCESTRY");
+  assert.equal(git.classification, "NOT_ANCESTOR");
+  assert.equal(git.argumentsSha256, createHash("sha256").update(JSON.stringify(args)).digest("hex"));
+  assert.equal(git.arguments[2].revision.sha, second);
+  assert.equal(git.arguments[3].revision.sha, first);
+  assert.deepEqual(git.stderr, { available: false });
+  assert.equal(sanitizedFailureCode(error), "SOUNDING_LINE_PRODUCT_FAILURE:VERIFICATION_COMMAND_FAILED");
+  assert.equal(failureCategoryFor(error), "PRODUCT_FAILURE");
+  assert(!JSON.stringify(observed).includes(root));
+  assert.equal(Object.isFrozen(error), true);
+});
+
+test("actual metadata conflict retains source binding and bounded output hashes without private fixture text", async (t) => {
+  const root = await fixture(t);
+  const { first, second } = diagnosticRepository(root);
+  const secret = "PRIVATE_DIAGNOSTIC_SENTINEL";
+  const directory = path.join(root, `r12-readme-${secret}`);
+  await mkdir(directory);
+  const files = ["current", "base", "other"].map((name) => path.join(directory, name));
+  const padding = `${secret}\n`.repeat(4000);
+  await Promise.all(files.map((file, index) => writeFile(file, `${["ours", "base", "theirs"][index]}\n${padding}`)));
+  const error = await admissionFailure("PLAN_REBUILD", () =>
+    sourceDiagnosticGit(
+      "DIAGNOSED_CONTINUATION",
+      ["merge-file", "--stdout", ...files],
+      { cwd: root, maxBuffer: 64 * 1024 * 1024, timeout: 5000, stdio: ["ignore", "pipe", "ignore"] },
+      { file: ".agents/README.md", revisions: [first, first, second] },
+    ),
+  );
+  const observed = verificationFailureObservation(error),
+    git = observed.replayAdmission.git;
+  assert.equal(error.status, 1);
+  assert.equal(git.operation, "METADATA_MERGE");
+  assert.equal(git.classification, "MERGE_CONFLICT");
+  assert.equal(git.metadata.file, "AGENTS_README");
+  assert.deepEqual(git.metadata.revisions, [first, first, second]);
+  assert.equal(git.stdout.representation, "BUFFER");
+  assert(git.stdout.bytes > 65536);
+  assert.equal(git.stdout.hashedBytes, 65536);
+  assert.equal(git.stdout.complete, false);
+  assert.equal(git.stdout.sha256, createHash("sha256").update(error.stdout.subarray(0, 65536)).digest("hex"));
+  assert(!JSON.stringify(observed).includes(secret));
+  assert(!JSON.stringify(observed).includes(root));
+  assert(!JSON.stringify(observed).includes("<<<<<<<"));
+});
+
+test("actual product-source Git readers preserve failure provenance through their existing typed translation", async (t) => {
+  const root = await fixture(t);
+  const { first } = diagnosticRepository(root);
+  const secretPath = "src/PRIVATE_SOURCE_PATH_" + "x".repeat(128);
+  const error = await admissionFailure("PLAN_REBUILD", () => revisionJson(root, first, secretPath));
+  const observed = verificationFailureObservation(error),
+    git = observed.replayAdmission.git;
+  assert.equal(error.message, `PRODUCT_EXPERIENCE_REGISTRY_INVALID:${secretPath}`);
+  assert.equal(error.cause, undefined);
+  assert.equal(git.component, "PRODUCT_EXPERIENCE");
+  assert.equal(git.operation, "SHOW");
+  assert.equal(git.exitCode, 128);
+  assert.equal(git.arguments[1].revision.sha, first);
+  assert.equal(git.arguments[1].revision.selector, "PATH");
+  assert(git.stderr.bytes > 0 && git.stderr.bytes < 65536);
+  assert.equal(git.stderr.hashedBytes, git.stderr.bytes);
+  assert.equal(git.stderr.complete, true);
+  assert.equal(sanitizedFailureCode(error), "PRODUCT_EXPERIENCE_REGISTRY_INVALID");
+  assert.equal(failureCategoryFor(error), "PRODUCT_EXPERIENCE_FAILURE");
+  assert(!JSON.stringify(observed).includes("PRIVATE_SOURCE_PATH"));
+  assert(!JSON.stringify(observed).includes(root));
+});
+
+test("unknown components and unsupported private command shapes execute unchanged without hashing", async (t) => {
+  const root = await fixture(t);
+  const { first } = diagnosticRepository(root);
+  for (const [component, argument] of [
+    ["PRIVATE_COMPONENT", `${first}:src/missing.ts`],
+    ["PRODUCT_EXPERIENCE", `${first}:PRIVATE_CONTEXT_FILE`],
+  ]) {
+    const error = await admissionFailure("PLAN_REBUILD", () =>
+      sourceDiagnosticGit(component, ["show", argument], {
+        cwd: root,
+        encoding: "utf8",
+        maxBuffer: 64 * 1024 * 1024,
+        stdio: ["ignore", "pipe", "ignore"],
+      }),
+    );
+    assert.equal(error.status, 128);
+    const observed = verificationFailureObservation(error);
+    assert.equal(observed.replayAdmission.git, null);
+    assert(!JSON.stringify(observed).includes("PRIVATE"));
+  }
+});
+
+test("historically ignored Git stderr cannot introduce a new maxBuffer failure", async (t) => {
+  const root = await fixture(t);
+  const { first } = diagnosticRepository(root);
+  const error = await admissionFailure("PLAN_REBUILD", () =>
+    sourceDiagnosticGit("PRODUCT_EXPERIENCE", ["show", `${first}:src/PRIVATE_STDERR_SENTINEL_missing.ts`], {
+      cwd: root,
+      encoding: "utf8",
+      maxBuffer: 8,
+      stdio: ["ignore", "pipe", "ignore"],
+    }),
+  );
+  assert.equal(error.status, 128);
+  assert.equal(error.code, undefined);
+  const observed = verificationFailureObservation(error);
+  assert.equal(observed.replayAdmission.git.operation, "SHOW");
+  assert.equal(observed.replayAdmission.git.exitCode, 128);
+  assert.deepEqual(observed.replayAdmission.git.stderr, { available: false });
+  assert(!JSON.stringify(observed).includes("PRIVATE_STDERR_SENTINEL"));
+});
+
+test("the exact public .prettierrc.json selector retains actual Git-reader failure provenance", async (t) => {
+  const root = await fixture(t);
+  const { first } = diagnosticRepository(root);
+  const error = await admissionFailure("PLAN_REBUILD", () => revisionJson(root, first, ".prettierrc.json"));
+  assert.equal(error.message, "PRODUCT_EXPERIENCE_REGISTRY_INVALID:.prettierrc.json");
+  assert.equal(sanitizedFailureCode(error), "PRODUCT_EXPERIENCE_REGISTRY_INVALID");
+  const observed = verificationFailureObservation(error);
+  assert.equal(observed.stage, "REPLAY_ADMISSION");
+  assert.equal(observed.replayAdmission.substage, "PLAN_REBUILD");
+  const git = observed.replayAdmission.git;
+  assert.equal(git.component, "PRODUCT_EXPERIENCE");
+  assert.equal(git.operation, "SHOW");
+  assert.equal(git.exitCode, 128);
+  assert.equal(git.arguments[1].revision.sha, first);
+  assert.equal(git.arguments[1].revision.pathSha256, createHash("sha256").update(".prettierrc.json").digest("hex"));
+  assert.equal(git.stderr.available, true);
+  assert(git.stderr.bytes > 0);
+  assert(!JSON.stringify(observed).includes(root));
+  assert(!JSON.stringify(observed).includes(".prettierrc.json"));
+});
+
+test("fixed replay substages preserve synchronous values, frozen errors and concurrent async isolation", async () => {
+  for (const substage of REPLAY_ADMISSION_SUBSTAGES) {
+    const error = Object.freeze(new Error("PRIVATE_SUBSTAGE_ERROR"));
+    await assert.rejects(
+      withVerificationStage("REPLAY_ADMISSION", () =>
+        withReplayAdmissionSubstage(substage, () => {
+          throw error;
+        }),
+      ),
+      (value) => value === error,
+    );
+    assert.equal(verificationFailureObservation(error).replayAdmission.substage, substage);
+    assert.equal(verificationFailureObservation(error).replayAdmission.git, null);
+  }
+  assert.equal(
+    withReplayAdmissionSubstage("HEAD_CHECK", () => 42),
+    42,
+  );
+  const observed = await Promise.all(
+    ["HEAD_CHECK", "LIVE_CONTEXT"].map(async (substage) => {
+      const error = Object.freeze(new Error("PRIVATE_CONCURRENT_ERROR"));
+      await assert.rejects(
+        withVerificationStage("REPLAY_ADMISSION", () =>
+          withReplayAdmissionSubstage(substage, async () => {
+            await Promise.resolve();
+            throw error;
+          }),
+        ),
+        (value) => value === error,
+      );
+      return verificationFailureObservation(error).replayAdmission.substage;
+    }),
+  );
+  assert.deepEqual(observed, ["HEAD_CHECK", "LIVE_CONTEXT"]);
+  const deepest = Object.freeze(new Error("PRODUCT_EXPERIENCE_EXCEPTION_EXECUTION_PHASE_ALREADY_CONSUMED"));
+  await assert.rejects(
+    withVerificationStage("REPLAY_ADMISSION", () =>
+      withReplayAdmissionSubstage("PHASE_CLAIM", () => {
+        throw observeVerificationFailure("PHASE_CREATE", deepest, { phase: "experience" });
+      }),
+    ),
+    (value) => value === deepest,
+  );
+  assert.equal(verificationFailureObservation(deepest).stage, "PHASE_CREATE");
+  assert.equal(verificationFailureObservation(deepest).replayAdmission.substage, "PHASE_CLAIM");
+});
+
+test("caught Git probes cannot label a later unrelated admission failure", async (t) => {
+  const root = await fixture(t);
+  diagnosticRepository(root);
+  const later = Object.freeze(new Error("PRIVATE_LATER_FAILURE"));
+  await assert.rejects(
+    withVerificationStage("REPLAY_ADMISSION", () =>
+      withReplayAdmissionSubstage("PLAN_REBUILD", () => {
+        try {
+          sourceSnapshot(root, "0".repeat(40));
+        } catch {
+          /* Expected synthetic read failure is handled. */
+        }
+        throw later;
+      }),
+    ),
+    (value) => value === later,
+  );
+  assert.equal(verificationFailureObservation(later).replayAdmission.git, null);
+  assert.equal(verificationFailureObservation(later).replayAdmission.substage, "PLAN_REBUILD");
+});
+
+test("an actual Git failure at the ordinary replay seam preserves technical results and launches no replay", async (t) => {
+  const root = await fixture(t);
+  diagnosticRepository(root);
+  const diagnostics = createBrowserDiagnosticSession(root, identity);
+  const verification = {
+    timings: [{ phase: "synthetic", status: "PASS" }],
+    obligations: [],
+    reconciliation: [],
+    finalization: { decision: "PASS", requiredObligations: 0 },
+    freshObligations: 0,
+    commandsAvoided: [],
+    avoidedDurationMs: 0,
+  };
+  const result = { decision: "FAIL", timing: { commands: [] } };
+  await assert.rejects(
+    completeOrdinaryVerification({
+      root,
+      plan: { candidateSha: identity.candidateSha, productExperience: { applicable: true, contracts: [] } },
+      result,
+      verification,
+      diagnostics,
+      verifyExperience: () => ({ status: "PASS" }),
+      replay: () =>
+        withVerificationStage("REPLAY_ADMISSION", () =>
+          withReplayAdmissionSubstage("PLAN_REBUILD", () => sourceSnapshot(root, "0".repeat(40))),
+        ),
+    }),
+    (error) => {
+      const observed = verificationFailureObservation(error);
+      assert.equal(observed.replayAdmission.git.component, "PRODUCT_EXPERIENCE");
+      assert.equal(observed.replayAdmission.git.operation, "LS_TREE");
+      assert.equal(observed.exitCode, 128);
+      assert.equal(sanitizedFailureCode(error), "SOUNDING_LINE_PRODUCT_FAILURE:VERIFICATION_COMMAND_FAILED");
+      return true;
+    },
+  );
+  assert.equal(result.decision, "FAIL");
+  assert.deepEqual(result.timing.commands, verification.timings);
+  assert.equal(result.evidenceReconciliation.finalization.decision, "PASS");
+  assert.equal(result.productExperienceDecision.status, "PASS");
+  assert.equal(result.productExperienceReplay, undefined);
+  assert.deepEqual(await diagnostics.read(), { binding: null, runtime: null, profile: null });
+  await assert.rejects(readFile(path.join(root, "artifacts/sounding-line/exception-experience.json")), {
+    code: "ENOENT",
+  });
 });

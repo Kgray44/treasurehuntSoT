@@ -1,5 +1,5 @@
 // One ordinary-only successor. Historical R8 evidence never grants execution.
-import { execFileSync } from "node:child_process";
+import { sourceDiagnosticGit } from "./source-diagnostics.mjs";
 import { createHash } from "node:crypto";
 import { readFileSync, lstatSync, mkdtempSync, writeFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -67,7 +67,7 @@ const fail = (code) => {
   throw new Error(`PRODUCT_EXPERIENCE_EXCEPTION_R9_${code}`);
 };
 const git = (root, args, binary = false) =>
-  execFileSync("git", args, {
+  sourceDiagnosticGit("R9_CONTINUATION", args, {
     cwd: root,
     encoding: binary ? null : "utf8",
     maxBuffer: 64 * 1024 * 1024,
@@ -245,12 +245,17 @@ function validateMergedMetadata({ root, baseSha, candidateSha }) {
         CROSSDECK_R9.frozenReferenceSha,
       ].entries())
         writeFileSync(files[index], git(root, ["show", `${revision}:${file}`], true));
-      const merged = execFileSync("git", ["merge-file", "--stdout", ...files], {
-        cwd: root,
-        maxBuffer: 64 * 1024 * 1024,
-        timeout: 5000,
-        stdio: ["ignore", "pipe", "ignore"],
-      });
+      const merged = sourceDiagnosticGit(
+        "R9_CONTINUATION",
+        ["merge-file", "--stdout", ...files],
+        {
+          cwd: root,
+          maxBuffer: 64 * 1024 * 1024,
+          timeout: 5000,
+          stdio: ["ignore", "pipe", "ignore"],
+        },
+        { file, revisions: [baseSha, "43340791355526fb31fe2dbf9274eb8632589b30", CROSSDECK_R9.frozenReferenceSha] },
+      );
       const blob = createHash("sha1").update(`blob ${merged.length}\0`).update(merged).digest("hex");
       if (git(root, ["rev-parse", `${candidateSha}:${file}`]).trim() !== blob) fail("MERGED_METADATA_CHANGED");
     } finally {

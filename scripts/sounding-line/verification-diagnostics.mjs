@@ -1,4 +1,5 @@
 // Observations only: never used for admission, fingerprints or acceptance.
+import { replayAdmissionFailure, withReplayAdmissionScope } from "./source-diagnostics.mjs";
 const stages = new Set([
   "CLASSIFICATION",
   "ORDINARY_ADMISSION",
@@ -87,13 +88,16 @@ export function observeVerificationFailure(stage, error, { cause = error, phase 
 }
 export async function withVerificationStage(stage, operation) {
   try {
-    return await operation();
+    return await (stage === "REPLAY_ADMISSION" ? withReplayAdmissionScope(operation) : operation());
   } catch (error) {
     throw observeVerificationFailure(stage, error);
   }
 }
 export function verificationFailureObservation(error) {
-  return object(error) && observations.has(error)
-    ? { ...observations.get(error) }
-    : observation("UNCLASSIFIED", error, error);
+  const observed =
+    object(error) && observations.has(error)
+      ? { ...observations.get(error) }
+      : observation("UNCLASSIFIED", error, error);
+  const replayAdmission = replayAdmissionFailure(error);
+  return replayAdmission ? { ...observed, replayAdmission } : observed;
 }
