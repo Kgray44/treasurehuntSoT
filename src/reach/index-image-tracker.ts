@@ -1,4 +1,5 @@
 import type { Point } from "./coordinates";
+import { fullHandDetectionPolicy } from "./hand-detection-authority";
 
 /** Canonical descriptor identity, not model weights or an accuracy certificate. */
 export const indexImageAlgorithmDescriptor = {
@@ -27,6 +28,18 @@ export const indexImageAlgorithmDescriptor = {
   searchDomain: "PREVIOUS_AND_PREDICTED_SQUARE_UNION",
   templateUpdate: "LAST_ACCEPTED_IMAGE_PATCH",
   modelContrary: "LATCH_UNTIL_COHERENT_POINT_OR_NEW_HINT",
+  wholeHandAuthority: {
+    version: 2,
+    promotion: { minimumFrames: 3, minimumSpanMs: 120, maximumGapMs: 250, source: "EXACT_MODEL_TRACK_AND_CONTEXT" },
+    contrary: "IMMEDIATE_COMPATIBLE_PAUSE_THEN_CONFIRMED_LATCH",
+    ambiguous: "FRAME_LOCAL_ABSTENTION",
+    conflict: "FRAME_LOCAL_PAUSE_WITHOUT_PROMOTION",
+    positive: "COMPATIBLE_TEMPORAL_PROMOTION_WITHOUT_COORDINATE_REBIND",
+    manualHint: "CANNOT_BYPASS_AVAILABLE_AUTHORITY",
+    unavailable: "IMAGE_FALLBACK_WITH_RETAINED_CONTRARY",
+    matchedPoint: "CURRENT_ACCEPTED_IMAGE_MATCH_DISPLAY_ONLY_NEVER_ACTION_OR_CALIBRATION",
+    detection: fullHandDetectionPolicy,
+  },
   manualAnchor: "NEW_GENERATION",
   grayscale: [77, 150, 29, 8],
 } as const;
@@ -34,7 +47,7 @@ export const indexImageAlgorithm = {
   providerId: "watchglass.index-image",
   providerVersion: "1",
   algorithm: "BOUNDED_PHOTOMETRIC_NCC_V1",
-  algorithmDigest: "b5584b7fb99b6f2f7977d82081e4530c7a7bef836d3c1d24e2629438d9e546de",
+  algorithmDigest: "b48867498df1d561f103eaeb1351a9c039597a08244ec8ac28d1211bb2359783",
 } as const;
 export type IndexImageBinding = {
   providerGeneration: number;
@@ -56,6 +69,7 @@ export type IndexImageObservation = IndexImageBinding & {
   trackId: string | null;
   trackGeneration: number;
   point: Point | null;
+  matchedPoint?: Point | null;
   state: "UNSEEDED" | "TRACKING" | "UNCERTAIN" | "LOST";
   modelAgreement: "AGREE" | "DISAGREE" | "UNAVAILABLE";
   anchorSource: "MODEL_INDEX" | "MANUAL_HINT" | null;
@@ -77,9 +91,11 @@ export type IndexGrayFrame = {
   received: number;
 };
 export type IndexModelAnchor = {
-  point: Point;
+  point: Point | null;
   pointing: boolean;
   contrary: boolean;
+  authority?: "POINT" | "CONTRARY" | "AMBIGUOUS";
+  authoritySource?: string;
 };
 type Patch = { values: Float32Array; mean: number; deviation: number; structure: number; radius: number };
 type Match = { point: Point; correlation: number; separation: number };
@@ -198,6 +214,15 @@ export class IndexImageTracker {
   private trackGeneration = 0;
   private anchorSource: IndexImageObservation["anchorSource"] = null;
   private vetoed = false;
+  private authorityVetoed = false;
+  private authorityCandidate: {
+    kind: "POINT" | "CONTRARY";
+    source: string;
+    startedAt: number;
+    lastAt: number;
+    frames: number;
+    confirmed: boolean;
+  } | null = null;
   private failures = 0;
   private grid: { width: number; height: number } | null = null;
   private readonly searchScores = new Float64Array((policy.search * 2 + 1 + policy.predictionLimit) ** 2);
@@ -213,6 +238,8 @@ export class IndexImageTracker {
     this.trackGeneration = 0;
     this.anchorSource = null;
     this.vetoed = false;
+    this.authorityVetoed = false;
+    this.authorityCandidate = null;
     this.failures = 0;
     this.grid = null;
     // A reset cannot make an old camera frame new.
@@ -243,6 +270,7 @@ export class IndexImageTracker {
       forwardBackwardErrorPixels: null,
     };
     let modelAgreement: IndexImageObservation["modelAgreement"] = "UNAVAILABLE";
+    let currentMatchedPoint: Point | null = null;
     const result = (
       state: IndexImageObservation["state"],
       reason: string,
@@ -263,6 +291,8 @@ export class IndexImageTracker {
         state === "TRACKING" && this.point
           ? { x: this.point.x / (frame.width - 1), y: this.point.y / (frame.height - 1) }
           : null,
+      matchedPoint:
+        state === "TRACKING" || (state === "UNCERTAIN" && reason.startsWith("FULL_HAND_")) ? currentMatchedPoint : null,
       state,
       modelAgreement,
       anchorSource: this.anchorSource,
@@ -274,16 +304,60 @@ export class IndexImageTracker {
       this.previous = null;
       this.template = null;
       this.point = null;
+      this.authorityCandidate = null;
       return result("LOST", "FRAME_GRID_CHANGED");
     }
     this.grid ??= { width: frame.width, height: frame.height };
-    if (model && !boundedPoint(model.point)) model = null;
-    const modelPoint = model ? { x: model.point.x * (frame.width - 1), y: model.point.y * (frame.height - 1) } : null;
+    // A missing/bad tip cannot discard a whole-hand negative or ambiguity.
+    if (model?.point && !boundedPoint(model.point)) model = { ...model, point: null };
+    const modelPoint = model?.point
+      ? { x: model.point.x * (frame.width - 1), y: model.point.y * (frame.height - 1) }
+      : null;
     if (manualHint) {
+      const retainedAuthorityVeto = this.authorityVetoed && model?.authority !== undefined;
       this.reset();
+      this.authorityVetoed = retainedAuthorityVeto;
       this.grid = { width: frame.width, height: frame.height };
     }
-    const anchor = manualHint ?? (!this.anchorSource && model?.pointing ? model.point : null);
+    const updateGestureVeto = () => {
+      const kind = model?.authority;
+      const source = model?.authoritySource;
+      if ((kind !== "POINT" && kind !== "CONTRARY") || modelAgreement !== "AGREE" || !source?.trim()) {
+        this.authorityCandidate = null;
+      } else {
+        const p = indexImageAlgorithmDescriptor.wholeHandAuthority.promotion;
+        const old = this.authorityCandidate;
+        this.authorityCandidate =
+          old && old.kind === kind && old.source === source && frame.capture - old.lastAt <= p.maximumGapMs
+            ? { ...old, lastAt: frame.capture, frames: old.frames + 1 }
+            : { kind, source, startedAt: frame.capture, lastAt: frame.capture, frames: 1, confirmed: false };
+        const candidate = this.authorityCandidate;
+        candidate.confirmed =
+          candidate.frames >= p.minimumFrames && frame.capture - candidate.startedAt >= p.minimumSpanMs;
+        if (candidate.confirmed) {
+          this.authorityVetoed = kind === "CONTRARY";
+          if (kind === "POINT") this.vetoed = false;
+        }
+      }
+      if (!kind && modelAgreement === "AGREE") {
+        if (model?.contrary) this.vetoed = true;
+        else if (model?.pointing) this.vetoed = false;
+      }
+    };
+    const gesturePauseReason = () => {
+      if (model?.authority === "AMBIGUOUS") return "FULL_HAND_AMBIGUOUS";
+      if (model?.authority && modelAgreement !== "AGREE") return "FULL_HAND_INDEX_CONFLICT";
+      if (model?.authority === "CONTRARY")
+        return this.authorityCandidate?.confirmed ? "FULL_HAND_CONTRARY_CONFIRMED" : "FULL_HAND_CONTRARY_PENDING";
+      if (model?.authority === "POINT" && (this.authorityVetoed || this.vetoed)) return "FULL_HAND_POINT_PENDING";
+      if (this.authorityVetoed) return "FULL_HAND_CONTRARY_AWAITING_POINT";
+      return this.vetoed ? "COHERENT_MODEL_CONTRARY" : null;
+    };
+    const fullPointReason = () =>
+      this.authorityCandidate?.confirmed ? "FULL_HAND_POINT_CONFIRMED" : "FULL_HAND_POINT_PENDING";
+    const anchor =
+      manualHint ??
+      (!this.anchorSource && model?.pointing && (!model.authority || model.authority === "POINT") ? model.point : null);
     if (anchor) {
       if (!boundedPoint(anchor)) return result("UNSEEDED", "HINT_OUTSIDE_IMAGE");
       const center = { x: anchor.x * (frame.width - 1), y: anchor.y * (frame.height - 1) };
@@ -311,16 +385,18 @@ export class IndexImageTracker {
       this.trackId = `index-image-${this.trackGeneration}`;
       this.anchorSource = manualHint ? "MANUAL_HINT" : "MODEL_INDEX";
       this.vetoed = false;
+      currentMatchedPoint = { x: center.x / (frame.width - 1), y: center.y / (frame.height - 1) };
       modelAgreement =
         modelPoint && Math.hypot(center.x - modelPoint.x, center.y - modelPoint.y) <= policy.modelAgreementRadius
           ? "AGREE"
           : modelPoint
             ? "DISAGREE"
             : "UNAVAILABLE";
-      if (modelAgreement === "AGREE" && model?.contrary) this.vetoed = true;
+      updateGestureVeto();
+      const pauseReason = gesturePauseReason();
       return result(
-        this.vetoed ? "UNCERTAIN" : "TRACKING",
-        this.vetoed ? "COHERENT_MODEL_CONTRARY" : "ANCHOR_ACQUIRED",
+        pauseReason ? "UNCERTAIN" : "TRACKING",
+        pauseReason ?? (model?.authority === "POINT" ? fullPointReason() : "ANCHOR_ACQUIRED"),
         2 * scale,
       );
     }
@@ -341,6 +417,7 @@ export class IndexImageTracker {
     quality.correlation = found?.correlation ?? null;
     quality.separation = found?.separation ?? null;
     const reject = (reason: string) => {
+      this.authorityCandidate = null;
       ++this.failures;
       return result(this.failures >= 2 ? "LOST" : "UNCERTAIN", reason);
     };
@@ -362,10 +439,7 @@ export class IndexImageTracker {
         ? "AGREE"
         : "DISAGREE"
       : "UNAVAILABLE";
-    if (modelAgreement === "AGREE") {
-      if (model?.contrary) this.vetoed = true;
-      else if (model?.pointing) this.vetoed = false;
-    }
+    updateGestureVeto();
     // Appearance supplies the point. A disagreeing model never moves it or
     // replaces the patch; a later explicit seed creates a different binding.
     const dt = gap / 1000;
@@ -375,19 +449,23 @@ export class IndexImageTracker {
       cap = speed > policy.maximumVelocity ? policy.maximumVelocity / speed : 1;
     this.velocity = { x: vx * cap, y: vy * cap };
     this.point = found.point;
+    currentMatchedPoint = { x: found.point.x / (frame.width - 1), y: found.point.y / (frame.height - 1) };
     this.template = current;
     this.previous = { ...frame, data: frame.data.slice() };
     this.acceptedAt = frame.capture;
     this.failures = 0;
     const uncertainty =
       Math.max(1.5, (1 - found.correlation) * 10 + backward * 1.5 + (found.separation < 0.08 ? 2 : 0)) * scale;
+    const pauseReason = gesturePauseReason();
     return result(
-      this.vetoed ? "UNCERTAIN" : "TRACKING",
-      this.vetoed
-        ? "COHERENT_MODEL_CONTRARY"
-        : modelAgreement === "DISAGREE"
-          ? "MODEL_DISAGREES_IMAGE_RETAINED"
-          : "IMAGE_MATCH",
+      pauseReason ? "UNCERTAIN" : "TRACKING",
+      pauseReason
+        ? pauseReason
+        : model?.authority === "POINT"
+          ? fullPointReason()
+          : modelAgreement === "DISAGREE"
+            ? "MODEL_DISAGREES_IMAGE_RETAINED"
+            : "IMAGE_MATCH",
       uncertainty,
     );
   }

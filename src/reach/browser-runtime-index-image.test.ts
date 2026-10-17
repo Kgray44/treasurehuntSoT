@@ -1,6 +1,8 @@
 // @sounding-line-registration owner=reach suite=unit.reach contracts=reach.phase1.foundation
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { ReachBrowserRuntime, type IndexImageObservation } from "./browser-runtime";
+import type { HandResult } from "@/watchglass/hand-provider";
+import { pointingPose } from "../../tests/e2e/fixtures/reach/pointing-poses";
 
 type Bitmap = { rgba: Uint8ClampedArray; close: ReturnType<typeof vi.fn> };
 type FrameMessage = { type: "FRAME"; generation: number; capture: number; bitmap: Bitmap };
@@ -195,7 +197,7 @@ function setup(
       video.currentTime += 1 / 30;
       video.presentedFrames++;
     },
-    result(capture?: number) {
+    result(capture?: number, landmarks: HandResult["landmarks"] = []) {
       const worker = workers.at(-1)!;
       worker.onmessage!({
         data: {
@@ -205,7 +207,7 @@ function setup(
           inferenceTime: performance.timeOrigin + now,
           width: 320,
           height: 240,
-          result: { landmarks: [], handedness: [] },
+          result: { landmarks, handedness: landmarks.map(() => [{ categoryName: "Right", score: 0.99 }]) },
         },
       } as MessageEvent);
     },
@@ -217,6 +219,115 @@ function setup(
 }
 
 describe("runtime image source integration", () => {
+  function modelPose(point: { x: number; y: number }, options: Parameters<typeof pointingPose>[0] = {}) {
+    const pose = pointingPose(options);
+    const dx = point.x - pose[8].x,
+      dy = point.y - pose[8].y;
+    return pose.map((p) => ({ x: p.x + dx, y: p.y + dy, z: p.z }));
+  }
+
+  it("gives a coherent full hand gesture authority while preserving independent image coordinates and identity", async () => {
+    const s = setup();
+    await s.start();
+    await s.advance(10);
+    s.result(undefined, [modelPose(s.hint)]);
+    const first = s.image.mock.calls.at(-1)![0];
+    expect(first).toMatchObject({ state: "TRACKING", point: s.hint, modelAgreement: "AGREE" });
+    const next = async (landmarks: HandResult["landmarks"] = []) => {
+      const count = s.workers.at(-1)!.frames.length;
+      s.freshFrame();
+      await s.advance(7);
+      expect(s.workers.at(-1)!.frames).toHaveLength(count + 1);
+      await s.advance(10);
+      s.result(undefined, landmarks);
+      return s.image.mock.calls.at(-1)![0];
+    };
+    const open = modelPose(s.hint, { indexBends: [0, 5, 10], otherBends: [0, 5, 10] });
+    expect(await next([open])).toMatchObject({
+      state: "UNCERTAIN",
+      point: null,
+      matchedPoint: s.hint,
+      reason: "FULL_HAND_CONTRARY_PENDING",
+    });
+    // One questionable whole-hand result cannot leave an indefinite veto.
+    expect(await next()).toMatchObject({ state: "TRACKING", point: s.hint, trackId: first.trackId });
+    for (let i = 0; i < 9; i++) await next([open]);
+    expect(s.image.mock.calls.at(-1)![0]).toMatchObject({
+      state: "UNCERTAIN",
+      point: null,
+      reason: "FULL_HAND_CONTRARY_CONFIRMED",
+    });
+    expect(await next()).toMatchObject({
+      state: "UNCERTAIN",
+      point: null,
+      trackId: first.trackId,
+      reason: "FULL_HAND_CONTRARY_AWAITING_POINT",
+    });
+    // Clearing a confirmed negative also needs compatible temporal evidence.
+    expect(await next([modelPose(s.hint)])).toMatchObject({ state: "UNCERTAIN", point: null, trackId: first.trackId });
+    for (let i = 0; i < 8; i++) await next([modelPose(s.hint)]);
+    expect(s.image.mock.calls.at(-1)![0]).toMatchObject({ state: "TRACKING", point: s.hint, trackId: first.trackId });
+  });
+
+  it("cannot bypass an available contrary full hand with a manual appearance hint", async () => {
+    const s = setup();
+    await s.start();
+    await s.advance(10);
+    s.result(undefined, [modelPose(s.hint, { indexBends: [0, 5, 10], otherBends: [0, 5, 10] })]);
+    expect(s.image.mock.calls.at(-1)![0]).toMatchObject({
+      state: "UNCERTAIN",
+      point: null,
+      reason: "FULL_HAND_CONTRARY_PENDING",
+    });
+  });
+
+  it("pauses a disagreeing full-hand return without latching its wrong digit", async () => {
+    const s = setup();
+    await s.start();
+    await s.advance(10);
+    s.result(undefined, [
+      modelPose({ x: s.hint.x + 0.12, y: s.hint.y }, { indexBends: [0, 5, 10], otherBends: [0, 5, 10] }),
+    ]);
+    const conflict = s.image.mock.calls.at(-1)![0];
+    expect(conflict).toMatchObject({
+      state: "UNCERTAIN",
+      point: null,
+      matchedPoint: s.hint,
+      reason: "FULL_HAND_INDEX_CONFLICT",
+    });
+    s.freshFrame();
+    await s.advance(7);
+    await s.advance(10);
+    s.result();
+    expect(s.image.mock.calls.at(-1)![0]).toMatchObject({
+      state: "TRACKING",
+      point: s.hint,
+      trackId: conflict.trackId,
+    });
+  });
+
+  it.each(["MISSING_INDEX", "TWO_FULL_HANDS", "POINT_CONFLICT"] as const)(
+    "pauses%s without snapping image coordinates or fabricating a missing index",
+    async (scenario) => {
+      const s = setup();
+      await s.start();
+      await s.advance(10);
+      const pose = modelPose(s.hint);
+      if (scenario === "MISSING_INDEX") pose[8].x = -0.1;
+      const landmarks =
+        scenario === "TWO_FULL_HANDS"
+          ? [modelPose({ x: s.hint.x - 0.14, y: s.hint.y }), modelPose({ x: s.hint.x + 0.14, y: s.hint.y })]
+          : scenario === "POINT_CONFLICT"
+            ? [modelPose({ x: s.hint.x + 0.12, y: s.hint.y })]
+            : [pose];
+      s.result(undefined, landmarks);
+      expect(s.image.mock.calls.at(-1)![0]).toMatchObject({
+        state: "UNCERTAIN",
+        point: null,
+        reason: scenario === "POINT_CONFLICT" ? "FULL_HAND_INDEX_CONFLICT" : "FULL_HAND_AMBIGUOUS",
+      });
+    },
+  );
   it("pairs clean pixels with the exact worker bitmap/capture and emits no pixel or model payload", async () => {
     const s = setup();
     const worker = await s.start();
@@ -312,6 +423,10 @@ describe("runtime image source integration", () => {
       point: null,
       monotonicCaptureTime: worker.frames[1].capture,
     });
+    const uncertain = s.image.mock.calls[1][0] as IndexImageObservation & {
+      matchedPoint?: { x: number; y: number } | null;
+    };
+    expect(uncertain.matchedPoint ?? null).toBeNull();
   });
 
   it("measures capture-to-completion and both main-thread phases without relabeling capture time", async () => {

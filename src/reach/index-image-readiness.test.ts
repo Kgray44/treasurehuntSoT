@@ -256,3 +256,25 @@ describe("image-tip readiness", () => {
     expect(selector.update(frame(10120))).toMatchObject({ eligible: true, changed: false });
   });
 });
+
+it.each([
+  ["FULL_HAND_POINT_PENDING", "image remains tracked"],
+  ["FULL_HAND_CONTRARY", "not pointing"],
+  ["FULL_HAND_CONTRARY_PENDING", "dashed ring"],
+  ["FULL_HAND_CONTRARY_CONFIRMED", "not pointing"],
+  ["FULL_HAND_CONTRARY_AWAITING_POINT", "fresh setup"],
+  ["FULL_HAND_AMBIGUOUS", "one pointing hand"],
+  ["FULL_HAND_INDEX_CONFLICT", "will not jump"],
+])("explains %s while preserving the established image source", (reason, expected) => {
+  const selector = new IndexImageReadiness();
+  expect(establish(selector).eligible).toBe(true);
+  const paused = selector.update(
+    frame(300, { state: "UNCERTAIN", point: null, matchedPoint: { x: 0.4, y: 0.6 }, reason }),
+  );
+  expect(paused).toMatchObject({ eligible: false, changed: false, condition: "UNCERTAIN" });
+  expect(paused.guidance).toContain(expected);
+  selector.update(frame(350));
+  selector.update(frame(400));
+  selector.update(frame(450));
+  expect(selector.update(frame(470))).toMatchObject({ eligible: true, changed: false, condition: "READY" });
+});

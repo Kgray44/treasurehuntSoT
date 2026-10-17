@@ -5,7 +5,7 @@ import { pointingPose } from "./fixtures/reach/pointing-poses";
 /** Public analytic appearance and fake inference. This is D0 integration proof, never physical recognition proof. */
 async function installFixture(page: Page, model = "FULL") {
   await page.addInitScript(
-    ({ model, relaxed, curled, endOn }) => {
+    ({ model, relaxed, curled, endOn, open }) => {
       const fixture = {
         model,
         x: 120,
@@ -13,6 +13,7 @@ async function installFixture(page: Page, model = "FULL") {
         blank: false,
         repeated: false,
         frames: [] as { capture: number; reply: number }[],
+        modelFrames: [] as { capture: number; mode: string }[],
         drawCount: 0,
         tracks: 0,
         workers: 0,
@@ -93,20 +94,43 @@ async function installFixture(page: Page, model = "FULL") {
           message.bitmap!.close();
           fixture.pending++;
           fixture.maximumPending = Math.max(fixture.maximumPending, fixture.pending);
-          const source = fixture.model === "WRONG" ? curled : fixture.model === "DIRECT" ? endOn : relaxed;
+          const mode = fixture.model;
+          const source =
+            mode === "WRONG" || mode === "WRONG_ONCE"
+              ? curled
+              : mode === "DIRECT"
+                ? endOn
+                : mode === "OPEN"
+                  ? open
+                  : relaxed;
+          const conflict = mode === "WRONG" || mode === "WRONG_ONCE" || mode === "CONFLICT";
           const tip = {
-            x: fixture.x / 319 + (fixture.model === "WRONG" ? 0.15 : 0),
-            y: fixture.y / 239 + (fixture.model === "WRONG" ? 0.1 : 0),
+            x: fixture.x / 319 + (conflict ? 0.15 : 0),
+            y: fixture.y / 239 + (conflict ? 0.1 : 0),
           };
           const points = source.map((point, index) =>
-            fixture.model === "INDEX" && ![5, 6, 7, 8].includes(index)
+            mode === "INDEX" && ![5, 6, 7, 8].includes(index)
               ? { x: -1, y: -1, z: 0 }
               : { ...point, x: point.x + tip.x - source[8].x, y: point.y + tip.y - source[8].y },
           );
+          const ambiguous = mode === "AMBIGUOUS";
           const result = {
-            landmarks: fixture.model === "NONE" ? [] : [points],
-            handedness: fixture.model === "NONE" ? [] : [[{ categoryName: "Right", score: 0.95 }]],
+            landmarks:
+              mode === "NONE"
+                ? []
+                : ambiguous
+                  ? [points, points.map((point) => ({ ...point, x: point.x + 0.22 }))]
+                  : [points],
+            handedness:
+              mode === "NONE"
+                ? []
+                : ambiguous
+                  ? [[{ categoryName: "Right", score: 0.95 }], [{ categoryName: "Left", score: 0.95 }]]
+                  : [[{ categoryName: "Right", score: 0.95 }]],
           };
+          fixture.modelFrames.push({ capture: message.capture, mode });
+          if (fixture.modelFrames.length > 600) fixture.modelFrames.shift();
+          if (mode === "WRONG_ONCE") fixture.model = "NONE";
           setTimeout(() => {
             fixture.pending--;
             if (this.terminated) return;
@@ -141,6 +165,7 @@ async function installFixture(page: Page, model = "FULL") {
       relaxed: pointingPose({ indexBends: [0, 10, 20] }),
       curled: pointingPose({ indexBends: [0, 100, 150] }),
       endOn: pointingPose({ indexBends: [0, 5, 10], depthAngle: 85 }),
+      open: pointingPose({ indexBends: [0, 0, 0], otherBends: [0, 0, 0] }),
     },
   );
 }
@@ -195,6 +220,7 @@ test("D0 image-relative control follows fresh appearance through model failure, 
       state: string;
       generation: string;
       agreement: string;
+      reason: string;
       x: number | null;
       y: number | null;
       expectedX: number;
@@ -222,6 +248,7 @@ test("D0 image-relative control follows fresh appearance through model failure, 
         state: section.dataset.imageState!,
         generation: section.dataset.imageTrackGeneration!,
         agreement: section.dataset.imageModelAgreement!,
+        reason: section.dataset.imageReason!,
         x: circle ? Number(circle.getAttribute("cx")) : null,
         y: circle ? Number(circle.getAttribute("cy")) : null,
         expectedX: state.x,
@@ -240,7 +267,7 @@ test("D0 image-relative control follows fresh appearance through model failure, 
         sample();
       }
     }
-    state.model = "NONE";
+    state.model = "FULL";
     await new Promise((resolve) => setTimeout(resolve, 180));
     sample();
     return { records, workerFrames: [...state.frames] };
@@ -248,14 +275,33 @@ test("D0 image-relative control follows fresh appearance through model failure, 
   const tracked = sampled.records.filter((row) => row.state === "TRACKING");
   expect(tracked.length).toBeGreaterThan(40);
   expect(new Set(tracked.map((row) => row.generation))).toEqual(new Set([initial]));
-  expect(tracked.some((row) => row.agreement === "DISAGREE")).toBe(true);
+  expect(sampled.records.some((row) => row.agreement === "DISAGREE")).toBe(true);
   expect(tracked.some((row) => row.agreement === "UNAVAILABLE")).toBe(true);
-  expect(sampled.records.filter((row) => row.state !== "TRACKING")).toEqual([]);
+  const authorityPaused = sampled.records.filter((row) => row.state !== "TRACKING");
+  expect(authorityPaused.length).toBeGreaterThan(0);
+  expect(
+    authorityPaused.every(
+      (row) =>
+        row.state === "UNCERTAIN" &&
+        [
+          "FULL_HAND_CONTRARY_PENDING",
+          "FULL_HAND_CONTRARY_CONFIRMED",
+          "FULL_HAND_CONTRARY_AWAITING_POINT",
+          "FULL_HAND_POINT_PENDING",
+          "FULL_HAND_INDEX_CONFLICT",
+          "FULL_HAND_AMBIGUOUS",
+        ].includes(row.reason) &&
+        row.x === null &&
+        row.y === null,
+    ),
+  ).toBe(true);
+  expect(new Set(sampled.records.map((row) => row.generation))).toEqual(new Set([initial]));
   expect(tracked.every((row) => row.x !== null && row.y !== null)).toBe(true);
   expect(Math.max(...tracked.map((row) => Math.hypot(row.x! - row.expectedX, row.y! - row.expectedY)))).toBeLessThan(
     34,
   );
   await ready(page);
+  await configure(page, { model: "NONE" });
   await page.getByRole("button", { name: "Set up relative movement", exact: true }).click();
   await expect(page.getByLabel("Target 2 of 5", { exact: true })).toBeVisible({ timeout: 12000 });
   await expect(page.getByText(/1 of 5 targets saved/)).toBeVisible();
@@ -367,6 +413,8 @@ test("D0 image-relative control follows fresh appearance through model failure, 
         evidence: "ANALYTIC_CAMERA_PIXELS_AND_FAKE_WORKER_D0_ONLY",
         samples: sampled.records.length,
         tracked: tracked.length,
+        authorityPaused: authorityPaused.length,
+        authorityPauseReasons: [...new Set(authorityPaused.map((row) => row.reason))],
         identityChanges: new Set(tracked.map((row) => row.generation)).size - 1,
         fakeWorkerCaptureHz:
           (1000 * (sampled.workerFrames.length - 1)) /
@@ -396,6 +444,15 @@ test("D0 manual image-only hints support mirrored click and natural keyboard whi
   await installFixture(page, "NONE");
   await page.goto("/devices/reach");
   await page.getByRole("button", { name: "Enable live camera", exact: true }).click();
+  const initialHint = await page.evaluate(() => {
+    const section = document.querySelector<HTMLElement>("section[data-image-state]")!,
+      button = [...document.querySelectorAll("button")].find(
+        (button) => button.textContent === "Track visible fingertip",
+      );
+    return { capture: Number(section.dataset.imageCaptureTime), hintAvailable: !!button && !button.disabled };
+  });
+  if (initialHint.capture === 0) expect(initialHint.hintAvailable).toBe(false);
+  await expect.poll(async () => Number(await root(page).getAttribute("data-image-capture-time"))).toBeGreaterThan(0);
   await expect(page.getByRole("button", { name: "Track visible fingertip", exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: "Set up relative movement", exact: true })).toBeDisabled();
   await markByClick(page, 120, 120, true);
@@ -412,12 +469,89 @@ test("D0 manual image-only hints support mirrored click and natural keyboard whi
   await configure(page, { repeated: false, x: 182, y: 129 });
   await page.getByRole("button", { name: "Use natural preview", exact: true }).click();
   await page.getByRole("button", { name: "Enable live camera", exact: true }).click();
+  await expect.poll(async () => Number(await root(page).getAttribute("data-image-capture-time"))).toBeGreaterThan(0);
   await page.getByRole("button", { name: "Track visible fingertip", exact: true }).click();
   const picker = page.getByRole("button", { name: /^Mark visible fingertip in camera/ });
   for (let i = 0; i < 7; i++) await picker.press("ArrowRight");
   for (let i = 0; i < 4; i++) await picker.press("ArrowDown");
+  const selectedPatch = await page.evaluate(() => {
+    const video = document.querySelector("video")!,
+      picker = document.querySelector<HTMLButtonElement>('[aria-label^="Mark visible fingertip in camera"]')!,
+      svg = picker.querySelector("svg")!,
+      path = svg.querySelector("path")!.getAttribute("d")!,
+      match = path.match(/M ([\d.]+) ([\d.]+) h 24 M ([\d.]+) ([\d.]+) v 24/)!;
+    const point = { x: Number(match[3]) / svg.viewBox.baseVal.width, y: Number(match[2]) / svg.viewBox.baseVal.height };
+    const canvas = document.createElement("canvas");
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const context = canvas.getContext("2d")!;
+    context.drawImage(video, 0, 0);
+    const rgba = context.getImageData(0, 0, canvas.width, canvas.height).data,
+      gray = Uint8Array.from(
+        { length: canvas.width * canvas.height },
+        (_, i) => (rgba[i * 4] * 77 + rgba[i * 4 + 1] * 150 + rgba[i * 4 + 2] * 29) >> 8,
+      );
+    const x = Math.round(point.x * (canvas.width - 1)),
+      y = Math.round(point.y * (canvas.height - 1)),
+      values: number[] = [];
+    let sum = 0,
+      squares = 0,
+      xx = 0,
+      yy = 0,
+      xy = 0;
+    for (let dy = -7; dy <= 7; dy++)
+      for (let dx = -7; dx <= 7; dx++) {
+        const i = (y + dy) * canvas.width + x + dx,
+          value = gray[i],
+          gx = (gray[i + 1] - gray[i - 1]) / 2,
+          gy = (gray[i + canvas.width] - gray[i - canvas.width]) / 2;
+        values.push(value);
+        sum += value;
+        squares += value * value;
+        xx += gx * gx;
+        yy += gy * gy;
+        xy += gx * gy;
+      }
+    const mean = sum / values.length,
+      total = xx + yy;
+    return {
+      evidence: "PUBLIC_ANALYTIC_CAMERA_PIXELS_AT_KEYBOARD_HINT",
+      videoWidth: video.videoWidth,
+      videoHeight: video.videoHeight,
+      path,
+      viewBox: { width: svg.viewBox.baseVal.width, height: svg.viewBox.baseVal.height },
+      normalized: point,
+      selectedPixel: { x, y },
+      textureDeviation: Math.sqrt(Math.max(0, squares / values.length - mean * mean)),
+      structureRatio: (total - Math.sqrt((xx - yy) ** 2 + 4 * xy * xy)) / 2 / Math.max(1e-9, total),
+      radius: 7,
+      values,
+    };
+  });
+  await testInfo.attach("D0-index-image-keyboard-hint-patch.json", {
+    body: JSON.stringify(selectedPatch, null, 2),
+    contentType: "application/json",
+  });
+  expect(selectedPatch.selectedPixel).toEqual({ x: 182, y: 129 });
+  expect(selectedPatch.textureDeviation).toBeGreaterThanOrEqual(6);
+  expect(selectedPatch.structureRatio).toBeGreaterThanOrEqual(0.008);
+  await picker.screenshot({ path: testInfo.outputPath("D0-natural-keyboard-selected-patch.png") });
   await picker.press("Enter");
-  await ready(page);
+  try {
+    await ready(page);
+  } catch (error) {
+    await testInfo.attach("D0-index-image-keyboard-failure.json", {
+      body: JSON.stringify(
+        await root(page).evaluate((element) =>
+          Object.fromEntries([...element.attributes].map((a) => [a.name, a.value])),
+        ),
+        null,
+        2,
+      ),
+      contentType: "application/json",
+    });
+    throw error;
+  }
   await expect
     .poll(async () => Number(await page.locator('svg[aria-label="Finger image position"] circle').getAttribute("cx")))
     .toBeGreaterThan(178);
@@ -443,6 +577,159 @@ test("D0 manual image-only hints support mirrored click and natural keyboard whi
   await page.getByRole("button", { name: "Stop camera & clear session", exact: true }).click();
 });
 
+test("D0 full-hand authority pauses conflicts without changing image coordinates and manual hints cannot bypass it", async ({
+  page,
+}, testInfo) => {
+  await installFixture(page);
+  await page.goto("/devices/reach");
+  await page.getByRole("button", { name: "Enable live camera", exact: true }).click();
+  await ready(page);
+  await expect(root(page)).toHaveAttribute("data-image-reason", "FULL_HAND_POINT_CONFIRMED");
+  const generation = await root(page).getAttribute("data-image-track-generation"),
+    phases: object[] = [];
+  const record = async (phase: string) => {
+    phases.push(
+      await root(page).evaluate((section, phase) => {
+        const element = section as HTMLElement,
+          circle = section.querySelector('svg[aria-label="Finger image position"] circle'),
+          preview = section.querySelector('svg[aria-label="Finger image match, pointing paused"] circle');
+        return {
+          phase,
+          state: element.dataset.imageState,
+          reason: element.dataset.imageReason,
+          generation: element.dataset.imageTrackGeneration,
+          x: circle ? Number(circle.getAttribute("cx")) : null,
+          y: circle ? Number(circle.getAttribute("cy")) : null,
+          previewX: preview ? Number(preview.getAttribute("cx")) : null,
+          previewY: preview ? Number(preview.getAttribute("cy")) : null,
+          capture: element.dataset.imageCaptureTime,
+        };
+      }, phase),
+    );
+  };
+  const blocked = async (reason: string | RegExp) => {
+    await expect(root(page)).toHaveAttribute("data-image-state", "UNCERTAIN");
+    await expect(root(page)).toHaveAttribute("data-image-reason", reason);
+    await expect(page.locator('svg[aria-label="Finger image position"]')).toHaveCount(0);
+    await expect(page.locator('svg[aria-label="Finger image match, pointing paused"] circle')).toBeVisible();
+  };
+  const sameSourceTracking = async (reason?: string) => {
+    await expect(root(page)).toHaveAttribute("data-image-state", "TRACKING");
+    await expect(root(page)).toHaveAttribute("data-image-track-generation", generation!);
+    if (reason) await expect(root(page)).toHaveAttribute("data-image-reason", reason);
+    const point = await page.locator('svg[aria-label="Finger image position"] circle').evaluate((circle) => ({
+      x: Number(circle.getAttribute("cx")),
+      y: Number(circle.getAttribute("cy")),
+    }));
+    expect(Math.hypot(point.x - 120, point.y - 120)).toBeLessThan(2);
+  };
+  await page.getByRole("button", { name: "Set up relative movement", exact: true }).click();
+  await expect(page.getByLabel("Target 2 of 5", { exact: true })).toBeVisible({ timeout: 12000 });
+  const singleWrongReturn = await page.evaluate(async () => {
+    const fixture = (
+      window as unknown as {
+        reachIndexImageFixture: { model: string; modelFrames: { capture: number; mode: string }[] };
+      }
+    ).reachIndexImageFixture;
+    const section = document.querySelector<HTMLElement>("section[data-image-state]")!,
+      records: { state: string; reason: string; gold: boolean; gray: boolean }[] = [];
+    const observe = () =>
+      records.push({
+        state: section.dataset.imageState!,
+        reason: section.dataset.imageReason!,
+        gold: !!section.querySelector('svg[aria-label="Finger image position"]'),
+        gray: !!section.querySelector('svg[aria-label="Finger image match, pointing paused"]'),
+      });
+    const observer = new MutationObserver(observe);
+    observer.observe(section, { attributes: true, attributeFilter: ["data-image-state", "data-image-reason"] });
+    fixture.model = "WRONG_ONCE";
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    observer.disconnect();
+    return { records, wrongFrames: fixture.modelFrames.filter((frame) => frame.mode === "WRONG_ONCE").length };
+  });
+  expect(singleWrongReturn.wrongFrames).toBe(1);
+  expect(
+    singleWrongReturn.records.some(
+      (record) =>
+        record.state === "UNCERTAIN" && record.reason === "FULL_HAND_INDEX_CONFLICT" && !record.gold && record.gray,
+    ),
+  ).toBe(true);
+  await sameSourceTracking();
+  await configure(page, { model: "INDEX" });
+  await sameSourceTracking();
+  await record("one-wrong-digit-return-pauses-then-fallback-recovers-without-reset");
+  await configure(page, { model: "OPEN" });
+  await blocked("FULL_HAND_CONTRARY_CONFIRMED");
+  await expect(page.getByLabel("Target 2 of 5", { exact: true })).toBeVisible();
+  await expect(page.getByText(/1 of 5 targets saved/)).toBeVisible();
+  await record("sustained-compatible-full-hand-negative-confirms-before-latching");
+  await page.screenshot({ path: testInfo.outputPath("D0-full-hand-contrary-saved-target.png"), fullPage: false });
+  await expect(page.getByLabel("Target 2 of 5", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Pause calibration", exact: true }).click();
+  const beforePreviewMove = Number(await root(page).getAttribute("data-image-capture-time"));
+  await configure(page, { x: 126 });
+  await expect
+    .poll(async () =>
+      Number(await page.locator('svg[aria-label="Finger image match, pointing paused"] circle').getAttribute("cx")),
+    )
+    .toBeGreaterThan(124);
+  expect(Number(await root(page).getAttribute("data-image-capture-time"))).toBeGreaterThan(beforePreviewMove);
+  await blocked("FULL_HAND_CONTRARY_CONFIRMED");
+  await record("fresh-gray-image-position-moves-while-action-remains-paused");
+  await configure(page, { model: "NONE" });
+  await blocked("FULL_HAND_CONTRARY_AWAITING_POINT");
+  await record("missing-model-does-not-erase-visible-contrary");
+  await configure(page, { model: "INDEX" });
+  await blocked("FULL_HAND_CONTRARY_AWAITING_POINT");
+  await record("partial-index-does-not-erase-visible-contrary");
+  await configure(page, { model: "FULL", x: 120 });
+  await sameSourceTracking("FULL_HAND_POINT_CONFIRMED");
+  await expect(page.getByLabel("Target 2 of 5", { exact: true })).toBeVisible();
+  await expect(page.getByText(/1 of 5 targets saved/)).toBeVisible();
+  await expect(page.getByRole("alert", { name: "Setup ended", exact: true })).toHaveCount(0);
+  await record("compatible-full-hand-recovers-same-image-position");
+  await page.screenshot({ path: testInfo.outputPath("D0-full-hand-confirmed-image-position.png"), fullPage: false });
+  await configure(page, { model: "CONFLICT" });
+  await blocked("FULL_HAND_INDEX_CONFLICT");
+  await record("pointing-model-at-other-position-does-not-snap-image");
+  await configure(page, { model: "NONE" });
+  await sameSourceTracking();
+  await configure(page, { model: "AMBIGUOUS" });
+  await blocked("FULL_HAND_AMBIGUOUS");
+  await record("two-credible-whole-hands-pause");
+  await configure(page, { model: "NONE" });
+  await sameSourceTracking();
+  await record("frame-local-ambiguity-can-return-to-image-fallback");
+  await page.getByRole("button", { name: "Cancel calibration", exact: true }).click();
+  await configure(page, { model: "OPEN" });
+  await blocked("FULL_HAND_CONTRARY_CONFIRMED");
+  await markByClick(page, 120, 120, true);
+  await expect(root(page)).not.toHaveAttribute("data-image-track-generation", generation!);
+  await blocked(/^FULL_HAND_CONTRARY_(PENDING|CONFIRMED)$/);
+  await expect(page.getByRole("button", { name: "Set up relative movement", exact: true })).toBeDisabled();
+  await record("manual-hint-cannot-bypass-visible-open-hand");
+  await page.screenshot({
+    path: testInfo.outputPath("D0-full-hand-contrary-manual-hint-blocked.png"),
+    fullPage: false,
+  });
+  await configure(page, { model: "NONE" });
+  await blocked("FULL_HAND_CONTRARY_AWAITING_POINT");
+  const blockedGeneration = await root(page).getAttribute("data-image-track-generation");
+  await markByClick(page, 120, 120, true);
+  await ready(page);
+  await expect(root(page)).not.toHaveAttribute("data-image-track-generation", blockedGeneration!);
+  await record("explicit-new-hint-allowed-only-when-full-hand-unavailable");
+  await testInfo.attach("D0-index-image-authority-metrics.json", {
+    body: JSON.stringify(
+      { evidence: "PUBLIC_ANALYTIC_CAMERA_AND_FAKE_FULL_HAND_MODEL", singleWrongReturn, phases },
+      null,
+      2,
+    ),
+    contentType: "application/json",
+  });
+  await page.getByRole("button", { name: "Stop camera & clear session", exact: true }).click();
+});
+
 test("D0 stale model replies hide the image marker, pause collection and recover the same image source", async ({
   page,
 }, testInfo) => {
@@ -454,7 +741,15 @@ test("D0 stale model replies hide the image marker, pause collection and recover
   await configure(page, { model: "NONE" });
   await page.getByRole("button", { name: "Set up relative movement", exact: true }).click();
   await expect(page.getByLabel("Target 2 of 5", { exact: true })).toBeVisible({ timeout: 12000 });
-  await configure(page, { replyDelayMs: 200 });
+  // Bound the interruption in the browser, independent of slow driver or
+  // screenshot round trips. Actual event-loop stalls can still expire identity.
+  await page.evaluate(() => {
+    const fixture = (window as unknown as { reachIndexImageFixture: { replyDelayMs: number } }).reachIndexImageFixture;
+    fixture.replyDelayMs = 200;
+    setTimeout(() => {
+      fixture.replyDelayMs = 2;
+    }, 700);
+  });
   await expect(root(page)).toHaveAttribute("data-image-state", "STALE");
   await expect(page.locator('svg[aria-label="Finger image position"]')).toHaveCount(0);
   await expect(page.getByText("Finger image tracking", { exact: true })).not.toBeVisible();

@@ -4232,7 +4232,9 @@
           "INDEX_IMAGE_TRACKING",
           "FINGERTIP_HINT",
           "STALE_IMAGE_TRACK",
-          "ADAPTIVE_PACING"
+          "ADAPTIVE_PACING",
+          "FULL_HAND_PRIORITY",
+          "FULL_HAND_INDEX_CONFLICT"
         ],
         "devices": ["DESKTOP", "MOBILE"],
         "roles": ["ANONYMOUS"],

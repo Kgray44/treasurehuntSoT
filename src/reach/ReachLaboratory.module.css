@@ -185,6 +185,10 @@
   stroke: var(--reach-gold);
   stroke-width: 3;
 }
+.fingerMatchPaused {
+  stroke: #b7c7c4;
+  stroke-dasharray: 5 4;
+}
 .fingerPicker {
   position: absolute;
   inset: 0;

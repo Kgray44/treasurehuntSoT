@@ -199,4 +199,89 @@ describe("fresh image-tip observation gate", () => {
       new IndexImageObservationGate(context).accept({ ...frame(), point: { x: 0.3, y: 0.7, z: 0 } }, 110),
     ).toThrow();
   });
+  it("accepts optional current matched coordinates while keeping older metadata fixtures valid", () => {
+    expect(new IndexImageObservationGate(context).accept(frame(), 110)).not.toHaveProperty("matchedPoint");
+    expect(
+      new IndexImageObservationGate(context).accept({ ...frame(), matchedPoint: null }, 110).matchedPoint,
+    ).toBeNull();
+    expect(
+      new IndexImageObservationGate(context).accept({ ...frame(), matchedPoint: frame().point }, 110).matchedPoint,
+    ).toEqual(frame().point);
+    expect(() =>
+      new IndexImageObservationGate(context).accept({ ...frame(), matchedPoint: { x: 0.31, y: 0.7 } }, 110),
+    ).toThrow();
+  });
+  it.each([
+    "FULL_HAND_POINT_PENDING",
+    "FULL_HAND_CONTRARY_PENDING",
+    "FULL_HAND_CONTRARY_CONFIRMED",
+    "FULL_HAND_CONTRARY_AWAITING_POINT",
+    "FULL_HAND_INDEX_CONFLICT",
+    "FULL_HAND_AMBIGUOUS",
+  ])("allows a fresh display-only match during%s without creating an actionable point", (reason) => {
+    const paused = { ...frame(), state: "UNCERTAIN", point: null, matchedPoint: { x: 0.3, y: 0.7 }, reason };
+    const accepted = new IndexImageObservationGate(context).accept(paused, 110);
+    expect(accepted.point).toBeNull();
+    expect(accepted.matchedPoint).toEqual({ x: 0.3, y: 0.7 });
+  });
+  it.each([
+    { state: "LOST", reason: "FULL_HAND_CONTRARY_PENDING" },
+    { state: "UNSEEDED", reason: "FULL_HAND_POINT_PENDING" },
+    { state: "UNCERTAIN", reason: "APPEARANCE_MISMATCH" },
+    { state: "UNCERTAIN", reason: "APPEARANCE_AMBIGUOUS" },
+    { state: "UNCERTAIN", reason: "COHERENT_MODEL_CONTRARY" },
+  ])("rejects retained matched coordinates without an accepted full-hand-paused image match:%o", (status) => {
+    const input = { ...frame(), ...status, point: null, matchedPoint: { x: 0.3, y: 0.7 } };
+    expect(() => new IndexImageObservationGate(context).accept(input, 110)).toThrow();
+    expect(
+      new IndexImageObservationGate(context).accept({ ...input, matchedPoint: null }, 110).matchedPoint,
+    ).toBeNull();
+  });
+  it("requires normalized finite 2D matched metadata and an image source identity", () => {
+    for (const matchedPoint of [
+      { x: NaN, y: 0.7 },
+      { x: 0.3, y: Infinity },
+      { x: -0.001, y: 0.7 },
+      { x: 0.3, y: 1.001 },
+      { x: 0.3, y: 0.7, z: 0 },
+    ]) {
+      expect(() =>
+        new IndexImageObservationGate(context).accept(
+          { ...frame(), point: null, state: "UNCERTAIN", reason: "FULL_HAND_INDEX_CONFLICT", matchedPoint },
+          110,
+        ),
+      ).toThrow();
+    }
+    expect(() =>
+      new IndexImageObservationGate(context).accept(
+        {
+          ...frame(),
+          point: null,
+          state: "UNCERTAIN",
+          reason: "FULL_HAND_INDEX_CONFLICT",
+          matchedPoint: { x: 0.3, y: 0.7 },
+          trackId: null,
+          trackGeneration: 0,
+        },
+        110,
+      ),
+    ).toThrow();
+  });
+  it("never refreshes stale matched pixels through a recent completion or consumes ordering on rejection", () => {
+    const gate = new IndexImageObservationGate(context);
+    expect(() =>
+      gate.accept(
+        {
+          ...frame(900, 100),
+          monotonicInferenceTime: 300,
+          point: null,
+          state: "UNCERTAIN",
+          reason: "FULL_HAND_POINT_PENDING",
+          matchedPoint: { x: 0.3, y: 0.7 },
+        },
+        310,
+      ),
+    ).toThrow("INDEX_IMAGE_CLOCK_OR_FRESHNESS");
+    expect(gate.accept(frame(), 110).sequence).toBe(0);
+  });
 });

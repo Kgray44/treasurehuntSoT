@@ -7,7 +7,8 @@ const status = (page: Page) => page.getByRole("status", { name: "Reach status" }
 async function demo(page: Page, mode: "ABSOLUTE" | "RELATIVE" = "ABSOLUTE") {
   await page.goto("/devices/pair");
   await page.getByRole("link", { name: "Find the Hand interaction laboratory" }).click();
-  await expect(page.getByRole("heading", { name: "Find your point." })).toBeVisible();
+  // The isolated development route may compile on its first natural navigation.
+  await expect(page.getByRole("heading", { name: "Find your point." })).toBeVisible({ timeout: 30000 });
   await page.getByRole("button", { name: "Explore guided demo" }).click();
   await expect(status(page)).toContainText("Your fingertip is ready");
   if (mode === "ABSOLUTE") await page.getByRole("radio", { name: /Absolute pointing/ }).check();

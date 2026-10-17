@@ -108,6 +108,268 @@ describe("independent image fingertip evidence", () => {
       { state: "TRACKING", trackId: first.trackId },
     );
   });
+  const full = (kind: "POINT" | "CONTRARY", x: number, y: number, authoritySource = "full-model-A") => ({
+    point: point(x, y),
+    pointing: kind === "POINT",
+    contrary: kind === "CONTRARY",
+    authority: kind,
+    authoritySource,
+  });
+  const confirmNegative = (tracker: IndexImageTracker) => {
+    for (const at of [133, 193, 253]) tracker.update(image(60, 60, at), full("CONTRARY", 60, 60));
+  };
+  it("promotes compatible whole-hand pointing after three fresh frames and120ms without replacing image coordinates", () => {
+    const tracker = new IndexImageTracker(binding);
+    const first = tracker.update(image(60, 60, 100), null, point(60, 60));
+    for (const [i, at] of [133, 193, 253].entries()) {
+      const x = 62 + i * 2;
+      expect(tracker.update(image(x, 61, at), full("POINT", x + 2, 62))).toMatchObject({
+        state: "TRACKING",
+        reason: i === 2 ? "FULL_HAND_POINT_CONFIRMED" : "FULL_HAND_POINT_PENDING",
+        point: point(x, 61),
+        matchedPoint: point(x, 61),
+        trackId: first.trackId,
+        modelAgreement: "AGREE",
+      });
+    }
+  });
+  it("does not confuse three fast frames with the required120ms span", () => {
+    const tracker = new IndexImageTracker(binding);
+    tracker.update(image(60, 60, 100), null, point(60, 60));
+    for (const at of [133, 153, 173])
+      expect(tracker.update(image(60, 60, at), full("CONTRARY", 60, 60))).toMatchObject({
+        state: "UNCERTAIN",
+        point: null,
+        matchedPoint: point(60, 60),
+        reason: "FULL_HAND_CONTRARY_PENDING",
+      });
+    expect(tracker.update(image(60, 60, 253), full("CONTRARY", 60, 60)).reason).toBe("FULL_HAND_CONTRARY_CONFIRMED");
+    expect(tracker.update(image(61, 60, 286))).toMatchObject({
+      state: "UNCERTAIN",
+      point: null,
+      reason: "FULL_HAND_CONTRARY_AWAITING_POINT",
+    });
+  });
+  it("pauses a single compatible contrary immediately but resumes afterNONE without a false latch", () => {
+    const tracker = new IndexImageTracker(binding);
+    const first = tracker.update(image(60, 60, 100), null, point(60, 60));
+    expect(tracker.update(image(62, 60, 133), full("CONTRARY", 62, 60))).toMatchObject({
+      state: "UNCERTAIN",
+      reason: "FULL_HAND_CONTRARY_PENDING",
+      point: null,
+      matchedPoint: point(62, 60),
+      trackId: first.trackId,
+    });
+    expect(tracker.update(image(64, 60, 166))).toMatchObject({
+      state: "TRACKING",
+      point: point(64, 60),
+      trackId: first.trackId,
+    });
+  });
+  it("does not latch a wrong-digit contrary that disagrees with accepted image evidence", () => {
+    const tracker = new IndexImageTracker(binding);
+    const first = tracker.update(image(60, 60, 100), null, point(60, 60));
+    for (const [i, at] of [133, 193, 253].entries())
+      expect(tracker.update(image(62 + i, 60, at), full("CONTRARY", 95, 80))).toMatchObject({
+        state: "UNCERTAIN",
+        reason: "FULL_HAND_INDEX_CONFLICT",
+        point: null,
+        matchedPoint: point(62 + i, 60),
+        trackId: first.trackId,
+      });
+    expect(tracker.update(image(66, 60, 286))).toMatchObject({
+      state: "TRACKING",
+      point: point(66, 60),
+      trackId: first.trackId,
+    });
+  });
+  it("retains a confirmed negative throughNONE until a compatible positive is temporally confirmed", () => {
+    const tracker = new IndexImageTracker(binding);
+    const first = tracker.update(image(60, 60, 100), null, point(60, 60));
+    confirmNegative(tracker);
+    expect(tracker.update(image(61, 60, 286))).toMatchObject({
+      state: "UNCERTAIN",
+      point: null,
+      matchedPoint: point(61, 60),
+      reason: "FULL_HAND_CONTRARY_AWAITING_POINT",
+    });
+    for (const [i, at] of [319, 379, 439].entries()) {
+      const x = 62 + i;
+      expect(tracker.update(image(x, 60, at), full("POINT", x, 60))).toMatchObject({
+        state: i === 2 ? "TRACKING" : "UNCERTAIN",
+        point: i === 2 ? point(x, 60) : null,
+        matchedPoint: point(x, 60),
+        reason: i === 2 ? "FULL_HAND_POINT_CONFIRMED" : "FULL_HAND_POINT_PENDING",
+        trackId: first.trackId,
+      });
+    }
+  });
+  it.each(["CONTRARY", "AMBIGUOUS", "POINT"] as const)(
+    "manual hints cannot bypass available%s authority or clear a confirmed negative",
+    (authority) => {
+      const tracker = new IndexImageTracker(binding);
+      tracker.update(image(60, 60, 100), null, point(60, 60));
+      confirmNegative(tracker);
+      const anchor = {
+        point: authority === "CONTRARY" ? point(62, 60) : point(95, 80),
+        pointing: authority === "POINT",
+        contrary: authority === "CONTRARY",
+        authority,
+        authoritySource: "full-model-A",
+      };
+      const selected = tracker.update(image(62, 60, 286), anchor, point(62, 60));
+      expect(selected.state).toBe("UNCERTAIN");
+      expect(selected.point).toBeNull();
+      expect(selected.matchedPoint).toEqual(point(62, 60));
+      expect(tracker.update(image(64, 60, 319))).toMatchObject({
+        state: "UNCERTAIN",
+        point: null,
+        trackId: selected.trackId,
+        reason: "FULL_HAND_CONTRARY_AWAITING_POINT",
+      });
+    },
+  );
+  it("allows a deliberate new hint to clear a confirmed negative only when whole-hand authority is unavailable", () => {
+    const tracker = new IndexImageTracker(binding);
+    const first = tracker.update(image(60, 60, 100), null, point(60, 60));
+    confirmNegative(tracker);
+    const selected = tracker.update(image(62, 60, 286), null, point(62, 60));
+    expect(selected).toMatchObject({ state: "TRACKING", point: point(62, 60), anchorSource: "MANUAL_HINT" });
+    expect(selected.trackId).not.toBe(first.trackId);
+  });
+  it.each([null, { x: NaN, y: 0 }, point(95, 80)])(
+    "a contrary missing or incompatible tip cannot latch through manual seeding:%o",
+    (tip) => {
+      const tracker = new IndexImageTracker(binding);
+      expect(
+        tracker.update(
+          image(60, 60, 100),
+          { point: tip, pointing: false, contrary: true, authority: "CONTRARY", authoritySource: "full-model-A" },
+          point(60, 60),
+        ),
+      ).toMatchObject({
+        state: "UNCERTAIN",
+        point: null,
+        matchedPoint: point(60, 60),
+        reason: "FULL_HAND_INDEX_CONFLICT",
+      });
+      expect(tracker.update(image(62, 60, 133)).state).toBe("TRACKING");
+    },
+  );
+  it("never accumulates temporal evidence across distinct model tracks or missing source keys", () => {
+    for (const sources of [
+      ["model-A", "model-B", "model-A"],
+      ["model-A", " model-A", "model-A"],
+      ["", "", ""],
+    ]) {
+      const tracker = new IndexImageTracker(binding);
+      tracker.update(image(60, 60, 100), null, point(60, 60));
+      for (const [i, at] of [133, 193, 253].entries())
+        expect(tracker.update(image(60, 60, at), full("CONTRARY", 60, 60, sources[i])).reason).toBe(
+          "FULL_HAND_CONTRARY_PENDING",
+        );
+      expect(tracker.update(image(62, 60, 286)).state).toBe("TRACKING");
+    }
+  });
+  it("restarts confirmation after a gap exceeding250ms while preserving optical identity", () => {
+    const tracker = new IndexImageTracker(binding);
+    const first = tracker.update(image(60, 60, 100), null, point(60, 60));
+    for (const at of [133, 193, 494, 554])
+      expect(tracker.update(image(60, 60, at), full("CONTRARY", 60, 60))).toMatchObject({
+        reason: "FULL_HAND_CONTRARY_PENDING",
+        trackId: first.trackId,
+      });
+    expect(tracker.update(image(60, 60, 614), full("CONTRARY", 60, 60)).reason).toBe("FULL_HAND_CONTRARY_CONFIRMED");
+  });
+  it("does not let rejected image evidence advance or retain a gesture candidate", () => {
+    const tracker = new IndexImageTracker(binding);
+    tracker.update(image(60, 60, 100), null, point(60, 60));
+    for (const at of [133, 193]) tracker.update(image(60, 60, at), full("CONTRARY", 60, 60));
+    expect(tracker.update(image(60, 60, 223, { blank: true }), full("CONTRARY", 60, 60))).toMatchObject({
+      reason: "APPEARANCE_MISMATCH",
+      matchedPoint: null,
+      point: null,
+    });
+    for (const at of [253, 313])
+      expect(tracker.update(image(60, 60, at), full("CONTRARY", 60, 60)).reason).toBe("FULL_HAND_CONTRARY_PENDING");
+    expect(tracker.update(image(62, 60, 346)).state).toBe("TRACKING");
+  });
+  it.each(["UNAVAILABLE", "AMBIGUOUS", "CONFLICT"] as const)(
+    "resets promotion evidence across%s without erasing the accepted image source",
+    (interruption) => {
+      const tracker = new IndexImageTracker(binding);
+      const first = tracker.update(image(60, 60, 100), null, point(60, 60));
+      for (const at of [133, 193]) tracker.update(image(60, 60, at), full("CONTRARY", 60, 60));
+      const model =
+        interruption === "UNAVAILABLE"
+          ? null
+          : interruption === "AMBIGUOUS"
+            ? { point: null, pointing: false, contrary: false, authority: "AMBIGUOUS" as const }
+            : full("POINT", 95, 80);
+      tracker.update(image(60, 60, 223), model);
+      for (const at of [253, 313])
+        expect(tracker.update(image(60, 60, at), full("CONTRARY", 60, 60))).toMatchObject({
+          reason: "FULL_HAND_CONTRARY_PENDING",
+          trackId: first.trackId,
+        });
+      expect(tracker.update(image(62, 60, 346)).state).toBe("TRACKING");
+    },
+  );
+  it("pauses whole-hand ambiguity without inventing a tip and resumes the same source after it clears", () => {
+    const tracker = new IndexImageTracker(binding);
+    const first = tracker.update(image(60, 60, 100), null, point(60, 60));
+    expect(
+      tracker.update(image(62, 60, 133), { point: null, pointing: false, contrary: false, authority: "AMBIGUOUS" }),
+    ).toMatchObject({
+      state: "UNCERTAIN",
+      reason: "FULL_HAND_AMBIGUOUS",
+      point: null,
+      matchedPoint: point(62, 60),
+      trackId: first.trackId,
+    });
+    expect(tracker.update(image(64, 60, 166))).toMatchObject({
+      state: "TRACKING",
+      point: point(64, 60),
+      trackId: first.trackId,
+    });
+  });
+  it("requires current optical evidence despite a positive full model", () => {
+    const tracker = new IndexImageTracker(binding);
+    const first = tracker.update(image(60, 60, 100), null, point(60, 60));
+    expect(tracker.update(image(62, 60, 133, { blank: true }), full("POINT", 62, 60))).toMatchObject({
+      state: "UNCERTAIN",
+      point: null,
+      matchedPoint: null,
+      trackId: first.trackId,
+    });
+  });
+  it.each([10, 20, 30])(
+    "keeps source and image coordinates continuous through repeated brief authority transitions at%ifps",
+    (fps) => {
+      const tracker = new IndexImageTracker(binding);
+      const first = tracker.update(image(40, 50, 100), null, point(40, 50));
+      for (let i = 1; i <= 30; ++i) {
+        const x = 40 + Math.min(i, 30 - i) * 2,
+          y = 50 + (i % 3),
+          phase = i % 10;
+        const model =
+          phase === 3
+            ? full("CONTRARY", x, y)
+            : phase === 6
+              ? { point: null, pointing: false, contrary: false, authority: "AMBIGUOUS" as const }
+              : phase === 7
+                ? full("POINT", x + 25, y + 20)
+                : phase === 4
+                  ? null
+                  : full("POINT", x, y);
+        const result = tracker.update(image(x, y, 100 + (i * 1000) / fps), model);
+        expect(result.trackId).toBe(first.trackId);
+        expect(result.matchedPoint).toEqual(point(x, y));
+        if ([3, 6, 7].includes(phase)) expect(result.point).toBeNull();
+        else expect(result).toMatchObject({ state: "TRACKING", point: point(x, y) });
+      }
+    },
+  );
   it("abstains throughout full image occlusion and recovers only a matching recent patch", () => {
     const tracker = new IndexImageTracker(binding);
     const first = tracker.update(image(60, 60, 100), null, point(60, 60));

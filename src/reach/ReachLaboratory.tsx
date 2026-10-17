@@ -961,10 +961,19 @@ export function ReachLaboratory({
     setMarkFinger(false);
     setMessage(
       accepted
-        ? "Fingertip hint selected. Hold briefly while image tracking settles. Selecting a new fingertip requires a fresh setup."
+        ? "Fingertip hint queued. Tracking still needs a clear image match and compatible full-hand posture when visible. Selecting a new fingertip requires a fresh setup."
         : "The camera is not ready for a fingertip hint. Enable it and try again.",
     );
   };
+  const imagePreviewPoint =
+    !indexStale && indexState
+      ? indexState.state === "TRACKING"
+        ? indexState.point
+        : indexState.state === "UNCERTAIN"
+          ? (indexState.matchedPoint ?? null)
+          : null
+      : null;
+  const imageGesturePaused = imagePreviewPoint !== null && indexState?.state === "UNCERTAIN";
   return (
     <section
       className={styles.lab}
@@ -978,6 +987,7 @@ export function ReachLaboratory({
       data-image-state={indexStale ? "STALE" : (indexState?.state ?? "UNSEEDED")}
       data-image-track-generation={indexState?.trackGeneration ?? 0}
       data-image-model-agreement={indexState?.modelAgreement ?? "UNAVAILABLE"}
+      data-image-reason={indexStale ? "STALE" : (indexState?.reason ?? "UNSEEDED")}
       data-image-capture-time={indexState?.monotonicCaptureTime ?? ""}
       data-image-inference-time={indexState?.monotonicInferenceTime ?? ""}
     >
@@ -1036,15 +1046,15 @@ export function ReachLaboratory({
                 demo={source === "DEMO"}
                 active={source !== "OFF"}
               />
-              {source === "LIVE" && pointingMode === "RELATIVE" && !indexStale && indexState?.point && (
+              {source === "LIVE" && pointingMode === "RELATIVE" && indexState && imagePreviewPoint && (
                 <svg
-                  className={styles.fingerOverlay}
+                  className={`${styles.fingerOverlay} ${imageGesturePaused ? styles.fingerMatchPaused : ""}`}
                   viewBox={`0 0 ${indexState.frameWidth} ${indexState.frameHeight}`}
-                  aria-label="Finger image position"
+                  aria-label={imageGesturePaused ? "Finger image match, pointing paused" : "Finger image position"}
                 >
                   <circle
-                    cx={indexState.point.x * indexState.frameWidth}
-                    cy={indexState.point.y * indexState.frameHeight}
+                    cx={imagePreviewPoint.x * indexState.frameWidth}
+                    cy={imagePreviewPoint.y * indexState.frameHeight}
                     r="9"
                   />
                 </svg>
@@ -1124,13 +1134,15 @@ export function ReachLaboratory({
             <strong>
               {pointingMode === "RELATIVE" && indexStale
                 ? "Waiting for fresh fingertip tracking"
-                : pointingMode === "RELATIVE" && !indexStale && indexState?.state === "TRACKING"
-                  ? "Finger image tracking"
-                  : readiness.detectedCount
-                    ? `${readiness.detectedCount} hand${readiness.detectedCount === 1 ? "" : "s"} detected`
-                    : source === "OFF"
-                      ? "Ready when you are"
-                      : "Show your hand"}
+                : pointingMode === "RELATIVE" && imageGesturePaused
+                  ? "Fingertip image matched · pointing paused"
+                  : pointingMode === "RELATIVE" && !indexStale && indexState?.state === "TRACKING"
+                    ? "Finger image tracking"
+                    : readiness.detectedCount
+                      ? `${readiness.detectedCount} hand${readiness.detectedCount === 1 ? "" : "s"} detected`
+                      : source === "OFF"
+                        ? "Ready when you are"
+                        : "Show your hand"}
             </strong>
             <span>
               {readiness.hand
@@ -1144,6 +1156,7 @@ export function ReachLaboratory({
             <div className={styles.cameraTools}>
               {source === "LIVE" && status === "READY" && pointingMode === "RELATIVE" && (
                 <button
+                  disabled={indexState === null || indexStale}
                   onClick={() => {
                     setSeedPoint({ x: 0.5, y: 0.5 });
                     setMarkFinger((value) => !value);
@@ -1338,9 +1351,11 @@ export function ReachLaboratory({
               <span>
                 {readiness.detectedCount} detected ·{" "}
                 {pointingMode === "RELATIVE"
-                  ? !indexStale && indexState?.state === "TRACKING"
-                    ? "Fingertip appearance tracked"
-                    : "Fingertip appearance uncertain"
+                  ? imageGesturePaused
+                    ? "Fingertip image matched · pointing paused"
+                    : !indexStale && indexState?.state === "TRACKING"
+                      ? "Fingertip appearance tracked"
+                      : "Fingertip appearance uncertain"
                   : assessment?.framed
                     ? assessment.offImageFingerSupport
                       ? "Index and knuckles visible"
@@ -1357,6 +1372,14 @@ export function ReachLaboratory({
                 · {readiness.eligible ? "Eligible for collection" : "Collection waiting"}
               </span>
             )}
+            {source === "LIVE" &&
+              pointingMode === "RELATIVE" &&
+              !indexStale &&
+              indexState?.reason === "FULL_HAND_POINT_CONFIRMED" && (
+                <span>
+                  Full-hand detection confirms pointing. Image tracking keeps the fingertip position continuous.
+                </span>
+              )}
             {source === "LIVE" && assessment?.depthDominant && (
               <span>
                 Index aimed toward the camera. Depth is inferred; the independent check still measures accuracy.

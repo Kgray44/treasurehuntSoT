@@ -15,6 +15,24 @@ const guidance: Record<IndexImageReadinessResult["condition"], string> = {
   UNCERTAIN: "Image tracking paused. Keep your fingertip visible while it reacquires.",
   LOST: "Fingertip tracking paused. Bring your finger back into view.",
 };
+const postureGuidance: Record<string, string> = {
+  FULL_HAND_POINT_PENDING:
+    "Full-hand pointing evidence is settling. The fingertip image remains tracked; saved targets are kept.",
+  COHERENT_MODEL_CONTRARY:
+    "Pointing posture changed. Show a relaxed index point again. If the hand stays cropped, mark the visible fingertip to start a fresh setup.",
+  FULL_HAND_CONTRARY:
+    "The full hand is visible and is not pointing. Show a relaxed index point; an image hint cannot override this posture.",
+  FULL_HAND_CONTRARY_PENDING:
+    "The hand posture changed. Pointing is paused while it settles; the dashed ring still shows the matched fingertip image.",
+  FULL_HAND_CONTRARY_CONFIRMED:
+    "The full hand is visible and is not pointing. Show a relaxed index point; an image hint cannot override this posture.",
+  FULL_HAND_CONTRARY_AWAITING_POINT:
+    "Pointing is paused after an open or bent hand. Show a relaxed index point again. If the hand stays cropped, mark the visible fingertip for a fresh setup.",
+  FULL_HAND_AMBIGUOUS:
+    "Full-hand detection is ambiguous. Keep one pointing hand visible while tracking settles; saved targets are kept.",
+  FULL_HAND_INDEX_CONFLICT:
+    "The hand model and selected fingertip disagree. Keep your index visible while they agree again; the cursor will not jump to another finger.",
+};
 function identity(o: IndexImageObservation): string | null {
   if (o.trackId === null || o.trackGeneration <= 0) return null;
   return JSON.stringify([
@@ -67,10 +85,7 @@ export class IndexImageReadiness {
       observation: o,
       eligible: condition === "READY",
       condition,
-      guidance:
-        o.reason === "COHERENT_MODEL_CONTRARY"
-          ? "Pointing posture changed. Show a relaxed index point again. If the hand stays cropped, mark the visible fingertip to start a fresh setup."
-          : guidance[condition],
+      guidance: postureGuidance[o.reason] ?? guidance[condition],
       changed,
     });
     const at = o.monotonicCaptureTime;

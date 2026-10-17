@@ -6,6 +6,7 @@ const generation = z.number().finite().int().positive();
 const clock = z.number().finite().nonnegative();
 const diagnostic = z.number().finite().nullable();
 const nonnegativeDiagnostic = z.number().finite().nonnegative().nullable();
+const imagePoint = z.strictObject({ x: z.number().finite().min(0).max(1), y: z.number().finite().min(0).max(1) });
 const contextSchema = z.strictObject({
   providerGeneration: generation,
   cameraLeaseId: nonempty,
@@ -30,7 +31,8 @@ export const indexImageObservationSchema = z
     monotonicInferenceTime: clock,
     trackId: nonempty.nullable(),
     trackGeneration: z.number().finite().int().nonnegative(),
-    point: z.strictObject({ x: z.number().finite().min(0).max(1), y: z.number().finite().min(0).max(1) }).nullable(),
+    point: imagePoint.nullable(),
+    matchedPoint: imagePoint.nullable().optional(),
     state: z.enum(["UNSEEDED", "TRACKING", "UNCERTAIN", "LOST"]),
     modelAgreement: z.enum(["AGREE", "DISAGREE", "UNAVAILABLE"]),
     anchorSource: z.enum(["MODEL_INDEX", "MANUAL_HINT"]).nullable(),
@@ -46,7 +48,13 @@ export const indexImageObservationSchema = z
   .refine((o) => (o.trackId === null ? o.trackGeneration === 0 : o.trackGeneration > 0))
   .refine((o) =>
     o.state === "TRACKING" ? o.point !== null && o.trackId !== null && o.trackGeneration > 0 : o.point === null,
-  );
+  )
+  .refine((o) => {
+    if (o.matchedPoint == null) return true;
+    if (o.state === "TRACKING")
+      return o.point !== null && o.point.x === o.matchedPoint.x && o.point.y === o.matchedPoint.y;
+    return o.state === "UNCERTAIN" && o.reason.startsWith("FULL_HAND_") && o.trackId !== null && o.trackGeneration > 0;
+  });
 
 /** A rejected envelope never advances the original-pixel clock or frame binding. */
 export class IndexImageObservationGate {

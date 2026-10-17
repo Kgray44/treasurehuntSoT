@@ -1,17 +1,15 @@
 import { BrowserCameraBroker } from "@/sextant/camera";
 import { BrowserHandAdapter } from "@/watchglass/hand-provider";
 import { ObservationGate, type HandObservation } from "./observation";
-import { assessHand } from "@/watchglass/hand-posture";
-import { indexGeometry } from "@/watchglass/index-geometry";
 import {
   IndexImageTracker,
   indexImageAlgorithmDescriptor,
   type IndexGrayFrame,
   type IndexImageObservation,
-  type IndexModelAnchor,
 } from "./index-image-tracker";
 import { IndexImageObservationGate } from "./index-image-observation";
 import { ReachTrackingPacer } from "./tracking-pacer";
+import { selectIndexModelAnchor } from "./hand-detection-authority";
 export type { IndexImageObservation } from "./index-image-tracker";
 /** Passive, opt-in input for the local development recorder. No identity or lease data. */
 export type RawHandInference = {
@@ -323,18 +321,7 @@ export class ReachBrowserRuntime {
                 received - this.imageFrame.capture <= 150 &&
                 (!this.pendingIndexHint || this.imageFrame.capture >= this.pendingIndexHint.requestedAt)
               ) {
-                let model: IndexModelAnchor | null = null;
-                if (observation?.hands.length === 1) {
-                  const hand = observation.hands[0],
-                    index = indexGeometry(hand, observation),
-                    posture = assessHand(hand, observation);
-                  if (hand.continuity !== "AMBIGUOUS" && index.geometry && index.complete && index.tip)
-                    model = {
-                      point: { x: index.tip.x, y: index.tip.y },
-                      pointing: index.extended && posture.pointing,
-                      contrary: !posture.pointing && posture.validCount >= 16,
-                    };
-                }
+                const model = selectIndexModelAnchor(observation);
                 const hint = this.pendingIndexHint?.point;
                 this.pendingIndexHint = null;
                 const tracked = this.imageTracker.update({ ...this.imageFrame, received }, model, hint);
