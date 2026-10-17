@@ -4253,7 +4253,11 @@
         ],
         "homeportScreenIds": [],
         "homeportJourneyIds": [],
-        "browserTests": ["tests/e2e/reach-laboratory.spec.ts"],
+        "browserTests": [
+          "tests/e2e/reach-laboratory.spec.ts",
+          "tests/e2e/reach-device-return.spec.ts",
+          "tests/e2e/reach-page-accessibility.spec.ts"
+        ],
         "fixtureProfile": "generic",
         "recordingRequired": true,
         "motion": {

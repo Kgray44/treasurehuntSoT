@@ -1,9 +1,9 @@
 ---
 title: Reach recognition, calibration and experience refit
 audience: product-engineering
-status: implemented-and-reviewed
+status: corrective-review-in-progress
 canonical_for: reach-recognition-calibration-experience-refit
-last_reviewed: 2026-10-12
+last_reviewed: 2026-10-17
 ---
 
 # Reach recognition, calibration and experience refit
@@ -40,6 +40,14 @@ An independent check can open while the user rests or reaches for its control. I
 
 Sextant retains explicit consent, camera leases and teardown; the unchanged worker remains one frame in flight. Stale observations hide the pointer. Camera/hand/model/frame/orientation/mirror/view changes invalidate setup, and live absolute screen-position changes invalidate it as well. Stop, background and navigation release camera/worker/render/session timers. No raw-frame retention, upload, hidden calibration persistence, progression writer, Parallax mutation, Phase 2 selection, Phase 3 manipulation or Air Handoff exists.
 
+## Current page accessibility correction
+
+The current correction on [PR 766](https://github.com/Kgray44/treasurehuntSoT/pull/766) gives Device connections a primary heading in both account states. The laboratory guidance remains named content within the main workspace, and the pointing area has an explicit named group while retaining its existing focus and target behavior. Camera consent, calibration readiness, independent accuracy checks and return cleanup retain their existing guards.
+
+The third current review confirmed a nested guidance landmark and a missing primary heading. Both defects were already present in the first two current capture archives: those reviews checked trace identity without unpacking the raw accessibility observations. Their visual observations remain historical evidence, while the semantic review gap is recorded explicitly. [PR 768](https://github.com/Kgray44/treasurehuntSoT/pull/768) proposes a protected, source-bound continuation at cumulative review four; the blocked third review remains unchanged.
+
+New focused checks inspect the complete pages, both account states, desktop/mobile layouts, normal/reduced motion and the selected laboratory states. They retain every violation severity, check native headings and landmarks, and verify the pointing group's name and automatic focus. Incomplete contrast, caption and ARIA observations remain separate from passes and require current evidence-based review. Fresh capture, independent review, authenticated submission, whole ordinary qualification and landed verification are still pending for this correction. The older evidence below does not supply its acceptance.
+
 ## Evidence and independent review
 
 Focused tests cover official landmark geometry across reflection/rotation, posture alternatives, nonessential visibility, two-hand continuity/crossings, clock and context failures, outliers/dropouts, fit coverage, separate relative validation and letterbox transforms. Existing Reach-owned Device Lab D0 oracles additionally exercise acquisition recovery, incidental-hand continuity and relative check failure. Later-phase declarations retain their non-executable status.
@@ -54,7 +62,7 @@ All ten production-browser journeys passed at clean product candidate `632e1895a
 
 [Protected capture 38198691260](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38198691260) passed twelve desktop/mobile, normal/reduced-motion journeys and issued immutable artifact `11724538509`. Its product source digest is `c64ecc9728c26d2532a0c26ee23d511a65e91255d710219398f79c7d16398874`; all 108 referenced artifacts were hash verified. The separate rendered-first reviewer accepted all seventeen dimensions, with the six initial findings resolved and no unresolved blocking finding. Ordinary qualification, the final qualified head and protected integration are traced on [PR 716](https://github.com/Kgray44/treasurehuntSoT/pull/716); capture and review preparation do not issue that mainline decision. Neither software qualification nor this implementation record grants real-person D4 or owner acceptance.
 
-Before final qualification, protected main advanced through the concurrent Parallax refinements and documentation closure to `81fa477c5099b259e0d3bd8e8e0e6e52a7dc02bb`. The isolated Reach branch reconciled that baseline at `4642246fdb13d2ff7da3ba16718bd2e5602b65c6`; Reach runtime and test source remained unchanged. [Fresh protected capture 38203766959](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38203766959) passed all twelve journeys and issued artifact `11727080389`, with product source digest `fee267ee0448feb3bf4200446a90886dd1835984fb9f3d6a1bcbe55d0dbfb783`. Independent rendered-first baseline review accepted all seventeen dimensions and independently verified all 108 artifact hashes. The six initial findings remain resolved. Two nonblocking polish notes remain: the returned Devices doorway placement and a secondary target-saved caption that briefly persists into the next hold. Three repair iterations remain recorded. The current candidate report binds this fresh capture; the separate D1 measurements retain their original `632e1895` identity. Required ordinary acceptance and landed verification remain the protected integration gates recorded on PR 716.
+Before final qualification, protected main advanced through the concurrent Parallax refinements and documentation closure to `81fa477c5099b259e0d3bd8e8e0e6e52a7dc02bb`. The isolated Reach branch reconciled that baseline at `4642246fdb13d2ff7da3ba16718bd2e5602b65c6`; Reach runtime and test source remained unchanged. [Fresh protected capture 38203766959](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38203766959) passed all twelve journeys and issued artifact `11727080389`, with product source digest `fee267ee0448feb3bf4200446a90886dd1835984fb9f3d6a1bcbe55d0dbfb783`. Independent rendered-first baseline review accepted all seventeen dimensions and independently verified all 108 artifact hashes. The six initial findings remain resolved. Two nonblocking polish notes remain: the returned Devices doorway placement and a secondary target-saved caption that briefly persists into the next hold. Three repair iterations remain recorded. That historical candidate report bound the fresh capture; the separate D1 measurements retain their original `632e1895` identity. Required ordinary acceptance and landed verification remain the protected integration gates recorded on PR 716.
 
 ## Separately approved capture prerequisite
 
