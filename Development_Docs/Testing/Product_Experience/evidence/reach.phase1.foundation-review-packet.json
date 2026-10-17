@@ -1,0 +1,2007 @@
+{
+  "objective": "Enable a camera, see honest tracking, calibrate and independently check pointing, practice, recover and return naturally",
+  "contract": {
+    "id": "reach.phase1.foundation",
+    "name": "Reach Phase 1 observation, calibration and laboratory foundation",
+    "authority": "reach",
+    "owners": ["reach", "project-sextant", "watchglass"],
+    "critical": true,
+    "experienceIntent": {
+      "objective": "Point at calibration targets using my real hand and understand whether I can act",
+      "visibleOutcome": "Detected hand, tracking quality, gesture classification and calibration eligibility remain visibly distinct",
+      "integrationOwner": "Reach calibration experience integration",
+      "systems": ["reach", "project-sextant", "watchglass"],
+      "sourcePaths": ["src/reach", "src/components/reach"],
+      "persona": "A Creator or Player completing the named human objective",
+      "entryPoint": "CONTEXTUAL_VOYAGE_OR_STUDIO_ENTRY_REQUIRED",
+      "devices": ["DESKTOP", "MOBILE"],
+      "accessibility": "Provide keyboard/touch operation and a meaningful supported alternate experience.",
+      "baselineDebt": [
+        {
+          "id": "PE-DEBT-REACH-STAGES",
+          "fingerprint": "0047d89ebcb6a5b9c253bdfd004f7659a55b15b3b4e11cf0dff6bd8642db3902",
+          "status": "OWNER_REPORTED_BASELINE_REQUIRES_RENDERED_CONFIRMATION",
+          "repairOwner": "Spatial Experience Refit",
+          "repairPath": "Development_Docs/Testing/Product_Experience/Spatial_Refit_Readiness.md",
+          "ledger": "Development_Docs/Projects/Project_Homeport/Homeport_Nonconformity_Ledger.csv",
+          "deficiency": "Hand detection can be confused with action eligibility, producing misleading calibration feedback."
+        }
+      ],
+      "limitation": "This campaign defines the required experience and tracks existing debt; it does not implement Spatial Experience Refit."
+    },
+    "experience": {
+      "persona": "A Creator, Player or owner exploring local hand interaction with an ordinary webcam",
+      "objective": "Enable a camera, see honest tracking, calibrate and independently check pointing, practice, recover and return naturally",
+      "visibleOutcome": "A coherent staged camera and pointing workspace with visible acquisition, distinct recognition stages, safe recovery and independent results",
+      "integrationOwner": "Reach calibration experience integration",
+      "systems": ["reach", "project-sextant", "watchglass"],
+      "sourcePaths": ["src/reach", "src/app/devices/reach", "src/app/devices/pair/page.tsx"],
+      "projectionPaths": [
+        "src/watchglass/hand-observation.ts",
+        "src/watchglass/hand-provider.ts",
+        "src/watchglass/hand-posture.ts",
+        "src/sextant/camera.ts",
+        "public/reach"
+      ],
+      "entryPoint": "/devices/pair",
+      "states": [
+        "WELCOME",
+        "TRACKING",
+        "TRAINING",
+        "PAUSED",
+        "FIT_READY",
+        "VALIDATION",
+        "RESULTS",
+        "PLAYGROUND",
+        "MULTIPLE_HANDS",
+        "DETECTED_INELIGIBLE",
+        "RELATIVE_TRAINING",
+        "RELATIVE_VALIDATION",
+        "RELATIVE_RESULTS",
+        "CAMERA_UNAVAILABLE",
+        "RETURNED"
+      ],
+      "devices": ["DESKTOP", "MOBILE"],
+      "roles": ["ANONYMOUS"],
+      "accessibility": "Keyboard, touch and ordinary buttons operate setup, pause, retry, deletion, export and return. A disclosed guided demo explains the full flow without a camera.",
+      "fallback": "Camera failure gives a plain-language explanation, retry and a guided conventional demonstration. All Voyagewright navigation remains conventional.",
+      "navigation": "Existing device connections link opens Reach; the visible return clears owned camera resources and restores device connections; safe contextual return is accepted.",
+      "designTarget": "One continuous instrument workspace with a large registered camera stage, restrained brass and sea-green hierarchy, staged target plane, contextual guidance, visible progress and deliberately disclosed diagnostics. Mobile preparation prioritizes the camera and calibration prioritizes the target.",
+      "references": [
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted public entry establishes hierarchy and a coherent shell around distinct role destinations.",
+          "preserve": "Visible account access, clear destinations, cinematic composition and a usable reduced-motion equivalent."
+        },
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted constrained gateway keeps the same destinations and account access.",
+          "preserve": "Mobile task hierarchy, readable controls and contextual navigation."
+        }
+      ],
+      "homeportScreenIds": [],
+      "homeportJourneyIds": [],
+      "browserTests": ["tests/e2e/reach-laboratory.spec.ts"],
+      "fixtureProfile": "generic",
+      "recordingRequired": true,
+      "motion": {
+        "measurement": "Visible-control activation to changed rendered readiness or next-stage outcome; software UI feedback only, excluding camera exposure or inference accuracy",
+        "feedbackBudgetMs": 5000
+      },
+      "continuity": {
+        "objective": "Maintain the existing Voyagewright origin and navigation destination before, during and after local camera/observation/calibration work; no pairing or progression authority moves into Reach.",
+        "checks": [
+          {
+            "id": "voyagewright-home-origin",
+            "role": "link",
+            "name": "Voyagewright home",
+            "attribute": "href"
+          }
+        ]
+      },
+      "limitations": [
+        "D0 and photographic D1 replay do not establish real-person webcam accuracy, field ergonomics or owner acceptance.",
+        "Absolute empirical RGB pointing is experimental and must pass held-out validation for the current setup; relative cursor control has distinct setup and claims.",
+        "Camera movement can be undetectable. Calibration is session-only and must be repeated after placement, identity or geometry changes.",
+        "Phase 2 target selection, Phase 3 manipulation and Crossdeck Air Handoff are not implemented by this laboratory."
+      ],
+      "resolvedDebtIds": ["PE-DEBT-REACH-STAGES"],
+      "journeys": [
+        {
+          "id": "absolute-calibration-and-recovery",
+          "roles": ["ANONYMOUS"],
+          "outcome": "A person enters naturally, understands tracking, completes nine training and five independent targets, practices, sees detected ineligible hands and safely returns",
+          "steps": [
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Find the Hand interaction laboratory"
+            },
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Find your point.",
+              "text": "Find your point.",
+              "path": "/devices/reach",
+              "kind": "outcome",
+              "meaning": "The visible device link opens the Reach workspace without pairing or camera access.",
+              "state": "WELCOME"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Explore guided demo"
+            },
+            {
+              "action": "assert",
+              "role": "status",
+              "name": "Reach status",
+              "text": "Your hand is ready",
+              "path": "/devices/reach",
+              "kind": "outcome",
+              "meaning": "The user sees a clearly disclosed simulated hand, distinct detection and posture readiness.",
+              "state": "TRACKING",
+              "feedbackBoundary": true
+            },
+            {
+              "action": "click",
+              "role": "radio",
+              "name": "Relative movement"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Begin nine-point calibration"
+            },
+            {
+              "action": "assert",
+              "role": "img",
+              "name": "Target 1 of 9",
+              "state": "TRAINING"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Pause calibration"
+            },
+            {
+              "action": "assert",
+              "role": "button",
+              "name": "Resume calibration",
+              "state": "PAUSED"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Resume calibration"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Move demo hand to target"
+            },
+            {
+              "action": "assert",
+              "role": "img",
+              "name": "Target 2 of 9"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Move demo hand to target"
+            },
+            {
+              "action": "assert",
+              "role": "img",
+              "name": "Target 3 of 9"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Move demo hand to target"
+            },
+            {
+              "action": "assert",
+              "role": "img",
+              "name": "Target 4 of 9"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Move demo hand to target"
+            },
+            {
+              "action": "assert",
+              "role": "img",
+              "name": "Target 5 of 9"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Move demo hand to target"
+            },
+            {
+              "action": "assert",
+              "role": "img",
+              "name": "Target 6 of 9"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Move demo hand to target"
+            },
+            {
+              "action": "assert",
+              "role": "img",
+              "name": "Target 7 of 9"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Move demo hand to target"
+            },
+            {
+              "action": "assert",
+              "role": "img",
+              "name": "Target 8 of 9"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Move demo hand to target"
+            },
+            {
+              "action": "assert",
+              "role": "img",
+              "name": "Target 9 of 9"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Move demo hand to target"
+            },
+            {
+              "action": "assert",
+              "role": "button",
+              "name": "Check five new targets",
+              "text": "Check five new targets",
+              "path": "/devices/reach",
+              "kind": "outcome",
+              "meaning": "All nine training targets complete but the user is required to run an independent check.",
+              "state": "FIT_READY"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Check five new targets"
+            },
+            {
+              "action": "assert",
+              "role": "img",
+              "name": "Target 1 of 5",
+              "state": "VALIDATION"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Move demo hand to target"
+            },
+            {
+              "action": "assert",
+              "role": "img",
+              "name": "Target 2 of 5"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Move demo hand to target"
+            },
+            {
+              "action": "assert",
+              "role": "img",
+              "name": "Target 3 of 5"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Move demo hand to target"
+            },
+            {
+              "action": "assert",
+              "role": "img",
+              "name": "Target 4 of 5"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Move demo hand to target"
+            },
+            {
+              "action": "assert",
+              "role": "img",
+              "name": "Target 5 of 5"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Move demo hand to target"
+            },
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Independent check passed",
+              "text": "Independent check passed",
+              "path": "/devices/reach",
+              "kind": "outcome",
+              "meaning": "Five independent targets establish a session-specific simulated result, separately from training.",
+              "state": "RESULTS"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Open pointing playground"
+            },
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Follow your movement.",
+              "text": "Follow your movement.",
+              "path": "/devices/reach",
+              "kind": "outcome",
+              "meaning": "The user reaches a separate practice surface with a fresh filtered pointer and no domain activation.",
+              "state": "PLAYGROUND"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Show a practice target"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Move demo hand to target"
+            },
+            {
+              "action": "click",
+              "role": "combobox",
+              "name": "Demo tracking condition"
+            },
+            {
+              "action": "keyboard",
+              "key": "Home"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "Enter"
+            },
+            {
+              "action": "assert",
+              "role": "status",
+              "name": "Reach status",
+              "text": "2 detected",
+              "state": "MULTIPLE_HANDS"
+            },
+            {
+              "action": "click",
+              "role": "combobox",
+              "name": "Demo tracking condition"
+            },
+            {
+              "action": "keyboard",
+              "key": "Home"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "ArrowDown"
+            },
+            {
+              "action": "keyboard",
+              "key": "Enter"
+            },
+            {
+              "action": "assert",
+              "role": "status",
+              "name": "Reach status",
+              "text": "Move your hand slightly toward the center",
+              "state": "DETECTED_INELIGIBLE"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "← Device connections"
+            },
+            {
+              "action": "assert",
+              "role": "link",
+              "name": "Find the Hand interaction laboratory",
+              "text": "Find the Hand interaction laboratory",
+              "path": "/devices/pair",
+              "returnPath": true,
+              "state": "RETURNED"
+            }
+          ]
+        },
+        {
+          "id": "relative-movement-and-check",
+          "roles": ["ANONYMOUS"],
+          "outcome": "A person uses a comfortable movement setup, independently checks cursor control and practices without an absolute-accuracy claim",
+          "steps": [
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Find the Hand interaction laboratory"
+            },
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Find your point.",
+              "text": "Find your point.",
+              "path": "/devices/reach",
+              "kind": "outcome",
+              "meaning": "The visible device link opens the Reach workspace without pairing or camera access.",
+              "state": "WELCOME"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Explore guided demo"
+            },
+            {
+              "action": "assert",
+              "role": "status",
+              "name": "Reach status",
+              "text": "Your hand is ready",
+              "path": "/devices/reach",
+              "kind": "outcome",
+              "meaning": "The user sees a clearly disclosed simulated hand, distinct detection and posture readiness.",
+              "state": "TRACKING",
+              "feedbackBoundary": true
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Set up relative movement"
+            },
+            {
+              "action": "assert",
+              "role": "img",
+              "name": "Target 1 of 5",
+              "state": "RELATIVE_TRAINING"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Move demo hand to target"
+            },
+            {
+              "action": "assert",
+              "role": "img",
+              "name": "Target 2 of 5"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Move demo hand to target"
+            },
+            {
+              "action": "assert",
+              "role": "img",
+              "name": "Target 3 of 5"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Move demo hand to target"
+            },
+            {
+              "action": "assert",
+              "role": "img",
+              "name": "Target 4 of 5"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Move demo hand to target"
+            },
+            {
+              "action": "assert",
+              "role": "img",
+              "name": "Target 5 of 5"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Move demo hand to target"
+            },
+            {
+              "action": "assert",
+              "role": "button",
+              "name": "Check five new targets",
+              "text": "Check five new targets",
+              "path": "/devices/reach",
+              "kind": "outcome",
+              "meaning": "Comfortable center and four directions establish a separate movement-control mapping."
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Check five new targets"
+            },
+            {
+              "action": "assert",
+              "role": "img",
+              "name": "Target 1 of 5",
+              "state": "RELATIVE_VALIDATION"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Move demo hand to target"
+            },
+            {
+              "action": "assert",
+              "role": "img",
+              "name": "Target 2 of 5"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Move demo hand to target"
+            },
+            {
+              "action": "assert",
+              "role": "img",
+              "name": "Target 3 of 5"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Move demo hand to target"
+            },
+            {
+              "action": "assert",
+              "role": "img",
+              "name": "Target 4 of 5"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Move demo hand to target"
+            },
+            {
+              "action": "assert",
+              "role": "img",
+              "name": "Target 5 of 5"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Move demo hand to target"
+            },
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Independent check passed",
+              "text": "Independent check passed",
+              "path": "/devices/reach",
+              "kind": "outcome",
+              "meaning": "Independent cursor-control targets pass without claiming physically accurate absolute pointing.",
+              "state": "RELATIVE_RESULTS"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Open pointing playground"
+            },
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Follow your movement.",
+              "text": "Follow your movement.",
+              "path": "/devices/reach",
+              "kind": "outcome",
+              "meaning": "The movement mode reaches its own cursor playground with explicit relative instructions."
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "← Device connections"
+            },
+            {
+              "action": "assert",
+              "role": "link",
+              "name": "Find the Hand interaction laboratory",
+              "text": "Find the Hand interaction laboratory",
+              "path": "/devices/pair",
+              "returnPath": true,
+              "state": "RETURNED"
+            }
+          ]
+        },
+        {
+          "id": "camera-unavailability-and-conventional-recovery",
+          "roles": ["ANONYMOUS"],
+          "outcome": "A person understands an unavailable camera and completes a useful conventional demonstration before returning",
+          "steps": [
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Find the Hand interaction laboratory"
+            },
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Find your point.",
+              "text": "Find your point.",
+              "path": "/devices/reach",
+              "kind": "outcome",
+              "meaning": "The visible device link opens the Reach workspace without pairing or camera access.",
+              "state": "WELCOME"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Enable live camera"
+            },
+            {
+              "action": "assert",
+              "role": "button",
+              "name": "Retry live camera",
+              "text": "Retry live camera",
+              "path": "/devices/reach",
+              "kind": "outcome",
+              "meaning": "An unavailable camera explains its actual condition and exposes explicit retry and a guided conventional alternative.",
+              "state": "CAMERA_UNAVAILABLE"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Explore guided demo"
+            },
+            {
+              "action": "assert",
+              "role": "status",
+              "name": "Reach status",
+              "text": "Your hand is ready",
+              "path": "/devices/reach",
+              "kind": "outcome",
+              "meaning": "The user sees a clearly disclosed simulated hand, distinct detection and posture readiness.",
+              "state": "TRACKING",
+              "feedbackBoundary": true
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "← Device connections"
+            },
+            {
+              "action": "assert",
+              "role": "link",
+              "name": "Find the Hand interaction laboratory",
+              "text": "Find the Hand interaction laboratory",
+              "path": "/devices/pair",
+              "returnPath": true,
+              "state": "RETURNED"
+            }
+          ]
+        }
+      ],
+      "roleSetup": {}
+    }
+  },
+  "sourceDigest": "a02784c3df8a98e9613a3711659c8dc0b44fa2936b32c3b009b1e3735d0462ae",
+  "artifacts": [
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1.png",
+      "sha256": "694cd536cba7eaf400ef960bc84ace27cf70e6cdede1af6fb9ce1b5b2ca457ef",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "WELCOME",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3.png",
+      "sha256": "bcf9ef7dcf810c3abdc553ec2f68bf5f1045b826c6d77c38d230fa47fec6c4a3",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "TRACKING",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRAINING-7",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRAINING-7.png",
+      "sha256": "647f06b90bf637231f3364898e8eee7577ed53b65196ad7ba5ef007f71be3d0d",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "TRAINING",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-PAUSED-9",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-PAUSED-9.png",
+      "sha256": "f5055a836adba291adc8e1ae7bf5b810a714e056465cbbe43db934a3c97ab852",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "PAUSED",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-FIT_READY-28",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-FIT_READY-28.png",
+      "sha256": "1c5ffd0e2a77fb604bc54e6cb56c0931dd844333e12fa43db65f216288db9a14",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "FIT_READY",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-VALIDATION-30",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-VALIDATION-30.png",
+      "sha256": "7d923cd762302313aff0291118e051446c9ff374a2464214870bec01970e8cae",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "VALIDATION",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RESULTS-40",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RESULTS-40.png",
+      "sha256": "07799dc8158607e5addcb5194f0a03978866f746fbf3a8baca6d84f9ad9cf1a2",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "RESULTS",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-PLAYGROUND-42",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-PLAYGROUND-42.png",
+      "sha256": "6093f7ff9b34ad0182db7b30bfc2c825fba2d9f2bcbd927528258354c86c59d1",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "PLAYGROUND",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-MULTIPLE_HANDS-49",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-MULTIPLE_HANDS-49.png",
+      "sha256": "8f0dda037dbdfc1d717f4640d3e2472758368e853c49d1566cbdc904dabfb4bf",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "MULTIPLE_HANDS",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55.png",
+      "sha256": "11354353d25ea52a37e53e52cb05a728abd24d94feaa2277489c2ef12ec7a92c",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "DETECTED_INELIGIBLE",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-57",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-57.png",
+      "sha256": "93bb298ae6e13c24d8d08d057d1917aa7f7746f4dd0a70b53a26688f95a3d7d1",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL.trace.zip",
+      "sha256": "9bbdd66ecda7511ec1d3072f2471f0155a26aea973625083f6652238cc06324a",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/209b957b39f869b5aecad4b1ab782314.webm",
+      "sha256": "b6de634d5781fb75b2675f32a62bf49a8cb5de9b17c18ddb987bce8651e5ac20",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-WELCOME-1",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-WELCOME-1.png",
+      "sha256": "a49f98d57841fb4e903891737ebbe12883c5f20c75dcf5fe36c3663de9030e8d",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "WELCOME",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-TRACKING-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-TRACKING-3.png",
+      "sha256": "bcf9ef7dcf810c3abdc553ec2f68bf5f1045b826c6d77c38d230fa47fec6c4a3",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "TRACKING",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-TRAINING-7",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-TRAINING-7.png",
+      "sha256": "647f06b90bf637231f3364898e8eee7577ed53b65196ad7ba5ef007f71be3d0d",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "TRAINING",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-PAUSED-9",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-PAUSED-9.png",
+      "sha256": "0f6f8de008d003269346d4ca86215d968300b0c3e6c95c742bf7029ec6a1f3b2",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "PAUSED",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-FIT_READY-28",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-FIT_READY-28.png",
+      "sha256": "5b9440cbe01e87e31f19d121948de4a41f682018a05d20b42ea0d062ae7030d4",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "FIT_READY",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-VALIDATION-30",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-VALIDATION-30.png",
+      "sha256": "6a9fb547d2592403dedc5c059631ff7ecfdda3c03b0b77c6a09fd6d82950718a",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "VALIDATION",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-RESULTS-40",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-RESULTS-40.png",
+      "sha256": "8b61d2d1cb01466559fb07ca3e2f4c5056e12e9e3a4fdccbb4b439ef971c9562",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "RESULTS",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-PLAYGROUND-42",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-PLAYGROUND-42.png",
+      "sha256": "13232326f9f6dafb484644c7cd45efc2876b5f0d578969bde69bfddcffe946d5",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "PLAYGROUND",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-MULTIPLE_HANDS-49",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-MULTIPLE_HANDS-49.png",
+      "sha256": "28a82c21ef6f1be7ee5b63af0d0505192a45ac75f89e8dae4d03336732ab0ba9",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "MULTIPLE_HANDS",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-DETECTED_INELIGIBLE-55",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-DETECTED_INELIGIBLE-55.png",
+      "sha256": "361f0630ab224adfdbee519f440c50e29e2e092bb3b5e3777ed6feba9525c7ed",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "DETECTED_INELIGIBLE",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-57",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-57.png",
+      "sha256": "93bb298ae6e13c24d8d08d057d1917aa7f7746f4dd0a70b53a26688f95a3d7d1",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED.trace.zip",
+      "sha256": "1b2cdb0aea427c7cfa184bf0413bb637b2f8a18c773e01c78a2620c70e155a35",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/486c1d63de5fe92c23de7d554401c0b3.webm",
+      "sha256": "a52df792a05d3bdbadad391be99ded2783a88c251753b34477f39014250eda79",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1.png",
+      "sha256": "694cd536cba7eaf400ef960bc84ace27cf70e6cdede1af6fb9ce1b5b2ca457ef",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "WELCOME",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3.png",
+      "sha256": "bcf9ef7dcf810c3abdc553ec2f68bf5f1045b826c6d77c38d230fa47fec6c4a3",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "TRACKING",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_TRAINING-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_TRAINING-5.png",
+      "sha256": "589cd8bfdc74b2fa8d0804e9e75f2f75c895e5c2fc0e11c1df4cff772bf13a20",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "RELATIVE_TRAINING",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_VALIDATION-17",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_VALIDATION-17.png",
+      "sha256": "ace2be01513c9bce1008e5e9d9061b364398c79572ad07b56d153c238f0618fa",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "RELATIVE_VALIDATION",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_RESULTS-27",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_RESULTS-27.png",
+      "sha256": "fd034a488da6149c5687dc7fd4121c869d2bd5fc9bbbf2ed8cd4393e9280acbb",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "RELATIVE_RESULTS",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RETURNED-31",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RETURNED-31.png",
+      "sha256": "93bb298ae6e13c24d8d08d057d1917aa7f7746f4dd0a70b53a26688f95a3d7d1",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL.trace.zip",
+      "sha256": "2cec09bd8d7b7e4a09541db0ed594b4ed739d036060f9b7e2c196862207b58b6",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/a85a38ad55328151b65853e05b59e3ba.webm",
+      "sha256": "1e7337554164f3bdc3ef7d57fd05ef149cdcf6b0dd6c53ed05a8813ea1855e47",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-WELCOME-1",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-WELCOME-1.png",
+      "sha256": "694cd536cba7eaf400ef960bc84ace27cf70e6cdede1af6fb9ce1b5b2ca457ef",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "WELCOME",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-TRACKING-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-TRACKING-3.png",
+      "sha256": "bcf9ef7dcf810c3abdc553ec2f68bf5f1045b826c6d77c38d230fa47fec6c4a3",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "TRACKING",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-RELATIVE_TRAINING-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-RELATIVE_TRAINING-5.png",
+      "sha256": "589cd8bfdc74b2fa8d0804e9e75f2f75c895e5c2fc0e11c1df4cff772bf13a20",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "RELATIVE_TRAINING",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-RELATIVE_VALIDATION-17",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-RELATIVE_VALIDATION-17.png",
+      "sha256": "c9f26330142e59b5850491a4ac039f4c7f55c82a322630ed357528a86632ee62",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "RELATIVE_VALIDATION",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-RELATIVE_RESULTS-27",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-RELATIVE_RESULTS-27.png",
+      "sha256": "fd034a488da6149c5687dc7fd4121c869d2bd5fc9bbbf2ed8cd4393e9280acbb",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "RELATIVE_RESULTS",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-RETURNED-31",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-RETURNED-31.png",
+      "sha256": "93bb298ae6e13c24d8d08d057d1917aa7f7746f4dd0a70b53a26688f95a3d7d1",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED.trace.zip",
+      "sha256": "a3296fe59cb62f6de622bf55c1df543320abdd1cc2650c479ad83517c069ae43",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/b70bea371492820d12d2844123757ba1.webm",
+      "sha256": "4f46a7b34766ed0b04e4cbb422f73b658cdafd6c47c3697b89e03f77ac71b746",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1.png",
+      "sha256": "694cd536cba7eaf400ef960bc84ace27cf70e6cdede1af6fb9ce1b5b2ca457ef",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "WELCOME",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-CAMERA_UNAVAILABLE-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-CAMERA_UNAVAILABLE-3.png",
+      "sha256": "5d9dfffa801a8cd08766bb0510effdfea79cbf30164ea81b27ff7bd4287a8e95",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "CAMERA_UNAVAILABLE",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-TRACKING-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-TRACKING-5.png",
+      "sha256": "59f921134e7fdb3b92f7c0f96e199228a12e71456e28c0ff0840cca3e5c35cbd",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "TRACKING",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-7",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-7.png",
+      "sha256": "93bb298ae6e13c24d8d08d057d1917aa7f7746f4dd0a70b53a26688f95a3d7d1",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL.trace.zip",
+      "sha256": "fb1280dc11e5735ebc6053e16f0defd31bfc3c6eb39c392712bc49917af75335",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/0f859e0dabc79b1e3500a6657db34572.webm",
+      "sha256": "920e4937b724c0d42abb51d450333ca57c717874b02fcd89ffb8b8f1fd96afd8",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-WELCOME-1",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-WELCOME-1.png",
+      "sha256": "694cd536cba7eaf400ef960bc84ace27cf70e6cdede1af6fb9ce1b5b2ca457ef",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "WELCOME",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-CAMERA_UNAVAILABLE-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-CAMERA_UNAVAILABLE-3.png",
+      "sha256": "5d9dfffa801a8cd08766bb0510effdfea79cbf30164ea81b27ff7bd4287a8e95",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "CAMERA_UNAVAILABLE",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-TRACKING-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-TRACKING-5.png",
+      "sha256": "3f4986578f36521bfbad66f7d7612a19d3a224fdb78050c9b54e2b1b61810bc4",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "TRACKING",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-7",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-7.png",
+      "sha256": "93bb298ae6e13c24d8d08d057d1917aa7f7746f4dd0a70b53a26688f95a3d7d1",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED.trace.zip",
+      "sha256": "93fcc11c0f8d8bfb40d5832d95e0ae66cb444ca67d0a5e0e10854758e5a5c3e0",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/f5165631e82d3f336671ff0ad12d3292.webm",
+      "sha256": "b1649bc3ef3cdfa7002cdd1b540cdbb926f022e4641fe64b69aa37786a8502f6",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-WELCOME-1",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-WELCOME-1.png",
+      "sha256": "9139e3dd51054ac1d420823db33650c3d76ba8d97a615019ca0b664229d950c5",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "WELCOME",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-TRACKING-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-TRACKING-3.png",
+      "sha256": "2c2ec2286f00bb7b856e35658c435dacea3ff3f84f3df48eb5fd839091f6715b",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "TRACKING",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-TRAINING-7",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-TRAINING-7.png",
+      "sha256": "9b55fcccc12c052a8b0f1875b0b15bbeec26c723430d4a55bd5a055a227d88be",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "TRAINING",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-PAUSED-9",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-PAUSED-9.png",
+      "sha256": "cf1f4d4c083a744d66b2f9c2f815b25935015cbe8d4dd09d36ca49709b60e6b2",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "PAUSED",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-FIT_READY-28",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-FIT_READY-28.png",
+      "sha256": "939fed13f03105ce5bb99458bbc52a26c9056612acd3a02a8cd961513c0d5406",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "FIT_READY",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-VALIDATION-30",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-VALIDATION-30.png",
+      "sha256": "834d7098578ba200a9b3b182e5f98df0b929c58c141083e5fda85647b68975ef",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "VALIDATION",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RESULTS-40",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RESULTS-40.png",
+      "sha256": "e0e85ee75c7f0db1c854a3e40cbe74b7a47e5edc92bd1046d5e5721babc344b5",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "RESULTS",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-PLAYGROUND-42",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-PLAYGROUND-42.png",
+      "sha256": "c19c67501f65e2de961dae3cdc5a42572ee2250a35e74ef3cdf0ceace638cdc7",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "PLAYGROUND",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-MULTIPLE_HANDS-49",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-MULTIPLE_HANDS-49.png",
+      "sha256": "1f5774c206a22ad981023550c2999aa1cf769253eda9e95c9f0076523a2d6033",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "MULTIPLE_HANDS",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55.png",
+      "sha256": "cddc281748e26b819c25d0d1e546909896186b804c68f503169f28b6a0216b48",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "DETECTED_INELIGIBLE",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-57",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-57.png",
+      "sha256": "68a7438cf0ae609910728682af208f3efd5b788b69331e647ccb1c916647b40a",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL.trace.zip",
+      "sha256": "6e4ee19898b7d1a475ed9b6227bd167b96fceaca3e414c059b8ac0fbf9e4d62f",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/a370bae42bca5e82b62bc7d5824e962c.webm",
+      "sha256": "dde59a7439094c4f6964a7984707c489e8f464a79e1deeadfdb4797973e47456",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-WELCOME-1",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-WELCOME-1.png",
+      "sha256": "f131ab87ca5333448159f7ecaefadc3be17e73c3a93586bd80a3e4ae7450af96",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "WELCOME",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-TRACKING-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-TRACKING-3.png",
+      "sha256": "1f08009e2a6954e4c2cf39fb4a370ab81417bebcfbbb47d5f283220634c66e7a",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "TRACKING",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-TRAINING-7",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-TRAINING-7.png",
+      "sha256": "9b55fcccc12c052a8b0f1875b0b15bbeec26c723430d4a55bd5a055a227d88be",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "TRAINING",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-PAUSED-9",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-PAUSED-9.png",
+      "sha256": "b69acd94a9d548e87dee8289c1333607c1169a0998f8952f9a212cb6ab1bdf20",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "PAUSED",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-FIT_READY-28",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-FIT_READY-28.png",
+      "sha256": "939fed13f03105ce5bb99458bbc52a26c9056612acd3a02a8cd961513c0d5406",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "FIT_READY",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-VALIDATION-30",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-VALIDATION-30.png",
+      "sha256": "5003391deb1473a0d219194c26cd305bff8a521a80c4e1ca99c5ed1e5cd67ee5",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "VALIDATION",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-RESULTS-40",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-RESULTS-40.png",
+      "sha256": "bf1d733c709c5320b0feeff08ef4fb5a30d769d22474bf3cf5a5b03b1963ea64",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "RESULTS",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-PLAYGROUND-42",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-PLAYGROUND-42.png",
+      "sha256": "dd1143b0ec28c6aefb023702255a09a788054cf9c24f5375efe61edac4bf88f6",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "PLAYGROUND",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-MULTIPLE_HANDS-49",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-MULTIPLE_HANDS-49.png",
+      "sha256": "4181a2afe6b64b73abec28753dcbfbafc5bc204579158c33602fc7cdebaad291",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "MULTIPLE_HANDS",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-DETECTED_INELIGIBLE-55",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-DETECTED_INELIGIBLE-55.png",
+      "sha256": "d83199d9aac83b4887cd4b938e2c4bab5b712c394a357b37ce81234a899c9f4a",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "DETECTED_INELIGIBLE",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-57",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-57.png",
+      "sha256": "68a7438cf0ae609910728682af208f3efd5b788b69331e647ccb1c916647b40a",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED.trace.zip",
+      "sha256": "62cd905253e598ed61b5aa06f1bac4c08a73e7a91daee4c42b7a13838acbe63c",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/c10b96bd64bf8ff5a15c3b0f851bcaff.webm",
+      "sha256": "3807cba65dbd1ada8c7dcb738b3c3ed2f664644ddf393cbf4e1d18298c0a9867",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-WELCOME-1",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-WELCOME-1.png",
+      "sha256": "9139e3dd51054ac1d420823db33650c3d76ba8d97a615019ca0b664229d950c5",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "WELCOME",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-TRACKING-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-TRACKING-3.png",
+      "sha256": "2c2ec2286f00bb7b856e35658c435dacea3ff3f84f3df48eb5fd839091f6715b",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "TRACKING",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RELATIVE_TRAINING-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RELATIVE_TRAINING-5.png",
+      "sha256": "ab69bcfae46a6f574d340151965fc86588509cb1007844c29bd5519ed0986d2e",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "RELATIVE_TRAINING",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RELATIVE_VALIDATION-17",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RELATIVE_VALIDATION-17.png",
+      "sha256": "986b3a2b998cb21f2f83f131a41ca21c7ac8c32c5d159d20f7d3a975e2a540ae",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "RELATIVE_VALIDATION",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RELATIVE_RESULTS-27",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RELATIVE_RESULTS-27.png",
+      "sha256": "12a6e7acc131d2135dbc53bbdd7558386c29a35b8296153968e48a4cfadbb620",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "RELATIVE_RESULTS",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RETURNED-31",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RETURNED-31.png",
+      "sha256": "68a7438cf0ae609910728682af208f3efd5b788b69331e647ccb1c916647b40a",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL.trace.zip",
+      "sha256": "ef8b7fc230acdcce1c734b86a8083e5e5cf9cb011eae64e53f9c1f5e06498c7a",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/10aa1340075e311238b88e8731faaa47.webm",
+      "sha256": "43dd232a732e4eff5edb0b982f5692aa28deb079a36bda14f5960a74eb0fe636",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-WELCOME-1",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-WELCOME-1.png",
+      "sha256": "f131ab87ca5333448159f7ecaefadc3be17e73c3a93586bd80a3e4ae7450af96",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "WELCOME",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-TRACKING-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-TRACKING-3.png",
+      "sha256": "1f08009e2a6954e4c2cf39fb4a370ab81417bebcfbbb47d5f283220634c66e7a",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "TRACKING",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RELATIVE_TRAINING-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RELATIVE_TRAINING-5.png",
+      "sha256": "ab69bcfae46a6f574d340151965fc86588509cb1007844c29bd5519ed0986d2e",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "RELATIVE_TRAINING",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RELATIVE_VALIDATION-17",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RELATIVE_VALIDATION-17.png",
+      "sha256": "bb0a05f73ebe17b3a1a5216ec61343b6370165df59cd432b900a5472a45459f4",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "RELATIVE_VALIDATION",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RELATIVE_RESULTS-27",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RELATIVE_RESULTS-27.png",
+      "sha256": "989bdcb1ce94c127ec29d57d4b00701e54b14ebf02fd8dd6292c237faf9c8749",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "RELATIVE_RESULTS",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RETURNED-31",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RETURNED-31.png",
+      "sha256": "68a7438cf0ae609910728682af208f3efd5b788b69331e647ccb1c916647b40a",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED.trace.zip",
+      "sha256": "6f52c68a27847d998bd378faa098d6183df34195c7ed2510be3c6a185ea85e8e",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/a2ca5fa62eaabb2a2964ccddd6e71087.webm",
+      "sha256": "e96bc84c4e71c13bb73db62a756b7a8ced56bfe25c2a7faf6029b3626f4fd4c9",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-WELCOME-1",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-WELCOME-1.png",
+      "sha256": "9139e3dd51054ac1d420823db33650c3d76ba8d97a615019ca0b664229d950c5",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "WELCOME",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-CAMERA_UNAVAILABLE-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-CAMERA_UNAVAILABLE-3.png",
+      "sha256": "589f796ed041e20aecb7732f8b16586b1fc72fc1c41eadccafaea1fd2384dc96",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "CAMERA_UNAVAILABLE",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-TRACKING-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-TRACKING-5.png",
+      "sha256": "77567ec65a26278a8fa8a153cdbaa4b520f4217dbdb9636440b660bc97117484",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "TRACKING",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-7",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-7.png",
+      "sha256": "68a7438cf0ae609910728682af208f3efd5b788b69331e647ccb1c916647b40a",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL.trace.zip",
+      "sha256": "b30f41624be4e02b4689d3443dbdd9a107d52dd038c134e2892aecb6939bd484",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/f5d1f1c0c57dd605df2518d24250ecfb.webm",
+      "sha256": "1b1018497c2edad756dcd49496392656fa23a18c2990de4b4cbeeacf59b76a62",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-WELCOME-1",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-WELCOME-1.png",
+      "sha256": "f131ab87ca5333448159f7ecaefadc3be17e73c3a93586bd80a3e4ae7450af96",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "WELCOME",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-CAMERA_UNAVAILABLE-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-CAMERA_UNAVAILABLE-3.png",
+      "sha256": "510036802005b1667cb2dac5c8e39333d191a50843da50d4561bd5819855e3d1",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "CAMERA_UNAVAILABLE",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-TRACKING-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-TRACKING-5.png",
+      "sha256": "77567ec65a26278a8fa8a153cdbaa4b520f4217dbdb9636440b660bc97117484",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "TRACKING",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-7",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-7.png",
+      "sha256": "68a7438cf0ae609910728682af208f3efd5b788b69331e647ccb1c916647b40a",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED.trace.zip",
+      "sha256": "075a5c256df5b7004c278f4ba789ca22e54d6790e0f01b0d193b27ce91083c6d",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/329ad96cc2d8ae612dff6704ff080e0a.webm",
+      "sha256": "a37da61605c18283645d2a4d2a906d5f63bf162edbe81647a4d85c028d36766c",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "reach.phase1.foundation",
+      "device": "MOBILE",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    }
+  ],
+  "packetDigest": "65d1d610fb8a33649d896a3f76f349b0def3e706fdd122294a403c29ef03dfa0",
+  "instructions": "Inspect rendered images and recordings before source. Record concrete evidence for every dimension. Builder rationale is intentionally excluded. Return review JSON; do not infer owner acceptance.",
+  "reviewDimensions": [
+    "composition",
+    "hierarchy",
+    "typography",
+    "spacing",
+    "controls",
+    "contrast",
+    "consistency",
+    "states",
+    "responsive",
+    "keyboard",
+    "focus",
+    "feedback",
+    "motion",
+    "continuity",
+    "complexity",
+    "role-outcomes",
+    "fallbacks"
+  ],
+  "builderRationaleIncluded": false
+}
