@@ -821,3 +821,495 @@ test("an actual Git failure at the ordinary replay seam preserves technical resu
     code: "ENOENT",
   });
 });
+
+// The separate hosted reconstruction is exercised only with synthetic API/ZIP/
+// Git fixtures. These tests never invoke its CLI, source child, campaign helpers,
+// real API, historical source checkout or any product/consumer execution.
+const {
+  REPLAY_SOURCE_DIAGNOSTIC_POLICY: sourceDiagnosticPolicy,
+  replaySourceDiagnosticPolicyDigest,
+  validateDiagnosticEnvironment,
+  validateDiagnosticExecution,
+  createDiagnosticReservation,
+  readDiagnosticReservation,
+  createReadOnlyDiagnosticRequest,
+  readBoundedDiagnosticBody,
+  downloadDiagnosticArchive,
+  strictDiagnosticZipMember,
+  validateDiagnosticPaths,
+  installHistoricalOverlay,
+  sourceDiagnosticChildEnvironment,
+  sourceDiagnosticResult,
+  diagnosticFailureResult,
+} = await import("../../scripts/sounding-line/replay-admission-source-diagnostic.mjs");
+
+function sourceDiagnosticEnvironment(overrides = {}) {
+  const policy = sourceDiagnosticPolicy;
+  return {
+    GITHUB_ACTIONS: "true",
+    GITHUB_REPOSITORY: policy.repository,
+    GITHUB_REF: "refs/heads/main",
+    GITHUB_SHA: "a".repeat(40),
+    GITHUB_EVENT_NAME: "workflow_dispatch",
+    GITHUB_RUN_ATTEMPT: "1",
+    GITHUB_ACTOR: policy.actor,
+    GITHUB_TRIGGERING_ACTOR: policy.actor,
+    GITHUB_WORKFLOW_REF: `${policy.repository}/${policy.workflow}@refs/heads/main`,
+    GITHUB_JOB: "reserve-diagnostic",
+    GITHUB_RUN_ID: "123456",
+    ...overrides,
+  };
+}
+function sourceDiagnosticApi() {
+  const policy = sourceDiagnosticPolicy,
+    environment = sourceDiagnosticEnvironment();
+  const run = {
+    id: 123456,
+    run_attempt: 1,
+    event: "workflow_dispatch",
+    head_sha: environment.GITHUB_SHA,
+    head_branch: "main",
+    path: policy.workflow,
+    status: "in_progress",
+    conclusion: null,
+    repository: { full_name: policy.repository },
+    head_repository: { full_name: policy.repository },
+    actor: { login: policy.actor },
+    triggering_actor: { login: policy.actor },
+    workflow_id: 55,
+  };
+  const responses = new Map([
+    ["actions/runs/123456", run],
+    ["actions/workflows/55", { id: 55, path: policy.workflow, state: "active" }],
+    [
+      "branches/main",
+      {
+        name: "main",
+        commit: { sha: environment.GITHUB_SHA },
+        protected: true,
+        protection: {
+          required_status_checks: { checks: [{ context: "Sounding Line / Mainline Decision", app_id: 15368 }] },
+        },
+      },
+    ],
+    [
+      "pulls/721",
+      {
+        state: "open",
+        draft: true,
+        merged: false,
+        base: { ref: "main", repo: { full_name: policy.repository } },
+        head: { sha: policy.candidate, repo: { full_name: policy.repository } },
+      },
+    ],
+    [
+      "actions/workflows/55/runs?event=workflow_dispatch&per_page=100&page=1",
+      { total_count: 1, workflow_runs: [structuredClone(run)] },
+    ],
+  ]);
+  const calls = [];
+  const request = async (endpoint, method = "GET") => {
+    calls.push({ endpoint, method });
+    assert.equal(method, "GET");
+    assert.ok(responses.has(endpoint), "synthetic API must explicitly cover every read");
+    return structuredClone(responses.get(endpoint));
+  };
+  return { environment, responses, calls, request };
+}
+const sourceDiagnosticNow = () => new Date("2026-10-17T07:00:00Z");
+
+test("finite diagnostic rejects actor, executor, rerun, lease, ref and expiry changes before requests", async () => {
+  const environment = sourceDiagnosticEnvironment();
+  assert.equal(validateDiagnosticEnvironment(environment, "reserve-diagnostic", sourceDiagnosticNow()).runId, 123456);
+  for (const changed of [
+    { GITHUB_ACTOR: "another-owner" },
+    { GITHUB_TRIGGERING_ACTOR: "another-owner" },
+    { GITHUB_JOB: "final-check" },
+    { GITHUB_RUN_ATTEMPT: "2" },
+    { GITHUB_REF: "refs/heads/candidate" },
+    { GITHUB_EVENT_NAME: "pull_request_target" },
+    { GITHUB_WORKFLOW_REF: "private-url" },
+    { SOUNDING_LINE_EXCEPTION_PHASE: "qualify" },
+    { SOUNDING_LINE_R13_LOCAL_LEASE: "old-lease" },
+  ])
+    assert.throws(
+      () => validateDiagnosticEnvironment({ ...environment, ...changed }, "reserve-diagnostic", sourceDiagnosticNow()),
+      /CONTEXT_INVALID/u,
+    );
+  assert.throws(
+    () => validateDiagnosticEnvironment(environment, "reserve-diagnostic", new Date("2026-10-23T00:00:00Z")),
+    /EXPIRED/u,
+  );
+});
+
+test("finite diagnostic authenticates main protection, exact draft subject and complete one-dispatch history", async () => {
+  const valid = sourceDiagnosticApi();
+  const execute = (api) =>
+    validateDiagnosticExecution({
+      request: api.request,
+      environment: api.environment,
+      installerSha: api.environment.GITHUB_SHA,
+      job: "reserve-diagnostic",
+      now: sourceDiagnosticNow(),
+    });
+  const result = await execute(valid);
+  assert.equal(result.policyDigest, replaySourceDiagnosticPolicyDigest);
+  assert.equal(valid.calls.length, 5);
+  for (const mutate of [
+    (api) => {
+      api.responses.get("branches/main").protected = false;
+    },
+    (api) => {
+      api.responses.get("branches/main").protection.required_status_checks.checks[0].app_id = 7;
+    },
+    (api) => {
+      api.responses.get("branches/main").commit.sha = "b".repeat(40);
+    },
+    (api) => {
+      api.responses.get("pulls/721").draft = false;
+    },
+    (api) => {
+      api.responses.get("pulls/721").head.sha = "b".repeat(40);
+    },
+    (api) => {
+      api.responses.get("actions/runs/123456").head_sha = "b".repeat(40);
+    },
+    (api) => {
+      api.responses.get("actions/runs/123456").triggering_actor.login = "other";
+    },
+    (api) => {
+      api.responses.get("actions/runs/123456").status = "completed";
+    },
+    (api) => {
+      api.responses.get("actions/runs/123456").conclusion = "cancelled";
+    },
+    (api) => {
+      api.responses.get("actions/workflows/55/runs?event=workflow_dispatch&per_page=100&page=1").total_count = 2;
+    },
+    (api) => {
+      api.responses
+        .get("actions/workflows/55/runs?event=workflow_dispatch&per_page=100&page=1")
+        .workflow_runs.unshift({ id: 111, conclusion: "cancelled" });
+    },
+  ]) {
+    const api = sourceDiagnosticApi();
+    mutate(api);
+    await assert.rejects(execute(api), /(?:PROTECTION|BINDING|HISTORY)_INVALID/u);
+    assert.equal(
+      api.calls.some((call) => call.method !== "GET"),
+      false,
+    );
+  }
+});
+
+function diagnosticReservationApi(execution, { loseRefResponse = false } = {}) {
+  const calls = [],
+    refs = new Map(),
+    blobs = new Map(),
+    trees = new Map(),
+    commits = new Map();
+  const treeSha = "f".repeat(40);
+  trees.set(treeSha, { tree: [{ path: "source", mode: "040000", type: "tree", sha: "e".repeat(40) }] });
+  commits.set(execution.installerSha, { tree: { sha: treeSha }, parents: [] });
+  const request = async (endpoint, method = "GET", body) => {
+    calls.push({ endpoint, method });
+    if (method === "POST") {
+      const sha = createHash("sha256").update(JSON.stringify(body)).digest("hex").slice(0, 40);
+      if (endpoint === "git/blobs") {
+        blobs.set(sha, { content: Buffer.from(body.content).toString("base64") });
+        return { sha };
+      }
+      if (endpoint === "git/trees") {
+        trees.set(sha, { tree: [...trees.get(body.base_tree).tree, ...body.tree] });
+        return { sha };
+      }
+      if (endpoint === "git/commits") {
+        commits.set(sha, { tree: { sha: body.tree }, parents: body.parents.map((parent) => ({ sha: parent })) });
+        return { sha };
+      }
+      if (endpoint === "git/refs") {
+        assert.equal(body.ref, `refs/tags/${sourceDiagnosticPolicy.namespace}/attempt-1`);
+        if (refs.has(body.ref)) throw Error("PRODUCT_EXPERIENCE_EXCEPTION_SLOT_CONSUMED");
+        refs.set(body.ref, { object: { type: "commit", sha: body.sha } });
+        if (loseRefResponse) throw Error("PRODUCT_EXPERIENCE_EXCEPTION_CUSTODY_WRITE_OUTCOME_UNKNOWN");
+        return { ref: body.ref };
+      }
+    }
+    if (endpoint.startsWith("git/ref/")) return refs.get(`refs/${endpoint.slice(8)}`) ?? null;
+    if (endpoint.startsWith("git/blobs/")) return blobs.get(endpoint.slice(10));
+    if (endpoint.startsWith("git/trees/")) return trees.get(endpoint.slice(10));
+    if (endpoint.startsWith("git/commits/")) return commits.get(endpoint.slice(12));
+    assert.fail("unexpected synthetic reservation operation");
+  };
+  return { request, calls, refs };
+}
+
+test("diagnostic atomic reservation has one distinct immutable slot and worker cannot write", async () => {
+  const api = sourceDiagnosticApi();
+  const execution = await validateDiagnosticExecution({
+    request: api.request,
+    environment: api.environment,
+    installerSha: api.environment.GITHUB_SHA,
+    job: "reserve-diagnostic",
+    now: sourceDiagnosticNow(),
+  });
+  const fixture = diagnosticReservationApi(execution);
+  const claim = await createDiagnosticReservation({ request: fixture.request, execution });
+  assert.match(claim.commitSha, /^[a-f0-9]{40}$/u);
+  assert.equal(claim.diagnosticOnly, true);
+  assert.equal(claim.grantsQualification, false);
+  assert.equal(claim.binding.originalRun, 39004965102);
+  const writes = fixture.calls.filter((call) => call.method === "POST").length;
+  assert.equal(writes, 4);
+  assert.equal(
+    (await readDiagnosticReservation({ request: fixture.request, execution, reservation: claim.commitSha })).commitSha,
+    claim.commitSha,
+  );
+  await assert.rejects(createDiagnosticReservation({ request: fixture.request, execution }), /SLOT_CONSUMED/u);
+  await assert.rejects(
+    readDiagnosticReservation({
+      request: fixture.request,
+      execution: { ...execution, runId: 123457 },
+      reservation: claim.commitSha,
+    }),
+    /RESERVATION_INVALID/u,
+  );
+  await assert.rejects(
+    readDiagnosticReservation({ request: fixture.request, execution, reservation: "0".repeat(40) }),
+    /RESERVATION_INVALID/u,
+  );
+  const readonly = createReadOnlyDiagnosticRequest(fixture.request);
+  assert.throws(() => readonly("git/refs", "POST", {}), /READ_ONLY_REQUEST_REQUIRED/u);
+  assert.equal(fixture.calls.filter((call) => call.method === "POST").length, writes);
+  assert.equal(
+    fixture.calls.some((call) => /(?:qualify|qualified|PE-X-CROSSDECK)/u.test(call.endpoint)),
+    false,
+  );
+});
+
+test("ambiguous diagnostic reservation creation is preserved without a second write", async () => {
+  const execution = { installerSha: "a".repeat(40), runId: 123456, workflowId: 55 };
+  const fixture = diagnosticReservationApi(execution, { loseRefResponse: true });
+  await assert.rejects(createDiagnosticReservation({ request: fixture.request, execution }), /WRITE_OUTCOME_UNKNOWN/u);
+  assert.equal(fixture.refs.size, 1);
+  assert.equal(fixture.calls.filter((call) => call.endpoint === "git/refs" && call.method === "POST").length, 1);
+});
+
+test("diagnostic archive redirects strip credentials and oversize/forged archives fail boundedly", async () => {
+  const calls = [];
+  await assert.rejects(
+    downloadDiagnosticArchive({
+      token: "PRIVATE_SYNTHETIC_TOKEN",
+      fetchImpl: async (url, options) => {
+        calls.push({ url, options });
+        return calls.length === 1
+          ? new Response(null, {
+              status: 302,
+              headers: { location: "https://archive.example.invalid/blob?private-signature" },
+            })
+          : new Response("forged");
+      },
+    }),
+    /ARCHIVE_INVALID/u,
+  );
+  assert.equal(calls.length, 2);
+  assert.equal(calls[0].options.headers.Authorization, "Bearer PRIVATE_SYNTHETIC_TOKEN");
+  assert.deepEqual(calls[1].options.headers, {});
+  assert.equal(
+    calls.every((call) => call.options.redirect === "manual"),
+    true,
+  );
+  for (const location of ["http://archive.example.invalid/blob", "https://user:secret@archive.example.invalid/blob"]) {
+    let count = 0;
+    await assert.rejects(
+      downloadDiagnosticArchive({
+        token: "secret",
+        fetchImpl: async () => {
+          count++;
+          return new Response(null, { status: 302, headers: { location } });
+        },
+      }),
+      /ARCHIVE_TRANSPORT_FAILED/u,
+    );
+    assert.equal(count, 1);
+  }
+  await assert.rejects(
+    readBoundedDiagnosticBody(
+      new Response("secret", { headers: { "content-length": String(1024 * 1024 + 1) } }),
+      1024 * 1024,
+    ),
+    /ARCHIVE_TOO_LARGE/u,
+  );
+  await assert.rejects(readBoundedDiagnosticBody(new Response("12345"), 4), /ARCHIVE_TOO_LARGE/u);
+  assert.equal((await readBoundedDiagnosticBody(new Response("1234"), 4)).toString(), "1234");
+});
+
+function syntheticDiagnosticZip(bytes, name = "ordinary-decision.json", descriptor = true) {
+  const filename = Buffer.from(name),
+    local = Buffer.alloc(30),
+    central = Buffer.alloc(46),
+    end = Buffer.alloc(22);
+  local.writeUInt32LE(0x04034b50);
+  local.writeUInt16LE(descriptor ? 8 : 0, 6);
+  local.writeUInt16LE(filename.length, 26);
+  const tail = descriptor ? Buffer.alloc(16) : Buffer.alloc(0);
+  if (descriptor) {
+    tail.writeUInt32LE(0x08074b50);
+    tail.writeUInt32LE(bytes.length, 8);
+    tail.writeUInt32LE(bytes.length, 12);
+  }
+  central.writeUInt32LE(0x02014b50);
+  central.writeUInt16LE(descriptor ? 8 : 0, 8);
+  central.writeUInt32LE(bytes.length, 20);
+  central.writeUInt32LE(bytes.length, 24);
+  central.writeUInt16LE(filename.length, 28);
+  end.writeUInt32LE(0x06054b50);
+  end.writeUInt16LE(1, 8);
+  end.writeUInt16LE(1, 10);
+  end.writeUInt32LE(central.length + filename.length, 12);
+  end.writeUInt32LE(local.length + filename.length + bytes.length + tail.length, 16);
+  return Buffer.concat([local, filename, bytes, tail, central, filename, end]);
+}
+
+test("strict diagnostic ZIP reader accepts only one exact bounded hash-pinned member without extraction", () => {
+  const bytes = Buffer.from('{"synthetic":true}\n');
+  const expected = {
+    name: "ordinary-decision.json",
+    bytes: bytes.length,
+    digest: createHash("sha256").update(bytes).digest("hex"),
+  };
+  for (const descriptor of [true, false])
+    assert.deepEqual(
+      strictDiagnosticZipMember(syntheticDiagnosticZip(bytes, expected.name, descriptor), expected),
+      bytes,
+    );
+  assert.throws(
+    () => strictDiagnosticZipMember(syntheticDiagnosticZip(bytes, "../private.json"), expected),
+    /ARCHIVE_INVALID/u,
+  );
+  assert.throws(
+    () => strictDiagnosticZipMember(syntheticDiagnosticZip(bytes), { ...expected, digest: "0".repeat(64) }),
+    /ARCHIVE_INVALID/u,
+  );
+  assert.throws(
+    () => strictDiagnosticZipMember(syntheticDiagnosticZip(bytes), { ...expected, bytes: 9 * 1024 * 1024 }),
+    /ARCHIVE_INVALID/u,
+  );
+  const twoEntries = syntheticDiagnosticZip(bytes);
+  twoEntries.writeUInt16LE(2, twoEntries.length - 12);
+  assert.throws(() => strictDiagnosticZipMember(twoEntries, expected), /ARCHIVE_INVALID/u);
+});
+
+test("diagnostic paths forbid symlink/escape or overwrite and overlay rejects foreign checkouts before writes", async (t) => {
+  const root = await fixture(t);
+  for (const name of ["installer", "authority", "candidate", "receipts"]) await mkdir(path.join(root, name));
+  const paths = {
+    workspace: root,
+    installer: path.join(root, "installer"),
+    authority: path.join(root, "authority"),
+    candidate: path.join(root, "candidate"),
+    output: path.join(root, "receipts/reproduction.json"),
+    mode: "diagnose",
+  };
+  assert.equal(validateDiagnosticPaths(paths).candidate, paths.candidate);
+  assert.throws(() => validateDiagnosticPaths({ ...paths, candidate: path.join(root, "installer") }), /PATH_INVALID/u);
+  assert.throws(() => validateDiagnosticPaths({ ...paths, output: path.join(root, "outside.json") }), /PATH_INVALID/u);
+  await writeFile(paths.output, "original");
+  assert.throws(() => validateDiagnosticPaths(paths), /OUTPUT_INVALID/u);
+  for (const name of ["installer", "authority", "candidate"]) diagnosticRepository(path.join(root, name));
+  assert.throws(() => installHistoricalOverlay({ ...paths, installerSha: "0".repeat(40) }));
+  assert.equal(await readFile(paths.output, "utf8"), "original");
+  await assert.rejects(readFile(path.join(paths.authority, "scripts/sounding-line/source-diagnostics.mjs")), {
+    code: "ENOENT",
+  });
+});
+
+test("source child receives actual diagnostic metadata with no credentials, Git overrides or consumer permission", () => {
+  const environment = sourceDiagnosticEnvironment({
+    GITHUB_JOB: "source-diagnostic",
+    GH_TOKEN: "private",
+    GITHUB_TOKEN: "private",
+    NODE_OPTIONS: "--require private",
+    GIT_TRACE: "private",
+    GIT_CONFIG_COUNT: "1",
+    SOUNDING_LINE_EXCEPTION_PHASE: "qualify",
+    SOUNDING_LINE_EXCEPTION_LEASE: "private",
+    SOUNDING_LINE_R13_LOCAL_LEASE: "private",
+  });
+  const child = sourceDiagnosticChildEnvironment(environment);
+  assert.equal(child.GITHUB_JOB, "source-diagnostic");
+  assert.equal(child.GITHUB_RUN_ID, "123456");
+  assert.equal(
+    Object.keys(child).some((key) => /^(?:GH_TOKEN|GITHUB_TOKEN|SOUNDING_LINE_|GIT_|NODE_OPTIONS)/u.test(key)),
+    false,
+  );
+  assert.equal(JSON.stringify(child).includes("private"), false);
+});
+
+test("a source-only nonreproduction or new Git failure never grants product acceptance or the original cause", async (t) => {
+  const result = {
+    status: "NOT_REPRODUCED",
+    completeness: "DIAGNOSTIC_INCOMPLETE",
+    originalCauseClaim: false,
+    qualification: false,
+    milestones: [
+      "SOURCE_RECOGNITION",
+      "PLAN_INPUT",
+      "REGISTRY_READ",
+      "CAMPAIGN_RELATION",
+      "HEAD_CHECK",
+      "PLAN_REBUILD",
+      "PLAN_COMPARE",
+      "REGISTRY_READ",
+      "HISTORICAL_PREPARE",
+    ],
+    productExecutions: 0,
+    consumerAdmissions: 0,
+    networkRequests: 0,
+  };
+  assert.equal(sourceDiagnosticResult(result).status, "NOT_REPRODUCED");
+  for (const change of [
+    { status: "PASS" },
+    { originalCauseClaim: true },
+    { qualification: true },
+    { productExecutions: 1 },
+    { consumerAdmissions: 1 },
+    { networkRequests: 1 },
+    { milestones: ["PHASE_CLAIM"] },
+  ])
+    assert.throws(() => sourceDiagnosticResult({ ...result, ...change }), /SOURCE_CHILD_INVALID/u);
+  const root = await fixture(t);
+  diagnosticRepository(root);
+  let observation;
+  await assert.rejects(
+    withVerificationStage("REPLAY_ADMISSION", () =>
+      withReplayAdmissionSubstage("PLAN_REBUILD", () => sourceSnapshot(root, "0".repeat(40))),
+    ),
+    (error) => {
+      observation = verificationFailureObservation(error);
+      return true;
+    },
+  );
+  assert.equal(observation.replayAdmission.git.operation, "LS_TREE");
+  const observed = sourceDiagnosticResult({ ...result, status: "SOURCE_OPERATION_FAILURE_REPRODUCED", observation });
+  assert.equal(observed.originalCauseClaim, false);
+  assert.equal(observed.qualification, false);
+  assert.equal(JSON.stringify(observed).includes(root), false);
+});
+
+test("unknown or partial source execution never becomes a known setup failure or retry permission", () => {
+  for (const diagnosticCode of ["WRITE_OUTCOME_UNKNOWN", "SOURCE_CHILD_UNKNOWN", "PRIVATE_UNCLASSIFIED_ERROR"]) {
+    const result = diagnosticFailureResult({ diagnosticCode, message: "PRIVATE", stack: "PRIVATE" });
+    assert.equal(result.status, "EXECUTION_UNKNOWN");
+    assert.equal(result.completeness, "DIAGNOSTIC_INCOMPLETE");
+    assert.equal(JSON.stringify(result).includes("PRIVATE"), false);
+  }
+  assert.equal(
+    diagnosticFailureResult({ diagnosticCode: "BINDING_INVALID" }).status,
+    "DIAGNOSTIC_SETUP_OR_BINDING_FAILURE",
+  );
+  assert.equal(
+    diagnosticFailureResult({ diagnosticCode: "SOURCE_POSTCONDITION_INVALID" }, true).status,
+    "EXECUTION_UNKNOWN",
+  );
+});
