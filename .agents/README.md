@@ -20,6 +20,7 @@ not authorize restarting a completed phase.
 - [Replay admission Git failure observations](replay-admission-git-diagnostics.md)
 - [Crossdeck ordinary6 finite hosted source diagnostic](crossdeck-ordinary6-source-diagnostic.md)
 - [Crossdeck ordinary6 finite posttechnical diagnostic](crossdeck-ordinary6-posttechnical-diagnostic.md)
+- [Crossdeck ordinary6 finite historical-validation diagnostic](crossdeck-ordinary6-historical-validation-diagnostic.md)
 - [Experience context setup replay repair context](experience-context-setup-repair.md)
 - [Crossdeck finite final-verification implementation context](crossdeck-final-verification-proposal.md)
 - [Crossdeck R2 authority amendment context](crossdeck-r2-final-verification.md)
