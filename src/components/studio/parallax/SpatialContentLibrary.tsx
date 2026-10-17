@@ -30,6 +30,7 @@ import { AssetPreview } from "./SpatialAssetBrowser";
 import { modelIds, type ModelId } from "@/parallax/asset-catalog";
 import { SpatialAssetInspector3D } from "./SpatialAssetInspector3D";
 import { SpatialCommunityPublisher } from "./SpatialCommunityPublisher";
+import { useStudioContextMenu, type StudioMenuAction } from "./StudioContextMenu";
 import styles from "./SpatialContentLibrary.module.css";
 
 const categoryNames: Record<SpatialContentKind, string> = {
@@ -237,6 +238,7 @@ function Artwork({ item }: { item: SpatialContentEntry }) {
 }
 
 export function SpatialContentLibrary(props: Props) {
+  const contextMenu = useStudioContextMenu();
   const [localKind, setLocalKind] = useState<SpatialContentKind>(props.initialKind ?? "ASSETS");
   const kind = props.kind ?? localKind;
   const filtersId = useId();
@@ -489,6 +491,40 @@ export function SpatialContentLibrary(props: Props) {
       kind: item.kind,
     });
     setSelectedId(item.id);
+  };
+  const insertPreset = (preset: string) => {
+    if (props.expanded && preset.startsWith("sc02:") && props.onPlacePreset) props.onPlacePreset(preset);
+    else props.onInsertPreset(preset);
+  };
+  const cardMenuActions = (item: SpatialContentEntry): StudioMenuAction[] => {
+    const actions: StudioMenuAction[] = [
+      { label: "Preview details", icon: "inspect", run: () => selectEntry(item) },
+    ];
+    if (item.preset)
+      actions.push({
+        label: props.expanded && item.preset.startsWith("sc02:") ? "Place in Scene" : "Add to scene",
+        icon: "plus",
+        disabled: props.busy || Boolean(item.blocked),
+        run: () => insertPreset(item.preset!),
+      });
+    if (
+      item.kind === "SCENES" &&
+      item.id.startsWith("saved:") &&
+      !item.archived &&
+      !item.readOnly &&
+      item.origin !== "INSTALLED"
+    )
+      actions.push({
+        label: "Archive",
+        icon: "archive",
+        danger: true,
+        disabled: props.busy || item.id === `saved:${props.currentId}`,
+        run: () => {
+          selectEntry(item);
+          setArchiveId(item.id);
+        },
+      });
+    return actions;
   };
   const chooseKind = (next: SpatialContentKind) => {
     if (props.onKindChange) props.onKindChange(next);
@@ -1026,11 +1062,7 @@ export function SpatialContentLibrary(props: Props) {
               <button
                 className={props.expanded && selected.preset.startsWith("sc02:") ? styles.placeAction : undefined}
                 disabled={props.busy || Boolean(selected.blocked)}
-                onClick={() =>
-                  props.expanded && selected.preset!.startsWith("sc02:") && props.onPlacePreset
-                    ? props.onPlacePreset(selected.preset!)
-                    : props.onInsertPreset(selected.preset!)
-                }
+                onClick={() => insertPreset(selected.preset!)}
               >
                 {props.expanded && selected.preset.startsWith("sc02:") ? "Place in Scene" : "Add to active Scene"}
               </button>
@@ -1221,7 +1253,10 @@ export function SpatialContentLibrary(props: Props) {
             key={item.id}
             className={styles.card}
             data-selected={selectedId === item.id}
+            tabIndex={-1}
             draggable={Boolean(item.preset && !item.blocked && !props.busy)}
+            onContextMenu={(event) => contextMenu.open(event, item.name, cardMenuActions(item))}
+            onKeyDown={(event) => contextMenu.open(event, item.name, cardMenuActions(item))}
             onDragStart={(event) => {
               if (item.preset) {
                 event.dataTransfer.setData("application/parallax-preset", item.preset);
@@ -1255,11 +1290,7 @@ export function SpatialContentLibrary(props: Props) {
                 {item.preset && (
                   <button
                     disabled={props.busy || Boolean(item.blocked)}
-                    onClick={() =>
-                      props.expanded && item.preset!.startsWith("sc02:") && props.onPlacePreset
-                        ? props.onPlacePreset(item.preset!)
-                        : props.onInsertPreset(item.preset!)
-                    }
+                    onClick={() => insertPreset(item.preset!)}
                   >
                     {props.expanded && item.preset.startsWith("sc02:") ? "Place in Scene" : "Add to Scene"}
                   </button>
@@ -1331,6 +1362,7 @@ export function SpatialContentLibrary(props: Props) {
           />,
           document.body,
         )}
+      {contextMenu.menu}
     </section>
   );
 }
