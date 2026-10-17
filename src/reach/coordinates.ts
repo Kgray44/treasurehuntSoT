@@ -1,4 +1,5 @@
 import type { HandObservation } from "./observation";
+import { handGeometry, type GeometryFrame } from "@/watchglass/hand-geometry";
 export type Point = { x: number; y: number };
 export type Viewport = {
   width: number;
@@ -25,15 +26,32 @@ export function imageToViewport(point: Point, viewport: Viewport, mirror: boolea
     y: viewport.offsetY + point.y * viewport.height,
   };
 }
-/** Empirical index axis features; source remains unmirrored, z is hand-relative, never metric depth. */
-export function pointingFeatures(hand: HandObservation["hands"][number]): number[] {
-  const base = hand.landmarks[5],
-    tip = hand.landmarks[8],
-    pip = hand.landmarks[6],
-    palm = hand.landmarks[17];
-  const scale = Math.hypot(base.x - palm.x, base.y - palm.y);
-  if (scale < 0.035 || [base, tip, pip, palm].some((p) => !p.valid)) throw new Error("POINT_AXIS_DEGENERATE");
-  return [1, base.x, base.y, (tip.x - pip.x) / scale, (tip.y - pip.y) / scale];
+/**
+ * V2 empirical camera-relative index features. The complete joint chord and
+ * inferred 3D palm width avoid a short 2D distal segment masquerading as curl.
+ * Relative z bounds depth-facing slopes; it is never metric depth or a screen
+ * intersection. Independent per-context held-out validation remains required.
+ */
+export function pointingFeatures(hand: HandObservation["hands"][number], frame?: GeometryFrame): number[] {
+  const shape = handGeometry(hand, frame);
+  const index = shape.finger(5);
+  if (
+    !index ||
+    !hand.landmarks[17].valid ||
+    shape.scale < 0.035 ||
+    index.reach < shape.scale * 0.2 ||
+    index.chain > shape.scale * 3.5
+  )
+    throw new Error("POINT_AXIS_DEGENERATE");
+  const denominator = shape.scale + Math.abs(index.axis.z);
+  const base = hand.landmarks[5];
+  return [
+    1,
+    base.x,
+    base.y,
+    ((2 / 3) * index.axis.x) / denominator,
+    ((2 / 3) * index.axis.y) / denominator / shape.aspect,
+  ];
 }
 export class PointFilter {
   private point: Point | null = null;

@@ -350,6 +350,7 @@ test("viewport changes invalidate the fit and preserve camera availability; safe
   await expect(status(page)).toContainText("Guided demo");
   await expect(page.getByRole("button", { name: "Begin nine-point calibration" })).toBeVisible();
   await expect(page.getByLabel("Target 2 of 9", { exact: true })).toHaveCount(0);
+  await shot(page, "viewport-invalidation");
   await page.goto("/devices/reach?returnTo=https://example.com");
   await expect(page.getByRole("link", { name: "← Device connections" })).toHaveAttribute("href", "/devices/pair");
 });
@@ -428,7 +429,7 @@ test("photographic worker completes nine real-landmark holds and five independen
   await holdTargets(5, "VALIDATION");
   await shot(page, "worker-independent-results", true);
   const absolute = await readMetrics();
-  expect(absolute.calibration.mapping).toBe("INDEX_AXIS_RIDGE_V1");
+  expect(absolute.calibration.mapping).toBe("INDEX_AXIS_RIDGE_V2");
   // Aggregate counts are raw samples; the visible target loop proves hold counts.
   expect(absolute.calibration.trainingCount).toBeGreaterThanOrEqual(9 * 15);
   expect(absolute.calibration.validationCount).toBeGreaterThanOrEqual(5 * 15);

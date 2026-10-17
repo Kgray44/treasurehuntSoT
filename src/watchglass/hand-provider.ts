@@ -2,7 +2,7 @@ import type { HandObservation } from "./hand-observation";
 import { assessHand } from "./hand-posture";
 export const handModel = {
   providerId: "watchglass.hand-observation",
-  providerVersion: "1.1.0",
+  providerVersion: "1.2.0",
   modelId: "mediapipe.hand-landmarker.float16",
   modelVersion: "1",
   modelDigest: "fbc2a30080c3c557093b5ddfc334698132eb341044ccee322ccf8bcf3607cde1",
@@ -12,7 +12,9 @@ export const handModel = {
 } as const;
 type Landmark = { x: number; y: number; z: number };
 export type HandResult = { landmarks: Landmark[][]; handedness: { categoryName: string; score: number }[][] };
-type Track = { id: number; center: { x: number; y: number }; at: number; scale: number };
+type Track = { id: number; center: { x: number; y: number }; at: number; scale: number | null };
+/** A bounded recovery opportunity, never evidence of identity while a hand is absent. */
+export const HAND_CONTINUITY_GRACE_MS = 1200;
 /** Local spatial continuity only. Crossings and long gaps create a new generation, never biometric identity. */
 export class BrowserHandAdapter {
   private sequence = 0;
@@ -64,20 +66,22 @@ export class BrowserHandAdapter {
         ? { x: palm.reduce((s, p) => s + p.x, 0) / palm.length, y: palm.reduce((s, p) => s + p.y, 0) / palm.length }
         : null;
     });
-    const eligibleTracks = this.tracks.filter((t) => capture - t.at <= 300);
+    // Track association uses palm evidence only. An uncertain index tip or a
+    // temporarily ineligible point must not manufacture a different identity.
+    const scales = hands.map((h) =>
+      h.landmarks[5].valid && h.landmarks[17].valid
+        ? Math.hypot(h.landmarks[5].x - h.landmarks[17].x, h.landmarks[5].y - h.landmarks[17].y)
+        : null,
+    );
+    // Keep the last observed location briefly through an occlusion. The record's
+    // timestamp is not refreshed until a hand passes the existing spatial match;
+    // ambiguity, a jump, or expiry still produces a fresh local generation.
+    const eligibleTracks = this.tracks.filter((t) => capture - t.at <= HAND_CONTINUITY_GRACE_MS);
     const costs = centers.map((center, i) =>
       eligibleTracks.map((t) =>
         center
           ? Math.hypot(center.x - t.center.x, center.y - t.center.y) +
-            Math.abs(
-              assessHand(hands[i]).geometry
-                ? Math.hypot(
-                    hands[i].landmarks[5].x - hands[i].landmarks[17].x,
-                    hands[i].landmarks[5].y - hands[i].landmarks[17].y,
-                  ) - t.scale
-                : 1,
-            ) *
-              0.25
+            (scales[i] !== null && t.scale !== null ? Math.abs(scales[i]! - t.scale) * 0.25 : 0)
           : Infinity,
       ),
     );
@@ -93,15 +97,18 @@ export class BrowserHandAdapter {
       return ranked[0].index;
     });
     const collision = assignments.length === 2 && assignments[0] >= 0 && assignments[0] === assignments[1];
+    const associationAmbiguous = !!crossing || collision || assignments.includes(-2);
     const next: Track[] = [];
     hands.forEach((hand, i) => {
-      const ambiguous = !!crossing || collision || assignments[i] === -2;
+      // A partial palm cannot establish a new usable track. Preserve prior
+      // records without refreshing them so the original palm may recover.
+      const ambiguous = !!crossing || collision || assignments[i] === -2 || centers[i] === null;
       const prior = !ambiguous && assignments[i] >= 0 ? eligibleTracks[assignments[i]] : null;
       const id = prior?.id ?? ++this.generation;
       hand.trackId = `local-${id}`;
       hand.trackGeneration = id;
       hand.continuity = ambiguous ? "AMBIGUOUS" : prior ? "CONTINUOUS" : "ACQUIRED";
-      const assessment = assessHand(hand);
+      const assessment = assessHand(hand, { frameWidth: width, frameHeight: height });
       hand.occluded = !assessment.requiredValid;
       hand.pose = assessment.pointing ? "POINT_CANDIDATE" : "UNKNOWN";
       if (centers[i] && !ambiguous)
@@ -109,11 +116,15 @@ export class BrowserHandAdapter {
           id,
           center: centers[i]!,
           at: capture,
-          scale: Math.hypot(hand.landmarks[5].x - hand.landmarks[17].x, hand.landmarks[5].y - hand.landmarks[17].y),
+          scale: scales[i] ?? prior?.scale ?? null,
         });
     });
-    this.tracks = hands.length ? next : eligibleTracks;
-    const rawTracked = hands.some((h) => assessHand(h).validCount >= 16);
+    // A different visible hand does not prove that an occluded hand vanished.
+    // Actual crossing/assignment ambiguity still retires unmatched records.
+    this.tracks = associationAmbiguous
+      ? next
+      : [...next, ...eligibleTracks.filter((track) => !next.some((matched) => matched.id === track.id))];
+    const rawTracked = hands.some((h) => assessHand(h, { frameWidth: width, frameHeight: height }).validCount >= 16);
     return {
       observationVersion: 1,
       ...this.binding,
@@ -136,7 +147,7 @@ export class BrowserHandAdapter {
         ? "NO_HAND"
         : hands.length > 1
           ? "MULTIPLE_HANDS"
-          : !assessHand(hands[0]).framed
+          : !assessHand(hands[0], { frameWidth: width, frameHeight: height }).framed
             ? "LOW_VISIBILITY"
             : "NONE",
     };

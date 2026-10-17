@@ -48,8 +48,8 @@ it("rejects an isolated outlier while retaining trustworthy samples", () => {
 it("expires a long loss and restarts only the current evidence window", () => {
   const window = new SampleWindow(syntheticBinding, target);
   for (let i = 0; i < 10; i++) window.push(features, 100 + i * 50, syntheticBinding);
-  expect(window.pause(1000)).toMatchObject({ state: "EXPIRED", progress: 0 });
-  expect(window.push(features, 1050, syntheticBinding)).toMatchObject({ state: "ACQUIRING", samples: null });
+  expect(window.pause(3200)).toMatchObject({ state: "EXPIRED", progress: 0 });
+  expect(window.push(features, 3250, syntheticBinding)).toMatchObject({ state: "ACQUIRING", samples: null });
 });
 it.each(["trackGeneration", "providerGeneration", "viewportEpoch", "cameraFrameVersion"] as const)(
   "refuses to bridge %s changes",

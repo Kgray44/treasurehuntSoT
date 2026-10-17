@@ -112,6 +112,7 @@ export function ReachLaboratory({
   const [status, setStatus] = useState("DISABLED"),
     [readiness, setReadiness] = useState(initialReadiness),
     [hands, setHands] = useState<HandObservation["hands"]>([]);
+  const [frameSize, setFrameSize] = useState<Pick<HandObservation, "frameWidth" | "frameHeight">>();
   const [mirror, setMirror] = useState(true),
     [calibration, setCalibration] = useState<Calibration | null>(null),
     [target, setTarget] = useState<Point | null>(null);
@@ -182,6 +183,7 @@ export function ReachLaboratory({
     readyRef.current = initialReadiness;
     setReadiness(initialReadiness);
     setHands([]);
+    setFrameSize(undefined);
     aggregates.current = [];
     timing.current.reset();
     setMetrics(timingSnapshot(timing.current));
@@ -215,14 +217,17 @@ export function ReachLaboratory({
       visual.current.observation = o;
       visual.current.activeTrack = ready.hand?.trackId ?? null;
       if (ready.changed && (trial.current || calibrationRef.current)) {
-        invalidate("The hand or camera changed. Set up again so samples stay tied to one hand.");
+        invalidate(
+          "We can no longer confirm the same hand and camera setup. Set up again so samples stay tied to one hand.",
+        );
         log("CONTEXT_CHANGED");
       }
-      // Guidance changes have bounded hysteresis; eligibility itself always changes immediately.
+      // Visual guidance settles; fresh anatomy and recovery determine eligibility.
       if (lastGuidance.current.value !== ready.condition) lastGuidance.current = { value: ready.condition, at: now };
       if (now - lastUI.current >= 120) {
         lastUI.current = now;
         setHands(o.hands);
+        setFrameSize({ frameWidth: o.frameWidth, frameHeight: o.frameHeight });
         setReadiness((previous) =>
           lastGuidance.current.value === ready.condition && now - lastGuidance.current.at >= 180
             ? ready
@@ -249,21 +254,14 @@ export function ReachLaboratory({
       }
       let features: number[];
       try {
-        features = pointingFeatures(ready.hand);
+        features = pointingFeatures(ready.hand, o);
       } catch {
+        if (t?.window && !t.paused) setAcquisition(t.window.pause(o.monotonicCaptureTime));
         return;
       }
       if (t && !t.paused && now >= t.after && (sourceRef.current !== "DEMO" || t.demoTargetReady)) {
-        if (now - t.acquiredAt > 20000) {
-          t.paused = true;
-          t.window?.reset();
-          setPaused(true);
-          setAcquisition(null);
-          setMessage(
-            "This hold needs a retry. Rest your hand, improve the lighting or framing, then resume. Your saved targets are kept.",
-          );
-          return;
-        }
+        // A slow hold or tracking pause is not setup invalidation. The bounded
+        // evidence window handles expiry of this target without losing others.
         try {
           t.binding ??= binding;
           t.window ??= new SampleWindow(t.binding, t.order[t.groups.length], t.mode);
@@ -383,7 +381,7 @@ export function ReachLaboratory({
       const position = rect ? `${Math.round(rect.left)}:${Math.round(rect.top)}` : "";
       const absoluteLive =
         sourceRef.current === "LIVE" &&
-        (trial.current?.mode === "ABSOLUTE" || calibrationRef.current?.mapping === "INDEX_AXIS_RIDGE_V1");
+        (trial.current?.mode === "ABSOLUTE" || calibrationRef.current?.mapping === "INDEX_AXIS_RIDGE_V2");
       if (
         absoluteLive &&
         lastPosition &&
@@ -511,7 +509,7 @@ export function ReachLaboratory({
   const begin = (stage: Trial["stage"]) => {
     const observation = lastObservation.current;
     const readiness = readyRef.current;
-    const posture = readiness.hand ? assessHand(readiness.hand) : null;
+    const posture = readiness.hand && observation ? assessHand(readiness.hand, observation) : null;
     const age = observation ? performance.now() - observation.monotonicCaptureTime : Infinity;
     // Opening a target may wait through the existing short-loss grace. Actual
     // sampling still requires a fresh eligible observation; no stale sample is used.
@@ -578,11 +576,11 @@ export function ReachLaboratory({
     const t = trial.current;
     if (!t) return;
     t.paused = !t.paused;
-    t.window?.reset();
+    const progress = t.window?.pause(performance.now());
     t.after = performance.now() + 700;
     t.acquiredAt = performance.now();
     setPaused(t.paused);
-    setAcquisition(null);
+    setAcquisition(progress ?? null);
     setMessage(
       t.paused
         ? "Paused. Relax your hand; your completed targets are saved."
@@ -641,18 +639,24 @@ export function ReachLaboratory({
     ? "Paused"
     : source === "DEMO" && training && !demoHolding
       ? "Move the demo hand to begin"
-      : acquisition?.state === "MOVING"
-        ? "Let your hand settle"
-        : acquisition?.state === "PAUSED" || acquisition?.state === "EXPIRED"
-          ? "Waiting for tracking"
-          : acquisition?.state === "COLLECTING"
-            ? "Hold here · collecting"
-            : acquisition?.state === "ACCEPTED"
-              ? "Target saved"
-              : "Find a comfortable hold";
+      : training && !readiness.eligible && acquisition?.state !== "EXPIRED"
+        ? acquisition?.progress
+          ? "Collection paused · hold progress kept"
+          : "Waiting for eligible tracking · saved targets kept"
+        : acquisition?.state === "MOVING"
+          ? "Movement detected · let your hand settle"
+          : acquisition?.state === "PAUSED"
+            ? "Collection paused · hold progress kept"
+            : acquisition?.state === "EXPIRED"
+              ? "Reacquiring this target · saved targets kept"
+              : acquisition?.state === "COLLECTING"
+                ? "Hold here · collecting"
+                : acquisition?.state === "ACCEPTED"
+                  ? "Target saved"
+                  : "Find a comfortable hold";
   const relativeInstruction =
     step === "TRAINING" && pointingMode === "RELATIVE" ? relativeLayout.instructions[completed] : null;
-  const assessment = readiness.hand ? assessHand(readiness.hand) : null;
+  const assessment = readiness.hand ? assessHand(readiness.hand, frameSize) : null;
   const calibrationLabel =
     calibration?.status === "VALIDATED"
       ? "Independent check passed"
@@ -681,6 +685,7 @@ export function ReachLaboratory({
       data-motion-level={motion?.mode ?? "reduced"}
       data-reach-session="local-private"
       data-reach-authority="laboratory-only"
+      data-reach-readiness={readiness.condition}
     >
       <header className={styles.header}>
         <div>
@@ -808,6 +813,9 @@ export function ReachLaboratory({
             {training ? (
               <>
                 <span>
+                  {readiness.detectedCount} hand{readiness.detectedCount === 1 ? "" : "s"} detected ·{" "}
+                  {readiness.eligible ? "Point eligible" : "Collection paused"}
+                  <br />
                   {completed} of {total} saved · {Math.round((acquisition?.progress ?? 0) * 100)}% collected
                 </span>
                 <progress aria-label="Target progress" max={1} value={acquisition?.progress ?? 0} />
@@ -934,7 +942,13 @@ export function ReachLaboratory({
             {source !== "OFF" && (
               <span>
                 {readiness.detectedCount} detected · {assessment?.framed ? "Hand framed" : "Framing needs attention"} ·{" "}
-                {assessment?.pointing ? "Point recognized" : "Point not yet recognized"}
+                {assessment?.pointing ? "Point recognized" : "Point not yet recognized"} ·{" "}
+                {readiness.eligible ? "Eligible for collection" : "Collection waiting"}
+              </span>
+            )}
+            {source === "LIVE" && assessment?.depthDominant && (
+              <span>
+                Index aimed toward the camera. Depth is inferred; the independent check still measures accuracy.
               </span>
             )}
           </div>
@@ -1033,7 +1047,8 @@ export function ReachLaboratory({
                 </div>
                 <progress aria-label="Current target acquisition" max={1} value={acquisition?.progress ?? 0} />
                 <p>
-                  {completed} of {total} targets saved. Brief interruptions pause this target.
+                  {completed} of {total} targets saved. Brief interruptions pause collection; only fresh, stable samples
+                  count.
                 </p>
               </div>
               <div className={styles.actions}>

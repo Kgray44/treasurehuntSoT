@@ -9,7 +9,7 @@ import {
 } from "./foundation-scenarios";
 import { calibrationLayout, estimatedPoint, fitCalibration, stableSamples, validateCalibration } from "./calibration";
 import { BrowserCameraBroker } from "@/sextant/camera";
-import { BrowserHandAdapter } from "@/watchglass/hand-provider";
+import { BrowserHandAdapter, HAND_CONTINUITY_GRACE_MS } from "@/watchglass/hand-provider";
 import { syntheticObservation } from "./synthetic";
 describe("Reach Phase 1 owner oracles", () => {
   it("detaches and rejects a source that ends during listener registration", async () => {
@@ -187,7 +187,8 @@ describe("Reach Phase 1 owner oracles", () => {
     adapter.envelope({ landmarks: [], handedness: [] }, 120, 130, 640, 480);
     const b = adapter.envelope({ landmarks, handedness: [] }, 140, 150, 640, 480);
     expect(b.hands[0].trackGeneration).toBe(a.hands[0].trackGeneration);
-    const c = adapter.envelope({ landmarks, handedness: [] }, 500, 510, 640, 480);
+    const expired = 140 + HAND_CONTINUITY_GRACE_MS + 1;
+    const c = adapter.envelope({ landmarks, handedness: [] }, expired, expired + 10, 640, 480);
     expect(c.hands[0].trackGeneration).toBeGreaterThan(a.hands[0].trackGeneration);
   });
 });

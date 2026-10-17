@@ -44,11 +44,24 @@ export type CalibrationBinding = {
   trackGeneration: number;
   evidenceTier: HandObservation["evidenceTier"];
 };
-export type CalibrationSample = { target: Point; features: number[]; at: number };
+export type CalibrationSample = {
+  target: Point;
+  features: number[];
+  at: number;
+  /** Real capture-time segments. A resumed segment never credits its preceding interruption. */
+  continuitySegment?: number;
+};
+export const sampleEvidencePolicy = {
+  maximumSampleGapMs: 300,
+  recoveryMs: 2500,
+  maximumWindowMs: 5000,
+  minimumEvidenceMs: 600,
+  minimumSamples: 15,
+} as const;
 export type Calibration = {
   version: 1;
   id: string;
-  mapping: "INDEX_AXIS_RIDGE_V1" | "RELATIVE_DISPLACEMENT_V1";
+  mapping: "INDEX_AXIS_RIDGE_V2" | "RELATIVE_DISPLACEMENT_V1";
   binding: CalibrationBinding;
   createdAt: number;
   expiresAt: number;
@@ -104,12 +117,42 @@ function validSample(sample: CalibrationSample) {
     sample.features[0] === 1
   );
 }
+/** Returns real observed evidence time, excluding paused, rejected and reacquisition intervals. */
+export function sampleEvidenceDuration(samples: CalibrationSample[]): number | null {
+  if (!samples.length) return 0;
+  const segmented = samples[0].continuitySegment !== undefined;
+  let duration = 0;
+  for (let i = 0; i < samples.length; i++) {
+    const sample = samples[i];
+    if (
+      !Number.isFinite(sample.at) ||
+      (segmented
+        ? !Number.isInteger(sample.continuitySegment) || sample.continuitySegment! < 0
+        : sample.continuitySegment !== undefined)
+    )
+      return null;
+    if (!i) continue;
+    const previous = samples[i - 1],
+      gap = sample.at - previous.at;
+    if (gap <= 0) return null;
+    if (!segmented || sample.continuitySegment === previous.continuitySegment) {
+      if (gap > sampleEvidencePolicy.maximumSampleGapMs) return null;
+      duration += segmented ? Math.min(100, gap) : gap;
+    } else {
+      if (sample.continuitySegment !== previous.continuitySegment! + 1 || gap > sampleEvidencePolicy.recoveryMs)
+        return null;
+    }
+  }
+  if (segmented && samples.at(-1)!.at - samples[0].at > sampleEvidencePolicy.maximumWindowMs) return null;
+  return duration;
+}
 export function stableSamples(samples: CalibrationSample[]) {
+  const duration = sampleEvidenceDuration(samples);
   if (
-    samples.length < 15 ||
+    samples.length < sampleEvidencePolicy.minimumSamples ||
     samples.some((s) => !validSample(s)) ||
-    samples.at(-1)!.at - samples[0].at < 600 ||
-    samples.some((s, i) => i > 0 && (s.at <= samples[i - 1].at || s.at - samples[i - 1].at > 300))
+    duration === null ||
+    duration < sampleEvidencePolicy.minimumEvidenceMs
   )
     return false;
   return samples[0].features.every(
@@ -163,7 +206,7 @@ export function fitCalibration(groups: CalibrationSample[][], binding: Calibrati
   const c: Calibration = {
     version: 1,
     id: crypto.randomUUID(),
-    mapping: "INDEX_AXIS_RIDGE_V1",
+    mapping: "INDEX_AXIS_RIDGE_V2",
     binding: structuredClone(binding),
     createdAt: now,
     expiresAt: now + 30 * 60 * 1000,
@@ -358,7 +401,7 @@ export function estimatedPoint(c: Calibration, observation: HandObservation, bin
     observation.evidenceTier !== binding.evidenceTier
   )
     return null;
-  const point = calibratedPoint(c, pointingFeatures(hand), binding, now);
+  const point = calibratedPoint(c, pointingFeatures(hand, observation), binding, now);
   return point
     ? {
         ...point,

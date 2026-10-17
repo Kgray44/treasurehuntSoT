@@ -4221,6 +4221,9 @@
           "PLAYGROUND",
           "MULTIPLE_HANDS",
           "DETECTED_INELIGIBLE",
+          "TEMPORARY_INTERRUPTION",
+          "REACQUIRING",
+          "SETUP_INVALIDATED",
           "RELATIVE_TRAINING",
           "RELATIVE_VALIDATION",
           "RELATIVE_RESULTS",
@@ -4232,7 +4235,7 @@
         "accessibility": "Keyboard, touch and ordinary buttons operate setup, pause, retry, deletion, export and return. A disclosed guided demo explains the full flow without a camera.",
         "fallback": "Camera failure gives a plain-language explanation, retry and a guided conventional demonstration. All Voyagewright navigation remains conventional.",
         "navigation": "Existing device connections link opens Reach; the visible return clears owned camera resources and restores device connections; safe contextual return is accepted.",
-        "designTarget": "One continuous instrument workspace with a large registered camera stage, restrained brass and sea-green hierarchy, staged target plane, contextual guidance, visible progress and deliberately disclosed diagnostics. Mobile preparation prioritizes the camera and calibration prioritizes the target.",
+        "designTarget": "One continuous instrument workspace with a large registered camera stage, restrained brass and sea-green hierarchy, staged target plane, contextual guidance, visible progress and deliberately disclosed diagnostics. Mobile preparation prioritizes the camera and calibration prioritizes the target. Distinguish tracking, posture eligibility, actual collection, frozen interrupted progress, fresh reacquisition and genuine setup invalidation. Preserve completed targets across same-context pauses; relaxed and camera-facing index points use inferred 3D anatomy with honest uncertainty.",
         "references": [
           {
             "family": "Gateway / public entry",
@@ -4253,7 +4256,7 @@
         ],
         "homeportScreenIds": [],
         "homeportJourneyIds": [],
-        "browserTests": ["tests/e2e/reach-laboratory.spec.ts"],
+        "browserTests": ["tests/e2e/reach-laboratory.spec.ts", "tests/e2e/reach-recovery.spec.ts"],
         "fixtureProfile": "generic",
         "recordingRequired": true,
         "motion": {
