@@ -27,6 +27,7 @@ const frameSchema = z.object({
   width: nullable,
   height: nullable,
   mirror: z.boolean(),
+  inferenceBackend: z.enum(["CPU_WASM", "GPU_WEBGL"]).nullable().default(null),
   timingFlags: z.array(z.string()).max(20),
   hands: z
     .array(
