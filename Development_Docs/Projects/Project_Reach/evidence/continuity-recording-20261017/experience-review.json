@@ -1,0 +1,220 @@
+{
+  "schema_version": 1,
+  "classification": "engineering_evidence",
+  "review_kind": "independent_rendered_experience_review",
+  "review_completed_utc": "2026-10-17 20:29:06 UTC",
+  "application_source_commit": "a450b244cbb2e5fa9643f74b0c794d07a1fa3ab5",
+  "source_binding_basis": "Application source frozen at a450b244cbb2e5fa9643f74b0c794d07a1fa3ab5 and isolated physical-followup-browser-evidence capture provenance supplied by the implementation agent. This reviewer inspected the new rendered files independently and did not inspect implementation source.",
+  "reviewer": {
+    "identity": "/root/experience_critique_v2",
+    "role": "Independent visual review subagent",
+    "rendered_before_source": true,
+    "implementation_source_inspected": false,
+    "method": "view_image(detail=original) on eight fresh public/analytic fixture captures, before inspecting implementation source; dimensions read with System.Drawing. Only this JSON report was changed. Private owner recording was excluded."
+  },
+  "objective": "Owner-requested local guided video/landmark recording and clear review/download access; visible index tracking remains separate from confirmed pointing and collection, cropped non-index inference is disclosed, paused progress remains visible, and genuine setup invalidation gives a reason.",
+  "images_reviewed": [
+    {
+      "file": "D1-local-recorder-review.png",
+      "reviewed_original_path": "D:\\CodexRuntime\\reach-edge-motion-20261017\\physical-followup-browser-evidence\\reach-recovery-the-local-r-55994-o-raw-trace-and-pause-local\\D1-local-recorder-review.png",
+      "application_source_commit": "a450b244cbb2e5fa9643f74b0c794d07a1fa3ab5",
+      "width_px": 1280,
+      "height_px": 1040,
+      "observation": "Saved recording occupies the main left panel starting approximately image y277; separate video and trace downloads are around y431 and deletion around y486. The large empty live-camera block from the earlier review is absent. Public photographic hand, trace, CENTER label, elapsed/camera times, and saved diagnostic/no-microphone caption are visible."
+    },
+    {
+      "file": "D0-cropped-finger-inference.png",
+      "reviewed_original_path": "D:\\CodexRuntime\\reach-edge-motion-20261017\\physical-followup-browser-evidence\\reach-recovery-D0-controll-81de3-ut-losing-completed-targets\\D0-cropped-finger-inference.png",
+      "application_source_commit": "a450b244cbb2e5fa9643f74b0c794d07a1fa3ab5",
+      "width_px": 1280,
+      "height_px": 1385,
+      "observation": "Cropped-finger state explicitly says some cropped fingers are model-estimated, requires visible index and knuckles, and says pointing is checked against other fingers. The camera footer says partial hand and some fingers inferred; readiness is eligible in this fixture."
+    },
+    {
+      "file": "D0-cropped-open-hand-rejected.png",
+      "reviewed_original_path": "D:\\CodexRuntime\\reach-edge-motion-20261017\\physical-followup-browser-evidence\\reach-recovery-D0-controll-81de3-ut-losing-completed-targets\\D0-cropped-open-hand-rejected.png",
+      "application_source_commit": "a450b244cbb2e5fa9643f74b0c794d07a1fa3ab5",
+      "width_px": 1280,
+      "height_px": 1429,
+      "observation": "Cropped open-hand state retains visible index joints but says Point not yet recognized and Collection waiting. Additional copy says pointing is tentative and collection paused until enough anatomy is available; setup is visibly unavailable."
+    },
+    {
+      "file": "D0-index-tracked-intent-uncertain.png",
+      "reviewed_original_path": "D:\\CodexRuntime\\reach-edge-motion-20261017\\physical-followup-browser-evidence\\reach-recovery-D0-controll-81de3-ut-losing-completed-targets\\D0-index-tracked-intent-uncertain.png",
+      "application_source_commit": "a450b244cbb2e5fa9643f74b0c794d07a1fa3ab5",
+      "width_px": 1280,
+      "height_px": 1429,
+      "observation": "Intent-uncertain state says Index detected and requests more of the other fingers so pointing can be confirmed. Index remains visible while Point not yet recognized and Collection waiting, with setup unavailable."
+    },
+    {
+      "file": "D0-context-invalidation.png",
+      "reviewed_original_path": "D:\\CodexRuntime\\reach-edge-motion-20261017\\physical-followup-browser-evidence\\reach-recovery-D0-controll-81de3-ut-losing-completed-targets\\D0-context-invalidation.png",
+      "application_source_commit": "a450b244cbb2e5fa9643f74b0c794d07a1fa3ab5",
+      "width_px": 1280,
+      "height_px": 1415,
+      "observation": "Full-width amber Setup ended alert appears before the camera/setup region, explains that the same hand and camera setup cannot be confirmed, and requests a fresh setup while the camera remains available."
+    },
+    {
+      "file": "D0-posture-interruption.png",
+      "reviewed_original_path": "D:\\CodexRuntime\\reach-edge-motion-20261017\\physical-followup-browser-evidence\\reach-recovery-D0-controll-81de3-ut-losing-completed-targets\\D0-posture-interruption.png",
+      "application_source_commit": "a450b244cbb2e5fa9643f74b0c794d07a1fa3ab5",
+      "width_px": 1280,
+      "height_px": 1247,
+      "observation": "During posture interruption, visible index joints remain tracked while pointing is tentative and collection paused. The progress area says waiting for eligible tracking and saved targets kept; 1 of 9 targets saved remains explicit."
+    },
+    {
+      "file": "D0-brief-occlusion.png",
+      "reviewed_original_path": "D:\\CodexRuntime\\reach-edge-motion-20261017\\physical-followup-browser-evidence\\reach-recovery-D0-controll-81de3-ut-losing-completed-targets\\D0-brief-occlusion.png",
+      "application_source_commit": "a450b244cbb2e5fa9643f74b0c794d07a1fa3ab5",
+      "width_px": 1280,
+      "height_px": 1182,
+      "observation": "During brief occlusion, zero hands are detected; same-hand return guidance is visible, 33% current hold progress is retained, and 1 of 9 saved remains explicit."
+    },
+    {
+      "file": "D0-recovered-saved-targets.png",
+      "reviewed_original_path": "D:\\CodexRuntime\\reach-edge-motion-20261017\\physical-followup-browser-evidence\\reach-recovery-D0-controll-81de3-ut-losing-completed-targets\\D0-recovered-saved-targets.png",
+      "application_source_commit": "a450b244cbb2e5fa9643f74b0c794d07a1fa3ab5",
+      "width_px": 1280,
+      "height_px": 1163,
+      "observation": "After recovery, target 3 is active with 2 of 9 saved and 27% current hold progress; current readiness and eligible-for-collection metadata agree."
+    }
+  ],
+  "findings": [
+    {
+      "id": "REACH-RECORDER-VISUAL-01",
+      "severity": "P2",
+      "status": "resolved_in_rendered_followup",
+      "title": "Successful saved playback is below an empty live-camera panel",
+      "image": "D1-local-recorder-review.png",
+      "observation": "In the 1280x1556 review render, a disabled live-camera rectangle occupies approximately y277-788. Recorded playback starts around y823 and download actions around y839. An 800px-high desktop viewport therefore emphasizes an empty preview and Enable camera preview before the saved recording is visible.",
+      "impact": "A successful recording can look empty, and the person may enable the live camera again while trying to review the saved capture.",
+      "recommendation": "Use the main preview area for saved playback in review state, or promote a clear playback/download action before the empty live-preview block.",
+      "blocking_scope": "Resolved in supplied follow-up render; no confirmed recording/download blocker was observed.",
+      "initial_application_source_commit": "fd0f5fc89cb39f97909b6c7cd0477cef6206057a",
+      "initial_image": "review-before-local-recorder-review.png",
+      "initial_reviewed_original_path": "D:\\CodexRuntime\\reach-edge-motion-20261017\\recorder-recheck-browser-evidence\\reach-recovery-the-local-r-55994-o-raw-trace-and-pause-local\\D1-local-recorder-review.png",
+      "closure": {
+        "application_source_commit": "a450b244cbb2e5fa9643f74b0c794d07a1fa3ab5",
+        "image": "D1-local-recorder-review.png",
+        "observation": "Saved playback now occupies the primary preview area, and both download actions are visible near its top in the same desktop view. The empty live-camera block no longer precedes playback.",
+        "scope": "Visual closure for the supplied 1280px-wide rendered follow-up; not a claim about mobile layout, all viewport heights, physical accuracy, or owner acceptance."
+      }
+    }
+  ],
+  "positive_observations": [
+    "Saved playback and both download actions are prominent together in the review state; the photographic fixture, rendered trace, current CENTER label, and recorded times remain readable.",
+    "Review privacy details still explain visible camera background, local page memory, manual downloads, no upload/account storage/fitting, unsaved-recording loss on leaving, and diagnostic latency limits. The saved recording caption says no microphone.",
+    "Visible index tracking is explicitly separated from confirmed pointing and collection in the uncertain and cropped-open-hand states.",
+    "Cropped non-index landmark inference is disclosed without implying that all anatomy was observed; visible index/knuckle and other-finger checks remain explained.",
+    "Paused posture and brief-occlusion states preserve readable saved-target counts; the occlusion frame also preserves partial hold progress, and recovery advances to the next target.",
+    "Genuine continuity invalidation has a prominent amber reason and a fresh-setup next action, while keeping camera availability clear."
+  ],
+  "limits": [
+    "Public photographic and analytic fixtures only. The private owner recording was excluded; no physical pointing accuracy, comfort, reliability, or owner acceptance is claimed.",
+    "Current saved playback shows CENTER labeling. This review does not establish labels for all 14 guide steps, paused/resume recording behavior, or mobile recording layout.",
+    "Static screenshots do not establish video/trace timing alignment, dynamic continuity, downloaded file contents, keyboard traversal, or screen-reader behavior.",
+    "The earlier decoded public-fixture video frame and initial recording-control/privacy review are preserved in review_history under their original fd0f5fc89cb39f97909b6c7cd0477cef6206057a source. They are not relabeled as current-source proof.",
+    "Loopback/environment gating, no-upload behavior, implementation internals, and test outcomes were not independently checked from source or network inspection by this visual reviewer.",
+    "No protected acceptance or Crossdeck/Sounding Line qualification was performed."
+  ],
+  "disposition": {
+    "status": "development_visual_review_complete_with_resolved_p2",
+    "confirmed_open_p0_p1": 0,
+    "confirmed_open_p2": 0,
+    "initial_p2_resolved": 1,
+    "recording_download_blocker_observed": false,
+    "physical_validation": "pending",
+    "owner_acceptance": "pending",
+    "protected_acceptance": false
+  },
+  "review_history": [
+    {
+      "application_source_commit": "fd0f5fc89cb39f97909b6c7cd0477cef6206057a",
+      "review_completed_utc": "2026-10-17 20:15:33 UTC",
+      "findings": [
+        {
+          "id": "REACH-RECORDER-VISUAL-01",
+          "severity": "P2",
+          "status": "open_in_reviewed_render",
+          "title": "Successful saved playback is below an empty live-camera panel",
+          "image": "D1-local-recorder-review.png",
+          "observation": "In the 1280x1556 review render, a disabled live-camera rectangle occupies approximately y277-788. Recorded playback starts around y823 and download actions around y839. An 800px-high desktop viewport therefore emphasizes an empty preview and Enable camera preview before the saved recording is visible.",
+          "impact": "A successful recording can look empty, and the person may enable the live camera again while trying to review the saved capture.",
+          "recommendation": "Use the main preview area for saved playback in review state, or promote a clear playback/download action before the empty live-preview block.",
+          "blocking_scope": "Usability finding; does not prevent recording, stopping, or local file download. No P0/P1 blocker was observed."
+        }
+      ],
+      "images_reviewed": [
+        {
+          "file": "D1-local-recorder-active.png",
+          "reviewed_original_path": "D:\\CodexRuntime\\reach-edge-motion-20261017\\recorder-recheck-browser-evidence\\reach-recovery-the-local-r-55994-o-raw-trace-and-pause-local\\D1-local-recorder-active.png",
+          "width_px": 1280,
+          "height_px": 1251,
+          "observation": "Active recording shows Step 1 of 14, a comfortable center-point prompt, elapsed guide time, raw-result count, a prompt-position diagram, Pause recording, Stop & review, and Cancel & delete recording. The photographic hand and mint trace are visible together."
+        },
+        {
+          "file": "D1-local-recorder-review.png",
+          "reviewed_original_path": "D:\\CodexRuntime\\reach-edge-motion-20261017\\recorder-recheck-browser-evidence\\reach-recovery-the-local-r-55994-o-raw-trace-and-pause-local\\D1-local-recorder-review.png",
+          "width_px": 1280,
+          "height_px": 1556,
+          "observation": "Review states user stopped, preserves video and trace in page memory, offers separate video/trace downloads and deletion, and says no setup is fitted or validated. Saved playback begins below a large disabled live-preview rectangle."
+        },
+        {
+          "file": "recorder-public-fixture-frame.png",
+          "reviewed_original_path": "D:\\CodexRuntime\\reach-edge-motion-20261017\\recorder-public-fixture-frame.png",
+          "width_px": 640,
+          "height_px": 592,
+          "observation": "Decoded saved-video frame visibly combines the public photographic hand and trace with CENTER, guide elapsed time, camera time, requested-pose text, and the diagnostic/no-latency-qualification footer."
+        },
+        {
+          "file": "D0-context-invalidation.png",
+          "reviewed_original_path": "D:\\CodexRuntime\\reach-edge-motion-20261017\\continuity-recording-browser-evidence\\reach-recovery-D0-controll-81de3-ut-losing-completed-targets\\D0-context-invalidation.png",
+          "width_px": 1280,
+          "height_px": 1439,
+          "observation": "Genuine reset render places a full-width amber Setup ended alert before camera/setup, explains that the same hand and camera setup cannot be confirmed, and says to begin a fresh setup while the camera remains available."
+        }
+      ],
+      "positive_observations": [
+        "Local developer testing and no calibration fit are visible above the main heading.",
+        "The active current-point prompt and saved-frame CENTER label connect the requested pose to the photographic hand and rendered trace.",
+        "Prompt-position copy explicitly says there is no fit or pointing-eligibility gate.",
+        "Record-state Pause, Stop & review, and Cancel & delete are readable ordinary controls. Review-state video and landmark trace downloads are distinct, as is deletion.",
+        "Privacy details say video includes the visible camera background, no microphone is used, nothing is uploaded or saved to an account, and leaving discards unsaved page recordings.",
+        "Details distinguish requested prompt intent from verified ground truth, state raw trace contents and resource limits, and exclude sensor-to-display latency qualification.",
+        "The amber Setup ended alert is prominent and explains both the reason for reset and the next action."
+      ],
+      "limits": [
+        "Public photographic fixture only; no owner footage was reviewed and no physical pointing accuracy, comfort, or owner acceptance is claimed.",
+        "Only the CENTER step is visible in supplied recording artifacts; this review does not establish labels for every one of the 14 steps.",
+        "No before-recording, paused/resume, or mobile recording render was supplied. Those state presentations were not independently reviewed.",
+        "Static screenshots and one decoded frame do not establish video/trace time alignment, dynamic continuity, file contents, keyboard accessibility, or screen-reader behavior.",
+        "Loopback/environment-flag gating, no-upload behavior, test results, and source binding were reported by the implementation agent; they were not independently established from source or network inspection by this visual reviewer.",
+        "No protected acceptance or Crossdeck/Sounding Line qualification was performed."
+      ],
+      "disposition": {
+        "status": "development_review_complete_with_open_p2_usability_finding",
+        "confirmed_open_p0_p1": 0,
+        "confirmed_open_p2": 1,
+        "recording_download_blocker_observed": false,
+        "physical_validation": "pending",
+        "owner_acceptance": "pending",
+        "protected_acceptance": false
+      },
+      "preserved_initial_review_image": "review-before-local-recorder-review.png",
+      "note": "Initial rendered review is retained as history. Original reviewed paths identify the exact earlier files even where a later canonical image uses the same basename."
+    }
+  ],
+  "residual_observations": [
+    {
+      "severity": "unconfirmed_capture_observation",
+      "images": [
+        "D1-local-recorder-review.png",
+        "D0-posture-interruption.png",
+        "D0-brief-occlusion.png",
+        "D0-recovered-saved-targets.png"
+      ],
+      "observation": "Some fullpage renders retain a focused-scroll skip-link/sticky-navigation composition over the earlier page header. This was already identified as capture-state ambiguity; the new crop/intent and reset renders show normal title/step ordering.",
+      "disposition": "No shared navigation source defect or repair is claimed from these static captures. This does not reopen the resolved saved-playback ordering finding."
+    }
+  ]
+}

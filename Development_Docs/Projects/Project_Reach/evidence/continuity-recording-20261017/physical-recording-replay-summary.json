@@ -1,0 +1,460 @@
+{
+  "version": 1,
+  "classification": "engineering_evidence",
+  "role": "DEVELOPMENT_ONLY_OWNER_AUTHORIZED_LOCAL_RECORDING_REPLAY",
+  "recordingSourceCommit": "fd0f5fc89cb39f97909b6c7cd0477cef6206057a",
+  "finalReplaySourceCommit": "a450b244cbb2e5fa9643f74b0c794d07a1fa3ab5",
+  "physicalAccuracyQualified": false,
+  "protectedQualification": false,
+  "ownerAcceptance": "PENDING_NEW_WEBCAM_TRIAL",
+  "consent": "Owner explicitly selected short camera video plus landmark trace, including visible background, for local testing and requested point snapshots.",
+  "privacy": {
+    "originalDownloadsPreserved": true,
+    "privateCopiesHashVerified": true,
+    "rawVideoCommitted": false,
+    "rawLandmarksCommitted": false,
+    "ownerImagesCommitted": false,
+    "uploaded": false,
+    "traceSha256": "1ecb33169a710a0680133f97ded8848cb830d4002c80f45c5d5344d7a9e108cc",
+    "videoSha256": "82befe2eb01d08390e415b2c0085e36c7ca6ba8d9932489c06d32f09c9af5794"
+  },
+  "snapshotExtraction": {
+    "extractedCompositeFrames": 25,
+    "targetMidpoints": 9,
+    "failedExtractions": 0,
+    "imagesAreUnmodifiedFullCompositeFrames": true,
+    "selectedWithoutFilteringForSuccessfulPosture": true,
+    "alignment": "BEST_EFFORT_CAPTURE_CLOCK_MINUS_PAUSES;_VISIBLE_TARGET_AND_CAMERA_TIME_CHECKED",
+    "privateContactSheetAvailableLocally": true
+  },
+  "coverage": {
+    "recordedResults": 928,
+    "promptLabels": "REQUESTED_INTENT_ONLY_NOT_FRAME_GROUND_TRUTH",
+    "ownerCorrection": "SWEEP prompt was not performed correctly; other positions were performed well according to owner.",
+    "sweepExcludedFromPhysicalMotionEvidence": true,
+    "freshCaptureWithUpdatedSource": false
+  },
+  "before": {
+    "rejectedObservationInputs": 0,
+    "replacementContextEvents": 3
+  },
+  "after": {
+    "rejectedObservationInputs": 0,
+    "replacementContextEvents": 1
+  },
+  "steps": [
+    {
+      "step": "CENTER",
+      "results": 77,
+      "eligibleBefore": 74,
+      "eligibleAfter": 74,
+      "contextEventsBefore": 0,
+      "contextEventsAfter": 0,
+      "physicalMotionEvidence": "PROMPT_AND_VISUAL_REVIEW_ONLY"
+    },
+    {
+      "step": "BOTTOM",
+      "results": 102,
+      "eligibleBefore": 19,
+      "eligibleAfter": 61,
+      "contextEventsBefore": 0,
+      "contextEventsAfter": 0,
+      "physicalMotionEvidence": "PROMPT_AND_VISUAL_REVIEW_ONLY"
+    },
+    {
+      "step": "TOP",
+      "results": 76,
+      "eligibleBefore": 54,
+      "eligibleAfter": 62,
+      "contextEventsBefore": 0,
+      "contextEventsAfter": 0,
+      "physicalMotionEvidence": "PROMPT_AND_VISUAL_REVIEW_ONLY"
+    },
+    {
+      "step": "LEFT",
+      "results": 60,
+      "eligibleBefore": 60,
+      "eligibleAfter": 60,
+      "contextEventsBefore": 0,
+      "contextEventsAfter": 0,
+      "physicalMotionEvidence": "PROMPT_AND_VISUAL_REVIEW_ONLY"
+    },
+    {
+      "step": "RIGHT",
+      "results": 58,
+      "eligibleBefore": 58,
+      "eligibleAfter": 58,
+      "contextEventsBefore": 0,
+      "contextEventsAfter": 0,
+      "physicalMotionEvidence": "PROMPT_AND_VISUAL_REVIEW_ONLY"
+    },
+    {
+      "step": "TOP_LEFT",
+      "results": 50,
+      "eligibleBefore": 50,
+      "eligibleAfter": 50,
+      "contextEventsBefore": 0,
+      "contextEventsAfter": 0,
+      "physicalMotionEvidence": "PROMPT_AND_VISUAL_REVIEW_ONLY"
+    },
+    {
+      "step": "TOP_RIGHT",
+      "results": 50,
+      "eligibleBefore": 40,
+      "eligibleAfter": 40,
+      "contextEventsBefore": 0,
+      "contextEventsAfter": 0,
+      "physicalMotionEvidence": "PROMPT_AND_VISUAL_REVIEW_ONLY"
+    },
+    {
+      "step": "BOTTOM_LEFT",
+      "results": 46,
+      "eligibleBefore": 14,
+      "eligibleAfter": 39,
+      "contextEventsBefore": 0,
+      "contextEventsAfter": 0,
+      "physicalMotionEvidence": "PROMPT_AND_VISUAL_REVIEW_ONLY"
+    },
+    {
+      "step": "BOTTOM_RIGHT",
+      "results": 48,
+      "eligibleBefore": 0,
+      "eligibleAfter": 20,
+      "contextEventsBefore": 0,
+      "contextEventsAfter": 0,
+      "physicalMotionEvidence": "PROMPT_AND_VISUAL_REVIEW_ONLY"
+    },
+    {
+      "step": "RELAXED",
+      "results": 75,
+      "eligibleBefore": 51,
+      "eligibleAfter": 51,
+      "contextEventsBefore": 1,
+      "contextEventsAfter": 0,
+      "physicalMotionEvidence": "PROMPT_AND_VISUAL_REVIEW_ONLY"
+    },
+    {
+      "step": "SWEEP",
+      "results": 129,
+      "eligibleBefore": 129,
+      "eligibleAfter": 129,
+      "contextEventsBefore": 0,
+      "contextEventsAfter": 0,
+      "physicalMotionEvidence": "EXCLUDED_BY_OWNER_CORRECTION"
+    },
+    {
+      "step": "OPEN_PALM",
+      "results": 64,
+      "eligibleBefore": 11,
+      "eligibleAfter": 13,
+      "contextEventsBefore": 1,
+      "contextEventsAfter": 0,
+      "physicalMotionEvidence": "PROMPT_AND_VISUAL_REVIEW_ONLY"
+    },
+    {
+      "step": "HIDE",
+      "results": 13,
+      "eligibleBefore": 0,
+      "eligibleAfter": 0,
+      "contextEventsBefore": 0,
+      "contextEventsAfter": 0,
+      "physicalMotionEvidence": "PROMPT_AND_VISUAL_REVIEW_ONLY"
+    },
+    {
+      "step": "RECOVER",
+      "results": 80,
+      "eligibleBefore": 33,
+      "eligibleAfter": 33,
+      "contextEventsBefore": 1,
+      "contextEventsAfter": 1,
+      "physicalMotionEvidence": "PROMPT_AND_VISUAL_REVIEW_ONLY"
+    }
+  ],
+  "visualFindings": [
+    "Representative lower-target images show an extended or camera-facing index while lower non-index fingers and wrist are cropped. Current visible index/core geometry passes in the reviewed examples.",
+    "The first two former replacement-context events follow overlapping model hypotheses on one visible physical hand. Their resets disappear in final software replay; ambiguous frames still do not collect samples.",
+    "At the reviewed lower-left and end-on lower-right examples, bounded auxiliary finger estimates support pointing while the observed index and knuckles remain required.",
+    "The reviewed bottom example remains ineligible because inferred secondary-finger geometry resembles an open hand. The open-hand veto was retained.",
+    "A potential open-palm false-positive prompt-transition image still visibly shows pointing; prompt labels alone were not treated as confirmed false positives.",
+    "The remaining context event follows actual absence beyond the unchanged 1.2-second local association grace. It is not silently rebound to saved calibration."
+  ],
+  "remainingLimits": [
+    "One camera and one owner recording do not establish general hand anatomy, comfort, screen intersection, physical accuracy or identity.",
+    "Off-image finger geometry is bounded monocular model inference, not observed anatomy. Missing observed index/core or ambiguous/open/competing poses still pause collection.",
+    "Twelve late lower-right results contain no raw hand hypothesis; observation processing cannot reconstruct a live hand that the model did not return.",
+    "Visible index tracing and indexTracked diagnostics remain independent of confirmed pointing and calibration eligibility.",
+    "The owner did not perform the sweep correctly; another physical motion trial remains required."
+  ],
+  "acquisitionReplay": {
+    "sourceCandidate": "a450b244cbb2e5fa9643f74b0c794d07a1fa3ab5",
+    "productionSampleWindowUsed": true,
+    "calibrationFitPerformed": false,
+    "heldOutValidationPerformed": false,
+    "instructionDelayMs": 700,
+    "minimumSamples": 15,
+    "minimumObservedEvidenceMs": 600,
+    "featureSpreadAndEvidenceGatesUnchanged": true,
+    "relativeRelevantHolds": {
+      "completedWithinRecordedPrompt": 4,
+      "total": 5,
+      "uncompleted": ["LEFT"]
+    },
+    "absoluteHolds": {
+      "completedWithinRecordedPrompt": 4,
+      "total": 9,
+      "uncompleted": ["LEFT", "TOP_LEFT", "TOP_RIGHT", "BOTTOM_LEFT", "BOTTOM_RIGHT"]
+    },
+    "results": [
+      {
+        "prompt": "CENTER",
+        "modes": [
+          {
+            "mode": "ABSOLUTE",
+            "completedWithinRecordedPrompt": true,
+            "maximumProgress": 1,
+            "needsNewSetup": false,
+            "eligibleAfterDelay": 68,
+            "pushCalls": 15,
+            "pausedObservations": 0,
+            "rejections": 0,
+            "firstCompletionAfterPromptMs": 1861.2999999970198
+          },
+          {
+            "mode": "RELATIVE",
+            "completedWithinRecordedPrompt": true,
+            "maximumProgress": 1,
+            "needsNewSetup": false,
+            "eligibleAfterDelay": 68,
+            "pushCalls": 15,
+            "pausedObservations": 0,
+            "rejections": 0,
+            "firstCompletionAfterPromptMs": 1861.2999999970198
+          }
+        ]
+      },
+      {
+        "prompt": "BOTTOM",
+        "modes": [
+          {
+            "mode": "ABSOLUTE",
+            "completedWithinRecordedPrompt": true,
+            "maximumProgress": 1,
+            "needsNewSetup": false,
+            "eligibleAfterDelay": 52,
+            "pushCalls": 34,
+            "pausedObservations": 41,
+            "rejections": 12,
+            "firstCompletionAfterPromptMs": 6568.699999999255
+          },
+          {
+            "mode": "RELATIVE",
+            "completedWithinRecordedPrompt": true,
+            "maximumProgress": 1,
+            "needsNewSetup": false,
+            "eligibleAfterDelay": 52,
+            "pushCalls": 34,
+            "pausedObservations": 41,
+            "rejections": 12,
+            "firstCompletionAfterPromptMs": 6568.699999999255
+          }
+        ]
+      },
+      {
+        "prompt": "TOP",
+        "modes": [
+          {
+            "mode": "ABSOLUTE",
+            "completedWithinRecordedPrompt": true,
+            "maximumProgress": 1,
+            "needsNewSetup": false,
+            "eligibleAfterDelay": 58,
+            "pushCalls": 53,
+            "pausedObservations": 8,
+            "rejections": 35,
+            "firstCompletionAfterPromptMs": 5580.599999997765
+          },
+          {
+            "mode": "RELATIVE",
+            "completedWithinRecordedPrompt": true,
+            "maximumProgress": 1,
+            "needsNewSetup": false,
+            "eligibleAfterDelay": 58,
+            "pushCalls": 53,
+            "pausedObservations": 8,
+            "rejections": 35,
+            "firstCompletionAfterPromptMs": 5580.599999997765
+          }
+        ]
+      },
+      {
+        "prompt": "LEFT",
+        "modes": [
+          {
+            "mode": "ABSOLUTE",
+            "completedWithinRecordedPrompt": false,
+            "maximumProgress": 0.4666666666666667,
+            "needsNewSetup": false,
+            "eligibleAfterDelay": 51,
+            "pushCalls": 51,
+            "pausedObservations": 0,
+            "rejections": 40,
+            "firstCompletionAfterPromptMs": null
+          },
+          {
+            "mode": "RELATIVE",
+            "completedWithinRecordedPrompt": false,
+            "maximumProgress": 0.4666666666666667,
+            "needsNewSetup": false,
+            "eligibleAfterDelay": 51,
+            "pushCalls": 51,
+            "pausedObservations": 0,
+            "rejections": 40,
+            "firstCompletionAfterPromptMs": null
+          }
+        ]
+      },
+      {
+        "prompt": "RIGHT",
+        "modes": [
+          {
+            "mode": "ABSOLUTE",
+            "completedWithinRecordedPrompt": true,
+            "maximumProgress": 1,
+            "needsNewSetup": false,
+            "eligibleAfterDelay": 49,
+            "pushCalls": 15,
+            "pausedObservations": 0,
+            "rejections": 0,
+            "firstCompletionAfterPromptMs": 1873.7999999970198
+          },
+          {
+            "mode": "RELATIVE",
+            "completedWithinRecordedPrompt": true,
+            "maximumProgress": 1,
+            "needsNewSetup": false,
+            "eligibleAfterDelay": 49,
+            "pushCalls": 15,
+            "pausedObservations": 0,
+            "rejections": 0,
+            "firstCompletionAfterPromptMs": 1873.7999999970198
+          }
+        ]
+      },
+      {
+        "prompt": "TOP_LEFT",
+        "modes": [
+          {
+            "mode": "ABSOLUTE",
+            "completedWithinRecordedPrompt": false,
+            "maximumProgress": 0.8,
+            "needsNewSetup": false,
+            "eligibleAfterDelay": 43,
+            "pushCalls": 43,
+            "pausedObservations": 0,
+            "rejections": 33,
+            "firstCompletionAfterPromptMs": null
+          },
+          {
+            "mode": "RELATIVE",
+            "completedWithinRecordedPrompt": true,
+            "maximumProgress": 1,
+            "needsNewSetup": false,
+            "eligibleAfterDelay": 43,
+            "pushCalls": 42,
+            "pausedObservations": 0,
+            "rejections": 29,
+            "firstCompletionAfterPromptMs": 3951.099999997765
+          }
+        ]
+      },
+      {
+        "prompt": "TOP_RIGHT",
+        "modes": [
+          {
+            "mode": "ABSOLUTE",
+            "completedWithinRecordedPrompt": false,
+            "maximumProgress": 0.3333333333333333,
+            "needsNewSetup": false,
+            "eligibleAfterDelay": 33,
+            "pushCalls": 33,
+            "pausedObservations": 10,
+            "rejections": 26,
+            "firstCompletionAfterPromptMs": null
+          },
+          {
+            "mode": "RELATIVE",
+            "completedWithinRecordedPrompt": false,
+            "maximumProgress": 0.3333333333333333,
+            "needsNewSetup": false,
+            "eligibleAfterDelay": 33,
+            "pushCalls": 33,
+            "pausedObservations": 10,
+            "rejections": 26,
+            "firstCompletionAfterPromptMs": null
+          }
+        ]
+      },
+      {
+        "prompt": "BOTTOM_LEFT",
+        "modes": [
+          {
+            "mode": "ABSOLUTE",
+            "completedWithinRecordedPrompt": false,
+            "maximumProgress": 0.6,
+            "needsNewSetup": false,
+            "eligibleAfterDelay": 31,
+            "pushCalls": 31,
+            "pausedObservations": 7,
+            "rejections": 23,
+            "firstCompletionAfterPromptMs": null
+          },
+          {
+            "mode": "RELATIVE",
+            "completedWithinRecordedPrompt": true,
+            "maximumProgress": 1,
+            "needsNewSetup": false,
+            "eligibleAfterDelay": 31,
+            "pushCalls": 25,
+            "pausedObservations": 7,
+            "rejections": 11,
+            "firstCompletionAfterPromptMs": 3423
+          }
+        ]
+      },
+      {
+        "prompt": "BOTTOM_RIGHT",
+        "modes": [
+          {
+            "mode": "ABSOLUTE",
+            "completedWithinRecordedPrompt": false,
+            "maximumProgress": 0.4,
+            "needsNewSetup": false,
+            "eligibleAfterDelay": 13,
+            "pushCalls": 13,
+            "pausedObservations": 28,
+            "rejections": 7,
+            "firstCompletionAfterPromptMs": null
+          },
+          {
+            "mode": "RELATIVE",
+            "completedWithinRecordedPrompt": false,
+            "maximumProgress": 0.4,
+            "needsNewSetup": false,
+            "eligibleAfterDelay": 13,
+            "pushCalls": 13,
+            "pausedObservations": 28,
+            "rejections": 7,
+            "firstCompletionAfterPromptMs": null
+          }
+        ]
+      }
+    ],
+    "independentChecks": "Starting a fresh production window at every eligible observation did not complete any originally failed finite hold. Bounded raw-feature cohort checks likewise found no15-sample cohort meeting unchanged spread/evidence checks after700ms in those failed holds.",
+    "finding": "NO_DEMONSTRATED_SAMPLE_WINDOW_SEED_OR_RECOVERY_DEFECT",
+    "interpretation": "These were timed4-8second guide prompts, not interactive calibration trials. Production calibration can continue waiting. Incomplete recorded holds show insufficient agreeing movement/model evidence during this recording, not permanent inability to calibrate or established accuracy.",
+    "conservativeFreshnessPauseComparison": "Same completion outcomes when also pausing over150ms freshness gaps; actual100ms watchdog phase is not known from recording.",
+    "noSourceRebinding": true,
+    "rawFramesProcessed": 928,
+    "errors": 0
+  }
+}

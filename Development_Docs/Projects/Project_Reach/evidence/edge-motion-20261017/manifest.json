@@ -1,0 +1,397 @@
+{
+  "version": 1,
+  "role": "DEVELOPMENT_ONLY",
+  "qualification": false,
+  "protectedIntegration": false,
+  "physicalPointingAcceptance": "PENDING_OWNER_RETEST",
+  "protectedBase": "56b700bc2a45bee3ef2cdb5416439bae964f2233",
+  "branch": "codex/reach-edge-motion-20261017",
+  "implementationCommit": "53128badcb4dd0af8c1e0078ac930d7fabd9e0b6",
+  "geometryMotionCommit": "999918069ed3da6a7f444c1b04be494bc7cf7947",
+  "testSynchronizationCommit": "125ce701c0a15a6ba65eef87b08cd5992b12ded0",
+  "sourceFiles": [
+    {
+      "path": "public/reach/hand-worker.js",
+      "sha256": "7848b396aea9113fecfcb48472f4fbe070f54f44902833b028cb2b187bed3446"
+    },
+    {
+      "path": "public/reach/vendor/asset-manifest.json",
+      "sha256": "4c51b53330e74244f068e4588b6cbd52b3d4f4e5a6673828ea40b1cc8dd83647"
+    },
+    {
+      "path": "src/reach/ReachLaboratory.module.css",
+      "sha256": "e38520409ceddf0b3ffba73068bcd34f02be0e7ad58074e3f69ebe81066a9df7"
+    },
+    {
+      "path": "src/reach/ReachLaboratory.tsx",
+      "sha256": "867cffcedbab2c6dfe9db8b737dccf9f19690365907b20094349987986407526"
+    },
+    {
+      "path": "src/reach/ReachStage.tsx",
+      "sha256": "96168af96b4a1a7190d3ee89933eac969eb318deab22abf2256974c38098f4e8"
+    },
+    {
+      "path": "src/reach/acquisition.test.ts",
+      "sha256": "bcd6cac70d3ea39d5b58cc0766993aec2684e3ec0df7ce2937faeb2cc3bd2c35"
+    },
+    {
+      "path": "src/reach/assets.test.ts",
+      "sha256": "609fe4d8eef05cc54be92888497559474f5b84ff1049598c5d53d229a0c56591"
+    },
+    {
+      "path": "src/reach/browser-runtime.test.ts",
+      "sha256": "6b28ae2512e182ecda2a7243c85c9073a35512f6c4a923aa899cb7f0818044f3"
+    },
+    {
+      "path": "src/reach/browser-runtime.ts",
+      "sha256": "2022bf6bae9e2322d3fcfc1fadf02d448571c50b83d1c154db8da603289c5b61"
+    },
+    {
+      "path": "src/reach/calibration.ts",
+      "sha256": "69e8c29b7b73ca80eef6ed5f3f98c3394a6969c8cdf6f8f1e0b4b44823a536b1"
+    },
+    {
+      "path": "src/reach/coordinates.ts",
+      "sha256": "d6332ad77599c58c6ea6edbc201939f95acf1682d033b170a7e6e3fc4e473888"
+    },
+    {
+      "path": "src/reach/device-lab.test.ts",
+      "sha256": "a008e1a6b232301301e2632480ada5d5d449df6e416dea67035556c37689c3d1"
+    },
+    {
+      "path": "src/reach/device-lab.ts",
+      "sha256": "68e1e9d5a4615eb702b366d7ab1a819759ab1811b9c9ffc9e1b6870eceea143c"
+    },
+    {
+      "path": "src/reach/end-on-pointing.test.ts",
+      "sha256": "e8c14c19b5c5514e960aa2acbf5f981de811a9a2d9e8c7d9c4435394c8c47dcb"
+    },
+    {
+      "path": "src/reach/foundation-scenarios.ts",
+      "sha256": "da92846654f3fe26284f11dc092c00ea3397b5ae03e307b55b9c5e3fb1d9726a"
+    },
+    {
+      "path": "src/reach/foundation.test.ts",
+      "sha256": "b87cdf8b7be1eba46e1b7d0123b160cbecdc66fee316e88bf34dd00b17c05616"
+    },
+    {
+      "path": "src/reach/observation.ts",
+      "sha256": "95316fcb7f18dd5a7f068e5a77c73d5e91b022f5b3532e53f4295760d1e96cae"
+    },
+    {
+      "path": "src/reach/partial-framing.test.ts",
+      "sha256": "f3f04cbbdd7eadabdc322390e5014b31155c1f9cd9c04717eeabacc48a2de2de"
+    },
+    {
+      "path": "src/reach/point-filter.test.ts",
+      "sha256": "47c72d6640a129e02b2a260073edfee5b05c629649c852e5c65f8bcd10953521"
+    },
+    {
+      "path": "src/reach/pointer-continuity.test.ts",
+      "sha256": "6454b19161ab7ca9e22a02778c4557142da77d3b1bde53d47795b9a6c699b060"
+    },
+    {
+      "path": "src/reach/pointer-continuity.ts",
+      "sha256": "c752b90b85e471bd7078905cd0425973f3b5090f77df91457e1b7abcc7bb7ace"
+    },
+    {
+      "path": "src/reach/pointing-geometry.test.ts",
+      "sha256": "a2484768625dbb8be2f24e16b00c73a36c7cddc4ffe44db0c678702af47aaa83"
+    },
+    {
+      "path": "src/reach/pointing-transition.test.ts",
+      "sha256": "9678e33371c1268701a25700bda3c15cd5eb6171062d04fd4c4483e13046314f"
+    },
+    {
+      "path": "src/reach/privacy.ts",
+      "sha256": "552719adf54f1c391a85d6224849f43708e793c3a18687fa53ffb19fa4fbd874"
+    },
+    {
+      "path": "src/reach/provider-recovery.test.ts",
+      "sha256": "0758280cee53717203ee22b47b4208c5d7646b3e22724c657585749bc9e8aa24"
+    },
+    {
+      "path": "src/reach/readiness-recovery.test.ts",
+      "sha256": "fa51c7a965ccfda5aed72ee1b3191272a0b43e872b06f758add57f694fade9dd"
+    },
+    {
+      "path": "src/reach/recognition.test.ts",
+      "sha256": "a00ce549c113f91dda4786109373a1fc3fc85eb7cd6d883b6470337d4a82fba6"
+    },
+    {
+      "path": "src/reach/sample-recovery.test.ts",
+      "sha256": "d414444598a28b25d4ff2ab3d8ca885d41bc68998711e762120c718efb31da4b"
+    },
+    {
+      "path": "src/reach/sample-window.ts",
+      "sha256": "2db9f6e237c4eeb506deffb4382490c8b43ba4ed515e8b63c9c495b1eb06bb4d"
+    },
+    {
+      "path": "src/reach/synthetic.ts",
+      "sha256": "f685e6b9cd7f77233b95140461975555bf45b2508c98a7a16065e7cea4311c53"
+    },
+    {
+      "path": "src/reach/validation-reasons.test.ts",
+      "sha256": "80cee867a00e6a9927d8ba65ef8b32d034ccf8e1a2c78a169832a765dd9c1ff3"
+    },
+    {
+      "path": "src/reach/visualization.ts",
+      "sha256": "2a3f0f1e708adb020017ae4d051c469688a4598f26fdbf304c2559bf9bca997e"
+    },
+    {
+      "path": "src/sextant/camera.ts",
+      "sha256": "0b0a8311d17b994321648890b2aa35f431bb16f14f535e4d357f0916b9f0f7f4"
+    },
+    {
+      "path": "src/watchglass/hand-geometry.ts",
+      "sha256": "823bb4cf45c845526ee4a96541674d38d4eae0f75ed030e3bb0220a521fa6f5a"
+    },
+    {
+      "path": "src/watchglass/hand-observation.ts",
+      "sha256": "17a2528042a704963a68720c70570583f1a5e9b5eb480c46b7636c06aaf0ba9d"
+    },
+    {
+      "path": "src/watchglass/hand-posture.ts",
+      "sha256": "63e6f837b15c846713259d6a4d95d739394152ebd94852fd8346bdfb13446361"
+    },
+    {
+      "path": "src/watchglass/hand-provider.ts",
+      "sha256": "ce49130a59ee36effe4cfe1f762691bb7970a7cb6d70311596631ae783fd581c"
+    },
+    {
+      "path": "testing/contracts.json",
+      "sha256": "6a170bfa778d3f544ce04d34b695da0ac6d1647f1251d232d22cf62e79cd0480"
+    },
+    {
+      "path": "tests/e2e/fixtures/reach/pointing-poses.ts",
+      "sha256": "a642534b132a1f329046401e4ff5ecfcb7d5977e0abbf939d95d05f275e16f61"
+    },
+    {
+      "path": "tests/e2e/reach-laboratory.spec.ts",
+      "sha256": "229ebba8fed9208635fb08d324465310bfb827a761350d108dcfee93b18afd82"
+    },
+    {
+      "path": "tests/e2e/reach-recovery.spec.ts",
+      "sha256": "ee18572824f512bb12d1cbdb9379dc5c85d1344d0b1c4abd37248ad40b590537"
+    }
+  ],
+  "preservedPipeline": {
+    "baseline": "5117092984142ccdb96aeff5db90ea2e77a59357",
+    "unchangedPaths": [
+      "public/reach",
+      "src/reach/browser-runtime.ts",
+      "src/sextant/camera.ts",
+      "src/watchglass/hand-observation.ts"
+    ],
+    "cameraBranchOfReachStage": "UNCHANGED"
+  },
+  "unit": {
+    "passed": 208,
+    "failed": 0,
+    "files": 16
+  },
+  "browser": {
+    "runtime": "Isolated Edge contexts, task-owned database and loopback service",
+    "uniqueCasesPassed": 13,
+    "initialSource9999180": {
+      "startTime": "2026-10-17T19:46:04.309Z",
+      "duration": 259979.731,
+      "expected": 13,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "finalApplicationSource53128bad": {
+      "startTime": "2026-10-17T19:51:25.915Z",
+      "duration": 254360.543,
+      "expected": 12,
+      "skipped": 0,
+      "unexpected": 1,
+      "flaky": 0
+    },
+    "workerRecheckAfterTestWaitFix125ce701": {
+      "startTime": "2026-10-17T19:55:14.590Z",
+      "duration": 14679.51,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "testWaitExplanation": "The updated readiness UI appeared at observation 3. The old test synchronously assumed >3 observations. It now independently polls the same >3 worker count; no product or accuracy threshold changed. Other 12 cases passed unchanged on the final application source; the corrected photographic case passed its focused rerun."
+  },
+  "checks": {
+    "scopedEslint": "PASS",
+    "typecheck": "PASS",
+    "format": "PASS",
+    "docsValidate": "PENDING",
+    "featuresSync": "PASS_NO_CHANGE",
+    "featuresValidate": "PASS"
+  },
+  "bounds": {
+    "rawHeldOutP95LimitDiagonalFraction": 0.03,
+    "heldOutTargets": 5,
+    "acceptedEvidenceUnfiltered": true,
+    "unconfirmedDisplayHoldMs": 150,
+    "lastSeenExpiryMs": 450,
+    "providerAbsenceGraceMs": 1200
+  },
+  "independentReview": "experience-review.json",
+  "hardwareStartup": {
+    "realWebcam": true,
+    "inferenceObservationsAtDiagnosticRead": 45,
+    "captureIntervalP95Ms": 108.6,
+    "captureToInferenceP95Ms": 60.7,
+    "captureToCanvasSubmissionP95Ms": 147.3,
+    "canvasUpdateIntervalP95Ms": 16.9,
+    "physicalAccuracyClaim": false,
+    "footageSaved": false,
+    "landmarksSaved": false,
+    "stoppedCleanly": true,
+    "handOffCameraOff": true
+  },
+  "artifacts": [
+    {
+      "path": "continuous-sweep.json",
+      "sha256": "1e6e35c41bfa7e2523f469fd9ae5d61f3b9c25b8fdcb90a4c9293054e0071bf7",
+      "tier": "D0_SOFTWARE"
+    },
+    {
+      "path": "D0-bottom-wrist-outside.png",
+      "sha256": "969321d52849a1207eea976d29b037682b24790247e8e56f8ca26bdcf8c49fc9",
+      "tier": "D0_ANALYTIC_OR_GUIDED"
+    },
+    {
+      "path": "D0-brief-occlusion.png",
+      "sha256": "1a7e2451cfbae8f71a2d8356379bd7b1a98229095d9c69e69502c63e5f4a0fae",
+      "tier": "D0_ANALYTIC_OR_GUIDED"
+    },
+    {
+      "path": "D0-context-invalidation.png",
+      "sha256": "3167b0d7f7b07e25756ffba8100a66ede50099b153fca33f962869ba73b1d0a6",
+      "tier": "D0_ANALYTIC_OR_GUIDED"
+    },
+    {
+      "path": "D0-continuous-sweep.png",
+      "sha256": "2b54018f47b6e5b5799c09a79f393836feba5c87e8911e0ecb8fd9f7f484aa1f",
+      "tier": "D0_ANALYTIC_OR_GUIDED"
+    },
+    {
+      "path": "D0-direct-camera-point.png",
+      "sha256": "bf7d358ab3fcde9b30a15a17aac23776a4c94b3722e2e695becd5545e514c120",
+      "tier": "D0_ANALYTIC_OR_GUIDED"
+    },
+    {
+      "path": "D0-duplicate-suppressed.png",
+      "sha256": "7ad578dadca557c64453194790dc96182e4f78373ddb80661069f6806ef62ec9",
+      "tier": "D0_ANALYTIC_OR_GUIDED"
+    },
+    {
+      "path": "D0-failed-check-explained.png",
+      "sha256": "fe53a27e572b82ee7abff1c603cc7fa427501c70977762b2b0a9c64f8f371c70",
+      "tier": "D0_ANALYTIC_OR_GUIDED"
+    },
+    {
+      "path": "D0-foreshortened-point.png",
+      "sha256": "e009b54995ce0aa2e589400749a32f12447d60c85b151b2c2f1a790c956007d0",
+      "tier": "D0_ANALYTIC_OR_GUIDED"
+    },
+    {
+      "path": "D0-last-seen-during-check.png",
+      "sha256": "b4c1dcfc7a1a4498c86c16745cd65ed18d4de918cb78f051fa03a6619fd939a2",
+      "tier": "D0_ANALYTIC_OR_GUIDED"
+    },
+    {
+      "path": "D0-mobile-posture-interruption.png",
+      "sha256": "7c7d08541f782b98f5c073df51c6dba65a8e07dcd7c241609e8a277003a5da81",
+      "tier": "D0_ANALYTIC_OR_GUIDED"
+    },
+    {
+      "path": "D0-mobile-tracking-interruption.png",
+      "sha256": "a9450426b8c9f37286fa087a2c946c5f194666a8924abdcd9f6a5e94105abbde",
+      "tier": "D0_ANALYTIC_OR_GUIDED"
+    },
+    {
+      "path": "D0-posture-interruption.png",
+      "sha256": "96fe10c0296b0302cac5952a510d4e7f4c1b4f72e3d19d7ecccf193be26d88b8",
+      "tier": "D0_ANALYTIC_OR_GUIDED"
+    },
+    {
+      "path": "D0-recovered-saved-targets.png",
+      "sha256": "534f39c07d5da4f33359dae0765b176217a08bf84fd10e6ba13dac15702a9af9",
+      "tier": "D0_ANALYTIC_OR_GUIDED"
+    },
+    {
+      "path": "D0-relaxed-point.png",
+      "sha256": "dd1d564396ca872b4c55dbd1212799c8998a726ef1c568dc39535a5524ca6781",
+      "tier": "D0_ANALYTIC_OR_GUIDED"
+    },
+    {
+      "path": "laptop-playground-viewport.png",
+      "sha256": "9eb8a725227fd391f10b528b26dd9e5e2c249afa2933ee6bce8fc7a6b52706a1",
+      "tier": "D0_SOFTWARE"
+    },
+    {
+      "path": "laptop-playground.png",
+      "sha256": "038e7af6f9fc4d618640dd6673a385fb8b2065b1d0bf12a96dd1da8f7b4c3163",
+      "tier": "D0_SOFTWARE"
+    },
+    {
+      "path": "mobile-playground-viewport.png",
+      "sha256": "0958ce547a70605d00a6cf81549a8672d221b4166febdcc6e7406d991393a8bf",
+      "tier": "D0_SOFTWARE"
+    },
+    {
+      "path": "mobile-playground.png",
+      "sha256": "e3eb0e62a13ddfed4ddf6d17e5da8abf6473d084eee32247cc52db882c8010d9",
+      "tier": "D0_SOFTWARE"
+    },
+    {
+      "path": "point-filter-metrics.json",
+      "sha256": "10b2371348e4c23244a1f682361f0d69ff1045ef0c0be097ada55d59065f354b",
+      "tier": "D0_SOFTWARE"
+    },
+    {
+      "path": "review-before-failed-check.png",
+      "sha256": "c1068acb07b1a12a97edbe42337d5428ec4ba5853a86842da3acf8edbf1c34f7",
+      "tier": "D0_INITIAL_REVIEW"
+    },
+    {
+      "path": "review-before-last-seen.png",
+      "sha256": "17ae128f145b98a578665bd3ce6d9e66ea899df55ae707433fc9b1d4588bb3bc",
+      "tier": "D0_INITIAL_REVIEW"
+    },
+    {
+      "path": "worker-independent-results-viewport.png",
+      "sha256": "e64c90b950a5599cf401106434e80e0fdc492347e4ab127407e89d5f95bf7b0a",
+      "tier": "D1_PHOTOGRAPHIC_WORKER"
+    },
+    {
+      "path": "worker-partial-occlusion-viewport.png",
+      "sha256": "846ec4e4e5b6c909cab97617c0bc9ad9b475f99c46bdd9e618d8cad88ff2b79e",
+      "tier": "D1_PHOTOGRAPHIC_WORKER"
+    },
+    {
+      "path": "worker-photographic-tracking-viewport.png",
+      "sha256": "69da7454835bf039692e52ce1400a730de835809b4cd2a91fda832359f110c12",
+      "tier": "D1_PHOTOGRAPHIC_WORKER"
+    },
+    {
+      "path": "worker-relative-results-viewport.png",
+      "sha256": "1c1acffe2a558e09dba84c7dc504478ad583558ab7a600bd0b0a06cadc6b5960",
+      "tier": "D1_PHOTOGRAPHIC_WORKER"
+    },
+    {
+      "path": "worker-two-hands-viewport.png",
+      "sha256": "ae4818e35fec0b3c5901387d502c5e4b550c3e35e1f976edd40b3e06ab7e053b",
+      "tier": "D1_PHOTOGRAPHIC_WORKER"
+    }
+  ],
+  "createdAt": "2026-10-17T19:57:07.551Z",
+  "captureTimeSourceAgreement": true,
+  "historicalDisposition": {
+    "status": "OWNER_REPORTED_PHYSICAL_REGRESSION_AFTER_THIS_CAPTURE",
+    "reason": "Repeated CONTEXT_CHANGED setup resets; software passes did not establish physical reliability.",
+    "successorEvidence": "../continuity-recording-20261017/manifest.json",
+    "physicalAcceptance": false
+  }
+}

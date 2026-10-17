@@ -9411,6 +9411,54 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/continuity-recording-20261017/experience-review.json",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/continuity-recording-20261017/manifest.json",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/continuity-recording-20261017/physical-recording-replay-summary.json",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/edge-motion-20261017/continuous-sweep.json",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/edge-motion-20261017/experience-review.json",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/edge-motion-20261017/manifest.json",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/edge-motion-20261017/point-filter-metrics.json",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/natural-pointing-recovery-20261017/manifest.json",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Reach/Natural_Pointing_Recovery_20261017.md",
       "record_type": "program-record",
       "status": "preserved",

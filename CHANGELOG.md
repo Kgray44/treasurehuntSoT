@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-10-12
+last_reviewed: 2026-10-17
 ---
 
 # Changelog
@@ -18,7 +18,8 @@ last_reviewed: 2026-10-12
 
 ### Corrected
 
-- Reach's [local natural pointing/recovery correction](Development_Docs/Projects/Project_Reach/Natural_Pointing_Recovery_20261017.md) preserves the working camera/model/rendering pipeline, adds relaxed inferred-3D posture, buffers interrupted holds without crediting paused time, and keeps independent accuracy checks unchanged. Another physical trial and protected integration remain pending.
+- Reach's [local natural pointing/recovery correction](Development_Docs/Projects/Project_Reach/Natural_Pointing_Recovery_20261017.md) preserves the camera/model pipeline, required visible index/core geometry and independent raw 3% accuracy limit. After the owner follow-up repeatedly reset calibration, stable knuckle references, bounded off-image non-index estimates and brief phantom-overlap recovery address reproduced defects. Inferred fingers remain distinct from observed joints, and index tracing remains distinct from pointing eligibility; ambiguous frames never collect samples and established two-hand crossing rules remain unchanged. Replay of an owner-authorized private recording improves continuity and lower-pose eligibility, but is not fresh physical reliability or acceptance. Fresh physical retest and protected integration remain pending.
+- An explicitly enabled loopback-only Reach recorder guides 74 seconds of nine separate pointing holds, relaxed pointing, a sweep, open palm, brief hiding and recovery, without fitting calibration. Recording starts only on request; video combines the camera/background, existing hand overlay and synchronized prompts, with manual video/trace downloads and no audio, upload, account persistence or ordinary aggregate export. Files stay private/local and outside automatic commits. Prompt labels are instructions, not ground-truth accuracy. The standard laboratory still records no video.
 - Reach refits hand interpretation, active-hand continuity, dropout-tolerant acquisition and the staged responsive laboratory. Relative movement has separate setup and held-out cursor checks; experimental absolute pointing retains independent raw accuracy gating. [The refit record](Development_Docs/Projects/Project_Reach/Recognition_Calibration_Experience_Refit_20261011.md) preserves rendered/software proof and remaining physical/owner gates.
 - Floating Spatial Assistant supports dragging its title and resizing from every edge and corner, with keyboard alternatives and account-scoped window preferences. The composer stays at the bottom; viewport changes keep the window reachable without editing the scene.
 
