@@ -2669,6 +2669,9 @@ test("R3 Git admission permits only the bounded repair and freezes every other r
     "testing/product-experience-exceptions.json",
     JSON.stringify({ version: 1, exceptions: [template, successorTemplate, r3Template] }),
   );
+  // This synthetic base predates R13; its three historical grants must not
+  // inherit the installed-source sentinel from the current repository tree.
+  run(["update-index", "--force-remove", "scripts/sounding-line/experience-r13.mjs"]);
   const baseSha = commit(baseInput);
   const original = JSON.parse(run(["show", `${CROSSDECK_R3.blockedCandidate}:testing/contracts.json`]));
   const contracts = structuredClone(original);
@@ -3555,7 +3558,10 @@ test("R13 preserves fifteen remote predecessors and the distinct spent local set
     f.indexes.set(file, saved);
   }
   const oldStore = exceptionStore({ record: r12Template, request: f.request });
-  await oldStore.create("qualify", { classification: "unlisted old R12 authority" });
+  await oldStore.create("qualify", {
+    binding: exceptionBinding(f.plan),
+    classification: "unlisted old R12 authority",
+  });
   await assert.rejects(() => validateSuccessorPredecessor(f), /R13_OLD_R12_AUTHORITY_CONSUMED/u);
 });
 
