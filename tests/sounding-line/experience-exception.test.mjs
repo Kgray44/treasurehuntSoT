@@ -22,6 +22,8 @@ import test from "node:test";
 import "./experience-r9.test.mjs";
 import "./experience-r10.test.mjs";
 import "./experience-r11.test.mjs";
+import "./experience-r12.test.mjs";
+import "./experience-r12-technical-proof.test.mjs";
 import { createCustodyRequest } from "../../scripts/sounding-line/custody-transport.mjs";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import {
@@ -53,6 +55,7 @@ import {
   CROSSDECK_R9,
   CROSSDECK_R10,
   CROSSDECK_R11,
+  CROSSDECK_R12,
   bindExperienceException,
   assertExceptionExecution,
   campaignRelated,
@@ -97,6 +100,11 @@ import {
   pendingR11Reconciliation,
   r11HistoricalEvidencePlan,
 } from "../../scripts/sounding-line/experience-r11.mjs";
+import {
+  R12_OVERLAY_PATHS,
+  pendingR12Reconciliation,
+  r12HistoricalEvidencePlan,
+} from "../../scripts/sounding-line/experience-r12.mjs";
 import { checkoutProbe } from "../../scripts/sounding-line/experience-checkout-probe.mjs";
 import { verifyTrustedExperienceAttestation } from "../../scripts/sounding-line/experience-attestation.mjs";
 import {
@@ -3359,6 +3367,166 @@ test("R11 rejects an unknown extra campaign invocation before any reservation", 
   );
   assert(f.operations.every((op) => op.method === "GET"));
   assert.equal(await f.store.read("qualify"), null);
+});
+
+const r12Template = JSON.parse(
+  readFileSync(path.join(repo, "testing/product-experience-exceptions.json"), "utf8"),
+).exceptions.find((r) => r.id === CROSSDECK_R12.id);
+async function r12ApiFixture(t, supplied) {
+  const f = await r11ApiFixture(t);
+  const observation = JSON.parse(
+    readFileSync(
+      path.join(
+        repo,
+        "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r12-ordinary-only-20261017/r11-consumed-frozen-publication.derived.json",
+      ),
+      "utf8",
+    ),
+  );
+  const baseCommit = structuredClone(f.commits.get(f.plan.baseSha));
+  const { commitSha, ...payload } = observation.custody.qualify;
+  f.commits.set(payload.binding.baseSha, structuredClone(baseCommit));
+  const created = await f.store.create("qualify", payload);
+  f.commits.set(commitSha, structuredClone(f.commits.get(created.commitSha)));
+  f.refs.set(`refs/tags/${r11Template.custody.namespace}/qualify`, { object: { type: "commit", sha: commitSha } });
+  f.runs.set(observation.run.id, structuredClone(observation.run));
+  for (const artifact of observation.artifacts.artifacts) f.artifacts.set(artifact.id, structuredClone(artifact));
+  const p = r12Template.predecessor;
+  f.commits.set(p.candidateSha, { tree: { sha: p.candidateTree } });
+  const indexes = new Map(
+    [p.failureIndexPath, p.authorityPreservationIndexPath].map((file) => [
+      file,
+      execFileSync("git", ["show", `${p.failurePublication}:${file}`], { cwd: repo, maxBuffer: 64 * 1024 * 1024 }),
+    ]),
+  );
+  const request = async (endpoint, method, body) => {
+    if (endpoint === `git/commits/${p.failurePublication}`) return { tree: { sha: p.failurePublicationTree } };
+    if (endpoint === `git/trees/${p.failurePublicationTree}?recursive=1`)
+      return {
+        truncated: false,
+        tree: [...indexes.keys()].map((file) => ({ path: file, mode: "100644", type: "blob", sha: file })),
+      };
+    if (endpoint.startsWith("git/blobs/") && indexes.has(endpoint.slice(10)))
+      return { content: indexes.get(endpoint.slice(10)).toString("base64") };
+    return f.request(endpoint, method, body);
+  };
+  const root = supplied?.root ?? f.root;
+  let plan = supplied?.plan;
+  if (!plan) {
+    const registry = JSON.parse(readFileSync(path.join(repo, "testing/product-experience-exceptions.json"), "utf8"));
+    const bridge = {
+      version: 1,
+      id: CROSSDECK_R12.bridgeId,
+      status: "ACTIVE",
+      exceptionId: CROSSDECK_R12.id,
+      recordDigest: CROSSDECK_R12.recordDigest,
+      overlay: R12_OVERLAY_PATHS.map((file) => ({
+        path: file,
+        oldMode: null,
+        oldBlob: null,
+        newMode: "100644",
+        newBlob: "b".repeat(40),
+      })),
+    };
+    registry.exceptions = registry.exceptions.slice(0, 12);
+    registry.reconciliations = [...registry.reconciliations.slice(0, 4), bridge];
+    f.write("testing/product-experience-exceptions.json", registry);
+    const baseSha = f.commit();
+    f.write("fixture-publication.md", "Synthetic R12 publication\n");
+    const candidateSha = f.commit();
+    plan = { ...f.plan, baseSha, candidateSha, exception: recordBinding(r12Template) };
+    plan.exception.nonExecutingReconciliation = pendingR12Reconciliation({ root, baseSha, plan, record: r12Template });
+  }
+  f.commits.set(plan.baseSha, structuredClone(baseCommit));
+  const current = {
+    ...f.current,
+    runId: 39999400000,
+    createdAt: "2026-10-17T05:00:00Z",
+    event: "pull_request_target",
+    headSha: plan.candidateSha,
+    headBranch: "candidate",
+    displayTitle: `Sounding Line finite 1 ordinary 721 ${plan.candidateSha} active`,
+  };
+  f.runs.delete(f.current.runId);
+  f.runs.set(current.runId, remoteRun(current));
+  f.refs.set("refs/heads/main", { object: { sha: plan.baseSha } });
+  f.operations.length = 0;
+  return {
+    ...f,
+    root,
+    record: r12Template,
+    plan,
+    current,
+    request,
+    indexes,
+    observation,
+    store: exceptionStore({ record: r12Template, request }),
+    now: new Date(current.createdAt),
+  };
+}
+
+test("R12 authenticates fifteen exact predecessors and preserves ordinary5 failure before writes", async (t) => {
+  const f = await r12ApiFixture(t);
+  assert.equal((await validateSuccessorPredecessor(f)).length, 15);
+  await requireFirstCampaignRun({ ...f, mode: "ordinary", run: f.current });
+  for (const file of f.indexes.keys()) {
+    const saved = f.indexes.get(file);
+    f.indexes.set(file, Buffer.from("changed original"));
+    await assert.rejects(() => validateSuccessorPredecessor(f), /R12_PRESERVATION_INDEX_CHANGED/u);
+    f.indexes.set(file, saved);
+  }
+  const failed = f.runs.get(r12Template.predecessor.runId);
+  failed.conclusion = "cancelled";
+  await assert.rejects(() => validateSuccessorPredecessor(f), /R12_CONSUMED_RUN_CHANGED/u);
+  failed.conclusion = "failure";
+  const artifact = f.artifacts.get(r12Template.predecessor.artifacts[0].id);
+  artifact.size_in_bytes++;
+  await assert.rejects(() => validateSuccessorPredecessor(f), /R12_FAILURE_ARTIFACT_CHANGED/u);
+  artifact.size_in_bytes--;
+  assert(f.operations.every((operation) => operation.method === "GET"));
+});
+
+test("R12 exposes only original R8 seals and requires published focused proof before qualification custody", async (t) => {
+  const f = await r12ApiFixture(t);
+  const history = historicalExceptionContext(f);
+  assert.equal(history.plan.exception.id, r8Template.id);
+  assert.equal(r12HistoricalEvidencePlan(f.plan).sourceDigest, R8_FORMAT.sourceDigest);
+  assert.equal((await history.store.read("prepare")).commitSha, R8_FORMAT.prepareCommit);
+  assert.throws(() => history.store.read("qualify"), /HISTORICAL_SLOT_FORBIDDEN/u);
+  assert.throws(() => history.store.create("prepare", {}), /HISTORICAL_WRITE_FORBIDDEN/u);
+  f.operations.length = 0;
+  for (const mode of ["capture", "review", "verify", "local", "prepare"])
+    await assert.rejects(() => reserveExceptionStage({ ...f, run: f.current, mode }), /R12_MODE_FORBIDDEN/u);
+  await assert.rejects(
+    () => reserveExceptionStage({ ...f, run: f.current, mode: "ordinary" }),
+    /R12_FOCUSED_PUBLICATION_MISSING/u,
+  );
+  assert.deepEqual(f.operations, []);
+  assert.equal(await f.store.read("qualify"), null);
+  assert.equal(
+    (await exceptionStore({ record: r11Template, request: f.request }).read("qualify")).commitSha,
+    r12Template.predecessor.qualifyCommit,
+  );
+});
+
+test("R12 unknown campaign runs remain denied regardless of mode or result", async (t) => {
+  const f = await r12ApiFixture(t);
+  const extra = { ...f.current, runId: f.current.runId - 2, createdAt: "2026-10-17T04:59:00Z" };
+  for (const mode of ["ordinary", "capture", "review", "verify"])
+    for (const conclusion of ["success", "failure", "cancelled"]) {
+      extra.displayTitle = `Sounding Line finite 1 ${mode} 721 ${extra.headSha} active`;
+      f.runs.set(extra.runId, remoteRun(extra, "completed", conclusion));
+      await assert.rejects(
+        () => requireFirstCampaignRun({ ...f, mode: "ordinary", run: f.current }),
+        /R12_UNLISTED_CAMPAIGN_RUN/u,
+      );
+    }
+  f.runs.delete(extra.runId);
+  assert.equal(
+    (await requireFirstCampaignRun({ ...f, mode: "ordinary", run: f.current })).preservedPredecessorRuns,
+    15,
+  );
+  assert(f.operations.every((operation) => operation.method === "GET"));
 });
 
 test("R9 shared review pins recognize exact campaign bytes without classifying unrelated reports", async (t) => {

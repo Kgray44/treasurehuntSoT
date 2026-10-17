@@ -104,6 +104,10 @@ only their committed report.
 
 ## Debt and acceptance
 
+The [Crossdeck R12 diagnosed continuation](../../Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R12_Diagnosed_Continuation_20261017.md)
+preserves failed ordinary5 and original review7/submission3. Its two bounded
+technical cases are supporting proof; current whole qualification is mandatory.
+
 The [Homeport ledger](../../Projects/Project_Homeport/Homeport_Nonconformity_Ledger.csv)
 retains owner-reported spatial deficiencies and accountable repair paths.
 Owner reports are not rendered-confirmed waivers. A protected `RENDERED_CONFIRMED`

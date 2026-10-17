@@ -31,6 +31,11 @@ import {
   r11HistoricalEvidencePlan,
   R11_REGENERATED,
 } from "../../scripts/sounding-line/experience-r11.mjs";
+import {
+  CROSSDECK_R12,
+  r12HistoricalEvidencePlan,
+  R12_REGENERATED,
+} from "../../scripts/sounding-line/experience-r12.mjs";
 import { generateDocumentIndex } from "../../scripts/generate-document-index.mjs";
 import { validate as validateDocumentation } from "../../scripts/validate-documentation.mjs";
 import { r9HistoricalEvidencePlan } from "../../scripts/sounding-line/experience-r9.mjs";
@@ -38,9 +43,12 @@ import { r9HistoricalEvidencePlan } from "../../scripts/sounding-line/experience
 const fixtureFlag = "SOUNDING_LINE_ORDINARY_CONSUMER_POLICY_FIXTURE";
 const mergedFixtureFlag = "SOUNDING_LINE_R10_CONSUMER_POLICY_FIXTURE";
 const r11FixtureFlag = "SOUNDING_LINE_R11_CONSUMER_POLICY_FIXTURE";
-const mergedPolicy = process.env[r11FixtureFlag]
-  ? { name: "R11", record: CROSSDECK_R11, regenerated: R11_REGENERATED, historical: r11HistoricalEvidencePlan }
-  : { name: "R10", record: CROSSDECK_R10, regenerated: R10_REGENERATED, historical: r10HistoricalEvidencePlan };
+const r12FixtureFlag = "SOUNDING_LINE_R12_CONSUMER_POLICY_FIXTURE";
+const mergedPolicy = process.env[r12FixtureFlag]
+  ? { name: "R12", record: CROSSDECK_R12, regenerated: R12_REGENERATED, historical: r12HistoricalEvidencePlan }
+  : process.env[r11FixtureFlag]
+    ? { name: "R11", record: CROSSDECK_R11, regenerated: R11_REGENERATED, historical: r11HistoricalEvidencePlan }
+    : { name: "R10", record: CROSSDECK_R10, regenerated: R10_REGENERATED, historical: r10HistoricalEvidencePlan };
 const policyEnv = (suffix) => process.env[`SOUNDING_LINE_${mergedPolicy.name}_POLICY_${suffix}`];
 const frozen = {
   head: "7241f5a8a5965d67882a0b205601eba3087ddef5",
@@ -101,7 +109,7 @@ function ownedControlOutputs(root) {
     });
 }
 
-if (process.env[mergedFixtureFlag] || process.env[r11FixtureFlag])
+if (process.env[mergedFixtureFlag] || process.env[r11FixtureFlag] || process.env[r12FixtureFlag])
   test(
     `${mergedPolicy.name} actual merged consumer executes all registered policy without consumer qualification`,
     { timeout: 1500000 },
@@ -109,6 +117,8 @@ if (process.env[mergedFixtureFlag] || process.env[r11FixtureFlag])
       const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
       const baseSha = sourceGit(repo, ["rev-parse", policyEnv("BASE_SHA") ?? "HEAD"]);
       const actualCandidate = policyEnv("CANDIDATE_SHA");
+      if (mergedPolicy.name === "R12")
+        assert(actualCandidate, "R12 requires the actual corrected frozen consumer; a test overlay is forbidden");
       const owned = mkdtempSync(path.join(tmpdir(), `${mergedPolicy.name.toLowerCase()}-consumer-policy-`));
       assert(owned.startsWith(path.resolve(tmpdir()) + path.sep));
       const checkout = path.join(owned, "checkout");
@@ -345,7 +355,7 @@ function executePolicySchedule({ checkout, plan, proof, policyArgs }) {
       GITHUB_REF: "refs/heads/main",
       SOUNDING_LINE_BASE_SHA: plan.baseSha,
     };
-    for (const name of [fixtureFlag, mergedFixtureFlag, r11FixtureFlag, "GH_TOKEN", "GITHUB_TOKEN"])
+    for (const name of [fixtureFlag, mergedFixtureFlag, r11FixtureFlag, r12FixtureFlag, "GH_TOKEN", "GITHUB_TOKEN"])
       delete environment[name];
     // TAP is declaration ordered and can conceal progress in later files.
     // Retain immediate execution events independently without changing tests.

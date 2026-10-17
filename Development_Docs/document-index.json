@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-10-16",
+  "generated_at": "2026-10-17",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -3117,6 +3117,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r12-ordinary-only-20261017/r11-consumed-frozen-publication.derived.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r2-authority-amendment-20261015/local-validation.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -3376,6 +3382,12 @@
     },
     {
       "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R11_Ordinary_Only_20261016.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R12_Diagnosed_Continuation_20261017.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

@@ -18,6 +18,7 @@ import {
   readBrowserDiagnosticReceipt,
   writeBrowserDiagnosticReceipt,
 } from "./browser-diagnostics.mjs";
+import { assertR12TechnicalSource, requireR12TechnicalSuite } from "./experience-r12-technical-proof.mjs";
 
 const separator = process.argv.indexOf("--");
 const options = Object.fromEntries(
@@ -40,7 +41,12 @@ if (
 )
   throw new Error("SOUNDING_LINE_SUITE_FIXTURE_CONTRACT_UNSATISFIED:INVALID_PROFILE_INVOCATION");
 
-const exceptionPlan = await exceptionSuitePlan({ root, candidateSha });
+// This exact one-case diagnostic grant is independent of the normal six-file
+// technical allowance. Its create-only launch reservation precedes all setup.
+const r12Technical = options["r12-technical-proof"]
+  ? await requireR12TechnicalSuite({ root, candidateSha, options, browserTests, argv: process.argv.slice(2) })
+  : null;
+const exceptionPlan = r12Technical ? null : await exceptionSuitePlan({ root, candidateSha });
 if (exceptionPlan) {
   if (options["experience-plan"]) {
     const guardedPlan =
@@ -113,6 +119,7 @@ try {
       environment,
     );
   } else {
+    if (r12Technical) assertR12TechnicalSource(root, r12Technical);
     run(
       process.execPath,
       [
