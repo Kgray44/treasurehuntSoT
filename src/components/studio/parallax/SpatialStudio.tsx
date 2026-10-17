@@ -26,6 +26,8 @@ import { SpatialAssistant, type SpatialAssistantBase, type SpatialAssistantPort 
 import { createSpatialAssistantPort } from "./spatial-assistant-port";
 import type { creatorAIUsage } from "@/parallax/ai-ledger";
 import type { SpatialLibraryRecord } from "@/parallax/library-service";
+import { insertSpatialElement, extractComposition, insertSavedComposition } from "@/parallax/element-authoring";
+import { SpatialElementInspector } from "./SpatialElementInspector";
 import type { SpatialMoment, SpatialVersion } from "@/parallax/contracts";
 import { emptyStudioContent } from "@/parallax/studio-contracts";
 import {
@@ -584,7 +586,9 @@ export function SpatialStudio({
   const addPreset = (name: string) => {
     if (!draft) return;
     try {
-      const next = insertSpatialPreset(draft, name, crypto.randomUUID());
+      const next = name.startsWith("sc02:")
+        ? insertSpatialElement(draft, name.slice(5), crypto.randomUUID())
+        : insertSpatialPreset(draft, name, crypto.randomUUID());
       replace(next);
       setSelected(next.content.entities[draft.content.entities.length].id);
     } catch (cause) {
@@ -997,29 +1001,47 @@ export function SpatialStudio({
             <h3>Owned items</h3>
             {!filtered.length && <p>No saved items match. Create and save a spatial moment to begin.</p>}
             {filtered.map((item) => (
-              <button
-                className={styles.libraryItem}
-                key={item.id}
-                disabled={busy}
-                onClick={() =>
-                  void action(async () => {
-                    await persist();
-                    const data = await load();
-                    const refreshed = data.items.find((i) => i.id === item.id)!;
-                    install(refreshed.draft, refreshed.revision, true);
-                  })
-                }
-              >
-                <span className={styles.thumbnail} aria-hidden="true">
-                  {item.draft.content.entities[0]?.kind === "PARCHMENT" ? "▱" : "◇"}
-                </span>
-                <strong>{item.draft.content.title}</strong>
-                <small>
-                  {item.draft.scope === "MY_LIBRARY" ? "My Library" : "Chronicle only"} · {item.releases.length}{" "}
-                  versions · {item.usageCount} uses
-                </small>
-                <small>{item.draft.category.replaceAll("_", " ")} · Guided compatible · Creator owned</small>
-              </button>
+              <div key={item.id}>
+                <button
+                  className={styles.libraryItem}
+                  key={item.id}
+                  disabled={busy}
+                  onClick={() =>
+                    void action(async () => {
+                      await persist();
+                      const data = await load();
+                      const refreshed = data.items.find((i) => i.id === item.id)!;
+                      install(refreshed.draft, refreshed.revision, true);
+                    })
+                  }
+                >
+                  <span className={styles.thumbnail} aria-hidden="true">
+                    {item.draft.content.entities[0]?.kind === "PARCHMENT" ? "▱" : "◇"}
+                  </span>
+                  <strong>{item.draft.content.title}</strong>
+                  <small>
+                    {item.draft.scope === "MY_LIBRARY" ? "My Library" : "Chronicle only"} · {item.releases.length}{" "}
+                    versions · {item.usageCount} uses
+                  </small>
+                  <small>{item.draft.category.replaceAll("_", " ")} · Guided compatible · Creator owned</small>
+                </button>
+                {item.draft.category === "SCENE_TEMPLATE" && item.draft.tags.includes("composition") && (
+                  <button
+                    disabled={busy}
+                    onClick={() => {
+                      try {
+                        const next = insertSavedComposition(draft, item.draft, crypto.randomUUID());
+                        replace(next);
+                        setSelected(next.content.entities[draft.content.entities.length].id);
+                      } catch (cause) {
+                        setError(cause instanceof Error ? cause.message : "Composition could not be inserted.");
+                      }
+                    }}
+                  >
+                    Insert {item.draft.content.title} composition
+                  </button>
+                )}
+              </div>
             ))}
           </div>
           <div
@@ -1043,7 +1065,7 @@ export function SpatialStudio({
               <ul>
                 {draft.content.entities
                   .filter((e) =>
-                    `${e.name} ${e.kind} ${e.anchorId} ${e.interactions.join(" ")} ${draft.content.studio?.layers.find((l) => l.entityId === e.id)?.tags.join(" ")}`
+                    `${e.name} ${e.kind} ${e.element?.kind ?? ""} ${e.anchorId} ${e.interactions.join(" ")} ${draft.content.studio?.layers.find((l) => l.entityId === e.id)?.tags.join(" ")}`
                       .toLowerCase()
                       .includes(sceneQuery.toLowerCase()),
                   )
@@ -1055,6 +1077,7 @@ export function SpatialStudio({
                           {entity.parentEntityId ? "↳ " : "◇ "}
                           {entity.name}
                         </button>
+                        {entity.element && <small>{entity.element.kind.replaceAll("_", " ").toLowerCase()}</small>}
                         <button
                           aria-label={`Toggle visibility of ${entity.name}`}
                           onClick={() =>
@@ -1121,6 +1144,7 @@ export function SpatialStudio({
             preview={preview}
             environmentId={environment}
             timeMs={timeMs}
+            playing={playing}
             inputs={inputs}
           />
           <div className={styles.commandBar}>
@@ -1686,6 +1710,25 @@ export function SpatialStudio({
           {currentEntity && (
             <fieldset disabled={draft.content.studio?.layers.find((l) => l.entityId === currentEntity.id)?.locked}>
               <legend className={styles.srOnly}>Selected spatial object</legend>
+              <SpatialElementInspector
+                entity={currentEntity}
+                onChange={(element) => edit({ type: "CONTENT", entityId: currentEntity.id, patch: { element } })}
+              />
+              {draft.content.entities.some((e) => e.parentEntityId === currentEntity.id) && (
+                <button
+                  disabled={busy}
+                  onClick={() =>
+                    void action(async () => {
+                      const composition = extractComposition(draft, currentEntity.id, crypto.randomUUID());
+                      await api({ action: "SAVE", draft: composition, revision: 0 });
+                      await load();
+                      setStatus("Composition saved to My Spatial Library");
+                    })
+                  }
+                >
+                  Save selected composition
+                </button>
+              )}
               <details {...sectionProps("overview")}>
                 <summary>Overview / Identity</summary>
                 <label>

@@ -99,6 +99,31 @@ describe("Parallax Phase 1 domain and published contract", () => {
   });
 });
 describe("Parallax actual runtime and evidence seam", () => {
+  it("uses Guided meaning for extended elements instead of sending unsupported marker stand-ins to a renderer", async () => {
+    const moment = syntheticSpatialMoment();
+    const { checksum: _checksum, ...content } = moment.version;
+    void _checksum;
+    content.entities[0].element = {
+      kind: "LIGHT",
+      enabled: true,
+      type: "POINT",
+      color: "#79baff",
+      intensity: 12,
+      range: 6,
+      decay: 2,
+      angle: 0.6,
+      penumbra: 0.5,
+      pulseHz: 0,
+    };
+    moment.version = materializeSpatialVersion(content);
+    moment.attachment.versionChecksum = moment.version.checksum;
+    const { runtime, adapter } = lab(moment);
+    await runtime.open(adapter);
+    expect(runtime.read().mode).toBe("GUIDED");
+    expect(adapter.active).toBe(false);
+    expect(adapter.renders).toBe(0);
+    await runtime.close();
+  });
   it("invokes a version-pinned moment on unsupported hardware without camera acquisition", async () => {
     const runtime = new ParallaxLensRuntime(syntheticSpatialMoment(), syntheticBinding, guidedContext(), now);
     await runtime.open();
