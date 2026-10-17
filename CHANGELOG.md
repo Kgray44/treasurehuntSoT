@@ -14,6 +14,7 @@ last_reviewed: 2026-10-12
 
 ### Engineering
 
+- Reach review can continue at cumulative iteration four only through a source-bound policy installed on protected main for existing PR #766. The blocked third review, full product evidence and ordinary protected integration requirements remain intact. [Continuation and review gap](Development_Docs/Engineering/Reach_Product_Review_Continuation_20261017.md).
 - Ordinary verification starts completed-evidence intake without awaiting its own command module. A cold command regression checks that failures reach the canonical decision writer. [Startup behavior](Development_Docs/Engineering/Ordinary_Verifier_Cold_Startup_Repair.md) preserves the evidence and qualification requirements.
 - Product Experience Engineering adds selective experience contracts and real-browser evidence to ordinary Sounding Line, with independent criticism, bounded repair, protected capture/review attestation and explicit spatial baseline debt. [Operations and proof](Development_Docs/Testing/Product_Experience/README.md) preserve product and owner acceptance authority.
 
