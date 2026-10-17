@@ -1,3 +1,4 @@
+import { openOwnedSceneFromCurrentLibrary } from "./fixtures/parallax-current-library";
 import { test, expect } from "@playwright/test";
 import { mkdir, writeFile } from "node:fs/promises";
 import { db } from "../../src/lib/db";
@@ -38,6 +39,7 @@ test("Creator sees a receiving surface during real dragging, clamps on release, 
   const otherId = "direct-placement:second-clue";
   draft = editSpatialDraft(draft, { type: "DUPLICATE", entityId: id, newId: otherId });
   draft.content.entities[1].name = "Second clue";
+  draft.content.title = "Direct placement working Scene";
   await saveSpatialDraft(account.id, draft, 0);
   await authenticateClosure(context, account, baseURL!);
   await page.setViewportSize({ width: 1440, height: 1000 });
@@ -46,8 +48,11 @@ test("Creator sees a receiving surface during real dragging, clamps on release, 
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/studio/library");
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
-  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-  await page.getByRole("button", { name: /Desk Map.*My Library/ }).click();
+  await openOwnedSceneFromCurrentLibrary(page, {
+    definitionId: draft.content.definitionId,
+    title: draft.content.title,
+    state: "WORKING",
+  });
   await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("ENGINEERING");
   await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
   const graph = page.getByRole("region", { name: "Scene graph", exact: true });

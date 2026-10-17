@@ -1,3 +1,4 @@
+import { openOwnedSceneFromCurrentLibrary } from "./fixtures/parallax-current-library";
 import { test, expect } from "@playwright/test";
 import { mkdir } from "node:fs/promises";
 import { db } from "../../src/lib/db";
@@ -30,14 +31,18 @@ test("Creator adds and rebuilds actual furniture, protects a bound desk, correct
     targetFeatureId: "reference-desk",
     nearFeatureId: "window",
   });
+  draft.content.title = "Parametric working Scene";
   await saveSpatialDraft(account.id, draft, 0);
   await authenticateClosure(context, account, baseURL!);
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/studio/library");
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
-  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-  await page.getByRole("button", { name: /Desk Map.*My Library/ }).click();
+  await openOwnedSceneFromCurrentLibrary(page, {
+    definitionId: draft.content.definitionId,
+    title: draft.content.title,
+    state: "WORKING",
+  });
   await page.getByRole("button", { name: "Collapse left dock", exact: true }).click();
   const canvas = page.getByRole("region", { name: "Spatial canvas", exact: true });
   const host = canvas.locator('[data-renderer="READY"]');

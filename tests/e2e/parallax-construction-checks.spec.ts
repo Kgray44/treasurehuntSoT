@@ -1,3 +1,4 @@
+import { openOwnedSceneFromCurrentLibrary } from "./fixtures/parallax-current-library";
 import { test, expect } from "@playwright/test";
 import { mkdir } from "node:fs/promises";
 import { db } from "../../src/lib/db";
@@ -31,6 +32,7 @@ test("Creator follows exact construction findings, corrects wall orientation and
   desk.dimensions[1] *= 0.1;
   desk.position.y *= 0.1;
   draft.content.studio!.environment = room;
+  draft.content.title = "Construction findings working Scene";
   await saveSpatialDraft(account.id, draft, 0);
   await authenticateClosure(context, account, baseURL!);
   await page.setViewportSize({ width: 1440, height: 1000 });
@@ -39,8 +41,11 @@ test("Creator follows exact construction findings, corrects wall orientation and
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/studio/library");
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
-  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-  await page.getByRole("button", { name: /Desk Map.*My Library/ }).click();
+  await openOwnedSceneFromCurrentLibrary(page, {
+    definitionId: draft.content.definitionId,
+    title: draft.content.title,
+    state: "WORKING",
+  });
   await page.getByRole("button", { name: "Collapse left dock", exact: true }).click();
   const host = page.getByRole("region", { name: "Spatial canvas", exact: true }).locator('[data-renderer="READY"]');
   await expect(host.locator("canvas")).toBeVisible();

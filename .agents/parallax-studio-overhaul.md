@@ -3,7 +3,7 @@ title: Spatial Studio complete overhaul task contract
 audience: automation
 status: active
 canonical_for: parallax-studio-overhaul-20261012
-last_reviewed: 2026-10-12
+last_reviewed: 2026-10-17
 ---
 
 # Owned objective
@@ -143,3 +143,21 @@ review, current Sounding Line, protected merge and landed smoke. Recheck C above
 inference, private-state copying, evidence rebinding or duplicate product merges.
 SC-00A remains separately gated; Admiralty follows accepted #722. Physical Safari
 tracking, no-plane providers and reconstruction fidelity remain unqualified.
+
+## Restart continuation and local proof, 2026-10-17
+
+The coordinator relayed KG's restart instruction to resume needed corrective
+work in this existing task. Apply the reviewed nine-journey retired Library
+entry migration and perform focused local proof with original failures retained.
+Keep working fixtures working, preserve all 208 original matcher criteria and
+natural home entry, and keep generated data, dependencies and output on D:.
+This local authorization does not release the protected #722 capture,
+qualification, mainline merge or base-reconciliation hold behind #721's actual
+qualified protected landing. The designated cloud task solely owns Crossdeck,
+Reach and systemic workflow mutation; do not run its full qualification.
+
+SC-00C owns the separate Library card right-click/Shift+F10 repair in its owned
+checkout, including SpatialContentLibrary and its focused spec. Root owns only
+the nine entry specs and shared test-navigation fixture in this correction.
+Keep those component edits separate and adopt its exact committed handoff once
+available. Its proof remains source-bound and cannot establish root acceptance.

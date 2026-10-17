@@ -1,3 +1,4 @@
+import { openOwnedSceneFromCurrentLibrary } from "./fixtures/parallax-current-library";
 import { test, expect } from "@playwright/test";
 import { mkdir } from "node:fs/promises";
 import { db } from "../../src/lib/db";
@@ -48,8 +49,11 @@ test("Environment zones use real gizmos, retain edits and deletion, and disappea
   await page.setViewportSize({ width: 1600, height: 1100 });
   await page.goto("/studio/library");
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
-  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-  await page.getByRole("button", { name: /Synthetic exclusion zones.*My Library/ }).click();
+  await openOwnedSceneFromCurrentLibrary(page, {
+    definitionId: draft.content.definitionId,
+    title: draft.content.title,
+    state: "WORKING",
+  });
   const host = page.locator('[data-renderer="READY"]');
   await expect(host.locator("canvas")).toBeVisible();
   await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("ENGINEERING");

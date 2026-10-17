@@ -1,3 +1,4 @@
+import { openOwnedSceneFromCurrentLibrary } from "./fixtures/parallax-current-library";
 import { test, expect } from "@playwright/test";
 import { mkdir, writeFile } from "node:fs/promises";
 import { db } from "../../src/lib/db";
@@ -19,6 +20,7 @@ test("Creator clicks a graph title, edits a selected pose, resizes unobstructed 
   const account = await closureAccount("Synthetic cinematic Creator");
   await activateWorkspaceCapability(account.id, "CREATOR");
   const draft = createSpatialDraft("cinematic-preview");
+  draft.content.title = "Cinematic working Scene";
   await saveSpatialDraft(account.id, draft, 0);
   await authenticateClosure(context, account, baseURL!);
   await page.setViewportSize({ width: 1440, height: 1000 });
@@ -27,8 +29,11 @@ test("Creator clicks a graph title, edits a selected pose, resizes unobstructed 
   page.on("pageerror", (e) => errors.push(e.message));
   await page.goto("/studio/library");
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
-  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-  await page.getByRole("button", { name: /Desk Map.*My Library/ }).click();
+  await openOwnedSceneFromCurrentLibrary(page, {
+    definitionId: draft.content.definitionId,
+    title: draft.content.title,
+    state: "WORKING",
+  });
   const canvas = page.getByRole("region", { name: "Spatial canvas", exact: true }),
     host = canvas.locator('[data-renderer="READY"]');
   await expect(host.locator("canvas")).toBeVisible();

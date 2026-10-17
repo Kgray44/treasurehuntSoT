@@ -1,3 +1,4 @@
+import { openOwnedSceneFromCurrentLibrary } from "./fixtures/parallax-current-library";
 import { test, expect } from "@playwright/test";
 import { mkdir, writeFile } from "node:fs/promises";
 import { db } from "../../src/lib/db";
@@ -35,8 +36,11 @@ test("Creator authors actual material fading, recovers a transparent object and 
   });
   await page.goto("/studio/library");
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
-  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-  await page.getByRole("button", { name: /Fading Compass.*My Library/ }).click();
+  await openOwnedSceneFromCurrentLibrary(page, {
+    definitionId: draft.content.definitionId,
+    title: draft.content.title,
+    state: "WORKING",
+  });
   const canvas = page.getByRole("region", { name: "Spatial canvas", exact: true });
   const host = canvas.locator('[data-renderer="READY"]');
   await expect(host.locator("canvas")).toBeVisible();

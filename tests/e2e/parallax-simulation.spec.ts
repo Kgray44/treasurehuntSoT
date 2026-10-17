@@ -1,3 +1,4 @@
+import { openOwnedSceneFromCurrentLibrary } from "./fixtures/parallax-current-library";
 import { test, expect } from "@playwright/test";
 import { mkdir } from "node:fs/promises";
 import { db } from "../../src/lib/db";
@@ -28,8 +29,11 @@ test("Creator authors a delayed interaction, sees matching and unmatched outcome
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/studio/library");
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
-  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-  await page.getByRole("button", { name: /Floating Compass.*My Library/ }).click();
+  await openOwnedSceneFromCurrentLibrary(page, {
+    definitionId: draft.content.definitionId,
+    title: draft.content.title,
+    state: "WORKING",
+  });
   await page.getByRole("button", { name: "Collapse left dock", exact: true }).click();
   const canvas = page.getByRole("region", { name: "Spatial canvas", exact: true });
   const host = canvas.locator('[data-renderer="READY"]');

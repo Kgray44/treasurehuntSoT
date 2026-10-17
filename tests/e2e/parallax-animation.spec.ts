@@ -1,3 +1,4 @@
+import { openOwnedSceneFromCurrentLibrary, closeCurrentLibrary } from "./fixtures/parallax-current-library";
 import { test, expect } from "@playwright/test";
 import { mkdir } from "node:fs/promises";
 import { db } from "../../src/lib/db";
@@ -64,11 +65,14 @@ test("Creator edits, renders, scrubs, plays and reloads real object keyframes, t
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/studio/library");
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
-  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-  await page.getByRole("button", { name: /Floating Compass.*My Library/ }).click();
+  await openOwnedSceneFromCurrentLibrary(page, {
+    definitionId: draft.content.definitionId,
+    title: draft.content.title,
+    state: "WORKING",
+  });
   const host = page.getByRole("region", { name: "Spatial canvas", exact: true }).locator('[data-renderer="READY"]');
   await expect(host.locator("canvas")).toBeVisible();
-  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
+  await closeCurrentLibrary(page);
   await page
     .getByRole("region", { name: "Spatial canvas", exact: true })
     .getByRole("button", { name: "Isolate selected object", exact: true })

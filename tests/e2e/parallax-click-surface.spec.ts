@@ -1,3 +1,4 @@
+import { openOwnedSceneFromCurrentLibrary } from "./fixtures/parallax-current-library";
 import { test, expect } from "@playwright/test";
 import { mkdir } from "node:fs/promises";
 import { db } from "../../src/lib/db";
@@ -22,13 +23,17 @@ test("Clicking visible room surfaces places the selected asset without opening S
   const draft = createSpatialDraft("click-surface-fixture");
   draft.content.studio!.environment = createRoomEnvironment(simulationEnvironments[0]);
   draft.content.entities[0].widthMeters = 0.18;
+  draft.content.title = "Click surface working Scene";
   await saveSpatialDraft(account.id, draft, 0);
   await authenticateClosure(context, account, baseURL!);
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/studio/library");
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
-  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-  await page.getByRole("button", { name: /Desk Map.*My Library/ }).click();
+  await openOwnedSceneFromCurrentLibrary(page, {
+    definitionId: draft.content.definitionId,
+    title: draft.content.title,
+    state: "WORKING",
+  });
   await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("ENGINEERING");
   const canvas = page.getByRole("region", { name: "Spatial canvas", exact: true });
   const host = canvas.locator('[data-renderer="READY"]');
