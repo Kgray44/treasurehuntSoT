@@ -37,6 +37,7 @@ function setup(
     frameCallbacks?: boolean;
     backend?: "CPU_WASM" | "GPU_WEBGL";
     imageFailure?: "DRAW" | "READBACK";
+    calibrationCollecting?: boolean;
   } = {},
 ) {
   vi.useFakeTimers();
@@ -172,6 +173,9 @@ function setup(
     options.imageConsumer === false ? undefined : image,
   );
   sessions.push(runtime);
+  // Source integration cases use active collection; normal tracking is covered
+  // separately below so both phase ceilings are explicit in the fixture.
+  runtime.setCalibrationCollecting(options.calibrationCollecting ?? true);
   const hint = { x: 160 / 319, y: 120 / 239 };
   return {
     runtime,
@@ -236,6 +240,48 @@ function setup(
 }
 
 describe("runtime image source integration", () => {
+  it("uses the normal 30Hz ceiling unless the Lab explicitly marks active collection", async () => {
+    const s = setup({ calibrationCollecting: false });
+    const worker = await s.start();
+    expect(s.runtime.trackingPacing()).toMatchObject({ calibrationCollecting: false, maximumHz: 30 });
+    await s.advance(10);
+    s.result();
+    s.freshFrame();
+    await s.advance(23);
+    expect(worker.frames).toHaveLength(1);
+    await s.advance(1);
+    expect(worker.frames).toHaveLength(2);
+    expect(worker.frames[1].capture - worker.frames[0].capture).toBeGreaterThanOrEqual(1000 / 30);
+  });
+  it("does not let an already scheduled fast capture bypass a collection pause", async () => {
+    const s = setup();
+    const worker = await s.start();
+    expect(s.runtime.trackingPacing()).toMatchObject({ calibrationCollecting: true, maximumHz: 60 });
+    await s.advance(10);
+    s.result();
+    s.freshFrame();
+    s.runtime.setCalibrationCollecting(false);
+    expect(s.runtime.trackingPacing()).toMatchObject({ calibrationCollecting: false, maximumHz: 30 });
+    await s.advance(7);
+    expect(worker.frames).toHaveLength(1);
+    await s.advance(16);
+    expect(worker.frames).toHaveLength(1);
+    await s.advance(1);
+    expect(worker.frames).toHaveLength(2);
+    expect(worker.frames[1].capture - worker.frames[0].capture).toBeGreaterThanOrEqual(1000 / 30);
+  });
+  it("preserves one-in-flight backpressure when collection becomes active", async () => {
+    const s = setup({ calibrationCollecting: false });
+    const worker = await s.start();
+    s.runtime.setCalibrationCollecting(true);
+    s.freshFrame();
+    await s.advance(20);
+    expect(worker.frames).toHaveLength(1);
+    s.result();
+    await s.advance(1);
+    expect(worker.frames).toHaveLength(2);
+    expect(s.runtime.trackingPacing()).toMatchObject({ calibrationCollecting: true, maximumHz: 60 });
+  });
   it("prepares clean optical candidates after posting the exact worker bitmap but commits only its paired result", async () => {
     const prepare = vi.spyOn(IndexImageTracker.prototype, "prepare");
     const complete = vi.spyOn(IndexImageTracker.prototype, "complete");

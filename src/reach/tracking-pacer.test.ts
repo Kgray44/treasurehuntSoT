@@ -3,23 +3,25 @@ import { describe, expect, it } from "vitest";
 import { ReachTrackingPacer, reachTrackingPacingPolicy } from "./tracking-pacer";
 
 describe("adaptive local tracking pacing", () => {
-  it("starts up to 60Hz and never queues a capture before the current interval", () => {
+  it("starts up to 30Hz for normal tracking and never queues a capture before the current interval", () => {
     const pacer = new ReachTrackingPacer();
-    expect(pacer.targetHz).toBeCloseTo(60);
+    expect(pacer.targetHz).toBeCloseTo(30);
+    expect(pacer.diagnostics).toMatchObject({ calibrationCollecting: false, maximumHz: 30 });
     expect(pacer.nextDelay(0, -Infinity)).toBe(0);
-    expect(pacer.nextDelay(100, 100)).toBe(17);
+    expect(pacer.nextDelay(100, 100)).toBe(34);
     pacer.recordCompleted(100, 105, 1);
-    expect(pacer.nextDelay(105, 100)).toBe(12);
-    expect(pacer.nextDelay(117, 100)).toBe(0);
+    expect(pacer.nextDelay(105, 100)).toBe(29);
+    expect(pacer.nextDelay(134, 100)).toBe(0);
   });
 
-  it("holds lightweight steady work near the foreground ceiling", () => {
+  it.each([false, true])("holds lightweight steady work at the phase ceiling (collecting=%s)", (collecting) => {
     const pacer = new ReachTrackingPacer();
+    pacer.setCalibrationCollecting(collecting);
     for (let at = 0; at < 1000; at += 17) {
       pacer.recordTimerLateness(at, at + 0.5);
       pacer.recordCompleted(at, at + 4, 1);
     }
-    expect(pacer.targetHz).toBeCloseTo(60);
+    expect(pacer.targetHz).toBeCloseTo(collecting ? 60 : 30);
     expect(pacer.diagnostics.smoothedTotalMs).toBe(4);
   });
 
@@ -48,17 +50,17 @@ describe("adaptive local tracking pacing", () => {
       pacer.recordTimerLateness(i * 200, i * 200);
       pacer.recordCompleted(i * 200, i * 200 + 5, 1);
       expect(pacer.intervalMs).toBeGreaterThanOrEqual(previous * 0.9 - 1e-9);
-      expect(pacer.targetHz).toBeLessThanOrEqual(60);
+      expect(pacer.targetHz).toBeLessThanOrEqual(30);
       previous = pacer.intervalMs;
     }
-    expect(pacer.targetHz).toBeCloseTo(60);
+    expect(pacer.targetHz).toBeCloseTo(30);
   });
 
   it("responds to event-loop duress even when inference itself is cheap", () => {
     const pacer = new ReachTrackingPacer();
     pacer.recordCompleted(0, 4, 1);
     pacer.recordTimerLateness(20, 70);
-    expect(pacer.intervalMs).toBeGreaterThanOrEqual(1000 / 60 + (50 - 2) * 2);
+    expect(pacer.intervalMs).toBeGreaterThanOrEqual(1000 / 30 + (50 - 2) * 2);
     expect(pacer.diagnostics.smoothedTimerLatenessMs).toBe(50);
     const stressed = pacer.intervalMs;
     pacer.recordTimerLateness(80, 80);
@@ -117,7 +119,7 @@ describe("adaptive local tracking pacing", () => {
     for (const timing of invalid) {
       const pacer = new ReachTrackingPacer();
       expect(() => pacer.recordCompleted(timing[0], timing[1], timing[2])).toThrow("REACH_PACER_CLOCK_INVALID");
-      expect(pacer.targetHz).toBeCloseTo(60);
+      expect(pacer.targetHz).toBeCloseTo(30);
       expect(() => pacer.recordCompleted(0, 4, 1)).not.toThrow();
     }
     for (const timing of [
@@ -143,7 +145,7 @@ describe("adaptive local tracking pacing", () => {
     const pacer = new ReachTrackingPacer();
     expect(() => pacer.recordCompleted(0, Number.MAX_VALUE, Number.MAX_VALUE)).toThrow("REACH_PACER_DURATION_INVALID");
     expect(() => pacer.recordTimerLateness(0, Number.MAX_VALUE)).toThrow("REACH_PACER_DURATION_INVALID");
-    expect(pacer.targetHz).toBeCloseTo(60);
+    expect(pacer.targetHz).toBeCloseTo(30);
     pacer.recordTimerLateness(20, 19);
     expect(pacer.diagnostics.smoothedTimerLatenessMs).toBe(0);
   });
@@ -160,10 +162,43 @@ describe("adaptive local tracking pacing", () => {
       const next = completed + pacer.nextDelay(completed, capture);
       const interval = next - capture;
       expect(next).toBeGreaterThanOrEqual(completed);
-      expect(interval).toBeGreaterThanOrEqual(1000 / 60);
+      expect(interval).toBeGreaterThanOrEqual(1000 / 30);
       expect(total / interval).toBeLessThanOrEqual(reachTrackingPacingPolicy.maximumProcessingDuty + 1e-9);
       expect(main / interval).toBeLessThanOrEqual(0.3 + 1e-9);
       capture = next;
     }
+  });
+  it("ramps up for active collection and immediately returns to the normal cap on pause or completion", () => {
+    const pacer = new ReachTrackingPacer();
+    pacer.recordCompleted(0, 4, 1);
+    pacer.setCalibrationCollecting(true);
+    expect(pacer.targetHz).toBeCloseTo(30);
+    let previous = pacer.intervalMs;
+    for (let at = 100; at <= 1000; at += 100) {
+      pacer.recordCompleted(at, at + 4, 1);
+      expect(pacer.intervalMs).toBeGreaterThanOrEqual(previous * 0.9 - 1e-9);
+      previous = pacer.intervalMs;
+    }
+    expect(pacer.diagnostics).toMatchObject({ calibrationCollecting: true, maximumHz: 60 });
+    expect(pacer.targetHz).toBeCloseTo(60);
+    pacer.setCalibrationCollecting(false);
+    expect(pacer.targetHz).toBeCloseTo(30);
+    expect(pacer.nextDelay(1004, 1000)).toBe(30);
+  });
+  it("never uses the collection cap to bypass main-thread pressure, timer lateness or the unfocused cap", () => {
+    const pacer = new ReachTrackingPacer();
+    pacer.recordCompleted(0, 100, 30);
+    pacer.recordTimerLateness(100, 150);
+    const stressed = pacer.intervalMs;
+    pacer.setCalibrationCollecting(true);
+    expect(pacer.intervalMs).toBeGreaterThanOrEqual(stressed);
+    pacer.setFocused(false);
+    expect(pacer.maximumHz).toBe(8);
+    expect(pacer.targetHz).toBeLessThanOrEqual(8);
+    pacer.setCalibrationCollecting(false);
+    pacer.setCalibrationCollecting(true);
+    expect(pacer.targetHz).toBeLessThanOrEqual(8);
+    pacer.setFocused(true);
+    expect(pacer.intervalMs).toBeGreaterThanOrEqual(stressed);
   });
 });

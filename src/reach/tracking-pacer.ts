@@ -1,5 +1,6 @@
 export const reachTrackingPacingPolicy = {
-  maximumFocusedHz: 60,
+  maximumFocusedHz: 30,
+  maximumCalibrationHz: 60,
   maximumUnfocusedHz: 8,
   maximumMainThreadDuty: 0.3,
   // One inference in flight already bounds worker work. Elapsed worker time
@@ -19,6 +20,7 @@ const validClock = (value: number) => Number.isFinite(value) && value >= 0;
  */
 export class ReachTrackingPacer {
   private focused = true;
+  private calibrationCollecting = false;
   private interval = 1000 / reachTrackingPacingPolicy.maximumFocusedHz;
   private totalMs: number | null = null;
   private mainMs: number | null = null;
@@ -35,9 +37,18 @@ export class ReachTrackingPacer {
   get targetHz() {
     return 1000 / this.interval;
   }
+  get maximumHz() {
+    return !this.focused
+      ? reachTrackingPacingPolicy.maximumUnfocusedHz
+      : this.calibrationCollecting
+        ? reachTrackingPacingPolicy.maximumCalibrationHz
+        : reachTrackingPacingPolicy.maximumFocusedHz;
+  }
   get diagnostics() {
     return {
       focused: this.focused,
+      calibrationCollecting: this.calibrationCollecting,
+      maximumHz: this.maximumHz,
       targetHz: this.targetHz,
       intervalMs: this.interval,
       smoothedTotalMs: this.totalMs,
@@ -48,8 +59,7 @@ export class ReachTrackingPacer {
     };
   }
   private target(total: number, main: number, late: number, lastTotal: number, lastMain: number, lastLate: number) {
-    const minimum =
-      1000 / (this.focused ? reachTrackingPacingPolicy.maximumFocusedHz : reachTrackingPacingPolicy.maximumUnfocusedHz);
+    const minimum = 1000 / this.maximumHz;
     const target = Math.max(
       minimum,
       total / reachTrackingPacingPolicy.maximumProcessingDuty,
@@ -76,6 +86,22 @@ export class ReachTrackingPacer {
         this.lastLateness,
       ),
     );
+  }
+  /** Only active calibration collection may use the higher foreground ceiling. */
+  setCalibrationCollecting(collecting: boolean) {
+    if (this.calibrationCollecting === collecting) return;
+    this.calibrationCollecting = collecting;
+    const target = this.target(
+      this.totalMs ?? 0,
+      this.mainMs ?? 0,
+      this.lateMs ?? 0,
+      this.lastTotal,
+      this.lastMain,
+      this.lastLateness,
+    );
+    // Before any timing evidence exists this sets the initial mode ceiling.
+    // Later increases retain the same bounded, measured recovery as focus.
+    this.interval = this.totalMs === null && this.lateMs === null ? target : Math.max(this.interval, target);
   }
   nextDelay(now: number, lastCapture: number): number {
     if (!validClock(now) || (lastCapture !== -Infinity && (!validClock(lastCapture) || lastCapture > now)))

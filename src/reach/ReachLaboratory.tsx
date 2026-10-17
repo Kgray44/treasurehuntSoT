@@ -171,6 +171,8 @@ export function ReachLaboratory({
     [metrics, setMetrics] = useState(() => timingSnapshot(new ReachTiming()));
   const [pacing, setPacing] = useState<{
     focused: boolean;
+    calibrationCollecting: boolean;
+    maximumHz: number;
     targetHz: number;
     smoothedTotalMs: number | null;
     smoothedMainThreadMs: number | null;
@@ -198,6 +200,9 @@ export function ReachLaboratory({
   }, [step]);
   const advance = useCallback((next: Step) => {
     stepRef.current = next;
+    runtime.current?.setCalibrationCollecting(
+      (next === "TRAINING" || next === "VALIDATION") && trial.current?.paused === false,
+    );
     setStep(next);
   }, []);
   const changeSource = useCallback((next: Source) => {
@@ -227,6 +232,7 @@ export function ReachLaboratory({
     (reason?: string) => {
       setSetupInvalidation(reason ?? null);
       trial.current = null;
+      runtime.current?.setCalibrationCollecting(false);
       calibrationRef.current = null;
       setCalibration(null);
       setTarget(null);
@@ -624,6 +630,9 @@ export function ReachLaboratory({
       (o) => acceptIndex.current(o),
     );
     runtime.current = r;
+    r.setCalibrationCollecting(
+      (stepRef.current === "TRAINING" || stepRef.current === "VALIDATION") && trial.current?.paused === false,
+    );
     let lastSize = "";
     let lastPosition = "";
     const changed = () => {
@@ -867,6 +876,7 @@ export function ReachLaboratory({
     const t = trial.current;
     if (!t) return;
     t.paused = !t.paused;
+    runtime.current?.setCalibrationCollecting(!t.paused);
     const progress = t.window?.pause(performance.now());
     t.after = performance.now() + 700;
     t.acquiredAt = performance.now();
@@ -1008,6 +1018,8 @@ export function ReachLaboratory({
       data-reach-authority="laboratory-only"
       data-reach-readiness={readiness.condition}
       data-image-state={indexStale ? "STALE" : (indexState?.state ?? "UNSEEDED")}
+      data-capture-ceiling={pacing?.maximumHz}
+      data-calibration-capture={pacing?.calibrationCollecting ?? false}
       data-image-track-generation={indexState?.trackGeneration ?? 0}
       data-image-model-agreement={indexState?.modelAgreement ?? "UNAVAILABLE"}
       data-image-reason={indexStale ? "STALE" : (indexState?.reason ?? "UNSEEDED")}
@@ -1740,6 +1752,13 @@ export function ReachLaboratory({
                   <dd>{metrics.captureHz?.toFixed(1) ?? "—"} / second</dd>
                 </div>
                 <div>
+                  <dt>Tracking rate limit</dt>
+                  <dd>
+                    {pacing?.maximumHz ?? "—"} / second{" "}
+                    {pacing ? (pacing.calibrationCollecting ? "· calibration" : "· normal tracking") : ""}
+                  </dd>
+                </div>
+                <div>
                   <dt>Adaptive capture target</dt>
                   <dd>
                     {pacing?.targetHz.toFixed(1) ?? "—"} / second{" "}
@@ -1769,6 +1788,7 @@ export function ReachLaboratory({
                 performance.
               </p>
               <p>
+                Normal tracking is capped at 30 updates per second; active calibration collection is capped at 60.
                 Capture adapts to processing time and event-loop pressure, with one inference in flight. The target is a
                 ceiling, not a guaranteed camera rate. Visible unfocused pages slow down; hiding the page stops the
                 camera. These signals do not measure total system CPU use.

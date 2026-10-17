@@ -34,6 +34,7 @@ export class ReachBrowserRuntime {
   private detach = () => {};
   private active = false;
   private pacer: ReachTrackingPacer | null = null;
+  private calibrationCollecting = false;
   private imageTracker: IndexImageTracker | null = null;
   private imageCanvas: OffscreenCanvas | null = null;
   private imageContext: OffscreenCanvasRenderingContext2D | null = null;
@@ -79,6 +80,11 @@ export class ReachBrowserRuntime {
   trackingPacing() {
     return this.pacer?.diagnostics ?? null;
   }
+  /** Lab phase only: active TRAINING/VALIDATION collection, excluding pauses. */
+  setCalibrationCollecting(collecting: boolean) {
+    this.calibrationCollecting = collecting;
+    this.pacer?.setCalibrationCollecting(collecting);
+  }
   setIndexTrackingEnabled(enabled: boolean) {
     this.indexEnabled = !!this.indexObserve && enabled;
     if (!this.indexEnabled) {
@@ -108,6 +114,7 @@ export class ReachBrowserRuntime {
     const pacer = new ReachTrackingPacer();
     this.pacer = pacer;
     pacer.setFocused(document.hasFocus());
+    pacer.setCalibrationCollecting(this.calibrationCollecting);
     const generation = ++this.generation;
     const fail = (reason: string) => {
       if (generation === this.generation) this.stop(reason);
@@ -216,6 +223,11 @@ export class ReachBrowserRuntime {
       const pump = async () => {
         if (!this.active || generation !== this.generation || !workerReady || this.inFlight) return;
         this.timer = undefined;
+        // A pending fast timer cannot bypass a newly lowered phase/focus cap.
+        if (pacer.nextDelay(performance.now(), lastCapture) > 0) {
+          schedule();
+          return;
+        }
         const identity = frameIdentity();
         if (identity.frame < lastVideoFrame) {
           fail("FRAME_IDENTITY_RESTARTED");

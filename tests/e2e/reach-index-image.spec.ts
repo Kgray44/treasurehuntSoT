@@ -481,8 +481,12 @@ test("D0 live setup opens empty before pointing and binds its first fresh source
       name: mode === "RELATIVE" ? "Set up relative movement" : "Begin nine-point calibration",
       exact: true,
     });
+    await expect(root(page)).toHaveAttribute("data-capture-ceiling", "30");
+    await expect(root(page)).toHaveAttribute("data-calibration-capture", "false");
     await expect(start).toBeEnabled();
     await start.click();
+    await expect(root(page)).toHaveAttribute("data-capture-ceiling", "60");
+    await expect(root(page)).toHaveAttribute("data-calibration-capture", "true");
     await expect(page.getByLabel(`Target 1 of ${count}`, { exact: true })).toBeVisible();
     await expect(page.getByLabel("Current target acquisition", { exact: true })).toHaveAttribute("value", "0");
     // A bad/interrupted model return cannot invalidate an unbound trial.
@@ -552,6 +556,13 @@ test("D0 live setup opens empty before pointing and binds its first fresh source
     expect((firstFresh as { acquisition: number }).acquisition).toBeGreaterThan(0);
     phases.push(firstFresh);
     await page.getByRole("button", { name: "Pause calibration", exact: true }).click();
+    await expect(root(page)).toHaveAttribute("data-capture-ceiling", "30");
+    await expect(root(page)).toHaveAttribute("data-calibration-capture", "false");
+    await page.getByRole("button", { name: "Resume calibration", exact: true }).click();
+    await expect(root(page)).toHaveAttribute("data-capture-ceiling", "60");
+    await expect(root(page)).toHaveAttribute("data-calibration-capture", "true");
+    await page.getByRole("button", { name: "Pause calibration", exact: true }).click();
+    await expect(root(page)).toHaveAttribute("data-capture-ceiling", "30");
     await expect(page.getByRole("alert", { name: "Setup ended", exact: true })).toHaveCount(0);
     await page.screenshot({
       path: testInfo.outputPath(`D0-unbound-${mode.toLowerCase()}-first-point.png`),
