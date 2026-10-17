@@ -1,5 +1,5 @@
 name: Sounding Line historical validation replay diagnostic
-run-name: Sounding Line historical validation diagnostic 1 ordinary6
+run-name: Sounding Line historical validation diagnostic 2 ordinary6
 
 on:
   workflow_dispatch:

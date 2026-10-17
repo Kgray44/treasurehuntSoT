@@ -18,7 +18,7 @@ Posttechnical39019200508 was EXECUTION_UNKNOWN / DIAGNOSTIC_INCOMPLETE at techni
 command6, before historical validation or source observation; reservation
 `65524b9cbf9d1931e58634d737395a344a604b34` is spent. Its child reason is unknown.
 
-The standing owner-approved finite amendment investigates one omitted stage:
+The standing owner-approved finite diagnostic investigates one omitted stage:
 full historical Product Experience validation immediately before the fixed source
 prefix. Source-only omitted that validation; posttechnical never reached it.
 Its allocation, hashing and Git object/cache effects are a new causal hypothesis,
@@ -26,29 +26,104 @@ not an established old cause. Importing the same historical modules alone is
 not a newly reproduced workload. PR761's installed command-retention repair at
 `318e291ce976c57a66b716f93de6966f5fa840b6` grants no execution by itself.
 
-# Separate single-use authority
+# Consumed result and prospective repair
 
-Use only ID `CROSSDECK-ORDINARY6-HISTORICAL-VALIDATION-DIAGNOSTIC-20261017`,
+PR762 installed this diagnostic at
+`2442baaf0879afe15b47cc7ad148a81bca311449`. Its sole dispatch produced
+[run39026979523](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39026979523),
+which completed FAILURE. Reservation job117379818268 failed with
+`INSTALLER_CHANGED`; worker117379990825 was skipped. The safe original records
+workerStarted=false and zero historical validations, source prefixes, dependency/
+technical commands, browser/capture commands, replay commands and consumer admissions.
+actualChromiumLaunches remains null, not measured zero. No ciphertext was produced
+and no decryption occurred.
+
+Original server artifact12098647467 is a653-byte ZIP with SHA256
+`0aa28f49ced72db9a810a10ba189569758a703d6e582d75392654f3237d40028`.
+Its sole802-byte reservation.json has SHA256
+`7e5c1c3e7eaed7f4f42279014d9a6492d7b01a18f67b84a306e42934f9a98713`.
+Independent audit verified the authenticated claim-ref404: no claim ref exists.
+That does not make the allowance unused or refund it; this failure and the single
+workflow-history entry close the consumed/blocked grant.
+
+The installed reserve guard required installer.shallow===true from
+posttechnicalSnapshot, which never returns a shallow field. This deterministic
+new-diagnostic binding defect does not establish the original ordinary6 cause.
+The narrow repair reads the actual installer Git shallow state explicitly and
+retains head/clean checks and the shared snapshot contract. Independent inert
+real-repository contract audit passed on2026-10-17: terminal SHA256
+`b6d82ffafef0f0e6988757abc180a00c98484e68ea1b8d89d94ca66cf11e7985`.
+It exercised representative depth1/full-history repositories, the production
+reserve guard, four in-memory reservation POSTs and fresh read-only claim consumers.
+It made no external request, actual grant, validation, prefix, worker, key or crypto
+call. It did not exercise fixed E/B3 media, overlay or historical workload.
+
+The parent direction received2026-10-17 at11:10:31Z requires that audit before publication
+and continuation through a lawful execution path under standing owner authorization.
+The separately bounded successor below is combined with the repair for normal
+protected review. This prepared amendment claims no future installation, dispatch
+or result. Repair alone grants no execution, old-slot refund or new ordinary trial.
+
+# Consumed single-use authority (historical specification)
+
+The following describes the consumed grant; it is not an instruction to dispatch.
+
+The consumed ID was `CROSSDECK-ORDINARY6-HISTORICAL-VALIDATION-DIAGNOSTIC-20261017`,
 namespace `sounding-line-diagnostics/CROSSDECK-ORDINARY6-HISTORICAL-VALIDATION-DIAGNOSTIC-20261017`,
-create-only slot `attempt-1`, and
-`.github/workflows/sounding-line-replay-historical-validation-diagnostic.yml`.
-Expiry is 2026-10-22T23:59:59Z. Owner and triggering actor must both be Kgray44;
-event workflow_dispatch, main, attempt1, no inputs, exactly one workflow-dispatch
-POST total and one create-only reservation sequence. The reviewed reservation
-sequence may create its Git blob/tree/commit/ref; it authorizes no other write.
-Failure, setup failure, cancellation, unknown result or uncertain write consumes
-or blocks the slot. No rerun, refund, replacement namespace or uncertain POST retry.
+slot `attempt-1`, policy SHA256
+`4b9680c1005a03004d2c6973b51ff29e0db53403b589651f38917fa1ae8d82de`.
+Its sole manual attempt1 was39026979523 on installed M2 above. It required history0
+before dispatch and singleton current-run history during execution. Those historic
+identities and restrictions stay frozen; the failure consumes that grant despite
+claim-ref404. No rerun, refund or continuation under that ID is permitted.
 
-Independent source/synthetic review, normal protected installer whole/Mainline
-success from app15368, actual protected merge and independent actual-landed
-verification precede fresh prelaunch. Bind the actual installed head/tree/workflow
-ID; do not substitute the PR761 installation for these future facts. Fresh guards
-require protected exact main/source, owner/key availability, complete unfiltered
-and manual new-workflow history0, authenticated new-slot404, unexpired policy and
-unchanged held PRs. Recheck exact main/protection immediately before the sole
-workflow-dispatch POST.
-Reserve once before transfer/work; only reserve has contents-write. The read-only
-worker verifies that exact new claim. Old R13/diagnostic stores supply no authority.
+# One distinct contract-successor amendment
+
+This amendment authorizes only ID
+`CROSSDECK-ORDINARY6-HISTORICAL-VALIDATION-CONTRACT-SUCCESSOR-20261017`, namespace
+`sounding-line-diagnostics/CROSSDECK-ORDINARY6-HISTORICAL-VALIDATION-CONTRACT-SUCCESSOR-20261017`,
+and create-only slot `attempt-1`. Reuse the same physical workflow387562208 and path
+`.github/workflows/sounding-line-replay-historical-validation-diagnostic.yml`,
+with run title `Sounding Line historical validation diagnostic 2 ordinary6` and the
+same corrected runtime path. This is a distinct prospective grant, not a rerun,
+renaming or refund of any historical grant. Its policy/claim/ciphertext bind the new
+ID, digest and actual installed source. No inputs or runtime policy override exists.
+
+Expiry remains2026-10-22T23:59:59Z. Both actors must be Kgray44; event
+workflow_dispatch, ref main, run_attempt1. Permit exactly one new workflow-dispatch
+POST and one create-only reservation sequence. Only reserve has contents-write;
+the reviewed four Git blob/tree/commit/ref POSTs create only the new claim. The
+contents-read worker verifies that exact claim before transfer or work. Failure,
+setup failure, cancellation, unknown result or uncertain write consumes or blocks
+this new grant, without retry, extension, fallback namespace or another diagnostic.
+
+Independent final source/synthetic review, normal protected installer whole/Mainline
+success from app15368, expected-head protected merge and independent actual-landed
+verification precede fresh prelaunch. Bind the actual installed head/tree/bytes and
+active workflow387562208; no earlier installation supplies those facts. Fresh
+prelaunch requires protected exact main/source, owner/key availability, unexpired
+policy, unchanged held PRs, authenticated successor-slot404 and both complete
+unfiltered/manual histories containing exactly the old failed run below. Preserve
+authenticated old claim-ref404 as absence only, never as unused authority. Recheck
+exact main/protection immediately before the sole new POST; retain exclusive intent,
+acknowledgement and raw read receipts. An uncertain POST is reconciled read-only,
+never retried.
+
+The fixed predecessor is run39026979523/suite105766005817, completed FAILURE,
+workflow387562208, main, workflow_dispatch, run_attempt1, both actors Kgray44,
+repository/head repository Kgray44/treasurehuntSoT, the same workflow path, title
+`Sounding Line historical validation diagnostic 1 ordinary6`, head
+`2442baaf0879afe15b47cc7ad148a81bca311449`. During reserve and worker checks, both
+complete histories must contain exactly two distinct runs: that unchanged predecessor
+and the unique current successor. Reject extra/duplicate/partial histories or any
+rerun. The current run must be in_progress with null conclusion, the new title,
+actual installed head/current protected main, same workflow/path/repository and
+owner identities, manual attempt1. Old stores/claims/phases supply no permission;
+all other consumed allowances remain closed. Only this explicit amendment changes
+the old history0/singleton expectation for the newly installed successor. The fixed
+predecessor tuple and workflow ID are covered by the new policy digest.
+The current direct run's check_suite_id must be a positive safe integer and match
+the current entry in both histories; no future suite identity is guessed.
 
 # Fixed Node-only sequence and bounds
 
