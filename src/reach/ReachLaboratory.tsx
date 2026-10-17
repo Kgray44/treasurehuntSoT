@@ -523,7 +523,9 @@ export function ReachLaboratory({
       posture?.pointing &&
       posture.framed;
     if (stage === "TRAINING" && ((!readiness.eligible && !recentPoint) || !observation)) {
-      setMessage(readyRef.current.guidance);
+      setMessage(
+        readiness.condition === "READY" ? "Waiting for fresh tracking. Hold here briefly." : readiness.guidance,
+      );
       return;
     }
     if (stage === "VALIDATION" && !calibrationRef.current) return;
@@ -688,7 +690,15 @@ export function ReachLaboratory({
           <h1 id="reach-heading">Find your point.</h1>
           <p className={styles.intro}>See your hand. Find a comfortable rhythm. Explore a new way to point.</p>
         </div>
-        <Link href={returnHref} onClick={stop} className={styles.return}>
+        <Link
+          href={returnHref}
+          onClick={stop}
+          scroll={returnHref === "/devices/pair" ? false : undefined}
+          onNavigate={
+            returnHref === "/devices/pair" ? () => window.scrollTo({ top: 0, left: 0, behavior: "instant" }) : undefined
+          }
+          className={styles.return}
+        >
           ← {returnLabel}
         </Link>
         {source !== "OFF" && <button onClick={stop}>Stop session</button>}
@@ -820,7 +830,14 @@ export function ReachLaboratory({
             )}
           </div>
         )}
-        <div ref={plane} tabIndex={-1} className={styles.plane} hidden={!showPlane} aria-label="Pointing practice area">
+        <div
+          ref={plane}
+          role="group"
+          tabIndex={-1}
+          className={styles.plane}
+          hidden={!showPlane}
+          aria-label="Pointing practice area"
+        >
           <div className={styles.planeHeader}>
             <span>
               {step === "PLAYGROUND"
@@ -885,7 +902,7 @@ export function ReachLaboratory({
                   : `${paused ? "Paused" : readiness.eligible ? progress : readiness.guidance} · ${Math.round((acquisition?.progress ?? 0) * 100)}%`}
           </div>
         </div>
-        <aside className={styles.guide} aria-label="Reach guidance">
+        <section className={styles.guide} aria-label="Reach guidance">
           <p className={styles.eyebrow}>
             {training
               ? `${step === "TRAINING" ? "CALIBRATION" : "INDEPENDENT CHECK"} / ${completed + 1} OF ${total}`
@@ -1012,12 +1029,13 @@ export function ReachLaboratory({
                       </span>
                     </label>
                   </fieldset>
-                  <button className={styles.primary} disabled={!readiness.eligible} onClick={() => begin("TRAINING")}>
+                  <button className={styles.primary} onClick={() => begin("TRAINING")}>
                     {pointingMode === "ABSOLUTE" ? "Begin nine-point calibration" : "Set up relative movement"}
                   </button>
                   {!readiness.eligible && (
                     <p className={styles.hint}>
-                      The next step unlocks when your active hand is framed and your point is recognized.
+                      Request setup when you are ready. We will check your hand and show guidance if tracking needs
+                      attention.
                     </p>
                   )}
                 </>
@@ -1260,7 +1278,7 @@ export function ReachLaboratory({
               </ul>
             </div>
           </details>
-        </aside>
+        </section>
       </div>
       {source === "DEMO" && (
         <details className={styles.demoControls} open>
