@@ -523,7 +523,9 @@ export function ReachLaboratory({
       posture?.pointing &&
       posture.framed;
     if (stage === "TRAINING" && ((!readiness.eligible && !recentPoint) || !observation)) {
-      setMessage(readyRef.current.guidance);
+      setMessage(
+        readiness.condition === "READY" ? "Waiting for fresh tracking. Hold here briefly." : readiness.guidance,
+      );
       return;
     }
     if (stage === "VALIDATION" && !calibrationRef.current) return;
@@ -1012,12 +1014,13 @@ export function ReachLaboratory({
                       </span>
                     </label>
                   </fieldset>
-                  <button className={styles.primary} disabled={!readiness.eligible} onClick={() => begin("TRAINING")}>
+                  <button className={styles.primary} onClick={() => begin("TRAINING")}>
                     {pointingMode === "ABSOLUTE" ? "Begin nine-point calibration" : "Set up relative movement"}
                   </button>
                   {!readiness.eligible && (
                     <p className={styles.hint}>
-                      The next step unlocks when your active hand is framed and your point is recognized.
+                      Request setup when you are ready. We will check your hand and show guidance if tracking needs
+                      attention.
                     </p>
                   )}
                 </>
