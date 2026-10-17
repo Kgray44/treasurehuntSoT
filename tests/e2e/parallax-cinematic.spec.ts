@@ -1,4 +1,4 @@
-import { openOwnedSceneFromCurrentLibrary } from "./fixtures/parallax-current-library";
+import { openOwnedSceneFromCurrentLibrary, saveCurrentWorkingDraft } from "./fixtures/parallax-current-library";
 import { test, expect } from "@playwright/test";
 import { mkdir, writeFile } from "node:fs/promises";
 import { db } from "../../src/lib/db";
