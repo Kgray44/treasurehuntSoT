@@ -4341,7 +4341,12 @@
     gap: 4px;
   }
   .adaptiveWorkspace .center {
-    overflow: hidden;
+    overflow: auto;
+  }
+  /* Keep the editing viewport usable; its center scrolls instead of shrinking the scene. */
+  .adaptiveWorkspace .canvas:not(.roomPreviewCanvas) {
+    grid-template-rows: auto auto auto minmax(370px, 1fr) auto auto auto;
+    flex: 1 0 auto;
   }
   .adaptiveWorkspace .canvas {
     display: grid;

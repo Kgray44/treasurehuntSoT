@@ -49,10 +49,18 @@ test("Creator follows exact construction findings, corrects wall orientation and
   await page.getByRole("button", { name: "Collapse left dock", exact: true }).click();
   const host = page.getByRole("region", { name: "Spatial canvas", exact: true }).locator('[data-renderer="READY"]');
   await expect(host.locator("canvas")).toBeVisible();
+  await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("ENGINEERING");
   await page.getByRole("button", { name: "Edit room features", exact: true }).click();
   const editor = page.getByRole("region", { name: "Room feature editor", exact: true });
-  const checks = editor.getByLabel("Construction checks", { exact: true });
-  await checks.getByRole("button", { name: /Construction checks/ }).click();
+  const checks = page
+    .getByRole("region", { name: "Room spatial context", exact: true })
+    .getByLabel("Construction checks", { exact: true });
+  const showChecks = async () => {
+    await page.getByRole("button", { name: "Open spatial context", exact: true }).click();
+    if ((await checks.getAttribute("open")) === null)
+      await checks.getByRole("button", { name: /Construction checks/ }).click();
+  };
+  await showChecks();
   await expect(checks).toContainText("points outside this room");
   await expect(checks).toContainText("outside the broad");
   await mkdir(root, { recursive: true });
@@ -62,17 +70,17 @@ test("Creator follows exact construction findings, corrects wall orientation and
   await expect(editor.getByLabel("Room feature", { exact: true })).toHaveValue(wall.id);
   await editor.getByLabel("Feature rotation (degrees)", { exact: true }).fill("180");
   await editor.getByLabel("Feature rotation (degrees)", { exact: true }).press("Tab");
+  await showChecks();
   await expect(checks).not.toContainText("points outside this room");
   await checks.getByRole("button", { name: desk.name, exact: true }).first().click();
   await expect(editor.getByLabel("Room feature", { exact: true })).toHaveValue(desk.id);
   await page.setViewportSize({ width: 390, height: 844 });
-  // Phone layout folds the Inspector; reopen it through the normal room command.
-  await page.getByRole("button", { name: "Edit room features", exact: true }).click();
-  if ((await checks.getAttribute("open")) === null)
-    await checks.getByRole("button", { name: /Construction checks/ }).click();
+  // Phone layout folds the Inspector; reopen its current context through the dock rail.
+  await showChecks();
   await checks.scrollIntoViewIfNeeded();
   await expect(checks.getByText(/Check units or confirm the intended size/)).toBeVisible();
   await page.screenshot({ path: `${root}/construction-scale-review-phone.png` });
+  await page.getByRole("button", { name: "Open object properties", exact: true }).click();
   for (const [label, value] of [
     ["Feature height (m)", originalHeight],
     ["Feature y (m)", originalY],
@@ -80,6 +88,7 @@ test("Creator follows exact construction findings, corrects wall orientation and
     await editor.getByLabel(label, { exact: true }).fill(String(value));
     await editor.getByLabel(label, { exact: true }).press("Tab");
   }
+  await showChecks();
   await expect(checks).toContainText("No findings within these checks");
   await saveCurrentWorkingDraft(page);
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
@@ -91,7 +100,7 @@ test("Creator follows exact construction findings, corrects wall orientation and
   await page.reload();
   await expect(host.locator("canvas")).toBeVisible();
   await page.getByRole("button", { name: "Edit room features", exact: true }).click();
-  await checks.getByRole("button", { name: /Construction checks/ }).click();
+  await showChecks();
   await expect(checks).toContainText("No findings within these checks");
   expect((await listSpatialItems(account.id))[0].draft).toEqual(saved);
   await checks.scrollIntoViewIfNeeded();

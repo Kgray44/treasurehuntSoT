@@ -161,3 +161,11 @@ checkout, including SpatialContentLibrary and its focused spec. Root owns only
 the nine entry specs and shared test-navigation fixture in this correction.
 Keep those component edits separate and adopt its exact committed handoff once
 available. Its proof remains source-bound and cannot establish root acceptance.
+
+The coordinator's subsequent bounded follow-up authorizes repair of the exact
+three retained findings: the phone canvas's 370 px minimum, the cinematic
+room-coordinate test entry, and construction-check navigation. SC-00C confirmed
+no shared CSS/interface overlap and cleared a phone-only canvas CSS correction.
+Keep all 208 original matcher criteria and failed receipts. Recheck actual phone
+rendering and obtain independent local review; this remains separate from the
+held protected capture/qualification and the failed real-device AR journey.

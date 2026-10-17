@@ -4,7 +4,7 @@ import {
   saveCurrentWorkingDraft,
 } from "./fixtures/parallax-current-library";
 import { test, expect } from "@playwright/test";
-import { mkdir } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import { db } from "../../src/lib/db";
 import { closureAccount, authenticateClosure } from "./fixtures/landfall-closure";
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
@@ -140,6 +140,36 @@ test("Creator edits, renders, scrubs, plays and reloads real object keyframes, t
   const selectionCard = page.getByRole("button", { name: "Isolate selected object", exact: true }).locator("..");
   expect((await selectionCard.boundingBox())!.height).toBeLessThan(90);
   await page.screenshot({ path: `${root}/animation-phone.png`, fullPage: true });
+  await host.scrollIntoViewIfNeeded();
+  await page.screenshot({ path: `${root}/animation-phone-viewport.png`, fullPage: true });
+  await page.getByRole("button", { name: "Stop timeline", exact: true }).scrollIntoViewIfNeeded();
+  await page.screenshot({ path: `${root}/animation-phone-timeline-controls.png`, fullPage: true });
+  await writeFile(
+    `${root}/animation-phone-layout.json`,
+    JSON.stringify(
+      {
+        source: process.env.PARALLAX_A1_SOURCE_SHA,
+        viewport: page.viewportSize(),
+        canvas: await host.locator("canvas").boundingBox(),
+        selectionCard: await selectionCard.boundingBox(),
+        horizontalOverflow: await page.evaluate(() => document.documentElement.scrollWidth - innerWidth),
+        sceneScrollers: await host.evaluate((element) => {
+          const scrollers = [];
+          for (let parent = element.parentElement; parent; parent = parent.parentElement) {
+            if (["auto", "scroll"].includes(getComputedStyle(parent).overflowY))
+              scrollers.push({
+                height: parent.clientHeight,
+                contentHeight: parent.scrollHeight,
+                scrollTop: parent.scrollTop,
+              });
+          }
+          return scrollers;
+        }),
+      },
+      null,
+      2,
+    ),
+  );
 });
 
 test("Middle and Ctrl drag use the same camera pan and renderer recovery retains the draft", async ({
