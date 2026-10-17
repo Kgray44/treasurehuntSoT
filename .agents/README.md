@@ -33,6 +33,7 @@ not authorize restarting a completed phase.
 - [Ordinary policy test context repair](ordinary-test-context-repair.md)
 - [Crossdeck R10 ordinary-only successor](crossdeck-r10-ordinary-only.md)
 - [Crossdeck R11 ordinary-only successor](crossdeck-r11-ordinary-only.md)
+- [Crossdeck R12 diagnosed continuation](crossdeck-r12-ordinary-only.md)
 - [Parallax A1 owned task contract](parallax-a1-task-contract.md)
 - [Parallax A1 agreed Studio interface](parallax-a1-studio-interface.md)
 - [Sextant Phase 3 owned implementation context](sextant-phase3.md)

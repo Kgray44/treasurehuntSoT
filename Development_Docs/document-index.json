@@ -3117,6 +3117,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r12-ordinary-only-20261017/r11-consumed-frozen-publication.derived.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r2-authority-amendment-20261015/local-validation.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -3376,6 +3382,12 @@
     },
     {
       "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R11_Ordinary_Only_20261016.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R12_Diagnosed_Continuation_20261017.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -5434,6 +5446,60 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary4-failed-20261016/run.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary5-failed-20261017/artifacts.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary5-failed-20261017/consumed-custody.observation.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary5-failed-20261017/decision.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary5-failed-20261017/hosted-source-boundary.observation.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary5-failed-20261017/jobs.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary5-failed-20261017/measured-observation.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary5-failed-20261017/preservation-index.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary5-failed-20261017/run.original.raw.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary5-reverse-receive-repair-20261017/source-review.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -7516,6 +7582,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Crossdeck/Ordinary4_Disposition_20261016.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/Ordinary5_Disposition_20261017.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
