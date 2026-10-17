@@ -2460,6 +2460,7 @@ export function SpatialStudio({
     >
       <header
         className={styles.header}
+        tabIndex={-1}
         onContextMenu={(event) =>
           contextMenu.open(event, draft.content.title, [
             { label: "Save draft", icon: "save", disabled: busy, run: () => void action(persist) },

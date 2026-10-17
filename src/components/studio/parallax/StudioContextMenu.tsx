@@ -95,14 +95,6 @@ type Menu = {
   scrollPositions: Map<Element, { left: number; top: number }>;
   windowScroll: { x: number; y: number };
 };
-// Temporary local diagnostic, enabled only by the isolated construction test.
-function recordMenuEvent(event: string, target: EventTarget | null, details: unknown = null) {
-  const events = (window as typeof window & { __parallaxMenuEvents?: unknown[] }).__parallaxMenuEvents;
-  if (!events) return;
-  const element = target instanceof Element ? target : null;
-  events.push({ at: performance.now(), event, tag: element?.tagName, class: element?.getAttribute("class"), left: element?.scrollLeft, top: element?.scrollTop, details });
-  if (events.length > 80) events.shift();
-}
 /** Context actions use the same editor commands as visible controls. No hidden mutations. */
 export function useStudioContextMenu() {
   const [state, setState] = useState<Menu | null>(null);
@@ -119,7 +111,6 @@ export function useStudioContextMenu() {
     const scrollPositions = new Map<Element, { left: number; top: number }>();
     for (let element: Element | null = trigger; element; element = element.parentElement)
       scrollPositions.set(element, { left: element.scrollLeft, top: element.scrollTop });
-    recordMenuEvent("open", trigger, [...scrollPositions].map(([element, position]) => ({ tag: element.tagName, class: element.getAttribute("class"), ...position })));
     setState({
       title,
       actions,
@@ -144,9 +135,12 @@ export function useStudioContextMenu() {
     event.preventDefault();
     event.stopPropagation();
     const bounds = event.currentTarget.getBoundingClientRect();
+    const control = (event.target as HTMLElement).closest?.<HTMLElement>("button,a,input,textarea,select,[tabindex]");
+    // A focusable page shell outside this context area is not its opener.
+    // Starting there would omit the Studio's own scrolling ancestors.
+    const trigger = control && event.currentTarget.contains(control) ? control : event.currentTarget;
     openAt(
-      (event.target as HTMLElement).closest?.<HTMLElement>("button,a,input,textarea,select,[tabindex]") ??
-        event.currentTarget,
+      trigger,
       "clientX" in event ? event.clientX : bounds.left + 12,
       "clientY" in event ? event.clientY : bounds.bottom,
       title,
@@ -164,13 +158,9 @@ export function useStudioContextMenu() {
   useEffect(() => {
     if (!state) return;
     const outside = (event: Event) => {
-      if (!ref.current?.contains(event.target as Node)) {
-        recordMenuEvent(`dismiss:${event.type}`, event.target);
-        setState(null);
-      }
+      if (!ref.current?.contains(event.target as Node)) setState(null);
     };
     const scroll = (event: Event) => {
-      recordMenuEvent("scroll", event.target, event.target instanceof Element ? state.scrollPositions.get(event.target) ?? "untracked" : state.windowScroll);
       // A scroll used to reveal the trigger can be delivered after the menu opens.
       // Dismiss for a new movement, not a notification of the already captured position.
       if (
@@ -185,10 +175,7 @@ export function useStudioContextMenu() {
       }
       outside(event);
     };
-    const dismiss = () => {
-      recordMenuEvent("dismiss:resize", window);
-      setState(null);
-    };
+    const dismiss = () => setState(null);
     document.addEventListener("pointerdown", outside, true);
     document.addEventListener("scroll", scroll, true);
     window.addEventListener("resize", dismiss);

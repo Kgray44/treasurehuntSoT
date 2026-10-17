@@ -39,9 +39,6 @@ test("Creator follows exact construction findings, corrects wall orientation and
   await page.emulateMedia({ reducedMotion: "reduce" });
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
-  await page.addInitScript(() => {
-    (window as typeof window & { __parallaxMenuEvents?: unknown[] }).__parallaxMenuEvents = [];
-  });
   await page.goto("/studio/library");
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
   await openOwnedSceneFromCurrentLibrary(page, {
