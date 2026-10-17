@@ -386,7 +386,6 @@ function browserEvidenceCommand(command, argumentsList) {
   const script = argumentsList[0] ?? "";
   return (
     verificationPhase(command, argumentsList) === "browser-authority" ||
-    verificationPhase(command, argumentsList) === "suite-fixture-preflight" ||
     verificationPhase(command, argumentsList) === "browser-server-preparation" ||
     (command === "npx" &&
       argumentsList.includes("prisma") &&
@@ -396,10 +395,38 @@ function browserEvidenceCommand(command, argumentsList) {
   );
 }
 
-function requiresCurrentSetupOutput(group) {
+// A legacy preflight group can execute a complete browser suite or dedicated journey.
+// Keep its canonical partition/order while binding browser inputs and always
+// requiring fresh execution of its setup, production runtime and browser work.
+function isWholeBrowserExecution(group) {
   return group.commands.some(
     ([command, argumentsList]) =>
-      command === "npm" && ["run db:generate", "run build"].includes(argumentsList.join(" ")),
+      command === process.execPath &&
+      ["scripts/sounding-line/run-browser-suite.mjs", "tests/admiralty/phase3/run-journeys.mjs"].includes(
+        argumentsList[0],
+      ),
+  );
+}
+
+function browserFixturePaths(group) {
+  return group.commands
+    .flatMap(([, argumentsList]) => argumentsList)
+    .filter(
+      (argument) => argument.startsWith("scripts/") || argument.startsWith("prisma/") || argument.startsWith("tests/"),
+    );
+}
+
+function isBrowserEvidenceObligation(group) {
+  return group.kind === "browser" || isWholeBrowserExecution(group);
+}
+
+function requiresCurrentSetupOutput(group) {
+  return (
+    isWholeBrowserExecution(group) ||
+    group.commands.some(
+      ([command, argumentsList]) =>
+        command === "npm" && ["run db:generate", "run build"].includes(argumentsList.join(" ")),
+    )
   );
 }
 
@@ -566,7 +593,7 @@ function testPathsFor(group, plan) {
     return group.commands
       .flatMap(([, argumentsList]) => argumentsList)
       .filter((argument) => /\.test\.(?:ts|tsx)$/u.test(argument));
-  if (group.kind === "browser") return plan.selected.browserTests;
+  if (isBrowserEvidenceObligation(group)) return plan.selected.browserTests;
   if (group.kind === "migration") return plan.migrationScripts ?? [];
   if (group.kind === "preflight") {
     const [[command, argumentsList]] = group.commands;
@@ -593,13 +620,14 @@ function evidenceClosure(snapshot, group, plan) {
     ".nvmrc",
   ];
   const tests = testPathsFor(group, plan);
+  const browserEvidence = isBrowserEvidenceObligation(group);
   let entries = [];
   let unknown = false;
   if (group.kind === "unit") {
     const closure = staticSourceClosure(snapshot, tests);
     entries = closure.entries;
     unknown = closure.unknown;
-  } else if (requiresCurrentSetupOutput(group) && group.kind !== "browser" && group.kind !== "build") {
+  } else if (requiresCurrentSetupOutput(group) && !browserEvidence && group.kind !== "build") {
     const setup = prefixEntries(snapshot, ["prisma/", "scripts/"]);
     const dependencies = staticSourceClosure(
       snapshot,
@@ -607,7 +635,7 @@ function evidenceClosure(snapshot, group, plan) {
     );
     entries = dependencies.entries;
     unknown = dependencies.unknown;
-  } else if (group.kind === "browser" || group.kind === "build") {
+  } else if (browserEvidence || group.kind === "build") {
     // Browser setup and tests can read public models, photographic fixtures and
     // runtime files without importing them. Keep this conservative closure until
     // an independently reviewed narrower dependency proof exists.
@@ -620,8 +648,12 @@ function evidenceClosure(snapshot, group, plan) {
     // registries under Development_Docs. Their bytes are product dependencies.
     entries.push(...runtimeImports.entries);
     unknown ||= runtimeImports.unknown;
-    if (group.kind === "browser")
+    if (browserEvidence) {
       entries.push(...prefixEntries(snapshot, ["scripts/", "tests/e2e/", "tests/config/", "testing/"]));
+      const runners = staticSourceClosure(snapshot, browserFixturePaths(group));
+      entries.push(...runners.entries);
+      unknown ||= runners.unknown;
+    }
   } else if (group.kind === "migration") {
     const migration = staticSourceClosure(
       snapshot,
@@ -722,31 +754,28 @@ export async function buildEvidenceObligations(root, plan) {
   const snapshot = await semanticSnapshot(root, plan.candidateSha);
   return verificationObligationGroups(plan).map((group) => {
     const runtimeSetup = requiresCurrentSetupOutput(group);
+    const browserEvidence = isBrowserEvidenceObligation(group);
     const currentPolicy = requiresCurrentPolicyVerification(group);
     const closure = evidenceClosure(snapshot, group, plan);
     const testPaths = testPathsFor(group, plan);
-    const tests = ["unit", "browser"].includes(group.kind)
-      ? staticSourceClosure(snapshot, testPaths)
-      : pathEntries(snapshot, testPaths);
-    const fixturePaths =
-      group.kind === "browser"
-        ? group.commands
-            .flatMap(([, argumentsList]) => argumentsList)
-            .filter((argument) => argument.startsWith("scripts/") || argument.startsWith("prisma/"))
-        : runtimeSetup
-          ? prefixEntries(snapshot, ["scripts/"]).map((entry) => entry.path)
-          : [];
+    const tests =
+      group.kind === "unit" || browserEvidence
+        ? staticSourceClosure(snapshot, testPaths)
+        : pathEntries(snapshot, testPaths);
+    const fixturePaths = browserEvidence
+      ? browserFixturePaths(group)
+      : runtimeSetup
+        ? prefixEntries(snapshot, ["scripts/"]).map((entry) => entry.path)
+        : [];
     const fixtures = fixturePaths.length
       ? staticSourceClosure(snapshot, fixturePaths)
       : { entries: [], unknown: false };
     const schema =
-      group.kind === "browser" || group.kind === "migration" || runtimeSetup
-        ? prefixEntries(snapshot, ["prisma/"])
-        : [];
+      browserEvidence || group.kind === "migration" || runtimeSetup ? prefixEntries(snapshot, ["prisma/"]) : [];
     const inapplicableDependencyClasses = [];
     if (!fixturePaths.length) inapplicableDependencyClasses.push("fixtureDigest");
     if (!schema.length) inapplicableDependencyClasses.push("schemaDigest");
-    if (group.kind !== "browser") inapplicableDependencyClasses.push("browserIdentity");
+    if (!browserEvidence) inapplicableDependencyClasses.push("browserIdentity");
     const fingerprint = createEvidenceFingerprint({
       obligationId: group.id,
       qualificationMode: plan.mode,
@@ -762,7 +791,7 @@ export async function buildEvidenceObligations(root, plan) {
         platform: process.platform,
         architecture: process.arch,
       }),
-      browserIdentity: group.kind === "browser" ? browserIdentity(snapshot) : null,
+      browserIdentity: browserEvidence ? browserIdentity(snapshot) : null,
       environmentClass: snapshot.environmentClass,
       soundingLinePolicyDigest:
         group.kind === "unit" ? snapshot.unitEvidencePolicyIdentity : snapshot.authorityIdentity,
@@ -776,12 +805,7 @@ export async function buildEvidenceObligations(root, plan) {
       // Do not claim reusable browser proof until producer/runtime provenance is
       // independently authenticated; complete source closure alone is insufficient.
       reuseIndeterminate:
-        closure.unknown ||
-        tests.unknown ||
-        fixtures.unknown ||
-        group.kind === "browser" ||
-        runtimeSetup ||
-        currentPolicy,
+        closure.unknown || tests.unknown || fixtures.unknown || browserEvidence || runtimeSetup || currentPolicy,
       ...(group.kind === "browser"
         ? { reuseReason: "BROWSER_RUNTIME_PROVENANCE_UNAUTHENTICATED" }
         : runtimeSetup

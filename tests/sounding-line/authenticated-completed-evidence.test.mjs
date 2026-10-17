@@ -109,7 +109,7 @@ function reseal(receipt) {
   receipt.receiptDigest = digest(receipt);
 }
 
-async function fixture(action, { browser = false } = {}) {
+async function fixture(action, { browser = false, dedicated = false } = {}) {
   const owner = mkdtempSync(path.join(tmpdir(), "sl-authenticated-retention-")),
     root = path.join(owner, "candidate");
   mkdirSync(root);
@@ -156,6 +156,8 @@ async function fixture(action, { browser = false } = {}) {
       "src/example.ts": "export const value = true;\n",
       "tests/unit/example.test.ts": "import '../../src/example';\n",
       "tests/e2e/reach.spec.ts": "import '../../src/example';\n",
+      "tests/e2e/admiralty-phase3.spec.ts": "import '../../src/example';\n",
+      "tests/admiralty/phase3/run-journeys.mjs": "import '../../../src/example.ts';\n",
       "prisma/schema.sqlite.prisma": 'datasource db { provider = "sqlite" url = env("DATABASE_URL") }\n',
       "scripts/sounding-line/run-browser-suite.mjs": "export const fixture = true;\n",
       "scripts/sounding-line/prepare-browser-authority.mjs": "export const fixture = true;\n",
@@ -177,7 +179,10 @@ async function fixture(action, { browser = false } = {}) {
       databaseUrl: soundingLineDatabaseUrl(candidateSha),
       safetyPaths: [],
       lintPaths: [],
-      selected: { unitTests: ["tests/unit/example.test.ts"], browserTests: browser ? ["tests/e2e/reach.spec.ts"] : [] },
+      selected: {
+        unitTests: ["tests/unit/example.test.ts"],
+        browserTests: browser ? [dedicated ? "tests/e2e/admiralty-phase3.spec.ts" : "tests/e2e/reach.spec.ts"] : [],
+      },
       buildRequired: browser,
       migrationRequired: false,
       migrationScripts: [],
@@ -469,6 +474,108 @@ test("completed nonbrowser PASS remains reusable after later producer failure; o
     assert(state.calls.every((endpoint) => !/history|dispatch|refs|check-runs/u.test(endpoint)));
   });
 });
+for (const dedicated of [false, true])
+  test(`complete authenticated, disk and parent hints never skip ${dedicated ? "the dedicated Admiralty journey" : "a standalone whole browser suite"}`, async () => {
+    await fixture(
+      async (state) => {
+        const script = dedicated
+          ? "tests/admiralty/phase3/run-journeys.mjs"
+          : "scripts/sounding-line/run-browser-suite.mjs";
+        const wrapper = state.obligations.find((obligation) =>
+          obligation.commands.some(([command, args]) => command === process.execPath && args[0] === script),
+        );
+        assert.equal(wrapper.kind, "preflight");
+        assert.equal(wrapper.reuseReason, "SETUP_OUTPUT_NOT_ATTESTED");
+        assert.equal(wrapper.reuseIndeterminate, true);
+        assert(
+          wrapper.fingerprint.browserIdentity && wrapper.fingerprint.schemaDigest && wrapper.fingerprint.fixtureDigest,
+        );
+        assert(wrapper.fingerprint.testDefinitionDigest);
+        assert(wrapper.fingerprint.semanticClosureMembers.some((member) => member.startsWith(script + "@")));
+        assert(!wrapper.fingerprint.inapplicableDependencyClasses.includes("browserIdentity"));
+        const produced = state.produced.find((obligation) => obligation.id === wrapper.id);
+        assert.equal(canonicalJson(produced.fingerprint), canonicalJson(wrapper.fingerprint));
+        assert(state.checkpoints.at(-1).receipts.some((receipt) => receipt.obligationId === wrapper.id));
+        const proof = await state.authenticate();
+        assert(state.lookup(proof), "the complete run-bound artifact still authenticates useful unit proof");
+        assert.equal(
+          state.lookup(proof, wrapper),
+          null,
+          "even complete matching source proof cannot attest current browser runtime",
+        );
+        const cache = new FileEvidenceStore(path.join(state.root, "artifacts/sounding-line/evidence-store"));
+        const disk = await cache.writeFresh({
+          candidateSha: state.plan.candidateSha,
+          obligationId: wrapper.id,
+          fingerprint: wrapper.fingerprint,
+          planDigest: "d".repeat(64),
+          commands: wrapper.commandLabels,
+          durationMs: 1,
+        });
+        const diskPath = path.join(cache.receiptsRoot(), disk.id + ".json"),
+          originalDisk = readFileSync(diskPath);
+        const firstCalls = [];
+        const first = await runReconciledVerification(
+          state.root,
+          state.plan,
+          (_root, command, args) => firstCalls.push([command, args]),
+          { authenticatedEvidence: proof },
+        );
+        assert.equal(first.finalization.decision, "PASS");
+        assert.equal(firstCalls.filter(([, args]) => args[0] === script).length, 1);
+        const current = first.reconciliation.find((entry) => entry.obligationId === wrapper.id);
+        assert.equal(current.freshExecuted, true);
+        assert.deepEqual(current.reasonCodes, ["SETUP_OUTPUT_NOT_ATTESTED"]);
+        const failure = new Error("EXPECTED_FRESH_WRAPPER_FAILURE"),
+          calls = [];
+        let cleanup = 0,
+          returned = false;
+        const output = path.join(path.dirname(state.root), "second-completed");
+        await assert.rejects(
+          async () => {
+            await runReconciledVerification(
+              state.root,
+              state.plan,
+              async (_root, command, args) => {
+                calls.push([command, args]);
+                if (args[0] === script) {
+                  try {
+                    await Promise.resolve();
+                    throw failure;
+                  } finally {
+                    cleanup++;
+                  }
+                }
+              },
+              { authenticatedEvidence: proof, completedEvidenceRoot: output },
+            );
+            returned = true;
+          },
+          (error) => error === failure,
+        );
+        assert.equal(calls.filter(([, args]) => args[0] === script).length, 1);
+        assert.equal(cleanup, 1);
+        assert.equal(returned, false);
+        assert(!calls.some(([command, args]) => command === "npm" && args.join(" ") === "run build"));
+        assert(!calls.some(([, args]) => args.includes("prisma") && args.includes("generate")));
+        const saved = JSON.parse(
+          readFileSync(
+            path.join(output, `checkpoint-${String(state.obligations.indexOf(wrapper)).padStart(4, "0")}.json`),
+            "utf8",
+          ),
+        );
+        assert.deepEqual(
+          saved.receipts.map((receipt) => receipt.obligationId),
+          state.obligations.slice(0, state.obligations.indexOf(wrapper)).map((obligation) => obligation.id),
+        );
+        assert.equal(saved.wholeVerificationPassed, false);
+        assert.equal(saved.qualification, false);
+        assert.deepEqual(readFileSync(diskPath), originalDisk, "cached historical bytes remain untouched");
+      },
+      { browser: true, dedicated },
+    );
+  });
+
 test("cancelled producer admits only already-completed whole receipts, never browser proof", async () => {
   await fixture(
     async (state) => {

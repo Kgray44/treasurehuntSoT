@@ -13,7 +13,9 @@ import {
   runReconciledVerification,
   soundingLineDatabaseUrl,
   verificationObligationGroups,
+  verificationCommands,
 } from "../../scripts/sounding-line/ordinary.mjs";
+import { browserSuiteProfiles } from "../../scripts/sounding-line/browser-suite-profiles.mjs";
 
 function git(root, ...args) {
   return execFileSync("git", args, { cwd: root, encoding: "utf8" }).trim();
@@ -105,7 +107,7 @@ function checkpoints(directory) {
     .map((name) => JSON.parse(readFileSync(path.join(directory, name), "utf8")));
 }
 
-test("generic browser setup and actual suite execution form one complete browser obligation", () => {
+test("whole-suite wrappers preserve legacy partition and order without dropping canonical commands", () => {
   const plan = browserPlan({
     candidateSha: "a".repeat(40),
     databaseUrl: soundingLineDatabaseUrl("a".repeat(40)),
@@ -114,47 +116,63 @@ test("generic browser setup and actual suite execution form one complete browser
     lintPaths: [],
     migrationScripts: [],
   });
+  const raw = verificationCommands(plan);
   const groups = verificationObligationGroups(plan);
-  const browser = groups.filter((group) => group.kind === "browser");
-  assert.equal(browser.length, 1);
+  const wrapper = groups.find((group) =>
+    group.commands.some(([, args]) => args[0] === "scripts/sounding-line/run-browser-suite.mjs"),
+  );
+  const browser = groups.find((group) => group.kind === "browser");
+  assert.equal(wrapper.kind, "preflight", "the installed standalone whole-suite partition remains intact");
+  assert.equal(wrapper.commands.length, 1);
+  assert(groups.indexOf(wrapper) < groups.indexOf(browser));
   assert.deepEqual(
-    browser[0].commands.map(([, args]) => args[0]),
-    ["run", "--no-install", "scripts/sounding-line/run-browser-suite.mjs"],
+    browser.commands.map(([, args]) => args[0]),
+    ["run", "--no-install"],
   );
-  assert(
-    !groups.some(
-      (group) => group.kind === "preflight" && group.commands.some(([, args]) => args[0].includes("run-browser-suite")),
-    ),
-  );
+  const flattened = groups.flatMap((group) => group.commands);
+  assert.deepEqual(flattened, [...raw.slice(0, -3), raw.at(-1), ...raw.slice(-3, -1)]);
+  const tuples = (commands) => commands.map((command) => JSON.stringify(command)).sort();
+  assert.deepEqual(tuples(flattened), tuples(raw), "every canonical command remains present exactly once");
+  for (const profile of Object.values(browserSuiteProfiles).filter((entry) => !entry.dedicatedRunner))
+    assert.equal(profile.taskOwnedProductionHttp, true, "shared suites build their own exact production runtime");
 });
 
 test("browser closure binds Reach source, test, photographic fixtures, models, setup and schema", async () => {
   await fixture(async ({ root, plan }) => {
-    const [browser] = (await buildEvidenceObligations(root, browserPlan(plan))).filter(
-      (group) => group.kind === "browser",
+    const obligations = await buildEvidenceObligations(root, browserPlan(plan));
+    const wrapper = obligations.find((group) =>
+      group.commands.some(([, args]) => args[0] === "scripts/sounding-line/run-browser-suite.mjs"),
     );
-    for (const file of [
-      "src/reach/runtime.ts",
-      "Development_Docs/Runtime/registry.json",
-      "tests/e2e/reach.spec.ts",
-      "tests/e2e/fixtures/reach/photo.jpg",
-      "public/reach/model.task",
-      "public/reach/hand-worker.js",
-      "scripts/sounding-line/run-browser-suite.mjs",
-      "prisma/schema.sqlite.prisma",
-      "playwright.config.ts",
-      "testing/contracts.json",
-    ])
-      assert(
-        browser.fingerprint.semanticClosureMembers.some((entry) => entry.startsWith(file + "@")),
-        file,
+    const browserTail = obligations.find((group) => group.kind === "browser");
+    assert.equal(wrapper.kind, "preflight");
+    for (const browser of [wrapper, browserTail]) {
+      for (const file of [
+        "src/reach/runtime.ts",
+        "Development_Docs/Runtime/registry.json",
+        "tests/e2e/reach.spec.ts",
+        "tests/e2e/fixtures/reach/photo.jpg",
+        "public/reach/model.task",
+        "public/reach/hand-worker.js",
+        "scripts/sounding-line/run-browser-suite.mjs",
+        "prisma/schema.sqlite.prisma",
+        "playwright.config.ts",
+        "testing/contracts.json",
+      ])
+        assert(
+          browser.fingerprint.semanticClosureMembers.some((entry) => entry.startsWith(file + "@")),
+          file,
+        );
+      assert(browser.fingerprint.testDefinitionDigest);
+      assert(browser.fingerprint.fixtureDigest);
+      assert(browser.fingerprint.schemaDigest);
+      assert(browser.fingerprint.browserIdentity);
+      assert.equal(browser.reuseIndeterminate, true);
+      assert.equal(
+        browser.reuseReason,
+        browser === wrapper ? "SETUP_OUTPUT_NOT_ATTESTED" : "BROWSER_RUNTIME_PROVENANCE_UNAUTHENTICATED",
       );
-    assert(browser.fingerprint.testDefinitionDigest);
-    assert(browser.fingerprint.fixtureDigest);
-    assert(browser.fingerprint.schemaDigest);
-    assert(browser.fingerprint.browserIdentity);
-    assert.equal(browser.reuseIndeterminate, true);
-    assert.equal(browser.reuseReason, "BROWSER_RUNTIME_PROVENANCE_UNAUTHENTICATED");
+      assert(!browser.fingerprint.inapplicableDependencyClasses.includes("browserIdentity"));
+    }
   });
 });
 
@@ -170,9 +188,10 @@ for (const file of [
 ])
   test(`browser source closure invalidates on ${file}`, async () => {
     await fixture(async ({ root, plan }) => {
-      const before = (await buildEvidenceObligations(root, browserPlan(plan))).find(
-        (group) => group.kind === "browser",
-      );
+      const relevant = (group) =>
+        group.kind === "browser" ||
+        group.commands.some(([, args]) => args[0] === "scripts/sounding-line/run-browser-suite.mjs");
+      const before = (await buildEvidenceObligations(root, browserPlan(plan))).filter(relevant);
       put(root, file, readFileSync(path.join(root, file), "utf8") + "\nchanged inert input\n");
       const candidateSha = commit(root);
       const after = (
@@ -180,9 +199,13 @@ for (const file of [
           root,
           browserPlan({ ...plan, candidateSha, databaseUrl: soundingLineDatabaseUrl(candidateSha) }),
         )
-      ).find((group) => group.kind === "browser");
-      assert.equal(after.id, before.id, "complete candidate operands must normalize, not leave a SHA suffix");
-      assert.notEqual(after.fingerprint.fingerprintDigest, before.fingerprint.fingerprintDigest);
+      ).filter(relevant);
+      assert.equal(before.length, 2);
+      for (const prior of before) {
+        const current = after.find((group) => group.id === prior.id);
+        assert(current, "complete candidate operands normalize for wrapper and browser tail");
+        assert.notEqual(current.fingerprint.fingerprintDigest, prior.fingerprint.fingerprintDigest);
+      }
     });
   });
 
@@ -213,29 +236,105 @@ test("a later command failure retains only previously completed whole obligation
   });
 });
 
-test("cancellation inside a multi-command browser group never checkpoints its partial success", async () => {
+for (const cancelled of [false, true])
+  test(`standalone whole-suite ${cancelled ? "cancellation" : "failure"} retains only its completed prefix`, async () => {
+    await fixture(async ({ root, owner, plan }) => {
+      const failure = Object.assign(new Error("EXPECTED_WHOLE_SUITE_FAILURE"), {
+        name: cancelled ? "AbortError" : "Error",
+      });
+      const p = {
+        ...browserPlan(plan),
+        selected: {
+          unitTests: [],
+          browserTests: ["tests/e2e/harborlight-phase2.spec.ts", "tests/e2e/reach.spec.ts"],
+        },
+      };
+      const groups = verificationObligationGroups(p);
+      const wrapper = groups.find((group) =>
+        group.commands.some(([, args]) => args[0] === "scripts/sounding-line/run-browser-suite.mjs"),
+      );
+      const expectedPrefix = groups.slice(0, groups.indexOf(wrapper)).map((group) => group.id);
+      const calls = [],
+        output = path.join(owner, "completed");
+      let wrapperCleanup = 0,
+        returned = false;
+      await assert.rejects(
+        async () => {
+          await runReconciledVerification(
+            root,
+            p,
+            async (_root, command, args) => {
+              calls.push([command, args]);
+              if (args[0] === "scripts/sounding-line/run-browser-suite.mjs") {
+                try {
+                  await Promise.resolve();
+                  throw failure;
+                } finally {
+                  wrapperCleanup++;
+                }
+              }
+            },
+            { completedEvidenceRoot: output },
+          );
+          returned = true;
+        },
+        (error) => error === failure,
+      );
+      const wrappers = calls.filter(([, args]) => args[0] === "scripts/sounding-line/run-browser-suite.mjs");
+      assert.equal(wrappers.length, 1, "the current whole suite executes once; later generic profile never starts");
+      assert.equal(wrappers[0][1][wrappers[0][1].indexOf("--profile") + 1], "harborlight-phase2");
+      assert.equal(wrapperCleanup, 1, "the reconciler awaits its runner's finally before propagating failure");
+      assert.equal(returned, false, "no canonical finalization is returned after a failed whole suite");
+      assert(!calls.some(([command, args]) => command === "npm" && args.join(" ") === "run build"));
+      assert(!calls.some(([, args]) => args.includes("prisma") && args.includes("generate")));
+      const saved = checkpoints(output);
+      assert.equal(saved.length, expectedPrefix.length);
+      assert.deepEqual(
+        saved.at(-1).receipts.map((receipt) => receipt.obligationId),
+        expectedPrefix,
+      );
+      assert(saved.every((entry) => entry.receipts.every((receipt) => receipt.obligationId !== wrapper.id)));
+      assert(saved.every((entry) => entry.wholeVerificationPassed === false && entry.qualification === false));
+      assert.equal(failure.soundingLineTimings.at(-1).obligationId, wrapper.id);
+      assert.equal(failure.soundingLineTimings.at(-1).status, "FAIL");
+    });
+  });
+
+test("cancellation inside the final multi-command browser tail never checkpoints its partial success", async () => {
   await fixture(async ({ root, owner, plan }) => {
-    const cancelled = Object.assign(new Error("EXPECTED_CANCELLATION"), { name: "AbortError" });
-    const p = browserPlan(plan);
-    const browser = verificationObligationGroups(p).find((group) => group.kind === "browser");
-    let browserCommands = 0;
-    const output = path.join(owner, "completed");
+    const cancelled = Object.assign(new Error("EXPECTED_TAIL_CANCELLATION"), { name: "AbortError" });
+    const p = browserPlan(plan),
+      groups = verificationObligationGroups(p);
+    const browser = groups.find((group) => group.kind === "browser");
+    const wrapper = groups.find((group) =>
+      group.commands.some(([, args]) => args[0] === "scripts/sounding-line/run-browser-suite.mjs"),
+    );
+    const calls = [],
+      output = path.join(owner, "completed");
     await assert.rejects(
       runReconciledVerification(
         root,
         p,
-        (_root, _command, args) => {
-          if ((args[0] === "run" && args[1] === "build") || (args.includes("prisma") && args.includes("generate")))
-            browserCommands++;
-          if (args[0] === "scripts/sounding-line/run-browser-suite.mjs") throw cancelled;
+        (_root, command, args) => {
+          calls.push([command, args]);
+          if (args.includes("prisma") && args.includes("generate")) throw cancelled;
         },
         { completedEvidenceRoot: output },
       ),
       (error) => error === cancelled,
     );
-    assert.equal(browserCommands, 2);
+    assert.deepEqual(calls.slice(-3), [...wrapper.commands, ...browser.commands]);
+    assert.equal(
+      browser.commands.length,
+      2,
+      "successful build followed by cancelled Prisma remains one incomplete tail",
+    );
     const saved = checkpoints(output);
-    assert(saved.length > 0);
+    assert.deepEqual(
+      saved.at(-1).receipts.map((receipt) => receipt.obligationId),
+      groups.slice(0, groups.indexOf(browser)).map((group) => group.id),
+    );
+    assert(saved.at(-1).receipts.some((receipt) => receipt.obligationId === wrapper.id));
     assert(saved.every((entry) => entry.receipts.every((receipt) => receipt.obligationId !== browser.id)));
     assert(saved.every((entry) => entry.wholeVerificationPassed === false && entry.qualification === false));
   });
