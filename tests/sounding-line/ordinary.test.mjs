@@ -1624,6 +1624,7 @@ test("ordinary admission has no orchestration or generated-state prerequisites",
   assert.deepEqual(workflowNames, [
     "sounding-line-control-plane.yml",
     "sounding-line-exhaustive-release.yml",
+    "sounding-line-focused-repair.yml",
     "sounding-line-ordinary.yml",
     "sounding-line-replay-admission-diagnostic.yml",
     "sounding-line-replay-historical-validation-diagnostic.yml",
@@ -1636,6 +1637,22 @@ test("ordinary admission has no orchestration or generated-state prerequisites",
   assert.match(ordinaryWorkflow, /pull_request_target/u);
   assert.match(ordinaryWorkflow, /Sounding Line \/ Mainline Decision/u);
   assert.doesNotMatch(ordinaryWorkflow, /nightwatch|bosun|baseline|deepwater|feature catalog|P34|maintenance|train/iu);
+  const focusedWorkflow = readFileSync(".github/workflows/sounding-line-focused-repair.yml", "utf8");
+  assert.match(focusedWorkflow, /on:\n  workflow_dispatch:\n    inputs:\n/u);
+  const focusedInputs = focusedWorkflow.split("\npermissions:\n")[0];
+  assert.deepEqual(
+    [...focusedInputs.matchAll(/^      ([a-z_]+):$/gmu)].map((match) => match[1]),
+    ["candidate_sha", "test_selector"],
+  );
+  assert.match(focusedWorkflow, /permissions:\n  contents: read\n  actions: read\n\n/u);
+  assert.equal((focusedWorkflow.match(/^\s*permissions:/gmu) ?? []).length, 1);
+  assert.match(focusedWorkflow, /SOUNDING_LINE_EVIDENCE_PURPOSE: DEVELOPMENT_ONLY/u);
+  assert.match(focusedWorkflow, /process\.env\.GITHUB_REF !== "refs\/heads\/main"/u);
+  assert.doesNotMatch(
+    focusedWorkflow,
+    /pull_request_target|pull_request:|push:|workflow_call|schedule:|Mainline Decision|experience-exception\.mjs|--mode (?:ordinary|release)|PROTECTED_FINAL_VERIFICATION/u,
+  );
+  assert.doesNotMatch(ordinaryWorkflow, /sounding-line-focused-repair|develop-browser-suite\.mjs/u);
   const releaseWorkflow = readFileSync(".github/workflows/sounding-line-exhaustive-release.yml", "utf8");
   assert.match(releaseWorkflow, /--mode release/u);
   const controlPlaneWorkflow = readFileSync(".github/workflows/sounding-line-control-plane.yml", "utf8");
@@ -1800,6 +1817,20 @@ test("trusted PR routing produces one strict decision for ordinary and control-p
   assert.doesNotMatch(completed, /ordinary-verifier\.outcome == 'success'/u);
   assert.doesNotMatch(ordinaryWorkflow, /actions\/cache\/(?:restore|save)@v4/u);
   assert.doesNotMatch(completed, /candidate\/artifacts\/sounding-line\/evidence-store/u);
+  assert(ordinaryWorkflow.includes("`private_failure_publication_nonce=${randomUUID()}\\n`"));
+  assert.match(
+    ordinaryWorkflow,
+    /SOUNDING_LINE_PRIVATE_FAILURE_PUBLICATION_NONCE: \$\{\{ steps\.route\.outputs\.private_failure_publication_nonce \}\}/u,
+  );
+  const failureUpload = ordinaryWorkflow
+    .split(/\n      - /u)
+    .find((step) => step.includes("sounding-line-browser-failures-"));
+  assert(failureUpload, "encrypted failure upload is distinct from the ordinary qualification artifact");
+  assert.match(
+    failureUpload,
+    /steps\.ordinary-verifier\.outputs\.private_browser_failure_publish == steps\.route\.outputs\.private_failure_publication_nonce/u,
+  );
+  assert.match(failureUpload, /steps\.ordinary-verifier\.outputs\.private_browser_failure_paths != ''/u);
   assert.match(ordinaryWorkflow, /kind=control-plane/u);
   assert.match(
     ordinaryWorkflow,
