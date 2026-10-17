@@ -464,11 +464,15 @@ export function SpatialStudio({
     };
   }, [expandedLibrary]);
   const closeExpandedLibrary = (toViewport = false) => {
+    const revealViewport = toViewport && innerWidth < 1100;
+    if (revealViewport) setLibraryOpen(false);
     setExpandedLibrary(false);
     requestAnimationFrame(() => {
-      if (toViewport)
-        studioElement.current?.querySelector<HTMLElement>('[aria-label="Spatial canvas"] [data-renderer]')?.focus();
-      else
+      if (toViewport) {
+        const viewport = studioElement.current?.querySelector<HTMLElement>('[aria-label="Spatial canvas"] [data-renderer]');
+        if (revealViewport) viewport?.scrollIntoView({ block: "center", inline: "nearest", behavior: "instant" });
+        viewport?.focus({ preventScroll: true });
+      } else
         (
           studioElement.current?.querySelector<HTMLElement>('[aria-label="Expand Spatial Library"]') ??
           libraryReturnFocus.current
