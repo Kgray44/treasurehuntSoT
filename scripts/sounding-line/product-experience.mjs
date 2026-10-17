@@ -514,7 +514,88 @@ export function baselineScopeDigest(snapshot, sourcePaths) {
       .sort((a, b) => a.path.localeCompare(b.path)),
   );
 }
-function unboundProductExperiencePlan({ root, baseSha, candidateSha, changedPaths }) {
+function protectedReviewContinuation({ root, baseSha, candidateSha, prNumber, policy, contracts }) {
+  const record = policy.reviewContinuation;
+  if (!record || String(prNumber) !== String(record.prNumber)) return null;
+  const contract = contracts.find((value) => value.id === record.contractId);
+  if (!contract) return null;
+  if (
+    !/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/u.test(record.repository ?? "") ||
+    !Number.isSafeInteger(record.prNumber) ||
+    record.prNumber < 1 ||
+    !/^[a-z0-9-]+$/u.test(record.id ?? "") ||
+    !sha.test(record.ancestorCandidate ?? "") ||
+    !record.blockedReview?.path?.startsWith("Development_Docs/Engineering/") ||
+    !digestPattern.test(record.blockedReview.sha256 ?? "")
+  )
+    fail("REVIEW_CONTINUATION_INVALID");
+  // This is installed-base authority, never a candidate declaration or a new round.
+  const bytes = artifactBytes({ root, revision: baseSha, file: record.blockedReview.path });
+  if (
+    createHash("sha256").update(bytes).digest("hex") !== record.blockedReview.sha256 ||
+    !bytes.equals(artifactBytes({ root, revision: candidateSha, file: record.blockedReview.path }))
+  )
+    fail("REVIEW_CONTINUATION_HISTORY_MISMATCH");
+  const previous = JSON.parse(bytes.toString());
+  if (
+    previous.status !== "BLOCKED" ||
+    previous.iterations !== 3 ||
+    previous.repairAction !== "BLOCK_WITH_EVIDENCE" ||
+    previous.contractId !== contract.id ||
+    previous.candidateSha !== record.ancestorCandidate ||
+    !sha.test(previous.baseSha ?? "") ||
+    !digestPattern.test(previous.sourceDigest ?? "") ||
+    !digestPattern.test(previous.contractDigest ?? "") ||
+    !list(previous.findings) ||
+    previous.findings.some(
+      (finding) =>
+        !finding.id ||
+        finding.contractId !== contract.id ||
+        nonblocking.has(finding.classification) ||
+        !FINDING_CLASSES.includes(finding.classification) ||
+        finding.disposition !== "UNRESOLVED",
+    ) ||
+    new Set(previous.findings.map((finding) => finding.id)).size !== previous.findings.length
+  )
+    fail("REVIEW_CONTINUATION_HISTORY_INVALID");
+  git(root, ["merge-base", "--is-ancestor", record.ancestorCandidate, candidateSha]);
+  if (process.env.GITHUB_ACTIONS === "true") {
+    const event = JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH, "utf8"));
+    const pull = event.pull_request;
+    const dispatched = process.env.GITHUB_EVENT_NAME === "workflow_dispatch";
+    if (
+      process.env.GITHUB_REPOSITORY !== record.repository ||
+      process.env.GITHUB_SHA !== baseSha ||
+      process.env.GITHUB_REF !== "refs/heads/main" ||
+      (dispatched
+        ? String(event.inputs?.pr_number) !== String(record.prNumber) ||
+          event.inputs?.candidate_sha !== candidateSha ||
+          event.inputs?.base_sha !== baseSha
+        : process.env.GITHUB_EVENT_NAME !== "pull_request_target" ||
+          pull?.number !== record.prNumber ||
+          pull?.base?.repo?.full_name !== record.repository ||
+          pull?.base?.sha !== baseSha ||
+          pull?.head?.sha !== candidateSha)
+    )
+      fail("REVIEW_CONTINUATION_CONTEXT_MISMATCH");
+  }
+  return {
+    id: record.id,
+    policyDigest: experienceDigest(record),
+    prNumber: record.prNumber,
+    contractId: contract.id,
+    previousReviewSha256: record.blockedReview.sha256,
+    iterations: 4,
+    previousFindings: previous.findings.map(({ id, classification }) => ({ id, classification })),
+  };
+}
+function unboundProductExperiencePlan({
+  root,
+  baseSha,
+  candidateSha,
+  changedPaths,
+  prNumber = process.env.SOUNDING_LINE_PR_NUMBER,
+}) {
   const trustedRegistry = revisionJson(root, baseSha, "testing/contracts.json");
   const policy = trustedRegistry.experiencePolicy;
   if (!policy) return { applicable: false, classification: "TRUSTED_POLICY_NOT_YET_ACTIVATED", contractIds: [] };
@@ -557,6 +638,14 @@ function unboundProductExperiencePlan({ root, baseSha, candidateSha, changedPath
   if (!result.applicable) return result;
   const selected = contracts.filter((contract) => result.contractIds.includes(contract.id));
   const paired = planPairedEvidence(selected);
+  const reviewContinuation = protectedReviewContinuation({
+    root,
+    baseSha,
+    candidateSha,
+    prNumber,
+    policy,
+    contracts: selected,
+  });
   for (const contract of selected) registryBindings(root, baseSha, policy, contract);
   const uncovered = consumers.surfaces.filter(
     (file) => !selected.some((contract) => matches(file, contract.experience.sourcePaths)),
@@ -565,6 +654,7 @@ function unboundProductExperiencePlan({ root, baseSha, candidateSha, changedPath
   return {
     ...result,
     contracts: selected,
+    ...(reviewContinuation ? { reviewContinuation } : {}),
     ...(paired
       ? {
           paired,
@@ -609,6 +699,7 @@ function unboundProductExperiencePlan({ root, baseSha, candidateSha, changedPath
 export function planProductExperience(options) {
   const plan = unboundProductExperiencePlan(options);
   const exception = bindExperienceException({ ...options, plan });
+  if (exception && plan.reviewContinuation) fail("REVIEW_CONTINUATION_EXCEPTION_CONFLICT");
   return exception ? { ...plan, exception } : plan;
 }
 
@@ -877,9 +968,39 @@ export function validateExperienceEvidence({
         }
       } else fail("BLOCKING_FINDING", finding.id);
     }
+    const continuation = plan.reviewContinuation?.contractId === contract.id ? plan.reviewContinuation : null;
+    if (continuation) {
+      const binding = {
+        id: continuation.id,
+        policyDigest: continuation.policyDigest,
+        prNumber: continuation.prNumber,
+        previousReviewSha256: continuation.previousReviewSha256,
+        iterations: 4,
+        baseSha: plan.baseSha,
+        sourceDigest: plan.sourceDigest,
+      };
+      if (
+        experienceDigest(review.continuation ?? null) !== experienceDigest(binding) ||
+        new Set(review.findings.map((finding) => finding.id)).size !== review.findings.length ||
+        continuation.previousFindings.some(
+          (previous) =>
+            !review.findings.some(
+              (finding) =>
+                finding.id === previous.id &&
+                finding.classification === previous.classification &&
+                finding.disposition === "RESOLVED",
+            ),
+        )
+      )
+        fail("REVIEW_CONTINUATION_BINDING_MISMATCH", contract.id);
+    } else if (review.continuation) fail("REVIEW_CONTINUATION_NOT_AUTHORIZED", contract.id);
     if (
       !Number.isInteger(review.iterations) ||
-      (plan.exception ? review.iterations !== 11 : review.iterations < 1 || review.iterations > 3) ||
+      (plan.exception
+        ? review.iterations !== 11
+        : continuation
+          ? review.iterations !== 4
+          : review.iterations < 1 || review.iterations > 3) ||
       review.status !== "ACCEPTED"
     )
       fail("REVIEW_UNRESOLVED", contract.id);

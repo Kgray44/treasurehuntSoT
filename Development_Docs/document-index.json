@@ -435,6 +435,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Product_Experience_Reach_PR766_Blocked_Review_20261017.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Reach_Product_Review_Continuation_20261017.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Repository_Operations/administrator/admiralty-bootstrap.md",
       "record_type": "engineering-record",
       "status": "current",

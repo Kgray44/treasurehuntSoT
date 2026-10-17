@@ -4921,6 +4921,18 @@
       "required": true,
       "trustedReviewActors": ["Kgray44"],
       "workflow": ".github/workflows/sounding-line-ordinary.yml"
+    },
+    "reviewContinuation": {
+      "id": "reach-pr766-review-4-20261017",
+      "repository": "Kgray44/treasurehuntSoT",
+      "prNumber": 766,
+      "contractId": "reach.phase1.foundation",
+      "ancestorCandidate": "c88fdfeb49c1ae593e19f4b3a714fd731f8d76ff",
+      "blockedReview": {
+        "path": "Development_Docs/Engineering/Product_Experience_Reach_PR766_Blocked_Review_20261017.json",
+        "sha256": "94b9aa7a35a1d2f525c23bebfde7df9b789eb8842b79ba0f187abadedbb9846f",
+        "originalSha256": "e48eb72b1bcb837f6e77a32e877536fc12495515a5b617d7f751aae9709251cf"
+      }
     }
   }
 }
