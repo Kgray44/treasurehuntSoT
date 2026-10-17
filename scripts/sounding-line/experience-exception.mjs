@@ -6,6 +6,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createCustodyRequest } from "./custody-transport.mjs";
 import { observeVerificationFailure } from "./verification-diagnostics.mjs";
+import { sourceDiagnosticGit, withReplayAdmissionSubstage } from "./source-diagnostics.mjs";
 import {
   CROSSDECK_R3,
   validateR3Record,
@@ -212,7 +213,7 @@ const fail = (code) => {
   throw new Error(`PRODUCT_EXPERIENCE_EXCEPTION_${code}`);
 };
 const git = (root, ...args) =>
-  execFileSync("git", args, {
+  sourceDiagnosticGit("EXPERIENCE_EXCEPTION", args, {
     cwd: root,
     encoding: "utf8",
     stdio: ["ignore", "pipe", "ignore"],
@@ -2038,209 +2039,248 @@ export async function assertExceptionExecution({
 }) {
   // Rebuild from immutable source. A supplied plan or environment can never create permission.
   if (!existsSync(path.join(root, ".git")) && !plan.exception) return null;
-  if (
-    !recognizeExceptionExecution({
+  const recognized = withReplayAdmissionSubstage("SOURCE_RECOGNITION", () => {
+    const value = recognizeExceptionExecution({
       root,
       baseSha: plan.baseSha,
       candidateSha: git(root, "rev-parse", "HEAD"),
       environment,
-    })
-  ) {
-    if (plan.exception) fail("UNTRUSTED_EXECUTION_CLAIM");
-    return null;
-  }
-  if (!plan.baseSha || !plan.candidateSha) {
-    fail("EXECUTION_PLAN_CHANGED");
-  }
-  const records = trustedExceptions(root, plan.baseSha);
-  const related = records.some((record) =>
-    campaignRelated({
+    });
+    if (!value && plan.exception) fail("UNTRUSTED_EXECUTION_CLAIM");
+    return value;
+  });
+  if (!recognized) return null;
+  withReplayAdmissionSubstage("PLAN_INPUT", () => {
+    if (!plan.baseSha || !plan.candidateSha) fail("EXECUTION_PLAN_CHANGED");
+  });
+  const records = withReplayAdmissionSubstage("REGISTRY_READ", () => trustedExceptions(root, plan.baseSha));
+  const related = withReplayAdmissionSubstage("CAMPAIGN_RELATION", () =>
+    records.some((record) =>
+      campaignRelated({
+        root,
+        baseSha: plan.baseSha,
+        candidateSha: plan.candidateSha,
+        record,
+        prNumber: environment.SOUNDING_LINE_PR_NUMBER,
+      }),
+    ),
+  );
+  withReplayAdmissionSubstage("CAMPAIGN_RELATION", () => {
+    if (!related) fail("INSTALLED_PROTECTED_BASE_REQUIRED");
+  });
+  const { planProductExperience } = await withReplayAdmissionSubstage(
+    "PLAN_REBUILD",
+    () => import("./product-experience.mjs"),
+  );
+  const candidateSha = withReplayAdmissionSubstage("HEAD_CHECK", () => {
+    const candidate = git(root, "rev-parse", "HEAD");
+    if (candidate !== plan.candidateSha) fail("EXECUTION_HEAD_CHANGED");
+    return candidate;
+  });
+  const actual = withReplayAdmissionSubstage("PLAN_REBUILD", () => {
+    const changedPaths = git(root, "diff", "--name-only", "--no-renames", plan.baseSha, candidateSha).split(/\r?\n/u);
+    const value = planProductExperience({
       root,
       baseSha: plan.baseSha,
-      candidateSha: plan.candidateSha,
-      record,
+      candidateSha,
+      changedPaths,
       prNumber: environment.SOUNDING_LINE_PR_NUMBER,
-    }),
-  );
-  if (!related) {
-    fail("INSTALLED_PROTECTED_BASE_REQUIRED");
-  }
-  const { planProductExperience } = await import("./product-experience.mjs");
-  const candidateSha = git(root, "rev-parse", "HEAD");
-  if (candidateSha !== plan.candidateSha) fail("EXECUTION_HEAD_CHANGED");
-  const changedPaths = git(root, "diff", "--name-only", "--no-renames", plan.baseSha, candidateSha).split(/\r?\n/u);
-  const actual = planProductExperience({
-    root,
-    baseSha: plan.baseSha,
-    candidateSha,
-    changedPaths,
-    prNumber: environment.SOUNDING_LINE_PR_NUMBER,
-  });
-  if (!actual.exception) fail("APPROVAL_MISSING_OR_INACTIVE");
-  if (
-    actual.exception.nonExecutingReconciliation &&
-    (environment.SOUNDING_LINE_EXCEPTION_PHASE !== "qualify" ||
-      plan.localProof ||
-      Object.keys(environment).some(
-        (key) => /^SOUNDING_LINE_R(?:[3-9]|10|11|12)_LOCAL_LEASE$/u.test(key) && environment[key],
-      ))
-  )
-    fail("R8_FORMAT_EXECUTION_FORBIDDEN");
-  if (environment.SOUNDING_LINE_R8_LOCAL_LEASE) {
-    if (kind !== "experience" || environment.GITHUB_ACTIONS === "true" || actual.exception.id !== CROSSDECK_R8.id)
-      fail("R8_LOCAL_PROOF_SCOPE_CHANGED");
-    const marker = JSON.parse(readFileSync(r8LocalMarkerPath(root), "utf8"));
-    if (
-      marker.status !== "STARTED" ||
-      marker.lease !== environment.SOUNDING_LINE_R8_LOCAL_LEASE ||
-      marker.candidateSha !== candidateSha ||
-      digest(marker.binding) !== digest(exceptionBinding(actual))
-    )
-      fail("R8_LOCAL_PROOF_CONSUMED_OR_CHANGED");
-    try {
-      process.kill(marker.ownerPid, 0);
-    } catch {
-      fail("R8_LOCAL_PROOF_OWNER_EXITED");
-    }
-    if (plan.localProof !== CROSSDECK_R8.id || plan.pairedOnly !== true) fail("R8_LOCAL_PROOF_SCOPE_CHANGED");
-    validateExceptionExecutionPlan(r8LocalPlan(actual), plan);
-    if (claim) claimExceptionPhase({ root, phase: "r8-local-launch", plan, runId: 0 });
-    return { ...marker, preparationReservation: "LOCAL_PROOF_NOT_PROTECTED_PREPARATION" };
-  }
-  if (environment.SOUNDING_LINE_R7_LOCAL_LEASE) {
-    if (kind !== "experience" || environment.GITHUB_ACTIONS === "true" || actual.exception.id !== CROSSDECK_R7.id)
-      fail("R7_LOCAL_PROOF_SCOPE_CHANGED");
-    const marker = JSON.parse(readFileSync(r7LocalMarkerPath(root), "utf8"));
-    if (
-      marker.status !== "STARTED" ||
-      marker.lease !== environment.SOUNDING_LINE_R7_LOCAL_LEASE ||
-      marker.candidateSha !== candidateSha ||
-      digest(marker.binding) !== digest(exceptionBinding(actual))
-    )
-      fail("R7_LOCAL_PROOF_CONSUMED_OR_CHANGED");
-    try {
-      process.kill(marker.ownerPid, 0);
-    } catch {
-      fail("R7_LOCAL_PROOF_OWNER_EXITED");
-    }
-    if (plan.localProof !== CROSSDECK_R7.id || plan.pairedOnly !== true) fail("R7_LOCAL_PROOF_SCOPE_CHANGED");
-    validateExceptionExecutionPlan(r7LocalPlan(actual), plan);
-    if (claim) claimExceptionPhase({ root, phase: "r7-local-launch", plan, runId: 0 });
-    return { ...marker, preparationReservation: "LOCAL_PROOF_NOT_PROTECTED_PREPARATION" };
-  }
-  if (environment.SOUNDING_LINE_R6_LOCAL_LEASE) {
-    if (kind !== "experience" || environment.GITHUB_ACTIONS === "true" || actual.exception.id !== CROSSDECK_R6.id)
-      fail("R6_LOCAL_PROOF_SCOPE_CHANGED");
-    const marker = JSON.parse(readFileSync(r6LocalMarkerPath(root), "utf8"));
-    if (
-      marker.status !== "STARTED" ||
-      marker.lease !== environment.SOUNDING_LINE_R6_LOCAL_LEASE ||
-      marker.candidateSha !== candidateSha ||
-      digest(marker.binding) !== digest(exceptionBinding(actual))
-    )
-      fail("R6_LOCAL_PROOF_CONSUMED_OR_CHANGED");
-    try {
-      process.kill(marker.ownerPid, 0);
-    } catch {
-      fail("R6_LOCAL_PROOF_OWNER_EXITED");
-    }
-    if (plan.localProof !== CROSSDECK_R6.id || plan.pairedOnly !== true) fail("R6_LOCAL_PROOF_SCOPE_CHANGED");
-    validateExceptionExecutionPlan(r6LocalPlan(actual), plan);
-    if (claim) claimExceptionPhase({ root, phase: "r6-local-launch", plan, runId: 0 });
-    return { ...marker, preparationReservation: "LOCAL_PROOF_NOT_PROTECTED_PREPARATION" };
-  }
-  if (environment.SOUNDING_LINE_R3_LOCAL_LEASE) {
-    if (kind !== "experience" || environment.GITHUB_ACTIONS === "true" || actual.exception.id !== CROSSDECK_R3.id)
-      fail("R3_LOCAL_PROOF_SCOPE_CHANGED");
-    const marker = JSON.parse(readFileSync(r3LocalMarkerPath(root), "utf8"));
-    if (
-      marker.status !== "STARTED" ||
-      marker.lease !== environment.SOUNDING_LINE_R3_LOCAL_LEASE ||
-      digest(marker.binding) !== digest(exceptionBinding(actual))
-    )
-      fail("R3_LOCAL_PROOF_CONSUMED_OR_CHANGED");
-    try {
-      process.kill(marker.ownerPid, 0);
-    } catch {
-      fail("R3_LOCAL_PROOF_OWNER_EXITED");
-    }
-    if (plan.localProof !== CROSSDECK_R3.id || !["NORMAL", "REDUCED"].includes(plan.localProofMotionMode))
-      fail("R3_LOCAL_PROOF_SCOPE_CHANGED");
-    validateExceptionExecutionPlan(r3LocalPlan(actual, plan.localProofMotionMode), plan);
-    if (claim) claimExceptionPhase({ root, phase: `r3-local-launch-${plan.localProofMotionMode}`, plan, runId: 0 });
-    return { ...marker, preparationReservation: "LOCAL_PROOF_NOT_PROTECTED_PREPARATION" };
-  }
-  validateExceptionExecutionPlan(plan, actual);
-  const record = trustedExceptions(root, plan.baseSha).find((value) => value.id === actual.exception.id);
-  const phase = environment.SOUNDING_LINE_EXCEPTION_PHASE;
-  if (
-    !["prepare", "qualify"].includes(phase) ||
-    (kind !== "experience" && phase !== "qualify") ||
-    environment.GITHUB_ACTIONS !== "true" ||
-    environment.GITHUB_RUN_ATTEMPT !== "1" ||
-    environment.GITHUB_JOB !== (phase === "prepare" ? "experience-preparation" : "final-check")
-  )
-    fail("EXECUTION_PHASE_FORBIDDEN");
-  const phaseName = kind === "ordinary" ? "ordinary" : kind === "technical" ? "technical" : "experience";
-  if (!claim) return requireExceptionPhase({ root, phase: phaseName, plan, environment });
-  if (kind === "technical")
-    requireExceptionPhase({
-      root,
-      phase: "ordinary",
-      plan,
-      environment: {
-        ...environment,
-        SOUNDING_LINE_EXCEPTION_LEASE: environment.SOUNDING_LINE_EXCEPTION_ORDINARY_LEASE,
-      },
     });
-  const api = request ?? githubRequest(record.repository);
-  await validateLiveContext({ record, plan, request: api, environment });
-  await validateHistoricalExceptionCustody({ root, plan, request: api });
-  const reservation = await exceptionStore({ record, request: api }).read(phase);
-  if (
-    !reservation ||
-    digest(reservation.binding) !== digest(exceptionBinding(plan)) ||
-    reservation.run.runId !== Number(environment.GITHUB_RUN_ID) ||
-    (phase === "qualify" && reservation.candidateSha !== candidateSha)
-  )
-    fail("EXECUTION_RESERVATION_MISSING");
-  if (kind === "experience" && phase === "qualify" && !existsSync(phasePath(root, "technical-complete")))
-    fail("TECHNICAL_VERIFICATION_NOT_COMPLETE");
+    if (!value.exception) fail("APPROVAL_MISSING_OR_INACTIVE");
+    return value;
+  });
+  withReplayAdmissionSubstage("EXECUTOR_CONTEXT", () => {
+    if (
+      actual.exception.nonExecutingReconciliation &&
+      (environment.SOUNDING_LINE_EXCEPTION_PHASE !== "qualify" ||
+        plan.localProof ||
+        Object.keys(environment).some(
+          (key) => /^SOUNDING_LINE_R(?:[3-9]|10|11|12)_LOCAL_LEASE$/u.test(key) && environment[key],
+        ))
+    )
+      fail("R8_FORMAT_EXECUTION_FORBIDDEN");
+  });
+  const localLease = withReplayAdmissionSubstage("LOCAL_LEASE", () => {
+    if (environment.SOUNDING_LINE_R8_LOCAL_LEASE) {
+      if (kind !== "experience" || environment.GITHUB_ACTIONS === "true" || actual.exception.id !== CROSSDECK_R8.id)
+        fail("R8_LOCAL_PROOF_SCOPE_CHANGED");
+      const marker = JSON.parse(readFileSync(r8LocalMarkerPath(root), "utf8"));
+      if (
+        marker.status !== "STARTED" ||
+        marker.lease !== environment.SOUNDING_LINE_R8_LOCAL_LEASE ||
+        marker.candidateSha !== candidateSha ||
+        digest(marker.binding) !== digest(exceptionBinding(actual))
+      )
+        fail("R8_LOCAL_PROOF_CONSUMED_OR_CHANGED");
+      try {
+        process.kill(marker.ownerPid, 0);
+      } catch {
+        fail("R8_LOCAL_PROOF_OWNER_EXITED");
+      }
+      if (plan.localProof !== CROSSDECK_R8.id || plan.pairedOnly !== true) fail("R8_LOCAL_PROOF_SCOPE_CHANGED");
+      validateExceptionExecutionPlan(r8LocalPlan(actual), plan);
+      if (claim) claimExceptionPhase({ root, phase: "r8-local-launch", plan, runId: 0 });
+      return { ...marker, preparationReservation: "LOCAL_PROOF_NOT_PROTECTED_PREPARATION" };
+    }
+    if (environment.SOUNDING_LINE_R7_LOCAL_LEASE) {
+      if (kind !== "experience" || environment.GITHUB_ACTIONS === "true" || actual.exception.id !== CROSSDECK_R7.id)
+        fail("R7_LOCAL_PROOF_SCOPE_CHANGED");
+      const marker = JSON.parse(readFileSync(r7LocalMarkerPath(root), "utf8"));
+      if (
+        marker.status !== "STARTED" ||
+        marker.lease !== environment.SOUNDING_LINE_R7_LOCAL_LEASE ||
+        marker.candidateSha !== candidateSha ||
+        digest(marker.binding) !== digest(exceptionBinding(actual))
+      )
+        fail("R7_LOCAL_PROOF_CONSUMED_OR_CHANGED");
+      try {
+        process.kill(marker.ownerPid, 0);
+      } catch {
+        fail("R7_LOCAL_PROOF_OWNER_EXITED");
+      }
+      if (plan.localProof !== CROSSDECK_R7.id || plan.pairedOnly !== true) fail("R7_LOCAL_PROOF_SCOPE_CHANGED");
+      validateExceptionExecutionPlan(r7LocalPlan(actual), plan);
+      if (claim) claimExceptionPhase({ root, phase: "r7-local-launch", plan, runId: 0 });
+      return { ...marker, preparationReservation: "LOCAL_PROOF_NOT_PROTECTED_PREPARATION" };
+    }
+    if (environment.SOUNDING_LINE_R6_LOCAL_LEASE) {
+      if (kind !== "experience" || environment.GITHUB_ACTIONS === "true" || actual.exception.id !== CROSSDECK_R6.id)
+        fail("R6_LOCAL_PROOF_SCOPE_CHANGED");
+      const marker = JSON.parse(readFileSync(r6LocalMarkerPath(root), "utf8"));
+      if (
+        marker.status !== "STARTED" ||
+        marker.lease !== environment.SOUNDING_LINE_R6_LOCAL_LEASE ||
+        marker.candidateSha !== candidateSha ||
+        digest(marker.binding) !== digest(exceptionBinding(actual))
+      )
+        fail("R6_LOCAL_PROOF_CONSUMED_OR_CHANGED");
+      try {
+        process.kill(marker.ownerPid, 0);
+      } catch {
+        fail("R6_LOCAL_PROOF_OWNER_EXITED");
+      }
+      if (plan.localProof !== CROSSDECK_R6.id || plan.pairedOnly !== true) fail("R6_LOCAL_PROOF_SCOPE_CHANGED");
+      validateExceptionExecutionPlan(r6LocalPlan(actual), plan);
+      if (claim) claimExceptionPhase({ root, phase: "r6-local-launch", plan, runId: 0 });
+      return { ...marker, preparationReservation: "LOCAL_PROOF_NOT_PROTECTED_PREPARATION" };
+    }
+    if (environment.SOUNDING_LINE_R3_LOCAL_LEASE) {
+      if (kind !== "experience" || environment.GITHUB_ACTIONS === "true" || actual.exception.id !== CROSSDECK_R3.id)
+        fail("R3_LOCAL_PROOF_SCOPE_CHANGED");
+      const marker = JSON.parse(readFileSync(r3LocalMarkerPath(root), "utf8"));
+      if (
+        marker.status !== "STARTED" ||
+        marker.lease !== environment.SOUNDING_LINE_R3_LOCAL_LEASE ||
+        digest(marker.binding) !== digest(exceptionBinding(actual))
+      )
+        fail("R3_LOCAL_PROOF_CONSUMED_OR_CHANGED");
+      try {
+        process.kill(marker.ownerPid, 0);
+      } catch {
+        fail("R3_LOCAL_PROOF_OWNER_EXITED");
+      }
+      if (plan.localProof !== CROSSDECK_R3.id || !["NORMAL", "REDUCED"].includes(plan.localProofMotionMode))
+        fail("R3_LOCAL_PROOF_SCOPE_CHANGED");
+      validateExceptionExecutionPlan(r3LocalPlan(actual, plan.localProofMotionMode), plan);
+      if (claim) claimExceptionPhase({ root, phase: `r3-local-launch-${plan.localProofMotionMode}`, plan, runId: 0 });
+      return { ...marker, preparationReservation: "LOCAL_PROOF_NOT_PROTECTED_PREPARATION" };
+    }
+    return null;
+  });
+  if (localLease) return localLease;
+  withReplayAdmissionSubstage("PLAN_COMPARE", () => validateExceptionExecutionPlan(plan, actual));
+  const record = withReplayAdmissionSubstage("REGISTRY_READ", () =>
+    trustedExceptions(root, plan.baseSha).find((value) => value.id === actual.exception.id),
+  );
+  const phase = environment.SOUNDING_LINE_EXCEPTION_PHASE;
+  withReplayAdmissionSubstage("EXECUTOR_CONTEXT", () => {
+    if (
+      !["prepare", "qualify"].includes(phase) ||
+      (kind !== "experience" && phase !== "qualify") ||
+      environment.GITHUB_ACTIONS !== "true" ||
+      environment.GITHUB_RUN_ATTEMPT !== "1" ||
+      environment.GITHUB_JOB !== (phase === "prepare" ? "experience-preparation" : "final-check")
+    )
+      fail("EXECUTION_PHASE_FORBIDDEN");
+  });
+  const phaseName = kind === "ordinary" ? "ordinary" : kind === "technical" ? "technical" : "experience";
+  if (!claim)
+    return withReplayAdmissionSubstage("ORDINARY_LEASE", () =>
+      requireExceptionPhase({ root, phase: phaseName, plan, environment }),
+    );
+  if (kind === "technical")
+    withReplayAdmissionSubstage("ORDINARY_LEASE", () =>
+      requireExceptionPhase({
+        root,
+        phase: "ordinary",
+        plan,
+        environment: {
+          ...environment,
+          SOUNDING_LINE_EXCEPTION_LEASE: environment.SOUNDING_LINE_EXCEPTION_ORDINARY_LEASE,
+        },
+      }),
+    );
+  const api = withReplayAdmissionSubstage("CUSTODY_REQUEST", () => request ?? githubRequest(record.repository));
+  await withReplayAdmissionSubstage("LIVE_CONTEXT", () =>
+    validateLiveContext({ record, plan, request: api, environment }),
+  );
+  await withReplayAdmissionSubstage("HISTORICAL_CUSTODY", () =>
+    validateHistoricalExceptionCustody({ root, plan, request: api }),
+  );
+  const reservation = await withReplayAdmissionSubstage("RESERVATION", async () => {
+    const reservation = await exceptionStore({ record, request: api }).read(phase);
+    if (
+      !reservation ||
+      digest(reservation.binding) !== digest(exceptionBinding(plan)) ||
+      reservation.run.runId !== Number(environment.GITHUB_RUN_ID) ||
+      (phase === "qualify" && reservation.candidateSha !== candidateSha)
+    )
+      fail("EXECUTION_RESERVATION_MISSING");
+    return reservation;
+  });
+  withReplayAdmissionSubstage("TECHNICAL_COMPLETE", () => {
+    if (kind === "experience" && phase === "qualify" && !existsSync(phasePath(root, "technical-complete")))
+      fail("TECHNICAL_VERIFICATION_NOT_COMPLETE");
+  });
   const prepare =
     phase === "prepare"
       ? reservation
-      : await historicalExceptionContext({ root, plan, request: api }).store.read("prepare");
-  return claimExceptionPhase({
-    root,
-    phase: phaseName,
-    plan,
-    runId: Number(environment.GITHUB_RUN_ID),
-    preparationReservation: prepare.commitSha,
-    ...([
-      CROSSDECK_R2.id,
-      CROSSDECK_R3.id,
-      CROSSDECK_R4.id,
-      CROSSDECK_R5.id,
-      CROSSDECK_R6.id,
-      CROSSDECK_R7.id,
-      CROSSDECK_R8.id,
-      CROSSDECK_R9.id,
-      CROSSDECK_R10.id,
-      CROSSDECK_R11.id,
-      CROSSDECK_R12.id,
-      CROSSDECK_R13.id,
-    ].includes(record.id)
-      ? {
-          executionHistory: {
-            ...record.attemptHistory,
-            stage: phase,
-            ...(phase === "prepare"
-              ? { executedAttemptsIncludingThisPreparation: record.attemptHistory.nextPreparationAttemptTotal }
-              : {}),
-          },
-        }
-      : {}),
-  });
+      : await withReplayAdmissionSubstage("HISTORICAL_PREPARE", () =>
+          historicalExceptionContext({ root, plan, request: api }).store.read("prepare"),
+        );
+  return withReplayAdmissionSubstage("PHASE_CLAIM", () =>
+    claimExceptionPhase({
+      root,
+      phase: phaseName,
+      plan,
+      runId: Number(environment.GITHUB_RUN_ID),
+      preparationReservation: prepare.commitSha,
+      ...([
+        CROSSDECK_R2.id,
+        CROSSDECK_R3.id,
+        CROSSDECK_R4.id,
+        CROSSDECK_R5.id,
+        CROSSDECK_R6.id,
+        CROSSDECK_R7.id,
+        CROSSDECK_R8.id,
+        CROSSDECK_R9.id,
+        CROSSDECK_R10.id,
+        CROSSDECK_R11.id,
+        CROSSDECK_R12.id,
+        CROSSDECK_R13.id,
+      ].includes(record.id)
+        ? {
+            executionHistory: {
+              ...record.attemptHistory,
+              stage: phase,
+              ...(phase === "prepare"
+                ? { executedAttemptsIncludingThisPreparation: record.attemptHistory.nextPreparationAttemptTotal }
+                : {}),
+            },
+          }
+        : {}),
+    }),
+  );
 }
 export function r3LocalMarkerPath(root) {
   return path.join(

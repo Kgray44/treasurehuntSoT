@@ -1,4 +1,4 @@
-import { execFileSync } from "node:child_process";
+import { inheritSourceFailure, sourceDiagnosticGit } from "./source-diagnostics.mjs";
 import { createHash } from "node:crypto";
 import { r8FormatEvidencePlan, validateR8FormatEvidenceIdentity } from "./experience-r8-format.mjs";
 import { readFileSync, realpathSync } from "node:fs";
@@ -49,8 +49,8 @@ const sha = /^[a-f0-9]{40}$/u;
 const digestPattern = /^[a-f0-9]{64}$/u;
 const normalize = (file) => file.replaceAll("\\", "/");
 export const experienceDigest = (value) => createHash("sha256").update(JSON.stringify(value)).digest("hex");
-const fail = (code, detail = "") => {
-  throw new Error(`PRODUCT_EXPERIENCE_${code}${detail ? `:${detail}` : ""}`);
+const fail = (code, detail = "", cause) => {
+  throw inheritSourceFailure(cause, new Error(`PRODUCT_EXPERIENCE_${code}${detail ? `:${detail}` : ""}`));
 };
 const meaningful = (value) => typeof value === "string" && value.trim().length >= 12;
 const list = (value) => Array.isArray(value) && value.length > 0;
@@ -105,15 +105,20 @@ function validScreenshot(bytes, minimumHeight = 400) {
 }
 
 function git(root, args, options = {}) {
-  return execFileSync("git", args, { cwd: root, encoding: "utf8", maxBuffer: 128 * 1024 * 1024, ...options });
+  return sourceDiagnosticGit("PRODUCT_EXPERIENCE", args, {
+    cwd: root,
+    encoding: "utf8",
+    maxBuffer: 128 * 1024 * 1024,
+    ...options,
+  });
 }
 export function revisionJson(root, revision, file, optional = false) {
   const present = git(root, ["ls-tree", revision, "--", file]).trim();
   if (!present && optional) return null;
   try {
     return JSON.parse(git(root, ["show", `${revision}:${file}`]));
-  } catch {
-    fail("REGISTRY_INVALID", file);
+  } catch (cause) {
+    fail("REGISTRY_INVALID", file, cause);
   }
 }
 export function sourceSnapshot(root, revision) {
