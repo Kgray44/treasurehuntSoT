@@ -116,6 +116,68 @@ const errorRecord = (error, depth = 0) => ({
 });
 const publicationDirectory = (stage) =>
   `Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/${stage}/dependency-readiness`;
+// One spent infrastructure attempt survives the protected collector repair.
+// These are hashes of its unchanged raw files, never caller-selected identities.
+const COLLECTOR_FAILURE = Object.freeze({
+  baseSha: "986aa0002711a43b425600f03803fae3d5b9906f",
+  recordDigest: "a6689ebab490ed81f313cf4bc5e2e597181c012ad43645120698b2faef097359",
+  markerSha256: "5e65c941749df979247f6de4244d68f3be17fed5e34d192ba8db7bf4f971499a",
+  launchSha256: "75ac633fd7ec4b3f7501993accb8f923fc1cb3f0c9460ea4baadfa45feac9158",
+  receiptSha256: "3af4cdab910710fe31dae54de5d96a5cbc5f1b041cf06986f5664cf1a805f53b",
+});
+export function isPreservedCollectorFailure({ currentBinding, markerBytes, launchBytes, receiptBytes }) {
+  if (
+    currentBinding?.exceptionId !== exceptionId ||
+    currentBinding.recordDigest !== COLLECTOR_FAILURE.recordDigest ||
+    !sha.test(currentBinding.baseSha ?? "") ||
+    currentBinding.baseSha === COLLECTOR_FAILURE.baseSha ||
+    hash(markerBytes) !== COLLECTOR_FAILURE.markerSha256 ||
+    hash(launchBytes) !== COLLECTOR_FAILURE.launchSha256 ||
+    hash(receiptBytes) !== COLLECTOR_FAILURE.receiptSha256
+  )
+    return false;
+  const marker = JSON.parse(markerBytes),
+    launch = JSON.parse(launchBytes),
+    receipt = JSON.parse(receiptBytes);
+  if (
+    marker.stage !== "original" ||
+    marker.attempt !== 1 ||
+    marker.binding.baseSha !== COLLECTOR_FAILURE.baseSha ||
+    marker.binding.recordDigest !== COLLECTOR_FAILURE.recordDigest ||
+    currentBinding.contractDigest !== marker.binding.contractDigest ||
+    currentBinding.environmentDigest !== marker.binding.environmentDigest ||
+    !same(marker.binding, launch.binding) ||
+    !same(marker.binding, receipt.binding) ||
+    receipt.status !== "UNKNOWN" ||
+    receipt.setupStatus !== "FAIL" ||
+    receipt.cleanup?.status !== "PASS" ||
+    receipt.productJourneys !== 0 ||
+    receipt.productCaptures !== 0 ||
+    receipt.providerCalls !== 0
+  )
+    return false;
+  return true;
+}
+function preservedCollectorFailure(options) {
+  if (!isPreservedCollectorFailure(options)) return false;
+  try {
+    const { root, currentBinding } = options;
+    git(root, "merge-base", "--is-ancestor", COLLECTOR_FAILURE.baseSha, currentBinding.baseSha);
+    return true;
+  } catch {
+    return false;
+  }
+}
+function preservedCollectorHistory(entry, currentBinding) {
+  if (![entry.paths.marker, entry.paths.launch, entry.paths.receipt].every((file) => existsSync(file))) return false;
+  return preservedCollectorFailure({
+    root: entry.root,
+    currentBinding,
+    markerBytes: bytes(entry.paths.marker),
+    launchBytes: bytes(entry.paths.launch),
+    receiptBytes: bytes(entry.paths.receipt),
+  });
+}
 function commonDirectory(root) {
   return path.join(git(root, "rev-parse", "--path-format=absolute", "--git-common-dir"), "sounding-line");
 }
@@ -301,13 +363,14 @@ export function beginReadinessAttempt({
     for (const suffix of ["", "-launch"])
       if (existsSync(path.join(common, `crossdeck-r13-focused-${stage}${suffix}.json`))) fail("CASE_ALREADY_CONSUMED");
     const history = allAttempts(root);
-    if (
-      history.some((entry) => entry.binding.recordDigest !== expected.recordDigest || entry.binding.baseSha !== baseSha)
-    )
-      fail("CAMPAIGN_CHANGED");
     for (const entry of history) {
       if (!existsSync(entry.paths.receipt)) fail("PRIOR_ATTEMPT_NONTERMINAL");
       validateReadinessReceipt({ root: entry.root, record, stage: entry.stage, receipt: json(entry.paths.receipt) });
+      if (
+        entry.binding.recordDigest !== expected.recordDigest ||
+        (entry.binding.baseSha !== baseSha && !preservedCollectorHistory(entry, expected))
+      )
+        fail("CAMPAIGN_CHANGED");
     }
     const attempt = history.filter((entry) => entry.stage === stage).length + 1;
     if (attempt > 3 || history.length >= 6) fail("ATTEMPTS_EXHAUSTED");
@@ -563,6 +626,16 @@ export async function runNativeDependencyChecks({ attempt, environment = process
     persist(attempt.paths.nativeReceipt, result);
   }
 }
+export function osReleaseMetadata() {
+  const file = "/etc/os-release";
+  if (!existsSync(file)) return null;
+  if (!lstatSync(file).isSymbolicLink()) return publicFile(file);
+  const target = readlinkSync(file),
+    resolvedPath = realpathSync(file);
+  if (!["../usr/lib/os-release", "/usr/lib/os-release"].includes(target) || resolvedPath !== "/usr/lib/os-release")
+    fail("OS_RELEASE_SYMLINK_CHANGED");
+  return { path: file, type: "symlink", target, resolved: publicFile(resolvedPath) };
+}
 function systemLibraryMetadata() {
   const libraries = [
     "libnss3.so",
@@ -588,7 +661,7 @@ function systemLibraryMetadata() {
     platform: process.platform,
     architecture: process.arch,
     release: os.release(),
-    osRelease: existsSync("/etc/os-release") ? publicFile("/etc/os-release") : null,
+    osRelease: osReleaseMetadata(),
     libraries: libraries.map((name) => {
       const file = path.join("/usr/lib/x86_64-linux-gnu", name);
       return existsSync(file) ? { name, ...publicFile(realpathSync(file)) } : { name, status: "ABSENT" };
@@ -1024,15 +1097,12 @@ export function requireLatestReadinessPASS({
   const expected = expectedBinding({ baseSha, candidateSha, stage, manifest, record, environment });
   const history = allAttempts(root);
   for (const entry of history) {
-    if (
-      entry.binding.recordDigest !== expected.recordDigest ||
-      entry.binding.baseSha !== baseSha ||
-      !existsSync(entry.paths.receipt)
-    )
+    if (entry.binding.recordDigest !== expected.recordDigest || !existsSync(entry.paths.receipt))
       fail("HISTORY_NOT_TERMINAL");
     const receipt = json(entry.paths.receipt);
     validateReadinessReceipt({ root: entry.root, record, stage: entry.stage, receipt });
     if (!same(receipt.binding, entry.binding)) fail("RECEIPT_BINDING_CHANGED");
+    if (entry.binding.baseSha !== baseSha && !preservedCollectorHistory(entry, expected)) fail("HISTORY_NOT_TERMINAL");
   }
   const current = history.filter((entry) => entry.stage === stage).at(-1);
   if (!current || !matchesExpected(current.binding, expected)) fail("LATEST_SOURCE_CHANGED");
@@ -1156,7 +1226,6 @@ function validatePublished({ root, revision, record, stage, receipt }) {
       fail("PUBLICATION_HISTORY_CHANGED");
     const scope = (binding) =>
       Object.fromEntries(Object.entries(binding).filter(([key]) => !["attempt", "lease"].includes(key)));
-    if (!same(scope(entry.binding), scope(receipt.binding))) fail("PUBLICATION_SOURCE_CHANGED");
     for (const [key, file] of Object.entries(entry.files)) {
       if (
         ![
@@ -1177,8 +1246,10 @@ function validatePublished({ root, revision, record, stage, receipt }) {
         fail("PUBLICATION_PATH_CHANGED");
       read(file);
     }
-    const marker = JSON.parse(read(entry.files.marker));
-    const terminalReceipt = JSON.parse(read(entry.files.receipt));
+    const markerBytes = read(entry.files.marker),
+      receiptBytes = read(entry.files.receipt);
+    const marker = JSON.parse(markerBytes);
+    const terminalReceipt = JSON.parse(receiptBytes);
     inspectMarker(marker);
     inspectTerminal(terminalReceipt, record, stage);
     inspectProbeBindings(terminalReceipt, marker);
@@ -1195,6 +1266,26 @@ function validatePublished({ root, revision, record, stage, receipt }) {
       terminalReceipt.status !== entry.status
     )
       fail("PUBLICATION_BINDING_CHANGED");
+    if (!same(scope(entry.binding), scope(receipt.binding))) {
+      const stable = (binding) =>
+        Object.fromEntries(
+          Object.entries(scope(binding)).filter(
+            ([key]) => !["baseSha", "manifestSha256", "sourceManifestSha256"].includes(key),
+          ),
+        );
+      if (
+        !same(stable(entry.binding), stable(receipt.binding)) ||
+        !entry.files.launch ||
+        !preservedCollectorFailure({
+          root,
+          currentBinding: receipt.binding,
+          markerBytes,
+          launchBytes: read(entry.files.launch),
+          receiptBytes,
+        })
+      )
+        fail("PUBLICATION_SOURCE_CHANGED");
+    }
     if (
       entry.files.launch &&
       !(terminalReceipt.status !== "PASS" && terminalReceipt.unparsedOutputs?.includes("launch"))

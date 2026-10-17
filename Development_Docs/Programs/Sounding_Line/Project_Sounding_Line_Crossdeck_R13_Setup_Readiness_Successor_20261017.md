@@ -1,7 +1,7 @@
 ---
 title: Crossdeck R13 finite setup readiness successor
 audience: engineering
-status: prepared-awaiting-protected-installation
+status: active-readiness-repair-prepared
 canonical_for: sounding-line-crossdeck-r13-setup-readiness-successor-20261017
 last_reviewed: 2026-10-17
 ---
@@ -105,6 +105,59 @@ must regenerate both canonical inventories and pass the actual source-policy
 fixture; partial output is never acceptance.
 
 # Exact diagnostic original bytes
+
+## Installed R13 and first readiness outcome
+
+R13 was installed through protected #756 at accepted main
+986aa0002711a43b425600f03803fae3d5b9906f, tree
+0ef830942445c8f6a36ac8cb337e5dc1c7ce22ac. Installer run38998432085 finished
+SUCCESS with Mainline check117297928473 from GitHub Actions app15368. The normal
+merge retained parents e85ceda26a3770dfb2b01f2afd916e45761a5d9e and
+bb42f24a361e1a4196a066aec79991a92d74d15a. Landed rendered authority13/13,
+documentation, feature records and independent history checks passed. Existing
+draft #721 adopted the exact reviewed composed tree at
+48ab65a7787520de455ffbe945c7c24de2f2d538. Infrastructure acceptance does not
+qualify Crossdeck.
+
+Original readiness attempt1 began2026-10-17T03:41:25.637Z and ended UNKNOWN
+at03:44:06Z. Its six individual setup commands passed, including Prisma SQLite
+generation and the Next build, and all four native checks passed. Aggregate
+setup remains FAIL because the browser metadata collector rejected the normal
+`/etc/os-release` symlink to `/usr/lib/os-release` before Chromium launch. Full
+dependency inventory independently rejected npm's locked
+`node_modules/@forever-treasure/bridgewatch` link to `../../bridgewatch`.
+These exact failures supersede no earlier diagnostic conclusion. Cleanup is
+PASS; product journeys, captures and provider calls are zero, and neither
+focused case nor ordinary6 started.
+
+The unchanged common-Git marker SHA256 is
+5e65c941749df979247f6de4244d68f3be17fed5e34d192ba8db7bf4f971499a;
+launch SHA256 is
+75ac633fd7ec4b3f7501993accb8f923fc1cb3f0c9460ea4baadfa45feac9158;
+terminal receipt SHA256 is
+3af4cdab910710fe31dae54de5d96a5cbc5f1b041cf06986f5664cf1a805f53b.
+Preserve every listed output and the local private context; publish only the
+approved public chain. Missing dependency inventory remains an explicit original
+error, never a substituted successful manifest.
+
+The collector repair resolves and records the fixed system metadata file's
+symlink and regular target identity. Generic regular-file and dependency escape
+guards remain strict. Static provisioning replaces only the task-owned locked
+workspace dependency link with a regular copy of its57 exact tracked files
+(559,574 bytes), after checking every committed and working blob. The tracked
+workspace, lockfile, other dependencies and product source remain unchanged.
+
+The protected repair carries forward only this exact failed attempt1 across the
+authority base update, retaining its literal marker, launch and receipt hashes,
+all output validation and its original source/base bindings. It counts as the
+first of the unchanged three original-stage attempts and six total attempts.
+New original readiness therefore starts at attempt2; corrected starts at1.
+All new attempts, latest PASS, focused cases and ordinary qualification must bind
+the actual new accepted authority and exact current candidate. This adds no
+case, retry, refund, Product Experience operation or weaker acceptance path.
+The thirteen records, prior five bridges, campaign epoch, expiry and immutable
+history remain unchanged; only the current sixth bridge's reviewed affected
+infrastructure blobs are updated through normal protection.
 
 A read-only formatter check found four immutable F13 diagnostic originals whose
 bytes do not match the formatter. Their preserved content is not rewritten.
