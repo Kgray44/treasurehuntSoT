@@ -943,9 +943,22 @@ test("failed or cancelled replay emits only its owned stage, journal and two cur
         }),
         (error) => error === failure,
       );
-      assert.equal(events.length, 3);
+      assert.equal(events.length, 4);
       const current = events[0],
         journalDirectory = path.posix.dirname(current.capture_journal_path);
+      assert.equal(current.capture_raw_retention_status, "PENDING");
+      assert.equal(events.at(-1).capture_raw_retention_status, "COMPLETE");
+      assert.equal(current.capture_raw_encrypted_path, `${path.posix.dirname(workingDirectory)}/encrypted`);
+      assert(lstatSync(path.join(f.root, current.capture_raw_encrypted_path)).isDirectory());
+      const verifiedPaths = readdirSync(path.join(f.root, current.capture_raw_encrypted_path))
+        .map((name) => `${current.capture_raw_encrypted_path}/${name}`)
+        .sort();
+      assert.deepEqual(Object.keys(events.at(-1)).sort(), [
+        "capture_raw_retention_status",
+        "capture_raw_verified_paths",
+      ]);
+      assert.deepEqual([...events.at(-1).capture_raw_verified_paths].sort(), verifiedPaths);
+      assert.equal(Object.hasOwn(current, "capture_raw_path"), false);
       assert.equal(current.capture_journal_failure_path, `${journalDirectory}/journal-failure.json`);
       assert.equal(current.capture_journal_pending_path, `${journalDirectory}/journal.*.pending`);
       assert.equal(path.posix.basename(journalDirectory), path.posix.basename(path.posix.dirname(workingDirectory)));
@@ -956,7 +969,13 @@ test("failed or cancelled replay emits only its owned stage, journal and two cur
       assert.equal(scopes[0].binding.runId, scopes[1].binding.runId);
       assert.notEqual(scopes[0].binding.scopeId, scopes[1].binding.scopeId);
       const actual = parseActionsOutputs(readFileSync(outputFile, "utf8"));
-      for (const [name, value] of Object.entries(current)) assert.equal(actual[name], `candidate/${value}`);
+      for (const [name, value] of Object.entries(current))
+        if (name !== "capture_raw_retention_status") assert.equal(actual[name], `candidate/${value}`);
+      assert.equal(actual.capture_raw_retention_status, "COMPLETE");
+      assert.deepEqual(
+        actual.capture_raw_verified_paths.split("\n").sort(),
+        verifiedPaths.map((file) => `candidate/${file}`),
+      );
       assert.deepEqual(
         actual.capture_runtime_paths.split("\n"),
         scopes.map((scope) => `candidate/${relative(f.root, scope.runtime)}`),

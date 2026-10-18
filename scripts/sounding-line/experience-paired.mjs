@@ -3,6 +3,12 @@ import { execFileSync, spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { lstat, mkdir, readFile, realpath, writeFile } from "node:fs/promises";
 import path from "node:path";
+import {
+  EXPERIENCE_RAW_OUTPUT,
+  createRawOutputDirectory,
+  copyDeclaredCaptureFile,
+  rawCaptureBinding,
+} from "./experience-raw-output.mjs";
 
 export const PAIRED_CONTRACTS = ["crossdeck.phase2.continuity", "crossdeck.refit.companion"];
 export const PAIRED_CASES = [
@@ -190,6 +196,7 @@ export async function producePairedEvidence({
   outputDirectory,
   environment = process.env,
   run = spawnSync,
+  rawOutputDirectory = environment[EXPERIENCE_RAW_OUTPUT],
 }) {
   const paired = planPairedEvidence(plan.contracts);
   if (!paired) return null;
@@ -198,13 +205,16 @@ export async function producePairedEvidence({
   const output = path.resolve(root, outputDirectory, "paired");
   if (!output.startsWith(path.resolve(root) + path.sep)) fail("MEDIA_PATH_INVALID");
   await mkdir(output); // A previous/partial run must never be silently reused.
+  const producerOutput = rawOutputDirectory
+    ? await createRawOutputDirectory({ root, directory: `${rawOutputDirectory}/paired` })
+    : output;
   const binding = pairedBinding({ root, plan, databaseUrl: environment.DATABASE_URL });
-  const reportFile = path.join(output, "playwright-report.json");
+  const reportFile = path.join(producerOutput, "playwright-report.json");
   const env = {
     ...environment,
     FOREVER_PLAYWRIGHT_EXTERNAL_SERVER: "1",
     PLAYWRIGHT_BASE_URL: baseURL,
-    CROSSDECK_REFIT_ARTIFACT_ROOT: output,
+    CROSSDECK_REFIT_ARTIFACT_ROOT: producerOutput,
     SOUNDING_LINE_PAIRED_BINDING: JSON.stringify(binding),
     PLAYWRIGHT_JSON_OUTPUT_FILE: reportFile,
   };
@@ -228,13 +238,32 @@ export async function producePairedEvidence({
   if (result.error || result.status !== 0) fail("EXECUTION_FAILED");
   const reportBytes = await readFile(reportFile);
   validatePairedReport(JSON.parse(reportBytes));
+  const selectedFile = async (source, kind) => {
+    if (producerOutput === output) return source;
+    const selected = await copyDeclaredCaptureFile({
+      root,
+      rawDirectory: producerOutput,
+      source,
+      destination: path.join(output, path.relative(producerOutput, source)),
+      kind,
+      binding: rawCaptureBinding(plan),
+    });
+    return path.join(root, selected.path);
+  };
+  const selectedReport = await selectedFile(reportFile, "json");
   const artifacts = [],
     cases = [];
   for (const expected of PAIRED_CASES) {
-    const directory = path.join(output, expected.directory);
+    const directory = path.join(producerOutput, expected.directory);
     const witnessFile = await ownedFile(directory, "paired-witness.json");
     const witness = JSON.parse(witnessFile.bytes);
     validatePairedWitness(witness, expected, binding);
+    const selectedWitness = await selectedFile(witnessFile.path, "json");
+    // Observations remain exact producer bytes, including their original raw paths.
+    if (producerOutput !== output) {
+      const observations = await ownedFile(directory, "observations.json");
+      await selectedFile(observations.path, "json");
+    }
     const ids = [];
     for (const device of devices) {
       const media = witness.media[device];
@@ -246,13 +275,14 @@ export async function producePairedEvidence({
         for (const file of files) {
           if (!file.endsWith(suffix)) fail("MEDIA_TYPE_INVALID");
           const observed = await ownedFile(directory, file);
+          const selected = await selectedFile(observed.path, type);
           for (const contractId of paired.contractIds) {
             const id = `${contractId}-${expected.id}-${device}-${type}-${path.basename(file)}`;
             if (ids.includes(id)) fail("MEDIA_ID_DUPLICATED");
             ids.push(id);
             artifacts.push({
               id,
-              path: relative(root, observed.path),
+              path: relative(root, selected),
               sha256: hash(observed.bytes),
               type,
               contractId,
@@ -271,7 +301,7 @@ export async function producePairedEvidence({
     }
     cases.push({
       ...witness,
-      witness: { path: relative(root, witnessFile.path), sha256: hash(witnessFile.bytes) },
+      witness: { path: relative(root, selectedWitness), sha256: hash(witnessFile.bytes) },
       artifactIds: ids,
     });
   }
@@ -281,7 +311,7 @@ export async function producePairedEvidence({
       version: 1,
       binding,
       browserContexts: paired.browserContexts,
-      report: { path: relative(root, reportFile), sha256: hash(reportBytes) },
+      report: { path: relative(root, selectedReport), sha256: hash(reportBytes) },
       cases,
     },
   };
