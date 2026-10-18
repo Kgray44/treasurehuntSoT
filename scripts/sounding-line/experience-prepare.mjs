@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
+import { randomUUID } from "node:crypto";
 import { mkdir, readFile, writeFile, appendFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -9,10 +10,37 @@ import {
   revisionJson,
   validateExperienceEvidence,
 } from "./product-experience.mjs";
-import { experienceChangedPaths, runTrustedExperienceReplay } from "./experience-browser.mjs";
+import { experienceChangedPaths } from "./experience-browser.mjs";
+import { captureAndPublishExperience, createCaptureSubmission } from "./experience-capture-publication.mjs";
 import { loadTrustedExperienceArtifact, verifyTrustedExperienceAttestation } from "./experience-attestation.mjs";
 import { buildPlan } from "./ordinary.mjs";
 import { exceptionStore, trustedExceptions, sealedReviewIdentity } from "./experience-exception.mjs";
+
+export async function writeCaptureOutputs(paths, environment = process.env, workspacePrefix = "candidate") {
+  if (!environment.GITHUB_OUTPUT) return;
+  const safe = (file) =>
+    typeof file === "string" &&
+    !/[\\\u0000-\u001f\u007f]/u.test(file) &&
+    !path.posix.isAbsolute(file) &&
+    file.split("/").every((part) => part && part !== "." && part !== "..");
+  assert(workspacePrefix === "" || safe(workspacePrefix), "PRODUCT_EXPERIENCE_CAPTURE_OUTPUT_PREFIX_INVALID");
+  const lines = [];
+  for (const [name, value] of Object.entries(paths)) {
+    assert(
+      /^capture_(?:(?:plan|manifest|activation|stage|journal|journal_failure|journal_pending)_path|(?:runtime|profile)_paths)$/u.test(
+        name,
+      ),
+    );
+    const values = Array.isArray(value) ? value : [value];
+    assert(values.length > 0 && values.every((file) => safe(file) && file.startsWith("artifacts/sounding-line/")));
+    const prefixed = values.map((file) => `${workspacePrefix ? workspacePrefix + "/" : ""}${file}`);
+    if (Array.isArray(value)) {
+      const delimiter = `capture_${randomUUID()}`;
+      lines.push(`${name}<<${delimiter}`, ...prefixed, delimiter);
+    } else lines.push(`${name}=${prefixed[0]}`);
+  }
+  await appendFile(environment.GITHUB_OUTPUT, lines.join("\n") + "\n");
+}
 
 export function activationPlan({ root, baseSha, candidateSha }) {
   // Diagnostic exercises the installed authority; it cannot qualify a PR.
@@ -65,20 +93,29 @@ async function main() {
   const policy = plan.attestationPolicy;
   if (!policy?.required || !policy.trustedReviewActors.includes(process.env.GITHUB_ACTOR))
     throw new Error("PRODUCT_EXPERIENCE_AUTHENTICATED_SUBMISSION_REQUIRED");
-  const receiptRoot = path.join(root, "artifacts/sounding-line/product-experience-submission");
-  await mkdir(receiptRoot, { recursive: true });
-  await writeFile(path.join(receiptRoot, "plan.json"), JSON.stringify(plan, null, 2) + "\n");
+  const onPaths = (paths) =>
+    writeCaptureOutputs(paths, process.env, path.relative(process.cwd(), root).split(path.sep).join("/"));
+  let receiptRoot;
+  if (options.mode === "capture") ({ receiptRoot } = await createCaptureSubmission({ root, plan, onPaths }));
+  else {
+    receiptRoot = path.join(root, "artifacts/sounding-line/product-experience-submission");
+    await mkdir(receiptRoot, { recursive: true });
+    await writeFile(path.join(receiptRoot, "plan.json"), JSON.stringify(plan, null, 2) + "\n");
+  }
   if (process.env.GITHUB_OUTPUT)
     await appendFile(process.env.GITHUB_OUTPUT, `source_digest=${plan.sourceDigest.slice(0, 16)}\n`);
   if (options.mode === "capture") {
-    const replay = await runTrustedExperienceReplay({
+    const replay = await captureAndPublishExperience({
       root,
-      plan: { ...plan, outputDirectory: "Development_Docs/Testing/Product_Experience/evidence" },
+      plan,
+      record: plan.exception
+        ? trustedExceptions(root, baseSha).find((record) => record.id === plan.exception.id)
+        : null,
       environment: process.env,
-      validateReplay: false,
+      onPaths,
     });
     const capture = JSON.parse(await readFile(replay.capturePath, "utf8"));
-    await writeFile(path.join(receiptRoot, "capture.json"), JSON.stringify(capture, null, 2) + "\n");
+    await writeFile(path.join(receiptRoot, "capture.json"), JSON.stringify(capture, null, 2) + "\n", { flag: "wx" });
     await writeFile(
       path.join(receiptRoot, "activation.json"),
       JSON.stringify(
@@ -93,6 +130,7 @@ async function main() {
         null,
         2,
       ) + "\n",
+      { flag: "wx" },
     );
     return;
   }

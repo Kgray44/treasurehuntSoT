@@ -12,6 +12,7 @@ import {
   writeBrowserDiagnosticReceipt,
   readBrowserDiagnosticReceipt,
   createBrowserDiagnosticSession,
+  browserReceiptPaths,
 } from "./browser-diagnostics.mjs";
 import { producePairedEvidence, sealPairedRuntime, validatePairedEvidence } from "./experience-paired.mjs";
 import {
@@ -646,7 +647,14 @@ async function main() {
     JSON.stringify({ status: "CAPTURED_REVIEW_REQUIRED", captures: evidence.artifacts?.length ?? 0 }) + "\n",
   );
 }
-export async function runTrustedExperienceReplay({ root, plan, environment, validateReplay = true, diagnostics }) {
+export async function runTrustedExperienceReplay({
+  root,
+  plan,
+  environment,
+  validateReplay = true,
+  diagnostics,
+  onDiagnosticScope,
+}) {
   const exceptionLease = await withVerificationStage("REPLAY_ADMISSION", () =>
     assertExceptionExecution({
       root,
@@ -691,6 +699,8 @@ export async function runTrustedExperienceReplay({ root, plan, environment, vali
   const isolatedFixtures = [];
   for (const profile of profiles) {
     const diagnosticEnvironment = diagnostics?.beginScope();
+    if (diagnosticEnvironment && onDiagnosticScope)
+      await onDiagnosticScope(browserReceiptPaths(root, diagnosticEnvironment));
     if (!browserSuiteProfiles[profile] || browserSuiteProfiles[profile].dedicatedRunner)
       fail("PROFILE_ADAPTER_REQUIRED");
     const outputDirectory = `${plan.outputDirectory ?? "artifacts/sounding-line/product-experience-replay"}/${profile}`;

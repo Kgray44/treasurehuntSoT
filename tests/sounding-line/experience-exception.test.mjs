@@ -2669,13 +2669,14 @@ test("R3 Git admission permits only the bounded repair and freezes every other r
     "testing/product-experience-exceptions.json",
     JSON.stringify({ version: 1, exceptions: [template, successorTemplate, r3Template] }),
   );
-  // This synthetic base predates R13 and R14; its three historical grants must not
+  // This synthetic base predates R13, R14 and R16; its three historical grants must not
   // inherit the installed-source sentinel from the current repository tree.
   run([
     "update-index",
     "--force-remove",
     "scripts/sounding-line/experience-r13.mjs",
     "scripts/sounding-line/experience-r14.mjs",
+    "scripts/sounding-line/experience-current-r16.mjs",
   ]);
   const baseSha = commit(baseInput);
   const original = JSON.parse(run(["show", `${CROSSDECK_R3.blockedCandidate}:testing/contracts.json`]));

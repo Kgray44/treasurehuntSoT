@@ -20,11 +20,13 @@ import {
   validateCurrentPublicationArtifacts,
   validateCurrentCaptureIdentity,
   validateCurrentAdmissionPredecessors,
+  validateCurrentFailedPreparation,
   validateCurrentAdmissionFinalDecision,
   assertCurrentAdmissionCap,
 } from "../../scripts/sounding-line/experience-current-admission.mjs";
 import {
   trustedExceptions,
+  selectTrustedExceptions,
   exceptionBinding,
   sealedReviewIdentity,
   sealExceptionQualification,
@@ -36,6 +38,12 @@ import {
   createCurrentAdmissionObservation,
   validateCurrentAdmissionObservationCiphertext,
 } from "../../scripts/sounding-line/experience-current-observability.mjs";
+
+import {
+  CURRENT_R16,
+  CURRENT_R15_FAILED_PREPARATION,
+  CURRENT_R15_FAILED_RUN,
+} from "../../scripts/sounding-line/experience-current-r16.mjs";
 
 const sourceRoot = fileURLToPath(new URL("../..", import.meta.url));
 const historicalRegistry = JSON.parse(
@@ -165,6 +173,233 @@ function fixtureRecord(t) {
     },
   };
 }
+// These records are inert in-memory source fixtures. The new record uses synthetic
+// source/proof/publication fields and is never written to the repository registry.
+let retainedRegistry15;
+function registry15Fixture() {
+  retainedRegistry15 ??= JSON.parse(
+    execFileSync(
+      "git",
+      ["show", `${CURRENT_R16.protectedBaseAncestorSha}:testing/product-experience-exceptions.json`],
+      {
+        cwd: sourceRoot,
+        encoding: "utf8",
+        maxBuffer: 32 * 1024 * 1024,
+      },
+    ),
+  );
+  return structuredClone(retainedRegistry15);
+}
+function successorFixture(t) {
+  const record = fixtureRecord(t);
+  const registry = registry15Fixture(),
+    previous = registry.exceptions[14];
+  record.version = 16;
+  record.id = CURRENT_R16.id;
+  record.custody.namespace = `sounding-line-exceptions/${record.id}`;
+  record.ownerApproval = structuredClone(CURRENT_R16.ownerApproval);
+  record.predecessor = structuredClone(CURRENT_R15_FAILED_PREPARATION);
+  record.frozenReferenceSha = CURRENT_R16.frozenReferenceSha;
+  const a = record.currentSourceAdmission;
+  a.protectedBaseAncestorSha = CURRENT_R16.protectedBaseAncestorSha;
+  a.preservationRevision = CURRENT_R16.preservationRevision;
+  a.cumulativeHistory = structuredClone(CURRENT_R16.cumulativeHistory);
+  a.historicalRuns = [
+    ...structuredClone(previous.currentSourceAdmission.historicalRuns),
+    structuredClone(CURRENT_R15_FAILED_RUN),
+  ];
+  a.legacyR14History = structuredClone(previous.currentSourceAdmission.legacyR14History);
+  registry.exceptions.push(record);
+  return { record, registry, previous };
+}
+function failedPreparationFixture(previous) {
+  const p = CURRENT_R15_FAILED_PREPARATION;
+  // Reconstitute only the retained, already-spent public R15 preparation. It is
+  // not an R16 reservation, and no provider or custody request is performed.
+  return {
+    version: 1,
+    exceptionId: previous.id,
+    binding: {
+      exception: currentAdmissionBinding(previous),
+      baseSha: p.baseSha,
+      sourceDigest: p.sourceDigest,
+      contractDigest: p.contractDigest,
+    },
+    run: {
+      runId: p.runId,
+      runAttempt: p.runAttempt,
+      actor: "Kgray44",
+      workflowPath: ".github/workflows/sounding-line-ordinary.yml",
+      event: p.event,
+      headSha: p.headSha,
+      headBranch: p.headBranch,
+      createdAt: p.createdAt,
+      workflowId: p.workflowId,
+      displayTitle: CURRENT_R15_FAILED_RUN.displayTitle,
+    },
+    candidateSha: p.candidateSha,
+    status: "PREPARE_AND_REVIEW8_RESERVED_VALIDATION_PENDING",
+    independentReviewsCompleted: 7,
+    reservedIndependentReviewOrdinal: 8,
+  };
+}
+test("fixed generation16 preserves the literal fifteen-row prefix and selects only its successor", (t) => {
+  const { record, registry } = successorFixture(t);
+  assert.equal(validateCurrentAdmissionRegistry(registry), record);
+  assert.deepEqual(selectTrustedExceptions(registry.exceptions), [record]);
+  for (const mutate of [
+    (r) => {
+      r.exceptions[14].currentSourceAdmission.caps.capture = 0;
+    },
+    (r) => {
+      r.exceptions[0].id = "CHANGED-OLD-ROW";
+    },
+    (r) => {
+      r.reconciliations[0].id = "CHANGED-OLD-BRIDGE";
+    },
+    (r) => {
+      [r.exceptions[14], r.exceptions[15]] = [r.exceptions[15], r.exceptions[14]];
+    },
+    (r) => {
+      r.exceptions.push(structuredClone(record));
+    },
+    (r) => {
+      r.exceptions[15].version = 17;
+    },
+    (r) => {
+      r.exceptions[15].status = "RETIRED";
+    },
+    (r) => {
+      r.exceptions[15].expiresAt = "2026-10-17T23:59:59Z";
+    },
+    (r) => {
+      r.exceptions[15].predecessor.preparePayloadDigest = "0".repeat(64);
+    },
+    (r) => {
+      r.exceptions[15].currentSourceAdmission.cumulativeHistory.completedPreparationAttempts = 18;
+    },
+    (r) => {
+      r.exceptions[15].currentSourceAdmission.requiredReviewIterations = 13;
+    },
+    (r) => {
+      r.exceptions[15].currentSourceAdmission.preservationRevision = CURRENT_R16.frozenReferenceSha;
+    },
+    (r) => {
+      r.exceptions[15].currentSourceAdmission.historicalRuns[17].runAttempt = 2;
+    },
+    (r) => {
+      r.exceptions[15].immutableHistory[0].blob = sha(100);
+    },
+  ]) {
+    const changed = structuredClone(registry);
+    mutate(changed);
+    assert.throws(() => validateCurrentAdmissionRegistry(changed), /CURRENT_ADMISSION_/u);
+  }
+  const changedRecords = structuredClone(registry.exceptions);
+  changedRecords[14].currentSourceAdmission.caps.capture = 0;
+  assert.throws(() => selectTrustedExceptions(changedRecords), /CURRENT_R16_PREDECESSOR_REGISTRY_CHANGED/u);
+});
+test("installed generation16 reader denies removal, inactivity and expiry without falling back to R15", (t) => {
+  const { registry } = successorFixture(t);
+  const root = mkdtempSync(path.join(tmpdir(), "generation16-inert-source-only-"));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const git = (...args) =>
+    execFileSync("git", args, {
+      cwd: root,
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "pipe"],
+    }).trim();
+  git("init", "--quiet");
+  git("config", "user.name", "Inert generation16 unit fixture");
+  git("config", "user.email", "fixture@example.invalid");
+  mkdirSync(path.join(root, "testing"));
+  const writeRegistry = (value) =>
+    writeFileSync(path.join(root, "testing/product-experience-exceptions.json"), JSON.stringify(value));
+  const commit = () => {
+    git("add", ".");
+    git("commit", "--quiet", "-m", "inert source-only unit fixture");
+    return git("rev-parse", "HEAD");
+  };
+  const prior = registry15Fixture();
+  writeRegistry(prior);
+  assert.equal(trustedExceptions(root, commit())[0].id, CURRENT_R16.previousId);
+  mkdirSync(path.join(root, "scripts/sounding-line"), { recursive: true });
+  writeFileSync(
+    path.join(root, "scripts/sounding-line/experience-current-r16.mjs"),
+    "// inert presence guard fixture\n",
+  );
+  assert.throws(() => trustedExceptions(root, commit()), /R16_REGISTRY_INVALID/u);
+  writeRegistry(registry);
+  assert.equal(trustedExceptions(root, commit())[0].id, CURRENT_R16.id);
+  for (const status of ["RETIRED", "INACTIVE"]) {
+    const changed = structuredClone(registry);
+    changed.exceptions[15].status = status;
+    writeRegistry(changed);
+    assert.throws(() => trustedExceptions(root, commit()), /RECORD_INVALID/u);
+  }
+  writeRegistry(registry);
+  const installed = commit();
+  t.mock.timers.tick(Date.parse(CURRENT_R16.expiresAt) - Date.now());
+  assert.throws(() => trustedExceptions(root, installed), /RECORD_INVALID/u);
+});
+test("generation16 consumes exact failed R15 preparation and requires every success slot absent", async (t) => {
+  const { record, previous } = successorFixture(t);
+  const payload = failedPreparationFixture(previous);
+  assert.equal(hash(payload), CURRENT_R15_FAILED_PREPARATION.preparePayloadDigest);
+  let preparation = { ...payload, commitSha: record.predecessor.prepareCommit };
+  let occupied = null;
+  let tree = record.predecessor.candidateTree;
+  const slots = [];
+  const options = {
+    record,
+    storeFor: (value) => {
+      assert.equal(value.id, CURRENT_R16.previousId);
+      assert.equal(value.custody.namespace, `sounding-line-exceptions/${value.id}`);
+      return {
+        read: async (slot) => {
+          slots.push(slot);
+          return slot === "prepare" ? preparation : slot === occupied ? { occupied: true } : null;
+        },
+      };
+    },
+    request: async (endpoint) => {
+      assert.equal(endpoint, `git/commits/${record.predecessor.candidateSha}`);
+      return { tree: { sha: tree } };
+    },
+  };
+  await validateCurrentFailedPreparation(options);
+  assert.deepEqual(slots, ["prepare", "capture", "review-submit", "review8", "qualify", "qualified"]);
+  for (occupied of ["capture", "review-submit", "review8", "qualify", "qualified"])
+    await assert.rejects(validateCurrentFailedPreparation(options), /R15_UNEXPECTED_SUCCESS_SLOT/u);
+  occupied = null;
+  for (const mutate of [
+    (p) => {
+      p.commitSha = sha(99);
+    },
+    (p) => {
+      p.run.runAttempt = 2;
+    },
+    (p) => {
+      p.binding.sourceDigest = "a".repeat(64);
+    },
+    (p) => {
+      p.status = "PASS";
+    },
+    (p) => {
+      p.independentReviewsCompleted = 8;
+    },
+  ]) {
+    preparation = structuredClone({
+      ...payload,
+      commitSha: record.predecessor.prepareCommit,
+    });
+    mutate(preparation);
+    await assert.rejects(validateCurrentFailedPreparation(options), /R15_SPENT_PREPARATION_CHANGED/u);
+  }
+  preparation = { ...payload, commitSha: record.predecessor.prepareCommit };
+  tree = sha(99);
+  await assert.rejects(validateCurrentFailedPreparation(options), /R15_CANDIDATE_TREE_CHANGED/u);
+});
 const artifact = () => ({
   id: "fixture-current-screen",
   type: "screenshot",
