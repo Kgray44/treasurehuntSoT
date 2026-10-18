@@ -1,0 +1,63 @@
+{
+  "schema": "PINNED_NATIVE_ACTUAL_OUTPUT_HARNESS_BUNDLE_NOT_QUALIFICATION",
+  "createdAt": "2026-10-18T18:15:02.740213+00:00",
+  "sourceParent": "8a035ecb6a3ee4a941cbbe0f29b57362e164e01f",
+  "repairTree": "025a5efd6a6f14513035fbf2c235a3b818194fef",
+  "originalAuthority": "ea0918e0eb176507fe7cf8a41490ada9c51d0852",
+  "candidate": "b1f06c10d3f2709cda366c266137fc38f4eb1df4",
+  "artifact": 12136707006,
+  "run": 39125943388,
+  "originalBytes": 543172413,
+  "originalSHA256": "7f7006aa7fb39ed52a871015205285438fb26286ee6f6a9acb7195f1f6df7dd2",
+  "independentStaticReviewSHA256": "f209b40197c5781e77fa313020e185edb91844e1854b210fa1fd8782b3edc4f0",
+  "refusalSmokeReceiptSHA256": "a2349b37331bd380175b55c2a57605d85561bf7be48a5049b4ca7a811c4d073f",
+  "actualOriginalExecution": "NOT_YET_EXECUTED",
+  "qualification": false,
+  "files": [
+    {
+      "path": "testing/development/crossdeck-r16-actual-output-20261018/replay_actual_publication.unexecuted.private.mjs",
+      "name": "replay_actual_publication.unexecuted.private.mjs",
+      "bytes": 35430,
+      "sha256": "809c111e0d2895088766218bcb2c7fbe23aa99fb9f10766321226f388683bdbc",
+      "sha": "38bb61a4985e66b25558911a94bcde02b1317a46",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "testing/development/crossdeck-r16-actual-output-20261018/prepare_native_actual_output.private.py",
+      "name": "prepare_native_actual_output.private.py",
+      "bytes": 15822,
+      "sha256": "bd72421ec6be75a535bc707ff88ce73f2ecfc3a3263699d318873c916468cf91",
+      "sha": "50b388fc2063fcf083f99ece2eb037614b7db8e0",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "testing/development/crossdeck-r16-actual-output-20261018/configuration.template.private.json",
+      "name": "configuration.template.private.json",
+      "bytes": 1334,
+      "sha256": "d2dbdbd780ca9165cff4fcc3b0df27a18b71b5853660946a4b6690d77f192bc3",
+      "sha": "9a607d0023c0861130db2b5fb07a6ca20b9211e9",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "testing/development/crossdeck-r16-actual-output-20261018/execution-contract.unexecuted.private.json",
+      "name": "execution-contract.unexecuted.private.json",
+      "bytes": 6145,
+      "sha256": "46c37ac7e08bb8b6671a65ae318d8dae773e99751d61da3354984f97beae1d8d",
+      "sha": "da95740e1bff54075a176027d0b96615d9c160ff",
+      "mode": "100644",
+      "type": "blob"
+    },
+    {
+      "path": "testing/development/crossdeck-r16-actual-output-20261018/EXECUTE.native.md",
+      "name": "EXECUTE.native.md",
+      "bytes": 4226,
+      "sha256": "c5a3cfce072ead37fa5c75125092c3ab024dc0e6151cd3022a148d657c04de04",
+      "sha": "c56fd0833b572c39831500023315588e23050207",
+      "mode": "100644",
+      "type": "blob"
+    }
+  ]
+}

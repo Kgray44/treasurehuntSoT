@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "acknowledgement": "ACTUAL_BYTES_PUBLICATION_DIAGNOSTIC_ONLY",
+  "originalZip": { "path": "", "bytes": 0, "sha256": "" },
+  "extraction": { "root": "", "manifestPath": "", "manifestSHA256": "" },
+  "members": { "plan": "", "capture": "", "journal": "" },
+  "source": {
+    "originalAuthorityRoot": "",
+    "originalAuthoritySha": "ea0918e0eb176507fe7cf8a41490ada9c51d0852",
+    "repairAuthorityRoot": "",
+    "repairSha": "",
+    "repairTree": "025a5efd6a6f14513035fbf2c235a3b818194fef",
+    "candidateGitDir": "",
+    "candidateTree": "a35ec3a926ea5ccd900f6c1a21f234070ad0a72c"
+  },
+  "preimageProjectionRoot": "",
+  "outputRoot": "",
+  "expected": {
+    "baseSha": "ea0918e0eb176507fe7cf8a41490ada9c51d0852",
+    "candidateSha": "b1f06c10d3f2709cda366c266137fc38f4eb1df4",
+    "sourceDigest": "ffdcc90ae07e8d178bd76cf2de9d083d71763931ce3a372ddc0e3b845b88d25f",
+    "contractDigest": "",
+    "recordDigest": "49234c32a1c2ff0125cc8f9618c19df2029843a9a934fc3d9126f9592f5eb148",
+    "preparationReservation": "",
+    "strictPublisherSHA256": "fcfbeb4e4e4752dd171b6b472e84528864c4157c2121ce7fe1b51fbd211502e0",
+    "counts": {
+      "originalFiles": 529,
+      "stageFiles": 527,
+      "jsonFiles": 25,
+      "uniqueMedia": 298,
+      "extras": 204,
+      "genericContexts": 32,
+      "pairedContexts": 6
+    }
+  }
+}

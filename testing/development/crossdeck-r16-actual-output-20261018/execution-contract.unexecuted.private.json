@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "status": "UNEXECUTED_PREPARATION",
+  "qualification": false,
+  "acceptance": false,
+  "command": [
+    "node",
+    "<pinned-harness-path>",
+    "<root-frozen-concrete-configuration.json>"
+  ],
+  "requiredRuntime": "Node.js compatible with the exact repository scripts (current protected verification uses Node 24.19.0); Git with all exact local objects. No browser, package installation, credentials, network or Python dependency inside this harness.",
+  "prerequisites": [
+    "Root/provider-verified original ZIP retained unchanged, with exact whole-original size/SHA supplied privately in concrete config.",
+    "Separate root-owned safe full extraction/CRC intake. Pinned manifest is external to extraction root and contains version1,status PASS,archive{bytes,sha256},checks{wholeOriginalSHA256:true,centralDirectoryComplete:true,allFilesCRCVerified:true},files[{path,bytes,sha256,crc32}]. Paths are archive-relative, CRC is eight lowercase hex characters. Every extracted regular file must be listed and match its SHA/size.",
+    "Exact original EA authority source and exact reviewed/published repair authority source, with raw Git blob bytes for all tracked scripts/sounding-line files. The authority HEADs and repair tree are checked, and source files are fingerprinted before and after. Windows text-converted or missing source must be prepared separately; this harness never changes source.",
+    "Read-only candidate Git directory with HEAD C16 and all needed commit/tree/blob objects already local. Git no-lazy-fetch and optional-locks0 are forced. Per-case GIT_WORK_TREE points only to fresh private projections; no shared index/ref/source mutation occurs.",
+    "Root-prepared preimage projection with exactly the candidate raw Git bytes/modes for every tracked canonical target derived from original capture+R16 record, plus candidate-review.json. Any target absent from candidate must also be absent physically. Non-target original historical media need no materialization or copying.",
+    "Fresh nonexistent outputRoot on a volume with measured headroom. Keep original ZIP/extraction/template/source/preimage inputs outside outputRoot, and do not nest outputRoot under an input. Root must budget full original-stage copies, closed-stage copy, encrypted raw segments, three publication ready/preimage journals and final canonical output. No cleanup, hardlinks, retries, overwrite, sparse changes or storage reclamation is performed.",
+    "Independent source review and exact helper/configuration pins before execution. All concrete paths, manifest SHA, contractDigest and published repair SHA must be filled. The template refuses execution with missing values."
+  ],
+  "expectedNativeCounts": {
+    "originalFiles": 529,
+    "stageFiles": 527,
+    "closedJSON": 25,
+    "uniqueRequiredMedia": 298,
+    "undeclaredWebMs": 204,
+    "genericContexts": 32,
+    "pairedContexts": 6
+  },
+  "expectedCountsAre": "Native-reported expectations until independently checked against whole verified body; not an existing cloud ZIP proof and not product acceptance.",
+  "phases": [
+    "Verify ZIP whole hash, pinned trusted intake, every extracted file, original failed journal, exact plan/capture/record/source tuple, complete generic tuples, actual typed media/alias closure and all auxiliary file conservation.",
+    "Copy complete original stage unchanged into an original C16 preimage projection; invoke original EA and repaired unchanged strict publishers with separate fresh journals. Both must reject exact UNREFERENCED_OUTPUT before any promotion and preserve stage and canonical bytes.",
+    "Copy the entire original stage byte-for-byte into a fresh raw/original sibling in a second C16 preimage projection; copy only actual required JSON/media through production copyDeclaredCaptureFile, keeping original working-directory identity, JSON/witness/report/observation/media bytes and logical paired aliases. Validate actual artifacts and original paired/runtime provenance without an invented database URL.",
+    "Run actual raw seal, unchanged encrypted retention and minted verified-file-list boundary on the complete actual bytes. No artifact upload or GitHub output is emitted by this standalone harness.",
+    "Inject failure immediately before, then immediately after renaming an existing tracked media target using separate new journals. Each must preserve the original injected error, restore every prior byte/mode/absence, retain raw/stage/encrypted inputs and preserve failed output journals. These are publication development fault injections, not browser/capture retries.",
+    "Publish the unchanged closed stage normally using a third fresh journal; validate all media hashes, original paired JSON bytes, aliases, all journey bytes and current canonical artifact rules. Keep external candidate-review unchanged. Recheck all source, input ZIP/extraction, raw/stage/encrypted bytes and candidate HEAD/tree/stage0 tuples."
+  ],
+  "receipts": [
+    "configuration.private.json",
+    "input-and-closure.private.json",
+    "actual-publication-proof.private.json only on full success",
+    "failure.private.json only on failure",
+    "terminal.private.json",
+    "original-stage-control/.../journal.json",
+    "repaired-selected-boundary/.../journal.json and retained preimages/raw/stage/encrypted material"
+  ],
+  "limitations": [
+    "This is actual-byte selected-file/publication boundary replay. It does not execute the paired subprocess, browser, app, DB, current capture, independent product review, custody, admission, ordinary verification or qualified seal.",
+    "Original paired binding and DATABASE_URL digest are retained as original provenance. No URL is guessed or invented, and no witness JSON is rewritten.",
+    "Undeclared original WebMs remain raw diagnostic files. The replay does not assert a specific auxiliary file came from Axe unless independent producer/page linkage proves it.",
+    "A diagnostic PASS closes only this actual-output regression proof. Protected successor authorization, fresh whole qualification, product review and landed integration remain separate."
+  ]
+}
