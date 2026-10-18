@@ -147,24 +147,28 @@ jobs:
           SOUNDING_LINE_EXCEPTION_PHASE: ${{ needs.campaign-custody.outputs.phase }}
         run: node authority/scripts/sounding-line/experience-prepare.mjs --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA" --mode "$EXPERIENCE_MODE" --diagnostic "$EXPERIENCE_DIAGNOSTIC" --evidence evidence
       - uses: actions/upload-artifact@v4
-        if: always() && inputs.experience_mode == 'capture'
+        if: always() && inputs.experience_mode == 'capture' && steps.experience.outputs.capture_plan_path != ''
         with:
           name: product-experience-capture-${{ steps.experience.outputs.source_digest }}
           if-no-files-found: error
           path: |
-            candidate/artifacts/sounding-line/product-experience-submission/capture.json
-            candidate/artifacts/sounding-line/product-experience-submission/plan.json
-            candidate/artifacts/sounding-line/product-experience-submission/activation.json
-            candidate/Development_Docs/Testing/Product_Experience/evidence/
+            ${{ steps.experience.outcome == 'success' && steps.experience.outputs.capture_manifest_path || '' }}
+            ${{ steps.experience.outputs.capture_plan_path }}
+            ${{ steps.experience.outcome == 'success' && steps.experience.outputs.capture_activation_path || '' }}
+            ${{ steps.experience.outcome == 'success' && 'candidate/Development_Docs/Testing/Product_Experience/evidence/' || '' }}
+            ${{ steps.experience.outcome != 'success' && steps.experience.outputs.capture_stage_path || '' }}
+            ${{ steps.experience.outputs.capture_journal_path }}
+            ${{ steps.experience.outcome != 'success' && steps.experience.outputs.capture_journal_failure_path || '' }}
+            ${{ steps.experience.outcome != 'success' && steps.experience.outputs.capture_journal_pending_path || '' }}
           retention-days: 90
       - uses: actions/upload-artifact@v4
-        if: always() && inputs.experience_mode == 'capture'
+        if: always() && inputs.experience_mode == 'capture' && steps.experience.outputs.capture_plan_path != ''
         with:
           name: product-experience-lifecycle-${{ inputs.candidate_sha }}-${{ github.run_id }}
           path: |
-            candidate/artifacts/sounding-line/browser-runtime.json
-            candidate/artifacts/sounding-line/browser-suite-profile.json
-            candidate/artifacts/sounding-line/product-experience-submission/plan.json
+            ${{ steps.experience.outputs.capture_runtime_paths }}
+            ${{ steps.experience.outputs.capture_profile_paths }}
+            ${{ steps.experience.outputs.capture_plan_path }}
           if-no-files-found: warn
           retention-days: 90
       - uses: actions/upload-artifact@v4
