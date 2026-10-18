@@ -1,0 +1,412 @@
+{
+  "format": "REACH_LOCAL_FOCUSED_BROWSER_EVIDENCE_V1",
+  "evidenceClass": "ENGINEERING_EVIDENCE_PUBLIC_ANALYTIC_D0_ONLY",
+  "sourceRun": "index-image-final-focused-20261017T175249-5de4",
+  "appHead": "2d097dcbdf6a350f854ef6387fe70ff493a6ac73",
+  "algorithmDigest": "b48867498df1d561f103eaeb1351a9c039597a08244ec8ac28d1211bb2359783",
+  "provenance": {
+    "browserExecutor": "physical_trace_diagnosis",
+    "assembler": "recovery_review",
+    "assemblerRole": "COMPONENT_AUTHOR_EVIDENCE_ASSEMBLY",
+    "assemblerAuthoredRuntimeAndAuthorityHelper": true,
+    "independentAcceptance": false,
+    "independentReview": "Provided separately in final-independent-review.json by a reviewer who did not build this implementation."
+  },
+  "results": {
+    "passed": 5,
+    "unexpected": 0,
+    "skipped": 0,
+    "flaky": 0,
+    "durationMs": 50132.109000000004,
+    "startTime": "2026-10-17T21:52:50.554Z",
+    "cases": [
+      {
+        "title": "D0 image-relative control follows fresh appearance through model failure, motion and interruption",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 18039,
+        "retry": 0,
+        "errors": []
+      },
+      {
+        "title": "D0 manual image-only hints support mirrored click and natural keyboard while ambiguous pixels abstain",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 7583,
+        "retry": 0,
+        "errors": []
+      },
+      {
+        "title": "D0 full-hand authority pauses conflicts without changing image coordinates and manual hints cannot bypass it",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 8012,
+        "retry": 0,
+        "errors": []
+      },
+      {
+        "title": "D0 stale model replies hide the image marker, pause collection and recover the same image source",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 5308,
+        "retry": 0,
+        "errors": []
+      },
+      {
+        "title": "D0 adaptive pacing backs off on visible blur and event-loop duress, then actual pagehide releases resources",
+        "status": "passed",
+        "expectedStatus": "passed",
+        "durationMs": 10170,
+        "retry": 0,
+        "errors": []
+      }
+    ]
+  },
+  "sourceReceipt": {
+    "format": "LOCAL_REACH_INDEX_IMAGE_BROWSER_SOURCE_RECEIPT",
+    "head": "2d097dcbdf6a350f854ef6387fe70ff493a6ac73",
+    "sourceStableDuringRun": true,
+    "changedDuringRun": [],
+    "before": {
+      "src/reach/browser-runtime.ts": "6e2b6d09316e95bdbc8f4d15465c071b52da6403c04b4f23c754ff32d19283b4",
+      "src/reach/index-image-tracker.ts": "292c162eb9a7c08dcbf8094e4c2183de0fa0dcc1fc5bc7ce354ea70fc53b11b5",
+      "src/reach/index-image-observation.ts": "e012dbe5a2963fc1b825c2940f4aca8274f42f73bb29fca05fd8a5e4dc5fc9e3",
+      "src/reach/index-image-readiness.ts": "aaab41037a8152354fb9128b8cd06a903e9a101d9ee0b4b45ddbd3d52bedb1c6",
+      "src/reach/tracking-pacer.ts": "cff192537080be35940d529ec1e0248266e0a73d4deebc2b89c4dea49d97c7a9",
+      "src/reach/ReachLaboratory.tsx": "2582b5bdbd081265f2b2c01acb9b80443e5b5efa2a55800c8b48796896775b29",
+      "src/reach/ReachLaboratory.module.css": "018d651fdf42d3935cc9a98f8f14afe4f8fc706c9404778d14b2d301ccb801e2",
+      "src/reach/coordinates.ts": "c81581e9861369f21b9dcba0b66af3c04f9a04f887c3b600888d5e358ebc3622",
+      "src/reach/calibration.ts": "9bddb35f843913594f5fe6909c92beda77b8f23726ce1c4d5e52defba4d271d6",
+      "src/reach/sample-window.ts": "f4b3cb2f9cc057065f71db6c38f0980cc1f89ad32955ce94d5f0c32e682ae852",
+      "src/reach/observation.ts": "f3f178fc016a82ce2ae65c4c4ad7c906d182d372863bd637bb0fb08ce5ce9496",
+      "src/watchglass/index-geometry.ts": "e5358f0a1f2b4c1165d5f27bfdd1e7caf8542e02e102d299f67fdd9ddf456d41",
+      "src/watchglass/hand-posture.ts": "0049a16f687bc5c66fe053cfac2b8e709d35c85d43a59e401d4f7e0ada9133f1",
+      "src/watchglass/hand-provider.ts": "601d216e66207ffd6b99d7bf4ae948a28febb466fe0488a8f1c2eef9ba74190b",
+      "src/watchglass/hand-observation.ts": "48de857b35b07299aa21e8f0ed9536c8e369c542d773e6f0269a458a9f53f0a3",
+      "tests/e2e/reach-index-image.spec.ts": "447fa135b73f6e9fa2c6c3fb3675298f642ed4d5d4aa510d6d8da2c8fb322a57",
+      "tests/e2e/fixtures/reach/pointing-poses.ts": "a642534b132a1f329046401e4ff5ecfcb7d5977e0abbf939d95d05f275e16f61",
+      "src/reach/hand-detection-authority.ts": "4e6b4dc7c324a4c56d8a2d887f7a0a069d387541a99cf9a3cff336c20de6e070",
+      "src/watchglass/hand-geometry.ts": "9ea7176a1af0472309d525aeba5dcae6f18ab6844e63627c4ffa4987a9a67f90",
+      "src/reach/ReachPoseRecorder.tsx": "df5fd5e255f6d280479b4346adc1cd6b3a6842d906a180aa5b69476d60509a39",
+      "src/reach/pose-recording.ts": "3b20e783400c7dc60469ff88845a19240e4098adbeceb73747f9ca2facbe5b57",
+      "src/reach/ReachStage.tsx": "96168af96b4a1a7190d3ee89933eac969eb318deab22abf2256974c38098f4e8",
+      "src/reach/pointer-continuity.ts": "5e5eee4a93e1f4575c7fc71bbcb0147e672760ca0b9599f320e210e6681948a2",
+      "src/reach/privacy.ts": "552719adf54f1c391a85d6224849f43708e793c3a18687fa53ffb19fa4fbd874",
+      "src/sextant/camera.ts": "0b0a8311d17b994321648890b2aa35f431bb16f14f535e4d357f0916b9f0f7f4",
+      "public/reach/hand-worker.js": "7848b396aea9113fecfcb48472f4fbe070f54f44902833b028cb2b187bed3446",
+      "public/reach/vendor/asset-manifest.json": "4c51b53330e74244f068e4588b6cbd52b3d4f4e5a6673828ea40b1cc8dd83647"
+    },
+    "after": {
+      "src/reach/browser-runtime.ts": "6e2b6d09316e95bdbc8f4d15465c071b52da6403c04b4f23c754ff32d19283b4",
+      "src/reach/index-image-tracker.ts": "292c162eb9a7c08dcbf8094e4c2183de0fa0dcc1fc5bc7ce354ea70fc53b11b5",
+      "src/reach/index-image-observation.ts": "e012dbe5a2963fc1b825c2940f4aca8274f42f73bb29fca05fd8a5e4dc5fc9e3",
+      "src/reach/index-image-readiness.ts": "aaab41037a8152354fb9128b8cd06a903e9a101d9ee0b4b45ddbd3d52bedb1c6",
+      "src/reach/tracking-pacer.ts": "cff192537080be35940d529ec1e0248266e0a73d4deebc2b89c4dea49d97c7a9",
+      "src/reach/ReachLaboratory.tsx": "2582b5bdbd081265f2b2c01acb9b80443e5b5efa2a55800c8b48796896775b29",
+      "src/reach/ReachLaboratory.module.css": "018d651fdf42d3935cc9a98f8f14afe4f8fc706c9404778d14b2d301ccb801e2",
+      "src/reach/coordinates.ts": "c81581e9861369f21b9dcba0b66af3c04f9a04f887c3b600888d5e358ebc3622",
+      "src/reach/calibration.ts": "9bddb35f843913594f5fe6909c92beda77b8f23726ce1c4d5e52defba4d271d6",
+      "src/reach/sample-window.ts": "f4b3cb2f9cc057065f71db6c38f0980cc1f89ad32955ce94d5f0c32e682ae852",
+      "src/reach/observation.ts": "f3f178fc016a82ce2ae65c4c4ad7c906d182d372863bd637bb0fb08ce5ce9496",
+      "src/watchglass/index-geometry.ts": "e5358f0a1f2b4c1165d5f27bfdd1e7caf8542e02e102d299f67fdd9ddf456d41",
+      "src/watchglass/hand-posture.ts": "0049a16f687bc5c66fe053cfac2b8e709d35c85d43a59e401d4f7e0ada9133f1",
+      "src/watchglass/hand-provider.ts": "601d216e66207ffd6b99d7bf4ae948a28febb466fe0488a8f1c2eef9ba74190b",
+      "src/watchglass/hand-observation.ts": "48de857b35b07299aa21e8f0ed9536c8e369c542d773e6f0269a458a9f53f0a3",
+      "tests/e2e/reach-index-image.spec.ts": "447fa135b73f6e9fa2c6c3fb3675298f642ed4d5d4aa510d6d8da2c8fb322a57",
+      "tests/e2e/fixtures/reach/pointing-poses.ts": "a642534b132a1f329046401e4ff5ecfcb7d5977e0abbf939d95d05f275e16f61",
+      "src/reach/hand-detection-authority.ts": "4e6b4dc7c324a4c56d8a2d887f7a0a069d387541a99cf9a3cff336c20de6e070",
+      "src/watchglass/hand-geometry.ts": "9ea7176a1af0472309d525aeba5dcae6f18ab6844e63627c4ffa4987a9a67f90",
+      "src/reach/ReachPoseRecorder.tsx": "df5fd5e255f6d280479b4346adc1cd6b3a6842d906a180aa5b69476d60509a39",
+      "src/reach/pose-recording.ts": "3b20e783400c7dc60469ff88845a19240e4098adbeceb73747f9ca2facbe5b57",
+      "src/reach/ReachStage.tsx": "96168af96b4a1a7190d3ee89933eac969eb318deab22abf2256974c38098f4e8",
+      "src/reach/pointer-continuity.ts": "5e5eee4a93e1f4575c7fc71bbcb0147e672760ca0b9599f320e210e6681948a2",
+      "src/reach/privacy.ts": "552719adf54f1c391a85d6224849f43708e793c3a18687fa53ffb19fa4fbd874",
+      "src/sextant/camera.ts": "0b0a8311d17b994321648890b2aa35f431bb16f14f535e4d357f0916b9f0f7f4",
+      "public/reach/hand-worker.js": "7848b396aea9113fecfcb48472f4fbe070f54f44902833b028cb2b187bed3446",
+      "public/reach/vendor/asset-manifest.json": "4c51b53330e74244f068e4588b6cbd52b3d4f4e5a6673828ea40b1cc8dd83647"
+    },
+    "exitCode": 0,
+    "physicalRecognitionQualified": false,
+    "physicalLatencyQualified": false,
+    "heldOutAccuracyQualified": false
+  },
+  "metrics": {
+    "motion": {
+      "evidence": "ANALYTIC_CAMERA_PIXELS_AND_FAKE_WORKER_D0_ONLY",
+      "samples": 229,
+      "tracked": 197,
+      "authorityPaused": 32,
+      "authorityPauseReasons": ["FULL_HAND_INDEX_CONFLICT"],
+      "identityChanges": 0,
+      "fakeWorkerCaptureHz": 29.26545988033685,
+      "sampledImageUiHz": 8.98780926234817,
+      "uiSampledAgeP95Ms": 106.69999999925494,
+      "fakeWorkerReplyP95Ms": 7.600000001490116,
+      "sampledImageInferenceP95Ms": 9,
+      "physicalLatencyQualified": false,
+      "physicalRecognitionQualified": false,
+      "heldOutAccuracyQualified": false
+    },
+    "adaptivePacing": {
+      "evidence": "REAL_BROWSER_WITH_ANALYTIC_CAMERA_AND_FAKE_WORKER",
+      "focusEvent": "SIMULATED_BLUR_FOCUS_WITH_DOCUMENT_REMAINING_VISIBLE",
+      "physicalLatencyQualified": false,
+      "visibleBeforeBlur": "visible",
+      "visibleAfter": "visible",
+      "phases": [
+        {
+          "name": "focused",
+          "captured": 30,
+          "captureHz": 29.812183245530942,
+          "medianIntervalMs": 34.899999998509884,
+          "maximumReplyAgeMs": 11.300000000745058
+        },
+        {
+          "name": "visible-simulated-blur",
+          "captured": 9,
+          "captureHz": 6.875477463712758,
+          "medianIntervalMs": 140,
+          "maximumReplyAgeMs": 9.400000002235174
+        },
+        {
+          "name": "focus-recovery",
+          "captured": 49,
+          "captureHz": 22.184995698834847,
+          "medianIntervalMs": 35.5,
+          "maximumReplyAgeMs": 10
+        },
+        {
+          "name": "controlled-event-loop-duress",
+          "captured": 6,
+          "captureHz": 6.011421701223367,
+          "medianIntervalMs": 146,
+          "maximumReplyAgeMs": 12.899999998509884
+        },
+        {
+          "name": "post-duress-recovery",
+          "captured": 56,
+          "captureHz": 22.26020590691123,
+          "medianIntervalMs": 35.600000001490116,
+          "maximumReplyAgeMs": 10.800000000745058
+        }
+      ],
+      "maximumPending": 1,
+      "tracks": 1,
+      "workers": 1,
+      "finalImageState": "TRACKING",
+      "finalCaptureAge": 107
+    },
+    "staleCallbacks": {
+      "evidence": "ANALYTIC_CAMERA_AND_DELAYED_FAKE_WORKER",
+      "state": "STALE",
+      "captureAge": 495.0999999977648,
+      "tracks": 1,
+      "workers": 1,
+      "maximumPending": 1
+    },
+    "fullHandHandoff": {
+      "evidence": "PUBLIC_ANALYTIC_CAMERA_AND_FAKE_FULL_HAND_MODEL",
+      "singleWrongReturn": {
+        "records": [
+          {
+            "state": "UNCERTAIN",
+            "reason": "FULL_HAND_INDEX_CONFLICT",
+            "gold": false,
+            "gray": true
+          },
+          {
+            "state": "TRACKING",
+            "reason": "IMAGE_MATCH",
+            "gold": true,
+            "gray": false
+          }
+        ],
+        "wrongFrames": 1
+      },
+      "phases": [
+        {
+          "phase": "one-wrong-digit-return-pauses-then-fallback-recovers-without-reset",
+          "state": "TRACKING",
+          "reason": "IMAGE_MATCH",
+          "imageGeneration": 1,
+          "actionablePointPresent": true,
+          "currentDisplayMatchPresent": false
+        },
+        {
+          "phase": "sustained-compatible-full-hand-negative-confirms-before-latching",
+          "state": "UNCERTAIN",
+          "reason": "FULL_HAND_CONTRARY_CONFIRMED",
+          "imageGeneration": 1,
+          "actionablePointPresent": false,
+          "currentDisplayMatchPresent": true
+        },
+        {
+          "phase": "fresh-gray-image-position-moves-while-action-remains-paused",
+          "state": "UNCERTAIN",
+          "reason": "FULL_HAND_CONTRARY_CONFIRMED",
+          "imageGeneration": 1,
+          "actionablePointPresent": false,
+          "currentDisplayMatchPresent": true
+        },
+        {
+          "phase": "missing-model-does-not-erase-visible-contrary",
+          "state": "UNCERTAIN",
+          "reason": "FULL_HAND_CONTRARY_AWAITING_POINT",
+          "imageGeneration": 1,
+          "actionablePointPresent": false,
+          "currentDisplayMatchPresent": true
+        },
+        {
+          "phase": "partial-index-does-not-erase-visible-contrary",
+          "state": "UNCERTAIN",
+          "reason": "FULL_HAND_CONTRARY_AWAITING_POINT",
+          "imageGeneration": 1,
+          "actionablePointPresent": false,
+          "currentDisplayMatchPresent": true
+        },
+        {
+          "phase": "compatible-full-hand-recovers-same-image-position",
+          "state": "TRACKING",
+          "reason": "FULL_HAND_POINT_CONFIRMED",
+          "imageGeneration": 1,
+          "actionablePointPresent": true,
+          "currentDisplayMatchPresent": false
+        },
+        {
+          "phase": "pointing-model-at-other-position-does-not-snap-image",
+          "state": "UNCERTAIN",
+          "reason": "FULL_HAND_INDEX_CONFLICT",
+          "imageGeneration": 1,
+          "actionablePointPresent": false,
+          "currentDisplayMatchPresent": true
+        },
+        {
+          "phase": "two-credible-whole-hands-pause",
+          "state": "UNCERTAIN",
+          "reason": "FULL_HAND_AMBIGUOUS",
+          "imageGeneration": 1,
+          "actionablePointPresent": false,
+          "currentDisplayMatchPresent": true
+        },
+        {
+          "phase": "frame-local-ambiguity-can-return-to-image-fallback",
+          "state": "TRACKING",
+          "reason": "IMAGE_MATCH",
+          "imageGeneration": 1,
+          "actionablePointPresent": true,
+          "currentDisplayMatchPresent": false
+        },
+        {
+          "phase": "manual-hint-cannot-bypass-visible-open-hand",
+          "state": "UNCERTAIN",
+          "reason": "FULL_HAND_CONTRARY_PENDING",
+          "imageGeneration": 2,
+          "actionablePointPresent": false,
+          "currentDisplayMatchPresent": true
+        },
+        {
+          "phase": "explicit-new-hint-allowed-only-when-full-hand-unavailable",
+          "state": "TRACKING",
+          "reason": "IMAGE_MATCH",
+          "imageGeneration": 3,
+          "actionablePointPresent": true,
+          "currentDisplayMatchPresent": false
+        }
+      ],
+      "sameImageGenerationBeforeExplicitReseed": true,
+      "noActionablePointInPausedPhases": true,
+      "availableOpenHandHintBlocked": true,
+      "explicitUnavailableHintStartsFreshGeneration": true
+    }
+  },
+  "screenshots": [
+    {
+      "file": "focused-image-relative-saved-target.png",
+      "sha256": "e484c6969d84c6b82f60c35e9a84d4b0919a6667858b023d21c5efaf2880a8b9",
+      "bytes": 313971,
+      "width": 1280,
+      "height": 900,
+      "captureMode": "VIEWPORT_ONLY",
+      "content": "PUBLIC_ANALYTIC_D0_CAMERA_AND_MODEL_FIXTURE"
+    },
+    {
+      "file": "focused-natural-keyboard-hint.png",
+      "sha256": "e4f89927d8a55db924fde313f3b282ca69e8342dbd8acfbeca79327d32a5dc10",
+      "bytes": 205935,
+      "width": 1280,
+      "height": 900,
+      "captureMode": "VIEWPORT_ONLY",
+      "content": "PUBLIC_ANALYTIC_D0_CAMERA_AND_MODEL_FIXTURE"
+    },
+    {
+      "file": "focused-mobile-hint-picker.png",
+      "sha256": "2bfce76aaa38d07f32acd3b9730096fd2699594f5d827e8afbfa8795e4e47bbf",
+      "bytes": 85583,
+      "width": 390,
+      "height": 844,
+      "captureMode": "VIEWPORT_ONLY",
+      "content": "PUBLIC_ANALYTIC_D0_CAMERA_AND_MODEL_FIXTURE"
+    },
+    {
+      "file": "focused-image-occlusion.png",
+      "sha256": "72762a584960813588f253bc1f515b39d36d6390dd0b2cb2ba2cfec95e62ceb0",
+      "bytes": 209397,
+      "width": 1280,
+      "height": 900,
+      "captureMode": "VIEWPORT_ONLY",
+      "content": "PUBLIC_ANALYTIC_D0_CAMERA_AND_MODEL_FIXTURE"
+    },
+    {
+      "file": "focused-whole-hand-contrary-saved-target.png",
+      "sha256": "7063bb0557219831ce7bd0a58bb94a518c1d951c3820c3b6f1b37adf5bee602b",
+      "bytes": 321214,
+      "width": 1280,
+      "height": 900,
+      "captureMode": "VIEWPORT_ONLY",
+      "content": "PUBLIC_ANALYTIC_D0_CAMERA_AND_MODEL_FIXTURE"
+    },
+    {
+      "file": "focused-whole-hand-confirmed-image-position.png",
+      "sha256": "3824549422af738d344ad552e163ab37a8bc8bafd47e929bdb1de9b2f6a7cd4d",
+      "bytes": 316405,
+      "width": 1280,
+      "height": 900,
+      "captureMode": "VIEWPORT_ONLY",
+      "content": "PUBLIC_ANALYTIC_D0_CAMERA_AND_MODEL_FIXTURE"
+    },
+    {
+      "file": "focused-whole-hand-manual-hint-blocked.png",
+      "sha256": "ddf1747c8712ebf17e90b61ffcfa1299266374aa676160b6105a97109e8176f4",
+      "bytes": 228057,
+      "width": 1280,
+      "height": 900,
+      "captureMode": "VIEWPORT_ONLY",
+      "content": "PUBLIC_ANALYTIC_D0_CAMERA_AND_MODEL_FIXTURE"
+    },
+    {
+      "file": "focused-stale-image-callbacks.png",
+      "sha256": "422047c415d836d1d0458be66d1ac2fe0309580d7a12d59e3ed5a877f5be7a26",
+      "bytes": 316254,
+      "width": 1280,
+      "height": 900,
+      "captureMode": "VIEWPORT_ONLY",
+      "content": "PUBLIC_ANALYTIC_D0_CAMERA_AND_MODEL_FIXTURE"
+    }
+  ],
+  "boundaries": {
+    "physicalRecognitionQualified": false,
+    "physicalLatencyQualified": false,
+    "heldOutAccuracyQualified": false,
+    "protectedQualificationRun": false,
+    "ownerPhysicalAcceptance": false,
+    "rawOwnerMediaIncluded": false,
+    "credentialsIncluded": false,
+    "notes": [
+      "Public analytic camera pixels and fake worker results exercise software flow only.",
+      "Image coordinates remain separate from whole-hand gesture authority; paused matched metadata is display-only.",
+      "Viewport captures avoid the fullPage screenshot resize artifact; target and saved progress are asserted after Pause and after capture.",
+      "Blur/focus are simulated events while the page remains visible; pagehide cleanup uses an actual browser event.",
+      "No raw owner video, images, landmark traces, camera identifiers or fit coefficients are included."
+    ]
+  }
+}

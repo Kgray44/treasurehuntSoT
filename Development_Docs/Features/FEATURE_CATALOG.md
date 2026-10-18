@@ -2467,6 +2467,45 @@ A consented local camera laboratory distinguishes tracked joints, active-hand co
 
 # Completed Branch Features Not Yet Available on Main
 
+## FT-B114 - Reach Runtime Governance and Numeric Operations
+
+**Status:** BRANCH COMPLETE NOT MERGED
+**Program or subsystem:** Project Reach and Admiralty
+
+Authorized Admiralty operators inspect privacy-bounded live report distributions and independently checked calibration outcomes, then govern mandatory Reach availability, pacing and retention through exact revisioned previews, privileged assurance, explicit confirmation and audit receipts.
+
+### Important subfeatures
+
+- Canonical CONFIG_OBSERVE and CONFIG_OPERATE authority with governed policy preview, assurance, confirmation, idempotent receipt and audited revert
+- Mandatory global availability and phase/model pacing across Laboratory and local recorder with policy expiry, hidden-page stop and no automatic camera restart
+- Automatic bounded numeric reporting without account association, raw camera content, positions, landmarks, trajectories or per-user telemetry settings
+- Snapshot-consistent aggregation across every retained report with pooled fixed-bin percentiles, confidence means, explicit denominators and missingness
+- Separate absolute/relative training and held-out outcomes, empty/unavailable states and bounded revision-detail overflow while every retained report contributes to global numeric totals
+
+### Primary surfaces
+
+`/admin/reach`, `/devices/reach`, `/devices/reach/record`
+
+### Meaningful limitations
+
+- Branch-complete software evidence is not protected-main integration, deployment, physical webcam performance or owner acceptance.
+- Client-reported aggregate windows do not establish distinct people, sessions or independent physical accuracy; sensor/display timing remains excluded.
+- Retention excludes expired records and purges them on reporting, collection or policy operations; no independent periodic deletion service is claimed.
+- The synthetic Admiralty fixture proves software reporting/governance behavior, not real-user coverage; final Reach physical tracking and protected-main integration remain separate.
+
+### Evidence
+
+- commit: `9034912a44bbf1b3a216356529b6baa59ee75bcb`
+- path: `src/components/admiralty/ReachAdminConsole.tsx`
+- path: `src/reach/runtime-policy.ts`
+- path: `src/reach/telemetry.ts`
+- test: `tests/e2e/reach-admiralty.spec.ts`
+- test: `src/reach/admin-pagination.test.ts`
+- completion-record: `Development_Docs/Projects/Project_Reach/Changes_From_Main_20261017.md`
+- path: `Development_Docs/Projects/Project_Reach/evidence/index-continuity-20261017/admiralty-browser-summary.json`
+
+---
+
 # Deliberately Excluded Until Complete
 
 - Harborlight Phase 4 is planned and is not cataloged as an implemented capability.
