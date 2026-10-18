@@ -572,12 +572,11 @@ for (const model of ["FULL", "INDEX"] as const) {
       "data-fingertip-model-support",
       model === "FULL" ? "FULL_HAND" : "REGISTERED_INDEX",
     );
-    await expect(
-      page.getByText(model === "FULL" ? "Hand model position tracked" : "Visible index position tracked", {
-        exact: true,
-      }),
-    ).toBeVisible();
-    await expect(page.getByText("Fingertip appearance tracked", { exact: true })).toHaveCount(0);
+    const status = page.getByRole("status", { name: "Reach status", exact: true });
+    await expect(status).toContainText(
+      model === "FULL" ? "Hand model position tracked" : "Visible index position tracked",
+    );
+    await expect(status).not.toContainText("Fingertip appearance tracked");
     await page.screenshot({ path: testInfo.outputPath(`D0-${model}-MODEL-target2-paused.png`), fullPage: false });
     await configure(page, { blank: false });
     await expect(root(page)).toHaveAttribute("data-fingertip-coordinate-source", "FUSED");
