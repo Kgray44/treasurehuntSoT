@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, type RefObject } from "react";
+import { observationFreshnessTime } from "@/watchglass/hand-observation";
 import { containedFrame, handConnections, type ReachVisualFrame, type ReachTiming } from "./visualization";
 import styles from "./ReachLaboratory.module.css";
 type Props = {
@@ -25,8 +26,9 @@ export function ReachStage({ frame, timings, kind, demo = false, overlay = false
         dpr = Math.min(2, window.devicePixelRatio || 1);
       const value = frame.current,
         o = value.observation;
-      const fresh = o && at - o.monotonicCaptureTime >= 0 && at - o.monotonicCaptureTime <= 150;
-      const cameraPhase = !o ? 0 : fresh ? 1 : at - o.monotonicCaptureTime <= 450 ? 2 : 0;
+      const age = o ? at - observationFreshnessTime(o) : Infinity;
+      const fresh = o && age >= 0 && age <= 150;
+      const cameraPhase = !o ? 0 : fresh ? 1 : age >= 0 && age <= 450 ? 2 : 0;
       const ghostAge = value.lastSeen ? at - value.lastSeen.capturedAt : -1;
       const fading = kind === "POINTER" && !(fresh && value.filtered) && ghostAge >= 0 && ghostAge <= 450;
       // The ref is mutated in place. Snapshot primitives rather than retaining
@@ -62,7 +64,7 @@ export function ReachStage({ frame, timings, kind, demo = false, overlay = false
       }
       context.setTransform(dpr, 0, 0, dpr, 0, 0);
       context.clearRect(0, 0, width, height);
-      if (kind === "CAMERA" && o && (fresh || at - o.monotonicCaptureTime <= 450)) {
+      if (kind === "CAMERA" && o && cameraPhase > 0) {
         const rect = containedFrame(width, height, o.frameWidth, o.frameHeight);
         context.globalAlpha = fresh ? 1 : 0.3;
         for (const hand of o.hands) {

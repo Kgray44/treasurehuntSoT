@@ -121,6 +121,7 @@ export type IndexImageObservation = IndexImageBinding & {
   orientation: 0;
   sequence: number;
   monotonicCaptureTime: number;
+  monotonicPixelOriginTime?: number;
   monotonicInferenceTime: number;
   trackId: string | null;
   trackGeneration: number;

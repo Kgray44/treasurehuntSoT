@@ -904,7 +904,11 @@ export class ReachBrowserRuntime {
                   gateTime = performance.now();
                   // Commit the gate and adapter together. A rejected schema,
                   // future clock or source cannot advance association history.
-                  gated.observation = gate.accept(candidate, gateTime, captureFresh);
+                  gated.observation = gate.accept(
+                    frameOrigin === null ? candidate : { ...candidate, monotonicPixelOriginTime: frameOrigin },
+                    gateTime,
+                    captureFresh,
+                  );
                 }
                 return true;
               },
@@ -968,15 +972,22 @@ export class ReachBrowserRuntime {
                   prepared.token,
                   modelAnchor,
                   () => performance.now(),
-                  () => !originExpired(),
+                  captureFresh,
                 );
-                if (originExpired()) throw new Error("OBSERVATION_PIXEL_ORIGIN_STALE");
+                if (!captureFresh()) throw new Error("OBSERVATION_PIXEL_ORIGIN_STALE");
                 // Processing completion is current; capture remains the original
                 // bitmap time. Gate independently enforces the150ms age limit.
                 const accepted = imageGate.accept(
-                  { ...tracked, sequence: imageSequence++, monotonicInferenceTime: performance.now() },
+                  {
+                    ...tracked,
+                    sequence: imageSequence++,
+                    monotonicInferenceTime: performance.now(),
+                    ...(frameOrigin === null ? {} : { monotonicPixelOriginTime: frameOrigin }),
+                  },
                   performance.now(),
+                  captureFresh,
                 );
+                if (!captureFresh()) throw new Error("OBSERVATION_PIXEL_ORIGIN_STALE");
                 imageAccepted = true;
                 imageObservation = accepted;
                 try {

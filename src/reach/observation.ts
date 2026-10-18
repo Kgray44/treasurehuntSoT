@@ -1,4 +1,4 @@
-import { handObservationSchema, type HandObservation } from "@/watchglass/hand-observation";
+import { handObservationSchema, observationFreshnessTime, type HandObservation } from "@/watchglass/hand-observation";
 import { assessHand } from "@/watchglass/hand-posture";
 import { HAND_CONTINUITY_GRACE_MS } from "@/watchglass/hand-provider";
 export { handObservationSchema, type HandObservation } from "@/watchglass/hand-observation";
@@ -28,7 +28,8 @@ export class ObservationGate {
       throw new Error("OBSERVATION_BINDING_MISMATCH");
     if (o.sequence <= this.sequence || o.monotonicCaptureTime <= this.capture) throw new Error("OBSERVATION_REORDERED");
     if (
-      now - o.monotonicCaptureTime > this.maxAgeMs ||
+      now - observationFreshnessTime(o) > this.maxAgeMs ||
+      (o.monotonicPixelOriginTime !== undefined && o.monotonicPixelOriginTime > now + 5) ||
       o.monotonicCaptureTime > now + 5 ||
       o.monotonicInferenceTime < o.monotonicCaptureTime ||
       o.monotonicInferenceTime > now + 5

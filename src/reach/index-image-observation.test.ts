@@ -76,6 +76,20 @@ describe("fresh image-tip observation gate", () => {
     expect(() => gate.accept({ ...frame(900, 900), algorithmDigest: "0".repeat(64), frameWidth: 1280 }, 910)).toThrow();
     expect(gate.accept(frame(), 110).frameWidth).toBe(640);
   });
+  it.each(["false", "throw"] as const)(
+    "does not commit dimensions or ordering when final source freshness rejects with %s",
+    (failure) => {
+      const gate = new IndexImageObservationGate(context);
+      const finalFresh = () => {
+        if (failure === "throw") throw new Error("SOURCE_NO_LONGER_FRESH");
+        return false;
+      };
+      expect(() => gate.accept({ ...frame(900, 900), frameWidth: 1280 }, 910, finalFresh)).toThrow();
+      expect(gate.accept(frame(), 110)).toMatchObject({ frameWidth: 640, sequence: 0 });
+      expect(() => gate.accept(frame(1, 150), 160, finalFresh)).toThrow();
+      expect(gate.accept(frame(1, 150), 160).sequence).toBe(1);
+    },
+  );
 
   it("requires both sequence and original capture time to increase strictly", () => {
     for (const reordered of [frame(0, 150), frame(1, 100), frame(90, 90)]) {

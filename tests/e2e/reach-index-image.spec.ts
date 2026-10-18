@@ -498,6 +498,23 @@ for (const model of ["FULL", "INDEX"] as const) {
     await page.getByRole("button", { name: "Pause calibration", exact: true }).click();
     await expect(page.getByText(/1 of 5 targets saved\./)).toBeVisible();
     await page.screenshot({ path: testInfo.outputPath("D0-fused-target2-pose-recovery.png"), fullPage: false });
+    // Force a durable appearance outage while fake inference continues reporting
+    // the already verified current index. This tests admission/copy, not neural recognition.
+    await configure(page, { blank: true });
+    await expect(root(page)).toHaveAttribute("data-fingertip-coordinate-source", "MODEL");
+    await expect(root(page)).toHaveAttribute(
+      "data-fingertip-model-support",
+      model === "FULL" ? "FULL_HAND" : "REGISTERED_INDEX",
+    );
+    await expect(
+      page.getByText(model === "FULL" ? "Hand model position tracked" : "Visible index position tracked", {
+        exact: true,
+      }),
+    ).toBeVisible();
+    await expect(page.getByText("Fingertip appearance tracked", { exact: true })).toHaveCount(0);
+    await page.screenshot({ path: testInfo.outputPath(`D0-${model}-MODEL-target2-paused.png`), fullPage: false });
+    await configure(page, { blank: false });
+    await expect(root(page)).toHaveAttribute("data-fingertip-coordinate-source", "FUSED");
     await configure(page, { model: "NONE", x: 90 });
     await expect(root(page)).toHaveAttribute("data-fingertip-coordinate-source", "IMAGE");
     await expect(root(page)).toHaveAttribute("data-image-track-generation", generation!);

@@ -100,6 +100,43 @@ describe("Reach canvas submissions", () => {
     expect(props.timings.current.submissionAge).toEqual([10, 10]);
     expect(props.timings.current.visualizationIntervals).toEqual([510]);
   });
+  it("fades and expires old camera pixels by origin rather than their newer dispatch", () => {
+    const props = inputs();
+    props.frame.current.observation = {
+      ...props.frame.current.observation!,
+      monotonicCaptureTime: 200,
+      monotonicPixelOriginTime: 100,
+    };
+    render(<ReachStage {...props} kind="CAMERA" />);
+    tick(250);
+    expect(strokes.at(-1)?.alpha).toBe(1);
+    tick(251);
+    expect(strokes.at(-1)?.alpha).toBe(0.3);
+    const count = strokes.length;
+    tick(550);
+    expect(strokes.length).toBe(count);
+    tick(551);
+    expect(context.clearRect).toHaveBeenCalledTimes(3);
+    expect(strokes.length).toBe(count);
+    expect(props.timings.current.submissionAge).toEqual([50]);
+  });
+  it("removes actionable pointer strokes at the pixel-origin freshness deadline", () => {
+    const props = inputs();
+    props.frame.current.observation = {
+      ...props.frame.current.observation!,
+      monotonicCaptureTime: 200,
+      monotonicPixelOriginTime: 100,
+    };
+    props.frame.current.filtered = { x: 0.5, y: 0.5 };
+    render(<ReachStage {...props} kind="POINTER" />);
+    tick(250);
+    expect(context.stroke).toHaveBeenCalledTimes(1);
+    tick(251);
+    expect(context.clearRect).toHaveBeenCalledTimes(2);
+    expect(context.stroke).toHaveBeenCalledTimes(1);
+    tick(300);
+    expect(context.clearRect).toHaveBeenCalledTimes(2);
+  });
   it("polls sixty RAFs but submits only five source updates and their five stale transitions", () => {
     const props = inputs();
     render(<ReachStage {...props} kind="CAMERA" />);
@@ -190,7 +227,7 @@ describe("Reach canvas submissions", () => {
     const props = inputs();
     const view = render(<ReachStage {...props} kind="CAMERA" />);
     tick(99);
-    expect(strokes.at(-1)?.alpha).toBe(0.3);
+    expect(context.stroke).not.toHaveBeenCalled();
     tick(100);
     expect(context.clearRect).toHaveBeenCalledTimes(2);
     expect(strokes.at(-1)?.alpha).toBe(1);

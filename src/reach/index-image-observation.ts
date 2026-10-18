@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { observationFreshnessTime } from "@/watchglass/hand-observation";
 import { indexImageAlgorithm, type IndexImageObservation } from "./index-image-tracker";
 
 const nonempty = z.string().refine((value) => value.trim().length > 0);
@@ -28,6 +29,7 @@ export const indexImageObservationSchema = z
     frameHeight: z.number().finite().int().positive(),
     sequence: z.number().finite().int().nonnegative(),
     monotonicCaptureTime: clock,
+    monotonicPixelOriginTime: clock.optional(),
     monotonicInferenceTime: clock,
     trackId: nonempty.nullable(),
     trackGeneration: z.number().finite().int().nonnegative(),
@@ -48,6 +50,10 @@ export const indexImageObservationSchema = z
     uncertaintyRadiusPixels: nonnegativeDiagnostic,
     reason: nonempty,
   })
+  .refine(
+    (o) => o.monotonicPixelOriginTime === undefined || o.monotonicPixelOriginTime <= o.monotonicCaptureTime + 5,
+    "INDEX_IMAGE_PIXEL_ORIGIN_CLOCK_INVALID",
+  )
   .refine((o) => (o.trackId === null ? o.trackGeneration === 0 : o.trackGeneration > 0))
   .refine((o) =>
     o.state === "TRACKING" ? o.point !== null && o.trackId !== null && o.trackGeneration > 0 : o.point === null,
@@ -68,7 +74,7 @@ export class IndexImageObservationGate {
   constructor(binding: IndexImageObservationBinding) {
     this.binding = Object.freeze(contextSchema.parse(binding));
   }
-  accept(input: unknown, now: number): IndexImageObservation {
+  accept(input: unknown, now: number, finalFresh?: () => boolean): IndexImageObservation {
     const o = indexImageObservationSchema.parse(input);
     if (
       !Number.isFinite(now) ||
@@ -78,13 +84,15 @@ export class IndexImageObservationGate {
       throw new Error("INDEX_IMAGE_BINDING_MISMATCH");
     if (o.sequence <= this.sequence || o.monotonicCaptureTime <= this.capture) throw new Error("INDEX_IMAGE_REORDERED");
     if (
-      now - o.monotonicCaptureTime > 150 ||
+      now - observationFreshnessTime(o) > 150 ||
+      (o.monotonicPixelOriginTime !== undefined && o.monotonicPixelOriginTime > now + 5) ||
       o.monotonicInferenceTime < o.monotonicCaptureTime ||
       o.monotonicInferenceTime > now + 5
     )
       throw new Error("INDEX_IMAGE_CLOCK_OR_FRESHNESS");
     const frame = `${o.frameWidth}:${o.frameHeight}`;
     if (this.frame !== null && frame !== this.frame) throw new Error("INDEX_IMAGE_FRAME_CHANGED");
+    if (finalFresh && !finalFresh()) throw new Error("INDEX_IMAGE_CLOCK_OR_FRESHNESS");
     this.sequence = o.sequence;
     this.capture = o.monotonicCaptureTime;
     this.frame = frame;

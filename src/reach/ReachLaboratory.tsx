@@ -4,6 +4,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 import { motion as animated } from "motion/react";
 import { useOptionalMotionPolicyContext } from "@/animation/motion/MotionPolicyContext";
 import { assessHand } from "@/watchglass/hand-posture";
+import { observationFreshnessTime } from "@/watchglass/hand-observation";
 import { ReachBrowserRuntime } from "./browser-runtime";
 import type { CaptureHealthCause, CaptureHealthDiagnosis } from "./capture-health";
 import { useReachRuntimePolicy } from "./runtime-policy-client";
@@ -205,6 +206,7 @@ export function ReachLaboratory({
     pointerContinuity = useRef(new PointerContinuity()),
     visual = useRef<ReachVisualFrame>(emptyFrame()),
     timing = useRef(new ReachTiming());
+  const acceptedPointerOrigin = useRef<{ capture: number; origin: number } | null>(null);
   const epoch = useRef(1),
     lastObservation = useRef<HandObservation | null>(null),
     lastIndexObservation = useRef<IndexImageObservation | null>(null),
@@ -458,7 +460,13 @@ export function ReachLaboratory({
     evidenceTier: o.evidenceTier,
   });
   const consumeControl = useRef<
-    (features: number[], at: number, binding: CalibrationBinding, observation?: HandObservation) => void
+    (
+      features: number[],
+      at: number,
+      binding: CalibrationBinding,
+      observation?: HandObservation,
+      freshnessObservation?: HandObservation | IndexImageObservation,
+    ) => void
   >(() => {});
   const pauseControl = useCallback(
     (now: number, guidance: string) => {
@@ -470,10 +478,29 @@ export function ReachLaboratory({
     },
     [retainPointer],
   );
+  const pauseStaleControl = useCallback(
+    (now: number) => {
+      if (modeRef.current === "RELATIVE") {
+        indexReadiness.current.pause();
+        setIndexStale(true);
+      }
+      const guidance = "Waiting for fresh tracking. Hold here briefly.";
+      pauseControl(now, "Waiting for fresh tracking. Collection paused.");
+      readyRef.current = { ...readyRef.current, eligible: false, condition: "RECOVERING", guidance };
+      setReadiness((previous) => ({ ...previous, eligible: false, condition: "RECOVERING", guidance }));
+    },
+    [pauseControl],
+  );
   useEffect(() => {
     modeRef.current = pointingMode;
-    consumeControl.current = (features, at, binding, observation) => {
+    consumeControl.current = (features, at, binding, observation, freshnessObservation) => {
       const now = performance.now();
+      const evidence = freshnessObservation ?? observation;
+      const origin = evidence ? observationFreshnessTime(evidence) : at;
+      if (now - origin < 0 || now - origin > 150) {
+        pauseStaleControl(now);
+        return;
+      }
       const t = trial.current;
       const incumbent = calibrationRef.current?.binding ?? t?.binding;
       if (incumbent && Object.entries(incumbent).some(([k, v]) => binding[k as keyof CalibrationBinding] !== v)) {
@@ -487,6 +514,13 @@ export function ReachLaboratory({
         try {
           t.binding ??= binding;
           t.window ??= new SampleWindow(t.binding, t.order[t.groups.length], t.mode);
+          // Readiness/features/window construction can cross the source-pixel
+          // deadline. Only a still-fresh capture may enter the evidence window.
+          const collectionTime = performance.now();
+          if (collectionTime - origin < 0 || collectionTime - origin > 150) {
+            pauseStaleControl(collectionTime);
+            return;
+          }
           const progress = t.window.push(features, at, binding);
           if (now - lastControlUI.current >= 80 || progress.samples) {
             lastControlUI.current = now;
@@ -587,9 +621,15 @@ export function ReachLaboratory({
       if (visual.current.filtered) {
         // A display spike hold is not a new accepted position. Its memory must
         // expire from the accepted estimate's clock rather than each bad input.
+        const acceptedCapture = filter.current.acceptedCaptureTime!;
+        if (acceptedCapture === at) acceptedPointerOrigin.current = { capture: at, origin };
+        const pointerOrigin =
+          acceptedPointerOrigin.current?.capture === acceptedCapture
+            ? acceptedPointerOrigin.current.origin
+            : acceptedCapture;
         pointerContinuity.current.observe(
           visual.current.filtered,
-          filter.current.acceptedCaptureTime!,
+          Math.min(acceptedCapture, pointerOrigin),
           JSON.stringify(binding),
         );
         visual.current.lastSeen = null;
@@ -627,11 +667,10 @@ export function ReachLaboratory({
   const acceptIndex = useRef<(o: IndexImageObservation) => void>(() => {});
   useEffect(() => {
     acceptIndex.current = (o) => {
-      const age = performance.now() - o.monotonicCaptureTime;
+      const now = performance.now();
+      const age = now - observationFreshnessTime(o);
       if (age < 0 || age > 150) {
-        indexReadiness.current.pause();
-        if (modeRef.current === "RELATIVE")
-          pauseControl(performance.now(), "Waiting for fresh fingertip tracking. Collection paused.");
+        pauseStaleControl(now);
         return;
       }
       lastIndexObservation.current = o;
@@ -686,13 +725,19 @@ export function ReachLaboratory({
         pauseControl(performance.now(), next.guidance);
         return;
       }
-      consumeControl.current(relativeIndexFeatures(o.point), o.monotonicCaptureTime, imageBindingFor(o));
+      consumeControl.current(relativeIndexFeatures(o.point), o.monotonicCaptureTime, imageBindingFor(o), undefined, o);
     };
   });
   const accept = useRef<(o: HandObservation) => void>(() => {});
   useEffect(() => {
     accept.current = (o) => {
       const now = performance.now();
+      const age = now - observationFreshnessTime(o);
+      if (age < 0 || age > 150) {
+        pauseStaleControl(now);
+        modelPostureEligible.current = false;
+        return;
+      }
       lastObservation.current = o;
       if (sourceRef.current === "LIVE" && o.evidenceTier !== "D0") {
         for (const hand of o.hands) telemetry.current?.recordHandednessConfidence(hand.handednessConfidence);
@@ -914,7 +959,7 @@ export function ReachLaboratory({
     const freshness = setInterval(() => {
       const o = modeRef.current === "RELATIVE" ? lastIndexObservation.current : lastObservation.current,
         now = performance.now();
-      if (o && now - o.monotonicCaptureTime > 150) {
+      if (o && now - observationFreshnessTime(o) > 150) {
         if (modeRef.current === "RELATIVE") setIndexStale(true);
         visual.current.raw = null;
         visual.current.filtered = null;
@@ -1237,6 +1282,20 @@ export function ReachLaboratory({
                   : "Find a comfortable hold";
   const relativeInstruction =
     step === "TRAINING" && pointingMode === "RELATIVE" ? relativeLayout.instructions[completed] : null;
+  const relativeEvidenceLabel =
+    indexState?.coordinateSource === "MODEL"
+      ? indexState.modelSupport === "REGISTERED_INDEX"
+        ? "Visible index position tracked"
+        : "Hand model position tracked"
+      : indexState?.coordinateSource === "FUSED"
+        ? "Hand and image position tracked"
+        : "Fingertip appearance tracked";
+  const relativeControlLabel =
+    indexState?.coordinateSource === "MODEL"
+      ? "Relative model control"
+      : indexState?.coordinateSource === "FUSED"
+        ? "Relative fused control"
+        : "Relative image control";
   const assessment = readiness.hand ? assessHand(readiness.hand, frameSize) : null;
   const calibrationLabel =
     calibration?.status === "VALIDATED"
@@ -1726,8 +1785,8 @@ export function ReachLaboratory({
                   ? imageGesturePaused
                     ? "Fingertip image matched · pointing paused"
                     : !indexStale && indexState?.state === "TRACKING"
-                      ? "Fingertip appearance tracked"
-                      : "Fingertip appearance uncertain"
+                      ? relativeEvidenceLabel
+                      : "Fingertip tracking uncertain"
                   : assessment?.framed
                     ? assessment.offImageFingerSupport
                       ? "Index and knuckles visible"
@@ -1737,7 +1796,7 @@ export function ReachLaboratory({
                     : "Framing needs attention"}{" "}
                 ·{" "}
                 {pointingMode === "RELATIVE"
-                  ? "Relative image control"
+                  ? relativeControlLabel
                   : assessment?.pointing
                     ? "Point recognized"
                     : "Point not yet recognized"}{" "}
@@ -1749,7 +1808,12 @@ export function ReachLaboratory({
               !indexStale &&
               indexState?.reason === "FULL_HAND_POINT_CONFIRMED" && (
                 <span>
-                  Full-hand detection confirms pointing. Image tracking keeps the fingertip position continuous.
+                  Full-hand detection confirms pointing.{" "}
+                  {indexState.coordinateSource === "MODEL"
+                    ? "The hand model supplies the current fingertip position."
+                    : indexState.coordinateSource === "FUSED"
+                      ? "Hand anatomy and image motion supply the current fingertip position."
+                      : "Image tracking supplies the current fingertip position."}
                 </span>
               )}
             {source === "LIVE" && assessment?.depthDominant && (

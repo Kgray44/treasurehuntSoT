@@ -4,11 +4,20 @@ import type { ComponentProps } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { IndexImageTracker, type IndexImageObservation, type IndexModelAnchor } from "./index-image-tracker";
 import { defaultReachRuntimePolicy } from "./runtime-policy";
+import { SampleWindow } from "./sample-window";
+import { IndexImageReadiness } from "./index-image-readiness";
+import { ActiveHandSelector, type HandObservation } from "./observation";
+import { syntheticObservation } from "./synthetic";
+import * as calibrationModule from "./calibration";
 
 // D0 ReactDOM + real optical/controller/evidence integration. No camera, neural
 // recognition, physical accuracy, or owner-acceptance claim.
 const fixture = vi.hoisted(() => ({
-  runtimes: [] as { image: (o: IndexImageObservation) => void; status: (value: string) => void }[],
+  runtimes: [] as {
+    image: (o: IndexImageObservation) => void;
+    observe: (o: HandObservation) => void;
+    status: (value: string) => void;
+  }[],
 }));
 vi.mock("./runtime-policy-client", () => ({
   useReachRuntimePolicy: () => ({ status: "READY", revision: 0, policy: defaultReachRuntimePolicy, refresh() {} }),
@@ -32,7 +41,7 @@ vi.mock("./browser-runtime", () => ({
   ReachBrowserRuntime: class {
     constructor(
       _video: unknown,
-      _observe: unknown,
+      public observe: (o: HandObservation) => void,
       public status: (value: string) => void,
       _media: unknown,
       _raw: unknown,
@@ -109,6 +118,7 @@ function deliver(
     unrelated?: boolean;
     cue?: boolean;
     cueSource?: string;
+    originAge?: number;
   } = {},
 ) {
   let observation!: IndexImageObservation;
@@ -124,6 +134,8 @@ function deliver(
           : { point: normalized(x), pointing: true, contrary: false },
       options.manual ? normalized(x) : null,
     );
+    if (options.originAge !== undefined)
+      observation.monotonicPixelOriginTime = observation.monotonicCaptureTime - options.originAge;
     fixture.runtimes[0].image(observation);
   });
   return observation;
@@ -168,6 +180,105 @@ afterEach(() => {
 });
 
 describe("relative calibration optical source across target 1 → 2", () => {
+  it("rejects old camera pixels before image readiness even when dispatch is current", () => {
+    const tracker = new IndexImageTracker(binding);
+    openAndSaveFirst(tracker);
+    const readiness = vi.spyOn(IndexImageReadiness.prototype, "update");
+    const samples = vi.spyOn(SampleWindow.prototype, "push");
+    deliver(tracker, { originAge: 200 });
+    expect(readiness).not.toHaveBeenCalled();
+    expect(samples).not.toHaveBeenCalled();
+    expect(screen.getByLabelText("Target 2 of 5")).toBeInTheDocument();
+    expect(screen.getByRole("status", { name: "Reach status" })).toHaveTextContent("Waiting for fresh tracking");
+  });
+
+  it("rejects an old-pixel model observation before hand selection and absolute sampling", () => {
+    render(<ReachLaboratory />);
+    fireEvent.click(screen.getByRole("button", { name: "Enable live camera" }));
+    fireEvent.click(screen.getByRole("radio", { name: "Absolute pointing" }));
+    fireEvent.click(screen.getByRole("button", { name: "Begin nine-point calibration" }));
+    const selection = vi.spyOn(ActiveHandSelector.prototype, "update");
+    const samples = vi.spyOn(SampleWindow.prototype, "push");
+    act(() => {
+      vi.advanceTimersByTime(300);
+      const o = syntheticObservation({ x: 0.5, y: 0.5 }, 1, performance.now());
+      o.monotonicPixelOriginTime = performance.now() - 200;
+      fixture.runtimes[0].observe(o);
+    });
+    expect(selection).not.toHaveBeenCalled();
+    expect(samples).not.toHaveBeenCalled();
+    expect(screen.getByLabelText("Target 1 of 9")).toBeInTheDocument();
+  });
+
+  it("rechecks pixel age after readiness work crosses the150ms collection deadline", () => {
+    const tracker = new IndexImageTracker(binding);
+    openAndSaveFirst(tracker);
+    const original = IndexImageReadiness.prototype.update;
+    vi.spyOn(IndexImageReadiness.prototype, "update").mockImplementationOnce(function (this: IndexImageReadiness, o) {
+      const result = original.call(this, o);
+      vi.advanceTimersByTime(26);
+      return result;
+    });
+    const samples = vi.spyOn(SampleWindow.prototype, "push");
+    deliver(tracker, { originAge: 125 });
+    expect(samples).not.toHaveBeenCalled();
+    expect(screen.getByRole("status", { name: "Reach status" })).toHaveTextContent("Waiting for fresh tracking");
+    expect(screen.getByLabelText("Target 2 of 5")).toBeInTheDocument();
+  });
+
+  it("rechecks origin age immediately before inserting a target sample", () => {
+    const tracker = new IndexImageTracker(binding);
+    openAndSaveFirst(tracker);
+    fireEvent.click(screen.getByRole("button", { name: "Pause calibration" }));
+    fireEvent.click(screen.getByRole("button", { name: "Resume calibration" }));
+    for (let i = 0; i < 13; ++i) deliver(tracker);
+    const original: typeof calibrationModule.assertCurrentReachBinding = calibrationModule.assertCurrentReachBinding;
+    const construction = vi
+      .spyOn(calibrationModule, "assertCurrentReachBinding")
+      .mockImplementationOnce((value, mode) => {
+        original(value, mode);
+        vi.advanceTimersByTime(26);
+      });
+    const samples = vi.spyOn(SampleWindow.prototype, "push");
+    deliver(tracker, { originAge: 125 });
+    expect(construction).toHaveBeenCalledOnce();
+    expect(samples).not.toHaveBeenCalled();
+    expect(screen.getByLabelText("Target 2 of 5")).toBeInTheDocument();
+  });
+
+  it("expires visible readiness by pixel origin while its dispatch timestamp is still fresh", () => {
+    const tracker = new IndexImageTracker(binding);
+    openAndSaveFirst(tracker);
+    const o = deliver(tracker, { originAge: 120 });
+    act(() => vi.advanceTimersByTime(100));
+    expect(performance.now() - o.monotonicCaptureTime).toBe(100);
+    expect(screen.getByRole("status", { name: "Reach status" })).toHaveTextContent("Waiting for fresh tracking");
+    expect(screen.getByLabelText("Target 2 of 5")).toBeInTheDocument();
+  });
+
+  it.each([false, true])("names current MODEL support truthfully (registered index:%s)", (registered) => {
+    const tracker = new IndexImageTracker(binding);
+    openAndSaveFirst(tracker, false, true);
+    if (registered) for (let i = 0; i < 6; ++i) deliver(tracker, { cue: true });
+    for (let i = 0; i < 6; ++i)
+      deliver(tracker, registered ? { cue: true, blank: true } : { conditioned: true, blank: true });
+    const status = screen.getByRole("status", { name: "Reach status" });
+    expect(status).toHaveTextContent(registered ? "Visible index position tracked" : "Hand model position tracked");
+    expect(status).toHaveTextContent("Relative model control");
+    expect(status).not.toHaveTextContent("Fingertip appearance tracked");
+  });
+
+  it("distinguishes FUSED position evidence from IMAGE fallback in the status", () => {
+    const tracker = new IndexImageTracker(binding);
+    openAndSaveFirst(tracker, false, true);
+    const status = screen.getByRole("status", { name: "Reach status" });
+    expect(status).toHaveTextContent("Hand and image position tracked");
+    expect(status).toHaveTextContent("Relative fused control");
+    for (let i = 0; i < 6; ++i) deliver(tracker);
+    expect(status).toHaveTextContent("Fingertip appearance tracked");
+    expect(status).toHaveTextContent("Relative image control");
+  });
+
   it("keeps the completed first target across its 700ms transition and same-reference motion", () => {
     const tracker = new IndexImageTracker(binding);
     const first = openAndSaveFirst(tracker);

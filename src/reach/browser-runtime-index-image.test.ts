@@ -5,7 +5,7 @@ import { BrowserHandAdapter, type HandInferencePolicy, type HandResult } from "@
 import { handObservationSchema } from "@/watchglass/hand-observation";
 import { pointingPose } from "../../tests/e2e/fixtures/reach/pointing-poses";
 import { IndexImageTracker } from "./index-image-tracker";
-import { IndexImageObservationGate } from "./index-image-observation";
+import { IndexImageObservationGate, indexImageObservationSchema } from "./index-image-observation";
 import { ReachCaptureHealth } from "./capture-health";
 import * as imageSignal from "@/watchglass/image-signal";
 
@@ -977,6 +977,102 @@ describe("runtime image source integration", () => {
     });
     expect(s.status).toHaveBeenLastCalledWith("READY");
     expect(s.runtime.resources().workers).toBe(1);
+  });
+  it("rejects an image publication whose origin expires during image schema parsing and recovers on the next frame", async () => {
+    const s = setup({ frameCallbacks: true });
+    const worker = await s.start(false);
+    await s.advance(10);
+    s.result();
+    expect(s.runtime.seedIndex(s.hint)).toBe(true);
+    s.presented(2, 1.1, { captureTime: 100 });
+    await s.advance(7);
+    expect(worker.frames).toHaveLength(2);
+    const parse = indexImageObservationSchema.parse;
+    vi.spyOn(indexImageObservationSchema, "parse").mockImplementationOnce((...args) => {
+      const parsed = parse(...args);
+      s.jumpClock(20);
+      return parsed;
+    });
+    await s.advance(123);
+    s.result();
+    expect(performance.now()).toBe(260);
+    expect(performance.now() - worker.frames[1].capture).toBe(143);
+    expect(s.image).toHaveBeenCalledOnce();
+    expect(s.status).toHaveBeenLastCalledWith("STALE_OR_INVALID_OBSERVATION");
+    s.presented(3, 1.2);
+    await s.advance(1);
+    await s.advance(5);
+    s.result();
+    expect(s.image).toHaveBeenCalledTimes(2);
+    expect(s.image.mock.calls[1][0]).toMatchObject({ state: "TRACKING", point: s.hint });
+    expect(s.status).toHaveBeenLastCalledWith("READY");
+    expect(s.runtime.resources().workers).toBe(1);
+  });
+  it("checks origin freshness immediately before image publication even after a valid gate return", async () => {
+    const s = setup({ frameCallbacks: true });
+    const worker = await s.start(false);
+    await s.advance(10);
+    s.result();
+    expect(s.runtime.seedIndex(s.hint)).toBe(true);
+    s.presented(2, 1.1, { captureTime: 100 });
+    await s.advance(7);
+    expect(worker.frames).toHaveLength(2);
+    const accept = IndexImageObservationGate.prototype.accept;
+    vi.spyOn(IndexImageObservationGate.prototype, "accept").mockImplementationOnce(function (
+      this: IndexImageObservationGate,
+      ...args
+    ) {
+      const accepted = accept.apply(this, args);
+      s.jumpClock(20);
+      return accepted;
+    });
+    await s.advance(123);
+    s.result();
+    expect(performance.now()).toBe(260);
+    expect(s.image).toHaveBeenCalledOnce();
+    expect(s.status).toHaveBeenLastCalledWith("STALE_OR_INVALID_OBSERVATION");
+    s.presented(3, 1.2);
+    await s.advance(1);
+    await s.advance(5);
+    s.result();
+    expect(s.image).toHaveBeenCalledTimes(2);
+    expect(s.image.mock.calls[1][0]).toMatchObject({ state: "TRACKING", point: s.hint });
+  });
+  it("rejects dispatch age that expires during image parsing when camera-origin metadata is unavailable", async () => {
+    const s = setup();
+    await s.start();
+    const parse = indexImageObservationSchema.parse;
+    vi.spyOn(indexImageObservationSchema, "parse").mockImplementationOnce((...args) => {
+      const parsed = parse(...args);
+      s.jumpClock(20);
+      return parsed;
+    });
+    await s.advance(140);
+    s.result();
+    expect(s.image).not.toHaveBeenCalled();
+    expect(s.status).toHaveBeenLastCalledWith("STALE_OR_INVALID_OBSERVATION");
+    expect(s.runtime.resources().workers).toBe(1);
+  });
+  it("carries known pixel origin to both consumers while preserving worker dispatch timestamps", async () => {
+    const s = setup({ frameCallbacks: true });
+    const worker = await s.start();
+    await s.advance(10);
+    s.result();
+    s.presented(2, 1.1, { captureTime: 105 });
+    await s.advance(7);
+    await s.advance(5);
+    s.result();
+    expect(worker.frames[1].capture).toBe(117);
+    expect(s.observe.mock.calls[1][0]).toMatchObject({ monotonicCaptureTime: 117, monotonicPixelOriginTime: 105 });
+    expect(s.image.mock.calls[1][0]).toMatchObject({ monotonicCaptureTime: 117, monotonicPixelOriginTime: 105 });
+  });
+  it("leaves pixel-origin knowledge absent on the existing fallback path", async () => {
+    const s = setup();
+    await s.start();
+    await s.advance(10);
+    s.result();
+    expect(s.observe.mock.calls[0][0]).not.toHaveProperty("monotonicPixelOriginTime");
+    expect(s.image.mock.calls[0][0]).not.toHaveProperty("monotonicPixelOriginTime");
   });
   it("closes a bitmap whose origin becomes old during asynchronous extraction", async () => {
     const s = setup({ frameCallbacks: true });
