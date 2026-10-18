@@ -17,7 +17,15 @@ async function installFixture(page: Page, model = "FULL") {
         blank: false,
         repeated: false,
         appearanceRotation: 0,
-        frames: [] as { capture: number; reply: number }[],
+        frames: [] as {
+          capture: number;
+          reply: number;
+          pixelOrigin: number | null;
+          mode: string;
+          x: number;
+          y: number;
+        }[],
+        presentations: [] as { received: number; origin: number }[],
         modelFrames: [] as { capture: number; mode: string }[],
         drawCount: 0,
         tracks: 0,
@@ -27,6 +35,21 @@ async function installFixture(page: Page, model = "FULL") {
         replyDelayMs: 2,
       };
       Object.assign(window, { reachIndexImageFixture: fixture });
+      const modes = ["FULL", "INDEX", "DIRECT", "OPEN", "WRONG", "WRONG_ONCE", "CONFLICT", "AMBIGUOUS", "NONE"];
+      const originalFrameCallback = HTMLVideoElement.prototype.requestVideoFrameCallback;
+      if (originalFrameCallback) {
+        HTMLVideoElement.prototype.requestVideoFrameCallback = function (callback) {
+          return originalFrameCallback.call(this, (at, metadata) => {
+            const detail = metadata as VideoFrameCallbackMetadata & { captureTime?: number };
+            fixture.presentations.push({
+              received: performance.now(),
+              origin: detail.captureTime ?? detail.presentationTime,
+            });
+            if (fixture.presentations.length > 600) fixture.presentations.shift();
+            callback(at, metadata);
+          });
+        };
+      }
       const lifecycle = (kind: string) => {
         const report = (window as unknown as { reachFixtureLifecycle?: (value: object) => Promise<void> })
           .reachFixtureLifecycle;
@@ -43,7 +66,6 @@ async function installFixture(page: Page, model = "FULL") {
             fixture.drawCount++;
             ctx.fillStyle = "rgb(30,30,30)";
             ctx.fillRect(0, 0, 320, 240);
-            if (fixture.blank) return;
             const finger = (x: number, y: number) => {
               ctx.save();
               ctx.translate(x, y);
@@ -58,8 +80,23 @@ async function installFixture(page: Page, model = "FULL") {
                 }
               ctx.restore();
             };
-            finger(fixture.x, fixture.y);
-            if (fixture.repeated) finger(fixture.x + 20, fixture.y);
+            if (!fixture.blank) {
+              finger(fixture.x, fixture.y);
+              if (fixture.repeated) finger(fixture.x + 20, fixture.y);
+            }
+            // Encode this exposure's controlled pose in a remote image corner.
+            // Fake inference must describe its bitmap, never a later live fixture state.
+            const bits = [1, 0, 1, 0];
+            for (const [value, count] of [
+              [Math.round(fixture.x * 16), 13],
+              [Math.round(fixture.y * 16), 12],
+              [modes.indexOf(fixture.model), 4],
+            ])
+              for (let bit = 0; bit < count; bit++) bits.push((value >> bit) & 1);
+            bits.forEach((bit, i) => {
+              ctx.fillStyle = bit ? "white" : "black";
+              ctx.fillRect(4 + i * 4, 4, 4, 8);
+            });
           };
           draw();
           const timer = setInterval(draw, 1000 / 30);
@@ -81,6 +118,7 @@ async function installFixture(page: Page, model = "FULL") {
         onmessage: ((event: MessageEvent) => void) | null = null;
         onerror = null;
         terminated = false;
+        decoder = new OffscreenCanvas(132, 1);
         constructor(_url: string | URL, _options?: WorkerOptions) {
           super();
           void _url;
@@ -100,10 +138,24 @@ async function installFixture(page: Page, model = "FULL") {
           if (message.type !== "FRAME") return;
           const width = message.bitmap!.width,
             height = message.bitmap!.height;
+          const decoder = this.decoder.getContext("2d", { willReadFrequently: true })!;
+          decoder.drawImage(message.bitmap!, 4, 8, 132, 1, 0, 0, 132, 1);
+          const code = decoder.getImageData(0, 0, 132, 1).data;
+          const bits = Array.from({ length: 33 }, (_, i) => Number(code[(i * 4 + 2) * 4] >= 128));
+          if (bits.slice(0, 4).join("") !== "1010") throw new Error("FIXTURE_BITMAP_CODE_MISSING");
+          let offset = 4;
+          const read = (count: number) => {
+            let value = 0;
+            for (let bit = 0; bit < count; bit++) value |= bits[offset++] << bit;
+            return value;
+          };
+          const x = read(13) / 16,
+            y = read(12) / 16,
+            mode = modes[read(4)];
+          if (!mode || x > width - 1 || y > height - 1) throw new Error("FIXTURE_BITMAP_CODE_INVALID");
           message.bitmap!.close();
           fixture.pending++;
           fixture.maximumPending = Math.max(fixture.maximumPending, fixture.pending);
-          const mode = fixture.model;
           const source =
             mode === "WRONG" || mode === "WRONG_ONCE"
               ? curled
@@ -114,8 +166,8 @@ async function installFixture(page: Page, model = "FULL") {
                   : relaxed;
           const conflict = mode === "WRONG" || mode === "WRONG_ONCE" || mode === "CONFLICT";
           const tip = {
-            x: fixture.x / 319 + (conflict ? 0.15 : 0),
-            y: fixture.y / 239 + (conflict ? 0.1 : 0),
+            x: x / (width - 1) + (conflict ? 0.15 : 0),
+            y: y / (height - 1) + (conflict ? 0.1 : 0),
           };
           const points = source.map((point, index) =>
             mode === "INDEX" && ![5, 6, 7, 8].includes(index)
@@ -139,12 +191,14 @@ async function installFixture(page: Page, model = "FULL") {
           };
           fixture.modelFrames.push({ capture: message.capture, mode });
           if (fixture.modelFrames.length > 600) fixture.modelFrames.shift();
-          if (mode === "WRONG_ONCE") fixture.model = "NONE";
+          if (mode === "WRONG_ONCE" && fixture.model === "WRONG_ONCE") fixture.model = "NONE";
+          const pixelOrigin =
+            [...fixture.presentations].reverse().find((row) => row.received <= message.capture)?.origin ?? null;
           setTimeout(() => {
             fixture.pending--;
             if (this.terminated) return;
             const reply = performance.now();
-            fixture.frames.push({ capture: message.capture, reply });
+            fixture.frames.push({ capture: message.capture, reply, pixelOrigin, mode, x, y });
             if (fixture.frames.length > 600) fixture.frames.shift();
             this.onmessage?.(
               new MessageEvent("message", {
@@ -209,9 +263,21 @@ const unavailable = async (page: Page) => {
   await expect(page.locator('[data-calibration-target="true"]')).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Set up relative movement", exact: true })).toBeEnabled();
 };
-async function markByClick(page: Page, x: number, y: number, mirrored: boolean) {
-  await page.getByRole("button", { name: "Track visible fingertip", exact: true }).click();
+async function openManualPicker(page: Page) {
   const picker = page.getByRole("button", { name: /^Mark visible fingertip in camera/ });
+  // A fresh-frame watchdog can disable the button between actionability and input.
+  // Retry ordinary activation only; never force input or relax the capture gate.
+  await expect(async () => {
+    if (await picker.isVisible()) return;
+    const button = page.getByRole("button", { name: "Track visible fingertip", exact: true });
+    await button.scrollIntoViewIfNeeded();
+    await button.click({ timeout: 1500 });
+    await expect(picker).toBeVisible({ timeout: 500 });
+  }).toPass({ timeout: 15000 });
+  return picker;
+}
+async function markByClick(page: Page, x: number, y: number, mirrored: boolean) {
+  const picker = await openManualPicker(page);
   const box = (await picker.boundingBox())!;
   const scale = Math.min(box.width / 320, box.height / 240),
     width = 320 * scale,
@@ -691,7 +757,7 @@ test("D0 display staleness between timely delayed captures preserves evidence wh
   test.setTimeout(90000);
   await installFixture(page);
   await page.goto("/devices/reach");
-  await configure(page, { replyDelayMs: 120 });
+  await configure(page, { replyDelayMs: 80 });
   await page.getByRole("button", { name: "Enable live camera", exact: true }).click();
   await expect
     .poll(() =>
@@ -735,8 +801,11 @@ test("D0 display staleness between timely delayed captures preserves evidence wh
       }
     ).reachDisplayClockProbe;
     probe.observer.disconnect();
-    const fixture = (window as unknown as { reachIndexImageFixture: { frames: { capture: number; reply: number }[] } })
-      .reachIndexImageFixture;
+    const fixture = (
+      window as unknown as {
+        reachIndexImageFixture: { frames: { capture: number; reply: number; pixelOrigin: number | null }[] };
+      }
+    ).reachIndexImageFixture;
     return { records: probe.records, workerFrames: fixture.frames };
   });
   const collecting = beforeContrary.records.filter((row) => row.target1);
@@ -754,9 +823,22 @@ test("D0 display staleness between timely delayed captures preserves evidence wh
     .filter((frame) => frame !== undefined)
     .map((frame) => frame.reply - frame.capture);
   expect(ages.length).toBe(captures.length);
-  expect(ages.every((age) => age >= 119 && age <= 150)).toBe(true);
+  expect(ages.every((age) => age >= 79 && age <= 150)).toBe(true);
+  const originalPixelAges = captures.map((capture) => {
+    const frame = beforeContrary.workerFrames.find((row) => row.capture === capture)!;
+    expect(frame.pixelOrigin).not.toBeNull();
+    return frame.reply - Math.min(frame.capture, frame.pixelOrigin!);
+  });
+  expect(originalPixelAges.every((age) => age >= 79 && age <= 150)).toBe(true);
   const generation = await root(page).getAttribute("data-image-track-generation");
-  await configure(page, { model: "OPEN" });
+  // Known original pixels older than the unchanged 150 ms limit must pause.
+  await configure(page, { replyDelayMs: 170 });
+  await expect(root(page)).toHaveAttribute("data-image-state", "STALE");
+  await page.waitForTimeout(350);
+  await expect(page.getByLabel("Target 2 of 5", { exact: true })).toBeVisible();
+  await expect(page.getByText(/1 of 5 targets saved/)).toBeVisible();
+  await expect(page.locator('svg[aria-label="Finger image position"]')).toHaveCount(0);
+  await configure(page, { replyDelayMs: 80, model: "OPEN" });
   await page.waitForFunction(() =>
     document
       .querySelector<HTMLElement>("section[data-image-state]")
@@ -783,11 +865,13 @@ test("D0 display staleness between timely delayed captures preserves evidence wh
   await testInfo.attach("D0-index-image-display-clock-metrics.json", {
     body: JSON.stringify(
       {
-        evidence: "PUBLIC_ANALYTIC_CAMERA_FAKE_WORKER_WITH_INTENTIONAL_120MS_REPLY",
+        evidence: "PUBLIC_ANALYTIC_CAMERA_FAKE_WORKER_WITH_INTENTIONAL_80MS_REPLY",
         beforeContrary,
         acceptedUiCaptureCount: captures.length,
         maximumObservedCaptureIntervalMs: Math.max(...intervals),
         acceptedReplyAgesMs: ages,
+        acceptedOriginalPixelAgesMs: originalPixelAges,
+        over150MsOriginalPixelsPaused: true,
         staleDisplayEvents: stale.length,
         contraryPoseExplicitlyPaused: true,
         sameImageGenerationAfterRecovery: generation,
@@ -834,8 +918,7 @@ test("D0 manual image-only hints support mirrored click and natural keyboard whi
   await page.getByRole("button", { name: "Use natural preview", exact: true }).click();
   await page.getByRole("button", { name: "Enable live camera", exact: true }).click();
   await expect.poll(async () => Number(await root(page).getAttribute("data-image-capture-time"))).toBeGreaterThan(0);
-  await page.getByRole("button", { name: "Track visible fingertip", exact: true }).click();
-  const picker = page.getByRole("button", { name: /^Mark visible fingertip in camera/ });
+  const picker = await openManualPicker(page);
   for (let i = 0; i < 7; i++) await picker.press("ArrowRight");
   for (let i = 0; i < 4; i++) await picker.press("ArrowDown");
   const selectedPatch = await page.evaluate(() => {
@@ -921,7 +1004,7 @@ test("D0 manual image-only hints support mirrored click and natural keyboard whi
     .toBeGreaterThan(178);
   await page.screenshot({ path: testInfo.outputPath("D0-image-only-natural-keyboard-hint.png"), fullPage: false });
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.getByRole("button", { name: "Track visible fingertip", exact: true }).click();
+  await openManualPicker(page);
   await page.screenshot({ path: testInfo.outputPath("D0-image-only-mobile-hint-picker.png"), fullPage: false });
   await page.getByRole("button", { name: /^Mark visible fingertip in camera/ }).press("Escape");
   // Border clipping has insufficient patch support; it must abstain honestly.
