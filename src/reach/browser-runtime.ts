@@ -1,8 +1,12 @@
-import { BrowserCameraBroker } from "@/sextant/camera";
-import { BrowserHandAdapter, type HandInferenceBackend } from "@/watchglass/hand-provider";
+import { BrowserCameraBroker, type CameraLease } from "@/sextant/camera";
+import { BrowserExposureAssistance } from "@/sextant/browser-exposure";
+import { browserVisualCapabilities } from "@/sextant/browser-visual-capabilities";
+import { sampleImageSignal, type ImageLumaPlane } from "@/watchglass/image-signal";
+import { BrowserHandAdapter, handModel, type HandInferenceBackend } from "@/watchglass/hand-provider";
 import { ObservationGate, type HandObservation } from "./observation";
 import {
   IndexImageTracker,
+  indexImageAlgorithm,
   indexImageAlgorithmDescriptor,
   type IndexImagePreparedToken,
   type IndexImageObservation,
@@ -12,9 +16,22 @@ import {
   ReachTrackingPacer,
   defaultReachTrackingLimits,
   parseReachTrackingLimits,
+  reachTrackingPacingPolicy,
   type ReachTrackingLimits,
 } from "./tracking-pacer";
 import { selectIndexModelAnchor } from "./hand-detection-authority";
+import {
+  ReachCaptureHealth,
+  defaultReachCaptureHealthPolicy,
+  captureProcessingPressure,
+  type CaptureImageSignal,
+} from "./capture-health";
+import { reachImmutableSafety } from "./runtime-policy";
+import {
+  ReachCaptureAssistance,
+  type CaptureAssistanceAction,
+  type CaptureAssistanceCandidate,
+} from "./capture-assistance";
 export type { IndexImageObservation } from "./index-image-tracker";
 /** Passive, opt-in input for the local development recorder. No identity or lease data. */
 export type RawHandInference = {
@@ -60,6 +77,24 @@ export class ReachBrowserRuntime {
   private indexEnabled = false;
   private pendingIndexHint: IndexHint | null = null;
   private manualIndexSelection = false;
+  private readonly captureHealth = new ReachCaptureHealth();
+  private captureHealthEpoch = 0;
+  private lastUsableCapture = -Infinity;
+  private pendingSignalPlane: (ImageLumaPlane & { capture: number }) | null = null;
+  private diagnosticCapability: ReturnType<typeof browserVisualCapabilities> | null = null;
+  private diagnosticTrack: MediaStreamTrack | null = null;
+  private diagnosticLease: { id: string; generation: number } | null = null;
+  private captureAssistance: ReachCaptureAssistance | null = null;
+  private assistanceTimer: ReturnType<typeof setTimeout> | undefined;
+  private assistanceTick = () => {};
+  private stopCaptureAssistance = () => {};
+  private cancelCaptureAssistance = () => {};
+  private assistanceTransitioning = false;
+  private assistanceFailure: string | null = null;
+  private assistanceCostMs = 0;
+  private diagnosticMode = 0;
+  private diagnosticNotBefore = -Infinity;
+  private diagnosticSourceBinding: string | null = null;
   constructor(
     private video: HTMLVideoElement,
     private observe: (o: HandObservation) => void,
@@ -89,9 +124,13 @@ export class ReachBrowserRuntime {
     )
       return false;
     // Use the next actual capture, never a new hint on an older in-flight image.
+    this.cancelCaptureAssistance();
     if (this.preparedImage) this.preparedImage.tracker.discard(this.preparedImage.token);
     this.preparedImage = null;
     this.manualIndexSelection = true;
+    this.pendingSignalPlane = null;
+    this.captureHealth.reset();
+    ++this.captureHealthEpoch;
     this.imageTracker?.requestManualSelection();
     this.pendingIndexHint = { point: { ...point }, requestedAt: performance.now(), attemptedCapture: null };
     return true;
@@ -102,15 +141,329 @@ export class ReachBrowserRuntime {
   /** Explicit return to model seeding, never a reinterpretation of the mirror control. */
   clearIndexSelection() {
     if (!this.active || !this.indexEnabled) return false;
+    this.cancelCaptureAssistance();
     if (this.preparedImage) this.preparedImage.tracker.discard(this.preparedImage.token);
     this.preparedImage = null;
     this.pendingIndexHint = null;
     this.manualIndexSelection = false;
+    this.pendingSignalPlane = null;
+    this.captureHealth.reset();
+    ++this.captureHealthEpoch;
     this.imageTracker?.reset();
     return true;
   }
   trackingPacing() {
     return this.pacer?.diagnostics ?? null;
+  }
+  /** Local metadata only. Queries the authorized track once at acquisition, never from this getter. */
+  captureDiagnostics() {
+    const cached = this.diagnosticCapability;
+    const leaseValid = this.diagnosticLeaseCurrent();
+    const valid = leaseValid && cached?.currentAuthorizedLease;
+    if (!leaseValid) this.captureHealth.reset();
+    return {
+      capabilities:
+        valid && cached
+          ? {
+              ...cached,
+              descriptor: { ...cached.descriptor, controls: { ...cached.descriptor.controls } },
+              negotiated: { ...cached.negotiated, format: { ...cached.negotiated.format } },
+            }
+          : null,
+      health: this.captureHealth.diagnose(performance.now()),
+      assistance: (leaseValid || this.assistanceFailure) && this.captureAssistance
+        ? {
+            ...this.captureAssistance.snapshot(),
+            reason: this.assistanceFailure ?? this.captureAssistance.snapshot().reason,
+            transitioning: this.assistanceTransitioning,
+            profile: "COLOR_RADIOMETRIC_COMPATIBILITY_NOT_PHYSICAL_QUALIFICATION" as const,
+          }
+        : null,
+    };
+  }
+  private diagnosticLeaseCurrent() {
+    const current = this.camera.snapshot();
+    return (
+      this.active &&
+      current.availability === "READY" &&
+      current.permission === "GRANTED" &&
+      current.leaseId === this.diagnosticLease?.id &&
+      current.generation === this.diagnosticLease?.generation &&
+      this.diagnosticTrack?.readyState === "live"
+    );
+  }
+  private captureHealthContext(sourceBinding: string) {
+    return JSON.stringify([
+      sourceBinding,
+      this.indexEnabled ? indexImageAlgorithm.algorithmDigest : "MODEL",
+      this.manualIndexSelection ? "MANUAL" : "AUTOMATIC",
+      this.captureHealthEpoch,
+      this.diagnosticMode,
+    ]);
+  }
+  private installCaptureAssistance(lease: CameraLease, generation: number, backend: () => HandInferenceBackend | null) {
+    const planner = new ReachCaptureAssistance(),
+      exposure = new BrowserExposureAssistance(
+        this.camera,
+        lease,
+        () => this.active && generation === this.generation && document.visibilityState === "visible",
+      );
+    this.captureAssistance = planner;
+    this.assistanceFailure = null;
+    this.assistanceTransitioning = false;
+    type Attempt = {
+      id: number;
+      binding: string;
+      controller: AbortController;
+      started: number;
+      applied: number | null;
+      resource: { restore(): Promise<void> } | null;
+      promise: Promise<{ restore(): Promise<void> }> | null;
+    };
+    let active: Attempt | null = null,
+      watchdog: ReturnType<typeof setTimeout> | undefined,
+      transition = 0;
+    const current = () =>
+      this.active &&
+      generation === this.generation &&
+      this.captureAssistance === planner &&
+      this.diagnosticLeaseCurrent();
+    const timed = (work: () => void) => {
+      const at = performance.now();
+      try {
+        work();
+      } finally {
+        if (current()) this.assistanceCostMs += Math.max(0, performance.now() - at);
+      }
+    };
+    const clearWatchdog = () => {
+      if (watchdog !== undefined) {
+        clearTimeout(watchdog);
+        if (this.assistanceTimer === watchdog) this.assistanceTimer = undefined;
+        watchdog = undefined;
+      }
+    };
+    const newMode = () => {
+      this.captureHealth.reset();
+      ++this.diagnosticMode;
+      this.diagnosticNotBefore = performance.now();
+    };
+    const candidates = (): CaptureAssistanceCandidate[] =>
+      active !== null || (!this.assistanceTransitioning && exposure.available())
+        ? [
+            {
+              id: "current-color-exposure",
+              kind: "EXPOSURE",
+              access: current() ? "AVAILABLE" : "UNKNOWN",
+              authorized: current(),
+              qualifiedProfile:
+                backend() === "CPU_WASM" && this.diagnosticSourceBinding
+                  ? JSON.stringify([
+                      "COLOR_RADIOMETRIC_COMPATIBILITY",
+                      this.diagnosticSourceBinding,
+                      handModel.modelDigest,
+                      "CPU_WASM",
+                    ])
+                  : null,
+              preservesPrimaryGeometry: true,
+              work: "NEUTRAL",
+              addresses: ["LIGHTING_OR_CONTRAST", "LOW_SUBJECT_SIGNAL"],
+            },
+          ]
+        : [];
+    const arm = () => {
+      clearWatchdog();
+      if (!current()) return;
+      const deadline = planner.snapshot().deadlineMs,
+        now = performance.now();
+      if (deadline === null) return;
+      watchdog = setTimeout(
+        () => {
+          const fired = watchdog;
+          watchdog = undefined;
+          if (this.assistanceTimer === fired) this.assistanceTimer = undefined;
+          if (generation === this.generation && this.captureAssistance === planner) {
+            if (current()) this.assistanceTick();
+            else this.stopCaptureAssistance();
+          }
+        },
+        Math.max(0, deadline - now),
+      );
+      this.assistanceTimer = watchdog;
+    };
+    const restoreAttempt = (attempt: Attempt) => {
+      const token = ++transition;
+      attempt.controller.abort();
+      this.assistanceTransitioning = true;
+      this.diagnosticNotBefore = Infinity;
+      const restore = attempt.resource
+        ? attempt.resource.restore()
+        : attempt.promise?.then(
+            (resource) => resource.restore(),
+            (error) => {
+              if (String(error).includes("RESTORE_")) throw error;
+            },
+          );
+      void Promise.resolve(restore).then(
+        () => {
+          if (!current() || token !== transition) return;
+          timed(() => {
+            this.assistanceTransitioning = false;
+            newMode();
+          });
+        },
+        () => {
+          if (!current() || token !== transition) return;
+          this.assistanceTransitioning = false;
+          this.assistanceFailure = "EXPOSURE_RESTORE_FAILED";
+          // Do not claim a new baseline if the driver's restoration was not confirmed.
+          this.stop("CAPTURE_CONTROL_RESTORE_FAILED");
+        },
+      );
+    };
+    const execute = (actions: CaptureAssistanceAction[]) => {
+      for (const action of actions) {
+        if (action.type === "RELEASE") {
+          if (active?.id === action.requestId && active.binding === action.context) {
+            const previous = active;
+            active = null;
+            clearWatchdog();
+            restoreAttempt(previous);
+          }
+          continue;
+        }
+        if (!current() || active || action.candidate.kind !== "EXPOSURE" || this.assistanceTransitioning) continue;
+        const attempt: Attempt = {
+          id: action.requestId,
+          binding: action.context,
+          controller: new AbortController(),
+          started: performance.now(),
+          applied: null,
+          resource: null,
+          promise: null,
+        };
+        active = attempt;
+        this.assistanceFailure = null;
+        this.assistanceTransitioning = true;
+        this.diagnosticNotBefore = Infinity;
+        this.captureHealth.reset();
+        attempt.promise = exposure.start(attempt.controller.signal);
+        void attempt.promise.then(
+          (resource) => {
+            if (!current() || active !== attempt || attempt.controller.signal.aborted) {
+              void resource.restore().catch(() => {});
+              return;
+            }
+            timed(() => {
+              attempt.resource = resource;
+              attempt.applied = performance.now();
+              this.assistanceTransitioning = false;
+              newMode();
+              execute(
+                planner.acknowledge(
+                  attempt.id,
+                  attempt.binding,
+                  this.captureHealthContext(attempt.binding),
+                  true,
+                  performance.now(),
+                ),
+              );
+              arm();
+            });
+          },
+          () => {
+            if (!current() || active !== attempt) return;
+            timed(() => {
+              this.assistanceFailure = "EXPOSURE_CONTROL_FAILED";
+              execute(planner.acknowledge(attempt.id, attempt.binding, "", false, performance.now()));
+              arm();
+            });
+          },
+        );
+      }
+    };
+    this.assistanceTick = () => {
+      if (!current()) return;
+      timed(() => {
+        const binding = this.diagnosticSourceBinding ?? "";
+        execute(
+          planner.update(
+            {
+              binding,
+              enabled: this.active,
+              foreground: document.visibilityState === "visible",
+              authorized: current(),
+            },
+            this.captureHealth.diagnose(performance.now()),
+            candidates(),
+            performance.now(),
+          ),
+        );
+        arm();
+      });
+    };
+    this.cancelCaptureAssistance = () => {
+      if (!current()) return;
+      timed(() => {
+        execute(
+          planner.update(
+            { binding: this.diagnosticSourceBinding ?? "", enabled: false, foreground: true, authorized: true },
+            this.captureHealth.diagnose(performance.now()),
+            [],
+            performance.now(),
+          ),
+        );
+        clearWatchdog();
+      });
+    };
+    this.stopCaptureAssistance = () => {
+      clearWatchdog();
+      const previous = active;
+      active = null;
+      ++transition;
+      previous?.controller.abort();
+      try {
+        planner.update(
+          { binding: this.diagnosticSourceBinding ?? "", enabled: false, foreground: false, authorized: false },
+          this.captureHealth.diagnose(performance.now()),
+          [],
+          performance.now(),
+        );
+      } catch {
+        /* Cleanup remains independent of diagnostic clock errors. */
+      }
+      void previous?.resource?.restore().catch(() => {});
+      void exposure.release().catch(() => {});
+      this.assistanceTransitioning = false;
+    };
+  }
+  private measureCaptureSignal(
+    plane: ImageLumaPlane,
+    point: { x: number; y: number } | null,
+  ): CaptureImageSignal | null {
+    const radius = indexImageAlgorithmDescriptor.policy.radius;
+    const x = point ? Math.max(0, Math.floor(point.x * (plane.width - 1)) - radius) : 0;
+    const y = point ? Math.max(0, Math.floor(point.y * (plane.height - 1)) - radius) : 0;
+    const measurement = sampleImageSignal(
+      plane,
+      point
+        ? {
+            kind: "ROI",
+            x,
+            y,
+            width: Math.min(plane.width - x, radius * 2 + 1),
+            height: Math.min(plane.height - y, radius * 2 + 1),
+          }
+        : { kind: "WHOLE_FRAME" },
+    );
+    if (measurement.status !== "MEASURED" || measurement.meanAbsoluteLaplacian === null) return null;
+    const unit = (n: number) => Math.max(0, Math.min(1, n));
+    return {
+      scope: point ? "SUBJECT_REGION" : "WHOLE_FRAME",
+      meanLuminance: unit(measurement.meanLuma / 255),
+      luminanceDeviation: unit(measurement.contrastStandardDeviation / 127.5),
+      detail: unit(measurement.meanAbsoluteLaplacian / 1020),
+    };
   }
   /** Lab phase only: active TRAINING/VALIDATION collection, excluding pauses. */
   setCalibrationCollecting(collecting: boolean) {
@@ -123,8 +476,15 @@ export class ReachBrowserRuntime {
     this.trackingLimits = checked;
   }
   setIndexTrackingEnabled(enabled: boolean) {
-    this.indexEnabled = !!this.indexObserve && enabled;
+    const next = !!this.indexObserve && enabled;
+    if (this.indexEnabled !== next) {
+      this.cancelCaptureAssistance();
+      this.captureHealth.reset();
+      ++this.captureHealthEpoch;
+    }
+    this.indexEnabled = next;
     if (!this.indexEnabled) {
+      this.pendingSignalPlane = null;
       this.imageTracker?.reset();
       this.imageTracker = null;
       this.imageCanvas = null;
@@ -201,9 +561,24 @@ export class ReachBrowserRuntime {
         cameraFrameVersion: lease.generation,
         mirrorTransform: mirror ? ("PREVIEW_X" as const) : ("NONE" as const),
       };
+      this.diagnosticLease = { id: lease.id, generation: lease.generation };
+      this.diagnosticTrack = lease.stream.getVideoTracks()[0] ?? null;
+      try {
+        this.diagnosticCapability = browserVisualCapabilities(this.camera.snapshot(), this.diagnosticTrack, {
+          providerId: "sextant.browser-video",
+          providerVersion: "1",
+          ephemeralSourceId: lease.id,
+          ephemeralGroupId: null,
+          leaseId: lease.id,
+          leaseGeneration: lease.generation,
+        });
+      } catch {
+        this.diagnosticCapability = null;
+      }
       let adapter: BrowserHandAdapter | null = null;
       let backend: HandInferenceBackend | null = null;
       let legacyBackend = false;
+      this.installCaptureAssistance(lease, generation, () => backend);
       const gate = new ObservationGate({ ...binding, orientation: 0 });
       const imageGate = this.indexObserve ? new IndexImageObservationGate({ ...binding, orientation: 0 }) : null;
       const worker = new Worker("/reach/hand-worker.js");
@@ -343,10 +718,12 @@ export class ReachBrowserRuntime {
                     hint?.point,
                   );
                   this.preparedImage = { token, tracker: this.imageTracker, hint };
+                  this.pendingSignalPlane = { data: gray, ...imageSize, rowStrideBytes: imageSize.width, capture };
                 }
               } catch {
                 this.imageTracker.discard();
                 this.preparedImage = null;
+                this.pendingSignalPlane = null;
               }
               imageCaptureCost = performance.now() - imageStarted;
             }
@@ -450,6 +827,14 @@ export class ReachBrowserRuntime {
             lastMetricCapture = data.capture;
           }
           const prepared = this.preparedImage;
+          let modelAnchor: ReturnType<typeof selectIndexModelAnchor> = null;
+          let modelSelectionFailed = false;
+          try {
+            if (observation) modelAnchor = selectIndexModelAnchor(observation);
+          } catch {
+            modelSelectionFailed = true;
+          }
+          let imageObservation: IndexImageObservation | null = null;
           if (this.indexObserve && this.indexEnabled && this.pendingImageCapture !== null) {
             let imageAccepted = false;
             try {
@@ -458,6 +843,7 @@ export class ReachBrowserRuntime {
               // as a fresh response to an explicit selection.
               if (
                 observation &&
+                !modelSelectionFailed &&
                 this.imageTracker &&
                 imageGate &&
                 prepared &&
@@ -467,8 +853,7 @@ export class ReachBrowserRuntime {
                 received - prepared.token.capture <= 150 &&
                 prepared.hint === this.pendingIndexHint
               ) {
-                const model = selectIndexModelAnchor(observation);
-                const tracked = this.imageTracker.complete(prepared.token, model, () => performance.now());
+                const tracked = this.imageTracker.complete(prepared.token, modelAnchor, () => performance.now());
                 // Processing completion is current; capture remains the original
                 // bitmap time. Gate independently enforces the150ms age limit.
                 const accepted = imageGate.accept(
@@ -476,6 +861,7 @@ export class ReachBrowserRuntime {
                   performance.now(),
                 );
                 imageAccepted = true;
+                imageObservation = accepted;
                 try {
                   this.indexObserve(accepted);
                 } catch {
@@ -494,13 +880,94 @@ export class ReachBrowserRuntime {
             this.preparedImage = null;
             this.pendingImageCapture = null;
           }
+          const signalPlane = this.pendingSignalPlane;
+          this.pendingSignalPlane = null;
+          let imageSignal: CaptureImageSignal | null = null;
+          try {
+            if (
+              observation &&
+              (!this.indexEnabled || imageObservation !== null) &&
+              signalPlane &&
+              signalPlane.capture === data.capture &&
+              data.capture === lastCapture &&
+              performance.now() - data.capture <= reachImmutableSafety.maximumObservationAgeMs
+            ) {
+              const point = imageObservation?.matchedPoint ?? imageObservation?.point ?? modelAnchor?.point ?? null;
+              imageSignal = this.measureCaptureSignal(signalPlane, point);
+            }
+          } catch {
+            /* Optional measured signal cannot interrupt the hand/image pipeline. */
+          }
           const completed = performance.now();
-          if (data.capture === lastCapture)
+          if (data.capture === lastCapture) {
             pacer.recordCompleted(
               data.capture,
               completed,
-              Math.min(completed - data.capture, imageCaptureCost + completed - resultStarted),
+              Math.min(completed - data.capture, imageCaptureCost + completed - resultStarted + this.assistanceCostMs),
             );
+            this.assistanceCostMs = 0;
+          }
+          // Diagnostic evidence cannot authorize capture, pointer output or calibration.
+          try {
+            if (!this.diagnosticLeaseCurrent()) this.captureHealth.reset();
+            else if (data.capture === lastCapture && data.capture >= this.diagnosticNotBefore) {
+              const reason = imageObservation?.reason ?? "";
+              const identityConflict =
+                reason.includes("CONFLICT") ||
+                reason.includes("AMBIGUOUS") ||
+                modelAnchor?.authority === "AMBIGUOUS" ||
+                !!observation?.hands.some((h) => h.continuity === "AMBIGUOUS");
+              const contraryGesture =
+                reason.includes("CONTRARY") ||
+                (!identityConflict && !!modelAnchor?.contrary && imageObservation?.modelAgreement !== "DISAGREE");
+              const freshImageContinuity = !!(imageObservation?.point || imageObservation?.matchedPoint);
+              const usablePoint = this.indexEnabled ? !!imageObservation?.point : !!modelAnchor?.pointing;
+              if (observation && usablePoint && !contraryGesture && !identityConflict)
+                this.lastUsableCapture = data.capture;
+              const diagnostics = pacer.diagnostics;
+              const measuredPressure = captureProcessingPressure(
+                diagnostics,
+                reachTrackingPacingPolicy.timerToleranceMs,
+              );
+              const sourceBinding = JSON.stringify([
+                handModel.providerId,
+                handModel.providerVersion,
+                handModel.modelId,
+                handModel.modelVersion,
+                handModel.modelDigest,
+                backend,
+                generation,
+                lease.id,
+                lease.generation,
+                width,
+                height,
+                binding.mirrorTransform,
+                0,
+              ]);
+              this.diagnosticSourceBinding = sourceBinding;
+              this.captureHealth.record({
+                sourceBinding,
+                context: this.captureHealthContext(sourceBinding),
+                captureMs: data.capture,
+                receivedMs: performance.now(),
+                accepted: !!observation,
+                trackingExpected:
+                  this.calibrationCollecting ||
+                  this.manualIndexSelection ||
+                  (!contraryGesture && completed - this.lastUsableCapture <= defaultReachCaptureHealthPolicy.windowMs),
+                usablePoint,
+                modelHandPresent: !!observation?.hands.length,
+                freshImageContinuity,
+                identityConflict,
+                contraryGesture,
+                processingPressure: measuredPressure,
+                imageSignal,
+              });
+            }
+            this.assistanceTick();
+          } catch {
+            /* Read-only diagnostics cannot interrupt the existing pipeline. */
+          }
           schedule();
         } else
           this.stop(
@@ -525,6 +992,12 @@ export class ReachBrowserRuntime {
   stop(reason = "DISABLED") {
     this.active = false;
     ++this.generation;
+    this.stopCaptureAssistance();
+    this.stopCaptureAssistance = () => {};
+    this.cancelCaptureAssistance = () => {};
+    this.assistanceTick = () => {};
+    clearTimeout(this.assistanceTimer);
+    this.assistanceTimer = undefined;
     clearTimeout(this.timer);
     clearTimeout(this.startup);
     this.timer = undefined;
@@ -544,6 +1017,17 @@ export class ReachBrowserRuntime {
     this.pendingImageCapture = null;
     this.pendingIndexHint = null;
     this.manualIndexSelection = false;
+    this.pendingSignalPlane = null;
+    this.captureHealth.reset();
+    ++this.captureHealthEpoch;
+    this.lastUsableCapture = -Infinity;
+    this.diagnosticCapability = null;
+    this.diagnosticTrack = null;
+    this.diagnosticLease = null;
+    this.assistanceCostMs = 0;
+    this.diagnosticMode = 0;
+    this.diagnosticNotBefore = -Infinity;
+    this.diagnosticSourceBinding = null;
     this.pacer = null;
     this.video.pause();
     this.video.srcObject = null;
@@ -555,7 +1039,10 @@ export class ReachBrowserRuntime {
     return {
       tracks: this.camera.ownedTracks,
       workers: this.worker ? 1 : 0,
-      timers: Number(this.timer !== undefined) + Number(this.startup !== undefined),
+      timers:
+        Number(this.timer !== undefined) +
+        Number(this.startup !== undefined) +
+        Number(this.assistanceTimer !== undefined),
     };
   }
 }

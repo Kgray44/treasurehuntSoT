@@ -17,3 +17,5 @@ export * from "./field-provider";
 export * from "./media-capability";
 export * from "./nearby";
 export * from "./requirements";
+export * from "./visual-capture";
+export * from "./browser-visual-capabilities";

@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { defaultReachRuntimePolicy } from "./runtime-policy";
 import type { ReachInferenceMetrics } from "./browser-runtime";
 import { indexImageAlgorithm, type IndexImageObservation } from "./index-image-tracker";
+import { SampleWindow } from "./sample-window";
 type FixtureRuntime = {
   start: ReturnType<typeof vi.fn>;
   setTrackingLimits: ReturnType<typeof vi.fn>;
@@ -11,6 +12,7 @@ type FixtureRuntime = {
   clearIndexSelection: ReturnType<typeof vi.fn>;
   image: (observation: unknown) => void;
   metrics: (packet: ReachInferenceMetrics) => void;
+  status: (status: string) => void;
 };
 const fixture = vi.hoisted(() => ({
   policy: {} as Record<string, unknown>,
@@ -29,6 +31,7 @@ vi.mock("./browser-runtime", () => ({
     clearIndexSelection = vi.fn(() => true);
     resources = () => ({ workers: 1, tracks: 1, timers: 0 });
     trackingPacing = () => ({ maximumHz: 15, targetHz: 15, calibrationCollecting: false, focused: true });
+    captureDiagnostics = () => null;
     constructor(
       _video: unknown,
       public observe: (observation: unknown) => void,
@@ -66,6 +69,33 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 describe("mandatory Reach policy in the actual Laboratory", () => {
+  it("keeps setup operable during startup, explains rejection and never queues an automatic start", () => {
+    const samples = vi.spyOn(SampleWindow.prototype, "push");
+    render(<ReachLaboratory />);
+    const runtime = fixture.runtimes[0];
+    runtime.start.mockImplementationOnce(async () => runtime.status("MODEL_STARTING"));
+    fireEvent.click(screen.getByRole("button", { name: "Enable live camera" }));
+    const setup = screen.getByRole("button", { name: "Set up relative movement" });
+    expect(setup).toBeEnabled();
+    act(() => setup.click());
+    expect(document.querySelector("[data-step=PREPARE]")).not.toBeNull();
+    expect(
+      screen.getByText("Wait for the camera and hand model to finish starting, then request setup again."),
+    ).toBeVisible();
+    act(() => runtime.status("READY"));
+    expect(document.querySelector("[data-step=PREPARE]")).not.toBeNull();
+    act(() => setup.click());
+    expect(document.querySelector("[data-step=TRAINING]")).not.toBeNull();
+    expect(samples).not.toHaveBeenCalled();
+  });
+  it("keeps a persistent explanation when camera-control restoration really invalidates a setup", () => {
+    render(<ReachLaboratory />);
+    fireEvent.click(screen.getByRole("button", { name: "Enable live camera" }));
+    fireEvent.click(screen.getByRole("button", { name: "Set up relative movement" }));
+    act(() => fixture.runtimes[0].status("CAPTURE_CONTROL_RESTORE_FAILED"));
+    expect(document.querySelector("[data-step=PREPARE]")).not.toBeNull();
+    expect(screen.getByRole("alert")).toHaveTextContent("Camera controls could not be restored");
+  });
   it("keeps manual selection explicit through a failed match and offers an intentional return to automatic selection", () => {
     render(<ReachLaboratory />);
     fireEvent.click(screen.getByRole("button", { name: "Enable live camera" }));

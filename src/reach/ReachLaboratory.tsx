@@ -5,6 +5,7 @@ import { motion as animated } from "motion/react";
 import { useOptionalMotionPolicyContext } from "@/animation/motion/MotionPolicyContext";
 import { assessHand } from "@/watchglass/hand-posture";
 import { ReachBrowserRuntime } from "./browser-runtime";
+import type { CaptureHealthCause, CaptureHealthDiagnosis } from "./capture-health";
 import { useReachRuntimePolicy } from "./runtime-policy-client";
 import { ReachTelemetryCollector } from "./telemetry-client";
 import type { ReachTelemetryReadiness } from "./telemetry";
@@ -80,7 +81,35 @@ const cameraMessages: Record<string, string> = {
   CAMERA_FRAME_TIMEOUT: "The camera is not sending video",
   FRAME_CHANGED_RECALIBRATE: "Camera size changed",
   STALE_OR_INVALID_OBSERVATION: "Waiting for fresh tracking",
+  CAPTURE_CONTROL_RESTORE_FAILED: "Camera stopped because its controls could not be restored",
 };
+const captureHealthMessages: Record<CaptureHealthDiagnosis["state"], string> = {
+  WARMING: "Gathering signal history",
+  NO_POINTING_INTENT: "No pointing attempt established",
+  HEALTHY: "Tracking signal is steady",
+  INTERRUPTED: "Waiting for current pointing evidence",
+  DEGRADED: "Tracking signal is inconsistent",
+  RECOVERING: "Tracking signal is recovering",
+};
+const captureCauseMessages: Record<CaptureHealthCause, string> = {
+  STALE_CAPTURE: "Frames are arriving too late",
+  REJECTED_OBSERVATION: "Tracking observations were rejected",
+  PROCESSING_PRESSURE: "Tracking work is running behind",
+  IDENTITY_CONFLICT: "Hand and fingertip identity disagree",
+  MODEL_ACQUISITION_GAP: "Image tracking continues while the hand model is missing",
+  LOW_SUBJECT_SIGNAL: "The selected region is dark or has little contrast",
+  LIGHTING_OR_CONTRAST: "Lighting or contrast may be limiting recognition",
+  DETAIL_LOSS_OR_MOTION: "Motion, texture or image detail may be limiting recognition",
+  UNKNOWN: "The available evidence does not establish a cause",
+};
+const captureAssistanceMessages = {
+  BASELINE: "Regular camera",
+  REQUESTING: "Starting an exposure trial",
+  TRIAL: "Measuring an exposure trial",
+  ASSISTED: "Camera exposure assistance active",
+  BACKOFF: "Regular camera · retry delayed",
+  STOPPED: "Stopped",
+} as const;
 const percent = (value: number | undefined | null) => (value == null ? "Not measured" : `${(value * 100).toFixed(2)}%`);
 const checkedError = (value: number | undefined | null, limit = 0.03) =>
   value != null && value > limit && percent(value) === percent(limit)
@@ -234,6 +263,9 @@ export function ReachLaboratory({
     smoothedMainThreadMs: number | null;
     smoothedTimerLatenessMs: number | null;
   } | null>(null);
+  const [captureDiagnostics, setCaptureDiagnostics] = useState<ReturnType<
+    ReachBrowserRuntime["captureDiagnostics"]
+  > | null>(null);
   const trialEntryReady = useCallback(
     () =>
       canOpenReachTrial({
@@ -779,7 +811,11 @@ export function ReachLaboratory({
           setReadiness(initialReadiness);
           setEntryReady(false);
           setHands([]);
-          invalidate();
+          invalidate(
+            state === "CAPTURE_CONTROL_RESTORE_FAILED"
+              ? "Camera controls could not be restored. The camera stopped; enable it again to begin a fresh setup."
+              : undefined,
+          );
           if (state !== "DISABLED") {
             changeSource("OFF");
             advance("PREPARE");
@@ -890,6 +926,7 @@ export function ReachLaboratory({
     const diagnostics = setInterval(() => {
       setMetrics(timingSnapshot(timing.current));
       setPacing(runtime.current?.trackingPacing() ?? null);
+      setCaptureDiagnostics(runtime.current?.captureDiagnostics() ?? null);
     }, 1000);
     let lastActivity = performance.now();
     const activity = setInterval(() => {
@@ -1032,7 +1069,7 @@ export function ReachLaboratory({
   const begin = (stage: Trial["stage"]) => {
     if (policyRef.current.status !== "READY") return;
     if (stage === "TRAINING" && !trialEntryReady()) {
-      setMessage(readyRef.current.guidance);
+      setMessage("Wait for the camera and hand model to finish starting, then request setup again.");
       return;
     }
     if (stage === "VALIDATION" && !calibrationRef.current) return;
@@ -1260,7 +1297,15 @@ export function ReachLaboratory({
           <h1 id="reach-heading">Find your point.</h1>
           <p className={styles.intro}>See your hand. Find a comfortable rhythm. Explore a new way to point.</p>
         </div>
-        <Link href={returnHref} onClick={stop} className={styles.return}>
+        <Link
+          href={returnHref}
+          onClick={stop}
+          scroll={returnHref === "/devices/pair" ? false : undefined}
+          onNavigate={
+            returnHref === "/devices/pair" ? () => window.scrollTo({ top: 0, left: 0, behavior: "instant" }) : undefined
+          }
+          className={styles.return}
+        >
           ← {returnLabel}
         </Link>
         {source !== "OFF" && <button onClick={stop}>Stop session</button>}
@@ -1522,7 +1567,14 @@ export function ReachLaboratory({
             )}
           </div>
         )}
-        <div ref={plane} tabIndex={-1} className={styles.plane} hidden={!showPlane} aria-label="Pointing practice area">
+        <div
+          ref={plane}
+          role="group"
+          tabIndex={-1}
+          className={styles.plane}
+          hidden={!showPlane}
+          aria-label="Pointing practice area"
+        >
           <div className={styles.planeHeader}>
             <span>
               {step === "PLAYGROUND"
@@ -1594,7 +1646,7 @@ export function ReachLaboratory({
                   : `${paused ? "Paused" : readiness.eligible ? progress : readiness.guidance} · ${Math.round((acquisition?.progress ?? 0) * 100)}%`}
           </div>
         </div>
-        <aside className={styles.guide} aria-label="Reach guidance">
+        <section className={styles.guide} aria-label="Reach guidance">
           <p className={styles.eyebrow}>
             {training
               ? `${step === "TRAINING" ? "CALIBRATION" : "INDEPENDENT CHECK"} / ${completed + 1} OF ${total}`
@@ -1777,7 +1829,7 @@ export function ReachLaboratory({
                       </span>
                     </label>
                   </fieldset>
-                  <button className={styles.primary} disabled={!entryReady} onClick={() => begin("TRAINING")}>
+                  <button className={styles.primary} onClick={() => begin("TRAINING")}>
                     {pointingMode === "ABSOLUTE" ? "Begin nine-point calibration" : "Set up relative movement"}
                   </button>
                   {entryReady && (
@@ -1785,7 +1837,7 @@ export function ReachLaboratory({
                   )}
                   {!entryReady && (
                     <p className={styles.hint}>
-                      Waiting for the camera and hand model to start. Tracking can settle after setup begins.
+                      Setup checks the camera and model when requested. Tracking can settle after setup begins.
                     </p>
                   )}
                 </>
@@ -2047,7 +2099,71 @@ export function ReachLaboratory({
                   <dt>Canvas update interval p95</dt>
                   <dd>{metrics.visualization?.toFixed(1) ?? "—"} ms</dd>
                 </div>
+                <div>
+                  <dt>Capture signal history</dt>
+                  <dd>
+                    {source === "LIVE" && captureDiagnostics
+                      ? captureHealthMessages[captureDiagnostics.health.state]
+                      : "Camera off"}
+                  </dd>
+                </div>
+                <div>
+                  <dt>Usable pointing evidence</dt>
+                  <dd>{source === "LIVE" ? percent(captureDiagnostics?.health.usableFraction) : "Not measured"}</dd>
+                </div>
+                <div>
+                  <dt>Negotiated camera image</dt>
+                  <dd>
+                    {source === "LIVE" &&
+                    captureDiagnostics?.capabilities?.negotiated.width &&
+                    captureDiagnostics.capabilities.negotiated.height
+                      ? `${captureDiagnostics.capabilities.negotiated.width} × ${captureDiagnostics.capabilities.negotiated.height}`
+                      : "Not reported"}
+                  </dd>
+                </div>
+                <div>
+                  <dt>Exposure controls at camera start</dt>
+                  <dd>
+                    {source === "LIVE"
+                      ? (captureDiagnostics?.capabilities?.descriptor.controls.exposure.toLowerCase() ?? "unknown")
+                      : "Not queried"}
+                  </dd>
+                </div>
+                <div>
+                  <dt>Automatic capture assistance</dt>
+                  <dd>
+                    {source === "LIVE" && captureDiagnostics?.assistance
+                      ? captureDiagnostics.assistance.transitioning
+                        ? "Restoring or adjusting camera exposure"
+                        : captureAssistanceMessages[captureDiagnostics.assistance.state]
+                      : "Not active"}
+                  </dd>
+                </div>
               </dl>
+              {source === "LIVE" && captureDiagnostics && (
+                <>
+                  <p>
+                    Measured signal:{" "}
+                    {captureDiagnostics.health.measured.map((cause) => captureCauseMessages[cause]).join("; ") ||
+                      "No sustained issue established"}
+                    .
+                    {captureDiagnostics.health.hypotheses.length > 0 && (
+                      <>
+                        {" "}
+                        Possible explanation:{" "}
+                        {captureDiagnostics.health.hypotheses.map((cause) => captureCauseMessages[cause]).join("; ")}.
+                      </>
+                    )}{" "}
+                    This history describes tracking evidence, not physical pointing accuracy. Brief interruptions keep
+                    saved targets.
+                  </p>
+                  <p>
+                    A regular camera is the baseline. Extra sensors are optional. This browser session has not
+                    established an infrared or depth capture path; that does not establish whether the device contains
+                    those sensors. Camera capabilities are read from the current authorized stream.
+                  </p>
+                </>
+              )}
               <p>
                 Software capture begins at frame bitmap acquisition. Canvas submission ends at drawing commands; this
                 excludes sensor exposure, compositor presentation and display scanout. Synthetic timing is not inference
@@ -2116,7 +2232,7 @@ export function ReachLaboratory({
               </ul>
             </div>
           </details>
-        </aside>
+        </section>
       </div>
       {source === "DEMO" && (
         <details className={styles.demoControls} open>

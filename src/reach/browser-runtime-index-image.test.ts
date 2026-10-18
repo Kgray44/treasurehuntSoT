@@ -5,6 +5,8 @@ import type { HandResult } from "@/watchglass/hand-provider";
 import { pointingPose } from "../../tests/e2e/fixtures/reach/pointing-poses";
 import { IndexImageTracker } from "./index-image-tracker";
 import { IndexImageObservationGate } from "./index-image-observation";
+import { ReachCaptureHealth } from "./capture-health";
+import * as imageSignal from "@/watchglass/image-signal";
 
 type Bitmap = { rgba: Uint8ClampedArray; close: ReturnType<typeof vi.fn> };
 type FrameMessage = { type: "FRAME"; generation: number; capture: number; bitmap: Bitmap };
@@ -39,6 +41,7 @@ function setup(
     imageFailure?: "DRAW" | "READBACK";
     calibrationCollecting?: boolean;
     metricsThrows?: boolean;
+    exposureControls?: boolean;
   } = {},
 ) {
   vi.useFakeTimers();
@@ -147,8 +150,35 @@ function setup(
       }
     },
   );
+  const exposureSettings = { width: 320, height: 240, frameRate: 30, exposureCompensation: 0 };
+  const originalExposureConstraint: MediaTrackConstraintSet & { exposureCompensation: number } = {
+    exposureCompensation: 0,
+  };
+  const applySettings = (input: MediaTrackConstraints) => {
+    for (const set of input.advanced ?? [])
+      for (const [key, value] of Object.entries(set))
+        if (key === "exposureCompensation") exposureSettings.exposureCompensation = Number(value);
+  };
   const track = {
+    kind: "video",
     readyState: "live",
+    getCapabilities: vi.fn(() => ({
+      exposureMode: ["continuous"],
+      torch: true,
+      ...(options.exposureControls ? { exposureCompensation: { min: -4, max: 4, step: 0.5 } } : {}),
+    })),
+    getSettings: vi.fn(() => ({ ...exposureSettings, deviceId: "never-export-device-id" })),
+    getConstraints: options.exposureControls
+      ? vi.fn(() => ({
+          width: { ideal: 320 },
+          height: { ideal: 240 },
+          frameRate: { max: 30 },
+          advanced: [originalExposureConstraint],
+        }))
+      : undefined,
+    applyConstraints: options.exposureControls
+      ? vi.fn(async (input: MediaTrackConstraints) => applySettings(input))
+      : undefined,
     stop: vi.fn(() => {
       track.readyState = "ended";
     }),
@@ -191,6 +221,9 @@ function setup(
     metrics,
     status,
     track,
+    media,
+    exposureSettings,
+    applySettings,
     bitmap,
     drawn,
     contexts,
@@ -246,6 +279,214 @@ function setup(
 }
 
 describe("runtime image source integration", () => {
+  it("diagnoses the exact existing bitmap gray plane without another readback, queue or repeated capability query", async () => {
+    const sampled = vi.spyOn(imageSignal, "sampleImageSignal"),
+      record = vi.spyOn(ReachCaptureHealth.prototype, "record");
+    const s = setup(),
+      worker = await s.start();
+    expect(s.track.getCapabilities).toHaveBeenCalledOnce();
+    expect(s.track.getSettings).toHaveBeenCalledOnce();
+    expect(s.events.filter((e) => e === "PIXEL_READBACK")).toHaveLength(1);
+    expect(worker.frames).toHaveLength(1);
+    expect(sampled).not.toHaveBeenCalled();
+    // The displayed video moves after capture; diagnostics must still inspect the original paired pixels.
+    s.video.rgba.fill(255);
+    await s.advance(10);
+    s.result();
+    expect(sampled).toHaveBeenCalledOnce();
+    const plane = sampled.mock.calls[0][0],
+      original = worker.frames[0].bitmap.rgba;
+    const at = (120 * 320 + 160) * 4;
+    expect(plane.data[120 * 320 + 160]).toBe((original[at] * 77 + original[at + 1] * 150 + original[at + 2] * 29) >> 8);
+    expect(record.mock.calls.at(-1)![0]).toMatchObject({
+      accepted: true,
+      usablePoint: true,
+      freshImageContinuity: true,
+      imageSignal: { scope: "SUBJECT_REGION" },
+    });
+    const a = s.runtime.captureDiagnostics(),
+      b = s.runtime.captureDiagnostics();
+    expect(a.capabilities?.negotiated).toMatchObject({ width: 320, height: 240, frameRate: 30 });
+    expect(a.capabilities?.descriptor.controls.directInfraredLed).toBe("UNKNOWN");
+    expect(s.track.getCapabilities).toHaveBeenCalledOnce();
+    expect(s.track.getSettings).toHaveBeenCalledOnce();
+    expect(s.events.filter((e) => e === "PIXEL_READBACK")).toHaveLength(1);
+    expect(worker.frames).toHaveLength(1);
+    expect(a).toEqual(b);
+    expect(JSON.stringify(a)).not.toContain("never-export-device-id");
+    expect(JSON.stringify(a)).not.toContain('"data"');
+    if (a.capabilities) a.capabilities.negotiated.width = 1;
+    expect(s.runtime.captureDiagnostics().capabilities?.negotiated.width).toBe(320);
+  });
+  it("labels the whole frame honestly when no current ROI exists, and uses a same-capture index region without a wrist requirement", async () => {
+    const record = vi.spyOn(ReachCaptureHealth.prototype, "record"),
+      s = setup();
+    await s.start(false);
+    await s.advance(10);
+    s.result();
+    expect(record.mock.calls.at(-1)![0].imageSignal?.scope).toBe("WHOLE_FRAME");
+    expect(s.runtime.seedIndex(s.hint)).toBe(true);
+    s.freshFrame();
+    await s.advance(7);
+    await s.advance(10);
+    const pose = modelPose(s.hint);
+    pose[0].y = -0.05;
+    s.result(undefined, [pose]);
+    expect(record.mock.calls.at(-1)![0].imageSignal?.scope).toBe("SUBJECT_REGION");
+    expect(record.mock.calls.at(-1)![0].usablePoint).toBe(true);
+    expect(s.image.mock.calls.at(-1)![0].state).toBe("TRACKING");
+  });
+  it("discards a rejected capture's signal and never reuses its ROI on the next current no-hand frame", async () => {
+    const record = vi.spyOn(ReachCaptureHealth.prototype, "record"),
+      sampled = vi.spyOn(imageSignal, "sampleImageSignal"),
+      s = setup();
+    const worker = await s.start();
+    await s.advance(151);
+    s.result();
+    expect(record.mock.calls.at(-1)![0]).toMatchObject({ accepted: false, imageSignal: null });
+    expect(sampled).not.toHaveBeenCalled();
+    s.video.rgba.fill(255);
+    s.freshFrame();
+    // The first late inference already consumed the interval; the due zero-delay pump needs one timer turn.
+    await s.advance(1);
+    expect(worker.frames).toHaveLength(2);
+    await s.advance(10);
+    s.result();
+    const current = record.mock.calls.at(-1)![0];
+    expect(current.accepted).toBe(true);
+    expect(current.imageSignal).toMatchObject({ scope: "WHOLE_FRAME", meanLuminance: 1, luminanceDeviation: 0 });
+    expect(sampled).toHaveBeenCalledOnce();
+  });
+  it("clears retained diagnostic pixels on mode disable and leaves the model-only path without extra image work", async () => {
+    const record = vi.spyOn(ReachCaptureHealth.prototype, "record"),
+      s = setup();
+    await s.start();
+    s.runtime.setIndexTrackingEnabled(false);
+    await s.advance(10);
+    s.result(undefined, [modelPose(s.hint)]);
+    expect(record.mock.calls.at(-1)![0].imageSignal).toBeNull();
+    expect(s.image).not.toHaveBeenCalled();
+    s.freshFrame();
+    await s.advance(7);
+    await s.advance(10);
+    s.result(undefined, [modelPose(s.hint)]);
+    expect(record.mock.calls.at(-1)![0].imageSignal).toBeNull();
+    expect(s.events.filter((e) => e === "PIXEL_READBACK")).toHaveLength(1);
+  });
+  it("preserves an explicit pointing attempt through a contrary result, without changing its existing pause", async () => {
+    const record = vi.spyOn(ReachCaptureHealth.prototype, "record"),
+      s = setup();
+    await s.start();
+    await s.advance(10);
+    s.result(undefined, [modelPose(s.hint, { indexBends: [0, 5, 10], otherBends: [0, 5, 10] })]);
+    expect(record.mock.calls.at(-1)![0]).toMatchObject({
+      contraryGesture: true,
+      trackingExpected: true,
+      usablePoint: false,
+    });
+    expect(s.image.mock.calls.at(-1)![0]).toMatchObject({
+      state: "UNCERTAIN",
+      point: null,
+      reason: "FULL_HAND_CONTRARY_PENDING",
+    });
+  });
+  it("suppresses only implicit recent-point expectation for a contrary gesture outside explicit collection/manual selection", async () => {
+    const record = vi.spyOn(ReachCaptureHealth.prototype, "record"),
+      s = setup({ calibrationCollecting: false });
+    await s.start(false);
+    await s.advance(10);
+    s.result(undefined, [modelPose(s.hint)]);
+    expect(record.mock.calls.at(-1)![0].usablePoint).toBe(true);
+    s.freshFrame();
+    await s.advance(57);
+    await s.advance(10);
+    s.result(undefined, [modelPose(s.hint, { indexBends: [0, 5, 10], otherBends: [0, 5, 10] })]);
+    expect(record.mock.calls.at(-1)![0]).toMatchObject({
+      contraryGesture: true,
+      trackingExpected: false,
+      usablePoint: false,
+    });
+  });
+  it("keeps a low administrative rate distinct from measured processing pressure", async () => {
+    const record = vi.spyOn(ReachCaptureHealth.prototype, "record"),
+      s = setup();
+    s.runtime.setTrackingLimits({
+      normalMaximumHz: 5,
+      calibrationMaximumHz: 5,
+      modelMaximumHz: 5,
+      unfocusedMaximumHz: 5,
+    });
+    await s.start();
+    await s.advance(10);
+    s.result();
+    expect(s.runtime.trackingPacing()?.maximumHz).toBe(5);
+    expect(record.mock.calls.at(-1)![0].processingPressure).toBe(false);
+  });
+  it("reports measured image-processing pressure only when it reduces the current permitted ceiling", async () => {
+    const record = vi.spyOn(ReachCaptureHealth.prototype, "record"),
+      s = setup({ imageCostMs: 70 });
+    await s.start();
+    await s.advance(10);
+    s.result();
+    expect(s.runtime.trackingPacing()!.targetHz).toBeLessThan(s.runtime.trackingPacing()!.maximumHz);
+    expect(record.mock.calls.at(-1)![0].processingPressure).toBe(true);
+  });
+  it("preserves independent latency pressure even when a slow admin cap hides capacity limitation", async () => {
+    const record = vi.spyOn(ReachCaptureHealth.prototype, "record"),
+      s = setup();
+    s.runtime.setTrackingLimits({
+      normalMaximumHz: 5,
+      calibrationMaximumHz: 5,
+      modelMaximumHz: 5,
+      unfocusedMaximumHz: 5,
+    });
+    await s.start();
+    await s.advance(121);
+    s.result();
+    expect(s.runtime.trackingPacing()!.targetHz).toBe(5);
+    expect(record.mock.calls.at(-1)![0].processingPressure).toBe(true);
+  });
+  it.each(["SAMPLER", "HEALTH"] as const)(
+    "isolates an optional %s diagnostic failure from every existing inference consumer",
+    async (failure) => {
+      if (failure === "SAMPLER")
+        vi.spyOn(imageSignal, "sampleImageSignal").mockImplementationOnce(() => {
+          throw Error("diagnostic failed");
+        });
+      else
+        vi.spyOn(ReachCaptureHealth.prototype, "record").mockImplementationOnce(() => {
+          throw Error("diagnostic failed");
+        });
+      const s = setup();
+      await s.start();
+      await s.advance(10);
+      s.result();
+      expect(s.observe).toHaveBeenCalledOnce();
+      expect(s.image).toHaveBeenCalledOnce();
+      expect(s.metrics).toHaveBeenCalledOnce();
+      expect(s.status).toHaveBeenLastCalledWith("READY");
+      expect(s.runtime.resources().workers).toBe(1);
+    },
+  );
+  it.each(["STOP", "HIDE", "LEASE_ENDED"] as const)(
+    "withholds stale capability metadata and pixel evidence after %s",
+    async (reason) => {
+      const s = setup();
+      await s.start();
+      await s.advance(10);
+      s.result();
+      expect(s.runtime.captureDiagnostics().capabilities).not.toBeNull();
+      if (reason === "STOP") s.runtime.stop();
+      else if (reason === "HIDE") s.hide();
+      else s.runtime.camera.release();
+      const result = s.runtime.captureDiagnostics();
+      expect(result.capabilities).toBeNull();
+      expect(result.assistance).toBeNull();
+      expect(result.health).toMatchObject({ state: "WARMING", context: null, evidenceMs: 0 });
+      expect(s.track.getCapabilities).toHaveBeenCalledOnce();
+      expect(s.track.getSettings).toHaveBeenCalledOnce();
+    },
+  );
   it("reports only scalar gate disposition and preserves rejected-packet denominators", async () => {
     const s = setup();
     const worker = await s.start();
@@ -526,6 +767,232 @@ describe("runtime image source integration", () => {
       dy = point.y - pose[8].y;
     return pose.map((p) => ({ x: p.x + dx, y: p.y + dy, z: p.z }));
   }
+  function prepareExposureRig() {
+    const s = setup({ exposureControls: true });
+    s.runtime.setTrackingLimits({
+      normalMaximumHz: 10,
+      calibrationMaximumHz: 10,
+      modelMaximumHz: 60,
+      unfocusedMaximumHz: 8,
+    });
+    const dark = pixels();
+    for (let i = 0; i < dark.length; i += 4) dark[i] = dark[i + 1] = dark[i + 2] = 8 + (dark[i] % 25);
+    s.video.rgba = dark;
+    const open = modelPose(s.hint, { indexBends: [0, 5, 10], otherBends: [0, 5, 10] });
+    return { ...s, dark, open };
+  }
+  async function nextExposureFrame(s: ReturnType<typeof prepareExposureRig>, landmarks: HandResult["landmarks"]) {
+    const before = s.workers.at(-1)!.frames.length;
+    s.freshFrame();
+    await s.advance(90);
+    expect(s.workers.at(-1)!.frames).toHaveLength(before + 1);
+    await s.advance(10);
+    s.result(undefined, landmarks);
+    for (let i = 0; i < 5; i++) await Promise.resolve();
+  }
+  async function startExposureFailureWindow(s: ReturnType<typeof prepareExposureRig>, frames = 13) {
+    await s.start();
+    await s.advance(10);
+    s.result(undefined, [s.open]);
+    for (let i = 1; i < frames; i++) await nextExposureFrame(s, [s.open]);
+    for (let i = 0; i < 5; i++) await Promise.resolve();
+  }
+  it("requests only one bounded same-color exposure trial after sustained measured signal loss, then retains actual current improvement", async () => {
+    const s = prepareExposureRig();
+    await startExposureFailureWindow(s);
+    expect(s.track.applyConstraints).toHaveBeenCalledTimes(1);
+    const trial = s.runtime.captureDiagnostics();
+    expect(trial.assistance).toMatchObject({ state: "TRIAL", activeKind: "EXPOSURE", transitioning: false });
+    expect(trial.assistance?.profile).toBe("COLOR_RADIOMETRIC_COMPATIBILITY_NOT_PHYSICAL_QUALIFICATION");
+    expect(s.exposureSettings.exposureCompensation).toBe(1);
+    const lease = s.observe.mock.calls[0][0].cameraLeaseId,
+      imageId = s.image.mock.calls[0][0].trackId;
+    const bright = s.dark.slice();
+    for (let i = 0; i < bright.length; i += 4) bright[i] = bright[i + 1] = bright[i + 2] = bright[i] + 80;
+    s.video.rgba = bright;
+    for (let i = 0; i < 23; i++) await nextExposureFrame(s, [modelPose(s.hint)]);
+    expect(s.runtime.captureDiagnostics().assistance).toMatchObject({
+      state: "ASSISTED",
+      reason: "ASSISTANCE_IMPROVED_TRACKING",
+      activeKind: "EXPOSURE",
+    });
+    expect(s.track.applyConstraints).toHaveBeenCalledTimes(1);
+    expect(s.media.getUserMedia).toHaveBeenCalledTimes(1);
+    expect(s.observe.mock.calls.every(([o]) => o.cameraLeaseId === lease)).toBe(true);
+    expect(s.image.mock.calls.every(([o]) => o.trackId === imageId)).toBe(true);
+    expect(s.contexts).toHaveLength(1);
+    expect(s.events.filter((e) => e === "PIXEL_READBACK")).toHaveLength(s.workers[0].frames.length);
+    expect(s.runtime.resources().timers).toBeLessThanOrEqual(2);
+    expect(s.track.stop).not.toHaveBeenCalled();
+  });
+  it("does not modify exposure for a brief signal dip or invent a second stream", async () => {
+    const s = prepareExposureRig();
+    await startExposureFailureWindow(s, 5);
+    expect(s.track.applyConstraints).not.toHaveBeenCalled();
+    expect(s.runtime.captureDiagnostics().assistance?.activeKind).toBeNull();
+    for (let i = 0; i < 5; i++) await nextExposureFrame(s, [modelPose(s.hint)]);
+    expect(s.track.applyConstraints).not.toHaveBeenCalled();
+    expect(s.media.getUserMedia).toHaveBeenCalledOnce();
+  });
+  it("discovers controls that become available later without opening another camera or restarting capture", async () => {
+    const s = prepareExposureRig();
+    s.track.getCapabilities.mockReturnValue({ exposureMode: ["continuous"], torch: true });
+    await startExposureFailureWindow(s);
+    expect(s.track.applyConstraints).not.toHaveBeenCalled();
+    s.track.getCapabilities.mockReturnValue({
+      exposureMode: ["continuous"],
+      torch: true,
+      exposureCompensation: { min: -4, max: 4, step: 0.5 },
+    });
+    await nextExposureFrame(s, [s.open]);
+    expect(s.track.applyConstraints).toHaveBeenCalledOnce();
+    expect(s.runtime.captureDiagnostics().assistance?.state).toBe("TRIAL");
+    expect(s.media.getUserMedia).toHaveBeenCalledOnce();
+    expect(s.runtime.resources().workers).toBe(1);
+  });
+  it("expires assisted mode at its last qualified evidence deadline despite a stale packet immediately before it", async () => {
+    const s = prepareExposureRig();
+    await startExposureFailureWindow(s);
+    for (let i = 0; i < 23; i++) await nextExposureFrame(s, [modelPose(s.hint)]);
+    expect(s.runtime.captureDiagnostics().assistance?.state).toBe("ASSISTED");
+    const deadline = s.runtime.captureDiagnostics().assistance!.deadlineMs!;
+    s.freshFrame();
+    await s.advance(90);
+    const capture = s.workers[0].frames.at(-1)!.capture;
+    s.video.readyState = 0;
+    await s.advance(deadline - performance.now() - 1);
+    s.result(capture);
+    expect(s.metrics.mock.calls.at(-1)![0].disposition).toBe("LATE");
+    expect(s.runtime.captureDiagnostics().assistance?.deadlineMs).toBe(deadline);
+    expect(s.exposureSettings.exposureCompensation).toBe(1);
+    await s.advance(1);
+    for (let i = 0; i < 8; i++) await Promise.resolve();
+    expect(s.runtime.captureDiagnostics().assistance).toMatchObject({
+      state: "BACKOFF",
+      reason: "ASSISTANCE_EVIDENCE_TIMEOUT",
+      activeKind: null,
+    });
+    expect(s.exposureSettings.exposureCompensation).toBe(0);
+    expect(s.track.stop).not.toHaveBeenCalled();
+  });
+  it("restores a failed trial before assigning a new baseline diagnostic context while preserving the camera binding", async () => {
+    const s = prepareExposureRig();
+    await startExposureFailureWindow(s);
+    const trialContext = s.runtime.captureDiagnostics().health.context,
+      lease = s.observe.mock.calls[0][0].cameraLeaseId;
+    for (let i = 0; i < 24; i++) await nextExposureFrame(s, [s.open]);
+    expect(s.runtime.captureDiagnostics().assistance).toMatchObject({
+      state: "BACKOFF",
+      reason: "ASSISTANCE_DID_NOT_IMPROVE_TRACKING",
+      activeKind: null,
+      transitioning: false,
+    });
+    expect(s.exposureSettings.exposureCompensation).toBe(0);
+    expect(s.track.applyConstraints).toHaveBeenCalledTimes(3);
+    expect(s.runtime.captureDiagnostics().health.context).not.toBe(trialContext);
+    expect(s.observe.mock.calls.every(([o]) => o.cameraLeaseId === lease)).toBe(true);
+    expect(s.runtime.resources().workers).toBe(1);
+    expect(s.track.stop).not.toHaveBeenCalled();
+  });
+  it("excludes an in-flight pre-apply bitmap from the new trial window without suppressing its normal observation", async () => {
+    const record = vi.spyOn(ReachCaptureHealth.prototype, "record"),
+      s = prepareExposureRig();
+    let resolve!: () => void;
+    const pending = new Promise<void>((done) => {
+      resolve = done;
+    });
+    s.track.applyConstraints!.mockImplementationOnce(async (input) => {
+      await pending;
+      s.applySettings(input);
+    });
+    await startExposureFailureWindow(s);
+    expect(s.runtime.captureDiagnostics().assistance?.state).toBe("REQUESTING");
+    const previousRecords = record.mock.calls.length,
+      previousObservations = s.observe.mock.calls.length;
+    s.freshFrame();
+    await s.advance(90);
+    const oldCapture = s.workers[0].frames.at(-1)!.capture;
+    await s.advance(1);
+    resolve();
+    for (let i = 0; i < 6; i++) await Promise.resolve();
+    expect(s.runtime.captureDiagnostics().assistance?.state).toBe("TRIAL");
+    await s.advance(9);
+    s.result(undefined, [modelPose(s.hint)]);
+    expect(s.observe).toHaveBeenCalledTimes(previousObservations + 1);
+    expect(record).toHaveBeenCalledTimes(previousRecords);
+    await nextExposureFrame(s, [modelPose(s.hint)]);
+    expect(record.mock.calls.at(-1)![0].captureMs).toBeGreaterThan(oldCapture);
+    expect(s.runtime.captureDiagnostics().health.windowStartedMs).toBeGreaterThan(oldCapture);
+  });
+  it("expires and restores an exposure trial even when no further neural result arrives", async () => {
+    const s = prepareExposureRig();
+    await startExposureFailureWindow(s);
+    s.video.readyState = 0;
+    expect(s.runtime.captureDiagnostics().assistance?.state).toBe("TRIAL");
+    await s.advance(8000);
+    for (let i = 0; i < 8; i++) await Promise.resolve();
+    expect(s.runtime.captureDiagnostics().assistance).toMatchObject({
+      state: "BACKOFF",
+      reason: "ASSISTANCE_TRIAL_TIMEOUT",
+      activeKind: null,
+    });
+    expect(s.exposureSettings.exposureCompensation).toBe(0);
+    expect(s.track.stop).not.toHaveBeenCalled();
+    expect(s.runtime.resources().timers).toBeLessThanOrEqual(1);
+  });
+  it("stops the old session instead of declaring a baseline when exposure restoration cannot be confirmed", async () => {
+    const s = prepareExposureRig();
+    await startExposureFailureWindow(s);
+    s.track.applyConstraints!.mockRejectedValueOnce(Error("synthetic failed restore"));
+    for (let i = 0; i < 24 && s.runtime.resources().workers; i++) await nextExposureFrame(s, [s.open]);
+    for (let i = 0; i < 8; i++) await Promise.resolve();
+    expect(s.status).toHaveBeenLastCalledWith("CAPTURE_CONTROL_RESTORE_FAILED");
+    expect(s.runtime.resources()).toEqual({ tracks: 0, workers: 0, timers: 0 });
+    expect(s.runtime.captureDiagnostics().capabilities).toBeNull();
+    expect(s.runtime.captureDiagnostics().assistance?.reason).toBe("EXPOSURE_RESTORE_FAILED");
+  });
+  it("aborts a pending old exposure request and prevents its late completion from touching a fresh session", async () => {
+    const s = prepareExposureRig();
+    let resolve!: () => void;
+    const pending = new Promise<void>((done) => {
+      resolve = done;
+    });
+    s.track.applyConstraints!.mockImplementationOnce(async (input) => {
+      await pending;
+      s.applySettings(input);
+    });
+    await startExposureFailureWindow(s);
+    expect(s.runtime.captureDiagnostics().assistance?.state).toBe("REQUESTING");
+    const oldWorker = s.workers[0];
+    s.runtime.stop();
+    const freshTrack = {
+      ...s.track,
+      readyState: "live",
+      stop: vi.fn(),
+      getCapabilities: vi.fn(() => ({})),
+      getSettings: vi.fn(() => ({ width: 320, height: 240, frameRate: 30 })),
+      applyConstraints: vi.fn(async () => {}),
+    };
+    s.media.getUserMedia.mockResolvedValueOnce({
+      getTracks: () => [freshTrack],
+      getVideoTracks: () => [freshTrack],
+    } as unknown as MediaStream);
+    await s.runtime.start(true, true);
+    const freshWorker = s.workers.at(-1)!;
+    freshWorker.onmessage!({ data: { type: "READY", generation: freshWorker.generation } } as MessageEvent);
+    await Promise.resolve();
+    resolve();
+    for (let i = 0; i < 10; i++) await Promise.resolve();
+    expect(freshTrack.applyConstraints).not.toHaveBeenCalled();
+    expect(oldWorker.terminate).toHaveBeenCalledOnce();
+    expect(s.runtime.resources().workers).toBe(1);
+    expect(s.runtime.captureDiagnostics().assistance).toMatchObject({
+      state: "BASELINE",
+      activeKind: null,
+      transitioning: false,
+    });
+    expect(s.runtime.captureDiagnostics().assistance?.reason).not.toBe("EXPOSURE_CONTROL_FAILED");
+  });
 
   it("gives a coherent full hand gesture authority while preserving independent image coordinates and identity", async () => {
     const s = setup();
