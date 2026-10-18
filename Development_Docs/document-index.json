@@ -9663,6 +9663,42 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/fused-pipeline-20261018/continuous-recording-aggregate.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/fused-pipeline-20261018/development-proof.json",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/fused-pipeline-20261018/F01-full-model-saved-target.png",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/fused-pipeline-20261018/F02-cropped-index-saved-target.png",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/fused-pipeline-20261018/F03-fused-hand-image.png",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/fused-pipeline-20261018/F04-image-fallback-saved-target.png",
+      "record_type": "validation-evidence",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Reach/evidence/index-continuity-20261017/actual-gpu-rate-latency-summary.json",
       "record_type": "validation-evidence",
       "status": "preserved",

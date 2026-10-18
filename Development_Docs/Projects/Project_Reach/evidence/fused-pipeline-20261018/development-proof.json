@@ -1,0 +1,283 @@
+{
+  "schemaVersion": 1,
+  "classification": "SUPPLEMENTAL_ISOLATED_PRODUCTION_DEVELOPMENT_EVIDENCE_NOT_QUALIFICATION",
+  "applicationSource": "5107ce22823a65f02735fbff50698172c86578a1",
+  "sourceTree": "6b0674b5bf6daf847c28b2993f5569b6186c6679",
+  "archiveSha256": "046df667afbc9467cbd30607a09edf4bb0737bea3eda0cd6734a21999202947c",
+  "comparedMain": "7942a575a1ca42c179d9cbc25a89075a7caf36e5",
+  "observedRemoteMain": "ea0918e0eb176507fe7cf8a41490ada9c51d0852",
+  "producerVersion": 2,
+  "producerDigest": "a270516b632bd60c9cddc4e449334b09946491824e2d734685d7e681ac097f14",
+  "normalBuild": {
+    "success": true,
+    "applicationUnchanged": true,
+    "receiptSha256": "90c6751f8b012b8ec378f453bda31feac1eb2968cad024e60035f8e8416a724e",
+    "typescript": "PASS",
+    "actualNode": "v24.18.0",
+    "repositoryNodePin": "24.19.0",
+    "pinnedRuntimeParityClaimed": false
+  },
+  "units": {
+    "passed": 1261,
+    "failed": 0,
+    "skipped": 0,
+    "actualFiles": 68,
+    "sourceStable": true,
+    "reportSha256": "d7566f2b70afa01bbea24cb3212a55795cf083cfb3179b5cdaab05cdd221bd01",
+    "sourceReceiptSha256": "1a4dcb0e1d4c5ae3261f8644d0a71588173dab246b2004e24185663d6c3da5c1"
+  },
+  "browserCohorts": [
+    {
+      "suite": "index",
+      "caseFilter": "",
+      "applicationSource": "5107ce22823a65f02735fbff50698172c86578a1",
+      "testSource": "831c67f4a7e26ac03929e90fcb64403b34937066",
+      "sourceStable": true,
+      "applicationUnchangedAtTestSource": true,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0,
+      "reportSha256": "0aa1a1fa2490501bffe162d9449a041ecf9bbe459c45bb4bd6a0ab611f47d1f1",
+      "sourceReceiptSha256": "1521149cab14bc8f5f83f9f7d10135823b76a14e47561ff40dbf38d0eb69cc96"
+    },
+    {
+      "suite": "laboratory",
+      "caseFilter": "a completed failed check|mobile interruptions",
+      "applicationSource": "5107ce22823a65f02735fbff50698172c86578a1",
+      "testSource": "ccaed0f691b4b518efe0d389f6716da30e51e8a6",
+      "sourceStable": true,
+      "applicationUnchangedAtTestSource": true,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0,
+      "reportSha256": "b09bfb6b4c3d593ca5a2b3dc3a3b10141ddef05bd82af917b902c5a23aa3fa58",
+      "sourceReceiptSha256": "f405485d813d6f155856f8c5c5922379f7fe8224e3411f5db607d477e03de3c8"
+    },
+    {
+      "suite": "admiralty",
+      "caseFilter": "",
+      "applicationSource": "5107ce22823a65f02735fbff50698172c86578a1",
+      "testSource": "ccaed0f691b4b518efe0d389f6716da30e51e8a6",
+      "sourceStable": true,
+      "applicationUnchangedAtTestSource": true,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0,
+      "reportSha256": "93628544dd9d7be4f7a88f16fa314d4de213cbbd4707350c3e126809d1669593",
+      "sourceReceiptSha256": "7cfb6e181c940e5725c46d0820d37d9380f11ebc3a57bf4a932d8a979d48ca4a"
+    }
+  ],
+  "retainedFailedAnalyticCohorts": [
+    {
+      "suite": "index",
+      "caseFilter": "",
+      "applicationSource": "5107ce22823a65f02735fbff50698172c86578a1",
+      "testSource": "5107ce22823a65f02735fbff50698172c86578a1",
+      "sourceStable": true,
+      "applicationUnchangedAtTestSource": true,
+      "passed": 6,
+      "failed": 4,
+      "skipped": 0,
+      "flaky": 0,
+      "reportSha256": "8cd1f97522172e4fe4281358c761353a2d2a490bf521bd112aa96ec5b1a856ab",
+      "sourceReceiptSha256": "25424d6b887c893295fb01807ff7e5182980e875ac011b3f23d5d27991bb5087"
+    },
+    {
+      "suite": "index",
+      "caseFilter": "",
+      "applicationSource": "5107ce22823a65f02735fbff50698172c86578a1",
+      "testSource": "0fbd561a0d8472b3486902c41b228e4b13068ad4",
+      "sourceStable": true,
+      "applicationUnchangedAtTestSource": true,
+      "passed": 8,
+      "failed": 2,
+      "skipped": 0,
+      "flaky": 0,
+      "reportSha256": "51f2d856d0c8445620ec4576400971050f01276ff34723cb5fa5ee4d7f0e8d02",
+      "sourceReceiptSha256": "171a05c7f4886ee98bdb57deda58f735b13e56279a1cb96b78d23eb321e9da86"
+    },
+    {
+      "suite": "index",
+      "caseFilter": "",
+      "applicationSource": "5107ce22823a65f02735fbff50698172c86578a1",
+      "testSource": "3fa7c77b8eebbe7f19f7dd705d7ac2fdbfbeacae",
+      "sourceStable": true,
+      "applicationUnchangedAtTestSource": true,
+      "passed": 9,
+      "failed": 1,
+      "skipped": 0,
+      "flaky": 0,
+      "reportSha256": "cda08587998dbc812346d8e0c1743983ed5fe6fafe03fe17276ca2550ff88a36",
+      "sourceReceiptSha256": "39a5e5fdc20f710ef10f0c2c4d5a41f270427d88f05cdade625fbf4cc1b69190"
+    }
+  ],
+  "failedCohortExplanation": "Unpaired fake inference versus bitmap, dispatch-only delayed-positive age assumption, stale-disabled picker click race, standalone-text locator inside status line, and asynchronous 250ms stale-age probe; original failures preserved. Test-only repairs retain negative assertions and application150ms limit.",
+  "actualNeuralPhotographicCalibration": {
+    "reportSha256": "5459cfd522ccaa864bb481f99127aaaa7715b57324b1f144cc95cda7941ef23e",
+    "fixture": "official photograph; smooth translation, pixel noise, incidental second hand and transient partial occlusion",
+    "absolute": {
+      "status": "VALIDATED",
+      "mapping": "INDEX_TIP_AXIS_RIDGE_V1",
+      "rawValidationP95DiagonalFraction": 0.009620750935967726,
+      "trainingCount": 135,
+      "validationCount": 75
+    },
+    "relative": {
+      "status": "VALIDATED",
+      "mapping": "INDEX_TIP_DISPLACEMENT_V2",
+      "rawValidationP95DiagonalFraction": 0.006068582584250609,
+      "trainingCount": 75,
+      "validationCount": 75
+    },
+    "cleanup": {
+      "tracks": 0,
+      "workers": 0,
+      "furtherObservations": 0,
+      "furtherVideoDraws": 0,
+      "furtherCanvasClears": 0
+    },
+    "physicalAccuracyQualified": false
+  },
+  "independentDevelopmentReview": {
+    "disposition": "NO_BLOCKING_FINDING_IN_REVIEWED_SOURCE_AND_RENDERS",
+    "reviewedApplicationSource": "5107ce22823a65f02735fbff50698172c86578a1",
+    "scope": "Component source, exact-bitmap pairing and truthful MODEL/FUSED/IMAGE feedback, saved target, contrary pause, manual recovery, desktop/mobile renders. No protected, physical or owner acceptance.",
+    "reviewReceiptSha256": "2587bef3e635f4bc8e2e9839b1d0b84041bac328f78d3087a0e24334d15f9e5d",
+    "imagesActuallyViewed": 29,
+    "blockingFindings": 0,
+    "nonblockingBaselineCopyFinding": 1
+  },
+  "images": [
+    {
+      "file": "F01-full-model-saved-target.png",
+      "sha256": "c617cb147b832c718c8bdfe417241afce62454c3e159467527f0eb9928f2b388",
+      "applicationSource": "5107ce22823a65f02735fbff50698172c86578a1",
+      "captureTestSource": "3fa7c77b8eebbe7f19f7dd705d7ac2fdbfbeacae",
+      "classification": "PUBLIC_ANALYTIC_PIXELS_FAKE_INFERENCE_D0_NOT_PHYSICAL",
+      "coordinateSource": "MODEL_FULL_HAND"
+    },
+    {
+      "file": "F02-cropped-index-saved-target.png",
+      "sha256": "b377b59479b89145f46640f2b4510509ede0fa481430bd37d3bbde069548bd3c",
+      "applicationSource": "5107ce22823a65f02735fbff50698172c86578a1",
+      "captureTestSource": "3fa7c77b8eebbe7f19f7dd705d7ac2fdbfbeacae",
+      "classification": "PUBLIC_ANALYTIC_PIXELS_FAKE_INFERENCE_D0_NOT_PHYSICAL",
+      "coordinateSource": "MODEL_REGISTERED_INDEX"
+    },
+    {
+      "file": "F03-fused-hand-image.png",
+      "sha256": "9c9b2ed0e5d479e31105065d29d72d69a32da314f4257742da5fe2eeb37e9573",
+      "applicationSource": "5107ce22823a65f02735fbff50698172c86578a1",
+      "captureTestSource": "3fa7c77b8eebbe7f19f7dd705d7ac2fdbfbeacae",
+      "classification": "PUBLIC_ANALYTIC_PIXELS_FAKE_INFERENCE_D0_NOT_PHYSICAL",
+      "coordinateSource": "FUSED"
+    },
+    {
+      "file": "F04-image-fallback-saved-target.png",
+      "sha256": "ecbea1d1d6a775d73c672764a122f2d0eaef5fcc7a09732da038b6233c520ad1",
+      "applicationSource": "5107ce22823a65f02735fbff50698172c86578a1",
+      "captureTestSource": "3fa7c77b8eebbe7f19f7dd705d7ac2fdbfbeacae",
+      "classification": "PUBLIC_ANALYTIC_PIXELS_FAKE_INFERENCE_D0_NOT_PHYSICAL",
+      "coordinateSource": "IMAGE"
+    }
+  ],
+  "continuousRecordingAggregateSha256": "896650c88768e3ed69c653d75df687bf4575a3b7d1c5d63ce31eaafc04433fc7",
+  "privacy": {
+    "rawOwnerMediaPublished": false,
+    "landmarksOrTrajectoriesPublished": false,
+    "credentialsPublished": false,
+    "browserTelemetryInterceptedForAnalyticAndLaboratoryFixtures": true,
+    "admiraltyReports": "SYNTHETIC_ISOLATED_FIXTURE_ONLY"
+  },
+  "qualification": false,
+  "physicalAccuracyQualified": false,
+  "ownerRetest": "PENDING",
+  "remainingLimits": [
+    "Cold neural acquisition and wrong-digit estimates remain possible",
+    "Historical recordings lack original pixel-origin metadata and do not establish live freshness",
+    "No product native IR/depth bridge installed",
+    "No guarantee of tracking during total occlusion, arbitrary blur or unverified finger replacement",
+    "Canonical sealing and trusted-experience boundaries remain preserved; no full qualification"
+  ],
+  "primaryLaboratoryCohort": {
+    "suite": "laboratory",
+    "caseFilter": "",
+    "applicationSource": "5107ce22823a65f02735fbff50698172c86578a1",
+    "testSource": "831c67f4a7e26ac03929e90fcb64403b34937066",
+    "sourceStable": true,
+    "applicationUnchangedAtTestSource": true,
+    "passed": 14,
+    "failed": 2,
+    "skipped": 0,
+    "flaky": 0,
+    "reportSha256": "1d2d33d62bda61d8f807a429e39341a1d08a83a31af5f15132d6f2e126955488",
+    "sourceReceiptSha256": "a81c2f0d121cb8bfcf5d111471fd0cd9219806eea6a7c0c07eb13758128e4087"
+  },
+  "uniqueBrowserPassCoverage": {
+    "cases": 29,
+    "method": "10 final analytic +14 original laboratory +2 exact-copy test-only corrections +3 Admiralty. Not a claimed clean29-case single cohort; primary14/16 and earlier failed cohorts remain explicit."
+  },
+  "laboratoryTestOnlyCorrection": {
+    "reason": "Two legacy exact-text assertions expected image-only pause wording. Current source correctly names combined tracking and saved progress. Successor updates copy expectations only, preserving all failed-check, recovery, marker, saved-target and no-auto-repeat assertions.",
+    "applicationSourceUnchanged": true,
+    "primaryFailureReceiptPreserved": true,
+    "successorCohort": {
+      "suite": "laboratory",
+      "caseFilter": "a completed failed check|mobile interruptions",
+      "applicationSource": "5107ce22823a65f02735fbff50698172c86578a1",
+      "testSource": "ccaed0f691b4b518efe0d389f6716da30e51e8a6",
+      "sourceStable": true,
+      "applicationUnchangedAtTestSource": true,
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0,
+      "reportSha256": "b09bfb6b4c3d593ca5a2b3dc3a3b10141ddef05bd82af917b902c5a23aa3fa58",
+      "sourceReceiptSha256": "f405485d813d6f155856f8c5c5922379f7fe8224e3411f5db607d477e03de3c8"
+    }
+  },
+  "retainedFailedAdmiraltyCohorts": [
+    {
+      "suite": "admiralty",
+      "caseFilter": "",
+      "applicationSource": "5107ce22823a65f02735fbff50698172c86578a1",
+      "testSource": "ccaed0f691b4b518efe0d389f6716da30e51e8a6",
+      "sourceStable": true,
+      "applicationUnchangedAtTestSource": true,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 2,
+      "flaky": 0,
+      "reportSha256": "646a17836ba6fee48676bed34583ad33f5b7ab421559864454ac5d05c833e6a1",
+      "sourceReceiptSha256": "c775624e1be56ac4b436b91075e330887fb7639bdb0a4d1700e6051f1fd64ad7"
+    }
+  ],
+  "admiraltyFixturePreparation": {
+    "receiptSha256": "90a105e0c26d9e56dbbed9b5a03afbb9b66bdb895eed80721afbbd9cf2c31d66",
+    "reason": "Initial empty-state assertion ran against a clone containing two prior synthetic reports; original fixture was preserved as a whole verified backup before preparing an empty working fixture.",
+    "ownerDatabaseTouched": false
+  },
+  "independentBitmapPairingControl": {
+    "passed": 2,
+    "failed": 0,
+    "reportSha256": "d43309be93dfb1d7612d5243577f30d5af16a80c7c795565d38455f2e6ae6e8d",
+    "method": "Private delayed-bitmap/moving-video control on exact application5107; image pixels and neural packet share one transferred bitmap",
+    "qualification": false
+  },
+  "fixturePairingCausalDiagnostic": {
+    "reportSha256": "702f6c533ab870263240510925d5dea35fae07ce383dfaebe601503de9fb09ee",
+    "pairedFullAndIndex": "55/55 post-transition TRACKING, zero identity changes at20Hz per arm",
+    "oneDeliberateMismatch": "Accepted optical conflict revokes association and eventually expires unsupported identity",
+    "methodLimits": "Private analytic four-sample raster approximation, not exact browser, sensor or physical recognition"
+  },
+  "applicationFileHashes": {
+    "src/reach/index-image-tracker.ts": "3dce2d94e20e01836730a27d33859637d45f12ba7a4055f1347693ef7693666f",
+    "src/reach/browser-runtime.ts": "9027f383c650fba448db61fe8b0d6c35575f32ee9fce90b79f6c47219198410b",
+    "src/reach/ReachLaboratory.tsx": "38870d026018d2575f81648c19736fc5ebe41dbd876581c68a1de971ff44fc41",
+    "src/reach/ReachStage.tsx": "9ff9f00879cb29e96727f23ea3512dfa2ec44a7f4636a72db93e05287498df62",
+    "src/watchglass/hand-observation.ts": "cc30022376790270362749612a3c1c8dcdf50f670a817534d83853da331df294"
+  }
+}
