@@ -2,6 +2,8 @@ import packageManifest from "../../../package.json";
 import { landfallOperationsProviders } from "@/landfall/provider-operations-server";
 import { communityOperationalSnapshot, collectCommunityProviderHealth } from "@/community/operations";
 import { readCommunityOutboxRuntimePolicy } from "@/community/operational-policy";
+import { readReachRuntimePolicy } from "@/reach/admin-service";
+import type { ReachRuntimePolicyEnvelope } from "@/reach/runtime-policy";
 import { db } from "@/lib/db";
 import { parsePrivateContentConfiguration } from "@/private-content/config";
 import { collectPrivateProviderHealth, createPrivateProviderRuntime } from "@/private-content/providers";
@@ -208,6 +210,12 @@ export async function getOperationsOverview(operator: AdmiraltyCurrentOperator) 
 
 export async function getConfigurationProjection(operator: AdmiraltyCurrentOperator) {
   const policy = await readCommunityOutboxRuntimePolicy();
+  let reachPolicy: ReachRuntimePolicyEnvelope | null = null;
+  try {
+    reachPolicy = await readReachRuntimePolicy();
+  } catch {
+    /* Keep unconfigured stores explicitly unavailable. */
+  }
   const values: Record<string, string> = {
     "platform.environment": environmentLabel(),
     "platform.database-provider": process.env.DATABASE_URL?.startsWith("mysql:")
@@ -230,18 +238,43 @@ export async function getConfigurationProjection(operator: AdmiraltyCurrentOpera
     "harborlight.outbox.dispatch-enabled": policy.dispatchEnabled ? "Accepting new work" : "Paused",
     "harborlight.outbox.batch-size": `${policy.batchSize} jobs per batch`,
     "harborlight.outbox.poll-interval": `${Math.round(policy.pollIntervalMs / 1_000)} seconds`,
+    "reach.feature-enabled": reachPolicy ? (reachPolicy.policy.featureEnabled ? "Enabled" : "Disabled") : "Unavailable",
+    "reach.normal-maximum-hz": reachPolicy ? `${reachPolicy.policy.normalMaximumHz} Hz` : "Unavailable",
+    "reach.calibration-maximum-hz": reachPolicy ? `${reachPolicy.policy.calibrationMaximumHz} Hz` : "Unavailable",
+    "reach.unfocused-maximum-hz": reachPolicy ? `${reachPolicy.policy.unfocusedMaximumHz} Hz` : "Unavailable",
+    "reach.model-maximum-hz": reachPolicy ? `${reachPolicy.policy.modelMaximumHz} Hz` : "Unavailable",
+    "reach.telemetry-enabled": reachPolicy
+      ? reachPolicy.policy.telemetryEnabled
+        ? "Automatic aggregate collection enabled"
+        : "Disabled"
+      : "Unavailable",
+    "reach.telemetry-retention-days": reachPolicy
+      ? `${reachPolicy.policy.telemetryRetentionDays} days maximum`
+      : "Unavailable",
+    "reach.local-recorder-enabled": reachPolicy
+      ? reachPolicy.policy.localRecorderEnabled
+        ? "Local gates still required"
+        : "Disabled"
+      : "Unavailable",
   };
   const settings = admiraltyConfigurationRegistry.map((definition) => ({
     ...definition,
     effectiveValue: values[definition.key] ?? "Not available",
-    configured: definition.managementClass === "POLICY_EDITABLE" || Boolean(process.env[definition.sourceReference]),
-    mutableHere: definition.managementClass === "POLICY_EDITABLE",
+    configured:
+      definition.owner === "Reach"
+        ? reachPolicy !== null
+        : definition.managementClass === "POLICY_EDITABLE" || Boolean(process.env[definition.sourceReference]),
+    mutableHere: definition.owner === "Harborlight" && definition.managementClass === "POLICY_EDITABLE",
   }));
   await auditOperationsRead(operator, "ADMIRALTY_CONFIGURATION_READ", "ConfigurationProjection", "current", {
     settingCount: settings.length,
     editableSettingCount: settings.filter((setting) => setting.mutableHere).length,
   });
-  return projection("Source-bound configuration registry", { settings, communityOutboxRuntimePolicy: policy });
+  return projection("Source-bound configuration registry", {
+    settings,
+    communityOutboxRuntimePolicy: policy,
+    reachRuntimePolicy: reachPolicy,
+  });
 }
 
 export async function getReleaseProjection(operator: AdmiraltyCurrentOperator) {

@@ -5,6 +5,9 @@ import { motion as animated } from "motion/react";
 import { useOptionalMotionPolicyContext } from "@/animation/motion/MotionPolicyContext";
 import { assessHand } from "@/watchglass/hand-posture";
 import { ReachBrowserRuntime } from "./browser-runtime";
+import { useReachRuntimePolicy } from "./runtime-policy-client";
+import { ReachTelemetryCollector } from "./telemetry-client";
+import type { ReachTelemetryReadiness } from "./telemetry";
 import {
   calibrationLayout,
   relativeLayout,
@@ -112,6 +115,58 @@ export function ReachLaboratory({
   returnLabel?: string;
   localPoseRecording?: boolean;
 }) {
+  const runtimePolicy = useReachRuntimePolicy();
+  const policyRef = useRef(runtimePolicy);
+  useLayoutEffect(() => {
+    policyRef.current = runtimePolicy;
+  }, [runtimePolicy]);
+  const telemetry = useRef<ReachTelemetryCollector | null>(null);
+  const [telemetryStatus, setTelemetryStatus] = useState(
+    "Automatic numeric reporting is active during live camera use.",
+  );
+  const telemetryReady = useRef<ReachTelemetryReadiness | null>(null);
+  const telemetryInterruptedAt = useRef<number | null>(null);
+  const modelPostureEligible = useRef(false);
+  const cameraTelemetryActive = useRef(false);
+  useEffect(() => {
+    const collector = new ReachTelemetryCollector({
+      policy: { featureEnabled: false, telemetryEnabled: false, revision: 0 },
+    });
+    telemetry.current = collector;
+    return () => {
+      collector.dispose();
+      telemetry.current = null;
+    };
+  }, []);
+  useEffect(() => {
+    telemetry.current?.setPolicy({
+      featureEnabled: runtimePolicy.status === "READY",
+      telemetryEnabled: runtimePolicy.policy?.telemetryEnabled === true,
+      revision: runtimePolicy.revision ?? 0,
+    });
+  }, [runtimePolicy.status, runtimePolicy.policy, runtimePolicy.revision]);
+  const recordReadiness = useCallback((condition: ReachReadiness["condition"]) => {
+    const next: ReachTelemetryReadiness =
+      condition === "NO_HAND"
+        ? "noHand"
+        : condition === "CHOOSE_HAND"
+          ? "ambiguous"
+          : (condition.toLowerCase() as ReachTelemetryReadiness);
+    const collector = telemetry.current;
+    collector?.recordReadiness(next);
+    if (telemetryReady.current !== next) {
+      if (next === "ready" && telemetryReady.current !== null) {
+        collector?.recordEvent("recoveries");
+        if (telemetryInterruptedAt.current !== null)
+          collector?.recordTiming("recoveryMs", performance.now() - telemetryInterruptedAt.current);
+        telemetryInterruptedAt.current = null;
+      } else if (telemetryReady.current === "ready") {
+        collector?.recordEvent("trackingInterruptions");
+        telemetryInterruptedAt.current = performance.now();
+      }
+      telemetryReady.current = next;
+    }
+  }, []);
   const video = useRef<HTMLVideoElement>(null),
     workspace = useRef<HTMLDivElement>(null),
     plane = useRef<HTMLDivElement>(null),
@@ -230,6 +285,17 @@ export function ReachLaboratory({
   }, [setupInvalidation]);
   const invalidate = useCallback(
     (reason?: string) => {
+      if (reason && sourceRef.current === "LIVE") {
+        const current = trial.current;
+        if (current)
+          telemetry.current?.recordCalibration(
+            current.mode,
+            current.stage === "TRAINING" ? "TRAINING" : "CHECK",
+            "INVALIDATED",
+          );
+        if (!reason.startsWith("Calibration deleted") && !reason.includes("expired"))
+          telemetry.current?.recordEvent("sourceInvalidations");
+      }
       setSetupInvalidation(reason ?? null);
       trial.current = null;
       runtime.current?.setCalibrationCollecting(false);
@@ -253,6 +319,28 @@ export function ReachLaboratory({
     [advance],
   );
   const stop = useCallback(() => {
+    if (sourceRef.current === "LIVE") {
+      const current = trial.current;
+      if (current)
+        telemetry.current?.recordCalibration(
+          current.mode,
+          current.stage === "TRAINING" ? "TRAINING" : "CHECK",
+          "CANCELLED",
+        );
+      if (cameraTelemetryActive.current) telemetry.current?.recordEvent("cameraStops");
+      cameraTelemetryActive.current = false;
+      void telemetry.current
+        ?.flush()
+        .then((result) =>
+          setTelemetryStatus(
+            result === "UPLOADED"
+              ? "Aggregate report sent"
+              : result === "RETRY_PENDING"
+                ? "Report pending; retry while this page stays open"
+                : "No numeric report pending",
+          ),
+        );
+    }
     changeSource("OFF");
     runtime.current?.stop();
     invalidate();
@@ -279,6 +367,21 @@ export function ReachLaboratory({
     setPracticeTarget(null);
     setMessage("Your camera is off and session calibration is cleared.");
   }, [advance, changeSource, invalidate]);
+  useEffect(() => {
+    if (runtimePolicy.status === "READY" && runtimePolicy.policy) {
+      const { normalMaximumHz, calibrationMaximumHz, unfocusedMaximumHz, modelMaximumHz } = runtimePolicy.policy;
+      runtime.current?.setTrackingLimits({ normalMaximumHz, calibrationMaximumHz, unfocusedMaximumHz, modelMaximumHz });
+    } else if (runtimePolicy.status === "DISABLED" || runtimePolicy.status === "UNAVAILABLE") {
+      if (sourceRef.current !== "OFF") {
+        stop();
+        setMessage(
+          runtimePolicy.status === "DISABLED"
+            ? "Reach was disabled by an administrator. Camera capture has stopped."
+            : "Reach policy could not be refreshed within 30 seconds. Camera capture has stopped; retry policy to continue.",
+        );
+      }
+    }
+  }, [runtimePolicy.status, runtimePolicy.policy, stop]);
   const changePointingMode = (next: PointingMode) => {
     modeRef.current = next;
     setPointingMode(next);
@@ -353,6 +456,8 @@ export function ReachLaboratory({
             setAcquisition(progress);
           }
           if (progress.samples) {
+            if (sourceRef.current === "LIVE")
+              telemetry.current?.recordCalibrationTarget(t.mode, t.stage === "TRAINING" ? "TRAINING" : "CHECK");
             timing.current.push(timing.current.acquisition, now - t.acquiredAt);
             t.groups.push(progress.samples);
             setCompleted(t.groups.length);
@@ -365,6 +470,23 @@ export function ReachLaboratory({
                     ? fitCalibration(t.groups, t.binding, now)
                     : fitRelativeCalibration(t.groups, t.binding, now);
               calibrationRef.current = fitted;
+              if (sourceRef.current === "LIVE") {
+                telemetry.current?.recordCalibration(
+                  t.mode,
+                  t.stage === "TRAINING" ? "TRAINING" : "CHECK",
+                  t.stage === "TRAINING" ? "COMPLETED" : fitted.status === "VALIDATED" ? "PASSED" : "FAILED",
+                  {
+                    rawP95: fitted.validationP95,
+                    jitterP95: fitted.validationJitterP95,
+                    median: percentile(fitted.validationErrors, 0.5),
+                  },
+                );
+                telemetry.current?.recordValidationSamples(
+                  t.mode,
+                  t.stage === "TRAINING" ? "TRAINING" : "RAW",
+                  t.stage === "TRAINING" ? fitted.trainingResiduals : fitted.validationErrors,
+                );
+              }
               setCalibration(fitted);
               aggregates.current = [...aggregates.current.slice(-9), aggregateCalibrationExport(fitted, true)];
               trial.current = null;
@@ -393,6 +515,12 @@ export function ReachLaboratory({
           const contextChanged = error instanceof Error && error.message === "SAMPLE_CONTEXT_CHANGED";
           if (contextChanged) invalidate("The camera, hand or pointing area changed. Start a fresh setup.");
           else {
+            if (sourceRef.current === "LIVE")
+              telemetry.current?.recordCalibration(
+                t.mode,
+                t.stage === "TRAINING" ? "TRAINING" : "CHECK",
+                "INVALIDATED",
+              );
             trial.current = null;
             setTarget(null);
             setAcquisition(null);
@@ -471,6 +599,14 @@ export function ReachLaboratory({
       lastIndexObservation.current = o;
       setIndexStale(false);
       const next = indexReadiness.current.update(o);
+      if (sourceRef.current === "LIVE") {
+        telemetry.current?.recordImageState(o.state.toLowerCase() as "unseeded" | "tracking" | "uncertain" | "lost", {
+          correlation: o.quality.correlation,
+          separation: o.quality.separation,
+          uncertaintyPx: o.uncertaintyRadiusPixels,
+        });
+        telemetry.current?.recordTiming("captureToImageMs", o.monotonicInferenceTime - o.monotonicCaptureTime);
+      }
       if (modeRef.current !== "RELATIVE") return;
       const ready: ReachReadiness = {
         detectedCount: lastObservation.current?.hands.length ?? 0,
@@ -486,6 +622,7 @@ export function ReachLaboratory({
         guidance: next.guidance,
       };
       readyRef.current = ready;
+      if (sourceRef.current === "LIVE") recordReadiness(ready.condition);
       setEntryReady(trialEntryReady());
       if (next.changed && (trial.current?.binding || calibrationRef.current)) {
         invalidate("A new fingertip was selected or the camera changed. Begin a fresh setup for this track.");
@@ -509,12 +646,17 @@ export function ReachLaboratory({
     accept.current = (o) => {
       const now = performance.now();
       lastObservation.current = o;
+      if (sourceRef.current === "LIVE" && o.evidenceTier !== "D0") {
+        for (const hand of o.hands) telemetry.current?.recordHandednessConfidence(hand.handednessConfidence);
+      }
       setInferenceBackend(o.inferenceBackend);
       if (o.evidenceTier !== "D0") timing.current.observe(o);
       const ready = selector.current.update(o);
+      modelPostureEligible.current = ready.eligible;
       const imageMode = modeRef.current === "RELATIVE";
       const eligibilityChanged = readyRef.current.eligible !== ready.eligible;
       if (!imageMode) {
+        if (sourceRef.current === "LIVE") recordReadiness(ready.condition);
         readyRef.current = ready;
         setEntryReady(trialEntryReady());
       }
@@ -575,6 +717,10 @@ export function ReachLaboratory({
       video.current!,
       (o) => accept.current(o),
       (state) => {
+        if (state === "READY" && sourceRef.current === "LIVE" && !cameraTelemetryActive.current) {
+          cameraTelemetryActive.current = true;
+          telemetry.current?.recordEvent("cameraStarts");
+        }
         sessionStatus.current = state;
         setStatus(state);
         setEntryReady(trialEntryReady());
@@ -585,6 +731,10 @@ export function ReachLaboratory({
               : previous,
           );
         if (state === "STALE_OR_INVALID_OBSERVATION") {
+          if (sourceRef.current === "LIVE") {
+            recordReadiness("RECOVERING");
+            if (modeRef.current === "RELATIVE") telemetry.current?.recordImageState("stale");
+          }
           const now = performance.now();
           if (modeRef.current === "RELATIVE") {
             indexReadiness.current.pause();
@@ -600,6 +750,18 @@ export function ReachLaboratory({
           }));
         }
         if (!["READY", "MODEL_STARTING", "REQUESTING", "STALE_OR_INVALID_OBSERVATION"].includes(state)) {
+          if (sourceRef.current === "LIVE" && cameraTelemetryActive.current) {
+            cameraTelemetryActive.current = false;
+            telemetry.current?.recordEvent("cameraStops");
+            const current = trial.current;
+            if (current)
+              telemetry.current?.recordCalibration(
+                current.mode,
+                current.stage === "TRAINING" ? "TRAINING" : "CHECK",
+                "CANCELLED",
+              );
+            void telemetry.current?.flush();
+          }
           lastObservation.current = null;
           setInferenceBackend(undefined);
           lastIndexObservation.current = null;
@@ -628,8 +790,27 @@ export function ReachLaboratory({
       undefined,
       undefined,
       (o) => acceptIndex.current(o),
+      (packet) => {
+        if (sourceRef.current !== "LIVE") return;
+        telemetry.current?.recordModelPacket({
+          ...packet,
+          postureEligible: modelPostureEligible.current,
+          cadence:
+            (stepRef.current === "TRAINING" || stepRef.current === "VALIDATION") && !trial.current?.paused
+              ? "CALIBRATION"
+              : "NORMAL",
+        });
+      },
     );
     runtime.current = r;
+    const policy = policyRef.current.policy;
+    if (policy)
+      r.setTrackingLimits({
+        normalMaximumHz: policy.normalMaximumHz,
+        calibrationMaximumHz: policy.calibrationMaximumHz,
+        unfocusedMaximumHz: policy.unfocusedMaximumHz,
+        modelMaximumHz: policy.modelMaximumHz,
+      });
     r.setCalibrationCollecting(
       (stepRef.current === "TRAINING" || stepRef.current === "VALIDATION") && trial.current?.paused === false,
     );
@@ -674,7 +855,7 @@ export function ReachLaboratory({
       window.visualViewport?.removeEventListener("resize", changed);
       window.visualViewport?.removeEventListener("scroll", changed);
     };
-  }, [advance, changeSource, invalidate, pauseControl, trialEntryReady]);
+  }, [advance, changeSource, invalidate, pauseControl, trialEntryReady, recordReadiness]);
   useEffect(() => {
     if (source === "OFF") return;
     const freshness = setInterval(() => {
@@ -706,9 +887,34 @@ export function ReachLaboratory({
       setMetrics(timingSnapshot(timing.current));
       setPacing(runtime.current?.trackingPacing() ?? null);
     }, 1000);
+    let lastActivity = performance.now();
+    const activity = setInterval(() => {
+      const now = performance.now(),
+        delta = now - lastActivity;
+      lastActivity = now;
+      const collector = telemetry.current;
+      if (sourceRef.current === "LIVE" && document.visibilityState === "visible") {
+        const paced = runtime.current?.trackingPacing();
+        collector?.recordActivity(delta, {
+          focused: document.hasFocus(),
+          collecting: paced?.calibrationCollecting === true,
+          cadence: paced?.calibrationCollecting ? "CALIBRATION" : "NORMAL",
+          capHz: paced?.maximumHz,
+        });
+        if (collector?.shouldFlush)
+          void collector
+            .flush()
+            .then((result) =>
+              setTelemetryStatus(
+                result === "UPLOADED" ? "Aggregate report sent" : "Report pending; retry while this page stays open",
+              ),
+            );
+      }
+    }, 1000);
     return () => {
       clearInterval(freshness);
       clearInterval(diagnostics);
+      clearInterval(activity);
     };
   }, [source, invalidate, log, retainPointer, trialEntryReady]);
   useEffect(() => {
@@ -801,6 +1007,7 @@ export function ReachLaboratory({
     };
   }, [source, mirror, stop]);
   const startDemo = () => {
+    if (policyRef.current.status !== "READY") return;
     stop();
     changeSource("DEMO");
     sessionStatus.current = "DEMO";
@@ -810,12 +1017,16 @@ export function ReachLaboratory({
     setMessage("Guided demo: the hand is simulated. Camera accuracy is not measured.");
   };
   const startCamera = () => {
+    if (policyRef.current.status !== "READY") return;
     stop();
     changeSource("LIVE");
+    telemetryReady.current = null;
+    telemetryInterruptedAt.current = null;
     setMessage("Allow camera access to begin. Keep your hand comfortably in view.");
     void runtime.current?.start(true, mirror);
   };
   const begin = (stage: Trial["stage"]) => {
+    if (policyRef.current.status !== "READY") return;
     if (stage === "TRAINING" && !trialEntryReady()) {
       setMessage(readyRef.current.guidance);
       return;
@@ -852,6 +1063,8 @@ export function ReachLaboratory({
       demoTargetReady: false,
       paused: false,
     };
+    if (sourceRef.current === "LIVE")
+      telemetry.current?.recordCalibration(pointingMode, stage === "TRAINING" ? "TRAINING" : "CHECK", "STARTED");
     setTarget(order[0]);
     setCompleted(0);
     setTotal(order.length);
@@ -876,6 +1089,7 @@ export function ReachLaboratory({
     const t = trial.current;
     if (!t) return;
     t.paused = !t.paused;
+    if (sourceRef.current === "LIVE") telemetry.current?.recordEvent(t.paused ? "pauses" : "recoveries");
     runtime.current?.setCalibrationCollecting(!t.paused);
     const progress = t.window?.pause(performance.now());
     t.after = performance.now() + 700;
@@ -1020,6 +1234,8 @@ export function ReachLaboratory({
       data-image-state={indexStale ? "STALE" : (indexState?.state ?? "UNSEEDED")}
       data-capture-ceiling={pacing?.maximumHz}
       data-calibration-capture={pacing?.calibrationCollecting ?? false}
+      data-reach-policy={runtimePolicy.status}
+      data-reach-policy-revision={runtimePolicy.revision ?? ""}
       data-image-track-generation={indexState?.trackGeneration ?? 0}
       data-image-model-agreement={indexState?.modelAgreement ?? "UNAVAILABLE"}
       data-image-reason={indexStale ? "STALE" : (indexState?.reason ?? "UNSEEDED")}
@@ -1037,6 +1253,21 @@ export function ReachLaboratory({
         </Link>
         {source !== "OFF" && <button onClick={stop}>Stop session</button>}
       </header>
+      {runtimePolicy.status !== "READY" && (
+        <div className={styles.setupAlert} role="status">
+          <strong>
+            {runtimePolicy.status === "LOADING"
+              ? "Checking Reach availability…"
+              : runtimePolicy.status === "DISABLED"
+                ? "Reach is disabled by an administrator"
+                : "Reach policy is unavailable"}
+          </strong>
+          <p>Camera and demo access require current administrator policy. Existing local recordings are retained.</p>
+          {runtimePolicy.status === "UNAVAILABLE" && (
+            <button onClick={() => void runtimePolicy.refresh()}>Retry policy</button>
+          )}
+        </div>
+      )}
       <ol className={styles.journey} aria-label="Your Reach journey">
         {["Prepare", "Calibrate", "Check", "Explore"].map((label, i) => {
           const current =
@@ -1155,7 +1386,8 @@ export function ReachLaboratory({
                 <p>
                   Enable your camera when you are ready.
                   <br />
-                  Everything is processed on this device.
+                  Camera imagery and landmarks stay on this device. Reach reports numeric performance metrics
+                  automatically.
                 </p>
               </div>
             )}
@@ -1471,10 +1703,12 @@ export function ReachLaboratory({
             <>
               {source === "OFF" ? (
                 <div className={styles.actions}>
-                  <button className={styles.primary} onClick={startCamera}>
+                  <button className={styles.primary} onClick={startCamera} disabled={runtimePolicy.status !== "READY"}>
                     {status === "DISABLED" ? "Enable live camera" : "Retry live camera"}
                   </button>
-                  <button onClick={startDemo}>Explore guided demo</button>
+                  <button onClick={startDemo} disabled={runtimePolicy.status !== "READY"}>
+                    Explore guided demo
+                  </button>
                 </div>
               ) : (
                 <>
@@ -1559,6 +1793,12 @@ export function ReachLaboratory({
                 <button onClick={retryTarget}>Retry this target</button>
                 <button
                   onClick={() => {
+                    if (sourceRef.current === "LIVE" && trial.current)
+                      telemetry.current?.recordCalibration(
+                        trial.current.mode,
+                        trial.current.stage === "TRAINING" ? "TRAINING" : "CHECK",
+                        "CANCELLED",
+                      );
                     trial.current = null;
                     setTarget(null);
                     setAcquisition(null);
@@ -1718,9 +1958,9 @@ export function ReachLaboratory({
             <summary>Session diagnostics & privacy</summary>
             <div className={styles.diagnosticBody}>
               <p>
-                Advanced measurements are local and bounded to this session. Model handedness scores are not intent
-                confidence. RGB landmarks do not establish metric depth or a physical display ray. Camera movement may
-                be undetectable; recalibrate after changing camera or seating.
+                Detailed diagnostics are bounded to this session. Automatic reporting sends numeric aggregates only.
+                Model handedness scores are not intent confidence. RGB landmarks do not establish metric depth or a
+                physical display ray. Camera movement may be undetectable; recalibrate after changing camera or seating.
               </p>
               <dl className={styles.metricGrid}>
                 <div>
@@ -1788,10 +2028,31 @@ export function ReachLaboratory({
                 performance.
               </p>
               <p>
-                Normal tracking is capped at 30 updates per second; active calibration collection is capped at 60.
-                Capture adapts to processing time and event-loop pressure, with one inference in flight. The target is a
-                ceiling, not a guaranteed camera rate. Visible unfocused pages slow down; hiding the page stops the
-                camera. These signals do not measure total system CPU use.
+                Normal tracking is capped at {runtimePolicy.policy?.normalMaximumHz ?? "—"} updates per second; active
+                calibration collection is capped at {runtimePolicy.policy?.calibrationMaximumHz ?? "—"}. Capture adapts
+                to processing time and event-loop pressure, with one inference in flight. The target is a ceiling, not a
+                guaranteed camera rate. Visible unfocused pages slow down; hiding the page stops the camera. These
+                signals do not measure total system CPU use.
+              </p>
+              <p>
+                Administrator policy revision {runtimePolicy.revision ?? "—"} applies automatically, refreshes every 15
+                seconds and expires after 30 seconds without refresh. Users cannot override the feature switch or
+                limits. Enabling Reach never grants camera permission.
+              </p>
+              <p>
+                {runtimePolicy.policy?.telemetryEnabled
+                  ? telemetryStatus
+                  : "Aggregate collection is disabled by an administrator."}{" "}
+                Numeric performance reports are automatic during live Reach use. They contain counts, averages and fixed
+                histogram bins, never video, landmarks, camera, track or account identifiers, positions or calibration
+                coefficients. Report counts cannot establish distinct people or sessions. Reports expire after{" "}
+                {runtimePolicy.policy?.telemetryRetentionDays ?? "—"} days; expired data is purged on the next
+                collection or reporting operation. Administrators control reporting and retention.
+              </p>
+              <p>
+                The hand model is capped at {runtimePolicy.policy?.modelMaximumHz ?? "—"} inferences per second. This
+                one-frame pipeline obeys the lower of the model and current capture caps; processing pressure may lower
+                achieved rates further.
               </p>
               <p>
                 Calibration: {calibration?.mapping ?? "none"} · {calibration?.status ?? "REQUIRED"} · no target snapping
@@ -1874,8 +2135,8 @@ export function ReachLaboratory({
       )}
       <footer className={styles.footer}>
         <p>
-          <span aria-hidden="true">◇</span> Private by design. No microphone, video storage, upload or saved
-          calibration.
+          <span aria-hidden="true">◇</span> No microphone. Camera imagery, landmarks and calibration stay on this
+          device. Numeric performance reporting is automatic when enabled by an administrator.
         </p>
         <p>Reach is an interaction laboratory. Pointing here does not select or activate Voyagewright objects.</p>
       </footer>

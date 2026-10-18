@@ -8,7 +8,12 @@ import {
   type IndexImageObservation,
 } from "./index-image-tracker";
 import { IndexImageObservationGate } from "./index-image-observation";
-import { ReachTrackingPacer } from "./tracking-pacer";
+import {
+  ReachTrackingPacer,
+  defaultReachTrackingLimits,
+  parseReachTrackingLimits,
+  type ReachTrackingLimits,
+} from "./tracking-pacer";
 import { selectIndexModelAnchor } from "./hand-detection-authority";
 export type { IndexImageObservation } from "./index-image-tracker";
 /** Passive, opt-in input for the local development recorder. No identity or lease data. */
@@ -23,6 +28,15 @@ export type RawHandInference = {
   mirror: boolean;
   inferenceBackend?: HandInferenceBackend;
 };
+/** Scalar diagnostics only. This callback never receives an image, identity or landmarks. */
+export type ReachInferenceMetrics = {
+  disposition: "ACCEPTED" | "LATE" | "INVALID";
+  packetAgeMs: number;
+  modelResultMs: number;
+  preprocessingMs: number;
+  frameIntervalMs: number | null;
+  handCount: number | null;
+};
 type IndexHint = { point: { x: number; y: number }; requestedAt: number };
 export class ReachBrowserRuntime {
   readonly camera: BrowserCameraBroker;
@@ -35,6 +49,7 @@ export class ReachBrowserRuntime {
   private active = false;
   private pacer: ReachTrackingPacer | null = null;
   private calibrationCollecting = false;
+  private trackingLimits: ReachTrackingLimits = { ...defaultReachTrackingLimits };
   private imageTracker: IndexImageTracker | null = null;
   private imageCanvas: OffscreenCanvas | null = null;
   private imageContext: OffscreenCanvasRenderingContext2D | null = null;
@@ -51,6 +66,7 @@ export class ReachBrowserRuntime {
     media: Pick<MediaDevices, "getUserMedia"> | null = navigator.mediaDevices ?? null,
     private rawInference?: (frame: RawHandInference) => void,
     private indexObserve?: (observation: IndexImageObservation) => void,
+    private inferenceMetrics?: (packet: ReachInferenceMetrics) => void,
   ) {
     this.indexEnabled = !!indexObserve;
     this.camera = new BrowserCameraBroker(media, (state) => {
@@ -85,6 +101,11 @@ export class ReachBrowserRuntime {
     this.calibrationCollecting = collecting;
     this.pacer?.setCalibrationCollecting(collecting);
   }
+  setTrackingLimits(limits: ReachTrackingLimits) {
+    const checked = parseReachTrackingLimits(limits);
+    this.pacer?.setTrackingLimits(checked);
+    this.trackingLimits = checked;
+  }
   setIndexTrackingEnabled(enabled: boolean) {
     this.indexEnabled = !!this.indexObserve && enabled;
     if (!this.indexEnabled) {
@@ -113,6 +134,7 @@ export class ReachBrowserRuntime {
     this.active = true;
     const pacer = new ReachTrackingPacer();
     this.pacer = pacer;
+    pacer.setTrackingLimits(this.trackingLimits);
     pacer.setFocused(document.hasFocus());
     pacer.setCalibrationCollecting(this.calibrationCollecting);
     const generation = ++this.generation;
@@ -203,6 +225,7 @@ export class ReachBrowserRuntime {
       let width = 0,
         height = 0;
       let lastCapture = -Infinity;
+      let lastMetricCapture: number | null = null;
       let imageCaptureCost = 0;
       let imageSequence = 0;
       let captureDue: number | null = null;
@@ -370,21 +393,36 @@ export class ReachBrowserRuntime {
             // Optional local diagnostics must not interrupt inference.
           }
           let observation: HandObservation | null = null;
+          let gateTime = performance.now();
           try {
-            observation = gate.accept(
-              adapter.envelope(
-                data.result,
-                data.capture,
-                data.inferenceTime - performance.timeOrigin,
-                data.width,
-                data.height,
-              ),
-              performance.now(),
+            const envelope = adapter.envelope(
+              data.result,
+              data.capture,
+              data.inferenceTime - performance.timeOrigin,
+              data.width,
+              data.height,
             );
+            gateTime = performance.now();
+            observation = gate.accept(envelope, gateTime);
             this.observe(observation);
             this.status("READY");
           } catch {
             this.status("STALE_OR_INVALID_OBSERVATION");
+          }
+          if (this.inferenceMetrics) {
+            try {
+              this.inferenceMetrics({
+                disposition: observation ? "ACCEPTED" : gateTime - data.capture > 150 ? "LATE" : "INVALID",
+                packetAgeMs: gateTime - data.capture,
+                modelResultMs: data.inferenceTime - performance.timeOrigin - data.capture,
+                preprocessingMs: imageCaptureCost,
+                frameIntervalMs: lastMetricCapture === null ? null : data.capture - lastMetricCapture,
+                handCount: observation?.hands.length ?? null,
+              });
+            } catch {
+              // Optional aggregate diagnostics cannot alter capture or eligibility.
+            }
+            lastMetricCapture = data.capture;
           }
           const prepared = this.preparedImage;
           if (this.indexObserve && this.indexEnabled && this.pendingImageCapture !== null) {

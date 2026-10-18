@@ -4201,7 +4201,7 @@
         "visibleOutcome": "A coherent staged camera and pointing workspace with visible acquisition, distinct recognition stages, safe recovery and independent results",
         "integrationOwner": "Reach calibration experience integration",
         "systems": ["reach", "project-sextant", "watchglass"],
-        "sourcePaths": ["src/reach", "src/app/devices/reach", "src/app/devices/pair/page.tsx"],
+        "sourcePaths": ["src/reach", "src/app/devices/reach", "src/app/devices/pair/page.tsx", "src/app/api/reach"],
         "projectionPaths": [
           "src/watchglass/hand-observation.ts",
           "src/watchglass/hand-provider.ts",
@@ -4234,7 +4234,11 @@
           "STALE_IMAGE_TRACK",
           "ADAPTIVE_PACING",
           "FULL_HAND_PRIORITY",
-          "FULL_HAND_INDEX_CONFLICT"
+          "FULL_HAND_INDEX_CONFLICT",
+          "POLICY_DISABLED",
+          "POLICY_UNAVAILABLE",
+          "POLICY_RATE_UPDATE",
+          "AUTOMATIC_METRICS"
         ],
         "devices": ["DESKTOP", "MOBILE"],
         "roles": ["ANONYMOUS"],
@@ -4290,7 +4294,10 @@
           "Absolute empirical RGB pointing is experimental and must pass held-out validation for the current setup; relative cursor control has distinct setup and claims.",
           "Camera movement can be undetectable. Calibration is session-only and must be repeated after placement, identity or geometry changes.",
           "Phase 2 target selection, Phase 3 manipulation and Crossdeck Air Handoff are not implemented by this laboratory.",
-          "Index-only intent is heuristic. Manual fingertip hints select appearance, not an automatic finger classifier. Blur, edge clipping, repeated texture, occlusion and unverified monocular anatomy may pause tracking; physical robustness remains pending."
+          "Index-only intent is heuristic. Manual fingertip hints select appearance, not an automatic finger classifier. Blur, edge clipping, repeated texture, occlusion and unverified monocular anatomy may pause tracking; physical robustness remains pending.",
+          "The Laboratory, guided demo and local recorder require current mandatory Reach policy. Initial unavailability blocks entry; policy expiry or global disable stops owned camera/model work, clears actionable output and never automatically restarts capture after re-enable. Conventional navigation and existing local recordings remain available.",
+          "Current policy applies normal, calibration, unfocused and model ceilings without restarting an otherwise valid active camera. Hidden pages stop camera capture; policy cannot weaken observation freshness, source binding, sample collection or independent held-out accuracy requirements.",
+          "Live numeric aggregate reporting is automatic only while both global Reach and reporting switches allow it. There is no user telemetry toggle or account association. Reports exclude raw camera content, landmarks, coordinates, coefficients, camera/track/session identifiers and trajectories; report windows do not establish distinct people or sessions. Guided and synthetic experiments remain separate from live client-reported metrics."
         ],
         "resolvedDebtIds": ["PE-DEBT-REACH-STAGES"],
         "journeys": [
@@ -4881,6 +4888,271 @@
                 "path": "/devices/pair",
                 "returnPath": true,
                 "state": "RETURNED"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "reach.admiralty.controls",
+      "name": "Reach mandatory runtime policy and numeric reporting in Admiralty",
+      "authority": "reach",
+      "owners": ["reach", "project-admiralty", "project-sextant"],
+      "critical": true,
+      "experience": {
+        "persona": "An authorized Admiralty observer or operator inspecting Reach performance and governing every client",
+        "objective": "Enter through Admiralty, understand report coverage and limits, then review and apply an exact runtime policy through canonical privileged assurance",
+        "visibleOutcome": "Reach reports distinguish missing evidence from measured outcomes, and a revisioned policy change has an exact preview, explicit confirmation, receipt and audit history",
+        "integrationOwner": "Reach and Admiralty runtime governance integration",
+        "systems": ["reach", "project-admiralty", "project-sextant"],
+        "sourcePaths": [
+          "src/app/admin/reach",
+          "src/app/api/reach",
+          "src/app/api/admin/reach",
+          "src/app/api/admin/commands/reach-runtime-policy",
+          "src/components/admiralty/ReachAdminConsole.tsx",
+          "src/components/admiralty/ReachAdminConsole.module.css",
+          "src/reach/admin-commands.ts",
+          "src/reach/admin-service.ts",
+          "src/reach/admin-storage.ts",
+          "src/reach/runtime-policy.ts",
+          "src/reach/runtime-policy-client.ts",
+          "src/reach/telemetry.ts",
+          "src/reach/telemetry-client.ts"
+        ],
+        "projectionPaths": [
+          "src/components/admiralty/AdmiraltyShell.tsx",
+          "src/admiralty/configuration-registry.ts",
+          "src/admiralty/ports/operations-admin-read.ts",
+          "src/reach/ReachLaboratory.tsx",
+          "src/reach/ReachPoseRecorder.tsx",
+          "src/reach/browser-runtime.ts",
+          "src/reach/tracking-pacer.ts"
+        ],
+        "entryPoint": "/admin",
+        "states": [
+          "OVERVIEW",
+          "PERFORMANCE",
+          "CALIBRATION",
+          "POLICY_READY",
+          "OBSERVE_ONLY",
+          "ASSURANCE_REQUIRED",
+          "POLICY_PREVIEW",
+          "POLICY_CONFIRMED",
+          "POLICY_HISTORY",
+          "EMPTY_REPORTS",
+          "REPORTING_UNAVAILABLE",
+          "REPORTING_INCOMPLETE",
+          "POLICY_DISABLED",
+          "POLICY_UNAVAILABLE",
+          "POLICY_RATE_UPDATE",
+          "AUTOMATIC_METRICS",
+          "RETURNED"
+        ],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["CONFIG_OBSERVE", "CONFIG_OPERATE"],
+        "accessibility": "Labeled native controls, visible focus, keyboard-operable report tabs, exact data tables and contained narrow-screen overflow support both observation and policy review. Desktop, mobile and reduced-motion review must retain the same meaning and governed actions.",
+        "fallback": "Empty reports establish no performance claim. Unavailable storage shows no assumed policy or totals. Pooled summaries must cover every matching retained report; incomplete pagination, count mismatch or numeric overflow makes the summary unavailable rather than presenting a partial cohort as the entire population. Observe-only authority cannot preview or execute; expired assurance, stale revision or changed preview requires renewed review.",
+        "navigation": "An authenticated operator enters /admin and selects Reach from the authorized Admiralty navigation. Report views and policy history stay in /admin/reach, with the ordinary Overview link returning to /admin.",
+        "designTarget": "Preserve the canonical Admiralty shell, readable cards and restrained report hierarchy. Keep source, denominators, missingness, histogram percentile bounds and report windows visible; do not present report counts as people or sessions. Separate observed handedness confidence from unavailable pointing confidence. CONFIG_OBSERVE grants observation and CONFIG_OPERATE grants governed mutation. A change requires Current password, Verify identity, Preview Reach policy, the exact before/after values and consequences, the I reviewed the policy and its effect on all Reach clients checkbox, Confirm and apply Reach policy, a receipt and canonical audit history. Draft changes invalidate a preview; assurance, revision and confirmation are rechecked by the server. Restoring a previous policy is a newly reviewed command. No user telemetry switch exists. Feature and reporting policy apply globally; disable or expired policy stops owned camera work without automatic restart, live rate changes preserve the active camera, and hidden pages stop capture. Accuracy, freshness, source integrity and camera permission remain immutable.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted public entry establishes hierarchy and a coherent shell around distinct role destinations.",
+            "preserve": "Visible account access, clear destinations, cinematic composition and a usable reduced-motion equivalent."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted constrained gateway keeps the same destinations and account access.",
+            "preserve": "Mobile task hierarchy, readable controls and contextual navigation."
+          }
+        ],
+        "homeportScreenIds": [],
+        "homeportJourneyIds": [],
+        "browserTests": ["tests/e2e/reach-admiralty.spec.ts"],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "motion": {
+          "measurement": "Visible report-view activation to the corresponding rendered panel; software UI feedback excludes camera sensing, physical recognition latency and policy polling propagation",
+          "feedbackBudgetMs": 5000
+        },
+        "continuity": {
+          "objective": "Keep authenticated capability authority and governed commands in canonical Admiralty while every Reach consumer follows the same mandatory runtime policy and camera lifecycle.",
+          "checks": [
+            {
+              "id": "admiralty-home-origin",
+              "role": "link",
+              "name": "Admiralty Open the Chartroom",
+              "attribute": "href"
+            }
+          ]
+        },
+        "limitations": [
+          "This is a source-bound development contract, not protected qualification, physical webcam acceptance or proof of universal user coverage.",
+          "The registered browser spec requires TASK_OWNED_SYNTHETIC_REACH_ADMIN fixture classification, private credentials and a matching isolated loopback server/database. The owner preview at port 3137 and shared runtime databases are forbidden. Generic profile membership does not provision this dedicated fixture or authorize its mutation.",
+          "Role setup requires separately provisioned authenticated synthetic storage state with the named canonical capability and access to /admin; no owner credentials or fabricated role identities are embedded. Governed mutation proof uses the dedicated browser spec and its deliberate current-password assurance, exact preview, confirmation and audit assertions.",
+          "Empty, unavailable and incomplete summaries require rendered component proof; desktop/mobile and reduced-motion states require source-bound visual review. Registering these obligations does not declare those reviews complete.",
+          "Live reports contain only bounded numeric counters and fixed-bin distributions. No account association, identifiers, camera content, landmarks, coordinates, trajectories or coefficients are permitted. Report counts cannot establish distinct people or sessions, and model-path experiments remain distinct from live client-reported evidence. Server aggregation streams all retained matching reports through fixed-size counters and histogram bins. Policy-revision metadata is bounded to 128 buckets with explicit overflow report coverage; numeric totals remain complete.",
+          "Cross-consumer proof must cover disabled and expired policy, active camera stop without automatic restart, rate changes without camera restart, hidden-page camera shutdown and optional local-recorder policy. Policy cannot weaken the 150 ms freshness, minimum target evidence, independent raw 3% held-out check or source/context binding.",
+          "Retention excludes expired data on reads and purges it during collection/reporting/policy operations; no independent periodic deletion service is claimed."
+        ],
+        "roleSetup": {
+          "CONFIG_OBSERVE": {
+            "entryPoint": "/admin",
+            "steps": [],
+            "witness": { "role": "heading", "name": "Platform Overview", "text": "Platform Overview" }
+          },
+          "CONFIG_OPERATE": {
+            "entryPoint": "/admin",
+            "steps": [],
+            "witness": { "role": "heading", "name": "Platform Overview", "text": "Platform Overview" }
+          }
+        },
+        "journeys": [
+          {
+            "id": "observe-reach-reports-and-return",
+            "roles": ["CONFIG_OBSERVE", "CONFIG_OPERATE"],
+            "outcome": "An authorized operator opens Reach naturally, compares performance with independent calibration outcomes, understands reporting limits and returns to Admiralty",
+            "steps": [
+              { "action": "click", "role": "link", "name": "Reach" },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Reach",
+                "text": "Reach",
+                "path": "/admin/reach",
+                "state": "OVERVIEW",
+                "feedbackBoundary": true,
+                "meaning": "The authorized Admiralty navigation opens the dedicated Reach reporting and policy destination."
+              },
+              { "action": "click", "role": "button", "name": "Performance" },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Performance distributions",
+                "text": "Performance distributions",
+                "path": "/admin/reach",
+                "state": "PERFORMANCE",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "The performance view separates measured distributions, missingness and source limitations from calibration results."
+              },
+              { "action": "click", "role": "button", "name": "Calibration" },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Calibration and independent checks",
+                "text": "Calibration and independent checks",
+                "path": "/admin/reach",
+                "state": "CALIBRATION",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "Absolute and relative independent-check outcomes remain distinct and retain the raw held-out accuracy requirement."
+              },
+              { "action": "click", "role": "button", "name": "Privacy & history" },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Privacy and measurement limits",
+                "text": "Privacy and measurement limits",
+                "path": "/admin/reach",
+                "state": "AUTOMATIC_METRICS",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "Automatic numeric reporting and its privacy, retention and report-coverage boundaries remain explicit."
+              },
+              { "action": "click", "role": "link", "name": "Overview" },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Platform Overview",
+                "text": "Platform Overview",
+                "path": "/admin",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "review-mandatory-policy-and-return",
+            "roles": ["CONFIG_OPERATE"],
+            "outcome": "A policy operator sees the global runtime ceilings, privileged assurance controls and immutable safeguards before any governed change",
+            "steps": [
+              { "action": "click", "role": "link", "name": "Reach" },
+              { "action": "click", "role": "button", "name": "Runtime policy" },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Mandatory runtime policy",
+                "text": "Mandatory runtime policy",
+                "path": "/admin/reach",
+                "state": "POLICY_READY",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "Mandatory ceilings and global availability are governed in canonical Admiralty rather than by a client override."
+              },
+              { "action": "assert", "role": "button", "name": "Verify identity", "state": "ASSURANCE_REQUIRED" },
+              { "action": "assert", "role": "button", "name": "Preview Reach policy" },
+              { "action": "assert", "role": "heading", "name": "Immutable safeguards" },
+              { "action": "click", "role": "button", "name": "Privacy & history" },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Policy history",
+                "text": "Policy history",
+                "path": "/admin/reach",
+                "state": "POLICY_HISTORY",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "Policy changes retain revisioned receipts and canonical audit history; a previous policy can only be staged for a new governed review."
+              },
+              { "action": "click", "role": "link", "name": "Overview" },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Platform Overview",
+                "text": "Platform Overview",
+                "path": "/admin",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "observe-policy-without-mutation",
+            "roles": ["CONFIG_OBSERVE"],
+            "outcome": "An observe-only operator sees mandatory policy and safeguards without assurance, preview or execution controls",
+            "steps": [
+              { "action": "click", "role": "link", "name": "Reach" },
+              { "action": "click", "role": "button", "name": "Runtime policy" },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Mandatory runtime policy",
+                "text": "Mandatory runtime policy",
+                "path": "/admin/reach",
+                "state": "OBSERVE_ONLY",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "absentRole": { "role": "button", "name": "Preview Reach policy" },
+                "meaning": "CONFIG_OBSERVE permits inspection while CONFIG_OPERATE remains required for policy preview and execution."
+              },
+              { "action": "click", "role": "link", "name": "Overview" },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Platform Overview",
+                "text": "Platform Overview",
+                "path": "/admin",
+                "state": "RETURNED",
+                "returnPath": true
               }
             ]
           }

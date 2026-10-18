@@ -1,5 +1,8 @@
 // @sounding-line-registration owner=reach suite=browser.reach contracts=reach.phase1.foundation
 import { expect, test } from "@playwright/test";
+test.beforeEach(async ({ page }) => {
+  await page.route("**/api/reach/telemetry", (route) => route.fulfill({ status: 200, json: { accepted: true } }));
+});
 
 test("local recorder waits for processed camera evidence before its first pointer start", async ({
   page,

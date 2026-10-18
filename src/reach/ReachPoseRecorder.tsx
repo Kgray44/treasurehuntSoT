@@ -1,7 +1,8 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ReachBrowserRuntime } from "./browser-runtime";
+import { useReachRuntimePolicy } from "./runtime-policy-client";
 import { ReachStage } from "./ReachStage";
 import { ReachTiming, type ReachVisualFrame } from "./visualization";
 import {
@@ -29,6 +30,12 @@ const firstView: ReturnType<PoseRecordingSession["tick"]> = {
   paused: false,
 };
 export function ReachPoseRecorder() {
+  const runtimePolicy = useReachRuntimePolicy();
+  const policyRef = useRef(runtimePolicy);
+  useLayoutEffect(() => {
+    policyRef.current = runtimePolicy;
+  }, [runtimePolicy]);
+  const allowed = runtimePolicy.status === "READY" && runtimePolicy.policy?.localRecorderEnabled === true;
   const video = useRef<HTMLVideoElement>(null),
     stage = useRef<HTMLDivElement>(null);
   const runtime = useRef<ReachBrowserRuntime | null>(null),
@@ -62,6 +69,7 @@ export function ReachPoseRecorder() {
     [frameAspect, setFrameAspect] = useState(4 / 3);
   const stopRef = useRef<(reason?: string, cancel?: boolean) => void>(() => {});
   const setRecordingPhase = (next: Phase) => {
+    runtime.current?.setCalibrationCollecting(next === "RECORDING");
     phaseRef.current = next;
     if (mounted.current) setPhase(next);
   };
@@ -128,6 +136,14 @@ export function ReachPoseRecorder() {
       },
     );
     runtime.current = r;
+    const policy = policyRef.current.policy;
+    if (policy)
+      r.setTrackingLimits({
+        normalMaximumHz: policy.normalMaximumHz,
+        calibrationMaximumHz: policy.calibrationMaximumHz,
+        unfocusedMaximumHz: policy.unfocusedMaximumHz,
+        modelMaximumHz: policy.modelMaximumHz,
+      });
     const hidden = () => {
       if (document.visibilityState !== "visible") {
         stopRef.current("PAGE_HIDDEN");
@@ -151,6 +167,15 @@ export function ReachPoseRecorder() {
     };
   }, []);
   useEffect(() => {
+    if (allowed && runtimePolicy.policy) {
+      const { normalMaximumHz, calibrationMaximumHz, unfocusedMaximumHz, modelMaximumHz } = runtimePolicy.policy;
+      runtime.current?.setTrackingLimits({ normalMaximumHz, calibrationMaximumHz, unfocusedMaximumHz, modelMaximumHz });
+    } else if (runtimePolicy.status !== "LOADING") {
+      stopRef.current("ADMINISTRATOR_POLICY_STOPPED");
+      runtime.current?.stop();
+    }
+  }, [allowed, runtimePolicy.status, runtimePolicy.policy]);
+  useEffect(() => {
     const timer = setInterval(() => {
       const current = session.current;
       if (!current || current.stopped) return;
@@ -172,6 +197,7 @@ export function ReachPoseRecorder() {
     setError("");
   };
   const start = () => {
+    if (policyRef.current.status !== "READY" || !policyRef.current.policy?.localRecorderEnabled) return;
     setError("");
     if (phaseRef.current !== "IDLE" || saved.current) return;
     const sourceVideo = video.current,
@@ -493,6 +519,14 @@ export function ReachPoseRecorder() {
               <p className={styles.cameraStatus}>Prompt position only · no fit or pointing eligibility gate</p>
             </>
           )}
+          {!allowed && runtimePolicy.status !== "LOADING" && (
+            <p className={styles.error} role="status">
+              {runtimePolicy.status === "UNAVAILABLE"
+                ? "Current Reach policy is unavailable."
+                : "An administrator disabled Reach or local recording."}{" "}
+              Capture stopped; existing recording data is retained for review.
+            </p>
+          )}
           {error && (
             <p className={styles.error} role="alert">
               {error}
@@ -502,7 +536,9 @@ export function ReachPoseRecorder() {
             <div className={styles.actions}>
               {!busy && status !== "READY" && (
                 <button
+                  disabled={!allowed}
                   onClick={() => {
+                    if (policyRef.current.status !== "READY" || !policyRef.current.policy?.localRecorderEnabled) return;
                     setError("");
                     void runtime.current?.start(true, true);
                   }}
@@ -511,7 +547,7 @@ export function ReachPoseRecorder() {
                 </button>
               )}
               {phase === "IDLE" && (
-                <button disabled={status !== "READY" || !captureReady} onClick={start}>
+                <button disabled={!allowed || status !== "READY" || !captureReady} onClick={start}>
                   Start guided video + trace recording
                 </button>
               )}

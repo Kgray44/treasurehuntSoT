@@ -3,6 +3,9 @@ import { test, expect, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+test.beforeEach(async ({ page }) => {
+  await page.route("**/api/reach/telemetry", (route) => route.fulfill({ status: 200, json: { accepted: true } }));
+});
 const status = (page: Page) => page.getByRole("status", { name: "Reach status" });
 async function demo(page: Page, mode: "ABSOLUTE" | "RELATIVE" = "ABSOLUTE") {
   await page.goto("/devices/pair");

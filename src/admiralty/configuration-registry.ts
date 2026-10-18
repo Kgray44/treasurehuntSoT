@@ -356,6 +356,88 @@ export const admiraltyConfigurationRegistry: readonly AdmiraltyConfigurationDefi
     secretClassification: "NONE",
     mutationCommandOwner: "Harborlight COMMUNITY_OUTBOX_RUNTIME_POLICY_UPDATE",
   },
+  ...(
+    [
+      [
+        "feature-enabled",
+        "Reach availability",
+        "BOOLEAN",
+        "Enabled or disabled for all clients",
+        "Global Reach feature availability; camera consent remains required.",
+      ],
+      [
+        "normal-maximum-hz",
+        "Normal Reach capture ceiling",
+        "INTEGER",
+        "5 through 30 Hz",
+        "Mandatory normal and paused-calibration capture ceiling.",
+      ],
+      [
+        "calibration-maximum-hz",
+        "Reach calibration capture ceiling",
+        "INTEGER",
+        "Normal ceiling through 60 Hz",
+        "Mandatory ceiling while calibration actively collects samples.",
+      ],
+      [
+        "unfocused-maximum-hz",
+        "Unfocused Reach capture ceiling",
+        "INTEGER",
+        "1 through 8 Hz, at most normal",
+        "Visible unfocused capture ceiling; hiding the page still stops camera capture.",
+      ],
+      [
+        "model-maximum-hz",
+        "Reach hand model inference ceiling",
+        "INTEGER",
+        "5 through 60 Hz",
+        "Effective pipeline rate is the lower of model and current phase ceilings.",
+      ],
+      [
+        "telemetry-enabled",
+        "Automatic Reach aggregate reports",
+        "BOOLEAN",
+        "Enabled or disabled globally",
+        "Automatic bounded scalar telemetry without media, landmarks or identifying fields.",
+      ],
+      [
+        "telemetry-retention-days",
+        "Reach report retention",
+        "INTEGER",
+        "7 through 90 days",
+        "Maximum report retention; reducing it can purge older reports.",
+      ],
+      [
+        "local-recorder-enabled",
+        "Local Reach pose recorder",
+        "BOOLEAN",
+        "Enabled or disabled",
+        "Global permission remains subject to the local environment, loopback host and explicit recording action.",
+      ],
+    ] as const
+  ).map(
+    ([key, name, valueType, allowedValues, description], index): AdmiraltyConfigurationDefinition => ({
+      id: `ADM-CFG-${String(index + 16).padStart(3, "0")}`,
+      key: `reach.${key}`,
+      name,
+      description,
+      owner: "Reach",
+      managementClass: "POLICY_EDITABLE",
+      valueType,
+      sourceReference: "src/reach/runtime-policy.ts",
+      allowedValues,
+      validation: "Strict owner schema; expected revision, recent assurance and explicit confirmation",
+      requiredCapability: "CONFIG_OPERATE",
+      reauthenticationRequired: true,
+      supportGrantRequired: false,
+      restartOrReload: "Clients refresh every 15 seconds; unavailable policy expires after 30 seconds",
+      previewBehavior: "Current/proposed policy, consequences and expiry at /admin/reach",
+      auditCategory: "GOVERNED_POLICY_CHANGE",
+      rollbackBehavior: "Preview the prior policy using a new reason and the current revision",
+      secretClassification: "NONE",
+      mutationCommandOwner: "Reach REACH_RUNTIME_POLICY_UPDATE",
+    }),
+  ),
 ];
 
 export function configurationDefinition(key: string) {

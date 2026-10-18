@@ -2,6 +2,9 @@
 import { expect, test } from "@playwright/test";
 import { readFile } from "node:fs/promises";
 import { pointingPose, pointingTransitionPose } from "./fixtures/reach/pointing-poses";
+test.beforeEach(async ({ page }) => {
+  await page.route("**/api/reach/telemetry", (route) => route.fulfill({ status: 200, json: { accepted: true } }));
+});
 
 test("the local recording tool honors its flag and keeps video, raw trace and pause local", async ({
   page,

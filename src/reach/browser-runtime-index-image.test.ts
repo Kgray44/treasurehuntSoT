@@ -1,6 +1,6 @@
 // @sounding-line-registration owner=reach suite=unit.reach contracts=reach.phase1.foundation
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { ReachBrowserRuntime, type IndexImageObservation } from "./browser-runtime";
+import { ReachBrowserRuntime, type IndexImageObservation, type ReachInferenceMetrics } from "./browser-runtime";
 import type { HandResult } from "@/watchglass/hand-provider";
 import { pointingPose } from "../../tests/e2e/fixtures/reach/pointing-poses";
 import { IndexImageTracker } from "./index-image-tracker";
@@ -38,6 +38,7 @@ function setup(
     backend?: "CPU_WASM" | "GPU_WEBGL";
     imageFailure?: "DRAW" | "READBACK";
     calibrationCollecting?: boolean;
+    metricsThrows?: boolean;
   } = {},
 ) {
   vi.useFakeTimers();
@@ -160,6 +161,9 @@ function setup(
     ),
   };
   const observe = vi.fn(),
+    metrics = vi.fn<(packet: ReachInferenceMetrics) => void>(() => {
+      if (options.metricsThrows) throw new Error("OPTIONAL_METRICS_FAILED");
+    }),
     image = vi.fn<(observation: IndexImageObservation) => void>(() => {
       now += options.callbackCostMs ?? 0;
     }),
@@ -171,6 +175,7 @@ function setup(
     media,
     undefined,
     options.imageConsumer === false ? undefined : image,
+    metrics,
   );
   sessions.push(runtime);
   // Source integration cases use active collection; normal tracking is covered
@@ -183,6 +188,7 @@ function setup(
     workers,
     image,
     observe,
+    metrics,
     status,
     track,
     bitmap,
@@ -240,18 +246,122 @@ function setup(
 }
 
 describe("runtime image source integration", () => {
-  it("uses the normal 30Hz ceiling unless the Lab explicitly marks active collection", async () => {
-    const s = setup({ calibrationCollecting: false });
+  it("reports only scalar gate disposition and preserves rejected-packet denominators", async () => {
+    const s = setup();
     const worker = await s.start();
-    expect(s.runtime.trackingPacing()).toMatchObject({ calibrationCollecting: false, maximumHz: 30 });
     await s.advance(10);
     s.result();
+    expect(s.metrics).toHaveBeenLastCalledWith({
+      disposition: "ACCEPTED",
+      packetAgeMs: 10,
+      modelResultMs: 10,
+      preprocessingMs: 0,
+      frameIntervalMs: null,
+      handCount: 0,
+    });
     s.freshFrame();
-    await s.advance(23);
+    await s.advance(7);
+    const capture = worker.frames.at(-1)!.capture;
+    await s.advance(151);
+    s.result(capture);
+    expect(s.metrics).toHaveBeenLastCalledWith(
+      expect.objectContaining({ disposition: "LATE", packetAgeMs: 151, handCount: null }),
+    );
+    for (const [packet] of s.metrics.mock.calls) {
+      expect(Object.keys(packet).sort()).toEqual(
+        ["disposition", "packetAgeMs", "modelResultMs", "preprocessingMs", "frameIntervalMs", "handCount"].sort(),
+      );
+      expect(
+        Object.values(packet).every((value) => value === null || ["string", "number"].includes(typeof value)),
+      ).toBe(true);
+    }
+  });
+  it("isolates aggregate diagnostic failures from inference and image tracking", async () => {
+    const s = setup({ metricsThrows: true });
+    await s.start();
+    await s.advance(10);
+    s.result();
+    expect(s.metrics).toHaveBeenCalledOnce();
+    expect(s.image).toHaveBeenCalledOnce();
+    expect(s.status).toHaveBeenLastCalledWith("READY");
+    expect(s.runtime.resources().workers).toBe(1);
+  });
+  it("applies administrative limits to a pending timer without restarting the camera or image identity", async () => {
+    const s = setup();
+    const worker = await s.start();
+    await s.advance(10);
+    s.result();
+    const first = s.image.mock.calls[0][0];
+    const resources = s.runtime.resources();
+    s.runtime.setTrackingLimits({
+      modelMaximumHz: 60,
+      normalMaximumHz: 10,
+      calibrationMaximumHz: 20,
+      unfocusedMaximumHz: 5,
+    });
+    expect(s.runtime.trackingPacing()?.maximumHz).toBe(20);
+    expect(s.runtime.resources()).toEqual(resources);
+    s.freshFrame();
+    await s.advance(7);
+    expect(worker.frames).toHaveLength(1);
+    await s.advance(32);
     expect(worker.frames).toHaveLength(1);
     await s.advance(1);
     expect(worker.frames).toHaveLength(2);
-    expect(worker.frames[1].capture - worker.frames[0].capture).toBeGreaterThanOrEqual(1000 / 30);
+    await s.advance(10);
+    s.result();
+    expect(s.image.mock.calls[1][0]).toMatchObject({
+      state: "TRACKING",
+      trackId: first.trackId,
+      trackGeneration: first.trackGeneration,
+      providerGeneration: first.providerGeneration,
+      cameraLeaseId: first.cameraLeaseId,
+    });
+    expect(s.track.stop).not.toHaveBeenCalled();
+    expect(worker.terminate).not.toHaveBeenCalled();
+  });
+  it("validates administrative limits even before a camera session is started", () => {
+    const s = setup();
+    expect(() =>
+      s.runtime.setTrackingLimits({
+        modelMaximumHz: 60,
+        normalMaximumHz: 5,
+        calibrationMaximumHz: 60,
+        unfocusedMaximumHz: 8,
+      }),
+    ).toThrow("REACH_TRACKING_LIMITS_INVALID");
+    expect(s.runtime.resources()).toEqual({ tracks: 0, workers: 0, timers: 0 });
+  });
+  it("uses policy supplied before startup for the first scheduled collection interval", async () => {
+    const s = setup();
+    s.runtime.setTrackingLimits({
+      modelMaximumHz: 60,
+      normalMaximumHz: 10,
+      calibrationMaximumHz: 20,
+      unfocusedMaximumHz: 5,
+    });
+    const worker = await s.start();
+    expect(s.runtime.trackingPacing()).toMatchObject({ maximumHz: 20, calibrationCollecting: true });
+    await s.advance(10);
+    s.result();
+    s.freshFrame();
+    await s.advance(39);
+    expect(worker.frames).toHaveLength(1);
+    await s.advance(1);
+    expect(worker.frames).toHaveLength(2);
+  });
+  it("uses the normal 15Hz ceiling unless the Lab explicitly marks active collection", async () => {
+    const s = setup({ calibrationCollecting: false });
+    const worker = await s.start();
+    expect(s.runtime.trackingPacing()).toMatchObject({ calibrationCollecting: false, maximumHz: 15 });
+    await s.advance(10);
+    s.result();
+    s.freshFrame();
+    await s.advance(56);
+    expect(worker.frames).toHaveLength(1);
+    await s.advance(1);
+    expect(worker.frames).toHaveLength(2);
+    expect(worker.frames[1].capture - worker.frames[0].capture).toBeGreaterThanOrEqual(1000 / 15);
   });
   it("does not let an already scheduled fast capture bypass a collection pause", async () => {
     const s = setup();
@@ -261,14 +371,14 @@ describe("runtime image source integration", () => {
     s.result();
     s.freshFrame();
     s.runtime.setCalibrationCollecting(false);
-    expect(s.runtime.trackingPacing()).toMatchObject({ calibrationCollecting: false, maximumHz: 30 });
+    expect(s.runtime.trackingPacing()).toMatchObject({ calibrationCollecting: false, maximumHz: 15 });
     await s.advance(7);
     expect(worker.frames).toHaveLength(1);
-    await s.advance(16);
+    await s.advance(49);
     expect(worker.frames).toHaveLength(1);
     await s.advance(1);
     expect(worker.frames).toHaveLength(2);
-    expect(worker.frames[1].capture - worker.frames[0].capture).toBeGreaterThanOrEqual(1000 / 30);
+    expect(worker.frames[1].capture - worker.frames[0].capture).toBeGreaterThanOrEqual(1000 / 15);
   });
   it("preserves one-in-flight backpressure when collection becomes active", async () => {
     const s = setup({ calibrationCollecting: false });

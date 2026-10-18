@@ -1,6 +1,10 @@
 // @sounding-line-registration owner=reach suite=browser.reach contracts=reach.phase1.foundation
 import { expect, test, type Page } from "@playwright/test";
 import { pointingPose } from "./fixtures/reach/pointing-poses";
+test.beforeEach(async ({ page }) => {
+  // Controlled fixtures must never populate the live optimization store.
+  await page.route("**/api/reach/telemetry", (route) => route.fulfill({ status: 200, json: { accepted: true } }));
+});
 
 /** Public analytic appearance and fake inference. This is D0 integration proof, never physical recognition proof. */
 async function installFixture(page: Page, model = "FULL") {
@@ -481,7 +485,7 @@ test("D0 live setup opens empty before pointing and binds its first fresh source
       name: mode === "RELATIVE" ? "Set up relative movement" : "Begin nine-point calibration",
       exact: true,
     });
-    await expect(root(page)).toHaveAttribute("data-capture-ceiling", "30");
+    await expect(root(page)).toHaveAttribute("data-capture-ceiling", "15");
     await expect(root(page)).toHaveAttribute("data-calibration-capture", "false");
     await expect(start).toBeEnabled();
     await start.click();
@@ -556,13 +560,13 @@ test("D0 live setup opens empty before pointing and binds its first fresh source
     expect((firstFresh as { acquisition: number }).acquisition).toBeGreaterThan(0);
     phases.push(firstFresh);
     await page.getByRole("button", { name: "Pause calibration", exact: true }).click();
-    await expect(root(page)).toHaveAttribute("data-capture-ceiling", "30");
+    await expect(root(page)).toHaveAttribute("data-capture-ceiling", "15");
     await expect(root(page)).toHaveAttribute("data-calibration-capture", "false");
     await page.getByRole("button", { name: "Resume calibration", exact: true }).click();
     await expect(root(page)).toHaveAttribute("data-capture-ceiling", "60");
     await expect(root(page)).toHaveAttribute("data-calibration-capture", "true");
     await page.getByRole("button", { name: "Pause calibration", exact: true }).click();
-    await expect(root(page)).toHaveAttribute("data-capture-ceiling", "30");
+    await expect(root(page)).toHaveAttribute("data-capture-ceiling", "15");
     await expect(page.getByRole("alert", { name: "Setup ended", exact: true })).toHaveCount(0);
     await page.screenshot({
       path: testInfo.outputPath(`D0-unbound-${mode.toLowerCase()}-first-point.png`),
