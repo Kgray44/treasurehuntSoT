@@ -21,6 +21,13 @@ import { experienceDigest, validateExperienceArtifacts } from "./product-experie
 import { validatePairedEvidence } from "./experience-paired.mjs";
 import { validateCurrentPublicationArtifacts } from "./experience-current-admission.mjs";
 import { createBrowserDiagnosticSession } from "./browser-diagnostics.mjs";
+import {
+  EXPERIENCE_RAW_OUTPUT,
+  createRawOutputDirectory,
+  rawCaptureBinding,
+  sealRawCaptureOutput,
+} from "./experience-raw-output.mjs";
+import { retainRawCaptureOutput, verifiedRawCapturePaths } from "./experience-raw-retention.mjs";
 
 const canonical = "Development_Docs/Testing/Product_Experience/evidence";
 const staging = "artifacts/sounding-line/product-experience-capture-staging";
@@ -397,17 +404,23 @@ export async function captureAndPublishExperience({
   replay = runTrustedExperienceReplay,
   promote = rename,
   onPaths = async () => {},
+  retainRaw = retainRawCaptureOutput,
 }) {
   root = path.resolve(root);
   if ((await realpath(root)) !== root) fail("ROOT_SYMLINK");
   const stageRoot = await directory(root, staging);
   const owned = await mkdtemp(path.join(stageRoot, "capture-"));
   const workingDirectory = `${relative(root, owned)}/capture`;
+  const rawDirectory = `${relative(root, owned)}/raw`;
+  const encryptedDirectory = `${relative(root, owned)}/encrypted`;
   const journalDirectory = `${publication}/${path.basename(owned)}`;
   await mkdir(await ownedPath(root, journalDirectory, { directories: true }));
   await mkdir(path.join(root, workingDirectory));
+  await createRawOutputDirectory({ root, directory: rawDirectory });
   await onPaths({
     capture_stage_path: workingDirectory,
+    capture_raw_encrypted_path: encryptedDirectory,
+    capture_raw_retention_status: "PENDING",
     capture_journal_path: `${journalDirectory}/journal.json`,
     capture_journal_failure_path: `${journalDirectory}/journal-failure.json`,
     capture_journal_pending_path: `${journalDirectory}/journal.*.pending`,
@@ -420,26 +433,69 @@ export async function captureAndPublishExperience({
   });
   const runtimePaths = [],
     profilePaths = [];
-  const result = await replay({
-    root,
-    plan: replayPlan,
-    environment,
-    validateReplay: false,
-    diagnostics,
-    onDiagnosticScope: async (paths) => {
-      const scope = relative(root, paths.directory);
-      if (!inside(scope, "artifacts/sounding-line/browser-diagnostics")) fail("DIAGNOSTIC_PATH_INVALID");
-      await mkdir(await ownedPath(root, scope, { directories: true }));
-      runtimePaths.push(relative(root, paths.runtime));
-      profilePaths.push(relative(root, paths.profile));
-      await onPaths({ capture_runtime_paths: [...runtimePaths], capture_profile_paths: [...profilePaths] });
-    },
-  });
-  if (
-    result.status !== "PASS" ||
-    path.resolve(result.capturePath) !== path.join(root, workingDirectory, "capture.json")
-  )
-    fail("REPLAY_INCOMPLETE");
+  let result, failure;
+  const retentionFailures = [];
+  try {
+    result = await replay({
+      root,
+      plan: replayPlan,
+      environment: { ...environment, [EXPERIENCE_RAW_OUTPUT]: rawDirectory },
+      validateReplay: false,
+      diagnostics,
+      onDiagnosticScope: async (paths) => {
+        const scope = relative(root, paths.directory);
+        if (!inside(scope, "artifacts/sounding-line/browser-diagnostics")) fail("DIAGNOSTIC_PATH_INVALID");
+        await mkdir(await ownedPath(root, scope, { directories: true }));
+        runtimePaths.push(relative(root, paths.runtime));
+        profilePaths.push(relative(root, paths.profile));
+        await onPaths({ capture_runtime_paths: [...runtimePaths], capture_profile_paths: [...profilePaths] });
+      },
+    });
+    if (
+      result.status !== "PASS" ||
+      path.resolve(result.capturePath) !== path.join(root, workingDirectory, "capture.json")
+    )
+      fail("REPLAY_INCOMPLETE");
+  } catch (error) {
+    failure = error;
+  }
+  try {
+    await sealRawCaptureOutput({
+      root,
+      rawDirectory,
+      binding: rawCaptureBinding(plan),
+      outcome: failure ? "FAIL" : "PASS",
+    });
+  } catch (error) {
+    retentionFailures.push(error);
+  }
+  try {
+    const completion = await retainRaw({
+      root,
+      rawDirectory,
+      encryptedDirectory,
+      binding: rawCaptureBinding(plan),
+      outcome: failure || retentionFailures.length ? "FAIL" : "PASS",
+    });
+    await onPaths({
+      capture_raw_verified_paths: await verifiedRawCapturePaths(completion),
+      capture_raw_retention_status: "COMPLETE",
+    });
+  } catch (error) {
+    retentionFailures.push(error);
+    try {
+      await onPaths({ capture_raw_retention_status: "INCOMPLETE" });
+    } catch (outputError) {
+      retentionFailures.push(outputError);
+    }
+  }
+  if (retentionFailures.length) {
+    const errors = [...(failure ? [failure] : []), ...retentionFailures];
+    throw new AggregateError(errors, "PRODUCT_EXPERIENCE_RAW_OUTPUT_RETENTION_FAILED", { cause: errors[0] });
+  }
+  if (failure) throw failure;
+  // Verify the complete retained raw closure before any canonical mutation.
+  // Publication has its own outcome and rollback journal; raw PASS is no acceptance.
   const published = await publishExperienceCapture({
     root,
     plan,

@@ -26,13 +26,29 @@ export async function writeCaptureOutputs(paths, environment = process.env, work
   assert(workspacePrefix === "" || safe(workspacePrefix), "PRODUCT_EXPERIENCE_CAPTURE_OUTPUT_PREFIX_INVALID");
   const lines = [];
   for (const [name, value] of Object.entries(paths)) {
+    if (name === "capture_raw_retention_status") {
+      assert(["PENDING", "COMPLETE", "INCOMPLETE"].includes(value));
+      lines.push(`${name}=${value}`);
+      continue;
+    }
     assert(
-      /^capture_(?:(?:plan|manifest|activation|stage|journal|journal_failure|journal_pending)_path|(?:runtime|profile)_paths)$/u.test(
+      /^capture_(?:(?:plan|manifest|activation|stage|raw_encrypted|journal|journal_failure|journal_pending)_path|(?:runtime|profile|raw_verified)_paths)$/u.test(
         name,
       ),
     );
     const values = Array.isArray(value) ? value : [value];
     assert(values.length > 0 && values.every((file) => safe(file) && file.startsWith("artifacts/sounding-line/")));
+    if (name === "capture_raw_verified_paths") {
+      assert(Array.isArray(value) && new Set(values).size === values.length);
+      const roots = values.map(
+        (file) =>
+          /^(artifacts\/sounding-line\/product-experience-capture-staging\/capture-[A-Za-z0-9_-]+\/encrypted)\/(?:part-[0-9]{6}\.encrypted|index\.encrypted|retention\.json)$/u.exec(
+            file,
+          )?.[1],
+      );
+      assert(roots.every(Boolean) && new Set(roots).size === 1);
+      assert(values.includes(`${roots[0]}/index.encrypted`) && values.includes(`${roots[0]}/retention.json`));
+    }
     const prefixed = values.map((file) => `${workspacePrefix ? workspacePrefix + "/" : ""}${file}`);
     if (Array.isArray(value)) {
       const delimiter = `capture_${randomUUID()}`;

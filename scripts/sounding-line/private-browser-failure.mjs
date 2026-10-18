@@ -29,6 +29,7 @@ export const BROWSER_FAILURE_LIMITS = Object.freeze({
 const publicKey =
   "-----BEGIN PUBLIC KEY-----\nMIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAqhR0X1gnk0ll9753ViDR\nia9R8pIDEYZDydLXSaSg9lRNd6kYNdkyeb7Bqt8z/A/MAJP5ngCPUaH0xvq4n+OQ\nXkF0v9XqdD/xkaZX4Cv4xiLyJkTU2lOdMEKI96o9dsHN428BTZ7nbW7sZ5Uh19L7\n8wYIw/mm+A44+3T5Tp0SCcoUcT9HqTZgk3r1CGu33WvNjeqyid22nYVSsPipQga+\ncTpcDQve9MePaFCPsi/KrRrsK2yxkgUwFY20SWu26ZjklAlQ0+isLE06f3MmsH0s\nimq0PLjcRbDG99iCJ/TiwEpZQJNJQT3n1rN7HzSYef0WZFKKkb+vF/vwihOP1AoF\nOwlHPHj3tiy5TR7ZXoqRSYC43NFDRVHp2WP8mDdJT2TInGhrwCuW/l0bpds+p7wQ\nUC2OIfq1p/FivQtp0X+4UDs8YjpSnrhl8cgqz9ipzr72TrB95I60ygrHIAfqKh47\nHKu5BOb2GG1c5KLTH9oJiZ4hsf620/dZ1Y0JjJAYAmmjAgMBAAE=\n-----END PUBLIC KEY-----\n";
 const keyId = "f82684218e386d09e9120d0c7b54722e5833e5c18a3d7a8a73d94b9afead48bc";
+export const BROWSER_FAILURE_ENCRYPTION_KEY = Object.freeze({ publicKey, keyId });
 const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const need = (value, code = "CONTEXT_INVALID") => {
   if (!value) throw Error(`SOUNDING_LINE_PRIVATE_BROWSER_FAILURE_${code}`);
