@@ -257,6 +257,27 @@ describe("image-tip readiness", () => {
   });
 });
 
+it.each(["UNSEEDED", "LOST"] as const)(
+  "explains a required new manual selection while%s without inventing an image source",
+  (state) => {
+    const selector = new IndexImageReadiness();
+    const result = selector.update(
+      frame(300, {
+        state,
+        point: null,
+        matchedPoint: null,
+        trackId: null,
+        trackGeneration: 0,
+        anchorSource: null,
+        reason: "MANUAL_SELECTION_REQUIRED",
+      }),
+    );
+    expect(result).toMatchObject({ eligible: false, condition: state, changed: false });
+    expect(result.guidance).toContain("Mark the visible fingertip again");
+    expect(result.guidance).toContain("will not replace your selection");
+  },
+);
+
 it.each([
   ["IMAGE_REFERENCE_CONFLICT", "appearance matches disagree"],
   ["IMAGE_REFERENCE_EXPIRED", "fresh setup"],

@@ -78,6 +78,8 @@ test("local recorder waits for processed camera evidence before its first pointe
   });
   try {
     await page.goto("/devices/reach/record");
+    const clean = page.getByRole("checkbox", { name: "Save camera image without hand overlay" });
+    await expect(clean).toBeChecked();
     const start = page.getByRole("button", { name: "Start guided video + trace recording" });
     await page.getByRole("button", { name: "Enable camera preview" }).click();
     await expect
@@ -94,10 +96,38 @@ test("local recorder waits for processed camera evidence before its first pointe
     expect(bounds).not.toBeNull();
     await page.mouse.click(bounds!.x + bounds!.width / 2, bounds!.y + bounds!.height / 2);
     await expect(page.getByRole("button", { name: "Pause recording", exact: true })).toBeVisible();
+    await expect(clean).toBeDisabled();
     const progress = page.getByRole("progressbar", { name: "Guided recording progress" });
     await expect.poll(async () => Number(await progress.getAttribute("value"))).toBeGreaterThan(900);
     await page.getByRole("button", { name: "Stop & review", exact: true }).click();
     await expect(page.getByRole("heading", { name: "Review your local recording" })).toBeVisible();
+    const trace = await page
+      .getByRole("link", { name: "Download landmark trace", exact: true })
+      .evaluate(async (link) => {
+        const response = await fetch((link as HTMLAnchorElement).href);
+        return response.json();
+      });
+    expect(trace.video).toMatchObject({
+      kind: "CAMERA_IMAGE_AND_PROMPT",
+      containsHandOverlay: false,
+      cameraImageEncoding: "MIRRORED_REENCODED_DIAGNOSTIC_NOT_RAW_SENSOR",
+      imageRegion: { x: 0, y: 0, width: 640, height: 480 },
+      annotationStripHeight: 112,
+      previewMirrorX: true,
+    });
+    await testInfo.attach("clean-camera-recording-metadata.json", {
+      body: JSON.stringify(
+        {
+          evidence: "SYNTHETIC_CAMERA_REAL_PINNED_CPU_WORKER_AND_MEDIARECORDER",
+          video: trace.video,
+          frameCount: trace.frames.length,
+          physicalRecognitionQualified: false,
+        },
+        null,
+        2,
+      ),
+      contentType: "application/json",
+    });
   } finally {
     await testInfo.attach("recorder-readiness-phases.json", {
       body: JSON.stringify(

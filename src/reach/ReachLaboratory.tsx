@@ -204,6 +204,7 @@ export function ReachLaboratory({
   const [inferenceBackend, setInferenceBackend] = useState<HandObservation["inferenceBackend"]>();
   const [indexState, setIndexState] = useState<IndexImageObservation | null>(null),
     [indexStale, setIndexStale] = useState(false),
+    [manualFingerSelected, setManualFingerSelected] = useState(false),
     [markFinger, setMarkFinger] = useState(false),
     [seedPoint, setSeedPoint] = useState<Point>({ x: 0.5, y: 0.5 });
   const [mirror, setMirror] = useState(true),
@@ -352,6 +353,7 @@ export function ReachLaboratory({
     indexReadiness.current.reset();
     setIndexState(null);
     setIndexStale(false);
+    setManualFingerSelected(false);
     setMarkFinger(false);
     selector.current.reset();
     readyRef.current = initialReadiness;
@@ -390,6 +392,7 @@ export function ReachLaboratory({
     lastIndexObservation.current = null;
     setIndexState(null);
     setIndexStale(false);
+    setManualFingerSelected(false);
     const waiting: ReachReadiness = {
       ...initialReadiness,
       detectedCount: lastObservation.current?.hands.length ?? 0,
@@ -768,6 +771,7 @@ export function ReachLaboratory({
           indexReadiness.current.reset();
           setIndexState(null);
           setIndexStale(false);
+          setManualFingerSelected(false);
           setMarkFinger(false);
           visual.current = emptyFrame();
           selector.current.reset();
@@ -1206,9 +1210,16 @@ export function ReachLaboratory({
   const markVisibleFinger = (point: Point) => {
     const accepted = runtime.current?.seedIndex(point);
     setMarkFinger(false);
+    if (accepted) {
+      setManualFingerSelected(true);
+      indexReadiness.current.reset();
+      lastIndexObservation.current = null;
+      setIndexState(null);
+      invalidate("You selected a fingertip. Begin a fresh setup after tracking settles.");
+    }
     setMessage(
       accepted
-        ? "Fingertip hint queued. Tracking still needs a clear image match and compatible full-hand posture when visible. Selecting a new fingertip requires a fresh setup."
+        ? "Selected fingertip reserved. A failed image match will ask you to mark it again; it will not switch to another model finger. Full-hand pointing confirmation is still required when available."
         : "The camera is not ready for a fingertip hint. Enable it and try again.",
     );
   };
@@ -1232,6 +1243,7 @@ export function ReachLaboratory({
       data-reach-authority="laboratory-only"
       data-reach-readiness={readiness.condition}
       data-image-state={indexStale ? "STALE" : (indexState?.state ?? "UNSEEDED")}
+      data-image-selection={manualFingerSelected ? "MANUAL" : "AUTOMATIC"}
       data-capture-ceiling={pacing?.maximumHz}
       data-calibration-capture={pacing?.calibrationCollecting ?? false}
       data-reach-policy={runtimePolicy.status}
@@ -1432,6 +1444,18 @@ export function ReachLaboratory({
                   {markFinger ? "Cancel fingertip hint" : "Track visible fingertip"}
                 </button>
               )}
+              {source === "LIVE" && pointingMode === "RELATIVE" && manualFingerSelected && (
+                <button
+                  onClick={() => {
+                    if (!runtime.current?.clearIndexSelection()) return;
+                    changePointingMode("RELATIVE");
+                    setMarkFinger(false);
+                    invalidate("Automatic fingertip selection restored. Begin a fresh setup after tracking settles.");
+                  }}
+                >
+                  Use automatic fingertip selection
+                </button>
+              )}
               <button
                 onClick={() => {
                   const next = !mirror;
@@ -1450,6 +1474,8 @@ export function ReachLaboratory({
               Show a relaxed index point to start. If only the finger is visible, choose “Track visible fingertip” and
               mark its tip. This hint follows its appearance; it cannot identify a finger from appearance alone. A gold
               ring shows the image track.
+              {manualFingerSelected &&
+                " Your selection stays reserved after a tracking loss. Mark it again to reacquire, or choose automatic fingertip selection explicitly."}
             </p>
           )}
         </div>

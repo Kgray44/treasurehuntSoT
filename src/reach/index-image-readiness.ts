@@ -16,6 +16,8 @@ const guidance: Record<IndexImageReadinessResult["condition"], string> = {
   LOST: "Fingertip tracking paused. Bring your finger back into view.",
 };
 const postureGuidance: Record<string, string> = {
+  MANUAL_SELECTION_REQUIRED:
+    "Your selected fingertip could not be acquired or its image track expired. Mark the visible fingertip again, or choose automatic fingertip selection; the hand model will not replace your selection.",
   IMAGE_REFERENCE_CONFLICT:
     "Fingertip appearance matches disagree. Tracking is paused to avoid a jump; keep the same fingertip visible while it reacquires. Saved targets are kept.",
   IMAGE_REFERENCE_EXPIRED:

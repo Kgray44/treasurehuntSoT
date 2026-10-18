@@ -418,7 +418,7 @@ test("D0 image-relative control follows fresh appearance through model failure, 
   // A deliberate new anchor is a new source, so saved samples cannot be rebound.
   await markByClick(page, 120, 120, true);
   await expect(page.getByRole("alert", { name: "Setup ended", exact: true })).toContainText(
-    "A new fingertip was selected or the camera changed. Begin a fresh setup for this track.",
+    "You selected a fingertip. Begin a fresh setup after tracking settles.",
   );
   await expect(root(page)).not.toHaveAttribute("data-image-track-generation", initial!);
   const percentile = (values: number[]) => [...values].sort((a, b) => a - b)[Math.ceil(values.length * 0.95) - 1];
@@ -837,6 +837,83 @@ test("D0 manual image-only hints support mirrored click and natural keyboard whi
   });
   await expect(root(page)).not.toHaveAttribute("data-image-state", "TRACKING");
   await unavailable(page);
+  await page.getByRole("button", { name: "Stop camera & clear session", exact: true }).click();
+});
+
+test("D0 manual selection survives rejected pixels and expiry without silently returning to a model digit", async ({
+  page,
+}, testInfo) => {
+  await installFixture(page, "NONE");
+  await page.goto("/devices/reach");
+  await page.getByRole("button", { name: "Enable live camera", exact: true }).click();
+  await expect.poll(async () => Number(await root(page).getAttribute("data-image-capture-time"))).toBeGreaterThan(0);
+  await configure(page, { blank: true });
+  await page.waitForFunction(() => {
+    const video = document.querySelector("video")!;
+    const canvas = document.createElement("canvas");
+    canvas.width = 320;
+    canvas.height = 240;
+    const context = canvas.getContext("2d")!;
+    context.drawImage(video, 0, 0, 320, 240);
+    return context.getImageData(120, 120, 1, 1).data[0] < 40;
+  });
+  await markByClick(page, 120, 120, true);
+  await expect(root(page)).toHaveAttribute("data-image-selection", "MANUAL");
+  await expect(root(page)).toHaveAttribute("data-image-reason", "MANUAL_SELECTION_REQUIRED");
+  await configure(page, { blank: false, model: "FULL" });
+  await page.waitForTimeout(800);
+  await expect(root(page)).toHaveAttribute("data-image-reason", "MANUAL_SELECTION_REQUIRED");
+  await expect(root(page)).toHaveAttribute("data-image-track-generation", "0");
+  await unavailable(page);
+  await page.screenshot({
+    path: testInfo.outputPath("D0-manual-failed-selection-no-model-takeover.png"),
+    fullPage: false,
+  });
+  await page.getByRole("button", { name: "Use automatic fingertip selection", exact: true }).click();
+  await expect(root(page)).toHaveAttribute("data-image-selection", "AUTOMATIC");
+  await ready(page);
+  await configure(page, { model: "NONE" });
+  await markByClick(page, 120, 120, true);
+  await ready(page);
+  const selectedGeneration = await root(page).getAttribute("data-image-track-generation");
+  await configure(page, { blank: true });
+  await expect(root(page)).not.toHaveAttribute("data-image-state", "TRACKING");
+  await page.waitForTimeout(1500);
+  await configure(page, { blank: false, model: "FULL" });
+  await expect(root(page)).toHaveAttribute("data-image-reason", "MANUAL_SELECTION_REQUIRED");
+  await page.waitForTimeout(500);
+  await expect(root(page)).toHaveAttribute("data-image-selection", "MANUAL");
+  await expect(root(page)).toHaveAttribute("data-image-track-generation", "0");
+  await unavailable(page);
+  await markByClick(page, 120, 120, true);
+  await ready(page);
+  await expect(root(page)).not.toHaveAttribute("data-image-track-generation", selectedGeneration!);
+  const resources = await page.evaluate(() => {
+    const fixture = (window as unknown as { reachIndexImageFixture: { workers: number; tracks: number } })
+      .reachIndexImageFixture;
+    return { workers: fixture.workers, tracks: fixture.tracks };
+  });
+  expect(resources).toEqual({ workers: 1, tracks: 1 });
+  await page.screenshot({
+    path: testInfo.outputPath("D0-manual-deliberate-reacquisition-same-camera.png"),
+    fullPage: false,
+  });
+  await testInfo.attach("D0-index-image-manual-selection-metrics.json", {
+    body: JSON.stringify(
+      {
+        evidence: "PUBLIC_ANALYTIC_CAMERA_AND_FAKE_WORKER",
+        rejectedSeedDoesNotAutoSelect: true,
+        expiredSelectionDoesNotAutoSelect: true,
+        explicitAutomaticRecovery: true,
+        explicitManualReacquisition: true,
+        resources,
+        physicalRecognitionQualified: false,
+      },
+      null,
+      2,
+    ),
+    contentType: "application/json",
+  });
   await page.getByRole("button", { name: "Stop camera & clear session", exact: true }).click();
 });
 

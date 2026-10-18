@@ -4238,7 +4238,10 @@
           "POLICY_DISABLED",
           "POLICY_UNAVAILABLE",
           "POLICY_RATE_UPDATE",
-          "AUTOMATIC_METRICS"
+          "AUTOMATIC_METRICS",
+          "MANUAL_SELECTION_REQUIRED",
+          "EXPLICIT_AUTOMATIC_SELECTION",
+          "CLEAN_CAMERA_RECORDING"
         ],
         "devices": ["DESKTOP", "MOBILE"],
         "roles": ["ANONYMOUS"],
@@ -4295,6 +4298,8 @@
           "Camera movement can be undetectable. Calibration is session-only and must be repeated after placement, identity or geometry changes.",
           "Phase 2 target selection, Phase 3 manipulation and Crossdeck Air Handoff are not implemented by this laboratory.",
           "Index-only intent is heuristic. Manual fingertip hints select appearance, not an automatic finger classifier. Blur, edge clipping, repeated texture, occlusion and unverified monocular anatomy may pause tracking; physical robustness remains pending.",
+          "A selected manual fingertip remains reserved after rejected pixels or image-track expiry. No automatic model digit replaces it silently; a new mark or explicit automatic-selection control starts a fresh source/setup without restarting the camera. Old selection coordinates are never replayed after the bounded source-image attempt.",
+          "Local diagnostic recording defaults to a camera image without baked hand landmarks and retains its separate trace; the existing overlaid recording remains an explicit option. Both are mirrored re-encoded video with guide annotations outside the camera region, not raw sensor or latency evidence. Live rendering remains unchanged.",
           "The Laboratory, guided demo and local recorder require current mandatory Reach policy. Initial unavailability blocks entry; policy expiry or global disable stops owned camera/model work, clears actionable output and never automatically restarts capture after re-enable. Conventional navigation and existing local recordings remain available.",
           "Current policy applies normal, calibration, unfocused and model ceilings without restarting an otherwise valid active camera. Hidden pages stop camera capture; policy cannot weaken observation freshness, source binding, sample collection or independent held-out accuracy requirements.",
           "Live numeric aggregate reporting is automatic only while both global Reach and reporting switches allow it. There is no user telemetry toggle or account association. Reports exclude raw camera content, landmarks, coordinates, coefficients, camera/track/session identifiers and trajectories; report windows do not establish distinct people or sessions. Guided and synthetic experiments remain separate from live client-reported metrics."

@@ -37,7 +37,7 @@ export type ReachInferenceMetrics = {
   frameIntervalMs: number | null;
   handCount: number | null;
 };
-type IndexHint = { point: { x: number; y: number }; requestedAt: number };
+type IndexHint = { point: { x: number; y: number }; requestedAt: number; attemptedCapture: number | null };
 export class ReachBrowserRuntime {
   readonly camera: BrowserCameraBroker;
   private generation = 0;
@@ -59,6 +59,7 @@ export class ReachBrowserRuntime {
   private videoFrameCallback: number | undefined;
   private indexEnabled = false;
   private pendingIndexHint: IndexHint | null = null;
+  private manualIndexSelection = false;
   constructor(
     private video: HTMLVideoElement,
     private observe: (o: HandObservation) => void,
@@ -90,7 +91,22 @@ export class ReachBrowserRuntime {
     // Use the next actual capture, never a new hint on an older in-flight image.
     if (this.preparedImage) this.preparedImage.tracker.discard(this.preparedImage.token);
     this.preparedImage = null;
-    this.pendingIndexHint = { point: { ...point }, requestedAt: performance.now() };
+    this.manualIndexSelection = true;
+    this.imageTracker?.requestManualSelection();
+    this.pendingIndexHint = { point: { ...point }, requestedAt: performance.now(), attemptedCapture: null };
+    return true;
+  }
+  indexSelectionMode(): "AUTOMATIC" | "MANUAL" {
+    return this.manualIndexSelection ? "MANUAL" : "AUTOMATIC";
+  }
+  /** Explicit return to model seeding, never a reinterpretation of the mirror control. */
+  clearIndexSelection() {
+    if (!this.active || !this.indexEnabled) return false;
+    if (this.preparedImage) this.preparedImage.tracker.discard(this.preparedImage.token);
+    this.preparedImage = null;
+    this.pendingIndexHint = null;
+    this.manualIndexSelection = false;
+    this.imageTracker?.reset();
     return true;
   }
   trackingPacing() {
@@ -116,6 +132,7 @@ export class ReachBrowserRuntime {
       this.preparedImage = null;
       this.pendingImageCapture = null;
       this.pendingIndexHint = null;
+      this.manualIndexSelection = false;
     }
   }
   async start(consent: boolean, mirror: boolean, deviceId?: string) {
@@ -288,6 +305,7 @@ export class ReachBrowserRuntime {
                   this.imageCanvas = new OffscreenCanvas(imageWidth, imageHeight);
                   this.imageContext = this.imageCanvas.getContext("2d", { willReadFrequently: true });
                   this.imageTracker = new IndexImageTracker({ ...binding, frameWidth: width, frameHeight: height });
+                  if (this.manualIndexSelection) this.imageTracker.requestManualSelection();
                 }
                 if (this.imageContext) {
                   // This exact bitmap goes to the model below. Its clean pixels
@@ -311,8 +329,15 @@ export class ReachBrowserRuntime {
                 const gray = new Uint8Array(imageSize.width * imageSize.height);
                 for (let i = 0; i < gray.length; ++i)
                   gray[i] = (rgba[i * 4] * 77 + rgba[i * 4 + 1] * 150 + rgba[i * 4 + 2] * 29) >> 8;
+                if (
+                  this.pendingIndexHint &&
+                  capture - this.pendingIndexHint.requestedAt >
+                    indexImageAlgorithmDescriptor.manualAnchor.maximumDispatchAgeMs
+                )
+                  this.pendingIndexHint = null;
                 const hint = this.pendingIndexHint;
                 if (!hint || capture >= hint.requestedAt) {
+                  if (hint) hint.attemptedCapture = capture;
                   const token = this.imageTracker.prepare(
                     { data: gray, ...imageSize, capture, received: performance.now() },
                     hint?.point,
@@ -444,7 +469,6 @@ export class ReachBrowserRuntime {
               ) {
                 const model = selectIndexModelAnchor(observation);
                 const tracked = this.imageTracker.complete(prepared.token, model, () => performance.now());
-                this.pendingIndexHint = null;
                 // Processing completion is current; capture remains the original
                 // bitmap time. Gate independently enforces the150ms age limit.
                 const accepted = imageGate.accept(
@@ -461,6 +485,10 @@ export class ReachBrowserRuntime {
             } catch {
               // A rejected capture pauses evidence without closing the model.
             }
+            // An attempted selection belongs to one source image. Replaying its
+            // old coordinates after a rejected capture could select a moved hand
+            // or background. Keep manual intent, but require a fresh selection.
+            if (this.pendingIndexHint && this.pendingIndexHint.attemptedCapture !== null) this.pendingIndexHint = null;
             if (!imageAccepted) this.status("STALE_OR_INVALID_OBSERVATION");
             prepared?.tracker.discard(prepared.token);
             this.preparedImage = null;
@@ -515,6 +543,7 @@ export class ReachBrowserRuntime {
     this.preparedImage = null;
     this.pendingImageCapture = null;
     this.pendingIndexHint = null;
+    this.manualIndexSelection = false;
     this.pacer = null;
     this.video.pause();
     this.video.srcObject = null;

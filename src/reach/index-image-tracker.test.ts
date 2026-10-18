@@ -103,7 +103,7 @@ describe("independent image fingertip evidence", () => {
     expect(tracker.update(image(60, 60, 1301))).toMatchObject({
       state: "LOST",
       trackId: null,
-      reason: "IMAGE_CONTINUITY_EXPIRED",
+      reason: "MANUAL_SELECTION_REQUIRED",
     });
   });
   it("commits prepared pixels only with the same frame's full-hand decision", () => {
@@ -433,6 +433,80 @@ describe("independent image fingertip evidence", () => {
       anchorSource: "MANUAL_HINT",
     });
   });
+  it("never replaces a rejected manual selection with an automatic model digit", () => {
+    const tracker = new IndexImageTracker(binding);
+    expect(tracker.update(image(60, 60, 100, { blank: true }), null, point(60, 60))).toMatchObject({
+      state: "UNSEEDED",
+      anchorSource: null,
+      point: null,
+      trackId: null,
+      reason: "ANCHOR_TEXTURE_OR_EDGE_UNSUITABLE",
+    });
+    const wrongDigit = { point: point(95, 80), pointing: true, contrary: false };
+    for (const at of [133, 166, 1500])
+      expect(tracker.update(image(95, 80, at), wrongDigit)).toMatchObject({
+        state: "UNSEEDED",
+        reason: "MANUAL_SELECTION_REQUIRED",
+        point: null,
+        trackId: null,
+        anchorSource: null,
+      });
+    // Another deliberate selection can establish a new manual image track.
+    expect(tracker.update(image(60, 60, 1533), null, point(60, 60))).toMatchObject({
+      state: "TRACKING",
+      anchorSource: "MANUAL_HINT",
+      point: point(60, 60),
+    });
+  });
+  it("keeps manual intent after image expiry and requires explicit reset before automatic model seeding", () => {
+    const tracker = new IndexImageTracker(binding);
+    const first = tracker.update(image(60, 60, 100), null, point(60, 60));
+    const wrongDigit = { point: point(95, 80), pointing: true, contrary: false };
+    expect(tracker.update(image(95, 80, 1301), wrongDigit)).toMatchObject({
+      state: "LOST",
+      reason: "MANUAL_SELECTION_REQUIRED",
+      point: null,
+      matchedPoint: null,
+      trackId: null,
+      trackGeneration: 0,
+      anchorSource: null,
+    });
+    expect(tracker.update(image(95, 80, 1334), wrongDigit)).toMatchObject({
+      state: "UNSEEDED",
+      reason: "MANUAL_SELECTION_REQUIRED",
+      point: null,
+      trackId: null,
+    });
+    tracker.reset();
+    const automatic = tracker.update(image(95, 80, 1367), wrongDigit);
+    expect(automatic).toMatchObject({ state: "TRACKING", anchorSource: "MODEL_INDEX", point: point(95, 80) });
+    expect(automatic.trackId).not.toBe(first.trackId);
+  });
+  it("retains explicit manual intent when a prepared selection is rejected at final freshness", () => {
+    const tracker = new IndexImageTracker(binding);
+    const token = tracker.prepare(image(60, 60, 100), point(60, 60));
+    expect(() => tracker.complete(token, null, 251)).toThrow("FRAME_INVALID_OR_STALE");
+    expect(tracker.update(image(95, 80, 300), { point: point(95, 80), pointing: true, contrary: false })).toMatchObject(
+      {
+        state: "UNSEEDED",
+        reason: "MANUAL_SELECTION_REQUIRED",
+        point: null,
+        anchorSource: null,
+      },
+    );
+  });
+  it("can latch selection intent before a usable capture without creating or reusing coordinates", () => {
+    const tracker = new IndexImageTracker(binding);
+    tracker.requestManualSelection();
+    expect(tracker.update(image(95, 80, 100), { point: point(95, 80), pointing: true, contrary: false })).toMatchObject(
+      {
+        state: "UNSEEDED",
+        reason: "MANUAL_SELECTION_REQUIRED",
+        point: null,
+        trackId: null,
+      },
+    );
+  });
   it("ignores a wrong model digit rather than moving the image track", () => {
     const tracker = new IndexImageTracker(binding);
     const first = tracker.update(image(60, 60, 100), null, point(60, 60));
@@ -499,6 +573,25 @@ describe("independent image fingertip evidence", () => {
       point: null,
       reason: "FULL_HAND_CONTRARY_AWAITING_POINT",
     });
+  });
+  it("clears a previous automatic coordinate before a manual selection that later fails freshness", () => {
+    const tracker = new IndexImageTracker(binding);
+    expect(tracker.update(image(95, 80, 100), { point: point(95, 80), pointing: true, contrary: false }).state).toBe(
+      "TRACKING",
+    );
+    const token = tracker.prepare(image(60, 60, 133), point(60, 60));
+    expect(() => tracker.complete(token, null, 284)).toThrow("FRAME_INVALID_OR_STALE");
+    expect(tracker.update(image(95, 80, 300), { point: point(95, 80), pointing: true, contrary: false })).toMatchObject(
+      {
+        state: "UNSEEDED",
+        reason: "MANUAL_SELECTION_REQUIRED",
+        anchorSource: null,
+        trackId: null,
+        trackGeneration: 0,
+        point: null,
+        matchedPoint: null,
+      },
+    );
   });
   it("pauses a single compatible contrary immediately but resumes afterNONE without a false latch", () => {
     const tracker = new IndexImageTracker(binding);
@@ -732,8 +825,15 @@ describe("independent image fingertip evidence", () => {
     const first = tracker.update(image(60, 60, 100), null, point(60, 60));
     expect(tracker.update(image(60, 60, 1400))).toMatchObject({ state: "LOST", point: null });
     const reseeded = tracker.update(image(60, 60, 1433), { point: point(60, 60), pointing: true, contrary: false });
-    expect(reseeded.state).toBe("TRACKING");
-    expect(reseeded.trackId).not.toBe(first.trackId);
+    expect(reseeded).toMatchObject({
+      state: "UNSEEDED",
+      point: null,
+      trackId: null,
+      reason: "MANUAL_SELECTION_REQUIRED",
+    });
+    const selected = tracker.update(image(60, 60, 1466), null, point(60, 60));
+    expect(selected.state).toBe("TRACKING");
+    expect(selected.trackId).not.toBe(first.trackId);
   });
   it.each([200, 500, 1000])(
     "recovers a recent appearance after %ims occlusion without claiming any occluded point",

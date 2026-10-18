@@ -3,9 +3,13 @@ import { act, cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { defaultReachRuntimePolicy } from "./runtime-policy";
 import type { ReachInferenceMetrics } from "./browser-runtime";
+import { indexImageAlgorithm, type IndexImageObservation } from "./index-image-tracker";
 type FixtureRuntime = {
   start: ReturnType<typeof vi.fn>;
   setTrackingLimits: ReturnType<typeof vi.fn>;
+  seedIndex: ReturnType<typeof vi.fn>;
+  clearIndexSelection: ReturnType<typeof vi.fn>;
+  image: (observation: unknown) => void;
   metrics: (packet: ReachInferenceMetrics) => void;
 };
 const fixture = vi.hoisted(() => ({
@@ -21,6 +25,8 @@ vi.mock("./browser-runtime", () => ({
     setTrackingLimits = vi.fn();
     setCalibrationCollecting = vi.fn();
     setIndexTrackingEnabled = vi.fn();
+    seedIndex = vi.fn(() => true);
+    clearIndexSelection = vi.fn(() => true);
     resources = () => ({ workers: 1, tracks: 1, timers: 0 });
     trackingPacing = () => ({ maximumHz: 15, targetHz: 15, calibrationCollecting: false, focused: true });
     constructor(
@@ -60,6 +66,52 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 describe("mandatory Reach policy in the actual Laboratory", () => {
+  it("keeps manual selection explicit through a failed match and offers an intentional return to automatic selection", () => {
+    render(<ReachLaboratory />);
+    fireEvent.click(screen.getByRole("button", { name: "Enable live camera" }));
+    const runtime = fixture.runtimes[0];
+    const at = performance.now();
+    const waiting: IndexImageObservation = {
+      observationVersion: 1,
+      ...indexImageAlgorithm,
+      providerGeneration: 1,
+      cameraLeaseId: "local-test-camera",
+      cameraFrameVersion: 1,
+      frameWidth: 320,
+      frameHeight: 240,
+      mirrorTransform: "PREVIEW_X",
+      orientation: 0,
+      sequence: 0,
+      monotonicCaptureTime: at,
+      monotonicInferenceTime: at,
+      trackId: null,
+      trackGeneration: 0,
+      point: null,
+      state: "UNSEEDED",
+      modelAgreement: "UNAVAILABLE",
+      anchorSource: null,
+      quality: { correlation: null, separation: null, texture: null, forwardBackwardErrorPixels: null },
+      uncertaintyRadiusPixels: null,
+      reason: "SHOW_INDEX_OR_SELECT_TIP",
+    };
+    act(() => runtime.image(waiting));
+    fireEvent.click(screen.getByRole("button", { name: "Set up relative movement" }));
+    expect(document.querySelector("[data-step=TRAINING]")).not.toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Track visible fingertip" }));
+    fireEvent.keyDown(screen.getByRole("button", { name: /Mark visible fingertip in camera/ }), { key: "Enter" });
+    expect(runtime.seedIndex).toHaveBeenCalledWith({ x: 0.5, y: 0.5 });
+    expect(document.querySelector("[data-step=PREPARE]")).not.toBeNull();
+    expect(screen.getByText("You selected a fingertip. Begin a fresh setup after tracking settles.")).toBeVisible();
+    act(() => runtime.image({ ...waiting, sequence: 1, reason: "MANUAL_SELECTION_REQUIRED" }));
+    expect(screen.getByRole("button", { name: "Use automatic fingertip selection" })).toBeVisible();
+    fireEvent.click(screen.getByRole("button", { name: "Use automatic fingertip selection" }));
+    expect(runtime.clearIndexSelection).toHaveBeenCalledOnce();
+    expect(screen.queryByRole("button", { name: "Use automatic fingertip selection" })).toBeNull();
+    expect(
+      screen.getByText("Automatic fingertip selection restored. Begin a fresh setup after tracking settles."),
+    ).toBeVisible();
+    expect(runtime.start).toHaveBeenCalledOnce();
+  });
   it("applies new capture/model caps without restarting the active camera", async () => {
     const view = render(<ReachLaboratory />);
     fireEvent.click(screen.getByRole("button", { name: "Enable live camera" }));

@@ -21,6 +21,7 @@ type Download = {
   frames: number;
   reason: string;
   filenameBase: string;
+  containsHandOverlay: boolean;
 };
 const firstView: ReturnType<PoseRecordingSession["tick"]> = {
   step: poseRecordingSteps[0],
@@ -63,6 +64,7 @@ export function ReachPoseRecorder() {
   const [status, setStatus] = useState("DISABLED"),
     [phase, setPhase] = useState<Phase>("IDLE");
   const [captureReady, setCaptureReady] = useState(false);
+  const [cleanCamera, setCleanCamera] = useState(true);
   const [view, setView] = useState(firstView),
     [error, setError] = useState("");
   const [download, setDownload] = useState<Download | null>(null),
@@ -202,13 +204,14 @@ export function ReachPoseRecorder() {
     if (phaseRef.current !== "IDLE" || saved.current) return;
     const sourceVideo = video.current,
       sourceOverlay = stage.current?.querySelector("canvas");
+    const containsHandOverlay = !cleanCamera;
     if (
       !sourceVideo ||
       sourceVideo.readyState < 2 ||
       !sourceVideo.srcObject ||
       status !== "READY" ||
       !captureReady ||
-      !sourceOverlay
+      (containsHandOverlay && !sourceOverlay)
     ) {
       setError("Enable the camera and wait for live tracking before recording.");
       return;
@@ -257,17 +260,18 @@ export function ReachPoseRecorder() {
         context.translate(canvas.width, 0);
         context.scale(-1, 1);
         context.drawImage(sourceVideo, 0, 0, canvas.width, imageHeight);
-        context.drawImage(
-          sourceOverlay,
-          0,
-          0,
-          sourceOverlay.width,
-          sourceOverlay.height,
-          0,
-          0,
-          canvas.width,
-          imageHeight,
-        );
+        if (containsHandOverlay && sourceOverlay)
+          context.drawImage(
+            sourceOverlay,
+            0,
+            0,
+            sourceOverlay.width,
+            sourceOverlay.height,
+            0,
+            0,
+            canvas.width,
+            imageHeight,
+          );
         context.restore();
         const step = current.currentStep(at);
         context.fillStyle = "#c9f4e5";
@@ -293,7 +297,7 @@ export function ReachPoseRecorder() {
         context.fillStyle = "#9abbb1";
         context.font = "11px sans-serif";
         context.fillText(
-          "Local diagnostic composite · prompt labels are not verified intent · not latency qualification",
+          `${containsHandOverlay ? "Local diagnostic composite" : "Local camera image · mirrored/re-encoded"} · prompts are not verified intent · not latency qualification`,
           12,
           canvas.height - 9,
         );
@@ -342,6 +346,9 @@ export function ReachPoseRecorder() {
           ...captured,
           video: {
             ...captured.video,
+            kind: containsHandOverlay ? captured.video.kind : "CAMERA_IMAGE_AND_PROMPT",
+            containsHandOverlay,
+            cameraImageEncoding: "MIRRORED_REENCODED_DIAGNOSTIC_NOT_RAW_SENSOR",
             compositeWidth: canvas.width,
             compositeHeight: canvas.height,
             imageRegion: { x: 0, y: 0, width: canvas.width, height: imageHeight },
@@ -362,6 +369,7 @@ export function ReachPoseRecorder() {
           frames: trace.frames.length,
           reason: trace.stopReason ?? stopReason.current,
           filenameBase: trace.recordingId,
+          containsHandOverlay,
         };
         saved.current = result;
         setDownload(result);
@@ -424,8 +432,9 @@ export function ReachPoseRecorder() {
         <p className={styles.eyebrow}>Local developer testing · no calibration fit</p>
         <h1>Record natural hand movement</h1>
         <p>
-          Follow a {poseRecordingDurationMs / 1000}-second guide. Record the camera image, its existing rendered hand
-          trace, and raw landmark results for later frame-by-frame comparison.
+          Follow a {poseRecordingDurationMs / 1000}-second guide. Save the camera image without the hand overlay by
+          default, plus a separate landmark trace for later frame-by-frame comparison. The live preview keeps its
+          overlay.
         </p>
       </header>
       <div className={styles.layout}>
@@ -457,7 +466,7 @@ export function ReachPoseRecorder() {
           <p className={styles.cameraStatus}>
             {reviewing
               ? download?.video
-                ? "Saved diagnostic recording · camera and hand overlay · no microphone"
+                ? `Saved diagnostic recording · ${download.containsHandOverlay ? "camera and hand overlay" : "camera image without hand overlay"} · mirrored/re-encoded · no microphone`
                 : "Diagnostic video is unavailable. The partial trace remains available in the review controls."
               : `Camera: ${status === "READY" && !captureReady ? "waiting for tracking" : status.replaceAll("_", " ").toLowerCase()} · mirrored preview · no microphone`}
           </p>
@@ -498,6 +507,17 @@ export function ReachPoseRecorder() {
           )}
           {!reviewing && (
             <>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={cleanCamera}
+                  disabled={phase !== "IDLE"}
+                  onChange={(event) => {
+                    if (phaseRef.current === "IDLE") setCleanCamera(event.target.checked);
+                  }}
+                />{" "}
+                Save camera image without hand overlay
+              </label>
               <p aria-live="polite">
                 {phase === "PAUSED"
                   ? "Paused. The guide, video and trace are paused together."
@@ -564,9 +584,11 @@ export function ReachPoseRecorder() {
           <aside className={styles.privacy}>
             <strong>Local recording details</strong>
             <p>
-              Video includes your visible camera background and the same hand overlay shown here. The trace contains up
-              to two hands, 21 joint coordinates, relative depth, model identity, timing and prompt labels. Prompts
-              describe requested intent; they are not verified ground truth.
+              Video includes your visible camera background. By default, its camera image has no hand overlay; uncheck
+              the option before recording to include the existing overlay. Both modes are mirrored, re-encoded
+              diagnostic video with prompt labels below the camera image, not raw sensor footage. The separate trace
+              contains up to two hands, 21 joint coordinates, relative depth, model identity, timing and prompt labels.
+              Prompts describe requested intent; they are not verified ground truth.
             </p>
             <p>
               Nothing is uploaded, fitted, saved to an account or added to aggregate exports. Recording stops within 90

@@ -681,7 +681,7 @@ describe("runtime image source integration", () => {
     });
   });
 
-  it("suppresses stale image callbacks using original capture age, while retaining the hint for a new capture", async () => {
+  it("suppresses stale image callbacks and never retries a selected old coordinate on a later image", async () => {
     const s = setup();
     const worker = await s.start();
     await s.advance(151);
@@ -696,9 +696,99 @@ describe("runtime image source integration", () => {
     s.result();
     expect(s.image).toHaveBeenCalledOnce();
     expect(s.image.mock.calls[0][0]).toMatchObject({
-      state: "TRACKING",
+      state: "UNSEEDED",
+      point: null,
+      anchorSource: null,
+      reason: "MANUAL_SELECTION_REQUIRED",
       monotonicCaptureTime: worker.frames[1].capture,
     });
+    expect(s.runtime.indexSelectionMode()).toBe("MANUAL");
+  });
+
+  it("keeps rejected manual selection intent instead of seeding the next automatic model digit", async () => {
+    const s = setup();
+    s.video.rgba.fill(30);
+    await s.start();
+    await s.advance(10);
+    s.result();
+    expect(s.image.mock.calls.at(-1)![0]).toMatchObject({
+      state: "UNSEEDED",
+      reason: "ANCHOR_TEXTURE_OR_EDGE_UNSUITABLE",
+      point: null,
+    });
+    expect(s.runtime.indexSelectionMode()).toBe("MANUAL");
+    s.video.rgba = pixels();
+    s.freshFrame();
+    await s.advance(Math.ceil(s.runtime.trackingPacing()!.intervalMs));
+    await s.advance(10);
+    s.result(undefined, [modelPose(s.hint)]);
+    expect(s.image.mock.calls.at(-1)![0]).toMatchObject({
+      state: "UNSEEDED",
+      reason: "MANUAL_SELECTION_REQUIRED",
+      point: null,
+      anchorSource: null,
+    });
+    expect(s.runtime.seedIndex(s.hint)).toBe(true);
+    s.freshFrame();
+    await s.advance(Math.ceil(s.runtime.trackingPacing()!.intervalMs));
+    await s.advance(10);
+    s.result();
+    expect(s.image.mock.calls.at(-1)![0]).toMatchObject({ state: "TRACKING", anchorSource: "MANUAL_HINT" });
+    expect(s.runtime.clearIndexSelection()).toBe(true);
+    expect(s.runtime.indexSelectionMode()).toBe("AUTOMATIC");
+    s.freshFrame();
+    await s.advance(Math.ceil(s.runtime.trackingPacing()!.intervalMs));
+    await s.advance(10);
+    s.result(undefined, [modelPose(s.hint)]);
+    expect(s.image.mock.calls.at(-1)![0]).toMatchObject({ state: "TRACKING", anchorSource: "MODEL_INDEX" });
+  });
+
+  it("keeps manual intent after an expired image track until explicit index disable", async () => {
+    const s = setup();
+    await s.start();
+    await s.advance(10);
+    s.result();
+    const first = s.image.mock.calls.at(-1)![0];
+    await s.advance(1201);
+    s.freshFrame();
+    await s.advance(Math.ceil(s.runtime.trackingPacing()!.intervalMs));
+    await s.advance(10);
+    s.result(undefined, [modelPose(s.hint)]);
+    expect(s.image.mock.calls.at(-1)![0]).toMatchObject({
+      state: "LOST",
+      reason: "MANUAL_SELECTION_REQUIRED",
+      point: null,
+      trackId: null,
+      anchorSource: null,
+    });
+    expect(s.runtime.indexSelectionMode()).toBe("MANUAL");
+    expect(first.trackId).not.toBeNull();
+    s.runtime.setIndexTrackingEnabled(false);
+    expect(s.runtime.indexSelectionMode()).toBe("AUTOMATIC");
+  });
+
+  it("expires an unattempted hint rather than seeding its old coordinates after a delayed in-flight packet", async () => {
+    const s = setup();
+    const worker = await s.start(false);
+    await s.advance(5);
+    expect(s.runtime.seedIndex(s.hint)).toBe(true);
+    await s.advance(151);
+    s.result();
+    s.freshFrame();
+    await s.advance(Math.ceil(s.runtime.trackingPacing()!.intervalMs));
+    await s.advance(10);
+    for (let retry = 0; retry < 16 && worker.frames.length < 2; retry++) await s.advance(10);
+    expect(worker.frames).toHaveLength(2);
+    s.result(undefined, [modelPose(s.hint)]);
+    expect(s.image.mock.calls.at(-1)![0]).toMatchObject({
+      state: "UNSEEDED",
+      reason: "MANUAL_SELECTION_REQUIRED",
+      point: null,
+      anchorSource: null,
+    });
+    expect(s.runtime.indexSelectionMode()).toBe("MANUAL");
+    s.runtime.stop();
+    expect(s.runtime.indexSelectionMode()).toBe("AUTOMATIC");
   });
 
   it("does not turn a mismatched worker capture into current image evidence", async () => {

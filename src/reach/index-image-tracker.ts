@@ -60,14 +60,19 @@ export const indexImageAlgorithmDescriptor = {
     matchedPoint: "CURRENT_ACCEPTED_IMAGE_MATCH_DISPLAY_ONLY_NEVER_ACTION_OR_CALIBRATION",
     detection: fullHandDetectionPolicy,
   },
-  manualAnchor: "NEW_GENERATION",
+  manualAnchor: {
+    generation: "NEW_GENERATION",
+    selectionIntent: "PERSIST_UNTIL_EXPLICIT_AUTOMATIC_OR_SESSION_RESET",
+    failedAttempt: "REQUIRE_NEW_SELECTION_WITHOUT_POSITION_RETRY",
+    maximumDispatchAgeMs: 150,
+  },
   grayscale: [77, 150, 29, 8],
 } as const;
 export const indexImageAlgorithm = {
   providerId: "watchglass.index-image",
   providerVersion: "1",
   algorithm: "BOUNDED_PHOTOMETRIC_NCC_V1",
-  algorithmDigest: "8b2846e3959552912bf978c531d3099d56f15d7f9648ce08d8f23feb0fc63498",
+  algorithmDigest: "491ae53971dc0352714c9849fdf2521a469b190130d6f408cc6cff4abf0f98eb",
 } as const;
 export type IndexImageBinding = {
   providerGeneration: number;
@@ -188,6 +193,7 @@ export class IndexImageTracker {
   private trackId: string | null = null;
   private trackGeneration = 0;
   private anchorSource: IndexImageObservation["anchorSource"] = null;
+  private manualSelection = false;
   private vetoed = false;
   private authorityVetoed = false;
   private authorityCandidate: {
@@ -204,6 +210,15 @@ export class IndexImageTracker {
   private readonly reverseScores = new Float64Array((policy.reverseSearch * 2 + 1) ** 2);
   private nccScratch = createNccScratch(policy);
   constructor(readonly binding: IndexImageBinding) {}
+  /** Selection intent survives failed pixels and internal expiry; it supplies no evidence. */
+  requestManualSelection() {
+    const retainedAuthorityVeto = this.authorityVetoed,
+      retainedVeto = this.vetoed;
+    this.reset();
+    this.manualSelection = true;
+    this.authorityVetoed = retainedAuthorityVeto;
+    this.vetoed = retainedVeto;
+  }
   reset() {
     this.previous = null;
     this.template = null;
@@ -218,6 +233,7 @@ export class IndexImageTracker {
     this.trackId = null;
     this.trackGeneration = 0;
     this.anchorSource = null;
+    this.manualSelection = false;
     this.vetoed = false;
     this.authorityVetoed = false;
     this.authorityCandidate = null;
@@ -242,6 +258,7 @@ export class IndexImageTracker {
     )
       throw new Error("INDEX_IMAGE_FRAME_INVALID_OR_STALE");
     this.lastCapture = frame.capture;
+    if (manualHint) this.requestManualSelection();
     const owned = { ...frame, data: frame.data.slice() };
     const token = Object.freeze({ capture: frame.capture });
     const matches =
@@ -311,6 +328,7 @@ export class IndexImageTracker {
       trackId: this.trackId,
       trackGeneration: this.trackGeneration,
       anchorSource: this.anchorSource,
+      manualSelection: this.manualSelection,
       vetoed: this.vetoed,
       authorityVetoed: this.authorityVetoed,
       authorityCandidate: this.authorityCandidate,
@@ -382,7 +400,11 @@ export class IndexImageTracker {
     preparedMatches?: PreparedImage["matches"],
   ): IndexImageObservation {
     const expired = this.anchorSource !== null && frame.capture - this.acceptedAt > policy.maximumRecoveryMs;
-    if (expired) this.reset();
+    if (expired) {
+      const manualSelection = this.manualSelection;
+      this.reset();
+      this.manualSelection = manualSelection;
+    }
     const scale = this.binding.frameWidth / frame.width;
     const quality: IndexImageObservation["quality"] = {
       correlation: null,
@@ -440,6 +462,7 @@ export class IndexImageTracker {
     if (manualHint) {
       const retainedAuthorityVeto = this.authorityVetoed && model?.authority !== undefined;
       this.reset();
+      this.manualSelection = true;
       this.authorityVetoed = retainedAuthorityVeto;
       this.grid = { width: frame.width, height: frame.height };
     }
@@ -481,7 +504,12 @@ export class IndexImageTracker {
       this.authorityCandidate?.confirmed ? "FULL_HAND_POINT_CONFIRMED" : "FULL_HAND_POINT_PENDING";
     const anchor =
       manualHint ??
-      (!this.anchorSource && model?.pointing && (!model.authority || model.authority === "POINT") ? model.point : null);
+      (!this.manualSelection &&
+      !this.anchorSource &&
+      model?.pointing &&
+      (!model.authority || model.authority === "POINT")
+        ? model.point
+        : null);
     if (anchor) {
       if (!boundedPoint(anchor)) return result("UNSEEDED", "HINT_OUTSIDE_IMAGE");
       const center = { x: anchor.x * (frame.width - 1), y: anchor.y * (frame.height - 1) };
@@ -529,7 +557,13 @@ export class IndexImageTracker {
     if (!this.point || !this.template || !this.previous || !this.reference)
       return result(
         this.anchorSource || expired ? "LOST" : "UNSEEDED",
-        expired ? "IMAGE_CONTINUITY_EXPIRED" : this.anchorSource ? "REANCHOR_REQUIRED" : "SHOW_INDEX_OR_SELECT_TIP",
+        this.manualSelection
+          ? "MANUAL_SELECTION_REQUIRED"
+          : expired
+            ? "IMAGE_CONTINUITY_EXPIRED"
+            : this.anchorSource
+              ? "REANCHOR_REQUIRED"
+              : "SHOW_INDEX_OR_SELECT_TIP",
       );
     const gap = frame.capture - this.acceptedAt;
     const reject = (reason: string) => {
