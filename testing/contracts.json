@@ -4229,7 +4229,7 @@
         ],
         "devices": ["DESKTOP", "MOBILE"],
         "roles": ["ANONYMOUS"],
-        "accessibility": "Keyboard, touch and ordinary buttons operate setup, pause, retry, deletion, export and return. A disclosed guided demo explains the full flow without a camera.",
+        "accessibility": "Keyboard, touch and ordinary buttons operate setup, pause, retry, deletion, export and return. The setup request remains operable by keyboard and touch; activation checks current readiness, either opens setup under the existing guards or keeps preparation visible with polite live guidance, and never queues an automatic start. A disclosed guided demo explains the full flow without a camera.",
         "fallback": "Camera failure gives a plain-language explanation, retry and a guided conventional demonstration. All Voyagewright navigation remains conventional.",
         "navigation": "Existing device connections link opens Reach; the visible return clears owned camera resources and restores device connections; safe contextual return is accepted.",
         "designTarget": "One continuous instrument workspace with a large registered camera stage, restrained brass and sea-green hierarchy, staged target plane, contextual guidance, visible progress and deliberately disclosed diagnostics. Mobile preparation prioritizes the camera and calibration prioritizes the target.",
@@ -4253,7 +4253,11 @@
         ],
         "homeportScreenIds": [],
         "homeportJourneyIds": [],
-        "browserTests": ["tests/e2e/reach-laboratory.spec.ts"],
+        "browserTests": [
+          "tests/e2e/reach-laboratory.spec.ts",
+          "tests/e2e/reach-device-return.spec.ts",
+          "tests/e2e/reach-page-accessibility.spec.ts"
+        ],
         "fixtureProfile": "generic",
         "recordingRequired": true,
         "motion": {
