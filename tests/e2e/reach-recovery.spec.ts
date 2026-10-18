@@ -114,7 +114,9 @@ test("a completed failed check explains the accuracy limit and keeps setup inste
   await page.waitForTimeout(150);
   await page.getByLabel("Demo tracking condition").selectOption("POSTURE");
   await expect(page.getByRole("status", { name: "Pointer feedback" })).toContainText("Last seen pointer");
-  await expect(page.getByRole("status", { name: "Reach status" })).toContainText("Image tracking paused");
+  await expect(page.getByRole("status", { name: "Reach status" })).toContainText(
+    "Tracking paused. Keep the same fingertip visible; saved targets are kept.",
+  );
   await expect(page.getByRole("status", { name: "Reach status" })).not.toContainText("Your hand is ready");
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({ path: testInfo.outputPath("D0-last-seen-during-check.png"), fullPage: false });
@@ -148,13 +150,17 @@ test("mobile interruptions keep the reason and saved targets beside the active t
     });
   await condition.selectOption("POSTURE");
   await expect(
-    page.getByText("Image tracking paused. Keep your fingertip visible while it reacquires.", { exact: true }).first(),
+    page
+      .getByText("Tracking paused. Keep the same fingertip visible; saved targets are kept.", { exact: true })
+      .first(),
   ).toBeVisible();
   await showTarget();
   await page.screenshot({ path: testInfo.outputPath("D0-mobile-posture-interruption.png"), fullPage: false });
   await condition.selectOption("NO_HAND");
   await expect(
-    page.getByText("Image tracking paused. Keep your fingertip visible while it reacquires.", { exact: true }).first(),
+    page
+      .getByText("Tracking paused. Keep the same fingertip visible; saved targets are kept.", { exact: true })
+      .first(),
   ).toBeVisible();
   await showTarget();
   await page.screenshot({ path: testInfo.outputPath("D0-mobile-tracking-interruption.png"), fullPage: false });
