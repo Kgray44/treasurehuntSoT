@@ -3,10 +3,18 @@ title: Crossdeck refit publication checkpoint
 audience: automation
 status: current
 canonical_for: crossdeck-refit-publication-checkpoint-20261012
-last_reviewed: 2026-10-17
+last_reviewed: 2026-10-18
 ---
 
-## Current consumed ordinary5 failure
+## Current combined-source qualification hold
+
+The existing PR #721 continuation remains draft, unqualified and unmerged. Historical F `43b5f4d55b6ac751ed9b2e05d4e4cace38544c4f` and accepted Reach main `7942a575a1ca42c179d9cbc25a89075a7caf36e5` are composition inputs, not a qualified combined candidate. Preserve both source histories, all consumed failures and old evidence at their original bindings. Ordinary5 run38986106986 and later R14 ordinary7 run39037804106 failed; their qualifiers are spent and no old execution allowance may be reused.
+
+A current continuation must use its actual installed protected authority and exact source/base/contract/obligation tuple. Fresh combined-source capture, independent rendered review, authenticated submission, true-loader admission, current technical and Experience replay, canonical finalizer, exact qualified seal and whole workflow/Mainline PASS remain required before a normal protected merge and actual landed-product verification. Historical product review7/authenticated submission3 and accepted Reach-only proof cannot qualify the new combined tree. No current record, namespace, grant, allowance or execution permission is created by this status correction. Existing #722 and dependent spatial integration stay held until Crossdeck is actually merged and landed verification passes. Only the owner may grant PRODUCT_ACCEPTED.
+
+The sections below preserve earlier source-bound instructions and observations. Their former current/pending language is historical and grants no new execution or reused slot.
+
+## Historical consumed ordinary5 failure
 
 Whole run38986106986 failed at2026-10-17T00:45:10Z on53601e9/tree85e9/basea16c. Read the [ordinary5 disposition](../Development_Docs/Projects/Project_Crossdeck/Ordinary5_Disposition_20261017.md) and unchanged live custody. R11qualify59eee4ede94f91a116cc4e0cfcc98c795a62567e is consumed; qualified is absent. PR721 is draft specifically to prevent an automatic synchronize execution during correction publication. Technical36passed/1failed/1notrun and cleanupPASS remain outcomes within wholeFAIL; current Experience replay and canonical finalizer are absent.
 

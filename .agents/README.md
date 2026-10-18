@@ -3,7 +3,7 @@ title: Repository automation guidance
 audience: automation
 status: current
 canonical_for: repository-automation-guidance
-last_reviewed: 2026-10-15
+last_reviewed: 2026-10-17
 ---
 
 # Repository automation guidance
@@ -13,6 +13,7 @@ evidence remain in their governed documentation locations. Each context packet
 retains its own task scope, ownership and evidence boundaries; older packets do
 not authorize restarting a completed phase.
 
+- [Focused development and final verification](testing-workflow.md)
 - [Automatic Product Experience Engineering workflow](product-experience-workflow.md)
 - [Crossdeck refit publication checkpoint](crossdeck-refit-checkpoint.md)
 - [Sounding Line capture lifecycle repair context](capture-lifecycle-repair.md)

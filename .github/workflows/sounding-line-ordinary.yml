@@ -224,8 +224,10 @@ jobs:
         run: |
           node --input-type=module <<'EOF'
           import { appendFileSync } from "node:fs";
+          import { randomUUID } from "node:crypto";
           import { buildPlan } from "./scripts/sounding-line/ordinary.mjs";
 
+          appendFileSync(process.env.GITHUB_OUTPUT, `private_failure_publication_nonce=${randomUUID()}\n`);
           try {
             const plan = await buildPlan({
               root: "../candidate",
@@ -245,16 +247,6 @@ jobs:
             appendFileSync(process.env.GITHUB_OUTPUT, "kind=control-plane\n");
           }
           EOF
-      - name: Restore reusable ordinary evidence
-        id: evidence-cache
-        if: steps.route.outputs.kind == 'ordinary'
-        continue-on-error: true
-        uses: actions/cache/restore@v4
-        with:
-          path: candidate/artifacts/sounding-line/evidence-store
-          key: sounding-line-evidence-v14-${{ runner.os }}-${{ hashFiles('authority/scripts/sounding-line/ordinary.mjs', 'authority/scripts/sounding-line/evidence.mjs') }}-${{ steps.source.outputs.candidate }}
-          restore-keys: |
-            sounding-line-evidence-v14-${{ runner.os }}-${{ hashFiles('authority/scripts/sounding-line/ordinary.mjs', 'authority/scripts/sounding-line/evidence.mjs') }}-
       - run: npm ci --ignore-scripts
         working-directory: candidate
       - run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
@@ -268,17 +260,30 @@ jobs:
         if: steps.route.outputs.kind == 'ordinary'
         env:
           GH_TOKEN: ${{ github.token }}
+          SOUNDING_LINE_EVIDENCE_PURPOSE: PROTECTED_FINAL_VERIFICATION
+          SOUNDING_LINE_PRIVATE_FAILURE_PUBLICATION_NONCE: ${{ steps.route.outputs.private_failure_publication_nonce }}
           SOUNDING_LINE_PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
           SOUNDING_LINE_BASE_SHA: ${{ steps.source.outputs.base }}
           SOUNDING_LINE_EXCEPTION_PHASE: ${{ needs.campaign-custody.outputs.phase }}
         run: node authority/scripts/sounding-line/ordinary.mjs --mode ordinary --workspace candidate --base ${{ steps.source.outputs.base }} --candidate ${{ steps.source.outputs.candidate }}
-      - name: Persist passing reusable ordinary evidence
-        if: ${{ always() && steps.route.outputs.kind == 'ordinary' && steps.ordinary-verifier.outcome == 'success' && steps.evidence-cache.outputs.cache-hit != 'true' }}
-        continue-on-error: true
-        uses: actions/cache/save@v4
+      - name: Retain completed whole obligations after any verifier outcome
+        id: completed-evidence-artifact
+        if: ${{ always() && steps.route.outputs.kind == 'ordinary' }}
+        uses: actions/upload-artifact@v4
         with:
-          path: candidate/artifacts/sounding-line/evidence-store
-          key: sounding-line-evidence-v14-${{ runner.os }}-${{ hashFiles('authority/scripts/sounding-line/ordinary.mjs', 'authority/scripts/sounding-line/evidence.mjs') }}-${{ steps.source.outputs.candidate }}
+          name: sounding-line-completed-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: authority/artifacts/sounding-line/completed-evidence/checkpoint-*.json
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Retain encrypted browser failure diagnostics
+        id: browser-failure-artifact
+        if: ${{ always() && steps.route.outputs.kind == 'ordinary' && steps.route.outputs.private_failure_publication_nonce != '' && steps.ordinary-verifier.outputs.private_browser_failure_publish == steps.route.outputs.private_failure_publication_nonce && steps.ordinary-verifier.outputs.private_browser_failure_paths != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: sounding-line-browser-failures-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ steps.ordinary-verifier.outputs.private_browser_failure_paths }}
+          if-no-files-found: error
+          retention-days: 90
       - name: Bind control-plane validation to the exact candidate tree
         if: steps.route.outputs.kind == 'control-plane'
         working-directory: candidate

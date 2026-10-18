@@ -107,7 +107,7 @@ function fixture(t) {
   return { root, git, write, commit, plan, baseSha, candidateSha };
 }
 
-test("R14 changes the entire accepted ordinary workflow only by the two fixed artifact members", () => {
+test("historical accepted R14 installation changed only the two fixed ordinary artifact members", () => {
   const file = ".github/workflows/sounding-line-ordinary.yml";
   const accepted = execFileSync("git", ["show", `ba27c3395da43c54c1f90d7f18e2ce07f7523fd4:${file}`], {
     cwd: repo,
@@ -119,7 +119,31 @@ test("R14 changes the entire accepted ordinary workflow only by the two fixed ar
     "            candidate/artifacts/sounding-line/ordinary-decision.json\n" +
     "            candidate/artifacts/sounding-line/r14-observation.encrypted\n";
   assert.equal(accepted.split(previousPath).length, 2, "The exact historical upload path occurs once");
-  assert.equal(readFileSync(path.join(repo, file), "utf8"), accepted.replace(previousPath, currentPaths));
+  const installedR14 = execFileSync("git", ["show", `fd30aa1412072e89d04f2bb68786d9c184f82dfc:${file}`], {
+    cwd: repo,
+    encoding: "utf8",
+  });
+  assert.equal(installedR14, accepted.replace(previousPath, currentPaths));
+});
+
+test("current ordinary qualification upload preserves the exact two R14 artifact members and metadata", () => {
+  const workflow = readFileSync(path.join(repo, ".github/workflows/sounding-line-ordinary.yml"), "utf8");
+  const ordinaryUploads = workflow
+    .split(/\n      - /u)
+    .filter((step) => /(?:^|\n) *uses: actions\/upload-artifact@/u.test(step))
+    .filter((step) => /^ *name: sounding-line-ordinary-/mu.test(step));
+  assert.equal(ordinaryUploads.length, 1, "only one upload uses the ordinary qualification artifact name");
+  const ordinaryArtifacts = [
+    ...workflow.matchAll(
+      /      - uses: actions\/upload-artifact@v4\n        if: always\(\) && steps\.route\.outputs\.kind == 'ordinary'\n        with:\n          name: sounding-line-ordinary-\$\{\{ steps\.source\.outputs\.candidate \}\}\n          path: \|\n([\s\S]*?)          if-no-files-found: error(?:\n|$)/gu,
+    ),
+  ];
+  assert.equal(ordinaryArtifacts.length, 1, "the ordinary qualification artifact occurs exactly once");
+  assert.equal(
+    ordinaryArtifacts[0][1],
+    "            candidate/artifacts/sounding-line/ordinary-decision.json\n" +
+      "            candidate/artifacts/sounding-line/r14-observation.encrypted\n",
+  );
 });
 
 test("R14 preserves the literal thirteen-record/six-bridge prefix and grants only whole ordinary7", () => {

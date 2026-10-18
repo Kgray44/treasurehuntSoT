@@ -3,14 +3,14 @@ title: Project Crossdeck engineering home
 audience: product-engineering
 status: governing-baseline
 canonical_for: project-crossdeck-engineering-home
-last_reviewed: 2026-10-17
+last_reviewed: 2026-10-18
 ---
 
 # Project Crossdeck
 
 **The Multi-Surface Chronicle Experience System**
 
-The [R11 final candidate](Spatial_Experience_Refit_R11_Verification_20261017.md) preserves the complete Crossdeck experience and adopts the separately protected [R11 successor #754](https://github.com/Kgray44/treasurehuntSoT/pull/754) on main `a16c5807`. The accepted source repair [#753](https://github.com/Kgray44/treasurehuntSoT/pull/753) improves replay-failure diagnostics without inventing a cause for the earlier failure. The reviewed real merge matches all executable/configuration source and original evidence bindings. [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) is still draft, unqualified and unmerged; one finite ordinary5, its current replay and qualified seal, protected merge and landed smoke remain pending.
+The Crossdeck refit implements contextual device connection, handoff and distinct supported browser companion views. The [R11 source record](Spatial_Experience_Refit_R11_Verification_20261017.md), protected [successor #754](https://github.com/Kgray44/treasurehuntSoT/pull/754) and diagnostic repair [#753](https://github.com/Kgray44/treasurehuntSoT/pull/753) remain historical; they do not qualify the current combined source. [Ordinary5](Ordinary5_Disposition_20261017.md) and later [R14 ordinary7](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39037804106) are consumed failures. [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) is still draft, unqualified and unmerged. The continuation preserves its existing product work and adopts accepted Reach changes; fresh combined-source Product Experience capture, independent review, authenticated submission, current whole qualification and exact qualified seal, protected merge and landed smoke remain required. Existing #722 and dependent spatial integration stay held until the actual Crossdeck landing is verified. Physical/native and owner acceptance remain separate.
 
 Consumed ordinary4 [run 38968131415](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38968131415) failed after technical verification. The actual browser log records 38 passing tests and cleanup PASS; current Experience replay has no result. [The source-bound failure disposition](Ordinary4_Disposition_20261016.md) preserves originals and the exact diagnostic boundary. R10 remains spent with no qualified seal.
 

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-10-17",
+  "generated_at": "2026-10-18",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -424,6 +424,24 @@
     },
     {
       "path": "Development_Docs/Engineering/Experience_Changed_Path_Buffer_Repair.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Ordinary_Verifier_Cold_Startup_Repair.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Product_Experience_Reach_PR766_Blocked_Review_20261017.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Reach_Product_Review_Continuation_20261017.md",
       "record_type": "engineering-record",
       "status": "current",
       "canonical_for": null
@@ -13611,6 +13629,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/admiralty.phase1.registry-review-packet.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/capture.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -13707,7 +13731,19 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/parallax.floating-controls.experience-review-packet.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-review-packet.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/spatial-pilot.experience-review-packet.json",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null
