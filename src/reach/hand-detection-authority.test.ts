@@ -109,10 +109,21 @@ describe("whole-hand authority before index fallback", () => {
     expect(selectIndexModelAnchor(value)).not.toHaveProperty("identityObserved");
   });
 
-  it.each([0, 90])("uses full3D other-finger evidence to reject an open hand at depth orientation%s", (depthAngle) => {
-    const value = observation({ indexBends: [0, 5, 10], otherBends: [0, 5, 10], depthAngle });
-    expect(selectIndexModelAnchor(value)).toMatchObject({ authority: "CONTRARY", pointing: false, contrary: true });
-  });
+  it.each([
+    { depthAngle: 0, authority: "CONTRARY", contrary: true },
+    { depthAngle: 90, authority: "AMBIGUOUS", contrary: false },
+  ])(
+    "never offers a pointing action from an open-hand hypothesis at depth%o",
+    ({ depthAngle, authority, contrary }) => {
+      const value = observation({ indexBends: [0, 5, 10], otherBends: [0, 5, 10], depthAngle });
+      const anchor = selectIndexModelAnchor(value);
+      expect(anchor).toMatchObject({ authority, pointing: false, contrary });
+      // Entirely end-on inferred bones cannot prove visible finger extension.
+      // Ambiguity still pauses, supplies no model geometry and cannot fall back.
+      expect(anchor).not.toHaveProperty("geometry");
+      expect(anchor).not.toHaveProperty("indexCue");
+    },
+  );
 
   it.each([0, 85].flatMap((depthAngle) => [110, 150].map((angle) => ({ depthAngle, angle }))))(
     "does not call two straight secondary chains pointing opposite the index an open hand (%o)",

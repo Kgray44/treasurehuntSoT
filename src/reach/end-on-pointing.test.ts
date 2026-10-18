@@ -83,13 +83,25 @@ describe("camera-directed index overlapping the palm in the image", () => {
     for (const base of [9, 13, 17])
       for (const [offset, index] of [base + 1, base + 2, base + 3].entries())
         allEndOn.landmarks[index] = { ...allEndOn.landmarks[base], z: -[0.035, 0.06, 0.08][offset] };
-    expect(assessHand(allEndOn, frame)).toMatchObject({ pointing: true, intentEvidence: "HEURISTIC_INDEX_ONLY" });
+    expect(assessHand(allEndOn, frame)).toMatchObject({
+      pointing: false,
+      contrary: false,
+      posture: "UNKNOWN",
+      pointingEvidence: "NONE",
+      intentEvidence: "NONE",
+    });
   });
   it("does not claim a competing finger from an entirely depth-overlapping model chain", () => {
     const hand = endOnHand();
     for (const [offset, index] of [10, 11, 12].entries())
       hand.landmarks[index] = { ...hand.landmarks[9], z: -[0.035, 0.06, 0.08][offset] };
-    expect(assessHand(hand, frame)).toMatchObject({ pointing: true, intentEvidence: "HEURISTIC_INDEX_ONLY" });
+    expect(assessHand(hand, frame)).toMatchObject({
+      pointing: false,
+      contrary: false,
+      posture: "UNKNOWN",
+      pointingEvidence: "NONE",
+      intentEvidence: "NONE",
+    });
   });
   it("rejects a visible thumb/index pinch at the end-on index tip", () => {
     const hand = endOnHand();

@@ -209,7 +209,17 @@ describe("independent image fingertip evidence", () => {
                 );
         observed = tracker.update(deformingImage(x, y, 100 + i * 80, i * 0.3, Math.min(0.85, i * 0.018)), model);
       }
-      expect(observed).toMatchObject({ point: null, trackId: seed.trackId, reason: "IMAGE_REFERENCE_EXPIRED" });
+      if (["WRONG", "CONTRARY", "AMBIGUOUS"].includes(condition)) {
+        // Paused/conflicting pixels no longer renew trusted optical history.
+        // After the bounded recovery window, retain saved calibration evidence
+        // in its consumer, but do not advertise an active image identity.
+        expect(observed).toMatchObject({
+          point: null,
+          trackId: null,
+          reason: "MANUAL_SELECTION_REQUIRED",
+          temporalTrack: { state: "EXPIRED", identity: "EXPIRED" },
+        });
+      } else expect(observed).toMatchObject({ point: null, trackId: seed.trackId, reason: "IMAGE_REFERENCE_EXPIRED" });
     });
   for (const interruption of ["MISSING", "NEGATIVE", "AMBIGUOUS", "BAD_IMAGE"] as const)
     it(`clears tight appearance-refresh evidence on intermittent ${interruption}`, () => {

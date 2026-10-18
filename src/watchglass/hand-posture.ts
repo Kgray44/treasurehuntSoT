@@ -1,6 +1,11 @@
 import type { HandObservation } from "./hand-observation";
 import { cosine, handGeometry, subtract, vectorLength, type GeometryFrame } from "./hand-geometry";
 import { indexGeometry, indexLandmarks } from "./index-geometry";
+import {
+  observedSecondaryFingerPolicy,
+  observedSecondaryFingers,
+  secondaryGestureEvidence,
+} from "./secondary-finger-evidence";
 
 type Hand = HandObservation["hands"][number];
 export const pointingLandmarks = indexLandmarks;
@@ -16,64 +21,47 @@ export function assessHand(hand: Hand, frame?: GeometryFrame) {
   const index = indexGeometry(hand, frame);
   const shape = handGeometry(hand, frame);
   const pixelWidth = frame?.frameWidth ?? 640;
-  const others = [9, 13, 17]
-    .map((base) => {
-      // Auxiliary off-image estimates cannot veto an observed index-only point.
-      const finger = shape.finger(base);
-      if (!finger) return null;
-      const joints = [base, base + 1, base + 2, base + 3].map((id) => shape.points[id]);
-      const lengths = joints.slice(1).map((point, i) => {
-        const bone = subtract(point, joints[i]);
-        return Math.hypot(bone.x, bone.y);
-      });
-      const projectedChain = lengths.reduce((sum, length) => sum + length, 0);
-      const projectedReach = Math.hypot(finger.axis.x, finger.axis.y);
-      // In-bounds model joints have no per-joint visibility score. Demand a
-      // separated, coherent projected chain before calling it contrary evidence;
-      // a depth-overlapping or collapsed inferred finger remains uncertain.
-      const projectedCoherent =
-        lengths.every((length) => length >= 3 / pixelWidth) &&
-        projectedReach >= 12 / pixelWidth &&
-        projectedReach / Math.max(1e-9, finger.chain) >= 0.5 &&
-        projectedReach / Math.max(1e-9, projectedChain) >= 0.85 &&
-        Math.hypot(joints[3].x - shape.points[8].x, joints[3].y - shape.points[8].y) >= 8 / pixelWidth;
-      return { ...finger, projectedCoherent };
-    })
-    .filter(
-      (finger) =>
-        finger !== null &&
-        finger.projectedCoherent &&
-        finger.chain >= index.chain * 0.35 &&
-        finger.chain <= index.chain * 2.5 &&
-        finger.lengths.every((length) => length >= 0.001),
-    )
-    .filter((finger) => finger !== null);
-  const open = others.filter(
+  const currentOthers = observedSecondaryFingers(shape, index, pixelWidth).filter(
+    (finger) =>
+      finger.chain >= index.chain * 0.35 &&
+      finger.chain <= index.chain * 2.5 &&
+      finger.lengths.every((length) => length >= 0.001),
+  );
+  const others = currentOthers.filter((finger) => finger.projectedCoherent);
+  const openEvidence = secondaryGestureEvidence(
+    currentOthers,
     (finger) => finger.straightness >= 0.93 && finger.pipAlignment >= 0.7 && finger.dipAlignment >= 0.7,
-  ).length;
-  const similar = others.filter(
+    2,
+  );
+  const similarEvidence = secondaryGestureEvidence(
+    currentOthers,
     (finger) =>
       finger.straightness >= index.straightness - 0.1 &&
-      cosine(finger.axis, index.axis) >= 0.85 &&
+      cosine(finger.axis, index.axis) >= observedSecondaryFingerPolicy.minimumParallelIndexAlignment &&
       finger.pipAlignment >= 0.3 &&
       finger.dipAlignment >= 0.3,
-  ).length;
-  const anatomyForward = shape.palmBasis === "WRIST" ? shape.forward : subtract(shape.points[6], shape.points[5]);
-  const competing = others.some(
+    2,
+  );
+  const competingEvidence = secondaryGestureEvidence(
+    currentOthers,
     (finger) =>
       finger.straightness >= 0.96 &&
       finger.pipAlignment >= 0.85 &&
       finger.dipAlignment >= 0.85 &&
-      (cosine(finger.axis, anatomyForward) >= 0.2 || (index.depthDominant && cosine(finger.axis, index.axis) >= 0.8)) &&
       cosine(finger.axis, index.axis) >= 0.35,
   );
+  const open = openEvidence.count,
+    similar = similarEvidence.count,
+    competing = competingEvidence.count > 0;
+  const uncertainSecondary = openEvidence.uncertain || similarEvidence.uncertain || competingEvidence.uncertain;
   const pinched =
     index.complete && points[4].valid && vectorLength(subtract(shape.points[4], shape.points[8])) < index.chain * 0.12;
-  const contrary = open >= 2 || similar >= 2 || competing || pinched;
-  const pointing = index.extended && !contrary;
+  const clearBent = index.anatomical && !index.extended && !index.marginal;
+  const contrary = open >= 2 || similar >= 2 || competing || pinched || clearBent;
+  const pointing = index.extended && !contrary && !uncertainSecondary;
   const pointingEvidence = pointing
     ? ("DISTINCT" as const)
-    : index.marginal && !contrary
+    : index.marginal && !contrary && !uncertainSecondary
       ? ("MARGINAL" as const)
       : ("NONE" as const);
   const intentEvidence = pointing
@@ -85,9 +73,11 @@ export function assessHand(hand: Hand, frame?: GeometryFrame) {
     ? ("POINT" as const)
     : open >= 2 || similar >= 2
       ? ("OPEN" as const)
-      : index.anatomical
-        ? ("BENT" as const)
-        : ("UNKNOWN" as const);
+      : uncertainSecondary
+        ? ("UNKNOWN" as const)
+        : contrary
+          ? ("BENT" as const)
+          : ("UNKNOWN" as const);
   const wristAtEdge =
     points[0].valid && (points[0].x <= 0.015 || points[0].x >= 0.985 || points[0].y <= 0.015 || points[0].y >= 0.985);
   const partialFramingReason = !points[0].valid
@@ -108,6 +98,7 @@ export function assessHand(hand: Hand, frame?: GeometryFrame) {
     partialFramingReason,
     palmBasis: shape.palmBasis,
     pointing,
+    contrary,
     pointingEvidence,
     intentEvidence,
     posture,

@@ -53,6 +53,17 @@ export type RawHandInference = {
   inferenceBackend?: HandInferenceBackend;
   inferencePolicy?: HandInferencePolicy;
 };
+/** Explicit local recorder only. Consumers must omit lease/track identities from exports. */
+export type ReachFrameDiagnostics = {
+  capture: number;
+  completed: number;
+  modelObservation: HandObservation | null;
+  indexObservation: IndexImageObservation | null;
+  modelReason: string;
+  indexReason: string;
+};
+const frameRejectionReason = (error: unknown, fallback: string) =>
+  error instanceof Error && /^[A-Z][A-Z0-9_]{0,159}$/.test(error.message) ? error.message : fallback;
 /** Scalar diagnostics only. This callback never receives an image, identity or landmarks. */
 export type ReachInferenceMetrics = {
   disposition: "ACCEPTED" | "LATE" | "INVALID";
@@ -117,6 +128,7 @@ export class ReachBrowserRuntime {
     private rawInference?: (frame: RawHandInference) => void,
     private indexObserve?: (observation: IndexImageObservation) => void,
     private inferenceMetrics?: (packet: ReachInferenceMetrics) => void,
+    private frameDiagnostics?: (frame: ReachFrameDiagnostics) => void,
   ) {
     this.indexEnabled = !!indexObserve;
     this.camera = new BrowserCameraBroker(media, (state) => {
@@ -883,6 +895,8 @@ export class ReachBrowserRuntime {
             // Optional local diagnostics must not interrupt inference.
           }
           let observation: HandObservation | null = null;
+          let modelReason = "MODEL_OBSERVATION_REJECTED";
+          let indexReason = this.indexEnabled ? "INDEX_CAPTURE_NOT_PREPARED" : "INDEX_TRACKING_DISABLED";
           let gateTime = performance.now();
           const frameOrigin =
             pendingFrameOrigin && pendingFrameOrigin.capture === data.capture ? pendingFrameOrigin.origin : null;
@@ -915,9 +929,11 @@ export class ReachBrowserRuntime {
             );
             if (!gated.observation) throw new Error("OBSERVATION_NOT_GATED");
             observation = gated.observation;
+            modelReason = "ACCEPTED";
             this.observe(observation);
             this.status("READY");
-          } catch {
+          } catch (error) {
+            modelReason = frameRejectionReason(error, "MODEL_OBSERVATION_INVALID");
             gateTime = performance.now();
             this.status("STALE_OR_INVALID_OBSERVATION");
           }
@@ -953,6 +969,21 @@ export class ReachBrowserRuntime {
             let imageAccepted = false;
             try {
               const received = performance.now();
+              indexReason = !observation
+                ? "INDEX_MODEL_OBSERVATION_REJECTED"
+                : modelSelectionFailed
+                  ? "INDEX_MODEL_SELECTION_FAILED"
+                  : !this.imageTracker || !imageGate || !prepared
+                    ? "INDEX_CAPTURE_NOT_PREPARED"
+                    : prepared.tracker !== this.imageTracker ||
+                        this.pendingImageCapture !== data.capture ||
+                        prepared.token.capture !== data.capture
+                      ? "INDEX_CAPTURE_PAIR_MISMATCH"
+                      : received - prepared.token.capture > 150 || originExpired()
+                        ? "INDEX_IMAGE_CLOCK_OR_FRESHNESS"
+                        : prepared.hint !== this.pendingIndexHint
+                          ? "INDEX_SELECTION_REPLACED"
+                          : "INDEX_CAPTURE_REJECTED";
               // Never relabel a stale model image or an older in-flight image
               // as a fresh response to an explicit selection.
               if (
@@ -990,13 +1021,15 @@ export class ReachBrowserRuntime {
                 if (!captureFresh()) throw new Error("OBSERVATION_PIXEL_ORIGIN_STALE");
                 imageAccepted = true;
                 imageObservation = accepted;
+                indexReason = "ACCEPTED";
                 try {
                   this.indexObserve(accepted);
                 } catch {
                   /* Optional consumer isolation. */
                 }
               }
-            } catch {
+            } catch (error) {
+              indexReason = frameRejectionReason(error, "INDEX_OBSERVATION_INVALID");
               // A rejected capture pauses evidence without closing the model.
             }
             // An attempted selection belongs to one source image. Replaying its
@@ -1097,6 +1130,18 @@ export class ReachBrowserRuntime {
             /* Read-only diagnostics cannot interrupt the existing pipeline. */
           }
           pendingFrameOrigin = null;
+          try {
+            this.frameDiagnostics?.({
+              capture: data.capture,
+              completed: performance.now(),
+              modelObservation: observation,
+              indexObservation: imageObservation,
+              modelReason,
+              indexReason,
+            });
+          } catch {
+            // Explicit local recording is observational and cannot affect capture.
+          }
           schedule();
         } else if (
           !workerReady &&

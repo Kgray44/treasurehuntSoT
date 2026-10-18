@@ -1364,6 +1364,9 @@ export function ReachLaboratory({
       data-fingertip-coordinate-source={indexState?.coordinateSource ?? "IMAGE"}
       data-fingertip-model-support={indexState?.modelSupport ?? "NONE"}
       data-fingertip-optical-epoch={indexState?.opticalEpoch ?? 0}
+      data-index-association={indexState?.temporalTrack?.identity ?? "UNAVAILABLE"}
+      data-index-temporal-state={indexState?.temporalTrack?.state ?? "UNAVAILABLE"}
+      data-index-intent={indexState?.temporalTrack?.intent ?? "UNCERTAIN"}
       data-image-reason={indexStale ? "STALE" : (indexState?.reason ?? "UNSEEDED")}
       data-image-capture-time={indexState?.monotonicCaptureTime ?? ""}
       data-image-inference-time={indexState?.monotonicInferenceTime ?? ""}
@@ -2141,6 +2144,26 @@ export function ReachLaboratory({
                   <dd>{metrics.observations}</dd>
                 </div>
                 <div>
+                  <dt>Index association</dt>
+                  <dd>{indexState?.temporalTrack?.identity.toLowerCase() ?? "Not established"}</dd>
+                </div>
+                <div>
+                  <dt>Position tracking state</dt>
+                  <dd>
+                    {indexStale
+                      ? "Waiting for fresh evidence"
+                      : (indexState?.temporalTrack?.state.toLowerCase() ?? "Not running")}
+                  </dd>
+                </div>
+                <div>
+                  <dt>Anatomical pointing evidence</dt>
+                  <dd>{indexState?.temporalTrack?.intent.toLowerCase() ?? "Unknown"}</dd>
+                </div>
+                <div>
+                  <dt>Position age at dispatch</dt>
+                  <dd>{indexState?.temporalTrack?.measurementAgeMs?.toFixed(1) ?? "—"} ms</dd>
+                </div>
+                <div>
                   <dt>Model processing</dt>
                   <dd>
                     {source === "DEMO"
@@ -2239,6 +2262,14 @@ export function ReachLaboratory({
                   </dd>
                 </div>
               </dl>
+              {indexState?.temporalTrack && (
+                <p>
+                  Association, gesture evidence and position quality are separate. A motion prediction is diagnostic
+                  only; it never becomes a measured sample or interaction. Unknown current anatomy can coexist with a
+                  fresh, previously selected fingertip image. Every calibration sample still requires the current
+                  measurement and the laboratory's separate eligibility checks.
+                </p>
+              )}
               {source === "LIVE" && captureDiagnostics && (
                 <>
                   <p>

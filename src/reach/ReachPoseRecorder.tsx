@@ -2,6 +2,8 @@
 import Link from "next/link";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ReachBrowserRuntime } from "./browser-runtime";
+import { observationFreshnessTime } from "@/watchglass/hand-observation";
+import { IndexImageReadiness, type IndexImageReadinessResult } from "./index-image-readiness";
 import { useReachRuntimePolicy } from "./runtime-policy-client";
 import { ReachStage } from "./ReachStage";
 import { ReachTiming, type ReachVisualFrame } from "./visualization";
@@ -10,6 +12,7 @@ import {
   poseRecordingDurationMs,
   poseRecordingLimits,
   poseRecordingSteps,
+  type PoseCanonicalReadiness,
 } from "./pose-recording";
 import styles from "./ReachPoseRecorder.module.css";
 
@@ -61,10 +64,15 @@ export function ReachPoseRecorder() {
     previewEstimate: false,
   });
   const timings = useRef(new ReachTiming());
+  const indexReadiness = useRef(new IndexImageReadiness());
+  const canonicalReadiness = useRef<PoseCanonicalReadiness | null>(null);
+  const lastCanonicalUI = useRef(0);
   const [status, setStatus] = useState("DISABLED"),
     [phase, setPhase] = useState<Phase>("IDLE");
   const [captureReady, setCaptureReady] = useState(false);
   const [cleanCamera, setCleanCamera] = useState(true);
+  const [canonical, setCanonical] = useState<IndexImageReadinessResult | null>(null);
+  const [canonicalStale, setCanonicalStale] = useState(false);
   const [view, setView] = useState(firstView),
     [error, setError] = useState("");
   const [download, setDownload] = useState<Download | null>(null),
@@ -126,6 +134,18 @@ export function ReachPoseRecorder() {
           setStatus(next);
           if (!["READY", "STALE_OR_INVALID_OBSERVATION"].includes(next)) setCaptureReady(false);
         }
+        if (next === "STALE_OR_INVALID_OBSERVATION") {
+          indexReadiness.current.pause();
+          canonicalReadiness.current = null;
+          if (mounted.current) setCanonicalStale(true);
+        } else if (!["READY"].includes(next)) {
+          indexReadiness.current.reset();
+          canonicalReadiness.current = null;
+          if (mounted.current) {
+            setCanonical(null);
+            setCanonicalStale(false);
+          }
+        }
         if (!["DISABLED", "READY", "MODEL_STARTING", "REQUESTING", "STALE_OR_INVALID_OBSERVATION"].includes(next))
           stopRef.current(next);
       },
@@ -134,6 +154,33 @@ export function ReachPoseRecorder() {
         const current = session.current;
         if (!current || current.stopped || current.paused) return;
         current.append(raw, performance.now());
+        if (current.stopped) stopRef.current("TRACE_OR_GUIDE_LIMIT");
+      },
+      (observation) => {
+        const now = performance.now();
+        const age = now - observationFreshnessTime(observation);
+        if (age < 0 || age > 150) {
+          indexReadiness.current.pause();
+          canonicalReadiness.current = null;
+          if (mounted.current) setCanonicalStale(true);
+          return;
+        }
+        const next = indexReadiness.current.update(observation);
+        const evaluatedAt = performance.now();
+        canonicalReadiness.current = { result: next, evaluatedAt };
+        if (mounted.current) {
+          setCanonicalStale(evaluatedAt - observationFreshnessTime(observation) > 150);
+          if (now - lastCanonicalUI.current >= 80 || !next.eligible || next.changed) {
+            lastCanonicalUI.current = now;
+            setCanonical(next);
+          }
+        }
+      },
+      undefined,
+      (diagnostic) => {
+        const current = session.current;
+        if (!current || current.paused) return;
+        current.attachCanonical(diagnostic, canonicalReadiness.current, performance.now());
         if (current.stopped) stopRef.current("TRACE_OR_GUIDE_LIMIT");
       },
     );
@@ -179,9 +226,12 @@ export function ReachPoseRecorder() {
   }, [allowed, runtimePolicy.status, runtimePolicy.policy]);
   useEffect(() => {
     const timer = setInterval(() => {
+      const now = performance.now();
+      const last = canonicalReadiness.current?.result.observation;
+      if (last && now - observationFreshnessTime(last) > 150 && mounted.current) setCanonicalStale(true);
       const current = session.current;
       if (!current || current.stopped) return;
-      const next = current.tick(performance.now());
+      const next = current.tick(now);
       setView(next);
       if (next.stopped) stopRef.current("GUIDE_OR_TIME_LIMIT");
     }, 100);
@@ -244,7 +294,9 @@ export function ReachPoseRecorder() {
       if (!context) throw new Error("The browser could not create the recording canvas.");
       const started = performance.now();
       const filenameBase = `reach-pose-recording-${new Date().toISOString().replace(/[-:.]/g, "")}-${crypto.randomUUID().slice(0, 8)}`;
-      session.current = new PoseRecordingSession(started, sourceVideo.currentTime, filenameBase);
+      session.current = new PoseRecordingSession(started, sourceVideo.currentTime, filenameBase, {
+        canonicalTracking: true,
+      });
       chunks.current = [];
       bytes.current = 0;
       discard.current = false;
@@ -426,6 +478,20 @@ export function ReachPoseRecorder() {
   const reviewing = phase === "REVIEW";
   const stepIndex = poseRecordingSteps.findIndex((step) => step.id === view.step.id);
   const promptTarget = "target" in view.step ? view.step.target : { x: 0.5, y: 0.5 };
+  const canonicalReady = !canonicalStale && canonical?.eligible === true;
+  const canonicalLabel = canonicalStale
+    ? "waiting for fresh tracking"
+    : !canonical
+      ? "waiting for fingertip tracking"
+      : canonical.observation.state !== "TRACKING"
+        ? "tracking paused"
+        : !canonical.eligible
+          ? "tracking is settling"
+          : canonical.observation.coordinateSource === "MODEL"
+            ? "model position ready"
+            : canonical.observation.coordinateSource === "FUSED"
+              ? "hand and image position ready"
+              : "image position ready";
   return (
     <main className={styles.recorder}>
       <header>
@@ -433,8 +499,8 @@ export function ReachPoseRecorder() {
         <h1>Record natural hand movement</h1>
         <p>
           Follow a {poseRecordingDurationMs / 1000}-second guide. Save the camera image without the hand overlay by
-          default, plus a separate landmark trace for later frame-by-frame comparison. The live preview keeps its
-          overlay.
+          default, plus a separate landmark trace for later frame-by-frame comparison. The live preview keeps its joint
+          overlay. The trace also records the same fingertip tracking and readiness used by setup.
         </p>
       </header>
       <div className={styles.layout}>
@@ -470,6 +536,13 @@ export function ReachPoseRecorder() {
                 : "Diagnostic video is unavailable. The partial trace remains available in the review controls."
               : `Camera: ${status === "READY" && !captureReady ? "waiting for tracking" : status.replaceAll("_", " ").toLowerCase()} · mirrored preview · no microphone`}
           </p>
+          {!reviewing && (
+            <p className={styles.cameraStatus} role="status" aria-label="Canonical fingertip tracking">
+              Fingertip: {canonicalLabel}. {canonicalReady ? "Tracking is ready" : "Tracking is not ready"}; no
+              calibration samples or actions are collected here. The joint overlay can remain visible while fingertip
+              tracking is paused.
+            </p>
+          )}
         </section>
         <section className={styles.controls}>
           <p className={styles.eyebrow}>
@@ -536,7 +609,9 @@ export function ReachPoseRecorder() {
                   style={{ left: `${promptTarget.x * 100}%`, top: `${promptTarget.y * 100}%` }}
                 />
               </div>
-              <p className={styles.cameraStatus}>Prompt position only · no fit or pointing eligibility gate</p>
+              <p className={styles.cameraStatus}>
+                Prompt position only · tracking readiness recorded · no calibration fit
+              </p>
             </>
           )}
           {!allowed && runtimePolicy.status !== "LOADING" && (
@@ -587,8 +662,10 @@ export function ReachPoseRecorder() {
               Video includes your visible camera background. By default, its camera image has no hand overlay; uncheck
               the option before recording to include the existing overlay. Both modes are mirrored, re-encoded
               diagnostic video with prompt labels below the camera image, not raw sensor footage. The separate trace
-              contains up to two hands, 21 joint coordinates, relative depth, model identity, timing and prompt labels.
-              Prompts describe requested intent; they are not verified ground truth.
+              contains up to two hands, 21 joint coordinates, relative depth, model versions, timing and prompt labels,
+              plus canonical fingertip measurements, tracking states and exact rejection reasons. Source and hand
+              references are local recording ordinals, not raw camera, lease or track identifiers. Prompts describe
+              requested intent; they are not verified ground truth.
             </p>
             <p>
               Nothing is uploaded, fitted, saved to an account or added to aggregate exports. Recording stops within 90

@@ -49,6 +49,27 @@ export const indexImageObservationSchema = z
     }),
     uncertaintyRadiusPixels: nonnegativeDiagnostic,
     reason: nonempty,
+    measurements: z
+      .strictObject({
+        model: imagePoint.nullable(),
+        image: imagePoint.nullable(),
+        accepted: imagePoint.nullable(),
+        imageDisposition: z.enum(["TIP", "SHAFT", "DISPUTED", "UNAVAILABLE"]),
+        modelDisposition: z.enum(["QUALIFIED", "CANDIDATE", "UNAVAILABLE"]),
+      })
+      .optional(),
+    temporalTrack: z
+      .strictObject({
+        state: z.enum(["ACQUIRING", "TRACKING", "UNCERTAIN", "COASTING", "REACQUIRING", "AMBIGUOUS", "EXPIRED"]),
+        identity: z.enum(["ESTABLISHED", "CANDIDATE", "AMBIGUOUS", "EXPIRED"]),
+        intent: z.enum(["POINT", "CONTRARY", "UNCERTAIN"]),
+        measurementAgeMs: nonnegativeDiagnostic,
+        positionUncertaintyPixels: nonnegativeDiagnostic,
+        sourceGenerationCount: z.number().finite().int().min(0).max(8),
+        hypothesisCount: z.number().finite().int().min(0).max(3),
+        displayPoint: imagePoint.nullable(),
+      })
+      .optional(),
   })
   .refine(
     (o) => o.monotonicPixelOriginTime === undefined || o.monotonicPixelOriginTime <= o.monotonicCaptureTime + 5,
@@ -57,6 +78,24 @@ export const indexImageObservationSchema = z
   .refine((o) => (o.trackId === null ? o.trackGeneration === 0 : o.trackGeneration > 0))
   .refine((o) =>
     o.state === "TRACKING" ? o.point !== null && o.trackId !== null && o.trackGeneration > 0 : o.point === null,
+  )
+  .refine(
+    (o) =>
+      !o.measurements ||
+      (o.point === null
+        ? o.measurements.accepted === null
+        : o.measurements.accepted?.x === o.point.x && o.measurements.accepted?.y === o.point.y),
+    "INDEX_MEASUREMENT_LEDGER_MISMATCH",
+  )
+  .refine(
+    (o) =>
+      !o.temporalTrack ||
+      (o.state === "TRACKING"
+        ? o.temporalTrack.state === "TRACKING" &&
+          o.temporalTrack.measurementAgeMs !== null &&
+          o.temporalTrack.measurementAgeMs <= 150
+        : o.temporalTrack.state !== "TRACKING"),
+    "INDEX_TEMPORAL_MEASUREMENT_MISMATCH",
   )
   .refine((o) => {
     if (o.matchedPoint == null) return true;

@@ -5,11 +5,27 @@ import { defaultReachRuntimePolicy } from "./runtime-policy";
 import { syntheticObservation } from "./synthetic";
 import type { HandObservation } from "./observation";
 import { poseRecordingLimits } from "./pose-recording";
+import { indexImageAlgorithm, type IndexImageObservation } from "./index-image-tracker";
+import type { RawHandInference, ReachFrameDiagnostics } from "./browser-runtime";
 const fixture = vi.hoisted(() => ({
   policy: {} as Record<string, unknown>,
   observe: (observation: HandObservation) => {
     void observation;
   },
+  raw: (_frame: RawHandInference) => {
+    void _frame;
+  },
+  index: (_frame: IndexImageObservation) => {
+    void _frame;
+  },
+  diagnostic: (_frame: ReachFrameDiagnostics) => {
+    void _frame;
+  },
+  status: (_state: string) => {
+    void _state;
+  },
+  constructors: vi.fn(),
+  collecting: vi.fn(),
   starts: vi.fn(),
   stops: vi.fn(),
   draws: vi.fn(),
@@ -22,13 +38,23 @@ vi.mock("./ReachStage", () => ({ ReachStage: () => <canvas /> }));
 vi.mock("./browser-runtime", () => ({
   ReachBrowserRuntime: class {
     setTrackingLimits = vi.fn();
-    setCalibrationCollecting = vi.fn();
+    setCalibrationCollecting = fixture.collecting;
     constructor(
       video: HTMLVideoElement,
       observe: typeof fixture.observe,
       private status: (state: string) => void,
+      _media?: unknown,
+      raw?: typeof fixture.raw,
+      index?: typeof fixture.index,
+      _metrics?: unknown,
+      diagnostic?: typeof fixture.diagnostic,
     ) {
+      fixture.constructors();
       fixture.observe = observe;
+      fixture.raw = raw ?? (() => {});
+      fixture.index = index ?? (() => {});
+      fixture.diagnostic = diagnostic ?? (() => {});
+      fixture.status = status;
       Object.defineProperties(video, {
         readyState: { value: 4 },
         videoWidth: { value: 640 },
@@ -49,6 +75,8 @@ vi.mock("./browser-runtime", () => ({
 import { ReachPoseRecorder } from "./ReachPoseRecorder";
 beforeEach(() => {
   fixture.starts.mockClear();
+  fixture.constructors.mockClear();
+  fixture.collecting.mockClear();
   fixture.stops.mockClear();
   fixture.draws.mockClear();
   fixture.capture.mockClear();
@@ -145,6 +173,124 @@ it.each(["DISABLED", "UNAVAILABLE"])(
     expect(screen.getByRole("link", { name: "Download diagnostic video" })).toBeVisible();
   },
 );
+
+it("records the same runtime's raw, canonical and rejected frames with shared readiness instead of skeleton-only success", async () => {
+  let now = 1000;
+  vi.spyOn(performance, "now").mockImplementation(() => now);
+  render(<ReachPoseRecorder />);
+  expect(fixture.constructors).toHaveBeenCalledTimes(1);
+  fireEvent.click(screen.getByRole("button", { name: "Enable camera preview" }));
+  act(() => fixture.observe(syntheticObservation({ x: 0.5, y: 0.5 }, 0, now)));
+  fireEvent.click(screen.getByRole("button", { name: "Start guided video + trace recording" }));
+  expect(fixture.collecting).toHaveBeenCalledWith(true);
+  for (let sequence = 0; sequence < 9; sequence++) {
+    const capture = 1010 + sequence * 50;
+    const model = syntheticObservation({ x: 0.5, y: 0.5 }, sequence, capture);
+    Object.assign(model, { cameraLeaseId: "PRIVATE_LEASE", mirrorTransform: "PREVIEW_X", providerGeneration: 1 });
+    const index: IndexImageObservation = {
+      observationVersion: 1,
+      ...indexImageAlgorithm,
+      providerGeneration: 1,
+      cameraLeaseId: "PRIVATE_LEASE",
+      cameraFrameVersion: model.cameraFrameVersion,
+      frameWidth: 640,
+      frameHeight: 480,
+      mirrorTransform: "PREVIEW_X",
+      orientation: 0,
+      sequence,
+      monotonicCaptureTime: capture,
+      monotonicInferenceTime: capture + 20,
+      trackId: "PRIVATE_INDEX",
+      trackGeneration: 1,
+      point: { x: 0.5, y: 0.5 },
+      state: "TRACKING",
+      modelAgreement: "AGREE",
+      anchorSource: "MODEL_INDEX",
+      coordinateSource: "FUSED",
+      opticalEpoch: 1,
+      modelSupport: "FULL_HAND",
+      quality: { correlation: 0.95, separation: 0.1, texture: 20, forwardBackwardErrorPixels: 0 },
+      uncertaintyRadiusPixels: 4,
+      reason: "FULL_HAND_POINT_CONFIRMED",
+    };
+    now = capture + 15;
+    act(() => {
+      fixture.raw({
+        result: { landmarks: [model.hands[0].landmarks.map(({ x, y, z }) => ({ x, y, z }))] },
+        capture,
+        inference: capture + 10,
+        received: now,
+        videoTime: capture / 1000,
+        width: 640,
+        height: 480,
+        mirror: true,
+      });
+      fixture.observe(model);
+      fixture.index(index);
+      now = capture + 25;
+      fixture.diagnostic({
+        capture,
+        completed: now,
+        modelObservation: model,
+        indexObservation: index,
+        modelReason: "MODEL_ACCEPTED",
+        indexReason: "INDEX_ACCEPTED",
+      });
+    });
+  }
+  expect(screen.getByRole("status", { name: "Canonical fingertip tracking" })).toHaveTextContent(
+    "hand and image position ready",
+  );
+  now = 1500;
+  act(() => {
+    fixture.raw({
+      result: { landmarks: [] },
+      capture: now,
+      inference: now,
+      received: now,
+      videoTime: 1.5,
+      width: 640,
+      height: 480,
+      mirror: true,
+    });
+    fixture.status("STALE_OR_INVALID_OBSERVATION");
+    fixture.diagnostic({
+      capture: now,
+      completed: now,
+      modelObservation: null,
+      indexObservation: null,
+      modelReason: "OBSERVATION_PIXEL_ORIGIN_STALE",
+      indexReason: "INDEX_RESULT_UNAVAILABLE",
+    });
+  });
+  expect(screen.getByRole("status", { name: "Canonical fingertip tracking" })).toHaveTextContent(
+    "waiting for fresh tracking",
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Stop & review" }));
+  const blob = fixture.blobs.find((entry) => entry.type === "application/json")!;
+  const text = await new Promise<string>((resolve) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result));
+    reader.readAsText(blob);
+  });
+  const trace = JSON.parse(text);
+  expect(trace.frames).toHaveLength(10);
+  expect(trace.frames[8].canonicalIndexTrack).toMatchObject({
+    index: { accepted: true, coordinateSource: "FUSED", indexRef: "index-1" },
+    readiness: { trackingEligible: true },
+    calibration: { evaluated: false, samplesCollected: 0 },
+  });
+  expect(trace.frames[9]).toMatchObject({
+    rawHandCount: 0,
+    canonicalIndexTrack: {
+      index: { accepted: false, reason: "INDEX_RESULT_UNAVAILABLE" },
+      readiness: { trackingEligible: false },
+    },
+  });
+  expect(text).not.toContain("PRIVATE_LEASE");
+  expect(text).not.toContain("PRIVATE_INDEX");
+  expect(fixture.constructors).toHaveBeenCalledTimes(1);
+});
 it.each([true, false])(
   "records the actual canvas sources and trace metadata with clean camera %s",
   async (cleanCamera) => {

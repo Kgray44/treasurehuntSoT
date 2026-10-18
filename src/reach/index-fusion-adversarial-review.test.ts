@@ -25,7 +25,7 @@ type Chain = NonNullable<IndexModelAnchor["geometry"]>["index"];
 type Rival = "NONE" | "SHAFT_MIDSEGMENT" | "FORWARD_MIDSEGMENT";
 const point = (x: number, y: number): Point => ({ x: x / (width - 1), y: y / (height - 1) });
 
-function currentModel(x = 45, y = 45, rival: Rival = "NONE"): IndexModelAnchor {
+function currentModel(x = 45, y = 45, rival: Rival = "NONE", palmSpan = 0.37): IndexModelAnchor {
   const index = [48, 32, 16, 0].map((offset) => ({ ...point(x, y + offset), z: 0 })) as unknown as Chain;
   const thumb = [point(25, 93), point(18, 75), point(20, 57), point(25, 45)];
   const middle =
@@ -41,7 +41,6 @@ function currentModel(x = 45, y = 45, rival: Rival = "NONE"): IndexModelAnchor {
   const otherSegments = fingers.flatMap((finger) => finger.slice(1).map((joint, i) => [finger[i], joint] as const));
   // A wrong label can preserve the model's same-hand scale and internal index
   // shape. Do not let a changed palm span accidentally reject the adversary.
-  const palmSpan = 0.37;
   return {
     point: point(x, y),
     pointing: true,
@@ -101,10 +100,10 @@ function expectCompleteCurrentMetadata(anchor: IndexModelAnchor) {
   }
 }
 
-function establish(tracker: IndexImageTracker) {
+function establish(tracker: IndexImageTracker, palmSpan = 0.37) {
   let selected;
   for (const at of [100, 166, 233]) {
-    const anchor = currentModel();
+    const anchor = currentModel(45, 45, "NONE", palmSpan);
     expectCompleteCurrentMetadata(anchor);
     selected = tracker.update(pixels(at), anchor);
   }
@@ -115,6 +114,33 @@ function establish(tracker: IndexImageTracker) {
 }
 
 describe("independent fusion adversaries with complete current index metadata", () => {
+  it.each([0.4, 0.5, 0.65])(
+    "does not discard a contradictory true-tip patch merely because its footprint overlaps a wrong model digit with palm span%s",
+    (palmSpan) => {
+      const tracker = new IndexImageTracker(binding);
+      const selected = establish(tracker, palmSpan);
+      const distance = 12;
+      const shaftRadius = Math.min(8, Math.max(3, palmSpan * (width - 1) * 0.08));
+      // This is precisely the overlap proposal's newly eligible region: the
+      // original verified feature's center is outside anatomical support, but
+      // its7px NCC window intersects the model's other nearby finger surface.
+      expect(distance).toBeGreaterThan(shaftRadius);
+      expect(distance).toBeLessThan(shaftRadius + 7);
+      for (const at of [300, 366, 433, 500]) {
+        const wrong = currentModel(45 + distance, 45, "NONE", palmSpan);
+        expectCompleteCurrentMetadata(wrong);
+        expect(indexShapeContinues(currentModel().geometry!.index, wrong.geometry!.index, 0.75, 0.35, 60)).toBe(true);
+        const output = tracker.update(pixels(at), wrong);
+        expect(output).toMatchObject({
+          point: null,
+          reason: "FULL_HAND_INDEX_CONFLICT",
+          trackId: selected.trackId,
+          opticalEpoch: selected.opticalEpoch,
+        });
+      }
+    },
+  );
+
   it.each([12, 24])(
     "does not promote a same-source rigidly translated wrong model digit by %s pixels",
     (translation) => {

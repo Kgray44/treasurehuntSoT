@@ -67,9 +67,10 @@ describe("current hand extent remains negative evidence after index permission i
     const tracker = new IndexImageTracker(binding);
     const selected = revokeIndexWithCurrentInsideHandConflict(tracker);
     for (const at of [366, 433, 500, 566, 633]) {
-      // Current index is still45,45. The accepted appearance moves from an
-      // inside-hand rival at69,45 to69,22, beyond the conservative hull margin.
-      const output = tracker.update(pixels(at, 69, 22), currentModel());
+      // The disputed69,45 match did not move trusted history from45,45.
+      // Keep this candidate inside its32px motion bound so the hull gate,
+      // rather than an earlier motion rejection, must reject the background.
+      const output = tracker.update(pixels(at, 60, 22), currentModel());
       expect(output).toMatchObject({
         point: null,
         matchedPoint: null,
@@ -92,7 +93,7 @@ describe("current hand extent remains negative evidence after index permission i
       if (condition === "NO_CURRENT_HAND_IDENTITY") delete current.identitySource;
       if (condition === "OTHER_HAND_EXTENT") current.handRegion!.source = "another-observed-hand";
       if (condition === "INSUFFICIENT_EXTENT") current.handRegion!.points = current.handRegion!.points.slice(0, 8);
-      const output = tracker.update(pixels(366, 69, 22), current);
+      const output = tracker.update(pixels(366, 60, 22), current);
       expect(output).toMatchObject({
         point: null,
         reason: "FULL_HAND_INDEX_CONFLICT",

@@ -16,6 +16,8 @@ const guidance: Record<IndexImageReadinessResult["condition"], string> = {
   LOST: "Fingertip tracking paused. Bring the same finger back into view; saved targets are kept.",
 };
 const postureGuidance: Record<string, string> = {
+  INDEX_SOURCE_ASSOCIATION_PENDING:
+    "The hand model returned a different track. Keep the same index visible while its identity is checked; saved targets are kept.",
   FINGERTIP_RECONFIRMED_SETTLING:
     "The same fingertip is reacquired. Hold briefly while tracking settles; saved targets are kept.",
   SAME_HAND_POSITION_UNCERTAIN: "Your hand is still tracked. Fingertip position is settling; saved targets are kept.",
@@ -48,6 +50,8 @@ const postureGuidance: Record<string, string> = {
     "The hand model and selected fingertip disagree. Keep your index visible while they agree again; the cursor will not jump to another finger.",
   INDEX_MODEL_IMAGE_CONFLICT:
     "The visible index and tracked image disagree. Sampling is paused while they agree again; saved targets are kept.",
+  INDEX_IDENTITY_RECONFIRM_REQUIRED:
+    "Fingertip identity is being checked after a disagreement. Keep the same index visible; saved targets are kept.",
 };
 function identity(o: IndexImageObservation): string | null {
   if (o.trackId === null || o.trackGeneration <= 0) return null;

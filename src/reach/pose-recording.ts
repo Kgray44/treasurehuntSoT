@@ -1,5 +1,8 @@
 import { handModel } from "@/watchglass/hand-provider";
-import type { RawHandInference } from "./browser-runtime";
+import { observationFreshnessTime, type HandObservation } from "@/watchglass/hand-observation";
+import type { RawHandInference, ReachFrameDiagnostics } from "./browser-runtime";
+import type { IndexImageObservation } from "./index-image-tracker";
+import type { IndexImageReadinessResult } from "./index-image-readiness";
 
 export const poseRecordingLimits = {
   durationMs: 90_000,
@@ -105,6 +108,73 @@ export const poseRecordingSteps = [
 export const poseRecordingDurationMs = poseRecordingSteps.reduce((sum, step) => sum + step.seconds * 1000, 0);
 type Step = (typeof poseRecordingSteps)[number];
 type RawPoint = { x: number | null; y: number | null; z: number | null };
+type CanonicalProvider = { id: string; version: string; digest: string };
+type CanonicalMeasurements = {
+  model: { x: number; y: number } | null;
+  image: { x: number; y: number } | null;
+  accepted: { x: number; y: number } | null;
+  imageDisposition: "TIP" | "SHAFT" | "DISPUTED" | "UNAVAILABLE";
+  modelDisposition: "QUALIFIED" | "CANDIDATE" | "UNAVAILABLE";
+};
+type CanonicalTemporalTrack = {
+  state: "ACQUIRING" | "TRACKING" | "UNCERTAIN" | "COASTING" | "REACQUIRING" | "AMBIGUOUS" | "EXPIRED";
+  identity: "ESTABLISHED" | "CANDIDATE" | "AMBIGUOUS" | "EXPIRED";
+  intent: "POINT" | "CONTRARY" | "UNCERTAIN";
+  measurementAgeMs: number | null;
+  positionUncertaintyPixels: number | null;
+  sourceGenerationCount: number;
+  hypothesisCount: number;
+};
+export type PoseCanonicalReadiness = { result: IndexImageReadinessResult; evaluatedAt: number };
+export type PoseCanonicalIndexTrack =
+  | { schemaVersion: 1; disposition: "PENDING" }
+  | {
+      schemaVersion: 1;
+      disposition: "COMPLETE";
+      completedMs: number | null;
+      model: {
+        accepted: boolean;
+        reason: string;
+        sourceRef: string | null;
+        provider: CanonicalProvider | null;
+        hands: {
+          handRef: string | null;
+          continuity: string;
+          associationBasis: string | null;
+          reportedIndexTip: { x: number; y: number } | null;
+        }[];
+      };
+      index: {
+        accepted: boolean;
+        reason: string;
+        sourceRef: string | null;
+        indexRef: string | null;
+        provider: CanonicalProvider | null;
+        sequence: number | null;
+        pixelOriginMs: number | null;
+        state: IndexImageObservation["state"] | null;
+        coordinateSource: IndexImageObservation["coordinateSource"] | null;
+        modelSupport: IndexImageObservation["modelSupport"] | null;
+        modelAgreement: IndexImageObservation["modelAgreement"] | null;
+        anchorSource: IndexImageObservation["anchorSource"] | null;
+        opticalEpoch: number | null;
+        point: { x: number; y: number } | null;
+        matchedPoint: { x: number; y: number } | null;
+        quality: IndexImageObservation["quality"] | null;
+        uncertaintyRadiusPixels: number | null;
+        freshAtCompletion: boolean | null;
+        measurements?: CanonicalMeasurements;
+        temporalTrack?: CanonicalTemporalTrack;
+      };
+      readiness: {
+        condition: IndexImageReadinessResult["condition"] | "NOT_EVALUATED";
+        trackingEligible: boolean;
+        changed: boolean | null;
+        evaluatedMs: number | null;
+      };
+      calibration: { evaluated: false; samplesCollected: 0; reason: "NO_CALIBRATION_TARGET_OR_FIT_CONTEXT" };
+      actions: { evaluated: false; committed: 0 };
+    };
 export type PoseTraceFrame = {
   sequence: number;
   step: Step["id"];
@@ -127,10 +197,39 @@ export type PoseTraceFrame = {
   rawHandCount: number;
   truncated: boolean;
   malformed: boolean;
+  canonicalIndexTrack?: PoseCanonicalIndexTrack;
 };
 const finite = (value: unknown): number | null => (typeof value === "number" && Number.isFinite(value) ? value : null);
 const object = (value: unknown): Record<string, unknown> =>
   value !== null && typeof value === "object" ? (value as Record<string, unknown>) : {};
+const reason = (value: string) => (/^[A-Z][A-Z0-9_]{0,159}$/.test(value) ? value : "DIAGNOSTIC_REASON_UNAVAILABLE");
+const boundedPoint = (value: { x: number; y: number } | null | undefined) =>
+  value && [value.x, value.y].every(Number.isFinite) && value.x >= 0 && value.x <= 1 && value.y >= 0 && value.y <= 1
+    ? { x: value.x, y: value.y }
+    : null;
+type Source = HandObservation | IndexImageObservation;
+const sourceKey = (o: Source) =>
+  JSON.stringify([
+    o.providerId,
+    o.providerVersion,
+    "algorithmDigest" in o ? o.algorithmDigest : o.modelDigest,
+    o.providerGeneration,
+    o.cameraLeaseId,
+    o.cameraFrameVersion,
+    o.frameWidth,
+    o.frameHeight,
+    o.mirrorTransform,
+    o.orientation,
+    "inferenceBackend" in o ? o.inferenceBackend : null,
+  ]);
+const sameCaptureContext = (model: HandObservation, index: IndexImageObservation) =>
+  model.providerGeneration === index.providerGeneration &&
+  model.cameraLeaseId === index.cameraLeaseId &&
+  model.cameraFrameVersion === index.cameraFrameVersion &&
+  model.frameWidth === index.frameWidth &&
+  model.frameHeight === index.frameHeight &&
+  model.mirrorTransform === index.mirrorTransform &&
+  model.orientation === index.orientation;
 function snapshotResult(input: unknown) {
   const result = object(input),
     raw = Array.isArray(result.landmarks) ? result.landmarks : [];
@@ -163,7 +262,7 @@ function snapshotResult(input: unknown) {
   });
   return { hands, rawHandCount: raw.length, malformed, truncated };
 }
-/** Ephemeral local test evidence. No fitting, identity fields, storage or network calls. */
+/** Ephemeral local test evidence. Ordinal references never export raw lease/track identities. */
 export class PoseRecordingSession {
   private frames: PoseTraceFrame[] = [];
   private bytes = 0;
@@ -174,14 +273,21 @@ export class PoseRecordingSession {
   private endedAt: number | null = null;
   private endReason: string | null = null;
   private events: { atMs: number; event: "PAUSE" | "RESUME" }[] = [];
+  private sourceRefs = new Map<string, string>();
+  private handRefs = new Map<string, string>();
+  private indexRefs = new Map<string, string>();
+  private canonicalAttachments = { completed: 0, unmatched: 0, duplicate: 0, contextRejected: 0 };
+  private readonly canonicalTracking: boolean;
   constructor(
     readonly startedAt: number,
     readonly cameraVideoStartedAt: number,
     readonly recordingId: string = crypto.randomUUID(),
+    options: { canonicalTracking?: boolean } = {},
   ) {
     if (!Number.isFinite(startedAt) || !Number.isFinite(cameraVideoStartedAt))
       throw new Error("POSE_RECORDING_CLOCK_INVALID");
     this.lastNow = startedAt;
+    this.canonicalTracking = options.canonicalTracking === true;
   }
   private clock(now: number) {
     if (!Number.isFinite(now) || now < this.lastNow) throw new Error("POSE_RECORDING_CLOCK_INVALID");
@@ -301,6 +407,9 @@ export class PoseRecordingSession {
       inferencePolicy: input.inferencePolicy ?? null,
       timingFlags: flags,
       ...snapshotResult(input.result),
+      ...(this.canonicalTracking
+        ? { canonicalIndexTrack: { schemaVersion: 1 as const, disposition: "PENDING" as const } }
+        : {}),
     };
     const bytes = JSON.stringify(frame).length;
     if (this.bytes + bytes > poseRecordingLimits.traceBytes) {
@@ -310,6 +419,152 @@ export class PoseRecordingSession {
     this.frames.push(frame);
     this.bytes += bytes;
     if (capture !== null) this.previousCapture = capture;
+    return true;
+  }
+  /** Attach final same-frame canonical output without rerunning tracking or dropping a raw result. */
+  attachCanonical(input: ReachFrameDiagnostics, readiness: PoseCanonicalReadiness | null, now: number) {
+    if (!this.canonicalTracking) return false;
+    const row = this.frames[this.frames.length - 1];
+    if (!Number.isFinite(input.capture) || !row || row.captureMs !== input.capture - this.startedAt) {
+      this.canonicalAttachments.unmatched++;
+      return false;
+    }
+    if (row.canonicalIndexTrack?.disposition !== "PENDING") {
+      this.canonicalAttachments.duplicate++;
+      return false;
+    }
+    this.clock(now);
+    const matchesRaw = (o: Source) =>
+      o.monotonicCaptureTime === input.capture &&
+      o.frameWidth === row.width &&
+      o.frameHeight === row.height &&
+      (o.mirrorTransform === "PREVIEW_X") === row.mirror;
+    const modelMatches = input.modelObservation !== null && matchesRaw(input.modelObservation);
+    const indexMatches = input.indexObservation !== null && matchesRaw(input.indexObservation);
+    const model = modelMatches ? input.modelObservation : null;
+    const contextMatches =
+      !input.indexObservation || (model !== null && sameCaptureContext(model, input.indexObservation));
+    const index = indexMatches && contextMatches ? input.indexObservation : null;
+    const extra = index as
+      | (IndexImageObservation & { measurements?: CanonicalMeasurements; temporalTrack?: CanonicalTemporalTrack })
+      | null;
+    if ((!modelMatches && input.modelObservation) || (!indexMatches && input.indexObservation) || !contextMatches)
+      this.canonicalAttachments.contextRejected++;
+    const ordinal = (map: Map<string, string>, key: string, prefix: string) => {
+      let ref = map.get(key);
+      if (!ref && map.size < poseRecordingLimits.frames * 2) {
+        ref = `${prefix}-${map.size + 1}`;
+        map.set(key, ref);
+      }
+      return ref ?? null;
+    };
+    const source = (o: Source) => ordinal(this.sourceRefs, sourceKey(o), "source");
+    const provider = (o: Source): CanonicalProvider => ({
+      id: o.providerId,
+      version: o.providerVersion,
+      digest: "algorithmDigest" in o ? o.algorithmDigest : o.modelDigest,
+    });
+    const fresh = (o: Source, at: number) =>
+      at - observationFreshnessTime(o) >= 0 && at - observationFreshnessTime(o) <= 150;
+    const matchingReadiness = index !== null && readiness?.result.observation === index;
+    const mismatchReason = (o: Source) =>
+      o.monotonicCaptureTime === input.capture ? "CANONICAL_CONTEXT_MISMATCH" : "CANONICAL_CAPTURE_MISMATCH";
+    const snapshot: PoseCanonicalIndexTrack = {
+      schemaVersion: 1,
+      disposition: "COMPLETE",
+      completedMs: finite(input.completed) === null ? null : input.completed - this.startedAt,
+      model: {
+        accepted: model !== null,
+        reason:
+          input.modelObservation && !modelMatches ? mismatchReason(input.modelObservation) : reason(input.modelReason),
+        sourceRef: model ? source(model) : null,
+        provider: model ? provider(model) : null,
+        hands:
+          model?.hands.slice(0, 2).map((hand) => ({
+            handRef: ordinal(this.handRefs, `${sourceKey(model)}:${hand.trackId}:${hand.trackGeneration}`, "hand"),
+            continuity: hand.continuity ?? "UNKNOWN",
+            associationBasis: hand.associationBasis ?? null,
+            reportedIndexTip: hand.landmarks[8]?.valid ? boundedPoint(hand.landmarks[8]) : null,
+          })) ?? [],
+      },
+      index: {
+        accepted: index !== null,
+        reason:
+          input.indexObservation && !indexMatches
+            ? mismatchReason(input.indexObservation)
+            : !contextMatches
+              ? "CANONICAL_CONTEXT_MISMATCH"
+              : reason(input.indexReason),
+        sourceRef: index ? source(index) : null,
+        indexRef:
+          index?.trackId && index.trackGeneration > 0
+            ? ordinal(this.indexRefs, `${sourceKey(index)}:${index.trackId}:${index.trackGeneration}`, "index")
+            : null,
+        provider: index ? provider(index) : null,
+        sequence: index?.sequence ?? null,
+        pixelOriginMs:
+          index?.monotonicPixelOriginTime === undefined ? null : index.monotonicPixelOriginTime - this.startedAt,
+        state: index?.state ?? null,
+        coordinateSource: index?.coordinateSource ?? null,
+        modelSupport: index?.modelSupport ?? null,
+        modelAgreement: index?.modelAgreement ?? null,
+        anchorSource: index?.anchorSource ?? null,
+        opticalEpoch: index?.opticalEpoch ?? null,
+        point: boundedPoint(index?.point),
+        matchedPoint: boundedPoint(index?.matchedPoint),
+        quality: index
+          ? {
+              correlation: finite(index.quality.correlation),
+              separation: finite(index.quality.separation),
+              texture: finite(index.quality.texture),
+              forwardBackwardErrorPixels: finite(index.quality.forwardBackwardErrorPixels),
+            }
+          : null,
+        uncertaintyRadiusPixels: index?.uncertaintyRadiusPixels ?? null,
+        freshAtCompletion: index ? fresh(index, input.completed) : null,
+        ...(extra?.measurements
+          ? {
+              measurements: {
+                model: boundedPoint(extra.measurements.model),
+                image: boundedPoint(extra.measurements.image),
+                accepted: boundedPoint(extra.measurements.accepted),
+                imageDisposition: extra.measurements.imageDisposition,
+                modelDisposition: extra.measurements.modelDisposition,
+              },
+            }
+          : {}),
+        ...(extra?.temporalTrack
+          ? {
+              temporalTrack: {
+                state: extra.temporalTrack.state,
+                identity: extra.temporalTrack.identity,
+                intent: extra.temporalTrack.intent,
+                measurementAgeMs: finite(extra.temporalTrack.measurementAgeMs),
+                positionUncertaintyPixels: finite(extra.temporalTrack.positionUncertaintyPixels),
+                sourceGenerationCount: extra.temporalTrack.sourceGenerationCount,
+                hypothesisCount: extra.temporalTrack.hypothesisCount,
+              },
+            }
+          : {}),
+      },
+      readiness: {
+        condition: matchingReadiness ? readiness.result.condition : "NOT_EVALUATED",
+        trackingEligible: matchingReadiness && readiness.result.eligible && fresh(index!, readiness.evaluatedAt),
+        changed: matchingReadiness ? readiness.result.changed : null,
+        evaluatedMs: matchingReadiness ? readiness.evaluatedAt - this.startedAt : null,
+      },
+      calibration: { evaluated: false, samplesCollected: 0, reason: "NO_CALIBRATION_TARGET_OR_FIT_CONTEXT" },
+      actions: { evaluated: false, committed: 0 },
+    };
+    const next = { ...row, canonicalIndexTrack: snapshot };
+    const nextBytes = this.bytes - JSON.stringify(row).length + JSON.stringify(next).length;
+    if (nextBytes > poseRecordingLimits.traceBytes) {
+      this.stop(now, "TRACE_MEMORY_LIMIT");
+      return false;
+    }
+    row.canonicalIndexTrack = snapshot;
+    this.bytes = nextBytes;
+    this.canonicalAttachments.completed++;
     return true;
   }
   export() {
@@ -338,6 +593,21 @@ export class PoseRecordingSession {
           "Up to one capture/inference/render interval. Verify the visible step and elapsed label; not sensor exposure or latency qualification.",
       },
       limits: poseRecordingLimits,
+      ...(this.canonicalTracking
+        ? {
+            canonicalTracking: {
+              schemaVersion: 1,
+              pipeline: "SAME_REACH_BROWSER_RUNTIME_AND_INDEX_IMAGE_READINESS_AS_LABORATORY",
+              references: "PER_RECORDING_ORDINALS_NOT_RAW_LEASE_HAND_OR_TRACK_IDENTIFIERS",
+              calibration: "TRACKING_READINESS_ONLY_NO_TARGET_SETTLE_SAMPLE_WINDOW_FIT_OR_ACTIONS",
+              cadence:
+                "ACTIVE_RECORDING_CALIBRATION_CEILING_PREVIEW_AND_PAUSE_NORMAL_CEILING_ADAPTIVE_PRESSURE_APPLIES",
+              acquisition: "RUNTIME_MAY_PRECEDE_RECORDING_NOT_A_COLD_ACQUISITION_PROOF",
+              attachments: { ...this.canonicalAttachments },
+              pendingFrames: this.frames.filter((frame) => frame.canonicalIndexTrack?.disposition === "PENDING").length,
+            },
+          }
+        : {}),
       guide: poseRecordingSteps,
       durationMs: (this.endedAt ?? this.lastNow) - this.startedAt,
       activeDurationMs: this.activeElapsed(this.lastNow),

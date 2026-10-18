@@ -1,10 +1,16 @@
 import type { Point } from "./coordinates";
 import { fullHandDetectionPolicy } from "./hand-detection-authority";
 import { createNccScratch, searchNcc } from "./index-ncc";
+import { TemporalIndexTrack, temporalIndexPolicy, type TemporalIndexSnapshot } from "./temporal-index-track";
+import {
+  IndexSourceAssociation,
+  indexSourceAssociationPolicy,
+  sameIndexSourceContext,
+} from "./index-source-association";
 
 /** Canonical descriptor identity, not model weights or an accuracy certificate. */
 export const indexImageAlgorithmDescriptor = {
-  algorithm: "CONDITIONED_MODEL_IMAGE_FUSION_V2",
+  algorithm: "TEMPORAL_INDEX_FUSION_V3",
   policy: {
     radius: 7,
     minimumRadius: 4,
@@ -21,6 +27,8 @@ export const indexImageAlgorithmDescriptor = {
     modelAgreementRadius: 8,
     supportedDifferenceAverageRadius: 10,
     indexShaftRadius: 3,
+    indexShaftPalmRadiusRatio: 0.08,
+    maximumIndexShaftRadius: 8,
     indexShaftRivalMargin: 2,
     distalRayMaximumBones: 1,
     distalRayMinimumLength: 4,
@@ -68,7 +76,7 @@ export const indexImageAlgorithmDescriptor = {
     imageOutlier:
       "CURRENT_CREDIBLE_SAME_HAND_CONVEX_HULL_PLUS_CONSERVATIVE_MARGIN_REJECTS_ONLY_OUTSIDE_HAND_MATCHES_EVEN_AFTER_INDEX_PERMISSION_REVOKED_NEVER_REPROVES_INDEX_OR_RESOLVES_INSIDE_HAND_DIGITS",
     shaftSupport:
-      "ENTRY_REGISTERED_AUTOMATIC_INDEX_WITH_CURRENT_FOUR_NAMED_INDEX_ASSOCIATIONS_AND_COHERENT_SHAPE_MAY_CLASSIFY_DISTAL_SHAFT_NCC_AS_IDENTITY_ONLY_IF_SEPARATED_FROM_COMPETING_DIGIT_SEGMENTS_NEVER_TIP_COORDINATES_OR_REPROOF",
+      "ENTRY_REGISTERED_AUTOMATIC_INDEX_WITH_CURRENT_FOUR_NAMED_INDEX_ASSOCIATIONS_AND_COHERENT_SHAPE_MAY_CLASSIFY_DISTAL_SHAFT_NCC_AS_IDENTITY_ONLY_WITH_THREE_PIXEL_RADIUS_OR_CURRENT_CREDIBLE_PALM_SPAN_TIMES_POINT_ZERO_EIGHT_CAPPED_AT_EIGHT_IF_SEPARATED_FROM_COMPETING_DIGIT_SEGMENTS_NEVER_TIP_COORDINATES_OR_REPROOF",
     shaftConsensus:
       "ONE_INDEPENDENT_SHAFT_MATCH_CAN_CLASSIFY_ITS_SAME_FRAME_REFERENCE_ADAPTIVE_PARTNER_WITHIN_EXISTING_TWO_PIXEL_CONSENSUS_ONLY_WHEN_PARTNER_PASSES_OWN_ENDPOINT_AND_COMPETING_DIGIT_GUARDS",
     distalEndpoint:
@@ -86,7 +94,9 @@ export const indexImageAlgorithmDescriptor = {
     reconfirmation:
       "NO_CURRENT_ACCEPTED_IMAGE_CONTRADICTION_AND_CURRENT_QUALIFIED_INDEX_GEOMETRY_PLUS_TWO_SEPARATED_PREVIOUSLY_VERIFIED_INDEX_REGIONS_INCLUDING_DISTAL_AND_NEW_TIP_NCC_3_FRAMES_120MS_BEFORE_SAME_ID_OPTICAL_REPLACEMENT",
     modelConflict:
-      "ACCEPTED_IMAGE_CONFLICT_CLEARS_COORDINATE_ASSOCIATION_WITHOUT_ERASING_CURRENT_VERIFIED_HAND_IDENTITY",
+      "CURRENT_REGISTERED_FULL_INDEX_OR_LIVE_REGISTERED_PARTIAL_INDEX_CONFLICT_PAUSES_AND_LATCHES_UNRESOLVED_COORDINATES_WITHOUT_COMMITTING_CONFLICTING_OPTICAL_HISTORY_UNREGISTERED_TAGS_ARE_FRAME_LOCAL_NEGATIVE_OR_AMBIGUOUS_PIXELS_MAY_RETAIN_ASSOCIATION_WITHOUT_MEASUREMENT_HISTORY",
+    conflictRecovery:
+      "SOURCE_MATCHED_TRUSTED_REFERENCE_IMAGE_PROOF_WITHIN_250MS_PLUS_CURRENT_THREE_FRAME_120MS_GEOMETRY_RESTORES_AUTOMATIC_CONTROL_MANUAL_REQUIRES_CURRENT_IMAGE_AND_SAME_SOURCE_CONFIRMED_FULL_POINT_NO_MODEL_REANCHOR",
     manual: "IMAGE_ONLY_NO_MODEL_INITIALIZATION_RESCUE_OR_EXPIRY_TAKEOVER",
     unavailable:
       "RETAIN_REGISTERED_COHORT_UP_TO_250MS_BUT_REQUIRE_CURRENT_QUALIFIED_FULL_OR_REGISTERED_INDEX_GEOMETRY_FOR_MODEL_ACTION",
@@ -128,13 +138,32 @@ export const indexImageAlgorithmDescriptor = {
     failedAttempt: "REQUIRE_NEW_SELECTION_WITHOUT_POSITION_RETRY",
     maximumDispatchAgeMs: 150,
   },
+  temporalIndex: temporalIndexPolicy,
+  sourceAssociation: indexSourceAssociationPolicy,
+  temporalSemantics: {
+    diagnosticEnvelope:
+      "DISPLAY_MATCH_REQUIRES_ACTIVE_LOGICAL_ID_OTHER_CANDIDATES_RETAINED_ONLY_IN_CURRENT_MEASUREMENT_LEDGER_NO_NULL_ID_MATCHEDPOINT",
+    automaticEntry:
+      "CURRENT_FULL_OR_REGISTERED_INDEX_GEOMETRY_THREE_FRAMES_120MS_BEFORE_AUTOMATIC_SEED_CAN_PUBLISH_POINT_IMAGE_PIXELS_ALONE_CANNOT_PROMOTE_UNPROVED_COLD_INDEX",
+    association:
+      "LOGICAL_SESSION_INDEX_INDEPENDENT_OF_RAW_TEMPLATE_EPOCH_AND_TEMPORARY_MODEL_ID_CURRENT_MEASUREMENT_OR_SEPARATE_REGISTERED_IDENTITY_PROOF_RENEWS_BOUNDED_CONTINUITY",
+    gesture:
+      "CURRENT_CONFIRMED_SAME_SOURCE_ANATOMICAL_POINT_OR_RETAINED_CONTRARY_OTHERWISE_UNKNOWN_INDEPENDENT_OF_POSITION",
+    coast:
+      "EXISTING_BOUNDED_CONSTANT_VELOCITY_DISPLAY_ONLY_AGE_INCLUDES_COMPLETION_NEVER_MEASUREMENT_SAMPLE_OR_ACTION_KALMAN_NOT_SELECTED",
+    sourceAlias:
+      "ONLY_SAME_FIRST_TEN_PROVIDER_CAMERA_GEOMETRY_PROVENANCE_FIELDS_NEW_ID_REQUIRES_FIXED_INDEX_SHAPE_OLD_DISTINCT_TIP_AND_TWO_OLD_SEPARATED_ANATOMICAL_PATCHES_INCLUDING_DIP_THREE_CURRENT_FRAMES_120MS_WITH_NO_COMPETING_SOURCE_QUARANTINE_UNPROVED_INPUT_BEFORE_TRUSTED_STATE_ALREADY_PROVEN_ACTUAL_ADAPTER_GENERATION_RETAINS_ASSOCIATION_AND_NEGATIVE_INTENT_WITH_CURRENT_KNOWN_HAND_WITHOUT_INDEX_COORDINATE_PERMISSION",
+    expiry:
+      "CLEAR_ACTIVE_IDENTITY_KEEP_CANONICAL_CONSUMER_COMPLETED_TARGETS_UNTIL_SEPARATELY_VERIFIED_REPLACEMENT_OR_EXPLICIT_DOMAIN_CHANGE",
+    uncertainty: "BOUNDED_HEURISTIC_NOT_CALIBRATED_PROBABILITY_SHARED_CAMERA_ERRORS_NOT_INDEPENDENT",
+  },
   grayscale: [77, 150, 29, 8],
 } as const;
 export const indexImageAlgorithm = {
   providerId: "watchglass.index-image",
-  providerVersion: "3",
-  algorithm: "CONDITIONED_MODEL_IMAGE_FUSION_V2",
-  algorithmDigest: "e122538b1cfeadf2da1fc50673ae49ab53fab54e3dbe31fc4b3382d508cda3e4",
+  providerVersion: "4",
+  algorithm: "TEMPORAL_INDEX_FUSION_V3",
+  algorithmDigest: "f83610af8437c966ff03b57ebc0d359dd72ce991f71624f76aa8f76151ef3776",
 } as const;
 export type IndexImageBinding = {
   providerGeneration: number;
@@ -172,6 +201,14 @@ export type IndexImageObservation = IndexImageBinding & {
   };
   uncertaintyRadiusPixels: number | null;
   reason: string;
+  measurements?: {
+    model: Point | null;
+    image: Point | null;
+    accepted: Point | null;
+    imageDisposition: "TIP" | "SHAFT" | "DISPUTED" | "UNAVAILABLE";
+    modelDisposition: "QUALIFIED" | "CANDIDATE" | "UNAVAILABLE";
+  };
+  temporalTrack?: TemporalIndexSnapshot;
 };
 /** Pixels remain in process memory and are never included in observations. */
 export type IndexGrayFrame = {
@@ -587,9 +624,15 @@ function patch(frame: IndexGrayFrame, center: Point, radius: number): Patch | nu
  * pointing intent. Ambiguous appearance produces no actionable point.
  */
 export class IndexImageTracker {
+  private readonly temporal = new TemporalIndexTrack();
+  private readonly sourceAssociation = new IndexSourceAssociation();
+  private sourceAnatomy: IndexModelAnchor["geometry"] | null = null;
+  private sourceCanonical: string | null = null;
+  private trustedModelSource: string | null = null;
   private sequence = 0;
   private lastCapture = -Infinity;
   private acceptedAt = -Infinity;
+  private associationAt = -Infinity;
   private previous: IndexGrayFrame | null = null;
   private template: Patch | null = null;
   private reference: { template: Patch; frame: IndexGrayFrame; point: Point } | null = null;
@@ -602,6 +645,7 @@ export class IndexImageTracker {
   private trackId: string | null = null;
   private trackGeneration = 0;
   private anchorSource: IndexImageObservation["anchorSource"] = null;
+  private automaticEntryPending = false;
   private manualSelection = false;
   private vetoed = false;
   private authorityVetoed = false;
@@ -635,6 +679,7 @@ export class IndexImageTracker {
   private modelIdentity: { source: string; seenAt: number } | null = null;
   private handIdentity: { source: string; seenAt: number; coordinateSupport: boolean } | null = null;
   private indexIdentity: IndexIdentity | null = null;
+  private coordinateConflict: { source: string | null; at: number; imageProofAt: number | null } | null = null;
   private fingerReference: {
     source: string;
     frame: IndexGrayFrame;
@@ -656,7 +701,12 @@ export class IndexImageTracker {
     this.authorityVetoed = retainedAuthorityVeto;
     this.vetoed = retainedVeto;
   }
-  reset() {
+  reset(retainTemporalAssociation = false) {
+    if (!retainTemporalAssociation) this.temporal.reset();
+    this.sourceAssociation.reset();
+    this.sourceAnatomy = null;
+    this.sourceCanonical = null;
+    this.trustedModelSource = null;
     this.previous = null;
     this.template = null;
     this.reference = null;
@@ -667,9 +717,11 @@ export class IndexImageTracker {
     this.point = null;
     this.velocity = { x: 0, y: 0 };
     this.acceptedAt = -Infinity;
+    this.associationAt = -Infinity;
     this.trackId = null;
     this.trackGeneration = 0;
     this.anchorSource = null;
+    this.automaticEntryPending = false;
     this.manualSelection = false;
     this.vetoed = false;
     this.authorityVetoed = false;
@@ -688,6 +740,7 @@ export class IndexImageTracker {
     this.modelIdentity = null;
     this.handIdentity = null;
     this.indexIdentity = null;
+    this.coordinateConflict = null;
     this.fingerReference = null;
     this.cueAssociation = null;
     this.cueContinuity = null;
@@ -717,7 +770,7 @@ export class IndexImageTracker {
     const matches =
       !manualHint &&
       (!this.grid || (this.grid.width === frame.width && this.grid.height === frame.height)) &&
-      frame.capture - this.acceptedAt <= policy.maximumRecoveryMs
+      frame.capture - Math.max(this.acceptedAt, this.associationAt) <= policy.maximumRecoveryMs
         ? this.computeMatches(owned)
         : null;
     this.pending = { token, frame: owned, hint: manualHint ? { ...manualHint } : null, matches };
@@ -749,19 +802,91 @@ export class IndexImageTracker {
     // Finalization is synchronous and private. A slow seed search must not keep
     // an identity alive merely because it started inside the freshness limit.
     const checkpoint = this.checkpoint();
+    const temporalCheckpoint = this.temporal.checkpoint();
+    const sourceCheckpoint = this.sourceAssociation.checkpoint();
     try {
+      const associatedModel = this.associateModelSource(model, pending.frame, pending.matches);
       const observation = this.finishUpdate(
         { ...pending.frame, received: started },
-        model,
+        associatedModel,
         pending.hint,
         pending.matches,
       );
       const completed = now();
       if (!validTime(completed) || completed < started || !sourceFresh())
         throw new Error("INDEX_IMAGE_FRAME_INVALID_OR_STALE");
-      return { ...observation, monotonicInferenceTime: completed };
+      const temporal = this.temporal.observe({
+        capture: pending.frame.capture,
+        completed,
+        rawTrackId: observation.trackId,
+        point: observation.point,
+        uncertaintyPixels: observation.uncertaintyRadiusPixels,
+        identitySupported:
+          this.associationAt === pending.frame.capture ||
+          (observation.trackId !== null &&
+            observation.matchedPoint != null &&
+            !this.automaticEntryPending &&
+            !this.coordinateConflict &&
+            observation.modelAgreement !== "DISAGREE") ||
+          this.handIdentity?.seenAt === pending.frame.capture,
+        source: associatedModel?.identitySource ?? this.handIdentity?.source ?? null,
+        intent:
+          this.authorityVetoed || this.vetoed
+            ? "CONTRARY"
+            : associatedModel?.authority === "POINT" &&
+                associatedModel.pointing &&
+                associatedModel.identitySource === this.handIdentity?.source &&
+                this.authorityCandidate?.confirmed &&
+                this.authorityCandidate.lastAt === pending.frame.capture
+              ? "POINT"
+              : "UNCERTAIN",
+        ambiguous: observation.reason === "FULL_HAND_AMBIGUOUS",
+        hypotheses: Math.max(this.sourceAssociation.candidateCount, this.coordinateConflict ? 2 : 1),
+        width: this.binding.frameWidth,
+        height: this.binding.frameHeight,
+      });
+      const finalized = now();
+      if (!validTime(finalized) || finalized < completed || !sourceFresh())
+        throw new Error("INDEX_IMAGE_FRAME_INVALID_OR_STALE");
+      const snapshotAge =
+        temporal.snapshot.measurementAgeMs === null ? null : temporal.snapshot.measurementAgeMs + finalized - completed;
+      if (temporal.snapshot.state === "COASTING" && snapshotAge! > policy.maximumCaptureAgeMs) {
+        temporal.snapshot.state = "REACQUIRING";
+        temporal.snapshot.displayPoint = null;
+      }
+      temporal.snapshot.measurementAgeMs = snapshotAge;
+      return {
+        ...observation,
+        monotonicInferenceTime: finalized,
+        trackId: temporal.trackId,
+        trackGeneration: temporal.trackGeneration,
+        state: observation.state === "TRACKING" && !temporal.accept ? "UNCERTAIN" : observation.state,
+        point: temporal.accept ? observation.point : null,
+        reason:
+          observation.state === "TRACKING" && !temporal.accept
+            ? "INDEX_SOURCE_ASSOCIATION_PENDING"
+            : observation.reason,
+        matchedPoint:
+          temporal.trackId === null || (observation.state === "TRACKING" && !temporal.accept)
+            ? null
+            : observation.matchedPoint,
+        measurements: observation.measurements
+          ? {
+              ...observation.measurements,
+              model: model?.point && boundedPoint(model.point) ? { ...model.point } : null,
+              modelDisposition:
+                associatedModel?.point === null && model?.point
+                  ? "CANDIDATE"
+                  : observation.measurements.modelDisposition,
+              accepted: temporal.accept ? observation.measurements.accepted : null,
+            }
+          : undefined,
+        temporalTrack: temporal.snapshot,
+      };
     } catch (error) {
       Object.assign(this, checkpoint);
+      this.temporal.restore(temporalCheckpoint);
+      this.sourceAssociation.restore(sourceCheckpoint);
       this.nccScratch = createNccScratch(policy);
       throw error;
     }
@@ -772,7 +897,11 @@ export class IndexImageTracker {
   private checkpoint() {
     return {
       sequence: this.sequence,
+      sourceAnatomy: this.sourceAnatomy,
+      sourceCanonical: this.sourceCanonical,
+      trustedModelSource: this.trustedModelSource,
       acceptedAt: this.acceptedAt,
+      associationAt: this.associationAt,
       previous: this.previous,
       template: this.template,
       reference: this.reference,
@@ -783,6 +912,7 @@ export class IndexImageTracker {
       trackId: this.trackId,
       trackGeneration: this.trackGeneration,
       anchorSource: this.anchorSource,
+      automaticEntryPending: this.automaticEntryPending,
       manualSelection: this.manualSelection,
       vetoed: this.vetoed,
       authorityVetoed: this.authorityVetoed,
@@ -801,6 +931,7 @@ export class IndexImageTracker {
       modelIdentity: this.modelIdentity,
       handIdentity: this.handIdentity,
       indexIdentity: this.indexIdentity,
+      coordinateConflict: this.coordinateConflict,
       fingerReference: this.fingerReference,
       cueAssociation: this.cueAssociation,
       cueContinuity: this.cueContinuity,
@@ -865,12 +996,174 @@ export class IndexImageTracker {
       adaptive: evaluate(this.template, this.previous, previousPoint),
     };
   }
+  private appearanceSupportsIndex(frame: IndexGrayFrame, index: ModelGeometry["index"], source: string): boolean {
+    const reference = this.fingerReference;
+    if (!reference || reference.source !== source) return false;
+    const supported: { index: number; prior: Point; current: Point }[] = [];
+    for (const anchor of reference.anchors) {
+      const joint = index[anchor.index];
+      const expected = { x: Math.round(joint.x * (frame.width - 1)), y: Math.round(joint.y * (frame.height - 1)) };
+      const current = patch(frame, expected, policy.fingerIdentityRadius);
+      if (!current || current.deviation < policy.minimumTexture || current.structure < policy.minimumStructure)
+        continue;
+      const forward = searchNcc(
+        frame,
+        anchor.template,
+        expected,
+        policy.modelAgreementRadius,
+        this.searchScores,
+        undefined,
+        this.nccScratch,
+      );
+      const reverse = searchNcc(
+        reference.frame,
+        current,
+        anchor.point,
+        policy.reverseSearch,
+        this.reverseScores,
+        undefined,
+        this.nccScratch,
+      );
+      if (
+        forward &&
+        reverse &&
+        forward.correlation >= policy.minimumCorrelation &&
+        reverse.correlation >= policy.minimumCorrelation &&
+        forward.separation >= policy.minimumSeparation &&
+        reverse.separation >= policy.minimumSeparation &&
+        Math.hypot(forward.point.x - expected.x, forward.point.y - expected.y) <= policy.maximumForwardBackward &&
+        Math.hypot(reverse.point.x - anchor.point.x, reverse.point.y - anchor.point.y) <= policy.maximumForwardBackward
+      )
+        supported.push({ index: anchor.index, prior: anchor.point, current: expected });
+    }
+    return supported.some(
+      (distal) =>
+        distal.index === policy.requiredDistalIdentityRegion &&
+        supported.some(
+          (other) =>
+            other.index !== distal.index &&
+            Math.hypot(other.prior.x - distal.prior.x, other.prior.y - distal.prior.y) >=
+              policy.fingerIdentityRadius * 2 + 1 &&
+            Math.hypot(other.current.x - distal.current.x, other.current.y - distal.current.y) >=
+              policy.fingerIdentityRadius * 2 + 1,
+        ),
+    );
+  }
+  private associateModelSource(
+    model: IndexModelAnchor | null | undefined,
+    frame: IndexGrayFrame,
+    matches: PreparedImage["matches"],
+  ): IndexModelAnchor | null | undefined {
+    if (this.manualSelection || !model?.identitySource || !this.sourceCanonical) return model;
+    const source = model.identitySource;
+    const canonical = this.sourceCanonical;
+    // A proven exact current adapter generation carries association and
+    // negative intent across posture uncertainty. Coordinate permission remains
+    // independently governed by the current index/optical gates below.
+    const knownCurrent =
+      source === this.trustedModelSource &&
+      this.handIdentity?.source === canonical &&
+      frame.capture - this.handIdentity.seenAt <= policy.maximumRecoveryMs;
+    const quarantine = (): IndexModelAnchor => ({
+      ...model,
+      point: null,
+      pointing: false,
+      contrary: false,
+      authority: "AMBIGUOUS",
+      geometry: undefined,
+      indexCue: undefined,
+      indexIdentityEvidence: undefined,
+      indexIdentityGeometry: undefined,
+      handRegion: undefined,
+      otherDigitEvidence: undefined,
+      identityObserved: false,
+    });
+    if (
+      source !== canonical &&
+      (!sameIndexSourceContext(source, canonical) || (!knownCurrent && !this.sourceAssociation.canonicalSource))
+    )
+      return quarantine();
+    const valid = validModelGeometry(model, this.binding.frameWidth / this.binding.frameHeight);
+    const geometry = valid ? model.geometry : null;
+    const coherent =
+      !!geometry &&
+      !!this.sourceAnatomy &&
+      indexShapeContinues(
+        this.sourceAnatomy.index,
+        geometry.index,
+        this.binding.frameHeight / this.binding.frameWidth,
+        policy.indexCueMaximumShapeChange,
+        policy.modelMaximumAxisTurnDegrees,
+        { previous: this.sourceAnatomy.palmSpan, current: geometry.palmSpan },
+      );
+    const optical = matches?.stable.accepted ?? matches?.adaptive.accepted;
+    const consensus =
+      !(matches?.stable.accepted && matches.adaptive.accepted) ||
+      Math.hypot(
+        matches.stable.accepted.found.point.x - matches.adaptive.accepted.found.point.x,
+        matches.stable.accepted.found.point.y - matches.adaptive.accepted.found.point.y,
+      ) <= policy.maximumReferenceDisagreement;
+    const tipAgreement =
+      !!model.point &&
+      !!optical &&
+      consensus &&
+      Math.hypot(
+        optical.found.point.x - model.point.x * (frame.width - 1),
+        optical.found.point.y - model.point.y * (frame.height - 1),
+      ) <= policy.modelAgreementRadius;
+    const newSource = source !== this.sourceAssociation.trustedSource;
+    const decision = this.sourceAssociation.observe({
+      source,
+      capture: frame.capture,
+      fullPoint:
+        valid && model.authority === "POINT" && model.pointing && !model.contrary && model.authoritySource === source,
+      identityObserved: model.identityObserved === true,
+      anatomyCompatible: coherent,
+      appearanceVerified:
+        !!geometry &&
+        newSource &&
+        coherent &&
+        tipAgreement &&
+        this.appearanceSupportsIndex(frame, geometry.index, canonical),
+      tipAgreement,
+      ambiguous: model.authority === "AMBIGUOUS",
+    });
+    if (decision.state === "PROMOTED") this.trustedModelSource = source;
+    const originalTrusted = knownCurrent;
+    const knownAliasNegative =
+      decision.state !== "EXPIRED" &&
+      source === this.sourceAssociation.trustedSource &&
+      model.identityObserved === true &&
+      model.authoritySource === source &&
+      model.authority === "CONTRARY";
+    if (
+      !originalTrusted &&
+      !knownAliasNegative &&
+      ((decision.state !== "VERIFIED" && decision.state !== "PROMOTED") ||
+        source !== this.sourceAssociation.trustedSource)
+    )
+      return quarantine();
+    if (source === canonical) return model;
+    const normalize = <T extends { source: string }>(value: T | undefined): T | undefined =>
+      value?.source === source ? { ...value, source: canonical } : value;
+    return {
+      ...model,
+      identitySource: canonical,
+      authoritySource: model.authoritySource === source ? canonical : model.authoritySource,
+      indexIdentityEvidence: normalize(model.indexIdentityEvidence),
+      indexIdentityGeometry: normalize(model.indexIdentityGeometry),
+      handRegion: normalize(model.handRegion),
+      indexCue: normalize(model.indexCue),
+      otherDigitEvidence: normalize(model.otherDigitEvidence),
+    };
+  }
   private finishUpdate(
     frame: IndexGrayFrame,
     model?: IndexModelAnchor | null,
     manualHint?: Point | null,
     preparedMatches?: PreparedImage["matches"],
   ): IndexImageObservation {
+    const rawOptical = preparedMatches?.stable.accepted ?? preparedMatches?.adaptive.accepted;
     // A missing/bad tip cannot discard a whole-hand negative or ambiguity.
     if (model?.point && !boundedPoint(model.point)) model = { ...model, point: null };
     const modelPoint = model?.point
@@ -1020,8 +1313,14 @@ export class IndexImageTracker {
       };
       const stableSupport = shaftSupport(preparedMatches.stable),
         adaptiveSupport = shaftSupport(preparedMatches.adaptive);
-      const stableShaft = stableSupport.eligible && stableSupport.distance <= policy.indexShaftRadius;
-      const adaptiveShaft = adaptiveSupport.eligible && adaptiveSupport.distance <= policy.indexShaftRadius;
+      const shaftRadius = currentRegion
+        ? Math.min(
+            policy.maximumIndexShaftRadius,
+            Math.max(policy.indexShaftRadius, region.palmSpan * (frame.width - 1) * policy.indexShaftPalmRadiusRatio),
+          )
+        : policy.indexShaftRadius;
+      const stableShaft = stableSupport.eligible && stableSupport.distance <= shaftRadius;
+      const adaptiveShaft = adaptiveSupport.eligible && adaptiveSupport.distance <= shaftRadius;
       const sameFeature =
         preparedMatches.stable.accepted &&
         preparedMatches.adaptive.accepted &&
@@ -1057,6 +1356,27 @@ export class IndexImageTracker {
       acceptedOptical &&
       !tipCompatible(acceptedOptical.found.point);
     if (fullOpticalConflict) {
+      const registeredContradiction =
+        (!this.manualSelection &&
+          indexCue !== null &&
+          indexCue.cue.source === this.handIdentity?.source &&
+          indexCue.cue.source === this.indexIdentity?.source &&
+          frame.capture - this.indexIdentity.lastAt <= policy.modelMaximumGapMs) ||
+        (validModelGeometry(model, this.binding.frameWidth / this.binding.frameHeight) &&
+          model.identitySource === model.authoritySource &&
+          model.identityObserved === true &&
+          (this.handIdentity?.source === model.authoritySource ||
+            (this.manualSelection &&
+              this.authorityCandidate?.source === model.authoritySource &&
+              this.authorityCandidate.confirmed)));
+      if (registeredContradiction || this.coordinateConflict) {
+        this.coordinateConflict ??= {
+          source: this.handIdentity?.source ?? model?.authoritySource ?? indexCue?.cue.source ?? null,
+          at: frame.capture,
+          imageProofAt: null,
+        };
+        this.coordinateConflict = { ...this.coordinateConflict, imageProofAt: null };
+      }
       // A position contradiction revokes coordinate permission, not current
       // evidence that the same already-selected hand remains in view.
       if (this.handIdentity) this.handIdentity = { ...this.handIdentity, coordinateSupport: false };
@@ -1195,6 +1515,7 @@ export class IndexImageTracker {
       frame.capture -
         Math.max(
           this.acceptedAt,
+          this.associationAt,
           this.modelAcceptedAt,
           this.modelIdentity?.seenAt ?? -Infinity,
           this.handIdentity?.seenAt ?? -Infinity,
@@ -1202,7 +1523,7 @@ export class IndexImageTracker {
         policy.maximumRecoveryMs;
     if (expired) {
       const manualSelection = this.manualSelection;
-      this.reset();
+      this.reset(true);
       this.manualSelection = manualSelection;
     }
     const scale = this.binding.frameWidth / frame.width;
@@ -1272,6 +1593,30 @@ export class IndexImageTracker {
         coordinateSource,
         opticalEpoch: this.opticalEpoch,
         modelSupport,
+        measurements: {
+          model: model?.point ? { ...model.point } : null,
+          image: rawOptical
+            ? {
+                x: (rawOptical.found.refinedPoint?.x ?? rawOptical.found.point.x) / (frame.width - 1),
+                y: (rawOptical.found.refinedPoint?.y ?? rawOptical.found.point.y) / (frame.height - 1),
+              }
+            : null,
+          accepted:
+            state === "TRACKING" && producedPoint
+              ? {
+                  x: producedPoint.x / (frame.width - 1),
+                  y: producedPoint.y / (frame.height - 1),
+                }
+              : null,
+          imageDisposition: !rawOptical
+            ? "UNAVAILABLE"
+            : indexShaftObserved
+              ? "SHAFT"
+              : state === "TRACKING" && coordinateSource !== "MODEL"
+                ? "TIP"
+                : "DISPUTED",
+          modelDisposition: !model?.point ? "UNAVAILABLE" : modelSupport ? "QUALIFIED" : "CANDIDATE",
+        },
       };
     };
     if (this.grid && (this.grid.width !== frame.width || this.grid.height !== frame.height)) {
@@ -1466,9 +1811,34 @@ export class IndexImageTracker {
         (this.indexIdentity?.source === indexCue!.cue.source && this.indexIdentity.lastAt === frame.capture));
     const conditionedReady = modelReady || cueReady;
     const conditionedSource = modelReady ? this.modelContinuity!.source : cueReady ? this.cueContinuity!.source : null;
+    if (this.coordinateConflict && opticalAssociation && currentSource === this.coordinateConflict.source)
+      this.coordinateConflict = { ...this.coordinateConflict, imageProofAt: frame.capture };
+    if (
+      this.coordinateConflict &&
+      conditionedReady &&
+      this.coordinateConflict.imageProofAt !== null &&
+      frame.capture - this.coordinateConflict.imageProofAt <= policy.modelMaximumGapMs &&
+      conditionedSource === this.coordinateConflict.source
+    )
+      this.coordinateConflict = null;
     const confirmHandIdentity = () => {
       if (!this.manualSelection && conditionedSource && model?.identitySource === conditionedSource) {
         this.handIdentity = { source: conditionedSource, seenAt: frame.capture, coordinateSupport: true };
+        if (
+          !this.sourceAssociation.canonicalSource &&
+          currentGeometry &&
+          model?.authority === "POINT" &&
+          !this.coordinateConflict
+        ) {
+          this.sourceAssociation.establish({
+            source: this.trustedModelSource ?? conditionedSource,
+            canonicalSource: this.sourceCanonical ?? conditionedSource,
+            capture: frame.capture,
+          });
+          this.sourceCanonical ??= conditionedSource;
+          this.trustedModelSource ??= conditionedSource;
+          this.sourceAnatomy = model.geometry;
+        }
         if (currentIndexIdentity?.source === conditionedSource) {
           const index = currentIndexIdentity.index.map((joint) => ({ ...joint })) as unknown as IndexCue["index"];
           this.indexIdentity = {
@@ -1482,17 +1852,35 @@ export class IndexImageTracker {
         }
       }
     };
+    const verifiedContrary =
+      model?.authority === "CONTRARY" &&
+      model.authoritySource === this.handIdentity?.source &&
+      model?.identitySource === this.handIdentity?.source &&
+      this.handIdentity?.seenAt === frame.capture;
+    const verifiedPoint =
+      !this.manualSelection &&
+      !this.coordinateConflict &&
+      currentGeometry &&
+      model?.authoritySource === this.handIdentity?.source &&
+      model?.identitySource === this.handIdentity?.source &&
+      this.handIdentity?.coordinateSupport === true &&
+      this.indexIdentity?.source === this.handIdentity.source &&
+      this.indexIdentity.lastAt === frame.capture;
     const updateGestureVeto = () => {
       const kind = model?.authority;
       const source = model?.authoritySource;
-      if ((kind !== "POINT" && kind !== "CONTRARY") || modelAgreement !== "AGREE" || !source?.trim()) {
+      if (
+        (kind !== "POINT" && kind !== "CONTRARY") ||
+        (modelAgreement !== "AGREE" && !verifiedContrary && !verifiedPoint) ||
+        !source?.trim()
+      ) {
         this.authorityCandidate = null;
       } else {
         const p = indexImageAlgorithmDescriptor.wholeHandAuthority.promotion;
         const old = this.authorityCandidate;
         this.authorityCandidate =
           old && old.kind === kind && old.source === source && frame.capture - old.lastAt <= p.maximumGapMs
-            ? { ...old, lastAt: frame.capture, frames: old.frames + 1 }
+            ? { ...old, lastAt: frame.capture, frames: old.frames + (old.lastAt === frame.capture ? 0 : 1) }
             : { kind, source, startedAt: frame.capture, lastAt: frame.capture, frames: 1, confirmed: false };
         const candidate = this.authorityCandidate;
         candidate.confirmed =
@@ -1507,8 +1895,14 @@ export class IndexImageTracker {
         else if (model?.pointing && !model.indexCue) this.vetoed = false;
       }
     };
+    // A clear negative from the already-selected current hand remains negative
+    // even when its fingertip patch is temporarily unavailable. It supplies no
+    // positive pose, image registration or coordinate evidence.
+    if (verifiedContrary || verifiedPoint) updateGestureVeto();
     const gesturePauseReason = () => {
       if (indexCue && modelAgreement === "DISAGREE") return "INDEX_MODEL_IMAGE_CONFLICT";
+      if (this.coordinateConflict)
+        return model?.authority ? "FULL_HAND_INDEX_CONFLICT" : "INDEX_IDENTITY_RECONFIRM_REQUIRED";
       if (model?.authority === "AMBIGUOUS")
         return this.handIdentity?.source === model.identitySource && this.handIdentity?.seenAt === frame.capture
           ? "SAME_HAND_POSITION_UNCERTAIN"
@@ -1516,6 +1910,11 @@ export class IndexImageTracker {
       if (model?.authority && modelAgreement !== "AGREE") return "FULL_HAND_INDEX_CONFLICT";
       if (model?.authority === "CONTRARY")
         return this.authorityCandidate?.confirmed ? "FULL_HAND_CONTRARY_CONFIRMED" : "FULL_HAND_CONTRARY_PENDING";
+      if (this.automaticEntryPending) {
+        if (conditionedReady && modelAgreement === "AGREE" && !this.authorityVetoed && !this.vetoed)
+          this.automaticEntryPending = false;
+        else return "FULL_HAND_POINT_PENDING";
+      }
       if (model?.authority === "POINT" && (this.authorityVetoed || this.vetoed)) return "FULL_HAND_POINT_PENDING";
       if (this.authorityVetoed) return "FULL_HAND_CONTRARY_AWAITING_POINT";
       return this.vetoed ? "COHERENT_MODEL_CONTRARY" : null;
@@ -1628,62 +2027,8 @@ export class IndexImageTracker {
       });
       if (anchors.length >= policy.minimumFingerIdentityRegions) this.fingerReference = { source, frame, anchors };
     };
-    const fingerAppearanceContinues = (source: string): boolean => {
-      const reference = this.fingerReference;
-      if (!currentIndex || !reference || reference.source !== source) return false;
-      const supported: { index: number; prior: Point; current: Point }[] = [];
-      for (const anchor of reference.anchors) {
-        const joint = currentIndex[anchor.index];
-        const expected = { x: Math.round(joint.x * (frame.width - 1)), y: Math.round(joint.y * (frame.height - 1)) };
-        const current = patch(frame, expected, policy.fingerIdentityRadius);
-        if (!current || current.deviation < policy.minimumTexture || current.structure < policy.minimumStructure)
-          continue;
-        const forward = searchNcc(
-          frame,
-          anchor.template,
-          expected,
-          policy.modelAgreementRadius,
-          this.searchScores,
-          undefined,
-          this.nccScratch,
-        );
-        const reverse = searchNcc(
-          reference.frame,
-          current,
-          anchor.point,
-          policy.reverseSearch,
-          this.reverseScores,
-          undefined,
-          this.nccScratch,
-        );
-        if (
-          forward &&
-          reverse &&
-          forward.correlation >= policy.minimumCorrelation &&
-          reverse.correlation >= policy.minimumCorrelation &&
-          forward.separation >= policy.minimumSeparation &&
-          reverse.separation >= policy.minimumSeparation &&
-          Math.hypot(forward.point.x - expected.x, forward.point.y - expected.y) <= policy.maximumForwardBackward &&
-          Math.hypot(reverse.point.x - anchor.point.x, reverse.point.y - anchor.point.y) <=
-            policy.maximumForwardBackward
-        )
-          supported.push({ index: anchor.index, prior: anchor.point, current: expected });
-      }
-      // Evaluate all regions before choosing a pair: a nearby middle region
-      // must not hide a valid separated base/distal correspondence.
-      return supported.some(
-        (distal) =>
-          distal.index === policy.requiredDistalIdentityRegion &&
-          supported.some(
-            (other) =>
-              other.index !== distal.index &&
-              Math.hypot(other.prior.x - distal.prior.x, other.prior.y - distal.prior.y) >=
-                policy.fingerIdentityRadius * 2 + 1 &&
-              Math.hypot(other.current.x - distal.current.x, other.current.y - distal.current.y) >=
-                policy.fingerIdentityRadius * 2 + 1,
-          ),
-      );
-    };
+    const fingerAppearanceContinues = (source: string): boolean =>
+      currentIndex !== null && this.appearanceSupportsIndex(frame, currentIndex, source);
     // Reconfirm pixels BEFORE restoring coordinate permission. A current
     // contrary image, unknown/replaced hand, manual hint or absent geometry
     // cannot enter this probation. Palm continuity alone supplies no point.
@@ -1706,6 +2051,7 @@ export class IndexImageTracker {
     if (canReconfirm) {
       const output = { x: modelPoint!.x + this.anatomicalOffset.x, y: modelPoint!.y + this.anatomicalOffset.y };
       if (registerCurrentOptical(reconfirmSource!, modelPoint!, output)) {
+        this.coordinateConflict = null;
         this.handIdentity = { source: reconfirmSource!, seenAt: frame.capture, coordinateSupport: true };
         if (currentIndexIdentity?.source === reconfirmSource) {
           const index = currentIndexIdentity.index.map((joint) => ({ ...joint })) as unknown as IndexCue["index"];
@@ -1726,7 +2072,8 @@ export class IndexImageTracker {
       }
     } else if (!conditionedReady) this.modelOpticalCandidate = null;
     const modelFallback = (): IndexImageObservation | null => {
-      if (!conditionedReady || !conditionedSource || !modelPoint || this.manualSelection) return null;
+      if (!conditionedReady || !conditionedSource || !modelPoint || this.manualSelection || this.coordinateConflict)
+        return null;
       const acceptedOptical = preparedMatches?.stable.accepted ?? preparedMatches?.adaptive.accepted;
       if (acceptedOptical && !tipCompatible(acceptedOptical.found.point)) return null;
       // Only the independently established same-source anatomical cohort can
@@ -1817,6 +2164,7 @@ export class IndexImageTracker {
       this.trackGeneration = ++nextAnchor;
       this.trackId = `index-image-${this.trackGeneration}`;
       this.anchorSource = manualHint ? "MANUAL_HINT" : "MODEL_INDEX";
+      this.automaticEntryPending = !manualHint && (!!model?.authority || !!model?.indexCue) && !conditionedReady;
       if (
         !this.manualSelection &&
         currentSource &&
@@ -1856,7 +2204,7 @@ export class IndexImageTracker {
       );
     const gap = frame.capture - this.acceptedAt;
     const reject = (reason: string) => {
-      this.authorityCandidate = null;
+      if (!verifiedContrary && !verifiedPoint) this.authorityCandidate = null;
       this.referenceRefreshCandidate = null;
       ++this.failures;
       return result(this.failures >= 2 ? "LOST" : "UNCERTAIN", reason);
@@ -1882,9 +2230,34 @@ export class IndexImageTracker {
     if (!stable.accepted && frame.capture - this.lastReferenceAt > policy.maximumAdaptiveOnlyMs)
       return modelFallback() ?? reject("IMAGE_REFERENCE_EXPIRED");
     const { found, current, backward } = selected.accepted;
-    if (stable.accepted) this.lastReferenceAt = frame.capture;
     modelAgreement = modelPoint ? (tipCompatible(found.point) ? "AGREE" : "DISAGREE") : "UNAVAILABLE";
     updateGestureVeto();
+    if (
+      this.manualSelection &&
+      this.coordinateConflict &&
+      modelAgreement === "AGREE" &&
+      model?.authority === "POINT" &&
+      model.authoritySource === this.coordinateConflict.source &&
+      this.authorityCandidate?.kind === "POINT" &&
+      this.authorityCandidate.confirmed
+    )
+      this.coordinateConflict = null;
+    const currentPause = gesturePauseReason();
+    if (currentPause) {
+      // Current full-quality pixels can retain an association while gesture
+      // permission is paused. They do not advance position, template or motion.
+      if (!fullOpticalConflict && !this.coordinateConflict && !this.automaticEntryPending)
+        this.associationAt = frame.capture;
+      // Candidate pixels are useful feedback, never a new trusted reference.
+      // Otherwise a disputed patch can walk onto the background and become
+      // actionable as soon as the hand model drops out on a later capture.
+      currentMatchedPoint = {
+        x: ((found.refinedPoint?.x ?? found.point.x) + this.imagePhase.x) / (frame.width - 1),
+        y: ((found.refinedPoint?.y ?? found.point.y) + this.imagePhase.y) / (frame.height - 1),
+      };
+      return result("UNCERTAIN", currentPause);
+    }
+    if (stable.accepted) this.lastReferenceAt = frame.capture;
     // A changing appearance needs repeated independent full-hand support, not
     // one lucky agreement after an earlier weak model confirmation. Valid
     // stable reference matches are never refreshed, preserving loop accuracy.

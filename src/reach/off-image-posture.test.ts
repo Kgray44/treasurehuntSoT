@@ -49,10 +49,20 @@ describe("bounded auxiliary off-image non-index anatomy", () => {
   });
 
   it.each([{ otherBends: [0, 5, 10] }, { otherBends: [0, 15, 25] }])(
-    "does not let cropped or depth-overlapping non-index estimates veto the index: %j",
+    "pauses for complete depth-overlapping open-finger hypotheses without treating them as a contrary gesture: %j",
     (options) => {
       const { hand } = croppedPose(options);
-      expect(assessHand(hand, frame)).toMatchObject({ pointing: true, intentEvidence: "HEURISTIC_INDEX_ONLY" });
+      const without = structuredClone(hand);
+      delete without.offImageFingerLandmarks;
+      for (const current of [hand, without])
+        expect(assessHand(current, frame)).toMatchObject({
+          indexTracked: true,
+          pointing: false,
+          contrary: false,
+          posture: "UNKNOWN",
+          intentEvidence: "NONE",
+          offImageFingerSupport: false,
+        });
     },
   );
 
@@ -63,10 +73,11 @@ describe("bounded auxiliary off-image non-index anatomy", () => {
       hand.landmarks[index] = { ...extended[index], y: extended[index].y + 0.47 };
     }
     hand.offImageFingerLandmarks = hand.offImageFingerLandmarks!.filter((point) => ![10, 11, 12].includes(point.index));
-    expect(assessHand(hand, frame)).toMatchObject({ pointing: true, intentEvidence: "HEURISTIC_INDEX_ONLY" });
+    expect(assessHand(hand, frame)).toMatchObject({ pointing: false, contrary: false, posture: "UNKNOWN" });
     const pinch = croppedPose().hand;
     pinch.landmarks[4] = { ...raw[8] };
     expect(assessHand(pinch, frame).pointing).toBe(false);
+    expect(assessHand(pinch, frame).contrary).toBe(true);
   });
 
   it.each([5, 6, 7, 8])("never rescues missing required index landmark %s", (index) => {
@@ -146,12 +157,14 @@ describe("bounded auxiliary off-image non-index anatomy", () => {
     expect(assessHand(hand, frame).indexTracked).toBe(false);
   });
 
-  it("uses a coherent index when other fingers cannot be projected reliably, and rejects a collapsed index", () => {
+  it("retains index geometry but pauses for an unprojectable open-finger hypothesis, and rejects a collapsed index", () => {
     const { hand } = croppedPose({ otherBends: [0, 5, 10] });
     expect(assessHand(hand, frame)).toMatchObject({
       indexTracked: true,
-      pointing: true,
-      intentEvidence: "HEURISTIC_INDEX_ONLY",
+      pointing: false,
+      contrary: false,
+      posture: "UNKNOWN",
+      intentEvidence: "NONE",
     });
     hand.landmarks[7] = { ...hand.landmarks[8] };
     expect(assessHand(hand, frame).indexTracked).toBe(false);

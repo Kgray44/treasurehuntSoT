@@ -2,12 +2,19 @@ import type { HandObservation } from "@/watchglass/hand-observation";
 import { cosine, dot, handGeometry, subtract, vectorLength } from "@/watchglass/hand-geometry";
 import { indexGeometry } from "@/watchglass/index-geometry";
 import { assessHand } from "@/watchglass/hand-posture";
+import {
+  observedSecondaryFingerPolicy,
+  observedSecondaryFingers,
+  secondaryGestureEvidence,
+} from "@/watchglass/secondary-finger-evidence";
 import type { Point } from "./coordinates";
 import type { IndexModelAnchor } from "./index-image-tracker";
 
 /** Observed model geometry thresholds; none are probabilities or world measurements. */
 const minimumForwardDigitAlignment = 0.35;
 export const fullHandDetectionPolicy = {
+  secondaryEvidence: observedSecondaryFingerPolicy,
+  uncertainGesture: "MARGINAL_INDEX_OR_UNSUPPORTED_POTENTIAL_CONTRARY_GESTURE_IS_AMBIGUOUS_NEVER_NEGATIVE",
   palm: {
     minimumSpan: 0.035,
     maximumSpan: 0.65,
@@ -22,11 +29,11 @@ export const fullHandDetectionPolicy = {
     maximumChainPalmRatio: 3.5,
     minimumBonePalmRatio: 0.04,
     maximumBonePalmRatio: 1.5,
-    minimumBone: 0.001,
-    minimumMiddleProximalRatio: 0.22,
-    maximumMiddleProximalRatio: 1.4,
-    minimumDistalProximalRatio: 0.18,
-    maximumDistalProximalRatio: 1.2,
+    minimumBone: observedSecondaryFingerPolicy.bones.minimumLength,
+    minimumMiddleProximalRatio: observedSecondaryFingerPolicy.bones.minimumMiddleProximalRatio,
+    maximumMiddleProximalRatio: observedSecondaryFingerPolicy.bones.maximumMiddleProximalRatio,
+    minimumDistalProximalRatio: observedSecondaryFingerPolicy.bones.minimumDistalProximalRatio,
+    maximumDistalProximalRatio: observedSecondaryFingerPolicy.bones.maximumDistalProximalRatio,
   },
   index: {
     minimumProximalPalmRatio: 0.1,
@@ -140,14 +147,13 @@ function fullCandidate(hand: Hand, frame: Observation) {
   const shape = observedPalm(hand, frame),
     p = fullHandDetectionPolicy;
   if (!shape) return null;
-  const fingers = [9, 13, 17]
-    .map((base) => {
-      if (![base, base + 1, base + 2, base + 3].every((id) => observed(hand, id))) return null;
-      return shape.finger(base);
-    })
+  const index = indexGeometry(hand, frame);
+  const fingers = observedSecondaryFingers(shape, index, frame.frameWidth)
+    .filter((finger) =>
+      [finger.base, finger.base + 1, finger.base + 2, finger.base + 3].every((id) => observed(hand, id)),
+    )
     .filter(
       (finger) =>
-        finger !== null &&
         finger.chain >= shape.scale * p.fingers.minimumChainPalmRatio &&
         finger.chain <= shape.scale * p.fingers.maximumChainPalmRatio &&
         finger.lengths.every(
@@ -159,9 +165,8 @@ function fullCandidate(hand: Hand, frame: Observation) {
         finger.lengths[1] <= finger.lengths[0] * p.fingers.maximumMiddleProximalRatio &&
         finger.lengths[2] >= finger.lengths[0] * p.fingers.minimumDistalProximalRatio &&
         finger.lengths[2] <= finger.lengths[0] * p.fingers.maximumDistalProximalRatio,
-    )
-    .filter((finger) => finger !== null);
-  return fingers.length < p.fingers.minimumComplete ? null : { hand, shape, fingers };
+    );
+  return fingers.length < p.fingers.minimumComplete ? null : { hand, shape, fingers, index };
 }
 
 /** Same-capture gesture authority and conditioned anatomy for the fused producer. */
@@ -174,9 +179,8 @@ export function fullHandDecision(observation: Observation | null): FullHandDecis
   if (!candidates.length) return unavailable;
   if (candidates.length !== 1 || candidates[0].hand.continuity === "AMBIGUOUS")
     return { decision: "FULL_AMBIGUOUS", indexPoint: null, sourceKey: null };
-  const { hand, shape, fingers } = candidates[0],
+  const { hand, shape, fingers, index } = candidates[0],
     p = fullHandDetectionPolicy;
-  const index = indexGeometry(hand, observation);
   const indexPoint = index.tip ? { x: index.tip.x, y: index.tip.y } : null;
   // A model track is local continuity evidence, never handedness or a point-
   // derived identity. This key stays internal to the gesture handoff policy.
@@ -188,36 +192,42 @@ export function fullHandDecision(observation: Observation | null): FullHandDecis
     index.lengths[0] >= shape.scale * p.index.minimumProximalPalmRatio &&
     index.lengths.slice(1).every((length) => length >= shape.scale * p.index.minimumDistalPalmRatio);
   if (!anatomical) return { decision: "FULL_AMBIGUOUS", indexPoint, sourceKey };
-  const open = fingers.filter(
-    (finger) =>
-      finger.straightness >= p.open.minimumStraightness &&
-      finger.pipAlignment >= p.open.minimumPipAlignment &&
-      finger.dipAlignment >= p.open.minimumDipAlignment &&
-      // A straight inferred chain folded back across the hand is not an open
-      // finger. Reuse the competing-finger forward-direction requirement.
-      cosine(finger.axis, index.axis) >= p.open.minimumIndexAlignment,
-  ).length;
-  const similar = fingers.filter(
-    (finger) =>
-      dot(finger.axis, index.axis) / Math.max(1e-9, finger.chain * index.reach) >=
-        index.straightness - p.similar.straightnessTolerance &&
-      finger.pipAlignment >= p.similar.minimumPipAlignment &&
-      finger.dipAlignment >= p.similar.minimumDipAlignment,
-  ).length;
-  const competing = fingers.some(
-    (finger) =>
-      finger.straightness >= p.competing.minimumStraightness &&
-      finger.pipAlignment >= p.competing.minimumPipAlignment &&
-      finger.dipAlignment >= p.competing.minimumDipAlignment &&
-      cosine(finger.axis, index.axis) >= p.competing.minimumIndexAlignment,
-  );
+  const openFinger = (finger: (typeof fingers)[number]) =>
+    finger.straightness >= p.open.minimumStraightness &&
+    finger.pipAlignment >= p.open.minimumPipAlignment &&
+    finger.dipAlignment >= p.open.minimumDipAlignment &&
+    // A straight inferred chain folded back across the hand is not an open
+    // finger. Reuse the competing-finger forward-direction requirement.
+    cosine(finger.axis, index.axis) >= p.open.minimumIndexAlignment;
+  const similarFinger = (finger: (typeof fingers)[number]) =>
+    dot(finger.axis, index.axis) / Math.max(1e-9, finger.chain * index.reach) >=
+      index.straightness - p.similar.straightnessTolerance &&
+    finger.pipAlignment >= p.similar.minimumPipAlignment &&
+    finger.dipAlignment >= p.similar.minimumDipAlignment;
+  const competingFinger = (finger: (typeof fingers)[number]) =>
+    finger.straightness >= p.competing.minimumStraightness &&
+    finger.pipAlignment >= p.competing.minimumPipAlignment &&
+    finger.dipAlignment >= p.competing.minimumDipAlignment &&
+    cosine(finger.axis, index.axis) >= p.competing.minimumIndexAlignment;
+  const openEvidence = secondaryGestureEvidence(fingers, openFinger, p.open.minimumCount);
+  const similarEvidence = secondaryGestureEvidence(fingers, similarFinger, p.similar.minimumCount);
+  const competingEvidence = secondaryGestureEvidence(fingers, competingFinger);
+  const open = openEvidence.count,
+    similar = similarEvidence.count,
+    competing = competingEvidence.count > 0;
+  // Unprojectable or directionless secondary geometry may pause whole-hand
+  // authority, but is not positive evidence of a contrary gesture. A current
+  // independently observed backward direction excludes that secondary claim.
+  const uncertainSecondary = openEvidence.uncertain || similarEvidence.uncertain || competingEvidence.uncertain;
   const pinched =
     observed(hand, 4) && vectorLength(subtract(shape.points[4], shape.points[8])) < shape.scale * p.pinchPalmRatio;
   const extended =
     index.straightness >= p.index.minimumStraightness &&
     index.pipAlignment >= p.index.minimumPipAlignment &&
     index.dipAlignment >= p.index.minimumDipAlignment;
-  const pointing = extended && open < p.open.minimumCount && similar < p.similar.minimumCount && !competing && !pinched;
+  const contrary = open >= p.open.minimumCount || similar >= p.similar.minimumCount || competing || pinched;
+  const clearBent = !extended && !index.marginal;
+  const pointing = extended && !contrary && !uncertainSecondary;
   const geometry: IndexModelAnchor["geometry"] = pointing
     ? {
         index: observedIndexChain(hand),
@@ -225,7 +235,7 @@ export function fullHandDecision(observation: Observation | null): FullHandDecis
       }
     : undefined;
   return {
-    decision: pointing ? "FULL_POINT" : "FULL_CONTRARY",
+    decision: pointing ? "FULL_POINT" : contrary || clearBent ? "FULL_CONTRARY" : "FULL_AMBIGUOUS",
     indexPoint,
     sourceKey,
     identityObserved: true,
@@ -393,7 +403,7 @@ export function selectIndexModelAnchor(observation: Observation | null): IndexMo
     ...digitEvidence,
     ...region,
     pointing,
-    contrary: !posture.pointing && posture.validCount >= 16,
+    contrary: posture.contrary && posture.validCount >= 16,
     ...(pointing ? { indexCue: { source: modelSource(observation!, hand), index: observedIndexChain(hand) } } : {}),
   };
 }

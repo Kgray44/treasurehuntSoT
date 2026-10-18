@@ -1,6 +1,11 @@
 // @sounding-line-registration owner=reach suite=unit.reach contracts=reach.phase1.foundation
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { ReachBrowserRuntime, type IndexImageObservation, type ReachInferenceMetrics } from "./browser-runtime";
+import {
+  ReachBrowserRuntime,
+  type IndexImageObservation,
+  type ReachInferenceMetrics,
+  type ReachFrameDiagnostics,
+} from "./browser-runtime";
 import { BrowserHandAdapter, type HandInferencePolicy, type HandResult } from "@/watchglass/hand-provider";
 import { handObservationSchema } from "@/watchglass/hand-observation";
 import { pointingPose } from "../../tests/e2e/fixtures/reach/pointing-poses";
@@ -43,6 +48,8 @@ function setup(
     imageFailure?: "DRAW" | "READBACK";
     calibrationCollecting?: boolean;
     metricsThrows?: boolean;
+    frameDiagnostics?: boolean;
+    frameDiagnosticsThrows?: boolean;
     exposureControls?: boolean;
   } = {},
 ) {
@@ -200,6 +207,10 @@ function setup(
     ),
   };
   const observe = vi.fn(),
+    raw = vi.fn(),
+    frameDiagnostics = vi.fn<(packet: ReachFrameDiagnostics) => void>(() => {
+      if (options.frameDiagnosticsThrows) throw new Error("OPTIONAL_FRAME_DIAGNOSTICS_FAILED");
+    }),
     metrics = vi.fn<(packet: ReachInferenceMetrics) => void>(() => {
       if (options.metricsThrows) throw new Error("OPTIONAL_METRICS_FAILED");
     }),
@@ -212,9 +223,10 @@ function setup(
     observe,
     status,
     media,
-    undefined,
+    options.frameDiagnostics || options.frameDiagnosticsThrows ? raw : undefined,
     options.imageConsumer === false ? undefined : image,
     metrics,
+    options.frameDiagnostics || options.frameDiagnosticsThrows ? frameDiagnostics : undefined,
   );
   sessions.push(runtime);
   // Source integration cases use active collection; normal tracking is covered
@@ -228,6 +240,8 @@ function setup(
     image,
     observe,
     metrics,
+    raw,
+    frameDiagnostics,
     status,
     track,
     media,
@@ -292,7 +306,84 @@ function setup(
   };
 }
 
+/** Advance the fake wall clock with its timers, then present one genuinely new frame. */
+async function spacedResult(s: ReturnType<typeof setup>, landmarks: HandResult["landmarks"], minimumCaptureGap = 67) {
+  const worker = s.workers.at(-1)!;
+  const before = worker.frames.length;
+  const lastCapture = worker.frames.at(-1)!.capture;
+  while (performance.now() - lastCapture < minimumCaptureGap) await s.advance(1);
+  s.freshFrame();
+  for (let elapsed = 0; elapsed < 500 && worker.frames.length === before; elapsed++) await s.advance(1);
+  expect(worker.frames).toHaveLength(before + 1);
+  await s.advance(10);
+  s.result(undefined, landmarks);
+  const latest = s.image.mock.calls.at(-1)![0];
+  expect(latest.monotonicCaptureTime).toBe(worker.frames.at(-1)!.capture);
+  return latest;
+}
+
 describe("runtime image source integration", () => {
+  it("reports the exact gated same-frame pair once, after the existing raw and tracking consumers", async () => {
+    const s = setup({ frameDiagnostics: true });
+    const worker = await s.start();
+    await s.advance(10);
+    s.result();
+    expect(s.raw).toHaveBeenCalledOnce();
+    expect(s.frameDiagnostics).toHaveBeenCalledOnce();
+    const packet = s.frameDiagnostics.mock.calls[0][0];
+    expect(packet).toMatchObject({
+      capture: worker.frames[0].capture,
+      completed: performance.now(),
+      modelReason: "ACCEPTED",
+      indexReason: "ACCEPTED",
+    });
+    expect(packet.modelObservation).toBe(s.observe.mock.calls[0][0]);
+    expect(packet.indexObservation).toBe(s.image.mock.calls[0][0]);
+    expect(packet.indexObservation?.monotonicCaptureTime).toBe(packet.capture);
+    for (const consumer of [s.raw, s.observe, s.image])
+      expect(consumer.mock.invocationCallOrder[0]).toBeLessThan(s.frameDiagnostics.mock.invocationCallOrder[0]);
+  });
+
+  it("retains a rejected raw result with exact final reasons and no accepted canonical pair", async () => {
+    const s = setup({ frameDiagnostics: true });
+    const worker = await s.start();
+    await s.advance(151);
+    s.result();
+    expect(s.raw).toHaveBeenCalledOnce();
+    expect(s.observe).not.toHaveBeenCalled();
+    expect(s.image).not.toHaveBeenCalled();
+    expect(s.frameDiagnostics).toHaveBeenCalledExactlyOnceWith({
+      capture: worker.frames[0].capture,
+      completed: performance.now(),
+      modelObservation: null,
+      indexObservation: null,
+      modelReason: "OBSERVATION_PIXEL_ORIGIN_STALE",
+      indexReason: "INDEX_MODEL_OBSERVATION_REJECTED",
+    });
+    expect(s.status).toHaveBeenLastCalledWith("STALE_OR_INVALID_OBSERVATION");
+  });
+
+  it("isolates a throwing frame diagnostic from accepted tracking and subsequent capture", async () => {
+    const s = setup({ frameDiagnosticsThrows: true });
+    const worker = await s.start();
+    await s.advance(10);
+    s.result();
+    const first = s.image.mock.calls[0][0];
+    s.freshFrame();
+    await s.advance(7);
+    expect(worker.frames).toHaveLength(2);
+    await s.advance(10);
+    s.result();
+    expect(s.frameDiagnostics).toHaveBeenCalledTimes(2);
+    expect(s.raw).toHaveBeenCalledTimes(2);
+    expect(s.observe).toHaveBeenCalledTimes(2);
+    expect(s.image).toHaveBeenCalledTimes(2);
+    expect(s.image.mock.calls[1][0].trackId).toBe(first.trackId);
+    expect(s.status).toHaveBeenLastCalledWith("READY");
+    expect(s.runtime.resources().workers).toBe(1);
+    expect(s.runtime.resources().tracks).toBe(1);
+  });
+
   it("diagnoses the exact existing bitmap gray plane without another readback, queue or repeated capability query", async () => {
     const sampled = vi.spyOn(imageSignal, "sampleImageSignal"),
       record = vi.spyOn(ReachCaptureHealth.prototype, "record");
@@ -389,10 +480,11 @@ describe("runtime image source integration", () => {
   });
   it("preserves an explicit pointing attempt through a contrary result, without changing its existing pause", async () => {
     const record = vi.spyOn(ReachCaptureHealth.prototype, "record"),
-      s = setup();
+      s = setup({ frameDiagnostics: true });
     await s.start();
     await s.advance(10);
     s.result(undefined, [modelPose(s.hint, { indexBends: [0, 5, 10], otherBends: [0, 5, 10] })]);
+    expect(s.frameDiagnostics.mock.calls[0][0].indexReason).toBe("ACCEPTED");
     expect(record.mock.calls.at(-1)![0]).toMatchObject({
       contraryGesture: true,
       trackingExpected: true,
@@ -410,6 +502,13 @@ describe("runtime image source integration", () => {
     await s.start(false);
     await s.advance(10);
     s.result(undefined, [modelPose(s.hint)]);
+    for (let evidence = 1; evidence < 3; evidence++) {
+      expect(record.mock.calls.at(-1)![0].usablePoint).toBe(false);
+      s.freshFrame();
+      await s.advance(57);
+      await s.advance(10);
+      s.result(undefined, [modelPose(s.hint)]);
+    }
     expect(record.mock.calls.at(-1)![0].usablePoint).toBe(true);
     s.freshFrame();
     await s.advance(57);
@@ -1739,11 +1838,40 @@ describe("runtime image source integration", () => {
     expect(s.image.mock.calls.at(-1)![0]).toMatchObject({ state: "TRACKING", anchorSource: "MANUAL_HINT" });
     expect(s.runtime.clearIndexSelection()).toBe(true);
     expect(s.runtime.indexSelectionMode()).toBe("AUTOMATIC");
-    s.freshFrame();
-    await s.advance(Math.ceil(s.runtime.trackingPacing()!.intervalMs));
-    await s.advance(10);
-    s.result(undefined, [modelPose(s.hint)]);
+    for (let evidence = 0; evidence < 3; evidence++) {
+      await spacedResult(s, [modelPose(s.hint)]);
+      if (evidence < 2) expect(s.image.mock.calls.at(-1)![0].point).toBeNull();
+    }
     expect(s.image.mock.calls.at(-1)![0]).toMatchObject({ state: "TRACKING", anchorSource: "MODEL_INDEX" });
+  });
+
+  it("cannot turn one cold model guess into image control when that hand disappears before confirmation", async () => {
+    const s = setup();
+    const worker = await s.start(false);
+    const firstCapture = worker.frames[0].capture;
+    await s.advance(10);
+    // Good texture is deliberately available at this unverified model guess.
+    // It cannot independently prove that this is the selected anatomical index.
+    s.result(undefined, [modelPose(s.hint)]);
+    expect(s.image.mock.calls.at(-1)![0].point).toBeNull();
+    for (let absent = 0; absent < 6; absent++) {
+      const latest = await spacedResult(s, [], 100);
+      expect(latest.point).toBeNull();
+      expect(latest.state).not.toBe("TRACKING");
+      expect(s.observe.mock.calls.at(-1)![0].hands).toHaveLength(0);
+    }
+    expect(worker.frames.at(-1)!.capture - firstCapture).toBeLessThan(1200);
+    expect(s.image.mock.calls.every(([packet]) => packet.point === null && packet.state !== "TRACKING")).toBe(true);
+    const qualificationStart = worker.frames.length;
+    for (let evidence = 0; evidence < 3; evidence++) {
+      const latest = await spacedResult(s, [modelPose(s.hint)]);
+      if (evidence < 2) expect(latest.point).toBeNull();
+      else expect(latest).toMatchObject({ state: "TRACKING", anchorSource: "MODEL_INDEX" });
+    }
+    expect(worker.frames.at(-1)!.capture - worker.frames[qualificationStart].capture).toBeGreaterThanOrEqual(120);
+    expect(s.runtime.indexSelectionMode()).toBe("AUTOMATIC");
+    expect(s.observe).toHaveBeenCalledTimes(worker.frames.length);
+    expect(s.metrics.mock.calls.every(([packet]) => packet.disposition === "ACCEPTED")).toBe(true);
   });
 
   it("keeps manual intent after an expired image track until explicit index disable", async () => {
