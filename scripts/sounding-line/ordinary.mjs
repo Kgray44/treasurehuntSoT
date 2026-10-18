@@ -34,6 +34,7 @@ import { BROWSER_DIAGNOSTIC_CONTEXT, createBrowserDiagnosticSession } from "./br
 import { withVerificationStage, verificationFailureObservation } from "./verification-diagnostics.mjs";
 import { withSourceDiagnosticCapture } from "./source-diagnostics.mjs";
 import { createR14Observation } from "./experience-r14-observability.mjs";
+import { createCurrentAdmissionObservation } from "./experience-current-observability.mjs";
 import { authenticateCompletedEvidence, authenticatedCompletedReceipt } from "./authenticated-completed-evidence.mjs";
 
 const sha = /^[a-f0-9]{40}$/u;
@@ -1772,7 +1773,7 @@ async function main() {
   let plan;
   let result;
   let diagnostics;
-  let r14Observation;
+  let r14Observation, currentAdmissionObservation, activeObservation;
   try {
     plan = await withVerificationStage("CLASSIFICATION", () => buildPlan({ root, baseSha, candidateSha, mode }));
     if (plan.productExperience.exception && mode !== "ordinary")
@@ -1819,6 +1820,8 @@ async function main() {
     } else result.completedEvidenceIntake = { status: "UNSUPPORTED_ENVIRONMENT_FRESH", qualification: false };
     diagnostics = createBrowserDiagnosticSession(root, { baseSha, candidateSha, planDigest: result.planDigest });
     r14Observation = createR14Observation({ root, plan: plan.productExperience });
+    currentAdmissionObservation = createCurrentAdmissionObservation({ root, plan: plan.productExperience });
+    activeObservation = currentAdmissionObservation ?? r14Observation;
     const verify = async () => {
       const verification = await withVerificationStage("TECHNICAL_VERIFICATION", () =>
         runReconciledVerification(
@@ -1830,7 +1833,7 @@ async function main() {
       );
       await completeOrdinaryVerification({ root, plan, result, verification, diagnostics });
     };
-    if (r14Observation) await withSourceDiagnosticCapture(r14Observation, verify);
+    if (activeObservation) await withSourceDiagnosticCapture(activeObservation, verify);
     else await verify();
     const browserDiagnostics = await diagnostics.read();
     result.browserQualification = browserDiagnostics.runtime;
@@ -1841,7 +1844,7 @@ async function main() {
       result.failureCategory = result.browserSuiteProfile.failureCategory;
     result.decision = "PASS";
   } catch (error) {
-    r14Observation?.rememberFinalFailure(error);
+    activeObservation?.rememberFinalFailure(error);
     result ??= {
       version: 1,
       authority: "SOUNDING_LINE",
@@ -1864,15 +1867,18 @@ async function main() {
     if (result.browserSuiteProfile?.failureCategory)
       result.failureCategory = result.browserSuiteProfile.failureCategory;
   }
-  if (r14Observation) {
+  if (activeObservation) {
+    const field = currentAdmissionObservation ? "currentAdmissionObservation" : "r14Observation";
     try {
-      result.r14Observation = await r14Observation.finish();
+      result[field] = await activeObservation.finish();
     } catch {
-      result.r14Observation = { status: "EVIDENCE_LOSS", evidenceLoss: true };
+      result[field] = { status: "EVIDENCE_LOSS", evidenceLoss: true };
     }
-    if (result.r14Observation.status !== "COMPLETE" && result.decision === "PASS") {
+    if (result[field].status !== "COMPLETE" && result.decision === "PASS") {
       result.decision = "FAIL";
-      result.error = "SOUNDING_LINE_R14_OBSERVATION_INCOMPLETE";
+      result.error = currentAdmissionObservation
+        ? "SOUNDING_LINE_CURRENT_ADMISSION_OBSERVATION_INCOMPLETE"
+        : "SOUNDING_LINE_R14_OBSERVATION_INCOMPLETE";
       result.failureCategory = "EXECUTION_UNKNOWN";
     }
   }

@@ -6,6 +6,7 @@ import path from "node:path";
 import { inflateSync } from "node:zlib";
 import { bindExperienceException, validateExceptionEvidence } from "./experience-exception.mjs";
 import { planPairedEvidence, validatePairedEvidence } from "./experience-paired.mjs";
+import { isCurrentAdmissionPlan } from "./experience-current-admission.mjs";
 
 // This module is loaded alongside the protected-main Sounding Line verifier.
 // Candidate declarations can add obligations, never remove trusted obligations.
@@ -997,7 +998,8 @@ export function validateExperienceEvidence({
     if (
       !Number.isInteger(review.iterations) ||
       (plan.exception
-        ? review.iterations !== 11
+        ? review.iterations !==
+          (isCurrentAdmissionPlan(plan) ? plan.exception.currentSourceAdmission.requiredReviewIterations : 11)
         : continuation
           ? review.iterations !== 4
           : review.iterations < 1 || review.iterations > 3) ||
