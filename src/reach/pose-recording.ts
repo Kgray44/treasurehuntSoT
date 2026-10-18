@@ -147,6 +147,7 @@ export type PoseCanonicalIndexTrack =
       index: {
         accepted: boolean;
         reason: string;
+        trackingReason: string | null;
         sourceRef: string | null;
         indexRef: string | null;
         provider: CanonicalProvider | null;
@@ -495,6 +496,7 @@ export class PoseRecordingSession {
             : !contextMatches
               ? "CANONICAL_CONTEXT_MISMATCH"
               : reason(input.indexReason),
+        trackingReason: index ? reason(index.reason) : null,
         sourceRef: index ? source(index) : null,
         indexRef:
           index?.trackId && index.trackGeneration > 0

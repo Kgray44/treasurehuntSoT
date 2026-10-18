@@ -92,11 +92,13 @@ export const indexImageAlgorithmDescriptor = {
     indexIdentity:
       "ONLY_LIVE_250MS_REGISTRATION_RENEWS_FROM_THREE_CURRENT_OBSERVED_COMMON_NAMED_INDEX_JOINTS_WITH_EXPLICIT_ADAPTER_INDEX_CHAIN_ASSOCIATION_OR_COMPLETE_FIXED_SHAPE_PROOF_NEVER_PALM_ONLY_GESTURE_OR_COORDINATES",
     reconfirmation:
-      "NO_CURRENT_ACCEPTED_IMAGE_CONTRADICTION_AND_CURRENT_QUALIFIED_INDEX_GEOMETRY_PLUS_TWO_SEPARATED_PREVIOUSLY_VERIFIED_INDEX_REGIONS_INCLUDING_DISTAL_AND_NEW_TIP_NCC_3_FRAMES_120MS_BEFORE_SAME_ID_OPTICAL_REPLACEMENT",
+      "NO_CURRENT_ACCEPTED_IMAGE_CONTRADICTION_AND_CURRENT_QUALIFIED_INDEX_GEOMETRY_PLUS_TWO_OLD_AND_CURRENT_MATCHED_REGIONS_SEPARATED_BY_FIFTEEN_PIXELS_INCLUDING_DIP_NN_INNOVATION_EIGHT_TRUE_MATCHED_MATERIAL_REVERSE_CLOSURE_TWO_AND_NEW_TIP_NCC_THREE_FRAMES_120MS_BEFORE_SAME_ID_OPTICAL_REPLACEMENT",
     modelConflict:
       "CURRENT_REGISTERED_FULL_INDEX_OR_LIVE_REGISTERED_PARTIAL_INDEX_CONFLICT_PAUSES_AND_LATCHES_UNRESOLVED_COORDINATES_WITHOUT_COMMITTING_CONFLICTING_OPTICAL_HISTORY_UNREGISTERED_TAGS_ARE_FRAME_LOCAL_NEGATIVE_OR_AMBIGUOUS_PIXELS_MAY_RETAIN_ASSOCIATION_WITHOUT_MEASUREMENT_HISTORY",
     conflictRecovery:
       "SOURCE_MATCHED_TRUSTED_REFERENCE_IMAGE_PROOF_WITHIN_250MS_PLUS_CURRENT_THREE_FRAME_120MS_GEOMETRY_RESTORES_AUTOMATIC_CONTROL_MANUAL_REQUIRES_CURRENT_IMAGE_AND_SAME_SOURCE_CONFIRMED_FULL_POINT_NO_MODEL_REANCHOR",
+    conflictSearch:
+      "ONE_NONAUTHORITATIVE_SEARCH_PROPOSAL_FROM_FULL_QUALITY_ORIGINAL_STABLE_TEMPLATE_ROUNDTRIP_ONLY_SOURCE_AND_OPTICAL_EPOCH_SCOPED_GAP_250MS_LIFETIME_1200MS_FROM_FROZEN_TRUSTED_CAPTURE_KEEP_FROZEN_WINDOW_RIVALS_AND_ADAPTIVE_REVERSE_ORIGIN_NO_TEMPLATE_VELOCITY_MEASUREMENT_OR_IDENTITY_CLOCK_RENEWAL",
     manual: "IMAGE_ONLY_NO_MODEL_INITIALIZATION_RESCUE_OR_EXPIRY_TAKEOVER",
     unavailable:
       "RETAIN_REGISTERED_COHORT_UP_TO_250MS_BUT_REQUIRE_CURRENT_QUALIFIED_FULL_OR_REGISTERED_INDEX_GEOMETRY_FOR_MODEL_ACTION",
@@ -163,7 +165,7 @@ export const indexImageAlgorithm = {
   providerId: "watchglass.index-image",
   providerVersion: "4",
   algorithm: "TEMPORAL_INDEX_FUSION_V3",
-  algorithmDigest: "f83610af8437c966ff03b57ebc0d359dd72ce991f71624f76aa8f76151ef3776",
+  algorithmDigest: "74fc0c477f7e4b945ee9daa0522e860ea6d05d46ec7bd63760e48b8af866568e",
 } as const;
 export type IndexImageBinding = {
   providerGeneration: number;
@@ -642,6 +644,16 @@ export class IndexImageTracker {
   private pending: PreparedImage | null = null;
   private point: Point | null = null;
   private velocity: Point = { x: 0, y: 0 };
+  // A disputed optical trajectory may guide a bounded search, but cannot
+  // replace any trusted measurement, template, velocity or evidence clock.
+  private quarantinedSearch: {
+    point: Point;
+    at: number;
+    frozenTrustedAt: number;
+    source: string;
+    reference: NonNullable<IndexImageTracker["reference"]>;
+    opticalEpoch: number;
+  } | null = null;
   private trackId: string | null = null;
   private trackGeneration = 0;
   private anchorSource: IndexImageObservation["anchorSource"] = null;
@@ -716,6 +728,7 @@ export class IndexImageTracker {
     this.nccScratch = createNccScratch(policy);
     this.point = null;
     this.velocity = { x: 0, y: 0 };
+    this.quarantinedSearch = null;
     this.acceptedAt = -Infinity;
     this.associationAt = -Infinity;
     this.trackId = null;
@@ -805,13 +818,22 @@ export class IndexImageTracker {
     const temporalCheckpoint = this.temporal.checkpoint();
     const sourceCheckpoint = this.sourceAssociation.checkpoint();
     try {
-      const associatedModel = this.associateModelSource(model, pending.frame, pending.matches);
+      // An unverified source may not inherit a search trajectory prepared for
+      // the selected hand, even if it happens to overlap its image candidate.
+      const trustedSearchSource = this.trustedModelSource ?? this.handIdentity?.source;
+      const foreignSearchSource =
+        !!trustedSearchSource && !!model?.identitySource && model.identitySource !== trustedSearchSource;
+      const displacedSearch = foreignSearchSource && this.quarantinedSearch !== null;
+      if (foreignSearchSource) this.quarantinedSearch = null;
+      const matches = displacedSearch ? this.computeMatches(pending.frame) : pending.matches;
+      const associatedModel = this.associateModelSource(model, pending.frame, matches);
       const observation = this.finishUpdate(
         { ...pending.frame, received: started },
         associatedModel,
         pending.hint,
-        pending.matches,
+        matches,
       );
+      if (foreignSearchSource) this.quarantinedSearch = null;
       const completed = now();
       if (!validTime(completed) || completed < started || !sourceFresh())
         throw new Error("INDEX_IMAGE_FRAME_INVALID_OR_STALE");
@@ -909,6 +931,7 @@ export class IndexImageTracker {
       referenceRefreshCandidate: this.referenceRefreshCandidate,
       point: this.point,
       velocity: this.velocity,
+      quarantinedSearch: this.quarantinedSearch,
       trackId: this.trackId,
       trackGeneration: this.trackGeneration,
       anchorSource: this.anchorSource,
@@ -940,18 +963,31 @@ export class IndexImageTracker {
   }
   private computeMatches(frame: IndexGrayFrame): PreparedImage["matches"] {
     if (!this.point || !this.template || !this.previous || !this.reference) return null;
-    const gap = frame.capture - this.acceptedAt;
-    const prediction = { x: (this.velocity.x * gap) / 1000, y: (this.velocity.y * gap) / 1000 };
+    const candidate = this.quarantinedSearch;
+    const searchCandidate =
+      candidate &&
+      candidate.reference === this.reference &&
+      candidate.opticalEpoch === this.opticalEpoch &&
+      candidate.source === this.handIdentity?.source &&
+      candidate.source === this.coordinateConflict?.source &&
+      frame.capture - candidate.at <= policy.modelMaximumGapMs &&
+      frame.capture - candidate.frozenTrustedAt <= policy.maximumRecoveryMs
+        ? candidate
+        : null;
+    const previousPoint = searchCandidate?.point ?? this.point;
+    const gap = frame.capture - (searchCandidate?.at ?? this.acceptedAt);
+    const prediction = searchCandidate
+      ? { x: 0, y: 0 }
+      : { x: (this.velocity.x * gap) / 1000, y: (this.velocity.y * gap) / 1000 };
     const predictedDistance = Math.hypot(prediction.x, prediction.y);
     const predictionCap = predictedDistance > policy.predictionLimit ? policy.predictionLimit / predictedDistance : 1;
     const predicted = {
-      x: this.point.x + prediction.x * predictionCap,
-      y: this.point.y + prediction.y * predictionCap,
+      x: previousPoint.x + prediction.x * predictionCap,
+      y: previousPoint.y + prediction.y * predictionCap,
     };
-    const previousPoint = this.point;
     const scale = this.binding.frameWidth / frame.width;
     const evaluate = (template: Patch, history: IndexGrayFrame, origin: Point): MatchEvaluation => {
-      const found = searchNcc(
+      let found = searchNcc(
         frame,
         template,
         predicted,
@@ -961,6 +997,24 @@ export class IndexImageTracker {
         this.nccScratch,
         true,
       );
+      if (searchCandidate && template === this.reference!.template && found) {
+        // Keep the frozen trusted window in the rival comparison. Moving the
+        // proposal must not hide a competing copy of the selected appearance.
+        const rival = searchNcc(
+          frame,
+          template,
+          this.point!,
+          policy.search,
+          this.searchScores,
+          undefined,
+          this.nccScratch,
+        );
+        if (
+          rival &&
+          Math.hypot(rival.point.x - found.point.x, rival.point.y - found.point.y) > policy.peakExclusionRadius
+        )
+          found = { ...found, separation: Math.min(found.separation, found.correlation - rival.correlation) };
+      }
       const quality: IndexImageObservation["quality"] = {
         correlation: found?.correlation ?? null,
         separation: found?.separation ?? null,
@@ -993,7 +1047,9 @@ export class IndexImageTracker {
     };
     return {
       stable: evaluate(this.reference.template, this.reference.frame, this.reference.point),
-      adaptive: evaluate(this.template, this.previous, previousPoint),
+      // The adaptive template still belongs to its last trusted frame. A
+      // search proposal is never its reverse-correspondence origin.
+      adaptive: evaluate(this.template, this.previous, this.point),
     };
   }
   private appearanceSupportsIndex(frame: IndexGrayFrame, index: ModelGeometry["index"], source: string): boolean {
@@ -1003,9 +1059,6 @@ export class IndexImageTracker {
     for (const anchor of reference.anchors) {
       const joint = index[anchor.index];
       const expected = { x: Math.round(joint.x * (frame.width - 1)), y: Math.round(joint.y * (frame.height - 1)) };
-      const current = patch(frame, expected, policy.fingerIdentityRadius);
-      if (!current || current.deviation < policy.minimumTexture || current.structure < policy.minimumStructure)
-        continue;
       const forward = searchNcc(
         frame,
         anchor.template,
@@ -1015,6 +1068,18 @@ export class IndexImageTracker {
         undefined,
         this.nccScratch,
       );
+      if (
+        !forward ||
+        forward.correlation < policy.minimumCorrelation ||
+        forward.separation < policy.minimumSeparation ||
+        Math.hypot(forward.point.x - expected.x, forward.point.y - expected.y) > policy.modelAgreementRadius
+      )
+        continue;
+      // Roundtrip the same matched material. NN registration uncertainty is
+      // bounded separately by the existing model agreement radius above.
+      const current = patch(frame, forward.point, policy.fingerIdentityRadius);
+      if (!current || current.deviation < policy.minimumTexture || current.structure < policy.minimumStructure)
+        continue;
       const reverse = searchNcc(
         reference.frame,
         current,
@@ -1025,16 +1090,12 @@ export class IndexImageTracker {
         this.nccScratch,
       );
       if (
-        forward &&
         reverse &&
-        forward.correlation >= policy.minimumCorrelation &&
         reverse.correlation >= policy.minimumCorrelation &&
-        forward.separation >= policy.minimumSeparation &&
         reverse.separation >= policy.minimumSeparation &&
-        Math.hypot(forward.point.x - expected.x, forward.point.y - expected.y) <= policy.maximumForwardBackward &&
         Math.hypot(reverse.point.x - anchor.point.x, reverse.point.y - anchor.point.y) <= policy.maximumForwardBackward
       )
-        supported.push({ index: anchor.index, prior: anchor.point, current: expected });
+        supported.push({ index: anchor.index, prior: anchor.point, current: forward.point });
     }
     return supported.some(
       (distal) =>
@@ -2006,6 +2067,7 @@ export class IndexImageTracker {
             this.acceptedAt = frame.capture;
             this.lastReferenceAt = frame.capture;
             this.velocity = { x: 0, y: 0 };
+            this.quarantinedSearch = null;
             this.opticalEpoch++;
             this.modelOpticalCandidate = null;
             this.cueAssociation = { source, lastAt: frame.capture };
@@ -2087,6 +2149,7 @@ export class IndexImageTracker {
         this.anchorSource = "MODEL_INDEX";
       }
       this.modelAcceptedAt = frame.capture;
+      this.quarantinedSearch = null;
       confirmHandIdentity();
       if (modelReady && model?.identityObserved === true)
         this.modelIdentity = { source: conditionedSource, seenAt: frame.capture };
@@ -2160,6 +2223,7 @@ export class IndexImageTracker {
       this.lastReferenceAt = frame.capture;
       this.acceptedAt = frame.capture;
       this.velocity = { x: 0, y: 0 };
+      this.quarantinedSearch = null;
       this.failures = 0;
       this.trackGeneration = ++nextAnchor;
       this.trackId = `index-image-${this.trackGeneration}`;
@@ -2244,6 +2308,23 @@ export class IndexImageTracker {
       this.coordinateConflict = null;
     const currentPause = gesturePauseReason();
     if (currentPause) {
+      if (
+        stable.accepted &&
+        this.coordinateConflict?.source &&
+        this.coordinateConflict.source === this.handIdentity?.source &&
+        this.reference &&
+        frame.capture - this.acceptedAt <= policy.maximumRecoveryMs &&
+        frame.capture - this.handIdentity.seenAt <= policy.maximumRecoveryMs
+      ) {
+        this.quarantinedSearch = {
+          point: { ...stable.accepted.found.point },
+          at: frame.capture,
+          frozenTrustedAt: this.acceptedAt,
+          source: this.coordinateConflict.source,
+          reference: this.reference,
+          opticalEpoch: this.opticalEpoch,
+        };
+      }
       // Current full-quality pixels can retain an association while gesture
       // permission is paused. They do not advance position, template or motion.
       if (!fullOpticalConflict && !this.coordinateConflict && !this.automaticEntryPending)
@@ -2369,6 +2450,7 @@ export class IndexImageTracker {
     this.template = current;
     this.previous = frame;
     this.acceptedAt = frame.capture;
+    this.quarantinedSearch = null;
     this.failures = 0;
     if (refreshReference) {
       this.reference = { template: current, frame: this.previous, point: { ...found.point } };

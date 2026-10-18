@@ -366,6 +366,10 @@ test("D0 image-relative control follows fresh appearance through model failure, 
     sample();
     return { records, workerFrames: [...state.frames] };
   });
+  await testInfo.attach("D0 motion source records", {
+    body: JSON.stringify(sampled),
+    contentType: "application/json",
+  });
   const tracked = sampled.records.filter((row) => row.state === "TRACKING");
   expect(tracked.length).toBeGreaterThan(40);
   expect(new Set(tracked.map((row) => row.generation))).toEqual(new Set([initial]));

@@ -102,6 +102,7 @@ describe("same-frame canonical recorder trace", () => {
       const last = recording.export().frames.at(-1)!.canonicalIndexTrack!;
       expect(last).toMatchObject({
         disposition: "COMPLETE",
+        index: { reason: "INDEX_ACCEPTED", trackingReason: "FULL_HAND_POINT_CONFIRMED" },
         readiness: { trackingEligible: ready.eligible, condition: ready.condition, changed: ready.changed },
         calibration: { evaluated: false, samplesCollected: 0 },
         actions: { evaluated: false, committed: 0 },
@@ -134,7 +135,7 @@ describe("same-frame canonical recorder trace", () => {
       hands: [],
       canonicalIndexTrack: {
         model: { accepted: false, reason: "OBSERVATION_PIXEL_ORIGIN_STALE" },
-        index: { accepted: false, reason: "INDEX_RESULT_UNAVAILABLE", point: null },
+        index: { accepted: false, reason: "INDEX_RESULT_UNAVAILABLE", trackingReason: null, point: null },
         readiness: { condition: "NOT_EVALUATED", trackingEligible: false },
       },
     });
@@ -186,6 +187,24 @@ describe("same-frame canonical recorder trace", () => {
     expect(recording.export().frames[1]).toEqual(before);
     expect(recording.export().canonicalTracking).toMatchObject({ attachments: { unmatched: 1, duplicate: 1 } });
   });
+
+  it.each(["private-camera-lease=1234", "X".repeat(161)])(
+    "bounds the producer reason without exporting unstructured identifier text",
+    (untrustedReason) => {
+      const recording = session(),
+        diagnostic = result(1010);
+      diagnostic.indexObservation!.reason = untrustedReason;
+      recording.append(raw(1010), 1025);
+      recording.attachCanonical(diagnostic, null, 1040);
+      const exported = recording.export();
+      expect(exported.frames[0].canonicalIndexTrack).toMatchObject({
+        index: { reason: "INDEX_ACCEPTED", trackingReason: "DIAGNOSTIC_REASON_UNAVAILABLE" },
+      });
+      expect(JSON.stringify(exported)).not.toContain(untrustedReason);
+      expect(exported.limits.traceBytes).toBe(16 * 1024 * 1024);
+      expect(exported.traceBytes).toBe(exported.frames.reduce((sum, frame) => sum + JSON.stringify(frame).length, 0));
+    },
+  );
 
   it.each(["capture", "lease", "dimensions"])(
     "rejects a foreign canonical %s while preserving the original raw frame",
@@ -292,6 +311,8 @@ describe("same-frame canonical recorder trace", () => {
     expect(snapshot).toMatchObject({
       index: {
         accepted: true,
+        reason: "INDEX_ACCEPTED",
+        trackingReason: "FULL_HAND_INDEX_CONFLICT",
         point: null,
         measurements: { model: { x: 0.4, y: 0.3 }, image: { x: 0.5, y: 0.6 }, accepted: null },
         temporalTrack: { identity: "ESTABLISHED", intent: "UNCERTAIN", state: "UNCERTAIN" },
