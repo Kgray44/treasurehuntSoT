@@ -1,7 +1,218 @@
 // @sounding-line-registration owner=reach suite=browser.reach contracts=reach.phase1.foundation
 import { expect, test } from "@playwright/test";
+import { pointingPose } from "./fixtures/reach/pointing-poses";
 test.beforeEach(async ({ page }) => {
   await page.route("**/api/reach/telemetry", (route) => route.fulfill({ status: 200, json: { accepted: true } }));
+});
+
+test("D0 encoded recorder video excludes the live skeleton by default and preserves the optional composite", async ({
+  page,
+}, testInfo) => {
+  test.skip(process.env.REACH_LOCAL_POSE_CAPTURE !== "1", "Requires the explicit local recording flag.");
+  await page.addInitScript(
+    (points) => {
+      Object.defineProperty(navigator.mediaDevices, "getUserMedia", {
+        value: async (options: MediaStreamConstraints) => {
+          if (options.audio !== false) throw new Error("MICROPHONE_REQUESTED");
+          const canvas = document.createElement("canvas");
+          canvas.width = 640;
+          canvas.height = 480;
+          const context = canvas.getContext("2d")!;
+          let index = 0;
+          const draw = () => {
+            context.fillStyle = index++ % 2 ? "rgb(84,77,66)" : "rgb(85,78,67)";
+            context.fillRect(0, 0, 640, 480);
+          };
+          draw();
+          const timer = setInterval(draw, 1000 / 30);
+          const stream = canvas.captureStream(30);
+          for (const track of stream.getTracks()) {
+            const stop = track.stop.bind(track);
+            track.stop = () => {
+              clearInterval(timer);
+              stop();
+            };
+          }
+          return stream;
+        },
+      });
+      class RecorderFixtureWorker {
+        onmessage: ((event: MessageEvent) => void) | null = null;
+        onerror = null;
+        terminated = false;
+        postMessage(message: { type: string; generation: number; capture: number; bitmap?: ImageBitmap }) {
+          if (message.type === "INIT") {
+            setTimeout(() => {
+              if (!this.terminated)
+                this.onmessage?.(
+                  new MessageEvent("message", { data: { type: "READY", generation: message.generation } }),
+                );
+            }, 0);
+          } else if (message.type === "FRAME") {
+            const width = message.bitmap!.width,
+              height = message.bitmap!.height;
+            message.bitmap!.close();
+            setTimeout(() => {
+              if (!this.terminated)
+                this.onmessage?.(
+                  new MessageEvent("message", {
+                    data: {
+                      type: "RESULT",
+                      generation: message.generation,
+                      capture: message.capture,
+                      inferenceTime: performance.timeOrigin + performance.now(),
+                      width,
+                      height,
+                      result: {
+                        landmarks: [points],
+                        handedness: [[{ categoryName: "Right", score: 0.95 }]],
+                      },
+                    },
+                  }),
+                );
+            }, 2);
+          }
+        }
+        terminate() {
+          this.terminated = true;
+        }
+      }
+      window.Worker = RecorderFixtureWorker as unknown as typeof Worker;
+    },
+    pointingPose({ indexBends: [0, 10, 20] }),
+  );
+  const observations: unknown[] = [];
+  for (const containsHandOverlay of [false, true]) {
+    await test.step(
+      containsHandOverlay ? "Explicit existing hand-overlay video" : "Default clean camera video",
+      async () => {
+        await page.goto("/devices/reach/record");
+        const clean = page.getByRole("checkbox", { name: "Save camera image without hand overlay" });
+        await expect(clean).toBeChecked();
+        if (containsHandOverlay) await clean.uncheck();
+        await page.getByRole("button", { name: "Enable camera preview" }).click();
+        const start = page.getByRole("button", { name: "Start guided video + trace recording" });
+        await expect(start).toBeEnabled();
+        const live = page.getByRole("img", { name: "Live hand joints aligned with the camera image" });
+        const countLiveCyan = () =>
+          live.evaluate((element) => {
+            const canvas = element as HTMLCanvasElement;
+            const data = canvas.getContext("2d")!.getImageData(0, 0, canvas.width, canvas.height).data;
+            let count = 0;
+            for (let i = 0; i < data.length; i += 4)
+              if (data[i + 3] && data[i + 1] - data[i] > 25 && data[i + 2] - data[i] > 8 && data[i + 1] > 160) count++;
+            return count;
+          });
+        await expect.poll(countLiveCyan).toBeGreaterThan(50);
+        const liveBefore = await countLiveCyan();
+        await start.click();
+        await expect(clean).toBeDisabled();
+        const progress = page.getByRole("progressbar", { name: "Guided recording progress" });
+        await expect.poll(async () => Number(await progress.getAttribute("value"))).toBeGreaterThanOrEqual(900);
+        expect(await countLiveCyan()).toBe(liveBefore);
+        await page.getByRole("button", { name: "Stop & review", exact: true }).click();
+        await expect(page.getByRole("heading", { name: "Review your local recording" })).toBeVisible();
+        const trace = await page
+          .getByRole("link", { name: "Download landmark trace", exact: true })
+          .evaluate(async (link) => (await fetch((link as HTMLAnchorElement).href)).json());
+        expect(trace.video).toMatchObject({
+          kind: containsHandOverlay ? "CAMERA_PLUS_EXISTING_RENDERED_TRACE_AND_PROMPT" : "CAMERA_IMAGE_AND_PROMPT",
+          containsHandOverlay,
+          cameraImageEncoding: "MIRRORED_REENCODED_DIAGNOSTIC_NOT_RAW_SENSOR",
+          requestedFps: 20,
+          imageRegion: { x: 0, y: 0, width: 640, height: 480 },
+          annotationStripHeight: 112,
+          previewMirrorX: true,
+          audio: false,
+        });
+        expect(trace.limits.videoBytes).toBe(64 * 1024 * 1024);
+        expect(trace.frames.some((frame: { hands: unknown[] }) => frame.hands.length === 1)).toBe(true);
+        const decoded = await page.getByLabel("Review local diagnostic recording").evaluate(async (element) => {
+          const video = element as HTMLVideoElement;
+          if (video.readyState < 2)
+            await new Promise<void>((resolve, reject) => {
+              const timeout = setTimeout(() => reject(new Error("RECORDED_VIDEO_DECODE_TIMEOUT")), 10000);
+              video.addEventListener(
+                "loadeddata",
+                () => {
+                  clearTimeout(timeout);
+                  resolve();
+                },
+                { once: true },
+              );
+              video.addEventListener(
+                "error",
+                () => {
+                  clearTimeout(timeout);
+                  reject(new Error("RECORDED_VIDEO_DECODE_FAILED"));
+                },
+                { once: true },
+              );
+            });
+          video.muted = true;
+          await video.play();
+          const started = performance.now();
+          await new Promise<void>((resolve, reject) => {
+            const wait = () => {
+              if (video.currentTime >= 0.3) resolve();
+              else if (performance.now() - started > 10000) reject(new Error("RECORDED_VIDEO_FRAME_TIMEOUT"));
+              else requestAnimationFrame(wait);
+            };
+            wait();
+          });
+          video.pause();
+          const canvas = document.createElement("canvas");
+          canvas.width = 640;
+          canvas.height = 480;
+          const context = canvas.getContext("2d")!;
+          // Exclude the prompt strip: only the encoded camera image region is measured.
+          context.drawImage(video, 0, 0, 640, 480, 0, 0, 640, 480);
+          const pixels = context.getImageData(0, 0, 640, 480).data;
+          let cyanPixels = 0;
+          for (let i = 0; i < pixels.length; i += 4)
+            if (pixels[i + 1] - pixels[i] > 25 && pixels[i + 2] - pixels[i] > 8 && pixels[i + 1] > 160) cyanPixels++;
+          return {
+            cyanPixels,
+            width: video.videoWidth,
+            height: video.videoHeight,
+            at: video.currentTime,
+            png: canvas.toDataURL("image/png"),
+          };
+        });
+        expect(decoded.width).toBe(640);
+        expect(decoded.height).toBe(592);
+        if (containsHandOverlay) expect(decoded.cyanPixels).toBeGreaterThan(50);
+        else expect(decoded.cyanPixels).toBeLessThanOrEqual(5);
+        await testInfo.attach(
+          containsHandOverlay ? "D0-decoded-composite-camera-region.png" : "D0-decoded-clean-camera-region.png",
+          {
+            body: Buffer.from(decoded.png.split(",")[1], "base64"),
+            contentType: "image/png",
+          },
+        );
+        observations.push({
+          containsHandOverlay,
+          video: trace.video,
+          liveCyanPixels: liveBefore,
+          decodedCyanPixels: decoded.cyanPixels,
+          decodedAtSeconds: decoded.at,
+          frames: trace.frames.length,
+        });
+      },
+    );
+  }
+  await testInfo.attach("D0-encoded-clean-vs-overlay-video.json", {
+    body: JSON.stringify(
+      {
+        evidence: "D0_SYNTHETIC_FLAT_CAMERA_FAKE_MODEL_REAL_REACHSTAGE_AND_MEDIARECORDER_DECODE",
+        observations,
+        physicalRecognitionQualified: false,
+      },
+      null,
+      2,
+    ),
+    contentType: "application/json",
+  });
 });
 
 test("local recorder waits for processed camera evidence before its first pointer start", async ({
