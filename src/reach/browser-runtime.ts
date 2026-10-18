@@ -6,6 +6,7 @@ import {
   BrowserHandAdapter,
   handModel,
   handProviderVersion,
+  handStartupPolicy,
   type HandInferenceBackend,
   type HandInferencePolicy,
 } from "@/watchglass/hand-provider";
@@ -602,7 +603,7 @@ export class ReachBrowserRuntime {
       this.worker = worker;
       this.status("MODEL_STARTING");
       const modelStartup = performance.now();
-      const modelDeadline = modelStartup + 15000;
+      const modelDeadline = modelStartup + handStartupPolicy.totalMs;
       let originalStartup = false;
       let startupFallbackReason: string | null = null;
       let lastVideoTime = -1;
@@ -778,7 +779,7 @@ export class ReachBrowserRuntime {
             fail("MODEL_FAILURE");
             return;
           }
-          if (!originalStartup && performance.now() - modelStartup >= 8000) {
+          if (!originalStartup && performance.now() - modelStartup >= handStartupPolicy.optionalAccelerationMs) {
             fallbackOriginal("RECOVERY_STARTUP_TIMEOUT");
             return;
           }
@@ -1072,7 +1073,10 @@ export class ReachBrowserRuntime {
       // Bounded acceleration startup. No camera frame is sent before READY.
       // Retire a slow optional worker before starting the original CPU path;
       // both attempts share the existing total15s model-start deadline.
-      this.startup = setTimeout(() => fallbackOriginal("RECOVERY_STARTUP_TIMEOUT"), 8000);
+      this.startup = setTimeout(
+        () => fallbackOriginal("RECOVERY_STARTUP_TIMEOUT"),
+        handStartupPolicy.optionalAccelerationMs,
+      );
       install(worker, "GPU");
     } catch (error) {
       if (generation === this.generation)

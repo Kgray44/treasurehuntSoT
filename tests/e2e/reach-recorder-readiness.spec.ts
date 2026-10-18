@@ -392,10 +392,21 @@ test("local recorder waits for processed camera evidence before its first pointe
       annotationStripHeight: 112,
       previewMirrorX: true,
     });
+    expect(trace.model.inferenceBackendsUsed.length).toBeGreaterThan(0);
+    expect(
+      trace.model.inferenceBackendsUsed.every((backend: string) => ["CPU_WASM", "GPU_WEBGL"].includes(backend)),
+    ).toBe(true);
+    expect(trace.model.inferencePoliciesUsed.length).toBeGreaterThan(0);
+    expect(
+      trace.model.inferencePoliciesUsed.every((policy: string) =>
+        ["ORIGINAL_CPU", "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1"].includes(policy),
+      ),
+    ).toBe(true);
     await testInfo.attach("clean-camera-recording-metadata.json", {
       body: JSON.stringify(
         {
-          evidence: "SYNTHETIC_CAMERA_REAL_PINNED_CPU_WORKER_AND_MEDIARECORDER",
+          evidence: "SYNTHETIC_CAMERA_REAL_PINNED_WORKER_AND_MEDIARECORDER",
+          actualModel: trace.model,
           video: trace.video,
           frameCount: trace.frames.length,
           physicalRecognitionQualified: false,

@@ -14,6 +14,8 @@ export const handModel = {
   maxHands: 2,
 } as const;
 export type HandInferencePolicy = "ORIGINAL_CPU" | "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1";
+/** Device-independent startup policy. Live observation/inference deadlines are separate. */
+export const handStartupPolicy = Object.freeze({ version: 1, totalMs: 15000, optionalAccelerationMs: 12000 });
 export const handProviderVersion = (policy: HandInferencePolicy) =>
   policy === "ORIGINAL_CPU" ? handModel.providerVersion : `${handModel.providerVersion}+actual-roi-v1`;
 type Landmark = { x: number; y: number; z: number };

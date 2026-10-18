@@ -800,13 +800,36 @@ describe("runtime image source integration", () => {
     expect(s.status).toHaveBeenLastCalledWith("MODEL_BACKEND_CHANGED");
     expect(s.runtime.resources()).toEqual({ tracks: 0, workers: 0, timers: 0 });
   });
+  it.each([8110, 11999])(
+    "accepts a healthy optional GPU READY at %ims without a second camera or worker",
+    async (elapsed) => {
+      const s = setup({ backend: "GPU_WEBGL", providerPolicy: "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1" });
+      await s.runtime.start(true, true);
+      const worker = s.workers[0];
+      s.jumpClock(elapsed);
+      worker.onmessage!({
+        data: {
+          type: "READY",
+          generation: worker.generation,
+          backend: "GPU_WEBGL",
+          providerPolicy: "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1",
+        },
+      } as MessageEvent);
+      await Promise.resolve();
+      expect(s.status).toHaveBeenLastCalledWith("READY");
+      expect(s.workers).toHaveLength(1);
+      expect(worker.terminate).not.toHaveBeenCalled();
+      expect(s.media.getUserMedia).toHaveBeenCalledOnce();
+      expect(worker.frames).toHaveLength(1);
+    },
+  );
   it("retires a slow optional startup before originalCPU fallback within the unchanged total model deadline", async () => {
     const s = setup();
     await s.runtime.start(true, true);
     const optional = s.workers[0],
       late = optional.onmessage!;
     expect(optional.frames).toHaveLength(0);
-    await s.advance(8000);
+    await s.advance(12000);
     expect(optional.terminate).toHaveBeenCalledOnce();
     const cpu = s.workers[1];
     expect(cpu.url).toBe("/reach/hand-worker.js");
@@ -821,7 +844,7 @@ describe("runtime image source integration", () => {
     } as MessageEvent);
     expect(s.status).toHaveBeenLastCalledWith("MODEL_STARTING");
     expect(s.bitmap).not.toHaveBeenCalled();
-    await s.advance(6999);
+    await s.advance(2999);
     expect(s.runtime.resources().workers).toBe(1);
     await s.advance(1);
     expect(cpu.terminate).toHaveBeenCalledOnce();
@@ -876,7 +899,7 @@ describe("runtime image source integration", () => {
     const s = setup();
     await s.runtime.start(true, true);
     const worker = s.workers[0];
-    s.jumpClock(8000);
+    s.jumpClock(12000);
     worker.onmessage!({
       data: {
         type: "READY",
