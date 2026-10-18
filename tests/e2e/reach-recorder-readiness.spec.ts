@@ -11,6 +11,8 @@ test("D0 encoded recorder video excludes the live skeleton by default and preser
   test.skip(process.env.REACH_LOCAL_POSE_CAPTURE !== "1", "Requires the explicit local recording flag.");
   await page.addInitScript(
     (points) => {
+      const rasterFixture = { capture: Number.NEGATIVE_INFINITY, deliveredResults: 0 };
+      Object.assign(window, { recorderRasterFixture: rasterFixture });
       Object.defineProperty(navigator.mediaDevices, "getUserMedia", {
         value: async (options: MediaStreamConstraints) => {
           if (options.audio !== false) throw new Error("MICROPHONE_REQUESTED");
@@ -43,17 +45,20 @@ test("D0 encoded recorder video excludes the live skeleton by default and preser
         postMessage(message: { type: string; generation: number; capture: number; bitmap?: ImageBitmap }) {
           if (message.type === "INIT") {
             setTimeout(() => {
-              if (!this.terminated)
+              if (!this.terminated) {
                 this.onmessage?.(
                   new MessageEvent("message", { data: { type: "READY", generation: message.generation } }),
                 );
+              }
             }, 0);
           } else if (message.type === "FRAME") {
             const width = message.bitmap!.width,
               height = message.bitmap!.height;
             message.bitmap!.close();
             setTimeout(() => {
-              if (!this.terminated)
+              if (!this.terminated) {
+                rasterFixture.capture = message.capture;
+                rasterFixture.deliveredResults++;
                 this.onmessage?.(
                   new MessageEvent("message", {
                     data: {
@@ -70,6 +75,7 @@ test("D0 encoded recorder video excludes the live skeleton by default and preser
                     },
                   }),
                 );
+              }
             }, 2);
           }
         }
@@ -96,18 +102,35 @@ test("D0 encoded recorder video excludes the live skeleton by default and preser
         const live = page.getByRole("img", { name: "Live hand joints aligned with the camera image" });
         const inspectLive = () =>
           live.evaluate(async (element) => {
+            await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
             const canvas = element as HTMLCanvasElement;
+            const inspectedAt = performance.now();
+            const fixture = (
+              window as unknown as {
+                recorderRasterFixture: { capture: number; deliveredResults: number };
+              }
+            ).recorderRasterFixture;
+            const captureAgeMs = inspectedAt - fixture.capture;
+            const deliveredResults = fixture.deliveredResults;
             const data = canvas.getContext("2d")!.getImageData(0, 0, canvas.width, canvas.height).data;
-            let count = 0;
-            for (let i = 0; i < data.length; i += 4)
+            let count = 0,
+              maximumAlpha = 0;
+            for (let i = 0; i < data.length; i += 4) {
+              maximumAlpha = Math.max(maximumAlpha, data[i + 3]);
               if (data[i + 3] && data[i + 1] - data[i] > 25 && data[i + 2] - data[i] > 8 && data[i + 1] > 160) count++;
+            }
             const rect = canvas.getBoundingClientRect();
+            // Capture PNG before the asynchronous digest permits another draw.
+            const png = canvas.toDataURL("image/png");
             const hash = [...new Uint8Array(await crypto.subtle.digest("SHA-256", data))]
               .map((byte) => byte.toString(16).padStart(2, "0"))
               .join("");
             return {
               count,
               hash,
+              maximumAlpha,
+              captureAgeMs,
+              deliveredResults,
               width: canvas.width,
               height: canvas.height,
               clientWidth: canvas.clientWidth,
@@ -117,15 +140,16 @@ test("D0 encoded recorder video excludes the live skeleton by default and preser
               viewportWidth: innerWidth,
               documentWidth: document.documentElement.clientWidth,
               scroll: { x: scrollX, y: scrollY },
-              png: canvas.toDataURL("image/png"),
+              png,
             };
           });
         await expect.poll(async () => (await inspectLive()).count).toBeGreaterThan(50);
-        // getImageData can move Chromium's canvas raster from its initial GPU
-        // path to software. Establish a settled readback baseline across fresh
-        // fixture redraws, then require exact pixels throughout recording.
+        // A correctly dimmed stale overlay is not pixel-identical to a fresh
+        // drawing. Compare settled, fully fresh redraws without changing the
+        // renderer's freshness boundary or permitting any pixel tolerance.
         let previousSignature = "",
           settledReadbacks = 0;
+        let freshBaseline: Awaited<ReturnType<typeof inspectLive>> | null = null;
         const baselineReadbacks: object[] = [];
         await expect
           .poll(
@@ -133,21 +157,41 @@ test("D0 encoded recorder video excludes the live skeleton by default and preser
               const snapshot = await inspectLive();
               baselineReadbacks.push({ ...snapshot, png: undefined });
               const signature = `${snapshot.width}/${snapshot.height}/${snapshot.dpr}/${snapshot.hash}`;
-              settledReadbacks = snapshot.count > 50 && signature === previousSignature ? settledReadbacks + 1 : 1;
-              previousSignature = signature;
+              const fresh =
+                snapshot.count > 50 &&
+                snapshot.maximumAlpha === 255 &&
+                snapshot.captureAgeMs >= 0 &&
+                snapshot.captureAgeMs <= 150;
+              settledReadbacks = fresh ? (signature === previousSignature ? settledReadbacks + 1 : 1) : 0;
+              previousSignature = fresh ? signature : "";
+              freshBaseline = fresh ? snapshot : null;
               return settledReadbacks;
             },
             { intervals: [100], timeout: 5000 },
           )
           .toBeGreaterThanOrEqual(3);
-        const liveBefore = await inspectLive();
+        const liveBefore = freshBaseline!;
         await start.click();
         await expect(clean).toBeDisabled();
         const progress = page.getByRole("progressbar", { name: "Guided recording progress" });
         await expect
           .poll(async () => Number(await progress.getAttribute("value")), { intervals: [50], timeout: 5000 })
           .toBeGreaterThanOrEqual(900);
-        const liveDuring = await inspectLive();
+        let liveDuring = liveBefore;
+        await expect
+          .poll(
+            async () => {
+              liveDuring = await inspectLive();
+              return (
+                liveDuring.maximumAlpha === 255 &&
+                liveDuring.captureAgeMs >= 0 &&
+                liveDuring.captureAgeMs <= 150 &&
+                liveDuring.deliveredResults > liveBefore.deliveredResults
+              );
+            },
+            { intervals: [16], timeout: 5000 },
+          )
+          .toBe(true);
         // Stop before diagnostic file writes so evidence collection does not
         // extend the recording interval being measured below.
         await page.getByRole("button", { name: "Stop & review", exact: true }).click();
