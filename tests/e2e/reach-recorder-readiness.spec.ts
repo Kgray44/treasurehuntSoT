@@ -94,22 +94,85 @@ test("D0 encoded recorder video excludes the live skeleton by default and preser
         const start = page.getByRole("button", { name: "Start guided video + trace recording" });
         await expect(start).toBeEnabled();
         const live = page.getByRole("img", { name: "Live hand joints aligned with the camera image" });
-        const countLiveCyan = () =>
-          live.evaluate((element) => {
+        const inspectLive = () =>
+          live.evaluate(async (element) => {
             const canvas = element as HTMLCanvasElement;
             const data = canvas.getContext("2d")!.getImageData(0, 0, canvas.width, canvas.height).data;
             let count = 0;
             for (let i = 0; i < data.length; i += 4)
               if (data[i + 3] && data[i + 1] - data[i] > 25 && data[i + 2] - data[i] > 8 && data[i + 1] > 160) count++;
-            return count;
+            const rect = canvas.getBoundingClientRect();
+            const hash = [...new Uint8Array(await crypto.subtle.digest("SHA-256", data))]
+              .map((byte) => byte.toString(16).padStart(2, "0"))
+              .join("");
+            return {
+              count,
+              hash,
+              width: canvas.width,
+              height: canvas.height,
+              clientWidth: canvas.clientWidth,
+              clientHeight: canvas.clientHeight,
+              cssRect: { x: rect.x, y: rect.y, width: rect.width, height: rect.height },
+              dpr: devicePixelRatio,
+              viewportWidth: innerWidth,
+              documentWidth: document.documentElement.clientWidth,
+              scroll: { x: scrollX, y: scrollY },
+              png: canvas.toDataURL("image/png"),
+            };
           });
-        await expect.poll(countLiveCyan).toBeGreaterThan(50);
-        const liveBefore = await countLiveCyan();
+        await expect.poll(async () => (await inspectLive()).count).toBeGreaterThan(50);
+        // getImageData can move Chromium's canvas raster from its initial GPU
+        // path to software. Establish a settled readback baseline across fresh
+        // fixture redraws, then require exact pixels throughout recording.
+        let previousSignature = "",
+          settledReadbacks = 0;
+        const baselineReadbacks: object[] = [];
+        await expect
+          .poll(
+            async () => {
+              const snapshot = await inspectLive();
+              baselineReadbacks.push({ ...snapshot, png: undefined });
+              const signature = `${snapshot.width}/${snapshot.height}/${snapshot.dpr}/${snapshot.hash}`;
+              settledReadbacks = snapshot.count > 50 && signature === previousSignature ? settledReadbacks + 1 : 1;
+              previousSignature = signature;
+              return settledReadbacks;
+            },
+            { intervals: [100], timeout: 5000 },
+          )
+          .toBeGreaterThanOrEqual(3);
+        const liveBefore = await inspectLive();
         await start.click();
         await expect(clean).toBeDisabled();
         const progress = page.getByRole("progressbar", { name: "Guided recording progress" });
-        await expect.poll(async () => Number(await progress.getAttribute("value"))).toBeGreaterThanOrEqual(900);
-        expect(await countLiveCyan()).toBe(liveBefore);
+        await expect
+          .poll(async () => Number(await progress.getAttribute("value")), { intervals: [50], timeout: 5000 })
+          .toBeGreaterThanOrEqual(900);
+        const liveDuring = await inspectLive();
+        for (const [phase, capture] of Object.entries({ before: liveBefore, during: liveDuring }))
+          await testInfo.attach(`D0-${containsHandOverlay ? "composite" : "clean"}-live-${phase}.png`, {
+            body: Buffer.from(capture.png.split(",")[1], "base64"),
+            contentType: "image/png",
+          });
+        await testInfo.attach(`D0-${containsHandOverlay ? "composite" : "clean"}-live-geometry.json`, {
+          body: JSON.stringify(
+            {
+              before: { ...liveBefore, png: undefined },
+              during: { ...liveDuring, png: undefined },
+              baselineReadbacks,
+              modelFixturePoints: pointingPose({ indexBends: [0, 10, 20] }),
+            },
+            null,
+            2,
+          ),
+          contentType: "application/json",
+        });
+        expect(liveDuring.count).toBe(liveBefore.count);
+        expect(liveDuring.hash).toBe(liveBefore.hash);
+        expect([liveDuring.width, liveDuring.height, liveDuring.dpr]).toEqual([
+          liveBefore.width,
+          liveBefore.height,
+          liveBefore.dpr,
+        ]);
         await page.getByRole("button", { name: "Stop & review", exact: true }).click();
         await expect(page.getByRole("heading", { name: "Review your local recording" })).toBeVisible();
         const trace = await page
@@ -126,6 +189,8 @@ test("D0 encoded recorder video excludes the live skeleton by default and preser
           audio: false,
         });
         expect(trace.limits.videoBytes).toBe(64 * 1024 * 1024);
+        expect(trace.activeDurationMs).toBeGreaterThanOrEqual(800);
+        expect(trace.activeDurationMs).toBeLessThanOrEqual(1200);
         expect(trace.frames.some((frame: { hands: unknown[] }) => frame.hands.length === 1)).toBe(true);
         const decoded = await page.getByLabel("Review local diagnostic recording").evaluate(async (element) => {
           const video = element as HTMLVideoElement;
@@ -193,10 +258,11 @@ test("D0 encoded recorder video excludes the live skeleton by default and preser
         observations.push({
           containsHandOverlay,
           video: trace.video,
-          liveCyanPixels: liveBefore,
+          liveCyanPixels: liveBefore.count,
           decodedCyanPixels: decoded.cyanPixels,
           decodedAtSeconds: decoded.at,
           frames: trace.frames.length,
+          activeDurationMs: trace.activeDurationMs,
         });
       },
     );
