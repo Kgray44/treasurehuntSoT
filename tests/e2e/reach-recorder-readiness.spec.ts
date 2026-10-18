@@ -176,7 +176,7 @@ test("D0 encoded recorder video excludes the live skeleton by default and preser
         const progress = page.getByRole("progressbar", { name: "Guided recording progress" });
         await expect
           .poll(async () => Number(await progress.getAttribute("value")), { intervals: [50], timeout: 5000 })
-          .toBeGreaterThanOrEqual(900);
+          .toBeGreaterThanOrEqual(400);
         let liveDuring = liveBefore;
         await expect
           .poll(
@@ -192,9 +192,20 @@ test("D0 encoded recorder video excludes the live skeleton by default and preser
             { intervals: [16], timeout: 5000 },
           )
           .toBe(true);
-        // Stop before diagnostic file writes so evidence collection does not
-        // extend the recording interval being measured below.
-        await page.getByRole("button", { name: "Stop & review", exact: true }).click();
+        // Stop at the same observed 900ms progress boundary in the page. Driver
+        // round trips and PNG readback must not extend this one-second fixture.
+        await progress.evaluate(async (element) => {
+          const deadline = performance.now() + 5000;
+          while (Number(element.getAttribute("value")) < 900) {
+            if (performance.now() >= deadline) throw new Error("RECORDING_PROGRESS_TIMEOUT");
+            await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+          }
+          const stop = [...document.querySelectorAll("button")].find(
+            (button) => button.textContent?.trim() === "Stop & review",
+          );
+          if (!stop || stop.disabled) throw new Error("RECORDING_STOP_UNAVAILABLE");
+          stop.click();
+        });
         await expect(page.getByRole("heading", { name: "Review your local recording" })).toBeVisible();
         for (const [phase, capture] of Object.entries({ before: liveBefore, during: liveDuring }))
           await testInfo.attach(`D0-${containsHandOverlay ? "composite" : "clean"}-live-${phase}.png`, {
