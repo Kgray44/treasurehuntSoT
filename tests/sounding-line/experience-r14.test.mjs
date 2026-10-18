@@ -22,7 +22,15 @@ import {
 import { verificationObligationGroups } from "../../scripts/sounding-line/ordinary.mjs";
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
-const registry = JSON.parse(readFileSync(path.join(repo, "testing/product-experience-exceptions.json"), "utf8"));
+const installedRegistry = JSON.parse(
+  readFileSync(path.join(repo, "testing/product-experience-exceptions.json"), "utf8"),
+);
+// Historical R14 assertions retain the exact accepted fourteen-row/seven-bridge prefix.
+const registry = {
+  ...installedRegistry,
+  exceptions: installedRegistry.exceptions.slice(0, 14),
+  reconciliations: installedRegistry.reconciliations.slice(0, 7),
+};
 const record = registry.exceptions.find((entry) => entry.id === r14.CROSSDECK_R14.id);
 const oldRecord = registry.exceptions.find((entry) => entry.id === CROSSDECK_R13.id);
 const oldBase = "24fb189a90435ccb6021b63fd6953603ae090bc0";

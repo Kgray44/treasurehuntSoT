@@ -4,6 +4,7 @@ import { inflateRawSync } from "node:zlib";
 import { experienceDigest } from "./product-experience.mjs";
 import { verifyExceptionAttestation } from "./experience-exception.mjs";
 import { r8FormatEvidencePlan, validateR8FormatEvidenceIdentity } from "./experience-r8-format.mjs";
+import { isCurrentAdmissionPlan, validateCurrentCaptureIdentity } from "./experience-current-admission.mjs";
 
 const fail = (code) => {
   throw new Error(`PRODUCT_EXPERIENCE_${code}`);
@@ -136,6 +137,7 @@ export async function verifyTrustedExperienceAttestation({
     kind: "review",
     policy: plan.attestationPolicy,
   });
+  validateCurrentCaptureIdentity(currentPlan, capture, evidence);
   const identities = (artifacts) =>
     artifacts.map(({ id, sha256, type, contractId, state, device, role, motionMode }) => ({
       id,
@@ -167,6 +169,14 @@ export async function verifyTrustedExperienceAttestation({
   return {
     status: "PASS",
     ...(exceptionCustody ? { exception: currentPlan.exception, exceptionCustody } : {}),
+    ...(isCurrentAdmissionPlan(currentPlan)
+      ? {
+          currentBaseSha: currentPlan.baseSha,
+          currentSourceDigest: currentPlan.sourceDigest,
+          currentContractDigest: currentPlan.contractDigest,
+          currentCandidateSha: currentPlan.candidateSha,
+        }
+      : {}),
     ...(currentPlan.exception?.nonExecutingReconciliation
       ? {
           currentBaseSha: currentPlan.baseSha,
