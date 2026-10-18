@@ -1,53 +1,49 @@
 -- Reach-owned policy and automatic numeric aggregate reports. No camera or user identity data.
-CREATE TABLE `ReachRuntimePolicy` (
-  `id` VARCHAR(64) NOT NULL,
-  `revision` INTEGER NOT NULL,
-  `policy` LONGTEXT NOT NULL,
-  `updatedAt` DATETIME(3) NOT NULL,
-  PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE TABLE "ReachRuntimePolicy" (
+  "id" TEXT NOT NULL PRIMARY KEY,
+  "revision" INTEGER NOT NULL,
+  "policy" TEXT NOT NULL,
+  "updatedAt" DATETIME NOT NULL
+);
 
-CREATE TABLE `ReachPolicyPreview` (
-  `id` VARCHAR(36) NOT NULL,
-  `actorAccountId` VARCHAR(191) NOT NULL,
-  `accountSessionId` VARCHAR(191) NOT NULL,
-  `fingerprint` VARCHAR(64) NOT NULL,
-  `expectedRevision` INTEGER NOT NULL,
-  `expiresAt` DATETIME(3) NOT NULL,
-  `usedAt` DATETIME(3) NULL,
-  `createdAt` DATETIME(3) NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `ReachPolicyPreview_expiresAt_idx` (`expiresAt`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE TABLE "ReachPolicyPreview" (
+  "id" TEXT NOT NULL PRIMARY KEY,
+  "actorAccountId" TEXT NOT NULL,
+  "accountSessionId" TEXT NOT NULL,
+  "fingerprint" TEXT NOT NULL,
+  "expectedRevision" INTEGER NOT NULL,
+  "expiresAt" DATETIME NOT NULL,
+  "usedAt" DATETIME,
+  "createdAt" DATETIME NOT NULL
+);
+CREATE INDEX "ReachPolicyPreview_expiresAt_idx" ON "ReachPolicyPreview"("expiresAt");
 
-CREATE TABLE `ReachPolicyChange` (
-  `id` VARCHAR(36) NOT NULL,
-  `actorAccountId` VARCHAR(191) NOT NULL,
-  `accountSessionId` VARCHAR(191) NOT NULL,
-  `idempotencyKey` VARCHAR(128) NOT NULL,
-  `fingerprint` VARCHAR(64) NOT NULL,
-  `expectedRevision` INTEGER NOT NULL,
-  `resultingRevision` INTEGER NOT NULL,
-  `beforeState` LONGTEXT NOT NULL,
-  `afterState` LONGTEXT NOT NULL,
-  `reason` VARCHAR(240) NOT NULL,
-  `correlationId` VARCHAR(36) NOT NULL,
-  `createdAt` DATETIME(3) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `ReachPolicyChange_idempotencyKey_key` (`idempotencyKey`),
-  INDEX `ReachPolicyChange_createdAt_idx` (`createdAt`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE TABLE "ReachPolicyChange" (
+  "id" TEXT NOT NULL PRIMARY KEY,
+  "actorAccountId" TEXT NOT NULL,
+  "accountSessionId" TEXT NOT NULL,
+  "idempotencyKey" TEXT NOT NULL,
+  "fingerprint" TEXT NOT NULL,
+  "expectedRevision" INTEGER NOT NULL,
+  "resultingRevision" INTEGER NOT NULL,
+  "beforeState" TEXT NOT NULL,
+  "afterState" TEXT NOT NULL,
+  "reason" TEXT NOT NULL,
+  "correlationId" TEXT NOT NULL,
+  "createdAt" DATETIME NOT NULL
+);
+CREATE UNIQUE INDEX "ReachPolicyChange_idempotencyKey_key" ON "ReachPolicyChange"("idempotencyKey");
+CREATE INDEX "ReachPolicyChange_createdAt_idx" ON "ReachPolicyChange"("createdAt");
 
-CREATE TABLE `ReachTelemetryReport` (
-  `id` VARCHAR(36) NOT NULL,
-  `idempotencyKey` VARCHAR(36) NOT NULL,
-  `fingerprint` VARCHAR(64) NOT NULL,
-  `reportVersion` INTEGER NOT NULL,
-  `report` LONGTEXT NOT NULL,
-  `receivedAt` DATETIME(3) NOT NULL,
-  `expiresAt` DATETIME(3) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `ReachTelemetryReport_idempotencyKey_key` (`idempotencyKey`),
-  INDEX `ReachTelemetryReport_receivedAt_idx` (`receivedAt`),
-  INDEX `ReachTelemetryReport_expiresAt_idx` (`expiresAt`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE TABLE "ReachTelemetryReport" (
+  "id" TEXT NOT NULL PRIMARY KEY,
+  "idempotencyKey" TEXT NOT NULL,
+  "fingerprint" TEXT NOT NULL,
+  "reportVersion" INTEGER NOT NULL,
+  "report" TEXT NOT NULL,
+  "receivedAt" DATETIME NOT NULL,
+  "expiresAt" DATETIME NOT NULL
+);
+CREATE UNIQUE INDEX "ReachTelemetryReport_idempotencyKey_key" ON "ReachTelemetryReport"("idempotencyKey");
+CREATE INDEX "ReachTelemetryReport_receivedAt_idx" ON "ReachTelemetryReport"("receivedAt");
+CREATE INDEX "ReachTelemetryReport_expiresAt_idx" ON "ReachTelemetryReport"("expiresAt");
