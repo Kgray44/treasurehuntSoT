@@ -9,6 +9,7 @@ import type { DeckState } from "../../src/crossdeck/sync-contracts";
 import { createAccountSession } from "../../src/wayfarer/accounts";
 import { createCrossdeckRefitFixture, removeCrossdeckRefitFixture } from "./fixtures/crossdeck-refit";
 import { authenticateClosure, openClosureJournal, openClosureMap } from "./fixtures/landfall-closure";
+import { assertDesktopHandoffReceiptReadable } from "./fixtures/journal-layout";
 
 test.describe.configure({ mode: "serial", timeout: 180_000 });
 test.use({ trace: "off", video: "off", screenshot: "off" });
@@ -352,6 +353,12 @@ test("recover pairing and transfers while preserving shared-screen privacy", asy
     timings.sendToSharedOfferMs = Date.now() - sentAt;
     expect(await crewSend.handoff.innerText()).not.toContain("is open on your other device");
     await capture(p, "08-crew-receive-pending", crewReceive);
+    await openClosureMap(d);
+    await assertDesktopHandoffReceiptReadable(
+      d,
+      crewSend.handoff,
+      "The island course is ready to receive. It stays here until opened there.",
+    );
     await capture(d, "08-crew-transfer-pending", crewSend.handoff);
     const receivedAt = Date.now();
     await crewReceive.getByRole("button", { name: /^Receive / }).click();
@@ -361,6 +368,7 @@ test("recover pairing and transfers while preserving shared-screen privacy", asy
     await expect(crewSend.handoff.getByText(/is open on your other device/)).toBeVisible();
     timings.receiveToRenderedReceiptMs = Date.now() - receivedAt;
     expect((await deck()).handoffs.at(-1)?.state).toBe("ACKNOWLEDGED");
+    await assertDesktopHandoffReceiptReadable(d, crewSend.handoff, "The island course is open on your other device.");
     await capture(d, "09-crew-delivery-acknowledged", crewSend.handoff);
     outcomes.DELIVERY_ACKNOWLEDGED = true;
     await expect(p.getByText("A letter from the Captain", { exact: true })).toHaveCount(0);

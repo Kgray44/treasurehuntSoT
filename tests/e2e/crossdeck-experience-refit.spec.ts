@@ -9,6 +9,7 @@ import { createAccountSession, revokeAccountSession } from "../../src/wayfarer/a
 import { STALE_MS } from "../../src/crossdeck/contracts";
 import { createCrossdeckRefitFixture, removeCrossdeckRefitFixture } from "./fixtures/crossdeck-refit";
 import { authenticateClosure, openClosureJournal, openClosureMap } from "./fixtures/landfall-closure";
+import { assertDesktopHandoffReceiptReadable, assertPhoneJournalReadingArea } from "./fixtures/journal-layout";
 
 test.describe.configure({ mode: "serial", timeout: 180_000 });
 test.use({ trace: "off", video: "off", screenshot: "off" });
@@ -263,6 +264,12 @@ for (const motion of ["no-preference", "reduce"] as const)
       timings.sendToVisibleOfferMs = Date.now() - sentAt;
       await capture(p, "09-receive-offer", receiving);
       expect(await sending.innerText()).not.toContain("is open on your other device");
+      await openClosureMap(d);
+      await assertDesktopHandoffReceiptReadable(
+        d,
+        sending,
+        "The island course is ready to receive. It stays here until opened there.",
+      );
       await capture(d, "09-transfer-pending", sending);
       const receivedAt = Date.now();
       await receiving.getByRole("button", { name: /^Receive / }).click();
@@ -276,6 +283,7 @@ for (const motion of ["no-preference", "reduce"] as const)
       );
       expect(state.handoffs.at(-1).state).toBe("ACKNOWLEDGED");
       expect(state.objects["MAP:" + voyage.activeId].custody).toBe(receiver.surfaceId);
+      await assertDesktopHandoffReceiptReadable(d, sending, "The island course is open on your other device.");
       await capture(d, "10-delivery-acknowledged", sending);
       outcomes.DELIVERY_ACKNOWLEDGED = true;
 
@@ -332,6 +340,7 @@ for (const motion of ["no-preference", "reduce"] as const)
       await restoredChart.getByRole("button", { name: "Close journal tool drawer", exact: true }).click();
       await expect(closeRestoredDrawer).toBeHidden();
       await expect(p.getByRole("heading", { name: "Follow the lanterns", exact: true })).toBeVisible();
+      await assertPhoneJournalReadingArea(p, "Follow the lanterns");
       await capture(p, "16-return-to-chronicle");
       expect((await db.taleSession.findUniqueOrThrow({ where: { id: voyage.id } })).currentSequence).toBe(
         before.sequence,

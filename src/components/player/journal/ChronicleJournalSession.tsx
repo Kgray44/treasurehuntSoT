@@ -249,6 +249,21 @@ function ChronicleJournalSessionIdentity({
 }: ChronicleJournalSessionProps) {
   const companionMode = Boolean(companion);
   const root = useRef<HTMLElement>(null);
+  const measureReadingDock = useCallback((node: HTMLDivElement | null) => {
+    if (!node) return;
+    const shell = node.closest<HTMLElement>(".chronicle-journal-shell");
+    const measure = () => {
+      shell?.style.setProperty("--journal-reading-dock-height", `${Math.ceil(node.getBoundingClientRect().height)}px`);
+    };
+    measure();
+    if (typeof ResizeObserver === "undefined") return;
+    const observer = new ResizeObserver(measure);
+    observer.observe(node, { box: "border-box" });
+    return () => {
+      observer.disconnect();
+      shell?.style.removeProperty("--journal-reading-dock-height");
+    };
+  }, []);
   const book = useRef<PageFlipBookHandle>(null);
   const journalHeading = useRef<HTMLHeadingElement>(null);
   const openingStatus = useRef<HTMLDivElement>(null);
@@ -1482,52 +1497,54 @@ function ChronicleJournalSessionIdentity({
           )}
         </aside>
 
-        <nav
-          className="journal-context-tabs persistent-interface"
-          aria-label="Journal tools"
-          aria-hidden={openingActive}
-          inert={openingActive ? true : undefined}
-        >
-          {(["chapters", "map", "artifacts", "messages"] as const).map((drawer) => (
-            <button
-              key={drawer}
-              aria-expanded={reading.openDrawer === drawer}
-              onClick={(event) => toggleDrawer(drawer, event.currentTarget)}
-            >
-              {drawer}
-            </button>
-          ))}
-        </nav>
-
-        {!historical ? (
-          <aside
-            className="chronicle-objective-tray persistent-objective"
-            data-opening-actor="objective"
+        <div className="journal-reading-dock" ref={measureReadingDock}>
+          <nav
+            className="journal-context-tabs persistent-interface"
+            aria-label="Journal tools"
             aria-hidden={openingActive}
             inert={openingActive ? true : undefined}
           >
-            <div>
-              <p>Current objective</p>
-              <strong>{currentObjective}</strong>
-              <span>{state.session.status.replaceAll("_", " ").toLocaleLowerCase()}</span>
-            </div>
-            {newContent && (
-              <button className="return-current" onClick={returnToCurrent}>
-                Return to Current Objective
+            {(["chapters", "map", "artifacts", "messages"] as const).map((drawer) => (
+              <button
+                key={drawer}
+                aria-expanded={reading.openDrawer === drawer}
+                onClick={(event) => toggleDrawer(drawer, event.currentTarget)}
+              >
+                {drawer}
               </button>
-            )}
-            <JournalActions
-              state={state}
-              currentBlock={currentBlock}
-              choices={choices}
-              answer={answer}
-              setAnswer={setAnswer}
-              waitRemaining={waitRemaining}
-              busy={busy}
-              act={act}
-            />
-          </aside>
-        ) : null}
+            ))}
+          </nav>
+
+          {!historical ? (
+            <aside
+              className="chronicle-objective-tray persistent-objective"
+              data-opening-actor="objective"
+              aria-hidden={openingActive}
+              inert={openingActive ? true : undefined}
+            >
+              <div>
+                <p>Current objective</p>
+                <strong>{currentObjective}</strong>
+                <span>{state.session.status.replaceAll("_", " ").toLocaleLowerCase()}</span>
+              </div>
+              {newContent && (
+                <button className="return-current" onClick={returnToCurrent}>
+                  Return to Current Objective
+                </button>
+              )}
+              <JournalActions
+                state={state}
+                currentBlock={currentBlock}
+                choices={choices}
+                answer={answer}
+                setAnswer={setAnswer}
+                waitRemaining={waitRemaining}
+                busy={busy}
+                act={act}
+              />
+            </aside>
+          ) : null}
+        </div>
 
         {journalReady && spatialBlocks.length > 0 && (
           <ParallaxJournalProvider
