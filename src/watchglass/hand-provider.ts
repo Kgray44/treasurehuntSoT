@@ -180,7 +180,7 @@ export class BrowserHandAdapter {
     inference: number,
     width: number,
     height: number,
-    acceptCapture?: () => boolean,
+    acceptCapture?: (observation?: HandObservation) => boolean,
   ): HandObservation {
     if (!Number.isFinite(capture) || !Number.isFinite(inference) || capture <= this.capture || inference < capture)
       throw new Error("HAND_PROVIDER_CLOCK_INVALID");
@@ -422,7 +422,7 @@ export class BrowserHandAdapter {
     };
     // Association state is evidence too. Rejected or processing-expired pixels
     // cannot renew a hand's history merely because no observation was published.
-    if (acceptCapture && !acceptCapture()) throw new Error("HAND_PROVIDER_CAPTURE_REJECTED");
+    if (acceptCapture && !acceptCapture(observation)) throw new Error("HAND_PROVIDER_CAPTURE_REJECTED");
     this.capture = capture;
     this.generation = generation;
     this.tracks = nextTracks;

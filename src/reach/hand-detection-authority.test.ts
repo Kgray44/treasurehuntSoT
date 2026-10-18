@@ -127,6 +127,38 @@ describe("whole-hand authority before index fallback", () => {
     expect(selectIndexModelAnchor(value)).toBeNull();
   });
 
+  it("exposes a current partial index cue with the same canonical source and no fabricated palm authority", () => {
+    const value = observation();
+    const full = selectIndexModelAnchor(value)!;
+    expect(full).not.toHaveProperty("indexCue");
+    for (let id = 0; id < 21; id++) if (![5, 6, 7, 8].includes(id)) value.hands[0].landmarks[id] = missing;
+    const partial = selectIndexModelAnchor(value)!;
+    expect(partial.indexCue?.source).toBe(full.authoritySource);
+    expect(partial.indexCue?.index).toEqual(full.geometry!.index);
+    expect(partial).not.toHaveProperty("geometry");
+    expect(partial).not.toHaveProperty("authority");
+    expect(partial).not.toHaveProperty("identityObserved");
+    const saved = partial.indexCue!.index[3].x;
+    value.hands[0].landmarks[8].x += 0.01;
+    expect(partial.indexCue!.index[3].x).toBe(saved);
+    value.cameraLeaseId = "another-camera";
+    expect(selectIndexModelAnchor(value)!.indexCue?.source).not.toBe(partial.indexCue?.source);
+    value.hands[0].landmarks[7] = missing;
+    expect(selectIndexModelAnchor(value)).toBeNull();
+  });
+
+  it("does not offer a partial pointing cue past an open hand, bent index or multiple hands", () => {
+    const open = observation({ otherBends: [0, 0, 0] });
+    expect(selectIndexModelAnchor(open)).not.toHaveProperty("indexCue");
+    const bent = observation({ indexBends: [0, 100, 150] });
+    for (let id = 0; id < 21; id++) if (![5, 6, 7, 8].includes(id)) bent.hands[0].landmarks[id] = missing;
+    expect(selectIndexModelAnchor(bent)?.indexCue).toBeUndefined();
+    const two = observation();
+    for (let id = 0; id < 21; id++) if (![5, 6, 7, 8].includes(id)) two.hands[0].landmarks[id] = missing;
+    two.hands.push(structuredClone(two.hands[0]));
+    expect(selectIndexModelAnchor(two)).toBeNull();
+  });
+
   it("scopes full authority to track/source binding rather than handedness or fingertip coordinates", () => {
     const initial = observation(),
       key = selectIndexModelAnchor(initial)!.authoritySource;

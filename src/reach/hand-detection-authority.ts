@@ -71,6 +71,29 @@ const observed = (hand: Hand, id: number) => {
   const p = hand.landmarks[id];
   return !!p?.valid && [p.x, p.y, p.z].every(Number.isFinite) && p.x >= 0 && p.x <= 1 && p.y >= 0 && p.y <= 1;
 };
+function modelSource(observation: Observation, hand: Hand) {
+  return JSON.stringify([
+    observation.providerId ?? null,
+    observation.providerVersion ?? null,
+    observation.modelDigest ?? null,
+    observation.providerGeneration ?? null,
+    observation.cameraLeaseId ?? null,
+    observation.cameraFrameVersion ?? null,
+    observation.frameWidth,
+    observation.frameHeight,
+    observation.mirrorTransform ?? null,
+    observation.orientation ?? null,
+    hand.trackId,
+    hand.trackGeneration,
+  ]);
+}
+function observedIndexChain(hand: Hand): NonNullable<IndexModelAnchor["geometry"]>["index"] {
+  const point = (id: number) => {
+    const { x, y, z } = hand.landmarks[id];
+    return { x, y, z };
+  };
+  return [point(5), point(6), point(7), point(8)];
+}
 function fullCandidate(hand: Hand, frame: Observation) {
   // A count of in-bounds joints is insufficient: require a plausible observed
   // knuckle row and two complete other fingers. Off-image estimates never count.
@@ -137,20 +160,7 @@ export function fullHandDecision(observation: Observation | null): FullHandDecis
   const indexPoint = index.tip ? { x: index.tip.x, y: index.tip.y } : null;
   // A model track is local continuity evidence, never handedness or a point-
   // derived identity. This key stays internal to the gesture handoff policy.
-  const sourceKey = JSON.stringify([
-    observation.providerId ?? null,
-    observation.providerVersion ?? null,
-    observation.modelDigest ?? null,
-    observation.providerGeneration ?? null,
-    observation.cameraLeaseId ?? null,
-    observation.cameraFrameVersion ?? null,
-    observation.frameWidth,
-    observation.frameHeight,
-    observation.mirrorTransform ?? null,
-    observation.orientation ?? null,
-    hand.trackId,
-    hand.trackGeneration,
-  ]);
+  const sourceKey = modelSource(observation, hand);
   if (!index.complete || !index.geometry) return { decision: "FULL_AMBIGUOUS", indexPoint, sourceKey };
   const anatomical =
     index.chain >= shape.scale * p.fingers.minimumChainPalmRatio &&
@@ -185,13 +195,9 @@ export function fullHandDecision(observation: Observation | null): FullHandDecis
     index.pipAlignment >= p.index.minimumPipAlignment &&
     index.dipAlignment >= p.index.minimumDipAlignment;
   const pointing = extended && open < p.open.minimumCount && similar < p.similar.minimumCount && !competing && !pinched;
-  const observedPoint = (id: number) => {
-    const { x, y, z } = hand.landmarks[id];
-    return { x, y, z };
-  };
   const geometry: IndexModelAnchor["geometry"] = pointing
     ? {
-        index: [observedPoint(5), observedPoint(6), observedPoint(7), observedPoint(8)],
+        index: observedIndexChain(hand),
         palmSpan: shape.scale,
       }
     : undefined;
@@ -223,9 +229,11 @@ export function selectIndexModelAnchor(observation: Observation | null): IndexMo
     index = indexGeometry(hand, observation),
     posture = assessHand(hand, observation);
   if (hand.continuity === "AMBIGUOUS" || !index.geometry || !index.complete || !index.tip) return null;
+  const pointing = index.extended && posture.pointing;
   return {
     point: { x: index.tip.x, y: index.tip.y },
-    pointing: index.extended && posture.pointing,
+    pointing,
     contrary: !posture.pointing && posture.validCount >= 16,
+    ...(pointing ? { indexCue: { source: modelSource(observation!, hand), index: observedIndexChain(hand) } } : {}),
   };
 }

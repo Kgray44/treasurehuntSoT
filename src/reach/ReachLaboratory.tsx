@@ -1303,6 +1303,7 @@ export function ReachLaboratory({
       data-image-track-generation={indexState?.trackGeneration ?? 0}
       data-image-model-agreement={indexState?.modelAgreement ?? "UNAVAILABLE"}
       data-fingertip-coordinate-source={indexState?.coordinateSource ?? "IMAGE"}
+      data-fingertip-model-support={indexState?.modelSupport ?? "NONE"}
       data-fingertip-optical-epoch={indexState?.opticalEpoch ?? 0}
       data-image-reason={indexStale ? "STALE" : (indexState?.reason ?? "UNSEEDED")}
       data-image-capture-time={indexState?.monotonicCaptureTime ?? ""}
@@ -1490,9 +1491,13 @@ export function ReachLaboratory({
                 ? `${readiness.hand.handedness === "UNKNOWN" ? "Active" : readiness.hand.handedness === "LEFT" ? "Left" : "Right"} hand · ${assessment?.offImageFingerSupport ? "partial hand · some fingers inferred" : assessment?.partialFraming ? "partial hand · wrist optional" : assessment?.landmarkQuality === "TRACKED" ? "joints tracked" : "some joints hidden"}`
                 : pointingMode === "RELATIVE" && !indexStale && indexState?.state === "TRACKING"
                   ? indexState.coordinateSource === "MODEL"
-                    ? "Following the index identified by the full-hand model"
+                    ? indexState.modelSupport === "REGISTERED_INDEX"
+                      ? "Following the visible index · verified earlier against its image"
+                      : "Following the index identified by the hand model"
                     : indexState.coordinateSource === "FUSED"
-                      ? "Full-hand index and image motion agree"
+                      ? indexState.modelSupport === "REGISTERED_INDEX"
+                        ? "Visible index and image motion agree"
+                        : "Hand model and image motion agree"
                       : "Following your fingertip image · hand model may be out of view"
                   : "Show an index point, or mark a visible fingertip below"}
             </span>

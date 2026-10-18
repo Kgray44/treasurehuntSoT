@@ -28,6 +28,14 @@ function model(x: number, y = 45, source = "same-complete-hand"): IndexModelAnch
     },
   };
 }
+function partial(x: number, y = 45, source = "same-complete-hand"): IndexModelAnchor {
+  return {
+    point: point(x, y),
+    pointing: true,
+    contrary: false,
+    indexCue: { source, index: model(x, y).geometry!.index },
+  };
+}
 function frame(x: number, at: number, seed: number | null = 0): IndexGrayFrame {
   const data = new Uint8Array(160 * 120).fill(30);
   if (seed !== null)
@@ -47,6 +55,91 @@ function establish(tracker: IndexImageTracker) {
   return result;
 }
 describe("one conditioned model/image relative producer", () => {
+  it("uses a current registered index through cropped appearance changes without requiring a palm or changing finger identity", () => {
+    const tracker = new IndexImageTracker(binding),
+      seed = establish(tracker);
+    expect(tracker.update(frame(47, 300, null), partial(47)).point).toBeNull();
+    expect(tracker.update(frame(49, 366, null), partial(49)).point).toBeNull();
+    for (let i = 0; i < 24; ++i) {
+      const x = 51 + i * 2,
+        observed = tracker.update(frame(x, 433 + i * 67, null), partial(x));
+      expect(observed).toMatchObject({
+        state: "TRACKING",
+        coordinateSource: "MODEL",
+        modelSupport: "REGISTERED_INDEX",
+        reason: "INDEX_MODEL_CONTINUITY",
+        trackId: seed.trackId,
+      });
+      expect(observed.point!.x * 159).toBeCloseTo(x, 6);
+      expect(observed.uncertaintyRadiusPixels).toBe(16);
+    }
+    expect(tracker.update(frame(99, 2041, null)).point).toBeNull();
+  });
+  it("cannot initialize from a featureless partial index or borrow an unassociated full-model cold start", () => {
+    const cold = new IndexImageTracker(binding);
+    for (let i = 0; i < 8; ++i)
+      expect(cold.update(frame(45, 100 + i * 67, null), partial(45))).toMatchObject({ point: null, trackId: null });
+    const modelOnly = new IndexImageTracker(binding);
+    let seeded;
+    for (const at of [100, 166, 233]) seeded = modelOnly.update(frame(45, at, null), model(45));
+    expect(seeded!.coordinateSource).toBe("MODEL");
+    for (const at of [300, 366, 433, 500])
+      expect(modelOnly.update(frame(45, at, null), partial(45))).toMatchObject({
+        point: null,
+        trackId: seeded!.trackId,
+      });
+  });
+  it.each(["SOURCE", "MISSING", "CURLED", "COLLAPSED", "TIP", "GAP"] as const)(
+    "rejects unqualified cropped cue %s",
+    (condition) => {
+      const tracker = new IndexImageTracker(binding),
+        seed = establish(tracker);
+      const start = condition === "GAP" ? 600 : 300;
+      for (let i = 0; i < 5; ++i) {
+        const anchor = partial(47, 45, condition === "SOURCE" ? "another-hand" : "same-complete-hand");
+        if (condition === "MISSING") anchor.indexCue = undefined;
+        if (condition === "COLLAPSED")
+          anchor.indexCue!.index = [0, 0, 0, 0].map(() => ({ ...point(47), z: 0 })) as unknown as NonNullable<
+            IndexModelAnchor["indexCue"]
+          >["index"];
+        if (condition === "CURLED") anchor.indexCue!.index[2].y = anchor.indexCue!.index[0].y;
+        if (condition === "TIP") anchor.indexCue!.index[3].x += 0.1;
+        expect(tracker.update(frame(47, start + i * 67, null), anchor)).toMatchObject({
+          point: null,
+          trackId: seed.trackId,
+        });
+      }
+    },
+  );
+  it("cannot use a partial cue to clear a confirmed contrary hand or override an accepted image conflict", () => {
+    const tracker = new IndexImageTracker(binding),
+      seed = establish(tracker);
+    for (const at of [300, 366, 433])
+      tracker.update(frame(45, at), {
+        ...model(45),
+        geometry: undefined,
+        pointing: false,
+        contrary: true,
+        authority: "CONTRARY",
+      });
+    for (const at of [500, 566, 633, 700])
+      expect(tracker.update(frame(45, at, null), partial(45))).toMatchObject({ point: null, trackId: seed.trackId });
+    const conflict = new IndexImageTracker(binding),
+      first = establish(conflict);
+    conflict.update(frame(45, 300), partial(69));
+    for (const at of [366, 433, 500, 566])
+      expect(conflict.update(frame(45, at, null), partial(69))).toMatchObject({ point: null, trackId: first.trackId });
+  });
+  it("exposes only IMAGE fallback when the current cue disappears and current pixels remain good", () => {
+    const tracker = new IndexImageTracker(binding);
+    establish(tracker);
+    for (const at of [300, 366, 433]) tracker.update(frame(45, at), partial(45));
+    expect(tracker.update(frame(47, 500))).toMatchObject({
+      state: "TRACKING",
+      coordinateSource: "IMAGE",
+      modelSupport: null,
+    });
+  });
   it("retains registration across a brief unavailable model frame but requires current full geometry for action", () => {
     const tracker = new IndexImageTracker(binding),
       seed = establish(tracker);
@@ -250,6 +343,15 @@ describe("one conditioned model/image relative producer", () => {
         point: null,
         trackId: seed.trackId,
         opticalEpoch: seed.opticalEpoch,
+      });
+    const retained = new IndexImageTracker(binding),
+      initial = establish(retained);
+    retained.update(frame(45, 300), { point: point(45), pointing: false, contrary: true });
+    for (const at of [366, 433, 500, 566])
+      expect(retained.update(frame(45, at), partial(45))).toMatchObject({
+        point: null,
+        trackId: initial.trackId,
+        reason: "COHERENT_MODEL_CONTRARY",
       });
   });
   it("does not add large model jitter to stable high-quality pixels, and retains offset on image-only handoff", () => {

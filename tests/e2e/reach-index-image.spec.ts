@@ -466,53 +466,76 @@ test("D0 image-relative control follows fresh appearance through model failure, 
   await page.getByRole("button", { name: "Stop camera & clear session", exact: true }).click();
 });
 
-test("D0 fused full-hand motion and optical pose changes preserve calibration target 1 to 2", async ({
-  page,
-}, testInfo) => {
-  await installFixture(page);
-  await page.goto("/devices/reach");
-  await page.getByRole("button", { name: "Enable live camera", exact: true }).click();
-  await ready(page);
-  await expect(root(page)).toHaveAttribute("data-fingertip-coordinate-source", /FUSED|MODEL/);
-  const generation = await root(page).getAttribute("data-image-track-generation");
-  await page.getByRole("button", { name: "Set up relative movement", exact: true }).click();
-  await expect(page.getByLabel("Target 2 of 5", { exact: true })).toBeVisible({ timeout: 12000 });
-  // Simulate a natural change in finger appearance during movement, while the
-  // current full-hand index anatomy and model association remain continuous.
-  await configure(page, { appearanceRotation: 55, x: 88 });
-  await expect(root(page)).toHaveAttribute("data-image-track-generation", generation!);
-  await expect(root(page)).toHaveAttribute("data-image-state", "TRACKING");
-  await expect
-    .poll(async () => {
-      const circle = page.locator('svg[aria-label="Finger image position"] circle');
-      return Math.hypot(Number(await circle.getAttribute("cx")) - 88, Number(await circle.getAttribute("cy")) - 120);
-    })
-    .toBeLessThan(2);
-  await expect(root(page)).toHaveAttribute("data-step", "TRAINING");
-  await expect(page.getByRole("alert", { name: "Setup ended", exact: true })).toHaveCount(0);
-  await page.getByRole("button", { name: "Pause calibration", exact: true }).click();
-  await expect(page.getByText(/1 of 5 targets saved\./)).toBeVisible();
-  await page.screenshot({ path: testInfo.outputPath("D0-fused-target2-pose-recovery.png"), fullPage: false });
-  await configure(page, { model: "NONE", x: 90 });
-  await expect(root(page)).toHaveAttribute("data-fingertip-coordinate-source", "IMAGE");
-  await expect(root(page)).toHaveAttribute("data-image-track-generation", generation!);
-  await expect
-    .poll(async () =>
-      Math.abs(Number(await page.locator('svg[aria-label="Finger image position"] circle').getAttribute("cx")) - 90),
-    )
-    .toBeLessThan(2);
-  await configure(page, { model: "FULL", x: 92 });
-  await expect(root(page)).toHaveAttribute("data-fingertip-coordinate-source", /FUSED|MODEL/);
-  await expect(root(page)).toHaveAttribute("data-image-track-generation", generation!);
-  await expect
-    .poll(async () =>
-      Math.abs(Number(await page.locator('svg[aria-label="Finger image position"] circle').getAttribute("cx")) - 92),
-    )
-    .toBeLessThan(2);
-  await expect(page.getByLabel("Target 2 of 5", { exact: true })).toBeVisible();
-  await expect(page.getByRole("alert", { name: "Setup ended", exact: true })).toHaveCount(0);
-  await page.getByRole("button", { name: "Stop session", exact: true }).click();
-});
+for (const model of ["FULL", "INDEX"] as const) {
+  test(`D0 fused ${model} motion and optical pose changes preserve calibration target 1 to 2`, async ({
+    page,
+  }, testInfo) => {
+    await installFixture(page);
+    await page.goto("/devices/reach");
+    await page.getByRole("button", { name: "Enable live camera", exact: true }).click();
+    await ready(page);
+    await expect(root(page)).toHaveAttribute("data-fingertip-coordinate-source", /FUSED|MODEL/);
+    if (model === "INDEX") {
+      await configure(page, { model });
+      await expect(root(page)).toHaveAttribute("data-fingertip-model-support", "REGISTERED_INDEX");
+    }
+    const generation = await root(page).getAttribute("data-image-track-generation");
+    await page.getByRole("button", { name: "Set up relative movement", exact: true }).click();
+    await expect(page.getByLabel("Target 2 of 5", { exact: true })).toBeVisible({ timeout: 12000 });
+    // Simulate a natural change in finger appearance during movement, while the
+    // current observed index anatomy and its verified association remain continuous.
+    await configure(page, { appearanceRotation: 55, x: 88 });
+    await expect(root(page)).toHaveAttribute("data-image-track-generation", generation!);
+    await expect(root(page)).toHaveAttribute("data-image-state", "TRACKING");
+    await expect
+      .poll(async () => {
+        const circle = page.locator('svg[aria-label="Finger image position"] circle');
+        return Math.hypot(Number(await circle.getAttribute("cx")) - 88, Number(await circle.getAttribute("cy")) - 120);
+      })
+      .toBeLessThan(2);
+    await expect(root(page)).toHaveAttribute("data-step", "TRAINING");
+    await expect(page.getByRole("alert", { name: "Setup ended", exact: true })).toHaveCount(0);
+    await page.getByRole("button", { name: "Pause calibration", exact: true }).click();
+    await expect(page.getByText(/1 of 5 targets saved\./)).toBeVisible();
+    await page.screenshot({ path: testInfo.outputPath("D0-fused-target2-pose-recovery.png"), fullPage: false });
+    await configure(page, { model: "NONE", x: 90 });
+    await expect(root(page)).toHaveAttribute("data-fingertip-coordinate-source", "IMAGE");
+    await expect(root(page)).toHaveAttribute("data-image-track-generation", generation!);
+    await expect
+      .poll(async () =>
+        Math.abs(Number(await page.locator('svg[aria-label="Finger image position"] circle').getAttribute("cx")) - 90),
+      )
+      .toBeLessThan(2);
+    await configure(page, { model, x: 92 });
+    await expect(root(page)).toHaveAttribute("data-fingertip-coordinate-source", /FUSED|MODEL/);
+    await expect(root(page)).toHaveAttribute(
+      "data-fingertip-model-support",
+      model === "FULL" ? "FULL_HAND" : "REGISTERED_INDEX",
+    );
+    await expect(root(page)).toHaveAttribute("data-image-track-generation", generation!);
+    await expect
+      .poll(async () =>
+        Math.abs(Number(await page.locator('svg[aria-label="Finger image position"] circle').getAttribute("cx")) - 92),
+      )
+      .toBeLessThan(2);
+    await expect(page.getByLabel("Target 2 of 5", { exact: true })).toBeVisible();
+    await expect(page.getByRole("alert", { name: "Setup ended", exact: true })).toHaveCount(0);
+    await testInfo.attach("D0-fusion-transition-receipt", {
+      contentType: "application/json",
+      body: JSON.stringify({
+        fixture: "ANALYTIC_CAMERA_FAKE_INFERENCE_NOT_PHYSICAL_RECOGNITION",
+        modelSupport: model,
+        sameExternalGeneration: generation,
+        savedTargets: 1,
+        target: 2,
+        positionBoundAnalysisPixels: 2,
+        positions: [88, 90, 92],
+        physicalAccuracyQualified: false,
+      }),
+    });
+    await page.getByRole("button", { name: "Stop session", exact: true }).click();
+  });
+}
 
 test("D0 live setup opens empty before pointing and binds its first fresh source without restarting", async ({
   page,

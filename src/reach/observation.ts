@@ -19,7 +19,7 @@ export class ObservationGate {
     readonly binding: ObservationBinding,
     readonly maxAgeMs = 150,
   ) {}
-  accept(input: unknown, now: number): HandObservation {
+  accept(input: unknown, now: number, finalFresh?: () => boolean): HandObservation {
     const o = handObservationSchema.parse(input);
     if (
       !Number.isFinite(now) ||
@@ -47,6 +47,7 @@ export class ObservationGate {
       o.evidenceTier,
     ]);
     if (this.source !== null && this.source !== source) throw new Error("OBSERVATION_SOURCE_CHANGED");
+    if (finalFresh && !finalFresh()) throw new Error("OBSERVATION_CLOCK_OR_FRESHNESS");
     this.sequence = o.sequence;
     this.capture = o.monotonicCaptureTime;
     this.frame = frame;

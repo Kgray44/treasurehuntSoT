@@ -2,6 +2,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { ReachBrowserRuntime, type IndexImageObservation, type ReachInferenceMetrics } from "./browser-runtime";
 import { BrowserHandAdapter, type HandInferencePolicy, type HandResult } from "@/watchglass/hand-provider";
+import { handObservationSchema } from "@/watchglass/hand-observation";
 import { pointingPose } from "../../tests/e2e/fixtures/reach/pointing-poses";
 import { IndexImageTracker } from "./index-image-tracker";
 import { IndexImageObservationGate } from "./index-image-observation";
@@ -907,6 +908,75 @@ describe("runtime image source integration", () => {
     expect(s.observe).not.toHaveBeenCalled();
     expect(s.metrics.mock.calls.at(-1)?.[0]).toMatchObject({ disposition: "LATE", packetAgeMs: 151 });
     expect(s.runtime.resources().tracks).toBe(1);
+  });
+  it.each(["FUTURE_INFERENCE", "FUTURE_CAPTURE", "FRACTIONAL_FRAME"] as const)(
+    "does not poison association or gate state after rejecting %s metadata",
+    async (fault) => {
+      const s = setup();
+      const worker = await s.start(false);
+      await s.advance(10);
+      const pose = modelPose(s.hint);
+      worker.onmessage!({
+        data: {
+          type: "RESULT",
+          generation: worker.generation,
+          capture: worker.frames[0].capture + (fault === "FUTURE_CAPTURE" ? 1000 : 0),
+          inferenceTime: performance.timeOrigin + performance.now() + (fault.startsWith("FUTURE") ? 1000 : 0),
+          width: fault === "FRACTIONAL_FRAME" ? 320.5 : 320,
+          height: 240,
+          result: { landmarks: [pose], handedness: [[{ categoryName: "Right", score: 0.99 }]] },
+        },
+      } as MessageEvent);
+      expect(s.observe).not.toHaveBeenCalled();
+      expect(s.image).not.toHaveBeenCalled();
+      expect(s.metrics.mock.calls.at(-1)?.[0].disposition).toBe("INVALID");
+      s.freshFrame();
+      await s.advance(7);
+      expect(worker.frames).toHaveLength(2);
+      await s.advance(5);
+      s.result(undefined, [pose]);
+      expect(s.observe).toHaveBeenCalledOnce();
+      expect(s.observe.mock.calls[0][0]).toMatchObject({
+        sequence: 0,
+        observationId: "observation-0",
+        hands: [{ trackId: "local-1", trackGeneration: 1 }],
+      });
+      expect(s.status).toHaveBeenLastCalledWith("READY");
+      expect(s.runtime.resources().workers).toBe(1);
+    },
+  );
+  it("rolls back both gate and association when source age expires during schema validation", async () => {
+    const s = setup({ frameCallbacks: true });
+    const worker = await s.start(false);
+    await s.advance(10);
+    s.result();
+    s.presented(2, 1.1, { captureTime: 100 });
+    await s.advance(7);
+    expect(worker.frames).toHaveLength(2);
+    const parse = handObservationSchema.parse;
+    vi.spyOn(handObservationSchema, "parse").mockImplementationOnce((...args) => {
+      const parsed = parse(...args);
+      s.jumpClock(20);
+      return parsed;
+    });
+    await s.advance(123);
+    s.result(undefined, [modelPose(s.hint)]);
+    expect(performance.now()).toBe(260);
+    expect(s.observe).toHaveBeenCalledOnce();
+    expect(s.image).toHaveBeenCalledOnce();
+    expect(s.metrics.mock.calls.at(-1)?.[0]).toMatchObject({ disposition: "LATE", packetAgeMs: 160 });
+    s.presented(3, 1.2);
+    await s.advance(1);
+    await s.advance(5);
+    s.result(undefined, [modelPose(s.hint)]);
+    expect(s.observe).toHaveBeenCalledTimes(2);
+    expect(s.observe.mock.calls[1][0]).toMatchObject({
+      sequence: 1,
+      observationId: "observation-1",
+      hands: [{ trackId: "local-1", trackGeneration: 1 }],
+    });
+    expect(s.status).toHaveBeenLastCalledWith("READY");
+    expect(s.runtime.resources().workers).toBe(1);
   });
   it("closes a bitmap whose origin becomes old during asynchronous extraction", async () => {
     const s = setup({ frameCallbacks: true });

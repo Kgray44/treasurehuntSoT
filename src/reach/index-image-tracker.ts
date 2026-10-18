@@ -42,6 +42,10 @@ export const indexImageAlgorithmDescriptor = {
     modelMinimumCorrectionWeight: 0.15,
     modelMaximumCorrectionStep: 0.5,
     modelCorrectionDeadband: 0.2,
+    indexCueMaximumRelativeJointMotion: 0.2,
+    indexCueUncertainty: 8,
+    indexMinimumChain: 0.012,
+    indexMaximumChain: 1.2,
   },
   searchDomain: "PREVIOUS_AND_PREDICTED_SQUARE_UNION",
   searchKernel: "EXACT_INTEGER_INTEGRAL_MOMENTS_WITH_ORIGINAL_NCC_PRODUCT_AND_TIE_ORDER",
@@ -49,13 +53,17 @@ export const indexImageAlgorithmDescriptor = {
     image: "INTEGER_GATED_CONCAVE_3X3_SUBPIXEL_WITH_FIXED_TEMPLATE_PHASE",
     fusion:
       "IMAGE_DISPLACEMENT_PLUS_BOUNDED_CORRELATION_WEIGHTED_ANATOMICAL_OFFSET_AFTER_SOURCE_SCOPED_GEOMETRIC_PROBATION",
-    model: "CURRENT_FULL_POINT_ONLY_AFTER_3_FRAMES_120MS_COHERENT_GEOMETRY",
+    model: "CURRENT_FULL_POINT_OR_OPTICALLY_REGISTERED_INDEX_AFTER_SOURCE_SCOPED_3_FRAME_120MS_GEOMETRIC_PROBATION",
     continuity: "SAME_CONFIRMED_MODEL_SOURCE_CAN_SUPPORT_ONE_FINGER_ID_THROUGH_OPTICAL_EPOCH_REPLACEMENT",
-    modelConflict: "ANY_FULL_POINT_OR_CONTRARY_ACCEPTED_IMAGE_CONFLICT_CLEARS_REGISTERED_MODEL_IDENTITY_BEFORE_RENEWAL",
+    modelConflict:
+      "ANY_FULL_POINT_CONTRARY_OR_INDEX_CUE_ACCEPTED_IMAGE_CONFLICT_CLEARS_REGISTERED_MODEL_ASSOCIATION_BEFORE_RENEWAL",
     manual: "IMAGE_ONLY_NO_MODEL_INITIALIZATION_RESCUE_OR_EXPIRY_TAKEOVER",
-    unavailable: "RETAIN_REGISTERED_COHORT_UP_TO_250MS_BUT_REQUIRE_CURRENT_FULL_POINT_GEOMETRY_FOR_MODEL_ACTION",
+    unavailable:
+      "RETAIN_REGISTERED_COHORT_UP_TO_250MS_BUT_REQUIRE_CURRENT_QUALIFIED_FULL_OR_REGISTERED_INDEX_GEOMETRY_FOR_MODEL_ACTION",
     contraryIdentity: "ONLY_CONTINUOUS_FRESH_VERIFIED_SAME_FULL_HAND_SOURCE_RENEWS_IDENTITY_NEVER_POSITIVE_EVIDENCE",
     uncertainty: "MAX_OPTICAL_HEURISTIC_AND_ANATOMICAL_CORRECTION_MAGNITUDE_IN_SOURCE_PIXELS",
+    partialIndex:
+      "CURRENT_OBSERVED_EXTENDED_INDEX_ONLY_AFTER_EXISTING_OPTICAL_SOURCE_ASSOCIATION_AND_3_FRAME_120MS_COHERENCE_NO_COLD_MODEL_OR_CONTRARY_CLEAR",
   },
   templateUpdate: {
     reference: "STABLE_APPEARANCE_PATCH_AND_FRAME_WITH_TIGHT_MODEL_SUPPORTED_REFRESH_ONLY",
@@ -95,7 +103,7 @@ export const indexImageAlgorithm = {
   providerId: "watchglass.index-image",
   providerVersion: "2",
   algorithm: "CONDITIONED_MODEL_IMAGE_FUSION_V1",
-  algorithmDigest: "973f7207b71cbdd3834ddda9e9dd43da6a74da82462c888d29802b746a89b24d",
+  algorithmDigest: "a270516b632bd60c9cddc4e449334b09946491824e2d734685d7e681ac097f14",
 } as const;
 export type IndexImageBinding = {
   providerGeneration: number;
@@ -120,6 +128,7 @@ export type IndexImageObservation = IndexImageBinding & {
   matchedPoint?: Point | null;
   coordinateSource?: "IMAGE" | "FUSED" | "MODEL";
   opticalEpoch?: number;
+  modelSupport?: "FULL_HAND" | "REGISTERED_INDEX" | null;
   state: "UNSEEDED" | "TRACKING" | "UNCERTAIN" | "LOST";
   modelAgreement: "AGREE" | "DISAGREE" | "UNAVAILABLE";
   anchorSource: "MODEL_INDEX" | "MANUAL_HINT" | null;
@@ -147,6 +156,7 @@ export type IndexModelAnchor = {
   authority?: "POINT" | "CONTRARY" | "AMBIGUOUS";
   authoritySource?: string;
   identityObserved?: boolean;
+  indexCue?: { source: string; index: NonNullable<IndexModelAnchor["geometry"]>["index"] };
   geometry?: {
     index: readonly [
       { x: number; y: number; z: number },
@@ -186,6 +196,62 @@ type ModelContinuity = {
   point: Point;
   associated: boolean;
 };
+type IndexCue = NonNullable<IndexModelAnchor["indexCue"]>;
+type CueContinuity = {
+  source: string;
+  startedAt: number;
+  lastAt: number;
+  frames: number;
+  index: IndexCue["index"];
+  chain: number;
+};
+function cueMetrics(
+  model: IndexModelAnchor | null | undefined,
+  aspect: number,
+): { cue: IndexCue; chain: number } | null {
+  const cue = model?.indexCue,
+    p = fullHandDetectionPolicy;
+  if (
+    model?.authority ||
+    !model?.pointing ||
+    model.contrary ||
+    !model.point ||
+    !boundedPoint(model.point) ||
+    !cue?.source?.trim() ||
+    !Array.isArray(cue.index) ||
+    cue.index.length !== 4 ||
+    !cue.index.every((joint) => joint && boundedPoint(joint) && Number.isFinite(joint.z))
+  )
+    return null;
+  if (Math.hypot(cue.index[3].x - model.point.x, cue.index[3].y - model.point.y) > 1e-6) return null;
+  const vectors = [0, 1, 2].map((i) => ({
+    x: cue.index[i + 1].x - cue.index[i].x,
+    y: (cue.index[i + 1].y - cue.index[i].y) / aspect,
+    z: cue.index[i + 1].z - cue.index[i].z,
+  }));
+  const lengths = vectors.map((v) => Math.hypot(v.x, v.y, v.z)),
+    chain = lengths.reduce((a, b) => a + b, 0);
+  const alignment = (i: number, j: number) =>
+    (vectors[i].x * vectors[j].x + vectors[i].y * vectors[j].y + vectors[i].z * vectors[j].z) /
+    (lengths[i] * lengths[j]);
+  const reach = Math.hypot(
+    cue.index[3].x - cue.index[0].x,
+    (cue.index[3].y - cue.index[0].y) / aspect,
+    cue.index[3].z - cue.index[0].z,
+  );
+  return lengths.every((length) => length >= p.fingers.minimumBone) &&
+    chain >= policy.indexMinimumChain &&
+    chain <= policy.indexMaximumChain &&
+    lengths[1] >= lengths[0] * p.fingers.minimumMiddleProximalRatio &&
+    lengths[1] <= lengths[0] * p.fingers.maximumMiddleProximalRatio &&
+    lengths[2] >= lengths[0] * p.fingers.minimumDistalProximalRatio &&
+    lengths[2] <= lengths[0] * p.fingers.maximumDistalProximalRatio &&
+    reach / chain >= p.index.minimumStraightness &&
+    alignment(0, 1) >= p.index.minimumPipAlignment &&
+    alignment(1, 2) >= p.index.minimumDipAlignment
+    ? { cue, chain }
+    : null;
+}
 function validModelGeometry(
   model: IndexModelAnchor | null | undefined,
   aspect: number,
@@ -228,8 +294,8 @@ function validModelGeometry(
     segments[1] <= segments[0] * p.fingers.maximumMiddleProximalRatio &&
     segments[2] >= segments[0] * p.fingers.minimumDistalProximalRatio &&
     segments[2] <= segments[0] * p.fingers.maximumDistalProximalRatio &&
-    chain >= 0.012 &&
-    chain <= 1.2 &&
+    chain >= policy.indexMinimumChain &&
+    chain <= policy.indexMaximumChain &&
     chain >= g.palmSpan * p.fingers.minimumChainPalmRatio &&
     chain <= g.palmSpan * p.fingers.maximumChainPalmRatio &&
     length(g.index[0], g.index[3]) / chain >= p.index.minimumStraightness &&
@@ -319,6 +385,8 @@ export class IndexImageTracker {
   private modelCoordinate: { source: string; at: number; point: Point; output: Point } | null = null;
   private wasModelOnly = false;
   private modelIdentity: { source: string; seenAt: number } | null = null;
+  private cueAssociation: { source: string; lastAt: number } | null = null;
+  private cueContinuity: CueContinuity | null = null;
   private readonly searchScores = new Float64Array((policy.search * 2 + 1 + policy.predictionLimit) ** 2);
   private readonly reverseScores = new Float64Array((policy.reverseSearch * 2 + 1) ** 2);
   private nccScratch = createNccScratch(policy);
@@ -361,6 +429,8 @@ export class IndexImageTracker {
     this.modelCoordinate = null;
     this.wasModelOnly = false;
     this.modelIdentity = null;
+    this.cueAssociation = null;
+    this.cueContinuity = null;
     // A reset cannot make an old camera frame new.
   }
   prepare(frame: IndexGrayFrame, manualHint?: Point | null): IndexImagePreparedToken {
@@ -467,6 +537,8 @@ export class IndexImageTracker {
       modelCoordinate: this.modelCoordinate,
       wasModelOnly: this.wasModelOnly,
       modelIdentity: this.modelIdentity,
+      cueAssociation: this.cueAssociation,
+      cueContinuity: this.cueContinuity,
     };
   }
   private computeMatches(frame: IndexGrayFrame): PreparedImage["matches"] {
@@ -538,9 +610,12 @@ export class IndexImageTracker {
     const modelPoint = model?.point
       ? { x: model.point.x * (frame.width - 1), y: model.point.y * (frame.height - 1) }
       : null;
+    const indexCue = !this.manualSelection
+      ? cueMetrics(model, this.binding.frameWidth / this.binding.frameHeight)
+      : null;
     const acceptedOptical = preparedMatches?.stable.accepted ?? preparedMatches?.adaptive.accepted;
     const fullOpticalConflict =
-      (model?.authority === "POINT" || model?.authority === "CONTRARY") &&
+      (model?.authority === "POINT" || model?.authority === "CONTRARY" || indexCue !== null) &&
       modelPoint &&
       acceptedOptical &&
       Math.hypot(acceptedOptical.found.point.x - modelPoint.x, acceptedOptical.found.point.y - modelPoint.y) >
@@ -550,6 +625,12 @@ export class IndexImageTracker {
       this.modelContinuity = null;
       this.modelOpticalCandidate = null;
       this.modelCoordinate = null;
+      this.cueAssociation = null;
+      this.cueContinuity = null;
+    }
+    if (model?.authority === "CONTRARY" || model?.authority === "AMBIGUOUS") {
+      this.cueAssociation = null;
+      this.cueContinuity = null;
     }
     if (
       this.modelIdentity &&
@@ -592,6 +673,7 @@ export class IndexImageTracker {
     let currentMatchedPoint: Point | null = null;
     let producedPoint: Point | null = null;
     let coordinateSource: IndexImageObservation["coordinateSource"] = "IMAGE";
+    let modelSupport: IndexImageObservation["modelSupport"] = null;
     const result = (
       state: IndexImageObservation["state"],
       reason: string,
@@ -636,6 +718,7 @@ export class IndexImageTracker {
         reason,
         coordinateSource,
         opticalEpoch: this.opticalEpoch,
+        modelSupport,
       };
     };
     if (this.grid && (this.grid.width !== frame.width || this.grid.height !== frame.height)) {
@@ -715,7 +798,10 @@ export class IndexImageTracker {
               (model!.identityObserved === true &&
                 this.modelIdentity !== null &&
                 this.modelIdentity.source === model!.authoritySource &&
-                frame.capture - this.modelIdentity.seenAt <= policy.modelMaximumGapMs),
+                frame.capture - this.modelIdentity.seenAt <= policy.modelMaximumGapMs) ||
+              (this.cueAssociation?.source === model!.authoritySource &&
+                this.cueAssociation !== null &&
+                frame.capture - this.cueAssociation.lastAt <= policy.modelMaximumGapMs),
           };
     } else if (
       model?.authority ||
@@ -729,6 +815,71 @@ export class IndexImageTracker {
       !!this.modelContinuity?.associated &&
       this.modelContinuity.frames >= policy.modelMinimumFrames &&
       frame.capture - this.modelContinuity.startedAt >= policy.modelMinimumSpanMs;
+    const currentSource = currentGeometry ? model!.authoritySource! : indexCue?.cue.source;
+    if (
+      this.cueAssociation &&
+      (frame.capture - this.cueAssociation.lastAt > policy.modelMaximumGapMs ||
+        (currentSource && currentSource !== this.cueAssociation.source))
+    )
+      this.cueAssociation = null;
+    const opticalAssociation =
+      !!currentSource &&
+      !!modelPoint &&
+      !!acceptedOptical &&
+      Math.hypot(acceptedOptical.found.point.x - modelPoint.x, acceptedOptical.found.point.y - modelPoint.y) <=
+        policy.modelAgreementRadius;
+    if (
+      !this.manualSelection &&
+      this.trackId &&
+      currentSource &&
+      (opticalAssociation || this.cueAssociation?.source === currentSource)
+    )
+      this.cueAssociation = { source: currentSource, lastAt: frame.capture };
+    if (indexCue && this.trackId && !this.manualSelection) {
+      const { cue, chain } = indexCue,
+        old = this.cueContinuity;
+      const dx = cue.index[3].x - (old?.index[3].x ?? cue.index[3].x),
+        dy = cue.index[3].y - (old?.index[3].y ?? cue.index[3].y);
+      const ratio = old ? chain / old.chain : 1;
+      const coherent =
+        !!old &&
+        old.source === cue.source &&
+        frame.capture - old.lastAt <= policy.modelMaximumGapMs &&
+        Math.hypot(dx * (frame.width - 1), dy * (frame.height - 1)) <= policy.modelMaximumStep &&
+        ratio >= policy.modelMinimumScaleRatio &&
+        ratio <= policy.modelMaximumScaleRatio &&
+        cue.index.every(
+          (joint, i) =>
+            Math.hypot(
+              joint.x - old.index[i].x - dx,
+              (joint.y - old.index[i].y - dy) / (this.binding.frameWidth / this.binding.frameHeight),
+              joint.z - old.index[i].z,
+            ) <=
+            Math.max(chain, old.chain) * policy.indexCueMaximumRelativeJointMotion,
+        );
+      const snapshot = cue.index.map((joint) => ({ ...joint })) as unknown as IndexCue["index"];
+      this.cueContinuity = coherent
+        ? { ...old!, index: snapshot, chain, lastAt: frame.capture, frames: old!.frames + 1 }
+        : { source: cue.source, index: snapshot, chain, startedAt: frame.capture, lastAt: frame.capture, frames: 1 };
+    } else if (
+      model?.authority ||
+      model?.contrary ||
+      !this.cueContinuity ||
+      frame.capture - this.cueContinuity.lastAt > policy.modelMaximumGapMs
+    )
+      this.cueContinuity = null;
+    const cueReady =
+      !!indexCue &&
+      !!this.trackId &&
+      !this.manualSelection &&
+      !this.authorityVetoed &&
+      !this.vetoed &&
+      this.cueAssociation?.source === indexCue.cue.source &&
+      this.cueContinuity?.source === indexCue.cue.source &&
+      this.cueContinuity.frames >= policy.modelMinimumFrames &&
+      frame.capture - this.cueContinuity.startedAt >= policy.modelMinimumSpanMs;
+    const conditionedReady = modelReady || cueReady;
+    const conditionedSource = modelReady ? this.modelContinuity!.source : cueReady ? this.cueContinuity!.source : null;
     const updateGestureVeto = () => {
       const kind = model?.authority;
       const source = model?.authoritySource;
@@ -751,7 +902,7 @@ export class IndexImageTracker {
       }
       if (!kind && modelAgreement === "AGREE") {
         if (model?.contrary) this.vetoed = true;
-        else if (model?.pointing) this.vetoed = false;
+        else if (model?.pointing && !model.indexCue) this.vetoed = false;
       }
     };
     const gesturePauseReason = () => {
@@ -766,7 +917,7 @@ export class IndexImageTracker {
     const fullPointReason = () =>
       this.authorityCandidate?.confirmed ? "FULL_HAND_POINT_CONFIRMED" : "FULL_HAND_POINT_PENDING";
     const modelFallback = (): IndexImageObservation | null => {
-      if (!modelReady || !modelPoint || this.manualSelection) return null;
+      if (!conditionedReady || !conditionedSource || !modelPoint || this.manualSelection) return null;
       const acceptedOptical = preparedMatches?.stable.accepted ?? preparedMatches?.adaptive.accepted;
       if (
         acceptedOptical &&
@@ -785,12 +936,12 @@ export class IndexImageTracker {
         this.anchorSource = "MODEL_INDEX";
       }
       this.modelAcceptedAt = frame.capture;
-      if (model?.identityObserved === true)
-        this.modelIdentity = { source: this.modelContinuity!.source, seenAt: frame.capture };
+      if (modelReady && model?.identityObserved === true)
+        this.modelIdentity = { source: conditionedSource, seenAt: frame.capture };
       const priorCoordinate = this.modelCoordinate;
       producedPoint =
         priorCoordinate &&
-        priorCoordinate.source === this.modelContinuity!.source &&
+        priorCoordinate.source === conditionedSource &&
         frame.capture - priorCoordinate.at <= policy.modelMaximumGapMs
           ? {
               x: priorCoordinate.output.x + modelPoint.x - priorCoordinate.point.x,
@@ -798,12 +949,13 @@ export class IndexImageTracker {
             }
           : { ...modelPoint };
       this.modelCoordinate = {
-        source: this.modelContinuity!.source,
+        source: conditionedSource,
         at: frame.capture,
         point: { ...modelPoint },
         output: { ...producedPoint },
       };
       coordinateSource = "MODEL";
+      modelSupport = modelReady ? "FULL_HAND" : "REGISTERED_INDEX";
       this.wasModelOnly = true;
       const center = { x: Math.round(modelPoint.x), y: Math.round(modelPoint.y) };
       const radius = Math.min(
@@ -811,7 +963,7 @@ export class IndexImageTracker {
         Math.floor(Math.min(center.x - 1, center.y - 1, frame.width - 2 - center.x, frame.height - 2 - center.y)),
       );
       const current = radius >= policy.minimumRadius ? patch(frame, center, radius) : null;
-      const source = this.modelContinuity!.source;
+      const source = conditionedSource;
       let candidate = this.modelOpticalCandidate;
       if (current && current.deviation >= policy.minimumTexture && current.structure >= policy.minimumStructure) {
         const distinct = searchNcc(
@@ -892,11 +1044,16 @@ export class IndexImageTracker {
             this.velocity = { x: 0, y: 0 };
             this.opticalEpoch++;
             this.modelOpticalCandidate = null;
+            this.cueAssociation = { source, lastAt: frame.capture };
           }
         } else this.modelOpticalCandidate = null;
       } else this.modelOpticalCandidate = null;
       const pauseReason = gesturePauseReason();
-      return result(pauseReason ? "UNCERTAIN" : "TRACKING", pauseReason ?? "FULL_HAND_MODEL_CONTINUITY", 6 * scale);
+      return result(
+        pauseReason ? "UNCERTAIN" : "TRACKING",
+        pauseReason ?? (cueReady && !modelReady ? "INDEX_MODEL_CONTINUITY" : "FULL_HAND_MODEL_CONTINUITY"),
+        (cueReady && !modelReady ? policy.indexCueUncertainty : 6) * scale,
+      );
     };
     const anchor =
       manualHint ??
@@ -940,6 +1097,13 @@ export class IndexImageTracker {
       this.trackGeneration = ++nextAnchor;
       this.trackId = `index-image-${this.trackGeneration}`;
       this.anchorSource = manualHint ? "MANUAL_HINT" : "MODEL_INDEX";
+      if (
+        !this.manualSelection &&
+        currentSource &&
+        modelPoint &&
+        Math.hypot(center.x - modelPoint.x, center.y - modelPoint.y) <= policy.modelAgreementRadius
+      )
+        this.cueAssociation = { source: currentSource, lastAt: frame.capture };
       this.vetoed = false;
       currentMatchedPoint = { x: center.x / (frame.width - 1), y: center.y / (frame.height - 1) };
       modelAgreement =
@@ -1051,7 +1215,7 @@ export class IndexImageTracker {
       x: (found.refinedPoint?.x ?? found.point.x) + this.imagePhase.x,
       y: (found.refinedPoint?.y ?? found.point.y) + this.imagePhase.y,
     };
-    if (modelReady && modelPoint && modelAgreement === "AGREE" && !this.manualSelection) {
+    if (conditionedReady && modelPoint && modelAgreement === "AGREE" && !this.manualSelection) {
       const weight = Math.min(
         policy.modelCorrectionWeight,
         Math.max(policy.modelMinimumCorrectionWeight, (1 - found.correlation) * 2),
@@ -1070,17 +1234,18 @@ export class IndexImageTracker {
         y: this.anatomicalOffset.y + gain * innovation.y,
       };
       this.modelAcceptedAt = frame.capture;
-      if (model?.identityObserved === true)
+      if (modelReady && model?.identityObserved === true)
         this.modelIdentity = { source: this.modelContinuity!.source, seenAt: frame.capture };
       coordinateSource = "FUSED";
+      modelSupport = modelReady ? "FULL_HAND" : "REGISTERED_INDEX";
     }
     producedPoint = { x: optical.x + this.anatomicalOffset.x, y: optical.y + this.anatomicalOffset.y };
-    if (modelReady && modelPoint && modelAgreement === "AGREE") {
+    if (conditionedReady && conditionedSource && modelPoint && modelAgreement === "AGREE") {
       const priorCoordinate = this.modelCoordinate;
       if (
         this.wasModelOnly &&
         priorCoordinate &&
-        priorCoordinate.source === this.modelContinuity!.source &&
+        priorCoordinate.source === conditionedSource &&
         frame.capture - priorCoordinate.at <= policy.modelMaximumGapMs
       ) {
         producedPoint = {
@@ -1090,7 +1255,7 @@ export class IndexImageTracker {
         this.anatomicalOffset = { x: producedPoint.x - optical.x, y: producedPoint.y - optical.y };
       }
       this.modelCoordinate = {
-        source: this.modelContinuity!.source,
+        source: conditionedSource,
         at: frame.capture,
         point: { ...modelPoint },
         output: { ...producedPoint },

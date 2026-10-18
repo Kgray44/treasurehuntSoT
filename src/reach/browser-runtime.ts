@@ -891,20 +891,30 @@ export class ReachBrowserRuntime {
             !originExpired() && performance.now() - data.capture <= reachImmutableSafety.maximumObservationAgeMs;
           try {
             if (!captureFresh()) throw new Error("OBSERVATION_PIXEL_ORIGIN_STALE");
-            const envelope = adapter.envelope(
+            const gated: { observation: HandObservation | null } = { observation: null };
+            adapter.envelope(
               data.result,
               data.capture,
               data.inferenceTime - performance.timeOrigin,
               data.width,
               data.height,
-              captureFresh,
+              (candidate) => {
+                if (!captureFresh()) return false;
+                if (candidate) {
+                  gateTime = performance.now();
+                  // Commit the gate and adapter together. A rejected schema,
+                  // future clock or source cannot advance association history.
+                  gated.observation = gate.accept(candidate, gateTime, captureFresh);
+                }
+                return true;
+              },
             );
-            gateTime = performance.now();
-            if (originExpired()) throw new Error("OBSERVATION_PIXEL_ORIGIN_STALE");
-            observation = gate.accept(envelope, gateTime);
+            if (!gated.observation) throw new Error("OBSERVATION_NOT_GATED");
+            observation = gated.observation;
             this.observe(observation);
             this.status("READY");
           } catch {
+            gateTime = performance.now();
             this.status("STALE_OR_INVALID_OBSERVATION");
           }
           if (this.inferenceMetrics) {

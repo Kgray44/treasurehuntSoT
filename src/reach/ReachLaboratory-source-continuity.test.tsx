@@ -61,6 +61,7 @@ const binding = {
   mirrorTransform: "PREVIEW_X" as const,
 };
 const normalized = (x = 60, y = 60) => ({ x: x / 159, y: y / 119 });
+const conditionedSource = "synthetic-full-hand-same-camera-track-generation";
 function pixels(x: number, y: number, capture: number, blank = false, unrelated = false) {
   const data = new Uint8Array(160 * 120).fill(30);
   if (!blank)
@@ -77,7 +78,7 @@ function conditionedModel(x: number): IndexModelAnchor {
     pointing: true,
     contrary: false,
     authority: "POINT",
-    authoritySource: "synthetic-full-hand-same-camera-track-generation",
+    authoritySource: conditionedSource,
     geometry: {
       index: [
         { x: point.x, y: point.y + 0.18, z: 0 },
@@ -89,9 +90,26 @@ function conditionedModel(x: number): IndexModelAnchor {
     },
   };
 }
+function indexOnlyModel(x: number, source = conditionedSource): IndexModelAnchor {
+  const full = conditionedModel(x);
+  return {
+    point: full.point,
+    pointing: true,
+    contrary: false,
+    indexCue: { source, index: full.geometry!.index },
+  };
+}
 function deliver(
   tracker: IndexImageTracker,
-  options: { x?: number; blank?: boolean; manual?: boolean; conditioned?: boolean; unrelated?: boolean } = {},
+  options: {
+    x?: number;
+    blank?: boolean;
+    manual?: boolean;
+    conditioned?: boolean;
+    unrelated?: boolean;
+    cue?: boolean;
+    cueSource?: string;
+  } = {},
 ) {
   let observation!: IndexImageObservation;
   act(() => {
@@ -99,7 +117,11 @@ function deliver(
     const x = options.x ?? 60;
     observation = tracker.update(
       pixels(x, 60, performance.now(), options.blank, options.unrelated),
-      options.conditioned ? conditionedModel(x) : { point: normalized(x), pointing: true, contrary: false },
+      options.cue
+        ? indexOnlyModel(x, options.cueSource)
+        : options.conditioned
+          ? conditionedModel(x)
+          : { point: normalized(x), pointing: true, contrary: false },
       options.manual ? normalized(x) : null,
     );
     fixture.runtimes[0].image(observation);
@@ -172,6 +194,58 @@ describe("relative calibration optical source across target 1 → 2", () => {
     expect(screen.getByText(/1 of 5 targets saved/)).toBeVisible();
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
   });
+
+  it("keeps saved target1 through registered palm-absent index assistance and the return of the full hand", () => {
+    const tracker = new IndexImageTracker(binding);
+    const first = openAndSaveFirst(tracker, false, true);
+    // Register the partial cue against current, independently accepted optical
+    // evidence before changing appearance. It has no palm span/full authority.
+    for (let i = 0; i < 6; ++i) deliver(tracker, { cue: true });
+    const motion: IndexImageObservation[] = [];
+    for (let i = 0; i < 30; ++i) motion.push(deliver(tracker, { x: 60 + i, cue: true, unrelated: true }));
+    expect(motion.every((o) => o.state === "TRACKING" && o.trackId === first.trackId)).toBe(true);
+    expect(motion.some((o) => o.coordinateSource === "MODEL" && o.modelSupport === "REGISTERED_INDEX")).toBe(true);
+    expect(motion.at(-1)!.opticalEpoch).toBeGreaterThan(first.opticalEpoch!);
+    for (let i = 0; i < 6; ++i)
+      expect(deliver(tracker, { x: 90 + i, conditioned: true, unrelated: true })).toMatchObject({
+        state: "TRACKING",
+        trackId: first.trackId,
+      });
+    expect(screen.getByLabelText("Target 2 of 5")).toBeInTheDocument();
+    expect(screen.getByText(/1 of 5 targets saved/)).toBeVisible();
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+  });
+
+  it("keeps a cold palm-absent cue from starting model-only collection", () => {
+    const tracker = new IndexImageTracker(binding);
+    render(<ReachLaboratory />);
+    fireEvent.click(screen.getByRole("button", { name: "Enable live camera" }));
+    fireEvent.click(screen.getByRole("button", { name: "Set up relative movement" }));
+    for (let i = 0; i < 30; ++i)
+      expect(deliver(tracker, { cue: true, blank: true })).toMatchObject({ point: null, trackId: null });
+    expect(screen.getByLabelText("Target 1 of 5")).toBeInTheDocument();
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+  });
+
+  it.each(["manual image selection", "a different partial model source"])(
+    "never borrows a registered-index cue for %s",
+    (scenario) => {
+      const tracker = new IndexImageTracker(binding);
+      openAndSaveFirst(tracker, scenario === "manual image selection", scenario !== "manual image selection");
+      for (let i = 0; i < 6; ++i) deliver(tracker, { cue: true });
+      for (let i = 0; i < 30; ++i)
+        expect(
+          deliver(tracker, {
+            cue: true,
+            cueSource: scenario === "a different partial model source" ? "another-model-track-generation" : undefined,
+            blank: true,
+          }),
+        ).toMatchObject({ point: null });
+      expect(screen.getByLabelText("Target 2 of 5")).toBeInTheDocument();
+      expect(screen.getByText(/1 of 5 targets saved/)).toBeVisible();
+      expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    },
+  );
 
   it("explains the reset only after optical expiry and a genuinely new automatic anchor", () => {
     const tracker = new IndexImageTracker(binding);
