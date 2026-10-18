@@ -8,6 +8,20 @@ import { createCustodyRequest } from "./custody-transport.mjs";
 import { observeVerificationFailure } from "./verification-diagnostics.mjs";
 import { sourceDiagnosticGit, withReplayAdmissionSubstage } from "./source-diagnostics.mjs";
 import { validateR14ObservationCiphertext } from "./experience-r14-observability.mjs";
+import { validateCurrentAdmissionObservationCiphertext } from "./experience-current-observability.mjs";
+import {
+  isCurrentAdmissionRecord,
+  isCurrentAdmissionPlan,
+  validateCurrentAdmissionRecord,
+  validateCurrentAdmissionRegistry,
+  bindCurrentAdmission,
+  currentAdmissionBinding,
+  validateCurrentAdmissionEvidence,
+  validateCurrentAdmissionPredecessors,
+  currentRunIdentity,
+  assertCurrentAdmissionCap,
+  validateCurrentAdmissionFinalDecision,
+} from "./experience-current-admission.mjs";
 import {
   CROSSDECK_R3,
   validateR3Record,
@@ -289,6 +303,16 @@ function r3FamilyRelated(root, candidateSha) {
   }
 }
 export function selectTrustedExceptions(records) {
+  const current = records.filter(isCurrentAdmissionRecord);
+  if (current.length) {
+    if (current.length !== 1 || records.length !== 15) fail("CURRENT_PREDECESSOR_REGISTRY_CHANGED");
+    const prior = records.filter((record) => !isCurrentAdmissionRecord(record));
+    selectTrustedExceptions(prior);
+    validateCurrentAdmissionRecord(current[0], {
+      legacyRecord: prior.find((record) => record.id === CROSSDECK_R14.id),
+    });
+    return current;
+  }
   const r14 = records.filter((r) => r.id === CROSSDECK_R14.id);
   if (r14.length) {
     if (r14.length !== 1 || records.length !== 14) fail("R14_PREDECESSOR_REGISTRY_CHANGED");
@@ -518,7 +542,9 @@ export function selectTrustedExceptions(records) {
 export const trustedExceptions = (root, baseSha) => {
   // The adapter at the requested base cannot reactivate an older grant by removal.
   // Historical bases without this protected adapter retain their exact readers.
-  if (present(root, baseSha, "scripts/sounding-line/experience-r14.mjs"))
+  if (exceptionRecords(root, baseSha).some(isCurrentAdmissionRecord))
+    validateCurrentAdmissionRegistry(json(root, baseSha, EXCEPTION_REGISTRY));
+  else if (present(root, baseSha, "scripts/sounding-line/experience-r14.mjs"))
     validateR14Registry(json(root, baseSha, EXCEPTION_REGISTRY));
   else if (present(root, baseSha, "scripts/sounding-line/experience-r13.mjs"))
     validateR13Registry(json(root, baseSha, EXCEPTION_REGISTRY));
@@ -566,6 +592,7 @@ export function campaignRelated({ root, baseSha, candidateSha, record, prNumber 
   );
 }
 export function validateExceptionRecord(record, now = new Date()) {
+  if (isCurrentAdmissionRecord(record)) return validateCurrentAdmissionRecord(record, { now });
   if (ordinaryOnly(record?.id)) {
     validateOrdinaryOnlyRecord(record);
     if (now.getTime() >= Date.parse(record.expiresAt)) fail("EXPIRED");
@@ -663,6 +690,7 @@ export function bindExperienceException({ root, baseSha, candidateSha, plan, prN
   if (records.length !== 1) fail("AMBIGUOUS_CAMPAIGN");
   const record = records[0];
   validateExceptionRecord(record, now);
+  if (isCurrentAdmissionRecord(record)) return bindCurrentAdmission({ root, record, plan, baseSha, candidateSha });
   const nonExecutingReconciliation = ordinaryOnly(record.id)
     ? bindOrdinaryOnlyReconciliation({ root, baseSha, candidateSha, plan, record })
     : bindR8FormatReconciliation({ root, baseSha, candidateSha, plan, record });
@@ -769,6 +797,7 @@ export function bindExperienceException({ root, baseSha, candidateSha, plan, prN
   return { ...recordBinding(record), ...(nonExecutingReconciliation ? { nonExecutingReconciliation } : {}) };
 }
 export function recordBinding(record) {
+  if (isCurrentAdmissionRecord(record)) return currentAdmissionBinding(record);
   return {
     id: record.id,
     recordDigest: digest(record),
@@ -796,6 +825,7 @@ export function recordBinding(record) {
   };
 }
 export function validateExceptionEvidence(plan, evidence, automatedOnly = false) {
+  if (isCurrentAdmissionPlan(plan)) return validateCurrentAdmissionEvidence(plan, evidence, automatedOnly);
   if (!plan.exception) {
     if (evidence?.exception) fail("UNTRUSTED_EVIDENCE_CLAIM");
     return;
@@ -1089,6 +1119,21 @@ function isExactFailedPredecessor(run, p = CROSSDECK_R2.predecessor) {
   );
 }
 export async function validateSuccessorPredecessor({ record, request, now }) {
+  if (isCurrentAdmissionRecord(record)) {
+    await validateR14Predecessors(
+      {
+        ...record.currentSourceAdmission.legacyR14History,
+        repository: record.repository,
+        ownerApproval: { actor: record.ownerApproval.actor },
+      },
+      request,
+    );
+    return validateCurrentAdmissionPredecessors({
+      record,
+      request,
+      storeFor: (value) => exceptionStore({ record: value, request }),
+    });
+  }
   if (
     ![
       CROSSDECK_R2.id,
@@ -1777,12 +1822,15 @@ async function campaignHistory({ root, record, plan, mode, run, request, now, pr
   }
   for (const item of all.values()) {
     if (predecessors.some((p) => item.id === p.id)) {
-      if (ordinaryOnly(record.id)) {
+      if (ordinaryOnly(record.id) || isCurrentAdmissionRecord(record)) {
         if (
-          !r9HistoryRunMatches(
-            item,
-            predecessors.find((value) => value.id === item.id),
-          ) ||
+          !(isCurrentAdmissionRecord(record)
+            ? digest(currentRunIdentity(item)) ===
+              digest(currentRunIdentity(predecessors.find((value) => value.id === item.id)))
+            : r9HistoryRunMatches(
+                item,
+                predecessors.find((value) => value.id === item.id),
+              )) ||
           (record.id === CROSSDECK_R14.id &&
             item.id === record.predecessor.runId &&
             item.check_suite_id !== record.predecessor.checkSuiteId)
@@ -1863,6 +1911,11 @@ async function campaignHistory({ root, record, plan, mode, run, request, now, pr
   };
 }
 export async function reserveExceptionStage({ root, record, plan, mode, run, store, request, now }) {
+  if (isCurrentAdmissionRecord(record)) {
+    if (!["capture", "review", "ordinary", "verify"].includes(mode)) fail("MODE_FORBIDDEN");
+    if (mode !== "verify") assertCurrentAdmissionCap(record, mode);
+    if (mode === "review" && (await store.read("review-submit"))) fail("REVIEW_SUBMISSION_ALREADY_CONSUMED");
+  }
   if (ordinaryOnly(record?.id) || ordinaryOnly(plan.exception?.id)) {
     if (!ordinaryOnly(record?.id) || plan.exception?.id !== record.id) fail("R9_STAGE_RECORD_PLAN_CHANGED");
     validateOrdinaryOnlyRecord(record);
@@ -1947,7 +2000,9 @@ export async function reserveExceptionStage({ root, record, plan, mode, run, sto
       run,
       candidateSha,
       status: `PREPARE_AND_REVIEW${record.remainingIndependentReviewOrdinal}_RESERVED_VALIDATION_PENDING`,
-      independentReviewsCompleted: record.independentProductReviewsCompleted,
+      independentReviewsCompleted: isCurrentAdmissionRecord(record)
+        ? record.currentSourceAdmission.cumulativeHistory.completedIndependentReviews
+        : record.independentProductReviewsCompleted,
       reservedIndependentReviewOrdinal: record.remainingIndependentReviewOrdinal,
       ...([
         CROSSDECK_R2.id,
@@ -1986,7 +2041,8 @@ export async function reserveExceptionStage({ root, record, plan, mode, run, sto
   }
 }
 export async function requireSuccessfulReservation({ store, slot, plan, request }) {
-  if (["prepare", "capture", "review7", "review-submit"].includes(slot)) plan = r8FormatEvidencePlan(plan);
+  if (!isCurrentAdmissionPlan(plan) && ["prepare", "capture", "review7", "review-submit"].includes(slot))
+    plan = r8FormatEvidencePlan(plan);
   const reservation = await store.read(slot);
   if (!reservation || digest(reservation.binding) !== digest(exceptionBinding(plan)))
     fail("RESERVATION_BINDING_MISSING");
@@ -2320,6 +2376,17 @@ export async function assertExceptionExecution({
     trustedExceptions(root, plan.baseSha).find((value) => value.id === actual.exception.id),
   );
   const phase = environment.SOUNDING_LINE_EXCEPTION_PHASE;
+  if (isCurrentAdmissionRecord(record))
+    assertCurrentAdmissionCap(
+      record,
+      kind === "ordinary"
+        ? "ordinary"
+        : kind === "technical"
+          ? "technical"
+          : phase === "prepare"
+            ? "capture"
+            : "replay",
+    );
   withReplayAdmissionSubstage("EXECUTOR_CONTEXT", () => {
     if (
       !["prepare", "qualify"].includes(phase) ||
@@ -2382,6 +2449,20 @@ export async function assertExceptionExecution({
       plan,
       runId: Number(environment.GITHUB_RUN_ID),
       preparationReservation: prepare.commitSha,
+      ...(isCurrentAdmissionRecord(record)
+        ? {
+            executionHistory: {
+              ...record.currentSourceAdmission.cumulativeHistory,
+              stage: phase,
+              ...(phase === "prepare"
+                ? {
+                    executedAttemptsIncludingThisPreparation:
+                      record.currentSourceAdmission.cumulativeHistory.currentPreparationOrdinal,
+                  }
+                : {}),
+            },
+          }
+        : {}),
       ...([
         CROSSDECK_R2.id,
         CROSSDECK_R3.id,
@@ -2467,6 +2548,7 @@ export async function sealExceptionQualification({
   store,
   decision,
   observationFile,
+  publicationNonce = process.env.SOUNDING_LINE_CURRENT_OBSERVATION_PUBLICATION_NONCE,
 }) {
   if (record?.id !== plan.exception?.id) fail("QUALIFICATION_RECORD_CHANGED");
   if (ordinaryOnly(record.id)) {
@@ -2520,7 +2602,23 @@ export async function sealExceptionQualification({
   }
   if (record.id === CROSSDECK_R14.id)
     validateR14ObservationCiphertext({ file: observationFile, observation: decision.r14Observation });
-  return store.create("qualified", {
+  if (isCurrentAdmissionRecord(record)) {
+    const { verificationObligationGroups } = await import("./ordinary.mjs");
+    validateCurrentAdmissionFinalDecision({
+      plan,
+      ordinary,
+      record,
+      decision,
+      groups: verificationObligationGroups(ordinary),
+      run,
+      publicationNonce,
+    });
+    validateCurrentAdmissionObservationCiphertext({
+      file: observationFile,
+      observation: decision.currentAdmissionObservation,
+    });
+  }
+  const sealed = await store.create("qualified", {
     binding: exceptionBinding(plan),
     run,
     candidateSha: plan.candidateSha,
@@ -2528,6 +2626,12 @@ export async function sealExceptionQualification({
     decisionDigest: digest(decision),
     status: "QUALIFIED_JOB_PASS_AWAITING_WHOLE_WORKFLOW_CONCLUSION",
   });
+  if (isCurrentAdmissionRecord(record)) {
+    const actual = await store.read("qualified");
+    if (digest(actual) !== digest(sealed)) fail("CURRENT_QUALIFIED_READBACK_CHANGED");
+    return actual;
+  }
+  return sealed;
 }
 
 async function main() {
@@ -2616,8 +2720,15 @@ async function main() {
       run,
       store,
       decision,
-      ...(record.id === CROSSDECK_R14.id
-        ? { observationFile: path.join(path.dirname(path.resolve(options.decision)), "r14-observation.encrypted") }
+      ...(record.id === CROSSDECK_R14.id || isCurrentAdmissionRecord(record)
+        ? {
+            observationFile: path.join(
+              path.dirname(path.resolve(options.decision)),
+              isCurrentAdmissionRecord(record)
+                ? "current-admission-observation.encrypted"
+                : "r14-observation.encrypted",
+            ),
+          }
         : {}),
     });
   } else if (mode === "capture") {
