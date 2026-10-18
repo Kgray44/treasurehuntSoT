@@ -429,6 +429,24 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Ordinary_Verifier_Cold_Startup_Repair.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Product_Experience_Reach_PR766_Blocked_Review_20261017.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Reach_Product_Review_Continuation_20261017.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Repository_Operations/administrator/admiralty-bootstrap.md",
       "record_type": "engineering-record",
       "status": "current",
@@ -10342,6 +10360,12 @@
     },
     {
       "path": "Development_Docs/Testing/Product_Experience/evidence/reach-d1-632e1895/worker-performance.json",
+      "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/reach.phase1.foundation-review-packet.json",
       "record_type": "archive-index",
       "status": "preserved",
       "canonical_for": null

@@ -4245,7 +4245,7 @@
         ],
         "devices": ["DESKTOP", "MOBILE"],
         "roles": ["ANONYMOUS"],
-        "accessibility": "Keyboard, touch and ordinary buttons operate setup, pause, retry, deletion, export and return. A visible fingertip can be marked with a click or an arrow-key crosshair confirmed by Enter; Escape cancels. A disclosed guided demo explains the full flow without a camera.",
+        "accessibility": "Keyboard, touch and ordinary buttons operate setup, pause, retry, deletion, export and return. The setup request remains operable by keyboard and touch. Activation checks the current camera/model session; it can open an empty target before pointing settles, while every sample requires fresh eligible evidence. Unavailable session feedback is polite and never queues an automatic start. A visible fingertip can be marked with a click or an arrow-key crosshair confirmed by Enter; Escape cancels. A disclosed guided demo explains the full flow without a camera.",
         "fallback": "Camera failure gives a plain-language explanation, retry and a guided conventional demonstration. All Voyagewright navigation remains conventional.",
         "navigation": "Existing device connections link opens Reach; the visible return clears owned camera resources and restores device connections; safe contextual return is accepted.",
         "designTarget": "One continuous instrument workspace with a large registered camera stage, restrained brass and sea-green hierarchy, staged target plane, contextual guidance, visible progress and deliberately disclosed diagnostics. Mobile preparation prioritizes the camera and calibration prioritizes the target. Distinguish tracking, posture eligibility, actual collection, frozen interrupted progress, fresh reacquisition and genuine setup invalidation. Preserve completed targets across same-context pauses; relaxed and camera-facing index points use inferred 3D anatomy with honest uncertainty. Keep observed model joints distinct from the gold fingertip appearance track. Relative control uses one image feature profile throughout setup, independent checks and practice; full-hand/model return cannot replace a good image track. Clearly label manual appearance hints, fresh tracking, stale delivery and genuine source changes. Processing adapts to measured pressure; visible unfocused pages slow and hidden pages stop.",
@@ -4273,7 +4273,9 @@
           "tests/e2e/reach-laboratory.spec.ts",
           "tests/e2e/reach-recovery.spec.ts",
           "tests/e2e/reach-index-image.spec.ts",
-          "tests/e2e/reach-recorder-readiness.spec.ts"
+          "tests/e2e/reach-recorder-readiness.spec.ts",
+          "tests/e2e/reach-device-return.spec.ts",
+          "tests/e2e/reach-page-accessibility.spec.ts"
         ],
         "fixtureProfile": "generic",
         "recordingRequired": true,
@@ -5209,6 +5211,18 @@
       "required": true,
       "trustedReviewActors": ["Kgray44"],
       "workflow": ".github/workflows/sounding-line-ordinary.yml"
+    },
+    "reviewContinuation": {
+      "id": "reach-pr766-review-4-20261017",
+      "repository": "Kgray44/treasurehuntSoT",
+      "prNumber": 766,
+      "contractId": "reach.phase1.foundation",
+      "ancestorCandidate": "c88fdfeb49c1ae593e19f4b3a714fd731f8d76ff",
+      "blockedReview": {
+        "path": "Development_Docs/Engineering/Product_Experience_Reach_PR766_Blocked_Review_20261017.json",
+        "sha256": "94b9aa7a35a1d2f525c23bebfde7df9b789eb8842b79ba0f187abadedbb9846f",
+        "originalSha256": "e48eb72b1bcb837f6e77a32e877536fc12495515a5b617d7f751aae9709251cf"
+      }
     }
   }
 }

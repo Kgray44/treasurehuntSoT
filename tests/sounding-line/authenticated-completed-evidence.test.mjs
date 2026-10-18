@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { chmodSync, cpSync, existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -421,6 +421,157 @@ test("cold module entry performs no authenticated lookup or network request", as
     globalThis.fetch = previous;
   }
 });
+
+test(
+  "cold ordinary CLI falls back without credentials and preserves a bounded command failure",
+  { timeout: 20000 },
+  () => {
+    const owner = mkdtempSync(path.join(tmpdir(), "sl-cold-ordinary-cli-"));
+    const authority = path.join(owner, "authority"),
+      root = path.join(owner, "candidate"),
+      shims = path.join(owner, "command-shims"),
+      calls = path.join(owner, "command-calls.jsonl"),
+      network = path.join(owner, "network-attempts.log");
+    const environment = {
+      PATH: `${shims}${path.delimiter}${process.env.PATH ?? ""}`,
+      LANG: "C.UTF-8",
+      TZ: "UTC",
+      GIT_CONFIG_GLOBAL: process.platform === "win32" ? "NUL" : "/dev/null",
+      GIT_CONFIG_NOSYSTEM: "1",
+      GIT_OPTIONAL_LOCKS: "0",
+      GIT_NO_LAZY_FETCH: "1",
+      GITHUB_ACTIONS: "true",
+      GITHUB_EVENT_NAME: "pull_request_target",
+      GITHUB_REPOSITORY: REPOSITORY,
+      GITHUB_JOB: "final-check",
+      GITHUB_WORKFLOW_REF: `${REPOSITORY}/${WORKFLOW}@refs/heads/main`,
+      SOUNDING_LINE_EVIDENCE_PURPOSE: "PROTECTED_FINAL_VERIFICATION",
+      ...Object.fromEntries(
+        ["SystemRoot", "ComSpec", "PATHEXT"]
+          .filter((name) => process.env[name])
+          .map((name) => [name, process.env[name]]),
+      ),
+    };
+    const fixtureGit = (directory, ...args) =>
+      execFileSync("git", ["-c", "core.fsmonitor=false", ...args], {
+        cwd: directory,
+        env: environment,
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "pipe"],
+      }).trim();
+    const initialize = (directory) => {
+      fixtureGit(directory, "init", "-q");
+      fixtureGit(directory, "config", "user.name", "Cold CLI fixture");
+      fixtureGit(directory, "config", "user.email", "fixture@example.invalid");
+      fixtureGit(directory, "config", "core.hooksPath", process.platform === "win32" ? "NUL" : "/dev/null");
+      fixtureGit(directory, "config", "commit.gpgSign", "false");
+    };
+    const fixtureCommit = (directory, message) => {
+      fixtureGit(directory, "add", ".");
+      fixtureGit(directory, "commit", "-qm", message);
+      return fixtureGit(directory, "rev-parse", "HEAD");
+    };
+    try {
+      mkdirSync(root);
+      mkdirSync(shims);
+      // Preserve the real cold CLI/import graph in a separate synthetic authority.
+      // Importing ordinary.mjs in this test's parent would hide the startup cycle.
+      cpSync(path.join(installed, "scripts", "sounding-line"), path.join(authority, "scripts", "sounding-line"), {
+        recursive: true,
+      });
+      initialize(authority);
+      fixtureCommit(authority, "synthetic installed authority");
+      for (const name of MODULES) put(root, name, readFileSync(path.join(installed, name)));
+      for (const [name, contents] of Object.entries({
+        ".gitignore": "artifacts/\n",
+        "package.json": '{"scripts":{}}\n',
+        "package-lock.json": '{"lockfileVersion":3}\n',
+        "tsconfig.json": "{}\n",
+        "next.config.ts": "export default {};\n",
+        "postcss.config.mjs": "export default {};\n",
+        "playwright.config.ts": "export default {};\n",
+        "vitest.config.ts": "export default {};\n",
+        "eslint.config.mjs": "export default [];\n",
+        ".prettierrc.json": "{}\n",
+        ".prettierignore": "node_modules\n",
+        ".nvmrc": "24\n",
+        "testing/contracts.json": "{}\n",
+        "testing/impact-map.json": "{}\n",
+        "testing/suites.json": "{}\n",
+        "src/example.ts": "export const value = true;\n",
+        "src/example.test.ts": "import './example';\n",
+        "Development_Docs/guide.md": "# Inert guide\n",
+      }))
+        put(root, name, contents);
+      initialize(root);
+      const baseSha = fixtureCommit(root, "synthetic accepted source");
+      put(root, "Development_Docs/guide.md", "# Inert guide\n\nDocumentation-only candidate.\n");
+      const candidateSha = fixtureCommit(root, "synthetic candidate");
+      for (const command of ["npm", "npx"]) {
+        const script = path.join(shims, `${command}.cjs`);
+        const source = `require('node:fs').appendFileSync(${JSON.stringify(calls)},JSON.stringify({command:${JSON.stringify(command)},args:process.argv.slice(2)})+'\\n');process.stderr.write('INERT_BOUNDED_COMMAND_FAILURE\\n');process.exit(23);\n`;
+        writeFileSync(script, source);
+        put(shims, command, `#!${process.execPath}\n${source}`);
+        chmodSync(path.join(shims, command), 0o700);
+        put(shims, `${command}.cmd`, `@echo off\r\n"${process.execPath}" "${script}" %*\r\n`);
+      }
+      const denyNetwork = path.join(owner, "deny-network.mjs");
+      writeFileSync(
+        denyNetwork,
+        `import {appendFileSync} from 'node:fs';globalThis.fetch=async()=>{appendFileSync(${JSON.stringify(network)},'DENIED\\n');throw new Error('INERT_NETWORK_FORBIDDEN');};\n`,
+      );
+      const result = spawnSync(
+        process.execPath,
+        [
+          "--import",
+          denyNetwork,
+          path.join(authority, "scripts", "sounding-line", "ordinary.mjs"),
+          "--mode",
+          "ordinary",
+          "--workspace",
+          root,
+          "--base",
+          baseSha,
+          "--candidate",
+          candidateSha,
+        ],
+        { cwd: root, env: environment, encoding: "utf8", timeout: 15000 },
+      );
+      assert.ifError(result.error);
+      assert.equal(result.status, 1, result.stderr);
+      assert.doesNotMatch(result.stderr, /unsettled top-level await/u);
+      const decision = JSON.parse(
+        readFileSync(path.join(root, "artifacts", "sounding-line", "ordinary-decision.json")),
+      );
+      assert.equal(decision.decision, "FAIL");
+      assert.equal(decision.candidateSha, candidateSha);
+      assert.equal(decision.baseSha, baseSha);
+      assert.equal(decision.completedEvidenceIntake.status, "CONSERVATIVE_FRESH_FALLBACK");
+      assert.equal(
+        decision.completedEvidenceIntake.reason,
+        "SOUNDING_LINE_COMPLETED_EVIDENCE_AUTHENTICATED_ACCESS_REQUIRED",
+      );
+      assert.equal(decision.completedEvidenceIntake.qualification, false);
+      assert.equal(decision.failureObservation.stage, "TECHNICAL_VERIFICATION");
+      assert.equal(decision.failureObservation.exitCode, 23);
+      assert.equal(decision.browserRequired, false);
+      assert.equal(decision.buildRequired, false);
+      assert.equal(decision.productExperience.applicable, false);
+      assert.deepEqual(decision.selected.browserTests, []);
+      assert.deepEqual(
+        readFileSync(calls, "utf8")
+          .trim()
+          .split("\n")
+          .map((line) => JSON.parse(line)),
+        [{ command: "npx", args: ["--no-install", "prettier", "--check", "Development_Docs/guide.md"] }],
+      );
+      assert.equal(existsSync(network), false);
+      assert(result.stdout.endsWith(`${JSON.stringify(decision, null, 2)}\n`));
+    } finally {
+      rmSync(owner, { recursive: true, force: true });
+    }
+  },
+);
 
 test("completed nonbrowser PASS remains reusable after later producer failure; opaque proof is candidate-bound", async () => {
   await fixture(async (state) => {
