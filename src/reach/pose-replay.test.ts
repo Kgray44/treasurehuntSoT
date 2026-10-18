@@ -98,7 +98,7 @@ it("replays recorded GPU recovery provenance and rejects a later backend or poli
   trace.frames[4].inferenceBackend = "CPU_WASM";
   trace.frames[4].inferencePolicy = "ORIGINAL_CPU";
   const report = replayPoseRecording(trace);
-  expect(report.replayProviderVersion).toBe("1.5.0+actual-roi-v1");
+  expect(report.replayProviderVersion).toBe("1.6.0+actual-roi-v1");
   expect(report.rejectionCounts.FRAME_CONTEXT_CHANGED_NO_REBIND).toBe(1);
   expect(report.steps[0].replayAcceptedFrames).toBe(5);
   expect(report.recordedInferenceSources).toContain("GPU_WEBGL:WATCHGLASS_ACTUAL_ROI_RECOVERY_V1");

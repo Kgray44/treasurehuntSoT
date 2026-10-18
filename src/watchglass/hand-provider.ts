@@ -4,7 +4,7 @@ import { assessHand } from "./hand-posture";
 import { indexGeometry } from "./index-geometry";
 export const handModel = {
   providerId: "watchglass.hand-observation",
-  providerVersion: "1.5.0",
+  providerVersion: "1.6.0",
   modelId: "mediapipe.hand-landmarker.float16",
   modelVersion: "1",
   modelDigest: "fbc2a30080c3c557093b5ddfc334698132eb341044ccee322ccf8bcf3607cde1",
@@ -23,6 +23,8 @@ export type HandResult = { landmarks: Landmark[][]; handedness: { categoryName: 
 type IndexCenter = { x: number; y: number };
 type IndexCapture = { center: IndexCenter; at: number; inferredSpan: number };
 type IndexSnapshot = (IndexCenter | null)[];
+type PalmSnapshot = { points: { x: number; y: number; z: number }[]; span: number };
+type PalmCapture = { shape: PalmSnapshot; at: number; width: number; height: number };
 type Track = {
   id: number;
   center: IndexCenter;
@@ -31,9 +33,79 @@ type Track = {
   scale: number | null;
   recent: IndexCapture[];
   established: boolean;
+  palm: PalmCapture | null;
+  /** Same-capture partner of index; frozen with it throughout palm quarantine. */
+  indexPalm: PalmCapture | null;
+  palmOnly: boolean;
 };
 type ObservedHand = HandObservation["hands"][number];
 const associationIndices = [5, 6, 7, 8] as const;
+/** Observed MCP geometry only; this policy neither detects nor qualifies pointing. */
+export const observedPalmContinuityPolicy = Object.freeze({
+  version: 3,
+  minimumSpan: 0.035,
+  maximumSpan: 0.65,
+  minimumAlong: 0.05,
+  maximumAlong: 0.95,
+  minimumRowSeparation: 0.05,
+  maximumArchRatio: 0.65,
+  maximumGapMs: 200,
+  maximumTranslation: 0.14,
+  maximumScaleRatio: 1.2,
+  maximumShapeRatio: 1.2,
+  minimumProjectedPalmSpreadPixels: 1,
+  maximumTransportResidualRatio: 0.2,
+  rejoin:
+    "PROPER_OBSERVED_PALM_SIMILARITY_TRANSPORTS_FIXED_SAME_CAPTURE_INDEX_REFERENCE_ALL_JOINT_ABSOLUTE_AND_PROJECTED_CHAIN_RELATIVE_RESIDUALS_NO_DEGENERATE_OR_REFLECTED_REPROOF",
+});
+function observedPalm(hand: ObservedHand, aspect: number): PalmSnapshot | null {
+  if (!Number.isFinite(aspect) || aspect <= 0 || ![5, 9, 13, 17].every((i) => hand.landmarks[i].valid)) return null;
+  const origin = hand.landmarks[5];
+  const points = [5, 9, 13, 17].map((i) => ({
+    x: hand.landmarks[i].x,
+    y: hand.landmarks[i].y * aspect,
+    z: hand.landmarks[i].z - origin.z,
+  }));
+  const across = { x: points[3].x - origin.x, y: points[3].y - points[0].y, z: points[3].z };
+  const span = Math.hypot(across.x, across.y, across.z),
+    p = observedPalmContinuityPolicy;
+  if (!Number.isFinite(span) || span < p.minimumSpan || span > p.maximumSpan) return null;
+  const row = points.slice(1, 3).map((point) => {
+    const relative = { x: point.x - origin.x, y: point.y - points[0].y, z: point.z };
+    const along = (relative.x * across.x + relative.y * across.y + relative.z * across.z) / span ** 2;
+    return {
+      along,
+      arch:
+        Math.hypot(relative.x - along * across.x, relative.y - along * across.y, relative.z - along * across.z) / span,
+    };
+  });
+  return row.every(
+    (point) => point.along >= p.minimumAlong && point.along <= p.maximumAlong && point.arch <= p.maximumArchRatio,
+  ) && row[1].along - row[0].along >= p.minimumRowSeparation
+    ? { points, span }
+    : null;
+}
+function palmContinues(current: PalmSnapshot, previous: PalmCapture, at: number, width: number, height: number) {
+  const p = observedPalmContinuityPolicy;
+  if (previous.width !== width || previous.height !== height || at - previous.at > p.maximumGapMs) return false;
+  if (Math.max(current.span, previous.shape.span) / Math.min(current.span, previous.shape.span) > p.maximumScaleRatio)
+    return false;
+  const dx = current.points.reduce((sum, point, i) => sum + point.x - previous.shape.points[i].x, 0) / 4;
+  const dy = current.points.reduce((sum, point, i) => sum + point.y - previous.shape.points[i].y, 0) / 4;
+  if (Math.hypot(dx, dy) > p.maximumTranslation) return false;
+  for (let i = 0; i < 4; ++i)
+    for (let j = i + 1; j < 4; ++j) {
+      const distance = (shape: PalmSnapshot) =>
+        Math.hypot(
+          shape.points[i].x - shape.points[j].x,
+          shape.points[i].y - shape.points[j].y,
+          shape.points[i].z - shape.points[j].z,
+        ) / shape.span;
+      const lengths = [distance(current), distance(previous.shape)];
+      if (Math.min(...lengths) <= 0 || Math.max(...lengths) / Math.min(...lengths) > p.maximumShapeRatio) return false;
+    }
+  return true;
+}
 const handBones = [
   [0, 1],
   [1, 2],
@@ -82,6 +154,106 @@ function indexChain(hand: ObservedHand, aspect: number): number | null {
       b = hand.landmarks[i + 1];
     return sum + Math.hypot(b.x - a.x, (b.y - a.y) * aspect, b.z - a.z);
   }, 0);
+}
+function palmTransportedIndex(track: Track, palm: PalmSnapshot, width: number, height: number) {
+  const reference = track.indexPalm,
+    p = observedPalmContinuityPolicy;
+  if (
+    !reference ||
+    reference.width !== width ||
+    reference.height !== height ||
+    !Number.isFinite(width) ||
+    !Number.isFinite(height) ||
+    width <= 0 ||
+    height <= 0 ||
+    track.scale === null ||
+    !track.index.every((point) => point !== null)
+  )
+    return null;
+  const center = (shape: PalmSnapshot) => ({
+    x: shape.points.reduce((sum, point) => sum + point.x, 0) / 4,
+    y: shape.points.reduce((sum, point) => sum + point.y, 0) / 4,
+  });
+  const oldCenter = center(reference.shape),
+    currentCenter = center(palm);
+  let spread = 0,
+    currentSpread = 0,
+    dot = 0,
+    cross = 0;
+  for (let i = 0; i < 4; i++) {
+    const x = reference.shape.points[i].x - oldCenter.x,
+      y = reference.shape.points[i].y - oldCenter.y;
+    const xx = palm.points[i].x - currentCenter.x,
+      yy = palm.points[i].y - currentCenter.y;
+    spread += x * x + y * y;
+    currentSpread += xx * xx + yy * yy;
+    dot += x * xx + y * yy;
+    cross += x * yy - y * xx;
+  }
+  const oldRms = Math.sqrt(spread / 4),
+    currentRms = Math.sqrt(currentSpread / 4);
+  if (oldRms * width < p.minimumProjectedPalmSpreadPixels || currentRms * width < p.minimumProjectedPalmSpreadPixels)
+    return null;
+  const a = dot / spread,
+    b = cross / spread,
+    scale = Math.hypot(a, b);
+  if (!Number.isFinite(scale) || scale <= 0) return null;
+  // The proper similarity has positive determinant. Current index guesses
+  // never participate in its fit; a reflected/nonrigid palm must fit on its
+  // own or remain identity-only. A nonzero row area is not required.
+  const transport = (point: IndexCenter) => ({
+    x: currentCenter.x + a * (point.x - oldCenter.x) - b * (point.y - oldCenter.y),
+    y: currentCenter.y + b * (point.x - oldCenter.x) + a * (point.y - oldCenter.y),
+  });
+  if (
+    reference.shape.points.some((point, i) => {
+      const predicted = transport(point);
+      return (
+        Math.hypot(predicted.x - palm.points[i].x, predicted.y - palm.points[i].y) >
+        p.maximumTransportResidualRatio * currentRms
+      );
+    })
+  )
+    return null;
+  const aspect = height / width;
+  const index = track.index.map((point) => {
+    const predicted = transport({ x: point!.x, y: point!.y * aspect });
+    return { x: predicted.x, y: predicted.y / aspect };
+  });
+  const projectedChain = index
+    .slice(1)
+    .reduce((sum, point, i) => sum + Math.hypot(point.x - index[i].x, (point.y - index[i].y) * aspect), 0);
+  return { index, projectedChain, span: (track.scale * palm.span) / reference.shape.span };
+}
+function palmIndexRejoinCost(
+  current: IndexSnapshot,
+  span: number | null,
+  track: Track,
+  palm: PalmSnapshot | null,
+  capture: number,
+  width: number,
+  height: number,
+) {
+  const p = observedPalmContinuityPolicy;
+  if (!track.palm || !palm || span === null || !palmContinues(palm, track.palm, capture, width, height))
+    return Infinity;
+  const predicted = palmTransportedIndex(track, palm, width, height);
+  if (
+    !predicted ||
+    Math.min(span, predicted.span) <= 0 ||
+    !Number.isFinite(predicted.projectedChain) ||
+    predicted.projectedChain <= 0 ||
+    Math.max(span, predicted.span) / Math.min(span, predicted.span) > p.maximumScaleRatio ||
+    current.some(
+      (joint, i) =>
+        joint === null ||
+        Math.hypot(joint.x - predicted.index[i].x, joint.y - predicted.index[i].y) > p.maximumTranslation ||
+        Math.hypot(joint.x - predicted.index[i].x, ((joint.y - predicted.index[i].y) * height) / width) >
+          p.maximumTransportResidualRatio * predicted.projectedChain,
+    )
+  )
+    return Infinity;
+  return indexDisplacement(current, predicted.index) + Math.abs(span - predicted.span) * 0.25;
 }
 /** Suppress only near-identical visible hypotheses, never infer identity from handedness. */
 function duplicateHypotheses(a: ObservedHand, b: ObservedHand, aspect: number) {
@@ -222,7 +394,7 @@ export class BrowserHandAdapter {
         handednessConfidence:
           Number.isFinite(category?.score) && category.score >= 0 && category.score <= 1 ? category.score : null,
         coordinateFrame: "CAMERA_IMAGE_NORMALIZED" as const,
-        associationBasis: "INDEX_CHAIN_V1" as const,
+        associationBasis: "INDEX_CHAIN_V1" as NonNullable<ObservedHand["associationBasis"]>,
         landmarks,
         ...(offImageFingerLandmarks.length ? { offImageFingerLandmarks } : {}),
         presenceScore: null,
@@ -247,6 +419,7 @@ export class BrowserHandAdapter {
         inferredSpans[i]! <= 1,
     );
     const indices = hands.map(observedIndex);
+    const palms = hands.map((hand) => observedPalm(hand, height / width));
     const centers = hands.map((h, i) => {
       if (reliableIndex[i]) return indexCenter(h);
       const index = associationIndices.map((j) => h.landmarks[j]).filter((p) => p.valid);
@@ -273,10 +446,14 @@ export class BrowserHandAdapter {
     // Ambiguous output is never evidence that a retained record was observed.
     const costs = centers.map((center, i) =>
       eligibleTracks.map((t) =>
-        center
-          ? indexDisplacement(indices[i], t.index) +
-            (scales[i] !== null && t.scale !== null ? Math.abs(scales[i]! - t.scale) * 0.25 : 0)
-          : Infinity,
+        !center
+          ? Infinity
+          : t.palmOnly
+            ? reliableIndex[i]
+              ? palmIndexRejoinCost(indices[i], scales[i], t, palms[i], capture, width, height)
+              : Infinity
+            : indexDisplacement(indices[i], t.index) +
+              (scales[i] !== null && t.scale !== null ? Math.abs(scales[i]! - t.scale) * 0.25 : 0),
       ),
     );
     // Recent coherent motion can cross the static association radius between
@@ -284,7 +461,7 @@ export class BrowserHandAdapter {
     // from two observed index-chain references; it is not identity evidence after loss.
     const predictedCosts = centers.map((center, i) =>
       eligibleTracks.map((track) => {
-        if (!center || !reliableIndex[i] || track.recent.length !== 2) return Infinity;
+        if (!center || !reliableIndex[i] || track.palmOnly || track.recent.length !== 2) return Infinity;
         const [previous, last] = track.recent;
         const historyMs = last.at - previous.at,
           gapMs = capture - last.at;
@@ -344,6 +521,19 @@ export class BrowserHandAdapter {
       if (ranked[1] && ranked[1].cost - ranked[0].cost < 0.035) return -2;
       return ranked[0].index;
     });
+    // A qualified palm may only continue one already known hand. It never
+    // creates a cold malformed track, breaks a tie or resolves two hands.
+    // A palm fallback never replaces the index reference, including when a
+    // newly plausible model chain is present. Rejoin requires a separate
+    // ordinary index match plus a current coherent palm above.
+    let palmAssignment = -1;
+    if (hands.length === 1 && eligibleTracks.length === 1 && assignments[0] === -1) {
+      const prior = eligibleTracks[0];
+      if (prior.established && prior.palm && palms[0] && palmContinues(palms[0], prior.palm, capture, width, height)) {
+        assignments[0] = 0;
+        palmAssignment = 0;
+      }
+    }
     const collision = assignments.length === 2 && assignments[0] >= 0 && assignments[0] === assignments[1];
     const associationAmbiguous = !!crossing || collision || assignments.includes(-2);
     const establishedMatched = assignments.some(
@@ -353,32 +543,45 @@ export class BrowserHandAdapter {
     hands.forEach((hand, i) => {
       // A partial index cannot establish a new track. Three common observed
       // joints may confirm an incumbent without replacing its fixed reference.
-      const ambiguous = associationAmbiguous || centers[i] === null || (!reliableIndex[i] && assignments[i] < 0);
+      const palmMatched = palmAssignment === i;
+      const indexMatched = reliableIndex[i] && !palmMatched;
+      const ambiguous =
+        associationAmbiguous || (!palmMatched && (centers[i] === null || (!reliableIndex[i] && assignments[i] < 0)));
       const prior = !ambiguous && assignments[i] >= 0 ? eligibleTracks[assignments[i]] : null;
       const id = prior?.id ?? ++generation;
       hand.trackId = `local-${id}`;
       hand.trackGeneration = id;
       hand.continuity = ambiguous ? "AMBIGUOUS" : prior ? "CONTINUOUS" : "ACQUIRED";
+      if (palmMatched) hand.associationBasis = "OBSERVED_PALM_CONTINUITY_V1";
       const assessment = assessHand(hand, { frameWidth: width, frameHeight: height });
       hand.occluded = !assessment.requiredValid;
       hand.pose = assessment.pointing ? "POINT_CANDIDATE" : "UNKNOWN";
-      if (centers[i] && !ambiguous)
+      if ((centers[i] || palmMatched) && !ambiguous)
         next.push({
           id,
-          center: reliableIndex[i] ? centers[i]! : prior!.center,
-          index: reliableIndex[i] ? indices[i] : prior!.index,
+          center: indexMatched ? centers[i]! : prior!.center,
+          index: indexMatched ? indices[i] : prior!.index,
           at: capture,
-          scale: reliableIndex[i] ? (scales[i] ?? prior?.scale ?? null) : prior!.scale,
+          scale: indexMatched ? (scales[i] ?? prior?.scale ?? null) : prior!.scale,
           // A second hypothesis beside an existing hand must be observed again
           // unambiguously before it can survive absence and compete later.
           // This is temporal association evidence, never model confidence.
           established: prior ? prior.established || reliableIndex[i] : !establishedMatched,
-          recent: reliableIndex[i]
-            ? [
-                ...(prior?.recent.filter((sample) => capture - sample.at <= motionContinuity.maximumGapMs) ?? []),
-                { center: centers[i]!, at: capture, inferredSpan: inferredSpans[i]! },
-              ].slice(-2)
-            : [],
+          palm: palms[i] ? { shape: palms[i]!, at: capture, width, height } : (prior?.palm ?? null),
+          indexPalm: indexMatched
+            ? palms[i]
+              ? { shape: palms[i]!, at: capture, width, height }
+              : null
+            : prior!.indexPalm,
+          palmOnly: indexMatched ? false : palmMatched || (prior?.palmOnly ?? false),
+          recent: palmMatched
+            ? prior!.recent
+            : indexMatched
+              ? [
+                  ...(prior?.recent.filter((sample) => capture - sample.at <= motionContinuity.maximumGapMs) ?? []),
+                  { center: centers[i]!, at: capture, inferredSpan: inferredSpans[i]! },
+                ].slice(-2)
+              : [],
         });
     });
     // A temporary extra hypothesis cannot erase a lone established history.

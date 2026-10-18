@@ -6,6 +6,7 @@ import type { Point } from "./coordinates";
 import type { IndexModelAnchor } from "./index-image-tracker";
 
 /** Observed model geometry thresholds; none are probabilities or world measurements. */
+const minimumForwardDigitAlignment = 0.35;
 export const fullHandDetectionPolicy = {
   palm: {
     minimumSpan: 0.035,
@@ -34,15 +35,28 @@ export const fullHandDetectionPolicy = {
     minimumPipAlignment: 0.2,
     minimumDipAlignment: 0,
   },
-  open: { minimumStraightness: 0.93, minimumPipAlignment: 0.7, minimumDipAlignment: 0.7, minimumCount: 2 },
+  open: {
+    minimumStraightness: 0.93,
+    minimumPipAlignment: 0.7,
+    minimumDipAlignment: 0.7,
+    minimumCount: 2,
+    minimumIndexAlignment: minimumForwardDigitAlignment,
+  },
   similar: { straightnessTolerance: 0.1, minimumPipAlignment: 0.3, minimumDipAlignment: 0.3, minimumCount: 2 },
   competing: {
     minimumStraightness: 0.96,
     minimumPipAlignment: 0.85,
     minimumDipAlignment: 0.85,
-    minimumIndexAlignment: 0.35,
+    minimumIndexAlignment: minimumForwardDigitAlignment,
   },
   pinchPalmRatio: 0.18,
+  imageSupport: {
+    minimumObservedJoints: 12,
+    minimumStructuredObservedJoints: 9,
+    minimumProximalSegments: 2,
+    minimumMarginAnalysisPixels: 8,
+    palmMarginRatio: 0.3,
+  },
 } as const;
 
 export type FullHandDecision = {
@@ -94,7 +108,7 @@ function observedIndexChain(hand: Hand): NonNullable<IndexModelAnchor["geometry"
   };
   return [point(5), point(6), point(7), point(8)];
 }
-function fullCandidate(hand: Hand, frame: Observation) {
+function observedPalm(hand: Hand, frame: Observation) {
   // A count of in-bounds joints is insufficient: require a plausible observed
   // knuckle row and two complete other fingers. Off-image estimates never count.
   if (![5, 9, 13, 17].every((id) => observed(hand, id))) return null;
@@ -120,6 +134,12 @@ function fullCandidate(hand: Hand, frame: Observation) {
     row[1].along - row[0].along < p.palm.minimumRowSeparation
   )
     return null;
+  return shape;
+}
+function fullCandidate(hand: Hand, frame: Observation) {
+  const shape = observedPalm(hand, frame),
+    p = fullHandDetectionPolicy;
+  if (!shape) return null;
   const fingers = [9, 13, 17]
     .map((base) => {
       if (![base, base + 1, base + 2, base + 3].every((id) => observed(hand, id))) return null;
@@ -172,7 +192,10 @@ export function fullHandDecision(observation: Observation | null): FullHandDecis
     (finger) =>
       finger.straightness >= p.open.minimumStraightness &&
       finger.pipAlignment >= p.open.minimumPipAlignment &&
-      finger.dipAlignment >= p.open.minimumDipAlignment,
+      finger.dipAlignment >= p.open.minimumDipAlignment &&
+      // A straight inferred chain folded back across the hand is not an open
+      // finger. Reuse the competing-finger forward-direction requirement.
+      cosine(finger.axis, index.axis) >= p.open.minimumIndexAlignment,
   ).length;
   const similar = fingers.filter(
     (finger) =>
@@ -213,9 +236,129 @@ export function fullHandDecision(observation: Observation | null): FullHandDecis
 /** Exact runtime arbitration, also usable by private diagnostic replay. */
 export function selectIndexModelAnchor(observation: Observation | null): IndexModelAnchor | null {
   const full = fullHandDecision(observation);
+  const only = observation?.hands.length === 1 ? observation.hands[0] : null;
+  const support = only?.continuity === "CONTINUOUS" && observation && observedPalm(only, observation);
+  const points =
+    support && only
+      ? only.landmarks.flatMap((point, id) => (id !== 0 && observed(only, id) ? [{ x: point.x, y: point.y }] : []))
+      : [];
+  const indexSupport = only && observation && indexGeometry(only, observation);
+  const proximalSegments =
+    support && only
+      ? [
+          [1, 2],
+          [2, 3],
+          [9, 10],
+          [13, 14],
+          [17, 18],
+        ].filter(([a, b]) => {
+          if (!observed(only, a) || !observed(only, b)) return false;
+          const length = vectorLength(subtract(support.points[a], support.points[b]));
+          return (
+            length >= fullHandDetectionPolicy.fingers.minimumBone &&
+            length <= support.scale * fullHandDetectionPolicy.fingers.maximumBonePalmRatio
+          );
+        }).length
+      : 0;
+  const structuredSupport =
+    indexSupport?.extended && proximalSegments >= fullHandDetectionPolicy.imageSupport.minimumProximalSegments;
+  // This is a negative spatial constraint, never a hand mask or proof of a
+  // selected finger. It may reject a beard/background match well outside the
+  // observed hand; it cannot resolve two candidates inside the same hand.
+  const region =
+    support && (points.length >= fullHandDetectionPolicy.imageSupport.minimumObservedJoints || structuredSupport)
+      ? {
+          handRegion: {
+            source: modelSource(observation!, only!),
+            points,
+            palmSpan: support.scale,
+            structuredSupport: !!structuredSupport,
+            otherFingerPoints: only!.landmarks.flatMap((point, id) =>
+              ((id >= 1 && id <= 4) || id >= 9) && observed(only!, id) ? [{ x: point.x, y: point.y }] : [],
+            ),
+            otherFingerSegments: [1, 9, 13, 17].flatMap((base) =>
+              [0, 1, 2].flatMap((offset) => {
+                const a = base + offset,
+                  b = a + 1;
+                return observed(only!, a) && observed(only!, b)
+                  ? [
+                      [
+                        { x: only!.landmarks[a].x, y: only!.landmarks[a].y },
+                        { x: only!.landmarks[b].x, y: only!.landmarks[b].y },
+                      ] as [Point, Point],
+                    ]
+                  : [];
+              }),
+            ),
+          },
+        }
+      : {};
+  const currentIdentity = (hand: Hand | undefined) =>
+    hand?.continuity === "CONTINUOUS" ? { identitySource: modelSource(observation!, hand) } : {};
+  const fullIdentity = full.sourceKey
+    ? currentIdentity(observation?.hands.find((hand) => modelSource(observation!, hand) === full.sourceKey))
+    : {};
+  const currentIndex =
+    only && observation && only.continuity === "CONTINUOUS" ? indexGeometry(only, observation) : null;
+  const indexIdentity =
+    currentIndex?.geometry && currentIndex.complete
+      ? {
+          indexIdentityGeometry: {
+            source: modelSource(observation!, only!),
+            index: observedIndexChain(only!),
+            ...(only!.associationBasis ? { associationBasis: only!.associationBasis } : {}),
+          },
+        }
+      : {};
+  const indexJoints =
+    only?.continuity === "CONTINUOUS" && only.associationBasis === "INDEX_CHAIN_V1"
+      ? [5, 6, 7, 8]
+          .filter((index) => observed(only, index))
+          .map((index) => ({ index, x: only.landmarks[index].x, y: only.landmarks[index].y }))
+      : [];
+  const indexEvidence =
+    indexJoints.length >= 3
+      ? {
+          indexIdentityEvidence: {
+            source: modelSource(observation!, only!),
+            associationBasis: "INDEX_CHAIN_V1" as const,
+            joints: indexJoints,
+          },
+        }
+      : {};
+  const digitEvidence =
+    only?.continuity === "CONTINUOUS"
+      ? {
+          otherDigitEvidence: {
+            source: modelSource(observation!, only),
+            points: only.landmarks.flatMap((point, id) =>
+              ((id >= 1 && id <= 4) || id >= 9) && observed(only, id) ? [{ x: point.x, y: point.y }] : [],
+            ),
+            segments: [1, 9, 13, 17].flatMap((base) =>
+              [0, 1, 2].flatMap((offset) => {
+                const a = base + offset,
+                  b = a + 1;
+                return observed(only, a) && observed(only, b)
+                  ? [
+                      [
+                        { x: only.landmarks[a].x, y: only.landmarks[a].y },
+                        { x: only.landmarks[b].x, y: only.landmarks[b].y },
+                      ] as [Point, Point],
+                    ]
+                  : [];
+              }),
+            ),
+          },
+        }
+      : {};
   if (full.decision !== "UNAVAILABLE")
     return {
       point: full.indexPoint,
+      ...fullIdentity,
+      ...indexIdentity,
+      ...indexEvidence,
+      ...digitEvidence,
+      ...region,
       pointing: full.decision === "FULL_POINT",
       contrary: full.decision === "FULL_CONTRARY",
       ...(full.sourceKey === null ? {} : { authoritySource: full.sourceKey }),
@@ -228,10 +371,27 @@ export function selectIndexModelAnchor(observation: Observation | null): IndexMo
   const hand = observation.hands[0],
     index = indexGeometry(hand, observation),
     posture = assessHand(hand, observation);
-  if (hand.continuity === "AMBIGUOUS" || !index.geometry || !index.complete || !index.tip) return null;
+  if (hand.continuity === "AMBIGUOUS") return null;
+  if (!index.geometry || !index.complete || !index.tip)
+    return hand.continuity === "CONTINUOUS"
+      ? {
+          point: null,
+          pointing: false,
+          contrary: false,
+          ...currentIdentity(hand),
+          ...indexIdentity,
+          ...indexEvidence,
+          ...digitEvidence,
+        }
+      : null;
   const pointing = index.extended && posture.pointing;
   return {
     point: { x: index.tip.x, y: index.tip.y },
+    ...currentIdentity(hand),
+    ...indexIdentity,
+    ...indexEvidence,
+    ...digitEvidence,
+    ...region,
     pointing,
     contrary: !posture.pointing && posture.validCount >= 16,
     ...(pointing ? { indexCue: { source: modelSource(observation!, hand), index: observedIndexChain(hand) } } : {}),

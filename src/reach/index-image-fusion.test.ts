@@ -48,6 +48,15 @@ function frame(x: number, at: number, seed: number | null = 0): IndexGrayFrame {
       }
   return { data, width: 160, height: 120, capture: at, received: at + 10 };
 }
+function fingerFrame(x: number, at: number, changedTip = false, otherFinger = false): IndexGrayFrame {
+  const value = frame(x, at, null);
+  for (let dy = -10; dy <= 35; dy++)
+    for (let dx = -10; dx <= 10; dx++) {
+      const seed = (changedTip && dy <= 0) || otherFinger ? 19 : 0;
+      value.data[(45 + dy) * 160 + x + dx] = 45 + ((dx * 73 + dy * 127 + dx * dy * 19 + seed * 41 + 100000) % 135);
+    }
+  return value;
+}
 function establish(tracker: IndexImageTracker) {
   let result = tracker.update(frame(45, 100), model(45));
   for (const at of [166, 233]) result = tracker.update(frame(45, at), model(45));
@@ -55,6 +64,221 @@ function establish(tracker: IndexImageTracker) {
   return result;
 }
 describe("one conditioned model/image relative producer", () => {
+  const withRegion = (anchor: IndexModelAnchor, narrow = false): IndexModelAnchor => ({
+    ...anchor,
+    identitySource: "same-complete-hand",
+    handRegion: {
+      source: "same-complete-hand",
+      palmSpan: 0.1,
+      points: Array.from({ length: 12 }, (_, i) =>
+        point(narrow ? 40 + (i % 2) * 10 : 30 + (i % 2) * 55, 40 + Math.floor(i / 2) * 6),
+      ),
+    },
+  });
+  it("averages small model/image differences with bounded correction while retaining identity", () => {
+    const tracker = new IndexImageTracker(binding);
+    let seed;
+    for (const at of [100, 166, 233]) seed = tracker.update(frame(45, at), withRegion(model(45)));
+    const output = tracker.update(frame(45, 300), withRegion(model(54)));
+    expect(output).toMatchObject({ state: "TRACKING", coordinateSource: "FUSED", trackId: seed!.trackId });
+    expect(output.point!.x * 159).toBeGreaterThan(45);
+    expect(output.point!.x * 159).toBeLessThanOrEqual(45.5);
+  });
+  it("rejects an optical match outside a credible current hand instead of moving the index onto background texture", () => {
+    const tracker = new IndexImageTracker(binding);
+    let seed;
+    for (const at of [100, 166, 233]) seed = tracker.update(frame(45, at), withRegion(model(45), true));
+    for (const at of [300, 366, 433]) {
+      const output = tracker.update(frame(69, at), withRegion(model(45), true));
+      expect(output).toMatchObject({ state: "TRACKING", coordinateSource: "MODEL", trackId: seed!.trackId });
+      expect(output.point!.x * 159).toBeCloseTo(45, 6);
+    }
+  });
+  it("retains inside-hand wrong-digit contradictions despite a credible current hand extent", () => {
+    const tracker = new IndexImageTracker(binding);
+    let seed;
+    for (const at of [100, 166, 233]) seed = tracker.update(frame(45, at), withRegion(model(45)));
+    for (const at of [300, 366, 433])
+      expect(tracker.update(frame(45, at), withRegion(model(69)))).toMatchObject({
+        state: "UNCERTAIN",
+        point: null,
+        trackId: seed!.trackId,
+        reason: "FULL_HAND_INDEX_CONFLICT",
+      });
+  });
+  it("withholds a cursor when a current cropped index contradicts the accepted image", () => {
+    const tracker = new IndexImageTracker(binding),
+      seed = establish(tracker);
+    for (const at of [300, 366, 433])
+      expect(tracker.update(frame(45, at), partial(69))).toMatchObject({
+        state: "UNCERTAIN",
+        point: null,
+        trackId: seed.trackId,
+        reason: "INDEX_MODEL_IMAGE_CONFLICT",
+        opticalEpoch: seed.opticalEpoch,
+      });
+  });
+  it.each(["FULL", "REGISTERED_INDEX"] as const)(
+    "reconfirms a new %s image after a conflict without transferring identity or publishing probation",
+    (support) => {
+      const tracker = new IndexImageTracker(binding);
+      const supported = (x: number): IndexModelAnchor => ({
+        ...(support === "FULL" ? model(x) : partial(x)),
+        identitySource: "same-complete-hand",
+      });
+      let seed;
+      for (const at of [100, 166, 233, 300])
+        seed = tracker.update(fingerFrame(45, at), { ...model(45), identitySource: "same-complete-hand" });
+      expect(
+        tracker.update(fingerFrame(45, 366), { ...model(69), identitySource: "same-complete-hand" }).point,
+      ).toBeNull();
+      let observed;
+      const probation = [];
+      for (let i = 0; i < 14; i++) {
+        observed = tracker.update(fingerFrame(69, 433 + i * 67, true), supported(69));
+        expect(observed.trackId).toBe(seed!.trackId);
+        if (observed.reason === "FINGERTIP_RECONFIRMED_SETTLING") {
+          probation.push(observed);
+          expect(observed.point).toBeNull();
+        }
+      }
+      expect(probation).toHaveLength(1);
+      expect(observed).toMatchObject({ state: "TRACKING", trackId: seed!.trackId });
+      expect(observed!.opticalEpoch).toBeGreaterThan(seed!.opticalEpoch!);
+      expect(observed!.point!.x * 159).toBeCloseTo(69, 1);
+    },
+  );
+  it("does not treat matching base joints as identity proof when the distal index is replaced by a different textured tip", () => {
+    const tracker = new IndexImageTracker(binding);
+    const anatomy = (wrongTip = false): IndexModelAnchor => ({
+      ...model(45),
+      identitySource: "same-complete-hand",
+      point: point(wrongTip ? 57 : 45),
+      geometry: {
+        palmSpan: 0.2,
+        index: [48, 32, 16, 0].map((dy, i) => ({
+          ...point(wrongTip && i >= 2 ? 57 : 45, 45 + dy),
+          z: 0,
+        })) as unknown as NonNullable<IndexModelAnchor["geometry"]>["index"],
+      },
+    });
+    const image = (at: number, wrongTip = false) => {
+      const result = frame(45, at, null);
+      for (let dy = -10; dy <= 64; dy++)
+        for (let dx = -10; dx <= 10; dx++)
+          if (!wrongTip || dy > 20)
+            result.data[(45 + dy) * 160 + 45 + dx] = 45 + ((dx * 73 + dy * 127 + dx * dy * 19 + 100000) % 135);
+      if (wrongTip) {
+        const wrong = frame(57, at, 19);
+        for (let y = 35; y <= 55; y++)
+          for (let x = 47; x <= 67; x++) result.data[y * 160 + x] = wrong.data[y * 160 + x];
+      }
+      return result;
+    };
+    let seed;
+    for (const at of [100, 166, 233, 300]) seed = tracker.update(image(at), anatomy());
+    expect(seed!.state).toBe("TRACKING");
+    tracker.update(image(366), anatomy(true));
+    for (let i = 0; i < 30; i++)
+      expect(tracker.update(image(433 + i * 67, true), anatomy(true))).toMatchObject({
+        point: null,
+        trackId: seed!.trackId,
+        opticalEpoch: seed!.opticalEpoch,
+      });
+  });
+  it("never replaces the selected index with another distinctive textured region on the same hand", () => {
+    const tracker = new IndexImageTracker(binding);
+    let seed;
+    for (const at of [100, 166, 233, 300])
+      seed = tracker.update(fingerFrame(45, at), { ...model(45), identitySource: "same-complete-hand" });
+    tracker.update(fingerFrame(45, 366), { ...model(69), identitySource: "same-complete-hand" });
+    for (let i = 0; i < 40; i++)
+      expect(
+        tracker.update(fingerFrame(69, 433 + i * 67, true, true), {
+          ...model(69),
+          identitySource: "same-complete-hand",
+        }),
+      ).toMatchObject({ point: null, trackId: seed!.trackId, opticalEpoch: seed!.opticalEpoch });
+  });
+  it("never reconfirms a wrong model from blank pixels after an accepted contradictory image", () => {
+    const tracker = new IndexImageTracker(binding);
+    let seed;
+    for (const at of [100, 166, 233])
+      seed = tracker.update(frame(45, at), { ...model(45), identitySource: "same-complete-hand" });
+    tracker.update(frame(45, 300), { ...model(69), identitySource: "same-complete-hand" });
+    for (let i = 0; i < 40; i++)
+      expect(
+        tracker.update(frame(69, 366 + i * 67, null), { ...model(69), identitySource: "same-complete-hand" }),
+      ).toMatchObject({ point: null, trackId: seed!.trackId, opticalEpoch: seed!.opticalEpoch });
+  });
+
+  it("preserves the verified same-hand identity through anatomy uncertainty while withholding every uncertain point", () => {
+    const tracker = new IndexImageTracker(binding);
+    const supported = (x = 45): IndexModelAnchor => ({ ...model(x), identitySource: "same-complete-hand" });
+    let seed = tracker.update(frame(45, 100, null), supported());
+    for (const at of [166, 233]) seed = tracker.update(frame(45, at, null), supported());
+    for (let at = 300; at <= 2300; at += 100) {
+      expect(
+        tracker.update(frame(45, at, null), {
+          point: null,
+          pointing: false,
+          contrary: false,
+          authority: "AMBIGUOUS",
+          authoritySource: "same-complete-hand",
+          identitySource: "same-complete-hand",
+          indexIdentityGeometry: { source: "same-complete-hand", index: model(45).geometry!.index },
+        }),
+      ).toMatchObject({
+        point: null,
+        matchedPoint: null,
+        trackId: seed.trackId,
+        trackGeneration: seed.trackGeneration,
+      });
+    }
+    let returned;
+    for (const at of [2366, 2433, 2500]) returned = tracker.update(frame(49, at, null), supported(49));
+    expect(returned).toMatchObject({
+      state: "TRACKING",
+      coordinateSource: "MODEL",
+      trackId: seed.trackId,
+      trackGeneration: seed.trackGeneration,
+    });
+    expect(returned!.point!.x * 159).toBeCloseTo(49, 6);
+  });
+  it("never treats same-hand identity-only observations as pointing, optical registration or a cold anchor", () => {
+    const tracker = new IndexImageTracker(binding);
+    for (let at = 100; at <= 2100; at += 100)
+      expect(
+        tracker.update(frame(45, at, null), {
+          point: null,
+          pointing: false,
+          contrary: false,
+          identitySource: "same-complete-hand",
+        }),
+      ).toMatchObject({ point: null, trackId: null, opticalEpoch: 0 });
+  });
+  it.each(["DIFFERENT_SOURCE", "ABSENT", "EXPIRED"] as const)(
+    "does not preserve a selected finger through unverified identity %s",
+    (kind) => {
+      const tracker = new IndexImageTracker(binding);
+      const supported: IndexModelAnchor = { ...model(45), identitySource: "same-complete-hand" };
+      let seed;
+      for (const at of [100, 166, 233]) seed = tracker.update(frame(45, at, null), supported);
+      for (const at of kind === "EXPIRED" ? [1600] : [300, 500, 700, 900, 1100, 1300, 1500])
+        tracker.update(frame(45, at, null), {
+          point: null,
+          pointing: false,
+          contrary: false,
+          ...(kind === "ABSENT"
+            ? {}
+            : { identitySource: kind === "DIFFERENT_SOURCE" ? "another-hand" : "same-complete-hand" }),
+        });
+      let returned;
+      for (const at of [1800, 1866, 1933]) returned = tracker.update(frame(45, at, null), supported);
+      expect(returned!.trackId).not.toBe(seed!.trackId);
+    },
+  );
+
   it("uses a current registered index through cropped appearance changes without requiring a palm or changing finger identity", () => {
     const tracker = new IndexImageTracker(binding),
       seed = establish(tracker);
@@ -156,11 +380,22 @@ describe("one conditioned model/image relative producer", () => {
   });
   it("preserves continuously verified full-hand identity during contrary posture without collecting a point", () => {
     const tracker = new IndexImageTracker(binding);
-    let seed = tracker.update(frame(45, 100, null), model(45));
-    for (const at of [166, 233]) seed = tracker.update(frame(45, at, null), model(45));
+    const observedModel = (): IndexModelAnchor => {
+      const current = model(45);
+      return {
+        ...current,
+        identitySource: "same-complete-hand",
+        indexIdentityGeometry: {
+          source: "same-complete-hand",
+          index: current.geometry!.index,
+        },
+      };
+    };
+    let seed = tracker.update(frame(45, 100, null), observedModel());
+    for (const at of [166, 233]) seed = tracker.update(frame(45, at, null), observedModel());
     for (let at = 300; at <= 1700; at += 200) {
       const contrary = {
-        ...model(45),
+        ...observedModel(),
         geometry: undefined,
         authority: "CONTRARY" as const,
         pointing: false,
@@ -174,9 +409,9 @@ describe("one conditioned model/image relative producer", () => {
         opticalEpoch: 0,
       });
     }
-    expect(tracker.update(frame(45, 1766, null), model(45)).point).toBeNull();
-    expect(tracker.update(frame(45, 1833, null), model(45)).point).toBeNull();
-    expect(tracker.update(frame(45, 1900, null), model(45))).toMatchObject({
+    expect(tracker.update(frame(45, 1766, null), observedModel()).point).toBeNull();
+    expect(tracker.update(frame(45, 1833, null), observedModel()).point).toBeNull();
+    expect(tracker.update(frame(45, 1900, null), observedModel())).toMatchObject({
       state: "TRACKING",
       coordinateSource: "MODEL",
       trackId: seed.trackId,
@@ -210,7 +445,22 @@ describe("one conditioned model/image relative producer", () => {
     const tracker = new IndexImageTracker(binding);
     establish(tracker);
     let observed;
-    for (let i = 0; i < 30; ++i) observed = tracker.update(frame(45, 300 + i * 50), model(49));
+    // With true difference averaging, a high-quality image is deliberately
+    // not pulled all the way to a biased model. Exercise a sizeable correction
+    // with a lower-confidence, still independently accepted optical match.
+    for (let i = 0; i < 30; ++i) {
+      const noisy = frame(45, 300 + i * 50);
+      let random = 51427;
+      for (let y = 35; y <= 55; y++)
+        for (let x = 35; x <= 55; x++) {
+          random = (Math.imul(random, 1664525) + 1013904223) >>> 0;
+          noisy.data[y * 160 + x] = Math.max(
+            0,
+            Math.min(255, noisy.data[y * 160 + x] + ((random >>> 24) - 127.5) * 0.44),
+          );
+        }
+      observed = tracker.update(noisy, model(52.5));
+    }
     expect(observed!.coordinateSource).toBe("FUSED");
     const correction = Math.abs(observed!.point!.x * 159 - 45);
     expect(correction).toBeGreaterThan(3);

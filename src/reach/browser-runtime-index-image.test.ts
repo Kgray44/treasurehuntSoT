@@ -1169,7 +1169,7 @@ describe("runtime image source integration", () => {
     s.result();
     expect(s.observe.mock.calls[0][0]).toMatchObject({
       inferenceBackend: "GPU_WEBGL",
-      providerVersion: "1.5.0+actual-roi-v1",
+      providerVersion: "1.6.0+actual-roi-v1",
     });
     expect(s.runtime.captureDiagnostics().perception).toMatchObject({
       backend: "GPU_WEBGL",
@@ -1248,7 +1248,7 @@ describe("runtime image source integration", () => {
     expect(cpu.frames).toHaveLength(1);
     await s.advance(10);
     s.result();
-    expect(s.observe.mock.calls[0][0].providerVersion).toBe("1.5.0");
+    expect(s.observe.mock.calls[0][0].providerVersion).toBe("1.6.0");
     expect(s.runtime.captureDiagnostics().perception).toMatchObject({
       backend: "CPU_WASM",
       policy: "ORIGINAL_CPU",

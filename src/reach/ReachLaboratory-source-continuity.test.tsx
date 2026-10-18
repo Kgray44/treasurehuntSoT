@@ -119,19 +119,42 @@ function deliver(
     cue?: boolean;
     cueSource?: string;
     originAge?: number;
+    currentHandIdentity?: boolean;
+    anatomyUncertain?: boolean;
+    currentIndexIdentity?: boolean;
   } = {},
 ) {
   let observation!: IndexImageObservation;
   act(() => {
     vi.advanceTimersByTime(50);
     const x = options.x ?? 60;
-    observation = tracker.update(
-      pixels(x, 60, performance.now(), options.blank, options.unrelated),
-      options.cue
+    const anchor = options.anatomyUncertain
+      ? {
+          point: null,
+          pointing: false,
+          contrary: false,
+          authority: "AMBIGUOUS" as const,
+          authoritySource: conditionedSource,
+        }
+      : options.cue
         ? indexOnlyModel(x, options.cueSource)
         : options.conditioned
           ? conditionedModel(x)
-          : { point: normalized(x), pointing: true, contrary: false },
+          : { point: normalized(x), pointing: true, contrary: false };
+    observation = tracker.update(
+      pixels(x, 60, performance.now(), options.blank, options.unrelated),
+      {
+        ...anchor,
+        ...(options.currentHandIdentity ? { identitySource: conditionedSource } : {}),
+        ...(options.currentIndexIdentity
+          ? {
+              indexIdentityGeometry: {
+                source: conditionedSource,
+                index: conditionedModel(x).geometry!.index,
+              },
+            }
+          : {}),
+      },
       options.manual ? normalized(x) : null,
     );
     if (options.originAge !== undefined)
@@ -140,14 +163,19 @@ function deliver(
   });
   return observation;
 }
-function openAndSaveFirst(tracker: IndexImageTracker, manual = false, conditioned = false) {
+function openAndSaveFirst(
+  tracker: IndexImageTracker,
+  manual = false,
+  conditioned = false,
+  currentHandIdentity = false,
+) {
   render(<ReachLaboratory />);
   fireEvent.click(screen.getByRole("button", { name: "Enable live camera" }));
-  let last = deliver(tracker, { manual, conditioned });
-  for (let i = 0; i < 7; ++i) last = deliver(tracker, { conditioned });
+  let last = deliver(tracker, { manual, conditioned, currentHandIdentity });
+  for (let i = 0; i < 7; ++i) last = deliver(tracker, { conditioned, currentHandIdentity });
   fireEvent.click(screen.getByRole("button", { name: "Set up relative movement" }));
   expect(screen.getByLabelText("Target 1 of 5")).toBeInTheDocument();
-  for (let i = 0; i < 32; ++i) last = deliver(tracker, { conditioned });
+  for (let i = 0; i < 32; ++i) last = deliver(tracker, { conditioned, currentHandIdentity });
   expect(screen.getByLabelText("Target 2 of 5")).toBeInTheDocument();
   return last;
 }
@@ -180,6 +208,52 @@ afterEach(() => {
 });
 
 describe("relative calibration optical source across target 1 → 2", () => {
+  it("keeps target 2 through sustained gesture uncertainty with current observed index identity, then naturally resumes", () => {
+    const tracker = new IndexImageTracker(binding);
+    const first = openAndSaveFirst(tracker, false, true, true);
+    const sample = vi.spyOn(SampleWindow.prototype, "push");
+    for (let i = 0; i < 42; i++) {
+      const next = deliver(tracker, {
+        blank: true,
+        anatomyUncertain: true,
+        currentHandIdentity: true,
+        currentIndexIdentity: true,
+      });
+      expect(next.point).toBeNull();
+      expect(next.trackId).toBe(first.trackId);
+    }
+    expect(sample).not.toHaveBeenCalled();
+    expect(screen.getByLabelText("Target 2 of 5")).toBeInTheDocument();
+    expect(screen.getByText(/1 of 5 targets saved/)).toBeVisible();
+    expect(screen.getByRole("status", { name: "Reach status" })).toHaveTextContent("Your hand is still tracked");
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    let recovered;
+    for (let i = 0; i < 12; i++)
+      recovered = deliver(tracker, { blank: true, conditioned: true, currentHandIdentity: true, x: 50 });
+    expect(recovered).toMatchObject({ state: "TRACKING", coordinateSource: "MODEL", trackId: first.trackId });
+    expect(screen.getByLabelText("Target 2 of 5")).toBeInTheDocument();
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    expect(sample).toHaveBeenCalled();
+  });
+
+  it("keeps saved targets during palm-only continuity without granting later unverified model tips sample permission", () => {
+    const tracker = new IndexImageTracker(binding);
+    const first = openAndSaveFirst(tracker, false, true, true);
+    const sample = vi.spyOn(SampleWindow.prototype, "push");
+    for (let i = 0; i < 42; i++) {
+      const next = deliver(tracker, { blank: true, anatomyUncertain: true, currentHandIdentity: true });
+      expect(next).toMatchObject({ point: null, trackId: first.trackId });
+    }
+    for (let i = 0; i < 12; i++) {
+      const next = deliver(tracker, { blank: true, conditioned: true, currentHandIdentity: true, x: 50 });
+      expect(next).toMatchObject({ point: null, trackId: first.trackId });
+    }
+    expect(sample).not.toHaveBeenCalled();
+    expect(screen.getByLabelText("Target 2 of 5")).toBeInTheDocument();
+    expect(screen.getByText(/1 of 5 targets saved/)).toBeVisible();
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+  });
+
   it("rejects old camera pixels before image readiness even when dispatch is current", () => {
     const tracker = new IndexImageTracker(binding);
     openAndSaveFirst(tracker);

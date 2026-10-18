@@ -16,12 +16,21 @@ const guidance: Record<IndexImageReadinessResult["condition"], string> = {
   LOST: "Fingertip tracking paused. Bring the same finger back into view; saved targets are kept.",
 };
 const postureGuidance: Record<string, string> = {
+  FINGERTIP_RECONFIRMED_SETTLING:
+    "The same fingertip is reacquired. Hold briefly while tracking settles; saved targets are kept.",
+  SAME_HAND_POSITION_UNCERTAIN: "Your hand is still tracked. Fingertip position is settling; saved targets are kept.",
   MANUAL_SELECTION_REQUIRED:
     "Your selected fingertip could not be acquired or its image track expired. Mark the visible fingertip again, or choose automatic fingertip selection; the hand model will not replace your selection.",
   IMAGE_REFERENCE_CONFLICT:
     "Fingertip appearance matches disagree. Tracking is paused to avoid a jump; keep the same fingertip visible while it reacquires. Saved targets are kept.",
   IMAGE_REFERENCE_EXPIRED:
-    "The fingertip appearance has changed too much to preserve its position. Return to the original appearance, or mark the visible fingertip for a fresh setup.",
+    "The fingertip image needs a fresh match. Keep the same index visible while tracking reacquires; saved targets are kept.",
+  IMAGE_OUTSIDE_OBSERVED_HAND:
+    "The image tracker drifted away from your hand. Pointer sampling is paused while index tracking settles; saved targets are kept.",
+  INDEX_SHAFT_MATCH_NOT_TIP:
+    "Your index is still associated, but its tip position is settling. Sampling is paused; saved targets are kept.",
+  INDEX_SHAFT_MODEL_TIP: "Following the hand model's fingertip while the index image changes.",
+  IMAGE_TIP_MODEL_ENDPOINT_UNCERTAIN: "Following the tracked fingertip while the hand model's endpoint is uncertain.",
   FULL_HAND_POINT_PENDING: "Full-hand pointing evidence is settling; saved targets are kept.",
   COHERENT_MODEL_CONTRARY:
     "Pointing posture changed. Show a relaxed index point again. If the hand stays cropped, mark the visible fingertip to start a fresh setup.",
@@ -37,6 +46,8 @@ const postureGuidance: Record<string, string> = {
     "Full-hand detection is ambiguous. Keep one pointing hand visible while tracking settles; saved targets are kept.",
   FULL_HAND_INDEX_CONFLICT:
     "The hand model and selected fingertip disagree. Keep your index visible while they agree again; the cursor will not jump to another finger.",
+  INDEX_MODEL_IMAGE_CONFLICT:
+    "The visible index and tracked image disagree. Sampling is paused while they agree again; saved targets are kept.",
 };
 function identity(o: IndexImageObservation): string | null {
   if (o.trackId === null || o.trackGeneration <= 0) return null;
