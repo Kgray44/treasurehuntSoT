@@ -98,7 +98,9 @@ export const indexImageAlgorithmDescriptor = {
     conflictRecovery:
       "SOURCE_MATCHED_TRUSTED_REFERENCE_IMAGE_PROOF_WITHIN_250MS_PLUS_CURRENT_THREE_FRAME_120MS_GEOMETRY_RESTORES_AUTOMATIC_CONTROL_MANUAL_REQUIRES_CURRENT_IMAGE_AND_SAME_SOURCE_CONFIRMED_FULL_POINT_NO_MODEL_REANCHOR",
     conflictSearch:
-      "ONE_NONAUTHORITATIVE_SEARCH_PROPOSAL_FROM_FULL_QUALITY_ORIGINAL_STABLE_TEMPLATE_ROUNDTRIP_ONLY_SOURCE_AND_OPTICAL_EPOCH_SCOPED_GAP_250MS_LIFETIME_1200MS_FROM_FROZEN_TRUSTED_CAPTURE_KEEP_FROZEN_WINDOW_RIVALS_AND_ADAPTIVE_REVERSE_ORIGIN_NO_TEMPLATE_VELOCITY_MEASUREMENT_OR_IDENTITY_CLOCK_RENEWAL",
+      "ONE_OLD_SOURCE_SEARCH_PROPOSAL_FROM_FULL_QUALITY_ORIGINAL_STABLE_TEMPLATE_ROUNDTRIP_GAP_250MS_LIFETIME_1200MS_FROM_FROZEN_TRUSTED_CAPTURE_ORIGINAL_WINDOW_RIVALS_AND_ADAPTIVE_REVERSE_ORIGIN_FOREIGN_ALIAS_PROOF_SEPARATELY_USES_STANDARD_TRUSTED_WINDOW_NEVER_OLD_PROPOSAL_NO_TEMPLATE_VELOCITY_MEASUREMENT_OR_IDENTITY_CLOCK_RENEWAL",
+    sourceAnatomyRefresh:
+      "DEEPCOPY_LATEST_PROVEN_ENTRY_TRUSTED_ACTUAL_SOURCE_CONFIRMED_FULL_POINT_CURRENT_FOUR_INDEX_JOINTS_LIVE_CERT_COHERENT_GEOMETRY_STRICT_EIGHT_PIXEL_OPTICAL_CONSENSUS_AND_OLD_TWO_PART_INDEX_PROOF_BEFORE_SAME_CAPTURE_BANK_RENEWAL_NO_CANDIDATE_NEGATIVE_COLD_SHAFT_RAY_OR_MODEL_ONLY_REFRESH",
     manual: "IMAGE_ONLY_NO_MODEL_INITIALIZATION_RESCUE_OR_EXPIRY_TAKEOVER",
     unavailable:
       "RETAIN_REGISTERED_COHORT_UP_TO_250MS_BUT_REQUIRE_CURRENT_QUALIFIED_FULL_OR_REGISTERED_INDEX_GEOMETRY_FOR_MODEL_ACTION",
@@ -165,7 +167,7 @@ export const indexImageAlgorithm = {
   providerId: "watchglass.index-image",
   providerVersion: "4",
   algorithm: "TEMPORAL_INDEX_FUSION_V3",
-  algorithmDigest: "74fc0c477f7e4b945ee9daa0522e860ea6d05d46ec7bd63760e48b8af866568e",
+  algorithmDigest: "d44f622206af73179698c692871bbfc515ff074f48bacb038d86449b78d8c42a",
 } as const;
 export type IndexImageBinding = {
   providerGeneration: number;
@@ -818,22 +820,22 @@ export class IndexImageTracker {
     const temporalCheckpoint = this.temporal.checkpoint();
     const sourceCheckpoint = this.sourceAssociation.checkpoint();
     try {
-      // An unverified source may not inherit a search trajectory prepared for
-      // the selected hand, even if it happens to overlap its image candidate.
+      // Foreign NN candidates cannot inherit the selected hand's speculative
+      // search. Keep its old-source optical hypothesis separately; destroying
+      // it merely because another NN ID appeared would defeat reacquisition.
       const trustedSearchSource = this.trustedModelSource ?? this.handIdentity?.source;
       const foreignSearchSource =
         !!trustedSearchSource && !!model?.identitySource && model.identitySource !== trustedSearchSource;
-      const displacedSearch = foreignSearchSource && this.quarantinedSearch !== null;
-      if (foreignSearchSource) this.quarantinedSearch = null;
-      const matches = displacedSearch ? this.computeMatches(pending.frame) : pending.matches;
-      const associatedModel = this.associateModelSource(model, pending.frame, matches);
+      const sourceMatches = foreignSearchSource ? this.computeMatches(pending.frame, false) : pending.matches;
+      const entryTrustedModel = !!this.trustedModelSource && model?.identitySource === this.trustedModelSource;
+      const associatedModel = this.associateModelSource(model, pending.frame, sourceMatches);
       const observation = this.finishUpdate(
         { ...pending.frame, received: started },
         associatedModel,
         pending.hint,
-        matches,
+        pending.matches,
+        entryTrustedModel,
       );
-      if (foreignSearchSource) this.quarantinedSearch = null;
       const completed = now();
       if (!validTime(completed) || completed < started || !sourceFresh())
         throw new Error("INDEX_IMAGE_FRAME_INVALID_OR_STALE");
@@ -961,10 +963,11 @@ export class IndexImageTracker {
       cueCohorts: this.cueCohorts,
     };
   }
-  private computeMatches(frame: IndexGrayFrame): PreparedImage["matches"] {
+  private computeMatches(frame: IndexGrayFrame, allowQuarantine = true): PreparedImage["matches"] {
     if (!this.point || !this.template || !this.previous || !this.reference) return null;
     const candidate = this.quarantinedSearch;
     const searchCandidate =
+      allowQuarantine &&
       candidate &&
       candidate.reference === this.reference &&
       candidate.opticalEpoch === this.opticalEpoch &&
@@ -1223,6 +1226,7 @@ export class IndexImageTracker {
     model?: IndexModelAnchor | null,
     manualHint?: Point | null,
     preparedMatches?: PreparedImage["matches"],
+    entryTrustedModel = false,
   ): IndexImageObservation {
     const rawOptical = preparedMatches?.stable.accepted ?? preparedMatches?.adaptive.accepted;
     // A missing/bad tip cannot discard a whole-hand negative or ambiguity.
@@ -2417,6 +2421,34 @@ export class IndexImageTracker {
         confirmHandIdentity();
         if (modelReady && model?.identityObserved === true)
           this.modelIdentity = { source: this.modelContinuity!.source, seenAt: frame.capture };
+        if (
+          entryTrustedModel &&
+          modelReady &&
+          currentGeometry &&
+          this.sourceCanonical === conditionedSource &&
+          !this.manualSelection &&
+          !this.automaticEntryPending &&
+          !this.coordinateConflict &&
+          !this.authorityVetoed &&
+          !this.vetoed &&
+          !indexShaftObserved &&
+          model?.authority === "POINT" &&
+          this.authorityCandidate?.kind === "POINT" &&
+          this.authorityCandidate.confirmed &&
+          this.authorityCandidate.lastAt === frame.capture &&
+          currentObservedIndex?.source === conditionedSource &&
+          currentObservedIndex.joints.length === 4 &&
+          this.indexIdentity?.source === conditionedSource &&
+          this.indexIdentity.lastAt === frame.capture &&
+          Math.hypot(found.point.x - modelPoint.x, found.point.y - modelPoint.y) <= policy.modelAgreementRadius &&
+          fingerAppearanceContinues(conditionedSource!)
+        )
+          this.sourceAnatomy = {
+            index: model.geometry!.index.map((joint) => ({ ...joint })) as unknown as NonNullable<
+              IndexModelAnchor["geometry"]
+            >["index"],
+            palmSpan: model.geometry!.palmSpan,
+          };
         rememberFingerReference(conditionedSource!);
         coordinateSource = "FUSED";
         modelSupport = modelReady ? "FULL_HAND" : "REGISTERED_INDEX";

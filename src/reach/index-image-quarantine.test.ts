@@ -184,16 +184,67 @@ describe("fixed-reference image quarantine follows candidates without trusting t
     expect(expired.matchedPoint).toBeNull();
   });
 
-  it("does not advance the old source's candidate from foreign-source current anatomy", () => {
+  it("retains old-source image search without lending its proof to a foreign same-context model ID", () => {
     const tracker = new IndexImageTracker(binding);
-    const selected = startConflict(tracker);
-    expect(tracker.update(pixels(366, 69), model(93, "different-provider-context")).point).toBeNull();
-    // Repeated foreign frames must not recreate a search proposal after the
-    // first one cleared it. Both still match the old fixed patch locally.
-    expect(tracker.update(pixels(433, 69), model(93, "different-provider-context")).point).toBeNull();
-    const current = tracker.update(pixels(500, 93), model(117));
-    expect(current).toMatchObject({ point: null, trackId: selected.trackId });
-    expect(current.matchedPoint).toBeNull();
+    const context = [
+      "synthetic-provider",
+      "synthetic-model",
+      "synthetic-algorithm",
+      1,
+      binding.cameraLeaseId,
+      1,
+      320,
+      240,
+      "NONE",
+      0,
+    ];
+    const rawA = JSON.stringify([...context, "hand-a", 1]);
+    const rawB = JSON.stringify([...context, "hand-b", 2]);
+    let selected;
+    for (const at of [100, 166, 233]) selected = tracker.update(pixels(at), model(45, rawA));
+    expect(selected).toMatchObject({ state: "TRACKING", coordinateSource: "FUSED" });
+    expectCandidate(tracker.update(pixels(300, 57), model(81, rawA)), 57, selected!.trackId);
+    const internal = tracker as unknown as {
+      sourceAssociation: import("./index-source-association").IndexSourceAssociation;
+      quarantinedSearch: { source: string; point: { x: number }; frozenTrustedAt: number } | null;
+    };
+    const helper = internal.sourceAssociation;
+    const trusted = helper.checkpoint();
+    const history = opticalState(tracker);
+    const observed = vi.spyOn(helper, "observe");
+    for (const [at, x] of [
+      [366, 69],
+      [433, 81],
+      [500, 93],
+    ]) {
+      // B's tip exactly agrees with the moving OLD-A optical hypothesis, but
+      // B must receive the standard trusted45 search, not that hypothesis.
+      expectCandidate(tracker.update(pixels(at, x), model(x, rawB)), x, selected!.trackId);
+      expect(opticalState(tracker)).toEqual(history);
+      expect(internal.quarantinedSearch).toMatchObject({ source: rawA, point: { x }, frozenTrustedAt: 233 });
+      expect(helper.checkpoint()).toMatchObject({
+        canonical: trusted.canonical,
+        trusted: rawA,
+        trustedAt: trusted.trustedAt,
+        candidates: [],
+      });
+    }
+    const foreignEvidence = observed.mock.calls
+      .map(([evidence]) => evidence)
+      .filter((evidence) => evidence.source === rawB);
+    expect(foreignEvidence).toHaveLength(3);
+    expect(foreignEvidence.every((evidence) => evidence.appearanceVerified === false)).toBe(true);
+    expect(
+      foreignEvidence.filter((evidence) => evidence.capture >= 433).map((evidence) => evidence.tipAgreement),
+    ).toEqual([false, false]);
+    observed.mockRestore();
+    // The original source may recover its own retained fixed-reference search;
+    // a different source cannot inherit it merely by agreeing with its point.
+    for (const at of [566, 633])
+      expectCandidate(tracker.update(pixels(at, 93), model(93, rawA)), 93, selected!.trackId);
+    const recovered = tracker.update(pixels(699, 93), model(93, rawA));
+    expect(recovered).toMatchObject({ state: "TRACKING", trackId: selected!.trackId });
+    expect(recovered.point!.x * 159).toBeCloseTo(93, 1);
   });
 
   it("invalidates a quarantined search center when an explicit hint creates a new optical epoch", () => {
