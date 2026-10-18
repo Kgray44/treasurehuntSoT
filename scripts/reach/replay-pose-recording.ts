@@ -2,7 +2,12 @@ import { readFile, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { createHash } from "node:crypto";
 import { z } from "zod";
-import { BrowserHandAdapter, handModel } from "../../src/watchglass/hand-provider";
+import {
+  BrowserHandAdapter,
+  handModel,
+  handProviderVersion,
+  type HandInferencePolicy,
+} from "../../src/watchglass/hand-provider";
 import { assessHand } from "../../src/watchglass/hand-posture";
 import { ActiveHandSelector, ObservationGate } from "../../src/reach/observation";
 import { poseRecordingSteps, type PoseTraceFrame } from "../../src/reach/pose-recording";
@@ -28,6 +33,7 @@ const frameSchema = z.object({
   height: nullable,
   mirror: z.boolean(),
   inferenceBackend: z.enum(["CPU_WASM", "GPU_WEBGL"]).nullable().default(null),
+  inferencePolicy: z.enum(["ORIGINAL_CPU", "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1"]).nullable().default(null),
   timingFlags: z.array(z.string()).max(20),
   hands: z
     .array(
@@ -183,6 +189,7 @@ export function replayPoseRecording(input: unknown) {
   let context: string | null = null,
     previousSequence = -1,
     previousReceived = -Infinity;
+  let replayPolicy: HandInferencePolicy | null = null;
   const outcomes: Outcome[] = [],
     rejectionCounts: Record<string, number> = {},
     capturedFlagCounts: Record<string, number> = {};
@@ -264,7 +271,13 @@ export function replayPoseRecording(input: unknown) {
       reject("FRAME_DIMENSIONS_INVALID");
       continue;
     }
-    const frameContext = `${frame.width}:${frame.height}:${frame.mirror}`;
+    const backend = frame.inferenceBackend ?? "CPU_WASM";
+    const policy = frame.inferencePolicy ?? "ORIGINAL_CPU";
+    if (backend === "GPU_WEBGL" && policy !== "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1") {
+      reject("FRAME_INFERENCE_POLICY_UNSUPPORTED");
+      continue;
+    }
+    const frameContext = `${frame.width}:${frame.height}:${frame.mirror}:${backend}:${policy}`;
     if (context !== null && context !== frameContext) {
       reject("FRAME_CONTEXT_CHANGED_NO_REBIND");
       continue;
@@ -277,7 +290,8 @@ export function replayPoseRecording(input: unknown) {
         cameraFrameVersion: 1,
         mirrorTransform: frame.mirror ? ("PREVIEW_X" as const) : ("NONE" as const),
       };
-      adapter = new BrowserHandAdapter(binding, "D0");
+      replayPolicy = policy;
+      adapter = new BrowserHandAdapter(binding, "D0", backend, policy);
       gate = new ObservationGate({ ...binding, orientation: 0 });
     }
     try {
@@ -391,7 +405,17 @@ export function replayPoseRecording(input: unknown) {
     analysis: "CURRENT_SOFTWARE_REPLAY_OF_RECORDED_MODEL_OUTPUT;_NOT_NEW_INFERENCE_OR_CAMERA_QUALIFICATION",
     modelDigest: handModel.modelDigest,
     recordedProviderVersion: trace.model.providerVersion,
-    replayProviderVersion: handModel.providerVersion,
+    replayProviderVersion: replayPolicy ? handProviderVersion(replayPolicy) : null,
+    recordedInferenceSources: [
+      ...new Set(
+        trace.frames.map((frame) => `${frame.inferenceBackend ?? "UNKNOWN"}:${frame.inferencePolicy ?? "UNKNOWN"}`),
+      ),
+    ],
+    legacyReplayAssumption: trace.frames.some(
+      (frame) => frame.inferenceBackend === null || frame.inferencePolicy === null,
+    )
+      ? "MISSING_BACKEND_ASSUMED_CPU;_MISSING_POLICY_ASSUMED_ORIGINAL_CPU;_GPU_WITHOUT_SUPPORTED_POLICY_REJECTED;_NOT_RECORDED_PROVENANCE"
+      : null,
     clocks: {
       fixedSyntheticOffsetMs: clockOffsetMs,
       representativeSeekBasis: "CAPTURE_CLOCK_MINUS_PAUSES_BEST_EFFORT;_GUIDE_ELAPSED_FALLBACK_IF_CLOCK_MISSING",

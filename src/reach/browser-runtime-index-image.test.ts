@@ -1,7 +1,7 @@
 // @sounding-line-registration owner=reach suite=unit.reach contracts=reach.phase1.foundation
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { ReachBrowserRuntime, type IndexImageObservation, type ReachInferenceMetrics } from "./browser-runtime";
-import type { HandResult } from "@/watchglass/hand-provider";
+import type { HandInferencePolicy, HandResult } from "@/watchglass/hand-provider";
 import { pointingPose } from "../../tests/e2e/fixtures/reach/pointing-poses";
 import { IndexImageTracker } from "./index-image-tracker";
 import { IndexImageObservationGate } from "./index-image-observation";
@@ -38,6 +38,7 @@ function setup(
     callbackCostMs?: number;
     frameCallbacks?: boolean;
     backend?: "CPU_WASM" | "GPU_WEBGL";
+    providerPolicy?: HandInferencePolicy;
     imageFailure?: "DRAW" | "READBACK";
     calibrationCollecting?: boolean;
     metricsThrows?: boolean;
@@ -123,6 +124,8 @@ function setup(
   vi.stubGlobal("createImageBitmap", bitmap);
   const workers: {
     generation: number;
+    url: string;
+    init: Record<string, unknown> | null;
     onmessage: ((event: MessageEvent) => void) | null;
     frames: FrameMessage[];
     transfers: unknown[][];
@@ -132,16 +135,20 @@ function setup(
     "Worker",
     class {
       generation = 0;
+      init: Record<string, unknown> | null = null;
       onmessage: ((event: MessageEvent) => void) | null = null;
       onerror = null;
       frames: FrameMessage[] = [];
       transfers: unknown[][] = [];
       terminate = vi.fn();
-      constructor() {
+      constructor(readonly url: string) {
         workers.push(this);
       }
       postMessage(message: { type: string; generation: number }, transfer: unknown[] = []) {
-        if (message.type === "INIT") this.generation = message.generation;
+        if (message.type === "INIT") {
+          this.generation = message.generation;
+          this.init = { ...message };
+        }
         if (message.type === "FRAME") {
           events.push("WORKER_FRAME_POSTED");
           this.frames.push(message as FrameMessage);
@@ -242,6 +249,7 @@ function setup(
           type: "READY",
           generation: worker.generation,
           ...(options.backend ? { backend: options.backend } : {}),
+          ...(options.providerPolicy ? { providerPolicy: options.providerPolicy } : {}),
         },
       } as MessageEvent);
       await Promise.resolve();
@@ -251,6 +259,9 @@ function setup(
     async advance(ms: number) {
       now += ms;
       await vi.advanceTimersByTimeAsync(ms);
+    },
+    jumpClock(ms: number) {
+      now += ms;
     },
     freshFrame() {
       video.currentTime += 1 / 30;
@@ -268,6 +279,7 @@ function setup(
           height: 240,
           result: { landmarks, handedness: landmarks.map(() => [{ categoryName: "Right", score: 0.99 }]) },
           ...(options.backend ? { backend: options.backend } : {}),
+          ...(options.providerPolicy ? { providerPolicy: options.providerPolicy } : {}),
         },
       } as MessageEvent);
     },
@@ -760,6 +772,124 @@ describe("runtime image source integration", () => {
     await s.start(true, false);
     expect(s.status).toHaveBeenLastCalledWith("MODEL_BACKEND_CHANGED");
     expect(s.runtime.resources()).toEqual({ tracks: 0, workers: 0, timers: 0 });
+  });
+  it("accepts the verified recovery policy and binds actual GPU metadata without changing the image coordinate path", async () => {
+    const s = setup({ backend: "GPU_WEBGL", providerPolicy: "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1" });
+    const worker = await s.start();
+    expect(worker.url).toBe("/reach/recovery-worker.js");
+    expect(worker.init).toMatchObject({
+      delegate: "GPU",
+      mirrorTransform: "PREVIEW_X",
+      geometryVersion: s.runtime.camera.snapshot().generation,
+    });
+    await s.advance(10);
+    s.result();
+    expect(s.observe.mock.calls[0][0]).toMatchObject({
+      inferenceBackend: "GPU_WEBGL",
+      providerVersion: "1.5.0+actual-roi-v1",
+    });
+    expect(s.runtime.captureDiagnostics().perception).toMatchObject({
+      backend: "GPU_WEBGL",
+      policy: "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1",
+      fallbackReason: null,
+    });
+    expect(s.image.mock.calls.at(-1)?.[0].point).not.toBeNull();
+    worker.onmessage!({
+      data: { type: "RESULT", generation: worker.generation, backend: "GPU_WEBGL", providerPolicy: "ORIGINAL_CPU" },
+    } as MessageEvent);
+    expect(s.status).toHaveBeenLastCalledWith("MODEL_BACKEND_CHANGED");
+    expect(s.runtime.resources()).toEqual({ tracks: 0, workers: 0, timers: 0 });
+  });
+  it("retires a slow optional startup before originalCPU fallback within the unchanged total model deadline", async () => {
+    const s = setup();
+    await s.runtime.start(true, true);
+    const optional = s.workers[0],
+      late = optional.onmessage!;
+    expect(optional.frames).toHaveLength(0);
+    await s.advance(8000);
+    expect(optional.terminate).toHaveBeenCalledOnce();
+    const cpu = s.workers[1];
+    expect(cpu.url).toBe("/reach/hand-worker.js");
+    expect(s.media.getUserMedia).toHaveBeenCalledOnce();
+    late({
+      data: {
+        type: "READY",
+        generation: optional.generation,
+        backend: "GPU_WEBGL",
+        providerPolicy: "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1",
+      },
+    } as MessageEvent);
+    expect(s.status).toHaveBeenLastCalledWith("MODEL_STARTING");
+    expect(s.bitmap).not.toHaveBeenCalled();
+    await s.advance(6999);
+    expect(s.runtime.resources().workers).toBe(1);
+    await s.advance(1);
+    expect(cpu.terminate).toHaveBeenCalledOnce();
+    expect(s.runtime.resources()).toEqual({ tracks: 0, workers: 0, timers: 0 });
+    expect(s.status).toHaveBeenLastCalledWith("MODEL_FAILURE");
+  });
+  it("runs originalCPU on startup failure without requesting a second camera or reusing optional-worker replies", async () => {
+    const s = setup({ backend: "CPU_WASM" });
+    await s.runtime.start(true, true);
+    const optional = s.workers[0];
+    optional.onmessage!({
+      data: { type: "ERROR", generation: optional.generation, reason: "RECOVERY_RUNTIME_ABI" },
+    } as MessageEvent);
+    const cpu = s.workers[1];
+    expect(optional.terminate).toHaveBeenCalledOnce();
+    cpu.onmessage!({ data: { type: "READY", generation: cpu.generation, backend: "CPU_WASM" } } as MessageEvent);
+    await Promise.resolve();
+    expect(cpu.frames).toHaveLength(1);
+    await s.advance(10);
+    s.result();
+    expect(s.observe.mock.calls[0][0].providerVersion).toBe("1.5.0");
+    expect(s.runtime.captureDiagnostics().perception).toMatchObject({
+      backend: "CPU_WASM",
+      policy: "ORIGINAL_CPU",
+      fallbackReason: "RECOVERY_STARTUP_UNAVAILABLE",
+    });
+    expect(s.media.getUserMedia).toHaveBeenCalledOnce();
+  });
+  it.each(["RECOVERY_TASK_INTEGRITY", "RECOVERY_PARTIAL_CLOSE_FAILED"])(
+    "does not bypass a fatal %s with a second worker",
+    async (reason) => {
+      const s = setup();
+      await s.runtime.start(true, true);
+      const worker = s.workers[0];
+      worker.onmessage!({ data: { type: "ERROR", generation: worker.generation, reason } } as MessageEvent);
+      expect(s.workers).toHaveLength(1);
+      expect(s.runtime.resources()).toEqual({ tracks: 0, workers: 0, timers: 0 });
+    },
+  );
+  it("rejects READY after the absolute startup deadline even when a blocked event loop delivers it before timers", async () => {
+    const s = setup();
+    await s.runtime.start(true, true);
+    const worker = s.workers[0];
+    s.jumpClock(15000);
+    worker.onmessage!({ data: { type: "READY", generation: worker.generation, backend: "CPU_WASM" } } as MessageEvent);
+    expect(s.status).toHaveBeenLastCalledWith("MODEL_FAILURE");
+    expect(s.bitmap).not.toHaveBeenCalled();
+    expect(s.workers).toHaveLength(1);
+    expect(s.runtime.resources()).toEqual({ tracks: 0, workers: 0, timers: 0 });
+  });
+  it("enforces the optional startup deadline on receipt without waiting for its delayed timer", async () => {
+    const s = setup();
+    await s.runtime.start(true, true);
+    const worker = s.workers[0];
+    s.jumpClock(8000);
+    worker.onmessage!({
+      data: {
+        type: "READY",
+        generation: worker.generation,
+        backend: "GPU_WEBGL",
+        providerPolicy: "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1",
+      },
+    } as MessageEvent);
+    expect(worker.terminate).toHaveBeenCalledOnce();
+    expect(s.workers).toHaveLength(2);
+    expect(s.workers[1].url).toBe("/reach/hand-worker.js");
+    expect(s.bitmap).not.toHaveBeenCalled();
+    expect(s.status).toHaveBeenLastCalledWith("MODEL_STARTING");
   });
   function modelPose(point: { x: number; y: number }, options: Parameters<typeof pointingPose>[0] = {}) {
     const pose = pointingPose(options);

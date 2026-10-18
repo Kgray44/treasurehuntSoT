@@ -442,6 +442,8 @@ export function ReachLaboratory({
     featureProfile: REACH_FEATURE_PROFILE,
     associationBasis: REACH_ASSOCIATION_BASIS,
     providerId: o.providerId,
+    providerVersion: o.providerVersion,
+    inferenceBackend: o.inferenceBackend,
     modelDigest: o.modelDigest,
     providerGeneration: o.providerGeneration,
     cameraLeaseId: o.cameraLeaseId,
@@ -608,6 +610,7 @@ export function ReachLaboratory({
     featureProfile: REACH_RELATIVE_FEATURE_PROFILE,
     associationBasis: REACH_RELATIVE_ASSOCIATION_BASIS,
     providerId: sourceRef.current === "DEMO" ? "reach.demo.index-image" : o.providerId,
+    providerVersion: o.providerVersion,
     modelDigest: o.algorithmDigest,
     providerGeneration: o.providerGeneration,
     cameraLeaseId: o.cameraLeaseId,
@@ -2105,6 +2108,14 @@ export function ReachLaboratory({
                     {source === "LIVE" && captureDiagnostics
                       ? captureHealthMessages[captureDiagnostics.health.state]
                       : "Camera off"}
+                  </dd>
+                </div>
+                <div>
+                  <dt>Hand model processing</dt>
+                  <dd>
+                    {source === "LIVE" && captureDiagnostics?.perception
+                      ? `${captureDiagnostics.perception.backend === "GPU_WEBGL" ? "GPU" : "CPU"} · ${captureDiagnostics.perception.policy === "ORIGINAL_CPU" ? "original model path" : "current-frame region recovery"}`
+                      : "Not running"}
                   </dd>
                 </div>
                 <div>

@@ -89,6 +89,28 @@ it("reports camera-context changes without manufacturing a fresh compatible bind
   expect(report.rejectionCounts.FRAME_CONTEXT_CHANGED_NO_REBIND).toBe(2);
   expect(report.steps[0].replayAcceptedFrames).toBe(5);
 });
+it("replays recorded GPU recovery provenance and rejects a later backend or policy change without rebinding", () => {
+  const trace = fixture();
+  for (const frame of trace.frames) {
+    frame.inferenceBackend = "GPU_WEBGL";
+    frame.inferencePolicy = "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1";
+  }
+  trace.frames[4].inferenceBackend = "CPU_WASM";
+  trace.frames[4].inferencePolicy = "ORIGINAL_CPU";
+  const report = replayPoseRecording(trace);
+  expect(report.replayProviderVersion).toBe("1.5.0+actual-roi-v1");
+  expect(report.rejectionCounts.FRAME_CONTEXT_CHANGED_NO_REBIND).toBe(1);
+  expect(report.steps[0].replayAcceptedFrames).toBe(5);
+  expect(report.recordedInferenceSources).toContain("GPU_WEBGL:WATCHGLASS_ACTUAL_ROI_RECOVERY_V1");
+});
+it("does not relabel GPU frames without a supported graph policy as originalCPU", () => {
+  const trace = fixture();
+  for (const frame of trace.frames) frame.inferenceBackend = "GPU_WEBGL";
+  const report = replayPoseRecording(trace);
+  expect(report.rejectionCounts.FRAME_INFERENCE_POLICY_UNSUPPORTED).toBe(6);
+  expect(report.steps[0].replayAcceptedFrames).toBe(0);
+  expect(report.replayProviderVersion).toBeNull();
+});
 it("counts unobserved long gaps as misses after the last fresh eligible position expires", () => {
   const report = replayPoseRecording(fixture([0, 100, 200, 300, 400, 3000, 3100, 3200]));
   expect(report.steps[0].longestEligibilityMiss!.durationMs).toBeGreaterThan(2400);

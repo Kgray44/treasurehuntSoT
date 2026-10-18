@@ -4,15 +4,18 @@ import { assessHand } from "./hand-posture";
 import { indexGeometry } from "./index-geometry";
 export const handModel = {
   providerId: "watchglass.hand-observation",
-  providerVersion: "1.4.0",
+  providerVersion: "1.5.0",
   modelId: "mediapipe.hand-landmarker.float16",
   modelVersion: "1",
   modelDigest: "fbc2a30080c3c557093b5ddfc334698132eb341044ccee322ccf8bcf3607cde1",
   runtimeVersion: "0.10.32",
-  preferredBackend: "CPU_WASM",
-  supportedBackends: ["CPU_WASM"],
+  preferredBackend: "GPU_WEBGL",
+  supportedBackends: ["CPU_WASM", "GPU_WEBGL"],
   maxHands: 2,
 } as const;
+export type HandInferencePolicy = "ORIGINAL_CPU" | "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1";
+export const handProviderVersion = (policy: HandInferencePolicy) =>
+  policy === "ORIGINAL_CPU" ? handModel.providerVersion : `${handModel.providerVersion}+actual-roi-v1`;
 type Landmark = { x: number; y: number; z: number };
 export type HandResult = { landmarks: Landmark[][]; handedness: { categoryName: string; score: number }[][] };
 type IndexCenter = { x: number; y: number };
@@ -167,6 +170,7 @@ export class BrowserHandAdapter {
     >,
     private tier: HandObservation["evidenceTier"] = "UNQUALIFIED",
     private readonly backend: HandInferenceBackend = "CPU_WASM",
+    private readonly policy: HandInferencePolicy = "ORIGINAL_CPU",
   ) {}
   envelope(result: HandResult, capture: number, inference: number, width: number, height: number): HandObservation {
     if (!Number.isFinite(capture) || !Number.isFinite(inference) || capture <= this.capture || inference < capture)
@@ -383,7 +387,7 @@ export class BrowserHandAdapter {
       observationVersion: 1,
       ...this.binding,
       providerId: handModel.providerId,
-      providerVersion: handModel.providerVersion,
+      providerVersion: handProviderVersion(this.policy),
       modelId: handModel.modelId,
       modelVersion: handModel.modelVersion,
       modelDigest: handModel.modelDigest,

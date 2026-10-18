@@ -113,10 +113,13 @@ describe("Reach Phase 1 owner oracles", () => {
     const binding = {
       ...syntheticBinding,
       providerId: o.providerId,
+      providerVersion: o.providerVersion,
+      inferenceBackend: "CPU_WASM" as const,
       modelDigest: o.modelDigest,
       cameraLeaseId: o.cameraLeaseId,
       trackId: o.hands[0].trackId,
     };
+    o.inferenceBackend = "CPU_WASM";
     const c = validateCalibration(
       fitCalibration(calibrationGroups(), binding, 1000),
       calibrationGroups(calibrationLayout.validation),
@@ -131,6 +134,10 @@ describe("Reach Phase 1 owner oracles", () => {
     });
     expect(estimatedPoint(c, o, binding, 1300)).toBeNull();
     expect(estimatedPoint(c, { ...o, providerGeneration: 2 }, binding, 1101)).toBeNull();
+    expect(
+      estimatedPoint(c, { ...o, providerVersion: `${o.providerVersion}+different-policy` }, binding, 1101),
+    ).toBeNull();
+    expect(estimatedPoint(c, { ...o, inferenceBackend: "GPU_WEBGL" }, binding, 1101)).toBeNull();
     // Coarse legacy quality no longer overrides valid per-hand feature evidence.
     expect(estimatedPoint(c, { ...o, quality: "LOW" }, binding, 1101)).not.toBeNull();
     const partial = structuredClone(o);

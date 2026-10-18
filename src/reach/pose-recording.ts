@@ -121,6 +121,7 @@ export type PoseTraceFrame = {
   height: number | null;
   mirror: boolean;
   inferenceBackend: RawHandInference["inferenceBackend"] | null;
+  inferencePolicy: RawHandInference["inferencePolicy"] | null;
   timingFlags: string[];
   hands: { landmarks: RawPoint[]; handedness: "LEFT" | "RIGHT" | "UNKNOWN"; handednessScore: number | null }[];
   rawHandCount: number;
@@ -297,6 +298,7 @@ export class PoseRecordingSession {
       height: finite(input.height),
       mirror: input.mirror === true,
       inferenceBackend: input.inferenceBackend ?? null,
+      inferencePolicy: input.inferencePolicy ?? null,
       timingFlags: flags,
       ...snapshotResult(input.result),
     };
@@ -322,7 +324,9 @@ export class PoseRecordingSession {
       missingCoordinates: "NULL_NOT_FABRICATED_ZERO",
       model: {
         ...handModel,
+        providerVersionMeaning: "BASE_ADAPTER_VERSION;_EXACT_LIVE_VERSION_DEPENDS_ON_PER_FRAME_INFERENCE_POLICY",
         inferenceBackendsUsed: [...new Set(this.frames.map((frame) => frame.inferenceBackend).filter(Boolean))],
+        inferencePoliciesUsed: [...new Set(this.frames.map((frame) => frame.inferencePolicy).filter(Boolean))],
       },
       video: {
         kind: "CAMERA_PLUS_EXISTING_RENDERED_TRACE_AND_PROMPT",

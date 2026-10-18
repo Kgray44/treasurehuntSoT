@@ -14,6 +14,7 @@ export class ObservationGate {
   private capture = -1;
   private frame: string | null = null;
   private backend: HandObservation["inferenceBackend"] | null = null;
+  private source: string | null = null;
   constructor(
     readonly binding: ObservationBinding,
     readonly maxAgeMs = 150,
@@ -37,10 +38,20 @@ export class ObservationGate {
     if (this.frame !== null && this.frame !== frame) throw new Error("OBSERVATION_FRAME_CHANGED");
     const backend = o.inferenceBackend ?? "CPU_WASM";
     if (this.backend !== null && this.backend !== backend) throw new Error("OBSERVATION_BACKEND_CHANGED");
+    const source = JSON.stringify([
+      o.providerId,
+      o.providerVersion,
+      o.modelId,
+      o.modelVersion,
+      o.modelDigest,
+      o.evidenceTier,
+    ]);
+    if (this.source !== null && this.source !== source) throw new Error("OBSERVATION_SOURCE_CHANGED");
     this.sequence = o.sequence;
     this.capture = o.monotonicCaptureTime;
     this.frame = frame;
     this.backend = backend;
+    this.source = source;
     return o;
   }
 }

@@ -68,6 +68,11 @@
       "contractIds": ["reach.phase1.foundation"]
     },
     {
+      "path": "src/watchglass/image-signal.ts",
+      "suiteIds": ["unit.reach", "static.core", "browser.reach"],
+      "contractIds": ["reach.phase1.foundation"]
+    },
+    {
       "path": "src/reach/**",
       "suiteIds": ["unit.reach", "static.core", "browser.reach"],
       "contractIds": ["reach.phase1.foundation"]

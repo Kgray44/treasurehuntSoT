@@ -146,6 +146,7 @@ it.each([false, true])(
           "height",
           "mirror",
           "inferenceBackend",
+          "inferencePolicy",
         ].sort(),
       );
       expect(s.observe).toHaveBeenCalledOnce();

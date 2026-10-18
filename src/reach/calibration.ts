@@ -40,6 +40,9 @@ export const relativeLayout = {
 };
 type CalibrationSourceBinding = {
   providerId: string;
+  /** Present in current live fits; optional only for older synthetic diagnostic fixtures. */
+  providerVersion?: string;
+  inferenceBackend?: HandObservation["inferenceBackend"];
   modelDigest: string;
   providerGeneration: number;
   cameraLeaseId: string;
@@ -503,6 +506,8 @@ export function estimatedPoint(c: Calibration, observation: HandObservation, bin
     ageMs < 0 ||
     ageMs > 150 ||
     observation.providerId !== binding.providerId ||
+    (binding.providerVersion !== undefined && observation.providerVersion !== binding.providerVersion) ||
+    (binding.inferenceBackend !== undefined && observation.inferenceBackend !== binding.inferenceBackend) ||
     observation.modelDigest !== binding.modelDigest ||
     observation.providerGeneration !== binding.providerGeneration ||
     observation.cameraLeaseId !== binding.cameraLeaseId ||

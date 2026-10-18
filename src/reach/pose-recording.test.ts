@@ -20,10 +20,11 @@ const frame = (capture = 1010): RawHandInference => ({
 });
 it("reports actual backend provenance without guessing it for legacy frames", () => {
   const recording = new PoseRecordingSession(1000, 20);
-  recording.append({ ...frame(), inferenceBackend: "CPU_WASM" }, 1040);
+  recording.append({ ...frame(), inferenceBackend: "CPU_WASM", inferencePolicy: "ORIGINAL_CPU" }, 1040);
   recording.append(frame(1050), 1080);
   const exported = recording.export();
   expect(exported.model.inferenceBackendsUsed).toEqual(["CPU_WASM"]);
+  expect(exported.model.inferencePoliciesUsed).toEqual(["ORIGINAL_CPU"]);
   expect(exported.frames.map((item) => item.inferenceBackend)).toEqual(["CPU_WASM", null]);
 });
 it("labels all nine positions separately and keeps the complete guide below the wall limit", () => {

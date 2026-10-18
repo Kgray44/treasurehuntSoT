@@ -2,7 +2,13 @@ import { BrowserCameraBroker, type CameraLease } from "@/sextant/camera";
 import { BrowserExposureAssistance } from "@/sextant/browser-exposure";
 import { browserVisualCapabilities } from "@/sextant/browser-visual-capabilities";
 import { sampleImageSignal, type ImageLumaPlane } from "@/watchglass/image-signal";
-import { BrowserHandAdapter, handModel, type HandInferenceBackend } from "@/watchglass/hand-provider";
+import {
+  BrowserHandAdapter,
+  handModel,
+  handProviderVersion,
+  type HandInferenceBackend,
+  type HandInferencePolicy,
+} from "@/watchglass/hand-provider";
 import { ObservationGate, type HandObservation } from "./observation";
 import {
   IndexImageTracker,
@@ -44,6 +50,7 @@ export type RawHandInference = {
   height: number;
   mirror: boolean;
   inferenceBackend?: HandInferenceBackend;
+  inferencePolicy?: HandInferencePolicy;
 };
 /** Scalar diagnostics only. This callback never receives an image, identity or landmarks. */
 export type ReachInferenceMetrics = {
@@ -95,6 +102,12 @@ export class ReachBrowserRuntime {
   private diagnosticMode = 0;
   private diagnosticNotBefore = -Infinity;
   private diagnosticSourceBinding: string | null = null;
+  private perception: {
+    backend: HandInferenceBackend;
+    policy: HandInferencePolicy;
+    fallbackReason: string | null;
+    startupMs: number;
+  } | null = null;
   constructor(
     private video: HTMLVideoElement,
     private observe: (o: HandObservation) => void,
@@ -162,6 +175,7 @@ export class ReachBrowserRuntime {
     const valid = leaseValid && cached?.currentAuthorizedLease;
     if (!leaseValid) this.captureHealth.reset();
     return {
+      perception: leaseValid && this.perception ? { ...this.perception } : null,
       capabilities:
         valid && cached
           ? {
@@ -171,14 +185,15 @@ export class ReachBrowserRuntime {
             }
           : null,
       health: this.captureHealth.diagnose(performance.now()),
-      assistance: (leaseValid || this.assistanceFailure) && this.captureAssistance
-        ? {
-            ...this.captureAssistance.snapshot(),
-            reason: this.assistanceFailure ?? this.captureAssistance.snapshot().reason,
-            transitioning: this.assistanceTransitioning,
-            profile: "COLOR_RADIOMETRIC_COMPATIBILITY_NOT_PHYSICAL_QUALIFICATION" as const,
-          }
-        : null,
+      assistance:
+        (leaseValid || this.assistanceFailure) && this.captureAssistance
+          ? {
+              ...this.captureAssistance.snapshot(),
+              reason: this.assistanceFailure ?? this.captureAssistance.snapshot().reason,
+              transitioning: this.assistanceTransitioning,
+              profile: "COLOR_RADIOMETRIC_COMPATIBILITY_NOT_PHYSICAL_QUALIFICATION" as const,
+            }
+          : null,
     };
   }
   private diagnosticLeaseCurrent() {
@@ -257,7 +272,7 @@ export class ReachBrowserRuntime {
               access: current() ? "AVAILABLE" : "UNKNOWN",
               authorized: current(),
               qualifiedProfile:
-                backend() === "CPU_WASM" && this.diagnosticSourceBinding
+                backend() !== null && this.diagnosticSourceBinding
                   ? JSON.stringify([
                       "COLOR_RADIOMETRIC_COMPATIBILITY",
                       this.diagnosticSourceBinding,
@@ -578,13 +593,18 @@ export class ReachBrowserRuntime {
       let adapter: BrowserHandAdapter | null = null;
       let backend: HandInferenceBackend | null = null;
       let legacyBackend = false;
+      let inferencePolicy: HandInferencePolicy = "ORIGINAL_CPU";
+      let legacyPolicy = false;
       this.installCaptureAssistance(lease, generation, () => backend);
       const gate = new ObservationGate({ ...binding, orientation: 0 });
       const imageGate = this.indexObserve ? new IndexImageObservationGate({ ...binding, orientation: 0 }) : null;
-      const worker = new Worker("/reach/hand-worker.js");
+      let worker = new Worker("/reach/recovery-worker.js");
       this.worker = worker;
       this.status("MODEL_STARTING");
-      this.startup = setTimeout(() => fail("MODEL_FAILURE"), 15000);
+      const modelStartup = performance.now();
+      const modelDeadline = modelStartup + 15000;
+      let originalStartup = false;
+      let startupFallbackReason: string | null = null;
       let lastVideoTime = -1;
       let lastVideoFrame = 0;
       let presentedFrame = 0;
@@ -751,24 +771,51 @@ export class ReachBrowserRuntime {
         // rather than sleeping another whole capture interval.
         schedule();
       };
-      worker.onmessage = ({ data }) => {
+      const receive = ({ data }: MessageEvent) => {
         if (!this.active || generation !== this.generation || data.generation !== generation) return;
         if (data.type === "READY") {
+          if (performance.now() >= modelDeadline) {
+            fail("MODEL_FAILURE");
+            return;
+          }
+          if (!originalStartup && performance.now() - modelStartup >= 8000) {
+            fallbackOriginal("RECOVERY_STARTUP_TIMEOUT");
+            return;
+          }
           const selected = data.backend ?? "CPU_WASM";
-          if (workerReady || selected !== "CPU_WASM") {
+          const selectedPolicy = data.providerPolicy ?? "ORIGINAL_CPU";
+          if (
+            workerReady ||
+            !["CPU_WASM", "GPU_WEBGL"].includes(selected) ||
+            !["ORIGINAL_CPU", "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1"].includes(selectedPolicy) ||
+            (selected === "GPU_WEBGL" && selectedPolicy !== "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1")
+          ) {
             fail("MODEL_BACKEND_CHANGED");
             return;
           }
           backend = selected;
+          inferencePolicy = selectedPolicy;
           legacyBackend = data.backend === undefined;
-          adapter = new BrowserHandAdapter(binding, "UNQUALIFIED", selected);
+          legacyPolicy = data.providerPolicy === undefined;
+          adapter = new BrowserHandAdapter(binding, "UNQUALIFIED", selected, inferencePolicy);
+          this.perception = {
+            backend: selected,
+            policy: inferencePolicy,
+            fallbackReason: startupFallbackReason ?? data.fallbackReason ?? null,
+            startupMs: performance.now() - modelStartup,
+          };
           workerReady = true;
           clearTimeout(this.startup);
           this.startup = undefined;
           this.status("READY");
           void pump();
         } else if (data.type === "RESULT") {
-          if (!adapter || !backend || (data.backend ?? (legacyBackend ? "CPU_WASM" : null)) !== backend) {
+          if (
+            !adapter ||
+            !backend ||
+            (data.backend ?? (legacyBackend ? "CPU_WASM" : null)) !== backend ||
+            (data.providerPolicy ?? (legacyPolicy ? "ORIGINAL_CPU" : null)) !== inferencePolicy
+          ) {
             fail("MODEL_BACKEND_CHANGED");
             return;
           }
@@ -790,6 +837,7 @@ export class ReachBrowserRuntime {
               height: data.height,
               mirror,
               inferenceBackend: backend,
+              inferencePolicy,
             });
           } catch {
             // Optional local diagnostics must not interrupt inference.
@@ -931,7 +979,7 @@ export class ReachBrowserRuntime {
               );
               const sourceBinding = JSON.stringify([
                 handModel.providerId,
-                handModel.providerVersion,
+                handProviderVersion(inferencePolicy),
                 handModel.modelId,
                 handModel.modelVersion,
                 handModel.modelDigest,
@@ -969,6 +1017,12 @@ export class ReachBrowserRuntime {
             /* Read-only diagnostics cannot interrupt the existing pipeline. */
           }
           schedule();
+        } else if (
+          !workerReady &&
+          !originalStartup &&
+          !/INTEGRITY|ARCHIVE|CLEANUP|CLOSE_FAILED/.test(String(data.reason))
+        ) {
+          fallbackOriginal("RECOVERY_STARTUP_UNAVAILABLE");
         } else
           this.stop(
             ["MODEL_FETCH", "MODEL_INTEGRITY", "RUNTIME_INIT", "MODEL_INIT", "MODEL_INFERENCE"].includes(data.reason)
@@ -976,8 +1030,50 @@ export class ReachBrowserRuntime {
               : "MODEL_FAILURE",
           );
       };
-      worker.onerror = () => fail("MODEL_FAILURE");
-      worker.postMessage({ type: "INIT", generation });
+      const install = (current: Worker, delegate?: "GPU") => {
+        current.onmessage = (event) => {
+          if (current === worker) receive(event);
+        };
+        current.onerror = () => {
+          if (current !== worker) return;
+          if (!workerReady && !originalStartup) fallbackOriginal("RECOVERY_STARTUP_UNAVAILABLE");
+          else fail("MODEL_FAILURE");
+        };
+        current.postMessage({
+          type: "INIT",
+          generation,
+          geometryVersion: lease.generation,
+          mirrorTransform: binding.mirrorTransform,
+          ...(delegate ? { delegate } : {}),
+        });
+      };
+      const fallbackOriginal = (reason: string) => {
+        if (workerReady || originalStartup || !this.active || generation !== this.generation) return;
+        originalStartup = true;
+        startupFallbackReason = reason;
+        worker.onmessage = null;
+        worker.onerror = null;
+        worker.terminate();
+        clearTimeout(this.startup);
+        const remaining = modelDeadline - performance.now();
+        if (remaining <= 0) {
+          fail("MODEL_FAILURE");
+          return;
+        }
+        try {
+          worker = new Worker("/reach/hand-worker.js");
+          this.worker = worker;
+          this.startup = setTimeout(() => fail("MODEL_FAILURE"), remaining);
+          install(worker);
+        } catch {
+          fail("MODEL_FAILURE");
+        }
+      };
+      // Bounded acceleration startup. No camera frame is sent before READY.
+      // Retire a slow optional worker before starting the original CPU path;
+      // both attempts share the existing total15s model-start deadline.
+      this.startup = setTimeout(() => fallbackOriginal("RECOVERY_STARTUP_TIMEOUT"), 8000);
+      install(worker, "GPU");
     } catch (error) {
       if (generation === this.generation)
         this.stop(
@@ -1028,6 +1124,7 @@ export class ReachBrowserRuntime {
     this.diagnosticMode = 0;
     this.diagnosticNotBefore = -Infinity;
     this.diagnosticSourceBinding = null;
+    this.perception = null;
     this.pacer = null;
     this.video.pause();
     this.video.srcObject = null;
