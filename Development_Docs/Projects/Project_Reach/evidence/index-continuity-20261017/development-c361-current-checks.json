@@ -1,0 +1,1708 @@
+{
+  "schemaVersion": 1,
+  "classification": "SUPPLEMENTAL_ISOLATED_NORMAL_BUILD_DEVELOPMENT_EVIDENCE_NOT_CANONICAL_OR_QUALIFICATION",
+  "sourceCommit": "c36193d920418a1491db5286fca429663878d0e3",
+  "latestTestSourceCommit": "e35745baf3dbb5a5e61ee5a0f4721d176c3af39f",
+  "comparedMain": "7942a575a1ca42c179d9cbc25a89075a7caf36e5",
+  "sourceTree": "c154fc95bb428695bc4ef30426bc166e8bd7668d",
+  "sourceArchiveSha256": "a1d5e7383e7297df059b4abb7069bb1bef64b5d562ebf733bdb8ac6b12859417",
+  "sourceFiles": 6360,
+  "normalBuild": {
+    "success": true,
+    "sourceApplicationUnchanged": true,
+    "compiledTestEnvironmentKeys": 0,
+    "buildReceiptSha256": "d8c5cfb010b57277842bc71c63d0205f02c8b4da4f3584dc529ddb9f9bb0e792",
+    "sourceManifestSha256": "76421245dd848e7469e36bc309f2a2a8266a8d66a120264becb79126e6c033a1",
+    "snapshotManifestSha256": "35179c92895696cfd379acd0b97a26cb404978cace6f439912cb281df4a0ee68",
+    "typescript": "PASS"
+  },
+  "dependencyBoundary": {
+    "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+    "mode": "OWNED_DEPENDENCY_JUNCTION_READ_ONLY_BY_PROCEDURE",
+    "accessControlEnforcedReadOnlyClaimed": false,
+    "generatedClientProjection": "c36193d920418a1491db5286fca429663878d0e3",
+    "completeInstalledDependencyFingerprintClaimed": false
+  },
+  "runtimeVersion": {
+    "actualNode": "v24.18.0",
+    "repositoryPinnedNode": "24.19.0",
+    "canonicalRuntimeParity": false,
+    "limitation": "ActualNode24.18.0 differs from the repository24.19.0 pin; no equivalent pinned-host or protected result claimed"
+  },
+  "focusedUnits": {
+    "passed": 123,
+    "failed": 0,
+    "skipped": 0,
+    "files": 3,
+    "sourceBinding": "Executed on 7627a8f21a8c2829376a303798ee2a1445e96b3e; exact affected module/test hashes unchanged in c361",
+    "reportSha256": "a402949348e46038979b0bb57f7ea66d6c2fc73f468bb0611d23f5cc06aa360d"
+  },
+  "earlierBroadUnits": {
+    "passed": 958,
+    "failed": 0,
+    "skipped": 0,
+    "files": 53,
+    "sourceBinding": "Earlier working-tree broad cohort; overlaps focused tests and is not additive or assigned an invented final commit",
+    "reportSha256": "5bfdac654f0ef29f0513b9ed39d085a744db6bd72ca3e568b609f8607f80c214"
+  },
+  "databaseCorrection": {
+    "committedSource": "c36193d920418a1491db5286fca429663878d0e3",
+    "actualRunSourceCommit": "7eb3e3058af6645f95987c7846db01498d7335b2",
+    "sourceBinding": "Working-tree file hashes subsequently committed unchanged; original execution commit retained",
+    "focusedUnits": {
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "files": 1,
+      "sourceBinding": "Exact database file hashes committed in c361",
+      "reportSha256": "e6fefe2a561f1583e04d34b36426d53a2dbb65394eae3e60790c89b9021fd182"
+    },
+    "actualFullHistorySqlite": {
+      "exitCode": 0,
+      "passedChecks": 18,
+      "sqliteVersion": "3.46.0",
+      "checks": [
+        {
+          "name": "MySQL counterpart preserves original migration bytes",
+          "pass": true
+        },
+        {
+          "name": "Unmodified canonical full-history bootstrap exits0",
+          "pass": true
+        },
+        {
+          "name": "Four Reach tables exist after the full historical schema",
+          "pass": true
+        },
+        {
+          "name": "All six operational lookup/unique indexes exist",
+          "pass": true
+        },
+        {
+          "name": "Raw policy insert",
+          "pass": true
+        },
+        {
+          "name": "Raw policy query preserves numeric revision and JSON",
+          "pass": true
+        },
+        {
+          "name": "Conditional policy update succeeds at expected revision",
+          "pass": true
+        },
+        {
+          "name": "Stale expected revision changes no row",
+          "pass": true
+        },
+        {
+          "name": "Preview nullable usedAt round-trips",
+          "pass": true
+        },
+        {
+          "name": "Preview usage update accepts actual Prisma Date binding",
+          "pass": true
+        },
+        {
+          "name": "Raw change insert",
+          "pass": true
+        },
+        {
+          "name": "Raw numeric report insert",
+          "pass": true
+        },
+        {
+          "name": "Change duplicate idempotency key rejects a different primary key",
+          "pass": true
+        },
+        {
+          "name": "Report duplicate idempotency key rejects a different primary key",
+          "pass": true
+        },
+        {
+          "name": "Raw report version/JSON round-trip",
+          "pass": true
+        },
+        {
+          "name": "Retention predicate removes exactly the expired report",
+          "pass": true
+        },
+        {
+          "name": "Final disposable database integrity",
+          "pass": true
+        },
+        {
+          "name": "Reviewed migration/schema/test bytes remain stable",
+          "pass": true
+        }
+      ],
+      "reportSha256": "f5ff084b4160ee295462baac1da8835b2dde3d42726d9bb37ea8566fe3b6e0a9"
+    },
+    "sourceHashes": {
+      "scripts/sounding-line/sqlite-bootstrap.mjs": "bdf006afb04d9f445094400b46eb1fd7ea27bd166741a8341c48ab6f00ac46cc",
+      "prisma/migrations/202610180001_reach_admin_policy_telemetry/migration.sql": "b217a8904288af7082ca63c25fc7f3c38461eb8e8512b50e7d378bdad709f9f9",
+      "prisma/mysql-migrations/202610180001_reach_admin_policy_telemetry/migration.sql": "6b5d54aac0473843326a010f653e77f9eff551ae927e8eb421961a0f73515d92",
+      "prisma/schema.prisma": "3787e75a77e61913e34f8cd482bc9001fbce6a1f59d11e0438cde2008ca09e75",
+      "prisma/schema.sqlite.prisma": "e9d4613f724c63791befd1bbbce248f7bbe9f9ad001eaee1e8f1af0f2d761d0a",
+      "src/reach/admin-migrations.test.ts": "8438d0a8bfdaab5813f85f59d438175cf086dcc7ec1796a9c72958de51106beb"
+    },
+    "bothPrismaSchemasValidated": true,
+    "mySqlExecution": false
+  },
+  "scopedLint": "PASS",
+  "independentStartupReview": {
+    "sourceStable": true,
+    "passedChecks": 12,
+    "reportSha256": "1595fc93f58c09bbfcdac15d59ea8d55233b9e52e0bea69476d67af882821092",
+    "sourceHashes": {
+      "src/reach/browser-runtime.ts": "aa4ca7aaa6069a4ccba5879e1731be7c85f27a34ee3dcc89d4c371ee2ffbf929",
+      "src/reach/browser-runtime-index-image.test.ts": "c613cea52387e30634aaf5130d30f008abe74941148e0dfc46c59bd86d6153a2",
+      "src/watchglass/hand-provider.ts": "7acef992b16de065f4fcc40ef898205a9424127e688032ade39e6cc7b0999c96",
+      "src/reach/observation.ts": "9e4b9c52d94c3eeac399bcb6faef15d4548a747a3acce67914e544766054ae97",
+      "public/reach/recovery-provider.js": "65cf027002c5596f1483393e0095bcfad39f0c78d5747c8cc56442862aedcf1a",
+      "public/reach/recovery-worker.js": "2c51a99d8341eefbe9ddd8d3b3dfec98d5e6ffca41a8b6e447c6531ce23cd176"
+    }
+  },
+  "currentBrowserRuns": [
+    {
+      "runId": "c361-1",
+      "suite": "admiralty",
+      "sourceCommit": "c36193d920418a1491db5286fca429663878d0e3",
+      "testSourceCommit": "c36193d920418a1491db5286fca429663878d0e3",
+      "builtSourceCommit": "c36193d920418a1491db5286fca429663878d0e3",
+      "unfiltered": true,
+      "sourceStable": true,
+      "exitCode": 0,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0,
+      "durationMs": 41879.316999999995,
+      "cases": [
+        {
+          "file": "tests/e2e/reach-admiralty.spec.ts",
+          "title": "operator naturally reviews Reach reports and applies an assured revisioned model/capture policy",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 19016,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-admiralty.spec.ts",
+          "title": "observe-only operator reads Reach but cannot preview or execute policy",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 6002,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-admiralty.spec.ts",
+          "title": "mobile operator can inspect policy ranges and immutable safeguards without overflow",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 8305,
+              "retry": 0
+            }
+          ]
+        }
+      ],
+      "reportSha256": "01ca384bc04d3c844db8ed3aecaae50a17580b47b7ec46bbaa51fd530943aab1",
+      "sourceReceiptSha256": "17896893979e8f81433b34ec49a93002549f9408a2edbc058e9c31ef729c2818",
+      "configurationSha256": "97414e57363ae83a7211124b1a21c59bff1bcffe669f8605bc12c47c3670eb9a"
+    },
+    {
+      "runId": "c361-2",
+      "suite": "index",
+      "sourceCommit": "c36193d920418a1491db5286fca429663878d0e3",
+      "testSourceCommit": "c36193d920418a1491db5286fca429663878d0e3",
+      "builtSourceCommit": "c36193d920418a1491db5286fca429663878d0e3",
+      "unfiltered": true,
+      "sourceStable": true,
+      "exitCode": 1,
+      "passed": 4,
+      "failed": 4,
+      "skipped": 0,
+      "flaky": 0,
+      "durationMs": 161325.994,
+      "cases": [
+        {
+          "file": "tests/e2e/reach-index-image.spec.ts",
+          "title": "D0 image-relative control follows fresh appearance through model failure, motion and interruption",
+          "outcome": "unexpected",
+          "attempts": [
+            {
+              "status": "failed",
+              "durationMs": 18146,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-index-image.spec.ts",
+          "title": "D0 live setup opens empty before pointing and binds its first fresh source without restarting",
+          "outcome": "unexpected",
+          "attempts": [
+            {
+              "status": "failed",
+              "durationMs": 17633,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-index-image.spec.ts",
+          "title": "D0 display staleness between timely delayed captures preserves evidence while contrary frames pause it",
+          "outcome": "unexpected",
+          "attempts": [
+            {
+              "status": "failed",
+              "durationMs": 23790,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-index-image.spec.ts",
+          "title": "D0 manual image-only hints support mirrored click and natural keyboard while ambiguous pixels abstain",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 22189,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-index-image.spec.ts",
+          "title": "D0 manual selection survives rejected pixels and expiry without silently returning to a model digit",
+          "outcome": "unexpected",
+          "attempts": [
+            {
+              "status": "failed",
+              "durationMs": 35408,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-index-image.spec.ts",
+          "title": "D0 full-hand authority pauses conflicts without changing image coordinates and manual hints cannot bypass it",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 8885,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-index-image.spec.ts",
+          "title": "D0 stale model replies hide the image marker, pause collection and recover the same image source",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 4377,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-index-image.spec.ts",
+          "title": "D0 adaptive pacing backs off on visible blur and event-loop duress, then actual pagehide releases resources",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 9728,
+              "retry": 0
+            }
+          ]
+        }
+      ],
+      "reportSha256": "352fbf1d4cb5828bcf82e5e0952611d2cc3d457a6205575369132557ce428165",
+      "sourceReceiptSha256": "ec29d93f00b12f163cf00b5370da4f18c1f2edc8a9ee462750796d0d75ba4223",
+      "configurationSha256": "b0eabbf138dc4c5ddddc40c1203f7e91e84c6588ad48d2478fde36cd61033f60"
+    },
+    {
+      "runId": "c361-3",
+      "suite": "index",
+      "sourceCommit": "c36193d920418a1491db5286fca429663878d0e3",
+      "testSourceCommit": "c36193d920418a1491db5286fca429663878d0e3",
+      "builtSourceCommit": "c36193d920418a1491db5286fca429663878d0e3",
+      "unfiltered": true,
+      "sourceStable": true,
+      "exitCode": 0,
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0,
+      "durationMs": 78858.298,
+      "cases": [
+        {
+          "file": "tests/e2e/reach-index-image.spec.ts",
+          "title": "D0 image-relative control follows fresh appearance through model failure, motion and interruption",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 16450,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-index-image.spec.ts",
+          "title": "D0 live setup opens empty before pointing and binds its first fresh source without restarting",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 15543,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-index-image.spec.ts",
+          "title": "D0 display staleness between timely delayed captures preserves evidence while contrary frames pause it",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 8337,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-index-image.spec.ts",
+          "title": "D0 manual image-only hints support mirrored click and natural keyboard while ambiguous pixels abstain",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 7908,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-index-image.spec.ts",
+          "title": "D0 manual selection survives rejected pixels and expiry without silently returning to a model digit",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 6813,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-index-image.spec.ts",
+          "title": "D0 full-hand authority pauses conflicts without changing image coordinates and manual hints cannot bypass it",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 8741,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-index-image.spec.ts",
+          "title": "D0 stale model replies hide the image marker, pause collection and recover the same image source",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 4168,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-index-image.spec.ts",
+          "title": "D0 adaptive pacing backs off on visible blur and event-loop duress, then actual pagehide releases resources",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 9358,
+              "retry": 0
+            }
+          ]
+        }
+      ],
+      "reportSha256": "cead630a0c5c908d6d3ea47856dda4962b2936c97a3c1f3c1d0d024c4d965d79",
+      "sourceReceiptSha256": "d00973e89f316323caa0e7fe1b32373e54606a5dccfe5fa20b18bfb8bea5a541",
+      "configurationSha256": "8d8712a7ea90dd83db603cd97cd0499eda7fcc98ae19f5e7acef3a9cf60f86b4"
+    },
+    {
+      "runId": "c361-4",
+      "suite": "laboratory",
+      "sourceCommit": "c36193d920418a1491db5286fca429663878d0e3",
+      "testSourceCommit": "c36193d920418a1491db5286fca429663878d0e3",
+      "builtSourceCommit": "c36193d920418a1491db5286fca429663878d0e3",
+      "unfiltered": true,
+      "sourceStable": true,
+      "exitCode": 1,
+      "passed": 15,
+      "failed": 1,
+      "skipped": 0,
+      "flaky": 0,
+      "durationMs": 361601.678,
+      "cases": [
+        {
+          "file": "tests/e2e/reach-laboratory.spec.ts",
+          "title": "guided absolute experience, held-out check, playground, recovery and private export on laptop",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 44899,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-laboratory.spec.ts",
+          "title": "guided absolute experience, held-out check, playground, recovery and private export on mobile",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 40260,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-laboratory.spec.ts",
+          "title": "relative movement uses separate setup, check and cursor claims",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 21685,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-laboratory.spec.ts",
+          "title": "posture rejection preserves detection and lets the current target recover",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 4769,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-laboratory.spec.ts",
+          "title": "photographic video through the actual worker tracks noise, motion, partial occlusion and a second hand, then cleans up",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 24604,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-laboratory.spec.ts",
+          "title": "worker NONE has bounded lifecycle and recovery",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 2774,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-laboratory.spec.ts",
+          "title": "worker MODEL_UNAVAILABLE has bounded lifecycle and recovery",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 2819,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-laboratory.spec.ts",
+          "title": "camera denial has a useful retry and conventional demonstration",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 2553,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-laboratory.spec.ts",
+          "title": "viewport changes invalidate the fit and preserve camera availability; safe return excludes external URLs",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 7500,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-laboratory.spec.ts",
+          "title": "photographic worker completes nine real-landmark holds and five independent checks",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 66294,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-recorder-readiness.spec.ts",
+          "title": "D0 encoded recorder video excludes the live skeleton by default and preserves the optional composite",
+          "outcome": "unexpected",
+          "attempts": [
+            {
+              "status": "failed",
+              "durationMs": 6006,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-recorder-readiness.spec.ts",
+          "title": "local recorder waits for processed camera evidence before its first pointer start",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 17090,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-recovery.spec.ts",
+          "title": "the local recording tool honors its flag and keeps video, raw trace and pause local",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 20528,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-recovery.spec.ts",
+          "title": "a completed failed check explains the accuracy limit and keeps setup instead of silently repeating",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 23279,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-recovery.spec.ts",
+          "title": "mobile interruptions keep the reason and saved targets beside the active target",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 8504,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-recovery.spec.ts",
+          "title": "D0 controlled poses recover in the actual laboratory without losing completed targets",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 57051,
+              "retry": 0
+            }
+          ]
+        }
+      ],
+      "reportSha256": "154ae9fc647cce172a11fa20ae265fb4b81adf98816b404e0ea784faf864e2c4",
+      "sourceReceiptSha256": "b1847bab8bd86531752871871449c2e2e1cda3a9c2b708edbb51049ab81ae876",
+      "configurationSha256": "f37dc8691d519b09190c83a80f501bc547035ca5eb3a1e83e3b030c9e9a5dbcf"
+    },
+    {
+      "runId": "c361-5",
+      "suite": "laboratory",
+      "sourceCommit": "c36193d920418a1491db5286fca429663878d0e3",
+      "testSourceCommit": "e35745baf3dbb5a5e61ee5a0f4721d176c3af39f",
+      "builtSourceCommit": "c36193d920418a1491db5286fca429663878d0e3",
+      "unfiltered": false,
+      "sourceStable": true,
+      "exitCode": 0,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0,
+      "durationMs": 6788.012,
+      "cases": [
+        {
+          "file": "tests/e2e/reach-recorder-readiness.spec.ts",
+          "title": "D0 encoded recorder video excludes the live skeleton by default and preserves the optional composite",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 5281,
+              "retry": 0
+            }
+          ]
+        }
+      ],
+      "reportSha256": "68bd3a92f43119fb6a8363787e26003ff022575b7082fa3fe1b07226096c9d45",
+      "sourceReceiptSha256": "dc4e91ebe3bf089b6f90bdc332bd6da7404a994213895d32c0120ca4f90faf80",
+      "configurationSha256": "c0496086beaff70be8f887e1c7332f206c0bcbb4ad971b3c9b9191b03bdc4396"
+    }
+  ],
+  "requiredFullCohorts": {
+    "admiralty": "c361-1",
+    "index": "c361-3",
+    "laboratory": "c361-4"
+  },
+  "currentFullCohortOutcome": {
+    "scope": "SELECTED_COHORTS_WITH_CONTROLLED_INDEX_REPEAT_NOT_THE_ORIGINAL_BATCH",
+    "passed": 26,
+    "failed": 1,
+    "skipped": 0,
+    "flaky": 0,
+    "cases": 27,
+    "allPassed": false
+  },
+  "fixtureContext": {
+    "affectedIndexRun": "c361-2",
+    "affectedIndexOutcome": {
+      "runId": "c361-2",
+      "suite": "index",
+      "sourceCommit": "c36193d920418a1491db5286fca429663878d0e3",
+      "testSourceCommit": "c36193d920418a1491db5286fca429663878d0e3",
+      "builtSourceCommit": "c36193d920418a1491db5286fca429663878d0e3",
+      "unfiltered": true,
+      "sourceStable": true,
+      "exitCode": 1,
+      "passed": 4,
+      "failed": 4,
+      "skipped": 0,
+      "flaky": 0,
+      "durationMs": 161325.994,
+      "cases": [
+        {
+          "file": "tests/e2e/reach-index-image.spec.ts",
+          "title": "D0 image-relative control follows fresh appearance through model failure, motion and interruption",
+          "outcome": "unexpected",
+          "attempts": [
+            {
+              "status": "failed",
+              "durationMs": 18146,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-index-image.spec.ts",
+          "title": "D0 live setup opens empty before pointing and binds its first fresh source without restarting",
+          "outcome": "unexpected",
+          "attempts": [
+            {
+              "status": "failed",
+              "durationMs": 17633,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-index-image.spec.ts",
+          "title": "D0 display staleness between timely delayed captures preserves evidence while contrary frames pause it",
+          "outcome": "unexpected",
+          "attempts": [
+            {
+              "status": "failed",
+              "durationMs": 23790,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-index-image.spec.ts",
+          "title": "D0 manual image-only hints support mirrored click and natural keyboard while ambiguous pixels abstain",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 22189,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-index-image.spec.ts",
+          "title": "D0 manual selection survives rejected pixels and expiry without silently returning to a model digit",
+          "outcome": "unexpected",
+          "attempts": [
+            {
+              "status": "failed",
+              "durationMs": 35408,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-index-image.spec.ts",
+          "title": "D0 full-hand authority pauses conflicts without changing image coordinates and manual hints cannot bypass it",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 8885,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-index-image.spec.ts",
+          "title": "D0 stale model replies hide the image marker, pause collection and recover the same image source",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 4377,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-index-image.spec.ts",
+          "title": "D0 adaptive pacing backs off on visible blur and event-loop duress, then actual pagehide releases resources",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 9728,
+              "retry": 0
+            }
+          ]
+        }
+      ],
+      "reportSha256": "352fbf1d4cb5828bcf82e5e0952611d2cc3d457a6205575369132557ce428165",
+      "sourceReceiptSha256": "ec29d93f00b12f163cf00b5370da4f18c1f2edc8a9ee462750796d0d75ba4223",
+      "configurationSha256": "b0eabbf138dc4c5ddddc40c1203f7e91e84c6588ad48d2478fde36cd61033f60"
+    },
+    "controlledIndexRepeat": "c361-3",
+    "controlledIndexRepeatAllPass": true,
+    "reset": {
+      "classification": "SYNTHETIC_TEST_FIXTURE_RESET_NOT_APPLICATION_FIX",
+      "policyBeforeReset": [
+        {
+          "revision": 1,
+          "normalMaximumHz": 10,
+          "calibrationMaximumHz": 60,
+          "modelMaximumHz": 20,
+          "unfocusedMaximumHz": 8
+        }
+      ],
+      "executedResetHelperSha256": "98fffe174d67fd19cc02475906a4de149f50a1fe709d8162bf7084c8addf21e8",
+      "controlledPolicyRevision": 0,
+      "controlledCaps": {
+        "normalMaximumHz": 15,
+        "calibrationMaximumHz": 60,
+        "modelMaximumHz": 60,
+        "unfocusedMaximumHz": 8
+      },
+      "priorCohortCount": 3,
+      "resetReceiptSha256": "089a895647430a81b919d817ffbbe6ee6bd0d493d905ea2abb819682af539ff9",
+      "priorPolicyContextSupplementSha256": "cc770d4f1ffd1b96d6797f5623b8beb4f2c9b727ea806862a41f6b8457a9166b",
+      "priorWholeDatabasePreserved": true,
+      "accountsAndSessionsPreserved": true,
+      "ownerPreviewUnmodified": true
+    },
+    "explanation": "The first index cohort reused nondefault policy after the admin test. That context alone does not explain every failure. All outcomes are retained. The controlled repeat restores revision0 before unchanged c361 tests; any remaining failure is unresolved development evidence, and no earlier result is relabelled."
+  },
+  "separateRecorderMeasurementRepeat": {
+    "runId": "c361-5",
+    "suite": "laboratory",
+    "sourceCommit": "c36193d920418a1491db5286fca429663878d0e3",
+    "testSourceCommit": "e35745baf3dbb5a5e61ee5a0f4721d176c3af39f",
+    "builtSourceCommit": "c36193d920418a1491db5286fca429663878d0e3",
+    "unfiltered": false,
+    "sourceStable": true,
+    "exitCode": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "flaky": 0,
+    "durationMs": 6788.012,
+    "cases": [
+      {
+        "file": "tests/e2e/reach-recorder-readiness.spec.ts",
+        "title": "D0 encoded recorder video excludes the live skeleton by default and preserves the optional composite",
+        "outcome": "expected",
+        "attempts": [
+          {
+            "status": "passed",
+            "durationMs": 5281,
+            "retry": 0
+          }
+        ]
+      }
+    ],
+    "reportSha256": "68bd3a92f43119fb6a8363787e26003ff022575b7082fa3fe1b07226096c9d45",
+    "sourceReceiptSha256": "dc4e91ebe3bf089b6f90bdc332bd6da7404a994213895d32c0120ca4f90faf80",
+    "configurationSha256": "c0496086beaff70be8f887e1c7332f206c0bcbb4ad971b3c9b9191b03bdc4396"
+  },
+  "measurementSuccessorScope": {
+    "changedTestPaths": [
+      "tests/e2e/reach-recorder-readiness.spec.ts"
+    ],
+    "applicationUnchanged": true,
+    "recorderRepeatResolved": true,
+    "statement": "All complete cohort counts and case outcomes are retained. A measurement-only recorder repeat is separate from its original full laboratory failure. The controlled default-policy index repeat is separate from the earlier nondefault-policy cohort. Neither repeat converts the original batch into27of27."
+  },
+  "unresolvedReadiness": {
+    "controlledIndexRepeatHasFailuresOrMissingProof": false,
+    "recorderMeasurementRepeatUnresolved": false,
+    "caseOutcomesMustBeReadWithContext": true,
+    "causalAttributionBeyondRecordedEvidence": false
+  },
+  "earlier7627BrowserRuns": [
+    {
+      "runId": "7627-1",
+      "suite": "admiralty",
+      "sourceCommit": "7627a8f21a8c2829376a303798ee2a1445e96b3e",
+      "testSourceCommit": null,
+      "builtSourceCommit": "7627a8f21a8c2829376a303798ee2a1445e96b3e",
+      "unfiltered": true,
+      "sourceStable": true,
+      "exitCode": 1,
+      "passed": 1,
+      "failed": 1,
+      "skipped": 1,
+      "flaky": 0,
+      "durationMs": 18162.897,
+      "cases": [
+        {
+          "file": "tests/e2e/reach-admiralty.spec.ts",
+          "title": "operator naturally reviews Reach reports and applies an assured revisioned model/capture policy",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 11402,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-admiralty.spec.ts",
+          "title": "observe-only operator reads Reach but cannot preview or execute policy",
+          "outcome": "unexpected",
+          "attempts": [
+            {
+              "status": "failed",
+              "durationMs": 2388,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-admiralty.spec.ts",
+          "title": "mobile operator can inspect policy ranges and immutable safeguards without overflow",
+          "outcome": "skipped",
+          "attempts": [
+            {
+              "status": "skipped",
+              "durationMs": 0,
+              "retry": 0
+            }
+          ]
+        }
+      ],
+      "reportSha256": "6618c2bf0a24662f243a7b8937fcdb3b988a48238a7b97a3763fc33c55c6a1e3",
+      "sourceReceiptSha256": "f48e27318f5b4eeaf0ecb4fd67c7af777feb4f34f9913ad821eee9991ebcbddc",
+      "configurationSha256": "a3cbadd2afc8ad780755b50a44e50606a1be549e9a1687d5367a5c76e248e734"
+    },
+    {
+      "runId": "7627-2",
+      "suite": "admiralty",
+      "sourceCommit": "7627a8f21a8c2829376a303798ee2a1445e96b3e",
+      "testSourceCommit": "db9080fd8aa318f5862282572b2b735a3a924614",
+      "builtSourceCommit": "7627a8f21a8c2829376a303798ee2a1445e96b3e",
+      "unfiltered": true,
+      "sourceStable": true,
+      "exitCode": 0,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0,
+      "durationMs": 28588.083,
+      "cases": [
+        {
+          "file": "tests/e2e/reach-admiralty.spec.ts",
+          "title": "operator naturally reviews Reach reports and applies an assured revisioned model/capture policy",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 13500,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-admiralty.spec.ts",
+          "title": "observe-only operator reads Reach but cannot preview or execute policy",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 4880,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-admiralty.spec.ts",
+          "title": "mobile operator can inspect policy ranges and immutable safeguards without overflow",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 5805,
+              "retry": 0
+            }
+          ]
+        }
+      ],
+      "reportSha256": "1e0357fcd4029f3721664f9ef31fb95e37fd9a25a9e25ef14bd956baf5516c93",
+      "sourceReceiptSha256": "781db50f74cbca8cefe99a9422036f265c96febaa367537381878d935ebca665",
+      "configurationSha256": "88181a6a2fbcaba6d96ab0a477434616a157786c6109779d8ed3c6d3ed88c026"
+    },
+    {
+      "runId": "7627-3",
+      "suite": "laboratory",
+      "sourceCommit": "7627a8f21a8c2829376a303798ee2a1445e96b3e",
+      "testSourceCommit": null,
+      "builtSourceCommit": "7627a8f21a8c2829376a303798ee2a1445e96b3e",
+      "unfiltered": true,
+      "sourceStable": true,
+      "exitCode": 1,
+      "passed": 14,
+      "failed": 2,
+      "skipped": 0,
+      "flaky": 0,
+      "durationMs": 307666.487,
+      "cases": [
+        {
+          "file": "tests/e2e/reach-laboratory.spec.ts",
+          "title": "guided absolute experience, held-out check, playground, recovery and private export on laptop",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 43007,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-laboratory.spec.ts",
+          "title": "guided absolute experience, held-out check, playground, recovery and private export on mobile",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 36786,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-laboratory.spec.ts",
+          "title": "relative movement uses separate setup, check and cursor claims",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 19463,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-laboratory.spec.ts",
+          "title": "posture rejection preserves detection and lets the current target recover",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 3892,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-laboratory.spec.ts",
+          "title": "photographic video through the actual worker tracks noise, motion, partial occlusion and a second hand, then cleans up",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 16735,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-laboratory.spec.ts",
+          "title": "worker NONE has bounded lifecycle and recovery",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 1149,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-laboratory.spec.ts",
+          "title": "worker MODEL_UNAVAILABLE has bounded lifecycle and recovery",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 1400,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-laboratory.spec.ts",
+          "title": "camera denial has a useful retry and conventional demonstration",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 2457,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-laboratory.spec.ts",
+          "title": "viewport changes invalidate the fit and preserve camera availability; safe return excludes external URLs",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 6675,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-laboratory.spec.ts",
+          "title": "photographic worker completes nine real-landmark holds and five independent checks",
+          "outcome": "unexpected",
+          "attempts": [
+            {
+              "status": "failed",
+              "durationMs": 40104,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-recorder-readiness.spec.ts",
+          "title": "D0 encoded recorder video excludes the live skeleton by default and preserves the optional composite",
+          "outcome": "unexpected",
+          "attempts": [
+            {
+              "status": "failed",
+              "durationMs": 5741,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-recorder-readiness.spec.ts",
+          "title": "local recorder waits for processed camera evidence before its first pointer start",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 14943,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-recovery.spec.ts",
+          "title": "the local recording tool honors its flag and keeps video, raw trace and pause local",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 15766,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-recovery.spec.ts",
+          "title": "a completed failed check explains the accuracy limit and keeps setup instead of silently repeating",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 22237,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-recovery.spec.ts",
+          "title": "mobile interruptions keep the reason and saved targets beside the active target",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 6986,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-recovery.spec.ts",
+          "title": "D0 controlled poses recover in the actual laboratory without losing completed targets",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 54900,
+              "retry": 0
+            }
+          ]
+        }
+      ],
+      "reportSha256": "a34aabde167b6e7fd626d0859a0bb7df9f12be182a2ad05f268525715a0fcb2b",
+      "sourceReceiptSha256": "7d1dfae3e9db3ef3b101e34a4b6289e810ceab0a89085a57ea50dd90ffb7f5d7",
+      "configurationSha256": "d18af9483cc94774ab0c8f59e3ce231d8fcd1acd3fe5c2709f529112eb4ed458"
+    },
+    {
+      "runId": "7627-4",
+      "suite": "laboratory",
+      "sourceCommit": "7627a8f21a8c2829376a303798ee2a1445e96b3e",
+      "testSourceCommit": "db9080fd8aa318f5862282572b2b735a3a924614",
+      "builtSourceCommit": "7627a8f21a8c2829376a303798ee2a1445e96b3e",
+      "unfiltered": false,
+      "sourceStable": true,
+      "exitCode": 1,
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "flaky": 0,
+      "durationMs": 86416.036,
+      "cases": [
+        {
+          "file": "tests/e2e/reach-laboratory.spec.ts",
+          "title": "photographic worker completes nine real-landmark holds and five independent checks",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 76169,
+              "retry": 0
+            }
+          ]
+        },
+        {
+          "file": "tests/e2e/reach-recorder-readiness.spec.ts",
+          "title": "D0 encoded recorder video excludes the live skeleton by default and preserves the optional composite",
+          "outcome": "unexpected",
+          "attempts": [
+            {
+              "status": "failed",
+              "durationMs": 4385,
+              "retry": 0
+            }
+          ]
+        }
+      ],
+      "reportSha256": "1666ca65421a1960e7a28bf7e732264b2a08c08b8077213a909a3ee10e8a6609",
+      "sourceReceiptSha256": "b3abe9b23a6b52434bb7b57c8688d479c50718ad747935a7b5defd058213d1fa",
+      "configurationSha256": "8de139e9e752e5110c0d755686d205cc2d6adf8e275ae4a463bc5c00c57e8785"
+    },
+    {
+      "runId": "7627-5",
+      "suite": "laboratory",
+      "sourceCommit": "7627a8f21a8c2829376a303798ee2a1445e96b3e",
+      "testSourceCommit": "eebb2ceed1a78593634b194743a872dc7e242a48",
+      "builtSourceCommit": "7627a8f21a8c2829376a303798ee2a1445e96b3e",
+      "unfiltered": false,
+      "sourceStable": true,
+      "exitCode": 1,
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "flaky": 0,
+      "durationMs": 11826.920999999998,
+      "cases": [
+        {
+          "file": "tests/e2e/reach-recorder-readiness.spec.ts",
+          "title": "D0 encoded recorder video excludes the live skeleton by default and preserves the optional composite",
+          "outcome": "unexpected",
+          "attempts": [
+            {
+              "status": "failed",
+              "durationMs": 5775,
+              "retry": 0
+            }
+          ]
+        }
+      ],
+      "reportSha256": "65161faa558b0ca617e4a1553f431b5f24f9b16a7d441c76348c9275faf0449d",
+      "sourceReceiptSha256": "bc44943670f356eaa29e9569ad1a6e14037721b94abdc1e8dc245ed211b1055e",
+      "configurationSha256": "e015ee84849566f3d2381e90883b544aa4bdbb893ad95096610dbfe891fdc643"
+    },
+    {
+      "runId": "7627-6",
+      "suite": "laboratory",
+      "sourceCommit": "7627a8f21a8c2829376a303798ee2a1445e96b3e",
+      "testSourceCommit": "7eb3e3058af6645f95987c7846db01498d7335b2",
+      "builtSourceCommit": "7627a8f21a8c2829376a303798ee2a1445e96b3e",
+      "unfiltered": false,
+      "sourceStable": true,
+      "exitCode": 0,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0,
+      "durationMs": 10264.555,
+      "cases": [
+        {
+          "file": "tests/e2e/reach-recorder-readiness.spec.ts",
+          "title": "D0 encoded recorder video excludes the live skeleton by default and preserves the optional composite",
+          "outcome": "expected",
+          "attempts": [
+            {
+              "status": "passed",
+              "durationMs": 8089,
+              "retry": 0
+            }
+          ]
+        }
+      ],
+      "reportSha256": "dbd831db0e0a9bac61728ea65214bd47ad095a5553ea94916928b6235099a36a",
+      "sourceReceiptSha256": "7eefa6bae670d5fab51ee3d1956567cc309a68a18b70be81bb5c1df947fcf4ed",
+      "configurationSha256": "ef52a9aa7574642df4987b202627ee5cd370d3e6e2e376d29d74ff8ff485f66b"
+    }
+  ],
+  "historicalInterpretation": "Earlier failed whole cohorts and later targeted repeats retain exact separate outcomes; targeted passes do not relabel a failed whole cohort",
+  "photographicProof": {
+    "fixture": "PUBLIC_PHOTOGRAPH_WITH_CONTROLLED_SYNTHETIC_TRANSFORMS",
+    "evidenceTier": "D1_UNQUALIFIED",
+    "absolute": {
+      "mapping": "INDEX_TIP_AXIS_RIDGE_V1",
+      "status": "VALIDATED",
+      "evidenceTier": "UNQUALIFIED",
+      "trainingCount": 135,
+      "trainingResidualP95DiagonalFraction": 0.005912454953944673,
+      "validationCount": 75,
+      "rawValidationP95DiagonalFraction": 0.005406681306294374,
+      "rawValidationJitterP95DiagonalFraction": 0.00506244360342215,
+      "edgeValidationP95DiagonalFraction": 0.005406681306294374,
+      "trainingResidualMedianDiagonalFraction": 0.0027024651283145892,
+      "rawValidationMedianDiagonalFraction": 0.002921703660341681,
+      "physicalQualification": "PENDING"
+    },
+    "relative": {
+      "mapping": "INDEX_TIP_DISPLACEMENT_V2",
+      "status": "VALIDATED",
+      "evidenceTier": "UNQUALIFIED",
+      "trainingCount": 75,
+      "trainingResidualP95DiagonalFraction": 0.009632155167814075,
+      "validationCount": 75,
+      "rawValidationP95DiagonalFraction": 0.010277165558515888,
+      "rawValidationJitterP95DiagonalFraction": 0.00894414408439872,
+      "edgeValidationP95DiagonalFraction": 0.010277165558515888,
+      "trainingResidualMedianDiagonalFraction": 0.0006880110834150822,
+      "rawValidationMedianDiagonalFraction": 0.001333021474116893,
+      "physicalQualification": "PENDING"
+    },
+    "inferenceBackend": "GPU_WEBGL",
+    "imageAlgorithmDigest": "491ae53971dc0352714c9849fdf2521a469b190130d6f408cc6cff4abf0f98eb",
+    "softwareTiming": {
+      "boundary": "Software capture to canvas submission; excludes sensor exposure and display scanout",
+      "inferenceCount": 400,
+      "inferenceP95Ms": 44.000097654759884,
+      "captureIntervalP95Ms": 117.69999999552965,
+      "canvasSubmissionAgeP95Ms": 46.90000000298096,
+      "visualizationIntervalP95Ms": 116.69999999999709,
+      "recentModelCaptureHz": 13.357673983690344,
+      "acquisition": {
+        "count": 24,
+        "medianMs": 1800.8000000044703,
+        "p95Ms": 2819.0999999940395,
+        "maxMs": 2890.1999999955297
+      }
+    },
+    "cleanup": {
+      "tracks": 0,
+      "workers": 0,
+      "furtherObservations": 0,
+      "furtherVideoDraws": 0,
+      "furtherCanvasClears": 0
+    },
+    "reportSha256": "7d25080b52074cdcd3bb0a346b09c2646005b54491f82eac1e3ffac6490e0923",
+    "relativeExportSha256": "fd6fac1d33d07407615fb5ca2f4cf2520e07f6e90df75d42187c4cda9d6b74fa",
+    "exportGeometrySha256": "9d3a2709e084aec848ef3dc11708293eaab21dcb9dc1aad2b4104b2bd5c637f7",
+    "scope": "Software fixture integration, not physical fingertip ground truth or accepted webcam accuracy"
+  },
+  "canonicalPrepareFailures": [
+    {
+      "sourceCommit": "7627a8f21a8c2829376a303798ee2a1445e96b3e",
+      "outcome": "FAILED_BEFORE_BUILD_OR_BROWSER",
+      "stage": "PRISMA_GENERATE",
+      "code": "EPERM_DLL_RENAME",
+      "loadedOwnedClientDllConfirmed": true,
+      "cleanup": "PASS",
+      "browserCases": 0,
+      "preparedManifest": false,
+      "boundaryReceiptSha256": "f55c647a6902ef5a2743eaf1d9f36ca2962943f47c31c7b2e4c3f2cc641226a8",
+      "canonicalReceiptSha256": "2089ba17e457e997ea4dde5ad50876bab7b5dcf8795e5bd9ced21ea446875a17",
+      "interpretation": "Loaded owned preview processes held the generated client DLL; neither application result nor qualification"
+    },
+    {
+      "sourceCommit": "7eb3e3058af6645f95987c7846db01498d7335b2",
+      "outcome": "FAILED_BEFORE_BUILD_OR_BROWSER",
+      "stage": "SQLITE_BOOTSTRAP",
+      "code": "P2010_SQL_DIALECT",
+      "prismaGenerateExitCode": 0,
+      "bootstrapExitCode": 1,
+      "cleanup": "PASS",
+      "browserCases": 0,
+      "preparedManifest": false,
+      "boundaryReceiptSha256": "0dbd26378791e261cab7d0524d2e49aa20af37aa00ff18e5bb65919e728e3c40",
+      "canonicalReceiptSha256": "7cd2f1457f0340ed8f4e0542b02ad6c63bb5cdd223dc0debd413823f7ad77487",
+      "interpretation": "Branch-owned MySQL DDL was misplaced in the SQLite migration path; corrected in c361 with separate SQLite and unchanged MySQL copies"
+    },
+    {
+      "sourceCommit": "c36193d920418a1491db5286fca429663878d0e3",
+      "outcome": "BUILD_PASS_SNAPSHOT_SEALING_FAIL",
+      "stage": "IMMUTABLE_SNAPSHOT_SEALING",
+      "code": "DEVELOPMENT_BUILD_LINK_OUTSIDE_DEPENDENCIES",
+      "commands": [
+        {
+          "label": "prisma-generate",
+          "exitCode": 0,
+          "cleanup": "PASS",
+          "treeReaped": true
+        },
+        {
+          "label": "sqlite-bootstrap",
+          "exitCode": 0,
+          "cleanup": "PASS",
+          "treeReaped": true
+        },
+        {
+          "label": "generic-seed",
+          "exitCode": 0,
+          "cleanup": "PASS",
+          "treeReaped": true
+        },
+        {
+          "label": "scripts/migrate-legacy-companion.ts",
+          "exitCode": 0,
+          "cleanup": "PASS",
+          "treeReaped": true
+        },
+        {
+          "label": "scripts/sounding-line/prepare-validation-isolation.mjs",
+          "exitCode": 0,
+          "cleanup": "PASS",
+          "treeReaped": true
+        },
+        {
+          "label": "next-build",
+          "exitCode": 0,
+          "cleanup": "PASS",
+          "treeReaped": true
+        }
+      ],
+      "nextBuild": {
+        "compiledSuccessfully": true,
+        "typecheckSucceeded": true,
+        "compileSeconds": 37.9,
+        "typecheckSeconds": 55,
+        "staticPagesGenerated": 160
+      },
+      "links": [
+        {
+          "generatedRelativePath": "node_modules/@prisma/client-2c3a283f134fdcb6",
+          "dependency": "@prisma/client",
+          "literalIsRelative": false,
+          "targetInsideOwnedDependencies": true,
+          "targetIsOwnRealpath": true,
+          "permittedByCanonicalGuard": false
+        },
+        {
+          "generatedRelativePath": "node_modules/pino-28069d5257187539",
+          "dependency": "pino",
+          "literalIsRelative": false,
+          "targetInsideOwnedDependencies": true,
+          "targetIsOwnRealpath": true,
+          "permittedByCanonicalGuard": false
+        },
+        {
+          "generatedRelativePath": "node_modules/sharp-20c6a5da84e2135f",
+          "dependency": "sharp",
+          "literalIsRelative": false,
+          "targetInsideOwnedDependencies": true,
+          "targetIsOwnRealpath": true,
+          "permittedByCanonicalGuard": false
+        }
+      ],
+      "browserCases": 0,
+      "preparedManifest": false,
+      "activeLockReleased": true,
+      "boundaryReceiptSha256": "25ad316f30f21d7e24ddb9fc9e847d5426cab1f6d1c831150e93bc6d7d04c071",
+      "canonicalReceiptSha256": "cfc7742aa963d2cfd97c9d9151d5de99bd8fbca2cc6c98c24d3ba7072e9e4868",
+      "linkDiagnosisSha256": "a9c6404b6b18ca043a96ac1d97fd55688c8c05a496f279dd8ab4318f5fd1425f",
+      "interpretation": "Generated absolute links resolve into owned dependencies, but the unchanged canonical guard requires relative literals. No engine or link repair or sealing bypass."
+    }
+  ],
+  "protectedExperiencePlan": {
+    "status": "BLOCKED",
+    "code": "PRODUCT_EXPERIENCE_TRUSTED_OBLIGATION_CHANGED:reach.phase1.foundation.absolute-calibration-and-recovery",
+    "base": "7942a575a1ca42c179d9cbc25a89075a7caf36e5",
+    "candidate": "c36193d920418a1491db5286fca429663878d0e3",
+    "reportSha256": "419304be2aad67d3e787747968d9d137d021014343d9c3acad86b74a98350084",
+    "bypassOrRepair": false
+  },
+  "actualWebcam": {
+    "classification": "BOUNDED_ACTUAL_WEBCAM_STARTUP_NOT_PHYSICAL_POINTING_ACCEPTANCE",
+    "applicationBuildSource": "7627a8f21a8c2829376a303798ee2a1445e96b3e",
+    "sqliteClientProjectionSource": "c36193d920418a1491db5286fca429663878d0e3",
+    "actualProcessing": "GPU_CURRENT_FRAME_REGION_RECOVERY",
+    "observedResultCount": 33,
+    "observedHandCountAtOneRead": 1,
+    "diagnosticReads": [
+      {
+        "results": 9,
+        "captureIntervalP95Ms": 1004.1,
+        "recentModelUpdatesPerSecond": 1.1,
+        "adaptiveTargetHz": 12.1,
+        "mainThreadWorkMs": 7.8,
+        "captureToInferenceP95Ms": 35.6
+      },
+      {
+        "results": 33,
+        "adaptiveTargetHz": 12.7,
+        "mainThreadWorkMs": 5.6,
+        "captureToInferenceP95Ms": 19
+      }
+    ],
+    "cameraStoppedAndSessionCleared": true,
+    "imageryOrLandmarksSaved": false,
+    "reportSha256": "9441b1998452cc10fbbd58ae8db2bc46c85987fb75703687e8e6fbfad14f508e",
+    "uncertainty": "Observed recent update rate included 1.1Hz. Foreground, video viewport, OS occlusion, real motion, gaming and concurrent build were not controlled; no causal attribution or throughput acceptance.",
+    "physicalPointingAccuracy": "NOT_TESTED"
+  },
+  "syntheticPresentationNegativeControl": {
+    "classification": "SYNTHETIC_HEADLESS_VIDEO_PRESENTATION_ONLY",
+    "headless": true,
+    "sourceType": "DETACHED_CANVAS_CAPTURE_STREAM",
+    "requestedFps": 30,
+    "phases": [
+      {
+        "index": 0,
+        "mode": "IN_VIEW",
+        "durationMs": 5001.29999999702,
+        "sourceDraws": 152,
+        "rvfc": 149,
+        "rvfcHz": 29.792254013974123,
+        "qualityFrames": 149,
+        "droppedFrames": 0,
+        "callbackGapP95Ms": 37.40000000000009,
+        "callbackGapMaxMs": 66.69999999999982,
+        "intersectsViewportBefore": true,
+        "intersectsViewportAfter": true,
+        "documentHasFocus": true
+      },
+      {
+        "index": 1,
+        "mode": "SCROLLED_OUT",
+        "durationMs": 5013.79999999702,
+        "sourceDraws": 152,
+        "rvfc": 150,
+        "rvfcHz": 29.917427899016545,
+        "qualityFrames": 150,
+        "droppedFrames": 150,
+        "callbackGapP95Ms": 37.5,
+        "callbackGapMaxMs": 66.70000000000073,
+        "intersectsViewportBefore": false,
+        "intersectsViewportAfter": false,
+        "documentHasFocus": true
+      },
+      {
+        "index": 2,
+        "mode": "IN_VIEW",
+        "durationMs": 5013.39999999851,
+        "sourceDraws": 152,
+        "rvfc": 151,
+        "rvfcHz": 30.119280328727985,
+        "qualityFrames": 151,
+        "droppedFrames": 0,
+        "callbackGapP95Ms": 37.5,
+        "callbackGapMaxMs": 62.5,
+        "intersectsViewportBefore": true,
+        "intersectsViewportAfter": true,
+        "documentHasFocus": true
+      },
+      {
+        "index": 3,
+        "mode": "SCROLLED_OUT",
+        "durationMs": 5004.29999999702,
+        "sourceDraws": 152,
+        "rvfc": 149,
+        "rvfcHz": 29.77439402115955,
+        "qualityFrames": 149,
+        "droppedFrames": 149,
+        "callbackGapP95Ms": 37.5,
+        "callbackGapMaxMs": 66.70000000000073,
+        "intersectsViewportBefore": false,
+        "intersectsViewportAfter": false,
+        "documentHasFocus": true
+      },
+      {
+        "index": 4,
+        "mode": "IN_VIEW",
+        "durationMs": 5015,
+        "sourceDraws": 152,
+        "rvfc": 150,
+        "rvfcHz": 29.91026919242273,
+        "qualityFrames": 150,
+        "droppedFrames": 0,
+        "callbackGapP95Ms": 37.5,
+        "callbackGapMaxMs": 66.79999999999927,
+        "intersectsViewportBefore": true,
+        "intersectsViewportAfter": true,
+        "documentHasFocus": true
+      }
+    ],
+    "cleanup": "TRACK_ENDED",
+    "reportSha256": "9d3e51bd7c54fe44a5e2b2aae430b026c6e1b153b9fecc8463e8d37ff5a18168",
+    "rawReportSha256": "cd2e28db17d21c9b4a8bc54ee71aad29a33dc2a61dfd90b427f1088c2e1a5bba",
+    "interpretation": "Scrolling alone did not reproduce the 1Hz observation. Offscreen presentation dropped counters coexisted with about30Hz fresh callbacks and advancing total frames. Actual camera, headed/OS occlusion, application pump and neural inference were not measured; no causal patch justified."
+  },
+  "syntheticIdenticalContentNegativeControl": {
+    "classification": "SYNTHETIC_HEADLESS_IDENTICAL_REDRAW_ONLY",
+    "headless": true,
+    "requestedFps": 30,
+    "phases": [
+      {
+        "mode": "STATIC_REDRAW",
+        "durationMs": 5002.20000000298,
+        "sourceDraws": 152,
+        "frameCallbacks": 149,
+        "callbackHz": 29.786893766724887,
+        "totalVideoFrameDelta": 149,
+        "droppedFrameDelta": 0,
+        "visibleAndFocused": true
+      },
+      {
+        "mode": "ONE_PIXEL_CHANGE",
+        "durationMs": 5015.39999999851,
+        "sourceDraws": 152,
+        "frameCallbacks": 150,
+        "callbackHz": 29.907883718156988,
+        "totalVideoFrameDelta": 150,
+        "droppedFrameDelta": 0,
+        "visibleAndFocused": true
+      },
+      {
+        "mode": "STATIC_REDRAW",
+        "durationMs": 5016,
+        "sourceDraws": 153,
+        "frameCallbacks": 151,
+        "callbackHz": 30.103668261562998,
+        "totalVideoFrameDelta": 151,
+        "droppedFrameDelta": 0,
+        "visibleAndFocused": true
+      },
+      {
+        "mode": "ONE_PIXEL_CHANGE",
+        "durationMs": 5001.80000000447,
+        "sourceDraws": 152,
+        "frameCallbacks": 150,
+        "callbackHz": 29.98920388657402,
+        "totalVideoFrameDelta": 150,
+        "droppedFrameDelta": 0,
+        "visibleAndFocused": true
+      },
+      {
+        "mode": "STATIC_REDRAW",
+        "durationMs": 5010.60000000149,
+        "sourceDraws": 152,
+        "frameCallbacks": 150,
+        "callbackHz": 29.936534546751965,
+        "totalVideoFrameDelta": 149,
+        "droppedFrameDelta": 0,
+        "visibleAndFocused": true
+      }
+    ],
+    "reportSha256": "216c874a4157a7eb264dd04575336baff7708c1c5184955c344ea2aa8f2b4c68",
+    "cleanup": "TRACK_ENDED",
+    "interpretation": "Identical redraws and one changed source pixel both produced about30Hz callbacks in this headless synthetic stream. Neither content identity nor scrolling alone reproduced the prior1Hz actual-webcam observation. The actual camera, ordinary headed/OS occlusion and Reach pump remain unmeasured causes; no source patch is inferred."
+  },
+  "protectedQualification": false,
+  "physicalRecognitionQualified": false,
+  "ownerAccepted": false,
+  "caveats": [
+    "All browser proof is bounded development evidence from an isolated synthetic fixture or public photograph; no private owner footage is published.",
+    "No native IR/depth transport, registered multi-camera fusion or proven illumination control is supplied.",
+    "Independent held-out raw3% requirements, current150ms freshness and source/context invalidation remain unchanged.",
+    "Unit counts overlap. Browser and hardware contexts differ and are not pooled as fleet reliability or physical latency."
+  ]
+}

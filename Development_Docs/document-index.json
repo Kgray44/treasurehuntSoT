@@ -699,12 +699,6 @@
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Features/branch-complete/reach-admiralty-controls.json",
-      "record_type": "engineering-record",
-      "status": "preserved",
-      "canonical_for": null
-    },
-    {
       "path": "Development_Docs/Features/branch-complete/project-shipwright-phase2.json",
       "record_type": "archive-index",
       "status": "preserved",
@@ -719,6 +713,12 @@
     {
       "path": "Development_Docs/Features/branch-complete/project-shipwright-phase5.json",
       "record_type": "archive-index",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Features/branch-complete/reach-admiralty-controls.json",
+      "record_type": "engineering-record",
       "status": "preserved",
       "canonical_for": null
     },
@@ -9435,6 +9435,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Reach/Changes_From_Main_20261017.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Reach/evidence/continuity-recording-20261017/experience-review.json",
       "record_type": "validation-evidence",
       "status": "preserved",
@@ -9448,6 +9454,186 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Reach/evidence/continuity-recording-20261017/physical-recording-replay-summary.json",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/current-preview-c361-20261018/C01-mobile-calibration-viewport.png",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/current-preview-c361-20261018/C02-mobile-detected-ineligible-viewport.png",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/current-preview-c361-20261018/C03-mobile-playground-viewport.png",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/current-preview-c361-20261018/C04-mobile-results-viewport.png",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/current-preview-c361-20261018/C05-mobile-tracking-viewport.png",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/current-preview-c361-20261018/C06-mobile-validation-viewport.png",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/current-preview-c361-20261018/C07-worker-nine-target-fit-viewport.png",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/current-preview-c361-20261018/C08-worker-independent-results-viewport.png",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/current-preview-c361-20261018/C09-worker-relative-results-viewport.png",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/current-preview-c361-20261018/C10-D0-failed-check-explained.png",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/current-preview-c361-20261018/C11-D0-brief-occlusion.png",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/current-preview-c361-20261018/C12-D0-context-invalidation.png",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/current-preview-c361-20261018/C13-D0-recovered-saved-targets.png",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/current-preview-c361-20261018/C14-D0-mobile-tracking-interruption.png",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/current-preview-c361-20261018/C15-D1-local-recorder-review.png",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/current-preview-c361-20261018/C16-SYNTHETIC-reach-admin-policy-mobile.png",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/current-preview-c361-20261018/C17-SYNTHETIC-reach-admin-observer-mobile.png",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/current-preview-c361-20261018/C18-SYNTHETIC-reach-admin-empty-desktop.png",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/current-preview-c361-20261018/C19-SYNTHETIC-reach-admin-populated-desktop.png",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/current-preview-c361-20261018/C20-SYNTHETIC-reach-admin-performance-desktop.png",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/current-preview-c361-20261018/C21-SYNTHETIC-reach-admin-counters-desktop.png",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/current-preview-c361-20261018/C22-SYNTHETIC-reach-admin-classification-score-desktop.png",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/current-preview-c361-20261018/C23-SYNTHETIC-reach-admin-calibration-desktop.png",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/current-preview-c361-20261018/C24-SYNTHETIC-reach-admin-policy-preview-desktop.png",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/current-preview-c361-20261018/C25-SYNTHETIC-reach-admin-policy-confirmed-desktop.png",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/current-preview-c361-20261018/C26-D0-full-hand-contrary-saved-target.png",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/current-preview-c361-20261018/C28-D0-manual-failed-selection-no-model-takeover.png",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/current-preview-c361-20261018/C29-D0-image-only-mobile-hint-picker.png",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/current-preview-c361-20261018/development-ui-gallery.json",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/current-preview-c361-20261018/development-ui-review.json",
       "record_type": "validation-evidence",
       "status": "preserved",
       "canonical_for": null
@@ -9477,13 +9663,13 @@
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Projects/Project_Reach/evidence/natural-pointing-recovery-20261017/manifest.json",
+      "path": "Development_Docs/Projects/Project_Reach/evidence/index-continuity-20261017/actual-gpu-rate-latency-summary.json",
       "record_type": "validation-evidence",
       "status": "preserved",
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Projects/Project_Reach/evidence/index-continuity-20261017/superseded-photographic-failures.json",
+      "path": "Development_Docs/Projects/Project_Reach/evidence/index-continuity-20261017/actual-gpu-rate-source-manifest.json",
       "record_type": "validation-evidence",
       "status": "preserved",
       "canonical_for": null
@@ -9501,7 +9687,7 @@
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Projects/Project_Reach/evidence/index-continuity-20261017/throughput-resolution-summary.json",
+      "path": "Development_Docs/Projects/Project_Reach/evidence/index-continuity-20261017/development-c361-current-checks.json",
       "record_type": "validation-evidence",
       "status": "preserved",
       "canonical_for": null
@@ -9519,7 +9705,19 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/index-continuity-20261017/recovery-provider-protocol-summary.json",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Reach/evidence/index-continuity-20261017/source-manifest.json",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/index-continuity-20261017/superseded-photographic-failures.json",
       "record_type": "validation-evidence",
       "status": "preserved",
       "canonical_for": null
@@ -9531,14 +9729,20 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/index-continuity-20261017/throughput-resolution-summary.json",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Reach/evidence/index-continuity-20261017/unit-summary.json",
       "record_type": "validation-evidence",
       "status": "preserved",
       "canonical_for": null
     },
     {
-      "path": "Development_Docs/Projects/Project_Reach/Changes_From_Main_20261017.md",
-      "record_type": "program-record",
+      "path": "Development_Docs/Projects/Project_Reach/evidence/natural-pointing-recovery-20261017/manifest.json",
+      "record_type": "validation-evidence",
       "status": "preserved",
       "canonical_for": null
     },

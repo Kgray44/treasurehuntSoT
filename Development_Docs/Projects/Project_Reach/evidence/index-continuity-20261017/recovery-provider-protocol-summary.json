@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "startup": {
+    "gpuReadyMs": 5183.8,
+    "faultFallbackReadyMs": 7745.5,
+    "firstLiveSyntheticPriorCount": 0,
+    "syntheticTimestamp": -1,
+    "firstLiveGpuPacketAgeMs": 28.3,
+    "gpuControlPacketsWithin150Ms": 15,
+    "webgl2DenialOriginalCpuFallback": true,
+    "firstLiveGpuInferenceMs": 22.9
+  },
+  "controls": {
+    "assertionsFailed": 0,
+    "sceneCategories": 5,
+    "exactRegionCacheControlsPassed": 9,
+    "gpuCandidatePackets": 15,
+    "cpuColdMaximumCoordinateDifference": 0,
+    "cpuOriginalAndCandidatePackets": 30,
+    "assertionsPassed": 178,
+    "neuralResultPackets": 49
+  },
+  "caveats": [
+    "Controlled direct-bitmap and worker protocol evidence, not live camera, held-out calibration, physical recognition accuracy or owner acceptance.",
+    "Cold CPU outputs matched original on reviewed controls; warm ROI scheduling and GPU arithmetic can produce different current landmarks.",
+    "Always-on fresh palm scan and actual neural ROI retention do not solve cold pointing acquisition at every pose.",
+    "Startup compilation is excluded from live inference timing; total model-start limit15s and live inference timeout3s remain external unchanged limits.",
+    "Action freshness150ms is distinct from the250ms maximum prior-hypothesis retention.",
+    "No private imagery, landmarks, coordinates, device/account/camera identifiers or capture paths are included."
+  ],
+  "sourceStable": true,
+  "classification": "DEVELOPMENT_PROTOCOL_CONTROLS_NOT_APPLICATION_OR_PHYSICAL_ACCEPTANCE",
+  "sources": {
+    "taskSha256": "fbc2a30080c3c557093b5ddfc334698132eb341044ccee322ccf8bcf3607cde1",
+    "originalWorkerSha256": "9450f53274dd9801f2261b0e7381ab2a9e34994a61a44d8ef3349d865bdcfc14",
+    "workerSha256": "2c51a99d8341eefbe9ddd8d3b3dfec98d5e6ffca41a8b6e447c6531ce23cd176",
+    "runtimeBundleSha256": "1cdadf6c65d572330994f37be24fd575526480e4e7a2608ae1937be331c88c41",
+    "providerSha256": "65cf027002c5596f1483393e0095bcfad39f0c78d5747c8cc56442862aedcf1a",
+    "resultSha256": "59324311813a02658f63a86d931d80666c9cdf223a4fa219918d95d193fc7a46"
+  },
+  "unitChecks": {
+    "passed": 33,
+    "scopedFormat": "PASS",
+    "scopedLint": "PASS",
+    "scopedTypecheck": "PASS",
+    "failed": 0
+  }
+}

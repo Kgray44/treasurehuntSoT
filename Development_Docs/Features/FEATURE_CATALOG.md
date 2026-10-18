@@ -2492,17 +2492,19 @@ Authorized Admiralty operators inspect privacy-bounded live report distributions
 - Client-reported aggregate windows do not establish distinct people, sessions or independent physical accuracy; sensor/display timing remains excluded.
 - Retention excludes expired records and purges them on reporting, collection or policy operations; no independent periodic deletion service is claimed.
 - The synthetic Admiralty fixture proves software reporting/governance behavior, not real-user coverage; final Reach physical tracking and protected-main integration remain separate.
+- Canonical artifact sealing and the trusted experience plan remain blocked; supplemental normal-build browser results do not establish protected integration readiness.
 
 ### Evidence
 
-- commit: `9034912a44bbf1b3a216356529b6baa59ee75bcb`
+- commit: `c36193d920418a1491db5286fca429663878d0e3`
 - path: `src/components/admiralty/ReachAdminConsole.tsx`
 - path: `src/reach/runtime-policy.ts`
 - path: `src/reach/telemetry.ts`
 - test: `tests/e2e/reach-admiralty.spec.ts`
 - test: `src/reach/admin-pagination.test.ts`
 - completion-record: `Development_Docs/Projects/Project_Reach/Changes_From_Main_20261017.md`
-- path: `Development_Docs/Projects/Project_Reach/evidence/index-continuity-20261017/admiralty-browser-summary.json`
+- path: `Development_Docs/Projects/Project_Reach/evidence/index-continuity-20261017/development-c361-current-checks.json`
+- path: `Development_Docs/Projects/Project_Reach/evidence/current-preview-c361-20261018/development-ui-review.json`
 
 ---
 
