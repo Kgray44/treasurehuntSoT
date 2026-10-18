@@ -6,7 +6,16 @@ import { getReachAdminOverview } from "./admin-service";
 import { createReachTelemetryReport } from "./telemetry";
 
 const now = new Date("2026-10-17T23:00:00Z");
-const actor = { capabilities: ["CONFIG_OBSERVE"] } as AdmiraltyCurrentOperator;
+const actor: AdmiraltyCurrentOperator = {
+  accountId: "synthetic-reach-observer",
+  accountSessionId: "synthetic-observer-session",
+  displayName: "Synthetic observer",
+  roles: ["OPERATIONS_OPERATOR"],
+  capabilities: ["CONFIG_OBSERVE"],
+  csrfToken: "synthetic-csrf",
+  sessionExpiresAt: new Date(now.getTime() + 3600000),
+  authorizationBasis: "ROLE_CAPABILITY:OPERATIONS_OPERATOR",
+};
 function snapshotFixture(rows: number, counted = rows) {
   const report = createReachTelemetryReport();
   report.model.packets = 1;

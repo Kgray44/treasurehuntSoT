@@ -13,9 +13,26 @@ export function reachRequestAddress(request: Request) {
 }
 export function requireReachSameOriginJson(request: Request) {
   const origin = request.headers.get("Origin");
+  // Next can normalize a loopback Request.url to localhost. The browser Host
+  // authority still identifies the actual destination; never alias loopback hosts.
+  let expected: URL;
+  try {
+    expected = new URL(request.url);
+    if (!["http:", "https:"].includes(expected.protocol)) throw new Error("UNSUPPORTED_PROTOCOL");
+    const host = request.headers.get("Host");
+    if (host !== null) {
+      if (!host || /[,\s\\/?#@]/u.test(host)) throw new Error("INVALID_AUTHORITY");
+      const authority = new URL(`${expected.protocol}//${host}`);
+      if (authority.username || authority.password || authority.pathname !== "/" || authority.search || authority.hash)
+        throw new Error("INVALID_AUTHORITY");
+      expected.host = authority.host;
+    }
+  } catch {
+    throw new AdmiraltyError("ADMIRALTY_CSRF_INVALID", "A valid same-origin destination is required.", 403);
+  }
   if (
     !origin ||
-    origin !== new URL(request.url).origin ||
+    origin !== expected.origin ||
     (request.headers.has("Sec-Fetch-Site") && request.headers.get("Sec-Fetch-Site") !== "same-origin")
   )
     throw new AdmiraltyError("ADMIRALTY_CSRF_INVALID", "A same-origin request is required.", 403);

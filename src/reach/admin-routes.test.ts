@@ -111,6 +111,26 @@ describe("public Reach policy and identity-free automatic numeric ingestion", ()
     expect(mocks.account).not.toHaveBeenCalled();
     expect(response.headers.get("Cache-Control")).toBe("private, no-store");
   });
+  it("uses the validated actual Host when Next normalizes a loopback URL, without aliasing hosts", async () => {
+    const body = JSON.stringify(contribution());
+    const normalized = (Host: string, Origin: string, protocol = "http:") =>
+      new Request(`${protocol}//localhost:3138/api/reach/telemetry`, {
+        method: "POST",
+        headers: { Host, Origin, "Content-Type": "application/json", "Sec-Fetch-Site": "same-origin" },
+        body,
+      });
+    expect((await telemetry(normalized("127.0.0.1:3138", "http://127.0.0.1:3138"))).status).toBe(202);
+    mocks.insert.mockClear();
+    for (const invalid of [
+      normalized("127.0.0.1:3138", "http://localhost:3138"),
+      normalized("127.0.0.1:3138,foreign.invalid", "http://127.0.0.1:3138"),
+      normalized("foreign.invalid", "http://127.0.0.1:3138"),
+      normalized("127.0.0.1:3138", "https://127.0.0.1:3138"),
+      normalized("127.0.0.1:3138", "ftp://127.0.0.1:3138", "ftp:"),
+    ])
+      expect((await telemetry(invalid)).status).toBe(403);
+    expect(mocks.insert).not.toHaveBeenCalled();
+  });
   it.each<Record<string, string>>([
     { Origin: "https://foreign.invalid" },
     { Origin: "null" },
