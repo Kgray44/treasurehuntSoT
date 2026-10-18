@@ -235,16 +235,31 @@ test("observe-only operator reads Reach but cannot preview or execute policy", a
   await page.getByRole("button", { name: "Runtime policy", exact: true }).click();
   await expect(page.getByText(/CONFIG_OPERATE authority is required/)).toBeVisible();
   await expect(page.getByRole("button", { name: "Preview Reach policy" })).toHaveCount(0);
-  const context = await page.request.get("/api/auth/context");
-  const identity = await context.json();
+  // Exercise the signed-in browser's actual cookie policy. APIRequestContext
+  // does not apply Chromium's Secure-cookie exception for HTTP loopback.
+  const context = await page.evaluate(async () => {
+    const response = await fetch("/api/auth/context", { credentials: "same-origin" });
+    return { status: response.status, identity: await response.json() };
+  });
+  expect(context.status).toBe(200);
+  const identity = context.identity;
+  expect(identity.authenticated).toBe(true);
   expect(identity.csrfToken).toBeTruthy();
   for (const step of ["preview", "execute"]) {
-    const denied = await page.request.post(`/api/admin/commands/reach-runtime-policy/${step}`, {
-      headers: { "x-csrf-token": identity.csrfToken, Origin: new URL(fixture.baseURL).origin },
-      data: {},
-    });
-    expect(denied.status()).toBe(403);
-    expect((await denied.json()).code).toBe("ADMIRALTY_CAPABILITY_DENIED");
+    const denied = await page.evaluate(
+      async ({ step, csrfToken }) => {
+        const response = await fetch(`/api/admin/commands/reach-runtime-policy/${step}`, {
+          method: "POST",
+          credentials: "same-origin",
+          headers: { "content-type": "application/json", "x-csrf-token": csrfToken },
+          body: JSON.stringify({}),
+        });
+        return { status: response.status, body: await response.json() };
+      },
+      { step, csrfToken: identity.csrfToken },
+    );
+    expect(denied.status).toBe(403);
+    expect(denied.body.code).toBe("ADMIRALTY_CAPABILITY_DENIED");
   }
   await accessible(page);
   await capture(page, info, "SYNTHETIC-reach-admin-observer-mobile");

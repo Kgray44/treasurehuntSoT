@@ -393,12 +393,54 @@ test("photographic worker completes nine real-landmark holds and five independen
       ),
     );
   };
+  const metricExportGeometry: object[] = [];
   const readMetrics = async () => {
+    const geometry = () =>
+      page.getByRole("group", { name: "Pointing practice area", exact: true }).evaluate((element) => {
+        const rect = element.getBoundingClientRect();
+        return {
+          rect: { x: rect.x, y: rect.y, width: rect.width, height: rect.height },
+          client: { width: element.clientWidth, height: element.clientHeight },
+          scroll: { x: scrollX, y: scrollY },
+          viewport: {
+            width: innerWidth,
+            height: innerHeight,
+            scale: visualViewport?.scale ?? 1,
+            dpr: devicePixelRatio,
+          },
+          step: document.querySelector("[data-step]")?.getAttribute("data-step"),
+        };
+      });
+    const before = await geometry();
+    const unchanged = async (boundary: string) => {
+      await page.evaluate(
+        () => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))),
+      );
+      const after = await geometry();
+      metricExportGeometry.push({ boundary, before, after });
+      await writeFile(
+        testInfo.outputPath("photographic-export-geometry.json"),
+        JSON.stringify(metricExportGeometry, null, 2),
+      );
+      expect(after).toEqual(before);
+      await expect(page.getByRole("alert", { name: "Setup ended" })).toHaveCount(0);
+    };
+    // This is diagnostic export instrumentation. Native DOM control activation
+    // avoids the driver's automatic scroll, which would honestly invalidate a
+    // screen-bound absolute fit. Natural export controls are exercised above.
     const summary = page.getByText("Session diagnostics & privacy", { exact: true });
-    if (!(await summary.locator("..").evaluate((element) => element.hasAttribute("open")))) await summary.click();
-    await page.getByRole("checkbox", { name: /I consent to downloading/ }).check();
+    if (!(await summary.locator("..").evaluate((element) => element.hasAttribute("open"))))
+      await summary.evaluate((element) => (element as HTMLElement).click());
+    await unchanged("diagnostics-open");
+    const consent = page.getByRole("checkbox", { name: /I consent to downloading/ });
+    if (!(await consent.isChecked())) await consent.evaluate((element) => (element as HTMLInputElement).click());
+    await expect(consent).toBeChecked();
+    await unchanged("download-consent");
+    const exportButton = page.getByRole("button", { name: "Export aggregate metrics" });
+    await expect(exportButton).toBeEnabled();
     const downloaded = page.waitForEvent("download");
-    await page.getByRole("button", { name: "Export aggregate metrics" }).click();
+    await exportButton.evaluate((element) => (element as HTMLButtonElement).click());
+    await unchanged("export-activated");
     return JSON.parse(await readFile((await (await downloaded).path())!, "utf8"));
   };
   const holdTargets = async (count: number, stage: string) => {

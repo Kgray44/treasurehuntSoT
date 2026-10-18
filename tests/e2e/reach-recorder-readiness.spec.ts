@@ -148,6 +148,10 @@ test("D0 encoded recorder video excludes the live skeleton by default and preser
           .poll(async () => Number(await progress.getAttribute("value")), { intervals: [50], timeout: 5000 })
           .toBeGreaterThanOrEqual(900);
         const liveDuring = await inspectLive();
+        // Stop before diagnostic file writes so evidence collection does not
+        // extend the recording interval being measured below.
+        await page.getByRole("button", { name: "Stop & review", exact: true }).click();
+        await expect(page.getByRole("heading", { name: "Review your local recording" })).toBeVisible();
         for (const [phase, capture] of Object.entries({ before: liveBefore, during: liveDuring }))
           await testInfo.attach(`D0-${containsHandOverlay ? "composite" : "clean"}-live-${phase}.png`, {
             body: Buffer.from(capture.png.split(",")[1], "base64"),
@@ -173,8 +177,6 @@ test("D0 encoded recorder video excludes the live skeleton by default and preser
           liveBefore.height,
           liveBefore.dpr,
         ]);
-        await page.getByRole("button", { name: "Stop & review", exact: true }).click();
-        await expect(page.getByRole("heading", { name: "Review your local recording" })).toBeVisible();
         const trace = await page
           .getByRole("link", { name: "Download landmark trace", exact: true })
           .evaluate(async (link) => (await fetch((link as HTMLAnchorElement).href)).json());
