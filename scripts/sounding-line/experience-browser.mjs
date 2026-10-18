@@ -16,6 +16,12 @@ import {
 } from "./browser-diagnostics.mjs";
 import { producePairedEvidence, sealPairedRuntime, validatePairedEvidence } from "./experience-paired.mjs";
 import {
+  EXPERIENCE_RAW_OUTPUT,
+  createRawOutputDirectory,
+  copyDeclaredCaptureFile,
+  rawCaptureBinding,
+} from "./experience-raw-output.mjs";
+import {
   assertExceptionExecution,
   claimExceptionPhase,
   CROSSDECK_R3,
@@ -341,7 +347,14 @@ export async function runExperienceJourney({
   };
 }
 
-export async function captureProductExperience({ root, plan, baseURL, outputDirectory, storageState }) {
+export async function captureProductExperience({
+  root,
+  plan,
+  baseURL,
+  outputDirectory,
+  storageState,
+  rawOutputDirectory = process.env[EXPERIENCE_RAW_OUTPUT],
+}) {
   const exceptionLease = await assertExceptionExecution({ root, plan, kind: "experience" });
   if (exceptionLease)
     claimExceptionPhase({
@@ -369,6 +382,10 @@ export async function captureProductExperience({ root, plan, baseURL, outputDire
   const artifactRoot = path.resolve(root, outputDirectory);
   if (!artifactRoot.startsWith(path.resolve(root) + path.sep)) fail("ARTIFACT_PATH_INVALID");
   await mkdir(artifactRoot, { recursive: true });
+  const rawRecordings =
+    rawOutputDirectory && !plan.pairedOnly
+      ? await createRawOutputDirectory({ root, directory: `${rawOutputDirectory}/recordings` })
+      : null;
   const browser = plan.pairedOnly ? null : await chromium.launch({ headless: true });
   const evidence = {
     version: 1,
@@ -410,7 +427,7 @@ export async function captureProductExperience({ root, plan, baseURL, outputDire
                 baseURL,
                 viewport: EXPERIENCE_VIEWPORTS[device],
                 reducedMotion: motionMode === "REDUCED" ? "reduce" : "no-preference",
-                recordVideo: { dir: artifactRoot },
+                recordVideo: { dir: rawRecordings ?? artifactRoot },
                 ...((authenticatedState ?? storageState) ? { storageState: authenticatedState ?? storageState } : {}),
               });
               await context.tracing.start({ screenshots: true, snapshots: true });
@@ -533,7 +550,18 @@ export async function captureProductExperience({ root, plan, baseURL, outputDire
                 });
                 const video = page.video();
                 await context.close();
-                const videoPath = await video.path();
+                let videoPath = await video.path();
+                if (rawRecordings) {
+                  const selected = await copyDeclaredCaptureFile({
+                    root,
+                    rawDirectory: rawRecordings,
+                    source: videoPath,
+                    destination: path.join(artifactRoot, path.basename(videoPath)),
+                    kind: "recording",
+                    binding: rawCaptureBinding(plan),
+                  });
+                  videoPath = path.join(root, selected.path);
+                }
                 evidence.artifacts.push({
                   id: `${contract.id}-${journey.id}-${device}-${role}-${motionMode}-recording`,
                   path: relative(root, videoPath),
@@ -556,7 +584,7 @@ export async function captureProductExperience({ root, plan, baseURL, outputDire
   } finally {
     await browser?.close();
   }
-  const paired = await producePairedEvidence({ root, plan, baseURL, outputDirectory });
+  const paired = await producePairedEvidence({ root, plan, baseURL, outputDirectory, rawOutputDirectory });
   if (paired) {
     evidence.artifacts.push(...paired.artifacts);
     evidence.pairedEvidence = paired.pairedEvidence;
@@ -731,7 +759,13 @@ export async function runTrustedExperienceReplay({
         ],
         {
           cwd: root,
-          env: { ...isolatedEnvironment, ...diagnosticEnvironment },
+          env: {
+            ...isolatedEnvironment,
+            ...diagnosticEnvironment,
+            ...(isolatedEnvironment[EXPERIENCE_RAW_OUTPUT]
+              ? { [EXPERIENCE_RAW_OUTPUT]: `${isolatedEnvironment[EXPERIENCE_RAW_OUTPUT]}/${profile}` }
+              : {}),
+          },
           stdio: "inherit",
         },
       ),

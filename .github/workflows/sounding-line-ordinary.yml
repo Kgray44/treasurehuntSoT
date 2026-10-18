@@ -161,6 +161,20 @@ jobs:
             ${{ steps.experience.outcome != 'success' && steps.experience.outputs.capture_journal_failure_path || '' }}
             ${{ steps.experience.outcome != 'success' && steps.experience.outputs.capture_journal_pending_path || '' }}
           retention-days: 90
+      - name: Retain current raw capture after failure or cancellation
+        id: capture-raw-retention
+        if: always() && inputs.experience_mode == 'capture' && steps.experience.outcome != 'success' && steps.experience.outputs.capture_raw_verified_paths == '' && steps.experience.outputs.capture_raw_encrypted_path != ''
+        env:
+          CAPTURE_PLAN: ${{ steps.experience.outputs.capture_plan_path }}
+          CAPTURE_ENCRYPTED: ${{ steps.experience.outputs.capture_raw_encrypted_path }}
+        run: node authority/scripts/sounding-line/experience-raw-retention.mjs --workspace candidate --plan "$CAPTURE_PLAN" --encrypted "$CAPTURE_ENCRYPTED"
+      - uses: actions/upload-artifact@v4
+        if: always() && inputs.experience_mode == 'capture' && (steps.experience.outputs.capture_raw_verified_paths != '' || (steps.capture-raw-retention.outcome == 'success' && steps.capture-raw-retention.outputs.capture_raw_verified_paths != ''))
+        with:
+          name: product-experience-raw-${{ inputs.candidate_sha }}-${{ github.run_id }}
+          path: ${{ steps.experience.outputs.capture_raw_verified_paths || steps.capture-raw-retention.outputs.capture_raw_verified_paths }}
+          if-no-files-found: error
+          retention-days: 90
       - uses: actions/upload-artifact@v4
         if: always() && inputs.experience_mode == 'capture' && steps.experience.outputs.capture_plan_path != ''
         with:

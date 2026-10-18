@@ -9,6 +9,7 @@ import {
   CURRENT_R15_FAILED_RUN,
   CURRENT_R15_LEGACY_PREDECESSOR,
 } from "./experience-current-r16.mjs";
+import { CURRENT_R17, CURRENT_R16_FAILED_PREPARATION, CURRENT_R16_FAILED_RUN } from "./experience-current-r17.mjs";
 
 export const CURRENT_ADMISSION_KIND = "CROSSDECK_CURRENT_SOURCE_ADMISSION_1";
 export const CURRENT_LEGACY_REGISTRY_DIGEST = "ab123c025952b5f5f5140e55ff95f2ba1f2433a33a0de5c200885d917c1344fd";
@@ -83,7 +84,9 @@ export const isCurrentAdmissionPlan = (plan) =>
 
 export function validateCurrentAdmissionRecord(record, { now = new Date(), legacyRecord, legacyCurrentRecord } = {}) {
   const a = record?.currentSourceAdmission;
-  const successor = record?.version === CURRENT_R16.version;
+  const successor16 = record?.version === CURRENT_R16.version;
+  const successor17 = record?.version === CURRENT_R17.version;
+  const successor = successor16 || successor17;
   need(
     isCurrentAdmissionRecord(record) &&
       (record.version === 15 || successor) &&
@@ -102,14 +105,16 @@ export function validateCurrentAdmissionRecord(record, { now = new Date(), legac
     "RECORD_INVALID",
   );
   need(
-    (successor
-      ? same(record.predecessor, CURRENT_R15_FAILED_PREPARATION)
-      : record.predecessor?.id === CURRENT_LEGACY.id &&
-        record.predecessor.recordDigest === CURRENT_LEGACY.recordDigest &&
-        record.predecessor.qualifyCommit === CURRENT_LEGACY.qualifyCommit &&
-        record.predecessor.runId === CURRENT_LEGACY.runId &&
-        sha(record.predecessor.qualifyPayloadDigest, 64) &&
-        Number.isFinite(Date.parse(record.predecessor.campaignEpoch))) &&
+    (successor17
+      ? same(record.predecessor, CURRENT_R16_FAILED_PREPARATION)
+      : successor16
+        ? same(record.predecessor, CURRENT_R15_FAILED_PREPARATION)
+        : record.predecessor?.id === CURRENT_LEGACY.id &&
+          record.predecessor.recordDigest === CURRENT_LEGACY.recordDigest &&
+          record.predecessor.qualifyCommit === CURRENT_LEGACY.qualifyCommit &&
+          record.predecessor.runId === CURRENT_LEGACY.runId &&
+          sha(record.predecessor.qualifyPayloadDigest, 64) &&
+          Number.isFinite(Date.parse(record.predecessor.campaignEpoch))) &&
       sha(record.frozenReferenceSha) &&
       sha(record.frozenTrees?.src) &&
       sha(a.protectedBaseAncestorSha) &&
@@ -237,7 +242,7 @@ export function validateCurrentAdmissionRecord(record, { now = new Date(), legac
       a.paidProviderCalls === 0,
     "CAP_OR_OBSERVATION_INVALID",
   );
-  if (successor) {
+  if (successor16) {
     need(
       record.id === CURRENT_R16.id &&
         record.frozenReferenceSha === CURRENT_R16.frozenReferenceSha &&
@@ -257,10 +262,48 @@ export function validateCurrentAdmissionRecord(record, { now = new Date(), legac
       "R16_SCOPE_OR_SPENT_HISTORY_CHANGED",
     );
   }
+  if (successor17) {
+    need(
+      record.id === CURRENT_R17.id &&
+        record.frozenReferenceSha === CURRENT_R17.frozenReferenceSha &&
+        a.preservationRevision === CURRENT_R17.preservationRevision &&
+        a.protectedBaseAncestorSha === CURRENT_R17.protectedBaseAncestorSha &&
+        same(record.ownerApproval, CURRENT_R17.ownerApproval) &&
+        record.expiresAt === CURRENT_R17.expiresAt &&
+        same(a.cumulativeHistory, CURRENT_R17.cumulativeHistory) &&
+        a.requiredReviewIterations === CURRENT_R17.requiredReviewIterations &&
+        record.remainingIndependentReviewOrdinal === CURRENT_R17.remainingIndependentReviewOrdinal &&
+        hash(a.legacyR14History) === CURRENT_R17.legacyR14HistoryDigest &&
+        hash(record.immutableHistory) === CURRENT_R17.immutableHistoryDigest &&
+        a.historicalRuns.length === 19 &&
+        hash(a.historicalRuns.slice(0, 18)) === CURRENT_R17.previousRunsDigest &&
+        same(a.historicalRuns[18], CURRENT_R16_FAILED_RUN) &&
+        (legacyCurrentRecord === undefined || hash(legacyCurrentRecord) === CURRENT_R17.previousRecordDigest),
+      "R17_SCOPE_OR_SPENT_HISTORY_CHANGED",
+    );
+  }
   return record;
 }
 
 export function validateCurrentAdmissionRegistry(registry, now, { requiredVersion } = {}) {
+  if (
+    requiredVersion === 17 ||
+    (requiredVersion === undefined &&
+      registry?.exceptions?.some((record) => isCurrentAdmissionRecord(record) && record.version === 17))
+  ) {
+    need(registry?.version === 1 && registry.exceptions.length === 17, "R17_REGISTRY_INVALID");
+    const prior = { ...registry, exceptions: registry.exceptions.slice(0, 16) };
+    need(hash(prior) === CURRENT_R17.previousRegistryDigest, "R17_PREDECESSOR_REGISTRY_CHANGED");
+    validateCurrentAdmissionRegistry(prior, now, { requiredVersion: 16 });
+    const current = registry.exceptions[16];
+    need(current?.version === 17 && isCurrentAdmissionRecord(current), "R17_REGISTRY_INVALID");
+    validateCurrentAdmissionRecord(current, {
+      now,
+      legacyRecord: prior.exceptions.find((record) => record.id === CURRENT_LEGACY.id),
+      legacyCurrentRecord: prior.exceptions[15],
+    });
+    return current;
+  }
   if (
     requiredVersion === 16 ||
     registry?.exceptions?.some((record) => isCurrentAdmissionRecord(record) && record.version === 16)
@@ -571,44 +614,48 @@ export function assertCurrentAdmissionCap(record, stage) {
 }
 export async function validateCurrentFailedPreparation({ record, request, storeFor }) {
   validateCurrentAdmissionRecord(record);
-  need(record.version === 16, "R16_RECORD_REQUIRED");
-  const p = record.predecessor;
-  const spent = storeFor({
-    id: p.id,
-    custody: { namespace: `sounding-line-exceptions/${p.id}` },
-  });
-  const preparation = await spent.read("prepare");
-  need(preparation?.commitSha === p.prepareCommit, "R15_SPENT_PREPARATION_CHANGED");
-  const { commitSha: preparationCommit, ...preparationPayload } = preparation;
-  need(
-    preparationCommit === p.prepareCommit &&
-      hash(preparationPayload) === p.preparePayloadDigest &&
-      preparationPayload.version === 1 &&
-      preparationPayload.exceptionId === p.id &&
-      preparation.binding?.exception?.id === p.id &&
-      preparation.binding.exception.recordDigest === p.recordDigest &&
-      preparation.binding.baseSha === p.baseSha &&
-      preparation.binding.sourceDigest === p.sourceDigest &&
-      preparation.binding.contractDigest === p.contractDigest &&
-      preparation.candidateSha === p.candidateSha &&
-      preparation.run?.runId === p.runId &&
-      preparation.run.runAttempt === p.runAttempt &&
-      preparation.run.workflowId === p.workflowId &&
-      preparation.run.headSha === p.headSha &&
-      preparation.run.event === p.event &&
-      preparation.status === "PREPARE_AND_REVIEW8_RESERVED_VALIDATION_PENDING" &&
-      preparation.independentReviewsCompleted === 7 &&
-      preparation.reservedIndependentReviewOrdinal === 8,
-    "R15_SPENT_PREPARATION_CHANGED",
-  );
-  for (const slot of ["capture", "review-submit", "review8", "qualify", "qualified"])
-    need(!(await spent.read(slot)), "R15_UNEXPECTED_SUCCESS_SLOT");
-  const candidate = await request(`git/commits/${p.candidateSha}`);
-  need(candidate?.tree?.sha === p.candidateTree, "R15_CANDIDATE_TREE_CHANGED");
+  need(record.version === 16 || record.version === 17, "R16_RECORD_REQUIRED");
+  const preparations =
+    record.version === 17 ? [CURRENT_R15_FAILED_PREPARATION, record.predecessor] : [record.predecessor];
+  for (const p of preparations) {
+    const generation = p.id === CURRENT_R15_FAILED_PREPARATION.id ? "R15" : "R16";
+    const spent = storeFor({
+      id: p.id,
+      custody: { namespace: `sounding-line-exceptions/${p.id}` },
+    });
+    const preparation = await spent.read("prepare");
+    need(preparation?.commitSha === p.prepareCommit, `${generation}_SPENT_PREPARATION_CHANGED`);
+    const { commitSha: preparationCommit, ...preparationPayload } = preparation;
+    need(
+      preparationCommit === p.prepareCommit &&
+        hash(preparationPayload) === p.preparePayloadDigest &&
+        preparationPayload.version === 1 &&
+        preparationPayload.exceptionId === p.id &&
+        preparation.binding?.exception?.id === p.id &&
+        preparation.binding.exception.recordDigest === p.recordDigest &&
+        preparation.binding.baseSha === p.baseSha &&
+        preparation.binding.sourceDigest === p.sourceDigest &&
+        preparation.binding.contractDigest === p.contractDigest &&
+        preparation.candidateSha === p.candidateSha &&
+        preparation.run?.runId === p.runId &&
+        preparation.run.runAttempt === p.runAttempt &&
+        preparation.run.workflowId === p.workflowId &&
+        preparation.run.headSha === p.headSha &&
+        preparation.run.event === p.event &&
+        preparation.status === "PREPARE_AND_REVIEW8_RESERVED_VALIDATION_PENDING" &&
+        preparation.independentReviewsCompleted === 7 &&
+        preparation.reservedIndependentReviewOrdinal === 8,
+      `${generation}_SPENT_PREPARATION_CHANGED`,
+    );
+    for (const slot of ["capture", "review-submit", "review8", "qualify", "qualified"])
+      need(!(await spent.read(slot)), `${generation}_UNEXPECTED_SUCCESS_SLOT`);
+    const candidate = await request(`git/commits/${p.candidateSha}`);
+    need(candidate?.tree?.sha === p.candidateTree, `${generation}_CANDIDATE_TREE_CHANGED`);
+  }
 }
 export async function validateCurrentAdmissionPredecessors({ record, request, storeFor }) {
   validateCurrentAdmissionRecord(record);
-  const successor = record.version === 16;
+  const successor = record.version === 16 || record.version === 17;
   const legacyPredecessor = successor ? CURRENT_R15_LEGACY_PREDECESSOR : record.predecessor;
   const previous = storeFor({
     id: CURRENT_LEGACY.id,
@@ -646,12 +693,12 @@ export async function validateCurrentAdmissionPredecessors({ record, request, st
       expected,
       runId: CURRENT_LEGACY.runId,
     })),
-    ...(successor
-      ? record.predecessor.artifacts.map((expected) => ({
-          expected,
-          runId: record.predecessor.runId,
-        }))
-      : []),
+    ...(record.version === 17
+      ? [CURRENT_R15_FAILED_PREPARATION, record.predecessor]
+      : successor
+        ? [record.predecessor]
+        : []
+    ).flatMap((preparation) => preparation.artifacts.map((expected) => ({ expected, runId: preparation.runId }))),
   ]) {
     const artifact = await request(`actions/artifacts/${expected.id}`);
     need(
