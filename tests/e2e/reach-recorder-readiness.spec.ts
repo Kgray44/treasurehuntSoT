@@ -171,41 +171,218 @@ test("D0 encoded recorder video excludes the live skeleton by default and preser
           )
           .toBeGreaterThanOrEqual(3);
         const liveBefore = freshBaseline!;
-        await start.click();
-        await expect(clean).toBeDisabled();
-        const progress = page.getByRole("progressbar", { name: "Guided recording progress" });
-        await expect
-          .poll(async () => Number(await progress.getAttribute("value")), { intervals: [50], timeout: 5000 })
-          .toBeGreaterThanOrEqual(400);
-        let liveDuring = liveBefore;
-        await expect
-          .poll(
-            async () => {
-              liveDuring = await inspectLive();
-              return (
-                liveDuring.maximumAlpha === 255 &&
-                liveDuring.captureAgeMs >= 0 &&
-                liveDuring.captureAgeMs <= 150 &&
-                liveDuring.deliveredResults > liveBefore.deliveredResults
+        // Arm the observer before the native Start click. A slow Playwright
+        // response or PNG return must never postpone this fixture's Stop.
+        await page.evaluate((baselineResults) => {
+          type Snapshot = {
+            count: number;
+            maximumAlpha: number;
+            captureAgeMs: number;
+            deliveredResults: number;
+            width: number;
+            height: number;
+            clientWidth: number;
+            clientHeight: number;
+            cssRect: { x: number; y: number; width: number; height: number };
+            dpr: number;
+            viewportWidth: number;
+            documentWidth: number;
+            scroll: { x: number; y: number };
+            png: string;
+          };
+          let resolve!: (value: {
+            liveDuring: Snapshot & { hash: string };
+            modeLockedDuringRecording: boolean;
+            timing: object;
+          }) => void;
+          let reject!: (reason: Error) => void;
+          const finished = new Promise<{
+            liveDuring: Snapshot & { hash: string };
+            modeLockedDuringRecording: boolean;
+            timing: object;
+          }>((yes, no) => {
+            resolve = yes;
+            reject = no;
+          });
+          // Attach a handler immediately; the driver may still be awaiting its
+          // real click response when a deliberate fixture failure occurs.
+          void finished.catch(() => {});
+          Object.assign(window, { recorderNativeBoundedProof: { finished } });
+          const armedAt = performance.now();
+          let raf = 0;
+          let ended = false;
+          let firstProgressAt: number | null = null;
+          let modeLockedDuringRecording = false;
+          let captured: {
+            snapshot: Snapshot;
+            bytes: Uint8ClampedArray<ArrayBuffer>;
+            observedProgress: number;
+            at: number;
+          } | null = null;
+          const stopButton = () =>
+            [...document.querySelectorAll("button")].find(
+              (button) => button.textContent?.trim() === "Stop & review" && !button.disabled,
+            );
+          const stop = (observedProgress: number, failure?: Error) => {
+            if (ended) return;
+            ended = true;
+            cancelAnimationFrame(raf);
+            clearTimeout(deadline);
+            const button = stopButton();
+            if (!button) {
+              reject(new Error("RECORDING_STOP_UNAVAILABLE"));
+              return;
+            }
+            const stopAt = performance.now();
+            button.click();
+            if (failure || !captured) {
+              reject(failure ?? new Error("NO_FRESH_DURING_RECORDING_RASTER"));
+              return;
+            }
+            const accepted = captured;
+            // Only after Stop: asynchronous digest and driver/artifact work.
+            void crypto.subtle.digest("SHA-256", accepted.bytes).then(
+              (value) =>
+                resolve({
+                  liveDuring: {
+                    ...accepted.snapshot,
+                    hash: [...new Uint8Array(value)].map((byte) => byte.toString(16).padStart(2, "0")).join(""),
+                  },
+                  modeLockedDuringRecording,
+                  timing: {
+                    armedAt,
+                    firstProgressAt,
+                    capturedAt: accepted.at,
+                    capturedProgressMs: accepted.observedProgress,
+                    stopAt,
+                    stoppedProgressMs: observedProgress,
+                  },
+                }),
+              () => reject(new Error("RECORDING_RASTER_DIGEST_FAILED")),
+            );
+          };
+          const deadline = setTimeout(() => {
+            const progress = document.querySelector('progress[aria-label="Guided recording progress"]');
+            stop(Number(progress?.getAttribute("value") ?? 0), new Error("RECORDING_PROGRESS_TIMEOUT"));
+          }, 5000);
+          const tick = () => {
+            if (ended) return;
+            try {
+              const progress = document.querySelector('progress[aria-label="Guided recording progress"]');
+              const value = Number(progress?.getAttribute("value") ?? 0);
+              if (value > 0 && firstProgressAt === null) firstProgressAt = performance.now();
+              if (value > 0 && value < 900) {
+                const checkbox = [...document.querySelectorAll('input[type="checkbox"]')].find((element) =>
+                  element.closest("label")?.textContent?.includes("Save camera image without hand overlay"),
+                ) as HTMLInputElement | undefined;
+                if (!checkbox?.disabled) {
+                  stop(value, new Error("RECORDING_MODE_CHANGED_WHILE_RECORDING"));
+                  return;
+                }
+                modeLockedDuringRecording = true;
+              }
+              // Stop gets priority; a delayed readback cannot prolong the run.
+              if (value >= 900) {
+                stop(value);
+                return;
+              }
+              if (value >= 400 && !captured) {
+                const canvas = document.querySelector(
+                  'canvas[aria-label="Live hand joints aligned with the camera image"]',
+                ) as HTMLCanvasElement | null;
+                const fixture = (
+                  window as unknown as { recorderRasterFixture: { capture: number; deliveredResults: number } }
+                ).recorderRasterFixture;
+                const inspectedAt = performance.now();
+                const captureAgeMs = inspectedAt - fixture.capture;
+                if (canvas && captureAgeMs >= 0 && captureAgeMs <= 150 && fixture.deliveredResults > baselineResults) {
+                  const bytes = canvas.getContext("2d")!.getImageData(0, 0, canvas.width, canvas.height).data;
+                  let count = 0,
+                    maximumAlpha = 0;
+                  for (let i = 0; i < bytes.length; i += 4) {
+                    maximumAlpha = Math.max(maximumAlpha, bytes[i + 3]);
+                    if (
+                      bytes[i + 3] &&
+                      bytes[i + 1] - bytes[i] > 25 &&
+                      bytes[i + 2] - bytes[i] > 8 &&
+                      bytes[i + 1] > 160
+                    )
+                      count++;
+                  }
+                  if (maximumAlpha === 255) {
+                    const rect = canvas.getBoundingClientRect();
+                    captured = {
+                      bytes,
+                      observedProgress: value,
+                      at: inspectedAt,
+                      snapshot: {
+                        count,
+                        maximumAlpha,
+                        captureAgeMs,
+                        deliveredResults: fixture.deliveredResults,
+                        width: canvas.width,
+                        height: canvas.height,
+                        clientWidth: canvas.clientWidth,
+                        clientHeight: canvas.clientHeight,
+                        cssRect: { x: rect.x, y: rect.y, width: rect.width, height: rect.height },
+                        dpr: devicePixelRatio,
+                        viewportWidth: innerWidth,
+                        documentWidth: document.documentElement.clientWidth,
+                        scroll: { x: scrollX, y: scrollY },
+                        png: canvas.toDataURL("image/png"),
+                      },
+                    };
+                  }
+                }
+              }
+              raf = requestAnimationFrame(tick);
+            } catch (error) {
+              const progress = document.querySelector('progress[aria-label="Guided recording progress"]');
+              stop(
+                Number(progress?.getAttribute("value") ?? 0),
+                error instanceof Error ? error : new Error("RECORDING_RASTER_READBACK_FAILED"),
               );
-            },
-            { intervals: [16], timeout: 5000 },
-          )
-          .toBe(true);
-        // Stop at the same observed 900ms progress boundary in the page. Driver
-        // round trips and PNG readback must not extend this one-second fixture.
-        await progress.evaluate(async (element) => {
-          const deadline = performance.now() + 5000;
-          while (Number(element.getAttribute("value")) < 900) {
-            if (performance.now() >= deadline) throw new Error("RECORDING_PROGRESS_TIMEOUT");
-            await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
-          }
-          const stop = [...document.querySelectorAll("button")].find(
-            (button) => button.textContent?.trim() === "Stop & review",
-          );
-          if (!stop || stop.disabled) throw new Error("RECORDING_STOP_UNAVAILABLE");
-          stop.click();
+            }
+          };
+          raf = requestAnimationFrame(tick);
+        }, liveBefore.deliveredResults);
+        await start.click();
+        const nativeProof = await page.evaluate(async () => {
+          const state = (
+            window as unknown as {
+              recorderNativeBoundedProof: {
+                finished: Promise<{
+                  liveDuring: {
+                    count: number;
+                    hash: string;
+                    maximumAlpha: number;
+                    captureAgeMs: number;
+                    deliveredResults: number;
+                    width: number;
+                    height: number;
+                    clientWidth: number;
+                    clientHeight: number;
+                    cssRect: { x: number; y: number; width: number; height: number };
+                    dpr: number;
+                    viewportWidth: number;
+                    documentWidth: number;
+                    scroll: { x: number; y: number };
+                    png: string;
+                  };
+                  modeLockedDuringRecording: boolean;
+                  timing: object;
+                }>;
+              };
+            }
+          ).recorderNativeBoundedProof;
+          return state.finished;
         });
+        const liveDuring = nativeProof.liveDuring;
+        expect(nativeProof.modeLockedDuringRecording).toBe(true);
+        expect(liveDuring.maximumAlpha).toBe(255);
+        expect(liveDuring.captureAgeMs).toBeGreaterThanOrEqual(0);
+        expect(liveDuring.captureAgeMs).toBeLessThanOrEqual(150);
+        expect(liveDuring.deliveredResults).toBeGreaterThan(liveBefore.deliveredResults);
         await expect(page.getByRole("heading", { name: "Review your local recording" })).toBeVisible();
         for (const [phase, capture] of Object.entries({ before: liveBefore, during: liveDuring }))
           await testInfo.attach(`D0-${containsHandOverlay ? "composite" : "clean"}-live-${phase}.png`, {
@@ -218,6 +395,7 @@ test("D0 encoded recorder video excludes the live skeleton by default and preser
               before: { ...liveBefore, png: undefined },
               during: { ...liveDuring, png: undefined },
               baselineReadbacks,
+              nativeTiming: nativeProof.timing,
               modelFixturePoints: pointingPose({ indexBends: [0, 10, 20] }),
             },
             null,
