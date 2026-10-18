@@ -22,6 +22,7 @@ import {
   assertCurrentAdmissionCap,
   validateCurrentAdmissionFinalDecision,
 } from "./experience-current-admission.mjs";
+import { CURRENT_R16 } from "./experience-current-r16.mjs";
 import {
   CROSSDECK_R3,
   validateR3Record,
@@ -289,11 +290,14 @@ function campaignHistoryMarker(record, inventory, paths = treePaths(inventory)) 
       (file !== sharedCandidateReviewPath || inventory.get(file)?.split(" ").at(-1) === blob),
   );
 }
-export function exceptionRecords(root, baseSha) {
-  if (!present(root, baseSha, EXCEPTION_REGISTRY)) return [];
+function exceptionRegistry(root, baseSha) {
+  if (!present(root, baseSha, EXCEPTION_REGISTRY)) return null;
   const registry = json(root, baseSha, EXCEPTION_REGISTRY);
-  if (registry.version !== 1 || !Array.isArray(registry.exceptions)) fail("REGISTRY_INVALID");
-  return registry.exceptions;
+  if (registry?.version !== 1 || !Array.isArray(registry.exceptions)) fail("REGISTRY_INVALID");
+  return registry;
+}
+export function exceptionRecords(root, baseSha) {
+  return exceptionRegistry(root, baseSha)?.exceptions ?? [];
 }
 function r3FamilyRelated(root, candidateSha) {
   try {
@@ -303,6 +307,19 @@ function r3FamilyRelated(root, candidateSha) {
   }
 }
 export function selectTrustedExceptions(records) {
+  if (records.some((record) => isCurrentAdmissionRecord(record) && record.version === 16)) {
+    if (records.length !== 16 || digest(records.slice(0, 15)) !== CURRENT_R16.previousRecordsDigest)
+      fail("CURRENT_R16_PREDECESSOR_REGISTRY_CHANGED");
+    selectTrustedExceptions(records.slice(0, 15));
+    const successor = records[15];
+    if (!isCurrentAdmissionRecord(successor) || successor.version !== 16)
+      fail("CURRENT_R16_PREDECESSOR_REGISTRY_CHANGED");
+    validateCurrentAdmissionRecord(successor, {
+      legacyRecord: records.find((record) => record.id === CROSSDECK_R14.id),
+      legacyCurrentRecord: records[14],
+    });
+    return [successor];
+  }
   const current = records.filter(isCurrentAdmissionRecord);
   if (current.length) {
     if (current.length !== 1 || records.length !== 15) fail("CURRENT_PREDECESSOR_REGISTRY_CHANGED");
@@ -540,15 +557,17 @@ export function selectTrustedExceptions(records) {
   return records.filter((record) => record.status === "ACTIVE");
 }
 export const trustedExceptions = (root, baseSha) => {
+  // Reuse only this immutable revision's read, never a cached validation result.
+  const registry = exceptionRegistry(root, baseSha);
+  const records = registry?.exceptions ?? [];
   // The adapter at the requested base cannot reactivate an older grant by removal.
   // Historical bases without this protected adapter retain their exact readers.
-  if (exceptionRecords(root, baseSha).some(isCurrentAdmissionRecord))
-    validateCurrentAdmissionRegistry(json(root, baseSha, EXCEPTION_REGISTRY));
-  else if (present(root, baseSha, "scripts/sounding-line/experience-r14.mjs"))
-    validateR14Registry(json(root, baseSha, EXCEPTION_REGISTRY));
-  else if (present(root, baseSha, "scripts/sounding-line/experience-r13.mjs"))
-    validateR13Registry(json(root, baseSha, EXCEPTION_REGISTRY));
-  return selectTrustedExceptions(exceptionRecords(root, baseSha));
+  if (present(root, baseSha, "scripts/sounding-line/experience-current-r16.mjs"))
+    validateCurrentAdmissionRegistry(registry, undefined, { requiredVersion: 16 });
+  else if (records.some(isCurrentAdmissionRecord)) validateCurrentAdmissionRegistry(registry);
+  else if (present(root, baseSha, "scripts/sounding-line/experience-r14.mjs")) validateR14Registry(registry);
+  else if (present(root, baseSha, "scripts/sounding-line/experience-r13.mjs")) validateR13Registry(registry);
+  return selectTrustedExceptions(records);
 };
 export function campaignRelated({ root, baseSha, candidateSha, record, prNumber }) {
   if (Number(prNumber) === record.pullRequest) return true;
