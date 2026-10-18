@@ -1302,6 +1302,12 @@ test("D0 stale model replies hide the image marker, pause collection and recover
     }, 700);
   });
   await expect(root(page)).toHaveAttribute("data-image-state", "STALE");
+  // Staleness is now detected at original pixel age 150 ms. Observe the older
+  // dispatch-age probe only after its predeclared 250 ms threshold has elapsed.
+  await page.waitForFunction(() => {
+    const section = document.querySelector<HTMLElement>("section[data-image-state]")!;
+    return section.dataset.imageState === "STALE" && performance.now() - Number(section.dataset.imageCaptureTime) > 300;
+  });
   await expect(page.locator('svg[aria-label="Finger image position"]')).toHaveCount(0);
   await expect(page.getByText("Fingertip tracking", { exact: true })).not.toBeVisible();
   await expect(page.getByLabel("Target 2 of 5", { exact: true })).toBeVisible();
