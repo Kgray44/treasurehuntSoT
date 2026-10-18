@@ -28,6 +28,29 @@ describe("whole-hand authority before index fallback", () => {
     expect(fullHandDecision(value).decision).toBe("FULL_POINT");
   });
 
+  it("supplies same-capture observed anatomy only for a conditioned full index point", () => {
+    const value = observation();
+    const anchor = selectIndexModelAnchor(value)!;
+    expect(anchor.geometry?.index).toEqual(
+      [5, 6, 7, 8].map((id) => {
+        const { x, y, z } = value.hands[0].landmarks[id];
+        return { x, y, z };
+      }),
+    );
+    expect(anchor.geometry?.palmSpan).toBeGreaterThan(0);
+    expect(anchor.identityObserved).toBe(true);
+    const savedX = anchor.geometry!.index[3].x;
+    value.hands[0].landmarks[8].x += 0.01;
+    expect(anchor.geometry!.index[3].x).toBe(savedX);
+    for (const pose of [observation({ otherBends: [0, 5, 10] }), observation({ indexBends: [0, 100, 150] })]) {
+      expect(selectIndexModelAnchor(pose)).not.toHaveProperty("geometry");
+      expect(selectIndexModelAnchor(pose)).toMatchObject({ pointing: false, identityObserved: true });
+    }
+    for (let id = 0; id < 21; id++) if (![5, 6, 7, 8].includes(id)) value.hands[0].landmarks[id] = missing;
+    expect(selectIndexModelAnchor(value)).not.toHaveProperty("geometry");
+    expect(selectIndexModelAnchor(value)).not.toHaveProperty("identityObserved");
+  });
+
   it.each([0, 90])("uses full3D other-finger evidence to reject an open hand at depth orientation%s", (depthAngle) => {
     const value = observation({ indexBends: [0, 5, 10], otherBends: [0, 5, 10], depthAngle });
     expect(selectIndexModelAnchor(value)).toMatchObject({ authority: "CONTRARY", pointing: false, contrary: true });

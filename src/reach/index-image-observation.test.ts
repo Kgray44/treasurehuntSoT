@@ -52,7 +52,8 @@ describe("fresh image-tip observation gate", () => {
   it("rejects each provider, algorithm, camera and view change without consuming the sequence", () => {
     const changes = [
       { providerId: "other-image-source" },
-      { providerVersion: "2" },
+      { providerVersion: `${indexImageAlgorithm.providerVersion}-other` },
+      { providerVersion: "1" },
       { algorithmDigest: "f".repeat(64) },
       { providerGeneration: 2 },
       { cameraLeaseId: "other-camera" },

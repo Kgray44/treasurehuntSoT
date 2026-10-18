@@ -174,10 +174,18 @@ export class BrowserHandAdapter {
     private readonly backend: HandInferenceBackend = "CPU_WASM",
     private readonly policy: HandInferencePolicy = "ORIGINAL_CPU",
   ) {}
-  envelope(result: HandResult, capture: number, inference: number, width: number, height: number): HandObservation {
+  envelope(
+    result: HandResult,
+    capture: number,
+    inference: number,
+    width: number,
+    height: number,
+    acceptCapture?: () => boolean,
+  ): HandObservation {
     if (!Number.isFinite(capture) || !Number.isFinite(inference) || capture <= this.capture || inference < capture)
       throw new Error("HAND_PROVIDER_CLOCK_INVALID");
-    this.capture = capture;
+    if (acceptCapture && !acceptCapture()) throw new Error("HAND_PROVIDER_CAPTURE_REJECTED");
+    let generation = this.generation;
     const eligibleTracks = this.tracks.filter((t) => capture - t.at <= HAND_CONTINUITY_GRACE_MS);
     const hands = result.landmarks.slice(0, 2).map((points, i) => {
       const landmarks = Array.from({ length: 21 }, (_, j) => {
@@ -347,7 +355,7 @@ export class BrowserHandAdapter {
       // joints may confirm an incumbent without replacing its fixed reference.
       const ambiguous = associationAmbiguous || centers[i] === null || (!reliableIndex[i] && assignments[i] < 0);
       const prior = !ambiguous && assignments[i] >= 0 ? eligibleTracks[assignments[i]] : null;
-      const id = prior?.id ?? ++this.generation;
+      const id = prior?.id ?? ++generation;
       hand.trackId = `local-${id}`;
       hand.trackGeneration = id;
       hand.continuity = ambiguous ? "AMBIGUOUS" : prior ? "CONTINUOUS" : "ACQUIRED";
@@ -378,14 +386,14 @@ export class BrowserHandAdapter {
     // reacquisition still needs the ordinary spatial gate within the same grace.
     // Crossing or a tie between two established histories remains irreversible.
     const retainEstablished = !associationAmbiguous || eligibleTracks.filter((track) => track.established).length === 1;
-    this.tracks = [
+    const nextTracks = [
       ...next,
       ...eligibleTracks
         .filter((track) => retainEstablished && track.established && !next.some((matched) => matched.id === track.id))
         .map((track) => ({ ...track, recent: [] })),
     ];
     const rawTracked = hands.some((h) => assessHand(h, { frameWidth: width, frameHeight: height }).validCount >= 16);
-    return {
+    const observation: HandObservation = {
       observationVersion: 1,
       ...this.binding,
       providerId: handModel.providerId,
@@ -395,7 +403,7 @@ export class BrowserHandAdapter {
       modelDigest: handModel.modelDigest,
       inferenceBackend: this.backend,
       observationId: `observation-${this.sequence}`,
-      sequence: this.sequence++,
+      sequence: this.sequence,
       monotonicCaptureTime: capture,
       monotonicInferenceTime: inference,
       frameWidth: width,
@@ -412,5 +420,13 @@ export class BrowserHandAdapter {
             ? "LOW_VISIBILITY"
             : "NONE",
     };
+    // Association state is evidence too. Rejected or processing-expired pixels
+    // cannot renew a hand's history merely because no observation was published.
+    if (acceptCapture && !acceptCapture()) throw new Error("HAND_PROVIDER_CAPTURE_REJECTED");
+    this.capture = capture;
+    this.generation = generation;
+    this.tracks = nextTracks;
+    ++this.sequence;
+    return observation;
   }
 }

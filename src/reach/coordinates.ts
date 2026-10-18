@@ -3,8 +3,8 @@ import type { GeometryFrame } from "@/watchglass/hand-geometry";
 import { indexGeometry } from "@/watchglass/index-geometry";
 export const REACH_FEATURE_PROFILE = "INDEX_TIP_AXIS_V1" as const;
 export const REACH_ASSOCIATION_BASIS = "INDEX_CHAIN_V1" as const;
-export const REACH_RELATIVE_FEATURE_PROFILE = "INDEX_TIP_IMAGE_V1" as const;
-export const REACH_RELATIVE_ASSOCIATION_BASIS = "INDEX_IMAGE_TRACK_V1" as const;
+export const REACH_RELATIVE_FEATURE_PROFILE = "INDEX_TIP_FUSED_V1" as const;
+export const REACH_RELATIVE_ASSOCIATION_BASIS = "INDEX_FUSED_TRACK_V1" as const;
 export type Point = { x: number; y: number };
 export type Viewport = {
   width: number;
@@ -42,7 +42,7 @@ export function pointingFeatures(hand: HandObservation["hands"][number], frame?:
   if (!index.complete || !index.geometry || !index.tip || index.reach <= 1e-5) throw new Error("POINT_AXIS_DEGENERATE");
   return [1, index.tip.x, index.tip.y, index.axis.x / index.reach, index.axis.y / index.reach / index.aspect];
 }
-/** A fresh image track supplies only observed 2D position, never an invented axis. */
+/** One fresh fused fingertip producer supplies 2D position, never an invented axis. */
 export function relativeIndexFeatures(point: Point): number[] {
   if (![point.x, point.y].every(Number.isFinite) || point.x < 0 || point.x > 1 || point.y < 0 || point.y > 1)
     throw new Error("INDEX_IMAGE_POINT_INVALID");

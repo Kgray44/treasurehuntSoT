@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-10-17",
+  "generated_at": "2026-10-18",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -9743,6 +9743,12 @@
     {
       "path": "Development_Docs/Projects/Project_Reach/evidence/natural-pointing-recovery-20261017/manifest.json",
       "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/Fused_Tracking_Audit_20261018.md",
+      "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
     },

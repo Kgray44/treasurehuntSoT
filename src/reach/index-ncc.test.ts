@@ -95,6 +95,40 @@ function equal(
   return expected.match;
 }
 describe("exact bounded NCC kernel", () => {
+  it("refines fractional translations without changing any integer score, winner, rival or tie", () => {
+    const original = frame(160, 120, 21),
+      t = template(original, 70, 60);
+    const integerErrors: number[] = [],
+      refinedErrors: number[] = [];
+    for (const shift of [0.1, 0.2, 0.3, 0.4, 0.6, 0.7, 0.8, 0.9]) {
+      const moved = { ...original, data: new Uint8Array(original.data.length), capture: 100 + shift };
+      for (let y = 0; y < original.height; ++y)
+        for (let x = 1; x < original.width; ++x)
+          moved.data[y * original.width + x] = Math.round(
+            original.data[y * original.width + x] * (1 - shift) + original.data[y * original.width + x - 1] * shift,
+          );
+      const exactScores = new Float64Array(49 * 49),
+        refinedScores = new Float64Array(49 * 49);
+      const exact = searchNcc(moved, t, { x: 70, y: 60 }, 24, exactScores)!;
+      const refined = searchNcc(moved, t, { x: 70, y: 60 }, 24, refinedScores, undefined, createNccScratch(), true)!;
+      expect(refined).toMatchObject(exact);
+      expect(Array.from(refinedScores)).toEqual(Array.from(exactScores));
+      integerErrors.push(Math.abs(exact.point.x - 70 - shift));
+      refinedErrors.push(Math.abs((refined.refinedPoint?.x ?? refined.point.x) - 70 - shift));
+      if (refined.refinedPoint)
+        expect(
+          Math.hypot(refined.refinedPoint.x - refined.point.x, refined.refinedPoint.y - refined.point.y),
+        ).toBeLessThanOrEqual(Math.SQRT1_2);
+    }
+    expect(refinedErrors.reduce((a, b) => a + b, 0)).toBeLessThan(integerErrors.reduce((a, b) => a + b, 0));
+    expect(Math.max(...refinedErrors)).toBeLessThan(0.25);
+    const scores = new Float64Array(49 * 49);
+    expect(searchNcc(original, t, { x: 70, y: 60 }, 24, scores, undefined, createNccScratch(), true)).toEqual({
+      point: { x: 70, y: 60 },
+      correlation: 1,
+      separation: expect.any(Number),
+    });
+  });
   it.each([1, 17, 971])("preserves every score, rival peak and tie on noisy images (seed%s)", (seed) => {
     const f = frame(160, 120, seed),
       t = template(f, 71, 63);

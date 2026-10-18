@@ -8,12 +8,12 @@ export type IndexImageReadinessResult = {
   changed: boolean;
 };
 const guidance: Record<IndexImageReadinessResult["condition"], string> = {
-  READY: "Your fingertip is ready for image-based relative control.",
-  ACQUIRING: "Keep your fingertip visible while image tracking settles.",
+  READY: "Your fingertip is ready for relative control.",
+  ACQUIRING: "Keep your fingertip visible while tracking settles.",
   RECOVERING: "Fingertip tracking is returning. Hold briefly while it settles.",
   UNSEEDED: "Show your index finger in the preview to begin image tracking.",
-  UNCERTAIN: "Image tracking paused. Keep your fingertip visible while it reacquires.",
-  LOST: "Fingertip tracking paused. Bring your finger back into view.",
+  UNCERTAIN: "Tracking paused. Keep the same fingertip visible; saved targets are kept.",
+  LOST: "Fingertip tracking paused. Bring the same finger back into view; saved targets are kept.",
 };
 const postureGuidance: Record<string, string> = {
   MANUAL_SELECTION_REQUIRED:
@@ -22,8 +22,7 @@ const postureGuidance: Record<string, string> = {
     "Fingertip appearance matches disagree. Tracking is paused to avoid a jump; keep the same fingertip visible while it reacquires. Saved targets are kept.",
   IMAGE_REFERENCE_EXPIRED:
     "The fingertip appearance has changed too much to preserve its position. Return to the original appearance, or mark the visible fingertip for a fresh setup.",
-  FULL_HAND_POINT_PENDING:
-    "Full-hand pointing evidence is settling. The fingertip image remains tracked; saved targets are kept.",
+  FULL_HAND_POINT_PENDING: "Full-hand pointing evidence is settling; saved targets are kept.",
   COHERENT_MODEL_CONTRARY:
     "Pointing posture changed. Show a relaxed index point again. If the hand stays cropped, mark the visible fingertip to start a fresh setup.",
   FULL_HAND_CONTRARY:
@@ -57,7 +56,7 @@ function identity(o: IndexImageObservation): string | null {
   ]);
 }
 
-/** Selection follows only the independently gated image track, never a model hand ID. */
+/** Selection follows the independently gated fused producer, never a model ID alone. */
 export class IndexImageReadiness {
   private established: string | null = null;
   private candidate: string | null = null;

@@ -610,6 +610,16 @@ export class ReachBrowserRuntime {
       let lastVideoFrame = 0;
       let presentedFrame = 0;
       let presentedMediaTime = -1;
+      let presentedOriginTime: number | null = null;
+      let pendingFrameOrigin: { capture: number; origin: number } | null = null;
+      // Keep pixel age separate from the serialized dispatch clock used by the
+      // worker and pacer. A camera frame can originate during the prior inference.
+      const originFresh = (origin: number | null, now: number) =>
+        origin !== null &&
+        Number.isFinite(origin) &&
+        origin >= 0 &&
+        origin <= now + 5 &&
+        now - origin <= reachImmutableSafety.maximumObservationAgeMs;
       let workerReady = false;
       let wakeFreshFrame = () => {};
       const usesPresentedCallbacks = typeof this.video.requestVideoFrameCallback === "function";
@@ -623,6 +633,16 @@ export class ReachBrowserRuntime {
           ) {
             presentedFrame = metadata.presentedFrames;
             presentedMediaTime = metadata.mediaTime;
+            const origin = metadata.captureTime === undefined ? metadata.presentationTime : metadata.captureTime;
+            presentedOriginTime =
+              Number.isFinite(metadata.presentationTime) &&
+              metadata.presentationTime >= 0 &&
+              metadata.presentationTime <= performance.now() + 5 &&
+              Number.isFinite(origin) &&
+              origin >= 0 &&
+              origin <= metadata.presentationTime + 5
+                ? origin
+                : null;
             wakeFreshFrame();
           }
           this.videoFrameCallback = this.video.requestVideoFrameCallback(presented);
@@ -632,6 +652,8 @@ export class ReachBrowserRuntime {
       const frameIdentity = () => {
         if (usesPresentedCallbacks) return { frame: presentedFrame, mediaTime: presentedMediaTime };
         const quality = this.video.getVideoPlaybackQuality();
+        // This fallback proves presentation progress, not sensor throughput:
+        // total also includes predecode drops, so it cannot replace the difference.
         const frame = quality.totalVideoFrames - quality.droppedVideoFrames;
         return { frame: Number.isInteger(frame) && frame >= 0 ? frame : 0, mediaTime: this.video.currentTime };
       };
@@ -670,6 +692,13 @@ export class ReachBrowserRuntime {
           return;
         }
         if (!this.inFlight && this.video.readyState >= 2 && identity.frame > lastVideoFrame) {
+          if (usesPresentedCallbacks && !originFresh(presentedOriginTime, performance.now())) {
+            // Consume this old presentation and wait for a genuinely newer one;
+            // taking another bitmap must not relabel old pixels as fresh input.
+            lastVideoFrame = identity.frame;
+            this.status("STALE_OR_INVALID_OBSERVATION");
+            return;
+          }
           if (width && (this.video.videoWidth !== width || this.video.videoHeight !== height)) {
             this.stop("FRAME_CHANGED_RECALIBRATE");
             return;
@@ -681,10 +710,20 @@ export class ReachBrowserRuntime {
           lastVideoTime = identity.mediaTime;
           const capture = performance.now();
           lastCapture = capture;
+          pendingFrameOrigin =
+            usesPresentedCallbacks && presentedOriginTime !== null ? { capture, origin: presentedOriginTime } : null;
           try {
             const bitmap = await createImageBitmap(this.video);
             if (!this.active || generation !== this.generation) {
               bitmap.close();
+              return;
+            }
+            if (pendingFrameOrigin && !originFresh(pendingFrameOrigin.origin, performance.now())) {
+              bitmap.close();
+              this.inFlight = false;
+              pendingFrameOrigin = null;
+              this.status("STALE_OR_INVALID_OBSERVATION");
+              schedule();
               return;
             }
             const imageStarted = performance.now();
@@ -845,15 +884,23 @@ export class ReachBrowserRuntime {
           }
           let observation: HandObservation | null = null;
           let gateTime = performance.now();
+          const frameOrigin =
+            pendingFrameOrigin && pendingFrameOrigin.capture === data.capture ? pendingFrameOrigin.origin : null;
+          const originExpired = () => frameOrigin !== null && !originFresh(frameOrigin, performance.now());
+          const captureFresh = () =>
+            !originExpired() && performance.now() - data.capture <= reachImmutableSafety.maximumObservationAgeMs;
           try {
+            if (!captureFresh()) throw new Error("OBSERVATION_PIXEL_ORIGIN_STALE");
             const envelope = adapter.envelope(
               data.result,
               data.capture,
               data.inferenceTime - performance.timeOrigin,
               data.width,
               data.height,
+              captureFresh,
             );
             gateTime = performance.now();
+            if (originExpired()) throw new Error("OBSERVATION_PIXEL_ORIGIN_STALE");
             observation = gate.accept(envelope, gateTime);
             this.observe(observation);
             this.status("READY");
@@ -863,8 +910,12 @@ export class ReachBrowserRuntime {
           if (this.inferenceMetrics) {
             try {
               this.inferenceMetrics({
-                disposition: observation ? "ACCEPTED" : gateTime - data.capture > 150 ? "LATE" : "INVALID",
-                packetAgeMs: gateTime - data.capture,
+                disposition: observation
+                  ? "ACCEPTED"
+                  : originExpired() || gateTime - data.capture > 150
+                    ? "LATE"
+                    : "INVALID",
+                packetAgeMs: Math.max(gateTime - data.capture, frameOrigin === null ? 0 : gateTime - frameOrigin),
                 modelResultMs: data.inferenceTime - performance.timeOrigin - data.capture,
                 preprocessingMs: imageCaptureCost,
                 frameIntervalMs: lastMetricCapture === null ? null : data.capture - lastMetricCapture,
@@ -900,9 +951,16 @@ export class ReachBrowserRuntime {
                 this.pendingImageCapture === data.capture &&
                 prepared.token.capture === data.capture &&
                 received - prepared.token.capture <= 150 &&
+                !originExpired() &&
                 prepared.hint === this.pendingIndexHint
               ) {
-                const tracked = this.imageTracker.complete(prepared.token, modelAnchor, () => performance.now());
+                const tracked = this.imageTracker.complete(
+                  prepared.token,
+                  modelAnchor,
+                  () => performance.now(),
+                  () => !originExpired(),
+                );
+                if (originExpired()) throw new Error("OBSERVATION_PIXEL_ORIGIN_STALE");
                 // Processing completion is current; capture remains the original
                 // bitmap time. Gate independently enforces the150ms age limit.
                 const accepted = imageGate.accept(
@@ -1017,6 +1075,7 @@ export class ReachBrowserRuntime {
           } catch {
             /* Read-only diagnostics cannot interrupt the existing pipeline. */
           }
+          pendingFrameOrigin = null;
           schedule();
         } else if (
           !workerReady &&

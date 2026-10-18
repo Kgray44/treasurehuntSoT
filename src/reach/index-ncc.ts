@@ -2,7 +2,7 @@
 export type NccFrame = { data: Uint8Array; width: number; height: number; capture?: number };
 export type NccPoint = { x: number; y: number };
 export type NccTemplate = { values: Float32Array; mean: number; deviation: number; radius: number };
-export type NccMatch = { point: NccPoint; correlation: number; separation: number };
+export type NccMatch = { point: NccPoint; refinedPoint?: NccPoint; correlation: number; separation: number };
 type Region = {
   data: Uint8Array | null;
   capture: number | undefined;
@@ -131,6 +131,7 @@ export function searchNcc(
   scores: Float64Array,
   previous?: NccPoint,
   scratch: NccScratch = createNccScratch(),
+  refine = false,
 ): NccMatch | null {
   if (
     !Number.isInteger(frame.width) ||
@@ -215,5 +216,32 @@ export function searchNcc(
       dy = minY + Math.floor(i / width) - point.y;
     if (dx * dx + dy * dy > exclusionSquared) second = Math.max(second, scores[i]);
   }
-  return { point, correlation: best, separation: best - second };
+  // Refinement never changes the integer winner, rival, or acceptance scores.
+  // A concave, interior 3x3 peak supplies a bounded subpixel measurement only.
+  let refinedPoint: NccPoint | undefined;
+  if (refine && best < 1 - 1e-10) {
+    const x = point.x - minX,
+      y = point.y - minY;
+    if (x > 0 && x < width - 1 && y > 0 && y < height - 1) {
+      const at = (dx: number, dy: number) => scores[(y + dy) * width + x + dx];
+      const neighborhood = [-1, 0, 1].flatMap((dy) => [-1, 0, 1].map((dx) => at(dx, dy)));
+      const gx = (at(1, 0) - at(-1, 0)) / 2,
+        gy = (at(0, 1) - at(0, -1)) / 2;
+      const xx = at(1, 0) + at(-1, 0) - 2 * best,
+        yy = at(0, 1) + at(0, -1) - 2 * best;
+      const xy = (at(1, 1) - at(1, -1) - at(-1, 1) + at(-1, -1)) / 4;
+      const determinant = xx * yy - xy * xy;
+      if (
+        neighborhood.every((value) => Number.isFinite(value) && value > -1) &&
+        xx < -1e-6 &&
+        yy < -1e-6 &&
+        determinant > 1e-6
+      ) {
+        const dx = (xy * gy - yy * gx) / determinant,
+          dy = (xy * gx - xx * gy) / determinant;
+        if (Math.abs(dx) <= 0.5 && Math.abs(dy) <= 0.5) refinedPoint = { x: point.x + dx, y: point.y + dy };
+      }
+    }
+  }
+  return { point, ...(refinedPoint ? { refinedPoint } : {}), correlation: best, separation: best - second };
 }

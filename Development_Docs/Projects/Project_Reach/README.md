@@ -12,6 +12,8 @@ Reach is Voyagewright's reusable browser-first spatial interaction and intent sy
 
 ## Effective governing sources
 
+The [fused tracking pipeline audit](Fused_Tracking_Audit_20261018.md) is the successor to the image-only preview below. It addresses owner-reported target-transition resets and position stepping through a versioned hand/image producer, finer image positioning and transactional pixel-age guards. Earlier receipts retain their original source; fresh development proof and physical acceptance remain separate.
+
 The [detailed comparison with current main](Changes_From_Main_20261017.md) records specifications, unchanged accuracy gates, measurements and remaining limitations.
 
 The normal `c361` preview now has [source-bound development checks](evidence/index-continuity-20261017/development-c361-current-checks.json) and a [separate-agent capture review](evidence/current-preview-c361-20261018/development-ui-review.json). Controlled primary cohorts record 26/27 passes, plus a separate passing recorder measurement correction; their failed and superseded runs remain explicit. The photographic raw held-out P95 is 0.5407% absolute and 1.0277% relative. Real webcam startup works, but a low delivered-cadence observation remains unexplained; these software fixtures do not prove physical reliability. Canonical artifact sealing and the trusted experience plan remain blocked, so no protected qualification or mainline readiness is claimed.

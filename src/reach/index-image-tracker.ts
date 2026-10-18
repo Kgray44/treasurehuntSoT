@@ -4,7 +4,7 @@ import { createNccScratch, searchNcc } from "./index-ncc";
 
 /** Canonical descriptor identity, not model weights or an accuracy certificate. */
 export const indexImageAlgorithmDescriptor = {
-  algorithm: "BOUNDED_PHOTOMETRIC_NCC_V1",
+  algorithm: "CONDITIONED_MODEL_IMAGE_FUSION_V1",
   policy: {
     radius: 7,
     minimumRadius: 4,
@@ -31,9 +31,32 @@ export const indexImageAlgorithmDescriptor = {
     referenceRefreshMinimumSpanMs: 120,
     referenceRefreshMaximumGapMs: 250,
     referenceRefreshModelAgreement: 2,
+    modelMinimumFrames: 3,
+    modelMinimumSpanMs: 120,
+    modelMaximumGapMs: 250,
+    modelMaximumStep: 64,
+    modelMinimumScaleRatio: 0.6,
+    modelMaximumScaleRatio: 1.67,
+    modelMaximumRelativeJointMotion: 0.35,
+    modelCorrectionWeight: 0.5,
+    modelMinimumCorrectionWeight: 0.15,
+    modelMaximumCorrectionStep: 0.5,
+    modelCorrectionDeadband: 0.2,
   },
   searchDomain: "PREVIOUS_AND_PREDICTED_SQUARE_UNION",
   searchKernel: "EXACT_INTEGER_INTEGRAL_MOMENTS_WITH_ORIGINAL_NCC_PRODUCT_AND_TIE_ORDER",
+  coordinates: {
+    image: "INTEGER_GATED_CONCAVE_3X3_SUBPIXEL_WITH_FIXED_TEMPLATE_PHASE",
+    fusion:
+      "IMAGE_DISPLACEMENT_PLUS_BOUNDED_CORRELATION_WEIGHTED_ANATOMICAL_OFFSET_AFTER_SOURCE_SCOPED_GEOMETRIC_PROBATION",
+    model: "CURRENT_FULL_POINT_ONLY_AFTER_3_FRAMES_120MS_COHERENT_GEOMETRY",
+    continuity: "SAME_CONFIRMED_MODEL_SOURCE_CAN_SUPPORT_ONE_FINGER_ID_THROUGH_OPTICAL_EPOCH_REPLACEMENT",
+    modelConflict: "ANY_FULL_POINT_OR_CONTRARY_ACCEPTED_IMAGE_CONFLICT_CLEARS_REGISTERED_MODEL_IDENTITY_BEFORE_RENEWAL",
+    manual: "IMAGE_ONLY_NO_MODEL_INITIALIZATION_RESCUE_OR_EXPIRY_TAKEOVER",
+    unavailable: "RETAIN_REGISTERED_COHORT_UP_TO_250MS_BUT_REQUIRE_CURRENT_FULL_POINT_GEOMETRY_FOR_MODEL_ACTION",
+    contraryIdentity: "ONLY_CONTINUOUS_FRESH_VERIFIED_SAME_FULL_HAND_SOURCE_RENEWS_IDENTITY_NEVER_POSITIVE_EVIDENCE",
+    uncertainty: "MAX_OPTICAL_HEURISTIC_AND_ANATOMICAL_CORRECTION_MAGNITUDE_IN_SOURCE_PIXELS",
+  },
   templateUpdate: {
     reference: "STABLE_APPEARANCE_PATCH_AND_FRAME_WITH_TIGHT_MODEL_SUPPORTED_REFRESH_ONLY",
     adaptive: "LAST_ACCEPTED_IMAGE_PATCH",
@@ -44,9 +67,9 @@ export const indexImageAlgorithmDescriptor = {
     refreshFailures: ["APPEARANCE_MISMATCH", "FORWARD_BACKWARD_DISAGREEMENT"],
     stableSuccess: "NEVER_REFRESH_AND_CLEAR_REFRESH_COHORT",
     referenceExpiry: "NO_REFRESH_AFTER_ADAPTIVE_ONLY_BOUND",
-    coordinateRebind: "NEVER_SNAP_TO_MODEL_OR_CHANGE_IMAGE_IDENTITY",
+    coordinateRebind: "SOURCE_CONDITIONED_CURRENT_MODEL_ASSIST_CAN_REPLACE_OPTICAL_EPOCH_WITHOUT_RELABELING_FINGER",
   },
-  lifecycle: "PREPARE_PIXELS_WITHOUT_COMMIT_THEN_SAME_CAPTURE_AUTHORITY_AND_FINAL_FRESHNESS_COMMIT",
+  lifecycle: "PREPARE_PIXELS_THEN_SAME_CAPTURE_AUTHORITY_AND_FINAL_DISPATCH_AND_SOURCE_ORIGIN_FRESHNESS_ROLLBACK",
   modelContrary: "LATCH_UNTIL_COHERENT_POINT_OR_NEW_HINT",
   wholeHandAuthority: {
     version: 2,
@@ -54,7 +77,7 @@ export const indexImageAlgorithmDescriptor = {
     contrary: "IMMEDIATE_COMPATIBLE_PAUSE_THEN_CONFIRMED_LATCH",
     ambiguous: "FRAME_LOCAL_ABSTENTION",
     conflict: "FRAME_LOCAL_PAUSE_WITHOUT_PROMOTION",
-    positive: "COMPATIBLE_TEMPORAL_PROMOTION_WITHOUT_COORDINATE_REBIND",
+    positive: "COMPATIBLE_TEMPORAL_PROMOTION_WITH_DECLARED_CONDITIONED_FUSION",
     manualHint: "CANNOT_BYPASS_AVAILABLE_AUTHORITY",
     unavailable: "IMAGE_FALLBACK_WITH_RETAINED_CONTRARY",
     matchedPoint: "CURRENT_ACCEPTED_IMAGE_MATCH_DISPLAY_ONLY_NEVER_ACTION_OR_CALIBRATION",
@@ -70,9 +93,9 @@ export const indexImageAlgorithmDescriptor = {
 } as const;
 export const indexImageAlgorithm = {
   providerId: "watchglass.index-image",
-  providerVersion: "1",
-  algorithm: "BOUNDED_PHOTOMETRIC_NCC_V1",
-  algorithmDigest: "491ae53971dc0352714c9849fdf2521a469b190130d6f408cc6cff4abf0f98eb",
+  providerVersion: "2",
+  algorithm: "CONDITIONED_MODEL_IMAGE_FUSION_V1",
+  algorithmDigest: "973f7207b71cbdd3834ddda9e9dd43da6a74da82462c888d29802b746a89b24d",
 } as const;
 export type IndexImageBinding = {
   providerGeneration: number;
@@ -95,6 +118,8 @@ export type IndexImageObservation = IndexImageBinding & {
   trackGeneration: number;
   point: Point | null;
   matchedPoint?: Point | null;
+  coordinateSource?: "IMAGE" | "FUSED" | "MODEL";
+  opticalEpoch?: number;
   state: "UNSEEDED" | "TRACKING" | "UNCERTAIN" | "LOST";
   modelAgreement: "AGREE" | "DISAGREE" | "UNAVAILABLE";
   anchorSource: "MODEL_INDEX" | "MANUAL_HINT" | null;
@@ -121,9 +146,19 @@ export type IndexModelAnchor = {
   contrary: boolean;
   authority?: "POINT" | "CONTRARY" | "AMBIGUOUS";
   authoritySource?: string;
+  identityObserved?: boolean;
+  geometry?: {
+    index: readonly [
+      { x: number; y: number; z: number },
+      { x: number; y: number; z: number },
+      { x: number; y: number; z: number },
+      { x: number; y: number; z: number },
+    ];
+    palmSpan: number;
+  };
 };
 type Patch = { values: Float32Array; mean: number; deviation: number; structure: number; radius: number };
-type Match = { point: Point; correlation: number; separation: number };
+type Match = { point: Point; refinedPoint?: Point; correlation: number; separation: number };
 type MatchEvaluation = {
   accepted: { found: Match; current: Patch; backward: number } | null;
   reason: string | null;
@@ -141,6 +176,67 @@ const policy = indexImageAlgorithmDescriptor.policy;
 let nextAnchor = 0;
 const boundedPoint = (p: Point) =>
   Number.isFinite(p.x) && Number.isFinite(p.y) && p.x >= 0 && p.x <= 1 && p.y >= 0 && p.y <= 1;
+type ModelGeometry = NonNullable<IndexModelAnchor["geometry"]>;
+type ModelContinuity = {
+  source: string;
+  startedAt: number;
+  lastAt: number;
+  frames: number;
+  geometry: ModelGeometry;
+  point: Point;
+  associated: boolean;
+};
+function validModelGeometry(
+  model: IndexModelAnchor | null | undefined,
+  aspect: number,
+): model is IndexModelAnchor & { point: Point; geometry: ModelGeometry; authoritySource: string } {
+  const g = model?.geometry;
+  if (
+    model?.authority !== "POINT" ||
+    !model.pointing ||
+    model.contrary ||
+    !model.authoritySource?.trim() ||
+    !model.point ||
+    !boundedPoint(model.point) ||
+    !g ||
+    g.index.length !== 4 ||
+    !Number.isFinite(g.palmSpan) ||
+    g.palmSpan < fullHandDetectionPolicy.palm.minimumSpan ||
+    g.palmSpan > fullHandDetectionPolicy.palm.maximumSpan ||
+    !g.index.every((p) => boundedPoint(p) && Number.isFinite(p.z))
+  )
+    return false;
+  if (Math.hypot(model.point.x - g.index[3].x, model.point.y - g.index[3].y) > 1e-6) return false;
+  const length = (a: ModelGeometry["index"][number], b: ModelGeometry["index"][number]) =>
+    Math.hypot(a.x - b.x, (a.y - b.y) / aspect, a.z - b.z);
+  const segments = [0, 1, 2].map((i) => length(g.index[i], g.index[i + 1]));
+  const chain = segments.reduce((sum, value) => sum + value, 0);
+  const p = fullHandDetectionPolicy;
+  const vectors = [0, 1, 2].map((i) => ({
+    x: g.index[i + 1].x - g.index[i].x,
+    y: (g.index[i + 1].y - g.index[i].y) / aspect,
+    z: g.index[i + 1].z - g.index[i].z,
+  }));
+  const alignment = (i: number, j: number) =>
+    (vectors[i].x * vectors[j].x + vectors[i].y * vectors[j].y + vectors[i].z * vectors[j].z) /
+    (segments[i] * segments[j]);
+  return (
+    segments.every((value) => value >= p.fingers.minimumBone && value <= g.palmSpan * p.fingers.maximumBonePalmRatio) &&
+    segments[0] >= g.palmSpan * p.index.minimumProximalPalmRatio &&
+    segments.slice(1).every((value) => value >= g.palmSpan * p.index.minimumDistalPalmRatio) &&
+    segments[1] >= segments[0] * p.fingers.minimumMiddleProximalRatio &&
+    segments[1] <= segments[0] * p.fingers.maximumMiddleProximalRatio &&
+    segments[2] >= segments[0] * p.fingers.minimumDistalProximalRatio &&
+    segments[2] <= segments[0] * p.fingers.maximumDistalProximalRatio &&
+    chain >= 0.012 &&
+    chain <= 1.2 &&
+    chain >= g.palmSpan * p.fingers.minimumChainPalmRatio &&
+    chain <= g.palmSpan * p.fingers.maximumChainPalmRatio &&
+    length(g.index[0], g.index[3]) / chain >= p.index.minimumStraightness &&
+    alignment(0, 1) >= p.index.minimumPipAlignment &&
+    alignment(1, 2) >= p.index.minimumDipAlignment
+  );
+}
 function patch(frame: IndexGrayFrame, center: Point, radius: number): Patch | null {
   const x = Math.round(center.x),
     y = Math.round(center.y);
@@ -206,6 +302,23 @@ export class IndexImageTracker {
   } | null = null;
   private failures = 0;
   private grid: { width: number; height: number } | null = null;
+  private modelContinuity: ModelContinuity | null = null;
+  private modelAcceptedAt = -Infinity;
+  private opticalEpoch = 0;
+  private imagePhase: Point = { x: 0, y: 0 };
+  private anatomicalOffset: Point = { x: 0, y: 0 };
+  private modelOpticalCandidate: {
+    source: string;
+    startedAt: number;
+    lastAt: number;
+    frames: number;
+    template: Patch;
+    frame: IndexGrayFrame;
+    point: Point;
+  } | null = null;
+  private modelCoordinate: { source: string; at: number; point: Point; output: Point } | null = null;
+  private wasModelOnly = false;
+  private modelIdentity: { source: string; seenAt: number } | null = null;
   private readonly searchScores = new Float64Array((policy.search * 2 + 1 + policy.predictionLimit) ** 2);
   private readonly reverseScores = new Float64Array((policy.reverseSearch * 2 + 1) ** 2);
   private nccScratch = createNccScratch(policy);
@@ -239,6 +352,15 @@ export class IndexImageTracker {
     this.authorityCandidate = null;
     this.failures = 0;
     this.grid = null;
+    this.modelContinuity = null;
+    this.modelAcceptedAt = -Infinity;
+    this.opticalEpoch = 0;
+    this.imagePhase = { x: 0, y: 0 };
+    this.anatomicalOffset = { x: 0, y: 0 };
+    this.modelOpticalCandidate = null;
+    this.modelCoordinate = null;
+    this.wasModelOnly = false;
+    this.modelIdentity = null;
     // A reset cannot make an old camera frame new.
   }
   prepare(frame: IndexGrayFrame, manualHint?: Point | null): IndexImagePreparedToken {
@@ -280,6 +402,7 @@ export class IndexImageTracker {
     token: IndexImagePreparedToken,
     model: IndexModelAnchor | null | undefined,
     completionClock: number | (() => number),
+    sourceFresh: () => boolean = () => true,
   ): IndexImageObservation {
     const pending = this.pending;
     if (!pending || pending.token !== token) throw new Error("INDEX_IMAGE_PREPARED_CAPTURE_INVALID");
@@ -288,7 +411,7 @@ export class IndexImageTracker {
     const validTime = (value: number) =>
       Number.isFinite(value) && value >= token.capture && value - token.capture <= policy.maximumCaptureAgeMs;
     const started = now();
-    if (!validTime(started)) {
+    if (!validTime(started) || !sourceFresh()) {
       this.nccScratch = createNccScratch(policy);
       throw new Error("INDEX_IMAGE_FRAME_INVALID_OR_STALE");
     }
@@ -303,7 +426,8 @@ export class IndexImageTracker {
         pending.matches,
       );
       const completed = now();
-      if (!validTime(completed) || completed < started) throw new Error("INDEX_IMAGE_FRAME_INVALID_OR_STALE");
+      if (!validTime(completed) || completed < started || !sourceFresh())
+        throw new Error("INDEX_IMAGE_FRAME_INVALID_OR_STALE");
       return { ...observation, monotonicInferenceTime: completed };
     } catch (error) {
       Object.assign(this, checkpoint);
@@ -334,6 +458,15 @@ export class IndexImageTracker {
       authorityCandidate: this.authorityCandidate,
       failures: this.failures,
       grid: this.grid,
+      modelContinuity: this.modelContinuity,
+      modelAcceptedAt: this.modelAcceptedAt,
+      opticalEpoch: this.opticalEpoch,
+      imagePhase: this.imagePhase,
+      anatomicalOffset: this.anatomicalOffset,
+      modelOpticalCandidate: this.modelOpticalCandidate,
+      modelCoordinate: this.modelCoordinate,
+      wasModelOnly: this.wasModelOnly,
+      modelIdentity: this.modelIdentity,
     };
   }
   private computeMatches(frame: IndexGrayFrame): PreparedImage["matches"] {
@@ -357,6 +490,7 @@ export class IndexImageTracker {
         this.searchScores,
         previousPoint,
         this.nccScratch,
+        true,
       );
       const quality: IndexImageObservation["quality"] = {
         correlation: found?.correlation ?? null,
@@ -399,7 +533,49 @@ export class IndexImageTracker {
     manualHint?: Point | null,
     preparedMatches?: PreparedImage["matches"],
   ): IndexImageObservation {
-    const expired = this.anchorSource !== null && frame.capture - this.acceptedAt > policy.maximumRecoveryMs;
+    // A missing/bad tip cannot discard a whole-hand negative or ambiguity.
+    if (model?.point && !boundedPoint(model.point)) model = { ...model, point: null };
+    const modelPoint = model?.point
+      ? { x: model.point.x * (frame.width - 1), y: model.point.y * (frame.height - 1) }
+      : null;
+    const acceptedOptical = preparedMatches?.stable.accepted ?? preparedMatches?.adaptive.accepted;
+    const fullOpticalConflict =
+      (model?.authority === "POINT" || model?.authority === "CONTRARY") &&
+      modelPoint &&
+      acceptedOptical &&
+      Math.hypot(acceptedOptical.found.point.x - modelPoint.x, acceptedOptical.found.point.y - modelPoint.y) >
+        policy.modelAgreementRadius;
+    if (fullOpticalConflict) {
+      this.modelIdentity = null;
+      this.modelContinuity = null;
+      this.modelOpticalCandidate = null;
+      this.modelCoordinate = null;
+    }
+    if (
+      this.modelIdentity &&
+      (frame.capture - this.modelIdentity.seenAt > policy.modelMaximumGapMs ||
+        model?.authority === "AMBIGUOUS" ||
+        (!!model?.authority && model.authoritySource !== this.modelIdentity.source))
+    )
+      this.modelIdentity = null;
+    // Current observed identity is distinct from a current pointing sample.
+    // A contrary hand can maintain its already-verified identity, never its
+    // geometry/positive/optical clocks or any actionable coordinates.
+    if (
+      !this.manualSelection &&
+      this.modelIdentity &&
+      model?.identityObserved === true &&
+      model.authority === "CONTRARY" &&
+      model.authoritySource === this.modelIdentity.source &&
+      model.point &&
+      boundedPoint(model.point)
+    ) {
+      this.modelIdentity = { ...this.modelIdentity, seenAt: frame.capture };
+    }
+    const expired =
+      this.anchorSource !== null &&
+      frame.capture - Math.max(this.acceptedAt, this.modelAcceptedAt, this.modelIdentity?.seenAt ?? -Infinity) >
+        policy.maximumRecoveryMs;
     if (expired) {
       const manualSelection = this.manualSelection;
       this.reset();
@@ -414,35 +590,54 @@ export class IndexImageTracker {
     };
     let modelAgreement: IndexImageObservation["modelAgreement"] = "UNAVAILABLE";
     let currentMatchedPoint: Point | null = null;
+    let producedPoint: Point | null = null;
+    let coordinateSource: IndexImageObservation["coordinateSource"] = "IMAGE";
     const result = (
       state: IndexImageObservation["state"],
       reason: string,
       uncertainty: number | null = null,
-    ): IndexImageObservation => ({
-      observationVersion: 1,
-      ...this.binding,
-      providerId: indexImageAlgorithm.providerId,
-      providerVersion: indexImageAlgorithm.providerVersion,
-      algorithmDigest: indexImageAlgorithm.algorithmDigest,
-      orientation: 0,
-      sequence: this.sequence++,
-      monotonicCaptureTime: frame.capture,
-      monotonicInferenceTime: frame.received,
-      trackId: this.trackId,
-      trackGeneration: this.trackGeneration,
-      point:
-        state === "TRACKING" && this.point
-          ? { x: this.point.x / (frame.width - 1), y: this.point.y / (frame.height - 1) }
-          : null,
-      matchedPoint:
-        state === "TRACKING" || (state === "UNCERTAIN" && reason.startsWith("FULL_HAND_")) ? currentMatchedPoint : null,
-      state,
-      modelAgreement,
-      anchorSource: this.anchorSource,
-      quality: { ...quality },
-      uncertaintyRadiusPixels: uncertainty,
-      reason,
-    });
+    ): IndexImageObservation => {
+      if (
+        state === "TRACKING" &&
+        producedPoint &&
+        !boundedPoint({ x: producedPoint.x / (frame.width - 1), y: producedPoint.y / (frame.height - 1) })
+      ) {
+        state = "UNCERTAIN";
+        reason = "FUSED_POINT_OUTSIDE_IMAGE";
+        producedPoint = null;
+      }
+      return {
+        observationVersion: 1,
+        ...this.binding,
+        providerId: indexImageAlgorithm.providerId,
+        providerVersion: indexImageAlgorithm.providerVersion,
+        algorithmDigest: indexImageAlgorithm.algorithmDigest,
+        orientation: 0,
+        sequence: this.sequence++,
+        monotonicCaptureTime: frame.capture,
+        monotonicInferenceTime: frame.received,
+        trackId: this.trackId,
+        trackGeneration: this.trackGeneration,
+        point:
+          state === "TRACKING" && producedPoint
+            ? { x: producedPoint.x / (frame.width - 1), y: producedPoint.y / (frame.height - 1) }
+            : null,
+        matchedPoint:
+          state === "TRACKING" && currentMatchedPoint && producedPoint
+            ? { x: producedPoint.x / (frame.width - 1), y: producedPoint.y / (frame.height - 1) }
+            : state === "UNCERTAIN" && reason.startsWith("FULL_HAND_")
+              ? currentMatchedPoint
+              : null,
+        state,
+        modelAgreement,
+        anchorSource: this.anchorSource,
+        quality: { ...quality },
+        uncertaintyRadiusPixels: uncertainty,
+        reason,
+        coordinateSource,
+        opticalEpoch: this.opticalEpoch,
+      };
+    };
     if (this.grid && (this.grid.width !== frame.width || this.grid.height !== frame.height)) {
       this.previous = null;
       this.template = null;
@@ -454,11 +649,6 @@ export class IndexImageTracker {
       return result("LOST", "FRAME_GRID_CHANGED");
     }
     this.grid ??= { width: frame.width, height: frame.height };
-    // A missing/bad tip cannot discard a whole-hand negative or ambiguity.
-    if (model?.point && !boundedPoint(model.point)) model = { ...model, point: null };
-    const modelPoint = model?.point
-      ? { x: model.point.x * (frame.width - 1), y: model.point.y * (frame.height - 1) }
-      : null;
     if (manualHint) {
       const retainedAuthorityVeto = this.authorityVetoed && model?.authority !== undefined;
       this.reset();
@@ -466,6 +656,79 @@ export class IndexImageTracker {
       this.authorityVetoed = retainedAuthorityVeto;
       this.grid = { width: frame.width, height: frame.height };
     }
+    const currentGeometry =
+      !this.manualSelection && validModelGeometry(model, this.binding.frameWidth / this.binding.frameHeight);
+    if (currentGeometry && modelPoint) {
+      const g = model!.geometry!,
+        old = this.modelContinuity;
+      const previousOptical = preparedMatches?.stable.accepted ?? preparedMatches?.adaptive.accepted;
+      const agreesWithOptical =
+        !!previousOptical &&
+        Math.hypot(previousOptical.found.point.x - modelPoint.x, previousOptical.found.point.y - modelPoint.y) <=
+          policy.modelAgreementRadius;
+      const opticalContradiction = !!previousOptical && !agreesWithOptical;
+      if (opticalContradiction) this.modelIdentity = null;
+      const ratio = old ? g.palmSpan / old.geometry.palmSpan : 1;
+      const dx = g.index[3].x - (old?.geometry.index[3].x ?? g.index[3].x),
+        dy = g.index[3].y - (old?.geometry.index[3].y ?? g.index[3].y);
+      const coherent =
+        !!old &&
+        !opticalContradiction &&
+        !(!old.associated && agreesWithOptical) &&
+        old.source === model!.authoritySource &&
+        frame.capture - old.lastAt <= policy.modelMaximumGapMs &&
+        Math.hypot(dx * (frame.width - 1), dy * (frame.height - 1)) <= policy.modelMaximumStep &&
+        ratio >= policy.modelMinimumScaleRatio &&
+        ratio <= policy.modelMaximumScaleRatio &&
+        g.index.every(
+          (p, i) =>
+            Math.hypot(
+              p.x - old.geometry.index[i].x - dx,
+              (p.y - old.geometry.index[i].y - dy) / (this.binding.frameWidth / this.binding.frameHeight),
+              p.z - old.geometry.index[i].z,
+            ) <=
+            Math.max(g.palmSpan, old.geometry.palmSpan) * policy.modelMaximumRelativeJointMotion,
+        );
+      const snapshot = {
+        index: g.index.map((p) => ({ ...p })) as unknown as ModelGeometry["index"],
+        palmSpan: g.palmSpan,
+      };
+      this.modelContinuity = coherent
+        ? {
+            ...old!,
+            geometry: snapshot,
+            point: { ...modelPoint },
+            lastAt: frame.capture,
+            frames: old!.frames + 1,
+            associated: old!.associated || agreesWithOptical,
+          }
+        : {
+            source: model!.authoritySource!,
+            startedAt: frame.capture,
+            lastAt: frame.capture,
+            frames: 1,
+            geometry: snapshot,
+            point: { ...modelPoint },
+            associated:
+              !this.trackId ||
+              agreesWithOptical ||
+              (model!.identityObserved === true &&
+                this.modelIdentity !== null &&
+                this.modelIdentity.source === model!.authoritySource &&
+                frame.capture - this.modelIdentity.seenAt <= policy.modelMaximumGapMs),
+          };
+    } else if (
+      model?.authority ||
+      model?.contrary ||
+      !this.modelContinuity ||
+      frame.capture - this.modelContinuity.lastAt > policy.modelMaximumGapMs
+    )
+      this.modelContinuity = null;
+    const modelReady =
+      currentGeometry &&
+      !!this.modelContinuity?.associated &&
+      this.modelContinuity.frames >= policy.modelMinimumFrames &&
+      frame.capture - this.modelContinuity.startedAt >= policy.modelMinimumSpanMs;
     const updateGestureVeto = () => {
       const kind = model?.authority;
       const source = model?.authoritySource;
@@ -502,6 +765,139 @@ export class IndexImageTracker {
     };
     const fullPointReason = () =>
       this.authorityCandidate?.confirmed ? "FULL_HAND_POINT_CONFIRMED" : "FULL_HAND_POINT_PENDING";
+    const modelFallback = (): IndexImageObservation | null => {
+      if (!modelReady || !modelPoint || this.manualSelection) return null;
+      const acceptedOptical = preparedMatches?.stable.accepted ?? preparedMatches?.adaptive.accepted;
+      if (
+        acceptedOptical &&
+        Math.hypot(acceptedOptical.found.point.x - modelPoint.x, acceptedOptical.found.point.y - modelPoint.y) >
+          policy.modelAgreementRadius
+      )
+        return null;
+      // Only the independently established same-source anatomical cohort can
+      // support the existing identity when appearance is absent. No old patch
+      // or old model output is represented as a current measurement.
+      modelAgreement = "AGREE";
+      updateGestureVeto();
+      if (!this.trackId) {
+        this.trackGeneration = ++nextAnchor;
+        this.trackId = `index-fused-${this.trackGeneration}`;
+        this.anchorSource = "MODEL_INDEX";
+      }
+      this.modelAcceptedAt = frame.capture;
+      if (model?.identityObserved === true)
+        this.modelIdentity = { source: this.modelContinuity!.source, seenAt: frame.capture };
+      const priorCoordinate = this.modelCoordinate;
+      producedPoint =
+        priorCoordinate &&
+        priorCoordinate.source === this.modelContinuity!.source &&
+        frame.capture - priorCoordinate.at <= policy.modelMaximumGapMs
+          ? {
+              x: priorCoordinate.output.x + modelPoint.x - priorCoordinate.point.x,
+              y: priorCoordinate.output.y + modelPoint.y - priorCoordinate.point.y,
+            }
+          : { ...modelPoint };
+      this.modelCoordinate = {
+        source: this.modelContinuity!.source,
+        at: frame.capture,
+        point: { ...modelPoint },
+        output: { ...producedPoint },
+      };
+      coordinateSource = "MODEL";
+      this.wasModelOnly = true;
+      const center = { x: Math.round(modelPoint.x), y: Math.round(modelPoint.y) };
+      const radius = Math.min(
+        policy.radius,
+        Math.floor(Math.min(center.x - 1, center.y - 1, frame.width - 2 - center.x, frame.height - 2 - center.y)),
+      );
+      const current = radius >= policy.minimumRadius ? patch(frame, center, radius) : null;
+      const source = this.modelContinuity!.source;
+      let candidate = this.modelOpticalCandidate;
+      if (current && current.deviation >= policy.minimumTexture && current.structure >= policy.minimumStructure) {
+        const distinct = searchNcc(
+          frame,
+          current,
+          center,
+          policy.search,
+          this.searchScores,
+          undefined,
+          this.nccScratch,
+        );
+        if (distinct && distinct.separation >= policy.minimumSeparation) {
+          let consistent = false;
+          if (
+            candidate &&
+            candidate.source === source &&
+            frame.capture - candidate.lastAt <= policy.modelMaximumGapMs
+          ) {
+            const forward = searchNcc(
+              frame,
+              candidate.template,
+              center,
+              policy.modelAgreementRadius,
+              this.searchScores,
+              undefined,
+              this.nccScratch,
+            );
+            const reverse = searchNcc(
+              candidate.frame,
+              current,
+              candidate.point,
+              policy.reverseSearch,
+              this.reverseScores,
+              undefined,
+              this.nccScratch,
+            );
+            consistent =
+              !!forward &&
+              !!reverse &&
+              forward.correlation >= policy.minimumCorrelation &&
+              forward.separation >= policy.minimumSeparation &&
+              reverse.correlation >= policy.minimumCorrelation &&
+              Math.hypot(forward.point.x - center.x, forward.point.y - center.y) <= policy.maximumForwardBackward &&
+              Math.hypot(reverse.point.x - candidate.point.x, reverse.point.y - candidate.point.y) <=
+                policy.maximumForwardBackward;
+          }
+          candidate = consistent
+            ? {
+                ...candidate!,
+                lastAt: frame.capture,
+                frames: candidate!.frames + 1,
+                template: current,
+                frame,
+                point: center,
+              }
+            : {
+                source,
+                startedAt: frame.capture,
+                lastAt: frame.capture,
+                frames: 1,
+                template: current,
+                frame,
+                point: center,
+              };
+          this.modelOpticalCandidate = candidate;
+          if (
+            candidate.frames >= policy.modelMinimumFrames &&
+            frame.capture - candidate.startedAt >= policy.modelMinimumSpanMs
+          ) {
+            this.point = center;
+            this.template = current;
+            this.previous = frame;
+            this.reference = { template: current, frame, point: center };
+            this.imagePhase = { x: modelPoint.x - center.x, y: modelPoint.y - center.y };
+            this.anatomicalOffset = { x: producedPoint.x - modelPoint.x, y: producedPoint.y - modelPoint.y };
+            this.acceptedAt = frame.capture;
+            this.lastReferenceAt = frame.capture;
+            this.velocity = { x: 0, y: 0 };
+            this.opticalEpoch++;
+            this.modelOpticalCandidate = null;
+          }
+        } else this.modelOpticalCandidate = null;
+      } else this.modelOpticalCandidate = null;
+      const pauseReason = gesturePauseReason();
+      return result(pauseReason ? "UNCERTAIN" : "TRACKING", pauseReason ?? "FULL_HAND_MODEL_CONTINUITY", 6 * scale);
+    };
     const anchor =
       manualHint ??
       (!this.manualSelection &&
@@ -520,17 +916,23 @@ export class IndexImageTracker {
       const initial = radius >= policy.minimumRadius ? patch(frame, center, radius) : null;
       quality.texture = initial?.deviation ?? null;
       if (!initial || initial.deviation < policy.minimumTexture || initial.structure < policy.minimumStructure)
-        return result(this.anchorSource ? "UNCERTAIN" : "UNSEEDED", "ANCHOR_TEXTURE_OR_EDGE_UNSUITABLE");
+        return (
+          modelFallback() ?? result(this.anchorSource ? "UNCERTAIN" : "UNSEEDED", "ANCHOR_TEXTURE_OR_EDGE_UNSUITABLE")
+        );
       // A seed must also be locally distinguishable, not one repeated tile.
       const distinct = searchNcc(frame, initial, center, policy.search, this.searchScores, undefined, this.nccScratch);
       quality.correlation = distinct?.correlation ?? null;
       quality.separation = distinct?.separation ?? null;
       if (!distinct || distinct.separation < policy.minimumSeparation)
-        return result(this.anchorSource ? "UNCERTAIN" : "UNSEEDED", "ANCHOR_APPEARANCE_AMBIGUOUS");
-      this.point = center;
+        return modelFallback() ?? result(this.anchorSource ? "UNCERTAIN" : "UNSEEDED", "ANCHOR_APPEARANCE_AMBIGUOUS");
+      const integerCenter = { x: Math.round(center.x), y: Math.round(center.y) };
+      this.point = integerCenter;
+      producedPoint = center;
+      this.imagePhase = { x: center.x - integerCenter.x, y: center.y - integerCenter.y };
       this.template = initial;
       this.previous = frame;
-      this.reference = { template: initial, frame: this.previous, point: { ...center } };
+      this.reference = { template: initial, frame: this.previous, point: integerCenter };
+      this.opticalEpoch++;
       this.lastReferenceAt = frame.capture;
       this.acceptedAt = frame.capture;
       this.velocity = { x: 0, y: 0 };
@@ -555,15 +957,18 @@ export class IndexImageTracker {
       );
     }
     if (!this.point || !this.template || !this.previous || !this.reference)
-      return result(
-        this.anchorSource || expired ? "LOST" : "UNSEEDED",
-        this.manualSelection
-          ? "MANUAL_SELECTION_REQUIRED"
-          : expired
-            ? "IMAGE_CONTINUITY_EXPIRED"
-            : this.anchorSource
-              ? "REANCHOR_REQUIRED"
-              : "SHOW_INDEX_OR_SELECT_TIP",
+      return (
+        modelFallback() ??
+        result(
+          this.anchorSource || expired ? "LOST" : "UNSEEDED",
+          this.manualSelection
+            ? "MANUAL_SELECTION_REQUIRED"
+            : expired
+              ? "IMAGE_CONTINUITY_EXPIRED"
+              : this.anchorSource
+                ? "REANCHOR_REQUIRED"
+                : "SHOW_INDEX_OR_SELECT_TIP",
+        )
       );
     const gap = frame.capture - this.acceptedAt;
     const reject = (reason: string) => {
@@ -589,9 +994,9 @@ export class IndexImageTracker {
       ) > policy.maximumReferenceDisagreement
     )
       return reject("IMAGE_REFERENCE_CONFLICT");
-    if (!selected.accepted) return reject(selected.reason!);
+    if (!selected.accepted) return modelFallback() ?? reject(selected.reason!);
     if (!stable.accepted && frame.capture - this.lastReferenceAt > policy.maximumAdaptiveOnlyMs)
-      return reject("IMAGE_REFERENCE_EXPIRED");
+      return modelFallback() ?? reject("IMAGE_REFERENCE_EXPIRED");
     const { found, current, backward } = selected.accepted;
     if (stable.accepted) this.lastReferenceAt = frame.capture;
     modelAgreement = modelPoint
@@ -632,8 +1037,9 @@ export class IndexImageTracker {
         frame.capture - cohort.startedAt >= policy.referenceRefreshMinimumSpanMs &&
         !!this.authorityCandidate?.confirmed;
     }
-    // Appearance supplies the point. A disagreeing model never moves it or
-    // replaces the patch; a later explicit seed creates a different binding.
+    // Optical registration retains its own integer template coordinates. The
+    // refined measurement and anatomical correction never feed a rounded patch
+    // back into the next image search (which would accumulate sampling drift).
     const dt = gap / 1000;
     const vx = (found.point.x - this.point.x) / dt,
       vy = (found.point.y - this.point.y) / dt;
@@ -641,7 +1047,58 @@ export class IndexImageTracker {
       cap = speed > policy.maximumVelocity ? policy.maximumVelocity / speed : 1;
     this.velocity = { x: vx * cap, y: vy * cap };
     this.point = found.point;
-    currentMatchedPoint = { x: found.point.x / (frame.width - 1), y: found.point.y / (frame.height - 1) };
+    const optical = {
+      x: (found.refinedPoint?.x ?? found.point.x) + this.imagePhase.x,
+      y: (found.refinedPoint?.y ?? found.point.y) + this.imagePhase.y,
+    };
+    if (modelReady && modelPoint && modelAgreement === "AGREE" && !this.manualSelection) {
+      const weight = Math.min(
+        policy.modelCorrectionWeight,
+        Math.max(policy.modelMinimumCorrectionWeight, (1 - found.correlation) * 2),
+      );
+      const innovation = {
+        x: modelPoint.x - optical.x - this.anatomicalOffset.x,
+        y: modelPoint.y - optical.y - this.anatomicalOffset.y,
+      };
+      const magnitude = Math.hypot(innovation.x, innovation.y);
+      const gain =
+        magnitude <= policy.modelCorrectionDeadband
+          ? 0
+          : Math.min(weight, policy.modelMaximumCorrectionStep / magnitude);
+      this.anatomicalOffset = {
+        x: this.anatomicalOffset.x + gain * innovation.x,
+        y: this.anatomicalOffset.y + gain * innovation.y,
+      };
+      this.modelAcceptedAt = frame.capture;
+      if (model?.identityObserved === true)
+        this.modelIdentity = { source: this.modelContinuity!.source, seenAt: frame.capture };
+      coordinateSource = "FUSED";
+    }
+    producedPoint = { x: optical.x + this.anatomicalOffset.x, y: optical.y + this.anatomicalOffset.y };
+    if (modelReady && modelPoint && modelAgreement === "AGREE") {
+      const priorCoordinate = this.modelCoordinate;
+      if (
+        this.wasModelOnly &&
+        priorCoordinate &&
+        priorCoordinate.source === this.modelContinuity!.source &&
+        frame.capture - priorCoordinate.at <= policy.modelMaximumGapMs
+      ) {
+        producedPoint = {
+          x: priorCoordinate.output.x + modelPoint.x - priorCoordinate.point.x,
+          y: priorCoordinate.output.y + modelPoint.y - priorCoordinate.point.y,
+        };
+        this.anatomicalOffset = { x: producedPoint.x - optical.x, y: producedPoint.y - optical.y };
+      }
+      this.modelCoordinate = {
+        source: this.modelContinuity!.source,
+        at: frame.capture,
+        point: { ...modelPoint },
+        output: { ...producedPoint },
+      };
+    }
+    this.wasModelOnly = false;
+    this.modelOpticalCandidate = null;
+    currentMatchedPoint = { x: optical.x / (frame.width - 1), y: optical.y / (frame.height - 1) };
     this.template = current;
     this.previous = frame;
     this.acceptedAt = frame.capture;
@@ -652,7 +1109,11 @@ export class IndexImageTracker {
       this.referenceRefreshCandidate = null;
     }
     const uncertainty =
-      Math.max(1.5, (1 - found.correlation) * 10 + backward * 1.5 + (found.separation < 0.08 ? 2 : 0)) * scale;
+      Math.max(
+        1.5,
+        (1 - found.correlation) * 10 + backward * 1.5 + (found.separation < 0.08 ? 2 : 0),
+        Math.hypot(this.anatomicalOffset.x, this.anatomicalOffset.y),
+      ) * scale;
     const pauseReason = gesturePauseReason();
     return result(
       pauseReason ? "UNCERTAIN" : "TRACKING",

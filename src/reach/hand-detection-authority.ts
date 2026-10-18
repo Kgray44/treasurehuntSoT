@@ -49,6 +49,8 @@ export type FullHandDecision = {
   decision: "FULL_POINT" | "FULL_CONTRARY" | "FULL_AMBIGUOUS" | "UNAVAILABLE";
   indexPoint: Point | null;
   sourceKey: string | null;
+  geometry?: IndexModelAnchor["geometry"];
+  identityObserved?: boolean;
 };
 type Observation = Pick<HandObservation, "hands" | "frameWidth" | "frameHeight"> &
   Partial<
@@ -119,7 +121,7 @@ function fullCandidate(hand: Hand, frame: Observation) {
   return fingers.length < p.fingers.minimumComplete ? null : { hand, shape, fingers };
 }
 
-/** Same-capture gesture authority only; image matching remains the coordinate source. */
+/** Same-capture gesture authority and conditioned anatomy for the fused producer. */
 export function fullHandDecision(observation: Observation | null): FullHandDecision {
   const unavailable: FullHandDecision = { decision: "UNAVAILABLE", indexPoint: null, sourceKey: null };
   if (!observation) return unavailable;
@@ -182,13 +184,23 @@ export function fullHandDecision(observation: Observation | null): FullHandDecis
     index.straightness >= p.index.minimumStraightness &&
     index.pipAlignment >= p.index.minimumPipAlignment &&
     index.dipAlignment >= p.index.minimumDipAlignment;
+  const pointing = extended && open < p.open.minimumCount && similar < p.similar.minimumCount && !competing && !pinched;
+  const observedPoint = (id: number) => {
+    const { x, y, z } = hand.landmarks[id];
+    return { x, y, z };
+  };
+  const geometry: IndexModelAnchor["geometry"] = pointing
+    ? {
+        index: [observedPoint(5), observedPoint(6), observedPoint(7), observedPoint(8)],
+        palmSpan: shape.scale,
+      }
+    : undefined;
   return {
-    decision:
-      extended && open < p.open.minimumCount && similar < p.similar.minimumCount && !competing && !pinched
-        ? "FULL_POINT"
-        : "FULL_CONTRARY",
+    decision: pointing ? "FULL_POINT" : "FULL_CONTRARY",
     indexPoint,
     sourceKey,
+    identityObserved: true,
+    ...(geometry ? { geometry } : {}),
   };
 }
 
@@ -201,6 +213,8 @@ export function selectIndexModelAnchor(observation: Observation | null): IndexMo
       pointing: full.decision === "FULL_POINT",
       contrary: full.decision === "FULL_CONTRARY",
       ...(full.sourceKey === null ? {} : { authoritySource: full.sourceKey }),
+      ...(full.geometry ? { geometry: full.geometry } : {}),
+      ...(full.identityObserved ? { identityObserved: true } : {}),
       authority:
         full.decision === "FULL_POINT" ? "POINT" : full.decision === "FULL_CONTRARY" ? "CONTRARY" : "AMBIGUOUS",
     };

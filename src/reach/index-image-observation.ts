@@ -36,6 +36,8 @@ export const indexImageObservationSchema = z
     state: z.enum(["UNSEEDED", "TRACKING", "UNCERTAIN", "LOST"]),
     modelAgreement: z.enum(["AGREE", "DISAGREE", "UNAVAILABLE"]),
     anchorSource: z.enum(["MODEL_INDEX", "MANUAL_HINT"]).nullable(),
+    coordinateSource: z.enum(["IMAGE", "FUSED", "MODEL"]).optional(),
+    opticalEpoch: z.number().finite().int().nonnegative().optional(),
     quality: z.strictObject({
       correlation: diagnostic,
       separation: diagnostic,

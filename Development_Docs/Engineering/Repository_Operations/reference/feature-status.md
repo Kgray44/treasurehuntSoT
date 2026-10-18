@@ -6,6 +6,8 @@ canonical_for: feature-status
 last_reviewed: 2026-10-18
 ---
 
+The [fused fingertip pipeline audit](../../../Projects/Project_Reach/Fused_Tracking_Audit_20261018.md) supersedes the image-only coordinate policy in earlier Reach branch records. This is a repair of the existing relative tracking capability, with a fresh calibration profile and preserved raw held-out gates. It does not declare protected-main or physical availability.
+
 The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.md) is an isolated synthetic implementation in qualification. It exercises accepted platform contracts; its combined physical/owner session remains pending and it does not promote later spatial phases.
 
 # Feature status

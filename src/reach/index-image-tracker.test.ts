@@ -18,6 +18,11 @@ const binding = {
   mirrorTransform: "PREVIEW_X" as const,
 };
 const point = (x: number, y: number) => ({ x: x / 159, y: y / 119 });
+function expectSubpixelPoint(actual: { x: number; y: number } | null, x: number, y: number) {
+  expect(actual).not.toBeNull();
+  expect(Math.abs(actual!.x * 159 - x)).toBeLessThanOrEqual(0.5);
+  expect(Math.abs(actual!.y * 119 - y)).toBeLessThanOrEqual(0.5);
+}
 function image(
   x: number,
   y: number,
@@ -169,7 +174,8 @@ describe("independent image fingertip evidence", () => {
         deformingImage(x, y, 100 + i * 80, i * 0.3, Math.min(0.85, i * 0.018)),
         full("POINT", x, y),
       );
-      expect(observed).toMatchObject({ state: "TRACKING", point: point(x, y), trackId: seed.trackId });
+      expect(observed).toMatchObject({ state: "TRACKING", trackId: seed.trackId });
+      expectSubpixelPoint(observed.point, x, y);
     }
   });
   for (const condition of [
@@ -352,7 +358,8 @@ describe("independent image fingertip evidence", () => {
       observed = tracker.update(changedAppearance(i * 0.03, at));
       lateSupport.update(changedAppearance(i * 0.03, at));
     }
-    expect(observed).toMatchObject({ state: "TRACKING", trackId: seed.trackId, point: point(60, 60) });
+    expect(observed).toMatchObject({ state: "TRACKING", trackId: seed.trackId });
+    expectSubpixelPoint(observed.point, 60, 60);
     const direct = new IndexImageTracker(binding);
     direct.update(changedAppearance(0, 100), null, point(60, 60));
     expect(direct.update(changedAppearance(0.9, 133)).point).toBeNull();
@@ -394,11 +401,12 @@ describe("independent image fingertip evidence", () => {
       reason: "IMAGE_REFERENCE_CONFLICT",
       trackId: seed.trackId,
     });
-    expect(tracker.update(changedAppearance(0.3, 496))).toMatchObject({
+    const recovered = tracker.update(changedAppearance(0.3, 496));
+    expect(recovered).toMatchObject({
       state: "TRACKING",
-      point: point(60, 60),
       trackId: seed.trackId,
     });
+    expectSubpixelPoint(recovered.point, 60, 60);
   });
   it("binds algorithm identity to the explicit policy descriptor, rather than ML weights or confidence", () => {
     expect(createHash("sha256").update(JSON.stringify(indexImageAlgorithmDescriptor)).digest("hex")).toBe(

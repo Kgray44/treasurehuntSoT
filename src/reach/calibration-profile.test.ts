@@ -165,6 +165,28 @@ describe("index-tip feature and calibration source contract", () => {
     );
   });
 
+  it("requires fresh calibration rather than upgrading the former image-only profile", () => {
+    const former = {
+      ...syntheticRelativeBinding,
+      featureProfile: "INDEX_TIP_IMAGE_V1",
+      associationBasis: "INDEX_IMAGE_TRACK_V1",
+    } as unknown as CalibrationBinding;
+    expect(() => fitRelativeCalibration(relativeCalibrationGroups(), former, 1000)).toThrow(
+      "REACH_FEATURE_PROFILE_MISMATCH",
+    );
+    expect(() => new SampleWindow(former, { x: 0.5, y: 0.5 }, "RELATIVE")).toThrow("REACH_FEATURE_PROFILE_MISMATCH");
+    const checked = validateCalibration(
+      fitRelativeCalibration(relativeCalibrationGroups(), syntheticRelativeBinding, 1000),
+      relativeCalibrationGroups(calibrationLayout.validation),
+    );
+    const old = { ...checked, binding: former };
+    expect(isCurrentCalibration(old)).toBe(false);
+    expect(() => validateCalibration(old, relativeCalibrationGroups(calibrationLayout.validation))).toThrow(
+      "REACH_FEATURE_PROFILE_MISMATCH",
+    );
+    expect(calibratedPoint(old, relativeIndexFeatures({ x: 0.5, y: 0.5 }), former, 1100)).toBeNull();
+  });
+
   it("preserves every image-relative source/context binding and fit expiration", () => {
     const checked = validateCalibration(
       fitRelativeCalibration(relativeCalibrationGroups(), syntheticRelativeBinding, 1000),

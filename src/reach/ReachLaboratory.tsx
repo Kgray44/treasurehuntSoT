@@ -431,7 +431,7 @@ export function ReachLaboratory({
       condition: "ACQUIRING",
       guidance:
         next === "RELATIVE"
-          ? "Waiting for fresh fingertip image tracking to settle."
+          ? "Waiting for fresh fingertip tracking to settle."
           : "Waiting for fresh index geometry to settle.",
     };
     readyRef.current = waiting;
@@ -662,8 +662,18 @@ export function ReachLaboratory({
       readyRef.current = ready;
       if (sourceRef.current === "LIVE") recordReadiness(ready.condition);
       setEntryReady(trialEntryReady());
-      if (next.changed && (trial.current?.binding || calibrationRef.current)) {
-        invalidate("A new fingertip was selected or the camera changed. Begin a fresh setup for this track.");
+      const establishedBinding = trial.current?.binding ?? calibrationRef.current?.binding;
+      if (next.changed && establishedBinding) {
+        const cameraChanged =
+          establishedBinding.cameraLeaseId !== o.cameraLeaseId ||
+          establishedBinding.cameraFrameVersion !== o.cameraFrameVersion ||
+          establishedBinding.mirror !== (o.mirrorTransform === "PREVIEW_X") ||
+          establishedBinding.orientation !== o.orientation;
+        invalidate(
+          cameraChanged
+            ? "The camera or its image geometry changed. Begin a fresh setup for this camera."
+            : "Fingertip identity could not be preserved through the tracking loss or new selection. Begin a fresh setup; saved samples cannot transfer to an unverified finger.",
+        );
         log("INDEX_IMAGE_CONTEXT_CHANGED");
       }
       if (performance.now() - lastIndexUI.current >= 80 || next.changed || !next.eligible) {
@@ -1281,6 +1291,8 @@ export function ReachLaboratory({
       data-motion-level={motion?.mode ?? "reduced"}
       data-reach-session="local-private"
       data-reach-authority="laboratory-only"
+      data-reach-tracker-version={indexImageAlgorithm.providerVersion}
+      data-reach-tracker-digest={indexImageAlgorithm.algorithmDigest}
       data-reach-readiness={readiness.condition}
       data-image-state={indexStale ? "STALE" : (indexState?.state ?? "UNSEEDED")}
       data-image-selection={manualFingerSelected ? "MANUAL" : "AUTOMATIC"}
@@ -1290,6 +1302,8 @@ export function ReachLaboratory({
       data-reach-policy-revision={runtimePolicy.revision ?? ""}
       data-image-track-generation={indexState?.trackGeneration ?? 0}
       data-image-model-agreement={indexState?.modelAgreement ?? "UNAVAILABLE"}
+      data-fingertip-coordinate-source={indexState?.coordinateSource ?? "IMAGE"}
+      data-fingertip-optical-epoch={indexState?.opticalEpoch ?? 0}
       data-image-reason={indexStale ? "STALE" : (indexState?.reason ?? "UNSEEDED")}
       data-image-capture-time={indexState?.monotonicCaptureTime ?? ""}
       data-image-inference-time={indexState?.monotonicInferenceTime ?? ""}
@@ -1464,7 +1478,7 @@ export function ReachLaboratory({
                 : pointingMode === "RELATIVE" && imageGesturePaused
                   ? "Fingertip image matched · pointing paused"
                   : pointingMode === "RELATIVE" && !indexStale && indexState?.state === "TRACKING"
-                    ? "Finger image tracking"
+                    ? "Fingertip tracking"
                     : readiness.detectedCount
                       ? `${readiness.detectedCount} hand${readiness.detectedCount === 1 ? "" : "s"} detected`
                       : source === "OFF"
@@ -1475,7 +1489,11 @@ export function ReachLaboratory({
               {readiness.hand
                 ? `${readiness.hand.handedness === "UNKNOWN" ? "Active" : readiness.hand.handedness === "LEFT" ? "Left" : "Right"} hand · ${assessment?.offImageFingerSupport ? "partial hand · some fingers inferred" : assessment?.partialFraming ? "partial hand · wrist optional" : assessment?.landmarkQuality === "TRACKED" ? "joints tracked" : "some joints hidden"}`
                 : pointingMode === "RELATIVE" && !indexStale && indexState?.state === "TRACKING"
-                  ? "Following your fingertip · hand model may be out of view"
+                  ? indexState.coordinateSource === "MODEL"
+                    ? "Following the index identified by the full-hand model"
+                    : indexState.coordinateSource === "FUSED"
+                      ? "Full-hand index and image motion agree"
+                      : "Following your fingertip image · hand model may be out of view"
                   : "Show an index point, or mark a visible fingertip below"}
             </span>
           </div>
@@ -1521,7 +1539,8 @@ export function ReachLaboratory({
             <p className={styles.fingerHelp}>
               Show a relaxed index point to start. If only the finger is visible, choose “Track visible fingertip” and
               mark its tip. This hint follows its appearance; it cannot identify a finger from appearance alone. A gold
-              ring shows the image track.
+              ring shows the tracked fingertip. The hand model and image evidence work together when the full hand is
+              visible.
               {manualFingerSelected &&
                 " Your selection stays reserved after a tracking loss. Mark it again to reacquire, or choose automatic fingertip selection explicitly."}
             </p>

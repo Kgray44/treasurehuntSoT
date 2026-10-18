@@ -281,7 +281,7 @@ it.each(["UNSEEDED", "LOST"] as const)(
 it.each([
   ["IMAGE_REFERENCE_CONFLICT", "appearance matches disagree"],
   ["IMAGE_REFERENCE_EXPIRED", "fresh setup"],
-  ["FULL_HAND_POINT_PENDING", "image remains tracked"],
+  ["FULL_HAND_POINT_PENDING", "Full-hand pointing evidence is settling"],
   ["FULL_HAND_CONTRARY", "not pointing"],
   ["FULL_HAND_CONTRARY_PENDING", "dashed ring"],
   ["FULL_HAND_CONTRARY_CONFIRMED", "not pointing"],

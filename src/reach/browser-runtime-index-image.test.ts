@@ -1,7 +1,7 @@
 // @sounding-line-registration owner=reach suite=unit.reach contracts=reach.phase1.foundation
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { ReachBrowserRuntime, type IndexImageObservation, type ReachInferenceMetrics } from "./browser-runtime";
-import type { HandInferencePolicy, HandResult } from "@/watchglass/hand-provider";
+import { BrowserHandAdapter, type HandInferencePolicy, type HandResult } from "@/watchglass/hand-provider";
 import { pointingPose } from "../../tests/e2e/fixtures/reach/pointing-poses";
 import { IndexImageTracker } from "./index-image-tracker";
 import { IndexImageObservationGate } from "./index-image-observation";
@@ -99,7 +99,7 @@ function setup(
   const callbacks = new Map<number, VideoFrameRequestCallback>();
   let callbackId = 0;
   const cancelVideoFrame = vi.fn((id: number) => callbacks.delete(id));
-  const presented = (frame: number, mediaTime: number) => {
+  const presented = (frame: number, mediaTime: number, metadata: Partial<VideoFrameCallbackMetadata> = {}) => {
     const pending = [...callbacks.entries()].at(-1)!;
     callbacks.delete(pending[0]);
     pending[1](now, {
@@ -110,6 +110,7 @@ function setup(
       presentationTime: now,
       expectedDisplayTime: now,
       processingDuration: 0,
+      ...metadata,
     });
   };
   if (options.frameCallbacks)
@@ -744,6 +745,222 @@ describe("runtime image source integration", () => {
     await s.advance(1);
     expect(worker.frames).toHaveLength(2);
   });
+  it("waits for a new presentation instead of relabeling an old queued frame after a slow result", async () => {
+    const s = setup({ frameCallbacks: true });
+    const worker = await s.start(false);
+    const binding = s.runtime.camera.snapshot();
+    await s.advance(10);
+    s.presented(2, 1.1);
+    s.jumpClock(400);
+    s.result();
+    await s.advance(1);
+    expect(worker.frames).toHaveLength(1);
+    expect(s.bitmap).toHaveBeenCalledOnce();
+    expect(s.observe).not.toHaveBeenCalled();
+    expect(s.image).not.toHaveBeenCalled();
+    expect(s.status).toHaveBeenLastCalledWith("STALE_OR_INVALID_OBSERVATION");
+    expect(s.runtime.camera.snapshot()).toEqual(binding);
+    expect(worker.terminate).not.toHaveBeenCalled();
+    s.presented(3, 1.2);
+    await s.advance(1);
+    expect(worker.frames).toHaveLength(2);
+    await s.advance(5);
+    s.result();
+    expect(s.observe).toHaveBeenCalledOnce();
+    expect(s.runtime.camera.snapshot()).toEqual(binding);
+    expect(s.status).toHaveBeenLastCalledWith("READY");
+  });
+  it("does not dispatch an old startup presentation when the model becomes ready", async () => {
+    const s = setup({ frameCallbacks: true });
+    await s.runtime.start(true, true);
+    s.presented(1, 1);
+    s.jumpClock(400);
+    const worker = s.workers[0];
+    worker.onmessage!({ data: { type: "READY", generation: worker.generation } } as MessageEvent);
+    await Promise.resolve();
+    expect(worker.frames).toHaveLength(0);
+    expect(s.bitmap).not.toHaveBeenCalled();
+    expect(s.runtime.resources()).toEqual({ tracks: 1, workers: 1, timers: 0 });
+    s.presented(2, 1.1);
+    await s.advance(1);
+    expect(worker.frames).toHaveLength(1);
+  });
+  it("rejects an old camera origin even when its presentation and dispatch appear current", async () => {
+    const s = setup({ frameCallbacks: true });
+    const worker = await s.start(false);
+    await s.advance(10);
+    s.result();
+    await s.advance(7);
+    await s.advance(144);
+    s.presented(2, 1.1, { captureTime: 100 });
+    await s.advance(1);
+    expect(worker.frames).toHaveLength(1);
+    expect(s.bitmap).toHaveBeenCalledOnce();
+    expect(s.status).toHaveBeenLastCalledWith("STALE_OR_INVALID_OBSERVATION");
+  });
+  it("checks camera-origin age again at model receipt without extending the 150ms budget", async () => {
+    const s = setup({ frameCallbacks: true });
+    const worker = await s.start(false);
+    await s.advance(100);
+    s.result();
+    s.presented(2, 1.1, { captureTime: 100 });
+    await s.advance(1);
+    expect(worker.frames).toHaveLength(2);
+    await s.advance(60);
+    s.result();
+    expect(s.observe).toHaveBeenCalledOnce();
+    expect(s.image).toHaveBeenCalledOnce();
+    expect(s.metrics.mock.calls.at(-1)?.[0]).toMatchObject({ disposition: "LATE", packetAgeMs: 161 });
+    expect(s.status).toHaveBeenLastCalledWith("STALE_OR_INVALID_OBSERVATION");
+    expect(s.runtime.resources().tracks).toBe(1);
+  });
+  it.each([150, 151])("retains the exact camera-origin freshness boundary at %sms", async (age) => {
+    const s = setup({ frameCallbacks: true });
+    await s.start(false);
+    await s.advance(100);
+    s.result();
+    s.presented(2, 1.1, { captureTime: 100 });
+    await s.advance(1);
+    await s.advance(age - 101);
+    s.result();
+    expect(s.observe).toHaveBeenCalledTimes(age === 150 ? 2 : 1);
+    expect(s.image).toHaveBeenCalledTimes(age === 150 ? 2 : 1);
+    expect(s.metrics.mock.calls.at(-1)?.[0]).toMatchObject({
+      disposition: age === 150 ? "ACCEPTED" : "LATE",
+      packetAgeMs: age,
+    });
+  });
+  it("does not publish image evidence when optical completion itself exhausts the origin budget", async () => {
+    const s = setup({ frameCallbacks: true });
+    await s.start(false);
+    const complete = IndexImageTracker.prototype.complete;
+    vi.spyOn(IndexImageTracker.prototype, "complete").mockImplementation(function (this: IndexImageTracker, ...args) {
+      const result = complete.apply(this, args);
+      s.jumpClock(20);
+      return result;
+    });
+    await s.advance(140);
+    s.result();
+    expect(s.observe).toHaveBeenCalledOnce();
+    expect(s.image).not.toHaveBeenCalled();
+    expect(s.status).toHaveBeenLastCalledWith("STALE_OR_INVALID_OBSERVATION");
+    expect(s.runtime.resources().workers).toBe(1);
+  });
+  it("rolls back an image seed when origin age expires inside finalization while dispatch age remains fresh", async () => {
+    const s = setup({ frameCallbacks: true });
+    const worker = await s.start(false);
+    await s.advance(10);
+    s.result();
+    expect(s.runtime.seedIndex(s.hint)).toBe(true);
+    s.presented(2, 1.1, { captureTime: 100 });
+    await s.advance(7);
+    expect(worker.frames).toHaveLength(2);
+    const complete = IndexImageTracker.prototype.complete;
+    const finalizations: { started: number; completed: number; capture: number }[] = [];
+    vi.spyOn(IndexImageTracker.prototype, "complete").mockImplementationOnce(function (
+      this: IndexImageTracker,
+      token,
+      model,
+      completionClock,
+      sourceFresh,
+    ) {
+      let calls = 0;
+      const clock = () => {
+        if (++calls === 2) s.jumpClock(20);
+        const value = typeof completionClock === "function" ? completionClock() : completionClock;
+        if (calls === 1) finalizations.push({ started: value, completed: value, capture: token.capture });
+        else finalizations[0].completed = value;
+        return value;
+      };
+      return complete.call(this, token, model, clock, sourceFresh);
+    });
+    await s.advance(123);
+    s.result();
+    expect(finalizations).toEqual([{ started: 240, completed: 260, capture: 117 }]);
+    expect(finalizations[0].completed - finalizations[0].capture).toBeLessThan(150);
+    expect(finalizations[0].completed - 100).toBeGreaterThan(150);
+    expect(s.observe).toHaveBeenCalledTimes(2);
+    expect(s.image).toHaveBeenCalledOnce();
+    expect(s.status).toHaveBeenLastCalledWith("STALE_OR_INVALID_OBSERVATION");
+    s.presented(3, 1.2);
+    await s.advance(1);
+    await s.advance(5);
+    s.result();
+    expect(s.image.mock.calls.at(-1)?.[0]).toMatchObject({
+      state: "UNSEEDED",
+      reason: "MANUAL_SELECTION_REQUIRED",
+      anchorSource: null,
+      trackId: null,
+      point: null,
+    });
+    expect(s.image.mock.calls.at(-1)?.[0].matchedPoint ?? null).toBeNull();
+    expect(s.runtime.indexSelectionMode()).toBe("MANUAL");
+    expect(s.runtime.resources().workers).toBe(1);
+  });
+  it("does not mutate hand association for a dispatch that is already late before adapter processing", async () => {
+    const s = setup();
+    await s.start(false);
+    const envelope = vi.spyOn(BrowserHandAdapter.prototype, "envelope");
+    await s.advance(151);
+    s.result(undefined, [modelPose(s.hint)]);
+    expect(envelope).not.toHaveBeenCalled();
+    expect(s.observe).not.toHaveBeenCalled();
+    expect(s.metrics.mock.calls.at(-1)?.[0]).toMatchObject({ disposition: "LATE", packetAgeMs: 151 });
+    expect(s.runtime.resources().tracks).toBe(1);
+  });
+  it("closes a bitmap whose origin becomes old during asynchronous extraction", async () => {
+    const s = setup({ frameCallbacks: true });
+    let deliver!: (bitmap: Bitmap) => void;
+    s.bitmap.mockImplementationOnce(() => new Promise((resolve) => (deliver = resolve)));
+    const worker = await s.start(false, false);
+    s.jumpClock(151);
+    const bitmap = { rgba: pixels(), close: vi.fn() };
+    deliver(bitmap);
+    await Promise.resolve();
+    expect(bitmap.close).toHaveBeenCalledOnce();
+    expect(worker.frames).toHaveLength(0);
+    expect(s.drawn).toHaveLength(0);
+    expect(s.status).toHaveBeenLastCalledWith("STALE_OR_INVALID_OBSERVATION");
+    s.presented(2, 1.1);
+    await s.advance(1);
+    expect(worker.frames).toHaveLength(1);
+  });
+  it("keeps camera-origin and serialized dispatch clocks separate through phase changes", async () => {
+    const s = setup({ frameCallbacks: true, calibrationCollecting: false });
+    const worker = await s.start(false);
+    const binding = s.runtime.camera.snapshot();
+    await s.advance(20);
+    s.presented(2, 1.1, { captureTime: 115 });
+    s.runtime.setCalibrationCollecting(true);
+    await s.advance(10);
+    s.result();
+    s.runtime.setCalibrationCollecting(false);
+    s.runtime.setCalibrationCollecting(true);
+    await s.advance(1);
+    await s.advance(36);
+    expect(worker.frames).toHaveLength(2);
+    expect(worker.frames[1].capture).toBeGreaterThanOrEqual(130);
+    expect(worker.frames[1].capture).not.toBe(115);
+    await s.advance(5);
+    s.result();
+    expect(s.observe).toHaveBeenCalledTimes(2);
+    expect(s.runtime.camera.snapshot()).toEqual(binding);
+    expect(s.workers).toHaveLength(1);
+    expect(s.media.getUserMedia).toHaveBeenCalledOnce();
+  });
+  it.each([NaN, Infinity, -1, 1000])(
+    "does not reinterpret invalid camera-origin metadata (%s) as fresh",
+    async (captureTime) => {
+      const s = setup({ frameCallbacks: true });
+      const worker = await s.start(false);
+      await s.advance(10);
+      s.result();
+      s.presented(2, 1.1, { captureTime });
+      await s.advance(7);
+      expect(worker.frames).toHaveLength(1);
+      expect(s.status).toHaveBeenLastCalledWith("STALE_OR_INVALID_OBSERVATION");
+    },
+  );
   it("keeps the visible-unfocused ceiling when a fresh presentation wakes the loop", async () => {
     const s = setup({ frameCallbacks: true, focused: false });
     const worker = await s.start();
