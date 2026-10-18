@@ -79043,7 +79043,7 @@
         "kind": "CROSSDECK_CURRENT_SOURCE_ADMISSION_1",
         "protectedBaseAncestorSha": "42fe81b8353f77af0655015f0d105340630bce42",
         "preservationRevision": "43b5f4d55b6ac751ed9b2e05d4e4cace38544c4f",
-        "sourceDigest": "37d5287930b4dcac42f03257fa7a834e7ffb59f2a7e85ee27a77ef3b025a47c7",
+        "sourceDigest": "ffdcc90ae07e8d178bd76cf2de9d083d71763931ce3a372ddc0e3b845b88d25f",
         "contextCount": 38,
         "pairedBrowserContexts": 6,
         "requiredObligationIds": [
@@ -79093,11 +79093,11 @@
         },
         "historyLedger": {
           "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-current-source-admission-20261018-r16/historical-ledger.json",
-          "sha256": "4b42de48f00d43836edc7e161a1c435a3c76f0f3160a0a1c8e7755f990040ff5"
+          "sha256": "fded828496fe14e68069a8ae5be4a33190f49de31dcadd8a538cf4b2dede7912"
         },
         "disposition": {
           "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-current-source-admission-20261018-r16/causal-disposition.md",
-          "sha256": "835620a080785ba4f42808fb18f293bf3522cb00d976e26332912983e24bf273"
+          "sha256": "3c3b8e6557c1e8032b0a275a246fee639d1ab4c3c899c328f466ff3fea3ec685"
         },
         "protectedOverlay": [
           {
@@ -79123,18 +79123,18 @@
             "oldMode": null,
             "oldBlob": null,
             "newMode": "100644",
-            "newBlob": "a5e7b8fe75f5a9209d0acf288f92de1e2aa3e1c1",
+            "newBlob": "5375acbfc383ce0ba84b7ca30444a0fa3f95a552",
             "candidateMode": "100644",
-            "candidateBlob": "a5e7b8fe75f5a9209d0acf288f92de1e2aa3e1c1"
+            "candidateBlob": "5375acbfc383ce0ba84b7ca30444a0fa3f95a552"
           },
           {
             "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-current-source-admission-20261018-r16/historical-ledger.json",
             "oldMode": null,
             "oldBlob": null,
             "newMode": "100644",
-            "newBlob": "8f938552dfcefc2750222dcec58ef5a515365d6f",
+            "newBlob": "03472847fcc90c4e013b80b9bedf1e67951a94ef",
             "candidateMode": "100644",
-            "candidateBlob": "8f938552dfcefc2750222dcec58ef5a515365d6f"
+            "candidateBlob": "03472847fcc90c4e013b80b9bedf1e67951a94ef"
           },
           {
             "path": "Development_Docs/document-index.json",
@@ -79195,9 +79195,9 @@
             "oldMode": "100644",
             "oldBlob": "4818b16aeceff0d6801a38e2214195755f74b9a6",
             "newMode": "100644",
-            "newBlob": "7fbe4c278c835a308543299f47684cc58ba0d627",
+            "newBlob": "7a1296c89d7a85b5a37e09f4ecabf995b73b7ec2",
             "candidateMode": "100644",
-            "candidateBlob": "7fbe4c278c835a308543299f47684cc58ba0d627"
+            "candidateBlob": "7a1296c89d7a85b5a37e09f4ecabf995b73b7ec2"
           },
           {
             "path": "scripts/sounding-line/experience-prepare.mjs",
@@ -79225,6 +79225,15 @@
             "newBlob": "13f898e203bec436fe3b2ac195017c63085146ce",
             "candidateMode": "100644",
             "candidateBlob": "13f898e203bec436fe3b2ac195017c63085146ce"
+          },
+          {
+            "path": "tests/sounding-line/experience-exception.test.mjs",
+            "oldMode": "100644",
+            "oldBlob": "a2ef1e705e3b8fafe0532264e9e5e9cfdbaa3c59",
+            "newMode": "100644",
+            "newBlob": "9cbd3566094fbdd6bdcd5f850b52874db152461b",
+            "candidateMode": "100644",
+            "candidateBlob": "9cbd3566094fbdd6bdcd5f850b52874db152461b"
           }
         ],
         "historicalRuns": [

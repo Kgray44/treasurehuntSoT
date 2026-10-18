@@ -116,8 +116,8 @@
     {
       "role": "derivation",
       "receiptId": "source-only-derivation.actual.private.json",
-      "bytes": 2889,
-      "sha256": "f3fcc6c52c92931d28e6d6d44cdbb6e310e1c26c8907d81d6d07465531392512"
+      "bytes": 2887,
+      "sha256": "f4c3575706ca10146f5d81a89d7270bbfb6106d159415d0582d9090f31bb67a9"
     },
     {
       "role": "policy",
@@ -161,20 +161,20 @@
       "pairedContexts": 6,
       "allFreshContextsRequired": 38
     },
-    "repairIntent": "Reviewed repair uses fresh private staging and guarded canonical publication with preimages/rollback. Fixed submission and paired producer remain create-only. Current-invocation diagnostic scopes are claimed before emitting their paths and retained on failure/cancellation. Successful upload contains current canonical media once and the current journal. All seven contracts, 38 contexts, product assertions, paired guards, retry/timeout and acceptance requirements remain unchanged.",
-    "sourceDigest": "37d5287930b4dcac42f03257fa7a834e7ffb59f2a7e85ee27a77ef3b025a47c7",
+    "repairIntent": "Reviewed repair uses fresh private staging and guarded canonical publication with preimages/rollback. Fixed submission and paired producer remain create-only. Current-invocation diagnostic scopes are claimed before emitting their paths and retained on failure/cancellation. Successful upload contains current canonical media once and the current journal. All seven contracts, 38 contexts, product assertions, paired guards, retry/timeout and acceptance requirements remain unchanged. The separately reviewed installer correction reuses registry reads within one trusted lookup and removes the current R16 sentinel only from the synthetic historical R3 fixture; the unchanged direct-guard maximum 120 and current R16 fail-closed behavior remain required.",
+    "sourceDigest": "ffdcc90ae07e8d178bd76cf2de9d083d71763931ce3a372ddc0e3b845b88d25f",
     "contractDigest": "befbdf5fa900b58f2a706c94a80861bb1819fbb045c17bb00756fa83b9b4af3d",
     "sourceFreezeReceipt": {
       "receiptId": "authority-freeze.actual.private.json",
-      "bytes": 74519,
-      "sha256": "36e25953afc0e0b5e6714b8a646d6d865772da8e73da0197490552bd75163ea5"
+      "bytes": 77421,
+      "sha256": "94133f433b4dad97d357f1f1de7cd2689b0963ce368d62880cf3ffdd5f80c222"
     },
     "reviewedSourceBinding": {
       "frozenReferenceSha": "fd09a072f0211ff1642f67a43bc9d7e0d3ddb62c",
       "protectedBaseAncestorSha": "42fe81b8353f77af0655015f0d105340630bce42",
       "preservationRevision": "43b5f4d55b6ac751ed9b2e05d4e4cace38544c4f",
       "sourceTree": "20d569b217f2f6fdda37d89ad2b9c842ead047ff",
-      "sourceDigest": "37d5287930b4dcac42f03257fa7a834e7ffb59f2a7e85ee27a77ef3b025a47c7",
+      "sourceDigest": "ffdcc90ae07e8d178bd76cf2de9d083d71763931ce3a372ddc0e3b845b88d25f",
       "contractDigest": "befbdf5fa900b58f2a706c94a80861bb1819fbb045c17bb00756fa83b9b4af3d",
       "contractIds": [
         "crossdeck.phase2.continuity",
@@ -236,10 +236,10 @@
         },
         {
           "path": "scripts/sounding-line/experience-exception.mjs",
-          "bytes": 122470,
-          "sha256": "dd8710c58ffdb979b592ec451ada16e27945d4b5c0e2bb4c0574fd7e6362cd40",
+          "bytes": 122566,
+          "sha256": "f0b1606298858f33cdd6e77dada92456cb6b4b276986728f1b8f98d6de563053",
           "mode": "100644",
-          "blob": "7fbe4c278c835a308543299f47684cc58ba0d627"
+          "blob": "7a1296c89d7a85b5a37e09f4ecabf995b73b7ec2"
         },
         {
           "path": "scripts/sounding-line/experience-prepare.mjs",
@@ -261,6 +261,13 @@
           "sha256": "1b79881a6fe804012a253e2ec3db293202e1f561fd514aa7977a7de00ce1b19e",
           "mode": "100644",
           "blob": "13f898e203bec436fe3b2ac195017c63085146ce"
+        },
+        {
+          "path": "tests/sounding-line/experience-exception.test.mjs",
+          "bytes": 214473,
+          "sha256": "fc0ad205f67218fdd051a1b664520994d02fc3530115ef58f816fbb79cf1c861",
+          "mode": "100644",
+          "blob": "9cbd3566094fbdd6bdcd5f850b52874db152461b"
         }
       ],
       "scope": "Actual reviewed source-only derivation and byte pins. Final proof/catalog/record derivation, accepted installer identities and default-loader admission remain separate required gates."
@@ -268,33 +275,28 @@
     "sourceProofReceipts": {
       "derivation": {
         "receiptId": "source-only-derivation.actual.private.json",
-        "bytes": 2889,
-        "sha256": "f3fcc6c52c92931d28e6d6d44cdbb6e310e1c26c8907d81d6d07465531392512"
+        "bytes": 2887,
+        "sha256": "f4c3575706ca10146f5d81a89d7270bbfb6106d159415d0582d9090f31bb67a9"
       },
       "freeze": {
         "receiptId": "authority-freeze.actual.private.json",
-        "bytes": 74519,
-        "sha256": "36e25953afc0e0b5e6714b8a646d6d865772da8e73da0197490552bd75163ea5"
+        "bytes": 77421,
+        "sha256": "94133f433b4dad97d357f1f1de7cd2689b0963ce368d62880cf3ffdd5f80c222"
       },
-      "captureFreeze": {
-        "receiptId": "repair-source-freeze.v2.actual.private.json",
-        "bytes": 7518,
-        "sha256": "4e7251e0f0ddf324cc9b6c9cc736c49c676cf9a19a81cd74d019454359f93090"
+      "sourceDerivationBody": {
+        "receiptId": "actual-source-only-derivation.private.json",
+        "bytes": 2438997,
+        "sha256": "20816a5f3b6e4a5312d0803cbe0eb7055462586b5f0ca57d84bee26c2d27cd59"
       },
-      "adapterFreeze": {
-        "receiptId": "source-freeze.v2.private.json",
-        "bytes": 1448,
-        "sha256": "1c06b73bea4caa6f076fd496b8062f517f593eedc8e5dbbc600675f6eb0aeead"
+      "correctionSourceFreeze": {
+        "receiptId": "source-freeze.actual.private.json",
+        "bytes": 6791,
+        "sha256": "061b713221a3b00d7ed8bc9338a072ce63ed361a9e5e2a74a3980bc0f5ef0270"
       },
-      "captureReview": {
-        "receiptId": "concrete-source-review.v2.private.json",
-        "bytes": 12919,
-        "sha256": "1d56a52c2b053f41e033798fc6617577175e180289fcd8405c50bb5c34b8252e"
-      },
-      "adapterReview": {
-        "receiptId": "independent-code-review.v2.actual.private.json",
-        "bytes": 7108,
-        "sha256": "939f00abc732b0a2cfc9012694a8ef695e5a2d5c07fb4cf774eac626bafb7a87"
+      "independentCorrectionSourceReview": {
+        "receiptId": "independent-source-review.actual.private.json",
+        "bytes": 10915,
+        "sha256": "9f515f0300bad5b3961df96f98c7345da515e345f7380a69faafca690ad37c7f"
       },
       "policy": {
         "receiptId": "policy-intent.actual.private.json",
@@ -306,10 +308,56 @@
         "bytes": 11716,
         "sha256": "098fdd31c7803a97e6f09dbaedf4c7719a205498b95dbe83adcfdda4daa0d8b9"
       },
-      "sourceDerivationBody": {
-        "receiptId": "actual-source-only-derivation.private.json",
-        "bytes": 2426938,
-        "sha256": "fdc0c4cb03c6bb8d9bca3126f7e622d1cd4bf740deb2962590f301969ad4790a"
+      "historicalSupportingSourceProofs": {
+        "priorSourceDigest": "37d5287930b4dcac42f03257fa7a834e7ffb59f2a7e85ee27a77ef3b025a47c7",
+        "receipts": {
+          "derivation": {
+            "receiptId": "source-only-derivation.actual.private.json",
+            "bytes": 2889,
+            "sha256": "f3fcc6c52c92931d28e6d6d44cdbb6e310e1c26c8907d81d6d07465531392512"
+          },
+          "freeze": {
+            "receiptId": "authority-freeze.actual.private.json",
+            "bytes": 74519,
+            "sha256": "36e25953afc0e0b5e6714b8a646d6d865772da8e73da0197490552bd75163ea5"
+          },
+          "captureFreeze": {
+            "receiptId": "repair-source-freeze.v2.actual.private.json",
+            "bytes": 7518,
+            "sha256": "4e7251e0f0ddf324cc9b6c9cc736c49c676cf9a19a81cd74d019454359f93090"
+          },
+          "adapterFreeze": {
+            "receiptId": "source-freeze.v2.private.json",
+            "bytes": 1448,
+            "sha256": "1c06b73bea4caa6f076fd496b8062f517f593eedc8e5dbbc600675f6eb0aeead"
+          },
+          "captureReview": {
+            "receiptId": "concrete-source-review.v2.private.json",
+            "bytes": 12919,
+            "sha256": "1d56a52c2b053f41e033798fc6617577175e180289fcd8405c50bb5c34b8252e"
+          },
+          "adapterReview": {
+            "receiptId": "independent-code-review.v2.actual.private.json",
+            "bytes": 7108,
+            "sha256": "939f00abc732b0a2cfc9012694a8ef695e5a2d5c07fb4cf774eac626bafb7a87"
+          },
+          "policy": {
+            "receiptId": "policy-intent.actual.private.json",
+            "bytes": 2668,
+            "sha256": "e7052a8b5fa5ade442d86e564c33f09b178af87b6ecb4706b6583692bcd63590"
+          },
+          "history": {
+            "receiptId": "fresh-history.accepted-fixed-cut.actual.private.json",
+            "bytes": 11716,
+            "sha256": "098fdd31c7803a97e6f09dbaedf4c7719a205498b95dbe83adcfdda4daa0d8b9"
+          },
+          "sourceDerivationBody": {
+            "receiptId": "actual-source-only-derivation.private.json",
+            "bytes": 2426938,
+            "sha256": "fdc0c4cb03c6bb8d9bca3126f7e622d1cd4bf740deb2962590f301969ad4790a"
+          }
+        },
+        "scope": "Prior source-specific freezes/reviews retained unchanged as historical support for the unchanged source fragments. They do not independently accept the corrected two-file source or any later product result."
       }
     },
     "remainingGates": [
@@ -618,5 +666,72 @@
       "displayTitle": "Sounding Line finite 1 capture 721 fd09a072f0211ff1642f67a43bc9d7e0d3ddb62c active",
       "checkSuiteId": 106001089218
     }
-  ]
+  ],
+  "installerVerification": {
+    "pullRequest": 771,
+    "runId": 39121764556,
+    "runAttempt": 1,
+    "workflowId": 341545080,
+    "checkSuiteId": 106016472349,
+    "event": "pull_request_target",
+    "headSha": "b38c403b67280b36208656b31349f1241f485df4",
+    "baseSha": "42fe81b8353f77af0655015f0d105340630bce42",
+    "tree": "04663f9a62d5e16fea778c58c0fb59db63bfcc54",
+    "createdAt": "2026-10-18T11:04:29Z",
+    "wholeConclusion": "failure",
+    "classification": "SOURCE_PROVED_CONTROL_PLANE_INSTALLER_UNRELATED_TO_FINITE_PR721_CAMPAIGN",
+    "sourceProof": {
+      "installerAndProtectedBaseSrcTree": "72442383da719f83fc306e2e2e1a395107f07f63",
+      "frozenCrossdeckProductSrcTree": "20d569b217f2f6fdda37d89ad2b9c842ead047ff",
+      "installerAndProtectedBaseContractsBlob": "cec75109b4855603da434fe8cf49b2fa4643729a",
+      "changedPathsExcludeSrcTechnicalBrowserAndContracts": true
+    },
+    "failedChecks": [
+      {
+        "test": "tests/sounding-line/experience-exception.test.mjs:1579",
+        "failure": "direct guard must stay bounded across installed history records; observed 123 Git calls against unchanged maximum120",
+        "logLines": [2019, 2022]
+      },
+      {
+        "test": "tests/sounding-line/experience-exception.test.mjs:2643",
+        "failure": "historical synthetic R3 base retains the R16 marker while substituting a three-row registry; R16_REGISTRY_INVALID before intended R3 binding",
+        "logLines": [2033, 2045]
+      }
+    ],
+    "jobConclusions": {
+      "custody": "success",
+      "focusedVerification": "failure",
+      "experiencePreparation": "skipped",
+      "mainlineDecision": "failure"
+    },
+    "originalLog": {
+      "bytes": 286081,
+      "sha256": "0fb7dde93caff24255d8903358ea7e3b58f12db8127547298be4af4a3be77db2"
+    },
+    "finiteCampaignEffect": {
+      "historicalRowsUnchanged": 18,
+      "completedPreparationsUnchanged": 19,
+      "proposedPreparationOrdinalUnchanged": 20,
+      "completedIndependentReviewsUnchanged": 7,
+      "reviewIterationUnchanged": 12,
+      "reviewOrdinalUnchanged": 8,
+      "newFiniteCaptureOrReview": false,
+      "finiteAllowanceConsumedByInstaller": false,
+      "R16GrantInstalled": false,
+      "R16ProposalIdentityUnchanged": "PE-X-CROSSDECK-CURRENT-VERIFY-20261018-R16"
+    },
+    "disposition": "Failed installer preserved. The narrow two-file correction has separate actual source-freeze and independent source-review pins below; the same unused R16 proposal still requires normal protected verification and actual landed admission. No finite allowance, old product acceptance, refund, protection waiver or owner acceptance is inferred.",
+    "correctedSourceProofs": {
+      "freeze": {
+        "receiptId": "source-freeze.actual.private.json",
+        "bytes": 6791,
+        "sha256": "061b713221a3b00d7ed8bc9338a072ce63ed361a9e5e2a74a3980bc0f5ef0270"
+      },
+      "independentSourceReview": {
+        "receiptId": "independent-source-review.actual.private.json",
+        "bytes": 10915,
+        "sha256": "9f515f0300bad5b3961df96f98c7345da515e345f7380a69faafca690ad37c7f"
+      }
+    }
+  }
 }
