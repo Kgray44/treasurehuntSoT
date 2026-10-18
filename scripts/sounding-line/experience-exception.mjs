@@ -23,6 +23,7 @@ import {
   validateCurrentAdmissionFinalDecision,
 } from "./experience-current-admission.mjs";
 import { CURRENT_R16 } from "./experience-current-r16.mjs";
+import { CURRENT_R17 } from "./experience-current-r17.mjs";
 import {
   CROSSDECK_R3,
   validateR3Record,
@@ -307,6 +308,19 @@ function r3FamilyRelated(root, candidateSha) {
   }
 }
 export function selectTrustedExceptions(records) {
+  if (records.some((record) => isCurrentAdmissionRecord(record) && record.version === 17)) {
+    if (records.length !== 17 || digest(records.slice(0, 16)) !== CURRENT_R17.previousRecordsDigest)
+      fail("CURRENT_R17_PREDECESSOR_REGISTRY_CHANGED");
+    selectTrustedExceptions(records.slice(0, 16));
+    const successor = records[16];
+    if (!isCurrentAdmissionRecord(successor) || successor.version !== 17)
+      fail("CURRENT_R17_PREDECESSOR_REGISTRY_CHANGED");
+    validateCurrentAdmissionRecord(successor, {
+      legacyRecord: records.find((record) => record.id === CROSSDECK_R14.id),
+      legacyCurrentRecord: records[15],
+    });
+    return [successor];
+  }
   if (records.some((record) => isCurrentAdmissionRecord(record) && record.version === 16)) {
     if (records.length !== 16 || digest(records.slice(0, 15)) !== CURRENT_R16.previousRecordsDigest)
       fail("CURRENT_R16_PREDECESSOR_REGISTRY_CHANGED");
@@ -560,13 +574,32 @@ export const trustedExceptions = (root, baseSha) => {
   // Reuse only this immutable revision's read, never a cached validation result.
   const registry = exceptionRegistry(root, baseSha);
   const records = registry?.exceptions ?? [];
+  // Read this immutable revision's fixed sentinel paths together. Nothing is
+  // cached across calls, and a missing successor row cannot reactivate a prefix.
+  const sentinels = new Set(
+    git(
+      root,
+      "ls-tree",
+      baseSha,
+      "--",
+      "scripts/sounding-line/experience-current-r17.mjs",
+      "scripts/sounding-line/experience-current-r16.mjs",
+      "scripts/sounding-line/experience-r14.mjs",
+      "scripts/sounding-line/experience-r13.mjs",
+    )
+      .split("\n")
+      .filter(Boolean)
+      .map((row) => row.split("\t")[1]),
+  );
   // The adapter at the requested base cannot reactivate an older grant by removal.
   // Historical bases without this protected adapter retain their exact readers.
-  if (present(root, baseSha, "scripts/sounding-line/experience-current-r16.mjs"))
+  if (sentinels.has("scripts/sounding-line/experience-current-r17.mjs"))
+    validateCurrentAdmissionRegistry(registry, undefined, { requiredVersion: 17 });
+  else if (sentinels.has("scripts/sounding-line/experience-current-r16.mjs"))
     validateCurrentAdmissionRegistry(registry, undefined, { requiredVersion: 16 });
   else if (records.some(isCurrentAdmissionRecord)) validateCurrentAdmissionRegistry(registry);
-  else if (present(root, baseSha, "scripts/sounding-line/experience-r14.mjs")) validateR14Registry(registry);
-  else if (present(root, baseSha, "scripts/sounding-line/experience-r13.mjs")) validateR13Registry(registry);
+  else if (sentinels.has("scripts/sounding-line/experience-r14.mjs")) validateR14Registry(registry);
+  else if (sentinels.has("scripts/sounding-line/experience-r13.mjs")) validateR13Registry(registry);
   return selectTrustedExceptions(records);
 };
 export function campaignRelated({ root, baseSha, candidateSha, record, prNumber }) {
