@@ -119,10 +119,10 @@ export default async function CommunityListingPage({ params }: Props) {
           />
         </div>
       </article>
-      <section className="community-detail-reviews" aria-labelledby="community-reviews-title">
-        <h2 id="community-reviews-title">Community reviews</h2>
+      <div className="community-detail-reviews">
+        <h2 id="community-detail-reviews-title">Community reviews</h2>
         <CommunityReviewList listingId={detail.card.id} />
-      </section>
+      </div>
       <CommunityCommentThread subjectType="LISTING" subjectId={detail.card.id} returnTo={detail.card.destination} />
       <p className="community-detail-return">
         <Link href={districtRoute}>Return to {districtLabel(detail.card.variant)}</Link>

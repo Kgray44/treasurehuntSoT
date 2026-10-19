@@ -183,3 +183,13 @@ Crew failure screenshots and error contexts before close. Keep the runner trace,
 both videos, existing collector validation and the fixed64MiB raw budget. This
 fixture repair cannot recover the earlier overwritten screenshot or change its
 incomplete disposition.
+
+Community run39330479919 passed ordinary entry and all ten district checks in
+four variants, then each listing detail failed axe's landmark-unique rule: its
+outer review wrapper and inner ReviewList reused community-reviews-title. Keep
+the visible headings and component's named region; make the layout wrapper a
+div with a distinct heading ID. Retain all axe and3000ms assertions. Preserve
+the original run and its incomplete63-member encrypted diagnostics (LIMIT and
+FAILURE_ATTACHMENTS_INCOMPLETE) under the unchanged64MiB raw budget. One
+corrected-source development successor exercises the remaining public details,
+empty states/search and returns; no protected or rendered acceptance is inferred.
