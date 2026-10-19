@@ -6804,7 +6804,8 @@
           "src/components/wakebook/AuthenticatedPassportPage.tsx",
           "src/components/wakebook/PassportLayout.tsx",
           "src/components/wakebook/WakebookArchive.tsx",
-          "src/components/wakebook/WakebookInsights.tsx"
+          "src/components/wakebook/WakebookInsights.tsx",
+          "src/styles/personal-harbor.css"
         ],
         "entryPoint": "/account",
         "states": ["PASSPORT_READY", "SECTION_READY", "RETURNED"],
@@ -6867,7 +6868,8 @@
         "browserTests": ["tests/e2e/sextant-consumer-journeys.spec.ts"],
         "limitations": [
           "This registration covers the actual overview and section projections, including honest empty collections. Historical detail/book/replay, granted artifact detail and the unused legacy ChroniclePassport component remain separate obligations.",
-          "The existing synthetic active-Voyage baseline is reused unchanged. No additional progression, reader-state preparation, historical detail, artifact grant or geography is fabricated; registration grants no rendered or protected acceptance."
+          "The existing synthetic active-Voyage baseline is reused unchanged. No additional progression, reader-state preparation, historical detail, artifact grant or geography is fabricated; registration grants no rendered or protected acceptance.",
+          "The shared stylesheet declaration is limited to these actual journeys. Other affected consumers retain their separate registration, capture and acceptance obligations."
         ],
         "motion": {
           "measurement": "Ordinary Passport navigation activation to the distinct response-rendered section outcome on each desktop/mobile and normal/reduced-motion variant",
@@ -7311,7 +7313,8 @@
           "src/components/captain/CaptainCommandConsole.tsx",
           "src/components/captain/CaptainOperationalPanel.tsx",
           "src/components/muster/MusterRoom.tsx",
-          "src/components/muster/CrewChat.tsx"
+          "src/components/muster/CrewChat.tsx",
+          "src/styles/platform.css"
         ],
         "entryPoint": "/account",
         "states": ["RESOURCE_READY", "RETURNED"],
@@ -7376,7 +7379,8 @@
           "Registration is source-only and grants no capture, protected qualification, physical or owner acceptance. Fixed development variants each own a distinct mutable draft and retain failures without resetting shared state.",
           "The active crew fixture cannot send gathering chat. Command execution, ready/inviting crews, legacy Captain screens and blocked or adverse resources remain separate requirements.",
           "Creator settings are read through the declared journey. The development browser case additionally saves, reopens and ordinarily restores a working title, with unchanged canonical progression and published checksums.",
-          "This separate resource-owner persona preserves the canonical active-Player Creator safety lock. It does not satisfy the older single-persona native-context Creator/Parallax-to-Player handoff."
+          "This separate resource-owner persona preserves the canonical active-Player Creator safety lock. It does not satisfy the older single-persona native-context Creator/Parallax-to-Player handoff.",
+          "The shared stylesheet declaration is limited to these actual journeys. Other affected consumers retain their separate registration, capture and acceptance obligations."
         ],
         "motion": {
           "measurement": "Ordinary workspace and resource activation to the distinct response-rendered task, separately for desktop/mobile and reduced motion",
@@ -7550,7 +7554,8 @@
           "src/app/studio/tales/[taleId]/settings/page.tsx",
           "src/components/studio/StudioHome.tsx",
           "src/components/studio/TaleEditorSection.tsx",
-          "src/components/studio/TaleEditor.tsx"
+          "src/components/studio/TaleEditor.tsx",
+          "src/styles/studio.css"
         ],
         "entryPoint": "/account",
         "states": ["RESOURCE_READY", "RETURNED"],
@@ -7615,7 +7620,8 @@
           "Registration is source-only and grants no capture, protected qualification, physical or owner acceptance. Fixed development variants each own a distinct mutable draft and retain failures without resetting shared state.",
           "The active crew fixture cannot send gathering chat. Command execution, ready/inviting crews, legacy Captain screens and blocked or adverse resources remain separate requirements.",
           "Creator settings are read through the declared journey. The development browser case additionally saves, reopens and ordinarily restores a working title, with unchanged canonical progression and published checksums.",
-          "This separate resource-owner persona preserves the canonical active-Player Creator safety lock. It does not satisfy the older single-persona native-context Creator/Parallax-to-Player handoff."
+          "This separate resource-owner persona preserves the canonical active-Player Creator safety lock. It does not satisfy the older single-persona native-context Creator/Parallax-to-Player handoff.",
+          "The shared stylesheet declaration is limited to these actual journeys. Other affected consumers retain their separate registration, capture and acceptance obligations."
         ],
         "motion": {
           "measurement": "Ordinary workspace and resource activation to the distinct response-rendered task, separately for desktop/mobile and reduced motion",
