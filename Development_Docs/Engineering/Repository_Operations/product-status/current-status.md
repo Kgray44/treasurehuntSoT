@@ -16,7 +16,7 @@ idle/standby recovery and selected iOS permission/geofence cases pass with exact
 source and cleanup receipts. The actual Android WebView Device controls and paired
 Journal development cases pass. Normal iOS Devices proof requires canonical
 Darwin process-supervision support; broader rendered consumer acceptance remains
-pending. The Captain dashboard source checkpoint confirms 176 affected surfaces and 60
+pending. The completed-history source checkpoint confirms 176 affected surfaces and 54
 missing registrations. Fresh four-variant consumer/resource runs pass at their
 recorded sources; independent rendered review clears the Passport contrast, safe
 preview and mobile authoring-rail repairs. Distinct Creator/Crew development proof now passes with clear independent

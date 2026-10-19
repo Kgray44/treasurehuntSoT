@@ -649,3 +649,11 @@ The historical notice changes only from aside to the same named section. Existin
 Journal tests pass 28/28; TypeScript, four-variant discovery and experience-contract
 validation pass. No new registration count or rendered acceptance is claimed until
 the source is frozen/reconciled and the actual browser evidence is reviewed.
+
+The [completed-history reconciliation](phase4-source-reconciliation-history-20261019.json)
+freezes `b601c604c34ce2182c49ea2962d5ce5edd559be6` against accepted main
+`40491dd68ace88ee033b53fd264ddbfe303c6d28`: 176 affected surfaces, 54 still
+unregistered. The six declared historical paths explain the reduction from 60;
+the historical 141-path/13-family inventory and all older checkpoints remain
+unchanged. The authoritative planner remains blocked. This is source declaration
+accounting, with no protected capture or acceptance credit.

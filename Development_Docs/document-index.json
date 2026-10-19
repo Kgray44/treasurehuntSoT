@@ -4383,6 +4383,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Sextant/phase4-source-reconciliation-history-20261019.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Sextant/phase4-source-reconciliation-passport-20261019.json",
       "record_type": "engineering-record",
       "status": "current",

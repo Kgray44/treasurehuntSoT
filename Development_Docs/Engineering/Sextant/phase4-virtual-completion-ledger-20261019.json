@@ -6,7 +6,7 @@
   "status": "IN_PROGRESS",
   "initialCandidate": "5ff2739776513b8f8ed20c1cb661c164216d0eeb",
   "protectedBase": "f6af0b0e151f15f1a23808413ccee531b9827ca7",
-  "currentSoftwareCandidate": "bdb99837af8e0067a5f212c164ef71047404a33c",
+  "currentSoftwareCandidate": "b601c604c34ce2182c49ea2962d5ce5edd559be6",
   "pr": "https://github.com/Kgray44/treasurehuntSoT/pull/709",
   "independentSourceReview": {
     "reviewerContext": "/root/sextant_source_review",
@@ -138,6 +138,13 @@
       "reviewer": "/root/sextant_source_review",
       "disposition": "CLEAR_SETTLED_VISIBLE_MEASURE_AND_BOUNDED_RESPONSE_METADATA",
       "reviewerRanTests": false
+    },
+    "completedHistory": {
+      "source": "b601c604c34ce2182c49ea2962d5ce5edd559be6",
+      "reviewer": "/root/sextant_source_review",
+      "disposition": "TWO_FIXTURE_SELECTOR_FINDINGS_REPAIRED_NO_REMAINING_MATERIAL_SOURCE_FINDING",
+      "reviewerRanTests": false,
+      "scope": "SOURCE_ONLY_FRESH_BROWSER_AND_RENDERED_PROOF_REQUIRED"
     }
   },
   "localChecks": {
@@ -1067,7 +1074,7 @@
     "historicalObligations": 141,
     "historicalFamilies": 13,
     "currentAffectedSurfaces": 176,
-    "currentUnregisteredSurfaces": 60,
+    "currentUnregisteredSurfaces": 54,
     "protectedCapturedOrAcceptedByThisContinuation": 0,
     "developmentCapturedVariants": 4,
     "planner": "PRODUCT_EXPERIENCE_UNREGISTERED_SURFACE",
@@ -1075,7 +1082,7 @@
     "reachDiagnostics": "PROTECTED_ACCEPTED_ON_BASE",
     "historicalAccounting": "PRESERVED_SEXTANT_3_OF_3_CROSSDECK_10_OF_3_R1_2_OF_3",
     "registeredNewPlayerWorkspaceSurfaces": 2,
-    "remainingSoftware": "60 unregistered affected surfaces at0b76873e4b; fresh authoring mobile-overflow execution/review, unconfirmed390normal Community Guide activation with bounded exact-link diagnostics dispatched atbdb99837af, completed-history journey source-reviewed but not executed, account/recovery/invitation/admiralty/catalog/Creator/Landfall fixtures, governed legacy disposition, formal reference/layout review and protected capture/qualification. Resource Crew label/chrome repairs clear atff7b5d0e4f. Independent software remains; canonical Darwin supervision, accepted Crossdeck source and physical/owner gates stay separate.",
+    "remainingSoftware": "54 unregistered affected surfaces atb601c604c3; fresh authoring mobile-overflow execution/review, unconfirmed390normal Community Guide activation with bounded exact-link diagnostics dispatched atbdb99837af, completed-history journey source-reviewed and development-dispatched, account/recovery/invitation/admiralty/catalog/Creator/Landfall fixtures, governed legacy disposition, formal reference/layout review and protected capture/qualification. Resource Crew label/chrome repairs clear atff7b5d0e4f. Independent software remains; canonical Darwin supervision, accepted Crossdeck source and physical/owner gates stay separate.",
     "independentDevelopmentJourneyReview": {
       "source": "0d8b3c7841966a1d1c8b5dae21570b1043dc7915",
       "reviewer": "/root/sextant_source_review",
@@ -1107,11 +1114,12 @@
     "registeredNewPassportSourcePaths": 14,
     "newlyRegisteredAffectedPassportSurfaces": 12,
     "sourceReconciliation": {
-      "path": "phase4-source-reconciliation-dashboard-20261019.json",
-      "sha256": "6c3b16c5224d250ecab06332af0c7f5ea883c3ee4299233548f81b87dc1dac84",
-      "sourceSha": "0b76873e4ba45670c2c94378d785956fcbaad9a8",
+      "path": "phase4-source-reconciliation-history-20261019.json",
+      "sha256": "41c0a2bf1e9b37bf818735b4a7ccccf75cfdd496bf46509f076ed31b6b21baa2",
+      "sourceSha": "b601c604c34ce2182c49ea2962d5ce5edd559be6",
+      "baseSha": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
       "affected": 176,
-      "unregistered": 60,
+      "unregistered": 54,
       "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
     },
     "sourceReconciliations": [
@@ -1150,6 +1158,15 @@
         "sourceSha": "0b76873e4ba45670c2c94378d785956fcbaad9a8",
         "affected": 176,
         "unregistered": 60,
+        "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
+      },
+      {
+        "path": "phase4-source-reconciliation-history-20261019.json",
+        "sha256": "41c0a2bf1e9b37bf818735b4a7ccccf75cfdd496bf46509f076ed31b6b21baa2",
+        "sourceSha": "b601c604c34ce2182c49ea2962d5ce5edd559be6",
+        "baseSha": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
+        "affected": 176,
+        "unregistered": 54,
         "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
       }
     ],

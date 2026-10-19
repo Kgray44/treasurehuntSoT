@@ -14,7 +14,7 @@ The [2026-10-19 continuation](../../Sextant/Project_Sextant_Phase_4_Virtual_Comp
 adds focused corrections to native pause/revocation, expected-interruption
 recovery, compatible local attitude, late acknowledgements and truthful radio
 availability. It grants no completed-feature promotion or Phase 4 acceptance.
-The Captain dashboard source checkpoint still requires 60 experience registrations,
+The completed-history source checkpoint still requires 54 experience registrations,
 remaining consumer capture/review, normal iOS Device product proof and the
 separate D4/owner gates.
 Android WebView Device controls and paired Journal development cases pass;
