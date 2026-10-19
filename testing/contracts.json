@@ -5407,7 +5407,11 @@
           "RETURNED_TO_VOYAGE",
           "CREATOR_DRAFT_REOPENED"
         ],
-        "browserTests": ["tests/e2e/spatial-chronicle-pilot.spec.ts", "tests/e2e/parallax-guided.spec.ts"],
+        "browserTests": [
+          "tests/e2e/spatial-chronicle-pilot.spec.ts",
+          "tests/e2e/parallax-guided.spec.ts",
+          "tests/e2e/sextant-consumer-journeys.spec.ts"
+        ],
         "continuity": {
           "objective": "Observe the same canonical Voyage at contextual entry, actual readable Lens outcome and Journal return on desktop and mobile",
           "checks": [
@@ -6618,6 +6622,160 @@
             }
           ]
         }
+      }
+    },
+    {
+      "id": "sextant.shared-consumers.workspace-capabilities",
+      "name": "Sextant shared-context workspace capabilities and actual Player resource return",
+      "authority": "project-sextant",
+      "owners": ["project-sextant", "project-helm"],
+      "critical": true,
+      "experience": {
+        "persona": "An authenticated synthetic Player reading truthful workspace availability while an authorized Voyage remains active",
+        "objective": "Use ordinary account navigation to inspect workspace capability boundaries and reach the actual Player library without changing the active Voyage",
+        "visibleOutcome": "The existing identity reaches its real released synthetic Voyage in the Player library, then returns to the same Personal Harbor",
+        "integrationOwner": "Sextant shared-consumer verification; Homeport and Helm retain account and resource authority",
+        "systems": ["project-sextant", "project-homeport", "project-helm", "one-voyage"],
+        "sourcePaths": ["src/app/account/roles/page.tsx", "src/components/homeport/WorkspaceCapabilityDashboard.tsx"],
+        "entryPoint": "/account",
+        "states": ["CAPABILITY_READY", "PLAYER_RESOURCE_READY", "RETURNED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["PLAYER"],
+        "roleSetup": {
+          "PLAYER": {
+            "entryPoint": "/sign-in?returnTo=%2Faccount",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "sextant.experience@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Sextant-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "button",
+              "name": "Synthetic Sextant Navigator",
+              "text": "Synthetic Sextant Navigator"
+            }
+          }
+        },
+        "references": [
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected curated reference supplies readable task hierarchy and safe account/gateway navigation; actual Personal Harbor layout remains supplemental design context pending source-bound review.",
+            "preserve": "Readable task hierarchy, visible keyboard controls, contextual safe return and usable constrained layout; no account layout acceptance inferred from these generic references."
+          },
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected curated reference supplies readable task hierarchy and safe account/gateway navigation; actual Personal Harbor layout remains supplemental design context pending source-bound review.",
+            "preserve": "Readable task hierarchy, visible keyboard controls, contextual safe return and usable constrained layout; no account layout acceptance inferred from these generic references."
+          }
+        ],
+        "fixtureProfile": "generic",
+        "fixture": "sextant-shared-consumers-v1",
+        "recordingRequired": true,
+        "accessibility": "Keyboard and touch reach the same workspace state, actual Player resource and ordinary account return at constrained widths and reduced motion.",
+        "fallback": "Unavailable or safety-locked workspaces explain their state while the Player resource and account return stay usable. No role assignment grants another account resource.",
+        "navigation": "Personal Harbor account menu opens All Workspaces; Enter Player opens its real library; the account menu returns to Personal Harbor.",
+        "designTarget": "Retain the task heading, visible workspace availability, ownership boundary and readable authored Voyage card without encouraging unsafe workspace transitions.",
+        "browserTests": ["tests/e2e/sextant-consumer-journeys.spec.ts"],
+        "limitations": [
+          "This declaration covers the existing Player-resource branch. Captain and Creator resource journeys and acceptance remain separate explicit obligations; no capability is granted by this test.",
+          "Registration does not grant rendered experience, native, physical or owner acceptance."
+        ],
+        "motion": {
+          "measurement": "Account-menu and workspace activation to readable task and Player library feedback, separately on normal and reduced motion",
+          "feedbackBudgetMs": 3000
+        },
+        "continuity": {
+          "objective": "Keep the same authenticated synthetic account while entering its actual Player resource and returning to Personal Harbor",
+          "checks": [
+            {
+              "id": "account-identity",
+              "role": "button",
+              "name": "Synthetic Sextant Navigator",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "journeys": [
+          {
+            "id": "workspace-player-resource-and-return",
+            "roles": ["PLAYER"],
+            "outcome": "The Player inspects workspace capability limits, reaches the actual pinned Voyage in its library and returns to the same account Overview",
+            "steps": [
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "All Workspaces"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "All Workspaces",
+                "path": "/account/roles",
+                "state": "CAPABILITY_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Enter Player"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "path": "/player/library",
+                "text": "Synthetic Sextant experience Voyage",
+                "kind": "outcome",
+                "meaning": "The visible Player action opens the real authorized synthetic Voyage resource rather than only a role label.",
+                "state": "PLAYER_RESOURCE_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Navigator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
       }
     }
   ],

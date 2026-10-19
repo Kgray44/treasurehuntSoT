@@ -50,6 +50,12 @@ async function main() {
     },
   });
   if (marker !== 1) throw new Error("SEXTANT_EXPERIENCE_DATABASE_IDENTITY_REQUIRED");
+  await seedSextantExperience();
+}
+
+/** Shared by the guarded capture producer and owned generic browser tests.
+ * Callers must establish their task-owned synthetic database before seeding. */
+export async function seedSextantExperience() {
   const now = new Date();
   const accountId = "sextant-experience-navigator";
   const account = await db.userAccount.create({
@@ -138,10 +144,21 @@ async function main() {
   const persisted = await db.chronicle.findUniqueOrThrow({ where: { id: voyage.taleId } });
   if (persisted.slug !== snapshot.tale.slug) throw new Error("SEXTANT_SYNTHETIC_ROUTE_IDENTITY_MISMATCH");
   process.stdout.write("SEXTANT_SYNTHETIC_EXPERIENCE_FIXTURE_READY\n");
+  return {
+    accountId,
+    voyageId: voyage.id,
+    taleId: voyage.taleId,
+    versionId: voyage.versionId,
+    activeId: voyage.activeId,
+  };
 }
-main()
-  .catch((error: unknown) => {
-    process.stderr.write(`${error instanceof Error ? error.message : "Synthetic fixture preparation failed"}\n`);
-    process.exitCode = 1;
-  })
-  .finally(() => db.$disconnect());
+if (
+  process.argv[1]?.replaceAll("\\", "/").endsWith("/.agents/scripts/sextant-experience-fixture.ts") ||
+  process.argv[1] === ".agents/scripts/sextant-experience-fixture.ts"
+)
+  main()
+    .catch((error: unknown) => {
+      process.stderr.write(`${error instanceof Error ? error.message : "Synthetic fixture preparation failed"}\n`);
+      process.exitCode = 1;
+    })
+    .finally(() => db.$disconnect());

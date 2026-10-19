@@ -146,3 +146,21 @@ a measured virtual guest. The original unsupported Doze result is preserved.
 The existing hosted lab also has a bounded development `ios-devices` target for
 the existing normal Devices XCTest through the generic isolated product runtime.
 These added paths still require actual hosted results before any execution claim.
+
+## Ordinary consumer journey development
+
+The existing guarded synthetic experience producer is shared with a focused
+browser case; its CLI database/source/nonce guards remain. The case uses ordinary
+sign-in, account-menu workspace entry, the actual Player library, Journal full
+replay, contextual Devices, keyboard screen fallback, the same Voyage return,
+Guided Lens and ordinary Personal Harbor return. It records desktop/mobile and
+normal/reduced-motion variants, and checks the published checksum and active
+Voyage progression. No cookie authentication, reader-state preparation, hidden
+progression or unmerged Crossdeck contract substitutes for the visible journey.
+
+A new additive workspace declaration covers its existing Player-resource branch
+and two previously unregistered source paths. Captain/Creator resource acceptance
+remains explicitly separate. The historical 141/13 mapping is preserved, and the
+remaining registrations, canonical fixtures and protected capture/review still
+require source-bound completion. Neither adding a declaration nor a development
+recording grants experience or Phase 4 acceptance.
