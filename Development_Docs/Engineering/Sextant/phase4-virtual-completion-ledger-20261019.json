@@ -6,7 +6,7 @@
   "status": "IN_PROGRESS",
   "initialCandidate": "5ff2739776513b8f8ed20c1cb661c164216d0eeb",
   "protectedBase": "f6af0b0e151f15f1a23808413ccee531b9827ca7",
-  "currentSoftwareCandidate": "998d684bd21b95eb05ac827b09bc241427be089b",
+  "currentSoftwareCandidate": "99cbb4b8ebacf0655a2ccfa964bff00e397890f5",
   "pr": "https://github.com/Kgray44/treasurehuntSoT/pull/709",
   "independentSourceReview": {
     "reviewerContext": "/root/sextant_source_review",
@@ -346,20 +346,49 @@
       },
       "cleanup": "RUNTIME_PORTS_AND_TRANSPORT_PASS",
       "artifacts": 4
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "450af3f4794e8e290db8484b36d17631390086ff",
+      "transportSha": "bf77cb19db84a1baa2e364cd10d288ba562c9e39",
+      "runId": "39323401270",
+      "status": "HARVESTED_SUCCESS_FOUR_VARIANTS",
+      "passportRoutesPerVariant": 9,
+      "ordinaryPlayerWorkspace": true,
+      "sameVoyageDeviceFallbackJournalAndReleasedClue": true,
+      "unchangedProgressionAndPublishedEdition": true,
+      "productionBuild": "PASS",
+      "qualification": false,
+      "renderedReview": "PASSPORT_INTRO_HEADING_LOW_CONTRAST_REQUIRES_REPAIR",
+      "captureLimit": "390_REDUCED_OVERVIEW_INTRO_NOT_IN_VIEWPORT",
+      "cleanup": "RUNTIME_PORTS_AND_TRANSPORT_PASS",
+      "artifacts": 98
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "99cbb4b8ebacf0655a2ccfa964bff00e397890f5",
+      "transportSha": "a4170a256127d6d3fa1f0f888ab6a55ca6b74334",
+      "runId": "39324450092",
+      "status": "DISPATCHED_NO_OUTCOME_CLAIMED",
+      "scope": "Actual Captain roster, cancelled command review, safe preview and distinct owner Creator draft save/reopen/restore",
+      "qualification": false
     }
   ],
   "experience": {
     "historicalObligations": 141,
     "historicalFamilies": 13,
-    "currentAffectedSurfaces": 170,
-    "currentUnregisteredSurfaces": 104,
-    "capturedOrAcceptedByThisContinuation": 0,
+    "currentAffectedSurfaces": 171,
+    "currentUnregisteredSurfaces": 92,
+    "protectedCapturedOrAcceptedByThisContinuation": 0,
+    "developmentCapturedVariants": 4,
     "planner": "PRODUCT_EXPERIENCE_UNREGISTERED_SURFACE",
     "crossdeck721": "OPEN_UNMERGED_NOT_CONSUMED",
     "reachDiagnostics": "PROTECTED_ACCEPTED_ON_BASE",
     "historicalAccounting": "PRESERVED_SEXTANT_3_OF_3_CROSSDECK_10_OF_3_R1_2_OF_3",
     "registeredNewPlayerWorkspaceSurfaces": 2,
-    "remainingSoftware": "104 unregistered affected surfaces, remaining canonical populated/adverse fixtures, required protected capture/review and final qualification; declarations and development passes qualify none",
+    "remainingSoftware": "92 unregistered affected surfaces, remaining canonical populated/adverse fixtures, compatible paired-persona Creator/Player handoff, required protected capture/review and final qualification; declarations and development passes qualify none",
     "independentDevelopmentJourneyReview": {
       "source": "0d8b3c7841966a1d1c8b5dae21570b1043dc7915",
       "reviewer": "/root/sextant_source_review",
@@ -377,11 +406,22 @@
       "networkLimit": "FOUR_FAILED_FIRST_PARTY_REQUESTS_RECORDED_NOT_ERROR_FREE_NETWORKING",
       "physicalEvidence": false
     },
+    "consumerIndependentRenderedReview": {
+      "source": "450af3f4794e8e290db8484b36d17631390086ff",
+      "runId": "39323401270",
+      "reviewer": "/root/sextant_source_review",
+      "distinctCapturesReviewed": 48,
+      "finding": "P2_PASSPORT_INTRO_HEADING_LOW_CONTRAST",
+      "otherMaterialVisualFindings": 0,
+      "maximumPassportReadinessMs": 1602.4,
+      "limit": "390_REDUCED_OVERVIEW_INTRO_NOT_CAPTURED; ONE_DESKTOP_LENS_BACKGROUND_OPENING_ANIMATION_FALLBACK",
+      "scope": "DEVELOPMENT_RENDERED_REVIEW_NOT_PROTECTED_CUSTODY_NATIVE_OR_OWNER_ACCEPTANCE"
+    },
     "registeredNewPassportSourcePaths": 14,
     "newlyRegisteredAffectedPassportSurfaces": 12,
     "sourceReconciliation": {
-      "path": "phase4-source-reconciliation-passport-20261019.json",
-      "sha256": "c2bff6406c504b8c51ea14b0d750ba1bfdc3cb0b59c278b2d268a74574140e17",
+      "path": "phase4-source-reconciliation-resources-20261019.json",
+      "sha256": "e64c32c3b4c024307a4a2759ef4d2d38724d6945499d3c404ddbae1469137499",
       "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
     }
   },

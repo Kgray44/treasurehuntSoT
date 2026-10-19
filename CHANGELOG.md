@@ -24,6 +24,8 @@ last_reviewed: 2026-10-19
   semantics to use a named section within the private Passport, avoiding an
   incorrectly nested complementary landmark. The Muster Chronicle card uses
   the same valid section semantics. Accessibility assertions remain.
+- The private Passport intro heading inherits its card's dark text color so it
+  stays readable on the pale gold background.
 
 - Sextant's Phase 4 candidate pauses and revokes native location alongside other
   optional input, permits a fresh explicit acquisition after expected native

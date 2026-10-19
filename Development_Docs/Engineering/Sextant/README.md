@@ -11,10 +11,12 @@ last_reviewed: 2026-10-19
 The [2026-10-19 virtual completion continuation](Project_Sextant_Phase_4_Virtual_Completion_20261019.md)
 reconciles the existing draft with current main, inventories every Phase 4 gate,
 and records focused provider corrections and new source-bound virtual work.
-Its current inventory has 170 affected surfaces; 104 still lack experience
+Its resource checkpoint has 171 affected surfaces; 92 still lack experience
 registration. The historical 141-path mapping remains intact. Reach diagnostics
 are now protected-accepted; Crossdeck #721 remains unmerged. Earlier counts
 and failed campaigns remain historical evidence, not current acceptance.
+The [resource source reconciliation](phase4-source-reconciliation-resources-20261019.json)
+binds that count to `99cbb4b8eb`; it grants no capture or acceptance credit.
 
 The [bounded Phase 4 follow-up ledger](phase4-acceptance-followup-r1-ledger.json)
 preserves the exhausted original campaign and records the separately authorized

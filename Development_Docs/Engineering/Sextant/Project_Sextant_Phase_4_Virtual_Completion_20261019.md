@@ -319,3 +319,29 @@ has no Player membership and does not weaken that lock. Its settings journey
 does not satisfy the older Parallax working-clue-to-Player requirement. A
 compatible canonical paired-persona handoff remains a software/contract gate;
 it is neither physical-only nor accepted by this continuation.
+
+Run `39323401270` passed all four Chromium viewport/motion variants at
+`450af3f4794e8e290db8484b36d17631390086ff`, with 98 harvested original artifacts
+and runtime/port/transport cleanup. It covered all nine Passport routes, actual
+Player workspace entry, the uniquely named current Device row, keyboard screen
+fallback, same-Voyage Journal return and released Guided Lens clue/Inspect.
+Progression and published-edition checksums remained unchanged. These are
+development results at that source, not protected experience acceptance.
+Independent rendered review identified a washed-out Passport intro heading on
+the pale gold card despite axe passing. It now inherits the existing dark card
+text color. The mobile reduced-motion overview capture was scrolled beyond the
+intro, so the next case brings that actual heading into view after recording
+ordinary readiness. Original captures and the review finding remain retained.
+The reviewer inspected all 48 distinct captures; no other material visual defect
+was found. Maximum recorded Passport readiness was 1602.4 ms. One desktop Lens
+background showed opening-animation fallback, so usable continuation does not
+prove universally successful animation. Static captures do not establish all
+viewport behavior, native sensing or protected/owner acceptance.
+
+At source `99cbb4b8ebacf0655a2ccfa964bff00e397890f5`, resource registration
+reconciliation reports 171 affected surfaces and 92 without declarations. It
+preserves the 141 historical paths and remains blocked for protected planning.
+Source-only declarations qualify no surface. The fixed Captain/Creator resource
+matrix is dispatched separately as development run `39324450092`; no outcome is
+claimed before harvest. Existing component tests (5/5), TypeScript, privacy D0,
+documentation and feature validation passed at the resource checkpoint.

@@ -116,3 +116,11 @@ same-named section; do not label it an executed browser finding.
 The old single-persona Creator/Parallax journey conflicts with the canonical
 active-Player workspace lock. Preserve the lock and record the paired-persona
 contract requirement separately; the new settings journey does not satisfy it.
+
+Consumer run39323401270 passed all four variants at450af3f479; preserve its98
+original artifacts. Independent rendered review found low-contrast intro heading
+text on the gold Passport card, and the390-reduced overview did not show that
+intro. Correct the heading to inherit the card's existing dark text and bring
+the real heading into view for its screenshot only after measuring unchanged
+ordinary readiness. Keep axe and3000ms assertions. Development pass is not
+protected acceptance or a refund of historical review/capture counters.

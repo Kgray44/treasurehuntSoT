@@ -3579,6 +3579,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Sextant/phase4-source-reconciliation-resources-20261019.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Sextant/phase4-virtual-completion-ledger-20261019.json",
       "record_type": "engineering-record",
       "status": "current",

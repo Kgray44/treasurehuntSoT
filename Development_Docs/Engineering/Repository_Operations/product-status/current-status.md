@@ -16,8 +16,10 @@ idle/standby recovery and selected iOS permission/geofence cases pass with exact
 source and cleanup receipts. The actual Android WebView Device controls and paired
 Journal development cases pass. Normal iOS Devices proof requires canonical
 Darwin process-supervision support; broader rendered consumer acceptance remains
-pending. The current planner confirms 170 affected surfaces and 104
-missing registrations. Reach diagnostics are accepted on main; Crossdeck #721
+pending. The resource checkpoint confirms 171 affected surfaces and 92
+missing registrations. Four natural consumer variants pass at their recorded
+source; independent rendered review requires a Passport heading contrast repair.
+Reach diagnostics are accepted on main; Crossdeck #721
 is still unmerged. The following R1 accounting and older qualification results
 retain their historical source identities.
 

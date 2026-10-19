@@ -1453,6 +1453,9 @@ html[data-voyage-theme="light"] .button--quiet {
 .passport-intro p {
   color: #29332d;
 }
+.passport-intro h2 {
+  color: inherit;
+}
 
 .passport-intro .personal-harbor__eyebrow {
   color: #5f4214;

@@ -2,6 +2,7 @@
 /Development_Docs/Engineering/Sextant/evidence/20261019-virtual/** -text -whitespace
 /Development_Docs/Engineering/Sextant/evidence/20261019-product/** -text -whitespace
 /Development_Docs/Engineering/Sextant/phase4-source-reconciliation-passport-20261019.json -text -whitespace
+/Development_Docs/Engineering/Sextant/phase4-source-reconciliation-resources-20261019.json -text -whitespace
 *.cmd text eol=crlf
 # Preserve immutable synthetic evaluation archive bytes across Windows checkouts.
 Development_Docs/Projects/Project_Parallax/evidence/owner-refinements/model-comparison/*.json.txt -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

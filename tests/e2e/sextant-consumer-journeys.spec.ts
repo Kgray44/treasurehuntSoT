@@ -86,6 +86,9 @@ for (const viewport of [
         passportTimings.overview = (await page.evaluate(() => performance.now())) - passportStart;
         expect(passportTimings.overview).toBeLessThanOrEqual(3000);
         expect((await new AxeBuilder({ page }).include(".passport-shell").analyze()).violations).toEqual([]);
+        const introHeading = page.getByRole("heading", { name: "A record you can return to", exact: true });
+        await introHeading.scrollIntoViewIfNeeded();
+        await expect(introHeading).toBeInViewport();
         await page.screenshot({ path: info.outputPath("passport-overview.png") });
         for (const [label, title, outcome] of [
           ["Your Voyages", "Your Voyages", "Your private shelf"],
