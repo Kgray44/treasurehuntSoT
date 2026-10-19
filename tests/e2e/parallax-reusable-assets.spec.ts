@@ -75,7 +75,8 @@ test("Creator saves and reuses a versioned object, edits only its instance, relo
   await expect(thumbnail.locator("rect")).toHaveCount(asset.draft.content.entities.length + 1);
   await mkdir(root, { recursive: true });
   await page.screenshot({ path: `${root}/library-object-definition.png` });
-  await page.getByRole("button", { name: "Save as new…", exact: true }).click();
+  const header = page.getByRole("heading", { name: "Parallax", exact: true }).locator("..").locator("..");
+  await header.getByRole("button", { name: "Save as new…", exact: true }).click();
   const copy = page.getByRole("dialog", { name: "Save as new definition", exact: true });
   await copy.getByLabel("Name", { exact: true }).fill("Compass source scene copy");
   await copy.getByRole("button", { name: "Create independent definition", exact: true }).click();

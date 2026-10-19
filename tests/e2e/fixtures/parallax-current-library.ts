@@ -69,7 +69,10 @@ export async function openCurrentScenePublication(page: Page) {
 
 /** Persist through the working-draft command without creating Library membership. */
 export async function saveCurrentWorkingDraft(page: Page) {
-  await page.getByRole("heading", { name: "Parallax", exact: true }).click({ button: "right" });
+  const heading = page.getByRole("heading", { name: "Parallax", exact: true });
+  const header = heading.locator("..").locator("..");
+  await expect(header.getByRole("button", { name: "Save to Library", exact: true })).toBeEnabled();
+  await heading.click({ button: "right" });
   const save = page.getByRole("menuitem", { name: "Save draft", exact: true });
   await expect(save).toBeVisible();
   await save.click();
