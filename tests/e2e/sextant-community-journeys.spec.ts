@@ -1,5 +1,5 @@
 // @sounding-line-registration owner=project-sextant suite=browser.sextant contracts=sextant.shared-consumers.public-community
-import { test, expect } from "@playwright/test";
+import { test, expect, type Request as BrowserRequest, type Response as BrowserResponse } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { writeFile } from "node:fs/promises";
 import { db } from "../../src/lib/db";
@@ -139,6 +139,91 @@ for (const viewport of [
             );
           };
           await observeGuide("before-click");
+          const guidePath = "/community/guides/reading-the-weathered-chart";
+          let guideRequests = 0,
+            guideResponses = 0;
+          const onGuideRequest = (request: BrowserRequest) => {
+            if (new URL(request.url()).pathname !== guidePath || guideRequests++ >= 12) return;
+            console.log(
+              "SEXTANT_GUIDE_REQUEST",
+              JSON.stringify({ count: guideRequests, navigation: request.isNavigationRequest() }),
+            );
+          };
+          const onGuideResponse = (response: BrowserResponse) => {
+            if (new URL(response.url()).pathname !== guidePath || guideResponses++ >= 12) return;
+            console.log("SEXTANT_GUIDE_RESPONSE", JSON.stringify({ count: guideResponses, status: response.status() }));
+          };
+          if (detail.district === "Guides") {
+            page.on("request", onGuideRequest);
+            page.on("response", onGuideResponse);
+            await detailLink
+              .evaluate((expected, expectedPath) => {
+                const owned = window as Window & { __sextantPhase4GuideObserver?: () => void };
+                if (owned.__sextantPhase4GuideObserver) return;
+                let count = 0;
+                const observe = (event: Event, phase: string) => {
+                  if (count++ >= 12) return;
+                  try {
+                    const target = event.target instanceof Element ? event.target : null;
+                    const anchor = target?.closest("a");
+                    const href = anchor ? new URL(anchor.href).pathname : "";
+                    const box = expected.getBoundingClientRect();
+                    const layer = expected.closest("[data-route-layer]");
+                    console.log(
+                      "SEXTANT_GUIDE_POINTER",
+                      JSON.stringify({
+                        event: event.type,
+                        phase,
+                        trusted: event.isTrusted,
+                        prevented: event.defaultPrevented,
+                        targetTag: target?.tagName ?? "NONE",
+                        anchor:
+                          href === expectedPath
+                            ? "EXPECTED_GUIDE"
+                            : href === "/community/guides"
+                              ? "CURRENT_GUIDES"
+                              : href.startsWith("/community")
+                                ? "OTHER_PUBLIC"
+                                : "NONE",
+                        pathname: location.pathname.startsWith("/community") ? location.pathname : "OUTSIDE_COMMUNITY",
+                        scrollY: Math.round(scrollY),
+                        expectedRect: box
+                          ? {
+                              x: Math.round(box.x),
+                              y: Math.round(box.y),
+                              width: Math.round(box.width),
+                              height: Math.round(box.height),
+                            }
+                          : null,
+                        expectedConnected: Boolean(expected?.isConnected),
+                        expectedInactive: Boolean(expected?.closest('[inert], [aria-hidden="true"]')),
+                        routeRole: layer?.getAttribute("data-route-role"),
+                        generation: layer?.getAttribute("data-route-generation"),
+                        transition: document
+                          .querySelector(".product-route-transition")
+                          ?.getAttribute("data-route-state"),
+                      }),
+                    );
+                  } catch {
+                    /* Observation never controls the action or primary error. */
+                  }
+                };
+                const capture = (event: Event) => observe(event, "capture");
+                const bubble = (event: Event) => observe(event, "bubble");
+                for (const type of ["pointerdown", "pointerup", "click"]) {
+                  document.addEventListener(type, capture, { capture: true, passive: true });
+                  document.addEventListener(type, bubble, { passive: true });
+                }
+                owned.__sextantPhase4GuideObserver = () => {
+                  for (const type of ["pointerdown", "pointerup", "click"]) {
+                    document.removeEventListener(type, capture, true);
+                    document.removeEventListener(type, bubble);
+                  }
+                  delete owned.__sextantPhase4GuideObserver;
+                };
+              }, guidePath)
+              .catch(() => console.warn("SEXTANT_GUIDE_POINTER_OBSERVATION_UNAVAILABLE"));
+          }
           try {
             await measure(
               `${detail.card} detail`,
@@ -151,6 +236,20 @@ for (const viewport of [
           } catch (error) {
             await observeGuide("failed").catch(() => console.warn("SEXTANT_GUIDE_FAILURE_OBSERVATION_UNAVAILABLE"));
             throw error;
+          } finally {
+            if (detail.district === "Guides") {
+              page.off("request", onGuideRequest);
+              page.off("response", onGuideResponse);
+              console.log(
+                "SEXTANT_GUIDE_NETWORK_SUMMARY",
+                JSON.stringify({ requests: guideRequests, responses: guideResponses }),
+              );
+              await page
+                .evaluate(() => {
+                  (window as Window & { __sextantPhase4GuideObserver?: () => void }).__sextantPhase4GuideObserver?.();
+                })
+                .catch(() => console.warn("SEXTANT_GUIDE_POINTER_CLEANUP_UNAVAILABLE"));
+            }
           }
           await observeGuide("ready");
           if (detail.card === "The Lantern Coast") {

@@ -292,3 +292,12 @@ snapshot. Scope the same toolbar geometry assertion and More menu lookup to
 the accessible current main task. Preserve both containers, the original failed
 receipt, all geometry/hit-test/content assertions and every timing bound. This
 selector correction does not change product motion or infer rendered acceptance.
+
+The unresolved390-normal Guide activation now needs bounded native pointer and
+network observations. Around only the unchanged Guide action, passive document
+capture/bubble listeners record at most12 event summaries: tag/anchor class,
+trust/default prevention, synthetic route phase/generation, expected link rect
+and scroll position. Exact Guide-path requests/responses log at most12 summaries
+each without queries, headers or bodies. Remove listeners in finally; observation
+and cleanup failures must never replace the original test error. No retry, forced
+click, new wait, motion change, timeout increase or product cause is inferred.
