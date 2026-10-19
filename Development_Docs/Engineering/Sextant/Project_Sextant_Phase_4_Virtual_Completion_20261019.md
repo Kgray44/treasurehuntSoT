@@ -83,3 +83,18 @@ on local Node 24.18.0/npm 11.9.0. Hosted native jobs use repository-pinned Node
 24.19.0; local feedback is not proof of that hosted toolchain or native execution.
 The Feature Catalog decision is NO CHANGE REQUIRED: these are corrections to an
 unaccepted candidate, not a completed major capability.
+
+Independent re-review found two further source gaps. Pending native cleanup is
+now shared by every stop caller and awaited before successor acquisition; the
+broker rejects callbacks from a superseded active generation. The declaration
+cache now refreshes on native nearby/permission/termination transitions using a
+single coherent snapshot. Three additional regressions failed before these
+repairs and pass afterward. The passive state subscription remains until runtime
+disposal; actual sensor subscriptions end with the final acquisition.
+
+All 53 deterministic D0/D1 scenarios passed at clean source
+`a1c465ba79f6779c33b96d635486e1805b8fb526`. Android run `39301316984` and iOS run
+`39301326349` bind that source, not the later cleanup/cache corrections. Their
+native input blobs are unchanged by those subsequent TypeScript fixes; their
+receipts must nevertheless retain their original full-source identity. They
+remain development evidence, not final combined-candidate qualification.

@@ -227,6 +227,7 @@ export class SextantLeaseBroker {
             updateClass,
             emit: (sample) => this.sample(active, sample),
             fail: (interruption) => {
+              if (this.active.get(id) !== active || active.controller.signal.aborted) return;
               if (!interruption) this.failed.add(id);
               active.controller.abort();
               void this.cancelWhere(

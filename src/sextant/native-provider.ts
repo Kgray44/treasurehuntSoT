@@ -111,6 +111,7 @@ export class NativeSensorProvider implements SextantProvider {
   private fail: (() => void) | null = null;
   private clockAnchor: { nativeAt: number; localAt: number; uncertaintyMs: number } | null = null;
   private disposed = false;
+  private stopping: Promise<void> | null = null;
   constructor(
     private readonly transport: SextantNativeTransport,
     family: NativeSensorFamily,
@@ -135,8 +136,8 @@ export class NativeSensorProvider implements SextantProvider {
       simulationSupport: Boolean(simulationIdentity),
     };
   }
-  async refresh() {
-    const reply = nativeCapabilitySnapshotSchema.parse(await this.transport.request("SEXTANT_STATE"));
+  async refresh(snapshot?: z.infer<typeof nativeCapabilitySnapshotSchema>) {
+    const reply = snapshot ?? nativeCapabilitySnapshotSchema.parse(await this.transport.request("SEXTANT_STATE"));
     const states: Record<string, CapabilityState> = {};
     for (const capability of this.definition.capabilities)
       states[capability] = reply.states[capability] ?? { ...unknownState(), support: "UNSUPPORTED" };
@@ -156,6 +157,7 @@ export class NativeSensorProvider implements SextantProvider {
     emit: (sample: ProviderSample) => void;
     fail: (interruption?: "EXPIRED" | "BACKGROUND" | "POWER" | "PERMISSION") => void;
   }) {
+    if (this.stopping) await this.stopping;
     if (this.disposed || this.leaseId || context.signal.aborted) throw new Error("SEXTANT_NATIVE_START_REFUSED");
     const leaseId = crypto.randomUUID();
     this.leaseId = leaseId;
@@ -241,7 +243,8 @@ export class NativeSensorProvider implements SextantProvider {
       );
       const received = this.now();
       if (this.leaseId !== leaseId || context.signal.aborted) {
-        await this.transport.request("SEXTANT_STOP", { leaseId });
+        const stopped = await this.transport.request("SEXTANT_STOP", { leaseId });
+        if ((stopped as { accepted?: unknown })?.accepted !== true) throw new Error("SEXTANT_NATIVE_CLEANUP_FAILED");
         return;
       }
       if (
@@ -261,7 +264,7 @@ export class NativeSensorProvider implements SextantProvider {
       void this.wallNow;
       this.generation = reply.generation;
     } catch (error) {
-      await this.stop();
+      if (this.leaseId === leaseId) await this.stop();
       throw error;
     }
   }
@@ -287,7 +290,8 @@ export class NativeSensorProvider implements SextantProvider {
           if (this.leaseId === leaseId && this.generation === generation) fail?.();
         });
   }
-  async stop() {
+  stop(): Promise<void> {
+    if (this.stopping) return this.stopping;
     const leaseId = this.leaseId;
     this.leaseId = this.generation = null;
     this.clockAnchor = null;
@@ -297,10 +301,17 @@ export class NativeSensorProvider implements SextantProvider {
     this.abortDetach = null;
     this.lastCapture.clear();
     for (const state of Object.values(this.states)) state.freshness = "STALE";
-    if (leaseId) {
-      const reply = await this.transport.request("SEXTANT_STOP", { leaseId });
+    if (!leaseId) return Promise.resolve();
+    const pending = this.transport.request("SEXTANT_STOP", { leaseId }).then((reply) => {
       if ((reply as { accepted?: unknown })?.accepted !== true) throw new Error("SEXTANT_NATIVE_CLEANUP_FAILED");
-    }
+    });
+    this.stopping = pending;
+    void pending
+      .finally(() => {
+        if (this.stopping === pending) this.stopping = null;
+      })
+      .catch(() => {});
+    return pending;
   }
   async dispose() {
     this.disposed = true;

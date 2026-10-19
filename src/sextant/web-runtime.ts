@@ -41,6 +41,7 @@ export class WebSextantRuntime {
   private readonly nativeTransport: import("./native-provider").SextantNativeTransport | null;
   readonly ready: Promise<void>;
   private nativeDeclarations: Record<string, CapabilityState> = {};
+  private nativeRefreshGeneration = 0;
   private foreground = true;
   private criticalPower = false;
   constructor(
@@ -151,6 +152,7 @@ export class WebSextantRuntime {
       target?.removeEventListener("pageshow", pageshow);
       detachNativeLifecycle();
       detachNativePower();
+      detachNativeCapabilities();
     };
     const detachNativeLifecycle = this.nativeTransport
       ? subscribeLandfallNativeLifecycle((state) => {
@@ -175,6 +177,16 @@ export class WebSextantRuntime {
             .catch(() => this.notify());
         })
       : () => {};
+    const detachNativeCapabilities =
+      this.nativeTransport?.subscribe((input) => {
+        if (this.disposed || !input || typeof input !== "object") return;
+        const type = (input as { type?: unknown }).type;
+        if (!["nearby-state", "ble-ended", "interaction-ended", "permission", "sextant-ended"].includes(String(type)))
+          return;
+        void this.refreshNative()
+          .then(() => this.notify())
+          .catch(() => this.notify());
+      }) ?? (() => {});
     this.detachPermission = this.permissions.onChange(() => this.notify());
     if (target?.document?.visibilityState === "hidden") visibility(new Event("visibilitychange"));
   }
@@ -188,10 +200,12 @@ export class WebSextantRuntime {
     }
   }
   private async refreshNative() {
-    if (!this.nativeTransport) return;
-    await Promise.all(this.nativeProviders.map((provider) => provider.refresh()));
+    if (!this.nativeTransport || this.disposed) return;
+    const generation = ++this.nativeRefreshGeneration;
     const snapshot = nativeCapabilitySnapshotSchema.parse(await this.nativeTransport.request("SEXTANT_STATE"));
-    if (this.disposed) return;
+    if (this.disposed || generation !== this.nativeRefreshGeneration) return;
+    await Promise.all(this.nativeProviders.map((provider) => provider.refresh(snapshot)));
+    if (this.disposed || generation !== this.nativeRefreshGeneration) return;
     this.nativeDeclarations = Object.fromEntries(
       Object.entries(snapshot.states).filter(([id]) => this.capabilities.list().some((c) => c.id === id)),
     );

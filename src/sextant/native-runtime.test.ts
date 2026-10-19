@@ -131,6 +131,101 @@ describe("production runtime selection over companion transport", () => {
       await f.runtime.dispose();
     }
   });
+  it.each(["accepted", "rejected"])(
+    "waits for the original native cleanup acknowledgement (%s) before successor acquisition",
+    async (outcome) => {
+      const f = positionRuntime(),
+        original = f.request.getMockImplementation()!;
+      let finish!: (value: unknown) => void, reject!: (reason: Error) => void;
+      let firstStop = true;
+      f.request.mockImplementation((operation, payload) => {
+        if (operation === "SEXTANT_STOP" && firstStop) {
+          firstStop = false;
+          return new Promise((yes, no) => {
+            finish = yes;
+            reject = no;
+          });
+        }
+        return original(operation, payload);
+      });
+      try {
+        await f.acquire();
+        const [leaseId, generation] = [...f.active][0];
+        for (const listener of [...f.listeners])
+          listener({ type: "sextant-ended", leaseId, generation, reason: "EXPIRED" });
+        let settled = false;
+        const next = f.acquire().then(
+          () => {
+            settled = true;
+            return "STARTED";
+          },
+          () => {
+            settled = true;
+            return "REFUSED";
+          },
+        );
+        await vi.waitFor(() => expect(finish).toBeDefined());
+        await new Promise<void>((resolve) => setImmediate(resolve));
+        expect(settled).toBe(false);
+        expect(f.request.mock.calls.filter(([op]) => op === "SEXTANT_START")).toHaveLength(1);
+        if (outcome === "accepted") {
+          f.active.delete(leaseId);
+          finish({ accepted: true });
+        } else reject(new Error("Scoped cleanup failed"));
+        expect(await next).toBe(outcome === "accepted" ? "STARTED" : "REFUSED");
+        expect(f.runtime.leases.diagnostics().failedProviders).toBe(outcome === "accepted" ? 0 : 1);
+      } finally {
+        finish?.({ accepted: true });
+        await f.runtime.dispose();
+      }
+    },
+  );
+  it("refreshes native capability availability after a nearby state transition without acquiring sensors", async () => {
+    const f = positionRuntime(),
+      original = f.request.getMockImplementation()!;
+    let ready = false;
+    f.request.mockImplementation(async (operation, payload) => {
+      const reply = await original(operation, payload);
+      if (operation === "SEXTANT_STATE")
+        return {
+          ...(reply as object),
+          states: {
+            ...(reply as { states: Record<string, unknown> }).states,
+            "sextant.nearby.uwb.range": {
+              ...unknownState(),
+              support: "SUPPORTED",
+              permission: "GRANTED",
+              availability: ready ? "AVAILABLE" : "TEMPORARILY_UNAVAILABLE",
+            },
+          },
+        };
+      return reply;
+    });
+    try {
+      await f.runtime.ready;
+      // Refresh through an explicit contextual action so the initial transport
+      // snapshot includes the radio declaration installed by this fixture.
+      await f.runtime.enable(
+        {
+          consumerId: "devices",
+          surfaceId: "phone",
+          purpose: "Inspect available device input",
+          consent: true,
+          userInitiated: true,
+        },
+        "sextant.position.observation",
+      );
+      expect(f.runtime.projectCapability("sextant.nearby.uwb.range").availability).toBe("TEMPORARILY_UNAVAILABLE");
+      ready = true;
+      for (const listener of [...f.listeners]) listener({ type: "nearby-state", family: "UWB", state: "READY" });
+      await vi.waitFor(() =>
+        expect(f.runtime.projectCapability("sextant.nearby.uwb.range").availability).toBe("AVAILABLE"),
+      );
+      expect(f.request.mock.calls.some(([op]) => op === "SEXTANT_START")).toBe(false);
+    } finally {
+      await f.runtime.dispose();
+    }
+  });
   it.each(["EXPIRED", "PERMISSION", "BACKGROUND", "POWER"])(
     "allows a fresh explicit acquisition after native %s without restoring the ended lease",
     async (reason) => {
@@ -336,9 +431,11 @@ describe("production runtime selection over companion transport", () => {
     expect(b.filter((e) => e.type === "OBSERVATION")).toHaveLength(2);
     await second.release();
     expect(active.size).toBe(0);
-    expect(listeners.size).toBe(0);
+    // The runtime retains only its passive capability-state subscription.
+    expect(listeners.size).toBe(1);
     await runtime.dispose();
     expect(active.size).toBe(0);
+    expect(listeners.size).toBe(0);
   });
   it("does not prompt or start when the consumer declines purpose consent", async () => {
     const request = vi.fn<(operation: SextantNativeOperation) => Promise<unknown>>(async () => ({
