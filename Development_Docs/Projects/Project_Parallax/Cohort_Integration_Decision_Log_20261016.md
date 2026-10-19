@@ -3,7 +3,7 @@ title: Spatial cohort integration decision log
 audience: engineering
 status: in-progress
 canonical_for: parallax-cohort-preparation-20261016
-last_reviewed: 2026-10-17
+last_reviewed: 2026-10-19
 ---
 
 # Spatial cohort integration decision log
@@ -223,3 +223,42 @@ protected capture/qualification and mainline reconciliation/merge remain held
 behind #721's accepted landing. The cloud owner retains sole Crossdeck/systemic
 execution. Actual Safari calibration and admitted planes remain UNQUALIFIED;
 no paid call, private-state copying or shared phone runtime change occurs.
+
+## R20 infrastructure intake only, 2026-10-19
+
+The coordinator reports protected/landed R20 PR #775 at main
+`40491dd68ace88ee033b53fd264ddbfe303c6d28`, tree
+`026ac51825b5ef5c9620fda6b50fe6f6246a6470`, with Ubuntu run `39314777034`,
+743/743 regressions and 13/13 rendered fixtures. Root independently verifies
+the merged PR identity and exact Git commit/tree; the run outcomes remain the
+coordinator's upstream report, not new Parallax qualification.
+
+The [static intake](evidence/cohort-preparation-20261016/r20-infrastructure-intake-20261019.original.json)
+compares root `c293af18d56e7bf29c02a7667b23d9a3fe658646` against only the R20
+infrastructure delta. Its three overlapping paths are `.agents/README.md`,
+`Development_Docs/document-index.json` and the Ledgerlight documentation matrix.
+They require navigation preservation/index regeneration during later accepted-
+base reconciliation; this is not a simulated or proven clean merge. No direct
+product overlap or concurrently changed contract entry is identified in this
+bounded check. No material dependency conflict is reported from this slice.
+
+The intake also fingerprints the approved three-clause metadata without applying
+it. Those design-target fields are absent from both this historical #722 source
+and the infrastructure-only #775 tree; the companion and mobile contract IDs
+are not present there either. The raw record marks these as pending dependency
+intake, not as approved clauses already installed or a failed product admission.
+Only the eventual accepted #721 source can supply that product/contract handoff.
+
+Read-only #721 remains open/draft at `b55f5a32b7a6c42ba309db756f944e50145de123`,
+with no merged date or merge commit. The existing cloud owner must adopt the
+approved isolated three-clause contract input on the accepted infrastructure,
+then own the fresh capture/review/current technical qualification, protected
+landing and landed proof. #775 is not #721 product acceptance. Root keeps #722
+protected capture/qualification/merge and conflicting Crossdeck edits held
+until the actual accepted #721 tuple is supplied and verified.
+
+The owned D checkout is retained. No source import, merge/rebase, main move,
+workflow execution, R19 reuse bridge, counter refund/reset, new product task,
+paid call or private/shared runtime change occurs. Earlier local #722 receipts
+remain attributed to their original sources. Current checks are documentation/
+catalog validation only, not a new browser or physical-AR result.

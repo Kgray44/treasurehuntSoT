@@ -1,0 +1,122 @@
+{
+  "kind": "STATIC_DEPENDENCY_INTAKE_ONLY",
+  "generatedAt": "2026-10-19T20:22:53.485Z",
+  "head": "c293af18d56e7bf29c02a7667b23d9a3fe658646",
+  "base": "aaef39a57d2c89ca57136dce327d337c5cb0ef7f",
+  "accepted": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
+  "acceptedTree": "026ac51825b5ef5c9620fda6b50fe6f6246a6470",
+  "scope": "Exact R20 infrastructure paths, shared contract changes and approved three-clause preimages; no merge simulation or product acceptance",
+  "r20ChangedPaths": [
+    ".agents/README.md",
+    ".agents/crossdeck-r20-acceptance-boundary.md",
+    "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
+    "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-acceptance-boundary-20261019-r20/adjudication.json",
+    "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-acceptance-boundary-20261019-r20/causal-disposition.md",
+    "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-acceptance-boundary-20261019-r20/historical-ledger.json",
+    "Development_Docs/Projects/Project_Homeport/Homeport_Nonconformity_Ledger.csv",
+    "Development_Docs/Projects/Voyagewright_Refit_V1/README.md",
+    "Development_Docs/Projects/Voyagewright_Refit_V1/player-journal-crossdeck/design-packet.md",
+    "Development_Docs/Projects/Voyagewright_Refit_V1/refit-registry.json",
+    "Development_Docs/Testing/Product_Experience/README.md",
+    "Development_Docs/document-index.json",
+    "scripts/sounding-line/experience-current-admission.mjs",
+    "scripts/sounding-line/experience-current-r20.mjs",
+    "scripts/sounding-line/experience-exception.mjs",
+    "scripts/sounding-line/experience-scope-adjudication.mjs",
+    "scripts/sounding-line/product-experience.mjs",
+    "testing/product-experience-exceptions.json",
+    "tests/sounding-line/experience-current-admission.test.mjs",
+    "tests/sounding-line/experience-current-r20.test.mjs",
+    "tests/sounding-line/experience-exception.test.mjs",
+    "tests/sounding-line/product-experience.test.mjs"
+  ],
+  "rootChangedPathCount": 9610,
+  "r20Overlaps": [
+    {
+      "file": ".agents/README.md",
+      "base": "af0467d73e91304ef50790e5d51c2ca86aa1efeb",
+      "candidate": "149fb40e93f7c2261b8ad51c915619f33ba2f2d7",
+      "accepted": "5cdbb949ee38347052ecf430e4aa683a87600cf8",
+      "disposition": "DIFFERENT_BLOBS_STATIC_RECONCILIATION_REQUIRED"
+    },
+    {
+      "file": "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
+      "base": "38f87891a6ca39ae2d7a1c93659af136224fca9a",
+      "candidate": "5b078ad18aa76e21a63643208e56e8d953994a2c",
+      "accepted": "2ada27a9f449a9365528d47bfd9fcb2b3e207de0",
+      "disposition": "DIFFERENT_BLOBS_STATIC_RECONCILIATION_REQUIRED"
+    },
+    {
+      "file": "Development_Docs/document-index.json",
+      "base": "f5821cae98c2f6ea3c6fcd2241f0cfa09880d441",
+      "candidate": "65e97232ff11fd4285001b833178f8db4cc94300",
+      "accepted": "7dd49cc527ac17e092b1674788f7d1989ba3fc77",
+      "disposition": "DIFFERENT_BLOBS_STATIC_RECONCILIATION_REQUIRED"
+    }
+  ],
+  "sharedContractChanges": [],
+  "approvedClauseIntake": [
+    {
+      "contractId": "crossdeck.phase2.continuity",
+      "candidateHasContract": true,
+      "candidateHasDesignTarget": false,
+      "acceptedInfrastructureHasContract": true,
+      "acceptedInfrastructureHasDesignTarget": false,
+      "candidateDesignTargetSha256": null,
+      "approvedOriginalSha256": "16afde93c5e3988fdd6fbbc63ea2d672903d3b375e2a9ffce1b41d37c6e62dad",
+      "approvedNewSha256": "b6492439c816643dfaff97c5e69232cea157db9abc32d943f5ee323349154a20",
+      "candidateMatchesApprovedOriginal": null,
+      "candidateMatchesApprovedNew": null,
+      "acceptedInfrastructureMatchesApprovedOriginal": null,
+      "acceptedInfrastructureMatchesApprovedNew": null,
+      "disposition": "NO_EXISTING_CANDIDATE_TARGET_PENDING_DEPENDENCY_INTAKE"
+    },
+    {
+      "contractId": "crossdeck.refit.companion",
+      "candidateHasContract": false,
+      "candidateHasDesignTarget": false,
+      "acceptedInfrastructureHasContract": false,
+      "acceptedInfrastructureHasDesignTarget": false,
+      "candidateDesignTargetSha256": null,
+      "approvedOriginalSha256": "e757817997c10037448d02a095ac920e9cff990bcc5adad08305defb99fd0cd2",
+      "approvedNewSha256": "c504452b5f66d9854af556ff47b4ab20e6d04b1d797a0eb001ef105622546ef1",
+      "candidateMatchesApprovedOriginal": null,
+      "candidateMatchesApprovedNew": null,
+      "acceptedInfrastructureMatchesApprovedOriginal": null,
+      "acceptedInfrastructureMatchesApprovedNew": null,
+      "disposition": "NO_EXISTING_CANDIDATE_TARGET_PENDING_DEPENDENCY_INTAKE"
+    },
+    {
+      "contractId": "homeport.shell.crossdeck-companion-mobile",
+      "candidateHasContract": false,
+      "candidateHasDesignTarget": false,
+      "acceptedInfrastructureHasContract": false,
+      "acceptedInfrastructureHasDesignTarget": false,
+      "candidateDesignTargetSha256": null,
+      "approvedOriginalSha256": "9ebf41bbdc869b888d36d83156eb6b255e562a276a171014d1fe54f675348594",
+      "approvedNewSha256": "53ed282069ed9728577edaaf5c3c20800b228f22b32bdb0b151ca55350b0e6ee",
+      "candidateMatchesApprovedOriginal": null,
+      "candidateMatchesApprovedNew": null,
+      "acceptedInfrastructureMatchesApprovedOriginal": null,
+      "acceptedInfrastructureMatchesApprovedNew": null,
+      "disposition": "NO_EXISTING_CANDIDATE_TARGET_PENDING_DEPENDENCY_INTAKE"
+    }
+  ],
+  "adjudicationTopKeys": [
+    "classification",
+    "scope",
+    "approvalReadback",
+    "frozenContractInput",
+    "retainedR19",
+    "independentForensicAudit",
+    "requiredOrder",
+    "consumerOwnerChat",
+    "maintenanceCaptureOrCustodyDispatch",
+    "productRuntimeChanged",
+    "refitOwnerAcceptance"
+  ],
+  "qualified": false,
+  "merged": false,
+  "sourceModified": false,
+  "priorEvidenceRebound": false
+}
