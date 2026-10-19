@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "candidateSha": "e49241ca31989ed1678e1bacea14469f8a35d525",
+  "target": "sextant-community",
+  "tier": "development",
+  "profiles": {
+    "android": [
+      {
+        "profile": "primary-phone",
+        "api": 36,
+        "device": "pixel_7",
+        "ram": "3072M",
+        "memory": 3072,
+        "lowRam": ""
+      }
+    ],
+    "apple": [
+      "primary-phone"
+    ]
+  },
+  "scenarios": {
+    "appleDevices": [],
+    "browser": [
+      "sextant-community-journeys"
+    ],
+    "journal": [],
+    "background": [],
+    "radio": "uwb-native-peer-session,ble-native-generic-discovery,ble-native-ibeacon-discovery,ble-native-eddystone-uid-discovery",
+    "ios": "permission-denied-native,permission-revoked-mid-route,gps-perfect-walk,offline-native-canonical-reconcile,offline-lost-response-canonical-reconcile,offline-restart-canonical-reconcile,virtual-player-navigation,virtual-offline-canonical-reconcile,geofence-native-background-wake",
+    "android": "device-reboot,qr-native-camera-valid,permission-denied-native,permission-approximate-native,permission-revoked-mid-route,motion-walk,stationary,barometer-floor-change,orientation-turn,heading-turn,gps-perfect-walk,offline-native-canonical-reconcile,offline-lost-response-canonical-reconcile,offline-restart-canonical-reconcile,virtual-player-navigation,virtual-offline-canonical-reconcile,battery-normal,battery-low,battery-saver,charger-change",
+    "provider": "all"
+  },
+  "transportSha": "0688af611043e9cfe75f890d7bd87f7c9901b7de",
+  "transportTree": "95d7ea0381df59ee8dc3590d5313b90d12c04932",
+  "branch": "codex/landfall-lab-e49241ca3198-1792447864134",
+  "workflow": "landfall-device-lab.yml",
+  "createdAt": "2026-10-19T22:11:06.561Z",
+  "cleanup": "PASS",
+  "runId": "39333117664",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39333117664",
+  "harvested": "C:\\Users\\kkids\\.codex\\worktrees\\sextant-phase4-lab-completion\\Codex_TreasureHunt\\artifacts\\landfall-device-lab\\hosted-e49241ca3198-1792447864134\\run-39333117664"
+}

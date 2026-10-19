@@ -6,7 +6,7 @@
   "status": "IN_PROGRESS",
   "initialCandidate": "5ff2739776513b8f8ed20c1cb661c164216d0eeb",
   "protectedBase": "f6af0b0e151f15f1a23808413ccee531b9827ca7",
-  "currentSoftwareCandidate": "e49241ca31989ed1678e1bacea14469f8a35d525",
+  "currentSoftwareCandidate": "637f5de345142b67fe8e77055e7384f22bc74609",
   "pr": "https://github.com/Kgray44/treasurehuntSoT/pull/709",
   "independentSourceReview": {
     "reviewerContext": "/root/sextant_source_review",
@@ -118,6 +118,13 @@
       "disposition": "SOURCE_CLEAR_WITH_SEPARATE_UNCONFIRMED_MOBILE_GUIDE_FAILURE",
       "reviewerRanTests": false,
       "scope": "SOURCE_ONLY_FRESH_EXECUTION_PENDING"
+    },
+    "authoringDrawerContinuation": {
+      "source": "637f5de345142b67fe8e77055e7384f22bc74609",
+      "reviewer": "/root/sextant_source_review",
+      "disposition": "SOURCE_CLEAR_ORDINARY_OPEN_CLOSE_NO_ASSERTION_WEAKENING",
+      "reviewerRanTests": false,
+      "scope": "SOURCE_ONLY_FRESH_EXECUTION_PENDING"
     }
   },
   "localChecks": {
@@ -184,6 +191,12 @@
       },
       "typescript": "PASS",
       "independentSourceReview": "CLEAR",
+      "docsValidate": "PASS",
+      "featureCatalog": "NO_CHANGE_REQUIRED"
+    },
+    "authoringDrawer": {
+      "source": "637f5de345142b67fe8e77055e7384f22bc74609",
+      "typescript": "PASS",
       "docsValidate": "PASS",
       "featureCatalog": "NO_CHANGE_REQUIRED"
     }
@@ -626,9 +639,21 @@
       "sourceSha": "0e657cc757933df775fd6047bda13a1f489e7ff0",
       "transportSha": "d3aaa2fc2819a8a144cec72ec6d8a5fc7c49b9e5",
       "runId": "39332800305",
-      "status": "DISPATCHED_NO_OUTCOME_CLAIMED",
+      "status": "HARVESTED_FAILURE_FOUR_VARIANTS_TEST_EXPECTED_CLOSED_DRAWER_VISIBLE",
       "qualification": false,
-      "scope": "Six actual Creator authoring panes with existing owned fixture; empty libraries/chart, loaded Drydock assessments and immutable Version review; no uploads, world creation, Sea Trial run or publication"
+      "scope": "Six actual Creator authoring panes with existing owned fixture; empty libraries/chart, loaded Drydock assessments and immutable Version review; no uploads, world creation, Sea Trial run or publication",
+      "artifacts": 4,
+      "productionBuild": "PASS",
+      "cleanup": "RUNTIME_TREES_PORTS_AND_TRANSPORT_PASS",
+      "diagnostics": {
+        "retention": "COMPLETE",
+        "issues": [],
+        "memberCount": 17,
+        "rawBytes": 20930133,
+        "ciphertextBytes": 37222050,
+        "fixedBudgetUnchanged": true,
+        "encryptedOriginalRetainedInOwnedArtifacts": true
+      }
     },
     {
       "platform": "CHROMIUM",
@@ -636,9 +661,32 @@
       "sourceSha": "e49241ca31989ed1678e1bacea14469f8a35d525",
       "transportSha": "0688af611043e9cfe75f890d7bd87f7c9901b7de",
       "runId": "39333117664",
+      "status": "HARVESTED_FAILURE_THREE_VARIANTS_PASS_ONE_390_NORMAL_GUIDE_HEADING_ABSENT",
+      "qualification": false,
+      "scope": "Corrected clear query/filter drafts against destination URL; all prior Community details/empty search/return assertions retained; prior mobile Guide failure separately unconfirmed",
+      "artifacts": 4,
+      "productionBuild": "PASS",
+      "cleanup": "RUNTIME_TREES_PORTS_AND_TRANSPORT_PASS",
+      "cause": "GUIDE_FAILURE_UNCONFIRMED_NOT_EXPLAINED_BY_CORRECTED_CLEAR",
+      "diagnostics": {
+        "retention": "COMPLETE",
+        "issues": [],
+        "memberCount": 22,
+        "rawBytes": 54917710,
+        "ciphertextBytes": 97647670,
+        "fixedBudgetUnchanged": true,
+        "encryptedOriginalRetainedInOwnedArtifacts": true
+      }
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "637f5de345142b67fe8e77055e7384f22bc74609",
+      "transportSha": "286ee713c1747ef1eabf2656e6e555b135c85323",
+      "runId": "39334344712",
       "status": "DISPATCHED_NO_OUTCOME_CLAIMED",
       "qualification": false,
-      "scope": "Corrected clear query/filter drafts against destination URL; all prior Community details/empty search/return assertions retained; prior mobile Guide failure separately unconfirmed"
+      "scope": "Ordinary Upload media entry, same drawer content/axe/capture/ordinary close/hidden state; all six panes and canonical preservation assertions retained"
     }
   ],
   "experience": {
@@ -653,7 +701,7 @@
     "reachDiagnostics": "PROTECTED_ACCEPTED_ON_BASE",
     "historicalAccounting": "PRESERVED_SEXTANT_3_OF_3_CROSSDECK_10_OF_3_R1_2_OF_3",
     "registeredNewPlayerWorkspaceSurfaces": 2,
-    "remainingSoftware": "63 unregistered affected surfaces at0e657cc757; remaining populated/adverse fixtures and consumer journeys, Community success including unconfirmed mobile Guide failure, authoring resource results, formal reference/layout review, required protected capture/review and final qualification. Independent attainable software remains; paired development proof does not amend the older single-persona contract.",
+    "remainingSoftware": "63 unregistered affected surfaces at0e657cc757; remaining populated/adverse fixtures and consumer journeys, unconfirmed390-normal Community Guide navigation failure, corrected authoring successor results, formal reference/layout review, required protected capture/review and final qualification. Independent attainable software remains; paired development proof does not amend the older single-persona contract.",
     "independentDevelopmentJourneyReview": {
       "source": "0d8b3c7841966a1d1c8b5dae21570b1043dc7915",
       "reviewer": "/root/sextant_source_review",
@@ -768,7 +816,9 @@
     "evidence/20261019-paired-dialog-failure/publication-index.json",
     "evidence/20261019-paired-clue/publication-index.json",
     "evidence/20261019-community-landmark-failure/publication-index.json",
-    "evidence/20261019-community-clear-failure/publication-index.json"
+    "evidence/20261019-community-clear-failure/publication-index.json",
+    "evidence/20261019-authoring-drawer-failure/publication-index.json",
+    "evidence/20261019-community-guide-failure/publication-index.json"
   ],
   "currentProtectedBase": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
   "canonicalHostDependencies": [

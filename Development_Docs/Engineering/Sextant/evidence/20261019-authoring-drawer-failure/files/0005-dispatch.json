@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "candidateSha": "0e657cc757933df775fd6047bda13a1f489e7ff0",
+  "target": "sextant-authoring-resources",
+  "tier": "development",
+  "profiles": {
+    "android": [
+      {
+        "profile": "primary-phone",
+        "api": 36,
+        "device": "pixel_7",
+        "ram": "3072M",
+        "memory": 3072,
+        "lowRam": ""
+      }
+    ],
+    "apple": [
+      "primary-phone"
+    ]
+  },
+  "scenarios": {
+    "appleDevices": [],
+    "browser": [
+      "sextant-authoring-resource-journeys"
+    ],
+    "journal": [],
+    "background": [],
+    "radio": "uwb-native-peer-session,ble-native-generic-discovery,ble-native-ibeacon-discovery,ble-native-eddystone-uid-discovery",
+    "ios": "permission-denied-native,permission-revoked-mid-route,gps-perfect-walk,offline-native-canonical-reconcile,offline-lost-response-canonical-reconcile,offline-restart-canonical-reconcile,virtual-player-navigation,virtual-offline-canonical-reconcile,geofence-native-background-wake",
+    "android": "device-reboot,qr-native-camera-valid,permission-denied-native,permission-approximate-native,permission-revoked-mid-route,motion-walk,stationary,barometer-floor-change,orientation-turn,heading-turn,gps-perfect-walk,offline-native-canonical-reconcile,offline-lost-response-canonical-reconcile,offline-restart-canonical-reconcile,virtual-player-navigation,virtual-offline-canonical-reconcile,battery-normal,battery-low,battery-saver,charger-change",
+    "provider": "all"
+  },
+  "transportSha": "d3aaa2fc2819a8a144cec72ec6d8a5fc7c49b9e5",
+  "transportTree": "8b5d69d02c468cff843a956a9282aa49d5df2577",
+  "branch": "codex/landfall-lab-0e657cc75793-1792447702228",
+  "workflow": "landfall-device-lab.yml",
+  "createdAt": "2026-10-19T22:08:25.739Z",
+  "cleanup": "PASS",
+  "runId": "39332800305",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39332800305",
+  "harvested": "C:\\Users\\kkids\\.codex\\worktrees\\sextant-phase4-lab-completion\\Codex_TreasureHunt\\artifacts\\landfall-device-lab\\hosted-0e657cc75793-1792447702228\\run-39332800305"
+}

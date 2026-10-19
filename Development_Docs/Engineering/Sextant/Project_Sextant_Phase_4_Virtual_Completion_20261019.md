@@ -475,8 +475,14 @@ owned artifacts with exact hashes; the Git indexes explicitly publish metadata/l
 subsets only. No diagnostic budget or collector validation is relaxed.
 The clear action now resets query and advanced drafts against its destination
 URL; the default-to-query-to-clear regression and all six component tests pass.
-Independent source review is clear; run 39333117664 at e49241ca31 is dispatched
-with every original Community assertion retained and no outcome claimed here.
+Independent source review is clear. Run 39333117664 at `e49241ca31` subsequently
+passes three variants, including actual empty search and Clear. The 390-pixel
+normal-motion variant repeats the Guide heading failure; its cause is still
+unconfirmed. The [original receipt/log subset](evidence/20261019-community-guide-failure/publication-index.json)
+records COMPLETE private diagnostics: 22 members, 54917710 raw bytes and 97647670
+encrypted bytes. Runtime trees, ports and transport cleanup pass. This failed
+whole run grants no rendered or protected acceptance. A bounded navigation
+observation will diagnose the remaining Guide failure without changing assertions.
 
 The [authoring source checkpoint](phase4-source-reconciliation-authoring-20261019.json)
 binds 175 affected surfaces and 63 registration gaps to `0e657cc757933df775fd6047bda13a1f489e7ff0`,
@@ -492,4 +498,14 @@ and use same-named Asset drawer/Scenario ledger sections, retaining ledger styli
 and existing named-role assertions. The three existing component files pass 26
 tests; TypeScript, discovery, contract/docs/features checks and independent source
 review pass. Canonical Drydock state capture waits for all three loaded panels.
-Run 39332800305 is dispatched from 0e657cc757; no browser outcome is claimed here.
+Run 39332800305 at `0e657cc757` fails all four variants because the test assumes
+the Asset drawer is already visible. The intended page state hides it until the
+ordinary Upload media action. The [original receipt/log subset](evidence/20261019-authoring-drawer-failure/publication-index.json)
+records COMPLETE private diagnostics: 17 members, 20930133 raw bytes and 37222050
+encrypted bytes; runtime trees, ports and transport cleanup pass. Corrected source
+`637f5de345142b67fe8e77055e7384f22bc74609` opens the drawer ordinarily, retains its
+content assertion, audits axe, captures it, closes it and verifies it is hidden.
+The formal contract now includes the same open/close sequence. Independent source
+review, TypeScript and documentation/catalog checks pass. Run 39334344712 binds
+that source and is dispatched; no browser outcome is claimed yet. No media upload
+or authoring mutation is performed by this correction.

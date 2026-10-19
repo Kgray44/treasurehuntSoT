@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/sextant-authoring-resource-journeys.spec.ts"
+  ],
+  "status": "FAIL",
+  "failureCategory": "PRODUCT_FAILURE",
+  "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED",
+  "diagnosticBinding": {
+    "version": 1,
+    "runId": "8f453669-846f-4f8c-9254-ea4e16b46b2e",
+    "scopeId": "4bc702c4-77b7-462d-b19e-2b95261b6e06",
+    "baseSha": "0e657cc757933df775fd6047bda13a1f489e7ff0",
+    "candidateSha": "0e657cc757933df775fd6047bda13a1f489e7ff0",
+    "planDigest": "4749e42e6168c49c34cb4dcfc9f2e05ada7c8e7c930993a1165850f7dc6fa328"
+  }
+}

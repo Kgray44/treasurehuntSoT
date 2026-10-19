@@ -227,3 +227,12 @@ capture it, close it ordinarily and assert hidden before continuing. Add the sam
 open/close sequence to the formal contract. No upload or other authoring mutation
 is performed. A corrected-source development successor retains all six panes,
 readiness limits and canonical progression/edition preservation assertions.
+
+Community run39333117664 passes three variants, including corrected Clear, and
+repeats the Guide-heading absence only at390-normal. Keep that failed whole-run
+outcome and complete private diagnostics. Add bounded synthetic public route/layer
+observations around the unchanged Guide click/readiness assertions to establish
+the cause; do not retry unchanged source, alter timeouts or infer a product fix.
+Authoring drawer successor637f5de345 runs as39334344712. Both prior failed receipts
+are indexed under engineering evidence with exact private-bundle hashes and
+runtime/transport cleanup proof; private ciphertext remains in owned artifacts.
