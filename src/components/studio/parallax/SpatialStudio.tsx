@@ -929,7 +929,7 @@ export function SpatialStudio({
             </button>
           ))}
         </nav>
-        <aside className={styles.library} aria-label="Spatial Library" hidden={!libraryOpen}>
+        <section className={styles.library} aria-label="Spatial Library" hidden={!libraryOpen}>
           {dockHandle("library")}
           <div className={styles.dockTitle}>
             <h2>Assets &amp; scene</h2>
@@ -1075,7 +1075,7 @@ export function SpatialStudio({
               </ul>
             </section>
           </div>
-        </aside>
+        </section>
         <section className={styles.center}>
           <div className={styles.previewControls}>
             <label>
@@ -1636,7 +1636,7 @@ export function SpatialStudio({
             </div>
           </section>
         </section>
-        <aside className={styles.inspector} aria-label="Spatial inspector" hidden={!inspectorOpen}>
+        <section className={styles.inspector} aria-label="Spatial inspector" hidden={!inspectorOpen}>
           {dockHandle("inspector")}
           <div className={styles.dockTitle}>
             <h2>{currentEntity?.name ?? "Select an entity"}</h2>
@@ -2159,7 +2159,7 @@ export function SpatialStudio({
               )}
             </section>
           </details>
-        </aside>
+        </section>
         <nav className={`${styles.dockRail} ${styles.rightRail}`} aria-label="Inspector dock">
           <button
             aria-label="Open contextual Inspector"

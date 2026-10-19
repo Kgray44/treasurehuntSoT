@@ -132,3 +132,14 @@ colors and the rail's shell-height inset/layer. Retain every prior assertion; ad
 preview axe and header/rail non-overlap geometry. Preserve all34 original members
 and original review findings. A corrected-source resource successor remains
 development-only and does not amend the old single-persona Creator contract.
+
+Distinct Creator/Crew comparison uses fixed paired resource identities and
+ordinary sign-in for both personas. Verify the Crew Creator safety lock; never
+end participation to enter Creator. Save a distinguishing working title, refresh
+the product-bound Save URL, then refresh the actual Crew Journal and assert the
+original released Lens title/clue/Inspect while the working title still differs.
+Ordinarily restore the working title and return both accounts through Harbor.
+Preserve progression/edition checksums, canonical failure attachment names and
+fixed diagnostic budget. The source-predicted named Studio panel sections keep
+all existing named-role assertions. This development proof grants no protected
+paired custody or old single-persona contract acceptance.

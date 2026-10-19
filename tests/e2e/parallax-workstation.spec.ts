@@ -29,7 +29,7 @@ test("Adaptive workspace docks reclaim viewport area and preserve editing across
   await expect(canvas).toBeVisible();
   const renderer = await canvas.elementHandle();
   await expect(page.getByLabel("Workspace layout")).toHaveValue("SPATIAL");
-  await expect(page.getByRole("complementary", { name: "Spatial Library" })).toBeHidden();
+  await expect(page.getByRole("region", { name: "Spatial Library" })).toBeHidden();
   await expect(page.getByRole("button", { name: "Expand bottom dock" })).toBeVisible();
   const root = "artifacts/parallax-phase3/workstation-refinement";
   await mkdir(root, { recursive: true });
@@ -40,7 +40,7 @@ test("Adaptive workspace docks reclaim viewport area and preserve editing across
     .getByRole("region", { name: "Spatial asset browser" })
     .getByRole("button", { name: "Peeking Letter", exact: false });
   await asset.dragTo(canvas, { targetPosition: { x: 250, y: 180 } });
-  const inspector = page.getByRole("complementary", { name: "Spatial inspector" });
+  const inspector = page.getByRole("region", { name: "Spatial inspector" });
   await expect(inspector.getByRole("heading", { name: "Peeking Letter", exact: true })).toBeVisible();
   await page.getByRole("tab", { name: "Hierarchy", exact: true }).click();
   await expect(

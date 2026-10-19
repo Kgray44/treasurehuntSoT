@@ -369,3 +369,24 @@ were not independently played. This remains development review only.
 The [original resource evidence index](evidence/20261019-resources/publication-index.json)
 preserves all 34 harvested members plus hosted receipt, dispatch and CI log with
 original hashes and both unresolved rendered findings.
+
+The next independent software case compares two genuine personas on one pinned
+synthetic Voyage. The resource owner enters Creator Studio ordinarily; the crew
+Player signs in separately and retains the active-Player Creator safety lock.
+Each viewport/motion case owns distinct resources and a canonical synthetic
+Spatial Moment. The Creator saves a distinguishing working title, refreshes the
+URL bound by the actual Save action and observes the persisted title. The Crew
+then refreshes its actual Journal and compares the original released experience
+title, clue and Inspect result before the working title is ordinarily restored.
+Progression and the pinned edition checksum must remain unchanged. This case
+does not amend or satisfy the older single-persona capture contract, publish a
+new edition or establish native tracking. It remains unexecuted until a bound
+hosted result is harvested.
+
+Source review corrected cached Player comparison, a non-distinguishing clue
+assertion, partial-setup context cleanup and Crew attachment kind names before
+execution. The private collector retains its canonical names/budget. Two named
+Spatial Studio panels become sections within main; this was a source-predicted
+landmark correction. Existing named-role lookups retain their assertions against
+the new region semantics, including the original component absence assertions.
+The existing eight Spatial Studio component tests pass with those updated roles.

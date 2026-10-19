@@ -67,7 +67,7 @@ test("owner refinements: coherent Studio themes, overlay assistance and populate
   }
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.getByLabel("Workspace layout").selectOption("CONSTRUCTION");
-  const inspector = page.getByRole("complementary", { name: "Spatial inspector" });
+  const inspector = page.getByRole("region", { name: "Spatial inspector" });
   await page
     .getByRole("region", { name: "Spatial asset browser" })
     .getByRole("button", { name: "Peeking Letter", exact: false })

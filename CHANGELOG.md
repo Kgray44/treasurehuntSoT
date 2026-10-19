@@ -30,6 +30,8 @@ last_reviewed: 2026-10-19
   on its pale preview sheet, keeping the projected Passage readable.
 - Creator authoring navigation stays below the application masthead on mobile
   and desktop so it cannot cover the logo, navigation or account controls.
+- Spatial Studio's named Library and Inspector panels use valid section
+  landmarks within its main workspace.
 
 - Sextant's Phase 4 candidate pauses and revokes native location alongside other
   optional input, permits a fresh explicit acquisition after expected native

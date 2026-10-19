@@ -5,20 +5,33 @@ import { db } from "../../src/lib/db";
 import { saveStudioDraft, studioDraftSchema } from "../../src/chronicle/studio-service";
 import { closureVoyage } from "../../tests/e2e/fixtures/landfall-closure";
 import { seedSextantExperience } from "./sextant-experience-fixture";
+import { syntheticSpatialMoment } from "../../src/parallax/fixtures";
 
 const title = "Synthetic Sextant command Voyage";
-type ResourceCase = "default" | "1280-no-preference" | "1280-reduce" | "390-no-preference" | "390-reduce";
+const resourceCases = [
+  "default",
+  "1280-no-preference",
+  "1280-reduce",
+  "390-no-preference",
+  "390-reduce",
+  "paired-1280-no-preference",
+  "paired-1280-reduce",
+  "paired-390-no-preference",
+  "paired-390-reduce",
+] as const;
+type ResourceCase = (typeof resourceCases)[number];
 
 /** Reuse the existing nonce-owned database guard and preserve its separate Player baseline. */
 export async function seedSextantResourceExperiences(resourceCase: ResourceCase = "default") {
-  if (!["default", "1280-no-preference", "1280-reduce", "390-no-preference", "390-reduce"].includes(resourceCase))
-    throw new Error("SEXTANT_RESOURCE_CASE_INVALID");
+  if (!resourceCases.includes(resourceCase)) throw new Error("SEXTANT_RESOURCE_CASE_INVALID");
   const player = await seedSextantExperience();
   const suffix = resourceCase === "default" ? "" : `-${resourceCase}`;
   const ownerId = `sextant-resource-owner${suffix}`;
   const crewId = `sextant-resource-crew${suffix}`;
   const email = `sextant.resources${suffix}@example.test`;
   const displayName = `Synthetic Sextant Captain${suffix}`;
+  const paired = resourceCase.startsWith("paired-");
+  const crewEmail = paired ? `sextant.crew${suffix}@example.test` : null;
   const existing = await db.userAccount.findUnique({
     where: { id: ownerId },
     include: { profile: true, emails: true },
@@ -46,6 +59,7 @@ export async function seedSextantResourceExperiences(resourceCase: ResourceCase 
       ownerId,
       email,
       displayName,
+      crewEmail,
       voyageId: voyage.id,
       taleId: tale.id,
       versionId: version.id,
@@ -101,6 +115,21 @@ export async function seedSextantResourceExperiences(resourceCase: ResourceCase 
           claimedAt: now,
         },
       },
+      ...(crewEmail
+        ? {
+            emails: {
+              create: {
+                normalizedEmail: crewEmail,
+                displayEmail: crewEmail,
+                isPrimary: true,
+                verificationState: "VERIFIED",
+                verifiedAt: now,
+              },
+            },
+            credential: { create: { passwordHash: await hash("Synthetic-Sextant-Crew-2026!", 12) } },
+            roles: { create: { role: "PLAYER", scopeType: "GLOBAL" } },
+          }
+        : {}),
     },
     include: { profile: true },
   });
@@ -125,6 +154,15 @@ export async function seedSextantResourceExperiences(resourceCase: ResourceCase 
   const snapshot = JSON.parse(version.contentSnapshot);
   snapshot.tale.title = title;
   snapshot.tale.slug = `sextant-resource-chronicle${suffix}`;
+  if (paired) {
+    const block = snapshot.chapters[0].blocks[0];
+    block.title = "The Captain’s note";
+    block.configuration = { heading: "The Captain’s note", body: "Open the Lens to read the released clue." };
+    const moment = syntheticSpatialMoment(voyage.activeId);
+    moment.definition.ownerPersonId = ownerId;
+    block.presentation = { spatialMoment: moment };
+    block.completion = { mode: "playerConfirmation" };
+  }
   const contentSnapshot = JSON.stringify(snapshot);
   await db.publishedTaleVersion.update({
     where: { id: version.id },
@@ -148,6 +186,7 @@ export async function seedSextantResourceExperiences(resourceCase: ResourceCase 
     ownerId,
     email,
     displayName,
+    crewEmail,
     voyageId: voyage.id,
     taleId: voyage.taleId,
     versionId: version.id,

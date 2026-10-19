@@ -329,7 +329,7 @@ test("complete published adventure, genuine phone handoff, recovery, feedback, a
       .screenshot({ path: `${evidence}/studio-selected-inspector.png` });
     await d.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
     await d
-      .getByRole("complementary", { name: "Spatial Library", exact: true })
+      .getByRole("region", { name: "Spatial Library", exact: true })
       .screenshot({ path: `${evidence}/studio-library.png` });
     await d.getByRole("tab", { name: "Hierarchy", exact: true }).click();
     await d
