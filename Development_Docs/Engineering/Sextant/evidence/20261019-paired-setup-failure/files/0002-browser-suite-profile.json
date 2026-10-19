@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/sextant-parallax-paired-journeys.spec.ts"
+  ],
+  "status": "FAIL",
+  "failureCategory": "PRODUCT_FAILURE",
+  "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED",
+  "diagnosticBinding": {
+    "version": 1,
+    "runId": "c194f91c-8c99-42a1-8f2d-330c1f7f9a76",
+    "scopeId": "457c747e-6b8b-4f92-bf0a-1b517af260d5",
+    "baseSha": "727ff58ff336a7eeabc3afda9a8ea1d0b14a52ed",
+    "candidateSha": "727ff58ff336a7eeabc3afda9a8ea1d0b14a52ed",
+    "planDigest": "e93a09bc85c6cd85a8b2d88fa3952f44882e8e08d69becdfe000de018e8dd7ad"
+  }
+}

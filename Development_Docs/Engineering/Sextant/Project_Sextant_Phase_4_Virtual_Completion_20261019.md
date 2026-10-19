@@ -390,3 +390,61 @@ Spatial Studio panels become sections within main; this was a source-predicted
 landmark correction. Existing named-role lookups retain their assertions against
 the new region semantics, including the original component absence assertions.
 The existing eight Spatial Studio component tests pass with those updated roles.
+
+The corrected consumer run 39325122288 passed all four variants at
+`23d697925d2a2505f4c9d91f8c6660337bedf266`. Independent review found the
+Passport intro visible and readable in all four; no new material defect appeared
+in sampled Atlas, Device and Lens captures. All 98 original hashes agree. Maximum
+Passport readiness was 2071.5 ms. Full-page Device captures still place a sticky
+header across card text, so they do not establish unobscured complete-page proof.
+Static review does not establish animation success, native behavior or protected
+acceptance. The [fresh consumer originals](evidence/20261019-contrast-repair/publication-index.json)
+preserve 98 members plus hosted receipt, dispatch and CI log.
+
+The corrected resource run 39326967341 passed all four variants at
+`716985c1afbfa1dc55aff644fc54dc554f57edb8`. Independent review confirms
+readable safe-preview text and an authoring rail that clears the masthead in all
+four variants, with no new material defect in the eight repair captures. All 38
+original hashes match; maximum recorded resource readiness was 1269.0 ms. Both
+runs passed supervised process reaping, port release and transport cleanup.
+The [fresh resource originals](evidence/20261019-resource-repair/publication-index.json)
+preserve 38 members plus hosted receipt, dispatch and CI log. Neither run grants
+protected custody, native/physical proof or owner acceptance. Older defective
+passing captures and their original review findings remain unchanged.
+
+Paired run 39327507704 at 727ff58ff336 failed before sign-in because manual Crew
+trace start conflicted with the runner. Its [original failure](evidence/20261019-paired-setup-failure/publication-index.json)
+remains retained. Run 39329558470 at 928dd936fc reached the real Crew Journal,
+released clue and Inspect, then all four variants failed at an axe selector that
+required an explicit role attribute on a native HTML dialog. No Creator save or
+after-save comparison is proved by that run. Runtime/tree/port/transport cleanup
+passed. Its canonical diagnostic retention remains INCOMPLETE: MANIFEST_INVALID,
+25 members, 42052355 raw bytes and 74779850 encrypted bytes. The original CI list
+repeats the same automatic screenshot path per variant; collector rejection is
+preserved. The [original receipt/log subset](evidence/20261019-paired-dialog-failure/publication-index.json)
+records the encrypted bundle hash and owned artifact location without copying
+that private bundle into Git. The source repair uses the actual open dialog and
+distinct explicit owner/Crew failure captures, including setup and cleanup-only
+failures. Trace/video ownership, primary failures and fixed limits remain intact.
+Run 39331079907 at `a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167` is dispatched;
+no outcome is claimed here.
+
+The [stylesheet checkpoint](phase 4-source-reconciliation-styles-20261019.json)
+binds 174 affected surfaces/92 gaps to 0d413da1d2. The subsequent
+[Community checkpoint](phase 4-source-reconciliation-community-20261019.json)
+binds 175 affected surfaces/74 gaps to `4e1afbc0158bdd1cd496a5bfecc131110f086528`.
+Its 21 declared paths include the ten districts, actual public details and visited
+components; 18 previous registration gaps are covered. Historical 141 paths remain
+intact and protected planning stays blocked. Declarations grant no acceptance.
+The canonical Homeport Phase 4 producer and synthetic manifest are adopted unchanged
+once inside the nonce-owned database. Preflight rejects all producer namespace
+and unique-key collisions; an exclusive attempt receipt preserves partial work.
+Reuse reads the real public projection and release eligibility. Ordinary anonymous
+entry, ten districts, eight details, empty Creator/collection/search, comment
+sign-in gating and independent active-Voyage/edition preservation are declared.
+Independent source review cleared fixture and formal contract corrections. Two
+source-predicted nested landmark containers became sections; existing six comment/
+review tests and TypeScript/privacy/docs/features checks pass. Run 39330479919 is
+dispatched from 4e1afbc015; no browser outcome is claimed here. Historical Community
+captures are supplemental context; protected generic references establish general
+hierarchy only, with Community-specific reference/layout acceptance still open.

@@ -16,3 +16,10 @@ Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r3-owner-decision-pro
 Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r3-owner-decision-proposal-20261015/consumer-seam-confirmation.original.raw.txt -text -whitespace
 Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r3-review-cancellation-20261015/*.original.raw.txt -text -whitespace
 Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r4-recovery-20261015/*.original.raw.txt -text -whitespace
+
+/Development_Docs/Engineering/Sextant/evidence/20261019-contrast-repair/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-resource-repair/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-paired-setup-failure/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-paired-dialog-failure/** -text -whitespace
+/Development_Docs/Engineering/Sextant/phase4-source-reconciliation-styles-20261019.json -text -whitespace
+/Development_Docs/Engineering/Sextant/phase4-source-reconciliation-community-20261019.json -text -whitespace

@@ -1,0 +1,616 @@
+{
+  "schemaVersion": 1,
+  "classification": "ENGINEERING_EVIDENCE_ORIGINAL_BYTES_NOT_ACCEPTANCE",
+  "sourceSha": "23d697925d2a2505f4c9d91f8c6660337bedf266",
+  "runId": "39325122288",
+  "artifacts": 98,
+  "reviewFinding": "INDEPENDENT_RENDERED_REVIEW_CLEAR_WITH_CAPTURE_LIMITS_NOT_PROTECTED_ACCEPTANCE",
+  "files": [
+    {
+      "path": "files/0001-browser-runtime.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-23d697925d2a2505f4c9d91f8c6660337bedf266/browser-diagnostics/902a1df0-a5d8-4c14-9d21-f419c7460747/0a6e3100-6147-47a3-890f-b2ae9a4de4e9/browser-runtime.json",
+      "bytes": 2176,
+      "sha256": "508bf71ed05b7730642c1bf49cefacc9c33b2aced3f3129bfc690b00244eb8e3"
+    },
+    {
+      "path": "files/0002-browser-suite-profile.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-23d697925d2a2505f4c9d91f8c6660337bedf266/browser-diagnostics/902a1df0-a5d8-4c14-9d21-f419c7460747/0a6e3100-6147-47a3-890f-b2ae9a4de4e9/browser-suite-profile.json",
+      "bytes": 552,
+      "sha256": "5ad35a83c88b827695b387065c753bd902c50205ba90469149db24bee0586026"
+    },
+    {
+      "path": "files/0003-consumer-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--32b93-d-Lens-1280px-no-preference-chromium/consumer-receipt.json",
+      "bytes": 1100,
+      "sha256": "aa530baa2b7628d9ed6d6b7f675f9067d26f65a42fac23709791d9af3e449b68"
+    },
+    {
+      "path": "files/0004-device-fallback.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--32b93-d-Lens-1280px-no-preference-chromium/device-fallback.png",
+      "bytes": 1008112,
+      "sha256": "c414928a1a8ced76057a9df459e132ab7ad2d494915d5561d718e75954b51022"
+    },
+    {
+      "path": "files/0005-guided-clue.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--32b93-d-Lens-1280px-no-preference-chromium/guided-clue.png",
+      "bytes": 708865,
+      "sha256": "ecc6a8852982fcc26bd37b7034e51a1dd1154640f4b8672e494eac64b6b92391"
+    },
+    {
+      "path": "files/0006-journal-ready.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--32b93-d-Lens-1280px-no-preference-chromium/journal-ready.png",
+      "bytes": 678758,
+      "sha256": "7d7c499f29fc95199aa8d892637b3549608e239c73d27b971fe1fb612370b757"
+    },
+    {
+      "path": "files/0007-passport-artifacts.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--32b93-d-Lens-1280px-no-preference-chromium/passport-artifacts.png",
+      "bytes": 428958,
+      "sha256": "c6967fb7e58abf940f05677109a43d7fee3ffe2cdb0def003fd5fd0a007d675b"
+    },
+    {
+      "path": "files/0008-passport-memories.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--32b93-d-Lens-1280px-no-preference-chromium/passport-memories.png",
+      "bytes": 427239,
+      "sha256": "cf272db05039ae1b1c63b13489c715c1d77a68d5e52504ed2729ee5a7485a39a"
+    },
+    {
+      "path": "files/0009-passport-overview.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--32b93-d-Lens-1280px-no-preference-chromium/passport-overview.png",
+      "bytes": 681238,
+      "sha256": "a0ff7041b2399036e3add7d55a1f102c1d9ccae08e375ba9c5372ba5bc39f25b"
+    },
+    {
+      "path": "files/0010-passport-people.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--32b93-d-Lens-1280px-no-preference-chromium/passport-people.png",
+      "bytes": 592903,
+      "sha256": "4c7681a8ddc6f8756ed5e68551e56b468cb652e9bf36c2101f50fdbf1717e9a7"
+    },
+    {
+      "path": "files/0011-passport-saved.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--32b93-d-Lens-1280px-no-preference-chromium/passport-saved.png",
+      "bytes": 375329,
+      "sha256": "6e94b9028b933b60452e996802af69f3a73fd11c944e139f8b88c8fd32899cd6"
+    },
+    {
+      "path": "files/0012-passport-statistics.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--32b93-d-Lens-1280px-no-preference-chromium/passport-statistics.png",
+      "bytes": 530896,
+      "sha256": "203e24103a141eb5d8f13713f725ea3b44e25d93718f6d76f10a9d214dbabbbf"
+    },
+    {
+      "path": "files/0013-passport-timeline.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--32b93-d-Lens-1280px-no-preference-chromium/passport-timeline.png",
+      "bytes": 475035,
+      "sha256": "af6624c7546ca706154734842ac1da6c99da76c74cf839e92db2ceb3dbfa74f3"
+    },
+    {
+      "path": "files/0014-passport-voyage-atlas.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--32b93-d-Lens-1280px-no-preference-chromium/passport-voyage-atlas.png",
+      "bytes": 448386,
+      "sha256": "cb8fd13038c898e27367a011e316e15e65ead944f556c438089b42b0a2af63f9"
+    },
+    {
+      "path": "files/0015-passport-your-voyages.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--32b93-d-Lens-1280px-no-preference-chromium/passport-your-voyages.png",
+      "bytes": 638158,
+      "sha256": "dca4862e59d1fd5d9745c84febc5d27dae4dc0b2374559099d277b61221e0571"
+    },
+    {
+      "path": "files/0016-1476eac0912b8e75150c56d03df0e275.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--32b93-d-Lens-1280px-no-preference-chromium/recording/1476eac0912b8e75150c56d03df0e275.webm",
+      "bytes": 2589,
+      "sha256": "8a2a88b2a081c0ace048f9aaece3bc825afa8cddc3611b0a44bce1a75bec8af1"
+    },
+    {
+      "path": "files/0017-2dce05feb12c97af8a38d375e5e3b513.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--32b93-d-Lens-1280px-no-preference-chromium/recording/2dce05feb12c97af8a38d375e5e3b513.webm",
+      "bytes": 2589,
+      "sha256": "bb745634f5c87ad44ec3425fd5e10a188d4a46b2a6b3689e1671a99aa6524f2b"
+    },
+    {
+      "path": "files/0018-2ebeccb7c7296cd645a9a4385f1b969d.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--32b93-d-Lens-1280px-no-preference-chromium/recording/2ebeccb7c7296cd645a9a4385f1b969d.webm",
+      "bytes": 2589,
+      "sha256": "b06966b1d3f733eeb458e16eb1e86c350b617e183da76d17d3aeb3af059766e9"
+    },
+    {
+      "path": "files/0019-545cc337d9d56ef2654a22bece3998e8.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--32b93-d-Lens-1280px-no-preference-chromium/recording/545cc337d9d56ef2654a22bece3998e8.webm",
+      "bytes": 2633,
+      "sha256": "2db2fb727b529f45503d00ba6005c736301eb6c544735eeeacb8452ac5b0b897"
+    },
+    {
+      "path": "files/0020-5516868246b12084337023c57a0adafa.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--32b93-d-Lens-1280px-no-preference-chromium/recording/5516868246b12084337023c57a0adafa.webm",
+      "bytes": 2633,
+      "sha256": "25241595f078448266a971cf4cc4f4164fc077791c73d4fc9d8fd80125e5e69d"
+    },
+    {
+      "path": "files/0021-ab607b5c2cf69098b20a16336cff2f5f.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--32b93-d-Lens-1280px-no-preference-chromium/recording/ab607b5c2cf69098b20a16336cff2f5f.webm",
+      "bytes": 2633,
+      "sha256": "ea2ed7f399f9d6c49046454bb978cd34b3e9409ec7d79912ab667ab0594b2299"
+    },
+    {
+      "path": "files/0022-d70fb6fdbf4a7b68ff13fdf6e13b9359.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--32b93-d-Lens-1280px-no-preference-chromium/recording/d70fb6fdbf4a7b68ff13fdf6e13b9359.webm",
+      "bytes": 2677,
+      "sha256": "cbb6ffd0cef8053ecd00d49310b94d8efdcdc8d27ded3527f16e3c434b86e3dc"
+    },
+    {
+      "path": "files/0023-e0e463576eefeadeda2625a3154eaba3.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--32b93-d-Lens-1280px-no-preference-chromium/recording/e0e463576eefeadeda2625a3154eaba3.webm",
+      "bytes": 2589,
+      "sha256": "79311431b6b512d293f568d21ddfa521453da95d8ac139d7810731f8f4297cf5"
+    },
+    {
+      "path": "files/0024-ec71371f0220fac46bc4971656753d8a.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--32b93-d-Lens-1280px-no-preference-chromium/recording/ec71371f0220fac46bc4971656753d8a.webm",
+      "bytes": 7516199,
+      "sha256": "fdf55d56a09838045201667c92592826b52ccf8fd6079845e9017d2cb2c99874"
+    },
+    {
+      "path": "files/0025-f12a8c0586328d807325108cb5c4945d.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--32b93-d-Lens-1280px-no-preference-chromium/recording/f12a8c0586328d807325108cb5c4945d.webm",
+      "bytes": 2633,
+      "sha256": "8a7231912a696f47fc092fa246034ab81d154a8bee4402ecef2af5ef8017f0c1"
+    },
+    {
+      "path": "files/0026-f440a73dd4b2d5229e10cab927d06108.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--32b93-d-Lens-1280px-no-preference-chromium/recording/f440a73dd4b2d5229e10cab927d06108.webm",
+      "bytes": 2633,
+      "sha256": "b865c5d210fcf70c4889c01730ca269f381b8f56198f5e0b2396b45b136066fe"
+    },
+    {
+      "path": "files/0027-consumer-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--6582c-d-Guided-Lens-1280px-reduce-chromium/consumer-receipt.json",
+      "bytes": 1134,
+      "sha256": "1ccfba41ce6b339373ace27c92e65d4d6d1855c679473e4bd6b2b07955c2d80e"
+    },
+    {
+      "path": "files/0028-device-fallback.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--6582c-d-Guided-Lens-1280px-reduce-chromium/device-fallback.png",
+      "bytes": 1065939,
+      "sha256": "885ad9daacbcedc16ab5c2d9ff2449905045fc245bb48b8e477500555c4e80e3"
+    },
+    {
+      "path": "files/0029-guided-clue.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--6582c-d-Guided-Lens-1280px-reduce-chromium/guided-clue.png",
+      "bytes": 668045,
+      "sha256": "9b2c6431bf84de147cb7550525d08ebb6114d85ece6890929a7d3d3e00bf7388"
+    },
+    {
+      "path": "files/0030-journal-ready.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--6582c-d-Guided-Lens-1280px-reduce-chromium/journal-ready.png",
+      "bytes": 609423,
+      "sha256": "a76080f67d4b4fb407dca73fd915122f5648e01ed1ede7e68943f44661767c4b"
+    },
+    {
+      "path": "files/0031-passport-artifacts.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--6582c-d-Guided-Lens-1280px-reduce-chromium/passport-artifacts.png",
+      "bytes": 428958,
+      "sha256": "c6967fb7e58abf940f05677109a43d7fee3ffe2cdb0def003fd5fd0a007d675b"
+    },
+    {
+      "path": "files/0032-passport-memories.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--6582c-d-Guided-Lens-1280px-reduce-chromium/passport-memories.png",
+      "bytes": 427239,
+      "sha256": "cf272db05039ae1b1c63b13489c715c1d77a68d5e52504ed2729ee5a7485a39a"
+    },
+    {
+      "path": "files/0033-passport-overview.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--6582c-d-Guided-Lens-1280px-reduce-chromium/passport-overview.png",
+      "bytes": 685440,
+      "sha256": "3e0940aa34f0c36c32cd1163ff3e449477f8c8edb88e84f0002c58a19058887c"
+    },
+    {
+      "path": "files/0034-passport-people.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--6582c-d-Guided-Lens-1280px-reduce-chromium/passport-people.png",
+      "bytes": 592903,
+      "sha256": "4c7681a8ddc6f8756ed5e68551e56b468cb652e9bf36c2101f50fdbf1717e9a7"
+    },
+    {
+      "path": "files/0035-passport-saved.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--6582c-d-Guided-Lens-1280px-reduce-chromium/passport-saved.png",
+      "bytes": 442573,
+      "sha256": "b25b8eefb52aaeb16bce9e691d996a58e03dfa26c73ea1812abd52bd0360ce5f"
+    },
+    {
+      "path": "files/0036-passport-statistics.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--6582c-d-Guided-Lens-1280px-reduce-chromium/passport-statistics.png",
+      "bytes": 530896,
+      "sha256": "203e24103a141eb5d8f13713f725ea3b44e25d93718f6d76f10a9d214dbabbbf"
+    },
+    {
+      "path": "files/0037-passport-timeline.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--6582c-d-Guided-Lens-1280px-reduce-chromium/passport-timeline.png",
+      "bytes": 475035,
+      "sha256": "af6624c7546ca706154734842ac1da6c99da76c74cf839e92db2ceb3dbfa74f3"
+    },
+    {
+      "path": "files/0038-passport-voyage-atlas.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--6582c-d-Guided-Lens-1280px-reduce-chromium/passport-voyage-atlas.png",
+      "bytes": 502479,
+      "sha256": "a8354384c654a0d2e7918a0683c09fe2144a54fcc23f5b031f686db2eee94171"
+    },
+    {
+      "path": "files/0039-passport-your-voyages.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--6582c-d-Guided-Lens-1280px-reduce-chromium/passport-your-voyages.png",
+      "bytes": 642912,
+      "sha256": "a10de5225374eb5af45b8e172b3d0f951774ed7e5e2c0f50c74daeadd5ae1866"
+    },
+    {
+      "path": "files/0040-0765b0eda444206c8fe0c608e636f97d.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--6582c-d-Guided-Lens-1280px-reduce-chromium/recording/0765b0eda444206c8fe0c608e636f97d.webm",
+      "bytes": 2589,
+      "sha256": "cb97aae374621431172165c0d8c0d953e1470e4cfad6d7f5e8bf75288eb4a747"
+    },
+    {
+      "path": "files/0041-12c2aef45ce85ae9a00ac0eb3042fa8b.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--6582c-d-Guided-Lens-1280px-reduce-chromium/recording/12c2aef45ce85ae9a00ac0eb3042fa8b.webm",
+      "bytes": 2633,
+      "sha256": "ac1917ad930855944f44a690bb55cd94a5485b539785d32467582a2394fd0fa6"
+    },
+    {
+      "path": "files/0042-13d2fb735761219847b3884322c66bdf.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--6582c-d-Guided-Lens-1280px-reduce-chromium/recording/13d2fb735761219847b3884322c66bdf.webm",
+      "bytes": 2589,
+      "sha256": "2e82054a079205abd07162bdfb5c608ddbd9d0efcd4b6f96dc3f83123e7c0ea8"
+    },
+    {
+      "path": "files/0043-2dcbfa11a5a4fa83a7094dfb15adeeb7.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--6582c-d-Guided-Lens-1280px-reduce-chromium/recording/2dcbfa11a5a4fa83a7094dfb15adeeb7.webm",
+      "bytes": 2589,
+      "sha256": "e9b57618b3723240a7fed94ac3b021526491c723c3a4aee89b452f6a1c6c5e7e"
+    },
+    {
+      "path": "files/0044-583591791abd3030342032acd9bfc9e7.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--6582c-d-Guided-Lens-1280px-reduce-chromium/recording/583591791abd3030342032acd9bfc9e7.webm",
+      "bytes": 2633,
+      "sha256": "faeb9e69525b8c33e6377c113fd6c6319d4c010c8a4603853a10009081fe1860"
+    },
+    {
+      "path": "files/0045-6014710ee996ae4196a991f89ba340a7.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--6582c-d-Guided-Lens-1280px-reduce-chromium/recording/6014710ee996ae4196a991f89ba340a7.webm",
+      "bytes": 2633,
+      "sha256": "8aca13492536a56875cc8fb4b6b42be63ab6fcdd54cad09bb62eb774309fbbf5"
+    },
+    {
+      "path": "files/0046-87f5bb19fece3fef85baa6d81c8da4ad.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--6582c-d-Guided-Lens-1280px-reduce-chromium/recording/87f5bb19fece3fef85baa6d81c8da4ad.webm",
+      "bytes": 2589,
+      "sha256": "a78681bb361dd881b84391b4d770a7f271ea0921e38865a061fd675364efef74"
+    },
+    {
+      "path": "files/0047-95b2e25b22b93099dcfec8eeaabed4ab.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--6582c-d-Guided-Lens-1280px-reduce-chromium/recording/95b2e25b22b93099dcfec8eeaabed4ab.webm",
+      "bytes": 2633,
+      "sha256": "2b3d20e91d06be11d58ddf99063fc6e0734dcb38138f0065469084e1f26d3395"
+    },
+    {
+      "path": "files/0048-991b324edcdf371a9a41c9ae13ace615.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--6582c-d-Guided-Lens-1280px-reduce-chromium/recording/991b324edcdf371a9a41c9ae13ace615.webm",
+      "bytes": 2589,
+      "sha256": "d7029629981ae2e92c02120fcab0a6b07c66f45e7d2cf365174310561d3e6888"
+    },
+    {
+      "path": "files/0049-a1fcbddf58948d642ec3e72ece39921b.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--6582c-d-Guided-Lens-1280px-reduce-chromium/recording/a1fcbddf58948d642ec3e72ece39921b.webm",
+      "bytes": 3762146,
+      "sha256": "b520a61a8a00fb9c379e16f9d7ea7e7178145e155daa6c7ca2e7ae6abbfc3995"
+    },
+    {
+      "path": "files/0050-b6d281c99984f15fee7481ad94957b51.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--6582c-d-Guided-Lens-1280px-reduce-chromium/recording/b6d281c99984f15fee7481ad94957b51.webm",
+      "bytes": 2589,
+      "sha256": "1d08fe03c2a7f291150f83082e68df2e651b73bd0d7d40882e49e530e28af1d8"
+    },
+    {
+      "path": "files/0051-consumer-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--811aa-ed-Lens-390px-no-preference-chromium/consumer-receipt.json",
+      "bytes": 1112,
+      "sha256": "2050174f8b54a3ba2448da784ac01f43109efcf24909ec7d12df0f6de714bc2a"
+    },
+    {
+      "path": "files/0052-device-fallback.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--811aa-ed-Lens-390px-no-preference-chromium/device-fallback.png",
+      "bytes": 770237,
+      "sha256": "452d3ba3f0143ab4dd2110b050789c5ad5d5dbfc26fe7e96c241bddf2006b9c0"
+    },
+    {
+      "path": "files/0053-guided-clue.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--811aa-ed-Lens-390px-no-preference-chromium/guided-clue.png",
+      "bytes": 359300,
+      "sha256": "7c1021b71bce907287c9ee964cb0022c9ee10990b2029bc3ea91fbf7a4ecb2c9"
+    },
+    {
+      "path": "files/0054-journal-ready.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--811aa-ed-Lens-390px-no-preference-chromium/journal-ready.png",
+      "bytes": 312301,
+      "sha256": "050daec4017bbc5b4e3b87dd2eff8c378ef70af559664da6a6dc4282ce783e7d"
+    },
+    {
+      "path": "files/0055-passport-artifacts.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--811aa-ed-Lens-390px-no-preference-chromium/passport-artifacts.png",
+      "bytes": 146051,
+      "sha256": "450b548a6660b85117ba345378087c98d339a88ad8fe04872405f46db14b6846"
+    },
+    {
+      "path": "files/0056-passport-memories.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--811aa-ed-Lens-390px-no-preference-chromium/passport-memories.png",
+      "bytes": 156405,
+      "sha256": "d5f904e0d639f9d4fb25cb132b94cefc5ea18ec6a3a43c65c24d1ebe5446bae6"
+    },
+    {
+      "path": "files/0057-passport-overview.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--811aa-ed-Lens-390px-no-preference-chromium/passport-overview.png",
+      "bytes": 283964,
+      "sha256": "5d5900fe201863f3a2eac4f4adf22cd1a1d0c346268d8c2ad2b3ca322c26c36a"
+    },
+    {
+      "path": "files/0058-passport-people.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--811aa-ed-Lens-390px-no-preference-chromium/passport-people.png",
+      "bytes": 239143,
+      "sha256": "5bdf1d81c593a538bf336d8f706d3cc76626e8b6cdf5481fe1cd3c91fa97e008"
+    },
+    {
+      "path": "files/0059-passport-saved.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--811aa-ed-Lens-390px-no-preference-chromium/passport-saved.png",
+      "bytes": 160059,
+      "sha256": "77e1ed807b0fcacca0470990b89d1c33b1140ad6a2d8da185c1e82f8d21ef7c9"
+    },
+    {
+      "path": "files/0060-passport-statistics.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--811aa-ed-Lens-390px-no-preference-chromium/passport-statistics.png",
+      "bytes": 223852,
+      "sha256": "6e83010f44f706456e7b1e38027740cc0ae0efa85db40930844e521399d64ae7"
+    },
+    {
+      "path": "files/0061-passport-timeline.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--811aa-ed-Lens-390px-no-preference-chromium/passport-timeline.png",
+      "bytes": 178961,
+      "sha256": "abaf6490411262efa77a9eab968680362f77c3c561a2ef9d75c16371a9b824d7"
+    },
+    {
+      "path": "files/0062-passport-voyage-atlas.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--811aa-ed-Lens-390px-no-preference-chromium/passport-voyage-atlas.png",
+      "bytes": 183101,
+      "sha256": "7bbbe4e33fe9cc1771308c10e49fd5614b0d9eb06f8f7d548704f0832e0ebd12"
+    },
+    {
+      "path": "files/0063-passport-your-voyages.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--811aa-ed-Lens-390px-no-preference-chromium/passport-your-voyages.png",
+      "bytes": 240580,
+      "sha256": "1068458f869e0a963caabd8c5909700e251a31c200e95e6a3743a538c227d7e7"
+    },
+    {
+      "path": "files/0064-16078123f3f3484078121b54fac58d99.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--811aa-ed-Lens-390px-no-preference-chromium/recording/16078123f3f3484078121b54fac58d99.webm",
+      "bytes": 1240,
+      "sha256": "bcb52aa03dc81615d9390a4f203ee60e4635e730a75c3c86db40f80e702f2301"
+    },
+    {
+      "path": "files/0065-2c54ff21b0e0904497206ef93775aa68.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--811aa-ed-Lens-390px-no-preference-chromium/recording/2c54ff21b0e0904497206ef93775aa68.webm",
+      "bytes": 6986616,
+      "sha256": "e62797654df4617c517842a3e8da9d03af4dfb12dbdd86977a88a29dd6f2d56a"
+    },
+    {
+      "path": "files/0066-352c20d9da76e850c1818b3cf211a16a.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--811aa-ed-Lens-390px-no-preference-chromium/recording/352c20d9da76e850c1818b3cf211a16a.webm",
+      "bytes": 1209,
+      "sha256": "83152cab0bd376159ceb7dc7e3e65b486696068a2e7f85eee033d86ac912234b"
+    },
+    {
+      "path": "files/0067-5a0581a507d70bf73aa006d4f37d02fe.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--811aa-ed-Lens-390px-no-preference-chromium/recording/5a0581a507d70bf73aa006d4f37d02fe.webm",
+      "bytes": 1209,
+      "sha256": "e6073ce2f507bdd5c90781e6dbdd44d54449f2e8e712da15a4fb4704ef9a7bbe"
+    },
+    {
+      "path": "files/0068-69160f7f45502cc59475bf2947a17985.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--811aa-ed-Lens-390px-no-preference-chromium/recording/69160f7f45502cc59475bf2947a17985.webm",
+      "bytes": 1240,
+      "sha256": "b7f48fcd412738845032e91593c45338248915df89907cdb88e8e89ae1e8987e"
+    },
+    {
+      "path": "files/0069-8042d1880a1112955cd240d775aa8f7c.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--811aa-ed-Lens-390px-no-preference-chromium/recording/8042d1880a1112955cd240d775aa8f7c.webm",
+      "bytes": 1209,
+      "sha256": "83d5c020c747a0cd580248b6ccacfc526c1f6b1ba625de814266abe2347f6647"
+    },
+    {
+      "path": "files/0070-aae6bbeaae46e287f7fb95c191dec300.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--811aa-ed-Lens-390px-no-preference-chromium/recording/aae6bbeaae46e287f7fb95c191dec300.webm",
+      "bytes": 1209,
+      "sha256": "cd9f3e6d0950da81ed50c6a254b204ce402f18ad0fcb5d3458308a9fec93a1f5"
+    },
+    {
+      "path": "files/0071-b28ec826d2f52c5b9cefe2533eaadab3.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--811aa-ed-Lens-390px-no-preference-chromium/recording/b28ec826d2f52c5b9cefe2533eaadab3.webm",
+      "bytes": 1178,
+      "sha256": "d625013d6488bc6d93b63f0cee1654963b77bb467dc746f01cee0fe934f5baa4"
+    },
+    {
+      "path": "files/0072-ca001239819211fd88957ae916be4c0b.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--811aa-ed-Lens-390px-no-preference-chromium/recording/ca001239819211fd88957ae916be4c0b.webm",
+      "bytes": 1209,
+      "sha256": "14ed682ced1e2bae548d20eba77a270ad81ab6aad9a7bc502be7abd400a19fb1"
+    },
+    {
+      "path": "files/0073-dfb4d5a76185401c7acac0038dcfe62f.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--811aa-ed-Lens-390px-no-preference-chromium/recording/dfb4d5a76185401c7acac0038dcfe62f.webm",
+      "bytes": 1209,
+      "sha256": "3e5210976c3780ccf0ed6ab6a8ff2b42c57dc8e249ae46faada2b84a905d2dd4"
+    },
+    {
+      "path": "files/0074-f98d69c317267c7d9a6dd3f5fa7fdb54.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--811aa-ed-Lens-390px-no-preference-chromium/recording/f98d69c317267c7d9a6dd3f5fa7fdb54.webm",
+      "bytes": 1209,
+      "sha256": "0d962d547bec2d9f5113a8baa5468eb78f1c1399b28f9a3892b748934bbfc9f5"
+    },
+    {
+      "path": "files/0075-consumer-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--e8985-nd-Guided-Lens-390px-reduce-chromium/consumer-receipt.json",
+      "bytes": 1107,
+      "sha256": "66b737b0bd14f57e3161a59733bd3596be54b8f6fa5a07f82b6740aaade0aa97"
+    },
+    {
+      "path": "files/0076-device-fallback.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--e8985-nd-Guided-Lens-390px-reduce-chromium/device-fallback.png",
+      "bytes": 815553,
+      "sha256": "24974f9b8fb3e446a75b817489d74542d1f8ed0353c378a19fb215b6d48dddb6"
+    },
+    {
+      "path": "files/0077-guided-clue.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--e8985-nd-Guided-Lens-390px-reduce-chromium/guided-clue.png",
+      "bytes": 343124,
+      "sha256": "c5449986d2aaea895fda80f55d26b05ba00aeccac34363a6a452cfae511f4eee"
+    },
+    {
+      "path": "files/0078-journal-ready.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--e8985-nd-Guided-Lens-390px-reduce-chromium/journal-ready.png",
+      "bytes": 306020,
+      "sha256": "d55062b2d6db4982006cf0e99d9dfa2e388883baa0fedaf5579ecb09ad63d6af"
+    },
+    {
+      "path": "files/0079-passport-artifacts.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--e8985-nd-Guided-Lens-390px-reduce-chromium/passport-artifacts.png",
+      "bytes": 166159,
+      "sha256": "0601a86da09235d1090aadbce733df241edd490d7e0e497ec9bb28c62e3960df"
+    },
+    {
+      "path": "files/0080-passport-memories.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--e8985-nd-Guided-Lens-390px-reduce-chromium/passport-memories.png",
+      "bytes": 160170,
+      "sha256": "29637b2742d980fa2fecaf7bf9949560c6dd6940455be4aa31b5d62b77fed0f9"
+    },
+    {
+      "path": "files/0081-passport-overview.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--e8985-nd-Guided-Lens-390px-reduce-chromium/passport-overview.png",
+      "bytes": 272531,
+      "sha256": "f840660b1e9ad962e07844c7cb2327eec1e79f9e61b678892740d7fadfe29921"
+    },
+    {
+      "path": "files/0082-passport-people.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--e8985-nd-Guided-Lens-390px-reduce-chromium/passport-people.png",
+      "bytes": 244128,
+      "sha256": "b915817a2644e20a3de1922389325069e13033e7aa3bd076d5f5f9dcbe7daac5"
+    },
+    {
+      "path": "files/0083-passport-saved.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--e8985-nd-Guided-Lens-390px-reduce-chromium/passport-saved.png",
+      "bytes": 179879,
+      "sha256": "e245874504f51a15b92483302fa0ad8cd92d9322fa237a52da5ff6730c39ac6a"
+    },
+    {
+      "path": "files/0084-passport-statistics.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--e8985-nd-Guided-Lens-390px-reduce-chromium/passport-statistics.png",
+      "bytes": 237837,
+      "sha256": "4689ca575db1fc232c7abff8e234e1a9ff43f0e9a69ce89f77f2fdd2c6cda5d3"
+    },
+    {
+      "path": "files/0085-passport-timeline.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--e8985-nd-Guided-Lens-390px-reduce-chromium/passport-timeline.png",
+      "bytes": 195717,
+      "sha256": "b969bdef2106e78d58cd13ad05459fcc35fbd651f6a63ab10eca7baec13cd633"
+    },
+    {
+      "path": "files/0086-passport-voyage-atlas.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--e8985-nd-Guided-Lens-390px-reduce-chromium/passport-voyage-atlas.png",
+      "bytes": 202090,
+      "sha256": "24fa14c29870e59f132e0253a83f6363f082b02703c6e0947c8a72ab0dfee533"
+    },
+    {
+      "path": "files/0087-passport-your-voyages.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--e8985-nd-Guided-Lens-390px-reduce-chromium/passport-your-voyages.png",
+      "bytes": 239382,
+      "sha256": "83cede7531d11e7d23184f0018379d55d1bcf1c669d45490021b251fbfc840ea"
+    },
+    {
+      "path": "files/0088-138f5c941efd204b75401d9f13361ada.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--e8985-nd-Guided-Lens-390px-reduce-chromium/recording/138f5c941efd204b75401d9f13361ada.webm",
+      "bytes": 1178,
+      "sha256": "5f9e1877885e163eec17e1d568d32a49d2c9ff335e1cd94b3ae6ba7f1ce10845"
+    },
+    {
+      "path": "files/0089-714f7645cbe7952b35b0e0cc27d2cef1.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--e8985-nd-Guided-Lens-390px-reduce-chromium/recording/714f7645cbe7952b35b0e0cc27d2cef1.webm",
+      "bytes": 1209,
+      "sha256": "2bcddd797a65e77c6eac60e4e1afd3c1320657e7816d48bd25c49886191a1d6b"
+    },
+    {
+      "path": "files/0090-783d612d5d955159046e6cfe64e8f038.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--e8985-nd-Guided-Lens-390px-reduce-chromium/recording/783d612d5d955159046e6cfe64e8f038.webm",
+      "bytes": 3071552,
+      "sha256": "66e8f18ce5770512eddf6fb6fd1a08b9f8ba3ad0375422f93d21f5c14dc2de3c"
+    },
+    {
+      "path": "files/0091-80ac39c6e325df6daee71841739791a8.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--e8985-nd-Guided-Lens-390px-reduce-chromium/recording/80ac39c6e325df6daee71841739791a8.webm",
+      "bytes": 1178,
+      "sha256": "1c92ceb8cb6d40894a79e5804e2d877d99cae669f5bb0860dadb164c4efd8b8a"
+    },
+    {
+      "path": "files/0092-83fe26e9e34cf8a5f723f5f12dfbee4d.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--e8985-nd-Guided-Lens-390px-reduce-chromium/recording/83fe26e9e34cf8a5f723f5f12dfbee4d.webm",
+      "bytes": 1178,
+      "sha256": "7dcf20e8e2779a33d748c38223d11528c8fe8d8f0a9f6099bcbcb8a714a1b1b1"
+    },
+    {
+      "path": "files/0093-8fdba94a6fcdcc2b5f7a296e89118894.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--e8985-nd-Guided-Lens-390px-reduce-chromium/recording/8fdba94a6fcdcc2b5f7a296e89118894.webm",
+      "bytes": 1178,
+      "sha256": "5c40a270b68526321ba53373cd8d2f41a3dac750cea0bc5a62ddb89ea7b6ca4b"
+    },
+    {
+      "path": "files/0094-b07f9647dbad3a95fb678b2a5b27b3c7.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--e8985-nd-Guided-Lens-390px-reduce-chromium/recording/b07f9647dbad3a95fb678b2a5b27b3c7.webm",
+      "bytes": 1209,
+      "sha256": "4217b46341cfe84b38f417e880f3ef892e9629619e69c203f53a4349ce03a500"
+    },
+    {
+      "path": "files/0095-bd89807e07e597c7847628f5784f182a.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--e8985-nd-Guided-Lens-390px-reduce-chromium/recording/bd89807e07e597c7847628f5784f182a.webm",
+      "bytes": 1209,
+      "sha256": "2a2f9c9aae74599a856ca0a061d4e32abca4aa90a548a404f1ccfe2093f00644"
+    },
+    {
+      "path": "files/0096-c89ef51813d97f187462a2a373d5442f.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--e8985-nd-Guided-Lens-390px-reduce-chromium/recording/c89ef51813d97f187462a2a373d5442f.webm",
+      "bytes": 1178,
+      "sha256": "9d4a91d5876659d6a7780f698128c9a3324be836fbd9f3e825aab84462c8b073"
+    },
+    {
+      "path": "files/0097-d16ccc6ae34edd9b7dc0611c7c4502d9.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--e8985-nd-Guided-Lens-390px-reduce-chromium/recording/d16ccc6ae34edd9b7dc0611c7c4502d9.webm",
+      "bytes": 1209,
+      "sha256": "d36eb904036690dbc0196fa5ccd7b5917379db2d6cfd17eebb01a861b500df2b"
+    },
+    {
+      "path": "files/0098-ede2856296b3d768159c3dc3f0085dd0.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/artifacts/landfall-browser-passing-results-23d697925d2a2505f4c9d91f8c6660337bedf266/artifacts/sounding-line/private-browser-failures/56e4f040-3384-49a7-ab1d-8bd902d11d8f/results/sextant-consumer-journeys--e8985-nd-Guided-Lens-390px-reduce-chromium/recording/ede2856296b3d768159c3dc3f0085dd0.webm",
+      "bytes": 1178,
+      "sha256": "d3a79a7a542da200cb97c0f8bda72ed83792d4a57d5c297007450865fab60eaf"
+    },
+    {
+      "path": "files/0099-hosted-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/run-39325122288/hosted-receipt.json",
+      "bytes": 38981,
+      "sha256": "bdebeeaa3aba71e646e699a23fbde87a51d2f1ce3ff3f44baba51601279ed848"
+    },
+    {
+      "path": "files/0100-dispatch.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-23d697925d2a-1792444105083/dispatch.json",
+      "bytes": 2032,
+      "sha256": "4c1bbc6b6dd232310e2a2e3a2bbd8d374f677d1e5ea083309b75bd9502286b61"
+    },
+    {
+      "path": "files/0101-contrast-39325122288.log",
+      "sourcePath": "artifacts/sextant-phase4/contrast-39325122288.log",
+      "bytes": 306531,
+      "sha256": "4fe59def6bbe5af49b2ac17180a92cea4d9375ad55700d9411fbf39d43edf34a"
+    }
+  ]
+}

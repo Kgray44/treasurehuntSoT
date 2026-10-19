@@ -1,0 +1,46 @@
+{
+  "source": {
+    "sourceSha": "716985c1afbfa1dc55aff644fc54dc554f57edb8",
+    "sourceTree": "4805ba76711b0810db1596ea34d4902ba3045523",
+    "dirty": false,
+    "sourceFingerprint": "e8e5b50dc4ef7e679c6bc480ccf63c8eca985752ad9dde1a4edb10b1aeb9ba0e"
+  },
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "reducedMotion": "reduce",
+  "feedback": [
+    {
+      "task": "Captain library",
+      "elapsedMs": 226.65539799999533
+    },
+    {
+      "task": "Muster roster",
+      "elapsedMs": 237.10265300000174
+    },
+    {
+      "task": "Captain console",
+      "elapsedMs": 176.78779300000315
+    },
+    {
+      "task": "Player-safe projection",
+      "elapsedMs": 251.22940400000516
+    },
+    {
+      "task": "Creator library",
+      "elapsedMs": 233.29850000000442
+    }
+  ],
+  "ordinarySignIn": true,
+  "actualCaptainAuthority": "sextant-resource-voyage-390-reduce",
+  "separatePlayerBaseline": "sextant-experience-voyage",
+  "crewChat": "ACTIVE_VOYAGE_DISABLED_NO_MESSAGE_SENT",
+  "cancelledCommandReview": true,
+  "playerSafePreview": true,
+  "creatorDraftSavedReopenedRestored": true,
+  "unchangedCanonicalProgress": true,
+  "unchangedPublishedEditions": true,
+  "qualification": false,
+  "physicalEvidence": false
+}

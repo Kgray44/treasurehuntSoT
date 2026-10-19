@@ -6,7 +6,7 @@
   "status": "IN_PROGRESS",
   "initialCandidate": "5ff2739776513b8f8ed20c1cb661c164216d0eeb",
   "protectedBase": "f6af0b0e151f15f1a23808413ccee531b9827ca7",
-  "currentSoftwareCandidate": "23d697925d2a2505f4c9d91f8c6660337bedf266",
+  "currentSoftwareCandidate": "a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167",
   "pr": "https://github.com/Kgray44/treasurehuntSoT/pull/709",
   "independentSourceReview": {
     "reviewerContext": "/root/sextant_source_review",
@@ -90,6 +90,20 @@
       "reviewer": "/root/sextant_source_review",
       "disposition": "THREE_EVIDENCE_WORDING_AND_COVERAGE_FINDINGS_RESOLVED",
       "scope": "SOURCE_REVIEW_ONLY_NO_RENDERED_ACCEPTANCE"
+    },
+    "communityContinuation": {
+      "source": "4e1afbc0158bdd1cd496a5bfecc131110f086528",
+      "reviewer": "/root/sextant_source_review",
+      "disposition": "FIXTURE_PRISTINE_ELIGIBILITY_CONTRACT_CONTINUITY_RETURNS_AND_CAPTURE_STATES_FINDINGS_RESOLVED",
+      "reviewerRanTests": false,
+      "scope": "SOURCE_ONLY_NO_FORMAL_OR_RENDERED_ACCEPTANCE"
+    },
+    "pairedDiagnosticsContinuation": {
+      "source": "a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167",
+      "reviewer": "/root/sextant_source_review",
+      "disposition": "RUNNER_TRACE_NATIVE_DIALOG_AND_BOTH_PERSONA_SETUP_CLEANUP_FAILURE_COVERAGE_CLEAR",
+      "reviewerRanTests": false,
+      "scope": "SOURCE_ONLY_FRESH_EXECUTION_REQUIRED"
     }
   },
   "localChecks": {
@@ -123,6 +137,18 @@
       "passed": 7,
       "failed": 0,
       "acceptedMain": "40491dd68ace88ee033b53fd264ddbfe303c6d28"
+    },
+    "community": {
+      "source": "4e1afbc0158bdd1cd496a5bfecc131110f086528",
+      "existingComponentTests": {
+        "passed": 6,
+        "failed": 0
+      },
+      "typescript": "PASS",
+      "docsValidate": "PASS",
+      "privacyD0": "PASS",
+      "browserDiscovery": "FOUR_CHROMIUM_VARIANTS_AND_FOUR_WEBKIT_VARIANTS_NOT_EXECUTED_LOCALLY",
+      "featureCatalog": "NO_CHANGE_REQUIRED"
     }
   },
   "hosted": [
@@ -181,7 +207,10 @@
         "failed": 0,
         "unsupported": 0
       },
-      "scope": ["android-doze-recovery", "android-standby-recovery"],
+      "scope": [
+        "android-doze-recovery",
+        "android-standby-recovery"
+      ],
       "osReadback": "ENTRY_AND_WAKE_CONFIRMED",
       "nativeInstrumentation": "PASS",
       "cleanup": "PASS",
@@ -341,7 +370,10 @@
         "retention": "INCOMPLETE",
         "members": 15,
         "rawBytes": 64004083,
-        "issues": ["LIMIT", "FAILURE_ATTACHMENTS_INCOMPLETE"],
+        "issues": [
+          "LIMIT",
+          "FAILURE_ATTACHMENTS_INCOMPLETE"
+        ],
         "fixedBudgetUnchanged": true
       },
       "cleanup": "RUNTIME_PORTS_AND_TRANSPORT_PASS",
@@ -383,13 +415,110 @@
         "P2_MOBILE_CREATOR_AUTHORING_RAIL_OVERLAPS_GLOBAL_MASTHEAD"
       ],
       "qualification": false
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "23d697925d2a2505f4c9d91f8c6660337bedf266",
+      "transportSha": "42d217dd4654c4b1783e3e8e1f89f6ee415e5280",
+      "runId": "39325122288",
+      "status": "HARVESTED_SUCCESS_FOUR_VARIANTS",
+      "scope": "Nine actual Passport routes and same-Voyage current Device fallback/Journal/released clue",
+      "productionBuild": "PASS",
+      "artifacts": 98,
+      "qualification": false,
+      "unchangedProgressionAndPublishedEdition": true,
+      "renderedReview": "PASSPORT_INTRO_VISIBLE_AND_LEGIBLE_ALL_FOUR_VARIANTS_NO_NEW_MATERIAL_DEFECT_IN_SAMPLED_ATLAS_DEVICE_LENS",
+      "maximumPassportReadinessMs": 2071.5,
+      "cleanup": "RUNTIME_TREES_PORTS_AND_TRANSPORT_PASS",
+      "limits": [
+        "DEVICE_FULL_PAGE_STICKY_HEADER_OBSCURES_CARD_TEXT_NOT_UNOBSCURED_COMPLETE_PAGE_PROOF",
+        "STATIC_REVIEW_NOT_ANIMATION_NATIVE_PROTECTED_OR_OWNER_ACCEPTANCE"
+      ]
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "716985c1afbfa1dc55aff644fc54dc554f57edb8",
+      "transportSha": "edce6c11d1643fc30eebfb5674f33f3c1a03b53f",
+      "runId": "39326967341",
+      "status": "HARVESTED_SUCCESS_FOUR_VARIANTS",
+      "scope": "Actual Captain resources, safe preview and separate owner Creator title save/reopen/restore",
+      "productionBuild": "PASS",
+      "artifacts": 38,
+      "qualification": false,
+      "unchangedProgressionAndPublishedEditions": true,
+      "maximumResourceReadinessMs": 1268.988870000001,
+      "renderedReview": "PREVIEW_TEXT_LEGIBLE_AND_AUTHORING_RAIL_CLEARS_MASTHEAD_ALL_FOUR_VARIANTS_NO_NEW_MATERIAL_DEFECT_IN_EIGHT_REPAIR_CAPTURES",
+      "cleanup": "RUNTIME_TREES_PORTS_AND_TRANSPORT_PASS",
+      "limits": [
+        "DEVELOPMENT_RENDERED_REVIEW_NOT_PROTECTED_NATIVE_PHYSICAL_OR_OWNER_ACCEPTANCE"
+      ]
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "727ff58ff336a7eeabc3afda9a8ea1d0b14a52ed",
+      "transportSha": "87110a2166f8fb51e12a44c9b7cafc53c7776b5b",
+      "runId": "39327507704",
+      "status": "HARVESTED_FAILURE_FOUR_VARIANTS_BEFORE_SIGN_IN",
+      "failure": "MANUAL_TRACE_START_CONFLICTED_WITH_RUNNER_OWNED_TRACE",
+      "artifacts": 4,
+      "qualification": false,
+      "scope": "Distinct Creator/Crew test setup; product assertions unexecuted"
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "928dd936fc4804260500cd95d5a301094fe3d34e",
+      "transportSha": "7a38898a550d44881a51000ec5630539c08a1285",
+      "runId": "39329558470",
+      "status": "HARVESTED_FAILURE_FOUR_VARIANTS_AT_INITIAL_CREW_CLUE_AXE_SELECTOR",
+      "failure": "EXPLICIT_ROLE_ATTRIBUTE_SELECTOR_DID_NOT_MATCH_NATIVE_HTML_DIALOG",
+      "scope": "Crew ordinary sign-in, Creator safety lock, actual Journal and released clue/Inspect reached; Creator save/reopen/after comparison unexecuted",
+      "artifacts": 4,
+      "productionBuild": "PASS",
+      "cleanup": "RUNTIME_TREES_PORTS_AND_TRANSPORT_PASS",
+      "qualification": false,
+      "diagnostics": {
+        "retention": "INCOMPLETE",
+        "issues": [
+          "MANIFEST_INVALID"
+        ],
+        "memberCount": 25,
+        "rawBytes": 42052355,
+        "ciphertextBytes": 74779850,
+        "sourceDiagnosis": "ORIGINAL_CI_REPEATS_SAME_AUTOMATIC_SCREENSHOT_PATH_PER_VARIANT_COLLECTOR_REJECTS_DUPLICATE_POINTER",
+        "fixedBudgetUnchanged": true,
+        "encryptedOriginalRetainedInOwnedArtifacts": true
+      }
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "4e1afbc0158bdd1cd496a5bfecc131110f086528",
+      "transportSha": "59286d02878c27f6ab411a97f167e7296f9894e2",
+      "runId": "39330479919",
+      "status": "DISPATCHED_NO_OUTCOME_CLAIMED",
+      "scope": "Ordinary anonymous Community entry, ten public districts, eight details, empty states/search and independent Voyage preservation",
+      "qualification": false
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167",
+      "transportSha": "8b0388c34e685bbe1dd040477eca46117170a3a2",
+      "runId": "39331079907",
+      "status": "DISPATCHED_NO_OUTCOME_CLAIMED",
+      "scope": "Corrected native dialog axe selector and distinct failure states; actual Creator save/reopen and refreshed Crew pinned-clue comparison",
+      "qualification": false
     }
   ],
   "experience": {
     "historicalObligations": 141,
     "historicalFamilies": 13,
-    "currentAffectedSurfaces": 171,
-    "currentUnregisteredSurfaces": 92,
+    "currentAffectedSurfaces": 175,
+    "currentUnregisteredSurfaces": 74,
     "protectedCapturedOrAcceptedByThisContinuation": 0,
     "developmentCapturedVariants": 4,
     "planner": "PRODUCT_EXPERIENCE_UNREGISTERED_SURFACE",
@@ -397,7 +526,7 @@
     "reachDiagnostics": "PROTECTED_ACCEPTED_ON_BASE",
     "historicalAccounting": "PRESERVED_SEXTANT_3_OF_3_CROSSDECK_10_OF_3_R1_2_OF_3",
     "registeredNewPlayerWorkspaceSurfaces": 2,
-    "remainingSoftware": "92 unregistered affected surfaces, remaining canonical populated/adverse fixtures, compatible paired-persona Creator/Player handoff, required protected capture/review and final qualification; declarations and development passes qualify none",
+    "remainingSoftware": "74 unregistered affected surfaces at4e1afbc015; remaining populated/adverse consumer fixtures, actual Community and paired Creator/Crew results, formal reference/layout review, required protected capture/review and final qualification. Independent attainable software remains; declarations and development passes qualify none.",
     "independentDevelopmentJourneyReview": {
       "source": "0d8b3c7841966a1d1c8b5dae21570b1043dc7915",
       "reviewer": "/root/sextant_source_review",
@@ -429,9 +558,51 @@
     "registeredNewPassportSourcePaths": 14,
     "newlyRegisteredAffectedPassportSurfaces": 12,
     "sourceReconciliation": {
-      "path": "phase4-source-reconciliation-resources-20261019.json",
-      "sha256": "e64c32c3b4c024307a4a2759ef4d2d38724d6945499d3c404ddbae1469137499",
+      "path": "phase4-source-reconciliation-community-20261019.json",
+      "sha256": "f181c732ac38fcbf26bba808f5c6540ef642625b33769daea46f521e82add083",
+      "sourceSha": "4e1afbc0158bdd1cd496a5bfecc131110f086528",
+      "affected": 175,
+      "unregistered": 74,
       "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
+    },
+    "sourceReconciliations": [
+      {
+        "path": "phase4-source-reconciliation-resources-20261019.json",
+        "sha256": "e64c32c3b4c024307a4a2759ef4d2d38724d6945499d3c404ddbae1469137499",
+        "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
+      },
+      {
+        "path": "phase4-source-reconciliation-styles-20261019.json",
+        "sha256": "9cee2a31fe28f5dad1f109288b7553088c65760d92eb9e209969e60041d44c92",
+        "sourceSha": "0d413da1d294660696ebe67246b666ccf19ba0da",
+        "affected": 174,
+        "unregistered": 92,
+        "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
+      },
+      {
+        "path": "phase4-source-reconciliation-community-20261019.json",
+        "sha256": "f181c732ac38fcbf26bba808f5c6540ef642625b33769daea46f521e82add083",
+        "sourceSha": "4e1afbc0158bdd1cd496a5bfecc131110f086528",
+        "affected": 175,
+        "unregistered": 74,
+        "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
+      }
+    ],
+    "consumerIndependentRenderedReviewSuccessor": {
+      "source": "23d697925d2a2505f4c9d91f8c6660337bedf266",
+      "runId": "39325122288",
+      "reviewer": "/root/sextant_source_review",
+      "disposition": "REPAIR_CLEAR_ALL_FOUR_VARIANTS",
+      "originalHashesVerified": 98,
+      "scope": "DEVELOPMENT_RENDERED_REVIEW_NOT_PROTECTED_NATIVE_PHYSICAL_OR_OWNER_ACCEPTANCE"
+    },
+    "resourceIndependentRenderedReviewSuccessor": {
+      "source": "716985c1afbfa1dc55aff644fc54dc554f57edb8",
+      "runId": "39326967341",
+      "reviewer": "/root/sextant_source_review",
+      "disposition": "BOTH_REPAIRS_CLEAR_ALL_FOUR_VARIANTS",
+      "originalHashesVerified": 38,
+      "scope": "DEVELOPMENT_RENDERED_REVIEW_NOT_PROTECTED_NATIVE_PHYSICAL_OR_OWNER_ACCEPTANCE"
     }
   },
   "externalGates": [
@@ -447,7 +618,11 @@
     "evidence/20261019-virtual/publication-index.json",
     "evidence/20261019-product/publication-index.json",
     "evidence/20261019-consumers/publication-index.json",
-    "evidence/20261019-resources/publication-index.json"
+    "evidence/20261019-resources/publication-index.json",
+    "evidence/20261019-contrast-repair/publication-index.json",
+    "evidence/20261019-resource-repair/publication-index.json",
+    "evidence/20261019-paired-setup-failure/publication-index.json",
+    "evidence/20261019-paired-dialog-failure/publication-index.json"
   ],
   "currentProtectedBase": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
   "canonicalHostDependencies": [
