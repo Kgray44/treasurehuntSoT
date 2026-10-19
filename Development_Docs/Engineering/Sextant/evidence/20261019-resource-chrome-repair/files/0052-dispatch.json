@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "candidateSha": "ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25",
+  "target": "sextant-resources",
+  "tier": "development",
+  "profiles": {
+    "android": [
+      {
+        "profile": "primary-phone",
+        "api": 36,
+        "device": "pixel_7",
+        "ram": "3072M",
+        "memory": 3072,
+        "lowRam": ""
+      }
+    ],
+    "apple": [
+      "primary-phone"
+    ]
+  },
+  "scenarios": {
+    "appleDevices": [],
+    "browser": [
+      "sextant-resource-journeys"
+    ],
+    "journal": [],
+    "background": [],
+    "radio": "uwb-native-peer-session,ble-native-generic-discovery,ble-native-ibeacon-discovery,ble-native-eddystone-uid-discovery",
+    "ios": "permission-denied-native,permission-revoked-mid-route,gps-perfect-walk,offline-native-canonical-reconcile,offline-lost-response-canonical-reconcile,offline-restart-canonical-reconcile,virtual-player-navigation,virtual-offline-canonical-reconcile,geofence-native-background-wake",
+    "android": "device-reboot,qr-native-camera-valid,permission-denied-native,permission-approximate-native,permission-revoked-mid-route,motion-walk,stationary,barometer-floor-change,orientation-turn,heading-turn,gps-perfect-walk,offline-native-canonical-reconcile,offline-lost-response-canonical-reconcile,offline-restart-canonical-reconcile,virtual-player-navigation,virtual-offline-canonical-reconcile,battery-normal,battery-low,battery-saver,charger-change",
+    "provider": "all"
+  },
+  "transportSha": "3c2407c7447de91a5a129a96b7005202ea29ac68",
+  "transportTree": "e5bb13e9edd0ab25efc91e88d2476d62e3c95660",
+  "branch": "codex/landfall-lab-ff7b5d0e4f9f-1792450783609",
+  "workflow": "landfall-device-lab.yml",
+  "createdAt": "2026-10-19T22:59:46.385Z",
+  "cleanup": "PASS",
+  "runId": "39338716275",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39338716275",
+  "harvested": "C:\\Users\\kkids\\.codex\\worktrees\\sextant-phase4-completion\\Codex_TreasureHunt\\artifacts\\landfall-device-lab\\hosted-ff7b5d0e4f9f-1792450783609\\run-39338716275"
+}

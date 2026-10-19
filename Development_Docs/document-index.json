@@ -741,6 +741,60 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-authoring-mobile-overflow/files/0001-browser-runtime.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-authoring-mobile-overflow/files/0002-browser-suite-profile.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-authoring-mobile-overflow/files/0007-authoring-resource-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-authoring-mobile-overflow/files/0023-authoring-resource-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-authoring-mobile-overflow/files/0039-authoring-resource-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-authoring-mobile-overflow/files/0055-authoring-resource-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-authoring-mobile-overflow/files/0067-hosted-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-authoring-mobile-overflow/files/0068-dispatch.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-authoring-mobile-overflow/publication-index.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Sextant/evidence/20261019-authoring-readiness-failure/files/0001-browser-runtime.json",
       "record_type": "engineering-record",
       "status": "current",
@@ -1341,6 +1395,60 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-resource-chrome-repair/files/0001-browser-runtime.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-resource-chrome-repair/files/0002-browser-suite-profile.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-resource-chrome-repair/files/0009-resource-consumer-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-resource-chrome-repair/files/0021-resource-consumer-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-resource-chrome-repair/files/0033-resource-consumer-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-resource-chrome-repair/files/0045-resource-consumer-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-resource-chrome-repair/files/0051-hosted-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-resource-chrome-repair/files/0052-dispatch.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-resource-chrome-repair/publication-index.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Sextant/evidence/20261019-resource-repair/files/0001-browser-runtime.json",
       "record_type": "engineering-record",
       "status": "current",
@@ -1390,6 +1498,42 @@
     },
     {
       "path": "Development_Docs/Engineering/Sextant/evidence/20261019-resource-repair/publication-index.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-resource-selector-failure/files/0001-browser-runtime.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-resource-selector-failure/files/0002-browser-suite-profile.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-resource-selector-failure/files/0003-retention.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-resource-selector-failure/files/0004-hosted-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-resource-selector-failure/files/0005-dispatch.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-resource-selector-failure/publication-index.json",
       "record_type": "engineering-record",
       "status": "current",
       "canonical_for": null

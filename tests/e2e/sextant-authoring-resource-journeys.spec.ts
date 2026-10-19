@@ -138,8 +138,35 @@ for (const viewport of [
             await expect(page.locator(".record-grid article")).toHaveCount(0);
           if (label === "Living Chart")
             await expect(main).toContainText("Add a real place or virtual world to begin the Living Chart.");
-          if (label === "Sea Trials")
-            await expect(page.getByRole("region", { name: "Saved Sea Trial Scenarios", exact: true })).toBeVisible();
+          const boundedPanels =
+            label === "Sea Trials"
+              ? [
+                  page.getByRole("region", { name: "Saved Sea Trial Scenarios", exact: true }),
+                  main.locator(".drydock-scenario-editor"),
+                ]
+              : label === "Versions"
+                ? [page.getByRole("region", { name: "Review and publish", exact: true })]
+                : [];
+          for (const panel of boundedPanels) {
+            await expect(panel).toBeVisible();
+            const bounds = await panel.evaluate((element) => {
+              const box = element.getBoundingClientRect();
+              const container = element.closest(".editor-single-panel")!.getBoundingClientRect();
+              return {
+                contained: box.left >= container.left - 1 && box.right <= container.right + 1,
+                visibleOverflow: Math.max(0, element.scrollWidth - element.clientWidth),
+                overflowingChildren: [...element.querySelectorAll("*")].filter((child) => {
+                  const childBox = child.getBoundingClientRect();
+                  return childBox.width > 0 && (childBox.left < box.left - 1 || childBox.right > box.right + 1);
+                }).length,
+              };
+            });
+            expect(bounds, `${label} content stays within its card`).toEqual({
+              contained: true,
+              visibleOverflow: 0,
+              overflowingChildren: 0,
+            });
+          }
           if (label === "Versions") {
             const review = page.getByRole("region", { name: "Review and publish", exact: true });
             await expect(review).toContainText("Drydock release decision");
@@ -150,6 +177,14 @@ for (const viewport of [
           await page.getByRole("heading", { level: 2, name: heading, exact: true }).scrollIntoViewIfNeeded();
           await expect(page.getByRole("heading", { level: 2, name: heading, exact: true })).toBeInViewport();
           await page.screenshot({ path: info.outputPath(`authoring-${label.toLowerCase().replaceAll(" ", "-")}.png`) });
+          if (label === "Versions") {
+            const confirmation = page
+              .getByRole("region", { name: "Review and publish", exact: true })
+              .getByRole("checkbox");
+            await confirmation.scrollIntoViewIfNeeded();
+            await expect(confirmation).toBeInViewport();
+            await page.screenshot({ path: info.outputPath("authoring-publication-confirmation.png") });
+          }
         }
         await page.getByRole("link", { name: "← Studio", exact: true }).click();
         await accountMenu.click();

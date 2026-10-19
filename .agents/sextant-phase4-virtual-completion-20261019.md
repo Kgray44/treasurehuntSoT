@@ -301,3 +301,11 @@ and scroll position. Exact Guide-path requests/responses log at most12 summaries
 each without queries, headers or bodies. Remove listeners in finally; observation
 and cleanup failures must never replace the original test error. No retry, forced
 click, new wait, motion change, timeout increase or product cause is inferred.
+
+Independent rendered review of authoring39337654035 retains mobile overflow
+R39337654035-01 despite four passing development journeys. Make publishing grid
+tracks shrinkable and wrap long checksums; make the Sea Trials ledger/editor
+tracks and fields shrinkable without clipping content. Keep actual pane content,
+disabled publication and readiness timing intact. Require card/descendant horizontal
+bounds for both panes and capture the publication confirmation after ordinary
+scrolling. Fresh four-variant execution and independent image review are required.

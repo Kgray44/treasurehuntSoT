@@ -1751,6 +1751,7 @@ html[data-voyage-theme="light"] .studio-no-editable-draft__details dt {
 .drydock-scenario-layout .drydock-scenario-ledger,
 .drydock-scenario-editor,
 .drydock-run-receipt {
+  min-width: 0;
   border: 1px solid rgba(201, 169, 95, 0.25);
   border-radius: 12px;
   padding: 1rem;
@@ -1861,7 +1862,18 @@ html[data-voyage-theme="light"] .studio-no-editable-draft__details dt {
 }
 .drydock-filter input,
 .drydock-run-actions select {
+  min-width: 0;
   width: 100%;
+}
+.drydock-scenario-editor .settings-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.drydock-scenario-editor .settings-grid > label {
+  min-width: 0;
+}
+.drydock-scenario-editor .settings-grid input,
+.drydock-scenario-editor .settings-grid select {
+  min-width: 0;
 }
 .drydock-json-fields section,
 .drydock-advanced-json,
@@ -2002,8 +2014,9 @@ html[data-voyage-theme="light"] .studio-no-editable-draft__details dt {
 }
 @media (max-width: 780px) {
   .drydock-scenario-layout,
-  .drydock-json-fields {
-    grid-template-columns: 1fr;
+  .drydock-json-fields,
+  .drydock-scenario-editor .settings-grid {
+    grid-template-columns: minmax(0, 1fr);
   }
   .drydock-run-receipt ol li {
     align-items: start;
@@ -2219,6 +2232,9 @@ html[data-voyage-theme="light"] .studio-no-editable-draft__details dt {
 }
 .studio-publishing-review {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
+  overflow-wrap: anywhere;
   gap: 1rem;
   margin-bottom: 1.25rem;
   border: 1px solid rgba(201, 169, 95, 0.38);
@@ -2234,6 +2250,7 @@ html[data-voyage-theme="light"] .studio-no-editable-draft__details dt {
 }
 .studio-publishing-stages {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.75rem;
   margin: 0;
   padding: 0;

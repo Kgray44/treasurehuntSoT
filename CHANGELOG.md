@@ -20,6 +20,8 @@ last_reviewed: 2026-10-19
 
 ### Corrected
 
+- Creator publication review wraps release checksums and stage content within its
+  card. Sea Trials keeps its Scenario ledger and editor fields within narrow cards.
 - The Captain Chronicle dashboard uses neutral Crew wording when its legacy label
   is absent. Creator actions and section navigation share one desktop sticky
   container below the application masthead; mobile keeps its compact section rail.

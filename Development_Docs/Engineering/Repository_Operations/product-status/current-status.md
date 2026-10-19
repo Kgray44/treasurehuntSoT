@@ -20,12 +20,12 @@ pending. The Captain dashboard source checkpoint confirms 176 affected surfaces 
 missing registrations. Fresh four-variant consumer/resource runs pass at their
 recorded sources; independent rendered review clears the Passport contrast, safe
 preview and mobile authoring-rail repairs. Distinct Creator/Crew development proof now passes with clear independent
-rendered review. Community still fails mobile normal-motion Guide entry; authoring
-still requires settled drawer and loaded Sea Trials verification. Their failed
-originals remain preserved. The extended Captain resource run passes four variants,
-but rendered review finds a misleading fallback Crew label and desktop editor
-chrome overlap; their source repair still needs fresh browser review. Protected
-acceptance remains pending.
+rendered review. Community still needs mobile normal-motion Guide entry resolution.
+Authoring passes the settled drawer and loaded Sea Trials checks in four variants,
+but independent review retains mobile publication-review and Scenario-ledger overflow.
+The Captain resource rerun passes four variants with clear independent review of
+the neutral Crew wording, editor chrome and More menu. Original failures and
+defective passing captures remain preserved. Protected acceptance remains pending.
 Reach diagnostics are accepted on main; Crossdeck #721
 is still unmerged. The following R1 accounting and older qualification results
 retain their historical source identities.

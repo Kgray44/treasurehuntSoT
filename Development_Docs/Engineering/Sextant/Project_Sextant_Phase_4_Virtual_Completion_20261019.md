@@ -594,3 +594,40 @@ resolution, then use ordinary Passport materialization, Book, replay and Cabinet
 provenance. Direct history rows or seeded completion statuses cannot prove that
 production journey. Canonical Darwin process ownership remains a software
 prerequisite separate from deferred manual Apple provisioning.
+
+At source `926a170b0fe6f8f78df449c884352ae1a2c14f56`, authoring run
+39337654035 passes all four variants, including the settled Asset drawer and
+loaded Sea Trials. Independent review verifies all 66 hashes, the frozen source
+fingerprint/tree and all 28 PNGs. All 28 activations are below 3000 ms, maximum
+699.91 ms. It retains R39337654035-01: both mobile publication reviews clip stage
+content horizontally and the Scenario ledger exceeds its card. The
+[69 original files](evidence/20261019-authoring-mobile-overflow/publication-index.json)
+preserve this defective passing result. Drydock still honestly reports missing
+evidence and NEEDS REPAIR; this is not publication readiness. The pending layout
+repair uses shrinkable grid/form tracks and checksum wrapping without clipping,
+adds card/descendant bounds and captures the publication confirmation by ordinary
+scrolling. Eight existing publishing/Scenario unit tests, TypeScript, source review
+and documentation/catalog checks pass; fresh browser and rendered proof remain.
+
+The same source's resource run 39337646202 passes three variants; desktop normal
+fails because a raw toolbar selector also finds an inert outgoing snapshot. Its
+[six-file original subset](evidence/20261019-resource-selector-failure/publication-index.json)
+retains COMPLETE diagnostics and the exact encrypted original's owned location and
+hash. No assertions or timing bounds were removed. Source
+`ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25` scopes the same toolbar/menu
+checks to the accessible current main. Run 39338716275 passes all four variants;
+independent review of all 24 PNGs resolves R39335372914-01 and -02 across all
+four. Neutral Voyage crew is visible, and the masthead, toolbar, rail and More
+menu paint without the reported overlap. All 50 hashes and the frozen source
+fingerprint/tree match. All 28 activations remain below 3000 ms, maximum
+1112.73 ms. The [53 originals](evidence/20261019-resource-chrome-repair/publication-index.json)
+include receipts and captures. All three runs report successful runtime trees,
+streams, ports and transport cleanup. Their videos were hashed, not reviewed;
+viewport samples do not establish full-page motion, native, protected or owner
+acceptance.
+
+Community's exact-link passive pointer/network diagnostic is frozen at
+`bdb99837af8e0067a5f212c164ef71047404a33c` and dispatched as development
+run 39339458097. It preserves the ordinary click, original assertions and limits.
+The observer closes over the actual clicked node rather than an outgoing clone;
+source review and TypeScript pass. No Guide product cause is inferred yet.
