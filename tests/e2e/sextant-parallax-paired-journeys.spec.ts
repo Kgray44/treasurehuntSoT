@@ -1,6 +1,6 @@
 // @sounding-line-registration owner=project-sextant suite=browser.sextant contracts=sextant.phase4.native-context
 // Development-only two-persona comparison; does not amend the older single-persona capture contract.
-import { test, expect, type Page } from "@playwright/test";
+import { test, expect, type BrowserContext, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { writeFile } from "node:fs/promises";
 import { db } from "../../src/lib/db";
@@ -10,7 +10,9 @@ import { enterClosureJournal } from "./fixtures/landfall-closure";
 import { deviceLabSourceIdentity } from "../../scripts/device-lab/source";
 
 test.describe.configure({ mode: "default", timeout: 180000 });
-test.use({ video: "on", trace: "retain-on-failure", screenshot: "only-on-failure" });
+// Closing the extra context before runner teardown collides with its automatic
+// screenshot ordinals. Capture both personas explicitly under distinct paths.
+test.use({ video: "on", trace: "retain-on-failure", screenshot: "off" });
 test.beforeAll(() => {
   if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic") throw new Error("SEXTANT_OWNED_BROWSER_REQUIRED");
   ensureGenericSoundingLineIsolation();
@@ -42,23 +44,8 @@ for (const viewport of [
           | "paired-1280-reduce"
           | "paired-390-no-preference"
           | "paired-390-reduce";
-        const fixture = await seedSextantResourceExperiences(key);
-        expect(await seedSextantResourceExperiences(key)).toEqual(fixture);
-        expect(fixture.crewEmail).toBeTruthy();
-        const baseline = await db.taleSession.findUniqueOrThrow({
-          where: { id: fixture.voyageId },
-          select: { currentBlockId: true, currentSequence: true, publishedVersionId: true, status: true },
-        });
-        const edition = await db.publishedTaleVersion.findUniqueOrThrow({
-          where: { id: fixture.versionId },
-          select: { checksum: true, contentSnapshot: true },
-        });
-        const crewContext = await browser.newContext({
-          baseURL,
-          viewport,
-          reducedMotion,
-          recordVideo: { dir: info.outputPath("crew-recording"), size: viewport },
-        });
+        let fixture!: Awaited<ReturnType<typeof seedSextantResourceExperiences>>;
+        let crewContext: BrowserContext | undefined;
         let primaryFailure: unknown;
         const cleanupFailures: unknown[] = [];
         let crew!: Page;
@@ -85,11 +72,30 @@ for (const viewport of [
           recordFeedback(`Published clue ${stage}`, start);
           await note.getByRole("button", { name: "Inspect", exact: true }).click();
           await expect(note).toContainText("You are inspecting The Captain’s note.");
-          expect((await new AxeBuilder({ page: crew }).include('[role="dialog"]').analyze()).violations).toEqual([]);
+          // Chronicle Lens is a native HTML dialog with an implicit role.
+          // Audit that actual open dialog, not an absent explicit-role attribute.
+          expect((await new AxeBuilder({ page: crew }).include("dialog[open]").analyze()).violations).toEqual([]);
           await crew.screenshot({ path: info.outputPath(`crew-${stage}-published-clue.png`) });
           await crew.getByRole("button", { name: "Close Chronicle Lens", exact: true }).click();
         };
         try {
+          fixture = await seedSextantResourceExperiences(key);
+          expect(await seedSextantResourceExperiences(key)).toEqual(fixture);
+          expect(fixture.crewEmail).toBeTruthy();
+          const baseline = await db.taleSession.findUniqueOrThrow({
+            where: { id: fixture.voyageId },
+            select: { currentBlockId: true, currentSequence: true, publishedVersionId: true, status: true },
+          });
+          const edition = await db.publishedTaleVersion.findUniqueOrThrow({
+            where: { id: fixture.versionId },
+            select: { checksum: true, contentSnapshot: true },
+          });
+          crewContext = await browser.newContext({
+            baseURL,
+            viewport,
+            reducedMotion,
+            recordVideo: { dir: info.outputPath("crew-recording"), size: viewport },
+          });
           crew = await crewContext.newPage();
           crewVideo = crew.video();
           // Playwright Test owns tracing for every browser.newContext() in this
@@ -216,27 +222,38 @@ for (const viewport of [
               cleanupFailures.push(error);
             }
           };
-          if (primaryFailure && crew)
-            await cleanup(async () => {
-              const screenshot = info.outputPath("crew-failure-screenshot.png");
-              await crew.screenshot({ path: screenshot });
-              await info.attach("screenshot", { path: screenshot, contentType: "image/png" });
-            });
-          if (primaryFailure && crew)
-            await cleanup(async () => {
-              const context = info.outputPath("crew-failure-error-context.md");
-              await writeFile(
-                context,
-                `# Synthetic Crew failure context\n\n${crew.url()}\n\n${await crew.locator("body").innerText({ timeout: 1000 })}\n`,
-              );
-              await info.attach("error-context", { path: context, contentType: "text/markdown" });
-            });
-          await cleanup(() => crewContext.close());
+          const captureFailure = async () => {
+            for (const [persona, failurePage] of [
+              ["owner", page],
+              ["crew", crew],
+            ] as const) {
+              if (!failurePage || failurePage.isClosed()) continue;
+              await cleanup(async () => {
+                const screenshot = info.outputPath(`${persona}-failure-screenshot.png`);
+                await failurePage.screenshot({ path: screenshot });
+                await info.attach("screenshot", { path: screenshot, contentType: "image/png" });
+              });
+              await cleanup(async () => {
+                const context = info.outputPath(`${persona}-failure-error-context.md`);
+                await writeFile(
+                  context,
+                  `# Synthetic ${persona} failure context\n\n${failurePage.url()}\n\n${await failurePage.locator("body").innerText({ timeout: 1000 })}\n`,
+                );
+                await info.attach("error-context", { path: context, contentType: "text/markdown" });
+              });
+            }
+          };
+          if (primaryFailure) await captureFailure();
+          const ownedCrewContext = crewContext;
+          if (ownedCrewContext) await cleanup(() => ownedCrewContext.close());
           const completedCrewVideo = crewVideo;
           if (completedCrewVideo)
             await cleanup(async () =>
               info.attach("video", { path: await completedCrewVideo.path(), contentType: "video/webm" }),
             );
+          // A cleanup-only failure still needs the open owner's diagnostic
+          // state before the runner tears down its page and seals the bundle.
+          if (!primaryFailure && cleanupFailures.length) await captureFailure();
         }
         if (primaryFailure) throw primaryFailure;
         if (cleanupFailures.length) throw new AggregateError(cleanupFailures, "SEXTANT_PAIRED_CONTEXT_CLEANUP_FAILED");

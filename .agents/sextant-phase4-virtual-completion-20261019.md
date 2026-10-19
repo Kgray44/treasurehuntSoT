@@ -166,3 +166,20 @@ role grant or private publication is performed by browser navigation. Existing
 curated generic references supply navigation hierarchy only; historic Community
 captures are supplemental design context. Registration and development capture
 do not grant protected Community layout acceptance or any custody allowance.
+
+Paired tracing successor run39329558470 reached Crew sign-in, the locked Player
+workspace, actual Journal and original released clue/Inspect in all four variants.
+It then failed because the axe include selector required an explicit dialog role
+attribute while Chronicle Lens uses native HTML dialog semantics. Preserve that
+failure and canonical diagnostic publication. Audit the actual open native dialog
+with unchanged axe0, progression, Save/reopen and timing assertions in one
+corrected-source development successor; no product or paired acceptance is
+inferred from reaching the earlier Crew steps.
+That run's collector retained25 unique members but reported INCOMPLETE with
+MANIFEST_INVALID. The original CI attachment list repeats the same automatic
+test-failed-1.png path twice per variant after the extra context closes. Disable
+only this test's automatic screenshots and explicitly attach distinct owner and
+Crew failure screenshots and error contexts before close. Keep the runner trace,
+both videos, existing collector validation and the fixed64MiB raw budget. This
+fixture repair cannot recover the earlier overwritten screenshot or change its
+incomplete disposition.
