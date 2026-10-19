@@ -1,0 +1,101 @@
+{
+  "classification": "APPLICATION_SOURCE_CONTRACT_AND_STATIC_CHECKS_NOT_PERCEPTION_OR_PHYSICAL_ACCEPTANCE",
+  "startingHead": "cd34451832e2d0004492880ac1288ec31945d3b2",
+  "applicationFiles": [
+    {
+      "path": "src/reach/browser-runtime.ts",
+      "sha256": "3dd86ef22fda089f90b6847ee80b60c670176761c18775e0f6e91a9e137d5b88"
+    },
+    {
+      "path": "public/reach/recovery-provider.js",
+      "sha256": "fe68db187f9db74943e1f0c55c3ad76621a2c60591af84d950bb6c407f372ca9"
+    },
+    {
+      "path": "public/reach/recovery-worker.js",
+      "sha256": "4d8caa84874b76795b1acc1db975277ffb0329eb485d62eae20fe50712965222"
+    }
+  ],
+  "subsystem": {
+    "command": "vitest run src/reach src/watchglass src/sextant --maxWorkers=2",
+    "receiptSha256": "244bfcf66aa2106258552e4a7d7835531bee9b7f15a5c4c3b7e5ae39fe438f83",
+    "total": 1652,
+    "passed": 1652,
+    "failed": 0,
+    "pending": 0,
+    "files": 87,
+    "suiteGroups": 187
+  },
+  "finalFocused": {
+    "command": "vitest run src/reach/browser-runtime-index-image.test.ts src/reach/browser-runtime.test.ts src/watchglass/recovery-provider.test.ts --maxWorkers=2",
+    "receiptSha256": "e422688e6eaf30842bbd1cad94fe3186e813351558c8ab89a4c937fce1d9393f",
+    "total": 208,
+    "passed": 208,
+    "failed": 0,
+    "pending": 0,
+    "files": 3,
+    "suiteGroups": 7,
+    "overlapsSubsystem": true,
+    "purpose": "Recheck exact final test fixtures after removal of duplicate unchanged backend/policy object properties."
+  },
+  "staticChecks": {
+    "fullTypeScript": {
+      "command": "tsc --noEmit",
+      "observedExitCode": 0,
+      "toolSession": 91989
+    },
+    "scopedEslint": {
+      "observedExitCode": 0,
+      "toolSession": 87680
+    },
+    "finalPrettier": "Application and test files unchanged by final scoped formatting."
+  },
+  "failedFirstPreparation": {
+    "receiptSha256": "7700c6fbdec60d0a653f2d2a429b78393e8dd8f0d65caa4f0d2067e79da88d67",
+    "canonicalStatus": "FAIL",
+    "refusal": "DEVELOPMENT_SOURCE_CHANGED_DURING_PREPARE",
+    "commands": [
+      {
+        "label": "prisma-generate",
+        "exitCode": 0,
+        "cleanup": "PASS",
+        "treeReaped": true
+      },
+      {
+        "label": "sqlite-bootstrap",
+        "exitCode": 0,
+        "cleanup": "PASS",
+        "treeReaped": true
+      },
+      {
+        "label": "generic-seed",
+        "exitCode": 0,
+        "cleanup": "PASS",
+        "treeReaped": true
+      },
+      {
+        "label": "scripts/migrate-legacy-companion.ts",
+        "exitCode": 0,
+        "cleanup": "PASS",
+        "treeReaped": true
+      },
+      {
+        "label": "scripts/sounding-line/prepare-validation-isolation.mjs",
+        "exitCode": 0,
+        "cleanup": "PASS",
+        "treeReaped": true
+      },
+      {
+        "label": "next-build",
+        "exitCode": 0,
+        "cleanup": "PASS",
+        "treeReaped": true
+      }
+    ],
+    "reason": "Root changelog edited during preparation; failed source-binding receipt preserved. No source-bound browser acceptance granted."
+  },
+  "interpretation": [
+    "Counts overlap and are not summed into an independent acceptance rate.",
+    "Static and injected contract tests do not establish neural accuracy, live capacity, selected-index identity, physical reliability or owner acceptance.",
+    "Original subsystem assertions and the broad mixed-motion browser assertion remain present."
+  ]
+}

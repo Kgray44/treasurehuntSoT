@@ -1,0 +1,210 @@
+{
+  "schemaVersion": 1,
+  "reviewId": "reach-phase1-geometry-development-review-r2-failed-cohort",
+  "classification": "SAFE_AGGREGATE_INDEPENDENT_DEVELOPMENT_EXPERIENCE_REVIEW",
+  "contractId": "reach.phase1.foundation",
+  "originalPrivateReviewSha256": "96171e967c2e0b42cc95621abfe84903ac82434e2e7b90405ed20cfa84ceb8ed",
+  "originalSafeAggregateSha256": "f450fbe031945861b78352e5d3670bf1449c00103f5583cc3712dbdd215801ef",
+  "preservedOriginalEvidence": true,
+  "scope": "New-source failed-cohort screenshots and actual screencast sequences only; no reuse of original-source captures as proof of repaired-source behavior.",
+  "verdict": "INCOMPLETE_RECAPTURE_WITH_FAILED_COHORT",
+  "repairDisposition": "VERIFY_FINAL_EVIDENCE",
+  "allContractPass": false,
+  "visualCompletionBlocked": true,
+  "finalSourceProof": false,
+  "unresolvedFindingIds": ["F-STOP-OVERLAY"],
+  "authority": "Independent development criticism only; no protected qualification, semantic model correctness, physical qualification or owner acceptance authority.",
+  "sourceIdentity": {
+    "baseHeadReported": "cd34451832e2d0004492880ac1288ec31945d3b2",
+    "freezeReceiptSha256Reported": "aad81b9868110f179c03d46ec29719313dddd8d2a9a47eed43a723f69b9e7b04",
+    "fullContentDigestReported": "99e2c0e1fa4e5cf1ecbeb05f18b6ba32c6cc626c9e5cf0f00689a294f2a6031a",
+    "fileCountReported": 2806,
+    "fullDigestIndependentlyRecomputed": false,
+    "repairedReachStageSha256Verified": "033519dba16a970997d64c98a7a4500105d4a1aa9f3dc23d138c191e5c2ce979",
+    "sourceReadScope": "Only the repaired ReachStage inactive branch after the original experience-first review.",
+    "ownershipObservation": "The repaired inactive branch obtains the canvas context, resets its transform, clears the full backing bitmap and returns without scheduling animation. Existing active cleanup still cancels animation. No ownership concern was identified in that narrow change. Source inspection does not resolve the rendered finding."
+  },
+  "cohortOutcome": {
+    "reportedByBuilder": "Laboratory original cohort terminal 8 passed and 2 failed out of 10, with source, fixture and build unchanged and owned process cleanup passing.",
+    "originalAssertionsPreservedReported": true,
+    "canonicalQualification": false,
+    "interpretation": "Both failed original cases remain failures. No assertion is weakened, no retry-to-pass conclusion is supplied, and no causal link to the canvas repair is established."
+  },
+  "failureObservations": [
+    {
+      "id": "R2-PHOTO-TARGET-3-HOLD",
+      "kind": "CONFIRMED_RENDERED_STATE_DURING_ORIGINAL_COHORT_FAILURE",
+      "evidenceTier": "D1_PUBLIC_PHOTOGRAPH_REPLAY",
+      "observed": "Actual screenshot sequence progresses from target 1 collecting to target 3 with two targets saved. A second photograph hand appears during target 3. Collection subsequently waits for fresh or eligible tracking; both hand joint sets become amber, neither active-hand control appears selected, and guidance explicitly asks the person to choose a hand or show one pointing hand. Target 3 remains current in the terminal screenshot.",
+      "visibleUserRecovery": "Active-hand controls, pause, retry and cancel remain available; previous saved targets stay visibly counted.",
+      "failedOutcome": "The original photographic loop does not reach target 4, the independent checks, practice or the new stop assertions.",
+      "causationBoundary": "The user-facing hold concerns unresolved hand selection or eligibility in the observed frames. Why the prior selected identity stopped yielding eligible evidence is not established by these captures. No claim that the canvas repair caused it.",
+      "evidenceIds": [
+        "stop-overlay-repair/supplemental-browser-final/laboratory/test-results/reach-laboratory-photograp-7bd3d-and-five-independent-checks-chromium/test-failed-1.png",
+        "stop-overlay-repair/supplemental-browser-final/laboratory/test-results/reach-laboratory-photograp-7bd3d-and-five-independent-checks-chromium/trace.zip",
+        "experience-review/repair-failure-sequence/frame-manifest.json"
+      ]
+    },
+    {
+      "id": "R2-VIEWPORT-INVALIDATION-REASON",
+      "kind": "CONFIRMED_RENDERED_STATE_DURING_ORIGINAL_COHORT_FAILURE",
+      "evidenceTier": "D0_GUIDED_SIMULATION",
+      "observed": "The actual sequence shows target 2 with one saved target, then a viewport resize returns the workspace to Prepare with Setup ended. The simulated camera remains available. The displayed reason is generic: the tracked fingertip, camera or pointing area changed. That reason persists in the terminal screenshot; the sampled sequence does not show the specific view-size wording required by the unchanged assertion.",
+      "visibleUserRecovery": "The interface clearly requires a fresh setup while preserving the camera and conventional navigation.",
+      "failedOutcome": "The original reason-specific guidance assertion is not fulfilled. Coherent safe invalidation does not turn that failed assertion into a pass.",
+      "causationBoundary": "Capture establishes the displayed reason and state transition, not the causal mechanism that selected or overwrote that reason. No claim that the canvas repair caused it.",
+      "evidenceIds": [
+        "stop-overlay-repair/supplemental-browser-final/laboratory/test-results/reach-laboratory-viewport--354d3-turn-excludes-external-URLs-chromium/test-failed-1.png",
+        "stop-overlay-repair/supplemental-browser-final/laboratory/test-results/reach-laboratory-viewport--354d3-turn-excludes-external-URLs-chromium/trace.zip",
+        "experience-review/repair-failure-sequence/frame-manifest.json"
+      ]
+    }
+  ],
+  "stopFindingDisposition": {
+    "id": "F-STOP-OVERLAY",
+    "status": "OPEN_PENDING_EXACT_SOURCE_STOP_RECAPTURE",
+    "reason": "The new photographic cohort failed before the stop assertions and therefore produced no repaired-source stopped or settled image proof. Code and focused tests alone cannot resolve the original rendered defect.",
+    "requiredEvidence": "Separate actual-worker focused stop recapture on the current prepared build, with immediate and settled blank camera and pointer canvases, correct camera-off state and owned resources released. Include source/build binding, image hashes and canvas alpha evidence; preserve both failed original cases."
+  },
+  "remainingProofGaps": [
+    "Repaired-source actual Stop camera and clear session rendered outcome and settled canvas clearing.",
+    "Complete successful original cohort on this repaired source remains absent; the two original failures remain visible.",
+    "Protected/canonical capture and qualification remain unavailable because the prepared build did not pass canonical Windows dependency-junction admission.",
+    "Broader contract states, reduced motion, accessibility, conventional return lifecycle and physical/owner acceptance gaps remain as recorded in the preserved original review. No original-source screenshot is promoted to repaired-source proof."
+  ],
+  "artifactMetadata": [
+    {
+      "artifactId": "stop-overlay-repair/supplemental-browser-final/laboratory/test-results/reach-laboratory-photograp-7bd3d-and-five-independent-checks-chromium/test-failed-1.png",
+      "sha256": "037d9621d45cde28c8a4a5d87723f69c94f12f98701e947718603e93f51bddaa",
+      "bytes": 327055,
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "artifactId": "stop-overlay-repair/supplemental-browser-final/laboratory/test-results/reach-laboratory-photograp-7bd3d-and-five-independent-checks-chromium/trace.zip",
+      "sha256": "0fd7d2e7cd529a4eb49e4fe140fa1a273a4653a312a0e293e4558f32dff34e99",
+      "bytes": 21357176
+    },
+    {
+      "artifactId": "stop-overlay-repair/supplemental-browser-final/laboratory/test-results/reach-laboratory-viewport--354d3-turn-excludes-external-URLs-chromium/test-failed-1.png",
+      "sha256": "4a1a31517beab1e0651e5b07992a9321850702c3c528ac4e0ae0eb0a4d2a37eb",
+      "bytes": 228521,
+      "width": 900,
+      "height": 700
+    },
+    {
+      "artifactId": "stop-overlay-repair/supplemental-browser-final/laboratory/test-results/reach-laboratory-viewport--354d3-turn-excludes-external-URLs-chromium/trace.zip",
+      "sha256": "584e599e905e0a6e910fd38ab15aced0fcb6f34dfa979560951d14b04b75427c",
+      "bytes": 5883819
+    },
+    {
+      "artifactId": "experience-review/repair-failure-sequence/frame-manifest.json",
+      "sha256": "eb7818937253925ab2e64d18fd1af71516f48724142a91e386e118bd4bf5bfb1",
+      "bytes": 5401
+    },
+    {
+      "artifactId": "experience-review/repair-failure-sequence/photo-frame-129036.jpeg",
+      "sha256": "88b2d3c56e350cd207110f1b23b06980c0476cb3225322bd983819e3145236bc",
+      "bytes": 36974,
+      "width": 720,
+      "height": 450
+    },
+    {
+      "artifactId": "experience-review/repair-failure-sequence/photo-frame-132986.jpeg",
+      "sha256": "92ada13a606aab8e089140e9ef5b600498a4b3af079dc3b4f5a278ce7ac06a20",
+      "bytes": 37738,
+      "width": 720,
+      "height": 450
+    },
+    {
+      "artifactId": "experience-review/repair-failure-sequence/photo-frame-137882.jpeg",
+      "sha256": "d8cbc0a6e45b4d7b71f8c90636cf1305853dcf3cbe5e0eb8066b0ebc8240f493",
+      "bytes": 38179,
+      "width": 720,
+      "height": 450
+    },
+    {
+      "artifactId": "experience-review/repair-failure-sequence/photo-frame-144912.jpeg",
+      "sha256": "778f580cdd8f3598640d7a29c868520a6b010c70cf8e01bf8c249a67a69c5efe",
+      "bytes": 39313,
+      "width": 720,
+      "height": 450
+    },
+    {
+      "artifactId": "experience-review/repair-failure-sequence/photo-frame-155518.jpeg",
+      "sha256": "0e98daa8d4bc0fe47f5047cf2b1c2987b9d48fa3b24dd7c78e4b57e26eaf396f",
+      "bytes": 39297,
+      "width": 720,
+      "height": 450
+    },
+    {
+      "artifactId": "experience-review/repair-failure-sequence/viewport-frame-104155.jpeg",
+      "sha256": "7869ed75e1cc7eb2629f742c30fed003a3affdb847421020540afc804a67b722",
+      "bytes": 45876,
+      "width": 800,
+      "height": 450
+    },
+    {
+      "artifactId": "experience-review/repair-failure-sequence/viewport-frame-104271.jpeg",
+      "sha256": "97473f5e2a3826f9a75e3897855507e6c16905e199ae978b5d90208072085c28",
+      "bytes": 27956,
+      "width": 800,
+      "height": 450
+    },
+    {
+      "artifactId": "experience-review/repair-failure-sequence/viewport-frame-107795.jpeg",
+      "sha256": "b0819043fa1e5099c36b09c3d7d79485cafe733e88ad33f067b489fc32761111",
+      "bytes": 41824,
+      "width": 800,
+      "height": 450
+    },
+    {
+      "artifactId": "experience-review/repair-failure-sequence/viewport-frame-107988.jpeg",
+      "sha256": "f74286e4863056ba3a35d03f0b3bd1a6fc6b827fb2e16a3d9e049465ab763302",
+      "bytes": 24070,
+      "width": 579,
+      "height": 326
+    },
+    {
+      "artifactId": "experience-review/repair-failure-sequence/viewport-frame-108092.jpeg",
+      "sha256": "090491069240aae9c4eec8eea9b743c6fe8a23c7b9c5b26dec429b95133436b2",
+      "bytes": 43029,
+      "width": 579,
+      "height": 450
+    },
+    {
+      "artifactId": "experience-review/repair-failure-sequence/viewport-frame-108493.jpeg",
+      "sha256": "090491069240aae9c4eec8eea9b743c6fe8a23c7b9c5b26dec429b95133436b2",
+      "bytes": 43029,
+      "width": 579,
+      "height": 450
+    },
+    {
+      "artifactId": "experience-review/repair-failure-sequence/viewport-frame-118124.jpeg",
+      "sha256": "090491069240aae9c4eec8eea9b743c6fe8a23c7b9c5b26dec429b95133436b2",
+      "bytes": 43029,
+      "width": 579,
+      "height": 450
+    },
+    {
+      "artifactId": "src/reach/ReachStage.tsx",
+      "sha256": "033519dba16a970997d64c98a7a4500105d4a1aa9f3dc23d138c191e5c2ce979",
+      "bytes": 7229
+    },
+    {
+      "artifactId": "src/reach/browser-runtime.ts",
+      "sha256": "3dd86ef22fda089f90b6847ee80b60c670176761c18775e0f6e91a9e137d5b88",
+      "bytes": 56883
+    },
+    {
+      "artifactId": "public/reach/recovery-provider.js",
+      "sha256": "fe68db187f9db74943e1f0c55c3ad76621a2c60591af84d950bb6c407f372ca9",
+      "bytes": 22285
+    },
+    {
+      "artifactId": "public/reach/recovery-worker.js",
+      "sha256": "4d8caa84874b76795b1acc1db975277ffb0329eb485d62eae20fe50712965222",
+      "bytes": 8459
+    }
+  ]
+}

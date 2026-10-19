@@ -1,0 +1,541 @@
+{
+  "classification": "AUTHOR_READ_ONLY_TERMINAL_FULL_ORDER_RAW_FAILURE_ANALYSIS_NOT_PHYSICAL",
+  "provenance": {
+    "implementationAuthorAlsoAnalyzed": true,
+    "independentlyAuthoredPerceptionLabels": false,
+    "realbrowserrawclocksrecordedunchanged": true
+  },
+  "sourcePins": {
+    "head": "cd34451832e2d0004492880ac1288ec31945d3b2",
+    "digest": "99e2c0e1fa4e5cf1ecbeb05f18b6ba32c6cc626c9e5cf0f00689a294f2a6031a",
+    "candidateFiles": [
+      {
+        "path": "src/reach/browser-runtime.ts",
+        "sha256": "3dd86ef22fda089f90b6847ee80b60c670176761c18775e0f6e91a9e137d5b88"
+      },
+      {
+        "path": "public/reach/recovery-provider.js",
+        "sha256": "fe68db187f9db74943e1f0c55c3ad76621a2c60591af84d950bb6c407f372ca9"
+      },
+      {
+        "path": "public/reach/recovery-worker.js",
+        "sha256": "4d8caa84874b76795b1acc1db975277ffb0329eb485d62eae20fe50712965222"
+      },
+      {
+        "path": "src/reach/ReachStage.tsx",
+        "sha256": "033519dba16a970997d64c98a7a4500105d4a1aa9f3dc23d138c191e5c2ce979"
+      }
+    ],
+    "beforeBuildSourceManifestSha256": "aad81b9868110f179c03d46ec29719313dddd8d2a9a47eed43a723f69b9e7b04",
+    "frozenManifestVerified": true
+  },
+  "reviewedSourceFiles": [
+    {
+      "path": "src/reach/ReachLaboratory.tsx",
+      "sha256": "f43081cf92cd43056898c585214a845739d98bc0c5344793035670867a49c5cf"
+    },
+    {
+      "path": "src/reach/index-image-tracker.ts",
+      "sha256": "c3bfe20e82a4c9e6230b357bb2890b0eebf5add5930948f003e8b1bb8780ed56"
+    },
+    {
+      "path": "src/reach/browser-runtime.ts",
+      "sha256": "3dd86ef22fda089f90b6847ee80b60c670176761c18775e0f6e91a9e137d5b88"
+    },
+    {
+      "path": "src/reach/observation.ts",
+      "sha256": "e9a3a11f47100416951ae8ae1b22b25c0aec9b69ab65723337eeccc4df4fc65f"
+    },
+    {
+      "path": "src/watchglass/hand-provider.ts",
+      "sha256": "05bf24d6c027de933c49fb9af0afde218f21bbec12ac2737b591d3709cd56973"
+    }
+  ],
+  "inputs": [
+    {
+      "label": "summary-private.json",
+      "sha256": "d5be9cb0ef0aba5f711f0d0e387921b72018b3078f083abc76fe86a1020615a7"
+    },
+    {
+      "label": "playwright.json",
+      "sha256": "c03c303c221041e92d55b9d65a3985e24a8e659b9d8f129fd88ae2b3d7dae962"
+    },
+    {
+      "label": "passive-reach-clock-private.json",
+      "sha256": "4d7b1eb9ef939aa6d7cc9a794cdfbb7f73178542c5fe4a8d9f399fdaa7881a82"
+    },
+    {
+      "label": "photographic-hold-image-points.json",
+      "sha256": "1880eb7919b4843c30aa9cb9ef2b44f40a462aba8b0a700556a2325cad5d7bc4"
+    },
+    {
+      "label": "full-photo-replay-passive-receipt-private.json",
+      "sha256": "abd1c8c119c7a55abcc205ae1d8052f90000b2b97def852890fe7cd64d67ef0b"
+    },
+    {
+      "label": "freeze-final-private.json",
+      "sha256": "ce2b4292dc2f9701dd52986ec36755b05b64fed8d46da0820531785db72a0a39"
+    },
+    {
+      "label": "input-binding-private.json",
+      "sha256": "fc6a59a3e1fd0dc4c4c9239507c5f7eb0bb044755d84d8317fe220e77aded83c"
+    },
+    {
+      "label": "aggregate-safe.json",
+      "sha256": "c4787941c40b8921af25e098d2784f95338f3cd09693129745c70de3804fbff8"
+    },
+    {
+      "label": "aggregate-safe.json",
+      "sha256": "32ce61cd27a657e9e4a7bf64d8fc863b3857e6c225a5a367556411d5f1f3d3c9"
+    }
+  ],
+  "denominators": {
+    "originalFullLaboratory": {
+      "startTime": "2026-10-19T20:15:29.406Z",
+      "duration": 158371.09,
+      "expected": 8,
+      "skipped": 0,
+      "unexpected": 2,
+      "flaky": 0
+    },
+    "focusedFirstThreeHolds": {
+      "startTime": "2026-10-19T20:34:55.764Z",
+      "duration": 17981.17,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "newFullOrderRawLaboratory": {
+      "startTime": "2026-10-19T20:38:22.639Z",
+      "duration": 217570.826,
+      "expected": 8,
+      "skipped": 0,
+      "unexpected": 2,
+      "flaky": 0
+    },
+    "combinedRate": "NOT_COMBINED_DIFFERENT_EXPERIMENTS"
+  },
+  "fullOrder": {
+    "all10OriginalCasesRetained": true,
+    "parity": "Two imports only; inverse normalization byte identical. Existing original telemetry route preserved. No new routes/retries/repeats.",
+    "cases": [
+      {
+        "title": "guided absolute experience, held-out check, playground, recovery and private export on laptop",
+        "status": "passed"
+      },
+      {
+        "title": "guided absolute experience, held-out check, playground, recovery and private export on mobile",
+        "status": "passed"
+      },
+      {
+        "title": "relative movement uses separate setup, check and cursor claims",
+        "status": "passed"
+      },
+      {
+        "title": "posture rejection preserves detection and lets the current target recover",
+        "status": "passed"
+      },
+      {
+        "title": "photographic video through the actual worker tracks noise, motion, partial occlusion and a second hand, then cleans up",
+        "status": "passed"
+      },
+      {
+        "title": "worker NONE has bounded lifecycle and recovery",
+        "status": "passed"
+      },
+      {
+        "title": "worker MODEL_UNAVAILABLE has bounded lifecycle and recovery",
+        "status": "passed"
+      },
+      {
+        "title": "camera denial has a useful retry and conventional demonstration",
+        "status": "passed"
+      },
+      {
+        "title": "viewport changes invalidate the fit and preserve camera availability; safe return excludes external URLs",
+        "status": "failed"
+      },
+      {
+        "title": "photographic worker completes nine real-landmark holds and five independent checks",
+        "status": "failed"
+      }
+    ],
+    "failure": {
+      "stage": "RELATIVE_VALIDATION",
+      "indexZeroBased": 2,
+      "expectedNext": "Target4of5",
+      "timeoutMs": 20000,
+      "originalCallLine": 525,
+      "absoluteTarget3TwoHandsPassed": true,
+      "failedOriginalFullRunStillRetained": true
+    },
+    "progress": {
+      "persistedCheckpointCount": 42,
+      "savedTargetCount": 21,
+      "savedTargetsByStage": {
+        "TRAINING": 9,
+        "VALIDATION": 5,
+        "RELATIVE_TRAINING": 5,
+        "RELATIVE_VALIDATION": 2
+      },
+      "lastPersistedSaved": {
+        "stage": "RELATIVE_VALIDATION",
+        "indexZeroBased": 1,
+        "imageState": "STALE",
+        "imageReason": "STALE",
+        "imageGeneration": "1"
+      },
+      "limitation": "Original writes checkpoints after each target save. Failing target3 motion-complete checkpoint remained in memory; its absence is not a claim no motion occurred."
+    },
+    "ready": [
+      {
+        "worker": 1,
+        "type": "READY",
+        "generation": 3,
+        "backend": "CPU_WASM",
+        "providerPolicy": "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1",
+        "fallbackReason": "GPU_STARTUP_LATENCY_HEALTH_FAILED",
+        "capture": null,
+        "inferenceEpoch": null,
+        "receivedPage": 3836.300000011921,
+        "receivedEpoch": 1792442436948.8,
+        "width": null,
+        "height": null,
+        "handCount": null,
+        "startupHealth": {
+          "classification": "SYNTHETIC_PREREADY_LATENCY_NECESSARY_CONDITION_ONLY",
+          "probeDimensions": {
+            "width": 640,
+            "height": 480
+          },
+          "geometryVersion": 3,
+          "mirrorTransform": "PREVIEW_X",
+          "livePixelQualification": false,
+          "attempts": [
+            {
+              "passed": false,
+              "delegate": "GPU",
+              "width": 640,
+              "height": 480,
+              "maximumElapsedMs": 150,
+              "outputsDiscarded": true,
+              "retainedRegionsCleared": true,
+              "probes": [
+                {
+                  "timestamp": -2,
+                  "elapsedMs": 288.59999999403954,
+                  "forcedRegions": 2,
+                  "discardedHandOutputs": 0
+                },
+                {
+                  "timestamp": -1,
+                  "elapsedMs": 320.2000000178814,
+                  "forcedRegions": 2,
+                  "discardedHandOutputs": 0
+                }
+              ]
+            },
+            {
+              "passed": true,
+              "delegate": "CPU",
+              "width": 640,
+              "height": 480,
+              "maximumElapsedMs": 150,
+              "outputsDiscarded": true,
+              "retainedRegionsCleared": true,
+              "probes": [
+                {
+                  "timestamp": -2,
+                  "elapsedMs": 54.80000001192093,
+                  "forcedRegions": 2,
+                  "discardedHandOutputs": 0
+                },
+                {
+                  "timestamp": -1,
+                  "elapsedMs": 55.900000005960464,
+                  "forcedRegions": 2,
+                  "discardedHandOutputs": 0
+                }
+              ]
+            }
+          ]
+        },
+        "fixtureCondition": "POINT"
+      }
+    ],
+    "rawCounts": {
+      "init": 1,
+      "frame": 989,
+      "result": 988,
+      "error": 0
+    },
+    "rawTiming": {
+      "results": 988,
+      "rawHandCounts": {
+        "1": 973,
+        "2": 15
+      },
+      "packetAgeMs": {
+        "n": 988,
+        "min": 46.70000001788139,
+        "median": 58.69999998807907,
+        "p95": 89.10000002384186,
+        "max": 153.30000001192093
+      },
+      "pixelOriginToReceiptMs": {
+        "n": 988,
+        "min": 61.49999999404099,
+        "median": 99.90000000596046,
+        "p95": 139.19999999404536,
+        "max": 226.90000001191947
+      },
+      "rawPacketAgesOver150": 1,
+      "replayAdmitted": 955,
+      "replayRejected": 33,
+      "replayConditions": {
+        "ACQUIRING": 14,
+        "READY": 941
+      },
+      "observedImageReasons": {
+        "UNSEEDED": 489,
+        "STALE": 160,
+        "FULL_HAND_POINT_PENDING": 2,
+        "FULL_HAND_POINT_CONFIRMED": 197,
+        "APPEARANCE_MISMATCH": 1,
+        "IMAGE_MOTION_TOO_LARGE": 139
+      },
+      "observedImageGenerations": {
+        "0": 489,
+        "1": 499
+      }
+    },
+    "last20Seconds": {
+      "results": 226,
+      "rawHandCounts": {
+        "1": 226
+      },
+      "packetAgeMs": {
+        "n": 226,
+        "min": 47.400000005960464,
+        "median": 61.099999994039536,
+        "p95": 87.59999999403954,
+        "max": 124.7000000178814
+      },
+      "pixelOriginToReceiptMs": {
+        "n": 226,
+        "min": 62.800000017887214,
+        "median": 107.60000001192384,
+        "p95": 143.60000001787557,
+        "max": 181.30000001192093
+      },
+      "rawPacketAgesOver150": 0,
+      "replayAdmitted": 219,
+      "replayRejected": 7,
+      "replayConditions": {
+        "READY": 219
+      },
+      "observedImageReasons": {
+        "STALE": 86,
+        "APPEARANCE_MISMATCH": 1,
+        "IMAGE_MOTION_TOO_LARGE": 139
+      },
+      "observedImageGenerations": {
+        "1": 226
+      }
+    },
+    "last15Seconds": {
+      "results": 172,
+      "rawHandCounts": {
+        "1": 172
+      },
+      "packetAgeMs": {
+        "n": 172,
+        "min": 47.400000005960464,
+        "median": 60.29999998211861,
+        "p95": 86.30000001192093,
+        "max": 109.19999998807907
+      },
+      "pixelOriginToReceiptMs": {
+        "n": 172,
+        "min": 62.800000017887214,
+        "median": 107.40000000000146,
+        "p95": 143.60000001787557,
+        "max": 164.30000000595464
+      },
+      "rawPacketAgesOver150": 0,
+      "replayAdmitted": 167,
+      "replayRejected": 5,
+      "replayConditions": {
+        "READY": 167
+      },
+      "observedImageReasons": {
+        "IMAGE_MOTION_TOO_LARGE": 110,
+        "STALE": 62
+      },
+      "observedImageGenerations": {
+        "1": 172
+      }
+    },
+    "last5Seconds": {
+      "results": 57,
+      "rawHandCounts": {
+        "1": 57
+      },
+      "packetAgeMs": {
+        "n": 57,
+        "min": 48.5,
+        "median": 60,
+        "p95": 84.69999998807907,
+        "max": 107.90000000596046
+      },
+      "pixelOriginToReceiptMs": {
+        "n": 57,
+        "min": 62.800000017887214,
+        "median": 106.69999999999709,
+        "p95": 136.10000001787557,
+        "max": 145.5
+      },
+      "rawPacketAgesOver150": 0,
+      "replayAdmitted": 57,
+      "replayRejected": 0,
+      "replayConditions": {
+        "READY": 57
+      },
+      "observedImageReasons": {
+        "IMAGE_MOTION_TOO_LARGE": 36,
+        "STALE": 21
+      },
+      "observedImageGenerations": {
+        "1": 57
+      }
+    },
+    "afterLastSavedTarget": {
+      "results": 233,
+      "rawHandCounts": {
+        "1": 233
+      },
+      "packetAgeMs": {
+        "n": 233,
+        "min": 47.400000005960464,
+        "median": 61.5,
+        "p95": 101.90000000596046,
+        "max": 145.40000000596046
+      },
+      "pixelOriginToReceiptMs": {
+        "n": 233,
+        "min": 62.800000017887214,
+        "median": 108.10000001787557,
+        "p95": 152.40000001787848,
+        "max": 181.30000001192093
+      },
+      "rawPacketAgesOver150": 0,
+      "replayAdmitted": 221,
+      "replayRejected": 12,
+      "replayConditions": {
+        "ACQUIRING": 2,
+        "READY": 219
+      },
+      "observedImageReasons": {
+        "STALE": 93,
+        "APPEARANCE_MISMATCH": 1,
+        "IMAGE_MOTION_TOO_LARGE": 139
+      },
+      "observedImageGenerations": {
+        "1": 233
+      }
+    },
+    "finalUi": [
+      {
+        "reachReadiness": "RECOVERING",
+        "imageState": "LOST",
+        "imageReason": "IMAGE_MOTION_TOO_LARGE",
+        "imageCaptureTime": "78689.09999999404",
+        "imageInferenceTime": "78756.09999999404",
+        "imageModelAgreement": "UNAVAILABLE",
+        "fingertipCoordinateSource": "IMAGE",
+        "calibrationIdentity": "ACTIVE"
+      }
+    ],
+    "observedImage": {
+      "generations": {
+        "0": 489,
+        "1": 499
+      },
+      "firstMismatchAfterLastSavedMs": 1270.300000011921,
+      "firstMotionTooLargeAfterLastSavedMs": 1370.800000011921,
+      "lastTrackingBeforeFailureEndMs": 21647.5,
+      "meaning": "DOM state observed immediately before each RESULT runtime callback; throttled rendering and prior-frame state, not exact image decision timestamps."
+    },
+    "modelSourceReplay": {
+      "singleReplayRows": 988,
+      "receiptClockAdmitted": 955,
+      "rejected": 33,
+      "distinctSelectedLocalTrackGenerationPairs": 1,
+      "selectedChangedRows": 0,
+      "sourceContinuityAmbiguousRows": 0,
+      "conditions": {
+        "ACQUIRING": 14,
+        "READY": 941
+      },
+      "absoluteTwoHandInterval": {
+        "rawRows": 16,
+        "admittedRows": 16,
+        "incumbentRetainedRows": 16,
+        "firstTwoSelectedCondition": "READY"
+      },
+      "limitation": "Exact pinned model adapter/posture/gate/selector code at passive receipt time with a stable synthetic opaque lease token. It does not reproduce runtime internal final gate, relative image tracking, selectIndexModelAnchor authority, appearance/reference/velocity state or image-source aliases."
+    },
+    "cleanup": {
+      "browser": "PASS",
+      "server": "PASS",
+      "portReleased": true,
+      "sourceUnchanged": true,
+      "fixtureUnchanged": true,
+      "buildUnchanged": true,
+      "runtimeArchive": "PASS_ARCHIVED_OWNED_MUTABLE_COPY",
+      "preTeardownActiveCounts": {
+        "tracks": 1,
+        "workers": 1,
+        "prompts": 1,
+        "observations": 988,
+        "draws": 1568,
+        "canvasClears": 2921
+      },
+      "activeCountBoundary": "Failure attachment taken while camera was intentionally active; later owned cleanup passed. This is not a leak claim."
+    }
+  },
+  "causalAssessment": {
+    "proven": [
+      "This full-order run passed earlier absolute two-hand transition and9absolute+5absolutevalidation+5relativetraining+2relativevalidation targets before failing next relativecheck progress.",
+      "Final image stateLOST/IMAGE_MOTION_TOO_LARGE with imagegeneration1, modelAgreementUNAVAILABLE, coordinateSourceIMAGE and calibrationIdentityACTIVE is recorded.",
+      "Late model-side replay rows preserve incumbent local generation with framed/geometry/pointing evidence while visible image state remains LOST or STALE. This cannot establish that current image-selected material is correct.",
+      "IMAGE_MOTION_TOO_LARGE is emitted at index-image-tracker1047..1048 after NCC correlation/separation checks when proposed match is more than32analysispixels from previous search point. This names an algorithm rejection; it is not measured physical finger motion.",
+      "At2345 failed matches can attempt existing modelFallback then retain match rejection when fallback is unavailable. No per-frame fallback eligibility internals were captured."
+    ],
+    "supportedNarrowConclusion": "The later exercised stall is a current-image correspondence/recovery failure after intermittent freshness rejections, distinct from the earlier full-cohort CHOOSE_HAND failure. Neural disappearance or selected-model replacement is not demonstrated in this replay.",
+    "unproven": [
+      "No grayscale frames, templates, match winners, current optical reference, image velocity, actual model anchor/fallback eligibility or exact internal gate/status trace were recorded. Image registration and source identity cannot be replayed.",
+      "Temporal ordering of stale DOM samples then mismatch/motion reason does not prove stale rejection caused the optical loss.",
+      "All observed imagegeneration1 and ACTIVE flag do not establish correct physical fingertip or unbroken material identity.",
+      "Different failure stages under instrumentation do not prove flakiness, regression, source repair or original root cause."
+    ],
+    "actionableSourceFix": "NONE_JUSTIFIED_BY_THIS_BOUNDED_EVIDENCE",
+    "missingDiscriminator": "Joint current grayscale and frozen image-tracker reference/match/authority diagnostics at the already identified transition would be needed to distinguish accumulated search displacement, wrong material match and failed model fallback; no additional run authorized or performed here."
+  },
+  "promotion": {
+    "fullLaboratoryPassed": false,
+    "stopAlphaAssertionsReachedInFailedPhoto": false,
+    "endOfJourneyCalibrationPerformanceAvailable": false,
+    "phase1PerceptionMissionAccepted": false,
+    "canonicalQualification": false,
+    "conclusion": "Preserve all full-cohort failures and partial progress. No correctness or physical promotion from this run."
+  },
+  "limitations": [
+    "One full-order raw browser cohort and one model-only offline replay, no repeated attempts or threshold changes.",
+    "Public photographic fixture is synthetic video; no physical camera, exact endpoint/identity ground truth, capture-to-display latency or owner acceptance.",
+    "Safe aggregate excludes raw landmarks, coordinates and opaque leases; raw packet files stay private.",
+    "Original canonical Windows junction refusal remains unqualified.",
+    "Original viewport message-path failure remains retained; no attribution to unchanged active Stage drawing."
+  ]
+}

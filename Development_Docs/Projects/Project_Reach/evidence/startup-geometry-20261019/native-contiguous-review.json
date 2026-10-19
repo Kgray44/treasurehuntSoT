@@ -1,0 +1,252 @@
+{
+  "classification": "AGGREGATE_NATIVE_ONLY_AI_DEVELOPMENT_REVIEW_NOT_PHYSICAL_GROUND_TRUTH",
+  "referenceSha256": "5cb024ad66904b5689575c5ecb9167ba3f7286aaff2d9b3492c8b16a8ef43f00",
+  "planSha256": "29962478b2844fe8cae83588c450acbf5bb0e0828dc7021901daac43bce1fb0a",
+  "pixelConvention": "MIRRORED_NATIVE_PIXEL_CENTERS",
+  "coordinateVerification": {
+    "originalPngTilesPixelEqual": 79,
+    "additionalFlip": false,
+    "resize": false,
+    "modelOverlay": false,
+    "exactPointLabels": 0
+  },
+  "coverage": {
+    "originalWindows": 5,
+    "plannedFrameVisits": 120,
+    "uniqueFrames": 79,
+    "uniqueCounts": {
+      "frames": 79,
+      "tipVisibility": {
+        "VISIBLE": 48,
+        "AMBIGUOUS": 21,
+        "NOT_VISIBLE": 10
+      },
+      "anatomicalDigit": {
+        "INDEX": 54,
+        "UNRESOLVED": 25
+      },
+      "pointingIntent": {
+        "POINT": 41,
+        "UNRESOLVED": 38
+      },
+      "selectedIndexContinuity": {
+        "UNRESOLVED": 39,
+        "SAME_VISIBLE_INDEX": 40
+      },
+      "endpointRegions": 54,
+      "exactPointLabels": 0
+    },
+    "unionCohorts": [
+      {
+        "name": "RIGHT",
+        "spanMs": 1300.0000000000007,
+        "frames": 24,
+        "tipVisibility": {
+          "VISIBLE": 20,
+          "AMBIGUOUS": 4
+        },
+        "anatomicalDigit": {
+          "INDEX": 24
+        },
+        "pointingIntent": {
+          "POINT": 24
+        },
+        "selectedIndexContinuity": {
+          "UNRESOLVED": 1,
+          "SAME_VISIBLE_INDEX": 23
+        },
+        "endpointRegions": 24,
+        "exactPointLabels": 0
+      },
+      {
+        "name": "BOTTOM_RIGHT",
+        "spanMs": 1481.9999999999993,
+        "frames": 27,
+        "tipVisibility": {
+          "VISIBLE": 16,
+          "AMBIGUOUS": 7,
+          "NOT_VISIBLE": 4
+        },
+        "anatomicalDigit": {
+          "INDEX": 16,
+          "UNRESOLVED": 11
+        },
+        "pointingIntent": {
+          "POINT": 9,
+          "UNRESOLVED": 18
+        },
+        "selectedIndexContinuity": {
+          "UNRESOLVED": 19,
+          "SAME_VISIBLE_INDEX": 8
+        },
+        "endpointRegions": 16,
+        "exactPointLabels": 0
+      },
+      {
+        "name": "SWEEP",
+        "spanMs": 1448.9999999999982,
+        "frames": 28,
+        "tipVisibility": {
+          "VISIBLE": 12,
+          "AMBIGUOUS": 10,
+          "NOT_VISIBLE": 6
+        },
+        "anatomicalDigit": {
+          "INDEX": 14,
+          "UNRESOLVED": 14
+        },
+        "pointingIntent": {
+          "POINT": 8,
+          "UNRESOLVED": 20
+        },
+        "selectedIndexContinuity": {
+          "UNRESOLVED": 19,
+          "SAME_VISIBLE_INDEX": 9
+        },
+        "endpointRegions": 14,
+        "exactPointLabels": 0
+      }
+    ],
+    "windowCounts": [
+      {
+        "itemId": "sequence-01",
+        "frames": 24,
+        "tipVisibility": {
+          "VISIBLE": 20,
+          "AMBIGUOUS": 4
+        },
+        "anatomicalDigit": {
+          "INDEX": 24
+        },
+        "pointingIntent": {
+          "POINT": 24
+        },
+        "selectedIndexContinuity": {
+          "UNRESOLVED": 1,
+          "SAME_VISIBLE_INDEX": 23
+        },
+        "endpointRegions": 24,
+        "exactPointLabels": 0
+      },
+      {
+        "itemId": "sequence-02",
+        "frames": 24,
+        "tipVisibility": {
+          "VISIBLE": 13,
+          "AMBIGUOUS": 7,
+          "NOT_VISIBLE": 4
+        },
+        "anatomicalDigit": {
+          "INDEX": 13,
+          "UNRESOLVED": 11
+        },
+        "pointingIntent": {
+          "POINT": 9,
+          "UNRESOLVED": 15
+        },
+        "selectedIndexContinuity": {
+          "UNRESOLVED": 16,
+          "SAME_VISIBLE_INDEX": 8
+        },
+        "endpointRegions": 13,
+        "exactPointLabels": 0
+      },
+      {
+        "itemId": "sequence-03",
+        "frames": 24,
+        "tipVisibility": {
+          "VISIBLE": 13,
+          "AMBIGUOUS": 7,
+          "NOT_VISIBLE": 4
+        },
+        "anatomicalDigit": {
+          "INDEX": 13,
+          "UNRESOLVED": 11
+        },
+        "pointingIntent": {
+          "POINT": 6,
+          "UNRESOLVED": 18
+        },
+        "selectedIndexContinuity": {
+          "SAME_VISIBLE_INDEX": 6,
+          "UNRESOLVED": 18
+        },
+        "endpointRegions": 13,
+        "exactPointLabels": 0
+      },
+      {
+        "itemId": "sequence-04",
+        "frames": 24,
+        "tipVisibility": {
+          "VISIBLE": 8,
+          "AMBIGUOUS": 10,
+          "NOT_VISIBLE": 6
+        },
+        "anatomicalDigit": {
+          "INDEX": 10,
+          "UNRESOLVED": 14
+        },
+        "pointingIntent": {
+          "POINT": 8,
+          "UNRESOLVED": 16
+        },
+        "selectedIndexContinuity": {
+          "UNRESOLVED": 15,
+          "SAME_VISIBLE_INDEX": 9
+        },
+        "endpointRegions": 10,
+        "exactPointLabels": 0
+      },
+      {
+        "itemId": "sequence-05",
+        "frames": 24,
+        "tipVisibility": {
+          "VISIBLE": 8,
+          "AMBIGUOUS": 10,
+          "NOT_VISIBLE": 6
+        },
+        "anatomicalDigit": {
+          "INDEX": 10,
+          "UNRESOLVED": 14
+        },
+        "pointingIntent": {
+          "POINT": 4,
+          "UNRESOLVED": 20
+        },
+        "selectedIndexContinuity": {
+          "SAME_VISIBLE_INDEX": 6,
+          "UNRESOLVED": 18
+        },
+        "endpointRegions": 10,
+        "exactPointLabels": 0
+      }
+    ]
+  },
+  "visibleHandContinuity": {
+    "observedFrameTransitions": 76,
+    "coarseSameVisibleHand": 76,
+    "referenceSelectedIndexSameWithinInitialResolvedSegment": 40,
+    "referenceSelectedIndexUnresolvedTransitions": 36,
+    "referenceDifferentVisibleDigit": 0,
+    "interpretation": "No resolved different digit was observed; unresolved transitions and unreviewed gaps prevent a zero anatomical-switch claim."
+  },
+  "referenceAuthority": {
+    "independentlyEnteredAI": true,
+    "physicalGroundTruth": false,
+    "ownerConfirmed": false,
+    "recordingExposed": true,
+    "perFrameModelOutputsOpenedDuringReview": false,
+    "oldReferenceValuesReopened": false,
+    "sealedBeforeCandidate": false
+  },
+  "conclusion": "The selected fingertip can become blurred or clipped while the same visible hand remains present. Initial clearly visible index segments support limited local continuity; later gaps remain unqualified. Logical replacement counts cannot be converted into anatomical switch counts from these references.",
+  "limitations": [
+    "Single exposed recording, AI coarse references rather than physical measured ground truth.",
+    "Native temporal spacing is49–68ms in these intervals; inter-exposure identity events or motion are unobserved.",
+    "No model confidence, requested prompt, logical counter or missing pointer used as visual identity evidence.",
+    "No wrong-digit or explicit contrary reference exists in these chosen windows; false identification specificity is unavailable.",
+    "These windows cover only three short union intervals and cannot adjudicate all nine logical replacements in the full recording.",
+    "No physical continuity proof across unreviewed temporal gaps or hidden/blurred selected-index interval.",
+    "Endpoint regions are deliberately coarse visual uncertainty estimates; no exact accuracy or calibrated confidence interval."
+  ]
+}

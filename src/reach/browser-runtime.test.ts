@@ -8,7 +8,7 @@ afterEach(() => {
 function setup(rawInference?: (frame: RawHandInference) => void) {
   vi.stubGlobal("isSecureContext", true);
   vi.stubGlobal("OffscreenCanvas", class {});
-  vi.stubGlobal("createImageBitmap", vi.fn().mockResolvedValue({ close: vi.fn() }));
+  vi.stubGlobal("createImageBitmap", vi.fn().mockResolvedValue({ width: 640, height: 480, close: vi.fn() }));
   vi.spyOn(document, "visibilityState", "get").mockReturnValue("visible");
   const workers: { onmessage: ((event: MessageEvent) => void) | null; generation: number }[] = [];
   vi.stubGlobal(
@@ -111,13 +111,17 @@ it.each([false, true])(
       s.resume();
       await start;
       const worker = s.workers[0];
-      worker.onmessage!({ data: { type: "READY", generation: worker.generation } } as MessageEvent);
+      worker.onmessage!({
+        data: { type: "READY", generation: worker.generation, backend: "CPU_WASM", providerPolicy: "ORIGINAL_CPU" },
+      } as MessageEvent);
       await Promise.resolve();
       const now = performance.now();
       const result = { landmarks: [], handedness: [] };
       worker.onmessage!({
         data: {
           type: "RESULT",
+          backend: "CPU_WASM",
+          providerPolicy: "ORIGINAL_CPU",
           generation: worker.generation,
           result,
           capture: now - 5,
@@ -166,9 +170,13 @@ it("records stale raw results for diagnosis without making them eligible, and ig
     await start;
     const worker = s.workers[0],
       now = performance.now();
-    worker.onmessage!({ data: { type: "READY", generation: worker.generation } } as MessageEvent);
+    worker.onmessage!({
+      data: { type: "READY", generation: worker.generation, backend: "CPU_WASM", providerPolicy: "ORIGINAL_CPU" },
+    } as MessageEvent);
     const data = {
       type: "RESULT",
+      backend: "CPU_WASM",
+      providerPolicy: "ORIGINAL_CPU",
       generation: worker.generation,
       result: { landmarks: [], handedness: [] },
       capture: now - 200,

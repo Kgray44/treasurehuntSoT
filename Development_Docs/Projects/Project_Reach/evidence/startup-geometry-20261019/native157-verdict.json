@@ -1,0 +1,170 @@
+{
+  "classification": "SAFE_BLIND157_DEVELOPMENT_VERDICT_NOT_PHYSICAL_GROUND_TRUTH_NOT_MISSION_ACCEPTANCE",
+  "source": {
+    "primaryAggregateSha256": "226f6eea973cb61b29615fc1815233c8277bd231dfe683b9b14f8743a24a10b5",
+    "separateAgreementSha256": "573264cb891a572d5b8b319ee9ec6ef87c7a4c112ad60fd003807fbd082c18cb",
+    "metricSealSha256": "6ca0356bad5b7f2be6b884caeaceeb29b7d17319175d64195c4885496fdfb67d",
+    "metricDefinitionSha256": "bc79b51326c17f32c56d232c452e3a8be6055cd420c3fde339c1f8b186677ac0",
+    "evaluatorSha256": "5c04d1940daba344309aec5f51b19b58361ece0a2048c37dbc75c565a822099e",
+    "rectangleMetricCodeSha256": "44feececa150bb06722aa5e0e62e55b8792e399bb1532aba98adf22ca11b7112",
+    "sourcePinsSha256": "d8a0802367b89976463833eba8351ec1cbde613cb806e6717e33eda5d93f19bb",
+    "pairedRawResultsSha256": "23ef09eb70e1e9e367cd561c698012492da0834fc03be09c547b9e5d63196cfe",
+    "pairedGrayStreamSha256": "d91e0f49cc9954dfead0fce1c1e5f5c2996fb55293da266197f8833daeef0c8a",
+    "pairedManifestSha256": "daafc7a9a3feff82ae19073e2b28d6a0a73f2b22459146efc43e0bb2d93078f6",
+    "planSha256": "424b98044f3bb71587e48295b54d7bde52623385eabd35c1a809e873a3bbac84",
+    "new157ReferencesSha256": "18ce44cf20101b67245dc2c7248cd929f9ca0834107eeb5493e3e9f63df9169e",
+    "old79ReferencesSha256": "5cb024ad66904b5689575c5ecb9167ba3f7286aaff2d9b3492c8b16a8ef43f00",
+    "canonicalBundleSha256": "83847083b960f4e20132e11e96e33350c9eda580d3e3d3f662991a3be35d4026",
+    "benchmarkRunnerSha256": "71de507c224bbc3c65b86ef1ff392d4bda9e9ed449ef9b517537ece52e831e6c",
+    "priorChecked48V2TransformSourceSha256": "5e398569a9a654d67b916ca1c5570681f0c2eb1d475e21b9bd73413ffd97cf38",
+    "all157SourcePngBindingsSha256": "63f9294bd25baf433bd1f769ab02312ecbab268f65a7b0e2bb6685ea7477401f"
+  },
+  "cohort": {
+    "reviewed": 157,
+    "visibleIndexPointing": 102,
+    "ambiguous": 35,
+    "notVisible": 20,
+    "anatomicalIndex": 129,
+    "anatomyUnresolved": 28,
+    "apparentPointing": 120,
+    "intentUnresolved": 37,
+    "coarseRectangles": 137,
+    "exactGroundTruthPoints": 0,
+    "explicitContraryControls": 0,
+    "explicitNonIndexControls": 0,
+    "old79AndOld48NotPooled": true
+  },
+  "frozenReplay": {
+    "gpu": {
+      "packets": 1336,
+      "measuredPositions": 428,
+      "readinessEligible": 364,
+      "logicalIdChanges": 6,
+      "rejectedOrErrorFrames": 0,
+      "states": {
+        "UNSEEDED": 164,
+        "UNCERTAIN": 207,
+        "LOST": 537,
+        "TRACKING": 428
+      },
+      "exactPriorCompact1336StateFreshnessIdParity": true,
+      "exactPriorConditionalAggregateParity": true
+    },
+    "cpu": {
+      "packets": 1336,
+      "measuredPositions": 504,
+      "readinessEligible": 446,
+      "logicalIdChanges": 9,
+      "rejectedOrErrorFrames": 0,
+      "states": {
+        "UNSEEDED": 124,
+        "UNCERTAIN": 166,
+        "LOST": 542,
+        "TRACKING": 504
+      },
+      "exactPriorCompact1336StateFreshnessIdParity": true,
+      "exactPriorConditionalAggregateParity": true
+    }
+  },
+  "primaryRaw": {
+    "gpu": {
+      "inside": 73,
+      "outside": 24,
+      "missing": 5
+    },
+    "cpu": {
+      "inside": 80,
+      "outside": 16,
+      "missing": 6
+    },
+    "cpuAvailabilityGains": 3,
+    "cpuAvailabilityLosses": 4,
+    "gpuOutsideCpuInside": 9,
+    "gpuInsideCpuOutside": 1,
+    "singleCpuRegressionOutsideSubjectiveBoxLowerBoundPixels": 0.8955990374088287
+  },
+  "primaryConditionalMeasurement": {
+    "gpu": {
+      "inside": 0,
+      "outside": 0,
+      "missing": 102
+    },
+    "cpu": {
+      "inside": 5,
+      "outside": 0,
+      "missing": 97
+    },
+    "readyGpu": 0,
+    "readyCpu": 1,
+    "RIGHT": {
+      "referenceFrames": 11,
+      "gpuMeasured": 0,
+      "cpuMeasured": 3,
+      "cpuInside": 3,
+      "cpuReady": 0
+    },
+    "SWEEP": {
+      "reviewed": 146,
+      "visibleIndexPointing": 91,
+      "gpuMeasured": 0,
+      "cpuMeasured": 2,
+      "cpuInside": 2,
+      "cpuReady": 1
+    }
+  },
+  "logicalReplacementReferenceCoverage": {
+    "gpu": {
+      "logicalReplacements": 6,
+      "bothBoundaryEndpointsAnnotated": 0,
+      "fullIntervalsAnnotated": 0,
+      "completeCoarseVisibleIndexContinuity": 0,
+      "unresolved": 6,
+      "fullMeasuredReturnIntervalsAnnotated": 0
+    },
+    "cpu": {
+      "logicalReplacements": 9,
+      "bothBoundaryEndpointsAnnotated": 2,
+      "fullIntervalsAnnotated": 2,
+      "completeCoarseVisibleIndexContinuity": 1,
+      "unresolved": 8,
+      "fullMeasuredReturnIntervalsAnnotated": 1
+    }
+  },
+  "coarseVisibleCpuInterval": {
+    "intervalFrames": 6,
+    "visibleIndexFrames": 6,
+    "supportedAdjacentTransitions": 5,
+    "scope": "One accepted logical replacement interval has complete adjacent coarse visible-index support. Its longer last-fresh-to-first-fresh return interval remains partly unannotated. This does not establish physical identity truth or same-ID recovery."
+  },
+  "fullyAnnotatedMixedCpuInterval": {
+    "intervalFrames": 105,
+    "visibleIndexFrames": 69,
+    "supportedAdjacentTransitions": 63,
+    "requiredAdjacentTransitions": 104,
+    "conclusion": "Continuous selected-anatomical identity remains unresolved through ambiguity and hidden anatomy."
+  },
+  "separateReviewerAgreement": {
+    "samePngPairs": 28,
+    "visibilityDisagreements": 7,
+    "anatomyDisagreements": 12,
+    "intentDisagreements": 12,
+    "continuityValueDisagreements": 6,
+    "bothBoxes": 14,
+    "overlap": 14,
+    "disjoint": 0,
+    "oneBoxOnly": 10,
+    "neitherBox": 4,
+    "continuitySemanticLimitation": "New labels describe immediately adjacent frame continuity. Old selectedIndexContinuity describes continuity from the initially resolved segment, so equality is a value diagnostic, not interchangeable local-adjacency annotation or reliability."
+  },
+  "verdict": "Five additional conditional measurements are consistent with independently blind subjective coarse boxes, with raw gains and regressions retained. This is bounded AI development support. Most logical boundaries remain unresolved, no wrong-digit/contrary cohort is available here, and the Phase1 perception mission remains incomplete.",
+  "limits": [
+    "New reviewer was blind to prior outputs/source/metrics/references. Sampling was selected after an earlier aggregate event-coverage analysis; exposed recording and all references remain AI development, not independently sampled physical holdout.",
+    "Subjective coarse rectangles and static apparent anatomy/intent are fallible. No exact endpoint, selected physical identity or field qualification.",
+    "Repeated frames are temporally correlated. No frame-count independence or confidence interval.",
+    "No new model inference, camera, recording, label creation, source changes, threshold changes or sweep. Replay only unchanged stored raw neural packets and gray planes.",
+    "The current UI/build browser cohort is independent from this historical conditional producer comparison; do not claim new post-UI capture/performance or physical calibration from replay.",
+    "Zero explicit contrary/non-index controls means this cohort cannot estimate false fingertip/pointer identification risk.",
+    "The reviewer disagreement diagnostic preserves uncertainty/conflict; the primary new bounds are not consensus. Neither reference set was overwritten or revised.",
+    "Exact owner-local rerun requires the sealed private evaluator and private input/reference files. No publicly distributed recording/dataset or independent third-party reproduction is claimed."
+  ]
+}

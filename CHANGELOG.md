@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-10-18
+last_reviewed: 2026-10-19
 ---
 
 # Changelog
@@ -20,6 +20,7 @@ last_reviewed: 2026-10-18
 
 ### Corrected
 
+- Reach's development startup candidate checks processing capacity at the delivered camera size and can select the existing CPU region provider before tracking begins. Synthetic probe outputs never become observations. Resolution changes invalidate the source, and stopped camera/pointer surfaces clear their retained pixels. Existing freshness, identity, calibration and startup deadlines remain enforced. Natural-motion reliability and physical acceptance remain open. [Integration and evidence](Development_Docs/Projects/Project_Reach/Phase_1_Startup_Capacity_Integration_20261019.md).
 - Reach's bounded overnight investigation compares appearance references, gradient/multiscale matching and semantic-provider feasibility on the difficult recording, and tests the actual calibration controller at reduced rates. Correct selected-index reacquisition remains unresolved; research regressions are kept out of the working preview. [Comparisons, calibration evidence and limits](Development_Docs/Projects/Project_Reach/Overnight_Reliability_Campaign_20261019.md).
 - Reach's development preview corrects fingertip material registration, keeps selected-image identity separate from ambiguous model candidates, and allows a previously verified model source to return through fresh bounded proof after its timer expires. Paired recording input shows improved LEFT recovery and fewer identity changes, with continued RIGHT failures; this does not establish physical calibration reliability. [Target-three diagnosis and limits](Development_Docs/Projects/Project_Reach/Target_3_Recovery_20261018.md).
 

@@ -1,0 +1,400 @@
+{
+  "schemaVersion": 1,
+  "classification": "SAFE_AGGREGATE_INDEPENDENT_DEVELOPMENT_EXPERIENCE_REVIEW",
+  "reviewId": "reach-phase1-geometry-development-review-r1-safe-aggregate",
+  "contractId": "reach.phase1.foundation",
+  "originalPrivateReviewSha256": "96171e967c2e0b42cc95621abfe84903ac82434e2e7b90405ed20cfa84ceb8ed",
+  "originalReviewPreserved": true,
+  "verdict": "REPAIR_AND_RECAPTURE",
+  "allContractPass": false,
+  "visualCompletionBlocked": true,
+  "blockingFindingIds": ["F-STOP-OVERLAY"],
+  "finalSourceProof": false,
+  "sourceBoundary": "This aggregate describes the original reviewed source. A subsequent ReachStage repair is pending a newly frozen source identity and actual application recapture. It does not resolve F-STOP-OVERLAY or qualify the repaired source.",
+  "authority": "Independent development criticism only; no protected qualification, semantic model correctness, physical qualification or owner acceptance decision.",
+  "objective": "From Device connections, enable local camera, reach current hand tracking without choosing a processor, use independent setup and check, access ordinary controls and recovery, and release resources on exit.",
+  "provenance": {
+    "experienceBeforeApplicationSource": true,
+    "builderRationaleRead": false,
+    "applicationSourceReadScope": "After finding the rendered defect, narrow read-only stop and canvas lifecycle ownership investigation in ReachLaboratory and ReachStage.",
+    "reviewedCandidateBaseHead": "cd34451832e2d0004492880ac1288ec31945d3b2",
+    "reviewedCandidateState": "Dirty candidate; not a final commit or protected candidate receipt.",
+    "fullSourceDigestReportedByBuilder": "d854d3f23b35a03a17aac50e0cc19cd730a8f1bab1638734beffab7cab082a5f",
+    "fullSourceFileCountReportedByBuilder": 2806,
+    "fullSourceDigestIndependentlyRecomputed": false,
+    "threeRuntimeSourcePinsIndependentlyVerified": true,
+    "canonicalPrepareBoundary": "Windows dependency-junction admission failed despite build exit 0; supplemental evidence remains unqualified.",
+    "reviewedCaptureCount": 20,
+    "guidedD0CaptureCount": 13,
+    "photographicWorkerAndCameraDenialCaptureCount": 7,
+    "photographicTraceSequencesInspected": 2,
+    "captureBoundary": "Actual application images and screencast resource sequences were visually inspected. D1 is public photograph replay through the installed native worker; D0 is guided simulation. Neither establishes real-person camera or physical pointing accuracy.",
+    "aggregateContentBoundary": "Artifact IDs, hashes, image dimensions, bounded observations and proof gaps only. No image payload, raw trace action stream, coordinates, hand observations, personal content or account identifiers."
+  },
+  "observations": [
+    {
+      "dimension": "Hierarchy and composition",
+      "status": "BOUNDED_OBSERVATION",
+      "observation": "Dark continuous instrument workspace, cream readable headings, restrained brass and sea-green accents, and grouped controls are coherent with the accepted reference family. Desktop and mobile calibration prioritize a wide target plane with readable progress and visible pause, retry and cancel in reviewed viewports. No horizontal clipping or unusable ordinary control is visible in reviewed regions. Active collection captures preserve geometry; unseen content is not classified as clipped UI.",
+      "evidenceIds": [
+        "laboratory/captures/laptop-calibration-viewport.png",
+        "laboratory/captures/mobile-calibration-viewport.png",
+        "laboratory/captures/camera-denied-viewport.png"
+      ]
+    },
+    {
+      "dimension": "State meaning and evidence honesty",
+      "status": "BOUNDED_OBSERVATION",
+      "observation": "Detection, framing, recognized point and collection readiness are separately stated. Guided evidence discloses simulation and camera-off state. Setup completion requires a separate independent check and initially labels pointing error as not measured. Absolute and relative modes are visibly distinct. Labels and software fits do not establish semantic intent or physical accuracy.",
+      "evidenceIds": [
+        "laboratory/captures/laptop-tracking-viewport.png",
+        "laboratory/captures/mobile-results-viewport.png",
+        "laboratory/captures/worker-nine-target-fit-viewport.png",
+        "laboratory/captures/worker-relative-results-viewport.png"
+      ]
+    },
+    {
+      "dimension": "Native worker activation",
+      "status": "PARTIAL",
+      "observation": "Observed application interaction reaches photographic native-worker tracking from the visible camera activation control without a processor chooser. Pointing-mode choice is separate. Both photographic traces start directly at the Laboratory, so Device connections entry is unproved. Synthetic camera transport does not establish physical permission or capture.",
+      "evidenceIds": [
+        "laboratory/captures/worker-photographic-tracking-viewport.png",
+        "laboratory/test-results/reach-laboratory-photograp-d7bbe--second-hand-then-cleans-up-chromium/trace.zip"
+      ]
+    },
+    {
+      "dimension": "Setup, independent check and practice",
+      "status": "BOUNDED_OBSERVATION",
+      "observation": "Actual application screenshot sequences show absolute training, required independent check, new-target check and session result, followed by separate relative setup, check, result and conventional practice. Independent targets state that they do not change the fit. Practice states that no application actions activate. Supporting D1 samples remain explicitly UNQUALIFIED with physical qualification pending.",
+      "evidenceIds": [
+        "laboratory/captures/worker-nine-target-fit-viewport.png",
+        "laboratory/captures/worker-independent-results-viewport.png",
+        "laboratory/captures/worker-relative-results-viewport.png",
+        "laboratory/test-results/reach-laboratory-photograp-7bd3d-and-five-independent-checks-chromium/trace.zip"
+      ]
+    },
+    {
+      "dimension": "Adverse and recovery states",
+      "status": "PARTIAL",
+      "observation": "Ineligible guidance explains a movement correction and paused collection, with a dashed Last seen pointer. Two-hand evidence shows explicit active-hand choices. Camera denial gives a plain explanation, retry, guided demonstration and visible return. A changed-view capture explains Setup ended while distinguishing camera availability. These bounded outcomes do not establish complete recovery transitions or policy coverage.",
+      "evidenceIds": [
+        "laboratory/captures/mobile-detected-ineligible-viewport.png",
+        "laboratory/captures/worker-partial-occlusion-viewport.png",
+        "laboratory/captures/worker-two-hands-viewport.png",
+        "laboratory/captures/camera-denied-viewport.png",
+        "laboratory/captures/viewport-invalidation-viewport.png"
+      ]
+    },
+    {
+      "dimension": "Motion and timing",
+      "status": "PARTIAL",
+      "observation": "Actual screencast sequences show prompt software acknowledgment, then several seconds of model preparation before stable tracking. This is not a claim of sub-five-second acquisition. Setup, check and practice show changed rendered stages in sampled sequences. Complete timing boundaries and reduced-motion review remain absent.",
+      "evidenceIds": [
+        "laboratory/test-results/reach-laboratory-photograp-d7bbe--second-hand-then-cleans-up-chromium/trace.zip",
+        "laboratory/test-results/reach-laboratory-photograp-7bd3d-and-five-independent-checks-chromium/trace.zip"
+      ]
+    },
+    {
+      "dimension": "Exit and continuity",
+      "status": "BLOCKING_FINDING",
+      "observation": "The stop control returns to camera-off Prepare and supporting scalar evidence reports zero tracks, zero workers and no further activity. The final hand-joint bitmap visibly survives over the empty camera stage. Resource release and rendered clearing are separate. Conventional Device connections return was not inspected.",
+      "evidenceIds": [
+        "laboratory/test-results/reach-laboratory-photograp-7bd3d-and-five-independent-checks-chromium/test-finished-1.png",
+        "experience-review/calibration-sequence/calibration-final-frame.jpeg"
+      ]
+    },
+    {
+      "dimension": "Accessibility and mobile continuity",
+      "status": "PARTIAL",
+      "observation": "Reviewed mobile guided controls and text are readable and stack without visible horizontal overflow. Static images cannot establish keyboard reachability, focus, screen-reader behavior, touch ergonomics, reduced motion or mobile native-worker operation. Repeated success headings create minor mobile density but are not a blocking finding by themselves.",
+      "evidenceIds": [
+        "laboratory/captures/mobile-calibration-viewport.png",
+        "laboratory/captures/mobile-validation-viewport.png",
+        "laboratory/captures/mobile-results-viewport.png",
+        "laboratory/captures/mobile-playground-viewport.png"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "F-STOP-OVERLAY",
+      "priority": "P2",
+      "statusAtOriginalReview": "OPEN_CONFIRMED_RENDERED_DEFECT",
+      "statusOfRepair": "PENDING_NEW_SOURCE_CAPTURE",
+      "blocking": true,
+      "blocks": "Claim that the stop and cleared-session experience is visually complete",
+      "title": "Stop retains the final hand-joint canvas bitmap over the camera-off empty state",
+      "observed": "Camera-off Prepare states that session calibration is cleared, yet the mint hand-joint overlay stays stretched over the empty-state icon and title through the terminal screenshot, while scalar owned-resource counts are zero.",
+      "baselineOrRegression": "UNESTABLISHED; current reviewed defect confirmed without attributing its introduction.",
+      "contractBinding": "Navigation continuity and truthful current tracking state after camera/session clearing.",
+      "rootCause": "ReachLaboratory clears the visual ref and sets source OFF while retaining a mounted inactive ReachStage. ReachStage returns before drawing when inactive; the old effect cleanup only cancels animation. The previous canvas backing bitmap survives and stretches when the Prepare layout changes its display size.",
+      "sourceLocations": [
+        "src/reach/ReachLaboratory.tsx:406-434",
+        "src/reach/ReachLaboratory.tsx:1539-1545",
+        "src/reach/ReachStage.tsx:16-19",
+        "src/reach/ReachStage.tsx:157-159"
+      ],
+      "recommendedRepair": "On canvas deactivation, cancel animation and clear the full backing bitmap with transform and pixel ratio handled, or remove the inactive stage. Shared camera and pointer canvas ownership should not retain inactive pixels.",
+      "requiredRecapture": "Repeat actual photographic setup, check and practice followed by stop on exact repaired source. Retain zero resource and no-further-work assertions. Inspect immediate and settled/resize camera-off screenshots with blank joint and pointer canvases. Preserve the original failing review and receipts.",
+      "evidenceIds": [
+        "laboratory/test-results/reach-laboratory-photograp-7bd3d-and-five-independent-checks-chromium/test-finished-1.png",
+        "experience-review/calibration-sequence/calibration-frame-186284.jpeg",
+        "experience-review/calibration-sequence/calibration-final-frame.jpeg"
+      ]
+    }
+  ],
+  "proofGaps": [
+    "Natural entry from Device connections and conventional return with owned-resource release.",
+    "Reduced-motion actual experience, visible keyboard focus, touch and crosshair accessibility journeys.",
+    "Mobile native-worker activation and relative setup, check and practice; mobile reviewed evidence is guided absolute flow.",
+    "Full pause/resume preservation, interruption, fresh reacquisition, invalidation transitions and all required timing boundaries.",
+    "Manual hint reservation, rejected or stale image delivery, explicit automatic selection and full-hand/index conflict transitions.",
+    "Policy disabled, unavailable and rate-update rendered behavior and actual hidden-page lifecycle; synthetic pagehide supports only its own bounded shutdown case.",
+    "Clean and overlaid local recorder, export/deletion continuity and current-policy boundaries.",
+    "Physical camera and real-person accuracy, physical geometry, semantic model correctness, ergonomics, protected qualification and owner acceptance."
+  ],
+  "sourcePins": [
+    {
+      "path": "src/reach/browser-runtime.ts",
+      "sha256": "3dd86ef22fda089f90b6847ee80b60c670176761c18775e0f6e91a9e137d5b88"
+    },
+    {
+      "path": "public/reach/recovery-provider.js",
+      "sha256": "fe68db187f9db74943e1f0c55c3ad76621a2c60591af84d950bb6c407f372ca9"
+    },
+    {
+      "path": "public/reach/recovery-worker.js",
+      "sha256": "4d8caa84874b76795b1acc1db975277ffb0329eb485d62eae20fe50712965222"
+    }
+  ],
+  "artifactMetadata": [
+    {
+      "artifactId": "laboratory/captures/camera-denied-viewport.png",
+      "sha256": "a647476074a2a0539e928799ffbf655d53c8e43efa2ab3103ac7aa18642eef70",
+      "bytes": 307962,
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "artifactId": "laboratory/captures/laptop-calibration-viewport.png",
+      "sha256": "f5c4553686fa4df7e05702b0832fe5f69215219145c6b85387c94e76f35e986f",
+      "bytes": 325335,
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "artifactId": "laboratory/captures/laptop-detected-ineligible-viewport.png",
+      "sha256": "1ee69b0c272ae3b4a61989301f1050edb3421673604fc0cd5e6347ad0ffeac19",
+      "bytes": 325489,
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "artifactId": "laboratory/captures/laptop-playground-viewport.png",
+      "sha256": "399122085d2e6b2b281a49d3718750df5741aa0b0682134c6c1813236c277abf",
+      "bytes": 330449,
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "artifactId": "laboratory/captures/laptop-results-viewport.png",
+      "sha256": "ff3e7d54b0f09eaf83f2453973e5356a9d8dbb01c7e506ae542ff7adab05a9ec",
+      "bytes": 323029,
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "artifactId": "laboratory/captures/laptop-tracking-viewport.png",
+      "sha256": "424a7adac82fc0c9f619f17d46b57b9920adb3580b2464ee14aa8b5dbf6d7475",
+      "bytes": 298833,
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "artifactId": "laboratory/captures/laptop-validation-viewport.png",
+      "sha256": "3911784ad46f3c53295463022d5165775570443e570025d6d06936993d78590d",
+      "bytes": 333252,
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "artifactId": "laboratory/captures/mobile-calibration-viewport.png",
+      "sha256": "fb3e201bbc37adc79d722a3f79182127226f802ba82ee19b7cb117a0cc5ca896",
+      "bytes": 128290,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "artifactId": "laboratory/captures/mobile-detected-ineligible-viewport.png",
+      "sha256": "cb56cae77ceff8bc9bb34ef4dcee1a1486533f37fc0df333620a62edf35261a9",
+      "bytes": 126229,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "artifactId": "laboratory/captures/mobile-playground-viewport.png",
+      "sha256": "c57894a68171cf23f2ce2d1ca907ee97745908c9011c9a704468e0b904a2821e",
+      "bytes": 133396,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "artifactId": "laboratory/captures/mobile-results-viewport.png",
+      "sha256": "2f616a35dfa097093228277c85382593985c412436d655f4f896e2d527f59658",
+      "bytes": 121456,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "artifactId": "laboratory/captures/mobile-tracking-viewport.png",
+      "sha256": "8a37ac32e6cbc1d91c5e7e359bc4a7022a2157c5483496d660fca94721dd40c8",
+      "bytes": 104534,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "artifactId": "laboratory/captures/mobile-validation-viewport.png",
+      "sha256": "e5ebbceba9a78cf9a22098c160a4e913b9f91fe231c9e41f1fea49f2934fdb1f",
+      "bytes": 123100,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "artifactId": "laboratory/captures/viewport-invalidation-viewport.png",
+      "sha256": "cae7fe9250ca22ed1e5b3bb568668eab196919b41f79a4e379c1f08c9283b286",
+      "bytes": 228369,
+      "width": 900,
+      "height": 700
+    },
+    {
+      "artifactId": "laboratory/captures/worker-independent-results-viewport.png",
+      "sha256": "84be100327031400af0483e107dd78d4b4e24c69c92562094e16324103e386b1",
+      "bytes": 320048,
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "artifactId": "laboratory/captures/worker-nine-target-fit-viewport.png",
+      "sha256": "6b5eb98eb03dc9a5de1ed1224cef3e01793cad1f11441a22c63ccb185298aa68",
+      "bytes": 317980,
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "artifactId": "laboratory/captures/worker-partial-occlusion-viewport.png",
+      "sha256": "5d3678ac3c7ce7d800a15c395ae8a46e6953c7f9c2bf80fe0f1491ee59780e28",
+      "bytes": 245775,
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "artifactId": "laboratory/captures/worker-photographic-tracking-viewport.png",
+      "sha256": "fcca781c64f606ba424a8cbf4a3e8dbb1dae6a364f9817ed8ba8dff713b968d2",
+      "bytes": 253365,
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "artifactId": "laboratory/captures/worker-relative-results-viewport.png",
+      "sha256": "cecec79e65c13d9d2fecde981870febda0a497c81580fc4dbac8b1b347983030",
+      "bytes": 346615,
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "artifactId": "laboratory/captures/worker-two-hands-viewport.png",
+      "sha256": "b699514d5c05e05b92ca4cba3b001e1b478293ca54622e05036a3a37f9b55123",
+      "bytes": 318522,
+      "width": 1280,
+      "height": 720
+    },
+    {
+      "artifactId": "laboratory/test-results/reach-laboratory-photograp-d7bbe--second-hand-then-cleans-up-chromium/trace.zip",
+      "sha256": "6d94b0c5d562200105b45dc614e5bcde1758f8e72a65fbe2089935144b79b5c3",
+      "bytes": 16151508
+    },
+    {
+      "artifactId": "laboratory/test-results/reach-laboratory-photograp-d7bbe--second-hand-then-cleans-up-chromium/worker-performance.json",
+      "sha256": "3902e6ed1cdf64b9bac163eaa912e0bd2bfe3d8bb95c37c107230d5a2e29ddfd",
+      "bytes": 897
+    },
+    {
+      "artifactId": "laboratory/test-results/reach-laboratory-photograp-d7bbe--second-hand-then-cleans-up-chromium/passive-reach-clock-private.json",
+      "sha256": "ed5fc2eade3e15fdeadb2e803d76386ab4c71e82439d62c037db9ca167630b4e",
+      "bytes": 133689
+    },
+    {
+      "artifactId": "laboratory/test-results/reach-laboratory-photograp-7bd3d-and-five-independent-checks-chromium/trace.zip",
+      "sha256": "d0b1f0bbfbf6481498eaab40a3a258ea7c80540ded1283d6ada4bfc63a2527cf",
+      "bytes": 44808100
+    },
+    {
+      "artifactId": "laboratory/test-results/reach-laboratory-photograp-7bd3d-and-five-independent-checks-chromium/photographic-calibration-performance.json",
+      "sha256": "fb4213ab55ed93e70994db8ec95f5588d1a49ca6219758c0dd0ac1473131d545",
+      "bytes": 3193
+    },
+    {
+      "artifactId": "laboratory/test-results/reach-laboratory-photograp-7bd3d-and-five-independent-checks-chromium/passive-reach-clock-private.json",
+      "sha256": "c594eaa707417438a9f20032ab0162d899ac048205452f957ab1684939ee0e1f",
+      "bytes": 1128800
+    },
+    {
+      "artifactId": "laboratory/test-results/reach-laboratory-photograp-7bd3d-and-five-independent-checks-chromium/test-finished-1.png",
+      "sha256": "6de265b9f7f0d669e030d93e3d47bbc22892c1eeef49e85a3bbfbb4cc44985b4",
+      "bytes": 434022,
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "artifactId": "experience-review/photo-sequence/frame-manifest.json",
+      "sha256": "8060d4142d4c104ce61a16bc9b9f9b22181f1bd4c060aae8baa054a60833662a",
+      "bytes": 3161
+    },
+    {
+      "artifactId": "experience-review/calibration-sequence/frame-manifest.json",
+      "sha256": "b86724c10a240bc0f99bd62ec1a969d22219f980f9f60f87e4a19f51e3f1e219",
+      "bytes": 3635
+    },
+    {
+      "artifactId": "experience-review/calibration-sequence/calibration-final-frame.jpeg",
+      "sha256": "d03300849e7e5747500ad5ca76f8f3b0e4c0a372f063547bbf191fc824350eba",
+      "bytes": 46850,
+      "width": 720,
+      "height": 450
+    },
+    {
+      "artifactId": "testing/contracts.json",
+      "sha256": "614791db57e5717b6a44aa69c7ee3092c350e7dc618aa3e3a06d9377c488165c",
+      "bytes": 198596
+    },
+    {
+      "artifactId": ".agents/product-experience-workflow.md",
+      "sha256": "1db28e8585b0067e5dcf41828889f29d0b595fa7b699cc7002f360675342823b",
+      "bytes": 6681
+    },
+    {
+      "artifactId": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+      "sha256": "4c1c6c44de8007dec2a05fda240249f4e87b56b7b6f7fe2335323f2e7f5cc024",
+      "bytes": 676078,
+      "width": 1440,
+      "height": 1854
+    },
+    {
+      "artifactId": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+      "sha256": "661f40c43a7dc7a3f55376675a282e1c10a6562b284235f2be93fb733a0e7477",
+      "bytes": 336360,
+      "width": 390,
+      "height": 3281
+    },
+    {
+      "artifactId": "src/reach/ReachLaboratory.tsx",
+      "sha256": "f43081cf92cd43056898c585214a845739d98bc0c5344793035670867a49c5cf",
+      "bytes": 113300
+    },
+    {
+      "artifactId": "src/reach/ReachStage.tsx",
+      "sha256": "9ff9f00879cb29e96727f23ea3512dfa2ec44a7f4636a72db93e05287498df62",
+      "bytes": 6958
+    }
+  ]
+}

@@ -141,7 +141,14 @@ async function installFixture(page: Page, model = "FULL") {
             setTimeout(() => {
               if (!this.terminated)
                 this.onmessage?.(
-                  new MessageEvent("message", { data: { type: "READY", generation: message.generation } }),
+                  new MessageEvent("message", {
+                    data: {
+                      type: "READY",
+                      generation: message.generation,
+                      backend: "CPU_WASM",
+                      providerPolicy: "ORIGINAL_CPU",
+                    },
+                  }),
                 );
             }, 0);
             return;
@@ -219,6 +226,8 @@ async function installFixture(page: Page, model = "FULL") {
               new MessageEvent("message", {
                 data: {
                   type: "RESULT",
+                  backend: "CPU_WASM",
+                  providerPolicy: "ORIGINAL_CPU",
                   generation: message.generation,
                   capture: message.capture,
                   inferenceTime: performance.timeOrigin + reply,

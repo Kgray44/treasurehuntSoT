@@ -538,8 +538,40 @@ test("photographic worker completes nine real-landmark holds and five independen
   expect(metrics.trialAggregates).toHaveLength(4);
   expect(metrics.timing.acquisitionMs).toHaveLength(24);
   expect(metrics.timing.inferenceCount).toBeGreaterThanOrEqual(15 * 24);
+  const stagePixels = () =>
+    page
+      .locator(
+        'canvas[aria-label="Live hand joints aligned with the camera image"], canvas[aria-label="Pointing feedback surface"]',
+      )
+      .evaluateAll((canvases) =>
+        canvases.map((element) => {
+          const canvas = element as HTMLCanvasElement;
+          const context = canvas.getContext("2d");
+          if (!context) throw new Error("Stage canvas context unavailable");
+          const pixels =
+            canvas.width && canvas.height ? context.getImageData(0, 0, canvas.width, canvas.height).data : [];
+          let visiblePixels = 0;
+          for (let index = 3; index < pixels.length; index += 4) if (pixels[index] > 0) visiblePixels++;
+          return {
+            label: canvas.getAttribute("aria-label"),
+            width: canvas.width,
+            height: canvas.height,
+            visiblePixels,
+          };
+        }),
+      );
+  const beforeStop = await stagePixels();
+  expect(
+    beforeStop.some(
+      (canvas) => canvas.label === "Live hand joints aligned with the camera image" && canvas.visiblePixels > 0,
+    ),
+  ).toBe(true);
   await page.getByRole("button", { name: "Stop camera & clear session" }).click();
   expect(await telemetry(page)).toMatchObject({ tracks: 0, workers: 0, prompts: 1 });
+  const afterStop = await stagePixels();
+  expect(afterStop.some((canvas) => canvas.label === "Live hand joints aligned with the camera image")).toBe(true);
+  expect(afterStop.every((canvas) => canvas.visiblePixels === 0)).toBe(true);
+  await shot(page, "worker-stopped-clear");
   await page.waitForTimeout(200);
   const stopped = await telemetry(page);
   await page.waitForTimeout(400);
@@ -547,6 +579,13 @@ test("photographic worker completes nine real-landmark holds and five independen
   expect(settled.observations).toBe(stopped.observations);
   expect(settled.draws).toBe(stopped.draws);
   expect(settled.canvasClears).toBe(stopped.canvasClears);
+  const afterSettle = await stagePixels();
+  expect(afterSettle.every((canvas) => canvas.visiblePixels === 0)).toBe(true);
+  await shot(page, "worker-stopped-settled");
+  await writeFile(
+    testInfo.outputPath("stopped-canvas-clear.json"),
+    JSON.stringify({ beforeStop, afterStop, afterSettle }, null, 2),
+  );
   const heapAfterStop = await page.evaluate(
     () => (performance as Performance & { memory?: { usedJSHeapSize: number } }).memory?.usedJSHeapSize ?? null,
   );

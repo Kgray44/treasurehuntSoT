@@ -3,10 +3,12 @@ title: Voyagewright features
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-10-18
+last_reviewed: 2026-10-19
 ---
 
 # Voyagewright features
+
+The [Reach startup correction](../../Development_Docs/Projects/Project_Reach/Phase_1_Startup_Capacity_Integration_20261019.md) is a development candidate for timely initialization at the delivered camera geometry. It can select the existing CPU region provider before admitting live observations and rejects resolution drift. This preserves the laboratory's current capability and safety requirements; it does not establish natural-motion recovery, physical accuracy or mainline availability.
 
 The current Reach [selected-index repair](../../Development_Docs/Projects/Project_Reach/Selected_Index_Identity_Repair_20261018.md) is undergoing development validation after the owner still experienced target-transition resets on the earlier fused preview despite its passing software checks. It separates a known hand, continuity of the selected index and permission to produce a current position. Supported uncertainty pauses sampling while retaining completed targets. An unverified replacement tracking identity suspends relative setup or its check with the saved count visible, while blocking reuse of the original samples; an explicit fresh setup remains available. Immutable index/palm references account for observed hand motion during rejoining, and compatible model/image differences use a bounded weighted correction rather than eventual full model bias. Freshness, privacy and independent raw accuracy requirements remain unchanged. The [previous pipeline audit](../../Development_Docs/Projects/Project_Reach/Fused_Tracking_Audit_20261018.md) preserves its original results; physical reliability and acceptance remain open.
 

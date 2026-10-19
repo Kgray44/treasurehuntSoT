@@ -1,6 +1,6 @@
 import { BrowserCameraBroker, type CameraLease } from "@/sextant/camera";
 import { BrowserExposureAssistance } from "@/sextant/browser-exposure";
-import { browserVisualCapabilities } from "@/sextant/browser-visual-capabilities";
+import { browserVisualCapabilities, browserVisualCapabilityPolicy } from "@/sextant/browser-visual-capabilities";
 import { sampleImageSignal, type ImageLumaPlane } from "@/watchglass/image-signal";
 import {
   BrowserHandAdapter,
@@ -64,6 +64,8 @@ export type ReachFrameDiagnostics = {
 };
 const frameRejectionReason = (error: unknown, fallback: string) =>
   error instanceof Error && /^[A-Z][A-Z0-9_]{0,159}$/.test(error.message) ? error.message : fallback;
+const validFrameDimension = (value: number) =>
+  Number.isSafeInteger(value) && value > 0 && value <= browserVisualCapabilityPolicy.maximumDimension;
 /** Scalar diagnostics only. This callback never receives an image, identity or landmarks. */
 export type ReachInferenceMetrics = {
   disposition: "ACCEPTED" | "LATE" | "INVALID";
@@ -583,6 +585,12 @@ export class ReachBrowserRuntime {
       }
       clearTimeout(this.startup);
       this.startup = undefined;
+      const frameWidth = this.video.videoWidth,
+        frameHeight = this.video.videoHeight;
+      if (!validFrameDimension(frameWidth) || !validFrameDimension(frameHeight)) {
+        fail("FRAME_CHANGED_RECALIBRATE");
+        return;
+      }
       const binding = {
         providerGeneration: generation,
         cameraLeaseId: lease.id,
@@ -669,8 +677,10 @@ export class ReachBrowserRuntime {
         const frame = quality.totalVideoFrames - quality.droppedVideoFrames;
         return { frame: Number.isInteger(frame) && frame >= 0 ? frame : 0, mediaTime: this.video.currentTime };
       };
-      let width = 0,
-        height = 0;
+      // The startup capacity screen and every live bitmap share this geometry.
+      // A resize while the worker starts cannot silently become its first frame.
+      const width = frameWidth,
+        height = frameHeight;
       let lastCapture = -Infinity;
       let lastMetricCapture: number | null = null;
       let imageCaptureCost = 0;
@@ -715,8 +725,6 @@ export class ReachBrowserRuntime {
             this.stop("FRAME_CHANGED_RECALIBRATE");
             return;
           }
-          width = this.video.videoWidth;
-          height = this.video.videoHeight;
           this.inFlight = true;
           lastVideoFrame = identity.frame;
           lastVideoTime = identity.mediaTime;
@@ -728,6 +736,16 @@ export class ReachBrowserRuntime {
             const bitmap = await createImageBitmap(this.video);
             if (!this.active || generation !== this.generation) {
               bitmap.close();
+              return;
+            }
+            if (
+              bitmap.width !== width ||
+              bitmap.height !== height ||
+              this.video.videoWidth !== width ||
+              this.video.videoHeight !== height
+            ) {
+              bitmap.close();
+              fail("FRAME_CHANGED_RECALIBRATE");
               return;
             }
             if (pendingFrameOrigin && !originFresh(pendingFrameOrigin.origin, performance.now())) {
@@ -824,7 +842,12 @@ export class ReachBrowserRuntime {
         schedule();
       };
       const receive = ({ data }: MessageEvent) => {
-        if (!this.active || generation !== this.generation || data.generation !== generation) return;
+        if (!this.active || generation !== this.generation) return;
+        if (!data || typeof data !== "object") {
+          fail("MODEL_FAILURE");
+          return;
+        }
+        if (data.generation !== generation) return;
         if (data.type === "READY") {
           if (performance.now() >= modelDeadline) {
             fail("MODEL_FAILURE");
@@ -834,16 +857,62 @@ export class ReachBrowserRuntime {
             fallbackOriginal("RECOVERY_STARTUP_TIMEOUT");
             return;
           }
-          const selected = data.backend ?? "CPU_WASM";
-          const selectedPolicy = data.providerPolicy ?? "ORIGINAL_CPU";
+          // Only the known original worker has the older omitted-policy ABI.
+          // Optional-worker fallback identifies its original CPU graph explicitly.
+          const selected = data.backend ?? (originalStartup ? "CPU_WASM" : null);
+          const selectedPolicy = data.providerPolicy ?? (originalStartup ? "ORIGINAL_CPU" : null);
           if (
             workerReady ||
             !["CPU_WASM", "GPU_WEBGL"].includes(selected) ||
             !["ORIGINAL_CPU", "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1"].includes(selectedPolicy) ||
+            (originalStartup && (selected !== "CPU_WASM" || selectedPolicy !== "ORIGINAL_CPU")) ||
             (selected === "GPU_WEBGL" && selectedPolicy !== "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1")
           ) {
             fail("MODEL_BACKEND_CHANGED");
             return;
+          }
+          if (this.video.videoWidth !== width || this.video.videoHeight !== height) {
+            fail("FRAME_CHANGED_RECALIBRATE");
+            return;
+          }
+          if (selectedPolicy === "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1") {
+            const health = data.startupHealth,
+              attempts = health?.attempts,
+              selectedAttempt = Array.isArray(attempts) ? attempts.at(-1) : null;
+            if (
+              health?.classification !== "SYNTHETIC_PREREADY_LATENCY_NECESSARY_CONDITION_ONLY" ||
+              health.probeDimensions?.width !== width ||
+              health.probeDimensions?.height !== height ||
+              health.geometryVersion !== lease.generation ||
+              health.mirrorTransform !== binding.mirrorTransform ||
+              !Array.isArray(attempts) ||
+              attempts.length < 1 ||
+              attempts.length > 2 ||
+              selectedAttempt?.passed !== true ||
+              selectedAttempt.delegate !== (selected === "GPU_WEBGL" ? "GPU" : "CPU") ||
+              selectedAttempt.width !== width ||
+              selectedAttempt.height !== height ||
+              selectedAttempt.maximumElapsedMs !== reachImmutableSafety.maximumObservationAgeMs ||
+              selectedAttempt.outputsDiscarded !== true ||
+              selectedAttempt.retainedRegionsCleared !== true ||
+              !Array.isArray(selectedAttempt.probes) ||
+              selectedAttempt.probes.length !== 2 ||
+              [0, 1].some((index) => {
+                const probe = selectedAttempt.probes[index];
+                return (
+                  !probe ||
+                  typeof probe !== "object" ||
+                  probe.timestamp !== index - 2 ||
+                  probe.forcedRegions !== 2 ||
+                  !Number.isFinite(probe.elapsedMs) ||
+                  probe.elapsedMs < 0 ||
+                  probe.elapsedMs > reachImmutableSafety.maximumObservationAgeMs
+                );
+              })
+            ) {
+              fail("MODEL_STARTUP_HEALTH_INVALID");
+              return;
+            }
           }
           backend = selected;
           inferencePolicy = selectedPolicy;
@@ -1143,7 +1212,10 @@ export class ReachBrowserRuntime {
             // Explicit local recording is observational and cannot affect capture.
           }
           schedule();
+        } else if (data.type === "ERROR" && data.reason === "RECOVERY_FRAME_GEOMETRY_MISMATCH") {
+          fail("FRAME_CHANGED_RECALIBRATE");
         } else if (
+          data.type === "ERROR" &&
           !workerReady &&
           !originalStartup &&
           !/INTEGRITY|ARCHIVE|CLEANUP|CLOSE_FAILED/.test(String(data.reason))
@@ -1170,6 +1242,8 @@ export class ReachBrowserRuntime {
           generation,
           geometryVersion: lease.generation,
           mirrorTransform: binding.mirrorTransform,
+          frameWidth,
+          frameHeight,
           ...(delegate ? { delegate } : {}),
         });
       };

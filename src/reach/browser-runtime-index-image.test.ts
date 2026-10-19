@@ -14,7 +14,7 @@ import { IndexImageObservationGate, indexImageObservationSchema } from "./index-
 import { ReachCaptureHealth } from "./capture-health";
 import * as imageSignal from "@/watchglass/image-signal";
 
-type Bitmap = { rgba: Uint8ClampedArray; close: ReturnType<typeof vi.fn> };
+type Bitmap = { rgba: Uint8ClampedArray; width: number; height: number; close: ReturnType<typeof vi.fn> };
 type FrameMessage = { type: "FRAME"; generation: number; capture: number; bitmap: Bitmap };
 const sessions: ReachBrowserRuntime[] = [];
 afterEach(() => {
@@ -35,6 +35,31 @@ function pixels() {
       data[i] = data[i + 1] = data[i + 2] = 45 + ((dx * 73 + dy * 127 + dx * dy * 19 + 100000) % 135);
     }
   return data;
+}
+function startupHealthFor(init: Record<string, unknown> | null, backend: "CPU_WASM" | "GPU_WEBGL" = "GPU_WEBGL") {
+  const width = Number(init?.frameWidth),
+    height = Number(init?.frameHeight);
+  return {
+    classification: "SYNTHETIC_PREREADY_LATENCY_NECESSARY_CONDITION_ONLY",
+    probeDimensions: { width, height },
+    geometryVersion: init?.geometryVersion,
+    mirrorTransform: init?.mirrorTransform,
+    attempts: [
+      {
+        passed: true,
+        delegate: backend === "GPU_WEBGL" ? "GPU" : "CPU",
+        width,
+        height,
+        maximumElapsedMs: 150,
+        outputsDiscarded: true,
+        retainedRegionsCleared: true,
+        probes: [
+          { timestamp: -2, elapsedMs: 20, forcedRegions: 2 },
+          { timestamp: -1, elapsedMs: 21, forcedRegions: 2 },
+        ],
+      },
+    ],
+  };
 }
 function setup(
   options: {
@@ -103,7 +128,12 @@ function setup(
     videoHeight: 240,
     rgba: pixels(),
   };
-  const bitmap = vi.fn<() => Promise<Bitmap>>(async () => ({ rgba: video.rgba.slice(), close: vi.fn() }));
+  const bitmap = vi.fn<() => Promise<Bitmap>>(async () => ({
+    rgba: video.rgba.slice(),
+    width: video.videoWidth,
+    height: video.videoHeight,
+    close: vi.fn(),
+  }));
   const callbacks = new Map<number, VideoFrameRequestCallback>();
   let callbackId = 0;
   const cancelVideoFrame = vi.fn((id: number) => callbacks.delete(id));
@@ -264,8 +294,11 @@ function setup(
         data: {
           type: "READY",
           generation: worker.generation,
-          ...(options.backend ? { backend: options.backend } : {}),
-          ...(options.providerPolicy ? { providerPolicy: options.providerPolicy } : {}),
+          backend: options.backend ?? "CPU_WASM",
+          providerPolicy: options.providerPolicy ?? "ORIGINAL_CPU",
+          ...(options.providerPolicy === "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1"
+            ? { startupHealth: startupHealthFor(worker.init, options.backend) }
+            : {}),
         },
       } as MessageEvent);
       await Promise.resolve();
@@ -294,8 +327,8 @@ function setup(
           width: 320,
           height: 240,
           result: { landmarks, handedness: landmarks.map(() => [{ categoryName: "Right", score: 0.99 }]) },
-          ...(options.backend ? { backend: options.backend } : {}),
-          ...(options.providerPolicy ? { providerPolicy: options.providerPolicy } : {}),
+          backend: options.backend ?? "CPU_WASM",
+          providerPolicy: options.providerPolicy ?? "ORIGINAL_CPU",
         },
       } as MessageEvent);
     },
@@ -768,6 +801,8 @@ describe("runtime image source integration", () => {
     worker.onmessage!({
       data: {
         type: "RESULT",
+        backend: "CPU_WASM",
+        providerPolicy: "ORIGINAL_CPU",
         generation: worker.generation,
         capture: worker.frames[0].capture,
         inferenceTime: NaN,
@@ -876,7 +911,9 @@ describe("runtime image source integration", () => {
     s.presented(1, 1);
     s.jumpClock(400);
     const worker = s.workers[0];
-    worker.onmessage!({ data: { type: "READY", generation: worker.generation } } as MessageEvent);
+    worker.onmessage!({
+      data: { type: "READY", generation: worker.generation, backend: "CPU_WASM", providerPolicy: "ORIGINAL_CPU" },
+    } as MessageEvent);
     await Promise.resolve();
     expect(worker.frames).toHaveLength(0);
     expect(s.bitmap).not.toHaveBeenCalled();
@@ -1018,6 +1055,8 @@ describe("runtime image source integration", () => {
       worker.onmessage!({
         data: {
           type: "RESULT",
+          backend: "CPU_WASM",
+          providerPolicy: "ORIGINAL_CPU",
           generation: worker.generation,
           capture: worker.frames[0].capture + (fault === "FUTURE_CAPTURE" ? 1000 : 0),
           inferenceTime: performance.timeOrigin + performance.now() + (fault.startsWith("FUTURE") ? 1000 : 0),
@@ -1179,7 +1218,7 @@ describe("runtime image source integration", () => {
     s.bitmap.mockImplementationOnce(() => new Promise((resolve) => (deliver = resolve)));
     const worker = await s.start(false, false);
     s.jumpClock(151);
-    const bitmap = { rgba: pixels(), close: vi.fn() };
+    const bitmap = { rgba: pixels(), width: 320, height: 240, close: vi.fn() };
     deliver(bitmap);
     await Promise.resolve();
     expect(bitmap.close).toHaveBeenCalledOnce();
@@ -1295,6 +1334,7 @@ describe("runtime image source integration", () => {
           generation: worker.generation,
           backend: "GPU_WEBGL",
           providerPolicy: "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1",
+          startupHealth: startupHealthFor(worker.init),
         },
       } as MessageEvent);
       await Promise.resolve();
@@ -1614,7 +1654,9 @@ describe("runtime image source integration", () => {
     } as unknown as MediaStream);
     await s.runtime.start(true, true);
     const freshWorker = s.workers.at(-1)!;
-    freshWorker.onmessage!({ data: { type: "READY", generation: freshWorker.generation } } as MessageEvent);
+    freshWorker.onmessage!({
+      data: { type: "READY", generation: freshWorker.generation, backend: "CPU_WASM", providerPolicy: "ORIGINAL_CPU" },
+    } as MessageEvent);
     await Promise.resolve();
     resolve();
     for (let i = 0; i < 10; i++) await Promise.resolve();
@@ -2069,7 +2111,7 @@ describe("runtime image source integration", () => {
     );
     const worker = await s.start(true, false);
     s.runtime.stop();
-    const late = { rgba: pixels(), close: vi.fn() };
+    const late = { rgba: pixels(), width: 320, height: 240, close: vi.fn() };
     resolve(late);
     await Promise.resolve();
     expect(late.close).toHaveBeenCalledOnce();
@@ -2138,4 +2180,168 @@ describe("runtime image source integration", () => {
     expect(resumed.trackId).not.toBe(previous.trackId);
     expect(s.contexts).toHaveLength(2);
   });
+});
+
+describe("startup capacity screen and actual frame geometry", () => {
+  const actual = { backend: "GPU_WEBGL", providerPolicy: "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1" } as const;
+  it.each(["CPU_WASM", "GPU_WEBGL"] as const)(
+    "binds qualified %s startup to the actual camera geometry",
+    async (backend) => {
+      const s = setup({ backend, providerPolicy: actual.providerPolicy });
+      const worker = await s.start(false);
+      expect(worker.init).toMatchObject({ frameWidth: 320, frameHeight: 240 });
+      expect(worker.frames).toHaveLength(1);
+      expect(s.media.getUserMedia).toHaveBeenCalledOnce();
+    },
+  );
+  it.each([0, -1, 1.5, 16385, Number.NaN, Number.POSITIVE_INFINITY])(
+    "rejects invalid delivered dimension %s before creating a worker",
+    async (dimension) => {
+      const s = setup(actual);
+      s.video.videoWidth = dimension;
+      await s.runtime.start(true, true);
+      expect(s.status).toHaveBeenLastCalledWith("FRAME_CHANGED_RECALIBRATE");
+      expect(s.workers).toHaveLength(0);
+      expect(s.track.stop).toHaveBeenCalledOnce();
+      expect(s.runtime.resources()).toEqual({ tracks: 0, workers: 0, timers: 0 });
+    },
+  );
+  const invalidProofs: [string, (health: ReturnType<typeof startupHealthFor>) => unknown][] = [
+    ["missing", () => undefined],
+    ["null", () => null],
+    ["different width", (h) => ({ ...h, probeDimensions: { width: 640, height: 240 } })],
+    ["different lease", (h) => ({ ...h, geometryVersion: Number(h.geometryVersion) + 1 })],
+    ["different mirror", (h) => ({ ...h, mirrorTransform: "NONE" })],
+    ["wrong backend", (h) => ({ ...h, attempts: [{ ...h.attempts[0], delegate: "CPU" }] })],
+    ["failed last probe", (h) => ({ ...h, attempts: [{ ...h.attempts[0], passed: false }] })],
+    ["output not discarded", (h) => ({ ...h, attempts: [{ ...h.attempts[0], outputsDiscarded: false }] })],
+    ["regions not cleared", (h) => ({ ...h, attempts: [{ ...h.attempts[0], retainedRegionsCleared: false }] })],
+    ["null probe", (h) => ({ ...h, attempts: [{ ...h.attempts[0], probes: [null, null] }] })],
+    ["sparse probes", (h) => ({ ...h, attempts: [{ ...h.attempts[0], probes: Array(2) }] })],
+    ["one probe", (h) => ({ ...h, attempts: [{ ...h.attempts[0], probes: h.attempts[0].probes.slice(0, 1) }] })],
+    [
+      "negative elapsed",
+      (h) => ({
+        ...h,
+        attempts: [{ ...h.attempts[0], probes: h.attempts[0].probes.map((p) => ({ ...p, elapsedMs: -1 })) }],
+      }),
+    ],
+    [
+      "nonfinite elapsed",
+      (h) => ({
+        ...h,
+        attempts: [{ ...h.attempts[0], probes: h.attempts[0].probes.map((p) => ({ ...p, elapsedMs: Number.NaN })) }],
+      }),
+    ],
+    [
+      "151ms elapsed",
+      (h) => ({
+        ...h,
+        attempts: [{ ...h.attempts[0], probes: h.attempts[0].probes.map((p) => ({ ...p, elapsedMs: 151 })) }],
+      }),
+    ],
+    [
+      "repeated timestamp",
+      (h) => ({
+        ...h,
+        attempts: [{ ...h.attempts[0], probes: h.attempts[0].probes.map((p) => ({ ...p, timestamp: -1 })) }],
+      }),
+    ],
+  ];
+  it.each(invalidProofs)("rejects %s startup evidence without a legacy retry", async (_name, mutate) => {
+    const s = setup(actual);
+    await s.runtime.start(true, true);
+    const worker = s.workers[0];
+    worker.onmessage!({
+      data: {
+        type: "READY",
+        generation: worker.generation,
+        ...actual,
+        startupHealth: mutate(startupHealthFor(worker.init)),
+      },
+    } as MessageEvent);
+    expect(s.status).toHaveBeenLastCalledWith("MODEL_STARTUP_HEALTH_INVALID");
+    expect(s.bitmap).not.toHaveBeenCalled();
+    expect(s.workers).toHaveLength(1);
+    expect(s.runtime.resources()).toEqual({ tracks: 0, workers: 0, timers: 0 });
+  });
+  it("accepts both probes at the unchanged inclusive150ms bound", async () => {
+    const s = setup(actual);
+    await s.runtime.start(true, true);
+    const worker = s.workers[0],
+      health = startupHealthFor(worker.init);
+    for (const p of health.attempts[0].probes) p.elapsedMs = 150;
+    worker.onmessage!({
+      data: { type: "READY", generation: worker.generation, ...actual, startupHealth: health },
+    } as MessageEvent);
+    await Promise.resolve();
+    expect(worker.frames).toHaveLength(1);
+    expect(s.workers).toHaveLength(1);
+  });
+  it("rejects a resize during startup before the first bitmap", async () => {
+    const s = setup(actual);
+    await s.runtime.start(true, true);
+    const worker = s.workers[0];
+    s.video.videoWidth = 640;
+    worker.onmessage!({
+      data: { type: "READY", generation: worker.generation, ...actual, startupHealth: startupHealthFor(worker.init) },
+    } as MessageEvent);
+    expect(s.status).toHaveBeenLastCalledWith("FRAME_CHANGED_RECALIBRATE");
+    expect(s.bitmap).not.toHaveBeenCalled();
+    expect(worker.frames).toHaveLength(0);
+    expect(s.runtime.resources()).toEqual({ tracks: 0, workers: 0, timers: 0 });
+  });
+  it("closes a pending old-size bitmap when video geometry changes during capture", async () => {
+    const s = setup(actual);
+    let release!: (value: Bitmap) => void;
+    s.bitmap.mockImplementationOnce(
+      () =>
+        new Promise<Bitmap>((resolve) => {
+          release = resolve;
+        }),
+    );
+    const worker = await s.start(false, false),
+      close = vi.fn();
+    s.video.videoHeight = 480;
+    release({ rgba: s.video.rgba.slice(), width: 320, height: 240, close } as Bitmap);
+    await Promise.resolve();
+    await Promise.resolve();
+    expect(close).toHaveBeenCalledOnce();
+    expect(worker.frames).toHaveLength(0);
+    expect(s.status).toHaveBeenLastCalledWith("FRAME_CHANGED_RECALIBRATE");
+    expect(s.runtime.resources()).toEqual({ tracks: 0, workers: 0, timers: 0 });
+  });
+  it("invalidates the live source when the worker rejects bitmap geometry", async () => {
+    const s = setup(actual),
+      worker = await s.start(false);
+    worker.onmessage!({
+      data: { type: "ERROR", generation: worker.generation, reason: "RECOVERY_FRAME_GEOMETRY_MISMATCH" },
+    } as MessageEvent);
+    expect(s.status).toHaveBeenLastCalledWith("FRAME_CHANGED_RECALIBRATE");
+    expect(s.observe).not.toHaveBeenCalled();
+    expect(s.workers).toHaveLength(1);
+    expect(s.runtime.resources()).toEqual({ tracks: 0, workers: 0, timers: 0 });
+  });
+  it("restricts omitted legacy READY metadata to the original worker fallback", async () => {
+    const s = setup();
+    await s.runtime.start(true, true);
+    const worker = s.workers[0];
+    worker.onmessage!({ data: { type: "READY", generation: worker.generation } } as MessageEvent);
+    expect(s.status).toHaveBeenLastCalledWith("MODEL_BACKEND_CHANGED");
+    expect(s.workers).toHaveLength(1);
+    expect(s.bitmap).not.toHaveBeenCalled();
+    expect(s.runtime.resources()).toEqual({ tracks: 0, workers: 0, timers: 0 });
+  });
+  it.each([null, { type: "PROGRESS" }])(
+    "fails malformed startup messages without treating them as optional-init errors: %s",
+    async (value) => {
+      const s = setup();
+      await s.runtime.start(true, true);
+      const worker = s.workers[0];
+      worker.onmessage!({ data: value === null ? null : { ...value, generation: worker.generation } } as MessageEvent);
+      expect(s.status).toHaveBeenLastCalledWith("MODEL_FAILURE");
+      expect(s.workers).toHaveLength(1);
+      expect(s.runtime.resources()).toEqual({ tracks: 0, workers: 0, timers: 0 });
+    },
+  );
 });

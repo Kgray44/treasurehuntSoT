@@ -1,0 +1,1338 @@
+{
+  "classification": "AUTHOR_READ_ONLY_TERMINAL_COHORT_CAUSAL_LIMITS_NOT_PHYSICAL",
+  "provenance": {
+    "implementationAuthorAlsoAnalyzed": true,
+    "independentlyAuthoredPerceptionLabels": false,
+    "realbrowserrawclocksrecordedunchanged": true
+  },
+  "inputs": {
+    "aggregateSha256": "c4787941c40b8921af25e098d2784f95338f3cd09693129745c70de3804fbff8",
+    "sourcePins": {
+      "head": "cd34451832e2d0004492880ac1288ec31945d3b2",
+      "digest": "99e2c0e1fa4e5cf1ecbeb05f18b6ba32c6cc626c9e5cf0f00689a294f2a6031a",
+      "candidateFiles": [
+        {
+          "path": "src/reach/browser-runtime.ts",
+          "sha256": "3dd86ef22fda089f90b6847ee80b60c670176761c18775e0f6e91a9e137d5b88"
+        },
+        {
+          "path": "public/reach/recovery-provider.js",
+          "sha256": "fe68db187f9db74943e1f0c55c3ad76621a2c60591af84d950bb6c407f372ca9"
+        },
+        {
+          "path": "public/reach/recovery-worker.js",
+          "sha256": "4d8caa84874b76795b1acc1db975277ffb0329eb485d62eae20fe50712965222"
+        },
+        {
+          "path": "src/reach/ReachStage.tsx",
+          "sha256": "033519dba16a970997d64c98a7a4500105d4a1aa9f3dc23d138c191e5c2ce979"
+        }
+      ],
+      "beforeBuildSourceManifestSha256": "aad81b9868110f179c03d46ec29719313dddd8d2a9a47eed43a723f69b9e7b04",
+      "frozenManifestVerified": true
+    },
+    "reviewedSourceFiles": [
+      {
+        "path": "src/reach/ReachLaboratory.tsx",
+        "sha256": "f43081cf92cd43056898c585214a845739d98bc0c5344793035670867a49c5cf"
+      },
+      {
+        "path": "src/reach/observation.ts",
+        "sha256": "e9a3a11f47100416951ae8ae1b22b25c0aec9b69ab65723337eeccc4df4fc65f"
+      },
+      {
+        "path": "src/watchglass/hand-provider.ts",
+        "sha256": "05bf24d6c027de933c49fb9af0afde218f21bbec12ac2737b591d3709cd56973"
+      },
+      {
+        "path": "src/reach/browser-runtime.ts",
+        "sha256": "3dd86ef22fda089f90b6847ee80b60c670176761c18775e0f6e91a9e137d5b88"
+      },
+      {
+        "path": "src/reach/ReachStage.tsx",
+        "sha256": "033519dba16a970997d64c98a7a4500105d4a1aa9f3dc23d138c191e5c2ce979"
+      },
+      {
+        "path": "tests/e2e/reach-laboratory.spec.ts",
+        "sha256": "19669f26a48478217613cc6125049e27997366046f139d96cb3459b0966c78d6"
+      },
+      {
+        "path": "tests/e2e/reach-index-image.spec.ts",
+        "sha256": "75b2fcac4f5c6789330649440d92067ce54311918b52334270eabc17f1ea4ef1"
+      }
+    ]
+  },
+  "terminalCohorts": [
+    {
+      "name": "laboratory",
+      "stats": {
+        "startTime": "2026-10-19T20:15:29.406Z",
+        "duration": 158371.09,
+        "expected": 8,
+        "skipped": 0,
+        "unexpected": 2,
+        "flaky": 0
+      },
+      "cleanup": {
+        "browser": "PASS",
+        "server": "PASS",
+        "portReleased": true,
+        "sourceUnchanged": true,
+        "fixtureUnchanged": true,
+        "buildUnchanged": true
+      },
+      "failedCases": [
+        {
+          "title": "viewport changes invalidate the fit and preserve camera availability; safe return excludes external URLs",
+          "status": "failed"
+        },
+        {
+          "title": "photographic worker completes nine real-landmark holds and five independent checks",
+          "status": "failed"
+        }
+      ]
+    },
+    {
+      "name": "index-image",
+      "stats": {
+        "startTime": "2026-10-19T20:20:36.420Z",
+        "duration": 136407.43399999998,
+        "expected": 11,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "cleanup": {
+        "browser": "PASS",
+        "server": "PASS",
+        "portReleased": true,
+        "sourceUnchanged": true,
+        "fixtureUnchanged": true,
+        "buildUnchanged": true
+      },
+      "failedCases": [
+        {
+          "title": "D0 image-relative control follows fresh appearance through model failure, motion and interruption",
+          "status": "failed"
+        }
+      ]
+    },
+    {
+      "name": "geometry-smoke",
+      "stats": {
+        "startTime": "2026-10-19T20:23:05.283Z",
+        "duration": 15304.654,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cleanup": {
+        "browser": "PASS",
+        "server": "PASS",
+        "portReleased": true,
+        "sourceUnchanged": true,
+        "fixtureUnchanged": true,
+        "buildUnchanged": true
+      },
+      "failedCases": []
+    }
+  ],
+  "currentPhotographicCases": [
+    {
+      "title": "photographic video through the actual worker tracks noise, motion, partial occlusion and a second hand, then cleans up",
+      "status": "passed",
+      "counts": {
+        "init": 1,
+        "ready": 1,
+        "frame": 56,
+        "result": 56,
+        "error": 0,
+        "paired": 56,
+        "unpaired": 0
+      },
+      "ready": [
+        {
+          "backend": "CPU_WASM",
+          "providerPolicy": "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1",
+          "fallbackReason": "GPU_STARTUP_LATENCY_HEALTH_FAILED",
+          "startupHealth": {
+            "classification": "SYNTHETIC_PREREADY_LATENCY_NECESSARY_CONDITION_ONLY",
+            "probeDimensions": {
+              "width": 640,
+              "height": 480
+            },
+            "geometryVersion": 3,
+            "mirrorTransform": "PREVIEW_X",
+            "livePixelQualification": false,
+            "attempts": [
+              {
+                "passed": false,
+                "delegate": "GPU",
+                "width": 640,
+                "height": 480,
+                "maximumElapsedMs": 150,
+                "outputsDiscarded": true,
+                "retainedRegionsCleared": true,
+                "probes": [
+                  {
+                    "timestamp": -2,
+                    "elapsedMs": 318.7000000178814,
+                    "forcedRegions": 2,
+                    "discardedHandOutputs": 0
+                  },
+                  {
+                    "timestamp": -1,
+                    "elapsedMs": 312.90000000596046,
+                    "forcedRegions": 2,
+                    "discardedHandOutputs": 0
+                  }
+                ]
+              },
+              {
+                "passed": true,
+                "delegate": "CPU",
+                "width": 640,
+                "height": 480,
+                "maximumElapsedMs": 150,
+                "outputsDiscarded": true,
+                "retainedRegionsCleared": true,
+                "probes": [
+                  {
+                    "timestamp": -2,
+                    "elapsedMs": 61.599999994039536,
+                    "forcedRegions": 2,
+                    "discardedHandOutputs": 0
+                  },
+                  {
+                    "timestamp": -1,
+                    "elapsedMs": 54.19999998807907,
+                    "forcedRegions": 2,
+                    "discardedHandOutputs": 0
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "packetAgeMs": {
+        "n": 56,
+        "min": 50.70000001788139,
+        "median": 57.30000001192093,
+        "p95": 87.69999998807907,
+        "max": 105.59999999403954
+      },
+      "rawFreshness": {
+        "atMost150Ms": 56,
+        "atLeast150Ms": 0,
+        "strictlyOver150Ms": 0,
+        "nonfiniteAge": 0
+      },
+      "handCountRuns": [
+        {
+          "handCount": 1,
+          "results": 19,
+          "startSecondsAfterFirstResult": 0,
+          "endSecondsAfterFirstResult": 1.3654000000059605
+        },
+        {
+          "handCount": 2,
+          "results": 6,
+          "startSecondsAfterFirstResult": 1.4529000000059604,
+          "endSecondsAfterFirstResult": 1.9125
+        },
+        {
+          "handCount": 1,
+          "results": 31,
+          "startSecondsAfterFirstResult": 2.0025999999940396,
+          "endSecondsAfterFirstResult": 4.075
+        }
+      ],
+      "last5Seconds": {
+        "results": 56,
+        "handCounts": {
+          "1": 50,
+          "2": 6
+        },
+        "over150Ms": 0,
+        "atLeast150Ms": 0,
+        "timing": {
+          "packetAgeMs": {
+            "n": 56,
+            "min": 50.70000001788139,
+            "median": 57.30000001192093,
+            "p95": 87.69999998807907,
+            "max": 105.59999999403954
+          },
+          "captureToInferenceCompletionMs": {
+            "n": 56,
+            "min": 50.60009765625,
+            "median": 57.000244140625,
+            "p95": 85.199951171875,
+            "max": 88.300048828125
+          },
+          "dispatchToReceiptMs": {
+            "n": 56,
+            "min": 50,
+            "median": 56.5,
+            "p95": 86.599853515625,
+            "max": 104.7998046875
+          },
+          "captureToDispatchMs": {
+            "n": 56,
+            "min": 0.5,
+            "median": 0.800000011920929,
+            "p95": 1.2999999821186066,
+            "max": 2.2999999821186066
+          },
+          "inferenceCompletionToReceiptMs": {
+            "n": 56,
+            "min": 0,
+            "median": 0.199951171875,
+            "p95": 0.7998046875,
+            "max": 20.39990234375
+          }
+        }
+      },
+      "last15Seconds": {
+        "results": 56,
+        "handCounts": {
+          "1": 50,
+          "2": 6
+        },
+        "over150Ms": 0,
+        "atLeast150Ms": 0,
+        "timing": {
+          "packetAgeMs": {
+            "n": 56,
+            "min": 50.70000001788139,
+            "median": 57.30000001192093,
+            "p95": 87.69999998807907,
+            "max": 105.59999999403954
+          },
+          "captureToInferenceCompletionMs": {
+            "n": 56,
+            "min": 50.60009765625,
+            "median": 57.000244140625,
+            "p95": 85.199951171875,
+            "max": 88.300048828125
+          },
+          "dispatchToReceiptMs": {
+            "n": 56,
+            "min": 50,
+            "median": 56.5,
+            "p95": 86.599853515625,
+            "max": 104.7998046875
+          },
+          "captureToDispatchMs": {
+            "n": 56,
+            "min": 0.5,
+            "median": 0.800000011920929,
+            "p95": 1.2999999821186066,
+            "max": 2.2999999821186066
+          },
+          "inferenceCompletionToReceiptMs": {
+            "n": 56,
+            "min": 0,
+            "median": 0.199951171875,
+            "p95": 0.7998046875,
+            "max": 20.39990234375
+          }
+        }
+      },
+      "presentationProxy": {
+        "eligiblePairedRows": 56,
+        "finiteCaptureTimeRows": 0,
+        "diagnosticWindows": {
+          "last5Seconds": {
+            "rows": 56,
+            "strictlyOver150AtReceipt": 2,
+            "presentationToReceiptMs": {
+              "n": 56,
+              "min": 66,
+              "median": 100.70000001192057,
+              "p95": 134.90000000596046,
+              "max": 160.00000000596083
+            },
+            "conditionalOriginToReceiptMs": {
+              "n": 56,
+              "min": 66,
+              "median": 100.70000001192057,
+              "p95": 134.90000000596046,
+              "max": 160.00000000596083
+            }
+          },
+          "last15Seconds": {
+            "rows": 56,
+            "strictlyOver150AtReceipt": 2,
+            "presentationToReceiptMs": {
+              "n": 56,
+              "min": 66,
+              "median": 100.70000001192057,
+              "p95": 134.90000000596046,
+              "max": 160.00000000596083
+            },
+            "conditionalOriginToReceiptMs": {
+              "n": 56,
+              "min": 66,
+              "median": 100.70000001192057,
+              "p95": 134.90000000596046,
+              "max": 160.00000000596083
+            }
+          }
+        },
+        "dimensionsMismatch": 0,
+        "invalidConditionalOrigin": 0,
+        "presentationToReceiptMs": {
+          "n": 56,
+          "min": 66,
+          "median": 100.70000001192057,
+          "p95": 134.90000000596046,
+          "max": 160.00000000596083
+        },
+        "conditionalRuntimeOriginToReceiptMs": {
+          "n": 56,
+          "min": 66,
+          "median": 100.70000001192057,
+          "p95": 134.90000000596046,
+          "max": 160.00000000596083
+        },
+        "conditionalRuntimeOriginToCaptureMs": {
+          "n": 56,
+          "min": 11.399999999999636,
+          "median": 37.30000001192093,
+          "p95": 65.50000001788158,
+          "max": 70.30000002384168
+        },
+        "callbackAgeOfPresentationMs": {
+          "n": 56,
+          "min": 10.60000001788103,
+          "median": 14.700000005960646,
+          "p95": 16.80000001192093,
+          "max": 19.300000017881757
+        },
+        "conditionalOriginStrictlyOver150AtReceipt": 2,
+        "limitation": "Latest observed rVFC at or before capture, never a later dispatch callback. Finite captureTime is used when present; null combines absent and nonfinite in the instrumentation, so presentation fallback is conditional. This is a presentation-origin proxy, not sensor exposure, exact final source-veto proof, display scanout or capture-to-visible latency."
+      },
+      "finalUiStates": [
+        {
+          "reachReadiness": "NO_HAND",
+          "imageState": "UNSEEDED",
+          "imageReason": "UNSEEDED",
+          "imageCaptureTime": "",
+          "imageInferenceTime": "",
+          "imageModelAgreement": "UNAVAILABLE",
+          "fingertipCoordinateSource": "IMAGE",
+          "calibrationIdentity": "ACTIVE"
+        }
+      ]
+    },
+    {
+      "title": "photographic worker completes nine real-landmark holds and five independent checks",
+      "status": "failed",
+      "counts": {
+        "init": 1,
+        "ready": 1,
+        "frame": 223,
+        "result": 222,
+        "error": 0,
+        "paired": 222,
+        "unpaired": 0
+      },
+      "ready": [
+        {
+          "backend": "CPU_WASM",
+          "providerPolicy": "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1",
+          "fallbackReason": "GPU_STARTUP_LATENCY_HEALTH_FAILED",
+          "startupHealth": {
+            "classification": "SYNTHETIC_PREREADY_LATENCY_NECESSARY_CONDITION_ONLY",
+            "probeDimensions": {
+              "width": 640,
+              "height": 480
+            },
+            "geometryVersion": 3,
+            "mirrorTransform": "PREVIEW_X",
+            "livePixelQualification": false,
+            "attempts": [
+              {
+                "passed": false,
+                "delegate": "GPU",
+                "width": 640,
+                "height": 480,
+                "maximumElapsedMs": 150,
+                "outputsDiscarded": true,
+                "retainedRegionsCleared": true,
+                "probes": [
+                  {
+                    "timestamp": -2,
+                    "elapsedMs": 356,
+                    "forcedRegions": 2,
+                    "discardedHandOutputs": 0
+                  },
+                  {
+                    "timestamp": -1,
+                    "elapsedMs": 344.2999999821186,
+                    "forcedRegions": 2,
+                    "discardedHandOutputs": 0
+                  }
+                ]
+              },
+              {
+                "passed": true,
+                "delegate": "CPU",
+                "width": 640,
+                "height": 480,
+                "maximumElapsedMs": 150,
+                "outputsDiscarded": true,
+                "retainedRegionsCleared": true,
+                "probes": [
+                  {
+                    "timestamp": -2,
+                    "elapsedMs": 75.40000000596046,
+                    "forcedRegions": 2,
+                    "discardedHandOutputs": 0
+                  },
+                  {
+                    "timestamp": -1,
+                    "elapsedMs": 89.40000000596046,
+                    "forcedRegions": 2,
+                    "discardedHandOutputs": 0
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "packetAgeMs": {
+        "n": 222,
+        "min": 49.79999998211861,
+        "median": 83.40000000596046,
+        "p95": 164.2000000178814,
+        "max": 747.3000000119209
+      },
+      "rawFreshness": {
+        "atMost150Ms": 207,
+        "atLeast150Ms": 15,
+        "strictlyOver150Ms": 15,
+        "nonfiniteAge": 0
+      },
+      "handCountRuns": [
+        {
+          "handCount": 1,
+          "results": 75,
+          "startSecondsAfterFirstResult": 0,
+          "endSecondsAfterFirstResult": 6.394099999994039
+        },
+        {
+          "handCount": 2,
+          "results": 147,
+          "startSecondsAfterFirstResult": 6.578300000011921,
+          "endSecondsAfterFirstResult": 29.35519999998808
+        }
+      ],
+      "last5Seconds": {
+        "results": 57,
+        "handCounts": {
+          "2": 57
+        },
+        "over150Ms": 0,
+        "atLeast150Ms": 0,
+        "timing": {
+          "packetAgeMs": {
+            "n": 57,
+            "min": 72,
+            "median": 81.90000000596046,
+            "p95": 88.89999997615814,
+            "max": 92.2000000178814
+          },
+          "captureToInferenceCompletionMs": {
+            "n": 57,
+            "min": 71.80029296875,
+            "median": 81.7001953125,
+            "p95": 88.800048828125,
+            "max": 92.000244140625
+          },
+          "dispatchToReceiptMs": {
+            "n": 57,
+            "min": 71.2998046875,
+            "median": 81.300048828125,
+            "p95": 87.699951171875,
+            "max": 91.199951171875
+          },
+          "captureToDispatchMs": {
+            "n": 57,
+            "min": 0.4000000059604645,
+            "median": 0.800000011920929,
+            "p95": 1.2000000178813934,
+            "max": 1.5
+          },
+          "inferenceCompletionToReceiptMs": {
+            "n": 57,
+            "min": 0.099853515625,
+            "median": 0.199951171875,
+            "p95": 0.300048828125,
+            "max": 0.699951171875
+          }
+        }
+      },
+      "last15Seconds": {
+        "results": 101,
+        "handCounts": {
+          "2": 101
+        },
+        "over150Ms": 3,
+        "atLeast150Ms": 3,
+        "timing": {
+          "packetAgeMs": {
+            "n": 101,
+            "min": 70.2999999821186,
+            "median": 83.5,
+            "p95": 93.90000000596046,
+            "max": 747.3000000119209
+          },
+          "captureToInferenceCompletionMs": {
+            "n": 101,
+            "min": 70.10009765625,
+            "median": 83.400146484375,
+            "p95": 93.60009765625,
+            "max": 747.10009765625
+          },
+          "dispatchToReceiptMs": {
+            "n": 101,
+            "min": 69.2001953125,
+            "median": 82.699951171875,
+            "p95": 92.60009765625,
+            "max": 746.099853515625
+          },
+          "captureToDispatchMs": {
+            "n": 101,
+            "min": 0.4000000059604645,
+            "median": 0.800000011920929,
+            "p95": 1.2999999821186066,
+            "max": 19.5
+          },
+          "inferenceCompletionToReceiptMs": {
+            "n": 101,
+            "min": 0,
+            "median": 0.199951171875,
+            "p95": 0.5,
+            "max": 8.199951171875
+          }
+        }
+      },
+      "presentationProxy": {
+        "eligiblePairedRows": 222,
+        "finiteCaptureTimeRows": 0,
+        "diagnosticWindows": {
+          "last5Seconds": {
+            "rows": 57,
+            "strictlyOver150AtReceipt": 1,
+            "presentationToReceiptMs": {
+              "n": 57,
+              "min": 84.79999998807762,
+              "median": 115.69999999999709,
+              "p95": 148.40000000596046,
+              "max": 156.59999998808053
+            },
+            "conditionalOriginToReceiptMs": {
+              "n": 57,
+              "min": 84.79999998807762,
+              "median": 115.69999999999709,
+              "p95": 148.40000000596046,
+              "max": 156.59999998808053
+            }
+          },
+          "last15Seconds": {
+            "rows": 101,
+            "strictlyOver150AtReceipt": 8,
+            "presentationToReceiptMs": {
+              "n": 101,
+              "min": 84.79999998807762,
+              "median": 119.60000000595755,
+              "p95": 152.59999999999854,
+              "max": 809.9000000059605
+            },
+            "conditionalOriginToReceiptMs": {
+              "n": 101,
+              "min": 84.79999998807762,
+              "median": 119.60000000595755,
+              "p95": 152.59999999999854,
+              "max": 809.9000000059605
+            }
+          }
+        },
+        "dimensionsMismatch": 0,
+        "invalidConditionalOrigin": 0,
+        "presentationToReceiptMs": {
+          "n": 222,
+          "min": 70.09999999403954,
+          "median": 119.60000000595755,
+          "p95": 204,
+          "max": 809.9000000059605
+        },
+        "conditionalRuntimeOriginToReceiptMs": {
+          "n": 222,
+          "min": 70.09999999403954,
+          "median": 119.60000000595755,
+          "p95": 204,
+          "max": 809.9000000059605
+        },
+        "conditionalRuntimeOriginToCaptureMs": {
+          "n": 222,
+          "min": 7.500000011918019,
+          "median": 35.79999999404026,
+          "p95": 63.80000001192093,
+          "max": 78.6999999940399
+        },
+        "callbackAgeOfPresentationMs": {
+          "n": 222,
+          "min": 0.10000000596119207,
+          "median": 14.89999998807616,
+          "p95": 17.200000000000728,
+          "max": 24.599999988078707
+        },
+        "conditionalOriginStrictlyOver150AtReceipt": 32,
+        "limitation": "Latest observed rVFC at or before capture, never a later dispatch callback. Finite captureTime is used when present; null combines absent and nonfinite in the instrumentation, so presentation fallback is conditional. This is a presentation-origin proxy, not sensor exposure, exact final source-veto proof, display scanout or capture-to-visible latency."
+      },
+      "finalUiStates": [
+        {
+          "reachReadiness": "CHOOSE_HAND",
+          "imageState": "UNSEEDED",
+          "imageReason": "UNSEEDED",
+          "imageCaptureTime": "",
+          "imageInferenceTime": "",
+          "imageModelAgreement": "UNAVAILABLE",
+          "fingertipCoordinateSource": "IMAGE",
+          "calibrationIdentity": "ACTIVE"
+        }
+      ]
+    }
+  ],
+  "earlierDistinctSourcePhotographicCases": [
+    {
+      "title": "photographic video through the actual worker tracks noise, motion, partial occlusion and a second hand, then cleans up",
+      "status": "passed",
+      "counts": {
+        "init": 1,
+        "ready": 1,
+        "frame": 64,
+        "result": 63,
+        "error": 0,
+        "paired": 63,
+        "unpaired": 0
+      },
+      "ready": [
+        {
+          "backend": "CPU_WASM",
+          "providerPolicy": "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1",
+          "fallbackReason": "GPU_STARTUP_LATENCY_HEALTH_FAILED",
+          "startupHealth": {
+            "classification": "SYNTHETIC_PREREADY_LATENCY_NECESSARY_CONDITION_ONLY",
+            "probeDimensions": {
+              "width": 640,
+              "height": 480
+            },
+            "geometryVersion": 3,
+            "mirrorTransform": "PREVIEW_X",
+            "livePixelQualification": false,
+            "attempts": [
+              {
+                "passed": false,
+                "delegate": "GPU",
+                "width": 640,
+                "height": 480,
+                "maximumElapsedMs": 150,
+                "outputsDiscarded": true,
+                "retainedRegionsCleared": true,
+                "probes": [
+                  {
+                    "timestamp": -2,
+                    "elapsedMs": 354.40000000596046,
+                    "forcedRegions": 2,
+                    "discardedHandOutputs": 0
+                  },
+                  {
+                    "timestamp": -1,
+                    "elapsedMs": 339.69999998807907,
+                    "forcedRegions": 2,
+                    "discardedHandOutputs": 0
+                  }
+                ]
+              },
+              {
+                "passed": true,
+                "delegate": "CPU",
+                "width": 640,
+                "height": 480,
+                "maximumElapsedMs": 150,
+                "outputsDiscarded": true,
+                "retainedRegionsCleared": true,
+                "probes": [
+                  {
+                    "timestamp": -2,
+                    "elapsedMs": 65.5,
+                    "forcedRegions": 2,
+                    "discardedHandOutputs": 0
+                  },
+                  {
+                    "timestamp": -1,
+                    "elapsedMs": 67.39999997615814,
+                    "forcedRegions": 2,
+                    "discardedHandOutputs": 0
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "packetAgeMs": {
+        "n": 63,
+        "min": 55.900000005960464,
+        "median": 66.80000001192093,
+        "p95": 90.09999999403954,
+        "max": 100.09999999403954
+      },
+      "rawFreshness": {
+        "atMost150Ms": 63,
+        "atLeast150Ms": 0,
+        "strictlyOver150Ms": 0,
+        "nonfiniteAge": 0
+      },
+      "handCountRuns": [
+        {
+          "handCount": 1,
+          "results": 18,
+          "startSecondsAfterFirstResult": 0,
+          "endSecondsAfterFirstResult": 1.5452999999821186
+        },
+        {
+          "handCount": 2,
+          "results": 5,
+          "startSecondsAfterFirstResult": 1.6452999999821185,
+          "endSecondsAfterFirstResult": 2.021899999976158
+        },
+        {
+          "handCount": 1,
+          "results": 40,
+          "startSecondsAfterFirstResult": 2.1245,
+          "endSecondsAfterFirstResult": 5.253
+        }
+      ],
+      "last5Seconds": {
+        "results": 60,
+        "handCounts": {
+          "1": 55,
+          "2": 5
+        },
+        "over150Ms": 0,
+        "atLeast150Ms": 0,
+        "timing": {
+          "packetAgeMs": {
+            "n": 60,
+            "min": 55.900000005960464,
+            "median": 66.30000001192093,
+            "p95": 90.09999999403954,
+            "max": 100.09999999403954
+          },
+          "captureToInferenceCompletionMs": {
+            "n": 60,
+            "min": 55.599853515625,
+            "median": 65.699951171875,
+            "p95": 89.999755859375,
+            "max": 99.999755859375
+          },
+          "dispatchToReceiptMs": {
+            "n": 60,
+            "min": 55,
+            "median": 65.199951171875,
+            "p95": 88.89990234375,
+            "max": 98.7998046875
+          },
+          "captureToDispatchMs": {
+            "n": 60,
+            "min": 0.3999999761581421,
+            "median": 0.9000000059604645,
+            "p95": 1.300000011920929,
+            "max": 1.699999988079071
+          },
+          "inferenceCompletionToReceiptMs": {
+            "n": 60,
+            "min": 0.10009765625,
+            "median": 0.199951171875,
+            "p95": 2.10009765625,
+            "max": 10.5
+          }
+        }
+      },
+      "last15Seconds": {
+        "results": 63,
+        "handCounts": {
+          "1": 58,
+          "2": 5
+        },
+        "over150Ms": 0,
+        "atLeast150Ms": 0,
+        "timing": {
+          "packetAgeMs": {
+            "n": 63,
+            "min": 55.900000005960464,
+            "median": 66.80000001192093,
+            "p95": 90.09999999403954,
+            "max": 100.09999999403954
+          },
+          "captureToInferenceCompletionMs": {
+            "n": 63,
+            "min": 55.599853515625,
+            "median": 66.10009765625,
+            "p95": 89.999755859375,
+            "max": 99.999755859375
+          },
+          "dispatchToReceiptMs": {
+            "n": 63,
+            "min": 55,
+            "median": 65.699951171875,
+            "p95": 88.89990234375,
+            "max": 98.7998046875
+          },
+          "captureToDispatchMs": {
+            "n": 63,
+            "min": 0.3999999761581421,
+            "median": 0.9000000059604645,
+            "p95": 1.300000011920929,
+            "max": 2.9000000059604645
+          },
+          "inferenceCompletionToReceiptMs": {
+            "n": 63,
+            "min": 0.10009765625,
+            "median": 0.199951171875,
+            "p95": 2.10009765625,
+            "max": 10.5
+          }
+        }
+      },
+      "presentationProxy": {
+        "eligiblePairedRows": 63,
+        "finiteCaptureTimeRows": 0,
+        "diagnosticWindows": {
+          "last5Seconds": {
+            "rows": 60,
+            "strictlyOver150AtReceipt": 2,
+            "presentationToReceiptMs": {
+              "n": 60,
+              "min": 73.5,
+              "median": 110.40000001192129,
+              "p95": 146.30000002384168,
+              "max": 166.5000000238415
+            },
+            "conditionalOriginToReceiptMs": {
+              "n": 60,
+              "min": 73.5,
+              "median": 110.40000001192129,
+              "p95": 146.30000002384168,
+              "max": 166.5000000238415
+            }
+          },
+          "last15Seconds": {
+            "rows": 63,
+            "strictlyOver150AtReceipt": 2,
+            "presentationToReceiptMs": {
+              "n": 63,
+              "min": 73.5,
+              "median": 110.40000001192129,
+              "p95": 146.30000002384168,
+              "max": 166.5000000238415
+            },
+            "conditionalOriginToReceiptMs": {
+              "n": 63,
+              "min": 73.5,
+              "median": 110.40000001192129,
+              "p95": 146.30000002384168,
+              "max": 166.5000000238415
+            }
+          }
+        },
+        "dimensionsMismatch": 0,
+        "invalidConditionalOrigin": 0,
+        "presentationToReceiptMs": {
+          "n": 63,
+          "min": 73.5,
+          "median": 110.40000001192129,
+          "p95": 146.30000002384168,
+          "max": 166.5000000238415
+        },
+        "conditionalRuntimeOriginToReceiptMs": {
+          "n": 63,
+          "min": 73.5,
+          "median": 110.40000001192129,
+          "p95": 146.30000002384168,
+          "max": 166.5000000238415
+        },
+        "conditionalRuntimeOriginToCaptureMs": {
+          "n": 63,
+          "min": 7.600000011920201,
+          "median": 41.1000000119202,
+          "p95": 69.89999999999964,
+          "max": 74.89999999999964
+        },
+        "callbackAgeOfPresentationMs": {
+          "n": 63,
+          "min": 0.3000000238425855,
+          "median": 14.200000023842222,
+          "p95": 18.800000017881757,
+          "max": 26.000000017881575
+        },
+        "conditionalOriginStrictlyOver150AtReceipt": 2,
+        "limitation": "Latest observed rVFC at or before capture, never a later dispatch callback. Finite captureTime is used when present; null combines absent and nonfinite in the instrumentation, so presentation fallback is conditional. This is a presentation-origin proxy, not sensor exposure, exact final source-veto proof, display scanout or capture-to-visible latency."
+      },
+      "finalUiStates": [
+        {
+          "reachReadiness": "NO_HAND",
+          "imageState": "UNSEEDED",
+          "imageReason": "UNSEEDED",
+          "imageCaptureTime": "",
+          "imageInferenceTime": "",
+          "imageModelAgreement": "UNAVAILABLE",
+          "fingertipCoordinateSource": "IMAGE",
+          "calibrationIdentity": "ACTIVE"
+        }
+      ]
+    },
+    {
+      "title": "photographic worker completes nine real-landmark holds and five independent checks",
+      "status": "passed",
+      "counts": {
+        "init": 1,
+        "ready": 1,
+        "frame": 829,
+        "result": 828,
+        "error": 0,
+        "paired": 828,
+        "unpaired": 0
+      },
+      "ready": [
+        {
+          "backend": "CPU_WASM",
+          "providerPolicy": "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1",
+          "fallbackReason": "GPU_STARTUP_LATENCY_HEALTH_FAILED",
+          "startupHealth": {
+            "classification": "SYNTHETIC_PREREADY_LATENCY_NECESSARY_CONDITION_ONLY",
+            "probeDimensions": {
+              "width": 640,
+              "height": 480
+            },
+            "geometryVersion": 3,
+            "mirrorTransform": "PREVIEW_X",
+            "livePixelQualification": false,
+            "attempts": [
+              {
+                "passed": false,
+                "delegate": "GPU",
+                "width": 640,
+                "height": 480,
+                "maximumElapsedMs": 150,
+                "outputsDiscarded": true,
+                "retainedRegionsCleared": true,
+                "probes": [
+                  {
+                    "timestamp": -2,
+                    "elapsedMs": 347.09999999403954,
+                    "forcedRegions": 2,
+                    "discardedHandOutputs": 0
+                  },
+                  {
+                    "timestamp": -1,
+                    "elapsedMs": 349.30000001192093,
+                    "forcedRegions": 2,
+                    "discardedHandOutputs": 0
+                  }
+                ]
+              },
+              {
+                "passed": true,
+                "delegate": "CPU",
+                "width": 640,
+                "height": 480,
+                "maximumElapsedMs": 150,
+                "outputsDiscarded": true,
+                "retainedRegionsCleared": true,
+                "probes": [
+                  {
+                    "timestamp": -2,
+                    "elapsedMs": 64.40000000596046,
+                    "forcedRegions": 2,
+                    "discardedHandOutputs": 0
+                  },
+                  {
+                    "timestamp": -1,
+                    "elapsedMs": 65.2999999821186,
+                    "forcedRegions": 2,
+                    "discardedHandOutputs": 0
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "packetAgeMs": {
+        "n": 828,
+        "min": 32.39999997615814,
+        "median": 60.400000005960464,
+        "p95": 82.2000000178814,
+        "max": 109.10000002384186
+      },
+      "rawFreshness": {
+        "atMost150Ms": 828,
+        "atLeast150Ms": 0,
+        "strictlyOver150Ms": 0,
+        "nonfiniteAge": 0
+      },
+      "handCountRuns": [
+        {
+          "handCount": 1,
+          "results": 86,
+          "startSecondsAfterFirstResult": 0,
+          "endSecondsAfterFirstResult": 6.2918000000119205
+        },
+        {
+          "handCount": 2,
+          "results": 33,
+          "startSecondsAfterFirstResult": 6.402,
+          "endSecondsAfterFirstResult": 9.68330000001192
+        },
+        {
+          "handCount": 1,
+          "results": 709,
+          "startSecondsAfterFirstResult": 9.804800000011921,
+          "endSecondsAfterFirstResult": 54.79830000001192
+        }
+      ],
+      "last5Seconds": {
+        "results": 91,
+        "handCounts": {
+          "1": 91
+        },
+        "over150Ms": 0,
+        "atLeast150Ms": 0,
+        "timing": {
+          "packetAgeMs": {
+            "n": 91,
+            "min": 32.70000001788139,
+            "median": 38.69999998807907,
+            "p95": 47.80000001192093,
+            "max": 57.19999998807907
+          },
+          "captureToInferenceCompletionMs": {
+            "n": 91,
+            "min": 32.500244140625,
+            "median": 38.400146484375,
+            "p95": 47.60009765625,
+            "max": 56.800048828125
+          },
+          "dispatchToReceiptMs": {
+            "n": 91,
+            "min": 32.199951171875,
+            "median": 37.89990234375,
+            "p95": 46.5,
+            "max": 56.5
+          },
+          "captureToDispatchMs": {
+            "n": 91,
+            "min": 0.3999999761581421,
+            "median": 0.699999988079071,
+            "p95": 2.0999999940395355,
+            "max": 3.100000023841858
+          },
+          "inferenceCompletionToReceiptMs": {
+            "n": 91,
+            "min": 0.099853515625,
+            "median": 0.199951171875,
+            "p95": 0.39990234375,
+            "max": 0.599853515625
+          }
+        }
+      },
+      "last15Seconds": {
+        "results": 288,
+        "handCounts": {
+          "1": 288
+        },
+        "over150Ms": 0,
+        "atLeast150Ms": 0,
+        "timing": {
+          "packetAgeMs": {
+            "n": 288,
+            "min": 32.39999997615814,
+            "median": 36.599999994039536,
+            "p95": 49.60000002384186,
+            "max": 57.19999998807907
+          },
+          "captureToInferenceCompletionMs": {
+            "n": 288,
+            "min": 32.2001953125,
+            "median": 36.400146484375,
+            "p95": 49.400146484375,
+            "max": 56.800048828125
+          },
+          "dispatchToReceiptMs": {
+            "n": 288,
+            "min": 31.800048828125,
+            "median": 35.60009765625,
+            "p95": 48.800048828125,
+            "max": 56.5
+          },
+          "captureToDispatchMs": {
+            "n": 288,
+            "min": 0.09999999403953552,
+            "median": 0.699999988079071,
+            "p95": 2,
+            "max": 3.100000023841858
+          },
+          "inferenceCompletionToReceiptMs": {
+            "n": 288,
+            "min": 0.099853515625,
+            "median": 0.199951171875,
+            "p95": 0.39990234375,
+            "max": 1.39990234375
+          }
+        }
+      },
+      "presentationProxy": {
+        "eligiblePairedRows": 828,
+        "finiteCaptureTimeRows": 0,
+        "diagnosticWindows": {
+          "last5Seconds": {
+            "rows": 91,
+            "strictlyOver150AtReceipt": 0,
+            "presentationToReceiptMs": {
+              "n": 91,
+              "min": 45.099999999998545,
+              "median": 58.799999994036625,
+              "p95": 93.79999999403663,
+              "max": 100.79999999403663
+            },
+            "conditionalOriginToReceiptMs": {
+              "n": 91,
+              "min": 45.099999999998545,
+              "median": 58.799999994036625,
+              "p95": 93.79999999403663,
+              "max": 100.79999999403663
+            }
+          },
+          "last15Seconds": {
+            "rows": 288,
+            "strictlyOver150AtReceipt": 0,
+            "presentationToReceiptMs": {
+              "n": 288,
+              "min": 42.200000011922384,
+              "median": 51.50000000595901,
+              "p95": 93.79999999403663,
+              "max": 116.00000000595901
+            },
+            "conditionalOriginToReceiptMs": {
+              "n": 288,
+              "min": 42.200000011922384,
+              "median": 51.50000000595901,
+              "p95": 93.79999999403663,
+              "max": 116.00000000595901
+            }
+          }
+        },
+        "dimensionsMismatch": 0,
+        "invalidConditionalOrigin": 0,
+        "presentationToReceiptMs": {
+          "n": 828,
+          "min": 42.200000011922384,
+          "median": 91.80000000596192,
+          "p95": 131.89999998807616,
+          "max": 165.00000001192166
+        },
+        "conditionalRuntimeOriginToReceiptMs": {
+          "n": 828,
+          "min": 42.200000011922384,
+          "median": 91.80000000596192,
+          "p95": 131.89999998807616,
+          "max": 165.00000001192166
+        },
+        "conditionalRuntimeOriginToCaptureMs": {
+          "n": 828,
+          "min": 6.69999999999709,
+          "median": 30.30000000000291,
+          "p95": 61.40000001192129,
+          "max": 69.90000001192129
+        },
+        "callbackAgeOfPresentationMs": {
+          "n": 828,
+          "min": 0.30000001192092896,
+          "median": 14.899999994038808,
+          "p95": 16.99999999404099,
+          "max": 24.799999994040263
+        },
+        "conditionalOriginStrictlyOver150AtReceipt": 7,
+        "limitation": "Latest observed rVFC at or before capture, never a later dispatch callback. Finite captureTime is used when present; null combines absent and nonfinite in the instrumentation, so presentation fallback is conditional. This is a presentation-origin proxy, not sensor exposure, exact final source-veto proof, display scanout or capture-to-visible latency."
+      },
+      "finalUiStates": [
+        {
+          "reachReadiness": "NO_HAND",
+          "imageState": "UNSEEDED",
+          "imageReason": "UNSEEDED",
+          "imageCaptureTime": "",
+          "imageInferenceTime": "",
+          "imageModelAgreement": "UNAVAILABLE",
+          "fingertipCoordinateSource": "IMAGE",
+          "calibrationIdentity": "ACTIVE"
+        }
+      ]
+    }
+  ],
+  "conclusions": {
+    "photoFailure": {
+      "proven": [
+        "Current photographic calibration failed the original20second Target4of9 expectation during the deliberate TRAINING target3 TWO condition; all original assertions remain retained.",
+        "Current stream returned222rawRESULTs with no worker ERROR;75one-hand results then147two-hand results. Final57results over5seconds were all two-hand and all packet ages<=150ms; finalDOM readinessCHOOSE_HAND.",
+        "15of222 packet ages exceeded150ms overall; the747.3ms worst result was mainly capture-to-inference completion747.1ms, not message transport. The finalstream was not uniformly stale.",
+        "The earlier different-source full calibration passed and returned828rawRESULTs, including33two-hand results followed by709one-hand results. Current failure kept TWO until progress advanced, so long two-hand duration is partly a consequence of the stall.",
+        "ABSOLUTE mode disables image tracking (ReachLaboratory450); UNSEEDED/UNAVAILABLE/IMAGE and calibrationIdentityACTIVE do not prove loss or correctness of an image-selected fingertip.",
+        "ActiveHandSelector157 immediately pauses any ambiguous continuity. Its CHOOSE_HAND177 path requires no current matching active hand and a candidate set whose size is not one; raw handcount alone does not reveal whether zero or two hands are eligible."
+      ],
+      "inferred": [
+        "Late admission gaps could affect bounded association, but current scalar logs cannot prove incumbent disappearance, ambiguity, posture rejection or exact track generation transitions."
+      ],
+      "unavailable": [
+        "Passive logs contain no raw landmarks, per-frame trackID/generation/assessment or exact final source-veto decision. They cannot prove why the incumbent stopped matching.",
+        "End-of-journey photographic-calibration-performance.json and new Stop alpha assertions were not reached in this failed full journey; earlier-source success cannot qualify them."
+      ]
+    },
+    "viewportFailure": {
+      "proven": [
+        "Failure snapshot displayed the unique generic binding mismatch paragraph emitted at ReachLaboratory541: The tracked fingertip, camera or pointing area changed. Begin a fresh setup.",
+        "bindingFor469..481 reads live pointing-plane dimensions and viewport epoch. consumeControl534..544 invalidates any current binding mismatch. invalidate346 clears trial.current and the calibration binding.",
+        "Viewport observer1003..1012 emits the expected view-specific message only while an existing calibration or trial binding remains. The original test regex omitted the observed generic paragraph.",
+        "No native Worker INIT/READY/FRAME/RESULT occurred in this guided D0 viewport case. It is not evidence of actual worker startup or neural latency failure."
+      ],
+      "inferred": [
+        "A control sample can observe new dimensions first, invoke generic invalidation and clear the binding before the resize observer checks its binding guard. This explains the competing message paths; callback ordering is not directly recorded."
+      ],
+      "limits": [
+        "The safe invalidation occurred. Neither this message-path evidence nor the nonpaired runs establishes causal attribution to the inactive ReachStage clear repair. Active drawing code was unchanged."
+      ]
+    },
+    "indexFailure": {
+      "title": "D0 image-relative control follows fresh appearance through model failure, motion and interruption",
+      "originalAssertion": "line399 new Set(TRACKING generations) equals new Set([initial])",
+      "expectedGenerations": ["1"],
+      "receivedGenerations": ["1", "2", "3"],
+      "classification": "D0_ANALYTIC_FIXTURE_FAILURE_RETAINED_NOT_PHYSICAL_IDENTITY_TRUTH"
+    }
+  },
+  "limitations": [
+    "Current and earlier source-bound browser runs are nonpaired; differences do not prove regression, repair causality or flakiness.",
+    "Raw timely packets are not selected-index correctness or calibration sample counts.",
+    "Presentation-origin timing is conditional rVFC evidence, not sensor exposure, display scanout or capture-to-visible latency.",
+    "Canonical Windows junction refusal remains failure; supplemental cleanup and tests confer no canonical acceptance.",
+    "Original gray-smoke maximum801x683 wording is inaccurate after403x687 portrait resize; exact dimensions retained."
+  ]
+}

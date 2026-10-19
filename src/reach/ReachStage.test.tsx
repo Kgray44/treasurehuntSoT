@@ -236,8 +236,57 @@ describe("Reach canvas submissions", () => {
     view.rerender(<ReachStage {...props} kind="CAMERA" active={false} />);
     expect(queued.size).toBe(0);
     tick(110);
-    expect(context.clearRect).toHaveBeenCalledTimes(2);
+    expect(context.clearRect).toHaveBeenCalledTimes(3); // Deactivation also clears the retained canvas once.
     view.unmount();
     expect(queued.size).toBe(0);
+  });
+  it.each(["CAMERA", "POINTER"] as const)(
+    "clears the full %s backing bitmap when stopped and redraws only after a fresh activation",
+    (kind) => {
+      vi.stubGlobal("devicePixelRatio", 2);
+      const props = inputs();
+      props.frame.current.filtered = { x: 0.5, y: 0.5 };
+      const view = render(<ReachStage {...props} kind={kind} />);
+      tick(110);
+      const el = view.container.querySelector("canvas")!;
+      expect([el.width, el.height]).toEqual([640, 480]);
+      expect(context.stroke).toHaveBeenCalled();
+      const drawn = vi.mocked(context.stroke).mock.calls.length;
+      const submitted = [...props.timings.current.submissionAge];
+      // Stop replaces the frame ref while retaining this mounted canvas.
+      props.frame.current.observation = null;
+      props.frame.current.filtered = null;
+      view.rerender(<ReachStage {...props} kind={kind} active={false} />);
+      expect(context.setTransform).toHaveBeenLastCalledWith(1, 0, 0, 1, 0, 0);
+      expect(context.clearRect).toHaveBeenLastCalledWith(0, 0, 640, 480);
+      expect(queued.size).toBe(0);
+      const clears = vi.mocked(context.clearRect).mock.calls.length;
+      width = 480;
+      height = 320;
+      tick(600);
+      expect(context.clearRect).toHaveBeenCalledTimes(clears);
+      expect(context.stroke).toHaveBeenCalledTimes(drawn);
+      expect(props.timings.current.submissionAge).toEqual(submitted);
+      props.frame.current.observation = syntheticObservation({ x: 0.6, y: 0.5 }, 2, 610);
+      props.frame.current.filtered = { x: 0.6, y: 0.5 };
+      view.rerender(<ReachStage {...props} kind={kind} active />);
+      expect(queued.size).toBe(1);
+      tick(620);
+      expect([el.width, el.height]).toEqual([960, 640]);
+      expect(context.stroke).toHaveBeenCalledTimes(drawn + (kind === "CAMERA" ? 22 : 1));
+      view.unmount();
+      expect(queued.size).toBe(0);
+    },
+  );
+  it("keeps an initially inactive canvas blank without starting polling or submitting observations", () => {
+    const props = inputs();
+    const view = render(<ReachStage {...props} kind="CAMERA" active={false} />);
+    const el = view.container.querySelector("canvas")!;
+    expect(context.setTransform).toHaveBeenLastCalledWith(1, 0, 0, 1, 0, 0);
+    expect(context.clearRect).toHaveBeenCalledWith(0, 0, el.width, el.height);
+    expect(queued.size).toBe(0);
+    tick(110);
+    expect(context.stroke).not.toHaveBeenCalled();
+    expect(props.timings.current.submissionAge).toEqual([]);
   });
 });

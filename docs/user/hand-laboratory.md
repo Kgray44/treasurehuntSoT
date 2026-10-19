@@ -3,7 +3,7 @@ title: Hand interaction laboratory
 audience: user
 status: preview-pending-physical-qualification
 canonical_for: reach-hand-laboratory-guide
-last_reviewed: 2026-10-18
+last_reviewed: 2026-10-19
 ---
 
 # Find your point
@@ -13,6 +13,8 @@ Open **Device connections → Find the Hand interaction laboratory**. Reach lets
 The latest [selected-index repair](../../Development_Docs/Projects/Project_Reach/Selected_Index_Identity_Repair_20261018.md) is being validated after the owner still encountered calibration resets in the earlier preview, despite its passing software checks. Reliable physical use is not yet established.
 
 Choose **Enable live camera** to allow local hand tracking. The standard laboratory requests no microphone, uploads no camera frames and records no video. Place the camera near your screen and sit comfortably. The hand model and its joint drawing remain visible separately from pointing eligibility and sample collection.
+
+The development candidate checks processing capacity before tracking starts and can use the CPU when graphics processing is too slow. You do not need to choose a processor. This startup check does not guarantee recognition or steady performance under later load. If the camera's resolution changes, the session stops and requires fresh setup; old calibration cannot silently continue with a different image size.
 
 The [earlier index continuity record](../../Development_Docs/Projects/Project_Reach/Index_Finger_Continuity_20261017.md) introduced support for a coherent observed index chain when the wrist, palm and other fingers leave view. Relaxed fingers and a gently bent index are allowed. Clearly conflicting visible gestures still pause collection. Hidden fingers cannot prove intent, and monocular inferred depth does not establish a physical screen ray. An index aimed toward the camera can be recognized through joint relationships even when its projected length is short.
 

@@ -1,0 +1,328 @@
+{
+  "schemaVersion": 1,
+  "reviewId": "reach-phase1-geometry-development-review-r3-focused-stop",
+  "classification": "SAFE_AGGREGATE_INDEPENDENT_DEVELOPMENT_EXPERIENCE_REVIEW",
+  "contractId": "reach.phase1.foundation",
+  "reviewScope": "F-STOP-OVERLAY only: actual-worker photographic camera joints clear on stop, stay blank when idle and resized, repaint after fresh activation, and clear on a second stop at desktop DPR1 and DPR2.",
+  "verdict": "F_STOP_OVERLAY_RESOLVED_FOR_BOUNDED_DEVELOPMENT_REVIEW",
+  "findingDisposition": {
+    "id": "F-STOP-OVERLAY",
+    "status": "RESOLVED_IN_FOCUSED_D1_RENDERED_RECAPTURE",
+    "blocksThisNarrowStopReview": false,
+    "doesNotGrantFullContractAcceptance": true
+  },
+  "allContractPass": false,
+  "canonicalQualification": false,
+  "finalSourceQualification": false,
+  "physicalQualification": false,
+  "ownerAcceptance": false,
+  "authority": "Independent development criticism only. This resolves the observed camera bitmap retention in the bounded source-bound supplemental development recapture; it does not establish protected qualification, complete Laboratory experience, semantic model correctness, physical accuracy or owner acceptance.",
+  "preservedReviews": [
+    {
+      "id": "r1-original-rendered-stop-defect",
+      "sha256": "96171e967c2e0b42cc95621abfe84903ac82434e2e7b90405ed20cfa84ceb8ed"
+    },
+    {
+      "id": "r1-safe-aggregate",
+      "sha256": "f450fbe031945861b78352e5d3670bf1449c00103f5583cc3712dbdd215801ef"
+    },
+    {
+      "id": "r2-failed-original-cohort-safe-aggregate",
+      "sha256": "a10ed3056aff7c962f5bc3b0a42684e0cc11ffa737b6b997da3edf7d993aceee"
+    }
+  ],
+  "sourceIdentity": {
+    "baseHeadReported": "cd34451832e2d0004492880ac1288ec31945d3b2",
+    "freezeReceiptSha256Reported": "aad81b9868110f179c03d46ec29719313dddd8d2a9a47eed43a723f69b9e7b04",
+    "sourceDigestInTerminalReceipt": "99e2c0e1fa4e5cf1ecbeb05f18b6ba32c6cc626c9e5cf0f00689a294f2a6031a",
+    "fileCountReported": 2806,
+    "fullDigestIndependentlyRecomputed": false,
+    "repairedReachStageSha256IndependentlyVerified": "033519dba16a970997d64c98a7a4500105d4a1aa9f3dc23d138c191e5c2ce979",
+    "specificRuntimeSourceHashesVerifiedAgain": true,
+    "bindingLimitation": "The prepared build tree was manually selected by the builder. Canonical preparation refused DEVELOPMENT_BUILD_LINK_OUTSIDE_DEPENDENCIES and issued no canonical build manifest. The supplemental helper checks unchanged source, fixture and prepared-build inventory around execution, which does not independently establish canonical source-to-build qualification.",
+    "noOriginalSourceCapturePromotedToNewSourceProof": true
+  },
+  "evidenceReview": {
+    "experienceFirst": true,
+    "builderRationaleUsedForVisualDecision": false,
+    "actualPngsInspected": 6,
+    "actualTraceSequencesInspected": 2,
+    "additionalTraceFramesInspected": 12,
+    "scalarReceiptsInspected": 2,
+    "terminalReceiptInspected": true,
+    "scopeBoundary": "Public photograph replay through the installed native worker; no physical webcam or real-person capture. No full calibration was completed in either focused case."
+  },
+  "observations": [
+    {
+      "dimension": "Visible clearing",
+      "observation": "Each before-stop image visibly contains photographed hand joints. The after-stop and settled images show only the ordinary camera-off empty state, with no retained mint hand overlay over its icon or title. Correct camera-off and cleared-session text are visible."
+    },
+    {
+      "dimension": "Idle and resize continuity",
+      "observation": "Actual trace frames corroborate that camera-off remains blank after settling and after changing the viewport from 1280 by 800 to 950 by 720. No automatic camera reactivation is observed before explicit enable."
+    },
+    {
+      "dimension": "Fresh restart and second clearing",
+      "observation": "Actual trace frames show a new photographed camera image and fresh visible joints after explicit reactivation, followed by a second stop returning to the blank camera-off empty state."
+    },
+    {
+      "dimension": "Canvas alpha support",
+      "observation": "Scalar evidence supplements direct visual inspection: camera visible pixels are positive before stop, zero after stop, zero after settling and resize, positive after explicit reactivation, then zero after the second stop at both DPR values. The pointer canvas is already empty in these focused cases and stays empty."
+    },
+    {
+      "dimension": "Resources and process lifecycle",
+      "observation": "Both scalar receipts report zero owned tracks and workers in the stopped settled state. The terminal supplemental receipt reports 2 expected passes, no unexpected or skipped cases, unchanged source/fixture/build, browser and server cleanup passing, released port and archived owned mutable runtime."
+    },
+    {
+      "dimension": "Capture interpretation",
+      "observation": "Full-page PNGs show the fixed shell displaced through the page during capture. Proper viewport trace frames corroborate the blank camera stage, restart and second stop. This review does not classify that screenshot presentation as a new application defect or accept the overall shell layout from those full-page images."
+    }
+  ],
+  "caseScalarSummary": [
+    {
+      "dpr": 1,
+      "cssViewportBeforeResize": {
+        "width": 1280,
+        "height": 800
+      },
+      "cssViewportAfterResize": {
+        "width": 950,
+        "height": 720
+      },
+      "cameraVisiblePixels": {
+        "beforeStop": 3004,
+        "afterStop": 0,
+        "afterSettle": 0,
+        "afterResize": 0,
+        "reactivated": 2391,
+        "afterSecondStop": 0
+      },
+      "pointerVisiblePixelsBeforeStop": 0,
+      "pointerVisiblePixelsAfterEachStop": 0,
+      "settledTracks": 0,
+      "settledWorkers": 0,
+      "fullCalibrationCompleted": false
+    },
+    {
+      "dpr": 2,
+      "cssViewportBeforeResize": {
+        "width": 1280,
+        "height": 800
+      },
+      "cssViewportAfterResize": {
+        "width": 950,
+        "height": 720
+      },
+      "cameraVisiblePixels": {
+        "beforeStop": 10530,
+        "afterStop": 0,
+        "afterSettle": 0,
+        "afterResize": 0,
+        "reactivated": 8058,
+        "afterSecondStop": 0
+      },
+      "pointerVisiblePixelsBeforeStop": 0,
+      "pointerVisiblePixelsAfterEachStop": 0,
+      "settledTracks": 0,
+      "settledWorkers": 0,
+      "fullCalibrationCompleted": false
+    }
+  ],
+  "limitations": [
+    "Resolution applies to the observed retained camera-joint bitmap only on the specifically recorded supplemental prepared build and source pins.",
+    "The pointer canvas begins empty, so these cases do not prove clearing of a previously painted pointer. Source ownership is shared but source inspection cannot substitute for that missing rendered case.",
+    "DPR2 uses the desktop layout and is not mobile proof. Mobile stop, reduced motion, accessibility and conventional return remain outside this focused review.",
+    "The repaired-source original Laboratory cohort remains 8 of 10: photo target-3 hand-selection hold and viewport reason assertion failures are preserved and are not converted to passes by these two focused cases.",
+    "The full photographic training and independent-check sequence did not complete on this repaired source. Earlier source success is not reused as current-source proof.",
+    "Canonical source-to-build manifest and protected qualification remain unavailable under the retained dependency-junction refusal.",
+    "Broader contract states and all original physical, semantic model, device ergonomics and owner acceptance gaps remain unqualified."
+  ],
+  "artifactMetadata": [
+    {
+      "artifactId": "stop-overlay-repair/focused-stop-current/focused-stop/test-results/focused-stop-DPR-1-actual--56190-as-without-further-activity-chromium/before-stop.png",
+      "sha256": "42efe45d0f1afdb95061b335a1d24b6646a21cbb533fb75ec93a17cdad43e7fb",
+      "bytes": 427699,
+      "width": 1280,
+      "height": 1333
+    },
+    {
+      "artifactId": "stop-overlay-repair/focused-stop-current/focused-stop/test-results/focused-stop-DPR-1-actual--56190-as-without-further-activity-chromium/after-stop.png",
+      "sha256": "2f6f15d84b5b9ea21ad06e598d961ced7da5f01ef880b87d2f6c3b524fcb99d8",
+      "bytes": 418104,
+      "width": 1280,
+      "height": 1229
+    },
+    {
+      "artifactId": "stop-overlay-repair/focused-stop-current/focused-stop/test-results/focused-stop-DPR-1-actual--56190-as-without-further-activity-chromium/after-stop-settled.png",
+      "sha256": "5ed526dc58ccef9b080e00e7f254e9a0c3b7f365681a8c7374feed904621a506",
+      "bytes": 418106,
+      "width": 1280,
+      "height": 1229
+    },
+    {
+      "artifactId": "stop-overlay-repair/focused-stop-current/focused-stop/test-results/focused-stop-DPR-1-actual--56190-as-without-further-activity-chromium/focused-stop-scalars.json",
+      "sha256": "6ebef6b8f8cc597f97cd2f1958c69c6e7474cd6dfa2792f36f10eb1119f63948",
+      "bytes": 1997
+    },
+    {
+      "artifactId": "stop-overlay-repair/focused-stop-current/focused-stop/test-results/focused-stop-DPR-1-actual--56190-as-without-further-activity-chromium/trace.zip",
+      "sha256": "4afebdc22deb0064489989dc79f9e6be3c81a4f38862a81f9dccb90f8f8914ed",
+      "bytes": 15661141
+    },
+    {
+      "artifactId": "stop-overlay-repair/focused-stop-current/focused-stop/test-results/focused-stop-DPR-2-actual--573ec-as-without-further-activity-chromium/before-stop.png",
+      "sha256": "c168a1060103e046801b2d92b962d37cd775ee0386862c2e6b42f96363209096",
+      "bytes": 1241666,
+      "width": 2560,
+      "height": 2666
+    },
+    {
+      "artifactId": "stop-overlay-repair/focused-stop-current/focused-stop/test-results/focused-stop-DPR-2-actual--573ec-as-without-further-activity-chromium/after-stop.png",
+      "sha256": "f847cdbd83f95f10ea264a19acf0f4fcf7888f869fbaafcc1790322f87ef57b0",
+      "bytes": 1291177,
+      "width": 2560,
+      "height": 2458
+    },
+    {
+      "artifactId": "stop-overlay-repair/focused-stop-current/focused-stop/test-results/focused-stop-DPR-2-actual--573ec-as-without-further-activity-chromium/after-stop-settled.png",
+      "sha256": "f847cdbd83f95f10ea264a19acf0f4fcf7888f869fbaafcc1790322f87ef57b0",
+      "bytes": 1291177,
+      "width": 2560,
+      "height": 2458
+    },
+    {
+      "artifactId": "stop-overlay-repair/focused-stop-current/focused-stop/test-results/focused-stop-DPR-2-actual--573ec-as-without-further-activity-chromium/focused-stop-scalars.json",
+      "sha256": "b01157ea9f6216473d31572de56693b061dca9b30f6c0e0103cfef9981b91a1d",
+      "bytes": 2008
+    },
+    {
+      "artifactId": "stop-overlay-repair/focused-stop-current/focused-stop/test-results/focused-stop-DPR-2-actual--573ec-as-without-further-activity-chromium/trace.zip",
+      "sha256": "89b3ddd99d95e4f1288b981840cc67deb06aaceb4746d4640fcfb2f10ed00bfc",
+      "bytes": 14646390
+    },
+    {
+      "artifactId": "stop-overlay-repair/focused-stop-current/summary-private.json",
+      "sha256": "f880ae252d4925945da62bdddf913b51f80559498f404a3da3dcdcf71867fb26",
+      "bytes": 1915
+    },
+    {
+      "artifactId": "stop-overlay-repair/focused-stop-current/input-binding-private.json",
+      "sha256": "c7a6cc1d3e034e2099cb642bcf26dfe52cbc3d6184160889cc471af9cc53b894",
+      "bytes": 1734822
+    },
+    {
+      "artifactId": "stop-overlay-repair/focused-stop-current/focused-stop/receipt-private.json",
+      "sha256": "2a57ac19f27341f36fbe108c2a57bfafcf68a582a46ef28dd472903115ed40ed",
+      "bytes": 1357
+    },
+    {
+      "artifactId": "experience-review/focused-stop-sequence/dpr1-frame-12703.jpeg",
+      "sha256": "97ac3341ed60ca19e6bdaed4a5c35747b880f625cd619c36dbca3ed6dda17e6b",
+      "bytes": 20218,
+      "width": 432,
+      "height": 270
+    },
+    {
+      "artifactId": "experience-review/focused-stop-sequence/dpr1-frame-12859.jpeg",
+      "sha256": "97438e24857f3099e274f935dfbf195fea74fce26da69c68b11b970ef2e3befa",
+      "bytes": 34610,
+      "width": 720,
+      "height": 450
+    },
+    {
+      "artifactId": "experience-review/focused-stop-sequence/dpr1-frame-14305.jpeg",
+      "sha256": "d221330b3925279241cebaf7c2dc149985205e5792c84fa0240461524e26bdbe",
+      "bytes": 26963,
+      "width": 469,
+      "height": 450
+    },
+    {
+      "artifactId": "experience-review/focused-stop-sequence/dpr1-frame-14639.jpeg",
+      "sha256": "f8014fd97e769404e1c7f077eb010ab638653aa7b74e98b9820d4b55c948688c",
+      "bytes": 41716,
+      "width": 594,
+      "height": 450
+    },
+    {
+      "artifactId": "experience-review/focused-stop-sequence/dpr1-frame-25351.jpeg",
+      "sha256": "1b0d26a91a32c3a02c8259989924d5f33bb9b0d0a796b0a66119a76776286705",
+      "bytes": 44930,
+      "width": 594,
+      "height": 450
+    },
+    {
+      "artifactId": "experience-review/focused-stop-sequence/dpr1-frame-25752.jpeg",
+      "sha256": "72bd6e0295f1d9284342a21098e73ed00c1619a7fc2f304f134bb7b3ccee7312",
+      "bytes": 41713,
+      "width": 594,
+      "height": 450
+    },
+    {
+      "artifactId": "experience-review/focused-stop-sequence/dpr2-frame-34582.jpeg",
+      "sha256": "744003f3088d7998e48b5d6823eea5e46fa2407a54c8155f19436a371520aef9",
+      "bytes": 31861,
+      "width": 432,
+      "height": 450
+    },
+    {
+      "artifactId": "experience-review/focused-stop-sequence/dpr2-frame-34785.jpeg",
+      "sha256": "4149d85c9e48c426706bbbdff3faa5ba00218318243789123d7fc543fb21941c",
+      "bytes": 12625,
+      "width": 469,
+      "height": 293
+    },
+    {
+      "artifactId": "experience-review/focused-stop-sequence/dpr2-frame-37687.jpeg",
+      "sha256": "b31946dc5b5e8952f8654df63d4da706f4ed25c620b78e06aee3495240fa7f2a",
+      "bytes": 26640,
+      "width": 469,
+      "height": 450
+    },
+    {
+      "artifactId": "experience-review/focused-stop-sequence/dpr2-frame-37745.jpeg",
+      "sha256": "4bdfc37d37157681840342d58244d9c1640a087e35f0894cfc0567bff9a05b02",
+      "bytes": 41040,
+      "width": 594,
+      "height": 450
+    },
+    {
+      "artifactId": "experience-review/focused-stop-sequence/dpr2-frame-42819.jpeg",
+      "sha256": "4b7220dd602889980eb9abbb8d9d9b167efbad71c6f185203f1804b84fda460e",
+      "bytes": 46407,
+      "width": 594,
+      "height": 450
+    },
+    {
+      "artifactId": "experience-review/focused-stop-sequence/dpr2-frame-43437.jpeg",
+      "sha256": "f8014fd97e769404e1c7f077eb010ab638653aa7b74e98b9820d4b55c948688c",
+      "bytes": 41716,
+      "width": 594,
+      "height": 450
+    },
+    {
+      "artifactId": "experience-review/focused-stop-sequence/frame-manifest.json",
+      "sha256": "2007f4525616cf8f04ddd1de4a2522997bbe3b71fc8c19d34adc72bec5150bb3",
+      "bytes": 5307
+    },
+    {
+      "artifactId": "src/reach/ReachStage.tsx",
+      "sha256": "033519dba16a970997d64c98a7a4500105d4a1aa9f3dc23d138c191e5c2ce979",
+      "bytes": 7229
+    },
+    {
+      "artifactId": "src/reach/browser-runtime.ts",
+      "sha256": "3dd86ef22fda089f90b6847ee80b60c670176761c18775e0f6e91a9e137d5b88",
+      "bytes": 56883
+    },
+    {
+      "artifactId": "public/reach/recovery-provider.js",
+      "sha256": "fe68db187f9db74943e1f0c55c3ad76621a2c60591af84d950bb6c407f372ca9",
+      "bytes": 22285
+    },
+    {
+      "artifactId": "public/reach/recovery-worker.js",
+      "sha256": "4d8caa84874b76795b1acc1db975277ffb0329eb485d62eae20fe50712965222",
+      "bytes": 8459
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-/* Unreferenced Watchglass recovery candidate. Existing hand-worker.js stays canonical. */
+/* Pinned Watchglass region provider with startup-only GPU/CPU selection. */
 /* global importScripts */
 "use strict";
 var exports = {};
@@ -9,6 +9,8 @@ let detector = null,
   initialized = false,
   closed = false;
 let startupAbort = null;
+let readyPublished = false;
+let frameGeometry = null;
 let backend = "CPU_WASM",
   providerPolicy = "ORIGINAL_CPU",
   fallbackReason = null;
@@ -39,6 +41,7 @@ async function fetchBytes(path, maximum) {
 }
 self.onmessage = async ({ data }) => {
   if (data.type === "INIT") {
+    if (closed) return;
     if (initialized) {
       sendError("RECOVERY_ALREADY_INITIALIZED");
       return;
@@ -53,9 +56,16 @@ self.onmessage = async ({ data }) => {
         (data.delegate !== undefined && !["CPU", "GPU"].includes(data.delegate)) ||
         (data.mirrorTransform !== undefined && !["NONE", "PREVIEW_X"].includes(data.mirrorTransform)) ||
         !Number.isSafeInteger(data.geometryVersion ?? 1) ||
-        (data.geometryVersion ?? 1) <= 0
+        (data.geometryVersion ?? 1) <= 0 ||
+        ![data.frameWidth, data.frameHeight].every(
+          (value) =>
+            Number.isSafeInteger(value) &&
+            value >= candidate.policy.startup.healthProbe.minimumDimension &&
+            value <= candidate.policy.startup.healthProbe.maximumDimension,
+        )
       )
         throw new Error("RECOVERY_INIT_CONTEXT");
+      frameGeometry = Object.freeze({ width: data.frameWidth, height: data.frameHeight });
       const [bundle, taskBytes] = await Promise.all([
         fetchBytes("/reach/vendor/vision_bundle.js", 204618),
         fetchBytes("/reach/vendor/hand_landmarker.task", candidate.policy.taskBytes),
@@ -70,21 +80,16 @@ self.onmessage = async ({ data }) => {
       }
       const fileset = await exports.FilesetResolver.forVisionTasks("/reach/vendor/wasm");
       if (closed) return;
-      try {
-        detector = await candidate.create(fileset, assets, { delegate: data.delegate ?? "CPU" });
-        detector.reset({
-          session: String(generation),
-          geometry: String(data.geometryVersion ?? 1),
-          mirror: data.mirrorTransform === "PREVIEW_X",
-        });
-        backend = data.delegate === "GPU" ? "GPU_WEBGL" : "CPU_WASM";
-        providerPolicy = candidate.policy.version;
-      } catch (error) {
-        // Initialization-only fallback: never change model/backend within an
-        // established capture generation. Asset integrity failure cannot reach here.
+      let actualRegionProvider = true;
+      let selectedDelegate = data.delegate ?? "CPU";
+      const startupHealth = [];
+      const createOriginalAfterGenericInitFailure = async (error) => {
+        // Preserve the existing initialization-only original CPU fallback.
+        // Integrity is verified outside this branch and cannot arrive here.
         if (!closeDetector() || error?.message === "RECOVERY_PARTIAL_CLOSE_FAILED")
           throw new Error("RECOVERY_PARTIAL_CLOSE_FAILED");
         if (closed) return;
+        actualRegionProvider = false;
         fallbackReason = "RECOVERY_PROVIDER_INIT_UNAVAILABLE";
         detector = await exports.HandLandmarker.createFromOptions(fileset, {
           baseOptions: { modelAssetBuffer: taskBytes, delegate: "CPU" },
@@ -96,12 +101,75 @@ self.onmessage = async ({ data }) => {
         });
         backend = "CPU_WASM";
         providerPolicy = "ORIGINAL_CPU";
+      };
+      try {
+        detector = await candidate.create(fileset, assets, { delegate: selectedDelegate });
+      } catch (error) {
+        await createOriginalAfterGenericInitFailure(error);
       }
       if (closed) {
-        closeDetector();
+        if (!closeDetector()) throw new Error("RECOVERY_PARTIAL_CLOSE_FAILED");
         return;
       }
-      self.postMessage({ type: "READY", generation, backend, providerPolicy, fallbackReason });
+      const qualify = () => {
+        let report;
+        try {
+          report = detector.qualifyStartupLatency(frameGeometry);
+        } catch {
+          report = { passed: false, delegate: selectedDelegate, reason: "STARTUP_PROBE_EXECUTION_FAILED" };
+        }
+        startupHealth.push(report);
+        return report.passed === true;
+      };
+      if (actualRegionProvider && !qualify()) {
+        if (!closeDetector()) throw new Error("RECOVERY_PARTIAL_CLOSE_FAILED");
+        if (closed) return;
+        if (selectedDelegate !== "GPU") throw new Error("RECOVERY_CPU_STARTUP_HEALTH_FAILED");
+        selectedDelegate = "CPU";
+        fallbackReason = "GPU_STARTUP_LATENCY_HEALTH_FAILED";
+        try {
+          detector = await candidate.create(fileset, assets, { delegate: "CPU" });
+        } catch (error) {
+          await createOriginalAfterGenericInitFailure(error);
+        }
+        if (closed) {
+          if (!closeDetector()) throw new Error("RECOVERY_PARTIAL_CLOSE_FAILED");
+          return;
+        }
+        if (actualRegionProvider && !qualify()) {
+          if (!closeDetector()) throw new Error("RECOVERY_PARTIAL_CLOSE_FAILED");
+          throw new Error("RECOVERY_CPU_STARTUP_HEALTH_FAILED");
+        }
+      }
+      if (actualRegionProvider) {
+        detector.reset({
+          session: String(generation),
+          geometry: String(data.geometryVersion ?? 1),
+          mirror: data.mirrorTransform === "PREVIEW_X",
+        });
+        backend = selectedDelegate === "GPU" ? "GPU_WEBGL" : "CPU_WASM";
+        providerPolicy = candidate.policy.version;
+      }
+      if (closed) {
+        if (!closeDetector()) throw new Error("RECOVERY_PARTIAL_CLOSE_FAILED");
+        return;
+      }
+      readyPublished = true;
+      self.postMessage({
+        type: "READY",
+        generation,
+        backend,
+        providerPolicy,
+        fallbackReason,
+        startupHealth: {
+          classification: "SYNTHETIC_PREREADY_LATENCY_NECESSARY_CONDITION_ONLY",
+          attempts: startupHealth,
+          probeDimensions: { ...frameGeometry },
+          geometryVersion: data.geometryVersion ?? 1,
+          mirrorTransform: data.mirrorTransform ?? "NONE",
+          livePixelQualification: false,
+        },
+      });
     } catch (error) {
       failed = true;
       const cleaned = closeDetector();
@@ -119,7 +187,9 @@ self.onmessage = async ({ data }) => {
     }
   } else if (data.type === "FRAME") {
     try {
-      if (failed || !detector || data.generation !== generation) return;
+      if (failed || !readyPublished || !detector || data.generation !== generation) return;
+      if (!data.bitmap || data.bitmap.width !== frameGeometry.width || data.bitmap.height !== frameGeometry.height)
+        throw new Error("RECOVERY_FRAME_GEOMETRY_MISMATCH");
       const result = detector.detectForVideo(data.bitmap, data.capture);
       self.postMessage({
         type: "RESULT",
@@ -132,10 +202,17 @@ self.onmessage = async ({ data }) => {
         height: data.bitmap.height,
         result: { landmarks: result.landmarks, worldLandmarks: result.worldLandmarks, handedness: result.handedness },
       });
-    } catch {
+    } catch (error) {
       failed = true;
+      readyPublished = false;
       const cleaned = closeDetector();
-      sendError(cleaned ? "MODEL_INFERENCE" : "RECOVERY_PARTIAL_CLOSE_FAILED");
+      sendError(
+        cleaned
+          ? error?.message === "RECOVERY_FRAME_GEOMETRY_MISMATCH"
+            ? error.message
+            : "MODEL_INFERENCE"
+          : "RECOVERY_PARTIAL_CLOSE_FAILED",
+      );
       if (!cleaned) self.close();
     } finally {
       data.bitmap?.close();
@@ -143,6 +220,7 @@ self.onmessage = async ({ data }) => {
   } else if (data.type === "CLOSE") {
     closed = true;
     failed = true;
+    readyPublished = false;
     startupAbort?.abort();
     closeDetector();
     self.close();

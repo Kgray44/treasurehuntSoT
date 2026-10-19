@@ -14,10 +14,16 @@ type Props = {
 export function ReachStage({ frame, timings, kind, demo = false, overlay = false, active = true }: Props) {
   const canvas = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
-    if (!active) return;
     const el = canvas.current!;
     const context = el.getContext("2d");
     if (!context) return;
+    if (!active) {
+      // Stop keeps this canvas mounted. Clear its full backing bitmap before
+      // leaving it idle, including pixels drawn under a previous DPR transform.
+      context.setTransform(1, 0, 0, 1, 0, 0);
+      context.clearRect(0, 0, el.width, el.height);
+      return;
+    }
     let animation = 0;
     let previous: unknown[] | null = null;
     const draw = (at: number) => {

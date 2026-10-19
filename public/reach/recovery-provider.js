@@ -1,4 +1,4 @@
-/* Watchglass candidate: exact pinned MediaPipe internals; not selected by the live worker. */
+/* Watchglass region provider built from exact pinned MediaPipe internals. */
 /* global exports, Uc, fc, nn, Vi, qs, Rs, Yo, Ss, qo, ws, Fn, Rn, ge, tn, pa, gc */
 "use strict";
 
@@ -14,7 +14,19 @@
     detection: 0.6,
     presence: 0.6,
     association: 0.6,
-    startup: Object.freeze({ syntheticCanvasSide: 64, timestamp: -1, outputsDiscarded: true }),
+    startup: Object.freeze({
+      syntheticCanvasSide: 64,
+      timestamp: -3,
+      outputsDiscarded: true,
+      healthProbe: Object.freeze({
+        minimumDimension: 1,
+        maximumDimension: 16384,
+        timestamps: Object.freeze([-2, -1]),
+        maximumElapsedMs: 150,
+        geometryPolicy: "SEXTANT_SOURCE_GEOMETRY_V1_1_TO_16384",
+        coverage: "ACTUAL_BOUND_FRAME_GEOMETRY_SYNTHETIC_GRAY_NECESSARY_CONDITION_NOT_LIVE_PIXEL_QUALIFICATION",
+      }),
+    }),
     palm: Object.freeze({
       name: "hand_detector.tflite",
       bytes: 2339878,
@@ -465,7 +477,10 @@
       }
       throw error;
     }
-    let closed = false;
+    let closed = false,
+      startupHealthAttempted = false,
+      liveStarted = false;
+    let qualifiedGeometry = null;
     let context = { session: "initial", geometry: "initial", mirror: false };
     return Object.freeze({
       metadata: Object.freeze({
@@ -474,6 +489,75 @@
         maximumRetainedAgeMs: policy.retentionMs,
         modelSha256: policy.taskSha256,
       }),
+      qualifyStartupLatency(geometry) {
+        if (closed || liveStarted || startupHealthAttempted) fail("RECOVERY_STARTUP_HEALTH_STATE");
+        const settings = policy.startup.healthProbe;
+        const width = geometry?.width,
+          height = geometry?.height;
+        if (
+          ![width, height].every(
+            (value) =>
+              Number.isSafeInteger(value) && value >= settings.minimumDimension && value <= settings.maximumDimension,
+          )
+        )
+          fail("RECOVERY_STARTUP_GEOMETRY");
+        startupHealthAttempted = true;
+        const probes = [];
+        const forced = [
+          { xCenter: 0.25, yCenter: 0.5, width: 0.4, height: 0.8, rotation: 0 },
+          { xCenter: 0.75, yCenter: 0.5, width: 0.4, height: 0.8, rotation: 0 },
+        ];
+        for (let i = 0; i < settings.timestamps.length; i++) {
+          const started = performance.now();
+          let synthetic = null;
+          let discarded = 0;
+          try {
+            synthetic = new OffscreenCanvas(width, height);
+            const drawing = synthetic.getContext("2d");
+            if (!drawing) fail("RECOVERY_STARTUP_PROBE_CANVAS");
+            drawing.fillStyle = i === 0 ? "#606060" : "#a0a0a0";
+            drawing.fillRect(0, 0, width, height);
+            submit(synthetic, settings.timestamps[i], forced);
+            discarded = task.landmarks.length;
+          } finally {
+            if (synthetic) {
+              synthetic.width = 0;
+              synthetic.height = 0;
+            }
+            task.landmarks = [];
+            task.worldLandmarks = [];
+            task.handedness = [];
+            task.currentNextRects = [];
+            cache.reset();
+          }
+          const elapsedMs = performance.now() - started;
+          probes.push(
+            Object.freeze({
+              timestamp: settings.timestamps[i],
+              elapsedMs,
+              forcedRegions: 2,
+              discardedHandOutputs: discarded,
+            }),
+          );
+        }
+        const passed =
+          probes.length === 2 &&
+          probes.every(
+            (p) => Number.isFinite(p.elapsedMs) && p.elapsedMs >= 0 && p.elapsedMs <= settings.maximumElapsedMs,
+          );
+        if (passed) qualifiedGeometry = Object.freeze({ width, height });
+        return Object.freeze({
+          passed,
+          delegate,
+          width,
+          height,
+          maximumElapsedMs: settings.maximumElapsedMs,
+          probes: Object.freeze(probes),
+          outputsDiscarded: true,
+          retainedRegionsCleared: true,
+          coverage: settings.coverage,
+        });
+      },
       reset(next) {
         if (
           closed ||
@@ -488,6 +572,10 @@
       },
       detectForVideo(image, capture) {
         if (closed) fail("RECOVERY_CLOSED");
+        if (!qualifiedGeometry) fail("RECOVERY_STARTUP_HEALTH_REQUIRED");
+        if (!image || image.width !== qualifiedGeometry.width || image.height !== qualifiedGeometry.height)
+          fail("RECOVERY_FRAME_GEOMETRY_MISMATCH");
+        liveStarted = true;
         const priors = cache.begin(capture, { ...context, width: image.width, height: image.height });
         submit(image, capture, priors);
         cache.observe(capture, task.landmarks, task.currentNextRects);
