@@ -276,7 +276,7 @@ function Atlas({ insights }: { insights: Insights }) {
 
 function AtlasUnavailable({ hasVoyages }: { hasVoyages: boolean }) {
   return (
-    <aside className="wakebook-atlas__boundary" aria-label="Journey geography availability">
+    <section className="wakebook-atlas__boundary" aria-label="Journey geography availability">
       <p className="personal-harbor__eyebrow">Private geography</p>
       <h3>{hasVoyages ? "Journey geography is not available yet" : "Your Atlas is ready when history arrives"}</h3>
       <p>
@@ -293,7 +293,7 @@ function AtlasUnavailable({ hasVoyages }: { hasVoyages: boolean }) {
       >
         <p>Landfall is the governed source for any future owner-safe geography projection.</p>
       </TechnicalDetails>
-    </aside>
+    </section>
   );
 }
 

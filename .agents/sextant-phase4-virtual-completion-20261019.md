@@ -96,3 +96,11 @@ build, then failed before browser execution because canonical process ownership
 invoked its Linux subreaper on Darwin. Preserve runtime cleanup FAIL separately
 from native build cleanup and transport cleanup. Do not bypass supervision or
 dispatch another equivalent Apple product run until canonical host support exists.
+
+Run39321477293 reached all four browser variants. All stopped at the reproduced
+Atlas nested-complementary-landmark accessibility defect. Correct only the named
+availability container semantics and rerun the focused consumer matrix from its
+new committed source; retain axe assertions and 3000ms feedback targets. The
+canonical encrypted collector/publication ran but hit its fixed raw-byte limit,
+retaining15 diagnostic members with INCOMPLETE status. Preserve that exact limit
+and incomplete receipt; do not raise budgets or claim complete diagnostics.

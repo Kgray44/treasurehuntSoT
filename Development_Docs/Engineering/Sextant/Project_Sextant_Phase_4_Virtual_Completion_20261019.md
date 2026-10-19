@@ -284,3 +284,14 @@ its guarded top-level ESM await. Native Node ESM now invokes that same canonical
 fingerprint/binding helper before creating the diagnostic scope. No authority,
 consumer assertion or feedback target is changed; the zero-artifact failed run
 and original CI log remain preserved in the owner artifact directory.
+
+The corrected launch `39321477293` at `998d684bd2` reached the browser matrix.
+All four variants exposed the same Voyage Atlas accessibility defect: its named
+availability aside was nested inside the Passport main landmark. It now uses a
+named section with the same content and CSS class. The existing axe assertions
+and 3000 ms feedback targets remain. Other product guides remain accurate; this
+is an ordinary accessibility correction, not a feature-availability promotion.
+Runtime and transport cleanup passed. Canonical encrypted failure publication
+succeeded, but its fixed 64 MB raw limit retained only 15 diagnostic members;
+the receipt remains INCOMPLETE with LIMIT/FAILURE_ATTACHMENTS_INCOMPLETE. No
+complete diagnostic, experience or protected acceptance is inferred.

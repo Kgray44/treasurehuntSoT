@@ -6,7 +6,7 @@
   "status": "IN_PROGRESS",
   "initialCandidate": "5ff2739776513b8f8ed20c1cb661c164216d0eeb",
   "protectedBase": "f6af0b0e151f15f1a23808413ccee531b9827ca7",
-  "currentSoftwareCandidate": "e2b791d96a435b81516048b06e0e738b8ab443bd",
+  "currentSoftwareCandidate": "998d684bd21b95eb05ac827b09bc241427be089b",
   "pr": "https://github.com/Kgray44/treasurehuntSoT/pull/709",
   "independentSourceReview": {
     "reviewerContext": "/root/sextant_source_review",
@@ -324,6 +324,28 @@
       "qualification": false,
       "failure": "TSX_CJS_TRANSFORM_REJECTED_CANONICAL_ESM_TOP_LEVEL_AWAIT",
       "cleanup": "TRANSPORT_PASS_NO_PRODUCT_RUNTIME_STARTED"
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "998d684bd21b95eb05ac827b09bc241427be089b",
+      "transportSha": "e9c9e785763ee4b0dc36b7111b951311c60ea9e2",
+      "runId": "39321477293",
+      "status": "HARVESTED_FAILURE_FOUR_ATLAS_ACCESSIBILITY_VIOLATIONS",
+      "qualification": false,
+      "productionBuild": "PASS",
+      "failure": "ATLAS_NESTED_COMPLEMENTARY_LANDMARK",
+      "developmentRepair": "Named section preserves availability content and styling; independent source review clear; existing component tests 3/3 and TypeScript pass",
+      "diagnostics": {
+        "encryptedPublication": "PASS",
+        "retention": "INCOMPLETE",
+        "members": 15,
+        "rawBytes": 64004083,
+        "issues": ["LIMIT", "FAILURE_ATTACHMENTS_INCOMPLETE"],
+        "fixedBudgetUnchanged": true
+      },
+      "cleanup": "RUNTIME_PORTS_AND_TRANSPORT_PASS",
+      "artifacts": 4
     }
   ],
   "experience": {

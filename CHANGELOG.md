@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-10-12
+last_reviewed: 2026-10-19
 ---
 
 # Changelog
@@ -19,6 +19,10 @@ last_reviewed: 2026-10-12
 - Product Experience Engineering adds selective experience contracts and real-browser evidence to ordinary Sounding Line, with independent criticism, bounded repair, protected capture/review attestation and explicit spatial baseline debt. [Operations and proof](Development_Docs/Testing/Product_Experience/README.md) preserve product and owner acceptance authority.
 
 ### Corrected
+
+- The Sextant Phase 4 consumer continuation corrects Voyage Atlas availability
+  semantics to use a named section within the private Passport, avoiding an
+  incorrectly nested complementary landmark. Accessibility assertions remain.
 
 - Sextant's Phase 4 candidate pauses and revokes native location alongside other
   optional input, permits a fresh explicit acquisition after expected native
