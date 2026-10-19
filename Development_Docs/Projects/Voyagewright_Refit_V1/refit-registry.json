@@ -100,6 +100,21 @@
       "protectedMergePr": "https://github.com/Kgray44/treasurehuntSoT/pull/658",
       "mainCommit": "0164bc0739956909d2640294516221e81becd952",
       "validationRecord": "muster/final-validation.md"
+    },
+    {
+      "id": "player-journal-crossdeck",
+      "name": "Player Journal and Crossdeck editorial hierarchy",
+      "productArea": "Player_Journal_Crossdeck",
+      "routePatterns": ["/player/playthroughs/**/journal", "/devices/companion", "/devices/display"],
+      "treatment": "UNASSESSED",
+      "status": "PLANNED",
+      "branch": null,
+      "designPacket": "player-journal-crossdeck/design-packet.md",
+      "ownerAccepted": false,
+      "preserveReferences": [
+        "../../Programs/Sounding_Line/evidence/crossdeck-acceptance-boundary-20261019-r20/adjudication.json"
+      ],
+      "notes": "KG owner-directed after Crossdeck/Parallax protected integration. Only residual editorial R17-R8-B1 hierarchy in three contracts transfers; original severity/history and all Crossdeck functional/accessibility/security/continuity obligations remain. Approval Sentinel_6dd5d7e3d8288191bb9a543c9db63739, 2026-10-19T19:06Z; Refit owner acceptance remains outstanding."
     }
   ]
 }

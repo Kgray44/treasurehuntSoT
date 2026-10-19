@@ -2680,6 +2680,7 @@ test("R3 Git admission permits only the bounded repair and freezes every other r
     "scripts/sounding-line/experience-current-r17.mjs",
     "scripts/sounding-line/experience-current-r18.mjs",
     "scripts/sounding-line/experience-current-r19.mjs",
+    "scripts/sounding-line/experience-current-r20.mjs",
   ]);
   const baseSha = commit(baseInput);
   const original = JSON.parse(run(["show", `${CROSSDECK_R3.blockedCandidate}:testing/contracts.json`]));

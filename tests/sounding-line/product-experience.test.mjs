@@ -295,6 +295,21 @@ test("representative complete cross-project experience passes required outcome a
   assert.equal(fixture.validate().status, "PASS");
 });
 
+test("editorial deferral cannot exempt an unbound contract or a new functional blocker", () => {
+  const f = experienceFixture();
+  f.evidence.reviews[0].findings.push({
+    id: "NEW-FUNCTIONAL-BLOCKER",
+    classification: "MAJOR_EXPERIENCE_DEFECT",
+    contractId: f.contract.id,
+    observation: "Synthetic unreadable current passage remains a functional blocker.",
+    evidenceIds: ["MOBILE-READY"],
+    disposition: "FUNCTIONAL_RESOLVED_EDITORIAL_DEFERRED",
+  });
+  assert.throws(() => f.validate(), /R20_ADJUDICATION_TRUSTED_SCOPE_REQUIRED/u);
+  f.evidence.reviews[0].findings[0].disposition = "UNRESOLVED";
+  assert.throws(() => f.validate(), /BLOCKING_FINDING/u);
+});
+
 test("finite submission validates ordinary committed media without an evidence checkout and review needs all materialized bytes", async (t) => {
   const directory = mkdtempSync(path.join(tmpdir(), "exception-evidence-roots-"));
   t.after(() => rmSync(directory, { recursive: true, force: true }));
