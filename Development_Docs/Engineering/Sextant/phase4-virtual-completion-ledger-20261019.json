@@ -436,7 +436,8 @@
   "phase5Started": false,
   "evidencePublication": [
     "evidence/20261019-virtual/publication-index.json",
-    "evidence/20261019-product/publication-index.json"
+    "evidence/20261019-product/publication-index.json",
+    "evidence/20261019-consumers/publication-index.json"
   ],
   "currentProtectedBase": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
   "canonicalHostDependencies": [

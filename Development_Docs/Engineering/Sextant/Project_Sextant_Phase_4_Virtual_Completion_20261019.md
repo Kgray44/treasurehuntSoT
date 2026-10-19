@@ -337,6 +337,10 @@ was found. Maximum recorded Passport readiness was 1602.4 ms. One desktop Lens
 background showed opening-animation fallback, so usable continuation does not
 prove universally successful animation. Static captures do not establish all
 viewport behavior, native sensing or protected/owner acceptance.
+The [original consumer evidence index](evidence/20261019-consumers/publication-index.json)
+preserves all 98 harvested members plus the hosted receipt, dispatch and CI log.
+Every copied file retains its SHA-256; the visual defect remains part of that
+passing development run's independent disposition.
 
 At source `99cbb4b8ebacf0655a2ccfa964bff00e397890f5`, resource registration
 reconciliation reports 171 affected surfaces and 92 without declarations. It
