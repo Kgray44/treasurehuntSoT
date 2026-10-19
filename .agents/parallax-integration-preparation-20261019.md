@@ -1,7 +1,7 @@
 ---
 title: Parallax complete integration preparation
 audience: automation
-status: active
+status: local-prepared-protected-held
 canonical_for: parallax-integration-preparation-20261019
 last_reviewed: 2026-10-19
 ---
@@ -46,3 +46,21 @@ reported as protected, physical, live-provider or owner acceptance.
 Context is a source-bound Project Trim adaptation, not generated packet-v2
 evidence. Expand source/schema/consumer mappings when an actual uncertainty
 requires it. Do not launch another implementation task or invent another phase.
+
+## Completed local handoff
+
+The source freeze is `961b1a82a1e2a7a33cc35f11c6e02e53027658e4`, with
+accepted R20 main `40491dd68ace88ee033b53fd264ddbfe303c6d28` and latest root
+`8715b61b301df519fff637e52ecd2d982ca38271`. The initial intake above remains
+historical context. Final family readback has #721 open/draft at
+`eb40c12559604214210977e8bc498f22fea059ce`. Its complete consumer contract and
+accepted closure remain prerequisites; R20 does not transfer or reset its finite
+owner authority.
+
+[The authoritative handoff](../Development_Docs/Projects/Project_Parallax/Integration_Preparation_20261019.md)
+contains exact dispositions, conflicts, verification matrix, assertion migrations,
+independent review and remaining protected gates. Independent review 2 closes all
+three original findings for local preparation. No product, test or harness input
+changes after the frozen source; additive evidence/doc commits retain each actual
+producing source. Do not rebind earlier receipts, repeat finite authority, or promote
+local preparation to protected/physical/native/provider/owner acceptance.

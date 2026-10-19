@@ -3,10 +3,18 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-10-17
+last_reviewed: 2026-10-19
 ---
 
 # Changelog
+
+The [complete Parallax integration preparation](Development_Docs/Projects/Project_Parallax/Integration_Preparation_20261019.md) consolidates the adopted
+Studio overhaul on current protected main, preserves historical source and
+records, and repairs integrated save, focus, placement recovery, Timeline and
+Guided fallback behavior. The source-bound local verification matrix and
+independent rendered review are recorded there. Crossdeck #721 acceptance,
+protected qualification, physical AR and owner acceptance remain separate.
+This preparation does not promote mainline feature availability.
 
 - Parallax source `3dedbb9cd10e` fixes a context-menu opener escaping into a focusable outer page wrapper, restores selected-item heading semantics and migrates three remaining Inspector test entries. All 208 original criteria remain; [4/4 focused and 11/11 combined local production-browser cases pass](Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/README.md), with fresh 370 px phone canvas evidence and independent local rendered review. Earlier failures remain retained; protected and physical AR acceptance are separate.
 

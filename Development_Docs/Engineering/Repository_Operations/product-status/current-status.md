@@ -3,10 +3,18 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-10-17
+last_reviewed: 2026-10-19
 ---
 
 # Current status
+
+The [complete Parallax integration preparation](../../../Projects/Project_Parallax/Integration_Preparation_20261019.md) consolidates the adopted
+Studio overhaul on current protected main, preserves historical source and
+records, and repairs integrated save, focus, placement recovery, Timeline and
+Guided fallback behavior. The source-bound local verification matrix and
+independent rendered review are recorded there. Crossdeck #721 acceptance,
+protected qualification, physical AR and owner acceptance remain separate.
+This preparation does not promote mainline feature availability.
 
 The [exact four-path Parallax correction](../../../Projects/Project_Parallax/evidence/four-path-correction-20261017/README.md) captures and repairs the header-menu opener escaping into the page wrapper and migrates the remaining three Inspector entries without changing any of the 208 original criteria. Uninstrumented source `3dedbb9cd10e` passes 4/4 focused and 11/11 combined production Chromium cases, with fresh 370 px phone canvas proof and successful owned cleanup. Separate current-source local rendered reviews find no actionable bounded regression. Earlier failed and instrumented results remain preserved. This closes these four local correction paths; whole-Studio, physical Safari and protected acceptance remain incomplete, with no new mainline availability.
 

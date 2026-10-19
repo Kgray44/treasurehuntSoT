@@ -3,10 +3,25 @@ title: Parallax Spatial Studio Creator guide
 audience: creators
 status: current
 canonical_for: parallax-spatial-studio-guide
-last_reviewed: 2026-10-17
+last_reviewed: 2026-10-19
 ---
 
 # Build a spatial experience
+
+In the integration candidate, autosave retains your working Scene. Right-click
+its Studio header, or focus a header control and press Shift+F10, to choose
+**Save draft** explicitly. A successful command confirms the working save,
+including when your changes were already saved. Save to Library remains a
+separate deliberate action.
+
+An expanded Timeline sits below the Scene. Scroll the centre pane to reach its
+controls; the canvas keeps room for its tools and selected-item card. Collapsing
+the Inspector returns keyboard focus to its open Properties, Spatial context or
+Scene control. A placement that cannot fit offers **Edit room layout** or
+**Dismiss** so you can change the room before trying again. Selected saved Assets
+show their existing classification in Library details. If Guided preview cannot
+start audio, it explains that state while the readable experience remains usable.
+These corrections are locally verified; protected integration remains pending.
 
 In the SC-00C expanded Library candidate, use **Expand ↗** in the compact
 left Library to browse the same content in a larger floating workspace. The
@@ -508,7 +523,6 @@ The active PR #722 candidate autosaves a stable working definition without addin
 Environments are now independent definitions. Creating/editing/reconstructing one does not manufacture a Scene. Using a room in a Scene records an independent snapshot; editing the original does not update other Scenes or Chronicles. The Inspector distinguishes original definitions and placed instances. Conflicting saves retain pending work and require review or an explicit named copy. See [lifecycle details and verification boundaries](Spatial_Library_Lifecycle_20261014.md).
 
 The original instruction/model measurements above remain historical. The [room instruction continuation](reference/Room_Instruction_Continuation_20261014.md) adds explicit rotated-frame seating offsets and returned-support requirements. A prompt adjustment alone does not prove improved reconstruction fidelity.
-
 
 In Engineering, a selected Spot light also exposes numeric pitch and roll to aim its local forward direction precisely; the same transform edit path serves the viewport rotation tool. Ambient light fills the whole scene, so its Inspector omits ineffective placement, size and rotation controls. Scene identity and fallback stay visible in Guided, while Library, reuse and publication starts collapsed there and opens by default in Standard and Engineering. A locked object's accessible description stays readable and becomes editable after Unlock.
 

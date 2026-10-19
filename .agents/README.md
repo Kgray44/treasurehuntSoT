@@ -3,7 +3,7 @@ title: Repository automation guidance
 audience: automation
 status: current
 canonical_for: repository-automation-guidance
-last_reviewed: 2026-10-17
+last_reviewed: 2026-10-19
 ---
 
 # Repository automation guidance

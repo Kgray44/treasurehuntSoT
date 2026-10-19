@@ -3,7 +3,7 @@ title: Voyagewright features
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-10-15
+last_reviewed: 2026-10-19
 ---
 
 # Voyagewright features
@@ -48,7 +48,7 @@ refinements; full overhaul qualification and protected integration remain open.
 
 An isolated [Spatial Inspector refit candidate](../../Development_Docs/Projects/Project_Parallax/SC00B_Combined_Inspector_Review_20261015.md) groups selected-item Properties, Spatial context and Scene settings in three authoring depths. Room features show direct Guided actions and separate support/nearby context; missing or unapplied selections retain a route back to their details. Asset selection from a room feature or Timeline returns to asset Properties; entering room editing clears asset controls. Seven synthetic browser journeys, a focused Assistant preview and eight local desktop/phone semantic contexts pass on corrected SC-02 root source `79348a8f`. Precise Spot direction, truthful Ambient controls, Scene depth and locked accessibility are covered; independent local review found no Inspector blocker. The owner accepted the preceding visual packet; corrected-source review and protected full-plan qualification remain open.
 
-The full Spatial Studio overhaul is in progress in an isolated candidate. It adds entity keyframes, renderer diagnostics/recovery, camera/clamping controls, editable semantic room features, versioned reusable objects/assemblies, independent scene copies and explicit simulation results. Bounded room, library and simulation browser journeys provide development evidence. The protected photo candidate now previews actual room geometry before saved Apply, refines shared features and withdraws permissions through reload in an isolated development fixture. Shared wall openings and saved-render Assistant feedback extend the candidate. Comprehensive cross-device acceptance, live photo accuracy, production private-provider readiness, production asset/material quality and the complete A–P workflow remain open. [Active checkpoint](../../Development_Docs/Projects/Project_Parallax/Spatial_Studio_Overhaul_20261012.md).
+The full Spatial Studio overhaul is consolidated in an isolated current-main integration candidate. Its [complete local preparation record](../../Development_Docs/Projects/Project_Parallax/Integration_Preparation_20261019.md) covers the integrated Studio, source-bound verification and independent rendered review while Crossdeck acceptance and protected qualification remain pending. It adds entity keyframes, renderer diagnostics/recovery, camera/clamping controls, editable semantic room features, versioned reusable objects/assemblies, independent scene copies and explicit simulation results. Bounded room, library and simulation browser journeys provide development evidence. The protected photo candidate now previews actual room geometry before saved Apply, refines shared features and withdraws permissions through reload in an isolated development fixture. Shared wall openings and saved-render Assistant feedback extend the candidate. Comprehensive cross-device acceptance, live photo accuracy, production private-provider readiness, production asset/material quality and the complete A–P workflow remain open. [Active checkpoint](../../Development_Docs/Projects/Project_Parallax/Spatial_Studio_Overhaul_20261012.md).
 
 The continuing Studio candidate also supports inline asset rename, temporary
 hidden/offscreen editing recovery, live timeline clip movement and duration

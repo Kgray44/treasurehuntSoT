@@ -3,12 +3,20 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-10-17
+last_reviewed: 2026-10-19
 ---
 
 The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.md) is an isolated synthetic implementation in qualification. It exercises accepted platform contracts; its combined physical/owner session remains pending and it does not promote later spatial phases.
 
 # Feature status
+
+The [complete Parallax integration preparation](../../../Projects/Project_Parallax/Integration_Preparation_20261019.md) consolidates the adopted
+Studio overhaul on current protected main, preserves historical source and
+records, and repairs integrated save, focus, placement recovery, Timeline and
+Guided fallback behavior. The source-bound local verification matrix and
+independent rendered review are recorded there. Crossdeck #721 acceptance,
+protected qualification, physical AR and owner acceptance remain separate.
+This preparation does not promote mainline feature availability.
 
 Parallax's [four-path corrective source](../../../Projects/Project_Parallax/evidence/four-path-correction-20261017/README.md) closes the captured header-menu opener defect and three remaining retired Inspector entries locally. Source `3dedbb9cd10e` passes 4/4 focused and 11/11 combined production Chromium cases, preserving all 208 original matcher criteria and the measured 370 px phone canvas. Current-source local rendered critiques report no actionable bounded finding. Historical failures remain intact. These ordinary corrections do not promote a Feature Catalog capability or availability; full protected qualification, failed physical Safari alignment and the #721 dependency hold remain separate.
 
