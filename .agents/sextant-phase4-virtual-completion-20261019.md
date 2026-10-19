@@ -207,3 +207,14 @@ and replace nested Asset drawer/Scenario ledger asides with same-named sections.
 Preserve the ledger styling via its explicit class and every existing named-role
 assertion. Keep axe0 and 3000ms readiness checks. Registration, generic hierarchy
 references and development evidence grant no protected authoring acceptance.
+
+Community wrapper successor run39331845535 clears the original landmark check.
+Three variants then fail actual search recovery because returning to the default
+URL resurrects its older unsent query draft; clear the query and advanced drafts
+against the destination URL, retaining actual empty-search/clear assertions and
+adding the original default-to-search-to-clear regression. One390-normal variant
+instead stops at Guide detail navigation with its exact cause unconfirmed; retain
+that separately and do not claim the search fix explains it. Keep all original
+receipts, fixed diagnostic bounds and source identities. A corrected-source
+development successor must exercise every existing public detail/search/return
+assertion; no protected or physical acceptance follows.
