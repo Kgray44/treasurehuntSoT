@@ -124,3 +124,11 @@ intro. Correct the heading to inherit the card's existing dark text and bring
 the real heading into view for its screenshot only after measuring unchanged
 ordinary readiness. Keep axe and3000ms assertions. Development pass is not
 protected acceptance or a refund of historical review/capture counters.
+
+Resource run39324450092 passed4 variants at99cbb4b8eb, but independent rendered
+review found pale projected text on the safe-preview sheet and mobile authoring
+navigation covering the masthead. Scope fixes to that sheet's heading/body/metadata
+colors and the rail's shell-height inset/layer. Retain every prior assertion; add
+preview axe and header/rail non-overlap geometry. Preserve all34 original members
+and original review findings. A corrected-source resource successor remains
+development-only and does not amend the old single-persona Creator contract.

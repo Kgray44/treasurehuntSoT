@@ -2149,6 +2149,15 @@ dl dd {
   margin-bottom: 1rem;
 }
 
+.player-safe-preview > section {
+  --text-heading: var(--parchment-ink);
+  --text-body: var(--parchment-ink);
+}
+
+.player-safe-preview > section :is(.card-kicker, dt) {
+  color: #5f4214;
+}
+
 .preview-watermark {
   border: 2px dashed #8e3e36;
   padding: 0.7rem;

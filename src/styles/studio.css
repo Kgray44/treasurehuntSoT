@@ -797,8 +797,8 @@ html[data-voyage-theme="light"] .studio-no-editable-draft__details dt {
 }
 .editor-section-nav {
   position: sticky;
-  z-index: 45;
-  top: 76px;
+  z-index: calc(var(--z-navigation, 30) - 1);
+  top: var(--shell-header-height, 76px);
   display: flex;
   overflow-x: auto;
   max-width: 100%;
@@ -2669,7 +2669,6 @@ html[data-voyage-theme="light"] .studio-no-editable-draft__details dt {
     align-items: start;
   }
   .editor-section-nav {
-    top: 0;
     width: 100%;
     padding-inline: 0.5rem;
   }

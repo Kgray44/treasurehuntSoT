@@ -349,3 +349,23 @@ Source-only declarations qualify no surface. The fixed Captain/Creator resource
 matrix is dispatched separately as development run `39324450092`; no outcome is
 claimed before harvest. Existing component tests (5/5), TypeScript, privacy D0,
 documentation and feature validation passed at the resource checkpoint.
+
+Resource run `39324450092` subsequently passed all four development variants at
+`99cbb4b8ebacf0655a2ccfa964bff00e397890f5`, with 34 original harvested members,
+unchanged progression/published checksums and supervised tree/port/transport
+cleanup. Maximum measured resource feedback was 1342.9 ms. Independent rendered
+review found the safe Player preview's projected Passage and metadata too pale
+against its gold sheet in every variant. The scoped sheet now sets its existing
+heading/body tokens to parchment ink and uses dark metadata; the warning remains.
+The original passing captures retain that P2 disposition. A fresh corrected-source
+resource run is required before claiming the rendered repair.
+The same review found mobile authoring navigation covering the application
+masthead. Its sticky inset now follows the existing shell-header height and its
+layer sits below the shell navigation. The resource journey retains all prior
+assertions and adds actual header/rail non-overlap geometry plus preview axe.
+All 34 harvested member hashes match inventory. Review inspected 16 screenshots;
+chat and the cancelled command dialog are not directly shown, and recordings
+were not independently played. This remains development review only.
+The [original resource evidence index](evidence/20261019-resources/publication-index.json)
+preserves all 34 harvested members plus hosted receipt, dispatch and CI log with
+original hashes and both unresolved rendered findings.

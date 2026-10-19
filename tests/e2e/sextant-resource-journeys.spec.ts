@@ -107,6 +107,7 @@ for (const viewport of [
           () => expect(page.getByRole("main")).toContainText("PREVIEW · NO LIVE MUTATIONS"),
         );
         await expect(page.getByRole("heading", { level: 1, name: fixture.title, exact: true })).toBeVisible();
+        expect((await new AxeBuilder({ page }).include(".player-safe-preview").analyze()).violations).toEqual([]);
         await page.screenshot({ path: info.outputPath("captain-safe-preview.png") });
         await page.getByRole("link", { name: "Back to Captain’s Command", exact: true }).click();
         await accountMenu.click();
@@ -140,6 +141,15 @@ for (const viewport of [
           .getByRole("link", { name: "Chronicle", exact: true })
           .click();
         await expect(title).toHaveValue(editedTitle);
+        const shellHeader = await page.locator(".product-shell-header").boundingBox();
+        const authoringRail = await page
+          .getByRole("navigation", { name: "Chronicle authoring sections", exact: true })
+          .boundingBox();
+        expect(shellHeader).not.toBeNull();
+        expect(authoringRail).not.toBeNull();
+        expect(authoringRail!.y, "Authoring navigation stays below the application masthead").toBeGreaterThanOrEqual(
+          shellHeader!.y + shellHeader!.height - 1,
+        );
         expect((await new AxeBuilder({ page }).include(".tale-editor").analyze()).violations).toEqual([]);
         await page.screenshot({ path: info.outputPath("creator-draft-reopened.png") });
         const restore = page.waitForResponse(

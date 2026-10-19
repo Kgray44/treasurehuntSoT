@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "candidateSha": "99cbb4b8ebacf0655a2ccfa964bff00e397890f5",
+  "target": "sextant-resources",
+  "tier": "development",
+  "profiles": {
+    "android": [
+      {
+        "profile": "primary-phone",
+        "api": 36,
+        "device": "pixel_7",
+        "ram": "3072M",
+        "memory": 3072,
+        "lowRam": ""
+      }
+    ],
+    "apple": [
+      "primary-phone"
+    ]
+  },
+  "scenarios": {
+    "appleDevices": [],
+    "browser": [
+      "sextant-resource-journeys"
+    ],
+    "journal": [],
+    "background": [],
+    "radio": "uwb-native-peer-session,ble-native-generic-discovery,ble-native-ibeacon-discovery,ble-native-eddystone-uid-discovery",
+    "ios": "permission-denied-native,permission-revoked-mid-route,gps-perfect-walk,offline-native-canonical-reconcile,offline-lost-response-canonical-reconcile,offline-restart-canonical-reconcile,virtual-player-navigation,virtual-offline-canonical-reconcile,geofence-native-background-wake",
+    "android": "device-reboot,qr-native-camera-valid,permission-denied-native,permission-approximate-native,permission-revoked-mid-route,motion-walk,stationary,barometer-floor-change,orientation-turn,heading-turn,gps-perfect-walk,offline-native-canonical-reconcile,offline-lost-response-canonical-reconcile,offline-restart-canonical-reconcile,virtual-player-navigation,virtual-offline-canonical-reconcile,battery-normal,battery-low,battery-saver,charger-change",
+    "provider": "all"
+  },
+  "transportSha": "a4170a256127d6d3fa1f0f888ab6a55ca6b74334",
+  "transportTree": "fb308cd95ced052ba7350d7c4b16c500e9e98d22",
+  "branch": "codex/landfall-lab-99cbb4b8ebac-1792443809021",
+  "workflow": "landfall-device-lab.yml",
+  "createdAt": "2026-10-19T21:03:34.869Z",
+  "cleanup": "PASS",
+  "runId": "39324450092",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39324450092",
+  "harvested": "C:\\Users\\kkids\\.codex\\worktrees\\sextant-phase4-completion\\Codex_TreasureHunt\\artifacts\\landfall-device-lab\\hosted-99cbb4b8ebac-1792443809021\\run-39324450092"
+}

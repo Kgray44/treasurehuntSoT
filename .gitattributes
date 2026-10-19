@@ -2,6 +2,7 @@
 /Development_Docs/Engineering/Sextant/evidence/20261019-virtual/** -text -whitespace
 /Development_Docs/Engineering/Sextant/evidence/20261019-product/** -text -whitespace
 /Development_Docs/Engineering/Sextant/evidence/20261019-consumers/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-resources/** -text -whitespace
 /Development_Docs/Engineering/Sextant/phase4-source-reconciliation-passport-20261019.json -text -whitespace
 /Development_Docs/Engineering/Sextant/phase4-source-reconciliation-resources-20261019.json -text -whitespace
 *.cmd text eol=crlf

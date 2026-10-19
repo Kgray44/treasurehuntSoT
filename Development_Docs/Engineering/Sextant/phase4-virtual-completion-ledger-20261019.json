@@ -6,7 +6,7 @@
   "status": "IN_PROGRESS",
   "initialCandidate": "5ff2739776513b8f8ed20c1cb661c164216d0eeb",
   "protectedBase": "f6af0b0e151f15f1a23808413ccee531b9827ca7",
-  "currentSoftwareCandidate": "99cbb4b8ebacf0655a2ccfa964bff00e397890f5",
+  "currentSoftwareCandidate": "23d697925d2a2505f4c9d91f8c6660337bedf266",
   "pr": "https://github.com/Kgray44/treasurehuntSoT/pull/709",
   "independentSourceReview": {
     "reviewerContext": "/root/sextant_source_review",
@@ -371,8 +371,17 @@
       "sourceSha": "99cbb4b8ebacf0655a2ccfa964bff00e397890f5",
       "transportSha": "a4170a256127d6d3fa1f0f888ab6a55ca6b74334",
       "runId": "39324450092",
-      "status": "DISPATCHED_NO_OUTCOME_CLAIMED",
+      "status": "HARVESTED_SUCCESS_FOUR_VARIANTS",
       "scope": "Actual Captain roster, cancelled command review, safe preview and distinct owner Creator draft save/reopen/restore",
+      "maximumResourceFeedbackMs": 1342.9026900000026,
+      "unchangedProgressionAndPublishedEditions": true,
+      "productionBuild": "PASS",
+      "cleanup": "RUNTIME_TREES_PORTS_AND_TRANSPORT_PASS",
+      "artifacts": 34,
+      "renderedReview": [
+        "P2_SAFE_PLAYER_PREVIEW_PROJECTED_TEXT_LOW_CONTRAST",
+        "P2_MOBILE_CREATOR_AUTHORING_RAIL_OVERLAPS_GLOBAL_MASTHEAD"
+      ],
       "qualification": false
     }
   ],
@@ -437,7 +446,8 @@
   "evidencePublication": [
     "evidence/20261019-virtual/publication-index.json",
     "evidence/20261019-product/publication-index.json",
-    "evidence/20261019-consumers/publication-index.json"
+    "evidence/20261019-consumers/publication-index.json",
+    "evidence/20261019-resources/publication-index.json"
   ],
   "currentProtectedBase": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
   "canonicalHostDependencies": [

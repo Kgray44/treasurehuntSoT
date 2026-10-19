@@ -26,6 +26,10 @@ last_reviewed: 2026-10-19
   the same valid section semantics. Accessibility assertions remain.
 - The private Passport intro heading inherits its card's dark text color so it
   stays readable on the pale gold background.
+- The Captain's safe Player preview uses dark heading, body and metadata text
+  on its pale preview sheet, keeping the projected Passage readable.
+- Creator authoring navigation stays below the application masthead on mobile
+  and desktop so it cannot cover the logo, navigation or account controls.
 
 - Sextant's Phase 4 candidate pauses and revokes native location alongside other
   optional input, permits a fresh explicit acquisition after expected native
