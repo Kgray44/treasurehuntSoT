@@ -7808,7 +7808,8 @@
           "src/components/community/CommunityCommentThread.tsx",
           "src/components/community/CommunityDiscoveryBrowser.tsx",
           "src/components/community/PublicCommunitySection.tsx",
-          "src/components/community/CommunityReviewList.tsx"
+          "src/components/community/CommunityReviewList.tsx",
+          "src/styles/community.css"
         ],
         "entryPoint": "/",
         "states": ["PUBLIC_READY", "EMPTY_SEARCH", "EMPTY_CREATOR", "EMPTY_COLLECTION", "RETURNED"],
