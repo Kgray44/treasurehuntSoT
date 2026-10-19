@@ -4205,7 +4205,7 @@
         "entryPoint": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
         "states": ["JOURNAL_READY", "CONNECT_READY", "RETURNED"],
         "navigation": "Open the Journal, use Connect another device, inspect contextual pairing instructions, then Continue the Chronicle in the same Voyage.",
-        "designTarget": "Keep the book and its primary reading task dominant; use one quiet contextual connection control, a focused phone dialog with scan-first guidance and a direct return.",
+        "designTarget": "Keep the current passage legible and reachable, with operable contextual connection controls, focused QR/code guidance and direct return to the same Chronicle. Preserve an unobscured current heading and the existing substantive first-viewport reading-area and hit-test requirements. Editorial first-viewport dominance, utility grouping and appearance refinement are assigned to Project Refit; obstruction, unreadability and inaccessible controls remain Crossdeck blockers.",
         "roleSetup": {
           "PLAYER": {
             "entryPoint": "/sign-in?returnTo=%2Fplayer%2Fplaythroughs%2F00000000-0000-4000-8000-00000000cd11%2Fjournal",
@@ -5489,7 +5489,7 @@
         "entryPoint": "/devices/companion?voyage=00000000-0000-4000-8000-00000000cd11",
         "states": ["COMPANION_READY", "LIBRARY_READY", "RETURNED"],
         "navigation": "Exit to My Voyages opens the authorized Chronicle Library; Continue Adventure restores the same current Voyage.",
-        "designTarget": "Keep the companion immersive, preserve compact account/context controls, and make the safe library exit and re-entry readable on desktop and phone.",
+        "designTarget": "Keep account/context controls and safe library exit and same-Voyage re-entry readable, discoverable and operable on desktop and phone in both motion modes. Relative passage/chrome composition after return and editorial appearance refinement are assigned to Project Refit; no functional, accessibility or continuity defect is deferred.",
         "roleSetup": {
           "PLAYER": {
             "entryPoint": "/sign-in?returnTo=%2Faccount%2Fdevices%3Fvoyage%3D00000000-0000-4000-8000-00000000cd11",
@@ -5729,7 +5729,7 @@
         "entryPoint": "/devices/companion?voyage=00000000-0000-4000-8000-00000000cd11",
         "states": ["JOURNAL_READY", "LENS_READY", "CHART_READY", "ARTIFACT_READY", "JOURNAL_RESTORED", "RETURNED"],
         "navigation": "Begin on the authorized paired companion; Change companion purpose reaches Lens, Chart, Journal and Artifact viewer; Return to Chronicle opens the original Journal.",
-        "designTarget": "Give each purpose its own full readable workspace beneath one Chronicle identity and connection status; make purpose change secondary and the return persistent, with camera-free meaningful Lens and actual map objectives.",
+        "designTarget": "Give each purpose its full readable workspace beneath one Chronicle identity and connection status, with discoverable, operable purpose selection and persistent unobscured return, camera-free meaningful Lens and actual map objectives. Editorial ranking and grouping of purpose/connection utilities and appearance refinement are assigned to Project Refit after all functional reading, purpose and return criteria pass.",
         "roleSetup": {
           "PLAYER": {
             "entryPoint": "/sign-in?returnTo=%2Faccount%2Fdevices%3Fvoyage%3D00000000-0000-4000-8000-00000000cd11",
