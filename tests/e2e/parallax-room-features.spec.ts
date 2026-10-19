@@ -1,3 +1,8 @@
+import {
+  closeCurrentLibrary,
+  openOwnedSceneFromCurrentLibrary,
+  saveCurrentWorkingDraft,
+} from "./fixtures/parallax-current-library";
 import { test, expect } from "@playwright/test";
 import { mkdir } from "node:fs/promises";
 import { db } from "../../src/lib/db";
@@ -29,13 +34,18 @@ test("Environment editing selects rendered features and shares live transform gi
     targetFeatureId: "reference-desk",
     nearFeatureId: "window",
   });
+  draft.content.title = "Fixture " + draft.content.definitionId;
   await saveSpatialDraft(account.id, draft, 0);
   await authenticateClosure(context, account, baseURL!);
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/studio/library");
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
-  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-  await page.getByRole("button", { name: /Desk Map.*My Library/ }).click();
+  await openOwnedSceneFromCurrentLibrary(page, {
+    definitionId: draft.content.definitionId,
+    title: draft.content.title,
+    state: "WORKING",
+  });
+  await closeCurrentLibrary(page);
   const canvas = page.getByRole("region", { name: "Spatial canvas", exact: true });
   const host = canvas.locator('[data-renderer="READY"]');
   await expect(host.locator("canvas")).toBeVisible();
@@ -123,7 +133,7 @@ test("Environment editing selects rendered features and shares live transform gi
   await host.locator("canvas").press("Shift+F10");
   await expect(page.getByRole("menuitem", { name: "Move feature", exact: true })).toBeVisible();
   await page.keyboard.press("Escape");
-  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await saveCurrentWorkingDraft(page);
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
   const saved = (await listSpatialItems(account.id))[0].draft;
   expect(
@@ -154,15 +164,21 @@ test("Creator edits semantic room dimensions and furniture while the actual rend
     targetFeatureId: "reference-desk",
     nearFeatureId: "window",
   });
+  draft.content.title = "Fixture " + draft.content.definitionId;
   await saveSpatialDraft(account.id, draft, 0);
   await authenticateClosure(context, account, baseURL!);
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/studio/library");
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
-  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-  await page.getByRole("button", { name: /Desk Map.*My Library/ }).click();
+  await openOwnedSceneFromCurrentLibrary(page, {
+    definitionId: draft.content.definitionId,
+    title: draft.content.title,
+    state: "WORKING",
+  });
+  await closeCurrentLibrary(page);
   const host = page.getByRole("region", { name: "Spatial canvas", exact: true }).locator('[data-renderer="READY"]');
   await expect(host.locator("canvas")).toBeVisible();
+  await page.getByRole("button", { name: "Open scene settings", exact: true }).click();
   await page.getByText("Room photograph reconstruction", { exact: true }).click();
   const photo = page.getByRole("region", { name: "Room photograph reconstruction", exact: true });
   await expect(photo).toContainText("manual room editing is available.");
@@ -170,6 +186,7 @@ test("Creator edits semantic room dimensions and furniture while the actual rend
   await mkdir(root, { recursive: true });
   await photo.scrollIntoViewIfNeeded();
   await page.screenshot({ path: `${root}/photo-room-unavailable-manual.png` });
+  await page.getByRole("button", { name: "Open scene settings", exact: true }).click();
   await page.getByText("Room photograph reconstruction", { exact: true }).click();
   await expect(page.getByRole("combobox", { name: "Environment", exact: true })).toHaveValue("editable-bedroom");
   await page.getByRole("button", { name: "Edit room features", exact: true }).click();
@@ -234,7 +251,7 @@ test("Creator edits semantic room dimensions and furniture while the actual rend
   await editor.getByLabel("Room width (m)", { exact: true }).press("Tab");
   await expect(editor.getByRole("alert")).toHaveCount(0);
   await expect.poll(center).toBeCloseTo(0.75);
-  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await saveCurrentWorkingDraft(page);
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
   const saved = (await listSpatialItems(account.id))[0].draft;
   expect(saved.content.studio!.environment!.width).toBe(5);
@@ -266,7 +283,7 @@ test("Creator edits semantic room dimensions and furniture while the actual rend
   await editor.getByLabel("Feature x (m)", { exact: true }).press("Tab");
   await expect.poll(center).toBeCloseTo(0.65);
   await expect.poll(entityX).toBeCloseTo(0.65);
-  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await saveCurrentWorkingDraft(page);
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
   await page.getByRole("button", { name: "Collapse Inspector", exact: true }).click();
   await host.scrollIntoViewIfNeeded();

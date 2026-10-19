@@ -1,6 +1,6 @@
 import {
-  openOwnedSceneFromCurrentLibrary,
   closeCurrentLibrary,
+  openOwnedSceneFromCurrentLibrary,
   saveCurrentWorkingDraft,
 } from "./fixtures/parallax-current-library";
 import { test, expect } from "@playwright/test";
@@ -40,6 +40,7 @@ test("Creator privately imports a room photo, confirms measurement, preserves it
     create: { id: AI_CONTROL_ID, policy: JSON.stringify({ ...defaultAIGlobalPolicy, enabled: true }) },
   });
   const draft = createSpatialDraft("synthetic-room-photograph");
+  draft.content.title = "Fixture " + draft.content.definitionId;
   await saveSpatialDraft(account.id, draft, 0);
   await authenticateClosure(context, account, baseURL!);
   await page.setViewportSize({ width: 1440, height: 1000 });
@@ -52,7 +53,8 @@ test("Creator privately imports a room photo, confirms measurement, preserves it
     state: "WORKING",
   });
   await closeCurrentLibrary(page);
-  await page.getByRole("button", { name: "Collapse left dock", exact: true }).click();
+  await page.getByRole("button", { name: "Open scene settings", exact: true }).click();
+  await page.getByRole("button", { name: "Open scene settings", exact: true }).click();
   await page.getByText("Room photograph reconstruction", { exact: true }).click();
   const photo = page.getByRole("region", { name: "Room photograph reconstruction", exact: true });
   await expect(photo).toContainText("Local development photo import and room inference are ready.");
@@ -112,6 +114,7 @@ test("Creator privately imports a room photo, confirms measurement, preserves it
     .poll(async () => (JSON.parse((await host.getAttribute("data-cutaway-parts"))!) as string[]).sort())
     .toEqual(cameraFacingShell);
   await page.getByRole("button", { name: "Reset view", exact: true }).click();
+  await page.getByRole("button", { name: "Open scene settings", exact: true }).click();
   await page.getByText("Room photograph reconstruction", { exact: true }).click();
   await host.scrollIntoViewIfNeeded();
   await page.screenshot({ path: `${root}/photo-room-applied-cutaway.png` });
@@ -151,7 +154,8 @@ test("Creator privately imports a room photo, confirms measurement, preserves it
   await expect(editor).toContainText("width 1.75 m");
   await editor.getByText(/Scale reference:/).scrollIntoViewIfNeeded();
   await page.screenshot({ path: `${root}/photo-room-measurement-reloaded.png` });
-  await page.getByText("Room & environmental features", { exact: true }).click();
+  await page.getByRole("button", { name: "Open scene settings", exact: true }).click();
+  await page.getByRole("button", { name: "Open scene settings", exact: true }).click();
   await page.getByText("Room photograph reconstruction", { exact: true }).click();
   await photo.getByLabel("Shared room feature", { exact: true }).selectOption(desk.id);
   const secondImage = await sharp({ create: { width: 620, height: 400, channels: 3, background: "#97aab0" } })
@@ -187,6 +191,7 @@ test("Creator privately imports a room photo, confirms measurement, preserves it
   await expect(host.locator("canvas")).toBeVisible();
   await expect.poll(deskX).toBeCloseTo(1.25);
   expect((await listSpatialItems(account.id))[0].draft).toEqual(refined);
+  await page.getByRole("button", { name: "Open scene settings", exact: true }).click();
   await page.getByText("Room photograph reconstruction", { exact: true }).click();
   await photo.getByText(/Manage photo permissions/).click();
   await expect(
@@ -198,6 +203,7 @@ test("Creator privately imports a room photo, confirms measurement, preserves it
   await page.screenshot({ path: `${root}/photo-room-restored.png` });
   await page.reload();
   await expect.poll(deskX).toBeCloseTo(1.25);
+  await page.getByRole("button", { name: "Open scene settings", exact: true }).click();
   await page.getByText("Room photograph reconstruction", { exact: true }).click();
   await expect(photo).toContainText("Local development photo import and room inference are ready.");
   await expect(photo.getByRole("button", { name: /Withdraw photo .* processing permission/ })).toHaveCount(0);
@@ -205,6 +211,7 @@ test("Creator privately imports a room photo, confirms measurement, preserves it
 
   // Continue through the actual Assistant and shared scene clock, rather than
   // injecting a pre-authored reveal into the photograph fixture.
+  await page.getByRole("button", { name: "Open scene settings", exact: true }).click();
   await page.getByText("Room photograph reconstruction", { exact: true }).click();
   await page.getByRole("button", { name: /Ask Parallax/ }).click();
   const assistant = page.getByRole("region", { name: "Spatial Assistant", exact: true });

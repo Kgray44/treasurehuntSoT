@@ -1,6 +1,6 @@
 import {
-  openOwnedSceneFromCurrentLibrary,
   closeCurrentLibrary,
+  openOwnedSceneFromCurrentLibrary,
   saveCurrentWorkingDraft,
 } from "./fixtures/parallax-current-library";
 import { test, expect } from "@playwright/test";
@@ -46,6 +46,7 @@ test("Creator renames, drags and resizes a real animated clip, observes motion a
       delayMs: 0,
     },
   ];
+  draft.content.title = "Refinement " + draft.content.definitionId;
   await saveSpatialDraft(account.id, draft, 0);
   await authenticateClosure(context, account, baseURL!);
   await page.setViewportSize({ width: 1440, height: 1000 });
@@ -213,8 +214,7 @@ test("Creator renames, drags and resizes a real animated clip, observes motion a
   await expect.poll(async () => (await receipt()).status).toBe("IN_VIEW");
   await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("ENGINEERING");
   await page.getByRole("button", { name: "Edit selected object", exact: true }).click();
-  const transform = page.getByText("Transform", { exact: true });
-  if ((await transform.locator("..").getAttribute("open")) === null) await transform.click();
+  await page.getByRole("button", { name: "Open object properties", exact: true }).click();
   await page.getByLabel("Object width in meters", { exact: true }).fill("0.01");
   await page.getByLabel("Position x", { exact: true }).fill("50");
   await expect.poll(async () => (await receipt()).status).not.toBe("IN_VIEW");
@@ -230,6 +230,7 @@ test("Renaming one footprint preserves its shape and rebuilds only that prop", a
   const account = await closureAccount("Synthetic footprint rename Creator");
   await activateWorkspaceCapability(account.id, "CREATOR");
   const draft = createSpatialDraft("footprint-rename", "Ghost Footprint Trail");
+  draft.content.title = "Refinement " + draft.content.definitionId;
   await saveSpatialDraft(account.id, draft, 0);
   await authenticateClosure(context, account, baseURL!);
   await page.setViewportSize({ width: 1440, height: 1000 });
@@ -293,6 +294,7 @@ test("Record captures edited poses and motion stays clear across modes and rende
   const account = await closureAccount("Synthetic recorded pose Creator");
   await activateWorkspaceCapability(account.id, "CREATOR");
   const draft = createSpatialDraft("recorded-motion", "Floating Compass");
+  draft.content.title = "Refinement " + draft.content.definitionId;
   await saveSpatialDraft(account.id, draft, 0);
   await authenticateClosure(context, account, baseURL!);
   await page.setViewportSize({ width: 1440, height: 1000 });
@@ -305,7 +307,6 @@ test("Record captures edited poses and motion stays clear across modes and rende
     state: "WORKING",
   });
   await closeCurrentLibrary(page);
-  await page.getByRole("button", { name: "Collapse left dock", exact: true }).click();
   const canvas = page.getByRole("region", { name: "Spatial canvas", exact: true });
   const host = canvas.locator('[data-renderer="READY"]');
   await expect(host.locator("canvas")).toBeVisible();
@@ -318,8 +319,7 @@ test("Record captures edited poses and motion stays clear across modes and rende
   await page.getByLabel("Preview", { exact: true }).selectOption("EDITOR");
   await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("ENGINEERING");
   await canvas.getByRole("button", { name: "Edit selected object", exact: true }).click();
-  const transform = page.getByText("Transform", { exact: true });
-  if ((await transform.locator("..").getAttribute("open")) === null) await transform.click();
+  await page.getByRole("button", { name: "Open object properties", exact: true }).click();
   await page.getByLabel("Position x", { exact: true }).fill("0.5");
   await editor.getByRole("button", { name: /Record keyframe at 10.0 s/ }).click();
   await expect(editor.getByLabel("POSITION keyframe 2 x", { exact: true })).toHaveValue("0.5000");

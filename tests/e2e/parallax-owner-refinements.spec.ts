@@ -1,3 +1,8 @@
+import {
+  addCurrentBuiltinAsset,
+  openCurrentLibraryCategory,
+  saveCurrentWorkingDraft,
+} from "./fixtures/parallax-current-library";
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { mkdir, writeFile } from "node:fs/promises";
@@ -68,10 +73,7 @@ test("owner refinements: coherent Studio themes, overlay assistance and populate
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.getByLabel("Workspace layout", { exact: true }).selectOption("CONSTRUCTION");
   const inspector = page.getByRole("complementary", { name: "Spatial inspector" });
-  await page
-    .getByRole("region", { name: "Spatial asset browser" })
-    .getByRole("button", { name: "Peeking Letter", exact: false })
-    .click();
+  await addCurrentBuiltinAsset(page, "Peeking Letter");
   await expect(inspector.getByRole("heading", { name: "Peeking Letter", exact: true })).toBeVisible();
   await inspector.getByLabel("Object name", { exact: true }).fill("Owner review letter");
   await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
@@ -91,7 +93,7 @@ test("owner refinements: coherent Studio themes, overlay assistance and populate
   await page.getByRole("button", { name: "Add spatial behavior", exact: true }).click();
   await page.getByText("Sequence properties & simulation", { exact: true }).click();
   await page.getByLabel("Behavior 1 delay milliseconds").fill("1200");
-  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await saveCurrentWorkingDraft(page);
   await expect(page.getByRole("status", { name: "", exact: true })).toContainText("Working draft saved");
   const saved = (await listSpatialItems(account.id)).find((item) =>
     item.draft.content.entities.some((entity) => entity.name === "Owner review letter"),
@@ -131,7 +133,8 @@ test("owner refinements: coherent Studio themes, overlay assistance and populate
         page.getByRole("button", { name: /Owner review letter: highlight 1200 milliseconds/ }),
       ).toBeVisible();
       if (mode !== "ENGINEERING") await expect(inspector.getByLabel("Object name", { exact: true })).toBeVisible();
-      if (mode === "GUIDED") await expect(inspector.getByText("Appearance / layers", { exact: true })).toBeHidden();
+      if (mode === "GUIDED")
+        await expect(inspector.getByRole("heading", { name: "Appearance & layers", exact: true })).toBeHidden();
       if (mode === "ENGINEERING") await expect(inspector.getByLabel("Position x", { exact: true })).toBeVisible();
       else await expect(inspector.getByText("Advanced / Engineering", { exact: true })).toBeHidden();
       await page.screenshot({
@@ -153,19 +156,21 @@ test("owner refinements: coherent Studio themes, overlay assistance and populate
     }
     await selectBottom("Timeline");
     await page.getByLabel("Authoring mode").selectOption("DETAILED");
-    for (const title of ["Appearance / layers", "Interactions", "Accessibility & Fallback"]) {
-      const summary = inspector.getByText(title, { exact: true });
-      if (!(await summary.evaluate((element) => element.parentElement?.hasAttribute("open")))) await summary.click();
+    await page.getByRole("button", { name: "Open object properties", exact: true }).click();
+    for (const title of ["Appearance & layers", "Interactions", "Accessibility"]) {
+      await expect(inspector.getByRole("heading", { name: title, exact: true })).toBeVisible();
     }
     await page.getByRole("button", { name: "Open Library", exact: true }).click();
     await page.screenshot({ path: `${root}/owner-library-and-inspector-${theme.toLowerCase()}.png`, fullPage: true });
-    await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-    await expect(page.getByRole("tabpanel", { name: "Open Saved Spatial Items", exact: true })).toContainText(
-      "Saved Spatial Library",
+    const workingLibrary = await openCurrentLibraryCategory(page, "Scenes", "MY_CREATIONS", "WORKING");
+    await expect(workingLibrary.getByRole("tab", { name: "Scenes", exact: true })).toHaveAttribute(
+      "aria-selected",
+      "true",
     );
-    await expect(page.getByRole("region", { name: "Saved spatial definitions", exact: true })).toContainText(
-      saved.draft.content.title,
-    );
+    await workingLibrary.getByRole("searchbox").fill(saved.draft.content.title);
+    await expect(
+      workingLibrary.getByRole("button", { name: `Inspect ${saved.draft.content.title}`, exact: true }),
+    ).toBeVisible();
     await page.screenshot({ path: `${root}/owner-saved-library-${theme.toLowerCase()}.png`, fullPage: true });
     await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
     const axes = await new AxeBuilder({ page }).include("[data-mode]").analyze();
@@ -206,7 +211,7 @@ test("floating assistance moves, resizes, restores and keeps its composer at the
   await page.goto("/studio/parallax");
   const canvas = page.getByRole("region", { name: "Spatial canvas", exact: true });
   await expect(canvas.locator('[data-renderer="READY"] canvas')).toBeVisible();
-  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await saveCurrentWorkingDraft(page);
   await expect(page.getByRole("status", { name: "", exact: true })).toContainText("Working draft saved");
   await page.getByRole("button", { name: /Ask Parallax/ }).click();
   const host = page.locator("#parallax-assistance");

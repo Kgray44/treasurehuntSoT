@@ -1,3 +1,8 @@
+import {
+  closeCurrentLibrary,
+  openOwnedSceneFromCurrentLibrary,
+  saveCurrentWorkingDraft,
+} from "./fixtures/parallax-current-library";
 import { test, expect } from "@playwright/test";
 import { mkdir } from "node:fs/promises";
 import AxeBuilder from "@axe-core/playwright";
@@ -20,13 +25,18 @@ test("Creator uses one graph toolbar, right-click object commands and keyboard m
   const account = await closureAccount("Synthetic context-menu Creator");
   await activateWorkspaceCapability(account.id, "CREATOR");
   const draft = createSpatialDraft("context-scene");
+  draft.content.title = "Fixture " + draft.content.definitionId;
   await saveSpatialDraft(account.id, draft, 0);
   await authenticateClosure(context, account, baseURL!);
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/studio/library");
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
-  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-  await page.getByRole("button", { name: /Desk Map.*My Library/ }).click();
+  await openOwnedSceneFromCurrentLibrary(page, {
+    definitionId: draft.content.definitionId,
+    title: draft.content.title,
+    state: "WORKING",
+  });
+  await closeCurrentLibrary(page);
   const canvas = page.getByRole("region", { name: "Spatial canvas", exact: true });
   const host = canvas.locator('[data-renderer="READY"]');
   await expect(host.locator("canvas")).toBeVisible();
@@ -69,7 +79,7 @@ test("Creator uses one graph toolbar, right-click object commands and keyboard m
   await page.keyboard.press("ArrowDown");
   await page.keyboard.press("Escape");
   await expect(selected).toBeFocused();
-  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await saveCurrentWorkingDraft(page);
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
   const saved = (await listSpatialItems(account.id))[0].draft;
   await page.reload();
@@ -92,7 +102,11 @@ test("Creator uses one graph toolbar, right-click object commands and keyboard m
   await expect(host.locator("canvas")).toBeFocused();
 
   await page.getByRole("button", { name: "Open Library", exact: true }).click();
-  const asset = page.getByRole("button", { name: /^Peeking Letter\b/ });
+  const library = page.getByRole("region", { name: "Spatial content library", exact: true });
+  await library.getByRole("tab", { name: "Assets", exact: true }).click();
+  await library.getByRole("combobox", { name: "Source", exact: true }).selectOption("ALL");
+  await library.getByRole("searchbox").fill("Peeking Letter");
+  const asset = library.getByRole("button", { name: "Inspect Peeking Letter", exact: true });
   await asset.click({ button: "right" });
   await expect(menu.getByRole("menuitem", { name: "Add to scene", exact: true })).toBeVisible();
   await page.screenshot({ path: `${root}/asset-context-dark.png` });
@@ -100,12 +114,11 @@ test("Creator uses one graph toolbar, right-click object commands and keyboard m
   await expect.poll(async () => JSON.parse((await host.getAttribute("data-scene-receipt"))!).length).toBe(3);
   await page.getByRole("button", { name: "Undo", exact: true }).first().click();
   await expect.poll(async () => JSON.parse((await host.getAttribute("data-scene-receipt"))!).length).toBe(2);
-  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-  await page
-    .getByRole("article", { name: "Saved scene: Desk Map", exact: true })
-    .filter({ hasText: "currently open" })
-    .getByRole("button", { name: "Actions for Desk Map", exact: true })
-    .click();
+  await library.getByRole("tab", { name: "Scenes", exact: true }).click();
+  await library.getByRole("combobox", { name: "Source", exact: true }).selectOption("MY_CREATIONS");
+  await library.getByRole("combobox", { name: "Show", exact: true }).selectOption("WORKING");
+  await library.getByRole("searchbox").fill(draft.content.title);
+  await library.getByRole("button", { name: `Inspect ${draft.content.title}`, exact: true }).click({ button: "right" });
   await expect(menu.getByRole("menuitem", { name: "Archive", exact: true })).toBeDisabled();
   await page.screenshot({ path: `${root}/saved-scene-context-dark.png` });
   await page.keyboard.press("Escape");

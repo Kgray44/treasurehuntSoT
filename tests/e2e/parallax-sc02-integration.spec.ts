@@ -195,7 +195,16 @@ test("physical Library insertion uses Bedroom supports, preserves Undo and refus
       .toBe(true);
     if (await noFit.isVisible()) {
       expect((await saved())!.draft.content).toEqual(before.draft.content);
+
+      await expect(noFit.getByRole("button", { name: "Retry save", exact: true })).toHaveCount(0);
+      await expect(noFit.getByRole("button", { name: "Review saved revision", exact: true })).toHaveCount(0);
+      await expect(noFit.getByRole("button", { name: "Edit room layout", exact: true })).toBeEnabled();
       await page.screenshot({ path: `${evidence}/room-aware-no-fit-recovery.png`, fullPage: true });
+      await noFit.getByRole("button", { name: "Edit room layout", exact: true }).click();
+      await expect(noFit).toHaveCount(0);
+      await expect(page.getByRole("region", { name: "Room feature editor", exact: true })).toBeVisible();
+      expect((await saved())!.draft.content.entities).toEqual(before.draft.content.entities);
+      await page.screenshot({ path: `${evidence}/room-aware-no-fit-room-recovery.png`, fullPage: true });
       refused = true;
       break;
     }

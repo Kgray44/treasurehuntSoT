@@ -1,3 +1,4 @@
+import { saveCurrentWorkingDraft } from "./fixtures/parallax-current-library";
 import { test, expect, type Locator, type Page } from "@playwright/test";
 import { mkdir, writeFile } from "node:fs/promises";
 import { db } from "../../src/lib/db";
@@ -49,7 +50,9 @@ async function reuseCurrentComposition(page: Page) {
     .getByRole("button", { name: "Add saved composition", exact: true })
     .click();
 }
-const evidence = process.env.SC02_EVIDENCE_DIR ?? "Development_Docs/Projects/Project_Parallax/evidence/sc02/product";
+const evidence =
+  process.env.SC02_EVIDENCE_DIR ??
+  `artifacts/parallax-a1/sc02/${process.env.PARALLAX_A1_SOURCE_SHA?.slice(0, 12) ?? "unbound"}`;
 
 test("SC-02 Creator places real assets, edits a light, saves and reuses a composition, then reloads the same Scene", async ({
   page,
@@ -75,7 +78,7 @@ test("SC-02 Creator places real assets, edits a light, saves and reuses a compos
       .filter({ has: page.getByText("EDITING SCENE", { exact: true }) })
       .locator("strong"),
   ).toHaveText("Desk Map");
-  await page.getByLabel("Workspace layout").selectOption("CONSTRUCTION");
+  await page.getByLabel("Workspace layout", { exact: true }).selectOption("CONSTRUCTION");
   const canvas = page.locator('[data-renderer="READY"] canvas'),
     instrument = page.locator('[data-renderer="READY"]');
   await expect(canvas).toBeVisible();
@@ -115,7 +118,7 @@ test("SC-02 Creator places real assets, edits a light, saves and reuses a compos
   await page.getByRole("spinbutton", { name: "Light intensity numeric value", exact: true }).fill("22");
   await page.getByRole("spinbutton", { name: "Light intensity numeric value", exact: true }).blur();
   await reuseCurrentComposition(page);
-  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await saveCurrentWorkingDraft(page);
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
   const definition = new URL(page.url()).searchParams.get("definition")!;
   const saved = (await listSpatialItems(account.id)).find((i) => i.id === definition)!.draft;
@@ -152,7 +155,7 @@ test("SC-02 Creator places real assets, edits a light, saves and reuses a compos
     await page.screenshot({ path: `${evidence}/composition-${theme.toLowerCase()}.png`, fullPage: true });
   }
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.getByLabel("Workspace layout").selectOption("SPATIAL");
+  await page.getByLabel("Workspace layout", { exact: true }).selectOption("SPATIAL");
   const resetLayout = page.getByRole("button", { name: "Reset Workspace Layout", exact: true });
   const resetBox = await resetLayout.boundingBox();
   expect(resetBox!.x + resetBox!.width).toBeLessThanOrEqual(390);
@@ -532,7 +535,9 @@ test("SC-02 Creator authors and reuses elements with native keyboard navigation 
       .getByRole("button", { name: "Add saved composition", exact: true }),
     "Insert saved composition",
   );
-  await activate(page.getByRole("button", { name: "Save draft", exact: true }), "Save draft");
+  await tabTo(page.getByRole("button", { name: "Save to Library", exact: true }), "Scene header actions");
+  await page.keyboard.press("Shift+F10");
+  await activate(page.getByRole("menuitem", { name: "Save draft", exact: true }), "Save draft");
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
   const definition = new URL(page.url()).searchParams.get("definition")!;
   const saved = (await listSpatialItems(account.id)).find((i) => i.id === definition)!.draft;
@@ -628,7 +633,7 @@ test("SC-02 preserves a failed save and recovers audio from unavailable and Guid
     } else await route.continue();
   });
   await addCurrentPreset(page, "Spatial ambience");
-  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await saveCurrentWorkingDraft(page);
   const saveAlert = page.getByRole("main").getByRole("alert");
   await expect(saveAlert).toContainText("Synthetic save unavailable");
   await page.screenshot({ path: `${evidence}/recovery-save-unavailable.png`, fullPage: true });
@@ -719,7 +724,7 @@ test("SC-02 measures a composed Scene and reclaims temporary model resources", a
   await page.getByRole("button", { name: "Play timeline", exact: true }).click();
   const observations = [];
   for (const quality of ["LOW", "MEDIUM", "HIGH"]) {
-    await page.getByLabel("Renderer quality").selectOption(quality);
+    await page.getByLabel("Preview quality", { exact: true }).selectOption(quality);
     await expect
       .poll(async () => JSON.parse((await instrument.getAttribute("data-performance"))!).quality)
       .toBe(quality);

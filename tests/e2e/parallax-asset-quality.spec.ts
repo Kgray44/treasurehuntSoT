@@ -1,6 +1,8 @@
 import {
-  openOwnedSceneFromCurrentLibrary,
   closeCurrentLibrary,
+  openCurrentLibraryCategory,
+  openCurrentScenePublication,
+  openOwnedSceneFromCurrentLibrary,
   saveCurrentWorkingDraft,
 } from "./fixtures/parallax-current-library";
 import { test, expect } from "@playwright/test";
@@ -83,7 +85,6 @@ test("Creator inspects representative actual asset materials at useful distances
     const host = canvas.locator('[data-renderer="READY"]');
     await expect(host).toHaveAttribute("data-appearance", theme.toLowerCase());
     await expect(host).toHaveAttribute("data-rendered", "true");
-    await page.getByRole("button", { name: "Collapse left dock", exact: true }).click();
     await canvas.getByRole("button", { name: "Reset view", exact: true }).click();
     await page.screenshot({ path: `${root}/asset-quality-room-${theme.toLowerCase()}.png` });
     const receipts = async () => JSON.parse((await host.getAttribute("data-scene-receipt"))!) as RendererReceipt[];
@@ -214,7 +215,7 @@ test("Creator duplicates and reuses a right boot without changing its rendered h
   await page.screenshot({ path: `${root}/asset-quality-right-boot-duplicated.png` });
   await canvas.getByRole("button", { name: "Edit selected object", exact: true }).click();
   const inspector = page.getByRole("complementary", { name: "Spatial inspector", exact: true });
-  await inspector.getByText("Library, reuse & publication", { exact: true }).click();
+  await openCurrentScenePublication(page);
   await inspector.getByLabel("Asset name", { exact: true }).fill("Reusable right boot");
   await inspector.getByLabel("Asset description", { exact: true }).fill("A right boot retaining its silhouette.");
   await inspector.getByLabel("Asset classification", { exact: true }).fill("Footprint");
@@ -225,9 +226,12 @@ test("Creator duplicates and reuses a right boot without changing its rendered h
   expect(await current()).toEqual(duplicated);
   const definition = (await records()).find((item) => item.draft.content.studio?.libraryDefinition)!;
   const releaseChecksum = definition.releases[0].checksum;
-  await page
-    .getByRole("article", { name: "Reusable object: Reusable right boot", exact: true })
-    .getByRole("button", { name: "Add to current scene", exact: true })
+  const assetLibrary = await openCurrentLibraryCategory(page, "Assets", "MY_CREATIONS", "SAVED");
+  await assetLibrary.getByRole("searchbox").fill("Reusable right boot");
+  await assetLibrary.getByRole("button", { name: "Inspect Reusable right boot", exact: true }).click();
+  await assetLibrary
+    .getByRole("complementary", { name: "Reusable right boot details", exact: true })
+    .getByRole("button", { name: "Place in Scene", exact: true })
     .click();
   await expect(page.getByRole("status")).toHaveText(
     "Independent asset copy added and saved; its definition is unchanged",

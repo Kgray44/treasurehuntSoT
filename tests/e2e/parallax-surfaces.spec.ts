@@ -1,3 +1,8 @@
+import {
+  closeCurrentLibrary,
+  openOwnedSceneFromCurrentLibrary,
+  saveCurrentWorkingDraft,
+} from "./fixtures/parallax-current-library";
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { mkdir } from "node:fs/promises";
@@ -57,7 +62,7 @@ test("Creator snaps a clue to both walls, table and entire floor with orientatio
   ] as const) {
     await canvas.getByRole("button", { name: label, exact: true }).click();
     await expect(canvas).toContainText("snapped and aligned");
-    await page.getByRole("button", { name: "Save draft", exact: true }).click();
+    await saveCurrentWorkingDraft(page);
     await expect(page.getByRole("status")).toHaveText("Working draft saved");
     const current = (await listSpatialItems(account.id))[0].draft;
     const pose = previewEntityTransform(current.content, current.content.entities[0].id);
@@ -71,7 +76,7 @@ test("Creator snaps a clue to both walls, table and entire floor with orientatio
   const saved = (await listSpatialItems(account.id))[0];
   await page.getByRole("button", { name: "Undo", exact: true }).first().click();
   await page.getByRole("button", { name: "Redo", exact: true }).first().click();
-  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await saveCurrentWorkingDraft(page);
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
   expect((await listSpatialItems(account.id))[0].draft).toEqual(saved.draft);
   await page.reload();
@@ -122,15 +127,21 @@ test("Hidden Wall Message retains wall intent when automatic placement is enable
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/studio/library");
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
-  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-  await page.getByRole("button", { name: /Hidden Wall Message.*My Library/ }).click();
-  await expect(page.getByRole("heading", { name: "Hidden Wall Message", level: 1 })).toBeVisible();
-  await page.getByText("Spatial Placement & grouping", { exact: true }).click();
+  await openOwnedSceneFromCurrentLibrary(page, {
+    definitionId: draft.content.definitionId,
+    title: draft.content.title,
+    state: "WORKING",
+  });
+  await closeCurrentLibrary(page);
+  await expect(page.getByRole("region", { name: "Environment and Scene", exact: true })).toContainText(
+    "Hidden Wall Message",
+  );
+  await page.getByRole("button", { name: "Open spatial context", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Manual placement", exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Author remotely", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Automatic placement", exact: true })).toBeVisible();
   await expect(page.getByLabel("Semantic surface")).toHaveValue("WALL");
-  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await saveCurrentWorkingDraft(page);
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
   const wall = (await listSpatialItems(account.id))[0].draft;
   expect(
@@ -144,7 +155,7 @@ test("Hidden Wall Message retains wall intent when automatic placement is enable
     .getByRole("button", { name: "table left", exact: true })
     .click();
   await expect(page.getByLabel("Semantic surface")).toHaveValue("TABLE");
-  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await saveCurrentWorkingDraft(page);
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
   const table = (await listSpatialItems(account.id))[0].draft;
   const resolved = Object.values(

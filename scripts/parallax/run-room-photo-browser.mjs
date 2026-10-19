@@ -1,5 +1,6 @@
 // Bounded development-only photo journey. This is not protected production browser qualification.
-import { execFileSync, spawn } from "node:child_process";
+import { execFileSync } from "node:child_process";
+import { spawnOwnedProcess, processExit, stopOwnedProcess } from "../sounding-line/owned-process.mjs";
 import { createHash, randomUUID } from "node:crypto";
 import {
   mkdirSync,
@@ -80,12 +81,14 @@ for (const args of [
 ])
   execFileSync(process.execPath, args, { cwd: root, env, stdio: "inherit", windowsHide: true });
 const startedAt = new Date().toISOString();
-const server = spawn(
+const server = spawnOwnedProcess(
   process.execPath,
   ["node_modules/next/dist/bin/next", "dev", "-H", "127.0.0.1", "-p", String(port)],
-  { cwd: root, env, stdio: "inherit", windowsHide: true },
+  { root, env },
 );
 let exitCode = 1;
+let browser;
+let cleanup;
 try {
   const deadline = Date.now() + 120000;
   for (;;) {
@@ -98,19 +101,30 @@ try {
     if (Date.now() > deadline) throw new Error("Owned development server readiness timed out");
     await new Promise((resolve) => setTimeout(resolve, 500));
   }
-  const browser = spawn(
+  browser = spawnOwnedProcess(
     process.execPath,
     ["node_modules/@playwright/test/cli.js", "test", ...tests, "--project", "chromium", "--output", resultRoot],
-    { cwd: root, env, stdio: "inherit", windowsHide: true },
+    { root, env },
   );
-  exitCode = await new Promise((resolve, reject) => {
-    browser.once("error", reject);
-    browser.once("exit", (code) => resolve(code ?? 1));
-  });
+  exitCode = (await processExit(browser)).code ?? 1;
 } finally {
-  if (process.platform === "win32")
-    execFileSync("taskkill", ["/PID", String(server.pid), "/T", "/F"], { windowsHide: true, stdio: "ignore" });
-  else server.kill("SIGTERM");
+  const browserCleanup = await stopOwnedProcess(browser);
+  const serverCleanup = await stopOwnedProcess(server);
+  const portReleased = await new Promise((resolve) => {
+    const probe = createServer();
+    probe.once("error", () => resolve(false));
+    probe.listen(port, "127.0.0.1", () => probe.close((error) => resolve(!error)));
+  });
+  cleanup = {
+    status:
+      [browserCleanup, serverCleanup].every((receipt) => ["PASS", "NOT_STARTED"].includes(receipt.status)) &&
+      portReleased
+        ? "PASS"
+        : "FAIL",
+    browser: browserCleanup,
+    server: serverCleanup,
+    portReleased,
+  };
   if (!path.resolve(privateRoot).startsWith(path.resolve(tmpdir()) + path.sep))
     throw new Error("Unsafe private fixture cleanup");
   rmSync(privateRoot, { recursive: true });
@@ -140,6 +154,7 @@ try {
         finishedAt: new Date().toISOString(),
         exitCode,
         sourceBinding: unchanged ? "VALID" : "INVALIDATED",
+        cleanup,
         recordings,
       },
       null,
@@ -147,5 +162,6 @@ try {
     ),
   );
   if (!unchanged) throw new Error("Source changed during photo capture");
+  if (cleanup.status !== "PASS") throw new Error("Owned development runtime cleanup failed");
 }
 process.exitCode = exitCode;

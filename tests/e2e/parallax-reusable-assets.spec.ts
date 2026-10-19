@@ -1,3 +1,9 @@
+import {
+  closeCurrentLibrary,
+  openCurrentLibraryCategory,
+  openCurrentScenePublication,
+  openOwnedSceneFromCurrentLibrary,
+} from "./fixtures/parallax-current-library";
 import { test, expect } from "@playwright/test";
 import { mkdir } from "node:fs/promises";
 import { db } from "../../src/lib/db";
@@ -30,11 +36,15 @@ test("Creator saves and reuses a versioned object, edits only its instance, relo
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/studio/library");
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
-  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-  await page.getByRole("button", { name: "Compass source scene", exact: true }).click();
+  await openOwnedSceneFromCurrentLibrary(page, {
+    definitionId: source.content.definitionId,
+    title: source.content.title,
+    state: "SAVED",
+  });
+  await closeCurrentLibrary(page);
   const inspector = page.getByRole("complementary", { name: "Spatial inspector", exact: true });
   if (await inspector.isHidden()) await page.getByRole("button", { name: "Inspector", exact: true }).click();
-  await inspector.getByText("Library, reuse & publication", { exact: true }).click();
+  await openCurrentScenePublication(page);
   await inspector.getByLabel("Asset name", { exact: true }).fill("Captain navigation compass");
   await inspector
     .getByLabel("Asset description", { exact: true })
@@ -49,19 +59,27 @@ test("Creator saves and reuses a versioned object, edits only its instance, relo
   expect(asset.releases).toHaveLength(1);
   expect(records.find((i) => i.id === source.content.definitionId)!.draft).toEqual(source);
   const pin = asset.releases[0].checksum;
-  const card = page.getByRole("article", { name: "Asset: Captain navigation compass", exact: true });
+  const library = await openCurrentLibraryCategory(page, "Assets", "MY_CREATIONS", "SAVED");
+  await library.getByRole("searchbox").fill("Captain navigation compass");
+  const assetInspect = library.getByRole("button", { name: "Inspect Captain navigation compass", exact: true });
+  const card = library.getByRole("article").filter({ has: assetInspect });
   await expect(card).toContainText("Navigation clue");
   await expect(card.getByRole("img")).toBeVisible();
   await mkdir(root, { recursive: true });
   await page.screenshot({ path: `${root}/library-object-definition.png` });
-  await page.getByRole("button", { name: "Actions for Compass source scene", exact: true }).click();
-  await page.getByRole("menuitem", { name: "Save as new…", exact: true }).click();
+  await page.getByRole("button", { name: "Save as new…", exact: true }).click();
   const copy = page.getByRole("dialog", { name: "Save as new definition", exact: true });
   await copy.getByLabel("Name", { exact: true }).fill("Compass source scene copy");
   await copy.getByRole("button", { name: "Create independent definition", exact: true }).click();
   await expect(copy).not.toBeVisible();
-  await card.getByRole("button", { name: "Use in current scene", exact: true }).click();
-  await expect(page.getByRole("status")).toHaveText("Independent pinned copy added");
+  await assetInspect.click();
+  await library
+    .getByRole("complementary", { name: "Captain navigation compass details", exact: true })
+    .getByRole("button", { name: "Place in Scene", exact: true })
+    .click();
+  await expect(page.getByRole("status")).toHaveText(
+    "Independent asset copy added and saved; its definition is unchanged",
+  );
   const targetId = new URL(page.url()).searchParams.get("definition")!;
   const target = async () => (await listSpatialItems(account.id)).find((i) => i.id === targetId)!.draft;
   expect(targetId).not.toBe(source.content.definitionId);
@@ -73,11 +91,7 @@ test("Creator saves and reuses a versioned object, edits only its instance, relo
   await page.getByRole("button", { name: "Redo", exact: true }).click();
   await page.getByRole("button", { name: "Save to Library", exact: true }).click();
   await expect.poll(async () => (await target()).content.entities.length).toBe(2);
-  const overview = inspector
-    .locator("details")
-    .filter({ has: page.locator("summary", { hasText: /^Overview \/ Identity$/ }) });
-  if (!(await overview.evaluate((element) => (element as HTMLDetailsElement).open)))
-    await overview.locator("summary").click();
+  await page.getByRole("button", { name: "Open object properties", exact: true }).click();
   await inspector.getByLabel("Object name", { exact: true }).fill("Local navigation clue");
   await page.getByRole("button", { name: "Save to Library", exact: true }).click();
   await expect
@@ -98,21 +112,29 @@ test("Creator saves and reuses a versioned object, edits only its instance, relo
   await page.reload();
   await expect(host.locator("canvas")).toBeVisible();
   expect(await target()).toEqual(saved);
-  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-  await page.getByLabel("Library type", { exact: true }).selectOption("ASSET");
+  await openCurrentLibraryCategory(page, "Assets", "MY_CREATIONS", "SAVED");
+  await library.getByRole("searchbox").fill("Captain navigation compass");
   await expect(card).toBeVisible();
-  await card.getByRole("button", { name: /^Captain navigation compass/ }).click();
+  await assetInspect.click();
+  await library
+    .getByRole("complementary", { name: "Captain navigation compass details", exact: true })
+    .getByRole("button", { name: "Open original", exact: true })
+    .click();
   await expect
     .poll(async () => (await receipt()).find((r) => r.id === asset.draft.content.entities[0].id)?.status)
     .toBe("IN_VIEW");
   await page.getByRole("button", { name: "Collapse left dock", exact: true }).click();
   await page.screenshot({ path: `${root}/library-open-definition.png` });
-  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-  await page.getByLabel("Library type", { exact: true }).selectOption("SCENE");
-  await page.getByRole("button", { name: /^Compass source scene copy/ }).click();
-  await page.getByLabel("Library type", { exact: true }).selectOption("ASSET");
-  await card.getByRole("button", { name: "Actions for Captain navigation compass", exact: true }).click();
+  await openOwnedSceneFromCurrentLibrary(page, {
+    definitionId: targetId,
+    title: "Compass source scene copy",
+    state: "SAVED",
+  });
+  await openCurrentLibraryCategory(page, "Assets", "MY_CREATIONS", "SAVED");
+  await library.getByRole("searchbox").fill("Captain navigation compass");
+  await assetInspect.click({ button: "right" });
   await page.getByRole("menuitem", { name: "Archive", exact: true }).click();
+  await library.getByRole("button", { name: "Archive item", exact: true }).click();
   await expect(card).toHaveCount(0);
   expect((await listSpatialItems(account.id)).some((i) => i.id === asset.id)).toBe(false);
   expect((await listSpatialItems(account.id)).find((i) => i.id === targetId)!.draft).toEqual(saved);

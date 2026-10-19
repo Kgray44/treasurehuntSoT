@@ -1,3 +1,4 @@
+import { openCurrentScenePublication } from "./fixtures/parallax-current-library";
 import { test, expect } from "@playwright/test";
 import { randomUUID } from "node:crypto";
 import { mkdir, writeFile } from "node:fs/promises";
@@ -106,7 +107,7 @@ test("a large saved-Scene catalog remains searchable and paged in the actual Stu
   }
   expect(selectedReads).toEqual([`saved:${firstId}`]);
   await page.getByRole("button", { name: "Open scene settings", exact: true }).click();
-  await page.getByText("Library, reuse & publication", { exact: true }).click();
+  await openCurrentScenePublication(page);
   const historicalVersion = page.getByRole("button", { name: "v1.0.0 · 1 objects", exact: true });
   await expect(historicalVersion).toBeVisible();
   await historicalVersion.click();

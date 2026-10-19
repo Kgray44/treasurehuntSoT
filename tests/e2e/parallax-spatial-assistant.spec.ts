@@ -1,3 +1,4 @@
+import { openCurrentScenePublication, saveCurrentWorkingDraft } from "./fixtures/parallax-current-library";
 import { test, expect, type Page } from "@playwright/test";
 import { randomUUID } from "node:crypto";
 import { mkdir, writeFile } from "node:fs/promises";
@@ -223,7 +224,7 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
   await expect(mapButton).toHaveCount(0);
   await assistant.getByRole("button", { name: "Redo", exact: true }).click();
   await expect(mapButton).toBeVisible();
-  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await saveCurrentWorkingDraft(page);
   await expect
     .poll(async () => (await ownedWorking(account.id, request.draft.content.definitionId)).draft)
     .toEqual(expected);
@@ -249,7 +250,7 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
     widthMeters: 0.45,
   });
   await page.getByRole("button", { name: "Close assistance", exact: true }).click();
-  await page.getByText("Library, reuse & publication", { exact: true }).click();
+  await openCurrentScenePublication(page);
   await page.getByRole("button", { name: "Save to Spatial Library", exact: true }).click();
   await page.getByText("Scene actions", { exact: true }).click();
   await page.getByRole("button", { name: "Validate in Drydock", exact: true }).click();
@@ -268,8 +269,7 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
   );
   await expect(page.getByLabel("Clue or message")).toHaveValue("Follow the northern harbor bearing.");
   await page.getByRole("combobox", { name: "Workspace layout", exact: true }).selectOption("SPATIAL");
-  const library = page.getByText("Library, reuse & publication", { exact: true });
-  if ((await library.locator("..").getAttribute("open")) === null) await library.click();
+  await openCurrentScenePublication(page);
   await page.getByRole("button", { name: /v1.0.0 · 2 objects/ }).click();
   await expect(page.getByText(`Pinned ${pin.slice(0, 16)}…`, { exact: true })).toBeVisible();
   expect({

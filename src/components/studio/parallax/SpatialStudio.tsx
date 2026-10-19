@@ -225,7 +225,12 @@ export function SpatialStudio({
   const [groupDialog, setGroupDialog] = useState<{ group: EditingGroup; creating: boolean } | null>(null);
   const [sceneQuery, setSceneQuery] = useState(""),
     [status, setStatus] = useState("Opening Spatial Studio…"),
-    [error, setError] = useState("");
+    [error, setErrorMessage] = useState("");
+  const [errorRecovery, setErrorRecovery] = useState<"SAVE" | "PLACEMENT">("SAVE");
+  const setError = useCallback((message: string) => {
+    setErrorMessage(message);
+    setErrorRecovery("SAVE");
+  }, []);
   const [busy, setBusy] = useState(false);
   const [savedSceneSnapshot, setSavedSceneSnapshot] = useState("");
   const [sceneManagerOpen, setSceneManagerOpen] = useState(false);
@@ -300,22 +305,25 @@ export function SpatialStudio({
   const [assistantHighlights, setAssistantHighlights] = useState<readonly string[]>([]);
   const [roomEditing, writeRoomEditing] = useState(false);
   const roomEditingRef = useRef(false);
-  const setRoomEditing = useCallback((enabled: boolean) => {
-    if (enabled && draftRef.current?.content.environment) {
-      setError(
-        "This Scene uses an immutable Environment version. Choose Edit environment to create an independent editable copy.",
-      );
-      writeRoomEditing(false);
-      return;
-    }
-    if (roomEditingRef.current !== enabled) {
-      roomEditingRef.current = enabled;
-      generation.current++;
-      setEditorGeneration(generation.current);
-      setAssistantScenePreview(null);
-    }
-    writeRoomEditing(enabled);
-  }, []);
+  const setRoomEditing = useCallback(
+    (enabled: boolean) => {
+      if (enabled && draftRef.current?.content.environment) {
+        setError(
+          "This Scene uses an immutable Environment version. Choose Edit environment to create an independent editable copy.",
+        );
+        writeRoomEditing(false);
+        return;
+      }
+      if (roomEditingRef.current !== enabled) {
+        roomEditingRef.current = enabled;
+        generation.current++;
+        setEditorGeneration(generation.current);
+        setAssistantScenePreview(null);
+      }
+      writeRoomEditing(enabled);
+    },
+    [setError],
+  );
   const setSelected = useCallback(
     (id: string | null) => {
       setInspectorTransformPreview(null);
@@ -909,7 +917,7 @@ export function SpatialStudio({
       setTimeMs(0);
       setInputs(initialSpatialInputs());
     },
-    [entityId, writeHistory, setSelected],
+    [entityId, writeHistory, setSelected, setError],
   );
   const load = useCallback(
     async (selectedDefinitionId?: string, firstAvailable = false) => {
@@ -1077,7 +1085,18 @@ export function SpatialStudio({
     return () => {
       cancelled = true;
     };
-  }, [load, install, definitionId, chronicleId, blockId, environmentDefinitionId, libraryEntryId, api, setLayout]);
+  }, [
+    load,
+    install,
+    definitionId,
+    chronicleId,
+    blockId,
+    environmentDefinitionId,
+    libraryEntryId,
+    api,
+    setLayout,
+    setError,
+  ]);
   useEffect(() => {
     if (!draft || !loaded || environmentRecord || legacyEnvironmentRecord || recovery) return;
     if (savedJson.current !== JSON.stringify(draft))
@@ -1091,7 +1110,7 @@ export function SpatialStudio({
       800,
     );
     return () => clearTimeout(timer);
-  }, [draft, loaded, persist, environmentRecord, legacyEnvironmentRecord, recovery]);
+  }, [draft, loaded, persist, environmentRecord, legacyEnvironmentRecord, recovery, setError]);
   useEffect(() => {
     const warn = (event: BeforeUnloadEvent) => {
       if (draftRef.current && savedJson.current !== JSON.stringify(draftRef.current)) event.preventDefault();
@@ -1134,6 +1153,7 @@ export function SpatialStudio({
   };
   const addPreset = (name: string, placement?: { position: Transform["position"]; surfaceId: string }) => {
     if (!draft || busy) return false;
+    setError("");
     try {
       if (previewEnvironmentError) throw new Error(previewEnvironmentError);
       if (name === "Exclusion Zone") {
@@ -1180,6 +1200,7 @@ export function SpatialStudio({
       return true;
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Asset could not be added.");
+      setErrorRecovery("PLACEMENT");
       return false;
     }
   };
@@ -2422,6 +2443,25 @@ export function SpatialStudio({
         </button>
       </main>
     );
+  const headerMenuActions: StudioMenuAction[] = [
+    { label: "Save draft", icon: "save", disabled: busy, run: () => void action(persist) },
+    {
+      label: "New scene",
+      icon: "plus",
+      disabled: busy,
+      run: () => {
+        if (spatialLibraryKind(draft) === "SCENES") setSceneManagerOpen(true);
+        else
+          void action(async () => {
+            await persist();
+            install(fresh(chronicleId), 0, false);
+            setSceneManagerOpen(true);
+          });
+      },
+    },
+    { label: "Open saved scenes", icon: "inspect", run: () => openLeftTab("SAVED") },
+    { label: "Reset workspace layout", icon: "reset", run: resetWorkspace },
+  ];
   return (
     <main
       ref={studioElement}
@@ -2463,27 +2503,8 @@ export function SpatialStudio({
       <header
         className={styles.header}
         tabIndex={-1}
-        onContextMenu={(event) =>
-          contextMenu.open(event, draft.content.title, [
-            { label: "Save draft", icon: "save", disabled: busy, run: () => void action(persist) },
-            {
-              label: "New scene",
-              icon: "plus",
-              disabled: busy,
-              run: () => {
-                if (spatialLibraryKind(draft) === "SCENES") setSceneManagerOpen(true);
-                else
-                  void action(async () => {
-                    await persist();
-                    install(fresh(chronicleId), 0, false);
-                    setSceneManagerOpen(true);
-                  });
-              },
-            },
-            { label: "Open saved scenes", icon: "inspect", run: () => openLeftTab("SAVED") },
-            { label: "Reset workspace layout", icon: "reset", run: resetWorkspace },
-          ])
-        }
+        onContextMenu={(event) => contextMenu.open(event, draft.content.title, headerMenuActions)}
+        onKeyDown={(event) => contextMenu.open(event, draft.content.title, headerMenuActions)}
       >
         <div>
           <Link
@@ -2755,26 +2776,43 @@ export function SpatialStudio({
       {error && (
         <div role="alert" className={styles.error}>
           {error}
-          <button disabled={busy} onClick={() => void action(persist)}>
-            Retry save
-          </button>
-          <button
-            onClick={() =>
-              void action(async () => {
-                const data = await load();
-                const current = data.items.find((e) => e.id === draft.content.definitionId);
-                if (current)
-                  setRecovery({
-                    document: draft,
-                    revision: revision.current,
-                    at: new Date().toISOString(),
-                    server: current,
-                  });
-              })
-            }
-          >
-            Review saved revision
-          </button>
+          {errorRecovery === "PLACEMENT" ? (
+            <>
+              <p>Choose another asset or adjust the room layout before trying again.</p>
+              <button
+                onClick={() => {
+                  setError("");
+                  startRoomEditing();
+                }}
+              >
+                Edit room layout
+              </button>
+              <button onClick={() => setError("")}>Dismiss</button>
+            </>
+          ) : (
+            <>
+              <button disabled={busy} onClick={() => void action(persist)}>
+                Retry save
+              </button>
+              <button
+                onClick={() =>
+                  void action(async () => {
+                    const data = await load();
+                    const current = data.items.find((e) => e.id === draft.content.definitionId);
+                    if (current)
+                      setRecovery({
+                        document: draft,
+                        revision: revision.current,
+                        at: new Date().toISOString(),
+                        server: current,
+                      });
+                  })
+                }
+              >
+                Review saved revision
+              </button>
+            </>
+          )}
         </div>
       )}
       <nav className={styles.workstationNavigation} aria-label="Workstation panels">

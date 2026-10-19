@@ -239,7 +239,7 @@ test("Inspector text preserves spaces and newlines, and room membership requires
   await saveSpatialDraft(account.id, draft, 0);
   await authenticateClosure(context, account, baseURL!);
   await open(page, draft.content.title, draft.content.definitionId);
-  await page.getByRole("button", { name: "Open contextual Inspector", exact: true }).click();
+  await page.getByRole("button", { name: "Open object properties", exact: true }).click();
   const message = page.getByRole("textbox", { name: "Clue or message", exact: true });
   await message.fill("");
   await message.pressSequentially("Find the old pirate note ");

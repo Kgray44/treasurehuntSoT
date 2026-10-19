@@ -132,6 +132,29 @@ test("Creator edits, renders, scrubs, plays and reloads real object keyframes, t
   await page.getByRole("tab", { name: "Timeline", exact: true }).click();
   await page.getByLabel("Timeline visible duration").selectOption("10000");
   await page.screenshot({ path: `${root}/animation-reloaded-zoom.png` });
+  for (const viewport of [
+    { width: 1440, height: 1000 },
+    { width: 1280, height: 800 },
+  ]) {
+    await page.setViewportSize(viewport);
+    const canvasRegion = page.getByRole("region", { name: "Spatial canvas", exact: true });
+    const controls = canvasRegion
+      .getByRole("toolbar", { name: "Spatial editing tools", exact: true })
+      .getByRole("button");
+    await expect(controls).toHaveCount(7);
+    const regionBounds = (await canvasRegion.boundingBox())!;
+    const rendererBounds = (await host.locator("canvas").boundingBox())!;
+    for (const button of await controls.all()) {
+      await expect(button).toBeInViewport();
+      const bounds = (await button.boundingBox())!;
+      expect(bounds.x).toBeGreaterThanOrEqual(regionBounds.x);
+      expect(bounds.y).toBeGreaterThanOrEqual(regionBounds.y);
+      expect(bounds.x + bounds.width).toBeLessThanOrEqual(regionBounds.x + regionBounds.width);
+      expect(bounds.y + bounds.height).toBeLessThanOrEqual(rendererBounds.y + rendererBounds.height);
+    }
+    await page.screenshot({ path: `${root}/toolbar-expanded-desktop-${viewport.width}x${viewport.height}.png` });
+  }
+  await page.setViewportSize({ width: 1440, height: 1000 });
   await page.setViewportSize({ width: 390, height: 844 });
   await expect
     .poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), { timeout: 3000 })
