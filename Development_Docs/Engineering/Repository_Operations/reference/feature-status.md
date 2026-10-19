@@ -14,7 +14,7 @@ The [2026-10-19 continuation](../../Sextant/Project_Sextant_Phase_4_Virtual_Comp
 adds focused corrections to native pause/revocation, expected-interruption
 recovery, compatible local attitude, late acknowledgements and truthful radio
 availability. It grants no completed-feature promotion or Phase 4 acceptance.
-The completed-history source checkpoint still requires 54 experience registrations,
+The Community-style source checkpoint has 178 affected surfaces and still requires 54 experience registrations,
 remaining consumer capture/review, normal iOS Device product proof and the
 separate D4/owner gates.
 Android WebView Device controls and paired Journal development cases pass;
@@ -26,8 +26,9 @@ The Captain Crew-label/editor-chrome repairs pass four-variant independent rende
 review. Authoring passes its settled drawer and loaded Sea Trials checks, but
 retains mobile publication-review/Sea Trials overflow. Community passes four
 variants but retains a Search-hover contrast finding; prior Guide cause remains
-unconfirmed. Historical completion/provenance passes three variants with a
-desktop replay landmark failure. Repaired-source proof and protected acceptance remain pending.
+unconfirmed. The historical completion/provenance successor passes four variants
+with clear review of visible content and incomplete lower Book/provenance captures.
+Repaired-source proof and protected acceptance remain pending.
 The bounded continuation passes 327 focused tests, 59 D0/D1 scenarios, Android
 OS idle/standby recovery and three selected iOS permission/geofence scenarios.
 Every receipt retains its actual source; none promotes the feature to accepted.

@@ -26,7 +26,8 @@ last_reviewed: 2026-10-19
 - The Journal's historical-volume notice uses a named section within the main
   reading task, preserving its read-only content and styling.
 - Creator publication review wraps release checksums and stage content within its
-  card. Sea Trials keeps its Scenario ledger and editor fields within narrow cards.
+  card. Sea Trials keeps its Scenario ledger and editor fields within narrow cards;
+  its Suite save row can wrap and its flexible title field can shrink.
 - The Captain Chronicle dashboard uses neutral Crew wording when its legacy label
   is absent. Creator actions and section navigation share one desktop sticky
   container below the application masthead; mobile keeps its compact section rail.

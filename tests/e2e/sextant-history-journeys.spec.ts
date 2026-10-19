@@ -170,6 +170,10 @@ for (const viewport of [
         );
         await expect(page).toHaveURL(new RegExp(`/passport/history/${record.id}$`));
         await passportCapture("history-detail");
+        const bookEntry = page.getByRole("link", { name: "Open private Voyage Book", exact: true });
+        await bookEntry.scrollIntoViewIfNeeded();
+        await expect(bookEntry).toBeInViewport();
+        await page.screenshot({ path: info.outputPath("history-detail-actions.png") });
         await measure(
           "Actual private Voyage Book",
           () => page.getByRole("link", { name: "Open private Voyage Book", exact: true }).click(),
@@ -179,6 +183,16 @@ for (const viewport of [
           passport.getByRole("button", { name: "Print this private Voyage Book", exact: true }),
         ).toBeVisible();
         await passportCapture("history-book");
+        for (const title of ["The journey you completed", "The people on this Voyage"]) {
+          const sectionHeading = page.getByRole("heading", { level: 3, name: title, exact: true });
+          await sectionHeading.scrollIntoViewIfNeeded();
+          await expect(sectionHeading).toBeInViewport();
+          await page.screenshot({
+            path: info.outputPath(
+              `history-book-${title === "The journey you completed" ? "source-history" : "crew"}.png`,
+            ),
+          });
+        }
         await page.getByRole("link", { name: "Back to Voyage Detail", exact: true }).click();
         const replayStarted = performance.now();
         await page.getByRole("link", { name: "Replay this Journey", exact: true }).click();
@@ -231,6 +245,12 @@ for (const viewport of [
           .getByRole("heading", { level: 1, name: "Artifact Provenance", exact: true })
           .scrollIntoViewIfNeeded();
         await page.screenshot({ path: info.outputPath("history-artifact-provenance.png") });
+        const authority = page.getByText("Authoritative grant evidence is on file for this personal record.", {
+          exact: true,
+        });
+        await authority.scrollIntoViewIfNeeded();
+        await expect(authority).toBeInViewport();
+        await page.screenshot({ path: info.outputPath("history-artifact-authority.png") });
         await page.getByRole("link", { name: "← Artifact Cabinet", exact: true }).click();
         await expect(page.getByRole("heading", { name: "Artifact Cabinet", exact: true })).toBeVisible();
         await page.getByRole("link", { name: "Personal Harbor", exact: true }).click();

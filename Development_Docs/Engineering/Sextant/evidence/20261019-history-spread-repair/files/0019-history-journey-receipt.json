@@ -1,0 +1,77 @@
+{
+  "source": {
+    "sourceSha": "08adc7effd0cc96c3456e13421fd5c106bae7978",
+    "sourceTree": "b5d92737f4a44394386671b956ce58d54ac93d19",
+    "dirty": false,
+    "sourceFingerprint": "6ee4d585ee7043a8c8e34f1ea3486a7295b7773ae50a9dd4956a57cb423ebd65"
+  },
+  "fixture": {
+    "ownerId": "sextant-resource-owner-history-1280-reduce",
+    "email": "sextant.resources-history-1280-reduce@example.test",
+    "displayName": "Synthetic Sextant Captain-history-1280-reduce",
+    "crewEmail": "sextant.crew-history-1280-reduce@example.test",
+    "crewAccountId": "sextant-resource-crew-history-1280-reduce",
+    "crewDisplayName": "Synthetic Sextant Crew-history-1280-reduce",
+    "voyageId": "sextant-resource-voyage-history-1280-reduce",
+    "taleId": "sextant-resource-chronicle-history-1280-reduce",
+    "versionId": "cmvfw3hfp001g0crwj2c2500d",
+    "playerVoyageId": "sextant-experience-voyage",
+    "title": "Synthetic Sextant remembered Voyage"
+  },
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "reducedMotion": "reduce",
+  "feedback": [
+    {
+      "task": "Narrative response and next action",
+      "elapsedMs": 238.65776299999925
+    },
+    {
+      "task": "Personal grant response and next action",
+      "elapsedMs": 341.5572699999975
+    },
+    {
+      "task": "Canonical Voyage completion and read-only feedback",
+      "elapsedMs": 236.19627200000104
+    },
+    {
+      "task": "Completed Your Voyages",
+      "elapsedMs": 291.12910199999897
+    },
+    {
+      "task": "Actual completed Voyage Detail",
+      "elapsedMs": 222.44266900000366
+    },
+    {
+      "task": "Actual private Voyage Book",
+      "elapsedMs": 150.78771399999823
+    },
+    {
+      "task": "Actual personal Artifact Cabinet",
+      "elapsedMs": 222.56526000000304
+    },
+    {
+      "task": "Actual personal provenance",
+      "elapsedMs": 171.36866100000043
+    }
+  ],
+  "replayOpeningMs": 441.0140339999998,
+  "completion": {
+    "sessionId": "sextant-resource-voyage-history-1280-reduce",
+    "eventCount": 15,
+    "actualPlayerPostAndCanonicalCompletion": true
+  },
+  "provenance": {
+    "historyRecordId": "cmvfw3i5a001z0cqox2pjpjps",
+    "artifactRecordId": "cmvfw3nbx00390cqob5q5r4mr",
+    "grantId": "c2215e1a-40f8-4a47-a197-af11f7b1b770",
+    "recipientPolicy": "ALL_ACTIVE_PLAYERS"
+  },
+  "noSeededHistoryCompletionOrReceipt": true,
+  "unchangedCompletedProgressAndEdition": true,
+  "unchangedIndependentActiveVoyage": true,
+  "protectedQualification": false,
+  "physicalEvidence": false
+}

@@ -170,6 +170,7 @@ for (const viewport of [
                       tag: child.tagName,
                       class: child.className.toString().slice(0, 120),
                       label: child.getAttribute("aria-label")?.slice(0, 80),
+                      section: child.closest("section[aria-label]")?.getAttribute("aria-label")?.slice(0, 80),
                       left: Math.round(childBox.left - box.left),
                       right: Math.round(childBox.right - box.right),
                       width: Math.round(childBox.width),

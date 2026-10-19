@@ -347,3 +347,30 @@ primary hover to the existing light-gold/ink pair, assert actual hovered glyph
 contrast and capture it. Capture lower detail outcomes, anonymous comment gating
 and the empty-result panel after ordinary scrolling because these were outside
 most prior viewports. Preserve original captures, timing budgets and assertions.
+
+The08adc authoring diagnostic39341788210 again fails both mobile bounds and
+identifies one103px bare button in the Scenario editor, with15px right overhang.
+An actual-component mock-JSON render with Arial isolates an unwrapped Scenario
+Suite save row (3px overhang); min-width0 on its flexible input plus row wrapping
+removes that isolated overflow. Apply only those two layout rules, retain all
+original bounds, and add nearest named-section metadata for any successor
+failure. This isolated font experiment is not exact-host16px or product acceptance;
+fresh production browser and independent image review remain required.
+
+History39341796252 passes all four with independent review clear in its24PNGs;
+the prior desktop landmark failure remains preserved. Most Book source history,
+Crew and personal-provenance authority lie below these captures. Add explicit
+post-measurement targets for Detail actions, Book source/people headings and the
+actual authority sentence, retaining original cover/header captures and all
+baseline/edition/grant assertions. This supplements visible proof without claiming
+the previous Book cover captures showed lower content.
+
+Community39341802638 again fails390normal with trusted SPAN/no-anchor clicks
+and zero Guide requests; reduced and desktop variants pass. The anchor's ::after
+stretches over its positioned card, so offscreen text rects alone do not imply
+replacement or an invalid hit area. Keep the same action and extend passive
+metadata only: client coordinates, at most4ancestor tags/classes, composed-path
+membership, at most4exact fixed-Guide anchors, owning-card rect, ::after geometry
+and pointer-events, scroll-root and viewport offsets. This discriminates overlays,
+card hit area and transition geometry without a delay/retry/forced click or
+speculative product change. Preserve all original failures and diagnostic budgets.

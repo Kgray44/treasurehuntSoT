@@ -696,3 +696,47 @@ verification remain required. All three runs report runtime tree/stream/port and
 transport cleanup passing; private encrypted originals remain outside Git with
 exact hashes/locations. Videos were hashed, not reviewed. These are development
 results, with no protected, native, physical or owner acceptance.
+
+At `08adc7effd0cc96c3456e13421fd5c106bae7978`, history run39341796252
+passes all four. Independent review checks all49hashes, all24PNGs and the frozen
+source/tree/fingerprint. Its32feedback timings meet3000ms, maximum1637.662678ms;
+separate replay opening reaches1080.727289ms. No new material issue is visible.
+The [52 originals](evidence/20261019-history-spread-repair/publication-index.json)
+retain both successful receipts and capture limits: Book heading/content images
+are effectively duplicate covers on mobile; most lower Detail actions, Book
+source sections and provenance authority are offscreen. Historical Captain is
+honestly Unavailable, with no populated-attribution proof. Two replay captures
+show readable page-turn fallback. The next source adds explicit ordinary scroll
+targets for Detail actions, Book source/people sections and the authority sentence.
+
+Authoring diagnostic39341788210 at the same source again passes desktop and
+fails both mobile cases. The [six-file original subset](evidence/20261019-authoring-node-diagnostic/publication-index.json)
+records a324px Scenario editor with one103px button extending15px beyond its
+right edge and16px scroll overflow. An isolated actual-component/CSS render
+with mock JSON and Arial reproduces3px overflow in the Suite save row; making
+its flexible input shrinkable and wrapping the row removes that local overflow.
+The narrow repair changes only those two rules and retains all bounds. It is
+source-reviewed clear; the isolated font result does not prove the exact hosted
+cause or product repair. Fresh production capture remains required.
+
+Community diagnostic39341802638 at the same source passes three variants. The
+390normal Guide case again fails. Its [six-file original subset](evidence/20261019-community-pointer-diagnostic/publication-index.json)
+now shows trusted pointerdown/up/click landing on a SPAN outside an anchor,
+defaultPrevented false and zero Guide requests/responses. The closed-over link
+remains connected/incoming and non-inert but reports y950 beyond the844px
+viewport at scrollY519. Reduced motion reaches the actual anchor, returns200
+and reports link y411/scrollY1058. Even a passing desktop capture reports the
+original observed node below its viewport, so node replacement or geometry
+interactions still require investigation; no exact scroll/product cause is
+inferred. This narrows the failure to activation before any detail request.
+All three runs report successful runtime tree/stream/port and transport cleanup.
+Videos are hashed, not viewed; private encrypted originals remain at exact owned
+locations with hashes, without decryption or budget changes.
+
+The [08adc frontier checkpoint](phase4-source-reconciliation-frontier-20261019.json)
+records178affected/55unregistered: adding the page renderer and Community
+stylesheet increases the affected inventory by two; only the new page renderer
+was declared there. The [d1dbe style checkpoint](phase4-source-reconciliation-community-style-20261019.json)
+then explicitly binds the actual hover stylesheet to its tested Community
+journey, yielding178affected/54unregistered. Neither checkpoint grants acceptance
+or replaces the historical141paths/13families or any earlier source receipt.

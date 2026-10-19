@@ -172,12 +172,23 @@ for (const viewport of [
                     const href = anchor ? new URL(anchor.href).pathname : "";
                     const box = expected.getBoundingClientRect();
                     const layer = expected.closest("[data-route-layer]");
+                    const cardBox = expected.closest("article.community-card")?.getBoundingClientRect();
+                    const pseudo = getComputedStyle(expected, "::after");
+                    const ancestry = [];
+                    for (let node = target; node && ancestry.length < 4; node = node.parentElement)
+                      ancestry.push({ tag: node.tagName, class: node.getAttribute("class")?.slice(0, 120) ?? "" });
                     events.push({
                       event: event.type,
                       phase,
                       trusted: event.isTrusted,
                       prevented: event.defaultPrevented,
                       targetTag: target?.tagName ?? "NONE",
+                      ancestry,
+                      originalAnchorInPath: event.composedPath().includes(expected),
+                      point:
+                        event instanceof MouseEvent
+                          ? { x: Math.round(event.clientX), y: Math.round(event.clientY) }
+                          : null,
                       anchor:
                         href === expectedPath
                           ? "EXPECTED_GUIDE"
@@ -188,6 +199,46 @@ for (const viewport of [
                               : "NONE",
                       pathname: location.pathname.startsWith("/community") ? location.pathname : "OUTSIDE_COMMUNITY",
                       scrollY: Math.round(scrollY),
+                      scrollRoot: Math.round(document.scrollingElement?.scrollTop ?? 0),
+                      viewport: {
+                        width: innerWidth,
+                        height: innerHeight,
+                        offsetTop: visualViewport?.offsetTop,
+                        offsetLeft: visualViewport?.offsetLeft,
+                      },
+                      cardRect: cardBox
+                        ? {
+                            x: Math.round(cardBox.x),
+                            y: Math.round(cardBox.y),
+                            width: Math.round(cardBox.width),
+                            height: Math.round(cardBox.height),
+                          }
+                        : null,
+                      pseudo: {
+                        position: pseudo.position,
+                        top: pseudo.top,
+                        right: pseudo.right,
+                        bottom: pseudo.bottom,
+                        left: pseudo.left,
+                        pointerEvents: pseudo.pointerEvents,
+                      },
+                      matchingAnchors: [...document.querySelectorAll<HTMLAnchorElement>(`a[href="${expectedPath}"]`)]
+                        .slice(0, 4)
+                        .map((link) => {
+                          const rect = link.getBoundingClientRect(),
+                            route = link.closest("[data-route-layer]");
+                          return {
+                            original: link === expected,
+                            connected: link.isConnected,
+                            inactive: Boolean(link.closest('[inert], [aria-hidden="true"]')),
+                            x: Math.round(rect.x),
+                            y: Math.round(rect.y),
+                            width: Math.round(rect.width),
+                            height: Math.round(rect.height),
+                            generation: route?.getAttribute("data-route-generation"),
+                            role: route?.getAttribute("data-route-role"),
+                          };
+                        }),
                       expectedRect: box
                         ? {
                             x: Math.round(box.x),

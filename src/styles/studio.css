@@ -1932,7 +1932,11 @@ html[data-voyage-theme="light"] .studio-no-editable-draft__details dt {
   justify-content: space-between;
 }
 .drydock-suite-panel input {
+  min-width: 0;
   flex: 1;
+}
+.drydock-suite-panel > div {
+  flex-wrap: wrap;
 }
 .drydock-suite-panel ul {
   display: grid;
