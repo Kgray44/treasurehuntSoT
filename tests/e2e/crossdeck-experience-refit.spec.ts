@@ -367,10 +367,11 @@ for (const motion of ["no-preference", "reduce"] as const)
         journal: { currentBlockId: voyage.nextId },
       });
       expect(continued.state.session.currentSequence).toBeGreaterThan(before.sequence);
-      const continuedHeading = p
-        .locator(":is(h1,h2,h3,h4,h5,h6):visible")
-        .filter({ hasText: /^Voyage complete$/ })
-        .first();
+      const currentReadablePage = p.locator(
+        '.main-journal-book [data-pageflip-role="primary"][data-pageflip-current="true"][data-pageflip-lifecycle="visible"], ' +
+          '.main-journal-book:is([data-pageflip-status="reduced"],[data-pageflip-status="fallback"]) > .reduced-page-stage > article[data-page-index]',
+      );
+      const continuedHeading = currentReadablePage.getByRole("heading", { name: "Voyage complete", exact: true });
       await expect(p.locator(".persistent-objective").getByText("Voyage complete", { exact: true })).toBeVisible();
       const returnToCurrentObjective = p.getByRole("button", { name: "Return to Current Objective", exact: true });
       await expect
@@ -378,6 +379,11 @@ for (const motion of ["no-preference", "reduce"] as const)
         .toBe(true);
       if (await returnToCurrentObjective.isVisible()) await returnToCurrentObjective.click();
       await expect(closeRestoredDrawer).toBeHidden();
+      await expect(p.locator("main.chronicle-journal-shell")).toHaveAttribute(
+        "data-page-flip-readiness",
+        /^(ready|fallback|reduced)$/u,
+      );
+      await expect(currentReadablePage).toHaveCount(1);
       await expect(continuedHeading).toBeVisible();
       await continuedHeading.scrollIntoViewIfNeeded();
       await expect(continuedHeading).toBeInViewport();
