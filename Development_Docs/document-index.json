@@ -3099,6 +3099,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-current-source-admission-20261019-r19/packet-verification.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-activation-review-20261015/activation-review.json",
       "record_type": "program-record",
       "status": "preserved",

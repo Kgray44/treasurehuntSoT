@@ -1,5 +1,5 @@
 ---
-title: Crossdeck R19 source-bound preparation and outstanding receipt gate
+title: Crossdeck R19 source-bound preparation and proposed installation
 audience: engineering
 status: current
 canonical_for: crossdeck-r19-source-bound-preparation
@@ -8,12 +8,13 @@ last_reviewed: 2026-10-19
 
 # Crossdeck R19 source-bound preparation
 
-This engineering checkpoint records local preparation of a finite successor to
+The original engineering checkpoint below records local preparation of a finite successor to
 the consumed R18 capture. It creates no active registry row, reservation, execution
 allowance, installation approval or product acceptance. The new reader sentinel
 requires its matching nineteenth record and cannot be installed alone as usable
 authority. The [ledger](historical-ledger.json) binds the public source and
-preserved history; the private repair review packet remains unreceived.
+preserved history. At that checkpoint the private repair review packet remained
+unreceived; the later authorized intake and its limits are recorded below.
 
 R18 [run 39192951399](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39192951399),
 attempt 1, remains a whole failure at base
@@ -132,3 +133,65 @@ with B1/B2 resolution, authenticated submission, all technical/ordinary/replay
 obligations, qualified seal and protected PR #721 landing. No consumer capture
 is authorized by this preparation. Downstream PR #722 and spatial acceptance
 remain held.
+
+## Authorized original packet intake and proposed installation
+
+The preceding paragraphs preserve the public checkpoint at local commit
+`7021fb8af238b0fe191a3220b46a0a0e2596732f`. They describe its original receipt
+gate and incomplete Windows triage as of that checkpoint. The owner subsequently
+authorized this exact private ZIP and destination, and directly supplied the
+original archive on 2026-10-19 after the Library route returned an invalid-token
+failure. Both that access failure and the original ZIP remain preserved privately.
+
+The [packet verification](packet-verification.json) records the actual intake:
+519,894 bytes, expected SHA256
+`a616ef0fde8ccdf42626a0f3cca1a3be92b838e77412dc77f710935945135667`, all
+27 members read with CRC verification, and all 26 manifest byte/hash bindings
+matched. Both source files equal the frozen Git blobs; all 2,556 original
+build-input pins independently match that same frozen source. No instruction
+from the archive was executed. Only this bounded verification summary and
+source/evidence hashes enter the repository; original private members remain
+outside Git.
+
+The original receipts record a 196.780-second production build, all three original
+registered browser cases passing in 134.911 seconds with zero retries, and the
+original normal DejaVu stress case passing in 58.071 seconds with zero retries.
+The original server cleanup receipt reports observed exit, reaped descendants
+and closed streams in 721ms. These are inspected original development receipts,
+not new executions or protected acceptance. Raw logs, screenshots, traces, font
+profile and environment bytes are outside the compact archive and were not
+inspected here. Their recorded hashes do not prove their content.
+
+Earlier same-CSS application observer receipts directly contain reading heights
+240.77883911132812 and 230.299072265625 pixels. The minimum margin over the
+unchanged 211-pixel threshold is 19.299072265625 pixels in that local DejaVu
+profile. The earlier normal whole wrapper journey later failed and remains
+failed; final default helper success supplies threshold-only evidence. No default
+numeric margin or hosted font/OS equivalence is established. The source and
+focused visual reviews retain their limited scopes, including lower-page
+occlusion and unproved scroll reachability. None completes whole review9 or
+resolves B1/B2 against future current contract media.
+
+The separate bounded Windows triage is now complete. Its original summary is
+SHA256 `30dbc8370710036e88dc5475a9b545461663f5fd3c33966eea6960dc5d6a2845`.
+The 97 remaining reported units comprise 96 detailed failures and one parent
+rollup: 65 unavailable-UID cases, 19 POSIX private-mode assumptions, ten symlink
+privilege units, two Linux path/report fixture cases and one existing Windows
+argument-splitting defect. Twelve matched representative cases reproduce on
+accepted main and the candidate with byte-identical twelve test files and sixteen
+runtime boundary modules. This is bounded causal triage, not a rerun of all 97
+or a passing whole policy result. No R19 defect was identified within that scope;
+the original 735-test nonaccepting result remains unchanged. Linux qualification
+and all original assertions remain mandatory. The unrelated Windows argument
+defect was not repaired in this authority amendment.
+
+Receipt intake clears only the missing packet gate. The proposed nineteenth
+record must retain the literal eighteen-row registry, seven reconciliations,
+1,360 pins, spent R18 reservation, blocked R17 review and original expiry. Its
+final overlay must bind these proof bytes and generated catalogs, and the actual
+maintenance/product composition must derive the source digest without injecting
+the pre-maintenance product digest. The unchanged default-loader plan and full
+26-file future publication projection must retain all required contracts,
+contexts, technical suites and obligation groups. Independent exact-candidate
+review, normal protected installer checks, merge and landed verification remain
+required before adoption. No consumer capture is included in this maintenance.

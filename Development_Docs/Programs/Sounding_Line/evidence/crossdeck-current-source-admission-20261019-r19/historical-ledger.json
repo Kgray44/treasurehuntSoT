@@ -945,5 +945,63 @@
     "newCapture": false,
     "qualification": false
   },
-  "newRegistryRecordCreatedMeaning": "Active maintenance registry is unchanged at eighteen records; separate local zero-cap fixtures are inert source calculations only."
+  "newRegistryRecordCreatedMeaning": "Active maintenance registry is unchanged at eighteen records; separate local zero-cap fixtures are inert source calculations only.",
+  "postCheckpoint": {
+    "status": "AUTHORIZED_ORIGINAL_PACKET_VERIFIED_PROPOSED_INSTALLATION_PENDING",
+    "observedAtUtc": "2026-10-19T14:22:33.173575+00:00",
+    "precedingFieldsAreHistoricalCheckpoint": {
+      "commit": "7021fb8af238b0fe191a3220b46a0a0e2596732f",
+      "tree": "b61648a266d3fcd065bc45869c6f6a433ec52073",
+      "ledgerSha256": "21f1f0ac819756f68f453290a9dfcebb798da205356b5dcd2dd3bcda410ca14c",
+      "dispositionSha256": "52b8f31041015754f528d180a3d2b5550cd4a1da320c36c2c746add7b7a910b4"
+    },
+    "packetVerification": {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-current-source-admission-20261019-r19/packet-verification.json",
+      "sha256": "d638e3ca9b285ea217ce28b4fdc4aeabc3761884de136eccfa74d65471ba8e64",
+      "bytes": 6104,
+      "archiveBytes": 519894,
+      "archiveSha256": "a616ef0fde8ccdf42626a0f3cca1a3be92b838e77412dc77f710935945135667",
+      "membersVerified": 27,
+      "manifestBindingsVerified": 26,
+      "buildInputPinsVerified": 2556,
+      "privateOriginalsRemainOutsideGit": true,
+      "originalDevelopmentReceiptsInspected": true,
+      "absentRawMediaLogsEnvironmentInspected": false,
+      "hostedFontEquivalenceProved": false,
+      "wholeReview9Complete": false
+    },
+    "windowsTriage": {
+      "summarySha256": "30dbc8370710036e88dc5475a9b545461663f5fd3c33966eea6960dc5d6a2845",
+      "reportedUnits": 97,
+      "detailedFailures": 96,
+      "aggregateParents": 1,
+      "categories": {
+        "unavailableUid": 65,
+        "posixPrivateMode": 19,
+        "symlinkPrivilegeIncludingParent": 10,
+        "linuxPathOrReportFixture": 2,
+        "preexistingWindowsArgvSplit": 1
+      },
+      "matchedRepresentativeCases": 12,
+      "identicalTestFiles": 12,
+      "identicalBoundaryModules": 16,
+      "wholePolicyPass": false,
+      "all97Rerun": false,
+      "newR19DefectIdentifiedWithinScope": false,
+      "linuxQualificationRequired": true,
+      "assertionsWeakened": false
+    },
+    "requiredNextProofs": [
+      "Final proof/catalog composition and exact proposed registry/overlay binding",
+      "Unchanged default-loader planning against actual final composition and complete future publication command identities",
+      "Independent exact-candidate review and normal protected installer qualification",
+      "Protected maintenance landing, landed verification and consumer adoption",
+      "Separate fresh consumer authorization and all current capture/review/submission/technical/ordinary/replay/seal gates"
+    ],
+    "consumerCaptureAuthorizedByIntake": false,
+    "consumerCaptureExecuted": false,
+    "newReservation": false,
+    "protectedInstallation": false,
+    "productAccepted": false
+  }
 }
