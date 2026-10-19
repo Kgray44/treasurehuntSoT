@@ -3039,6 +3039,24 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-acceptance-boundary-20261019-r20/adjudication.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-acceptance-boundary-20261019-r20/causal-disposition.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-acceptance-boundary-20261019-r20/historical-ledger.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-current-source-admission-20261018-r16/causal-disposition.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -9255,7 +9273,25 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/integration-preparation-20261019/historical-pr705/scripts__parallax__visual-contact-sheet.mjs.original.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/integration-preparation-20261019/historical-pr705/tests__e2e__parallax-visual-review.spec.ts.original.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/integration-preparation-20261019/historical-record-intake.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/integration-preparation-20261019/late-intake-plan.original.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -16653,6 +16689,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/Spatial_Studio_Visual_Review_20261011.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/Surface_Snapping_Correction.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -17248,6 +17290,12 @@
     },
     {
       "path": "Development_Docs/Projects/Voyagewright_Refit_V1/muster/validation-results.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Voyagewright_Refit_V1/player-journal-crossdeck/design-packet.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

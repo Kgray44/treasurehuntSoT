@@ -13,6 +13,7 @@ evidence remain in their governed documentation locations. Each context packet
 retains its own task scope, ownership and evidence boundaries; older packets do
 not authorize restarting a completed phase.
 
+- [Complete Parallax integration preparation](parallax-integration-preparation-20261019.md)
 - [Focused development and final verification](testing-workflow.md)
 - [Automatic Product Experience Engineering workflow](product-experience-workflow.md)
 - [Working drafts and unified Library continuation](parallax-library-lifecycle.md)
@@ -43,6 +44,7 @@ not authorize restarting a completed phase.
 - [Crossdeck R13 setup readiness successor](crossdeck-r13-setup-successor.md)
 - [Crossdeck R14 instrumented whole qualification](crossdeck-r14-instrumented-qualification.md)
 - [Crossdeck R19 source preparation and protected installation gates](crossdeck-r19-source-preparation.md)
+- [Crossdeck R20 approved acceptance-boundary amendment](crossdeck-r20-acceptance-boundary.md)
 - [Parallax A1 owned task contract](parallax-a1-task-contract.md)
 - [Parallax A1 agreed Studio interface](parallax-a1-studio-interface.md)
 - [Sextant Phase 3 owned implementation context](sextant-phase3.md)

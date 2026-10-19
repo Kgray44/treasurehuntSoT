@@ -16,6 +16,7 @@ Its governing promise is simple even though the machinery behind it is emphatica
 
 > **Creators author spatial intent. Parallax solves spatial implementation.**
 
+- [Original October 11 owner-review baseline](Spatial_Studio_Visual_Review_20261011.md) preserves its original product source and pending owner-review status; its inactive producers remain evidence only.
 - [Complete current-main integration preparation](Integration_Preparation_20261019.md) records exact PR containment, superseded implementations, conflict resolutions and integrated verification while Crossdeck's protected acceptance remains pending.
 - [Working drafts and unified Library lifecycle](Spatial_Library_Lifecycle_20261014.md) records deliberate membership, independent environments, named copies, recovery and verification boundaries.
 - [SC-00 integration handoff](SC_00_Integration_Handoff_20261015.md) maps Inspector/Library selection and persistence contracts, pending SC-01 interfaces, parallel ownership and remaining acceptance.

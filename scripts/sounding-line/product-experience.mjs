@@ -1,6 +1,7 @@
 import { inheritSourceFailure, sourceDiagnosticGit } from "./source-diagnostics.mjs";
 import { createHash } from "node:crypto";
 import { r8FormatEvidencePlan, validateR8FormatEvidenceIdentity } from "./experience-r8-format.mjs";
+import { R20_DEFERRED_DISPOSITION, validateScopedR20Finding } from "./experience-scope-adjudication.mjs";
 import { readFileSync, realpathSync } from "node:fs";
 import path from "node:path";
 import { inflateSync } from "node:zlib";
@@ -940,6 +941,15 @@ export function validateExperienceEvidence({
         finding.evidenceIds.some((id) => !artifacts.has(id))
       )
         fail("FINDING_INVALID", contract.id);
+      if (finding.disposition === R20_DEFERRED_DISPOSITION) {
+        validateScopedR20Finding({
+          plan: currentPlan,
+          finding,
+          contractId: contract.id,
+          artifacts: evidence.artifacts,
+        });
+        continue;
+      }
       if (nonblocking.has(finding.classification)) continue;
       if (finding.disposition === "RESOLVED") {
         if (
