@@ -24,8 +24,10 @@ Independent rendered review clears the Passport heading, safe-preview contrast
 and mobile authoring-rail repairs; distinct Creator/Crew development proof also passes with clear rendered review.
 The Captain Crew-label/editor-chrome repairs pass four-variant independent rendered
 review. Authoring passes its settled drawer and loaded Sea Trials checks, but
-retains mobile publication-review/Scenario-ledger overflow. Community Guide entry
-resolution and protected acceptance remain pending.
+retains mobile publication-review/Sea Trials overflow. Community passes four
+variants but retains a Search-hover contrast finding; prior Guide cause remains
+unconfirmed. Historical completion/provenance passes three variants with a
+desktop replay landmark failure. Repaired-source proof and protected acceptance remain pending.
 The bounded continuation passes 327 focused tests, 59 D0/D1 scenarios, Android
 OS idle/standby recovery and three selected iOS permission/geofence scenarios.
 Every receipt retains its actual source; none promotes the feature to accepted.

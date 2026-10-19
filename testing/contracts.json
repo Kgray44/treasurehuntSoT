@@ -8710,7 +8710,8 @@
           "src/components/wakebook/WakebookVoyageDetail.tsx",
           "src/components/wakebook/WakebookVoyageBook.tsx",
           "src/components/homeport/PassportSurfaces.tsx",
-          "src/components/player/journal/ChronicleJournalSession.tsx"
+          "src/components/player/journal/ChronicleJournalSession.tsx",
+          "src/components/player/journal/ChronicleJournalPage.tsx"
         ],
         "entryPoint": "/account",
         "states": [

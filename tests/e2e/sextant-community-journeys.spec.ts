@@ -64,11 +64,11 @@ for (const viewport of [
             await expect(page.locator(`a[href$="/${slug}"]`)).toHaveCount(0);
           expect((await new AxeBuilder({ page }).include(".community-harbor").analyze()).violations).toEqual([]);
         };
-        const capture = async (name: string) => {
+        const capture = async (name: string, target = page.getByRole("heading", { level: 1 })) => {
           // Make each actual task heading visible only after its readiness
           // measurement and accessibility assertions have completed.
-          await page.getByRole("heading", { level: 1 }).scrollIntoViewIfNeeded();
-          await expect(page.getByRole("heading", { level: 1 })).toBeInViewport();
+          await target.scrollIntoViewIfNeeded();
+          await expect(target).toBeInViewport();
           await page.screenshot({ path: info.outputPath(`${name}.png`) });
         };
         await page.goto("/");
@@ -158,9 +158,12 @@ for (const viewport of [
             page.on("response", onGuideResponse);
             await detailLink
               .evaluate((expected, expectedPath) => {
-                const owned = window as Window & { __sextantPhase4GuideObserver?: () => void };
+                const owned = window as Window & {
+                  __sextantPhase4GuideObserver?: { events: unknown[]; remove: () => void };
+                };
                 if (owned.__sextantPhase4GuideObserver) return;
                 let count = 0;
+                const events: unknown[] = [];
                 const observe = (event: Event, phase: string) => {
                   if (count++ >= 12) return;
                   try {
@@ -169,41 +172,36 @@ for (const viewport of [
                     const href = anchor ? new URL(anchor.href).pathname : "";
                     const box = expected.getBoundingClientRect();
                     const layer = expected.closest("[data-route-layer]");
-                    console.log(
-                      "SEXTANT_GUIDE_POINTER",
-                      JSON.stringify({
-                        event: event.type,
-                        phase,
-                        trusted: event.isTrusted,
-                        prevented: event.defaultPrevented,
-                        targetTag: target?.tagName ?? "NONE",
-                        anchor:
-                          href === expectedPath
-                            ? "EXPECTED_GUIDE"
-                            : href === "/community/guides"
-                              ? "CURRENT_GUIDES"
-                              : href.startsWith("/community")
-                                ? "OTHER_PUBLIC"
-                                : "NONE",
-                        pathname: location.pathname.startsWith("/community") ? location.pathname : "OUTSIDE_COMMUNITY",
-                        scrollY: Math.round(scrollY),
-                        expectedRect: box
-                          ? {
-                              x: Math.round(box.x),
-                              y: Math.round(box.y),
-                              width: Math.round(box.width),
-                              height: Math.round(box.height),
-                            }
-                          : null,
-                        expectedConnected: Boolean(expected?.isConnected),
-                        expectedInactive: Boolean(expected?.closest('[inert], [aria-hidden="true"]')),
-                        routeRole: layer?.getAttribute("data-route-role"),
-                        generation: layer?.getAttribute("data-route-generation"),
-                        transition: document
-                          .querySelector(".product-route-transition")
-                          ?.getAttribute("data-route-state"),
-                      }),
-                    );
+                    events.push({
+                      event: event.type,
+                      phase,
+                      trusted: event.isTrusted,
+                      prevented: event.defaultPrevented,
+                      targetTag: target?.tagName ?? "NONE",
+                      anchor:
+                        href === expectedPath
+                          ? "EXPECTED_GUIDE"
+                          : href === "/community/guides"
+                            ? "CURRENT_GUIDES"
+                            : href.startsWith("/community")
+                              ? "OTHER_PUBLIC"
+                              : "NONE",
+                      pathname: location.pathname.startsWith("/community") ? location.pathname : "OUTSIDE_COMMUNITY",
+                      scrollY: Math.round(scrollY),
+                      expectedRect: box
+                        ? {
+                            x: Math.round(box.x),
+                            y: Math.round(box.y),
+                            width: Math.round(box.width),
+                            height: Math.round(box.height),
+                          }
+                        : null,
+                      expectedConnected: Boolean(expected?.isConnected),
+                      expectedInactive: Boolean(expected?.closest('[inert], [aria-hidden="true"]')),
+                      routeRole: layer?.getAttribute("data-route-role"),
+                      generation: layer?.getAttribute("data-route-generation"),
+                      transition: document.querySelector(".product-route-transition")?.getAttribute("data-route-state"),
+                    });
                   } catch {
                     /* Observation never controls the action or primary error. */
                   }
@@ -214,12 +212,15 @@ for (const viewport of [
                   document.addEventListener(type, capture, { capture: true, passive: true });
                   document.addEventListener(type, bubble, { passive: true });
                 }
-                owned.__sextantPhase4GuideObserver = () => {
-                  for (const type of ["pointerdown", "pointerup", "click"]) {
-                    document.removeEventListener(type, capture, true);
-                    document.removeEventListener(type, bubble);
-                  }
-                  delete owned.__sextantPhase4GuideObserver;
+                owned.__sextantPhase4GuideObserver = {
+                  events,
+                  remove: () => {
+                    for (const type of ["pointerdown", "pointerup", "click"]) {
+                      document.removeEventListener(type, capture, true);
+                      document.removeEventListener(type, bubble);
+                    }
+                    delete owned.__sextantPhase4GuideObserver;
+                  },
                 };
               }, guidePath)
               .catch(() => console.warn("SEXTANT_GUIDE_POINTER_OBSERVATION_UNAVAILABLE"));
@@ -246,8 +247,16 @@ for (const viewport of [
               );
               await page
                 .evaluate(() => {
-                  (window as Window & { __sextantPhase4GuideObserver?: () => void }).__sextantPhase4GuideObserver?.();
+                  const observer = (
+                    window as Window & {
+                      __sextantPhase4GuideObserver?: { events: unknown[]; remove: () => void };
+                    }
+                  ).__sextantPhase4GuideObserver;
+                  const events = observer?.events ?? [];
+                  observer?.remove();
+                  return events;
                 })
+                .then((events) => console.log("SEXTANT_GUIDE_POINTER_SUMMARY", JSON.stringify(events)))
                 .catch(() => console.warn("SEXTANT_GUIDE_POINTER_CLEANUP_UNAVAILABLE"));
             }
           }
@@ -260,6 +269,17 @@ for (const viewport of [
           }
           await checkPublic();
           await capture(`detail-${detail.card.toLowerCase().replaceAll(" ", "-")}`);
+          await capture(
+            `outcome-${detail.card.toLowerCase().replaceAll(" ", "-")}`,
+            page.getByRole("heading", { name: detail.outcome, exact: true }),
+          );
+          if (detail.card === "The Lantern Coast") {
+            const comments = page.getByRole("region", { name: "Comments", exact: true });
+            await capture(
+              "community-anonymous-comment-gate",
+              comments.getByRole("link", { name: "Sign in to comment", exact: true }),
+            );
+          }
           await measure(
             `${detail.card} return`,
             () => navigation.getByRole("link", { name: "Community Harbor", exact: true }).click(),
@@ -278,9 +298,39 @@ for (const viewport of [
         );
         await checkPublic();
         await search.scrollIntoViewIfNeeded();
+        const searchButton = page.getByRole("button", { name: "Search Community Harbor", exact: true });
+        await measure(
+          "Settled readable Search hover",
+          () => searchButton.hover(),
+          async () => {
+            await expect(searchButton).toHaveCSS("background-color", "rgb(226, 203, 145)");
+            await expect(searchButton).toHaveCSS("background-image", "none");
+          },
+        );
+        const hoverContrast = await searchButton.evaluate((element) => {
+          const style = getComputedStyle(element);
+          const luminance = (css: string) => {
+            const channels = css
+              .match(/[\d.]+/g)
+              ?.slice(0, 3)
+              .map(Number);
+            if (channels?.length !== 3) throw new Error("SEXTANT_SEARCH_COLOR_UNAVAILABLE");
+            return channels
+              .map((channel) => {
+                const value = channel / 255;
+                return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+              })
+              .reduce((sum, value, index) => sum + value * [0.2126, 0.7152, 0.0722][index], 0);
+          };
+          const foreground = luminance(style.color),
+            background = luminance(style.backgroundColor);
+          return (Math.max(foreground, background) + 0.05) / (Math.min(foreground, background) + 0.05);
+        });
+        expect(hoverContrast, "Hovered Search glyph stays readable").toBeGreaterThanOrEqual(4.5);
         await page.screenshot({ path: info.outputPath("community-empty-search.png") });
         // There are two legitimate clear controls (active chips and empty state).
         const empty = page.locator(".community-state--empty");
+        await capture("community-empty-search-result", empty.getByRole("heading"));
         await empty.getByRole("button", { name: "Clear search and filters", exact: true }).click();
         await expect(search).toHaveValue("");
         await expect(

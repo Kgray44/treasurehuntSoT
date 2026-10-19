@@ -149,18 +149,39 @@ for (const viewport of [
                 : [];
           for (const panel of boundedPanels) {
             await expect(panel).toBeVisible();
-            const bounds = await panel.evaluate((element) => {
+            const { observation, ...bounds } = await panel.evaluate((element) => {
               const box = element.getBoundingClientRect();
               const container = element.closest(".editor-single-panel")!.getBoundingClientRect();
+              const offenders = [...element.querySelectorAll("*")].filter((child) => {
+                const childBox = child.getBoundingClientRect();
+                return childBox.width > 0 && (childBox.left < box.left - 1 || childBox.right > box.right + 1);
+              });
               return {
                 contained: box.left >= container.left - 1 && box.right <= container.right + 1,
                 visibleOverflow: Math.max(0, element.scrollWidth - element.clientWidth),
-                overflowingChildren: [...element.querySelectorAll("*")].filter((child) => {
-                  const childBox = child.getBoundingClientRect();
-                  return childBox.width > 0 && (childBox.left < box.left - 1 || childBox.right > box.right + 1);
-                }).length,
+                overflowingChildren: offenders.length,
+                observation: {
+                  panel: element.className,
+                  width: Math.round(box.width),
+                  nodes: offenders.slice(0, 8).map((child) => {
+                    const childBox = child.getBoundingClientRect(),
+                      style = getComputedStyle(child);
+                    return {
+                      tag: child.tagName,
+                      class: child.className.toString().slice(0, 120),
+                      label: child.getAttribute("aria-label")?.slice(0, 80),
+                      left: Math.round(childBox.left - box.left),
+                      right: Math.round(childBox.right - box.right),
+                      width: Math.round(childBox.width),
+                      minWidth: style.minWidth,
+                      fontSize: style.fontSize,
+                    };
+                  }),
+                },
               };
             });
+            if (!bounds.contained || bounds.visibleOverflow || bounds.overflowingChildren)
+              console.log("SEXTANT_AUTHORING_BOUNDS", JSON.stringify({ label, ...bounds, observation }));
             expect(bounds, `${label} content stays within its card`).toEqual({
               contained: true,
               visibleOverflow: 0,

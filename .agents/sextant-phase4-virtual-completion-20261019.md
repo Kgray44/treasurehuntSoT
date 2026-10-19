@@ -301,6 +301,12 @@ and scroll position. Exact Guide-path requests/responses log at most12 summaries
 each without queries, headers or bodies. Remove listeners in finally; observation
 and cleanup failures must never replace the original test error. No retry, forced
 click, new wait, motion change, timeout increase or product cause is inferred.
+The first successful diagnostic run forwards exact-path request200 summaries;
+its browser-console pointer messages are not ordinary Node stdout. Retain the
+same bounded pointer summaries in the test namespace, retrieve them and remove
+listeners together in finally, then print only those safe summaries. A later
+whole-source required capture may exercise this correction; do not launch an
+equivalent Community sweep solely for the observation transport change.
 
 Independent rendered review of authoring39337654035 retains mobile overflow
 R39337654035-01 despite four passing development journeys. Make publishing grid
@@ -324,3 +330,20 @@ Formal contracts retain stable routes and dynamic-link semantic outcomes without
 inventing static record IDs. Historical Journal's named section preserves content
 and styling. Independent source review is clear after correcting the provenance
 panel selector and pre-mutation membership check. Fresh execution remains required.
+
+History39340010047 passes three variants and fails desktop normal replay axe:
+the artifact's primary and continuation pages share a landmark name. Preserve
+the primary name and give the secondary page its existing visible continued
+suffix, with no spread/content/motion change. Authoring39339880666 passes desktop
+but both mobile variants fail the new Sea Trials bounds with one descendant and
+16px overflow. An isolated actual-component/mock-JSON CSS experiment does not
+reproduce it; no product cause or extra CSS repair is inferred. Add only bounded
+failure-node geometry (max8, no values) to locate the remaining offender while
+retaining every bound and readiness measure.
+
+Community39339458097 passes all four; independent review of80PNGs finds hovered
+Search dark ink on a global dark hover background (R39339458097-01). Scope the
+primary hover to the existing light-gold/ink pair, assert actual hovered glyph
+contrast and capture it. Capture lower detail outcomes, anonymous comment gating
+and the empty-result panel after ordinary scrolling because these were outside
+most prior viewports. Preserve original captures, timing budgets and assertions.

@@ -657,3 +657,42 @@ unregistered. The six declared historical paths explain the reduction from 60;
 the historical 141-path/13-family inventory and all older checkpoints remain
 unchanged. The authoritative planner remains blocked. This is source declaration
 accounting, with no protected capture or acceptance credit.
+
+Community run 39339458097 passes all four variants at `bdb99837af`. Independent
+review verifies all 170 hashes, frozen source/tree/fingerprint and all 80 PNGs.
+All 112 activations meet 3000 ms, maximum 2413.92254 ms; each Guide detail returns
+one 200 response. Earlier dead-click cause remains unconfirmed. Review retains
+R39339458097-01: the hovered Search glyph has dark ink on the global dark hover
+background. Lower comment/install restrictions and empty-Creator outcomes mostly
+lie outside these viewports, and the desktop reduced empty-result panel is also
+offscreen. The [173 originals](evidence/20261019-community-hover-finding/publication-index.json)
+preserve this passing result with its limitation. The prepared repair scopes the
+primary hover to light gold/ink, waits for that opaque settled state inside a
+3000 ms measurement, checks contrast, and captures actual lower outcomes/comment
+gating/empty results using explicit scroll targets. Bounded Guide summaries now
+return from the browser and remove listeners in finally; the earlier browser
+console messages were not Node stdout. Independent source review is clear after
+correcting the capture helper's original automatic return to H1. No assertion,
+timing bound or earlier failure is removed.
+
+Authoring run 39339880666 at `79a49bbe9c` passes both desktop cases; both mobile
+cases fail the new Sea Trials bounds. The card is contained, but one descendant
+overflows by 16 pixels. Its [six-file original subset](evidence/20261019-authoring-bounds-failure/publication-index.json)
+identifies the retained encrypted diagnostic original. An isolated actual
+component/CSS experiment with mock JSON does not reproduce that width, so no
+specific element cause or further CSS fix is inferred. The successor adds only
+failure-time tag/class/label and geometry for at most eight offending nodes,
+preserving the identical three-value bounds oracle. Mobile publication review
+has not been reached in this failed successor and remains unqualified.
+
+History run 39340010047 at `b601c604c3` passes three cases. Desktop normal motion
+reaches read-only replay and fails axe because both visible artifact spread pages
+share the name The Sextant compass. The [six-file original subset](evidence/20261019-history-landmark-failure/publication-index.json)
+preserves the whole-run failure. The secondary artifact/map/illustrated-story
+section now adds the same continued suffix already shown in its H3, leaving the
+primary label, content, spread and motion intact. Its owning experience declaration
+includes this page renderer. Source review is clear; fresh browser and rendered
+verification remain required. All three runs report runtime tree/stream/port and
+transport cleanup passing; private encrypted originals remain outside Git with
+exact hashes/locations. Videos were hashed, not reviewed. These are development
+results, with no protected, native, physical or owner acceptance.

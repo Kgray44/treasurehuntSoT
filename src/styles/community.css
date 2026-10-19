@@ -626,6 +626,11 @@ html[data-voyage-theme="light"] :where(.community-button--quiet, .community-filt
   background: linear-gradient(135deg, #e2cb91, var(--community-brass));
 }
 
+html .community-harbor .community-button--primary:hover:not(:disabled) {
+  color: var(--community-ink);
+  background: #e2cb91;
+}
+
 .community-button--quiet {
   border-color: var(--community-border);
   color: var(--community-paper);

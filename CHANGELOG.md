@@ -20,6 +20,9 @@ last_reviewed: 2026-10-19
 
 ### Corrected
 
+- Community primary actions keep a light background and readable ink when hovered,
+  including the Search icon. Journal continuation pages have distinct landmark names
+  matching their visible continued headings.
 - The Journal's historical-volume notice uses a named section within the main
   reading task, preserving its read-only content and styling.
 - Creator publication review wraps release checksums and stage content within its

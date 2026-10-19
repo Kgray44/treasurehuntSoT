@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/sextant-community-journeys.spec.ts"
+  ],
+  "status": "PASS",
+  "failureCategory": null,
+  "failureCode": null,
+  "diagnosticBinding": {
+    "version": 1,
+    "runId": "45235c6d-2035-44ce-9199-02a93b8fab6e",
+    "scopeId": "15f9d9ac-f2ea-4abc-bc4e-e01afc379c08",
+    "baseSha": "bdb99837af8e0067a5f212c164ef71047404a33c",
+    "candidateSha": "bdb99837af8e0067a5f212c164ef71047404a33c",
+    "planDigest": "0facf2fafa559b1cccedcdde74d9eba7c581bafa786f2fad06340dc64c960125"
+  }
+}
