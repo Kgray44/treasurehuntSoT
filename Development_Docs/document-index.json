@@ -9591,6 +9591,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/integration-preparation-20261019/delivery-checks/delivery-custody-853ba25cb5a6.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/integration-preparation-20261019/delivery-checks/finalization-intake.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/integration-preparation-20261019/delivery-checks/pr721-delivery-boundary.json",
       "record_type": "program-record",
       "status": "preserved",

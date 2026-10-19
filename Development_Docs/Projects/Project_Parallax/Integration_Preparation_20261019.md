@@ -233,7 +233,11 @@ retains hashes and task-owned paths for 1,278 diagnostic files, including origin
 traces and the invalid historical-output attempt. Those large originals remain
 external; they are not silently replaced with passing reports. The migration-03
 attempt has no formal cleanup receipt; manual PID/port observations remain distinct.
-Review 2 and final checks have an additive closure-artifact manifest. Immutable
+Review 2 and final checks have an additive closure-artifact manifest. The
+[post-closure custody audit](evidence/integration-preparation-20261019/delivery-checks/delivery-custody-853ba25cb5a6.json)
+passes on evidence commit `853ba25cb5a6`, including all 675 closure artifacts and
+2,445 task-evidence Git/working files. Application and harness inputs are unchanged
+since the frozen checkpoint. Immutable
 archives use scoped `-text`; historical producer whitespace is preserved.
 
 Engineering records and immutable receipts live under this Project's evidence
