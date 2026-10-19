@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { createHash } from "node:crypto";
+import { mkdir } from "node:fs/promises";
 import AxeBuilder from "@axe-core/playwright";
 import { db } from "../../src/lib/db";
 import { syntheticSpatialMoment } from "../../src/parallax/fixtures";
@@ -16,16 +17,17 @@ for (const mobile of [false, true])
     if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic") throw new Error("PARALLAX_OWNED_BROWSER_REQUIRED");
     ensureGenericSoundingLineIsolation();
     const account = await closureAccount("Synthetic Parallax navigator");
-    let taleId: string | undefined;
+    const evidence = `artifacts/parallax-integration-browser/${process.env.PARALLAX_A1_SOURCE_SHA?.slice(0, 12) ?? "unbound"}/guided-${mobile ? "phone" : "desktop"}`;
+    await mkdir(evidence, { recursive: true });
     const context = await browser.newContext({
       viewport: mobile ? { width: 390, height: 844 } : { width: 1280, height: 900 },
       isMobile: mobile,
       hasTouch: mobile,
       reducedMotion: "reduce",
+      recordVideo: { dir: `${evidence}/recordings` },
     });
     try {
       const voyage = await closureVoyage(account, account, "narrative");
-      taleId = voyage.taleId;
       const version = await db.publishedTaleVersion.findUniqueOrThrow({ where: { id: voyage.versionId } });
       const snapshot = JSON.parse(version.contentSnapshot);
       const block = snapshot.chapters[0].blocks[0];
@@ -62,6 +64,7 @@ for (const mobile of [false, true])
       );
       await lens.getByRole("button", { name: "Inspect", exact: true }).click();
       await expect(lens.getByText(/You are inspecting The Captain’s note/)).toBeVisible();
+      await page.screenshot({ path: `${evidence}/lens-interaction.png`, fullPage: true });
       const a11y = await new AxeBuilder({ page }).include("dialog[open]").analyze();
       expect(a11y.violations.filter((v) => ["critical", "serious"].includes(v.impact || ""))).toEqual([]);
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
@@ -79,9 +82,10 @@ for (const mobile of [false, true])
       const after = await db.taleSession.findUniqueOrThrow({ where: { id: voyage.id } });
       expect(after.currentBlockId).toBe(before.currentBlockId);
       expect(after.currentSequence).toBe(before.currentSequence);
+      await page.screenshot({ path: `${evidence}/journal-return.png`, fullPage: true });
     } finally {
       await context.close();
-      if (taleId) await db.chronicle.delete({ where: { id: taleId } });
-      await db.userAccount.delete({ where: { id: account.id } });
+      // The guarded runner owns the disposable database. Retain immutable
+      // publication and observation rows together with this source-bound proof.
     }
   });

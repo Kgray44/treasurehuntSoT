@@ -37,7 +37,7 @@ test("Adaptive workspace docks reclaim viewport area and preserve editing across
   await expect(page.getByLabel("Workspace layout", { exact: true })).toHaveValue("SPATIAL");
   await expect(page.getByRole("complementary", { name: "Spatial Library" })).toBeHidden();
   await expect(page.getByRole("button", { name: "Expand bottom dock" })).toBeVisible();
-  const root = "artifacts/parallax-phase3/workstation-refinement";
+  const root = `artifacts/parallax-integration-browser/${process.env.PARALLAX_A1_SOURCE_SHA?.slice(0, 12) ?? "unbound"}/workstation`;
   await mkdir(root, { recursive: true });
   await page.screenshot({ path: `${root}/default-spatial-editing.png`, fullPage: true });
   const defaultBounds = (await canvas.boundingBox())!;
@@ -238,7 +238,7 @@ test("Creator edits a populated 3D workstation, previews intent, and retains can
   await page.getByRole("button", { name: "Rotate tool", exact: true }).click();
   await page.getByLabel("Workspace layout", { exact: true }).selectOption("SPATIAL");
   await page.screenshot({
-    path: "artifacts/parallax-phase3/workstation-refinement/desktop-primary.png",
+    path: `artifacts/parallax-integration-browser/${process.env.PARALLAX_A1_SOURCE_SHA?.slice(0, 12) ?? "unbound"}/workstation/desktop-primary.png`,
     fullPage: true,
   });
   const canvas = page.locator('[data-renderer="READY"] canvas');
@@ -252,11 +252,14 @@ test("Creator edits a populated 3D workstation, previews intent, and retains can
   expect(Buffer.compare(before, after)).not.toBe(0);
   await page.getByRole("button", { name: "Reset view", exact: true }).click();
   await page.getByLabel("Camera perspective").selectOption("plan");
-  await page.screenshot({ path: "artifacts/parallax-phase3/workstation-refinement/plan-view.png", fullPage: true });
+  await page.screenshot({
+    path: `artifacts/parallax-integration-browser/${process.env.PARALLAX_A1_SOURCE_SHA?.slice(0, 12) ?? "unbound"}/workstation/plan-view.png`,
+    fullPage: true,
+  });
   await page.getByLabel("Camera perspective").selectOption("perspective");
   await page.getByRole("button", { name: "Toggle spatial overlays" }).click();
   await page.screenshot({
-    path: "artifacts/parallax-phase3/workstation-refinement/surface-overlays.png",
+    path: `artifacts/parallax-integration-browser/${process.env.PARALLAX_A1_SOURCE_SHA?.slice(0, 12) ?? "unbound"}/workstation/surface-overlays.png`,
     fullPage: true,
   });
   await page.getByRole("button", { name: "Play timeline", exact: true }).click();
@@ -286,7 +289,7 @@ test("Creator edits a populated 3D workstation, previews intent, and retains can
   await expect(proposedMap).toBeVisible();
   expect(JSON.stringify((await listSpatialItems(account.id)).find((i) => i.id === saved.id)!.draft)).toBe(storedBefore);
   await page.screenshot({
-    path: "artifacts/parallax-phase3/workstation-refinement/proposal-preview.png",
+    path: `artifacts/parallax-integration-browser/${process.env.PARALLAX_A1_SOURCE_SHA?.slice(0, 12) ?? "unbound"}/workstation/proposal-preview.png`,
     fullPage: true,
   });
   await assistant.getByRole("button", { name: "Current scene", exact: true }).click();
@@ -295,14 +298,14 @@ test("Creator edits a populated 3D workstation, previews intent, and retains can
   await page.getByRole("button", { name: "Close assistance", exact: true }).click();
   await page.getByLabel("Workspace layout", { exact: true }).selectOption("FOCUS");
   await page.screenshot({
-    path: "artifacts/parallax-phase3/workstation-refinement/immersive-viewport.png",
+    path: `artifacts/parallax-integration-browser/${process.env.PARALLAX_A1_SOURCE_SHA?.slice(0, 12) ?? "unbound"}/workstation/immersive-viewport.png`,
     fullPage: true,
   });
   await page.getByLabel("Workspace layout", { exact: true }).selectOption("CONSTRUCTION");
   for (const mode of ["DETAILED", "ENGINEERING"]) {
     await page.getByLabel("Authoring mode").selectOption(mode);
     await page.screenshot({
-      path: `artifacts/parallax-phase3/workstation-refinement/desktop-${mode}.png`,
+      path: `artifacts/parallax-integration-browser/${process.env.PARALLAX_A1_SOURCE_SHA?.slice(0, 12) ?? "unbound"}/workstation/desktop-${mode}.png`,
       fullPage: true,
     });
   }
@@ -311,7 +314,7 @@ test("Creator edits a populated 3D workstation, previews intent, and retains can
   expect(desktopAxe.violations.filter((v) => ["critical", "serious"].includes(v.impact ?? ""))).toEqual([]);
   await page.setViewportSize({ width: 390, height: 844 });
   await page.screenshot({
-    path: "artifacts/parallax-phase3/workstation-refinement/constrained-viewport.png",
+    path: `artifacts/parallax-integration-browser/${process.env.PARALLAX_A1_SOURCE_SHA?.slice(0, 12) ?? "unbound"}/workstation/constrained-viewport.png`,
     fullPage: true,
   });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);

@@ -145,8 +145,8 @@ test("Creator saves and reuses a versioned object, edits only its instance, relo
   });
   await openCurrentLibraryCategory(page, "Assets", "MY_CREATIONS", "SAVED");
   await library.getByRole("searchbox").fill("Captain navigation compass");
-  await assetInspect.click({ button: "right" });
-  await page.getByRole("menuitem", { name: "Archive", exact: true }).click();
+  await assetInspect.click();
+  await assetDetails.getByRole("button", { name: "Archive…", exact: true }).click();
   await library.getByRole("button", { name: "Archive item", exact: true }).click();
   await expect(card).toHaveCount(0);
   expect((await listSpatialItems(account.id)).some((i) => i.id === asset.id)).toBe(false);

@@ -11,7 +11,7 @@ import { AI_CONTROL_ID } from "../../src/parallax/ai-ledger";
 import { defaultAIGlobalPolicy, aiPricing, aiMaximumExposureNano } from "../../src/parallax/ai-policy";
 
 test.describe.configure({ mode: "serial", timeout: 300000 });
-test.use({ actionTimeout: 30000 });
+test.use({ actionTimeout: 30000, video: "on" });
 test.skip(process.env.PARALLAX_A1_SYNTHETIC_PROVIDER !== "1", "Run the guarded unpaid Parallax browser fixture.");
 test.afterAll(() => db.$disconnect());
 const password = "Synthetic-A1-Enforcement-2026!";
