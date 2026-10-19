@@ -17,10 +17,12 @@ import {
   validateCurrentAdmissionRegistry,
   validateCurrentAdmissionEvidence,
   validateCurrentAdmissionOverlay,
+  validateCurrentProductRepair,
   validateCurrentPublicationArtifacts,
   validateCurrentCaptureIdentity,
   validateCurrentAdmissionPredecessors,
   validateCurrentFailedPreparation,
+  validateCurrentBlockedReviewPredecessor,
   validateCurrentAdmissionFinalDecision,
   assertCurrentAdmissionCap,
 } from "../../scripts/sounding-line/experience-current-admission.mjs";
@@ -49,6 +51,11 @@ import {
   CURRENT_R16_FAILED_PREPARATION,
   CURRENT_R16_FAILED_RUN,
 } from "../../scripts/sounding-line/experience-current-r17.mjs";
+import {
+  CURRENT_R18,
+  CURRENT_R17_BLOCKED_CAPTURE,
+  CURRENT_R17_SUCCESSFUL_RUN,
+} from "../../scripts/sounding-line/experience-current-r18.mjs";
 
 const sourceRoot = fileURLToPath(new URL("../..", import.meta.url));
 const historicalRegistry = JSON.parse(
@@ -318,6 +325,503 @@ function failedR16PreparationFixture(previous) {
     reservedIndependentReviewOrdinal: 8,
   };
 }
+
+// These helpers retain the real public seventeen-row prefix. All newly appended
+// fields are inert source fixtures, never installed or submitted. Positive R18
+// admission tests remain explicitly pending while actual repair bindings are null.
+let retainedRegistry17;
+function registry17Fixture() {
+  if (!retainedRegistry17) {
+    const raw = execFileSync(
+      "git",
+      ["show", `${CURRENT_R18.protectedBaseAncestorSha}:testing/product-experience-exceptions.json`],
+      { cwd: sourceRoot, maxBuffer: 32 * 1024 * 1024 },
+    );
+    assert.equal(bytesHash(raw), CURRENT_R18.previousRegistryRawSha256);
+    retainedRegistry17 = JSON.parse(raw);
+  }
+  return structuredClone(retainedRegistry17);
+}
+function generation18Fixture(t) {
+  const record = fixtureRecord(t),
+    registry = registry17Fixture(),
+    previous = registry.exceptions[16];
+  record.version = 18;
+  record.id = CURRENT_R18.id;
+  record.custody.namespace = `sounding-line-exceptions/${record.id}`;
+  record.ownerApproval = structuredClone(CURRENT_R18.ownerApproval);
+  record.predecessor = structuredClone(CURRENT_R17_BLOCKED_CAPTURE);
+  record.frozenReferenceSha = CURRENT_R18.frozenReferenceSha;
+  record.remainingIndependentReviewOrdinal = CURRENT_R18.remainingIndependentReviewOrdinal;
+  const a = record.currentSourceAdmission;
+  a.protectedBaseAncestorSha = CURRENT_R18.protectedBaseAncestorSha;
+  a.preservationRevision = CURRENT_R18.preservationRevision;
+  a.cumulativeHistory = structuredClone(CURRENT_R18.cumulativeHistory);
+  a.requiredReviewIterations = CURRENT_R18.requiredReviewIterations;
+  a.historicalRuns = [
+    ...structuredClone(previous.currentSourceAdmission.historicalRuns),
+    structuredClone(CURRENT_R17_SUCCESSFUL_RUN),
+  ];
+  a.legacyR14History = structuredClone(previous.currentSourceAdmission.legacyR14History);
+  a.publicationFiles = structuredClone(previous.currentSourceAdmission.publicationFiles);
+  a.observation.id = "FIXTURE-GENERATION18-OBSERVATION-NOT-INSTALLED";
+  registry.exceptions.push(record);
+  return { record, registry, previous };
+}
+const pendingR18Repair =
+  CURRENT_R18.frozenReferenceSha === null || CURRENT_R18.repairedProductFiles === null
+    ? "Actual independently reviewed repair SHA and old/new blobs are not frozen"
+    : false;
+function successfulR17PreparationFixture(previous) {
+  const p = CURRENT_R17_BLOCKED_CAPTURE;
+  return {
+    version: 1,
+    exceptionId: previous.id,
+    binding: {
+      exception: currentAdmissionBinding(previous),
+      baseSha: p.baseSha,
+      sourceDigest: p.sourceDigest,
+      contractDigest: p.contractDigest,
+    },
+    run: {
+      runId: p.runId,
+      runAttempt: p.runAttempt,
+      actor: "Kgray44",
+      workflowPath: ".github/workflows/sounding-line-ordinary.yml",
+      event: p.event,
+      headSha: p.headSha,
+      headBranch: p.headBranch,
+      createdAt: p.createdAt,
+      workflowId: p.workflowId,
+      displayTitle: CURRENT_R17_SUCCESSFUL_RUN.displayTitle,
+    },
+    candidateSha: p.candidateSha,
+    status: "PREPARE_AND_REVIEW8_RESERVED_VALIDATION_PENDING",
+    independentReviewsCompleted: 7,
+    reservedIndependentReviewOrdinal: 8,
+  };
+}
+function providerRun(identity) {
+  return {
+    id: identity.id,
+    run_attempt: identity.runAttempt,
+    workflow_id: identity.workflowId,
+    event: identity.event,
+    head_sha: identity.headSha,
+    head_branch: identity.headBranch,
+    actor: { login: identity.actor },
+    triggering_actor: { login: identity.triggeringActor },
+    head_repository: { full_name: identity.repository },
+    status: identity.status,
+    conclusion: identity.conclusion,
+    created_at: identity.createdAt,
+    display_title: identity.displayTitle,
+    check_suite_id: identity.checkSuiteId,
+  };
+}
+
+test("generation18 source keeps successful R17 capture and blocked raw review8 truthful without refunding counters", (t) => {
+  const { record, registry, previous } = generation18Fixture(t),
+    prior = registry17Fixture();
+  assert.equal(hash(prior), CURRENT_R18.previousRegistryDigest);
+  assert.equal(hash(prior.exceptions), CURRENT_R18.previousRecordsDigest);
+  assert.equal(hash(previous), CURRENT_R18.previousRecordDigest);
+  assert.equal(hash(previous.currentSourceAdmission.historicalRuns), CURRENT_R18.previousRunsDigest);
+  assert.deepEqual(registry.exceptions.slice(0, 17), prior.exceptions);
+  assert.deepEqual(registry.reconciliations, prior.reconciliations);
+  assert.equal(CURRENT_R18.repairReferenceSha, "3aabd9b029ed6378372b73992bae3ac68561ea72");
+  assert.deepEqual(CURRENT_R18.repairPaths, [
+    "src/components/player/journal/ChronicleJournalSession.tsx",
+    "src/styles/chronicle.css",
+    "tests/e2e/crossdeck-experience-refit.spec.ts",
+    "tests/e2e/crossdeck-refit-recovery.spec.ts",
+    "tests/e2e/fixtures/journal-layout.ts",
+    "tests/e2e/fixtures/landfall-closure.ts",
+  ]);
+  assert.equal(record.predecessor.kind, "SUCCESSFUL_CURRENT_CAPTURE_BLOCKED_RAW_REVIEW_1");
+  assert.equal(record.predecessor.conclusion, "success");
+  assert.equal(record.predecessor.runId, 39167709214);
+  assert.equal(record.predecessor.blockedReview.verdict, "REWORK_REQUIRED");
+  assert.equal(record.predecessor.blockedReview.authenticatedSubmission, false);
+  assert.equal(record.predecessor.blockedReview.rawBytes, 315555);
+  assert.equal(
+    record.predecessor.blockedReview.rawSha256,
+    "eefdb991ea9c4b210834a88ab0af05f2f20816fcb9f39b75bcd579e16a536a3d",
+  );
+  assert.deepEqual(
+    record.predecessor.blockedReview.blockingFindings.map(({ id }) => id),
+    ["R17-R8-B1", "R17-R8-B2"],
+  );
+  assert.deepEqual(record.predecessor.blockedReview.nonblockingFindingIds, ["R17-R8-N1", "R17-R8-N2"]);
+  assert.deepEqual(record.currentSourceAdmission.cumulativeHistory, {
+    legacyRepairRecaptureAttempts: 11,
+    completedPreparationAttempts: 21,
+    currentPreparationOrdinal: 22,
+    completedIndependentReviews: 8,
+  });
+  assert.equal(record.currentSourceAdmission.requiredReviewIterations, 13);
+  assert.equal(record.remainingIndependentReviewOrdinal, 9);
+  assert.deepEqual(previous.currentSourceAdmission.cumulativeHistory, CURRENT_R17.cumulativeHistory);
+  assert.equal(previous.currentSourceAdmission.requiredReviewIterations, 12);
+  assert.equal(previous.remainingIndependentReviewOrdinal, 8);
+  assert.equal(hash(successfulR17PreparationFixture(previous)), record.predecessor.preparePayloadDigest);
+  assert.deepEqual(record.currentSourceAdmission.historicalRuns.at(-1), CURRENT_R17_SUCCESSFUL_RUN);
+  if (pendingR18Repair) {
+    assert.throws(() => validateCurrentAdmissionRegistry(registry), /CURRENT_ADMISSION_SOURCE_POLICY_INVALID/u);
+    assert.throws(() => selectTrustedExceptions(registry.exceptions), /CURRENT_ADMISSION_SOURCE_POLICY_INVALID/u);
+  } else {
+    assert.equal(validateCurrentAdmissionRegistry(registry), record);
+    assert.deepEqual(selectTrustedExceptions(registry.exceptions), [record]);
+  }
+});
+
+test(
+  "fixed generation18 rejects changed prefix, spent success, review history, or repair bindings",
+  { skip: pendingR18Repair },
+  (t) => {
+    const { record, registry } = generation18Fixture(t);
+    assert.equal(
+      validateCurrentAdmissionRegistry(registry, undefined, {
+        requiredVersion: 18,
+      }),
+      record,
+    );
+    for (const mutate of [
+      (r) => {
+        r.exceptions[0].id = "CHANGED-OLD-ROW";
+      },
+      (r) => {
+        r.reconciliations[0].id = "CHANGED-OLD-BRIDGE";
+      },
+      (r) => {
+        r.exceptions[16].currentSourceAdmission.caps.capture = 0;
+      },
+      (r) => {
+        [r.exceptions[16], r.exceptions[17]] = [r.exceptions[17], r.exceptions[16]];
+      },
+      (r) => {
+        r.exceptions.push(structuredClone(record));
+      },
+      (r) => {
+        r.exceptions[17].predecessor.conclusion = "failure";
+      },
+      (r) => {
+        r.exceptions[17].predecessor.blockedReview.rawSha256 = "0".repeat(64);
+      },
+      (r) => {
+        r.exceptions[17].predecessor.blockedReview.authenticatedSubmission = true;
+      },
+      (r) => {
+        r.exceptions[17].predecessor.blockedReview.blockingFindings.pop();
+      },
+      (r) => {
+        r.exceptions[17].predecessor.artifacts[0].sha256 = "0".repeat(64);
+      },
+      (r) => {
+        r.exceptions[17].currentSourceAdmission.historicalRuns.at(-1).conclusion = "failure";
+      },
+      (r) => {
+        r.exceptions[17].currentSourceAdmission.cumulativeHistory.completedPreparationAttempts = 20;
+      },
+      (r) => {
+        r.exceptions[17].currentSourceAdmission.cumulativeHistory.currentPreparationOrdinal = 21;
+      },
+      (r) => {
+        r.exceptions[17].currentSourceAdmission.cumulativeHistory.completedIndependentReviews = 7;
+      },
+      (r) => {
+        r.exceptions[17].currentSourceAdmission.requiredReviewIterations = 12;
+      },
+      (r) => {
+        r.exceptions[17].remainingIndependentReviewOrdinal = 8;
+      },
+      (r) => {
+        r.exceptions[17].frozenReferenceSha = null;
+      },
+      (r) => {
+        r.exceptions[17].frozenReferenceSha = sha(99);
+      },
+      (r) => {
+        r.exceptions[17].currentSourceAdmission.protectedOverlay[0].path = "src/escaped.ts";
+      },
+    ]) {
+      const changed = structuredClone(registry);
+      mutate(changed);
+      assert.throws(
+        () =>
+          validateCurrentAdmissionRegistry(changed, undefined, {
+            requiredVersion: 18,
+          }),
+        /CURRENT_ADMISSION_/u,
+      );
+    }
+  },
+);
+
+for (const [label, file, expectedBlob] of [
+  [
+    "historical repair ledger",
+    "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-b53291133625/repair-ledger.json",
+    "16a58def6f5c63af155af67e4f06d615b055ae36",
+  ],
+  [
+    "canonical candidate review",
+    "Development_Docs/Testing/Product_Experience/candidate-review.json",
+    "7131e22305cac75317ab1d6f48a9ed807f8da9bc",
+  ],
+])
+  test(`generation18 immutable history overlay forbids ${label}`, { skip: pendingR18Repair }, (t) => {
+    const { record } = generation18Fixture(t);
+    validateCurrentAdmissionRecord(record);
+    const entry = record.immutableHistory.find(({ path }) => path === file);
+    assert.equal(entry?.blob, expectedBlob);
+    assert.equal(entry.mode ?? "100644", "100644");
+    if (label === "canonical candidate review")
+      assert.ok(
+        record.currentSourceAdmission.publicationFiles.includes(file),
+        "canonical current publication stays legitimate and separate from protected authority overlay",
+      );
+    record.currentSourceAdmission.protectedOverlay.push({
+      path: file,
+      oldMode: "100644",
+      oldBlob: entry.blob,
+      newMode: "100644",
+      newBlob: sha(901),
+      candidateMode: "100644",
+      candidateBlob: sha(901),
+    });
+    assert.throws(() => validateCurrentAdmissionRecord(record), {
+      message: "PRODUCT_EXPERIENCE_CURRENT_ADMISSION_R18_IMMUTABLE_HISTORY_OVERLAY_FORBIDDEN",
+    });
+  });
+
+test("generation18 provisional null product bindings fail closed in the exact-file comparator", () => {
+  if (pendingR18Repair)
+    assert.throws(
+      () =>
+        validateCurrentProductRepair({
+          priorRepair: new Map(),
+          reference: new Map(),
+          candidate: new Map(),
+          actualRepairPaths: CURRENT_R18.repairPaths,
+        }),
+      /R18_REPAIR_SCOPE_CHANGED/u,
+    );
+});
+
+test(
+  "generation18 product repair accepts only its six pinned old/new modes and blobs",
+  { skip: pendingR18Repair },
+  () => {
+    const priorRepair = new Map(
+      CURRENT_R18.repairedProductFiles
+        .filter((e) => e.oldMode !== null)
+        .map((e) => [e.path, `${e.oldMode} blob ${e.oldBlob}`]),
+    );
+    const reference = new Map(CURRENT_R18.repairedProductFiles.map((e) => [e.path, `${e.newMode} blob ${e.newBlob}`]));
+    const candidate = new Map(reference),
+      options = {
+        priorRepair,
+        reference,
+        candidate,
+        actualRepairPaths: [...CURRENT_R18.repairPaths],
+      };
+    assert.deepEqual([...validateCurrentProductRepair(options).keys()].sort(), [...CURRENT_R18.repairPaths].sort());
+    for (const actualRepairPaths of [
+      CURRENT_R18.repairPaths.slice(1),
+      [...CURRENT_R18.repairPaths, "src/unapproved.ts"],
+      [...CURRENT_R18.repairPaths.slice(1), "tests/e2e/unapproved.spec.ts"],
+    ])
+      assert.throws(() => validateCurrentProductRepair({ ...options, actualRepairPaths }), /R18_REPAIR_SCOPE_CHANGED/u);
+    for (const entry of CURRENT_R18.repairedProductFiles)
+      for (const field of ["priorRepair", "reference", "candidate"])
+        for (const wrong of [
+          undefined,
+          `100755 blob ${entry.newBlob}`,
+          `120000 blob ${entry.newBlob}`,
+          `100644 blob ${sha(99)}`,
+        ]) {
+          if (wrong === undefined && field === "priorRepair" && entry.oldMode === null) continue;
+          const changed = new Map(options[field]);
+          if (wrong === undefined) changed.delete(entry.path);
+          else changed.set(entry.path, wrong);
+          assert.throws(
+            () => validateCurrentProductRepair({ ...options, [field]: changed }),
+            /R18_REPAIR_SOURCE_CHANGED/u,
+          );
+        }
+  },
+);
+
+test("installed generation18 sentinel rejects absent or provisional authority without falling back to R17", (t) => {
+  fixtureRecord(t);
+  const root = mkdtempSync(path.join(tmpdir(), "generation18-inert-source-only-"));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const git = (...args) =>
+    execFileSync("git", args, {
+      cwd: root,
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "pipe"],
+    }).trim();
+  git("init", "--quiet");
+  git("config", "user.name", "Inert generation18 unit fixture");
+  git("config", "user.email", "fixture@example.invalid");
+  mkdirSync(path.join(root, "testing"));
+  mkdirSync(path.join(root, "scripts/sounding-line"), { recursive: true });
+  writeFileSync(
+    path.join(root, "scripts/sounding-line/experience-current-r18.mjs"),
+    "// inert source-presence fixture\n",
+  );
+  const commit = (registry) => {
+    writeFileSync(path.join(root, "testing/product-experience-exceptions.json"), JSON.stringify(registry));
+    git("add", ".");
+    git("commit", "--quiet", "-m", "inert source-only generation18 fixture");
+    return git("rev-parse", "HEAD");
+  };
+  assert.throws(() => trustedExceptions(root, commit(registry17Fixture())), /R18_REGISTRY_INVALID/u);
+  const { registry } = generation18Fixture(t);
+  if (pendingR18Repair) {
+    assert.throws(() => trustedExceptions(root, commit(registry)), /CURRENT_ADMISSION_SOURCE_POLICY_INVALID/u);
+  } else {
+    assert.equal(trustedExceptions(root, commit(registry))[0].id, CURRENT_R18.id);
+    for (const mutate of [
+      (r) => {
+        r.exceptions.pop();
+      },
+      (r) => {
+        r.exceptions[17].status = "RETIRED";
+      },
+      (r) => {
+        r.exceptions[17].status = "INACTIVE";
+      },
+      (r) => {
+        r.exceptions[17].id = "WRONG-GENERATION18";
+      },
+      (r) => {
+        r.exceptions[17].version = 17;
+      },
+      (r) => {
+        r.exceptions[17].expiresAt = "2026-10-17T23:59:59Z";
+      },
+    ]) {
+      const changed = structuredClone(registry);
+      mutate(changed);
+      assert.throws(() => trustedExceptions(root, commit(changed)), /CURRENT_ADMISSION_/u);
+    }
+    const installed = commit(registry);
+    t.mock.timers.tick(Date.parse(CURRENT_R18.expiresAt) - Date.now());
+    assert.throws(() => trustedExceptions(root, installed), /RECORD_INVALID/u);
+  }
+});
+
+test(
+  "generation18 successful R17 custody validates exact provider success and raw-blocked history separately",
+  { skip: pendingR18Repair },
+  async (t) => {
+    const { record, previous } = generation18Fixture(t),
+      p = CURRENT_R17_BLOCKED_CAPTURE,
+      payload = successfulR17PreparationFixture(previous);
+    assert.equal(hash(payload), p.preparePayloadDigest);
+    let preparation = { ...payload, commitSha: p.prepareCommit },
+      occupied = null,
+      run = providerRun(CURRENT_R17_SUCCESSFUL_RUN),
+      tree = p.candidateTree;
+    const artifactResponses = new Map(
+      p.artifacts.map((a) => [
+        a.id,
+        {
+          id: a.id,
+          expired: false,
+          size_in_bytes: a.bytes,
+          digest: `sha256:${a.sha256}`,
+          workflow_run: { id: p.runId },
+        },
+      ]),
+    );
+    const calls = [],
+      slots = [],
+      options = {
+        record,
+        storeFor: (value) => {
+          assert.equal(value.id, CURRENT_R17.id);
+          assert.equal(value.custody.namespace, `sounding-line-exceptions/${CURRENT_R17.id}`);
+          return {
+            read: async (slot) => {
+              slots.push(slot);
+              return slot === "prepare" ? preparation : slot === occupied ? { occupied: true } : null;
+            },
+          };
+        },
+        request: async (endpoint) => {
+          calls.push(endpoint);
+          if (endpoint === `actions/runs/${p.runId}`) return run;
+          if (endpoint === `git/commits/${p.candidateSha}`) return { tree: { sha: tree } };
+          const match = /^actions\/artifacts\/(\d+)$/u.exec(endpoint);
+          assert.ok(match && artifactResponses.has(Number(match[1])), `Unexpected inert R17 route: ${endpoint}`);
+          return artifactResponses.get(Number(match[1]));
+        },
+      };
+    await validateCurrentBlockedReviewPredecessor(options);
+    assert.deepEqual(slots, ["prepare", ...p.absentSlots]);
+    assert.deepEqual(calls, [
+      `actions/runs/${p.runId}`,
+      `git/commits/${p.candidateSha}`,
+      ...p.artifacts.map(({ id }) => `actions/artifacts/${id}`),
+    ]);
+    calls.length = 0;
+    await validateCurrentBlockedReviewPredecessor({
+      ...options,
+      observedRun: run,
+    });
+    assert.ok(!calls.includes(`actions/runs/${p.runId}`), "already observed R17 history is not fetched twice");
+    for (occupied of p.absentSlots)
+      await assert.rejects(validateCurrentBlockedReviewPredecessor(options), /R17_UNEXPECTED_SUCCESS_SLOT/u);
+    occupied = null;
+    for (const mutate of [
+      (v) => {
+        v.commitSha = sha(99);
+      },
+      (v) => {
+        v.run.runAttempt = 2;
+      },
+      (v) => {
+        v.status = "PASS";
+      },
+      (v) => {
+        v.independentReviewsCompleted = 8;
+      },
+      (v) => {
+        v.reservedIndependentReviewOrdinal = 9;
+      },
+    ]) {
+      preparation = structuredClone({ ...payload, commitSha: p.prepareCommit });
+      mutate(preparation);
+      await assert.rejects(validateCurrentBlockedReviewPredecessor(options), /R17_SPENT_PREPARATION_CHANGED/u);
+    }
+    preparation = { ...payload, commitSha: p.prepareCommit };
+    run = { ...run, conclusion: "failure" };
+    await assert.rejects(validateCurrentBlockedReviewPredecessor(options), /R17_SUCCESSFUL_CAPTURE_CHANGED/u);
+    run = providerRun(CURRENT_R17_SUCCESSFUL_RUN);
+    tree = sha(99);
+    await assert.rejects(validateCurrentBlockedReviewPredecessor(options), /R17_CANDIDATE_TREE_CHANGED/u);
+    tree = p.candidateTree;
+    for (const change of [
+      { expired: true },
+      { digest: `sha256:${"0".repeat(64)}` },
+      { size_in_bytes: p.artifacts[0].bytes + 1 },
+      { workflow_run: { id: 1 } },
+    ]) {
+      const a = p.artifacts[0],
+        original = artifactResponses.get(a.id);
+      artifactResponses.set(a.id, { ...original, ...change });
+      await assert.rejects(
+        validateCurrentBlockedReviewPredecessor(options),
+        /R17_SUCCESSFUL_CAPTURE_ARTIFACT_CHANGED/u,
+      );
+      artifactResponses.set(a.id, original);
+    }
+  },
+);
 
 test("fixed generation17 retains the literal sixteen-row prefix, bridges and failed R16 history without refunds", (t) => {
   const { record, registry, previous } = generation17Fixture(t),
@@ -793,6 +1297,94 @@ test("current review retains protected ledger counters without old iterations11 
   evidence.reviews[0].independentReviewOrdinal = 7;
   assert.throws(() => validateCurrentAdmissionEvidence(plan, evidence), /REVIEW_HISTORY_CHANGED/u);
 });
+test("generation18 evidence requires both blocked findings resolved per affected contract with current repair evidence", (t) => {
+  const record = fixtureRecord(t),
+    plan = planFor(record);
+  plan.exception.version = 18;
+  plan.exception.independentReviewOrdinal = CURRENT_R18.remainingIndependentReviewOrdinal;
+  const a = plan.exception.currentSourceAdmission;
+  a.cumulativeHistory = structuredClone(CURRENT_R18.cumulativeHistory);
+  a.requiredReviewIterations = CURRENT_R18.requiredReviewIterations;
+  const artifacts = contracts.map((contractId, index) => ({
+    ...artifact(),
+    id: `fixture-current-repair-${index}`,
+    path: `Development_Docs/Testing/Product_Experience/evidence/fixture-repair-${index}.png`,
+    contractId,
+  }));
+  const evidence = {
+    exception: plan.exception,
+    artifacts,
+    reviews: contracts.map((contractId, index) => ({
+      contractId,
+      iterations: 13,
+      independentReviewOrdinal: 9,
+      cumulativeHistory: structuredClone(a.cumulativeHistory),
+      findings: CURRENT_R17_BLOCKED_CAPTURE.blockedReview.blockingFindings
+        .filter((finding) => finding.contractIds.includes(contractId))
+        .map(({ id, classification }) => ({
+          id,
+          classification,
+          contractId,
+          disposition: "RESOLVED",
+          resolution: "Synthetic current repair evidence fixture only; no actual product judgment.",
+          repairEvidenceIds: [artifacts[index].id],
+        })),
+    })),
+  };
+  validateCurrentAdmissionEvidence(plan, evidence);
+  const fresh = () => structuredClone(evidence);
+  for (const finding of CURRENT_R17_BLOCKED_CAPTURE.blockedReview.blockingFindings)
+    for (const contractId of finding.contractIds)
+      for (const mutate of [
+        (review) => {
+          review.findings = review.findings.filter(({ id }) => id !== finding.id);
+        },
+        (review) => {
+          review.findings.push(structuredClone(review.findings.find(({ id }) => id === finding.id)));
+        },
+        (review) => {
+          review.findings.find(({ id }) => id === finding.id).classification = "MINOR_POLISH";
+        },
+        (review) => {
+          review.findings.find(({ id }) => id === finding.id).disposition = "UNRESOLVED";
+        },
+        (review) => {
+          review.findings.find(({ id }) => id === finding.id).resolution = "too short";
+        },
+        (review) => {
+          review.findings.find(({ id }) => id === finding.id).repairEvidenceIds = [];
+        },
+        (review) => {
+          review.findings.find(({ id }) => id === finding.id).repairEvidenceIds = ["old-r17-artifact"];
+        },
+        (review) => {
+          review.findings.find(({ id }) => id === finding.id).repairEvidenceIds = [
+            artifacts.find((v) => v.contractId !== contractId).id,
+          ];
+        },
+      ]) {
+        const changed = fresh(),
+          review = changed.reviews.find((entry) => entry.contractId === contractId);
+        mutate(review);
+        assert.throws(
+          () => validateCurrentAdmissionEvidence(plan, changed),
+          /REVIEW_HISTORY_CHANGED|R18_BLOCKING_FINDING_NOT_RESOLVED/u,
+        );
+      }
+  for (const change of [
+    { iterations: 12 },
+    { independentReviewOrdinal: 8 },
+    { cumulativeHistory: CURRENT_R17.cumulativeHistory },
+  ]) {
+    const changed = fresh();
+    Object.assign(changed.reviews[0], change);
+    assert.throws(() => validateCurrentAdmissionEvidence(plan, changed), /REVIEW_HISTORY_CHANGED/u);
+  }
+  const captureOnly = fresh();
+  delete captureOnly.reviews;
+  validateCurrentAdmissionEvidence(plan, captureOnly, true);
+});
+
 test("publication rejects arbitrary repeated paths and IDs and preserves capture identity", (t) => {
   const plan = planFor(fixtureRecord(t)),
     item = artifact();

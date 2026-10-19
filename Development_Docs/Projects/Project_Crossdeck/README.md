@@ -97,6 +97,23 @@ SSE invalidation, active reconciliation, recovery/security proof and measured
 load separately from the historical Phase 2 acceptance receipt. Its protected
 integration status remains explicitly recorded there.
 
+**2026-10-18 current repair checkpoint.** Protected R17 capture
+[39167709214](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39167709214)
+succeeded, but fresh source-blind independent review8 (iteration12) returned
+`REWORK_REQUIRED`. Both blockers remain preserved: phone Journal active-book
+occlusion and desktop paired pending/acknowledged status text beneath the open
+Charts drawer. The existing #721 branch now contains the independently reviewed
+six-file correction at `24b3ae474454ba893de986950af37a3390b5e7a5`.
+Focused development verification passed all three normal/reduced/recovery paired
+cases with zero retries or skips and six nearby phone/tablet/landscape checks
+without injected styles; production build, static checks and owned cleanup passed.
+An earlier `BOOK_SETTLING` phase-timeout failure remains preserved; the readiness
+assertion now uses its existing bounded 45-second wait. Successful full-motion
+playback is not established. A separately reviewed source-bound R18 successor,
+fresh whole capture, independent review9/iteration13, authenticated submission,
+complete protected qualification, #721 merge and landed verification remain
+pending. Existing #722 and dependent spatial integration remain held.
+
 ## Six-phase program
 
 1. **Phase 1 — Lay the Gangway**  
