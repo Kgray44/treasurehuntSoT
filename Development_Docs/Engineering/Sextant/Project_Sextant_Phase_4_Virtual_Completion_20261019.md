@@ -164,3 +164,13 @@ remains explicitly separate. The historical 141/13 mapping is preserved, and the
 remaining registrations, canonical fixtures and protected capture/review still
 require source-bound completion. Neither adding a declaration nor a development
 recording grants experience or Phase 4 acceptance.
+
+Consumer development run `39307522697` at `1c8fc3ab` failed before browser
+execution: the shared hosted template lacked the current required private
+failure-publication nonce. Its original log and harvested receipt are retained.
+The corrected template supplies the existing nonce-bound collector and uploads
+only its exact encrypted failure paths on failure; passing synthetic recordings
+remain separately publishable. The iOS product successor compiles with an
+explicit BUILD_ONLY scope and does not repeat the completed companion matrix.
+Build-only output carries no native-test pass claim and still verifies the
+actual app binary and owned simulator cleanup.

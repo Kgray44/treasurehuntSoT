@@ -10,7 +10,8 @@ async function main() {
   if (process.platform !== "darwin") throw new Error("LANDFALL_APPLE_REQUIRES_MACOS");
   const root = process.cwd();
   const scope = process.argv[2] ?? "all";
-  if (!["all", "companion-only"].includes(scope)) throw new Error("LANDFALL_APPLE_BUILD_SCOPE_INVALID");
+  if (!["all", "companion-only", "build-only"].includes(scope)) throw new Error("LANDFALL_APPLE_BUILD_SCOPE_INVALID");
+  const buildOnly = scope === "build-only";
   const presentationRequired = scope === "all";
   // Bind the required inventory to this checkout, including added provider tests.
   // Exactly one scenario-driver skip is allowed without its separately started endpoint.
@@ -42,8 +43,13 @@ async function main() {
     path.join(destination, "build-scope.json"),
     JSON.stringify(
       {
-        scope: presentationRequired ? "COMPANION_AND_PRESENTATION" : "COMPANION_ONLY",
-        requiredPassingTests,
+        scope: buildOnly
+          ? "COMPANION_BUILD_ONLY"
+          : presentationRequired
+            ? "COMPANION_AND_PRESENTATION"
+            : "COMPANION_ONLY",
+        requiredPassingTests: buildOnly ? 0 : requiredPassingTests,
+        nativeTestsPlanned: !buildOnly,
         sourceTestCount,
         excludedPresentationTests: presentationRequired ? [] : presentationTests,
         excludedProductTests: [productTest],
@@ -200,7 +206,7 @@ async function main() {
       '["127.0.0.1"]',
       path.join(root, "native", "ios", "LandfallCompanion", "Info.plist"),
     ]);
-    executionStage = "NATIVE_BUILD_AND_XCTEST";
+    executionStage = buildOnly ? "NATIVE_BUILD_ONLY" : "NATIVE_BUILD_AND_XCTEST";
     const output = await labTool(
       "xcodebuild",
       [
@@ -218,11 +224,15 @@ async function main() {
         "CODE_SIGNING_ALLOWED=YES",
         "CODE_SIGN_IDENTITY=-",
         "LANDFALL_LAB_PRESENTATION=1",
-        `-skip-testing:${productTest}`,
-        ...(presentationRequired
-          ? [`-skip-testing:${presentationTests[1]}`]
-          : presentationTests.map((test) => `-skip-testing:${test}`)),
-        "test",
+        ...(buildOnly
+          ? []
+          : [
+              `-skip-testing:${productTest}`,
+              ...(presentationRequired
+                ? [`-skip-testing:${presentationTests[1]}`]
+                : presentationTests.map((test) => `-skip-testing:${test}`)),
+            ]),
+        buildOnly ? "build-for-testing" : "test",
       ],
       1200000,
     );
@@ -235,71 +245,11 @@ async function main() {
         )
         .join("\n"),
     );
-    // Quiet xcodebuild may emit no success text; archive the structured result
-    // on successful runs as well as failures instead of relying on that output.
-    executionStage = "ARCHIVE_XCTEST_SUMMARY";
-    const testSummary = await labTool("xcrun", [
-      "xcresulttool",
-      "get",
-      "test-results",
-      "summary",
-      "--path",
-      resultPath,
-    ]);
-    await writeFile(path.join(destination, "native-test-summary.json"), testSummary);
-    await writeFile(
-      path.join(destination, "native-test-details.json"),
-      await labTool("xcrun", ["xcresulttool", "get", "test-results", "tests", "--path", resultPath]),
-    );
-    const nativeTests = JSON.parse(testSummary);
-    // Export the first bundle before the independent Motion test so a later
-    // failure preserves actual XXXL screenshots as well as the raw xcresult.
-    await labTool("xcrun", [
-      "xcresulttool",
-      "export",
-      "attachments",
-      "--path",
-      resultPath,
-      "--output-path",
-      path.join(destination, "test-attachments"),
-    ]);
-    if (presentationRequired) {
-      // Settings navigation and the readable XXXL shell are separate checks.
-      // Operate the real Reduce Motion switch at normal text size, retaining
-      // the first bundle's actual XXXL portrait/landscape proof independently.
-      executionStage = "CONFIGURE_OWNED_SETTINGS_TEXT";
-      await labTool("xcrun", ["simctl", "ui", id, "content_size", "large"]);
-      const settingsContentSize = (await labTool("xcrun", ["simctl", "ui", id, "content_size"])).trim().toLowerCase();
-      if (settingsContentSize !== "large") throw new Error("LANDFALL_APPLE_SETTINGS_TEXT_UNOBSERVED");
-      await writeFile(
-        path.join(destination, "settings-environment.json"),
-        JSON.stringify({ sourceClass: "ACTUAL_OWNED_SIMULATOR_SETTINGS", contentSize: "LARGE" }, null, 2),
-      );
-      resultPath = path.join(destination, "ReducedMotionTests.xcresult");
-      executionStage = "NATIVE_REDUCED_MOTION_XCTEST";
-      await labTool(
-        "xcodebuild",
-        [
-          "-quiet",
-          "-project",
-          path.join(root, "native", "ios", "LandfallCompanion.xcodeproj"),
-          "-scheme",
-          "LandfallCompanion",
-          "-destination",
-          `platform=iOS Simulator,id=${id}`,
-          "-derivedDataPath",
-          path.join(destination, "DerivedData"),
-          "-resultBundlePath",
-          resultPath,
-          "CODE_SIGNING_ALLOWED=YES",
-          "CODE_SIGN_IDENTITY=-",
-          "LANDFALL_LAB_PRESENTATION=1",
-          `-only-testing:${presentationTests[1]}`,
-          "test",
-        ],
-        600000,
-      );
-      const motionSummary = await labTool("xcrun", [
+    if (!buildOnly) {
+      // Quiet xcodebuild may emit no success text; archive the structured result
+      // on successful runs as well as failures instead of relying on that output.
+      executionStage = "ARCHIVE_XCTEST_SUMMARY";
+      const testSummary = await labTool("xcrun", [
         "xcresulttool",
         "get",
         "test-results",
@@ -307,52 +257,14 @@ async function main() {
         "--path",
         resultPath,
       ]);
-      await writeFile(path.join(destination, "reduced-motion-test-summary.json"), motionSummary);
-      const motionTests = JSON.parse(motionSummary);
-      if (
-        nativeTests.passedTests !== requiredPassingTests - 1 ||
-        nativeTests.failedTests !== 0 ||
-        motionTests.passedTests !== 1 ||
-        motionTests.failedTests !== 0 ||
-        motionTests.skippedTests !== 0
-      )
-        throw new Error("LANDFALL_APPLE_PRESENTATION_COMPONENT_TESTS_REQUIRED");
-      nativeTests.passedTests += motionTests.passedTests;
-      nativeTests.failedTests += motionTests.failedTests;
-      nativeTests.skippedTests += motionTests.skippedTests;
-      nativeTests.totalTestCount += motionTests.totalTestCount;
-      nativeTests.finishTime = motionTests.finishTime;
-      // Per-device and per-plan breakdowns belong to their original bundle;
-      // retaining the first breakdown here would misstate aggregate counts.
-      delete nativeTests.devicesAndConfigurations;
-      delete nativeTests.testResults;
-      delete nativeTests.statistics;
-      delete nativeTests.topInsights;
-      nativeTests.componentSummaries = ["native-test-summary.json", "reduced-motion-test-summary.json"];
-    }
-    await writeFile(path.join(destination, "test-summary.json"), JSON.stringify(nativeTests, null, 2));
-    // The only expected package-build skip is the canonical scenario driver,
-    // which requires its separately started endpoint. The companion-only job
-    // excludes exactly two presentation tests; their independent closure job
-    // still requires the complete source-bound inventory and cannot be substituted by this receipt.
-    if (
-      ![nativeTests.failedTests, nativeTests.passedTests, nativeTests.skippedTests].every(Number.isInteger) ||
-      nativeTests.failedTests !== 0 ||
-      nativeTests.passedTests < requiredPassingTests ||
-      nativeTests.skippedTests < 0 ||
-      nativeTests.skippedTests > 1
-    )
-      throw new Error(
-        presentationRequired ? "LANDFALL_APPLE_PRESENTATION_TESTS_REQUIRED" : "LANDFALL_APPLE_COMPANION_TESTS_REQUIRED",
+      await writeFile(path.join(destination, "native-test-summary.json"), testSummary);
+      await writeFile(
+        path.join(destination, "native-test-details.json"),
+        await labTool("xcrun", ["xcresulttool", "get", "test-results", "tests", "--path", resultPath]),
       );
-    executionStage = "EXPORT_XCTEST_ATTACHMENTS";
-    // Keep native capability values inspectable on the harvesting host. The
-    // passing assertion alone cannot establish the Simulator's NI capability.
-    await writeFile(
-      path.join(destination, "attachment-export-help.txt"),
-      await labTool("xcrun", ["xcresulttool", "help", "export", "attachments"]),
-    );
-    if (presentationRequired)
+      const nativeTests = JSON.parse(testSummary);
+      // Export the first bundle before the independent Motion test so a later
+      // failure preserves actual XXXL screenshots as well as the raw xcresult.
       await labTool("xcrun", [
         "xcresulttool",
         "export",
@@ -360,19 +272,155 @@ async function main() {
         "--path",
         resultPath,
         "--output-path",
-        path.join(destination, "reduced-motion-attachments"),
+        path.join(destination, "test-attachments"),
       ]);
+      if (presentationRequired) {
+        // Settings navigation and the readable XXXL shell are separate checks.
+        // Operate the real Reduce Motion switch at normal text size, retaining
+        // the first bundle's actual XXXL portrait/landscape proof independently.
+        executionStage = "CONFIGURE_OWNED_SETTINGS_TEXT";
+        await labTool("xcrun", ["simctl", "ui", id, "content_size", "large"]);
+        const settingsContentSize = (await labTool("xcrun", ["simctl", "ui", id, "content_size"])).trim().toLowerCase();
+        if (settingsContentSize !== "large") throw new Error("LANDFALL_APPLE_SETTINGS_TEXT_UNOBSERVED");
+        await writeFile(
+          path.join(destination, "settings-environment.json"),
+          JSON.stringify({ sourceClass: "ACTUAL_OWNED_SIMULATOR_SETTINGS", contentSize: "LARGE" }, null, 2),
+        );
+        resultPath = path.join(destination, "ReducedMotionTests.xcresult");
+        executionStage = "NATIVE_REDUCED_MOTION_XCTEST";
+        await labTool(
+          "xcodebuild",
+          [
+            "-quiet",
+            "-project",
+            path.join(root, "native", "ios", "LandfallCompanion.xcodeproj"),
+            "-scheme",
+            "LandfallCompanion",
+            "-destination",
+            `platform=iOS Simulator,id=${id}`,
+            "-derivedDataPath",
+            path.join(destination, "DerivedData"),
+            "-resultBundlePath",
+            resultPath,
+            "CODE_SIGNING_ALLOWED=YES",
+            "CODE_SIGN_IDENTITY=-",
+            "LANDFALL_LAB_PRESENTATION=1",
+            `-only-testing:${presentationTests[1]}`,
+            "test",
+          ],
+          600000,
+        );
+        const motionSummary = await labTool("xcrun", [
+          "xcresulttool",
+          "get",
+          "test-results",
+          "summary",
+          "--path",
+          resultPath,
+        ]);
+        await writeFile(path.join(destination, "reduced-motion-test-summary.json"), motionSummary);
+        const motionTests = JSON.parse(motionSummary);
+        if (
+          nativeTests.passedTests !== requiredPassingTests - 1 ||
+          nativeTests.failedTests !== 0 ||
+          motionTests.passedTests !== 1 ||
+          motionTests.failedTests !== 0 ||
+          motionTests.skippedTests !== 0
+        )
+          throw new Error("LANDFALL_APPLE_PRESENTATION_COMPONENT_TESTS_REQUIRED");
+        nativeTests.passedTests += motionTests.passedTests;
+        nativeTests.failedTests += motionTests.failedTests;
+        nativeTests.skippedTests += motionTests.skippedTests;
+        nativeTests.totalTestCount += motionTests.totalTestCount;
+        nativeTests.finishTime = motionTests.finishTime;
+        // Per-device and per-plan breakdowns belong to their original bundle;
+        // retaining the first breakdown here would misstate aggregate counts.
+        delete nativeTests.devicesAndConfigurations;
+        delete nativeTests.testResults;
+        delete nativeTests.statistics;
+        delete nativeTests.topInsights;
+        nativeTests.componentSummaries = ["native-test-summary.json", "reduced-motion-test-summary.json"];
+      }
+      await writeFile(path.join(destination, "test-summary.json"), JSON.stringify(nativeTests, null, 2));
+      // The only expected package-build skip is the canonical scenario driver,
+      // which requires its separately started endpoint. The companion-only job
+      // excludes exactly two presentation tests; their independent closure job
+      // still requires the complete source-bound inventory and cannot be substituted by this receipt.
+      if (
+        ![nativeTests.failedTests, nativeTests.passedTests, nativeTests.skippedTests].every(Number.isInteger) ||
+        nativeTests.failedTests !== 0 ||
+        nativeTests.passedTests < requiredPassingTests ||
+        nativeTests.skippedTests < 0 ||
+        nativeTests.skippedTests > 1
+      )
+        throw new Error(
+          presentationRequired
+            ? "LANDFALL_APPLE_PRESENTATION_TESTS_REQUIRED"
+            : "LANDFALL_APPLE_COMPANION_TESTS_REQUIRED",
+        );
+      executionStage = "EXPORT_XCTEST_ATTACHMENTS";
+      // Keep native capability values inspectable on the harvesting host. The
+      // passing assertion alone cannot establish the Simulator's NI capability.
+      await writeFile(
+        path.join(destination, "attachment-export-help.txt"),
+        await labTool("xcrun", ["xcresulttool", "help", "export", "attachments"]),
+      );
+      if (presentationRequired)
+        await labTool("xcrun", [
+          "xcresulttool",
+          "export",
+          "attachments",
+          "--path",
+          resultPath,
+          "--output-path",
+          path.join(destination, "reduced-motion-attachments"),
+        ]);
+    }
+    const appPath = path.join(
+      destination,
+      "DerivedData",
+      "Build",
+      "Products",
+      "Debug-iphonesimulator",
+      "LandfallCompanion.app",
+    );
+    if (!(await stat(path.join(appPath, "LandfallCompanion"))).isFile())
+      throw new Error("LANDFALL_APPLE_BUILT_BINARY_MISSING");
+    if (buildOnly) {
+      const products = path.join(destination, "DerivedData", "Build", "Products");
+      const testRuns = (await readdir(products)).filter((file) => file.endsWith(".xctestrun"));
+      const uiTests = path.join(
+        products,
+        "Debug-iphonesimulator",
+        "LandfallCompanionUiTests-Runner.app",
+        "PlugIns",
+        "LandfallCompanionUiTests.xctest",
+      );
+      if (testRuns.length !== 1 || !(await stat(uiTests)).isDirectory())
+        throw new Error("LANDFALL_APPLE_PRODUCT_TEST_BUILD_MISSING");
+      await writeFile(
+        path.join(destination, "prepared-product-test.json"),
+        JSON.stringify(
+          {
+            scope: "BUILD_FOR_TESTING_NO_XCTEST_EXECUTION",
+            testRun: testRuns[0],
+            uiTestProductPrepared: true,
+            testsExecuted: 0,
+            nativeTestAcceptance: false,
+          },
+          null,
+          2,
+        ),
+      );
+    }
     await writeFile(
       path.join(root, "artifacts", "landfall-device-lab", "apple-app.json"),
       JSON.stringify({
-        app: path.join(
-          destination,
-          "DerivedData",
-          "Build",
-          "Products",
-          "Debug-iphonesimulator",
-          "LandfallCompanion.app",
-        ),
+        app: appPath,
+        binarySha256: createHash("sha256")
+          .update(await readFile(path.join(appPath, "LandfallCompanion")))
+          .digest("hex"),
+        buildScope: scope,
         runtime: runtime.id,
         deviceType: deviceType.identifier,
         profile,

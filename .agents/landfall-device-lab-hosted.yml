@@ -29,7 +29,15 @@ jobs:
           cache: npm
       - run: npm ci --ignore-scripts
       - run: npx --no-install playwright install --with-deps chromium
+      - name: Bind private failure publication to this execution
+        id: browser-private-source
+        run: node --input-type=module -e 'import{appendFileSync}from"node:fs";import{randomUUID}from"node:crypto";appendFileSync(process.env.GITHUB_OUTPUT,`nonce=${randomUUID()}\n`);'
+      - name: Verify the existing private publication contract on its supported host
+        run: node --test tests/sounding-line/private-browser-failure-output.test.mjs
       - name: Build and run isolated first-party browser contracts
+        id: browser-execution
+        env:
+          SOUNDING_LINE_PRIVATE_FAILURE_PUBLICATION_NONCE: ${{ steps.browser-private-source.outputs.nonce }}
         run: |
           browser_database="$GITHUB_WORKSPACE/artifacts/sounding-line/generic-__CANDIDATE_SHA12__/validation-isolated-$(date +%Y%m%d-%H%M%S%3N)-$(cat /proc/sys/kernel/random/uuid | tr -d '-').db"
           npx --no-install tsx scripts/landfall/device-lab/configured-browser.ts __CANDIDATE_SHA__ "file:$browser_database" __BROWSER_SUITE__
@@ -40,8 +48,20 @@ jobs:
           path: |
             artifacts/sounding-line/browser-runtime.json
             artifacts/sounding-line/browser-suite-profile.json
-            test-results
           retention-days: 14
+      - uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: landfall-browser-passing-results-__CANDIDATE_SHA__
+          path: test-results
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        if: ${{ always() && steps.browser-execution.outputs.private_browser_failure_publish == steps.browser-private-source.outputs.nonce && steps.browser-execution.outputs.private_browser_failure_paths != '' }}
+        with:
+          name: landfall-browser-encrypted-failures-__CANDIDATE_SHA__
+          path: ${{ steps.browser-execution.outputs.private_browser_failure_paths }}
+          if-no-files-found: error
+          retention-days: 90
   providers:
     if: __RUN_PROVIDERS__
     name: Providers / ${{ matrix.os }}
@@ -123,8 +143,16 @@ jobs:
       - run: brew install xcodegen
       - run: npx --no-install playwright install chromium
       - run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
-      - run: npx --no-install tsx scripts/landfall/device-lab/apple-build.ts companion-only
+      - run: npx --no-install tsx scripts/landfall/device-lab/apple-build.ts build-only
+      - name: Bind private failure publication to the Apple product execution
+        id: apple-devices-private-source
+        run: node --input-type=module -e 'import{appendFileSync}from"node:fs";import{randomUUID}from"node:crypto";appendFileSync(process.env.GITHUB_OUTPUT,`nonce=${randomUUID()}\n`);'
+      - name: Verify the existing private publication contract on its supported host
+        run: node --test tests/sounding-line/private-browser-failure-output.test.mjs
       - name: Exercise the existing normal Devices journey with the owned generic runtime
+        id: apple-devices-execution
+        env:
+          SOUNDING_LINE_PRIVATE_FAILURE_PUBLICATION_NONCE: ${{ steps.apple-devices-private-source.outputs.nonce }}
         run: |
           node --input-type=module <<'EOF'
           import { randomUUID } from "node:crypto";
@@ -144,8 +172,20 @@ jobs:
             artifacts/landfall-device-lab
             artifacts/sounding-line/browser-runtime.json
             artifacts/sounding-line/browser-suite-profile.json
-            test-results
           retention-days: 14
+      - uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: sextant-ios-devices-passing-results-__CANDIDATE_SHA__
+          path: test-results
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        if: ${{ always() && steps.apple-devices-execution.outputs.private_browser_failure_publish == steps.apple-devices-private-source.outputs.nonce && steps.apple-devices-execution.outputs.private_browser_failure_paths != '' }}
+        with:
+          name: sextant-ios-devices-encrypted-failures-__CANDIDATE_SHA__
+          path: ${{ steps.apple-devices-execution.outputs.private_browser_failure_paths }}
+          if-no-files-found: error
+          retention-days: 90
 
   apple-notice:
     if: __RUN_APPLE_NOTICE__
@@ -358,7 +398,13 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
       - run: npx --no-install playwright install --with-deps chromium
+      - name: Bind private failure publication to the Android product execution
+        id: android-journal-private-source
+        run: node --input-type=module -e 'import{appendFileSync}from"node:fs";import{randomUUID}from"node:crypto";appendFileSync(process.env.GITHUB_OUTPUT,`nonce=${randomUUID()}\n`);'
       - name: Build optimized application before owning native devices
+        id: android-journal-execution
+        env:
+          SOUNDING_LINE_PRIVATE_FAILURE_PUBLICATION_NONCE: ${{ steps.android-journal-private-source.outputs.nonce }}
         run: |
           export ANDROID_SDK_ROOT="$ANDROID_HOME"
           pairing_database="$GITHUB_WORKSPACE/artifacts/sounding-line/generic-__CANDIDATE_SHA12__/validation-isolated-$(date +%Y%m%d-%H%M%S%3N)-$(cat /proc/sys/kernel/random/uuid | tr -d '-').db"
@@ -372,8 +418,20 @@ jobs:
             artifacts/landfall-device-lab/**/native-journal-pair-receipt.json
             artifacts/sounding-line/browser-runtime.json
             artifacts/sounding-line/browser-suite-profile.json
-            test-results
           retention-days: 14
+      - uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: landfall-android-journal-passing-results-${{ matrix.profile }}-__CANDIDATE_SHA__
+          path: test-results
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        if: ${{ always() && steps.android-journal-execution.outputs.private_browser_failure_publish == steps.android-journal-private-source.outputs.nonce && steps.android-journal-execution.outputs.private_browser_failure_paths != '' }}
+        with:
+          name: landfall-android-journal-encrypted-failures-${{ matrix.profile }}-__CANDIDATE_SHA__
+          path: ${{ steps.android-journal-execution.outputs.private_browser_failure_paths }}
+          if-no-files-found: error
+          retention-days: 90
 
   android-background:
     if: __RUN_ANDROID_BACKGROUND__

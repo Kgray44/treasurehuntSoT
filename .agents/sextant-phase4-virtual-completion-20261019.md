@@ -42,6 +42,17 @@ reset earlier allowances, provide protected custody, or authorize physical claim
 The idle adapter uses documented Android controls with OS readback and restores
 forced idle, app inactivity, standby bucket and the existing battery fixture.
 
+The browser consumer transport at `1c8fc3ab` failed before test execution because
+the older shared hosted template omitted the current private-publication nonce.
+Preserve run39307522697 and its original result. Corrected-source browser and
+iOS product launches use the existing nonce/collector/exact-path encrypted
+failure contract. For the iOS product successor, compile with `build-only`;
+do not repeat the completed 31-case companion matrix for a launch-only repair.
+The separate existing Android `android-journal` primary-phone target is also
+authorized once for its actual WebView Device controls and paired Journal UI,
+against accepted source only. Record complete source/run/cleanup proof and do
+not present the passing D0/D1 controls or OS idle cases as that product proof.
+
 Preserve canonical ownership: Sextant sensing/capability, Crossdeck participation
 and synchronization, Landfall world/navigation, Watchglass interpretation and
 One Voyage progression. Expected native interruptions end consumers; only a new
