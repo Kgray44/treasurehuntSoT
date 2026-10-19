@@ -9825,6 +9825,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/selected-index-identity-20261018/alternative-tracker-comparison.json",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/Selected_Index_Identity_Repair_20261018.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Sextant/Adaptive_Visual_Capture_Design_20261017.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -10738,6 +10750,30 @@
     },
     {
       "path": "Development_Docs/Validation/Voyagewright_Google_GitHub_OAuth_Validation_Record.md",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/selected-index-identity-20261018/desktop-relative-evidence-held.png",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/selected-index-identity-20261018/mobile-relative-evidence-held.png",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/selected-index-identity-20261018/desktop-check-evidence-held.png",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/selected-index-identity-20261018/suspended-relative-evidence-development-review.json",
       "record_type": "validation-evidence",
       "status": "preserved",
       "canonical_for": null

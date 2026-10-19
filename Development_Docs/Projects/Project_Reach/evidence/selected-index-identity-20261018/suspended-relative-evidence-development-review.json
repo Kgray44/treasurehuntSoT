@@ -1,0 +1,213 @@
+{
+  "schemaVersion": 1,
+  "classification": "ENGINEERING_EVIDENCE_SUPPLEMENTAL_SYNTHETIC_DEVELOPMENT_REVIEW",
+  "applicationSource": "1c0194b7e5d09a12b8b4b24b9c56f5c4d11e4b54",
+  "sourceTree": "27cd453f43b21ec0684c1a71faaedbc12b85bbef",
+  "sourceArchiveSha256": "ac11f8c8694af4f6281d658fbbf539472bff0abc4507b589b78814a7b5e902e4",
+  "reviewedCode": {
+    "src/reach/ReachLaboratory.tsx": "3f4cdc85e2957aced65cffbae79fda1d043a592e9afa983e92bdd3b2d39ec893",
+    "src/reach/ReachLaboratory-source-continuity.test.tsx": "b056df25eee9184544995fa8ed654477c92fc75f1f76a22a4f07a3dd99f922e4"
+  },
+  "verdict": "NO_BLOCKING_FINDING_IN_BOUNDED_RENDERED_SUSPENSION_REVIEW",
+  "method": {
+    "independence": "Reviewer did not author application suspension patch; reviewer authored private capture harness.",
+    "browser": "Isolated headless Edge, fresh owned profiles, anonymous navigation, task-owned loopback development build.",
+    "fixture": "Exact existing installFixture extraction: public analytic canvas appearance and fake bitmap-paired inference. No physical person imagery.",
+    "visualInspection": "State-specific viewport PNGs and 24 timestamped sampled frames across three saved interaction videos; no continuous frame-by-frame review claim.",
+    "sourceBinding": "Build manifest/source archive/build ID verified; scoped application and fixture hashes matched snapshot before/after each run.",
+    "concurrency": "Other synthetic development suites ran concurrently. No timing, throughput, hardware or latency claim.",
+    "geometry": "Recorded viewport, DPR, plane client dimensions and scroll. Top/scroll movement alone was not treated as source invalidation."
+  },
+  "denominator": {
+    "successfulScenarios": 3,
+    "selectedViewportPNGs": 3,
+    "successfulViewportPNGsRetainedPrivately": 23,
+    "savedInteractionVideosRetainedPrivately": 3,
+    "preservedFailedHarnessAttempts": 2
+  },
+  "scenarios": [
+    {
+      "scenario": "DESKTOP_TRAINING",
+      "viewport": {
+        "width": 1280,
+        "height": 900,
+        "dpr": 1,
+        "reducedMotion": true
+      },
+      "image": {
+        "file": "desktop-relative-evidence-held.png",
+        "sha256": "e20ef3092411a2d99d1ac4728538434fd924a89b790db6c41b1768d652ec116b",
+        "width": 1280,
+        "height": 900
+      },
+      "fixtureFunctionSha256": "c24d62443209d5fa4e9df39ad0564f8dfca7873a8f6113e31a467296f086b1bd",
+      "poseFixtureSha256": "a642534b132a1f329046401e4ff5ecfcb7d5977e0abbf939d95d05f275e16f61",
+      "sourceStable": true,
+      "builtSourceStable": true,
+      "cleanupConfirmed": true,
+      "planeClientSize": {
+        "width": 739,
+        "height": 568,
+        "unchangedFromOriginalBinding": true
+      },
+      "noHorizontalOverflow": true,
+      "assertions": {
+        "originalFirstTargetSaved": true,
+        "genuineBlankAndNoModelOver1700Ms": true,
+        "replacementEstablishedWithoutUsingOriginalEvidence": true,
+        "target2AndSavedCount1Preserved": true,
+        "persistentSuspendedExplanation": true,
+        "pointerSurfaceUnmounted": true,
+        "calibrationCaptureDisabled": true,
+        "exportDisabledWithConsent": true,
+        "noResumeRetryOrPlaygroundBypass": true,
+        "holdPersistsForFurther1100Ms": true,
+        "naturalReturnReleasesSyntheticCameraAndWorker": true,
+        "explicitChoice": "FRESH_START_TARGET1_ZERO_SAVED",
+        "fittedProfileAndOneCheckTargetPreservedInert": false
+      },
+      "privateInteractionVideo": {
+        "sha256": "45fb9a6b51bdf9dfb3c2f70a17e030d7f8cad87673d232d7785547da0cbbca9c",
+        "bytes": 1085336,
+        "encodedDurationSeconds": 9.44,
+        "publication": "PRIVATE_ONLY_NOT_INCLUDED"
+      }
+    },
+    {
+      "scenario": "MOBILE_TRAINING",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "dpr": 1,
+        "reducedMotion": true
+      },
+      "image": {
+        "file": "mobile-relative-evidence-held.png",
+        "sha256": "6e63b3deeb929ec009dd919042453f6d20cc29eba229c7e0941489247c580b2c",
+        "width": 390,
+        "height": 844
+      },
+      "fixtureFunctionSha256": "c24d62443209d5fa4e9df39ad0564f8dfca7873a8f6113e31a467296f086b1bd",
+      "poseFixtureSha256": "a642534b132a1f329046401e4ff5ecfcb7d5977e0abbf939d95d05f275e16f61",
+      "sourceStable": true,
+      "builtSourceStable": true,
+      "cleanupConfirmed": true,
+      "planeClientSize": {
+        "width": 354,
+        "height": 352,
+        "unchangedFromOriginalBinding": true
+      },
+      "noHorizontalOverflow": true,
+      "assertions": {
+        "originalFirstTargetSaved": true,
+        "genuineBlankAndNoModelOver1700Ms": true,
+        "replacementEstablishedWithoutUsingOriginalEvidence": true,
+        "target2AndSavedCount1Preserved": true,
+        "persistentSuspendedExplanation": true,
+        "pointerSurfaceUnmounted": true,
+        "calibrationCaptureDisabled": true,
+        "exportDisabledWithConsent": true,
+        "noResumeRetryOrPlaygroundBypass": true,
+        "holdPersistsForFurther1100Ms": true,
+        "naturalReturnReleasesSyntheticCameraAndWorker": true,
+        "explicitChoice": "CANCEL_TO_PREPARE_CAMERA_AVAILABLE",
+        "fittedProfileAndOneCheckTargetPreservedInert": false
+      },
+      "privateInteractionVideo": {
+        "sha256": "e1a305e3a952aab23e77f99dc1ef905cf83e4f4c21f82380f9565f2cfc432076",
+        "bytes": 677041,
+        "encodedDurationSeconds": 8.64,
+        "publication": "PRIVATE_ONLY_NOT_INCLUDED"
+      }
+    },
+    {
+      "scenario": "DESKTOP_FITTED_VALIDATION",
+      "viewport": {
+        "width": 1280,
+        "height": 900,
+        "dpr": 1,
+        "reducedMotion": true
+      },
+      "image": {
+        "file": "desktop-check-evidence-held.png",
+        "sha256": "f4ec5a3fe24ce3d34c9bb4e227cf03eb6e9350fdfb4c1b8fb19dbce51d1d4f7d",
+        "width": 1280,
+        "height": 900
+      },
+      "fixtureFunctionSha256": "c24d62443209d5fa4e9df39ad0564f8dfca7873a8f6113e31a467296f086b1bd",
+      "poseFixtureSha256": "a642534b132a1f329046401e4ff5ecfcb7d5977e0abbf939d95d05f275e16f61",
+      "sourceStable": true,
+      "builtSourceStable": true,
+      "cleanupConfirmed": true,
+      "planeClientSize": {
+        "width": 739,
+        "height": 568,
+        "unchangedFromOriginalBinding": true
+      },
+      "noHorizontalOverflow": true,
+      "assertions": {
+        "originalFirstTargetSaved": true,
+        "genuineBlankAndNoModelOver1700Ms": true,
+        "replacementEstablishedWithoutUsingOriginalEvidence": true,
+        "target2AndSavedCount1Preserved": true,
+        "persistentSuspendedExplanation": true,
+        "pointerSurfaceUnmounted": true,
+        "calibrationCaptureDisabled": true,
+        "exportDisabledWithConsent": true,
+        "noResumeRetryOrPlaygroundBypass": true,
+        "holdPersistsForFurther1100Ms": true,
+        "naturalReturnReleasesSyntheticCameraAndWorker": true,
+        "explicitChoice": "FRESH_START_TARGET1_ZERO_SAVED",
+        "fittedProfileAndOneCheckTargetPreservedInert": true
+      },
+      "privateInteractionVideo": {
+        "sha256": "59c43e3669ed064abb3961a5b4c2fd48f8aa57a0ea25cd8fa7f61fbf9ce33a7c",
+        "bytes": 1593459,
+        "encodedDurationSeconds": 17.84,
+        "publication": "PRIVATE_ONLY_NOT_INCLUDED"
+      }
+    }
+  ],
+  "preservedHarnessFailures": [
+    {
+      "category": "RESPONSIVE_SELECTOR_EXPECTED_HIDDEN_DESKTOP_SAVED_COUNT_TO_BE_VISIBLE",
+      "sourceStable": true,
+      "builtSourceStable": true,
+      "cleanupConfirmed": true,
+      "disposition": "Original failed receipt/video preserved privately. Successor asserts underlying count and visible mobile compact count."
+    },
+    {
+      "category": "RESPONSIVE_ROLE_LOOKUP_OMITTED_HIDDEN_DESKTOP_STATUS_CARD",
+      "sourceStable": true,
+      "builtSourceStable": true,
+      "cleanupConfirmed": true,
+      "disposition": "Original failed receipt/video preserved privately. Successor checks source card text plus visible mobile explanation."
+    }
+  ],
+  "observations": [
+    "Desktop and mobile show target two and one saved target and explain that completed targets cannot be used with the replacement track. Interactive pointer surface is absent while the camera preview remains available.",
+    "Mobile held-state explanation, saved count and explicit fresh/cancel controls fit the 390px viewport without horizontal overflow.",
+    "Fitted setup/check evidence remains present but inert. Explicit fresh discards old evidence and begins target one; explicit cancel returns to preparation.",
+    "Camera-preview image tracking is separate from permission to use previous calibration evidence. A current preview marker does not resume the held trial."
+  ],
+  "limitations": [
+    "Synthetic development evidence only: no actual neural recognition, live camera, sensor/display latency, physical pointing accuracy, owner acceptance or protected qualification.",
+    "Underlying physical rough-motion/identity limitation and separately preserved mixed-motion D0 failure remain open. This change preserves evidence safely; it does not establish successful identity recovery.",
+    "No independent physical held-out acceptance trial, full assistive-technology audit or physical-phone qualification is established.",
+    "Mobile diagnostic export was asserted disabled with consent. Its below-fold button is not shown by the selected mobile image.",
+    "Preserved harness failures are not passing checks and were not silently discarded."
+  ],
+  "privacy": {
+    "ownerMedia": false,
+    "calibrationCoefficients": false,
+    "accountOrCameraOrTrackIdentifiers": false,
+    "privateAbsolutePaths": false,
+    "credentialsOrCookies": false,
+    "syntheticFacelessViewportImagesOnly": true,
+    "ownerLandmarks": false,
+    "ownerPositionsOrTrajectories": false,
+    "syntheticPublicFixtureDrawing": true
+  },
+  "sourceReviewedPacketSha256": "620fd5ac58f2b2c8a38a74806196b40f1a2a379d4c9ca7cfa61cf8ade84a52ec",
+  "publicationEditorialNormalization": "Whitespace and owner-data privacy labels clarified; review assertions and outcomes unchanged."
+}

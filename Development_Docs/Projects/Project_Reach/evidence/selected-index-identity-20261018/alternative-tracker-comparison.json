@@ -1,0 +1,393 @@
+{
+  "classification": "ENGINEERING_DEVELOPMENT_EVIDENCE_AGGREGATE_ONLY_NOT_PRODUCT_ACCEPTANCE",
+  "createdAt": "2026-10-19T00:06:16Z",
+  "decision": "NO_ALTERNATIVE_ADOPTED_ALL_THREE_REJECTED_FOR_THIS_BOUNDED_TRANSITION",
+  "sourceTier": "Owner-recorded pixels; development and tuning evidence, not independent held-out validation.",
+  "inputDenominators": {
+    "frames": 135,
+    "updates": 134,
+    "durationSourceSeconds": 7.4159999999999995,
+    "oneKnownBusyCallbackMissing": true,
+    "laterVisiblePointReferences": 6,
+    "laterAmbiguousReferences": 2,
+    "initialLabelExcluded": true
+  },
+  "initialization": {
+    "oneTimeManualBox": true,
+    "nativeBoxSizePixels": [32, 32],
+    "analysisBoxSizePixels": [16, 16],
+    "sameTerminalCapBothContexts": true,
+    "nativeCenterErrorFromInitialReferencePixels": 0,
+    "grayCenterErrorFromInitialReferencePixels": 0.6751058884585535,
+    "initialAnnotationRadiusPixels": 8,
+    "noReseedsOrTuning": true,
+    "visualQaCompleted": true
+  },
+  "dependencies": [
+    {
+      "filename": "numpy-2.2.6-cp312-cp312-win_amd64.whl",
+      "sha256": "c1f9540be57940698ed329904db803cf7a402f3fc200bfe599334c9bd84a40b2",
+      "bytes": 12614190
+    },
+    {
+      "filename": "opencv_contrib_python-4.13.0.92-cp37-abi3-win_amd64.whl",
+      "sha256": "cb694dcf76bb2c8d7fa573fc1a99339e8b6640194d7778381e74cc3445369e45",
+      "bytes": 46486178
+    }
+  ],
+  "models": [
+    {
+      "filename": "nanotrack_backbone_sim.onnx",
+      "url": "https://raw.githubusercontent.com/HonglinChu/SiamTrackers/248663fde6bf7c40190cf10ee396d5662919ecd3/NanoTrack/models/nanotrackv2/nanotrack_backbone_sim.onnx",
+      "bytes": 1056849,
+      "sha256": "530bdd0cd00f19afab79a863e71ba71e3312395a5dc9151af675082bdaaa2fc4",
+      "gitBlobSha1": "17277ccff4a1525c2f3fc581c573a7f86afbff44"
+    },
+    {
+      "filename": "nanotrack_head_sim.onnx",
+      "url": "https://raw.githubusercontent.com/HonglinChu/SiamTrackers/248663fde6bf7c40190cf10ee396d5662919ecd3/NanoTrack/models/nanotrackv2/nanotrack_head_sim.onnx",
+      "bytes": 726198,
+      "sha256": "0d8c0637be849f092cc7236cae02e55c8b9455ebe37ba50601d6115db4247cd9",
+      "gitBlobSha1": "a5deab14e371b7c4a0a76e0a10630e9af853b2b1"
+    },
+    {
+      "filename": "NanoTrack-LICENSE",
+      "url": "https://raw.githubusercontent.com/HonglinChu/SiamTrackers/248663fde6bf7c40190cf10ee396d5662919ecd3/NanoTrack/LICENSE",
+      "bytes": 11357,
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "gitBlobSha1": "261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64"
+    }
+  ],
+  "licensing": "OpenCV: Apache 2.0; Python packaging: MIT; NumPy: BSD 3-Clause and bundled notices; NanoTrack folder: Apache 2.0. Exact license bytes remain in the private dependency receipt.",
+  "algorithms": [
+    {
+      "input": "NATIVE_COLOR",
+      "tracker": "CSRT_DEFAULT",
+      "updates": 134,
+      "successBoolTrue": 134,
+      "laterAvailable": 6,
+      "laterMissing": 0,
+      "withinAnnotationCircles": 0,
+      "nativePixelCenterError": {
+        "n": 6,
+        "median": 187.5026671218421,
+        "p95": 194.50449866262733,
+        "max": 194.50449866262733,
+        "total": 1098.4820637048078
+      },
+      "constructionMs": 0.4345,
+      "initializationMs": 36.5652,
+      "cpuUpdateMs": {
+        "n": 134,
+        "median": 19.462899999999998,
+        "p95": 23.3689,
+        "max": 27.0092,
+        "total": 2660.3807
+      }
+    },
+    {
+      "input": "NATIVE_COLOR",
+      "tracker": "KCF_DEFAULT",
+      "updates": 134,
+      "successBoolTrue": 7,
+      "laterAvailable": 0,
+      "laterMissing": 6,
+      "withinAnnotationCircles": 0,
+      "nativePixelCenterError": {
+        "n": 0,
+        "median": null,
+        "p95": null,
+        "max": null,
+        "total": 0
+      },
+      "constructionMs": 0.2771,
+      "initializationMs": 0.5872,
+      "cpuUpdateMs": {
+        "n": 134,
+        "median": 0.5201,
+        "p95": 0.8945,
+        "max": 1.3269,
+        "total": 72.4864
+      }
+    },
+    {
+      "input": "NATIVE_COLOR",
+      "tracker": "NANOTRACKV2_CPU_DEFAULT",
+      "updates": 134,
+      "successBoolTrue": 134,
+      "laterAvailable": 6,
+      "laterMissing": 0,
+      "withinAnnotationCircles": 0,
+      "nativePixelCenterError": {
+        "n": 6,
+        "median": 188.76772835751177,
+        "p95": 194.7004108881129,
+        "max": 194.7004108881129,
+        "total": 1103.0679252058244
+      },
+      "constructionMs": 19.0164,
+      "initializationMs": 7.786,
+      "cpuUpdateMs": {
+        "n": 134,
+        "median": 6.1825,
+        "p95": 7.4359,
+        "max": 9.1578,
+        "total": 849.6808
+      }
+    },
+    {
+      "input": "EXACT_NCC_GRAY",
+      "tracker": "CSRT_DEFAULT",
+      "updates": 134,
+      "successBoolTrue": 134,
+      "laterAvailable": 6,
+      "laterMissing": 0,
+      "withinAnnotationCircles": 0,
+      "nativePixelCenterError": {
+        "n": 6,
+        "median": 168.36661505416174,
+        "p95": 174.41142655791418,
+        "max": 174.41142655791418,
+        "total": 987.1448206835469
+      },
+      "constructionMs": 1.5751,
+      "initializationMs": 17.452,
+      "cpuUpdateMs": {
+        "n": 134,
+        "median": 19.467799999999997,
+        "p95": 22.2777,
+        "max": 27.1167,
+        "total": 2657.2094
+      }
+    },
+    {
+      "input": "EXACT_NCC_GRAY",
+      "tracker": "KCF_DEFAULT",
+      "updates": 134,
+      "successBoolTrue": 7,
+      "laterAvailable": 0,
+      "laterMissing": 6,
+      "withinAnnotationCircles": 0,
+      "nativePixelCenterError": {
+        "n": 0,
+        "median": null,
+        "p95": null,
+        "max": null,
+        "total": 0
+      },
+      "constructionMs": 0.0084,
+      "initializationMs": 0.0377,
+      "cpuUpdateMs": {
+        "n": 134,
+        "median": 0.15265,
+        "p95": 0.253,
+        "max": 0.4324,
+        "total": 22.6906
+      }
+    },
+    {
+      "input": "EXACT_NCC_GRAY",
+      "tracker": "NANOTRACKV2_CPU_DEFAULT",
+      "updates": 134,
+      "successBoolTrue": 134,
+      "laterAvailable": 6,
+      "laterMissing": 0,
+      "withinAnnotationCircles": 0,
+      "nativePixelCenterError": {
+        "n": 6,
+        "median": 211.21473567424633,
+        "p95": 217.37169819741155,
+        "max": 217.37169819741155,
+        "total": 1240.5115853572986
+      },
+      "constructionMs": 6.967,
+      "initializationMs": 2.3462,
+      "cpuUpdateMs": {
+        "n": 134,
+        "median": 6.043900000000001,
+        "p95": 7.1053,
+        "max": 10.2162,
+        "total": 830.3824
+      }
+    }
+  ],
+  "negativeProbes": [
+    {
+      "input": "NATIVE_COLOR",
+      "tracker": "CSRT_DEFAULT",
+      "type": "SYNTHETIC_BLANK",
+      "trials": 3,
+      "reportedSuccess": 0,
+      "nanoRawScores": []
+    },
+    {
+      "input": "NATIVE_COLOR",
+      "tracker": "CSRT_DEFAULT",
+      "type": "ACTUAL_NOHAND_SCENE_JUMP",
+      "trials": 1,
+      "reportedSuccess": 1,
+      "nanoRawScores": []
+    },
+    {
+      "input": "NATIVE_COLOR",
+      "tracker": "CSRT_DEFAULT",
+      "type": "ACTUAL_OPEN_SCENE_JUMP",
+      "trials": 1,
+      "reportedSuccess": 1,
+      "nanoRawScores": []
+    },
+    {
+      "input": "NATIVE_COLOR",
+      "tracker": "KCF_DEFAULT",
+      "type": "SYNTHETIC_BLANK",
+      "trials": 3,
+      "reportedSuccess": 0,
+      "nanoRawScores": []
+    },
+    {
+      "input": "NATIVE_COLOR",
+      "tracker": "KCF_DEFAULT",
+      "type": "ACTUAL_NOHAND_SCENE_JUMP",
+      "trials": 1,
+      "reportedSuccess": 0,
+      "nanoRawScores": []
+    },
+    {
+      "input": "NATIVE_COLOR",
+      "tracker": "KCF_DEFAULT",
+      "type": "ACTUAL_OPEN_SCENE_JUMP",
+      "trials": 1,
+      "reportedSuccess": 0,
+      "nanoRawScores": []
+    },
+    {
+      "input": "NATIVE_COLOR",
+      "tracker": "NANOTRACKV2_CPU_DEFAULT",
+      "type": "SYNTHETIC_BLANK",
+      "trials": 3,
+      "reportedSuccess": 3,
+      "nanoRawScores": [0.80857253074646, 0.8088599443435669, 0.8090730905532837]
+    },
+    {
+      "input": "NATIVE_COLOR",
+      "tracker": "NANOTRACKV2_CPU_DEFAULT",
+      "type": "ACTUAL_NOHAND_SCENE_JUMP",
+      "trials": 1,
+      "reportedSuccess": 1,
+      "nanoRawScores": [0.8122075796127319]
+    },
+    {
+      "input": "NATIVE_COLOR",
+      "tracker": "NANOTRACKV2_CPU_DEFAULT",
+      "type": "ACTUAL_OPEN_SCENE_JUMP",
+      "trials": 1,
+      "reportedSuccess": 1,
+      "nanoRawScores": [0.7811845541000366]
+    },
+    {
+      "input": "EXACT_NCC_GRAY",
+      "tracker": "CSRT_DEFAULT",
+      "type": "SYNTHETIC_BLANK",
+      "trials": 3,
+      "reportedSuccess": 0,
+      "nanoRawScores": []
+    },
+    {
+      "input": "EXACT_NCC_GRAY",
+      "tracker": "CSRT_DEFAULT",
+      "type": "ACTUAL_NOHAND_SCENE_JUMP",
+      "trials": 1,
+      "reportedSuccess": 0,
+      "nanoRawScores": []
+    },
+    {
+      "input": "EXACT_NCC_GRAY",
+      "tracker": "CSRT_DEFAULT",
+      "type": "ACTUAL_OPEN_SCENE_JUMP",
+      "trials": 1,
+      "reportedSuccess": 1,
+      "nanoRawScores": []
+    },
+    {
+      "input": "EXACT_NCC_GRAY",
+      "tracker": "KCF_DEFAULT",
+      "type": "SYNTHETIC_BLANK",
+      "trials": 3,
+      "reportedSuccess": 0,
+      "nanoRawScores": []
+    },
+    {
+      "input": "EXACT_NCC_GRAY",
+      "tracker": "KCF_DEFAULT",
+      "type": "ACTUAL_NOHAND_SCENE_JUMP",
+      "trials": 1,
+      "reportedSuccess": 0,
+      "nanoRawScores": []
+    },
+    {
+      "input": "EXACT_NCC_GRAY",
+      "tracker": "KCF_DEFAULT",
+      "type": "ACTUAL_OPEN_SCENE_JUMP",
+      "trials": 1,
+      "reportedSuccess": 0,
+      "nanoRawScores": []
+    },
+    {
+      "input": "EXACT_NCC_GRAY",
+      "tracker": "NANOTRACKV2_CPU_DEFAULT",
+      "type": "SYNTHETIC_BLANK",
+      "trials": 3,
+      "reportedSuccess": 3,
+      "nanoRawScores": [0.8588488698005676, 0.8606535196304321, 0.8619114756584167]
+    },
+    {
+      "input": "EXACT_NCC_GRAY",
+      "tracker": "NANOTRACKV2_CPU_DEFAULT",
+      "type": "ACTUAL_NOHAND_SCENE_JUMP",
+      "trials": 1,
+      "reportedSuccess": 1,
+      "nanoRawScores": [0.8117797374725342]
+    },
+    {
+      "input": "EXACT_NCC_GRAY",
+      "tracker": "NANOTRACKV2_CPU_DEFAULT",
+      "type": "ACTUAL_OPEN_SCENE_JUMP",
+      "trials": 1,
+      "reportedSuccess": 1,
+      "nanoRawScores": [0.8574557304382324]
+    }
+  ],
+  "currentNccReference": {
+    "source": "Existing full-sequence actual 1x 8e435/f836 interpretation; no manual reseed at this window. Source timestamps and labels are identical, and the grayscale input bytes match.",
+    "available": 3,
+    "missing": 3,
+    "withinAnnotationCircles": 3,
+    "centerErrorNativePixels": {
+      "n": 3,
+      "median": 5.565674418392957,
+      "p95": 7.854242632284186,
+      "max": 7.854242632284186,
+      "total": 17.251166524924823
+    }
+  },
+  "cpuScope": "OpenCV 4.13, one CPU thread, OpenCL off; NanoTrack uses DNN_BACKEND_OPENCV and DNN_TARGET_CPU. Update timings exclude I/O, physical camera and browser work. Existing resource contention was preserved; these are not browser FPS or hardware latency.",
+  "qualitativeReview": "Both initial boxes were visually centered on the correct index cap. Three reviewed later frames show CSRT and NanoTrack reporting success with boxes on the face, eye or nose, while KCF rejects. Both successful trackers miss all six later visible-tip references.",
+  "limitations": [
+    "One annotation-assisted 32-pixel initialization, with no ongoing oracle or reseeding. A bounding-box center follows material or a region; it is not a semantic anatomical endpoint.",
+    "Development and tuning evidence: six later visible-tip references and two ambiguous references. Sparse uncertainty circles are not independent human-qualified ground truth.",
+    "OpenCV success booleans and NanoTrack scores are not calibrated finger identity, pointing intent or confidence. A successful box can drift onto a face or another digit.",
+    "Native RGB differs from NCC in color and resolution. The exact grayscale comparison controls input bytes, but grayscale is not the original NanoTrack training domain.",
+    "CPU update times exclude image I/O, model acquisition, shared browser overhead, sensor exposure, display and pacing. Existing development and gaming load was preserved.",
+    "The transition slice has no independently labelled actual occlusion or no-hand interval. Separate blank, no-hand and open-hand scene jumps are bounded negative probes only.",
+    "No production adoption, integration or physical calibration accuracy is claimed. Owner pixels and coordinates are excluded from this aggregate.",
+    "NCC state comes from the earlier complete sequence; alternatives receive a favorable known-correct manual initialization at the slice start. This is not a randomized global algorithm ranking.",
+    "No protected qualification, held-out physical accuracy or 3-percent calibration result is claimed."
+  ],
+  "visualReviewReceiptSha256": "f7cacc7449d78778ccbcea8289122030bc94940f1580ba69dc6f4b46f6d3f138",
+  "evidenceBinding": {
+    "numericResultsSha256": "247f5e05d51322871d6df140e95e725c0e4b2a8b543f98880a3761853e6550eb",
+    "dependencyReceiptSha256": "3a679636fe5831b7d1020df4744e9025348570ff62de60075f4177b9ad527d1e",
+    "renderSealSha256": "7afb9d3acbacc7764701c5c6692b4ac8ba158b4db79c8ebb51b070e06e641e7c",
+    "originalReviewedAggregateSha256": "b1d44228db12298bb4316e99734ba6386b9a7da835ce935fd18c2d2ab87e174c"
+  }
+}
