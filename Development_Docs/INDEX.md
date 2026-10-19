@@ -3,7 +3,7 @@ title: Engineering record index
 audience: engineering
 status: current
 canonical_for: engineering-record-index
-last_reviewed: 2026-10-08
+last_reviewed: 2026-10-15
 ---
 
 # Engineering-record index
@@ -43,6 +43,24 @@ Use [document-index.json](document-index.json) for complete path-level classific
 
 ## Current project references
 
+- [Crossdeck R12 finite diagnosed continuation](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R12_Diagnosed_Continuation_20261017.md)
+- [Crossdeck R13 finite setup readiness successor](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R13_Setup_Readiness_Successor_20261017.md)
+- [Sounding Line capture helper lifecycle repair](Programs/Sounding_Line/Project_Sounding_Line_Capture_Lifecycle_Repair_Record.md)
+- [Sounding Line browser receipt diagnostic correction](Programs/Sounding_Line/Project_Sounding_Line_Browser_Receipt_Diagnostic_Record.md)
+- [Sounding Line replay failure observations and completed verification retention](Programs/Sounding_Line/Project_Sounding_Line_Replay_Failure_Diagnostics_20261016.md)
+- [Sounding Line replay admission Git failure observations](Programs/Sounding_Line/Project_Sounding_Line_Replay_Admission_Git_Diagnostics_20261017.md)
+- [Crossdeck ordinary6 finite hosted source diagnostic](Programs/Sounding_Line/Project_Sounding_Line_Ordinary6_Source_Diagnostic_20261017.md)
+- [Crossdeck ordinary6 finite posttechnical replay diagnostic](Programs/Sounding_Line/Project_Sounding_Line_Ordinary6_Posttechnical_Diagnostic_20261017.md)
+- [Crossdeck ordinary6 finite historical-validation diagnostic](Programs/Sounding_Line/Project_Sounding_Line_Ordinary6_Historical_Validation_Diagnostic_20261017.md)
+- [Crossdeck final-verification activation review](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_Final_Verification_Activation_Review_20261015.md)
+- [Crossdeck finite final-verification dispatch audit](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_Final_Verification_Dispatch_Audit_20261015.md)
+- [Crossdeck finite final-verification control plane](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_Final_Verification_Proposal_20261015.md)
+- [Experience context setup replay repair](Programs/Sounding_Line/Project_Sounding_Line_Context_Setup_Replay_Repair_20261015.md)
+- [Crossdeck R2 owner-decision proposal (pending and inactive)](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R2_Owner_Decision_Proposal_20261015.md)
+- [Crossdeck R3 phone-return authority amendment (approved; protected installation required)](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R3_Owner_Decision_Proposal_20261015.md)
+- [Crossdeck R3 review cancellation audit and inactive owner disposition](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R3_Review_Cancellation_Disposition_20261015.md)
+- [Crossdeck R4 checkout correction and approved fresh-evidence recovery](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R4_Recovery_20261015.md)
+- [Crossdeck R5 bounded custody transport recovery](Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R5_Transport_Recovery_20261015.md)
 - [Project Homeport](Projects/Project_Homeport/README.md)
 - [Voyagewright Refit V1](Projects/Voyagewright_Refit_V1/README.md)
 - [Project Tideglass](Projects/Project_Tideglass/README.md)

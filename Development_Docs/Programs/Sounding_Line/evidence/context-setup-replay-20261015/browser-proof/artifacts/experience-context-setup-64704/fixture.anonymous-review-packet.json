@@ -1,0 +1,132 @@
+{
+  "contract": {
+    "id": "fixture.anonymous",
+    "experience": {
+      "entryPoint": "/public",
+      "devices": [
+        "DESKTOP"
+      ],
+      "roles": [
+        "ANONYMOUS"
+      ],
+      "states": [
+        "READY",
+        "RETURNED"
+      ],
+      "recordingRequired": true,
+      "journeys": [
+        {
+          "id": "public-round-trip",
+          "roles": [
+            "ANONYMOUS"
+          ],
+          "steps": [
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Public fixture",
+              "state": "READY"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Leave public fixture"
+            },
+            {
+              "action": "assert",
+              "kind": "outcome",
+              "role": "heading",
+              "name": "Public outside",
+              "path": "/public-away",
+              "meaning": "Anonymous navigation stays public."
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Return to public fixture"
+            },
+            {
+              "action": "assert",
+              "role": "heading",
+              "name": "Public fixture",
+              "path": "/public",
+              "returnPath": true,
+              "state": "RETURNED"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "sourceDigest": "160406765ef9af03dde33212d406defa5b18f5def30614c1bd8f893a8ca0440f",
+  "artifacts": [
+    {
+      "id": "fixture.anonymous-public-round-trip-DESKTOP-ANONYMOUS-REDUCED-READY-0",
+      "path": "artifacts/experience-context-setup-64704/fixture.anonymous-public-round-trip-DESKTOP-ANONYMOUS-REDUCED-READY-0.png",
+      "sha256": "555515a97ca4948adabb00e2e5582494de63a040d5d093ceef4d94ffa0ee655e",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "fixture.anonymous",
+      "state": "READY",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "fixture.anonymous-public-round-trip-DESKTOP-ANONYMOUS-REDUCED-RETURNED-4",
+      "path": "artifacts/experience-context-setup-64704/fixture.anonymous-public-round-trip-DESKTOP-ANONYMOUS-REDUCED-RETURNED-4.png",
+      "sha256": "555515a97ca4948adabb00e2e5582494de63a040d5d093ceef4d94ffa0ee655e",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "fixture.anonymous",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "fixture.anonymous-public-round-trip-DESKTOP-ANONYMOUS-REDUCED-trace",
+      "path": "artifacts/experience-context-setup-64704/fixture.anonymous-public-round-trip-DESKTOP-ANONYMOUS-REDUCED.trace.zip",
+      "sha256": "8c9420d39aa53aac33e3ff3bbb57dc17e3453aa6c8c3490c1b88372cfad21dc1",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "fixture.anonymous",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "fixture.anonymous-public-round-trip-DESKTOP-ANONYMOUS-REDUCED-recording",
+      "path": "artifacts/experience-context-setup-64704/53eb5ce9d8e7bf25c59d27caa9f9f128.webm",
+      "sha256": "7fd976c5f4b05f4b0c0939f8eae437f6ecf1d99d9772d7349f3a652669a56d28",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "fixture.anonymous",
+      "device": "DESKTOP",
+      "role": "ANONYMOUS",
+      "motionMode": "REDUCED"
+    }
+  ],
+  "packetDigest": "940318fb677df2dcb63c7d29e7ac3136d79916f6a54740cd12c07be42de19573",
+  "instructions": "Inspect rendered images and recordings before source. Record concrete evidence for every dimension. Builder rationale is intentionally excluded. Return review JSON; do not infer owner acceptance.",
+  "reviewDimensions": [
+    "composition",
+    "hierarchy",
+    "typography",
+    "spacing",
+    "controls",
+    "contrast",
+    "consistency",
+    "states",
+    "responsive",
+    "keyboard",
+    "focus",
+    "feedback",
+    "motion",
+    "continuity",
+    "complexity",
+    "role-outcomes",
+    "fallbacks"
+  ],
+  "builderRationaleIncluded": false
+}

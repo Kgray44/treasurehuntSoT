@@ -1,8 +1,12 @@
-import { execFileSync } from "node:child_process";
+import { inheritSourceFailure, sourceDiagnosticGit } from "./source-diagnostics.mjs";
 import { createHash } from "node:crypto";
+import { r8FormatEvidencePlan, validateR8FormatEvidenceIdentity } from "./experience-r8-format.mjs";
 import { readFileSync, realpathSync } from "node:fs";
 import path from "node:path";
 import { inflateSync } from "node:zlib";
+import { bindExperienceException, validateExceptionEvidence } from "./experience-exception.mjs";
+import { planPairedEvidence, validatePairedEvidence } from "./experience-paired.mjs";
+import { isCurrentAdmissionPlan } from "./experience-current-admission.mjs";
 
 // This module is loaded alongside the protected-main Sounding Line verifier.
 // Candidate declarations can add obligations, never remove trusted obligations.
@@ -46,8 +50,8 @@ const sha = /^[a-f0-9]{40}$/u;
 const digestPattern = /^[a-f0-9]{64}$/u;
 const normalize = (file) => file.replaceAll("\\", "/");
 export const experienceDigest = (value) => createHash("sha256").update(JSON.stringify(value)).digest("hex");
-const fail = (code, detail = "") => {
-  throw new Error(`PRODUCT_EXPERIENCE_${code}${detail ? `:${detail}` : ""}`);
+const fail = (code, detail = "", cause) => {
+  throw inheritSourceFailure(cause, new Error(`PRODUCT_EXPERIENCE_${code}${detail ? `:${detail}` : ""}`));
 };
 const meaningful = (value) => typeof value === "string" && value.trim().length >= 12;
 const list = (value) => Array.isArray(value) && value.length > 0;
@@ -59,7 +63,7 @@ function crc32(bytes) {
   }
   return (crc ^ 0xffffffff) >>> 0;
 }
-function validScreenshot(bytes) {
+function validScreenshot(bytes, minimumHeight = 400) {
   try {
     if (!bytes.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))) return false;
     let offset = 8;
@@ -91,7 +95,7 @@ function validScreenshot(bytes) {
       return false;
     const width = header.readUInt32BE(0);
     const height = header.readUInt32BE(4);
-    if (width < 320 || height < 400 || width > 10000 || height > 50000) return false;
+    if (width < 320 || height < minimumHeight || width > 10000 || height > 50000) return false;
     return (
       inflateSync(Buffer.concat(data), { maxOutputLength: 128 * 1024 * 1024 }).length ===
       (width * (header[9] === 6 ? 4 : 3) + 1) * height
@@ -102,15 +106,20 @@ function validScreenshot(bytes) {
 }
 
 function git(root, args, options = {}) {
-  return execFileSync("git", args, { cwd: root, encoding: "utf8", maxBuffer: 128 * 1024 * 1024, ...options });
+  return sourceDiagnosticGit("PRODUCT_EXPERIENCE", args, {
+    cwd: root,
+    encoding: "utf8",
+    maxBuffer: 128 * 1024 * 1024,
+    ...options,
+  });
 }
 export function revisionJson(root, revision, file, optional = false) {
   const present = git(root, ["ls-tree", revision, "--", file]).trim();
   if (!present && optional) return null;
   try {
     return JSON.parse(git(root, ["show", `${revision}:${file}`]));
-  } catch {
-    fail("REGISTRY_INVALID", file);
+  } catch (cause) {
+    fail("REGISTRY_INVALID", file, cause);
   }
 }
 export function sourceSnapshot(root, revision) {
@@ -449,7 +458,7 @@ export function mergeExperienceContracts(trustedContracts, candidateContracts) {
         fail("TRUSTED_OBLIGATION_CHANGED", `${contract.id}.roleSetup.${role}`);
       experience.roleSetup[role] = setup;
     }
-    for (const key of ["motion", "continuity"]) {
+    for (const key of ["motion", "continuity", "pairedEvidence"]) {
       if (!baseline[key] && proposed[key]) experience[key] = proposed[key];
       else if (baseline[key] && proposed[key] && experienceDigest(baseline[key]) !== experienceDigest(proposed[key]))
         fail("TRUSTED_OBLIGATION_CHANGED", `${contract.id}.${key}`);
@@ -506,7 +515,88 @@ export function baselineScopeDigest(snapshot, sourcePaths) {
       .sort((a, b) => a.path.localeCompare(b.path)),
   );
 }
-export function planProductExperience({ root, baseSha, candidateSha, changedPaths }) {
+function protectedReviewContinuation({ root, baseSha, candidateSha, prNumber, policy, contracts }) {
+  const record = policy.reviewContinuation;
+  if (!record || String(prNumber) !== String(record.prNumber)) return null;
+  const contract = contracts.find((value) => value.id === record.contractId);
+  if (!contract) return null;
+  if (
+    !/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/u.test(record.repository ?? "") ||
+    !Number.isSafeInteger(record.prNumber) ||
+    record.prNumber < 1 ||
+    !/^[a-z0-9-]+$/u.test(record.id ?? "") ||
+    !sha.test(record.ancestorCandidate ?? "") ||
+    !record.blockedReview?.path?.startsWith("Development_Docs/Engineering/") ||
+    !digestPattern.test(record.blockedReview.sha256 ?? "")
+  )
+    fail("REVIEW_CONTINUATION_INVALID");
+  // This is installed-base authority, never a candidate declaration or a new round.
+  const bytes = artifactBytes({ root, revision: baseSha, file: record.blockedReview.path });
+  if (
+    createHash("sha256").update(bytes).digest("hex") !== record.blockedReview.sha256 ||
+    !bytes.equals(artifactBytes({ root, revision: candidateSha, file: record.blockedReview.path }))
+  )
+    fail("REVIEW_CONTINUATION_HISTORY_MISMATCH");
+  const previous = JSON.parse(bytes.toString());
+  if (
+    previous.status !== "BLOCKED" ||
+    previous.iterations !== 3 ||
+    previous.repairAction !== "BLOCK_WITH_EVIDENCE" ||
+    previous.contractId !== contract.id ||
+    previous.candidateSha !== record.ancestorCandidate ||
+    !sha.test(previous.baseSha ?? "") ||
+    !digestPattern.test(previous.sourceDigest ?? "") ||
+    !digestPattern.test(previous.contractDigest ?? "") ||
+    !list(previous.findings) ||
+    previous.findings.some(
+      (finding) =>
+        !finding.id ||
+        finding.contractId !== contract.id ||
+        nonblocking.has(finding.classification) ||
+        !FINDING_CLASSES.includes(finding.classification) ||
+        finding.disposition !== "UNRESOLVED",
+    ) ||
+    new Set(previous.findings.map((finding) => finding.id)).size !== previous.findings.length
+  )
+    fail("REVIEW_CONTINUATION_HISTORY_INVALID");
+  git(root, ["merge-base", "--is-ancestor", record.ancestorCandidate, candidateSha]);
+  if (process.env.GITHUB_ACTIONS === "true") {
+    const event = JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH, "utf8"));
+    const pull = event.pull_request;
+    const dispatched = process.env.GITHUB_EVENT_NAME === "workflow_dispatch";
+    if (
+      process.env.GITHUB_REPOSITORY !== record.repository ||
+      process.env.GITHUB_SHA !== baseSha ||
+      process.env.GITHUB_REF !== "refs/heads/main" ||
+      (dispatched
+        ? String(event.inputs?.pr_number) !== String(record.prNumber) ||
+          event.inputs?.candidate_sha !== candidateSha ||
+          event.inputs?.base_sha !== baseSha
+        : process.env.GITHUB_EVENT_NAME !== "pull_request_target" ||
+          pull?.number !== record.prNumber ||
+          pull?.base?.repo?.full_name !== record.repository ||
+          pull?.base?.sha !== baseSha ||
+          pull?.head?.sha !== candidateSha)
+    )
+      fail("REVIEW_CONTINUATION_CONTEXT_MISMATCH");
+  }
+  return {
+    id: record.id,
+    policyDigest: experienceDigest(record),
+    prNumber: record.prNumber,
+    contractId: contract.id,
+    previousReviewSha256: record.blockedReview.sha256,
+    iterations: 4,
+    previousFindings: previous.findings.map(({ id, classification }) => ({ id, classification })),
+  };
+}
+function unboundProductExperiencePlan({
+  root,
+  baseSha,
+  candidateSha,
+  changedPaths,
+  prNumber = process.env.SOUNDING_LINE_PR_NUMBER,
+}) {
   const trustedRegistry = revisionJson(root, baseSha, "testing/contracts.json");
   const policy = trustedRegistry.experiencePolicy;
   if (!policy) return { applicable: false, classification: "TRUSTED_POLICY_NOT_YET_ACTIVATED", contractIds: [] };
@@ -548,6 +638,15 @@ export function planProductExperience({ root, baseSha, candidateSha, changedPath
   if (result.applicable && !result.contractIds.length) fail("UNREGISTERED_SURFACE", result.affectedSurfaces.join(","));
   if (!result.applicable) return result;
   const selected = contracts.filter((contract) => result.contractIds.includes(contract.id));
+  const paired = planPairedEvidence(selected);
+  const reviewContinuation = protectedReviewContinuation({
+    root,
+    baseSha,
+    candidateSha,
+    prNumber,
+    policy,
+    contracts: selected,
+  });
   for (const contract of selected) registryBindings(root, baseSha, policy, contract);
   const uncovered = consumers.surfaces.filter(
     (file) => !selected.some((contract) => matches(file, contract.experience.sourcePaths)),
@@ -556,6 +655,28 @@ export function planProductExperience({ root, baseSha, candidateSha, changedPath
   return {
     ...result,
     contracts: selected,
+    ...(reviewContinuation ? { reviewContinuation } : {}),
+    ...(paired
+      ? {
+          paired,
+          candidateTree: git(root, ["rev-parse", `${candidateSha}^{tree}`]).trim(),
+          genericContextCount: selected.reduce(
+            (n, c) =>
+              n +
+              c.experience.devices.length *
+                c.experience.journeys.reduce((m, j) => m + j.roles.length * (c.experience.motion ? 2 : 1), 0),
+            0,
+          ),
+          contextCount:
+            selected.reduce(
+              (n, c) =>
+                n +
+                c.experience.devices.length *
+                  c.experience.journeys.reduce((m, j) => m + j.roles.length * (c.experience.motion ? 2 : 1), 0),
+              0,
+            ) + paired.browserContexts,
+        }
+      : {}),
     evidencePath: policy.evidencePath,
     baseSha,
     candidateSha,
@@ -576,6 +697,13 @@ export function planProductExperience({ root, baseSha, candidateSha, changedPath
   };
 }
 
+export function planProductExperience(options) {
+  const plan = unboundProductExperiencePlan(options);
+  const exception = bindExperienceException({ ...options, plan });
+  if (exception && plan.reviewContinuation) fail("REVIEW_CONTINUATION_EXCEPTION_CONFLICT");
+  return exception ? { ...plan, exception } : plan;
+}
+
 export function repairDisposition({ findings, iterations, previousBlockingCount, maxIterations = 3 }) {
   const blocking = findings.filter(
     (finding) =>
@@ -593,7 +721,7 @@ export function repairDisposition({ findings, iterations, previousBlockingCount,
     preserveRequirements: true,
   };
 }
-function artifactBytes({ root, revision, file }) {
+export function artifactBytes({ root, revision, file }) {
   if (typeof file !== "string" || path.posix.isAbsolute(file) || file.includes("\\") || file.split("/").includes(".."))
     fail("ARTIFACT_PATH_INVALID");
   if (revision) {
@@ -606,33 +734,23 @@ function artifactBytes({ root, revision, file }) {
   if (!resolved.startsWith(rootPath + path.sep)) fail("ARTIFACT_PATH_INVALID");
   return readFileSync(resolved);
 }
-export function validateExperienceEvidence({
-  plan,
-  evidence,
-  root,
-  baselineRoot = root,
-  revision,
-  readArtifact = artifactBytes,
-  automatedOnly = false,
-}) {
-  if (!plan.applicable) return { status: "NOT_APPLICABLE", classification: plan.classification };
-  if (!evidence || evidence.version !== 1) fail("EVIDENCE_MISSING");
-  if (
-    evidence.baseSha !== plan.baseSha ||
-    !sha.test(evidence.baseSha ?? "") ||
-    evidence.sourceDigest !== plan.sourceDigest ||
-    evidence.contractDigest !== plan.contractDigest
-  )
-    fail("EVIDENCE_SOURCE_MISMATCH");
-  if (!list(evidence.artifacts) || (!automatedOnly && !list(evidence.reviews)) || !list(evidence.journeys))
-    fail("VISUAL_EVIDENCE_INCOMPLETE");
+export function validateExperienceArtifacts({ plan, evidence, root, revision, readArtifact = artifactBytes }) {
+  if (!Array.isArray(evidence?.artifacts) || !evidence.artifacts.length) fail("VISUAL_EVIDENCE_INCOMPLETE");
   const artifacts = new Map();
   for (const artifact of evidence.artifacts) {
     if (artifacts.has(artifact.id) || !digestPattern.test(artifact.sha256 ?? "")) fail("ARTIFACT_IDENTITY_INVALID");
     const bytes = readArtifact({ root, revision, file: artifact.path });
     if (createHash("sha256").update(bytes).digest("hex") !== artifact.sha256)
       fail("ARTIFACT_DIGEST_MISMATCH", artifact.id);
-    if (artifact.type === "screenshot" && !validScreenshot(bytes)) fail("SCREENSHOT_INVALID", artifact.id);
+    const pairedLandscape =
+      plan?.paired?.contractIds?.includes(artifact.contractId) &&
+      artifact.device === "MOBILE" &&
+      ["PAIRED_crossdeck-pair-normal", "PAIRED_crossdeck-pair-reduced"].includes(artifact.state) &&
+      path.posix.basename(artifact.path) === "15-phone-landscape.png" &&
+      artifact.viewport?.width === 844 &&
+      artifact.viewport?.height === 390;
+    if (artifact.type === "screenshot" && !validScreenshot(bytes, pairedLandscape ? 390 : 400))
+      fail("SCREENSHOT_INVALID", artifact.id);
     if (
       artifact.type === "recording" &&
       (bytes.length < 128 ||
@@ -644,6 +762,41 @@ export function validateExperienceEvidence({
       fail("ARTIFACT_ORIGIN_INVALID", artifact.id);
     artifacts.set(artifact.id, artifact);
   }
+  return artifacts;
+}
+export function validateExperienceEvidence({
+  plan,
+  evidence,
+  root,
+  baselineRoot = root,
+  revision,
+  readArtifact = artifactBytes,
+  automatedOnly = false,
+}) {
+  const currentPlan = plan;
+  if (!automatedOnly) {
+    validateR8FormatEvidenceIdentity(plan, evidence ?? {});
+    plan = r8FormatEvidencePlan(plan);
+  }
+  if (!plan.applicable) return { status: "NOT_APPLICABLE", classification: plan.classification };
+  if (!evidence || evidence.version !== 1) fail("EVIDENCE_MISSING");
+  validateExceptionEvidence(plan, evidence, automatedOnly);
+  if (
+    evidence.baseSha !== plan.baseSha ||
+    !sha.test(evidence.baseSha ?? "") ||
+    evidence.sourceDigest !== plan.sourceDigest ||
+    evidence.contractDigest !== plan.contractDigest
+  )
+    fail("EVIDENCE_SOURCE_MISMATCH");
+  if (!list(evidence.artifacts) || (!automatedOnly && !list(evidence.reviews)) || !list(evidence.journeys))
+    fail("VISUAL_EVIDENCE_INCOMPLETE");
+  const artifacts = validateExperienceArtifacts({ plan, evidence, root, revision, readArtifact });
+  validatePairedEvidence({
+    root: baselineRoot,
+    plan,
+    evidence,
+    read: (file) => readArtifact({ root, revision, file }),
+  });
   for (const contract of plan.contracts) {
     const experience = contract.experience;
     const captures = evidence.artifacts.filter((artifact) => artifact.contractId === contract.id);
@@ -762,6 +915,7 @@ export function validateExperienceEvidence({
         sourceDigest: plan.sourceDigest,
         contract,
         artifacts: captures.map(({ id, sha256 }) => ({ id, sha256 })),
+        ...(contract.experience.pairedEvidence ? { pairedEvidence: evidence.pairedEvidence } : {}),
       })
     )
       fail("REVIEW_PACKET_MISMATCH", contract.id);
@@ -815,10 +969,40 @@ export function validateExperienceEvidence({
         }
       } else fail("BLOCKING_FINDING", finding.id);
     }
+    const continuation = plan.reviewContinuation?.contractId === contract.id ? plan.reviewContinuation : null;
+    if (continuation) {
+      const binding = {
+        id: continuation.id,
+        policyDigest: continuation.policyDigest,
+        prNumber: continuation.prNumber,
+        previousReviewSha256: continuation.previousReviewSha256,
+        iterations: 4,
+        baseSha: plan.baseSha,
+        sourceDigest: plan.sourceDigest,
+      };
+      if (
+        experienceDigest(review.continuation ?? null) !== experienceDigest(binding) ||
+        new Set(review.findings.map((finding) => finding.id)).size !== review.findings.length ||
+        continuation.previousFindings.some(
+          (previous) =>
+            !review.findings.some(
+              (finding) =>
+                finding.id === previous.id &&
+                finding.classification === previous.classification &&
+                finding.disposition === "RESOLVED",
+            ),
+        )
+      )
+        fail("REVIEW_CONTINUATION_BINDING_MISMATCH", contract.id);
+    } else if (review.continuation) fail("REVIEW_CONTINUATION_NOT_AUTHORIZED", contract.id);
     if (
       !Number.isInteger(review.iterations) ||
-      review.iterations < 1 ||
-      review.iterations > 3 ||
+      (plan.exception
+        ? review.iterations !==
+          (isCurrentAdmissionPlan(plan) ? plan.exception.currentSourceAdmission.requiredReviewIterations : 11)
+        : continuation
+          ? review.iterations !== 4
+          : review.iterations < 1 || review.iterations > 3) ||
       review.status !== "ACCEPTED"
     )
       fail("REVIEW_UNRESOLVED", contract.id);
@@ -827,7 +1011,14 @@ export function validateExperienceEvidence({
   return {
     status: "PASS",
     contractIds: plan.contractIds,
-    sourceDigest: plan.sourceDigest,
+    sourceDigest: currentPlan.sourceDigest,
+    ...(currentPlan.exception?.nonExecutingReconciliation
+      ? {
+          reviewedBaseSha: plan.baseSha,
+          reviewedSourceDigest: plan.sourceDigest,
+          nonExecutingReconciliation: currentPlan.exception.nonExecutingReconciliation,
+        }
+      : {}),
     independence: automatedOnly ? "AUTOMATED_REPLAY_ONLY" : "SEPARATE_CONTEXT_RECORDED",
     ownerAcceptance: "NOT_CLAIMED",
   };

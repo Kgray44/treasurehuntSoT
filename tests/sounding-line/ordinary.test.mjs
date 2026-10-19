@@ -6,6 +6,8 @@ import { createServer as createTcpServer } from "node:net";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
+import "./ordinary-consumer-policy.test.mjs";
+import "./incremental-browser-evidence.test.mjs";
 import { splitMigrationStatements } from "../../scripts/sounding-line/sqlite-bootstrap.mjs";
 import {
   assertBrowserAuthorityTopology,
@@ -21,6 +23,8 @@ import {
   assertBinding,
   browserProvisioningRequired,
   buildPlan,
+  buildEvidenceObligations,
+  trackedEntries,
   boundedVitestCommands,
   classifyChanges,
   packageAuthorityChanges,
@@ -41,6 +45,50 @@ import {
   isolatedBrowserFixtureCredentials,
   resolveBrowserSuiteDispatches,
 } from "../../scripts/sounding-line/browser-suite-profiles.mjs";
+
+// Optional exact-source metadata fixture. This calls only the canonical
+// obligation builder: no verification command, browser, API, lease or custody
+// operation is invoked, and the supplied consumer root is read-only.
+if (process.env.SOUNDING_LINE_GIT_OUTPUT_SOURCE_FIXTURE)
+  test("complete obligation planning reads the actual failed ordinary-two final plan without execution", async (t) => {
+    const root = path.resolve(process.env.SOUNDING_LINE_GIT_OUTPUT_SOURCE_ROOT);
+    const plan = JSON.parse(readFileSync(process.env.SOUNDING_LINE_GIT_OUTPUT_SOURCE_FIXTURE, "utf8"));
+    assert.equal(plan.candidateSha, "0c9d4c0741c016d83a40abd176cd6b2bb8bf8f5b");
+    assert.equal(plan.baseSha, "43340791355526fb31fe2dbf9274eb8632589b30");
+    assert.equal(
+      plan.productExperience.sourceDigest,
+      "ae8467e130cceca9fde7ffa6eb0ff4801deea503690daa9d10114747e7402136",
+    );
+    assert.equal(plan.decision, "FAIL");
+    assert.deepEqual(plan.timing.commands, []);
+    const inventory = trackedEntries(root, plan.candidateSha);
+    assert.equal(inventory.length, 9520);
+    const paths = new Set(inventory.map((entry) => entry.path));
+    for (const file of [...plan.selected.unitTests, ...plan.selected.browserTests]) assert(paths.has(file), file);
+    const obligations = await buildEvidenceObligations(root, plan);
+    assert.equal(obligations.length, verificationObligationGroups(plan).length);
+    assert.equal(new Set(obligations.map((entry) => entry.id)).size, obligations.length);
+    const privacy = obligations.find((entry) =>
+      entry.commandLabels.some((label) => label.includes("private-content/scan")),
+    );
+    assert(privacy);
+    assert.deepEqual(
+      privacy.fingerprint.semanticClosureMembers,
+      inventory.map((entry) => `${entry.path}@${entry.blob}`).sort(),
+    );
+    t.diagnostic(
+      JSON.stringify({
+        classification: "READ_ONLY_EXACT_FAILED_PLAN_METADATA_NOT_QUALIFICATION",
+        candidateSha: plan.candidateSha,
+        inventoryEntries: inventory.length,
+        obligations: obligations.length,
+        verificationCommandsExecuted: 0,
+        browsers: 0,
+        captures: 0,
+        custodyWrites: 0,
+      }),
+    );
+  });
 
 const basePackage = {
   scripts: {
@@ -79,7 +127,9 @@ function candidateFixture(changes) {
   }
   git(root, ["add", "."]);
   git(root, ["commit", "--quiet", "-m", "candidate"]);
-  return { root, baseSha, candidateSha: git(root, ["rev-parse", "HEAD"]) };
+  // This synthetic repository has no PR or campaign grant. Never borrow the
+  // enclosing verifier's real PR identity for its planning assertions.
+  return { root, baseSha, candidateSha: git(root, ["rev-parse", "HEAD"]), prNumber: 0 };
 }
 
 async function withCandidate(changes, assertion) {
@@ -91,6 +141,35 @@ async function withCandidate(changes, assertion) {
   }
 }
 
+test("neutral fixture planning cannot erase the production ambient campaign guard", async () => {
+  await withCandidate({ "src/product.ts": "export const product = 'neutral';\n" }, async (fixture) => {
+    await assert.doesNotReject(() => buildPlan({ ...fixture, mode: "ordinary" }));
+    await assert.rejects(
+      () => buildPlan({ ...fixture, mode: "ordinary", prNumber: 721 }),
+      /PRODUCT_EXPERIENCE_EXCEPTION_APPROVAL_MISSING_OR_INACTIVE/u,
+    );
+    const unbound = { root: fixture.root, baseSha: fixture.baseSha, candidateSha: fixture.candidateSha };
+    const source = `import assert from 'node:assert/strict';
+      const {buildPlan}=await import(${JSON.stringify(new URL("../../scripts/sounding-line/ordinary.mjs", import.meta.url).href)});
+      assert.equal(process.env.SOUNDING_LINE_PR_NUMBER,'721');
+      await assert.rejects(()=>buildPlan(${JSON.stringify({ ...unbound, mode: "ordinary" })}),/PRODUCT_EXPERIENCE_EXCEPTION_APPROVAL_MISSING_OR_INACTIVE/u);
+      console.log('AMBIENT_CAMPAIGN_GUARD_PRESERVED');`;
+    const result = spawnSync(process.execPath, ["--input-type=module", "-e", source], {
+      encoding: "utf8",
+      timeout: 20000,
+      env: {
+        ...process.env,
+        SOUNDING_LINE_PR_NUMBER: "721",
+        SOUNDING_LINE_EXCEPTION_PHASE: "qualify",
+        GITHUB_ACTIONS: "true",
+      },
+    });
+    assert.ifError(result.error);
+    assert.equal(result.status, 0, result.stderr);
+    assert.match(result.stdout, /AMBIENT_CAMPAIGN_GUARD_PRESERVED/u);
+  });
+});
+
 function commit(root, message) {
   git(root, ["add", "."]);
   git(root, ["commit", "--quiet", "-m", message]);
@@ -100,6 +179,7 @@ function commit(root, message) {
 function evidenceFixture() {
   const root = mkdtempSync(path.join(tmpdir(), "sounding-line-evidence-"));
   const files = {
+    ".gitignore": "artifacts/\n",
     "package.json": `${JSON.stringify(basePackage, null, 2)}\n`,
     "package-lock.json": `${JSON.stringify({ name: "evidence-fixture", lockfileVersion: 3, packages: {} }, null, 2)}\n`,
     "tsconfig.json": '{"compilerOptions":{"baseUrl":".","paths":{"@/*":["src/*"]}}}\n',
@@ -1544,7 +1624,11 @@ test("ordinary admission has no orchestration or generated-state prerequisites",
   assert.deepEqual(workflowNames, [
     "sounding-line-control-plane.yml",
     "sounding-line-exhaustive-release.yml",
+    "sounding-line-focused-repair.yml",
     "sounding-line-ordinary.yml",
+    "sounding-line-replay-admission-diagnostic.yml",
+    "sounding-line-replay-historical-validation-diagnostic.yml",
+    "sounding-line-replay-posttechnical-diagnostic.yml",
   ]);
   assert.equal(scripts.test, "vitest run");
   for (const key of Object.keys(scripts))
@@ -1553,6 +1637,22 @@ test("ordinary admission has no orchestration or generated-state prerequisites",
   assert.match(ordinaryWorkflow, /pull_request_target/u);
   assert.match(ordinaryWorkflow, /Sounding Line \/ Mainline Decision/u);
   assert.doesNotMatch(ordinaryWorkflow, /nightwatch|bosun|baseline|deepwater|feature catalog|P34|maintenance|train/iu);
+  const focusedWorkflow = readFileSync(".github/workflows/sounding-line-focused-repair.yml", "utf8");
+  assert.match(focusedWorkflow, /on:\n  workflow_dispatch:\n    inputs:\n/u);
+  const focusedInputs = focusedWorkflow.split("\npermissions:\n")[0];
+  assert.deepEqual(
+    [...focusedInputs.matchAll(/^      ([a-z_]+):$/gmu)].map((match) => match[1]),
+    ["candidate_sha", "test_selector"],
+  );
+  assert.match(focusedWorkflow, /permissions:\n  contents: read\n  actions: read\n\n/u);
+  assert.equal((focusedWorkflow.match(/^\s*permissions:/gmu) ?? []).length, 1);
+  assert.match(focusedWorkflow, /SOUNDING_LINE_EVIDENCE_PURPOSE: DEVELOPMENT_ONLY/u);
+  assert.match(focusedWorkflow, /process\.env\.GITHUB_REF !== "refs\/heads\/main"/u);
+  assert.doesNotMatch(
+    focusedWorkflow,
+    /pull_request_target|pull_request:|push:|workflow_call|schedule:|Mainline Decision|experience-exception\.mjs|--mode (?:ordinary|release)|PROTECTED_FINAL_VERIFICATION/u,
+  );
+  assert.doesNotMatch(ordinaryWorkflow, /sounding-line-focused-repair|develop-browser-suite\.mjs/u);
   const releaseWorkflow = readFileSync(".github/workflows/sounding-line-exhaustive-release.yml", "utf8");
   assert.match(releaseWorkflow, /--mode release/u);
   const controlPlaneWorkflow = readFileSync(".github/workflows/sounding-line-control-plane.yml", "utf8");
@@ -1562,6 +1662,136 @@ test("ordinary admission has no orchestration or generated-state prerequisites",
     controlPlaneWorkflow,
     /pull_request_target|nightwatch|bosun|baseline|deepwater|feature catalog|P34|maintenance|train/iu,
   );
+  const sourceDiagnosticWorkflow = readFileSync(
+    ".github/workflows/sounding-line-replay-admission-diagnostic.yml",
+    "utf8",
+  );
+  assert.match(sourceDiagnosticWorkflow, /on:\n  workflow_dispatch:\n\npermissions:\n/u);
+  assert.doesNotMatch(
+    sourceDiagnosticWorkflow,
+    /pull_request_target|workflow_call|schedule:|inputs:|Mainline Decision|--mode ordinary|experience-exception\.mjs|browser-authority\.mjs|run-browser-suite\.mjs/u,
+  );
+  assert.equal((sourceDiagnosticWorkflow.match(/contents: write/gu) ?? []).length, 1);
+  const sourceJob = sourceDiagnosticWorkflow.split("\n  source-diagnostic:\n")[1];
+  assert.ok(sourceJob, "the diagnostic source job is explicit and separate");
+  assert.match(sourceJob, /needs: reserve-diagnostic/u);
+  assert.match(sourceJob, /contents: read/u);
+  assert.doesNotMatch(sourceJob, /contents: write/u);
+  assert.doesNotMatch(ordinaryWorkflow, /replay-admission-source-diagnostic|source-diagnostic|reserve-diagnostic/u);
+  const posttechnicalWorkflow = readFileSync(
+    ".github/workflows/sounding-line-replay-posttechnical-diagnostic.yml",
+    "utf8",
+  );
+  assert.match(posttechnicalWorkflow, /on:\n  workflow_dispatch:\n\npermissions:\n/u);
+  assert.doesNotMatch(
+    posttechnicalWorkflow,
+    /pull_request_target|workflow_call|schedule:|inputs:|Mainline Decision|--mode ordinary|actions\/cache/u,
+  );
+  assert.equal((posttechnicalWorkflow.match(/contents: write/gu) ?? []).length, 1);
+  assert.equal((posttechnicalWorkflow.match(/node-version: 24\.19\.0/gu) ?? []).length, 2);
+  const posttechnicalJobs = posttechnicalWorkflow.split("\njobs:\n")[1];
+  assert.deepEqual(
+    [...posttechnicalJobs.matchAll(/^  ([a-z-]+):$/gmu)].map((match) => match[1]),
+    ["reserve-diagnostic", "posttechnical-diagnostic"],
+  );
+  const exactDiagnosticGuard =
+    "    if: ${{ github.event_name == 'workflow_dispatch' && github.repository == 'Kgray44/treasurehuntSoT' && github.ref == 'refs/heads/main' && github.actor == 'Kgray44' && github.triggering_actor == 'Kgray44' && github.run_attempt == 1 }}";
+  assert.equal(posttechnicalWorkflow.split(exactDiagnosticGuard).length - 1, 2);
+  assert.equal((posttechnicalWorkflow.match(/uses: actions\/upload-artifact@/gu) ?? []).length, 2);
+  const reservationJob = posttechnicalJobs.split("\n  posttechnical-diagnostic:\n")[0];
+  const reservationUpload = reservationJob.split("      - uses: actions/upload-artifact@v4\n");
+  assert.equal(reservationUpload.length, 2);
+  assert.deepEqual(
+    [...reservationUpload[1].matchAll(/^          path: (.+)$/gmu)].map((match) => match[1]),
+    ["receipts/reservation.json"],
+  );
+  const workloadJob = posttechnicalWorkflow.split("\n  posttechnical-diagnostic:\n")[1];
+  assert.ok(workloadJob, "the finite technical product diagnostic has its own job");
+  assert.match(workloadJob, /needs: reserve-diagnostic/u);
+  assert.match(workloadJob, /contents: read/u);
+  assert.doesNotMatch(workloadJob, /contents: write/u);
+  const workloadUpload = workloadJob.split("      - uses: actions/upload-artifact@v4\n");
+  assert.equal(workloadUpload.length, 2);
+  assert.match(workloadJob, /id: diagnose\n/u);
+  assert.match(
+    workloadUpload[1],
+    /^        if: \$\{\{ always\(\) && steps\.diagnose\.outputs\.evidence_safe == 'true' \}\}\n/u,
+  );
+  assert.deepEqual(
+    [...workloadUpload[1].matchAll(/^          path: (.+)$/gmu)].map((match) => match[1]),
+    ["|"],
+  );
+  assert.match(
+    workloadJob,
+    /path: \|\n            receipts\/reproduction\.json\n            receipts\/private-evidence\.encrypted\n          if-no-files-found:/u,
+  );
+  assert.doesNotMatch(ordinaryWorkflow, /replay-posttechnical-diagnostic|posttechnical-diagnostic/u);
+  const historicalValidationWorkflow = readFileSync(
+    ".github/workflows/sounding-line-replay-historical-validation-diagnostic.yml",
+    "utf8",
+  );
+  assert.match(historicalValidationWorkflow, /on:\n  workflow_dispatch:\n\npermissions:\n/u);
+  assert.doesNotMatch(
+    historicalValidationWorkflow,
+    /pull_request_target|workflow_call|schedule:|inputs:|Mainline Decision|--mode ordinary|actions\/cache|replay-posttechnical-diagnostic\.mjs|npm |npx |experience-exception\.mjs|browser-authority\.mjs|run-browser-suite\.mjs/u,
+  );
+  assert.equal((historicalValidationWorkflow.match(/contents: write/gu) ?? []).length, 1);
+  assert.equal((historicalValidationWorkflow.match(/node-version: 24\.19\.0/gu) ?? []).length, 2);
+  assert.deepEqual(
+    [...historicalValidationWorkflow.matchAll(/^    timeout-minutes: (\d+)$/gmu)].map((match) => Number(match[1])),
+    [5, 15],
+  );
+  assert.equal(historicalValidationWorkflow.split(exactDiagnosticGuard).length - 1, 2);
+  const historicalValidationJobs = historicalValidationWorkflow.split("\njobs:\n")[1];
+  assert.deepEqual(
+    [...historicalValidationJobs.matchAll(/^  ([a-z-]+):$/gmu)].map((match) => match[1]),
+    ["reserve-diagnostic", "historical-validation-diagnostic"],
+  );
+  const [historicalReservationJob, historicalValidationJob] = historicalValidationJobs.split(
+    "\n  historical-validation-diagnostic:\n",
+  );
+  assert.match(historicalReservationJob, /reservation: \$\{\{ steps\.reserve\.outputs\.reservation \}\}/u);
+  assert.match(historicalValidationJob, /needs: reserve-diagnostic/u);
+  assert.match(historicalValidationJob, /contents: read/u);
+  assert.doesNotMatch(historicalValidationJob, /contents: write/u);
+  assert.deepEqual(
+    [...historicalValidationWorkflow.matchAll(/^        run: (.+)$/gmu)].map((match) => match[1]),
+    [
+      'node installer/scripts/sounding-line/replay-historical-validation-diagnostic.mjs reserve --installer "$GITHUB_WORKSPACE/installer" --output "$GITHUB_WORKSPACE/receipts/reservation.json"',
+      'node installer/scripts/sounding-line/replay-historical-validation-diagnostic.mjs diagnose --installer "$GITHUB_WORKSPACE/installer" --authority "$GITHUB_WORKSPACE/authority" --candidate "$GITHUB_WORKSPACE/candidate" --reservation "$DIAGNOSTIC_RESERVATION" --output "$GITHUB_WORKSPACE/receipts/reproduction.json"',
+    ],
+  );
+  assert.deepEqual(
+    [
+      ...historicalValidationWorkflow.matchAll(
+        /^          ref: (.+)\n          path: (.+)\n          fetch-depth: (\d)\n          persist-credentials: false$/gmu,
+      ),
+    ].map((match) => match.slice(1)),
+    [
+      ["${{ github.sha }}", "installer", "1"],
+      ["${{ github.sha }}", "installer", "1"],
+      ["24fb189a90435ccb6021b63fd6953603ae090bc0", "authority", "1"],
+      ["7681d297f281ab03f30b4224b8288b7c942024c6", "candidate", "0"],
+    ],
+  );
+  const historicalReservationUpload = historicalReservationJob.split("      - uses: actions/upload-artifact@v4\n");
+  assert.equal(historicalReservationUpload.length, 2);
+  assert.deepEqual(
+    [...historicalReservationUpload[1].matchAll(/^          path: (.+)$/gmu)].map((match) => match[1]),
+    ["receipts/reservation.json"],
+  );
+  const historicalValidationUpload = historicalValidationJob.split("      - uses: actions/upload-artifact@v4\n");
+  assert.equal(historicalValidationUpload.length, 2);
+  assert.match(historicalValidationJob, /id: diagnose\n/u);
+  assert.match(
+    historicalValidationUpload[1],
+    /^        if: \$\{\{ always\(\) && steps\.diagnose\.outputs\.evidence_safe == 'true' \}\}\n/u,
+  );
+  assert.match(
+    historicalValidationUpload[1],
+    /path: \|\n            receipts\/reproduction\.json\n            receipts\/private-evidence\.encrypted\n          if-no-files-found:/u,
+  );
+  assert.doesNotMatch(ordinaryWorkflow, /historical-validation-diagnostic/u);
 });
 
 test("trusted PR routing produces one strict decision for ordinary and control-plane candidates", () => {
@@ -1573,11 +1803,34 @@ test("trusted PR routing produces one strict decision for ordinary and control-p
   assert.match(ordinaryWorkflow, /mode: "ordinary"/u);
   assert.match(ordinaryWorkflow, /kind=ordinary/u);
   assert.match(ordinaryWorkflow, /browser_required=\$\{plan\.browserRequired\}/u);
-  assert.match(ordinaryWorkflow, /Restore reusable ordinary evidence/u);
-  assert.match(ordinaryWorkflow, /actions\/cache\/restore@v4/u);
-  assert.match(ordinaryWorkflow, /Persist passing reusable ordinary evidence/u);
-  assert.match(ordinaryWorkflow, /actions\/cache\/save@v4/u);
-  assert.match(ordinaryWorkflow, /scripts\/sounding-line\/evidence\.mjs/u);
+  const completed = ordinaryWorkflow
+    .split(/\n      - /u)
+    .find((step) => step.includes("sounding-line-completed-evidence-"));
+  assert(completed, "retain completed whole-obligation checkpoints independently of later verifier outcome");
+  assert.match(completed, /if:.*always\(\)/u);
+  assert.match(completed, /steps\.route\.outputs\.kind == 'ordinary'/u);
+  assert.match(
+    completed,
+    /sounding-line-completed-evidence-\$\{\{ github\.run_id \}\}-\$\{\{ github\.run_attempt \}\}/u,
+  );
+  assert.match(completed, /authority\/artifacts\/sounding-line\/completed-evidence\/checkpoint-\*\.json/u);
+  assert.doesNotMatch(completed, /ordinary-verifier\.outcome == 'success'/u);
+  assert.doesNotMatch(ordinaryWorkflow, /actions\/cache\/(?:restore|save)@v4/u);
+  assert.doesNotMatch(completed, /candidate\/artifacts\/sounding-line\/evidence-store/u);
+  assert(ordinaryWorkflow.includes("`private_failure_publication_nonce=${randomUUID()}\\n`"));
+  assert.match(
+    ordinaryWorkflow,
+    /SOUNDING_LINE_PRIVATE_FAILURE_PUBLICATION_NONCE: \$\{\{ steps\.route\.outputs\.private_failure_publication_nonce \}\}/u,
+  );
+  const failureUpload = ordinaryWorkflow
+    .split(/\n      - /u)
+    .find((step) => step.includes("sounding-line-browser-failures-"));
+  assert(failureUpload, "encrypted failure upload is distinct from the ordinary qualification artifact");
+  assert.match(
+    failureUpload,
+    /steps\.ordinary-verifier\.outputs\.private_browser_failure_publish == steps\.route\.outputs\.private_failure_publication_nonce/u,
+  );
+  assert.match(failureUpload, /steps\.ordinary-verifier\.outputs\.private_browser_failure_paths != ''/u);
   assert.match(ordinaryWorkflow, /kind=control-plane/u);
   assert.match(
     ordinaryWorkflow,
@@ -1596,20 +1849,21 @@ test("v1.4 evidence reconciliation preserves, invalidates, falls back, and final
   await withEvidenceFixture(async ({ root, baseSha }) => {
     writeFileSync(path.join(root, "Development_Docs/guide.md"), "# Guide\n\nFirst ordinary candidate.\n");
     let candidateSha = commit(root, "documentation candidate");
-    let plan = await buildPlan({ root, baseSha, candidateSha, mode: "ordinary" });
+    let plan = await buildPlan({ prNumber: 0, root, baseSha, candidateSha, mode: "ordinary" });
     const first = await runReconciliation(root, plan);
     assert.ok(first.calls.length > 0);
     assert.equal(first.result.finalization.decision, "PASS");
     assert.equal(first.result.freshObligations, first.result.finalization.requiredObligations);
 
     const preserved = await runReconciliation(root, plan);
-    assert.equal(preserved.calls.length, 0);
-    assert.ok(preserved.result.reconciliation.every((entry) => entry.disposition === "PRESERVED"));
+    assert.deepEqual(preserved.calls, [["npm", ["run", "db:generate"]]]);
+    assert.ok(preserved.result.reconciliation.some((entry) => entry.disposition === "PRESERVED"));
+    assert.ok(preserved.result.reconciliation.some((entry) => entry.reasonCodes.includes("SETUP_OUTPUT_NOT_ATTESTED")));
     assert.equal(preserved.result.finalization.remainder.length, 0);
 
     writeFileSync(path.join(root, "Development_Docs/second-guide.md"), "# Second guide\n");
     candidateSha = commit(root, "mixed evidence candidate");
-    plan = await buildPlan({ root, baseSha, candidateSha, mode: "ordinary" });
+    plan = await buildPlan({ prNumber: 0, root, baseSha, candidateSha, mode: "ordinary" });
     const mixed = await runReconciliation(root, plan);
     assert.ok(mixed.result.reconciliation.some((entry) => ["PRESERVED", "REBOUND"].includes(entry.disposition)));
     assert.ok(mixed.result.reconciliation.some((entry) => entry.disposition === "INVALIDATED"));
@@ -1617,7 +1871,7 @@ test("v1.4 evidence reconciliation preserves, invalidates, falls back, and final
 
     writeFileSync(path.join(root, "src/product.ts"), "export const product = 'relevant change';\n");
     candidateSha = commit(root, "relevant source candidate");
-    plan = await buildPlan({ root, baseSha, candidateSha, mode: "ordinary" });
+    plan = await buildPlan({ prNumber: 0, root, baseSha, candidateSha, mode: "ordinary" });
     const sourceChanged = await runReconciliation(root, plan);
     assert.ok(sourceChanged.result.reconciliation.some((entry) => entry.disposition === "INVALIDATED"));
     assert.ok(sourceChanged.calls.length > 0);
@@ -1627,7 +1881,7 @@ test("v1.4 evidence reconciliation preserves, invalidates, falls back, and final
       "import { product } from './product';\nvoid product;\n// definition changed\n",
     );
     candidateSha = commit(root, "test definition candidate");
-    plan = await buildPlan({ root, baseSha, candidateSha, mode: "ordinary" });
+    plan = await buildPlan({ prNumber: 0, root, baseSha, candidateSha, mode: "ordinary" });
     const definitionChanged = await runReconciliation(root, plan);
     assert.ok(
       definitionChanged.result.reconciliation.some(
@@ -1640,7 +1894,7 @@ test("v1.4 evidence reconciliation preserves, invalidates, falls back, and final
       `${JSON.stringify({ name: "evidence-fixture", lockfileVersion: 3, packages: { "": { version: "2" } } }, null, 2)}\n`,
     );
     candidateSha = commit(root, "dependency candidate");
-    plan = await buildPlan({ root, baseSha, candidateSha, mode: "ordinary" });
+    plan = await buildPlan({ prNumber: 0, root, baseSha, candidateSha, mode: "ordinary" });
     const dependencyChanged = await runReconciliation(root, plan);
     assert.ok(
       dependencyChanged.result.reconciliation.some(
@@ -1650,7 +1904,7 @@ test("v1.4 evidence reconciliation preserves, invalidates, falls back, and final
 
     writeFileSync(path.join(root, "prisma/seed.ts"), "export const fixtureVersion = 2;\n");
     candidateSha = commit(root, "schema fixture candidate");
-    plan = await buildPlan({ root, baseSha, candidateSha, mode: "ordinary" });
+    plan = await buildPlan({ prNumber: 0, root, baseSha, candidateSha, mode: "ordinary" });
     const schemaChanged = await runReconciliation(root, plan);
     assert.ok(
       schemaChanged.result.reconciliation.some(
@@ -1665,7 +1919,7 @@ test("v1.4 evidence reconciliation preserves, invalidates, falls back, and final
 
     writeFileSync(path.join(root, "src/product.test.ts"), "import '/unknown-local-closure';\n");
     candidateSha = commit(root, "ambiguous closure candidate");
-    plan = await buildPlan({ root, baseSha, candidateSha, mode: "ordinary" });
+    plan = await buildPlan({ prNumber: 0, root, baseSha, candidateSha, mode: "ordinary" });
     const ambiguous = await runReconciliation(root, plan);
     assert.ok(
       ambiguous.result.reconciliation.some(
@@ -1674,18 +1928,23 @@ test("v1.4 evidence reconciliation preserves, invalidates, falls back, and final
     );
 
     const storeRoot = path.join(root, "artifacts", "sounding-line", "evidence-store", "receipts");
+    mkdirSync(storeRoot, { recursive: true });
     writeFileSync(path.join(storeRoot, "corrupt.json"), "not json\n");
     const corrupt = await runReconciliation(root, plan);
-    assert.ok(corrupt.result.reconciliation.every((entry) => entry.disposition === "CONSERVATIVE_FALLBACK"));
+    assert.ok(corrupt.result.reconciliation.some((entry) => entry.disposition === "CONSERVATIVE_FALLBACK"));
+    assert.ok(
+      corrupt.result.reconciliation.some((entry) => entry.disposition === "PRESERVED"),
+      "untrusted cache corruption cannot erase genuine unchanged observations in the trusted parent",
+    );
     assert.ok(corrupt.calls.length > 0);
   });
 });
 
-test("v1.4 evidence rebinds a browser obligation across an unrelated base advance and keeps release exhaustive", async () => {
+test("v1.4 keeps browser evidence fresh without runtime provenance and release exhaustive", async () => {
   await withEvidenceFixture(async ({ root, baseSha }) => {
     writeFileSync(path.join(root, "src/product.ts"), "export const product = 'candidate browser behavior';\n");
     const firstCandidate = commit(root, "browser candidate on original base");
-    const firstPlan = await buildPlan({ root, baseSha, candidateSha: firstCandidate, mode: "ordinary" });
+    const firstPlan = await buildPlan({ prNumber: 0, root, baseSha, candidateSha: firstCandidate, mode: "ordinary" });
     const first = await runReconciliation(root, firstPlan, 15);
     const freshBrowserReceipt = first.result.receipts.find((entry) => entry.obligationId.startsWith("browser."));
     assert.ok((freshBrowserReceipt?.durationMs ?? 0) >= 50);
@@ -1696,20 +1955,30 @@ test("v1.4 evidence rebinds a browser obligation across an unrelated base advanc
     git(root, ["checkout", "--quiet", "-b", "rebound-candidate"]);
     writeFileSync(path.join(root, "src/product.ts"), "export const product = 'candidate browser behavior';\n");
     const reboundCandidate = commit(root, "reapply browser candidate");
-    const reboundPlan = await buildPlan({ root, baseSha: newerBase, candidateSha: reboundCandidate, mode: "ordinary" });
+    const reboundPlan = await buildPlan({
+      prNumber: 0,
+      root,
+      baseSha: newerBase,
+      candidateSha: reboundCandidate,
+      mode: "ordinary",
+    });
     const rebound = await runReconciliation(root, reboundPlan);
     const browser = rebound.result.reconciliation.find((entry) => entry.obligationId.startsWith("browser."));
-    assert.equal(browser?.disposition, "REBOUND");
-    assert.equal(browser?.freshExecuted, false);
+    assert.equal(browser?.disposition, "CONSERVATIVE_FALLBACK");
+    assert.equal(browser?.freshExecuted, true);
+    assert(browser.reasonCodes.includes("BROWSER_RUNTIME_PROVENANCE_UNAUTHENTICATED"));
     assert.equal(rebound.result.finalization.decision, "PASS");
-    assert.equal(rebound.result.finalization.requiredObligations, 8);
-    assert.equal(rebound.result.freshObligations, 2);
-    assert.equal(rebound.result.finalization.counts.REBOUND, 6);
-    assert.equal(rebound.result.finalization.counts.INVALIDATED, 1);
-    assert.equal(rebound.result.commandsAvoided.length, 7);
-    assert.ok(rebound.result.avoidedDurationMs >= (freshBrowserReceipt?.durationMs ?? Infinity));
+    assert.equal(rebound.result.finalization.requiredObligations, verificationObligationGroups(reboundPlan).length);
+    assert(rebound.result.reconciliation.some((entry) => entry.disposition === "REBOUND"));
+    assert(rebound.result.freshObligations > 0);
 
-    const releasePlan = await buildPlan({ root, baseSha: newerBase, candidateSha: reboundCandidate, mode: "release" });
+    const releasePlan = await buildPlan({
+      prNumber: 0,
+      root,
+      baseSha: newerBase,
+      candidateSha: reboundCandidate,
+      mode: "release",
+    });
     const release = await runReconciliation(root, releasePlan);
     assert.equal(
       release.result.reconciliation.every((entry) => entry.disposition === "FRESH"),

@@ -1,0 +1,94 @@
+name: Sounding Line replay admission diagnostic
+run-name: Sounding Line source diagnostic 1 ordinary6
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+  pull-requests: read
+
+concurrency:
+  group: crossdeck-ordinary6-source-diagnostic-20261017
+  cancel-in-progress: false
+
+jobs:
+  reserve-diagnostic:
+    name: Reserve the single nonqualifying source diagnostic
+    if: ${{ github.event_name == 'workflow_dispatch' && github.repository == 'Kgray44/treasurehuntSoT' && github.ref == 'refs/heads/main' && github.actor == 'Kgray44' && github.triggering_actor == 'Kgray44' && github.run_attempt == 1 }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      actions: read
+      pull-requests: read
+    outputs:
+      reservation: ${{ steps.reserve.outputs.reservation }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: installer
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: installer/.nvmrc
+      - name: Reserve before artifact transfer or source reconstruction
+        id: reserve
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node installer/scripts/sounding-line/replay-admission-source-diagnostic.mjs reserve --installer "$GITHUB_WORKSPACE/installer" --output "$GITHUB_WORKSPACE/receipts/reservation.json"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: replay-admission-diagnostic-reservation-${{ github.run_id }}
+          path: receipts/
+          if-no-files-found: warn
+          retention-days: 90
+
+  source-diagnostic:
+    name: Reconstruct the fixed historical source prefix without admission
+    needs: reserve-diagnostic
+    if: ${{ github.event_name == 'workflow_dispatch' && github.repository == 'Kgray44/treasurehuntSoT' && github.ref == 'refs/heads/main' && github.actor == 'Kgray44' && github.triggering_actor == 'Kgray44' && github.run_attempt == 1 }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      actions: read
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: installer
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: 24fb189a90435ccb6021b63fd6953603ae090bc0
+          path: authority
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: 7681d297f281ab03f30b4224b8288b7c942024c6
+          path: candidate
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: installer/.nvmrc
+      - name: Observe source operations using the immutable failed plan
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DIAGNOSTIC_RESERVATION: ${{ needs.reserve-diagnostic.outputs.reservation }}
+        run: node installer/scripts/sounding-line/replay-admission-source-diagnostic.mjs diagnose --installer "$GITHUB_WORKSPACE/installer" --authority "$GITHUB_WORKSPACE/authority" --candidate "$GITHUB_WORKSPACE/candidate" --reservation "$DIAGNOSTIC_RESERVATION" --output "$GITHUB_WORKSPACE/receipts/reproduction.json"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: replay-admission-diagnostic-source-${{ github.run_id }}
+          path: receipts/
+          if-no-files-found: warn
+          retention-days: 90

@@ -2,8 +2,10 @@
 /* Focused candidate verification. The workflow supplies a trusted copy of this file. */
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { existsSync } from "node:fs";
-import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
+import { builtinModules } from "node:module";
+import { validateR8RawOriginals } from "./experience-r8-format.mjs";
+import { existsSync, realpathSync } from "node:fs";
+import { lstat, mkdir, mkdtemp, readFile, readdir, realpath, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
@@ -11,9 +13,12 @@ import {
   EVIDENCE_VERSION,
   FileEvidenceStore,
   createEvidenceFingerprint,
+  canonicalJson,
+  compareEvidenceFingerprints,
   digest as evidenceDigest,
   digestFileEntries,
   finalizeEvidence,
+  verifyReceipt,
 } from "./evidence.mjs";
 import {
   browserSuiteProfiles,
@@ -24,8 +29,22 @@ import { planProductExperience, verifyProductExperience } from "./product-experi
 import { runTrustedExperienceReplay } from "./experience-browser.mjs";
 import { verifyTrustedExperienceAttestation } from "./experience-attestation.mjs";
 import { revisionJson } from "./product-experience.mjs";
+import { assertExceptionExecution, markExceptionTechnicalComplete } from "./experience-exception.mjs";
+import { BROWSER_DIAGNOSTIC_CONTEXT, createBrowserDiagnosticSession } from "./browser-diagnostics.mjs";
+import { withVerificationStage, verificationFailureObservation } from "./verification-diagnostics.mjs";
+import { withSourceDiagnosticCapture } from "./source-diagnostics.mjs";
+import { createR14Observation } from "./experience-r14-observability.mjs";
+import { createCurrentAdmissionObservation } from "./experience-current-observability.mjs";
+import { authenticateCompletedEvidence, authenticatedCompletedReceipt } from "./authenticated-completed-evidence.mjs";
 
 const sha = /^[a-f0-9]{40}$/u;
+const protectedBrowserScripts = new Map([
+  ["scripts/sounding-line/run-browser-suite.mjs", fileURLToPath(new URL("./run-browser-suite.mjs", import.meta.url))],
+  ["scripts/sounding-line/browser-authority.mjs", fileURLToPath(new URL("./browser-authority.mjs", import.meta.url))],
+]);
+function isProtectedBrowserHost(command, argumentsList) {
+  return command === process.execPath && [...protectedBrowserScripts.values()].includes(argumentsList[0]);
+}
 const productRoots = new Set(["app", "components", "src", "lib", "prisma", "public", "styles"]);
 const aliases = new Map([
   ["community", ["harborlight"]],
@@ -297,11 +316,15 @@ async function listFiles(root, directory) {
 }
 
 function git(root, argumentsList) {
-  return execFileSync("git", argumentsList, { cwd: root, encoding: "utf8" }).trim();
+  return execFileSync("git", argumentsList, { cwd: root, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 }).trim();
 }
 
-function trackedEntries(root, revision) {
-  const output = execFileSync("git", ["ls-tree", "-rz", revision], { cwd: root, encoding: "utf8" });
+export function trackedEntries(root, revision) {
+  const output = execFileSync("git", ["ls-tree", "-rz", revision], {
+    cwd: root,
+    encoding: "utf8",
+    maxBuffer: 64 * 1024 * 1024,
+  });
   return output
     .split("\0")
     .filter(Boolean)
@@ -346,12 +369,18 @@ export function boundedVitestCommands(unitTests) {
 }
 
 function normalizedCommand(plan, command, argumentsList) {
-  const candidateToken = plan.candidateSha.slice(0, 12);
-  const normalize = (value) =>
-    value
-      .replaceAll(plan.databaseUrl, "file:./.sounding-line-CANDIDATE.sqlite")
-      .replaceAll(candidateToken, "CANDIDATE");
-  return { command: normalize(command), arguments: argumentsList.map(normalize) };
+  const databases = new Map([
+    [plan.databaseUrl, "file:./.sounding-line-CANDIDATE.sqlite"],
+    ...Object.keys(browserSuiteProfiles).map((profile) => [
+      suiteDatabaseUrl(plan.candidateSha, profile),
+      `file:./.sounding-line-CANDIDATE-${profile}.sqlite`,
+    ]),
+  ]);
+  const normalize = (value) => {
+    if (value === plan.candidateSha) return "CANDIDATE";
+    return databases.get(value) ?? value;
+  };
+  return { command, arguments: argumentsList.map(normalize) };
 }
 
 function browserEvidenceCommand(command, argumentsList) {
@@ -364,6 +393,50 @@ function browserEvidenceCommand(command, argumentsList) {
       argumentsList.includes("generate") &&
       argumentsList.includes("prisma/schema.sqlite.prisma")) ||
     /^scripts\/(?:admiralty|tideglass|homeport)\/(?:prepare|run)-.*(?:fixture|journeys|e2e)/u.test(script)
+  );
+}
+
+// A legacy preflight group can execute a complete browser suite or dedicated journey.
+// Keep its canonical partition/order while binding browser inputs and always
+// requiring fresh execution of its setup, production runtime and browser work.
+function isWholeBrowserExecution(group) {
+  return group.commands.some(
+    ([command, argumentsList]) =>
+      command === process.execPath &&
+      ["scripts/sounding-line/run-browser-suite.mjs", "tests/admiralty/phase3/run-journeys.mjs"].includes(
+        argumentsList[0],
+      ),
+  );
+}
+
+function browserFixturePaths(group) {
+  return group.commands
+    .flatMap(([, argumentsList]) => argumentsList)
+    .filter(
+      (argument) => argument.startsWith("scripts/") || argument.startsWith("prisma/") || argument.startsWith("tests/"),
+    );
+}
+
+function isBrowserEvidenceObligation(group) {
+  return group.kind === "browser" || isWholeBrowserExecution(group);
+}
+
+function requiresCurrentSetupOutput(group) {
+  return (
+    isWholeBrowserExecution(group) ||
+    group.commands.some(
+      ([command, argumentsList]) =>
+        command === "npm" && ["run db:generate", "run build"].includes(argumentsList.join(" ")),
+    )
+  );
+}
+
+function requiresCurrentPolicyVerification(group) {
+  return group.commands.some(
+    ([command, argumentsList]) =>
+      command === process.execPath &&
+      argumentsList[0] === "--test" &&
+      argumentsList.includes("tests/sounding-line/ordinary.test.mjs"),
   );
 }
 
@@ -431,8 +504,11 @@ function prefixEntries(snapshot, prefixes) {
 }
 
 const sourceExtensions = [".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".json", ".css"];
+const builtinSpecifiers = new Set(builtinModules.map((name) => name.replace(/^node:/u, "")));
 
 function resolveSourceImport(snapshot, importer, specifier) {
+  const builtin = specifier.replace(/^node:/u, "");
+  if (specifier.startsWith("node:") || builtinSpecifiers.has(builtin)) return { path: null, unknown: true };
   let root;
   if (specifier.startsWith("./") || specifier.startsWith("../"))
     root = path.posix.normalize(path.posix.join(path.posix.dirname(importer), specifier));
@@ -477,6 +553,26 @@ function staticSourceClosure(snapshot, seeds) {
       unknown = true;
       continue;
     }
+    // Unresolved computed imports/filesystem inputs cannot establish a reusable
+    // semantic closure merely because their caller lives under src/.
+    if (
+      /\b(?:import|require)\s*\((?!\s*(?:"[^"\\\r\n]*"|'[^'\\\r\n]*')\s*\))/u.test(contents) ||
+      /\b(?:import|require)\s*\//u.test(contents) ||
+      /\b(?:process|globalThis|global|Reflect|eval|Function)\b|\.\s*constructor\b|\[\s*["']constructor["']\s*\]|\brequire\b(?!\s*\()/u.test(
+        contents,
+      ) ||
+      /\bimport\s*\.\s*meta\s*\.\s*env/u.test(contents) ||
+      /\b(?:readFile(?:Sync)?|readdir(?:Sync)?|createReadStream)\s*\(/u.test(contents)
+    )
+      unknown = true;
+    for (const match of contents.matchAll(
+      /\b(?:readFile(?:Sync)?|readdir(?:Sync)?|createReadStream)\s*\(\s*(["'])([^"']+)\1/gu,
+    )) {
+      const input = path.posix.normalize(match[2]);
+      if (snapshot.byPath.has(input) && !visited.has(input)) queue.push(input);
+      // CWD and non-file APIs are not inferred from a string alone. Their
+      // literal tracked bytes are included, while reuse remains indeterminate.
+    }
     for (const specifier of extractModuleSpecifiers(contents)) {
       const resolved = resolveSourceImport(snapshot, file, specifier);
       if (resolved.unknown) unknown = true;
@@ -498,7 +594,7 @@ function testPathsFor(group, plan) {
     return group.commands
       .flatMap(([, argumentsList]) => argumentsList)
       .filter((argument) => /\.test\.(?:ts|tsx)$/u.test(argument));
-  if (group.kind === "browser") return plan.selected.browserTests;
+  if (isBrowserEvidenceObligation(group)) return plan.selected.browserTests;
   if (group.kind === "migration") return plan.migrationScripts ?? [];
   if (group.kind === "preflight") {
     const [[command, argumentsList]] = group.commands;
@@ -525,21 +621,59 @@ function evidenceClosure(snapshot, group, plan) {
     ".nvmrc",
   ];
   const tests = testPathsFor(group, plan);
+  const browserEvidence = isBrowserEvidenceObligation(group);
   let entries = [];
   let unknown = false;
   if (group.kind === "unit") {
     const closure = staticSourceClosure(snapshot, tests);
     entries = closure.entries;
     unknown = closure.unknown;
-  } else if (group.kind === "browser" || group.kind === "build") {
+  } else if (requiresCurrentSetupOutput(group) && !browserEvidence && group.kind !== "build") {
+    const setup = prefixEntries(snapshot, ["prisma/", "scripts/"]);
+    const dependencies = staticSourceClosure(
+      snapshot,
+      setup.map((entry) => entry.path),
+    );
+    entries = dependencies.entries;
+    unknown = dependencies.unknown;
+  } else if (browserEvidence || group.kind === "build") {
+    // Browser setup and tests can read public models, photographic fixtures and
+    // runtime files without importing them. Keep this conservative closure until
+    // an independently reviewed narrower dependency proof exists.
     entries = prefixEntries(snapshot, ["src/", "app/", "components/", "lib/", "public/", "styles/", "prisma/"]);
+    const runtimeImports = staticSourceClosure(
+      snapshot,
+      entries.map((entry) => entry.path),
+    );
+    // Runtime imports can legitimately leave product prefixes, including JSON
+    // registries under Development_Docs. Their bytes are product dependencies.
+    entries.push(...runtimeImports.entries);
+    unknown ||= runtimeImports.unknown;
+    if (browserEvidence) {
+      entries.push(...prefixEntries(snapshot, ["scripts/", "tests/e2e/", "tests/config/", "testing/"]));
+      const runners = staticSourceClosure(snapshot, browserFixturePaths(group));
+      entries.push(...runners.entries);
+      unknown ||= runners.unknown;
+    }
   } else if (group.kind === "migration") {
-    entries = prefixEntries(snapshot, ["prisma/", "scripts/"]);
+    const migration = staticSourceClosure(
+      snapshot,
+      prefixEntries(snapshot, ["prisma/", "scripts/"]).map((entry) => entry.path),
+    );
+    entries = migration.entries;
+    unknown = migration.unknown;
   } else if (group.commandLabels.some((label) => label.includes("private-content/scan"))) {
     // The scanner observes repository content, so a narrow closure would be unsafe.
     entries = snapshot.entries;
   } else if (group.commandLabels.some((label) => label.includes("tsc --noEmit"))) {
-    entries = prefixEntries(snapshot, ["src/", "app/", "components/", "lib/", "scripts/", "tests/", "prisma/"]);
+    const typecheck = staticSourceClosure(
+      snapshot,
+      prefixEntries(snapshot, ["src/", "app/", "components/", "lib/", "scripts/", "tests/", "prisma/"]).map(
+        (entry) => entry.path,
+      ),
+    );
+    entries = typecheck.entries;
+    unknown = typecheck.unknown;
   } else {
     const requested = pathEntries(snapshot, tests);
     entries = requested.entries;
@@ -561,25 +695,46 @@ async function semanticSnapshot(root, candidateSha) {
   const entries = trackedEntries(root, candidateSha);
   const modulePath = fileURLToPath(import.meta.url);
   const evidencePath = path.join(path.dirname(modulePath), "evidence.mjs");
-  const [ordinarySource, evidenceSource, experienceSource, experienceBrowserSource, experienceAttestationSource] =
-    await Promise.all([
-      readFile(modulePath, "utf8"),
-      readFile(evidencePath, "utf8"),
-      readFile(path.join(path.dirname(modulePath), "product-experience.mjs"), "utf8"),
-      readFile(path.join(path.dirname(modulePath), "experience-browser.mjs"), "utf8"),
-      readFile(path.join(path.dirname(modulePath), "experience-attestation.mjs"), "utf8"),
-    ]);
+  const [
+    ordinarySource,
+    evidenceSource,
+    experienceSource,
+    experienceBrowserSource,
+    experienceAttestationSource,
+    exceptionSource,
+    exceptionPolicy,
+    r8FormatSource,
+    r9Source,
+  ] = await Promise.all([
+    readFile(modulePath, "utf8"),
+    readFile(evidencePath, "utf8"),
+    readFile(path.join(path.dirname(modulePath), "product-experience.mjs"), "utf8"),
+    readFile(path.join(path.dirname(modulePath), "experience-browser.mjs"), "utf8"),
+    readFile(path.join(path.dirname(modulePath), "experience-attestation.mjs"), "utf8"),
+    readFile(path.join(path.dirname(modulePath), "experience-exception.mjs"), "utf8"),
+    Promise.resolve(revisionJson(root, candidateSha, "testing/product-experience-exceptions.json", true)),
+    readFile(path.join(path.dirname(modulePath), "experience-r8-format.mjs"), "utf8"),
+    readFile(path.join(path.dirname(modulePath), "experience-r9.mjs"), "utf8"),
+  ]);
   return {
     root,
     candidateSha,
     entries,
     byPath: new Map(entries.map((entry) => [entry.path, entry])),
+    // Pure unit execution uses the actual verifier/evidence semantic engine.
+    // Campaign admission/review/custody is recomputed separately for every plan;
+    // unrelated exception-registry rows are not unit execution dependencies.
+    unitEvidencePolicyIdentity: evidenceDigest({ ordinarySource, evidenceSource, version: EVIDENCE_VERSION }),
     authorityIdentity: evidenceDigest({
       ordinarySource,
       evidenceSource,
       experienceSource,
       experienceBrowserSource,
       experienceAttestationSource,
+      exceptionSource,
+      exceptionPolicy,
+      r8FormatSource,
+      r9Source,
       version: EVIDENCE_VERSION,
     }),
     environmentClass: process.env.GITHUB_ACTIONS === "true" ? "github-actions" : "local",
@@ -599,25 +754,29 @@ function browserIdentity(snapshot) {
 export async function buildEvidenceObligations(root, plan) {
   const snapshot = await semanticSnapshot(root, plan.candidateSha);
   return verificationObligationGroups(plan).map((group) => {
+    const runtimeSetup = requiresCurrentSetupOutput(group);
+    const browserEvidence = isBrowserEvidenceObligation(group);
+    const currentPolicy = requiresCurrentPolicyVerification(group);
     const closure = evidenceClosure(snapshot, group, plan);
     const testPaths = testPathsFor(group, plan);
-    const tests = ["unit", "browser"].includes(group.kind)
-      ? staticSourceClosure(snapshot, testPaths)
-      : pathEntries(snapshot, testPaths);
-    const fixturePaths =
-      group.kind === "browser"
-        ? group.commands
-            .flatMap(([, argumentsList]) => argumentsList)
-            .filter((argument) => argument.startsWith("scripts/") || argument.startsWith("prisma/"))
+    const tests =
+      group.kind === "unit" || browserEvidence
+        ? staticSourceClosure(snapshot, testPaths)
+        : pathEntries(snapshot, testPaths);
+    const fixturePaths = browserEvidence
+      ? browserFixturePaths(group)
+      : runtimeSetup
+        ? prefixEntries(snapshot, ["scripts/"]).map((entry) => entry.path)
         : [];
     const fixtures = fixturePaths.length
       ? staticSourceClosure(snapshot, fixturePaths)
       : { entries: [], unknown: false };
-    const schema = group.kind === "browser" || group.kind === "migration" ? prefixEntries(snapshot, ["prisma/"]) : [];
+    const schema =
+      browserEvidence || group.kind === "migration" || runtimeSetup ? prefixEntries(snapshot, ["prisma/"]) : [];
     const inapplicableDependencyClasses = [];
     if (!fixturePaths.length) inapplicableDependencyClasses.push("fixtureDigest");
     if (!schema.length) inapplicableDependencyClasses.push("schemaDigest");
-    if (group.kind !== "browser") inapplicableDependencyClasses.push("browserIdentity");
+    if (!browserEvidence) inapplicableDependencyClasses.push("browserIdentity");
     const fingerprint = createEvidenceFingerprint({
       obligationId: group.id,
       qualificationMode: plan.mode,
@@ -633,45 +792,271 @@ export async function buildEvidenceObligations(root, plan) {
         platform: process.platform,
         architecture: process.arch,
       }),
-      browserIdentity: group.kind === "browser" ? browserIdentity(snapshot) : null,
+      browserIdentity: browserEvidence ? browserIdentity(snapshot) : null,
       environmentClass: snapshot.environmentClass,
-      soundingLinePolicyDigest: snapshot.authorityIdentity,
-      authorityIdentity: "SOUNDING_LINE_DIRECT_V14",
+      soundingLinePolicyDigest:
+        group.kind === "unit" ? snapshot.unitEvidencePolicyIdentity : snapshot.authorityIdentity,
+      authorityIdentity: "SOUNDING_LINE_DIRECT_V14_BROWSER_CLOSURE_2",
       inapplicableDependencyClasses,
     });
-    return { ...group, fingerprint, reuseIndeterminate: closure.unknown || tests.unknown || fixtures.unknown };
+    return {
+      ...group,
+      fingerprint,
+      // The owned browser profile still inherits ambient process environment.
+      // Do not claim reusable browser proof until producer/runtime provenance is
+      // independently authenticated; complete source closure alone is insufficient.
+      reuseIndeterminate:
+        closure.unknown || tests.unknown || fixtures.unknown || browserEvidence || runtimeSetup || currentPolicy,
+      ...(group.kind === "browser"
+        ? { reuseReason: "BROWSER_RUNTIME_PROVENANCE_UNAUTHENTICATED" }
+        : runtimeSetup
+          ? { reuseReason: "SETUP_OUTPUT_NOT_ATTESTED" }
+          : currentPolicy
+            ? { reuseReason: "CURRENT_POLICY_VERIFICATION_REQUIRED" }
+            : {}),
+    };
   });
 }
 
-export async function runReconciledVerification(root, plan, runCommand = run) {
+// This memory accepts whole PASS observations from this parent or the opaque
+// authenticated protected-producer reader. Restored JSON alone is never proof.
+const parentObservedReceipts = new Map();
+const parentObservedProvenance = new Map();
+
+function parentConstructedReceipt(payload) {
+  const identity = evidenceDigest({
+    candidateSha: payload.candidateSha,
+    obligationId: payload.obligationId,
+    fingerprintDigest: payload.fingerprint.fingerprintDigest,
+    disposition: payload.disposition,
+    originalReceiptId: payload.originalReceiptId ?? null,
+  });
+  const unsigned = {
+    version: EVIDENCE_VERSION,
+    kind: "sounding-line-evidence-receipt",
+    immutable: true,
+    id: `sl14-${identity.slice(0, 32)}`,
+    ...payload,
+  };
+  return { ...unsigned, receiptDigest: evidenceDigest(unsigned) };
+}
+
+function assertExactParentReceipt(receipt, payload) {
+  if (canonicalJson(receipt) !== canonicalJson(parentConstructedReceipt(payload)))
+    throw new Error("SOUNDING_LINE_COMPLETED_EVIDENCE_RECEIPT_CHANGED");
+}
+
+function rememberObservedReceipt(root, receipt, provenance = null) {
+  const key = `${path.resolve(root)}:${receipt.receiptDigest}`;
+  parentObservedReceipts.set(key, canonicalJson(receipt));
+  if (provenance) parentObservedProvenance.set(key, JSON.parse(canonicalJson(provenance)));
+}
+
+function parentObservedResolution(root, obligation, candidateSha) {
+  const prefix = `${path.resolve(root)}:`;
+  let prior = null;
+  for (const [key, encoded] of parentObservedReceipts) {
+    if (!key.startsWith(prefix)) continue;
+    const receipt = JSON.parse(encoded);
+    if (receipt.obligationId !== obligation.id) continue;
+    prior = receipt;
+    if (reusableReceiptDisposition(root, receipt, obligation.fingerprint)) continue;
+    return {
+      disposition: receipt.candidateSha === candidateSha ? "PRESERVED" : "REBOUND",
+      reasonCodes: ["TRUSTED_PARENT_OBSERVED_SEMANTIC_FINGERPRINT_MATCH"],
+      receipt,
+    };
+  }
+  return prior
+    ? {
+        ...compareEvidenceFingerprints({
+          prior: prior.fingerprint,
+          current: obligation.fingerprint,
+          priorReceiptId: prior.id,
+        }),
+        receipt: null,
+      }
+    : null;
+}
+
+function reusableReceiptDisposition(root, receipt, fingerprint) {
+  if (!verifyReceipt(receipt).valid) return "EVIDENCE_INTEGRITY_FAILURE";
+  let actual;
+  try {
+    actual = createEvidenceFingerprint(receipt.fingerprint);
+  } catch {
+    return "EVIDENCE_FINGERPRINT_INVALID";
+  }
+  if (
+    canonicalJson(actual) !== canonicalJson(receipt.fingerprint) ||
+    compareEvidenceFingerprints({ prior: actual, current: fingerprint }).disposition !== "PRESERVED"
+  )
+    return "EVIDENCE_FINGERPRINT_INVALID";
+  if (parentObservedReceipts.get(`${path.resolve(root)}:${receipt.receiptDigest}`) !== canonicalJson(receipt))
+    return "EVIDENCE_PRODUCER_UNAUTHENTICATED";
+  return null;
+}
+
+export function completedEvidenceDirectory(
+  root,
+  authorityRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../.."),
+) {
+  const candidate = realpathSync(root);
+  const authority = realpathSync(authorityRoot);
+  const relative = path.relative(candidate, authority);
+  // Same-root local verification stays valid, but cannot label a directory in
+  // the candidate as an independent protected-authority export.
+  if (!relative.startsWith(`..${path.sep}`) && relative !== "..") return undefined;
+  return path.join(authority, "artifacts", "sounding-line", "completed-evidence");
+}
+
+export function completedEvidenceEnvironmentClass(plan, environment = process.env) {
+  const developmentRole = [environment.SOUNDING_LINE_ROLE, environment.SOUNDING_LINE_EXECUTION_ROLE].includes(
+    "DEVELOPMENT_ONLY",
+  );
+  const diagnosticLease = Object.entries(environment).some(
+    ([key, value]) => value && /(?:DIAGNOSTIC|POSTTECHNICAL|HISTORICAL_VALIDATION).*LEASE$/u.test(key),
+  );
+  return plan.mode === "ordinary" &&
+    environment.SOUNDING_LINE_EVIDENCE_PURPOSE === "PROTECTED_FINAL_VERIFICATION" &&
+    environment.GITHUB_ACTIONS === "true" &&
+    environment.GITHUB_REPOSITORY === "Kgray44/treasurehuntSoT" &&
+    environment.GITHUB_JOB === "final-check" &&
+    environment.GITHUB_EVENT_NAME === "pull_request_target" &&
+    environment.GITHUB_WORKFLOW_REF ===
+      "Kgray44/treasurehuntSoT/.github/workflows/sounding-line-ordinary.yml@refs/heads/main" &&
+    !developmentRole &&
+    !diagnosticLease
+    ? "github-actions-nonbrowser-controlled"
+    : "UNSUPPORTED";
+}
+
+async function completedEvidenceCheckpoint(root, plan, planDigest, directory) {
+  if (!directory) return null;
+  const target = path.resolve(directory);
+  const relative = path.relative(await realpath(root), target);
+  if (!relative.startsWith(`..${path.sep}`) && relative !== "..")
+    throw new Error("SOUNDING_LINE_COMPLETED_EVIDENCE_MUST_BE_OUTSIDE_CANDIDATE");
+  await mkdir(path.dirname(target), { recursive: true });
+  if ((await realpath(path.dirname(target))) !== path.dirname(target))
+    throw new Error("SOUNDING_LINE_COMPLETED_EVIDENCE_PARENT_SYMLINK");
+  await mkdir(target, { mode: 0o700 });
+  const st = await lstat(target);
+  if (!st.isDirectory() || st.isSymbolicLink()) throw new Error("SOUNDING_LINE_COMPLETED_EVIDENCE_ROOT_INVALID");
+  const authorityRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
+  const publicNumber = (value) =>
+    /^[1-9][0-9]*$/u.test(value ?? "") && Number.isSafeInteger(Number(value)) ? Number(value) : null;
+  const producerObservation = {
+    authentication: "UNAUTHENTICATED_OBSERVED_METADATA",
+    environmentClass: completedEvidenceEnvironmentClass(plan),
+    repository: process.env.GITHUB_REPOSITORY ?? null,
+    runId: publicNumber(process.env.GITHUB_RUN_ID),
+    runAttempt: publicNumber(process.env.GITHUB_RUN_ATTEMPT),
+    workflowRef: process.env.GITHUB_WORKFLOW_REF ?? null,
+    workflowSha: process.env.GITHUB_WORKFLOW_SHA ?? null,
+    event: process.env.GITHUB_EVENT_NAME ?? null,
+    job: process.env.GITHUB_JOB ?? null,
+    authoritySha: git(authorityRoot, ["rev-parse", "HEAD"]),
+    authorityModuleSha256: createHash("sha256")
+      .update(await readFile(fileURLToPath(import.meta.url)))
+      .digest("hex"),
+    candidateTree: git(root, ["rev-parse", `${plan.candidateSha}^{tree}`]),
+    sourceDigest: plan.productExperience?.sourceDigest ?? null,
+  };
+  let sequence = 0;
+  return async (receipts) => {
+    const entries = receipts.map((receipt) => {
+      if (parentObservedReceipts.get(`${path.resolve(root)}:${receipt.receiptDigest}`) !== canonicalJson(receipt))
+        throw new Error("SOUNDING_LINE_COMPLETED_EVIDENCE_NOT_PARENT_OBSERVED");
+      return JSON.parse(canonicalJson(receipt));
+    });
+    // Each create-only checkpoint is a completed prefix. A later failure or
+    // cancellation does not change it into final qualification or a partial PASS.
+    const checkpoint = {
+      version: 1,
+      kind: "sounding-line-completed-obligation-checkpoint",
+      authentication: "RETENTION_ONLY_NO_AUTHENTICATED_PRODUCER",
+      candidateSha: plan.candidateSha,
+      baseSha: plan.baseSha,
+      planDigest,
+      producerObservation,
+      completedWholeObligations: entries.length,
+      receipts: entries,
+      wholeVerificationPassed: false,
+      qualification: false,
+    };
+    await writeFile(
+      path.join(target, `checkpoint-${String(++sequence).padStart(4, "0")}.json`),
+      `${canonicalJson(checkpoint)}\n`,
+      { flag: "wx", mode: 0o600 },
+    );
+  };
+}
+
+export async function runReconciledVerification(
+  root,
+  plan,
+  runCommand = run,
+  { completedEvidenceRoot, authenticatedEvidence } = {},
+) {
+  if (git(root, ["rev-parse", "HEAD"]) !== plan.candidateSha)
+    throw new Error("SOUNDING_LINE_COMPLETED_EVIDENCE_HEAD_CHANGED");
+  git(root, ["diff", "--exit-code", "HEAD", "--"]);
   const obligations = await buildEvidenceObligations(root, plan);
   const store = new FileEvidenceStore(path.join(root, "artifacts", "sounding-line", "evidence-store"));
+  const observedRoot = path.join(root, "artifacts", "sounding-line", "parent-observed-evidence");
+  await mkdir(observedRoot, { recursive: true });
+  // Never overwrite or promote a restored, candidate-writable receipt. Fresh
+  // observations use a new ledger; historical/cache bytes remain untouched.
+  const observedStore = new FileEvidenceStore(await mkdtemp(path.join(observedRoot, "observation-")));
   const planDigest = evidenceDigest({
     mode: plan.mode,
     baseSha: plan.baseSha,
     candidateSha: plan.candidateSha,
     obligations: obligations.map((entry) => entry.id),
   });
+  const checkpoint = await completedEvidenceCheckpoint(root, plan, planDigest, completedEvidenceRoot);
   const receipts = [];
   const reconciliation = [];
   const timings = [];
   for (const obligation of obligations) {
     let resolution;
+    let producerProvenance = null;
     if (plan.mode === "release")
       resolution = { disposition: "FRESH", reasonCodes: ["RELEASE_MODE_EXHAUSTIVE"], receipt: null };
     else if (obligation.reuseIndeterminate)
       resolution = {
         disposition: "CONSERVATIVE_FALLBACK",
-        reasonCodes: ["SEMANTIC_CLOSURE_INDETERMINATE"],
+        reasonCodes: [obligation.reuseReason ?? "SEMANTIC_CLOSURE_INDETERMINATE"],
         receipt: null,
       };
     else {
       try {
-        resolution = await store.findReusable({
-          obligationId: obligation.id,
+        const authenticated = authenticatedCompletedReceipt(authenticatedEvidence, {
+          root,
           candidateSha: plan.candidateSha,
+          obligationId: obligation.id,
           fingerprint: obligation.fingerprint,
         });
+        if (authenticated) {
+          producerProvenance = authenticatedEvidence.provenance.find(
+            (entry) => entry.receiptId === authenticated.id && entry.receiptDigest === authenticated.receiptDigest,
+          );
+          if (!producerProvenance) throw new Error("SOUNDING_LINE_COMPLETED_EVIDENCE_PROVENANCE_MISSING");
+          rememberObservedReceipt(root, authenticated, producerProvenance);
+          resolution = {
+            disposition: authenticated.candidateSha === plan.candidateSha ? "PRESERVED" : "REBOUND",
+            reasonCodes: ["AUTHENTICATED_PROTECTED_PRODUCER_FINGERPRINT_MATCH"],
+            receipt: authenticated,
+          };
+        } else
+          resolution =
+            parentObservedResolution(root, obligation, plan.candidateSha) ??
+            (await store.findReusable({
+              obligationId: obligation.id,
+              candidateSha: plan.candidateSha,
+              fingerprint: obligation.fingerprint,
+            }));
       } catch {
         resolution = {
           disposition: "CONSERVATIVE_FALLBACK",
@@ -681,10 +1066,16 @@ export async function runReconciledVerification(root, plan, runCommand = run) {
       }
     }
     if (["PRESERVED", "REBOUND"].includes(resolution.disposition) && resolution.receipt) {
+      producerProvenance ??=
+        parentObservedProvenance.get(`${path.resolve(root)}:${resolution.receipt.receiptDigest}`) ?? null;
+      const denial = reusableReceiptDisposition(root, resolution.receipt, obligation.fingerprint);
+      if (denial) resolution = { disposition: "CONSERVATIVE_FALLBACK", reasonCodes: [denial], receipt: null };
+    }
+    if (["PRESERVED", "REBOUND"].includes(resolution.disposition) && resolution.receipt) {
       const receipt =
         resolution.disposition === "PRESERVED"
           ? resolution.receipt
-          : await store.rebind({
+          : await observedStore.rebind({
               sourceReceipt: resolution.receipt,
               candidateSha: plan.candidateSha,
               obligationId: obligation.id,
@@ -693,7 +1084,38 @@ export async function runReconciledVerification(root, plan, runCommand = run) {
               commands: obligation.commandLabels,
               decision: resolution,
             });
+      if (resolution.disposition === "REBOUND") {
+        const source = resolution.receipt;
+        const identity = {
+          originalReceiptId: source.id,
+          priorFingerprintDigest: source.fingerprint.fingerprintDigest,
+          currentFingerprintDigest: obligation.fingerprint.fingerprintDigest,
+          disposition: resolution.disposition,
+        };
+        assertExactParentReceipt(receipt, {
+          candidateSha: plan.candidateSha,
+          obligationId: obligation.id,
+          fingerprint: obligation.fingerprint,
+          planDigest,
+          commands: obligation.commandLabels,
+          durationMs: source.durationMs ?? null,
+          authorityVersion: EVIDENCE_VERSION,
+          producer: "SOUNDING_LINE_DIRECT",
+          result: "PASSED",
+          disposition: resolution.disposition,
+          originalReceiptId: source.id,
+          lineage: {
+            version: EVIDENCE_VERSION,
+            immutable: true,
+            ...identity,
+            reasonCodes: resolution.reasonCodes,
+            lineageDigest: evidenceDigest(identity),
+          },
+        });
+      }
+      rememberObservedReceipt(root, receipt, producerProvenance);
       receipts.push(receipt);
+      if (checkpoint) await checkpoint(receipts);
       reconciliation.push({
         obligationId: obligation.id,
         disposition: resolution.disposition,
@@ -701,6 +1123,7 @@ export async function runReconciledVerification(root, plan, runCommand = run) {
         receiptId: receipt.id,
         commandsAvoided: obligation.commandLabels,
         freshExecuted: false,
+        ...(producerProvenance ? { producerProvenance: JSON.parse(canonicalJson(producerProvenance)) } : {}),
       });
       timings.push({ phase: obligation.kind, durationMs: 0, status: "REUSED", obligationId: obligation.id });
       continue;
@@ -708,9 +1131,12 @@ export async function runReconciledVerification(root, plan, runCommand = run) {
     const startedAt = Date.now();
     try {
       for (const [command, argumentsList] of obligation.commands)
-        runCommand(root, command, argumentsList, { env: verificationEnvironment(plan, command, argumentsList) });
+        await runCommand(root, command, argumentsList, { env: verificationEnvironment(plan, command, argumentsList) });
       const durationMs = Date.now() - startedAt;
-      const receipt = await store.writeFresh({
+      if (git(root, ["rev-parse", "HEAD"]) !== plan.candidateSha)
+        throw new Error("SOUNDING_LINE_COMPLETED_EVIDENCE_HEAD_CHANGED");
+      git(root, ["diff", "--exit-code", "HEAD", "--"]);
+      const receipt = await observedStore.writeFresh({
         candidateSha: plan.candidateSha,
         obligationId: obligation.id,
         fingerprint: obligation.fingerprint,
@@ -718,7 +1144,22 @@ export async function runReconciledVerification(root, plan, runCommand = run) {
         commands: obligation.commandLabels,
         durationMs,
       });
+      assertExactParentReceipt(receipt, {
+        candidateSha: plan.candidateSha,
+        obligationId: obligation.id,
+        fingerprint: obligation.fingerprint,
+        planDigest,
+        commands: obligation.commandLabels,
+        durationMs,
+        authorityVersion: EVIDENCE_VERSION,
+        producer: "SOUNDING_LINE_DIRECT",
+        result: "PASSED",
+        disposition: "FRESH",
+        originalReceiptId: null,
+      });
+      rememberObservedReceipt(root, receipt);
       receipts.push(receipt);
+      if (checkpoint) await checkpoint(receipts);
       reconciliation.push({
         obligationId: obligation.id,
         disposition: resolution.disposition,
@@ -782,11 +1223,16 @@ function registrationChangesAreValid(root, candidateSha, paths) {
     jsonAtRevision(root, candidateSha, file);
 }
 
-function run(root, command, argumentsList, { env = {}, ...options } = {}) {
+export function run(root, command, argumentsList, { env = {}, ...options } = {}) {
   process.stdout.write(`\n> ${command} ${argumentsList.join(" ")}\n`);
   const candidateEnvironment = { ...process.env, ...env };
+  if (!Object.hasOwn(env, BROWSER_DIAGNOSTIC_CONTEXT)) delete candidateEnvironment[BROWSER_DIAGNOSTIC_CONTEXT];
   delete candidateEnvironment.GH_TOKEN;
   delete candidateEnvironment.GITHUB_TOKEN;
+  if (!isProtectedBrowserHost(command, argumentsList)) {
+    delete candidateEnvironment.GITHUB_OUTPUT;
+    delete candidateEnvironment.SOUNDING_LINE_PRIVATE_FAILURE_PUBLICATION_NONCE;
+  }
   execFileSync(command, argumentsList, {
     cwd: root,
     stdio: "inherit",
@@ -965,11 +1411,19 @@ export function requiresBuild({ changedPaths, mode = "ordinary" }) {
   );
 }
 
-export async function buildPlan({ root, baseSha, candidateSha, mode = "ordinary", experienceEvidenceRequired = true }) {
+export async function buildPlan({
+  root,
+  baseSha,
+  candidateSha,
+  mode = "ordinary",
+  experienceEvidenceRequired = true,
+  prNumber = process.env.SOUNDING_LINE_PR_NUMBER,
+}) {
   const baseTree = git(root, ["rev-parse", `${baseSha}^{tree}`]);
   const candidateTree = git(root, ["rev-parse", `${candidateSha}^{tree}`]);
   assertBinding({ baseSha, candidateSha, baseTree, candidateTree });
   git(root, ["merge-base", "--is-ancestor", baseSha, candidateSha]);
+  validateR8RawOriginals({ root, baseSha, candidateSha });
   const changedPaths = git(root, ["diff", "--name-only", "--no-renames", baseSha, candidateSha])
     .split(/\r?\n/u)
     .filter(Boolean);
@@ -1015,6 +1469,7 @@ export async function buildPlan({ root, baseSha, candidateSha, mode = "ordinary"
     baseSha,
     candidateSha,
     changedPaths: classification.admissionPaths,
+    prNumber,
   });
   if (productExperience.applicable) {
     for (const browserTest of productExperience.browserTests)
@@ -1181,6 +1636,7 @@ export function runVerificationCommands(root, plan, runCommand = run) {
 
 export function failureCategoryFor(error) {
   const message = error instanceof Error ? error.message : String(error);
+  if (message.startsWith("PRODUCT_EXPERIENCE_")) return "PRODUCT_EXPERIENCE_FAILURE";
   if (message.startsWith("SOUNDING_LINE_INVALID_SERVER_TOPOLOGY:")) return "INVALID_SERVER_TOPOLOGY";
   if (message.startsWith("SOUNDING_LINE_INFRASTRUCTURE_STARTUP_FAILURE:")) return "INFRASTRUCTURE_STARTUP_FAILURE";
   if (message.startsWith("SOUNDING_LINE_INFRASTRUCTURE_RUNTIME_FAILURE:")) return "INFRASTRUCTURE_RUNTIME_FAILURE";
@@ -1195,28 +1651,109 @@ export function failureCategoryFor(error) {
   return "PRODUCT_FAILURE";
 }
 
+// Fixed tokens only: contract names, integration owners and other suffix details
+// are not safe ordinary-decision diagnostics.
+const productExperienceFailureCodes = new Set(
+  `
+  ACCEPTED_REFERENCE_INVALID ACCEPTED_REFERENCE_UNKNOWN ACCESSIBILITY_OR_RESPONSIVE_DEFECT
+  ANONYMOUS_ROLE_STATE_MISMATCH APPLICABILITY_INDETERMINATE ARTIFACT_DIGEST_MISMATCH
+  ARTIFACT_IDENTITY_INVALID ARTIFACT_NOT_TRACKED_REGULAR_FILE ARTIFACT_ORIGIN_INVALID ARTIFACT_PATH_INVALID
+  ATTESTATION_ACCESS_UNAVAILABLE ATTESTATION_ARCHIVE_DIGEST_MISMATCH ATTESTATION_ARCHIVE_INVALID
+  ATTESTATION_JSON_INVALID ATTESTATION_MANIFEST_MISSING ATTESTATION_PROVENANCE_INVALID
+  ATTESTATION_REPOSITORY_INVALID ATTESTATION_SOURCE_MISMATCH BASELINE_DEBT_NOT_EXEMPT BASELINE_EVIDENCE_INVALID
+  BLOCKING_FINDING CANDIDATE_BASELINE_DEBT_FORBIDDEN CONTINUITY_OBSERVATION_MISSING
+  CONTRACT_FIELD_INVALID CONTRACT_MISSING CROSS_DEVICE_CONTINUITY_FAILED CROSS_PROJECT_CONTINUITY_REQUIRED
+  CROSS_PROJECT_JOURNEY_FAILED ENTRY_POINT_INVALID EVIDENCE_MISSING EVIDENCE_SOURCE_MISMATCH
+  EXACT_SOURCE_REQUIRED EXPERIENCE_DESIGN_REQUIRED FEEDBACK_BOUNDARY_INVALID FINDING_INVALID FINDINGS_MISSING
+  HOMEPORT_JOURNEY_UNKNOWN HOMEPORT_SCREEN_UNKNOWN INDEPENDENT_REVIEW_REQUIRED INTEGRATION_SCOPE_REQUIRED
+  ISOLATED_ROLE_FIXTURE_REQUIRED JOURNEY_ACTION_INVALID JOURNEY_DESTINATION_FAILED JOURNEY_INVALID
+  JOURNEY_ROLE_COVERAGE_INVALID KEYBOARD_FOCUS_FAILED KEYBOARD_REACHABILITY_FAILED MOTION_BOUNDARY_REQUIRED
+  NATURAL_JOURNEY_REQUIRED OWNER_ACCEPTANCE_UNAUTHORIZED PROFILE_ADAPTER_REQUIRED RECORDING_INVALID
+  RECORDING_REQUIRED REGISTRY_INVALID REPAIR_EVIDENCE_MISSING RESPONSIVENESS_FAILED RETURN_PATH_PREDICATE_REQUIRED
+  RETURN_PATH_REQUIRED RETURN_WITHOUT_DEPARTURE REVIEW_PACKET_MISMATCH REVIEW_UNRESOLVED ROLE_EXPERIENCE_MISSING
+  ROLE_JOURNEY_MISSING ROLE_WITNESS_REQUIRED SCREENSHOT_INVALID SEMANTIC_JOURNEY_FAILED SEMANTIC_OUTCOME_REQUIRED
+  SOURCE_SNAPSHOT_INVALID STATE_CAPTURE_MISSING SUBSTANTIVE_REVIEW_MISSING TASK_OWNED_LOOPBACK_REQUIRED
+  TRUSTED_ATTESTATION_POLICY_MISSING TRUSTED_ATTESTATION_REQUIRED TRUSTED_CAPTURE_OR_REVIEW_MISMATCH
+  TRUSTED_OBLIGATION_CHANGED TRUSTED_POLICY_INVALID TRUSTED_REPLAY_FAILED UNREGISTERED_SURFACE USER_OUTCOME_FAILED
+  VIEWPORT_UNSUPPORTED VISIBLE_CONTROL_REQUIRED ACTION_OUTCOME_NOT_OBSERVED
+`
+    .trim()
+    .split(/\s+/u)
+    .map((code) => `PRODUCT_EXPERIENCE_${code}`),
+);
+
 export function sanitizedFailureCode(error) {
   const message = error instanceof Error ? error.message : String(error);
+  if (message.startsWith("PRODUCT_EXPERIENCE_")) {
+    const token = message.split(":", 1)[0];
+    return productExperienceFailureCodes.has(token) ? token : "PRODUCT_EXPERIENCE_FAILURE";
+  }
   if (message.startsWith("SOUNDING_LINE_")) return message;
   return "SOUNDING_LINE_PRODUCT_FAILURE:VERIFICATION_COMMAND_FAILED";
 }
 
-async function readBrowserRuntimeReceipt(root) {
-  try {
-    return JSON.parse(await readFile(path.join(root, "artifacts", "sounding-line", "browser-runtime.json"), "utf8"));
-  } catch {
-    return null;
-  }
+export function browserDiagnosticRunner(diagnostics, runCommand = run) {
+  return (root, command, argumentsList, options = {}) => {
+    // Advance even before setup commands: their failure must not inherit an
+    // earlier command's browser receipt. No random context enters the plan.
+    const context = diagnostics.beginScope();
+    const script = argumentsList[0] ?? "";
+    const browserCommand =
+      ["scripts/sounding-line/browser-authority.mjs", "scripts/sounding-line/run-browser-suite.mjs"].includes(script) ||
+      /^scripts\/(?:admiralty|tideglass|homeport)\/run-.*(?:journeys|e2e)/u.test(script);
+    const protectedScript = command === process.execPath ? protectedBrowserScripts.get(script) : undefined;
+    const executionArguments = protectedScript ? [protectedScript, ...argumentsList.slice(1)] : argumentsList;
+    return runCommand(root, command, executionArguments, {
+      ...options,
+      env: { ...options.env, ...(browserCommand ? context : {}) },
+    });
+  };
+}
+export function exceptionCommandRunner(plan, runCommand, authorize = assertExceptionExecution) {
+  return async (root, command, argumentsList, options = {}) => {
+    if (plan.exception && argumentsList[0] === "scripts/sounding-line/run-browser-suite.mjs") {
+      const lease = await authorize({ root, plan, kind: "technical", claim: true });
+      options = { ...options, env: { ...options.env, SOUNDING_LINE_EXCEPTION_LEASE: lease.lease } };
+    }
+    return runCommand(root, command, argumentsList, options);
+  };
 }
 
-async function readBrowserSuiteProfileReceipt(root) {
-  try {
-    return JSON.parse(
-      await readFile(path.join(root, "artifacts", "sounding-line", "browser-suite-profile.json"), "utf8"),
-    );
-  } catch {
-    return null;
-  }
+export async function completeOrdinaryVerification({
+  root,
+  plan,
+  result,
+  verification,
+  diagnostics,
+  verifyExperience = verifyProductExperience,
+  replay = runTrustedExperienceReplay,
+}) {
+  // Verification has returned, so retain its observations even if a later stage fails.
+  // These fields do not change the overall FAIL decision or qualify a replay.
+  result.timing.commands = verification.timings;
+  result.evidenceReconciliation = {
+    evidenceVersion: EVIDENCE_VERSION,
+    obligations: verification.obligations,
+    reconciliation: verification.reconciliation,
+    finalization: verification.finalization,
+    requiredObligations: verification.finalization.requiredObligations,
+    freshObligations: verification.freshObligations,
+    commandsAvoided: verification.commandsAvoided,
+    avoidedDurationMs: verification.avoidedDurationMs,
+  };
+  await withVerificationStage("TECHNICAL_COMPLETE", () => markExceptionTechnicalComplete(root, plan.productExperience));
+  if (plan.productExperience.applicable) diagnostics.clearScope();
+  result.productExperienceDecision = await withVerificationStage("HISTORICAL_EXPERIENCE", () =>
+    verifyExperience(root, plan.candidateSha, plan.productExperience),
+  );
+  result.productExperienceReplay = await withVerificationStage("EXPERIENCE_REPLAY", () =>
+    replay({
+      root,
+      plan: plan.productExperience,
+      environment: verificationEnvironment(plan, process.execPath, ["scripts/sounding-line/browser-authority.mjs"]),
+      diagnostics,
+    }),
+  );
 }
 
 async function main() {
@@ -1235,8 +1772,21 @@ async function main() {
   const preflightStartedAt = Date.now();
   let plan;
   let result;
+  let diagnostics;
+  let r14Observation, currentAdmissionObservation, activeObservation;
   try {
-    plan = await buildPlan({ root, baseSha, candidateSha, mode });
+    plan = await withVerificationStage("CLASSIFICATION", () => buildPlan({ root, baseSha, candidateSha, mode }));
+    if (plan.productExperience.exception && mode !== "ordinary")
+      throw new Error("PRODUCT_EXPERIENCE_EXCEPTION_RELEASE_FORBIDDEN");
+    const exceptionLease = plan.productExperience.applicable
+      ? await withVerificationStage("ORDINARY_ADMISSION", () =>
+          assertExceptionExecution({ root, plan: plan.productExperience, kind: "ordinary", claim: true }),
+        )
+      : null;
+    if (exceptionLease) {
+      process.env.SOUNDING_LINE_EXCEPTION_ORDINARY_LEASE = exceptionLease.lease;
+      process.env.SOUNDING_LINE_BASE_SHA = baseSha;
+    }
     result = {
       ...plan,
       planDigest: hash(plan),
@@ -1245,32 +1795,56 @@ async function main() {
       failureCategory: null,
       decision: "FAIL",
     };
-    const verification = await runReconciledVerification(root, plan);
-    result.productExperienceDecision = verifyProductExperience(root, candidateSha, plan.productExperience);
-    result.productExperienceReplay = await runTrustedExperienceReplay({
-      root,
-      plan: plan.productExperience,
-      environment: verificationEnvironment(plan, process.execPath, ["scripts/sounding-line/browser-authority.mjs"]),
-    });
-    result.timing.commands = verification.timings;
-    result.evidenceReconciliation = {
-      evidenceVersion: EVIDENCE_VERSION,
-      obligations: verification.obligations,
-      reconciliation: verification.reconciliation,
-      finalization: verification.finalization,
-      requiredObligations: verification.finalization.requiredObligations,
-      freshObligations: verification.freshObligations,
-      commandsAvoided: verification.commandsAvoided,
-      avoidedDurationMs: verification.avoidedDurationMs,
+    let authenticatedEvidence;
+    if (completedEvidenceEnvironmentClass(plan) === "github-actions-nonbrowser-controlled") {
+      const intakeStartedAt = Date.now();
+      try {
+        authenticatedEvidence = await authenticateCompletedEvidence({ root, plan });
+        result.completedEvidenceIntake = {
+          status: authenticatedEvidence.admitted ? "AUTHENTICATED_ELIGIBLE_RECEIPTS" : "NO_ELIGIBLE_RECEIPTS_FRESH",
+          admitted: authenticatedEvidence.admitted,
+          provenance: authenticatedEvidence.provenance,
+          rejections: authenticatedEvidence.rejections,
+          qualification: false,
+        };
+      } catch (error) {
+        result.completedEvidenceIntake = {
+          status: "CONSERVATIVE_FRESH_FALLBACK",
+          reason: /^SOUNDING_LINE_COMPLETED_EVIDENCE_[A-Z0-9_]+$/u.test(error?.message ?? "")
+            ? error.message
+            : "SOUNDING_LINE_COMPLETED_EVIDENCE_UNAVAILABLE",
+          qualification: false,
+        };
+      }
+      result.timing.evidenceIntakeMs = Date.now() - intakeStartedAt;
+    } else result.completedEvidenceIntake = { status: "UNSUPPORTED_ENVIRONMENT_FRESH", qualification: false };
+    diagnostics = createBrowserDiagnosticSession(root, { baseSha, candidateSha, planDigest: result.planDigest });
+    r14Observation = createR14Observation({ root, plan: plan.productExperience });
+    currentAdmissionObservation = createCurrentAdmissionObservation({ root, plan: plan.productExperience });
+    activeObservation = currentAdmissionObservation ?? r14Observation;
+    const verify = async () => {
+      const verification = await withVerificationStage("TECHNICAL_VERIFICATION", () =>
+        runReconciledVerification(
+          root,
+          plan,
+          exceptionCommandRunner(plan.productExperience, browserDiagnosticRunner(diagnostics)),
+          { completedEvidenceRoot: completedEvidenceDirectory(root), authenticatedEvidence },
+        ),
+      );
+      await completeOrdinaryVerification({ root, plan, result, verification, diagnostics });
     };
-    result.browserQualification = await readBrowserRuntimeReceipt(root);
-    result.browserSuiteProfile = await readBrowserSuiteProfileReceipt(root);
+    if (activeObservation) await withSourceDiagnosticCapture(activeObservation, verify);
+    else await verify();
+    const browserDiagnostics = await diagnostics.read();
+    result.browserQualification = browserDiagnostics.runtime;
+    result.browserSuiteProfile = browserDiagnostics.profile;
     if (result.browserQualification?.failureCategory)
       result.failureCategory = result.browserQualification.failureCategory;
     if (result.browserSuiteProfile?.failureCategory)
       result.failureCategory = result.browserSuiteProfile.failureCategory;
     result.decision = "PASS";
   } catch (error) {
+    activeObservation?.rememberFinalFailure(error);
     result ??= {
       version: 1,
       authority: "SOUNDING_LINE",
@@ -1282,14 +1856,31 @@ async function main() {
       decision: "FAIL",
     };
     result.error = sanitizedFailureCode(error);
+    result.failureObservation = verificationFailureObservation(error);
     result.failureCategory = failureCategoryFor(error);
     result.timing.commands = error?.soundingLineTimings ?? result.timing.commands;
-    result.browserQualification = await readBrowserRuntimeReceipt(root);
-    result.browserSuiteProfile = await readBrowserSuiteProfileReceipt(root);
+    const browserDiagnostics = await diagnostics?.read();
+    result.browserQualification = browserDiagnostics?.runtime ?? null;
+    result.browserSuiteProfile = browserDiagnostics?.profile ?? null;
     if (result.browserQualification?.failureCategory)
       result.failureCategory = result.browserQualification.failureCategory;
     if (result.browserSuiteProfile?.failureCategory)
       result.failureCategory = result.browserSuiteProfile.failureCategory;
+  }
+  if (activeObservation) {
+    const field = currentAdmissionObservation ? "currentAdmissionObservation" : "r14Observation";
+    try {
+      result[field] = await activeObservation.finish();
+    } catch {
+      result[field] = { status: "EVIDENCE_LOSS", evidenceLoss: true };
+    }
+    if (result[field].status !== "COMPLETE" && result.decision === "PASS") {
+      result.decision = "FAIL";
+      result.error = currentAdmissionObservation
+        ? "SOUNDING_LINE_CURRENT_ADMISSION_OBSERVATION_INCOMPLETE"
+        : "SOUNDING_LINE_R14_OBSERVATION_INCOMPLETE";
+      result.failureCategory = "EXECUTION_UNKNOWN";
+    }
   }
   result.completedAt = new Date().toISOString();
   await mkdir(path.join(root, "artifacts", "sounding-line"), { recursive: true });

@@ -1,5 +1,5 @@
 name: Sounding Line ordinary
-run-name: Sounding Line ordinary ${{ github.event.pull_request.number || inputs.pr_number || github.run_id }}
+run-name: Sounding Line finite 1 ${{ inputs.experience_mode || 'ordinary' }} ${{ github.event.pull_request.number || inputs.pr_number || 'unbound' }} ${{ github.event.pull_request.head.sha || inputs.candidate_sha || 'unbound' }} ${{ github.event.pull_request.draft == true && 'draft' || 'active' }}
 
 on:
   pull_request_target:
@@ -29,7 +29,7 @@ on:
         default: ordinary
         options: [ordinary, capture, review, verify]
       experience_diagnostic:
-        description: Exercise installed experience authority without qualifying a PR
+        description: Non-qualifying experience diagnostic; ordinary mode checks custody checkout only
         type: boolean
         default: false
       evidence_ref:
@@ -47,7 +47,57 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  campaign-custody:
+    name: Sounding Line / Finite campaign custody
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.pull_request.draft == false }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      pull-requests: read
+      actions: read
+    outputs:
+      campaign: ${{ steps.custody.outputs.campaign }}
+      phase: ${{ steps.custody.outputs.phase }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          path: authority
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || inputs.candidate_sha }}
+          path: candidate
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        if: inputs.experience_mode == 'review' || inputs.experience_mode == 'verify'
+        with:
+          ref: ${{ inputs.evidence_ref || inputs.candidate_sha }}
+          path: evidence
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: authority/.nvmrc
+      - name: Reserve finite work using installed protected-main authority only
+        id: custody
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || inputs.base_sha }}
+          CANDIDATE_SHA: ${{ github.event.pull_request.head.sha || inputs.candidate_sha }}
+        run: node authority/scripts/sounding-line/experience-exception.mjs --operation reserve --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA" --evidence evidence
+      - name: Verify read-only custody checkout diagnostic identities and lineage
+        if: inputs.experience_diagnostic && inputs.experience_mode == 'ordinary'
+        env:
+          BASE_SHA: ${{ inputs.base_sha }}
+          CANDIDATE_SHA: ${{ inputs.candidate_sha }}
+          SOUNDING_LINE_PR_NUMBER: ${{ inputs.pr_number }}
+        run: node authority/scripts/sounding-line/experience-checkout-probe.mjs --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA"
   experience-preparation:
+    needs: campaign-custody
     name: Sounding Line / Experience preparation (no mainline decision)
     if: ${{ github.event_name == 'workflow_dispatch' && inputs.experience_mode != 'ordinary' }}
     runs-on: ubuntu-latest
@@ -92,16 +142,48 @@ jobs:
           BASE_SHA: ${{ inputs.base_sha }}
           CANDIDATE_SHA: ${{ inputs.candidate_sha }}
           EXPERIENCE_DIAGNOSTIC: ${{ inputs.experience_diagnostic }}
+          SOUNDING_LINE_PR_NUMBER: ${{ inputs.pr_number }}
+          SOUNDING_LINE_BASE_SHA: ${{ inputs.base_sha }}
+          SOUNDING_LINE_EXCEPTION_PHASE: ${{ needs.campaign-custody.outputs.phase }}
         run: node authority/scripts/sounding-line/experience-prepare.mjs --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA" --mode "$EXPERIENCE_MODE" --diagnostic "$EXPERIENCE_DIAGNOSTIC" --evidence evidence
       - uses: actions/upload-artifact@v4
-        if: inputs.experience_mode == 'capture'
+        if: always() && inputs.experience_mode == 'capture' && steps.experience.outputs.capture_plan_path != ''
         with:
           name: product-experience-capture-${{ steps.experience.outputs.source_digest }}
+          if-no-files-found: error
           path: |
-            candidate/artifacts/sounding-line/product-experience-submission/capture.json
-            candidate/artifacts/sounding-line/product-experience-submission/plan.json
-            candidate/artifacts/sounding-line/product-experience-submission/activation.json
-            candidate/Development_Docs/Testing/Product_Experience/evidence/
+            ${{ steps.experience.outcome == 'success' && steps.experience.outputs.capture_manifest_path || '' }}
+            ${{ steps.experience.outputs.capture_plan_path }}
+            ${{ steps.experience.outcome == 'success' && steps.experience.outputs.capture_activation_path || '' }}
+            ${{ steps.experience.outcome == 'success' && 'candidate/Development_Docs/Testing/Product_Experience/evidence/' || '' }}
+            ${{ steps.experience.outcome != 'success' && steps.experience.outputs.capture_stage_path || '' }}
+            ${{ steps.experience.outputs.capture_journal_path }}
+            ${{ steps.experience.outcome != 'success' && steps.experience.outputs.capture_journal_failure_path || '' }}
+            ${{ steps.experience.outcome != 'success' && steps.experience.outputs.capture_journal_pending_path || '' }}
+          retention-days: 90
+      - name: Retain current raw capture after failure or cancellation
+        id: capture-raw-retention
+        if: always() && inputs.experience_mode == 'capture' && steps.experience.outcome != 'success' && steps.experience.outputs.capture_raw_verified_paths == '' && steps.experience.outputs.capture_raw_encrypted_path != ''
+        env:
+          CAPTURE_PLAN: ${{ steps.experience.outputs.capture_plan_path }}
+          CAPTURE_ENCRYPTED: ${{ steps.experience.outputs.capture_raw_encrypted_path }}
+        run: node authority/scripts/sounding-line/experience-raw-retention.mjs --workspace candidate --plan "$CAPTURE_PLAN" --encrypted "$CAPTURE_ENCRYPTED"
+      - uses: actions/upload-artifact@v4
+        if: always() && inputs.experience_mode == 'capture' && (steps.experience.outputs.capture_raw_verified_paths != '' || (steps.capture-raw-retention.outcome == 'success' && steps.capture-raw-retention.outputs.capture_raw_verified_paths != ''))
+        with:
+          name: product-experience-raw-${{ inputs.candidate_sha }}-${{ github.run_id }}
+          path: ${{ steps.experience.outputs.capture_raw_verified_paths || steps.capture-raw-retention.outputs.capture_raw_verified_paths }}
+          if-no-files-found: error
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        if: always() && inputs.experience_mode == 'capture' && steps.experience.outputs.capture_plan_path != ''
+        with:
+          name: product-experience-lifecycle-${{ inputs.candidate_sha }}-${{ github.run_id }}
+          path: |
+            ${{ steps.experience.outputs.capture_runtime_paths }}
+            ${{ steps.experience.outputs.capture_profile_paths }}
+            ${{ steps.experience.outputs.capture_plan_path }}
+          if-no-files-found: warn
           retention-days: 90
       - uses: actions/upload-artifact@v4
         if: inputs.experience_mode == 'review'
@@ -116,10 +198,14 @@ jobs:
           path: candidate/artifacts/sounding-line/product-experience-submission/activation.json
           retention-days: 90
   final-check:
-    name: Sounding Line / Mainline Decision
-    if: ${{ (github.event_name != 'workflow_dispatch' || inputs.experience_mode == 'ordinary') && (github.event_name != 'pull_request_target' || github.event.pull_request.draft == false) }}
+    name: Sounding Line / Focused verification
+    needs: campaign-custody
+    if: ${{ (github.event_name != 'workflow_dispatch' || (inputs.experience_mode == 'ordinary' && !inputs.experience_diagnostic)) && (github.event_name != 'pull_request_target' || github.event.pull_request.draft == false) }}
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    outputs:
+      current_observation: ${{ steps.route.outputs.private_failure_publication_nonce != '' && steps.ordinary-verifier.outputs.current_admission_observation_publish == steps.route.outputs.private_failure_publication_nonce }}
+      current_observation_nonce: ${{ steps.route.outputs.private_failure_publication_nonce }}
     steps:
       - name: Bind the event to exact source identities
         id: source
@@ -159,8 +245,10 @@ jobs:
         run: |
           node --input-type=module <<'EOF'
           import { appendFileSync } from "node:fs";
+          import { randomUUID } from "node:crypto";
           import { buildPlan } from "./scripts/sounding-line/ordinary.mjs";
 
+          appendFileSync(process.env.GITHUB_OUTPUT, `private_failure_publication_nonce=${randomUUID()}\n`);
           try {
             const plan = await buildPlan({
               root: "../candidate",
@@ -180,16 +268,6 @@ jobs:
             appendFileSync(process.env.GITHUB_OUTPUT, "kind=control-plane\n");
           }
           EOF
-      - name: Restore reusable ordinary evidence
-        id: evidence-cache
-        if: steps.route.outputs.kind == 'ordinary'
-        continue-on-error: true
-        uses: actions/cache/restore@v4
-        with:
-          path: candidate/artifacts/sounding-line/evidence-store
-          key: sounding-line-evidence-v14-${{ runner.os }}-${{ hashFiles('authority/scripts/sounding-line/ordinary.mjs', 'authority/scripts/sounding-line/evidence.mjs') }}-${{ steps.source.outputs.candidate }}
-          restore-keys: |
-            sounding-line-evidence-v14-${{ runner.os }}-${{ hashFiles('authority/scripts/sounding-line/ordinary.mjs', 'authority/scripts/sounding-line/evidence.mjs') }}-
       - run: npm ci --ignore-scripts
         working-directory: candidate
       - run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
@@ -203,14 +281,30 @@ jobs:
         if: steps.route.outputs.kind == 'ordinary'
         env:
           GH_TOKEN: ${{ github.token }}
+          SOUNDING_LINE_EVIDENCE_PURPOSE: PROTECTED_FINAL_VERIFICATION
+          SOUNDING_LINE_PRIVATE_FAILURE_PUBLICATION_NONCE: ${{ steps.route.outputs.private_failure_publication_nonce }}
+          SOUNDING_LINE_PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
+          SOUNDING_LINE_BASE_SHA: ${{ steps.source.outputs.base }}
+          SOUNDING_LINE_EXCEPTION_PHASE: ${{ needs.campaign-custody.outputs.phase }}
         run: node authority/scripts/sounding-line/ordinary.mjs --mode ordinary --workspace candidate --base ${{ steps.source.outputs.base }} --candidate ${{ steps.source.outputs.candidate }}
-      - name: Persist passing reusable ordinary evidence
-        if: ${{ always() && steps.route.outputs.kind == 'ordinary' && steps.ordinary-verifier.outcome == 'success' && steps.evidence-cache.outputs.cache-hit != 'true' }}
-        continue-on-error: true
-        uses: actions/cache/save@v4
+      - name: Retain completed whole obligations after any verifier outcome
+        id: completed-evidence-artifact
+        if: ${{ always() && steps.route.outputs.kind == 'ordinary' }}
+        uses: actions/upload-artifact@v4
         with:
-          path: candidate/artifacts/sounding-line/evidence-store
-          key: sounding-line-evidence-v14-${{ runner.os }}-${{ hashFiles('authority/scripts/sounding-line/ordinary.mjs', 'authority/scripts/sounding-line/evidence.mjs') }}-${{ steps.source.outputs.candidate }}
+          name: sounding-line-completed-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: authority/artifacts/sounding-line/completed-evidence/checkpoint-*.json
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Retain encrypted browser failure diagnostics
+        id: browser-failure-artifact
+        if: ${{ always() && steps.route.outputs.kind == 'ordinary' && steps.route.outputs.private_failure_publication_nonce != '' && steps.ordinary-verifier.outputs.private_browser_failure_publish == steps.route.outputs.private_failure_publication_nonce && steps.ordinary-verifier.outputs.private_browser_failure_paths != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: sounding-line-browser-failures-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ steps.ordinary-verifier.outputs.private_browser_failure_paths }}
+          if-no-files-found: error
+          retention-days: 90
       - name: Bind control-plane validation to the exact candidate tree
         if: steps.route.outputs.kind == 'control-plane'
         working-directory: candidate
@@ -251,5 +345,68 @@ jobs:
         if: always() && steps.route.outputs.kind == 'ordinary'
         with:
           name: sounding-line-ordinary-${{ steps.source.outputs.candidate }}
-          path: candidate/artifacts/sounding-line/ordinary-decision.json
+          path: |
+            candidate/artifacts/sounding-line/ordinary-decision.json
+            candidate/artifacts/sounding-line/r14-observation.encrypted
           if-no-files-found: error
+      - name: Retain the validated current-admission encrypted observation
+        if: ${{ always() && steps.route.outputs.kind == 'ordinary' && steps.route.outputs.private_failure_publication_nonce != '' && steps.ordinary-verifier.outputs.current_admission_observation_publish == steps.route.outputs.private_failure_publication_nonce }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: sounding-line-current-admission-observation-${{ steps.source.outputs.candidate }}
+          path: candidate/artifacts/sounding-line/current-admission-observation.encrypted
+          if-no-files-found: error
+          retention-days: 90
+  mainline-decision:
+    name: Sounding Line / Mainline Decision
+    needs: [campaign-custody, final-check]
+    if: ${{ always() && (github.event_name != 'workflow_dispatch' || (inputs.experience_mode == 'ordinary' && !inputs.experience_diagnostic)) && (github.event_name != 'pull_request_target' || github.event.pull_request.draft == false) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      pull-requests: read
+      actions: read
+    steps:
+      - name: Require successful protected verification and custody
+        env:
+          CUSTODY_RESULT: ${{ needs.campaign-custody.result }}
+          VERIFICATION_RESULT: ${{ needs.final-check.result }}
+        run: test "$CUSTODY_RESULT" = success && test "$VERIFICATION_RESULT" = success
+      - uses: actions/checkout@v4
+        if: needs.campaign-custody.outputs.campaign == 'true'
+        with:
+          ref: ${{ github.sha }}
+          path: authority
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        if: needs.campaign-custody.outputs.campaign == 'true'
+        with:
+          ref: ${{ github.event.pull_request.head.sha || inputs.candidate_sha }}
+          path: candidate
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        if: needs.campaign-custody.outputs.campaign == 'true'
+        with:
+          node-version-file: authority/.nvmrc
+      - uses: actions/download-artifact@v4
+        if: needs.campaign-custody.outputs.campaign == 'true'
+        with:
+          name: sounding-line-ordinary-${{ github.event.pull_request.head.sha || inputs.candidate_sha }}
+          path: decision
+      - name: Download the validated current-admission cipher from this run
+        if: needs.campaign-custody.outputs.campaign == 'true' && needs.final-check.outputs.current_observation == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: sounding-line-current-admission-observation-${{ github.event.pull_request.head.sha || inputs.candidate_sha }}
+          path: decision
+      - name: Seal exact qualification without claiming whole-run success early
+        if: needs.campaign-custody.outputs.campaign == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha || inputs.base_sha }}
+          CANDIDATE_SHA: ${{ github.event.pull_request.head.sha || inputs.candidate_sha }}
+          SOUNDING_LINE_CURRENT_OBSERVATION_PUBLICATION_NONCE: ${{ needs.final-check.outputs.current_observation_nonce }}
+        run: node authority/scripts/sounding-line/experience-exception.mjs --operation seal --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA" --decision decision/ordinary-decision.json

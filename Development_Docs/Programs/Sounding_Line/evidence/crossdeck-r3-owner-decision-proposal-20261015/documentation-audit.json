@@ -1,0 +1,80 @@
+{
+  "classification": "DOCUMENTATION_EVIDENCE_AUDIT_NOT_NEW_PRODUCT_REVIEW",
+  "sourceDraftSha256": "2a731dd9455844ee573e894f3931ef241b394ce428b276f21efadb17f1a70144",
+  "originalReviewSha256": "7a076defe5dcdf90c7c02ed1fd5d69dbaeb05eeaa2fd14a6c5ef68ef4ecb1faa",
+  "baseSha": "aaef39a57d2c89ca57136dce327d337c5cb0ef7f",
+  "candidateSha": "bb69eed0cc930018bb4fe9e9f662a60ffa94dc11",
+  "canonicalSourceDigestVerified": "ad23861f9609e2ff3d98c95db78a030f9cb85ca491a7f2b99d42a05ed5f41dd8",
+  "canonicalContractDigestVerified": "8c8d5ddbc67e23f784e4465067973e2eb9d5f3d8d95bf44c646de4079cdb306d",
+  "contexts": 32,
+  "archivedReviewFiles": [
+    {
+      "originalName": "reviews.json",
+      "storedPath": "review3/reviews.original.raw.txt",
+      "sha256": "7a076defe5dcdf90c7c02ed1fd5d69dbaeb05eeaa2fd14a6c5ef68ef4ecb1faa",
+      "bytes": 142992
+    },
+    {
+      "originalName": "review-receipt.json",
+      "storedPath": "review3/review-receipt.original.raw.txt",
+      "sha256": "a43cec665cde17f57128073335b69ccd22ff1499430dabcbf2da5ae84fc5b260",
+      "bytes": 11831
+    },
+    {
+      "originalName": "blocker-assessment.json",
+      "storedPath": "review3/blocker-assessment.original.raw.txt",
+      "sha256": "920962153abc945eedc01799b59f5410593af98ed1277ae19ee9d6156710bbae",
+      "bytes": 6503
+    },
+    {
+      "originalName": "reviews.pre-final-severity-audit.json",
+      "storedPath": "review3/reviews.pre-final-severity-audit.original.raw.txt",
+      "sha256": "f94119bd805b756aa03891fa481aa66904296cd6666a065702f79d07c7f6a61f",
+      "bytes": 142025
+    },
+    {
+      "originalName": "review-receipt.pre-final-severity-audit.json",
+      "storedPath": "review3/review-receipt.pre-final-severity-audit.original.raw.txt",
+      "sha256": "6e589b73695299f18be6f2d6519d2c33b1c728070393e17749313905e017dd62",
+      "bytes": 9092
+    }
+  ],
+  "selectedOriginalMediaVerified": [
+    {
+      "id": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-7",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-7.png",
+      "sha256": "b21719086b7154d6f07690d4b51d6a1b0db0bd0e7fbda274d5e3f84cae2fb609"
+    },
+    {
+      "id": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL.trace.zip",
+      "sha256": "4fd89858ad1b0569671816dde7f8ab21e95d966e4d9693422d57bf4f595307bc"
+    },
+    {
+      "id": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/048354007b78c581c2f58847bda59553.webm",
+      "sha256": "de5506e8f5def3a506e26083ad4075bce1bc28b529d6a7172748205e4e7b648d"
+    }
+  ],
+  "originalPngVisuallyInspected": true,
+  "newBrowserRuns": 0,
+  "newProductReviews": 0,
+  "authorityOrCustodyWrites": 0,
+  "productSourceEdits": 0,
+  "ownerPublication": {
+    "commit": "1f20f32b4e131c430ad923d4acd33f483b9f3c3b",
+    "reviewSha256": "7a076defe5dcdf90c7c02ed1fd5d69dbaeb05eeaa2fd14a6c5ef68ef4ecb1faa",
+    "verifiedGitBlobBytes": true,
+    "productRuntimeDeltaFromBlockedCandidate": []
+  },
+  "sourceBlobs": {
+    "src/components/player/journal/ChronicleJournalSession.tsx": "e73f20c8af996be13765041597ec13508e9ca796",
+    "src/styles/chronicle.css": "f53fd9c20c994b88f2136c01e266af5319693e6d",
+    "src/styles/player.css": "743cf1863e17a0a448b480cf8a1b452703b310f9"
+  },
+  "phase": "PRE_APPROVAL_DOCUMENTATION_AUDIT",
+  "consumerSeamSnapshot": {
+    "path": "consumer-seam-confirmation.original.raw.txt",
+    "sha256": "bc1b84758c6ac9430ab22ab890eed635b9d1519490eaca27bddd29172e5f1cb2"
+  }
+}

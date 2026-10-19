@@ -1,0 +1,244 @@
+// Exact finite recovery; prior seals remain historical evidence, never current acceptance.
+import { createHash } from "node:crypto";
+
+export const CROSSDECK_R5 = {
+  id: "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R5",
+  recordDigest: "f7cc69e66e577c06cdd2f87ba10f99c98841c6172b08ca837e6a6a0da3cd3bd4",
+  predecessorDigest: "3b4e21f9b75689a7e88f0e4ea7ba450b46d71fd9b6fe9a9852ac9836f212434d",
+  frozenReferenceSha: "87bb29391ee747d9738cc7f259c47f4343a7da89",
+  predecessor: {
+    id: "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R4",
+    namespace: "sounding-line-exceptions/PE-X-CROSSDECK-FINAL-VERIFY-20261015-R4",
+    recordDigest: "3b4e21f9b75689a7e88f0e4ea7ba450b46d71fd9b6fe9a9852ac9836f212434d",
+    campaignEpoch: "2026-10-15T13:54Z",
+    baseSha: "a2495fd14efd5ade67832e18fd260f32da98b3b2",
+    candidateSha: "19687c12e20ef69e6519903b14e56a145df2d7e7",
+    candidateTree: "b8df76fca5532a71799f052ed74f1129c0311429",
+    sourceDigest: "4446bc23b1393a4d762a007a21b62d96980a8b9949e4f7741ae51617d07319b5",
+    contractDigest: "4ee636786ea5b2fedd375c3567441f151caa668d98934b01e98161c4c88c44ec",
+    consumerSha: "87bb29391ee747d9738cc7f259c47f4343a7da89",
+    consumerTree: "a2c7dae33c85887cccf734f819351f286728532e",
+    seals: [
+      {
+        slot: "prepare",
+        commitSha: "ab215f42af06e5b5942a9d562595dea3af5a5a6a",
+        payloadDigest: "7dbe366a2ed85e39b7e922e9d66e4652bb0a77b1ee7804f0187312bf2fc84b34",
+      },
+      {
+        slot: "capture",
+        commitSha: "ec1586323e5efef2a18ebe54fd7bd7491d78a7b2",
+        payloadDigest: "ee1e601582302c035448278cc7004b07bbb47e33bfee94c6c7eb6b2474171504",
+      },
+      {
+        slot: "review-submit",
+        commitSha: "004c1e35fb1696c7cd8e6e542cf6ec0ecca56954",
+        payloadDigest: "c9d619c946c1254a6adcca252ba59b8ae78061c6d59d78a519d080f4f95dcfe7",
+      },
+      {
+        slot: "review5",
+        commitSha: "de1f2097ac8c21093ed5917c6bda5886c6f53d1e",
+        payloadDigest: "7b25a2f8ba9851294e20753ef07c9925654d441e7f8c2ad209db20535606635b",
+      },
+    ],
+    runs: [
+      {
+        runId: 38822426167,
+        runAttempt: 1,
+        workflowId: 341545080,
+        mode: "ordinary",
+        createdAt: "2026-10-15T23:14:59Z",
+        conclusion: "failure",
+        baseSha: "a2495fd14efd5ade67832e18fd260f32da98b3b2",
+        candidateSha: "87bb29391ee747d9738cc7f259c47f4343a7da89",
+        event: "pull_request_target",
+        headSha: "87bb29391ee747d9738cc7f259c47f4343a7da89",
+        headBranch: "codex/crossdeck-experience-refit",
+        artifacts: [],
+      },
+      {
+        runId: 38814444774,
+        runAttempt: 1,
+        workflowId: 341545080,
+        mode: "capture",
+        createdAt: "2026-10-15T22:03:31Z",
+        conclusion: "success",
+        baseSha: "a2495fd14efd5ade67832e18fd260f32da98b3b2",
+        candidateSha: "19687c12e20ef69e6519903b14e56a145df2d7e7",
+        event: "workflow_dispatch",
+        headSha: "a2495fd14efd5ade67832e18fd260f32da98b3b2",
+        headBranch: "main",
+        artifacts: [
+          {
+            id: 12011465112,
+            size: 41664,
+            digest: "sha256:b3bf48100bec026555d4cee2c03fb82d3d3fc97acd62cac45dedee825e76c33e",
+          },
+          {
+            id: 12009949926,
+            size: 1259580006,
+            digest: "sha256:bc21c7f921ad6a0afce9c5fd7fd23b17290c4d7b58e9534bcd8637c96ae5b5fd",
+          },
+        ],
+      },
+      {
+        runId: 38820570426,
+        runAttempt: 1,
+        workflowId: 341545080,
+        mode: "review",
+        createdAt: "2026-10-15T22:57:40Z",
+        conclusion: "success",
+        baseSha: "a2495fd14efd5ade67832e18fd260f32da98b3b2",
+        candidateSha: "19687c12e20ef69e6519903b14e56a145df2d7e7",
+        event: "workflow_dispatch",
+        headSha: "a2495fd14efd5ade67832e18fd260f32da98b3b2",
+        headBranch: "main",
+        artifacts: [
+          {
+            id: 12012399990,
+            size: 17015,
+            digest: "sha256:5fec42361d6f7b07d208a3f4cf422c726a0b9c4dd6061c87b738094198a2741a",
+          },
+        ],
+      },
+    ],
+    failedOrdinary: {
+      runId: 38822426167,
+      jobs: [
+        {
+          id: 116721903368,
+          name: "Sounding Line / Finite campaign custody",
+          conclusion: "failure",
+          completedAt: "2026-10-15T23:18:00Z",
+          steps: [
+            {
+              number: 1,
+              name: "Set up job",
+              conclusion: "success",
+            },
+            {
+              number: 2,
+              name: "Run actions/checkout@v4",
+              conclusion: "success",
+            },
+            {
+              number: 3,
+              name: "Run actions/checkout@v4",
+              conclusion: "success",
+            },
+            {
+              number: 4,
+              name: "Run actions/checkout@v4",
+              conclusion: "skipped",
+            },
+            {
+              number: 5,
+              name: "Run actions/setup-node@v4",
+              conclusion: "success",
+            },
+            {
+              number: 6,
+              name: "Reserve finite work using installed protected-main authority only",
+              conclusion: "failure",
+            },
+            {
+              number: 7,
+              name: "Verify read-only custody checkout diagnostic identities and lineage",
+              conclusion: "skipped",
+            },
+            {
+              number: 12,
+              name: "Post Run actions/setup-node@v4",
+              conclusion: "skipped",
+            },
+            {
+              number: 13,
+              name: "Post Run actions/checkout@v4",
+              conclusion: "success",
+            },
+            {
+              number: 14,
+              name: "Post Run actions/checkout@v4",
+              conclusion: "success",
+            },
+            {
+              number: 15,
+              name: "Complete job",
+              conclusion: "success",
+            },
+          ],
+        },
+        {
+          id: 116722909471,
+          name: "Sounding Line / Mainline Decision",
+          conclusion: "failure",
+          completedAt: "2026-10-15T23:18:05Z",
+          steps: [
+            {
+              number: 1,
+              name: "Set up job",
+              conclusion: "success",
+            },
+            {
+              number: 2,
+              name: "Require successful protected verification and custody",
+              conclusion: "failure",
+            },
+            {
+              number: 3,
+              name: "Run actions/checkout@v4",
+              conclusion: "skipped",
+            },
+            {
+              number: 4,
+              name: "Run actions/checkout@v4",
+              conclusion: "skipped",
+            },
+            {
+              number: 5,
+              name: "Run actions/setup-node@v4",
+              conclusion: "skipped",
+            },
+            {
+              number: 6,
+              name: "Run actions/download-artifact@v4",
+              conclusion: "skipped",
+            },
+            {
+              number: 7,
+              name: "Seal exact qualification without claiming whole-run success early",
+              conclusion: "skipped",
+            },
+            {
+              number: 8,
+              name: "Complete job",
+              conclusion: "success",
+            },
+          ],
+        },
+        {
+          id: 116722910488,
+          name: "Sounding Line / Focused verification",
+          conclusion: "skipped",
+          completedAt: "2026-10-15T23:18:00Z",
+          steps: [],
+        },
+        {
+          id: 116722910638,
+          name: "Sounding Line / Experience preparation (no mainline decision)",
+          conclusion: "skipped",
+          completedAt: "2026-10-15T23:18:00Z",
+          steps: [],
+        },
+      ],
+    },
+  },
+};
+export function validateR5Record(record) {
+  if (
+    !["ACTIVE", "RETIRED"].includes(record.status) ||
+    createHash("sha256")
+      .update(JSON.stringify({ ...record, status: "ACTIVE" }))
+      .digest("hex") !== CROSSDECK_R5.recordDigest
+  )
+    throw new Error("PRODUCT_EXPERIENCE_EXCEPTION_R5_RECORD_CHANGED");
+}

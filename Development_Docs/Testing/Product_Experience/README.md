@@ -3,10 +3,19 @@ title: Product Experience Engineering operations
 audience: engineering
 status: current
 canonical_for: product-experience-engineering
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-19
 ---
 
 # Product Experience Engineering
+
+The [R19 source-bound preparation checkpoint](../../Programs/Sounding_Line/evidence/crossdeck-current-source-admission-20261019-r19/causal-disposition.md)
+records the consumed R18 failure and an uninstalled successor. The owner-supplied
+original private packet now has verified integrity, source and receipt bindings;
+its bounded development evidence supplies no consumer capture or acceptance authority.
+
+Engineering maintenance: [R8 historical format reconciliation](../../Engineering/Crossdeck_R8_Historical_Format_Reconciliation.md).
+Engineering maintenance: [complete changed-path buffer repair](../../Engineering/Experience_Changed_Path_Buffer_Repair.md).
+Engineering maintenance: [Crossdeck R9 ordinary-only successor](../../Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R9_Ordinary_Only_20261016.md).
 
 Sounding Line's ordinary mainline decision now owns executable experience
 obligations alongside existing technical contracts. The
@@ -99,6 +108,15 @@ product identity is still calculated from the exact candidate. Ordinary PRs use
 only their committed report.
 
 ## Debt and acceptance
+
+The [Crossdeck R12 diagnosed continuation](../../Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R12_Diagnosed_Continuation_20261017.md)
+preserves failed ordinary5 and original review7/submission3. Its two bounded
+technical cases are supporting proof; current whole qualification is mandatory.
+
+The [Crossdeck R13 setup readiness successor](../../Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R13_Setup_Readiness_Successor_20261017.md)
+preserves R12's spent setup failure and requires complete isolated dependency
+readiness before any new technical trial. It retains the same current whole
+qualification and historical review boundaries.
 
 The [Homeport ledger](../../Projects/Project_Homeport/Homeport_Nonconformity_Ledger.csv)
 retains owner-reported spatial deficiencies and accountable repair paths.

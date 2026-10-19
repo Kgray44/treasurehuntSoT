@@ -1,12 +1,43 @@
 #!/usr/bin/env node
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
-import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdir, rm, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { browserSuiteProfiles, isolatedBrowserFixtureCredentials } from "./browser-suite-profiles.mjs";
+import {
+  assertExceptionExecution,
+  claimExceptionPhase,
+  exceptionSuitePlan,
+  trustedExceptions,
+} from "./experience-exception.mjs";
+import {
+  browserReceiptPaths,
+  readBrowserDiagnosticReceipt,
+  writeBrowserDiagnosticReceipt,
+} from "./browser-diagnostics.mjs";
+import { assertR12TechnicalSource, requireR12TechnicalSuite } from "./experience-r12-technical-proof.mjs";
+import {
+  assertR13TechnicalSource,
+  requireR13TechnicalSuite,
+  requireR13DependencyReadinessSuite,
+  r13CaseProfileContext,
+} from "./experience-r13-technical-proof.mjs";
+import {
+  sealReadinessProfileContext,
+  runNativeDependencyChecks,
+  runBrowserDependencyProbe,
+} from "./experience-dependency-readiness.mjs";
+
+import {
+  requirePosttechnicalDiagnosticSuite,
+  assertPosttechnicalSources,
+  capturePosttechnicalSuiteEvidence,
+  scrubPosttechnicalSuiteEnvironment,
+  POSTTECHNICAL_POLICY,
+} from "./replay-posttechnical-suite.mjs";
 
 const separator = process.argv.indexOf("--");
 const options = Object.fromEntries(
@@ -25,17 +56,82 @@ if (
   !profile ||
   !/^[a-f0-9]{40}$/u.test(candidateSha ?? "") ||
   !databaseUrl ||
-  (!browserTests.length && !options["experience-plan"])
+  (!browserTests.length && !options["experience-plan"] && !options["r13-dependency-readiness"])
 )
   throw new Error("SOUNDING_LINE_SUITE_FIXTURE_CONTRACT_UNSATISFIED:INVALID_PROFILE_INVOCATION");
 
+// This distinct finite route validates its own private permission before any
+// existing consumer selector. Invalid requests never fall through to old grants.
+const posttechnical = options["posttechnical-diagnostic"]
+  ? await requirePosttechnicalDiagnosticSuite({
+      root,
+      candidateSha,
+      options,
+      browserTests,
+      argv: process.argv.slice(2),
+    })
+  : null;
+
+// This exact one-case diagnostic grant is independent of the normal six-file
+// technical allowance. Its create-only launch reservation precedes all setup.
+const readiness = options["r13-dependency-readiness"]
+  ? await requireR13DependencyReadinessSuite({ root, candidateSha, options, browserTests, argv: process.argv.slice(2) })
+  : null;
+const r13Technical = options["r13-technical-proof"]
+  ? await requireR13TechnicalSuite({ root, candidateSha, options, browserTests, argv: process.argv.slice(2) })
+  : null;
+const r12Technical = options["r12-technical-proof"]
+  ? await requireR12TechnicalSuite({ root, candidateSha, options, browserTests, argv: process.argv.slice(2) })
+  : null;
+const exceptionPlan =
+  r12Technical || r13Technical || readiness || posttechnical ? null : await exceptionSuitePlan({ root, candidateSha });
+if (exceptionPlan) {
+  if (options["experience-plan"]) {
+    const guardedPlan =
+      process.env.SOUNDING_LINE_R3_LOCAL_LEASE ||
+      process.env.SOUNDING_LINE_R6_LOCAL_LEASE ||
+      process.env.SOUNDING_LINE_R8_LOCAL_LEASE ||
+      process.env.SOUNDING_LINE_R7_LOCAL_LEASE
+        ? JSON.parse(await readFile(options["experience-plan"], "utf8"))
+        : exceptionPlan;
+    await assertExceptionExecution({ root, plan: guardedPlan, kind: "experience" });
+  } else {
+    const record = trustedExceptions(root, exceptionPlan.baseSha).find(
+      (value) => value.id === exceptionPlan.exception.id,
+    );
+    if (
+      profile?.id !== "generic" ||
+      JSON.stringify([...browserTests].sort()) !== JSON.stringify(record.requiredTechnicalBrowserTests)
+    )
+      throw new Error("PRODUCT_EXPERIENCE_EXCEPTION_TECHNICAL_SCOPE_CHANGED");
+    await assertExceptionExecution({ root, plan: exceptionPlan, kind: "technical" });
+    claimExceptionPhase({
+      root,
+      phase: "technical-launch",
+      plan: exceptionPlan,
+      runId: Number(process.env.GITHUB_RUN_ID),
+    });
+  }
+}
+
 const artifactRoot = path.join(root, "artifacts", "sounding-line");
-const receiptPath = path.join(artifactRoot, "browser-suite-profile.json");
-const environment = profileEnvironment({ profileId: profile.id, candidateSha, databaseUrl });
+const receiptPaths = browserReceiptPaths(root);
+// R13 reuses the exact private profile context created by its successful bounded
+// infrastructure attempt. The ordinary suite still reruns every setup command.
+const environment = r13Technical
+  ? await r13CaseProfileContext({ root, marker: r13Technical })
+  : profileEnvironment({ profileId: profile.id, candidateSha, databaseUrl });
+if (posttechnical) Object.assign(environment, posttechnical.environment);
+if (readiness) sealReadinessProfileContext({ attempt: readiness, profileEnvironment: environment });
+const setupSteps = [];
+let setupStatus = "FAIL";
 
 try {
-  await rm(path.join(artifactRoot, "browser-runtime.json"), { force: true });
-  await rm(receiptPath, { force: true });
+  if (readiness) await runNativeDependencyChecks({ attempt: readiness, environment: productEnvironment(environment) });
+  if (receiptPaths && !receiptPaths.binding) {
+    await rm(receiptPaths.runtime, { force: true });
+    await rm(receiptPaths.profile, { force: true });
+  }
   if (profile.validationIsolation) {
     await mkdir(path.dirname(sqlitePath(environment.DATABASE_URL)), { recursive: true });
     await clearOwnedIsolationDatabase(environment.DATABASE_URL, profile.id);
@@ -54,7 +150,9 @@ try {
   if (profile.seed) run(process.execPath, ["node_modules/tsx/dist/cli.mjs", "prisma/seed.ts"], environment);
   for (const preparer of profile.preparers ?? []) run(process.execPath, preparerArguments(preparer), environment);
   ensureProductionBuild();
-  if (options["experience-plan"]) {
+  if (readiness) {
+    await runBrowserDependencyProbe({ attempt: readiness, environment: productEnvironment(environment) });
+  } else if (options["experience-plan"]) {
     if (!options["experience-runner"]) throw new Error("PRODUCT_EXPERIENCE_TRUSTED_RUNNER_REQUIRED");
     // Candidate build/setup must not mutate either the checked-out product or
     // the separately checked-out protected helper before evidence execution.
@@ -70,23 +168,34 @@ try {
       environment,
     );
   } else {
+    if (r12Technical) assertR12TechnicalSource(root, r12Technical);
+    if (r13Technical) {
+      assertR13TechnicalSource(root, r13Technical);
+      // Repeated setup must preserve the exact dependency/context state proved
+      // by readiness before the single product case can launch.
+      await r13CaseProfileContext({ root, marker: r13Technical });
+    }
+    if (posttechnical) assertPosttechnicalSources(posttechnical.marker);
     run(
       process.execPath,
       [
-        "scripts/sounding-line/browser-authority.mjs",
+        fileURLToPath(new URL("./browser-authority.mjs", import.meta.url)),
         ...profile.fixtureArguments.flatMap((argument) => ["--fixture", argument]),
         ...(profile.fixtureProject ? ["--fixture-project", profile.fixtureProject] : []),
         "--",
         ...browserTests,
         ...(profile.browserArguments ?? []),
+        ...(posttechnical?.browserArguments ?? []),
         "--project",
         profile.browserProject ?? "chromium",
       ],
       environment,
     );
   }
-  await writeReceipt({ status: "PASS", failureCategory: null });
+  setupStatus = "PASS";
+  if (!readiness) await writeReceipt({ status: "PASS", failureCategory: null });
 } catch (error) {
+  if (readiness) throw error;
   const runtimeReceipt = await readBrowserReceipt();
   await writeReceipt(
     runtimeReceipt
@@ -98,6 +207,14 @@ try {
         },
   );
   throw error;
+} finally {
+  if (posttechnical) capturePosttechnicalSuiteEvidence({ context: posttechnical, root, status: setupStatus });
+  if (readiness)
+    await writeFile(
+      readiness.paths.setupReceipt,
+      JSON.stringify({ version: 1, status: setupStatus, steps: setupSteps }, null, 2) + "\n",
+      { flag: "wx" },
+    );
 }
 
 function ensureProductionBuild() {
@@ -173,13 +290,56 @@ function taskOwnedProductionHttpEnvironment(profileId, sha) {
   return environment;
 }
 
+function productEnvironment(env) {
+  const result = { ...process.env, ...env };
+  delete result.GITHUB_OUTPUT;
+  delete result.SOUNDING_LINE_PRIVATE_FAILURE_PUBLICATION_NONCE;
+  return result;
+}
+
 function run(command, argumentsList, env) {
+  const childEnvironment = { ...process.env, ...env };
+  if (
+    command !== process.execPath ||
+    argumentsList[0] !== fileURLToPath(new URL("./browser-authority.mjs", import.meta.url))
+  ) {
+    delete childEnvironment.GITHUB_OUTPUT;
+    delete childEnvironment.SOUNDING_LINE_PRIVATE_FAILURE_PUBLICATION_NONCE;
+  }
   const result = spawnSync(command, argumentsList, {
     cwd: root,
-    env: { ...process.env, ...env },
+    env: childEnvironment,
     stdio: "inherit",
     windowsHide: true,
+    ...(readiness
+      ? { timeout: argumentsList[0] === "node_modules/next/dist/bin/next" ? 900000 : 120000, killSignal: "SIGTERM" }
+      : {}),
+    ...(posttechnical
+      ? {
+          env: scrubPosttechnicalSuiteEnvironment(childEnvironment),
+          timeout: POSTTECHNICAL_POLICY.commandMs,
+          killSignal: "SIGTERM",
+        }
+      : {}),
   });
+  if (readiness) {
+    const fixedIds = [
+      "prisma-generate",
+      "sqlite-bootstrap",
+      "seed",
+      "migrate-legacy-companion",
+      "prepare-validation-isolation",
+      "next-build",
+    ];
+    setupSteps.push({
+      id: fixedIds[setupSteps.length],
+      status: !result.error && result.status === 0 ? "PASS" : "FAIL",
+      command,
+      arguments: argumentsList,
+      exitCode: result.status,
+      error: result.error ? { code: result.error.code ?? null, message: result.error.message } : null,
+    });
+  }
   if (result.error) throw result.error;
   if (result.status !== 0) throw new Error(`SOUNDING_LINE_SUITE_PROFILE_COMMAND_FAILED:${profile.id}`);
 }
@@ -195,19 +355,18 @@ function preparerArguments(preparer) {
 }
 
 async function readBrowserReceipt() {
-  try {
-    return JSON.parse(await readFile(path.join(artifactRoot, "browser-runtime.json"), "utf8"));
-  } catch {
-    return null;
-  }
+  return readBrowserDiagnosticReceipt(root, "browser-runtime.json");
 }
 
 async function writeReceipt({ status, failureCategory, failureCode = null }) {
-  await mkdir(artifactRoot, { recursive: true });
-  await writeFile(
-    receiptPath,
-    `${JSON.stringify({ version: 1, profile: profile.id, browserTests, status, failureCategory, failureCode }, null, 2)}\n`,
-  );
+  await writeBrowserDiagnosticReceipt(root, "browser-suite-profile.json", {
+    version: 1,
+    profile: profile.id,
+    browserTests,
+    status,
+    failureCategory,
+    failureCode,
+  });
 }
 
 function sqliteUrl(value) {

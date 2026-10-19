@@ -5,7 +5,21 @@ import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "nod
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
+import { pathToFileURL } from "node:url";
 import sharp from "sharp";
+import {
+  R8_FORMAT,
+  R8_FORMAT_OVERLAY_PATHS,
+  r8FormatEvidencePlan,
+} from "../../scripts/sounding-line/experience-r8-format.mjs";
+import { CROSSDECK_R8 } from "../../scripts/sounding-line/experience-r8.mjs";
+import {
+  buildEvidenceObligations,
+  trackedEntries,
+  verificationObligationGroups,
+} from "../../scripts/sounding-line/ordinary.mjs";
+import { validateExceptionSubmissionEvidence } from "../../scripts/sounding-line/experience-exception.mjs";
+import { verifyTrustedExperienceAttestation } from "../../scripts/sounding-line/experience-attestation.mjs";
 import {
   affectedConsumers,
   classifyExperience,
@@ -19,7 +33,98 @@ import {
   baselineScopeDigest,
   mergeExperienceContracts,
 } from "../../scripts/sounding-line/product-experience.mjs";
-import { experienceDatabaseUrl } from "../../scripts/sounding-line/experience-browser.mjs";
+import {
+  experienceDatabaseUrl,
+  experienceChangedPaths,
+  roleSetupAuthenticationResume,
+} from "../../scripts/sounding-line/experience-browser.mjs";
+
+test("experience and obligation readers preserve real Git output larger than the default buffer", async (t) => {
+  const root = mkdtempSync(path.join(tmpdir(), "experience-large-diff-"));
+  assert(root.startsWith(path.resolve(tmpdir()) + path.sep));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  const git = (args, options = {}) => execFileSync("git", args, { cwd: root, encoding: "utf8", ...options }).trim();
+  git(["init", "--quiet"]);
+  const emptyTree = git(["mktree"], { input: "" });
+  const blob = git(["hash-object", "-w", "--stdin"], { input: "synthetic fixture\n" });
+  const expected = Array.from({ length: 8192 }, (_, i) => `file-${String(i).padStart(5, "0")}-${"x".repeat(180)}.txt`);
+  const populatedTree = git(["mktree"], { input: expected.map((name) => `100644 blob ${blob}\t${name}\n`).join("") });
+  assert(Buffer.byteLength(expected.join("\n") + "\n") > 1024 * 1024);
+  // This reproduces the faulty calling boundary without a product plan/browser.
+  assert.throws(() => git(["diff", "--name-only", "--no-renames", emptyTree, populatedTree]), { code: "ENOBUFS" });
+  const actual = experienceChangedPaths(root, emptyTree, populatedTree);
+  assert.deepEqual(actual, expected);
+  assert.equal(new Set(actual).size, expected.length);
+  assert.throws(() => git(["ls-tree", "-rz", populatedTree]), { code: "ENOBUFS" });
+  assert.deepEqual(
+    trackedEntries(root, populatedTree),
+    expected.map((file) => ({ path: file, type: "blob", blob })),
+  );
+  const plan = {
+    mode: "ordinary",
+    candidateSha: populatedTree,
+    safetyPaths: [],
+    lintPaths: [],
+    selected: { unitTests: [], browserTests: [] },
+    migrationRequired: false,
+    buildRequired: false,
+  };
+  const obligations = await buildEvidenceObligations(root, plan);
+  assert.equal(obligations.length, verificationObligationGroups(plan).length);
+  const privacy = obligations.find((entry) =>
+    entry.commandLabels.some((label) => label.includes("private-content/scan")),
+  );
+  assert(privacy);
+  assert.deepEqual(
+    privacy.fingerprint.semanticClosureMembers,
+    expected.map((file) => `${file}@${blob}`),
+  );
+  assert.throws(() => experienceChangedPaths(root, "missing-revision", populatedTree));
+});
+
+test("authentication reuse recognizes only canonical login and a bounded same-origin return", () => {
+  const steps = [
+    { action: "fill", role: "textbox", name: "Email or Player name", value: "synthetic@example.test" },
+    { action: "fill", role: "textbox", name: "Password", value: "synthetic" },
+    { action: "click", role: "button", name: "Sign in" },
+    { action: "wait", role: "navigation", name: "Setup ready" },
+    { action: "click", role: "button", name: "Register this context" },
+  ];
+  for (const route of ["/sign-in", "/player/sign-in"])
+    assert.deepEqual(
+      roleSetupAuthenticationResume({ entryPoint: `${route}?returnTo=%2Fsetup%3Fcontext%3Downed`, steps }),
+      { stepCount: 3, entryPoint: "/setup?context=owned" },
+    );
+  assert.equal(
+    roleSetupAuthenticationResume({
+      entryPoint: "/sign-in?returnTo=%2Fsetup",
+      steps: [{ ...steps[0], name: "Unrecognized login" }, ...steps.slice(1)],
+    }),
+    null,
+  );
+  for (const target of [
+    "https://outside.invalid/setup",
+    "//outside.invalid/setup",
+    "/\\outside.invalid",
+    "/%2foutside.invalid",
+    "/setup\u0000",
+    "/sign-in",
+    "/player/sign-in",
+  ])
+    assert.equal(
+      roleSetupAuthenticationResume({ entryPoint: `/sign-in?returnTo=${encodeURIComponent(target)}`, steps }),
+      null,
+    );
+  for (const entryPoint of [
+    "/sign-in",
+    "/custom-login?returnTo=%2Fsetup",
+    "/sign-in?returnTo=%2Fsetup&returnTo=%2Fother",
+    "/sign-in?returnTo=%2Fsetup&return=%2Fother",
+    "//outside.invalid/sign-in?returnTo=%2Fsetup",
+  ])
+    assert.equal(roleSetupAuthenticationResume({ entryPoint, steps }), null);
+  assert.equal(steps.length, 5);
+});
 
 const fixturePng = await sharp({ create: { width: 390, height: 844, channels: 4, background: "#123456" } })
   .png()
@@ -188,6 +293,173 @@ test("representative complete cross-project experience passes required outcome a
   const fixture = experienceFixture();
   validateExperienceContract(fixture.contract);
   assert.equal(fixture.validate().status, "PASS");
+});
+
+test("finite submission validates ordinary committed media without an evidence checkout and review needs all materialized bytes", async (t) => {
+  const directory = mkdtempSync(path.join(tmpdir(), "exception-evidence-roots-"));
+  t.after(() => rmSync(directory, { recursive: true, force: true }));
+  const root = path.join(directory, "candidate");
+  mkdirSync(root);
+  const git = (cwd, ...args) =>
+    execFileSync("git", args, { cwd, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
+  const f = experienceFixture();
+  f.plan.evidencePath = "candidate-review.json";
+  for (const [file, bytes] of f.bytes) writeFileSync(path.join(root, file), bytes);
+  writeFileSync(path.join(root, f.plan.evidencePath), JSON.stringify(f.evidence));
+  git(root, "init", "-q");
+  git(root, "config", "user.name", "Evidence Fixture");
+  git(root, "config", "user.email", "fixture@example.invalid");
+  git(root, "add", ".");
+  git(root, "commit", "-qm", "synthetic media fixture");
+  const candidateSha = git(root, "rev-parse", "HEAD");
+  const missingEvidenceRoot = path.join(directory, "no-evidence-checkout");
+  writeFileSync(path.join(root, f.evidence.artifacts[0].path), "dirty working copy is not committed evidence");
+  assert.deepEqual(
+    await validateExceptionSubmissionEvidence({
+      root,
+      plan: f.plan,
+      mode: "ordinary",
+      candidateSha,
+      evidenceRoot: missingEvidenceRoot,
+    }),
+    f.evidence,
+  );
+  const full = path.join(directory, "full-evidence");
+  git(directory, "clone", "--depth=1", pathToFileURL(root).href, full);
+  assert.deepEqual(
+    await validateExceptionSubmissionEvidence({ root, plan: f.plan, mode: "review", candidateSha, evidenceRoot: full }),
+    f.evidence,
+  );
+  const sparse = path.join(directory, "sparse-evidence");
+  git(directory, "clone", "--depth=1", "--no-checkout", pathToFileURL(root).href, sparse);
+  git(sparse, "sparse-checkout", "set", "--no-cone", f.plan.evidencePath);
+  git(sparse, "checkout", "--detach", candidateSha);
+  await assert.rejects(
+    () =>
+      validateExceptionSubmissionEvidence({ root, plan: f.plan, mode: "review", candidateSha, evidenceRoot: sparse }),
+    /ENOENT/u,
+  );
+  writeFileSync(path.join(full, f.evidence.artifacts[0].path), "changed media");
+  await assert.rejects(
+    () => validateExceptionSubmissionEvidence({ root, plan: f.plan, mode: "review", candidateSha, evidenceRoot: full }),
+    /ARTIFACT_DIGEST_MISMATCH/u,
+  );
+});
+test("trusted exception keeps eleven truthful and retains every substantive review gate", () => {
+  const f = experienceFixture();
+  f.plan.exception = {
+    id: "PE-X-CROSSDECK-FINAL-VERIFY-20261015",
+    recordDigest: "e".repeat(64),
+    priorRepairRecaptureAttempts: 11,
+    independentReviewOrdinal: 3,
+  };
+  f.evidence.exception = f.plan.exception;
+  f.evidence.reviews[0].iterations = 11;
+  f.evidence.reviews[0].independentReviewOrdinal = 3;
+  assert.equal(f.validate().status, "PASS");
+  f.evidence.reviews[0].iterations = 3;
+  assert.throws(() => f.validate(), /HISTORY_OR_REVIEW_ORDINAL_CHANGED/u);
+  f.evidence.reviews[0].iterations = 11;
+  delete f.evidence.reviews[0].dimensions.hierarchy;
+  assert.throws(() => f.validate(), /SUBSTANTIVE_REVIEW_MISSING/u);
+});
+
+test("R8 reconciliation validates original review and current replay against separate truthful tuples", () => {
+  const f = experienceFixture();
+  const originalException = {
+    id: CROSSDECK_R8.id,
+    recordDigest: CROSSDECK_R8.recordDigest,
+    priorRepairRecaptureAttempts: 11,
+    independentReviewOrdinal: 7,
+  };
+  f.evidence.captureArtifactId = R8_FORMAT.captureArtifact;
+  f.evidence.reviewArtifactId = R8_FORMAT.reviewArtifact;
+  f.evidence.baseSha = R8_FORMAT.baseSha;
+  f.evidence.sourceDigest = R8_FORMAT.sourceDigest;
+  f.evidence.contractDigest = R8_FORMAT.contractDigest;
+  f.evidence.exception = originalException;
+  const review = f.evidence.reviews[0];
+  review.iterations = 11;
+  review.independentReviewOrdinal = 7;
+  review.packetDigest = experienceDigest({
+    sourceDigest: R8_FORMAT.sourceDigest,
+    contract: f.contract,
+    artifacts: f.evidence.artifacts.map(({ id, sha256 }) => ({ id, sha256 })),
+  });
+  const record = {
+    version: 1,
+    id: R8_FORMAT.id,
+    status: "ACTIVE",
+    exceptionId: CROSSDECK_R8.id,
+    recordDigest: CROSSDECK_R8.recordDigest,
+    overlay: R8_FORMAT_OVERLAY_PATHS.map((file) => ({
+      path: file,
+      oldMode: "100644",
+      oldBlob: "a".repeat(40),
+      newMode: "100644",
+      newBlob: "b".repeat(40),
+    })),
+    captureSeal: R8_FORMAT.captureSeal,
+    reviewSeal: R8_FORMAT.reviewSeal,
+    reviewSubmission: R8_FORMAT.reviewSubmission,
+    reviewArtifact: { id: R8_FORMAT.reviewArtifact, digest: R8_FORMAT.reviewDigest, runId: R8_FORMAT.reviewRun },
+  };
+  f.plan.baseSha = "c".repeat(40);
+  f.plan.sourceDigest = "d".repeat(64);
+  f.plan.contractDigest = R8_FORMAT.contractDigest;
+  f.plan.exception = {
+    ...originalException,
+    nonExecutingReconciliation: {
+      version: 1,
+      id: R8_FORMAT.id,
+      recordDigest: experienceDigest(record),
+      originalBaseSha: R8_FORMAT.baseSha,
+      originalSourceDigest: R8_FORMAT.sourceDigest,
+      originalPublicationCandidateSha: R8_FORMAT.publicationCandidateSha,
+      currentBaseSha: f.plan.baseSha,
+      currentSourceDigest: f.plan.sourceDigest,
+      overlay: record.overlay,
+      captureSeal: record.captureSeal,
+      reviewSeal: record.reviewSeal,
+      reviewSubmission: record.reviewSubmission,
+      reviewArtifact: record.reviewArtifact,
+    },
+  };
+  const result = f.validate();
+  assert.equal(result.sourceDigest, f.plan.sourceDigest);
+  assert.equal(result.reviewedSourceDigest, R8_FORMAT.sourceDigest);
+  assert.equal(r8FormatEvidencePlan(f.plan).candidateSha, R8_FORMAT.publicationCandidateSha);
+  delete review.dimensions.hierarchy;
+  assert.throws(() => f.validate(), /SUBSTANTIVE_REVIEW_MISSING/u);
+  review.dimensions.hierarchy = review.dimensions.composition;
+  f.evidence.sourceDigest = f.plan.sourceDigest;
+  assert.throws(() => f.validate(), /EVIDENCE_SOURCE_MISMATCH/u);
+  f.evidence.sourceDigest = R8_FORMAT.sourceDigest;
+  assert.throws(
+    () =>
+      validateExperienceEvidence({
+        plan: f.plan,
+        evidence: f.evidence,
+        root: "unused",
+        automatedOnly: true,
+        readArtifact: ({ file }) => f.bytes.get(file),
+      }),
+    /EVIDENCE_BINDING_MISSING/u,
+  );
+  const replay = structuredClone(f.evidence);
+  replay.baseSha = f.plan.baseSha;
+  replay.sourceDigest = f.plan.sourceDigest;
+  replay.exception = f.plan.exception;
+  assert.equal(
+    validateExperienceEvidence({
+      plan: f.plan,
+      evidence: replay,
+      root: "unused",
+      automatedOnly: true,
+      readArtifact: ({ file }) => f.bytes.get(file),
+    }).status,
+    "PASS",
+  );
 });
 for (const [name, mutation, rejection] of [
   [
@@ -379,6 +651,308 @@ test("repair loop consumes blocking findings and stops when progress is absent",
     "VERIFY_FINAL_EVIDENCE",
   );
 });
+test("ordinary automatic repair stops at three even when prior work made progress", () => {
+  const findings = [{ id: "focus", classification: "ACCESSIBILITY_DEFECT", disposition: "OPEN" }];
+  assert.equal(repairDisposition({ findings, iterations: 2, previousBlockingCount: 2 }).action, "REPAIR_AND_RECAPTURE");
+  assert.equal(repairDisposition({ findings, iterations: 3, previousBlockingCount: 2 }).action, "BLOCK_WITH_EVIDENCE");
+  assert.equal(repairDisposition({ findings, iterations: 11, previousBlockingCount: 2 }).action, "BLOCK_WITH_EVIDENCE");
+});
+
+test("final verification action does not waive the current acceptance cap for truthful eleven-attempt history", () => {
+  const fixture = experienceFixture();
+  fixture.evidence.reviews[0].iterations = 11;
+  assert.equal(repairDisposition({ findings: [], iterations: 11 }).action, "VERIFY_FINAL_EVIDENCE");
+  assert.throws(() => fixture.validate(), /PRODUCT_EXPERIENCE_REVIEW_UNRESOLVED/u);
+});
+
+test("ordinary accepted reviews retain their existing one-through-three boundary", () => {
+  for (const iterations of [1, 2, 3]) {
+    const fixture = experienceFixture();
+    fixture.evidence.reviews[0].iterations = iterations;
+    assert.equal(fixture.validate().status, "PASS");
+  }
+  const fixture = experienceFixture();
+  fixture.evidence.reviews[0].iterations = 4;
+  assert.throws(() => fixture.validate(), /PRODUCT_EXPERIENCE_REVIEW_UNRESOLVED/u);
+});
+
+const isolatedContinuationContexts = new WeakSet();
+function continuationFixture(
+  t,
+  {
+    candidateOnly = false,
+    changeRecord,
+    changePrevious,
+    changeCandidateHistory = false,
+    unrelatedCandidate = false,
+  } = {},
+) {
+  if (!isolatedContinuationContexts.has(t)) {
+    isolatedContinuationContexts.add(t);
+    const names = [
+      "GITHUB_ACTIONS",
+      "GITHUB_EVENT_PATH",
+      "GITHUB_EVENT_NAME",
+      "GITHUB_REPOSITORY",
+      "GITHUB_SHA",
+      "GITHUB_REF",
+      "SOUNDING_LINE_PR_NUMBER",
+    ];
+    const saved = Object.fromEntries(names.map((name) => [name, process.env[name]]));
+    for (const name of names) delete process.env[name];
+    t.after(() => {
+      for (const name of names) {
+        if (saved[name] === undefined) delete process.env[name];
+        else process.env[name] = saved[name];
+      }
+    });
+  }
+  const f = experienceFixture();
+  const root = mkdtempSync(path.join(tmpdir(), "experience-continuation-"));
+  t.after(() => rmSync(root, { recursive: true, force: true }));
+  mkdirSync(path.join(root, "testing"));
+  mkdirSync(path.join(root, "src/lens"), { recursive: true });
+  mkdirSync(path.join(root, "Development_Docs/Engineering"), { recursive: true });
+  const registry = {
+    contracts: [f.contract],
+    experiencePolicy: {
+      version: 1,
+      evidencePath: "Development_Docs/Testing/Product_Experience/candidate-review.json",
+      attestationPolicy: { required: true, trustedReviewActors: ["Fixture"] },
+    },
+  };
+  const saveRegistry = () => writeFileSync(path.join(root, "testing/contracts.json"), JSON.stringify(registry));
+  saveRegistry();
+  writeFileSync(path.join(root, "src/lens/Lens.tsx"), "export const Lens = () => <main>Lens</main>;\n");
+  git(root, ["init", "--quiet"]);
+  git(root, ["config", "user.email", "fixture@example.invalid"]);
+  git(root, ["config", "user.name", "Fixture"]);
+  const commit = (message) => {
+    git(root, ["add", "."]);
+    git(root, ["commit", "--quiet", "-m", message]);
+    return git(root, ["rev-parse", "HEAD"]);
+  };
+  const ancestorCandidate = commit("prior blocked candidate");
+  const previous = {
+    status: "BLOCKED",
+    iterations: 3,
+    repairAction: "BLOCK_WITH_EVIDENCE",
+    contractId: f.contract.id,
+    candidateSha: ancestorCandidate,
+    baseSha: ancestorCandidate,
+    sourceDigest: "b".repeat(64),
+    contractDigest: experienceDigest([f.contract]),
+    findings: ["landmark", "heading"].map((id) => ({
+      id,
+      contractId: f.contract.id,
+      classification: "ACCESSIBILITY_DEFECT",
+      disposition: "UNRESOLVED",
+    })),
+  };
+  changePrevious?.(previous);
+  const historyPath = "Development_Docs/Engineering/blocked-review.json";
+  const historyBytes = Buffer.from(JSON.stringify(previous));
+  writeFileSync(path.join(root, historyPath), historyBytes);
+  const record = {
+    id: "fixture-review-4",
+    repository: "Kgray44/treasurehuntSoT",
+    prNumber: 766,
+    contractId: f.contract.id,
+    ancestorCandidate,
+    blockedReview: { path: historyPath, sha256: createHash("sha256").update(historyBytes).digest("hex") },
+  };
+  changeRecord?.(record);
+  if (!candidateOnly) registry.experiencePolicy.reviewContinuation = record;
+  saveRegistry();
+  const baseSha = commit("protected continuation authority");
+  if (unrelatedCandidate) git(root, ["checkout", "--quiet", "--orphan", "unrelated-candidate"]);
+  if (candidateOnly) registry.experiencePolicy.reviewContinuation = record;
+  saveRegistry();
+  if (changeCandidateHistory) writeFileSync(path.join(root, historyPath), "candidate rewrote historical review\n");
+  writeFileSync(path.join(root, "src/lens/Lens.tsx"), "export const Lens = () => <main>Repaired Lens</main>;\n");
+  const candidateSha = commit("current repaired candidate");
+  const plan = (options = {}) =>
+    planProductExperience({
+      root,
+      baseSha,
+      candidateSha,
+      prNumber: 766,
+      changedPaths: ["src/lens/Lens.tsx"],
+      ...options,
+    });
+  const install = (value = plan()) => {
+    Object.assign(f.plan, value);
+    for (const key of ["baseSha", "sourceDigest", "contractDigest"]) f.evidence[key] = f.plan[key];
+    const review = f.evidence.reviews[0];
+    review.packetDigest = experienceDigest({
+      sourceDigest: f.plan.sourceDigest,
+      contract: value.contracts[0],
+      artifacts: f.evidence.artifacts.map(({ id, sha256 }) => ({ id, sha256 })),
+    });
+    review.iterations = 4;
+    if (value.reviewContinuation) {
+      const c = value.reviewContinuation;
+      review.continuation = {
+        id: c.id,
+        policyDigest: c.policyDigest,
+        prNumber: c.prNumber,
+        previousReviewSha256: c.previousReviewSha256,
+        iterations: 4,
+        baseSha: value.baseSha,
+        sourceDigest: value.sourceDigest,
+      };
+      review.findings = c.previousFindings.map((finding) => ({
+        ...finding,
+        contractId: f.contract.id,
+        observation: "The prior semantic defect is evidenced in the preserved third review",
+        evidenceIds: ["MOBILE-READY"],
+        disposition: "RESOLVED",
+        repairEvidenceIds: ["MOBILE-READY"],
+        resolution: "Current rendered and keyboard evidence demonstrates the corrected semantics",
+      }));
+    }
+    return f;
+  };
+  return { ...f, root, planCurrent: plan, install, baseSha, candidateSha, record };
+}
+
+test("protected continuation permits only cumulative fourth review with retained resolved findings", (t) => {
+  const f = continuationFixture(t);
+  const current = f.install();
+  assert.equal(current.validate().status, "PASS");
+  const review = current.evidence.reviews[0];
+  for (const iterations of [1, 3, 5]) {
+    review.iterations = iterations;
+    assert.throws(() => current.validate(), /REVIEW_UNRESOLVED/u);
+  }
+  review.iterations = 4;
+  review.findings[0].disposition = "UNRESOLVED";
+  assert.equal(repairDisposition({ findings: review.findings, iterations: 4 }).action, "BLOCK_WITH_EVIDENCE");
+  assert.throws(() => current.validate(), /BLOCKING_FINDING/u);
+});
+
+test("candidate policy cannot grant a continuation and another PR retains the default cap", (t) => {
+  for (const options of [{ candidateOnly: true }, {}]) {
+    const f = continuationFixture(t, options);
+    const plan = f.planCurrent(options.candidateOnly ? {} : { prNumber: 767 });
+    assert.equal(plan.reviewContinuation, undefined);
+    assert.throws(() => f.install(plan).validate(), /REVIEW_UNRESOLVED/u);
+  }
+  const wrongContract = continuationFixture(t, {
+    changeRecord: (r) => {
+      r.contractId = "another-contract";
+    },
+  });
+  assert.equal(wrongContract.planCurrent().reviewContinuation, undefined);
+  assert.throws(() => wrongContract.install().validate(), /REVIEW_UNRESOLVED/u);
+});
+
+test("continuation requires exact protected historical bytes and matching prior contract", (t) => {
+  const wrongHash = continuationFixture(t, {
+    changeRecord: (r) => {
+      r.blockedReview.sha256 = "0".repeat(64);
+    },
+  });
+  assert.throws(() => wrongHash.planCurrent(), /REVIEW_CONTINUATION_HISTORY_MISMATCH/u);
+  const rewritten = continuationFixture(t, { changeCandidateHistory: true });
+  assert.throws(() => rewritten.planCurrent(), /REVIEW_CONTINUATION_HISTORY_MISMATCH/u);
+  const wrongContract = continuationFixture(t, {
+    changePrevious: (p) => {
+      p.contractId = "another-contract";
+    },
+  });
+  assert.throws(() => wrongContract.planCurrent(), /REVIEW_CONTINUATION_HISTORY_INVALID/u);
+  const unrelated = continuationFixture(t, { unrelatedCandidate: true });
+  assert.throws(
+    () => unrelated.planCurrent(),
+    (error) => error.status === 1 && error.message.includes("--is-ancestor"),
+  );
+});
+
+test("fourth review cannot drop or downgrade prior findings or borrow stale current binding", (t) => {
+  const f = continuationFixture(t);
+  for (const mutate of [
+    (r) => {
+      r.findings.pop();
+    },
+    (r) => {
+      r.findings[0].classification = "MINOR_POLISH";
+    },
+    (r) => {
+      r.findings.push({ ...r.findings[0], classification: "MINOR_POLISH" });
+    },
+    (r) => {
+      r.continuation.previousReviewSha256 = "0".repeat(64);
+    },
+    (r) => {
+      r.continuation.sourceDigest = "0".repeat(64);
+    },
+    (r) => {
+      r.continuation.baseSha = "0".repeat(40);
+    },
+    (r) => {
+      delete r.continuation;
+    },
+  ]) {
+    const current = f.install();
+    mutate(current.evidence.reviews[0]);
+    assert.throws(() => current.validate(), /REVIEW_CONTINUATION_BINDING_MISMATCH/u);
+  }
+  const current = f.install();
+  delete current.evidence.reviews[0].findings[0].repairEvidenceIds;
+  assert.throws(() => current.validate(), /REPAIR_EVIDENCE_MISSING/u);
+});
+
+test("continuation uses ambient preparation PR context and checks actual hosted source identities", (t) => {
+  const f = continuationFixture(t);
+  const eventPath = path.join(f.root, "hosted-event.json");
+  Object.assign(process.env, {
+    GITHUB_ACTIONS: "true",
+    GITHUB_EVENT_PATH: eventPath,
+    GITHUB_EVENT_NAME: "workflow_dispatch",
+    GITHUB_REPOSITORY: f.record.repository,
+    GITHUB_SHA: f.baseSha,
+    GITHUB_REF: "refs/heads/main",
+    SOUNDING_LINE_PR_NUMBER: "766",
+  });
+  const inputs = { pr_number: "766", base_sha: f.baseSha, candidate_sha: f.candidateSha };
+  writeFileSync(eventPath, JSON.stringify({ inputs }));
+  assert.equal(f.planCurrent({ prNumber: undefined }).reviewContinuation.prNumber, 766);
+  for (const change of [{ pr_number: "767" }, { base_sha: "0".repeat(40) }, { candidate_sha: "0".repeat(40) }]) {
+    writeFileSync(eventPath, JSON.stringify({ inputs: { ...inputs, ...change } }));
+    assert.throws(() => f.planCurrent(), /REVIEW_CONTINUATION_CONTEXT_MISMATCH/u);
+  }
+  process.env.GITHUB_EVENT_NAME = "pull_request_target";
+  const pull = {
+    number: 766,
+    base: { sha: f.baseSha, repo: { full_name: f.record.repository } },
+    head: { sha: f.candidateSha },
+  };
+  writeFileSync(eventPath, JSON.stringify({ pull_request: pull }));
+  assert.equal(f.planCurrent().reviewContinuation.prNumber, 766);
+  process.env.GITHUB_REPOSITORY = "another/repository";
+  assert.throws(() => f.planCurrent(), /REVIEW_CONTINUATION_CONTEXT_MISMATCH/u);
+});
+
+test("valid fourth content review still requires the unmodified real trusted-artifact loader", async (t) => {
+  const f = continuationFixture(t);
+  const current = f.install();
+  assert.equal(current.validate().status, "PASS");
+  await assert.rejects(
+    verifyTrustedExperienceAttestation({ root: f.root, plan: current.plan, evidence: current.evidence }),
+    /TRUSTED_ATTESTATION_REQUIRED/u,
+  );
+});
+
+test("new campaign or claimed owner metadata cannot rebase truthful aggregate eleven under current authority", () => {
+  const fixture = experienceFixture();
+  const review = fixture.evidence.reviews[0];
+  review.iterations = 11;
+  review.reviewCampaign = { currentIterations: 1, historicalAggregateIterations: 11, priorHistoryPreserved: true };
+  review.proceduralException = { id: "PROPOSED_INACTIVE", ownerApproved: true };
+  assert.throws(() => fixture.validate(), /PRODUCT_EXPERIENCE_REVIEW_UNRESOLVED/u);
+});
+
 test("baseline debt is accountable and cannot excuse a completion claim or new regression", () => {
   const fixture = experienceFixture();
   fixture.contract.experience.baselineDebt = [

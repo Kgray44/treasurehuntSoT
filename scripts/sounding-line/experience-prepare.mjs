@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
+import { randomUUID } from "node:crypto";
 import { mkdir, readFile, writeFile, appendFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -9,9 +10,53 @@ import {
   revisionJson,
   validateExperienceEvidence,
 } from "./product-experience.mjs";
-import { runTrustedExperienceReplay } from "./experience-browser.mjs";
+import { experienceChangedPaths } from "./experience-browser.mjs";
+import { captureAndPublishExperience, createCaptureSubmission } from "./experience-capture-publication.mjs";
 import { loadTrustedExperienceArtifact, verifyTrustedExperienceAttestation } from "./experience-attestation.mjs";
 import { buildPlan } from "./ordinary.mjs";
+import { exceptionStore, trustedExceptions, sealedReviewIdentity } from "./experience-exception.mjs";
+
+export async function writeCaptureOutputs(paths, environment = process.env, workspacePrefix = "candidate") {
+  if (!environment.GITHUB_OUTPUT) return;
+  const safe = (file) =>
+    typeof file === "string" &&
+    !/[\\\u0000-\u001f\u007f]/u.test(file) &&
+    !path.posix.isAbsolute(file) &&
+    file.split("/").every((part) => part && part !== "." && part !== "..");
+  assert(workspacePrefix === "" || safe(workspacePrefix), "PRODUCT_EXPERIENCE_CAPTURE_OUTPUT_PREFIX_INVALID");
+  const lines = [];
+  for (const [name, value] of Object.entries(paths)) {
+    if (name === "capture_raw_retention_status") {
+      assert(["PENDING", "COMPLETE", "INCOMPLETE"].includes(value));
+      lines.push(`${name}=${value}`);
+      continue;
+    }
+    assert(
+      /^capture_(?:(?:plan|manifest|activation|stage|raw_encrypted|journal|journal_failure|journal_pending)_path|(?:runtime|profile|raw_verified)_paths)$/u.test(
+        name,
+      ),
+    );
+    const values = Array.isArray(value) ? value : [value];
+    assert(values.length > 0 && values.every((file) => safe(file) && file.startsWith("artifacts/sounding-line/")));
+    if (name === "capture_raw_verified_paths") {
+      assert(Array.isArray(value) && new Set(values).size === values.length);
+      const roots = values.map(
+        (file) =>
+          /^(artifacts\/sounding-line\/product-experience-capture-staging\/capture-[A-Za-z0-9_-]+\/encrypted)\/(?:part-[0-9]{6}\.encrypted|index\.encrypted|retention\.json)$/u.exec(
+            file,
+          )?.[1],
+      );
+      assert(roots.every(Boolean) && new Set(roots).size === 1);
+      assert(values.includes(`${roots[0]}/index.encrypted`) && values.includes(`${roots[0]}/retention.json`));
+    }
+    const prefixed = values.map((file) => `${workspacePrefix ? workspacePrefix + "/" : ""}${file}`);
+    if (Array.isArray(value)) {
+      const delimiter = `capture_${randomUUID()}`;
+      lines.push(`${name}<<${delimiter}`, ...prefixed, delimiter);
+    } else lines.push(`${name}=${prefixed[0]}`);
+  }
+  await appendFile(environment.GITHUB_OUTPUT, lines.join("\n") + "\n");
+}
 
 export function activationPlan({ root, baseSha, candidateSha }) {
   // Diagnostic exercises the installed authority; it cannot qualify a PR.
@@ -53,12 +98,7 @@ async function main() {
     throw new Error("PRODUCT_EXPERIENCE_PREPARATION_REQUIRES_PROTECTED_BASE_WORKFLOW");
   execFileSync("git", ["merge-base", "--is-ancestor", baseSha, candidateSha], { cwd: root });
   assert.equal(execFileSync("git", ["rev-parse", "HEAD"], { cwd: root, encoding: "utf8" }).trim(), candidateSha);
-  const changedPaths = execFileSync("git", ["diff", "--name-only", "--no-renames", baseSha, candidateSha], {
-    cwd: root,
-    encoding: "utf8",
-  })
-    .trim()
-    .split(/\r?\n/u);
+  const changedPaths = experienceChangedPaths(root, baseSha, candidateSha);
   const diagnostic = options.diagnostic === "true";
   if (!diagnostic) await buildPlan({ root, baseSha, candidateSha, experienceEvidenceRequired: false });
   else assert.equal(baseSha, candidateSha);
@@ -69,20 +109,29 @@ async function main() {
   const policy = plan.attestationPolicy;
   if (!policy?.required || !policy.trustedReviewActors.includes(process.env.GITHUB_ACTOR))
     throw new Error("PRODUCT_EXPERIENCE_AUTHENTICATED_SUBMISSION_REQUIRED");
-  const receiptRoot = path.join(root, "artifacts/sounding-line/product-experience-submission");
-  await mkdir(receiptRoot, { recursive: true });
-  await writeFile(path.join(receiptRoot, "plan.json"), JSON.stringify(plan, null, 2) + "\n");
+  const onPaths = (paths) =>
+    writeCaptureOutputs(paths, process.env, path.relative(process.cwd(), root).split(path.sep).join("/"));
+  let receiptRoot;
+  if (options.mode === "capture") ({ receiptRoot } = await createCaptureSubmission({ root, plan, onPaths }));
+  else {
+    receiptRoot = path.join(root, "artifacts/sounding-line/product-experience-submission");
+    await mkdir(receiptRoot, { recursive: true });
+    await writeFile(path.join(receiptRoot, "plan.json"), JSON.stringify(plan, null, 2) + "\n");
+  }
   if (process.env.GITHUB_OUTPUT)
     await appendFile(process.env.GITHUB_OUTPUT, `source_digest=${plan.sourceDigest.slice(0, 16)}\n`);
   if (options.mode === "capture") {
-    const replay = await runTrustedExperienceReplay({
+    const replay = await captureAndPublishExperience({
       root,
-      plan: { ...plan, outputDirectory: "Development_Docs/Testing/Product_Experience/evidence" },
+      plan,
+      record: plan.exception
+        ? trustedExceptions(root, baseSha).find((record) => record.id === plan.exception.id)
+        : null,
       environment: process.env,
-      validateReplay: false,
+      onPaths,
     });
     const capture = JSON.parse(await readFile(replay.capturePath, "utf8"));
-    await writeFile(path.join(receiptRoot, "capture.json"), JSON.stringify(capture, null, 2) + "\n");
+    await writeFile(path.join(receiptRoot, "capture.json"), JSON.stringify(capture, null, 2) + "\n", { flag: "wx" });
     await writeFile(
       path.join(receiptRoot, "activation.json"),
       JSON.stringify(
@@ -97,6 +146,7 @@ async function main() {
         null,
         2,
       ) + "\n",
+      { flag: "wx" },
     );
     return;
   }
@@ -125,6 +175,21 @@ async function main() {
       }));
     assert.equal(experienceDigest(identity(capture.artifacts)), experienceDigest(identity(evidence.artifacts)));
     assert.equal(experienceDigest(capture.journeys), experienceDigest(evidence.journeys));
+    assert.equal(experienceDigest(capture.pairedEvidence ?? null), experienceDigest(evidence.pairedEvidence ?? null));
+    let exceptionFields = {};
+    if (plan.exception) {
+      const record = trustedExceptions(root, baseSha).find((value) => value.id === plan.exception.id);
+      const { githubRequest } = await import("./experience-exception.mjs");
+      const store = exceptionStore({ record, request: githubRequest(record.repository) });
+      const prepare = await store.read("prepare");
+      const seal = await store.read(`review${record.remainingIndependentReviewOrdinal}`);
+      assert.equal(experienceDigest(seal?.reviewIdentity), experienceDigest(sealedReviewIdentity(plan, evidence)));
+      exceptionFields = {
+        exception: plan.exception,
+        exceptionPreparationReservation: prepare.commitSha,
+        exceptionReviewSeal: seal.commitSha,
+      };
+    }
     await writeFile(
       path.join(receiptRoot, "review.json"),
       JSON.stringify(
@@ -132,8 +197,10 @@ async function main() {
           baseSha,
           sourceDigest: plan.sourceDigest,
           contractDigest: plan.contractDigest,
+          ...exceptionFields,
           captureArtifactId: evidence.captureArtifactId,
           reviews: evidence.reviews,
+          ...(plan.paired ? { pairedEvidenceDigest: experienceDigest(evidence.pairedEvidence) } : {}),
           submittedBy: process.env.GITHUB_ACTOR,
           ownerAcceptance: "NOT_CLAIMED",
         },

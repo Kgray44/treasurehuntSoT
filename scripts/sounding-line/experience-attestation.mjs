@@ -2,6 +2,9 @@ import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { inflateRawSync } from "node:zlib";
 import { experienceDigest } from "./product-experience.mjs";
+import { verifyExceptionAttestation } from "./experience-exception.mjs";
+import { r8FormatEvidencePlan, validateR8FormatEvidenceIdentity } from "./experience-r8-format.mjs";
+import { isCurrentAdmissionPlan, validateCurrentCaptureIdentity } from "./experience-current-admission.mjs";
 
 const fail = (code) => {
   throw new Error(`PRODUCT_EXPERIENCE_${code}`);
@@ -48,7 +51,8 @@ export function validateAttestationProvenance({ artifact, run, workflow, plan, k
     run.head_repository?.full_name !== repository ||
     !actors.includes(run.actor?.login) ||
     workflow.path !== ".github/workflows/sounding-line-ordinary.yml" ||
-    run.conclusion !== "success"
+    run.conclusion !== "success" ||
+    (plan.exception && (run.run_attempt !== 1 || run.triggering_actor?.login !== run.actor?.login))
   )
     fail("ATTESTATION_PROVENANCE_INVALID");
   return true;
@@ -98,19 +102,27 @@ export async function loadTrustedExperienceArtifact({ root, plan, artifactId, ki
   if (
     manifest.baseSha !== plan.baseSha ||
     manifest.sourceDigest !== plan.sourceDigest ||
-    manifest.contractDigest !== plan.contractDigest
+    manifest.contractDigest !== plan.contractDigest ||
+    (plan.exception && experienceDigest(manifest.exception) !== experienceDigest(plan.exception))
   )
     fail("ATTESTATION_SOURCE_MISMATCH");
-  return manifest;
+  return {
+    ...manifest,
+    trustedArtifact: { id: artifact.id, digest: artifact.digest, runId: run.id, runAttempt: run.run_attempt },
+  };
 }
 export async function verifyTrustedExperienceAttestation({
   root,
   plan,
   evidence,
+  custodyRequest,
   loadArtifact = loadTrustedExperienceArtifact,
 }) {
   if (!plan.applicable) return { status: "NOT_APPLICABLE" };
   if (!plan.attestationPolicy?.required) fail("TRUSTED_ATTESTATION_POLICY_MISSING");
+  const currentPlan = plan;
+  validateR8FormatEvidenceIdentity(plan, evidence);
+  plan = r8FormatEvidencePlan(plan);
   const capture = await loadArtifact({
     root,
     plan,
@@ -125,6 +137,7 @@ export async function verifyTrustedExperienceAttestation({
     kind: "review",
     policy: plan.attestationPolicy,
   });
+  validateCurrentCaptureIdentity(currentPlan, capture, evidence);
   const identities = (artifacts) =>
     artifacts.map(({ id, sha256, type, contractId, state, device, role, motionMode }) => ({
       id,
@@ -139,12 +152,40 @@ export async function verifyTrustedExperienceAttestation({
   if (
     experienceDigest(identities(capture.artifacts)) !== experienceDigest(identities(evidence.artifacts)) ||
     experienceDigest(capture.journeys) !== experienceDigest(evidence.journeys) ||
+    experienceDigest(capture.pairedEvidence ?? null) !== experienceDigest(evidence.pairedEvidence ?? null) ||
+    (plan.paired && review.pairedEvidenceDigest !== experienceDigest(evidence.pairedEvidence)) ||
     review.captureArtifactId !== evidence.captureArtifactId ||
     experienceDigest(review.reviews) !== experienceDigest(evidence.reviews)
   )
     fail("TRUSTED_CAPTURE_OR_REVIEW_MISMATCH");
+  const exceptionCustody = await verifyExceptionAttestation({
+    root,
+    plan: currentPlan,
+    evidence,
+    capture,
+    review,
+    request: custodyRequest,
+  });
   return {
     status: "PASS",
+    ...(exceptionCustody ? { exception: currentPlan.exception, exceptionCustody } : {}),
+    ...(isCurrentAdmissionPlan(currentPlan)
+      ? {
+          currentBaseSha: currentPlan.baseSha,
+          currentSourceDigest: currentPlan.sourceDigest,
+          currentContractDigest: currentPlan.contractDigest,
+          currentCandidateSha: currentPlan.candidateSha,
+        }
+      : {}),
+    ...(currentPlan.exception?.nonExecutingReconciliation
+      ? {
+          currentBaseSha: currentPlan.baseSha,
+          currentSourceDigest: currentPlan.sourceDigest,
+          reviewedBaseSha: plan.baseSha,
+          reviewedSourceDigest: plan.sourceDigest,
+          nonExecutingReconciliation: currentPlan.exception.nonExecutingReconciliation,
+        }
+      : {}),
     captureArtifactId: evidence.captureArtifactId,
     reviewArtifactId: evidence.reviewArtifactId,
     provenance: "PROTECTED_WORKFLOW_AUTHENTICATED_SUBMISSION",
