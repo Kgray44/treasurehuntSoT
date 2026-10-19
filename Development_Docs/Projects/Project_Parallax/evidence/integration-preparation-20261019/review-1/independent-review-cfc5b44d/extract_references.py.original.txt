@@ -1,0 +1,8 @@
+import subprocess
+from pathlib import Path
+repo=Path(r'C:\Users\kkids\.codex\worktrees\parallax-integration-prep-20261019\Codex_TreasureHunt');out=Path(r'D:\CodexTemp\parallax-integration-20261019-01a15554\independent-review-cfc5b44d')
+for n in ['HP-P6-EV-001-root-standard-desktop.png','HP-P6-EV-002-root-modern-mobile.png']:
+ r=subprocess.run(['git','show',f'cfc5b44d:Development_Docs/Projects/Project_Homeport/evidence/phase6/{n}'],cwd=repo,capture_output=True)
+ if r.returncode:print(r.stderr.decode());continue
+ (out/n).write_bytes(r.stdout)
+ print(n,len(r.stdout))

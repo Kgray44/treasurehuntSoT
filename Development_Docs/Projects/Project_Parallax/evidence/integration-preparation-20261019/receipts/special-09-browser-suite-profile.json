@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/parallax-sc00c-scale-browser.spec.ts",
+    "--workers=1",
+    "--retries=0",
+    "--reporter=list,json,html",
+    "--output",
+    "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\special-09-results"
+  ],
+  "status": "PASS",
+  "failureCategory": null,
+  "failureCode": null
+}

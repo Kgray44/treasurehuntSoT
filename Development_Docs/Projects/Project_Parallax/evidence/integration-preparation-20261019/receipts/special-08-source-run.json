@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "candidate": "b72f5e5c2b38936b7cb2baa39963086f5a99fb56",
+  "tree": "221f78f38a1beb47430d051ba02a21e5ef68bc22",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-19T20:58:15.612Z",
+  "finishedAt": "2026-10-19T21:03:50.619Z",
+  "exitCode": 0,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "parallax-ai-enforcement-Gl-26102--visible-Admiralty-controls-chromium-video-1.webm",
+      "sha256": "a818c4e58c61624a49895de6bc648a790cb3767a7049ca8b7a8c1eaf52f59fd9"
+    },
+    {
+      "file": "parallax-ai-enforcement-Gl-26102--visible-Admiralty-controls-chromium-video.webm",
+      "sha256": "681d050b212ea629e3b189bdbaec82b9a78d3136774a6df343b4dbeac7fe1e86"
+    },
+    {
+      "file": "parallax-ai-enforcement-In-cc015-pacity-retries-stay-durable-chromium-video.webm",
+      "sha256": "592dd550e2f9ca482e230dfb82fe2ada646ac35d12dfe45a86b116183ae95106"
+    },
+    {
+      "file": "parallax-ai-enforcement-Pe-4cf39-ern-actual-Creator-requests-chromium-video.webm",
+      "sha256": "dc2739d7635db9aa45d954c9814e2d95cdeed5ff8c5c8aa3949b0c24534ae12b"
+    },
+    {
+      "file": "parallax-spatial-community-0369e--as-a-read-only-Environment-chromium-video-1.webm",
+      "sha256": "df66b02581e6762b98680eb89d4d59c058bb64f51b6d5a128678f5613f38831b"
+    },
+    {
+      "file": "parallax-spatial-community-0369e--as-a-read-only-Environment-chromium-video.webm",
+      "sha256": "0b2a59dbbbdbc1c3268ffae9da6d80aa820d23e747b98c51c3d4e8574211a19a"
+    },
+    {
+      "file": "parallax-spatial-community-0f048-version-after-Profile-setup-chromium-video.webm",
+      "sha256": "038cff87f8747a4244dcf4698fda0b07d9f9054e9893f465d393825f449fef45"
+    },
+    {
+      "file": "parallax-spatial-community-14d06--retry-recovers-one-release-chromium-video.webm",
+      "sha256": "29f44c023734b82a0b608177544dfee8ccb0ef029be8a60ea83c1019f251c36e"
+    },
+    {
+      "file": "parallax-spatial-community-1f615-ut-private-Library-metadata-chromium-video.webm",
+      "sha256": "b8161b3df85cda62aeaf13e8b9016bfe5870d9b2dc81d176f197ee96563a5ca2"
+    },
+    {
+      "file": "parallax-spatial-community-214c2-a-reusable-read-only-prefab-chromium-video.webm",
+      "sha256": "1200b8bf4f2f67dbdf83f7d30cb39835b2537faa1fd405f304298fa25dd947c9"
+    },
+    {
+      "file": "parallax-spatial-community-28f02-rewriting-its-first-release-chromium-video.webm",
+      "sha256": "85d6985cc982fd6fb1db78ee1c59c9a7482d048390a754d20369b5347dd55d3a"
+    },
+    {
+      "file": "parallax-spatial-community-478f7-returns-to-the-saved-source-chromium-video-1.webm",
+      "sha256": "96057a729cbeeebe4b4d5bacddb866eae7b15ce6dff6e6aa32ab6fccddd73655"
+    },
+    {
+      "file": "parallax-spatial-community-478f7-returns-to-the-saved-source-chromium-video.webm",
+      "sha256": "770cf46bdc5cf0dd9d27021321aab8c7626d3337caee7142c802f7c9fdd005ff"
+    },
+    {
+      "file": "parallax-spatial-community-5b28c-refusal-and-remains-private-chromium-video.webm",
+      "sha256": "4e57edf364c2e60e8ecba0ecd767a4e2705e553f3fef0cbd27bce3b0eeb7279d"
+    },
+    {
+      "file": "parallax-spatial-community-a2b06-n-immutable-Library-release-chromium-video-1.webm",
+      "sha256": "7d31ca205653f1a480dbaefdd1d76ea72d7cbbbb5b94121ed22096e10759baa8"
+    },
+    {
+      "file": "parallax-spatial-community-a2b06-n-immutable-Library-release-chromium-video.webm",
+      "sha256": "c51690bfcf6db72688d77e624312f6fc5aba4038e2f5f3a186e014ce87261957"
+    },
+    {
+      "file": "parallax-spatial-community-efd06-d-Creator-s-Effects-Library-chromium-video.webm",
+      "sha256": "31df4249f43498fe6bdea5beb0a4aff247db0e0331e5269307f58a325328d9f6"
+    },
+    {
+      "file": "parallax-spatial-community-fea16-io-entry-without-publishing-chromium-video.webm",
+      "sha256": "a1ecb014ef65e362c25cc962a8ccfd88c99be579f6067c685f2b13737f0e4fc3"
+    }
+  ]
+}

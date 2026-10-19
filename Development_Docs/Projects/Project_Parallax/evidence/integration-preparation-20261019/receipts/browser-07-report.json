@@ -1,0 +1,716 @@
+{
+  "config": {
+    "configFile": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\playwright.config.ts",
+    "rootDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "list"
+      ],
+      [
+        "json"
+      ],
+      [
+        "html"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/browser-07-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "phase3-readonly-setup",
+        "name": "phase3-readonly-setup",
+        "testDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/phase3-readonly-setup\\.setup\\.ts/u"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/browser-07-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/e2e",
+        "testIgnore": [
+          "/phase3-readonly-setup\\.setup\\.ts/u",
+          "/harborlight-phase2\\.spec\\.ts/u",
+          "/harborlight-phase3\\.spec\\.ts/u",
+          "/harborlight-phase4\\.spec\\.ts/u",
+          "/admiralty-phase1\\.spec\\.ts/u"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/browser-07-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "admiralty-phase1",
+        "name": "admiralty-phase1",
+        "testDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/admiralty-phase1\\.spec\\.ts/u"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/browser-07-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "harborlight-phase2",
+        "name": "harborlight-phase2",
+        "testDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/harborlight-phase2\\.spec\\.ts/u"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/browser-07-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "harborlight-phase3",
+        "name": "harborlight-phase3",
+        "testDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/harborlight-phase3\\.spec\\.ts/u"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/browser-07-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "harborlight-phase4",
+        "name": "harborlight-phase4",
+        "testDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/harborlight-phase4\\.spec\\.ts/u"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/browser-07-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "webkit-mobile",
+        "name": "webkit-mobile",
+        "testDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 240000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.56.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "parallax-sc02.spec.ts",
+      "file": "parallax-sc02.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "SC-02 Creator places real assets, edits a light, saves and reuses a composition, then reloads the same Scene",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "timedOut",
+                  "duration": 277498,
+                  "error": {
+                    "message": "\u001b[31mTest timeout of 240000ms exceeded.\u001b[39m",
+                    "stack": "\u001b[31mTest timeout of 240000ms exceeded.\u001b[39m"
+                  },
+                  "errors": [
+                    {
+                      "message": "\u001b[31mTest timeout of 240000ms exceeded.\u001b[39m"
+                    },
+                    {
+                      "location": {
+                        "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\fixtures\\parallax-current-library.ts",
+                        "column": 73,
+                        "line": 73
+                      },
+                      "message": "Error: locator.click: Test timeout of 240000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('menuitem', { name: 'Save draft', exact: true })\u001b[22m\n\n\n   at fixtures\\parallax-current-library.ts:73\n\n  71 | export async function saveCurrentWorkingDraft(page: Page) {\n  72 |   await page.getByRole(\"heading\", { name: \"Parallax\", exact: true }).click({ button: \"right\" });\n> 73 |   await page.getByRole(\"menuitem\", { name: \"Save draft\", exact: true }).click();\n     |                                                                         ^\n  74 | }\n  75 |\n  76 | /** The Scene header owns working-save and editing feedback; Library loading has its own live region. */\n    at saveCurrentWorkingDraft (C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\fixtures\\parallax-current-library.ts:73:73)\n    at C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-sc02.spec.ts:121:3"
+                    }
+                  ],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T19:50:00.787Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-07-results\\parallax-sc02-SC-02-Creato-80f45-then-reloads-the-same-Scene-chromium\\test-failed-1.png"
+                    },
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-07-results\\parallax-sc02-SC-02-Creato-80f45-then-reloads-the-same-Scene-chromium\\video.webm"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-07-results\\parallax-sc02-SC-02-Creato-80f45-then-reloads-the-same-Scene-chromium\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-07-results\\parallax-sc02-SC-02-Creato-80f45-then-reloads-the-same-Scene-chromium\\trace.zip"
+                    }
+                  ]
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "f35dd497d0e763e42702-a8562350a57ed506c7e0",
+          "file": "parallax-sc02.spec.ts",
+          "line": 57,
+          "column": 5
+        },
+        {
+          "title": "SC-02 actual Studio renders every model family and three composed scenes with finite instrumentation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 34481,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T19:54:42.819Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-07-results\\parallax-sc02-SC-02-actual-170db-with-finite-instrumentation-chromium\\video.webm"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f35dd497d0e763e42702-5969827ddb5f88174176",
+          "file": "parallax-sc02.spec.ts",
+          "line": 246,
+          "column": 5
+        },
+        {
+          "title": "SC-02 Studio visibly executes projected effects, a portal and additional light types",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 15519,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T19:55:17.548Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-07-results\\parallax-sc02-SC-02-Studio-0e25d--and-additional-light-types-chromium\\video.webm"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f35dd497d0e763e42702-fa44088d468889b94257",
+          "file": "parallax-sc02.spec.ts",
+          "line": 300,
+          "column": 5
+        },
+        {
+          "title": "SC-02 Creator authors and reuses elements with native keyboard navigation and returns from assistance",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 67836,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('heading', { name: 'Parallax', exact: true }).locator('..').getByRole('status')\nExpected: \u001b[32m\"Working draft saved\"\u001b[39m\nReceived: \u001b[31m\"Independent saved composition added · Undo is available\"\u001b[39m\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Parallax', exact: true }).locator('..').getByRole('status')\u001b[22m\n\u001b[2m    13 × locator resolved to <span role=\"status\">Independent saved composition added · Undo is ava…</span>\u001b[22m\n\u001b[2m       - unexpected value \"Independent saved composition added · Undo is available\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('heading', { name: 'Parallax', exact: true }).locator('..').getByRole('status')\nExpected: \u001b[32m\"Working draft saved\"\u001b[39m\nReceived: \u001b[31m\"Independent saved composition added · Undo is available\"\u001b[39m\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Parallax', exact: true }).locator('..').getByRole('status')\u001b[22m\n\u001b[2m    13 × locator resolved to <span role=\"status\">Independent saved composition added · Undo is ava…</span>\u001b[22m\n\u001b[2m       - unexpected value \"Independent saved composition added · Undo is available\"\u001b[22m\n\n    at C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-sc02.spec.ts:541:43",
+                    "location": {
+                      "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-sc02.spec.ts",
+                      "column": 43,
+                      "line": 541
+                    },
+                    "snippet": "  539 |   await page.keyboard.press(\"Shift+F10\");\n  540 |   await activate(page.getByRole(\"menuitem\", { name: \"Save draft\", exact: true }), \"Save draft\");\n> 541 |   await expect(currentStudioStatus(page)).toHaveText(\"Working draft saved\");\n      |                                           ^\n  542 |   const definition = new URL(page.url()).searchParams.get(\"definition\")!;\n  543 |   const saved = (await listSpatialItems(account.id)).find((i) => i.id === definition)!.draft;\n  544 |   expect(saved.content.entities.filter((entity) => entity.name === \"Ghostly Presence\")).toHaveLength(2);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-sc02.spec.ts",
+                        "column": 43,
+                        "line": 541
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('heading', { name: 'Parallax', exact: true }).locator('..').getByRole('status')\nExpected: \u001b[32m\"Working draft saved\"\u001b[39m\nReceived: \u001b[31m\"Independent saved composition added · Undo is available\"\u001b[39m\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Parallax', exact: true }).locator('..').getByRole('status')\u001b[22m\n\u001b[2m    13 × locator resolved to <span role=\"status\">Independent saved composition added · Undo is ava…</span>\u001b[22m\n\u001b[2m       - unexpected value \"Independent saved composition added · Undo is available\"\u001b[22m\n\n\n  539 |   await page.keyboard.press(\"Shift+F10\");\n  540 |   await activate(page.getByRole(\"menuitem\", { name: \"Save draft\", exact: true }), \"Save draft\");\n> 541 |   await expect(currentStudioStatus(page)).toHaveText(\"Working draft saved\");\n      |                                           ^\n  542 |   const definition = new URL(page.url()).searchParams.get(\"definition\")!;\n  543 |   const saved = (await listSpatialItems(account.id)).find((i) => i.id === definition)!.draft;\n  544 |   expect(saved.content.entities.filter((entity) => entity.name === \"Ghostly Presence\")).toHaveLength(2);\n    at C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-sc02.spec.ts:541:43"
+                    }
+                  ],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T19:55:33.080Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-07-results\\parallax-sc02-SC-02-Creato-53939-and-returns-from-assistance-chromium\\test-failed-1.png"
+                    },
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-07-results\\parallax-sc02-SC-02-Creato-53939-and-returns-from-assistance-chromium\\video.webm"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-07-results\\parallax-sc02-SC-02-Creato-53939-and-returns-from-assistance-chromium\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-07-results\\parallax-sc02-SC-02-Creato-53939-and-returns-from-assistance-chromium\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-sc02.spec.ts",
+                    "column": 43,
+                    "line": 541
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "f35dd497d0e763e42702-f844686b4bea2a73ecca",
+          "file": "parallax-sc02.spec.ts",
+          "line": 418,
+          "column": 5
+        },
+        {
+          "title": "SC-02 preserves a failed save and recovers audio from unavailable and Guided preview states",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 15153,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#parallax-canvas-feedback')\nExpected substring: \u001b[32m\"Preview audio is unavailable\"\u001b[39m\nReceived string:    \u001b[31m\"Audio could not start. Allow audio in this browser, then try again.\"\u001b[39m\nTimeout: 10000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('#parallax-canvas-feedback')\u001b[22m\n\u001b[2m    14 × locator resolved to <span aria-live=\"polite\" aria-atomic=\"true\" id=\"parallax-canvas-feedback\">Audio could not start. Allow audio in this browse…</span>\u001b[22m\n\u001b[2m       - unexpected value \"Audio could not start. Allow audio in this browser, then try again.\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#parallax-canvas-feedback')\nExpected substring: \u001b[32m\"Preview audio is unavailable\"\u001b[39m\nReceived string:    \u001b[31m\"Audio could not start. Allow audio in this browser, then try again.\"\u001b[39m\nTimeout: 10000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('#parallax-canvas-feedback')\u001b[22m\n\u001b[2m    14 × locator resolved to <span aria-live=\"polite\" aria-atomic=\"true\" id=\"parallax-canvas-feedback\">Audio could not start. Allow audio in this browse…</span>\u001b[22m\n\u001b[2m       - unexpected value \"Audio could not start. Allow audio in this browser, then try again.\"\u001b[22m\n\n    at C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-sc02.spec.ts:651:26",
+                    "location": {
+                      "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-sc02.spec.ts",
+                      "column": 26,
+                      "line": 651
+                    },
+                    "snippet": "  649 |   const feedback = page.locator(\"#parallax-canvas-feedback\");\n  650 |   await enable.click();\n> 651 |   await expect(feedback).toContainText(\"Preview audio is unavailable\");\n      |                          ^\n  652 |   await expect(feedback).toHaveAttribute(\"aria-live\", \"polite\");\n  653 |   await expect(enable).toHaveAttribute(\"aria-pressed\", \"false\");\n  654 |   await page.screenshot({ path: `${evidence}/recovery-audio-unavailable.png`, fullPage: true });"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-sc02.spec.ts",
+                        "column": 26,
+                        "line": 651
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('#parallax-canvas-feedback')\nExpected substring: \u001b[32m\"Preview audio is unavailable\"\u001b[39m\nReceived string:    \u001b[31m\"Audio could not start. Allow audio in this browser, then try again.\"\u001b[39m\nTimeout: 10000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for locator('#parallax-canvas-feedback')\u001b[22m\n\u001b[2m    14 × locator resolved to <span aria-live=\"polite\" aria-atomic=\"true\" id=\"parallax-canvas-feedback\">Audio could not start. Allow audio in this browse…</span>\u001b[22m\n\u001b[2m       - unexpected value \"Audio could not start. Allow audio in this browser, then try again.\"\u001b[22m\n\n\n  649 |   const feedback = page.locator(\"#parallax-canvas-feedback\");\n  650 |   await enable.click();\n> 651 |   await expect(feedback).toContainText(\"Preview audio is unavailable\");\n      |                          ^\n  652 |   await expect(feedback).toHaveAttribute(\"aria-live\", \"polite\");\n  653 |   await expect(enable).toHaveAttribute(\"aria-pressed\", \"false\");\n  654 |   await page.screenshot({ path: `${evidence}/recovery-audio-unavailable.png`, fullPage: true });\n    at C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-sc02.spec.ts:651:26"
+                    }
+                  ],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T19:56:48.172Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-07-results\\parallax-sc02-SC-02-preser-4e96a-e-and-Guided-preview-states-chromium\\test-failed-1.png"
+                    },
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-07-results\\parallax-sc02-SC-02-preser-4e96a-e-and-Guided-preview-states-chromium\\video.webm"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-07-results\\parallax-sc02-SC-02-preser-4e96a-e-and-Guided-preview-states-chromium\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-07-results\\parallax-sc02-SC-02-preser-4e96a-e-and-Guided-preview-states-chromium\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-sc02.spec.ts",
+                    "column": 26,
+                    "line": 651
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "f35dd497d0e763e42702-bcfa95564f8a4d215428",
+          "file": "parallax-sc02.spec.ts",
+          "line": 590,
+          "column": 5
+        },
+        {
+          "title": "SC-02 measures a composed Scene and reclaims temporary model resources",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 14323,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"LOW\"\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m\n\nCall Log:\n- Timeout 10000ms exceeded while waiting on the predicate",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"LOW\"\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m\n\nCall Log:\n- Timeout 10000ms exceeded while waiting on the predicate\n    at C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-sc02.spec.ts:728:5",
+                    "location": {
+                      "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-sc02.spec.ts",
+                      "column": 5,
+                      "line": 728
+                    },
+                    "snippet": "  726 |   for (const quality of [\"LOW\", \"MEDIUM\", \"HIGH\"]) {\n  727 |     await page.getByLabel(\"Preview quality\", { exact: true }).selectOption(quality);\n> 728 |     await expect\n      |     ^\n  729 |       .poll(async () => JSON.parse((await instrument.getAttribute(\"data-performance\"))!).quality)\n  730 |       .toBe(quality);\n  731 |     const sample = await instrument.evaluate(async (element) => {"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-sc02.spec.ts",
+                        "column": 5,
+                        "line": 728
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"LOW\"\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m\n\nCall Log:\n- Timeout 10000ms exceeded while waiting on the predicate\n\n  726 |   for (const quality of [\"LOW\", \"MEDIUM\", \"HIGH\"]) {\n  727 |     await page.getByLabel(\"Preview quality\", { exact: true }).selectOption(quality);\n> 728 |     await expect\n      |     ^\n  729 |       .poll(async () => JSON.parse((await instrument.getAttribute(\"data-performance\"))!).quality)\n  730 |       .toBe(quality);\n  731 |     const sample = await instrument.evaluate(async (element) => {\n    at C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-sc02.spec.ts:728:5"
+                    }
+                  ],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T19:57:05.420Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-07-results\\parallax-sc02-SC-02-measur-e2404-s-temporary-model-resources-chromium\\test-failed-1.png"
+                    },
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-07-results\\parallax-sc02-SC-02-measur-e2404-s-temporary-model-resources-chromium\\video.webm"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-07-results\\parallax-sc02-SC-02-measur-e2404-s-temporary-model-resources-chromium\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-07-results\\parallax-sc02-SC-02-measur-e2404-s-temporary-model-resources-chromium\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-sc02.spec.ts",
+                    "column": 5,
+                    "line": 728
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "f35dd497d0e763e42702-e079fc91f72ad1384680",
+          "file": "parallax-sc02.spec.ts",
+          "line": 707,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "parallax-workstation.spec.ts",
+      "file": "parallax-workstation.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Adaptive workspace docks reclaim viewport area and preserve editing across layouts and reload",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 15574,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeFocused\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('button', { name: 'Open object properties', exact: true })\nExpected: focused\nReceived: inactive\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeFocused\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: 'Open object properties', exact: true })\u001b[22m\n\u001b[2m    13 × locator resolved to <button aria-pressed=\"false\" aria-label=\"Open object properties\" title=\"Properties of the selected item\">◈</button>\u001b[22m\n\u001b[2m       - unexpected value \"inactive\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeFocused\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('button', { name: 'Open object properties', exact: true })\nExpected: focused\nReceived: inactive\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeFocused\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: 'Open object properties', exact: true })\u001b[22m\n\u001b[2m    13 × locator resolved to <button aria-pressed=\"false\" aria-label=\"Open object properties\" title=\"Properties of the selected item\">◈</button>\u001b[22m\n\u001b[2m       - unexpected value \"inactive\"\u001b[22m\n\n    at C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-workstation.spec.ts:70:91",
+                    "location": {
+                      "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-workstation.spec.ts",
+                      "column": 91,
+                      "line": 70
+                    },
+                    "snippet": "  68 |   await page.getByRole(\"button\", { name: \"Open Library\", exact: true }).click();\n  69 |   await page.getByRole(\"button\", { name: \"Collapse Inspector\", exact: true }).click();\n> 70 |   await expect(page.getByRole(\"button\", { name: \"Open object properties\", exact: true })).toBeFocused();\n     |                                                                                           ^\n  71 |   await page.getByRole(\"button\", { name: \"Open object properties\", exact: true }).click();\n  72 |   await page.screenshot({ path: `${root}/construction-layout.png`, fullPage: true });\n  73 |   await page.getByLabel(\"Workspace layout\", { exact: true }).selectOption(\"BEHAVIOR\");"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-workstation.spec.ts",
+                        "column": 91,
+                        "line": 70
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeFocused\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('button', { name: 'Open object properties', exact: true })\nExpected: focused\nReceived: inactive\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeFocused\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: 'Open object properties', exact: true })\u001b[22m\n\u001b[2m    13 × locator resolved to <button aria-pressed=\"false\" aria-label=\"Open object properties\" title=\"Properties of the selected item\">◈</button>\u001b[22m\n\u001b[2m       - unexpected value \"inactive\"\u001b[22m\n\n\n  68 |   await page.getByRole(\"button\", { name: \"Open Library\", exact: true }).click();\n  69 |   await page.getByRole(\"button\", { name: \"Collapse Inspector\", exact: true }).click();\n> 70 |   await expect(page.getByRole(\"button\", { name: \"Open object properties\", exact: true })).toBeFocused();\n     |                                                                                           ^\n  71 |   await page.getByRole(\"button\", { name: \"Open object properties\", exact: true }).click();\n  72 |   await page.screenshot({ path: `${root}/construction-layout.png`, fullPage: true });\n  73 |   await page.getByLabel(\"Workspace layout\", { exact: true }).selectOption(\"BEHAVIOR\");\n    at C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-workstation.spec.ts:70:91"
+                    }
+                  ],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T19:57:22.414Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-07-results\\parallax-workstation-Adapt-eb567-g-across-layouts-and-reload-chromium\\test-failed-1.png"
+                    },
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-07-results\\parallax-workstation-Adapt-eb567-g-across-layouts-and-reload-chromium\\video.webm"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-07-results\\parallax-workstation-Adapt-eb567-g-across-layouts-and-reload-chromium\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-07-results\\parallax-workstation-Adapt-eb567-g-across-layouts-and-reload-chromium\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-workstation.spec.ts",
+                    "column": 91,
+                    "line": 70
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "a05c448cd0d3363dbabe-8980e985d208e91073a6",
+          "file": "parallax-workstation.spec.ts",
+          "line": 15,
+          "column": 5
+        },
+        {
+          "title": "Creator edits a populated 3D workstation, previews intent, and retains canonical history",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": -1,
+                  "parallelIndex": -1,
+                  "status": "skipped",
+                  "duration": 0,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T19:57:38.975Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "a05c448cd0d3363dbabe-c31be244a6bea225b082",
+          "file": "parallax-workstation.spec.ts",
+          "line": 152,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-19T19:49:54.067Z",
+    "duration": 465057.595,
+    "expected": 2,
+    "skipped": 1,
+    "unexpected": 5,
+    "flaky": 0
+  }
+}

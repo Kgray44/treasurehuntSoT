@@ -1,0 +1,1396 @@
+{
+  "config": {
+    "configFile": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\playwright.config.ts",
+    "rootDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "list"
+      ],
+      [
+        "json"
+      ],
+      [
+        "html"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/browser-05-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "phase3-readonly-setup",
+        "name": "phase3-readonly-setup",
+        "testDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/phase3-readonly-setup\\.setup\\.ts/u"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/browser-05-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/e2e",
+        "testIgnore": [
+          "/phase3-readonly-setup\\.setup\\.ts/u",
+          "/harborlight-phase2\\.spec\\.ts/u",
+          "/harborlight-phase3\\.spec\\.ts/u",
+          "/harborlight-phase4\\.spec\\.ts/u",
+          "/admiralty-phase1\\.spec\\.ts/u"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/browser-05-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "admiralty-phase1",
+        "name": "admiralty-phase1",
+        "testDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/admiralty-phase1\\.spec\\.ts/u"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/browser-05-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "harborlight-phase2",
+        "name": "harborlight-phase2",
+        "testDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/harborlight-phase2\\.spec\\.ts/u"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/browser-05-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "harborlight-phase3",
+        "name": "harborlight-phase3",
+        "testDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/harborlight-phase3\\.spec\\.ts/u"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/browser-05-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "harborlight-phase4",
+        "name": "harborlight-phase4",
+        "testDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/harborlight-phase4\\.spec\\.ts/u"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/browser-05-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "webkit-mobile",
+        "name": "webkit-mobile",
+        "testDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 240000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.56.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "parallax-animation.spec.ts",
+      "file": "parallax-animation.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Creator edits, renders, scrubs, plays and reloads real object keyframes, then resets triggered simulation",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 12243,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T19:26:22.741Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-animation-Creator-c1f75-resets-triggered-simulation-chromium\\video.webm"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f05701a831818fc4838a-af96535b041b61575190",
+          "file": "parallax-animation.spec.ts",
+          "line": 22,
+          "column": 5
+        },
+        {
+          "title": "Middle and Ctrl drag use the same camera pan and renderer recovery retains the draft",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5038,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T19:26:35.378Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-animation-Middle--f8047--recovery-retains-the-draft-chromium\\video.webm"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f05701a831818fc4838a-d07eb00d8a26c7594991",
+          "file": "parallax-animation.spec.ts",
+          "line": 206,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "parallax-asset-quality.spec.ts",
+      "file": "parallax-asset-quality.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Creator inspects representative actual asset materials at useful distances in both appearances without altering the saved scene",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 18694,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T19:26:40.459Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-asset-quality-Cre-bef07-ut-altering-the-saved-scene-chromium\\video.webm"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0766fd074224b84ae5fc-0f3aaf80d3572bcb412a",
+          "file": "parallax-asset-quality.spec.ts",
+          "line": 27,
+          "column": 5
+        },
+        {
+          "title": "Creator duplicates and reuses a right boot without changing its rendered handedness",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 16184,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('heading', { name: 'Parallax', exact: true }).locator('..').getByRole('status')\nExpected: \u001b[32m\"\u001b[7mIndependent asset copy added and saved; its definition is\u001b[27m unchanged\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mReusable asset definition and immutable version saved; source scene\u001b[27m unchanged\"\u001b[39m\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Parallax', exact: true }).locator('..').getByRole('status')\u001b[22m\n\u001b[2m    13 × locator resolved to <span role=\"status\">Reusable asset definition and immutable version s…</span>\u001b[22m\n\u001b[2m       - unexpected value \"Reusable asset definition and immutable version saved; source scene unchanged\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('heading', { name: 'Parallax', exact: true }).locator('..').getByRole('status')\nExpected: \u001b[32m\"\u001b[7mIndependent asset copy added and saved; its definition is\u001b[27m unchanged\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mReusable asset definition and immutable version saved; source scene\u001b[27m unchanged\"\u001b[39m\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Parallax', exact: true }).locator('..').getByRole('status')\u001b[22m\n\u001b[2m    13 × locator resolved to <span role=\"status\">Reusable asset definition and immutable version s…</span>\u001b[22m\n\u001b[2m       - unexpected value \"Reusable asset definition and immutable version saved; source scene unchanged\"\u001b[22m\n\n    at C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-asset-quality.spec.ts:237:43",
+                    "location": {
+                      "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-asset-quality.spec.ts",
+                      "column": 43,
+                      "line": 237
+                    },
+                    "snippet": "  235 |     .getByRole(\"button\", { name: \"Place in Scene\", exact: true })\n  236 |     .click();\n> 237 |   await expect(currentStudioStatus(page)).toHaveText(\n      |                                           ^\n  238 |     \"Independent asset copy added and saved; its definition is unchanged\",\n  239 |   );\n  240 |   const inserted = await current();"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-asset-quality.spec.ts",
+                        "column": 43,
+                        "line": 237
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('heading', { name: 'Parallax', exact: true }).locator('..').getByRole('status')\nExpected: \u001b[32m\"\u001b[7mIndependent asset copy added and saved; its definition is\u001b[27m unchanged\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7mReusable asset definition and immutable version saved; source scene\u001b[27m unchanged\"\u001b[39m\nTimeout:  10000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Parallax', exact: true }).locator('..').getByRole('status')\u001b[22m\n\u001b[2m    13 × locator resolved to <span role=\"status\">Reusable asset definition and immutable version s…</span>\u001b[22m\n\u001b[2m       - unexpected value \"Reusable asset definition and immutable version saved; source scene unchanged\"\u001b[22m\n\n\n  235 |     .getByRole(\"button\", { name: \"Place in Scene\", exact: true })\n  236 |     .click();\n> 237 |   await expect(currentStudioStatus(page)).toHaveText(\n      |                                           ^\n  238 |     \"Independent asset copy added and saved; its definition is unchanged\",\n  239 |   );\n  240 |   const inserted = await current();\n    at C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-asset-quality.spec.ts:237:43"
+                    }
+                  ],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T19:26:59.163Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-asset-quality-Cre-ce8e5-ing-its-rendered-handedness-chromium\\test-failed-1.png"
+                    },
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-asset-quality-Cre-ce8e5-ing-its-rendered-handedness-chromium\\video.webm"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-asset-quality-Cre-ce8e5-ing-its-rendered-handedness-chromium\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-asset-quality-Cre-ce8e5-ing-its-rendered-handedness-chromium\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-asset-quality.spec.ts",
+                    "column": 43,
+                    "line": 237
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "0766fd074224b84ae5fc-f9e846d4773f8c650d6a",
+          "file": "parallax-asset-quality.spec.ts",
+          "line": 163,
+          "column": 5
+        },
+        {
+          "title": "Creator authors a full scene and navigates during interpolated playback without rebuilding props",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 11066,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T19:27:17.430Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-asset-quality-Cre-b583d-ck-without-rebuilding-props-chromium\\video.webm"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0766fd074224b84ae5fc-75d0abac57b14a42b09f",
+          "file": "parallax-asset-quality.spec.ts",
+          "line": 275,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "parallax-authoring-refinements.spec.ts",
+      "file": "parallax-authoring-refinements.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Creator renames, drags and resizes a real animated clip, observes motion and recovers hidden or tiny assets through saved replay",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 13340,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T19:27:29.556Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-authoring-refinem-099f2-assets-through-saved-replay-chromium\\video.webm"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5392668bdb9c0a8d6aaf-6ade1a98d3d1c0c6fe4e",
+          "file": "parallax-authoring-refinements.spec.ts",
+          "line": 23,
+          "column": 5
+        },
+        {
+          "title": "Renaming one footprint preserves its shape and rebuilds only that prop",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5038,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T19:27:42.906Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-authoring-refinem-87784-and-rebuilds-only-that-prop-chromium\\video.webm"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5392668bdb9c0a8d6aaf-518d650792bc4fde172e",
+          "file": "parallax-authoring-refinements.spec.ts",
+          "line": 228,
+          "column": 5
+        },
+        {
+          "title": "Record captures edited poses and motion stays clear across modes and renderer recovery",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8749,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T19:27:47.954Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-authoring-refinem-b728d-modes-and-renderer-recovery-chromium\\video.webm"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5392668bdb9c0a8d6aaf-b3bfdd0e21eb1060c4b6",
+          "file": "parallax-authoring-refinements.spec.ts",
+          "line": 288,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "parallax-groups.spec.ts",
+      "file": "parallax-groups.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "single name clicks rename assets and groups, and Library exclusion tools use the current room controls",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8778,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [
+                    {
+                      "text": "(node:125504) [THREE_CJS_DEPRECATED] DeprecationWarning: `require(\"three\")` is deprecated and will be removed.\nReplace `const THREE = require(\"three\")` with `import * as THREE from \"three\"`.\n"
+                    }
+                  ],
+                  "retry": 0,
+                  "startTime": "2026-10-19T19:27:56.802Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-groups-single-nam-afa3f-e-the-current-room-controls-chromium\\video.webm"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "23cff373fcf3107f6158-e8a275b29649c91962ea",
+          "file": "parallax-groups.spec.ts",
+          "line": 34,
+          "column": 5
+        },
+        {
+          "title": "Visible Bedroom geometry reaches the Assistant and a retained real response animates into clear entrance placement",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 17462,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T19:28:05.593Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-groups-Visible-Be-0518a-to-clear-entrance-placement-chromium\\video.webm"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "23cff373fcf3107f6158-273200a9cc7ccf8d9d9a",
+          "file": "parallax-groups.spec.ts",
+          "line": 136,
+          "column": 5
+        },
+        {
+          "title": "Inspector text preserves spaces and newlines, and room membership requires the viewport edit toggle",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 14452,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T19:28:23.064Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-groups-Inspector--d2352-es-the-viewport-edit-toggle-chromium\\video.webm"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "23cff373fcf3107f6158-9f268b24a57485bc4851",
+          "file": "parallax-groups.spec.ts",
+          "line": 228,
+          "column": 5
+        },
+        {
+          "title": "Scene Graph reorders live without moving assets, and a floor click places the whole selected footprint group",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7447,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T19:28:37.526Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-groups-Scene-Grap-957fa-le-selected-footprint-group-chromium\\video.webm"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "23cff373fcf3107f6158-db10bfb1d520497c19dc",
+          "file": "parallax-groups.spec.ts",
+          "line": 285,
+          "column": 5
+        },
+        {
+          "title": "Assistant previews and applies grouping and whole-group motion through the server adapter without inference traffic",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 12723,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T19:28:44.985Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-groups-Assistant--c7d33-r-without-inference-traffic-chromium\\video.webm"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "23cff373fcf3107f6158-b8ca293ba28fa7241699",
+          "file": "parallax-groups.spec.ts",
+          "line": 379,
+          "column": 5
+        },
+        {
+          "title": "Twenty footprints group through keyboard selection, move live together, cancel safely and retain editable membership",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 17970,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T19:28:57.721Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-groups-Twenty-foo-0df78--retain-editable-membership-chromium\\video.webm"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "23cff373fcf3107f6158-a8b7a8d4581643ec4a33",
+          "file": "parallax-groups.spec.ts",
+          "line": 438,
+          "column": 5
+        },
+        {
+          "title": "A mixed asset and room-feature group uses the same rotation/scale controls without double-moving its bound asset",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6754,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T19:29:15.702Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-groups-A-mixed-as-81211-uble-moving-its-bound-asset-chromium\\video.webm"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "23cff373fcf3107f6158-23a4ade9fabb41b0f91c",
+          "file": "parallax-groups.spec.ts",
+          "line": 591,
+          "column": 5
+        },
+        {
+          "title": "Assistant retains general follow-up intent, removes a reviewed asset and edits the actual scene",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 13576,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T19:29:22.468Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-groups-Assistant--b45d8--and-edits-the-actual-scene-chromium\\video.webm"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "23cff373fcf3107f6158-1ea32d827255e7f2d53c",
+          "file": "parallax-groups.spec.ts",
+          "line": 643,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "parallax-reusable-assets.spec.ts",
+      "file": "parallax-reusable-assets.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Creator saves and reuses a versioned object, edits only its instance, reloads and archives the unchanged definition",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 14622,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('region', { name: 'Spatial content library', exact: true }).getByRole('article').filter({ has: getByRole('region', { name: 'Spatial content library', exact: true }).getByRole('button', { name: 'Inspect Captain navigation compass', exact: true }) })\nExpected substring: \u001b[32m\"Navigation clue\"\u001b[39m\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('region', { name: 'Spatial content library', exact: true }).getByRole('article').filter({ has: getByRole('region', { name: 'Spatial content library', exact: true }).getByRole('button', { name: 'Inspect Captain navigation compass', exact: true }) })\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('region', { name: 'Spatial content library', exact: true }).getByRole('article').filter({ has: getByRole('region', { name: 'Spatial content library', exact: true }).getByRole('button', { name: 'Inspect Captain navigation compass', exact: true }) })\nExpected substring: \u001b[32m\"Navigation clue\"\u001b[39m\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('region', { name: 'Spatial content library', exact: true }).getByRole('article').filter({ has: getByRole('region', { name: 'Spatial content library', exact: true }).getByRole('button', { name: 'Inspect Captain navigation compass', exact: true }) })\u001b[22m\n\n    at C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-reusable-assets.spec.ts:67:22",
+                    "location": {
+                      "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-reusable-assets.spec.ts",
+                      "column": 22,
+                      "line": 67
+                    },
+                    "snippet": "  65 |   const assetInspect = library.getByRole(\"button\", { name: \"Inspect Captain navigation compass\", exact: true });\n  66 |   const card = library.getByRole(\"article\").filter({ has: assetInspect });\n> 67 |   await expect(card).toContainText(\"Navigation clue\");\n     |                      ^\n  68 |   await expect(card.getByRole(\"img\")).toBeVisible();\n  69 |   await mkdir(root, { recursive: true });\n  70 |   await page.screenshot({ path: `${root}/library-object-definition.png` });"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-reusable-assets.spec.ts",
+                        "column": 22,
+                        "line": 67
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('region', { name: 'Spatial content library', exact: true }).getByRole('article').filter({ has: getByRole('region', { name: 'Spatial content library', exact: true }).getByRole('button', { name: 'Inspect Captain navigation compass', exact: true }) })\nExpected substring: \u001b[32m\"Navigation clue\"\u001b[39m\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('region', { name: 'Spatial content library', exact: true }).getByRole('article').filter({ has: getByRole('region', { name: 'Spatial content library', exact: true }).getByRole('button', { name: 'Inspect Captain navigation compass', exact: true }) })\u001b[22m\n\n\n  65 |   const assetInspect = library.getByRole(\"button\", { name: \"Inspect Captain navigation compass\", exact: true });\n  66 |   const card = library.getByRole(\"article\").filter({ has: assetInspect });\n> 67 |   await expect(card).toContainText(\"Navigation clue\");\n     |                      ^\n  68 |   await expect(card.getByRole(\"img\")).toBeVisible();\n  69 |   await mkdir(root, { recursive: true });\n  70 |   await page.screenshot({ path: `${root}/library-object-definition.png` });\n    at C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-reusable-assets.spec.ts:67:22"
+                    }
+                  ],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T19:29:36.097Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-reusable-assets-C-b792c-es-the-unchanged-definition-chromium\\test-failed-1.png"
+                    },
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-reusable-assets-C-b792c-es-the-unchanged-definition-chromium\\video.webm"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-reusable-assets-C-b792c-es-the-unchanged-definition-chromium\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-reusable-assets-C-b792c-es-the-unchanged-definition-chromium\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-reusable-assets.spec.ts",
+                    "column": 22,
+                    "line": 67
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "0987d519b82f690a4df0-ac18de6260fd6ec8680f",
+          "file": "parallax-reusable-assets.spec.ts",
+          "line": 24,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "parallax-room-features.spec.ts",
+      "file": "parallax-room-features.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Environment editing selects rendered features and shares live transform gizmos, history and persistence",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9617,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T19:29:54.046Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-room-features-Env-588a2-mos-history-and-persistence-chromium\\video.webm"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a4b59fd77bd26ade061d-ec9f7e32ae44ea2df598",
+          "file": "parallax-room-features.spec.ts",
+          "line": 22,
+          "column": 5
+        },
+        {
+          "title": "Creator edits semantic room dimensions and furniture while the actual rendered clue follows its desk across reload",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 35283,
+                  "error": {
+                    "message": "TimeoutError: locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('region', { name: 'Room feature editor', exact: true }).getByLabel('Construction checks', { exact: true }).getByRole('button', { name: /Construction checks · checks passed/ })\u001b[22m\n",
+                    "stack": "TimeoutError: locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('region', { name: 'Room feature editor', exact: true }).getByLabel('Construction checks', { exact: true }).getByRole('button', { name: /Construction checks · checks passed/ })\u001b[22m\n\n    at C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-room-features.spec.ts:210:85",
+                    "location": {
+                      "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-room-features.spec.ts",
+                      "column": 85,
+                      "line": 210
+                    },
+                    "snippet": "  208 |     .toBeCloseTo(draft.content.studio!.environment!.features.find((f) => f.id === \"reference-desk\")!.position.x);\n  209 |   const checks = editor.getByLabel(\"Construction checks\", { exact: true });\n> 210 |   await checks.getByRole(\"button\", { name: /Construction checks · checks passed/ }).click();\n      |                                                                                     ^\n  211 |   await expect(checks).toContainText(\"No findings within these checks\");\n  212 |   await editor.getByLabel(\"Feature x (m)\", { exact: true }).fill(\"2\");\n  213 |   await editor.getByLabel(\"Feature x (m)\", { exact: true }).press(\"Tab\");"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-room-features.spec.ts",
+                        "column": 85,
+                        "line": 210
+                      },
+                      "message": "TimeoutError: locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('region', { name: 'Room feature editor', exact: true }).getByLabel('Construction checks', { exact: true }).getByRole('button', { name: /Construction checks · checks passed/ })\u001b[22m\n\n\n  208 |     .toBeCloseTo(draft.content.studio!.environment!.features.find((f) => f.id === \"reference-desk\")!.position.x);\n  209 |   const checks = editor.getByLabel(\"Construction checks\", { exact: true });\n> 210 |   await checks.getByRole(\"button\", { name: /Construction checks · checks passed/ }).click();\n      |                                                                                     ^\n  211 |   await expect(checks).toContainText(\"No findings within these checks\");\n  212 |   await editor.getByLabel(\"Feature x (m)\", { exact: true }).fill(\"2\");\n  213 |   await editor.getByLabel(\"Feature x (m)\", { exact: true }).press(\"Tab\");\n    at C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-room-features.spec.ts:210:85"
+                    }
+                  ],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T19:30:04.057Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-room-features-Cre-f1fe6-lows-its-desk-across-reload-chromium\\test-failed-1.png"
+                    },
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-room-features-Cre-f1fe6-lows-its-desk-across-reload-chromium\\video.webm"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-room-features-Cre-f1fe6-lows-its-desk-across-reload-chromium\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-room-features-Cre-f1fe6-lows-its-desk-across-reload-chromium\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-room-features.spec.ts",
+                    "column": 85,
+                    "line": 210
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "a4b59fd77bd26ade061d-b7794fe95e625ef7358e",
+          "file": "parallax-room-features.spec.ts",
+          "line": 157,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "parallax-spatial-assistant.spec.ts",
+      "file": "parallax-spatial-assistant.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Creator signs in, reviews actual canvas proposals, saves once and reopens an exact Chronicle pin",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 300000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 8830,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 0\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[33m@@ -8,6 +8,8 @@\u001b[39m\n\u001b[2m    \"previousRequestId\",\u001b[22m\n\u001b[2m    \"request\",\u001b[22m\n\u001b[2m    \"requestId\",\u001b[22m\n\u001b[2m    \"revision\",\u001b[22m\n\u001b[2m    \"selectedEntityId\",\u001b[22m\n\u001b[31m+   \"selectedGroupId\",\u001b[39m\n\u001b[31m+   \"selectedMembers\",\u001b[39m\n\u001b[2m  ]\u001b[22m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 0\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[33m@@ -8,6 +8,8 @@\u001b[39m\n\u001b[2m    \"previousRequestId\",\u001b[22m\n\u001b[2m    \"request\",\u001b[22m\n\u001b[2m    \"requestId\",\u001b[22m\n\u001b[2m    \"revision\",\u001b[22m\n\u001b[2m    \"selectedEntityId\",\u001b[22m\n\u001b[31m+   \"selectedGroupId\",\u001b[39m\n\u001b[31m+   \"selectedMembers\",\u001b[39m\n\u001b[2m  ]\u001b[22m\n    at C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-spatial-assistant.spec.ts:170:39",
+                    "location": {
+                      "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-spatial-assistant.spec.ts",
+                      "column": 39,
+                      "line": 170
+                    },
+                    "snippet": "  168 |     revision: base.revision,\n  169 |   });\n> 170 |   expect(Object.keys(request).sort()).toEqual(\n      |                                       ^\n  171 |     [\n  172 |       \"action\",\n  173 |       \"draft\","
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-spatial-assistant.spec.ts",
+                        "column": 39,
+                        "line": 170
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 0\u001b[39m\n\u001b[31m+ Received  + 2\u001b[39m\n\n\u001b[33m@@ -8,6 +8,8 @@\u001b[39m\n\u001b[2m    \"previousRequestId\",\u001b[22m\n\u001b[2m    \"request\",\u001b[22m\n\u001b[2m    \"requestId\",\u001b[22m\n\u001b[2m    \"revision\",\u001b[22m\n\u001b[2m    \"selectedEntityId\",\u001b[22m\n\u001b[31m+   \"selectedGroupId\",\u001b[39m\n\u001b[31m+   \"selectedMembers\",\u001b[39m\n\u001b[2m  ]\u001b[22m\n\n  168 |     revision: base.revision,\n  169 |   });\n> 170 |   expect(Object.keys(request).sort()).toEqual(\n      |                                       ^\n  171 |     [\n  172 |       \"action\",\n  173 |       \"draft\",\n    at C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-spatial-assistant.spec.ts:170:39"
+                    }
+                  ],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [
+                    {
+                      "text": "(node:132772) [THREE_CJS_DEPRECATED] DeprecationWarning: `require(\"three\")` is deprecated and will be removed.\nReplace `const THREE = require(\"three\")` with `import * as THREE from \"three\"`.\n"
+                    }
+                  ],
+                  "retry": 0,
+                  "startTime": "2026-10-19T19:30:41.250Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-spatial-assistant-9d1c0-pens-an-exact-Chronicle-pin-chromium\\test-failed-1.png"
+                    },
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-spatial-assistant-9d1c0-pens-an-exact-Chronicle-pin-chromium\\video.webm"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-spatial-assistant-9d1c0-pens-an-exact-Chronicle-pin-chromium\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-spatial-assistant-9d1c0-pens-an-exact-Chronicle-pin-chromium\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-spatial-assistant.spec.ts",
+                    "column": 39,
+                    "line": 170
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "7e5f0316499ddf7c9655-d09be51c6ca192a542a6",
+          "file": "parallax-spatial-assistant.spec.ts",
+          "line": 55,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "parallax-surfaces.spec.ts",
+      "file": "parallax-surfaces.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Creator snaps a clue to both walls, table and entire floor with orientation, Undo and persisted restore",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 9202,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n    at C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-surfaces.spec.ts:108:95",
+                    "location": {
+                      "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-surfaces.spec.ts",
+                      "column": 95,
+                      "line": 108
+                    },
+                    "snippet": "  106 |     await canvas.getByRole(\"button\", { name: \"Frame selection\", exact: true }).click();\n  107 |     await page.screenshot({ path: `${root}/surfaces-framed-${size.width}x${size.height}.png` });\n> 108 |     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);\n      |                                                                                               ^\n  109 |     const toggle = page.getByRole(\"button\", { name: \"Toggle spatial overlays\", exact: true });\n  110 |     if ((await toggle.getAttribute(\"aria-pressed\")) === \"true\")\n  111 |       await page.getByRole(\"button\", { name: \"Close room surfaces\", exact: true }).click();"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-surfaces.spec.ts",
+                        "column": 95,
+                        "line": 108
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m\n\n  106 |     await canvas.getByRole(\"button\", { name: \"Frame selection\", exact: true }).click();\n  107 |     await page.screenshot({ path: `${root}/surfaces-framed-${size.width}x${size.height}.png` });\n> 108 |     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);\n      |                                                                                               ^\n  109 |     const toggle = page.getByRole(\"button\", { name: \"Toggle spatial overlays\", exact: true });\n  110 |     if ((await toggle.getAttribute(\"aria-pressed\")) === \"true\")\n  111 |       await page.getByRole(\"button\", { name: \"Close room surfaces\", exact: true }).click();\n    at C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-surfaces.spec.ts:108:95"
+                    }
+                  ],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T19:30:52.413Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-surfaces-Creator--86e9e--Undo-and-persisted-restore-chromium\\test-failed-1.png"
+                    },
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-surfaces-Creator--86e9e--Undo-and-persisted-restore-chromium\\video.webm"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-surfaces-Creator--86e9e--Undo-and-persisted-restore-chromium\\error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-05-results\\parallax-surfaces-Creator--86e9e--Undo-and-persisted-restore-chromium\\trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\tests\\e2e\\parallax-surfaces.spec.ts",
+                    "column": 95,
+                    "line": 108
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "31694af60e4a528ffdc5-8ee631c58ca5f718d835",
+          "file": "parallax-surfaces.spec.ts",
+          "line": 30,
+          "column": 5
+        },
+        {
+          "title": "Hidden Wall Message retains wall intent when automatic placement is enabled and aligns when switched to table",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": -1,
+                  "parallelIndex": -1,
+                  "status": "skipped",
+                  "duration": 0,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T19:31:02.739Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "31694af60e4a528ffdc5-4cffcd7eadaf5a73d946",
+          "file": "parallax-surfaces.spec.ts",
+          "line": 118,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-19T19:26:16.749Z",
+    "duration": 286167.351,
+    "expected": 16,
+    "skipped": 1,
+    "unexpected": 5,
+    "flaky": 0
+  }
+}

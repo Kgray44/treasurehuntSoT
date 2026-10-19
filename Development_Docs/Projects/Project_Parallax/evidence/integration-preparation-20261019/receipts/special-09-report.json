@@ -1,0 +1,219 @@
+{
+  "config": {
+    "configFile": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\playwright.config.ts",
+    "rootDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "list"
+      ],
+      [
+        "json"
+      ],
+      [
+        "html"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/special-09-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "phase3-readonly-setup",
+        "name": "phase3-readonly-setup",
+        "testDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/phase3-readonly-setup\\.setup\\.ts/u"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/special-09-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/e2e",
+        "testIgnore": [
+          "/phase3-readonly-setup\\.setup\\.ts/u",
+          "/harborlight-phase2\\.spec\\.ts/u",
+          "/harborlight-phase3\\.spec\\.ts/u",
+          "/harborlight-phase4\\.spec\\.ts/u",
+          "/admiralty-phase1\\.spec\\.ts/u"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/special-09-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "admiralty-phase1",
+        "name": "admiralty-phase1",
+        "testDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/admiralty-phase1\\.spec\\.ts/u"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/special-09-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "harborlight-phase2",
+        "name": "harborlight-phase2",
+        "testDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/harborlight-phase2\\.spec\\.ts/u"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/special-09-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "harborlight-phase3",
+        "name": "harborlight-phase3",
+        "testDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/harborlight-phase3\\.spec\\.ts/u"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/special-09-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "harborlight-phase4",
+        "name": "harborlight-phase4",
+        "testDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/harborlight-phase4\\.spec\\.ts/u"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/special-09-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "webkit-mobile",
+        "name": "webkit-mobile",
+        "testDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 240000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.56.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "parallax-sc00c-scale-browser.spec.ts",
+      "file": "parallax-sc00c-scale-browser.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "a large saved-Scene catalog remains searchable and paged in the actual Studio",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 300000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 24921,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T21:06:12.105Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\special-09-results\\parallax-sc00c-scale-brows-04e80--paged-in-the-actual-Studio-chromium\\video.webm"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "107f94d83171b3271d7c-1ecdccc8e3281a36a481",
+          "file": "parallax-sc00c-scale-browser.spec.ts",
+          "line": 17,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-19T21:06:06.779Z",
+    "duration": 31531.187999999995,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

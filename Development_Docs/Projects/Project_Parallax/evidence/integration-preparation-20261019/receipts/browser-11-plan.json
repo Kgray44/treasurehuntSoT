@@ -1,0 +1,31 @@
+{
+  "candidate": "7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578",
+  "mode": "rest",
+  "startedAt": "2026-10-19T20:44:06.509Z",
+  "tests": [
+    "tests/e2e/parallax-assistant-presentation.spec.ts",
+    "tests/e2e/parallax-cinematic.spec.ts",
+    "tests/e2e/parallax-click-surface.spec.ts",
+    "tests/e2e/parallax-construction-checks.spec.ts",
+    "tests/e2e/parallax-context-menu.spec.ts",
+    "tests/e2e/parallax-direct-placement.spec.ts",
+    "tests/e2e/parallax-exclusion-zones.spec.ts",
+    "tests/e2e/parallax-library-lifecycle.spec.ts",
+    "tests/e2e/parallax-opacity.spec.ts",
+    "tests/e2e/parallax-owner-refinements.spec.ts",
+    "tests/e2e/parallax-parametric-room.spec.ts",
+    "tests/e2e/parallax-rooms.spec.ts",
+    "tests/e2e/parallax-sc00b-combined.spec.ts",
+    "tests/e2e/parallax-sc00c-drop-placement.spec.ts",
+    "tests/e2e/parallax-sc00c-expanded-library.spec.ts",
+    "tests/e2e/parallax-sc00c-library-context-menu.spec.ts",
+    "tests/e2e/parallax-sc00c-library-journeys.spec.ts",
+    "tests/e2e/parallax-sc02-integration.spec.ts",
+    "tests/e2e/parallax-scene-manager.spec.ts",
+    "tests/e2e/parallax-semantic-assistant.spec.ts",
+    "tests/e2e/parallax-simulation.spec.ts"
+  ],
+  "resultRoot": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-11-results",
+  "sc02EvidenceRoot": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\browser-11-sc02-evidence",
+  "qualification": false
+}

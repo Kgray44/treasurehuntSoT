@@ -1,0 +1,674 @@
+{
+  "config": {
+    "configFile": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\Codex_TreasureHunt\\playwright.config.ts",
+    "rootDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "list"
+      ],
+      [
+        "json"
+      ],
+      [
+        "html"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/special-12-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "phase3-readonly-setup",
+        "name": "phase3-readonly-setup",
+        "testDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/phase3-readonly-setup\\.setup\\.ts/u"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/special-12-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/e2e",
+        "testIgnore": [
+          "/phase3-readonly-setup\\.setup\\.ts/u",
+          "/harborlight-phase2\\.spec\\.ts/u",
+          "/harborlight-phase3\\.spec\\.ts/u",
+          "/harborlight-phase4\\.spec\\.ts/u",
+          "/admiralty-phase1\\.spec\\.ts/u"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/special-12-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "admiralty-phase1",
+        "name": "admiralty-phase1",
+        "testDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/admiralty-phase1\\.spec\\.ts/u"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/special-12-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "harborlight-phase2",
+        "name": "harborlight-phase2",
+        "testDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/harborlight-phase2\\.spec\\.ts/u"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/special-12-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "harborlight-phase3",
+        "name": "harborlight-phase3",
+        "testDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/harborlight-phase3\\.spec\\.ts/u"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/special-12-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "harborlight-phase4",
+        "name": "harborlight-phase4",
+        "testDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/harborlight-phase4\\.spec\\.ts/u"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/special-12-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "webkit-mobile",
+        "name": "webkit-mobile",
+        "testDir": "C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 240000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.56.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "parallax-ai-quotas.spec.ts",
+      "file": "parallax-ai-quotas.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Admiralty changes an AI allowance through the existing People dossier",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 300000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 19586,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [
+                    {
+                      "text": "(node:130008) [THREE_CJS_DEPRECATED] DeprecationWarning: `require(\"three\")` is deprecated and will be removed.\nReplace `const THREE = require(\"three\")` with `import * as THREE from \"three\"`.\n"
+                    }
+                  ],
+                  "retry": 0,
+                  "startTime": "2026-10-19T21:11:13.868Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "mobile-account-ai-history-access",
+                      "contentType": "application/json",
+                      "body": "eyJrZXlib2FyZEZvY3VzZWQiOnRydWUsImhvcml6b250YWxTY3JvbGxWZXJpZmllZCI6dHJ1ZSwidmlvbGF0aW9ucyI6W3siaWQiOiJsYW5kbWFyay1uby1kdXBsaWNhdGUtYmFubmVyIiwiaW1wYWN0IjoibW9kZXJhdGUiLCJ0YXJnZXRzIjpbWyJzZWN0aW9uW2RhdGEtcGFyYWxsYXgtYWktcXVvdGEtZml4dHVyZT1cInRydWVcIl0gPiAuY2hhcnRyb29tLXBhbmVsX19oZWFkaW5nIl1dfV19"
+                    },
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\special-12-results\\parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium\\video-2.webm"
+                    },
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\special-12-results\\parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium\\video-1.webm"
+                    },
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\special-12-results\\parallax-ai-quotas-Admiral-a2051-the-existing-People-dossier-chromium\\video.webm"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "048fa4b7c10db3dd98e4-509a7bafafacad958b49",
+          "file": "parallax-ai-quotas.spec.ts",
+          "line": 14,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "parallax-environment-creation.spec.ts",
+      "file": "parallax-environment-creation.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Environment photo setup imports 1 views, renders the proposal and saves an independent editable room",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8906,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T21:11:33.889Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\special-12-results\\parallax-environment-creat-ca91a-n-independent-editable-room-chromium\\video.webm"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5732d5cbaced102be65b-84532a5ae14c9ff811aa",
+          "file": "parallax-environment-creation.spec.ts",
+          "line": 21,
+          "column": 7
+        },
+        {
+          "title": "Environment photo setup imports 2 views, renders the proposal and saves an independent editable room",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8065,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T21:11:42.807Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\special-12-results\\parallax-environment-creat-f049b-n-independent-editable-room-chromium\\video.webm"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "5732d5cbaced102be65b-f3a25dedcb1389f698e1",
+          "file": "parallax-environment-creation.spec.ts",
+          "line": 21,
+          "column": 7
+        }
+      ]
+    },
+    {
+      "title": "parallax-environment-entry.spec.ts",
+      "file": "parallax-environment-entry.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Environment plus opens keyboard-friendly choices, duplicates a source and starts an empty shell",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6318,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T21:11:50.901Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\special-12-results\\parallax-environment-entry-5d20a-e-and-starts-an-empty-shell-chromium\\video.webm"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "25c80de47a27fdefcfb3-24b97361c21c861ff874",
+          "file": "parallax-environment-entry.spec.ts",
+          "line": 20,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "parallax-environment-library.spec.ts",
+      "file": "parallax-environment-library.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "pinned room editing creates an explicit independent Environment copy and preserves the Scene release pin",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7980,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T21:11:57.249Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\special-12-results\\parallax-environment-libra-07741-erves-the-Scene-release-pin-chromium\\video.webm"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a26bb7402a7501efbe7e-d4a767f9d5aa49ea9756",
+          "file": "parallax-environment-library.spec.ts",
+          "line": 22,
+          "column": 5
+        },
+        {
+          "title": "Creator discovers, renames, edits, applies and archives environments while preserving scene snapshots",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10178,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T21:12:05.238Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\special-12-results\\parallax-environment-libra-e13e5--preserving-scene-snapshots-chromium\\video.webm"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "a26bb7402a7501efbe7e-46e597bf2190043e811a",
+          "file": "parallax-environment-library.spec.ts",
+          "line": 123,
+          "column": 5
+        }
+      ]
+    },
+    {
+      "title": "parallax-photo-feedback.spec.ts",
+      "file": "parallax-photo-feedback.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Photo setup timeout-dark keeps processing and recovery visible without modifying the source",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 27900,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T21:12:15.450Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\special-12-results\\parallax-photo-feedback-Ph-a8abc-ithout-modifying-the-source-chromium\\video.webm"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "59ae1a4c325011b18ba3-9e8ce0d94f1aeb5d4c96",
+          "file": "parallax-photo-feedback.spec.ts",
+          "line": 18,
+          "column": 7
+        },
+        {
+          "title": "Photo setup clarification-phone-light keeps processing and recovery visible without modifying the source",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4619,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T21:12:43.359Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\special-12-results\\parallax-photo-feedback-Ph-6940f-ithout-modifying-the-source-chromium\\video.webm"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "59ae1a4c325011b18ba3-c5e30cd77876b76e4db3",
+          "file": "parallax-photo-feedback.spec.ts",
+          "line": 18,
+          "column": 7
+        },
+        {
+          "title": "Photo setup network-desktop-light keeps processing and recovery visible without modifying the source",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5340,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T21:12:47.988Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\special-12-results\\parallax-photo-feedback-Ph-f2dc4-ithout-modifying-the-source-chromium\\video.webm"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "59ae1a4c325011b18ba3-b3d8d2456fee0a648c81",
+          "file": "parallax-photo-feedback.spec.ts",
+          "line": 18,
+          "column": 7
+        }
+      ]
+    },
+    {
+      "title": "parallax-room-photo.spec.ts",
+      "file": "parallax-room-photo.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Creator privately imports a room photo, confirms measurement, preserves it through refinement, creates a hidden letter and replays its reveal",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 39376,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-19T21:12:53.364Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-integration-prep-20261019\\special-12-results\\parallax-room-photo-Creato-f6a5a-tter-and-replays-its-reveal-chromium\\video.webm"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "280c79b81537bb7513ac-fc49e5d9ea8ba1877972",
+          "file": "parallax-room-photo.spec.ts",
+          "line": 22,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-19T21:11:12.338Z",
+    "duration": 140982.16999999998,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
