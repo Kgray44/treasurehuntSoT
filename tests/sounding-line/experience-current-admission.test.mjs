@@ -1,4 +1,5 @@
 // Inert source/HTTP fixtures only. None of these records is installed or grants a run.
+import "./experience-current-r19.test.mjs";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { createHash } from "node:crypto";
