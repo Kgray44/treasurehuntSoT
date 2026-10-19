@@ -4500,3 +4500,19 @@
     min-height: 450px;
   }
 }
+
+/* Mid-width and landscape windows keep every Scene command inside the header. */
+@media (min-width: 701px) and (max-width: 1279px) {
+  .adaptiveWorkspace .header {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .adaptiveWorkspace .header > div:first-child {
+    min-width: 0;
+  }
+  .adaptiveWorkspace .toolbar {
+    grid-column: 1 / -1;
+    justify-self: stretch;
+    flex-wrap: wrap;
+    min-width: 0;
+  }
+}

@@ -194,9 +194,14 @@ test("Creator edits semantic room dimensions and furniture while the actual rend
   await page.getByRole("button", { name: "Open scene settings", exact: true }).click();
   await page.getByText("Room photograph reconstruction", { exact: true }).click();
   await expect(page.getByRole("combobox", { name: "Environment", exact: true })).toHaveValue("editable-bedroom");
+  await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("ENGINEERING");
   await page.getByRole("button", { name: "Edit room features", exact: true }).click();
   const editor = page.getByRole("region", { name: "Room feature editor", exact: true });
   await expect(editor).toBeVisible();
+  await editor.getByLabel("Room feature", { exact: true }).selectOption("reference-desk");
+  const roomContext = page.getByRole("region", { name: "Room spatial context", exact: true });
+  const showProperties = () => page.getByRole("button", { name: "Open object properties", exact: true }).click();
+  const showContext = () => page.getByRole("button", { name: "Open spatial context", exact: true }).click();
   const roomReceipt = async () =>
     JSON.parse((await host.getAttribute("data-room-receipt"))!) as { id: string; min: number[]; max: number[] }[];
   const center = async () => {
@@ -206,18 +211,27 @@ test("Creator edits semantic room dimensions and furniture while the actual rend
   await expect
     .poll(center)
     .toBeCloseTo(draft.content.studio!.environment!.features.find((f) => f.id === "reference-desk")!.position.x);
-  const checks = editor.getByLabel("Construction checks", { exact: true });
+  await showContext();
+  const checks = roomContext.getByLabel("Construction checks", { exact: true });
+  const reviewConstruction = async () => {
+    await showContext();
+    if (!(await checks.evaluate((element) => (element as HTMLDetailsElement).open)))
+      await checks.getByRole("button", { name: /Construction checks/ }).click();
+  };
   await checks.getByRole("button", { name: /Construction checks · checks passed/ }).click();
   await expect(checks).toContainText("No findings within these checks");
+  await showProperties();
   await editor.getByLabel("Feature x (m)", { exact: true }).fill("2");
   await editor.getByLabel("Feature x (m)", { exact: true }).press("Tab");
+  await reviewConstruction();
   await expect(checks).toContainText("needs correction");
   await expect(checks).toContainText("extends outside");
   await checks.getByRole("button", { name: "reference desk", exact: true }).first().click();
   await page.screenshot({ path: `${root}/room-construction-finding.png` });
   await page.getByRole("button", { name: "Undo", exact: true }).first().click();
+  await reviewConstruction();
   await expect(checks).toContainText("checks passed");
-  await checks.getByRole("button", { name: /Construction checks/ }).click();
+  await showProperties();
   const entityX = async () =>
     (JSON.parse((await host.getAttribute("data-scene-receipt"))!) as { position: number[] }[])[0].position[0];
   const initialPose = JSON.parse((await host.getAttribute("data-scene-receipt"))!)[0].position as number[];
@@ -240,13 +254,17 @@ test("Creator edits semantic room dimensions and furniture while the actual rend
   await editor.getByLabel("Feature name", { exact: true }).press("Tab");
   await editor.getByLabel("Room feature classification", { exact: true }).selectOption("TABLE");
   await expect(editor.getByLabel("Room feature", { exact: true })).toHaveValue("reference-desk");
-  await editor.getByLabel("Room width (m)", { exact: true }).fill("-1");
-  await editor.getByLabel("Room width (m)", { exact: true }).press("Tab");
-  await expect(editor.getByRole("alert")).toBeVisible();
-  await expect(editor.getByRole("alert")).toContainText("between 1 and 100 metres");
+  await showContext();
+  const dimensions = roomContext.getByLabel("Room dimensions", { exact: true });
+  if (!(await dimensions.evaluate((element) => (element as HTMLDetailsElement).open)))
+    await dimensions.locator("summary").click();
+  await roomContext.getByLabel("Room width (m)", { exact: true }).fill("-1");
+  await roomContext.getByLabel("Room width (m)", { exact: true }).press("Tab");
+  await expect(roomContext.getByRole("alert")).toBeVisible();
+  await expect(roomContext.getByRole("alert")).toContainText("between 1 and 100 metres");
   await expect
     .poll(() =>
-      editor.getByRole("alert").evaluate((alert) => {
+      roomContext.getByRole("alert").evaluate((alert) => {
         const inspector = alert.closest("aside")!;
         const title = inspector.querySelector("h2")!;
         const bounds = alert.getBoundingClientRect(),
@@ -258,9 +276,9 @@ test("Creator edits semantic room dimensions and furniture while the actual rend
   await mkdir(root, { recursive: true });
   await page.screenshot({ path: `${root}/room-feature-invalid.png` });
   await expect.poll(center).toBeCloseTo(0.6);
-  await editor.getByLabel("Room width (m)", { exact: true }).fill("5");
-  await editor.getByLabel("Room width (m)", { exact: true }).press("Tab");
-  await expect(editor.getByRole("alert")).toHaveCount(0);
+  await roomContext.getByLabel("Room width (m)", { exact: true }).fill("5");
+  await roomContext.getByLabel("Room width (m)", { exact: true }).press("Tab");
+  await expect(roomContext.getByRole("alert")).toHaveCount(0);
   await expect.poll(center).toBeCloseTo(0.75);
   await saveCurrentWorkingDraft(page);
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
@@ -286,6 +304,7 @@ test("Creator edits semantic room dimensions and furniture while the actual rend
     .getByText("View & audio", { exact: true })
     .click();
   await page.getByRole("button", { name: "Edit room features", exact: true }).click();
+  await editor.getByLabel("Room feature", { exact: true }).selectOption("reference-desk");
   await expect(editor.getByLabel("Room feature classification", { exact: true })).toHaveValue("TABLE");
   await expect(editor.getByLabel("Feature name", { exact: true })).toHaveValue("Window writing table");
   await editor.getByLabel("Feature name", { exact: true }).focus();

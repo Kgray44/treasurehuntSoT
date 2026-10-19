@@ -234,9 +234,12 @@ test("Creator duplicates and reuses a right boot without changing its rendered h
     .getByRole("complementary", { name: "Reusable right boot details", exact: true })
     .getByRole("button", { name: "Place in Scene", exact: true })
     .click();
-  await expect(currentStudioStatus(page)).toHaveText(
-    "Independent asset copy added and saved; its definition is unchanged",
-  );
+  const placement = page.getByLabel("Place Reusable right boot in Scene");
+  await expect(placement).toBeVisible();
+  expect(await current()).toEqual(duplicated);
+  await placement.getByRole("button", { name: "Floor", exact: true }).first().click();
+  await expect(placement).toBeHidden();
+  await expect(currentStudioStatus(page)).toHaveText("Independent released copy added");
   const inserted = await current();
   const instance = inserted.content.entities.at(-1)!;
   expect(instance.footprintSide).toBe("RIGHT");

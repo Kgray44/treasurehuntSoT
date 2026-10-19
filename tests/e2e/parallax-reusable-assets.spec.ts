@@ -63,8 +63,12 @@ test("Creator saves and reuses a versioned object, edits only its instance, relo
   const library = await openCurrentLibraryCategory(page, "Assets", "MY_CREATIONS", "SAVED");
   await library.getByRole("searchbox").fill("Captain navigation compass");
   const assetInspect = library.getByRole("button", { name: "Inspect Captain navigation compass", exact: true });
-  const card = library.getByRole("article").filter({ has: assetInspect });
-  await expect(card).toContainText("Navigation clue");
+  const card = library
+    .getByRole("article")
+    .filter({ has: page.getByRole("button", { name: "Inspect Captain navigation compass", exact: true }) });
+  await assetInspect.click();
+  const assetDetails = library.getByRole("complementary", { name: "Captain navigation compass details", exact: true });
+  await expect(assetDetails).toContainText("Navigation clue");
   await expect(card.getByRole("img")).toBeVisible();
   await mkdir(root, { recursive: true });
   await page.screenshot({ path: `${root}/library-object-definition.png` });
@@ -73,14 +77,18 @@ test("Creator saves and reuses a versioned object, edits only its instance, relo
   await copy.getByLabel("Name", { exact: true }).fill("Compass source scene copy");
   await copy.getByRole("button", { name: "Create independent definition", exact: true }).click();
   await expect(copy).not.toBeVisible();
+  await openCurrentLibraryCategory(page, "Assets", "MY_CREATIONS", "SAVED");
+  await library.getByRole("searchbox").fill("Captain navigation compass");
   await assetInspect.click();
   await library
     .getByRole("complementary", { name: "Captain navigation compass details", exact: true })
     .getByRole("button", { name: "Place in Scene", exact: true })
     .click();
-  await expect(currentStudioStatus(page)).toHaveText(
-    "Independent asset copy added and saved; its definition is unchanged",
-  );
+  const placement = page.getByLabel("Place Captain navigation compass in Scene");
+  await expect(placement).toBeVisible();
+  await placement.getByRole("button", { name: "Floor", exact: true }).first().click();
+  await expect(placement).toBeHidden();
+  await expect(currentStudioStatus(page)).toHaveText("Independent released copy added");
   const targetId = new URL(page.url()).searchParams.get("definition")!;
   const target = async () => (await listSpatialItems(account.id)).find((i) => i.id === targetId)!.draft;
   expect(targetId).not.toBe(source.content.definitionId);

@@ -161,6 +161,9 @@ test("Creator edits, renders, scrubs, plays and reloads real object keyframes, t
       expect(bounds.y + bounds.height).toBeLessThanOrEqual(rendererBounds.y + rendererBounds.height);
     }
     await page.screenshot({ path: `${root}/toolbar-expanded-desktop-${viewport.width}x${viewport.height}.png` });
+    await page.getByRole("tab", { name: "Timeline", exact: true }).scrollIntoViewIfNeeded();
+    await expect(page.getByRole("button", { name: "Play timeline", exact: true })).toBeInViewport();
+    await page.screenshot({ path: `${root}/timeline-reached-desktop-${viewport.width}x${viewport.height}.png` });
   }
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.setViewportSize({ width: 390, height: 844 });

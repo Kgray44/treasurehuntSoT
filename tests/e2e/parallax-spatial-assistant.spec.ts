@@ -166,6 +166,9 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
     request: createRequest,
     mode: "STANDARD",
     revision: base.revision,
+    selectedEntityId: base.draft.content.entities[0].id,
+    selectedGroupId: null,
+    selectedMembers: [{ kind: "ASSET", id: base.draft.content.entities[0].id }],
   });
   expect(Object.keys(request).sort()).toEqual(
     [
@@ -180,6 +183,8 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
       "requestId",
       "revision",
       "selectedEntityId",
+      "selectedGroupId",
+      "selectedMembers",
     ].sort(),
   );
   expect(base.draft.content.entities).toHaveLength(1);

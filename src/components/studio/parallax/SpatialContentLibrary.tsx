@@ -899,6 +899,11 @@ export function SpatialContentLibrary(props: Props) {
             </button>
           </div>
           <p>{selected.description}</p>
+          {scene?.draft.content.studio?.libraryDefinition?.classification && (
+            <p className={styles.metadata}>
+              Classification: {scene.draft.content.studio.libraryDefinition.classification}
+            </p>
+          )}
           <p className={styles.metadata}>
             {installedReadOnly ? originNames.INSTALLED : originNames[selected.origin]} · {selected.family}
           </p>
