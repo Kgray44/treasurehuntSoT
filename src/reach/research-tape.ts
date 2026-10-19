@@ -215,7 +215,7 @@ export class ResearchRecorder {
   event(op: string, stage: string, instanceId: string | null, value: any, callId = this.stack.at(-1) ?? 0, parentCallId = this.stack.at(-2) ?? null) {
     if (!this.isActive()) { this.noteLate(); return; }
     const start = nativeNow();
-    let charge = 0, encoded: ReturnType<ResearchGraphEncoder["encode"]> | null = null;
+    let charge = 0, reservedCharge = 0, encoded: ReturnType<ResearchGraphEncoder["encode"]> | null = null;
     try {
       if (this.ordinal >= 250000) throw new Error("RESEARCH_EVENT_CAP");
       encoded = this.encoder.encode(value);
@@ -227,6 +227,7 @@ export class ResearchRecorder {
       charge = text.length * 6 + 1024;
       if (this.queuedBytes + charge + encoded.blobCharge > 16 * 1024 * 1024) throw new Error("RESEARCH_QUEUE_BUDGET");
       if (!this.budget.reserve(charge)) throw new Error("RESEARCH_EVENT_BUDGET");
+      reservedCharge = charge;
       this.logicalBytes += text.length + encoded.blobs.reduce((n, b) => n + b.byteLength, 0);
       if (this.logicalBytes > 1024 * 1024 * 1024) throw new Error("RESEARCH_LOGICAL_CAP");
       this.blobCount += encoded.blobs.length;
@@ -234,9 +235,9 @@ export class ResearchRecorder {
       this.queue.push({ event, blobs: encoded.blobs, charge: charge + encoded.blobCharge, wireBytes });
       this.queuedBytes += charge + encoded.blobCharge;
       this.budget.release(encoded.scratchCharge);
-      charge = 0; encoded = null;
+      charge = 0; reservedCharge = 0; encoded = null;
       queueMicrotask(() => { void this.flush(); });
-    } catch (error) { this.budget.release(charge + (encoded?.blobCharge ?? 0) + (encoded?.scratchCharge ?? 0)); this.fail(error); }
+    } catch (error) { this.budget.release(reservedCharge + (encoded?.blobCharge ?? 0) + (encoded?.scratchCharge ?? 0)); this.fail(error); }
     finally { this.overheadMs += nativeNow() - start; }
   }
   probe(label: string, value: any) { this.event(label, "PROBE", null, { label, value }); }
@@ -375,7 +376,7 @@ const classFields: Record<string, string[]> = {
 const methods: Record<string, string[]> = {
   Tracker: ["prepare", "complete", "update", "reset", "requestManualSelection", "discard", "computeMatches", "associateModelSource"],
   Adapter: ["envelope"], ModelGate: ["accept"], ImageGate: ["accept"],
-  Temporal: ["observe", "reset", "restore"], SourceAssociation: ["observe", "reset", "restore"],
+  Temporal: ["observe", "reset", "restore"], SourceAssociation: ["establish", "observe", "reset", "restore"],
 };
 const installed = new WeakSet<object>();
 const observed = new WeakSet<object>();
