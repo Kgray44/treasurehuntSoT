@@ -209,6 +209,7 @@ export class WebSextantRuntime {
     this.nativeDeclarations = Object.fromEntries(
       Object.entries(snapshot.states).filter(([id]) => this.capabilities.list().some((c) => c.id === id)),
     );
+    await this.leases.revalidateCapabilities();
   }
   projectCapability(capabilityId: string): CapabilityState {
     const state = this.status(capabilityId);

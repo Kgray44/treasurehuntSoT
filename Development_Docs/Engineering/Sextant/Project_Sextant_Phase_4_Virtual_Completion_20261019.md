@@ -98,3 +98,51 @@ All 53 deterministic D0/D1 scenarios passed at clean source
 native input blobs are unchanged by those subsequent TypeScript fixes; their
 receipts must nevertheless retain their original full-source identity. They
 remain development evidence, not final combined-candidate qualification.
+
+## Consumer laboratory and remaining OS proof
+
+Six additional D0 scenarios exercise actual permission/lease acquisition and
+semantic consumers: pitch and roll, seeded noise and contradictory motion,
+silent dropout with fresh dwell after recovery, capability loss/restoration,
+fresh-process restoration and independent local sensing through peer disconnect.
+The capability case exposed a further broker gap: a refreshed unsupported
+declaration could leave existing leases consuming observations. Revalidation now
+ends only affected leases; sample delivery checks current availability, and
+restoration requires explicit reacquisition. Available shared-provider consumers
+remain acquired. The native runtime regression verifies those distinctions.
+Independent review identified a queue race in the first revalidation version.
+Captured lost consumers now receive ENDED synchronously, before queued resource
+cleanup; immediate restoration cannot revive their observation delivery. A
+regression holds an unrelated provider stop unresolved across that transition.
+The dispose/recreate D0 case proves fresh consent and dwell. A separate native
+transport regression delivers an actual stale lease and mismatched generation
+to a restored runtime and verifies ignored old ownership or fail-closed output,
+without treating a detached synthetic provider as generation evidence.
+
+The focused Sextant/consumer/Android-idle suite passed 323 tests before the two
+additional OS-scenario declaration checks. Original failed oracle reports are
+retained; the early offline fixture failure was a missing synthetic reacquisition
+cooldown/security mode, not a product defect.
+
+Baseline Android run `39301316984` reports 11 PASS, zero FAIL and one UNSUPPORTED
+Doze step. Its native instrumentation and all completed scenario cleanup passed.
+iOS run `39301326349` reports 31 native PASS, one expected SKIP and three selected
+canonical scenarios PASS, including the formerly failed foreground geofence
+return. Both retain source `a1c465ba79f6779c33b96d635486e1805b8fb526`.
+
+Hosted focused browser run `39304482251` passed the two desktop/mobile ordinary
+Devices refusal/fallback/accessibility cases at source
+`939d6dd3778db602318a3c29af4e3343c01f99f1`, with supervised cleanup. This is
+DEVELOPMENT_ONLY, qualification false. Local production compilation also passed
+at that source; its Windows development preparation then failed the immutable
+build link check, before browser execution. Neither result grants experience
+acceptance.
+
+The shared lab now includes separate Android OS-only idle and standby recovery
+scenarios. They use [documented Android controls](https://developer.android.com/training/monitoring-device-state/doze-standby),
+verify actual idle/app-inactive readback while backgrounded, check no canonical
+progression, recover a fresh foreground fix and verify restoration. They require
+a measured virtual guest. The original unsupported Doze result is preserved.
+The existing hosted lab also has a bounded development `ios-devices` target for
+the existing normal Devices XCTest through the generic isolated product runtime.
+These added paths still require actual hosted results before any execution claim.

@@ -28,6 +28,7 @@ export async function dispatchLandfallHostedLab(
       "android-background",
       "ios",
       "ios-presentation",
+      "ios-devices",
     ].includes(target)
   )
     throw new Error("LANDFALL_HOSTED_TARGET_INVALID");
@@ -46,10 +47,25 @@ export async function dispatchLandfallHostedLab(
     throw new Error("LANDFALL_HOSTED_BACKGROUND_SCENARIO_INVALID");
   if (
     selectedProfiles !== undefined &&
-    !["android", "android-radio", "android-journal", "android-background", "ios", "ios-presentation"].includes(target)
+    ![
+      "android",
+      "android-radio",
+      "android-journal",
+      "android-background",
+      "ios",
+      "ios-presentation",
+      "ios-devices",
+    ].includes(target)
   )
     throw new Error("LANDFALL_HOSTED_PROFILE_TARGET_REQUIRED");
   const typedTier = tier as "development" | "candidate" | "closure";
+  if (
+    target === "ios-devices" &&
+    (tier !== "development" ||
+      selectedScenarios !== undefined ||
+      (selectedProfiles !== undefined && selectedProfiles !== "primary-phone"))
+  )
+    throw new Error("LANDFALL_HOSTED_APPLE_DEVICES_SCOPE_INVALID");
   const selectedAndroid = hostedDeviceLabProfiles(
     "android",
     typedTier,
@@ -67,7 +83,11 @@ export async function dispatchLandfallHostedLab(
   const selectedApple = hostedDeviceLabProfiles(
     "ios",
     typedTier,
-    target === "ios-presentation" ? "primary-phone" : target === "ios" ? selectedProfiles : undefined,
+    ["ios-presentation", "ios-devices"].includes(target)
+      ? "primary-phone"
+      : target === "ios"
+        ? selectedProfiles
+        : undefined,
   );
   const androidProfiles = selectedAndroid.map(androidDeviceLabProvisioning);
   const appleProfiles = selectedApple;
@@ -85,6 +105,7 @@ export async function dispatchLandfallHostedLab(
     .replaceAll("__RUN_PROVIDERS__", String(target === "all" || target === "provider"))
     .replaceAll("__RUN_BROWSER__", String(target === "all" || target === "browser"))
     .replaceAll("__RUN_APPLE__", String(target === "all" || target === "ios"))
+    .replaceAll("__RUN_APPLE_DEVICES__", String(target === "ios-devices"))
     .replaceAll(
       "__RUN_APPLE_PRESENTATION__",
       String(
@@ -119,6 +140,7 @@ export async function dispatchLandfallHostedLab(
     .replaceAll("__ANDROID_PROFILES__", JSON.stringify(androidProfiles))
     .replaceAll("__APPLE_PROFILES__", JSON.stringify(appleProfiles));
   const scenarios = {
+    appleDevices: target === "ios-devices" ? ["sextant-native-apple-devices"] : [],
     browser: target === "browser" || target === "all" ? ["first-party-phase4-web"] : [],
     journal: target === "android-journal" || target === "all" ? ["first-party-native-journal-pair"] : [],
     background:

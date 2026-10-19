@@ -1645,6 +1645,84 @@
       "oracleOwner": "PARALLAX",
       "cleanupRequired": true,
       "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "sextant.consumer-pitch-roll",
+      "version": 1,
+      "owner": "SEXTANT",
+      "requiredCapabilities": ["device.motion", "device.orientation"],
+      "minimumTier": "D0",
+      "eligibleTiers": ["D0"],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "SEXTANT",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "sextant.consumer-noise-conflict",
+      "version": 1,
+      "owner": "SEXTANT",
+      "requiredCapabilities": ["device.motion", "device.orientation"],
+      "minimumTier": "D0",
+      "eligibleTiers": ["D0"],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "SEXTANT",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "sextant.consumer-dropout-recovery",
+      "version": 1,
+      "owner": "SEXTANT",
+      "requiredCapabilities": ["device.motion"],
+      "minimumTier": "D0",
+      "eligibleTiers": ["D0"],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "SEXTANT",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "sextant.consumer-capability-restoration",
+      "version": 1,
+      "owner": "SEXTANT",
+      "requiredCapabilities": ["device.motion"],
+      "minimumTier": "D0",
+      "eligibleTiers": ["D0"],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "SEXTANT",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "sextant.consumer-process-restoration",
+      "version": 1,
+      "owner": "SEXTANT",
+      "requiredCapabilities": ["device.motion", "device.lifecycle"],
+      "minimumTier": "D0",
+      "eligibleTiers": ["D0"],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "SEXTANT",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
+    },
+    {
+      "scenarioId": "sextant.consumer-offline-reconnect",
+      "version": 1,
+      "owner": "SEXTANT",
+      "requiredCapabilities": ["device.motion", "device.nearby-hardware"],
+      "minimumTier": "D0",
+      "eligibleTiers": ["D0"],
+      "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+      "soundingLineRegistration": "NOT_YET_REGISTERED_UNTIL_IMPLEMENTATION",
+      "oracleOwner": "SEXTANT",
+      "cleanupRequired": true,
+      "implementationState": "REGISTRY_BASELINE_ONLY"
     }
   ]
 }

@@ -7,6 +7,7 @@ import { discoverDeviceLabHost, labBinaryTool, labTool } from "./host";
 import { startDeviceLabAuthority } from "./authority-client";
 import { deliverDeviceLabPosition } from "./location-control";
 import { rebootOwnedAndroidGuest } from "../../../src/landfall/device-lab/android-reboot";
+import { ownedAndroidIdleControl } from "../../../src/landfall/device-lab/android-idle";
 import { setOwnedAppleLabPosition } from "../../../src/landfall/device-lab/apple-location-input";
 import { deviceLabSourceIdentity } from "./source";
 import { inspectOwnedAndroidLocationAccuracy } from "./android-location-settings";
@@ -457,6 +458,7 @@ export async function executeLandfallOsScenario(
   let ownedDevice: string | null = null;
   let androidSerial: string | null = null;
   let androidPowerMode: string | null = null;
+  let androidIdle: ReturnType<typeof ownedAndroidIdleControl> | undefined;
   let androidLocationBaseline: string | null = null;
   let androidRotationBaseline: { automatic: string; rotation: string } | null = null;
   const androidSensorBaselines = new Map<AndroidControlledSensor, readonly number[]>();
@@ -941,6 +943,28 @@ export async function executeLandfallOsScenario(
             await wait(() => results.has(index), 30000);
             steps.push(results.get(index)!);
           } else steps.push({ index, action: "LIFECYCLE", state: "PASS" });
+          continue;
+        }
+        if (step.action.type === "ANDROID_IDLE") {
+          if (target !== "android-emulator" || !androidSerial || deviceConfiguration?.virtual !== true || foreground) {
+            steps.push({
+              index,
+              action: "ANDROID_IDLE",
+              state: "UNSUPPORTED",
+              reason: "BACKGROUND_VIRTUAL_ANDROID_REQUIRED",
+            });
+            continue;
+          }
+          androidIdle ??= ownedAndroidIdleControl(
+            { virtual: true, serial: androidSerial },
+            {
+              adb,
+              now: Date.now,
+              delay: (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
+            },
+          );
+          await androidIdle.set(step.action.mode, step.action.enabled);
+          steps.push({ index, action: "ANDROID_IDLE", state: "PASS" });
           continue;
         }
         if (!foreground) {
@@ -1811,6 +1835,7 @@ export async function executeLandfallOsScenario(
     if (androidSerial) await adb(["shell", "am", "force-stop", "com.voyagewright.landfall"]).catch(() => undefined);
     if (androidSerial) await adb(["reverse", "--remove", `tcp:${port}`]).catch(() => undefined);
     if (androidSerial) {
+      if (androidIdle) remainingResources.push(...(await androidIdle.cleanup()));
       if (androidRotationBaseline !== null) {
         for (const [key, value] of [
           ["accelerometer_rotation", androidRotationBaseline.automatic],
@@ -1965,7 +1990,7 @@ export async function executeLandfallOsScenario(
                         limitation:
                           "Simulator/emulator lifecycle does not prove physical-device OEM suspension policy.",
                       }
-                    : action?.type === "POWER"
+                    : action?.type === "POWER" || action?.type === "ANDROID_IDLE"
                       ? {
                           method: "OS_POWER_CONTROL",
                           limitation:
@@ -2002,12 +2027,24 @@ export async function executeLandfallOsScenario(
             ...(fusedInput ? ["android-fused-mock-input", "native-location-lab-private-data"] : []),
             ...[...androidSensorBaselines.keys()].map((sensor) => `android-sensor-${sensor}`),
             ...(androidPowerMode !== null ? ["android-power-fixture", "android-battery-fixture"] : []),
+            ...(androidIdle ? ["android-forced-idle", "android-app-standby-baseline"] : []),
           ]
         : []),
     ],
     remainingResources,
   };
   await writeFile(path.join(destination, "native-steps.json"), JSON.stringify({ steps, cleanup }, null, 2));
+  if (androidIdle) {
+    const file = path.join(destination, "native-idle-controls.json");
+    await writeFile(file, JSON.stringify({ observations: androidIdle.observations, cleanup }, null, 2));
+    artifacts.push({
+      path: file,
+      sha256: createHash("sha256")
+        .update(await readFile(file))
+        .digest("hex"),
+      kind: "TEST_RESULT",
+    });
+  }
   const stepsFile = path.join(destination, "native-steps.json");
   artifacts.push({
     path: stepsFile,

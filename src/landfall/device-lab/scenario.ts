@@ -39,6 +39,7 @@ export const deviceLabActionSchema = z.discriminatedUnion("type", [
     thermal: z.boolean(),
     doze: z.boolean(),
   }),
+  z.strictObject({ type: z.literal("ANDROID_IDLE"), mode: z.enum(["DOZE", "STANDBY"]), enabled: z.boolean() }),
   z.strictObject({ type: z.literal("PROVIDER"), family: providerFamilySchema, health: providerHealthSchema }),
   z.strictObject({
     type: z.literal("REMOTE_DATA"),

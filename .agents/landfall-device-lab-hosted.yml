@@ -100,6 +100,52 @@ jobs:
           name: landfall-ios-${{ matrix.profile }}-__CANDIDATE_SHA__
           path: artifacts/landfall-device-lab
           retention-days: 14
+  apple-devices:
+    if: __RUN_APPLE_DEVICES__
+    name: Native / iOS normal Devices / primary-phone (development)
+    runs-on: macos-latest
+    timeout-minutes: 45
+    env:
+      LANDFALL_LAB_PROFILE: primary-phone
+      SEXTANT_NATIVE_APPLE_PRODUCT: "1"
+      SOUNDING_LINE_EVIDENCE_PURPOSE: DEVELOPMENT_ONLY
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: __CANDIDATE_SHA__
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: brew install xcodegen
+      - run: npx --no-install playwright install chromium
+      - run: npx --no-install prisma generate --schema prisma/schema.sqlite.prisma
+      - run: npx --no-install tsx scripts/landfall/device-lab/apple-build.ts companion-only
+      - name: Exercise the existing normal Devices journey with the owned generic runtime
+        run: |
+          node --input-type=module <<'EOF'
+          import { randomUUID } from "node:crypto";
+          import { spawnSync } from "node:child_process";
+          import path from "node:path";
+          const candidate = "__CANDIDATE_SHA__";
+          const stamp = new Date().toISOString().replace(/\D/g, "");
+          const database = path.join(process.cwd(), "artifacts/sounding-line", `generic-${candidate.slice(0,12)}`, `validation-isolated-${stamp.slice(0,8)}-${stamp.slice(8)}-${randomUUID().replaceAll("-", "")}.db`);
+          const result = spawnSync(process.execPath, ["scripts/sounding-line/run-browser-suite.mjs", "--profile", "generic", "--candidate", candidate, "--database-url", `file:${database}`, "--", "tests/e2e/sextant-native-apple-devices.spec.ts"], { stdio: "inherit", env: process.env });
+          if (result.error || result.status !== 0) throw new Error("SEXTANT_NATIVE_APPLE_DEVICES_DEVELOPMENT_FAILED");
+          EOF
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sextant-ios-devices-__CANDIDATE_SHA__
+          path: |
+            artifacts/landfall-device-lab
+            artifacts/sounding-line/browser-runtime.json
+            artifacts/sounding-line/browser-suite-profile.json
+            test-results
+          retention-days: 14
+
   apple-notice:
     if: __RUN_APPLE_NOTICE__
     name: Native / iOS notification UI / primary-phone

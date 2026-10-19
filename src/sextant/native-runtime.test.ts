@@ -100,6 +100,43 @@ describe("production runtime selection over companion transport", () => {
       await f.runtime.dispose();
     }
   });
+  it("ends only lost native capabilities and requires fresh acquisition after restoration", async () => {
+    const f = positionRuntime(),
+      original = f.request.getMockImplementation()!;
+    let available = true;
+    f.request.mockImplementation(async (operation, payload) => {
+      const result = await original(operation, payload);
+      if (operation === "SEXTANT_STATE" && !available) {
+        const snapshot = result as { states: Record<string, unknown> };
+        snapshot.states["sextant.position.observation"] = {
+          ...unknownState(),
+          support: "UNSUPPORTED",
+          availability: "TEMPORARILY_UNAVAILABLE",
+        };
+      }
+      return result;
+    });
+    try {
+      await f.acquire();
+      await f.acquire("sextant.magnetic.field");
+      expect(f.active.size).toBe(2);
+      available = false;
+      for (const listener of [...f.listeners]) listener({ type: "nearby-state" });
+      await vi.waitFor(() => expect(f.active.size).toBe(1));
+      expect(f.events).toContainEqual({ type: "ENDED", reason: "CAPABILITY_UNAVAILABLE" });
+      expect(f.runtime.leases.diagnostics().activeLeases).toBe(1);
+      available = true;
+      for (const listener of [...f.listeners]) listener({ type: "nearby-state" });
+      await vi.waitFor(() =>
+        expect(f.runtime.projectCapability("sextant.position.observation").support).toBe("SUPPORTED"),
+      );
+      expect(f.active.size).toBe(1);
+      await f.acquire();
+      expect(f.active.size).toBe(2);
+    } finally {
+      await f.runtime.dispose();
+    }
+  });
   it("revokes native position and accepts restored permission only on a fresh explicit retry", async () => {
     const f = positionRuntime();
     try {
@@ -112,6 +149,54 @@ describe("production runtime selection over companion transport", () => {
       expect(f.events.filter((event) => event.type === "OBSERVATION")).toEqual([]);
     } finally {
       await f.runtime.dispose();
+    }
+  });
+  it("rejects old lease and generation frames delivered to a newly restored runtime", async () => {
+    const first = positionRuntime();
+    await first.acquire("sextant.magnetic.field");
+    const [oldLease, oldGeneration] = [...first.active][0];
+    await first.runtime.dispose();
+    const restored = positionRuntime();
+    try {
+      await restored.acquire("sextant.magnetic.field");
+      const [leaseId, generation] = [...restored.active][0];
+      const sample = (lease: string, epoch: string) => ({
+        type: "sextant-sample",
+        version: 1,
+        leaseId: lease,
+        generation: epoch,
+        sequence: 1,
+        emittedAtWallMs: 0,
+        captureMonotonicMs: 10000,
+        captureAgeMs: 0,
+        fidelity: "OS",
+        sample: {
+          capabilityId: "sextant.magnetic.field",
+          value: { x: 20, y: 0, z: -45 },
+          units: "microtesla",
+          referenceFrame: "DEVICE",
+          qualityClass: "MEDIUM",
+          calibrationState: "GOOD",
+          confidence: null,
+          warnings: [],
+        },
+      });
+      for (const listener of [...restored.listeners]) {
+        listener(sample(oldLease, oldGeneration));
+      }
+      expect(restored.events).toEqual([]);
+      for (const listener of [...restored.listeners]) listener(sample(leaseId, generation));
+      expect(restored.events.filter((e) => e.type === "OBSERVATION")).toHaveLength(1);
+      // A frame asserting the current lease with an incompatible generation
+      // fails that provider closed instead of being silently relabelled.
+      for (const listener of [...restored.listeners]) listener(sample(leaseId, oldGeneration));
+      await restored.runtime.leases.idle();
+      expect(restored.events).toContainEqual({ type: "ENDED", reason: "PROVIDER_FAILED" });
+      expect(restored.active.size).toBe(0);
+      for (const listener of [...restored.listeners]) listener(sample(leaseId, generation));
+      expect(restored.events.filter((e) => e.type === "OBSERVATION")).toHaveLength(1);
+    } finally {
+      await restored.runtime.dispose();
     }
   });
   it("pauses position acquisition and requires explicit resume before another lease", async () => {

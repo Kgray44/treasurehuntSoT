@@ -33,6 +33,15 @@ the outstanding canonical foreground geofence case. The separately selected
 normal iOS Devices journey requires its own source-bound product runtime; do
 not present the baseline shell screenshot as product acceptance.
 
+After those baseline jobs, the current owner may claim one additional development
+Android primary-phone run for the new OS-only `android-doze-recovery` and
+`android-standby-recovery` scenarios, and one `ios-devices` primary-phone run for
+the previously unexecuted normal Devices product case. These source-bound claims
+complete distinct missing obligations; they do not repeat the passing matrices,
+reset earlier allowances, provide protected custody, or authorize physical claims.
+The idle adapter uses documented Android controls with OS readback and restores
+forced idle, app inactivity, standby bucket and the existing battery fixture.
+
 Preserve canonical ownership: Sextant sensing/capability, Crossdeck participation
 and synchronization, Landfall world/navigation, Watchglass interpretation and
 One Voyage progression. Expected native interruptions end consumers; only a new

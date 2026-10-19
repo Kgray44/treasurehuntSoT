@@ -11,6 +11,11 @@ import { fieldObservation } from "./phase3-fixtures";
 import { NearbySessions, SecureRangingSession } from "./nearby";
 import { projectCapabilities } from "@/crossdeck/contracts";
 import { unknownState } from "./contracts";
+import {
+  phase4ConsumerScenarioIds,
+  exercisePhase4ConsumerScenario,
+  type Phase4ConsumerScenario,
+} from "./phase4-consumer-lab";
 
 export const phase4ScenarioIds = [
   "coordinated-rotation-field",
@@ -30,6 +35,7 @@ export const phase4ScenarioIds = [
   "coordinated-magnetic-recovery",
   "coordinated-nearby-reconnect",
   "coordinated-crossdeck-negotiation",
+  ...phase4ConsumerScenarioIds,
 ] as const;
 const check = (condition: boolean) => {
   if (!condition) throw new Error("SEXTANT_PHASE4_ORACLE_FAILED");
@@ -196,7 +202,9 @@ export function createSextantPhase4ScenarioPacks(packs = new DeviceLabScenarioPa
       createAdapter: () => ({
         async execute({ signal }: { signal: AbortSignal }) {
           if (signal.aborted) throw new Error("SEXTANT_PHASE4_ABORTED");
-          if (suffix === "coordinated-nearby-reconnect") nearbyOracle();
+          if (phase4ConsumerScenarioIds.includes(suffix as Phase4ConsumerScenario))
+            await exercisePhase4ConsumerScenario(suffix as Phase4ConsumerScenario);
+          else if (suffix === "coordinated-nearby-reconnect") nearbyOracle();
           else if (suffix === "coordinated-crossdeck-negotiation") {
             const phone = projectCapabilities(
               { formFactor: "PHONE", viewportClass: "COMPACT", reducedMotion: false },
