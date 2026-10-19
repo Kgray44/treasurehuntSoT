@@ -6,7 +6,7 @@
   "status": "IN_PROGRESS",
   "initialCandidate": "5ff2739776513b8f8ed20c1cb661c164216d0eeb",
   "protectedBase": "f6af0b0e151f15f1a23808413ccee531b9827ca7",
-  "currentSoftwareCandidate": "d1dbe05541244d0a275b02fe44b35c5f98bd52f0",
+  "currentSoftwareCandidate": "395940ad721ceb21465532b59b27826ef50e9690",
   "pr": "https://github.com/Kgray44/treasurehuntSoT/pull/709",
   "independentSourceReview": {
     "reviewerContext": "/root/sextant_source_review",
@@ -143,6 +143,13 @@
       "source": "b601c604c34ce2182c49ea2962d5ce5edd559be6",
       "reviewer": "/root/sextant_source_review",
       "disposition": "TWO_FIXTURE_SELECTOR_FINDINGS_REPAIRED_NO_REMAINING_MATERIAL_SOURCE_FINDING",
+      "reviewerRanTests": false,
+      "scope": "SOURCE_ONLY_FRESH_BROWSER_AND_RENDERED_PROOF_REQUIRED"
+    },
+    "publicCatalog": {
+      "source": "395940ad721ceb21465532b59b27826ef50e9690",
+      "reviewer": "/root/sextant_source_review",
+      "disposition": "FIXTURE_METADATA_EDITION_LABEL_LOADED_RESULT_AND_IMMERSIVE_RETURN_FINDINGS_REPAIRED_NO_REMAINING_SOURCE_FINDING",
       "reviewerRanTests": false,
       "scope": "SOURCE_ONLY_FRESH_BROWSER_AND_RENDERED_PROOF_REQUIRED"
     }
@@ -1519,7 +1526,7 @@
     "historicalObligations": 141,
     "historicalFamilies": 13,
     "currentAffectedSurfaces": 178,
-    "currentUnregisteredSurfaces": 54,
+    "currentUnregisteredSurfaces": 45,
     "protectedCapturedOrAcceptedByThisContinuation": 0,
     "developmentCapturedVariants": 4,
     "planner": "PRODUCT_EXPERIENCE_UNREGISTERED_SURFACE",
@@ -1527,7 +1534,7 @@
     "reachDiagnostics": "PROTECTED_ACCEPTED_ON_BASE",
     "historicalAccounting": "PRESERVED_SEXTANT_3_OF_3_CROSSDECK_10_OF_3_R1_2_OF_3",
     "registeredNewPlayerWorkspaceSurfaces": 2,
-    "remainingSoftware": "54 unregistered affected surfaces atd1dbe05541 across178affected; Sea Trials Suite-row repair awaits fresh browser/images; Community390normal trusted pointer hits nonanchor SPAN without request, exact product cause unresolved; history4PASS/renderedclear with lower Book/provenance captures still incomplete; catalog fixture/journey source WIP; account/recovery/invitation/admiralty/Creator/Landfall fixtures, governed legacy disposition, formal reference/layout review and protected capture/qualification. Independent software remains; canonical Darwin supervision, accepted Crossdeck source and physical/owner gates stay separate.",
+    "remainingSoftware": "45 unregistered affected surfaces at395940ad72 across178affected; Suite-row repair, targeted lower history captures and passive Community pointer geometry run at3d2d430fe1; public catalog guest/edition journey runs at395940ad72. No result inferred while pending. Account/recovery/invitation/Admiralty/Creator/Landfall fixtures, governed legacy disposition, formal reference/layout review and protected capture/qualification remain. Canonical Darwin supervision, accepted Crossdeck source and physical/owner gates stay separate.",
     "independentDevelopmentJourneyReview": {
       "source": "0d8b3c7841966a1d1c8b5dae21570b1043dc7915",
       "reviewer": "/root/sextant_source_review",
@@ -1559,12 +1566,12 @@
     "registeredNewPassportSourcePaths": 14,
     "newlyRegisteredAffectedPassportSurfaces": 12,
     "sourceReconciliation": {
-      "path": "phase4-source-reconciliation-community-style-20261019.json",
-      "sha256": "2e7362277e65259e1114d39e340e64c9c7d8a9a09337acefe66aacfe49d9efbc",
-      "sourceSha": "d1dbe05541244d0a275b02fe44b35c5f98bd52f0",
+      "path": "phase4-source-reconciliation-catalog-20261019.json",
+      "sha256": "d988a6015e4e3347a2348316e6f34292a9526af08b63c0c667bde03defe8b8d6",
+      "sourceSha": "395940ad721ceb21465532b59b27826ef50e9690",
       "baseSha": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
       "affected": 178,
-      "unregistered": 54,
+      "unregistered": 45,
       "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
     },
     "sourceReconciliations": [
@@ -1630,6 +1637,15 @@
         "baseSha": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
         "affected": 178,
         "unregistered": 54,
+        "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
+      },
+      {
+        "path": "phase4-source-reconciliation-catalog-20261019.json",
+        "sha256": "d988a6015e4e3347a2348316e6f34292a9526af08b63c0c667bde03defe8b8d6",
+        "sourceSha": "395940ad721ceb21465532b59b27826ef50e9690",
+        "baseSha": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
+        "affected": 178,
+        "unregistered": 45,
         "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
       }
     ],
@@ -1733,6 +1749,32 @@
       "observedRunId": "39311000104",
       "authorityUnchanged": true,
       "passingCompanionOrBuildIsNotProductExecution": true
+    }
+  ],
+  "pendingDevelopmentRuns": [
+    {
+      "runId": "39343894046",
+      "sourceSha": "3d2d430fe1b09a254a3f3b7a708a1f1ede6b2914",
+      "target": "sextant-authoring-resources",
+      "scope": "SUITE_ROW_REPAIR"
+    },
+    {
+      "runId": "39343917005",
+      "sourceSha": "3d2d430fe1b09a254a3f3b7a708a1f1ede6b2914",
+      "target": "sextant-history",
+      "scope": "LOWER_CONTENT_CAPTURE_SUPPLEMENT"
+    },
+    {
+      "runId": "39343957811",
+      "sourceSha": "3d2d430fe1b09a254a3f3b7a708a1f1ede6b2914",
+      "target": "sextant-community",
+      "scope": "NEW_PASSIVE_CARD_POINTER_DIAGNOSTIC"
+    },
+    {
+      "runId": "39344041978",
+      "sourceSha": "395940ad721ceb21465532b59b27826ef50e9690",
+      "target": "sextant-catalog",
+      "scope": "FIRST_PUBLIC_CATALOG_GUEST_JOURNEY"
     }
   ]
 }

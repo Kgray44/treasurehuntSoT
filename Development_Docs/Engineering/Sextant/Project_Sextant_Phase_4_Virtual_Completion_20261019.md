@@ -759,3 +759,17 @@ names, including a realistic UP_TO_DATE response with a projection. No completed
 catalog experience, publishing readiness or protected acceptance is claimed.
 Authenticated catalog and populated-cookie history conditions remain separate,
 as do formal reference/layout review and the existing native/physical/owner gates.
+
+The [public-catalog checkpoint](phase4-source-reconciliation-catalog-20261019.json)
+binds `395940ad721ceb21465532b59b27826ef50e9690` to unchanged accepted main
+`40491dd68ace88ee033b53fd264ddbfe303c6d28`:178affected surfaces and45missing
+registrations. The new declaration covers nine previously unregistered actual
+catalog/comparison/preparation/history route sources. The planner remains BLOCKED;
+declarations grant no capture, layout or acceptance credit. The original141paths,
+all earlier source checkpoints and campaign accounting remain unchanged. Hosted
+development runs39343894046/39343917005/39343957811 exercise the Suite-row repair,
+history supplement and new passive Guide geometry at `3d2d430fe1`; run39344041978
+exercises the first public catalog/guest/edition journey at `395940ad72`.
+No conclusion is inferred while those runs are pending. Current product features
+and the player guide remain accurate; this partial consumer work and landmark
+correction require no feature-fragment change.
