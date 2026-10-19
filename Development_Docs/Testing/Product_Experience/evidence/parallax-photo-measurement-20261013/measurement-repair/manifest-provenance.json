@@ -1,0 +1,7 @@
+{
+  "documentClassification": "engineering-evidence",
+  "reviewedOriginalManifest": "manifest.original.json.txt",
+  "reviewedOriginalSha256": "80b51ecccdb64ddfad914a4ef0899a2272f9b0bbf22f5a7eb7b830aaa0d84c34",
+  "normalizedManifest": "manifest.json",
+  "archiveVerification": "Windows CRLF serialization restored after formatting; bytes match the original independent review digest exactly. Parsed normalized and reviewed original manifests are identical."
+}

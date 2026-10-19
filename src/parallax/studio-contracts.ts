@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { roomEnvironmentSchema } from "./environment-contracts";
+import { editingGroupSchema } from "./editing-group-contracts";
 
 const id = z
   .string()
@@ -22,6 +24,64 @@ export const behaviorSchema = z.strictObject({
   targetEntityId: id,
   action: z.enum(["SHOW", "HIDE", "HIGHLIGHT"]),
 });
+const animationVector = z.strictObject({
+  x: z.number().finite().min(-10000).max(10000),
+  y: z.number().finite().min(-10000).max(10000),
+  z: z.number().finite().min(-10000).max(10000),
+});
+const animationRotation = z
+  .strictObject({
+    x: z.number().finite(),
+    y: z.number().finite(),
+    z: z.number().finite(),
+    w: z.number().finite(),
+  })
+  .refine((q) => Math.abs(Math.hypot(q.x, q.y, q.z, q.w) - 1) < 1e-5);
+const trackFields = {
+  id,
+  entityId: id,
+  enabled: z.boolean(),
+  interpolation: z.enum(["STEP", "LINEAR", "EASE_IN_OUT", "CINEMATIC"]),
+};
+const keys = <T extends z.ZodType>(value: T) =>
+  z
+    .array(
+      z.strictObject({
+        id,
+        atMs: z.number().int().min(0).max(60000),
+        value,
+      }),
+    )
+    .min(1)
+    .max(128)
+    .superRefine((frames, context) => {
+      if (new Set(frames.map((f) => f.id)).size !== frames.length)
+        context.addIssue({ code: "custom", message: "PARALLAX_KEYFRAME_DUPLICATE" });
+      if (frames.some((f, i) => i > 0 && f.atMs <= frames[i - 1].atMs))
+        context.addIssue({ code: "custom", message: "PARALLAX_KEYFRAME_ORDER" });
+    });
+/** Local entity transforms, never camera paths or progression scripts. */
+export const animationTrackSchema = z.discriminatedUnion("property", [
+  z.strictObject({ ...trackFields, property: z.literal("POSITION"), keyframes: keys(animationVector) }),
+  z.strictObject({ ...trackFields, property: z.literal("ROTATION"), keyframes: keys(animationRotation) }),
+  z.strictObject({
+    ...trackFields,
+    property: z.literal("SCALE"),
+    keyframes: keys(z.number().finite().min(0.01).max(10)),
+  }),
+  z.strictObject({
+    ...trackFields,
+    property: z.literal("OPACITY"),
+    keyframes: keys(z.number().finite().min(0).max(1)),
+  }),
+  z.strictObject({
+    ...trackFields,
+    property: z.literal("VISIBILITY"),
+    interpolation: z.literal("STEP"),
+    keyframes: keys(z.boolean()),
+  }),
+]);
+export type AnimationTrack = z.infer<typeof animationTrackSchema>;
 export const spatialAssetSchema = z.strictObject({
   id,
   entityId: id,
@@ -40,9 +100,74 @@ export const spatialAssetSchema = z.strictObject({
 });
 export const studioContentSchema = z.strictObject({
   schemaVersion: z.literal(1),
+  releaseNotes: z.string().max(1000).optional(),
   layers: z.array(studioLayerSchema).max(32),
   behaviors: z.array(behaviorSchema).max(64),
+  // Optional without a default: historic published version checksums remain stable.
+  animationTracks: z.array(animationTrackSchema).max(128).optional(),
+  // Named authoring selections; transforms are baked into ordinary entity/feature data.
+  editingGroups: z.array(editingGroupSchema).max(64).optional(),
+  // Authoring geometry, never a native survey or tracking/calibration claim.
+  environment: roomEnvironmentSchema.optional(),
+  // Discovery only: hiding an environment entry never removes its scene geometry.
+  environmentLibraryArchived: z.boolean().optional(),
+  libraryDefinition: z
+    .strictObject({
+      kind: z.enum(["ASSET", "ASSEMBLY"]),
+      rootEntityId: id,
+      description: z.string().trim().max(1000),
+      classification: text(60),
+    })
+    .optional(),
+  // Placed copies retain immutable origin identity; runtime uses their copied data.
+  assetInstances: z
+    .array(
+      z.strictObject({
+        id,
+        definitionId: id,
+        versionId: id,
+        checksum: z.string().regex(/^[a-f0-9]{64}$/),
+        entityIds: z.array(id).min(1).max(32),
+        insertedAt: z.iso.datetime().optional(),
+      }),
+    )
+    .max(32)
+    .optional(),
   assets: z.array(spatialAssetSchema).max(32),
+  // Synthetic editor reference frames never replace measured native plane frames.
+  environmentBinding: z
+    .strictObject({
+      definitionId: id,
+      versionId: z.string().min(1).max(160).nullable(),
+      revision: z.number().int().positive(),
+      checksum: z.string().regex(/^[a-f0-9]{64}$/),
+      usedAt: z.iso.datetime(),
+      policy: z.literal("INDEPENDENT_PINNED_SNAPSHOT"),
+    })
+    .optional(),
+  surfacePreviewFrames: z
+    .array(
+      z.strictObject({
+        anchorId: id,
+        environmentId: id,
+        surfaceId: id,
+        position: z.strictObject({
+          x: z.number().finite().min(-100).max(100),
+          y: z.number().finite().min(-10).max(20),
+          z: z.number().finite().min(-100).max(100),
+        }),
+        rotation: z
+          .strictObject({
+            x: z.number().finite(),
+            y: z.number().finite(),
+            z: z.number().finite(),
+            w: z.number().finite(),
+          })
+          .refine((q) => Math.abs(Math.hypot(q.x, q.y, q.z, q.w) - 1) < 1e-5),
+      }),
+    )
+    .max(16)
+    .optional(),
   visionReferences: z
     .array(
       z.strictObject({

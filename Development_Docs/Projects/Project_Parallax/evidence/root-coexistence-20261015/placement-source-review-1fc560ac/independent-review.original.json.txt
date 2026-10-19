@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "reviewer": "/root/studio_foundation_review",
+  "reviewType": "INDEPENDENT_BOUNDED_SOURCE_REVIEW",
+  "disposition": "REPAIR_BEFORE_ADOPTION",
+  "source": {
+    "incomingHead": "687ee5000e3c1a905012b911d96e8ccdeef50dfa",
+    "productCommit": "1fc560ac29906f1ca52d775443a2b6728836788c",
+    "productTree": "b6b80793f3fa85b1810a2bc12a8f4bd3f361540a",
+    "comparisonRoot": "c14b0c71d076c4c5ff9fe3a6f5438d2a4631ca0a",
+    "checkout": "C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt",
+    "inspection": "Read immutable incoming Git blobs and diffs. No product differences found between product freeze and incoming head in src, tests or testing/contracts.json."
+  },
+  "scope": "Saved private/licensed installed Asset staging, surface placement, cancellation, grouping/frames, canonical insertion boundaries, Environment frame-ID redaction and registered journey delta.",
+  "findings": [
+    {
+      "id": "PX-SAVED-PLACEMENT-CANCEL-01",
+      "severity": "P1",
+      "blocking": true,
+      "title": "Cancellation does not invalidate an in-flight saved-Asset insertion",
+      "references": [
+        "src/components/studio/parallax/SpatialStudio.tsx:1285",
+        "src/components/studio/parallax/SpatialStudio.tsx:1287",
+        "src/components/studio/parallax/SpatialStudio.tsx:3407",
+        "src/components/studio/parallax/SpatialCanvas.tsx:1017",
+        "src/components/studio/parallax/SpatialCanvas.tsx:1054"
+      ],
+      "observation": "Cancel and Escape clear pendingSavedAsset state but do not advance generation or a placement attempt token. The insertion continuation checks the render-closure pendingSavedAsset after awaiting ASSET_INSERT; that captured value remains the original selection.",
+      "consequence": "Click a support, leave ASSET_INSERT pending, then Cancel: the late response can pass both guards and replace/persist the Scene after cancellation. A replacement pending selection has the same missing fencing.",
+      "minimumRepair": "Use a placement-attempt identity/ref invalidated by cancellation, replacement and Scene installation; check it after asynchronous boundaries and immediately before history installation. Add a deferred-response Cancel/replacement regression.",
+      "proofLevel": "Confirmed by control-flow inspection; no runtime reproduction executed."
+    },
+    {
+      "id": "PX-SAVED-PLACEMENT-GEOMETRY-01",
+      "severity": "P1",
+      "blocking": true,
+      "title": "Physical saved Assets are fitted as planar width-only objects",
+      "references": [
+        "src/components/studio/parallax/SpatialStudio.tsx:1297",
+        "src/components/studio/parallax/SpatialStudio.tsx:1310",
+        "src/parallax/group-surface-placement.ts:30",
+        "src/parallax/group-surface-placement.ts:45",
+        "src/parallax/surface-placement.ts:63",
+        "src/parallax/authoring.ts:277"
+      ],
+      "observation": "The new saved-Asset path delegates all added entities to placeGroupOnSurface. Its acceptance uses entity.widthMeters and a fixed 0.75 aspect ratio. Its primary orientation aligns to planar surfaceFrameRotation, while the existing element contract explicitly distinguishes Y-up models/effects from plane-local paper. Keyboard presearch also uses only the maximum member width.",
+      "consequence": "The new path cannot enforce descriptor depth/height, rotation-aware physical bounds, occupied solid intersections or the whole multi-entity footprint. Physical Assets can be accepted by a thin planar proxy and receive the wrong physical reference-frame orientation; keyboard search can choose a point that fits the proxy rather than the full definition.",
+      "minimumRepair": "Plan the complete saved definition using actual physical geometry, support convention and transformed aggregate bounds, preserving pointer exact-point semantics and keyboard clear-fit search. Fail atomically before history installation. Add physical depth/height/rotation/obstruction and multi-entity footprint regressions.",
+      "proofLevel": "Confirmed source mismatch with the existing physical frame/planner contracts; no physical or rendered reproduction executed."
+    },
+    {
+      "id": "PX-SAVED-PLACEMENT-HIERARCHY-01",
+      "severity": "P2",
+      "blocking": true,
+      "title": "Snapping every inserted member flattens parented Asset definitions",
+      "references": [
+        "src/components/studio/parallax/SpatialStudio.tsx:1310",
+        "src/parallax/group-surface-placement.ts:47",
+        "src/parallax/surface-placement.ts:14",
+        "src/parallax/authoring.ts:566",
+        "src/parallax/authoring.ts:584"
+      ],
+      "observation": "All added entities are passed as placement members. The helper invokes snapSpatialEntity on each one. Its PLACEMENT edit deletes parentEntityId and reanchors descendants, so a child subsequently processed as a member becomes an independent root.",
+      "consequence": "A valid multi-entity native ASSET with parented children loses hierarchy. Retained child-local animation values are no longer interpreted in their original parent frame.",
+      "minimumRepair": "Place the definition through its root/reference frame while preserving descendants and their local tracks, rather than applying a detach/reanchor operation to every member. Add parented animated Asset placement, save/reload and Undo/Redo regression coverage.",
+      "proofLevel": "Confirmed from the literal per-member call and PLACEMENT mutation; no runtime reproduction executed."
+    }
+  ],
+  "boundedObservations": [
+    {
+      "topic": "Exact Environment propagation",
+      "references": [
+        "src/parallax/group-surface-placement.ts:22",
+        "src/parallax/group-surface-placement.ts:24",
+        "src/parallax/editing-groups.ts:123",
+        "src/parallax/editing-groups.ts:129"
+      ],
+      "observation": "The host selects the current candidate from previewEnvironment, but the group helper and editing-group room resolver reconstruct a preset fallback for an external legacy Environment without rich content.studio.environment. The exact external legacy PreviewEnvironment is not threaded through these helpers.",
+      "qualification": "This is an unqualified source gap. No additional runtime failure or corrupt placement is asserted here. A custom legacy room with arbitrary retained supports requires explicit proof after repair."
+    },
+    {
+      "topic": "Atomic failure boundary",
+      "observation": "Candidate checks and the pure placement helper run before replace(next). A thrown no-fit error therefore avoids inserting the candidate into canonical history. This does not cure the incorrect fit acceptance described above."
+    },
+    {
+      "topic": "Existing authority and lineage",
+      "observation": "The flow continues through ASSET_INSERT and the existing exact version/license/target CAS authorities, then one history replacement and ordinary persistence. Reuse lineage remains in the returned draft. No new server authorization bypass was identified in this delta."
+    },
+    {
+      "topic": "Pointer versus keyboard",
+      "observation": "Pointer placement retains the chosen point instead of invoking the keyboard search. Keyboard input is explicitly marked KEYBOARD. Full-definition fit and temporal cancellation remain blocked as recorded above."
+    },
+    {
+      "topic": "Public Environment frame privacy",
+      "references": [
+        "src/community/spatial-package.ts:77",
+        "src/community/spatial-package.test.ts:54"
+      ],
+      "observation": "The public legacy Environment projection replaces the processing frame ID with community-simulated. Source checksums still describe the verified private source; sanitized package bytes obtain their own file/package checksums and review digest. Existing source envelopes and immutable releases are not rewritten. No blocker identified in this narrow correction."
+    },
+    {
+      "topic": "Registered Library journey",
+      "observation": "The contract traversal now uses the expanded canonical Library and adds an explicit placement-preview boundary before surface commitment. Separate definition discovery, instance save/history, later editing and archive/restore obligations remain in the journey. The changed status/main assertions do not themselves prove immutable-byte preservation, geometry or cancellation."
+    }
+  ],
+  "inspectedSourceSha256": {
+    "algorithm": "SHA256 of immutable Git blob bytes, not CRLF working-file hashes",
+    "files": {
+      "src/components/studio/parallax/SpatialStudio.tsx": "cf31a7d18127ba24cc9715b3302e15bc5e23265d7b8ed14f8ec6f331230a79e2",
+      "src/components/studio/parallax/SpatialCanvas.tsx": "8e16d3065c1aed956c4f7d1fe5000d527f1a01936700a9e3b76ee05303c47b6a",
+      "src/components/studio/parallax/spatial-workstation.ts": "958d853556e6d763141536b8f4021d752ac784a675e13b31e2f6a738c66dbf84",
+      "src/parallax/group-surface-placement.ts": "8c7ad4077468f55e8a76e6310ad54e6ff43ba3530c323b207b8490e89eb5f39f",
+      "src/parallax/authoring.ts": "d3302e4f97915b421fa33cfeeae219dee342e9f8810bf8a8becd30c83f7f1d29",
+      "src/parallax/editing-groups.ts": "2805f55ee0de3ae910fa228a53e8e16b4e428299c76d06f9d608fbb13542176c",
+      "src/parallax/surface-placement.ts": "f127f5d58d1d482a497976e05c537e01ab961af6f18a6488f37ed0b68b76cb18",
+      "src/parallax/reusable-assets.ts": "ffe843a426b44bf2a0cdb81dbb85ad53e749d5f8f5d7f61728bb7314b687f345",
+      "src/community/spatial-package.ts": "c69d7cda05798bc899d03c237e2fac42aa68642273264f1cc5c2a15583884c2f",
+      "testing/contracts.json": "5c83fbafbafc1d4ce2d256a546705ad840bf75891524589dc709007e0938f5d4"
+    }
+  },
+  "execution": {
+    "testsRunByReviewer": false,
+    "runtimeReproductionsRunByReviewer": false,
+    "browserOrMediaInspected": false,
+    "buildsRunByReviewer": false,
+    "apiOrPaidCalls": false,
+    "productOrGitMutations": false,
+    "authorizedOutputOnly": "New original review receipt in D:/CodexTemp/root-placement-1fc/"
+  },
+  "limits": [
+    "Source-only supporting review; not trusted Product Experience acceptance or a review-budget reset.",
+    "No rendered, owner, physical, native, protected or whole-Studio acceptance.",
+    "Incoming tests were inspected, not executed. They cover a single planar map placement, not the recorded cancellation, physical-solid or parented animated-definition failures.",
+    "No claim that this review diagnoses the owner's separate iPhone calibration failure.",
+    "Existing root, prior review history, original evidence and shared runtimes were preserved."
+  ],
+  "featureCatalog": "NO CHANGE REQUIRED"
+}

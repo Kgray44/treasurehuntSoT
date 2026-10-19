@@ -1,0 +1,103 @@
+{
+  "documentClassification": "engineering-evidence",
+  "candidate": "4ed06f1dfeee7ad495298350c7e07b76a5b2f271",
+  "tree": "cf94ac0283b4ef81292db4d6fb4b9e0040482128",
+  "contractId": "parallax.authored-library-and-simulation.experience",
+  "status": "ONE_PRODUCTION_OPACITY_REPAIR_JOURNEY_PASS_PENDING_INDEPENDENT_REVIEW",
+  "runtime": "PRODUCTION",
+  "provider": "SYNTHETIC_UNPAID",
+  "automaticPaidCalls": 0,
+  "objective": "Repair OP-01 with field-local visibly clipped-viewport-checked opacity rejection feedback and compact numeric labels; repair OP-02 with matching light/dark closeups. Preserve actual fade, zero/faint recovery, Undo, unchanged saved scene, postreload Play and phone recovery. Separate dark room-context full/partial/zero captures provide visible scene context.",
+  "artifacts": [
+    {
+      "file": "opacity-actual-material-proof.original.json.txt",
+      "bytes": 1711,
+      "sha256": "af3fe1008a36442fc29f6d91c6864427006ebbfc5dc64a8800313cdd96f34356"
+    },
+    {
+      "file": "opacity-editor-recovery-dark.png",
+      "bytes": 192600,
+      "sha256": "311e374ab5cab5a0fca05d144bc975eaf5c6cd79fa726ef5026cbf43eb49ab75"
+    },
+    {
+      "file": "opacity-faint-material-recovery-dark.png",
+      "bytes": 184097,
+      "sha256": "7b1f155e7c0968df4c0a1e2028efe21225e8f44a400263083dd38e5414ad004d"
+    },
+    {
+      "file": "opacity-full-material-dark.png",
+      "bytes": 193367,
+      "sha256": "0361ce52a02a4885ebf0192514192486e59265ce31029c5fe059369cd61371a4"
+    },
+    {
+      "file": "opacity-full-material-light.png",
+      "bytes": 220225,
+      "sha256": "c2891b0240ce209cd570a63ebc9c959315d6fa0d0bdc6f2c983adefd77f8c31c"
+    },
+    {
+      "file": "opacity-invalid-entry-restored.png",
+      "bytes": 195169,
+      "sha256": "75258dbfecebd38b626a3a5346f30d302eb77c5391aa1b00ccb2cc0eddd41862"
+    },
+    {
+      "file": "opacity-partial-material-dark.png",
+      "bytes": 192443,
+      "sha256": "59c50117278781f55292e76dbd003e34ef261874aa4d74b9befec96103785f23"
+    },
+    {
+      "file": "opacity-partial-material-light.png",
+      "bytes": 216791,
+      "sha256": "fa5ed9f2f490ea4dc6005c5675e52b1187b051e0585458ea13c041b8556f2c37"
+    },
+    {
+      "file": "opacity-phone-editor-recovery.png",
+      "bytes": 93060,
+      "sha256": "d9ab5cf49cc71f3ddda4dbf8c61a4b31167ebe2caa7bfc2c2d20736bf567fab8"
+    },
+    {
+      "file": "opacity-room-full-dark.png",
+      "bytes": 222355,
+      "sha256": "014614c408476ed7626a27f6ee62fb2ef45023ae2a622194d8900935171ada41"
+    },
+    {
+      "file": "opacity-room-partial-dark.png",
+      "bytes": 222243,
+      "sha256": "12d69de49d7daa264ca6d42af81d408e97c9e3e1d0717dca067e90659986515b"
+    },
+    {
+      "file": "opacity-room-zero-dark.png",
+      "bytes": 223778,
+      "sha256": "d8591e3df5f7bd2a183971ccaf3c443b1e6e431988900486d015ff2d3d2a3254"
+    },
+    {
+      "file": "opacity-saved-replay-dark.png",
+      "bytes": 228579,
+      "sha256": "9d723e529fb532c18bdc0890a593a1adfde5c061ef5aa7c434455f351607655e"
+    },
+    {
+      "file": "opacity-zero-material-dark.png",
+      "bytes": 169700,
+      "sha256": "3453a68af6255385f875285bf4ff55841cec243b2596b25082b10b92794ec879"
+    },
+    {
+      "file": "opacity-zero-material-light.png",
+      "bytes": 193374,
+      "sha256": "5825631642747da86ee840cf8eef603b78721407263342757f385a00f7d06f63"
+    },
+    {
+      "file": "parallax-opacity-Creator-a-34c98--and-replays-its-saved-fade-chromium-video.webm",
+      "bytes": 746763,
+      "sha256": "f9784ca00c0e73de1734b30743664e01051643aca5e0e335953d8da00029c9e2"
+    },
+    {
+      "file": "run.original.json.txt",
+      "bytes": 610,
+      "sha256": "b751ac939c7dcf596f43f7fa5cb99bfdcbb8855eab6eebea343350c1b55fdfd9"
+    }
+  ],
+  "limitations": [
+    "Native Java boundary compilation is in its separate exact540 packet; full native app/Swift compilation or physical rendering unclaimed.",
+    "Room-context appearance supports observation only; isolated closeups are separate and no whole scenarioN or physically calibrated shadow acceptance is asserted.",
+    "No full overhaul, hardware or owner acceptance."
+  ]
+}

@@ -1,0 +1,643 @@
+{
+  "documentClassification": "engineering-evidence",
+  "schemaVersion": 1,
+  "reviewedAt": "2026-10-13",
+  "reviewer": {
+    "agent": "/root/studio_foundation_review",
+    "relationship": "Independent child reviewer separate from builder /root",
+    "authority": ".agents/product-experience-workflow.md section5",
+    "identityLimit": "Provenance, not cryptographic authentication"
+  },
+  "candidate": "e57ed5da6344d55057dc7a4c3a0f506cd55812db",
+  "tree": "bb72e4acb7fb9f05973e3375be132b26ffbeed00",
+  "objective": "Close PX-PHOTO-MEASURE-01 by actual Creator known desk-width correction/rendered rescale/Save/reload and preservation through conflicting photo refinement. Recheck ordinary Creator photo entry, separate new hidden letter preserving original map, and both elapsed5s reveals without saved-state edits.",
+  "repairDisposition": "VERIFY_FINAL_EVIDENCE",
+  "findingDisposition": {
+    "id": "PX-PHOTO-MEASURE-01",
+    "status": "VERIFIED_REPAIRED_IN_BOUNDED_PACKET",
+    "remainingBlockers": [],
+    "smallestFurtherRepair": "None required by this observed bounded measurement/preservation/reveal objective"
+  },
+  "summary": "Known measurement is now actually entered/applied at1.75m through the ordinary room editor. Renderer and room scale change, then Save/reload retain the reference. Additional conflicting desk observation explicitly preserves confirmed desk and scale. Separate letter creation preserves the original map; both first and post-reload Run advance elapsed scene time until reveal, without next-action shortcut. Original receipt is preserved. Subtle overlapping-paper distinction, folded-art limits and stale reset notice remain explicit nonblocking limits.",
+  "runtime": "DEVELOPMENT",
+  "provider": "SYNTHETIC_UNPAID",
+  "automaticPaidCalls": 0,
+  "scope": {
+    "viewport": "1440x1000 desktop",
+    "theme": "dark",
+    "mode": "GUIDED",
+    "motionPreference": "reduced",
+    "originalArtifacts": 16,
+    "stills": 13,
+    "recordings": 1,
+    "contracts": [
+      "parallax.parametric-room-correction.experience (known measurement in photo-created scene only)",
+      "parallax.authored-library-and-simulation.experience (separate authored letter and saved elapsed reveal only)",
+      "photo consent/preview/refinement continuity observed; full protected-photo qualification not granted"
+    ],
+    "notAccepted": "Owner/product/full-overhaul/A–P/native/physical/live photo perception/production scanner/private-provider readiness"
+  },
+  "method": {
+    "visualFirst": "All13 native actual PNGs and complete meaningful recording chronology inspected before exact frozen source.",
+    "recording": "Actual WEBM30.120s;62chronological samples at2fps displayed in11sheets covering initial blank/loading, natural entry/import/preview, actual measurement/Save/reload/refine/withdraw, Assistant proposal/Apply and both elapsed runs. Not every encoded frame inspected; no subjective smoothness/native/GPU certification. Approximate sample-index labels not used as precise stopwatch measurements.",
+    "sources": "Only git show frozen e57 source; necessary photo test, parametric correction, room editor, reconstruction preservation and synthetic fixture excerpts. No builder rationale/working source/shared runtime/Git mutation/paid services.",
+    "hashVerification": "All16 originals SHA256/bytes independently checked before inspection and again at final publication, exact inventory/digest appended. Candidate tree independently matches manifest. Prior first-review original hash and decoded counterpart equality checked without changing it."
+  },
+  "softwareQualification": {
+    "capture": "Original photo-run receipt exit0/sourceBindingVALID; one isolated guarded synthetic-development browser workflowPASS according to parent. Independent reviewer did not rerun engineering suite.",
+    "boundaries": "Captured application/backend/renderer and canonical equality substantiate workflow. Software/protected integration/full product qualification remain separate."
+  },
+  "observations": [
+    {
+      "id": "MEASURE-01",
+      "evidence": ["photo-room-proposal.png", "photo-room-geometry-preview.png", "complete recording first segment"],
+      "detail": "Ordinary authenticated Creator enters Library→Spatial Studio→Saved Items. Explicit file/consent enables reconstruct. Actual proposed cutaway desk/window geometry appears before canonical save; uncertain6×5m/estimated3m text and scene-unchanged preview remain visible. Return restores original scene, then Preview/Apply saves initial room."
+    },
+    {
+      "id": "MEASURE-02",
+      "evidence": [
+        "photo-room-known-measurement.png",
+        "complete recording approximately6–7s",
+        "photo-measurement-observations.original.json.txt"
+      ],
+      "detail": "Creator opens Edit room features, selects Writing desk, opens Scale room from a known measurement, enters1.75 and clicks Apply known measurement. Native still shows feature width1.75, height/depth1, known input1.75 and Scale reference Writing desk·width1.75m. Actual rendered desk/room expand while map's authored dimensions stay fixed and attachment follows support. Proof: original desk width1.4→1.75, position[1,0.4,-1]→[1.25,0.5,-1.25], room[6,3,5]→[7.5,3.75,6.25], factor1.25."
+    },
+    {
+      "id": "MEASURE-03",
+      "evidence": [
+        "photo-room-measurement-reloaded.png",
+        "complete recording measurement Save/reload",
+        "frozen photo test"
+      ],
+      "detail": "Ordinary Save draft acknowledges saved working draft. Reload renders same scaled room and desk; editor feature width/height/depth and Scale reference remain1.75/1/1 and1.75m. Empty new-known-measurement input after reload is normal entry form reset while persisted reference is visibly retained. Canonical exact draft equality asserted."
+    },
+    {
+      "id": "MEASURE-04",
+      "evidence": [
+        "photo-room-measurement-retained-proposal.png",
+        "photo-room-permission-withdrawn.png",
+        "photo-room-restored.png",
+        "complete recording additional-view sequence",
+        "photo-measurement-observations.original.json.txt"
+      ],
+      "detail": "Additional flat-color image selects same Writing desk; fixture supplies conflicting x0.5/width1.4 estimates. Proposal visibly says Kept your confirmed Writing desk; image estimates do not overwrite it, and scaled room dimensions7.5×6.25/height3.75 remain. Saved Apply keeps same room, one desk, exact referenced feature and scaleReference; both processing permissions can be withdrawn individually, and later reload retains corrected geometry."
+    },
+    {
+      "id": "MEASURE-05",
+      "evidence": [
+        "photo-letter-proposed.png",
+        "photo-letter-saved-hidden.png",
+        "photo-measurement-observations.original.json.txt",
+        "frozen photo test"
+      ],
+      "detail": "Assistant request creates a folded pirate letter, rather than replacing map. Proposal labels New spatial object/Folded pirate letter. Apply object count becomes2; original map remains visible, selected Desk Map identity/clue unchanged. Saved feedback specifically names letter saved hidden as authored. Distinct canonical entity synthetic-folded-pirate-letter uses LETTER style; original entity exact equality asserted. New letter is not selected by the captured graph/Inspector, so selected-object card remains Desk Map."
+    },
+    {
+      "id": "MEASURE-06",
+      "evidence": [
+        "photo-letter-before-reveal.png",
+        "photo-letter-after-reveal.png",
+        "complete recording first elapsed interval"
+      ],
+      "detail": "Before Run at0.0s original map remains visible and separate letter is hidden. Frame selection frames original selected map/desk. Run advances through approximately5s; additional rectangular/letter sheet detail appears over the map after delay, then pauses at6.5s. Source asserts separate letter HIDDEN→IN_VIEW and clock>=5000, canonical saved draft unchanged. Overlap makes distinction subtle, not a fully separated two-prop visual composition."
+    },
+    {
+      "id": "MEASURE-07",
+      "evidence": [
+        "photo-letter-reloaded-replay.png",
+        "complete recording final elapsed interval",
+        "photo-measurement-observations.original.json.txt",
+        "frozen photo test"
+      ],
+      "detail": "After reload/reset original map remains on same desk, new letter initially hidden. Actual Run, not Preview next delayed action, advances ordinary elapsed clock through5s and pauses at5.5s when letter returns. Exact authored state including corrected room/reference/original map/new letter/behavior stays equal after both playbacks. Wider reloaded room framing makes added letter detail small; no large-art readability/selection persistence acceptance."
+    }
+  ],
+  "findings": [
+    {
+      "id": "PX-PHOTO-MEASURE-01",
+      "status": "VERIFIED_REPAIRED",
+      "severity": "previous-bounded-blocker-closed",
+      "evidence": [
+        "photo-room-known-measurement.png",
+        "photo-room-measurement-reloaded.png",
+        "photo-room-measurement-retained-proposal.png",
+        "complete recording",
+        "photo-measurement-observations.original.json.txt"
+      ],
+      "observation": "Missing actual known-measurement edit/render/save/reload/refinement-preservation journey now supplied and independently observed."
+    },
+    {
+      "id": "PX-PHOTO-SIM-NOTICE-01",
+      "status": "RETAINED_NONBLOCKING_VISIBLE_LIMIT",
+      "severity": "advisory",
+      "evidence": ["photo-letter-after-reveal.png", "photo-letter-reloaded-replay.png"],
+      "observation": "Simulation reset to the initial scene state remains displayed after elapsed clock/reveal progression at6.5/5.5s. Actual running/paused clock and visible letter are correct; reset wording is stale historical-action feedback. Clear/update or label last action in future feedback refinement."
+    },
+    {
+      "id": "PHOTO-LETTER-VISUAL-LIMIT",
+      "status": "NONBLOCKING_SCOPE_LIMIT",
+      "severity": "advisory",
+      "evidence": [
+        "photo-letter-before-reveal.png",
+        "photo-letter-after-reveal.png",
+        "photo-letter-reloaded-replay.png"
+      ],
+      "observation": "New letter overlaps original map, visible principally as added inner rectangular/letter-sheet detail; selected card/Inspector remain Desk Map. Canonical separate creation/original preservation plus actual reveal is verified, but distinctive standalone folded-letter artwork, clear simultaneous two-prop reading or automatic new-object selection is not accepted. A separate selected/isolated letter view would strengthen visual differentiation if those art/selection outcomes are later claimed."
+    }
+  ],
+  "dimensions": [
+    {
+      "dimension": "composition",
+      "judgment": "PASS_BOUNDED_WITH_OVERLAP_LIMIT",
+      "observation": "Room/desk visible beside contextual editor; measurement rescale observable. Close desk framing shows added paper detail after reveal, but original map and new letter overlap; wider reload reduces visual distinction.",
+      "evidence": [
+        "photo-room-known-measurement.png",
+        "photo-letter-before-reveal.png",
+        "photo-letter-after-reveal.png",
+        "photo-letter-reloaded-replay.png"
+      ]
+    },
+    {
+      "dimension": "hierarchy",
+      "judgment": "PASS_REPAIR",
+      "observation": "Estimated proposal→ordinary known-reference input→persisted Scale reference→conflicting-estimate preservation message make authority clear. New spatial object proposal and named saved-hidden result distinguish authored action from visible outcome.",
+      "evidence": [
+        "photo-room-proposal.png",
+        "photo-room-known-measurement.png",
+        "photo-room-measurement-retained-proposal.png",
+        "photo-letter-saved-hidden.png"
+      ]
+    },
+    {
+      "dimension": "typography",
+      "judgment": "PASS_DESKTOP",
+      "observation": "1.75m fields/reference guidance and confirmed-feature warning readable at native still size. Proposal/reveal labels readable. Wide-room paper is too small for art/text fidelity judgment; no phone/zoom typography renewal.",
+      "evidence": [
+        "photo-room-known-measurement.png",
+        "photo-room-measurement-reloaded.png",
+        "photo-room-measurement-retained-proposal.png"
+      ]
+    },
+    {
+      "dimension": "spacing",
+      "judgment": "PASS_OBSERVED_SCOPE",
+      "observation": "Long contextual editor scrolls to measurement fields/action/reference without moving scene viewport; photo warning appears in Inspector scroll area. Assistant composer/Apply and Simulation controls remain visible at desktop.",
+      "evidence": ["photo-room-known-measurement.png", "photo-letter-proposed.png", "photo-letter-before-reveal.png"]
+    },
+    {
+      "dimension": "controls",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Actual measurement input/Apply/Save/reload/editor reopening plus shared-feature/refine/Apply/withdraw used. Actual Run/Pause twice qualifies elapsed replay. Invalid measurement recovery, axis change, unrelated editing and complete menu controls not renewed.",
+      "evidence": ["complete recording", "frozen photo test"]
+    },
+    {
+      "dimension": "contrast",
+      "judgment": "PASS_OBSERVED_DARK_SCOPE",
+      "observation": "Pale fields/reference/action labels distinct from dark editor; original map remains visible before/after. New letter overlaps similar light map colors, an explicit distinction limit, not contrast-ratio/all-theme acceptance.",
+      "evidence": [
+        "photo-room-known-measurement.png",
+        "photo-letter-before-reveal.png",
+        "photo-letter-after-reveal.png"
+      ]
+    },
+    {
+      "dimension": "consistency",
+      "judgment": "PASS_DATA_AND_WORKFLOW_WITH_ART_LIMIT",
+      "observation": "Scale reference identity persists despite reload/input-form clearing and conflicting observation. New object count/hidden feedback consistent with separate letter; source LETTER style cannot substitute for folded-art acceptance.",
+      "evidence": [
+        "photo-room-measurement-reloaded.png",
+        "photo-room-measurement-retained-proposal.png",
+        "photo-letter-saved-hidden.png"
+      ]
+    },
+    {
+      "dimension": "states",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Estimated preview/save, measurement-applied/persisted, conflicting-view proposal/preserved Apply, permission-withdrawn/restored, new-letter-proposed/saved-hidden and both elapsed reveals observable. Full photo adverse/expiry/cancellation matrix absent.",
+      "evidence": ["13 supplied stills", "complete recording"]
+    },
+    {
+      "dimension": "responsive",
+      "judgment": "NOT_RENEWED_BEYOND_DESKTOP",
+      "observation": "1440x1000 dark Guided only; no phone/landscape/light/all-mode photo/measurement workflow acceptance. Other responsive Assistant receipts separate.",
+      "evidence": ["13 supplied PNGs", "frozen test viewport"]
+    },
+    {
+      "dimension": "keyboard",
+      "judgment": "PARTIAL_SCOPE",
+      "observation": "Native labeled known-measurement number/select/action and disclosures available; test fills/clicks actual controls. Complete keyboard-only consent/edit/Save/reload/withdraw journey and screen reader not qualified.",
+      "evidence": ["photo-room-known-measurement.png", "RoomEnvironmentEditor frozen source"]
+    },
+    {
+      "dimension": "focus",
+      "judgment": "PARTIAL_OBSERVED_SCOPE",
+      "observation": "Active measurement Apply and Run states visible; selected identity remains original Desk Map through new creation, preserving old context. New letter selection or full focus/return path not exercised.",
+      "evidence": ["photo-room-known-measurement.png", "photo-letter-saved-hidden.png", "photo-letter-after-reveal.png"]
+    },
+    {
+      "dimension": "feedback",
+      "judgment": "PASS_REPAIR_WITH_ADVISORY",
+      "observation": "Scale-reference confirmation and explicit kept-confirmed-feature warning directly address correction/preservation. Saved-hidden feedback truthful; reset notice stale after advancing (retained advisory), while clock/evaluated visibility correct.",
+      "evidence": [
+        "photo-room-known-measurement.png",
+        "photo-room-measurement-retained-proposal.png",
+        "photo-letter-saved-hidden.png",
+        "PX-PHOTO-SIM-NOTICE-01"
+      ]
+    },
+    {
+      "dimension": "motion",
+      "judgment": "PASS_BOTH_ELAPSED_REVEALS",
+      "observation": "Both ordinary Run sequences visibly advance scene clock for approximately5s before added letter detail, first pause6.5s/reload5.5s. No shortcut in this packet. Reduced preference preserves meaning; timing precision/smoothness/native performance not accepted.",
+      "evidence": [
+        "complete recording both elapsed intervals",
+        "photo-letter-after-reveal.png",
+        "photo-letter-reloaded-replay.png"
+      ]
+    },
+    {
+      "dimension": "continuity",
+      "judgment": "PASS_REPAIR",
+      "observation": "Known desk width/rendered scale/save/reload retained; conflicting refinement respects same reference/feature; both withdrawals preserve geometry. Original map untouched, separate letter and behavior saved, both playbacks leave canonical state equal.",
+      "evidence": ["photo-measurement-observations.original.json.txt", "complete recording", "frozen photo test"]
+    },
+    {
+      "dimension": "complexity",
+      "judgment": "PASS_BOUNDED_FIXTURE",
+      "observation": "One selected reference applies uniform ratio while clearly leaving other dimensions estimated. Additional view's conflicting desk does not override confirmation. Arbitrary multiple references/photos/ambiguous alignment not qualified.",
+      "evidence": ["photo-room-known-measurement.png", "photo-room-measurement-retained-proposal.png"]
+    },
+    {
+      "dimension": "role-outcomes",
+      "judgment": "PASS_BOUNDED_CREATOR",
+      "observation": "Synthetic authenticated Creator completes missing ordinary correction/preservation journey and separate hidden-letter elapsed replay. No live perception/physical calibration/owner/full-overhaul acceptance.",
+      "evidence": ["complete recording", "photo-measurement-observations.original.json.txt"]
+    },
+    {
+      "dimension": "fallbacks",
+      "judgment": "PASS_CONFLICT_PRESERVATION_ONLY",
+      "observation": "Conflicting upstream desk estimate falls back to retained Creator-confirmed reference with guidance. Known-measurement invalid inputs and missing providers/renderer errors/native fallback not newly reviewed.",
+      "evidence": ["photo-room-measurement-retained-proposal.png", "room-reconstruction frozen source"]
+    }
+  ],
+  "sourceCorroboration": [
+    {
+      "path": "tests/e2e/parallax-room-photo.spec.ts",
+      "blob": "db372635c386774cae8021d8b545b8816a789842",
+      "observation": "Actual room editor selects desk and fills1.75/Apply, renderer centerx1.25 and width1.75, ordinary Save/reload exact equality, reference/dimensions retained. Additional view warning and exact reference feature equality. Separate letter entity +1 and original exact equality/LETTER style. First and postreload actual Run→HIDDEN→IN_VIEW/time>=5000 with authored equality; no delayed-action shortcut."
+    },
+    {
+      "path": "src/parallax/parametric-room.ts",
+      "blob": "ec8fa28594142c4a7f8ce1047c803ed778625c4e",
+      "observation": "scaleRoomFromMeasurement computes measured/feature dimension ratio, uniformly resizes room geometry and records feature/axis/metres reference. This is approximate synthetic room correction, not native calibration or authored asset-size rescale."
+    },
+    {
+      "path": "src/components/studio/parallax/RoomEnvironmentEditor.tsx",
+      "blob": "ede6e7075e9296d4d1bbd0e6cfa1960395a563d2",
+      "observation": "Known measurement number input/axis/Apply uses shared function; Scale reference displays persisted identity/value and explains authored clue metres preserved/support followed. Incompatible reference edit clears reference; no such invalid branch newly captured."
+    },
+    {
+      "path": "src/parallax/room-reconstruction.ts",
+      "blob": "a54739c108c33e37802e1cbf7f7b8148c64da2d2",
+      "observation": "Additional view retains existing room dimensions, and matched CREATOR_CONFIRMED/reference feature is kept with explicit warning. Source corroborates visible kept desk and canonical equality."
+    },
+    {
+      "path": "scripts/parallax/synthetic-provider-preload.mjs",
+      "blob": "80b747a15a4eb633fb0b5f3ec4b71a7d279f8b2e",
+      "observation": "Guarded deterministic photo desk estimate x1/width1.4 initial and x0.5/width1.4 additional conflicts with corrected geometry. ROOM_LETTER now CREATE synthetic-folded-pirate-letter rather than editing original map; controlled style/room-placement/SHOW5000 workflow fixture, not live perception/model-quality proof."
+    }
+  ],
+  "limits": [
+    "DEVELOPMENT guarded synthetic flat-color input/upstream/private scanner workflow, not live image interpretation, production scanning/private-provider readiness or physical room accuracy.",
+    "Known1.75m is user-entered synthetic reference, not surveyed measurement. Other room dimensions inferred/estimated; uniform factor correction and canonical persistence are verified.",
+    "Desktop1440x1000 darkGuided/reduced only; no phone/landscape/light/allmode/native/physical/hardware/assistive-technology matrix.",
+    "Both first and postreload elapsed Run reveals now observed; this closes prior shortcut limit for this new packet only and does not rewrite original source-bound receipt.",
+    "New letter and original map overlap and selected Inspector remains Desk Map; no standalone folded-art quality/clear two-prop composition/new-letter selection acceptance.",
+    "Reset feedback remains stale after simulation time advances; retained nonblocking advisory, current clock/visible added object correct.",
+    "30.120s WEBM sampled62frames2fps throughout; not every encoded frame, millisecond timing calibration or representative smoothness/GPU performance.",
+    "Photo processing consent withdrawals/retained geometry observed; privacy/security/malware scanning/storage deletion/provider revocation/full protected-contract acceptance not granted.",
+    "No broad source integration/full-overhaul/A–P/native/physical/owner acceptance. Earlier first receipt remains REPAIR_AND_RECAPTURE as historical source-bound evidence; separate receipt closes named finding.",
+    "No independent test execution/features generators/source/runtime/Git mutations/paidcalls; receipt itself does not change feature catalog."
+  ],
+  "featureCatalog": "NO CHANGE REQUIRED",
+  "manifestSHA256": "80b51ecccdb64ddfad914a4ef0899a2272f9b0bbf22f5a7eb7b830aaa0d84c34",
+  "originalArtifactInventory": [
+    {
+      "file": "photo-letter-after-reveal.png",
+      "bytes": 305456,
+      "sha256": "eaecefdf3b2bfe45100cc225eeb5cda332ac09f007e8c0bdc1c92b529ff2e45a",
+      "independentlyVerified": true
+    },
+    {
+      "file": "photo-letter-before-reveal.png",
+      "bytes": 304009,
+      "sha256": "b0947546b36490e7426b76049b494a7d33cfd7dff53bf333466ee3c147d5e53b",
+      "independentlyVerified": true
+    },
+    {
+      "file": "photo-letter-proposed.png",
+      "bytes": 202713,
+      "sha256": "9e60e65de6a45892242787c8b3ef169eabecc9550a7354489f827b1812362dfd",
+      "independentlyVerified": true
+    },
+    {
+      "file": "photo-letter-reloaded-replay.png",
+      "bytes": 186729,
+      "sha256": "940b9212928f68ca61f60cd36370e33c4a79fd16258ab442b4c8e605042e77c9",
+      "independentlyVerified": true
+    },
+    {
+      "file": "photo-letter-saved-hidden.png",
+      "bytes": 195611,
+      "sha256": "4687eccdee60c1a147b58b7140ed17c440194d6054d6bf6cd2592e2c9c7b1bf5",
+      "independentlyVerified": true
+    },
+    {
+      "file": "photo-measurement-observations.original.json.txt",
+      "bytes": 7244,
+      "sha256": "aef5fbfbfda0378e27c45f03547b9161fc93b101161f94f61ef5c27a5735ec5a",
+      "independentlyVerified": true
+    },
+    {
+      "file": "photo-parallax-room-photo-Creato-f6a5a-tter-and-replays-its-reveal-chromium-video.webm",
+      "bytes": 1267578,
+      "sha256": "29cfc821026d07a8a6049da9fe0139339bb248acb3465963dc248370f6f4e1e9",
+      "independentlyVerified": true
+    },
+    {
+      "file": "photo-room-applied-cutaway.png",
+      "bytes": 200229,
+      "sha256": "1328e3eb32630c8bab1f6ccaf2e609ecad7c80e286f9ee8cca5cc4d3cbe78bb7",
+      "independentlyVerified": true
+    },
+    {
+      "file": "photo-room-geometry-preview.png",
+      "bytes": 226517,
+      "sha256": "19df0de0a2cafbfc21655a0512d0c51f1dd483dcb9da69cc8364d77fce1103aa",
+      "independentlyVerified": true
+    },
+    {
+      "file": "photo-room-known-measurement.png",
+      "bytes": 246495,
+      "sha256": "293f1702b1b2a43a8144a9e14f9679a6d6a9fffc6041b13a361bed77f2492701",
+      "independentlyVerified": true
+    },
+    {
+      "file": "photo-room-measurement-reloaded.png",
+      "bytes": 215002,
+      "sha256": "c71b8e11a0d2a3a2bb9e98a9cce51963fa1c18830ff9871905fdbe720ceb5e04",
+      "independentlyVerified": true
+    },
+    {
+      "file": "photo-room-measurement-retained-proposal.png",
+      "bytes": 234921,
+      "sha256": "fda0ddf8e8da531a0b64880a7984543b14fc070c6e95b679a3d54fbd070cb378",
+      "independentlyVerified": true
+    },
+    {
+      "file": "photo-room-permission-withdrawn.png",
+      "bytes": 229600,
+      "sha256": "93815a7c9a7ad9a2fb3aba746adb255903dd9caf2a9b2fef4bd235ce872f9bc3",
+      "independentlyVerified": true
+    },
+    {
+      "file": "photo-room-proposal.png",
+      "bytes": 226311,
+      "sha256": "6762d5cbb35ac06bac1f29548bb3f76df0484f98459e7e1046dc409ab050bef7",
+      "independentlyVerified": true
+    },
+    {
+      "file": "photo-room-restored.png",
+      "bytes": 229212,
+      "sha256": "bdf79a360c183ee45dd9352fc4ae2dd45b0eb194473b537545737bb77049937f",
+      "independentlyVerified": true
+    },
+    {
+      "file": "photo-run.original.json.txt",
+      "bytes": 531,
+      "sha256": "fccfbd37ae35b58c9e56c62a8d2ce7f876b262ff2d1e28d9760753deb074bc8b",
+      "independentlyVerified": true
+    }
+  ],
+  "mediaDigest": {
+    "serialization": "Sorted media file + space + SHA256 + LF, UTF8",
+    "sha256": "bcd3926ff13ca837ed75b65134d01ea9224c3357996412d82a69e94c2eebacd2"
+  },
+  "captureRun": {
+    "candidate": "e57ed5da6344d55057dc7a4c3a0f506cd55812db",
+    "tree": "bb72e4acb7fb9f05973e3375be132b26ffbeed00",
+    "runtime": "DEVELOPMENT",
+    "provider": "SYNTHETIC_UNPAID",
+    "startedAt": "2026-10-13T06:38:43.124Z",
+    "finishedAt": "2026-10-13T06:39:15.944Z",
+    "exitCode": 0,
+    "sourceBinding": "VALID",
+    "recordings": [
+      {
+        "file": "photo-parallax-room-photo-Creato-f6a5a-tter-and-replays-its-reveal-chromium-video.webm",
+        "sha256": "29cfc821026d07a8a6049da9fe0139339bb248acb3465963dc248370f6f4e1e9"
+      }
+    ]
+  },
+  "measurementProof": {
+    "runtime": "DEVELOPMENT",
+    "provider": "SYNTHETIC_UNPAID",
+    "measurement": {
+      "featureId": "synthetic-room-photograph:photo-room:observed-0-0009257cg828h7ar",
+      "axis": "WIDTH",
+      "measuredMeters": 1.75
+    },
+    "roomDimensions": [7.5, 3.75, 6.25],
+    "deskBeforeMeasurement": {
+      "id": "synthetic-room-photograph:photo-room:observed-0-0009257cg828h7ar",
+      "name": "Writing desk",
+      "classification": "DESK",
+      "position": {
+        "x": 1,
+        "y": 0.4,
+        "z": -1
+      },
+      "yawDegrees": 0,
+      "dimensions": [1.4, 0.8, 0.8],
+      "provenance": {
+        "basis": "DIRECTLY_OBSERVED",
+        "confidence": 0.8,
+        "sourceMediaIds": ["cmv6b8gg20009257cg828h7ar"]
+      },
+      "parts": [
+        {
+          "id": "synthetic-room-photograph:photo-room:observed-0-0009257cg828h7ar:top",
+          "size": [1, 0.08, 1],
+          "position": [0, 0.46, 0],
+          "surface": "DESK",
+          "context": ["FURNITURE"],
+          "face": "TOP",
+          "shape": "BOX",
+          "color": 10717800
+        },
+        {
+          "id": "synthetic-room-photograph:photo-room:observed-0-0009257cg828h7ar:leg--0.42--0.4",
+          "size": [0.035, 0.9199999999999999, 0.045],
+          "position": [-0.42, -0.04000000000000001, -0.4],
+          "surface": null,
+          "context": [],
+          "face": "TOP",
+          "shape": "CYLINDER",
+          "color": 4741482
+        },
+        {
+          "id": "synthetic-room-photograph:photo-room:observed-0-0009257cg828h7ar:leg--0.42-0.4",
+          "size": [0.035, 0.9199999999999999, 0.045],
+          "position": [-0.42, -0.04000000000000001, 0.4],
+          "surface": null,
+          "context": [],
+          "face": "TOP",
+          "shape": "CYLINDER",
+          "color": 4741482
+        },
+        {
+          "id": "synthetic-room-photograph:photo-room:observed-0-0009257cg828h7ar:leg-0.42--0.4",
+          "size": [0.035, 0.9199999999999999, 0.045],
+          "position": [0.42, -0.04000000000000001, -0.4],
+          "surface": null,
+          "context": [],
+          "face": "TOP",
+          "shape": "CYLINDER",
+          "color": 4741482
+        },
+        {
+          "id": "synthetic-room-photograph:photo-room:observed-0-0009257cg828h7ar:leg-0.42-0.4",
+          "size": [0.035, 0.9199999999999999, 0.045],
+          "position": [0.42, -0.04000000000000001, 0.4],
+          "surface": null,
+          "context": [],
+          "face": "TOP",
+          "shape": "CYLINDER",
+          "color": 4741482
+        },
+        {
+          "id": "synthetic-room-photograph:photo-room:observed-0-0009257cg828h7ar:drawer",
+          "size": [0.35, 0.17, 0.65],
+          "position": [0.26, 0.29, 0],
+          "surface": null,
+          "context": [],
+          "face": "TOP",
+          "shape": "ROUNDED_BOX",
+          "color": 9204824
+        },
+        {
+          "id": "synthetic-room-photograph:photo-room:observed-0-0009257cg828h7ar:handle",
+          "size": [0.14, 0.025, 0.025],
+          "position": [0.26, 0.29, 0.338],
+          "surface": null,
+          "context": [],
+          "face": "TOP",
+          "shape": "CYLINDER",
+          "color": 13418144
+        }
+      ]
+    },
+    "deskAfterMeasurement": {
+      "id": "synthetic-room-photograph:photo-room:observed-0-0009257cg828h7ar",
+      "name": "Writing desk",
+      "classification": "DESK",
+      "position": {
+        "x": 1.25,
+        "y": 0.5,
+        "z": -1.25
+      },
+      "yawDegrees": 0,
+      "dimensions": [1.75, 1, 1],
+      "provenance": {
+        "basis": "DIRECTLY_OBSERVED",
+        "confidence": 0.8,
+        "sourceMediaIds": ["cmv6b8gg20009257cg828h7ar"]
+      },
+      "parts": [
+        {
+          "id": "synthetic-room-photograph:photo-room:observed-0-0009257cg828h7ar:top",
+          "size": [1, 0.08, 1],
+          "position": [0, 0.46, 0],
+          "surface": "DESK",
+          "context": ["FURNITURE"],
+          "face": "TOP",
+          "shape": "BOX",
+          "color": 10717800
+        },
+        {
+          "id": "synthetic-room-photograph:photo-room:observed-0-0009257cg828h7ar:leg--0.42--0.4",
+          "size": [0.035, 0.9199999999999999, 0.045],
+          "position": [-0.42, -0.04000000000000001, -0.4],
+          "surface": null,
+          "context": [],
+          "face": "TOP",
+          "shape": "CYLINDER",
+          "color": 4741482
+        },
+        {
+          "id": "synthetic-room-photograph:photo-room:observed-0-0009257cg828h7ar:leg--0.42-0.4",
+          "size": [0.035, 0.9199999999999999, 0.045],
+          "position": [-0.42, -0.04000000000000001, 0.4],
+          "surface": null,
+          "context": [],
+          "face": "TOP",
+          "shape": "CYLINDER",
+          "color": 4741482
+        },
+        {
+          "id": "synthetic-room-photograph:photo-room:observed-0-0009257cg828h7ar:leg-0.42--0.4",
+          "size": [0.035, 0.9199999999999999, 0.045],
+          "position": [0.42, -0.04000000000000001, -0.4],
+          "surface": null,
+          "context": [],
+          "face": "TOP",
+          "shape": "CYLINDER",
+          "color": 4741482
+        },
+        {
+          "id": "synthetic-room-photograph:photo-room:observed-0-0009257cg828h7ar:leg-0.42-0.4",
+          "size": [0.035, 0.9199999999999999, 0.045],
+          "position": [0.42, -0.04000000000000001, 0.4],
+          "surface": null,
+          "context": [],
+          "face": "TOP",
+          "shape": "CYLINDER",
+          "color": 4741482
+        },
+        {
+          "id": "synthetic-room-photograph:photo-room:observed-0-0009257cg828h7ar:drawer",
+          "size": [0.35, 0.17, 0.65],
+          "position": [0.26, 0.29, 0],
+          "surface": null,
+          "context": [],
+          "face": "TOP",
+          "shape": "ROUNDED_BOX",
+          "color": 9204824
+        },
+        {
+          "id": "synthetic-room-photograph:photo-room:observed-0-0009257cg828h7ar:handle",
+          "size": [0.14, 0.025, 0.025],
+          "position": [0.26, 0.29, 0.338],
+          "surface": null,
+          "context": [],
+          "face": "TOP",
+          "shape": "CYLINDER",
+          "color": 13418144
+        }
+      ]
+    },
+    "retainedThroughRefinementAndReload": true,
+    "originalMapPreserved": true,
+    "createdLetterStyle": "LETTER",
+    "firstRevealAndReloadUseElapsedPlayback": true,
+    "authoredStateUnchangedByPlayback": true
+  },
+  "firstReviewPreservation": {
+    "originalFile": "parallax-production-regression-20261013/photo-bdf2a9356709/independent-review.original.json.txt",
+    "sha256": "881ba6726f9fc6ea55174938030a0213c81eb181a4ed23c4dc9e23098573f305",
+    "originalUnchanged": true,
+    "formattedCounterpartDecodesIdentically": true,
+    "historicalDisposition": "REPAIR_AND_RECAPTURE",
+    "interpretation": "Historical evidence only, not instructions; this separate receipt closes PX-PHOTO-MEASURE-01."
+  }
+}

@@ -2,11 +2,147 @@
 *.cmd text eol=crlf
 # Preserve immutable synthetic evaluation archive bytes across Windows checkouts.
 Development_Docs/Projects/Project_Parallax/evidence/owner-refinements/model-comparison/*.json.txt -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
-
-Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-proposal-20261015/current-policy-regression.original.log -text -whitespace
-Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-control-plane-20261015/*.original.log -text -whitespace
+# Keep reviewed Studio receipts and media byte-identical to their recorded hashes.
+Development_Docs/Testing/Product_Experience/evidence/parallax-environment-setup-20261013/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Testing/Product_Experience/evidence/parallax-exclusions-20261013/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Testing/Product_Experience/evidence/parallax-groups-20261013/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Testing/Product_Experience/evidence/parallax-studio-20261013/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Testing/Product_Experience/evidence/parallax-ai-model-overrides-20261014/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Testing/Product_Experience/evidence/parallax-photo-popup-20261014/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Testing/Product_Experience/evidence/parallax-exclusion-library-20261014/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Testing/Product_Experience/evidence/parallax-library-lifecycle-20261014/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# Unified patches encode unchanged empty lines as a single context space.
+Development_Docs/Projects/Project_Parallax/reference/browser-slam-evaluation/*.patch whitespace=-blank-at-eol
+# Preserve combined-candidate raw receipts, reviews and logs across Windows checkouts.
+Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/** -text
+Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-catalog-scale/root-*.log.txt -text
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/** -text
+Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-direct-library/keyboard-context/*.log.txt -text whitespace=-blank-at-eol,-blank-at-eof
+Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-pr736-final/*.log.txt -text whitespace=-blank-at-eol,-blank-at-eof
+# Original local tracker diagnostics, failed attempts and rendered recovery evidence.
+Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# Source-bound loading captures and original runtime receipts.
+Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# The original build progress output includes padding; preserve its bytes.
+Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/browser.log -text whitespace=-blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/bootstrap-release-index-20261015/browser-attempt1-14db7ecf6a01/development-checks/*.log -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-proposal-20261015/current-policy-regression.original.log -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-control-plane-20261015/*.original.log -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
 Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/** -text
-Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r3-owner-decision-proposal-20261015/review3/*.original.raw.txt -text -whitespace
-Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r3-owner-decision-proposal-20261015/consumer-seam-confirmation.original.raw.txt -text -whitespace
-Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r3-review-cancellation-20261015/*.original.raw.txt -text -whitespace
-Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r4-recovery-20261015/*.original.raw.txt -text -whitespace
+Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r3-owner-decision-proposal-20261015/review3/*.original.raw.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r3-owner-decision-proposal-20261015/consumer-seam-confirmation.original.raw.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r3-review-cancellation-20261015/*.original.raw.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r4-recovery-20261015/*.original.raw.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+
+# Retain original inherited build progress padding in source-bound receipts.
+Development_Docs/Projects/Project_Parallax/evidence/root-coexistence-20261015/** -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-collection-filter/*.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-natural-entry/*.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-update-release/*.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/a77a2c71-scaled-browser/run.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/7ac7594e-placement-follow-through/run.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-motion-lineage/*.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+
+# Keep the source-bound Inspector originals byte-identical on Windows.
+Development_Docs/Projects/Project_Parallax/evidence/sc-00b/combined-root-6bea2130/** -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-00b/assistant-preview-6bea2130/** -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-00b/experience-local-6bea2130/** -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+# Preserve new preparation diagnostics without recasting them as runtime proof.
+Development_Docs/Projects/Project_Parallax/evidence/cohort-preparation-20261016/*.original.* -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+# Original local test diagnostics must retain their byte identity on Windows.
+Development_Docs/Projects/Project_Parallax/evidence/library-entry-migration-20261017/** -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+
+# Preserve original local correction receipts and exact SC-00C evidence bytes.
+Development_Docs/Projects/Project_Parallax/evidence/library-entry-repair-20261017/** -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261017-library-context-menu-f7b0737a/** -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/four-path-correction-20261017/** -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+
+# Preserve exact inherited Parallax receipts; do not reformat historical proof.
+Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt1-6cf0e7dc631a/browser.log -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt2-eac5d65250f5/browser.log -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/attempt3-43154527a6a0/browser.log -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/final-status-tests.original.log -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/focused-tests.original.log -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/browser-tracking-recovery-20261015/intermediate-status-tests.original.log -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-catalog-scale/root-focused-original.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-catalog-scale/root-focused-repaired.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-catalog-scale/root-paged-detail-initial.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-catalog-scale/root-paged-detail-menu.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-catalog-scale/root-paged-detail-typescript-failure.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-00c/root-paged-host-first.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-00c/root-paged-host-schema.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-00c/root-paged-host-second.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-00c/root-paged-host-third.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc-00c/root-paged-wire-contract.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/host-api-working.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/impact-initial-failed.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/impact-rerun.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/inspector-browser-attempt1/browser.original.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/inspector-browser-attempt1/packet.json -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/inspector-browser-attempt1/run.original.json -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/inspector-domain-focused.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/inspector-hierarchy-focused.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/inspector-host-focused.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/inspector-numeric-fixture-failure.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/inspector-numeric-repaired.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/installed-all-writers-first.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/installed-all-writers-repaired.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/installed-rich-projection.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/installed-write-guard-tests.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/installed-write-guard-typecheck-first.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/paged-query-continuity-tests.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/projection-domain.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/projection-rereview.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/retained-support-rerun.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/studio-browser-attempt2/browser.original.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/studio-browser-attempt2/packet.json -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/studio-browser-attempt2/run.original.json -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/studio-browser-attempt3/browser.original.log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/studio-browser-attempt3/run.original.json -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/working-cache-line-ending-variants/host-api-working.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/working-cache-line-ending-variants/projection-domain.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/working-cache-line-ending-variants/projection-rereview.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc01/root-integration-20261015/working-cache-line-ending-variants/retained-support-rerun.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-3/browser-log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-4/browser-log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-5/browser-log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-6/browser-log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-7/log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-8/log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-9/log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/insertion-adapter-initial-failed.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/insertion-adapter-rerun.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/insertion-scaled-bounds-rerun.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/sc02-cjs-interop-probe.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/sc02-component-interop-fixed.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/sc02-composition-kind-tests.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/sc02-focused-repair.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/sc02-focused.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/sc02-full-regression-repaired.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/sc02-full-regression.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/sc02-review-repairs.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/sc02-room-panel-alone.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/current-5747ce15/manifest.original.json.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/paper-readability-repair/manifest.original.json.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Testing/Product_Experience/evidence/parallax-asset-quality-20261013/paper-type-readability-repair/manifest.original.json.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Testing/Product_Experience/evidence/parallax-photo-measurement-20261013/measurement-repair/manifest.original.json.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Testing/Product_Experience/evidence/parallax-pointer-cancellation-20261013/cancellation-qualified/manifest.original.json.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-3/browser-log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-4/browser-log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-5/browser-log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-6/browser-log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-7/log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-8/log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/browser-attempt-9/log.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/insertion-adapter-initial-failed.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/insertion-adapter-rerun.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/insertion-scaled-bounds-rerun.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/sc02-cjs-interop-probe.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/sc02-component-interop-fixed.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/sc02-composition-kind-tests.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/sc02-focused-repair.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/sc02-focused.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/sc02-full-regression-repaired.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/sc02-full-regression.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/sc02-review-repairs.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+Development_Docs/Projects/Project_Parallax/evidence/sc02/root-integration-20261015/sc02-room-panel-alone.txt -text whitespace=-blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol

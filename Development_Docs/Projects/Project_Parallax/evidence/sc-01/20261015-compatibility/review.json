@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 1,
+  "classification": "SOURCE_CONTRACT_REVIEW_AND_PATCH_HANDOFF",
+  "reviewedBridgeSource": "8e612f7ad96f799cc7511bf72ea6196372d012f9",
+  "reviewWorktreeSource": "a4aa1c25f319ba01ca4baa0eb6b75cbc2595ee23",
+  "acceptedMain": "99a2babaefbbe051de0352c4aca22c8723b743b8",
+  "bridgeReview": {
+    "reviewerContext": "SC-01 task 01a13d75-cbfd-7621-ab5f-a6fd1fb9fdf9",
+    "builderContext": "SC-00 task 01a12c32-ea0a-70d3-a918-5f9f735fa107",
+    "separateContexts": true,
+    "verdict": "SCOPED_DOMAIN_INVARIANTS_VERIFIED",
+    "scope": [
+      "Exact immutable owner/version/checksum resolution across both Environment formats",
+      "Lossless rich geometry and conservative working/saved/legacy/archive catalog projection",
+      "CAS revision distinct from release ordinal; opaque 160-character release IDs",
+      "Historical omitted fields and immutable envelope stability",
+      "Pinned Scene snapshot/source consistency and legacy geometry/semantic guard restoration"
+    ],
+    "finding": {
+      "id": "SC01-BRIDGE-001",
+      "initialSource": "03fd8a318c3b79d6ada0472deb234fe5b7113009",
+      "observed": "A schema-one pinned Scene object at x=99 metres passed the new pin guard.",
+      "initialResult": "1 FAILED, 17 PASSED",
+      "repairSource": "8e612f7ad96f799cc7511bf72ea6196372d012f9",
+      "resolution": "The existing legacy impact validator is invoked after exact pin resolution. The original failing probe now rejects without mutating the draft.",
+      "status": "RESOLVED_IN_SCOPED_DOMAIN_REVIEW",
+      "retainedImpactTypeAndFunction": {
+        "originalProductSource": "a33780ae92ab6e2a1e5aea33995a34896de591b6",
+        "normalizedSha256": "3256c7780343eba146bd47a71edf47d5d3688c210ec0b4f4bbec0190b6640b11",
+        "comparison": "EXACT_MATCH_AFTER_LINE_ENDING_NORMALIZATION_AND_EXCLUDING_NEXT_FUNCTION_COMMENT"
+      }
+    }
+  },
+  "ownedComparisonPatch": {
+    "builderContext": "SC-01 task 01a13d75-cbfd-7621-ab5f-a6fd1fb9fdf9",
+    "baselineImportCommit": "dbf389d4",
+    "patchCommit": "42697fa8",
+    "independentPatchReview": "PENDING_SEPARATE_OWNER_REVIEW",
+    "target": "Combined Studio with the SC-01 comparison baseline and bridge 8e612f7a",
+    "scope": [
+      "Canonical animationTracks and clip timing use the existing animation authoring model",
+      "Omitted and empty animation track lists compare as equivalent",
+      "Working snapshot associations compare by explicit source identity without creating an immutable pin",
+      "Changed working revision or room snapshot is distinguished; usage timestamps and immutable-source CAS metadata do not create false differences",
+      "Conflicting immutable/source bindings are rejected",
+      "Rich-room SceneReference retains the complete 150-character Environment version identity and immutable Scene checksum"
+    ],
+    "sceneManagerCallbacks": "UNCHANGED_ON_PR_727"
+  },
+  "validation": {
+    "sourceCommit": "a4aa1c25f319ba01ca4baa0eb6b75cbc2595ee23",
+    "domain": {
+      "status": "PASS",
+      "testFiles": 6,
+      "tests": 41,
+      "command": "npx vitest run src/parallax/scene-comparison-compatibility.test.ts src/parallax/scene-reference-compatibility.test.ts src/parallax/sc01-compatibility-audit.test.ts src/parallax/animation.test.ts src/parallax/environment-version-resolution.test.ts src/parallax/environment-library-compatibility.test.ts"
+    },
+    "changedFileLint": {
+      "status": "PASS",
+      "files": 4
+    },
+    "typecheck": {
+      "status": "PASS",
+      "scope": "Full project tsc --noEmit with isolated D: incremental state"
+    },
+    "format": "PASS",
+    "documentation": "PASS",
+    "featureSyncAndValidation": "PASS_NO_CATALOG_PROMOTION"
+  },
+  "sourceFiles": [
+    {
+      "path": "src/parallax/environment-reference.ts",
+      "sha256": "bd091ab275c347563c4a4bf36a84637487bc6807a9ab24905437eab0928444d8"
+    },
+    {
+      "path": "src/parallax/environment-version-resolution.ts",
+      "sha256": "935f70d4b0d8e87af0fa9ba69e5d016a71197add7c249d88b74f27dc02ce6c15"
+    },
+    {
+      "path": "src/parallax/environment-library-compatibility.ts",
+      "sha256": "db0c5e83c245b4d304c27b53cfc9c82ebec77d7c29de59990ad42d7867fa4a60"
+    },
+    {
+      "path": "src/parallax/legacy-scene-environment-impact.ts",
+      "sha256": "6ad706fa3e056e141e44c2132d61bec62f54026674cbe1d14977d62d7002a641"
+    },
+    {
+      "path": "src/parallax/library-lifecycle-contracts.ts",
+      "sha256": "5c2aec002316bd09fbe3ff56358324217a50ec1a0c9085b17972176639de674a"
+    },
+    {
+      "path": "src/parallax/scene-comparison.ts",
+      "sha256": "99b37a5247c919281351d46517e8cc22d8cff371c9878df4137be7ded8c04a55"
+    },
+    {
+      "path": "src/parallax/scene-reference.ts",
+      "sha256": "f8d44066638fe90146f0e315f9d550d2899dbea44e59cfa10ca7a3c4b13509e3"
+    },
+    {
+      "path": "src/parallax/sc01-compatibility-audit.test.ts",
+      "sha256": "714947000f0f0870da0f07cb40f7c13ea069fad989a7d4afccca3dd76f8ef423"
+    },
+    {
+      "path": "src/parallax/scene-comparison-compatibility.test.ts",
+      "sha256": "5b7511c3ec295ba58a23f22a467e674bb6371153a41cadd5f3a20a4bebdd1fef"
+    },
+    {
+      "path": "src/parallax/scene-reference-compatibility.test.ts",
+      "sha256": "96269e9fd74389b4b7710ea906112abb38b499405f1ca1d981f60d8a14aefb96"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "03fd-interface-audit-failed.log",
+      "sha256": "47ae8fc9697c34de71458d4f4b9b56576449ad23078e3b1008686f4e54630011"
+    },
+    {
+      "path": "03fd-failing-probe.txt",
+      "sha256": "714947000f0f0870da0f07cb40f7c13ea069fad989a7d4afccca3dd76f8ef423"
+    },
+    {
+      "path": "a4aa-domain-pass.log",
+      "sha256": "b59615d1b5cdbc2230606751b6e51d57d500764e3e914c7e7b738b71ade77707"
+    }
+  ],
+  "experienceBoundaries": {
+    "priorSC01SupportingRepairIteration": 2,
+    "priorSC01IndependentLocalReviewNumber": 3,
+    "reviewHistory": "UNCHANGED; this source-contract report does not reset or grant experience review allowances.",
+    "combinedUIAcceptance": "NOT_ESTABLISHED",
+    "protectedCaptureAndReview": "NOT_ESTABLISHED",
+    "ordinaryQualification": "NOT_ESTABLISHED",
+    "physicalAcceptance": "NOT_CLAIMED",
+    "ownerAcceptance": "NOT_CLAIMED",
+    "remaining": "Actual combined source-bound browser/capture/review and protected qualification. Crossdeck owning prerequisite remains unaccepted.",
+    "separateBridgeUIReview": {
+      "reportCommit": "c7b5fcc1c0dc9d2e6860a3349e14c5e382c1ea1d",
+      "candidate": "cde8957a8f1436387f5528f89949e0abb695e32c",
+      "productSource": "8e612f7ad96f799cc7511bf72ea6196372d012f9",
+      "disposition": "BLOCK_WITH_EVIDENCE",
+      "finding": "PX-BRIDGE-PRESERVATION-EVIDENCE-01",
+      "attempts": "ALL_THREE_REMAIN_FAIL",
+      "observed": "No confirmed visible product defect or semantic Scene change; the frozen test aborted before stored-envelope, immutable-release and copy-return/reload closure.",
+      "correctedHarness": "UNRUN",
+      "history": "PRESERVED; no new browser dispatch or budget reset is authorized by this source review."
+    }
+  }
+}

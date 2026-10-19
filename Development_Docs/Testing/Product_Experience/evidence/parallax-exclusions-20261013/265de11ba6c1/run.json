@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "candidate": "265de11ba6c1a0201b300737b34f8c6e4497114a",
+  "tree": "34acfa72fdc639db447e73fa9180fe3390c26c6c",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-13T20:32:57.450Z",
+  "finishedAt": "2026-10-13T20:34:34.046Z",
+  "exitCode": 0,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "parallax-exclusion-zones-E-18a6b-om-ordinary-scene-rendering-chromium-video.webm",
+      "sha256": "fda1faefbc0e35084944912b7a380e1379c480d73cfd525e308ee73c3949b74a"
+    }
+  ]
+}

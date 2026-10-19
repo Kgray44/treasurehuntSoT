@@ -1,0 +1,42 @@
+{
+  "source": "5f55fd4e011bd8410e5c8dd036022736982ee98b",
+  "runtime": "PRODUCTION",
+  "original": {
+    "id": "right-boot-source:entity-1",
+    "status": "IN_VIEW",
+    "position": [0.12, 0.02, 0.4],
+    "rotation": [-0.7071067811865476, 0, 0, 0.7071067811865476],
+    "scale": [1, 1, 1],
+    "bounds": {
+      "min": [0.03719882190227508, 0.01999999998100099, 0.25221295058727267],
+      "max": [0.19867712527513504, 0.02320000015199188, 0.5486838907003403]
+    }
+  },
+  "duplicate": {
+    "id": "cbd452fd-decd-4312-8be7-61b9d763eaea",
+    "status": "IN_VIEW",
+    "position": [0.32, 0.02, 0.4],
+    "rotation": [-0.7071067811865476, 0, 0, 0.7071067811865476],
+    "scale": [1, 1, 1],
+    "bounds": {
+      "min": [0.2371988219022751, 0.01999999998100099, 0.25221295058727267],
+      "max": [0.39867712527513505, 0.02320000015199188, 0.5486838907003403]
+    }
+  },
+  "instance": {
+    "id": "aff01296-a6e7-4cfd-a6e9-dd658bddc44a:entity-0",
+    "status": "IN_VIEW",
+    "position": [0, 0.85, -0.5],
+    "rotation": [-0.7071067811865476, 0, 0, 0.7071067811865476],
+    "scale": [1, 1, 1],
+    "bounds": {
+      "min": [-0.08280117809772491, 0.849999999981001, -0.6477870494127274],
+      "max": [0.07867712527513504, 0.8532000001519918, -0.35131610929965973]
+    }
+  },
+  "relativeBoundsX": [-0.08280117809772491, 0.07867712527513504],
+  "side": "RIGHT",
+  "sourceUnchangedByDefinitionSave": true,
+  "instanceAndDefinitionPreservedThroughReload": true,
+  "releaseChecksum": "9133db4d5914d5f9ceb362dacba089c0b2d2be9ccd9555cadb1ed6fed3ac5dc0"
+}

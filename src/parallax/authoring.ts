@@ -3,6 +3,23 @@ import { versionContentSchema, identityTransform, type Anchor, type SpatialEntit
 import { emptyStudioContent, type StudioContent } from "./studio-contracts";
 import { composeTransform, inverseTransform } from "./transforms";
 import { defaultRecipe, defaultDiscovery } from "./adaptive-contracts";
+import { syntheticRoomGeometry, discoverRoomSurfaces } from "./room-geometry";
+import type { RoomFeature } from "./environment-contracts";
+import type { Candidate, EnvironmentEvidence } from "./adaptive";
+import { spatialPropStyle, spatialFootprintSide } from "./prop-style";
+import { pruneEditingGroups } from "./editing-group-contracts";
+import { sceneLibraryMetadataSchema } from "./library-lifecycle-contracts";
+import { surfaceFrameRotation } from "./surface-placement";
+type PreviewRoom = {
+  id: string;
+  width: number;
+  depth: number;
+  horizontal: boolean;
+  vertical: boolean;
+  features?: RoomFeature[];
+  evidence?: EnvironmentEvidence;
+};
+const defaultPreviewRoom: PreviewRoom = { id: "bedroom", width: 4, depth: 4, horizontal: true, vertical: true };
 
 export const authoringModes = ["GUIDED", "DETAILED", "ENGINEERING"] as const;
 export const previewModes = [
@@ -17,6 +34,7 @@ export const previewModes = [
   "REMOTE",
 ] as const;
 export const draftSchema = z.strictObject({
+  library: sceneLibraryMetadataSchema.optional(),
   content: versionContentSchema,
   scope: z.enum(["CHRONICLE_ONLY", "MY_LIBRARY"]),
   chronicleId: z.string().min(1).max(128).nullable(),
@@ -41,7 +59,9 @@ export type Edit =
   | {
       type: "CONTENT";
       entityId: string;
-      patch: Partial<Pick<SpatialEntity, "name" | "content" | "alternativeText" | "widthMeters" | "interactions">>;
+      patch: Partial<
+        Pick<SpatialEntity, "name" | "content" | "alternativeText" | "widthMeters" | "interactions" | "element">
+      >;
     }
   | { type: "BEHAVIOR"; behavior: StudioContent["behaviors"][number] }
   | { type: "FALLBACK"; narrative: string }
@@ -73,20 +93,24 @@ export function createSpatialDraft(
     id: `${id}:entity-${i}`,
     name: trail ? `Footprint ${i + 1}` : preset,
     kind: preset === "Floating Compass" || trail ? "MARKER" : wall ? "TEXT" : "PARCHMENT",
+    ...(trail ? { footprintSide: i % 2 ? ("RIGHT" as const) : ("LEFT" as const) } : {}),
     anchorId,
     coordinateSpace: preset === "Floating Compass" || trail ? "LOCAL_SESSION" : "SURFACE_RELATIVE",
     transform: {
       ...identityTransform(),
       position: { x: trail ? (i % 2 ? 0.12 : -0.12) : 0, y: trail ? 0.02 : 0, z: trail && i > 0 ? -i * 0.4 : 0 },
+      ...(trail ? { rotation: { x: -Math.SQRT1_2, y: 0, z: 0, w: Math.SQRT1_2 } } : {}),
     },
-    widthMeters: trail ? 0.16 : preset === "Desk Map" ? 0.5 : 0.25,
+    widthMeters: trail ? 0.4 : preset === "Desk Map" ? 0.5 : 0.25,
     content:
       preset === "Desk Map"
         ? "Follow the compass rose to the northern harbor."
         : trail
           ? "A spectral footprint points ahead."
           : "The Captain left a clue for you.",
-    alternativeText: `${preset}, available to inspect in Guided View.`,
+    alternativeText: trail
+      ? `${i % 2 ? "Right" : "Left"} spectral boot print ${i + 1} of 5, pointing along the trail. Available to inspect in Guided View.`
+      : `${preset}, available to inspect in Guided View.`,
     interactions: ["PICK", "INSPECT", "PLACE"],
     visibility: "RELEASED",
     sharingScope: "PERSONAL",
@@ -102,6 +126,7 @@ export function createSpatialDraft(
   }));
   studio.provenance.origin = "PRESET";
   return draftSchema.parse({
+    library: { type: trail ? "TEMPLATE" : "SCENE", description: "" },
     scope: chronicleId ? "CHRONICLE_ONLY" : "MY_LIBRARY",
     chronicleId,
     category: trail ? "SCENE_TEMPLATE" : "MOMENT",
@@ -122,7 +147,9 @@ export function createSpatialDraft(
           transform: {
             ...identityTransform(),
             position:
-              preset === "Floating Compass" || trail ? { x: 0, y: trail ? 0 : 0.75, z: -1 } : { x: 0, y: 0, z: 0.01 },
+              preset === "Floating Compass" || trail
+                ? { x: 0, y: trail ? 0 : 0.75, z: trail ? 0.8 : -1 }
+                : { x: 0, y: 0, z: 0.01 },
           },
           ...(preset === "Floating Compass" || trail
             ? { kind: "LOCAL_WORLD" }
@@ -154,28 +181,180 @@ export function worldTransform(content: DraftContent, entityId: string): Transfo
   );
 }
 
+export function referenceSurfaceCandidate(
+  anchor: Anchor,
+  room: PreviewRoom = defaultPreviewRoom,
+  surfaces?: readonly Candidate[],
+) {
+  if (anchor.kind !== "SURFACE_RELATIVE") return undefined;
+  const planes =
+    surfaces ??
+    room.evidence?.candidates ??
+    discoverRoomSurfaces(syntheticRoomGeometry(room), { tracking: true, clutter: 0 });
+  if (room.evidence) {
+    const available = planes.filter((candidate) => candidate.safe && !candidate.occluded);
+    return anchor.alignment === "VERTICAL"
+      ? available.find((candidate) => candidate.surface === "WALL" && Math.abs(candidate.normal.y) < 0.2)
+      : (available.find(
+          (candidate) => ["TABLE", "DESK", "SHELF"].includes(candidate.surface) && candidate.normal.y > 0.9,
+        ) ?? available.find((candidate) => candidate.surface === "FLOOR" && candidate.normal.y > 0.9));
+  }
+  return anchor.alignment === "VERTICAL"
+    ? planes.find((c) => c.id === "wall-window")
+    : (planes.find((c) => c.id === "reference-desk") ??
+        planes.find((c) => c.safe && ["TABLE", "DESK", "SHELF"].includes(c.surface)) ??
+        planes.find((c) => c.surface === "FLOOR"));
+}
 /** Synthetic room frames are preview-only; surface offsets remain relative to the selected native surface. */
-export function referenceSurfaceFrame(anchor: Anchor): Transform {
+export function referenceSurfaceFrame(
+  anchor: Anchor,
+  room: PreviewRoom = defaultPreviewRoom,
+  surfaces?: readonly Candidate[],
+): Transform {
   if (anchor.kind !== "SURFACE_RELATIVE") return identityTransform();
+  const chosen = referenceSurfaceCandidate(anchor, room, surfaces);
+  if (room.evidence && !chosen)
+    throw new Error(
+      "The pinned Environment has no usable support for this surface-relative object. Review its surfaces before opening the Scene.",
+    );
   return {
     ...identityTransform(),
-    position: { x: 0, y: anchor.alignment === "HORIZONTAL" ? 0.75 : 1.4, z: -1 },
+    position: chosen?.position ?? { x: 0, y: 1.4, z: -room.depth / 2 + 0.06 },
     rotation:
-      anchor.alignment === "HORIZONTAL"
+      (chosen ? surfaceFrameRotation(chosen) : undefined) ??
+      (anchor.alignment === "HORIZONTAL"
         ? { x: -Math.SQRT1_2, y: 0, z: 0, w: Math.SQRT1_2 }
-        : identityTransform().rotation,
+        : identityTransform().rotation),
   };
 }
 
-export function previewEntityTransform(content: DraftContent, entityId: string): Transform {
+export function previewReferenceFrame(
+  content: DraftContent,
+  anchor: Anchor,
+  environmentId?: string,
+  room: PreviewRoom = defaultPreviewRoom,
+  surfaces?: readonly Candidate[],
+  upright = false,
+): Transform {
+  const frame = content.studio?.surfacePreviewFrames?.find(
+    (f) => f.anchorId === anchor.id && (!environmentId || f.environmentId === environmentId),
+  );
+  if (frame && (room.features || room.evidence)) {
+    const surface = (
+      surfaces ??
+      room.evidence?.candidates ??
+      discoverRoomSurfaces(syntheticRoomGeometry(room), { tracking: true, clutter: 0 })
+    ).find((c) => c.id === frame.surfaceId);
+    if (
+      room.evidence &&
+      (!surface ||
+        !surface.safe ||
+        surface.occluded ||
+        ["OPEN_SPACE", "DEVICE"].includes(surface.surface) ||
+        (anchor.kind === "SURFACE_RELATIVE" && anchor.alignment === "VERTICAL"
+          ? Math.abs(surface.normal.y) >= 0.2
+          : surface.normal.y <= 0.9))
+    )
+      throw new Error(
+        "The pinned Environment no longer has this object's usable support. Review its surface attachment before opening the Scene.",
+      );
+    if (surface)
+      return orientElementFrame(
+        { position: surface.position, rotation: surfaceFrameRotation(surface), scale: 1 },
+        anchor,
+        upright,
+      );
+  }
+  return orientElementFrame(
+    frame
+      ? { position: frame.position, rotation: frame.rotation, scale: 1 }
+      : referenceSurfaceFrame(anchor, room, surfaces),
+    anchor,
+    upright,
+  );
+}
+
+/** Models/effects use Y-up; paper assets use a plane-local Z normal. Preserve the room frame and its yaw. */
+function orientElementFrame(frame: Transform, anchor: Anchor, upright: boolean): Transform {
+  const oriented =
+    upright && anchor.kind === "SURFACE_RELATIVE" && anchor.alignment === "HORIZONTAL"
+      ? composeTransform(frame, { ...identityTransform(), rotation: { x: Math.SQRT1_2, y: 0, z: 0, w: Math.SQRT1_2 } })
+      : frame;
+  if (oriented === frame) return frame;
+  const q = oriented.rotation;
+  const length = Math.hypot(q.x, q.y, q.z, q.w);
+  return { ...oriented, rotation: { x: q.x / length, y: q.y / length, z: q.z / length, w: q.w / length } };
+}
+export function elementUsesUprightFrame(content: DraftContent, entityId: string): boolean {
+  let entity = content.entities.find((e) => e.id === entityId);
+  while (entity?.parentEntityId) entity = content.entities.find((e) => e.id === entity!.parentEntityId);
+  return Boolean(entity?.element);
+}
+
+/** Resolve all entities using one existing surface collection and one traversal of each parent chain. */
+export function previewEntityTransforms(
+  content: DraftContent,
+  environmentId?: string,
+  room: PreviewRoom = defaultPreviewRoom,
+  surfaces?: readonly Candidate[],
+): Record<string, Transform> {
+  const planes =
+    surfaces ??
+    room.evidence?.candidates ??
+    discoverRoomSurfaces(syntheticRoomGeometry(room), { tracking: true, clutter: 0 });
+  const entities = new Map(content.entities.map((entity) => [entity.id, entity]));
+  const anchors = new Map(content.anchors.map((anchor) => [anchor.id, anchor]));
+  const localWorld = new Map<string, Transform>();
+  const frames = new Map(
+    content.anchors.map((anchor) => [anchor.id, previewReferenceFrame(content, anchor, environmentId, room, planes)]),
+  );
+  const resolve = (id: string): Transform => {
+    const cached = localWorld.get(id);
+    if (cached) return cached;
+    const entity = entities.get(id)!;
+    const pose = composeTransform(
+      entity.parentEntityId ? resolve(entity.parentEntityId) : anchors.get(entity.anchorId)!.transform,
+      entity.transform,
+    );
+    localWorld.set(id, pose);
+    return pose;
+  };
+  return Object.fromEntries(
+    content.entities.map((entity) => [
+      entity.id,
+      composeTransform(
+        orientElementFrame(
+          frames.get(entity.anchorId)!,
+          anchors.get(entity.anchorId)!,
+          elementUsesUprightFrame(content, entity.id),
+        ),
+        resolve(entity.id),
+      ),
+    ]),
+  );
+}
+
+export function previewEntityTransform(
+  content: DraftContent,
+  entityId: string,
+  environmentId?: string,
+  room: PreviewRoom = defaultPreviewRoom,
+): Transform {
   const entity = content.entities.find((e) => e.id === entityId);
   if (!entity) throw new Error("Choose an existing spatial entity.");
   const anchor = content.anchors.find((a) => a.id === entity.anchorId)!;
-  return composeTransform(referenceSurfaceFrame(anchor), worldTransform(content, entityId));
+  return composeTransform(
+    previewReferenceFrame(content, anchor, environmentId, room, undefined, elementUsesUprightFrame(content, entityId)),
+    worldTransform(content, entityId),
+  );
 }
 
 export function editSpatialDraft(input: SpatialDraft, edit: Edit): SpatialDraft {
-  if (edit.type === "REPLACE") return draftSchema.parse(structuredClone(edit.draft));
+  if (edit.type === "REPLACE") {
+    const replacement = structuredClone(edit.draft);
+    pruneEditingGroups(replacement.content);
+    return draftSchema.parse(replacement);
+  }
   const next = structuredClone(input);
   const studio = (next.content.studio ??= emptyStudioContent());
   if (edit.type === "CREATE") {
@@ -235,6 +414,8 @@ export function editSpatialDraft(input: SpatialDraft, edit: Edit): SpatialDraft 
   if (layer?.locked && edit.type !== "LAYER") throw new Error("Unlock this entity before editing it.");
   switch (edit.type) {
     case "CONTENT":
+      if (edit.patch.name !== undefined && edit.patch.name !== entity.name)
+        entity.propStyle ??= spatialPropStyle(entity);
       Object.assign(entity, edit.patch);
       break;
     case "TRANSFORM":
@@ -296,7 +477,12 @@ export function editSpatialDraft(input: SpatialDraft, edit: Edit): SpatialDraft 
       break;
     }
     case "DUPLICATE": {
+      if (studio.libraryDefinition?.rootEntityId === entity.id)
+        throw new Error(
+          "Add this asset to a scene to duplicate and group it, then save the assembly as a new definition.",
+        );
       const clone = structuredClone(entity);
+      if (spatialPropStyle(entity) === "FOOTPRINT") clone.footprintSide = spatialFootprintSide(entity);
       clone.id = edit.newId;
       clone.name += " copy";
       clone.transform.position.x += 0.2;
@@ -322,6 +508,21 @@ export function editSpatialDraft(input: SpatialDraft, edit: Edit): SpatialDraft 
         entityId: clone.id,
         locked: false,
       });
+      const origin = studio.assetInstances?.find((i) => i.entityIds.includes(entity.id));
+      if (origin)
+        studio.assetInstances!.push({ ...structuredClone(origin), id: crypto.randomUUID(), entityIds: [clone.id] });
+      if (studio.animationTracks)
+        studio.animationTracks.push(
+          ...studio.animationTracks
+            .filter((t) => t.entityId === entity.id)
+            .map((t) => {
+              const track = structuredClone(t);
+              track.id = crypto.randomUUID();
+              track.entityId = clone.id;
+              for (const frame of track.keyframes) frame.id = crypto.randomUUID();
+              return track;
+            }),
+        );
       break;
     }
     case "DELETE": {
@@ -333,7 +534,17 @@ export function editSpatialDraft(input: SpatialDraft, edit: Edit): SpatialDraft 
         (b) => b.targetEntityId !== entity.id && b.sourceEntityId !== entity.id,
       );
       studio.assets = studio.assets.filter((a) => a.entityId !== entity.id);
+      if (studio.animationTracks)
+        studio.animationTracks = studio.animationTracks.filter((t) => t.entityId !== entity.id);
       studio.visionReferences = studio.visionReferences.filter((a) => a.entityId !== entity.id);
+      if (next.content.environmentPlacements)
+        next.content.environmentPlacements = next.content.environmentPlacements.filter((p) => p.entityId !== entity.id);
+      if (studio.assetInstances)
+        studio.assetInstances = studio.assetInstances
+          .map((i) => ({ ...i, entityIds: i.entityIds.filter((id) => id !== entity.id) }))
+          .filter((i) => i.entityIds.length);
+      if (studio.libraryDefinition?.rootEntityId === entity.id)
+        throw new Error("Keep the asset root, or save the remaining objects as a new reusable asset.");
       if (next.content.adaptive) {
         const adaptive = next.content.adaptive;
         adaptive.recipes = adaptive.recipes.filter((r) => r.entityId !== entity.id);
@@ -393,6 +604,13 @@ export function editSpatialDraft(input: SpatialDraft, edit: Edit): SpatialDraft 
     delete next.content.adaptive.calibration.reviewReceiptId;
     if (next.content.placementPolicy === "CALIBRATED") next.content.placementPolicy = "ADAPTIVE_STICKY";
   }
+  if (studio.surfacePreviewFrames)
+    studio.surfacePreviewFrames = studio.surfacePreviewFrames.filter(
+      (f) =>
+        next.content.anchors.some((a) => a.id === f.anchorId) &&
+        !(edit.type === "PLACEMENT" && f.anchorId === entity.anchorId),
+    );
+  pruneEditingGroups(next.content);
   return draftSchema.parse(next);
 }
 
@@ -413,8 +631,10 @@ export function redo(history: History): History {
   return next ? { past: [...history.past, history.present], present: next, future: history.future.slice(1) } : history;
 }
 export function forkSpatialDraft(input: SpatialDraft, definitionId: string): SpatialDraft {
+  const cloned = structuredClone(input);
+  if (cloned.library) delete cloned.library.creation;
   return draftSchema.parse({
-    ...structuredClone(input),
+    ...cloned,
     scope: "CHRONICLE_ONLY",
     lineage: { definitionId: input.content.definitionId, versionId: input.content.id },
     content: { ...input.content, definitionId, id: `${definitionId}:draft`, semanticVersion: "1.0.0" },

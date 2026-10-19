@@ -1,0 +1,214 @@
+{
+  "kind": "NATIVE_LOCAL_FOCUSED_PROOF_ORIGINALS",
+  "candidate": "9adeb9715011de4b38885ab88b53050632599257",
+  "tree": "045c1fc8a9a8138b74385386d44692d86fdce236",
+  "finishedAt": "2026-10-17T15:18:18.742Z",
+  "exitCode": 1,
+  "sourceHeadUnchanged": true,
+  "workingTreeClean": true,
+  "files": [
+    {
+      "path": "run-artifacts/animation-end.png",
+      "bytes": 201286,
+      "sha256": "8c1816b742b564a5eb48de37e3ce32d81e806526416f93edda0a7287d8c20140"
+    },
+    {
+      "path": "run-artifacts/animation-phone-layout.json",
+      "bytes": 422,
+      "sha256": "a4acdb2ea99856b4fd448853ed55cdc41c5273dd5acfda50345f06b6a92bba29"
+    },
+    {
+      "path": "run-artifacts/animation-phone-timeline-controls.png",
+      "bytes": 80482,
+      "sha256": "bd0c259114d09895338117989b9cce06462d237a9567a2c77386e40ca7d3a546"
+    },
+    {
+      "path": "run-artifacts/animation-phone-viewport.png",
+      "bytes": 113943,
+      "sha256": "d0fd428ec99566b6e534ff2847710c08f837376403a9fee634f82d66363bddb1"
+    },
+    {
+      "path": "run-artifacts/animation-phone.png",
+      "bytes": 115262,
+      "sha256": "9d25e6f1c9ac271907d4d7fe28276dd8abe73a21c99a1e2705ccd8cbdd02dcb5"
+    },
+    {
+      "path": "run-artifacts/animation-reloaded-zoom.png",
+      "bytes": 246343,
+      "sha256": "1322b42d834dc2917db2532be96a2ac23ba84267990933dd6a7a3bcafddbf951"
+    },
+    {
+      "path": "run-artifacts/animation-start.png",
+      "bytes": 206077,
+      "sha256": "be2a95da1c4534a41c782e977f113892075d82e2383d6f1ac00d1541c00f8b22"
+    },
+    {
+      "path": "run-artifacts/cinematic-first-take.png",
+      "bytes": 232925,
+      "sha256": "d4fe571489ff467024e1c58d1f7c77b10089bdffb31ee762bb3d5b0660e63e20"
+    },
+    {
+      "path": "run-artifacts/cinematic-live-duration-resize.png",
+      "bytes": 234856,
+      "sha256": "6312e7dedfbc368eb085bc3dda2e5a7b85e4b08e01e1ac139057efb3a61e13a9"
+    },
+    {
+      "path": "run-artifacts/cinematic-reduced-motion.png",
+      "bytes": 231270,
+      "sha256": "236efa655a7885b79be743b613090e201a578d2a4aaf96cf2ab20add58c94c8c"
+    },
+    {
+      "path": "run-artifacts/cinematic-second-take.png",
+      "bytes": 234301,
+      "sha256": "acbb31e148c1c580c661628d0c0d9d96ffbd14ec338b8cb2c7231f0a35dd9494"
+    },
+    {
+      "path": "run-artifacts/cinematic-selected-keyframe-settings.png",
+      "bytes": 234706,
+      "sha256": "f1f92320087923b9545686364a6d6d483deec6aded55058297f31e7835f336b5"
+    },
+    {
+      "path": "run-artifacts/construction-scale-review-phone.png",
+      "bytes": 64546,
+      "sha256": "9d8c8024f4c5b6cf8cf648a94c898efe824c7254cf96c3b678267980e69d4aa4"
+    },
+    {
+      "path": "run-artifacts/construction-wall-and-scale-findings.png",
+      "bytes": 283894,
+      "sha256": "4ecd70eac8066fbb77fb8e6cca4bdecf5991b896541ab51b60afce216b21ced8"
+    },
+    {
+      "path": "run-artifacts/parallax-animation-Creator-c1f75-resets-triggered-simulation-chromium-video.webm",
+      "bytes": 473132,
+      "sha256": "e0b92f03b220b78fdb827e463b58d28aaf349aea92f8ec8f0034b756cc320f9d"
+    },
+    {
+      "path": "run-artifacts/parallax-animation-Middle--f8047--recovery-retains-the-draft-chromium-video.webm",
+      "bytes": 262222,
+      "sha256": "2d073f46e7ba09a7b7e6d41e16052295c91d0e1d96067bdd3c438b3ff78a40e6"
+    },
+    {
+      "path": "run-artifacts/parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-error-context.md",
+      "bytes": 32766,
+      "sha256": "caeba482c96225687ef03ad67c227014f3bde1308615f8f0020bde68d1655c86"
+    },
+    {
+      "path": "run-artifacts/parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-test-failed-1.png",
+      "bytes": 266047,
+      "sha256": "115d6f95cccc5f80089ddee56da3824826eadb83e4ce19901931387c246a969c"
+    },
+    {
+      "path": "run-artifacts/parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm",
+      "bytes": 1283897,
+      "sha256": "462de3ca23c2408cdfbeb04537cabe481f45968c407188710167acc1f6ef6266"
+    },
+    {
+      "path": "run-artifacts/parallax-construction-chec-501d6-ale-through-save-and-reload-chromium-error-context.md",
+      "bytes": 7665,
+      "sha256": "f6fab652fc9f2b4c4d231e62d7832c11d1c8c67a2ac286fcd2aebca021365d77"
+    },
+    {
+      "path": "run-artifacts/parallax-construction-chec-501d6-ale-through-save-and-reload-chromium-test-failed-1.png",
+      "bytes": 114494,
+      "sha256": "63cd5c444099ce177928d70540b9b17d40a38dca990dcd82483a310eb027b30a"
+    },
+    {
+      "path": "run-artifacts/parallax-construction-chec-501d6-ale-through-save-and-reload-chromium-video.webm",
+      "bytes": 902916,
+      "sha256": "50989137f9593b713c6f82c1b9f2c152f549fbf33149f700298de18eb65cc2ec"
+    },
+    {
+      "path": "run-artifacts/renderer-context-loss.png",
+      "bytes": 190015,
+      "sha256": "febac61f059bd2e9a331a102a0c195065babffd71507fb119643b44b4f96d47f"
+    },
+    {
+      "path": "run-artifacts/renderer-isolated-framed.png",
+      "bytes": 215679,
+      "sha256": "6a77c240a243c645214f270108e839368ef1402d337038399c407a3e1eb8b138"
+    },
+    {
+      "path": "run-artifacts/renderer-recovered.png",
+      "bytes": 215196,
+      "sha256": "e3c366a8a3b91c500777505427620fc4905ed597faa967aeab1d0bc81654fc42"
+    },
+    {
+      "path": "run-artifacts/run.json",
+      "bytes": 1192,
+      "sha256": "86ddd7b67a79cabb4923103796167ab71af053ce25e0e22cff280d6caf7de862"
+    },
+    {
+      "path": "run-artifacts/timeline-live-playhead-scrub.png",
+      "bytes": 233088,
+      "sha256": "d6cfe7b2cc378aeb505a0513087f40fce9dc32930bf033b150a6b3a96e358a0d"
+    },
+    {
+      "path": "test-results/.last-run.json",
+      "bytes": 145,
+      "sha256": "b11a1178918b8edfe5273f7705df4a92451dbf159487ce1fdbaa67a4e2b7b4f5"
+    },
+    {
+      "path": "test-results/parallax-animation-Creator-c1f75-resets-triggered-simulation-chromium/video.webm",
+      "bytes": 473132,
+      "sha256": "e0b92f03b220b78fdb827e463b58d28aaf349aea92f8ec8f0034b756cc320f9d"
+    },
+    {
+      "path": "test-results/parallax-animation-Middle--f8047--recovery-retains-the-draft-chromium/video.webm",
+      "bytes": 262222,
+      "sha256": "2d073f46e7ba09a7b7e6d41e16052295c91d0e1d96067bdd3c438b3ff78a40e6"
+    },
+    {
+      "path": "test-results/parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium/error-context.md",
+      "bytes": 32766,
+      "sha256": "caeba482c96225687ef03ad67c227014f3bde1308615f8f0020bde68d1655c86"
+    },
+    {
+      "path": "test-results/parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium/test-failed-1.png",
+      "bytes": 266047,
+      "sha256": "115d6f95cccc5f80089ddee56da3824826eadb83e4ce19901931387c246a969c"
+    },
+    {
+      "path": "test-results/parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium/trace.zip",
+      "bytes": 13710498,
+      "sha256": "a297deeda7313ed09189e37c2b23fe66be94938e95d5cb495c963b6c4896e338"
+    },
+    {
+      "path": "test-results/parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium/video.webm",
+      "bytes": 1283897,
+      "sha256": "462de3ca23c2408cdfbeb04537cabe481f45968c407188710167acc1f6ef6266"
+    },
+    {
+      "path": "test-results/parallax-construction-chec-501d6-ale-through-save-and-reload-chromium/error-context.md",
+      "bytes": 7665,
+      "sha256": "f6fab652fc9f2b4c4d231e62d7832c11d1c8c67a2ac286fcd2aebca021365d77"
+    },
+    {
+      "path": "test-results/parallax-construction-chec-501d6-ale-through-save-and-reload-chromium/test-failed-1.png",
+      "bytes": 114494,
+      "sha256": "63cd5c444099ce177928d70540b9b17d40a38dca990dcd82483a310eb027b30a"
+    },
+    {
+      "path": "test-results/parallax-construction-chec-501d6-ale-through-save-and-reload-chromium/trace.zip",
+      "bytes": 5739817,
+      "sha256": "5e8cb9caa0a2acafc0bae4777d693b23c7046c6e663c1f0e9e7ca6c69ec65019"
+    },
+    {
+      "path": "test-results/parallax-construction-chec-501d6-ale-through-save-and-reload-chromium/video.webm",
+      "bytes": 902916,
+      "sha256": "50989137f9593b713c6f82c1b9f2c152f549fbf33149f700298de18eb65cc2ec"
+    },
+    {
+      "path": "browser-runtime.json",
+      "bytes": 1382,
+      "sha256": "d4e95f8c69168ddec9b6f0f1677a1d3a435ec52c11fa782e1af600ca47ac7dc5"
+    },
+    {
+      "path": "browser-suite-profile.json",
+      "bytes": 563,
+      "sha256": "1adfe0b7336fd1fa436ca86ea813b9b4b88021dd8a9ea193ff842b8aef31441d"
+    }
+  ],
+  "protectedQualification": false,
+  "crossdeckExecution": false,
+  "physicalAcceptance": false
+}

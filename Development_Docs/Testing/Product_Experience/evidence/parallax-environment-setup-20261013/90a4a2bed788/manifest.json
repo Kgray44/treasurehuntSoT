@@ -1,0 +1,113 @@
+{
+  "documentClassification": "engineering-evidence",
+  "source": "90a4a2bed788d3c0aad0e9da5ecbd6a2b4a79d4a",
+  "tree": "6bf2662e5d42be7db90ef155f1d7ce060f7a205e",
+  "contract": "parallax.authored-library-and-simulation.experience",
+  "runtime": "DEVELOPMENT",
+  "provider": "SYNTHETIC_UNPAID",
+  "automatedJourneys": 5,
+  "physicalDeviceAcceptance": false,
+  "ownerAcceptance": "PRESENTATION_ACCEPTED_AT_3779_UNCHANGED_PRODUCT_CODE",
+  "files": [
+    {
+      "file": "environment-setup-choices.png",
+      "sha256": "6edb59b13a5d41c56bddededee0cc5a2cf64d863833ec27731ec4299c93a2304",
+      "bytes": 205890
+    },
+    {
+      "file": "environment-setup-empty-editor.png",
+      "sha256": "1391cb8c27be8eaf70069b09ee5a3f758818942f9c9e5b616f7c6bca0a3bfb80",
+      "bytes": 245998
+    },
+    {
+      "file": "environment-photo-cancelled.png",
+      "sha256": "06d983226d422555650df17944c58c328da86abce104e5a88c39b7be868328bd",
+      "bytes": 43699
+    },
+    {
+      "file": "environment-photo-processing.png",
+      "sha256": "650e55dba0fe59af602808201265f099e3d7816f5c6981387aa0ad2bf7eba9c8",
+      "bytes": 164631
+    },
+    {
+      "file": "environment-photo-1-view-demo.png",
+      "sha256": "7e20d66f6eb0d1a33d99c497557a7841e70231eafb2764bb82fd704e9cf187da",
+      "bytes": 56421
+    },
+    {
+      "file": "environment-photo-2-view-demo.png",
+      "sha256": "1f3ade8d4826176eb5b689a27c137c9c977ff778eebbd404d4e1708089a23b05",
+      "bytes": 162869
+    },
+    {
+      "file": "environment-library-renamed.png",
+      "sha256": "3594d9d7ffbf54c111f71897eb205b862ecdf78699fb7cd777869f3ad44040fb",
+      "bytes": 267480
+    },
+    {
+      "file": "environment-library-phone.png",
+      "sha256": "23dbc33eefad9baf554881fd8436d025a66fc1d1371b1d93ab916a72bebba2d4",
+      "bytes": 59479
+    },
+    {
+      "file": "environment-photo-1-view-orbited.png",
+      "sha256": "8607283994e6c53052d5e6fe265ec11dfc93ec5de1fcde9d9f53d1b555504d23",
+      "bytes": 10726
+    },
+    {
+      "file": "environment-photo-1-view-zoomed.png",
+      "sha256": "a2680b69df307a5728d45a2ed06388247c7532340c038084602fcb1ceb7ec351",
+      "bytes": 12450
+    },
+    {
+      "file": "environment-photo-1-view-plan.png",
+      "sha256": "c9cca805606e0c513c0011a4d93269f982650e21e4020b72c7111479b9d95802",
+      "bytes": 35919
+    },
+    {
+      "file": "environment-photo-2-view-orbited.png",
+      "sha256": "b32fcf5eeb35266a690880c40d46f4a034c1ce24ef3252bb31a5e5c5673cb115",
+      "bytes": 9447
+    },
+    {
+      "file": "environment-photo-2-view-zoomed.png",
+      "sha256": "c850c75bf1f8a8ef8722adf8e025d0266b1466b1523c0294b4f1be67847c1295",
+      "bytes": 9424
+    },
+    {
+      "file": "environment-photo-2-view-plan.png",
+      "sha256": "e12a47c11b275b874c70666b1cdd44d8f786941ee43251268a3f107f1f34b895",
+      "bytes": 43641
+    },
+    {
+      "file": "photo-parallax-environment-creat-ca91a-n-independent-editable-room-chromium-video.webm",
+      "sha256": "50ad5cb5681cddd92f916311fcfebac72164731988c32a681b5e4b3cacbdeb45",
+      "bytes": 362063
+    },
+    {
+      "file": "photo-parallax-environment-creat-f049b-n-independent-editable-room-chromium-video.webm",
+      "sha256": "09085fdad59d1fa35082d61f2b45ddc95bc09c38e18e39f1bb8a0ec427d24681",
+      "bytes": 479313
+    },
+    {
+      "file": "photo-parallax-environment-entry-5d20a-e-and-starts-an-empty-shell-chromium-video.webm",
+      "sha256": "b8ac3bded8e6d62637d6c5ea0dac4b948c067f33bea7b9025a140cd948c1e245",
+      "bytes": 337042
+    },
+    {
+      "file": "photo-parallax-environment-libra-fb62a-out-removing-scene-geometry-chromium-video.webm",
+      "sha256": "a4469c4de5fa6a140a81138161af406eaa558852a79a465e5dd1e0684ff7c6c4",
+      "bytes": 618162
+    },
+    {
+      "file": "photo-parallax-room-photo-Creato-f6a5a-tter-and-replays-its-reveal-chromium-video.webm",
+      "sha256": "7ee7cad4904360cf278cd9d3c74ae3ee93842500f1158e3a2b843b81683794f4",
+      "bytes": 1448025
+    },
+    {
+      "file": "photo-run.json",
+      "sha256": "77e547c718fa7dbe02424aa1e3969e6c10520a942a826dd06e0aae55a5867366",
+      "bytes": 1331
+    }
+  ]
+}

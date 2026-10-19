@@ -1,0 +1,17 @@
+{
+  "source": "5fa77366665b160f79065012a606b97cf2fe3f23",
+  "definitionId": "8aa61ee6-30fa-4a4b-8d67-57f93c4c0d95",
+  "failedSaves": 1,
+  "retainedEntities": 2,
+  "observed": [
+    "503 save visibly failed",
+    "Retry saved canonical draft",
+    "Unavailable audio remained disabled and announced feedback",
+    "Restored AudioContext produced one source",
+    "Guided preview preserved text and refused false audio activation",
+    "Editor return resumed one source and pause reclaimed it"
+  ],
+  "limits": [
+    "Injected faults in actual app; no perceived sound, assistive technology, physical device or owner acceptance"
+  ]
+}

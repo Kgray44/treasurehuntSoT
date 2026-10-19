@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "candidate": "5f55fd4e011bd8410e5c8dd036022736982ee98b",
+  "tree": "aaaa1ccd47534e2eb1b3bc57a954810bc5048455",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-13T08:30:27.370Z",
+  "finishedAt": "2026-10-13T08:31:13.193Z",
+  "exitCode": 0,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "parallax-asset-quality-Cre-b583d-ck-without-rebuilding-props-chromium-video.webm",
+      "sha256": "0b520058f929f4ac76bb8789218414f001681bfc6afd59e264f751f5d45dd365"
+    }
+  ]
+}

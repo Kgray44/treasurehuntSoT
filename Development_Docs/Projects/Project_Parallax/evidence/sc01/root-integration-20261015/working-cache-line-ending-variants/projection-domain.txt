@@ -1,0 +1,25 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 C:/Users/kkids/.codex/worktrees/px-production-qualification/Codex_TreasureHunt
+
+ ✓ src/parallax/legacy-environment-preview.test.ts (9 tests) 32ms
+ ✓ src/parallax/environment-presentation.test.ts (10 tests) 51ms
+ ✓ src/parallax/element-insertion-placement.test.ts (44 tests) 1009ms
+ ✓ src/parallax/environment-authoring.test.ts (23 tests) 535ms
+ ✓ src/parallax/element-insertion.test.ts (4 tests) 209ms
+ ✓ src/parallax/authoring.test.ts (20 tests) 2106ms
+     ✓ materializes editable Desk Map with fallback and a truthful environment census  439ms
+     ✓ materializes editable Peeking Letter with fallback and a truthful environment census  357ms
+     ✓ materializes editable Hidden Wall Message with fallback and a truthful environment census  366ms
+     ✓ materializes editable Ghost Footprint Trail with fallback and a truthful environment census  366ms
+     ✓ materializes editable Floating Compass with fallback and a truthful environment census  421ms
+ ✓ src/parallax/assistant-environment.test.ts (20 tests) 933ms
+   ✓ puts a wall note by 'Classroom''s door on a clear vertical face, never its window  355ms
+
+ Test Files  7 passed (7)
+      Tests  130 passed (130)
+   Start at  04:10:57
+   Duration  15.67s (transform 6.55s, setup 7.32s, import 11.86s, tests 4.87s, environment 35.50s)
+

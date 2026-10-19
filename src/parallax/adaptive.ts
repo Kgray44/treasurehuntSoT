@@ -8,7 +8,7 @@ import {
 } from "./adaptive-contracts";
 import type { Transform } from "./contracts";
 import { composeTransform } from "./transforms";
-
+import { surfaceFrameRotation, findSurfacePlacement } from "./surface-placement";
 const point = z.strictObject({
   x: z.number().finite().min(-100).max(100),
   y: z.number().finite().min(-10).max(20),
@@ -20,7 +20,23 @@ export const candidateSchema = z.strictObject({
   context: z.array(contextClassSchema).max(7),
   region: z.enum(["CURRENT_ROOM", "ENTRANCE_REGION"]),
   position: point,
+  placementOffset: point.optional(),
+  exclusions: z
+    .array(
+      z.strictObject({
+        x: z.number().finite().min(-100).max(100),
+        y: z.number().finite().min(-100).max(100),
+        width: z.number().finite().positive().max(100),
+        depth: z.number().finite().positive().max(100),
+      }),
+    )
+    .max(128)
+    .optional(),
   normal: point,
+  rotation: z
+    .strictObject({ x: z.number().finite(), y: z.number().finite(), z: z.number().finite(), w: z.number().finite() })
+    .refine((q) => Math.abs(Math.hypot(q.x, q.y, q.z, q.w) - 1) < 1e-5)
+    .optional(),
   widthMeters: z.number().finite().positive().max(100),
   depthMeters: z.number().finite().positive().max(100),
   clearanceMeters: z.number().finite().min(0).max(100),
@@ -45,6 +61,18 @@ export const environmentEvidenceSchema = z
       c.addIssue({ code: "custom", message: "PARALLAX_CANDIDATE_ID_DUPLICATE" });
     if (e.candidates.some((x) => Math.abs(Math.hypot(x.normal.x, x.normal.y, x.normal.z) - 1) > 0.001))
       c.addIssue({ code: "custom", message: "PARALLAX_CANDIDATE_NORMAL_INVALID" });
+    if (
+      e.candidates.some(
+        ({ normal: n, rotation: q }) =>
+          q &&
+          Math.hypot(
+            2 * (q.x * q.z + q.w * q.y) - n.x,
+            2 * (q.y * q.z - q.w * q.x) - n.y,
+            1 - 2 * (q.x * q.x + q.y * q.y) - n.z,
+          ) > 0.001,
+      )
+    )
+      c.addIssue({ code: "custom", message: "PARALLAX_CANDIDATE_FRAME_MISMATCH" });
   });
 export type EnvironmentEvidence = z.infer<typeof environmentEvidenceSchema>;
 export type Candidate = z.infer<typeof candidateSchema>;
@@ -119,11 +147,13 @@ function candidateTransform(
   viewer?: Candidate["position"],
 ): Transform {
   const p = { ...c.position };
+  if (c.placementOffset && recipe.relativePlacement === "CENTER") {
+    p.x += c.placementOffset.x;
+    p.y += c.placementOffset.y;
+    p.z += c.placementOffset.z;
+  }
   // Rotate the authored +Z face onto the actual surface normal, including vertical walls.
-  const n = c.normal,
-    raw = n.z < -0.999999 ? { x: 0, y: 1, z: 0, w: 0 } : { x: -n.y, y: n.x, z: 0, w: 1 + n.z };
-  const length = Math.hypot(raw.x, raw.y, raw.z, raw.w);
-  const surfaceRotation = { x: raw.x / length, y: raw.y / length, z: raw.z / length, w: raw.w / length };
+  const surfaceRotation = surfaceFrameRotation(c);
   const basis = (x: number, y: number) =>
     composeTransform(
       { position: { x: 0, y: 0, z: 0 }, rotation: surfaceRotation, scale: 1 },
@@ -147,12 +177,15 @@ function candidateTransform(
   const yaw =
     recipe.orientation === "PLAYER_FACING" && viewer
       ? Math.atan2(viewer.x - p.x, viewer.z - p.z)
-      : Math.atan2(n.x, n.z);
+      : Math.atan2(c.normal.x, c.normal.z);
   return {
     position: p,
     scale: 1,
     rotation:
-      recipe.orientation === "SURFACE" ? surfaceRotation : { x: 0, y: Math.sin(yaw / 2), z: 0, w: Math.cos(yaw / 2) },
+      recipe.orientation === "SURFACE" ||
+      (recipe.orientation === "UPRIGHT" && recipe.preferredSurfaces.includes("WALL") && c.surface !== "WALL")
+        ? surfaceRotation
+        : { x: 0, y: Math.sin(yaw / 2), z: 0, w: Math.cos(yaw / 2) },
   };
 }
 export function evaluateCandidate(
@@ -207,6 +240,17 @@ export function evaluateCandidate(
         0.05 / (1 + Math.abs(c.position.y - recipe.preferredHeightMeters))) *
         1000,
     ) / 1000;
+  let transform = candidateTransform(recipe, c, width, viewer);
+  if (c.exclusions?.length || c.placementOffset) {
+    const fitted = findSurfacePlacement(
+      transform,
+      c,
+      width + recipe.minimumClearanceMeters * 2,
+      recipe.relativePlacement === "CENTER",
+    );
+    if (!fitted) constraints.push("INSUFFICIENT_FREE_SPACE");
+    else transform = { ...transform, position: fitted.position };
+  }
   const accepted = constraints.length === 0;
   return {
     candidate: c,
@@ -220,7 +264,7 @@ export function evaluateCandidate(
         ? "LOW_CONFIDENCE_FALLBACK"
         : "NO_VALID_PLACEMENT",
     constraints,
-    transform: candidateTransform(recipe, c, width, viewer),
+    transform,
   };
 }
 export type SceneResolution = {

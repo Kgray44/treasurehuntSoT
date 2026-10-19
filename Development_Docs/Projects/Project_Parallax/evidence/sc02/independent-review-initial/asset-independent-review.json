@@ -1,0 +1,993 @@
+{
+  "schemaVersion": 1,
+  "documentClassification": "ENGINEERING_EVIDENCE",
+  "title": "SC-02 independent exported-asset visual review, initial pass",
+  "reviewKind": "ASSET_PIPELINE_EVIDENCE_ONLY",
+  "reviewedAt": "2026-10-15T03:13:53.1465124Z",
+  "reviewer": {
+    "contextId": "/root/sc02_visual_review",
+    "role": "Independent reviewer subagent",
+    "separateFromBuilder": true,
+    "method": "Read user objective and bounded evidence packet; inspect each of 30 individual exported-GLB thumbnails before implementation source; no implementation source inspected."
+  },
+  "objective": "A production-quality premium real-time spatial asset library; primitive stand-ins and counts alone do not satisfy the brief.",
+  "sourceIdentity": {
+    "repositoryHead": "4baa39af82b78b50a46f590bc2acc2ff0b7597aa",
+    "candidateState": "UNCOMMITTED_WORKING_TREE",
+    "limitation": "This review binds the preserved evidence hashes and snapshot, not a frozen committed product candidate."
+  },
+  "evidence": {
+    "brief": "C:/Users/kkids/.codex/attachments/c7fa5f8a-08a5-4c3e-a679-cd0c3aa735d9/Pasted text.txt",
+    "originalThumbnailDirectory": "public/parallax/sc02/thumbnails",
+    "originalManifest": "public/parallax/sc02/manifest.json",
+    "originalMetrics": "Development_Docs/Projects/Project_Parallax/evidence/sc02/asset-render-metrics.json",
+    "preservedSnapshot": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial",
+    "manifestSha256": "bae88b5caa196bff3b98de5c186bf69ac48286d6b7165c88c1f3197d63620cf4",
+    "metricsSha256": "7f6d3d8089d85b2568efcf53b0aa8f5119c7025b466a7fd8d8218f004d37e1a0",
+    "thumbnailsInspectedIndividually": 30,
+    "uniqueThumbnailHashes": 1,
+    "thumbnailDimensionsPixels": [
+      480,
+      320
+    ],
+    "commonThumbnailSha256": "fdd0d4de94b871403698bf142bea42bd4867fa6209174b1f48448e43b91bc69e"
+  },
+  "overall": {
+    "decision": "BLOCKED",
+    "premiumProductionQuality": "NOT_ESTABLISHED",
+    "modelQualityConclusion": "UNASSESSABLE_FROM_SUPPLIED_RENDERS",
+    "repairDisposition": "REPAIR_AND_RECAPTURE",
+    "productExperienceAcceptance": false,
+    "visuallyComplete": false,
+    "journeyValidated": false,
+    "ownerAcceptance": "NOT_CLAIMED",
+    "rationale": "All 30 supplied thumbnails are visibly blank and byte-identical. No model quality judgment is possible. This is a confirmed evidence/preview blocker, not proof that the underlying GLB geometry itself is low quality."
+  },
+  "findings": [
+    {
+      "id": "SC02-ALL-ASSET-PREVIEWS-BLANK",
+      "severity": "BLOCKING",
+      "observation": "All 30 individual PNGs contain the same uniform dark background with no visible geometry.",
+      "effect": "The library preview and independent premium-quality evidence are unusable for every catalog asset.",
+      "evidencePaths": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/thumbnails",
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/manifest.json"
+      ],
+      "requiredRepair": "Regenerate visible, consistently lit and framed exported-GLB thumbnails; add representative close and alternate views; re-review all affected assets."
+    },
+    {
+      "id": "SC02-RENDER-BOUNDS-NULL",
+      "severity": "BLOCKING",
+      "observation": "Every metrics entry records null for all dimensions and minimum coordinates.",
+      "effect": "The render pipeline has not provided usable geometric bounds; reported calls, triangles, and errors=[] cannot establish valid framing, scale, or visible output.",
+      "evidencePaths": [
+        "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/asset-render-metrics.json"
+      ],
+      "requiredRepair": "Repair bounds measurement, require finite bounds and nonblank rendered output, and rerun the asset render pipeline."
+    }
+  ],
+  "capabilityStatus": {
+    "catalogCoverage": "DECLARED: 30 named entries in six requested families; distinctness is not visually established",
+    "metadata": "DECLARED: each entry has dimensions, support, collision, pivot, normal and PBR labels; geometric correctness is unverified",
+    "materialResponse": "UNVERIFIED: no rendered surface is visible",
+    "provenance": "MANIFEST_DECLARED_ONLY: AI_ASSISTED original geometry, proprietary license, owner authorization required, not published; license document and source originality not audited here",
+    "exportedPipeline": "REPORTED: all entries have load/render counters and no reported loader errors; visible success is contradicted by blank output",
+    "performance": "OBSERVATION_ONLY: software WebGL pipeline loadAndRenderMs is about 18.8 to 104 ms per asset; no editor scene frame-rate, memory cleanup, target-device budget, cold/warm method or repeatability proof",
+    "native": "MANIFEST_DECLARED_GUIDED_FALLBACK",
+    "productBrowserExperience": "NOT_REVIEWED: separate browser captures are required",
+    "pivotsScalePlacementCollision": "NOT_REVIEWED: metadata and null bounds do not prove behavior",
+    "saveReloadSelectTransform": "NOT_REVIEWED",
+    "interactiveAffordances": "NOT_REVIEWED: static blank previews cannot prove hinge, slide or cloth behavior",
+    "effectsAudioComposition": "OUT_OF_SCOPE_FOR_THIS_ASSET_PACKET",
+    "physicalDevice": "NOT_REVIEWED"
+  },
+  "limitations": [
+    "Only the supplied asset pipeline thumbnails, manifest and metrics were reviewed; no application screenshots or recordings were supplied in this pass.",
+    "One blank view per asset cannot establish back-face correctness, texture quality, edge detail, material response under different light, support/collision correctness, or animation quality.",
+    "Do not substitute successful tests, file counts, triangle counts, catalog prose, or PBR metadata labels for visual quality acceptance.",
+    "The supplied review packet does not establish final SC-02 production completeness, product journey acceptance, real-device behavior, or owner acceptance.",
+    "The preserved initial snapshot remains evidence of this pass even if original thumbnail paths are later regenerated."
+  ],
+  "assets": [
+    {
+      "assetId": "writing-desk",
+      "name": "Writing desk",
+      "family": "Furniture",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/thumbnails/writing-desk.png",
+      "thumbnailSha256": "fdd0d4de94b871403698bf142bea42bd4867fa6209174b1f48448e43b91bc69e",
+      "thumbnailBytes": 1186,
+      "inspectedWith": "view_image, individual image at 480 x 320",
+      "observation": "The complete frame is a uniform dark blue-gray background. No asset silhouette, surface, material, detail, or shadow is visible.",
+      "blockingFindings": [
+        {
+          "id": "SC02-ASSET-writing-desk-NO_VISIBLE_RENDER",
+          "severity": "BLOCKING",
+          "requirement": "SC-02 sections 2, 3 and 10: high-quality individual asset with recognizable geometry, convincing proportions, PBR response and useful preview",
+          "finding": "The supplied preview provides no visible instance of this asset, so its quality cannot be independently assessed and it cannot support premium asset acceptance.",
+          "requiredRepair": "Repair capture or render visibility, render this exported GLB with useful framing and lighting, and obtain independent visual re-review. Include additional views for hidden surfaces and articulation where applicable."
+        }
+      ],
+      "dimensions": {
+        "recognizability": "NOT_ASSESSABLE",
+        "detailedGeometry": "NOT_ASSESSABLE",
+        "proportions": "NOT_ASSESSABLE",
+        "materialResponse": "NOT_ASSESSABLE",
+        "normals": "NOT_ASSESSABLE",
+        "visualConsistency": "NOT_ASSESSABLE",
+        "distinctiveness": "NOT_ASSESSABLE",
+        "previewUsefulness": "FAIL"
+      },
+      "premiumQualityStatus": "BLOCKED_BY_MISSING_VISIBLE_EVIDENCE"
+    },
+    {
+      "assetId": "dining-table",
+      "name": "Dining table",
+      "family": "Furniture",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/thumbnails/dining-table.png",
+      "thumbnailSha256": "fdd0d4de94b871403698bf142bea42bd4867fa6209174b1f48448e43b91bc69e",
+      "thumbnailBytes": 1186,
+      "inspectedWith": "view_image, individual image at 480 x 320",
+      "observation": "The complete frame is a uniform dark blue-gray background. No asset silhouette, surface, material, detail, or shadow is visible.",
+      "blockingFindings": [
+        {
+          "id": "SC02-ASSET-dining-table-NO_VISIBLE_RENDER",
+          "severity": "BLOCKING",
+          "requirement": "SC-02 sections 2, 3 and 10: high-quality individual asset with recognizable geometry, convincing proportions, PBR response and useful preview",
+          "finding": "The supplied preview provides no visible instance of this asset, so its quality cannot be independently assessed and it cannot support premium asset acceptance.",
+          "requiredRepair": "Repair capture or render visibility, render this exported GLB with useful framing and lighting, and obtain independent visual re-review. Include additional views for hidden surfaces and articulation where applicable."
+        }
+      ],
+      "dimensions": {
+        "recognizability": "NOT_ASSESSABLE",
+        "detailedGeometry": "NOT_ASSESSABLE",
+        "proportions": "NOT_ASSESSABLE",
+        "materialResponse": "NOT_ASSESSABLE",
+        "normals": "NOT_ASSESSABLE",
+        "visualConsistency": "NOT_ASSESSABLE",
+        "distinctiveness": "NOT_ASSESSABLE",
+        "previewUsefulness": "FAIL"
+      },
+      "premiumQualityStatus": "BLOCKED_BY_MISSING_VISIBLE_EVIDENCE"
+    },
+    {
+      "assetId": "upholstered-chair",
+      "name": "Upholstered chair",
+      "family": "Furniture",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/thumbnails/upholstered-chair.png",
+      "thumbnailSha256": "fdd0d4de94b871403698bf142bea42bd4867fa6209174b1f48448e43b91bc69e",
+      "thumbnailBytes": 1186,
+      "inspectedWith": "view_image, individual image at 480 x 320",
+      "observation": "The complete frame is a uniform dark blue-gray background. No asset silhouette, surface, material, detail, or shadow is visible.",
+      "blockingFindings": [
+        {
+          "id": "SC02-ASSET-upholstered-chair-NO_VISIBLE_RENDER",
+          "severity": "BLOCKING",
+          "requirement": "SC-02 sections 2, 3 and 10: high-quality individual asset with recognizable geometry, convincing proportions, PBR response and useful preview",
+          "finding": "The supplied preview provides no visible instance of this asset, so its quality cannot be independently assessed and it cannot support premium asset acceptance.",
+          "requiredRepair": "Repair capture or render visibility, render this exported GLB with useful framing and lighting, and obtain independent visual re-review. Include additional views for hidden surfaces and articulation where applicable."
+        }
+      ],
+      "dimensions": {
+        "recognizability": "NOT_ASSESSABLE",
+        "detailedGeometry": "NOT_ASSESSABLE",
+        "proportions": "NOT_ASSESSABLE",
+        "materialResponse": "NOT_ASSESSABLE",
+        "normals": "NOT_ASSESSABLE",
+        "visualConsistency": "NOT_ASSESSABLE",
+        "distinctiveness": "NOT_ASSESSABLE",
+        "previewUsefulness": "FAIL"
+      },
+      "premiumQualityStatus": "BLOCKED_BY_MISSING_VISIBLE_EVIDENCE"
+    },
+    {
+      "assetId": "sofa",
+      "name": "Sofa",
+      "family": "Furniture",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/thumbnails/sofa.png",
+      "thumbnailSha256": "fdd0d4de94b871403698bf142bea42bd4867fa6209174b1f48448e43b91bc69e",
+      "thumbnailBytes": 1186,
+      "inspectedWith": "view_image, individual image at 480 x 320",
+      "observation": "The complete frame is a uniform dark blue-gray background. No asset silhouette, surface, material, detail, or shadow is visible.",
+      "blockingFindings": [
+        {
+          "id": "SC02-ASSET-sofa-NO_VISIBLE_RENDER",
+          "severity": "BLOCKING",
+          "requirement": "SC-02 sections 2, 3 and 10: high-quality individual asset with recognizable geometry, convincing proportions, PBR response and useful preview",
+          "finding": "The supplied preview provides no visible instance of this asset, so its quality cannot be independently assessed and it cannot support premium asset acceptance.",
+          "requiredRepair": "Repair capture or render visibility, render this exported GLB with useful framing and lighting, and obtain independent visual re-review. Include additional views for hidden surfaces and articulation where applicable."
+        }
+      ],
+      "dimensions": {
+        "recognizability": "NOT_ASSESSABLE",
+        "detailedGeometry": "NOT_ASSESSABLE",
+        "proportions": "NOT_ASSESSABLE",
+        "materialResponse": "NOT_ASSESSABLE",
+        "normals": "NOT_ASSESSABLE",
+        "visualConsistency": "NOT_ASSESSABLE",
+        "distinctiveness": "NOT_ASSESSABLE",
+        "previewUsefulness": "FAIL"
+      },
+      "premiumQualityStatus": "BLOCKED_BY_MISSING_VISIBLE_EVIDENCE"
+    },
+    {
+      "assetId": "bookshelf",
+      "name": "Bookshelf",
+      "family": "Furniture",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/thumbnails/bookshelf.png",
+      "thumbnailSha256": "fdd0d4de94b871403698bf142bea42bd4867fa6209174b1f48448e43b91bc69e",
+      "thumbnailBytes": 1186,
+      "inspectedWith": "view_image, individual image at 480 x 320",
+      "observation": "The complete frame is a uniform dark blue-gray background. No asset silhouette, surface, material, detail, or shadow is visible.",
+      "blockingFindings": [
+        {
+          "id": "SC02-ASSET-bookshelf-NO_VISIBLE_RENDER",
+          "severity": "BLOCKING",
+          "requirement": "SC-02 sections 2, 3 and 10: high-quality individual asset with recognizable geometry, convincing proportions, PBR response and useful preview",
+          "finding": "The supplied preview provides no visible instance of this asset, so its quality cannot be independently assessed and it cannot support premium asset acceptance.",
+          "requiredRepair": "Repair capture or render visibility, render this exported GLB with useful framing and lighting, and obtain independent visual re-review. Include additional views for hidden surfaces and articulation where applicable."
+        }
+      ],
+      "dimensions": {
+        "recognizability": "NOT_ASSESSABLE",
+        "detailedGeometry": "NOT_ASSESSABLE",
+        "proportions": "NOT_ASSESSABLE",
+        "materialResponse": "NOT_ASSESSABLE",
+        "normals": "NOT_ASSESSABLE",
+        "visualConsistency": "NOT_ASSESSABLE",
+        "distinctiveness": "NOT_ASSESSABLE",
+        "previewUsefulness": "FAIL"
+      },
+      "premiumQualityStatus": "BLOCKED_BY_MISSING_VISIBLE_EVIDENCE"
+    },
+    {
+      "assetId": "wardrobe",
+      "name": "Wardrobe",
+      "family": "Storage",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/thumbnails/wardrobe.png",
+      "thumbnailSha256": "fdd0d4de94b871403698bf142bea42bd4867fa6209174b1f48448e43b91bc69e",
+      "thumbnailBytes": 1186,
+      "inspectedWith": "view_image, individual image at 480 x 320",
+      "observation": "The complete frame is a uniform dark blue-gray background. No asset silhouette, surface, material, detail, or shadow is visible.",
+      "blockingFindings": [
+        {
+          "id": "SC02-ASSET-wardrobe-NO_VISIBLE_RENDER",
+          "severity": "BLOCKING",
+          "requirement": "SC-02 sections 2, 3 and 10: high-quality individual asset with recognizable geometry, convincing proportions, PBR response and useful preview",
+          "finding": "The supplied preview provides no visible instance of this asset, so its quality cannot be independently assessed and it cannot support premium asset acceptance.",
+          "requiredRepair": "Repair capture or render visibility, render this exported GLB with useful framing and lighting, and obtain independent visual re-review. Include additional views for hidden surfaces and articulation where applicable."
+        }
+      ],
+      "dimensions": {
+        "recognizability": "NOT_ASSESSABLE",
+        "detailedGeometry": "NOT_ASSESSABLE",
+        "proportions": "NOT_ASSESSABLE",
+        "materialResponse": "NOT_ASSESSABLE",
+        "normals": "NOT_ASSESSABLE",
+        "visualConsistency": "NOT_ASSESSABLE",
+        "distinctiveness": "NOT_ASSESSABLE",
+        "previewUsefulness": "FAIL"
+      },
+      "premiumQualityStatus": "BLOCKED_BY_MISSING_VISIBLE_EVIDENCE"
+    },
+    {
+      "assetId": "dresser",
+      "name": "Dresser",
+      "family": "Storage",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/thumbnails/dresser.png",
+      "thumbnailSha256": "fdd0d4de94b871403698bf142bea42bd4867fa6209174b1f48448e43b91bc69e",
+      "thumbnailBytes": 1186,
+      "inspectedWith": "view_image, individual image at 480 x 320",
+      "observation": "The complete frame is a uniform dark blue-gray background. No asset silhouette, surface, material, detail, or shadow is visible.",
+      "blockingFindings": [
+        {
+          "id": "SC02-ASSET-dresser-NO_VISIBLE_RENDER",
+          "severity": "BLOCKING",
+          "requirement": "SC-02 sections 2, 3 and 10: high-quality individual asset with recognizable geometry, convincing proportions, PBR response and useful preview",
+          "finding": "The supplied preview provides no visible instance of this asset, so its quality cannot be independently assessed and it cannot support premium asset acceptance.",
+          "requiredRepair": "Repair capture or render visibility, render this exported GLB with useful framing and lighting, and obtain independent visual re-review. Include additional views for hidden surfaces and articulation where applicable."
+        }
+      ],
+      "dimensions": {
+        "recognizability": "NOT_ASSESSABLE",
+        "detailedGeometry": "NOT_ASSESSABLE",
+        "proportions": "NOT_ASSESSABLE",
+        "materialResponse": "NOT_ASSESSABLE",
+        "normals": "NOT_ASSESSABLE",
+        "visualConsistency": "NOT_ASSESSABLE",
+        "distinctiveness": "NOT_ASSESSABLE",
+        "previewUsefulness": "FAIL"
+      },
+      "premiumQualityStatus": "BLOCKED_BY_MISSING_VISIBLE_EVIDENCE"
+    },
+    {
+      "assetId": "cabinet",
+      "name": "Cabinet",
+      "family": "Storage",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/thumbnails/cabinet.png",
+      "thumbnailSha256": "fdd0d4de94b871403698bf142bea42bd4867fa6209174b1f48448e43b91bc69e",
+      "thumbnailBytes": 1186,
+      "inspectedWith": "view_image, individual image at 480 x 320",
+      "observation": "The complete frame is a uniform dark blue-gray background. No asset silhouette, surface, material, detail, or shadow is visible.",
+      "blockingFindings": [
+        {
+          "id": "SC02-ASSET-cabinet-NO_VISIBLE_RENDER",
+          "severity": "BLOCKING",
+          "requirement": "SC-02 sections 2, 3 and 10: high-quality individual asset with recognizable geometry, convincing proportions, PBR response and useful preview",
+          "finding": "The supplied preview provides no visible instance of this asset, so its quality cannot be independently assessed and it cannot support premium asset acceptance.",
+          "requiredRepair": "Repair capture or render visibility, render this exported GLB with useful framing and lighting, and obtain independent visual re-review. Include additional views for hidden surfaces and articulation where applicable."
+        }
+      ],
+      "dimensions": {
+        "recognizability": "NOT_ASSESSABLE",
+        "detailedGeometry": "NOT_ASSESSABLE",
+        "proportions": "NOT_ASSESSABLE",
+        "materialResponse": "NOT_ASSESSABLE",
+        "normals": "NOT_ASSESSABLE",
+        "visualConsistency": "NOT_ASSESSABLE",
+        "distinctiveness": "NOT_ASSESSABLE",
+        "previewUsefulness": "FAIL"
+      },
+      "premiumQualityStatus": "BLOCKED_BY_MISSING_VISIBLE_EVIDENCE"
+    },
+    {
+      "assetId": "travel-trunk",
+      "name": "Travel trunk",
+      "family": "Storage",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/thumbnails/travel-trunk.png",
+      "thumbnailSha256": "fdd0d4de94b871403698bf142bea42bd4867fa6209174b1f48448e43b91bc69e",
+      "thumbnailBytes": 1186,
+      "inspectedWith": "view_image, individual image at 480 x 320",
+      "observation": "The complete frame is a uniform dark blue-gray background. No asset silhouette, surface, material, detail, or shadow is visible.",
+      "blockingFindings": [
+        {
+          "id": "SC02-ASSET-travel-trunk-NO_VISIBLE_RENDER",
+          "severity": "BLOCKING",
+          "requirement": "SC-02 sections 2, 3 and 10: high-quality individual asset with recognizable geometry, convincing proportions, PBR response and useful preview",
+          "finding": "The supplied preview provides no visible instance of this asset, so its quality cannot be independently assessed and it cannot support premium asset acceptance.",
+          "requiredRepair": "Repair capture or render visibility, render this exported GLB with useful framing and lighting, and obtain independent visual re-review. Include additional views for hidden surfaces and articulation where applicable."
+        }
+      ],
+      "dimensions": {
+        "recognizability": "NOT_ASSESSABLE",
+        "detailedGeometry": "NOT_ASSESSABLE",
+        "proportions": "NOT_ASSESSABLE",
+        "materialResponse": "NOT_ASSESSABLE",
+        "normals": "NOT_ASSESSABLE",
+        "visualConsistency": "NOT_ASSESSABLE",
+        "distinctiveness": "NOT_ASSESSABLE",
+        "previewUsefulness": "FAIL"
+      },
+      "premiumQualityStatus": "BLOCKED_BY_MISSING_VISIBLE_EVIDENCE"
+    },
+    {
+      "assetId": "treasure-chest",
+      "name": "Treasure chest",
+      "family": "Storage",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/thumbnails/treasure-chest.png",
+      "thumbnailSha256": "fdd0d4de94b871403698bf142bea42bd4867fa6209174b1f48448e43b91bc69e",
+      "thumbnailBytes": 1186,
+      "inspectedWith": "view_image, individual image at 480 x 320",
+      "observation": "The complete frame is a uniform dark blue-gray background. No asset silhouette, surface, material, detail, or shadow is visible.",
+      "blockingFindings": [
+        {
+          "id": "SC02-ASSET-treasure-chest-NO_VISIBLE_RENDER",
+          "severity": "BLOCKING",
+          "requirement": "SC-02 sections 2, 3 and 10: high-quality individual asset with recognizable geometry, convincing proportions, PBR response and useful preview",
+          "finding": "The supplied preview provides no visible instance of this asset, so its quality cannot be independently assessed and it cannot support premium asset acceptance.",
+          "requiredRepair": "Repair capture or render visibility, render this exported GLB with useful framing and lighting, and obtain independent visual re-review. Include additional views for hidden surfaces and articulation where applicable."
+        }
+      ],
+      "dimensions": {
+        "recognizability": "NOT_ASSESSABLE",
+        "detailedGeometry": "NOT_ASSESSABLE",
+        "proportions": "NOT_ASSESSABLE",
+        "materialResponse": "NOT_ASSESSABLE",
+        "normals": "NOT_ASSESSABLE",
+        "visualConsistency": "NOT_ASSESSABLE",
+        "distinctiveness": "NOT_ASSESSABLE",
+        "previewUsefulness": "FAIL"
+      },
+      "premiumQualityStatus": "BLOCKED_BY_MISSING_VISIBLE_EVIDENCE"
+    },
+    {
+      "assetId": "brass-compass",
+      "name": "Brass compass",
+      "family": "Nautical Props",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/thumbnails/brass-compass.png",
+      "thumbnailSha256": "fdd0d4de94b871403698bf142bea42bd4867fa6209174b1f48448e43b91bc69e",
+      "thumbnailBytes": 1186,
+      "inspectedWith": "view_image, individual image at 480 x 320",
+      "observation": "The complete frame is a uniform dark blue-gray background. No asset silhouette, surface, material, detail, or shadow is visible.",
+      "blockingFindings": [
+        {
+          "id": "SC02-ASSET-brass-compass-NO_VISIBLE_RENDER",
+          "severity": "BLOCKING",
+          "requirement": "SC-02 sections 2, 3 and 10: high-quality individual asset with recognizable geometry, convincing proportions, PBR response and useful preview",
+          "finding": "The supplied preview provides no visible instance of this asset, so its quality cannot be independently assessed and it cannot support premium asset acceptance.",
+          "requiredRepair": "Repair capture or render visibility, render this exported GLB with useful framing and lighting, and obtain independent visual re-review. Include additional views for hidden surfaces and articulation where applicable."
+        }
+      ],
+      "dimensions": {
+        "recognizability": "NOT_ASSESSABLE",
+        "detailedGeometry": "NOT_ASSESSABLE",
+        "proportions": "NOT_ASSESSABLE",
+        "materialResponse": "NOT_ASSESSABLE",
+        "normals": "NOT_ASSESSABLE",
+        "visualConsistency": "NOT_ASSESSABLE",
+        "distinctiveness": "NOT_ASSESSABLE",
+        "previewUsefulness": "FAIL"
+      },
+      "premiumQualityStatus": "BLOCKED_BY_MISSING_VISIBLE_EVIDENCE"
+    },
+    {
+      "assetId": "lantern",
+      "name": "Lantern",
+      "family": "Nautical Props",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/thumbnails/lantern.png",
+      "thumbnailSha256": "fdd0d4de94b871403698bf142bea42bd4867fa6209174b1f48448e43b91bc69e",
+      "thumbnailBytes": 1186,
+      "inspectedWith": "view_image, individual image at 480 x 320",
+      "observation": "The complete frame is a uniform dark blue-gray background. No asset silhouette, surface, material, detail, or shadow is visible.",
+      "blockingFindings": [
+        {
+          "id": "SC02-ASSET-lantern-NO_VISIBLE_RENDER",
+          "severity": "BLOCKING",
+          "requirement": "SC-02 sections 2, 3 and 10: high-quality individual asset with recognizable geometry, convincing proportions, PBR response and useful preview",
+          "finding": "The supplied preview provides no visible instance of this asset, so its quality cannot be independently assessed and it cannot support premium asset acceptance.",
+          "requiredRepair": "Repair capture or render visibility, render this exported GLB with useful framing and lighting, and obtain independent visual re-review. Include additional views for hidden surfaces and articulation where applicable."
+        }
+      ],
+      "dimensions": {
+        "recognizability": "NOT_ASSESSABLE",
+        "detailedGeometry": "NOT_ASSESSABLE",
+        "proportions": "NOT_ASSESSABLE",
+        "materialResponse": "NOT_ASSESSABLE",
+        "normals": "NOT_ASSESSABLE",
+        "visualConsistency": "NOT_ASSESSABLE",
+        "distinctiveness": "NOT_ASSESSABLE",
+        "previewUsefulness": "FAIL"
+      },
+      "premiumQualityStatus": "BLOCKED_BY_MISSING_VISIBLE_EVIDENCE"
+    },
+    {
+      "assetId": "treasure-map",
+      "name": "Treasure map",
+      "family": "Nautical Props",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/thumbnails/treasure-map.png",
+      "thumbnailSha256": "fdd0d4de94b871403698bf142bea42bd4867fa6209174b1f48448e43b91bc69e",
+      "thumbnailBytes": 1186,
+      "inspectedWith": "view_image, individual image at 480 x 320",
+      "observation": "The complete frame is a uniform dark blue-gray background. No asset silhouette, surface, material, detail, or shadow is visible.",
+      "blockingFindings": [
+        {
+          "id": "SC02-ASSET-treasure-map-NO_VISIBLE_RENDER",
+          "severity": "BLOCKING",
+          "requirement": "SC-02 sections 2, 3 and 10: high-quality individual asset with recognizable geometry, convincing proportions, PBR response and useful preview",
+          "finding": "The supplied preview provides no visible instance of this asset, so its quality cannot be independently assessed and it cannot support premium asset acceptance.",
+          "requiredRepair": "Repair capture or render visibility, render this exported GLB with useful framing and lighting, and obtain independent visual re-review. Include additional views for hidden surfaces and articulation where applicable."
+        }
+      ],
+      "dimensions": {
+        "recognizability": "NOT_ASSESSABLE",
+        "detailedGeometry": "NOT_ASSESSABLE",
+        "proportions": "NOT_ASSESSABLE",
+        "materialResponse": "NOT_ASSESSABLE",
+        "normals": "NOT_ASSESSABLE",
+        "visualConsistency": "NOT_ASSESSABLE",
+        "distinctiveness": "NOT_ASSESSABLE",
+        "previewUsefulness": "FAIL"
+      },
+      "premiumQualityStatus": "BLOCKED_BY_MISSING_VISIBLE_EVIDENCE"
+    },
+    {
+      "assetId": "nautical-chart",
+      "name": "Rolled nautical chart",
+      "family": "Nautical Props",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/thumbnails/nautical-chart.png",
+      "thumbnailSha256": "fdd0d4de94b871403698bf142bea42bd4867fa6209174b1f48448e43b91bc69e",
+      "thumbnailBytes": 1186,
+      "inspectedWith": "view_image, individual image at 480 x 320",
+      "observation": "The complete frame is a uniform dark blue-gray background. No asset silhouette, surface, material, detail, or shadow is visible.",
+      "blockingFindings": [
+        {
+          "id": "SC02-ASSET-nautical-chart-NO_VISIBLE_RENDER",
+          "severity": "BLOCKING",
+          "requirement": "SC-02 sections 2, 3 and 10: high-quality individual asset with recognizable geometry, convincing proportions, PBR response and useful preview",
+          "finding": "The supplied preview provides no visible instance of this asset, so its quality cannot be independently assessed and it cannot support premium asset acceptance.",
+          "requiredRepair": "Repair capture or render visibility, render this exported GLB with useful framing and lighting, and obtain independent visual re-review. Include additional views for hidden surfaces and articulation where applicable."
+        }
+      ],
+      "dimensions": {
+        "recognizability": "NOT_ASSESSABLE",
+        "detailedGeometry": "NOT_ASSESSABLE",
+        "proportions": "NOT_ASSESSABLE",
+        "materialResponse": "NOT_ASSESSABLE",
+        "normals": "NOT_ASSESSABLE",
+        "visualConsistency": "NOT_ASSESSABLE",
+        "distinctiveness": "NOT_ASSESSABLE",
+        "previewUsefulness": "FAIL"
+      },
+      "premiumQualityStatus": "BLOCKED_BY_MISSING_VISIBLE_EVIDENCE"
+    },
+    {
+      "assetId": "spyglass",
+      "name": "Spyglass",
+      "family": "Nautical Props",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/thumbnails/spyglass.png",
+      "thumbnailSha256": "fdd0d4de94b871403698bf142bea42bd4867fa6209174b1f48448e43b91bc69e",
+      "thumbnailBytes": 1186,
+      "inspectedWith": "view_image, individual image at 480 x 320",
+      "observation": "The complete frame is a uniform dark blue-gray background. No asset silhouette, surface, material, detail, or shadow is visible.",
+      "blockingFindings": [
+        {
+          "id": "SC02-ASSET-spyglass-NO_VISIBLE_RENDER",
+          "severity": "BLOCKING",
+          "requirement": "SC-02 sections 2, 3 and 10: high-quality individual asset with recognizable geometry, convincing proportions, PBR response and useful preview",
+          "finding": "The supplied preview provides no visible instance of this asset, so its quality cannot be independently assessed and it cannot support premium asset acceptance.",
+          "requiredRepair": "Repair capture or render visibility, render this exported GLB with useful framing and lighting, and obtain independent visual re-review. Include additional views for hidden surfaces and articulation where applicable."
+        }
+      ],
+      "dimensions": {
+        "recognizability": "NOT_ASSESSABLE",
+        "detailedGeometry": "NOT_ASSESSABLE",
+        "proportions": "NOT_ASSESSABLE",
+        "materialResponse": "NOT_ASSESSABLE",
+        "normals": "NOT_ASSESSABLE",
+        "visualConsistency": "NOT_ASSESSABLE",
+        "distinctiveness": "NOT_ASSESSABLE",
+        "previewUsefulness": "FAIL"
+      },
+      "premiumQualityStatus": "BLOCKED_BY_MISSING_VISIBLE_EVIDENCE"
+    },
+    {
+      "assetId": "parchment-note",
+      "name": "Folded parchment note",
+      "family": "Clue Objects",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/thumbnails/parchment-note.png",
+      "thumbnailSha256": "fdd0d4de94b871403698bf142bea42bd4867fa6209174b1f48448e43b91bc69e",
+      "thumbnailBytes": 1186,
+      "inspectedWith": "view_image, individual image at 480 x 320",
+      "observation": "The complete frame is a uniform dark blue-gray background. No asset silhouette, surface, material, detail, or shadow is visible.",
+      "blockingFindings": [
+        {
+          "id": "SC02-ASSET-parchment-note-NO_VISIBLE_RENDER",
+          "severity": "BLOCKING",
+          "requirement": "SC-02 sections 2, 3 and 10: high-quality individual asset with recognizable geometry, convincing proportions, PBR response and useful preview",
+          "finding": "The supplied preview provides no visible instance of this asset, so its quality cannot be independently assessed and it cannot support premium asset acceptance.",
+          "requiredRepair": "Repair capture or render visibility, render this exported GLB with useful framing and lighting, and obtain independent visual re-review. Include additional views for hidden surfaces and articulation where applicable."
+        }
+      ],
+      "dimensions": {
+        "recognizability": "NOT_ASSESSABLE",
+        "detailedGeometry": "NOT_ASSESSABLE",
+        "proportions": "NOT_ASSESSABLE",
+        "materialResponse": "NOT_ASSESSABLE",
+        "normals": "NOT_ASSESSABLE",
+        "visualConsistency": "NOT_ASSESSABLE",
+        "distinctiveness": "NOT_ASSESSABLE",
+        "previewUsefulness": "FAIL"
+      },
+      "premiumQualityStatus": "BLOCKED_BY_MISSING_VISIBLE_EVIDENCE"
+    },
+    {
+      "assetId": "sealed-letter",
+      "name": "Sealed letter",
+      "family": "Clue Objects",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/thumbnails/sealed-letter.png",
+      "thumbnailSha256": "fdd0d4de94b871403698bf142bea42bd4867fa6209174b1f48448e43b91bc69e",
+      "thumbnailBytes": 1186,
+      "inspectedWith": "view_image, individual image at 480 x 320",
+      "observation": "The complete frame is a uniform dark blue-gray background. No asset silhouette, surface, material, detail, or shadow is visible.",
+      "blockingFindings": [
+        {
+          "id": "SC02-ASSET-sealed-letter-NO_VISIBLE_RENDER",
+          "severity": "BLOCKING",
+          "requirement": "SC-02 sections 2, 3 and 10: high-quality individual asset with recognizable geometry, convincing proportions, PBR response and useful preview",
+          "finding": "The supplied preview provides no visible instance of this asset, so its quality cannot be independently assessed and it cannot support premium asset acceptance.",
+          "requiredRepair": "Repair capture or render visibility, render this exported GLB with useful framing and lighting, and obtain independent visual re-review. Include additional views for hidden surfaces and articulation where applicable."
+        }
+      ],
+      "dimensions": {
+        "recognizability": "NOT_ASSESSABLE",
+        "detailedGeometry": "NOT_ASSESSABLE",
+        "proportions": "NOT_ASSESSABLE",
+        "materialResponse": "NOT_ASSESSABLE",
+        "normals": "NOT_ASSESSABLE",
+        "visualConsistency": "NOT_ASSESSABLE",
+        "distinctiveness": "NOT_ASSESSABLE",
+        "previewUsefulness": "FAIL"
+      },
+      "premiumQualityStatus": "BLOCKED_BY_MISSING_VISIBLE_EVIDENCE"
+    },
+    {
+      "assetId": "antique-book",
+      "name": "Antique book",
+      "family": "Clue Objects",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/thumbnails/antique-book.png",
+      "thumbnailSha256": "fdd0d4de94b871403698bf142bea42bd4867fa6209174b1f48448e43b91bc69e",
+      "thumbnailBytes": 1186,
+      "inspectedWith": "view_image, individual image at 480 x 320",
+      "observation": "The complete frame is a uniform dark blue-gray background. No asset silhouette, surface, material, detail, or shadow is visible.",
+      "blockingFindings": [
+        {
+          "id": "SC02-ASSET-antique-book-NO_VISIBLE_RENDER",
+          "severity": "BLOCKING",
+          "requirement": "SC-02 sections 2, 3 and 10: high-quality individual asset with recognizable geometry, convincing proportions, PBR response and useful preview",
+          "finding": "The supplied preview provides no visible instance of this asset, so its quality cannot be independently assessed and it cannot support premium asset acceptance.",
+          "requiredRepair": "Repair capture or render visibility, render this exported GLB with useful framing and lighting, and obtain independent visual re-review. Include additional views for hidden surfaces and articulation where applicable."
+        }
+      ],
+      "dimensions": {
+        "recognizability": "NOT_ASSESSABLE",
+        "detailedGeometry": "NOT_ASSESSABLE",
+        "proportions": "NOT_ASSESSABLE",
+        "materialResponse": "NOT_ASSESSABLE",
+        "normals": "NOT_ASSESSABLE",
+        "visualConsistency": "NOT_ASSESSABLE",
+        "distinctiveness": "NOT_ASSESSABLE",
+        "previewUsefulness": "FAIL"
+      },
+      "premiumQualityStatus": "BLOCKED_BY_MISSING_VISIBLE_EVIDENCE"
+    },
+    {
+      "assetId": "ornate-key",
+      "name": "Ornate key",
+      "family": "Clue Objects",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/thumbnails/ornate-key.png",
+      "thumbnailSha256": "fdd0d4de94b871403698bf142bea42bd4867fa6209174b1f48448e43b91bc69e",
+      "thumbnailBytes": 1186,
+      "inspectedWith": "view_image, individual image at 480 x 320",
+      "observation": "The complete frame is a uniform dark blue-gray background. No asset silhouette, surface, material, detail, or shadow is visible.",
+      "blockingFindings": [
+        {
+          "id": "SC02-ASSET-ornate-key-NO_VISIBLE_RENDER",
+          "severity": "BLOCKING",
+          "requirement": "SC-02 sections 2, 3 and 10: high-quality individual asset with recognizable geometry, convincing proportions, PBR response and useful preview",
+          "finding": "The supplied preview provides no visible instance of this asset, so its quality cannot be independently assessed and it cannot support premium asset acceptance.",
+          "requiredRepair": "Repair capture or render visibility, render this exported GLB with useful framing and lighting, and obtain independent visual re-review. Include additional views for hidden surfaces and articulation where applicable."
+        }
+      ],
+      "dimensions": {
+        "recognizability": "NOT_ASSESSABLE",
+        "detailedGeometry": "NOT_ASSESSABLE",
+        "proportions": "NOT_ASSESSABLE",
+        "materialResponse": "NOT_ASSESSABLE",
+        "normals": "NOT_ASSESSABLE",
+        "visualConsistency": "NOT_ASSESSABLE",
+        "distinctiveness": "NOT_ASSESSABLE",
+        "previewUsefulness": "FAIL"
+      },
+      "premiumQualityStatus": "BLOCKED_BY_MISSING_VISIBLE_EVIDENCE"
+    },
+    {
+      "assetId": "puzzle-box",
+      "name": "Puzzle box",
+      "family": "Clue Objects",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/thumbnails/puzzle-box.png",
+      "thumbnailSha256": "fdd0d4de94b871403698bf142bea42bd4867fa6209174b1f48448e43b91bc69e",
+      "thumbnailBytes": 1186,
+      "inspectedWith": "view_image, individual image at 480 x 320",
+      "observation": "The complete frame is a uniform dark blue-gray background. No asset silhouette, surface, material, detail, or shadow is visible.",
+      "blockingFindings": [
+        {
+          "id": "SC02-ASSET-puzzle-box-NO_VISIBLE_RENDER",
+          "severity": "BLOCKING",
+          "requirement": "SC-02 sections 2, 3 and 10: high-quality individual asset with recognizable geometry, convincing proportions, PBR response and useful preview",
+          "finding": "The supplied preview provides no visible instance of this asset, so its quality cannot be independently assessed and it cannot support premium asset acceptance.",
+          "requiredRepair": "Repair capture or render visibility, render this exported GLB with useful framing and lighting, and obtain independent visual re-review. Include additional views for hidden surfaces and articulation where applicable."
+        }
+      ],
+      "dimensions": {
+        "recognizability": "NOT_ASSESSABLE",
+        "detailedGeometry": "NOT_ASSESSABLE",
+        "proportions": "NOT_ASSESSABLE",
+        "materialResponse": "NOT_ASSESSABLE",
+        "normals": "NOT_ASSESSABLE",
+        "visualConsistency": "NOT_ASSESSABLE",
+        "distinctiveness": "NOT_ASSESSABLE",
+        "previewUsefulness": "FAIL"
+      },
+      "premiumQualityStatus": "BLOCKED_BY_MISSING_VISIBLE_EVIDENCE"
+    },
+    {
+      "assetId": "candelabra",
+      "name": "Candelabra",
+      "family": "Environmental Decor",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/thumbnails/candelabra.png",
+      "thumbnailSha256": "fdd0d4de94b871403698bf142bea42bd4867fa6209174b1f48448e43b91bc69e",
+      "thumbnailBytes": 1186,
+      "inspectedWith": "view_image, individual image at 480 x 320",
+      "observation": "The complete frame is a uniform dark blue-gray background. No asset silhouette, surface, material, detail, or shadow is visible.",
+      "blockingFindings": [
+        {
+          "id": "SC02-ASSET-candelabra-NO_VISIBLE_RENDER",
+          "severity": "BLOCKING",
+          "requirement": "SC-02 sections 2, 3 and 10: high-quality individual asset with recognizable geometry, convincing proportions, PBR response and useful preview",
+          "finding": "The supplied preview provides no visible instance of this asset, so its quality cannot be independently assessed and it cannot support premium asset acceptance.",
+          "requiredRepair": "Repair capture or render visibility, render this exported GLB with useful framing and lighting, and obtain independent visual re-review. Include additional views for hidden surfaces and articulation where applicable."
+        }
+      ],
+      "dimensions": {
+        "recognizability": "NOT_ASSESSABLE",
+        "detailedGeometry": "NOT_ASSESSABLE",
+        "proportions": "NOT_ASSESSABLE",
+        "materialResponse": "NOT_ASSESSABLE",
+        "normals": "NOT_ASSESSABLE",
+        "visualConsistency": "NOT_ASSESSABLE",
+        "distinctiveness": "NOT_ASSESSABLE",
+        "previewUsefulness": "FAIL"
+      },
+      "premiumQualityStatus": "BLOCKED_BY_MISSING_VISIBLE_EVIDENCE"
+    },
+    {
+      "assetId": "framed-painting",
+      "name": "Framed painting",
+      "family": "Environmental Decor",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/thumbnails/framed-painting.png",
+      "thumbnailSha256": "fdd0d4de94b871403698bf142bea42bd4867fa6209174b1f48448e43b91bc69e",
+      "thumbnailBytes": 1186,
+      "inspectedWith": "view_image, individual image at 480 x 320",
+      "observation": "The complete frame is a uniform dark blue-gray background. No asset silhouette, surface, material, detail, or shadow is visible.",
+      "blockingFindings": [
+        {
+          "id": "SC02-ASSET-framed-painting-NO_VISIBLE_RENDER",
+          "severity": "BLOCKING",
+          "requirement": "SC-02 sections 2, 3 and 10: high-quality individual asset with recognizable geometry, convincing proportions, PBR response and useful preview",
+          "finding": "The supplied preview provides no visible instance of this asset, so its quality cannot be independently assessed and it cannot support premium asset acceptance.",
+          "requiredRepair": "Repair capture or render visibility, render this exported GLB with useful framing and lighting, and obtain independent visual re-review. Include additional views for hidden surfaces and articulation where applicable."
+        }
+      ],
+      "dimensions": {
+        "recognizability": "NOT_ASSESSABLE",
+        "detailedGeometry": "NOT_ASSESSABLE",
+        "proportions": "NOT_ASSESSABLE",
+        "materialResponse": "NOT_ASSESSABLE",
+        "normals": "NOT_ASSESSABLE",
+        "visualConsistency": "NOT_ASSESSABLE",
+        "distinctiveness": "NOT_ASSESSABLE",
+        "previewUsefulness": "FAIL"
+      },
+      "premiumQualityStatus": "BLOCKED_BY_MISSING_VISIBLE_EVIDENCE"
+    },
+    {
+      "assetId": "rug",
+      "name": "Rug",
+      "family": "Environmental Decor",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/thumbnails/rug.png",
+      "thumbnailSha256": "fdd0d4de94b871403698bf142bea42bd4867fa6209174b1f48448e43b91bc69e",
+      "thumbnailBytes": 1186,
+      "inspectedWith": "view_image, individual image at 480 x 320",
+      "observation": "The complete frame is a uniform dark blue-gray background. No asset silhouette, surface, material, detail, or shadow is visible.",
+      "blockingFindings": [
+        {
+          "id": "SC02-ASSET-rug-NO_VISIBLE_RENDER",
+          "severity": "BLOCKING",
+          "requirement": "SC-02 sections 2, 3 and 10: high-quality individual asset with recognizable geometry, convincing proportions, PBR response and useful preview",
+          "finding": "The supplied preview provides no visible instance of this asset, so its quality cannot be independently assessed and it cannot support premium asset acceptance.",
+          "requiredRepair": "Repair capture or render visibility, render this exported GLB with useful framing and lighting, and obtain independent visual re-review. Include additional views for hidden surfaces and articulation where applicable."
+        }
+      ],
+      "dimensions": {
+        "recognizability": "NOT_ASSESSABLE",
+        "detailedGeometry": "NOT_ASSESSABLE",
+        "proportions": "NOT_ASSESSABLE",
+        "materialResponse": "NOT_ASSESSABLE",
+        "normals": "NOT_ASSESSABLE",
+        "visualConsistency": "NOT_ASSESSABLE",
+        "distinctiveness": "NOT_ASSESSABLE",
+        "previewUsefulness": "FAIL"
+      },
+      "premiumQualityStatus": "BLOCKED_BY_MISSING_VISIBLE_EVIDENCE"
+    },
+    {
+      "assetId": "curtains",
+      "name": "Curtains",
+      "family": "Environmental Decor",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/thumbnails/curtains.png",
+      "thumbnailSha256": "fdd0d4de94b871403698bf142bea42bd4867fa6209174b1f48448e43b91bc69e",
+      "thumbnailBytes": 1186,
+      "inspectedWith": "view_image, individual image at 480 x 320",
+      "observation": "The complete frame is a uniform dark blue-gray background. No asset silhouette, surface, material, detail, or shadow is visible.",
+      "blockingFindings": [
+        {
+          "id": "SC02-ASSET-curtains-NO_VISIBLE_RENDER",
+          "severity": "BLOCKING",
+          "requirement": "SC-02 sections 2, 3 and 10: high-quality individual asset with recognizable geometry, convincing proportions, PBR response and useful preview",
+          "finding": "The supplied preview provides no visible instance of this asset, so its quality cannot be independently assessed and it cannot support premium asset acceptance.",
+          "requiredRepair": "Repair capture or render visibility, render this exported GLB with useful framing and lighting, and obtain independent visual re-review. Include additional views for hidden surfaces and articulation where applicable."
+        }
+      ],
+      "dimensions": {
+        "recognizability": "NOT_ASSESSABLE",
+        "detailedGeometry": "NOT_ASSESSABLE",
+        "proportions": "NOT_ASSESSABLE",
+        "materialResponse": "NOT_ASSESSABLE",
+        "normals": "NOT_ASSESSABLE",
+        "visualConsistency": "NOT_ASSESSABLE",
+        "distinctiveness": "NOT_ASSESSABLE",
+        "previewUsefulness": "FAIL"
+      },
+      "premiumQualityStatus": "BLOCKED_BY_MISSING_VISIBLE_EVIDENCE"
+    },
+    {
+      "assetId": "decorative-vase",
+      "name": "Decorative vase",
+      "family": "Environmental Decor",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/thumbnails/decorative-vase.png",
+      "thumbnailSha256": "fdd0d4de94b871403698bf142bea42bd4867fa6209174b1f48448e43b91bc69e",
+      "thumbnailBytes": 1186,
+      "inspectedWith": "view_image, individual image at 480 x 320",
+      "observation": "The complete frame is a uniform dark blue-gray background. No asset silhouette, surface, material, detail, or shadow is visible.",
+      "blockingFindings": [
+        {
+          "id": "SC02-ASSET-decorative-vase-NO_VISIBLE_RENDER",
+          "severity": "BLOCKING",
+          "requirement": "SC-02 sections 2, 3 and 10: high-quality individual asset with recognizable geometry, convincing proportions, PBR response and useful preview",
+          "finding": "The supplied preview provides no visible instance of this asset, so its quality cannot be independently assessed and it cannot support premium asset acceptance.",
+          "requiredRepair": "Repair capture or render visibility, render this exported GLB with useful framing and lighting, and obtain independent visual re-review. Include additional views for hidden surfaces and articulation where applicable."
+        }
+      ],
+      "dimensions": {
+        "recognizability": "NOT_ASSESSABLE",
+        "detailedGeometry": "NOT_ASSESSABLE",
+        "proportions": "NOT_ASSESSABLE",
+        "materialResponse": "NOT_ASSESSABLE",
+        "normals": "NOT_ASSESSABLE",
+        "visualConsistency": "NOT_ASSESSABLE",
+        "distinctiveness": "NOT_ASSESSABLE",
+        "previewUsefulness": "FAIL"
+      },
+      "premiumQualityStatus": "BLOCKED_BY_MISSING_VISIBLE_EVIDENCE"
+    },
+    {
+      "assetId": "hinged-door",
+      "name": "Hinged door",
+      "family": "Interactive Props",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/thumbnails/hinged-door.png",
+      "thumbnailSha256": "fdd0d4de94b871403698bf142bea42bd4867fa6209174b1f48448e43b91bc69e",
+      "thumbnailBytes": 1186,
+      "inspectedWith": "view_image, individual image at 480 x 320",
+      "observation": "The complete frame is a uniform dark blue-gray background. No asset silhouette, surface, material, detail, or shadow is visible.",
+      "blockingFindings": [
+        {
+          "id": "SC02-ASSET-hinged-door-NO_VISIBLE_RENDER",
+          "severity": "BLOCKING",
+          "requirement": "SC-02 sections 2, 3 and 10: high-quality individual asset with recognizable geometry, convincing proportions, PBR response and useful preview",
+          "finding": "The supplied preview provides no visible instance of this asset, so its quality cannot be independently assessed and it cannot support premium asset acceptance.",
+          "requiredRepair": "Repair capture or render visibility, render this exported GLB with useful framing and lighting, and obtain independent visual re-review. Include additional views for hidden surfaces and articulation where applicable."
+        }
+      ],
+      "dimensions": {
+        "recognizability": "NOT_ASSESSABLE",
+        "detailedGeometry": "NOT_ASSESSABLE",
+        "proportions": "NOT_ASSESSABLE",
+        "materialResponse": "NOT_ASSESSABLE",
+        "normals": "NOT_ASSESSABLE",
+        "visualConsistency": "NOT_ASSESSABLE",
+        "distinctiveness": "NOT_ASSESSABLE",
+        "previewUsefulness": "FAIL"
+      },
+      "premiumQualityStatus": "BLOCKED_BY_MISSING_VISIBLE_EVIDENCE"
+    },
+    {
+      "assetId": "opening-drawer",
+      "name": "Opening drawer",
+      "family": "Interactive Props",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/thumbnails/opening-drawer.png",
+      "thumbnailSha256": "fdd0d4de94b871403698bf142bea42bd4867fa6209174b1f48448e43b91bc69e",
+      "thumbnailBytes": 1186,
+      "inspectedWith": "view_image, individual image at 480 x 320",
+      "observation": "The complete frame is a uniform dark blue-gray background. No asset silhouette, surface, material, detail, or shadow is visible.",
+      "blockingFindings": [
+        {
+          "id": "SC02-ASSET-opening-drawer-NO_VISIBLE_RENDER",
+          "severity": "BLOCKING",
+          "requirement": "SC-02 sections 2, 3 and 10: high-quality individual asset with recognizable geometry, convincing proportions, PBR response and useful preview",
+          "finding": "The supplied preview provides no visible instance of this asset, so its quality cannot be independently assessed and it cannot support premium asset acceptance.",
+          "requiredRepair": "Repair capture or render visibility, render this exported GLB with useful framing and lighting, and obtain independent visual re-review. Include additional views for hidden surfaces and articulation where applicable."
+        }
+      ],
+      "dimensions": {
+        "recognizability": "NOT_ASSESSABLE",
+        "detailedGeometry": "NOT_ASSESSABLE",
+        "proportions": "NOT_ASSESSABLE",
+        "materialResponse": "NOT_ASSESSABLE",
+        "normals": "NOT_ASSESSABLE",
+        "visualConsistency": "NOT_ASSESSABLE",
+        "distinctiveness": "NOT_ASSESSABLE",
+        "previewUsefulness": "FAIL"
+      },
+      "premiumQualityStatus": "BLOCKED_BY_MISSING_VISIBLE_EVIDENCE"
+    },
+    {
+      "assetId": "articulated-chest",
+      "name": "Articulated chest",
+      "family": "Interactive Props",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/thumbnails/articulated-chest.png",
+      "thumbnailSha256": "fdd0d4de94b871403698bf142bea42bd4867fa6209174b1f48448e43b91bc69e",
+      "thumbnailBytes": 1186,
+      "inspectedWith": "view_image, individual image at 480 x 320",
+      "observation": "The complete frame is a uniform dark blue-gray background. No asset silhouette, surface, material, detail, or shadow is visible.",
+      "blockingFindings": [
+        {
+          "id": "SC02-ASSET-articulated-chest-NO_VISIBLE_RENDER",
+          "severity": "BLOCKING",
+          "requirement": "SC-02 sections 2, 3 and 10: high-quality individual asset with recognizable geometry, convincing proportions, PBR response and useful preview",
+          "finding": "The supplied preview provides no visible instance of this asset, so its quality cannot be independently assessed and it cannot support premium asset acceptance.",
+          "requiredRepair": "Repair capture or render visibility, render this exported GLB with useful framing and lighting, and obtain independent visual re-review. Include additional views for hidden surfaces and articulation where applicable."
+        }
+      ],
+      "dimensions": {
+        "recognizability": "NOT_ASSESSABLE",
+        "detailedGeometry": "NOT_ASSESSABLE",
+        "proportions": "NOT_ASSESSABLE",
+        "materialResponse": "NOT_ASSESSABLE",
+        "normals": "NOT_ASSESSABLE",
+        "visualConsistency": "NOT_ASSESSABLE",
+        "distinctiveness": "NOT_ASSESSABLE",
+        "previewUsefulness": "FAIL"
+      },
+      "premiumQualityStatus": "BLOCKED_BY_MISSING_VISIBLE_EVIDENCE"
+    },
+    {
+      "assetId": "hanging-banner",
+      "name": "Hanging banner",
+      "family": "Interactive Props",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/thumbnails/hanging-banner.png",
+      "thumbnailSha256": "fdd0d4de94b871403698bf142bea42bd4867fa6209174b1f48448e43b91bc69e",
+      "thumbnailBytes": 1186,
+      "inspectedWith": "view_image, individual image at 480 x 320",
+      "observation": "The complete frame is a uniform dark blue-gray background. No asset silhouette, surface, material, detail, or shadow is visible.",
+      "blockingFindings": [
+        {
+          "id": "SC02-ASSET-hanging-banner-NO_VISIBLE_RENDER",
+          "severity": "BLOCKING",
+          "requirement": "SC-02 sections 2, 3 and 10: high-quality individual asset with recognizable geometry, convincing proportions, PBR response and useful preview",
+          "finding": "The supplied preview provides no visible instance of this asset, so its quality cannot be independently assessed and it cannot support premium asset acceptance.",
+          "requiredRepair": "Repair capture or render visibility, render this exported GLB with useful framing and lighting, and obtain independent visual re-review. Include additional views for hidden surfaces and articulation where applicable."
+        }
+      ],
+      "dimensions": {
+        "recognizability": "NOT_ASSESSABLE",
+        "detailedGeometry": "NOT_ASSESSABLE",
+        "proportions": "NOT_ASSESSABLE",
+        "materialResponse": "NOT_ASSESSABLE",
+        "normals": "NOT_ASSESSABLE",
+        "visualConsistency": "NOT_ASSESSABLE",
+        "distinctiveness": "NOT_ASSESSABLE",
+        "previewUsefulness": "FAIL"
+      },
+      "premiumQualityStatus": "BLOCKED_BY_MISSING_VISIBLE_EVIDENCE"
+    },
+    {
+      "assetId": "wall-sign",
+      "name": "Wall sign",
+      "family": "Interactive Props",
+      "evidencePath": "Development_Docs/Projects/Project_Parallax/evidence/sc02/independent-review-initial/thumbnails/wall-sign.png",
+      "thumbnailSha256": "fdd0d4de94b871403698bf142bea42bd4867fa6209174b1f48448e43b91bc69e",
+      "thumbnailBytes": 1186,
+      "inspectedWith": "view_image, individual image at 480 x 320",
+      "observation": "The complete frame is a uniform dark blue-gray background. No asset silhouette, surface, material, detail, or shadow is visible.",
+      "blockingFindings": [
+        {
+          "id": "SC02-ASSET-wall-sign-NO_VISIBLE_RENDER",
+          "severity": "BLOCKING",
+          "requirement": "SC-02 sections 2, 3 and 10: high-quality individual asset with recognizable geometry, convincing proportions, PBR response and useful preview",
+          "finding": "The supplied preview provides no visible instance of this asset, so its quality cannot be independently assessed and it cannot support premium asset acceptance.",
+          "requiredRepair": "Repair capture or render visibility, render this exported GLB with useful framing and lighting, and obtain independent visual re-review. Include additional views for hidden surfaces and articulation where applicable."
+        }
+      ],
+      "dimensions": {
+        "recognizability": "NOT_ASSESSABLE",
+        "detailedGeometry": "NOT_ASSESSABLE",
+        "proportions": "NOT_ASSESSABLE",
+        "materialResponse": "NOT_ASSESSABLE",
+        "normals": "NOT_ASSESSABLE",
+        "visualConsistency": "NOT_ASSESSABLE",
+        "distinctiveness": "NOT_ASSESSABLE",
+        "previewUsefulness": "FAIL"
+      },
+      "premiumQualityStatus": "BLOCKED_BY_MISSING_VISIBLE_EVIDENCE"
+    }
+  ]
+}

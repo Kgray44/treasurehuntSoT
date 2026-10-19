@@ -105,7 +105,8 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
               JSONSerialization.isValidJSONObject(request), let encoded = try? JSONSerialization.data(withJSONObject: request), encoded.count <= 16384 else { replyHandler(nil, "INVALID_NATIVE_REQUEST"); return }
         let payload = request["payload"] as? [String: Any] ?? [:]
         switch operation {
-        case "SPATIAL_STATE": replyHandler(ParallaxLocalRuntime.state(),nil)
+        case "SPATIAL_STATE":
+            var state=ParallaxLocalRuntime.state();if payload["sceneCapabilities"] as? Bool == true {state["sceneOpacity"]=true};replyHandler(state,nil)
         case "SPATIAL_PERMISSION":
             guard foreground else {replyHandler(["supported":false,"permission":"RESTRICTED"],nil);return}
             ParallaxLocalRuntime.permission(reply:replyHandler)

@@ -1,0 +1,491 @@
+{
+  "schemaVersion": 1,
+  "documentClassification": "engineering-evidence",
+  "reviewer": "owner_experience_review",
+  "builderContext": "root",
+  "reviewerContext": "owner_experience_review",
+  "independence": "SEPARATE_CONTEXT",
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "candidate": "82a9ccd57a6d0485c797840396e6057f9e8221ca",
+  "tree": "16928fdb797eaec63cce7fecc5804a753c4e2853",
+  "contractId": "parallax.authored-library-and-simulation.experience",
+  "contractMetadataNote": "Owning candidate contract supplied by repository/task scope; original bounded manifest omitted contractId. Appended here without modifying capture manifest.",
+  "manifestPath": "Development_Docs/Testing/Product_Experience/evidence/parallax-cinematic-20261013/current-82a9ccd57a6d/manifest.json",
+  "packetDigest": "d82df4768b6d3c235292297287ec623fa37a87690cb7dc4d38d2d4aef32592cc",
+  "runtime": "PRODUCTION",
+  "runtimeEvidence": "Manifest status and task identify production; originalrun binds exactcandidate/tree and provider.",
+  "provider": "SYNTHETIC_UNPAID",
+  "automaticPaidCalls": 0,
+  "objective": "Owner requests Cinematic third continuous motion option, direct graph-title rename, usable keyframe selection/duration dragging and Edit room features controls. Preserve established Studio. New tracks default to easing; reduced motion removes decoration. Exact endpoints and canonical save/history preserved.",
+  "status": "BOUNDED_CINEMATIC_EXPERIENCE_VERIFIED_WITH_MINOR_POLISH",
+  "repairDisposition": "VERIFY_FINAL_EVIDENCE",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "fullScenarioNAcceptance": "NOT_CLAIMED",
+  "wholeOverhaulAcceptance": "NOT_CLAIMED",
+  "fullContractAcceptance": "NOT_CLAIMED",
+  "nativeHardwareAcceptance": "NOT_CLAIMED",
+  "dimensions": {
+    "composition": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "Established dark blue workstation persists: graph left, central paper preview, inspector right, Timeline below. Selected-pose settings now sit beside tracks within the bottom dock, rather than over the preview. The selected endpoint paper has a small right-corner overlap with the canvas callout; moving-take views are central and clear. Room control image retains the furnished room and actual fields.",
+      "evidenceIds": [
+        "cinematic-selected-keyframe-settings.png",
+        "cinematic-first-take.png",
+        "room-edit-controls-open-after-click.png"
+      ]
+    },
+    "hierarchy": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "Graph, inspector and selected-object callout agree on renamed Magic letter. Actual model remains the map/parchment originally named Desk Map; renaming is not replacement with a folded-letter asset. Selected keyframe fields have an outlined group and sit beside the track. Room editor changes primary heading to Bedroom, but retains the selected map type parchment underneath; this is a minor context mismatch.",
+      "evidenceIds": [
+        "cinematic-selected-keyframe-settings.png",
+        "cinematic-first-take.png",
+        "room-edit-controls-open-after-click.png"
+      ]
+    },
+    "typography": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "Object names, position fields, Time(s), X/Y/Z meters, clip duration and timeline hints are readable at original1440x1000 size. Diagram/compass-rose paper detail remains visible in motion stills. No additional paper-text quality, languages or native typography is accepted from this packet.",
+      "evidenceIds": [
+        "cinematic-selected-keyframe-settings.png",
+        "cinematic-live-duration-resize.png",
+        "cinematic-first-take.png"
+      ]
+    },
+    "spacing": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "Keyframe diamonds occupy a row above the duration bar. End handle remains distinct from the selected endpoint diamond. Live drag grows label2.0s to4.0s without the diamond intercepting the handle center. Adjacent selected-pose settings have a visible column boundary; room fields are spaced vertically. Selected endpoint callout lightly overlaps paper corner.",
+      "evidenceIds": [
+        "cinematic-selected-keyframe-settings.png",
+        "cinematic-live-duration-resize.png",
+        "room-edit-controls-open-after-click.png"
+      ]
+    },
+    "controls": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "Actual journey clicks graph title to open a focused rename field, commits Enter, clicks endpoint diamond, selects Cinematic interpolation and drags duration end while pointer remains down. New duration is committed after pointerup. Play/Pause/Restart/Stop and Edit room features are exercised; room feature selector receives focus and Feature x is edited.",
+      "evidenceIds": [
+        "cinematic-selected-keyframe-settings.png",
+        "cinematic-live-duration-resize.png",
+        "room-edit-controls-open-after-click.png",
+        "parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm"
+      ]
+    },
+    "contrast": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "Pale parchment is legible against navy preview; light-blue selection and clip controls distinguish selected object/track. Selected fields have an accent outline. Room field focus ring is visible. No formal WCAG ratio/low-vision claim is made. Only dark appearance is supplied in this bounded packet.",
+      "evidenceIds": [
+        "cinematic-first-take.png",
+        "cinematic-selected-keyframe-settings.png",
+        "room-edit-controls-open-after-click.png"
+      ]
+    },
+    "consistency": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "Both takes keep the same authored paper, material alpha1, pose identity and horizontal authored progression while small rotation/lateral variation differs. Reduced view keeps the same paper and authored movement with original rotation and support height. Rename is shared across graph/inspector/timeline; scene title remains Desk Map, appropriately distinct from entity name.",
+      "evidenceIds": [
+        "cinematic-renderer-proof.original.json.txt",
+        "cinematic-first-take.png",
+        "cinematic-second-take.png",
+        "cinematic-reduced-motion.png"
+      ]
+    },
+    "states": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "Recording covers natural Studio entry, saved library scene, direct rename, isolate/frame, selected keyframe, live resize, first take, restart/second take, save, reduced-motion take, reload and open room controls. Initial/loading frames are not accepted as final views. Adverse network/native/fallback states are not present.",
+      "evidenceIds": [
+        "parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm",
+        "room-edit-controls-open-after-click.png",
+        "run.original.json.txt"
+      ]
+    },
+    "responsive": {
+      "status": "NOT_ESTABLISHED_BEYOND_DESKTOP",
+      "observation": "All current stills are desktop1440x1000, encoded recording800x450. Side-by-side track/settings layout fits this desktop with scrollable pane heights. No phone/tablet/light-theme capture is included; responsive CSS alone would not establish those rendered experiences.",
+      "evidenceIds": [
+        "cinematic-selected-keyframe-settings.png",
+        "cinematic-live-duration-resize.png"
+      ]
+    },
+    "keyboard": {
+      "status": "PARTIAL_KEYBOARD_EVIDENCE",
+      "observation": "Direct title click opens a test-asserted focused rename textbox; Enter commits. Native form controls and room feature input support ordinary keyboard editing; Tab follows Feature x edit in the current journey. F2 compatibility is visible in pinned title help, but no fresh keyboard-only rename/resize/menu/tab-order audit is performed here.",
+      "evidenceIds": [
+        "room-edit-controls-open-after-click.png",
+        "parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm"
+      ]
+    },
+    "focus": {
+      "status": "TARGETED_FOCUS_EVIDENCE",
+      "observation": "Rename textbox focus and room feature-selector focus are asserted by pinned current journey. Original room image visibly shows Feature y focused after Feature x plus Tab. Selected keyframe styling indicates selection, not a comprehensive keyboard-focus proof. No full focus-return/trap or axe audit is supplied.",
+      "evidenceIds": [
+        "room-edit-controls-open-after-click.png",
+        "cinematic-selected-keyframe-settings.png",
+        "parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm"
+      ]
+    },
+    "feedback": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "Timeline duration visibly responds4.0s during dragging, then selected keyframe time becomes4 after commit. Selected endpoint field outline gives a useful destination for pose settings. Current source provides plain Cinematic guidance for new takes/scrubbing/reduced motion; that paragraph is scrolled out of these settings stills, so source text is not credited as a separate visible-capture result. Room button opens actual populated controls.",
+      "evidenceIds": [
+        "cinematic-live-duration-resize.png",
+        "cinematic-first-take.png",
+        "room-edit-controls-open-after-click.png",
+        "parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm"
+      ]
+    },
+    "motion": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "Entire10.36s recording inspected through22 local decoded full-duration samples(.5s plus final). Two actual moving takes gently rise/rock while following authored horizontal paper motion; first and second stills have visibly differing inclination. Renderer proof has23 distinct motion samples per take with changing positions/rotations. Reduced equivalent retains horizontal motion with exact original rotation and centerheight. Sampling/compression does not certify uninterrupted smoothness or physical animation quality.",
+      "evidenceIds": [
+        "cinematic-first-take.png",
+        "cinematic-second-take.png",
+        "cinematic-reduced-motion.png",
+        "cinematic-renderer-proof.original.json.txt",
+        "parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm"
+      ]
+    },
+    "continuity": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "Saved track is explicitly Cinematic with keyframe times[0,4000], and reload asserts saved draft equality. Stop returns exact starting rendered pose. Restart selects a new decoration take while authored track remains the same. Canonical evaluator source/unit assertions establish endpoint envelopezero/deterministic scrub; current browser sampling covers initial1.5s rather than a full4s endpoint traversal or complete historyUndo/Redo.",
+      "evidenceIds": [
+        "cinematic-renderer-proof.original.json.txt",
+        "parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm"
+      ]
+    },
+    "complexity": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "Each take reports5 draw calls,272 triangles with stable5 geometries/6 textures at790x446px, pixelratio1. CPU submission samples rangeabout.3–.6ms; these measure software submission, notGPU latency/FPS/hardware performance. Variation uses one take-dependent deterministic phase, not per-frame random resources. No stress benchmark is included.",
+      "evidenceIds": [
+        "cinematic-renderer-proof.original.json.txt",
+        "cinematic-first-take.png"
+      ]
+    },
+    "role-outcomes": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "Synthetic Creator directly renames an existing paper object, selects pose settings, resizes a usable duration handle, chooses the third continuous motion option, watches two takes and reduced equivalent, then opens real room feature controls. This discharges the bounded cinematic controls/motion journey. Six focused pass receipt includes five other recordings outside this packet; they are not independently reviewed here.",
+      "evidenceIds": [
+        "cinematic-selected-keyframe-settings.png",
+        "cinematic-live-duration-resize.png",
+        "cinematic-first-take.png",
+        "cinematic-second-take.png",
+        "cinematic-reduced-motion.png",
+        "room-edit-controls-open-after-click.png",
+        "parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm",
+        "run.original.json.txt"
+      ]
+    },
+    "fallbacks": {
+      "status": "SUPPORTED_WITH_BOUNDED_LIMITS",
+      "observation": "Reduced motion preserves meaningful authored interpolation while removing extra cinematic arc/rock rather than replacing it with unsupported behavior. Native capability/device fallback, GuidedView, mobile and renderer-failure media are outside this packet and not accepted.",
+      "evidenceIds": [
+        "cinematic-reduced-motion.png",
+        "cinematic-renderer-proof.original.json.txt"
+      ]
+    }
+  },
+  "findings": [
+    {
+      "id": "CIN-01",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "classification": "MINOR_POLISH",
+      "priority": 3,
+      "status": "OPEN_NONBLOCKING",
+      "blocking": false,
+      "observation": "In selected-keyframe/live-resize endpoint stills, a small right corner of the framed paper falls beneath the selected-object callout. Central actual moving-take stills remain clear. The unobstructed receipt checks handle-center hit testing only; it must not be promoted to complete paper/canvas unobstructed appearance.",
+      "repairSuggested": "Keep the selected paper endpoint clear of the recovery callout when framing, or allow the callout to move/collapse as needed; no control or authored-data failure inferred.",
+      "evidenceIds": [
+        "cinematic-selected-keyframe-settings.png",
+        "cinematic-live-duration-resize.png",
+        "cinematic-first-take.png",
+        "cinematic-renderer-proof.original.json.txt"
+      ]
+    },
+    {
+      "id": "CIN-02",
+      "contractId": "parallax.authored-library-and-simulation.experience",
+      "classification": "MINOR_POLISH",
+      "priority": 3,
+      "status": "OPEN_NONBLOCKING",
+      "blocking": false,
+      "observation": "Room editor heading correctly saysBedroom but subtitle remainsparchment from selected paper. Pinned SpatialStudio displays currentEntity.kind unconditionally below the room-aware heading. Actual room inputs are open and focusable; this is misleading context, not a functional opening failure.",
+      "repairSuggested": "Hide or replace selected-object kind while the header represents Room editor.",
+      "evidenceIds": [
+        "room-edit-controls-open-after-click.png"
+      ],
+      "sourcePath": "src/components/studio/parallax/SpatialStudio.tsx:2075"
+    }
+  ],
+  "confirmedBlockingProductFindings": [],
+  "inspection": {
+    "allNineOriginalBytesAndHashesVerified": true,
+    "fullSizeScreenshotCount": 6,
+    "recordingCount": 1,
+    "originalReceipts": 2,
+    "allCurrentImagesAndCompleteRecordingInspectedBeforeSource": true,
+    "recording": {
+      "evidenceId": "parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm",
+      "durationSeconds": 10.36,
+      "encodedWidth": 800,
+      "encodedHeight": 450,
+      "frameCount": 22,
+      "intervalSeconds": 0.5,
+      "method": "Task-owned local-file Chromium decode, full-duration timestamped sheet inspection; no shared product runtime or native playback.",
+      "chronology": [
+        "0.01 blank initial page",
+        "0.51 Studio entry",
+        "1.01–1.51 saved library/DeskMap scene",
+        "2.01 direct title rename textbox",
+        "2.51 isolate/frame preparation",
+        "3.01 selected endpoint settings",
+        "3.51 live duration resize",
+        "4.01–5.01 first cinematic take",
+        "5.51–7.01 restarted second take",
+        "7.51 save/reduced-motion equivalent",
+        "8.01–9.01 reduced equivalent",
+        "9.51 reload/editorstate",
+        "10.01–10.35 actual room feature control opening and field edit"
+      ]
+    }
+  },
+  "testEvidence": {
+    "run": {
+      "schemaVersion": 1,
+      "candidate": "82a9ccd57a6d0485c797840396e6057f9e8221ca",
+      "tree": "16928fdb797eaec63cce7fecc5804a753c4e2853",
+      "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+      "provider": "SYNTHETIC_UNPAID",
+      "startedAt": "2026-10-13T13:36:32.149Z",
+      "finishedAt": "2026-10-13T13:38:26.584Z",
+      "exitCode": 0,
+      "sourceBinding": "VALID",
+      "recordings": [
+        {
+          "file": "parallax-authoring-refinem-099f2-assets-through-saved-replay-chromium-video.webm",
+          "sha256": "56bbd85b65223bb218223b5bada90100fcd2d015ba1ab4bd6de3476b7acc49f9"
+        },
+        {
+          "file": "parallax-authoring-refinem-87784-and-rebuilds-only-that-prop-chromium-video.webm",
+          "sha256": "d654f28b84dc8034b8d9e1fc0663a4a0f4eb7fbf5ca78631a18697b4995ab5b5"
+        },
+        {
+          "file": "parallax-authoring-refinem-b728d-modes-and-renderer-recovery-chromium-video.webm",
+          "sha256": "d3b9149d8d91a949eb7b16b2fbbcb1ec339b015b9c1c34307226a1579de0a0dc"
+        },
+        {
+          "file": "parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm",
+          "sha256": "868360833f309b0fe536c2ac7e270ace0a964b855f6a307c884d3005dfe700d2"
+        },
+        {
+          "file": "parallax-opacity-Creator-a-34c98--and-replays-its-saved-fade-chromium-video.webm",
+          "sha256": "c97feb77a5533d648a9c4d46a85adf537348b42d6320782d6230a9cb2975c5e8"
+        },
+        {
+          "file": "parallax-room-features-Cre-f1fe6-lows-its-desk-across-reload-chromium-video.webm",
+          "sha256": "654539ccc9543ad24f7b4dcf2a02aa9e9313c7fceea630f1f93d9d448c0409bf"
+        }
+      ]
+    },
+    "focusedJourneyCountDeclared": 6,
+    "boundedScope": "One cinematic recording and six original stills are reviewed; other five run-listed recordings remain outside bounded packet. Real-photo media explicitly excluded.",
+    "assertions": "Current production test proves direct graphtitle click focuses rename; endpoint selection displays posefields; handle center hits the actual resize element;4.0s label updates while pointerdown; rendered position/lift/rotation change across takes; save retains Cinematic/[0,4000]; reducedheight/rotation equalstart; saved draft survivesreload; Editroomfeatures focusesselector and supportsfieldedit.",
+    "unobstructedReceiptMeaning": "document.elementFromPoint at end-handle center equals that handle. This is targeted hit-test evidence, not a whole-view/object no-overlap guarantee.",
+    "receiptLimit": "No perstep original Playwright archive or unitexecution receipt in currentpacket. Reviewer ran no tests."
+  },
+  "rendererProof": {
+    "start": {
+      "id": "cinematic-preview:entity-0",
+      "status": "IN_VIEW",
+      "materialOpacities": [
+        1,
+        1
+      ],
+      "position": [
+        0.64,
+        0.76,
+        -1.32
+      ],
+      "rotation": [
+        -0.7071067811865476,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "bounds": {
+        "min": [
+          0.39,
+          0.76,
+          -1.5075
+        ],
+        "max": [
+          0.89,
+          0.7744999995827675,
+          -1.1325
+        ]
+      }
+    },
+    "middle": {
+      "id": "cinematic-preview:entity-0",
+      "status": "IN_VIEW",
+      "materialOpacities": [
+        1,
+        1
+      ],
+      "position": [
+        0.7252989936379796,
+        0.7785623102167971,
+        -1.3195446222241376
+      ],
+      "rotation": [
+        -0.6901795179573261,
+        0,
+        0,
+        0.7236381920491711
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "bounds": {
+        "min": [
+          0.47529899363797956,
+          0.7696927228447248,
+          -1.5068347191856406
+        ],
+        "max": [
+          0.9752989936379796,
+          0.8019156646704603,
+          -1.131568610525598
+        ]
+      }
+    },
+    "reduced": {
+      "id": "cinematic-preview:entity-0",
+      "status": "IN_VIEW",
+      "materialOpacities": [
+        1,
+        1
+      ],
+      "position": [
+        0.6529900195340411,
+        0.76,
+        -1.32
+      ],
+      "rotation": [
+        -0.7071067811865476,
+        0,
+        0,
+        0.7071067811865476
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "bounds": {
+        "min": [
+          0.4029900195340411,
+          0.76,
+          -1.5075
+        ],
+        "max": [
+          0.9029900195340411,
+          0.7744999995827675,
+          -1.1325
+        ]
+      }
+    },
+    "firstTakeSummary": {
+      "sampleCount": 23,
+      "elapsedStartMs": 72.59999999403954,
+      "elapsedEndMs": 1541.0999999940395,
+      "minSupportBoundY": 0.7600492531243528,
+      "maxCenterY": 0.7776487643073585,
+      "minCpuSubmissionMs": 0.29999998211860657,
+      "maxCpuSubmissionMs": 0.6000000238418579,
+      "allInView": true
+    },
+    "secondTakeSummary": {
+      "sampleCount": 23,
+      "elapsedStartMs": 62.099999994039536,
+      "elapsedEndMs": 1530.199999988079,
+      "minSupportBoundY": 0.760032459582846,
+      "maxCenterY": 0.7776325502329313,
+      "minCpuSubmissionMs": 0.30000001192092896,
+      "maxCpuSubmissionMs": 0.6000000238418579,
+      "allInView": true
+    },
+    "fullOriginalEvidenceId": "cinematic-renderer-proof.original.json.txt",
+    "limits": "23 retained samples per1.5second take establish actualsubmitted transforms/costs, not a complete4second traversal, GPU frame time or native hardware. All46samples retain supportbounds above.76m; snapshots do not certify room shadowpixels."
+  },
+  "sourceConfirmation": {
+    "pinnedCandidate": "82a9ccd57a6d0485c797840396e6057f9e8221ca",
+    "paths": [
+      "tests/e2e/parallax-cinematic.spec.ts",
+      "src/parallax/behavior.ts",
+      "src/parallax/animation-authoring.ts",
+      "src/parallax/cinematic-animation.test.ts",
+      "src/components/studio/parallax/SpatialStudio.tsx",
+      "src/components/studio/parallax/SpatialStudio.module.css",
+      "src/components/studio/parallax/AnimationEditor.tsx"
+    ],
+    "facts": [
+      "Cinematic is third continuous interpolation afterLinear/Easeinout; Step remainsinstant and new continuous tracks defaultEaseinout.",
+      "Cinematic uses bounded sin-squared envelope, quintic easing and asset-kind sway, one stable phase pertrack/take. Reduced motion zeroes decoration; gentle halvesstrength.",
+      "Surface-relative arc uses localpositiveZ supportnormal; both currenttake receipts keep actualworld minYabove.76support.",
+      "Envelope is0at exact endpoints; canonical unit source asserts exactpositions/rotations, deterministic scrubbing, takevariation and reducedmotion, with savedpublication shape retained. Unitexecution not claimed from sourcealone.",
+      "Restart increments take once, resets timeline and startsLens; Play/Pause does not introduce perframe randomphase.",
+      "Keyframe markers anddurationhandles use separate rows; handle12pxwide, sidebyside timelinesettingsscrollable.",
+      "Directtitle click delegates existing rename with safetygates; F2help remains. Roomcontrol opening focusesactualRoomfeature selector.",
+      "Roomsubtitle defect confirmed by currentEntity.kind rendered independently of roomEditing."
+    ],
+    "codeEdits": false
+  },
+  "timing": {
+    "committedTrack": "0seconds to4seconds afterlive resize",
+    "firstTake": "23samples,72.6–1541.1ms elapsed",
+    "secondTake": "23samples,62.1–1530.2ms elapsed",
+    "reducedTake": "about700ms plusinteraction overhead; rendered centerY.76 andoriginalquaternion, x.6529900195",
+    "initialSupportY": 0.76,
+    "firstMinimumRenderedBoundY": 0.7600492531243528,
+    "secondMinimumRenderedBoundY": 0.760032459582846,
+    "currentCPU": "Actualsubmission samples about.3–.6ms at790x446,5calls/272triangles; noGPUnative/FPSclaim."
+  },
+  "historicalFailure": {
+    "manifestPath": "Development_Docs/Testing/Product_Experience/evidence/parallax-cinematic-20261013/first-surface-normal/manifest.json",
+    "manifestSha256": "d6becbbdd8c4c292c82f1c0ddf34f03e911cbfcc7d478777d3e6c2018510c39d",
+    "candidate": "6fc2eb251203985c76a627431136b35013a711dc",
+    "status": "CINEMATIC_FAILED_SURFACE_NORMAL_DIRECTION_OTHER_FIVE_JOURNEYS_PASS",
+    "allFourOriginalBytesAndHashesPreserved": true,
+    "disposition": "Historical failed surface-normal attempt stays failed. Currentcorrectedsource usespositiveZnormal, supported by currentactualtake bounds; originalrun/media not rewritten.",
+    "note": "Oldpacket retainedseparately; no real-photo artifacts inspected."
+  },
+  "evidenceIds": [
+    "cinematic-first-take.png",
+    "cinematic-live-duration-resize.png",
+    "cinematic-reduced-motion.png",
+    "cinematic-renderer-proof.original.json.txt",
+    "cinematic-second-take.png",
+    "cinematic-selected-keyframe-settings.png",
+    "parallax-cinematic-Creator-9c7e0-watches-two-cinematic-takes-chromium-video.webm",
+    "room-edit-controls-open-after-click.png",
+    "run.original.json.txt"
+  ],
+  "limitations": [
+    "This bounded packet covers the Cinematic journey only; receipt names the other five focused passes whose original artifacts remain in exact-source qualification folder. No owner acceptance, GPU hardware or full native app claim. No real-photo images or results are in this packet.",
+    "Only desktopdark cinematic path and supplied roomcontrol image are accepted; otherfocusedrun journeys are unreviewed in this boundedpacket.",
+    "The visiblepaper remains a renamedmapasset, not a newlymodeled foldedletter.",
+    "Two minorpolishfindings remain open without blocking the targetedcontrols/movement.",
+    "Complete4second endpoint playback, broadhistoryUndo/Redo, mobile/light/axe/screenreader/focus/native/hardware coverage is not established by these nineartifacts.",
+    "Exactendpoint/evaluator behavior has inspectedsource/unitassertions plusstartreceipt, separate from renderedbrowser motion samples.",
+    "No GPUtiming, continuoussmoothness, fullscenarioN/overhaul or owneracceptance."
+  ],
+  "featureCatalogDecision": "NO CHANGE REQUIRED",
+  "governanceChecks": "Independentreview only; no product changes, sharedruntime/privatecontent, paidcalls, builds/tests/generators."
+}

@@ -1,0 +1,29 @@
+{
+  "source": "1170f2217084ff5bdff5b0f0b039c49ce791f5f2",
+  "tree": "373079da84fc41ff0d5ae4b7a5f222baa56af06a",
+  "comparedWith": "2f815e371e08d5b288f9e69eb6f0c32409cc4d05",
+  "reviewerContext": "/root/studio_foundation_review",
+  "recordedBy": "Root transcription of a separate reviewer message; not an authenticated protected receipt",
+  "kind": "SUPPLEMENTARY_SOURCE_REVIEW",
+  "result": "NO_CONCRETE_BLOCKER_FOUND",
+  "scope": [
+    "marker admission from checked server working record and verified Library classification",
+    "exact-version ownership/integrity, installed-license and target read-only/CAS guards",
+    "self-contained refusal of Environment/calibrated/fixed-world/nested/media/perception content",
+    "inserted source-version lineage",
+    "selected Environment vs Scene dependency labels and unchanged standalone privacy acknowledgment",
+    "technical paths inside explicit sanitized JSON",
+    "no new private-data projection and phone recovery source unchanged"
+  ],
+  "hashes": {
+    "library-service.ts": "705a47f8b1a1599c0aedc62c056488198f4b70bd641dea307ca16c64d51ca94b",
+    "reusable-assets.ts": "ffe843a426b44bf2a0cdb81dbb85ad53e749d5f8f5d7f61728bb7314b687f345",
+    "SpatialCommunityPublisher.tsx": "00be4c9c7ea2adb5e5354301cc03f95b76ebaa0c74e74112dd2f70e9185f7156",
+    "SpatialStudio.tsx": "0a193b1b407c38570983e3757501b1d0aac1b7ea5964ebee19b0666334eecae2"
+  },
+  "limitations": [
+    "Source only; no tests run or fresh media inspected by this reviewer.",
+    "No physical/trusted/owner acceptance."
+  ],
+  "productMutations": false
+}

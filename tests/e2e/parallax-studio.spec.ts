@@ -71,7 +71,7 @@ test("Creator builds, versions, attaches, publishes and reopens a spatial moment
   try {
     await authenticateClosure(context, account, baseURL!);
     await page.goto(`/studio/parallax?chronicle=${tale.id}&block=${blockId}`);
-    await expect(page.getByRole("heading", { name: "Desk Map", level: 1 })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Parallax", level: 1 })).toBeVisible();
     await expect(page.getByLabel("Authoring mode")).toHaveValue("GUIDED");
     await page.getByText("Library, reuse & publication", { exact: true }).click();
     await page.getByLabel("Experience title").fill("Captain's reusable map");

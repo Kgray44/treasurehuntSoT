@@ -1,0 +1,33 @@
+{
+  "documentClassification": "engineering-evidence",
+  "candidate": "540b86e71078c229701dade20e45c0424ba2dc11",
+  "finishedAt": "2026-10-13T09:42:53.876730+00:00",
+  "status": "ACTUAL_JAVA_SCENE_BOUNDARY_COMPILE_AND_FIXTURES_PASS",
+  "inputs": [
+    {
+      "file": "native/android/app/src/main/java/com/voyagewright/landfall/ParallaxSceneTransfer.java",
+      "sha256": "d7b154905f59486382419931c0d7b9dea3ab77a524d179e5bc2377ef4b85207d"
+    },
+    {
+      "file": "native/android/app/src/androidTest/java/com/voyagewright/landfall/ParallaxBoundaryFixtures.java",
+      "sha256": "7fd571ecdeeef244f2382e06f4a4f728a6893fc0469d61e49be84a62a7bb97fd"
+    },
+    {
+      "file": "tests/fixtures/parallax/native-boundary-v1.json",
+      "sha256": "ff83584c3c6ff65bc6a5f80afef25fd710eb5b5635528358965bc76b8b333ad8"
+    }
+  ],
+  "testDependency": {
+    "artifact": "org.json:json:20240303",
+    "url": "https://repo.maven.apache.org/maven2/org/json/json/20240303/json-20240303.jar",
+    "sha256": "3cf6cd6892e32e2b4c1c39e0f52f5248a2f5b37646fdfbb79a66b46b618414ed",
+    "mavenSha1Verified": true
+  },
+  "jdk": "21.0.10",
+  "result": "Parallax native JVM boundary: 194 assertions passed (no Android UI/AR claim)",
+  "limitations": [
+    "Standalone actual Java boundary only, not full Android application compilation",
+    "JVM org.json test dependency is separate from Android platform implementation",
+    "No Android UI/AR/device/GPU or Swift compilation proof"
+  ]
+}

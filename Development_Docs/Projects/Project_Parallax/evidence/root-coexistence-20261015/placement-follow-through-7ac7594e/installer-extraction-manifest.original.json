@@ -1,0 +1,32 @@
+{
+  "archiveCommit": "2197c864d1bb2165c6f4bbe9bfc58c2444ff756a",
+  "archiveTree": "5ef0f45ab2af40cac05092a0fa88cdabda1febc8",
+  "sourceAndTestsUnchangedFrom8053": true,
+  "mislabelOriginalUnchanged": true,
+  "files": [
+    {
+      "id": "asset-installer.original.webm",
+      "archiveCommit": "2197c864d1bb2165c6f4bbe9bfc58c2444ff756a",
+      "originalPath": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/7ac7594e-placement-follow-through/asset-installer.original.webm",
+      "bytes": 996404,
+      "sha256": "7f4f7ee4212aa01be668848d07732ea8dc8995d7cdef94fb543d80457a26db76",
+      "gitBlob": "dc65490c79924fba7681a94fd94bd57234cbfdc4"
+    },
+    {
+      "id": "asset-installed-expanded.png",
+      "archiveCommit": "2197c864d1bb2165c6f4bbe9bfc58c2444ff756a",
+      "originalPath": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/7ac7594e-placement-follow-through/asset-installed-expanded.png",
+      "bytes": 239755,
+      "sha256": "85b57daf5672ab4614a0a1cafc1d6c620cdab266afdd7699e213cfea5258fe58",
+      "gitBlob": "fe7e975adb7a793eba36f87926eb1a1be7b6694a"
+    },
+    {
+      "id": "asset-reused-desktop.png",
+      "archiveCommit": "2197c864d1bb2165c6f4bbe9bfc58c2444ff756a",
+      "originalPath": "Development_Docs/Projects/Project_Parallax/evidence/sc-00c/20261015-expanded-library/7ac7594e-placement-follow-through/asset-reused-desktop.png",
+      "bytes": 289192,
+      "sha256": "8ace66a013e13cec656e162734b4edaa6664a49a89bf4367e55d32c06d49fa5f",
+      "gitBlob": "80a9edefb11bff651a9f7e54020d6c8f3b42629d"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "candidate": "d764cf5104c2ce886eb9249e93c6bc49d70b29cf",
+  "tree": "a01f08a118034af89aa6c443627e1de9e400b51c",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-12T23:20:14.521Z",
+  "finishedAt": "2026-10-12T23:21:08.648Z",
+  "exitCode": 0,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "parallax-assistant-present-30c3e-s-and-reduced-motion-review-chromium-video-1.webm",
+      "sha256": "9f5183da5d089c4d20a34f2a52fdbbffe60d0a9372b940380f1e16d2f6cb4a21"
+    },
+    {
+      "file": "parallax-assistant-present-30c3e-s-and-reduced-motion-review-chromium-video-2.webm",
+      "sha256": "579858f28e6f2906b124d80ccdddcefeb8092cb716adcf53b787d26a490acece"
+    },
+    {
+      "file": "parallax-assistant-present-30c3e-s-and-reduced-motion-review-chromium-video.webm",
+      "sha256": "2aae27f3523eed81844f2d5eec829143003bb6f08556134ef5e2839791f809a2"
+    }
+  ]
+}

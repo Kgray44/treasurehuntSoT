@@ -1,0 +1,898 @@
+{
+  "documentClassification": "engineering-evidence",
+  "schemaVersion": 1,
+  "reviewIdentity": {
+    "agent": "/root/studio_foundation_review",
+    "relationship": "Independent child reviewer; separate from implementation parent /root",
+    "method": "Read-only visual-first source-bound review under .agents/product-experience-workflow.md section5; identity records provenance, not cryptographic reviewer authentication"
+  },
+  "reviewedAt": "2026-10-13",
+  "candidate": "6c892c682ea5b1b60e9bf0e8c800ac950ef64507",
+  "tree": "6ec22b5d5602d5e970b9cb4e485c7f4519601418",
+  "objective": "Creator places a new note on the table near a window, reviews actual geometry before canonical Apply, sees graph/Inspector selection and saved restore; ambiguity asks named question without edits; cancellation stops one actual request without redispatch or late proposal; failure preserves scene and Engineering; dynamic motion preferences preserve Studio/composer and public sign-in input/focus.",
+  "repairDisposition": "REPAIR_AND_RECAPTURE",
+  "summary": "Semantic placement, preview-before-save, canonical Apply plus renderer confirmation, three-mode selection, saved geometry restore, named ambiguity, cancellation request safety, provider failure preservation and bounded motion preference continuity are verified. One confirmed cancellation completion-feedback defect prevents visual completion of this packet: cancellation returns to IDLE welcome content which pushes its scene-unchanged notice below the visible body.",
+  "runtime": "DEVELOPMENT",
+  "provider": "SYNTHETIC_UNPAID",
+  "automaticPaidCalls": 0,
+  "acceptance": {
+    "boundedVisualCompletion": false,
+    "boundedJourneySafety": "Verified for the supplied fixtures, except cancellation confirmation readability",
+    "softwareQualification": "Final capture receipt records exit0/VALID and three passing workflows; independent reviewer did not rerun tests",
+    "productAccepted": false,
+    "ownerAcceptance": "No new owner acceptance granted; earlier5ad accepted Studio foundation remains separate",
+    "protectedIntegration": "Not reviewed or granted",
+    "nativePhysicalLiveProvider": "Not reviewed or granted"
+  },
+  "scope": {
+    "studioViewport": "1440x1000 desktop dark",
+    "publicViewport": "1280x800 desktop sign-in",
+    "authoringModes": [
+      "GUIDED",
+      "DETAILED",
+      "ENGINEERING"
+    ],
+    "motion": "Studio starts full then switches to reduced; public sign-in switches full→reduced→full",
+    "selectedMedia": 21,
+    "selectedStills": 16,
+    "selectedRecordings": 5,
+    "selectedArtifacts": 28,
+    "historicalBoundary": "Only review=true material reviewed. Paired cancel-before and motion-before remain failed adverse evidence; other historical packets retain prior outcomes and were not broadly renewed."
+  },
+  "method": {
+    "order": "All16 selected actual PNGs and all5 selected recording chronologies inspected before candidate product/test source. Dense final placement segment inspected after source to resolve sampled preparing frame.",
+    "recordings": "Decoded chronological frames at2fps across start/end, 34+51+5+21+33 frames (144 samples) displayed in26 contact sheets; final placement9.5s onward additionally decoded10fps and final three actual frames inspected at native resolution. Approximate contact-sheet times are sample positions, not a latency measurement. Not every encoded video frame inspected.",
+    "stills": "All selected stills viewed through actual pixel contact sheets; cancellation still additionally inspected at full1440x1000.",
+    "sources": "Only git show exact frozen candidate; no working source, builder rationale, runtime control or paid provider calls.",
+    "verification": "All28 selected artifacts SHA256/byte counts independently rechecked at final receipt creation; exact inventory and media digest appended. Git candidate tree independently matches manifest.",
+    "limits": "Low-resolution recording, fast harness actions and2fps sampling do not establish representative smoothness, broad accessibility or real human dwell times."
+  },
+  "findings": [
+    {
+      "id": "PX-SEM-CANCEL-FEEDBACK-01",
+      "severity": "blocking-bounded-visual-feedback",
+      "status": "CONFIRMED",
+      "affectedContracts": [
+        "parallax.floating-controls.experience",
+        "bounded semantic Assistant request/cancellation objective; review dimensions states and feedback"
+      ],
+      "observation": "Cancel restores the focused retained composer and Send idea, but the visible Assistant body shows the welcome headline/suggestion cards rather than the cancellation confirmation. The explicit scene-unchanged notice is outside the visible scroll area. It remains unseen throughout the recorded late-response waiting interval.",
+      "evidence": [
+        "final/semantic-cancelled.png",
+        "final/checks-parallax-semantic-assistan-b84a4--without-changing-the-scene-chromium-video.webm approximately6.5–12s"
+      ],
+      "source": [
+        "src/components/studio/parallax/SpatialAssistant.tsx:287-288 (notice scroll limited to FAILED/UNAVAILABLE)",
+        "src/components/studio/parallax/SpatialAssistant.tsx:512-539 (IDLE welcome precedes feedback)",
+        "src/components/studio/parallax/SpatialAssistant.tsx:593-596 (notice below welcome)",
+        "tests/e2e/parallax-semantic-assistant.spec.ts:291-292 (text presence asserted, not visible-in-scroll-body confirmation)"
+      ],
+      "impact": "Creator sees the request stop but cannot read confirmation that cancellation completed and the scene stayed unchanged. DOM text existence and role=status do not prove readable visual completion.",
+      "smallestRepair": "Ensure cancellation confirmation appears in the visible Assistant body without scrolling, e.g. suppress welcome while this completion notice exists or move notice ahead of welcome. Retain composer focus/text and cancellation generation/abort safety.",
+      "recapture": "Capture actual request→Cancel→visible cancellation/unchanged-scene message, retained composer and Engineering mode, then full delayed-reply waiting interval with one dispatch/no proposal and unchanged saved data. Preserve this packet."
+    }
+  ],
+  "observations": [
+    {
+      "id": "SEM-01",
+      "outcome": "VERIFIED_BOUNDED",
+      "evidence": [
+        "final/semantic-interpreting.png",
+        "final/semantic-proposed-note-in-view.png",
+        "final/checks-parallax-semantic-assistan-aae51--identity-and-saved-restore-chromium-video.webm"
+      ],
+      "detail": "Natural Library→Spatial Studio→Saved Items entry loads two-table/window fixture. Busy request replaces welcome with 'Interpreting your idea…' and Cancel request. Proposed scene then visibly places a small parchment note on rear/window table; Locate/View canvas/Frame selection expose actual paper and selection outline. Before Apply, Inspector correctly says proposed object requires review/apply before saved-property editing. Preview does not save the second entity."
+    },
+    {
+      "id": "SEM-02",
+      "outcome": "VERIFIED_BOUNDED",
+      "evidence": [
+        "final/semantic-applied-renderer-confirmation.png",
+        "final/semantic-selected-guided.png",
+        "final/semantic-selected-detailed.png",
+        "final/semantic-selected-engineering.png",
+        "final/semantic-placement-proof.original.json.txt"
+      ],
+      "detail": "After explicit Apply, 'Your changes are saved' is separate from named 'Folded window note: rendered in the current view.' Graph contains Desk Map plus selected Folded window note, canvas outline and Inspector name/message agree. Guided shows identity and grouped controls; Detailed expands Transform; Engineering adds actual coordinate frame/anchor/position. Renderer restored note ID synthetic-window-note is IN_VIEW at[0,0.76,-0.8] with0.22m width and horizontal rotation. Original Desk Map remains unchanged."
+    },
+    {
+      "id": "SEM-03",
+      "outcome": "VERIFIED_BOUNDED",
+      "evidence": [
+        "final/checks-parallax-semantic-assistan-aae51--identity-and-saved-restore-chromium-video.webm final0.5s",
+        "final/semantic-placement-proof.original.json.txt"
+      ],
+      "detail": "Dense final actual frames after page reload show the same two tables/window and small white note on rear/window table; graph retains both object names. Reload chooses Desk Map as selected object rather than persisting note selection. Canonical saved draft equality and post-reload renderer receipt substantiate geometry restoration; exact selected-object focus/camera preservation on reload is not claimed."
+    },
+    {
+      "id": "SEM-04",
+      "outcome": "VERIFIED_BOUNDED",
+      "evidence": [
+        "final/semantic-ambiguous-target-question.png",
+        "final/semantic-reduced-motion-clarification.png",
+        "final/semantic-recovery-proof.original.json.txt"
+      ],
+      "detail": "Two equal plausible tables produce 'Choose the intended table' and question naming Left table or Right table, with Answer below instead of Apply. One-object scene remains visible and saved data is unchanged. This packet does not show answering the question to a successful resolved Apply."
+    },
+    {
+      "id": "SEM-05",
+      "outcome": "SAFETY_VERIFIED_FEEDBACK_REPAIR_REQUIRED",
+      "evidence": [
+        "cancel-before/semantic-cancel-failed.png",
+        "cancel-before/checks-parallax-semantic-assistan-b84a4--without-changing-the-scene-chromium-video.webm",
+        "final/semantic-cancellable-request.png",
+        "final/semantic-cancelled.png",
+        "final/semantic-recovery-proof.original.json.txt",
+        "final/provider-35516.original.jsonl.txt"
+      ],
+      "detail": "Paired earlier adverse recording shows late proposal after cancellation. Final recording returns to focused composer, retains one-object scene through full wait, and never installs Apply/proposal. Recovery proof records5500ms wait and exactly1 application dispatch; final provider log contains one CREATE_CANCEL entry. Request cancellation safety is repaired; visible completion notice remains clipped (finding01)."
+    },
+    {
+      "id": "SEM-06",
+      "outcome": "VERIFIED_BOUNDED",
+      "evidence": [
+        "final/semantic-provider-failure.png",
+        "final/semantic-recovery-proof.original.json.txt"
+      ],
+      "detail": "Failure shows 'Assistance is unavailable' and readable 'Your local scene is unchanged'; Engineering stays selected, numeric Inspector remains available, renderer retains original scene. Send idea and Start new task remain accessible. Subsequent reduced-motion clarification proves a new successful fixture request after recovery, but no real-provider outage/reconnect is established."
+    },
+    {
+      "id": "SEM-07",
+      "outcome": "VERIFIED_BOUNDED",
+      "evidence": [
+        "motion-before/semantic-motion-reset-failed.png",
+        "motion-before/checks-parallax-semantic-assistan-b84a4--without-changing-the-scene-chromium-video.webm",
+        "final/semantic-motion-switch-preserved-composer.png",
+        "final/semantic-reduced-motion-clarification.png"
+      ],
+      "detail": "Earlier recording resets custom Two plausible tables scene to default Desk Map bedroom and closes Assistant. Final supplied still retains Two plausible tables, original scene, open Assistant and exact unsent text after full→reduced switch. Final chronology remains in same room and sends named clarification under reduced motion. Studio reverse reduced→full with unsent work is not browser-qualified here."
+    },
+    {
+      "id": "SEM-08",
+      "outcome": "VERIFIED_BOUNDED",
+      "evidence": [
+        "final/semantic-public-sign-in-reduced-motion.png",
+        "final/semantic-public-sign-in-restored-motion.png",
+        "final/checks-parallax-semantic-assistan-2da52-ferences-in-both-directions-chromium-video.webm",
+        "final/semantic-public-motion-proof.original.json.txt"
+      ],
+      "detail": "Public sign-in keeps actual typed synthetic email and visible field focus across both preference directions. Proof confirms same retained DOM node, actual value and focus. Provider statuses change from Checking to unavailable naturally; authentication submission/provider availability is not accepted by this continuity review."
+    }
+  ],
+  "dimensions": [
+    {
+      "dimension": "composition",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Floating blue Assistant overlays left viewport without changing full Studio panel structure. View canvas removes overlay to inspect the parchment on table. Graph/viewport/Inspector three-column relation is visible; overlay obscures part of room while composing, with explicit canvas escape.",
+      "evidence": [
+        "final/semantic-interpreting.png",
+        "final/semantic-proposed-note-in-view.png",
+        "final/semantic-selected-guided.png"
+      ]
+    },
+    {
+      "dimension": "hierarchy",
+      "judgment": "PASS_WITH_BLOCKING_FEEDBACK_FINDING",
+      "observation": "Title/status, mode, scene graph, named selection and grouped Inspector establish clear authoring order. Proposal/Apply and saved-renderer result stand out. Cancel incorrectly restores prominent welcome ahead of its completion message.",
+      "evidence": [
+        "final/semantic-applied-renderer-confirmation.png",
+        "final/semantic-cancelled.png",
+        "final/semantic-selected-engineering.png"
+      ]
+    },
+    {
+      "dimension": "typography",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Proposal title, named ambiguity question and object identity read clearly in native stills. Coordinate/usage/helper text is small and dense; contact-sheet/video reduction must not be treated as desktop text failure.",
+      "evidence": [
+        "final/semantic-ambiguous-target-question.png",
+        "final/semantic-selected-engineering.png"
+      ]
+    },
+    {
+      "dimension": "spacing",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Composer and footer buttons remain separated and visible within float; Inspector fields have consistent spacing. Cancellation notice is below visible body because welcome consumes body height, not composer clipping.",
+      "evidence": [
+        "final/semantic-cancellable-request.png",
+        "final/semantic-cancelled.png"
+      ]
+    },
+    {
+      "dimension": "controls",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Actual Send, Cancel, Proposed scene, Locate object, View canvas, Frame selection, Apply, graph opening, selected-object edit and mode changes are exercised. Ambiguity omits Apply; failure restores Send/new-task. Answer-below resolution itself is not exercised.",
+      "evidence": [
+        "final recordings",
+        "final/semantic-ambiguous-target-question.png",
+        "final/semantic-provider-failure.png"
+      ]
+    },
+    {
+      "dimension": "contrast",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Dark blue panel borders, light blue primary buttons, selected graph row, light parchment on brown table and pale focus outline are visually distinct. Public cream sign-in form separates from dark green shell. No contrast ratio or light Studio qualification performed.",
+      "evidence": [
+        "final/semantic-selected-detailed.png",
+        "final/semantic-public-sign-in-restored-motion.png"
+      ]
+    },
+    {
+      "dimension": "consistency",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Established blue Studio layout retained across three modes and adverse states. Graph, Inspector and selected-object card share Folded window note identity. Engineering mode changes actual disclosed controls rather than renderer fallback.",
+      "evidence": [
+        "final/semantic-selected-guided.png",
+        "final/semantic-selected-detailed.png",
+        "final/semantic-selected-engineering.png",
+        "final/semantic-provider-failure.png"
+      ]
+    },
+    {
+      "dimension": "states",
+      "judgment": "REPAIR_REQUIRED",
+      "observation": "Interpreting, preview, clarification, saved-rendered, failure and recovery are observable. Cancellation safety state occurs but readable cancellation completion/unchanged-scene notice is hidden below welcome (PX-SEM-CANCEL-FEEDBACK-01).",
+      "evidence": [
+        "final/semantic-interpreting.png",
+        "final/semantic-applied-renderer-confirmation.png",
+        "final/semantic-cancelled.png",
+        "final/semantic-provider-failure.png"
+      ]
+    },
+    {
+      "dimension": "responsive",
+      "judgment": "PARTIAL_SCOPE",
+      "observation": "Studio1440x1000 and public sign-in1280x800 preserve usable supplied controls. No phone, landscape, zoom or dock-resize matrix is newly reviewed; prior separate responsive receipts are not renewed.",
+      "evidence": [
+        "final14stills",
+        "tests/e2e/parallax-semantic-assistant.spec.ts:129-130,248-249,341-342"
+      ]
+    },
+    {
+      "dimension": "keyboard",
+      "judgment": "PARTIAL_SCOPE",
+      "observation": "Labeled native fields/buttons and Enter/Shift+Enter helper are visible. Frozen component test covers Enter submit and Shift+Enter multiline; browser packet clicks actions rather than a complete keyboard journey. No assistive technology run.",
+      "evidence": [
+        "final/semantic-cancelled.png",
+        "src/components/studio/parallax/SpatialAssistant.test.tsx submit-once/multiline test"
+      ]
+    },
+    {
+      "dimension": "focus",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Cancellation returns visible focus to retained composer. Public sign-in focus remains on actual input in both motion directions, confirmed by DOM-node identity assertions. Full keyboard order/dialog return focus and Studio preference-switch same-node focus are not broadly qualified.",
+      "evidence": [
+        "final/semantic-cancelled.png",
+        "final/semantic-public-sign-in-reduced-motion.png",
+        "final/semantic-public-motion-proof.original.json.txt"
+      ]
+    },
+    {
+      "dimension": "feedback",
+      "judgment": "REPAIR_REQUIRED",
+      "observation": "Busy request and named ambiguity are clear; canonical save and renderer confirmation are distinct; failure explicitly says local scene unchanged. Cancel's explicit safe completion notice is not visible. Mutation activity timings substantiate phases but do not prove their visible readability (finding01).",
+      "evidence": [
+        "final/semantic-applied-renderer-confirmation.png",
+        "final/semantic-provider-failure.png",
+        "final/semantic-cancelled.png",
+        "final/semantic-placement-proof.original.json.txt",
+        "final/semantic-recovery-proof.original.json.txt"
+      ]
+    },
+    {
+      "dimension": "motion",
+      "judgment": "PASS_BOUNDED_CONTINUITY",
+      "observation": "Normal request state transition remains understandable after switching to reduced. Active Studio and composer survive; public form survives both directions. Spinner timing, representative animation smoothness and global route motion are not accepted from synthetic fast recordings.",
+      "evidence": [
+        "final/semantic-motion-switch-preserved-composer.png",
+        "final/semantic-reduced-motion-clarification.png",
+        "final public motion recording",
+        "final/semantic-public-motion-proof.original.json.txt"
+      ]
+    },
+    {
+      "dimension": "continuity",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Same room survives Apply/reload, request cancellation/failure and motion switch; canonical saved data equality is checked. Reload keeps geometry/graph but resets selected object to Desk Map. Paired adverse resets remain preserved.",
+      "evidence": [
+        "final placement recording finalframes",
+        "final/semantic-placement-proof.original.json.txt",
+        "final/semantic-recovery-proof.original.json.txt",
+        "motion-before recording"
+      ]
+    },
+    {
+      "dimension": "complexity",
+      "judgment": "PASS_BOUNDED",
+      "observation": "Guided groups identity/placement/interaction; Detailed expands transforms; Engineering supplies actual anchor coordinates. Named two-choice ambiguity avoids guessing or silent mutation. Fixed fixtures do not establish arbitrary complex room/model interpretation.",
+      "evidence": [
+        "final selected3mode stills",
+        "final/semantic-ambiguous-target-question.png"
+      ]
+    },
+    {
+      "dimension": "role-outcomes",
+      "judgment": "PASS_BOUNDED_CREATOR",
+      "observation": "Synthetic authenticated Creator enters via real Library, reviews actual proposed note geometry, applies canonical save and sees actual restored room. This establishes UI/backend/renderer workflow with intercepted upstream, not live semantic reasoning, Player roles, owner acceptance or physical placement.",
+      "evidence": [
+        "final placement recording",
+        "final/provider-35516.original.jsonl.txt",
+        "final/semantic-placement-proof.original.json.txt"
+      ]
+    },
+    {
+      "dimension": "fallbacks",
+      "judgment": "PASS_WITH_FEEDBACK_LIMIT",
+      "observation": "Provider failure preserves authored geometry and explicit Engineering rather than downgrading authoring mode to fallback. Cancellation is safe but readable completion needs repair. Broader no-provider configuration, WebGL loss/retry, native fallback and offline behavior are outside this packet.",
+      "evidence": [
+        "final/semantic-provider-failure.png",
+        "final/semantic-cancelled.png",
+        "final/semantic-recovery-proof.original.json.txt"
+      ]
+    }
+  ],
+  "sourceCorroboration": [
+    {
+      "path": "src/components/studio/parallax/SpatialAssistant.tsx",
+      "blob": "ee8c959fd66628c090906ce7c8c8a1df07ab5a0a",
+      "lines": "335-423,558-596,855-882",
+      "conclusion": "Generation and AbortController checks reject aborted/stale async results; distinct Cancel/Send keys and preventDefault avoid replacement form resubmit. Verified saved acknowledgement precedes install; rendered-scene/version receipt supplies separate named confirmation. IDLE welcome before notice explains confirmed cancellation feedback defect."
+    },
+    {
+      "path": "src/animation/platform/RouteMotionBoundary.tsx",
+      "blob": "58c19ce315274538a18dd3d4ac6173db5b5b3c60",
+      "lines": "383-425",
+      "conclusion": "Same LayoutGroup/incoming RouteLayer tree and stable generation/path key retained when preference alone changes; reduced changes timing rather than active component identity. Source mechanism supports observed continuity, not global route qualification."
+    },
+    {
+      "path": "src/components/studio/parallax/SpatialAssistant.test.tsx",
+      "blob": "29e75798d2a87022c429dafbb1da164b67a07431",
+      "conclusion": "Frozen cancellation regression asserts one port request, aborted signal, late reply ignored and input focus; Enter/multiline test is supporting keyboard source evidence only."
+    },
+    {
+      "path": "src/animation/platform/RouteMotionBoundary.test.tsx",
+      "blob": "0ef1d0f40f18d2e391f3114f785a7605566e31bd",
+      "conclusion": "Frozen regression preserves same stateful editor input/focus across full→reduced→full. Broader existing route tests inspected for context but not browser requalified."
+    },
+    {
+      "path": "tests/e2e/parallax-semantic-assistant.spec.ts",
+      "blob": "20043f5966e4227762b2b76693bade24fc2094ca",
+      "lines": "119-233,235-375",
+      "conclusion": "Real isolated API responses, persistence and renderer receipts exercised; preview first saves no second entity, Apply preserves original map, canonical reload equality checked. Request counter and5500ms wait separate safety from visible text presence. Public field node/value/focus retained in both directions."
+    }
+  ],
+  "evidenceTierLimits": [
+    "DEVELOPMENT runtime with deterministic synthetic unpaid upstream responses; no live model-quality, production provider-readiness or paid inference acceptance.",
+    "One synthetic room geometry with two generic tables and one window; semantic target fixture chosen by controlled upstream. No surveyed physical room, imported art/model fidelity or broad semantic generalization.",
+    "Table-relative pose and actual paper pixels verify renderer placement; physical support/contact/calibration not accepted.",
+    "Desktop dark Studio and one public sign-in at another desktop size; three modes inspected but no all-mode/device/theme/route matrix.",
+    "No new broad animation/simulation/room editing/library/protected-photo review; prior independent receipts and owner5ad acceptance remain separate.",
+    "Cancellation actual request is cancelled client-side and ignored; server-side upstream computation abortion, quota refunds and arbitrary long-latency/network scenarios not qualified.",
+    "Recorded waiting interval and safe logs prove one dispatch for fixture; no late proposal within5500ms. No infinite-duration guarantee.",
+    "Named ambiguity question is reviewed but no answer-to-Apply resolution journey captured.",
+    "Preview framing uses actual explicit Locate/View canvas/Frame actions; automatic helpful framing without those actions is not newly claimed.",
+    "Reload default selection changes to Desk Map; saved geometry/data equality verified, exact selection/camera persistence not claimed.",
+    "No native/browser-engine matrix, hardware, physical, protected integration, full overhaul/A–P or new owner/product acceptance.",
+    "Independent review did not rerun focused unit/lint/typecheck checks or features generators; parent owns aggregate validation and documentation/catalog decision. This evidence receipt does not change product features."
+  ],
+  "featureCatalog": "NO CHANGE REQUIRED",
+  "manifestSHA256": "1bfcd8d874c51c588e2c6a5537285ef1b5cbbe1900476ea01f3b12fa6f253228",
+  "selectedArtifactInventory": [
+    {
+      "phase": "cancel-before",
+      "file": "cancel-before/checks-parallax-semantic-assistan-b84a4--without-changing-the-scene-chromium-video.webm",
+      "bytes": 566074,
+      "sha256": "ac88727423ec15ffa641abcd7910120ba629b97318a0da345dff12e796153da9",
+      "review": true,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "cancel-before",
+      "file": "cancel-before/provider-53872.original.jsonl.txt",
+      "bytes": 4787,
+      "sha256": "e2f5e4724654842506341eed54e13e8ecaa78a02c458767ab024923906bf1659",
+      "review": true,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "cancel-before",
+      "file": "cancel-before/semantic-cancel-failed.png",
+      "bytes": 227050,
+      "sha256": "8b0c7b88508099c85167e9f2e1ec37883c5e0ae517724816d8061cd3c1b843d1",
+      "review": true,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "motion-before",
+      "file": "motion-before/checks-parallax-semantic-assistan-b84a4--without-changing-the-scene-chromium-video.webm",
+      "bytes": 773553,
+      "sha256": "2afcfd96dc4b58edbed6afb81c53305a4c5b7e7e4409a705babf98678c6566f6",
+      "review": true,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "motion-before",
+      "file": "motion-before/provider-57660.original.jsonl.txt",
+      "bytes": 4781,
+      "sha256": "cbf741e5be64dc86c8e5628e935519f47ebe9d838ec8824b316c15c32d4839d2",
+      "review": true,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "motion-before",
+      "file": "motion-before/semantic-motion-reset-failed.png",
+      "bytes": 237746,
+      "sha256": "a7163c040ed30079e1df9bf9a9ec81c07b9b4ebc06d45683559024da8b4cf736",
+      "review": true,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "final",
+      "file": "final/checks-parallax-semantic-assistan-2da52-ferences-in-both-directions-chromium-video.webm",
+      "bytes": 52498,
+      "sha256": "7a0b905bcd7f263b8c4033cbca01a9f50f720040f5134eeaec0d32ff01d50742",
+      "review": true,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "final",
+      "file": "final/checks-parallax-semantic-assistan-aae51--identity-and-saved-restore-chromium-video.webm",
+      "bytes": 557720,
+      "sha256": "0104da048b8234b84024ebb5ba977f2a6a3700e8f481fc17311f6a266d63ea2b",
+      "review": true,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "final",
+      "file": "final/checks-parallax-semantic-assistan-b84a4--without-changing-the-scene-chromium-video.webm",
+      "bytes": 613536,
+      "sha256": "0cf96b2003b400cabba0d5574bc556458e019e567f69adefbd2e05c2b6026030",
+      "review": true,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "final",
+      "file": "final/provider-35516.original.jsonl.txt",
+      "bytes": 5985,
+      "sha256": "61ce7d125c6cc7b73691c16f92a2993e8fa603fc1a04ca52f46e7e0d873f17b9",
+      "review": true,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-ambiguous-target-question.png",
+      "bytes": 213149,
+      "sha256": "75c1802ca3d255a15e096d4162ff9332eafb7297ab93b3140547e6fc7cb2cfe7",
+      "review": true,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-applied-renderer-confirmation.png",
+      "bytes": 265698,
+      "sha256": "74ac4d0b3851ac38b4a4babe5a06298de6575dd92d7d3b71abdf800b69b6b60e",
+      "review": true,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-assistant-run.original.json.txt",
+      "bytes": 934,
+      "sha256": "a496f01023d0c4f96a979f14f48010f70c2d1e4ff8ad244753d015bc5a8fe030",
+      "review": true,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-cancellable-request.png",
+      "bytes": 213190,
+      "sha256": "8142f9e762d971ff62bba165d5ecbc88b6260f03a634b2c50a89cb7211d45fd8",
+      "review": true,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-cancelled.png",
+      "bytes": 232208,
+      "sha256": "4ea0ce086b94d6f194340b0e1babc5d44d7a7a9adfebdb4af109658248e2fe5d",
+      "review": true,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-interpreting.png",
+      "bytes": 199977,
+      "sha256": "f198ac7e0a3ff019257972149f7f01b25815b846cefb4a9260bdaecb80029bf7",
+      "review": true,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-motion-switch-preserved-composer.png",
+      "bytes": 219550,
+      "sha256": "aef07792dfb1160996fdfb9958b96d572f80ca876d129c59867c90505f9fbb34",
+      "review": true,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-placement-proof.original.json.txt",
+      "bytes": 1787,
+      "sha256": "74446a20f3100800a35343c7a05284e08ecbb7b5b1b943e3c3e0d414a901bc6a",
+      "review": true,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-proposed-note-in-view.png",
+      "bytes": 368672,
+      "sha256": "d919fa04a9aebe362612801ef7051648ea3eead921ff62c799c785cf2d3fbf79",
+      "review": true,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-provider-failure.png",
+      "bytes": 215572,
+      "sha256": "e4868ce96cd965019999f0cbd19c59edb516c0b5a6e6d88290075e49e8513952",
+      "review": true,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-public-motion-proof.original.json.txt",
+      "bytes": 329,
+      "sha256": "9a2d2064c987c9a2cbbaa4d7ecf84ccd0c2b05eec4512e7f91a90cad22284158",
+      "review": true,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-public-sign-in-reduced-motion.png",
+      "bytes": 518639,
+      "sha256": "c704a2d07d1c327c0f8e781eb5accf00ccae9dfc363b526825c650428e364465",
+      "review": true,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-public-sign-in-restored-motion.png",
+      "bytes": 517818,
+      "sha256": "3997ddd196c08b3fbe1d6f72b0d331d8174f35958b8ef2d286f4f29444f53753",
+      "review": true,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-recovery-proof.original.json.txt",
+      "bytes": 2153,
+      "sha256": "90e0682e32979d6bdda56151f9982dfc908fe71001384a91a410ee9a1a0251e5",
+      "review": true,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-reduced-motion-clarification.png",
+      "bytes": 213195,
+      "sha256": "09b4511dbdab69f55985f8a0f0121aa6e47638f62e3c54e1dfb9dfd8be6aed83",
+      "review": true,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-selected-detailed.png",
+      "bytes": 325693,
+      "sha256": "66cb17593dd70e88f6c69ac89969801b7f01e2776372da646febdc4b3753741c",
+      "review": true,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-selected-engineering.png",
+      "bytes": 329410,
+      "sha256": "a18cbe89d2987b5111ecf88e0f078612a7da94d91f2ab72e2da7e1a6cf40606b",
+      "review": true,
+      "independentlyVerified": true
+    },
+    {
+      "phase": "final",
+      "file": "final/semantic-selected-guided.png",
+      "bytes": 326536,
+      "sha256": "cf95401fe83f48d1eda751c131b632d73c55530b6e80ad775a142e56ea513aab",
+      "review": true,
+      "independentlyVerified": true
+    }
+  ],
+  "selectedMediaDigest": {
+    "algorithm": "SHA256",
+    "serialization": "Sorted review=true PNG/webm file paths, each file + space + sha256 + LF, UTF8",
+    "sha256": "85205e8bcef74787846a023a5989dbdc4de4cceb71040864bd3f67a0f9bcd75b"
+  },
+  "captureRun": {
+    "candidate": "6c892c682ea5b1b60e9bf0e8c800ac950ef64507",
+    "tree": "6ec22b5d5602d5e970b9cb4e485c7f4519601418",
+    "runtime": "DEVELOPMENT",
+    "provider": "SYNTHETIC_UNPAID",
+    "startedAt": "2026-10-13T05:15:15.949Z",
+    "finishedAt": "2026-10-13T05:15:44.152Z",
+    "exitCode": 0,
+    "sourceBinding": "VALID",
+    "recordings": [
+      {
+        "file": "checks-parallax-semantic-assistan-2da52-ferences-in-both-directions-chromium-video.webm",
+        "sha256": "7a0b905bcd7f263b8c4033cbca01a9f50f720040f5134eeaec0d32ff01d50742"
+      },
+      {
+        "file": "checks-parallax-semantic-assistan-aae51--identity-and-saved-restore-chromium-video.webm",
+        "sha256": "0104da048b8234b84024ebb5ba977f2a6a3700e8f481fc17311f6a266d63ea2b"
+      },
+      {
+        "file": "checks-parallax-semantic-assistan-b84a4--without-changing-the-scene-chromium-video.webm",
+        "sha256": "0cf96b2003b400cabba0d5574bc556458e019e567f69adefbd2e05c2b6026030"
+      }
+    ]
+  },
+  "proofs": {
+    "semantic-placement-proof": {
+      "source": "6c892c682ea5b1b60e9bf0e8c800ac950ef64507",
+      "runtime": "DEVELOPMENT",
+      "provider": "SYNTHETIC_UNPAID",
+      "targetFeatureId": "window-table:top",
+      "pose": {
+        "position": {
+          "x": 0,
+          "y": 0.76,
+          "z": -0.8
+        },
+        "rotation": {
+          "x": -0.7071067811865477,
+          "y": 0,
+          "z": 0,
+          "w": 0.7071067811865477
+        },
+        "scale": 1
+      },
+      "rendered": {
+        "id": "synthetic-window-note",
+        "status": "IN_VIEW",
+        "position": [
+          0,
+          0.76,
+          -0.8
+        ],
+        "rotation": [
+          -0.7071067811865477,
+          0,
+          0,
+          0.7071067811865477
+        ],
+        "scale": [
+          1,
+          1,
+          1
+        ],
+        "bounds": {
+          "min": [
+            -0.10999999940395355,
+            0.76,
+            -0.8825000032782555
+          ],
+          "max": [
+            0.10999999940395355,
+            0.777343332991004,
+            -0.7174999967217446
+          ]
+        }
+      },
+      "observed": [
+        {
+          "elapsedMs": 0.20000001788139343,
+          "text": "Ready when you are",
+          "working": "false"
+        },
+        {
+          "elapsedMs": 384.30000001192093,
+          "text": "Saving and preparing scene context…",
+          "working": "true"
+        },
+        {
+          "elapsedMs": 388.59999999403954,
+          "text": "Interpreting your idea…",
+          "working": "true"
+        },
+        {
+          "elapsedMs": 1799.9000000059605,
+          "text": "Proposal ready for your review",
+          "working": "false"
+        },
+        {
+          "elapsedMs": 2922,
+          "text": "Applying and saving reviewed changes…",
+          "working": "true"
+        },
+        {
+          "elapsedMs": 3079.9000000059605,
+          "text": "Your changes are saved",
+          "working": "false"
+        }
+      ],
+      "errors": [],
+      "limits": "Real application/backend/renderer and persisted synthetic geometry; not live model interpretation or physical room accuracy."
+    },
+    "semantic-recovery-proof": {
+      "source": "6c892c682ea5b1b60e9bf0e8c800ac950ef64507",
+      "runtime": "DEVELOPMENT",
+      "provider": "SYNTHETIC_UNPAID",
+      "observed": [
+        {
+          "elapsedMs": 0.19999998807907104,
+          "text": "Ready when you are",
+          "working": "false"
+        },
+        {
+          "elapsedMs": 391.7999999821186,
+          "text": "Saving and preparing scene context…",
+          "working": "true"
+        },
+        {
+          "elapsedMs": 396.2999999821186,
+          "text": "Interpreting your idea…",
+          "working": "true"
+        },
+        {
+          "elapsedMs": 1747.0999999940395,
+          "text": "A little clarification will help",
+          "working": "false"
+        },
+        {
+          "elapsedMs": 1981.699999988079,
+          "text": "Ready when you are",
+          "working": "false"
+        },
+        {
+          "elapsedMs": 2282.0999999940395,
+          "text": "Saving and preparing scene context…",
+          "working": "true"
+        },
+        {
+          "elapsedMs": 2286.199999988079,
+          "text": "Interpreting your idea…",
+          "working": "true"
+        },
+        {
+          "elapsedMs": 2510.0999999940395,
+          "text": "Ready when you are",
+          "working": "false"
+        },
+        {
+          "elapsedMs": 8415,
+          "text": "Saving and preparing scene context…",
+          "working": "true"
+        },
+        {
+          "elapsedMs": 8419.09999999404,
+          "text": "Interpreting your idea…",
+          "working": "true"
+        },
+        {
+          "elapsedMs": 9270,
+          "text": "Assistance is unavailable",
+          "working": "false"
+        },
+        {
+          "elapsedMs": 9585.59999999404,
+          "text": "Ready when you are",
+          "working": "false"
+        },
+        {
+          "elapsedMs": 10058,
+          "text": "Saving and preparing scene context…",
+          "working": "true"
+        },
+        {
+          "elapsedMs": 10061.59999999404,
+          "text": "Interpreting your idea…",
+          "working": "true"
+        },
+        {
+          "elapsedMs": 11400.40000000596,
+          "text": "A little clarification will help",
+          "working": "false"
+        }
+      ],
+      "lateReplyWaitMs": 5500,
+      "cancelledRequestDispatches": 1,
+      "savedDataUnchanged": true,
+      "limits": "Deterministic upstream fixtures exercise real API/UI stages, not live semantic model quality or representative motion smoothness."
+    },
+    "semantic-public-motion-proof": {
+      "source": "6c892c682ea5b1b60e9bf0e8c800ac950ef64507",
+      "runtime": "DEVELOPMENT",
+      "reducedThenFullConfirmed": true,
+      "retainedDOMNode": true,
+      "value": "synthetic-motion-switch@example.test",
+      "focusRetained": true,
+      "limits": "One public sign-in form and the Studio fixture; no full product-route matrix acceptance."
+    }
+  },
+  "safeSyntheticProviderLogs": [
+    {
+      "file": "cancel-before/provider-53872.original.jsonl.txt",
+      "requests": 4,
+      "kinds": {
+        "CREATE_CANCEL": 2,
+        "ROOM_CLARIFICATION": 1,
+        "ROOM_TABLE": 1
+      },
+      "models": [
+        "gpt-6-luna"
+      ],
+      "interpretation": "Synthetic intercepted provider trace, not paid/live inference. Final log confirms one CREATE_CANCEL; paired preceding adverse logs retained."
+    },
+    {
+      "file": "motion-before/provider-57660.original.jsonl.txt",
+      "requests": 4,
+      "kinds": {
+        "CREATE_CANCEL": 1,
+        "FAILURE": 1,
+        "ROOM_CLARIFICATION": 1,
+        "ROOM_TABLE": 1
+      },
+      "models": [
+        "gpt-6-luna"
+      ],
+      "interpretation": "Synthetic intercepted provider trace, not paid/live inference. Final log confirms one CREATE_CANCEL; paired preceding adverse logs retained."
+    },
+    {
+      "file": "final/provider-35516.original.jsonl.txt",
+      "requests": 5,
+      "kinds": {
+        "CREATE_CANCEL": 1,
+        "FAILURE": 1,
+        "ROOM_CLARIFICATION": 2,
+        "ROOM_TABLE": 1
+      },
+      "models": [
+        "gpt-6-luna"
+      ],
+      "interpretation": "Synthetic intercepted provider trace, not paid/live inference. Final log confirms one CREATE_CANCEL; paired preceding adverse logs retained."
+    }
+  ],
+  "recordingInspection": [
+    {
+      "evidenceId": "cancel-before/checks-parallax-semantic-assistan-b84a4--without-changing-the-scene-chromium-video.webm",
+      "sha256": "ac88727423ec15ffa641abcd7910120ba629b97318a0da345dff12e796153da9",
+      "chronologySampled": true,
+      "sampleRateFps": 2,
+      "sampledFrames": 34
+    },
+    {
+      "evidenceId": "motion-before/checks-parallax-semantic-assistan-b84a4--without-changing-the-scene-chromium-video.webm",
+      "sha256": "2afcfd96dc4b58edbed6afb81c53305a4c5b7e7e4409a705babf98678c6566f6",
+      "chronologySampled": true,
+      "sampleRateFps": 2,
+      "sampledFrames": 51
+    },
+    {
+      "evidenceId": "final/checks-parallax-semantic-assistan-2da52-ferences-in-both-directions-chromium-video.webm",
+      "sha256": "7a0b905bcd7f263b8c4033cbca01a9f50f720040f5134eeaec0d32ff01d50742",
+      "chronologySampled": true,
+      "sampleRateFps": 2,
+      "sampledFrames": 5
+    },
+    {
+      "evidenceId": "final/checks-parallax-semantic-assistan-aae51--identity-and-saved-restore-chromium-video.webm",
+      "sha256": "0104da048b8234b84024ebb5ba977f2a6a3700e8f481fc17311f6a266d63ea2b",
+      "chronologySampled": true,
+      "sampleRateFps": 2,
+      "sampledFrames": 21
+    },
+    {
+      "evidenceId": "final/checks-parallax-semantic-assistan-b84a4--without-changing-the-scene-chromium-video.webm",
+      "sha256": "0cf96b2003b400cabba0d5574bc556458e019e567f69adefbd2e05c2b6026030",
+      "chronologySampled": true,
+      "sampleRateFps": 2,
+      "sampledFrames": 33
+    }
+  ]
+}

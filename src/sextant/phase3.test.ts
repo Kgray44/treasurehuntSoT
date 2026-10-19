@@ -126,6 +126,19 @@ describe("honest local field semantics", () => {
   });
 });
 describe("camera/microphone state and consumer-owned resources", () => {
+  it("requests the rear camera for browser AR while preserving an explicit device selection", async () => {
+    const media = {
+      getUserMedia: vi.fn<MediaDevices["getUserMedia"]>().mockRejectedValue(new Error("Synthetic camera unavailable")),
+    };
+    const broker = new BrowserCameraBroker(media);
+    await expect(broker.acquire(true, true, undefined, "environment")).rejects.toThrow("Synthetic camera unavailable");
+    expect(media.getUserMedia.mock.calls[0][0]?.video).toMatchObject({ facingMode: { ideal: "environment" } });
+    await expect(broker.acquire(true, true, "chosen-camera", "environment")).rejects.toThrow(
+      "Synthetic camera unavailable",
+    );
+    expect(media.getUserMedia.mock.calls[1][0]?.video).toMatchObject({ deviceId: { exact: "chosen-camera" } });
+    expect(media.getUserMedia.mock.calls[1][0]?.video).not.toHaveProperty("facingMode");
+  });
   it("shares declarations through the accepted camera broker without a parallel capture", async () => {
     const f = phase3Fixture();
     const track = Object.assign(new EventTarget(), {

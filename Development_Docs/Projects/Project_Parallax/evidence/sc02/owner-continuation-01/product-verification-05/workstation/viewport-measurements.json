@@ -1,0 +1,221 @@
+{
+  "artifactRoot": "D:\\CodexWorktrees\\treasurehunt-parallax-sc-02\\artifacts\\sounding-line\\generic-9831346ca918",
+  "measures": [
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "layout": "CONSTRUCTION",
+      "canvas": {
+        "width": 1270,
+        "height": 756,
+        "area": 960120
+      }
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "layout": "SPATIAL",
+      "canvas": {
+        "width": 1570,
+        "height": 756,
+        "area": 1186920
+      }
+    },
+    {
+      "viewport": {
+        "width": 1920,
+        "height": 1080
+      },
+      "layout": "FOCUS",
+      "canvas": {
+        "width": 1814,
+        "height": 756,
+        "area": 1371384
+      }
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "layout": "CONSTRUCTION",
+      "canvas": {
+        "width": 790,
+        "height": 576,
+        "area": 455040
+      }
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "layout": "SPATIAL",
+      "canvas": {
+        "width": 1090,
+        "height": 576,
+        "area": 627840
+      }
+    },
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "layout": "FOCUS",
+      "canvas": {
+        "width": 1334,
+        "height": 576,
+        "area": 768384
+      }
+    },
+    {
+      "viewport": {
+        "width": 1366,
+        "height": 768
+      },
+      "layout": "CONSTRUCTION",
+      "canvas": {
+        "width": 716,
+        "height": 444,
+        "area": 317904
+      }
+    },
+    {
+      "viewport": {
+        "width": 1366,
+        "height": 768
+      },
+      "layout": "SPATIAL",
+      "canvas": {
+        "width": 1016,
+        "height": 444,
+        "area": 451104
+      }
+    },
+    {
+      "viewport": {
+        "width": 1366,
+        "height": 768
+      },
+      "layout": "FOCUS",
+      "canvas": {
+        "width": 1260,
+        "height": 444,
+        "area": 559440
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "layout": "CONSTRUCTION",
+      "canvas": {
+        "width": 630,
+        "height": 476,
+        "area": 299880
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "layout": "SPATIAL",
+      "canvas": {
+        "width": 930,
+        "height": 476,
+        "area": 442680
+      }
+    },
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "layout": "FOCUS",
+      "canvas": {
+        "width": 1174,
+        "height": 476,
+        "area": 558824
+      }
+    },
+    {
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "layout": "CONSTRUCTION",
+      "canvas": {
+        "width": 924,
+        "height": 444,
+        "area": 410256
+      }
+    },
+    {
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "layout": "SPATIAL",
+      "canvas": {
+        "width": 924,
+        "height": 444,
+        "area": 410256
+      }
+    },
+    {
+      "viewport": {
+        "width": 1024,
+        "height": 768
+      },
+      "layout": "FOCUS",
+      "canvas": {
+        "width": 924,
+        "height": 444,
+        "area": 410256
+      }
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "layout": "CONSTRUCTION",
+      "canvas": {
+        "width": 294,
+        "height": 304,
+        "area": 89376
+      }
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "layout": "SPATIAL",
+      "canvas": {
+        "width": 294,
+        "height": 304,
+        "area": 89376
+      }
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "layout": "FOCUS",
+      "canvas": {
+        "width": 294,
+        "height": 304,
+        "area": 89376
+      }
+    }
+  ]
+}

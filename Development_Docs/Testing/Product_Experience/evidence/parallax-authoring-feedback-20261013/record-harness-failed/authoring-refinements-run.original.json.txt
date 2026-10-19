@@ -1,0 +1,24 @@
+{
+  "candidate": "7e25c63454e3dde6fa73e58e631deb49eae49898",
+  "tree": "d0d844be3f2c29399074f61519d25a6d44eb6e8a",
+  "runtime": "DEVELOPMENT",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-13T04:08:19.280Z",
+  "finishedAt": "2026-10-13T04:09:10.562Z",
+  "exitCode": 1,
+  "sourceBinding": "VALID",
+  "recordings": [
+    {
+      "file": "checks-parallax-authoring-refinem-099f2-assets-through-saved-replay-chromium-video.webm",
+      "sha256": "b10d01f4ea3c17838c32c78c2326f9d62c01b7bc88fbeb3e1b015ffc4ce17161"
+    },
+    {
+      "file": "checks-parallax-authoring-refinem-87784-and-rebuilds-only-that-prop-chromium-video.webm",
+      "sha256": "b5ec1b2f785f72da6dc70a823bd6e828045ae61d1bd9dbd97fed6326f7a3c949"
+    },
+    {
+      "file": "checks-parallax-authoring-refinem-b728d-modes-and-renderer-recovery-chromium-video.webm",
+      "sha256": "20092dbc2b757b2824a7f0ad5abfb0dc7f07e4f4b8e6b4c853dcd62650b99f3d"
+    }
+  ]
+}

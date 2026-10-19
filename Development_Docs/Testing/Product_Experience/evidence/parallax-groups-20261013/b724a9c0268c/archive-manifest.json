@@ -1,0 +1,41 @@
+{
+  "documentClassification": "engineering-evidence",
+  "sourceCommit": "b724a9c0268c04f2b732cd8d8a1268c470f67c7c",
+  "overallRunPassed": true,
+  "reviewScope": "FOCUSED_GROUP_PROPOSAL_REPAIRS_ONLY",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "files": [
+    {
+      "file": "groups-assistant-group-applied.png",
+      "sha256": "6c76e11df20e2114b04c0043777b9c4209b9ffc60e9abfb8a51a76abcb6ded60"
+    },
+    {
+      "file": "groups-assistant-group-proposal.png",
+      "sha256": "6731940c6ffbbaf0e872e40a2c60277f3574091636093ab95fa00788281ea200"
+    },
+    {
+      "file": "groups-assistant-move-proposal.png",
+      "sha256": "8352acd1cae0aafa56d2643f0a92350fb0e84fd6f5cd760f097db0a64397a10f"
+    },
+    {
+      "file": "independent-focused-review.original.json",
+      "sha256": "21193d97749b46ff9e95f6fa4af2c10a9421035fff2e5706d453e7d75c9a4e91"
+    },
+    {
+      "file": "parallax-groups-Assistant--c7d33-r-without-inference-traffic-chromium-video.webm",
+      "sha256": "825a77423f289c944f548835a480e8f107f853c08802d3fdf34aef0f372cd7a7"
+    },
+    {
+      "file": "pre-source-visual-notes.original.json",
+      "sha256": "873ba3355600376f7f2ba0b90cd9c1b759c41fbd862080ffea73037656eb985c"
+    },
+    {
+      "file": "review-packet.original.json",
+      "sha256": "fc862aa9a3a8f55daea8f3f028bc8e89216cb04034fa6327e56cc9492721a983"
+    },
+    {
+      "file": "run.json",
+      "sha256": "79b798c06f9331f3777ee4a3a005d6815f3dd38b68f147dfda7b254c1dfe0aea"
+    }
+  ]
+}

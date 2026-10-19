@@ -1,0 +1,1083 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 D:/CodexWorktrees/parallax-sc01-compat-review
+
+ ❯ src/components/studio/parallax/SceneManager.test.tsx (8 tests | 1 failed | 7 skipped) 442ms
+   × keeps an autosave failure visible inside the open Manager without changing the Scene 441ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/studio/parallax/SceneManager.test.tsx > keeps an autosave failure visible inside the open Manager without changing the Scene
+TestingLibraryElementError: Unable to find an accessible element with the role "alert"
+
+Here are the accessible roles:
+
+  heading:
+
+  Name "Environments & Scenes":
+  <h2
+    id="scene-manager-title"
+  />
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  <p />
+
+  --------------------------------------------------
+  button:
+
+  Name "Close Scene Manager":
+  <button
+    aria-label="Close Scene Manager"
+  />
+
+  --------------------------------------------------strong:
+
+  Name "":
+  <strong />
+
+  --------------------------------------------------group:
+
+  Name "":
+  <fieldset
+    class="_controls_811451"
+  />
+
+  Name "":
+  <details />
+
+  Name "":
+  <details />
+
+  --------------------------------------------------
+  combobox:
+
+  Name "Browse Environment":
+  <select />
+
+  Name "Scene source":
+  <select />
+
+  Name "Environment source version":
+  <select />
+
+  Name "Scene starting content":
+  <select />
+
+  Name "Scene preview lighting":
+  <select />
+
+  Name "Semantic reference for Room description":
+  <select />
+
+  Name "Compare active Scene with":
+  <select />
+
+  --------------------------------------------------
+  option:
+
+  Name "Bedroom · SAVED":
+  <option
+    value="shared-room"
+  />
+
+  Name "Selected Environment baseline":
+  <option
+    value=""
+  />
+
+  Name "Duplicate Active Scene":
+  <option
+    value="active"
+  />
+
+  Name "Duplicate Other Scene":
+  <option
+    value="other"
+  />
+
+  Name "Version 2 · Bedroom":
+  <option
+    value="room:v2"
+  />
+
+  Name "Version 1 · Bedroom":
+  <option
+    value="room:v1"
+  />
+
+  Name "Environment description only":
+  <option
+    value="BASELINE"
+  />
+
+  Name "Ghost Footprint Trail · supported markers":
+  <option
+    value="Ghost Footprint Trail"
+  />
+
+  Name "Peeking Letter · supported parchment":
+  <option
+    value="Peeking Letter"
+  />
+
+  Name "Hidden Wall Message · supported text":
+  <option
+    value="Hidden Wall Message"
+  />
+
+  Name "Use Environment base lighting":
+  <option
+    value="INHERIT"
+  />
+
+  Name "Normal · this Scene only":
+  <option
+    value="NORMAL"
+  />
+
+  Name "Low · this Scene only":
+  <option
+    value="LOW"
+  />
+
+  Name "No explicit feature reference":
+  <option
+    value=""
+  />
+
+  Name "floor furniture · FLOOR":
+  <option
+    value="floor-furniture"
+  />
+
+  Name "wall window · WALL":
+  <option
+    value="wall-window"
+  />
+
+  Name "wall front · WALL":
+  <option
+    value="wall-front"
+  />
+
+  Name "wall left · WALL":
+  <option
+    value="wall-left"
+  />
+
+  Name "wall right · WALL":
+  <option
+    value="wall-right"
+  />
+
+  Name "ceiling · CEILING":
+  <option
+    value="ceiling"
+  />
+
+  Name "entry door · DOOR":
+  <option
+    value="entry-door"
+  />
+
+  Name "window · WINDOW":
+  <option
+    value="window"
+  />
+
+  Name "reference desk · DESK":
+  <option
+    value="reference-desk"
+  />
+
+  Name "table left · TABLE":
+  <option
+    value="table-left"
+  />
+
+  Name "bed · TABLE":
+  <option
+    value="bed"
+  />
+
+  Name "wardrobe · SHELF":
+  <option
+    value="wardrobe"
+  />
+
+  Name "desk chair · CHAIR":
+  <option
+    value="desk-chair"
+  />
+
+  Name "desk chair · TABLE":
+  <option
+    value="desk-chair-seat"
+  />
+
+  Name "bedside lamp · OTHER":
+  <option
+    value="bedside-lamp"
+  />
+
+  Name "Choose a Scene in the same Environment":
+  <option
+    value=""
+  />
+
+  Name "Other Scene":
+  <option
+    value="other"
+  />
+
+  --------------------------------------------------
+  button:
+
+  Name "Edit shared Environment":
+  <button />
+
+  Name "New Environment":
+  <button />
+
+  Name "Reconstruct Environment":
+  <button />
+
+  Name "Create Scene from baseline":
+  <button />
+
+  Name "Review Environment impact":
+  <button
+    aria-expanded="false"
+  />
+
+  Name "Open Active Scene":
+  <button
+    disabled=""
+  />
+
+  Name "Use as duplication source":
+  <button />
+
+  Name "Archive Active Scene":
+  <button />
+
+  Name "Open Other Scene":
+  <button />
+
+  Name "Use as duplication source":
+  <button />
+
+  Name "Archive Other Scene":
+  <button />
+
+  Name "Rename Scene":
+  <button />
+
+  Name "Save Scene":
+  <button />
+
+  Name "Preview Scene":
+  <button />
+
+  Name "Duplicate active Scene":
+  <button />
+
+  Name "Open referenced Environment":
+  <button />
+
+  Name "Scene semantic references":
+  <summary
+    role="button"
+  />
+
+  Name "Scene identity & immutable versions":
+  <summary
+    role="button"
+  />
+
+  Name "Compare Scenes":
+  <button
+    disabled=""
+  />
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  <p
+    class="_description_811451"
+  />
+
+  Name "":
+  <p />
+
+  Name "":
+  <p />
+
+  Name "":
+  <p />
+
+  Name "":
+  <p />
+
+  Name "":
+  <p />
+
+  Name "":
+  <p />
+
+  --------------------------------------------------
+  region:
+
+  Name "Create Scene":
+  <section
+    aria-label="Create Scene"
+    class="_create_811451"
+  />
+
+  Name "Scene gallery":
+  <section
+    aria-label="Scene gallery"
+  />
+
+  Name "Active Scene information":
+  <section
+    aria-label="Active Scene information"
+    class="_active_811451"
+  />
+
+  Name "Scene comparison":
+  <section
+    aria-label="Scene comparison"
+    class="_comparison_811451"
+  />
+
+  --------------------------------------------------
+  heading:
+
+  Name "Create a Scene":
+  <h3 />
+
+  Name "Scenes in Bedroom":
+  <h3 />
+
+  Name "Active Scene":
+  <h4 />
+
+  Name "Other Scene":
+  <h4 />
+
+  Name "Active Scene · Active Scene":
+  <h3 />
+
+  Name "Compare independent Scenes":
+  <h3 />
+
+  --------------------------------------------------
+  textbox:
+
+  Name "Scene name":
+  <input
+    maxlength="120"
+    value="New Scene"
+  />
+
+  Name "Scene description":
+  <input
+    maxlength="2000"
+    value=""
+  />
+
+  Name "Rename active Scene":
+  <input
+    maxlength="120"
+    value="Active Scene"
+  />
+
+  Name "Active Scene description":
+  <textarea
+    maxlength="2000"
+  />
+
+  --------------------------------------------------
+  article:
+
+  Name "":
+  <article
+    class="_card_811451"
+    data-active="true"
+  />
+
+  Name "":
+  <article
+    class="_card_811451"
+    data-active="false"
+  />
+
+  --------------------------------------------------
+  term:
+
+  Name "":
+  <dt />
+
+  Name "":
+  <dt />
+
+  Name "":
+  <dt />
+
+  Name "":
+  <dt />
+
+  Name "":
+  <dt />
+
+  --------------------------------------------------
+  definition:
+
+  Name "":
+  <dd />
+
+  Name "":
+  <dd />
+
+  Name "":
+  <dd />
+
+  Name "":
+  <dd />
+
+  Name "":
+  <dd />
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+<dialog
+  aria-labelledby="scene-manager-title"
+  class="_dialog_811451"
+  open=""
+>
+  <div
+    class="_heading_811451"
+  >
+    <div>
+      <small>
+        PARALLAX / AUTHORING
+      </small>
+      <h2
+        id="scene-manager-title"
+      >
+        Environments & Scenes
+      </h2>
+      <p>
+        Build the room once. Give every Scene its own story.
+      </p>
+    </div>
+    <button
+      aria-label="Close Scene Manager"
+    >
+      Close
+    </button>
+  </div>
+  <div
+    class="_mode_811451"
+  >
+    <strong>
+      Editing Scene · independent content
+    </strong>
+    <span>
+      Scene objects, transforms, lighting overrides and behaviors save independently. Environment edits open their own workspace.
+    </span>
+  </div>
+  <fieldset
+    class="_controls_811451"
+  >
+    <div
+      class="_environmentBar_811451"
+    >
+      <label>
+        Browse Environment
+        <select>
+          <option
+            value="shared-room"
+          >
+            Bedroom
+             ·
+             
+            SAVED
+          </option>
+        </select>
+      </label>
+      <button>
+        Edit shared Environment
+      </button>
+      <button>
+        New Environment
+      </button>
+      <button>
+        Reconstruct Environment
+      </button>
+    </div>
+    <p
+      class="_description_811451"
+    >
+      <span>
+        2
+         independent 
+        Scenes
+         · 
+        2
+         
+        immutable Environment versions
+      </span>
+    </p>
+    <section
+      aria-label="Create Scene"
+      class="_create_811451"
+    >
+      <h3>
+        Create a Scene
+      </h3>
+      <p>
+        Choose an explicit Environment version or duplicate an existing Scene.
+      </p>
+      <div
+        class="_fields_811451"
+      >
+        <label>
+          Scene name
+          <input
+            maxlength="120"
+            value="New Scene"
+          />
+        </label>
+        <label>
+          Scene source
+          <select>
+            <option
+              value=""
+            >
+              Selected Environment baseline
+            </option>
+            <option
+              value="active"
+            >
+              Duplicate 
+              Active Scene
+            </option>
+            <option
+              value="other"
+            >
+              Duplicate 
+              Other Scene
+            </option>
+          </select>
+        </label>
+      </div>
+      <label>
+        Environment source version
+        <select>
+          <option
+            value="room:v2"
+          >
+            Version 
+            2
+             · 
+            Bedroom
+          </option>
+          <option
+            value="room:v1"
+          >
+            Version 
+            1
+             · 
+            Bedroom
+          </option>
+        </select>
+      </label>
+      <label>
+        Scene starting content
+        <select>
+          <option
+            value="BASELINE"
+          >
+            Environment description only
+          </option>
+          <option
+            value="Ghost Footprint Trail"
+          >
+            Ghost Footprint Trail · supported markers
+          </option>
+          <option
+            value="Peeking Letter"
+          >
+            Peeking Letter · supported parchment
+          </option>
+          <option
+            value="Hidden Wall Message"
+          >
+            Hidden Wall Message · supported text
+          </option>
+        </select>
+      </label>
+      <label>
+        Scene description
+        <input
+          maxlength="2000"
+          value=""
+        />
+      </label>
+      <button>
+        Create Scene from baseline
+      </button>
+    </section>
+    <section
+      aria-label="Scene gallery"
+    >
+      <div
+        class="_heading_811451"
+      >
+        <h3>
+          Scenes in 
+          Bedroom
+        </h3>
+        <button
+          aria-expanded="false"
+        >
+          Review Environment impact
+        </button>
+      </div>
+      <div
+        class="_gallery_811451"
+      >
+        <article
+          class="_card_811451"
+          data-active="true"
+        >
+          <svg
+            aria-hidden="true"
+            class="_thumbnail_811451"
+            viewBox="0 0 200 110"
+          >
+            <path
+              d="M20 86V25L100 9 180 25V86L100 103Z"
+              fill="var(--studio-raised)"
+              stroke="var(--studio-border-strong)"
+            />
+            <path
+              d="M20 86L100 65 180 86M100 9V65"
+              fill="none"
+              stroke="var(--studio-border)"
+            />
+            <g
+              transform="translate(50,38)"
+            >
+              <rect
+                fill="#9bc3ff"
+                height="13"
+                opacity="1"
+                rx="2"
+                width="18"
+              />
+              <path
+                d="M4 4H14M4 8H11"
+                stroke="#203044"
+                stroke-width="1.5"
+              />
+            </g>
+          </svg>
+          <div
+            class="_cardBody_811451"
+          >
+            <small>
+              ACTIVE SCENE
+               ·
+               
+              LEGACY REVIEW
+            </small>
+            <h4>
+              Active Scene
+            </h4>
+            <p>
+              An independent Scene in this shared Environment.
+            </p>
+            <span>
+              1
+               objects · 
+              0
+               immutable Scene versions ·
+               
+              Environment version 1
+            </span>
+            <div
+              class="_actions_811451"
+            >
+              <button
+                disabled=""
+              >
+                Open 
+                Active Scene
+              </button>
+              <button>
+                Use as duplication source
+              </button>
+              <button>
+                Archive 
+                Active Scene
+              </button>
+            </div>
+          </div>
+        </article>
+        <article
+          class="_card_811451"
+          data-active="false"
+        >
+          <svg
+            aria-hidden="true"
+            class="_thumbnail_811451"
+            viewBox="0 0 200 110"
+          >
+            <path
+              d="M20 86V25L100 9 180 25V86L100 103Z"
+              fill="var(--studio-raised)"
+              stroke="var(--studio-border-strong)"
+            />
+            <path
+              d="M20 86L100 65 180 86M100 9V65"
+              fill="none"
+              stroke="var(--studio-border)"
+            />
+            <g
+              transform="translate(50,38)"
+            >
+              <rect
+                fill="#9bc3ff"
+                height="13"
+                opacity="1"
+                rx="2"
+                width="18"
+              />
+              <path
+                d="M4 4H14M4 8H11"
+                stroke="#203044"
+                stroke-width="1.5"
+              />
+            </g>
+          </svg>
+          <div
+            class="_cardBody_811451"
+          >
+            <small>
+              INDEPENDENT SCENE
+               ·
+               
+              LEGACY REVIEW
+            </small>
+            <h4>
+              Other Scene
+            </h4>
+            <p>
+              An independent Scene in this shared Environment.
+            </p>
+            <span>
+              1
+               objects · 
+              0
+               immutable Scene versions ·
+               
+              Environment version 1
+            </span>
+            <div
+              class="_actions_811451"
+            >
+              <button>
+                Open 
+                Other Scene
+              </button>
+              <button>
+                Use as duplication source
+              </button>
+              <button>
+                Archive 
+                Other Scene
+              </button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+    <section
+      aria-label="Active Scene information"
+      class="_active_811451"
+    >
+      <h3>
+        Active Scene · 
+        Active Scene
+      </h3>
+      <p>
+        Working draft saved
+         ·
+         
+        Bedroom
+      </p>
+      <div
+        class="_fields_811451"
+      >
+        <label>
+          Rename active Scene
+          <input
+            maxlength="120"
+            value="Active Scene"
+          />
+        </label>
+        <button>
+          Rename Scene
+        </button>
+      </div>
+      <label>
+        Scene preview lighting
+        <select>
+          <option
+            value="INHERIT"
+          >
+            Use Environment base lighting
+          </option>
+          <option
+            value="NORMAL"
+          >
+            Normal · this Scene only
+          </option>
+          <option
+            value="LOW"
+          >
+            Low · this Scene only
+          </option>
+        </select>
+      </label>
+      <small>
+        Studio preview lighting is independent of physical room illumination.
+      </small>
+      <label>
+        Active Scene description
+        <textarea
+          maxlength="2000"
+        >
+          An independent Scene in this shared Environment.
+        </textarea>
+      </label>
+      <div
+        class="_actions_811451"
+      >
+        <button>
+          Save Scene
+        </button>
+        <button>
+          Preview Scene
+        </button>
+        <button>
+          Duplicate active Scene
+        </button>
+        <button>
+          Open referenced Environment
+        </button>
+      </div>
+      <details>
+        <summary
+          role="button"
+        >
+          Scene semantic references
+        </summary>
+        <p>
+          These references track shared features for version review. Use the canvas placement controls to move objects.
+        </p>
+        <label>
+          Semantic reference for Room description
+          <select>
+            <option
+              value=""
+            >
+              No explicit feature reference
+            </option>
+            <option
+              value="floor-furniture"
+            >
+              floor furniture · FLOOR
+            </option>
+            <option
+              value="wall-window"
+            >
+              wall window · WALL
+            </option>
+            <option
+              value="wall-front"
+            >
+              wall front · WALL
+            </option>
+            <option
+              value="wall-left"
+            >
+              wall left · WALL
+            </option>
+            <option
+              value="wall-right"
+            >
+              wall right · WALL
+            </option>
+            <option
+              value="ceiling"
+            >
+              ceiling · CEILING
+            </option>
+            <option
+              value="entry-door"
+            >
+              entry door · DOOR
+            </option>
+            <option
+              value="window"
+            >
+              window · WINDOW
+            </option>
+            <option
+              value="reference-desk"
+            >
+              reference desk · DESK
+            </option>
+            <option
+              value="table-left"
+            >
+              table left · TABLE
+            </option>
+            <option
+              value="bed"
+            >
+              bed · TABLE
+            </option>
+            <option
+              value="wardrobe"
+            >
+              wardrobe · SHELF
+            </option>
+            <option
+              value="desk-chair"
+            >
+              desk chair · CHAIR
+            </option>
+            <option
+              value="desk-chair-seat"
+            >
+              desk chair · TABLE
+            </option>
+            <option
+              value="bedside-lamp"
+            >
+              bedside lamp · OTHER
+            </option>
+          </select>
+        </label>
+      </details>
+      <details>
+        <summary
+          role="button"
+        >
+          Scene identity & immutable versions
+        </summary>
+        <dl>
+          <dt>
+            Scene definition
+          </dt>
+          <dd>
+            active
+          </dd>
+          <dt>
+            Working CAS revision
+          </dt>
+          <dd>
+            1
+          </dd>
+          <dt>
+            Environment version
+          </dt>
+          <dd>
+            room:v1
+          </dd>
+          <dt>
+            Environment checksum
+          </dt>
+          <dd>
+            84b213e1ee5944de148a06ccb89b809839599353f09223ad8c879edd500c3f27
+          </dd>
+          <dt>
+            Authored content
+          </dt>
+          <dd>
+            1
+             objects · 
+            0
+             
+            behavior rules · 
+            0
+             animation tracks
+          </dd>
+        </dl>
+        <p>
+          Environment versions and released Scenes are immutable. Working edits use their own conflict revision.
+        </p>
+      </details>
+    </section>
+    <section
+      aria-label="Scene comparison"
+      class="_comparison_811451"
+    >
+      <h3>
+        Compare independent Scenes
+      </h3>
+      <label>
+        Compare active Scene with
+        <select>
+          <option
+            value=""
+          >
+            Choose a Scene in the same Environment
+          </option>
+          <option
+            value="other"
+          >
+            Other Scene
+          </option>
+        </select>
+      </label>
+      <button
+        disabled=""
+      >
+        Compare Scenes
+      </button>
+    </section>
+  </fieldset>
+</dialog>
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/components/studio/parallax/SceneManager.test.tsx:116:26
+    114|   view.rerender(<SceneManager {...props} saveError="Please wait before…
+    115|   const manager = screen.getByRole("dialog", { name: "Environments & S…
+    116|   expect(within(manager).getByRole("alert")).toHaveTextContent("Please…
+       |                          ^
+    117|   expect(within(manager).getByRole("button", { name: "Save Scene", exa…
+    118|   expect(JSON.stringify(props.draft)).toBe(snapshot);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 7 skipped (8)
+   Start at  05:07:58
+   Duration  19.17s (transform 924ms, setup 2.45s, import 3.42s, tests 442ms, environment 12.27s)
+

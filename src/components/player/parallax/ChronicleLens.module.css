@@ -1,5 +1,6 @@
 .entry {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 1rem;
   padding: 1rem;
@@ -7,6 +8,86 @@
   border-radius: 14px;
   background: #d4b57e20;
   margin: 1rem 0;
+}
+.entry > div {
+  flex: 1 1 12rem;
+  min-width: 0;
+}
+.browserControls {
+  width: 100%;
+  text-align: left;
+}
+.browserControls select {
+  max-width: 100%;
+  font: inherit;
+  padding: 0.5rem;
+}
+.alignmentControls {
+  padding: 0.75rem;
+  border: 1px solid #779bbd66;
+  border-radius: 12px;
+  margin: 0.75rem 0;
+}
+.alignmentControls svg {
+  display: block;
+  margin: 0.5rem auto;
+}
+.alignmentControls svg text {
+  fill: currentColor;
+}
+.trackingAlert {
+  padding: 0.75rem;
+  border: 1px solid #e3b66a75;
+  border-radius: 10px;
+  background: #382b1f;
+  color: #ffe0a0;
+}
+.trackingDetails {
+  margin: 0.75rem 0;
+  font-size: 0.85rem;
+}
+.trackingDetails summary {
+  cursor: pointer;
+  padding: 0.5rem 0;
+}
+.trackingDetails ol {
+  max-height: 12rem;
+  overflow: auto;
+  padding-left: 1.5rem;
+  overflow-wrap: anywhere;
+}
+.worldCamera {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: #030911;
+  border-radius: 14px;
+  touch-action: manipulation;
+}
+.worldCamera video,
+.worldCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.worldCamera video {
+  object-fit: contain;
+}
+.worldCanvas canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.cameraHint {
+  position: absolute;
+  bottom: 0.75rem;
+  left: 0.75rem;
+  right: 0.75rem;
+  padding: 0.5rem;
+  background: #071827d9;
+  border-radius: 8px;
+  pointer-events: none;
 }
 .entry p {
   margin: 0.3rem 0;
@@ -60,6 +141,11 @@
   align-items: center;
   padding: 1.4rem 1.7rem;
   border-bottom: 1px solid #d4af6928;
+  gap: 1rem;
+}
+.lens header > div {
+  flex: 1;
+  min-width: 0;
 }
 .lens header p {
   font-size: 0.7rem;
@@ -75,7 +161,13 @@
 }
 .lens header button {
   font-size: 1.6rem;
-  padding: 0.3rem 0.8rem;
+  flex: none;
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  padding: 0;
 }
 .stage {
   padding: 1.8rem;
@@ -105,6 +197,9 @@
   gap: 1rem;
 }
 .object {
+  /* Global heading/paragraph rules read these tokens directly instead of inheriting color. */
+  --text-heading: #2c2418;
+  --text-body: #2c2418;
   color: #2c2418;
   border-radius: 3px 12px 6px 10px;
   padding: 1.6rem;
@@ -122,7 +217,7 @@
   font-size: 0.7rem;
   letter-spacing: 0.13em;
   text-transform: uppercase;
-  color: #655034;
+  color: #5c482f;
 }
 .selected {
   border-color: #f2c46b;

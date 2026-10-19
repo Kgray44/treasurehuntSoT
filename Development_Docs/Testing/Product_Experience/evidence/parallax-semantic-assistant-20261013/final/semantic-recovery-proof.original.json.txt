@@ -1,0 +1,86 @@
+{
+  "source": "6c892c682ea5b1b60e9bf0e8c800ac950ef64507",
+  "runtime": "DEVELOPMENT",
+  "provider": "SYNTHETIC_UNPAID",
+  "observed": [
+    {
+      "elapsedMs": 0.19999998807907104,
+      "text": "Ready when you are",
+      "working": "false"
+    },
+    {
+      "elapsedMs": 391.7999999821186,
+      "text": "Saving and preparing scene context…",
+      "working": "true"
+    },
+    {
+      "elapsedMs": 396.2999999821186,
+      "text": "Interpreting your idea…",
+      "working": "true"
+    },
+    {
+      "elapsedMs": 1747.0999999940395,
+      "text": "A little clarification will help",
+      "working": "false"
+    },
+    {
+      "elapsedMs": 1981.699999988079,
+      "text": "Ready when you are",
+      "working": "false"
+    },
+    {
+      "elapsedMs": 2282.0999999940395,
+      "text": "Saving and preparing scene context…",
+      "working": "true"
+    },
+    {
+      "elapsedMs": 2286.199999988079,
+      "text": "Interpreting your idea…",
+      "working": "true"
+    },
+    {
+      "elapsedMs": 2510.0999999940395,
+      "text": "Ready when you are",
+      "working": "false"
+    },
+    {
+      "elapsedMs": 8415,
+      "text": "Saving and preparing scene context…",
+      "working": "true"
+    },
+    {
+      "elapsedMs": 8419.09999999404,
+      "text": "Interpreting your idea…",
+      "working": "true"
+    },
+    {
+      "elapsedMs": 9270,
+      "text": "Assistance is unavailable",
+      "working": "false"
+    },
+    {
+      "elapsedMs": 9585.59999999404,
+      "text": "Ready when you are",
+      "working": "false"
+    },
+    {
+      "elapsedMs": 10058,
+      "text": "Saving and preparing scene context…",
+      "working": "true"
+    },
+    {
+      "elapsedMs": 10061.59999999404,
+      "text": "Interpreting your idea…",
+      "working": "true"
+    },
+    {
+      "elapsedMs": 11400.40000000596,
+      "text": "A little clarification will help",
+      "working": "false"
+    }
+  ],
+  "lateReplyWaitMs": 5500,
+  "cancelledRequestDispatches": 1,
+  "savedDataUnchanged": true,
+  "limits": "Deterministic upstream fixtures exercise real API/UI stages, not live semantic model quality or representative motion smoothness."
+}

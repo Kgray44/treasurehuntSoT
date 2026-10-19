@@ -1,10 +1,11 @@
 import { z } from "zod";
-import { assistantInterpretationSchema, SpatialAssistantError } from "./spatial-assistant";
+import { assistantInterpretationSchema, assistantOperationSchema, SpatialAssistantError } from "./spatial-assistant";
 import { aiUsageSchema, aiModelIds, type AIGlobalPolicy, type AIModelId, type AIUsage } from "./ai-policy";
 
 export const OPENAI_RESPONSES_URL = "https://api.openai.com/v1/responses";
 export { conciseAssistantInstructions as assistantSystemInstructions } from "./assistant-instructions";
 import { conciseAssistantInstructions as assistantSystemInstructions } from "./assistant-instructions";
+import { roomAssistantInstructions } from "./assistant-instructions";
 
 export function openAIProviderConfiguration(policy: AIGlobalPolicy) {
   const configured = Boolean(process.env.OPENAI_API_KEY?.trim());
@@ -72,7 +73,26 @@ const providerEnvelope = z.object({
     .nullable()
     .optional(),
 });
-export function extractOpenAIResponse(raw: unknown): Outcome {
+const assistantProviderInterpretationSchema = assistantInterpretationSchema.extend({
+  intentType: z.enum([...assistantInterpretationSchema.shape.intentType.options, "OUT_OF_SCOPE"]),
+});
+const outOfScopeInterpretation = assistantInterpretationSchema.parse({
+  intentType: "UNSUPPORTED",
+  summary:
+    "I can help you build and edit your spatial scene. Ask me about an object, your environment, or the Studio controls.",
+  clarification: null,
+  operations: [],
+  assumptions: [],
+  unsupportedCapabilities: [],
+  warnings: [],
+  accessibilityNotes: [],
+  creatorExplanation: "This Assistant focuses on Spatial Studio authoring.",
+});
+
+export function extractOpenAIResponse(
+  raw: unknown,
+  outputSchema: z.ZodType = assistantProviderInterpretationSchema,
+): Outcome {
   const parsed = providerEnvelope.safeParse(raw);
   if (!parsed.success)
     throw new OpenAIProviderError(
@@ -135,7 +155,17 @@ export function extractOpenAIResponse(raw: unknown): Outcome {
       },
     };
   try {
-    const interpretation = assistantInterpretationSchema.parse(JSON.parse(texts[0].text!));
+    const parsedInterpretation = outputSchema.parse(JSON.parse(texts[0].text!));
+    // The model classifies scope; a server-owned redirect replaces all off-topic
+    // text and operations. Scope never grants broader tool or edit authority.
+    const interpretation =
+      outputSchema === assistantProviderInterpretationSchema &&
+      typeof parsedInterpretation === "object" &&
+      parsedInterpretation !== null &&
+      "intentType" in parsedInterpretation &&
+      parsedInterpretation.intentType === "OUT_OF_SCOPE"
+        ? structuredClone(outOfScopeInterpretation)
+        : parsedInterpretation;
     return { responseId: body.id, usage, interpretation, failure: null };
   } catch {
     return {
@@ -154,12 +184,31 @@ export function buildOpenAIRequest(input: {
   mode: "STANDARD" | "ADVANCED";
   model: AIModelId;
   policy: AIGlobalPolicy;
+  deferInputCheck?: boolean;
 }) {
   if (!aiModelIds.includes(input.model) || !input.policy.allowedModels.includes(input.model))
     throw new OpenAIProviderError("MODEL_UNAVAILABLE", "The selected assistance model is unavailable.", true);
+  const hasRoom =
+    typeof input.context === "object" &&
+    input.context !== null &&
+    "room" in input.context &&
+    "placementPolicy" in input.context &&
+    input.context.placementPolicy === "FIXED";
+  // Send only operations the current scene can use. Keep the canonical response validator complete.
+  const options = assistantOperationSchema.options.filter((option) =>
+    hasRoom
+      ? !["SEMANTIC_PLACEMENT", "PLACEMENT", "INSERT_PRESET"].includes(option.shape.type.value)
+      : option.shape.type.value !== "ROOM_PLACEMENT",
+  );
+  const responseSchema = assistantProviderInterpretationSchema.extend({
+    summary: assistantInterpretationSchema.shape.summary,
+    operations: z
+      .array(z.discriminatedUnion("type", options as [(typeof options)[number], ...(typeof options)[number][]]))
+      .max(24),
+  });
   const body = {
     model: input.model,
-    instructions: assistantSystemInstructions,
+    instructions: hasRoom ? roomAssistantInstructions : assistantSystemInstructions,
     input: [{ role: "user", content: JSON.stringify({ creatorRequest: input.request, sceneContext: input.context }) }],
     reasoning: { effort: input.mode === "ADVANCED" ? input.policy.advancedReasoning : input.policy.standardReasoning },
     text: {
@@ -167,7 +216,7 @@ export function buildOpenAIRequest(input: {
         type: "json_schema",
         name: "parallax_spatial_assistant_v1",
         strict: true,
-        schema: z.toJSONSchema(assistantInterpretationSchema, { reused: "ref" }),
+        schema: z.toJSONSchema(responseSchema, { reused: "ref" }),
       },
     },
     max_output_tokens: input.policy.maximumOutputTokens,
@@ -178,13 +227,33 @@ export function buildOpenAIRequest(input: {
   // UTF-8 bytes conservatively bound text BPE tokens, including schema and instruction bytes.
   // Retain headroom for framing tokens. No clipping of meaningful Creator requests.
   const conservativeInputTokens = Buffer.byteLength(JSON.stringify(body), "utf8") + 256;
-  if (conservativeInputTokens > input.policy.maximumInputTokens)
+  if (conservativeInputTokens > (input.deferInputCheck ? 128000 : input.policy.maximumInputTokens))
     throw new OpenAIProviderError(
       "CONTEXT_TOO_LARGE",
       "This request needs less scene context or a higher administrator-configured input allowance.",
       true,
       413,
     );
+  return body;
+}
+/** Keep the byte bound for small requests; count expanded schemas/context before any paid dispatch. */
+export async function prepareOpenAIRequest(
+  input: Parameters<typeof buildOpenAIRequest>[0],
+  signal?: AbortSignal,
+  fetcher?: typeof fetch,
+) {
+  const body = buildOpenAIRequest({ ...input, deferInputCheck: true });
+  const byteBound = Buffer.byteLength(JSON.stringify(body), "utf8") + 256;
+  if (byteBound > input.policy.maximumInputTokens) {
+    const exact = await countOpenAIInputTokens(body, input.policy.timeoutMs, signal, fetcher);
+    if (exact + 256 > input.policy.maximumInputTokens)
+      throw new OpenAIProviderError(
+        "CONTEXT_TOO_LARGE",
+        "This request needs less scene context or a higher administrator-configured input allowance.",
+        true,
+        413,
+      );
+  }
   return body;
 }
 async function boundedResponseText(response: Response, maximumBytes: number) {
@@ -240,12 +309,13 @@ async function classifyOpenAIRateFailure(response: Response) {
 }
 
 /** Fixed upstream, server credential, no external tools, no redirects and no automatic paid retry. */
-export async function invokeOpenAISpatialAssistant(
-  body: ReturnType<typeof buildOpenAIRequest>,
+async function requestOpenAIJSON(
+  body: Record<string, unknown>,
   timeoutMs: number,
   signal?: AbortSignal,
   fetcher: typeof fetch = fetch,
-): Promise<Outcome> {
+  endpoint = OPENAI_RESPONSES_URL,
+): Promise<unknown> {
   const key = process.env.OPENAI_API_KEY?.trim();
   if (!key)
     throw new OpenAIProviderError(
@@ -256,7 +326,7 @@ export async function invokeOpenAISpatialAssistant(
   const timeout = AbortSignal.timeout(timeoutMs),
     combined = signal ? AbortSignal.any([signal, timeout]) : timeout;
   try {
-    const response = await fetcher(OPENAI_RESPONSES_URL, {
+    const response = await fetcher(endpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
       body: JSON.stringify(body),
@@ -291,7 +361,7 @@ export async function invokeOpenAISpatialAssistant(
         "The provider returned unreadable data. Your scene is unchanged.",
       );
     }
-    return extractOpenAIResponse(raw);
+    return raw;
   } catch (cause) {
     if (cause instanceof OpenAIProviderError) throw cause;
     if (signal?.aborted)
@@ -301,6 +371,48 @@ export async function invokeOpenAISpatialAssistant(
     throw new OpenAIProviderError(
       "PROVIDER_UNAVAILABLE",
       "Spatial Assistant can't connect right now. Your scene is unchanged.",
+    );
+  }
+}
+
+/** Both authoring and Watchglass perception use this one server-only credential/transport boundary. */
+export async function invokeOpenAISpatialAssistant(
+  body: Record<string, unknown>,
+  timeoutMs: number,
+  signal?: AbortSignal,
+  fetcher: typeof fetch = fetch,
+  outputSchema: z.ZodType = assistantProviderInterpretationSchema,
+): Promise<Outcome> {
+  return extractOpenAIResponse(await requestOpenAIJSON(body, timeoutMs, signal, fetcher), outputSchema);
+}
+
+/** Count the exact multimodal input before generation; do not guess image tokenization from bytes. */
+export async function countOpenAIInputTokens(
+  body: Record<string, unknown>,
+  timeoutMs: number,
+  signal?: AbortSignal,
+  fetcher: typeof fetch = fetch,
+) {
+  const { model, instructions, input, reasoning, text, tools } = body;
+  try {
+    const raw = await requestOpenAIJSON(
+      { model, instructions, input, reasoning, text, tools },
+      timeoutMs,
+      signal,
+      fetcher,
+      `${OPENAI_RESPONSES_URL}/input_tokens`,
+    );
+    return z
+      .object({
+        object: z.literal("response.input_tokens"),
+        input_tokens: z.number().int().nonnegative().max(2_000_000),
+      })
+      .parse(raw).input_tokens;
+  } catch {
+    throw new OpenAIProviderError(
+      "INPUT_COUNT_UNAVAILABLE",
+      "Input could not be checked. No generation was dispatched; try again or continue editing manually.",
+      true,
     );
   }
 }

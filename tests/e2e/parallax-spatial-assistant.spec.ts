@@ -135,7 +135,7 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
   await expect(page).toHaveURL(/\/studio\/parallax/);
   await page.goto(`/studio/parallax?chronicle=${tale.id}&block=${blockId}`);
-  await expect(page.getByRole("heading", { name: "Desk Map", level: 1 })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Parallax", level: 1 })).toBeVisible();
   const canvas = page.getByRole("region", { name: "Spatial canvas", exact: true });
   await expect(canvas.locator('[data-renderer="READY"]')).toBeVisible();
   await page.getByRole("button", { name: /Ask Parallax/ }).click();
@@ -205,6 +205,10 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
   expect(savedResponse.ok(), JSON.stringify(savedBody)).toBe(true);
   expect(savedBody.draft).toEqual(expected);
   await expect(assistant).toContainText("Your changes are saved");
+  const canvasCheck = assistant.getByRole("region", { name: "Saved scene canvas check", exact: true });
+  await expect(canvasCheck).toBeVisible();
+  await expect(canvasCheck).not.toContainText("Canvas confirmation is pending");
+  await expect(canvasCheck).toContainText(/rendered in the current view|saved, but|saved hidden as authored/);
   const saved = await ownedWorking(account.id, request.draft.content.definitionId);
   expect(saved).toEqual({ draft: expected, revision: base.revision + 1 });
   const ledger = await db.aIUsageLedger.findFirstOrThrow({
@@ -263,7 +267,7 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
     `/studio/parallax?chronicle=${tale.id}&definition=${capsule.definition.id}&entity=synthetic-pirate-map&block=${blockId}`,
   );
   await expect(page.getByLabel("Clue or message")).toHaveValue("Follow the northern harbor bearing.");
-  await page.getByLabel("Workspace layout").selectOption("SPATIAL");
+  await page.getByRole("combobox", { name: "Workspace layout", exact: true }).selectOption("SPATIAL");
   const library = page.getByText("Library, reuse & publication", { exact: true });
   if ((await library.locator("..").getAttribute("open")) === null) await library.click();
   await page.getByRole("button", { name: /v1.0.0 · 2 objects/ }).click();
