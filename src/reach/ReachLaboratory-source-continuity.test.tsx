@@ -17,6 +17,7 @@ const fixture = vi.hoisted(() => ({
     image: (o: IndexImageObservation) => void;
     observe: (o: HandObservation) => void;
     status: (value: string) => void;
+    setCalibrationCollecting: (collecting: boolean) => void;
   }[],
 }));
 vi.mock("./runtime-policy-client", () => ({
@@ -53,7 +54,7 @@ vi.mock("./browser-runtime", () => ({
     stop = () => this.status("DISABLED");
     resources = () => ({ workers: 1, tracks: 1, timers: 0 });
     setTrackingLimits() {}
-    setCalibrationCollecting() {}
+    setCalibrationCollecting = vi.fn();
     setIndexTrackingEnabled() {}
     trackingPacing = () => null;
     captureDiagnostics = () => null;
@@ -112,6 +113,7 @@ function deliver(
   tracker: IndexImageTracker,
   options: {
     x?: number;
+    y?: number;
     blank?: boolean;
     manual?: boolean;
     conditioned?: boolean;
@@ -128,6 +130,7 @@ function deliver(
   act(() => {
     vi.advanceTimersByTime(50);
     const x = options.x ?? 60;
+    const y = options.y ?? 60;
     const anchor = options.anatomyUncertain
       ? {
           point: null,
@@ -140,9 +143,9 @@ function deliver(
         ? indexOnlyModel(x, options.cueSource)
         : options.conditioned
           ? conditionedModel(x)
-          : { point: normalized(x), pointing: true, contrary: false };
+          : { point: normalized(x, y), pointing: true, contrary: false };
     observation = tracker.update(
-      pixels(x, 60, performance.now(), options.blank, options.unrelated),
+      pixels(x, y, performance.now(), options.blank, options.unrelated),
       {
         ...anchor,
         ...(options.currentHandIdentity ? { identitySource: conditionedSource } : {}),
@@ -178,6 +181,25 @@ function openAndSaveFirst(
   for (let i = 0; i < 32; ++i) last = deliver(tracker, { conditioned, currentHandIdentity });
   expect(screen.getByLabelText("Target 2 of 5")).toBeInTheDocument();
   return last;
+}
+function finishRelativeTraining(tracker: IndexImageTracker) {
+  let current = { x: 60, y: 60 };
+  for (const target of [
+    { x: 40, y: 60 },
+    { x: 80, y: 60 },
+    { x: 60, y: 40 },
+    { x: 60, y: 80 },
+  ]) {
+    const from = current;
+    for (let i = 1; i <= 20; ++i)
+      deliver(tracker, {
+        x: Math.round(from.x + ((target.x - from.x) * i) / 20),
+        y: Math.round(from.y + ((target.y - from.y) * i) / 20),
+      });
+    for (let i = 0; i < 28; ++i) deliver(tracker, target);
+    current = target;
+  }
+  return current;
 }
 beforeEach(() => {
   fixture.runtimes = [];
@@ -432,7 +454,7 @@ describe("relative calibration optical source across target 1 → 2", () => {
     },
   );
 
-  it("explains the reset only after optical expiry and a genuinely new automatic anchor", () => {
+  it("suspends saved evidence after optical expiry without lending it to the new automatic anchor", () => {
     const tracker = new IndexImageTracker(binding);
     const first = openAndSaveFirst(tracker);
     // Current model results remain fresh, but blank pixels cannot renew optical identity.
@@ -442,11 +464,16 @@ describe("relative calibration optical source across target 1 → 2", () => {
     for (let i = 0; i < 7; ++i) next = deliver(tracker);
     expect(next.state).toBe("TRACKING");
     expect(next.trackId).not.toBe(first.trackId);
-    expect(screen.getByRole("alert")).toHaveTextContent(
-      "Fingertip identity could not be preserved through the tracking loss or new selection. Begin a fresh setup; saved samples cannot transfer to an unverified finger.",
+    expect(screen.getByRole("status", { name: "Reach status" })).toHaveTextContent(
+      "Fingertip identity could not be verified. Completed targets are saved, but cannot be used with this track.",
     );
-    expect(document.querySelector("[data-step=PREPARE]")).not.toBeNull();
-    expect(screen.queryByLabelText("Target 2 of 5")).not.toBeInTheDocument();
+    expect(document.querySelector("[data-step=TRAINING]")).not.toBeNull();
+    expect(screen.getByLabelText("Target 2 of 5")).toBeInTheDocument();
+    expect(screen.getByText(/1 of 5 targets saved/)).toBeVisible();
+    expect(screen.getByRole("button", { name: "Start fresh setup" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Cancel setup" })).toBeVisible();
+    expect(screen.queryByRole("button", { name: "Resume calibration" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
   });
 
   it("keeps saved targets paused after manual identity expiry without borrowing a model tip", () => {
@@ -485,5 +512,218 @@ describe("relative calibration optical source across target 1 → 2", () => {
     );
     expect(document.querySelector("[data-step=PREPARE]")).not.toBeNull();
     expect(screen.queryByLabelText("Target 2 of 5")).not.toBeInTheDocument();
+  });
+  it("keeps replacement frames from sampling, fitting, exporting or enabling capture while saved evidence is held", () => {
+    const tracker = new IndexImageTracker(binding);
+    const sampling = vi.spyOn(SampleWindow.prototype, "push");
+    openAndSaveFirst(tracker);
+    const saved = sampling.mock.results.find((result) => result.type === "return" && result.value.samples)?.value
+      .samples;
+    expect(saved).toBeTruthy();
+    const originalSaved = structuredClone(saved);
+    const fit = vi.spyOn(calibrationModule, "fitRelativeCalibration");
+    const validate = vi.spyOn(calibrationModule, "validateCalibration");
+    const estimate = vi.spyOn(calibrationModule, "calibratedPoint");
+    const download = vi.fn();
+    vi.spyOn(URL, "createObjectURL").mockImplementation(download);
+    fireEvent.click(screen.getByText("Session diagnostics & privacy", { exact: true }));
+    fireEvent.click(screen.getByLabelText(/consent to downloading/));
+    expect(screen.getByRole("button", { name: "Export aggregate metrics" })).toBeEnabled();
+    for (let i = 0; i < 28; ++i) deliver(tracker, { blank: true });
+    for (let i = 0; i < 8; ++i) deliver(tracker);
+    expect(document.querySelector("[data-calibration-identity=SUSPENDED]")).not.toBeNull();
+    sampling.mockClear();
+    for (let i = 0; i < 40; ++i) deliver(tracker, { x: 50 });
+    expect(sampling).not.toHaveBeenCalled();
+    expect(fit).not.toHaveBeenCalled();
+    expect(validate).not.toHaveBeenCalled();
+    expect(estimate).not.toHaveBeenCalled();
+    expect(saved).toEqual(originalSaved);
+    expect(screen.getByLabelText("Target 2 of 5")).toBeInTheDocument();
+    expect(screen.getByText(/1 of 5 targets saved/)).toBeVisible();
+    expect(screen.getByRole("button", { name: "Export aggregate metrics" })).toBeDisabled();
+    screen.getByRole("button", { name: "Export aggregate metrics" }).click();
+    expect(download).not.toHaveBeenCalled();
+    expect(fixture.runtimes[0].setCalibrationCollecting).toHaveBeenLastCalledWith(false);
+    expect(document.querySelector("[data-calibration-capture=false]")).not.toBeNull();
+    expect(screen.queryByRole("button", { name: "Check five new targets" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Retry this target" })).not.toBeInTheDocument();
+  });
+
+  it.each(["fresh", "cancel"])("requires explicit %s choice for held evidence", (choice) => {
+    const tracker = new IndexImageTracker(binding);
+    openAndSaveFirst(tracker);
+    for (let i = 0; i < 28; ++i) deliver(tracker, { blank: true });
+    for (let i = 0; i < 8; ++i) deliver(tracker);
+    expect(screen.getByLabelText("Target 2 of 5")).toBeInTheDocument();
+    const sampling = vi.spyOn(SampleWindow.prototype, "push");
+    fireEvent.click(screen.getByRole("button", { name: choice === "fresh" ? "Start fresh setup" : "Cancel setup" }));
+    expect(sampling).not.toHaveBeenCalled();
+    expect(document.querySelector("[data-calibration-identity=SUSPENDED]")).toBeNull();
+    expect(screen.queryByLabelText("Target 2 of 5")).not.toBeInTheDocument();
+    if (choice === "fresh") {
+      expect(screen.getByLabelText("Target 1 of 5")).toBeInTheDocument();
+      expect(screen.getByText(/0 of 5 targets saved/)).toBeVisible();
+      for (let i = 0; i < 10; ++i) deliver(tracker);
+      expect(sampling).not.toHaveBeenCalled();
+      for (let i = 0; i < 10; ++i) deliver(tracker);
+      expect(sampling).toHaveBeenCalled();
+      expect(screen.queryByLabelText("Target 2 of 5")).not.toBeInTheDocument();
+    } else {
+      expect(document.querySelector("[data-step=PREPARE]")).not.toBeNull();
+      expect(screen.getByRole("button", { name: "Set up relative movement" })).toBeVisible();
+      expect(fixture.runtimes[0].setCalibrationCollecting).toHaveBeenLastCalledWith(false);
+    }
+  });
+
+  it("resumes only the original producer logical identity while its independently supported continuity remains live", () => {
+    const original = new IndexImageTracker(binding);
+    const first = openAndSaveFirst(original);
+    const other = new IndexImageTracker(binding);
+    for (let i = 0; i < 8; ++i) deliver(other);
+    expect(document.querySelector("[data-calibration-identity=SUSPENDED]")).not.toBeNull();
+    const sampling = vi.spyOn(SampleWindow.prototype, "push");
+    for (let i = 0; i < 8; ++i) {
+      const returning = deliver(original);
+      expect(returning.trackId).toBe(first.trackId);
+      expect(returning.temporalTrack).toMatchObject({ state: "TRACKING", identity: "ESTABLISHED" });
+    }
+    expect(document.querySelector("[data-calibration-identity=SUSPENDED]")).toBeNull();
+    expect(screen.getByLabelText("Target 2 of 5")).toBeInTheDocument();
+    expect(screen.getByText(/1 of 5 targets saved/)).toBeVisible();
+    expect(sampling).not.toHaveBeenCalled();
+    for (let i = 0; i < 15; ++i) deliver(original);
+    expect(sampling).toHaveBeenCalled();
+  });
+
+  it.each([
+    ["camera", { cameraLeaseId: "changed-camera" }],
+    ["manual", { anchorSource: "MANUAL_HINT" as const }],
+    ["provider generation", { providerGeneration: 2 }],
+    ["algorithm", { algorithmDigest: "b".repeat(64) }],
+    ["frame width", { frameWidth: 640 }],
+    ["frame height", { frameHeight: 480 }],
+    ["mirror", { mirrorTransform: "NONE" as const }],
+  ])("still invalidates held evidence for an explicit %s change", (_change, changed) => {
+    const tracker = new IndexImageTracker(binding);
+    openAndSaveFirst(tracker);
+    for (let i = 0; i < 28; ++i) deliver(tracker, { blank: true });
+    for (let i = 0; i < 8; ++i) deliver(tracker);
+    const samples = vi.spyOn(SampleWindow.prototype, "push");
+    act(() => {
+      vi.advanceTimersByTime(50);
+      const next = tracker.update(pixels(60, 60, performance.now()), {
+        point: normalized(),
+        pointing: true,
+        contrary: false,
+      });
+      fixture.runtimes[0].image({
+        ...next,
+        ...changed,
+      });
+    });
+    expect(samples).not.toHaveBeenCalled();
+    expect(document.querySelector("[data-calibration-identity=SUSPENDED]")).toBeNull();
+    expect(document.querySelector("[data-step=PREPARE]")).not.toBeNull();
+    expect(screen.queryByLabelText("Target 2 of 5")).not.toBeInTheDocument();
+    expect(screen.getByRole("alert")).toHaveTextContent("Begin a fresh setup");
+  });
+  it("holds a fitted profile and completed check targets inert until a fresh setup is explicitly requested", () => {
+    const tracker = new IndexImageTracker(binding);
+    openAndSaveFirst(tracker);
+    const current = finishRelativeTraining(tracker);
+    expect(screen.getByRole("button", { name: "Check five new targets" })).toBeVisible();
+    fireEvent.click(screen.getByRole("button", { name: "Check five new targets" }));
+    for (let i = 0; i < 32; ++i) deliver(tracker, current);
+    expect(screen.getByText(/1 of 5 targets saved/)).toBeVisible();
+    const target = screen.getByLabelText("Target 2 of 5");
+    const sampling = vi.spyOn(SampleWindow.prototype, "push");
+    const fit = vi.spyOn(calibrationModule, "fitRelativeCalibration");
+    const validate = vi.spyOn(calibrationModule, "validateCalibration");
+    const estimate = vi.spyOn(calibrationModule, "calibratedPoint");
+    for (let i = 0; i < 28; ++i) deliver(tracker, { ...current, blank: true });
+    for (let i = 0; i < 8; ++i) deliver(tracker, current);
+    expect(document.querySelector("[data-calibration-identity=SUSPENDED]")).not.toBeNull();
+    sampling.mockClear();
+    estimate.mockClear();
+    for (let i = 0; i < 24; ++i) deliver(tracker, current);
+    expect(screen.getByLabelText("Target 2 of 5")).toBe(target);
+    expect(screen.getByText(/1 of 5 targets saved/)).toBeVisible();
+    expect(sampling).not.toHaveBeenCalled();
+    expect(fit).not.toHaveBeenCalled();
+    expect(validate).not.toHaveBeenCalled();
+    expect(estimate).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByText("Session diagnostics & privacy", { exact: true }));
+    fireEvent.click(screen.getByLabelText(/consent to downloading/));
+    expect(screen.getByRole("button", { name: "Export aggregate metrics" })).toBeDisabled();
+    expect(screen.queryByRole("button", { name: "Resume check" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Open pointing playground" })).not.toBeInTheDocument();
+    expect(screen.getByText(/Calibration:.*SUSPENDED/)).toBeVisible();
+    fireEvent.click(screen.getByRole("button", { name: "Start fresh setup" }));
+    expect(screen.getByLabelText("Target 1 of 5")).toBeInTheDocument();
+    expect(screen.getByText(/0 of 5 targets saved/)).toBeVisible();
+    expect(screen.getByText(/Calibration: none/)).toBeVisible();
+  });
+
+  it("never restores a held binding from a stale old callback or an expired original producer", () => {
+    const original = new IndexImageTracker(binding);
+    const first = openAndSaveFirst(original);
+    const replacement = new IndexImageTracker(binding);
+    for (let i = 0; i < 8; ++i) deliver(replacement);
+    expect(document.querySelector("[data-calibration-identity=SUSPENDED]")).not.toBeNull();
+    const samples = vi.spyOn(SampleWindow.prototype, "push");
+    const readiness = vi.spyOn(IndexImageReadiness.prototype, "update");
+    act(() => fixture.runtimes[0].image(first));
+    expect(readiness).not.toHaveBeenCalled();
+    for (let i = 0; i < 28; ++i) deliver(replacement);
+    let returned;
+    for (let i = 0; i < 8; ++i) returned = deliver(original);
+    expect(returned!.trackId).not.toBe(first.trackId);
+    expect(document.querySelector("[data-calibration-identity=SUSPENDED]")).not.toBeNull();
+    expect(screen.getByLabelText("Target 2 of 5")).toBeInTheDocument();
+    expect(screen.getByText(/1 of 5 targets saved/)).toBeVisible();
+    expect(samples).not.toHaveBeenCalled();
+    expect(fixture.runtimes[0].setCalibrationCollecting).toHaveBeenLastCalledWith(false);
+  });
+  it("binds the image domain of the first collected sample after an empty setup source transition", () => {
+    render(<ReachLaboratory />);
+    fireEvent.click(screen.getByRole("button", { name: "Enable live camera" }));
+    fireEvent.click(screen.getByRole("button", { name: "Set up relative movement" }));
+    const opening = new IndexImageTracker(binding);
+    for (let i = 0; i < 4; ++i) deliver(opening);
+    const current = new IndexImageTracker({ ...binding, cameraLeaseId: "camera-before-first-sample" });
+    const samples = vi.spyOn(SampleWindow.prototype, "push");
+    for (let i = 0; i < 40; ++i) deliver(current);
+    expect(samples.mock.contexts[0]).toMatchObject({ binding: { cameraLeaseId: "camera-before-first-sample" } });
+    expect(screen.getByLabelText("Target 2 of 5")).toBeInTheDocument();
+    for (let i = 0; i < 28; ++i) deliver(current, { blank: true });
+    for (let i = 0; i < 8; ++i) deliver(current);
+    expect(document.querySelector("[data-calibration-identity=SUSPENDED]")).not.toBeNull();
+    expect(screen.getByLabelText("Target 2 of 5")).toBeInTheDocument();
+    expect(screen.getByText(/1 of 5 targets saved/)).toBeVisible();
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+  });
+  it("keeps the fitted source domain when a check opens during a foreign track's acquisition", () => {
+    const original = new IndexImageTracker(binding);
+    openAndSaveFirst(original);
+    finishRelativeTraining(original);
+    expect(screen.getByRole("button", { name: "Check five new targets" })).toBeVisible();
+    const replacement = new IndexImageTracker(binding);
+    deliver(replacement);
+    fireEvent.click(screen.getByRole("button", { name: "Check five new targets" }));
+    const samples = vi.spyOn(SampleWindow.prototype, "push");
+    const validate = vi.spyOn(calibrationModule, "validateCalibration");
+    for (let i = 0; i < 10; ++i) deliver(replacement);
+    expect(document.querySelector("[data-calibration-identity=SUSPENDED]")).not.toBeNull();
+    expect(document.querySelector("[data-step=VALIDATION]")).not.toBeNull();
+    expect(screen.getByLabelText("Target 1 of 5")).toBeInTheDocument();
+    expect(screen.getByText(/0 of 5 targets saved/)).toBeVisible();
+    expect(samples).not.toHaveBeenCalled();
+    expect(validate).not.toHaveBeenCalled();
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    expect(fixture.runtimes[0].setCalibrationCollecting).toHaveBeenLastCalledWith(false);
+    for (let i = 0; i < 20; ++i) deliver(replacement);
+    expect(samples).not.toHaveBeenCalled();
+    expect(screen.getByRole("button", { name: "Start fresh setup" })).toBeVisible();
   });
 });

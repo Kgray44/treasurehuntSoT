@@ -48,6 +48,7 @@ import styles from "./ReachLaboratory.module.css";
 type Source = "OFF" | "LIVE" | "DEMO";
 type Step = "PREPARE" | "TRAINING" | "VALIDATION" | "RESULTS" | "PLAYGROUND";
 type PointingMode = "RELATIVE" | "ABSOLUTE";
+type SessionCalibration = Calibration & { imageDomain: string | null };
 type Trial = {
   stage: "TRAINING" | "VALIDATION";
   mode: PointingMode;
@@ -55,11 +56,34 @@ type Trial = {
   groups: CalibrationSample[][];
   window: SampleWindow | null;
   binding: CalibrationBinding | null;
+  imageDomain: string | null;
+  identityHold: { wasPaused: boolean } | null;
   after: number;
   acquiredAt: number;
   demoTargetReady: boolean;
   paused: boolean;
 };
+const identityHoldGuidance =
+  "Fingertip identity could not be verified. Completed targets are saved, but cannot be used with this track.";
+const imageDomainFor = (o: IndexImageObservation) =>
+  JSON.stringify([
+    o.providerId,
+    o.providerVersion,
+    o.algorithmDigest,
+    o.providerGeneration,
+    o.cameraLeaseId,
+    o.cameraFrameVersion,
+    o.frameWidth,
+    o.frameHeight,
+    o.mirrorTransform,
+    o.orientation,
+  ]);
+const sameBinding = (a: CalibrationBinding, b: CalibrationBinding, includeIdentity = true) =>
+  Object.entries(a).every(
+    ([key, value]) =>
+      (!includeIdentity && (key === "trackId" || key === "trackGeneration")) ||
+      b[key as keyof CalibrationBinding] === value,
+  );
 const initialReadiness: ReachReadiness = {
   detectedCount: 0,
   hand: null,
@@ -215,7 +239,7 @@ export function ReachLaboratory({
     lastControlUI = useRef(0),
     lastUI = useRef(0);
   const trial = useRef<Trial | null>(null),
-    calibrationRef = useRef<Calibration | null>(null),
+    calibrationRef = useRef<SessionCalibration | null>(null),
     sourceRef = useRef<Source>("OFF"),
     stepRef = useRef<Step>("PREPARE");
   const modeRef = useRef<PointingMode>("RELATIVE");
@@ -245,7 +269,8 @@ export function ReachLaboratory({
     [total, setTotal] = useState(9),
     [acquisition, setAcquisition] = useState<Acquisition | null>(null),
     [demoHolding, setDemoHolding] = useState(false),
-    [paused, setPaused] = useState(false);
+    [paused, setPaused] = useState(false),
+    [identitySuspended, setIdentitySuspended] = useState(false);
   const [message, setMessage] = useState("A little movement. A new way to explore."),
     [setupInvalidation, setSetupInvalidation] = useState<string | null>(null),
     [pointerMessage, setPointerMessage] = useState(""),
@@ -333,6 +358,7 @@ export function ReachLaboratory({
       }
       setSetupInvalidation(reason ?? null);
       trial.current = null;
+      setIdentitySuspended(false);
       runtime.current?.setCalibrationCollecting(false);
       calibrationRef.current = null;
       setCalibration(null);
@@ -484,7 +510,9 @@ export function ReachLaboratory({
         indexReadiness.current.pause();
         setIndexStale(true);
       }
-      const guidance = "Waiting for fresh tracking. Hold here briefly.";
+      const guidance = trial.current?.identityHold
+        ? identityHoldGuidance
+        : "Waiting for fresh tracking. Hold here briefly.";
       pauseControl(now, "Waiting for fresh tracking. Collection paused.");
       readyRef.current = { ...readyRef.current, eligible: false, condition: "RECOVERING", guidance };
       setReadiness((previous) => ({ ...previous, eligible: false, condition: "RECOVERING", guidance }));
@@ -502,6 +530,12 @@ export function ReachLaboratory({
         return;
       }
       const t = trial.current;
+      // A replacement can be individually ready without proving continuity to
+      // this trial. Its saved groups remain inert under their original binding.
+      if (t?.identityHold) {
+        pauseControl(now, identityHoldGuidance);
+        return;
+      }
       const incumbent = calibrationRef.current?.binding ?? t?.binding;
       if (incumbent && Object.entries(incumbent).some(([k, v]) => binding[k as keyof CalibrationBinding] !== v)) {
         invalidate("The tracked fingertip, camera or pointing area changed. Begin a fresh setup.");
@@ -540,7 +574,7 @@ export function ReachLaboratory({
                   : t.mode === "ABSOLUTE"
                     ? fitCalibration(t.groups, t.binding, now)
                     : fitRelativeCalibration(t.groups, t.binding, now);
-              calibrationRef.current = fitted;
+              calibrationRef.current = { ...fitted, imageDomain: t.imageDomain };
               if (sourceRef.current === "LIVE") {
                 telemetry.current?.recordCalibration(
                   t.mode,
@@ -698,11 +732,33 @@ export function ReachLaboratory({
               : next.condition,
         guidance: next.guidance,
       };
-      readyRef.current = ready;
-      if (sourceRef.current === "LIVE") recordReadiness(ready.condition);
-      setEntryReady(trialEntryReady());
-      const establishedBinding = trial.current?.binding ?? calibrationRef.current?.binding;
-      if (next.changed && establishedBinding) {
+      const t = trial.current;
+      const incomingBinding = imageBindingFor(o);
+      const establishedBinding = t?.binding ?? calibrationRef.current?.binding;
+      const sameDomain =
+        !!t?.binding && t.imageDomain === imageDomainFor(o) && sameBinding(t.binding, incomingBinding, false);
+      const manualReplacement = o.anchorSource === "MANUAL_HINT" || manualFingerSelected;
+      if (t?.identityHold && (!sameDomain || manualReplacement)) {
+        invalidate("The camera, provider, pointing area or fingertip selection changed. Begin a fresh setup.");
+        log("INDEX_IMAGE_CONTEXT_CHANGED");
+        return;
+      }
+      if (next.changed && establishedBinding && t && sameDomain && !manualReplacement) {
+        t.identityHold ??= { wasPaused: t.paused };
+        t.paused = true;
+        t.window = null;
+        setAcquisition(null);
+        setIdentitySuspended(true);
+        setPaused(true);
+        runtime.current?.setCalibrationCollecting(false);
+        filter.current.reset();
+        pointerContinuity.current.reset();
+        visual.current.raw = visual.current.filtered = visual.current.lastSeen = null;
+        visual.current.uncertainty = null;
+        setPointerMessage("");
+        setMessage(identityHoldGuidance);
+        log("CALIBRATION_IDENTITY_SUSPENDED");
+      } else if (next.changed && establishedBinding) {
         const cameraChanged =
           establishedBinding.cameraLeaseId !== o.cameraLeaseId ||
           establishedBinding.cameraFrameVersion !== o.cameraFrameVersion ||
@@ -715,17 +771,45 @@ export function ReachLaboratory({
         );
         log("INDEX_IMAGE_CONTEXT_CHANGED");
       }
-      if (performance.now() - lastIndexUI.current >= 80 || next.changed || !next.eligible) {
+      if (t?.identityHold) {
+        const oldContinuity =
+          next.eligible &&
+          !!t.binding &&
+          sameBinding(t.binding, incomingBinding) &&
+          o.temporalTrack?.identity === "ESTABLISHED" &&
+          o.temporalTrack.state === "TRACKING";
+        if (oldContinuity) {
+          t.paused = t.identityHold.wasPaused;
+          t.identityHold = null;
+          t.after = now + 700;
+          t.acquiredAt = now;
+          setIdentitySuspended(false);
+          setPaused(t.paused);
+          runtime.current?.setCalibrationCollecting(!t.paused);
+          setMessage("The same fingertip is confirmed. Your completed targets are saved.");
+          log("CALIBRATION_IDENTITY_RECOVERED");
+        } else {
+          ready.eligible = false;
+          ready.condition = "RECOVERING";
+          ready.guidance = identityHoldGuidance;
+        }
+      }
+      readyRef.current = ready;
+      if (sourceRef.current === "LIVE") recordReadiness(ready.condition);
+      setEntryReady(trialEntryReady());
+      if (performance.now() - lastIndexUI.current >= 80 || next.changed || !ready.eligible) {
         lastIndexUI.current = performance.now();
         setIndexState(o);
         setFrameSize({ frameWidth: o.frameWidth, frameHeight: o.frameHeight });
         setReadiness(ready);
       }
-      if (!next.eligible || !o.point) {
-        pauseControl(performance.now(), next.guidance);
+      if (!ready.eligible || !o.point) {
+        pauseControl(performance.now(), ready.guidance);
         return;
       }
-      consumeControl.current(relativeIndexFeatures(o.point), o.monotonicCaptureTime, imageBindingFor(o), undefined, o);
+      if (t && (!t.binding || (t.imageDomain === null && sameBinding(t.binding, incomingBinding))))
+        t.imageDomain = imageDomainFor(o);
+      consumeControl.current(relativeIndexFeatures(o.point), o.monotonicCaptureTime, incomingBinding, undefined, o);
     };
   });
   const accept = useRef<(o: HandObservation) => void>(() => {});
@@ -839,7 +923,9 @@ export function ReachLaboratory({
             ...previous,
             eligible: false,
             condition: "RECOVERING",
-            guidance: "Waiting for fresh tracking. Hold here briefly.",
+            guidance: trial.current?.identityHold
+              ? identityHoldGuidance
+              : "Waiting for fresh tracking. Hold here briefly.",
           }));
         }
         if (!["READY", "MODEL_STARTING", "REQUESTING", "STALE_OR_INVALID_OBSERVATION"].includes(state)) {
@@ -969,7 +1055,9 @@ export function ReachLaboratory({
           ...previous,
           eligible: false,
           condition: "RECOVERING",
-          guidance: "Waiting for fresh tracking. Hold here briefly.",
+          guidance: trial.current?.identityHold
+            ? identityHoldGuidance
+            : "Waiting for fresh tracking. Hold here briefly.",
         }));
         // Display/action freshness is measured now. Evidence continuity uses
         // accepted capture clocks; only an actual rejected/ineligible capture
@@ -1130,7 +1218,7 @@ export function ReachLaboratory({
       setMessage("Wait for the camera and hand model to finish starting, then request setup again.");
       return;
     }
-    if (stage === "VALIDATION" && !calibrationRef.current) return;
+    if (stage === "VALIDATION" && (!calibrationRef.current || trial.current?.identityHold)) return;
     setSetupInvalidation(null);
     if (stage === "TRAINING") {
       calibrationRef.current = null;
@@ -1157,6 +1245,8 @@ export function ReachLaboratory({
       // A check can open while the user rests or reaches for its control. Fresh
       // samples must still match the already fitted hand/camera/view binding.
       binding: stage === "VALIDATION" ? { ...calibrationRef.current!.binding } : null,
+      imageDomain: stage === "VALIDATION" ? calibrationRef.current!.imageDomain : null,
+      identityHold: null,
       after: now + 700,
       acquiredAt: now,
       demoTargetReady: false,
@@ -1166,6 +1256,7 @@ export function ReachLaboratory({
       telemetry.current?.recordCalibration(pointingMode, stage === "TRAINING" ? "TRAINING" : "CHECK", "STARTED");
     setTarget(order[0]);
     setCompleted(0);
+    setIdentitySuspended(false);
     setTotal(order.length);
     setPaused(false);
     setDemoHolding(false);
@@ -1186,7 +1277,7 @@ export function ReachLaboratory({
   };
   const togglePause = () => {
     const t = trial.current;
-    if (!t) return;
+    if (!t || t.identityHold) return;
     t.paused = !t.paused;
     if (sourceRef.current === "LIVE") telemetry.current?.recordEvent(t.paused ? "pauses" : "recoveries");
     runtime.current?.setCalibrationCollecting(!t.paused);
@@ -1202,7 +1293,7 @@ export function ReachLaboratory({
     );
   };
   const retryTarget = () => {
-    if (!trial.current) return;
+    if (!trial.current || trial.current.identityHold) return;
     trial.current.window = null;
     trial.current.after = performance.now() + 700;
     trial.current.acquiredAt = performance.now();
@@ -1210,7 +1301,7 @@ export function ReachLaboratory({
     setMessage("Retrying this target. Your completed targets are saved.");
   };
   const exportMetrics = () => {
-    if (!exportConsent) return;
+    if (!exportConsent || trial.current?.identityHold) return;
     const o = lastObservation.current;
     const image = lastIndexObservation.current;
     const data = {
@@ -1261,25 +1352,27 @@ export function ReachLaboratory({
       ? "Guided demo · no camera"
       : (cameraMessages[status] ??
         (status.startsWith("MODEL_FAILURE") ? "Hand tracking could not load" : "Camera connection interrupted"));
-  const progress = paused
-    ? "Paused"
-    : source === "DEMO" && training && !demoHolding
-      ? "Move the demo hand to begin"
-      : training && !readiness.eligible && acquisition?.state !== "EXPIRED"
-        ? acquisition?.progress
-          ? "Collection paused · hold progress kept"
-          : "Waiting for eligible tracking · saved targets kept"
-        : acquisition?.state === "MOVING"
-          ? "Movement detected · let your hand settle"
-          : acquisition?.state === "PAUSED"
+  const progress = identitySuspended
+    ? "Saved evidence paused · identity unverified"
+    : paused
+      ? "Paused"
+      : source === "DEMO" && training && !demoHolding
+        ? "Move the demo hand to begin"
+        : training && !readiness.eligible && acquisition?.state !== "EXPIRED"
+          ? acquisition?.progress
             ? "Collection paused · hold progress kept"
-            : acquisition?.state === "EXPIRED"
-              ? "Reacquiring this target · saved targets kept"
-              : acquisition?.state === "COLLECTING"
-                ? "Hold here · collecting"
-                : acquisition?.state === "ACCEPTED"
-                  ? "Target saved"
-                  : "Find a comfortable hold";
+            : "Waiting for eligible tracking · saved targets kept"
+          : acquisition?.state === "MOVING"
+            ? "Movement detected · let your hand settle"
+            : acquisition?.state === "PAUSED"
+              ? "Collection paused · hold progress kept"
+              : acquisition?.state === "EXPIRED"
+                ? "Reacquiring this target · saved targets kept"
+                : acquisition?.state === "COLLECTING"
+                  ? "Hold here · collecting"
+                  : acquisition?.state === "ACCEPTED"
+                    ? "Target saved"
+                    : "Find a comfortable hold";
   const relativeInstruction =
     step === "TRAINING" && pointingMode === "RELATIVE" ? relativeLayout.instructions[completed] : null;
   const relativeEvidenceLabel =
@@ -1356,7 +1449,8 @@ export function ReachLaboratory({
       data-image-state={indexStale ? "STALE" : (indexState?.state ?? "UNSEEDED")}
       data-image-selection={manualFingerSelected ? "MANUAL" : "AUTOMATIC"}
       data-capture-ceiling={pacing?.maximumHz}
-      data-calibration-capture={pacing?.calibrationCollecting ?? false}
+      data-calibration-capture={!identitySuspended && (pacing?.calibrationCollecting ?? false)}
+      data-calibration-identity={identitySuspended ? "SUSPENDED" : "ACTIVE"}
       data-reach-policy={runtimePolicy.status}
       data-reach-policy-revision={runtimePolicy.revision ?? ""}
       data-image-track-generation={indexState?.trackGeneration ?? 0}
@@ -1675,13 +1769,15 @@ export function ReachLaboratory({
             <span>{pointingMode === "ABSOLUTE" ? "Absolute estimate" : "Relative movement"}</span>
           </div>
           <div className={styles.supportedRegion} aria-hidden="true" />
-          <ReachStage
-            frame={visual}
-            timings={timing}
-            kind="POINTER"
-            overlay={overlay}
-            active={showPlane && source !== "OFF"}
-          />
+          {!identitySuspended && (
+            <ReachStage
+              frame={visual}
+              timings={timing}
+              kind="POINTER"
+              overlay={overlay}
+              active={showPlane && source !== "OFF"}
+            />
+          )}
           {(target || practiceTarget) && (
             <animated.div
               className={styles.target}
@@ -1951,38 +2047,55 @@ export function ReachLaboratory({
                   count.
                 </p>
               </div>
-              <div className={styles.actions}>
-                {source === "DEMO" && <button onClick={moveDemoToTarget}>Move demo hand to target</button>}
-                <button className={styles.primary} onClick={togglePause}>
-                  {step === "VALIDATION"
-                    ? paused
-                      ? "Resume check"
-                      : "Pause check"
-                    : paused
-                      ? "Resume calibration"
-                      : "Pause calibration"}
-                </button>
-                <button onClick={retryTarget}>Retry this target</button>
-                <button
-                  onClick={() => {
-                    if (sourceRef.current === "LIVE" && trial.current)
-                      telemetry.current?.recordCalibration(
-                        trial.current.mode,
-                        trial.current.stage === "TRAINING" ? "TRAINING" : "CHECK",
-                        "CANCELLED",
+              {identitySuspended ? (
+                <div className={styles.actions}>
+                  <button className={styles.primary} onClick={() => begin("TRAINING")}>
+                    Start fresh setup
+                  </button>
+                  <button
+                    onClick={() => {
+                      invalidate();
+                      advance("PREPARE");
+                      setMessage("Setup cancelled. Your camera stays available.");
+                    }}
+                  >
+                    Cancel setup
+                  </button>
+                </div>
+              ) : (
+                <div className={styles.actions}>
+                  {source === "DEMO" && <button onClick={moveDemoToTarget}>Move demo hand to target</button>}
+                  <button className={styles.primary} onClick={togglePause}>
+                    {step === "VALIDATION"
+                      ? paused
+                        ? "Resume check"
+                        : "Pause check"
+                      : paused
+                        ? "Resume calibration"
+                        : "Pause calibration"}
+                  </button>
+                  <button onClick={retryTarget}>Retry this target</button>
+                  <button
+                    onClick={() => {
+                      if (sourceRef.current === "LIVE" && trial.current)
+                        telemetry.current?.recordCalibration(
+                          trial.current.mode,
+                          trial.current.stage === "TRAINING" ? "TRAINING" : "CHECK",
+                          "CANCELLED",
+                        );
+                      trial.current = null;
+                      setTarget(null);
+                      setAcquisition(null);
+                      advance(calibrationRef.current ? "RESULTS" : "PREPARE");
+                      setMessage(
+                        `${step === "VALIDATION" ? "Check" : "Calibration"} cancelled. Your camera stays available.`,
                       );
-                    trial.current = null;
-                    setTarget(null);
-                    setAcquisition(null);
-                    advance(calibrationRef.current ? "RESULTS" : "PREPARE");
-                    setMessage(
-                      `${step === "VALIDATION" ? "Check" : "Calibration"} cancelled. Your camera stays available.`,
-                    );
-                  }}
-                >
-                  {step === "VALIDATION" ? "Cancel check" : "Cancel calibration"}
-                </button>
-              </div>
+                    }}
+                  >
+                    {step === "VALIDATION" ? "Cancel check" : "Cancel calibration"}
+                  </button>
+                </div>
+              )}
             </>
           )}
           {step === "RESULTS" && (
@@ -2267,7 +2380,7 @@ export function ReachLaboratory({
                   Association, gesture evidence and position quality are separate. A motion prediction is diagnostic
                   only; it never becomes a measured sample or interaction. Unknown current anatomy can coexist with a
                   fresh, previously selected fingertip image. Every calibration sample still requires the current
-                  measurement and the laboratory's separate eligibility checks.
+                  measurement and the laboratory&apos;s separate eligibility checks.
                 </p>
               )}
               {source === "LIVE" && captureDiagnostics && (
@@ -2327,15 +2440,16 @@ export function ReachLaboratory({
                 achieved rates further.
               </p>
               <p>
-                Calibration: {calibration?.mapping ?? "none"} · {calibration?.status ?? "REQUIRED"} · no target snapping
-                · physical qualification pending.
+                Calibration: {calibration?.mapping ?? "none"} ·{" "}
+                {identitySuspended ? "SUSPENDED" : (calibration?.status ?? "REQUIRED")} · no target snapping · physical
+                qualification pending.
               </p>
               <label className={styles.check}>
                 <input type="checkbox" checked={exportConsent} onChange={(e) => setExportConsent(e.target.checked)} />I
                 consent to downloading this session’s aggregate metrics.
               </label>
               <div className={styles.actions}>
-                <button disabled={!exportConsent} onClick={exportMetrics}>
+                <button disabled={!exportConsent || identitySuspended} onClick={exportMetrics}>
                   Export aggregate metrics
                 </button>
                 <button

@@ -35,7 +35,18 @@ async function installFixture(page: Page, model = "FULL") {
         replyDelayMs: 2,
       };
       Object.assign(window, { reachIndexImageFixture: fixture });
-      const modes = ["FULL", "INDEX", "DIRECT", "OPEN", "WRONG", "WRONG_ONCE", "CONFLICT", "AMBIGUOUS", "NONE"];
+      const modes = [
+        "FULL",
+        "INDEX",
+        "DIRECT",
+        "OPEN",
+        "WRONG",
+        "WRONG_ONCE",
+        "CONFLICT",
+        "FOREIGN_CONFLICT",
+        "AMBIGUOUS",
+        "NONE",
+      ];
       const originalFrameCallback = HTMLVideoElement.prototype.requestVideoFrameCallback;
       if (originalFrameCallback) {
         HTMLVideoElement.prototype.requestVideoFrameCallback = function (callback) {
@@ -164,10 +175,14 @@ async function installFixture(page: Page, model = "FULL") {
                 : mode === "OPEN"
                   ? open
                   : relaxed;
-          const conflict = mode === "WRONG" || mode === "WRONG_ONCE" || mode === "CONFLICT";
+          const foreignConflict = mode === "WRONG" || mode === "WRONG_ONCE" || mode === "FOREIGN_CONFLICT";
+          const selectedConflict = mode === "CONFLICT";
           const tip = {
-            x: x / (width - 1) + (conflict ? 0.15 : 0),
-            y: y / (height - 1) + (conflict ? 0.1 : 0),
+            // Keep a selected-hand contradiction inside the adapter association
+            // radius and observed hand hull, beyond tip/shaft/ray compatibility.
+            // The farther hypothesis remains a separate unproved foreign source.
+            x: x / (width - 1) + (foreignConflict ? 0.15 : selectedConflict ? -0.04 : 0),
+            y: y / (height - 1) + (foreignConflict ? 0.1 : selectedConflict ? -0.05 : 0),
           };
           const points = source.map((point, index) =>
             mode === "INDEX" && ![5, 6, 7, 8].includes(index)
@@ -1104,6 +1119,173 @@ test("D0 manual selection survives rejected pixels and expiry without silently r
   await page.getByRole("button", { name: "Stop camera & clear session", exact: true }).click();
 });
 
+for (const viewport of [
+  { name: "desktop", width: 1280, height: 900 },
+  { name: "mobile", width: 390, height: 844 },
+] as const) {
+  test(`D0 ${viewport.name} preserves completed targets inert through unverified fingertip replacement`, async ({
+    page,
+  }, testInfo) => {
+    test.setTimeout(120000);
+    await page.setViewportSize({ width: viewport.width, height: viewport.height });
+    await installFixture(page);
+    await page.goto("/devices/reach");
+    await page.getByRole("button", { name: "Enable live camera", exact: true }).click();
+    await ready(page);
+    await page.getByText("Session diagnostics & privacy", { exact: true }).click();
+    await page.getByLabel(/consent to downloading/).check();
+    const exportButton = page.getByRole("button", { name: "Export aggregate metrics", exact: true });
+    await expect(exportButton).toBeEnabled();
+    const downloads: string[] = [];
+    page.on("download", (download) => downloads.push(download.suggestedFilename()));
+    const layouts: object[] = [];
+    const geometry = () =>
+      page.getByRole("group", { name: "Pointing practice area", exact: true }).evaluate((plane) => {
+        const rect = plane.getBoundingClientRect();
+        return {
+          viewportWidth: innerWidth,
+          viewportHeight: innerHeight,
+          dpr: devicePixelRatio,
+          scrollX,
+          scrollY,
+          plane: { x: rect.x, y: rect.y, width: rect.width, height: rect.height },
+        };
+      });
+    const assertHeld = async () => {
+      await expect(root(page)).toHaveAttribute("data-step", "TRAINING");
+      await expect(root(page)).toHaveAttribute("data-calibration-identity", "SUSPENDED");
+      await expect(root(page)).toHaveAttribute("data-calibration-capture", "false");
+      await expect(root(page)).not.toHaveAttribute("data-reach-readiness", "READY");
+      await expect(page.getByLabel("Target 2 of 5", { exact: true })).toBeVisible();
+      await expect(page.getByText(/1 of 5 targets saved\./)).toBeVisible();
+      await expect(page.getByLabel("Current target acquisition", { exact: true })).toHaveAttribute("value", "0");
+      await expect(page.getByRole("status", { name: "Reach status" })).toContainText(
+        "Fingertip identity could not be verified. Completed targets are saved, but cannot be used with this track.",
+      );
+      await expect(page.getByRole("img", { name: "Pointing feedback surface", exact: true })).toHaveCount(0);
+      await expect(page.getByRole("button", { name: "Check five new targets", exact: true })).toHaveCount(0);
+      await expect(page.getByRole("button", { name: "Open pointing playground", exact: true })).toHaveCount(0);
+      await expect(exportButton).toBeDisabled();
+      await expect(page.getByRole("button", { name: "Resume calibration", exact: true })).toHaveCount(0);
+      await expect(page.getByRole("button", { name: "Retry this target", exact: true })).toHaveCount(0);
+      await expect(page.getByRole("alert", { name: "Setup ended", exact: true })).toHaveCount(0);
+      expect(downloads).toEqual([]);
+    };
+    const replaceAfterSavedTarget = async (cycle: number) => {
+      await expect(page.getByLabel("Target 2 of 5", { exact: true })).toBeVisible({ timeout: 15000 });
+      await expect(page.getByText(/1 of 5 targets saved\./)).toBeVisible();
+      const originalGeneration = await root(page).getAttribute("data-image-track-generation");
+      const capture = Number(await root(page).getAttribute("data-image-capture-time"));
+      const before = await geometry();
+      await page.screenshot({
+        path: testInfo.outputPath(`D0-saved-evidence-${viewport.name}-${cycle}-before-loss.png`),
+        fullPage: false,
+      });
+      await configure(page, { blank: true, model: "NONE" });
+      const firstBlankCapture = () =>
+        page.evaluate((after) => {
+          const fixture = (
+            window as unknown as {
+              reachIndexImageFixture: { frames: { capture: number; mode: string }[] };
+            }
+          ).reachIndexImageFixture;
+          return fixture.frames.find((frame) => frame.capture > after && frame.mode === "NONE")?.capture ?? 0;
+        }, capture);
+      await expect.poll(firstBlankCapture).toBeGreaterThan(0);
+      const blankStarted = await firstBlankCapture();
+      // Observe actual fresh capture clocks crossing the unchanged identity
+      // expiry, rather than injecting a new identity or relying on a sleep.
+      await expect
+        .poll(async () => Number(await root(page).getAttribute("data-image-capture-time")) - blankStarted)
+        .toBeGreaterThan(1200);
+      const blankCaptureSpanMs = Number(await root(page).getAttribute("data-image-capture-time")) - blankStarted;
+      await expect(root(page)).not.toHaveAttribute("data-image-state", "TRACKING");
+      await configure(page, { blank: false, model: "FULL" });
+      await expect(root(page)).toHaveAttribute("data-image-state", "TRACKING");
+      await expect(root(page)).not.toHaveAttribute("data-image-track-generation", originalGeneration!);
+      await assertHeld();
+      const replacementGeneration = await root(page).getAttribute("data-image-track-generation");
+      const heldCapture = Number(await root(page).getAttribute("data-image-capture-time"));
+      await expect
+        .poll(async () => Number(await root(page).getAttribute("data-image-capture-time")) - heldCapture)
+        .toBeGreaterThan(1000);
+      await expect(root(page)).toHaveAttribute("data-image-state", "TRACKING");
+      await expect(root(page)).toHaveAttribute("data-image-track-generation", replacementGeneration!);
+      await assertHeld();
+      const replacementCaptureSpanMs = Number(await root(page).getAttribute("data-image-capture-time")) - heldCapture;
+      const held = await geometry();
+      expect(held.viewportWidth).toBe(before.viewportWidth);
+      expect(held.viewportHeight).toBe(before.viewportHeight);
+      expect(held.dpr).toBe(before.dpr);
+      expect(held.plane.width).toBe(before.plane.width);
+      expect(held.plane.height).toBe(before.plane.height);
+      expect(held.scrollX).toBe(before.scrollX);
+      expect(held.scrollY).toBe(before.scrollY);
+      // Text may change the plane's document position. It cannot change the
+      // bound pointing dimensions, DPR, saved target, or viewport authority.
+      layouts.push({
+        cycle,
+        before,
+        held,
+        planeTopDelta: held.plane.y - before.plane.y,
+        blankCaptureSpanMs,
+        replacementCaptureSpanMs,
+      });
+      await page.screenshot({
+        path: testInfo.outputPath(`D0-saved-evidence-${viewport.name}-${cycle}-suspended.png`),
+        fullPage: false,
+      });
+    };
+    await page.getByRole("button", { name: "Set up relative movement", exact: true }).click();
+    await replaceAfterSavedTarget(1);
+    await page.getByRole("button", { name: "Start fresh setup", exact: true }).click();
+    await expect(root(page)).toHaveAttribute("data-calibration-identity", "ACTIVE");
+    await expect(page.getByLabel("Target 1 of 5", { exact: true })).toBeVisible();
+    await expect(page.getByText(/0 of 5 targets saved\./)).toBeVisible();
+    await expect(page.getByRole("img", { name: "Pointing feedback surface", exact: true })).toHaveCount(1);
+    await replaceAfterSavedTarget(2);
+    await page.getByRole("button", { name: "Cancel setup", exact: true }).click();
+    await expect(root(page)).toHaveAttribute("data-step", "PREPARE");
+    await expect(root(page)).toHaveAttribute("data-calibration-identity", "ACTIVE");
+    await expect(page.locator('[data-calibration-target="true"]')).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Set up relative movement", exact: true })).toBeEnabled();
+    await expect(root(page)).toHaveAttribute("data-calibration-capture", "false");
+    await expect(page.getByRole("button", { name: "Stop camera & clear session", exact: true })).toBeEnabled();
+    await page.screenshot({
+      path: testInfo.outputPath(`D0-saved-evidence-${viewport.name}-explicit-cancel.png`),
+      fullPage: false,
+    });
+    await testInfo.attach(`D0-suspended-evidence-${viewport.name}.json`, {
+      body: JSON.stringify(
+        {
+          evidence: "PUBLIC_ANALYTIC_CAMERA_FAKE_MODEL_REAL_PRODUCER_AND_CONTROLLER",
+          viewport,
+          layouts,
+          minimumBlankCaptureSpanMs: 1200,
+          minimumFreshReplacementCaptureSpanMs: 1000,
+          completedTargetsTransferredToReplacement: false,
+          explicitFreshAndCancelVerified: true,
+          downloads,
+          physicalIdentityOrAccuracyQualified: false,
+        },
+        null,
+        2,
+      ),
+      contentType: "application/json",
+    });
+    await page.getByRole("button", { name: "Stop camera & clear session", exact: true }).click();
+    await expect
+      .poll(() =>
+        page.evaluate(() => {
+          const fixture = (window as unknown as { reachIndexImageFixture: { tracks: number; workers: number } })
+            .reachIndexImageFixture;
+          return { tracks: fixture.tracks, workers: fixture.workers };
+        }),
+      )
+      .toEqual({ tracks: 0, workers: 0 });
+  });
+}
+
 test("D0 full-hand authority pauses conflicts without changing image coordinates and manual hints cannot bypass it", async ({
   page,
 }, testInfo) => {
@@ -1240,9 +1422,33 @@ test("D0 full-hand authority pauses conflicts without changing image coordinates
   await page.screenshot({ path: testInfo.outputPath("D0-full-hand-confirmed-image-position.png"), fullPage: false });
   await configure(page, { model: "CONFLICT" });
   await blocked("FULL_HAND_INDEX_CONFLICT");
-  await record("pointing-model-at-other-position-does-not-snap-image");
+  await expect(root(page)).toHaveAttribute("data-image-track-generation", generation!);
+  await expect(root(page)).not.toHaveAttribute("data-reach-readiness", "READY");
+  const conflictedMatch = await page
+    .locator('svg[aria-label="Finger image match, pointing paused"] circle')
+    .evaluate((circle) => ({ x: Number(circle.getAttribute("cx")), y: Number(circle.getAttribute("cy")) }));
+  expect(Math.hypot(conflictedMatch.x - 120, conflictedMatch.y - 120)).toBeLessThan(2);
+  await record("same-selected-hand-coordinate-conflict-retains-optical-position-without-action");
+  await configure(page, { model: "NONE" });
+  await expect(root(page)).toHaveAttribute("data-image-state", "UNCERTAIN");
+  await expect(root(page)).toHaveAttribute("data-image-reason", "INDEX_IDENTITY_RECONFIRM_REQUIRED");
+  await expect(root(page)).toHaveAttribute("data-image-track-generation", generation!);
+  await expect(page.locator('svg[aria-label="Finger image position"]')).toHaveCount(0);
+  await expect(page.locator('svg[aria-label="Finger image match, pointing paused"]')).toHaveCount(0);
+  await expect(root(page)).not.toHaveAttribute("data-reach-readiness", "READY");
+  await record("same-source-conflict-does-not-disappear-or-claim-matched-pixels-with-model-dropout");
+  await configure(page, { model: "FULL" });
+  await sameSourceTracking("FULL_HAND_POINT_CONFIRMED");
+  await record("compatible-full-hand-cohort-reconfirms-selected-index-before-action-resumes");
+  await configure(page, { model: "FOREIGN_CONFLICT" });
+  await blocked("FULL_HAND_AMBIGUOUS");
+  await expect(root(page)).toHaveAttribute("data-image-track-generation", generation!);
+  await expect(root(page)).not.toHaveAttribute("data-reach-readiness", "READY");
+  await record("far-foreign-hand-hypothesis-is-quarantined-without-position-or-identity-transfer");
   await configure(page, { model: "NONE" });
   await sameSourceTracking();
+  await expect(root(page)).toHaveAttribute("data-image-model-agreement", "UNAVAILABLE");
+  await record("foreign-dropout-returns-only-the-prior-selected-optical-position");
   await configure(page, { model: "AMBIGUOUS" });
   await blocked("FULL_HAND_AMBIGUOUS");
   await record("two-credible-whole-hands-pause");
