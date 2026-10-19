@@ -20,6 +20,8 @@ recovery after bounded native interruptions, shared local attitude and late
 sensor/feedback responses. Supported radios report their actual permission and
 operational availability. These corrections remain subject to virtual and
 consumer qualification in the [continuation record](../../Development_Docs/Engineering/Sextant/Project_Sextant_Phase_4_Virtual_Completion_20261019.md).
+Android virtual-device controls now have development evidence. Normal iOS Devices
+and broader consumer experience acceptance remain pending.
 
 The candidate's compatibility Journal route uses existing exact-Voyage
 authorization so identity Players select canonical reader state and legacy

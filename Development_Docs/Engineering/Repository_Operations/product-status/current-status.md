@@ -13,8 +13,10 @@ reconciles current accepted main and repairs native location pause, bounded
 interruption recovery, relative-attitude sharing and stale output replies.
 The expanded source passes 327 focused checks and 59 D0/D1 scenarios. Android
 idle/standby recovery and selected iOS permission/geofence cases pass with exact
-source and cleanup receipts. Normal native Device journeys and broader rendered
-consumer acceptance remain pending. The current planner confirms 170 affected surfaces and 116
+source and cleanup receipts. The actual Android WebView Device controls and paired
+Journal development cases pass. Normal iOS Devices proof requires canonical
+Darwin process-supervision support; broader rendered consumer acceptance remains
+pending. The current planner confirms 170 affected surfaces and 104
 missing registrations. Reach diagnostics are accepted on main; Crossdeck #721
 is still unmerged. The following R1 accounting and older qualification results
 retain their historical source identities.

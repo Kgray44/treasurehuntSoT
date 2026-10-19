@@ -6,7 +6,7 @@
   "status": "IN_PROGRESS",
   "initialCandidate": "5ff2739776513b8f8ed20c1cb661c164216d0eeb",
   "protectedBase": "f6af0b0e151f15f1a23808413ccee531b9827ca7",
-  "currentSoftwareCandidate": "eb3f851d011974f6ac9d1317f49f524bebfdf4f2",
+  "currentSoftwareCandidate": "e2b791d96a435b81516048b06e0e738b8ab443bd",
   "pr": "https://github.com/Kgray44/treasurehuntSoT/pull/709",
   "independentSourceReview": {
     "reviewerContext": "/root/sextant_source_review",
@@ -84,6 +84,12 @@
       "disposition": "NO_REMAINING_ACTIONABLE_SOURCE_FINDINGS",
       "reviewerRanTests": false,
       "scope": "SOURCE_REVIEW_ONLY"
+    },
+    "passportContinuation": {
+      "source": "3efce9f0419b8418378cac546337b01967e192bf",
+      "reviewer": "/root/sextant_source_review",
+      "disposition": "THREE_EVIDENCE_WORDING_AND_COVERAGE_FINDINGS_RESOLVED",
+      "scope": "SOURCE_REVIEW_ONLY_NO_RENDERED_ACCEPTANCE"
     }
   },
   "localChecks": {
@@ -112,6 +118,11 @@
       "result": "PASS_BUILD",
       "localPreparation": "DEVELOPMENT_BUILD_LINK_OUTSIDE_DEPENDENCIES_BEFORE_BROWSER_EXECUTION",
       "cleanup": "PASS"
+    },
+    "r20PolicyReconciliation": {
+      "passed": 7,
+      "failed": 0,
+      "acceptedMain": "40491dd68ace88ee033b53fd264ddbfe303c6d28"
     }
   },
   "hosted": [
@@ -266,9 +277,17 @@
       "sourceSha": "eb3f851d011974f6ac9d1317f49f524bebfdf4f2",
       "transportSha": "d840e87701f4530f9b4c5c0c0a2f50658b730c39",
       "runId": "39310970101",
-      "status": "IN_PROGRESS",
+      "status": "HARVESTED_PARTIAL_FAILURE",
       "scope": "Independent four-variant diagnostic consumer matrix",
-      "qualification": false
+      "qualification": false,
+      "passed": 1,
+      "failed": 3,
+      "notRun": 0,
+      "ordinarySignInVariantsPassed": 4,
+      "failure": "CURRENT_DEVICE_RETURN_SELECTOR_AMBIGUOUS_WITH_RETAINED_ROWS",
+      "cleanup": "PASS",
+      "artifacts": 2,
+      "diagnosticRetention": "NO_DIAGNOSTIC_BINDING_COLLECTOR_NOT_INSTANTIATED"
     },
     {
       "platform": "IOS",
@@ -276,23 +295,49 @@
       "sourceSha": "eb3f851d011974f6ac9d1317f49f524bebfdf4f2",
       "transportSha": "19321f5b18e1215a541479dd5c3eed73890da2c9",
       "runId": "39311000104",
-      "status": "IN_PROGRESS",
+      "status": "HARVESTED_FAILURE_BEFORE_BROWSER_EXECUTION",
       "scope": "Canonical private-publication fixture and bounded-heap normal Devices product successor",
-      "qualification": false
+      "qualification": false,
+      "preparedProductTestBuild": "PASS",
+      "productionBuild": "PASS",
+      "preflight": {
+        "passed": 14,
+        "failed": 0
+      },
+      "failure": "CANONICAL_OWNED_PROCESS_LINUX_SUBREAPER_UNSUPPORTED_ON_DARWIN",
+      "cleanup": {
+        "nativeBuild": "PASS",
+        "browserRuntime": "FAIL_NO_PAYLOAD_LAUNCHED",
+        "portsReleased": true,
+        "transportBranch": "PASS"
+      },
+      "artifacts": 3248
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "e2b791d96a435b81516048b06e0e738b8ab443bd",
+      "transportSha": "022ec62a6256f30771cc4a3c2a804aa746b365b6",
+      "runId": "39320340580",
+      "status": "HARVESTED_FAILURE_BEFORE_PRODUCT_BUILD_OR_BROWSER_EXECUTION",
+      "scope": "Nine Passport routes, actual current-device return, four desktop/mobile/motion variants",
+      "qualification": false,
+      "failure": "TSX_CJS_TRANSFORM_REJECTED_CANONICAL_ESM_TOP_LEVEL_AWAIT",
+      "cleanup": "TRANSPORT_PASS_NO_PRODUCT_RUNTIME_STARTED"
     }
   ],
   "experience": {
     "historicalObligations": 141,
     "historicalFamilies": 13,
     "currentAffectedSurfaces": 170,
-    "currentUnregisteredSurfaces": 116,
+    "currentUnregisteredSurfaces": 104,
     "capturedOrAcceptedByThisContinuation": 0,
     "planner": "PRODUCT_EXPERIENCE_UNREGISTERED_SURFACE",
     "crossdeck721": "OPEN_UNMERGED_NOT_CONSUMED",
     "reachDiagnostics": "PROTECTED_ACCEPTED_ON_BASE",
     "historicalAccounting": "PRESERVED_SEXTANT_3_OF_3_CROSSDECK_10_OF_3_R1_2_OF_3",
     "registeredNewPlayerWorkspaceSurfaces": 2,
-    "remainingSoftware": "116 unregistered surfaces plus canonical populated/adverse fixtures and required protected capture/review; registrations alone qualify none",
+    "remainingSoftware": "104 unregistered affected surfaces, remaining canonical populated/adverse fixtures, required protected capture/review and final qualification; declarations and development passes qualify none",
     "independentDevelopmentJourneyReview": {
       "source": "0d8b3c7841966a1d1c8b5dae21570b1043dc7915",
       "reviewer": "/root/sextant_source_review",
@@ -309,6 +354,13 @@
       "nearbyLayout": "MINOR_WRAPPED_PAIRING_LABEL_AND_BACKGROUND_CLUTTER",
       "networkLimit": "FOUR_FAILED_FIRST_PARTY_REQUESTS_RECORDED_NOT_ERROR_FREE_NETWORKING",
       "physicalEvidence": false
+    },
+    "registeredNewPassportSourcePaths": 14,
+    "newlyRegisteredAffectedPassportSurfaces": 12,
+    "sourceReconciliation": {
+      "path": "phase4-source-reconciliation-passport-20261019.json",
+      "sha256": "c2bff6406c504b8c51ea14b0d750ba1bfdc3cb0b59c278b2d268a74574140e17",
+      "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
     }
   },
   "externalGates": [
@@ -323,5 +375,17 @@
   "evidencePublication": [
     "evidence/20261019-virtual/publication-index.json",
     "evidence/20261019-product/publication-index.json"
+  ],
+  "currentProtectedBase": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
+  "canonicalHostDependencies": [
+    {
+      "owner": "SOUNDING_LINE_PROCESS_OWNERSHIP",
+      "platform": "DARWIN",
+      "requirement": "NORMAL_IOS_DEVICES_PRODUCT_RUNTIME",
+      "status": "UNSUPPORTED_CURRENT_ACCEPTED_CANONICAL_SUPERVISION",
+      "observedRunId": "39311000104",
+      "authorityUnchanged": true,
+      "passingCompanionOrBuildIsNotProductExecution": true
+    }
   ]
 }

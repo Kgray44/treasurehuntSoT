@@ -266,3 +266,21 @@ started and the ports were released; native build cleanup is a separate receipt.
 The current canonical host does not support this product-runtime launch. Normal
 iOS Devices proof remains open pending that host contract; supervision is not
 bypassed and passing native companion results are not promoted to product proof.
+
+Current main advanced to `40491dd68ace88ee033b53fd264ddbfe303c6d28` with the
+approved R20 Crossdeck acceptance-boundary policy. This continuation reconciles
+that accepted policy without consuming the still-unmerged Crossdeck product
+candidate or its capture allowance. Source reconciliation of `e2b791d96` against
+that base reports 170 affected surfaces and 104 without declarations. The new
+Passport contract has 14 actual source paths, 12 currently affected; this does
+not grant any capture/acceptance credit. All 141 historical paths remain present.
+The [complete source reconciliation](phase4-source-reconciliation-passport-20261019.json)
+lists every current affected path, matching declarations, historical family and
+remaining support gap. Its blocked planner result is preserved unchanged.
+
+Run `39320340580` stopped before build or browser execution: the TypeScript
+launcher transformed the canonical development helper as CommonJS and rejected
+its guarded top-level ESM await. Native Node ESM now invokes that same canonical
+fingerprint/binding helper before creating the diagnostic scope. No authority,
+consumer assertion or feedback target is changed; the zero-artifact failed run
+and original CI log remain preserved in the owner artifact directory.

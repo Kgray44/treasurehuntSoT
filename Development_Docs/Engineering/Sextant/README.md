@@ -11,8 +11,8 @@ last_reviewed: 2026-10-19
 The [2026-10-19 virtual completion continuation](Project_Sextant_Phase_4_Virtual_Completion_20261019.md)
 reconciles the existing draft with current main, inventories every Phase 4 gate,
 and records focused provider corrections and new source-bound virtual work.
-Its current planner still requires 116 registrations across 170 affected
-surfaces. The historical 141-path mapping remains intact. Reach diagnostics
+Its current inventory has 170 affected surfaces; 104 still lack experience
+registration. The historical 141-path mapping remains intact. Reach diagnostics
 are now protected-accepted; Crossdeck #721 remains unmerged. Earlier counts
 and failed campaigns remain historical evidence, not current acceptance.
 
@@ -28,7 +28,8 @@ checks without claiming rendered route proof. The
 with complete ownership/fixture/entry/outcome/return mapping for 141 surfaces.
 At the R1 source, two declarations registered 12 journeys on 22 paths, with 118
 paths lacking declarations. The current continuation adds two Player-workspace
-paths; all 141 historical paths still require final-source acceptance. The
+paths and the continuation registers the actual Passport sections; all 141
+historical paths still require final-source acceptance. The
 [installed selector correction](phase4-password-selector-correction-r1.json)
 refutes the earlier password-role blocker without changing the helper. Reach's
 observability predecessor is now accepted on protected main. Crossdeck's

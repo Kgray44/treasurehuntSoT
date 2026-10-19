@@ -3573,6 +3573,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Sextant/phase4-source-reconciliation-passport-20261019.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Sextant/phase4-virtual-completion-ledger-20261019.json",
       "record_type": "engineering-record",
       "status": "current",
@@ -5962,6 +5968,24 @@
     },
     {
       "path": "Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/local-validation.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-acceptance-boundary-20261019-r20/adjudication.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-acceptance-boundary-20261019-r20/causal-disposition.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-acceptance-boundary-20261019-r20/historical-ledger.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -13006,6 +13030,12 @@
     },
     {
       "path": "Development_Docs/Projects/Voyagewright_Refit_V1/muster/validation-results.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Voyagewright_Refit_V1/player-journal-crossdeck/design-packet.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

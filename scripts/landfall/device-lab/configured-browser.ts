@@ -2,11 +2,8 @@ import { generateKeyPairSync } from "node:crypto";
 import { spawnSync } from "node:child_process";
 import path from "node:path";
 import { deviceLabSourceIdentity } from "./source";
+import { labTool } from "./host";
 import { createBrowserDiagnosticSession } from "../../sounding-line/browser-diagnostics.mjs";
-import {
-  developmentDiagnosticBinding,
-  developmentSourceFingerprint,
-} from "../../sounding-line/develop-browser-suite.mjs";
 
 /** Ephemeral synthetic signing configuration, never a deployment key or saved artifact. */
 async function main() {
@@ -39,7 +36,13 @@ async function main() {
     suite === "sextant-consumers"
       ? createBrowserDiagnosticSession(
           process.cwd(),
-          developmentDiagnosticBinding(await developmentSourceFingerprint(process.cwd())),
+          JSON.parse(
+            await labTool(process.execPath, [
+              "--input-type=module",
+              "-e",
+              'import{developmentDiagnosticBinding,developmentSourceFingerprint}from"./scripts/sounding-line/develop-browser-suite.mjs";process.stdout.write(JSON.stringify(developmentDiagnosticBinding(await developmentSourceFingerprint(process.cwd()))));',
+            ]),
+          ),
         )
       : null;
   const result = spawnSync(
