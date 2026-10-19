@@ -1,0 +1,30 @@
+[codex/parallax-integration-prep-20261019 979f9d7b9] Bind Parallax intake and repair saved-asset test fixture
+ 33 files changed, 180782 insertions(+), 105 deletions(-)
+ create mode 100644 Development_Docs/Projects/Project_Parallax/Integration_Preparation_20261019.md
+ create mode 100644 Development_Docs/Projects/Project_Parallax/SC_01_Environment_and_Scene_Manager.md
+ create mode 100644 Development_Docs/Projects/Project_Parallax/evidence/integration-preparation-20261019/ancestry-map.json
+ create mode 100644 Development_Docs/Projects/Project_Parallax/evidence/integration-preparation-20261019/historical-record-intake.json
+ create mode 100644 Development_Docs/Projects/Project_Parallax/evidence/integration-preparation-20261019/source-containment.json
+ create mode 100644 Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/16-journey-browser-runtime.json
+ create mode 100644 Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/16-journey-browser.log.txt
+ create mode 100644 Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/16-journey-media-manifest.json
+ create mode 100644 Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/README.md
+ create mode 100644 Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/asset-installed-details.png
+ create mode 100644 Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/asset-listing-desktop.png
+ create mode 100644 Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/compact-browser-runtime.json
+ create mode 100644 Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/compact-browser.log.txt
+ create mode 100644 Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/compact-evidence-manifest.json
+ create mode 100644 Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/natural-studio-content.png
+ create mode 100644 Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/natural-studio-package-review.png
+ create mode 100644 Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/rights-refusal-mobile.png
+ create mode 100644 Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/scale-browser-runtime.json
+ create mode 100644 Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/scale-browser.json
+ create mode 100644 Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/scale-browser.log.txt
+ create mode 100644 Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-combined-r6/scale-manifest.json
+ create mode 100644 Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-source-labels/README.md
+ create mode 100644 Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-source-labels/asset-content-mobile.png
+ create mode 100644 Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-source-labels/browser-attempt1.log.txt
+ create mode 100644 Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-source-labels/browser-runtime.json
+ create mode 100644 Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-source-labels/browser-suite-profile.json
+ create mode 100644 Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-source-labels/browser.log.txt
+ create mode 100644 Development_Docs/Projects/Project_Parallax/evidence/sc-07a/20261015-source-labels/scene-content-desktop.png

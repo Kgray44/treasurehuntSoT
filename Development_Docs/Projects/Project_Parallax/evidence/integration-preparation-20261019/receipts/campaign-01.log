@@ -1,0 +1,10 @@
+{"event":"START","candidate":"7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578","phase":"special-04","mode":"legacy","expected":2}
+{"event":"PASS","phase":"special-04","passed":2}
+{"event":"START","candidate":"7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578","phase":"browser-09","mode":"repairs","expected":22}
+{"event":"PASS","phase":"browser-09","passed":22}
+{"event":"START","candidate":"7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578","phase":"browser-10","mode":"models","expected":8}
+{"event":"PASS","phase":"browser-10","passed":8}
+{"event":"START","candidate":"7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578","phase":"browser-11","mode":"rest","expected":48}
+{"event":"PASS","phase":"browser-11","passed":48}
+{"event":"START","candidate":"7f0cbbd39893cce0f7b5ea4a9aaaa2a65047b578","phase":"special-05","mode":"extras","expected":18}
+{"event":"STOPPED_ON_FAILURE","phase":"special-05","failure":"Runner failed with exit 1"}

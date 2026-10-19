@@ -1,0 +1,18 @@
+npm warn "f6af0b0e151f15f1a23808413ccee531b9827ca7" is being parsed as a normal command line argument.
+npm warn "HEAD" is being parsed as a normal command line argument.
+npm warn Unknown cli config "--base". This will stop working in the next major version of npm.
+npm warn Unknown cli config "--candidate". This will stop working in the next major version of npm.
+
+> forever-treasure-companion@0.2.0 experience:plan
+> node scripts/sounding-line/experience-browser.mjs f6af0b0e151f15f1a23808413ccee531b9827ca7 HEAD
+
+file:///C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/scripts/sounding-line/experience-browser.mjs:44
+  throw new Error(`PRODUCT_EXPERIENCE_${code}`);
+        ^
+
+Error: PRODUCT_EXPERIENCE_EXACT_SOURCE_REQUIRED
+    at fail (file:///C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/scripts/sounding-line/experience-browser.mjs:44:9)
+    at main (file:///C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/scripts/sounding-line/experience-browser.mjs:660:34)
+    at file:///C:/Users/kkids/.codex/worktrees/parallax-integration-prep-20261019/Codex_TreasureHunt/scripts/sounding-line/experience-browser.mjs:849:96
+
+Node.js v24.18.0

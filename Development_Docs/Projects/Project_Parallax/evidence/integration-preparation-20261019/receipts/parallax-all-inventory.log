@@ -1,0 +1,89 @@
+(node:115624) [THREE_CJS_DEPRECATED] DeprecationWarning: `require("three")` is deprecated and will be removed.
+Replace `const THREE = require("three")` with `import * as THREE from "three"`.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+Error: HOMEPORT_PHASE4_EVIDENCE_ROOT is required.
+
+   at homeport-phase4.spec.ts:900
+
+  898 | function required(name: string) {
+  899 |   const value = process.env[name];
+> 900 |   if (!value) throw new Error(`${name} is required.`);
+      |                     ^
+  901 |   return value;
+  902 | }
+  903 |
+    at required (C:\Users\kkids\.codex\worktrees\parallax-integration-prep-20261019\Codex_TreasureHunt\tests\e2e\homeport-phase4.spec.ts:900:21)
+    at Object.<anonymous> (C:\Users\kkids\.codex\worktrees\parallax-integration-prep-20261019\Codex_TreasureHunt\tests\e2e\homeport-phase4.spec.ts:10:35)
+
+Error: HOMEPORT_PHASE7_TASK_ROOT is required.
+
+   at homeport-phase7-owner-correction-round1.spec.ts:778
+
+  776 | function required(name: string) {
+  777 |   const value = process.env[name];
+> 778 |   if (!value) throw new Error(`${name} is required.`);
+      |                     ^
+  779 |   return value;
+  780 | }
+  781 |
+    at required (C:\Users\kkids\.codex\worktrees\parallax-integration-prep-20261019\Codex_TreasureHunt\tests\e2e\homeport-phase7-owner-correction-round1.spec.ts:778:21)
+    at Object.<anonymous> (C:\Users\kkids\.codex\worktrees\parallax-integration-prep-20261019\Codex_TreasureHunt\tests\e2e\homeport-phase7-owner-correction-round1.spec.ts:17:31)
+
+Error: HOMEPORT_PHASE7_TASK_ROOT is required.
+
+   at homeport-phase7-owner-correction-round2.spec.ts:910
+
+  908 | function required(name: string) {
+  909 |   const value = process.env[name];
+> 910 |   if (!value) throw new Error(`${name} is required.`);
+      |                     ^
+  911 |   return value;
+  912 | }
+  913 |
+    at required (C:\Users\kkids\.codex\worktrees\parallax-integration-prep-20261019\Codex_TreasureHunt\tests\e2e\homeport-phase7-owner-correction-round2.spec.ts:910:21)
+    at Object.<anonymous> (C:\Users\kkids\.codex\worktrees\parallax-integration-prep-20261019\Codex_TreasureHunt\tests\e2e\homeport-phase7-owner-correction-round2.spec.ts:13:31)
+
+Error: HOMEPORT_PHASE7_TASK_ROOT is required.
+
+   at homeport-phase7-owner-correction-round3-patch-a.spec.ts:1021
+
+  1019 | function required(name: string) {
+  1020 |   const value = process.env[name];
+> 1021 |   if (!value) throw new Error(`${name} is required.`);
+       |                     ^
+  1022 |   return value;
+  1023 | }
+  1024 |
+    at required (C:\Users\kkids\.codex\worktrees\parallax-integration-prep-20261019\Codex_TreasureHunt\tests\e2e\homeport-phase7-owner-correction-round3-patch-a.spec.ts:1021:21)
+    at Object.<anonymous> (C:\Users\kkids\.codex\worktrees\parallax-integration-prep-20261019\Codex_TreasureHunt\tests\e2e\homeport-phase7-owner-correction-round3-patch-a.spec.ts:54:31)
+
+Error: HOMEPORT_PHASE7_TASK_ROOT is required.
+
+   at homeport-phase7-owner-correction-round3.spec.ts:989
+
+  987 | function required(name: string) {
+  988 |   const value = process.env[name];
+> 989 |   if (!value) throw new Error(`${name} is required.`);
+      |                     ^
+  990 |   return value;
+  991 | }
+  992 |
+    at required (C:\Users\kkids\.codex\worktrees\parallax-integration-prep-20261019\Codex_TreasureHunt\tests\e2e\homeport-phase7-owner-correction-round3.spec.ts:989:21)
+    at Object.<anonymous> (C:\Users\kkids\.codex\worktrees\parallax-integration-prep-20261019\Codex_TreasureHunt\tests\e2e\homeport-phase7-owner-correction-round3.spec.ts:20:31)
+
+Error: HOMEPORT_PHASE7_TASK_ROOT is required.
+
+   at homeport-phase7.spec.ts:564
+
+  562 | function required(name: string) {
+  563 |   const value = process.env[name];
+> 564 |   if (!value) throw new Error(`${name} is required.`);
+      |                     ^
+  565 |   return value;
+  566 | }
+  567 |
+    at required (C:\Users\kkids\.codex\worktrees\parallax-integration-prep-20261019\Codex_TreasureHunt\tests\e2e\homeport-phase7.spec.ts:564:21)
+    at Object.<anonymous> (C:\Users\kkids\.codex\worktrees\parallax-integration-prep-20261019\Codex_TreasureHunt\tests\e2e\homeport-phase7.spec.ts:10:31)
+Listing tests:
+Total: 0 tests in 0 files
