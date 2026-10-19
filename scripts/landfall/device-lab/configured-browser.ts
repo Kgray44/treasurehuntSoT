@@ -10,7 +10,9 @@ async function main() {
   const candidate = process.argv[2],
     databaseUrl = process.argv[3];
   const suite = process.argv[4] ?? "landfall";
-  if (!["landfall", "sextant-consumers", "sextant-resources", "sextant-paired-clue"].includes(suite))
+  if (
+    !["landfall", "sextant-consumers", "sextant-resources", "sextant-paired-clue", "sextant-community"].includes(suite)
+  )
     throw new Error("LANDFALL_CONFIGURED_BROWSER_SUITE_INVALID");
   const source = await deviceLabSourceIdentity();
   if (
@@ -63,15 +65,17 @@ async function main() {
           ? ["tests/e2e/sextant-resource-journeys.spec.ts"]
           : suite === "sextant-paired-clue"
             ? ["tests/e2e/sextant-parallax-paired-journeys.spec.ts"]
-            : [
-                "tests/e2e/landfall-phase1-live-position.spec.ts",
-                "tests/e2e/landfall-phase2.spec.ts",
-                "tests/e2e/landfall-closure.spec.ts",
-                "tests/e2e/landfall-phase3.spec.ts",
-                "tests/e2e/landfall-phase3-creator.spec.ts",
-                "tests/e2e/landfall-phase4.spec.ts",
-                "tests/e2e/landfall-offline-region.spec.ts",
-              ]),
+            : suite === "sextant-community"
+              ? ["tests/e2e/sextant-community-journeys.spec.ts"]
+              : [
+                  "tests/e2e/landfall-phase1-live-position.spec.ts",
+                  "tests/e2e/landfall-phase2.spec.ts",
+                  "tests/e2e/landfall-closure.spec.ts",
+                  "tests/e2e/landfall-phase3.spec.ts",
+                  "tests/e2e/landfall-phase3-creator.spec.ts",
+                  "tests/e2e/landfall-phase4.spec.ts",
+                  "tests/e2e/landfall-offline-region.spec.ts",
+                ]),
     ],
     {
       windowsHide: true,

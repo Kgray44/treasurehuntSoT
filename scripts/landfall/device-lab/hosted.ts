@@ -25,6 +25,7 @@ export async function dispatchLandfallHostedLab(
       "sextant-consumers",
       "sextant-resources",
       "sextant-paired-clue",
+      "sextant-community",
       "android",
       "android-radio",
       "android-journal",
@@ -63,7 +64,7 @@ export async function dispatchLandfallHostedLab(
     throw new Error("LANDFALL_HOSTED_PROFILE_TARGET_REQUIRED");
   const typedTier = tier as "development" | "candidate" | "closure";
   if (
-    ["sextant-consumers", "sextant-resources", "sextant-paired-clue"].includes(target) &&
+    ["sextant-consumers", "sextant-resources", "sextant-paired-clue", "sextant-community"].includes(target) &&
     (tier !== "development" || selectedScenarios !== undefined || selectedProfiles !== undefined)
   )
     throw new Error("LANDFALL_HOSTED_SEXTANT_CONSUMERS_SCOPE_INVALID");
@@ -113,7 +114,16 @@ export async function dispatchLandfallHostedLab(
     .replaceAll("__RUN_PROVIDERS__", String(target === "all" || target === "provider"))
     .replaceAll(
       "__RUN_BROWSER__",
-      String(["all", "browser", "sextant-consumers", "sextant-resources", "sextant-paired-clue"].includes(target)),
+      String(
+        [
+          "all",
+          "browser",
+          "sextant-consumers",
+          "sextant-resources",
+          "sextant-paired-clue",
+          "sextant-community",
+        ].includes(target),
+      ),
     )
     .replaceAll(
       "__BROWSER_JOB_NAME__",
@@ -123,11 +133,15 @@ export async function dispatchLandfallHostedLab(
           ? "Sextant Captain and Creator resources (development)"
           : target === "sextant-paired-clue"
             ? "Sextant distinct Creator and Crew clue comparison (development)"
-            : "optimized first-party Phase 4",
+            : target === "sextant-community"
+              ? "Sextant ordinary public Community journeys (development)"
+              : "optimized first-party Phase 4",
     )
     .replaceAll(
       "__BROWSER_SUITE__",
-      ["sextant-consumers", "sextant-resources", "sextant-paired-clue"].includes(target) ? target : "landfall",
+      ["sextant-consumers", "sextant-resources", "sextant-paired-clue", "sextant-community"].includes(target)
+        ? target
+        : "landfall",
     )
     .replaceAll("__RUN_APPLE__", String(target === "all" || target === "ios"))
     .replaceAll("__RUN_APPLE_DEVICES__", String(target === "ios-devices"))
@@ -173,9 +187,11 @@ export async function dispatchLandfallHostedLab(
           ? ["sextant-resource-journeys"]
           : target === "sextant-paired-clue"
             ? ["sextant-parallax-paired-journeys"]
-            : target === "browser" || target === "all"
-              ? ["first-party-phase4-web"]
-              : [],
+            : target === "sextant-community"
+              ? ["sextant-community-journeys"]
+              : target === "browser" || target === "all"
+                ? ["first-party-phase4-web"]
+                : [],
     journal: target === "android-journal" || target === "all" ? ["first-party-native-journal-pair"] : [],
     background:
       target === "android-background" || target === "all"

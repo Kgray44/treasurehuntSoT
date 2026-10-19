@@ -211,13 +211,13 @@ export function CommunityCommentThread({
           </button>
         </form>
       ) : currentUser.status !== "loading" ? (
-        <aside className="community-comment-composer">
+        <section className="community-comment-composer">
           <h3>Join the conversation</h3>
           <p>Sign in with a Community profile to comment, reply, or report a concern.</p>
           <Link className="community-button community-button--primary" href={signInHref}>
             Sign in to comment
           </Link>
-        </aside>
+        </section>
       ) : null}
       {state === "loading" ? <p role="status">Loading public comments.</p> : null}
       {state === "error" ? <p role="alert">Comments are temporarily unavailable.</p> : null}

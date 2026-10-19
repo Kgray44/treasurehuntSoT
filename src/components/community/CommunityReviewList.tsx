@@ -392,7 +392,7 @@ export function CommunityReviewList({ listingId }: { listingId: string }) {
           </div>
         </form>
       ) : reviewAccess ? (
-        <aside id="community-review-composer" className="community-review-composer" aria-label="Review eligibility">
+        <section id="community-review-composer" className="community-review-composer" aria-label="Review eligibility">
           <div>
             <h3>Review this Chronicle</h3>
             <p>{reviewAccess.message}</p>
@@ -406,7 +406,7 @@ export function CommunityReviewList({ listingId }: { listingId: string }) {
                   : "View Chronicle details"}
             </Link>
           ) : null}
-        </aside>
+        </section>
       ) : null}
       {state === "loading" ? <p role="status">Loading public reviews.</p> : null}
       {state === "error" ? <p role="alert">Reviews are temporarily unavailable.</p> : null}

@@ -20,7 +20,9 @@ async function main() {
   }
   if (
     !plan.contracts?.some((entry: { experience?: { fixture?: string } }) =>
-      ["sextant-shared-consumers-v1", "sextant-resource-consumers-v1"].includes(entry.experience?.fixture ?? ""),
+      ["sextant-shared-consumers-v1", "sextant-resource-consumers-v1", "sextant-community-consumers-v1"].includes(
+        entry.experience?.fixture ?? "",
+      ),
     )
   )
     return;
@@ -58,6 +60,14 @@ async function main() {
   ) {
     const { seedSextantResourceExperiences } = await import("./sextant-resource-fixtures");
     await seedSextantResourceExperiences();
+  }
+  if (
+    plan.contracts.some(
+      (entry: { experience?: { fixture?: string } }) => entry.experience?.fixture === "sextant-community-consumers-v1",
+    )
+  ) {
+    const { seedSextantCommunityExperience } = await import("./sextant-community-fixture");
+    await seedSextantCommunityExperience();
   }
 }
 

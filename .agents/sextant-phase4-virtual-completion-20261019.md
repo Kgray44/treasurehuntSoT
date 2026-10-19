@@ -151,3 +151,18 @@ for both contexts while retaining explicit Crew screenshot/video/error-context
 attachments and guaranteed context close. One corrected-source development
 successor exercises the previously unexecuted paired product assertions, with
 unchanged budgets, custody and acceptance boundaries.
+
+Public Community continuation adopts the existing Homeport Phase 4 synthetic
+producer and manifest unchanged, once inside the canonical nonce-owned database.
+Before invocation reject collisions across all producer-written models and their
+unique keys. Preserve an exclusive attempt file and original producer output;
+never reseed a partial attempt. Reuse checks the production anonymous public
+projection and active release, including absence of the ineligible fixture rows.
+The fixed `sextant-community` development selector exercises ordinary anonymous
+gateway entry, all ten public districts, eight public details, empty Creator and
+collection states, anonymous comments and actual empty-search recovery. Preserve
+the independent Sextant Voyage progression and actual published edition. No
+role grant or private publication is performed by browser navigation. Existing
+curated generic references supply navigation hierarchy only; historic Community
+captures are supplemental design context. Registration and development capture
+do not grant protected Community layout acceptance or any custody allowance.
