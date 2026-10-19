@@ -3,10 +3,12 @@ title: Reach target-three recovery diagnosis and registration correction
 audience: product-engineering
 status: development-repair-with-unresolved-automatic-recovery
 canonical_for: reach-target-three-recovery-20261018
-last_reviewed: 2026-10-18
+last_reviewed: 2026-10-19
 ---
 
 # Reach target-three recovery diagnosis and registration correction
+
+The [2026-10-19 bounded campaign](Overnight_Reliability_Campaign_20261019.md) is the subsequent investigation. It preserves this exact application's results while comparing additional perception candidates and separating controller admission from upstream identity loss.
 
 After the `1c0194b7` preview handoff, the owner reported another physical calibration stall: relative target three, two saved targets, one hand detected, and **Fingertip tracking paused**. The screenshot establishes that visible state; it contains no packet trace proving the exact rejection cause. The camera had already stopped through the existing away-page lifecycle when inspected. The owner's screenshot and all recording imagery remain private.
 

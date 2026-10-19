@@ -14,6 +14,7 @@ retains its own task scope, ownership and evidence boundaries; older packets do
 not authorize restarting a completed phase.
 
 - [Focused development and final verification](testing-workflow.md)
+- [Reach overnight reliability development contract](reach-overnight-reliability.md)
 - [Automatic Product Experience Engineering workflow](product-experience-workflow.md)
 - [Sounding Line capture lifecycle repair context](capture-lifecycle-repair.md)
 - [Sounding Line browser receipt diagnostic context](browser-receipt-diagnostics.md)

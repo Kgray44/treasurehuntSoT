@@ -3,10 +3,12 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-10-18
+last_reviewed: 2026-10-19
 ---
 
 # Current status
+
+Reach's [bounded overnight perception campaign](../../../Projects/Project_Reach/Overnight_Reliability_Campaign_20261019.md) investigates the continued physical stall using identical-input appearance comparisons, semantic-provider feasibility and the actual calibration controller. Controlled low-rate journeys can finish; correct selected-index reacquisition on difficult recorded motion remains unresolved. No failed research provider is substituted into the working preview, and no physical acceptance is claimed.
 
 Reach's [target-three recovery follow-up](../../../Projects/Project_Reach/Target_3_Recovery_20261018.md) follows another owner-reported physical calibration stall. Corrected material registration improves recorded LEFT availability; separated temporal identity and bounded exact-source return reduce recorded identity changes from ten to seven without inventing positions. The final source passes 1,588 subsystem tests, but RIGHT recovery and physical continuity remain unresolved. A detected hand can coexist with an unusable selected-index position. The preview remains experimental; these repairs do not establish physical acceptance.
 

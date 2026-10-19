@@ -3,7 +3,7 @@ title: Project Reach engineering home
 audience: product-engineering
 status: integrated-foundation-preview
 canonical_for: project-reach-engineering-home
-last_reviewed: 2026-10-18
+last_reviewed: 2026-10-19
 ---
 
 # Project Reach engineering home
@@ -11,6 +11,8 @@ last_reviewed: 2026-10-18
 Reach is Voyagewright's reusable browser-first spatial interaction and intent system. Phase 1's browser hand laboratory, observation/coordinate foundation and independent calibration workflow are integrated as a foundation preview through [PR #697](https://github.com/Kgray44/treasurehuntSoT/pull/697), main commit `7284b0dfaa31037d074d27df0f27b968f3977000`, after the [required Mainline Decision](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38113725340) passed. Landed source/asset verification passed. Physical webcam and held-out calibration, accuracy, jitter, exposure-to-visible latency, ergonomics and owner acceptance remain open; full Phase 1 is not accepted. See the [implementation and validation record](Project_Reach_Phase_1_Implementation_and_Validation_Record.md). Later-phase target acquisition, selection, manipulation and owner integrations are not implemented by this phase.
 
 ## Effective governing sources
+
+The [bounded overnight reliability campaign](Overnight_Reliability_Campaign_20261019.md) compares stronger appearance features, source-aware references and semantic-provider feasibility against the same recorded inputs. Its controller audit separates missing perception from safe sample suspension; physical reliability and the broad mixed-motion failure remain open.
 
 The [target-three recovery follow-up](Target_3_Recovery_20261018.md) records the owner's subsequent physical stall, corrected material registration, separated temporal identity, bounded original-source return, paired recording results and still-unresolved automatic recovery limits.
 

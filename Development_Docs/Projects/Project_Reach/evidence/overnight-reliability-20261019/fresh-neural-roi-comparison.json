@@ -1,0 +1,332 @@
+{
+  "classification": "AGGREGATE_FIXED_FRESH_ROI_NEURAL_COMPARISON_NO_PRIVATE_COORDINATES",
+  "result": "NO_MEASURABLE_IMPROVEMENT",
+  "source": "SAME_PINNED_MEDIAPIPE_0.10.32_FLOAT16_GRAPH_CPU",
+  "manifestSha256": "cc02d115003ec4d3560e0cab9df1e2c7181e62bd6cf7e80b63e41b62eed47022",
+  "rawResultsSha256": "9c3a0048dac0710912304e75b61dccc66e1ae8873da0a95160dad1a0ff107c5e",
+  "allPairedBitmapSha256Equal": true,
+  "allOriginalAssetsUnchanged": true,
+  "cpuGraphEvidence": [
+    {
+      "arm": "FRESH_FULL_CPU",
+      "workerHardwareConcurrency": 1,
+      "inferenceCalculators": [["InferenceCalculatorCpu"], ["InferenceCalculatorCpu"]]
+    },
+    {
+      "arm": "FRESH_NN_SQUARE_125",
+      "workerHardwareConcurrency": 1,
+      "inferenceCalculators": [["InferenceCalculatorCpu"]]
+    },
+    {
+      "arm": "FRESH_NN_SQUARE_160",
+      "workerHardwareConcurrency": 1,
+      "inferenceCalculators": [["InferenceCalculatorCpu"]]
+    },
+    {
+      "arm": "FRESH_NN_SQUARE_125_UPRIGHT90",
+      "workerHardwareConcurrency": 1,
+      "inferenceCalculators": [["InferenceCalculatorCpu"]]
+    }
+  ],
+  "coordinateConvention": {
+    "width": 640,
+    "height": 480,
+    "input": "Identical unmirrored bitmap per frame across all arms, created from same mirrored PNG; full camera area only",
+    "outputToMirroredReference": "x=640-640*normalizedX; y=480*normalizedY",
+    "convention": "continuous canvas image coordinates; deliberately separate from earlier639/479 pixel-index report"
+  },
+  "groups": [
+    {
+      "arm": "FRESH_FULL_CPU",
+      "visiblePointingReferenceCount": 30,
+      "plannedFrames": 44,
+      "modelCalls": 44,
+      "skippedNoNeuralROI": 0,
+      "handPresenceOnVisibleRefs": 29,
+      "singleFiniteIndexOnVisibleRefs": 29,
+      "singleInFrameIndexOnVisibleRefs": 29,
+      "insideReferenceCircle": 20,
+      "conditionalMedianCenterErrorPixels": 6.149753146977176,
+      "conditionalP95CenterErrorPixels": 19.091880890803747,
+      "conditionalMaxCenterErrorPixels": 100.30173853935422,
+      "pointingCandidatesOnVisibleRefs": 28,
+      "pointingCandidatesInsideReferenceCircle": 20,
+      "negativePointerControls": 3,
+      "negativeHandPresence": 2,
+      "negativePointingCandidates": 0,
+      "knownBlankFaceControls": 4,
+      "knownBlankFaceHandPresence": 0,
+      "knownBlankFacePointingCandidates": 0,
+      "medianInferenceMs": 37.01250000298023,
+      "p95InferenceMs": 40.01224999725819,
+      "controlDispositions": [
+        {
+          "id": "BLANK_BLACK",
+          "handCount": 0,
+          "pointing": false,
+          "presenceScore": null
+        },
+        {
+          "id": "BLANK_GRAY",
+          "handCount": 0,
+          "pointing": false,
+          "presenceScore": null
+        },
+        {
+          "id": "BLANK_WHITE",
+          "handCount": 0,
+          "pointing": false,
+          "presenceScore": null
+        },
+        {
+          "id": "FACE_ONLY",
+          "handCount": 0,
+          "pointing": false,
+          "presenceScore": null
+        }
+      ]
+    },
+    {
+      "arm": "FRESH_NN_SQUARE_125",
+      "visiblePointingReferenceCount": 30,
+      "plannedFrames": 44,
+      "modelCalls": 42,
+      "skippedNoNeuralROI": 2,
+      "handPresenceOnVisibleRefs": 19,
+      "singleFiniteIndexOnVisibleRefs": 19,
+      "singleInFrameIndexOnVisibleRefs": 19,
+      "insideReferenceCircle": 10,
+      "conditionalMedianCenterErrorPixels": 9.871926834766382,
+      "conditionalP95CenterErrorPixels": 82.96017962676294,
+      "conditionalMaxCenterErrorPixels": 196.59844826040268,
+      "pointingCandidatesOnVisibleRefs": 18,
+      "pointingCandidatesInsideReferenceCircle": 10,
+      "negativePointerControls": 3,
+      "negativeHandPresence": 2,
+      "negativePointingCandidates": 0,
+      "knownBlankFaceControls": 4,
+      "knownBlankFaceHandPresence": 0,
+      "knownBlankFacePointingCandidates": 0,
+      "medianInferenceMs": 17.862499997019768,
+      "p95InferenceMs": 20.394999997317793,
+      "controlDispositions": [
+        {
+          "id": "BLANK_BLACK",
+          "handCount": 0,
+          "pointing": false,
+          "presenceScore": 0.007365466561168432
+        },
+        {
+          "id": "BLANK_GRAY",
+          "handCount": 0,
+          "pointing": false,
+          "presenceScore": 0.0016182598192244768
+        },
+        {
+          "id": "BLANK_WHITE",
+          "handCount": 0,
+          "pointing": false,
+          "presenceScore": 0.006951009854674339
+        },
+        {
+          "id": "FACE_ONLY",
+          "handCount": 0,
+          "pointing": false,
+          "presenceScore": 0.46089527010917664
+        }
+      ]
+    },
+    {
+      "arm": "FRESH_NN_SQUARE_160",
+      "visiblePointingReferenceCount": 30,
+      "plannedFrames": 44,
+      "modelCalls": 42,
+      "skippedNoNeuralROI": 2,
+      "handPresenceOnVisibleRefs": 25,
+      "singleFiniteIndexOnVisibleRefs": 25,
+      "singleInFrameIndexOnVisibleRefs": 25,
+      "insideReferenceCircle": 15,
+      "conditionalMedianCenterErrorPixels": 8.693015025259236,
+      "conditionalP95CenterErrorPixels": 18.50158616127837,
+      "conditionalMaxCenterErrorPixels": 24.56040058395604,
+      "pointingCandidatesOnVisibleRefs": 25,
+      "pointingCandidatesInsideReferenceCircle": 15,
+      "negativePointerControls": 3,
+      "negativeHandPresence": 2,
+      "negativePointingCandidates": 0,
+      "knownBlankFaceControls": 4,
+      "knownBlankFaceHandPresence": 0,
+      "knownBlankFacePointingCandidates": 0,
+      "medianInferenceMs": 17.947500005364418,
+      "p95InferenceMs": 21.557500019669536,
+      "controlDispositions": [
+        {
+          "id": "BLANK_BLACK",
+          "handCount": 0,
+          "pointing": false,
+          "presenceScore": 0.007365466561168432
+        },
+        {
+          "id": "BLANK_GRAY",
+          "handCount": 0,
+          "pointing": false,
+          "presenceScore": 0.0016182598192244768
+        },
+        {
+          "id": "BLANK_WHITE",
+          "handCount": 0,
+          "pointing": false,
+          "presenceScore": 0.006951009854674339
+        },
+        {
+          "id": "FACE_ONLY",
+          "handCount": 0,
+          "pointing": false,
+          "presenceScore": 0.46089527010917664
+        }
+      ]
+    },
+    {
+      "arm": "FRESH_NN_SQUARE_125_UPRIGHT90",
+      "visiblePointingReferenceCount": 30,
+      "plannedFrames": 44,
+      "modelCalls": 42,
+      "skippedNoNeuralROI": 2,
+      "handPresenceOnVisibleRefs": 21,
+      "singleFiniteIndexOnVisibleRefs": 21,
+      "singleInFrameIndexOnVisibleRefs": 17,
+      "insideReferenceCircle": 8,
+      "conditionalMedianCenterErrorPixels": 9.891007181619464,
+      "conditionalP95CenterErrorPixels": 112.94091456472279,
+      "conditionalMaxCenterErrorPixels": 196.59844826040268,
+      "pointingCandidatesOnVisibleRefs": 16,
+      "pointingCandidatesInsideReferenceCircle": 8,
+      "negativePointerControls": 3,
+      "negativeHandPresence": 2,
+      "negativePointingCandidates": 0,
+      "knownBlankFaceControls": 4,
+      "knownBlankFaceHandPresence": 0,
+      "knownBlankFacePointingCandidates": 0,
+      "medianInferenceMs": 17.997500017285347,
+      "p95InferenceMs": 20.377500006556513,
+      "controlDispositions": [
+        {
+          "id": "BLANK_BLACK",
+          "handCount": 0,
+          "pointing": false,
+          "presenceScore": 0.007365466561168432
+        },
+        {
+          "id": "BLANK_GRAY",
+          "handCount": 0,
+          "pointing": false,
+          "presenceScore": 0.0016182598192244768
+        },
+        {
+          "id": "BLANK_WHITE",
+          "handCount": 0,
+          "pointing": false,
+          "presenceScore": 0.006951009854674339
+        },
+        {
+          "id": "FACE_ONLY",
+          "handCount": 0,
+          "pointing": false,
+          "presenceScore": 0.46089527010917664
+        }
+      ]
+    }
+  ],
+  "pairwise": [
+    {
+      "arm": "FRESH_NN_SQUARE_125",
+      "commonInFrameReferences": 19,
+      "moreCorrectThanFull": 1,
+      "lostCorrectFromFull": 11,
+      "improvedErrorOnCommon": 5,
+      "worsenedErrorOnCommon": 14,
+      "medianDeltaErrorOnCommon": 2.3771079877246626
+    },
+    {
+      "arm": "FRESH_NN_SQUARE_160",
+      "commonInFrameReferences": 25,
+      "moreCorrectThanFull": 2,
+      "lostCorrectFromFull": 7,
+      "improvedErrorOnCommon": 10,
+      "worsenedErrorOnCommon": 15,
+      "medianDeltaErrorOnCommon": 1.235378646920296
+    },
+    {
+      "arm": "FRESH_NN_SQUARE_125_UPRIGHT90",
+      "commonInFrameReferences": 17,
+      "moreCorrectThanFull": 0,
+      "lostCorrectFromFull": 12,
+      "improvedErrorOnCommon": 3,
+      "worsenedErrorOnCommon": 14,
+      "medianDeltaErrorOnCommon": 2.540135653349499
+    }
+  ],
+  "difficultSummary": [
+    {
+      "arm": "FRESH_FULL_CPU",
+      "visibleRightBottomRightRefs": 3,
+      "inFrame": 3,
+      "insideCircle": 1,
+      "pointing": 2,
+      "medianError": 11.204901729043366
+    },
+    {
+      "arm": "FRESH_NN_SQUARE_125",
+      "visibleRightBottomRightRefs": 3,
+      "inFrame": 2,
+      "insideCircle": 1,
+      "pointing": 2,
+      "medianError": 20.48706886364294
+    },
+    {
+      "arm": "FRESH_NN_SQUARE_160",
+      "visibleRightBottomRightRefs": 3,
+      "inFrame": 2,
+      "insideCircle": 1,
+      "pointing": 2,
+      "medianError": 9.88161261619372
+    },
+    {
+      "arm": "FRESH_NN_SQUARE_125_UPRIGHT90",
+      "visibleRightBottomRightRefs": 3,
+      "inFrame": 2,
+      "insideCircle": 1,
+      "pointing": 2,
+      "medianError": 22.06583124422196
+    }
+  ],
+  "cleanupProved": true,
+  "limitations": [
+    "IMAGE mode fresh inference, not warmVIDEO production cadence or identity recovery.",
+    "Current cached-NN ROI is a proposal from nearest matching input, not a verified endpoint or new source alias.",
+    "No best-arm fusion or oracle promotion; each fixed arm scored independently.",
+    "In-frame landmark availability is separate from hand presence and posture; all complete21 outputs retained.",
+    "All labels are nonblinded AI development references; no physical/owner/heldout accuracy."
+  ],
+  "decision": "REJECT_ALL_THREE_FIXED_ROI_PROPOSALS_RETAIN_EXISTING_PROVIDER",
+  "independentReview": {
+    "classification": "INDEPENDENT_FILE_ONLY_AUDIT",
+    "reviewer": "/root/calibration_buffer",
+    "result": "NO_MATERIAL_BLOCKER",
+    "reproduced": {
+      "casesPerArm": 44,
+      "graphFrameRequests": 170,
+      "scoredRows": 176,
+      "visiblePointingReferencesPerArm": 30,
+      "allPairedBitmapHashesEqual": true,
+      "allResultPacketsValid": true,
+      "allHashesMatch": true,
+      "inspector": "Fresh stateless BrowserHandAdapter per observation; posture is not continuity or action authority"
+    },
+    "notes": [
+      "Four console-error-channel entries are INFO XNNPACK delegate initialization diagnostics, not frame failures. Original manifest bytes remain preserved.",
+      "Rejection applies to the three predeclared crop policies, not all possible ROI strategies.",
+      "Cleanup has process-exit and control-port-release proof; no material cleanup blocker identified."
+    ]
+  }
+}

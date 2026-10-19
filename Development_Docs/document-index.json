@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-10-18",
+  "generated_at": "2026-10-19",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -9783,6 +9783,30 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/overnight-reliability-20261019/appearance-and-controller-comparison.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/overnight-reliability-20261019/campaign-checks.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/overnight-reliability-20261019/fresh-neural-roi-comparison.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/overnight-reliability-20261019/semantic-provider-comparison.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Reach/Fused_Tracking_Audit_20261018.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -9796,6 +9820,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Reach/Natural_Pointing_Recovery_20261017.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/Overnight_Reliability_Campaign_20261019.md",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

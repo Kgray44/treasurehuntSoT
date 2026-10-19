@@ -3,8 +3,10 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-10-18
+last_reviewed: 2026-10-19
 ---
+
+The [overnight reliability investigation](../../../Projects/Project_Reach/Overnight_Reliability_Campaign_20261019.md) compares stronger perception candidates without declaring a completed capability or availability change. Diagnostic-input coverage, limited development correctness estimates, controlled calibration journeys and unresolved physical recovery remain separate. This work does not promote the existing Reach preview to physical acceptance.
 
 The [selected-index identity repair](../../../Projects/Project_Reach/Selected_Index_Identity_Repair_20261018.md) is in development validation following continued owner-reported calibration resets after the earlier software proof. It separates a currently known hand from permission to use the selected index, retains saved targets during supported pauses and suspends unverified relative identity replacements without reusing their samples, and checks a returning index against immutable index/palm references transported by observed hand motion. Compatible measurements use bounded weighted averaging. The [previous fused pipeline audit](../../../Projects/Project_Reach/Fused_Tracking_Audit_20261018.md) and image-only records retain their original results. This repairs the existing relative tracking capability without relaxing freshness or raw held-out gates; it does not declare physical reliability, owner acceptance or protected-main availability.
 
