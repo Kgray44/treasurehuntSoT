@@ -1,4 +1,8 @@
-import { openCurrentScenePublication, saveCurrentWorkingDraft } from "./fixtures/parallax-current-library";
+import {
+  currentStudioStatus,
+  openCurrentScenePublication,
+  saveCurrentWorkingDraft,
+} from "./fixtures/parallax-current-library";
 import { test, expect, type Page } from "@playwright/test";
 import { randomUUID } from "node:crypto";
 import { mkdir, writeFile } from "node:fs/promises";
@@ -153,12 +157,15 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
   expect(createResponse.ok(), JSON.stringify(createdBody)).toBe(true);
   const proposal = createdBody.proposal as AssistantProposal;
   const request = createResponse.request().postDataJSON();
+  const base = await ownedWorking(account.id, request.draft.content.definitionId);
+  expect(base.revision).toBeGreaterThan(0);
+  expect(request.draft).toEqual(base.draft);
   expect(request).toMatchObject({
     action: "AI",
     kind: "ASSISTANT",
     request: createRequest,
     mode: "STANDARD",
-    revision: 1,
+    revision: base.revision,
   });
   expect(Object.keys(request).sort()).toEqual(
     [
@@ -175,7 +182,6 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
       "selectedEntityId",
     ].sort(),
   );
-  const base = await ownedWorking(account.id, request.draft.content.definitionId);
   expect(base.draft.content.entities).toHaveLength(1);
   const expected = await materializeAssistantProposal(
     base.draft,
@@ -254,12 +260,12 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
   await page.getByRole("button", { name: "Save to Spatial Library", exact: true }).click();
   await page.getByText("Scene actions", { exact: true }).click();
   await page.getByRole("button", { name: "Validate in Drydock", exact: true }).click();
-  await expect(page.getByRole("status").filter({ hasText: "Drydock spatial checks complete" })).toBeVisible();
+  await expect(currentStudioStatus(page).filter({ hasText: "Drydock spatial checks complete" })).toBeVisible();
   await page.getByText("Scene actions", { exact: true }).click();
   await page.getByRole("button", { name: "Create immutable version", exact: true }).click();
-  await expect(page.getByRole("status").filter({ hasText: "Immutable version created" })).toBeVisible();
+  await expect(currentStudioStatus(page).filter({ hasText: "Immutable version created" })).toBeVisible();
   await page.getByRole("button", { name: "Attach exact version", exact: true }).click();
-  await expect(page.getByRole("status").filter({ hasText: "Pinned spatial version attached" })).toBeVisible();
+  await expect(currentStudioStatus(page).filter({ hasText: "Pinned spatial version attached" })).toBeVisible();
   const attached = await getStudioTale(tale.id);
   const capsule = validateSpatialMoment(attached.draft.chapters[0].blocks[0].presentation.spatialMoment, blockId);
   expect(capsule.version.entities.find((entity) => entity.id === "synthetic-pirate-map")?.widthMeters).toBe(0.45);

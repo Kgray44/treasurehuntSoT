@@ -72,3 +72,16 @@ export async function saveCurrentWorkingDraft(page: Page) {
   await page.getByRole("heading", { name: "Parallax", exact: true }).click({ button: "right" });
   await page.getByRole("menuitem", { name: "Save draft", exact: true }).click();
 }
+
+/** The Scene header owns working-save and editing feedback; Library loading has its own live region. */
+export function currentStudioStatus(page: Page) {
+  return page.getByRole("heading", { name: "Parallax", exact: true }).locator("..").getByRole("status");
+}
+
+export async function openCurrentViewControls(page: Page) {
+  const summary = page
+    .getByRole("region", { name: "Spatial canvas", exact: true })
+    .getByText("View & audio", { exact: true });
+  const details = summary.locator("..");
+  if (!(await details.evaluate((element) => (element as HTMLDetailsElement).open))) await summary.click();
+}

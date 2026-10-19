@@ -1,5 +1,6 @@
 import {
   addCurrentBuiltinAsset,
+  currentStudioStatus,
   openCurrentLibraryCategory,
   saveCurrentWorkingDraft,
 } from "./fixtures/parallax-current-library";
@@ -94,7 +95,7 @@ test("owner refinements: coherent Studio themes, overlay assistance and populate
   await page.getByText("Sequence properties & simulation", { exact: true }).click();
   await page.getByLabel("Behavior 1 delay milliseconds").fill("1200");
   await saveCurrentWorkingDraft(page);
-  await expect(page.getByRole("status", { name: "", exact: true })).toContainText("Working draft saved");
+  await expect(currentStudioStatus(page)).toContainText("Working draft saved");
   const saved = (await listSpatialItems(account.id)).find((item) =>
     item.draft.content.entities.some((entity) => entity.name === "Owner review letter"),
   )!;
@@ -212,7 +213,7 @@ test("floating assistance moves, resizes, restores and keeps its composer at the
   const canvas = page.getByRole("region", { name: "Spatial canvas", exact: true });
   await expect(canvas.locator('[data-renderer="READY"] canvas')).toBeVisible();
   await saveCurrentWorkingDraft(page);
-  await expect(page.getByRole("status", { name: "", exact: true })).toContainText("Working draft saved");
+  await expect(currentStudioStatus(page)).toContainText("Working draft saved");
   await page.getByRole("button", { name: /Ask Parallax/ }).click();
   const host = page.locator("#parallax-assistance");
   await expect(host).toHaveAttribute("data-floating-placed", "true");

@@ -369,6 +369,7 @@ test("Record captures edited poses and motion stays clear across modes and rende
   await page.screenshot({ path: `${root}/refinement-phone-requested-fallback.png` });
   await page.getByLabel("Preview", { exact: true }).selectOption("EDITOR");
   await expect(host.locator("canvas")).toBeVisible();
+  await canvas.getByText("View & audio", { exact: true }).click();
   await canvas.getByRole("button", { name: "Frame animation", exact: true }).click();
   await canvas.scrollIntoViewIfNeeded();
   await expect

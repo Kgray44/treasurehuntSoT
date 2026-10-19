@@ -467,6 +467,7 @@ test("Twenty footprints group through keyboard selection, move live together, ca
   await checks.nth(1).check();
   await dialog.getByRole("button", { name: "Save group", exact: true }).click();
   await expect(graph.locator("[data-graph-group]")).toHaveCount(1);
+  await page.getByRole("button", { name: "Open spatial context", exact: true }).click();
   await page
     .getByRole("region", { name: "Group inspector", exact: true })
     .getByRole("button", { name: "Ungroup items", exact: true })

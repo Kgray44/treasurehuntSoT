@@ -103,7 +103,18 @@ try {
   }
   browser = spawnOwnedProcess(
     process.execPath,
-    ["node_modules/@playwright/test/cli.js", "test", ...tests, "--project", "chromium", "--output", resultRoot],
+    [
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      ...tests,
+      "--project",
+      "chromium",
+      "--output",
+      resultRoot,
+      "--workers=1",
+      "--retries=0",
+      "--reporter=list,json,html",
+    ],
     { root, env },
   );
   exitCode = (await processExit(browser)).code ?? 1;

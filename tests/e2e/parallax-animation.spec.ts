@@ -138,12 +138,20 @@ test("Creator edits, renders, scrubs, plays and reloads real object keyframes, t
   ]) {
     await page.setViewportSize(viewport);
     const canvasRegion = page.getByRole("region", { name: "Spatial canvas", exact: true });
+    await canvasRegion.scrollIntoViewIfNeeded();
     const controls = canvasRegion
       .getByRole("toolbar", { name: "Spatial editing tools", exact: true })
       .getByRole("button");
     await expect(controls).toHaveCount(7);
     const regionBounds = (await canvasRegion.boundingBox())!;
     const rendererBounds = (await host.locator("canvas").boundingBox())!;
+    const selectedItem = canvasRegion
+      .getByRole("button", { name: "Isolate selected object", exact: true })
+      .locator("..");
+    const selectionBounds = (await selectedItem.boundingBox())!;
+    expect(selectionBounds.y).toBeGreaterThanOrEqual(regionBounds.y);
+    expect(selectionBounds.y + selectionBounds.height).toBeLessThanOrEqual(regionBounds.y + regionBounds.height);
+
     for (const button of await controls.all()) {
       await expect(button).toBeInViewport();
       const bounds = (await button.boundingBox())!;

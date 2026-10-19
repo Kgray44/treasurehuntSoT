@@ -1,5 +1,6 @@
 import {
   closeCurrentLibrary,
+  currentStudioStatus,
   openCurrentLibraryCategory,
   openCurrentScenePublication,
   openOwnedSceneFromCurrentLibrary,
@@ -197,7 +198,7 @@ test("Creator duplicates and reuses a right boot without changing its rendered h
     .getByRole("button", { name: "Duplicate object", exact: true })
     .click();
   await saveCurrentWorkingDraft(page);
-  await expect(page.getByRole("status")).toHaveText("Working draft saved");
+  await expect(currentStudioStatus(page)).toHaveText("Working draft saved");
   const records = async () => listSpatialItems(account.id);
   const current = async () => (await records()).find((item) => item.id === source.content.definitionId)!.draft;
   const duplicated = await current();
@@ -220,7 +221,7 @@ test("Creator duplicates and reuses a right boot without changing its rendered h
   await inspector.getByLabel("Asset description", { exact: true }).fill("A right boot retaining its silhouette.");
   await inspector.getByLabel("Asset classification", { exact: true }).fill("Footprint");
   await inspector.getByRole("button", { name: "Save selected object as reusable asset", exact: true }).click();
-  await expect(page.getByRole("status")).toHaveText(
+  await expect(currentStudioStatus(page)).toHaveText(
     "Reusable asset definition and immutable version saved; source scene unchanged",
   );
   expect(await current()).toEqual(duplicated);
@@ -233,7 +234,7 @@ test("Creator duplicates and reuses a right boot without changing its rendered h
     .getByRole("complementary", { name: "Reusable right boot details", exact: true })
     .getByRole("button", { name: "Place in Scene", exact: true })
     .click();
-  await expect(page.getByRole("status")).toHaveText(
+  await expect(currentStudioStatus(page)).toHaveText(
     "Independent asset copy added and saved; its definition is unchanged",
   );
   const inserted = await current();
@@ -335,7 +336,7 @@ test("Creator authors a full scene and navigates during interpolated playback wi
   await animation.getByLabel("POSITION keyframe 2 seconds", { exact: true }).fill("8");
   await animation.getByLabel("POSITION keyframe 2 seconds", { exact: true }).press("Tab");
   await saveCurrentWorkingDraft(page);
-  await expect(page.getByRole("status")).toHaveText("Working draft saved");
+  await expect(currentStudioStatus(page)).toHaveText("Working draft saved");
   const saved = (await listSpatialItems(account.id)).find(
     (item) => item.draft.content.definitionId === draft.content.definitionId,
   )!.draft;

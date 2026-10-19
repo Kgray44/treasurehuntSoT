@@ -92,6 +92,9 @@ test("Environment editing selects rendered features and shares live transform gi
     return (feature.min[0] + feature.max[0]) / 2;
   };
   const initialX = await centerX();
+  const clueX = async () => JSON.parse((await host.getAttribute("data-scene-receipt"))!)[0].position[0];
+  const initialClueX = await clueX();
+  expect(draft.content.studio!.surfacePreviewFrames![0].surfaceId).toBe("reference-desk");
   await canvas.getByRole("button", { name: "Move tool", exact: true }).click();
   await expect.poll(async () => Boolean((await projected()).handles.X)).toBe(true);
   const handle = (await projected()).handles.X;
@@ -105,12 +108,13 @@ test("Environment editing selects rendered features and shares live transform gi
   const movedX = Number(await editor.getByLabel("Feature x (m)", { exact: true }).inputValue());
   expect(Math.abs(movedX - initialX)).toBeGreaterThan(0.05);
   await expect.poll(centerX).toBeCloseTo(movedX);
-  const clueX = async () => JSON.parse((await host.getAttribute("data-scene-receipt"))!)[0].position[0];
-  await expect.poll(clueX).toBeCloseTo(movedX);
+  await expect.poll(clueX).toBeCloseTo(initialClueX + movedX - initialX);
   await page.getByRole("button", { name: "Undo", exact: true }).first().click();
   await expect.poll(centerX).toBeCloseTo(initialX);
+  await expect.poll(clueX).toBeCloseTo(initialClueX);
   await page.getByRole("button", { name: "Redo", exact: true }).first().click();
   await expect.poll(centerX).toBeCloseTo(movedX);
+  await expect.poll(clueX).toBeCloseTo(initialClueX + movedX - initialX);
   await canvas.getByRole("button", { name: "Scale tool", exact: true }).click();
   await expect.poll(async () => Boolean((await projected()).handles.X)).toBe(true);
   const originalWidth = Number(await editor.getByLabel("Feature width (m)", { exact: true }).inputValue());
@@ -146,6 +150,7 @@ test("Environment editing selects rendered features and shares live transform gi
   await page.reload();
   await expect(host.locator("canvas")).toBeVisible();
   await expect.poll(centerX).toBeCloseTo(movedX);
+  await expect.poll(clueX).toBeCloseTo(initialClueX + movedX - initialX);
   expect((await listSpatialItems(account.id))[0].draft).toEqual(saved);
   await page.screenshot({ path: `${root}/room-feature-gizmo-reloaded.png` });
 });
@@ -215,12 +220,18 @@ test("Creator edits semantic room dimensions and furniture while the actual rend
   await checks.getByRole("button", { name: /Construction checks/ }).click();
   const entityX = async () =>
     (JSON.parse((await host.getAttribute("data-scene-receipt"))!) as { position: number[] }[])[0].position[0];
+  const initialPose = JSON.parse((await host.getAttribute("data-scene-receipt"))!)[0].position as number[];
+  const initialDesk = draft.content.studio!.environment!.features.find((feature) => feature.id === "reference-desk")!;
+  const offset = { x: initialPose[0] - initialDesk.position.x, z: initialPose[2] - initialDesk.position.z };
+  const attachedX = (deskX: number, yaw: number) =>
+    deskX + offset.x * Math.cos((yaw * Math.PI) / 180) + offset.z * Math.sin((yaw * Math.PI) / 180);
+  expect(draft.content.studio!.surfacePreviewFrames![0].surfaceId).toBe("reference-desk");
   await editor.getByLabel("Feature depth (m)", { exact: true }).focus();
   await expect(editor.getByLabel("Feature depth (m)", { exact: true })).toHaveValue("0.9");
   await editor.getByLabel("Feature x (m)", { exact: true }).fill("0.6");
   await editor.getByLabel("Feature x (m)", { exact: true }).press("Tab");
   await expect.poll(center).toBeCloseTo(0.6);
-  await expect.poll(entityX).toBeCloseTo(0.6);
+  await expect.poll(entityX).toBeCloseTo(attachedX(0.6, 0));
   await editor.getByLabel("Feature z (m)", { exact: true }).fill("0.6");
   await editor.getByLabel("Feature z (m)", { exact: true }).press("Tab");
   await editor.getByLabel("Feature rotation (degrees)", { exact: true }).fill("45");
@@ -266,10 +277,14 @@ test("Creator edits semantic room dimensions and furniture while the actual rend
   await page.reload();
   await expect(host.locator("canvas")).toBeVisible();
   await expect.poll(center).toBeCloseTo(0.75);
-  await expect.poll(entityX).toBeCloseTo(0.75);
+  await expect.poll(entityX).toBeCloseTo(attachedX(0.75, 45));
   expect((await listSpatialItems(account.id))[0].draft).toEqual(saved);
   await page.screenshot({ path: `${root}/room-feature-restored.png` });
   await page.setViewportSize({ width: 390, height: 844 });
+  await page
+    .getByRole("region", { name: "Spatial canvas", exact: true })
+    .getByText("View & audio", { exact: true })
+    .click();
   await page.getByRole("button", { name: "Edit room features", exact: true }).click();
   await expect(editor.getByLabel("Room feature classification", { exact: true })).toHaveValue("TABLE");
   await expect(editor.getByLabel("Feature name", { exact: true })).toHaveValue("Window writing table");
@@ -282,7 +297,7 @@ test("Creator edits semantic room dimensions and furniture while the actual rend
   await editor.getByLabel("Feature x (m)", { exact: true }).fill("0.65");
   await editor.getByLabel("Feature x (m)", { exact: true }).press("Tab");
   await expect.poll(center).toBeCloseTo(0.65);
-  await expect.poll(entityX).toBeCloseTo(0.65);
+  await expect.poll(entityX).toBeCloseTo(attachedX(0.65, 45));
   await saveCurrentWorkingDraft(page);
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
   await page.getByRole("button", { name: "Collapse Inspector", exact: true }).click();

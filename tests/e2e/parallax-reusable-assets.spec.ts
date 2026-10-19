@@ -1,5 +1,6 @@
 import {
   closeCurrentLibrary,
+  currentStudioStatus,
   openCurrentLibraryCategory,
   openCurrentScenePublication,
   openOwnedSceneFromCurrentLibrary,
@@ -51,7 +52,7 @@ test("Creator saves and reuses a versioned object, edits only its instance, relo
     .fill("A small reusable compass for navigation clues.");
   await inspector.getByLabel("Asset classification", { exact: true }).fill("Navigation clue");
   await inspector.getByRole("button", { name: "Save selected object as reusable asset", exact: true }).click();
-  await expect(page.getByRole("status")).toHaveText(
+  await expect(currentStudioStatus(page)).toHaveText(
     "Reusable asset definition and immutable version saved; source scene unchanged",
   );
   const records = await listSpatialItems(account.id),
@@ -77,7 +78,7 @@ test("Creator saves and reuses a versioned object, edits only its instance, relo
     .getByRole("complementary", { name: "Captain navigation compass details", exact: true })
     .getByRole("button", { name: "Place in Scene", exact: true })
     .click();
-  await expect(page.getByRole("status")).toHaveText(
+  await expect(currentStudioStatus(page)).toHaveText(
     "Independent asset copy added and saved; its definition is unchanged",
   );
   const targetId = new URL(page.url()).searchParams.get("definition")!;

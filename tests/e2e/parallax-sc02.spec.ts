@@ -1,4 +1,4 @@
-import { saveCurrentWorkingDraft } from "./fixtures/parallax-current-library";
+import { currentStudioStatus, saveCurrentWorkingDraft } from "./fixtures/parallax-current-library";
 import { test, expect, type Locator, type Page } from "@playwright/test";
 import { mkdir, writeFile } from "node:fs/promises";
 import { db } from "../../src/lib/db";
@@ -119,7 +119,7 @@ test("SC-02 Creator places real assets, edits a light, saves and reuses a compos
   await page.getByRole("spinbutton", { name: "Light intensity numeric value", exact: true }).blur();
   await reuseCurrentComposition(page);
   await saveCurrentWorkingDraft(page);
-  await expect(page.getByRole("status")).toHaveText("Working draft saved");
+  await expect(currentStudioStatus(page)).toHaveText("Working draft saved");
   const definition = new URL(page.url()).searchParams.get("definition")!;
   const saved = (await listSpatialItems(account.id)).find((i) => i.id === definition)!.draft;
   expect(saved.content.entities.filter((e) => e.name === "Ghostly Presence")).toHaveLength(2);
@@ -538,7 +538,7 @@ test("SC-02 Creator authors and reuses elements with native keyboard navigation 
   await tabTo(page.getByRole("button", { name: "Save to Library", exact: true }), "Scene header actions");
   await page.keyboard.press("Shift+F10");
   await activate(page.getByRole("menuitem", { name: "Save draft", exact: true }), "Save draft");
-  await expect(page.getByRole("status")).toHaveText("Working draft saved");
+  await expect(currentStudioStatus(page)).toHaveText("Working draft saved");
   const definition = new URL(page.url()).searchParams.get("definition")!;
   const saved = (await listSpatialItems(account.id)).find((i) => i.id === definition)!.draft;
   expect(saved.content.entities.filter((entity) => entity.name === "Ghostly Presence")).toHaveLength(2);
@@ -639,7 +639,7 @@ test("SC-02 preserves a failed save and recovers audio from unavailable and Guid
   await page.screenshot({ path: `${evidence}/recovery-save-unavailable.png`, fullPage: true });
   recoverSave = true;
   await page.getByRole("button", { name: "Retry save", exact: true }).click();
-  await expect(page.getByRole("status")).toHaveText("Working draft saved");
+  await expect(currentStudioStatus(page)).toHaveText("Working draft saved");
   await expect(saveAlert).toHaveCount(0);
   const definition = new URL(page.url()).searchParams.get("definition")!;
   const saved = (await listSpatialItems(account.id)).find((item) => item.id === definition)!.draft;

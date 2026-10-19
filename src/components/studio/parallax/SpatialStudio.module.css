@@ -4491,17 +4491,12 @@
   }
 }
 
-/* Expanded timelines can shorten a desktop canvas independently of window size. */
+/* Keep desktop editing controls and the selected-item card inside a usable Scene. */
 @media (min-width: 701px) {
-  .adaptiveWorkspace .canvas {
-    container-name: spatial-canvas;
-    container-type: size;
+  .adaptiveWorkspace .center {
+    overflow-y: auto;
   }
-  @container spatial-canvas (height < 440px) {
-    .viewportTools {
-      flex-direction: row;
-      flex-wrap: wrap;
-      max-width: calc(100% - 30px);
-    }
+  .adaptiveWorkspace .canvas {
+    min-height: 450px;
   }
 }

@@ -1,5 +1,6 @@
 import {
   closeCurrentLibrary,
+  openCurrentViewControls,
   openOwnedSceneFromCurrentLibrary,
   saveCurrentWorkingDraft,
 } from "./fixtures/parallax-current-library";
@@ -101,6 +102,7 @@ test("Creator snaps a clue to both walls, table and entire floor with orientatio
     await rendered.scrollIntoViewIfNeeded();
     expect((await rendered.boundingBox())!.height).toBeGreaterThan(240);
     await page.screenshot({ path: `${root}/surfaces-${size.width}x${size.height}.png` });
+    await openCurrentViewControls(page);
     await canvas.getByRole("button", { name: "Frame selection", exact: true }).click();
     await page.screenshot({ path: `${root}/surfaces-framed-${size.width}x${size.height}.png` });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
