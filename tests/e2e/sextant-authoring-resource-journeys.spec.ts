@@ -31,6 +31,33 @@ for (const viewport of [
           | "390-no-preference"
           | "390-reduce";
         const fixture = await seedSextantResourceExperiences(key);
+        const diagnosticPaths = new Set([
+          `/api/studio/tales/${fixture.taleId}/scenarios`,
+          `/api/studio/tales/${fixture.taleId}/scenarios/suites`,
+          `/api/studio/tales/${fixture.taleId}/simulation-runs`,
+        ]);
+        let diagnosticResponses = 0;
+        page.on("response", (response) => {
+          const pathname = new URL(response.url()).pathname;
+          if (!diagnosticPaths.has(pathname) || diagnosticResponses++ >= 12) return;
+          // Bounded responses from this task's fixed synthetic Chronicle only;
+          // no authored source, cookies or private diagnostics are logged.
+          void response
+            .json()
+            .then((body: { code?: string; error?: string; sourceChecksum?: string }) => {
+              console.log(
+                "SEXTANT_AUTHORING_TRIAL_RESPONSE",
+                JSON.stringify({
+                  pathname,
+                  status: response.status(),
+                  hasSourceChecksum: Boolean(body.sourceChecksum),
+                  code: body.code?.slice(0, 80),
+                  error: body.error?.slice(0, 256),
+                }),
+              );
+            })
+            .catch(() => console.warn("SEXTANT_AUTHORING_TRIAL_RESPONSE_UNAVAILABLE"));
+        });
         const voyageIds = [fixture.voyageId, fixture.playerVoyageId];
         const baseline = await db.taleSession.findMany({
           where: { id: { in: voyageIds } },
@@ -97,7 +124,10 @@ for (const viewport of [
             await measure(
               "Open actual Asset drawer",
               () => page.getByRole("button", { name: "Upload media", exact: true }).click(),
-              () => expect(drawer).toContainText("Upload and reuse assets"),
+              async () => {
+                await expect(drawer).toContainText("Upload and reuse assets");
+                await expect(drawer).toHaveCSS("opacity", "1");
+              },
             );
             expect((await new AxeBuilder({ page }).include("main").analyze()).violations).toEqual([]);
             await page.screenshot({ path: info.outputPath("authoring-asset-drawer.png") });

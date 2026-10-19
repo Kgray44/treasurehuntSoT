@@ -247,3 +247,18 @@ source-predicted semantic correction, not an executed browser finding. Register
 only the visited dashboard route/component and stylesheet. Also declare the live
 PlayerLibrary component already exercised by the existing ordinary Player
 workspace journey. Registration grants no new rendered or protected acceptance.
+
+Authoring run39334344712 reaches the open drawer but1280-normal fails axe at
+Search media and both drawer filters (foreground30373b/background071115,
+ratio1.57). The other three variants pass that point and fail the absent loaded
+Sea Trials heading; do not attribute that separate failure to contrast. Preserve
+the failed run and its diagnostics. Independent review identifies that the
+content-only ready predicate allows axe to sample the240ms opening fade before
+settling, while drawer controls already specify white text. Require opacity1
+inside the existing3000ms open-readiness measure, preserving the animation. Do
+not infer a final-state contrast defect or change colors from that sample. Add
+bounded status/error-code/error-summary observations for the exact fixed
+synthetic Chronicle's three Sea Trials JSON requests. Keep every assertion,
+natural action and timing bound. Response observation is best-effort and never
+replaces a test failure. No upload, trial execution or publication is authorized
+by this diagnostic correction.
