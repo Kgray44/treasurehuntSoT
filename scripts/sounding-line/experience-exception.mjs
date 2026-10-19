@@ -24,6 +24,7 @@ import {
 } from "./experience-current-admission.mjs";
 import { CURRENT_R16 } from "./experience-current-r16.mjs";
 import { CURRENT_R17 } from "./experience-current-r17.mjs";
+import { CURRENT_R18 } from "./experience-current-r18.mjs";
 import {
   CROSSDECK_R3,
   validateR3Record,
@@ -308,6 +309,19 @@ function r3FamilyRelated(root, candidateSha) {
   }
 }
 export function selectTrustedExceptions(records) {
+  if (records.some((record) => isCurrentAdmissionRecord(record) && record.version === 18)) {
+    if (records.length !== 18 || digest(records.slice(0, 17)) !== CURRENT_R18.previousRecordsDigest)
+      fail("CURRENT_R18_PREDECESSOR_REGISTRY_CHANGED");
+    selectTrustedExceptions(records.slice(0, 17));
+    const successor = records[17];
+    if (!isCurrentAdmissionRecord(successor) || successor.version !== 18)
+      fail("CURRENT_R18_PREDECESSOR_REGISTRY_CHANGED");
+    validateCurrentAdmissionRecord(successor, {
+      legacyRecord: records.find((record) => record.id === CROSSDECK_R14.id),
+      legacyCurrentRecord: records[16],
+    });
+    return [successor];
+  }
   if (records.some((record) => isCurrentAdmissionRecord(record) && record.version === 17)) {
     if (records.length !== 17 || digest(records.slice(0, 16)) !== CURRENT_R17.previousRecordsDigest)
       fail("CURRENT_R17_PREDECESSOR_REGISTRY_CHANGED");
@@ -582,6 +596,7 @@ export const trustedExceptions = (root, baseSha) => {
       "ls-tree",
       baseSha,
       "--",
+      "scripts/sounding-line/experience-current-r18.mjs",
       "scripts/sounding-line/experience-current-r17.mjs",
       "scripts/sounding-line/experience-current-r16.mjs",
       "scripts/sounding-line/experience-r14.mjs",
@@ -593,7 +608,9 @@ export const trustedExceptions = (root, baseSha) => {
   );
   // The adapter at the requested base cannot reactivate an older grant by removal.
   // Historical bases without this protected adapter retain their exact readers.
-  if (sentinels.has("scripts/sounding-line/experience-current-r17.mjs"))
+  if (sentinels.has("scripts/sounding-line/experience-current-r18.mjs"))
+    validateCurrentAdmissionRegistry(registry, undefined, { requiredVersion: 18 });
+  else if (sentinels.has("scripts/sounding-line/experience-current-r17.mjs"))
     validateCurrentAdmissionRegistry(registry, undefined, { requiredVersion: 17 });
   else if (sentinels.has("scripts/sounding-line/experience-current-r16.mjs"))
     validateCurrentAdmissionRegistry(registry, undefined, { requiredVersion: 16 });
@@ -2242,12 +2259,18 @@ export function recognizeExceptionExecution({ root, baseSha, candidateSha, envir
     ? (json(root, candidateSha, "testing/contracts.json").contracts ?? []).map((value) => value.id)
     : [];
   const refit = ids.includes("crossdeck.refit.companion") || ids.includes("crossdeck.refit.published-lens");
+  // Read this candidate's immutable src identity only when a historical row
+  // needs it. Keep the exact presence lookup, including an empty src tree.
+  let candidateSrcIdentity;
+  const readCandidateSrcIdentity = () => {
+    if (candidateSrcIdentity === undefined) {
+      candidateSrcIdentity = present(root, candidateSha, "src") ? identity(root, candidateSha, "src") : null;
+    }
+    return candidateSrcIdentity;
+  };
   return records.some((record) => {
     const marker = campaignHistoryMarker(record, candidateInventory, candidatePaths);
-    const frozen =
-      record.frozenTrees?.src &&
-      present(root, candidateSha, "src") &&
-      identity(root, candidateSha, "src") === record.frozenTrees.src;
+    const frozen = record.frozenTrees?.src && readCandidateSrcIdentity() === record.frozenTrees.src;
     let descends = false;
     try {
       git(root, "merge-base", "--is-ancestor", record.frozenReferenceSha, candidateSha);
