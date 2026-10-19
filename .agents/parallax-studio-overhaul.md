@@ -3,7 +3,7 @@ title: Spatial Studio complete overhaul task contract
 audience: automation
 status: active
 canonical_for: parallax-studio-overhaul-20261012
-last_reviewed: 2026-10-17
+last_reviewed: 2026-10-19
 ---
 
 # Owned objective
@@ -189,3 +189,15 @@ instrumentation is removed. This closes those four local paths only. Keep the
 #721 protected integration hold, sole cloud Crossdeck ownership and unqualified
 physical iPhone/calibration/plane boundaries. No paid calls or shared pilot
 restart are authorized by this corrective verification.
+
+## Accepted infrastructure is not the product release trigger, 2026-10-19
+
+R20 infrastructure PR #775 is reported protected/landed at main 40491dd68ace,
+tree 026ac51825b5. Retain this owned worktree. The existing cloud #721 owner
+alone adopts the approved isolated three-clause contract input, then performs
+the one fresh capture/review/current qualification/protected landing sequence.
+Keep #722 protected capture/qualification/merge and conflicting Crossdeck edits
+held until actual accepted #721 landing. Static intake/navigation preparation
+is permitted; historical receipts stay historical. Do not create an R19 reuse
+mechanism, refund/reset counters, dispatch a new Parallax task, or infer #721
+product acceptance from #775. Send only material dependency conflicts.

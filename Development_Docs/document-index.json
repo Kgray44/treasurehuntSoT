@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-10-17",
+  "generated_at": "2026-10-19",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -8470,6 +8470,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/cohort-preparation-20261016/main-f935-root-325-merge-tree.original.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/cohort-preparation-20261016/r20-infrastructure-intake-20261019.original.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
