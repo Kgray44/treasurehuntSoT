@@ -1,0 +1,826 @@
+{
+  "classification": "SAFE_AGGREGATE_DEVELOPMENT_NEURAL_ROI_ABLATION_NOT_SELECTED_INDEX_OR_PHYSICAL_ACCEPTANCE",
+  "manifestSha256": "3c4af05f7f7fe0558f5d92ae5dac93d3ca25b9b534cf738afcadc8cb5378dd23",
+  "resultsSha256": "1fddfe997de013d462be12ccac4275c11fa19cc2b6de1b1d2d184ff71f24033a",
+  "runnerSha256": "c7823a677d5d008b4fd9d6b13c3397c73ba0836d098bf096213aabf809dd805d",
+  "workerSha256": "e0f0663f3b305ddb325c83ef4af85af8e36b7a3c0a5ae433f97ff8c2467a9cca",
+  "labelSha256": "6b3b8171f329f2a540ce8b6697fab6afe4ca580d4eac5116502983e0b6a176ae",
+  "labelProvenance": "PRIVATE_NONBLINDED_AI_VISUAL_DEVELOPMENT_PIXEL_REFERENCES_WITH_UNCERTAINTY",
+  "all": {
+    "packets": 1336,
+    "arms": [
+      {
+        "arm": "CURRENT_RETAINED_ROI",
+        "handOutputs": 1233,
+        "multipleHands": 20,
+        "finiteFirstIndexPositions": 1233,
+        "inFrameFirstIndexPositions": 1201,
+        "inferenceMs": {
+          "n": 1336,
+          "median": 8.730000019073486,
+          "p95": 14.580000013113022,
+          "maximum": 33.13499999046326
+        },
+        "roundTripMs": {
+          "n": 1336,
+          "median": 8.949999988079071,
+          "p95": 14.840000003576279,
+          "maximum": 33.435000002384186
+        }
+      },
+      {
+        "arm": "RESET_ONLY_RETAINED_ROI_EACH_FRAME",
+        "handOutputs": 1163,
+        "multipleHands": 0,
+        "finiteFirstIndexPositions": 1163,
+        "inFrameFirstIndexPositions": 1142,
+        "inferenceMs": {
+          "n": 1336,
+          "median": 8.429999977350235,
+          "p95": 13.590000003576279,
+          "maximum": 28.24500000476837
+        },
+        "roundTripMs": {
+          "n": 1336,
+          "median": 8.645000010728836,
+          "p95": 13.905000001192093,
+          "maximum": 28.705000013113022
+        }
+      }
+    ],
+    "endpointDifferenceNativePixels": {
+      "n": 1163,
+      "median": 0,
+      "p95": 0,
+      "maximum": 0
+    }
+  },
+  "byPrompt": {
+    "CENTER": {
+      "packets": 109,
+      "arms": [
+        {
+          "arm": "CURRENT_RETAINED_ROI",
+          "handOutputs": 98,
+          "multipleHands": 0,
+          "finiteFirstIndexPositions": 98,
+          "inFrameFirstIndexPositions": 98,
+          "inferenceMs": {
+            "n": 109,
+            "median": 8.560000002384186,
+            "p95": 12.205000013113022,
+            "maximum": 24.509999990463257
+          },
+          "roundTripMs": {
+            "n": 109,
+            "median": 8.780000001192093,
+            "p95": 12.444999992847443,
+            "maximum": 24.805000007152557
+          }
+        },
+        {
+          "arm": "RESET_ONLY_RETAINED_ROI_EACH_FRAME",
+          "handOutputs": 98,
+          "multipleHands": 0,
+          "finiteFirstIndexPositions": 98,
+          "inFrameFirstIndexPositions": 98,
+          "inferenceMs": {
+            "n": 109,
+            "median": 8.560000002384186,
+            "p95": 11.604999989271164,
+            "maximum": 18.830000013113022
+          },
+          "roundTripMs": {
+            "n": 109,
+            "median": 8.775000005960464,
+            "p95": 11.88500002026558,
+            "maximum": 19.194999992847443
+          }
+        }
+      ],
+      "endpointDifferenceNativePixels": {
+        "n": 98,
+        "median": 0,
+        "p95": 0,
+        "maximum": 0
+      }
+    },
+    "BOTTOM": {
+      "packets": 145,
+      "arms": [
+        {
+          "arm": "CURRENT_RETAINED_ROI",
+          "handOutputs": 143,
+          "multipleHands": 2,
+          "finiteFirstIndexPositions": 143,
+          "inFrameFirstIndexPositions": 126,
+          "inferenceMs": {
+            "n": 145,
+            "median": 9.990000009536743,
+            "p95": 14.669999986886978,
+            "maximum": 23.655000001192093
+          },
+          "roundTripMs": {
+            "n": 145,
+            "median": 10.224999994039536,
+            "p95": 14.949999988079071,
+            "maximum": 23.969999998807907
+          }
+        },
+        {
+          "arm": "RESET_ONLY_RETAINED_ROI_EACH_FRAME",
+          "handOutputs": 121,
+          "multipleHands": 0,
+          "finiteFirstIndexPositions": 121,
+          "inFrameFirstIndexPositions": 110,
+          "inferenceMs": {
+            "n": 145,
+            "median": 9.495000004768372,
+            "p95": 13.515000015497208,
+            "maximum": 19.399999976158142
+          },
+          "roundTripMs": {
+            "n": 145,
+            "median": 9.734999984502792,
+            "p95": 13.724999994039536,
+            "maximum": 19.729999989271164
+          }
+        }
+      ],
+      "endpointDifferenceNativePixels": {
+        "n": 121,
+        "median": 0,
+        "p95": 0,
+        "maximum": 0
+      }
+    },
+    "TOP": {
+      "packets": 107,
+      "arms": [
+        {
+          "arm": "CURRENT_RETAINED_ROI",
+          "handOutputs": 107,
+          "multipleHands": 0,
+          "finiteFirstIndexPositions": 107,
+          "inFrameFirstIndexPositions": 107,
+          "inferenceMs": {
+            "n": 107,
+            "median": 11.159999996423721,
+            "p95": 23.850000023841858,
+            "maximum": 33.13499999046326
+          },
+          "roundTripMs": {
+            "n": 107,
+            "median": 11.41499999165535,
+            "p95": 24.155000001192093,
+            "maximum": 33.435000002384186
+          }
+        },
+        {
+          "arm": "RESET_ONLY_RETAINED_ROI_EACH_FRAME",
+          "handOutputs": 107,
+          "multipleHands": 0,
+          "finiteFirstIndexPositions": 107,
+          "inFrameFirstIndexPositions": 107,
+          "inferenceMs": {
+            "n": 107,
+            "median": 11.075000017881393,
+            "p95": 24.775000005960464,
+            "maximum": 28.24500000476837
+          },
+          "roundTripMs": {
+            "n": 107,
+            "median": 11.360000014305115,
+            "p95": 25.07499998807907,
+            "maximum": 28.705000013113022
+          }
+        }
+      ],
+      "endpointDifferenceNativePixels": {
+        "n": 107,
+        "median": 0,
+        "p95": 0,
+        "maximum": 0
+      }
+    },
+    "LEFT": {
+      "packets": 90,
+      "arms": [
+        {
+          "arm": "CURRENT_RETAINED_ROI",
+          "handOutputs": 90,
+          "multipleHands": 0,
+          "finiteFirstIndexPositions": 90,
+          "inFrameFirstIndexPositions": 90,
+          "inferenceMs": {
+            "n": 90,
+            "median": 8.074999988079071,
+            "p95": 10.689999997615814,
+            "maximum": 14.580000013113022
+          },
+          "roundTripMs": {
+            "n": 90,
+            "median": 8.285000026226044,
+            "p95": 10.879999995231628,
+            "maximum": 14.790000021457672
+          }
+        },
+        {
+          "arm": "RESET_ONLY_RETAINED_ROI_EACH_FRAME",
+          "handOutputs": 86,
+          "multipleHands": 0,
+          "finiteFirstIndexPositions": 86,
+          "inFrameFirstIndexPositions": 86,
+          "inferenceMs": {
+            "n": 90,
+            "median": 7.9000000059604645,
+            "p95": 10.400000005960464,
+            "maximum": 14.050000011920929
+          },
+          "roundTripMs": {
+            "n": 90,
+            "median": 8.155000001192093,
+            "p95": 10.73999997973442,
+            "maximum": 14.280000001192093
+          }
+        }
+      ],
+      "endpointDifferenceNativePixels": {
+        "n": 86,
+        "median": 0,
+        "p95": 0,
+        "maximum": 0
+      }
+    },
+    "RIGHT": {
+      "packets": 89,
+      "arms": [
+        {
+          "arm": "CURRENT_RETAINED_ROI",
+          "handOutputs": 89,
+          "multipleHands": 0,
+          "finiteFirstIndexPositions": 89,
+          "inFrameFirstIndexPositions": 89,
+          "inferenceMs": {
+            "n": 89,
+            "median": 8.245000004768372,
+            "p95": 11.284999996423721,
+            "maximum": 13.180000007152557
+          },
+          "roundTripMs": {
+            "n": 89,
+            "median": 8.474999994039536,
+            "p95": 11.550000011920929,
+            "maximum": 13.424999982118607
+          }
+        },
+        {
+          "arm": "RESET_ONLY_RETAINED_ROI_EACH_FRAME",
+          "handOutputs": 87,
+          "multipleHands": 0,
+          "finiteFirstIndexPositions": 87,
+          "inFrameFirstIndexPositions": 87,
+          "inferenceMs": {
+            "n": 89,
+            "median": 8.194999992847443,
+            "p95": 10.009999990463257,
+            "maximum": 12.180000007152557
+          },
+          "roundTripMs": {
+            "n": 89,
+            "median": 8.425000011920929,
+            "p95": 10.24499997496605,
+            "maximum": 12.634999990463257
+          }
+        }
+      ],
+      "endpointDifferenceNativePixels": {
+        "n": 87,
+        "median": 0,
+        "p95": 0,
+        "maximum": 0
+      }
+    },
+    "TOP_LEFT": {
+      "packets": 73,
+      "arms": [
+        {
+          "arm": "CURRENT_RETAINED_ROI",
+          "handOutputs": 73,
+          "multipleHands": 1,
+          "finiteFirstIndexPositions": 73,
+          "inFrameFirstIndexPositions": 73,
+          "inferenceMs": {
+            "n": 73,
+            "median": 8.394999980926514,
+            "p95": 11.659999996423721,
+            "maximum": 13.360000014305115
+          },
+          "roundTripMs": {
+            "n": 73,
+            "median": 8.599999994039536,
+            "p95": 11.894999980926514,
+            "maximum": 13.549999982118607
+          }
+        },
+        {
+          "arm": "RESET_ONLY_RETAINED_ROI_EACH_FRAME",
+          "handOutputs": 73,
+          "multipleHands": 0,
+          "finiteFirstIndexPositions": 73,
+          "inFrameFirstIndexPositions": 73,
+          "inferenceMs": {
+            "n": 73,
+            "median": 8.075000017881393,
+            "p95": 10.490000009536743,
+            "maximum": 13.259999990463257
+          },
+          "roundTripMs": {
+            "n": 73,
+            "median": 8.285000026226044,
+            "p95": 10.735000014305115,
+            "maximum": 13.490000009536743
+          }
+        }
+      ],
+      "endpointDifferenceNativePixels": {
+        "n": 73,
+        "median": 0,
+        "p95": 0,
+        "maximum": 0
+      }
+    },
+    "TOP_RIGHT": {
+      "packets": 74,
+      "arms": [
+        {
+          "arm": "CURRENT_RETAINED_ROI",
+          "handOutputs": 74,
+          "multipleHands": 2,
+          "finiteFirstIndexPositions": 74,
+          "inFrameFirstIndexPositions": 72,
+          "inferenceMs": {
+            "n": 74,
+            "median": 7.449999988079071,
+            "p95": 9.479999989271164,
+            "maximum": 11.189999997615814
+          },
+          "roundTripMs": {
+            "n": 74,
+            "median": 7.669999986886978,
+            "p95": 9.73999997973442,
+            "maximum": 11.38000002503395
+          }
+        },
+        {
+          "arm": "RESET_ONLY_RETAINED_ROI_EACH_FRAME",
+          "handOutputs": 74,
+          "multipleHands": 0,
+          "finiteFirstIndexPositions": 74,
+          "inFrameFirstIndexPositions": 72,
+          "inferenceMs": {
+            "n": 74,
+            "median": 7.405000001192093,
+            "p95": 8.629999995231628,
+            "maximum": 9.83500000834465
+          },
+          "roundTripMs": {
+            "n": 74,
+            "median": 7.614999979734421,
+            "p95": 8.844999998807907,
+            "maximum": 10.055000007152557
+          }
+        }
+      ],
+      "endpointDifferenceNativePixels": {
+        "n": 74,
+        "median": 0,
+        "p95": 0,
+        "maximum": 0
+      }
+    },
+    "BOTTOM_LEFT": {
+      "packets": 71,
+      "arms": [
+        {
+          "arm": "CURRENT_RETAINED_ROI",
+          "handOutputs": 71,
+          "multipleHands": 1,
+          "finiteFirstIndexPositions": 71,
+          "inFrameFirstIndexPositions": 69,
+          "inferenceMs": {
+            "n": 71,
+            "median": 7.645000010728836,
+            "p95": 10.675000011920929,
+            "maximum": 11.650000005960464
+          },
+          "roundTripMs": {
+            "n": 71,
+            "median": 7.854999989271164,
+            "p95": 10.900000005960464,
+            "maximum": 11.844999998807907
+          }
+        },
+        {
+          "arm": "RESET_ONLY_RETAINED_ROI_EACH_FRAME",
+          "handOutputs": 48,
+          "multipleHands": 0,
+          "finiteFirstIndexPositions": 48,
+          "inFrameFirstIndexPositions": 48,
+          "inferenceMs": {
+            "n": 71,
+            "median": 7.175000011920929,
+            "p95": 9.5,
+            "maximum": 10.870000004768372
+          },
+          "roundTripMs": {
+            "n": 71,
+            "median": 7.405000001192093,
+            "p95": 9.674999982118607,
+            "maximum": 11.120000004768372
+          }
+        }
+      ],
+      "endpointDifferenceNativePixels": {
+        "n": 48,
+        "median": 0,
+        "p95": 0,
+        "maximum": 0
+      }
+    },
+    "BOTTOM_RIGHT": {
+      "packets": 71,
+      "arms": [
+        {
+          "arm": "CURRENT_RETAINED_ROI",
+          "handOutputs": 30,
+          "multipleHands": 4,
+          "finiteFirstIndexPositions": 30,
+          "inFrameFirstIndexPositions": 30,
+          "inferenceMs": {
+            "n": 71,
+            "median": 8.555000007152557,
+            "p95": 14.455000013113022,
+            "maximum": 17.65999999642372
+          },
+          "roundTripMs": {
+            "n": 71,
+            "median": 8.75,
+            "p95": 14.640000015497208,
+            "maximum": 17.935000002384186
+          }
+        },
+        {
+          "arm": "RESET_ONLY_RETAINED_ROI_EACH_FRAME",
+          "handOutputs": 28,
+          "multipleHands": 0,
+          "finiteFirstIndexPositions": 28,
+          "inFrameFirstIndexPositions": 28,
+          "inferenceMs": {
+            "n": 71,
+            "median": 7.505000025033951,
+            "p95": 12.355000019073486,
+            "maximum": 13.325000017881393
+          },
+          "roundTripMs": {
+            "n": 71,
+            "median": 7.729999989271164,
+            "p95": 12.665000021457672,
+            "maximum": 13.650000005960464
+          }
+        }
+      ],
+      "endpointDifferenceNativePixels": {
+        "n": 28,
+        "median": 0,
+        "p95": 0,
+        "maximum": 0
+      }
+    },
+    "RELAXED": {
+      "packets": 109,
+      "arms": [
+        {
+          "arm": "CURRENT_RETAINED_ROI",
+          "handOutputs": 94,
+          "multipleHands": 2,
+          "finiteFirstIndexPositions": 94,
+          "inFrameFirstIndexPositions": 94,
+          "inferenceMs": {
+            "n": 109,
+            "median": 8.519999980926514,
+            "p95": 13.099999994039536,
+            "maximum": 16.939999997615814
+          },
+          "roundTripMs": {
+            "n": 109,
+            "median": 8.715000003576279,
+            "p95": 13.349999994039536,
+            "maximum": 17.905000001192093
+          }
+        },
+        {
+          "arm": "RESET_ONLY_RETAINED_ROI_EACH_FRAME",
+          "handOutputs": 92,
+          "multipleHands": 0,
+          "finiteFirstIndexPositions": 92,
+          "inFrameFirstIndexPositions": 92,
+          "inferenceMs": {
+            "n": 109,
+            "median": 8.405000001192093,
+            "p95": 12.814999997615814,
+            "maximum": 17.2049999833107
+          },
+          "roundTripMs": {
+            "n": 109,
+            "median": 8.625,
+            "p95": 13.129999995231628,
+            "maximum": 18.560000002384186
+          }
+        }
+      ],
+      "endpointDifferenceNativePixels": {
+        "n": 92,
+        "median": 0,
+        "p95": 0,
+        "maximum": 0
+      }
+    },
+    "SWEEP": {
+      "packets": 180,
+      "arms": [
+        {
+          "arm": "CURRENT_RETAINED_ROI",
+          "handOutputs": 172,
+          "multipleHands": 8,
+          "finiteFirstIndexPositions": 172,
+          "inFrameFirstIndexPositions": 163,
+          "inferenceMs": {
+            "n": 180,
+            "median": 9.180000007152557,
+            "p95": 14.25,
+            "maximum": 18.709999978542328
+          },
+          "roundTripMs": {
+            "n": 180,
+            "median": 9.394999980926514,
+            "p95": 14.504999995231628,
+            "maximum": 18.939999997615814
+          }
+        },
+        {
+          "arm": "RESET_ONLY_RETAINED_ROI_EACH_FRAME",
+          "handOutputs": 157,
+          "multipleHands": 0,
+          "finiteFirstIndexPositions": 157,
+          "inFrameFirstIndexPositions": 151,
+          "inferenceMs": {
+            "n": 180,
+            "median": 8.644999980926514,
+            "p95": 12.764999985694885,
+            "maximum": 15.159999996423721
+          },
+          "roundTripMs": {
+            "n": 180,
+            "median": 8.875,
+            "p95": 13.065000027418137,
+            "maximum": 15.41499999165535
+          }
+        }
+      ],
+      "endpointDifferenceNativePixels": {
+        "n": 157,
+        "median": 0,
+        "p95": 0,
+        "maximum": 0
+      }
+    },
+    "OPEN_PALM": {
+      "packets": 91,
+      "arms": [
+        {
+          "arm": "CURRENT_RETAINED_ROI",
+          "handOutputs": 90,
+          "multipleHands": 0,
+          "finiteFirstIndexPositions": 90,
+          "inFrameFirstIndexPositions": 90,
+          "inferenceMs": {
+            "n": 91,
+            "median": 8.1700000166893,
+            "p95": 10.285000026226044,
+            "maximum": 15.379999995231628
+          },
+          "roundTripMs": {
+            "n": 91,
+            "median": 8.370000004768372,
+            "p95": 10.519999980926514,
+            "maximum": 15.559999972581863
+          }
+        },
+        {
+          "arm": "RESET_ONLY_RETAINED_ROI_EACH_FRAME",
+          "handOutputs": 90,
+          "multipleHands": 0,
+          "finiteFirstIndexPositions": 90,
+          "inFrameFirstIndexPositions": 90,
+          "inferenceMs": {
+            "n": 91,
+            "median": 8.025000005960464,
+            "p95": 11.219999998807907,
+            "maximum": 12.625
+          },
+          "roundTripMs": {
+            "n": 91,
+            "median": 8.235000014305115,
+            "p95": 11.469999998807907,
+            "maximum": 13.024999976158142
+          }
+        }
+      ],
+      "endpointDifferenceNativePixels": {
+        "n": 90,
+        "median": 0,
+        "p95": 0,
+        "maximum": 0
+      }
+    },
+    "HIDE": {
+      "packets": 18,
+      "arms": [
+        {
+          "arm": "CURRENT_RETAINED_ROI",
+          "handOutputs": 18,
+          "multipleHands": 0,
+          "finiteFirstIndexPositions": 18,
+          "inFrameFirstIndexPositions": 18,
+          "inferenceMs": {
+            "n": 18,
+            "median": 8.074999988079071,
+            "p95": 12.439999997615814,
+            "maximum": 12.439999997615814
+          },
+          "roundTripMs": {
+            "n": 18,
+            "median": 8.299999982118607,
+            "p95": 12.685000002384186,
+            "maximum": 12.685000002384186
+          }
+        },
+        {
+          "arm": "RESET_ONLY_RETAINED_ROI_EACH_FRAME",
+          "handOutputs": 18,
+          "multipleHands": 0,
+          "finiteFirstIndexPositions": 18,
+          "inFrameFirstIndexPositions": 18,
+          "inferenceMs": {
+            "n": 18,
+            "median": 9.01000002026558,
+            "p95": 12.1700000166893,
+            "maximum": 12.1700000166893
+          },
+          "roundTripMs": {
+            "n": 18,
+            "median": 9.310000002384186,
+            "p95": 12.484999984502792,
+            "maximum": 12.484999984502792
+          }
+        }
+      ],
+      "endpointDifferenceNativePixels": {
+        "n": 18,
+        "median": 0,
+        "p95": 0,
+        "maximum": 0
+      }
+    },
+    "RECOVER": {
+      "packets": 109,
+      "arms": [
+        {
+          "arm": "CURRENT_RETAINED_ROI",
+          "handOutputs": 84,
+          "multipleHands": 0,
+          "finiteFirstIndexPositions": 84,
+          "inFrameFirstIndexPositions": 82,
+          "inferenceMs": {
+            "n": 109,
+            "median": 9.5450000166893,
+            "p95": 15.004999995231628,
+            "maximum": 16.924999982118607
+          },
+          "roundTripMs": {
+            "n": 109,
+            "median": 9.800000011920929,
+            "p95": 15.305000007152557,
+            "maximum": 17.155000001192093
+          }
+        },
+        {
+          "arm": "RESET_ONLY_RETAINED_ROI_EACH_FRAME",
+          "handOutputs": 84,
+          "multipleHands": 0,
+          "finiteFirstIndexPositions": 84,
+          "inFrameFirstIndexPositions": 82,
+          "inferenceMs": {
+            "n": 109,
+            "median": 9.395000010728836,
+            "p95": 13.590000003576279,
+            "maximum": 15.719999998807907
+          },
+          "roundTripMs": {
+            "n": 109,
+            "median": 9.639999985694885,
+            "p95": 13.83500000834465,
+            "maximum": 15.965000003576279
+          }
+        }
+      ],
+      "endpointDifferenceNativePixels": {
+        "n": 84,
+        "median": 0,
+        "p95": 0,
+        "maximum": 0
+      }
+    }
+  },
+  "sparseDevelopmentReferences": [
+    {
+      "arm": "CURRENT_RETAINED_ROI",
+      "visibleReferenceDenominator": 30,
+      "matchingSourceFrames": 30,
+      "finitePredictions": 29,
+      "insideUncertaintyCircles": 20,
+      "centerDistanceNativePixels": {
+        "n": 29,
+        "median": 7.12029526313825,
+        "p95": 36.65780929830515,
+        "maximum": 41.40014297077166
+      },
+      "errorLowerBoundNativePixels": {
+        "n": 29,
+        "median": 0,
+        "p95": 23.657809298305153,
+        "maximum": 29.40014297077166
+      },
+      "errorUpperBoundNativePixels": {
+        "n": 29,
+        "median": 16.043887687595138,
+        "p95": 49.65780929830515,
+        "maximum": 53.40014297077166
+      }
+    },
+    {
+      "arm": "RESET_ONLY_RETAINED_ROI_EACH_FRAME",
+      "visibleReferenceDenominator": 30,
+      "matchingSourceFrames": 30,
+      "finitePredictions": 28,
+      "insideUncertaintyCircles": 20,
+      "centerDistanceNativePixels": {
+        "n": 28,
+        "median": 5.455145850091638,
+        "p95": 31.272137750667763,
+        "maximum": 41.40014297077166
+      },
+      "errorLowerBoundNativePixels": {
+        "n": 28,
+        "median": 0,
+        "p95": 21.272137750667763,
+        "maximum": 29.40014297077166
+      },
+      "errorUpperBoundNativePixels": {
+        "n": 28,
+        "median": 15.703824332972646,
+        "p95": 41.27213775066777,
+        "maximum": 53.40014297077166
+      }
+    }
+  ],
+  "pairedReferenceComparisons": {
+    "n": 28,
+    "resetCenterCloser": 0,
+    "resetCenterFarther": 0,
+    "resetInsideGains": 0,
+    "resetInsideLosses": 0
+  },
+  "firstRightConflict": {
+    "sourceFrame": 466,
+    "armEndpointDifferenceNativePixels": 0,
+    "clearsOriginalConflict": "NOT_DETERMINED_BY_RAW_NEURAL_DIFFERENCE_ALONE"
+  },
+  "missingMetrics": {
+    "independentPhysicalGroundTruth": "UNAVAILABLE",
+    "selectedIndexIdentitySwitches": "UNAVAILABLE_RAW_GRAPH_OUTPUT_IS_NOT_IDENTITY_ASSOCIATION",
+    "captureToVisibleLatency": "UNAVAILABLE_OFFLINE_NEURAL_ABLATION",
+    "physicalControllerSuccess": "UNAVAILABLE",
+    "confidenceIntervals": "UNAVAILABLE_ONE_SERIAL_NONRANDOM_DEVELOPMENT_SEQUENCE"
+  },
+  "sourceUnchanged": true,
+  "cleanupProved": true,
+  "decision": "PENDING_INDEPENDENT_REVIEW_NO_PRODUCTION_PROMOTION",
+  "limits": [
+    "Native PNG decode is distinct from original video worker pixels; compare the two new arms only.",
+    "Original capture deltas simulate cache time; current worker elapsed cost is measured separately and does not establish camera or visible latency.",
+    "Sparse V3 labels are nonblinded development references. No independent physical accuracy or holdout.",
+    "Neural raw output differences cannot authorize selected-index recovery without the unchanged identity/image/sample gates."
+  ]
+}

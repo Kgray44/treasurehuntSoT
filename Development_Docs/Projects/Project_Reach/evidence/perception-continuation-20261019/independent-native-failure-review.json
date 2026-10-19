@@ -1,0 +1,86 @@
+{
+  "classification": "SAFE_AGGREGATE_COARSE_INDEPENDENT_AI_DEVELOPMENT_REVIEW_NOT_PHYSICAL_GROUND_TRUTH",
+  "sourceManifestSha256": "92b17d36dc350f21b26e319264f0f1b6508990b66c7dc342fd40bd9a42eaba3f",
+  "rows": [
+    {
+      "nativeIndex": 465,
+      "ptsSeconds": 25.728,
+      "step": "RIGHT",
+      "sha256": "e8e6d1682a65e17aced9ae313230263bac2602e4caf855b9dfb00668a3c57add",
+      "reviewOrder": "NATIVE_WITHOUT_MODEL_OVERLAY_FIRST",
+      "coarseCategory": "VISIBLE_TERMINAL_COARSE",
+      "observation": "An extended digit has a distinguishable rounded terminal region and a continuous shaft toward the visible hand. Anatomical appearance is consistent with index pointing; this is not physical identity proof.",
+      "groundTruthStatus": "COARSE_INDEPENDENT_AI_DEVELOPMENT_REVIEW_NOT_HUMAN_PHYSICAL_GT"
+    },
+    {
+      "nativeIndex": 466,
+      "ptsSeconds": 25.795,
+      "step": "RIGHT",
+      "sha256": "6f15a3321783ba30025ac351b6596d951f65cf9697a292b68a7a7922a6bd10ac",
+      "reviewOrder": "NATIVE_WITHOUT_MODEL_OVERLAY_FIRST",
+      "coarseCategory": "VISIBLE_TERMINAL_COARSE",
+      "observation": "The extended terminal surface remains visible with a traceable shaft. No frame-delivery absence is visible in the native image. This supports reviewing a model/image endpoint disagreement, but does not quantify which registered coordinate is correct.",
+      "groundTruthStatus": "COARSE_INDEPENDENT_AI_DEVELOPMENT_REVIEW_NOT_HUMAN_PHYSICAL_GT"
+    },
+    {
+      "nativeIndex": 467,
+      "ptsSeconds": 25.845,
+      "step": "RIGHT",
+      "sha256": "65a4926f401bb777b329a70cc98f3baa4811b1a415c0f0bead79ff55715006c7",
+      "reviewOrder": "NATIVE_WITHOUT_MODEL_OVERLAY_FIRST",
+      "coarseCategory": "MOTION_BLURRED",
+      "observation": "Compared with 465/466, the digit and hand show substantial motion blur during the turn. Exact terminal localization is less defensible.",
+      "groundTruthStatus": "COARSE_INDEPENDENT_AI_DEVELOPMENT_REVIEW_NOT_HUMAN_PHYSICAL_GT"
+    },
+    {
+      "nativeIndex": 771,
+      "ptsSeconds": 42.663,
+      "step": "BOTTOM_RIGHT",
+      "sha256": "67a9c012cc0b483a76ef4e883bbcc459cea69e985a7e55bc0cf00f5c0a37441d",
+      "reviewOrder": "NATIVE_WITHOUT_MODEL_OVERLAY_FIRST",
+      "coarseCategory": "VISIBLE_TERMINAL_PARTIAL_HAND",
+      "observation": "A down-left pointing digit has a distinguishable terminal region near the lower image boundary. Other hand anatomy and wrist are partly clipped. Semantic index assignment from this frame alone is less certain than 466.",
+      "groundTruthStatus": "COARSE_INDEPENDENT_AI_DEVELOPMENT_REVIEW_NOT_HUMAN_PHYSICAL_GT"
+    },
+    {
+      "nativeIndex": 772,
+      "ptsSeconds": 42.729,
+      "step": "BOTTOM_RIGHT",
+      "sha256": "76388768563b92f71fe95528d60405eaa128a2d7819ec01625ede8828c51ff22",
+      "reviewOrder": "NATIVE_WITHOUT_MODEL_OVERLAY_FIRST",
+      "coarseCategory": "VISIBLE_TERMINAL_PARTIAL_HAND",
+      "observation": "The terminal region remains distinguishable, but hand anatomy is partly clipped and finger detail is reduced. It is not justified to label all current hand joints independently correct from the native raster.",
+      "groundTruthStatus": "COARSE_INDEPENDENT_AI_DEVELOPMENT_REVIEW_NOT_HUMAN_PHYSICAL_GT"
+    },
+    {
+      "nativeIndex": 774,
+      "ptsSeconds": 42.845,
+      "step": "BOTTOM_RIGHT",
+      "sha256": "a9cacc92310edb72e46e3663c80839d01ed14da950a0af8a23c1b7db881dea02",
+      "reviewOrder": "NATIVE_WITHOUT_MODEL_OVERLAY_FIRST",
+      "coarseCategory": "MOTION_BLURRED_PARTIAL",
+      "observation": "The moving lower hand has substantial blur. An apparent terminal region exists but exact endpoint and index identity are uncertain.",
+      "groundTruthStatus": "COARSE_INDEPENDENT_AI_DEVELOPMENT_REVIEW_NOT_HUMAN_PHYSICAL_GT"
+    },
+    {
+      "nativeIndex": 775,
+      "ptsSeconds": 42.912,
+      "step": "BOTTOM_RIGHT",
+      "sha256": "775a12adcc8bc305227f1e2e0a8b7b80aa8de6d191d29f86a98a5308f4b38706",
+      "reviewOrder": "NATIVE_WITHOUT_MODEL_OVERLAY_FIRST",
+      "coarseCategory": "UNLOCALIZABLE_MOTION_BLUR",
+      "observation": "Strong hand motion blur and overlap obscure a unique selected-index endpoint. An abstention is defensible; a model-present flag cannot establish current measurable endpoint accuracy.",
+      "groundTruthStatus": "COARSE_INDEPENDENT_AI_DEVELOPMENT_REVIEW_NOT_HUMAN_PHYSICAL_GT"
+    },
+    {
+      "nativeIndex": 776,
+      "ptsSeconds": 42.979,
+      "step": "BOTTOM_RIGHT",
+      "sha256": "e4996de14ea00e2e209f21c60997fef79a7b0a41294617813054397e50aae1e7",
+      "reviewOrder": "NATIVE_WITHOUT_MODEL_OVERLAY_FIRST",
+      "coarseCategory": "UNLOCALIZABLE_MOTION_BLUR",
+      "observation": "Continuing severe motion blur and overlap prevent defensible precise index-tip labeling.",
+      "groundTruthStatus": "COARSE_INDEPENDENT_AI_DEVELOPMENT_REVIEW_NOT_HUMAN_PHYSICAL_GT"
+    }
+  ]
+}

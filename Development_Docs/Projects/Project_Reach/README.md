@@ -12,6 +12,8 @@ Reach is Voyagewright's reusable browser-first spatial interaction and intent sy
 
 ## Effective governing sources
 
+The [Phase 1 perception continuation](Phase_1_Perception_Continuation_20261019.md) adds a reproducible same-input benchmark and tests distinct pose-aware registration and neural ROI-history hypotheses. Both methods are rejected; retained RIGHT and mixed-motion reliability remain unresolved. Independent analytic controls and native-image review do not establish physical ground truth.
+
 The [bounded overnight reliability campaign](Overnight_Reliability_Campaign_20261019.md) compares stronger appearance features, source-aware references and semantic-provider feasibility against the same recorded inputs. Its controller audit separates missing perception from safe sample suspension; physical reliability and the broad mixed-motion failure remain open.
 
 The [target-three recovery follow-up](Target_3_Recovery_20261018.md) records the owner's subsequent physical stall, corrected material registration, separated temporal identity, bounded original-source return, paired recording results and still-unresolved automatic recovery limits.

@@ -1,0 +1,2178 @@
+{
+  "version": 1,
+  "classification": "SAFE_AGGREGATE_CACHED_SAME_FRAME_INTERPRETATION_COMPARISON",
+  "completed": true,
+  "input": {
+    "packets": 1336,
+    "promptResets": 0,
+    "resultsSha256": "3e33ae53b5097b66593209c561e446e0e528cd30e8fcbab618a1b1e89531dab1",
+    "graySha256": "bbfed087bf8379266b4127eb25ce033c4b5af54cbb43ef208e3b65a97accc569",
+    "receiptSha256": "ef3b12d133097648f7d6b97f7898718979afd6f2a7756e9392faf29e5a9a02e0",
+    "sourceVideoSha256": "71cc710477218aba11b31c2c205ee223a02ac3e1953c0933f5c7113e7b6d23d6",
+    "sourceNeuralBackend": "GPU_WEBGL"
+  },
+  "executable": {
+    "baselineSha256": "fc4b130644b14dcc940968a6652838b23e9d155509e502070e7ff3d9eb26de4f",
+    "candidateSha256": "8be6bdaeb4672b7e2cf46cff57ab340afe18eeb4d37dbb934806fa967dddcea5",
+    "baselineAlgorithmDigest": "00fc2b5cd07b6c54dc649ba4bc914f1327dbb3642fa02de6719fdc9b15710094",
+    "candidateAlgorithmDigest": "00fc2b5cd07b6c54dc649ba4bc914f1327dbb3642fa02de6719fdc9b15710094",
+    "dependencyManifestSha256": "39602b0e99d3ae9f9705682a7c8a392fa160138a68266df415ae9be2b5cf813f",
+    "importedDependencySha256": ["c2681ca4e91defc8e7d9fe620a586f49827cedb42ad5ef0e4ea4d7c016ffd9f6"],
+    "binding": "Hash-pinned entry bundles and declared synchronous imported modules; reviewed executable code is trusted, not sandboxed",
+    "inputAndEntryFilesUnchanged": true
+  },
+  "references": {
+    "count": 40,
+    "fileSha256": "ebf88a248b93698b811296d0a6c65d412fa2d9548e2b1d7b20440425532cfc69",
+    "provenance": {
+      "origin": "AI_VISUAL_ESTIMATE",
+      "split": "DEVELOPMENT",
+      "independentlyReviewed": false,
+      "blindedToCandidate": false,
+      "sealedBeforeCandidate": false,
+      "coordinateConvention": "MIRRORED_NATIVE_PIXEL_CENTERS"
+    },
+    "groundTruthAccuracyQualified": false
+  },
+  "baseline": {
+    "all": {
+      "packets": 1336,
+      "freshInputPackets": 1336,
+      "measuredPositions": 504,
+      "missingOrUnusablePositions": 832,
+      "readinessEligible": 416,
+      "logicalIdChanges": 7,
+      "rejectedOrErrorFrames": 0,
+      "states": {
+        "UNSEEDED": 134,
+        "UNCERTAIN": 246,
+        "LOST": 452,
+        "TRACKING": 504
+      },
+      "reasons": {
+        "SHOW_INDEX_OR_SELECT_TIP": 134,
+        "FULL_HAND_POINT_PENDING": 62,
+        "APPEARANCE_AMBIGUOUS": 97,
+        "APPEARANCE_MISMATCH": 321,
+        "FULL_HAND_MODEL_CONTINUITY": 42,
+        "FULL_HAND_POINT_CONFIRMED": 339,
+        "IMAGE_REFERENCE_CONFLICT": 25,
+        "IMAGE_OUTSIDE_OBSERVED_HAND": 4,
+        "INDEX_SHAFT_MODEL_TIP": 4,
+        "FULL_HAND_INDEX_CONFLICT": 38,
+        "FORWARD_BACKWARD_DISAGREEMENT": 6,
+        "INDEX_MODEL_CONTINUITY": 18,
+        "IMAGE_MATCH": 61,
+        "INDEX_MODEL_IMAGE_CONFLICT": 38,
+        "INDEX_IDENTITY_RECONFIRM_REQUIRED": 3,
+        "INDEX_SHAFT_MATCH_NOT_TIP": 1,
+        "FUSED_POINT_OUTSIDE_IMAGE": 1,
+        "FULL_HAND_AMBIGUOUS": 74,
+        "IMAGE_REFERENCE_EXPIRED": 3,
+        "IMAGE_CONTINUITY_EXPIRED": 12,
+        "IMAGE_TIP_MODEL_ENDPOINT_UNCERTAIN": 31,
+        "IMAGE_MOTION_TOO_LARGE": 17,
+        "SAME_HAND_POSITION_UNCERTAIN": 1,
+        "FULL_HAND_CONTRARY_PENDING": 1,
+        "FULL_HAND_CONTRARY_CONFIRMED": 3
+      },
+      "observedAvailabilityReturns": {
+        "sameLogicalId": {
+          "n": 21,
+          "median": 133,
+          "p95": 1018,
+          "maximum": 1500
+        },
+        "replacementLogicalId": {
+          "n": 7,
+          "median": 3883,
+          "p95": 15533,
+          "maximum": 15533
+        },
+        "rightCensoredLossIntervals": 0,
+        "interpretation": "Observed availability gaps only; logical IDs do not establish anatomical same-finger recovery. Initial acquisition excluded. Durations start at first missing source frame."
+      },
+      "interpretationCpuMs": {
+        "n": 1336,
+        "median": 0.9544000000005326,
+        "p95": 2.2150999999994383,
+        "maximum": 6.833099999999831,
+        "total": 1364.292400000002
+      },
+      "researchMechanismCounters": {},
+      "reviewedReferences": {
+        "visiblePointing": 30,
+        "positions": 12,
+        "missing": 18,
+        "insideUncertaintyRegion": 9,
+        "outsideUncertaintyRegion": 3,
+        "negativePointer": 3,
+        "negativePointerOutputs": 0,
+        "ambiguousOrNonvisible": 7,
+        "errorPixels": {
+          "n": 12,
+          "median": 5.447727359211245,
+          "p95": 18.850158743357465,
+          "maximum": 18.850158743357465
+        },
+        "authority": "REFERENCE_ESTIMATES_NOT_CERTIFIED_GROUND_TRUTH"
+      }
+    },
+    "byScenario": {
+      "CENTER": {
+        "packets": 109,
+        "freshInputPackets": 109,
+        "measuredPositions": 78,
+        "missingOrUnusablePositions": 31,
+        "readinessEligible": 63,
+        "logicalIdChanges": 0,
+        "rejectedOrErrorFrames": 0,
+        "states": {
+          "UNSEEDED": 15,
+          "UNCERTAIN": 9,
+          "LOST": 7,
+          "TRACKING": 78
+        },
+        "reasons": {
+          "SHOW_INDEX_OR_SELECT_TIP": 15,
+          "FULL_HAND_POINT_PENDING": 3,
+          "APPEARANCE_AMBIGUOUS": 6,
+          "APPEARANCE_MISMATCH": 1,
+          "FULL_HAND_MODEL_CONTINUITY": 15,
+          "FULL_HAND_POINT_CONFIRMED": 57,
+          "IMAGE_REFERENCE_CONFLICT": 3,
+          "IMAGE_OUTSIDE_OBSERVED_HAND": 1,
+          "INDEX_SHAFT_MODEL_TIP": 4,
+          "FULL_HAND_INDEX_CONFLICT": 4
+        },
+        "observedAvailabilityReturns": {
+          "sameLogicalId": {
+            "n": 5,
+            "median": 134,
+            "p95": 267,
+            "maximum": 267
+          },
+          "replacementLogicalId": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "rightCensoredLossIntervals": 0,
+          "interpretation": "Observed availability gaps only; logical IDs do not establish anatomical same-finger recovery. Initial acquisition excluded. Durations start at first missing source frame."
+        },
+        "interpretationCpuMs": {
+          "n": 109,
+          "median": 1.6832000000003973,
+          "p95": 3.3674000000000888,
+          "maximum": 6.833099999999831,
+          "total": 201.78819999999632
+        },
+        "researchMechanismCounters": {},
+        "reviewedReferences": {
+          "visiblePointing": 6,
+          "positions": 2,
+          "missing": 4,
+          "insideUncertaintyRegion": 1,
+          "outsideUncertaintyRegion": 1,
+          "negativePointer": 0,
+          "negativePointerOutputs": 0,
+          "ambiguousOrNonvisible": 0,
+          "errorPixels": {
+            "n": 2,
+            "median": 2.5987160932269386,
+            "p95": 11.32841741997134,
+            "maximum": 11.32841741997134
+          },
+          "authority": "REFERENCE_ESTIMATES_NOT_CERTIFIED_GROUND_TRUTH"
+        }
+      },
+      "BOTTOM": {
+        "packets": 145,
+        "freshInputPackets": 145,
+        "measuredPositions": 60,
+        "missingOrUnusablePositions": 85,
+        "readinessEligible": 45,
+        "logicalIdChanges": 0,
+        "rejectedOrErrorFrames": 0,
+        "states": {
+          "TRACKING": 60,
+          "UNCERTAIN": 38,
+          "LOST": 47
+        },
+        "reasons": {
+          "FULL_HAND_POINT_CONFIRMED": 19,
+          "FORWARD_BACKWARD_DISAGREEMENT": 2,
+          "APPEARANCE_AMBIGUOUS": 9,
+          "INDEX_MODEL_CONTINUITY": 4,
+          "IMAGE_MATCH": 37,
+          "INDEX_MODEL_IMAGE_CONFLICT": 6,
+          "INDEX_IDENTITY_RECONFIRM_REQUIRED": 2,
+          "INDEX_SHAFT_MATCH_NOT_TIP": 1,
+          "IMAGE_REFERENCE_CONFLICT": 19,
+          "FUSED_POINT_OUTSIDE_IMAGE": 1,
+          "FULL_HAND_AMBIGUOUS": 23,
+          "APPEARANCE_MISMATCH": 19,
+          "IMAGE_REFERENCE_EXPIRED": 3
+        },
+        "observedAvailabilityReturns": {
+          "sameLogicalId": {
+            "n": 7,
+            "median": 284,
+            "p95": 1018,
+            "maximum": 1018
+          },
+          "replacementLogicalId": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "rightCensoredLossIntervals": 1,
+          "interpretation": "Observed availability gaps only; logical IDs do not establish anatomical same-finger recovery. Initial acquisition excluded. Durations start at first missing source frame."
+        },
+        "interpretationCpuMs": {
+          "n": 145,
+          "median": 1.5118000000002212,
+          "p95": 2.7687999999998283,
+          "maximum": 6.714700000000448,
+          "total": 222.88990000000467
+        },
+        "researchMechanismCounters": {},
+        "reviewedReferences": {
+          "visiblePointing": 7,
+          "positions": 3,
+          "missing": 4,
+          "insideUncertaintyRegion": 3,
+          "outsideUncertaintyRegion": 0,
+          "negativePointer": 0,
+          "negativePointerOutputs": 0,
+          "ambiguousOrNonvisible": 2,
+          "errorPixels": {
+            "n": 3,
+            "median": 4.009023691445224,
+            "p95": 9.953014324037152,
+            "maximum": 9.953014324037152
+          },
+          "authority": "REFERENCE_ESTIMATES_NOT_CERTIFIED_GROUND_TRUTH"
+        }
+      },
+      "TOP": {
+        "packets": 107,
+        "freshInputPackets": 107,
+        "measuredPositions": 70,
+        "missingOrUnusablePositions": 37,
+        "readinessEligible": 64,
+        "logicalIdChanges": 1,
+        "rejectedOrErrorFrames": 0,
+        "states": {
+          "LOST": 29,
+          "UNCERTAIN": 8,
+          "TRACKING": 70
+        },
+        "reasons": {
+          "APPEARANCE_MISMATCH": 28,
+          "FULL_HAND_AMBIGUOUS": 5,
+          "IMAGE_CONTINUITY_EXPIRED": 1,
+          "FULL_HAND_POINT_PENDING": 3,
+          "FULL_HAND_POINT_CONFIRMED": 70
+        },
+        "observedAvailabilityReturns": {
+          "sameLogicalId": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "replacementLogicalId": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "rightCensoredLossIntervals": 0,
+          "interpretation": "Observed availability gaps only; logical IDs do not establish anatomical same-finger recovery. Initial acquisition excluded. Durations start at first missing source frame."
+        },
+        "interpretationCpuMs": {
+          "n": 107,
+          "median": 1.2267000000001644,
+          "p95": 2.249300000000403,
+          "maximum": 3.1536000000005515,
+          "total": 147.704000000007
+        },
+        "researchMechanismCounters": {},
+        "reviewedReferences": {
+          "visiblePointing": 2,
+          "positions": 0,
+          "missing": 2,
+          "insideUncertaintyRegion": 0,
+          "outsideUncertaintyRegion": 0,
+          "negativePointer": 0,
+          "negativePointerOutputs": 0,
+          "ambiguousOrNonvisible": 0,
+          "errorPixels": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "authority": "REFERENCE_ESTIMATES_NOT_CERTIFIED_GROUND_TRUTH"
+        }
+      },
+      "LEFT": {
+        "packets": 90,
+        "freshInputPackets": 90,
+        "measuredPositions": 87,
+        "missingOrUnusablePositions": 3,
+        "readinessEligible": 84,
+        "logicalIdChanges": 0,
+        "rejectedOrErrorFrames": 0,
+        "states": {
+          "TRACKING": 87,
+          "UNCERTAIN": 2,
+          "LOST": 1
+        },
+        "reasons": {
+          "FULL_HAND_POINT_CONFIRMED": 55,
+          "FULL_HAND_MODEL_CONTINUITY": 2,
+          "FULL_HAND_AMBIGUOUS": 1,
+          "IMAGE_TIP_MODEL_ENDPOINT_UNCERTAIN": 30,
+          "IMAGE_OUTSIDE_OBSERVED_HAND": 2
+        },
+        "observedAvailabilityReturns": {
+          "sameLogicalId": {
+            "n": 2,
+            "median": 117,
+            "p95": 133,
+            "maximum": 133
+          },
+          "replacementLogicalId": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "rightCensoredLossIntervals": 0,
+          "interpretation": "Observed availability gaps only; logical IDs do not establish anatomical same-finger recovery. Initial acquisition excluded. Durations start at first missing source frame."
+        },
+        "interpretationCpuMs": {
+          "n": 90,
+          "median": 0.914400000000569,
+          "p95": 1.7508000000007087,
+          "maximum": 1.9376000000002023,
+          "total": 92.74580000000424
+        },
+        "researchMechanismCounters": {},
+        "reviewedReferences": {
+          "visiblePointing": 2,
+          "positions": 2,
+          "missing": 0,
+          "insideUncertaintyRegion": 2,
+          "outsideUncertaintyRegion": 0,
+          "negativePointer": 0,
+          "negativePointerOutputs": 0,
+          "ambiguousOrNonvisible": 0,
+          "errorPixels": {
+            "n": 2,
+            "median": 2.558411091415704,
+            "p95": 8.996764286924414,
+            "maximum": 8.996764286924414
+          },
+          "authority": "REFERENCE_ESTIMATES_NOT_CERTIFIED_GROUND_TRUTH"
+        }
+      },
+      "RIGHT": {
+        "packets": 89,
+        "freshInputPackets": 89,
+        "measuredPositions": 13,
+        "missingOrUnusablePositions": 76,
+        "readinessEligible": 13,
+        "logicalIdChanges": 0,
+        "rejectedOrErrorFrames": 0,
+        "states": {
+          "TRACKING": 13,
+          "UNCERTAIN": 2,
+          "LOST": 74
+        },
+        "reasons": {
+          "FULL_HAND_POINT_CONFIRMED": 12,
+          "IMAGE_TIP_MODEL_ENDPOINT_UNCERTAIN": 1,
+          "FULL_HAND_INDEX_CONFLICT": 1,
+          "APPEARANCE_MISMATCH": 75
+        },
+        "observedAvailabilityReturns": {
+          "sameLogicalId": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "replacementLogicalId": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "rightCensoredLossIntervals": 1,
+          "interpretation": "Observed availability gaps only; logical IDs do not establish anatomical same-finger recovery. Initial acquisition excluded. Durations start at first missing source frame."
+        },
+        "interpretationCpuMs": {
+          "n": 89,
+          "median": 0.46050000000013824,
+          "p95": 0.9564000000000306,
+          "maximum": 2.548399999999674,
+          "total": 47.18959999999697
+        },
+        "researchMechanismCounters": {},
+        "reviewedReferences": {
+          "visiblePointing": 1,
+          "positions": 0,
+          "missing": 1,
+          "insideUncertaintyRegion": 0,
+          "outsideUncertaintyRegion": 0,
+          "negativePointer": 0,
+          "negativePointerOutputs": 0,
+          "ambiguousOrNonvisible": 1,
+          "errorPixels": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "authority": "REFERENCE_ESTIMATES_NOT_CERTIFIED_GROUND_TRUTH"
+        }
+      },
+      "TOP_LEFT": {
+        "packets": 73,
+        "freshInputPackets": 73,
+        "measuredPositions": 26,
+        "missingOrUnusablePositions": 47,
+        "readinessEligible": 20,
+        "logicalIdChanges": 1,
+        "rejectedOrErrorFrames": 0,
+        "states": {
+          "LOST": 45,
+          "UNCERTAIN": 2,
+          "TRACKING": 26
+        },
+        "reasons": {
+          "APPEARANCE_MISMATCH": 29,
+          "IMAGE_MOTION_TOO_LARGE": 14,
+          "IMAGE_CONTINUITY_EXPIRED": 1,
+          "FULL_HAND_POINT_PENDING": 3,
+          "APPEARANCE_AMBIGUOUS": 2,
+          "FULL_HAND_MODEL_CONTINUITY": 11,
+          "FULL_HAND_POINT_CONFIRMED": 13
+        },
+        "observedAvailabilityReturns": {
+          "sameLogicalId": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "replacementLogicalId": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "rightCensoredLossIntervals": 0,
+          "interpretation": "Observed availability gaps only; logical IDs do not establish anatomical same-finger recovery. Initial acquisition excluded. Durations start at first missing source frame."
+        },
+        "interpretationCpuMs": {
+          "n": 73,
+          "median": 0.5279000000000451,
+          "p95": 1.1823999999996886,
+          "maximum": 1.358900000000176,
+          "total": 47.7858000000042
+        },
+        "researchMechanismCounters": {},
+        "reviewedReferences": {
+          "visiblePointing": 2,
+          "positions": 0,
+          "missing": 2,
+          "insideUncertaintyRegion": 0,
+          "outsideUncertaintyRegion": 0,
+          "negativePointer": 0,
+          "negativePointerOutputs": 0,
+          "ambiguousOrNonvisible": 0,
+          "errorPixels": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "authority": "REFERENCE_ESTIMATES_NOT_CERTIFIED_GROUND_TRUTH"
+        }
+      },
+      "TOP_RIGHT": {
+        "packets": 74,
+        "freshInputPackets": 74,
+        "measuredPositions": 46,
+        "missingOrUnusablePositions": 28,
+        "readinessEligible": 37,
+        "logicalIdChanges": 1,
+        "rejectedOrErrorFrames": 0,
+        "states": {
+          "TRACKING": 46,
+          "UNCERTAIN": 5,
+          "LOST": 23
+        },
+        "reasons": {
+          "FULL_HAND_MODEL_CONTINUITY": 9,
+          "FULL_HAND_POINT_CONFIRMED": 37,
+          "APPEARANCE_MISMATCH": 23,
+          "IMAGE_CONTINUITY_EXPIRED": 1,
+          "FULL_HAND_POINT_PENDING": 2,
+          "IMAGE_REFERENCE_CONFLICT": 2
+        },
+        "observedAvailabilityReturns": {
+          "sameLogicalId": {
+            "n": 2,
+            "median": 49,
+            "p95": 67,
+            "maximum": 67
+          },
+          "replacementLogicalId": {
+            "n": 1,
+            "median": 1433,
+            "p95": 1433,
+            "maximum": 1433
+          },
+          "rightCensoredLossIntervals": 0,
+          "interpretation": "Observed availability gaps only; logical IDs do not establish anatomical same-finger recovery. Initial acquisition excluded. Durations start at first missing source frame."
+        },
+        "interpretationCpuMs": {
+          "n": 74,
+          "median": 0.8954000000003361,
+          "p95": 1.6854999999995925,
+          "maximum": 1.8167999999996027,
+          "total": 57.6988999999985
+        },
+        "researchMechanismCounters": {},
+        "reviewedReferences": {
+          "visiblePointing": 1,
+          "positions": 0,
+          "missing": 1,
+          "insideUncertaintyRegion": 0,
+          "outsideUncertaintyRegion": 0,
+          "negativePointer": 0,
+          "negativePointerOutputs": 0,
+          "ambiguousOrNonvisible": 0,
+          "errorPixels": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "authority": "REFERENCE_ESTIMATES_NOT_CERTIFIED_GROUND_TRUTH"
+        }
+      },
+      "BOTTOM_LEFT": {
+        "packets": 71,
+        "freshInputPackets": 71,
+        "measuredPositions": 36,
+        "missingOrUnusablePositions": 35,
+        "readinessEligible": 27,
+        "logicalIdChanges": 1,
+        "rejectedOrErrorFrames": 0,
+        "states": {
+          "TRACKING": 36,
+          "UNCERTAIN": 4,
+          "LOST": 31
+        },
+        "reasons": {
+          "FULL_HAND_POINT_CONFIRMED": 12,
+          "FULL_HAND_MODEL_CONTINUITY": 1,
+          "APPEARANCE_MISMATCH": 25,
+          "IMAGE_CONTINUITY_EXPIRED": 1,
+          "FULL_HAND_POINT_PENDING": 1,
+          "APPEARANCE_AMBIGUOUS": 8,
+          "IMAGE_MATCH": 10,
+          "INDEX_MODEL_CONTINUITY": 13
+        },
+        "observedAvailabilityReturns": {
+          "sameLogicalId": {
+            "n": 1,
+            "median": 115,
+            "p95": 115,
+            "maximum": 115
+          },
+          "replacementLogicalId": {
+            "n": 1,
+            "median": 1849,
+            "p95": 1849,
+            "maximum": 1849
+          },
+          "rightCensoredLossIntervals": 0,
+          "interpretation": "Observed availability gaps only; logical IDs do not establish anatomical same-finger recovery. Initial acquisition excluded. Durations start at first missing source frame."
+        },
+        "interpretationCpuMs": {
+          "n": 71,
+          "median": 0.7402000000001863,
+          "p95": 1.298200000000179,
+          "maximum": 3.2133999999996377,
+          "total": 50.68279999999504
+        },
+        "researchMechanismCounters": {},
+        "reviewedReferences": {
+          "visiblePointing": 3,
+          "positions": 2,
+          "missing": 1,
+          "insideUncertaintyRegion": 1,
+          "outsideUncertaintyRegion": 1,
+          "negativePointer": 0,
+          "negativePointerOutputs": 0,
+          "ambiguousOrNonvisible": 1,
+          "errorPixels": {
+            "n": 2,
+            "median": 3.7201976645134853,
+            "p95": 18.850158743357465,
+            "maximum": 18.850158743357465
+          },
+          "authority": "REFERENCE_ESTIMATES_NOT_CERTIFIED_GROUND_TRUTH"
+        }
+      },
+      "BOTTOM_RIGHT": {
+        "packets": 71,
+        "freshInputPackets": 71,
+        "measuredPositions": 13,
+        "missingOrUnusablePositions": 58,
+        "readinessEligible": 12,
+        "logicalIdChanges": 0,
+        "rejectedOrErrorFrames": 0,
+        "states": {
+          "TRACKING": 13,
+          "UNCERTAIN": 20,
+          "LOST": 23,
+          "UNSEEDED": 15
+        },
+        "reasons": {
+          "IMAGE_MATCH": 12,
+          "APPEARANCE_MISMATCH": 23,
+          "FULL_HAND_MODEL_CONTINUITY": 1,
+          "IMAGE_CONTINUITY_EXPIRED": 1,
+          "SHOW_INDEX_OR_SELECT_TIP": 15,
+          "FULL_HAND_POINT_PENDING": 9,
+          "FULL_HAND_INDEX_CONFLICT": 5,
+          "FULL_HAND_AMBIGUOUS": 5
+        },
+        "observedAvailabilityReturns": {
+          "sameLogicalId": {
+            "n": 1,
+            "median": 116,
+            "p95": 116,
+            "maximum": 116
+          },
+          "replacementLogicalId": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "rightCensoredLossIntervals": 1,
+          "interpretation": "Observed availability gaps only; logical IDs do not establish anatomical same-finger recovery. Initial acquisition excluded. Durations start at first missing source frame."
+        },
+        "interpretationCpuMs": {
+          "n": 71,
+          "median": 0.6527999999998428,
+          "p95": 1.1949000000004162,
+          "maximum": 1.8090000000001965,
+          "total": 46.655400000001464
+        },
+        "researchMechanismCounters": {},
+        "reviewedReferences": {
+          "visiblePointing": 2,
+          "positions": 1,
+          "missing": 1,
+          "insideUncertaintyRegion": 0,
+          "outsideUncertaintyRegion": 1,
+          "negativePointer": 0,
+          "negativePointerOutputs": 0,
+          "ambiguousOrNonvisible": 2,
+          "errorPixels": {
+            "n": 1,
+            "median": 12.844270203714444,
+            "p95": 12.844270203714444,
+            "maximum": 12.844270203714444
+          },
+          "authority": "REFERENCE_ESTIMATES_NOT_CERTIFIED_GROUND_TRUTH"
+        }
+      },
+      "RELAXED": {
+        "packets": 109,
+        "freshInputPackets": 109,
+        "measuredPositions": 41,
+        "missingOrUnusablePositions": 68,
+        "readinessEligible": 32,
+        "logicalIdChanges": 0,
+        "rejectedOrErrorFrames": 0,
+        "states": {
+          "UNCERTAIN": 37,
+          "LOST": 19,
+          "UNSEEDED": 12,
+          "TRACKING": 41
+        },
+        "reasons": {
+          "FULL_HAND_POINT_PENDING": 8,
+          "IMAGE_CONTINUITY_EXPIRED": 1,
+          "SHOW_INDEX_OR_SELECT_TIP": 12,
+          "INDEX_MODEL_IMAGE_CONFLICT": 6,
+          "APPEARANCE_AMBIGUOUS": 4,
+          "FULL_HAND_INDEX_CONFLICT": 7,
+          "APPEARANCE_MISMATCH": 15,
+          "FULL_HAND_POINT_CONFIRMED": 40,
+          "IMAGE_OUTSIDE_OBSERVED_HAND": 1,
+          "SAME_HAND_POSITION_UNCERTAIN": 1,
+          "INDEX_IDENTITY_RECONFIRM_REQUIRED": 1,
+          "FULL_HAND_AMBIGUOUS": 13
+        },
+        "observedAvailabilityReturns": {
+          "sameLogicalId": {
+            "n": 1,
+            "median": 749,
+            "p95": 749,
+            "maximum": 749
+          },
+          "replacementLogicalId": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "rightCensoredLossIntervals": 1,
+          "interpretation": "Observed availability gaps only; logical IDs do not establish anatomical same-finger recovery. Initial acquisition excluded. Durations start at first missing source frame."
+        },
+        "interpretationCpuMs": {
+          "n": 109,
+          "median": 1.317599999999402,
+          "p95": 2.0968000000002576,
+          "maximum": 5.0590000000001965,
+          "total": 128.20500000000175
+        },
+        "researchMechanismCounters": {},
+        "reviewedReferences": {
+          "visiblePointing": 1,
+          "positions": 1,
+          "missing": 0,
+          "insideUncertaintyRegion": 1,
+          "outsideUncertaintyRegion": 0,
+          "negativePointer": 0,
+          "negativePointerOutputs": 0,
+          "ambiguousOrNonvisible": 0,
+          "errorPixels": {
+            "n": 1,
+            "median": 5.447727359211245,
+            "p95": 5.447727359211245,
+            "maximum": 5.447727359211245
+          },
+          "authority": "REFERENCE_ESTIMATES_NOT_CERTIFIED_GROUND_TRUTH"
+        }
+      },
+      "SWEEP": {
+        "packets": 180,
+        "freshInputPackets": 180,
+        "measuredPositions": 11,
+        "missingOrUnusablePositions": 169,
+        "readinessEligible": 3,
+        "logicalIdChanges": 1,
+        "rejectedOrErrorFrames": 0,
+        "states": {
+          "UNCERTAIN": 74,
+          "LOST": 94,
+          "TRACKING": 11,
+          "UNSEEDED": 1
+        },
+        "reasons": {
+          "FULL_HAND_AMBIGUOUS": 26,
+          "APPEARANCE_MISMATCH": 56,
+          "IMAGE_CONTINUITY_EXPIRED": 4,
+          "FULL_HAND_POINT_PENDING": 20,
+          "FORWARD_BACKWARD_DISAGREEMENT": 3,
+          "FULL_HAND_MODEL_CONTINUITY": 2,
+          "INDEX_MODEL_CONTINUITY": 1,
+          "IMAGE_MATCH": 2,
+          "IMAGE_REFERENCE_CONFLICT": 1,
+          "FULL_HAND_POINT_CONFIRMED": 2,
+          "INDEX_MODEL_IMAGE_CONFLICT": 20,
+          "APPEARANCE_AMBIGUOUS": 35,
+          "SHOW_INDEX_OR_SELECT_TIP": 1,
+          "FULL_HAND_INDEX_CONFLICT": 4,
+          "IMAGE_MOTION_TOO_LARGE": 3
+        },
+        "observedAvailabilityReturns": {
+          "sameLogicalId": {
+            "n": 1,
+            "median": 66,
+            "p95": 66,
+            "maximum": 66
+          },
+          "replacementLogicalId": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "rightCensoredLossIntervals": 1,
+          "interpretation": "Observed availability gaps only; logical IDs do not establish anatomical same-finger recovery. Initial acquisition excluded. Durations start at first missing source frame."
+        },
+        "interpretationCpuMs": {
+          "n": 180,
+          "median": 0.9530000000004293,
+          "p95": 2.2565000000004147,
+          "maximum": 2.9382000000005064,
+          "total": 186.5123999999978
+        },
+        "researchMechanismCounters": {},
+        "reviewedReferences": {
+          "visiblePointing": 1,
+          "positions": 0,
+          "missing": 1,
+          "insideUncertaintyRegion": 0,
+          "outsideUncertaintyRegion": 0,
+          "negativePointer": 0,
+          "negativePointerOutputs": 0,
+          "ambiguousOrNonvisible": 1,
+          "errorPixels": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "authority": "REFERENCE_ESTIMATES_NOT_CERTIFIED_GROUND_TRUTH"
+        }
+      },
+      "OPEN_PALM": {
+        "packets": 91,
+        "freshInputPackets": 91,
+        "measuredPositions": 0,
+        "missingOrUnusablePositions": 91,
+        "readinessEligible": 0,
+        "logicalIdChanges": 0,
+        "rejectedOrErrorFrames": 0,
+        "states": {
+          "UNCERTAIN": 11,
+          "LOST": 14,
+          "UNSEEDED": 66
+        },
+        "reasons": {
+          "FULL_HAND_POINT_PENDING": 2,
+          "APPEARANCE_AMBIGUOUS": 9,
+          "INDEX_MODEL_IMAGE_CONFLICT": 6,
+          "APPEARANCE_MISMATCH": 5,
+          "FULL_HAND_INDEX_CONFLICT": 1,
+          "FULL_HAND_AMBIGUOUS": 1,
+          "IMAGE_CONTINUITY_EXPIRED": 1,
+          "SHOW_INDEX_OR_SELECT_TIP": 66
+        },
+        "observedAvailabilityReturns": {
+          "sameLogicalId": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "replacementLogicalId": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "rightCensoredLossIntervals": 0,
+          "interpretation": "Observed availability gaps only; logical IDs do not establish anatomical same-finger recovery. Initial acquisition excluded. Durations start at first missing source frame."
+        },
+        "interpretationCpuMs": {
+          "n": 91,
+          "median": 0.10779999999977008,
+          "p95": 1.0874999999996362,
+          "maximum": 1.4979000000002998,
+          "total": 30.28269999999611
+        },
+        "researchMechanismCounters": {},
+        "reviewedReferences": {
+          "visiblePointing": 0,
+          "positions": 0,
+          "missing": 0,
+          "insideUncertaintyRegion": 0,
+          "outsideUncertaintyRegion": 0,
+          "negativePointer": 2,
+          "negativePointerOutputs": 0,
+          "ambiguousOrNonvisible": 0,
+          "errorPixels": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "authority": "REFERENCE_ESTIMATES_NOT_CERTIFIED_GROUND_TRUTH"
+        }
+      },
+      "HIDE": {
+        "packets": 18,
+        "freshInputPackets": 18,
+        "measuredPositions": 0,
+        "missingOrUnusablePositions": 18,
+        "readinessEligible": 0,
+        "logicalIdChanges": 0,
+        "rejectedOrErrorFrames": 0,
+        "states": {
+          "UNSEEDED": 17,
+          "UNCERTAIN": 1
+        },
+        "reasons": {
+          "SHOW_INDEX_OR_SELECT_TIP": 17,
+          "FULL_HAND_POINT_PENDING": 1
+        },
+        "observedAvailabilityReturns": {
+          "sameLogicalId": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "replacementLogicalId": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "rightCensoredLossIntervals": 0,
+          "interpretation": "Observed availability gaps only; logical IDs do not establish anatomical same-finger recovery. Initial acquisition excluded. Durations start at first missing source frame."
+        },
+        "interpretationCpuMs": {
+          "n": 18,
+          "median": 0.12849999999980355,
+          "p95": 0.5539000000007945,
+          "maximum": 0.5539000000007945,
+          "total": 2.720500000001266
+        },
+        "researchMechanismCounters": {},
+        "reviewedReferences": {
+          "visiblePointing": 0,
+          "positions": 0,
+          "missing": 0,
+          "insideUncertaintyRegion": 0,
+          "outsideUncertaintyRegion": 0,
+          "negativePointer": 0,
+          "negativePointerOutputs": 0,
+          "ambiguousOrNonvisible": 0,
+          "errorPixels": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "authority": "REFERENCE_ESTIMATES_NOT_CERTIFIED_GROUND_TRUTH"
+        }
+      },
+      "RECOVER": {
+        "packets": 109,
+        "freshInputPackets": 109,
+        "measuredPositions": 23,
+        "missingOrUnusablePositions": 86,
+        "readinessEligible": 16,
+        "logicalIdChanges": 0,
+        "rejectedOrErrorFrames": 0,
+        "states": {
+          "UNCERTAIN": 33,
+          "LOST": 45,
+          "UNSEEDED": 8,
+          "TRACKING": 23
+        },
+        "reasons": {
+          "FULL_HAND_CONTRARY_PENDING": 1,
+          "APPEARANCE_MISMATCH": 22,
+          "IMAGE_CONTINUITY_EXPIRED": 1,
+          "SHOW_INDEX_OR_SELECT_TIP": 8,
+          "FULL_HAND_POINT_PENDING": 10,
+          "APPEARANCE_AMBIGUOUS": 24,
+          "FORWARD_BACKWARD_DISAGREEMENT": 1,
+          "FULL_HAND_INDEX_CONFLICT": 16,
+          "FULL_HAND_MODEL_CONTINUITY": 1,
+          "FULL_HAND_CONTRARY_CONFIRMED": 3,
+          "FULL_HAND_POINT_CONFIRMED": 22
+        },
+        "observedAvailabilityReturns": {
+          "sameLogicalId": {
+            "n": 1,
+            "median": 1500,
+            "p95": 1500,
+            "maximum": 1500
+          },
+          "replacementLogicalId": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "rightCensoredLossIntervals": 0,
+          "interpretation": "Observed availability gaps only; logical IDs do not establish anatomical same-finger recovery. Initial acquisition excluded. Durations start at first missing source frame."
+        },
+        "interpretationCpuMs": {
+          "n": 109,
+          "median": 1.0299999999997453,
+          "p95": 1.4686000000001513,
+          "maximum": 2.320600000000013,
+          "total": 101.43139999999676
+        },
+        "researchMechanismCounters": {},
+        "reviewedReferences": {
+          "visiblePointing": 2,
+          "positions": 1,
+          "missing": 1,
+          "insideUncertaintyRegion": 1,
+          "outsideUncertaintyRegion": 0,
+          "negativePointer": 1,
+          "negativePointerOutputs": 0,
+          "ambiguousOrNonvisible": 0,
+          "errorPixels": {
+            "n": 1,
+            "median": 5.917931769188178,
+            "p95": 5.917931769188178,
+            "maximum": 5.917931769188178
+          },
+          "authority": "REFERENCE_ESTIMATES_NOT_CERTIFIED_GROUND_TRUTH"
+        }
+      }
+    }
+  },
+  "candidate": {
+    "all": {
+      "packets": 1336,
+      "freshInputPackets": 1336,
+      "measuredPositions": 504,
+      "missingOrUnusablePositions": 832,
+      "readinessEligible": 416,
+      "logicalIdChanges": 7,
+      "rejectedOrErrorFrames": 0,
+      "states": {
+        "UNSEEDED": 134,
+        "UNCERTAIN": 246,
+        "LOST": 452,
+        "TRACKING": 504
+      },
+      "reasons": {
+        "SHOW_INDEX_OR_SELECT_TIP": 134,
+        "FULL_HAND_POINT_PENDING": 62,
+        "APPEARANCE_AMBIGUOUS": 97,
+        "APPEARANCE_MISMATCH": 321,
+        "FULL_HAND_MODEL_CONTINUITY": 42,
+        "FULL_HAND_POINT_CONFIRMED": 339,
+        "IMAGE_REFERENCE_CONFLICT": 25,
+        "IMAGE_OUTSIDE_OBSERVED_HAND": 4,
+        "INDEX_SHAFT_MODEL_TIP": 4,
+        "FULL_HAND_INDEX_CONFLICT": 38,
+        "FORWARD_BACKWARD_DISAGREEMENT": 6,
+        "INDEX_MODEL_CONTINUITY": 18,
+        "IMAGE_MATCH": 61,
+        "INDEX_MODEL_IMAGE_CONFLICT": 38,
+        "INDEX_IDENTITY_RECONFIRM_REQUIRED": 3,
+        "INDEX_SHAFT_MATCH_NOT_TIP": 1,
+        "FUSED_POINT_OUTSIDE_IMAGE": 1,
+        "FULL_HAND_AMBIGUOUS": 74,
+        "IMAGE_REFERENCE_EXPIRED": 3,
+        "IMAGE_CONTINUITY_EXPIRED": 12,
+        "IMAGE_TIP_MODEL_ENDPOINT_UNCERTAIN": 31,
+        "IMAGE_MOTION_TOO_LARGE": 17,
+        "SAME_HAND_POSITION_UNCERTAIN": 1,
+        "FULL_HAND_CONTRARY_PENDING": 1,
+        "FULL_HAND_CONTRARY_CONFIRMED": 3
+      },
+      "observedAvailabilityReturns": {
+        "sameLogicalId": {
+          "n": 21,
+          "median": 133,
+          "p95": 1018,
+          "maximum": 1500
+        },
+        "replacementLogicalId": {
+          "n": 7,
+          "median": 3883,
+          "p95": 15533,
+          "maximum": 15533
+        },
+        "rightCensoredLossIntervals": 0,
+        "interpretation": "Observed availability gaps only; logical IDs do not establish anatomical same-finger recovery. Initial acquisition excluded. Durations start at first missing source frame."
+      },
+      "interpretationCpuMs": {
+        "n": 1336,
+        "median": 0.9962999999997919,
+        "p95": 2.36620000000039,
+        "maximum": 9.187300000000505,
+        "total": 1447.6993000000102
+      },
+      "researchMechanismCounters": {
+        "eligible": 22,
+        "proposals": 0,
+        "probation": 0,
+        "attemptedCommits": 0,
+        "commits": 0,
+        "rejectedCommits": 0
+      },
+      "reviewedReferences": {
+        "visiblePointing": 30,
+        "positions": 12,
+        "missing": 18,
+        "insideUncertaintyRegion": 9,
+        "outsideUncertaintyRegion": 3,
+        "negativePointer": 3,
+        "negativePointerOutputs": 0,
+        "ambiguousOrNonvisible": 7,
+        "errorPixels": {
+          "n": 12,
+          "median": 5.447727359211245,
+          "p95": 18.850158743357465,
+          "maximum": 18.850158743357465
+        },
+        "authority": "REFERENCE_ESTIMATES_NOT_CERTIFIED_GROUND_TRUTH"
+      }
+    },
+    "byScenario": {
+      "CENTER": {
+        "packets": 109,
+        "freshInputPackets": 109,
+        "measuredPositions": 78,
+        "missingOrUnusablePositions": 31,
+        "readinessEligible": 63,
+        "logicalIdChanges": 0,
+        "rejectedOrErrorFrames": 0,
+        "states": {
+          "UNSEEDED": 15,
+          "UNCERTAIN": 9,
+          "LOST": 7,
+          "TRACKING": 78
+        },
+        "reasons": {
+          "SHOW_INDEX_OR_SELECT_TIP": 15,
+          "FULL_HAND_POINT_PENDING": 3,
+          "APPEARANCE_AMBIGUOUS": 6,
+          "APPEARANCE_MISMATCH": 1,
+          "FULL_HAND_MODEL_CONTINUITY": 15,
+          "FULL_HAND_POINT_CONFIRMED": 57,
+          "IMAGE_REFERENCE_CONFLICT": 3,
+          "IMAGE_OUTSIDE_OBSERVED_HAND": 1,
+          "INDEX_SHAFT_MODEL_TIP": 4,
+          "FULL_HAND_INDEX_CONFLICT": 4
+        },
+        "observedAvailabilityReturns": {
+          "sameLogicalId": {
+            "n": 5,
+            "median": 134,
+            "p95": 267,
+            "maximum": 267
+          },
+          "replacementLogicalId": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "rightCensoredLossIntervals": 0,
+          "interpretation": "Observed availability gaps only; logical IDs do not establish anatomical same-finger recovery. Initial acquisition excluded. Durations start at first missing source frame."
+        },
+        "interpretationCpuMs": {
+          "n": 109,
+          "median": 1.7978000000002794,
+          "p95": 5.793700000000172,
+          "maximum": 9.187300000000505,
+          "total": 230.89090000000033
+        },
+        "researchMechanismCounters": {
+          "eligible": 3,
+          "proposals": 0,
+          "probation": 0,
+          "attemptedCommits": 0,
+          "commits": 0,
+          "rejectedCommits": 0
+        },
+        "reviewedReferences": {
+          "visiblePointing": 6,
+          "positions": 2,
+          "missing": 4,
+          "insideUncertaintyRegion": 1,
+          "outsideUncertaintyRegion": 1,
+          "negativePointer": 0,
+          "negativePointerOutputs": 0,
+          "ambiguousOrNonvisible": 0,
+          "errorPixels": {
+            "n": 2,
+            "median": 2.5987160932269386,
+            "p95": 11.32841741997134,
+            "maximum": 11.32841741997134
+          },
+          "authority": "REFERENCE_ESTIMATES_NOT_CERTIFIED_GROUND_TRUTH"
+        }
+      },
+      "BOTTOM": {
+        "packets": 145,
+        "freshInputPackets": 145,
+        "measuredPositions": 60,
+        "missingOrUnusablePositions": 85,
+        "readinessEligible": 45,
+        "logicalIdChanges": 0,
+        "rejectedOrErrorFrames": 0,
+        "states": {
+          "TRACKING": 60,
+          "UNCERTAIN": 38,
+          "LOST": 47
+        },
+        "reasons": {
+          "FULL_HAND_POINT_CONFIRMED": 19,
+          "FORWARD_BACKWARD_DISAGREEMENT": 2,
+          "APPEARANCE_AMBIGUOUS": 9,
+          "INDEX_MODEL_CONTINUITY": 4,
+          "IMAGE_MATCH": 37,
+          "INDEX_MODEL_IMAGE_CONFLICT": 6,
+          "INDEX_IDENTITY_RECONFIRM_REQUIRED": 2,
+          "INDEX_SHAFT_MATCH_NOT_TIP": 1,
+          "IMAGE_REFERENCE_CONFLICT": 19,
+          "FUSED_POINT_OUTSIDE_IMAGE": 1,
+          "FULL_HAND_AMBIGUOUS": 23,
+          "APPEARANCE_MISMATCH": 19,
+          "IMAGE_REFERENCE_EXPIRED": 3
+        },
+        "observedAvailabilityReturns": {
+          "sameLogicalId": {
+            "n": 7,
+            "median": 284,
+            "p95": 1018,
+            "maximum": 1018
+          },
+          "replacementLogicalId": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "rightCensoredLossIntervals": 1,
+          "interpretation": "Observed availability gaps only; logical IDs do not establish anatomical same-finger recovery. Initial acquisition excluded. Durations start at first missing source frame."
+        },
+        "interpretationCpuMs": {
+          "n": 145,
+          "median": 1.5392000000001644,
+          "p95": 2.4857999999994718,
+          "maximum": 5.9471999999996115,
+          "total": 230.2443999999914
+        },
+        "researchMechanismCounters": {
+          "eligible": 0,
+          "proposals": 0,
+          "probation": 0,
+          "attemptedCommits": 0,
+          "commits": 0,
+          "rejectedCommits": 0
+        },
+        "reviewedReferences": {
+          "visiblePointing": 7,
+          "positions": 3,
+          "missing": 4,
+          "insideUncertaintyRegion": 3,
+          "outsideUncertaintyRegion": 0,
+          "negativePointer": 0,
+          "negativePointerOutputs": 0,
+          "ambiguousOrNonvisible": 2,
+          "errorPixels": {
+            "n": 3,
+            "median": 4.009023691445224,
+            "p95": 9.953014324037152,
+            "maximum": 9.953014324037152
+          },
+          "authority": "REFERENCE_ESTIMATES_NOT_CERTIFIED_GROUND_TRUTH"
+        }
+      },
+      "TOP": {
+        "packets": 107,
+        "freshInputPackets": 107,
+        "measuredPositions": 70,
+        "missingOrUnusablePositions": 37,
+        "readinessEligible": 64,
+        "logicalIdChanges": 1,
+        "rejectedOrErrorFrames": 0,
+        "states": {
+          "LOST": 29,
+          "UNCERTAIN": 8,
+          "TRACKING": 70
+        },
+        "reasons": {
+          "APPEARANCE_MISMATCH": 28,
+          "FULL_HAND_AMBIGUOUS": 5,
+          "IMAGE_CONTINUITY_EXPIRED": 1,
+          "FULL_HAND_POINT_PENDING": 3,
+          "FULL_HAND_POINT_CONFIRMED": 70
+        },
+        "observedAvailabilityReturns": {
+          "sameLogicalId": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "replacementLogicalId": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "rightCensoredLossIntervals": 0,
+          "interpretation": "Observed availability gaps only; logical IDs do not establish anatomical same-finger recovery. Initial acquisition excluded. Durations start at first missing source frame."
+        },
+        "interpretationCpuMs": {
+          "n": 107,
+          "median": 1.2880000000004657,
+          "p95": 2.584700000000339,
+          "maximum": 3.736499999999978,
+          "total": 160.81900000000587
+        },
+        "researchMechanismCounters": {
+          "eligible": 0,
+          "proposals": 0,
+          "probation": 0,
+          "attemptedCommits": 0,
+          "commits": 0,
+          "rejectedCommits": 0
+        },
+        "reviewedReferences": {
+          "visiblePointing": 2,
+          "positions": 0,
+          "missing": 2,
+          "insideUncertaintyRegion": 0,
+          "outsideUncertaintyRegion": 0,
+          "negativePointer": 0,
+          "negativePointerOutputs": 0,
+          "ambiguousOrNonvisible": 0,
+          "errorPixels": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "authority": "REFERENCE_ESTIMATES_NOT_CERTIFIED_GROUND_TRUTH"
+        }
+      },
+      "LEFT": {
+        "packets": 90,
+        "freshInputPackets": 90,
+        "measuredPositions": 87,
+        "missingOrUnusablePositions": 3,
+        "readinessEligible": 84,
+        "logicalIdChanges": 0,
+        "rejectedOrErrorFrames": 0,
+        "states": {
+          "TRACKING": 87,
+          "UNCERTAIN": 2,
+          "LOST": 1
+        },
+        "reasons": {
+          "FULL_HAND_POINT_CONFIRMED": 55,
+          "FULL_HAND_MODEL_CONTINUITY": 2,
+          "FULL_HAND_AMBIGUOUS": 1,
+          "IMAGE_TIP_MODEL_ENDPOINT_UNCERTAIN": 30,
+          "IMAGE_OUTSIDE_OBSERVED_HAND": 2
+        },
+        "observedAvailabilityReturns": {
+          "sameLogicalId": {
+            "n": 2,
+            "median": 117,
+            "p95": 133,
+            "maximum": 133
+          },
+          "replacementLogicalId": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "rightCensoredLossIntervals": 0,
+          "interpretation": "Observed availability gaps only; logical IDs do not establish anatomical same-finger recovery. Initial acquisition excluded. Durations start at first missing source frame."
+        },
+        "interpretationCpuMs": {
+          "n": 90,
+          "median": 0.9745000000002619,
+          "p95": 1.9896000000007916,
+          "maximum": 3.216500000000451,
+          "total": 99.97900000000027
+        },
+        "researchMechanismCounters": {
+          "eligible": 1,
+          "proposals": 0,
+          "probation": 0,
+          "attemptedCommits": 0,
+          "commits": 0,
+          "rejectedCommits": 0
+        },
+        "reviewedReferences": {
+          "visiblePointing": 2,
+          "positions": 2,
+          "missing": 0,
+          "insideUncertaintyRegion": 2,
+          "outsideUncertaintyRegion": 0,
+          "negativePointer": 0,
+          "negativePointerOutputs": 0,
+          "ambiguousOrNonvisible": 0,
+          "errorPixels": {
+            "n": 2,
+            "median": 2.558411091415704,
+            "p95": 8.996764286924414,
+            "maximum": 8.996764286924414
+          },
+          "authority": "REFERENCE_ESTIMATES_NOT_CERTIFIED_GROUND_TRUTH"
+        }
+      },
+      "RIGHT": {
+        "packets": 89,
+        "freshInputPackets": 89,
+        "measuredPositions": 13,
+        "missingOrUnusablePositions": 76,
+        "readinessEligible": 13,
+        "logicalIdChanges": 0,
+        "rejectedOrErrorFrames": 0,
+        "states": {
+          "TRACKING": 13,
+          "UNCERTAIN": 2,
+          "LOST": 74
+        },
+        "reasons": {
+          "FULL_HAND_POINT_CONFIRMED": 12,
+          "IMAGE_TIP_MODEL_ENDPOINT_UNCERTAIN": 1,
+          "FULL_HAND_INDEX_CONFLICT": 1,
+          "APPEARANCE_MISMATCH": 75
+        },
+        "observedAvailabilityReturns": {
+          "sameLogicalId": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "replacementLogicalId": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "rightCensoredLossIntervals": 1,
+          "interpretation": "Observed availability gaps only; logical IDs do not establish anatomical same-finger recovery. Initial acquisition excluded. Durations start at first missing source frame."
+        },
+        "interpretationCpuMs": {
+          "n": 89,
+          "median": 0.5057999999999083,
+          "p95": 0.9933000000000902,
+          "maximum": 1.1238000000003012,
+          "total": 49.92280000000483
+        },
+        "researchMechanismCounters": {
+          "eligible": 0,
+          "proposals": 0,
+          "probation": 0,
+          "attemptedCommits": 0,
+          "commits": 0,
+          "rejectedCommits": 0
+        },
+        "reviewedReferences": {
+          "visiblePointing": 1,
+          "positions": 0,
+          "missing": 1,
+          "insideUncertaintyRegion": 0,
+          "outsideUncertaintyRegion": 0,
+          "negativePointer": 0,
+          "negativePointerOutputs": 0,
+          "ambiguousOrNonvisible": 1,
+          "errorPixels": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "authority": "REFERENCE_ESTIMATES_NOT_CERTIFIED_GROUND_TRUTH"
+        }
+      },
+      "TOP_LEFT": {
+        "packets": 73,
+        "freshInputPackets": 73,
+        "measuredPositions": 26,
+        "missingOrUnusablePositions": 47,
+        "readinessEligible": 20,
+        "logicalIdChanges": 1,
+        "rejectedOrErrorFrames": 0,
+        "states": {
+          "LOST": 45,
+          "UNCERTAIN": 2,
+          "TRACKING": 26
+        },
+        "reasons": {
+          "APPEARANCE_MISMATCH": 29,
+          "IMAGE_MOTION_TOO_LARGE": 14,
+          "IMAGE_CONTINUITY_EXPIRED": 1,
+          "FULL_HAND_POINT_PENDING": 3,
+          "APPEARANCE_AMBIGUOUS": 2,
+          "FULL_HAND_MODEL_CONTINUITY": 11,
+          "FULL_HAND_POINT_CONFIRMED": 13
+        },
+        "observedAvailabilityReturns": {
+          "sameLogicalId": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "replacementLogicalId": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "rightCensoredLossIntervals": 0,
+          "interpretation": "Observed availability gaps only; logical IDs do not establish anatomical same-finger recovery. Initial acquisition excluded. Durations start at first missing source frame."
+        },
+        "interpretationCpuMs": {
+          "n": 73,
+          "median": 0.579899999999725,
+          "p95": 2.389600000000428,
+          "maximum": 3.0565999999998894,
+          "total": 60.203700000000026
+        },
+        "researchMechanismCounters": {
+          "eligible": 10,
+          "proposals": 0,
+          "probation": 0,
+          "attemptedCommits": 0,
+          "commits": 0,
+          "rejectedCommits": 0
+        },
+        "reviewedReferences": {
+          "visiblePointing": 2,
+          "positions": 0,
+          "missing": 2,
+          "insideUncertaintyRegion": 0,
+          "outsideUncertaintyRegion": 0,
+          "negativePointer": 0,
+          "negativePointerOutputs": 0,
+          "ambiguousOrNonvisible": 0,
+          "errorPixels": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "authority": "REFERENCE_ESTIMATES_NOT_CERTIFIED_GROUND_TRUTH"
+        }
+      },
+      "TOP_RIGHT": {
+        "packets": 74,
+        "freshInputPackets": 74,
+        "measuredPositions": 46,
+        "missingOrUnusablePositions": 28,
+        "readinessEligible": 37,
+        "logicalIdChanges": 1,
+        "rejectedOrErrorFrames": 0,
+        "states": {
+          "TRACKING": 46,
+          "UNCERTAIN": 5,
+          "LOST": 23
+        },
+        "reasons": {
+          "FULL_HAND_MODEL_CONTINUITY": 9,
+          "FULL_HAND_POINT_CONFIRMED": 37,
+          "APPEARANCE_MISMATCH": 23,
+          "IMAGE_CONTINUITY_EXPIRED": 1,
+          "FULL_HAND_POINT_PENDING": 2,
+          "IMAGE_REFERENCE_CONFLICT": 2
+        },
+        "observedAvailabilityReturns": {
+          "sameLogicalId": {
+            "n": 2,
+            "median": 49,
+            "p95": 67,
+            "maximum": 67
+          },
+          "replacementLogicalId": {
+            "n": 1,
+            "median": 1433,
+            "p95": 1433,
+            "maximum": 1433
+          },
+          "rightCensoredLossIntervals": 0,
+          "interpretation": "Observed availability gaps only; logical IDs do not establish anatomical same-finger recovery. Initial acquisition excluded. Durations start at first missing source frame."
+        },
+        "interpretationCpuMs": {
+          "n": 74,
+          "median": 0.9395000000004075,
+          "p95": 2.193500000000313,
+          "maximum": 2.6556000000000495,
+          "total": 64.2389000000012
+        },
+        "researchMechanismCounters": {
+          "eligible": 8,
+          "proposals": 0,
+          "probation": 0,
+          "attemptedCommits": 0,
+          "commits": 0,
+          "rejectedCommits": 0
+        },
+        "reviewedReferences": {
+          "visiblePointing": 1,
+          "positions": 0,
+          "missing": 1,
+          "insideUncertaintyRegion": 0,
+          "outsideUncertaintyRegion": 0,
+          "negativePointer": 0,
+          "negativePointerOutputs": 0,
+          "ambiguousOrNonvisible": 0,
+          "errorPixels": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "authority": "REFERENCE_ESTIMATES_NOT_CERTIFIED_GROUND_TRUTH"
+        }
+      },
+      "BOTTOM_LEFT": {
+        "packets": 71,
+        "freshInputPackets": 71,
+        "measuredPositions": 36,
+        "missingOrUnusablePositions": 35,
+        "readinessEligible": 27,
+        "logicalIdChanges": 1,
+        "rejectedOrErrorFrames": 0,
+        "states": {
+          "TRACKING": 36,
+          "UNCERTAIN": 4,
+          "LOST": 31
+        },
+        "reasons": {
+          "FULL_HAND_POINT_CONFIRMED": 12,
+          "FULL_HAND_MODEL_CONTINUITY": 1,
+          "APPEARANCE_MISMATCH": 25,
+          "IMAGE_CONTINUITY_EXPIRED": 1,
+          "FULL_HAND_POINT_PENDING": 1,
+          "APPEARANCE_AMBIGUOUS": 8,
+          "IMAGE_MATCH": 10,
+          "INDEX_MODEL_CONTINUITY": 13
+        },
+        "observedAvailabilityReturns": {
+          "sameLogicalId": {
+            "n": 1,
+            "median": 115,
+            "p95": 115,
+            "maximum": 115
+          },
+          "replacementLogicalId": {
+            "n": 1,
+            "median": 1849,
+            "p95": 1849,
+            "maximum": 1849
+          },
+          "rightCensoredLossIntervals": 0,
+          "interpretation": "Observed availability gaps only; logical IDs do not establish anatomical same-finger recovery. Initial acquisition excluded. Durations start at first missing source frame."
+        },
+        "interpretationCpuMs": {
+          "n": 71,
+          "median": 0.76299999999992,
+          "p95": 1.384900000000016,
+          "maximum": 2.095299999999952,
+          "total": 52.287100000000464
+        },
+        "researchMechanismCounters": {
+          "eligible": 0,
+          "proposals": 0,
+          "probation": 0,
+          "attemptedCommits": 0,
+          "commits": 0,
+          "rejectedCommits": 0
+        },
+        "reviewedReferences": {
+          "visiblePointing": 3,
+          "positions": 2,
+          "missing": 1,
+          "insideUncertaintyRegion": 1,
+          "outsideUncertaintyRegion": 1,
+          "negativePointer": 0,
+          "negativePointerOutputs": 0,
+          "ambiguousOrNonvisible": 1,
+          "errorPixels": {
+            "n": 2,
+            "median": 3.7201976645134853,
+            "p95": 18.850158743357465,
+            "maximum": 18.850158743357465
+          },
+          "authority": "REFERENCE_ESTIMATES_NOT_CERTIFIED_GROUND_TRUTH"
+        }
+      },
+      "BOTTOM_RIGHT": {
+        "packets": 71,
+        "freshInputPackets": 71,
+        "measuredPositions": 13,
+        "missingOrUnusablePositions": 58,
+        "readinessEligible": 12,
+        "logicalIdChanges": 0,
+        "rejectedOrErrorFrames": 0,
+        "states": {
+          "TRACKING": 13,
+          "UNCERTAIN": 20,
+          "LOST": 23,
+          "UNSEEDED": 15
+        },
+        "reasons": {
+          "IMAGE_MATCH": 12,
+          "APPEARANCE_MISMATCH": 23,
+          "FULL_HAND_MODEL_CONTINUITY": 1,
+          "IMAGE_CONTINUITY_EXPIRED": 1,
+          "SHOW_INDEX_OR_SELECT_TIP": 15,
+          "FULL_HAND_POINT_PENDING": 9,
+          "FULL_HAND_INDEX_CONFLICT": 5,
+          "FULL_HAND_AMBIGUOUS": 5
+        },
+        "observedAvailabilityReturns": {
+          "sameLogicalId": {
+            "n": 1,
+            "median": 116,
+            "p95": 116,
+            "maximum": 116
+          },
+          "replacementLogicalId": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "rightCensoredLossIntervals": 1,
+          "interpretation": "Observed availability gaps only; logical IDs do not establish anatomical same-finger recovery. Initial acquisition excluded. Durations start at first missing source frame."
+        },
+        "interpretationCpuMs": {
+          "n": 71,
+          "median": 0.6457000000000335,
+          "p95": 1.1984000000002197,
+          "maximum": 1.3885000000000218,
+          "total": 46.177700000003824
+        },
+        "researchMechanismCounters": {
+          "eligible": 0,
+          "proposals": 0,
+          "probation": 0,
+          "attemptedCommits": 0,
+          "commits": 0,
+          "rejectedCommits": 0
+        },
+        "reviewedReferences": {
+          "visiblePointing": 2,
+          "positions": 1,
+          "missing": 1,
+          "insideUncertaintyRegion": 0,
+          "outsideUncertaintyRegion": 1,
+          "negativePointer": 0,
+          "negativePointerOutputs": 0,
+          "ambiguousOrNonvisible": 2,
+          "errorPixels": {
+            "n": 1,
+            "median": 12.844270203714444,
+            "p95": 12.844270203714444,
+            "maximum": 12.844270203714444
+          },
+          "authority": "REFERENCE_ESTIMATES_NOT_CERTIFIED_GROUND_TRUTH"
+        }
+      },
+      "RELAXED": {
+        "packets": 109,
+        "freshInputPackets": 109,
+        "measuredPositions": 41,
+        "missingOrUnusablePositions": 68,
+        "readinessEligible": 32,
+        "logicalIdChanges": 0,
+        "rejectedOrErrorFrames": 0,
+        "states": {
+          "UNCERTAIN": 37,
+          "LOST": 19,
+          "UNSEEDED": 12,
+          "TRACKING": 41
+        },
+        "reasons": {
+          "FULL_HAND_POINT_PENDING": 8,
+          "IMAGE_CONTINUITY_EXPIRED": 1,
+          "SHOW_INDEX_OR_SELECT_TIP": 12,
+          "INDEX_MODEL_IMAGE_CONFLICT": 6,
+          "APPEARANCE_AMBIGUOUS": 4,
+          "FULL_HAND_INDEX_CONFLICT": 7,
+          "APPEARANCE_MISMATCH": 15,
+          "FULL_HAND_POINT_CONFIRMED": 40,
+          "IMAGE_OUTSIDE_OBSERVED_HAND": 1,
+          "SAME_HAND_POSITION_UNCERTAIN": 1,
+          "INDEX_IDENTITY_RECONFIRM_REQUIRED": 1,
+          "FULL_HAND_AMBIGUOUS": 13
+        },
+        "observedAvailabilityReturns": {
+          "sameLogicalId": {
+            "n": 1,
+            "median": 749,
+            "p95": 749,
+            "maximum": 749
+          },
+          "replacementLogicalId": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "rightCensoredLossIntervals": 1,
+          "interpretation": "Observed availability gaps only; logical IDs do not establish anatomical same-finger recovery. Initial acquisition excluded. Durations start at first missing source frame."
+        },
+        "interpretationCpuMs": {
+          "n": 109,
+          "median": 1.3234999999995125,
+          "p95": 1.9683999999997468,
+          "maximum": 3.6792999999997846,
+          "total": 127.28530000000319
+        },
+        "researchMechanismCounters": {
+          "eligible": 0,
+          "proposals": 0,
+          "probation": 0,
+          "attemptedCommits": 0,
+          "commits": 0,
+          "rejectedCommits": 0
+        },
+        "reviewedReferences": {
+          "visiblePointing": 1,
+          "positions": 1,
+          "missing": 0,
+          "insideUncertaintyRegion": 1,
+          "outsideUncertaintyRegion": 0,
+          "negativePointer": 0,
+          "negativePointerOutputs": 0,
+          "ambiguousOrNonvisible": 0,
+          "errorPixels": {
+            "n": 1,
+            "median": 5.447727359211245,
+            "p95": 5.447727359211245,
+            "maximum": 5.447727359211245
+          },
+          "authority": "REFERENCE_ESTIMATES_NOT_CERTIFIED_GROUND_TRUTH"
+        }
+      },
+      "SWEEP": {
+        "packets": 180,
+        "freshInputPackets": 180,
+        "measuredPositions": 11,
+        "missingOrUnusablePositions": 169,
+        "readinessEligible": 3,
+        "logicalIdChanges": 1,
+        "rejectedOrErrorFrames": 0,
+        "states": {
+          "UNCERTAIN": 74,
+          "LOST": 94,
+          "TRACKING": 11,
+          "UNSEEDED": 1
+        },
+        "reasons": {
+          "FULL_HAND_AMBIGUOUS": 26,
+          "APPEARANCE_MISMATCH": 56,
+          "IMAGE_CONTINUITY_EXPIRED": 4,
+          "FULL_HAND_POINT_PENDING": 20,
+          "FORWARD_BACKWARD_DISAGREEMENT": 3,
+          "FULL_HAND_MODEL_CONTINUITY": 2,
+          "INDEX_MODEL_CONTINUITY": 1,
+          "IMAGE_MATCH": 2,
+          "IMAGE_REFERENCE_CONFLICT": 1,
+          "FULL_HAND_POINT_CONFIRMED": 2,
+          "INDEX_MODEL_IMAGE_CONFLICT": 20,
+          "APPEARANCE_AMBIGUOUS": 35,
+          "SHOW_INDEX_OR_SELECT_TIP": 1,
+          "FULL_HAND_INDEX_CONFLICT": 4,
+          "IMAGE_MOTION_TOO_LARGE": 3
+        },
+        "observedAvailabilityReturns": {
+          "sameLogicalId": {
+            "n": 1,
+            "median": 66,
+            "p95": 66,
+            "maximum": 66
+          },
+          "replacementLogicalId": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "rightCensoredLossIntervals": 1,
+          "interpretation": "Observed availability gaps only; logical IDs do not establish anatomical same-finger recovery. Initial acquisition excluded. Durations start at first missing source frame."
+        },
+        "interpretationCpuMs": {
+          "n": 180,
+          "median": 0.9690000000000509,
+          "p95": 2.2770000000000437,
+          "maximum": 2.5397000000002663,
+          "total": 190.88460000000214
+        },
+        "researchMechanismCounters": {
+          "eligible": 0,
+          "proposals": 0,
+          "probation": 0,
+          "attemptedCommits": 0,
+          "commits": 0,
+          "rejectedCommits": 0
+        },
+        "reviewedReferences": {
+          "visiblePointing": 1,
+          "positions": 0,
+          "missing": 1,
+          "insideUncertaintyRegion": 0,
+          "outsideUncertaintyRegion": 0,
+          "negativePointer": 0,
+          "negativePointerOutputs": 0,
+          "ambiguousOrNonvisible": 1,
+          "errorPixels": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "authority": "REFERENCE_ESTIMATES_NOT_CERTIFIED_GROUND_TRUTH"
+        }
+      },
+      "OPEN_PALM": {
+        "packets": 91,
+        "freshInputPackets": 91,
+        "measuredPositions": 0,
+        "missingOrUnusablePositions": 91,
+        "readinessEligible": 0,
+        "logicalIdChanges": 0,
+        "rejectedOrErrorFrames": 0,
+        "states": {
+          "UNCERTAIN": 11,
+          "LOST": 14,
+          "UNSEEDED": 66
+        },
+        "reasons": {
+          "FULL_HAND_POINT_PENDING": 2,
+          "APPEARANCE_AMBIGUOUS": 9,
+          "INDEX_MODEL_IMAGE_CONFLICT": 6,
+          "APPEARANCE_MISMATCH": 5,
+          "FULL_HAND_INDEX_CONFLICT": 1,
+          "FULL_HAND_AMBIGUOUS": 1,
+          "IMAGE_CONTINUITY_EXPIRED": 1,
+          "SHOW_INDEX_OR_SELECT_TIP": 66
+        },
+        "observedAvailabilityReturns": {
+          "sameLogicalId": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "replacementLogicalId": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "rightCensoredLossIntervals": 0,
+          "interpretation": "Observed availability gaps only; logical IDs do not establish anatomical same-finger recovery. Initial acquisition excluded. Durations start at first missing source frame."
+        },
+        "interpretationCpuMs": {
+          "n": 91,
+          "median": 0.11099999999987631,
+          "p95": 0.9979999999995925,
+          "maximum": 1.1596999999992477,
+          "total": 29.62209999999868
+        },
+        "researchMechanismCounters": {
+          "eligible": 0,
+          "proposals": 0,
+          "probation": 0,
+          "attemptedCommits": 0,
+          "commits": 0,
+          "rejectedCommits": 0
+        },
+        "reviewedReferences": {
+          "visiblePointing": 0,
+          "positions": 0,
+          "missing": 0,
+          "insideUncertaintyRegion": 0,
+          "outsideUncertaintyRegion": 0,
+          "negativePointer": 2,
+          "negativePointerOutputs": 0,
+          "ambiguousOrNonvisible": 0,
+          "errorPixels": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "authority": "REFERENCE_ESTIMATES_NOT_CERTIFIED_GROUND_TRUTH"
+        }
+      },
+      "HIDE": {
+        "packets": 18,
+        "freshInputPackets": 18,
+        "measuredPositions": 0,
+        "missingOrUnusablePositions": 18,
+        "readinessEligible": 0,
+        "logicalIdChanges": 0,
+        "rejectedOrErrorFrames": 0,
+        "states": {
+          "UNSEEDED": 17,
+          "UNCERTAIN": 1
+        },
+        "reasons": {
+          "SHOW_INDEX_OR_SELECT_TIP": 17,
+          "FULL_HAND_POINT_PENDING": 1
+        },
+        "observedAvailabilityReturns": {
+          "sameLogicalId": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "replacementLogicalId": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "rightCensoredLossIntervals": 0,
+          "interpretation": "Observed availability gaps only; logical IDs do not establish anatomical same-finger recovery. Initial acquisition excluded. Durations start at first missing source frame."
+        },
+        "interpretationCpuMs": {
+          "n": 18,
+          "median": 0.1323000000002139,
+          "p95": 0.5760000000000218,
+          "maximum": 0.5760000000000218,
+          "total": 2.7358000000003813
+        },
+        "researchMechanismCounters": {
+          "eligible": 0,
+          "proposals": 0,
+          "probation": 0,
+          "attemptedCommits": 0,
+          "commits": 0,
+          "rejectedCommits": 0
+        },
+        "reviewedReferences": {
+          "visiblePointing": 0,
+          "positions": 0,
+          "missing": 0,
+          "insideUncertaintyRegion": 0,
+          "outsideUncertaintyRegion": 0,
+          "negativePointer": 0,
+          "negativePointerOutputs": 0,
+          "ambiguousOrNonvisible": 0,
+          "errorPixels": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "authority": "REFERENCE_ESTIMATES_NOT_CERTIFIED_GROUND_TRUTH"
+        }
+      },
+      "RECOVER": {
+        "packets": 109,
+        "freshInputPackets": 109,
+        "measuredPositions": 23,
+        "missingOrUnusablePositions": 86,
+        "readinessEligible": 16,
+        "logicalIdChanges": 0,
+        "rejectedOrErrorFrames": 0,
+        "states": {
+          "UNCERTAIN": 33,
+          "LOST": 45,
+          "UNSEEDED": 8,
+          "TRACKING": 23
+        },
+        "reasons": {
+          "FULL_HAND_CONTRARY_PENDING": 1,
+          "APPEARANCE_MISMATCH": 22,
+          "IMAGE_CONTINUITY_EXPIRED": 1,
+          "SHOW_INDEX_OR_SELECT_TIP": 8,
+          "FULL_HAND_POINT_PENDING": 10,
+          "APPEARANCE_AMBIGUOUS": 24,
+          "FORWARD_BACKWARD_DISAGREEMENT": 1,
+          "FULL_HAND_INDEX_CONFLICT": 16,
+          "FULL_HAND_MODEL_CONTINUITY": 1,
+          "FULL_HAND_CONTRARY_CONFIRMED": 3,
+          "FULL_HAND_POINT_CONFIRMED": 22
+        },
+        "observedAvailabilityReturns": {
+          "sameLogicalId": {
+            "n": 1,
+            "median": 1500,
+            "p95": 1500,
+            "maximum": 1500
+          },
+          "replacementLogicalId": {
+            "n": 0,
+            "median": null,
+            "p95": null,
+            "maximum": null
+          },
+          "rightCensoredLossIntervals": 0,
+          "interpretation": "Observed availability gaps only; logical IDs do not establish anatomical same-finger recovery. Initial acquisition excluded. Durations start at first missing source frame."
+        },
+        "interpretationCpuMs": {
+          "n": 109,
+          "median": 1.045600000000377,
+          "p95": 1.542899999999463,
+          "maximum": 1.7593999999999141,
+          "total": 102.40799999999763
+        },
+        "researchMechanismCounters": {
+          "eligible": 0,
+          "proposals": 0,
+          "probation": 0,
+          "attemptedCommits": 0,
+          "commits": 0,
+          "rejectedCommits": 0
+        },
+        "reviewedReferences": {
+          "visiblePointing": 2,
+          "positions": 1,
+          "missing": 1,
+          "insideUncertaintyRegion": 1,
+          "outsideUncertaintyRegion": 0,
+          "negativePointer": 1,
+          "negativePointerOutputs": 0,
+          "ambiguousOrNonvisible": 0,
+          "errorPixels": {
+            "n": 1,
+            "median": 5.917931769188178,
+            "p95": 5.917931769188178,
+            "maximum": 5.917931769188178
+          },
+          "authority": "REFERENCE_ESTIMATES_NOT_CERTIFIED_GROUND_TRUTH"
+        }
+      }
+    }
+  },
+  "expectedBaselineParity": {
+    "rows": 1336,
+    "outputDifferences": 0,
+    "readinessDifferences": 0,
+    "acceptedDifferences": 0,
+    "differingOutputFields": {},
+    "resultsSha256": "412d1ed43a52e0b7ca02eb299df576f4d7499809cf6aa7a8bac9728d2d55132a"
+  },
+  "paired": {
+    "positionAvailabilityGains": 0,
+    "positionAvailabilityLosses": 0,
+    "measuredPositionDifferences": 0
+  },
+  "unavailable": {
+    "physicalCorrectDigitRate": "No reviewed continuous anatomical identity labels",
+    "anatomicalIdentitySwitches": "Logical ID changes are not digit-switch ground truth",
+    "physicalRecoverySuccess": "Availability returns lack continuous anatomical recovery labels",
+    "stationaryJitter": "No independent stationary trajectory labels",
+    "captureToVisibleLatency": "Original capture/completion clocks are reused; sensor exposure and display presentation are unobserved",
+    "freshInferenceCostAndThroughput": "No neural execution, camera pacing or display in this benchmark",
+    "statisticalUncertainty": "Single serially correlated development recording; frame-binomial confidence intervals would imply unsupported independence",
+    "completedPhysicalCalibration": "Diagnostic prompts are not a target-responsive calibration recording"
+  },
+  "limits": [
+    "Every chronological packet is interpreted once per arm without resets. Original clocks are unchanged.",
+    "CPU distributions measure this Node interpretation run, including cloning and adapter/gate overhead; exclude decoding, model inference, camera and rendering.",
+    "Availability, logical identity and reference-region proximity are separate from physical correctness and acceptance.",
+    "Reference uncertainty regions remain annotation uncertainty; missing positions stay in the denominator.",
+    "Prompt names are instructions, not verified motion or gesture labels."
+  ]
+}

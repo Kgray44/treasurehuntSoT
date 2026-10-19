@@ -1,0 +1,74 @@
+{
+  "classification": "INDEPENDENT_FAULT_INJECTION_ON_FROZEN_CANDIDATE_DEVELOPMENT_POSITIVE",
+  "candidateSha256": "8be6bdaeb4672b7e2cf46cff57ab340afe18eeb4d37dbb934806fa967dddcea5",
+  "fixtureSourceSha256": "a0b15e2c46feb59072f62c1481b4076dd5cecb113cc34e9ffec46ed6bff71489",
+  "heldoutInputsUnchanged": true,
+  "events": [
+    {
+      "capture": 366,
+      "completionAge": 151,
+      "error": "INDEX_IMAGE_FRAME_INVALID_OR_STALE",
+      "probation": {
+        "startedAt": 366,
+        "lastAt": 366,
+        "frames": 1
+      },
+      "counters": {
+        "eligible": 1,
+        "proposals": 1,
+        "probation": 1,
+        "attemptedCommits": 0,
+        "commits": 0,
+        "rejectedCommits": 0,
+        "reasons": {
+          "INELIGIBLE_BASELINE_OR_CURRENT_SOURCE": 4
+        }
+      }
+    },
+    {
+      "capture": 433,
+      "completionAge": 151,
+      "error": "INDEX_IMAGE_FRAME_INVALID_OR_STALE",
+      "probation": {
+        "startedAt": 366,
+        "lastAt": 433,
+        "frames": 2
+      },
+      "counters": {
+        "eligible": 2,
+        "proposals": 2,
+        "probation": 2,
+        "attemptedCommits": 0,
+        "commits": 0,
+        "rejectedCommits": 0,
+        "reasons": {
+          "INELIGIBLE_BASELINE_OR_CURRENT_SOURCE": 4
+        }
+      }
+    },
+    {
+      "capture": 500,
+      "completionAge": 1,
+      "error": null,
+      "state": "TRACKING",
+      "reason": "FULL_HAND_POINT_CONFIRMED",
+      "probation": {
+        "startedAt": 366,
+        "lastAt": 500,
+        "frames": 3
+      },
+      "counters": {
+        "eligible": 3,
+        "proposals": 3,
+        "probation": 2,
+        "attemptedCommits": 1,
+        "commits": 1,
+        "rejectedCommits": 0,
+        "reasons": {
+          "INELIGIBLE_BASELINE_OR_CURRENT_SOURCE": 4
+        }
+      }
+    }
+  ],
+  "interpretation": "Two stale completions rejected by canonical150ms gate must not advance any reference-registration probation. SourceFresh callback intentionally remains true to isolate final completion-clock validation."
+}

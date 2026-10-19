@@ -1,0 +1,81 @@
+{
+  "classification": "SUPPLEMENTAL_PASSIVE_CLOCK_DIAGNOSIS_NOT_PHYSICAL_ACCEPTANCE",
+  "originalAssertionPreserved": true,
+  "passiveDiagnosticCaseOutcome": "FAIL_INITIAL_READY",
+  "playwrightReceiptSha256": "bf72ff6d5097427d37f3ebc7fc4563eb2da78d670664de6351532c55dd74a4ca",
+  "workerMessages": {
+    "READY": 1,
+    "RESULT": 92
+  },
+  "workerReady": [
+    {
+      "backend": "GPU_WEBGL",
+      "providerPolicy": "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1"
+    }
+  ],
+  "dispatchMessages": {
+    "INIT": 1,
+    "FRAME": 93
+  },
+  "rawResultHandCounts": {
+    "1": 92
+  },
+  "rawResultDispatchAgeMs": {
+    "n": 92,
+    "min": 263.59999999403954,
+    "median": 287.199951171875,
+    "p95": 349.59990233182907,
+    "max": 351.5
+  },
+  "rawResultInferenceAgeMs": {
+    "n": 92,
+    "min": 263.50014647841454,
+    "median": 286.900146484375,
+    "p95": 349.30009764432907,
+    "max": 351.300048828125
+  },
+  "clockConvention": "FRAME capture is window.performance.now; RESULT inference/received are epoch; subtract page timeOrigin estimated from paired dispatch clocks before computing age",
+  "rawResultsOver150ms": 92,
+  "rawResultTransportMs": {
+    "n": 92,
+    "min": 0.099853515625,
+    "median": 0.199951171875,
+    "p95": 0.39990234375,
+    "max": 0.7998046875
+  },
+  "presentedCallbacks": 603,
+  "presentedOriginAgeAtCallbackMs": {
+    "n": 603,
+    "min": 0.1999999999998181,
+    "median": 13.600000005960283,
+    "p95": 17.100000000000364,
+    "max": 59.400000000001455
+  },
+  "presentedCaptureTimeDefined": 0,
+  "presentedOriginFutureCallbacks": 0,
+  "presentedOriginNegativeCallbacks": 0,
+  "frameDispatchCount": 93,
+  "frameDimensions": {
+    "640x480": 93
+  },
+  "observedTelemetry": {
+    "observations": 92,
+    "draws": 606,
+    "tracks": 1,
+    "workers": 1
+  },
+  "sectionStates": [
+    {
+      "imageState": "UNSEEDED",
+      "imageReason": "UNSEEDED",
+      "step": "PREPARE",
+      "imageTrackGeneration": "0"
+    }
+  ],
+  "limits": [
+    "Private test copy adds passive clock listeners only; original readiness assertion and150ms limit unchanged.",
+    "Fresh dispatch clocks alone do not prove fresh camera pixel origin.",
+    "Single instrumented synthetic photographic case; not actual owner camera, real display latency or physical throughput.",
+    "All raw diagnostics, screenshots and traces remain private."
+  ]
+}
