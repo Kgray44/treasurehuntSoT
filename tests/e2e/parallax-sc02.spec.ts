@@ -1,4 +1,4 @@
-import { test, expect, type Locator } from "@playwright/test";
+import { test, expect, type Locator, type Page } from "@playwright/test";
 import { mkdir, writeFile } from "node:fs/promises";
 import { db } from "../../src/lib/db";
 import { closureAccount, authenticateClosure } from "./fixtures/landfall-closure";
@@ -14,6 +14,41 @@ import { execFileSync } from "node:child_process";
 test.describe.configure({ mode: "default", timeout: 240000 });
 test.use({ video: { mode: "on", size: { width: 1440, height: 900 } } });
 test.afterAll(() => db.$disconnect());
+
+const presetKind = (name: string) =>
+  name.startsWith("Ghostly Presence")
+    ? "Compositions"
+    : ["Point light", "Spatial ambience"].includes(name)
+      ? "Effects"
+      : "Assets";
+
+async function openCurrentLibrary(page: Page, kind: string) {
+  const open = page.getByRole("button", { name: "Open Library", exact: true });
+  if ((await open.getAttribute("aria-pressed")) !== "true") await open.click();
+  const library = page.getByRole("region", { name: "Spatial content library", exact: true });
+  await library.getByRole("tab", { name: kind, exact: true }).click();
+  return library;
+}
+
+async function addCurrentPreset(page: Page, name: string) {
+  const library = await openCurrentLibrary(page, presetKind(name));
+  await library.getByRole("searchbox").fill(name);
+  await library.getByRole("button", { name: `Inspect ${name}`, exact: true }).click();
+  const details = library.getByRole("complementary", { name: `${name} details`, exact: true });
+  await details.getByRole("button", { name: "Add to active Scene", exact: true }).click();
+}
+
+async function reuseCurrentComposition(page: Page) {
+  const name = "Ghostly Presence";
+  const library = await openCurrentLibrary(page, "Compositions");
+  await library.getByRole("combobox", { name: "Source", exact: true }).selectOption("MY_CREATIONS");
+  await library.getByRole("searchbox").fill(name);
+  await library.getByRole("button", { name: `Inspect ${name}`, exact: true }).click();
+  await library
+    .getByRole("complementary", { name: `${name} details`, exact: true })
+    .getByRole("button", { name: "Add saved composition", exact: true })
+    .click();
+}
 const evidence = process.env.SC02_EVIDENCE_DIR ?? "Development_Docs/Projects/Project_Parallax/evidence/sc02/product";
 
 test("SC-02 Creator places real assets, edits a light, saves and reuses a composition, then reloads the same Scene", async ({
@@ -32,21 +67,25 @@ test("SC-02 Creator places real assets, edits a light, saves and reuses a compos
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/studio/library");
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
-  await expect(page.getByRole("heading", { name: "Desk Map", level: 1 })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Parallax", level: 1 })).toBeVisible();
+  await expect(
+    page
+      .getByRole("region", { name: "Environment and Scene", exact: true })
+      .locator("div")
+      .filter({ has: page.getByText("EDITING SCENE", { exact: true }) })
+      .locator("strong"),
+  ).toHaveText("Desk Map");
   await page.getByLabel("Workspace layout").selectOption("CONSTRUCTION");
   const canvas = page.locator('[data-renderer="READY"] canvas'),
     instrument = page.locator('[data-renderer="READY"]');
   await expect(canvas).toBeVisible();
-  const library = page.getByRole("region", { name: "Spatial asset browser" });
-  const add = async (name: string) => {
-    await page.getByLabel("Search spatial assets").fill(name);
-    await library.getByRole("button", { name: `Add ${name}`, exact: true }).click();
-  };
+  const add = (name: string) => addCurrentPreset(page, name);
   await add("Treasure chest");
   await page.getByRole("button", { name: "Frame selection", exact: true }).click();
   await page.screenshot({ path: `${evidence}/treasure-chest-desktop.png`, fullPage: true });
   await add("Point light");
-  await page.getByLabel("Light intensity", { exact: true }).fill("35");
+  await page.getByRole("spinbutton", { name: "Light intensity numeric value", exact: true }).fill("35");
+  await page.getByRole("spinbutton", { name: "Light intensity numeric value", exact: true }).blur();
   await page.getByLabel("Element color", { exact: true }).fill("#3e84ff");
   await page.screenshot({ path: `${evidence}/real-point-light-enabled.png`, fullPage: true });
   const lightOn = await canvas.screenshot({ path: `${evidence}/light-on-canvas.png` });
@@ -62,18 +101,20 @@ test("SC-02 Creator places real assets, edits a light, saves and reuses a compos
   expect(lightChangedPixels).toBeGreaterThan(500);
   await page.getByLabel("Element enabled", { exact: true }).check();
   await add("Ghostly Presence");
+  await page.getByRole("button", { name: "Open spatial context", exact: true }).click();
   await page.getByRole("button", { name: "Save selected composition", exact: true }).click();
   await expect
     .poll(async () => (await listSpatialItems(account.id)).filter((i) => i.draft.tags.includes("composition")).length)
     .toBe(1);
-  await page.getByRole("tab", { name: "Hierarchy", exact: true }).click();
+  await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
   await page
-    .getByRole("region", { name: "Scene graph" })
-    .getByRole("button", { name: "↳ Ghostly Presence · Point light", exact: true })
-    .click();
-  await page.getByLabel("Light intensity", { exact: true }).fill("22");
-  await page.getByRole("tab", { name: "Saved", exact: true }).click();
-  await page.getByRole("button", { name: "Insert Ghostly Presence composition", exact: true }).click();
+    .getByRole("region", { name: "Scene graph", exact: true })
+    .locator("button[data-graph-entity]")
+    .filter({ hasText: "Ghostly Presence · Point light" })
+    .click({ position: { x: 8, y: 8 } });
+  await page.getByRole("spinbutton", { name: "Light intensity numeric value", exact: true }).fill("22");
+  await page.getByRole("spinbutton", { name: "Light intensity numeric value", exact: true }).blur();
+  await reuseCurrentComposition(page);
   await page.getByRole("button", { name: "Save draft", exact: true }).click();
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
   const definition = new URL(page.url()).searchParams.get("definition")!;
@@ -89,7 +130,7 @@ test("SC-02 Creator places real assets, edits a light, saves and reuses a compos
   await page.screenshot({ path: `${evidence}/composition-simulation.png`, fullPage: true });
   await page.getByRole("button", { name: "Pause timeline", exact: true }).click();
   await expect.poll(async () => JSON.parse((await instrument.getAttribute("data-performance"))!).audioSources).toBe(0);
-  await page.getByRole("button", { name: "Mute preview audio", exact: true }).click();
+  await page.getByRole("button", { name: "Disable preview audio", exact: true }).click();
   const metrics = JSON.parse((await instrument.getAttribute("data-performance"))!);
   expect(metrics.geometries).toBeGreaterThan(0);
   const setup = await (await page.request.get("/api/studio/parallax")).json(),
@@ -128,7 +169,7 @@ test("SC-02 Creator places real assets, edits a light, saves and reuses a compos
   expect(constrained.canvas!.height).toBeGreaterThan(300);
   expect(constrained.document.width).toBeLessThanOrEqual(390);
   expect(constrained.document.height).toBeLessThanOrEqual(constrained.document.viewportHeight + 2);
-  const viewDisclosure = page.getByText("View & audio controls", { exact: true });
+  const viewDisclosure = page.getByText("View & audio", { exact: true });
   await viewDisclosure.focus();
   await page.keyboard.press("Enter");
   await expect(page.getByRole("button", { name: "Enable preview audio", exact: true })).toBeVisible();
@@ -305,8 +346,16 @@ test("SC-02 Studio visibly executes projected effects, a portal and additional l
       .click();
     // Use an intentionally visible configured fill/density for causal comparison;
     // the gentle defaults are not intended to overpower the Gallery's sunlight.
-    if (id === "ambient-light") await page.getByLabel("Light intensity", { exact: true }).fill("2");
-    if (id === "mist") await page.getByLabel("Mist density", { exact: true }).fill("0.06");
+    if (id === "ambient-light") {
+      const intensity = page.getByRole("spinbutton", { name: "Light intensity numeric value", exact: true });
+      await intensity.fill("2");
+      await intensity.blur();
+    }
+    if (id === "mist") {
+      const density = page.getByRole("spinbutton", { name: "Mist density numeric value", exact: true });
+      await density.fill("0.06");
+      await density.blur();
+    }
     await page.screenshot({ path: `${evidence}/effect-${id}.png`, fullPage: true });
     const metrics = JSON.parse((await instrument.getAttribute("data-performance"))!);
     let parameterChangedPixels: number | null = null;
@@ -318,7 +367,12 @@ test("SC-02 Studio visibly executes projected effects, a portal and additional l
         .toBuffer();
       // Keep the element enabled and its selection bounds unchanged while setting only
       // the actual light intensity or mist density to zero.
-      await page.getByLabel(id === "mist" ? "Mist density" : "Light intensity", { exact: true }).fill("0");
+      const parameter = page.getByRole("spinbutton", {
+        name: `${id === "mist" ? "Mist density" : "Light intensity"} numeric value`,
+        exact: true,
+      });
+      await parameter.fill("0");
+      await parameter.blur();
       await page.screenshot({ path: `${evidence}/effect-${id}-zero.png`, fullPage: true });
       const off = await sharp(await canvas.screenshot({ path: `${evidence}/effect-${id}-off-canvas.png` }))
         .ensureAlpha()
@@ -386,20 +440,47 @@ test("SC-02 Creator authors and reuses elements with native keyboard navigation 
     await tabTo(target, name);
     await page.keyboard.press("Enter");
   };
+  const library = page.getByRole("region", { name: "Spatial content library", exact: true });
+  const ensureLibrary = async () => {
+    const open = page.getByRole("button", { name: "Open Library", exact: true });
+    if ((await open.getAttribute("aria-pressed")) !== "true") await activate(open, "Open Library");
+  };
   const search = async (text: string) => {
-    await tabTo(page.getByLabel("Search spatial assets"), "Search spatial assets");
+    await ensureLibrary();
+    const kind = presetKind(text);
+    await tabTo(library.getByRole("tab", { selected: true }), "Current Library category");
+    for (
+      let index = 0;
+      index < 5 &&
+      (await library.getByRole("tab", { name: kind, exact: true }).getAttribute("aria-selected")) !== "true";
+      index++
+    ) {
+      await page.keyboard.press("ArrowRight");
+    }
+    await expect(library.getByRole("tab", { name: kind, exact: true })).toHaveAttribute("aria-selected", "true");
+    await tabTo(library.getByRole("searchbox"), "Search Library");
     await page.keyboard.press("Control+A");
     await page.keyboard.type(text);
+  };
+  const preparePreset = async (name: string) => {
+    await search(name);
+    await activate(library.getByRole("button", { name: `Inspect ${name}`, exact: true }), `Inspect ${name}`);
+    const add = library
+      .getByRole("complementary", { name: `${name} details`, exact: true })
+      .getByRole("button", { name: "Add to active Scene", exact: true });
+    await tabTo(add, `Add ${name} to active Scene`);
   };
   await page.goto("/studio/library");
   await activate(page.getByRole("link", { name: "Spatial Studio", exact: true }), "Spatial Studio entry");
   await expect(page.locator('[data-renderer="READY"] canvas')).toBeVisible();
-  await activate(page.getByRole("button", { name: "Open asset Library", exact: true }), "Open asset Library");
+  await ensureLibrary();
   await search("zzzz-no-synthetic-match");
-  await expect(page.getByText("No supported assets match this filter.", { exact: true })).toBeVisible();
+  await expect(
+    library.getByText("No items match these filters. Clear search or choose another source.", { exact: true }),
+  ).toBeVisible();
   await page.screenshot({ path: `${evidence}/keyboard-empty-search.png`, fullPage: true });
-  await search("Treasure chest");
-  await activate(page.getByRole("button", { name: "Add Treasure chest", exact: true }), "Add Treasure chest");
+  await preparePreset("Treasure chest");
+  await page.keyboard.press("Enter");
   const chest = physicalAssets.find((a) => a.id === "treasure-chest")!;
   await activate(
     page.getByRole("button", { name: `${chest.name}. ${chest.description}`, exact: true }),
@@ -412,19 +493,19 @@ test("SC-02 Creator authors and reuses elements with native keyboard navigation 
     return { name: element.getAttribute("aria-label"), outline: style.outline, boxShadow: style.boxShadow };
   });
   await page.screenshot({ path: `${evidence}/keyboard-object-focus.png`, fullPage: true });
-  await search("Point light");
-  await tabTo(page.getByRole("button", { name: "Add Point light", exact: true }), "Add Point light");
+  await preparePreset("Point light");
   const feedbackStart = Date.now();
   await page.keyboard.press("Enter");
-  const intensity = page.getByLabel("Light intensity", { exact: true });
+  const intensity = page.getByRole("spinbutton", { name: "Light intensity numeric value", exact: true });
   await expect(intensity).toBeVisible({ timeout: 3000 });
   const inspectorFeedbackMs = Date.now() - feedbackStart;
   await tabTo(intensity, "Light intensity");
   await page.keyboard.press("Control+A");
   await page.keyboard.type("24");
   await expect(intensity).toHaveValue("24");
-  await search("Ghostly Presence");
-  await activate(page.getByRole("button", { name: "Add Ghostly Presence", exact: true }), "Add Ghostly Presence");
+  await preparePreset("Ghostly Presence");
+  await page.keyboard.press("Enter");
+  await activate(page.getByRole("button", { name: "Open spatial context", exact: true }), "Open spatial context");
   await activate(
     page.getByRole("button", { name: "Save selected composition", exact: true }),
     "Save selected composition",
@@ -432,9 +513,23 @@ test("SC-02 Creator authors and reuses elements with native keyboard navigation 
   await expect
     .poll(async () => (await listSpatialItems(account.id)).filter((i) => i.draft.tags.includes("composition")).length)
     .toBe(1);
-  await activate(page.getByRole("tab", { name: "Saved", exact: true }), "Saved Library tab");
+  await search("Ghostly Presence");
+  const savedSource = library.getByRole("combobox", { name: "Source", exact: true });
+  await tabTo(savedSource, "Saved composition source");
+  await page.keyboard.press("Home");
+  const sourceOptions = await savedSource.locator("option").count();
+  for (let option = 0; option < sourceOptions && (await savedSource.inputValue()) !== "MY_CREATIONS"; option++) {
+    await page.keyboard.press("ArrowDown");
+  }
+  await expect(savedSource).toHaveValue("MY_CREATIONS");
   await activate(
-    page.getByRole("button", { name: "Insert Ghostly Presence composition", exact: true }),
+    library.getByRole("button", { name: "Inspect Ghostly Presence", exact: true }),
+    "Inspect saved composition",
+  );
+  await activate(
+    library
+      .getByRole("complementary", { name: "Ghostly Presence details", exact: true })
+      .getByRole("button", { name: "Add saved composition", exact: true }),
     "Insert saved composition",
   );
   await activate(page.getByRole("button", { name: "Save draft", exact: true }), "Save draft");
@@ -532,9 +627,7 @@ test("SC-02 preserves a failed save and recovers audio from unavailable and Guid
       });
     } else await route.continue();
   });
-  await page.getByRole("button", { name: "Open asset Library", exact: true }).click();
-  await page.getByLabel("Search spatial assets").fill("Spatial ambience");
-  await page.getByRole("button", { name: "Add Spatial ambience", exact: true }).click();
+  await addCurrentPreset(page, "Spatial ambience");
   await page.getByRole("button", { name: "Save draft", exact: true }).click();
   const saveAlert = page.getByRole("main").getByRole("alert");
   await expect(saveAlert).toContainText("Synthetic save unavailable");
@@ -579,7 +672,7 @@ test("SC-02 preserves a failed save and recovers audio from unavailable and Guid
   await page.screenshot({ path: `${evidence}/recovery-audio-restored.png`, fullPage: true });
   await page.getByRole("button", { name: "Pause timeline", exact: true }).click();
   await expect.poll(async () => JSON.parse((await instrument.getAttribute("data-performance"))!).audioSources).toBe(0);
-  await page.getByRole("button", { name: "Mute preview audio", exact: true }).click();
+  await page.getByRole("button", { name: "Disable preview audio", exact: true }).click();
   await writeFile(
     `${evidence}/recovery-journey.json`,
     JSON.stringify(
@@ -664,10 +757,8 @@ test("SC-02 measures a composed Scene and reclaims temporary model resources", a
   await page.getByRole("button", { name: "Pause timeline", exact: true }).click();
   const baseline = JSON.parse((await instrument.getAttribute("data-performance"))!);
   const resourceCycles = [];
-  await page.getByRole("button", { name: "Open asset Library", exact: true }).click();
-  await page.getByLabel("Search spatial assets").fill("Treasure chest");
   for (let cycle = 0; cycle < 3; cycle++) {
-    await page.getByRole("button", { name: "Add Treasure chest", exact: true }).click();
+    await addCurrentPreset(page, "Treasure chest");
     await expect
       .poll(async () => JSON.parse((await instrument.getAttribute("data-performance"))!).geometries)
       .toBeGreaterThan(baseline.geometries);

@@ -226,24 +226,53 @@ test("scaled physical saved asset keeps keyboard and pointer support with animat
     width: 4,
     depth: 4,
     features: [
-      createGenericRoomFeature({ id: "floor", classification: "FLOOR", dimensions: [4, 0.16, 4], position: { x: 0, y: -0.08, z: 0 } }),
-      createGenericRoomFeature({ id: "small-table", classification: "TABLE", dimensions: [0.3, 0.8, 0.3], position: { x: 0, y: 0.4, z: 0 } }),
+      createGenericRoomFeature({
+        id: "floor",
+        classification: "FLOOR",
+        dimensions: [4, 0.16, 4],
+        position: { x: 0, y: -0.08, z: 0 },
+      }),
+      createGenericRoomFeature({
+        id: "small-table",
+        classification: "TABLE",
+        dimensions: [0.3, 0.8, 0.3],
+        position: { x: 0, y: 0.4, z: 0 },
+      }),
     ],
   };
-  const source = insertSpatialElement(createSpatialDraft(randomUUID(), "Scaled model source"), "candelabra", "scaled-candelabra");
+  const source = insertSpatialElement(
+    createSpatialDraft(randomUUID(), "Scaled model source"),
+    "candelabra",
+    "scaled-candelabra",
+  );
   const root = source.content.entities.at(-1)!;
   root.transform.scale = 0.25;
-  source.content.studio!.animationTracks = [{
-    id: "root-motion", entityId: root.id, property: "POSITION", enabled: true, interpolation: "LINEAR",
-    keyframes: [
-      { id: "start", atMs: 0, value: { ...root.transform.position } },
-      { id: "end", atMs: 1000, value: { ...root.transform.position, x: root.transform.position.x + 0.1 } },
-    ],
-  }];
+  source.content.studio!.animationTracks = [
+    {
+      id: "root-motion",
+      entityId: root.id,
+      property: "POSITION",
+      enabled: true,
+      interpolation: "LINEAR",
+      keyframes: [
+        { id: "start", atMs: 0, value: { ...root.transform.position } },
+        { id: "end", atMs: 1000, value: { ...root.transform.position, x: root.transform.position.x + 0.1 } },
+      ],
+    },
+  ];
   await saveSpatialDraft(account.id, source, 0);
-  const asset = await saveReusableAsset(account.id, source, 1, root.id, {
-    name: "Scaled candelabra", description: "Synthetic scaled physical fixture", classification: "Fixture",
-  }, room);
+  const asset = await saveReusableAsset(
+    account.id,
+    source,
+    1,
+    root.id,
+    {
+      name: "Scaled candelabra",
+      description: "Synthetic scaled physical fixture",
+      classification: "Fixture",
+    },
+    room,
+  );
   const scene = createSpatialDraft(randomUUID(), "Scaled placement scene");
   scene.content.entities[0].transform.position = { x: 1.5, y: 0, z: 1.5 };
   scene.content.studio!.environment = createRoomEnvironment(room);
@@ -267,8 +296,16 @@ test("scaled physical saved asset keeps keyboard and pointer support with animat
   await placement.getByRole("button", { name: table.id.replaceAll("-", " ") }).focus();
   await page.keyboard.press("Enter");
   await expect(placement).toBeHidden();
-  await expect.poll(async () => (await listSpatialItems(account.id)).find((item) => item.id === scene.content.definitionId)!.draft.content.entities.length).toBe(2);
-  const keyboardScene = (await listSpatialItems(account.id)).find((item) => item.id === scene.content.definitionId)!.draft;
+  await expect
+    .poll(
+      async () =>
+        (await listSpatialItems(account.id)).find((item) => item.id === scene.content.definitionId)!.draft.content
+          .entities.length,
+    )
+    .toBe(2);
+  const keyboardScene = (await listSpatialItems(account.id)).find(
+    (item) => item.id === scene.content.definitionId,
+  )!.draft;
   const keyboardEntity = keyboardScene.content.entities.at(-1)!;
   const keyboardPose = previewEntityTransforms(keyboardScene.content, room.id, room)[keyboardEntity.id];
   expect(keyboardPose.scale).toBeCloseTo(0.25);
@@ -276,7 +313,13 @@ test("scaled physical saved asset keeps keyboard and pointer support with animat
   const atStart = evaluateSpatialScene(keyboardScene.content, [], 0).states[keyboardEntity.id].transform;
   const atEnd = evaluateSpatialScene(keyboardScene.content, [], 1000).states[keyboardEntity.id].transform;
   expect(atStart.position.x).toBeCloseTo(keyboardEntity.transform.position.x);
-  expect(Math.hypot(atEnd.position.x - atStart.position.x, atEnd.position.y - atStart.position.y, atEnd.position.z - atStart.position.z)).toBeCloseTo(0.1);
+  expect(
+    Math.hypot(
+      atEnd.position.x - atStart.position.x,
+      atEnd.position.y - atStart.position.y,
+      atEnd.position.z - atStart.position.z,
+    ),
+  ).toBeCloseTo(0.1);
   await mkdir(evidence, { recursive: true });
   await page.screenshot({ path: `${evidence}/scaled-keyboard-placed.png`, fullPage: true });
   await page.getByRole("button", { name: "Undo", exact: true }).first().click();
@@ -289,22 +332,40 @@ test("scaled physical saved asset keeps keyboard and pointer support with animat
   const bounds = await renderer.boundingBox();
   await page.mouse.click(bounds!.x + tablePoint.x * bounds!.width, bounds!.y + tablePoint.y * bounds!.height);
   await expect(placement).toBeHidden();
-  await expect.poll(async () => (await listSpatialItems(account.id)).find((item) => item.id === scene.content.definitionId)!.draft.content.entities.length).toBe(2);
-  const pointerScene = (await listSpatialItems(account.id)).find((item) => item.id === scene.content.definitionId)!.draft;
+  await expect
+    .poll(
+      async () =>
+        (await listSpatialItems(account.id)).find((item) => item.id === scene.content.definitionId)!.draft.content
+          .entities.length,
+    )
+    .toBe(2);
+  const pointerScene = (await listSpatialItems(account.id)).find(
+    (item) => item.id === scene.content.definitionId,
+  )!.draft;
   const pointerEntity = pointerScene.content.entities.at(-1)!;
   const pointerPose = previewEntityTransforms(pointerScene.content, room.id, room)[pointerEntity.id];
   expect(pointerPose.scale).toBeCloseTo(0.25);
-  expect(Math.hypot(pointerPose.position.x - keyboardPose.position.x, pointerPose.position.y - keyboardPose.position.y, pointerPose.position.z - keyboardPose.position.z)).toBeLessThan(0.03);
+  expect(
+    Math.hypot(
+      pointerPose.position.x - keyboardPose.position.x,
+      pointerPose.position.y - keyboardPose.position.y,
+      pointerPose.position.z - keyboardPose.position.z,
+    ),
+  ).toBeLessThan(0.03);
   await page.screenshot({ path: `${evidence}/scaled-pointer-placed.png`, fullPage: true });
-  const renderedStart = JSON.parse((await renderer.getAttribute("data-projected-scene"))!).objects
-    .find((object: { id: string }) => object.id === pointerEntity.id);
+  const renderedStart = JSON.parse((await renderer.getAttribute("data-projected-scene"))!).objects.find(
+    (object: { id: string }) => object.id === pointerEntity.id,
+  );
   expect(renderedStart).toBeTruthy();
   await page.getByRole("button", { name: "Play timeline" }).first().click();
-  await expect.poll(async () => {
-    const rendered = JSON.parse((await renderer.getAttribute("data-projected-scene"))!).objects
-      .find((object: { id: string }) => object.id === pointerEntity.id);
-    return Math.hypot(rendered.x - renderedStart.x, rendered.y - renderedStart.y);
-  }).toBeGreaterThan(0.001);
+  await expect
+    .poll(async () => {
+      const rendered = JSON.parse((await renderer.getAttribute("data-projected-scene"))!).objects.find(
+        (object: { id: string }) => object.id === pointerEntity.id,
+      );
+      return Math.hypot(rendered.x - renderedStart.x, rendered.y - renderedStart.y);
+    })
+    .toBeGreaterThan(0.001);
   await page.screenshot({ path: `${evidence}/scaled-animated-playback.png`, fullPage: true });
   await page.getByRole("button", { name: "Pause timeline" }).first().click();
 });

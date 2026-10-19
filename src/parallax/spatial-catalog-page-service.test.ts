@@ -133,7 +133,9 @@ describe("owner-scoped Spatial catalog pages", () => {
     original.versions[0].checksum = canonicalChecksum(draft);
     rows = [original];
     expect((await pageOwnedSpatialCatalog("creator", { kind: "COMPOSITIONS" })).total).toBe(0);
-    expect((await pageOwnedSpatialCatalog("creator", { kind: "SCENES" })).items.map((item) => item.id)).toEqual(["scene-0002"]);
+    expect((await pageOwnedSpatialCatalog("creator", { kind: "SCENES" })).items.map((item) => item.id)).toEqual([
+      "scene-0002",
+    ]);
   });
 
   it("honors ownership, archive, favorite, collection, environment and composition filters", async () => {

@@ -167,9 +167,7 @@ try {
     throw new Error("Unsafe private fixture cleanup");
   rmSync(privateRoot, { recursive: true });
   const recordings = [];
-  for (const directory of existsSync(resultRoot)
-    ? readdirSync(resultRoot, { withFileTypes: true })
-    : []) {
+  for (const directory of existsSync(resultRoot) ? readdirSync(resultRoot, { withFileTypes: true }) : []) {
     if (!directory.isDirectory() || !directory.name.startsWith("parallax-owner-room-photo-")) continue;
     for (const file of readdirSync(path.join(resultRoot, directory.name))) {
       if (!/^video(?:-\d+)?\.webm$/.test(file)) continue;

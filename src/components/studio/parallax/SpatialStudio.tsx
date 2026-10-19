@@ -469,7 +469,9 @@ export function SpatialStudio({
     setExpandedLibrary(false);
     requestAnimationFrame(() => {
       if (toViewport) {
-        const viewport = studioElement.current?.querySelector<HTMLElement>('[aria-label="Spatial canvas"] [data-renderer]');
+        const viewport = studioElement.current?.querySelector<HTMLElement>(
+          '[aria-label="Spatial canvas"] [data-renderer]',
+        );
         if (revealViewport) viewport?.scrollIntoView({ block: "center", inline: "nearest", behavior: "instant" });
         viewport?.focus({ preventScroll: true });
       } else

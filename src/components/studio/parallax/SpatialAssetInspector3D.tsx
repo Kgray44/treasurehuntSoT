@@ -37,7 +37,7 @@ export function SpatialAssetInspector3D({ id, name, thumbnail }: { id: ModelId; 
         scene.add(keyLight);
         const camera = new T.PerspectiveCamera(40, 1, 0.01, radius * 10);
         let azimuth = Math.PI / 4;
-        let elevation = 0.34;
+        const elevation = 0.34;
         let dragX: number | null = null;
         const render = () => {
           camera.position.set(

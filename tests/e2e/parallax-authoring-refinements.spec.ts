@@ -1,3 +1,8 @@
+import {
+  openOwnedSceneFromCurrentLibrary,
+  closeCurrentLibrary,
+  saveCurrentWorkingDraft,
+} from "./fixtures/parallax-current-library";
 import { test, expect } from "@playwright/test";
 import { mkdir, writeFile } from "node:fs/promises";
 import { db } from "../../src/lib/db";
@@ -49,8 +54,12 @@ test("Creator renames, drags and resizes a real animated clip, observes motion a
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/studio/library");
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
-  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-  await page.getByRole("button", { name: /Desk Map.*My Library/ }).click();
+  await openOwnedSceneFromCurrentLibrary(page, {
+    definitionId: draft.content.definitionId,
+    title: draft.content.title,
+    state: "WORKING",
+  });
+  await closeCurrentLibrary(page);
   const canvas = page.getByRole("region", { name: "Spatial canvas", exact: true });
   const host = canvas.locator('[data-renderer="READY"]');
   const receipt = async () =>
@@ -135,7 +144,7 @@ test("Creator renames, drags and resizes a real animated clip, observes motion a
   expect(samples.at(-1)!.x).toBeGreaterThan(startX + 0.02);
   expect(samples.at(-1)!.x).toBeLessThan(startX + 0.24);
   await page.screenshot({ path: `${root}/refinement-interpolated-object.png` });
-  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await saveCurrentWorkingDraft(page);
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
   const saved = (await listSpatialItems(account.id))[0].draft;
   expect(saved.content.studio!.animationTracks![0].keyframes.map((frame) => frame.atMs)).toEqual([1000, 5000]);
@@ -227,8 +236,12 @@ test("Renaming one footprint preserves its shape and rebuilds only that prop", a
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/studio/library");
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
-  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-  await page.getByRole("button", { name: /Ghost Footprint Trail.*My Library/ }).click();
+  await openOwnedSceneFromCurrentLibrary(page, {
+    definitionId: draft.content.definitionId,
+    title: draft.content.title,
+    state: "WORKING",
+  });
+  await closeCurrentLibrary(page);
   const canvas = page.getByRole("region", { name: "Spatial canvas", exact: true });
   const host = canvas.locator('[data-renderer="READY"]');
   await expect(host.locator("canvas")).toBeVisible();
@@ -247,7 +260,7 @@ test("Renaming one footprint preserves its shape and rebuilds only that prop", a
     .toBe(costs.triangles);
   await mkdir(root, { recursive: true });
   await page.screenshot({ path: `${root}/refinement-footprint-identity.png` });
-  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await saveCurrentWorkingDraft(page);
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
   const saved = (await listSpatialItems(account.id))[0].draft;
   expect(saved.content.entities[0].propStyle).toBe("FOOTPRINT");
@@ -286,8 +299,12 @@ test("Record captures edited poses and motion stays clear across modes and rende
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("/studio/library");
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
-  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-  await page.getByRole("button", { name: /Floating Compass.*My Library/ }).click();
+  await openOwnedSceneFromCurrentLibrary(page, {
+    definitionId: draft.content.definitionId,
+    title: draft.content.title,
+    state: "WORKING",
+  });
+  await closeCurrentLibrary(page);
   await page.getByRole("button", { name: "Collapse left dock", exact: true }).click();
   const canvas = page.getByRole("region", { name: "Spatial canvas", exact: true });
   const host = canvas.locator('[data-renderer="READY"]');
@@ -328,7 +345,7 @@ test("Record captures edited poses and motion stays clear across modes and rende
       .toBe("IN_VIEW");
     await page.screenshot({ path: `${root}/refinement-motion-${mode.toLowerCase()}.png` });
   }
-  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await saveCurrentWorkingDraft(page);
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
   const saved = (await listSpatialItems(account.id))[0].draft;
   expect(saved.content.studio!.animationTracks![0].keyframes[1].value).toMatchObject({ x: 0.5 });

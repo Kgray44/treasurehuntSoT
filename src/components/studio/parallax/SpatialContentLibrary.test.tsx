@@ -123,29 +123,32 @@ it("moves category focus and selection together with standard tab keys", () => {
   expect(screen.getByRole("tab", { name: "Compositions" })).toHaveFocus();
 });
 
-it.each([false, true])("reads owned publication status in expanded=%s from the authorized Harborlight listing route", async (expanded) => {
-  const fetcher = vi.fn(async () =>
-    Response.json({
-      licenses: [],
-      listings: [
-        {
-          id: "listing-one",
-          title: "Published map",
-          publicationStatus: "PUBLISHED",
-          semanticVersion: "2.0.0",
-        },
-      ],
-    }),
-  );
-  vi.stubGlobal("fetch", fetcher);
-  render(<SpatialContentLibrary {...props()} catalogMode="FULL" items={[record(7)]} expanded={expanded} />);
-  fireEvent.click(screen.getByRole("button", { name: "Inspect Owned Scene 007" }));
-  expect(await screen.findByText(/Published in Community.*Published map.*v2\.0\.0/)).toBeVisible();
-  expect(fetcher).toHaveBeenCalledWith(
-    expect.stringContaining("/api/community/spatial-publication/licenses?"),
-    expect.any(Object),
-  );
-});
+it.each([false, true])(
+  "reads owned publication status in expanded=%s from the authorized Harborlight listing route",
+  async (expanded) => {
+    const fetcher = vi.fn(async () =>
+      Response.json({
+        licenses: [],
+        listings: [
+          {
+            id: "listing-one",
+            title: "Published map",
+            publicationStatus: "PUBLISHED",
+            semanticVersion: "2.0.0",
+          },
+        ],
+      }),
+    );
+    vi.stubGlobal("fetch", fetcher);
+    render(<SpatialContentLibrary {...props()} catalogMode="FULL" items={[record(7)]} expanded={expanded} />);
+    fireEvent.click(screen.getByRole("button", { name: "Inspect Owned Scene 007" }));
+    expect(await screen.findByText(/Published in Community.*Published map.*v2\.0\.0/)).toBeVisible();
+    expect(fetcher).toHaveBeenCalledWith(
+      expect.stringContaining("/api/community/spatial-publication/licenses?"),
+      expect.any(Object),
+    );
+  },
+);
 
 it("routes expanded Scene duplication to the existing Scene lifecycle action", () => {
   vi.stubGlobal(

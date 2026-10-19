@@ -42,10 +42,7 @@ function snapRootWithAnimation(
   );
   const newPose = previewEntityTransforms(snapped.content, environment.id, environment)[entityId];
   const worldDelta = composeTransform(newPose, inverseTransform(oldPose));
-  const localDelta = composeTransform(
-    inverseTransform(newFrame),
-    composeTransform(worldDelta, oldFrame),
-  );
+  const localDelta = composeTransform(inverseTransform(newFrame), composeTransform(worldDelta, oldFrame));
   const next = structuredClone(snapped);
   for (const track of next.content.studio?.animationTracks ?? []) {
     if (track.entityId !== entityId) continue;
@@ -55,8 +52,7 @@ function snapRootWithAnimation(
     else if (track.property === "ROTATION")
       for (const key of track.keyframes)
         key.value = composeTransform(localDelta, { ...oldEntity.transform, rotation: key.value }).rotation;
-    else if (track.property === "SCALE")
-      for (const key of track.keyframes) key.value *= localDelta.scale;
+    else if (track.property === "SCALE") for (const key of track.keyframes) key.value *= localDelta.scale;
   }
   return draftSchema.parse(next);
 }
@@ -76,7 +72,10 @@ export function placeGroupOnSurface(
   const environment = authoredPreviewEnvironment(
     input.content,
     typeof environmentInput === "string"
-      ? (simulationEnvironments.find((p) => p.id === environmentId) ?? { ...simulationEnvironments[0], id: environmentId })
+      ? (simulationEnvironments.find((p) => p.id === environmentId) ?? {
+          ...simulationEnvironments[0],
+          id: environmentId,
+        })
       : environmentInput,
   );
   const poses = previewEntityTransforms(input.content, environmentId, environment);

@@ -170,7 +170,9 @@ test("SC-00B combined Inspector covers twelve selection contexts and room recove
   await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("GUIDED");
   await expect(inspector.getByRole("textbox", { name: "Feature name", exact: true })).toHaveCount(0);
   await expect(inspector.getByRole("combobox", { name: "Room feature", exact: true })).toHaveValue("");
-  await expect(inspector.getByText("Select a room feature to adjust it. Open Spatial context for room tools and relationships.")).toBeVisible();
+  await expect(
+    inspector.getByText("Select a room feature to adjust it. Open Spatial context for room tools and relationships."),
+  ).toBeVisible();
   await depth("environment");
   const feature = async (id: string) => {
     const row = graph.locator(`[data-graph-feature="${id}"]`);
@@ -198,13 +200,18 @@ test("SC-00B combined Inspector covers twelve selection contexts and room recove
   const contextRoomWidth = inspector.getByRole("spinbutton", { name: "Room width (m)" });
   await contextRoomWidth.scrollIntoViewIfNeeded();
   await expect(contextRoomWidth).toBeInViewport();
-  await page.screenshot({ path: `${artifactRoot}/room-feature-context-dimensions-guided-scrolled.png`, fullPage: true });
+  await page.screenshot({
+    path: `${artifactRoot}/room-feature-context-dimensions-guided-scrolled.png`,
+    fullPage: true,
+  });
   await page.getByRole("button", { name: "Open object properties", exact: true }).click();
   await expect(inspector.getByRole("region", { name: "Room feature editor" })).toBeVisible();
   await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("GUIDED");
   await expect(inspector.getByRole("group", { name: "Room feature canvas tools" })).toBeVisible();
   await inspector.getByRole("button", { name: "Move in scene", exact: true }).click();
-  const moveTool = page.getByRole("toolbar", { name: "Spatial editing tools" }).getByRole("button", { name: "Move tool" });
+  const moveTool = page
+    .getByRole("toolbar", { name: "Spatial editing tools" })
+    .getByRole("button", { name: "Move tool" });
   await expect(moveTool).toHaveAttribute("aria-pressed", "true");
   await expect(inspector.getByRole("spinbutton", { name: "Feature x (m)" })).toHaveCount(0);
   await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("DETAILED");
@@ -249,10 +256,13 @@ test("SC-00B combined Inspector covers twelve selection contexts and room recove
     exact: true,
   });
   if ((await timelineTab.getAttribute("aria-selected")) !== "true") await timelineTab.click();
-  await page.locator('[aria-label="Spatial sequence tracks"]').getByRole("button", {
-    name: draft.content.entities[0].name,
-    exact: true,
-  }).click();
+  await page
+    .locator('[aria-label="Spatial sequence tracks"]')
+    .getByRole("button", {
+      name: draft.content.entities[0].name,
+      exact: true,
+    })
+    .click();
   await expect(inspector.getByRole("region", { name: "Room feature editor" })).toHaveCount(0);
   await expect(inspector.getByRole("region", { name: "Inspector context", exact: true })).toContainText(
     draft.content.entities[0].name,
@@ -366,14 +376,22 @@ test("SC-00B typed light and room feature edits survive undo, mode travel, and s
   await page.getByRole("button", { name: "Redo", exact: true }).click();
   await expect(roll).toHaveValue("12");
   await mkdir("artifacts/parallax-sc00b-integration/browser", { recursive: true });
-  await page.screenshot({ path: "artifacts/parallax-sc00b-integration/browser/spot-direction-engineering.png", fullPage: true });
+  await page.screenshot({
+    path: "artifacts/parallax-sc00b-integration/browser/spot-direction-engineering.png",
+    fullPage: true,
+  });
   await expect
     .poll(async () => {
       const saved = (await listSpatialItems(account.id)).find((item) => item.id === draft.content.definitionId);
       const element = saved?.draft.content.entities.find((entity) => entity.id === "light-edit")?.element;
       const rotation = saved?.draft.content.entities.find((entity) => entity.id === "light-edit")?.transform.rotation;
-      return element?.kind === "LIGHT" && element.intensity === 35 && rotation &&
-        Math.abs(rotation.x) > 0.1 && Math.abs(rotation.z) > 0.04;
+      return (
+        element?.kind === "LIGHT" &&
+        element.intensity === 35 &&
+        rotation &&
+        Math.abs(rotation.x) > 0.1 &&
+        Math.abs(rotation.z) > 0.04
+      );
     })
     .toBe(true);
   await page.reload();
@@ -394,7 +412,10 @@ test("SC-00B typed light and room feature edits survive undo, mode travel, and s
   await page.getByRole("button", { name: "Open spatial context" }).click();
   await expect(page.getByLabel("Semantic placement")).toHaveCount(0);
   await expect(page.getByText(/Ambient light fills the whole scene/)).toBeVisible();
-  await page.screenshot({ path: "artifacts/parallax-sc00b-integration/browser/ambient-context-engineering.png", fullPage: true });
+  await page.screenshot({
+    path: "artifacts/parallax-sc00b-integration/browser/ambient-context-engineering.png",
+    fullPage: true,
+  });
 
   await page.getByRole("button", { name: "Edit room features", exact: true }).click();
   await graph.locator('[data-graph-feature="room-table"]').click({ position: { x: 8, y: 8 } });

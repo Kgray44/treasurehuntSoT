@@ -388,7 +388,9 @@ export function SpatialCommunityPublisher({
                       to return here after saving it.
                     </p>
                   )}
-                  <span className={styles.eyebrow}>SAVED {savedSourceType} · REVISION {source.revision}</span>
+                  <span className={styles.eyebrow}>
+                    SAVED {savedSourceType} · REVISION {source.revision}
+                  </span>
                   <h3>{sourceTitle}</h3>
                   <p>{detail}</p>
                   {savedScenePublishesAsAsset && (
@@ -622,8 +624,7 @@ export function SpatialCommunityPublisher({
                     after approval.
                   </p>
                   <p>
-                    {reviewedType} · {visibility.toLowerCase()} after moderation ·{" "}
-                    {review.license.name}
+                    {reviewedType} · {visibility.toLowerCase()} after moderation · {review.license.name}
                   </p>
                   {savedScenePublishesAsAsset && (
                     <p className={styles.callout}>

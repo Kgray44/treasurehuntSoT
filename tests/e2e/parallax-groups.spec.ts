@@ -3,6 +3,11 @@ import { mkdir } from "node:fs/promises";
 import { db } from "../../src/lib/db";
 import { closureAccount, authenticateClosure } from "./fixtures/landfall-closure";
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
+import {
+  openOwnedSceneFromCurrentLibrary,
+  closeCurrentLibrary,
+  saveCurrentWorkingDraft,
+} from "./fixtures/parallax-current-library";
 import { activateWorkspaceCapability } from "../../src/homeport/workspace-capabilities";
 import { createSpatialDraft, previewEntityTransforms } from "../../src/parallax/authoring";
 import { insertSpatialPreset } from "../../src/parallax/editor-assets";
@@ -48,7 +53,7 @@ test("single name clicks rename assets and groups, and Library exclusion tools u
   );
   await saveSpatialDraft(account.id, draft, 0);
   await authenticateClosure(context, account, baseURL!);
-  await open(page, draft.content.title);
+  await open(page, draft.content.title, draft.content.definitionId);
   const graph = page.getByRole("region", { name: "Scene graph", exact: true });
   for (const name of ["North step", "Arrival step", "First step"]) {
     const row = graph.locator(`[data-graph-entity="${draft.content.entities[0].id}"]`);
@@ -70,9 +75,12 @@ test("single name clicks rename assets and groups, and Library exclusion tools u
     await expect(row).toContainText(name);
   }
   await capture(page, "first-click-group-rename");
-  await page.getByRole("button", { name: "Open Library", exact: true }).click();
+  await page.getByRole("button", { name: "Edit room features", exact: true }).click();
+  await page.getByRole("button", { name: "Open spatial context", exact: true }).click();
+  const spatialContext = page.getByRole("region", { name: "Room spatial context", exact: true });
+  await spatialContext.getByRole("button", { name: /Exclusion zones ·/ }).click();
   await capture(page, "exclusion-library-card");
-  await page.getByRole("button", { name: /^Exclusion Zone/ }).click();
+  await spatialContext.getByRole("button", { name: "Add exclusion zone", exact: true }).click();
   await expect(page.getByRole("button", { name: "Finish environment editing", exact: true })).toBeVisible();
   const editor = page.getByRole("region", { name: "Room feature editor" });
   const select = editor.getByRole("combobox", { name: "Room feature", exact: true });
@@ -95,18 +103,18 @@ test("single name clicks rename assets and groups, and Library exclusion tools u
     saved.content.studio!.environment!.id,
   );
 });
-const open = async (page: Page, title: string) => {
+const open = async (page: Page, title: string, definitionId: string) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/studio/library");
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
-  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-  await page.getByRole("button", { name: new RegExp(`${title}.*My Library`) }).click();
+  await openOwnedSceneFromCurrentLibrary(page, { definitionId, title, state: "WORKING" });
+  await closeCurrentLibrary(page);
   await expect(page.locator('[data-renderer="READY"] canvas')).toBeVisible();
   await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("ENGINEERING");
   await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
 };
 const persist = async (page: Page) => {
-  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await saveCurrentWorkingDraft(page);
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
 };
 const positions = async (page: Page) =>
@@ -143,7 +151,7 @@ test("Visible Bedroom geometry reaches the Assistant and a retained real respons
     update: { policy: JSON.stringify({ ...defaultAIGlobalPolicy, enabled: true }) },
   });
   await authenticateClosure(context, account, baseURL!);
-  await open(page, draft.content.title);
+  await open(page, draft.content.title, draft.content.definitionId);
   await page.getByRole("button", { name: "Ask Parallax", exact: true }).click();
   const assistant = page.getByRole("region", { name: "Spatial Assistant", exact: true });
   await assistant
@@ -230,8 +238,8 @@ test("Inspector text preserves spaces and newlines, and room membership requires
   draft.content.studio!.environment = createRoomEnvironment(simulationEnvironments.find((p) => p.id === "bedroom")!);
   await saveSpatialDraft(account.id, draft, 0);
   await authenticateClosure(context, account, baseURL!);
-  await open(page, draft.content.title);
-  await page.getByText("Overview / Identity", { exact: true }).click();
+  await open(page, draft.content.title, draft.content.definitionId);
+  await page.getByRole("button", { name: "Open contextual Inspector", exact: true }).click();
   const message = page.getByRole("textbox", { name: "Clue or message", exact: true });
   await message.fill("");
   await message.pressSequentially("Find the old pirate note ");
@@ -300,7 +308,7 @@ test("Scene Graph reorders live without moving assets, and a floor click places 
     );
   await saveSpatialDraft(account.id, draft, 0);
   await authenticateClosure(context, account, baseURL!);
-  await open(page, draft.content.title);
+  await open(page, draft.content.title, draft.content.definitionId);
   const graph = page.getByRole("region", { name: "Scene graph", exact: true });
   const rows = graph.locator("[data-graph-entity]");
   await expect(graph.getByRole("button", { name: "Group selected items", exact: true })).toBeEnabled();
@@ -386,7 +394,7 @@ test("Assistant previews and applies grouping and whole-group motion through the
     update: { policy: JSON.stringify({ ...defaultAIGlobalPolicy, enabled: true }) },
   });
   await authenticateClosure(context, account, baseURL!);
-  await open(page, "Assistant grouped footprints");
+  await open(page, "Assistant grouped footprints", draft.content.definitionId);
   await page
     .getByRole("region", { name: "Scene graph", exact: true })
     .locator("[data-graph-entity]")
@@ -443,7 +451,7 @@ test("Twenty footprints group through keyboard selection, move live together, ca
   draft.content.title = "Grouped footprints";
   await saveSpatialDraft(account.id, draft, 0);
   await authenticateClosure(context, account, baseURL!);
-  await open(page, "Grouped footprints");
+  await open(page, "Grouped footprints", draft.content.definitionId);
   const graph = page.getByRole("region", { name: "Scene graph", exact: true });
   const assets = graph.locator("[data-graph-entity]");
   await expect(assets).toHaveCount(20);
@@ -597,7 +605,7 @@ test("A mixed asset and room-feature group uses the same rotation/scale controls
   });
   await saveSpatialDraft(account.id, draft, 0);
   await authenticateClosure(context, account, baseURL!);
-  await open(page, "Grouped workstation");
+  await open(page, "Grouped workstation", draft.content.definitionId);
   await page.getByRole("button", { name: "Edit room features", exact: true }).click();
   const graph = page.getByRole("region", { name: "Scene graph", exact: true });
   await graph.getByRole("button", { name: "Group selected items", exact: true }).click();
@@ -648,7 +656,7 @@ test("Assistant retains general follow-up intent, removes a reviewed asset and e
   });
   await saveSpatialDraft(account.id, draft, 0);
   await authenticateClosure(context, account, baseURL!);
-  await open(page, draft.content.title);
+  await open(page, draft.content.title, draft.content.definitionId);
   await page.getByRole("button", { name: "Ask Parallax", exact: true }).click();
   const assistant = page.getByRole("region", { name: "Spatial Assistant", exact: true });
   const send = async (text: string) => {

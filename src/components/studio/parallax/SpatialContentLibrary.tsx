@@ -497,9 +497,7 @@ export function SpatialContentLibrary(props: Props) {
     else props.onInsertPreset(preset);
   };
   const cardMenuActions = (item: SpatialContentEntry): StudioMenuAction[] => {
-    const actions: StudioMenuAction[] = [
-      { label: "Preview details", icon: "inspect", run: () => selectEntry(item) },
-    ];
+    const actions: StudioMenuAction[] = [{ label: "Preview details", icon: "inspect", run: () => selectEntry(item) }];
     if (item.preset)
       actions.push({
         label: props.expanded && item.preset.startsWith("sc02:") ? "Place in Scene" : "Add to scene",
@@ -1288,10 +1286,7 @@ export function SpatialContentLibrary(props: Props) {
               <div>
                 <button onClick={() => selectEntry(item)}>Preview details</button>
                 {item.preset && (
-                  <button
-                    disabled={props.busy || Boolean(item.blocked)}
-                    onClick={() => insertPreset(item.preset!)}
-                  >
+                  <button disabled={props.busy || Boolean(item.blocked)} onClick={() => insertPreset(item.preset!)}>
                     {props.expanded && item.preset.startsWith("sc02:") ? "Place in Scene" : "Add to Scene"}
                   </button>
                 )}

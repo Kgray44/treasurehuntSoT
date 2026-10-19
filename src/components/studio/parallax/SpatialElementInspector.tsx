@@ -67,8 +67,13 @@ export function SpatialElementInspector({
     <section aria-label="Spatial element properties" className={styles.elementProperties}>
       <h3>{e.kind.replaceAll("_", " ")}</h3>
       <p className={styles.elementLead}>
-        {e.kind === "LIGHT" ? "Light & illumination" : e.kind === "SPATIAL_AUDIO" ? "Sound & reach" :
-          e.kind === "INTERACTION_VOLUME" ? "Interaction region" : "Appearance & playback"}
+        {e.kind === "LIGHT"
+          ? "Light & illumination"
+          : e.kind === "SPATIAL_AUDIO"
+            ? "Sound & reach"
+            : e.kind === "INTERACTION_VOLUME"
+              ? "Interaction region"
+              : "Appearance & playback"}
       </p>
       <label>
         <input type="checkbox" checked={e.enabled} onChange={(event) => patch({ enabled: event.target.checked })} />
@@ -89,15 +94,20 @@ export function SpatialElementInspector({
         <>
           {descriptor.visualBlocker && <p role="alert">Preview only: {descriptor.visualBlocker}</p>}
           <p>{descriptor.description}</p>
-          {engineering && <small>
-            {descriptor.dimensions.join(" × ")} m · bottom-center pivot · {descriptor.support.toLowerCase()} support ·{" "}
-            {descriptor.collision.toLowerCase().replaceAll("_", " ")} collision proxy
-          </small>}
-          {engineering && <small>
-            AI-assisted original geometry · Voyagewright proprietary license · owner authorization required for
-            redistribution.
-          </small>}
-          {descriptor.articulation && descriptor.articulation !== "CLOTH" &&
+          {engineering && (
+            <small>
+              {descriptor.dimensions.join(" × ")} m · bottom-center pivot · {descriptor.support.toLowerCase()} support ·{" "}
+              {descriptor.collision.toLowerCase().replaceAll("_", " ")} collision proxy
+            </small>
+          )}
+          {engineering && (
+            <small>
+              AI-assisted original geometry · Voyagewright proprietary license · owner authorization required for
+              redistribution.
+            </small>
+          )}
+          {descriptor.articulation &&
+            descriptor.articulation !== "CLOTH" &&
             range("articulation", "Articulation", 0, 1, 0.01)}
           {descriptor.articulation === "CLOTH" && (
             <small>Cloth is an authored stable drape. Live cloth simulation is unavailable.</small>
@@ -118,7 +128,11 @@ export function SpatialElementInspector({
             <>
               {standard && number("angle", "Spot angle in radians", 0.05, Math.PI / 2)}
               {standard && number("penumbra", "Spot softness", 0, 1)}
-              {engineering && <small>Aims along local −Z. Use Rotate in scene, or numeric pitch, yaw and roll to set direction.</small>}
+              {engineering && (
+                <small>
+                  Aims along local −Z. Use Rotate in scene, or numeric pitch, yaw and roll to set direction.
+                </small>
+              )}
             </>
           )}
           {e.type === "AMBIENT" && (
@@ -148,10 +162,12 @@ export function SpatialElementInspector({
         <>
           {select("pattern", "Projection pattern", ["SYMBOL", "FOOTPRINTS", "WRITING"])}
           {range("opacity", "Projection opacity", 0, 1, 0.01)}
-          {engineering && <small>
-            Surface overlay: place near the surface and rotate to align. Writing uses the object’s clue text.
-            Occlusion-aware projection is unavailable.
-          </small>}
+          {engineering && (
+            <small>
+              Surface overlay: place near the surface and rotate to align. Writing uses the object’s clue text.
+              Occlusion-aware projection is unavailable.
+            </small>
+          )}
         </>
       )}
       {e.kind === "SPATIAL_AUDIO" && (
@@ -177,10 +193,12 @@ export function SpatialElementInspector({
         <>
           {select("shape", "Region shape", ["BOX", "SPHERE"])}
           {number("radius", "Region radius in meters", 0.05, 3)}
-          {engineering && <small>
-            Editor region / grouping pivot. Automatic proximity detection requires a qualified runtime and is
-            unavailable.
-          </small>}
+          {engineering && (
+            <small>
+              Editor region / grouping pivot. Automatic proximity detection requires a qualified runtime and is
+              unavailable.
+            </small>
+          )}
         </>
       )}
       <label>
@@ -234,9 +252,11 @@ export function SpatialElementInspector({
           </small>
         </>
       )}
-      {engineering && <small>
-        Web Studio preview supported. Player/native presentation currently uses the authored Guided alternative.
-      </small>}
+      {engineering && (
+        <small>
+          Web Studio preview supported. Player/native presentation currently uses the authored Guided alternative.
+        </small>
+      )}
     </section>
   );
 }

@@ -1,3 +1,8 @@
+import {
+  openOwnedSceneFromCurrentLibrary,
+  closeCurrentLibrary,
+  saveCurrentWorkingDraft,
+} from "./fixtures/parallax-current-library";
 import { test, expect } from "@playwright/test";
 import { mkdir, writeFile } from "node:fs/promises";
 import { db } from "../../src/lib/db";
@@ -67,8 +72,12 @@ test("Creator inspects representative actual asset materials at useful distances
     expect(response.ok()).toBe(true);
     await page.reload();
     await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
-    await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-    await page.getByRole("button", { name: /Asset material study.*My Library/ }).click();
+    await openOwnedSceneFromCurrentLibrary(page, {
+      definitionId: draft.content.definitionId,
+      title: draft.content.title,
+      state: "WORKING",
+    });
+    await closeCurrentLibrary(page);
     await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("ENGINEERING");
     const canvas = page.getByRole("region", { name: "Spatial canvas", exact: true });
     const host = canvas.locator('[data-renderer="READY"]');
@@ -166,8 +175,12 @@ test("Creator duplicates and reuses a right boot without changing its rendered h
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/studio/library");
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
-  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-  await page.getByRole("button", { name: /Right boot source.*My Library/ }).click();
+  await openOwnedSceneFromCurrentLibrary(page, {
+    definitionId: source.content.definitionId,
+    title: source.content.title,
+    state: "WORKING",
+  });
+  await closeCurrentLibrary(page);
   const canvas = page.getByRole("region", { name: "Spatial canvas", exact: true });
   const host = canvas.locator('[data-renderer="READY"]');
   const receipt = async (id: string) =>
@@ -182,7 +195,7 @@ test("Creator duplicates and reuses a right boot without changing its rendered h
     .getByRole("toolbar", { name: "Scene graph object actions" })
     .getByRole("button", { name: "Duplicate object", exact: true })
     .click();
-  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await saveCurrentWorkingDraft(page);
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
   const records = async () => listSpatialItems(account.id);
   const current = async () => (await records()).find((item) => item.id === source.content.definitionId)!.draft;
@@ -287,8 +300,12 @@ test("Creator authors a full scene and navigates during interpolated playback wi
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("/studio/library");
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
-  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-  await page.getByRole("button", { name: /Full footprint scene.*My Library/ }).click();
+  await openOwnedSceneFromCurrentLibrary(page, {
+    definitionId: draft.content.definitionId,
+    title: draft.content.title,
+    state: "WORKING",
+  });
+  await closeCurrentLibrary(page);
   const canvas = page.getByRole("region", { name: "Spatial canvas", exact: true });
   const host = canvas.locator('[data-renderer="READY"]');
   await expect(host).toHaveAttribute("data-rendered", "true");
@@ -313,7 +330,7 @@ test("Creator authors a full scene and navigates during interpolated playback wi
   const animation = page.getByRole("region", { name: "Object animation editor", exact: true });
   await animation.getByLabel("POSITION keyframe 2 seconds", { exact: true }).fill("8");
   await animation.getByLabel("POSITION keyframe 2 seconds", { exact: true }).press("Tab");
-  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await saveCurrentWorkingDraft(page);
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
   const saved = (await listSpatialItems(account.id)).find(
     (item) => item.draft.content.definitionId === draft.content.definitionId,

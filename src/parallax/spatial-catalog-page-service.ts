@@ -70,8 +70,7 @@ function kindOf(draft: SpatialDraft): OwnedSpatialCatalogSummary["kind"] {
   const type = spatialLibraryKind(draft);
   if (draft.category === "EFFECT") return "EFFECTS";
   if (type === "ASSETS") return "ASSETS";
-  if (type === "ASSEMBLIES" || (type === "TEMPLATES" && draft.tags.includes("composition")))
-    return "COMPOSITIONS";
+  if (type === "ASSEMBLIES" || (type === "TEMPLATES" && draft.tags.includes("composition"))) return "COMPOSITIONS";
   return "SCENES";
 }
 

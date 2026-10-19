@@ -71,131 +71,148 @@ export function GroupSelectionInspector({
   return (
     <section className={styles.groupInspector} aria-label="Group inspector">
       <h3>{name}</h3>
-      <p>{count} items selected. {view === "PROPERTIES" ? "Move the selection together in the viewport." : "Inspect membership and group relationships."}</p>
+      <p>
+        {count} items selected.{" "}
+        {view === "PROPERTIES"
+          ? "Move the selection together in the viewport."
+          : "Inspect membership and group relationships."}
+      </p>
       {automatic && (
         <p>Automatic placement owns these asset positions. Switch to Manual placement to transform this selection.</p>
       )}
       {hasRoomFeatures && <p>Room features stay upright: rotation uses the Y axis, and scale is uniform.</p>}
       {locked && <p>Unlock the selected assets before transforming the group.</p>}
       {error && <p role="alert">{error}</p>}
-      {view === "PROPERTIES" && mode !== "GUIDED" && <fieldset disabled={disabled || automatic || locked}>
-        <legend>Selection center</legend>
-        <div className={styles.groupVector}>
-          {(["x", "y", "z"] as const).map((axis) => (
-            <label key={`${axis}:${pivot[axis]}`}>
-              {axis.toUpperCase()}
-              <input
-                aria-label={`Group ${axis.toUpperCase()}`}
-                type="number"
-                step="0.05"
-                defaultValue={Number(pivot[axis].toFixed(4))}
-                onBlur={(event) => {
-                  const value = Number(event.target.value);
-                  if (!event.target.value.trim() || !Number.isFinite(value)) {
-                    setError("Enter a finite selection center.");
-                    return;
-                  }
-                  if (event.target.value.trim() && Number.isFinite(value) && value !== Number(pivot[axis].toFixed(4)))
-                    run({
-                      ...identityTransform(),
-                      position: {
-                        x: axis === "x" ? value - pivot.x : 0,
-                        y: axis === "y" ? value - pivot.y : 0,
-                        z: axis === "z" ? value - pivot.z : 0,
-                      },
-                    });
-                }}
-              />
-            </label>
-          ))}
+      {view === "PROPERTIES" && mode !== "GUIDED" && (
+        <fieldset disabled={disabled || automatic || locked}>
+          <legend>Selection center</legend>
+          <div className={styles.groupVector}>
+            {(["x", "y", "z"] as const).map((axis) => (
+              <label key={`${axis}:${pivot[axis]}`}>
+                {axis.toUpperCase()}
+                <input
+                  aria-label={`Group ${axis.toUpperCase()}`}
+                  type="number"
+                  step="0.05"
+                  defaultValue={Number(pivot[axis].toFixed(4))}
+                  onBlur={(event) => {
+                    const value = Number(event.target.value);
+                    if (!event.target.value.trim() || !Number.isFinite(value)) {
+                      setError("Enter a finite selection center.");
+                      return;
+                    }
+                    if (event.target.value.trim() && Number.isFinite(value) && value !== Number(pivot[axis].toFixed(4)))
+                      run({
+                        ...identityTransform(),
+                        position: {
+                          x: axis === "x" ? value - pivot.x : 0,
+                          y: axis === "y" ? value - pivot.y : 0,
+                          z: axis === "z" ? value - pivot.z : 0,
+                        },
+                      });
+                  }}
+                />
+              </label>
+            ))}
+          </div>
+          <label>
+            Rotation delta (°)
+            <input
+              aria-label="Group rotation delta"
+              type="number"
+              step="15"
+              value={yaw}
+              onChange={(event) => setYaw(event.target.value)}
+            />
+          </label>
+          <label>
+            Scale factor
+            <input
+              aria-label="Group scale factor"
+              type="number"
+              min="0.01"
+              max="10"
+              step="0.05"
+              value={scale}
+              onChange={(event) => setScale(event.target.value)}
+            />
+          </label>
+          <button
+            type="button"
+            onClick={() => {
+              if (
+                !yaw.trim() ||
+                !scale.trim() ||
+                !Number.isFinite(Number(yaw)) ||
+                !Number.isFinite(Number(scale)) ||
+                Number(scale) < 0.01 ||
+                Number(scale) > 10
+              ) {
+                setError("Enter a finite rotation and a scale factor between 0.01 and 10.");
+                return;
+              }
+              const angle = (Number(yaw) * Math.PI) / 360;
+              const applied = run({
+                ...identityTransform(),
+                rotation: { x: 0, y: Math.sin(angle), z: 0, w: Math.cos(angle) },
+                scale: Number(scale),
+              });
+              if (applied) {
+                setYaw("0");
+                setScale("1");
+              }
+            }}
+          >
+            Apply rotation and scale
+          </button>
+        </fieldset>
+      )}
+      {view === "PROPERTIES" && mode === "GUIDED" && (
+        <div className={styles.inspectorActions}>
+          <button type="button" disabled={disabled || automatic || locked} onClick={() => onTool("translate")}>
+            Move selection
+          </button>
+          <button type="button" disabled={disabled || automatic || locked} onClick={() => onTool("rotate")}>
+            Rotate selection
+          </button>
+          <button type="button" disabled={disabled || automatic || locked} onClick={() => onTool("scale")}>
+            Resize selection
+          </button>
         </div>
-        <label>
-          Rotation delta (°)
-          <input
-            aria-label="Group rotation delta"
-            type="number"
-            step="15"
-            value={yaw}
-            onChange={(event) => setYaw(event.target.value)}
-          />
-        </label>
-        <label>
-          Scale factor
-          <input
-            aria-label="Group scale factor"
-            type="number"
-            min="0.01"
-            max="10"
-            step="0.05"
-            value={scale}
-            onChange={(event) => setScale(event.target.value)}
-          />
-        </label>
-        <button
-          type="button"
-          onClick={() => {
-            if (
-              !yaw.trim() ||
-              !scale.trim() ||
-              !Number.isFinite(Number(yaw)) ||
-              !Number.isFinite(Number(scale)) ||
-              Number(scale) < 0.01 ||
-              Number(scale) > 10
-            ) {
-              setError("Enter a finite rotation and a scale factor between 0.01 and 10.");
-              return;
-            }
-            const angle = (Number(yaw) * Math.PI) / 360;
-            const applied = run({
-              ...identityTransform(),
-              rotation: { x: 0, y: Math.sin(angle), z: 0, w: Math.cos(angle) },
-              scale: Number(scale),
-            });
-            if (applied) {
-              setYaw("0");
-              setScale("1");
-            }
-          }}
-        >
-          Apply rotation and scale
-        </button>
-      </fieldset>}
-      {view === "PROPERTIES" && mode === "GUIDED" && <div className={styles.inspectorActions}>
-        <button type="button" disabled={disabled || automatic || locked} onClick={() => onTool("translate")}>Move selection</button>
-        <button type="button" disabled={disabled || automatic || locked} onClick={() => onTool("rotate")}>Rotate selection</button>
-        <button type="button" disabled={disabled || automatic || locked} onClick={() => onTool("scale")}>Resize selection</button>
-      </div>}
-      {view === "CONTEXT" && <>
-      <div className={styles.groupActions}>
-        {onEditMembers ? (
-          <button type="button" disabled={disabled} onClick={onEditMembers}>
-            Edit members &amp; name
-          </button>
-        ) : (
-          <button type="button" disabled={disabled} onClick={onGroup}>
-            Group selection
-          </button>
-        )}
-        {onUngroup && (
-          <button type="button" disabled={disabled} onClick={onUngroup}>
-            Ungroup items
-          </button>
-        )}
-      </div>
-      <details>
-        <summary>Members · {members.length}</summary>
-        <p>Select a member to inspect it individually.</p>
-        <ul>
-          {members.map((member) => (
-            <li key={groupMemberKey(member)}>
-              <button type="button" onClick={() => onSelectMember(member)}>
-                {member.name}
+      )}
+      {view === "CONTEXT" && (
+        <>
+          <div className={styles.groupActions}>
+            {onEditMembers ? (
+              <button type="button" disabled={disabled} onClick={onEditMembers}>
+                Edit members &amp; name
               </button>
-            </li>
-          ))}
-        </ul>
-      </details>
-      </>}
+            ) : (
+              <button type="button" disabled={disabled} onClick={onGroup}>
+                Group selection
+              </button>
+            )}
+            {onUngroup && (
+              <button type="button" disabled={disabled} onClick={onUngroup}>
+                Ungroup items
+              </button>
+            )}
+          </div>
+          <details>
+            <summary>Members · {members.length}</summary>
+            <p>Select a member to inspect it individually.</p>
+            <ul>
+              {members.map((member) => (
+                <li key={groupMemberKey(member)}>
+                  <button type="button" onClick={() => onSelectMember(member)}>
+                    {member.name}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </details>
+        </>
+      )}
     </section>
   );
 }

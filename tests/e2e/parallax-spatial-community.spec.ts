@@ -246,7 +246,11 @@ test("private asset reaches the canonical listing and installs as an immutable L
       undefined,
       undefined,
       undefined,
-      { tags: "synthetic, tabletop", licenseKey: "REMIX_WITH_ATTRIBUTION", creditName: "Synthetic Harbor Collaborator" },
+      {
+        tags: "synthetic, tabletop",
+        licenseKey: "REMIX_WITH_ATTRIBUTION",
+        creditName: "Synthetic Harbor Collaborator",
+      },
     );
     await expect(wizard).toContainText("Your saved source remains in Spatial Studio");
     expect(
@@ -926,9 +930,9 @@ test("a Creator reaches server package review from the ordinary Studio entry wit
   await expect(classification).toBeVisible();
   const classificationBounds = await classification.boundingBox();
   const footerBounds = await wizard.locator("footer").boundingBox();
-  expect(classificationBounds && footerBounds && classificationBounds.y + classificationBounds.height < footerBounds.y).toBe(
-    true,
-  );
+  expect(
+    classificationBounds && footerBounds && classificationBounds.y + classificationBounds.height < footerBounds.y,
+  ).toBe(true);
   await page.screenshot({ path: testInfo.outputPath("natural-studio-content.png"), fullPage: true });
   await wizard.getByRole("button", { name: "Continue" }).click();
   await wizard.getByRole("textbox", { name: "Description" }).fill("A synthetic tabletop Scene for other Creators.");

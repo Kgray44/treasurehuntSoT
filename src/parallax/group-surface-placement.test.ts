@@ -1,5 +1,13 @@
 import { expect, it } from "vitest";
-import { createSpatialDraft, draftSchema, previewEntityTransforms, changeHistory, editSpatialDraft, undo, redo } from "./authoring";
+import {
+  createSpatialDraft,
+  draftSchema,
+  previewEntityTransforms,
+  changeHistory,
+  editSpatialDraft,
+  undo,
+  redo,
+} from "./authoring";
 import { simulationEnvironments } from "./studio-validation";
 import { syntheticEnvironmentEvidence } from "./adaptive-authoring";
 import { saveEditingGroup } from "./editing-groups";
@@ -112,7 +120,15 @@ it("preserves parented schematic children and their animation frames during plac
       interpolation: "LINEAR",
       keyframes: [
         { id: "root-start", atMs: 0, value: { ...parent.transform.position } },
-        { id: "root-end", atMs: 1000, value: { x: parent.transform.position.x + 0.2, y: parent.transform.position.y, z: parent.transform.position.z } },
+        {
+          id: "root-end",
+          atMs: 1000,
+          value: {
+            x: parent.transform.position.x + 0.2,
+            y: parent.transform.position.y,
+            z: parent.transform.position.z,
+          },
+        },
       ],
     },
     {
@@ -150,7 +166,9 @@ it("preserves parented schematic children and their animation frames during plac
     },
   ];
   const floor = {
-    ...syntheticEnvironmentEvidence(simulationEnvironments[0]).candidates.find((candidate) => candidate.surface === "FLOOR")!,
+    ...syntheticEnvironmentEvidence(simulationEnvironments[0]).candidates.find(
+      (candidate) => candidate.surface === "FLOOR",
+    )!,
     widthMeters: 20,
     depthMeters: 20,
     exclusions: [],
@@ -166,13 +184,17 @@ it("preserves parented schematic children and their animation frames during plac
   expect(placed.content.entities.find((entity) => entity.id === child.id)?.parentEntityId).toBe(parent.id);
   const placedParent = placed.content.entities.find((entity) => entity.id === parent.id)!;
   const tracks = placed.content.studio!.animationTracks!;
-  const startPosition = tracks.find((track) => track.id === "root-position")?.keyframes[0].value as typeof placedParent.transform.position;
-  const startRotation = tracks.find((track) => track.id === "root-rotation")?.keyframes[0].value as typeof placedParent.transform.rotation;
+  const startPosition = tracks.find((track) => track.id === "root-position")?.keyframes[0]
+    .value as typeof placedParent.transform.position;
+  const startRotation = tracks.find((track) => track.id === "root-rotation")?.keyframes[0]
+    .value as typeof placedParent.transform.rotation;
   for (const axis of ["x", "y", "z"] as const)
     expect(startPosition?.[axis]).toBeCloseTo(placedParent.transform.position[axis]);
   for (const axis of ["x", "y", "z", "w"] as const)
     expect(startRotation?.[axis]).toBeCloseTo(placedParent.transform.rotation[axis]);
-  expect(tracks.find((track) => track.id === "root-scale")?.keyframes[0].value).toBeCloseTo(placedParent.transform.scale);
+  expect(tracks.find((track) => track.id === "root-scale")?.keyframes[0].value).toBeCloseTo(
+    placedParent.transform.scale,
+  );
   expect(tracks.find((track) => track.id === "child-motion")?.keyframes).toEqual(
     source.content.studio?.animationTracks?.find((track) => track.id === "child-motion")?.keyframes,
   );
@@ -242,7 +264,9 @@ it("keeps a saved sofa Y-up and refuses an obstructed exact click", () => {
   const pose = previewEntityTransforms(placed.content, room.id, room)[member.id];
   expect(pose.position.y).toBeGreaterThanOrEqual(0);
   expect(Math.abs(pose.rotation.x)).toBeLessThan(1e-4);
-  expect(placed.content.studio?.assetInstances?.[0]?.versionId).toBe(copied.content.studio?.assetInstances?.[0]?.versionId);
+  expect(placed.content.studio?.assetInstances?.[0]?.versionId).toBe(
+    copied.content.studio?.assetInstances?.[0]?.versionId,
+  );
 });
 
 it("fits the rendered scale of a saved physical root and rebases its animation path", () => {
@@ -271,7 +295,11 @@ it("fits the rendered scale of a saved physical root and rebases its animation p
       interpolation: "LINEAR",
       keyframes: [
         { id: "start", atMs: 0, value: { ...root.transform.position } },
-        { id: "end", atMs: 1000, value: { x: root.transform.position.x + 0.3, y: root.transform.position.y, z: root.transform.position.z } },
+        {
+          id: "end",
+          atMs: 1000,
+          value: { x: root.transform.position.x + 0.3, y: root.transform.position.y, z: root.transform.position.z },
+        },
       ],
     },
     {
@@ -316,30 +344,49 @@ it("fits the rendered scale of a saved physical root and rebases its animation p
   for (const axis of ["x", "y", "z", "w"] as const)
     expect(evaluated.rotation[axis]).toBeCloseTo(placed.content.entities[0].transform.rotation[axis]);
   const end = evaluateSpatialScene(placed.content, [], 1000).states[member.id].transform;
-  expect(Math.hypot(
-    end.position.x - evaluated.position.x,
-    end.position.y - evaluated.position.y,
-    end.position.z - evaluated.position.z,
-  )).toBeCloseTo(0.3);
+  expect(
+    Math.hypot(
+      end.position.x - evaluated.position.x,
+      end.position.y - evaluated.position.y,
+      end.position.z - evaluated.position.z,
+    ),
+  ).toBeCloseTo(0.3);
   expect(end.scale).toBeCloseTo(2.4);
   expect(copied).toEqual(copiedBefore);
   expect(draftSchema.parse(JSON.parse(JSON.stringify(placed)))).toEqual(placed);
   const history = changeHistory({ present: base, past: [], future: [] }, { type: "REPLACE", draft: placed });
   expect(undo(history).present).toEqual(base);
   expect(redo(undo(history)).present).toEqual(placed);
-  const cramped = { ...room, id: "saved-scaled-cramped-room", width: 6, depth: 6,
-    features: [createGenericRoomFeature({ id: "floor", classification: "FLOOR", dimensions: [6, 0.16, 6], position: { x: 0, y: -0.08, z: 0 } })] };
-  const crampedFloor = syntheticEnvironmentEvidence(cramped).candidates.find((candidate) => candidate.surface === "FLOOR")!;
-  expect(() => placeSavedAssetOnSurface(base, copied, [member], crampedFloor, { x: 1.8, y: 0, z: 1.8 }, cramped, true)).toThrow();
+  const cramped = {
+    ...room,
+    id: "saved-scaled-cramped-room",
+    width: 6,
+    depth: 6,
+    features: [
+      createGenericRoomFeature({
+        id: "floor",
+        classification: "FLOOR",
+        dimensions: [6, 0.16, 6],
+        position: { x: 0, y: -0.08, z: 0 },
+      }),
+    ],
+  };
+  const crampedFloor = syntheticEnvironmentEvidence(cramped).candidates.find(
+    (candidate) => candidate.surface === "FLOOR",
+  )!;
+  expect(() =>
+    placeSavedAssetOnSurface(base, copied, [member], crampedFloor, { x: 1.8, y: 0, z: 1.8 }, cramped, true),
+  ).toThrow();
 });
 
 it.each(["scaled physical child", "mixed physical and schematic parts"] as const)(
   "rejects %s without changing the saved copy or scene",
   (kind) => {
     const room = simulationEnvironments[0];
-    let source = kind === "scaled physical child"
-      ? createSpatialDraft("assembly-source")
-      : insertSpatialElement(blankScene("assembly-source"), "sofa", "physical-root");
+    let source =
+      kind === "scaled physical child"
+        ? createSpatialDraft("assembly-source")
+        : insertSpatialElement(blankScene("assembly-source"), "sofa", "physical-root");
     if (kind === "scaled physical child") {
       const physical = insertSpatialElement(blankScene("physical-source"), "sofa", "physical-child");
       source.content.entities.push({ ...physical.content.entities[0], anchorId: source.content.entities[0].anchorId });
@@ -347,16 +394,26 @@ it.each(["scaled physical child", "mixed physical and schematic parts"] as const
     }
     if (kind === "mixed physical and schematic parts") {
       source = editSpatialDraft(source, {
-        type: "DUPLICATE", entityId: source.content.entities[0].id, newId: "schematic-child",
+        type: "DUPLICATE",
+        entityId: source.content.entities[0].id,
+        newId: "schematic-child",
       });
       source.content.entities[1].element = undefined;
     }
     const [root, child] = source.content.entities;
     source = editSpatialDraft(source, { type: "PARENT", entityId: child.id, parentId: root.id });
     if (kind === "scaled physical child") source.content.entities[1].transform.scale = 2;
-    const saved = createReusableSpatialAsset(source, root.id, "physical-assembly", {
-      name: "Physical assembly", description: "Synthetic", classification: "Fixture",
-    }, room);
+    const saved = createReusableSpatialAsset(
+      source,
+      root.id,
+      "physical-assembly",
+      {
+        name: "Physical assembly",
+        description: "Synthetic",
+        classification: "Fixture",
+      },
+      room,
+    );
     const version = materializeLibraryMoment(saved, "creator", 1).version;
     const base = blankScene("assembly-scene");
     const copied = insertReusableSpatialAsset(base, version, "assembly-copy");
@@ -364,8 +421,9 @@ it.each(["scaled physical child", "mixed physical and schematic parts"] as const
     const floor = syntheticEnvironmentEvidence(room).candidates.find((candidate) => candidate.surface === "FLOOR")!;
     const beforeBase = structuredClone(base);
     const beforeCopy = structuredClone(copied);
-    expect(() => placeSavedAssetOnSurface(base, copied, members, floor, floor.position, room, true))
-      .toThrow(/reviewed placement.*No items were inserted/);
+    expect(() => placeSavedAssetOnSurface(base, copied, members, floor, floor.position, room, true)).toThrow(
+      /reviewed placement.*No items were inserted/,
+    );
     expect(base).toEqual(beforeBase);
     expect(copied).toEqual(beforeCopy);
   },
@@ -412,25 +470,32 @@ it("lets keyboard placement search with a scaled-down physical model's rendered 
     depth: 4,
     features: [
       createGenericRoomFeature({
-        id: "floor", classification: "FLOOR", dimensions: [4, 0.16, 4],
+        id: "floor",
+        classification: "FLOOR",
+        dimensions: [4, 0.16, 4],
         position: { x: 0, y: -0.08, z: 0 },
       }),
       createGenericRoomFeature({
-        id: "small-table", classification: "TABLE", dimensions: [0.3, 0.8, 0.3],
+        id: "small-table",
+        classification: "TABLE",
+        dimensions: [0.3, 0.8, 0.3],
         position: { x: 0, y: 0.4, z: 0 },
       }),
     ],
   };
   const { base, copied, member } = savedPhysicalCopy("candelabra", room, 0.25);
   const table = syntheticEnvironmentEvidence(room).candidates.find((candidate) => candidate.surface === "TABLE")!;
-  expect(findSurfacePlacement(
-    { ...identityTransform(), position: table.position }, table, copied.content.entities[0].widthMeters,
-  )).toBeNull();
+  expect(
+    findSurfacePlacement(
+      { ...identityTransform(), position: table.position },
+      table,
+      copied.content.entities[0].widthMeters,
+    ),
+  ).toBeNull();
   const placed = placeSavedAssetOnSurface(base, copied, [member], table, table.position, room, false);
   const pose = previewEntityTransforms(placed.content, room.id, room)[member.id];
   expect(pose.scale).toBeCloseTo(0.25);
   expect(placed.content.entities).toHaveLength(1);
   const pointer = placeSavedAssetOnSurface(base, copied, [member], table, table.position, room, true);
-  expect(previewEntityTransforms(pointer.content, room.id, room)[member.id].position)
-    .toEqual(pose.position);
+  expect(previewEntityTransforms(pointer.content, room.id, room)[member.id].position).toEqual(pose.position);
 });

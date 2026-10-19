@@ -1,3 +1,8 @@
+import {
+  openOwnedSceneFromCurrentLibrary,
+  closeCurrentLibrary,
+  saveCurrentWorkingDraft,
+} from "./fixtures/parallax-current-library";
 import { test, expect } from "@playwright/test";
 import { mkdir, writeFile } from "node:fs/promises";
 import sharp from "sharp";
@@ -41,8 +46,12 @@ test("Creator privately imports a room photo, confirms measurement, preserves it
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/studio/library");
   await page.getByRole("link", { name: "Spatial Studio", exact: true }).click();
-  await page.getByRole("button", { name: "Open Saved Spatial Items", exact: true }).click();
-  await page.getByRole("button", { name: /Desk Map.*My Library/ }).click();
+  await openOwnedSceneFromCurrentLibrary(page, {
+    definitionId: draft.content.definitionId,
+    title: draft.content.title,
+    state: "WORKING",
+  });
+  await closeCurrentLibrary(page);
   await page.getByRole("button", { name: "Collapse left dock", exact: true }).click();
   await page.getByText("Room photograph reconstruction", { exact: true }).click();
   const photo = page.getByRole("region", { name: "Room photograph reconstruction", exact: true });
@@ -125,7 +134,7 @@ test("Creator privately imports a room photo, confirms measurement, preserves it
     .toBeCloseTo(1.75);
   await editor.getByText(/Scale reference:/).scrollIntoViewIfNeeded();
   await page.screenshot({ path: `${root}/photo-room-known-measurement.png` });
-  await page.getByRole("button", { name: "Save draft", exact: true }).click();
+  await saveCurrentWorkingDraft(page);
   await expect(page.getByRole("status")).toHaveText("Working draft saved");
   const measured = (await listSpatialItems(account.id))[0].draft;
   const measuredRoom = measured.content.studio!.environment!;

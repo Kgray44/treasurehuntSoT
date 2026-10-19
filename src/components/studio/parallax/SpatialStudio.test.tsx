@@ -401,7 +401,9 @@ it("opens Guided mode with canvas/library/timeline and keeps mode changes out of
   fireEvent.click(screen.getByLabelText("Ask Parallax", { selector: "button", exact: true }));
   expect(screen.getByLabelText("Spatial Assistant", { exact: true })).toBeVisible();
   expect(
-    within(screen.getByLabelText("Spatial Assistant", { exact: true })).getByText(/Spatial Assistant is unavailable/),
+    within(await screen.findByLabelText("Spatial Assistant", { exact: true })).getByText(
+      /Spatial Assistant is unavailable/,
+    ),
   ).toBeVisible();
   expect(screen.queryByText("Guided placement controls")).not.toBeInTheDocument();
   expect(screen.getByRole("button", { name: "Edit room features" })).toBeVisible();
@@ -525,7 +527,7 @@ it("mounts the real port, previews without saving, installs one acknowledged his
   await screen.findByRole("heading", { name: "Parallax", level: 1 });
   expect(screen.getByRole("heading", { name: "Shape & orientation" })).toBeVisible();
   fireEvent.click(screen.getByLabelText("Ask Parallax", { selector: "button", exact: true }));
-  const panel = within(screen.getByLabelText("Spatial Assistant", { exact: true }));
+  const panel = within(await screen.findByLabelText("Spatial Assistant", { exact: true }));
   fireEvent.change(panel.getByLabelText("Describe your spatial idea"), {
     target: { value: "Make the map smaller without changing its clue." },
   });
@@ -557,7 +559,7 @@ it("rejects a mounted late response after a manual edit and byte-identical undo"
   await screen.findByRole("heading", { name: "Parallax", level: 1 });
   expect(screen.getByRole("heading", { name: "Shape & orientation" })).toBeVisible();
   fireEvent.click(screen.getByLabelText("Ask Parallax", { selector: "button", exact: true }));
-  const panel = within(screen.getByLabelText("Spatial Assistant", { exact: true }));
+  const panel = within(await screen.findByLabelText("Spatial Assistant", { exact: true }));
   fireEvent.change(panel.getByLabelText("Describe your spatial idea"), { target: { value: "Make the map smaller." } });
   fireEvent.click(panel.getByRole("button", { name: /Send idea/ }));
   await waitFor(() => expect(calls.some((call) => call.action === "AI")).toBe(true));
@@ -583,7 +585,7 @@ it("locates a proposed object in the real preview without erasing it on selectio
   render(<SpatialStudio definitionId="owned" />);
   await screen.findByRole("heading", { name: "Parallax", level: 1 });
   fireEvent.click(screen.getByLabelText("Ask Parallax", { selector: "button", exact: true }));
-  const panel = within(screen.getByLabelText("Spatial Assistant", { exact: true }));
+  const panel = within(await screen.findByLabelText("Spatial Assistant", { exact: true }));
   fireEvent.change(panel.getByLabelText("Describe your spatial idea"), { target: { value: "Add a readable note." } });
   fireEvent.click(panel.getByRole("button", { name: /Send idea/ }));
   await panel.findByRole("button", { name: "Apply all changes" }, { timeout: 5000 });

@@ -538,9 +538,9 @@ describe.skipIf(!isolated)("SC-07A isolated Harborlight journey", () => {
       /pinned Environment is unavailable or invalid/,
     );
     expect(await db.communityListing.count({ where: { owner: { accountId: ownerId } } })).toBe(0);
-    expect((await db.reusableAuthoringItem.findUniqueOrThrow({ where: { id: scene.content.definitionId } })).status).toBe(
-      "SAVED",
-    );
+    expect(
+      (await db.reusableAuthoringItem.findUniqueOrThrow({ where: { id: scene.content.definitionId } })).status,
+    ).toBe("SAVED");
   });
 
   it("installs an owned synthetic Environment with a stable retry mapping", async () => {
