@@ -10,6 +10,7 @@ last_reviewed: 2026-10-15
 
 - [NCL-01 owned native Scene implementation context](parallax-ncl01.md)
 - [NCL-01 owned laptop preview operations](ncl01-local-preview.md)
+- [NCL-01 isolated TestFlight deployment](ncl01-testflight.md)
 
 Active execution guidance belongs here. Human product guidance and engineering
 evidence remain in their governed documentation locations. Each context packet

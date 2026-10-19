@@ -14,6 +14,11 @@ last_reviewed: 2026-10-15
 
 ### Engineering
 
+- Prepared an isolated NCL-01 iOS development-beta path with explicit app versions,
+  an existing-artwork app icon, required-reason privacy metadata and a separate
+  hosted archive/sign/export/upload workflow. [The deployment record](Development_Docs/Projects/Project_Parallax/NCL01_TestFlight_Deployment.md)
+  retains pending credentials, phone installation and physical ARKit gates.
+
 - NCL-01 begins a native Scene candidate with negotiated v2 delivery, exact SC02 chest/compass assets, authorized integrity-checked loading and native object selection through the existing Chronicle observation path. [The implementation record](Development_Docs/Projects/Project_Parallax/NCL01_Native_Scene_Vertical_Slice.md) separates contract/build evidence from pending browser integration, physical devices and owner acceptance.
 
 - Candidate iOS builds explain local-network access for laptop-hosted clues and wait within the existing activation limit while permission is granted. HTTPS trust remains required.
