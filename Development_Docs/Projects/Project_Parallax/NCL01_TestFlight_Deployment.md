@@ -176,11 +176,15 @@ Open the internal invitation on the iPhone, accept it in TestFlight, confirm
 **VoyageWright Landfall** and the expected version/build, then tap **Install** and
 **Open**. Sign into the existing synthetic NCL account through the laptop origin.
 Open its released Voyage Journal, **Open Chronicle Lens**, then the explicitly
-offered native camera placement action. Scan a well-lit textured horizontal
+offered **Use camera for local placement** action. Scan a well-lit textured horizontal
 surface and deliberately place the original chest and compass. Observe actual
 3D depth/parallax while walking around them and test Inspect/Pick/Place as offered.
 Record tracking loss/recovery, background/foreground return and camera closure.
 Interactions remain observations; they do not independently advance One Voyage.
+Begin slowly scanning the surface immediately: the initial surface-resolution
+window is 15 seconds, after which failure to find one returns to Guided View.
+This retained Scene authors the chest at 40 cm and compass at 16 cm. Models are
+static PBR objects; chest-lid and compass-needle articulation are unsupported.
 
 Record separate outcomes for (1) signed upload, (2) processed/internal-test
 availability, (3) exact-build TestFlight installation, (4) native camera/ARKit
@@ -193,3 +197,24 @@ Crossdeck registry/browser-adapter integration is unfinished. Native adaptive
 environment evidence and HIGHLIGHT remain limitations; unsupported requirements
 must fall back honestly. Do not claim those capabilities or shared multi-device
 qualification from this isolated beta.
+
+## Preparation verification
+
+Preparation commit `526b5c0a879e9164302718ae8a4ae5cc75508bcb` adds only the
+isolated beta tools/metadata and their documentation. Focused transport tests
+passed 3/3, runner boundary tests 4/4, and Windows credential checks 18/18 with
+synthetic in-memory certificates/profiles/keys. The latter validate CMS signature
+integrity, not Apple's signing trust chain. Reusing the real public CSR verifies
+its signature and match with the protected local private key. Public CSR SHA-256:
+`2bf6d580a6d1b1d0185cf34567aadbf219722628a7a514705623013d2d55a0b0`.
+Independent source review found no blocker to an unsigned device archive.
+
+The first [hosted device archive](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39342258297)
+binds that preparation commit through owned transport
+`814885f4dee5522741cc6dc3945ce39a764ccf13`. Its origin is the retained `.24` value
+for compilation/metadata checks only; phone reachability is not established.
+That initial run was canceled during its full-repository checkout before app
+compilation. A bounded checkout now selects the iOS app, pipeline, original model
+resources and referenced test fixtures, avoiding unrelated retained evidence.
+The replacement run remains an unsigned device archive and cannot produce a
+TestFlight-installable build. No signing secrets have been installed.

@@ -19,6 +19,11 @@ jobs:
         with:
           ref: __CANDIDATE_SHA__
           persist-credentials: false
+          sparse-checkout: |
+            native/ios
+            scripts/landfall/testflight
+            tests/fixtures/parallax
+            public/parallax/sc02/models
       - name: Install project generator
         run: brew list xcodegen >/dev/null 2>&1 || brew install xcodegen
       - name: Archive the real unsigned iOS application
@@ -43,6 +48,11 @@ jobs:
         with:
           ref: __CANDIDATE_SHA__
           persist-credentials: false
+          sparse-checkout: |
+            native/ios
+            scripts/landfall/testflight
+            tests/fixtures/parallax
+            public/parallax/sc02/models
       - name: Install project generator
         run: brew list xcodegen >/dev/null 2>&1 || brew install xcodegen
       - name: Sign, export, upload and observe Apple processing
