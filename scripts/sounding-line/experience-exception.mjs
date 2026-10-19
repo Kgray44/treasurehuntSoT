@@ -2259,12 +2259,18 @@ export function recognizeExceptionExecution({ root, baseSha, candidateSha, envir
     ? (json(root, candidateSha, "testing/contracts.json").contracts ?? []).map((value) => value.id)
     : [];
   const refit = ids.includes("crossdeck.refit.companion") || ids.includes("crossdeck.refit.published-lens");
+  // Read this candidate's immutable src identity only when a historical row
+  // needs it. Keep the exact presence lookup, including an empty src tree.
+  let candidateSrcIdentity;
+  const readCandidateSrcIdentity = () => {
+    if (candidateSrcIdentity === undefined) {
+      candidateSrcIdentity = present(root, candidateSha, "src") ? identity(root, candidateSha, "src") : null;
+    }
+    return candidateSrcIdentity;
+  };
   return records.some((record) => {
     const marker = campaignHistoryMarker(record, candidateInventory, candidatePaths);
-    const frozen =
-      record.frozenTrees?.src &&
-      present(root, candidateSha, "src") &&
-      identity(root, candidateSha, "src") === record.frozenTrees.src;
+    const frozen = record.frozenTrees?.src && readCandidateSrcIdentity() === record.frozenTrees.src;
     let descends = false;
     try {
       git(root, "merge-base", "--is-ancestor", record.frozenReferenceSha, candidateSha);

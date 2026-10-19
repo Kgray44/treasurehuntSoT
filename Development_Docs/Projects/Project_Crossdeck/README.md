@@ -114,6 +114,30 @@ fresh whole capture, independent review9/iteration13, authenticated submission,
 complete protected qualification, #721 merge and landed verification remain
 pending. Existing #722 and dependent spatial integration remain held.
 
+**2026-10-19 protected installer correction.** Proposed R18 control-plane
+[PR #773](https://github.com/Kgray44/treasurehuntSoT/pull/773) failed protected
+[run 39184672551](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39184672551):
+729 of 730 focused tests passed; the direct-execution guard made 121 Git calls
+against its unchanged limit of 120. A narrow invocation-local source lookup cache
+passed that same named development test with 83 `HISTORY_CHANGED` calls and 47
+`FROZEN_PRODUCT_CHANGED` calls, preserving the limit, timeout, test source and
+expected denials. Corrected source composition, protected verification and
+installation remain pending. This nonfinite installer failure consumes no capture
+or review allowance and changes no Crossdeck product source or campaign counters.
+Fresh whole capture, independent review9/iteration13, full qualification and
+existing #721/#722 integration gates remain required.
+
+**2026-10-19 corrected source-only checkpoint.** The corrected immutable source
+freeze and separate calculation passed with source digest
+`e46120f6191e123088d2d015ede312fe797af87f677bcdd4e3ec42f16c76813b`.
+The same-stage scope and normalized commands are unchanged. Both focused policy
+test files passed all 208 tests against the fixed source and actual private
+18-row registry in 158.664 seconds, with zero failures or skips. These are source
+calculation and development results. Confirmation after final proof/catalog
+composition, corrected registry/default-loader admission, normal protected
+verification and installation, and whole fresh product qualification remain
+pending. No finite allowance was consumed.
+
 ## Six-phase program
 
 1. **Phase 1 — Lay the Gangway**  

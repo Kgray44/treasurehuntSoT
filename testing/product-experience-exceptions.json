@@ -94000,7 +94000,7 @@
         "kind": "CROSSDECK_CURRENT_SOURCE_ADMISSION_1",
         "protectedBaseAncestorSha": "70cebee31f9717892956279816910ed767a8503a",
         "preservationRevision": "43b5f4d55b6ac751ed9b2e05d4e4cace38544c4f",
-        "sourceDigest": "fe2190944a556245e89566483410f7872afd681d815e972f92a492e8259996c0",
+        "sourceDigest": "e46120f6191e123088d2d015ede312fe797af87f677bcdd4e3ec42f16c76813b",
         "contextCount": 38,
         "pairedBrowserContexts": 6,
         "requiredObligationIds": [
@@ -94050,11 +94050,11 @@
         },
         "historyLedger": {
           "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-current-source-admission-20261018-r18/historical-ledger.json",
-          "sha256": "b91e1251f992b34f81187e19af063470dcf57e979f102d43e0d5d914bde49988"
+          "sha256": "8959b0b87e3c86debc8b472ffcc3ad5716f453d6d730f0f3e57bc9c29096e6e0"
         },
         "disposition": {
           "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-current-source-admission-20261018-r18/causal-disposition.md",
-          "sha256": "ce66604db3088dcacc6b5086586d3e4ef057d5a2014f46bc8eb7cb8662c214b0"
+          "sha256": "64b450f31dc34f2ae9c8b863ea8a735a3856c42f4df2793967d5ea83d1cece7d"
         },
         "protectedOverlay": [
           {
@@ -94071,27 +94071,27 @@
             "oldMode": null,
             "oldBlob": null,
             "newMode": "100644",
-            "newBlob": "22f14c201025ac6f00a51cb04771f9ee569b525b",
+            "newBlob": "7fc91aa82ebc1f1e96f83a8837efdf4385eb79c8",
             "candidateMode": "100644",
-            "candidateBlob": "22f14c201025ac6f00a51cb04771f9ee569b525b"
+            "candidateBlob": "7fc91aa82ebc1f1e96f83a8837efdf4385eb79c8"
           },
           {
             "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-current-source-admission-20261018-r18/historical-ledger.json",
             "oldMode": null,
             "oldBlob": null,
             "newMode": "100644",
-            "newBlob": "c0c56cc6f43ec6dc53490a2fb4105a5565dcc18b",
+            "newBlob": "2afe84102f5c3636db07ffc6cb90c4d153b20193",
             "candidateMode": "100644",
-            "candidateBlob": "c0c56cc6f43ec6dc53490a2fb4105a5565dcc18b"
+            "candidateBlob": "2afe84102f5c3636db07ffc6cb90c4d153b20193"
           },
           {
             "path": "Development_Docs/Projects/Project_Crossdeck/README.md",
             "oldMode": "100644",
             "oldBlob": "39d56a14ac396fcdd3fe9eabc6d4f6f898388340",
             "newMode": "100644",
-            "newBlob": "d79c34e310c7580597d17e552da8705265d7c747",
+            "newBlob": "287b1597d2ede48a05c7927a5f486e43e3e74f23",
             "candidateMode": "100644",
-            "candidateBlob": "d79c34e310c7580597d17e552da8705265d7c747"
+            "candidateBlob": "287b1597d2ede48a05c7927a5f486e43e3e74f23"
           },
           {
             "path": "Development_Docs/document-index.json",
@@ -94125,9 +94125,9 @@
             "oldMode": "100644",
             "oldBlob": "37eff2a4310d3032544da5f0c523d26a053cb8c3",
             "newMode": "100644",
-            "newBlob": "fc548d65efbdcecc7c245d01763478310f35184f",
+            "newBlob": "85d2e24a9bb2aa09de061130070eeb93576ff1f8",
             "candidateMode": "100644",
-            "candidateBlob": "fc548d65efbdcecc7c245d01763478310f35184f"
+            "candidateBlob": "85d2e24a9bb2aa09de061130070eeb93576ff1f8"
           },
           {
             "path": "tests/sounding-line/experience-current-admission.test.mjs",

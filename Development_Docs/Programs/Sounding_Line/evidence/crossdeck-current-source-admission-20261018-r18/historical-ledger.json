@@ -3485,7 +3485,7 @@
                 {
                   "action": "click",
                   "role": "link",
-                  "name": "← Device connections"
+                  "name": "\u2190 Device connections"
                 },
                 {
                   "action": "assert",
@@ -3684,7 +3684,7 @@
                 {
                   "action": "click",
                   "role": "link",
-                  "name": "← Device connections"
+                  "name": "\u2190 Device connections"
                 },
                 {
                   "action": "assert",
@@ -3753,7 +3753,7 @@
                 {
                   "action": "click",
                   "role": "link",
-                  "name": "← Device connections"
+                  "name": "\u2190 Device connections"
                 },
                 {
                   "action": "assert",
@@ -3969,8 +3969,8 @@
                   "action": "assert",
                   "kind": "outcome",
                   "role": "article",
-                  "name": "A parchment note bearing the Captain’s next clue.",
-                  "text": "You are inspecting The Captain’s note.",
+                  "name": "A parchment note bearing the Captain\u2019s next clue.",
+                  "text": "You are inspecting The Captain\u2019s note.",
                   "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
                   "meaning": "Inspection changes the visible canonical entity state and records a meaningful Lens interaction independently from Voyage progression.",
                   "state": "INSPECTED",
@@ -4648,7 +4648,7 @@
       },
       {
         "id": "homeport.shell.crossdeck-companion-mobile",
-        "name": "Homeport immersive companion contextual exit and same-Voyage re-entry · handheld",
+        "name": "Homeport immersive companion contextual exit and same-Voyage re-entry \u00b7 handheld",
         "authority": "project-homeport",
         "owners": [
           "project-homeport",
@@ -8113,5 +8113,394 @@
     "finiteAllowanceConsumed": false,
     "qualification": false,
     "mandatoryNext": "Finalize and independently audit exact proof/README bytes; regenerate both catalogs separately from fully materialized authority and candidate roots; rederive exact final docs composition; then construct and review only proposed18-row registry with literal17raw recovery and run unchanged production default-loader before-capture admission. Normal protected installation, adoption, actual public admission and whole fresh experience/technical qualification remain pending."
+  },
+  "postCutControlPlaneInstallerFailure": {
+    "kind": "POST_CUT_NONFINITE_CONTROL_PLANE_INSTALLER_FAILURE",
+    "scope": "This supplements the literal earlier R18 proof snapshot; all existing values, cutoffs, initial source calculations, old review/custody facts and finite history remain historical and unchanged. It creates no finite allowance and does not represent a fresh complete provider inventory.",
+    "pullRequest": 773,
+    "runId": 39184672551,
+    "runAttempt": 1,
+    "workflowId": 341545080,
+    "runUrl": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39184672551",
+    "headSha": "fd99acde41fc1ec3f19862e05d96f04cbe843695",
+    "headTree": "269d4456f0a4f817d0bcb7b01cdf49b25bd81920",
+    "baseSha": "70cebee31f9717892956279816910ed767a8503a",
+    "overallConclusion": "failure",
+    "overallConclusionEvidenceClass": "INDEPENDENTLY_READ_PRESERVED_PROVIDER_RUN_JOBS_CHECKS_AND_FOCUSED_LOG",
+    "focusedJob": {
+      "id": 117845137120,
+      "conclusion": "failure",
+      "tests": 730,
+      "pass": 729,
+      "fail": 1,
+      "skipped": 0,
+      "failingTest": "copied product trees and refit identities cannot evade direct execution guards",
+      "testPath": "tests/sounding-line/experience-exception.test.mjs",
+      "testLine": 1579,
+      "assertionLine": 1625,
+      "failure": "direct guard must stay bounded across installed history records; observed 121",
+      "observedGitCalls": 121,
+      "unchangedMaximumGitCalls": 120,
+      "originalLog": {
+        "bytes": 292638,
+        "sha256": "fb785ffeebb9ffe957ab8884a46da0f23198b078155f95097beef5835b6519a9",
+        "receiptId": "pr773-r18-protected-run39184672551-failure-20261019/focused-job.original.private.log"
+      },
+      "logLines": [
+        2068,
+        2070,
+        2071,
+        2073,
+        2079,
+        2080,
+        2081,
+        2082
+      ]
+    },
+    "sourceClassification": {
+      "classification": "SOURCE_PROVED_CONTROL_PLANE_INSTALLER_UNRELATED_TO_FINITE_PR721_CAMPAIGN",
+      "installerHeadTreeEqualsReviewedPrivateAuthorityTree": true,
+      "reviewedPrivateAuthority": "089eb69b5733954198642ea927874a19210f3c8e",
+      "exactElevenPathTreeReview": {
+        "bytes": 38701,
+        "sha256": "767a16c67ae000fcb867957723e00d1f5da75c039bf85d5fe80d67d97cd3b1fd",
+        "receiptId": "pr721-r18-actual-append-publication-independent-audit-20261019/final-eleven-tree-publication-addendum.actual.private.json"
+      },
+      "installerChangesExcludeSrcTechnicalBrowserAndContracts": true,
+      "actualProductRepairReferenceUnchanged": "24b3ae474454ba893de986950af37a3390b5e7a5",
+      "newFiniteCaptureOrIndependentProductReview": false
+    },
+    "finiteCampaignEffect": {
+      "knownFiniteHistoryCountUnchanged": 20,
+      "completedPreparationsUnchanged": 21,
+      "proposedPreparationOrdinalUnchanged": 22,
+      "completedIndependentReviewsUnchanged": 8,
+      "requiredReviewIterationUnchanged": 13,
+      "requiredReviewOrdinalUnchanged": 9,
+      "finiteAllowanceConsumedByInstaller": false,
+      "rerunOrRefundOrPaidProviderCallCreated": false,
+      "productAcceptance": false,
+      "qualifiedSeal": false
+    },
+    "acceptedCompleteHistoryAsOfReuse": {
+      "receipt": {
+        "bytes": 411839,
+        "sha256": "0cb9d65249079ea6c31e53beb3541f324fb433070adc21352f87a498cebf85ba",
+        "receiptId": "pr721-r18-root-complete-history-adoption-20261019/fresh-history-complete.accepted.actual.private.json"
+      },
+      "creationCutoffUtcInclusive": "2026-10-19T00:23:34Z",
+      "completeRepositoryRows": 4192,
+      "derivedWorkflowRows": 1169,
+      "campaignRepositoryRows": 270,
+      "campaignWorkflowRows": 242,
+      "use": "Reuse only the already accepted complete historical join at its original cutoff; supplement with this bounded installer observation. Refresh the tail, source/head/active state and unused namespace before any finite successor action. No new all-history remote fetch is required for the nonfinite source correction itself."
+    },
+    "publicationReceipt": {
+      "bytes": 6203,
+      "sha256": "32d104d2db7944fb5e156c39c15d93235a20b1d4fcd2f5dd0cf0ef7cb6d33b22",
+      "receiptId": "pr773-r18-remote-publication-20261019/publication.actual.private.json"
+    },
+    "independentDiagnosis": {
+      "bytes": 6734,
+      "sha256": "59984b26d31d8cbe20f909cee146770f27b6f7a9caeaa1bc6b45fb223c0c8f44",
+      "receiptId": "pr773-r18-direct-guard-bound-independent-diagnosis-20261019/diagnosis.actual.private.json"
+    },
+    "diagnosedCorrection": "An invocation-local lazy cache of the exact immutable candidate src present\u2192identity lookup pair; retain the distinct equality comparison for every installed/candidate/base record and all validation, denial, ancestry, budget and authorization predicates. No assertion/timeout changes.",
+    "correctionStatus": "ACTUAL_FIXED_SOURCE_AND_NAMED_REGRESSION_PASS_PENDING_FINAL_REDERIVATION_AND_PROTECTED_CHECKS",
+    "currentSourceDerivationStatus": "Corrected final authority/candidate source composition, command identities, overlay/registry bindings and real default-loader admission remain to be recomputed from actual final corrected inputs. Earlier calculation and default-loader results remain scoped to their original source tuple. No future source digest, obligation ID, corrected record digest, commit or tree is asserted here.",
+    "providerOriginal": {
+      "bytes": 394411,
+      "sha256": "bc41a1c89045059a682b0a52c3ed44fca0445043395d579a6726681d8a51c4d3",
+      "receiptId": "pr773-r18-protected-run39184672551-failure-20261019/provider-evidence.original.private.json"
+    },
+    "event": "pull_request_target",
+    "checkSuiteId": 106181801346,
+    "createdAt": "2026-10-19T01:17:18Z",
+    "terminalUpdatedAt": "2026-10-19T01:26:27Z",
+    "runNumber": 1171,
+    "jobs": [
+      {
+        "id": 117844458657,
+        "name": "Sounding Line / Finite campaign custody",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "fd99acde41fc1ec3f19862e05d96f04cbe843695",
+        "started_at": "2026-10-19T01:17:21Z",
+        "completed_at": "2026-10-19T01:20:18Z"
+      },
+      {
+        "id": 117845137120,
+        "name": "Sounding Line / Focused verification",
+        "status": "completed",
+        "conclusion": "failure",
+        "head_sha": "fd99acde41fc1ec3f19862e05d96f04cbe843695",
+        "started_at": "2026-10-19T01:20:20Z",
+        "completed_at": "2026-10-19T01:26:19Z"
+      },
+      {
+        "id": 117845138218,
+        "name": "Sounding Line / Experience preparation (no mainline decision)",
+        "status": "completed",
+        "conclusion": "skipped",
+        "head_sha": "fd99acde41fc1ec3f19862e05d96f04cbe843695",
+        "started_at": "2026-10-19T01:20:19Z",
+        "completed_at": "2026-10-19T01:20:18Z"
+      },
+      {
+        "id": 117846514644,
+        "name": "Sounding Line / Mainline Decision",
+        "status": "completed",
+        "conclusion": "failure",
+        "head_sha": "fd99acde41fc1ec3f19862e05d96f04cbe843695",
+        "started_at": "2026-10-19T01:26:22Z",
+        "completed_at": "2026-10-19T01:26:26Z"
+      }
+    ],
+    "requiredMainlineDecision": {
+      "appId": 15368,
+      "id": 117846514644,
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    "correctedSource": {
+      "path": "scripts/sounding-line/experience-exception.mjs",
+      "oldMode": "100644",
+      "oldBlob": "fc548d65efbdcecc7c245d01763478310f35184f",
+      "oldBytes": 124941,
+      "oldSHA256": "3e2d9ffcd5e56bf5b731c1ce0972bf55cf6d1bd0baea02845dd8625c8b962a39",
+      "newMode": "100644",
+      "newBlob": "85d2e24a9bb2aa09de061130070eeb93576ff1f8",
+      "newBytes": 125300,
+      "newSHA256": "2b3fbc0076e0578736ca9443667d66e336f0fc84eca6785bf9cfac3e414f9203",
+      "scope": "Only recognizeExceptionExecution: lazily cache the existing exact candidate src present\u2192identity pair once per invocation, including null for an absent path; preserve per-record frozenTrees.src equality, record order, ancestry, all denials, later validation and one-use authorization.",
+      "sourceInAuthorityAndCandidateByteEqual": true,
+      "testSource": {
+        "path": "tests/sounding-line/experience-exception.test.mjs",
+        "bytes": 214595,
+        "sha256": "5f0e33aa07202da21d333dbb3258085f84d6616d07322b3de5655668586f0d82",
+        "unchanged": true
+      },
+      "testAssertionMaximumGitOperations": 120,
+      "testTimeoutMs": 20000
+    },
+    "namedRegressionVerification": {
+      "classification": "DEVELOPMENT_ONLY_NOT_PROTECTED_VERIFICATION_OR_QUALIFICATION",
+      "before": {
+        "process": {
+          "bytes": 754,
+          "sha256": "e9b44fd2a6566ed5c53646fecdacb9e038882e1d092653dda27cb8af707ffcc7",
+          "receiptId": "pr773-r18-direct-guard-development-20261019/before.process.actual.private.json"
+        },
+        "stdout": {
+          "bytes": 955,
+          "sha256": "cc3c21e6886a6affe662881acdbaf67dfa31ccfb78920f9a5f4b9494ed6d1e00",
+          "receiptId": "pr773-r18-direct-guard-development-20261019/before.stdout.original.private.log"
+        },
+        "exitCode": 1,
+        "observedGitCalls": 121,
+        "maximumGitOperations": 120,
+        "disposition": "Preserved expected regression failure against actual18-row installed private composition."
+      },
+      "after": {
+        "process": {
+          "bytes": 721,
+          "sha256": "7fec4dff8a6f261f53c41446b03720995705b13ac49bef43557f0d83c002851a",
+          "receiptId": "pr773-r18-direct-guard-development-20261019/after.process.actual.private.json"
+        },
+        "stdout": {
+          "bytes": 518,
+          "sha256": "e8478b0b1da512c12ceca589839d1c1625f61782593578f194b26dfbd8fadec3",
+          "receiptId": "pr773-r18-direct-guard-development-20261019/after.stdout.original.private.log"
+        },
+        "exitCode": 0,
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "skipped": 0,
+        "denials": [
+          {
+            "expected": "HISTORY_CHANGED",
+            "gitOperations": 83,
+            "maximumGitOperations": 120,
+            "timeoutMs": 20000
+          },
+          {
+            "expected": "FROZEN_PRODUCT_CHANGED",
+            "gitOperations": 47,
+            "maximumGitOperations": 120,
+            "timeoutMs": 20000
+          }
+        ]
+      },
+      "full730SuiteOrNormalProtectedRunPassedByThisEvidence": false
+    },
+    "correctedInstallerCheckpoint": {
+      "path": "Development_Docs/Projects/Project_Crossdeck/README.md",
+      "role": "EXPANDED_SINGLE_DATED_CHECKPOINT_INSERT_WITH_NONFINITE_INSTALLER_FAILURE_AND_NAMED_FIX_RESULTS",
+      "oldAcceptedMode": "100644",
+      "oldAcceptedBlob": "39d56a14ac396fcdd3fe9eabc6d4f6f898388340",
+      "priorPreparedCheckpointBlob": "d79c34e310c7580597d17e552da8705265d7c747",
+      "newMode": "100644",
+      "newBlob": "a5aed8860ec2c6ae5ad1f978dcb4081ff9d02502",
+      "bytes": 12941,
+      "sha256": "110e7d091eed73d28926550753c3af225abf9ba09e24089f25392c4e159602b2",
+      "acceptedOldBytes": 10773,
+      "priorDatedInsertBytes": 1236,
+      "addedWithinContiguousDatedInsertBytes": 932,
+      "expandedSingleDatedInsertBytes": 2168,
+      "removeExpandedSingleInsertRecoversAllAcceptedOldBytes": true,
+      "immutableHistoryMember": false,
+      "productFreezeContainsREADME": false,
+      "meaning": "The original proposedInstallerCheckpoint retains the earlier d79/12009/3019 values as historical; this separate section binds the actual revised private README payload without changing those original snapshot values."
+    },
+    "actualCorrectedSourceOnlyCalculation": {
+      "status": "ACTUAL_CORRECTED_IMMUTABLE_SOURCE_ONLY_CALCULATION_PASS_NOT_FINAL_DOCS_ADMISSION",
+      "completedAt": "2026-10-19T01:51:14.907Z",
+      "chronology": "This is the later actual source-only calculation following the preceding initial post-cut correction snapshot. All preceding fields retain their original as-of scope. In particular, prior sourceDigest fe219 and prior command/group/default-loader pins are historical, not current corrected-source evidence.",
+      "sourceDigest": "e46120f6191e123088d2d015ede312fe797af87f677bcdd4e3ec42f16c76813b",
+      "priorSourceDigest": "fe2190944a556245e89566483410f7872afd681d815e972f92a492e8259996c0",
+      "sourceDigestChanged": true,
+      "contractDigest": "befbdf5fa900b58f2a706c94a80861bb1819fbb045c17bb00756fa83b9b4af3d",
+      "contractDigestUnchanged": true,
+      "initialCorrectedSourceComposition": {
+        "meaning": "Actual corrected initial source-only input. These commits/trees exclude this V2 proof/README payload, final canonical catalogs and corrected registry composition; they are not future final public tuples.",
+        "authorityCommit": "9e02e6c1042240799b98af38e1e93ed2c798b662",
+        "authorityTree": "bfe29e444d56215b7a7b833c60fa8daccc1ddec1",
+        "candidateCommit": "40e064a5e6bc41ca60e58346f35670e4a8092211",
+        "candidateTree": "0f8320113bd1bac049bf59674fa0db0e594a288e",
+        "candidateOrderedParents": [
+          "24b3ae474454ba893de986950af37a3390b5e7a5",
+          "9e02e6c1042240799b98af38e1e93ed2c798b662"
+        ]
+      },
+      "sourceBoundReferenceFields": {
+        "frozenReferenceSha": "24b3ae474454ba893de986950af37a3390b5e7a5",
+        "protectedBaseAncestorSha": "70cebee31f9717892956279816910ed767a8503a",
+        "preservationRevision": "43b5f4d55b6ac751ed9b2e05d4e4cace38544c4f"
+      },
+      "immutableAuthorityFreeze": {
+        "bytes": 78118,
+        "sha256": "a617252a689fa1d3d392f82d27c742f66e5fdde16f1b35991c3b83ab2c4fae35",
+        "receiptId": "pr773-corrected-r18-pure-source-root-20261019-attempt1/authority-freeze.actual.private.json"
+      },
+      "actualSourceReceipt": {
+        "bytes": 2451108,
+        "sha256": "a2a1405a4abe1bf5bc7804b0fabb3354d85a2590ed44c489b4653cce3bfbc1f6",
+        "receiptId": "pr773-corrected-r18-pure-source-root-20261019-attempt1/actual-source-only-derivation.private.json"
+      },
+      "futurePublicationPathProjectionReceipt": {
+        "bytes": 2452403,
+        "sha256": "d376601ff9d19c3c90c3aeaf93aa66bffd65ab95e9533f9062877b17fbb802cc",
+        "receiptId": "pr773-corrected-r18-pure-source-root-20261019-attempt1/future-publication-projection.private.json"
+      },
+      "executionReceipt": {
+        "bytes": 170053,
+        "sha256": "b26d8eb32dfd477b1fd53d20f57f239723b4738ecbf338be3ebd3578113761ee",
+        "receiptId": "pr773-corrected-r18-pure-source-root-20261019-attempt1/pure-source-derivation.execution.actual.private.json"
+      },
+      "counts": {
+        "contracts": 7,
+        "contexts": 38,
+        "selectedUnitFiles": 291,
+        "browserFiles": 8,
+        "groups": 8,
+        "commands": 13,
+        "publicationPaths": 26
+      },
+      "genericContexts": 32,
+      "pairedContexts": 6,
+      "sameStagePreservation": {
+        "comparison": "Corrected source-stage calculation against the original source-stage calculation, not against later final-docs output.",
+        "nineScopeValuesPreserved": true,
+        "eightNormalizedCanonicalGroupsPreserved": true,
+        "thirteenNormalizedCommandsPreserved": true,
+        "executionReceiptReportsExactNormalizedCommandEquality": true,
+        "priorSameStage": {
+          "actual": {
+            "path": "/workspace/crossdeck-cloud-receipts/focused-development-repair-20261017/pr721-r18-pure-derivation-root-source-20261019-attempt2/actual-source-only-derivation.private.json",
+            "bytes": 2451109,
+            "sha256": "8e632deb3de39b0380b2f542313c7de4f59e8a6fc1310eaad8a61bf212108a95"
+          },
+          "future": {
+            "path": "/workspace/crossdeck-cloud-receipts/focused-development-repair-20261017/pr721-r18-pure-derivation-root-source-20261019-attempt2/future-publication-projection.private.json",
+            "bytes": 2452404,
+            "sha256": "011fae47e4921c4acc2de8ed09b1e1ce305b02642e8c529cb01f6706d11f0422"
+          },
+          "execution": {
+            "path": "/workspace/crossdeck-cloud-receipts/focused-development-repair-20261017/pr721-r18-pure-derivation-root-source-20261019-attempt2/pure-source-derivation.execution.actual.private.json",
+            "bytes": 169758,
+            "sha256": "1ef729d531703c8d224f70da3b8138a01780ebfc210df237b95013001caaecc6"
+          }
+        }
+      },
+      "frozenProductRootsByteEqual": true,
+      "importedAuthorityReverifiedAfterDerivation": true,
+      "immutableHistoryPreservationVerifiedByThisCalculation": false,
+      "defaultLoaderExecuted": false,
+      "recordOrGrantCreated": false,
+      "sourceIndexRefsOrRegistryMutatedByCalculation": false,
+      "testsBrowserCaptureOrWorkflowExecutedByCalculation": false,
+      "finiteAllowanceConsumed": false,
+      "qualification": false,
+      "mandatoryNext": "Apply and independently review this exact corrected proof/README payload; regenerate/verify canonical catalogs separately; derive the actual final documentation composition and confirm corrected source digest/command identities. Rebuild and review the corrected proposed R18 registry row/overlay from actual inputs; run unchanged real default-loader and normal protected verification. Actual protected source admission and whole fresh experience/technical qualification remain pending."
+    },
+    "actualFullTwoPolicyDevelopmentVerification": {
+      "classification": "DEVELOPMENT_ONLY_NOT_NORMAL_PROTECTED_VERIFICATION_OR_QUALIFICATION",
+      "process": {
+        "bytes": 1073,
+        "sha256": "8f2d871c41be2f3f43d038ccfac3ff2198ef38d10496ecb3a7c943b5c30958de",
+        "receiptId": "pr773-r18-direct-guard-development-20261019/focused.process.actual.private.json"
+      },
+      "stdout": {
+        "bytes": 22488,
+        "sha256": "f5db3e8c8dc5d4a3e24ee55b05357611c8a82ba31d92fb0b3d5b526f9208f7e2",
+        "receiptId": "pr773-r18-direct-guard-development-20261019/focused.stdout.original.private.log"
+      },
+      "stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receiptId": "pr773-r18-direct-guard-development-20261019/focused.stderr.original.private.log"
+      },
+      "exitCode": 0,
+      "elapsedSeconds": 158.66425895690918,
+      "tests": 208,
+      "pass": 208,
+      "fail": 0,
+      "skipped": 0,
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+        "--test",
+        "tests/sounding-line/experience-current-admission.test.mjs",
+        "tests/sounding-line/experience-exception.test.mjs"
+      ],
+      "sourcePins": {
+        "scripts/sounding-line/experience-exception.mjs": "2b3fbc0076e0578736ca9443667d66e336f0fc84eca6785bf9cfac3e414f9203",
+        "tests/sounding-line/experience-exception.test.mjs": "5f0e33aa07202da21d333dbb3258085f84d6616d07322b3de5655668586f0d82",
+        "testing/product-experience-exceptions.json": "78fa75b444bf9249aa0b8e3f31c88c0f3afb4a0605cd568170f63521a7f404d1"
+      },
+      "scope": "Both unchanged test sources ran against the actual18-row private registry and fixed exception source. This supports the narrow correction; it does not replace the failed730-test protected installer run or prove current product/whole qualification.",
+      "qualification": false
+    },
+    "sourceOnlyUpdatedInstallerCheckpoint": {
+      "path": "Development_Docs/Projects/Project_Crossdeck/README.md",
+      "meaning": "Actual V2 payload adds the later source-only and208-test checkpoint to the same contiguous dated insert. Earlier d79/12009 and V1 a5aed/12941 bindings remain historical in their original fields.",
+      "newMode": "100644",
+      "newBlob": "287b1597d2ede48a05c7927a5f486e43e3e74f23",
+      "bytes": 13656,
+      "sha256": "c6cdba3f16653b06b8688a76068e6491d0301a686da7fa404adf4421a0384d1e",
+      "previousV1Payload": {
+        "bytes": 12941,
+        "sha256": "110e7d091eed73d28926550753c3af225abf9ba09e24089f25392c4e159602b2",
+        "receiptId": "pr773-r18-installer-failure-proof-transition-actual-20261019/README.corrected.private.md"
+      },
+      "addedSourceOnlyCheckpointBytes": 715,
+      "expandedSingleDatedInsertBytes": 2883,
+      "acceptedOldBytes": 10773,
+      "acceptedOldBlob": "39d56a14ac396fcdd3fe9eabc6d4f6f898388340",
+      "removeExpandedSingleInsertRecoversAllAcceptedOldBytes": true,
+      "allPriorREADMEBytesRecoveredByRemovingOnlyNewSourceCheckpoint": true,
+      "productFreezeContainsREADME": false,
+      "immutableHistoryMember": false
+    }
   }
 }
