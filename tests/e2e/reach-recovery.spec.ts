@@ -185,10 +185,14 @@ test("D0 controlled poses recover in the actual laboratory without losing comple
       ...point,
       y: point.y + 0.47,
     })),
-    CROPPED_OPEN: pointingPose({ indexBends: [0, 5, 10], otherBends: [0, 5, 10], depthAngle: 90 }).map((point) => ({
-      ...point,
-      y: point.y + 0.47,
-    })),
+    // All joints remain in the image. These end-on secondary chains lack
+    // projected pointing support; they must not use cropped-finger inference.
+    END_ON_OPEN_UNKNOWN: pointingPose({ indexBends: [0, 5, 10], otherBends: [0, 5, 10], depthAngle: 90 }).map(
+      (point) => ({
+        ...point,
+        y: point.y + 0.47,
+      }),
+    ),
     CROPPED_UNKNOWN: pointingPose({ indexBends: [0, 5, 10], depthAngle: 90 }).map((point, index) => ({
       ...point,
       y: [10, 11, 12, 14, 15, 16, 18, 19, 20].includes(index) ? 1.3 : point.y + 0.47,
@@ -208,6 +212,12 @@ test("D0 controlled poses recover in the actual laboratory without losing comple
         outlier: false,
         duplicate: false,
         observations: 0,
+        revision: 0,
+        appliedRevision: -1,
+        appliedPose: "",
+        appliedObservations: 0,
+        firstAppliedAt: 0,
+        lastAppliedAt: 0,
       };
       Object.assign(window, { reachPoseReplay: replay });
       Object.defineProperty(navigator.mediaDevices, "getUserMedia", {
@@ -241,8 +251,10 @@ test("D0 controlled poses recover in the actual laboratory without losing comple
           this.addEventListener("message", (event) => {
             if (event.data.type !== "RESULT") return;
             replay.observations++;
-            const source =
-              replay.pose === "SWEEP" ? sweepPoses[replay.sweepIndex] : poses[replay.pose as keyof typeof poses];
+            const revision = replay.revision;
+            const pose = replay.pose;
+            const appliedAt = performance.now();
+            const source = pose === "SWEEP" ? sweepPoses[replay.sweepIndex] : poses[pose as keyof typeof poses];
             const points = source.map((p) => ({
               ...p,
               x: p.x + (replay.outlier ? 0.07 : 0),
@@ -259,6 +271,19 @@ test("D0 controlled poses recover in the actual laboratory without losing comple
                   ? [[{ categoryName: "Right", score: 0.95 }], [{ categoryName: "Right", score: 0.95 }]]
                   : [[{ categoryName: "Right", score: 0.95 }]],
             };
+            // Acknowledge after the runtime's RESULT listener has consumed this
+            // injected revision, rather than reusing the preceding pose's UI.
+            setTimeout(() => {
+              if (replay.revision !== revision) return;
+              if (replay.appliedRevision !== revision) {
+                replay.appliedRevision = revision;
+                replay.appliedPose = pose;
+                replay.appliedObservations = 0;
+                replay.firstAppliedAt = appliedAt;
+              }
+              replay.appliedObservations++;
+              replay.lastAppliedAt = appliedAt;
+            }, 0);
           });
         }
       };
@@ -271,10 +296,41 @@ test("D0 controlled poses recover in the actual laboratory without losing comple
     hidden?: boolean;
     outlier?: boolean;
     duplicate?: boolean;
-  }) =>
-    page.evaluate((value) => {
-      Object.assign((window as unknown as { reachPoseReplay: object }).reachPoseReplay, value);
+  }) => {
+    const revision = await page.evaluate((value) => {
+      const state = (window as unknown as { reachPoseReplay: { revision: number } }).reachPoseReplay;
+      Object.assign(state, value);
+      return ++state.revision;
     }, value);
+    await page.waitForFunction((revision) => {
+      const state = (
+        window as unknown as {
+          reachPoseReplay: {
+            appliedRevision: number;
+            appliedObservations: number;
+            firstAppliedAt: number;
+            lastAppliedAt: number;
+          };
+        }
+      ).reachPoseReplay;
+      return (
+        state.appliedRevision === revision &&
+        state.appliedObservations >= 3 &&
+        state.lastAppliedAt - state.firstAppliedAt >= 120
+      );
+    }, revision);
+    await page.evaluate(
+      () => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))),
+    );
+    await testInfo.attach(`D0-pose-revision-${revision}.json`, {
+      body: JSON.stringify(
+        await page.evaluate(() => (window as unknown as { reachPoseReplay: object }).reachPoseReplay),
+        null,
+        2,
+      ),
+      contentType: "application/json",
+    });
+  };
   const status = page.getByRole("status", { name: "Reach status" });
   await page.goto("/devices/reach");
   await page.getByRole("button", { name: "Enable live camera" }).click();
@@ -300,11 +356,15 @@ test("D0 controlled poses recover in the actual laboratory without losing comple
   await expect(status).toContainText("Required joints visible");
   await expect(status).toContainText("Eligible for collection");
   await page.screenshot({ path: testInfo.outputPath("D0-cropped-finger-inference.png"), fullPage: false });
-  for (const pose of ["CROPPED_OPEN", "CROPPED_UNKNOWN"]) {
-    await replay({ pose });
-    await expect(status).toContainText("Eligible for collection");
-    await expect(status).toContainText("Index-only pointing is tentative");
-  }
+  await replay({ pose: "END_ON_OPEN_UNKNOWN" });
+  await expect(status).toContainText("Point not yet recognized");
+  await expect(status).toContainText("Collection waiting");
+  await expect(status).not.toContainText("Eligible for collection");
+  await expect(status).not.toContainText("Index-only pointing is tentative");
+  await page.screenshot({ path: testInfo.outputPath("D0-fully-visible-end-on-unknown.png"), fullPage: false });
+  await replay({ pose: "CROPPED_UNKNOWN" });
+  await expect(status).toContainText("Eligible for collection");
+  await expect(status).toContainText("Index-only pointing is tentative");
   await replay({ pose: "DEPTH" });
   await expect(status).toContainText("Index aimed toward the camera");
   await expect(status).toContainText("Eligible for collection");

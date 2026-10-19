@@ -24,6 +24,8 @@ type Evidence = {
   point: Point | null;
   uncertaintyPixels: number | null;
   identitySupported: boolean;
+  /** Current trusted image association only; never a measured point or a source alias proof. */
+  retainedImageIdentity?: boolean;
   source: string | null;
   intent: TemporalIndexSnapshot["intent"];
   ambiguous: boolean;
@@ -99,7 +101,8 @@ export class TemporalIndexTrack {
     // A raw template replacement is compatible only with current separately
     // verified same-source anatomy. New source aliases must be proved upstream.
     const replacement = this.logical !== null && e.rawTrackId !== null && e.rawTrackId !== this.logical.raw;
-    const compatibleReplacement = replacement && e.identitySupported && e.source !== null && e.source === this.source;
+    const compatibleReplacement =
+      replacement && !e.ambiguous && e.identitySupported && e.source !== null && e.source === this.source;
     const sourceChanged = this.source !== null && e.source !== null && this.source !== e.source;
     const ambiguous = e.ambiguous || sourceChanged || (replacement && !compatibleReplacement);
     if (!this.logical && e.rawTrackId && (!this.expired || e.point || e.identitySupported)) {
@@ -116,6 +119,19 @@ export class TemporalIndexTrack {
     } else if (compatibleReplacement) this.logical = { ...this.logical!, raw: e.rawTrackId! };
     const sameRaw = this.logical !== null && this.logical.raw === e.rawTrackId;
     const supported = sameRaw && !ambiguous && (e.identitySupported || e.point !== null);
+    const retainedImageIdentity =
+      this.logical?.established === true &&
+      sameRaw &&
+      e.retainedImageIdentity === true &&
+      e.identitySupported &&
+      e.ambiguous &&
+      !sourceChanged &&
+      (e.source === null || e.source === this.source) &&
+      e.point === null &&
+      now - e.capture <= temporalIndexPolicy.measurementFreshnessMs;
+    // Ambiguous gesture/model evidence remains nonactionable. A fresh image of
+    // the already selected material may retain only its existing identity clock.
+    if (retainedImageIdentity) this.identityAt = e.capture;
     if (supported) {
       this.logical = { ...this.logical!, established: true };
       this.identityAt = e.capture;

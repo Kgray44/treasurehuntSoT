@@ -1,6 +1,7 @@
 // @sounding-line-registration owner=reach suite=unit.reach contracts=reach.phase1.foundation
 import { describe, expect, it, vi } from "vitest";
 import { IndexImageTracker, type IndexGrayFrame, type IndexModelAnchor } from "./index-image-tracker";
+import type { TemporalIndexTrack } from "./temporal-index-track";
 
 // Public analytic pixels only. A quarantined search hypothesis supplies neither
 // finger recognition nor trusted measurement, gesture, or calibration evidence.
@@ -101,8 +102,208 @@ function startConflict(tracker: IndexImageTracker) {
   expectCandidate(tracker.update(pixels(300, 57), model(81)), 57, selected.trackId);
   return selected;
 }
+function contextualSource(hand: string, generation: number) {
+  return JSON.stringify([
+    "synthetic-provider",
+    "synthetic-model",
+    "synthetic-algorithm",
+    1,
+    binding.cameraLeaseId,
+    1,
+    320,
+    240,
+    "NONE",
+    0,
+    hand,
+    generation,
+  ]);
+}
 
 describe("fixed-reference image quarantine follows candidates without trusting them", () => {
+  it("retains established selected material through foreign model ambiguity without committing image coordinates", () => {
+    const tracker = new IndexImageTracker(binding);
+    const rawA = contextualSource("hand-a", 1);
+    const rawB = contextualSource("hand-b", 2);
+    let selected;
+    for (const at of [100, 166, 233]) selected = tracker.update(pixels(at), model(45, rawA));
+    expect(selected).toMatchObject({ state: "TRACKING", coordinateSource: "FUSED" });
+    const before = opticalState(tracker);
+    const internal = tracker as unknown as {
+      temporal: TemporalIndexTrack;
+      sourceCanonical: string | null;
+      trustedModelSource: string | null;
+      sourceAssociation: import("./index-source-association").IndexSourceAssociation;
+    };
+    const original = internal.temporal.checkpoint();
+    const observed = vi.spyOn(internal.temporal, "observe");
+    for (const at of [300, 450, 600, 750, 900, 1050, 1200, 1350, 1500, 1650, 1800]) {
+      // B has neither the old separated-part proof nor the selected source.
+      // Current unique A pixels may retain A's identity, never B's coordinates.
+      const paused = tracker.update(pixels(at), model(69, rawB));
+      expect(paused).toMatchObject({
+        state: "UNCERTAIN",
+        reason: "FULL_HAND_AMBIGUOUS",
+        trackId: selected!.trackId,
+        point: null,
+        measurements: { model: point(69), modelDisposition: "CANDIDATE", accepted: null },
+        temporalTrack: { state: "AMBIGUOUS", identity: "AMBIGUOUS", displayPoint: null },
+      });
+      expect(paused.matchedPoint!.x * 159).toBeCloseTo(45, 1);
+      expect(paused.temporalTrack!.measurementAgeMs).toBe(at + 1 - 233);
+      expect(opticalState(tracker)).toEqual(before);
+      expect(internal.temporal.checkpoint()).toMatchObject({
+        logical: original.logical,
+        source: rawA,
+        sources: [rawA],
+        identityAt: at,
+        measurement: original.measurement,
+        velocity: original.velocity,
+      });
+      expect(internal.sourceCanonical).toBe(rawA);
+      expect(internal.trustedModelSource).toBe(rawA);
+      expect(internal.sourceAssociation.trustedSource).not.toBe(rawB);
+    }
+    expect(observed.mock.calls).toHaveLength(11);
+    for (const [evidence] of observed.mock.calls)
+      expect(evidence).toMatchObject({ source: rawA, point: null, ambiguous: true, retainedImageIdentity: true });
+    observed.mockRestore();
+    let recovered;
+    for (const at of [1900, 1966, 2033]) recovered = tracker.update(pixels(at), model(45, rawA));
+    expect(recovered, JSON.stringify(recovered)).toMatchObject({ state: "TRACKING", trackId: selected!.trackId });
+    expect(recovered!.point!.x * 159).toBeCloseTo(45, 1);
+  });
+
+  it("never renews retained-image identity through a genuine coordinate conflict or subsequent model absence", () => {
+    const tracker = new IndexImageTracker(binding);
+    const selected = startConflict(tracker);
+    const internal = tracker as unknown as { temporal: TemporalIndexTrack };
+    const observed = vi.spyOn(internal.temporal, "observe");
+    const before = opticalState(tracker);
+    // Begin after the existing pre-conflict measurement's150ms display budget.
+    for (const at of [433, 566, 699]) {
+      const paused = tracker.update(pixels(at, 57), model(57, "unverified-foreign-hand"));
+      expect(paused).toMatchObject({ point: null, trackId: selected.trackId });
+      expect(paused.temporalTrack!.displayPoint).toBeNull();
+      expect(opticalState(tracker)).toEqual(before);
+    }
+    for (const at of [832, 1000, 1200]) {
+      const absent = tracker.update(pixels(at, 57));
+      expect(absent).toMatchObject({ point: null, trackId: selected.trackId });
+      expect(absent.temporalTrack!.displayPoint).toBeNull();
+      expect(opticalState(tracker)).toEqual(before);
+    }
+    expect(observed.mock.calls.every(([evidence]) => evidence.retainedImageIdentity !== true)).toBe(true);
+    expect(internal.temporal.checkpoint().identityAt).toBe(300);
+    observed.mockRestore();
+    const expired = tracker.update(pixels(1601, 57));
+    expect(expired).toMatchObject({ point: null, trackId: null });
+    expect(expired.temporalTrack!.displayPoint).toBeNull();
+  });
+
+  it.each(["FOREIGN_SOURCE", "TIP_INNOVATION", "ANATOMY", "REPEATED_PIXELS"] as const)(
+    "cannot reopen the selected source from %s after long ambiguity",
+    (kind) => {
+      const tracker = new IndexImageTracker(binding);
+      const rawA = contextualSource("hand-a", 1);
+      const rawB = contextualSource("hand-b", 2);
+      let selected;
+      for (const at of [100, 166, 233]) selected = tracker.update(pixels(at), model(45, rawA));
+      for (let at = 300; at <= 1800; at += 150)
+        expect(tracker.update(pixels(at), model(69, rawB))).toMatchObject({
+          point: null,
+          trackId: selected!.trackId,
+          reason: "FULL_HAND_AMBIGUOUS",
+        });
+      const before = opticalState(tracker);
+      let candidate = model(kind === "TIP_INNOVATION" ? 54 : 45, kind === "FOREIGN_SOURCE" ? rawB : rawA);
+      if (kind === "ANATOMY") {
+        // Same tip and valid straight bones, but90degrees from the fixed trusted
+        // index axis. A plausible new chain is not the retained chain's proof.
+        const index = [24, 16, 8, 0].map((dx) => ({ ...point(45 - dx), z: 0 })) as unknown as NonNullable<
+          IndexModelAnchor["geometry"]
+        >["index"];
+        candidate = {
+          ...candidate,
+          geometry: { index, palmSpan: 0.2 },
+          indexIdentityGeometry: { source: rawA, index, associationBasis: "INDEX_CHAIN_V1" },
+          indexIdentityEvidence: {
+            source: rawA,
+            associationBasis: "INDEX_CHAIN_V1",
+            joints: index.map((joint, i) => ({ index: i + 5, x: joint.x, y: joint.y })),
+          },
+        };
+      }
+      for (const at of [1900, 1966, 2033]) {
+        const frame = pixels(at);
+        if (kind === "REPEATED_PIXELS") {
+          const rival = pixels(at, 69);
+          for (let y = 35; y <= 55; ++y)
+            for (let x = 59; x <= 79; ++x) frame.data[y * 160 + x] = rival.data[y * 160 + x];
+        }
+        const rejected = tracker.update(frame, candidate);
+        expect(rejected).toMatchObject({ point: null, trackId: selected!.trackId });
+        expect(rejected.temporalTrack!.displayPoint).toBeNull();
+        expect(rejected.measurements!.accepted).toBeNull();
+        expect(rejected.measurements!.modelDisposition).toBe("CANDIDATE");
+        expect(opticalState(tracker)).toEqual(before);
+      }
+    },
+  );
+
+  it("requires a recent retained-material association before reopening an exact old model source", () => {
+    const tracker = new IndexImageTracker(binding);
+    const rawA = contextualSource("hand-a", 1);
+    const rawB = contextualSource("hand-b", 2);
+    let selected;
+    for (const at of [100, 166, 233]) selected = tracker.update(pixels(at), model(45, rawA));
+    for (let at = 300; at <= 1800; at += 150) tracker.update(pixels(at), model(69, rawB));
+    const before = opticalState(tracker);
+    const oldSource = tracker.update(pixels(2051), model(45, rawA));
+    expect(oldSource).toMatchObject({
+      reason: "FULL_HAND_AMBIGUOUS",
+      trackId: selected!.trackId,
+      point: null,
+      measurements: { modelDisposition: "CANDIDATE", accepted: null },
+      temporalTrack: { state: "AMBIGUOUS", displayPoint: null },
+    });
+    expect(opticalState(tracker)).toEqual(before);
+    // This fresh image may restart bounded association evidence; it cannot
+    // retroactively make the stale pre-entry association a full-hand proof.
+  });
+
+  it("allows only the previously proved actual alias to return to its retained canonical material", () => {
+    const tracker = new IndexImageTracker(binding);
+    const rawA = contextualSource("hand-a", 1);
+    const rawB = contextualSource("hand-b", 2);
+    const rawC = contextualSource("unverified-hand-c", 3);
+    const wholeIndexPixels = (capture: number) => {
+      const frame = pixels(capture);
+      // Extend the analytic texture across the named shaft regions so aliasB
+      // first earns the ordinary two-separated-old-parts proof, including DIP.
+      for (let dy = -12; dy <= 36; ++dy)
+        for (let dx = -10; dx <= 10; ++dx)
+          frame.data[(45 + dy) * 160 + 45 + dx] = 45 + ((dx * 73 + dy * 127 + dx * dy * 19 + 100000) % 135);
+      return frame;
+    };
+    let selected;
+    for (const at of [100, 166, 233]) selected = tracker.update(wholeIndexPixels(at), model(45, rawA));
+    let aliased;
+    for (const at of [300, 366, 433, 500, 566, 633]) aliased = tracker.update(wholeIndexPixels(at), model(45, rawB));
+    expect(aliased).toMatchObject({ state: "TRACKING", trackId: selected!.trackId });
+    const internal = tracker as unknown as { trustedModelSource: string | null };
+    expect(internal.trustedModelSource).toBe(rawB);
+    for (let at = 700; at <= 2200; at += 150)
+      expect(tracker.update(wholeIndexPixels(at), model(69, rawC))).toMatchObject({
+        point: null,
+        trackId: selected!.trackId,
+        reason: "FULL_HAND_AMBIGUOUS",
+      });
+    let returned;
+    for (const at of [2300, 2366, 2433]) returned = tracker.update(wholeIndexPixels(at), model(45, rawB));
+    expect(returned, JSON.stringify(returned)).toMatchObject({ state: "TRACKING", trackId: selected!.trackId });
+    expect(internal.trustedModelSource).toBe(rawB);
+  });
+
   it("keeps one identity beyond the old 32px center and recovers only with three current compatible frames", () => {
     const tracker = new IndexImageTracker(binding);
     const selected = startConflict(tracker);

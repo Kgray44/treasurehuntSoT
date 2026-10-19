@@ -153,6 +153,11 @@ export const indexImageAlgorithmDescriptor = {
       "CURRENT_FULL_OR_REGISTERED_INDEX_GEOMETRY_THREE_FRAMES_120MS_BEFORE_AUTOMATIC_SEED_CAN_PUBLISH_POINT_IMAGE_PIXELS_ALONE_CANNOT_PROMOTE_UNPROVED_COLD_INDEX",
     association:
       "LOGICAL_SESSION_INDEX_INDEPENDENT_OF_RAW_TEMPLATE_EPOCH_AND_TEMPORARY_MODEL_ID_CURRENT_MEASUREMENT_OR_SEPARATE_REGISTERED_IDENTITY_PROOF_RENEWS_BOUNDED_CONTINUITY",
+    selectedSource: "POST_FINALIZATION_SELECTED_HAND_OR_CANONICAL_SOURCE_NEVER_QUARANTINED_MODEL_CANDIDATE",
+    ambiguousImageIdentity:
+      "ONLY_ALREADY_ESTABLISHED_SAME_RAW_TRACK_CURRENT_FULL_QUALITY_MATERIAL_MATCH_WITH_CURRENT_ASSOCIATION_CLOCK_NO_AUTOMATIC_ENTRY_OR_COORDINATE_CONFLICT_OR_MODEL_DISAGREEMENT_RETAINS_IDENTITY_CLOCK_WITHOUT_POINT_SOURCE_ALIAS_OR_MEASUREMENT_PERMISSION",
+    exactSourceReturn:
+      "ONLY_LAST_VERIFIED_ACTUAL_MODEL_SOURCE_WITH_ESTABLISHED_SAME_RAW_CANONICAL_INDEX_AND_IDENTITY_AND_MATERIAL_CLOCKS_WITHIN_250MS_CURRENT_COHERENT_FULL_POINT_AND_STRICT_EIGHT_PIXEL_FULL_QUALITY_TIP_CONSENSUS_NO_ENTRY_OR_COORDINATE_CONFLICT_MAY_REBUILD_EXISTING_MODEL_PROBATION_NO_NEW_SOURCE_ALIAS",
     gesture:
       "CURRENT_CONFIRMED_SAME_SOURCE_ANATOMICAL_POINT_OR_RETAINED_CONTRARY_OTHERWISE_UNKNOWN_INDEPENDENT_OF_POSITION",
     coast:
@@ -169,7 +174,7 @@ export const indexImageAlgorithm = {
   providerId: "watchglass.index-image",
   providerVersion: "4",
   algorithm: "TEMPORAL_INDEX_FUSION_V3",
-  algorithmDigest: "5ee96601e09aaf99bfdad0a16a2b7cda63d462f68d28aebe69bb4aec5cb1fe69",
+  algorithmDigest: "00fc2b5cd07b6c54dc649ba4bc914f1327dbb3642fa02de6719fdc9b15710094",
 } as const;
 export type IndexImageBinding = {
   providerGeneration: number;
@@ -855,7 +860,17 @@ export class IndexImageTracker {
             !this.coordinateConflict &&
             observation.modelAgreement !== "DISAGREE") ||
           this.handIdentity?.seenAt === pending.frame.capture,
-        source: associatedModel?.identitySource ?? this.handIdentity?.source ?? null,
+        // The model may still be a quarantined candidate. Its source is not
+        // the provenance of the selected finger unless finalization proved it.
+        source: this.handIdentity?.source ?? this.sourceCanonical ?? null,
+        retainedImageIdentity:
+          observation.state === "UNCERTAIN" &&
+          observation.reason === "FULL_HAND_AMBIGUOUS" &&
+          observation.matchedPoint != null &&
+          this.associationAt === pending.frame.capture &&
+          !this.automaticEntryPending &&
+          !this.coordinateConflict &&
+          observation.modelAgreement !== "DISAGREE",
         intent:
           this.authorityVetoed || this.vetoed
             ? "CONTRARY"
@@ -1146,7 +1161,8 @@ export class IndexImageTracker {
     });
     if (
       source !== canonical &&
-      (!sameIndexSourceContext(source, canonical) || (!knownCurrent && !this.sourceAssociation.canonicalSource))
+      (!sameIndexSourceContext(source, canonical) ||
+        (!knownCurrent && !this.sourceAssociation.canonicalSource && source !== this.trustedModelSource))
     )
       return quarantine();
     const valid = validModelGeometry(model, this.binding.frameWidth / this.binding.frameHeight);
@@ -1195,7 +1211,29 @@ export class IndexImageTracker {
       ambiguous: model.authority === "AMBIGUOUS",
     });
     if (decision.state === "PROMOTED") this.trustedModelSource = source;
-    const originalTrusted = knownCurrent;
+    const selectedTrack = this.temporal.checkpoint();
+    // Model-source expiry must not trap an independently maintained image
+    // association. This is only the previously verified actual source returning
+    // to current selected material, never permission for a different model ID.
+    // Full point/geometry probation below still owns coordinate admission.
+    const exactSourceReturn =
+      source === this.trustedModelSource &&
+      selectedTrack.logical?.established === true &&
+      selectedTrack.logical.raw === this.trackId &&
+      selectedTrack.source === canonical &&
+      frame.capture - selectedTrack.identityAt <= policy.modelMaximumGapMs &&
+      frame.capture - this.associationAt <= policy.modelMaximumGapMs &&
+      !this.automaticEntryPending &&
+      !this.coordinateConflict &&
+      valid &&
+      coherent &&
+      tipAgreement &&
+      model.authority === "POINT" &&
+      model.pointing &&
+      !model.contrary &&
+      model.identityObserved === true &&
+      model.authoritySource === source;
+    const originalTrusted = knownCurrent || exactSourceReturn;
     const knownAliasNegative =
       decision.state !== "EXPIRED" &&
       source === this.sourceAssociation.trustedSource &&
