@@ -113,14 +113,46 @@ for (const viewport of [
             .locator("article.community-card")
             .filter({ has: page.getByRole("heading", { level: 3, name: detail.card, exact: true }) });
           await expect(card).toHaveCount(1);
-          await measure(
-            `${detail.card} detail`,
-            () => card.getByRole("heading", { level: 3 }).getByRole("link", { name: detail.card, exact: true }).click(),
-            async () => {
-              await expect(heading(detail.card)).toBeVisible();
-              await expect(page.getByRole("heading", { name: detail.outcome, exact: true })).toBeVisible();
-            },
-          );
+          const detailLink = card
+            .getByRole("heading", { level: 3 })
+            .getByRole("link", { name: detail.card, exact: true });
+          const observeGuide = async (phase: string) => {
+            if (detail.district !== "Guides") return;
+            // Only fixed synthetic public route metadata is emitted. Private
+            // screenshots, page context and traces remain with the collector.
+            const pathname = new URL(page.url()).pathname;
+            console.log(
+              "SEXTANT_GUIDE_NAVIGATION",
+              JSON.stringify({
+                phase,
+                pathname: pathname.startsWith("/community") ? pathname : "OUTSIDE_COMMUNITY",
+                expectedHeadingCount: await heading(detail.card).count(),
+                layers: await page.locator("[data-route-layer]").evaluateAll((layers) =>
+                  layers.slice(0, 4).map((layer) => ({
+                    path: layer.getAttribute("data-route-layer"),
+                    state: layer.getAttribute("data-route-state"),
+                    interactive: layer.getAttribute("data-route-interactive"),
+                    hidden: layer.getAttribute("aria-hidden"),
+                  })),
+                ),
+              }),
+            );
+          };
+          await observeGuide("before-click");
+          try {
+            await measure(
+              `${detail.card} detail`,
+              () => detailLink.click(),
+              async () => {
+                await expect(heading(detail.card)).toBeVisible();
+                await expect(page.getByRole("heading", { name: detail.outcome, exact: true })).toBeVisible();
+              },
+            );
+          } catch (error) {
+            await observeGuide("failed");
+            throw error;
+          }
+          await observeGuide("ready");
           if (detail.card === "The Lantern Coast") {
             const comments = page.getByRole("region", { name: "Comments", exact: true });
             await expect(comments).toContainText("No public comments yet.");
