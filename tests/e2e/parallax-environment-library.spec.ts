@@ -164,9 +164,20 @@ test("Creator discovers, renames, edits, applies and archives environments while
   const snapshot = (await listSpatialItems(account.id)).find((e) => e.id === scene.content.definitionId)!.draft;
   await library.getByRole("button", { name: "Edit original", exact: true }).click();
   const editor = page.getByRole("region", { name: "Room feature editor", exact: true });
+  const furnishing = environments[1].room!.features.find((feature) => feature.name === "reference desk")!;
+  expect(furnishing).toBeDefined();
+  await editor.getByLabel("Room feature", { exact: true }).selectOption(furnishing.id);
   await editor.getByLabel("Feature name", { exact: true }).fill("Edited original furnishing");
   await editor.getByLabel("Feature name", { exact: true }).press("Tab");
   await page.getByRole("button", { name: "Save to Library", exact: true }).click();
+  await expect
+    .poll(
+      async () =>
+        (await listEnvironmentDefinitions(account.id))
+          .find((item) => item.id === environments[1].id)!
+          .draft.room!.features.find((feature) => feature.id === furnishing.id)!.name,
+    )
+    .toBe("Edited original furnishing");
   await page.getByRole("button", { name: "Back to scene" }).click();
   await expect(library.getByRole("tab", { name: "Environments", exact: true })).toHaveAttribute(
     "aria-selected",

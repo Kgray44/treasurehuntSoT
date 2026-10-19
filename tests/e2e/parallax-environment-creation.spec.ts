@@ -113,6 +113,7 @@ for (const count of [1, 2])
     await page.mouse.wheel(0, -240);
     await expect.poll(pixelDigest).not.toBe(beforeZoom);
     await canvas.screenshot({ path: `${root}/environment-photo-${count}-view-zoomed.png` });
+    if (count === 1) await demo.getByText("View & audio", { exact: true }).click();
     await demo.getByLabel("Camera perspective", { exact: true }).selectOption("plan");
     await expect(demo.getByLabel("Camera perspective", { exact: true })).toHaveValue("plan");
     await canvas.screenshot({ path: `${root}/environment-photo-${count}-view-plan.png` });

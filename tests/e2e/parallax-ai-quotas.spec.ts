@@ -107,7 +107,13 @@ test("Admiralty changes an AI allowance through the existing People dossier", as
   await page.goto("/admin/people");
   await page.getByLabel("Search", { exact: true }).fill(creator.id);
   await page.getByRole("button", { name: "Search", exact: true }).click();
-  await page.getByRole("link", { name: "Synthetic A1 quota Creator", exact: true }).click();
+  await expect(page).toHaveURL((url) => url.pathname === "/admin/people" && url.searchParams.get("q") === creator.id);
+  // Retain the first pointer entry above; verify the return through the native keyboard link.
+  const accountReturn = page.getByRole("link", { name: "Synthetic A1 quota Creator", exact: true });
+  await accountReturn.focus();
+  await expect(accountReturn).toBeFocused();
+  await accountReturn.press("Enter");
+  await expect(page).toHaveURL(`/admin/people/${creator.id}`);
   await expect(panel.getByText("0 / 500", { exact: true })).toBeVisible();
   expect(
     JSON.parse((await db.aIQuotaUserPolicy.findUniqueOrThrow({ where: { accountId: creator.id } })).policy),
