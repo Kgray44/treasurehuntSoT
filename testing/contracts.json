@@ -6636,7 +6636,11 @@
         "visibleOutcome": "The existing identity reaches its real released synthetic Voyage in the Player library, then returns to the same Personal Harbor",
         "integrationOwner": "Sextant shared-consumer verification; Homeport and Helm retain account and resource authority",
         "systems": ["project-sextant", "project-homeport", "project-helm", "one-voyage"],
-        "sourcePaths": ["src/app/account/roles/page.tsx", "src/components/homeport/WorkspaceCapabilityDashboard.tsx"],
+        "sourcePaths": [
+          "src/app/account/roles/page.tsx",
+          "src/components/homeport/WorkspaceCapabilityDashboard.tsx",
+          "src/components/platform/PlayerLibrary.tsx"
+        ],
         "entryPoint": "/account",
         "states": ["CAPABILITY_READY", "PLAYER_RESOURCE_READY", "RETURNED"],
         "devices": ["DESKTOP", "MOBILE"],
@@ -7314,7 +7318,10 @@
           "src/components/captain/CaptainOperationalPanel.tsx",
           "src/components/muster/MusterRoom.tsx",
           "src/components/muster/CrewChat.tsx",
-          "src/styles/platform.css"
+          "src/styles/platform.css",
+          "src/app/captain/tales/[taleId]/page.tsx",
+          "src/components/captain/CaptainDashboard.tsx",
+          "src/styles/chronicle.css"
         ],
         "entryPoint": "/account",
         "states": ["RESOURCE_READY", "RETURNED"],
@@ -7377,10 +7384,11 @@
         "browserTests": ["tests/e2e/sextant-resource-journeys.spec.ts"],
         "limitations": [
           "Registration is source-only and grants no capture, protected qualification, physical or owner acceptance. Fixed development variants each own a distinct mutable draft and retain failures without resetting shared state.",
-          "The active crew fixture cannot send gathering chat. Command execution, ready/inviting crews, legacy Captain screens and blocked or adverse resources remain separate requirements.",
+          "The active crew fixture cannot send gathering chat. Command execution, ready/inviting crews, other legacy Captain screens and blocked or adverse resources remain separate requirements.",
           "Creator settings are read through the declared journey. The development browser case additionally saves, reopens and ordinarily restores a working title, with unchanged canonical progression and published checksums.",
           "This separate resource-owner persona preserves the canonical active-Player Creator safety lock. It does not satisfy the older single-persona native-context Creator/Parallax-to-Player handoff.",
-          "The shared stylesheet declaration is limited to these actual journeys. Other affected consumers retain their separate registration, capture and acceptance obligations."
+          "The shared stylesheet declaration is limited to these actual journeys. Other affected consumers retain their separate registration, capture and acceptance obligations.",
+          "The Published Chronicles Open Chronicle path visits the live CaptainDashboard and returns to the same Voyage controls without executing commands. Styling retains the same named navigation panel; dashboard capture/review remains source-bound."
         ],
         "motion": {
           "measurement": "Ordinary workspace and resource activation to the distinct response-rendered task, separately for desktop/mobile and reduced motion",
@@ -7449,6 +7457,46 @@
                 "state": "RESOURCE_READY",
                 "feedbackBoundary": true,
                 "meaning": "The ordinary visible action opens the actual owner-authorized persisted resource rather than a role label or manufactured route."
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Captain library"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Published Chronicles"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Open Chronicle"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "path": "/captain/tales/sextant-resource-chronicle",
+                "text": "Synthetic Sextant command Voyage",
+                "kind": "outcome",
+                "state": "RESOURCE_READY",
+                "feedbackBoundary": true,
+                "meaning": "The actual Published Chronicles card opens the owner-authorized Chronicle dashboard; its loaded task identifies the same Chronicle. The distinct session-link and baseline checks establish Voyage and pinned-edition continuity."
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Open Voyage controls"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "Captain command console",
+                "path": "/captain/sessions/sextant-resource-voyage",
+                "text": "Synthetic Sextant command Voyage",
+                "state": "RESOURCE_READY",
+                "returnPath": true
               },
               {
                 "action": "click",

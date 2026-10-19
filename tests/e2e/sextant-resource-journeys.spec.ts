@@ -101,6 +101,36 @@ for (const viewport of [
         await expect(command).toBeHidden();
         await page.screenshot({ path: info.outputPath("captain-console.png") });
         await console.getByRole("link", { name: "Captain library", exact: true }).click();
+        await page.getByRole("button", { name: "Published Chronicles", exact: true }).click();
+        const published = page.locator(".published-tale-grid article").filter({
+          has: page.getByRole("heading", { level: 2, name: fixture.title, exact: true }),
+        });
+        await expect(published).toHaveCount(1);
+        const dashboard = page.locator("main.captain-dashboard");
+        await measure(
+          "Published Chronicle dashboard",
+          () => published.getByRole("link", { name: "Open Chronicle", exact: true }).click(),
+          async () => {
+            await expect(
+              dashboard.getByRole("heading", { level: 1, name: "Captain’s Console", exact: true }),
+            ).toBeVisible();
+            await expect(dashboard.getByRole("heading", { level: 2, name: fixture.title, exact: true })).toBeVisible();
+            await expect(dashboard.locator(".captain-session-card")).toHaveCount(1);
+          },
+        );
+        await expect(dashboard.getByRole("link", { name: "Open Voyage controls", exact: true })).toHaveAttribute(
+          "href",
+          `/captain/sessions/${fixture.voyageId}`,
+        );
+        expect((await new AxeBuilder({ page }).include(".captain-dashboard").analyze()).violations).toEqual([]);
+        await dashboard.getByRole("heading", { level: 1 }).scrollIntoViewIfNeeded();
+        await page.screenshot({ path: info.outputPath("captain-chronicle-dashboard.png") });
+        await measure(
+          "Same Voyage controls return",
+          () => dashboard.getByRole("link", { name: "Open Voyage controls", exact: true }).click(),
+          () => expect(console).toContainText(fixture.title),
+        );
+        await console.getByRole("link", { name: "Captain library", exact: true }).click();
         await measure(
           "Player-safe projection",
           () => page.getByRole("link", { name: "Preview Crew view", exact: true }).click(),

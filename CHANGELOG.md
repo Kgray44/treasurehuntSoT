@@ -20,6 +20,8 @@ last_reviewed: 2026-10-19
 
 ### Corrected
 
+- Captain's Chronicle dashboard uses a named section for its Chronicle navigation,
+  preserving the panel's content and responsive styling within the main task.
 - The Sextant Phase 4 candidate clears Community query and advanced-filter
   drafts when returning from a search to the default Harbor. An older unsent
   query no longer returns after choosing Clear search and filters.

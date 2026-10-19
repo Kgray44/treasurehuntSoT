@@ -149,7 +149,7 @@ for (const viewport of [
               },
             );
           } catch (error) {
-            await observeGuide("failed");
+            await observeGuide("failed").catch(() => console.warn("SEXTANT_GUIDE_FAILURE_OBSERVATION_UNAVAILABLE"));
             throw error;
           }
           await observeGuide("ready");

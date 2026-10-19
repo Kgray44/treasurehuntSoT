@@ -236,3 +236,14 @@ the cause; do not retry unchanged source, alter timeouts or infer a product fix.
 Authoring drawer successor637f5de345 runs as39334344712. Both prior failed receipts
 are indexed under engineering evidence with exact private-bundle hashes and
 runtime/transport cleanup proof; private ciphertext remains in owned artifacts.
+
+Next resource coverage follows the actual Captain Library Published Chronicles
+card's Open Chronicle action into the live CaptainDashboard, then its Open Voyage
+controls return to the same canonical session. Preserve both active-Voyage
+baselines, every existing resource assertion and all feedback bounds. The
+dashboard's nested aside becomes a same-content named section with its eight
+existing CSS selectors preserved against an explicit class; this is a
+source-predicted semantic correction, not an executed browser finding. Register
+only the visited dashboard route/component and stylesheet. Also declare the live
+PlayerLibrary component already exercised by the existing ordinary Player
+workspace journey. Registration grants no new rendered or protected acceptance.
