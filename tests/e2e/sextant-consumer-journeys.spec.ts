@@ -1,5 +1,5 @@
 // @sounding-line-registration owner=project-sextant suite=browser.sextant contracts=sextant.phase4.native-context,sextant.shared-consumers.workspace-capabilities
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { writeFile } from "node:fs/promises";
 import { seedSextantExperience } from "../../.agents/scripts/sextant-experience-fixture";
@@ -8,7 +8,7 @@ import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-iso
 import { enterClosureJournal } from "./fixtures/landfall-closure";
 import { deviceLabSourceIdentity } from "../../scripts/device-lab/source";
 
-test.describe.configure({ mode: "serial", timeout: 180000 });
+test.describe.configure({ mode: "default", timeout: 180000 });
 test.use({ trace: "off", video: "off", screenshot: "off" });
 let fixture: Awaited<ReturnType<typeof seedSextantExperience>>;
 test.beforeAll(async () => {
@@ -33,16 +33,33 @@ for (const viewport of [
         reducedMotion,
         recordVideo: { dir: info.outputPath("recording"), size: viewport },
       });
-      const page = await context.newPage();
-      const before = await db.taleSession.findUniqueOrThrow({
-        where: { id: fixture.voyageId },
-        select: { currentBlockId: true, currentSequence: true, publishedVersionId: true },
-      });
-      const version = await db.publishedTaleVersion.findUniqueOrThrow({
-        where: { id: fixture.versionId },
-        select: { checksum: true },
-      });
+      const signInResponses: Array<{ path: string; status: number }> = [];
+      let ownedPage: Page | undefined;
+      let failed = false;
+      const capture = async (name: string, action: () => Promise<unknown>) => {
+        try {
+          await action();
+        } catch {
+          console.warn(`SEXTANT_SYNTHETIC_DIAGNOSTIC_UNAVAILABLE:${name}`);
+        }
+      };
       try {
+        await context.tracing.start({ screenshots: true, snapshots: true, sources: false });
+        const page = await context.newPage();
+        ownedPage = page;
+        page.on("response", (response) => {
+          const path = new URL(response.url()).pathname;
+          if (path === "/api/auth/sign-in" || path === "/api/auth/context")
+            signInResponses.push({ path, status: response.status() });
+        });
+        const before = await db.taleSession.findUniqueOrThrow({
+          where: { id: fixture.voyageId },
+          select: { currentBlockId: true, currentSequence: true, publishedVersionId: true },
+        });
+        const version = await db.publishedTaleVersion.findUniqueOrThrow({
+          where: { id: fixture.versionId },
+          select: { checksum: true },
+        });
         await page.goto(`${baseURL}/sign-in?returnTo=%2Faccount`);
         await page
           .getByRole("textbox", { name: "Email or Player name", exact: true })
@@ -146,8 +163,50 @@ for (const viewport of [
             2,
           ),
         );
+      } catch (error) {
+        failed = true;
+        await capture("screenshot", async () => {
+          if (!ownedPage) return;
+          const screenshot = info.outputPath("failure-screenshot.png");
+          await ownedPage.screenshot({ path: screenshot, fullPage: true });
+          await info.attach("screenshot", { path: screenshot, contentType: "image/png" });
+        });
+        await capture("error-context", async () => {
+          const errorContext = info.outputPath("error-context.md");
+          await writeFile(
+            errorContext,
+            [
+              "# Synthetic consumer failure context",
+              `Route: ${ownedPage ? new URL(ownedPage.url()).pathname : "PAGE_UNAVAILABLE"}`,
+              `Authentication responses: ${JSON.stringify(signInResponses)}`,
+              "## Rendered synthetic page",
+              (await ownedPage?.locator("body").innerText()) ?? "PAGE_UNAVAILABLE",
+            ].join("\n\n"),
+          );
+          await info.attach("error-context", { path: errorContext, contentType: "text/markdown" });
+        });
+        throw error;
       } finally {
-        await context.close();
+        try {
+          await capture("trace", async () => {
+            const trace = info.outputPath("failure-trace.zip");
+            await context.tracing.stop(failed ? { path: trace } : {});
+            if (failed) await info.attach("trace", { path: trace, contentType: "application/zip" });
+          });
+        } finally {
+          try {
+            await context.close();
+          } catch (cleanupError) {
+            console.warn("SEXTANT_BROWSER_CONTEXT_CLEANUP_FAILED");
+            if (!failed) throw cleanupError;
+          }
+        }
+        if (failed) {
+          await capture("video", async () => {
+            const video = await ownedPage?.video()?.path();
+            if (video) await info.attach("video", { path: video, contentType: "video/webm" });
+          });
+        }
       }
     });
   }

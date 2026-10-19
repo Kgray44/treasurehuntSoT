@@ -130,6 +130,7 @@ jobs:
       LANDFALL_LAB_PROFILE: primary-phone
       SEXTANT_NATIVE_APPLE_PRODUCT: "1"
       SOUNDING_LINE_EVIDENCE_PURPOSE: DEVELOPMENT_ONLY
+      NODE_OPTIONS: --max-old-space-size=4096
     steps:
       - uses: actions/checkout@v4
         with:

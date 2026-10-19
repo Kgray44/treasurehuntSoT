@@ -196,3 +196,30 @@ Captain/Creator acceptance. The remaining canonical fixtures, registrations,
 captures/reviews and protected qualification remain software gates, distinct
 from unmerged Crossdeck and D4/owner gates. No full Phase 4, protected integration
 or Phase 5 claim is made.
+
+## Product execution failures and diagnostic continuation
+
+At `fb937bbd`, browser run `39308990232` passed the first 1280 px ordinary-motion
+consumer journey, including released-clue Inspect and unchanged canonical
+progression and edition checks. The next reduced-motion case failed to reach
+Overview after ordinary sign-in; the serial suite skipped the remaining mobile
+variants. Runtime cleanup passed. This partial result does not complete the
+four-variant matrix. The custom context omitted the standard failure attachments,
+so the successor records screenshot, video, trace and rendered synthetic context
+through the existing encrypted failure collector. Assertions and timeouts remain
+unchanged; independent variants continue even when another fails.
+
+iOS run `39306514221` at `58d3e51d` passed 31 companion tests with one expected
+skip and verified native cleanup, then exhausted the approximately 2 GB V8 heap
+during Next production type checking before the normal Devices journey ran.
+The Apple product job now has a bounded 4096 MB heap. Type checking remains
+enabled, and this launch repair does not repeat the companion matrix or establish
+a product pass. Both original failed results remain preserved.
+
+The subsequent `fb937bbd` Apple run `39309002270` prepared the native product
+test build but stopped at the private-publication unit preflight (1 PASS,
+13 FAIL). Its fixture used macOS's aliased temporary path; the unchanged
+publication authority correctly rejects noncanonical paths. The test producer
+now resolves its own newly created temporary root before creating inputs.
+All output-security assertions remain. This is a fixture portability correction,
+not permission to relax publication checks or a normal Devices execution claim.

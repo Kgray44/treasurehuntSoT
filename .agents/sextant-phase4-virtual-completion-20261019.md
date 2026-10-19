@@ -63,3 +63,20 @@ Before significant experience acceptance, use current protected Product
 Experience workflow and independent review. Required review does not authorize
 waiving missing registrations, fixtures, accepted dependency contracts, finite
 custody, final qualification or mainline protection.
+
+Run39308990232 reached browser execution: the first desktop journey passed, then
+the reduced-motion sign-in failed its unchanged Overview assertion. Preserve
+that failure. The custom browser context omitted the standard private failure
+attachments. One diagnostic successor may record those exact screenshot/video/
+trace/error-context attachments through the existing encrypted collector and
+exercise the independent desktop/mobile variants without serial skipping.
+This is development diagnosis, not another protected acceptance campaign.
+Run39306514221 completed native companion tests but its product preparation
+exhausted the default approximately 2 GB V8 heap during Next type checking.
+A measured launch repair may bound only the Apple product job to 4096 MB;
+retain TypeScript checking and original failed receipts. Do not repeat passing
+companion or idle matrices.
+The `fb937bbd` Apple successor prepared its test build but stopped at the
+private-publication preflight: the inert unit fixture used macOS's aliased
+temporary directory. Resolve only the newly owned test fixture root and keep
+all authority/assertions unchanged before the measured product successor.

@@ -36,7 +36,9 @@ function outputs(file) {
   return result;
 }
 function fixture(t, previous = "") {
-  const root = fs.mkdtempSync(path.join(tmpdir(), "private-failure-output-"));
+  // macOS exposes its temporary directory through /var -> /private/var.
+  // The trusted publication contract requires canonical paths on every host.
+  const root = fs.realpathSync(fs.mkdtempSync(path.join(tmpdir(), "private-failure-output-")));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   const candidate = path.join(root, "candidate"),
     authority = path.join(root, "authority"),
