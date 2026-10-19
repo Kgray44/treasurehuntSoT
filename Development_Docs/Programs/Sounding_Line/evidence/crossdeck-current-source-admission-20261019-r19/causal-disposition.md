@@ -195,3 +195,45 @@ the pre-maintenance product digest. The unchanged default-loader plan and full
 contexts, technical suites and obligation groups. Independent exact-candidate
 review, normal protected installer checks, merge and landed verification remain
 required before adoption. No consumer capture is included in this maintenance.
+
+## First nonfinite protected installer result and historical fixture correction
+
+[Installer PR #774](https://github.com/Kgray44/treasurehuntSoT/pull/774) at
+`e5e81814a3fee72e32bb7d5b74889e77cfe99ab6`, tree
+`cec6b5d81b28b5d870f00b8d86f70b18f8648381`, failed protected
+[run 39271613165](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39271613165),
+attempt 1. Custody passed; focused verification and Mainline Decision failed.
+The original Linux regression result is 735 tests, 734 passed, one failed,
+zero cancelled and zero skipped in 134.920136242 seconds. Its original log is
+528,835 bytes, SHA256
+`2de3a7461e31940e45920ee8c67d8422231012652819c2d96ed172e1bdbe02da`.
+All five generation19 regressions passed. No product capture or independent
+review occurred; the finite campaign counters and spent R18 attempt are unchanged.
+
+The sole failure is the existing R3 historical Git-admission fixture. It builds
+its synthetic base from the executing HEAD, replaces the registry with three R3
+grants, and removes later sentinels only through R18. At the published installer
+HEAD, the new R19 sentinel therefore remains beside that three-row registry.
+The production reader correctly fails closed with
+`PRODUCT_EXPERIENCE_CURRENT_ADMISSION_R19_REGISTRY_INVALID` before reaching the
+first R3 positive admission assertion. The earlier broad Windows run began from
+the protected-base HEAD before the R19 source was committed, so this particular
+inherited-tree inconsistency was absent from that run.
+
+The exact historical case reproduced locally at the published HEAD. Adding only
+the R19 path to its existing fixture removal list, with the matching comment
+update, makes the same case pass. Its positive bounded-repair assertion and all
+three negative runtime/mode/contract assertions remain unchanged. No production
+guard, budget, assertion or suite was removed or relaxed. Independent read-only
+causal review confirmed this boundary. The five generation19 fail-closed and
+history-preservation tests also pass after the fixture correction.
+
+This existing test file now joins the six prior maintenance source/test files.
+A fresh local source calculation derives corrected composed source digest
+`35a5852d762587cd3b9dd6f08142621e3e8bb81e1483287f452504dd896ddba9`.
+The earlier `10816b4f` composition remains historical and must not be used for
+the corrected source. Final registry, proof, overlay and official planning
+bindings must be recomputed from the corrected bytes. The failed installer run
+remains failed and unmerged; fresh independent source review and normal protected
+checks are required before installation. This nonfinite installer correction
+does not refund, reset or consume a consumer capture allowance.

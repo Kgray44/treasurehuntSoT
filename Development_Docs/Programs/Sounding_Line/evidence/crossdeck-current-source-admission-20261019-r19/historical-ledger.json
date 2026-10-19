@@ -1002,6 +1002,116 @@
     "consumerCaptureExecuted": false,
     "newReservation": false,
     "protectedInstallation": false,
-    "productAccepted": false
+    "productAccepted": false,
+    "protectedInstallerFailure": {
+      "schema": "R19_NONFINITE_PROTECTED_INSTALLER_FAILURE_V1",
+      "observedAtUtc": "2026-10-19T14:56:53.028933+00:00",
+      "runId": 39271613165,
+      "runAttempt": 1,
+      "workflowId": 341545080,
+      "checkSuiteId": 106416484675,
+      "event": "pull_request_target",
+      "headSha": "e5e81814a3fee72e32bb7d5b74889e77cfe99ab6",
+      "pullRequest": 774,
+      "status": "completed",
+      "conclusion": "failure",
+      "tests": 735,
+      "passed": 734,
+      "failed": 1,
+      "cancelled": 0,
+      "skipped": 0,
+      "durationMs": 134920.136242,
+      "failedTest": "R3 Git admission permits only the bounded repair and freezes every other runtime entry",
+      "error": "PRODUCT_EXPERIENCE_CURRENT_ADMISSION_R19_REGISTRY_INVALID",
+      "originalLog": {
+        "bytes": 528835,
+        "sha256": "2de3a7461e31940e45920ee8c67d8422231012652819c2d96ed172e1bdbe02da"
+      },
+      "jobs": [
+        {
+          "id": 118125095557,
+          "name": "Sounding Line / Finite campaign custody",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 118126971405,
+          "name": "Sounding Line / Focused verification",
+          "status": "completed",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118126973488,
+          "name": "Sounding Line / Experience preparation (no mainline decision)",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "id": 118130295927,
+          "name": "Sounding Line / Mainline Decision",
+          "status": "completed",
+          "conclusion": "failure"
+        }
+      ],
+      "finiteConsumerAttempt": false,
+      "R18FailureReclassified": false,
+      "consumerCapture": false,
+      "newReservation": false,
+      "protectedInstallation": false,
+      "qualified": false
+    },
+    "historicalFixtureCorrection": {
+      "path": "tests/sounding-line/experience-exception.test.mjs",
+      "cause": "Three-grant historical base inherited current R19 sentinel from executing HEAD; production correctly failed closed.",
+      "change": "Add only R19 to the existing historical fixture sentinel-removal list and update its comment.",
+      "allFourOriginalAdmissionAssertionsUnchanged": true,
+      "productionSentinelAndReaderUnchanged": true,
+      "focusedBefore": "FAIL_R19_REGISTRY_INVALID",
+      "focusedAfter": "PASS",
+      "generation19Tests": {
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0
+      },
+      "originalLogs": [
+        {
+          "name": "r3-historical-fixture-before-correction-20261019.original.log",
+          "bytes": 1646,
+          "sha256": "d84361e8a092789dfe6b414515d123e144aa6be3e48cb584b6db5afab663641c"
+        },
+        {
+          "name": "r3-historical-fixture-after-correction-20261019.original.log",
+          "bytes": 228,
+          "sha256": "73a4c5e4c0b9dd3c9db9252c6193a1cb5c26ac79a0774d60d2901d0014ea04d6"
+        },
+        {
+          "name": "generation19-after-r3-correction-20261019.original.log",
+          "bytes": 682,
+          "sha256": "6cb606a34dabec5df2cc07ce0815dbfa3fd1da48d9364b6167f8ac3661784a92"
+        }
+      ],
+      "sourceCalculation": {
+        "classification": "LOCAL_SOURCE_ONLY_CALCULATION_OLD_V2_REGISTRY_NOT_REBOUND_OR_ADMITTED",
+        "authority": "78fa89a90d58c6d12ef0a73aec30c47e0671bbd8",
+        "authorityTree": "00570af1f19637aa64fb3b8f417fdfd9d2314843",
+        "candidate": "13e1d5126ae09e5c660d544bbfd17271bcebe346",
+        "candidateTree": "bcd4ecb870dde52e24381ab2118078dfe0323866",
+        "sourceDigest": "35a5852d762587cd3b9dd6f08142621e3e8bb81e1483287f452504dd896ddba9",
+        "previousSourceDigest": "10816b4f0adf455dafff26b488e3c308e456d1bf01647f991dd623bf71b0b228",
+        "newSourcePath": "tests/sounding-line/experience-exception.test.mjs",
+        "sourcePathsComparedToAcceptedBase": 7,
+        "protectedInstallation": false,
+        "qualified": false
+      },
+      "actualProviderRuntimeObserved": {
+        "operatingSystem": "Ubuntu24.04",
+        "nodeVersion": "24.19.0",
+        "nodeExecutable": "/opt/hostedtoolcache/node/24.19.0/x64/bin/node"
+      },
+      "finiteCounterAdjustment": false,
+      "refund": false,
+      "consumerCapture": false,
+      "newProtectedQualification": "PENDING_CORRECTED_EXACT_SOURCE"
+    }
   }
 }

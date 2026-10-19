@@ -101388,7 +101388,7 @@
         "kind": "CROSSDECK_CURRENT_SOURCE_ADMISSION_1",
         "protectedBaseAncestorSha": "77238d30791395385d40ac70348a49f5ba3b374a",
         "preservationRevision": "43b5f4d55b6ac751ed9b2e05d4e4cace38544c4f",
-        "sourceDigest": "10816b4f0adf455dafff26b488e3c308e456d1bf01647f991dd623bf71b0b228",
+        "sourceDigest": "35a5852d762587cd3b9dd6f08142621e3e8bb81e1483287f452504dd896ddba9",
         "contextCount": 38,
         "pairedBrowserContexts": 6,
         "requiredObligationIds": [
@@ -101438,11 +101438,11 @@
         },
         "historyLedger": {
           "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-current-source-admission-20261019-r19/historical-ledger.json",
-          "sha256": "44aea3af48d445a040fc597aec9c462b301281878d40913b23f6d5252a440e9b"
+          "sha256": "c66fe0ba0660bc6b6640dc056ff5d22fcd4a20daccbd8c7f240647f9aba8ef9f"
         },
         "disposition": {
           "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-current-source-admission-20261019-r19/causal-disposition.md",
-          "sha256": "8255ba405bcc795093349482dc31d8935ee457ad8ade2f57825a19f27146e983"
+          "sha256": "3c58c7441fab0bfa318e689c1363f51f6a88d48c7f0a7af9dc65a6c4762d8077"
         },
         "protectedOverlay": [
           {
@@ -101477,18 +101477,18 @@
             "oldMode": null,
             "oldBlob": null,
             "newMode": "100644",
-            "newBlob": "13e2b5600b1703c40c1f06e48d38f9b9f9bb422d",
+            "newBlob": "0d7c00c9bdc2bd35db8975602b80e104b1b152cf",
             "candidateMode": "100644",
-            "candidateBlob": "13e2b5600b1703c40c1f06e48d38f9b9f9bb422d"
+            "candidateBlob": "0d7c00c9bdc2bd35db8975602b80e104b1b152cf"
           },
           {
             "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-current-source-admission-20261019-r19/historical-ledger.json",
             "oldMode": null,
             "oldBlob": null,
             "newMode": "100644",
-            "newBlob": "16d4c2f521b98d61c04a3591cd9ec70071647b4d",
+            "newBlob": "e3d9d4d1d301629c0552e73483e5402670c6a9ed",
             "candidateMode": "100644",
-            "candidateBlob": "16d4c2f521b98d61c04a3591cd9ec70071647b4d"
+            "candidateBlob": "e3d9d4d1d301629c0552e73483e5402670c6a9ed"
           },
           {
             "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-current-source-admission-20261019-r19/packet-verification.json",
@@ -101570,6 +101570,15 @@
             "newBlob": "d600ccb1849151ac1a62b024c5ad61ed0f75f92f",
             "candidateMode": "100644",
             "candidateBlob": "d600ccb1849151ac1a62b024c5ad61ed0f75f92f"
+          },
+          {
+            "path": "tests/sounding-line/experience-exception.test.mjs",
+            "oldMode": "100644",
+            "oldBlob": "8fea3a225fc4da1e236cdb7bec800bb26d79d054",
+            "newMode": "100644",
+            "newBlob": "0980e31013441ead3d48dd0e4f159edca850cf81",
+            "candidateMode": "100644",
+            "candidateBlob": "0980e31013441ead3d48dd0e4f159edca850cf81"
           }
         ],
         "historicalRuns": [
