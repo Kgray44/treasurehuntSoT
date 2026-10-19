@@ -434,7 +434,7 @@ export function MusterRoom({
             </details>
           )}
         </section>
-        <aside className="muster-parchment" aria-labelledby="muster-chronicle-title">
+        <section className="muster-parchment" aria-labelledby="muster-chronicle-title">
           <div className="muster-paper" aria-hidden="true" />
           <div className="muster-paper-content">
             <div className="muster-cover">
@@ -674,7 +674,7 @@ export function MusterRoom({
               </div>
             </MusterOptions>
           </div>
-        </aside>
+        </section>
         <CrewChat
           voyageId={voyageId}
           csrfToken={room.csrfToken}

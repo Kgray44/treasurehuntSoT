@@ -104,3 +104,15 @@ new committed source; retain axe assertions and 3000ms feedback targets. The
 canonical encrypted collector/publication ran but hit its fixed raw-byte limit,
 retaining15 diagnostic members with INCOMPLETE status. Preserve that exact limit
 and incomplete receipt; do not raise budgets or claim complete diagnostics.
+
+Resource continuation: use a genuine Captain/Creator owner with no active Player
+membership and a separate crew Player. Each desktop/mobile/motion development
+variant owns distinct draft and Voyage identities. Do not reset failed drafts.
+Use ordinary workspace entry, actual roster/console/safe preview and owned
+Chronicle settings; cancel command review, save/reopen/ordinarily restore the
+working title, and verify published checksums/progression unchanged. ACTIVE
+Muster chat stays disabled. The source-predicted nested Muster aside becomes a
+same-named section; do not label it an executed browser finding.
+The old single-persona Creator/Parallax journey conflicts with the canonical
+active-Player workspace lock. Preserve the lock and record the paired-persona
+contract requirement separately; the new settings journey does not satisfy it.

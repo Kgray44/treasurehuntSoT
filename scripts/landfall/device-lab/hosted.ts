@@ -23,6 +23,7 @@ export async function dispatchLandfallHostedLab(
       "provider",
       "browser",
       "sextant-consumers",
+      "sextant-resources",
       "android",
       "android-radio",
       "android-journal",
@@ -61,7 +62,7 @@ export async function dispatchLandfallHostedLab(
     throw new Error("LANDFALL_HOSTED_PROFILE_TARGET_REQUIRED");
   const typedTier = tier as "development" | "candidate" | "closure";
   if (
-    target === "sextant-consumers" &&
+    ["sextant-consumers", "sextant-resources"].includes(target) &&
     (tier !== "development" || selectedScenarios !== undefined || selectedProfiles !== undefined)
   )
     throw new Error("LANDFALL_HOSTED_SEXTANT_CONSUMERS_SCOPE_INVALID");
@@ -109,14 +110,19 @@ export async function dispatchLandfallHostedLab(
     .replaceAll("__CANDIDATE_SHA12__", candidate.slice(0, 12))
     .replaceAll("__CANDIDATE_SHA__", candidate)
     .replaceAll("__RUN_PROVIDERS__", String(target === "all" || target === "provider"))
-    .replaceAll("__RUN_BROWSER__", String(["all", "browser", "sextant-consumers"].includes(target)))
+    .replaceAll(
+      "__RUN_BROWSER__",
+      String(["all", "browser", "sextant-consumers", "sextant-resources"].includes(target)),
+    )
     .replaceAll(
       "__BROWSER_JOB_NAME__",
       target === "sextant-consumers"
         ? "Sextant ordinary consumer journeys (development)"
-        : "optimized first-party Phase 4",
+        : target === "sextant-resources"
+          ? "Sextant Captain and Creator resources (development)"
+          : "optimized first-party Phase 4",
     )
-    .replaceAll("__BROWSER_SUITE__", target === "sextant-consumers" ? "sextant-consumers" : "landfall")
+    .replaceAll("__BROWSER_SUITE__", ["sextant-consumers", "sextant-resources"].includes(target) ? target : "landfall")
     .replaceAll("__RUN_APPLE__", String(target === "all" || target === "ios"))
     .replaceAll("__RUN_APPLE_DEVICES__", String(target === "ios-devices"))
     .replaceAll(
@@ -157,9 +163,11 @@ export async function dispatchLandfallHostedLab(
     browser:
       target === "sextant-consumers"
         ? ["sextant-consumer-journeys"]
-        : target === "browser" || target === "all"
-          ? ["first-party-phase4-web"]
-          : [],
+        : target === "sextant-resources"
+          ? ["sextant-resource-journeys"]
+          : target === "browser" || target === "all"
+            ? ["first-party-phase4-web"]
+            : [],
     journal: target === "android-journal" || target === "all" ? ["first-party-native-journal-pair"] : [],
     background:
       target === "android-background" || target === "all"

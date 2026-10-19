@@ -295,3 +295,27 @@ Runtime and transport cleanup passed. Canonical encrypted failure publication
 succeeded, but its fixed 64 MB raw limit retained only 15 diagnostic members;
 the receipt remains INCOMPLETE with LIMIT/FAILURE_ATTACHMENTS_INCOMPLETE. No
 complete diagnostic, experience or protected acceptance is inferred.
+
+The next resource design uses an actual Captain/Creator owner and a distinct
+crew member for active Player participation. Ordinary workspace entry reaches
+the real crew roster, command console, non-mutating Player preview and owned
+Chronicle settings. The development journey reviews and cancels a pause command,
+then saves, reopens and ordinarily restores a working title. Each viewport/motion
+variant owns separate mutable resources; failures retain their state. Published
+checksums and both active-Voyage baselines must remain unchanged. Active-Voyage
+chat is correctly disabled; no chat-send success is claimed. These are source
+registrations and unexecuted development cases until a bound run says otherwise.
+
+Independent source review predicted a second nested complementary landmark in
+Muster's Chronicle card. The named section repair preserves its content and CSS;
+this finding was source-predicted, not reproduced by the resource browser case.
+Existing accepted account references guide hierarchy and return paths. Source
+review, real rendered review and protected acceptance remain distinct.
+
+The older native-context Creator journey assumes the active Player can enter
+Creator Studio. Current canonical Homeport safety locking prevents that
+transition (`src/homeport/current-user.server.ts`). The separate resource owner
+has no Player membership and does not weaken that lock. Its settings journey
+does not satisfy the older Parallax working-clue-to-Player requirement. A
+compatible canonical paired-persona handoff remains a software/contract gate;
+it is neither physical-only nor accepted by this continuation.

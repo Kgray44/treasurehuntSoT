@@ -22,7 +22,8 @@ last_reviewed: 2026-10-19
 
 - The Sextant Phase 4 consumer continuation corrects Voyage Atlas availability
   semantics to use a named section within the private Passport, avoiding an
-  incorrectly nested complementary landmark. Accessibility assertions remain.
+  incorrectly nested complementary landmark. The Muster Chronicle card uses
+  the same valid section semantics. Accessibility assertions remain.
 
 - Sextant's Phase 4 candidate pauses and revokes native location alongside other
   optional input, permits a fresh explicit acquisition after expected native

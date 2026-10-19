@@ -7287,6 +7287,421 @@
           }
         ]
       }
+    },
+    {
+      "id": "sextant.shared-consumers.captain-resources",
+      "name": "Sextant actual Captain crew, command and safe-preview resources",
+      "authority": "project-sextant",
+      "owners": ["project-sextant", "project-homeport", "project-helm", "one-voyage"],
+      "critical": true,
+      "experience": {
+        "persona": "An ordinary authenticated synthetic Captain with genuine resource ownership and a separate crew member holding active Player participation",
+        "objective": "Reach actual authorized Captain resources through ordinary workspace navigation and return to the same Personal Harbor",
+        "visibleOutcome": "The real Captain resource response renders without changing active Voyage progression or its pinned edition",
+        "integrationOwner": "Sextant shared-consumer verification; Homeport, Helm, Chronicle and One Voyage retain identity, ownership, authoring and progression authority",
+        "systems": ["project-sextant", "project-homeport", "project-helm", "project-chronicle", "one-voyage"],
+        "sourcePaths": [
+          "src/app/captain/library/page.tsx",
+          "src/app/captain/sessions/[sessionId]/page.tsx",
+          "src/app/captain/voyages/[playthroughId]/muster/page.tsx",
+          "src/app/captain/voyages/[playthroughId]/player-preview/page.tsx",
+          "src/components/platform/CaptainLibrary.tsx",
+          "src/components/platform/PlayerSafePreview.tsx",
+          "src/components/captain/CaptainMusterRoom.tsx",
+          "src/components/captain/CaptainCommandConsole.tsx",
+          "src/components/captain/CaptainOperationalPanel.tsx",
+          "src/components/muster/MusterRoom.tsx",
+          "src/components/muster/CrewChat.tsx"
+        ],
+        "entryPoint": "/account",
+        "states": ["RESOURCE_READY", "RETURNED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["CAPTAIN"],
+        "roleSetup": {
+          "CAPTAIN": {
+            "entryPoint": "/sign-in?returnTo=%2Faccount",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "sextant.resources@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Sextant-Resources-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "button",
+              "name": "Synthetic Sextant Captain",
+              "text": "Synthetic Sextant Captain"
+            }
+          }
+        },
+        "references": [
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected curated reference supplies readable task hierarchy and safe account/gateway navigation; actual Personal Harbor layout remains supplemental design context pending source-bound review.",
+            "preserve": "Readable task hierarchy, visible keyboard controls, contextual safe return and usable constrained layout; no account layout acceptance inferred from these generic references."
+          },
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected curated reference supplies readable task hierarchy and safe account/gateway navigation; actual Personal Harbor layout remains supplemental design context pending source-bound review.",
+            "preserve": "Readable task hierarchy, visible keyboard controls, contextual safe return and usable constrained layout; no account layout acceptance inferred from these generic references."
+          }
+        ],
+        "fixtureProfile": "generic",
+        "fixture": "sextant-resource-consumers-v1",
+        "recordingRequired": true,
+        "accessibility": "Keyboard and touch preserve actual resource navigation, named content and visible return on desktop/mobile with normal and reduced motion; development checks axe on actual Muster and authoring content.",
+        "fallback": "The active Voyage disables gathering chat honestly. Captain command review is cancelled. Missing or locked resources retain canonical access decisions; no role or resource is granted by browser navigation.",
+        "navigation": "Ordinary account menu opens All Workspaces, visible workspace entry opens the real library, and Personal Harbor returns to the same account Overview.",
+        "designTarget": "Preserve existing readable task hierarchy, visible ownership and safe return. Keep the real Muster roster, command consequences, non-mutating preview and authored draft distinct.",
+        "browserTests": ["tests/e2e/sextant-resource-journeys.spec.ts"],
+        "limitations": [
+          "Registration is source-only and grants no capture, protected qualification, physical or owner acceptance. Fixed development variants each own a distinct mutable draft and retain failures without resetting shared state.",
+          "The active crew fixture cannot send gathering chat. Command execution, ready/inviting crews, legacy Captain screens and blocked or adverse resources remain separate requirements.",
+          "Creator settings are read through the declared journey. The development browser case additionally saves, reopens and ordinarily restores a working title, with unchanged canonical progression and published checksums.",
+          "This separate resource-owner persona preserves the canonical active-Player Creator safety lock. It does not satisfy the older single-persona native-context Creator/Parallax-to-Player handoff."
+        ],
+        "motion": {
+          "measurement": "Ordinary workspace and resource activation to the distinct response-rendered task, separately for desktop/mobile and reduced motion",
+          "feedbackBudgetMs": 3000
+        },
+        "continuity": {
+          "objective": "Keep the same actual owner account and preserve both independent active-Voyage baselines and pinned published editions",
+          "checks": [
+            {
+              "id": "owner-account",
+              "role": "button",
+              "name": "Synthetic Sextant Captain",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "journeys": [
+          {
+            "id": "actual-active-crew-and-command-return",
+            "roles": ["CAPTAIN"],
+            "outcome": "The real Captain reads the actual active crew roster and command resource, then returns to the same Harbor without executing a command",
+            "steps": [
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Captain"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "All Workspaces"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Enter Captain"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Open Muster Room"
+              },
+              {
+                "action": "assert",
+                "role": "list",
+                "name": "Voyage crew",
+                "path": "/captain/voyages/sextant-resource-voyage/muster",
+                "text": "Synthetic Sextant Crew",
+                "kind": "outcome",
+                "state": "RESOURCE_READY",
+                "feedbackBoundary": true,
+                "meaning": "The ordinary visible action opens the actual owner-authorized persisted resource rather than a role label or manufactured route."
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Open Captain’s Console"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "Captain command console",
+                "path": "/captain/sessions/sextant-resource-voyage",
+                "text": "Synthetic Sextant command Voyage",
+                "kind": "outcome",
+                "state": "RESOURCE_READY",
+                "feedbackBoundary": true,
+                "meaning": "The ordinary visible action opens the actual owner-authorized persisted resource rather than a role label or manufactured route."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Captain"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "text": "Overview",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "actual-captain-player-safe-preview-return",
+            "roles": ["CAPTAIN"],
+            "outcome": "The actual Captain opens the canonical non-mutating Player projection and returns through its visible library and account paths",
+            "steps": [
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Captain"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "All Workspaces"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Enter Captain"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Preview Crew view"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "path": "/captain/voyages/sextant-resource-voyage/player-preview",
+                "text": "PREVIEW · NO LIVE MUTATIONS",
+                "kind": "outcome",
+                "state": "RESOURCE_READY",
+                "feedbackBoundary": true,
+                "meaning": "The ordinary visible action opens the actual owner-authorized persisted resource rather than a role label or manufactured route."
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Back to Captain’s Command"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Captain"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "text": "Overview",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "sextant.shared-consumers.creator-draft",
+      "name": "Sextant actual owned Creator Chronicle settings and draft continuity",
+      "authority": "project-sextant",
+      "owners": ["project-sextant", "project-homeport", "project-helm", "one-voyage"],
+      "critical": true,
+      "experience": {
+        "persona": "An ordinary authenticated synthetic Creator with genuine resource ownership and a separate crew member holding active Player participation",
+        "objective": "Reach actual authorized Creator resources through ordinary workspace navigation and return to the same Personal Harbor",
+        "visibleOutcome": "The real Creator resource response renders without changing active Voyage progression or its pinned edition",
+        "integrationOwner": "Sextant shared-consumer verification; Homeport, Helm, Chronicle and One Voyage retain identity, ownership, authoring and progression authority",
+        "systems": ["project-sextant", "project-homeport", "project-helm", "project-chronicle", "one-voyage"],
+        "sourcePaths": [
+          "src/app/studio/library/page.tsx",
+          "src/app/studio/tales/[taleId]/page.tsx",
+          "src/app/studio/tales/[taleId]/settings/page.tsx",
+          "src/components/studio/StudioHome.tsx",
+          "src/components/studio/TaleEditorSection.tsx",
+          "src/components/studio/TaleEditor.tsx"
+        ],
+        "entryPoint": "/account",
+        "states": ["RESOURCE_READY", "RETURNED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["CREATOR"],
+        "roleSetup": {
+          "CREATOR": {
+            "entryPoint": "/sign-in?returnTo=%2Faccount",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "sextant.resources@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Sextant-Resources-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "button",
+              "name": "Synthetic Sextant Captain",
+              "text": "Synthetic Sextant Captain"
+            }
+          }
+        },
+        "references": [
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected curated reference supplies readable task hierarchy and safe account/gateway navigation; actual Personal Harbor layout remains supplemental design context pending source-bound review.",
+            "preserve": "Readable task hierarchy, visible keyboard controls, contextual safe return and usable constrained layout; no account layout acceptance inferred from these generic references."
+          },
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected curated reference supplies readable task hierarchy and safe account/gateway navigation; actual Personal Harbor layout remains supplemental design context pending source-bound review.",
+            "preserve": "Readable task hierarchy, visible keyboard controls, contextual safe return and usable constrained layout; no account layout acceptance inferred from these generic references."
+          }
+        ],
+        "fixtureProfile": "generic",
+        "fixture": "sextant-resource-consumers-v1",
+        "recordingRequired": true,
+        "accessibility": "Keyboard and touch preserve actual resource navigation, named content and visible return on desktop/mobile with normal and reduced motion; development checks axe on actual Muster and authoring content.",
+        "fallback": "The active Voyage disables gathering chat honestly. Captain command review is cancelled. Missing or locked resources retain canonical access decisions; no role or resource is granted by browser navigation.",
+        "navigation": "Ordinary account menu opens All Workspaces, visible workspace entry opens the real library, and Personal Harbor returns to the same account Overview.",
+        "designTarget": "Preserve existing readable task hierarchy, visible ownership and safe return. Keep the real Muster roster, command consequences, non-mutating preview and authored draft distinct.",
+        "browserTests": ["tests/e2e/sextant-resource-journeys.spec.ts"],
+        "limitations": [
+          "Registration is source-only and grants no capture, protected qualification, physical or owner acceptance. Fixed development variants each own a distinct mutable draft and retain failures without resetting shared state.",
+          "The active crew fixture cannot send gathering chat. Command execution, ready/inviting crews, legacy Captain screens and blocked or adverse resources remain separate requirements.",
+          "Creator settings are read through the declared journey. The development browser case additionally saves, reopens and ordinarily restores a working title, with unchanged canonical progression and published checksums.",
+          "This separate resource-owner persona preserves the canonical active-Player Creator safety lock. It does not satisfy the older single-persona native-context Creator/Parallax-to-Player handoff."
+        ],
+        "motion": {
+          "measurement": "Ordinary workspace and resource activation to the distinct response-rendered task, separately for desktop/mobile and reduced motion",
+          "feedbackBudgetMs": 3000
+        },
+        "continuity": {
+          "objective": "Keep the same actual owner account and preserve both independent active-Voyage baselines and pinned published editions",
+          "checks": [
+            {
+              "id": "owner-account",
+              "role": "button",
+              "name": "Synthetic Sextant Captain",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "journeys": [
+          {
+            "id": "actual-owned-chronicle-settings-return",
+            "roles": ["CREATOR"],
+            "outcome": "The Creator reaches its actual owned Chronicle settings and returns through Studio to the same Personal Harbor",
+            "steps": [
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Captain"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "All Workspaces"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Enter Creator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Edit Chronicle"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Chronicle"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "path": "/studio/tales/sextant-resource-chronicle/settings",
+                "text": "Chronicle identity",
+                "kind": "outcome",
+                "state": "RESOURCE_READY",
+                "feedbackBoundary": true,
+                "meaning": "The ordinary visible action opens the actual owner-authorized persisted resource rather than a role label or manufactured route."
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "← Studio"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Captain"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "text": "Overview",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
     }
   ],
   "experiencePolicy": {

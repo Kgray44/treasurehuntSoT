@@ -19,8 +19,8 @@ async function main() {
     throw error;
   }
   if (
-    !plan.contracts?.some(
-      (entry: { experience?: { fixture?: string } }) => entry.experience?.fixture === "sextant-shared-consumers-v1",
+    !plan.contracts?.some((entry: { experience?: { fixture?: string } }) =>
+      ["sextant-shared-consumers-v1", "sextant-resource-consumers-v1"].includes(entry.experience?.fixture ?? ""),
     )
   )
     return;
@@ -51,6 +51,14 @@ async function main() {
   });
   if (marker !== 1) throw new Error("SEXTANT_EXPERIENCE_DATABASE_IDENTITY_REQUIRED");
   await seedSextantExperience();
+  if (
+    plan.contracts.some(
+      (entry: { experience?: { fixture?: string } }) => entry.experience?.fixture === "sextant-resource-consumers-v1",
+    )
+  ) {
+    const { seedSextantResourceExperiences } = await import("./sextant-resource-fixtures");
+    await seedSextantResourceExperiences();
+  }
 }
 
 /** Shared by the guarded capture producer and owned generic browser tests.
