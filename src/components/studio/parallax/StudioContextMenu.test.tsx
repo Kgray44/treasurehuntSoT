@@ -13,6 +13,12 @@ function MenuFixture() {
           <h1>Parallax</h1>
           <button>Header control</button>
         </header>
+        <aside
+          data-testid="library-scrollport"
+          onContextMenu={(event) => context.open(event, "Library item", [{ label: "Inspect", run: () => {} }])}
+        >
+          <button>Library item</button>
+        </aside>
       </main>
       {context.menu}
     </div>
@@ -45,4 +51,22 @@ it("restores focus to a control inside the context area on Escape", () => {
   fireEvent.contextMenu(trigger);
   fireEvent.keyDown(screen.getByRole("menu"), { key: "Escape" });
   expect(trigger).toHaveFocus();
+});
+
+it("keeps a header menu open when an independent Library dock scrolls", () => {
+  render(<MenuFixture />);
+  fireEvent.contextMenu(screen.getByRole("heading", { name: "Parallax" }));
+  const library = screen.getByTestId("library-scrollport");
+  library.scrollTop = 725;
+  fireEvent.scroll(library);
+  expect(screen.getByRole("menuitem", { name: "Save draft" })).toBeVisible();
+});
+
+it("dismisses a Library card menu when its own dock scrolls", () => {
+  render(<MenuFixture />);
+  fireEvent.contextMenu(screen.getByRole("button", { name: "Library item" }));
+  const library = screen.getByTestId("library-scrollport");
+  library.scrollTop = 725;
+  fireEvent.scroll(library);
+  expect(screen.queryByRole("menu")).toBeNull();
 });

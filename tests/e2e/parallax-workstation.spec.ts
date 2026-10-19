@@ -5,7 +5,12 @@ import { db } from "../../src/lib/db";
 import { closureAccount, authenticateClosure } from "./fixtures/landfall-closure";
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
 import { activateWorkspaceCapability } from "../../src/homeport/workspace-capabilities";
-import { listSpatialItems } from "../../src/parallax/library-service";
+import { listSpatialItems, saveSpatialDraft } from "../../src/parallax/library-service";
+import { createSpatialDraft } from "../../src/parallax/authoring";
+import { createRoomEnvironment } from "../../src/parallax/environment-authoring";
+import { simulationEnvironments } from "../../src/parallax/studio-validation";
+import { AI_CONTROL_ID } from "../../src/parallax/ai-ledger";
+import { defaultAIGlobalPolicy } from "../../src/parallax/ai-policy";
 import { mkdir, writeFile } from "node:fs/promises";
 
 test.describe.configure({ mode: "serial", timeout: 180000 });
@@ -126,13 +131,20 @@ test("Adaptive workspace docks reclaim viewport area and preserve editing across
   await canvas.focus();
   await page.keyboard.press("/");
   await expect(page.getByLabel("Describe your spatial idea")).toBeFocused();
-  await page.getByText("Guided placement controls", { exact: true }).click();
-  await page.getByLabel("Spatial placement instruction").focus();
-  await expect(page.getByLabel("Spatial placement instruction")).toBeFocused();
-  const { aiAvailable } = await (await page.request.get("/api/studio/parallax")).json();
-  await expect(page.getByRole("region", { name: "Contextual spatial assistance" })).toContainText(
-    aiAvailable ? "Configured provider available in AI assistance" : "AI provider unavailable",
-  );
+  const assistant = page.getByRole("region", { name: "Spatial Assistant", exact: true });
+  const prompt = assistant.getByLabel("Describe your spatial idea", { exact: true });
+  await prompt.focus();
+  await expect(prompt).toBeFocused();
+  await prompt.fill("Place the selected letter on a table near the entrance");
+  const { aiUsage } = await (await page.request.get("/api/studio/parallax")).json();
+  const send = assistant.getByRole("button", { name: "Send idea", exact: true });
+  if (aiUsage.enabled && aiUsage.remaining > 0) await expect(send).toBeEnabled();
+  else {
+    await expect(send).toBeDisabled();
+    await expect(assistant).toContainText(
+      aiUsage.enabled ? "Monthly allowance reached" : "Spatial Assistant is unavailable",
+    );
+  }
   await page.getByRole("button", { name: "Dock assistance" }).click();
   await page.getByRole("button", { name: "Float assistance" }).click();
   await page.keyboard.press("Escape");
@@ -156,11 +168,20 @@ test("Creator edits a populated 3D workstation, previews intent, and retains can
 }) => {
   if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic") throw new Error("PARALLAX_OWNED_BROWSER_REQUIRED");
   ensureGenericSoundingLineIsolation();
+  if (process.env.PARALLAX_A1_SYNTHETIC_PROVIDER !== "1") throw new Error("Guarded unpaid Assistant fixture required");
   const account = await closureAccount("Synthetic Parallax workstation review");
   await activateWorkspaceCapability(account.id, "CREATOR");
+  await db.aIQuotaControl.upsert({
+    where: { id: AI_CONTROL_ID },
+    create: { id: AI_CONTROL_ID, policy: JSON.stringify({ ...defaultAIGlobalPolicy, enabled: true }) },
+    update: { policy: JSON.stringify({ ...defaultAIGlobalPolicy, enabled: true }) },
+  });
+  const source = createSpatialDraft(`workstation-${account.id}`);
+  source.content.studio!.environment = createRoomEnvironment(simulationEnvironments[0]);
+  await saveSpatialDraft(account.id, source, 0);
   await authenticateClosure(context, account, baseURL!);
   await page.setViewportSize({ width: 1680, height: 1050 });
-  await page.goto("/studio/parallax");
+  await page.goto(`/studio/parallax?definition=${source.content.definitionId}`);
   await expect(page.getByRole("heading", { level: 1, name: "Parallax" })).toBeVisible();
   await expect(page.locator('[data-renderer="READY"] canvas')).toBeVisible();
   await page.getByLabel("Workspace layout", { exact: true }).selectOption("CONSTRUCTION");
@@ -252,16 +273,25 @@ test("Creator edits a populated 3D workstation, previews intent, and retains can
   const saved = (await listSpatialItems(account.id))[0];
   const storedBefore = JSON.stringify(saved.draft);
   await page.getByRole("button", { name: /Ask Parallax/ }).click();
-  await page.getByText("Guided placement controls", { exact: true }).click();
-  await page.getByLabel("Spatial placement instruction").fill("Place the map on a table near the entrance");
-  await page.getByRole("button", { name: "Preview placement", exact: true }).click();
-  await expect(page.getByRole("region", { name: "Contextual spatial assistance" })).toContainText("draft unchanged");
+  const assistant = page.getByRole("region", { name: "Spatial Assistant", exact: true });
+  await assistant
+    .getByLabel("Describe your spatial idea", { exact: true })
+    .fill("Create a pirate map on a desk with a readable clue and a guided alternative.");
+  await assistant.getByRole("button", { name: "Send idea", exact: true }).click();
+  await expect(assistant.getByRole("heading", { name: "A pirate map for your desk", exact: true })).toBeVisible();
+  await assistant.getByRole("button", { name: "Proposed scene", exact: true }).click();
+  const proposedMap = page
+    .getByRole("region", { name: "Spatial canvas", exact: true })
+    .getByRole("button", { name: /^Pirate map\./ });
+  await expect(proposedMap).toBeVisible();
   expect(JSON.stringify((await listSpatialItems(account.id)).find((i) => i.id === saved.id)!.draft)).toBe(storedBefore);
   await page.screenshot({
     path: "artifacts/parallax-phase3/workstation-refinement/proposal-preview.png",
     fullPage: true,
   });
-  await page.getByRole("button", { name: "Discard preview", exact: true }).click();
+  await assistant.getByRole("button", { name: "Current scene", exact: true }).click();
+  await expect(proposedMap).toHaveCount(0);
+  expect(JSON.stringify((await listSpatialItems(account.id)).find((i) => i.id === saved.id)!.draft)).toBe(storedBefore);
   await page.getByRole("button", { name: "Close assistance", exact: true }).click();
   await page.getByLabel("Workspace layout", { exact: true }).selectOption("FOCUS");
   await page.screenshot({

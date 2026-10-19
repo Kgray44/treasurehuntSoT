@@ -171,7 +171,10 @@ export function useStudioContextMenu() {
         return;
       if (event.target instanceof Element) {
         const openedAt = state.scrollPositions.get(event.target);
-        if (openedAt && event.target.scrollLeft === openedAt.left && event.target.scrollTop === openedAt.top) return;
+        // A separate dock can settle or refresh without moving this menu's opener.
+        // Its own card menus still include that dock among their scrolling ancestors.
+        if (!openedAt) return;
+        if (event.target.scrollLeft === openedAt.left && event.target.scrollTop === openedAt.top) return;
       }
       outside(event);
     };
