@@ -8689,6 +8689,307 @@
           }
         ]
       }
+    },
+    {
+      "id": "sextant.shared-consumers.completed-history",
+      "name": "Sextant completed synthetic Voyage, historical Passport and artifact provenance",
+      "authority": "project-sextant",
+      "owners": ["project-sextant", "project-homeport", "project-wakebook"],
+      "critical": true,
+      "experience": {
+        "visibleOutcome": "The Player reads the materialized completed record, exact released Book/replay and receipt-backed personal artifact, then returns to the same Personal Harbor",
+        "integrationOwner": "Sextant shared-consumer verification; Wayfarer/Wakebook retain history, One Voyage retains progression/grant authority, and Lanternwake retains historical Journal presentation",
+        "systems": ["project-sextant", "project-wayfarer", "project-wakebook", "project-lanternwake", "one-voyage"],
+        "sourcePaths": [
+          "src/app/passport/history/page.tsx",
+          "src/app/passport/history/[recordId]/page.tsx",
+          "src/app/passport/history/[recordId]/book/page.tsx",
+          "src/app/passport/history/[recordId]/replay/page.tsx",
+          "src/app/passport/artifacts/page.tsx",
+          "src/app/passport/artifacts/[artifactId]/page.tsx",
+          "src/components/wakebook/WakebookVoyageDetail.tsx",
+          "src/components/wakebook/WakebookVoyageBook.tsx",
+          "src/components/homeport/PassportSurfaces.tsx",
+          "src/components/player/journal/ChronicleJournalSession.tsx"
+        ],
+        "entryPoint": "/account",
+        "states": [
+          "ARCHIVE_READY",
+          "DETAIL_READY",
+          "BOOK_READY",
+          "HISTORICAL_REPLAY_READY",
+          "ARTIFACT_READY",
+          "PROVENANCE_READY",
+          "RETURNED"
+        ],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["PLAYER"],
+        "roleSetup": {
+          "PLAYER": {
+            "entryPoint": "/sign-in?returnTo=%2Faccount",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "sextant.crew-history-default@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Sextant-Crew-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "button",
+              "name": "Synthetic Sextant Crew-history-default",
+              "text": "Synthetic Sextant Crew-history-default"
+            }
+          }
+        },
+        "references": [
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected gateway reference supplies readable hierarchy and safe navigation. Historical Passport/Book/replay/provenance layout requires fresh source-bound review.",
+            "preserve": "Named controls, readable ownership and safe returns; no history-specific layout acceptance inferred from generic references."
+          },
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected gateway reference supplies readable hierarchy and safe navigation. Historical Passport/Book/replay/provenance layout requires fresh source-bound review.",
+            "preserve": "Named controls, readable ownership and safe returns; no history-specific layout acceptance inferred from generic references."
+          }
+        ],
+        "fixtureProfile": "generic",
+        "fixture": "sextant-history-consumers-v1",
+        "recordingRequired": true,
+        "accessibility": "Ordinary keyboard/touch entry, named historical task controls, readable private source-bound content and non-mutating returns on desktop/mobile with normal/reduced motion; development audits actual Passport and historical Journal content.",
+        "fallback": "The personal artifact uses its actual accessible fallback representation without fabricated model media. Historical Journal remains read-only and bound to its played edition; absent history is not manufactured by a route visit.",
+        "navigation": "Ordinary Overview opens Chronicle Passport; visible section and record links enter archive/detail/Book/replay/Cabinet/provenance; actual account and Passport controls return to the same Overview.",
+        "designTarget": "Retain the completed record hierarchy, exact edition/receipt provenance, private Book actions and explicit historical read-only state. Keep private remembrance distinct from authoritative progression.",
+        "browserTests": ["tests/e2e/sextant-history-journeys.spec.ts"],
+        "limitations": [
+          "Registration and development evidence grant no protected, native, physical or owner acceptance.",
+          "The development browser cases each start a distinct ACTIVE synthetic Voyage and complete all three passages through ordinary authenticated Player POSTs. They do not seed completed states, history records or grant receipts.",
+          "The generic read-only capture precondition uses production interactWithTaleSession for one fixed nonce-guarded synthetic membership, verifies canonical completion/receipt/edition, and refuses partial failed state. That preparation is not browser authentication/completion proof.",
+          "History and artifact IDs are minted by canonical services and followed through actual owned links. Known archive/Cabinet/return paths are formal destinations; development additionally binds exact dynamic record URLs to database provenance.",
+          "Print control is inspected without opening a system print dialog. No memory edit, external sharing, real location/media or private content is used.",
+          "Journal opening duration is recorded separately; the selected 3000ms feedback boundaries do not claim full historical opening completes within that budget.",
+          "Accepted generic gateway references do not establish historical layout or motion acceptance. Fresh source-bound independent rendered review remains required."
+        ],
+        "motion": {
+          "measurement": "Ordinary archive, Book and Cabinet/provenance activation to the distinct loaded task, separately from full Journal opening",
+          "feedbackBudgetMs": 3000
+        },
+        "continuity": {
+          "objective": "Keep the same actual Player, receipt-authorized artifact and completed pinned edition; preserve an independent ACTIVE Voyage and prevent replay from producing new progression",
+          "checks": [
+            {
+              "id": "history-owner",
+              "role": "button",
+              "name": "Synthetic Sextant Crew-history-default",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "journeys": [
+          {
+            "id": "actual-completed-record-book-read-only-replay-return",
+            "roles": ["PLAYER"],
+            "outcome": "The Player reads the canonical completed record, private Book and read-only historical Journal and returns to the same Harbor",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Open Chronicle Passport"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Your Voyages"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Synthetic Sextant remembered Voyage",
+                "text": "Synthetic Sextant remembered Voyage",
+                "path": "/passport/history",
+                "state": "ARCHIVE_READY",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "The actual archive entry loads the same Player’s canonically completed synthetic Voyage; fixture provenance verifies completion independently of the displayed title."
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Open Synthetic Sextant remembered Voyage Voyage"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Voyage Detail",
+                "text": "Voyage Detail"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Synthetic Sextant remembered Voyage",
+                "text": "Synthetic Sextant remembered Voyage",
+                "state": "DETAIL_READY"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Open private Voyage Book"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Voyage Book",
+                "text": "Voyage Book"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Synthetic Sextant remembered Voyage",
+                "text": "Synthetic Sextant remembered Voyage",
+                "state": "BOOK_READY"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Print this private Voyage Book",
+                "text": "Print this private Voyage Book"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Back to Voyage Detail"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Replay this Journey"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open the journal"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Historical volume information",
+                "text": "This completed Voyage is read-only",
+                "state": "HISTORICAL_REPLAY_READY"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Crew-history-default"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "text": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "actual-personal-artifact-provenance-return",
+            "roles": ["PLAYER"],
+            "outcome": "The same Player reads a personal artifact backed by the server-resolved grant and returns without changing provenance or completed progression",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Open Chronicle Passport"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Artifacts"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Synthetic Sextant Compass",
+                "text": "Synthetic Sextant Compass",
+                "path": "/passport/artifacts",
+                "state": "ARTIFACT_READY",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "The actual Cabinet materializes the artifact from its canonical event-time recipient receipt; no inventory-only or fabricated personal grant is substituted."
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "View provenance"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Artifact Provenance",
+                "text": "Artifact Provenance"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Synthetic Sextant Compass",
+                "text": "Synthetic Sextant Compass",
+                "state": "PROVENANCE_READY"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "← Artifact Cabinet"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Artifact Cabinet",
+                "text": "Artifact Cabinet"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "text": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ],
+        "persona": "An ordinary signed-in Player reading their own completed synthetic Voyage and receipt-authorized personal artifact",
+        "objective": "Return to the actual completed synthetic Voyage, its private Book and read-only released Journal, and the personal artifact provenance authorized for the same Player"
+      }
     }
   ],
   "experiencePolicy": {

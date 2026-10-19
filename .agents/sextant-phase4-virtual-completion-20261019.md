@@ -309,3 +309,18 @@ tracks and fields shrinkable without clipping content. Keep actual pane content,
 disabled publication and readiness timing intact. Require card/descendant horizontal
 bounds for both panes and capture the publication confirmation after ordinary
 scrolling. Fresh four-variant execution and independent image review are required.
+
+The next bounded completed-history family uses four separate guarded ACTIVE
+synthetic Crew Voyages. Ordinary sign-in/workspace entry and three actual Player
+Continue controls must complete the Voyage and resolve one ALL_ACTIVE_PLAYERS
+artifact receipt. Read actual Passport history, Book, read-only replay, Cabinet
+and provenance through their ordinary links; verify exact dynamic record IDs,
+unchanged completed events/grants/edition and independent ACTIVE baseline. Do not
+seed completion, history rows or grant receipts. The separate fixed history-default
+generic-capture precondition invokes production progression only after exact
+membership/source preflight; it is explicitly not browser authentication or
+completion proof and refuses partial/ineligible fixtures without resetting them.
+Formal contracts retain stable routes and dynamic-link semantic outcomes without
+inventing static record IDs. Historical Journal's named section preserves content
+and styling. Independent source review is clear after correcting the provenance
+panel selector and pre-mutation membership check. Fresh execution remains required.

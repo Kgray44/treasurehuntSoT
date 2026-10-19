@@ -631,3 +631,21 @@ Community's exact-link passive pointer/network diagnostic is frozen at
 run 39339458097. It preserves the ordinary click, original assertions and limits.
 The observer closes over the actual clicked node rather than an outgoing clone;
 source review and TypeScript pass. No Guide product cause is inferred yet.
+
+The completed-history family is now prepared for development execution, with
+independent source review clear. Four separate guarded ACTIVE Voyages use ordinary
+Crew authentication and three real Player Continue controls, then authoritative
+completion, event-time artifact recipient resolution and actual Passport history
+materialization. Ordinary links lead to Voyage Detail, Book, read-only replay,
+Cabinet and exact personal provenance. Final assertions preserve completed
+progress/events/grants, pinned release bytes and the independent ACTIVE baseline.
+No completion status, history row or grant receipt is directly seeded. A separate
+fixed generic-capture precondition invokes production progression after exact
+membership/source preflight and explicitly grants no browser completion/auth proof.
+Partial and ineligible fixtures are refused without resetting them. Dynamic record
+URLs are checked against actual database identities in development; the formal
+contract retains dynamic link/outcome semantics without inventing static IDs.
+The historical notice changes only from aside to the same named section. Existing
+Journal tests pass 28/28; TypeScript, four-variant discovery and experience-contract
+validation pass. No new registration count or rendered acceptance is claimed until
+the source is frozen/reconciled and the actual browser evidence is reviewed.

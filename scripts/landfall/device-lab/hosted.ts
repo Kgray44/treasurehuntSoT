@@ -27,6 +27,7 @@ export async function dispatchLandfallHostedLab(
       "sextant-paired-clue",
       "sextant-community",
       "sextant-authoring-resources",
+      "sextant-history",
       "android",
       "android-radio",
       "android-journal",
@@ -71,6 +72,7 @@ export async function dispatchLandfallHostedLab(
       "sextant-paired-clue",
       "sextant-community",
       "sextant-authoring-resources",
+      "sextant-history",
     ].includes(target) &&
     (tier !== "development" || selectedScenarios !== undefined || selectedProfiles !== undefined)
   )
@@ -130,6 +132,7 @@ export async function dispatchLandfallHostedLab(
           "sextant-paired-clue",
           "sextant-community",
           "sextant-authoring-resources",
+          "sextant-history",
         ].includes(target),
       ),
     )
@@ -145,7 +148,9 @@ export async function dispatchLandfallHostedLab(
               ? "Sextant ordinary public Community journeys (development)"
               : target === "sextant-authoring-resources"
                 ? "Sextant owned Creator authoring resources (development)"
-                : "optimized first-party Phase 4",
+                : target === "sextant-history"
+                  ? "Sextant completed historical Passport journeys (development)"
+                  : "optimized first-party Phase 4",
     )
     .replaceAll(
       "__BROWSER_SUITE__",
@@ -155,6 +160,7 @@ export async function dispatchLandfallHostedLab(
         "sextant-paired-clue",
         "sextant-community",
         "sextant-authoring-resources",
+        "sextant-history",
       ].includes(target)
         ? target
         : "landfall",
@@ -207,9 +213,11 @@ export async function dispatchLandfallHostedLab(
               ? ["sextant-community-journeys"]
               : target === "sextant-authoring-resources"
                 ? ["sextant-authoring-resource-journeys"]
-                : target === "browser" || target === "all"
-                  ? ["first-party-phase4-web"]
-                  : [],
+                : target === "sextant-history"
+                  ? ["sextant-history-journeys"]
+                  : target === "browser" || target === "all"
+                    ? ["first-party-phase4-web"]
+                    : [],
     journal: target === "android-journal" || target === "all" ? ["first-party-native-journal-pair"] : [],
     background:
       target === "android-background" || target === "all"

@@ -5,12 +5,13 @@ import { db } from "../../src/lib/db";
 import { getStudioTale, saveStudioDraft, studioDraftSchema } from "../../src/chronicle/studio-service";
 import { snapshotFromStudio } from "../../src/chronicle/snapshot";
 import { getDrydockBlockContract } from "../../src/drydock/contracts/registry";
+import { parseDrydockBlock } from "../../src/drydock/contracts/parser";
 import type { PublishedTaleSnapshot } from "../../src/chronicle/types";
 import { closureVoyage } from "../../tests/e2e/fixtures/landfall-closure";
 import { seedSextantExperience } from "./sextant-experience-fixture";
 import { syntheticSpatialMoment } from "../../src/parallax/fixtures";
 
-const title = "Synthetic Sextant command Voyage";
+const defaultTitle = "Synthetic Sextant command Voyage";
 const resourceCases = [
   "default",
   "1280-no-preference",
@@ -21,6 +22,11 @@ const resourceCases = [
   "paired-1280-reduce",
   "paired-390-no-preference",
   "paired-390-reduce",
+  "history-1280-no-preference",
+  "history-1280-reduce",
+  "history-390-no-preference",
+  "history-390-reduce",
+  "history-default",
 ] as const;
 type ResourceCase = (typeof resourceCases)[number];
 
@@ -28,13 +34,15 @@ type ResourceCase = (typeof resourceCases)[number];
 export async function seedSextantResourceExperiences(resourceCase: ResourceCase = "default") {
   if (!resourceCases.includes(resourceCase)) throw new Error("SEXTANT_RESOURCE_CASE_INVALID");
   const player = await seedSextantExperience();
+  const history = resourceCase.startsWith("history-");
+  const title = history ? "Synthetic Sextant remembered Voyage" : defaultTitle;
   const suffix = resourceCase === "default" ? "" : `-${resourceCase}`;
   const ownerId = `sextant-resource-owner${suffix}`;
   const crewId = `sextant-resource-crew${suffix}`;
   const email = `sextant.resources${suffix}@example.test`;
   const displayName = `Synthetic Sextant Captain${suffix}`;
   const paired = resourceCase.startsWith("paired-");
-  const crewEmail = paired ? `sextant.crew${suffix}@example.test` : null;
+  const crewEmail = paired || history ? `sextant.crew${suffix}@example.test` : null;
   const existing = await db.userAccount.findUnique({
     where: { id: ownerId },
     include: { profile: true, emails: true },
@@ -63,6 +71,8 @@ export async function seedSextantResourceExperiences(resourceCase: ResourceCase 
       email,
       displayName,
       crewEmail,
+      crewAccountId: crewId,
+      crewDisplayName: crew.displayName,
       voyageId: voyage.id,
       taleId: tale.id,
       versionId: version.id,
@@ -166,6 +176,63 @@ export async function seedSextantResourceExperiences(resourceCase: ResourceCase 
     block.presentation = { spatialMoment: moment };
     block.completion = { mode: "playerConfirmation" };
   }
+  if (history) {
+    const first = snapshot.chapters[0].blocks[0];
+    const ending = snapshot.chapters[0].blocks[1];
+    const artifactId = `sextant-history-compass${suffix}`;
+    const narrativeContract = getDrydockBlockContract("narrative")!;
+    const grantContract = getDrydockBlockContract("artifactReveal")!;
+    const endingContract = getDrydockBlockContract("taleComplete")!;
+    first.title = "Remember the course";
+    first.schemaVersion = narrativeContract.currentVersion;
+    first.configuration = narrativeContract.configurationSchema.parse({
+      ...structuredClone(narrativeContract.defaultConfiguration),
+      heading: "Remember the course",
+      body: "A fictional course for this isolated software journey.",
+    });
+    first.completion = structuredClone(narrativeContract.defaultCompletion);
+    const grant = {
+      ...structuredClone(first),
+      id: `sextant-history-grant${suffix}`,
+      blockType: "artifactReveal",
+      title: "The Sextant compass",
+      orderIndex: 1,
+      nextBlockId: ending.id,
+      schemaVersion: grantContract.currentVersion,
+      configuration: grantContract.configurationSchema.parse({
+        ...structuredClone(grantContract.defaultConfiguration),
+        artifactId,
+        loreTitle: "The Sextant compass",
+        loreDescription: "Carry this fictional compass into your private history.",
+        recipientPolicy: "ALL_ACTIVE_PLAYERS",
+        addToCollection: true,
+        personalGrantState: "COLLECTED",
+        custodyKind: "PERSONAL",
+      }),
+      completion: structuredClone(grantContract.defaultCompletion),
+      connections: [{ targetBlockId: ending.id, connectionType: "DEFAULT", orderIndex: 0 }],
+    };
+    first.nextBlockId = grant.id;
+    first.connections = [{ targetBlockId: grant.id, connectionType: "DEFAULT", orderIndex: 0 }];
+    ending.orderIndex = 2;
+    ending.schemaVersion = endingContract.currentVersion;
+    ending.configuration = endingContract.configurationSchema.parse({
+      ...structuredClone(endingContract.defaultConfiguration),
+      finaleHeading: "The remembered Voyage",
+      finaleContent: "The fictional course is complete.",
+      replayAvailable: true,
+    });
+    ending.completion = structuredClone(endingContract.defaultCompletion);
+    snapshot.chapters[0].blocks = [first, grant, ending];
+    snapshot.artifacts = [{ id: artifactId, displayName: "Synthetic Sextant Compass", inventoryCategory: "RELIC" }];
+    for (const block of snapshot.chapters[0].blocks) {
+      const parsed = parseDrydockBlock(block);
+      if (!parsed.success)
+        throw new Error(
+          `SEXTANT_HISTORY_BLOCK_CONTRACT_INVALID:${JSON.stringify(parsed.issues.map((issue) => ({ code: issue.code, location: issue.location })))}`,
+        );
+    }
+  }
   const contentSnapshot = JSON.stringify(snapshot);
   await db.publishedTaleVersion.update({
     where: { id: version.id },
@@ -179,7 +246,11 @@ export async function seedSextantResourceExperiences(resourceCase: ResourceCase 
   const draftChapters = structuredClone(snapshot.chapters) as PublishedTaleSnapshot["chapters"];
   for (const chapter of draftChapters) {
     for (const block of chapter.blocks) {
-      if (block.blockType !== "narrative" && block.blockType !== "taleComplete")
+      if (
+        block.blockType !== "narrative" &&
+        block.blockType !== "taleComplete" &&
+        !(history && block.blockType === "artifactReveal")
+      )
         throw new Error("SEXTANT_RESOURCE_UNEXPECTED_DRAFT_BLOCK");
       const contract = getDrydockBlockContract(block.blockType)!;
       const configuration = structuredClone(contract.defaultConfiguration);
@@ -187,6 +258,7 @@ export async function seedSextantResourceExperiences(resourceCase: ResourceCase 
         configuration.heading = block.configuration.heading;
         configuration.body = block.configuration.body;
       }
+      if (history && block.blockType === "artifactReveal") Object.assign(configuration, block.configuration);
       block.schemaVersion = contract.currentVersion;
       block.configuration = configuration;
       block.completion = structuredClone(contract.defaultCompletion);
@@ -214,6 +286,8 @@ export async function seedSextantResourceExperiences(resourceCase: ResourceCase 
     email,
     displayName,
     crewEmail,
+    crewAccountId: crewId,
+    crewDisplayName: crew.profile!.displayName,
     voyageId: voyage.id,
     taleId: voyage.taleId,
     versionId: version.id,

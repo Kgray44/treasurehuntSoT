@@ -1261,11 +1261,11 @@ function ChronicleJournalSessionIdentity({
         </section>
 
         {historical ? (
-          <aside className="journal-historical-volume" aria-label="Historical volume information">
+          <section className="journal-historical-volume" aria-label="Historical volume information">
             <span>Historical volume</span>
             <strong>Preserved Voyage record</strong>
             <p>This completed Voyage is read-only and remains bound to the exact edition this Crew experienced.</p>
-          </aside>
+          </section>
         ) : null}
 
         {(openingPhase === "ENTRY_IDLE" || openingPhase === "ENTRY_ACTIVATED") && (
