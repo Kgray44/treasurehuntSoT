@@ -12,6 +12,8 @@ Reach is Voyagewright's reusable browser-first spatial interaction and intent sy
 
 ## Effective governing sources
 
+The [target-three recovery follow-up](Target_3_Recovery_20261018.md) records the owner's subsequent physical stall, corrected material registration, separated temporal identity, bounded original-source return, paired recording results and still-unresolved automatic recovery limits.
+
 The [selected-index identity and measurement audit](Selected_Index_Identity_Repair_20261018.md) is the current development successor. The owner still encountered target 1→2 resets on the earlier `5107ce22` preview after its software checks passed. The new repair is undergoing development validation; those earlier results do not establish that physical reliability is solved.
 
 The repair separates a currently known hand, continuity of its selected index and permission to produce a current coordinate. Position uncertainty pauses sampling while retaining completed targets when identity remains supported. Palm-motion rejoining compares the current index with an immutable, previously verified index/palm pair after accounting for observed translation, rotation and scale; a newly plausible chain cannot overwrite that reference during quarantine. Compatible model/image differences use a bounded weighted correction rather than accumulating the entire model offset. Degenerate or nonrigid projected changes can remain identity-only, and a genuinely unverified replacement cannot inherit the saved samples. Freshness and independent raw accuracy requirements remain unchanged.

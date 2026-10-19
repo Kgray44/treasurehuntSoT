@@ -10777,6 +10777,12 @@
       "record_type": "validation-evidence",
       "status": "preserved",
       "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/Target_3_Recovery_20261018.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
     }
   ]
 }

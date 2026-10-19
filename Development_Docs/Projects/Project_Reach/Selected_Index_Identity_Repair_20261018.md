@@ -8,6 +8,8 @@ last_reviewed: 2026-10-18
 
 # Reach selected-index identity and measurement audit
 
+The [target-three recovery follow-up](Target_3_Recovery_20261018.md) supersedes the preview handoff below after another owner-reported calibration stall. Its registration correction improves recorded LEFT availability, but RIGHT recovery and physical continuity remain unresolved. This record preserves the earlier exact-source evidence.
+
 This continues [PR #769](https://github.com/Kgray44/treasurehuntSoT/pull/769) after the owner reported that the `5107ce22` preview still reset relative calibration between targets 1 and 2. The [previous audit](Fused_Tracking_Audit_20261018.md) preserves its original software results; the owner's subsequent physical failure supersedes any inference that those results solved physical reliability. The [comparison with main](Changes_From_Main_20261017.md) retains the accumulated camera, scheduling, administration and hardware work.
 
 The delivered development application is `1c0194b7e5d09a12b8b4b24b9c56f5c4d11e4b54`. Relative setup now preserves completed evidence in a suspended trial instead of automatically discarding it when an unverified replacement index appears. **Natural-motion identity continuity remains unresolved:** the original mixed-motion browser assertion still fails, and the owner's recorded centre-to-bottom transition still loses logical continuity. This is an experimental physical retest preview, not a claim of rock-solid tracking, protected qualification or owner acceptance.
