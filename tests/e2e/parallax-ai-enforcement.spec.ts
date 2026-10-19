@@ -156,7 +156,7 @@ test("People dossier allowance, suspension and advanced access govern actual Cre
       ).model,
     ).toBe("gpt-6.1-sol");
     await panel.getByLabel("Reason for user policy change").fill("Synthetic restore inherited policy");
-    await confirm(panel, "Preview restore inherited policy");
+    await confirm(panel, "Reset to global");
     expect(await usage(owner)).toMatchObject({ allowance: 500, source: "INHERITED", used: 3 });
     expect((await request(owner, input(owner, "ADVANCED"))).body.code).toBe("ADVANCED_UNAVAILABLE");
     await panel.getByRole("button", { name: "Refresh account usage", exact: true }).click();
