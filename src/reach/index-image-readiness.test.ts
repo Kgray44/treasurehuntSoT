@@ -279,6 +279,10 @@ it.each(["UNSEEDED", "LOST"] as const)(
 );
 
 it.each([
+  ["APPEARANCE_MISMATCH", "no longer matches its reference"],
+  ["APPEARANCE_AMBIGUOUS", "Several image locations"],
+  ["FORWARD_BACKWARD_DISAGREEMENT", "match is inconsistent"],
+  ["IMAGE_MOTION_TOO_LARGE", "moved beyond the current image match"],
   ["IMAGE_REFERENCE_CONFLICT", "appearance matches disagree"],
   ["IMAGE_REFERENCE_EXPIRED", "saved targets are kept"],
   ["FULL_HAND_POINT_PENDING", "Full-hand pointing evidence is settling"],

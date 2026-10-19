@@ -16,6 +16,14 @@ const guidance: Record<IndexImageReadinessResult["condition"], string> = {
   LOST: "Fingertip tracking paused. Bring the same finger back into view; saved targets are kept.",
 };
 const postureGuidance: Record<string, string> = {
+  APPEARANCE_MISMATCH:
+    "The fingertip image no longer matches its reference. Tracking is trying to reacquire it; saved targets are kept.",
+  APPEARANCE_AMBIGUOUS:
+    "Several image locations look like the fingertip. Tracking is paused while a clear match returns; saved targets are kept.",
+  FORWARD_BACKWARD_DISAGREEMENT:
+    "The fingertip image match is inconsistent. Tracking is paused while it reacquires; saved targets are kept.",
+  IMAGE_MOTION_TOO_LARGE:
+    "The fingertip moved beyond the current image match. Tracking is trying to reacquire it; saved targets are kept.",
   INDEX_SOURCE_ASSOCIATION_PENDING:
     "The hand model returned a different track. Keep the same index visible while its identity is checked; saved targets are kept.",
   FINGERTIP_RECONFIRMED_SETTLING:

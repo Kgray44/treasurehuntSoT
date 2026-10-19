@@ -666,3 +666,95 @@ describe("one conditioned model/image relative producer", () => {
     }
   });
 });
+
+describe("current model-tip registration uses material roundtrip separately from neural innovation", () => {
+  const source = "same-complete-hand";
+  const currentModel = (x: number) => ({ ...model(x), identitySource: source });
+  const startModelOnly = (tracker: IndexImageTracker) => {
+    let seed;
+    for (const at of [100, 166, 233]) seed = tracker.update(frame(45, at, null), currentModel(45));
+    expect(seed).toMatchObject({ state: "TRACKING", coordinateSource: "MODEL", opticalEpoch: 0 });
+    return seed!;
+  };
+  it.each([4, 8])(
+    "registers current tip pixels with %ipx neural innovation and exact material closure",
+    (innovation) => {
+      const tracker = new IndexImageTracker(binding);
+      const first = startModelOnly(tracker);
+      const observations = [
+        tracker.update(frame(45, 300), currentModel(45)),
+        tracker.update(frame(45, 366), currentModel(45 + innovation)),
+        tracker.update(frame(45, 433), currentModel(45)),
+      ];
+      expect(observations.slice(0, 2).every((o) => o.opticalEpoch === 0)).toBe(true);
+      expect(observations.at(-1)).toMatchObject({
+        state: "TRACKING",
+        coordinateSource: "MODEL",
+        trackId: first.trackId,
+      });
+      expect(observations.at(-1)!.opticalEpoch).toBe(1);
+      // The newly registered coordinate origin remains the current neural tip,
+      // not the offset material match used only to establish roundtrip closure.
+      const imageOnly = tracker.update(frame(47, 500));
+      expect(imageOnly).toMatchObject({
+        state: "TRACKING",
+        coordinateSource: "IMAGE",
+        trackId: first.trackId,
+        opticalEpoch: 1,
+      });
+      expect(imageOnly.point!.x * 159).toBeCloseTo(47, 6);
+      expect(imageOnly.point!.y * 119).toBeCloseTo(45, 6);
+    },
+  );
+  it("does not register a neural innovation beyond8px or give later missing anatomy image authority", () => {
+    const tracker = new IndexImageTracker(binding);
+    const first = startModelOnly(tracker);
+    for (const [at, x] of [
+      [300, 45],
+      [366, 57],
+      [433, 45],
+      [500, 57],
+      [566, 45],
+    ]) {
+      expect(tracker.update(frame(45, at), currentModel(x))).toMatchObject({ trackId: first.trackId, opticalEpoch: 0 });
+    }
+    expect(tracker.update(frame(45, 633))).toMatchObject({ point: null, trackId: first.trackId, opticalEpoch: 0 });
+  });
+  it("retains the current fractional neural registration phase rather than the matched-material center", () => {
+    const tracker = new IndexImageTracker(binding);
+    const first = startModelOnly(tracker);
+    for (const [at, x] of [
+      [300, 45.25],
+      [366, 49.25],
+      [433, 45.25],
+    ])
+      tracker.update(frame(45, at), currentModel(x));
+    const imageOnly = tracker.update(frame(47, 500));
+    expect(imageOnly).toMatchObject({
+      state: "TRACKING",
+      coordinateSource: "IMAGE",
+      trackId: first.trackId,
+      opticalEpoch: 1,
+    });
+    expect(imageOnly.point!.x * 159).toBeCloseTo(47.25, 6);
+    expect(imageOnly.point!.y * 119).toBeCloseTo(45, 6);
+  });
+  it("does not register repeated rival image patches even when the current model is qualified", () => {
+    const tracker = new IndexImageTracker(binding);
+    const first = startModelOnly(tracker);
+    for (const [at, x] of [
+      [300, 45],
+      [366, 49],
+      [433, 45],
+      [500, 49],
+      [566, 45],
+    ]) {
+      const twins = frame(45, at);
+      const rival = frame(69, at);
+      for (let y = 35; y <= 55; ++y)
+        for (let pixelX = 59; pixelX <= 79; ++pixelX) twins.data[y * 160 + pixelX] = rival.data[y * 160 + pixelX];
+      expect(tracker.update(twins, currentModel(x))).toMatchObject({ trackId: first.trackId, opticalEpoch: 0 });
+    }
+    expect(tracker.update(frame(45, 633))).toMatchObject({ point: null, trackId: first.trackId, opticalEpoch: 0 });
+  });
+});

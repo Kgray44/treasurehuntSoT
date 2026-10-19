@@ -121,6 +121,8 @@ export const indexImageAlgorithmDescriptor = {
     stableSuccess: "NEVER_REFRESH_AND_CLEAR_REFRESH_COHORT",
     referenceExpiry: "NO_REFRESH_AFTER_ADAPTIVE_ONLY_BOUND",
     coordinateRebind: "SOURCE_CONDITIONED_CURRENT_MODEL_ASSIST_CAN_REPLACE_OPTICAL_EPOCH_WITHOUT_RELABELING_FINGER",
+    modelReRegistration:
+      "CURRENT_NEURAL_TIP_COORDINATE_AND_TEMPLATE_ORIGIN_THREE_FRAMES_120MS_WITH_EXISTING_EIGHT_PIXEL_NEURAL_INNOVATION_AND_TRUE_MATERIAL_FORWARD_MATCH_PATCH_REVERSE_CLOSURE_WITHIN_TWO_PIXELS",
   },
   lifecycle: "PREPARE_PIXELS_THEN_SAME_CAPTURE_AUTHORITY_AND_FINAL_DISPATCH_AND_SOURCE_ORIGIN_FRESHNESS_ROLLBACK",
   modelContrary: "LATCH_UNTIL_COHERENT_POINT_OR_NEW_HINT",
@@ -167,7 +169,7 @@ export const indexImageAlgorithm = {
   providerId: "watchglass.index-image",
   providerVersion: "4",
   algorithm: "TEMPORAL_INDEX_FUSION_V3",
-  algorithmDigest: "d44f622206af73179698c692871bbfc515ff074f48bacb038d86449b78d8c42a",
+  algorithmDigest: "5ee96601e09aaf99bfdad0a16a2b7cda63d462f68d28aebe69bb4aec5cb1fe69",
 } as const;
 export type IndexImageBinding = {
   providerGeneration: number;
@@ -2020,22 +2022,31 @@ export class IndexImageTracker {
               undefined,
               this.nccScratch,
             );
-            const reverse = searchNcc(
-              candidate.frame,
-              current,
-              candidate.point,
-              policy.reverseSearch,
-              this.reverseScores,
-              undefined,
-              this.nccScratch,
-            );
-            consistent =
-              !!forward &&
-              !!reverse &&
+            // Neural registration and material roundtrip are different errors.
+            // Reverse the actual forward-matched material; current remains the
+            // NN-centered patch/origin to register after qualified probation.
+            const material =
+              forward &&
               forward.correlation >= policy.minimumCorrelation &&
               forward.separation >= policy.minimumSeparation &&
+              Math.hypot(forward.point.x - center.x, forward.point.y - center.y) <= policy.modelAgreementRadius
+                ? patch(frame, forward.point, candidate.template.radius)
+                : null;
+            const reverse =
+              material && material.deviation >= policy.minimumTexture && material.structure >= policy.minimumStructure
+                ? searchNcc(
+                    candidate.frame,
+                    material,
+                    candidate.point,
+                    policy.reverseSearch,
+                    this.reverseScores,
+                    undefined,
+                    this.nccScratch,
+                  )
+                : null;
+            consistent =
+              !!reverse &&
               reverse.correlation >= policy.minimumCorrelation &&
-              Math.hypot(forward.point.x - center.x, forward.point.y - center.y) <= policy.maximumForwardBackward &&
               Math.hypot(reverse.point.x - candidate.point.x, reverse.point.y - candidate.point.y) <=
                 policy.maximumForwardBackward;
           }

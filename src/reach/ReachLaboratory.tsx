@@ -2273,6 +2273,10 @@ export function ReachLaboratory({
                   <dd>{indexState?.temporalTrack?.intent.toLowerCase() ?? "Unknown"}</dd>
                 </div>
                 <div>
+                  <dt>Current tracking decision</dt>
+                  <dd>{indexStale ? "STALE" : (indexState?.reason ?? "Not running")}</dd>
+                </div>
+                <div>
                   <dt>Position age at dispatch</dt>
                   <dd>{indexState?.temporalTrack?.measurementAgeMs?.toFixed(1) ?? "—"} ms</dd>
                 </div>
