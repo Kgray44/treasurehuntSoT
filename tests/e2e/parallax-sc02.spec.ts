@@ -128,11 +128,11 @@ test("SC-02 Creator places real assets, edits a light, saves and reuses a compos
   expect((await listSpatialItems(account.id)).find((i) => i.id === definition)!.draft).toEqual(saved);
   await page.getByRole("button", { name: "Enable preview audio", exact: true }).click();
   await page.getByRole("button", { name: "Play timeline", exact: true }).click();
-  await expect.poll(async () => JSON.parse((await instrument.getAttribute("data-performance"))!).audioSources).toBe(2);
+  await expect.poll(async () => JSON.parse((await instrument.getAttribute("data-performance"))!).audioVoices).toBe(2);
   await page.waitForTimeout(2200); // Observe the authored two-second entrance, not only the first fade frame.
   await page.screenshot({ path: `${evidence}/composition-simulation.png`, fullPage: true });
   await page.getByRole("button", { name: "Pause timeline", exact: true }).click();
-  await expect.poll(async () => JSON.parse((await instrument.getAttribute("data-performance"))!).audioSources).toBe(0);
+  await expect.poll(async () => JSON.parse((await instrument.getAttribute("data-performance"))!).audioVoices).toBe(0);
   await page.getByRole("button", { name: "Disable preview audio", exact: true }).click();
   const metrics = JSON.parse((await instrument.getAttribute("data-performance"))!);
   expect(metrics.geometries).toBeGreaterThan(0);
@@ -648,16 +648,16 @@ test("SC-02 preserves a failed save and recovers audio from unavailable and Guid
   const enable = page.getByRole("button", { name: "Enable preview audio", exact: true });
   const feedback = page.locator("#parallax-canvas-feedback");
   await enable.click();
-  await expect(feedback).toContainText("Preview audio is unavailable");
+  await expect(feedback).toHaveText("Audio could not start. Allow audio in this browser, then try again.");
   await expect(feedback).toHaveAttribute("aria-live", "polite");
   await expect(enable).toHaveAttribute("aria-pressed", "false");
   await page.screenshot({ path: `${evidence}/recovery-audio-unavailable.png`, fullPage: true });
   await page.evaluate(() => (window as unknown as { __sc02RestoreAudio: () => void }).__sc02RestoreAudio());
   await enable.click();
   await page.getByRole("button", { name: "Play timeline", exact: true }).click();
-  await expect.poll(async () => JSON.parse((await instrument.getAttribute("data-performance"))!).audioSources).toBe(1);
+  await expect.poll(async () => JSON.parse((await instrument.getAttribute("data-performance"))!).audioVoices).toBe(1);
   await page.getByRole("button", { name: "Pause timeline", exact: true }).click();
-  await expect.poll(async () => JSON.parse((await instrument.getAttribute("data-performance"))!).audioSources).toBe(0);
+  await expect.poll(async () => JSON.parse((await instrument.getAttribute("data-performance"))!).audioVoices).toBe(0);
   await page.getByLabel("Preview", { exact: true }).selectOption("FALLBACK");
   await expect(enable).toBeVisible();
   await enable.click();
@@ -673,10 +673,10 @@ test("SC-02 preserves a failed save and recovers audio from unavailable and Guid
   await expect(instrument.locator("canvas")).toBeVisible();
   await enable.click();
   await page.getByRole("button", { name: "Play timeline", exact: true }).click();
-  await expect.poll(async () => JSON.parse((await instrument.getAttribute("data-performance"))!).audioSources).toBe(1);
+  await expect.poll(async () => JSON.parse((await instrument.getAttribute("data-performance"))!).audioVoices).toBe(1);
   await page.screenshot({ path: `${evidence}/recovery-audio-restored.png`, fullPage: true });
   await page.getByRole("button", { name: "Pause timeline", exact: true }).click();
-  await expect.poll(async () => JSON.parse((await instrument.getAttribute("data-performance"))!).audioSources).toBe(0);
+  await expect.poll(async () => JSON.parse((await instrument.getAttribute("data-performance"))!).audioVoices).toBe(0);
   await page.getByRole("button", { name: "Disable preview audio", exact: true }).click();
   await writeFile(
     `${evidence}/recovery-journey.json`,
@@ -726,13 +726,13 @@ test("SC-02 measures a composed Scene and reclaims temporary model resources", a
   for (const quality of ["LOW", "MEDIUM", "HIGH"]) {
     await page.getByLabel("Preview quality", { exact: true }).selectOption(quality);
     await expect
-      .poll(async () => JSON.parse((await instrument.getAttribute("data-performance"))!).quality)
+      .poll(async () => JSON.parse((await instrument.getAttribute("data-render-costs"))!).quality)
       .toBe(quality);
     const sample = await instrument.evaluate(async (element) => {
       const start = performance.now();
       const samples: {
         atMs: number;
-        renderMs: number;
+        cpuSubmitMs: number;
         calls: number;
         triangles: number;
         geometries: number;
@@ -744,9 +744,9 @@ test("SC-02 measures a composed Scene and reclaims temporary model resources", a
       const heapBefore = heap();
       await new Promise<void>((resolve) => {
         const observer = new MutationObserver(() => {
-          samples.push({ atMs: performance.now() - start, ...JSON.parse(element.getAttribute("data-performance")!) });
+          samples.push({ atMs: performance.now() - start, ...JSON.parse(element.getAttribute("data-render-costs")!) });
         });
-        observer.observe(element, { attributes: true, attributeFilter: ["data-performance"] });
+        observer.observe(element, { attributes: true, attributeFilter: ["data-render-costs"] });
         setTimeout(() => {
           observer.disconnect();
           resolve();
@@ -755,7 +755,7 @@ test("SC-02 measures a composed Scene and reclaims temporary model resources", a
       return { elapsedMs: performance.now() - start, samples, heapBefore, heapAfter: heap() };
     });
     expect(sample.samples.length).toBeGreaterThan(10);
-    expect(sample.samples.every((frame) => Number.isFinite(frame.renderMs) && frame.calls > 0)).toBe(true);
+    expect(sample.samples.every((frame) => Number.isFinite(frame.cpuSubmitMs) && frame.calls > 0)).toBe(true);
     observations.push({ quality, ...sample });
     await page.screenshot({ path: `${evidence}/performance-${quality.toLowerCase()}.png`, fullPage: true });
   }
@@ -794,7 +794,7 @@ test("SC-02 measures a composed Scene and reclaims temporary model resources", a
         resourceCycles,
         limits: [
           "One synthetic software-WebGL desktop Scene and three four-second windows",
-          "renderMs is CPU render submission time, not GPU completion or sustained device FPS",
+          "cpuSubmitMs is CPU render submission time, not GPU completion or sustained device FPS",
           "Mutation intervals describe application renderer updates, not display refresh",
           "Heap samples are raw optional Chromium observations without forced GC; they do not establish leak freedom",
           "Three add/Undo cycles establish bounded geometry/texture reclamation only; no physical/native/owner acceptance",

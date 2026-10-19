@@ -2444,7 +2444,16 @@ export function SpatialStudio({
       </main>
     );
   const headerMenuActions: StudioMenuAction[] = [
-    { label: "Save draft", icon: "save", disabled: busy, run: () => void action(persist) },
+    {
+      label: "Save draft",
+      icon: "save",
+      disabled: busy,
+      run: () =>
+        void action(async () => {
+          await persist();
+          setStatus("Working draft saved");
+        }),
+    },
     {
       label: "New scene",
       icon: "plus",
@@ -4098,7 +4107,10 @@ export function SpatialStudio({
             <button
               aria-label="Collapse Inspector"
               onClick={() => {
-                studioElement.current?.querySelector<HTMLButtonElement>('[aria-label="Open scene settings"]')?.focus();
+                const opener = studioElement.current?.querySelector<HTMLButtonElement>(
+                  'nav[aria-label="Inspector dock"] button[aria-pressed="true"]',
+                );
+                opener?.focus({ preventScroll: true });
                 setInspectorOpen(false);
               }}
             >

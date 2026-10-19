@@ -203,7 +203,10 @@ test("Creator signs in, reviews actual canvas proposals, saves once and reopens 
   await expect(canvas.locator("canvas")).toBeVisible();
   expect((await ownedWorking(account.id, request.draft.content.definitionId)).revision).toBe(base.revision);
   await capture(page, "proposed-canvas");
-  await assistant.getByRole("button", { name: "Locate object", exact: true }).click();
+  const proposedMap = assistant.getByRole("article").filter({
+    has: page.getByRole("checkbox", { name: "New spatial object Pirate map · on a horizontal surface", exact: true }),
+  });
+  await proposedMap.getByRole("button", { name: "Locate object", exact: true }).click();
   await expect(mapButton).toHaveAttribute("aria-pressed", "true");
   await capture(page, "object-highlight");
   await assistant.getByRole("button", { name: "Current scene", exact: true }).click();

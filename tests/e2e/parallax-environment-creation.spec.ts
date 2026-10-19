@@ -9,6 +9,7 @@ import { createSpatialDraft } from "../../src/parallax/authoring";
 import { createRoomEnvironment } from "../../src/parallax/environment-authoring";
 import { simulationEnvironments } from "../../src/parallax/studio-validation";
 import { saveSpatialDraft, listSpatialItems } from "../../src/parallax/library-service";
+import { listEnvironmentDefinitions } from "../../src/parallax/library-lifecycle-service";
 import { AI_CONTROL_ID } from "../../src/parallax/ai-ledger";
 import { defaultAIGlobalPolicy } from "../../src/parallax/ai-policy";
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
@@ -44,7 +45,7 @@ for (const count of [1, 2])
     await page.goto(`/studio/parallax?definition=${source.content.definitionId}`);
     await page.getByRole("button", { name: "Open Library", exact: true }).click();
     await page.getByRole("tab", { name: "Environments", exact: true }).click();
-    await page.getByRole("button", { name: "Add environment", exact: true }).click();
+    await page.getByRole("button", { name: "Create Environment", exact: true }).click();
     await page.getByRole("button", { name: /From photos/ }).click();
     const dialog = page.getByRole("dialog", { name: "Build a room from photos", exact: true });
     const photo = dialog.getByRole("region", { name: "Room photograph reconstruction", exact: true });
@@ -123,11 +124,21 @@ for (const count of [1, 2])
     await photo.getByRole("button", { name: "Apply and save room", exact: true }).click();
     await expect(dialog).toHaveCount(0);
     await expect(page.getByRole("region", { name: "Room feature editor", exact: true })).toBeVisible();
-    const rooms = (await listSpatialItems(account.id)).filter(
-      (item) => item.draft.content.studio?.environment?.origin === "PHOTO_RECONSTRUCTION",
+    const rooms = (await listEnvironmentDefinitions(account.id)).filter(
+      (item) => item.draft.room?.origin === "PHOTO_RECONSTRUCTION",
     );
     expect(rooms).toHaveLength(1);
     expect(rooms[0].id).not.toBe(source.content.definitionId);
+    expect((await listSpatialItems(account.id)).find((item) => item.id === source.content.definitionId)!.draft).toEqual(
+      source,
+    );
+    expect(rooms[0].draft.name).toBe("New environment");
     await page.reload();
-    await expect(page.getByLabel("Current scene", { exact: true })).toContainText("Photo environment");
+    await expect(page.getByRole("heading", { level: 1, name: "New environment", exact: true })).toBeVisible();
+    expect((await listEnvironmentDefinitions(account.id)).find((item) => item.id === rooms[0].id)!.draft).toEqual(
+      rooms[0].draft,
+    );
+    expect((await listSpatialItems(account.id)).find((item) => item.id === source.content.definitionId)!.draft).toEqual(
+      source,
+    );
   });

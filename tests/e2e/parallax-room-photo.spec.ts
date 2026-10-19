@@ -122,6 +122,7 @@ test("Creator privately imports a room photo, confirms measurement, preserves it
   // Correct the inferred scale through the ordinary room editor, before the
   // next photograph deliberately supplies conflicting desk estimates.
   await page.getByRole("button", { name: "Edit room features", exact: true }).click();
+  await page.getByRole("combobox", { name: "Authoring mode", exact: true }).selectOption("ENGINEERING");
   const editor = page.getByRole("region", { name: "Room feature editor", exact: true });
   await editor.getByLabel("Room feature", { exact: true }).selectOption(desk.id);
   await editor.getByText("Scale room from a known measurement", { exact: true }).click();

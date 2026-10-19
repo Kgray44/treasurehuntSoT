@@ -69,7 +69,9 @@ test("Creator saves and reuses a versioned object, edits only its instance, relo
   await assetInspect.click();
   const assetDetails = library.getByRole("complementary", { name: "Captain navigation compass details", exact: true });
   await expect(assetDetails).toContainText("Navigation clue");
-  await expect(card.getByRole("img")).toBeVisible();
+  const thumbnail = card.locator("img");
+  await expect(thumbnail).toBeVisible();
+  await expect.poll(() => thumbnail.evaluate((image: HTMLImageElement) => image.naturalWidth)).toBeGreaterThan(0);
   await mkdir(root, { recursive: true });
   await page.screenshot({ path: `${root}/library-object-definition.png` });
   await page.getByRole("button", { name: "Save as new…", exact: true }).click();

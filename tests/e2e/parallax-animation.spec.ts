@@ -160,6 +160,15 @@ test("Creator edits, renders, scrubs, plays and reloads real object keyframes, t
       expect(bounds.x + bounds.width).toBeLessThanOrEqual(regionBounds.x + regionBounds.width);
       expect(bounds.y + bounds.height).toBeLessThanOrEqual(rendererBounds.y + rendererBounds.height);
     }
+    const surfaces = canvasRegion.getByRole("button", { name: "Toggle spatial overlays", exact: true });
+    const wasOverlaid = await surfaces.getAttribute("aria-pressed");
+    await surfaces.click();
+    await expect(surfaces).toHaveAttribute("aria-pressed", String(wasOverlaid !== "true"));
+    await page.screenshot({ path: `${root}/toolbar-surfaces-pointer-${viewport.width}x${viewport.height}.png` });
+    await surfaces.focus();
+    await surfaces.press("Enter");
+    await expect(surfaces).toHaveAttribute("aria-pressed", wasOverlaid!);
+    await page.screenshot({ path: `${root}/toolbar-surfaces-keyboard-${viewport.width}x${viewport.height}.png` });
     await page.screenshot({ path: `${root}/toolbar-expanded-desktop-${viewport.width}x${viewport.height}.png` });
     await page.getByRole("tab", { name: "Timeline", exact: true }).scrollIntoViewIfNeeded();
     await expect(page.getByRole("button", { name: "Play timeline", exact: true })).toBeInViewport();

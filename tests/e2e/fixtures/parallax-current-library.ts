@@ -1,4 +1,4 @@
-import { expect, type Page } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 
 export async function openCurrentLibraryCategory(
   page: Page,
@@ -69,8 +69,48 @@ export async function openCurrentScenePublication(page: Page) {
 
 /** Persist through the working-draft command without creating Library membership. */
 export async function saveCurrentWorkingDraft(page: Page) {
-  await page.getByRole("heading", { name: "Parallax", exact: true }).click({ button: "right" });
-  await page.getByRole("menuitem", { name: "Save draft", exact: true }).click();
+  const monitor = await page.evaluateHandle(() => {
+    const observations: Record<string, string | number | null>[] = [];
+    const observe = (event: Event) => {
+      const element = event.target instanceof Element ? event.target : null;
+      observations.push({
+        type: event.type,
+        tag: element?.tagName ?? null,
+        label: element?.getAttribute("aria-label") ?? null,
+        role: element?.getAttribute("role") ?? null,
+        class: element?.getAttribute("class") ?? null,
+        top: element?.scrollTop ?? window.scrollY,
+        left: element?.scrollLeft ?? window.scrollX,
+        time: performance.now(),
+      });
+    };
+    const events = ["scroll", "contextmenu", "pointerdown", "focusin"];
+    events.forEach((event) => document.addEventListener(event, observe, true));
+    window.addEventListener("resize", observe);
+    return {
+      observations,
+      dispose: () => {
+        events.forEach((event) => document.removeEventListener(event, observe, true));
+        window.removeEventListener("resize", observe);
+      },
+    };
+  });
+  try {
+    await page.getByRole("heading", { name: "Parallax", exact: true }).click({ button: "right" });
+    const save = page.getByRole("menuitem", { name: "Save draft", exact: true });
+    await expect(save).toBeVisible();
+    await save.click();
+  } finally {
+    const observations = await monitor.evaluate((state) => {
+      state.dispose();
+      return state.observations;
+    });
+    await test.info().attach("working-save-opener-events", {
+      body: JSON.stringify(observations, null, 2),
+      contentType: "application/json",
+    });
+    await monitor.dispose();
+  }
 }
 
 /** The Scene header owns working-save and editing feedback; Library loading has its own live region. */

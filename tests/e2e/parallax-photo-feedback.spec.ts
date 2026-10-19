@@ -83,7 +83,7 @@ for (const scenario of ["timeout-dark", "clarification-phone-light", "network-de
     }
     await page.getByRole("button", { name: "Open Library", exact: true }).click();
     await page.getByRole("tab", { name: "Environments", exact: true }).click();
-    await page.getByRole("button", { name: "Add environment", exact: true }).click();
+    await page.getByRole("button", { name: "Create Environment", exact: true }).click();
     await page.getByRole("button", { name: /From photos/ }).click();
     const dialog = page.getByRole("dialog", { name: "Build a room from photos", exact: true });
     const photo = dialog.getByRole("region", { name: "Room photograph reconstruction", exact: true });

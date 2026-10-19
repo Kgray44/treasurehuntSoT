@@ -760,14 +760,23 @@ export function SpatialCanvas(props: {
             <button
               aria-pressed={audioEnabled}
               onClick={() => {
+                const current = engine.current;
+                if (preview === "FALLBACK" || !current) {
+                  setAudioEnabled(false);
+                  setFeedback(
+                    "Preview audio is unavailable in Guided View. Return to the 3D preview to enable authored sound.",
+                  );
+                  return;
+                }
                 if (audioEnabled) {
-                  engine.current?.stopAudio();
+                  current.stopAudio();
                   setAudioEnabled(false);
                   return;
                 }
-                void engine.current
-                  ?.enableAudio()
+                void current
+                  .enableAudio()
                   .then(() => {
+                    if (engine.current !== current) return;
                     setAudioEnabled(true);
                     setFeedback("Preview audio enabled. Play the timeline in Preview to hear authored sound.");
                   })

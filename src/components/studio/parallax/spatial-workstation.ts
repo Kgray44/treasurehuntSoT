@@ -1188,6 +1188,7 @@ export function createWorkstation(
       const renderStart = performance.now();
       renderer.render(scene, camera);
       host.dataset.renderCosts = JSON.stringify({
+        quality: state?.quality ?? "MEDIUM",
         calls: renderer.info.render.calls,
         triangles: renderer.info.render.triangles,
         geometries: renderer.info.memory.geometries,
