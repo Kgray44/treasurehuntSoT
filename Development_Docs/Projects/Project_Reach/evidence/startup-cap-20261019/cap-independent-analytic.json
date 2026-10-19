@@ -1,0 +1,418 @@
+{
+  "classification": "INDEPENDENT_BLIND_NEW_ANALYTIC_LOCALIZATION_FEASIBILITY_NOT_PHYSICAL_OR_TRACKING_ACCEPTANCE",
+  "createdAt": "2026-10-19T18:58:29.994Z",
+  "candidateSha256": "868055dff130279b427b69fa743404a0e23e2eb08027fc8a690bdda6b640ad13",
+  "baselineSha256": "fc4b130644b14dcc940968a6652838b23e9d155509e502070e7ff3d9eb26de4f",
+  "inputsSha256": "0d1ac8af9fc0beadca41406fd43c65a68646b662ab134a8a3375b31f7a4fc488",
+  "labelsSha256": "d28442d70eba84fe78775dd6cf6e31c94e7475b9a73a7c14e2d0bbe7d4c51ba4",
+  "generatorSha256": "35d75e681d3ec723416e557d30c0e25afc0729392c093f1013cfffdc1133e7da",
+  "evaluatorSha256": "f567f67866d4e3653eb706932066fe68dcec1d1557bb9e222830770e81965324",
+  "sequenceCount": 96,
+  "frameCount": 2304,
+  "candidateFrozenBeforeFixtureGeneration": true,
+  "allGeneratedSequencesRetained": true,
+  "byCategory": {
+    "POSE_CHANGE_NO_FULL_MODEL_COORDINATE": {
+      "sequences": 12,
+      "seedEstablished": 6,
+      "mechanismEligible": 5,
+      "baselineCeiling": 0,
+      "postSeedFrames": 240,
+      "freshVisibleFrames": 240,
+      "baselineMeasuredPositions": 26,
+      "baselineMissingOnFreshVisible": 214,
+      "baselineFalsePositions": 0,
+      "baselineSameSeedIdPositions": 26,
+      "capProposals": 96,
+      "capProposalsOnBaselineMissing": 96,
+      "capCorrectCenterOnBaselineMissing": 0,
+      "capOnNoSelectedTarget": 0,
+      "capOutsideEight": 59,
+      "capWithinEightFieldDisagreements": 0,
+      "proposalsOnStaleInputs": 0,
+      "authoritativeCommitCount": 0,
+      "authoritativeRecoverySuccessCount": 0,
+      "reasons": {
+        "STRUCTURAL_CAP_PROPOSAL_ONLY": 96,
+        "COMPETING_CAP_HYPOTHESES": 24,
+        "NO_CURRENT_INDEX_PROPOSAL": 120
+      },
+      "capErrorAnalysisPixels": {
+        "n": 96,
+        "median": 8.514693182963187,
+        "p95": 10.500000000000007,
+        "max": 10.51189802081431,
+        "total": 857.3420106966437
+      },
+      "trackerCpuMs": {
+        "n": 240,
+        "median": 0.7221000000000117,
+        "p95": 1.531500000000051,
+        "max": 7.951399999999978,
+        "total": 178.1351000000015
+      },
+      "detectorOnlyCpuMs": {
+        "n": 240,
+        "median": 0.1502999999999588,
+        "p95": 0.765199999999993,
+        "max": 1.8776999999999475,
+        "total": 67.3190999999996
+      },
+      "coreErrors": 0,
+      "detectorErrors": 0
+    },
+    "WRONG_NEURAL_ENDPOINT_CURRENT_IMAGE_CORRECT": {
+      "sequences": 12,
+      "seedEstablished": 8,
+      "mechanismEligible": 0,
+      "baselineCeiling": 0,
+      "postSeedFrames": 240,
+      "freshVisibleFrames": 240,
+      "baselineMeasuredPositions": 80,
+      "baselineMissingOnFreshVisible": 160,
+      "baselineFalsePositions": 0,
+      "baselineSameSeedIdPositions": 80,
+      "capProposals": 180,
+      "capProposalsOnBaselineMissing": 0,
+      "capCorrectCenterOnBaselineMissing": 0,
+      "capOnNoSelectedTarget": 0,
+      "capOutsideEight": 180,
+      "capWithinEightFieldDisagreements": 0,
+      "proposalsOnStaleInputs": 0,
+      "authoritativeCommitCount": 0,
+      "authoritativeRecoverySuccessCount": 0,
+      "reasons": {
+        "STRUCTURAL_CAP_PROPOSAL_ONLY": 180,
+        "COMPETING_CAP_HYPOTHESES": 60
+      },
+      "capErrorAnalysisPixels": {
+        "n": 180,
+        "median": 9.653929125566206,
+        "p95": 10.831145983494793,
+        "max": 10.831145983494793,
+        "total": 1716.671913006243
+      },
+      "trackerCpuMs": {
+        "n": 240,
+        "median": 0.900000000000091,
+        "p95": 1.7975000000000136,
+        "max": 2.3069000000000415,
+        "total": 238.24400000000014
+      },
+      "detectorOnlyCpuMs": {
+        "n": 240,
+        "median": 0.4470000000001164,
+        "p95": 0.7750999999998385,
+        "max": 1.1929000000000087,
+        "total": 124.46820000000139
+      },
+      "coreErrors": 0,
+      "detectorErrors": 0
+    },
+    "BRIEF_OCCLUSION_MATERIAL_RETURN": {
+      "sequences": 12,
+      "seedEstablished": 9,
+      "mechanismEligible": 9,
+      "baselineCeiling": 0,
+      "postSeedFrames": 240,
+      "freshVisibleFrames": 222,
+      "baselineMeasuredPositions": 26,
+      "baselineMissingOnFreshVisible": 196,
+      "baselineFalsePositions": 0,
+      "baselineSameSeedIdPositions": 26,
+      "capProposals": 54,
+      "capProposalsOnBaselineMissing": 54,
+      "capCorrectCenterOnBaselineMissing": 0,
+      "capOnNoSelectedTarget": 0,
+      "capOutsideEight": 54,
+      "capWithinEightFieldDisagreements": 0,
+      "proposalsOnStaleInputs": 0,
+      "authoritativeCommitCount": 0,
+      "authoritativeRecoverySuccessCount": 0,
+      "reasons": {
+        "NO_CURRENT_INDEX_PROPOSAL": 132,
+        "COMPETING_CAP_HYPOTHESES": 54,
+        "STRUCTURAL_CAP_PROPOSAL_ONLY": 54
+      },
+      "capErrorAnalysisPixels": {
+        "n": 54,
+        "median": 8.514693182963178,
+        "p95": 9.500000000000007,
+        "max": 9.500000000000007,
+        "total": 477.2644772933373
+      },
+      "trackerCpuMs": {
+        "n": 240,
+        "median": 0.5868000000000393,
+        "p95": 1.1760000000001583,
+        "max": 2.345100000000002,
+        "total": 135.01230000000237
+      },
+      "detectorOnlyCpuMs": {
+        "n": 240,
+        "median": 0.04739999999992506,
+        "p95": 0.7269999999998618,
+        "max": 1.3080999999999676,
+        "total": 62.9263000000019
+      },
+      "coreErrors": 0,
+      "detectorErrors": 0
+    },
+    "MIXED_MOTION_PARTIAL_TO_FULL": {
+      "sequences": 12,
+      "seedEstablished": 9,
+      "mechanismEligible": 3,
+      "baselineCeiling": 4,
+      "postSeedFrames": 240,
+      "freshVisibleFrames": 240,
+      "baselineMeasuredPositions": 139,
+      "baselineMissingOnFreshVisible": 101,
+      "baselineFalsePositions": 0,
+      "baselineSameSeedIdPositions": 139,
+      "capProposals": 114,
+      "capProposalsOnBaselineMissing": 43,
+      "capCorrectCenterOnBaselineMissing": 0,
+      "capOnNoSelectedTarget": 0,
+      "capOutsideEight": 84,
+      "capWithinEightFieldDisagreements": 0,
+      "proposalsOnStaleInputs": 0,
+      "authoritativeCommitCount": 0,
+      "authoritativeRecoverySuccessCount": 0,
+      "reasons": {
+        "NO_CLOSED_CAP_CONNECTED_TO_SHAFT": 40,
+        "NO_CURRENT_INDEX_PROPOSAL": 72,
+        "STRUCTURAL_CAP_PROPOSAL_ONLY": 114,
+        "COMPETING_CAP_HYPOTHESES": 14
+      },
+      "capErrorAnalysisPixels": {
+        "n": 114,
+        "median": 8.514693182963207,
+        "p95": 9.513148795220232,
+        "max": 9.552486587271419,
+        "total": 971.4505757217233
+      },
+      "trackerCpuMs": {
+        "n": 240,
+        "median": 0.8548999999998159,
+        "p95": 1.4041999999999462,
+        "max": 2.8029999999998836,
+        "total": 226.67199999999775
+      },
+      "detectorOnlyCpuMs": {
+        "n": 240,
+        "median": 0.4819999999999709,
+        "p95": 0.8853999999998905,
+        "max": 1.7409999999999854,
+        "total": 103.3701000000001
+      },
+      "coreErrors": 0,
+      "detectorErrors": 0
+    },
+    "WRONG_DIGIT_WITH_PLAUSIBLE_CHAIN": {
+      "sequences": 12,
+      "seedEstablished": 9,
+      "mechanismEligible": 0,
+      "baselineCeiling": 0,
+      "postSeedFrames": 240,
+      "freshVisibleFrames": 0,
+      "baselineMeasuredPositions": 180,
+      "baselineMissingOnFreshVisible": 0,
+      "baselineFalsePositions": 180,
+      "baselineSameSeedIdPositions": 180,
+      "capProposals": 160,
+      "capProposalsOnBaselineMissing": 0,
+      "capCorrectCenterOnBaselineMissing": 0,
+      "capOnNoSelectedTarget": 160,
+      "capOutsideEight": 160,
+      "capWithinEightFieldDisagreements": 37,
+      "proposalsOnStaleInputs": 0,
+      "authoritativeCommitCount": 0,
+      "authoritativeRecoverySuccessCount": 0,
+      "reasons": {
+        "STRUCTURAL_CAP_PROPOSAL_ONLY": 160,
+        "COMPETING_CAP_HYPOTHESES": 80
+      },
+      "capErrorAnalysisPixels": {
+        "n": 0,
+        "median": null,
+        "p95": null,
+        "max": null,
+        "total": 0
+      },
+      "trackerCpuMs": {
+        "n": 240,
+        "median": 0.878400000000056,
+        "p95": 1.528099999999995,
+        "max": 4.569600000000037,
+        "total": 223.51479999999992
+      },
+      "detectorOnlyCpuMs": {
+        "n": 240,
+        "median": 0.44889999999986685,
+        "p95": 0.8006000000000313,
+        "max": 1.2756999999999152,
+        "total": 122.93840000000273
+      },
+      "coreErrors": 0,
+      "detectorErrors": 0
+    },
+    "COPIED_TEXTURE_RIVAL_AND_BACKGROUND": {
+      "sequences": 12,
+      "seedEstablished": 9,
+      "mechanismEligible": 0,
+      "baselineCeiling": 0,
+      "postSeedFrames": 240,
+      "freshVisibleFrames": 0,
+      "baselineMeasuredPositions": 0,
+      "baselineMissingOnFreshVisible": 0,
+      "baselineFalsePositions": 0,
+      "baselineSameSeedIdPositions": 0,
+      "capProposals": 102,
+      "capProposalsOnBaselineMissing": 0,
+      "capCorrectCenterOnBaselineMissing": 0,
+      "capOnNoSelectedTarget": 102,
+      "capOutsideEight": 23,
+      "capWithinEightFieldDisagreements": 0,
+      "proposalsOnStaleInputs": 0,
+      "authoritativeCommitCount": 0,
+      "authoritativeRecoverySuccessCount": 0,
+      "reasons": {
+        "STRUCTURAL_CAP_PROPOSAL_ONLY": 102,
+        "NO_CLOSED_CAP_CONNECTED_TO_SHAFT": 118,
+        "COMPETING_CAP_HYPOTHESES": 20
+      },
+      "capErrorAnalysisPixels": {
+        "n": 0,
+        "median": null,
+        "p95": null,
+        "max": null,
+        "total": 0
+      },
+      "trackerCpuMs": {
+        "n": 240,
+        "median": 1.0348000000003594,
+        "p95": 1.5342000000000553,
+        "max": 2.2350000000001273,
+        "total": 232.38100000000213
+      },
+      "detectorOnlyCpuMs": {
+        "n": 240,
+        "median": 0.6390000000001237,
+        "p95": 0.986699999999928,
+        "max": 1.3245999999999185,
+        "total": 158.86229999999978
+      },
+      "coreErrors": 0,
+      "detectorErrors": 0
+    },
+    "STALE_PIXEL_AND_FOREIGN_CONTEXT": {
+      "sequences": 12,
+      "seedEstablished": 4,
+      "mechanismEligible": 0,
+      "baselineCeiling": 0,
+      "postSeedFrames": 240,
+      "freshVisibleFrames": 120,
+      "baselineMeasuredPositions": 25,
+      "baselineMissingOnFreshVisible": 95,
+      "baselineFalsePositions": 0,
+      "baselineSameSeedIdPositions": 0,
+      "capProposals": 200,
+      "capProposalsOnBaselineMissing": 0,
+      "capCorrectCenterOnBaselineMissing": 0,
+      "capOnNoSelectedTarget": 0,
+      "capOutsideEight": 164,
+      "capWithinEightFieldDisagreements": 20,
+      "proposalsOnStaleInputs": 118,
+      "authoritativeCommitCount": 0,
+      "authoritativeRecoverySuccessCount": 0,
+      "reasons": {
+        "COMPETING_CAP_HYPOTHESES": 40,
+        "STRUCTURAL_CAP_PROPOSAL_ONLY": 200
+      },
+      "capErrorAnalysisPixels": {
+        "n": 200,
+        "median": 9.5,
+        "p95": 10.51189802081431,
+        "max": 10.51189802081431,
+        "total": 1862.6323559567218
+      },
+      "trackerCpuMs": {
+        "n": 240,
+        "median": 0.21459999999979118,
+        "p95": 1.2195000000001528,
+        "max": 2.088799999999992,
+        "total": 101.4943000000012
+      },
+      "detectorOnlyCpuMs": {
+        "n": 240,
+        "median": 0.4293999999999869,
+        "p95": 0.720299999999952,
+        "max": 1.1532999999999447,
+        "total": 113.53029999999853
+      },
+      "coreErrors": 120,
+      "detectorErrors": 0
+    },
+    "IDENTITY_LIFETIME_EXCEEDED": {
+      "sequences": 12,
+      "seedEstablished": 8,
+      "mechanismEligible": 0,
+      "baselineCeiling": 0,
+      "postSeedFrames": 240,
+      "freshVisibleFrames": 96,
+      "baselineMeasuredPositions": 0,
+      "baselineMissingOnFreshVisible": 96,
+      "baselineFalsePositions": 0,
+      "baselineSameSeedIdPositions": 0,
+      "capProposals": 0,
+      "capProposalsOnBaselineMissing": 0,
+      "capCorrectCenterOnBaselineMissing": 0,
+      "capOnNoSelectedTarget": 0,
+      "capOutsideEight": 0,
+      "capWithinEightFieldDisagreements": 0,
+      "proposalsOnStaleInputs": 0,
+      "authoritativeCommitCount": 0,
+      "authoritativeRecoverySuccessCount": 0,
+      "reasons": {
+        "NO_CURRENT_INDEX_PROPOSAL": 240
+      },
+      "capErrorAnalysisPixels": {
+        "n": 0,
+        "median": null,
+        "p95": null,
+        "max": null,
+        "total": 0
+      },
+      "trackerCpuMs": {
+        "n": 240,
+        "median": 0.06710000000020955,
+        "p95": 0.6131000000000313,
+        "max": 0.7853000000000065,
+        "total": 27.672699999999622
+      },
+      "detectorOnlyCpuMs": {
+        "n": 240,
+        "median": 0.02539999999999054,
+        "p95": 0.04039999999986321,
+        "max": 0.2173000000002503,
+        "total": 6.847199999997429
+      },
+      "coreErrors": 0,
+      "detectorErrors": 0
+    }
+  },
+  "totalMechanismEligibleSequences": 17,
+  "authoritativeCommits": 0,
+  "authoritativeRecoverySuccess": 0,
+  "decision": "Detector returns localization proposals only. No proposal gains constitute fresh same-index measured recovery. Preserve original neural8px conflict, identity/source/freshness and material gates.",
+  "limits": [
+    "Synthetic renderer supplies cap-center truth and selected material identity; this is not physical anatomical ground truth.",
+    "No NN inference, camera, display or physical latency is executed.",
+    "RawNN>8px cases require abstention under the original policy and cannot count as positive recovery even if contour localization looks plausible.",
+    "FullPOINT ceilings, unseeded fixtures, missing model proposal and actual baseline-failure denominators are explicit.",
+    "Pixel-center target remains fixed; exact contour-edge output is not relabelled as cap center to improve a score.",
+    "Detector-only API grants no source, identity, readiness or measured coordinate authority. No candidate positions or calibration samples are produced.",
+    "CPU values cover isolated tracker or additional image detector only; preserved synthetic source clocks are not capture-to-visible latency.",
+    "The96sequences are new analytic holdout for the frozen module; any future method changes make these fixtures development."
+  ]
+}

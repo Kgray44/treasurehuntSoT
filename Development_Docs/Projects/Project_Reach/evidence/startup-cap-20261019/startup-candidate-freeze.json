@@ -1,0 +1,38 @@
+{
+  "classification": "PRIVATE_PREREADY_LATENCY_CANDIDATE_FROZEN_NOT_RUNTIME_QUALIFIED",
+  "candidateFiles": [
+    {
+      "name": "recovery-provider.js",
+      "sha256": "f0b3d74b7cd3c7014cd34b3ed91a44b01d5a9707e68d10552e09bd859eef2eed"
+    },
+    {
+      "name": "recovery-worker.js",
+      "sha256": "96736cb9503e7639e2033cca95d3e44283b021a92befccb0979dbb53835d221e"
+    }
+  ],
+  "staticChecksPassed": 2,
+  "developmentChecksPassed": 17,
+  "developmentChecksFailed": 0,
+  "nativeProbeDimensions": {
+    "width": 640,
+    "height": 480
+  },
+  "nativeProbeCountPerAttempt": 2,
+  "forcedDistinctRegionsPerProbe": 2,
+  "maximumProbeElapsedMs": 150,
+  "bothProbeCostsRequired": true,
+  "syntheticOutputsDiscarded": true,
+  "existingLiveGatesChanged": false,
+  "productSourceChanged": false,
+  "browserDeadlinePolicyChanged": false,
+  "noCpuGpuOutputEquivalenceClaim": true,
+  "runtimeEvidence": "PENDING_ROOT_ROUTE_TEST",
+  "limitations": [
+    "Fixed640x480 is partial dimension coverage.",
+    "Uniform gray forces inference/readback but does not exercise accepted positive hand-output callbacks.",
+    "Passing startup timing is necessary only; live pixel age and current semantic identity remain independently gated."
+  ],
+  "failedEvidencePreserved": [
+    "Earlier mock harness lacked required rectangle-output count and failed one test; candidate files were unchanged; corrected final harness passed17."
+  ]
+}

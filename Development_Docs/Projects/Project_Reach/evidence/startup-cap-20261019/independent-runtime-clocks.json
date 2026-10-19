@@ -1,0 +1,250 @@
+{
+  "classification": "SAFE_AGGREGATE_INDEPENDENT_PHOTOGRAPHIC_FIXTURE_CLOCK_REVIEW_NOT_PHYSICAL",
+  "sourceAssertions": {
+    "expectCallNodes": 180,
+    "assertionFingerprint": "2e4a37102ed0a2d2701a7ef1727f9dc727b55a31be4b7ec33d12bc64333eb2c9",
+    "allAssertionSignaturesIdentical": true,
+    "gpuByteIdenticalToPrior": true,
+    "originalCpuInitErrorRouting": true,
+    "cpuRoiInitDelegateOverride": true
+  },
+  "clockNormalization": "EACH_MATCHED_FRAME_DISPATCH_EPOCH_MINUS_AT_PLUS_CAPTURE",
+  "arms": {
+    "CPU_ORIGINAL": {
+      "status": "passed",
+      "testDurationMs": 4480,
+      "ready": [
+        {
+          "backend": "CPU_WASM",
+          "providerPolicy": "ORIGINAL_CPU_LEGACY_OMITTED"
+        }
+      ],
+      "rawResultCount": 56,
+      "frameDispatchCount": 56,
+      "matchedRawResults": 56,
+      "unmatchedFrameDispatches": 0,
+      "handCountHistogram": {
+        "1": 51,
+        "2": 5
+      },
+      "completionMs": {
+        "n": 56,
+        "min": 29.2001953125,
+        "median": 32.300048828125,
+        "p95": 46.2001953125,
+        "max": 104.800048828125
+      },
+      "arrivalMs": {
+        "n": 56,
+        "min": 29.300048828125,
+        "median": 32.5,
+        "p95": 46.2998046875,
+        "max": 104.89990234375
+      },
+      "returnTransportMs": {
+        "n": 56,
+        "min": -0.000244140625,
+        "median": 0.099853515625,
+        "p95": 0.7998046875,
+        "max": 1.599853515625
+      },
+      "captureToDispatchMs": {
+        "n": 56,
+        "min": 0.3999999761581421,
+        "median": 0.5999999940395355,
+        "p95": 1,
+        "max": 1.899999976158142
+      },
+      "originAgeAtCaptureMs": {
+        "n": 56,
+        "min": 1.900000000000091,
+        "median": 17.39999998807889,
+        "p95": 57.09999999999991,
+        "max": 60.59999998807916
+      },
+      "originAgeAtArrivalMs": {
+        "n": 56,
+        "min": 34.29990234375009,
+        "median": 50.39995118379602,
+        "p95": 90.29995117187491,
+        "max": 117.19990235567093
+      },
+      "completionAbove150ms": 0,
+      "arrivalAbove150ms": 0,
+      "originArrivalAbove150ms": 0,
+      "allCompletionTimesWithin150ms": true,
+      "allArrivalTimesWithin150ms": true,
+      "singleInferenceInFlightConfirmed": true,
+      "observedFixtureResultHz": 17.42810931500744,
+      "ownedCleanup": {
+        "test": "PASS",
+        "server": "PASS",
+        "portReleased": true
+      },
+      "sourceUnchanged": true,
+      "fixtureUnchanged": true,
+      "canonicalRefusal": "DEVELOPMENT_BUILD_LINK_OUTSIDE_DEPENDENCIES",
+      "qualification": false
+    },
+    "GPU_ACTUAL_ROI": {
+      "status": "failed",
+      "testDurationMs": 32762,
+      "ready": [
+        {
+          "backend": "GPU_WEBGL",
+          "providerPolicy": "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1"
+        }
+      ],
+      "rawResultCount": 82,
+      "frameDispatchCount": 83,
+      "matchedRawResults": 82,
+      "unmatchedFrameDispatches": 1,
+      "handCountHistogram": {
+        "1": 82
+      },
+      "completionMs": {
+        "n": 82,
+        "min": 289.800048828125,
+        "median": 331.000244140625,
+        "p95": 345,
+        "max": 352.300048828125
+      },
+      "arrivalMs": {
+        "n": 82,
+        "min": 290,
+        "median": 331.300048828125,
+        "p95": 345.699951171875,
+        "max": 352.5
+      },
+      "returnTransportMs": {
+        "n": 82,
+        "min": 0.099853515625,
+        "median": 0.199951171875,
+        "p95": 0.699951171875,
+        "max": 4.39990234375
+      },
+      "captureToDispatchMs": {
+        "n": 82,
+        "min": 0.4000000059604645,
+        "median": 0.800000011920929,
+        "p95": 1.7000000178813934,
+        "max": 4
+      },
+      "originAgeAtCaptureMs": {
+        "n": 82,
+        "min": 2.199999988079071,
+        "median": 39.69999999403808,
+        "p95": 70.90000000000009,
+        "max": 97.89999998211897
+      },
+      "originAgeAtArrivalMs": {
+        "n": 82,
+        "min": 319.49999998807834,
+        "median": 369.19990233779026,
+        "p95": 410.7999023437501,
+        "max": 430.20004881024397
+      },
+      "completionAbove150ms": 82,
+      "arrivalAbove150ms": 82,
+      "originArrivalAbove150ms": 82,
+      "allCompletionTimesWithin150ms": false,
+      "allArrivalTimesWithin150ms": false,
+      "singleInferenceInFlightConfirmed": true,
+      "observedFixtureResultHz": 2.9739668986447976,
+      "ownedCleanup": {
+        "test": "PASS",
+        "server": "PASS",
+        "portReleased": true
+      },
+      "sourceUnchanged": true,
+      "fixtureUnchanged": true,
+      "canonicalRefusal": "DEVELOPMENT_BUILD_LINK_OUTSIDE_DEPENDENCIES",
+      "qualification": false
+    },
+    "CPU_ACTUAL_ROI": {
+      "status": "passed",
+      "testDurationMs": 4726,
+      "ready": [
+        {
+          "backend": "CPU_WASM",
+          "providerPolicy": "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1"
+        }
+      ],
+      "rawResultCount": 60,
+      "frameDispatchCount": 60,
+      "matchedRawResults": 60,
+      "unmatchedFrameDispatches": 0,
+      "handCountHistogram": {
+        "1": 54,
+        "2": 6
+      },
+      "completionMs": {
+        "n": 60,
+        "min": 31.800048828125,
+        "median": 32.89990234375,
+        "p95": 46.699951171875,
+        "max": 51.89990234375
+      },
+      "arrivalMs": {
+        "n": 60,
+        "min": 32.099853515625,
+        "median": 33.199951171875,
+        "p95": 47.39990234375,
+        "max": 52.199951171875
+      },
+      "returnTransportMs": {
+        "n": 60,
+        "min": 0.099853515625,
+        "median": 0.2998046875,
+        "p95": 0.699951171875,
+        "max": 2.60009765625
+      },
+      "captureToDispatchMs": {
+        "n": 60,
+        "min": 0.3999999761581421,
+        "median": 0.5999999940395355,
+        "p95": 1.0999999940395355,
+        "max": 1.300000011920929
+      },
+      "originAgeAtCaptureMs": {
+        "n": 60,
+        "min": 2.9999999940396265,
+        "median": 10.900000000000091,
+        "p95": 53.80000001192093,
+        "max": 63.39999999403949
+      },
+      "originAgeAtArrivalMs": {
+        "n": 60,
+        "min": 35.59985350966463,
+        "median": 46.299999994039354,
+        "p95": 97.00000001788135,
+        "max": 110.79990233778949
+      },
+      "completionAbove150ms": 0,
+      "arrivalAbove150ms": 0,
+      "originArrivalAbove150ms": 0,
+      "allCompletionTimesWithin150ms": true,
+      "allArrivalTimesWithin150ms": true,
+      "singleInferenceInFlightConfirmed": true,
+      "observedFixtureResultHz": 17.706949977866312,
+      "ownedCleanup": {
+        "test": "PASS",
+        "server": "PASS",
+        "portReleased": true
+      },
+      "sourceUnchanged": true,
+      "fixtureUnchanged": true,
+      "canonicalRefusal": "DEVELOPMENT_BUILD_LINK_OUTSIDE_DEPENDENCIES",
+      "qualification": false
+    }
+  },
+  "productionUnchanged": true,
+  "limitations": [
+    "Photographic canvas video is D1 replay, not a real webcam or physical fingertip-accuracy test.",
+    "Three separate Chromium journeys are not synchronized input-pixel paired trials. GPU fails the initial readiness assertion and therefore never exercises the later partial/two-hand stages reached by CPU arms.",
+    "Original CPU uses ORIGINAL_CPU graph policy; CPU_ACTUAL_ROI versus GPU_ACTUAL_ROI is the same graph/backend intervention, with separately observed timing and achieved fixture-stage exposure.",
+    "Completion includes worker queue, input upload, synchronous graph execution/GPU wait and result decoding; this recording does not separate those internal costs.",
+    "Presentation metadata is not a sensor exposure timestamp. Matching last presented callback bounds only the recorded callback-visible origin.",
+    "Canonical protected browser admission remained refused; these are explicitly supplemental owned-process runs."
+  ]
+}

@@ -9867,6 +9867,66 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/startup-cap-20261019/cap-development-feasibility.json",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/startup-cap-20261019/cap-endpoint-interpretation.json",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/startup-cap-20261019/cap-independent-analytic.json",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/startup-cap-20261019/independent-runtime-clocks.json",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/startup-cap-20261019/independent-startup-candidate.json",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/startup-cap-20261019/native48-backend-review.json",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/startup-cap-20261019/paired-backend-counterfactual.json",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/startup-cap-20261019/paired-backend-inference.json",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/startup-cap-20261019/source-manifest.json",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/startup-cap-20261019/startup-candidate-freeze.json",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Reach/Fused_Tracking_Audit_20261018.md",
       "record_type": "program-record",
       "status": "preserved",
@@ -9892,6 +9952,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Reach/Phase_1_Perception_Continuation_20261019.md",
+      "record_type": "engineering-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/Phase_1_Startup_And_Cap_Experiments_20261019.md",
       "record_type": "engineering-record",
       "status": "preserved",
       "canonical_for": null

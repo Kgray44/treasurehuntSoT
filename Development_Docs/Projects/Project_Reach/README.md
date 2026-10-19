@@ -12,6 +12,8 @@ Reach is Voyagewright's reusable browser-first spatial interaction and intent sy
 
 ## Effective governing sources
 
+The [backend latency and terminal-cap experiments](Phase_1_Startup_And_Cap_Experiments_20261019.md) reproduce late GPU completion and test a private startup capacity screen that selects the existing ROI provider on CPU. Paired CPU/GPU outputs differ; new blind AI references support six additional conditional RIGHT positions, while mixed-motion continuity remains unproved and BOTTOM-RIGHT regressions are retained. A separately frozen contour detector is rejected as recovery authority. Production source and physical readiness remain unchanged.
+
 The [Phase 1 perception continuation](Phase_1_Perception_Continuation_20261019.md) adds a reproducible same-input benchmark and tests distinct pose-aware registration and neural ROI-history hypotheses. Both methods are rejected; retained RIGHT and mixed-motion reliability remain unresolved. Independent analytic controls and native-image review do not establish physical ground truth.
 
 The [bounded overnight reliability campaign](Overnight_Reliability_Campaign_20261019.md) compares stronger appearance features, source-aware references and semantic-provider feasibility against the same recorded inputs. Its controller audit separates missing perception from safe sample suspension; physical reliability and the broad mixed-motion failure remain open.

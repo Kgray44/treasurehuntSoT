@@ -1,0 +1,109 @@
+{
+  "classification": "SOURCE_BOUND_STARTUP_AND_CAP_RESEARCH_MANIFEST_NOT_PRODUCTION_ACCEPTANCE",
+  "applicationHead": "2d03e6678c7af0d08775c67ea9afffa79e2f9ac2",
+  "startingBranchHead": "0aca4bd1cbbac51992e03090dff279b8f1cf9b20",
+  "previousPublishedManifestSha256": "d22fd3898cd1ebec5c5800bbeb202487791da5bb4e0de0fca0e9ec53cccce9b6",
+  "allPreviousSourceFilePinsRechecked": true,
+  "previousSourceFileCount": 90,
+  "privateTaskArtifactPins": [
+    {
+      "artifact": "cap/terminal-cap-fixed.cjs",
+      "sha256": "868055dff130279b427b69fa743404a0e23e2eb08027fc8a690bdda6b640ad13",
+      "custody": "PRIVATE_TASK_RUNTIME_NOT_A_REPOSITORY_PATH"
+    },
+    {
+      "artifact": "backend-startup/recovery-provider.js",
+      "sha256": "f0b3d74b7cd3c7014cd34b3ed91a44b01d5a9707e68d10552e09bd859eef2eed",
+      "custody": "PRIVATE_TASK_RUNTIME_NOT_A_REPOSITORY_PATH"
+    },
+    {
+      "artifact": "backend-startup/recovery-worker.js",
+      "sha256": "96736cb9503e7639e2033cca95d3e44283b021a92befccb0979dbb53835d221e",
+      "custody": "PRIVATE_TASK_RUNTIME_NOT_A_REPOSITORY_PATH"
+    },
+    {
+      "artifact": "backend-startup/freeze-private.json",
+      "sha256": "a7912c86086fd89acfde9d6a3b9ce56de298fb5ed9f4a0599e9b7e13cc237bc0",
+      "custody": "PRIVATE_TASK_RUNTIME_NOT_A_REPOSITORY_PATH"
+    },
+    {
+      "artifact": "backend-startup/development-checks-final-private.json",
+      "sha256": "93a9a4237964b88570c8293f079ff4be5d848392863797328f53abca2d6db02a",
+      "custody": "PRIVATE_TASK_RUNTIME_NOT_A_REPOSITORY_PATH"
+    },
+    {
+      "artifact": "runtime/paired-roi-backends.cjs",
+      "sha256": "8f60afac514ac993d357a03314205c14db0a93f99d5688d448e66ead894bfcf0",
+      "custody": "PRIVATE_TASK_RUNTIME_NOT_A_REPOSITORY_PATH"
+    },
+    {
+      "artifact": "runtime/interpret-paired-backends.mjs",
+      "sha256": "d04456f9604839601b41670f431e3f5d64cbbbca2996f3110ca90035fa123409",
+      "custody": "PRIVATE_TASK_RUNTIME_NOT_A_REPOSITORY_PATH"
+    },
+    {
+      "artifact": "runtime/roi-backend-paired-20261019T185625101Z/results-private.ndjson",
+      "sha256": "23ef09eb70e1e9e367cd561c698012492da0834fc03be09c547b9e5d63196cfe",
+      "custody": "PRIVATE_TASK_RUNTIME_NOT_A_REPOSITORY_PATH"
+    },
+    {
+      "artifact": "runtime/roi-backend-paired-20261019T185625101Z/paired-gray-320x240.bin",
+      "sha256": "d91e0f49cc9954dfead0fce1c1e5f5c2996fb55293da266197f8833daeef0c8a",
+      "custody": "PRIVATE_TASK_RUNTIME_NOT_A_REPOSITORY_PATH"
+    },
+    {
+      "artifact": "measurement/native48-blind-annotations-v1-private.json",
+      "sha256": "3f922d9051adb1a4fae8a7af1b5ab2d9031da233c420709506e949a210a40480",
+      "custody": "PRIVATE_TASK_RUNTIME_NOT_A_REPOSITORY_PATH"
+    },
+    {
+      "artifact": "measurement/native48-blind-seal-receipt-private.json",
+      "sha256": "ef6eb8e70a1335d2f43425d29efc741b0b7e38cb7fc4f091dde8f95042eb49aa",
+      "custody": "PRIVATE_TASK_RUNTIME_NOT_A_REPOSITORY_PATH"
+    },
+    {
+      "artifact": "measurement/generate-recovery-fixtures.py",
+      "sha256": "35d75e681d3ec723416e557d30c0e25afc0729392c093f1013cfffdc1133e7da",
+      "custody": "PRIVATE_TASK_RUNTIME_NOT_A_REPOSITORY_PATH"
+    },
+    {
+      "artifact": "measurement/evaluate-frozen-cap.cjs",
+      "sha256": "f567f67866d4e3653eb706932066fe68dcec1d1557bb9e222830770e81965324",
+      "custody": "PRIVATE_TASK_RUNTIME_NOT_A_REPOSITORY_PATH"
+    },
+    {
+      "artifact": "runtime/roi-backend-paired-20261019T185625101Z/final-private.json",
+      "sha256": "46b644f0cec47e774947a33ab809d35c8924e15766099d44016a99d6e027e867",
+      "custody": "PRIVATE_TASK_RUNTIME_NOT_A_REPOSITORY_PATH"
+    },
+    {
+      "artifact": "runtime/roi-backend-paired-20261019T185625101Z/cleanup-private.json",
+      "sha256": "920093655390875305e33c5181a5ce66769150dec8a62554185a7d43a0346154",
+      "custody": "PRIVATE_TASK_RUNTIME_NOT_A_REPOSITORY_PATH"
+    },
+    {
+      "artifact": "runtime/independent-startup-clock-review-private.json",
+      "sha256": "a0ae9bb6b34622862d2c0c593952ad9967c994e427b92c19e90834fef1c104fc",
+      "custody": "PRIVATE_TASK_RUNTIME_NOT_A_REPOSITORY_PATH"
+    },
+    {
+      "artifact": "measurement/paired-backend-review-v2/native48-comparison-safe.json",
+      "sha256": "c5390dc7b2d38a7acec21483dfc0d38c5d66ce427f6f6e4e3dfaeb16d74152fb",
+      "custody": "PRIVATE_TASK_RUNTIME_NOT_A_REPOSITORY_PATH"
+    },
+    {
+      "artifact": "measurement/paired-backend-review-v2/independent-perception-verdict-safe.json",
+      "sha256": "367c738eb61266f0e190c733e47687dc83d5cb47683ac3feefdc59ebfd1d3625",
+      "custody": "PRIVATE_TASK_RUNTIME_NOT_A_REPOSITORY_PATH"
+    }
+  ],
+  "applicationSourceChanged": false,
+  "modelOrDependencyChanged": false,
+  "qualifiedRelease": false,
+  "limits": [
+    "Pins bind preserved research receipts and source; they are not proof of protected acceptance or physical correctness.",
+    "Media, landmarks, label coordinates, seed values and raw packet traces remain private.",
+    "Publication JSON formatting is distinct from private producer byte identity. Published Git bytes are preserved by scoped -text attributes."
+  ],
+  "independentPerceptionDisposition": "PARTIAL_CONDITIONAL_RIGHT_IMPROVEMENT_MIXED_MOTION_AND_PHYSICAL_ACCEPTANCE_UNESTABLISHED"
+}

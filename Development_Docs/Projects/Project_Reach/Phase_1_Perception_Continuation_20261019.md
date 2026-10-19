@@ -116,3 +116,5 @@ Unavailable measurements remain explicit: dense correct-digit rate and false ide
 The next productive perception experiment must provide new independent current-image evidence when the index endpoint and model disagree or blur destroys material detail, with exercised same-index versus other-digit recovery. A larger compatibility radius, model-only plausible anatomy or longer sample preservation would not provide that proof. A separately recorded post-freeze target-responsive physical sequence with reviewed identity/endpoint uncertainty is still needed to assess RIGHT, lower edge and natural transitions. No owner-media upload, new camera recording or Phase 2 is performed.
 
 Phase 1 remains a foundation preview with unresolved physical reliability. This finite iteration delivers reproducibility and two defensible rejections; it does not complete the owner's perception mission.
+
+The subsequent [backend latency and terminal-cap experiments](Phase_1_Startup_And_Cap_Experiments_20261019.md) continue the same mission with new measurements and a private startup candidate. They preserve this iteration's source, results and failures.

@@ -1,0 +1,266 @@
+{
+  "classification": "SAFE_ANALYTIC_ENDPOINT_FEASIBILITY_INTERPRETATION_NO_PHYSICAL_OR_TRACKING_CLAIM",
+  "createdAt": "2026-10-19T19:01:11.042Z",
+  "sourceSummarySha256": "75615440914e2c05c36c6725c263444e65b7b34574d3abe101773d3ffc4970dc",
+  "sourceRowsSha256": "a347da1dfd92e38d97b1fa137a5cc6568685cae50fc39a463681260632715acf",
+  "candidateSha256": "868055dff130279b427b69fa743404a0e23e2eb08027fc8a690bdda6b640ad13",
+  "denominator": {
+    "allGeneratedSequences": 96,
+    "allGeneratedFrames": 2304,
+    "seedEstablished": 62,
+    "seedPendingOrUnqualified": 34,
+    "positiveRecoverySequences": 36,
+    "positiveSeedEstablished": 24,
+    "positiveUnseeded": 12,
+    "positiveMechanismEligible": 17,
+    "positiveBaselineCeiling": 4,
+    "positiveOtherNoneligible": 3
+  },
+  "mechanismEligibleOnly": {
+    "sequences": 17,
+    "freshVisibleBaselineMissingFrames": 271,
+    "capProposals": 128,
+    "capWithin2_5PixelRendererCenter": 0,
+    "capWithinCenterToleranceAndOriginal8PixelInnovation": 0,
+    "authoritativeFreshSameIdRecovery": 0,
+    "authoritativeCommits": 0
+  },
+  "byCategory": {
+    "POSE_CHANGE_NO_FULL_MODEL_COORDINATE": {
+      "postSeedFrames": 240,
+      "freshVisibleFrames": 240,
+      "freshVisibleCapProposals": 96,
+      "missingCapOnFreshVisible": 144,
+      "freshVisibleCapCenterErrorAnalysisPixels": {
+        "n": 96,
+        "median": 8.514693182963187,
+        "p95": 10.500000000000007,
+        "max": 10.51189802081431
+      },
+      "freshVisibleInside2_5PixelRendererCenter": 0,
+      "capProposalsDespiteRequiredAbstention": 0,
+      "actualInnovationOutside8ButHelperSaysInside": 0,
+      "actualInnovationInside8ButHelperSaysOutside": 0,
+      "detectorCpuAllAttemptsMs": {
+        "n": 240,
+        "median": 0.1502999999999588,
+        "p95": 0.765199999999993,
+        "max": 1.8776999999999475
+      },
+      "detectorCpuCurrentGeometryAvailableMs": {
+        "n": 120,
+        "median": 0.476600000000019,
+        "p95": 0.9707000000000789,
+        "max": 1.8776999999999475
+      }
+    },
+    "WRONG_NEURAL_ENDPOINT_CURRENT_IMAGE_CORRECT": {
+      "postSeedFrames": 240,
+      "freshVisibleFrames": 240,
+      "freshVisibleCapProposals": 180,
+      "missingCapOnFreshVisible": 60,
+      "freshVisibleCapCenterErrorAnalysisPixels": {
+        "n": 180,
+        "median": 9.653929125566206,
+        "p95": 10.831145983494793,
+        "max": 10.831145983494793
+      },
+      "freshVisibleInside2_5PixelRendererCenter": 0,
+      "capProposalsDespiteRequiredAbstention": 180,
+      "actualInnovationOutside8ButHelperSaysInside": 0,
+      "actualInnovationInside8ButHelperSaysOutside": 0,
+      "detectorCpuAllAttemptsMs": {
+        "n": 240,
+        "median": 0.4470000000001164,
+        "p95": 0.7750999999998385,
+        "max": 1.1929000000000087
+      },
+      "detectorCpuCurrentGeometryAvailableMs": {
+        "n": 240,
+        "median": 0.4470000000001164,
+        "p95": 0.7750999999998385,
+        "max": 1.1929000000000087
+      }
+    },
+    "BRIEF_OCCLUSION_MATERIAL_RETURN": {
+      "postSeedFrames": 240,
+      "freshVisibleFrames": 222,
+      "freshVisibleCapProposals": 54,
+      "missingCapOnFreshVisible": 168,
+      "freshVisibleCapCenterErrorAnalysisPixels": {
+        "n": 54,
+        "median": 8.514693182963178,
+        "p95": 9.500000000000007,
+        "max": 9.500000000000007
+      },
+      "freshVisibleInside2_5PixelRendererCenter": 0,
+      "capProposalsDespiteRequiredAbstention": 0,
+      "actualInnovationOutside8ButHelperSaysInside": 0,
+      "actualInnovationInside8ButHelperSaysOutside": 0,
+      "detectorCpuAllAttemptsMs": {
+        "n": 240,
+        "median": 0.04739999999992506,
+        "p95": 0.7269999999998618,
+        "max": 1.3080999999999676
+      },
+      "detectorCpuCurrentGeometryAvailableMs": {
+        "n": 108,
+        "median": 0.45900000000006,
+        "p95": 0.868199999999888,
+        "max": 1.3080999999999676
+      }
+    },
+    "MIXED_MOTION_PARTIAL_TO_FULL": {
+      "postSeedFrames": 240,
+      "freshVisibleFrames": 240,
+      "freshVisibleCapProposals": 114,
+      "missingCapOnFreshVisible": 126,
+      "freshVisibleCapCenterErrorAnalysisPixels": {
+        "n": 114,
+        "median": 8.514693182963207,
+        "p95": 9.513148795220232,
+        "max": 9.552486587271419
+      },
+      "freshVisibleInside2_5PixelRendererCenter": 0,
+      "capProposalsDespiteRequiredAbstention": 0,
+      "actualInnovationOutside8ButHelperSaysInside": 0,
+      "actualInnovationInside8ButHelperSaysOutside": 0,
+      "detectorCpuAllAttemptsMs": {
+        "n": 240,
+        "median": 0.4819999999999709,
+        "p95": 0.8853999999998905,
+        "max": 1.7409999999999854
+      },
+      "detectorCpuCurrentGeometryAvailableMs": {
+        "n": 168,
+        "median": 0.5200999999999567,
+        "p95": 0.9933999999998377,
+        "max": 1.7409999999999854
+      }
+    },
+    "WRONG_DIGIT_WITH_PLAUSIBLE_CHAIN": {
+      "postSeedFrames": 240,
+      "freshVisibleFrames": 0,
+      "freshVisibleCapProposals": 0,
+      "missingCapOnFreshVisible": 0,
+      "freshVisibleCapCenterErrorAnalysisPixels": {
+        "n": 0,
+        "median": null,
+        "p95": null,
+        "max": null
+      },
+      "freshVisibleInside2_5PixelRendererCenter": 0,
+      "capProposalsDespiteRequiredAbstention": 160,
+      "actualInnovationOutside8ButHelperSaysInside": 37,
+      "actualInnovationInside8ButHelperSaysOutside": 0,
+      "detectorCpuAllAttemptsMs": {
+        "n": 240,
+        "median": 0.44889999999986685,
+        "p95": 0.8006000000000313,
+        "max": 1.2756999999999152
+      },
+      "detectorCpuCurrentGeometryAvailableMs": {
+        "n": 240,
+        "median": 0.44889999999986685,
+        "p95": 0.8006000000000313,
+        "max": 1.2756999999999152
+      }
+    },
+    "COPIED_TEXTURE_RIVAL_AND_BACKGROUND": {
+      "postSeedFrames": 240,
+      "freshVisibleFrames": 0,
+      "freshVisibleCapProposals": 0,
+      "missingCapOnFreshVisible": 0,
+      "freshVisibleCapCenterErrorAnalysisPixels": {
+        "n": 0,
+        "median": null,
+        "p95": null,
+        "max": null
+      },
+      "freshVisibleInside2_5PixelRendererCenter": 0,
+      "capProposalsDespiteRequiredAbstention": 102,
+      "actualInnovationOutside8ButHelperSaysInside": 0,
+      "actualInnovationInside8ButHelperSaysOutside": 0,
+      "detectorCpuAllAttemptsMs": {
+        "n": 240,
+        "median": 0.6390000000001237,
+        "p95": 0.986699999999928,
+        "max": 1.3245999999999185
+      },
+      "detectorCpuCurrentGeometryAvailableMs": {
+        "n": 240,
+        "median": 0.6390000000001237,
+        "p95": 0.986699999999928,
+        "max": 1.3245999999999185
+      }
+    },
+    "STALE_PIXEL_AND_FOREIGN_CONTEXT": {
+      "postSeedFrames": 240,
+      "freshVisibleFrames": 120,
+      "freshVisibleCapProposals": 82,
+      "missingCapOnFreshVisible": 38,
+      "freshVisibleCapCenterErrorAnalysisPixels": {
+        "n": 82,
+        "median": 9.499999999999995,
+        "p95": 10.500000000000009,
+        "max": 10.511898020814307
+      },
+      "freshVisibleInside2_5PixelRendererCenter": 0,
+      "capProposalsDespiteRequiredAbstention": 200,
+      "actualInnovationOutside8ButHelperSaysInside": 20,
+      "actualInnovationInside8ButHelperSaysOutside": 0,
+      "detectorCpuAllAttemptsMs": {
+        "n": 240,
+        "median": 0.4293999999999869,
+        "p95": 0.720299999999952,
+        "max": 1.1532999999999447
+      },
+      "detectorCpuCurrentGeometryAvailableMs": {
+        "n": 240,
+        "median": 0.4293999999999869,
+        "p95": 0.720299999999952,
+        "max": 1.1532999999999447
+      }
+    },
+    "IDENTITY_LIFETIME_EXCEEDED": {
+      "postSeedFrames": 240,
+      "freshVisibleFrames": 96,
+      "freshVisibleCapProposals": 0,
+      "missingCapOnFreshVisible": 96,
+      "freshVisibleCapCenterErrorAnalysisPixels": {
+        "n": 0,
+        "median": null,
+        "p95": null,
+        "max": null
+      },
+      "freshVisibleInside2_5PixelRendererCenter": 0,
+      "capProposalsDespiteRequiredAbstention": 0,
+      "actualInnovationOutside8ButHelperSaysInside": 0,
+      "actualInnovationInside8ButHelperSaysOutside": 0,
+      "detectorCpuAllAttemptsMs": {
+        "n": 240,
+        "median": 0.02539999999999054,
+        "p95": 0.04039999999986321,
+        "max": 0.2173000000002503
+      },
+      "detectorCpuCurrentGeometryAvailableMs": {
+        "n": 0,
+        "median": null,
+        "p95": null,
+        "max": null
+      }
+    }
+  },
+  "validityReview": [
+    "All96newsequences are retained.34initial seedblocks remain FULL_HAND_POINT_PENDING at their planned fourthframe; no seed extension or redraw was used to improve denominators.",
+    "Known analytic target is renderer terminal-cap center. The contour method often proposes the distal boundary approximately8.5analysispixels away. This fixed convention is not relabelled after exposure; the difference alone is not proof of a wrong physical digit.",
+    "Wrong-digit controls hide the selected material and place a different rendered digit under plausible directmodelanchor metadata;160structuralproposals target a nonselected object. Copiedmaterial controls yield102proposals despite ambiguous correspondence and requiredabstention; these are not102provedwrong endpoint coordinates.",
+    "Directanalytic anchors bypass actual neural inference and BrowserHandAdapter anatomy classification. Baseline false positions in these adversarial-anchor cases do not establish observed model failures on owner footage.",
+    "Foreigncontext6sequence subcohort changes only semantic modelsourcekey while tracker camera binding stays fixed. It is UNQUALIFIED for camera/provider envelope rejection. Its25baselinepositions are not claimed as a realcamera context-gate regression.",
+    "Stale6sequence subcohort exercises120finalfresh/gate rejections with oldpixelorigin/currentdispatch. Image-only detector proposals remain proposals and carry no measured/source/identity authority.",
+    "Recompute innovation from returned shiftedpoint; helper modelWithinEightPixels uses pre-shift distance and must not be used for admission.",
+    "No candidate tracker wrapper or calibration input is installed or executed. Authoritative candidate commits and measured recovery are bothzero by API contract.",
+    "These newfixtures become DEVELOPMENT for every later candidate revision. They are not physical groundtruth or humanowner acceptance."
+  ],
+  "decision": "Do not promote the contour module as selected-index tracking or RIGHT conflict recovery. Retain original current-image/identity/source/freshness/8px gates and preserve all negative/ceiling/unqualified evidence."
+}
