@@ -1139,6 +1139,15 @@ for (const viewport of [
     const downloads: string[] = [];
     page.on("download", (download) => downloads.push(download.suggestedFilename()));
     const layouts: object[] = [];
+    const assertSavedCount = async (count: number) => {
+      // The desktop paragraph remains the complete DOM accounting. Mobile
+      // renders the same count in its separate visible compact summary.
+      const desktopCount = page.getByText(new RegExp(`${count} of 5 targets saved\\.`));
+      await expect(desktopCount).toContainText(`${count} of 5 targets saved.`);
+      await expect(
+        viewport.name === "mobile" ? page.getByText(new RegExp(`${count} of 5 saved ·`)) : desktopCount,
+      ).toBeVisible();
+    };
     const geometry = () =>
       page.getByRole("group", { name: "Pointing practice area", exact: true }).evaluate((plane) => {
         const rect = plane.getBoundingClientRect();
@@ -1157,11 +1166,18 @@ for (const viewport of [
       await expect(root(page)).toHaveAttribute("data-calibration-capture", "false");
       await expect(root(page)).not.toHaveAttribute("data-reach-readiness", "READY");
       await expect(page.getByLabel("Target 2 of 5", { exact: true })).toBeVisible();
-      await expect(page.getByText(/1 of 5 targets saved\./)).toBeVisible();
-      await expect(page.getByLabel("Current target acquisition", { exact: true })).toHaveAttribute("value", "0");
-      await expect(page.getByRole("status", { name: "Reach status" })).toContainText(
-        "Fingertip identity could not be verified. Completed targets are saved, but cannot be used with this track.",
-      );
+      await assertSavedCount(1);
+      const progress = page.getByRole("progressbar", {
+        name: viewport.name === "mobile" ? "Target progress" : "Current target acquisition",
+        exact: true,
+      });
+      await expect(progress).toBeVisible();
+      await expect(progress).toHaveAttribute("value", "0");
+      const holdGuidance =
+        "Fingertip identity could not be verified. Completed targets are saved, but cannot be used with this track.";
+      if (viewport.name === "mobile")
+        await expect(page.getByText(holdGuidance, { exact: true }).and(page.locator(":visible"))).toBeVisible();
+      else await expect(page.getByRole("status", { name: "Reach status" })).toContainText(holdGuidance);
       await expect(page.getByRole("img", { name: "Pointing feedback surface", exact: true })).toHaveCount(0);
       await expect(page.getByRole("button", { name: "Check five new targets", exact: true })).toHaveCount(0);
       await expect(page.getByRole("button", { name: "Open pointing playground", exact: true })).toHaveCount(0);
@@ -1173,7 +1189,11 @@ for (const viewport of [
     };
     const replaceAfterSavedTarget = async (cycle: number) => {
       await expect(page.getByLabel("Target 2 of 5", { exact: true })).toBeVisible({ timeout: 15000 });
-      await expect(page.getByText(/1 of 5 targets saved\./)).toBeVisible();
+      // Freeze the real controller before screenshot/driver work can advance
+      // target 2. The later identity hold must still disable collection itself.
+      await page.getByRole("button", { name: "Pause calibration", exact: true }).click();
+      await expect(page.getByRole("button", { name: "Resume calibration", exact: true })).toBeVisible();
+      await assertSavedCount(1);
       const originalGeneration = await root(page).getAttribute("data-image-track-generation");
       const capture = Number(await root(page).getAttribute("data-image-capture-time"));
       const before = await geometry();
@@ -1181,6 +1201,9 @@ for (const viewport of [
         path: testInfo.outputPath(`D0-saved-evidence-${viewport.name}-${cycle}-before-loss.png`),
         fullPage: false,
       });
+      // Resume before the loss so suspension, rather than the screenshot pause,
+      // must stop active collection. Resume starts the normal 700ms settle.
+      await page.getByRole("button", { name: "Resume calibration", exact: true }).click();
       await configure(page, { blank: true, model: "NONE" });
       const firstBlankCapture = () =>
         page.evaluate((after) => {
@@ -1241,7 +1264,7 @@ for (const viewport of [
     await page.getByRole("button", { name: "Start fresh setup", exact: true }).click();
     await expect(root(page)).toHaveAttribute("data-calibration-identity", "ACTIVE");
     await expect(page.getByLabel("Target 1 of 5", { exact: true })).toBeVisible();
-    await expect(page.getByText(/0 of 5 targets saved\./)).toBeVisible();
+    await assertSavedCount(0);
     await expect(page.getByRole("img", { name: "Pointing feedback surface", exact: true })).toHaveCount(1);
     await replaceAfterSavedTarget(2);
     await page.getByRole("button", { name: "Cancel setup", exact: true }).click();
