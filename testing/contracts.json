@@ -8341,6 +8341,7 @@
         "entryPoint": "/account",
         "states": [
           "ASSETS_READY",
+          "ASSET_DRAWER_READY",
           "WAYPOINTS_READY",
           "ARTIFACTS_READY",
           "EMPTY_CHART_READY",
@@ -8467,6 +8468,38 @@
                 "meaning": "The ordinary visible action renders actual authorized resource data or its truthful empty state, not a manufactured fixture response",
                 "state": "ASSETS_READY",
                 "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Upload media"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Asset drawer",
+                "path": "/studio/tales/sextant-resource-chronicle/assets",
+                "text": "Upload and reuse assets",
+                "kind": "outcome",
+                "meaning": "The ordinary Upload media action opens the actual drawer without uploading or mutating any media",
+                "state": "ASSET_DRAWER_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Close asset drawer"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "path": "/studio/tales/sextant-resource-chronicle/assets",
+                "text": "Asset Library",
+                "absentRole": {
+                  "role": "region",
+                  "name": "Asset drawer"
+                }
               },
               {
                 "action": "click",

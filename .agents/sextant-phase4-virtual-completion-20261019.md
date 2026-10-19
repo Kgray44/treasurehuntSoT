@@ -218,3 +218,12 @@ that separately and do not claim the search fix explains it. Keep all original
 receipts, fixed diagnostic bounds and source identities. A corrected-source
 development successor must exercise every existing public detail/search/return
 assertion; no protected or physical acceptance follows.
+
+Authoring run39332800305 fails all four variants at the test's assumption that
+the Asset drawer is already visible. Its page-open state is intentionally hidden
+until the ordinary Upload media action. Preserve that failure; open the actual
+drawer with that control, retain its content assertion, audit axe while open,
+capture it, close it ordinarily and assert hidden before continuing. Add the same
+open/close sequence to the formal contract. No upload or other authoring mutation
+is performed. A corrected-source development successor retains all six panes,
+readiness limits and canonical progression/edition preservation assertions.

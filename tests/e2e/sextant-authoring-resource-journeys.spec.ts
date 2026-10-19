@@ -93,9 +93,16 @@ for (const viewport of [
           if (label === "Assets") {
             await expect(page.locator(".asset-grid article")).toHaveCount(0);
             await expect(main).toContainText("0 assets");
-            await expect(page.getByRole("region", { name: "Asset drawer", exact: true })).toContainText(
-              "Upload and reuse assets",
+            const drawer = page.getByRole("region", { name: "Asset drawer", exact: true });
+            await measure(
+              "Open actual Asset drawer",
+              () => page.getByRole("button", { name: "Upload media", exact: true }).click(),
+              () => expect(drawer).toContainText("Upload and reuse assets"),
             );
+            expect((await new AxeBuilder({ page }).include("main").analyze()).violations).toEqual([]);
+            await page.screenshot({ path: info.outputPath("authoring-asset-drawer.png") });
+            await drawer.getByRole("button", { name: "Close asset drawer", exact: true }).click();
+            await expect(drawer).toBeHidden();
           }
           if (label === "Waypoints" || label === "Artifacts")
             await expect(page.locator(".record-grid article")).toHaveCount(0);
