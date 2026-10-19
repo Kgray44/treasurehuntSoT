@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "evidenceClass": "SHARED_WEB_CONTRACT",
+  "environment": "OPTIMIZED_ISOLATED_CHROMIUM",
+  "sampleCount": 1,
+  "releasedWaypoints": 256,
+  "viewportWidth": 375,
+  "reducedMotion": true,
+  "budgets": {
+    "coldJournalAndMapMs": 30000,
+    "warmJournalAndMapMs": 30000,
+    "offlineJournalAndMapMs": 30000
+  },
+  "measurements": {
+    "coldJournalAndMapMs": 953.3616169999877,
+    "warmJournalAndMapMs": 520.5093430000124,
+    "offlineJournalAndMapMs": 278.9934239999857
+  },
+  "storage": {
+    "usageBytes": 7533832,
+    "quotaBytes": 1019698934
+  },
+  "canonicalProgressionEvents": 0,
+  "limits": [
+    "Whole Journal readiness includes navigation and hydration; not renderer-only timing.",
+    "Origin storage estimate includes the fixture shell and encrypted records; not process memory.",
+    "No physical CPU, battery, location or sensor performance is inferred."
+  ]
+}

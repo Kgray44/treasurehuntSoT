@@ -1,0 +1,368 @@
+{
+  "version": 1,
+  "executor": "PRODUCTION_JOURNAL_PAIR",
+  "host": {
+    "version": 1,
+    "hostPlatform": "linux",
+    "architecture": "x64",
+    "osVersion": "7.0.0-1017-azure",
+    "hosted": true,
+    "nodeVersion": "v24.19.0",
+    "android": {
+      "sdkConfigured": true,
+      "adb": "/usr/local/lib/android/sdk/platform-tools/adb",
+      "emulator": "/usr/local/lib/android/sdk/emulator/emulator",
+      "adbVersion": "Android Debug Bridge version 1.0.41",
+      "emulatorVersion": "Android emulator version 37.2.12.0 (build_id 16428233) (CL:N/A)"
+    },
+    "apple": {
+      "configured": false,
+      "xcodeVersion": null,
+      "runtimes": [],
+      "devices": []
+    }
+  },
+  "deviceProfile": "primary-phone",
+  "result": "PASS",
+  "failure": null,
+  "source": {
+    "sourceSha": "fb937bbd04a98b07dd94b325682ceb654c8c4c5c",
+    "sourceTree": "a52bc4d149c6f25b068e545a509120702c2d79a8",
+    "dirty": false,
+    "sourceFingerprint": "39dd544c382434fa1be5927792ac9ca38aa0d76bbdc7dda410bdc83272beb8e2"
+  },
+  "apkSha256": "c10c2f5dcbe3142623e05166ec7a5483146125d60964a05e5d81207281345820",
+  "memoryBudget": {
+    "minimumTotalBytes": 12884901888,
+    "minimumAvailableBytes": 7516192768,
+    "stopBelowBytes": 1610612736,
+    "emulatorMemoryMiB": 3072
+  },
+  "memorySamples": [
+    {
+      "at": "2026-10-19T19:19:27.178Z",
+      "availableBytes": 14477082624
+    },
+    {
+      "at": "2026-10-19T19:19:34.762Z",
+      "availableBytes": 14088704000
+    },
+    {
+      "at": "2026-10-19T19:19:39.763Z",
+      "availableBytes": 13692440576
+    },
+    {
+      "at": "2026-10-19T19:19:44.764Z",
+      "availableBytes": 13319405568
+    },
+    {
+      "at": "2026-10-19T19:19:49.765Z",
+      "availableBytes": 12599042048
+    },
+    {
+      "at": "2026-10-19T19:19:54.767Z",
+      "availableBytes": 11738165248
+    },
+    {
+      "at": "2026-10-19T19:19:59.768Z",
+      "availableBytes": 11239837696
+    },
+    {
+      "at": "2026-10-19T19:20:04.771Z",
+      "availableBytes": 11031183360
+    },
+    {
+      "at": "2026-10-19T19:20:09.769Z",
+      "availableBytes": 10781040640
+    },
+    {
+      "at": "2026-10-19T19:20:14.773Z",
+      "availableBytes": 10576998400
+    },
+    {
+      "at": "2026-10-19T19:20:19.773Z",
+      "availableBytes": 10476986368
+    },
+    {
+      "at": "2026-10-19T19:20:24.769Z",
+      "availableBytes": 9923551232
+    },
+    {
+      "at": "2026-10-19T19:20:29.772Z",
+      "availableBytes": 9777647616
+    },
+    {
+      "at": "2026-10-19T19:20:34.774Z",
+      "availableBytes": 9593565184
+    },
+    {
+      "at": "2026-10-19T19:20:39.774Z",
+      "availableBytes": 9431420928
+    },
+    {
+      "at": "2026-10-19T19:20:44.780Z",
+      "availableBytes": 9212256256
+    },
+    {
+      "at": "2026-10-19T19:20:49.776Z",
+      "availableBytes": 8839819264
+    },
+    {
+      "at": "2026-10-19T19:20:54.778Z",
+      "availableBytes": 8546095104
+    },
+    {
+      "at": "2026-10-19T19:20:59.778Z",
+      "availableBytes": 8130019328
+    },
+    {
+      "at": "2026-10-19T19:21:04.783Z",
+      "availableBytes": 7751536640
+    },
+    {
+      "at": "2026-10-19T19:21:09.778Z",
+      "availableBytes": 7690665984
+    },
+    {
+      "at": "2026-10-19T19:21:14.781Z",
+      "availableBytes": 7576408064
+    },
+    {
+      "at": "2026-10-19T19:21:19.782Z",
+      "availableBytes": 7451090944
+    },
+    {
+      "at": "2026-10-19T19:21:24.782Z",
+      "availableBytes": 7374725120
+    },
+    {
+      "at": "2026-10-19T19:21:29.785Z",
+      "availableBytes": 7321063424
+    },
+    {
+      "at": "2026-10-19T19:21:34.786Z",
+      "availableBytes": 7213146112
+    },
+    {
+      "at": "2026-10-19T19:21:39.791Z",
+      "availableBytes": 7206518784
+    },
+    {
+      "at": "2026-10-19T19:21:44.796Z",
+      "availableBytes": 7178932224
+    },
+    {
+      "at": "2026-10-19T19:21:49.795Z",
+      "availableBytes": 7152414720
+    },
+    {
+      "at": "2026-10-19T19:21:54.794Z",
+      "availableBytes": 6962548736
+    },
+    {
+      "at": "2026-10-19T19:21:59.800Z",
+      "availableBytes": 6854721536
+    },
+    {
+      "at": "2026-10-19T19:22:04.794Z",
+      "availableBytes": 6681268224
+    },
+    {
+      "at": "2026-10-19T19:22:09.798Z",
+      "availableBytes": 6705700864
+    },
+    {
+      "at": "2026-10-19T19:22:14.799Z",
+      "availableBytes": 6702931968
+    },
+    {
+      "at": "2026-10-19T19:22:19.796Z",
+      "availableBytes": 6675386368
+    },
+    {
+      "at": "2026-10-19T19:22:24.799Z",
+      "availableBytes": 6645760000
+    },
+    {
+      "at": "2026-10-19T19:22:29.794Z",
+      "availableBytes": 6656700416
+    },
+    {
+      "at": "2026-10-19T19:22:34.795Z",
+      "availableBytes": 6465572864
+    },
+    {
+      "at": "2026-10-19T19:22:39.800Z",
+      "availableBytes": 6295265280
+    },
+    {
+      "at": "2026-10-19T19:22:44.801Z",
+      "availableBytes": 6297079808
+    },
+    {
+      "at": "2026-10-19T19:22:49.798Z",
+      "availableBytes": 6294261760
+    },
+    {
+      "at": "2026-10-19T19:22:54.798Z",
+      "availableBytes": 6297452544
+    },
+    {
+      "at": "2026-10-19T19:22:59.805Z",
+      "availableBytes": 6291877888
+    },
+    {
+      "at": "2026-10-19T19:23:04.801Z",
+      "availableBytes": 6286503936
+    },
+    {
+      "at": "2026-10-19T19:23:09.801Z",
+      "availableBytes": 6169931776
+    },
+    {
+      "at": "2026-10-19T19:23:14.801Z",
+      "availableBytes": 6123167744
+    },
+    {
+      "at": "2026-10-19T19:23:19.799Z",
+      "availableBytes": 6142251008
+    }
+  ],
+  "memoryViolated": false,
+  "serials": [
+    "emulator-5580",
+    "emulator-5582"
+  ],
+  "avdNames": [
+    "landfall_radio_0439773e8c484860b5875940e1dc0e4b_0",
+    "landfall_radio_0439773e8c484860b5875940e1dc0e4b_1"
+  ],
+  "avdHome": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/radio-owner-0439773e-8c48-4860-b587-5940e1dc0e4b/avd",
+  "logs": [
+    "owned-adb.log",
+    "emulator-0.log",
+    "emulator-1.log"
+  ],
+  "cleanup": {
+    "result": "PASS",
+    "ownedResources": [
+      {
+        "pid": 4719,
+        "started": "50641",
+        "executable": "/usr/local/lib/android/sdk/platform-tools/adb"
+      },
+      {
+        "pid": 4731,
+        "started": "50703",
+        "executable": "/usr/local/lib/android/sdk/emulator/emulator"
+      },
+      {
+        "pid": 4736,
+        "started": "50706",
+        "executable": "/usr/local/lib/android/sdk/emulator/crashpad_handler"
+      },
+      {
+        "pid": 4788,
+        "started": "50728",
+        "executable": "/usr/local/lib/android/sdk/emulator/netsimd"
+      },
+      {
+        "pid": 5007,
+        "started": "54658",
+        "executable": "/usr/local/lib/android/sdk/emulator/emulator"
+      },
+      {
+        "pid": 5012,
+        "started": "54666",
+        "executable": "/usr/local/lib/android/sdk/emulator/crashpad_handler"
+      },
+      {
+        "pid": 5121,
+        "started": "55076",
+        "executable": "/usr/local/lib/android/sdk/platform-tools/adb"
+      },
+      {
+        "pid": 5126,
+        "started": "55086",
+        "executable": "/usr/local/lib/android/sdk/platform-tools/adb"
+      },
+      {
+        "pid": 5129,
+        "started": "55092",
+        "executable": "/usr/local/lib/android/sdk/platform-tools/adb"
+      },
+      {
+        "pid": 5133,
+        "started": "55097",
+        "executable": "/usr/local/lib/android/sdk/platform-tools/adb"
+      },
+      {
+        "pid": 5137,
+        "started": "55103",
+        "executable": "/usr/local/lib/android/sdk/platform-tools/adb"
+      },
+      {
+        "pid": 5140,
+        "started": "55108",
+        "executable": "/usr/local/lib/android/sdk/platform-tools/adb"
+      },
+      {
+        "pid": 5142,
+        "started": "55112",
+        "executable": "/usr/local/lib/android/sdk/platform-tools/adb"
+      },
+      {
+        "pid": 5167,
+        "started": "55721",
+        "executable": "/usr/local/lib/android/sdk/platform-tools/adb"
+      },
+      {
+        "pid": 5418,
+        "started": "62224",
+        "executable": "/usr/local/lib/android/sdk/platform-tools/adb"
+      },
+      {
+        "pid": 5462,
+        "started": "62701",
+        "executable": "/usr/local/lib/android/sdk/platform-tools/adb"
+      },
+      {
+        "pid": 5471,
+        "started": "62722",
+        "executable": "/usr/local/lib/android/sdk/platform-tools/adb"
+      },
+      {
+        "pid": 5479,
+        "started": "62733",
+        "executable": "/usr/local/lib/android/sdk/platform-tools/adb"
+      },
+      {
+        "pid": 5485,
+        "started": "62744",
+        "executable": "/usr/local/lib/android/sdk/platform-tools/adb"
+      },
+      {
+        "pid": 5507,
+        "started": "62803",
+        "executable": "/usr/local/lib/android/sdk/platform-tools/adb"
+      },
+      {
+        "pid": 5544,
+        "started": "63413",
+        "executable": "/usr/local/lib/android/sdk/platform-tools/adb"
+      },
+      {
+        "pid": 5556,
+        "started": "64021",
+        "executable": "/usr/local/lib/android/sdk/platform-tools/adb"
+      },
+      {
+        "pid": 5581,
+        "started": "64627",
+        "executable": "/usr/local/lib/android/sdk/platform-tools/adb"
+      }
+    ],
+    "remainingResources": []
+  },
+  "endedAt": "2026-10-19T19:23:28.460Z"
+}

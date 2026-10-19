@@ -223,3 +223,22 @@ publication authority correctly rejects noncanonical paths. The test producer
 now resolves its own newly created temporary root before creating inputs.
 All output-security assertions remain. This is a fixture portability correction,
 not permission to relax publication checks or a normal Devices execution claim.
+
+Android product run `39309009723` passed all 14 selected development cases at
+`fb937bbd04a98b07dd94b325682ceb654c8c4c5c`. Actual Android WebView Device controls
+observed four OS samples, paused input and reached screen fallback. The paired
+Journal case used the optimized application and canonical SQLite, observed native
+stop and zero canonical progression events, and verified both emulator cleanup
+and runtime cleanup. Its peerVerified field remains false; real RF remains open.
+The [product publication index](evidence/20261019-product/publication-index.json)
+preserves 59 original files: Android receipts and captures, failed-run custody,
+and the Apple prepared-build/cleanup records. Complete bundles remain preserved
+in the owner artifact directories. No protected experience acceptance is granted.
+
+Independent rendered development review found the viewport Device controls
+legible and consistent with paused input and screen fallback. The native
+full-page capture repeats header strips and cannot establish complete-page
+coverage; retain that original defect. The stopped nearby panel has minor label
+wrapping/background clutter. Its receipt records four failed first-party requests,
+so the pass does not establish error-free networking. The reviewer did not run
+the software, grant protected capture custody, or provide owner acceptance.

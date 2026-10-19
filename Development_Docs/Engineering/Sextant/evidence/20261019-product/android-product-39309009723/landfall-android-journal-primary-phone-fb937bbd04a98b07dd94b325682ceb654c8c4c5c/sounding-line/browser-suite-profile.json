@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/landfall-phase4.spec.ts",
+    "tests/e2e/landfall-native-nearby.spec.ts"
+  ],
+  "status": "PASS",
+  "failureCategory": null,
+  "failureCode": null
+}

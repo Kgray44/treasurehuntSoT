@@ -6,7 +6,7 @@
   "status": "IN_PROGRESS",
   "initialCandidate": "5ff2739776513b8f8ed20c1cb661c164216d0eeb",
   "protectedBase": "f6af0b0e151f15f1a23808413ccee531b9827ca7",
-  "currentSoftwareCandidate": "fb937bbd04a98b07dd94b325682ceb654c8c4c5c",
+  "currentSoftwareCandidate": "eb3f851d011974f6ac9d1317f49f524bebfdf4f2",
   "pr": "https://github.com/Kgray44/treasurehuntSoT/pull/709",
   "independentSourceReview": {
     "reviewerContext": "/root/sextant_source_review",
@@ -76,6 +76,12 @@
           "resolution": "Claim narrowed; separate native transport test delivers old lease/generation and verifies fail-closed behavior"
         }
       ],
+      "reviewerRanTests": false,
+      "scope": "SOURCE_REVIEW_ONLY"
+    },
+    "diagnosticsContinuation": {
+      "source": "eb3f851d011974f6ac9d1317f49f524bebfdf4f2",
+      "disposition": "NO_REMAINING_ACTIONABLE_SOURCE_FINDINGS",
       "reviewerRanTests": false,
       "scope": "SOURCE_REVIEW_ONLY"
     }
@@ -177,9 +183,15 @@
       "sourceSha": "58d3e51db2948d206be0a62f5a47cb022f27d286",
       "transportSha": "b4a48aea1d387a389e5f4d0acdda30c9c9975426",
       "runId": "39306514221",
-      "status": "IN_PROGRESS",
+      "status": "HARVESTED_FAILURE_BEFORE_PRODUCT_EXECUTION",
       "scope": "companion-only native tests plus normal Devices product XCTest under owned generic runtime",
-      "cleanup": "PENDING"
+      "cleanup": "PASS",
+      "nativeTests": {
+        "passed": 31,
+        "expectedSkipped": 1
+      },
+      "artifacts": 4585,
+      "failure": "NEXT_TYPECHECK_V8_HEAP_EXHAUSTED_APPROX_2GB"
     },
     {
       "platform": "CHROMIUM",
@@ -201,6 +213,72 @@
       "scope": "ordinary synthetic consumer journeys",
       "cleanup": "TRANSPORT_BRANCH_PASS_NO_BROWSER_WORKER_STARTED",
       "failure": "SOUNDING_LINE_PRIVATE_PUBLICATION_OUTPUT_INITIALIZATION_FAILED"
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "fb937bbd04a98b07dd94b325682ceb654c8c4c5c",
+      "runId": "39308990232",
+      "status": "HARVESTED_PARTIAL_FAILURE",
+      "passed": 1,
+      "failed": 1,
+      "notRun": 2,
+      "failure": "REDUCED_MOTION_ORDINARY_SIGN_IN_OVERVIEW_NOT_VISIBLE",
+      "cleanup": "PASS",
+      "artifacts": 2,
+      "qualification": false
+    },
+    {
+      "platform": "IOS",
+      "tier": "D3",
+      "sourceSha": "fb937bbd04a98b07dd94b325682ceb654c8c4c5c",
+      "runId": "39309002270",
+      "status": "HARVESTED_FAILURE_BEFORE_PRODUCT_EXECUTION",
+      "preparedProductTestBuild": "PASS",
+      "nativeTestsExecuted": 0,
+      "preflight": {
+        "passed": 1,
+        "failed": 13,
+        "failure": "UNIT_FIXTURE_MACOS_TEMP_PATH_NOT_CANONICAL"
+      },
+      "cleanup": "PASS",
+      "artifacts": 3246,
+      "qualification": false
+    },
+    {
+      "platform": "ANDROID",
+      "tier": "D2",
+      "sourceSha": "fb937bbd04a98b07dd94b325682ceb654c8c4c5c",
+      "runId": "39309009723",
+      "status": "HARVESTED_SUCCESS",
+      "selectedCases": 14,
+      "nativeBridge": "ACTUAL_ANDROID_WEBVIEW",
+      "osSamplesObserved": 4,
+      "pausedAndFallback": true,
+      "canonicalProgressionEvents": 0,
+      "cleanup": "PASS",
+      "artifacts": 51,
+      "qualification": false
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "eb3f851d011974f6ac9d1317f49f524bebfdf4f2",
+      "transportSha": "d840e87701f4530f9b4c5c0c0a2f50658b730c39",
+      "runId": "39310970101",
+      "status": "IN_PROGRESS",
+      "scope": "Independent four-variant diagnostic consumer matrix",
+      "qualification": false
+    },
+    {
+      "platform": "IOS",
+      "tier": "D3",
+      "sourceSha": "eb3f851d011974f6ac9d1317f49f524bebfdf4f2",
+      "transportSha": "19321f5b18e1215a541479dd5c3eed73890da2c9",
+      "runId": "39311000104",
+      "status": "IN_PROGRESS",
+      "scope": "Canonical private-publication fixture and bounded-heap normal Devices product successor",
+      "qualification": false
     }
   ],
   "experience": {
@@ -220,6 +298,17 @@
       "reviewer": "/root/sextant_source_review",
       "disposition": "THREE_SOURCE_FINDINGS_REPAIRED_AND_CONFIRMED",
       "scope": "SOURCE_REVIEW_ONLY_NO_VISUAL_OR_QUALIFICATION_ACCEPTANCE"
+    },
+    "androidIndependentRenderedReview": {
+      "source": "fb937bbd04a98b07dd94b325682ceb654c8c4c5c",
+      "runId": "39309009723",
+      "reviewer": "/root/sextant_source_review",
+      "scope": "DEVELOPMENT_RENDERED_REVIEW_NOT_PROTECTED_CUSTODY_OR_OWNER_ACCEPTANCE",
+      "viewportControls": "LEGIBLE_PAUSED_AND_SCREEN_FALLBACK_CONSISTENT",
+      "fullPageCapture": "DEFECTIVE_REPEATED_HEADER_STRIPS_NOT_COMPLETE_PAGE_PROOF",
+      "nearbyLayout": "MINOR_WRAPPED_PAIRING_LABEL_AND_BACKGROUND_CLUTTER",
+      "networkLimit": "FOUR_FAILED_FIRST_PARTY_REQUESTS_RECORDED_NOT_ERROR_FREE_NETWORKING",
+      "physicalEvidence": false
     }
   },
   "externalGates": [
@@ -231,5 +320,8 @@
   "phase4Accepted": false,
   "protectedIntegration": "NOT_READY_PENDING_REQUIRED_SOFTWARE_CONSUMER_VIRTUAL_AND_PHYSICAL_GATES",
   "phase5Started": false,
-  "evidencePublication": "evidence/20261019-virtual/publication-index.json"
+  "evidencePublication": [
+    "evidence/20261019-virtual/publication-index.json",
+    "evidence/20261019-product/publication-index.json"
+  ]
 }

@@ -669,6 +669,138 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-product/android-product-39309009723/hosted-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-product/android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-native-nearby-rea-6e797-ckground-clears-the-session-chromium/attachments/native-device-controls-boundary-446ceb15c130a80b56e83bf5369cf8fb23965489.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-product/android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-native-nearby-rea-6e797-ckground-clears-the-session-chromium/native-device-controls-boundary.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-product/android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-measures-c-72fa6-large-released-waypoint-set-chromium/landfall-chart-performance.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-product/android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-B-de62d--readable-fallback-at-375px-chromium/bluetooth-evidence-class.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-product/android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-B-f210e-readable-fallback-at-1280px-chromium/bluetooth-evidence-class.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-product/android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-s-3c36a-ccessible-fallback-at-375px-chromium/signed-installation-evidence-class.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-product/android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-s-cbbd8-cessible-fallback-at-1280px-chromium/signed-installation-evidence-class.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-product/android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-private-co-32580-e-and-cancels-on-background-chromium/attachments/nearby-browser-stage-80792002602c84532872ec92b430f69e0ab4b337.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-product/android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-private-co-32580-e-and-cancels-on-background-chromium/nearby-browser-stage.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-product/android-product-39309009723/landfall-android-journal-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-device-lab/radio-owner-0439773e-8c48-4860-b587-5940e1dc0e4b/native-journal-pair-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-product/android-product-39309009723/landfall-android-journal-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-device-lab/radio-owner-0439773e-8c48-4860-b587-5940e1dc0e4b/radio-owner-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-product/android-product-39309009723/landfall-android-journal-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/sounding-line/browser-runtime.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-product/android-product-39309009723/landfall-android-journal-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/sounding-line/browser-suite-profile.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-product/apple-build-39309002270/apple-app.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-product/apple-build-39309002270/apple-build/cleanup.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-product/apple-build-39309002270/apple-build/prepared-product-test.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-product/failed-39306514221/hosted-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-product/failed-39307522697/hosted-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-product/failed-39308990232/hosted-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-product/failed-39309002270/hosted-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-product/publication-index.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/background.json",
       "record_type": "engineering-record",
       "status": "current",
