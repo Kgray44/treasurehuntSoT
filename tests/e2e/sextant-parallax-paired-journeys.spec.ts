@@ -92,7 +92,8 @@ for (const viewport of [
         try {
           crew = await crewContext.newPage();
           crewVideo = crew.video();
-          await crewContext.tracing.start({ screenshots: true, snapshots: true, sources: false });
+          // Playwright Test owns tracing for every browser.newContext() in this
+          // test. Starting or stopping it here conflicts with its trace chunks.
           await signIn(crew, fixture.crewEmail!, "Synthetic-Sextant-Crew-2026!");
           const crewMenu = crew.getByRole("button", { name: `Synthetic Sextant Crew-${key}`, exact: true });
           await crewMenu.click();
@@ -230,16 +231,6 @@ for (const viewport of [
               );
               await info.attach("error-context", { path: context, contentType: "text/markdown" });
             });
-          await cleanup(() =>
-            crewContext.tracing.stop(primaryFailure ? { path: info.outputPath("crew-failure-trace.zip") } : undefined),
-          );
-          if (primaryFailure)
-            await cleanup(() =>
-              info.attach("trace", {
-                path: info.outputPath("crew-failure-trace.zip"),
-                contentType: "application/zip",
-              }),
-            );
           await cleanup(() => crewContext.close());
           const completedCrewVideo = crewVideo;
           if (completedCrewVideo)

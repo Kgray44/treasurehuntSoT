@@ -143,3 +143,11 @@ Preserve progression/edition checksums, canonical failure attachment names and
 fixed diagnostic budget. The source-predicted named Studio panel sections keep
 all existing named-role assertions. This development proof grants no protected
 paired custody or old single-persona contract acceptance.
+
+Paired run39327507704 failed all four variants before ordinary sign-in: the
+custom Crew context tried to start tracing already owned by Playwright Test.
+Preserve its original failure and cleanup receipts. Let the runner own tracing
+for both contexts while retaining explicit Crew screenshot/video/error-context
+attachments and guaranteed context close. One corrected-source development
+successor exercises the previously unexecuted paired product assertions, with
+unchanged budgets, custody and acceptance boundaries.
