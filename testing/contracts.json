@@ -6777,6 +6777,516 @@
           }
         ]
       }
+    },
+    {
+      "id": "sextant.shared-consumers.passport-sections",
+      "name": "Sextant private Passport sections and truthful collection fallback",
+      "authority": "project-sextant",
+      "owners": ["project-sextant", "project-homeport", "project-wakebook"],
+      "critical": true,
+      "experience": {
+        "persona": "An authenticated synthetic Player inspecting the private Passport projection and truthful empty collections while an independent Voyage remains active",
+        "objective": "Enter Passport through Personal Harbor, open each actual archive section and return to the same account without altering active Voyage progression",
+        "visibleOutcome": "The real private shelf and source-bound insights render; absent Memories, grants and saved items remain honestly empty; each section returns through Personal Harbor",
+        "integrationOwner": "Sextant shared-consumer verification; Homeport and Wakebook retain identity, historical projection and artifact authority",
+        "systems": ["project-sextant", "project-homeport", "project-wakebook", "one-voyage"],
+        "sourcePaths": [
+          "src/app/passport/page.tsx",
+          "src/app/passport/history/page.tsx",
+          "src/app/passport/timeline/page.tsx",
+          "src/app/passport/people/page.tsx",
+          "src/app/passport/statistics/page.tsx",
+          "src/app/passport/atlas/page.tsx",
+          "src/app/passport/memories/page.tsx",
+          "src/app/passport/artifacts/page.tsx",
+          "src/app/passport/saved/page.tsx",
+          "src/components/homeport/PassportSurfaces.tsx",
+          "src/components/wakebook/AuthenticatedPassportPage.tsx",
+          "src/components/wakebook/PassportLayout.tsx",
+          "src/components/wakebook/WakebookArchive.tsx",
+          "src/components/wakebook/WakebookInsights.tsx"
+        ],
+        "entryPoint": "/account",
+        "states": ["PASSPORT_READY", "SECTION_READY", "RETURNED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["PLAYER"],
+        "roleSetup": {
+          "PLAYER": {
+            "entryPoint": "/sign-in?returnTo=%2Faccount",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "sextant.experience@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Sextant-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "button",
+              "name": "Synthetic Sextant Navigator",
+              "text": "Synthetic Sextant Navigator"
+            }
+          }
+        },
+        "references": [
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected curated reference supplies readable task hierarchy and safe account/gateway navigation; actual Personal Harbor layout remains supplemental design context pending source-bound review.",
+            "preserve": "Readable task hierarchy, visible keyboard controls, contextual safe return and usable constrained layout; no account layout acceptance inferred from these generic references."
+          },
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected curated reference supplies readable task hierarchy and safe account/gateway navigation; actual Personal Harbor layout remains supplemental design context pending source-bound review.",
+            "preserve": "Readable task hierarchy, visible keyboard controls, contextual safe return and usable constrained layout; no account layout acceptance inferred from these generic references."
+          }
+        ],
+        "fixtureProfile": "generic",
+        "fixture": "sextant-shared-consumers-v1",
+        "recordingRequired": true,
+        "accessibility": "Ordinary keyboard/touch navigation and named section landmarks remain readable on desktop/mobile with normal and reduced motion; the development case checks axe on each actual Passport section.",
+        "fallback": "Absent historical detail, artifact grants, saved items or geography remain visibly unavailable; no active Voyage completion or private record is invented.",
+        "navigation": "Overview opens Chronicle Passport; its real section navigation opens each task; Personal Harbor returns directly to the same Overview.",
+        "designTarget": "Preserve the accepted account typography, private Passport masthead, distinct task landmarks, truthful source quality and readable constrained layout.",
+        "browserTests": ["tests/e2e/sextant-consumer-journeys.spec.ts"],
+        "limitations": [
+          "This registration covers the actual overview and section projections, including honest empty collections. Historical detail/book/replay, granted artifact detail and the unused legacy ChroniclePassport component remain separate obligations.",
+          "The existing synthetic active-Voyage baseline is reused unchanged. No additional progression, reader-state preparation, historical detail, artifact grant or geography is fabricated; registration grants no rendered or protected acceptance."
+        ],
+        "motion": {
+          "measurement": "Ordinary Passport navigation activation to the distinct response-rendered section outcome on each desktop/mobile and normal/reduced-motion variant",
+          "feedbackBudgetMs": 3000
+        },
+        "continuity": {
+          "objective": "Keep the same authenticated synthetic Player and unchanged existing active-Voyage baseline through private Passport section entry and ordinary Personal Harbor return",
+          "checks": [
+            {
+              "id": "account-identity",
+              "role": "button",
+              "name": "Synthetic Sextant Navigator",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "journeys": [
+          {
+            "id": "passport-history-and-return",
+            "roles": ["PLAYER"],
+            "outcome": "The Player reads the actual Your Voyages projection and returns to the same authenticated Personal Harbor",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Open Chronicle Passport"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Chronicle Passport content",
+                "path": "/passport",
+                "text": "A record you can return to",
+                "state": "PASSPORT_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Your Voyages"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Your Voyages content",
+                "path": "/passport/history",
+                "text": "Your private shelf",
+                "kind": "outcome",
+                "meaning": "The actual owner-authorized archive response renders its source-bound projection or truthful empty collection, without fabricated active Voyage progress.",
+                "state": "SECTION_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "passport-timeline-and-return",
+            "roles": ["PLAYER"],
+            "outcome": "The Player reads the actual Timeline projection and returns to the same authenticated Personal Harbor",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Open Chronicle Passport"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Chronicle Passport content",
+                "path": "/passport",
+                "text": "A record you can return to",
+                "state": "PASSPORT_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Timeline"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Timeline content",
+                "path": "/passport/timeline",
+                "text": "Your archive in time",
+                "kind": "outcome",
+                "meaning": "The actual owner-authorized archive response renders its source-bound projection or truthful empty collection, without fabricated active Voyage progress.",
+                "state": "SECTION_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "passport-people-and-return",
+            "roles": ["PLAYER"],
+            "outcome": "The Player reads the actual People projection and returns to the same authenticated Personal Harbor",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Open Chronicle Passport"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Chronicle Passport content",
+                "path": "/passport",
+                "text": "A record you can return to",
+                "state": "PASSPORT_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "People"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "People content",
+                "path": "/passport/people",
+                "text": "Shared history",
+                "kind": "outcome",
+                "meaning": "The actual owner-authorized archive response renders its source-bound projection or truthful empty collection, without fabricated active Voyage progress.",
+                "state": "SECTION_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "passport-statistics-and-return",
+            "roles": ["PLAYER"],
+            "outcome": "The Player reads the actual Statistics projection and returns to the same authenticated Personal Harbor",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Open Chronicle Passport"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Chronicle Passport content",
+                "path": "/passport",
+                "text": "A record you can return to",
+                "state": "PASSPORT_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Statistics"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Statistics content",
+                "path": "/passport/statistics",
+                "text": "The record at a glance",
+                "kind": "outcome",
+                "meaning": "The actual owner-authorized archive response renders its source-bound projection or truthful empty collection, without fabricated active Voyage progress.",
+                "state": "SECTION_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "passport-atlas-and-return",
+            "roles": ["PLAYER"],
+            "outcome": "The Player reads the actual Voyage Atlas projection and returns to the same authenticated Personal Harbor",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Open Chronicle Passport"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Chronicle Passport content",
+                "path": "/passport",
+                "text": "A record you can return to",
+                "state": "PASSPORT_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Voyage Atlas"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Voyage Atlas content",
+                "path": "/passport/atlas",
+                "text": "Seasons in your archive",
+                "kind": "outcome",
+                "meaning": "The actual owner-authorized archive response renders its source-bound projection or truthful empty collection, without fabricated active Voyage progress.",
+                "state": "SECTION_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "passport-memories-and-return",
+            "roles": ["PLAYER"],
+            "outcome": "The Player reads the actual Memories projection and returns to the same authenticated Personal Harbor",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Open Chronicle Passport"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Chronicle Passport content",
+                "path": "/passport",
+                "text": "A record you can return to",
+                "state": "PASSPORT_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Memories"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Memories content",
+                "path": "/passport/memories",
+                "text": "No private Memories yet",
+                "kind": "outcome",
+                "meaning": "The actual owner-authorized archive response renders its source-bound projection or truthful empty collection, without fabricated active Voyage progress.",
+                "state": "SECTION_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "passport-artifacts-and-return",
+            "roles": ["PLAYER"],
+            "outcome": "The Player reads the actual Artifact Cabinet projection and returns to the same authenticated Personal Harbor",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Open Chronicle Passport"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Chronicle Passport content",
+                "path": "/passport",
+                "text": "A record you can return to",
+                "state": "PASSPORT_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Artifacts"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Artifact Cabinet content",
+                "path": "/passport/artifacts",
+                "text": "No artifacts found",
+                "kind": "outcome",
+                "meaning": "The actual owner-authorized archive response renders its source-bound projection or truthful empty collection, without fabricated active Voyage progress.",
+                "state": "SECTION_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "passport-saved-and-return",
+            "roles": ["PLAYER"],
+            "outcome": "The Player reads the actual Saved from Community projection and returns to the same authenticated Personal Harbor",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Open Chronicle Passport"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Chronicle Passport content",
+                "path": "/passport",
+                "text": "A record you can return to",
+                "state": "PASSPORT_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Saved"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Saved from Community content",
+                "path": "/passport/saved",
+                "text": "No eligible saved items",
+                "kind": "outcome",
+                "meaning": "The actual owner-authorized archive response renders its source-bound projection or truthful empty collection, without fabricated active Voyage progress.",
+                "state": "SECTION_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
     }
   ],
   "experiencePolicy": {

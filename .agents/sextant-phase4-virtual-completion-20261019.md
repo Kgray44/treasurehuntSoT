@@ -80,3 +80,19 @@ The `fb937bbd` Apple successor prepared its test build but stopped at the
 private-publication preflight: the inert unit fixture used macOS's aliased
 temporary directory. Resolve only the newly owned test fixture root and keep
 all authority/assertions unchanged before the measured product successor.
+
+The diagnostic successor run39310970101 passed ordinary sign-in in all variants;
+three then failed because legitimate retained device rows made an unscoped
+Continue Voyage selector ambiguous. Name/select the actual current-device row
+and assert older rows remain. Existing browser diagnostic custody was absent
+from the generic development wrapper; use its canonical freshly minted
+development source binding, never a protected qualification identity.
+The next focused development source also registers and records the actual
+Passport overview/sections with truthful empty collections, ordinary account
+entry/return, accessibility and unchanged active Voyage progression. Historical
+detail/book/replay and granted artifact detail remain separate obligations.
+Apple run39311000104 passed native preparation, publication preflight and product
+build, then failed before browser execution because canonical process ownership
+invoked its Linux subreaper on Darwin. Preserve runtime cleanup FAIL separately
+from native build cleanup and transport cleanup. Do not bypass supervision or
+dispatch another equivalent Apple product run until canonical host support exists.

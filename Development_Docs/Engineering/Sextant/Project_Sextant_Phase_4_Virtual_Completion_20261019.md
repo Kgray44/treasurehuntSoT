@@ -223,3 +223,27 @@ publication authority correctly rejects noncanonical paths. The test producer
 now resolves its own newly created temporary root before creating inputs.
 All output-security assertions remain. This is a fixture portability correction,
 not permission to relax publication checks or a normal Devices execution claim.
+
+Run `39310970101` reached ordinary sign-in in all four variants. One full journey
+passed; three failed when the test's Continue Voyage selector matched the
+legitimate rows retained by earlier devices. The repair gives the current device
+an ordinary visible label, selects its exact row and asserts one added row while
+preserving previous rows. It does not clear registrations or change Crossdeck.
+The generic wrapper lacked diagnostic custody, so those failed-run captures
+were not published. The fixed consumer wrapper now mints the existing development
+source binding and retains the existing encrypted collector/publication contract.
+
+The additional Passport declaration covers the actual overview and eight section
+routes with normal account entry/return and response-rendered collection/insight
+outcomes. Empty Memories, artifacts and saved items remain empty. The active
+Voyage is not completed to populate history; detail/book/replay, granted artifact
+detail and the unused legacy Passport component remain separate obligations.
+
+Apple run `39311000104` passed native test-build preparation, all 14 publication
+preflight tests and the bounded-heap production build. Its canonical browser
+runtime then invoked Linux subreaper supervision on Darwin and failed before
+browser execution. Runtime cleanup reports FAIL, although no product worker
+started and the ports were released; native build cleanup is a separate receipt.
+The current canonical host does not support this product-runtime launch. Normal
+iOS Devices proof remains open pending that host contract; supervision is not
+bypassed and passing native companion results are not promoted to product proof.

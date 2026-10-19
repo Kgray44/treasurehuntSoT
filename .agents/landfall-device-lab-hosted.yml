@@ -48,12 +48,16 @@ jobs:
           path: |
             artifacts/sounding-line/browser-runtime.json
             artifacts/sounding-line/browser-suite-profile.json
+            artifacts/sounding-line/browser-diagnostics/**/browser-runtime.json
+            artifacts/sounding-line/browser-diagnostics/**/browser-suite-profile.json
           retention-days: 14
       - uses: actions/upload-artifact@v4
         if: success()
         with:
           name: landfall-browser-passing-results-__CANDIDATE_SHA__
-          path: test-results
+          path: |
+            test-results
+            artifacts/sounding-line/private-browser-failures/**/results
           retention-days: 14
       - uses: actions/upload-artifact@v4
         if: ${{ always() && steps.browser-execution.outputs.private_browser_failure_publish == steps.browser-private-source.outputs.nonce && steps.browser-execution.outputs.private_browser_failure_paths != '' }}
