@@ -374,3 +374,20 @@ membership, at most4exact fixed-Guide anchors, owning-card rect, ::after geometr
 and pointer-events, scroll-root and viewport offsets. This discriminates overlays,
 card hit area and transition geometry without a delay/retry/forced click or
 speculative product change. Preserve all original failures and diagnostic budgets.
+
+Prepare the public catalog/Tideglass consumer family using a fixed synthetic
+PUBLIC Chronicle with two immutable fixture editions and a separate anonymous
+guest Voyage. Seed only after the canonical owned-isolation guard, refuse
+collisions or mismatched reuse, and preserve private baseline Voyages and edition
+bytes. Exercise natural navigation, search/empty/clear filters, preview, loaded
+edition comparison/details, preparation, empty browser history, actual guest
+creation, Journal and brand-home/catalog return to the same Voyage. Add only the
+fixed development target sextant-catalog; no profile/scenario override. Register
+the actual owning source paths without treating declarations as acceptance.
+Tideglass's current-status and loaded-result sections receive distinct names,
+including the real UP_TO_DATE response that also includes a projection. Current
+source review is clear, 11 component tests and TypeScript pass; fresh source-bound
+browser/rendered evidence, formal references and protected qualification remain.
+Anonymous-only and empty-cookie-history coverage cannot discharge authenticated
+or populated-cookie conditional obligations. This fixture does not prove actual
+publishing readiness, native behavior, protected custody or owner acceptance.

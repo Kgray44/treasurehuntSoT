@@ -443,14 +443,14 @@ export function TideglassPassage({
       ) : null}
 
       {comparison?.selection?.kind === "UP_TO_DATE" ? (
-        <section className="tideglass-passage__result" aria-live="polite">
+        <section className="tideglass-passage__result" aria-label="Current edition status" aria-live="polite">
           <h2>You are up to date.</h2>
           <p>{sourceLabel} is the current publishing edition for this Chronicle.</p>
         </section>
       ) : null}
 
       {projection ? (
-        <section className="tideglass-passage__result" aria-live="polite">
+        <section className="tideglass-passage__result" aria-label="Edition comparison result" aria-live="polite">
           <p className="community-eyebrow">
             {sourceLabel} to {targetLabel}
           </p>

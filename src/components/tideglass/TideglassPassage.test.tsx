@@ -181,12 +181,22 @@ describe("TideglassPassage", () => {
       <TideglassPassage
         taleSlug="lantern-test"
         initialContext={context}
+        initialSourceEditionId="edition-2"
+        initialTargetEditionId="edition-2"
         initialComparison={{
           selection: { kind: "UP_TO_DATE", sourceEditionId: "edition-2", targetEditionId: "edition-2" },
+          projection: {
+            ...comparison.projection,
+            projectionStatus: "NO_MEANINGFUL_CHANGE",
+            changes: [],
+            summary: { headline: "No meaningful changes.", categoryGroups: [] },
+          },
         }}
       />,
     );
     expect(screen.getByRole("heading", { name: "You are up to date." })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Current edition status" })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Edition comparison result" })).toBeInTheDocument();
   });
 
   it("renders a bounded unavailable state with retry after a context request fails", async () => {

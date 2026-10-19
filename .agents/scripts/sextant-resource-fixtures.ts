@@ -27,6 +27,11 @@ const resourceCases = [
   "history-390-no-preference",
   "history-390-reduce",
   "history-default",
+  "catalog-1280-no-preference",
+  "catalog-1280-reduce",
+  "catalog-390-no-preference",
+  "catalog-390-reduce",
+  "catalog-default",
 ] as const;
 type ResourceCase = (typeof resourceCases)[number];
 

@@ -740,3 +740,22 @@ was declared there. The [d1dbe style checkpoint](phase4-source-reconciliation-co
 then explicitly binds the actual hover stylesheet to its tested Community
 journey, yielding178affected/54unregistered. Neither checkpoint grants acceptance
 or replaces the historical141paths/13families or any earlier source receipt.
+
+The next consumer increment prepares an isolated public Chronicle with two
+immutable synthetic editions and an independent anonymous guest Voyage. The
+fixture checks all metadata, version identities, release bytes/checksums and the
+actual public/Tideglass projections, refusing reuse mismatches. A fixed
+development-only catalog target covers natural catalog search/empty/clear,
+preview, loaded comparison/details, preparation, empty browser history, actual
+guest creation, Journal and ordinary brand-home/catalog return to that Voyage.
+Private baselines and public edition bytes remain asserted. Its new formal
+declaration names the actual catalog, comparison and compatibility route sources;
+the frozen reconciliation and execution are still pending. Source review is clear,
+the three related component suites pass11tests, and TypeScript/contract validation
+pass. A TypeScript-only failure from unsupported Testing Library exact options was
+corrected without changing its default exact accessible-name matching. Tideglass's
+current-edition status and loaded comparison result now have distinct landmark
+names, including a realistic UP_TO_DATE response with a projection. No completed
+catalog experience, publishing readiness or protected acceptance is claimed.
+Authenticated catalog and populated-cookie history conditions remain separate,
+as do formal reference/layout review and the existing native/physical/owner gates.

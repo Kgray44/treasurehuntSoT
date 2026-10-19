@@ -19,6 +19,7 @@ async function main() {
       "sextant-community",
       "sextant-authoring-resources",
       "sextant-history",
+      "sextant-catalog",
     ].includes(suite)
   )
     throw new Error("LANDFALL_CONFIGURED_BROWSER_SUITE_INVALID");
@@ -79,15 +80,17 @@ async function main() {
                 ? ["tests/e2e/sextant-authoring-resource-journeys.spec.ts"]
                 : suite === "sextant-history"
                   ? ["tests/e2e/sextant-history-journeys.spec.ts"]
-                  : [
-                      "tests/e2e/landfall-phase1-live-position.spec.ts",
-                      "tests/e2e/landfall-phase2.spec.ts",
-                      "tests/e2e/landfall-closure.spec.ts",
-                      "tests/e2e/landfall-phase3.spec.ts",
-                      "tests/e2e/landfall-phase3-creator.spec.ts",
-                      "tests/e2e/landfall-phase4.spec.ts",
-                      "tests/e2e/landfall-offline-region.spec.ts",
-                    ]),
+                  : suite === "sextant-catalog"
+                    ? ["tests/e2e/sextant-catalog-journeys.spec.ts"]
+                    : [
+                        "tests/e2e/landfall-phase1-live-position.spec.ts",
+                        "tests/e2e/landfall-phase2.spec.ts",
+                        "tests/e2e/landfall-closure.spec.ts",
+                        "tests/e2e/landfall-phase3.spec.ts",
+                        "tests/e2e/landfall-phase3-creator.spec.ts",
+                        "tests/e2e/landfall-phase4.spec.ts",
+                        "tests/e2e/landfall-offline-region.spec.ts",
+                      ]),
     ],
     {
       windowsHide: true,

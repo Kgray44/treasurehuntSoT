@@ -8992,6 +8992,323 @@
         "persona": "An ordinary signed-in Player reading their own completed synthetic Voyage and receipt-authorized personal artifact",
         "objective": "Return to the actual completed synthetic Voyage, its private Book and read-only released Journal, and the personal artifact provenance authorized for the same Player"
       }
+    },
+    {
+      "id": "sextant.shared-consumers.public-chronicle",
+      "name": "Sextant public Chronicle catalog, edition comparison and compatibility guest entry",
+      "authority": "project-sextant",
+      "owners": [
+        "project-sextant",
+        "project-homeport",
+        "project-harborlight",
+        "one-voyage"
+      ],
+      "critical": true,
+      "experience": {
+        "persona": "An anonymous visitor choosing a public synthetic Chronicle and entering its released Voyage through ordinary supported guest controls",
+        "objective": "Inspect the actual public Chronicle and exact editions before beginning one authorized compatibility Voyage, then find the same Voyage in the public catalog and return home",
+        "visibleOutcome": "The visitor reads public editions and preparation without creating a Voyage, sees honest empty browser history, then starts one guest Voyage pinned to the current edition and returns through the catalog",
+        "integrationOwner": "Sextant shared-consumer verification; Chronicle owns public catalog/preparation, Tideglass owns server-projected comparison, One Voyage owns guest progression/authorization, Lanternwake owns the Journal",
+        "systems": [
+          "project-sextant",
+          "project-chronicle",
+          "project-tideglass",
+          "one-voyage",
+          "project-lanternwake"
+        ],
+        "sourcePaths": [
+          "src/app/tales/page.tsx",
+          "src/app/chronicles/[taleSlug]/page.tsx",
+          "src/app/chronicles/[taleSlug]/compare/page.tsx",
+          "src/app/play/[taleSlug]/page.tsx",
+          "src/app/play/[taleSlug]/history/page.tsx",
+          "src/app/play/[taleSlug]/session/[sessionId]/page.tsx",
+          "src/components/tales/TaleCatalog.tsx",
+          "src/components/tales/TaleStart.tsx",
+          "src/components/tideglass/TideglassPassage.tsx",
+          "src/components/player/journal/ChronicleJournalSession.tsx",
+          "src/components/player/journal/ChronicleJournalPage.tsx"
+        ],
+        "entryPoint": "/",
+        "states": [
+          "CATALOG_READY",
+          "PREVIEW_READY",
+          "COMPARISON_READY",
+          "PREPARATION_READY",
+          "EMPTY_COOKIE_HISTORY",
+          "ACTIVE_GUEST_JOURNAL",
+          "SAME_VOYAGE_RETURN",
+          "RETURNED"
+        ],
+        "devices": [
+          "DESKTOP",
+          "MOBILE"
+        ],
+        "roles": [
+          "ANONYMOUS"
+        ],
+        "fixtureProfile": "generic",
+        "fixture": "sextant-catalog-consumers-v1",
+        "recordingRequired": true,
+        "references": [
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected gateway/public hierarchy reference only. Actual catalog, edition comparison, preparation and guest Journal require fresh source-bound review.",
+            "preserve": "Readable hierarchy, named actual controls and ordinary returns; no detailed public-edition or guest-Journal acceptance inferred."
+          },
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected gateway/public hierarchy reference only. Actual catalog, edition comparison, preparation and guest Journal require fresh source-bound review.",
+            "preserve": "Readable hierarchy, named actual controls and ordinary returns; no detailed public-edition or guest-Journal acceptance inferred."
+          }
+        ],
+        "accessibility": "Named search/filter, public comparison and preparation controls; fallback cover, desktop/mobile normal/reduced motion; development audits all actual task surfaces and records the ordinary guest entry without sensor acquisition.",
+        "fallback": "Missing cover uses the existing honest fallback. No browser history is shown before the guest session cookie exists. Public comparison stays server-projected; no private source or readiness badge is fabricated.",
+        "navigation": "Gateway global navigation opens Explore Chronicles; filter the actual published card, follow preview/comparison/preparation/history links, then begin through the public form. The immersive Journal's brand returns home, where ordinary Explore navigation opens the same cookie-backed catalog continuation; brand home completes the return.",
+        "designTarget": "Preserve public edition identity, readable catalog and safe comparison hierarchy, explicit guest preparation, actual released Journal and truthful same-Voyage return. Keep private ACTIVE fixture resources absent from public cards.",
+        "browserTests": [
+          "tests/e2e/sextant-catalog-journeys.spec.ts"
+        ],
+        "limitations": [
+          "Source registration and development evidence are not protected, native, physical or owner acceptance.",
+          "The fixture creates two canonical immutable synthetic public snapshots atomically and verifies all metadata/checksums on reuse. This is not real publication or Drydock readiness proof.",
+          "Only anonymous guest presentation is exercised here; signed-in alias presentation and populated compatibility-cookie history remain distinct obligations.",
+          "The actual guest session ID is minted by production start controls. Development binds its URL/membership/current edition to database truth; the formal journey follows dynamic links and actual Journal state without inventing a static ID.",
+          "Journal opening duration is recorded separately; selected 3000ms feedback boundaries do not claim a full opening animation completes within that duration. No progression beyond the first released Passage, real media, location or private content is used."
+        ],
+        "continuity": {
+          "objective": "Keep one public Chronicle, exact current edition and actual newly created guest Voyage while all private ACTIVE baselines and public edition bytes remain unchanged",
+          "checks": [
+            "Development verifies no session before actual Begin Voyage and exactly one afterward with an anonymous active membership.",
+            "Exact public edition bytes/checksums and both independent private ACTIVE baselines remain unchanged.",
+            "The catalog continuation href equals the actual production-issued guest session URL; final read-only return does not advance its progress."
+          ]
+        },
+        "motion": {
+          "measurement": "Measure ordinary catalog, immutable preview, comparison, preparation and guest-start acknowledgement against loaded outcomes; record full Journal opening separately. No sleeps, forced clicks or motion bypass.",
+          "feedbackBudgetMs": 3000
+        },
+        "journeys": [
+          {
+            "id": "public-course-editions-guest-and-return",
+            "roles": [
+              "ANONYMOUS"
+            ],
+            "outcome": "An anonymous visitor inspects exact public editions, prepares without side effects, starts the actual current-edition guest Voyage and returns to its catalog continuation and home",
+            "steps": [
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open navigation"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Explore Chronicles"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Choose a Chronicle",
+                "text": "Choose a Chronicle",
+                "path": "/tales",
+                "state": "CATALOG_READY",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "The actual public catalog is loaded through ordinary global navigation."
+              },
+              {
+                "action": "fill",
+                "role": "searchbox",
+                "name": "Search",
+                "value": "Synthetic Sextant public course catalog-default"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Preview Chronicle"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Synthetic Sextant public course catalog-default",
+                "text": "Synthetic Sextant public course catalog-default",
+                "path": "/chronicles/sextant-public-catalog-default",
+                "state": "PREVIEW_READY",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "Read the actual public immutable Chronicle before starting; no session is created by inspection."
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "See what changed"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Selected edition context",
+                "text": "Starting edition",
+                "path": "/chronicles/sextant-public-catalog-default/compare"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Edition comparison result",
+                "text": "Edition 1.0.0 to Edition 2.0.0",
+                "path": "/chronicles/sextant-public-catalog-default/compare",
+                "state": "COMPARISON_READY",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "The exact public source and recommended pair has an actual loaded server-projected comparison, beyond context-only readiness."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Show detailed comparison"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Show concise comparison",
+                "state": "COMPARISON_READY"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Chronicle"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Start Chronicle"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Synthetic Sextant public course catalog-default",
+                "text": "Synthetic Sextant public course catalog-default",
+                "path": "/play/sextant-public-catalog-default",
+                "state": "PREPARATION_READY",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "The ordinary preparation form offers explicit guest entry without silently creating a Voyage."
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "View this browser's Voyage History"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "No Voyage History in this browser",
+                "text": "No Voyage History in this browser",
+                "path": "/play/sextant-public-catalog-default/history",
+                "state": "EMPTY_COOKIE_HISTORY",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "A fresh anonymous context honestly has no recorded compatibility Voyage cookie."
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Choose a Chronicle"
+              },
+              {
+                "action": "fill",
+                "role": "searchbox",
+                "name": "Search",
+                "value": "Synthetic Sextant public course catalog-default"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Preview Chronicle"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Start Chronicle"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Guest player name",
+                "value": "Synthetic Sextant Guest"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Begin Voyage"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open the journal"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "Voyage Journal",
+                "state": "ACTIVE_GUEST_JOURNAL",
+                "text": "Synthetic Sextant public course catalog-default"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Voyagewright home"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open navigation"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Explore Chronicles"
+              },
+              {
+                "action": "fill",
+                "role": "searchbox",
+                "name": "Search",
+                "value": "Synthetic Sextant public course catalog-default"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Continue Voyage",
+                "text": "Continue Voyage",
+                "path": "/tales",
+                "state": "SAME_VOYAGE_RETURN",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "The public catalog offers continuation of the same actual guest Voyage authorized by its production-issued cookie."
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Voyagewright home"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Open navigation",
+                "path": "/",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
     }
   ],
   "experiencePolicy": {
