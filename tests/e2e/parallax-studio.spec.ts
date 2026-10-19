@@ -157,7 +157,7 @@ test("Creator builds, versions, attaches, publishes and reopens a spatial moment
     );
     await page.getByRole("button", { name: "Open object properties", exact: true }).click();
     await expect(page.getByLabel("Clue or message")).toHaveValue("The northern harbor is your next bearing.");
-    await page.getByLabel("Workspace layout").selectOption("SPATIAL");
+    await page.getByLabel("Workspace layout", { exact: true }).selectOption("SPATIAL");
     await openCurrentScenePublication(page);
     await expect(page.getByRole("button", { name: /v1.0.0/ })).toBeVisible();
   } finally {

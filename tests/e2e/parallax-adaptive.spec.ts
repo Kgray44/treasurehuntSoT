@@ -144,6 +144,7 @@ test("Remote Creator stages, publishes and reopens an adaptive multi-object Chro
       .getByRole("region", { name: "Scene graph" })
       .getByRole("button", { name: /^Desk Map parchment$/, exact: true })
       .click();
+    await page.getByRole("button", { name: "Open spatial context", exact: true }).click();
     await page.getByText("Discovery assistance", { exact: true }).click();
     for (const i of [1, 2, 3]) await page.getByLabel(`Hint ${i} seconds`, { exact: true }).fill(String(i));
     await page.getByLabel("Expected search seconds").fill("1");
@@ -235,7 +236,7 @@ test("Remote Creator stages, publishes and reopens an adaptive multi-object Chro
     );
     await page.getByRole("button", { name: "Open object properties", exact: true }).click();
     await expect(page.getByLabel("Clue or message")).toHaveValue("The northern harbor is your next bearing.");
-    await page.getByLabel("Workspace layout").selectOption("SPATIAL");
+    await page.getByLabel("Workspace layout", { exact: true }).selectOption("SPATIAL");
     await openCurrentScenePublication(page);
     await expect(page.getByRole("button", { name: /v1.0.0/ })).toBeVisible();
     const play = await startTaleSession(source.tale.slug, {
@@ -310,7 +311,7 @@ test("Remote Creator stages, publishes and reopens an adaptive multi-object Chro
     await page.setViewportSize({ width: 1440, height: 900 });
     await authenticateClosure(context, account, baseURL!);
     await page.goto(`/studio/parallax?chronicle=${tale.id}&definition=${capsule.definition.id}&block=${blockId}`);
-    await page.getByLabel("Workspace layout").selectOption("SPATIAL");
+    await page.getByLabel("Workspace layout", { exact: true }).selectOption("SPATIAL");
     await page.getByRole("button", { name: "Open spatial context", exact: true }).click();
     await page.getByLabel("Nearby context").selectOption("ANY");
     await page.getByText("Field quality and Creator calibration review", { exact: true }).click();
