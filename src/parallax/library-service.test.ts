@@ -195,6 +195,12 @@ describe("owner-scoped Spatial Library storage", () => {
     );
     const moment = materializeLibraryMoment(asset, "creator", 1);
     mocks.findVersion.mockResolvedValue({ checksum: moment.version.checksum, envelope: JSON.stringify(moment) });
+    mocks.find
+      .mockResolvedValueOnce({
+        status: "SAVED",
+        versions: [{ envelope: JSON.stringify(asset), checksum: canonicalChecksum(asset) }],
+      })
+      .mockResolvedValueOnce(item());
     const result = await reuseSpatialAsset("creator", draft, 1, "asset", moment.version.id);
     expect(result.draft.content.entities).toHaveLength(2);
     expect(mocks.findVersion.mock.calls[0][0].where.item).toMatchObject({
