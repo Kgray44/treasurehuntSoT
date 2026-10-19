@@ -1,0 +1,49 @@
+{
+  "version": 2,
+  "scenarioId": "sextant.pressure-relative-climb",
+  "scenarioVersion": 1,
+  "owningProject": "SEXTANT",
+  "scenarioFingerprint": "7d78304753c6385c929a05419c79d7f355f45e8b1740a5cc4da7e8b0a47f511d",
+  "source": {
+    "sourceSha": "939d6dd3778db602318a3c29af4e3343c01f99f1",
+    "sourceTree": "b5564406431af89a105b253616a52c9caa0f491d",
+    "sourceFingerprint": "be94727776cfc9193f355908b581f9dba58785e0156855d8c559e0d99e948e77",
+    "dirty": false
+  },
+  "baseSha": "f6af0b0e151f15f1a23808413ccee531b9827ca7",
+  "tier": "D0",
+  "profile": "synthetic",
+  "hostOs": "win32 10.0.26300",
+  "runtimeVersion": "v24.18.0",
+  "capabilitySnapshot": [
+    "device.relative-elevation"
+  ],
+  "physicalOrVirtual": "VIRTUAL",
+  "startedAt": "2026-10-19T18:25:48.512Z",
+  "completedAt": "2026-10-19T18:25:48.513Z",
+  "assertions": [
+    {
+      "id": "sextant.phase3.pressure-relative-climb",
+      "state": "PASS"
+    }
+  ],
+  "evidenceClass": "PROVIDER_SIMULATION_PROVEN",
+  "unsupportedCapabilities": [],
+  "requiredFutureGates": [
+    "D4_REAL_DEVICE_REQUIRED_FOR_PHYSICAL_CLAIMS",
+    "D5_FIELD_REQUIRED_FOR_FIELD_CLAIMS",
+    "OWNER_ACCEPTANCE_REQUIRED"
+  ],
+  "artifacts": [],
+  "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+  "cleanupReceipt": {
+    "result": "PASS",
+    "ownedResources": [
+      "synthetic-media-resources",
+      "emulated-radio-listeners",
+      "bounded-nearby-timers"
+    ],
+    "remainingResources": []
+  },
+  "passFailDisposition": "PASS"
+}

@@ -1,0 +1,79 @@
+{
+  "buildCommand" : {
+    "command" : "build",
+    "skipDependencies" : false,
+    "style" : "buildAndRun"
+  },
+  "configuredTargets" : [
+    {
+      "guid" : "b19486ad4388e90f6741c76af5952a9bf3c3fad300aa2445d38fc7e759c03ba5"
+    },
+    {
+      "guid" : "b19486ad4388e90f6741c76af5952a9be42bc7562b2314cb6e1b882e0a3707f4"
+    },
+    {
+      "guid" : "b19486ad4388e90f6741c76af5952a9b86c65ff8f212c3e4385bc65801ac5cbd"
+    }
+  ],
+  "containerPath" : "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/native/ios/LandfallCompanion.xcodeproj",
+  "continueBuildingAfterErrors" : false,
+  "dependencyScope" : "workspace",
+  "enableIndexBuildArena" : false,
+  "hideShellScriptEnvironment" : false,
+  "parameters" : {
+    "action" : "build",
+    "activeArchitecture" : "arm64",
+    "activeRunDestination" : {
+      "disableOnlyActiveArch" : false,
+      "hostTargetedPlatform" : null,
+      "platform" : "iphonesimulator",
+      "sdk" : "iphonesimulator26.5",
+      "sdkVariant" : "iphonesimulator",
+      "supportedArchitectures" : [
+        "arm64",
+        "x86_64"
+      ],
+      "targetArchitecture" : "arm64"
+    },
+    "arenaInfo" : {
+      "buildIntermediatesPath" : "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Intermediates.noindex",
+      "buildProductsPath" : "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Products",
+      "derivedDataPath" : "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData",
+      "indexDataStoreFolderPath" : "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Index.noindex/DataStore",
+      "indexEnableDataStore" : true,
+      "indexPCHPath" : "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Index.noindex/PrecompiledHeaders",
+      "pchPath" : "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Intermediates.noindex/PrecompiledHeaders"
+    },
+    "configurationName" : "Debug",
+    "overrides" : {
+      "commandLine" : {
+        "table" : {
+          "CODE_SIGN_IDENTITY" : "-",
+          "CODE_SIGNING_ALLOWED" : "YES",
+          "LANDFALL_LAB_PRESENTATION" : "1"
+        }
+      },
+      "synthesized" : {
+        "table" : {
+          "ASSETCATALOG_FILTER_FOR_DEVICE_MODEL" : "iPhone18,5",
+          "ASSETCATALOG_FILTER_FOR_DEVICE_OS_VERSION" : "26.5",
+          "ASSETCATALOG_FILTER_FOR_THINNING_DEVICE_CONFIGURATION" : "iPhone18,5",
+          "BUILD_ACTIVE_RESOURCES_ONLY" : "YES",
+          "ENABLE_PREVIEWS" : "NO",
+          "ENABLE_XOJIT_PREVIEWS" : "YES",
+          "TARGET_DEVICE_IDENTIFIER" : "230459F1-6A9E-49B5-AE7E-A0CA34366E36",
+          "TARGET_DEVICE_MODEL" : "iPhone18,5",
+          "TARGET_DEVICE_OS_VERSION" : "26.5",
+          "TARGET_DEVICE_PLATFORM_NAME" : "iphonesimulator",
+          "TOOLCHAINS" : "com.apple.dt.toolchain.Metal.32023.883 $(inherited)"
+        }
+      }
+    }
+  },
+  "schemeCommand" : "test",
+  "showNonLoggedProgress" : true,
+  "useDryRun" : false,
+  "useImplicitDependencies" : true,
+  "useLegacyBuildLocations" : false,
+  "useParallelTargets" : true
+}

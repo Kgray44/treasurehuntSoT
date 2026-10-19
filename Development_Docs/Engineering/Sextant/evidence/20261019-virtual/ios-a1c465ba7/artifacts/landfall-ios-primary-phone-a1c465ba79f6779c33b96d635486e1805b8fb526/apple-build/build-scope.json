@@ -1,0 +1,15 @@
+{
+  "scope": "COMPANION_ONLY",
+  "requiredPassingTests": 31,
+  "sourceTestCount": 35,
+  "excludedPresentationTests": [
+    "LandfallCompanionUiTests/NativeLifecycleTests/testOwnedSimulatorLargeTextAndOrientation",
+    "LandfallCompanionUiTests/NativeLifecycleTests/testOwnedSimulatorReducedMotionSetting"
+  ],
+  "excludedProductTests": [
+    "LandfallCompanionUiTests/NativeLifecycleTests/testOwnedProductDevices"
+  ],
+  "independentProductReceiptRequired": true,
+  "independentPresentationReceiptRequired": true,
+  "presentationAcceptance": false
+}

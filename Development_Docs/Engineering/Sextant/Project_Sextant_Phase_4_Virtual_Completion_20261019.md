@@ -174,3 +174,25 @@ remain separately publishable. The iOS product successor compiles with an
 explicit BUILD_ONLY scope and does not repeat the completed companion matrix.
 Build-only output carries no native-test pass claim and still verifies the
 actual app binary and owned simulator cleanup.
+
+## Published evidence and current gates
+
+The [machine-readable completion ledger](phase4-virtual-completion-ledger-20261019.json)
+separates source corrections, development checks, original hosted results,
+remaining software and physical gates. The [publication index](evidence/20261019-virtual/publication-index.json)
+records 405 selected original files, copied byte for byte; complete native
+bundles and original failures remain in the owned artifact directories. Scoped
+Git attributes and formatter exclusion preserve those receipt bytes.
+
+Expanded source `58d3e51db2948d206be0a62f5a47cb022f27d286` passed 327 focused
+tests and 59 shared lab scenarios (44 D0, 15 D1). Android run `39306503567`
+passed both actual OS idle and standby scenarios with entry/wake readback,
+fresh foreground recovery, zero canonical progression and verified cleanup.
+Its earlier unsupported Doze result remains preserved at the earlier source.
+
+At `1c8fc3ab`, source reconciliation reports 170 affected surfaces and 116
+unregistered surfaces. The two Player-workspace declarations do not complete
+Captain/Creator acceptance. The remaining canonical fixtures, registrations,
+captures/reviews and protected qualification remain software gates, distinct
+from unmerged Crossdeck and D4/owner gates. No full Phase 4, protected integration
+or Phase 5 claim is made.

@@ -1,0 +1,139 @@
+{
+  "version": 1,
+  "scenarioId": "background",
+  "scenarioVersion": 1,
+  "seed": 1729,
+  "sourceSha": "a1c465ba79f6779c33b96d635486e1805b8fb526",
+  "sourceTree": "48faa16123f7f39f2bdb2200e42c30caea360973",
+  "sourceFingerprint": "8978074623377fe183abb1bf7b396656b713e7e12e46e5e985d9aeef7ef274fb",
+  "dirty": false,
+  "target": "android-emulator",
+  "hostPlatform": "linux",
+  "environment": "native-platform-and-origin-bound-webview",
+  "deviceProfile": "primary-phone",
+  "deviceConfiguration": {
+    "platform": "ANDROID",
+    "virtual": true,
+    "api": 36,
+    "model": "sdk_gphone64_x86_64",
+    "memoryKiB": 3048396,
+    "widthPixels": 1080,
+    "heightPixels": 2400,
+    "densityDpi": 420
+  },
+  "osVersion": "16",
+  "runtimeVersion": "Android API 36; null",
+  "providerVersions": {
+    "LOCATION": "landfall-contract-v1"
+  },
+  "publishedFixture": "landfall-device-lab-v1",
+  "fixtureHash": "54cc5a5adaf3d8ca5e715706a0a833be0be00df5872de62e0d461a6147db18a7",
+  "timing": "WALL_CLOCK",
+  "toleranceMs": 2000,
+  "startedAt": "2026-10-19T18:28:00.964Z",
+  "endedAt": "2026-10-19T18:28:15.243Z",
+  "evidenceClass": "EMULATOR_PROVEN",
+  "result": "PASS",
+  "steps": [
+    {
+      "index": 0,
+      "action": "LOCATION",
+      "state": "PASS",
+      "translation": {
+        "method": "OS_LOCATION_INJECTION",
+        "limitation": "Bounded repeated OS coordinate delivery within one step does not prove field GPS accuracy, multipath or sensor physics; injection counts are recorded separately."
+      }
+    },
+    {
+      "index": 1,
+      "action": "LIFECYCLE",
+      "state": "PASS",
+      "translation": {
+        "method": "OS_LIFECYCLE",
+        "limitation": "Simulator/emulator lifecycle does not prove physical-device OEM suspension policy."
+      }
+    },
+    {
+      "index": 2,
+      "action": "ASSERT",
+      "state": "PASS",
+      "translation": {
+        "method": "REAL_CANONICAL_AUTHORITY"
+      }
+    }
+  ],
+  "canonicalProgressionEvents": 0,
+  "canonicalAuthority": "ONE_VOYAGE_REAL_SQLITE",
+  "authorityFixtureHash": "ed951b7086333d2ea7f685e316df0963adf3c62d7ebba845bb8e65d21a8d4223",
+  "artifacts": [
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182627953Z-3816/background/native-final.png",
+      "sha256": "c03e9097d1a824baf8655d3a7cb50beb6a6d7f1815a0e48d488578dea3b18978",
+      "kind": "SCREENSHOT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182627953Z-3816/background/native-action-performance.json",
+      "sha256": "94bf97bc58def8b141a549b2f5f612211eb6c6b7a49599265295c34394b965fb",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182627953Z-3816/background/native-guest-reboots.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182627953Z-3816/background/native-client-readiness.json",
+      "sha256": "07f0278de0e6b62eb10212a3135f418a215a3c2956d1b84824b9687d64ad154c",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182627953Z-3816/background/native-apple-input-diagnostics.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182627953Z-3816/background/native-location-controls.json",
+      "sha256": "3a5414190d00d36cde007dede0bb0e0b09208198974fdf939f8f1876142361c4",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182627953Z-3816/background/native-location-diagnostics.json",
+      "sha256": "6af4bb95d196775a7eeeda14a2226ec56dff4afbb919e5f0cfeebdd5456ccb30",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182627953Z-3816/background/native-startups.json",
+      "sha256": "7d318df060efbd0f1a890deffff8d1a8494394efe3b5dc6c0fa3e838054286c4",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182627953Z-3816/background/authority/receipt.json",
+      "sha256": "4d85b990fe83158a8a3798cb4163b2ef6f03aded363359ce0511e94b12b30904",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182627953Z-3816/background/authority-command-diagnostics.json",
+      "sha256": "0c8c8d4e3116d94473a150733ea2544aae2b8703f8db0dfdac411f8206267ca8",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182627953Z-3816/background/native-steps.json",
+      "sha256": "de7fbbb8d0f17e331a816f5decbb07c86d67e3387501077baae87d0b2792852f",
+      "kind": "TEST_RESULT"
+    }
+  ],
+  "externalRequirements": [
+    "REAL_DEVICE_REQUIRED:SUSPENSION",
+    "REAL_DEVICE_REQUIRED:OEM_PROCESS_POLICY"
+  ],
+  "cleanup": {
+    "result": "PASS",
+    "ownedResources": [
+      "loopback-native-lab-server",
+      "native-app-process",
+      "native-app-private-data",
+      "owned-adb-reverse"
+    ],
+    "remainingResources": []
+  }
+}

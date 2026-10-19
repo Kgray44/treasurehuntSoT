@@ -1,0 +1,1089 @@
+{
+  "schemaVersion": 1,
+  "limits": {
+    "requestBytes": 16384,
+    "sceneBytes": 393216,
+    "chunkBytes": 8192,
+    "chunks": 48,
+    "entities": 32,
+    "timeoutMs": 15000
+  },
+  "sceneCases": [
+    {
+      "name": "resolved-scale-0.01",
+      "accepted": true,
+      "scene": {
+        "schemaVersion": 1,
+        "transformKind": "RESOLVED_LOCAL_V1",
+        "coordinateFrame": "LOCAL_Y_UP_NEGATIVE_Z",
+        "entities": [
+          {
+            "id": "note",
+            "kind": "TEXT",
+            "content": "Bounded local clue 世界 🌍",
+            "widthMeters": 0.25,
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": -1
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 0.01
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "resolved-scale-1",
+      "accepted": true,
+      "scene": {
+        "schemaVersion": 1,
+        "transformKind": "RESOLVED_LOCAL_V1",
+        "coordinateFrame": "LOCAL_Y_UP_NEGATIVE_Z",
+        "entities": [
+          {
+            "id": "note",
+            "kind": "TEXT",
+            "content": "Bounded local clue 世界 🌍",
+            "widthMeters": 0.25,
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": -1
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "resolved-scale-10",
+      "accepted": true,
+      "scene": {
+        "schemaVersion": 1,
+        "transformKind": "RESOLVED_LOCAL_V1",
+        "coordinateFrame": "LOCAL_Y_UP_NEGATIVE_Z",
+        "entities": [
+          {
+            "id": "note",
+            "kind": "TEXT",
+            "content": "Bounded local clue 世界 🌍",
+            "widthMeters": 0.25,
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": -1
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 10
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "resolved-scale-12",
+      "accepted": true,
+      "scene": {
+        "schemaVersion": 1,
+        "transformKind": "RESOLVED_LOCAL_V1",
+        "coordinateFrame": "LOCAL_Y_UP_NEGATIVE_Z",
+        "entities": [
+          {
+            "id": "note",
+            "kind": "TEXT",
+            "content": "Bounded local clue 世界 🌍",
+            "widthMeters": 0.25,
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": -1
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 12
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "resolved-scale-100",
+      "accepted": true,
+      "scene": {
+        "schemaVersion": 1,
+        "transformKind": "RESOLVED_LOCAL_V1",
+        "coordinateFrame": "LOCAL_Y_UP_NEGATIVE_Z",
+        "entities": [
+          {
+            "id": "note",
+            "kind": "TEXT",
+            "content": "Bounded local clue 世界 🌍",
+            "widthMeters": 0.25,
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": -1
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 100
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "resolved-scale-400",
+      "accepted": true,
+      "scene": {
+        "schemaVersion": 1,
+        "transformKind": "RESOLVED_LOCAL_V1",
+        "coordinateFrame": "LOCAL_Y_UP_NEGATIVE_Z",
+        "entities": [
+          {
+            "id": "note",
+            "kind": "TEXT",
+            "content": "Bounded local clue 世界 🌍",
+            "widthMeters": 0.25,
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": -1
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 400
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "resolved-scale-400.001",
+      "accepted": false,
+      "scene": {
+        "schemaVersion": 1,
+        "transformKind": "RESOLVED_LOCAL_V1",
+        "coordinateFrame": "LOCAL_Y_UP_NEGATIVE_Z",
+        "entities": [
+          {
+            "id": "note",
+            "kind": "TEXT",
+            "content": "Bounded local clue 世界 🌍",
+            "widthMeters": 0.25,
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": -1
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 400.001
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "resolved-scale-0",
+      "accepted": false,
+      "scene": {
+        "schemaVersion": 1,
+        "transformKind": "RESOLVED_LOCAL_V1",
+        "coordinateFrame": "LOCAL_Y_UP_NEGATIVE_Z",
+        "entities": [
+          {
+            "id": "note",
+            "kind": "TEXT",
+            "content": "Bounded local clue 世界 🌍",
+            "widthMeters": 0.25,
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": -1
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "resolved-scale--1",
+      "accepted": false,
+      "scene": {
+        "schemaVersion": 1,
+        "transformKind": "RESOLVED_LOCAL_V1",
+        "coordinateFrame": "LOCAL_Y_UP_NEGATIVE_Z",
+        "entities": [
+          {
+            "id": "note",
+            "kind": "TEXT",
+            "content": "Bounded local clue 世界 🌍",
+            "widthMeters": 0.25,
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": -1
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": -1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "resolved-scale-1e-09",
+      "accepted": false,
+      "scene": {
+        "schemaVersion": 1,
+        "transformKind": "RESOLVED_LOCAL_V1",
+        "coordinateFrame": "LOCAL_Y_UP_NEGATIVE_Z",
+        "entities": [
+          {
+            "id": "note",
+            "kind": "TEXT",
+            "content": "Bounded local clue 世界 🌍",
+            "widthMeters": 0.25,
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": -1
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1e-9
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "resolved-scale-1e+100",
+      "accepted": false,
+      "scene": {
+        "schemaVersion": 1,
+        "transformKind": "RESOLVED_LOCAL_V1",
+        "coordinateFrame": "LOCAL_Y_UP_NEGATIVE_Z",
+        "entities": [
+          {
+            "id": "note",
+            "kind": "TEXT",
+            "content": "Bounded local clue 世界 🌍",
+            "widthMeters": 0.25,
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": -1
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1e100
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "unsafe-position",
+      "accepted": false,
+      "scene": {
+        "schemaVersion": 1,
+        "transformKind": "RESOLVED_LOCAL_V1",
+        "coordinateFrame": "LOCAL_Y_UP_NEGATIVE_Z",
+        "entities": [
+          {
+            "id": "note",
+            "kind": "TEXT",
+            "content": "Bounded local clue 世界 🌍",
+            "widthMeters": 0.25,
+            "transform": {
+              "position": {
+                "x": 1000001,
+                "y": 0,
+                "z": -1
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "max-position",
+      "accepted": true,
+      "scene": {
+        "schemaVersion": 1,
+        "transformKind": "RESOLVED_LOCAL_V1",
+        "coordinateFrame": "LOCAL_Y_UP_NEGATIVE_Z",
+        "entities": [
+          {
+            "id": "note",
+            "kind": "TEXT",
+            "content": "Bounded local clue 世界 🌍",
+            "widthMeters": 0.25,
+            "transform": {
+              "position": {
+                "x": 1000000,
+                "y": 0,
+                "z": -1
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "degenerate-quaternion",
+      "accepted": false,
+      "scene": {
+        "schemaVersion": 1,
+        "transformKind": "RESOLVED_LOCAL_V1",
+        "coordinateFrame": "LOCAL_Y_UP_NEGATIVE_Z",
+        "entities": [
+          {
+            "id": "note",
+            "kind": "TEXT",
+            "content": "Bounded local clue 世界 🌍",
+            "widthMeters": 0.25,
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": -1
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 0
+              },
+              "scale": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "duplicate-id",
+      "accepted": false,
+      "scene": {
+        "schemaVersion": 1,
+        "transformKind": "RESOLVED_LOCAL_V1",
+        "coordinateFrame": "LOCAL_Y_UP_NEGATIVE_Z",
+        "entities": [
+          {
+            "id": "note",
+            "kind": "TEXT",
+            "content": "Bounded local clue 世界 🌍",
+            "widthMeters": 0.25,
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": -1
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            }
+          },
+          {
+            "id": "note",
+            "kind": "TEXT",
+            "content": "Bounded local clue 世界 🌍",
+            "widthMeters": 0.25,
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": -1
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "authored-payload-identity",
+      "accepted": false,
+      "scene": {
+        "schemaVersion": 1,
+        "transformKind": "AUTHORED",
+        "coordinateFrame": "LOCAL_Y_UP_NEGATIVE_Z",
+        "entities": [
+          {
+            "id": "note",
+            "kind": "TEXT",
+            "content": "Bounded local clue 世界 🌍",
+            "widthMeters": 0.25,
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": -1
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": 1
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "numeric-string",
+      "accepted": false,
+      "scene": {
+        "schemaVersion": 1,
+        "transformKind": "RESOLVED_LOCAL_V1",
+        "coordinateFrame": "LOCAL_Y_UP_NEGATIVE_Z",
+        "entities": [
+          {
+            "id": "note",
+            "kind": "TEXT",
+            "content": "Bounded local clue 世界 🌍",
+            "widthMeters": 0.25,
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": -1
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": "12"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "boolean-scale",
+      "accepted": false,
+      "scene": {
+        "schemaVersion": 1,
+        "transformKind": "RESOLVED_LOCAL_V1",
+        "coordinateFrame": "LOCAL_Y_UP_NEGATIVE_Z",
+        "entities": [
+          {
+            "id": "note",
+            "kind": "TEXT",
+            "content": "Bounded local clue 世界 🌍",
+            "widthMeters": 0.25,
+            "transform": {
+              "position": {
+                "x": 0,
+                "y": 0,
+                "z": -1
+              },
+              "rotation": {
+                "x": 0,
+                "y": 0,
+                "z": 0,
+                "w": 1
+              },
+              "scale": true
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "authoredScales": [
+    {
+      "scale": 0.01,
+      "accepted": true
+    },
+    {
+      "scale": 1,
+      "accepted": true
+    },
+    {
+      "scale": 10,
+      "accepted": true
+    },
+    {
+      "scale": 12,
+      "accepted": false
+    }
+  ],
+  "transferTraces": [
+    {
+      "name": "complete",
+      "steps": [
+        [
+          "BEGIN",
+          {
+            "sessionId": "fixture-session",
+            "epoch": 1,
+            "transactionId": "fixture-transaction",
+            "generation": 1,
+            "sceneTransferVersion": 1,
+            "totalBytes": 293,
+            "chunkCount": 1,
+            "digest": "137ec089fe4b339f1a35e0d4803e3e05dcd531cdfc4521be1de7e4f280215cc2"
+          },
+          true
+        ],
+        [
+          "CHUNK",
+          {
+            "sessionId": "fixture-session",
+            "epoch": 1,
+            "transactionId": "fixture-transaction",
+            "generation": 1,
+            "index": 0,
+            "data": "eyJzY2hlbWFWZXJzaW9uIjoxLCJ0cmFuc2Zvcm1LaW5kIjoiUkVTT0xWRURfTE9DQUxfVjEiLCJjb29yZGluYXRlRnJhbWUiOiJMT0NBTF9ZX1VQX05FR0FUSVZFX1oiLCJlbnRpdGllcyI6W3siaWQiOiJub3RlIiwia2luZCI6IlRFWFQiLCJjb250ZW50IjoiQm91bmRlZCBsb2NhbCBjbHVlIOS4lueVjCDwn4yNIiwid2lkdGhNZXRlcnMiOjAuMjUsInRyYW5zZm9ybSI6eyJwb3NpdGlvbiI6eyJ4IjowLCJ5IjowLCJ6IjotMX0sInJvdGF0aW9uIjp7IngiOjAsInkiOjAsInoiOjAsInciOjF9LCJzY2FsZSI6MX19XX0="
+          },
+          true
+        ],
+        [
+          "COMMIT",
+          {
+            "sessionId": "fixture-session",
+            "epoch": 1,
+            "transactionId": "fixture-transaction",
+            "generation": 1
+          },
+          true
+        ],
+        [
+          "COMMIT",
+          {
+            "sessionId": "fixture-session",
+            "epoch": 1,
+            "transactionId": "fixture-transaction",
+            "generation": 1
+          },
+          false
+        ],
+        [
+          "BEGIN",
+          {
+            "sessionId": "fixture-session",
+            "epoch": 1,
+            "transactionId": "fixture-transaction",
+            "generation": 1,
+            "sceneTransferVersion": 1,
+            "totalBytes": 293,
+            "chunkCount": 1,
+            "digest": "137ec089fe4b339f1a35e0d4803e3e05dcd531cdfc4521be1de7e4f280215cc2"
+          },
+          false
+        ]
+      ]
+    },
+    {
+      "name": "missing",
+      "steps": [
+        [
+          "BEGIN",
+          {
+            "sessionId": "fixture-session",
+            "epoch": 1,
+            "transactionId": "fixture-transaction",
+            "generation": 1,
+            "sceneTransferVersion": 1,
+            "totalBytes": 293,
+            "chunkCount": 1,
+            "digest": "137ec089fe4b339f1a35e0d4803e3e05dcd531cdfc4521be1de7e4f280215cc2"
+          },
+          true
+        ],
+        [
+          "COMMIT",
+          {
+            "sessionId": "fixture-session",
+            "epoch": 1,
+            "transactionId": "fixture-transaction",
+            "generation": 1
+          },
+          false
+        ]
+      ]
+    },
+    {
+      "name": "reordered",
+      "steps": [
+        [
+          "BEGIN",
+          {
+            "sessionId": "fixture-session",
+            "epoch": 1,
+            "transactionId": "fixture-transaction",
+            "generation": 1,
+            "sceneTransferVersion": 1,
+            "totalBytes": 293,
+            "chunkCount": 1,
+            "digest": "137ec089fe4b339f1a35e0d4803e3e05dcd531cdfc4521be1de7e4f280215cc2"
+          },
+          true
+        ],
+        [
+          "CHUNK",
+          {
+            "sessionId": "fixture-session",
+            "epoch": 1,
+            "transactionId": "fixture-transaction",
+            "generation": 1,
+            "index": 1,
+            "data": "eyJzY2hlbWFWZXJzaW9uIjoxLCJ0cmFuc2Zvcm1LaW5kIjoiUkVTT0xWRURfTE9DQUxfVjEiLCJjb29yZGluYXRlRnJhbWUiOiJMT0NBTF9ZX1VQX05FR0FUSVZFX1oiLCJlbnRpdGllcyI6W3siaWQiOiJub3RlIiwia2luZCI6IlRFWFQiLCJjb250ZW50IjoiQm91bmRlZCBsb2NhbCBjbHVlIOS4lueVjCDwn4yNIiwid2lkdGhNZXRlcnMiOjAuMjUsInRyYW5zZm9ybSI6eyJwb3NpdGlvbiI6eyJ4IjowLCJ5IjowLCJ6IjotMX0sInJvdGF0aW9uIjp7IngiOjAsInkiOjAsInoiOjAsInciOjF9LCJzY2FsZSI6MX19XX0="
+          },
+          false
+        ],
+        [
+          "COMMIT",
+          {
+            "sessionId": "fixture-session",
+            "epoch": 1,
+            "transactionId": "fixture-transaction",
+            "generation": 1
+          },
+          false
+        ]
+      ]
+    },
+    {
+      "name": "duplicate-chunk",
+      "steps": [
+        [
+          "BEGIN",
+          {
+            "sessionId": "fixture-session",
+            "epoch": 1,
+            "transactionId": "fixture-transaction",
+            "generation": 1,
+            "sceneTransferVersion": 1,
+            "totalBytes": 293,
+            "chunkCount": 1,
+            "digest": "137ec089fe4b339f1a35e0d4803e3e05dcd531cdfc4521be1de7e4f280215cc2"
+          },
+          true
+        ],
+        [
+          "CHUNK",
+          {
+            "sessionId": "fixture-session",
+            "epoch": 1,
+            "transactionId": "fixture-transaction",
+            "generation": 1,
+            "index": 0,
+            "data": "eyJzY2hlbWFWZXJzaW9uIjoxLCJ0cmFuc2Zvcm1LaW5kIjoiUkVTT0xWRURfTE9DQUxfVjEiLCJjb29yZGluYXRlRnJhbWUiOiJMT0NBTF9ZX1VQX05FR0FUSVZFX1oiLCJlbnRpdGllcyI6W3siaWQiOiJub3RlIiwia2luZCI6IlRFWFQiLCJjb250ZW50IjoiQm91bmRlZCBsb2NhbCBjbHVlIOS4lueVjCDwn4yNIiwid2lkdGhNZXRlcnMiOjAuMjUsInRyYW5zZm9ybSI6eyJwb3NpdGlvbiI6eyJ4IjowLCJ5IjowLCJ6IjotMX0sInJvdGF0aW9uIjp7IngiOjAsInkiOjAsInoiOjAsInciOjF9LCJzY2FsZSI6MX19XX0="
+          },
+          true
+        ],
+        [
+          "CHUNK",
+          {
+            "sessionId": "fixture-session",
+            "epoch": 1,
+            "transactionId": "fixture-transaction",
+            "generation": 1,
+            "index": 0,
+            "data": "eyJzY2hlbWFWZXJzaW9uIjoxLCJ0cmFuc2Zvcm1LaW5kIjoiUkVTT0xWRURfTE9DQUxfVjEiLCJjb29yZGluYXRlRnJhbWUiOiJMT0NBTF9ZX1VQX05FR0FUSVZFX1oiLCJlbnRpdGllcyI6W3siaWQiOiJub3RlIiwia2luZCI6IlRFWFQiLCJjb250ZW50IjoiQm91bmRlZCBsb2NhbCBjbHVlIOS4lueVjCDwn4yNIiwid2lkdGhNZXRlcnMiOjAuMjUsInRyYW5zZm9ybSI6eyJwb3NpdGlvbiI6eyJ4IjowLCJ5IjowLCJ6IjotMX0sInJvdGF0aW9uIjp7IngiOjAsInkiOjAsInoiOjAsInciOjF9LCJzY2FsZSI6MX19XX0="
+          },
+          false
+        ],
+        [
+          "COMMIT",
+          {
+            "sessionId": "fixture-session",
+            "epoch": 1,
+            "transactionId": "fixture-transaction",
+            "generation": 1
+          },
+          false
+        ]
+      ]
+    },
+    {
+      "name": "digest",
+      "steps": [
+        [
+          "BEGIN",
+          {
+            "sessionId": "fixture-session",
+            "epoch": 1,
+            "transactionId": "fixture-transaction",
+            "generation": 1,
+            "sceneTransferVersion": 1,
+            "totalBytes": 293,
+            "chunkCount": 1,
+            "digest": "0000000000000000000000000000000000000000000000000000000000000000"
+          },
+          true
+        ],
+        [
+          "CHUNK",
+          {
+            "sessionId": "fixture-session",
+            "epoch": 1,
+            "transactionId": "fixture-transaction",
+            "generation": 1,
+            "index": 0,
+            "data": "eyJzY2hlbWFWZXJzaW9uIjoxLCJ0cmFuc2Zvcm1LaW5kIjoiUkVTT0xWRURfTE9DQUxfVjEiLCJjb29yZGluYXRlRnJhbWUiOiJMT0NBTF9ZX1VQX05FR0FUSVZFX1oiLCJlbnRpdGllcyI6W3siaWQiOiJub3RlIiwia2luZCI6IlRFWFQiLCJjb250ZW50IjoiQm91bmRlZCBsb2NhbCBjbHVlIOS4lueVjCDwn4yNIiwid2lkdGhNZXRlcnMiOjAuMjUsInRyYW5zZm9ybSI6eyJwb3NpdGlvbiI6eyJ4IjowLCJ5IjowLCJ6IjotMX0sInJvdGF0aW9uIjp7IngiOjAsInkiOjAsInoiOjAsInciOjF9LCJzY2FsZSI6MX19XX0="
+          },
+          true
+        ],
+        [
+          "COMMIT",
+          {
+            "sessionId": "fixture-session",
+            "epoch": 1,
+            "transactionId": "fixture-transaction",
+            "generation": 1
+          },
+          false
+        ]
+      ]
+    },
+    {
+      "name": "abort",
+      "steps": [
+        [
+          "BEGIN",
+          {
+            "sessionId": "fixture-session",
+            "epoch": 1,
+            "transactionId": "fixture-transaction",
+            "generation": 1,
+            "sceneTransferVersion": 1,
+            "totalBytes": 293,
+            "chunkCount": 1,
+            "digest": "137ec089fe4b339f1a35e0d4803e3e05dcd531cdfc4521be1de7e4f280215cc2"
+          },
+          true
+        ],
+        [
+          "ABORT",
+          {
+            "sessionId": "fixture-session",
+            "epoch": 1,
+            "transactionId": "fixture-transaction",
+            "generation": 1
+          },
+          true
+        ],
+        [
+          "CHUNK",
+          {
+            "sessionId": "fixture-session",
+            "epoch": 1,
+            "transactionId": "fixture-transaction",
+            "generation": 1,
+            "index": 0,
+            "data": "eyJzY2hlbWFWZXJzaW9uIjoxLCJ0cmFuc2Zvcm1LaW5kIjoiUkVTT0xWRURfTE9DQUxfVjEiLCJjb29yZGluYXRlRnJhbWUiOiJMT0NBTF9ZX1VQX05FR0FUSVZFX1oiLCJlbnRpdGllcyI6W3siaWQiOiJub3RlIiwia2luZCI6IlRFWFQiLCJjb250ZW50IjoiQm91bmRlZCBsb2NhbCBjbHVlIOS4lueVjCDwn4yNIiwid2lkdGhNZXRlcnMiOjAuMjUsInRyYW5zZm9ybSI6eyJwb3NpdGlvbiI6eyJ4IjowLCJ5IjowLCJ6IjotMX0sInJvdGF0aW9uIjp7IngiOjAsInkiOjAsInoiOjAsInciOjF9LCJzY2FsZSI6MX19XX0="
+          },
+          false
+        ],
+        [
+          "COMMIT",
+          {
+            "sessionId": "fixture-session",
+            "epoch": 1,
+            "transactionId": "fixture-transaction",
+            "generation": 1
+          },
+          false
+        ]
+      ]
+    },
+    {
+      "name": "stale-session",
+      "steps": [
+        [
+          "BEGIN",
+          {
+            "sessionId": "fixture-session",
+            "epoch": 1,
+            "transactionId": "fixture-transaction",
+            "generation": 1,
+            "sceneTransferVersion": 1,
+            "totalBytes": 293,
+            "chunkCount": 1,
+            "digest": "137ec089fe4b339f1a35e0d4803e3e05dcd531cdfc4521be1de7e4f280215cc2"
+          },
+          true
+        ],
+        [
+          "CHUNK",
+          {
+            "sessionId": "old-session",
+            "epoch": 1,
+            "transactionId": "fixture-transaction",
+            "generation": 1,
+            "index": 0,
+            "data": "eyJzY2hlbWFWZXJzaW9uIjoxLCJ0cmFuc2Zvcm1LaW5kIjoiUkVTT0xWRURfTE9DQUxfVjEiLCJjb29yZGluYXRlRnJhbWUiOiJMT0NBTF9ZX1VQX05FR0FUSVZFX1oiLCJlbnRpdGllcyI6W3siaWQiOiJub3RlIiwia2luZCI6IlRFWFQiLCJjb250ZW50IjoiQm91bmRlZCBsb2NhbCBjbHVlIOS4lueVjCDwn4yNIiwid2lkdGhNZXRlcnMiOjAuMjUsInRyYW5zZm9ybSI6eyJwb3NpdGlvbiI6eyJ4IjowLCJ5IjowLCJ6IjotMX0sInJvdGF0aW9uIjp7IngiOjAsInkiOjAsInoiOjAsInciOjF9LCJzY2FsZSI6MX19XX0="
+          },
+          false
+        ],
+        [
+          "CHUNK",
+          {
+            "sessionId": "fixture-session",
+            "epoch": 1,
+            "transactionId": "fixture-transaction",
+            "generation": 1,
+            "index": 0,
+            "data": "eyJzY2hlbWFWZXJzaW9uIjoxLCJ0cmFuc2Zvcm1LaW5kIjoiUkVTT0xWRURfTE9DQUxfVjEiLCJjb29yZGluYXRlRnJhbWUiOiJMT0NBTF9ZX1VQX05FR0FUSVZFX1oiLCJlbnRpdGllcyI6W3siaWQiOiJub3RlIiwia2luZCI6IlRFWFQiLCJjb250ZW50IjoiQm91bmRlZCBsb2NhbCBjbHVlIOS4lueVjCDwn4yNIiwid2lkdGhNZXRlcnMiOjAuMjUsInRyYW5zZm9ybSI6eyJwb3NpdGlvbiI6eyJ4IjowLCJ5IjowLCJ6IjotMX0sInJvdGF0aW9uIjp7IngiOjAsInkiOjAsInoiOjAsInciOjF9LCJzY2FsZSI6MX19XX0="
+          },
+          true
+        ],
+        [
+          "COMMIT",
+          {
+            "sessionId": "fixture-session",
+            "epoch": 1,
+            "transactionId": "fixture-transaction",
+            "generation": 1
+          },
+          true
+        ]
+      ]
+    },
+    {
+      "name": "timeout",
+      "steps": [
+        [
+          "BEGIN",
+          {
+            "sessionId": "fixture-session",
+            "epoch": 1,
+            "transactionId": "fixture-transaction",
+            "generation": 1,
+            "sceneTransferVersion": 1,
+            "totalBytes": 293,
+            "chunkCount": 1,
+            "digest": "137ec089fe4b339f1a35e0d4803e3e05dcd531cdfc4521be1de7e4f280215cc2"
+          },
+          true
+        ],
+        ["EXPIRE", {}, true],
+        [
+          "CHUNK",
+          {
+            "sessionId": "fixture-session",
+            "epoch": 1,
+            "transactionId": "fixture-transaction",
+            "generation": 1,
+            "index": 0,
+            "data": "eyJzY2hlbWFWZXJzaW9uIjoxLCJ0cmFuc2Zvcm1LaW5kIjoiUkVTT0xWRURfTE9DQUxfVjEiLCJjb29yZGluYXRlRnJhbWUiOiJMT0NBTF9ZX1VQX05FR0FUSVZFX1oiLCJlbnRpdGllcyI6W3siaWQiOiJub3RlIiwia2luZCI6IlRFWFQiLCJjb250ZW50IjoiQm91bmRlZCBsb2NhbCBjbHVlIOS4lueVjCDwn4yNIiwid2lkdGhNZXRlcnMiOjAuMjUsInRyYW5zZm9ybSI6eyJwb3NpdGlvbiI6eyJ4IjowLCJ5IjowLCJ6IjotMX0sInJvdGF0aW9uIjp7IngiOjAsInkiOjAsInoiOjAsInciOjF9LCJzY2FsZSI6MX19XX0="
+          },
+          false
+        ],
+        [
+          "COMMIT",
+          {
+            "sessionId": "fixture-session",
+            "epoch": 1,
+            "transactionId": "fixture-transaction",
+            "generation": 1
+          },
+          false
+        ]
+      ]
+    },
+    {
+      "name": "fractional-epoch",
+      "steps": [
+        [
+          "BEGIN",
+          {
+            "sessionId": "fixture-session",
+            "epoch": 1.1,
+            "transactionId": "fixture-transaction",
+            "generation": 1,
+            "sceneTransferVersion": 1,
+            "totalBytes": 293,
+            "chunkCount": 1,
+            "digest": "137ec089fe4b339f1a35e0d4803e3e05dcd531cdfc4521be1de7e4f280215cc2"
+          },
+          false
+        ]
+      ]
+    },
+    {
+      "name": "fractional-generation",
+      "steps": [
+        [
+          "BEGIN",
+          {
+            "sessionId": "fixture-session",
+            "epoch": 1,
+            "transactionId": "fixture-transaction",
+            "generation": 1.1,
+            "sceneTransferVersion": 1,
+            "totalBytes": 293,
+            "chunkCount": 1,
+            "digest": "137ec089fe4b339f1a35e0d4803e3e05dcd531cdfc4521be1de7e4f280215cc2"
+          },
+          false
+        ]
+      ]
+    },
+    {
+      "name": "wrong-count",
+      "steps": [
+        [
+          "BEGIN",
+          {
+            "sessionId": "fixture-session",
+            "epoch": 1,
+            "transactionId": "fixture-transaction",
+            "generation": 1,
+            "sceneTransferVersion": 1,
+            "totalBytes": 293,
+            "chunkCount": 2,
+            "digest": "137ec089fe4b339f1a35e0d4803e3e05dcd531cdfc4521be1de7e4f280215cc2"
+          },
+          false
+        ]
+      ]
+    },
+    {
+      "name": "over-budget",
+      "steps": [
+        [
+          "BEGIN",
+          {
+            "sessionId": "fixture-session",
+            "epoch": 1,
+            "transactionId": "fixture-transaction",
+            "generation": 1,
+            "sceneTransferVersion": 1,
+            "totalBytes": 393217,
+            "chunkCount": 49,
+            "digest": "137ec089fe4b339f1a35e0d4803e3e05dcd531cdfc4521be1de7e4f280215cc2"
+          },
+          false
+        ]
+      ]
+    }
+  ],
+  "sizeCases": [
+    {
+      "count": 1,
+      "content": "small"
+    },
+    {
+      "count": 8,
+      "content": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "count": 32,
+      "content": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "count": 32,
+      "content": "界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界界"
+    },
+    {
+      "count": 32,
+      "content": "🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍🌍"
+    }
+  ],
+  "lifecycle": {
+    "terminalState": "INTERRUPTED",
+    "freshEpochRequired": true,
+    "duplicateTerminationEvents": 0
+  }
+}

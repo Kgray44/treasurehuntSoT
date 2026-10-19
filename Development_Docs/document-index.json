@@ -669,6 +669,2334 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/background.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/background/authority-command-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/background/authority/receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/background/authority/worker-cleanup.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/background/native-action-performance.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/background/native-apple-input-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/background/native-client-readiness.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/background/native-guest-reboots.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/background/native-location-controls.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/background/native-location-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/background/native-startups.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/background/native-steps.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/barometer-floor-change.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/barometer-floor-change/authority-command-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/barometer-floor-change/authority/receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/barometer-floor-change/authority/worker-cleanup.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/barometer-floor-change/native-action-performance.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/barometer-floor-change/native-apple-input-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/barometer-floor-change/native-client-readiness.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/barometer-floor-change/native-guest-reboots.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/barometer-floor-change/native-location-controls.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/barometer-floor-change/native-location-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/barometer-floor-change/native-startups.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/barometer-floor-change/native-steps.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/capabilities.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/doze.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/doze/authority-command-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/doze/authority/receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/doze/authority/worker-cleanup.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/doze/native-action-performance.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/doze/native-apple-input-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/doze/native-client-readiness.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/doze/native-guest-reboots.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/doze/native-location-controls.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/doze/native-location-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/doze/native-startups.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/doze/native-steps.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/heading-turn.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/heading-turn/authority-command-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/heading-turn/authority/receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/heading-turn/authority/worker-cleanup.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/heading-turn/native-action-performance.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/heading-turn/native-apple-input-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/heading-turn/native-client-readiness.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/heading-turn/native-guest-reboots.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/heading-turn/native-location-controls.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/heading-turn/native-location-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/heading-turn/native-startups.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/heading-turn/native-steps.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/motion-walk.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/motion-walk/authority-command-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/motion-walk/authority/receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/motion-walk/authority/worker-cleanup.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/motion-walk/native-action-performance.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/motion-walk/native-apple-input-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/motion-walk/native-client-readiness.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/motion-walk/native-guest-reboots.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/motion-walk/native-location-controls.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/motion-walk/native-location-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/motion-walk/native-startups.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/motion-walk/native-steps.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/offline-restart-canonical-reconcile.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/offline-restart-canonical-reconcile/authority-command-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/offline-restart-canonical-reconcile/authority/receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/offline-restart-canonical-reconcile/authority/worker-cleanup.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/offline-restart-canonical-reconcile/native-action-performance.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/offline-restart-canonical-reconcile/native-apple-input-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/offline-restart-canonical-reconcile/native-client-readiness.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/offline-restart-canonical-reconcile/native-guest-reboots.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/offline-restart-canonical-reconcile/native-location-controls.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/offline-restart-canonical-reconcile/native-location-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/offline-restart-canonical-reconcile/native-startups.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/offline-restart-canonical-reconcile/native-steps.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/orientation-turn.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/orientation-turn/authority-command-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/orientation-turn/authority/receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/orientation-turn/authority/worker-cleanup.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/orientation-turn/native-action-performance.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/orientation-turn/native-apple-input-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/orientation-turn/native-client-readiness.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/orientation-turn/native-guest-reboots.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/orientation-turn/native-location-controls.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/orientation-turn/native-location-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/orientation-turn/native-startups.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/orientation-turn/native-steps.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/permission-denied-native.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/permission-denied-native/authority-command-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/permission-denied-native/authority/receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/permission-denied-native/authority/worker-cleanup.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/permission-denied-native/native-action-performance.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/permission-denied-native/native-apple-input-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/permission-denied-native/native-client-readiness.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/permission-denied-native/native-guest-reboots.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/permission-denied-native/native-location-controls.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/permission-denied-native/native-location-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/permission-denied-native/native-startups.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/permission-denied-native/native-steps.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/permission-revoked-mid-route.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/permission-revoked-mid-route/authority-command-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/permission-revoked-mid-route/authority/receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/permission-revoked-mid-route/authority/worker-cleanup.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/permission-revoked-mid-route/native-action-performance.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/permission-revoked-mid-route/native-apple-input-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/permission-revoked-mid-route/native-client-readiness.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/permission-revoked-mid-route/native-guest-reboots.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/permission-revoked-mid-route/native-location-controls.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/permission-revoked-mid-route/native-location-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/permission-revoked-mid-route/native-startups.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/permission-revoked-mid-route/native-steps.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/resume.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/resume/authority-command-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/resume/authority/receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/resume/authority/worker-cleanup.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/resume/native-action-performance.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/resume/native-apple-input-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/resume/native-client-readiness.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/resume/native-guest-reboots.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/resume/native-location-controls.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/resume/native-location-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/resume/native-startups.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/resume/native-steps.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/screen-lock.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/screen-lock/authority-command-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/screen-lock/authority/receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/screen-lock/authority/worker-cleanup.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/screen-lock/native-action-performance.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/screen-lock/native-apple-input-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/screen-lock/native-client-readiness.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/screen-lock/native-guest-reboots.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/screen-lock/native-location-controls.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/screen-lock/native-location-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/screen-lock/native-startups.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/screen-lock/native-steps.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/stationary.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/stationary/authority-command-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/stationary/authority/receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/stationary/authority/worker-cleanup.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/stationary/native-action-performance.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/stationary/native-apple-input-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/stationary/native-client-readiness.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/stationary/native-guest-reboots.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/stationary/native-location-controls.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/stationary/native-location-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/stationary/native-startups.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/stationary/native-steps.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182627953Z-3816/summary.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/android-native-tests-1792434311403/native-sensor-performance.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/artifacts/landfall-android-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/android-native-tests-1792434311403/receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-a1c465ba7/hosted-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-idle-58d3e51db/artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-doze-recovery.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-idle-58d3e51db/artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-doze-recovery/authority-command-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-idle-58d3e51db/artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-doze-recovery/authority/receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-idle-58d3e51db/artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-doze-recovery/authority/worker-cleanup.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-idle-58d3e51db/artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-doze-recovery/native-action-performance.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-idle-58d3e51db/artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-doze-recovery/native-apple-input-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-idle-58d3e51db/artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-doze-recovery/native-client-readiness.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-idle-58d3e51db/artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-doze-recovery/native-guest-reboots.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-idle-58d3e51db/artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-doze-recovery/native-idle-controls.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-idle-58d3e51db/artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-doze-recovery/native-location-controls.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-idle-58d3e51db/artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-doze-recovery/native-location-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-idle-58d3e51db/artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-doze-recovery/native-startups.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-idle-58d3e51db/artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-doze-recovery/native-steps.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-idle-58d3e51db/artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-standby-recovery.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-idle-58d3e51db/artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-standby-recovery/authority-command-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-idle-58d3e51db/artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-standby-recovery/authority/receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-idle-58d3e51db/artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-standby-recovery/authority/worker-cleanup.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-idle-58d3e51db/artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-standby-recovery/native-action-performance.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-idle-58d3e51db/artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-standby-recovery/native-apple-input-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-idle-58d3e51db/artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-standby-recovery/native-client-readiness.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-idle-58d3e51db/artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-standby-recovery/native-guest-reboots.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-idle-58d3e51db/artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-standby-recovery/native-idle-controls.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-idle-58d3e51db/artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-standby-recovery/native-location-controls.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-idle-58d3e51db/artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-standby-recovery/native-location-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-idle-58d3e51db/artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-standby-recovery/native-startups.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-idle-58d3e51db/artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-standby-recovery/native-steps.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-idle-58d3e51db/artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/capabilities.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-idle-58d3e51db/artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/summary.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-idle-58d3e51db/artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/android-native-tests-1792436394062/native-sensor-performance.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-idle-58d3e51db/artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/android-native-tests-1792436394062/receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-idle-58d3e51db/artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/camera-fixture.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/android-idle-58d3e51db/hosted-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/continuation/consumer-idle-final.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/continuation/consumer-reconciliation-with-workspaces.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/continuation/new-consumer-oracles-after.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/continuation/new-consumer-oracles-before.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/continuation/review-capability-race-and-generation.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/continuation/review-capability-race-repairs.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/continuation/windows-publication-unit-observation.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.bounded-haptics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.capability-authored-fallback.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.capability-supported.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.capability-unavailable.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.consumer-capability-restoration.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.consumer-dropout-recovery.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.consumer-lease-sharing.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.consumer-noise-conflict.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.consumer-offline-reconnect.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.consumer-pitch-roll.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.consumer-process-restoration.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.coordinated-cadence-reset.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.coordinated-calibration-fallback.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.coordinated-clock-fallback.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.coordinated-crossdeck-negotiation.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.coordinated-interference-fallback.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.coordinated-lifecycle-reset.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.coordinated-magnetic-background.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.coordinated-magnetic-hysteresis.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.coordinated-magnetic-prop.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.coordinated-magnetic-receding.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.coordinated-magnetic-recovery.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.coordinated-magnetic-spike.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.coordinated-nearby-reconnect.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.coordinated-order-reset.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.coordinated-rotation-field.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.coordinated-stale-fallback.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.coordinated-trajectory-pressure.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.deliberate-turns.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.field-privacy-threats.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.frame-normalization.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.low-quality-observation.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.magnetic-baseline-trend.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.magnetic-disturbance.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.media-denied-busy.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.media-shared-cleanup.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.media-source-generation.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.nearby-peer-replay.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.pedometer-pause-restart.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.permission-denied.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.permission-revoked.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.pressure-relative-climb.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.pressure-weather-drift.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.provider-switch.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.simulation-identity.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.stale-observation.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.walking-spin-rejection.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.web-accessible-fallback.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.web-ble-denied.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.web-ble-disconnect.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.web-gravity-separation.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.web-heading-wrap.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.web-nearby-background.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.web-nfc-malformed.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.web-nfc-strict-read.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.web-permission-pause.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.web-relative-fallback.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.web-screen-rotation.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-58d3e51db/sextant.web-sharing-lifecycle.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.bounded-haptics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.capability-authored-fallback.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.capability-supported.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.capability-unavailable.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.consumer-lease-sharing.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.coordinated-cadence-reset.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.coordinated-calibration-fallback.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.coordinated-clock-fallback.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.coordinated-crossdeck-negotiation.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.coordinated-interference-fallback.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.coordinated-lifecycle-reset.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.coordinated-magnetic-background.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.coordinated-magnetic-hysteresis.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.coordinated-magnetic-prop.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.coordinated-magnetic-receding.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.coordinated-magnetic-recovery.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.coordinated-magnetic-spike.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.coordinated-nearby-reconnect.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.coordinated-order-reset.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.coordinated-rotation-field.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.coordinated-stale-fallback.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.coordinated-trajectory-pressure.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.deliberate-turns.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.field-privacy-threats.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.frame-normalization.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.low-quality-observation.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.magnetic-baseline-trend.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.magnetic-disturbance.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.media-denied-busy.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.media-shared-cleanup.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.media-source-generation.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.nearby-peer-replay.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.pedometer-pause-restart.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.permission-denied.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.permission-revoked.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.pressure-relative-climb.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.pressure-weather-drift.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.provider-switch.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.simulation-identity.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.stale-observation.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.walking-spin-rejection.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.web-accessible-fallback.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.web-ble-denied.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.web-ble-disconnect.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.web-gravity-separation.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.web-heading-wrap.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.web-nearby-background.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.web-nfc-malformed.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.web-nfc-strict-read.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.web-permission-pause.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.web-relative-fallback.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.web-screen-rotation.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/d0-d1-939d6dd37/sextant.web-sharing-lifecycle.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/capabilities.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/geofence-native-background-wake.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/geofence-native-background-wake/authority-command-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/geofence-native-background-wake/authority/receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/geofence-native-background-wake/authority/worker-cleanup.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/geofence-native-background-wake/native-action-performance.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/geofence-native-background-wake/native-apple-input-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/geofence-native-background-wake/native-apple-lifecycle-delivery.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/geofence-native-background-wake/native-apple-lifecycle-trace.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/geofence-native-background-wake/native-client-readiness.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/geofence-native-background-wake/native-guest-reboots.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/geofence-native-background-wake/native-location-controls.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/geofence-native-background-wake/native-location-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/geofence-native-background-wake/native-startups.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/geofence-native-background-wake/native-steps.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/geofence-native-background-wake/native-ui-driver.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/permission-denied-native.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/permission-denied-native/authority-command-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/permission-denied-native/authority/receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/permission-denied-native/authority/worker-cleanup.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/permission-denied-native/native-action-performance.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/permission-denied-native/native-apple-input-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/permission-denied-native/native-apple-lifecycle-delivery.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/permission-denied-native/native-apple-lifecycle-trace.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/permission-denied-native/native-client-readiness.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/permission-denied-native/native-guest-reboots.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/permission-denied-native/native-location-controls.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/permission-denied-native/native-location-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/permission-denied-native/native-startups.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/permission-denied-native/native-steps.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/permission-revoked-mid-route.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/permission-revoked-mid-route/authority-command-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/permission-revoked-mid-route/authority/receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/permission-revoked-mid-route/authority/worker-cleanup.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/permission-revoked-mid-route/native-action-performance.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/permission-revoked-mid-route/native-apple-input-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/permission-revoked-mid-route/native-apple-lifecycle-delivery.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/permission-revoked-mid-route/native-apple-lifecycle-trace.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/permission-revoked-mid-route/native-client-readiness.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/permission-revoked-mid-route/native-guest-reboots.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/permission-revoked-mid-route/native-location-controls.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/permission-revoked-mid-route/native-location-diagnostics.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/permission-revoked-mid-route/native-startups.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/permission-revoked-mid-route/native-steps.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/20261019T182559385Z-14496/summary.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/apple-app.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/apple-build/build-scope.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/apple-build/capabilities.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/apple-build/cleanup.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanion.build/Objects-normal/arm64/LandfallCompanion_const_extract_protocols.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanion.build/Objects-normal/arm64/LandfallCompanion-dependencies-1.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanion.build/Objects-normal/arm64/LandfallCompanion-OutputFileMap.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanion.build/Objects-normal/arm64/LandfallCompanion.abi.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanionTests.build/Objects-normal/arm64/LandfallCompanionTests_const_extract_protocols.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanionTests.build/Objects-normal/arm64/LandfallCompanionTests-dependencies-1.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanionTests.build/Objects-normal/arm64/LandfallCompanionTests-OutputFileMap.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanionTests.build/Objects-normal/arm64/LandfallCompanionTests.abi.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanionUiTests.build/Objects-normal/arm64/LandfallCompanionUiTests_const_extract_protocols.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanionUiTests.build/Objects-normal/arm64/LandfallCompanionUiTests-dependencies-1.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanionUiTests.build/Objects-normal/arm64/LandfallCompanionUiTests-OutputFileMap.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanionUiTests.build/Objects-normal/arm64/LandfallCompanionUiTests.abi.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/apple-build/DerivedData/Build/Intermediates.noindex/XCBuildData/8e3c1622c52496416879382142b47f5c.xcbuilddata/build-request.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/apple-build/DerivedData/Build/Intermediates.noindex/XCBuildData/8e3c1622c52496416879382142b47f5c.xcbuilddata/manifest.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/apple-build/DerivedData/Build/Products/Debug-iphonesimulator/LandfallCompanion.app/PlugIns/LandfallCompanionTests.xctest/native-boundary-v1.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/apple-build/DerivedData/Build/Products/Debug-iphonesimulator/LandfallCompanion.swiftmodule/arm64-apple-ios-simulator.abi.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/apple-build/DerivedData/Build/Products/Debug-iphonesimulator/LandfallCompanionTests.swiftmodule/arm64-apple-ios-simulator.abi.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/apple-build/DerivedData/Build/Products/Debug-iphonesimulator/LandfallCompanionUiTests.swiftmodule/arm64-apple-ios-simulator.abi.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/apple-build/native-test-details.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/apple-build/native-test-summary.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/apple-build/orientation-configuration.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/apple-build/presentation-environment.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/apple-build/runtime-selection.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/apple-build/test-attachments/3ADD7B2F-80E5-4187-8FFC-8F35264FF960.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/apple-build/test-attachments/7C5967B8-7455-4B09-8BB8-8BA108386865.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/apple-build/test-attachments/C1463DAF-6673-47B3-9447-039E73EBE8DE.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/apple-build/test-attachments/manifest.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/artifacts/landfall-ios-primary-phone-a1c465ba79f6779c33b96d635486e1805b8fb526/apple-build/test-summary.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/ios-a1c465ba7/hosted-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/local/cleanup-and-capability-repairs.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/local/current-frozen-reconciliation.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/local/focused-suite-cleanup-cache.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/local/pre-change-reconciliation.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/local/reproduced-cleanup-and-capability-gaps.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/local/reproduced-haptic-race.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/local/reproduced-provider-gaps.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/local/reproduced-stop-ownership-race.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/publication-index.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-virtual/publication-manifest.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Sextant/evidence/71b46a0b/geofence-foreground-hierarchy.txt",
       "record_type": "engineering-record",
       "status": "current",
@@ -1108,6 +3436,12 @@
     },
     {
       "path": "Development_Docs/Engineering/Sextant/phase4-shared-consumer-design-r1.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/phase4-virtual-completion-ledger-20261019.json",
       "record_type": "engineering-record",
       "status": "current",
       "canonical_for": null

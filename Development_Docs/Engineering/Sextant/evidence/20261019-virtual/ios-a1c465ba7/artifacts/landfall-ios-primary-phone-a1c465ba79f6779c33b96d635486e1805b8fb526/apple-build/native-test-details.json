@@ -1,0 +1,416 @@
+{
+  "devices" : [
+    {
+      "architecture" : "arm64",
+      "deviceId" : "230459F1-6A9E-49B5-AE7E-A0CA34366E36",
+      "deviceName" : "landfall-owned-5779",
+      "modelName" : "iPhone 17e",
+      "osBuildNumber" : "23F77",
+      "osVersion" : "26.5",
+      "platform" : "iOS Simulator"
+    }
+  ],
+  "testNodes" : [
+    {
+      "children" : [
+        {
+          "children" : [
+            {
+              "children" : [
+                {
+                  "duration" : "0.0028s",
+                  "durationInSeconds" : 0.00277101993560791,
+                  "name" : "testConfiguredOriginRequiresSingleHTTPSAuthority()",
+                  "nodeIdentifier" : "CompanionTests/testConfiguredOriginRequiresSingleHTTPSAuthority()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/CompanionTests/testConfiguredOriginRequiresSingleHTTPSAuthority",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "duration" : "0.0071s",
+                  "durationInSeconds" : 0.007079958915710449,
+                  "name" : "testFailedRegistrationCanRemoveOnlyItsOwnConsent()",
+                  "nodeIdentifier" : "CompanionTests/testFailedRegistrationCanRemoveOnlyItsOwnConsent()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/CompanionTests/testFailedRegistrationCanRemoveOnlyItsOwnConsent",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "duration" : "0.067s",
+                  "durationInSeconds" : 0.06685400009155273,
+                  "name" : "testNativeWakeJournalIsEncryptedBoundedAndClearable()",
+                  "nodeIdentifier" : "CompanionTests/testNativeWakeJournalIsEncryptedBoundedAndClearable()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/CompanionTests/testNativeWakeJournalIsEncryptedBoundedAndClearable",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "duration" : "0.01s",
+                  "durationInSeconds" : 0.010008096694946289,
+                  "name" : "testUnconfiguredShellDoesNotAcquireLocation()",
+                  "nodeIdentifier" : "CompanionTests/testUnconfiguredShellDoesNotAcquireLocation()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/CompanionTests/testUnconfiguredShellDoesNotAcquireLocation",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                }
+              ],
+              "name" : "CompanionTests",
+              "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/CompanionTests",
+              "nodeType" : "Test Suite",
+              "result" : "Passed"
+            },
+            {
+              "children" : [
+                {
+                  "duration" : "0.031s",
+                  "durationInSeconds" : 0.031224966049194336,
+                  "name" : "testActualFrameworkCapabilitiesAndInactiveAcquisition()",
+                  "nodeIdentifier" : "InstallationInteractionTests/testActualFrameworkCapabilitiesAndInactiveAcquisition()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/InstallationInteractionTests/testActualFrameworkCapabilitiesAndInactiveAcquisition",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                }
+              ],
+              "name" : "InstallationInteractionTests",
+              "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/InstallationInteractionTests",
+              "nodeType" : "Test Suite",
+              "result" : "Passed"
+            },
+            {
+              "children" : [
+                {
+                  "duration" : "0.0016s",
+                  "durationInSeconds" : 0.0016050338745117188,
+                  "name" : "testFinalFixIsCoalescedWithoutAnotherNativeCallback()",
+                  "nodeIdentifier" : "LocationThrottleTests/testFinalFixIsCoalescedWithoutAnotherNativeCallback()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/LocationThrottleTests/testFinalFixIsCoalescedWithoutAnotherNativeCallback",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "duration" : "0.001s",
+                  "durationInSeconds" : 0.0010360479354858398,
+                  "name" : "testQueuedFixExpiresAndPowerIntervalIsRecheckedBeforeDelivery()",
+                  "nodeIdentifier" : "LocationThrottleTests/testQueuedFixExpiresAndPowerIntervalIsRecheckedBeforeDelivery()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/LocationThrottleTests/testQueuedFixExpiresAndPowerIntervalIsRecheckedBeforeDelivery",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "duration" : "0.0012s",
+                  "durationInSeconds" : 0.0012110471725463867,
+                  "name" : "testStaleFutureInvalidAndOutOfOrderFixesCannotReplaceFreshPendingFix()",
+                  "nodeIdentifier" : "LocationThrottleTests/testStaleFutureInvalidAndOutOfOrderFixesCannotReplaceFreshPendingFix()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/LocationThrottleTests/testStaleFutureInvalidAndOutOfOrderFixesCannotReplaceFreshPendingFix",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "duration" : "0.00081s",
+                  "durationInSeconds" : 0.0008109807968139648,
+                  "name" : "testStopAndRestartCannotDeliverThePreviousPendingFix()",
+                  "nodeIdentifier" : "LocationThrottleTests/testStopAndRestartCannotDeliverThePreviousPendingFix()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/LocationThrottleTests/testStopAndRestartCannotDeliverThePreviousPendingFix",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                }
+              ],
+              "name" : "LocationThrottleTests",
+              "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/LocationThrottleTests",
+              "nodeType" : "Test Suite",
+              "result" : "Passed"
+            },
+            {
+              "children" : [
+                {
+                  "duration" : "0.0023s",
+                  "durationInSeconds" : 0.0023120641708374023,
+                  "name" : "testFrameworkCapabilityAndInactiveLifecycle()",
+                  "nodeIdentifier" : "NearbyInteractionTests/testFrameworkCapabilityAndInactiveLifecycle()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/NearbyInteractionTests/testFrameworkCapabilityAndInactiveLifecycle",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "duration" : "0.0019s",
+                  "durationInSeconds" : 0.0019370317459106445,
+                  "name" : "testPairingRejectsReplayUnboundedArchiveAndIdentityClaims()",
+                  "nodeIdentifier" : "NearbyInteractionTests/testPairingRejectsReplayUnboundedArchiveAndIdentityClaims()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/NearbyInteractionTests/testPairingRejectsReplayUnboundedArchiveAndIdentityClaims",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "duration" : "0.00084s",
+                  "durationInSeconds" : 0.0008440017700195312,
+                  "name" : "testUnsupportedDeviceDoesNotPrepareOrEmitAReportedRange()",
+                  "nodeIdentifier" : "NearbyInteractionTests/testUnsupportedDeviceDoesNotPrepareOrEmitAReportedRange()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/NearbyInteractionTests/testUnsupportedDeviceDoesNotPrepareOrEmitAReportedRange",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                }
+              ],
+              "name" : "NearbyInteractionTests",
+              "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/NearbyInteractionTests",
+              "nodeType" : "Test Suite",
+              "result" : "Passed"
+            },
+            {
+              "children" : [
+                {
+                  "duration" : "0.014s",
+                  "durationInSeconds" : 0.013564109802246094,
+                  "name" : "testSharedBoundaryFixtures()",
+                  "nodeIdentifier" : "ParallaxTests/testSharedBoundaryFixtures()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/ParallaxTests/testSharedBoundaryFixtures",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "duration" : "0.0018s",
+                  "durationInSeconds" : 0.0018160343170166016,
+                  "name" : "testStartIdentityUsesStrictNumbers()",
+                  "nodeIdentifier" : "ParallaxTests/testStartIdentityUsesStrictNumbers()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/ParallaxTests/testStartIdentityUsesStrictNumbers",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "duration" : "0.044s",
+                  "durationInSeconds" : 0.044400930404663086,
+                  "name" : "testTerminationIsAcknowledgedOnceWithoutOpeningCamera()",
+                  "nodeIdentifier" : "ParallaxTests/testTerminationIsAcknowledgedOnceWithoutOpeningCamera()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/ParallaxTests/testTerminationIsAcknowledgedOnceWithoutOpeningCamera",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                }
+              ],
+              "name" : "ParallaxTests",
+              "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/ParallaxTests",
+              "nodeType" : "Test Suite",
+              "result" : "Passed"
+            },
+            {
+              "children" : [
+                {
+                  "duration" : "0.41s",
+                  "durationInSeconds" : 0.4101649522781372,
+                  "name" : "testBoundedNativeLeaseEncryptionAndRestorePerformance()",
+                  "nodeIdentifier" : "PrivateStoreTests/testBoundedNativeLeaseEncryptionAndRestorePerformance()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/PrivateStoreTests/testBoundedNativeLeaseEncryptionAndRestorePerformance",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "duration" : "0.015s",
+                  "durationInSeconds" : 0.014795064926147461,
+                  "name" : "testCompleteLeaseReturnsOnlyItsBoundJourney()",
+                  "nodeIdentifier" : "PrivateStoreTests/testCompleteLeaseReturnsOnlyItsBoundJourney()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/PrivateStoreTests/testCompleteLeaseReturnsOnlyItsBoundJourney",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "duration" : "0.0048s",
+                  "durationInSeconds" : 0.004785060882568359,
+                  "name" : "testInvalidKeysExpiredLeasesAndOversizedValuesFailClosed()",
+                  "nodeIdentifier" : "PrivateStoreTests/testInvalidKeysExpiredLeasesAndOversizedValuesFailClosed()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/PrivateStoreTests/testInvalidKeysExpiredLeasesAndOversizedValuesFailClosed",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "duration" : "0.0081s",
+                  "durationInSeconds" : 0.008107900619506836,
+                  "name" : "testRestartLeaseIsEncryptedOriginBoundAndClearable()",
+                  "nodeIdentifier" : "PrivateStoreTests/testRestartLeaseIsEncryptedOriginBoundAndClearable()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/PrivateStoreTests/testRestartLeaseIsEncryptedOriginBoundAndClearable",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                }
+              ],
+              "name" : "PrivateStoreTests",
+              "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/PrivateStoreTests",
+              "nodeType" : "Test Suite",
+              "result" : "Passed"
+            },
+            {
+              "children" : [
+                {
+                  "children" : [
+                    {
+                      "name" : "SextantPositionTests.swift:46: This method can cause UI unresponsiveness if invoked on the main thread. Instead, consider waiting for the `-locationManagerDidChangeAuthorization:` callback and checking `authorizationStatus` first.",
+                      "nodeType" : "Runtime Warning"
+                    }
+                  ],
+                  "duration" : "0.029s",
+                  "durationInSeconds" : 0.02892899513244629,
+                  "name" : "testCaptureUncertaintyPermissionAndPowerRemainTruthful()",
+                  "nodeIdentifier" : "SextantPositionTests/testCaptureUncertaintyPermissionAndPowerRemainTruthful()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/SextantPositionTests/testCaptureUncertaintyPermissionAndPowerRemainTruthful",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "duration" : "0.00081s",
+                  "durationInSeconds" : 0.0008089542388916016,
+                  "name" : "testSharedPositionLeaseScopedCleanupAndClockGeneration()",
+                  "nodeIdentifier" : "SextantPositionTests/testSharedPositionLeaseScopedCleanupAndClockGeneration()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/SextantPositionTests/testSharedPositionLeaseScopedCleanupAndClockGeneration",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                }
+              ],
+              "name" : "SextantPositionTests",
+              "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/SextantPositionTests",
+              "nodeType" : "Test Suite",
+              "result" : "Passed"
+            },
+            {
+              "children" : [
+                {
+                  "duration" : "0.0034s",
+                  "durationInSeconds" : 0.003365039825439453,
+                  "name" : "testActualCoreMotionDiscoveryDoesNotFabricateSimulatorSupport()",
+                  "nodeIdentifier" : "SextantSensorTests/testActualCoreMotionDiscoveryDoesNotFabricateSimulatorSupport()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/SextantSensorTests/testActualCoreMotionDiscoveryDoesNotFabricateSimulatorSupport",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "duration" : "0.03s",
+                  "durationInSeconds" : 0.030052900314331055,
+                  "name" : "testConstrainedCadenceIsLowQualityAndUnsupportedBiasStaysUnavailable()",
+                  "nodeIdentifier" : "SextantSensorTests/testConstrainedCadenceIsLowQualityAndUnsupportedBiasStaysUnavailable()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/SextantSensorTests/testConstrainedCadenceIsLowQualityAndUnsupportedBiasStaysUnavailable",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "duration" : "0.0071s",
+                  "durationInSeconds" : 0.007073044776916504,
+                  "name" : "testEmptyDiscoveryAndLifecycleDoNotCreateFitnessServices()",
+                  "nodeIdentifier" : "SextantSensorTests/testEmptyDiscoveryAndLifecycleDoNotCreateFitnessServices()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/SextantSensorTests/testEmptyDiscoveryAndLifecycleDoNotCreateFitnessServices",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "duration" : "0.00053s",
+                  "durationInSeconds" : 0.0005300045013427734,
+                  "name" : "testFrameTransformAndRelativeAttitudeUseCanonicalQuaternion()",
+                  "nodeIdentifier" : "SextantSensorTests/testFrameTransformAndRelativeAttitudeUseCanonicalQuaternion()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/SextantSensorTests/testFrameTransformAndRelativeAttitudeUseCanonicalQuaternion",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "duration" : "0.013s",
+                  "durationInSeconds" : 0.012693047523498535,
+                  "name" : "testHapticsNeverClaimPhysicalOutputAndRespectLifecycleAndPreferences()",
+                  "nodeIdentifier" : "SextantSensorTests/testHapticsNeverClaimPhysicalOutputAndRespectLifecycleAndPreferences()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/SextantSensorTests/testHapticsNeverClaimPhysicalOutputAndRespectLifecycleAndPreferences",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "duration" : "0.00078s",
+                  "durationInSeconds" : 0.0007789134979248047,
+                  "name" : "testImpossibleStepCadenceCannotBecomeStepEvidence()",
+                  "nodeIdentifier" : "SextantSensorTests/testImpossibleStepCadenceCannotBecomeStepEvidence()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/SextantSensorTests/testImpossibleStepCadenceCannotBecomeStepEvidence",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "duration" : "0.00097s",
+                  "durationInSeconds" : 0.0009690523147583008,
+                  "name" : "testInjectedNativeLeaseSharingMonotonicCadenceAndLifecycleCleanup()",
+                  "nodeIdentifier" : "SextantSensorTests/testInjectedNativeLeaseSharingMonotonicCadenceAndLifecycleCleanup()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/SextantSensorTests/testInjectedNativeLeaseSharingMonotonicCadenceAndLifecycleCleanup",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "duration" : "0.0007s",
+                  "durationInSeconds" : 0.0006999969482421875,
+                  "name" : "testInjectedNativeRejectsStalePermissionAndUnboundedRequests()",
+                  "nodeIdentifier" : "SextantSensorTests/testInjectedNativeRejectsStalePermissionAndUnboundedRequests()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/SextantSensorTests/testInjectedNativeRejectsStalePermissionAndUnboundedRequests",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                },
+                {
+                  "duration" : "0.00096s",
+                  "durationInSeconds" : 0.0009609460830688477,
+                  "name" : "testRadioOperationalStateDoesNotInventPermissionOrSuspendForegroundLifecycle()",
+                  "nodeIdentifier" : "SextantSensorTests/testRadioOperationalStateDoesNotInventPermissionOrSuspendForegroundLifecycle()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/SextantSensorTests/testRadioOperationalStateDoesNotInventPermissionOrSuspendForegroundLifecycle",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                }
+              ],
+              "name" : "SextantSensorTests",
+              "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/SextantSensorTests",
+              "nodeType" : "Test Suite",
+              "result" : "Passed"
+            }
+          ],
+          "name" : "LandfallCompanionTests",
+          "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests",
+          "nodeType" : "Unit test bundle",
+          "result" : "Passed"
+        },
+        {
+          "children" : [
+            {
+              "children" : [
+                {
+                  "children" : [
+                    {
+                      "name" : "Test skipped - Canonical lab endpoint is not configured for this build test.",
+                      "nodeType" : "Failure Message"
+                    }
+                  ],
+                  "duration" : "0.44s",
+                  "durationInSeconds" : 0.4368469715118408,
+                  "name" : "testCanonicalScenarioOperations()",
+                  "nodeIdentifier" : "NativeLifecycleTests/testCanonicalScenarioOperations()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionUiTests/NativeLifecycleTests/testCanonicalScenarioOperations",
+                  "nodeType" : "Test Case",
+                  "result" : "Skipped"
+                },
+                {
+                  "duration" : "9s",
+                  "durationInSeconds" : 9.253607988357544,
+                  "name" : "testUnconfiguredShellReturnsFromHome()",
+                  "nodeIdentifier" : "NativeLifecycleTests/testUnconfiguredShellReturnsFromHome()",
+                  "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionUiTests/NativeLifecycleTests/testUnconfiguredShellReturnsFromHome",
+                  "nodeType" : "Test Case",
+                  "result" : "Passed"
+                }
+              ],
+              "name" : "NativeLifecycleTests",
+              "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionUiTests/NativeLifecycleTests",
+              "nodeType" : "Test Suite",
+              "result" : "Passed"
+            }
+          ],
+          "name" : "LandfallCompanionUiTests",
+          "nodeIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionUiTests",
+          "nodeType" : "UI test bundle",
+          "result" : "Passed"
+        }
+      ],
+      "name" : "LandfallCompanion",
+      "nodeType" : "Test Plan",
+      "result" : "Passed"
+    }
+  ],
+  "testPlanConfigurations" : [
+    {
+      "configurationId" : "1",
+      "configurationName" : "Test Scheme Action"
+    }
+  ]
+}

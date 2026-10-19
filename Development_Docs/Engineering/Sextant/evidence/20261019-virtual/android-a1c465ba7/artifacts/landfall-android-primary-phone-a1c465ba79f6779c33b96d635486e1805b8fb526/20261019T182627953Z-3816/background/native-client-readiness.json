@@ -1,0 +1,66 @@
+{
+  "requests": {
+    "documents": 2,
+    "workers": 1,
+    "scripts": 2
+  },
+  "stages": [
+    {
+      "stage": "ENTRY",
+      "elapsedMs": 4229
+    },
+    {
+      "stage": "RESTORE_LEASE",
+      "elapsedMs": 4231
+    },
+    {
+      "stage": "LEASE_RESTORED",
+      "elapsedMs": 4236
+    },
+    {
+      "stage": "REGISTER_WORKER",
+      "elapsedMs": 4241
+    },
+    {
+      "stage": "WAITING_WORKER",
+      "elapsedMs": 4278
+    },
+    {
+      "stage": "WAITING_CONTROL",
+      "elapsedMs": 4441
+    },
+    {
+      "stage": "WORKER_CONTROLLED",
+      "elapsedMs": 4449
+    },
+    {
+      "stage": "SCENARIO_RECEIVED",
+      "elapsedMs": 4458
+    },
+    {
+      "stage": "PASSIVE_PERMISSION",
+      "elapsedMs": 4467
+    },
+    {
+      "stage": "PERMISSION_READ",
+      "elapsedMs": 4469
+    },
+    {
+      "stage": "READY_POST",
+      "elapsedMs": 4494
+    },
+    {
+      "stage": "CONTROL_STEP_RECEIVED",
+      "elapsedMs": 4668
+    },
+    {
+      "stage": "CONTROL_RESULT_PREPARED",
+      "elapsedMs": 8418
+    },
+    {
+      "stage": "LIFECYCLE_BACKGROUND",
+      "elapsedMs": 9111
+    }
+  ],
+  "readyAcknowledgments": 1
+}

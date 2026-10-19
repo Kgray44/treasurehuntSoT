@@ -1,0 +1,158 @@
+{
+  "version": 1,
+  "scenarioId": "permission-revoked-mid-route",
+  "scenarioVersion": 1,
+  "seed": 1729,
+  "sourceSha": "a1c465ba79f6779c33b96d635486e1805b8fb526",
+  "sourceTree": "48faa16123f7f39f2bdb2200e42c30caea360973",
+  "sourceFingerprint": "8978074623377fe183abb1bf7b396656b713e7e12e46e5e985d9aeef7ef274fb",
+  "dirty": false,
+  "target": "ios-simulator",
+  "hostPlatform": "darwin",
+  "environment": "native-platform-and-origin-bound-webview",
+  "deviceProfile": "primary-phone",
+  "deviceConfiguration": {
+    "platform": "IOS",
+    "virtual": true,
+    "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-26-5",
+    "deviceType": "com.apple.CoreSimulator.SimDeviceType.iPhone-17e"
+  },
+  "osVersion": "com.apple.CoreSimulator.SimRuntime.iOS-26-5",
+  "runtimeVersion": "Xcode 26.6\nBuild version 17F113",
+  "providerVersions": {
+    "LOCATION": "landfall-contract-v1"
+  },
+  "publishedFixture": "landfall-device-lab-v1",
+  "fixtureHash": "54cc5a5adaf3d8ca5e715706a0a833be0be00df5872de62e0d461a6147db18a7",
+  "timing": "WALL_CLOCK",
+  "toleranceMs": 2000,
+  "startedAt": "2026-10-19T18:27:54.691Z",
+  "endedAt": "2026-10-19T18:29:28.155Z",
+  "evidenceClass": "SIMULATOR_PROVEN",
+  "result": "PASS",
+  "steps": [
+    {
+      "index": 0,
+      "action": "LOCATION",
+      "state": "PASS",
+      "translation": {
+        "method": "OS_LOCATION_INJECTION",
+        "limitation": "Bounded repeated OS coordinate delivery within one step does not prove field GPS accuracy, multipath or sensor physics; injection counts are recorded separately."
+      }
+    },
+    {
+      "index": 1,
+      "action": "PERMISSION",
+      "state": "PASS",
+      "translation": {
+        "method": "OS_PERMISSION_CONTROL",
+        "limitation": "Current native grants are checked without prompting. Android grant changes may terminate and relaunch the owned app; physical settings UX remains external."
+      }
+    },
+    {
+      "index": 2,
+      "action": "LOCATION",
+      "state": "PASS",
+      "reason": "OS_PERMISSION_PREVENTED_ACQUISITION",
+      "translation": {
+        "method": "OS_PERMISSION_CONTROL",
+        "limitation": "Current native grants are checked without prompting. Android grant changes may terminate and relaunch the owned app; physical settings UX remains external."
+      }
+    },
+    {
+      "index": 3,
+      "action": "ASSERT",
+      "state": "PASS",
+      "translation": {
+        "method": "SHARED_WEB_CONTRACT"
+      }
+    },
+    {
+      "index": 4,
+      "action": "ASSERT",
+      "state": "PASS",
+      "translation": {
+        "method": "SHARED_WEB_CONTRACT"
+      }
+    }
+  ],
+  "canonicalProgressionEvents": 0,
+  "canonicalAuthority": "ONE_VOYAGE_REAL_SQLITE",
+  "authorityFixtureHash": "ed951b7086333d2ea7f685e316df0963adf3c62d7ebba845bb8e65d21a8d4223",
+  "artifacts": [
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182559385Z-14496/permission-revoked-mid-route/native-final.png",
+      "sha256": "8ea4d56852beb9caa306f33e4c1e4774c49e7bff3dee1d5d4eaa5e815195b963",
+      "kind": "SCREENSHOT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182559385Z-14496/permission-revoked-mid-route/native-action-performance.json",
+      "sha256": "13c8a4fd484ae4f1a5e7f0a2977cb738a01644d60dee02e4a80779d131ab4cb4",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182559385Z-14496/permission-revoked-mid-route/native-guest-reboots.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182559385Z-14496/permission-revoked-mid-route/native-client-readiness.json",
+      "sha256": "5c8dfe501448bf62d39b5e9d0fe43c70aed27b5b56b254c5858cf3337a68555a",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182559385Z-14496/permission-revoked-mid-route/native-apple-lifecycle-delivery.json",
+      "sha256": "5fd7bb8a73437a18d816eaf4e587301bfd50d84dee1ab9df118981c4dd05e304",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182559385Z-14496/permission-revoked-mid-route/native-apple-lifecycle-trace.json",
+      "sha256": "14bf56d2bdcd5f947295fd047455398bc67e9692590ac33226213d73df1bcf12",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182559385Z-14496/permission-revoked-mid-route/native-apple-input-diagnostics.json",
+      "sha256": "0377d327d0e646e8e40483695fa0aa9cae7a068a08168bf5d15ef781aeacbc07",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182559385Z-14496/permission-revoked-mid-route/native-location-controls.json",
+      "sha256": "9e6f944b25626ecaa330644a5c7a594d06e2bf6f63434ded5ca788687a0f6d1c",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182559385Z-14496/permission-revoked-mid-route/native-location-diagnostics.json",
+      "sha256": "b86b55eceb4bfa6a92f0997797955543af0f2b48a36b25d53bbfa14772bf6a46",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182559385Z-14496/permission-revoked-mid-route/native-startups.json",
+      "sha256": "7d318df060efbd0f1a890deffff8d1a8494394efe3b5dc6c0fa3e838054286c4",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182559385Z-14496/permission-revoked-mid-route/authority/receipt.json",
+      "sha256": "4d85b990fe83158a8a3798cb4163b2ef6f03aded363359ce0511e94b12b30904",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182559385Z-14496/permission-revoked-mid-route/authority-command-diagnostics.json",
+      "sha256": "434f13b89d43d9b3e618f04a83a9fddc9d52abc37bbbf7c681ecfe648f1e40ba",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182559385Z-14496/permission-revoked-mid-route/native-steps.json",
+      "sha256": "278ea6b5ebb94c9df0854ff1e377709525ae18449a0071002228e2e50858726b",
+      "kind": "TEST_RESULT"
+    }
+  ],
+  "externalRequirements": [],
+  "cleanup": {
+    "result": "PASS",
+    "ownedResources": [
+      "loopback-native-lab-server",
+      "6876AEBB-5151-44E1-BDA9-3B3D35FF88CC"
+    ],
+    "remainingResources": []
+  }
+}

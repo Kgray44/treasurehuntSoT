@@ -3,7 +3,7 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-10-12
+last_reviewed: 2026-10-19
 ---
 
 The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.md) is an isolated synthetic implementation in qualification. It exercises accepted platform contracts; its combined physical/owner session remains pending and it does not promote later spatial phases.
@@ -14,8 +14,11 @@ The [2026-10-19 continuation](../../Sextant/Project_Sextant_Phase_4_Virtual_Comp
 adds focused corrections to native pause/revocation, expected-interruption
 recovery, compatible local attitude, late acknowledgements and truthful radio
 availability. It grants no completed-feature promotion or Phase 4 acceptance.
-Current source still requires 118 experience registrations, consumer capture and
-review, virtual native qualification and the separate D4/owner gates.
+Current source still requires 116 experience registrations, consumer capture and
+review, normal native Device product proof and the separate D4/owner gates.
+The bounded continuation passes 327 focused tests, 59 D0/D1 scenarios, Android
+OS idle/standby recovery and three selected iOS permission/geofence scenarios.
+Every receipt retains its actual source; none promotes the feature to accepted.
 
 The authorized Sextant R1 follow-up corrects synthetic route identity and consumes
 the existing identity/legacy authorization seam in one agreed compatibility
@@ -25,7 +28,7 @@ remain unqualified. The [separate R1 ledger](../../Sextant/phase4-acceptance-fol
 retains both exhausted historical campaigns and the new maximum of three actual
 iterations. No completed capability is promoted by this ordinary correction.
 
-Sextant Phase 4 remains an unaccepted implementation candidate. Native providers,
+Historical Phase 4 qualification remains unaccepted for the current candidate. Native providers,
 canonical leases, shared coherent sensor scenarios and optional Devices controls
 are under qualification. Source-bound Android profiles, actual Devices controls
 and OS lifecycle checks passed. Corrected Apple native tests passed; broader iOS

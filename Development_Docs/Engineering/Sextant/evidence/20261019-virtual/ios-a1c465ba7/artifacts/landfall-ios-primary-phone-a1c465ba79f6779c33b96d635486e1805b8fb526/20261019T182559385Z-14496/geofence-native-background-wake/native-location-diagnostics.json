@@ -1,0 +1,28 @@
+[
+  {
+    "index": 0,
+    "diagnostic": {
+      "received": 1,
+      "invalid": 0,
+      "stale": 0,
+      "future": 0,
+      "outOfBounds": 0,
+      "insufficientAccuracy": 0,
+      "withinRequestedBounds": 1,
+      "canonicalObservations": 1,
+      "firstQualifiedFixElapsedMs": 485,
+      "acquisition": {
+        "provider": "core-location",
+        "registered": true,
+        "enabled": true,
+        "permission": "GRANTED",
+        "nativeCallbacks": 1,
+        "forwardedCallbacks": 1,
+        "foreground": true,
+        "paused": false,
+        "intervalMs": 1000,
+        "failure": "NONE"
+      }
+    }
+  }
+]

@@ -1,0 +1,223 @@
+{
+  "version": 1,
+  "scenarioId": "offline-restart-canonical-reconcile",
+  "scenarioVersion": 3,
+  "seed": 1729,
+  "sourceSha": "a1c465ba79f6779c33b96d635486e1805b8fb526",
+  "sourceTree": "48faa16123f7f39f2bdb2200e42c30caea360973",
+  "sourceFingerprint": "8978074623377fe183abb1bf7b396656b713e7e12e46e5e985d9aeef7ef274fb",
+  "dirty": false,
+  "target": "android-emulator",
+  "hostPlatform": "linux",
+  "environment": "native-platform-and-origin-bound-webview",
+  "deviceProfile": "primary-phone",
+  "deviceConfiguration": {
+    "platform": "ANDROID",
+    "virtual": true,
+    "api": 36,
+    "model": "sdk_gphone64_x86_64",
+    "memoryKiB": 3048396,
+    "widthPixels": 1080,
+    "heightPixels": 2400,
+    "densityDpi": 420
+  },
+  "osVersion": "16",
+  "runtimeVersion": "Android API 36; null",
+  "providerVersions": {
+    "LOCATION": "landfall-contract-v1",
+    "OFFLINE_PACKAGE": "landfall-contract-v1"
+  },
+  "publishedFixture": "landfall-device-lab-restart-v2",
+  "fixtureHash": "5f5c17141009eab066f305b54803a97715938627e34be53c9049d7835e6a3ce3",
+  "timing": "WALL_CLOCK",
+  "toleranceMs": 2000,
+  "startedAt": "2026-10-19T18:29:08.046Z",
+  "endedAt": "2026-10-19T18:29:27.932Z",
+  "evidenceClass": "EMULATOR_PROVEN",
+  "result": "PASS",
+  "steps": [
+    {
+      "index": 0,
+      "action": "NETWORK",
+      "state": "PASS",
+      "translation": {
+        "method": "OS_NETWORK_AND_SERVICE_FAULT",
+        "limitation": "Virtual radios are controlled; owned loopback transport remains available to the test control plane."
+      }
+    },
+    {
+      "index": 1,
+      "action": "LOCATION",
+      "state": "PASS",
+      "translation": {
+        "method": "OS_LOCATION_INJECTION",
+        "limitation": "Bounded repeated OS coordinate delivery within one step does not prove field GPS accuracy, multipath or sensor physics; injection counts are recorded separately."
+      }
+    },
+    {
+      "index": 2,
+      "action": "LOCATION",
+      "state": "PASS",
+      "translation": {
+        "method": "OS_LOCATION_INJECTION",
+        "limitation": "Bounded repeated OS coordinate delivery within one step does not prove field GPS accuracy, multipath or sensor physics; injection counts are recorded separately."
+      }
+    },
+    {
+      "index": 3,
+      "action": "ASSERT",
+      "state": "PASS",
+      "translation": {
+        "method": "SHARED_WEB_CONTRACT"
+      }
+    },
+    {
+      "index": 4,
+      "action": "ASSERT",
+      "state": "PASS",
+      "translation": {
+        "method": "REAL_CANONICAL_AUTHORITY"
+      }
+    },
+    {
+      "index": 5,
+      "action": "LIFECYCLE",
+      "state": "PASS",
+      "translation": {
+        "method": "OS_LIFECYCLE",
+        "limitation": "Simulator/emulator lifecycle does not prove physical-device OEM suspension policy."
+      }
+    },
+    {
+      "index": 6,
+      "action": "LIFECYCLE",
+      "state": "PASS",
+      "translation": {
+        "method": "OS_LIFECYCLE",
+        "limitation": "Simulator/emulator lifecycle does not prove physical-device OEM suspension policy."
+      }
+    },
+    {
+      "index": 7,
+      "action": "ASSERT",
+      "state": "PASS",
+      "translation": {
+        "method": "SHARED_WEB_CONTRACT"
+      }
+    },
+    {
+      "index": 8,
+      "action": "ASSERT",
+      "state": "PASS",
+      "translation": {
+        "method": "SHARED_WEB_CONTRACT"
+      }
+    },
+    {
+      "index": 9,
+      "action": "NETWORK",
+      "state": "PASS",
+      "translation": {
+        "method": "OS_NETWORK_AND_SERVICE_FAULT",
+        "limitation": "Virtual radios are controlled; owned loopback transport remains available to the test control plane."
+      }
+    },
+    {
+      "index": 10,
+      "action": "RECONCILE",
+      "state": "PASS",
+      "translation": {
+        "method": "REAL_CANONICAL_AUTHORITY"
+      }
+    },
+    {
+      "index": 11,
+      "action": "ASSERT",
+      "state": "PASS",
+      "translation": {
+        "method": "SHARED_WEB_CONTRACT"
+      }
+    },
+    {
+      "index": 12,
+      "action": "ASSERT",
+      "state": "PASS",
+      "translation": {
+        "method": "REAL_CANONICAL_AUTHORITY"
+      }
+    }
+  ],
+  "canonicalProgressionEvents": 1,
+  "canonicalAuthority": "ONE_VOYAGE_REAL_SQLITE",
+  "authorityFixtureHash": "05ad9071affb978b316eafd582022c3d85012bf6a4fdc42a6dffa44e4a47e3c3",
+  "artifacts": [
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182627953Z-3816/offline-restart-canonical-reconcile/native-final.png",
+      "sha256": "d394e6a6e15dd992d2de9759659d8d6c87d984442b71364d3c4a715828e77023",
+      "kind": "SCREENSHOT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182627953Z-3816/offline-restart-canonical-reconcile/native-action-performance.json",
+      "sha256": "71986535ca9c240c34edadec45f2c2b4a3ebc3bed78d9d79892d93c8096d9be8",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182627953Z-3816/offline-restart-canonical-reconcile/native-guest-reboots.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182627953Z-3816/offline-restart-canonical-reconcile/native-client-readiness.json",
+      "sha256": "dff444123aaae24b6cee1c4f58bae868c846c69cd6e75611760bf573482d4d7c",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182627953Z-3816/offline-restart-canonical-reconcile/native-apple-input-diagnostics.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182627953Z-3816/offline-restart-canonical-reconcile/native-location-controls.json",
+      "sha256": "cec7f70e5d04afb69344dda0709033c240f7e2acf3ed446f733c2819743ed019",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182627953Z-3816/offline-restart-canonical-reconcile/native-location-diagnostics.json",
+      "sha256": "0eb680b4af5319f62917233a08affa94886d069d2e0741951337edc79f684775",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182627953Z-3816/offline-restart-canonical-reconcile/native-startups.json",
+      "sha256": "55657ef0b935bf58380e5499ea097ccb88c416e98138a3252e40089495f83bac",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182627953Z-3816/offline-restart-canonical-reconcile/authority/receipt.json",
+      "sha256": "d6fb6fb058060d84e91af7356a2c9b99618b9eb03daafe0a514029d18100a33a",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182627953Z-3816/offline-restart-canonical-reconcile/authority-command-diagnostics.json",
+      "sha256": "2e3ee6ffd9637235bc283e5408c05a106ce9dd029a4058b7af228c70a0fded0f",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182627953Z-3816/offline-restart-canonical-reconcile/native-steps.json",
+      "sha256": "bc8be9b415c91a4d8e409c5a3aa940f650b5f758bf8f74f4a88fe878d0280abe",
+      "kind": "TEST_RESULT"
+    }
+  ],
+  "externalRequirements": [
+    "REAL_DEVICE_REQUIRED:FIELD_ENVIRONMENT"
+  ],
+  "cleanup": {
+    "result": "PASS",
+    "ownedResources": [
+      "loopback-native-lab-server",
+      "native-app-process",
+      "native-app-private-data",
+      "owned-adb-reverse"
+    ],
+    "remainingResources": []
+  }
+}

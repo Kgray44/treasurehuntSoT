@@ -1,0 +1,44 @@
+[
+  {
+    "index": 1,
+    "diagnostic": {
+      "received": 1,
+      "invalid": 0,
+      "stale": 0,
+      "future": 0,
+      "outOfBounds": 0,
+      "insufficientAccuracy": 0,
+      "withinRequestedBounds": 1,
+      "canonicalObservations": 1,
+      "firstQualifiedFixElapsedMs": 3952.800000000003,
+      "acquisition": {
+        "provider": "gps",
+        "registered": true,
+        "enabled": true,
+        "permission": "GRANTED",
+        "nativeCallbacks": 1
+      }
+    }
+  },
+  {
+    "index": 9,
+    "diagnostic": {
+      "received": 1,
+      "invalid": 0,
+      "stale": 0,
+      "future": 0,
+      "outOfBounds": 0,
+      "insufficientAccuracy": 0,
+      "withinRequestedBounds": 1,
+      "canonicalObservations": 1,
+      "firstQualifiedFixElapsedMs": 3925.2000000000116,
+      "acquisition": {
+        "provider": "gps",
+        "registered": true,
+        "enabled": true,
+        "permission": "GRANTED",
+        "nativeCallbacks": 2
+      }
+    }
+  }
+]

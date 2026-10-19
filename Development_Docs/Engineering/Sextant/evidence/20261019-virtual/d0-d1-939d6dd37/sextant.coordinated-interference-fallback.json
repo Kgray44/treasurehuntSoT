@@ -1,0 +1,50 @@
+{
+  "version": 2,
+  "scenarioId": "sextant.coordinated-interference-fallback",
+  "scenarioVersion": 1,
+  "owningProject": "SEXTANT",
+  "scenarioFingerprint": "04182ab93fcf5b2055b58321142c6116d019107bced210e4c60402b5c5c06739",
+  "source": {
+    "sourceSha": "939d6dd3778db602318a3c29af4e3343c01f99f1",
+    "sourceTree": "b5564406431af89a105b253616a52c9caa0f491d",
+    "sourceFingerprint": "be94727776cfc9193f355908b581f9dba58785e0156855d8c559e0d99e948e77",
+    "dirty": false
+  },
+  "baseSha": "f6af0b0e151f15f1a23808413ccee531b9827ca7",
+  "tier": "D0",
+  "profile": "synthetic",
+  "hostOs": "win32 10.0.26300",
+  "runtimeVersion": "v24.18.0",
+  "capabilitySnapshot": [
+    "device.motion",
+    "device.magnetic-field"
+  ],
+  "physicalOrVirtual": "VIRTUAL",
+  "startedAt": "2026-10-19T18:25:48.599Z",
+  "completedAt": "2026-10-19T18:25:48.611Z",
+  "assertions": [
+    {
+      "id": "sextant.phase4.coordinated-interference-fallback",
+      "state": "PASS"
+    }
+  ],
+  "evidenceClass": "PROVIDER_SIMULATION_PROVEN",
+  "unsupportedCapabilities": [],
+  "requiredFutureGates": [
+    "D4_CORE_NATIVE_BRINGUP_REQUIRED",
+    "D4_REAL_DEVICE_REQUIRED_FOR_PHYSICAL_CLAIMS",
+    "D5_FIELD_REQUIRED_FOR_FIELD_CLAIMS",
+    "OWNER_ACCEPTANCE_REQUIRED"
+  ],
+  "artifacts": [],
+  "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+  "cleanupReceipt": {
+    "result": "PASS",
+    "ownedResources": [
+      "bounded-synthetic-series",
+      "ephemeral-field-model"
+    ],
+    "remainingResources": []
+  },
+  "passFailDisposition": "PASS"
+}

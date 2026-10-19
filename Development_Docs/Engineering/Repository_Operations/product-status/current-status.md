@@ -3,7 +3,7 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-10-12
+last_reviewed: 2026-10-19
 ---
 
 # Current status
@@ -11,8 +11,10 @@ last_reviewed: 2026-10-12
 The [2026-10-19 Sextant continuation](../../Sextant/Project_Sextant_Phase_4_Virtual_Completion_20261019.md)
 reconciles current accepted main and repairs native location pause, bounded
 interruption recovery, relative-attitude sharing and stale output replies.
-Current-source focused checks pass; new D2/D3 and rendered consumer evidence
-remain pending. The current planner confirms 170 affected surfaces and 118
+The expanded source passes 327 focused checks and 59 D0/D1 scenarios. Android
+idle/standby recovery and selected iOS permission/geofence cases pass with exact
+source and cleanup receipts. Normal native Device journeys and broader rendered
+consumer acceptance remain pending. The current planner confirms 170 affected surfaces and 116
 missing registrations. Reach diagnostics are accepted on main; Crossdeck #721
 is still unmerged. The following R1 accounting and older qualification results
 retain their historical source identities.
@@ -23,14 +25,14 @@ check. A recorded Crossdeck/Helm boundary permits the compatibility wrapper to u
 the unchanged authorization seam; the shared Journal's 28 regression checks pass.
 Actual route continuity and full consumer acceptance still require capture. R1 is
 at iteration 2/3 with no recapture after correcting a trusted-reference binding.
-Two new declarations register 12 journeys on 22 paths; accepted Reach main adds
-one pairing declaration. The current planner still blocks 118 unregistered paths,
+The R1 source registered 12 journeys on 22 paths; accepted Reach main added
+one pairing declaration. That source blocked 118 unregistered paths,
 and all original 141 require final-source capture/acceptance. The earlier password
-role blocker is refuted by installed Playwright source; approved diagnostics and
-the conditional Crossdeck retry remain unaccepted dependencies.
+role blocker is refuted by installed Playwright source. Reach diagnostics are now
+accepted; the conditional Crossdeck retry remains unmerged.
 See the [follow-up ledger](../../Sextant/phase4-acceptance-followup-r1-ledger.json).
 
-Sextant Phase 4 is an implementation candidate with native ownership, canonical
+Historical Sextant Phase 4 receipts describe an implementation candidate with native ownership, canonical
 transport, coordinated shared-lab scenarios and ordinary Devices controls under
 qualification. Four Android virtual profiles passed their registered scenarios;
 actual native Devices controls and OS lifecycle checks passed. Apple native tests,

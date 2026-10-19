@@ -1,0 +1,51 @@
+[
+  {
+    "operation": "counts",
+    "outcome": "SUCCEEDED",
+    "elapsedMs": 5,
+    "startedAfterMs": 0,
+    "failureCategory": null
+  },
+  {
+    "operation": "authorize",
+    "outcome": "SUCCEEDED",
+    "elapsedMs": 15,
+    "startedAfterMs": 1,
+    "failureCategory": null
+  },
+  {
+    "operation": "submit",
+    "outcome": "SUCCEEDED",
+    "elapsedMs": 36,
+    "startedAfterMs": 1,
+    "failureCategory": null
+  },
+  {
+    "operation": "counts",
+    "outcome": "SUCCEEDED",
+    "elapsedMs": 12,
+    "startedAfterMs": 2,
+    "failureCategory": null
+  },
+  {
+    "operation": "counts",
+    "outcome": "SUCCEEDED",
+    "elapsedMs": 4,
+    "startedAfterMs": 1,
+    "failureCategory": null
+  },
+  {
+    "operation": "counts",
+    "outcome": "SUCCEEDED",
+    "elapsedMs": 3,
+    "startedAfterMs": 0,
+    "failureCategory": null
+  },
+  {
+    "operation": "cleanup",
+    "outcome": "SUCCEEDED",
+    "elapsedMs": 4,
+    "startedAfterMs": 0,
+    "failureCategory": null
+  }
+]

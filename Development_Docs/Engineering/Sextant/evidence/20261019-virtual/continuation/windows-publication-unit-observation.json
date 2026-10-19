@@ -1,0 +1,15 @@
+{
+  "classification": "LOCAL_HOST_LIMITATION_OBSERVATION_NOT_FULL_TEST_REPORT",
+  "source": "0d8b3c7841966a1d1c8b5dae21570b1043dc7915",
+  "host": "win32",
+  "node": "v24.18.0",
+  "tests": 14,
+  "passed": 1,
+  "failed": 13,
+  "cause": "POSIX-only process.getuid and file ownership requirements are unavailable on Windows",
+  "authorityBlob": "8850b6c55bdf52eb110846b40c6571cd426ab43b",
+  "testBlob": "cd9a515972e7c7401767809dd60cf20e0330ce52",
+  "protectedMainBlobsIdentical": true,
+  "originalOutput": "Retained in this chat tool result; no full output file captured",
+  "action": "Run existing assertions unchanged on the supported hosted Linux/macOS launch paths"
+}

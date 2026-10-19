@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "toolExit": "PASS",
+  "finalizationDeadlineMs": 240000,
+  "finalizationTimedOut": false,
+  "finalizationElapsedMs": 45105,
+  "testCounts": {
+    "result": "PASS",
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0
+  }
+}

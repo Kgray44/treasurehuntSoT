@@ -1,0 +1,46 @@
+{
+  "version": 2,
+  "scenarioId": "sextant.consumer-lease-sharing",
+  "scenarioVersion": 1,
+  "owningProject": "SEXTANT",
+  "scenarioFingerprint": "29a07e6d13cee0cf6cb4a414596b4c34496a4a4436300a14abc6d58a1cff7ad5",
+  "source": {
+    "sourceSha": "939d6dd3778db602318a3c29af4e3343c01f99f1",
+    "sourceTree": "b5564406431af89a105b253616a52c9caa0f491d",
+    "sourceFingerprint": "be94727776cfc9193f355908b581f9dba58785e0156855d8c559e0d99e948e77",
+    "dirty": false
+  },
+  "baseSha": "f6af0b0e151f15f1a23808413ccee531b9827ca7",
+  "tier": "D0",
+  "profile": "synthetic",
+  "hostOs": "win32 10.0.26300",
+  "runtimeVersion": "v24.18.0",
+  "capabilitySnapshot": [
+    "device.capability-discovery"
+  ],
+  "physicalOrVirtual": "VIRTUAL",
+  "startedAt": "2026-10-19T18:25:48.461Z",
+  "completedAt": "2026-10-19T18:25:48.462Z",
+  "assertions": [
+    {
+      "id": "sextant.phase1.consumer-lease-sharing",
+      "state": "PASS"
+    }
+  ],
+  "evidenceClass": "PROVIDER_SIMULATION_PROVEN",
+  "unsupportedCapabilities": [],
+  "requiredFutureGates": [
+    "D4_REAL_DEVICE_REQUIRED_FOR_PHYSICAL_CLAIMS",
+    "D5_FIELD_REQUIRED_FOR_FIELD_CLAIMS"
+  ],
+  "artifacts": [],
+  "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+  "cleanupReceipt": {
+    "result": "PASS",
+    "ownedResources": [
+      "synthetic-provider"
+    ],
+    "remainingResources": []
+  },
+  "passFailDisposition": "PASS"
+}

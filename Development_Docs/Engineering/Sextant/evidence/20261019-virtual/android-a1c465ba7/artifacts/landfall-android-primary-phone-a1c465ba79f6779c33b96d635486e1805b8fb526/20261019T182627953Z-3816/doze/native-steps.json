@@ -1,0 +1,41 @@
+{
+  "steps": [
+    {
+      "index": 0,
+      "action": "POWER",
+      "state": "UNSUPPORTED",
+      "reason": "NATIVE_POWER_INJECTION_UNSUPPORTED",
+      "translation": {
+        "method": "OS_POWER_CONTROL",
+        "limitation": "Emulated OS constraints prove adaptation, not physical heat, battery endurance or OEM policy."
+      }
+    },
+    {
+      "index": 1,
+      "action": "LIFECYCLE",
+      "state": "PASS",
+      "translation": {
+        "method": "OS_LIFECYCLE",
+        "limitation": "Simulator/emulator lifecycle does not prove physical-device OEM suspension policy."
+      }
+    },
+    {
+      "index": 2,
+      "action": "ASSERT",
+      "state": "PASS",
+      "translation": {
+        "method": "SHARED_WEB_CONTRACT"
+      }
+    }
+  ],
+  "cleanup": {
+    "result": "PASS",
+    "ownedResources": [
+      "loopback-native-lab-server",
+      "native-app-process",
+      "native-app-private-data",
+      "owned-adb-reverse"
+    ],
+    "remainingResources": []
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "requests": {
+    "documents": 3,
+    "workers": 1,
+    "scripts": 2
+  },
+  "stages": [
+    {
+      "stage": "ENTRY",
+      "elapsedMs": 4015
+    },
+    {
+      "stage": "RESTORE_LEASE",
+      "elapsedMs": 4019
+    },
+    {
+      "stage": "LEASE_RESTORED",
+      "elapsedMs": 4025
+    },
+    {
+      "stage": "REGISTER_WORKER",
+      "elapsedMs": 4031
+    },
+    {
+      "stage": "WAITING_WORKER",
+      "elapsedMs": 4062
+    },
+    {
+      "stage": "WAITING_CONTROL",
+      "elapsedMs": 4182
+    },
+    {
+      "stage": "WORKER_CONTROLLED",
+      "elapsedMs": 4188
+    },
+    {
+      "stage": "SCENARIO_RECEIVED",
+      "elapsedMs": 4197
+    },
+    {
+      "stage": "PASSIVE_PERMISSION",
+      "elapsedMs": 4197
+    },
+    {
+      "stage": "PERMISSION_READ",
+      "elapsedMs": 4199
+    },
+    {
+      "stage": "READY_POST",
+      "elapsedMs": 4223
+    },
+    {
+      "stage": "ENTRY",
+      "elapsedMs": 7238
+    },
+    {
+      "stage": "RESTORE_LEASE",
+      "elapsedMs": 7239
+    },
+    {
+      "stage": "LEASE_RESTORED",
+      "elapsedMs": 7246
+    },
+    {
+      "stage": "REGISTER_WORKER",
+      "elapsedMs": 7247
+    },
+    {
+      "stage": "WAITING_WORKER",
+      "elapsedMs": 7251
+    },
+    {
+      "stage": "WAITING_CONTROL",
+      "elapsedMs": 7261
+    },
+    {
+      "stage": "WORKER_CONTROLLED",
+      "elapsedMs": 7262
+    },
+    {
+      "stage": "SCENARIO_RECEIVED",
+      "elapsedMs": 7295
+    },
+    {
+      "stage": "PASSIVE_PERMISSION",
+      "elapsedMs": 7298
+    },
+    {
+      "stage": "PERMISSION_READ",
+      "elapsedMs": 7301
+    },
+    {
+      "stage": "READY_POST",
+      "elapsedMs": 7323
+    },
+    {
+      "stage": "CONTROL_STEP_RECEIVED",
+      "elapsedMs": 7441
+    },
+    {
+      "stage": "CONTROL_RESULT_PREPARED",
+      "elapsedMs": 7447
+    },
+    {
+      "stage": "CONTROL_STEP_RECEIVED",
+      "elapsedMs": 7460
+    },
+    {
+      "stage": "CONTROL_RESULT_PREPARED",
+      "elapsedMs": 7466
+    },
+    {
+      "stage": "CONTROL_STEP_RECEIVED",
+      "elapsedMs": 7586
+    },
+    {
+      "stage": "CONTROL_RESULT_PREPARED",
+      "elapsedMs": 7589
+    }
+  ],
+  "readyAcknowledgments": 2
+}

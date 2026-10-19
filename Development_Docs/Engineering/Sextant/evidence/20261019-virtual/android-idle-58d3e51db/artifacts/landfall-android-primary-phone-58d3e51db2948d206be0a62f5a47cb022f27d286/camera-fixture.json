@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "synthetic": true,
+  "source": {
+    "sourceSha": "58d3e51db2948d206be0a62f5a47cb022f27d286",
+    "sourceTree": "57b9a21896631c1c6f9e80f0a87eaa84d476d330",
+    "dirty": false,
+    "sourceFingerprint": "ef7c769a36eae6d66ab5b2b154898188a167e59efaa421b4f70939c401ea6228"
+  },
+  "scope": {
+    "taleId": "fixture-tale",
+    "publishedVersionId": "version-1",
+    "worldspaceId": "town",
+    "waypointId": "town-arrival",
+    "id": "lab-installation",
+    "medium": "QR"
+  },
+  "keyId": "synthetic-camera-key",
+  "publicKey": {
+    "crv": "Ed25519",
+    "x": "vbRTMlMraoLVGNpTqhLslNxhWTxinZXJGwS3gwzaB8g",
+    "kty": "OKP"
+  },
+  "imageSha256": "14a96ba6f50e4d6c38491e0e177dcae2f14cce9c2bc008a26f155e1598d07ba6",
+  "tokenSha256": "728b2b54519843e4a12da4f7622304abdd278da895a1c161ff9d0b41a52eb474",
+  "acquisition": "EMULATOR_IMAGE_FILE_CAMERA",
+  "physicalPresence": "NOT_PROVEN",
+  "canComplete": false
+}

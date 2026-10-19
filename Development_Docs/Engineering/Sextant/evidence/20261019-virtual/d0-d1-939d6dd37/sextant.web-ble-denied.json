@@ -1,0 +1,49 @@
+{
+  "version": 2,
+  "scenarioId": "sextant.web-ble-denied",
+  "scenarioVersion": 1,
+  "owningProject": "SEXTANT",
+  "scenarioFingerprint": "cb4f7c4e806bad1bd48d0562118c9a15721c35176e961cc110e8bfdb6f60e26c",
+  "source": {
+    "sourceSha": "939d6dd3778db602318a3c29af4e3343c01f99f1",
+    "sourceTree": "b5564406431af89a105b253616a52c9caa0f491d",
+    "sourceFingerprint": "be94727776cfc9193f355908b581f9dba58785e0156855d8c559e0d99e948e77",
+    "dirty": false
+  },
+  "baseSha": "f6af0b0e151f15f1a23808413ccee531b9827ca7",
+  "tier": "D1",
+  "profile": "browser-api-emulation",
+  "hostOs": "win32 10.0.26300",
+  "runtimeVersion": "v24.18.0",
+  "capabilitySnapshot": [
+    "device.nearby-hardware"
+  ],
+  "physicalOrVirtual": "VIRTUAL",
+  "startedAt": "2026-10-19T18:25:48.541Z",
+  "completedAt": "2026-10-19T18:25:48.542Z",
+  "assertions": [
+    {
+      "id": "sextant.phase3.web-ble-denied",
+      "state": "PASS"
+    }
+  ],
+  "evidenceClass": "BROWSER_EMULATION_PROVEN",
+  "unsupportedCapabilities": [],
+  "requiredFutureGates": [
+    "D4_REAL_DEVICE_REQUIRED_FOR_PHYSICAL_CLAIMS",
+    "D5_FIELD_REQUIRED_FOR_FIELD_CLAIMS",
+    "OWNER_ACCEPTANCE_REQUIRED"
+  ],
+  "artifacts": [],
+  "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+  "cleanupReceipt": {
+    "result": "PASS",
+    "ownedResources": [
+      "synthetic-media-resources",
+      "emulated-radio-listeners",
+      "bounded-nearby-timers"
+    ],
+    "remainingResources": []
+  },
+  "passFailDisposition": "PASS"
+}

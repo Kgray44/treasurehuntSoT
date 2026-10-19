@@ -1,0 +1,235 @@
+{
+  "schemaVersion": 1,
+  "classification": "ENGINEERING_EVIDENCE_NOT_PHASE_ACCEPTANCE",
+  "request": "Sextant Phase 4 Completion 2026-10-19",
+  "ownerThread": "01a15554-f503-7760-9d95-aaa70a6936e9",
+  "status": "IN_PROGRESS",
+  "initialCandidate": "5ff2739776513b8f8ed20c1cb661c164216d0eeb",
+  "protectedBase": "f6af0b0e151f15f1a23808413ccee531b9827ca7",
+  "currentSoftwareCandidate": "fb937bbd04a98b07dd94b325682ceb654c8c4c5c",
+  "pr": "https://github.com/Kgray44/treasurehuntSoT/pull/709",
+  "independentSourceReview": {
+    "reviewerContext": "/root/sextant_source_review",
+    "builderContext": "/root",
+    "initialReviewedSource": "a0a5f9c373ca727a854568852daecdc1913af210",
+    "finalReviewedSource": "939d6dd3778db602318a3c29af4e3343c01f99f1",
+    "disposition": "ALL_REPORTED_SOURCE_FINDINGS_RESOLVED",
+    "findings": [
+      {
+        "id": "SX4-20261019-001",
+        "priority": 1,
+        "finding": "Pause omitted native location",
+        "resolution": "All registry permission groups participate in pause, resume and revoke"
+      },
+      {
+        "id": "SX4-20261019-002",
+        "priority": 2,
+        "finding": "Expected native interruption permanently quarantined the provider",
+        "resolution": "Expected interruption ends the consumer and permits fresh explicit acquisition"
+      },
+      {
+        "id": "SX4-20261019-003",
+        "priority": 2,
+        "finding": "Relative attitude implicitly requested conflicting absolute north",
+        "resolution": "Absolute orientation uses a separate native provider family"
+      },
+      {
+        "id": "SX4-20261019-004",
+        "priority": 2,
+        "finding": "Cancelled haptic failure cancelled a successor",
+        "resolution": "Native and semantic output failures respect captured owner epochs"
+      },
+      {
+        "id": "SX4-20261019-005",
+        "priority": 2,
+        "finding": "Radio declarations ignored operational state or ranging permission",
+        "resolution": "Operational availability and platform ranging grant remain separate from support and lifecycle"
+      },
+      {
+        "id": "SX4-20261019-006",
+        "priority": 2,
+        "finding": "Late cleanup could affect a successor",
+        "resolution": "Cleanup acknowledgement is shared and awaited; broker callbacks check active identity"
+      },
+      {
+        "id": "SX4-20261019-007",
+        "priority": 2,
+        "finding": "Nearby state changes did not refresh cached capability declarations",
+        "resolution": "Passive native state subscription refreshes one generation-bound snapshot and is disposed"
+      }
+    ],
+    "additionalBuilderRegression": "Late cadence replies cannot fail a successor lease",
+    "reviewerRanTests": false,
+    "scope": "INDEPENDENT_SOURCE_REVIEW_ONLY_NOT_RENDERED_OR_NATIVE_OR_PHYSICAL_ACCEPTANCE",
+    "additionalContinuation": {
+      "source": "58d3e51db2948d206be0a62f5a47cb022f27d286",
+      "disposition": "REVIEWER_CONFIRMED_BOTH_FINDINGS_RESOLVED",
+      "findings": [
+        {
+          "id": "SX4-20261019-008",
+          "finding": "Capability restoration revived consumers while cleanup queued",
+          "resolution": "Synchronous ENDED invalidation before resource cleanup with busy-queue regression"
+        },
+        {
+          "id": "SX4-20261019-009",
+          "finding": "Synthetic process case overstated generation isolation",
+          "resolution": "Claim narrowed; separate native transport test delivers old lease/generation and verifies fail-closed behavior"
+        }
+      ],
+      "reviewerRanTests": false,
+      "scope": "SOURCE_REVIEW_ONLY"
+    }
+  },
+  "localChecks": {
+    "focusedTests": {
+      "passed": 327,
+      "failed": 0,
+      "source": "58d3e51db2948d206be0a62f5a47cb022f27d286",
+      "qualification": false
+    },
+    "typeScript": "PASS",
+    "deterministicScenarios": {
+      "passed": 59,
+      "failed": 0,
+      "sourceSha": "58d3e51db2948d206be0a62f5a47cb022f27d286",
+      "tiers": {
+        "D0": 44,
+        "D1": 15
+      },
+      "dirty": false
+    },
+    "privacyScan": "PASS_AT_58D3E51DB_SOFTWARE_DELTA",
+    "docsValidate": "PASS",
+    "featureCatalog": "NO_CHANGE_REQUIRED",
+    "productionBuild": {
+      "source": "939d6dd3778db602318a3c29af4e3343c01f99f1",
+      "result": "PASS_BUILD",
+      "localPreparation": "DEVELOPMENT_BUILD_LINK_OUTSIDE_DEPENDENCIES_BEFORE_BROWSER_EXECUTION",
+      "cleanup": "PASS"
+    }
+  },
+  "hosted": [
+    {
+      "platform": "ANDROID",
+      "tier": "D2",
+      "profile": "primary-phone",
+      "sourceSha": "a1c465ba79f6779c33b96d635486e1805b8fb526",
+      "transportSha": "4dea0f84279ea103abd66c24a8ed94c77a6217a3",
+      "runId": "39301316984",
+      "status": "HARVESTED_FAILURE",
+      "cleanup": "PASS",
+      "scenarios": {
+        "total": 12,
+        "passed": 11,
+        "failed": 0,
+        "unsupported": 1
+      },
+      "unsupported": "doze: NATIVE_POWER_INJECTION_UNSUPPORTED",
+      "nativeInstrumentation": "PASS",
+      "artifacts": 163
+    },
+    {
+      "platform": "IOS",
+      "tier": "D3",
+      "profile": "primary-phone",
+      "sourceSha": "a1c465ba79f6779c33b96d635486e1805b8fb526",
+      "transportSha": "c896eb6c1954ee4a143a8f9e9a1a893d79952358",
+      "runId": "39301326349",
+      "status": "HARVESTED_SUCCESS",
+      "cleanup": "PASS",
+      "scenarios": {
+        "total": 3,
+        "passed": 3,
+        "failed": 0,
+        "unsupported": 0
+      },
+      "nativeTests": {
+        "passed": 31,
+        "failed": 0,
+        "expectedSkipped": 1
+      },
+      "artifacts": 6507
+    },
+    {
+      "platform": "ANDROID",
+      "tier": "D2",
+      "profile": "primary-phone",
+      "sourceSha": "58d3e51db2948d206be0a62f5a47cb022f27d286",
+      "transportSha": "985814e4686399e7698799b858e3afb7092f5c09",
+      "runId": "39306503567",
+      "status": "HARVESTED_SUCCESS",
+      "scenarios": {
+        "total": 2,
+        "passed": 2,
+        "failed": 0,
+        "unsupported": 0
+      },
+      "scope": ["android-doze-recovery", "android-standby-recovery"],
+      "osReadback": "ENTRY_AND_WAKE_CONFIRMED",
+      "nativeInstrumentation": "PASS",
+      "cleanup": "PASS",
+      "artifacts": 35
+    },
+    {
+      "platform": "IOS",
+      "tier": "D3",
+      "profile": "primary-phone",
+      "sourceSha": "58d3e51db2948d206be0a62f5a47cb022f27d286",
+      "transportSha": "b4a48aea1d387a389e5f4d0acdda30c9c9975426",
+      "runId": "39306514221",
+      "status": "IN_PROGRESS",
+      "scope": "companion-only native tests plus normal Devices product XCTest under owned generic runtime",
+      "cleanup": "PENDING"
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "939d6dd3778db602318a3c29af4e3343c01f99f1",
+      "runId": "39304482251",
+      "status": "PASS_DEVELOPMENT_CASE_NOT_ACCEPTANCE",
+      "cases": 2,
+      "cleanup": "PASS",
+      "qualification": false
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "1c8fc3abbbc2af35e3618c46df125bd35a7ad948",
+      "transportSha": "9acdcad92d818e3214e8e49c89f9aa412ff05d3d",
+      "runId": "39307522697",
+      "status": "HARVESTED_FAILURE_BEFORE_BROWSER_EXECUTION",
+      "scope": "ordinary synthetic consumer journeys",
+      "cleanup": "TRANSPORT_BRANCH_PASS_NO_BROWSER_WORKER_STARTED",
+      "failure": "SOUNDING_LINE_PRIVATE_PUBLICATION_OUTPUT_INITIALIZATION_FAILED"
+    }
+  ],
+  "experience": {
+    "historicalObligations": 141,
+    "historicalFamilies": 13,
+    "currentAffectedSurfaces": 170,
+    "currentUnregisteredSurfaces": 116,
+    "capturedOrAcceptedByThisContinuation": 0,
+    "planner": "PRODUCT_EXPERIENCE_UNREGISTERED_SURFACE",
+    "crossdeck721": "OPEN_UNMERGED_NOT_CONSUMED",
+    "reachDiagnostics": "PROTECTED_ACCEPTED_ON_BASE",
+    "historicalAccounting": "PRESERVED_SEXTANT_3_OF_3_CROSSDECK_10_OF_3_R1_2_OF_3",
+    "registeredNewPlayerWorkspaceSurfaces": 2,
+    "remainingSoftware": "116 unregistered surfaces plus canonical populated/adverse fixtures and required protected capture/review; registrations alone qualify none",
+    "independentDevelopmentJourneyReview": {
+      "source": "0d8b3c7841966a1d1c8b5dae21570b1043dc7915",
+      "reviewer": "/root/sextant_source_review",
+      "disposition": "THREE_SOURCE_FINDINGS_REPAIRED_AND_CONFIRMED",
+      "scope": "SOURCE_REVIEW_ONLY_NO_VISUAL_OR_QUALIFICATION_ACCEPTANCE"
+    }
+  },
+  "externalGates": [
+    "D4_CORE_REAL_DEVICE_BRING_UP",
+    "PERSONAL_APPLE_ACCOUNT_PROVISIONING_AND_PHYSICAL_SIGNING_EXPLICITLY_DEFERRED",
+    "ACTUAL_SENSOR_HAPTIC_RF_ACCURACY",
+    "OWNER_PRODUCT_ACCEPTANCE"
+  ],
+  "phase4Accepted": false,
+  "protectedIntegration": "NOT_READY_PENDING_REQUIRED_SOFTWARE_CONSUMER_VIRTUAL_AND_PHYSICAL_GATES",
+  "phase5Started": false,
+  "evidencePublication": "evidence/20261019-virtual/publication-index.json"
+}

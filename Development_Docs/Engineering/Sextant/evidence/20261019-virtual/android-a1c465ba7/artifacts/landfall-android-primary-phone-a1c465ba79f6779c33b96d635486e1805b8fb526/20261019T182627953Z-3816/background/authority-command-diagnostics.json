@@ -1,0 +1,23 @@
+[
+  {
+    "operation": "counts",
+    "outcome": "SUCCEEDED",
+    "elapsedMs": 17,
+    "startedAfterMs": 2,
+    "failureCategory": null
+  },
+  {
+    "operation": "counts",
+    "outcome": "SUCCEEDED",
+    "elapsedMs": 4,
+    "startedAfterMs": 1,
+    "failureCategory": null
+  },
+  {
+    "operation": "cleanup",
+    "outcome": "SUCCEEDED",
+    "elapsedMs": 6,
+    "startedAfterMs": 0,
+    "failureCategory": null
+  }
+]

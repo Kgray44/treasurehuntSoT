@@ -1,4 +1,5 @@
 * text=auto eol=lf
+/Development_Docs/Engineering/Sextant/evidence/20261019-virtual/** -text -whitespace
 *.cmd text eol=crlf
 # Preserve immutable synthetic evaluation archive bytes across Windows checkouts.
 Development_Docs/Projects/Project_Parallax/evidence/owner-refinements/model-comparison/*.json.txt -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "state": "OBSERVED",
+  "delivery": {
+    "foregroundNotifications": 2,
+    "backgroundNotifications": 1,
+    "sceneForegroundNotifications": 2,
+    "sceneBackgroundNotifications": 1,
+    "foregroundQueued": 2,
+    "backgroundQueued": 1,
+    "foregroundDelivered": 2,
+    "backgroundDelivered": 1
+  },
+  "unavailableReason": null
+}
