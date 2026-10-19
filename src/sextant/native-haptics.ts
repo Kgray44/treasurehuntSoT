@@ -44,7 +44,7 @@ export class NativeHapticAdapter implements SemanticHapticAdapter {
         }),
       ]);
     } catch (error) {
-      this.cancel();
+      if (epoch === this.epoch && this.owner === leaseId) this.cancel();
       throw error;
     } finally {
       clearTimeout(timer);

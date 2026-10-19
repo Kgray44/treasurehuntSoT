@@ -10,6 +10,13 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 
 # Feature status
 
+The [2026-10-19 continuation](../../Sextant/Project_Sextant_Phase_4_Virtual_Completion_20261019.md)
+adds focused corrections to native pause/revocation, expected-interruption
+recovery, compatible local attitude, late acknowledgements and truthful radio
+availability. It grants no completed-feature promotion or Phase 4 acceptance.
+Current source still requires 118 experience registrations, consumer capture and
+review, virtual native qualification and the separate D4/owner gates.
+
 The authorized Sextant R1 follow-up corrects synthetic route identity and consumes
 the existing identity/legacy authorization seam in one agreed compatibility
 wrapper. Fixture validation and 28 shared Journal regression checks pass; rendered

@@ -1,0 +1,85 @@
+---
+title: Sextant Phase 4 virtual completion continuation
+audience: engineering
+status: in-progress-not-phase-acceptance
+canonical_for: sextant-phase4-virtual-completion-20261019
+last_reviewed: 2026-10-19
+---
+
+# Sextant Phase 4 virtual completion continuation
+
+## Source and scope
+
+The owner authorized maximum attainable Phase 4 software and virtual completion
+on 2026-10-19. Continue existing draft PR #709; preserve Phase 1–3, the native
+architecture, historical failures and original receipt identities. No Phase 5,
+personal iPhone/Mac use, manual Apple account setup, provisioning or signing.
+This record is current engineering documentation. Linked JSON is engineering
+evidence; `.agents/scripts/sextant-phase4-reconcile.mjs` is active automation.
+
+Initial candidate: `5ff2739776513b8f8ed20c1cb661c164216d0eeb`.
+Fetched protected main: `f6af0b0e151f15f1a23808413ccee531b9827ca7`.
+Crossdeck #721 is OPEN/unmerged at `b55f5a32b7a6c42ba309db756f944e50145de123`.
+Only accepted main may supply its shared contracts. Protected Reach diagnostics
+are available on main; their former unavailability is stale.
+
+## Remaining-work inventory before implementation
+
+The governing authority is Sextant v1.0 §55.4, read with the Sextant v1.1,
+Landfall v1.2, Spatial Experience and shared Device Lab amendments. Earlier
+Phase 3 acceptance is retained through PR #701/#702. Historical qualification
+does not qualify this combined candidate.
+
+| Requirement                                                 | Initial classification                          | Remaining work                                                                                                   |
+| ----------------------------------------------------------- | ----------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| iOS Core Motion and Core Location seams                     | Implemented but untested on current source      | Reconcile main, inspect contracts, compile and run supported hosted XCTest/simulator cases                       |
+| Android sensor and position providers                       | Implemented but untested on current source      | Reconcile main, compile/instrument and exercise supported emulator controls                                      |
+| Haptics                                                     | Implemented but untested on current source      | Confirm semantic output, lifecycle refusal and visual fallback; physical sensation deferred                      |
+| BLE/NFC/UWB/Nearby Interaction                              | Partially implemented with capability fallbacks | Verify supported/unsupported and reconnect semantics; RF/accuracy deferred                                       |
+| Permissions, manifest and entitlements                      | Implemented but untested on current source      | Grant/deny/revoke/restore checks and no unsolicited acquisition                                                  |
+| Foreground/background/lock/power                            | Partially validated historically                | Refresh supported lifecycle tests; retain Apple foreground and Devices failures until corrected-source execution |
+| Deterministic provider lab                                  | Implemented and validated on historical source  | Current-source scenarios plus gap checks for suspend, restoration, stale/dropout/conflicts and semantic outputs  |
+| Crossdeck projection                                        | Dependent on another current project            | Test accepted contract only; do not consume unmerged #721                                                        |
+| Landfall/Watchglass/Reach/Parallax/Storytide seams          | Implemented but untested on current source      | Canonical ownership regression and supported consumer tests                                                      |
+| Device controls and accessible fallback                     | Partially implemented                           | Actual natural entry/action/return on desktop/mobile and reduced motion                                          |
+| Experience registrations                                    | Partially implemented                           | Recompute historical 141 paths/13 families and current planner, register actual journeys and fixture gaps        |
+| Synthetic consumer acceptance                               | Missing for final source                        | Build, source-bound capture, independent review and continuity checks                                            |
+| D2 Android execution                                        | Validated historically only                     | One bounded exact-source supported emulator dispatch; retain cleanup/logs/screenshots                            |
+| D3 iOS execution                                            | Partial historical failures                     | One bounded exact-source supported hosted simulator dispatch; no signing credentials                             |
+| Production build, TypeScript, privacy, focused verification | Missing for final source                        | Run after source reconciliation and focused repairs                                                              |
+| Protected readiness                                         | Dependent on acceptance gates                   | Assess final exact-source evidence; no bypass of exhausted review/protected custody                              |
+| D4 core bring-up                                            | External/physical only                          | Explicitly deferred: representative hardware, signing/provisioning and actual sensing/haptics/RF                 |
+| Owner acceptance                                            | External/physical only                          | Owner decision remains separate                                                                                  |
+
+The historical 141 obligations are an inventory to reconcile, not a current
+count or accepted experience. The source-only reconciliation receipt records
+each historical path, its present existence/affected status and exact current
+declarations, plus the authoritative planner disposition. Registration alone
+qualifies no surface. The previous 3/3 Sextant campaign, Crossdeck 10/3 and R1
+2/3 accounting remain immutable. This continuation does not mint additional
+protected campaign allowances.
+
+## Focused source corrections
+
+Independent read-only source review of combined source `a0a5f9c373ca727a854568852daecdc1913af210`
+identified location pause, permanent quarantine after normal native expiry,
+incompatible implicit absolute-orientation acquisition, cross-owner haptic
+cancellation and misleading radio declarations. The builder also reproduced a
+late cadence failure crossing a stop/restart boundary. Seven provider regression
+cases and one haptic regression failed before correction; the original results
+are retained separately from passing evidence.
+
+Pause/resume/revoke now apply to every capability permission group. Expected
+EXPIRED/BACKGROUND/POWER/PERMISSION termination ends consumers without permanently
+quarantining the provider. Fresh explicit acquisition is required; 60-second
+native bounds remain. Absolute orientation has its own family, so relative
+attitude does not implicitly request a conflicting north reference. Cadence and
+output replies retain their original generation/owner. Radio state keeps support,
+permission, operational availability and foreground lifecycle independent.
+
+Focused validation passes 273 tests in 38 suites, including the existing
+Sextant, coordinated-sensor, Crossdeck and Drydock boundaries. TypeScript passes
+on local Node 24.18.0/npm 11.9.0. Hosted native jobs use repository-pinned Node
+24.19.0; local feedback is not proof of that hosted toolchain or native execution.
+The Feature Catalog decision is NO CHANGE REQUIRED: these are corrections to an
+unaccepted candidate, not a completed major capability.

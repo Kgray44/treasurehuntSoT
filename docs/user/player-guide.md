@@ -22,6 +22,8 @@ Leaving the page or backgrounding the companion ends its input. Resume explicitl
 after returning. Declined permissions, unavailable hardware and limited readings
 retain screen controls. Calibration, interference and out-of-date readings show
 guidance on Devices; you can keep using screen controls while input is uncertain.
+Pausing also stops optional location input. After an interrupted or expired native
+session, choose the input again explicitly; an old session does not restart itself.
 Vibration is optional, respects reduced sensory preferences,
 and always has an on-screen confirmation. Native availability depends on the
 configured companion; physical-device qualification remains pending.

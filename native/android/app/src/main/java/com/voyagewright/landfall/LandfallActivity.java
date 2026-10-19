@@ -218,7 +218,10 @@ public final class LandfallActivity extends androidx.activity.ComponentActivity 
       case "SEXTANT_STATE":
         JSONObject sensorState=sextant.snapshot(foreground && !power.critical()),states=sensorState.getJSONObject("states"),hardwareStates=hardware.capabilityStates(foreground && !power.critical());
         for(java.util.Iterator<String> keys=hardwareStates.keys();keys.hasNext();){String key=keys.next();states.put(key,hardwareStates.get(key));}
-        states.put("sextant.nearby.uwb.range",SextantHardware.capabilityState(uwb.state().optBoolean("supported")?"SUPPORTED":"UNSUPPORTED","NOT_REQUIRED",foreground && !power.critical(),false));
+        JSONObject uwbState=uwb.state();
+        String rangingPermission=android.os.Build.VERSION.SDK_INT>=36?"android.permission.RANGING":"android.permission.UWB_RANGING";
+        String rangingGrant=checkSelfPermission(rangingPermission)==PackageManager.PERMISSION_GRANTED?"GRANTED":"PROMPT";
+        states.put("sextant.nearby.uwb.range",SextantHardware.capabilityState(uwbState.optBoolean("supported")?"SUPPORTED":"UNSUPPORTED",rangingGrant,foreground && !power.critical(),false,"READY".equals(uwbState.optString("state"))));
         states.put("sextant.lifecycle.background",SextantHardware.capabilityState("UNSUPPORTED","NOT_REQUIRED",foreground,false));
         states.put(SextantPosition.CAPABILITY,sextantPosition.snapshot(foreground && !power.critical()));
         reply(proxy,id,sensorState.put("hapticTier",sextantHaptics.tier()));break;

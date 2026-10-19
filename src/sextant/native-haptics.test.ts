@@ -10,7 +10,7 @@ const cue = {
   purpose: "Confirm optional selection",
   fallback: "Show the confirmation on screen",
 };
-function fixture() {
+function fixture(now = () => 10000) {
   const request = vi.fn<(op: SextantNativeOperation, payload?: Record<string, unknown>) => Promise<unknown>>(
     async (op) =>
       op === "SEXTANT_STATE"
@@ -20,9 +20,34 @@ function fixture() {
           : { accepted: true },
   );
   const adapter = new NativeHapticAdapter({ platform: "IOS", request, subscribe: () => () => {} }),
-    haptics = new SextantHaptics(adapter, () => 10000);
+    haptics = new SextantHaptics(adapter, now);
   return { request, adapter, haptics };
 }
+it("keeps a successor cue alive when an earlier cancelled request rejects", async () => {
+  vi.useFakeTimers();
+  let clock = 10000,
+    reject!: (error: Error) => void;
+  const f = fixture(() => clock);
+  await f.adapter.refresh();
+  f.request.mockImplementationOnce(
+    () =>
+      new Promise((_, no) => {
+        reject = no;
+      }),
+  );
+  const earlier = f.haptics.requestAsync(cue);
+  f.haptics.cancelConsumer(cue.consumerId);
+  clock += 500;
+  expect((await f.haptics.requestAsync({ ...cue, consumerId: "other" })).state).toBe("REQUESTED");
+  const newerLease = f.request.mock.calls.filter(([op]) => op === "SEXTANT_HAPTIC").at(-1)![1]!.leaseId;
+  reject(new Error("Old transport response lost"));
+  expect((await earlier).state).toBe("FALLBACK");
+  expect(f.haptics.status().active).toBe(true);
+  expect(
+    f.request.mock.calls.filter(([op, payload]) => op === "SEXTANT_HAPTIC_STOP" && payload?.leaseId === newerLease),
+  ).toEqual([]);
+  f.haptics.cancelConsumer("other");
+});
 it("requires native acknowledgement and retains visual fallback and physical uncertainty", async () => {
   vi.useFakeTimers();
   const f = fixture();

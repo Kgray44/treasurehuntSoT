@@ -8,6 +8,14 @@ last_reviewed: 2026-10-12
 
 # Sextant — Device Context
 
+The [2026-10-19 virtual completion continuation](Project_Sextant_Phase_4_Virtual_Completion_20261019.md)
+reconciles the existing draft with current main, inventories every Phase 4 gate,
+and records focused provider corrections and new source-bound virtual work.
+Its current planner still requires 118 registrations across 170 affected
+surfaces. The historical 141-path mapping remains intact. Reach diagnostics
+are now protected-accepted; Crossdeck #721 remains unmerged. Earlier counts
+and failed campaigns remain historical evidence, not current acceptance.
+
 The [bounded Phase 4 follow-up ledger](phase4-acceptance-followup-r1-ledger.json)
 preserves the exhausted original campaign and records the separately authorized
 R1 budget. Its first fixture repair passed the

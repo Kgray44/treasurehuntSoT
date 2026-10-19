@@ -21,8 +21,8 @@ class SextantHardware: NSObject, CBCentralManagerDelegate, NFCNDEFReaderSessionD
     private var bleScanId: String?
     init(emit: @escaping ([String: Any]) -> Void) { self.emit=emit; super.init() }
     var cameraBusy:Bool{qr != nil}
-    static func capabilityState(_ support:String,_ permission:String,_ foreground:Bool,_ busy:Bool=false)->[String:Any]{
-        ["support":support,"permission":permission,"availability":busy ? "BUSY":support == "SUPPORTED" && foreground && ["GRANTED","NOT_REQUIRED"].contains(permission) ? "AVAILABLE":"TEMPORARILY_UNAVAILABLE","calibration":"NOT_APPLICABLE","quality":"UNKNOWN","freshness":"UNKNOWN","lifecycle":foreground ? "FOREGROUND_ONLY":"SUSPENDED"]
+    static func capabilityState(_ support:String,_ permission:String,_ foreground:Bool,_ busy:Bool=false,_ operational:Bool=true)->[String:Any]{
+        ["support":support,"permission":permission,"availability":busy && foreground && operational ? "BUSY":support == "SUPPORTED" && foreground && operational && ["GRANTED","NOT_REQUIRED"].contains(permission) ? "AVAILABLE":"TEMPORARILY_UNAVAILABLE","calibration":"NOT_APPLICABLE","quality":"UNKNOWN","freshness":"UNKNOWN","lifecycle":foreground ? "FOREGROUND_ONLY":"SUSPENDED"]
     }
     func capabilityStates(foreground:Bool)->[String:Any]{
         func mediaPermission(_ type:AVMediaType)->String{switch AVCaptureDevice.authorizationStatus(for:type){case .authorized:return "GRANTED";case .denied:return "DENIED";case .restricted:return "RESTRICTED";default:return "PROMPT"}}
@@ -32,7 +32,7 @@ class SextantHardware: NSObject, CBCentralManagerDelegate, NFCNDEFReaderSessionD
         let bleSupport=bluetooth?.state == .unsupported ? "UNSUPPORTED":bluetooth == nil ? "UNKNOWN":"SUPPORTED"
         return ["sextant.media.camera":Self.capabilityState(AVCaptureDevice.default(for:.video)==nil ? "UNSUPPORTED":"SUPPORTED",mediaPermission(.video),foreground,cameraBusy),
                 "sextant.media.microphone":Self.capabilityState(AVCaptureDevice.default(for:.audio)==nil ? "UNSUPPORTED":"SUPPORTED",mediaPermission(.audio),foreground),
-                "sextant.nearby.ble.scan":Self.capabilityState(bleSupport,bluetoothPermission,foreground,scanning),
+                "sextant.nearby.ble.scan":Self.capabilityState(bleSupport,bluetoothPermission,foreground,scanning,bluetooth?.state == .poweredOn),
                 "sextant.nearby.ble.connect":Self.capabilityState("UNKNOWN",bluetoothPermission,foreground),
                 "sextant.nearby.nfc.read":Self.capabilityState(NFCNDEFReaderSession.readingAvailable ? "SUPPORTED":"UNSUPPORTED","NOT_REQUIRED",foreground,nfc != nil)]
     }

@@ -8,6 +8,15 @@ last_reviewed: 2026-10-12
 
 # Current status
 
+The [2026-10-19 Sextant continuation](../../Sextant/Project_Sextant_Phase_4_Virtual_Completion_20261019.md)
+reconciles current accepted main and repairs native location pause, bounded
+interruption recovery, relative-attitude sharing and stale output replies.
+Current-source focused checks pass; new D2/D3 and rendered consumer evidence
+remain pending. The current planner confirms 170 affected surfaces and 118
+missing registrations. Reach diagnostics are accepted on main; Crossdeck #721
+is still unmerged. The following R1 accounting and older qualification results
+retain their historical source identities.
+
 Sextant's separately authorized R1 follow-up preserves its original exhausted 3/3
 campaign. The synthetic route identity repair passed its isolated canonical-writer
 check. A recorded Crossdeck/Helm boundary permits the compatibility wrapper to use

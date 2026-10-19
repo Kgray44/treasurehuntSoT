@@ -12,6 +12,15 @@ private final class InjectedSextantSource:SextantSensorSource {
     func stop(){active.removeAll();stopped=true;emit=nil}
 }
 final class SextantSensorTests:XCTestCase {
+    func testRadioOperationalStateDoesNotInventPermissionOrSuspendForegroundLifecycle() {
+        let disabled=SextantHardware.capabilityState("SUPPORTED","GRANTED",true,false,false)
+        XCTAssertEqual(disabled["support"] as? String,"SUPPORTED")
+        XCTAssertEqual(disabled["permission"] as? String,"GRANTED")
+        XCTAssertEqual(disabled["availability"] as? String,"TEMPORARILY_UNAVAILABLE")
+        XCTAssertEqual(disabled["lifecycle"] as? String,"FOREGROUND_ONLY")
+        XCTAssertEqual(SextantHardware.capabilityState("SUPPORTED","DENIED",true)["availability"] as? String,"TEMPORARILY_UNAVAILABLE")
+        XCTAssertEqual(SextantHardware.capabilityState("SUPPORTED","GRANTED",true)["availability"] as? String,"AVAILABLE")
+    }
     @MainActor func testEmptyDiscoveryAndLifecycleDoNotCreateFitnessServices() {
         var altimeters=0,pedometers=0
         let source=CoreMotionSextantSource(makeAltimeter:{altimeters+=1;return CMAltimeter()},makePedometer:{pedometers+=1;return CMPedometer()})

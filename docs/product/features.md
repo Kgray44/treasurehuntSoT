@@ -15,6 +15,12 @@ sensors. Screen alternatives remain available. The [Phase 4 record](../../Develo
 separates source qualification, virtual native execution and the required physical
 core bring-up gate. Phase 4 is not formally accepted or integrated.
 
+The current Phase 4 continuation corrects location pause/revocation, explicit
+recovery after bounded native interruptions, shared local attitude and late
+sensor/feedback responses. Supported radios report their actual permission and
+operational availability. These corrections remain subject to virtual and
+consumer qualification in the [continuation record](../../Development_Docs/Engineering/Sextant/Project_Sextant_Phase_4_Virtual_Completion_20261019.md).
+
 The candidate's compatibility Journal route uses existing exact-Voyage
 authorization so identity Players select canonical reader state and legacy
 continuations retain their local state. This correction still requires rendered

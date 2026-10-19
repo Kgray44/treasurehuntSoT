@@ -226,10 +226,13 @@ export class SextantLeaseBroker {
             signal: active.controller.signal,
             updateClass,
             emit: (sample) => this.sample(active, sample),
-            fail: () => {
-              this.failed.add(id);
+            fail: (interruption) => {
+              if (!interruption) this.failed.add(id);
               active.controller.abort();
-              void this.cancelWhere((l) => l.provider === provider, "PROVIDER_FAILED").catch(() => {});
+              void this.cancelWhere(
+                (l) => l.provider === provider,
+                interruption ? `PROVIDER_${interruption}` : "PROVIDER_FAILED",
+              ).catch(() => {});
             },
           }),
         active.controller.signal,

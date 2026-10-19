@@ -20,6 +20,13 @@ last_reviewed: 2026-10-12
 
 ### Corrected
 
+- Sextant's Phase 4 candidate pauses and revokes native location alongside other
+  optional input, permits a fresh explicit acquisition after expected native
+  interruptions, isolates late sensor/output replies from newer leases, and
+  preserves compatible local orientation sharing. Native radio declarations
+  distinguish support, permission and operational availability. Current virtual
+  qualification and consumer acceptance remain required.
+
 - The Sextant Phase 4 candidate's compatibility Journal route now uses the existing
   exact-Voyage authorization result to select canonical identity reader state.
   Legacy continuation retains local reader state. Rendered continuation and final

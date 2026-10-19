@@ -72,7 +72,10 @@ class SextantHardware {
   SextantHardware(Activity activity,Consumer<JSONObject> emit){this.activity=activity;this.emit=emit;this.qr=new LandfallQrScanner((androidx.activity.ComponentActivity)activity,emit);}
   boolean cameraBusy(){return qr.active();}
   static JSONObject capabilityState(String support,String permission,boolean foreground,boolean busy)throws Exception {
-    return new JSONObject().put("support",support).put("permission",permission).put("availability",busy?"BUSY":support.equals("SUPPORTED") && foreground && (permission.equals("GRANTED") || permission.equals("NOT_REQUIRED"))?"AVAILABLE":"TEMPORARILY_UNAVAILABLE").put("calibration","NOT_APPLICABLE").put("quality","UNKNOWN").put("freshness","UNKNOWN").put("lifecycle",foreground?"FOREGROUND_ONLY":"SUSPENDED");
+    return capabilityState(support,permission,foreground,busy,true);
+  }
+  static JSONObject capabilityState(String support,String permission,boolean foreground,boolean busy,boolean operational)throws Exception {
+    return new JSONObject().put("support",support).put("permission",permission).put("availability",busy && foreground && operational?"BUSY":support.equals("SUPPORTED") && foreground && operational && (permission.equals("GRANTED") || permission.equals("NOT_REQUIRED"))?"AVAILABLE":"TEMPORARILY_UNAVAILABLE").put("calibration","NOT_APPLICABLE").put("quality","UNKNOWN").put("freshness","UNKNOWN").put("lifecycle",foreground?"FOREGROUND_ONLY":"SUSPENDED");
   }
   JSONObject capabilityStates(boolean foreground)throws Exception {
     android.content.pm.PackageManager features=activity.getPackageManager();JSONObject states=new JSONObject();
@@ -80,12 +83,14 @@ class SextantHardware {
     states.put("sextant.media.microphone",capabilityState(features.hasSystemFeature(PackageManager.FEATURE_MICROPHONE)?"SUPPORTED":"UNSUPPORTED",activity.checkSelfPermission(Manifest.permission.RECORD_AUDIO)==PackageManager.PERMISSION_GRANTED?"GRANTED":"PROMPT",foreground,false));
     String blePermission=Build.VERSION.SDK_INT>=31?(activity.checkSelfPermission(Manifest.permission.BLUETOOTH_SCAN)==PackageManager.PERMISSION_GRANTED && activity.checkSelfPermission(Manifest.permission.BLUETOOTH_CONNECT)==PackageManager.PERMISSION_GRANTED?"GRANTED":"PROMPT"):(activity.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED?"GRANTED":"PROMPT");
     String bleSupport=features.hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)?"SUPPORTED":"UNSUPPORTED";
-    states.put("sextant.nearby.ble.scan",capabilityState(bleSupport,blePermission,foreground,bleActive));
+    boolean bleOperational=false;
+    if(blePermission.equals("GRANTED"))try{BluetoothManager manager=(BluetoothManager)activity.getSystemService(Activity.BLUETOOTH_SERVICE);bleOperational=manager!=null && manager.getAdapter()!=null && manager.getAdapter().isEnabled();}catch(SecurityException ignored){}
+    states.put("sextant.nearby.ble.scan",capabilityState(bleSupport,blePermission,foreground,bleActive,bleOperational));
     // Existing native adapter owns discovery; generic GATT connection is not
     // inferred from scan support. A missing implementation stays unavailable.
     states.put("sextant.nearby.ble.connect",capabilityState("UNKNOWN",blePermission,foreground,false));
     NfcAdapter nfc=NfcAdapter.getDefaultAdapter(activity);
-    states.put("sextant.nearby.nfc.read",capabilityState(nfc==null?"UNSUPPORTED":"SUPPORTED","NOT_REQUIRED",foreground && nfc!=null && nfc.isEnabled(),nfcScanId!=null));
+    states.put("sextant.nearby.nfc.read",capabilityState(nfc==null?"UNSUPPORTED":"SUPPORTED","NOT_REQUIRED",foreground,nfcScanId!=null,nfc!=null && nfc.isEnabled()));
     return states;
   }
   String startBle(boolean foreground,String scanId){

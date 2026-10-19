@@ -10,6 +10,147 @@ import { SextantPermissionBroker } from "./permissions";
 afterEach(() => vi.useRealTimers());
 /** D0 transport double, not native execution or a platform/hardware receipt. */
 describe("production runtime selection over companion transport", () => {
+  function positionRuntime() {
+    const active = new Map<string, string>(),
+      listeners = new Set<(event: unknown) => void>();
+    const capabilityId = "sextant.position.observation";
+    const request = vi.fn(
+      async (operation: SextantNativeOperation, payload?: Record<string, unknown>): Promise<unknown> => {
+        if (operation === "SEXTANT_STATE")
+          return {
+            version: 1,
+            background: "FOREGROUND_ONLY",
+            states: Object.fromEntries(
+              Object.values(nativeSensorFamilies)
+                .flat()
+                .map((id) => [
+                  id,
+                  { ...unknownState(), support: "SUPPORTED", availability: "AVAILABLE", permission: "GRANTED" },
+                ]),
+            ),
+          };
+        if (operation === "SEXTANT_PERMISSION") return { state: "GRANTED" };
+        if (operation === "SEXTANT_START") {
+          const generation = crypto.randomUUID();
+          active.set(payload!.leaseId as string, generation);
+          return { accepted: true, generation, nativeMonotonicMs: 10000 };
+        }
+        if (operation === "SEXTANT_STOP") active.delete(payload!.leaseId as string);
+        return { accepted: true };
+      },
+    );
+    const runtime = new WebSextantRuntime(emulatedWebSensors().target, null, () => 10000, {
+      nativeTransport: {
+        platform: "IOS",
+        request,
+        subscribe(fn) {
+          listeners.add(fn);
+          return () => {
+            listeners.delete(fn);
+          };
+        },
+      },
+    });
+    const events: LeaseEvent[] = [];
+    const acquire = (requested = capabilityId, retry = false) =>
+      runtime.acquire(
+        {
+          consumerId: "landfall",
+          surfaceId: "phone",
+          purpose: "Optional input with screen fallback",
+          consent: true,
+          userInitiated: true,
+          capabilityId: requested,
+          retry,
+          updateClass: "INTERACTIVE",
+          minimumQuality: "MEDIUM",
+          maxAgeMs: 1000,
+          expiresAt: 130000,
+          frames:
+            requested === capabilityId
+              ? ["WGS84"]
+              : requested.includes("orientation")
+                ? ["LOCAL_ARBITRARY"]
+                : ["DEVICE"],
+          retentionClass: "EPHEMERAL",
+          foregroundRequirement: true,
+        },
+        (event) => events.push(event),
+      );
+    return { runtime, active, listeners, request, events, acquire };
+  }
+  it("acquires relative attitude alongside motion without requesting a conflicting north reference", async () => {
+    const f = positionRuntime(),
+      original = f.request.getMockImplementation()!;
+    f.request.mockImplementation(async (operation, payload) => {
+      if (
+        operation === "SEXTANT_START" &&
+        f.active.size &&
+        (payload?.capabilities as string[]).includes("sextant.orientation.absolute")
+      )
+        return { accepted: false };
+      return original(operation, payload);
+    });
+    try {
+      await f.acquire("sextant.motion.stability");
+      await f.acquire("sextant.orientation.relative");
+      expect(f.active.size).toBe(2);
+      expect(f.runtime.leases.diagnostics().activeLeases).toBe(2);
+    } finally {
+      await f.runtime.dispose();
+    }
+  });
+  it("revokes native position and accepts restored permission only on a fresh explicit retry", async () => {
+    const f = positionRuntime();
+    try {
+      await f.acquire();
+      await f.runtime.revoke();
+      expect(f.active.size).toBe(0);
+      await expect(f.acquire()).rejects.toThrow();
+      await f.acquire("sextant.position.observation", true);
+      expect(f.active.size).toBe(1);
+      expect(f.events.filter((event) => event.type === "OBSERVATION")).toEqual([]);
+    } finally {
+      await f.runtime.dispose();
+    }
+  });
+  it("pauses position acquisition and requires explicit resume before another lease", async () => {
+    const f = positionRuntime();
+    try {
+      await f.acquire();
+      expect(f.active.size).toBe(1);
+      await f.runtime.pause();
+      expect(f.active.size).toBe(0);
+      expect(f.events).toContainEqual({ type: "ENDED", reason: "PERMISSION_REVOKED_OR_PAUSED" });
+      await expect(f.acquire()).rejects.toThrow();
+      expect(() => f.runtime.resume(false)).toThrow("SEXTANT_USER_ACTION_REQUIRED");
+      f.runtime.resume(true);
+      await f.acquire();
+      expect(f.active.size).toBe(1);
+    } finally {
+      await f.runtime.dispose();
+    }
+  });
+  it.each(["EXPIRED", "PERMISSION", "BACKGROUND", "POWER"])(
+    "allows a fresh explicit acquisition after native %s without restoring the ended lease",
+    async (reason) => {
+      const f = positionRuntime();
+      try {
+        await f.acquire();
+        const [leaseId, generation] = [...f.active][0];
+        for (const listener of [...f.listeners]) listener({ type: "sextant-ended", leaseId, generation, reason });
+        await f.runtime.leases.idle();
+        expect(f.active.size).toBe(0);
+        expect(f.events).toContainEqual({ type: "ENDED", reason: `PROVIDER_${reason}` });
+        await f.acquire();
+        expect(f.active.size).toBe(1);
+        expect(f.active.has(leaseId)).toBe(false);
+        expect(f.events.filter((event) => event.type === "OBSERVATION")).toEqual([]);
+      } finally {
+        await f.runtime.dispose();
+      }
+    },
+  );
   it("releases a late native start acknowledgement after the consumer scope is cancelled", async () => {
     let acknowledge: ((value: unknown) => void) | undefined;
     const request = vi.fn(async (operation: SextantNativeOperation): Promise<unknown> => {

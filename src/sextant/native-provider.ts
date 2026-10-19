@@ -20,7 +20,10 @@ export const nativeSensorFamilies = {
     "sextant.motion.stability",
     "sextant.motion.moving",
   ],
-  orientation: ["sextant.orientation.relative", "sextant.orientation.absolute", "sextant.orientation.attitude"],
+  // Absolute north requires a different native reference. A relative consumer
+  // must not implicitly request it and invalidate an existing local-frame lease.
+  orientation: ["sextant.orientation.relative", "sextant.orientation.attitude"],
+  absolute: ["sextant.orientation.absolute"],
   heading: ["sextant.heading.estimate"],
   magnetic: ["sextant.magnetic.field", "sextant.magnetic.uncalibrated-field", "sextant.magnetic.bias"],
   pressure: ["sextant.pressure.observation"],
@@ -151,7 +154,7 @@ export class NativeSensorProvider implements SextantProvider {
     signal: AbortSignal;
     updateClass: UpdateClass;
     emit: (sample: ProviderSample) => void;
-    fail: () => void;
+    fail: (interruption?: "EXPIRED" | "BACKGROUND" | "POWER" | "PERMISSION") => void;
   }) {
     if (this.disposed || this.leaseId || context.signal.aborted) throw new Error("SEXTANT_NATIVE_START_REFUSED");
     const leaseId = crypto.randomUUID();
@@ -175,7 +178,7 @@ export class NativeSensorProvider implements SextantProvider {
         })
         .safeParse(input);
       if (ended.success && ended.data.leaseId === leaseId && ended.data.generation === this.generation) {
-        context.fail();
+        context.fail(ended.data.reason === "PROVIDER_ERROR" ? undefined : ended.data.reason);
         return;
       }
       const parsed = nativeSensorEventSchema.safeParse(input);
@@ -263,16 +266,26 @@ export class NativeSensorProvider implements SextantProvider {
     }
   }
   setUpdateClass(updateClass: UpdateClass) {
-    if (this.leaseId)
+    const leaseId = this.leaseId,
+      generation = this.generation,
+      fail = this.fail;
+    if (leaseId)
       void this.transport
         .request("SEXTANT_UPDATE", {
-          leaseId: this.leaseId,
+          leaseId,
           intervalMs: Math.max(this.definition.samplingBounds.minimumIntervalMs, updateInterval[updateClass]),
         })
         .then((r) => {
-          if ((r as { accepted?: unknown })?.accepted !== true) this.fail?.();
+          if (
+            this.leaseId === leaseId &&
+            this.generation === generation &&
+            (r as { accepted?: unknown })?.accepted !== true
+          )
+            fail?.();
         })
-        .catch(() => this.fail?.());
+        .catch(() => {
+          if (this.leaseId === leaseId && this.generation === generation) fail?.();
+        });
   }
   async stop() {
     const leaseId = this.leaseId;

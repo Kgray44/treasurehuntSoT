@@ -325,8 +325,7 @@ export class WebSextantRuntime {
   }
   async pause() {
     this.advanced.setPaused(true, false);
-    this.permissions.pause("PLATFORM_DEPENDENT");
-    for (const key of [motionKey, headingKey]) this.permissions.pause(key);
+    for (const key of new Set(this.capabilities.list().map((c) => c.permission))) this.permissions.pause(key);
     this.haptics.setPreferences(false, this.reducedSensory);
     await this.leases.idle();
     this.notify();
@@ -378,8 +377,8 @@ export class WebSextantRuntime {
   resume(userInitiated: boolean) {
     if (!userInitiated) throw new Error("SEXTANT_USER_ACTION_REQUIRED");
     this.advanced.setPaused(false, this.target?.document?.visibilityState !== "hidden");
-    this.permissions.resume("PLATFORM_DEPENDENT", userInitiated);
-    for (const key of [motionKey, headingKey]) this.permissions.resume(key, userInitiated);
+    for (const key of new Set(this.capabilities.list().map((c) => c.permission)))
+      this.permissions.resume(key, userInitiated);
     this.haptics.setPreferences(this.hapticsEnabled, this.reducedSensory);
     this.notify();
   }
@@ -390,7 +389,7 @@ export class WebSextantRuntime {
     this.notify();
   }
   async revoke() {
-    for (const key of [motionKey, headingKey]) this.permissions.set(key, "DENIED");
+    for (const key of new Set(this.capabilities.list().map((c) => c.permission))) this.permissions.set(key, "DENIED");
     this.haptics.cancel();
     await this.leases.idle();
     this.notify();

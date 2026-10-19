@@ -21,6 +21,13 @@ import static org.junit.Assert.*;
  * tests qualify software on the actual runtime, not magnetic or RF physics. */
 @RunWith(AndroidJUnit4.class)
 public final class SextantSensorTests {
+  @Test public void disabledRadioPreservesSupportPermissionAndForegroundLifecycle() throws Exception {
+    JSONObject state=SextantHardware.capabilityState("SUPPORTED","GRANTED",true,false,false);
+    assertEquals("SUPPORTED",state.getString("support"));assertEquals("GRANTED",state.getString("permission"));
+    assertEquals("TEMPORARILY_UNAVAILABLE",state.getString("availability"));assertEquals("FOREGROUND_ONLY",state.getString("lifecycle"));
+    assertEquals("AVAILABLE",SextantHardware.capabilityState("SUPPORTED","GRANTED",true,false,true).getString("availability"));
+    assertEquals("TEMPORARILY_UNAVAILABLE",SextantHardware.capabilityState("SUPPORTED","PROMPT",true,false,true).getString("availability"));
+  }
   @Test public void hapticLifecycleAndPreferenceGatesDoNotClaimPhysicalOutput() throws Exception {
     try(ActivityScenario<LandfallActivity> scenario=ActivityScenario.launch(LandfallActivity.class)) {
       scenario.onActivity(activity->{try{SextantHaptics haptics=new SextantHaptics(activity);JSONObject valid=new JSONObject().put("leaseId",UUID.randomUUID().toString()).put("enabled",true).put("reducedSensory",false).put("pattern",new JSONArray().put(15));

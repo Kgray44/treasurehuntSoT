@@ -97,6 +97,29 @@ function fixture(simulated = false, family: NativeSensorFamily = "magnetic") {
   };
 }
 describe("native semantic provider boundary (D0 transport doubles)", () => {
+  it.each(["rejected", "failed"])("ignores a late %s cadence update after a fresh acquisition", async (outcome) => {
+    const f = fixture();
+    let resolve!: (value: unknown) => void, reject!: (reason: Error) => void;
+    await f.start();
+    f.request.mockImplementationOnce(
+      () =>
+        new Promise((yes, no) => {
+          resolve = yes;
+          reject = no;
+        }),
+    );
+    f.provider.setUpdateClass("LOW_RATE");
+    await f.provider.stop();
+    await f.start();
+    if (outcome === "rejected") resolve({ accepted: false });
+    else reject(new Error("transport disconnected"));
+    await Promise.resolve();
+    await Promise.resolve();
+    expect(f.fail).not.toHaveBeenCalled();
+    f.send(f.event());
+    expect(f.emit).toHaveBeenCalledTimes(1);
+    await f.provider.stop();
+  });
   it("normalizes native position with an explicit WGS84 frame and bounded acquisition cadence", async () => {
     const f = fixture(false, "position");
     await f.start();

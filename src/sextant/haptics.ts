@@ -132,7 +132,7 @@ export class SextantHaptics {
         tier: this.adapter.tier,
       };
     } catch {
-      this.cancel();
+      if (epoch === this.epoch) this.cancel();
       return fallback("PLATFORM_FAILED");
     }
   }
