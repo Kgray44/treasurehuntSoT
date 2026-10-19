@@ -20,6 +20,14 @@ last_reviewed: 2026-10-19
 
 ### Corrected
 
+- The Sextant Phase 4 candidate clears Community query and advanced-filter
+  drafts when returning from a search to the default Harbor. An older unsent
+  query no longer returns after choosing Clear search and filters.
+- Community listing reviews use unique heading IDs and one review landmark;
+  anonymous comment/review prompts use valid sections within the main content.
+- Creator library search and sort controls have explicit accessible names.
+  Asset drawer and saved Sea Trial scenarios use valid named sections with
+  their existing content, controls and styling.
 - The Sextant Phase 4 consumer continuation corrects Voyage Atlas availability
   semantics to use a named section within the private Passport, avoiding an
   incorrectly nested complementary landmark. The Muster Chronicle card uses

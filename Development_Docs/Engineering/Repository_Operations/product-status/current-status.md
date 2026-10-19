@@ -16,11 +16,12 @@ idle/standby recovery and selected iOS permission/geofence cases pass with exact
 source and cleanup receipts. The actual Android WebView Device controls and paired
 Journal development cases pass. Normal iOS Devices proof requires canonical
 Darwin process-supervision support; broader rendered consumer acceptance remains
-pending. The Community source checkpoint confirms 175 affected surfaces and 74
+pending. The Creator authoring source checkpoint confirms 175 affected surfaces and 63
 missing registrations. Fresh four-variant consumer/resource runs pass at their
 recorded sources; independent rendered review clears the Passport contrast, safe
-preview and mobile authoring-rail repairs. Community and distinct Creator/Crew
-browser results and protected acceptance remain pending.
+preview and mobile authoring-rail repairs. Distinct Creator/Crew development proof now passes with clear independent
+rendered review. Community and authoring resource results and protected acceptance
+remain pending.
 Reach diagnostics are accepted on main; Crossdeck #721
 is still unmerged. The following R1 accounting and older qualification results
 retain their historical source identities.

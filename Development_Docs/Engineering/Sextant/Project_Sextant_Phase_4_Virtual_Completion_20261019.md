@@ -448,3 +448,48 @@ review tests and TypeScript/privacy/docs/features checks pass. Run 39330479919 i
 dispatched from 4e1afbc015; no browser outcome is claimed here. Historical Community
 captures are supplemental context; protected generic references establish general
 hierarchy only, with Community-specific reference/layout acceptance still open.
+
+Paired run 39331079907 subsequently passed all four variants at
+`a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167`. Independent review found no
+material defect in all 12 captures: each reopened Creator title differs while
+the refreshed Crew Lens keeps the original released title, clue and Inspect.
+All 42 original hashes match, maximum measured readiness is 955.9 ms, and supervised
+process trees, ports and transport resources are cleaned up. The Creator inspector
+is outside the mobile viewport captures. Videos, full-page completeness, animation
+behavior, native sensing, protected custody, the older single-persona contract and
+owner acceptance remain unestablished. The [paired originals](evidence/20261019-paired-clue/publication-index.json)
+preserve 42 members plus hosted receipt, dispatch and CI log.
+
+Community run 39330479919 at 4e1afbc015 failed all four variants at duplicate review
+landmarks after ordinary entry and all ten districts. Its [receipt/log subset](evidence/20261019-community-landmark-failure/publication-index.json)
+preserves original diagnostics: INCOMPLETE, LIMIT/FAILURE_ATTACHMENTS_INCOMPLETE,
+63 members, 50910077 raw bytes and 90550950 encrypted bytes. The wrapper repair
+cleared that point in run 39331845535 at cf06d1d855. Three variants subsequently
+failed actual empty-search recovery: returning to the default URL restored its
+older unsent query. One mobile variant with normal motion instead stopped at the Guide heading;
+its cause remains unconfirmed and is not explained by the clear-state repair.
+The [second original failure](evidence/20261019-community-clear-failure/publication-index.json)
+remains INCOMPLETE with LIMIT/FAILURE_ATTACHMENTS_INCOMPLETE, 90 members, 64726615
+raw bytes and 115132058 encrypted bytes. Both private encrypted bundles remain in
+owned artifacts with exact hashes; the Git indexes explicitly publish metadata/log
+subsets only. No diagnostic budget or collector validation is relaxed.
+The clear action now resets query and advanced drafts against its destination
+URL; the default-to-query-to-clear regression and all six component tests pass.
+Independent source review is clear; run 39333117664 at e49241ca31 is dispatched
+with every original Community assertion retained and no outcome claimed here.
+
+The [authoring source checkpoint](phase4-source-reconciliation-authoring-20261019.json)
+binds 175 affected surfaces and 63 registration gaps to `0e657cc757933df775fd6047bda13a1f489e7ff0`,
+covering 11 previous gaps without changing historical 141-path accounting. The new
+13-path declaration covers six actual owned Creator authoring panes and their
+visited components. It reuses the existing separate-owner/Crew fixture unchanged.
+Empty media/Waypoint/Artifact libraries, absent Living Chart, loaded current server
+Drydock checks and immutable Version review have ordinary navigation/return and
+unchanged two-Voyage/progress/edition/count assertions. Populated libraries/chart
+tools, uploads, installation/place/field-test panels, actual trials and publication
+remain separate requirements. Source-predicted corrections label existing controls
+and use same-named Asset drawer/Scenario ledger sections, retaining ledger styling
+and existing named-role assertions. The three existing component files pass 26
+tests; TypeScript, discovery, contract/docs/features checks and independent source
+review pass. Canonical Drydock state capture waits for all three loaded panels.
+Run 39332800305 is dispatched from 0e657cc757; no browser outcome is claimed here.

@@ -6,7 +6,7 @@
   "status": "IN_PROGRESS",
   "initialCandidate": "5ff2739776513b8f8ed20c1cb661c164216d0eeb",
   "protectedBase": "f6af0b0e151f15f1a23808413ccee531b9827ca7",
-  "currentSoftwareCandidate": "a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167",
+  "currentSoftwareCandidate": "e49241ca31989ed1678e1bacea14469f8a35d525",
   "pr": "https://github.com/Kgray44/treasurehuntSoT/pull/709",
   "independentSourceReview": {
     "reviewerContext": "/root/sextant_source_review",
@@ -104,6 +104,20 @@
       "disposition": "RUNNER_TRACE_NATIVE_DIALOG_AND_BOTH_PERSONA_SETUP_CLEANUP_FAILURE_COVERAGE_CLEAR",
       "reviewerRanTests": false,
       "scope": "SOURCE_ONLY_FRESH_EXECUTION_REQUIRED"
+    },
+    "authoringContinuation": {
+      "source": "0e657cc757933df775fd6047bda13a1f489e7ff0",
+      "reviewer": "/root/sextant_source_review",
+      "disposition": "NO_ACTIONABLE_FINDINGS_AFTER_SCOPED_DRYDOCK_STATE_CAPTURE_CORRECTION",
+      "reviewerRanTests": false,
+      "scope": "SOURCE_ONLY_EXECUTION_AND_RENDERED_REVIEW_PENDING"
+    },
+    "communityClearContinuation": {
+      "source": "e49241ca31989ed1678e1bacea14469f8a35d525",
+      "reviewer": "/root/sextant_source_review",
+      "disposition": "SOURCE_CLEAR_WITH_SEPARATE_UNCONFIRMED_MOBILE_GUIDE_FAILURE",
+      "reviewerRanTests": false,
+      "scope": "SOURCE_ONLY_FRESH_EXECUTION_PENDING"
     }
   },
   "localChecks": {
@@ -148,6 +162,29 @@
       "docsValidate": "PASS",
       "privacyD0": "PASS",
       "browserDiscovery": "FOUR_CHROMIUM_VARIANTS_AND_FOUR_WEBKIT_VARIANTS_NOT_EXECUTED_LOCALLY",
+      "featureCatalog": "NO_CHANGE_REQUIRED"
+    },
+    "authoring": {
+      "source": "0e657cc757933df775fd6047bda13a1f489e7ff0",
+      "existingComponentTests": {
+        "passed": 26,
+        "failed": 0
+      },
+      "typescript": "PASS",
+      "contractValidation": "PASS",
+      "browserDiscovery": "FOUR_CHROMIUM_VARIANTS_NOT_LOCAL_EXECUTION",
+      "docsValidate": "PASS",
+      "featureCatalog": "NO_CHANGE_REQUIRED"
+    },
+    "communityClear": {
+      "source": "e49241ca31989ed1678e1bacea14469f8a35d525",
+      "componentTests": {
+        "passed": 6,
+        "failed": 0
+      },
+      "typescript": "PASS",
+      "independentSourceReview": "CLEAR",
+      "docsValidate": "PASS",
       "featureCatalog": "NO_CHANGE_REQUIRED"
     }
   },
@@ -499,9 +536,25 @@
       "sourceSha": "4e1afbc0158bdd1cd496a5bfecc131110f086528",
       "transportSha": "59286d02878c27f6ab411a97f167e7296f9894e2",
       "runId": "39330479919",
-      "status": "DISPATCHED_NO_OUTCOME_CLAIMED",
+      "status": "HARVESTED_FAILURE_FOUR_VARIANTS_AT_FIRST_LISTING_REVIEW_LANDMARK",
       "scope": "Ordinary anonymous Community entry, ten public districts, eight details, empty states/search and independent Voyage preservation",
-      "qualification": false
+      "qualification": false,
+      "artifacts": 4,
+      "productionBuild": "PASS",
+      "failure": "DUPLICATE_REVIEW_LANDMARK_AND_HEADING_ID",
+      "ordinaryEntryAndTenDistrictsReached": true,
+      "diagnostics": {
+        "retention": "INCOMPLETE",
+        "issues": [
+          "LIMIT",
+          "FAILURE_ATTACHMENTS_INCOMPLETE"
+        ],
+        "memberCount": 63,
+        "rawBytes": 50910077,
+        "ciphertextBytes": 90550950,
+        "fixedBudgetUnchanged": true,
+        "encryptedOriginalRetainedInOwnedArtifacts": true
+      }
     },
     {
       "platform": "CHROMIUM",
@@ -509,16 +562,90 @@
       "sourceSha": "a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167",
       "transportSha": "8b0388c34e685bbe1dd040477eca46117170a3a2",
       "runId": "39331079907",
-      "status": "DISPATCHED_NO_OUTCOME_CLAIMED",
+      "status": "HARVESTED_SUCCESS_FOUR_VARIANTS",
       "scope": "Corrected native dialog axe selector and distinct failure states; actual Creator save/reopen and refreshed Crew pinned-clue comparison",
-      "qualification": false
+      "qualification": false,
+      "artifacts": 42,
+      "productionBuild": "PASS",
+      "cleanup": "RUNTIME_TREES_PORTS_AND_TRANSPORT_PASS",
+      "maximumMeasuredReadinessMs": 955.8551240000015,
+      "ordinarySeparateSignIns": true,
+      "crewCreatorSafetyLockPreserved": true,
+      "workingDraftSavedReopenedRestored": true,
+      "refreshedPublishedClueComparedBeforeAfter": true,
+      "unchangedCanonicalProgressAndActualPublishedSnapshot": true,
+      "renderedReview": "TWELVE_CAPTURES_NO_MATERIAL_VISUAL_DEFECT",
+      "renderedLimits": [
+        "CREATOR_INSPECTOR_OUTSIDE_VIEWPORT",
+        "VIDEOS_FULL_PAGE_ANIMATION_NATIVE_PROTECTED_OLD_SINGLE_PERSONA_AND_OWNER_ACCEPTANCE_NOT_ESTABLISHED"
+      ]
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "cf06d1d8554d5a3c17e1fc376c6e60dd1f352c83",
+      "transportSha": "8750ffc8f26ef6812157450bb66e1e334665728e",
+      "runId": "39331845535",
+      "status": "HARVESTED_FAILURE_THREE_CLEAR_DRAFTS_ONE_MOBILE_GUIDE",
+      "productionBuild": "PASS",
+      "artifacts": 4,
+      "qualification": false,
+      "failures": [
+        {
+          "variants": [
+            "1280-no-preference",
+            "1280-reduce",
+            "390-reduce"
+          ],
+          "failure": "CLEAR_SEARCH_RETURNED_TO_EARLIER_URL_AND_RESTORED_OLD_DRAFT_QUERY"
+        },
+        {
+          "variants": [
+            "390-no-preference"
+          ],
+          "failure": "GUIDE_DETAIL_HEADING_NOT_FOUND",
+          "cause": "UNCONFIRMED_NOT_EXPLAINED_BY_CLEAR_FIX"
+        }
+      ],
+      "diagnostics": {
+        "retention": "INCOMPLETE",
+        "issues": [
+          "LIMIT",
+          "FAILURE_ATTACHMENTS_INCOMPLETE"
+        ],
+        "memberCount": 90,
+        "rawBytes": 64726615,
+        "ciphertextBytes": 115132058,
+        "fixedBudgetUnchanged": true,
+        "encryptedOriginalRetainedInOwnedArtifacts": true
+      }
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "0e657cc757933df775fd6047bda13a1f489e7ff0",
+      "transportSha": "d3aaa2fc2819a8a144cec72ec6d8a5fc7c49b9e5",
+      "runId": "39332800305",
+      "status": "DISPATCHED_NO_OUTCOME_CLAIMED",
+      "qualification": false,
+      "scope": "Six actual Creator authoring panes with existing owned fixture; empty libraries/chart, loaded Drydock assessments and immutable Version review; no uploads, world creation, Sea Trial run or publication"
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "e49241ca31989ed1678e1bacea14469f8a35d525",
+      "transportSha": "0688af611043e9cfe75f890d7bd87f7c9901b7de",
+      "runId": "39333117664",
+      "status": "DISPATCHED_NO_OUTCOME_CLAIMED",
+      "qualification": false,
+      "scope": "Corrected clear query/filter drafts against destination URL; all prior Community details/empty search/return assertions retained; prior mobile Guide failure separately unconfirmed"
     }
   ],
   "experience": {
     "historicalObligations": 141,
     "historicalFamilies": 13,
     "currentAffectedSurfaces": 175,
-    "currentUnregisteredSurfaces": 74,
+    "currentUnregisteredSurfaces": 63,
     "protectedCapturedOrAcceptedByThisContinuation": 0,
     "developmentCapturedVariants": 4,
     "planner": "PRODUCT_EXPERIENCE_UNREGISTERED_SURFACE",
@@ -526,7 +653,7 @@
     "reachDiagnostics": "PROTECTED_ACCEPTED_ON_BASE",
     "historicalAccounting": "PRESERVED_SEXTANT_3_OF_3_CROSSDECK_10_OF_3_R1_2_OF_3",
     "registeredNewPlayerWorkspaceSurfaces": 2,
-    "remainingSoftware": "74 unregistered affected surfaces at4e1afbc015; remaining populated/adverse consumer fixtures, actual Community and paired Creator/Crew results, formal reference/layout review, required protected capture/review and final qualification. Independent attainable software remains; declarations and development passes qualify none.",
+    "remainingSoftware": "63 unregistered affected surfaces at0e657cc757; remaining populated/adverse fixtures and consumer journeys, Community success including unconfirmed mobile Guide failure, authoring resource results, formal reference/layout review, required protected capture/review and final qualification. Independent attainable software remains; paired development proof does not amend the older single-persona contract.",
     "independentDevelopmentJourneyReview": {
       "source": "0d8b3c7841966a1d1c8b5dae21570b1043dc7915",
       "reviewer": "/root/sextant_source_review",
@@ -558,11 +685,11 @@
     "registeredNewPassportSourcePaths": 14,
     "newlyRegisteredAffectedPassportSurfaces": 12,
     "sourceReconciliation": {
-      "path": "phase4-source-reconciliation-community-20261019.json",
-      "sha256": "f181c732ac38fcbf26bba808f5c6540ef642625b33769daea46f521e82add083",
-      "sourceSha": "4e1afbc0158bdd1cd496a5bfecc131110f086528",
+      "path": "phase4-source-reconciliation-authoring-20261019.json",
+      "sha256": "8d59a6ac203f1299c0473bd4a9590a53cb15365d3f27b0afbfe3a4407eb29607",
+      "sourceSha": "0e657cc757933df775fd6047bda13a1f489e7ff0",
       "affected": 175,
-      "unregistered": 74,
+      "unregistered": 63,
       "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
     },
     "sourceReconciliations": [
@@ -586,6 +713,14 @@
         "affected": 175,
         "unregistered": 74,
         "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
+      },
+      {
+        "path": "phase4-source-reconciliation-authoring-20261019.json",
+        "sha256": "8d59a6ac203f1299c0473bd4a9590a53cb15365d3f27b0afbfe3a4407eb29607",
+        "sourceSha": "0e657cc757933df775fd6047bda13a1f489e7ff0",
+        "affected": 175,
+        "unregistered": 63,
+        "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
       }
     ],
     "consumerIndependentRenderedReviewSuccessor": {
@@ -603,6 +738,14 @@
       "disposition": "BOTH_REPAIRS_CLEAR_ALL_FOUR_VARIANTS",
       "originalHashesVerified": 38,
       "scope": "DEVELOPMENT_RENDERED_REVIEW_NOT_PROTECTED_NATIVE_PHYSICAL_OR_OWNER_ACCEPTANCE"
+    },
+    "pairedIndependentRenderedReview": {
+      "source": "a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167",
+      "runId": "39331079907",
+      "reviewer": "/root/sextant_source_review",
+      "disposition": "NO_MATERIAL_VISUAL_DEFECT_IN_TWELVE_CAPTURES",
+      "originalHashesVerified": 42,
+      "scope": "DEVELOPMENT_RENDERED_ONLY_NOT_PROTECTED_NATIVE_PHYSICAL_OLD_SINGLE_PERSONA_OR_OWNER_ACCEPTANCE"
     }
   },
   "externalGates": [
@@ -622,7 +765,10 @@
     "evidence/20261019-contrast-repair/publication-index.json",
     "evidence/20261019-resource-repair/publication-index.json",
     "evidence/20261019-paired-setup-failure/publication-index.json",
-    "evidence/20261019-paired-dialog-failure/publication-index.json"
+    "evidence/20261019-paired-dialog-failure/publication-index.json",
+    "evidence/20261019-paired-clue/publication-index.json",
+    "evidence/20261019-community-landmark-failure/publication-index.json",
+    "evidence/20261019-community-clear-failure/publication-index.json"
   ],
   "currentProtectedBase": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
   "canonicalHostDependencies": [

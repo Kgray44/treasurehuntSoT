@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/sextant-community-journeys.spec.ts"
+  ],
+  "status": "FAIL",
+  "failureCategory": "PRODUCT_FAILURE",
+  "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED",
+  "diagnosticBinding": {
+    "version": 1,
+    "runId": "66621417-e135-414d-bcfe-b47f96974953",
+    "scopeId": "063de1c4-57ca-4403-8585-5fa2aa55ae47",
+    "baseSha": "cf06d1d8554d5a3c17e1fc376c6e60dd1f352c83",
+    "candidateSha": "cf06d1d8554d5a3c17e1fc376c6e60dd1f352c83",
+    "planDigest": "46b899a1d08d4dc74b06637fdca33b37acaa154fc2af206f4cf9e8a40589b7b4"
+  }
+}
