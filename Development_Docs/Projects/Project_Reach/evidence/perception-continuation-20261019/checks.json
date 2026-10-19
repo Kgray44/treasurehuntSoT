@@ -1,0 +1,199 @@
+{
+  "classification": "ENGINEERING_CHECK_AGGREGATE_NOT_QUALIFICATION_OR_PHYSICAL_ACCEPTANCE",
+  "sourceParent": "a127c6c96cf23ca1c3c796b43eeeb01ba1953dda",
+  "retainedApplication": "2d03e6678c7af0d08775c67ea9afffa79e2f9ac2",
+  "productSourceAssetsRuntimeDependenciesBrowserAssertionsAndAcceptanceMachineryUnchanged": true,
+  "unit": {
+    "passed": 1588,
+    "failed": 0,
+    "pending": 0,
+    "files": 87,
+    "privateReceiptSha256": "d48ba8aa263eff40b75dfa75105ae861f0e557a9ac2b8acc6091cf5a768bd78a"
+  },
+  "benchmarkContractTests": {
+    "passed": 6,
+    "failed": 0,
+    "independentReviewerAlsoRan": true
+  },
+  "fullTypeScript": "PASS",
+  "scopedLint": "PASS_AFTER_LOCAL_VARIABLE_NAMING_CORRECTION",
+  "formatting": "PASS",
+  "privateContentStagedDiffScan": "PASS",
+  "canonicalBrowserPreparations": [
+    {
+      "receiptSha256": "2d698e83e030e4881fe1059a90457a5fc2ee12539a794e80be30473909c20088",
+      "status": "FAIL",
+      "error": "DEVELOPMENT_SOURCE_CHANGED_DURING_PREPARE",
+      "commands": [
+        {
+          "label": "prisma-generate",
+          "exit": 0,
+          "cleanup": "PASS",
+          "treeReaped": true
+        },
+        {
+          "label": "sqlite-bootstrap",
+          "exit": 0,
+          "cleanup": "PASS",
+          "treeReaped": true
+        },
+        {
+          "label": "generic-seed",
+          "exit": 0,
+          "cleanup": "PASS",
+          "treeReaped": true
+        },
+        {
+          "label": "scripts/migrate-legacy-companion.ts",
+          "exit": 0,
+          "cleanup": "PASS",
+          "treeReaped": true
+        },
+        {
+          "label": "scripts/sounding-line/prepare-validation-isolation.mjs",
+          "exit": 0,
+          "cleanup": "PASS",
+          "treeReaped": true
+        },
+        {
+          "label": "next-build",
+          "exit": 0,
+          "cleanup": "PASS",
+          "treeReaped": true
+        }
+      ],
+      "scope": "CANONICAL_DEVELOPMENT_PREPARATION_REFUSED_NO_BROWSER_ADMISSION"
+    },
+    {
+      "receiptSha256": "e6ae2d8e7c400dad5179e2bb14462c440bf2100747afa335ad7196449873cc25",
+      "status": "FAIL",
+      "error": "DEVELOPMENT_BUILD_LINK_OUTSIDE_DEPENDENCIES",
+      "commands": [
+        {
+          "label": "prisma-generate",
+          "exit": 0,
+          "cleanup": "PASS",
+          "treeReaped": true
+        },
+        {
+          "label": "sqlite-bootstrap",
+          "exit": 0,
+          "cleanup": "PASS",
+          "treeReaped": true
+        },
+        {
+          "label": "generic-seed",
+          "exit": 0,
+          "cleanup": "PASS",
+          "treeReaped": true
+        },
+        {
+          "label": "scripts/migrate-legacy-companion.ts",
+          "exit": 0,
+          "cleanup": "PASS",
+          "treeReaped": true
+        },
+        {
+          "label": "scripts/sounding-line/prepare-validation-isolation.mjs",
+          "exit": 0,
+          "cleanup": "PASS",
+          "treeReaped": true
+        },
+        {
+          "label": "next-build",
+          "exit": 0,
+          "cleanup": "PASS",
+          "treeReaped": true
+        }
+      ],
+      "scope": "CANONICAL_DEVELOPMENT_PREPARATION_REFUSED_NO_BROWSER_ADMISSION"
+    }
+  ],
+  "supplementalBrowser": [
+    {
+      "name": "original-motion",
+      "receiptSha256": "33a6d8c206cfe40ef00a08a85abe3597819c7de0e5f304ff2e1bc311ed37451a",
+      "expected": 0,
+      "unexpected": 1,
+      "skipped": 0,
+      "flaky": 0,
+      "sourceDigest": "6adae7fdfe1bb9790456c897916b45ee7cbb68826bb93cb1e3c06553f6ba4f2a",
+      "sourceUnchanged": true,
+      "fixtureUnchanged": true,
+      "serverCleanup": "PASS",
+      "testCleanup": "PASS",
+      "portReleased": true,
+      "qualification": false,
+      "failureDisposition": "ORIGINAL_ONE_CONTINUING_INDEX_ASSERTION_REPRODUCED_GENERATIONS_1_2_3_LATER_ASSERTIONS_UNEXECUTED"
+    },
+    {
+      "name": "laboratory",
+      "receiptSha256": "31e5574c7396736cae66bca820b19cddc194efab6686b9aba2ce052d2f4c8526",
+      "expected": 8,
+      "unexpected": 2,
+      "skipped": 0,
+      "flaky": 0,
+      "sourceDigest": "6adae7fdfe1bb9790456c897916b45ee7cbb68826bb93cb1e3c06553f6ba4f2a",
+      "sourceUnchanged": true,
+      "fixtureUnchanged": true,
+      "serverCleanup": "PASS",
+      "testCleanup": "PASS",
+      "portReleased": true,
+      "qualification": false,
+      "failureDisposition": "TWO_PHOTOGRAPHIC_ACTUAL_WORKER_CASES_FAIL_INITIAL_READY_ASSERTION_LATER_CALIBRATION_ASSERTIONS_UNEXECUTED"
+    }
+  ],
+  "supplementalScope": "Separate functional diagnostics after canonical refusal; fresh task-owned DB clones/ports/processes. Three generated Windows junctions independently allowlisted to this worktree node_modules pino/sharp/@prisma/client. Shared canonical link guard unchanged and its refusal remains FAIL.",
+  "roiNeuralCleanup": {
+    "proved": true,
+    "privateReceiptSha256": "58ce1ef37ca98528eab663960285e1d61c376346bb5b9d5458fed214ebc90e09"
+  },
+  "independentReview": {
+    "pipelineAndNativeFrames": true,
+    "frozenCandidateHoldoutAndStaleCounterexample": true,
+    "benchmarkMeasurementsAndPrivacy": true,
+    "requirementCoverage": true
+  },
+  "documentationClassification": {
+    "report": "engineering-record",
+    "aggregates": "validation-evidence",
+    "contract": "automation-guidance",
+    "historicalEvidenceInventoryPreserved": true,
+    "productFeatureStatusGuideAndChangelogReview": "NO_PRODUCT_BEHAVIOR_CHANGE_NO_EDITS_REQUIRED"
+  },
+  "documentationValidation": "PASS",
+  "featureCatalogSync": "PASS",
+  "featureCatalogValidation": "PASS",
+  "featureCatalogDecision": "NO_CHANGE_REQUIRED",
+  "physicalGroundTruthQualified": false,
+  "physicalControllerOrFallbackTrialCompleted": false,
+  "phase1Ready": false,
+  "missionComplete": false,
+  "passiveClockDiagnostic": {
+    "classification": "SUPPLEMENTAL_PASSIVE_REPRODUCTION_ONLY",
+    "failedOriginalReadyAssertion": true,
+    "rawResults": 92,
+    "rawResultsContainingHand": 92,
+    "rawResultsOver150ms": 92,
+    "arrivalAgeMs": {
+      "n": 92,
+      "min": 263.59999999403954,
+      "median": 287.199951171875,
+      "p95": 349.59990233182907,
+      "max": 351.5
+    },
+    "presentedOriginMaximumAgeAtDispatchMs": 76.9,
+    "independentClockRecomputation": "MATCHES_EACH_DISPATCH_ORIGIN",
+    "underlyingWorkerComputeVersusScheduling": "UNAVAILABLE",
+    "rendererHardwareOrSoftwareClassification": "UNAVAILABLE_GPU_WEBGL_ONLY",
+    "serverCleanup": "PASS",
+    "testCleanup": "PASS",
+    "portReleased": true,
+    "sourceUnchanged": true,
+    "fixtureUnchanged": true,
+    "privateReceiptSha256": "65b1d9792fff6a980244217f3ae9fc5ab4851c75c6287f123f3a939dc478519b",
+    "earlierNoTestsFoundAttempt": "PRESERVED_COLLECTION_FAILURE_ZERO_TESTS_NOT_COUNTED",
+    "earlierMixedClockDerivation": "PRESERVED_INVALID_ARITHMETIC_NOT_USED",
+    "qualification": false
+  }
+}

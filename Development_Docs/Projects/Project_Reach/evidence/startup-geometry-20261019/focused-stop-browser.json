@@ -1,0 +1,323 @@
+{
+  "classification": "SUPPLEMENTAL_FOCUSED_STOP_ACTUAL_WORKER_DEVELOPMENT_NOT_FULL_LAB_OR_PHYSICAL_QUALIFICATION",
+  "qualification": false,
+  "authorRole": "IMPLEMENTATION_AUTHOR",
+  "sourceDigest": "99e2c0e1fa4e5cf1ecbeb05f18b6ba32c6cc626c9e5cf0f00689a294f2a6031a",
+  "sourceFiles": 2806,
+  "sourceHead": "cd34451832e2d0004492880ac1288ec31945d3b2",
+  "candidateFiles": [
+    {
+      "path": "src/reach/browser-runtime.ts",
+      "sha256": "3dd86ef22fda089f90b6847ee80b60c670176761c18775e0f6e91a9e137d5b88"
+    },
+    {
+      "path": "public/reach/recovery-provider.js",
+      "sha256": "fe68db187f9db74943e1f0c55c3ad76621a2c60591af84d950bb6c407f372ca9"
+    },
+    {
+      "path": "public/reach/recovery-worker.js",
+      "sha256": "4d8caa84874b76795b1acc1db975277ffb0329eb485d62eae20fe50712965222"
+    },
+    {
+      "path": "src/reach/ReachStage.tsx",
+      "sha256": "033519dba16a970997d64c98a7a4500105d4a1aa9f3dc23d138c191e5c2ce979"
+    }
+  ],
+  "canonicalRefusal": "DEVELOPMENT_BUILD_LINK_OUTSIDE_DEPENDENCIES",
+  "sourceToBuildLimit": "Builder manually selected prepared tree; unchanged inventory checks do not supply canonical source-to-build manifest.",
+  "inputBindingSha256": "c7a6cc1d3e034e2099cb642bcf26dfe52cbc3d6184160889cc471af9cc53b894",
+  "terminalSummarySha256": "f880ae252d4925945da62bdddf913b51f80559498f404a3da3dcdcf71867fb26",
+  "runtimeArchive": {
+    "status": "PASS_ARCHIVED_OWNED_MUTABLE_COPY"
+  },
+  "receipts": [
+    {
+      "classification": "FOCUSED_STOP_SUPPLEMENTAL_ORIGINAL_FULL_SUITE_FAILURES_RETAINED",
+      "qualification": false,
+      "name": "focused-stop",
+      "spec": "focused-stop.spec.ts",
+      "sourceDigest": "99e2c0e1fa4e5cf1ecbeb05f18b6ba32c6cc626c9e5cf0f00689a294f2a6031a",
+      "port": 54511,
+      "fixtureSha256": "7c479915ce71c939d4c24a653d069935be4e8e75fc4ef1bc3b5f106975c46351",
+      "canonicalRefusal": "DEVELOPMENT_BUILD_LINK_OUTSIDE_DEPENDENCIES",
+      "exit": {
+        "code": 0,
+        "signal": null,
+        "guardianExitCode": 0
+      },
+      "stats": {
+        "startTime": "2026-10-19T20:27:00.086Z",
+        "duration": 45261.025,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "errors": [],
+      "browserCleanup": {
+        "status": "PASS",
+        "directExitObserved": true,
+        "exitCode": 0,
+        "signal": null,
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": true,
+        "payloadExitCode": 0,
+        "elapsedMs": 3,
+        "ownership": "WINDOWS_JOB_OBJECT"
+      },
+      "serverCleanup": {
+        "status": "PASS",
+        "directExitObserved": true,
+        "exitCode": 1,
+        "signal": null,
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": true,
+        "payloadExitCode": null,
+        "elapsedMs": 186,
+        "ownership": "WINDOWS_JOB_OBJECT"
+      },
+      "portReleased": true,
+      "sourceUnchanged": true,
+      "fixtureUnchanged": true,
+      "buildUnchanged": true
+    }
+  ],
+  "cases": [
+    {
+      "classification": "FOCUSED_ACTUAL_WORKER_DEVELOPMENT_NOT_FULL_LAB_OR_PHYSICAL_QUALIFICATION",
+      "dpr": 1,
+      "beforeStop": [
+        {
+          "label": "Live hand joints aligned with the camera image",
+          "width": 731,
+          "height": 548,
+          "visiblePixels": 3004
+        },
+        {
+          "label": "Pointing feedback surface",
+          "width": 300,
+          "height": 150,
+          "visiblePixels": 0
+        }
+      ],
+      "afterStop": [
+        {
+          "label": "Live hand joints aligned with the camera image",
+          "width": 731,
+          "height": 548,
+          "visiblePixels": 0
+        },
+        {
+          "label": "Pointing feedback surface",
+          "width": 300,
+          "height": 150,
+          "visiblePixels": 0
+        }
+      ],
+      "afterSettle": [
+        {
+          "label": "Live hand joints aligned with the camera image",
+          "width": 731,
+          "height": 548,
+          "visiblePixels": 0
+        },
+        {
+          "label": "Pointing feedback surface",
+          "width": 300,
+          "height": 150,
+          "visiblePixels": 0
+        }
+      ],
+      "afterResize": [
+        {
+          "label": "Live hand joints aligned with the camera image",
+          "width": 731,
+          "height": 548,
+          "visiblePixels": 0
+        },
+        {
+          "label": "Pointing feedback surface",
+          "width": 300,
+          "height": 150,
+          "visiblePixels": 0
+        }
+      ],
+      "reactivated": [
+        {
+          "label": "Live hand joints aligned with the camera image",
+          "width": 518,
+          "height": 389,
+          "visiblePixels": 2391
+        },
+        {
+          "label": "Pointing feedback surface",
+          "width": 300,
+          "height": 150,
+          "visiblePixels": 0
+        }
+      ],
+      "afterSecondStop": [
+        {
+          "label": "Live hand joints aligned with the camera image",
+          "width": 518,
+          "height": 389,
+          "visiblePixels": 0
+        },
+        {
+          "label": "Pointing feedback surface",
+          "width": 300,
+          "height": 150,
+          "visiblePixels": 0
+        }
+      ],
+      "settledCounts": {
+        "tracks": 0,
+        "workers": 0,
+        "observations": 17,
+        "draws": 177
+      },
+      "fullCalibrationCompleted": false,
+      "scalarReceiptSha256": "6ebef6b8f8cc597f97cd2f1958c69c6e7474cd6dfa2792f36f10eb1119f63948",
+      "artifacts": [
+        {
+          "name": "before-stop.png",
+          "sha256": "42efe45d0f1afdb95061b335a1d24b6646a21cbb533fb75ec93a17cdad43e7fb"
+        },
+        {
+          "name": "after-stop.png",
+          "sha256": "2f6f15d84b5b9ea21ad06e598d961ced7da5f01ef880b87d2f6c3b524fcb99d8"
+        },
+        {
+          "name": "after-stop-settled.png",
+          "sha256": "5ed526dc58ccef9b080e00e7f254e9a0c3b7f365681a8c7374feed904621a506"
+        },
+        {
+          "name": "trace.zip",
+          "sha256": "4afebdc22deb0064489989dc79f9e6be3c81a4f38862a81f9dccb90f8f8914ed"
+        }
+      ]
+    },
+    {
+      "classification": "FOCUSED_ACTUAL_WORKER_DEVELOPMENT_NOT_FULL_LAB_OR_PHYSICAL_QUALIFICATION",
+      "dpr": 2,
+      "beforeStop": [
+        {
+          "label": "Live hand joints aligned with the camera image",
+          "width": 1462,
+          "height": 1096,
+          "visiblePixels": 10530
+        },
+        {
+          "label": "Pointing feedback surface",
+          "width": 300,
+          "height": 150,
+          "visiblePixels": 0
+        }
+      ],
+      "afterStop": [
+        {
+          "label": "Live hand joints aligned with the camera image",
+          "width": 1462,
+          "height": 1096,
+          "visiblePixels": 0
+        },
+        {
+          "label": "Pointing feedback surface",
+          "width": 300,
+          "height": 150,
+          "visiblePixels": 0
+        }
+      ],
+      "afterSettle": [
+        {
+          "label": "Live hand joints aligned with the camera image",
+          "width": 1462,
+          "height": 1096,
+          "visiblePixels": 0
+        },
+        {
+          "label": "Pointing feedback surface",
+          "width": 300,
+          "height": 150,
+          "visiblePixels": 0
+        }
+      ],
+      "afterResize": [
+        {
+          "label": "Live hand joints aligned with the camera image",
+          "width": 1462,
+          "height": 1096,
+          "visiblePixels": 0
+        },
+        {
+          "label": "Pointing feedback surface",
+          "width": 300,
+          "height": 150,
+          "visiblePixels": 0
+        }
+      ],
+      "reactivated": [
+        {
+          "label": "Live hand joints aligned with the camera image",
+          "width": 1036,
+          "height": 778,
+          "visiblePixels": 8058
+        },
+        {
+          "label": "Pointing feedback surface",
+          "width": 300,
+          "height": 150,
+          "visiblePixels": 0
+        }
+      ],
+      "afterSecondStop": [
+        {
+          "label": "Live hand joints aligned with the camera image",
+          "width": 1036,
+          "height": 778,
+          "visiblePixels": 0
+        },
+        {
+          "label": "Pointing feedback surface",
+          "width": 300,
+          "height": 150,
+          "visiblePixels": 0
+        }
+      ],
+      "settledCounts": {
+        "tracks": 0,
+        "workers": 0,
+        "observations": 24,
+        "draws": 124
+      },
+      "fullCalibrationCompleted": false,
+      "scalarReceiptSha256": "b01157ea9f6216473d31572de56693b061dca9b30f6c0e0103cfef9981b91a1d",
+      "artifacts": [
+        {
+          "name": "before-stop.png",
+          "sha256": "c168a1060103e046801b2d92b962d37cd775ee0386862c2e6b42f96363209096"
+        },
+        {
+          "name": "after-stop.png",
+          "sha256": "f847cdbd83f95f10ea264a19acf0f4fcf7888f869fbaafcc1790322f87ef57b0"
+        },
+        {
+          "name": "after-stop-settled.png",
+          "sha256": "f847cdbd83f95f10ea264a19acf0f4fcf7888f869fbaafcc1790322f87ef57b0"
+        },
+        {
+          "name": "trace.zip",
+          "sha256": "89b3ddd99d95e4f1288b981840cc67deb06aaceb4746d4640fcfb2f10ed00bfc"
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Full repaired-source Laboratory remains8/10 and full photo setup/check fails before Stop.",
+    "Two desktop DPR cases are not mobile or physical proof.",
+    "Both pointer canvases start empty; painted pointer clearing is a unit-test obligation.",
+    "Private focused test uses unchanged original fakeCamera/telemetry helpers and actual installed worker; no provider routes or model replacement."
+  ]
+}

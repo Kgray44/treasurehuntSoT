@@ -1,0 +1,49 @@
+{
+  "classification": "AUTHOR_PURE_CANONICAL_ANCHOR_CLASSIFICATION_OF_STORED_FINAL_MODEL_REPLAY_ROWS_NOT_IMAGE_REPLAY",
+  "inputs": {
+    "rawSha256": "4d7b1eb9ef939aa6d7cc9a794cdfbb7f73178542c5fe4a8d9f399fdaa7881a82",
+    "replaySha256": "abd1c8c119c7a55abcc205ae1d8052f90000b2b97def852890fe7cd64d67ef0b"
+  },
+  "scope": {
+    "finalSeconds": 5,
+    "rows": 57,
+    "allSingleRawAndAdaptedHand": true,
+    "temporalReplayPerformed": false,
+    "geometryNormalizationReconstructed": true,
+    "recordedReplayIdentitiesReused": true,
+    "associationBasisUnavailableAndNotInvented": true
+  },
+  "aggregate": {
+    "authorities": {
+      "POINT": 57
+    },
+    "fullDecisions": {
+      "FULL_POINT": 57
+    },
+    "pointingRows": 57,
+    "contraryRows": 0,
+    "pointPresentRows": 57,
+    "geometryPresentRows": 57,
+    "identitySourcePresentRows": 57,
+    "authoritySourcePresentRows": 57,
+    "uniqueIdentitySources": 1,
+    "identityAuthoritySourcesEqualRows": 57,
+    "indexIdentitySourceMatchesRows": 57,
+    "fullSourceMatchesIdentityRows": 57,
+    "fullIdentityObservedRows": 57,
+    "indexCompleteRows": 57,
+    "indexGeometryRows": 57,
+    "indexExtendedRows": 57,
+    "postureRequiredValidRows": 57,
+    "postureFramedRows": 57,
+    "postureGeometryRows": 57,
+    "posturePointingRows": 57
+  },
+  "limits": [
+    "Exact current pure selectIndexModelAnchor/fullHandDecision/posture/indexGeometry functions; no second temporal association replay.",
+    "Raw normalization reconstructs the same validity/off-image rules; posture booleans/count crosschecked identical to stored replay assessments on every row.",
+    "AssociationBasis was not retained, so no INDEX_CHAIN_V1 joint-evidence claim; full authority/source classification does not depend on that field.",
+    "Stable synthetic opaque lease token is inherited from the original model replay; actual runtime lease token and final admission timing remain unknown.",
+    "Pure anchor classification does not qualify optical material, image model agreement, current index tracker authority probation or modelFallback eligibility. No grayscale image replay or physical correctness claim."
+  ]
+}

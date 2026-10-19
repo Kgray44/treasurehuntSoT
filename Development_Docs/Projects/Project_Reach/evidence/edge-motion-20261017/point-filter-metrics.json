@@ -1,0 +1,115 @@
+{
+  "classification": "DEVELOPMENT_ONLY",
+  "qualification": false,
+  "physicalCameraProof": false,
+  "generatedAt": "2026-10-17T19:46:03.935Z",
+  "scope": "Display PointFilter only; raw calibration and held-out validation remain separate",
+  "algorithmReference": "https://gery.casiez.net/1euro/",
+  "parameters": {
+    "minimumCutoffHz": 1.5,
+    "beta": 3,
+    "derivativeCutoffHz": 1,
+    "maximumCutoffHz": 12,
+    "unconfirmedHoldMs": 150
+  },
+  "sourceFiles": [
+    {
+      "path": "D:/CodexWorktrees/reach-edge-motion-20261017/src/reach/coordinates.ts",
+      "sha256": "d6332ad77599c58c6ea6edbc201939f95acf1682d033b170a7e6e3fc4e473888"
+    },
+    {
+      "path": "D:/CodexWorktrees/reach-edge-motion-20261017/src/reach/point-filter.test.ts",
+      "sha256": "47c72d6640a129e02b2a260073edfee5b05c629649c852e5c65f8bcd10953521"
+    },
+    {
+      "path": "D:/CodexWorktrees/reach-edge-motion-20261017/src/reach/pointer-continuity.test.ts",
+      "sha256": "6454b19161ab7ca9e22a02778c4557142da77d3b1bde53d47795b9a6c699b060"
+    }
+  ],
+  "criteria": {
+    "stationaryRmsRatioAtMost": 0.6,
+    "stationaryFrameJitterRatioAtMost": 0.45,
+    "meanRampLagMsAtMost": 70,
+    "p95RampLagMsAtMost": 100
+  },
+  "trajectories": [
+    {
+      "fps": 15,
+      "stationaryRmsRatio": 0.5189510350858174,
+      "stationaryFrameJitterRatio": 0.33899911244316205,
+      "stationaryCenterBias": 0.0010766354817327304,
+      "steadyRampMeanLagMs": 50.742535468648825,
+      "steadyRampP95LagMs": 55.10717643307443,
+      "reversalDelayMs": 33.333333333333435,
+      "stoppedEndpointSettlingMs": 166.66666666666652,
+      "validFrameHoles": 0
+    },
+    {
+      "fps": 20,
+      "stationaryRmsRatio": 0.4569322670161706,
+      "stationaryFrameJitterRatio": 0.27758195164739435,
+      "stationaryCenterBias": 0.0007390479698499565,
+      "steadyRampMeanLagMs": 50.545610334427884,
+      "steadyRampP95LagMs": 55.17633420651036,
+      "reversalDelayMs": 0,
+      "stoppedEndpointSettlingMs": 100.00000000000009,
+      "validFrameHoles": 0
+    },
+    {
+      "fps": 30,
+      "stationaryRmsRatio": 0.3808513263247789,
+      "stationaryFrameJitterRatio": 0.20525001182110011,
+      "stationaryCenterBias": 0.00036874474153999765,
+      "steadyRampMeanLagMs": 50.52848442927569,
+      "steadyRampP95LagMs": 55.166944011043796,
+      "reversalDelayMs": 33.333333333333435,
+      "stoppedEndpointSettlingMs": 100.00000000000009,
+      "validFrameHoles": 0
+    },
+    {
+      "fps": 60,
+      "stationaryRmsRatio": 0.2964289415437552,
+      "stationaryFrameJitterRatio": 0.11488794908771476,
+      "stationaryCenterBias": 0.00046219602709784497,
+      "steadyRampMeanLagMs": 50.307589369063095,
+      "steadyRampP95LagMs": 55.02824112122162,
+      "reversalDelayMs": 33.333333333333435,
+      "stoppedEndpointSettlingMs": 83.33333333333348,
+      "validFrameHoles": 0
+    }
+  ],
+  "isolatedSpikes": [
+    {
+      "spike": 0.08,
+      "spikeDisplacement": 0,
+      "acceptedTimeAfterSpike": 650,
+      "returnDisplacement": 0
+    },
+    {
+      "spike": 0.15,
+      "spikeDisplacement": 0,
+      "acceptedTimeAfterSpike": 650,
+      "returnDisplacement": 0
+    },
+    {
+      "spike": -0.08,
+      "spikeDisplacement": 0,
+      "acceptedTimeAfterSpike": 650,
+      "returnDisplacement": 0
+    },
+    {
+      "spike": -0.15,
+      "spikeDisplacement": 0,
+      "acceptedTimeAfterSpike": 650,
+      "returnDisplacement": 0
+    }
+  ],
+  "incoherentInput": {
+    "anchorAt": 100,
+    "firstAbstentionAt": 300,
+    "acceptedCaptureTimeAfterTwoSeconds": 100,
+    "noUnconfirmedCaptureRefresh": true
+  },
+  "focusedTestCommand": "npx vitest run src/reach/point-filter.test.ts src/reach/pointer-continuity.test.ts src/reach/foundation.test.ts src/reach/validation-reasons.test.ts",
+  "focusedPassedTests": 47
+}

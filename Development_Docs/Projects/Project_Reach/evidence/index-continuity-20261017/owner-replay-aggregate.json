@@ -1,0 +1,191 @@
+{
+  "version": 1,
+  "classification": "engineering_evidence",
+  "evidenceTier": "DEVELOPMENT_ONLY",
+  "algorithm": {
+    "providerId": "watchglass.index-image",
+    "providerVersion": "1",
+    "algorithm": "BOUNDED_PHOTOMETRIC_NCC_V1",
+    "algorithmDigest": "8b2846e3959552912bf978c531d3099d56f15d7f9648ce08d8f23feb0fc63498"
+  },
+  "physicalAccuracyQualified": false,
+  "protectedQualification": false,
+  "sourceTreeSha256": "d184402854188ae3de1a5ddf02cf8eb12c928785e7458386eef2fd137251df21",
+  "role": "PRIVATE_OWNER_AUTHORIZED_COMPOSITE_REPLAY_AGGREGATES_ONLY",
+  "trackingObservationStage": "GESTURE_QUALIFIED_IMAGE_OBSERVATION_BEFORE_READINESS_CALIBRATION_AND_HELD_OUT_VALIDATION_NOT_ACTION_RELIABILITY",
+  "sourceArtifactHashes": [
+    {
+      "role": "ORIGINAL_LOCAL_VIDEO",
+      "sha256": "82befe2eb01d08390e415b2c0085e36c7ca6ba8d9932489c06d32f09c9af5794"
+    },
+    {
+      "role": "ORIGINAL_LOCAL_RAW_TRACE",
+      "sha256": "1ecb33169a710a0680133f97ded8848cb830d4002c80f45c5d5344d7a9e108cc"
+    },
+    {
+      "role": "CURRENT_PRIVATE_REPLAY",
+      "sha256": "bf6c73702c68918fc3b46abe9c630238630d59fab6da62eb2650bc68b842e8ea"
+    },
+    {
+      "role": "EXHAUSTIVE_PRIVATE_EXTRACTION_MANIFEST",
+      "sha256": "c2c87f320438787de083aa2c9cb46811245e1440e57910a88ea1281211fd635c"
+    },
+    {
+      "role": "PRIVATE_VISUAL_REVIEW",
+      "sha256": "cc6d6f37ddad11e6ed7d0f280f769839f8808ac32041357c9f0829fa2003c27c"
+    }
+  ],
+  "privacy": {
+    "rawCoordinatesIncluded": false,
+    "imagesIncluded": false,
+    "videoIncluded": false,
+    "privatePathsIncluded": false,
+    "uploadedPrivateContent": false,
+    "sourceRecordingsPreservedLocally": true
+  },
+  "coverage": {
+    "totalOriginalRawResults": 928,
+    "bottomRawResultsReviewed": 196,
+    "bottomSavedVideoFramesReviewed": 293,
+    "contactSheetsInspected": 25,
+    "criticalNativeFramesInspected": 17,
+    "rawNoHandResultsWithVisiblePhysicalIndex": 13,
+    "returnedWrongIndexAssignments": 3
+  },
+  "runs": [
+    {
+      "mode": "AUTOMATIC_MODEL_SEED",
+      "totals": {
+        "frames": 293,
+        "tracking": 158,
+        "uncertain": 14,
+        "lost": 113,
+        "unseeded": 8,
+        "identityChanges": 5
+      },
+      "acceptedImageAuthorityPauses": 0,
+      "acceptedImageMatches": 158,
+      "reasonCounts": {
+        "FULL_HAND_POINT_PENDING": 5,
+        "FULL_HAND_POINT_CONFIRMED": 34,
+        "APPEARANCE_MISMATCH": 126,
+        "ANCHOR_ACQUIRED": 6,
+        "IMAGE_MATCH": 112,
+        "MODEL_DISAGREES_IMAGE_RETAINED": 1,
+        "IMAGE_CONTINUITY_EXPIRED": 1,
+        "SHOW_INDEX_OR_SELECT_TIP": 8
+      },
+      "steps": [
+        {
+          "step": "BOTTOM",
+          "frames": 146,
+          "tracking": 96,
+          "uncertain": 5,
+          "lost": 45,
+          "unseeded": 0,
+          "identityChanges": 2,
+          "processingMedianMs": 0.9137000000000626,
+          "processingP95Ms": 3.1205999999997402
+        },
+        {
+          "step": "BOTTOM_LEFT",
+          "frames": 72,
+          "tracking": 40,
+          "uncertain": 7,
+          "lost": 25,
+          "unseeded": 0,
+          "identityChanges": 1,
+          "processingMedianMs": 0.561500000000251,
+          "processingP95Ms": 1.6797999999998865
+        },
+        {
+          "step": "BOTTOM_RIGHT",
+          "frames": 75,
+          "tracking": 22,
+          "uncertain": 2,
+          "lost": 43,
+          "unseeded": 8,
+          "identityChanges": 2,
+          "processingMedianMs": 0.7630999999996675,
+          "processingP95Ms": 1.9360000000001492
+        }
+      ]
+    },
+    {
+      "mode": "EXPLICIT_HUMAN_TIP_HINT",
+      "totals": {
+        "frames": 24,
+        "tracking": 19,
+        "uncertain": 5,
+        "lost": 0,
+        "unseeded": 0,
+        "identityChanges": 0
+      },
+      "acceptedImageAuthorityPauses": 4,
+      "acceptedImageMatches": 23,
+      "reasonCounts": {
+        "ANCHOR_ACQUIRED": 1,
+        "IMAGE_MATCH": 17,
+        "APPEARANCE_AMBIGUOUS": 1,
+        "FULL_HAND_INDEX_CONFLICT": 4,
+        "MODEL_DISAGREES_IMAGE_RETAINED": 1
+      },
+      "steps": [
+        {
+          "step": "BOTTOM_RIGHT",
+          "frames": 24,
+          "tracking": 19,
+          "uncertain": 5,
+          "lost": 0,
+          "unseeded": 0,
+          "identityChanges": 0,
+          "processingMedianMs": 0.5829000000003361,
+          "processingP95Ms": 1.2263000000002648
+        }
+      ]
+    }
+  ],
+  "postureOnlyComparisonToMain": {
+    "comparison": "RAW_POSTURE_ONLY_NO_ACTIVE_SELECTION_OR_CALIBRATION",
+    "mainCommit": "56b700bc2a45bee3ef2cdb5416439bae964f2233",
+    "currentMainCommitAtComparison": "d6e9e57d65eac3efc72223725e8e6bc462b40ccd",
+    "relevantMainSourcesIdentical": true,
+    "mainSourceComparison": "git diff56b700bc2..d6e9e57d6 for src/reach,src/watchglass and src/app/devices/reach was empty; original posture comparison remains source-valid.",
+    "steps": [
+      {
+        "step": "BOTTOM",
+        "rawResults": 102,
+        "mainPostureQualifies": 62,
+        "currentPostureQualifies": 102
+      },
+      {
+        "step": "BOTTOM_LEFT",
+        "rawResults": 46,
+        "mainPostureQualifies": 34,
+        "currentPostureQualifies": 44
+      },
+      {
+        "step": "BOTTOM_RIGHT",
+        "rawResults": 48,
+        "mainPostureQualifies": 14,
+        "currentPostureQualifies": 32
+      }
+    ],
+    "activeEligibilityOrAccuracyClaim": false
+  },
+  "preservedLimitations": [
+    "Saved video includes old colored hand overlay; matching may benefit or suffer from that overlay.",
+    "Video frame and nearest raw result are not the same sensor exposure.",
+    "Bilinear resize via Sharp approximates browser Canvas; no new model inference or physical qualification.",
+    "Manual mode uses one explicitly human-selected finger tip at one selected frame with the same runtime whole-hand authority; it does not claim automatic finger recognition.",
+    "Automatic replay has 158 gesture-qualified tracking, 14 uncertain, 113 lost and 8 unseeded image observations across 293 saved frames; 5 source-ID change events remain. These precede Readiness, calibration and held-out validation and do not measure action reliability or universal automatic bridging.",
+    "The separate explicit hint diagnostic has 19 gesture-qualified tracking observations out of 24, 5 uncertain and 0 lost, with 0 source-ID changes. Pixels match on 23 frames, but 4 of those are withheld by whole-hand authority. This does not establish arbitrary-image finger recognition.",
+    "Earlier optical fallback, immediate-authority and pre-correction temporal diagnostics remain historical evidence of their own source identities. Earlier browser success never upgrades a later algorithm candidate.",
+    "Observed in-bounds model joints can still be misassigned. Current spatial compatibility and source-scoped three-frame/120ms confirmation prevent a single bad full-hand return from establishing persistent authority, without certifying physical gesture truth.",
+    "Raw posture qualification is separate from freshness, source association, sample stability and independent held-out accuracy.",
+    "Prompt labels indicate requested intent, not frame accuracy ground truth; no calibration was fitted from them.",
+    "The owner reported the sweep was not performed as intended; it is excluded from physical motion evidence.",
+    "Core CPU replay timings were measured under concurrent development load and are not hard timing bounds or physical capture-to-display latency.",
+    "No new physical webcam acceptance or held-out validation is claimed by these replay aggregates."
+  ]
+}

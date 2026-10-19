@@ -84,3 +84,5 @@ Publishing this governing baseline does not authorize Parallax, Crossdeck, or la
 ## Reach-era effective integration
 
 Read the preserved authority above with the [current Reach integration amendment](../../Governing/Project_Sextant_Governing_Amendment_v1.1_Reach_Camera_and_Device_Gesture_Boundaries.md). The [effective spatial authority index](../../Governing/Voyagewright_Spatial_Experience_Effective_Authority.md) resolves the complete additive chain. Reach owns calibrated target/gesture intent; this project retains its domain authority. The amendment is governance only and does not claim new implementation or reopen accepted closure.
+
+The owned Reach development branch adds an [adaptive visual capture design and development record](Adaptive_Visual_Capture_Design_20261017.md). Its regular-camera baseline, optional source discovery and local frame contracts preserve Sextant hardware ownership. Pure contract/diagnostic proof and private native RGB/IR delivery probes remain distinct from production native transport, IR recognition, protected integration and physical pointing acceptance.

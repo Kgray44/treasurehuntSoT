@@ -1,0 +1,45 @@
+{
+  "classification": "DEVELOPMENT_ANALYTIC_MIXED_MOTION_AUDIT_NOT_PHYSICAL_GROUND_TRUTH",
+  "headAtReplay": "cd34451832e2d0004492880ac1288ec31945d3b2",
+  "algorithm": {
+    "providerId": "watchglass.index-image",
+    "providerVersion": "4",
+    "algorithm": "TEMPORAL_INDEX_FUSION_V3",
+    "algorithmDigest": "00fc2b5cd07b6c54dc649ba4bc914f1327dbb3642fa02de6719fdc9b15710094"
+  },
+  "sourceBundleSha256": "83847083b960f4e20132e11e96e33350c9eda580d3e3d3f662991a3be35d4026",
+  "originalAttachmentSha256": "621b41852a2439af550701212ce10742c5651f1ad2c959fc893f2ccc4f0e85e0",
+  "sourceClass": "Original supplemental browser source with currently verified unchanged producer; replay is not a new current-head browser capture.",
+  "replay": {
+    "workerExposures": 179,
+    "originalDomSamples": 229,
+    "stateParity": 229,
+    "reasonParity": 229,
+    "generationParity": 229,
+    "errors": 0,
+    "producerTrackingFrames": 67,
+    "originalTrackingDomSamples": 80,
+    "trackingLogicalGenerations": 3
+  },
+  "causalOrder": [
+    "Correct current neuralchain disappears; fresh uniquely matched image continues.",
+    "Acquired contrary neural hypothesis has authoritySource but no identitySource; source normalization returns early.",
+    "Continuous foreign hypothesis is quarantined; current material remains visible but accepted coordinates/templates stay frozen.",
+    "Accumulated current-material displacement exceeds the unchanged32px bound; later correctINDEX is a new unproved source.",
+    "Original same-source proof never returns; original alias proof lacks sufficiently separated old regions; identity expiry and new acquisition follow."
+  ],
+  "originalIdentityProof": {
+    "oldTexturedIndexRegions": 2,
+    "oldDipToOtherSeparationPixels": [8],
+    "minimumRequiredSeparationPixels": 15,
+    "originalSameSourceReturns": false,
+    "sourceAliasNecessaryOldPartCondition": false
+  },
+  "decision": "No same-ID recovery candidate is justified for this unchanged broad trace under the original identity proof. Nonauthoritative current-material proposals alone cannot qualify it.",
+  "limitations": [
+    "All development data; no anatomical switch or physical fingertip correctness ground truth.",
+    "Reconstructed analytic gray is not asserted byte-identical to saved browser raster.",
+    "Assumed finalization reply+1ms preserves known original pixel-origin bounds but is not a processing/capture/display latency measurement.",
+    "Original test and assertion preserved; no product changes, new services or camera capture."
+  ]
+}

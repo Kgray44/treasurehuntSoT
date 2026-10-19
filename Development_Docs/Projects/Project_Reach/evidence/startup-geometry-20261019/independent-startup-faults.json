@@ -1,0 +1,121 @@
+{
+  "classification": "SAFE_INDEPENDENT_PREFREEZE_PLANNED_GEOMETRY_STARTUP_FAULT_REVIEW_NOT_PHYSICAL_OR_NEURAL_QUALIFICATION",
+  "createdAt": "2026-10-19T19:29:57.856Z",
+  "sourceHead": "cd34451832e2d0004492880ac1288ec31945d3b2",
+  "sourcePins": {
+    "parentSha256": "3dd86ef22fda089f90b6847ee80b60c670176761c18775e0f6e91a9e137d5b88",
+    "providerSha256": "fe68db187f9db74943e1f0c55c3ad76621a2c60591af84d950bb6c407f372ca9",
+    "workerSha256": "4d8caa84874b76795b1acc1db975277ffb0329eb485d62eae20fe50712965222",
+    "parentEvaluationBundleSha256": "8614105328ac5f1838250049ad017a36e210cdca13e0ada4da970ec87ff082bb",
+    "sourceDependenciesPinnedAndRechecked": 93
+  },
+  "evaluationPins": {
+    "plannedCasesSha256": "1dfe8f41b3ac80152fa802edf52f9b6d38416041284b0c8d62564039b180c691",
+    "finalHarnessSha256": "f4e719debeef44e7f8d915f7096800f736c00229c0a0f07a5234c762381fa586",
+    "privateFinalReceiptSha256": "29ea266420ddf0df0a048431911d1858f1e90e135d4315414959804489619f83",
+    "firstFailedReceiptSha256": "5c0aecb69526ff0b666f8494672f6c527c7ddcc78be0cd4edc47d20c233daedf",
+    "secondFailedReceiptSha256": "0cc27ce13cf81d62e517241fcb10538351cc1e6cc104e4b5f6ff5df3a444a537"
+  },
+  "independence": {
+    "planSealedBeforeInitialWorkerFreeze": true,
+    "planSourceWasCurrentRetainedSource": true,
+    "planCaseCount": 52,
+    "initialWorkerFreezeUtc": "2026-10-19T19:19:03.344591+00:00",
+    "planSealObservedUtc": "2026-10-19T19:18:16.9929238Z",
+    "candidateInputsOrExpectedLabelsChangedAfterEvaluation": false,
+    "pipelineDevelopmentFixturesUsed": false,
+    "liveSourceChangedDuringEvaluation": false,
+    "protocolAdaptation": "Final worker schema uses startupHealth.probeDimensions instead of preliminary plan wording frameGeometry; identical width/height/context predicate and outcomes."
+  },
+  "result": {
+    "total": 52,
+    "passed": 52,
+    "failed": 0,
+    "scopes": {
+      "worker-provider": {
+        "total": 15,
+        "passed": 15,
+        "failed": 0
+      },
+      "provider": {
+        "total": 7,
+        "passed": 7,
+        "failed": 0
+      },
+      "worker": {
+        "total": 4,
+        "passed": 4,
+        "failed": 0
+      },
+      "parent": {
+        "total": 25,
+        "passed": 25,
+        "failed": 0
+      },
+      "parent-laboratory-source": {
+        "total": 1,
+        "passed": 1,
+        "failed": 0
+      }
+    },
+    "instrumentedContractCases": 51,
+    "runtimeGenerationPlusStaticLaboratoryCases": 1,
+    "reactCalibrationUiCases": 0,
+    "physicalCases": 0
+  },
+  "faultCoverage": [
+    "Explicit actual-dimension validation including integer and schema boundaries; extreme dimensions use allocation stubs only.",
+    "Odd/asymmetric and portrait probe binding; two ordered native costs; synthetic output/cache clearing.",
+    "Probe-cost inclusive150ms and nonfinite/backward clocks; proven-close failure and bounded GPU-to-CPU startup selection.",
+    "Current and foreign FRAME geometry rejection before NN; exact bitmap closure and no postREADY startup fallback.",
+    "Parent READY dimension/context/backend/health agreement; startup resize and asynchronous bitmap race rejection.",
+    "Unknown packet cannot cause model readiness or generic ERROR fallback; legacy omitted policy restricted to known original worker.",
+    "Absolute12s/15s receipt-time deadlines, retired-worker reply suppression and one inference in flight.",
+    "151ms completion rejection cannot advance accepted history; stop/restart produces new provider and camera bindings."
+  ],
+  "sourceEquivalence": [
+    {
+      "name": "recovery-provider.js",
+      "originalPrivateSha256": "d83f0fe8025661128dff0290388264ff1ac31af6743faed8f8e82db270db41dd",
+      "finalPublicSha256": "fe68db187f9db74943e1f0c55c3ad76621a2c60591af84d950bb6c407f372ca9",
+      "repositoryFormattingAndHeaderOnly": true,
+      "canonicalTokensEqual": true,
+      "canonicalTokenSha256": "0bd2d3eaf4a013be2bade924eca617558036c55677a31a923a2bf86fed968352",
+      "tokenNormalization": "Repository Prettier canonical formatting followed by TypeScript scanner with comments/trivia skipped"
+    },
+    {
+      "name": "recovery-worker.js",
+      "originalPrivateSha256": "058c692922745ce56cb58e6ea8d5de924f233184f5869f83db4b4c34cfa59020",
+      "finalPublicSha256": "4d8caa84874b76795b1acc1db975277ffb0329eb485d62eae20fe50712965222",
+      "repositoryFormattingAndHeaderOnly": true,
+      "canonicalTokensEqual": true,
+      "canonicalTokenSha256": "88bc7e07a9c3e73af8cad12606aff6e414885ee7463742820b5a2d16905aecca",
+      "tokenNormalization": "Repository Prettier canonical formatting followed by TypeScript scanner with comments/trivia skipped"
+    }
+  ],
+  "harnessFailuresPreserved": [
+    {
+      "initial": {
+        "passed": 21,
+        "failed": 31
+      },
+      "classification": "INDEPENDENT_VM_SETUP_ERRORS",
+      "cause": "Worker stub targeted an exports object replaced by the worker; parent mock omitted window.isSecureContext."
+    },
+    {
+      "second": {
+        "passed": 51,
+        "failed": 1
+      },
+      "classification": "INDEPENDENT_STATUS_ORACLE_NAMESPACE_ERROR",
+      "cause": "Unknown-packet assertion included the earlier legitimate camera-broker READY; corrected to events after injection and null perception."
+    }
+  ],
+  "decision": "NO_UNSAFE_ADMISSION_FOUND_IN_THE_FROZEN_CONTRACT_CASES; ACTUAL_BROWSER_AND_PERCEPTION_QUALIFICATION_REMAIN_SEPARATE",
+  "limitations": [
+    "No real camera, model inference, GPU timing, extreme raster allocation, browser or application service was executed.",
+    "Perception, native coordinate error, natural selected-index continuity, physical calibration and actual throughput remain unqualified.",
+    "P25 executes runtime source-generation reset and independently reads the existing Laboratory invalidation branch; it does not execute React calibration UI.",
+    "Contract tests use trusted local source with deterministic injected faults; passing does not authenticate arbitrary hostile worker source."
+  ]
+}

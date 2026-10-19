@@ -1,0 +1,155 @@
+.recorder {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 2rem;
+  color: #dcf3eb;
+  background: #102925;
+  min-height: 100vh;
+}
+.recorder h1 {
+  font:
+    500 2.4rem Georgia,
+    serif;
+  margin: 0.5rem 0 1rem;
+}
+.recorder header > p:last-child {
+  max-width: 850px;
+  color: #b1cbc2;
+  line-height: 1.6;
+}
+.eyebrow {
+  color: #cce4a7;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  font-size: 0.72rem;
+}
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(320px, 1fr);
+  gap: 2rem;
+  align-items: start;
+  margin-top: 2rem;
+}
+.stage {
+  position: relative;
+  width: 100%;
+  background: #081814;
+  border: 1px solid #547268;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.mirrored {
+  position: absolute;
+  inset: 0;
+  transform: scaleX(-1);
+}
+.mirrored video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.cameraStatus {
+  color: #a8c9bc;
+  font-size: 0.82rem;
+}
+.controls h2 {
+  font-size: 1.4rem;
+  line-height: 1.45;
+  margin: 0.5rem 0 1rem;
+}
+.controls p,
+.controls label {
+  line-height: 1.5;
+}
+.controls progress {
+  width: 100%;
+  accent-color: #91d9b2;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 1rem 0;
+}
+.recorder button,
+.actions a {
+  color: #e4f4eb;
+  border: 1px solid #72988a;
+  border-radius: 7px;
+  padding: 0.7rem 0.9rem;
+  background: #254c3d;
+  cursor: pointer;
+  text-decoration: none;
+}
+.recorder button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.recorder a {
+  color: #cfe6a6;
+}
+.privacy {
+  padding: 1rem;
+  border: 1px solid #547268;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  color: #b5ccc3;
+  margin: 1.5rem 0;
+}
+.privacy p:last-child {
+  margin-bottom: 0;
+}
+.error {
+  border-left: 3px solid #eaae83;
+  padding: 0.7rem;
+  background: #503a2b;
+  color: #ffe1c6;
+}
+.downloads {
+  border-top: 1px solid #547268;
+  padding-top: 0.75rem;
+}
+.downloads input {
+  margin-right: 0.5rem;
+}
+.review {
+  display: block;
+  width: 100%;
+  max-height: 650px;
+  border: 1px solid #547268;
+  border-radius: 12px;
+  background: #081814;
+}
+.guidePlane {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  max-width: 280px;
+  margin-top: 1rem;
+  border: 1px solid #72988a;
+  border-radius: 8px;
+  background: #183b30;
+}
+.targetDot {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border: 3px solid #e5d58b;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: #c0d59d;
+  box-shadow: 0 0 0 6px #d5cb8226;
+}
+@media (max-width: 850px) {
+  .recorder {
+    padding: 1rem;
+  }
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .recorder h1 {
+    font-size: 2rem;
+  }
+}

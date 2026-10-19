@@ -1,0 +1,78 @@
+{
+  "classification": "SEPARATE_SAME_PNG_REVIEWER_AGREEMENT_DIAGNOSTIC_NOT_CONSENSUS_NOT_POOLED_ACCURACY",
+  "new157ReferencesSha256": "18ce44cf20101b67245dc2c7248cd929f9ca0834107eeb5493e3e9f63df9169e",
+  "old79ReferencesSha256": "5cb024ad66904b5689575c5ecb9167ba3f7286aaff2d9b3492c8b16a8ef43f00",
+  "primary157ComparisonSha256": "226f6eea973cb61b29615fc1815233c8277bd231dfe683b9b14f8743a24a10b5",
+  "summary": {
+    "samePngPairs": 28,
+    "fields": {
+      "tipVisibility": {
+        "samePngPairs": 28,
+        "agree": 21,
+        "disagree": 7,
+        "oneReviewUnresolved": 0,
+        "bothUnresolved": 0,
+        "transitions": {
+          "VISIBLE / VISIBLE": 11,
+          "AMBIGUOUS / AMBIGUOUS": 7,
+          "VISIBLE / AMBIGUOUS": 2,
+          "NOT_VISIBLE / AMBIGUOUS": 1,
+          "NOT_VISIBLE / NOT_VISIBLE": 3,
+          "AMBIGUOUS / NOT_VISIBLE": 3,
+          "AMBIGUOUS / VISIBLE": 1
+        }
+      },
+      "anatomicalDigit": {
+        "samePngPairs": 28,
+        "agree": 16,
+        "disagree": 12,
+        "oneReviewUnresolved": 12,
+        "bothUnresolved": 3,
+        "transitions": {
+          "INDEX / INDEX": 13,
+          "UNRESOLVED / INDEX": 1,
+          "UNRESOLVED / UNRESOLVED": 3,
+          "INDEX / UNRESOLVED": 11
+        }
+      },
+      "pointingIntent": {
+        "samePngPairs": 28,
+        "agree": 16,
+        "disagree": 12,
+        "oneReviewUnresolved": 12,
+        "bothUnresolved": 8,
+        "transitions": {
+          "POINT / POINT": 8,
+          "POINT / UNRESOLVED": 12,
+          "UNRESOLVED / UNRESOLVED": 8
+        }
+      },
+      "localAdjacentIndexContinuity": {
+        "samePngPairs": 28,
+        "agree": 22,
+        "disagree": 6,
+        "oneReviewUnresolved": 6,
+        "bothUnresolved": 15,
+        "transitions": {
+          "SAME_VISIBLE_INDEX / UNRESOLVED": 4,
+          "SAME_VISIBLE_INDEX / SAME_VISIBLE_INDEX": 7,
+          "UNRESOLVED / SAME_VISIBLE_INDEX": 2,
+          "UNRESOLVED / UNRESOLVED": 15
+        }
+      }
+    },
+    "boxes": {
+      "bothBoxes": 14,
+      "overlap": 14,
+      "disjoint": 0,
+      "oneBoxOnly": 10,
+      "neitherBox": 4
+    },
+    "continuitySemanticLimitation": "New labels describe immediately adjacent frame continuity. Old selectedIndexContinuity describes continuity from the initially resolved segment, so equality is a value diagnostic, not interchangeable local-adjacency annotation or reliability."
+  },
+  "limits": [
+    "After fixed primary157 scoring, compare old79 on same PNG SHA only. Report visibility/anatomy/intent/continuity value agreements and disagreements plus both-box overlap/disjoint. Old selectedIndexContinuity has broader initial-segment semantics than new localAdjacentIndexContinuity, so its equality is a qualified value diagnostic only. Do not pool denominators, revise labels or choose the favorable reviewer.",
+    "No new media viewed, no labels revised, no favorable reviewer selected. Primary157 metrics remain unchanged.",
+    "Differences indicate reference uncertainty/conflict; the new subjective bounds alone are not consensus or physical truth."
+  ]
+}

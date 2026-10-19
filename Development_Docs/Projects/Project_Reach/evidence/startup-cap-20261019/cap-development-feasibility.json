@@ -1,0 +1,67 @@
+{
+  "classification": "SAFE_AGGREGATE_FIXED_CURRENT_IMAGE_CAP_LOCALIZATION_FEASIBILITY_NO_TRACKING_AUTHORITY",
+  "sourceHead": "0aca4bd1cbbac51992e03090dff279b8f1cf9b20",
+  "detectorSha256": "868055dff130279b427b69fa743404a0e23e2eb08027fc8a690bdda6b640ad13",
+  "algorithm": "CURRENT_PAIRED_SHAFT_TERMINAL_CAP_V1",
+  "frozenBeforeCorpusAndIndependentEvaluation": true,
+  "newWeightsOrDependencies": 0,
+  "productionSourceChanged": false,
+  "nativeDevelopmentFeasibility": {
+    "sourceFrame": 466,
+    "sourceTimeSeconds": 25.795,
+    "exactAnalysisGraySha256": "fd308cacd12cc526c08a444db8b22152046c4624c13b793d433b50e3cfa5999f",
+    "nativeWithoutOverlayViewedBeforeExecution": true,
+    "structuralCapProposals": 1,
+    "returnedPointInsideIndependentlySealedCoarseTerminalRegion": true,
+    "coarseReviewSha256": "568bac4d9c94663785ed08f307637c6f497e7e93174af3333ff6676730b2bd78",
+    "reviewClass": "INDEPENDENT_BLIND_AI_DEVELOPMENT_COARSE_REGION_ONLY",
+    "exactEndpointError": "UNAVAILABLE_NO_DEFENSIBLE_EXACT_CAP_CENTER_LABEL",
+    "recomputedReturnedPointToRawNeuralTipDistanceAnalysisPixels": 16.10124218810465,
+    "withinUnchangedEightPixelNeuralInnovation": false,
+    "otherCurrentDigitChainProposals": 4,
+    "otherCurrentDigitChainProposalsAccepted": 0,
+    "faceCeilingAndBackgroundProposals": 3,
+    "faceCeilingAndBackgroundProposalsAccepted": 0,
+    "selection": "Preidentified RIGHT failure; not random sampling, independent physical accuracy, or held-out recorded data."
+  },
+  "postFreezeAuthorDevelopmentMechanism": {
+    "validAcquisitionSeedFrames": 4,
+    "baselineRejectedVisibleTerminalFrames": 3,
+    "baselineRejection": "FULL_HAND_INDEX_CONFLICT",
+    "baselineMeasuredPositionsOnRejectedFrames": 0,
+    "structuralCapProposalsOnRejectedFrames": 3,
+    "knownAnalyticTerminalErrorAnalysisPixels": 0.5,
+    "proposalsBeyondUnchangedNeuralInnovation": 3,
+    "newAuthoritativeMeasurements": 0,
+    "blankControls": 1,
+    "blankControlsAccepted": 0,
+    "shaftOnlyCapOutsideImageControls": 1,
+    "shaftOnlyControlsAccepted": 0,
+    "duplicatedCapMaterialControls": 1,
+    "duplicatedCapControlsAcceptedAsStructuralProposal": 1,
+    "interpretation": "Detector can measure a terminal shape on a known analytic baseline failure, but does not supply a distinct index identity or rival-proof authority. Duplicate acceptance prevents treating structural acceptance as semantic uniqueness."
+  },
+  "integrationAssessment": {
+    "adopted": false,
+    "trackingAuthority": "NONE",
+    "rawNeuralLandmarkRewritten": false,
+    "coordinateConflictSuppressed": false,
+    "sourceAliasCreated": false,
+    "existingBoundsRetained": [
+      "Eight-analysis-pixel neural innovation",
+      "Two-analysis-pixel actual material reverse closure",
+      "150ms current-pixel and completion freshness",
+      "Current selected identity, source and anatomical eligibility"
+    ],
+    "decision": "PENDING_INDEPENDENT_LOCALIZATION_EVALUATION_NOT_A_RECOVERY_IMPROVEMENT",
+    "reason": "The native RIGHT structural proposal remains beyond the raw neural compatibility bound. Accepting that point requires a separately qualified explicit new coordinate authority; this detector does not establish such authority."
+  },
+  "frozenImplementationLimitation": "The exported rawModelDistancePixels and modelWithinEightPixels describe the pre-half-pixel axial point. Evaluation recomputes distance from the returned point. Neither helper grants admission, and the frozen module is not repaired after evaluation.",
+  "limits": [
+    "No camera, real-provider inference, application service, database or owner browser was opened by this detector work.",
+    "Current-image contour consistency is complementary image evidence, not statistically independent truth or anatomical index recognition.",
+    "Bright-foreground edge assumptions may abstain on dark or equal-contrast terminals. No threshold, crop or model sweep was performed.",
+    "No authoritative RIGHT or mixed-motion position, identity recovery, sample or calibration improvement is claimed.",
+    "Native imagery, coordinates, landmark traces and development rasters remain private outside Git and external services."
+  ]
+}

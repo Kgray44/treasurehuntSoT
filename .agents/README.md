@@ -3,7 +3,7 @@ title: Repository automation guidance
 audience: automation
 status: current
 canonical_for: repository-automation-guidance
-last_reviewed: 2026-10-17
+last_reviewed: 2026-10-19
 ---
 
 # Repository automation guidance
@@ -14,6 +14,9 @@ retains its own task scope, ownership and evidence boundaries; older packets do
 not authorize restarting a completed phase.
 
 - [Focused development and final verification](testing-workflow.md)
+- [Reach startup capacity and geometry integration](reach-startup-capacity-20261019.md)
+- [Reach Phase 1 perception continuation contract](reach-phase1-perception-20261019.md)
+- [Reach overnight reliability development contract](reach-overnight-reliability.md)
 - [Automatic Product Experience Engineering workflow](product-experience-workflow.md)
 - [Sounding Line capture lifecycle repair context](capture-lifecycle-repair.md)
 - [Sounding Line browser receipt diagnostic context](browser-receipt-diagnostics.md)

@@ -63,7 +63,7 @@ describe("stage separation and geometric posture on an official measured landmar
   });
   it("keeps a visibly detected edge hand distinct from sample eligibility", () => {
     const points = realPoint();
-    points[8].x = 0.995;
+    points[8].x = 1.005;
     const o = new BrowserHandAdapter(binding).envelope(result(points), 100, 110, 640, 480);
     expect(o.quality).toBe("USABLE");
     expect(o.reason).toBe("LOW_VISIBILITY");
@@ -137,5 +137,19 @@ describe("local continuity and deliberate active-hand selection", () => {
     adapter.envelope(result(), 100, 105, 640, 480);
     expect(() => adapter.envelope(result(), 99, 110, 640, 480)).toThrow("HAND_PROVIDER_CLOCK_INVALID");
     expect(() => adapter.envelope(result(), 120, 110, 640, 480)).toThrow("HAND_PROVIDER_CLOCK_INVALID");
+  });
+
+  it.each(["before", "during"])("does not renew identity when capture is rejected %s association", (when) => {
+    const adapter = new BrowserHandAdapter(binding);
+    const first = adapter.envelope(result(), 100, 105, 640, 480);
+    let checks = 0;
+    expect(() => adapter.envelope(result(), 1100, 1105, 640, 480, () => when === "during" && ++checks === 1)).toThrow(
+      "HAND_PROVIDER_CAPTURE_REJECTED",
+    );
+    // The rejected capture cannot extend the accepted hand's 1200ms lifetime.
+    const recovered = adapter.envelope(result(), 1400, 1405, 640, 480);
+    expect(recovered.hands[0].trackGeneration).toBe(first.hands[0].trackGeneration + 1);
+    expect(recovered.hands[0].trackId).not.toBe(first.hands[0].trackId);
+    expect(recovered.sequence).toBe(first.sequence + 1);
   });
 });

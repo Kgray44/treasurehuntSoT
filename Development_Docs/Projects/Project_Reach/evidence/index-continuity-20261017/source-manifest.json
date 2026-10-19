@@ -1,0 +1,416 @@
+{
+  "version": 2,
+  "classification": "engineering_evidence",
+  "evidenceTier": "DEVELOPMENT_ONLY",
+  "algorithm": {
+    "providerId": "watchglass.index-image",
+    "providerVersion": "1",
+    "algorithm": "BOUNDED_PHOTOMETRIC_NCC_V1",
+    "algorithmDigest": "8b2846e3959552912bf978c531d3099d56f15d7f9648ce08d8f23feb0fc63498"
+  },
+  "physicalAccuracyQualified": false,
+  "protectedQualification": false,
+  "generatedAtUtc": "2026-10-17T23:04:33.888Z",
+  "repositoryHeadAtCapture": "acda671618ae5313cc180da506b29bb36b4115f5",
+  "comparedMainCommit": "d6e9e57d65eac3efc72223725e8e6bc462b40ccd",
+  "forkCommit": "56b700bc2a45bee3ef2cdb5416439bae964f2233",
+  "sourceScope": "Bounded local development snapshot of Reach/Watchglass implementation and tests, Reach routes/replay tools, browser suites, dependency and testing-contract inputs. Not a hosted producer attestation, protected qualification or complete application dependency closure.",
+  "sourceTreeSha256": "d184402854188ae3de1a5ddf02cf8eb12c928785e7458386eef2fd137251df21",
+  "files": [
+    {
+      "path": "package-lock.json",
+      "bytes": 397906,
+      "sha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373"
+    },
+    {
+      "path": "package.json",
+      "bytes": 31046,
+      "sha256": "621feaf30acc7198c951514eb188144f22c40b4b8e12962481bce5b287285f37"
+    },
+    {
+      "path": "public/reach/hand-worker.js",
+      "bytes": 2374,
+      "sha256": "9450f53274dd9801f2261b0e7381ab2a9e34994a61a44d8ef3349d865bdcfc14"
+    },
+    {
+      "path": "scripts/reach/device-lab.ts",
+      "bytes": 1577,
+      "sha256": "456730e24b53b7abd44ee60334e417b9b33750f1a3f2c55934730f51400e40a5"
+    },
+    {
+      "path": "scripts/reach/replay-pose-recording.ts",
+      "bytes": 19110,
+      "sha256": "a279789c6180e78322069319209f6dca697eba9e67e9e34bb0dfa3ef35b6c04e"
+    },
+    {
+      "path": "src/app/devices/reach/page.tsx",
+      "bytes": 703,
+      "sha256": "10767c391f51a66101c3b7a4a144411d83cdccbd71b7925692ddc9a63823f121"
+    },
+    {
+      "path": "src/app/devices/reach/record/page.tsx",
+      "bytes": 584,
+      "sha256": "c441ce1ec80f05be2d741462a64e2480421af06a941e023f14a2d6f242087b9c"
+    },
+    {
+      "path": "src/reach/ReachLaboratory.module.css",
+      "bytes": 21570,
+      "sha256": "018d651fdf42d3935cc9a98f8f14afe4f8fc706c9404778d14b2d301ccb801e2"
+    },
+    {
+      "path": "src/reach/ReachLaboratory.tsx",
+      "bytes": 80285,
+      "sha256": "6740668e894aabf0ae1dc0c6f76b1597eb3b76f5e49d08248a996f80cb7faed5"
+    },
+    {
+      "path": "src/reach/ReachPoseRecorder.module.css",
+      "bytes": 2634,
+      "sha256": "3ae49b10d1df4a664d2e9d357ed741dcc6b641fc6c2726a9901ce45e23b67569"
+    },
+    {
+      "path": "src/reach/ReachPoseRecorder.tsx",
+      "bytes": 21420,
+      "sha256": "df5fd5e255f6d280479b4346adc1cd6b3a6842d906a180aa5b69476d60509a39"
+    },
+    {
+      "path": "src/reach/ReachStage.test.tsx",
+      "bytes": 8714,
+      "sha256": "8e4fc356e69024f9b5e24cf22d34fcce6020965c72d984393b0ebd896741e6f4"
+    },
+    {
+      "path": "src/reach/ReachStage.tsx",
+      "bytes": 6907,
+      "sha256": "f673850c25339fa0fb0d2ecba640d38be9c2392b852bc17f7d49673cbea4523f"
+    },
+    {
+      "path": "src/reach/acquisition.test.ts",
+      "bytes": 4970,
+      "sha256": "564406d3b4bc5c64f27c466546624e2267fec27480003ae9244e202c3a47b6cd"
+    },
+    {
+      "path": "src/reach/assets.test.ts",
+      "bytes": 1225,
+      "sha256": "609fe4d8eef05cc54be92888497559474f5b84ff1049598c5d53d229a0c56591"
+    },
+    {
+      "path": "src/reach/browser-runtime-index-image.test.ts",
+      "bytes": 25841,
+      "sha256": "0eb36c3ef89ebed6661ae063fec109b6570523642b13a35aa13ca5ac300e9677"
+    },
+    {
+      "path": "src/reach/browser-runtime.test.ts",
+      "bytes": 6268,
+      "sha256": "29b023da279e96b955ec8bcbdbc2c3ca8f955a071c46c9e5afabfed545638a5c"
+    },
+    {
+      "path": "src/reach/browser-runtime.ts",
+      "bytes": 19930,
+      "sha256": "0997cc6cdf86b0caa370a392c91f45cf59a117ae028a510b63342c4cc048baa8"
+    },
+    {
+      "path": "src/reach/calibration-profile.test.ts",
+      "bytes": 11898,
+      "sha256": "e2c7df65efd84c1f40ae1b890e87eb19668576b50df7bfd5a7086acc11b06db5"
+    },
+    {
+      "path": "src/reach/calibration.ts",
+      "bytes": 19891,
+      "sha256": "9bddb35f843913594f5fe6909c92beda77b8f23726ce1c4d5e52defba4d271d6"
+    },
+    {
+      "path": "src/reach/coordinates.ts",
+      "bytes": 5878,
+      "sha256": "c81581e9861369f21b9dcba0b66af3c04f9a04f887c3b600888d5e358ebc3622"
+    },
+    {
+      "path": "src/reach/device-lab.test.ts",
+      "bytes": 1509,
+      "sha256": "a008e1a6b232301301e2632480ada5d5d449df6e416dea67035556c37689c3d1"
+    },
+    {
+      "path": "src/reach/device-lab.ts",
+      "bytes": 1661,
+      "sha256": "68e1e9d5a4615eb702b366d7ab1a819759ab1811b9c9ffc9e1b6870eceea143c"
+    },
+    {
+      "path": "src/reach/end-on-pointing.test.ts",
+      "bytes": 5824,
+      "sha256": "ea328ae0d2980fc5853a8a410b040b8e098b6fe23dc1ee52922e28dc8a550521"
+    },
+    {
+      "path": "src/reach/foundation-scenarios.ts",
+      "bytes": 9354,
+      "sha256": "a705d97a12cfc3d35572ebaa88bf5c68ab054657591241d692b1d326610c0277"
+    },
+    {
+      "path": "src/reach/foundation.test.ts",
+      "bytes": 7806,
+      "sha256": "b87cdf8b7be1eba46e1b7d0123b160cbecdc66fee316e88bf34dd00b17c05616"
+    },
+    {
+      "path": "src/reach/hand-detection-authority.test.ts",
+      "bytes": 6991,
+      "sha256": "8d92b80e2a6a8f3ae21943b12bd5438d0dc6fd48d30bd44aa057b0ac8aab1f1e"
+    },
+    {
+      "path": "src/reach/hand-detection-authority.ts",
+      "bytes": 9150,
+      "sha256": "4e6b4dc7c324a4c56d8a2d887f7a0a069d387541a99cf9a3cff336c20de6e070"
+    },
+    {
+      "path": "src/reach/hand-worker.test.ts",
+      "bytes": 3655,
+      "sha256": "624a4a9978dbbdbee7847d19bf957820149d23f84abff3a63c7136d1bf1e75bc"
+    },
+    {
+      "path": "src/reach/index-image-observation.test.ts",
+      "bytes": 12132,
+      "sha256": "e3848442c81ed36f9c40026d90da197861fc430d4fde2d219a83bd0518caed0b"
+    },
+    {
+      "path": "src/reach/index-image-observation.ts",
+      "bytes": 4021,
+      "sha256": "e012dbe5a2963fc1b825c2940f4aca8274f42f73bb29fca05fd8a5e4dc5fc9e3"
+    },
+    {
+      "path": "src/reach/index-image-readiness.test.ts",
+      "bytes": 13112,
+      "sha256": "7b536c952c9d71b05ef011c0fed4661d56cf3668761a3642cdc22b97f089ab0e"
+    },
+    {
+      "path": "src/reach/index-image-readiness.ts",
+      "bytes": 6062,
+      "sha256": "445ab562ffb6d237a9e6d4c87db7a4c0fc57abdb5aa3654dfaa528f9d606bcc9"
+    },
+    {
+      "path": "src/reach/index-image-tracker.test.ts",
+      "bytes": 41898,
+      "sha256": "f11398430017ee457a1eb6a5903dd1fb61697abb4d3ed0f2d5f0aac5ca10e381"
+    },
+    {
+      "path": "src/reach/index-image-tracker.ts",
+      "bytes": 27837,
+      "sha256": "1793d127d30b4a8d7f7fe59d4ea1d0abe59471c17696ae32fcad0f31e91e2b9c"
+    },
+    {
+      "path": "src/reach/index-ncc.test.ts",
+      "bytes": 8006,
+      "sha256": "adcd98740ee7c7855f4f34ebcb173533c0f2a0bb7c2c49397893eedf92b5f417"
+    },
+    {
+      "path": "src/reach/index-ncc.ts",
+      "bytes": 7534,
+      "sha256": "0b9106d72fe85357423c68ea420230e38f03521fcdfc8c184303173279439da7"
+    },
+    {
+      "path": "src/reach/index-priority.test.ts",
+      "bytes": 5268,
+      "sha256": "1623721380e94802b265945b3bb7098e375bf2e90a5e24af8208ba51516d86a1"
+    },
+    {
+      "path": "src/reach/inference-backend.test.ts",
+      "bytes": 2078,
+      "sha256": "9b9b1466baee8ab0f21b3953439def377403ab14366b1a1c824c6840bf7bfcb0"
+    },
+    {
+      "path": "src/reach/observation.ts",
+      "bytes": 9247,
+      "sha256": "0622600a9a8b6dd15e8905f6e5bf33d117ff2786e50d93578b2d7a80d13e16b7"
+    },
+    {
+      "path": "src/reach/off-image-posture.test.ts",
+      "bytes": 7852,
+      "sha256": "504ec26997addafe52e60fe293397b175901a8e99c951efee82ccec44c63ba15"
+    },
+    {
+      "path": "src/reach/partial-framing.test.ts",
+      "bytes": 7034,
+      "sha256": "4d4f5709ec988b958dd5cd8fd326345374fad4d7aa1f2b12e162f4a1d33056f1"
+    },
+    {
+      "path": "src/reach/point-filter.test.ts",
+      "bytes": 9464,
+      "sha256": "394b063ae1edf971502748de3d141c962e80333fac15bcdd309c9e101636344f"
+    },
+    {
+      "path": "src/reach/pointer-continuity.test.ts",
+      "bytes": 2411,
+      "sha256": "fe3052b1a18da7d73293a74b0d68a52af5e58a4ae145a56633bc3185a9a5a83f"
+    },
+    {
+      "path": "src/reach/pointer-continuity.ts",
+      "bytes": 1816,
+      "sha256": "5e5eee4a93e1f4575c7fc71bbcb0147e672760ca0b9599f320e210e6681948a2"
+    },
+    {
+      "path": "src/reach/pointing-geometry.test.ts",
+      "bytes": 5504,
+      "sha256": "792bff5d9b85f6450cc8757f616e1ef504dc8e0f08d67707588e9bc87de47787"
+    },
+    {
+      "path": "src/reach/pointing-transition.test.ts",
+      "bytes": 4983,
+      "sha256": "9678e33371c1268701a25700bda3c15cd5eb6171062d04fd4c4483e13046314f"
+    },
+    {
+      "path": "src/reach/pose-recording.test.ts",
+      "bytes": 7739,
+      "sha256": "10e3408afaa4e94fb752a39eed0c1c2c099c9efc82ff24b11dcdaed1d8b4305d"
+    },
+    {
+      "path": "src/reach/pose-recording.ts",
+      "bytes": 12692,
+      "sha256": "a7c828f0f2fd5efdce822a6ff7c414e9b1d886a5733e50d05c6cfbb5027b13a3"
+    },
+    {
+      "path": "src/reach/pose-replay.test.ts",
+      "bytes": 8827,
+      "sha256": "76c8eb623d1ee660b0e128c553177c8b810b89c71a4e8cb1915f271ec0b1bda8"
+    },
+    {
+      "path": "src/reach/privacy.ts",
+      "bytes": 999,
+      "sha256": "552719adf54f1c391a85d6224849f43708e793c3a18687fa53ffb19fa4fbd874"
+    },
+    {
+      "path": "src/reach/provider-ambiguity.test.ts",
+      "bytes": 7938,
+      "sha256": "a706bafb36b76feb136be6ddbd5d29d351781b9c27fa3919426cba3b35f18d96"
+    },
+    {
+      "path": "src/reach/provider-index-continuity.test.ts",
+      "bytes": 6466,
+      "sha256": "e8d9e5de93068fb25b44b69f32052609aba518c400933fb863a93171f8a9aec2"
+    },
+    {
+      "path": "src/reach/provider-orientation.test.ts",
+      "bytes": 4434,
+      "sha256": "daf471231d311460461023dc163490c404096cb7c46416c3462d1d73f5012bac"
+    },
+    {
+      "path": "src/reach/provider-recovery.test.ts",
+      "bytes": 27741,
+      "sha256": "db52c4808a412b435173094b730efafbc80a741783efc9acbf99b1a899e6f960"
+    },
+    {
+      "path": "src/reach/readiness-recovery.test.ts",
+      "bytes": 6036,
+      "sha256": "d56cda9628fbe0d7ff523fd6d263165ad985501108cf57ff77f9dcc737f326f0"
+    },
+    {
+      "path": "src/reach/recognition.test.ts",
+      "bytes": 7430,
+      "sha256": "9e5d1d40c4688fe5fe7a8203db64c0d47e90feed3f9374f9e4a37e5c107ded91"
+    },
+    {
+      "path": "src/reach/sample-high-rate.test.ts",
+      "bytes": 4792,
+      "sha256": "cb2480422ed931d5a9df9603aae224fd6d85dda6e2607ae7cba3784ce81da942"
+    },
+    {
+      "path": "src/reach/sample-recovery.test.ts",
+      "bytes": 7941,
+      "sha256": "c413a7a9c3b08dcf89ac68bf1c98a08b5c594f8a15488c12a4d9474a3da5425e"
+    },
+    {
+      "path": "src/reach/sample-window.ts",
+      "bytes": 5836,
+      "sha256": "f4b3cb2f9cc057065f71db6c38f0980cc1f89ad32955ce94d5f0c32e682ae852"
+    },
+    {
+      "path": "src/reach/synthetic.ts",
+      "bytes": 2435,
+      "sha256": "f685e6b9cd7f77233b95140461975555bf45b2508c98a7a16065e7cea4311c53"
+    },
+    {
+      "path": "src/reach/tracking-pacer.test.ts",
+      "bytes": 7007,
+      "sha256": "6b4876a9970b1c2d01632d494d3cb0b7f9e4268fd16fb6f338f5187fb90d2fe2"
+    },
+    {
+      "path": "src/reach/tracking-pacer.ts",
+      "bytes": 4893,
+      "sha256": "d0142f5f7ced2444db3b887a95d86a58590d14369711c70a76280b0e0ad2912d"
+    },
+    {
+      "path": "src/reach/trial-entry.test.ts",
+      "bytes": 2656,
+      "sha256": "b094206ae0e07e5ccc06bc81c5b9e0fe41abf21b75630639e98aed5b275c2ca7"
+    },
+    {
+      "path": "src/reach/trial-entry.ts",
+      "bytes": 436,
+      "sha256": "54b892878ffaec62ddcf3d67e8567e0e2191e52612fe63d277be1a8c9991c3fc"
+    },
+    {
+      "path": "src/reach/validation-reasons.test.ts",
+      "bytes": 2887,
+      "sha256": "80cee867a00e6a9927d8ba65ef8b32d034ccf8e1a2c78a169832a765dd9c1ff3"
+    },
+    {
+      "path": "src/reach/visualization.ts",
+      "bytes": 2289,
+      "sha256": "2a3f0f1e708adb020017ae4d051c469688a4598f26fdbf304c2559bf9bca997e"
+    },
+    {
+      "path": "src/watchglass/hand-geometry.ts",
+      "bytes": 5372,
+      "sha256": "9ea7176a1af0472309d525aeba5dcae6f18ab6844e63627c4ffa4987a9a67f90"
+    },
+    {
+      "path": "src/watchglass/hand-observation.ts",
+      "bytes": 3208,
+      "sha256": "b8c8e2ebb359e2d61c055b9531d9e630bcadf209823f153b1df83ee6a091a7f5"
+    },
+    {
+      "path": "src/watchglass/hand-posture.ts",
+      "bytes": 5233,
+      "sha256": "0049a16f687bc5c66fe053cfac2b8e709d35c85d43a59e401d4f7e0ada9133f1"
+    },
+    {
+      "path": "src/watchglass/hand-provider.ts",
+      "bytes": 19533,
+      "sha256": "c54a30cbdbe665a36278962c7492ef8583f7a7c208b4d9e26f997b45301f197e"
+    },
+    {
+      "path": "src/watchglass/index-geometry.ts",
+      "bytes": 2527,
+      "sha256": "e5358f0a1f2b4c1165d5f27bfdd1e7caf8542e02e102d299f67fdd9ddf456d41"
+    },
+    {
+      "path": "testing/contracts.json",
+      "bytes": 179411,
+      "sha256": "7bef7a530557930fc027ffb1dd21272ac8d261e4aa8058b75aa3485e361976fd"
+    },
+    {
+      "path": "tests/e2e/fixtures/reach/pointing-poses.ts",
+      "bytes": 3514,
+      "sha256": "a642534b132a1f329046401e4ff5ecfcb7d5977e0abbf939d95d05f275e16f61"
+    },
+    {
+      "path": "tests/e2e/reach-index-image.spec.ts",
+      "bytes": 47656,
+      "sha256": "695ff618f9d002c6aceb77984ef8e9d6f3ebc455946056575689293bcd55459a"
+    },
+    {
+      "path": "tests/e2e/reach-laboratory.spec.ts",
+      "bytes": 27855,
+      "sha256": "14e9e2da3b6d7a803c911b425f5a6773cae2b445d97659a60e51b2759cefe173"
+    },
+    {
+      "path": "tests/e2e/reach-recorder-readiness.spec.ts",
+      "bytes": 4754,
+      "sha256": "fe421cd1fd4f676f98958d8f5917b95cfc6ca63074494db2b4610d52c91bc62b"
+    },
+    {
+      "path": "tests/e2e/reach-recovery.spec.ts",
+      "bytes": 21174,
+      "sha256": "bb5306449b3ea7863734ea616842297cf274365832873a59966e65b876285034"
+    },
+    {
+      "path": "vitest.config.ts",
+      "bytes": 855,
+      "sha256": "2e5ebb6291f36060d58b2937c95e1a7155d60564f4935d3a72f2cf8de3f4bfbe"
+    }
+  ]
+}

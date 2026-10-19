@@ -1,0 +1,1160 @@
+{
+  "classification": "ENGINEERING_EVIDENCE_SAFE_AGGREGATE_PREPARED_PRIVATELY_NOT_PUBLISHED_FINAL_FINITE_COMPARISON",
+  "sourceHead": "a465bfb63f537678a3efc3319a209a1c91f5a416",
+  "applicationHead": "2d03e6678c7af0d08775c67ea9afffa79e2f9ac2",
+  "algorithm": {
+    "providerId": "watchglass.index-image",
+    "providerVersion": "4",
+    "algorithm": "TEMPORAL_INDEX_FUSION_V3",
+    "algorithmDigest": "00fc2b5cd07b6c54dc649ba4bc914f1327dbb3642fa02de6719fdc9b15710094"
+  },
+  "baselineBundleSha256": "fc4b130644b14dcc940968a6652838b23e9d155509e502070e7ff3d9eb26de4f",
+  "sourceBinding": {
+    "gitApplicationFiles": 14,
+    "pinnedInstalledDependencyFiles": 71,
+    "sourceNoMutation": true
+  },
+  "corpus": {
+    "type": "DEVELOPMENT_RECORDED_PIXELS_WITH_CACHED_SAME_FRAME_NEURAL_OUTPUT",
+    "processed": 1336,
+    "promptGroups": 14,
+    "inputResultsSha256": "3e33ae53b5097b66593209c561e446e0e528cd30e8fcbab618a1b1e89531dab1",
+    "graySha256": "bbfed087bf8379266b4127eb25ce033c4b5af54cbb43ef208e3b65a97accc569",
+    "manualReferences": {
+      "total": 40,
+      "visiblePointing": 30,
+      "visibleOpen": 2,
+      "ambiguous": 6,
+      "notVisible": 2,
+      "explicitNegativeControls": 3,
+      "quality": "NonblindedAIdevelopmentannotationswithuncertaintycircles; notindependentheldoutgroundtruth."
+    }
+  },
+  "passA": {
+    "diagnosticStages": 16,
+    "palmStage": "UNAVAILABLE_NO_PALM_PROPOSALS_SAVED",
+    "semanticIndexStage": "UNAVAILABLE_EXCEPT_SPARSE_MANUAL_REFERENCE_EVIDENCE",
+    "producerReadinessExactParity": true,
+    "causalTimeline": {
+      "RIGHT": "Accepted current endpoint contradiction46625.795 revokescoordinatecert whileoldNNhandretainslogicalidentity. Subsequent75appearancefails andbankproofnotreachregistration;0quarantine. Initialmodelendpointbias vsvisuallycorrectopticaltip iscoarse-reviewed, not3percentGT.",
+      "BOTTOM_RIGHT": "Appearancefails77242.729, fullmodelONErescue77442.845, qualifiedmodelcoordinateslost77542.912, oldappearancecannotfollow;1200msexpiry79644.079. Latercold812/823geometry/modeldigituncertainty remainsnonactionable. DistinctfromRIGHTcoordinateveto.",
+      "MOTION": "SWEEP beginsalreadyunverifiedalias/quarantine, repeatedappearance/uniqueness/geometry/sourcefailures and genuineclockexpiry. PromptisnotmotionGT; originalbroadbrowserfailure hasseparate229sample/184analyticcausalreceipt."
+    },
+    "groups": {
+      "CENTER": {
+        "processed": 109,
+        "fresh": 109,
+        "neuralHandOutput": 98,
+        "tracking": 78,
+        "ready": 63,
+        "quarantined": 0,
+        "coordinateConflictFrames": 5,
+        "firstBlockingStage": {
+          "7": 1,
+          "8": 3,
+          "9": 16,
+          "10": 6,
+          "11": 5,
+          "14": 15,
+          "NONE": 63
+        },
+        "reasons": {
+          "SHOW_INDEX_OR_SELECT_TIP": 15,
+          "FULL_HAND_POINT_PENDING": 3,
+          "APPEARANCE_AMBIGUOUS": 6,
+          "APPEARANCE_MISMATCH": 1,
+          "FULL_HAND_MODEL_CONTINUITY": 15,
+          "FULL_HAND_POINT_CONFIRMED": 57,
+          "IMAGE_REFERENCE_CONFLICT": 3,
+          "IMAGE_OUTSIDE_OBSERVED_HAND": 1,
+          "INDEX_SHAFT_MODEL_TIP": 4,
+          "FULL_HAND_INDEX_CONFLICT": 4
+        }
+      },
+      "BOTTOM": {
+        "processed": 145,
+        "fresh": 145,
+        "neuralHandOutput": 144,
+        "tracking": 60,
+        "ready": 45,
+        "quarantined": 45,
+        "coordinateConflictFrames": 10,
+        "firstBlockingStage": {
+          "7": 24,
+          "8": 19,
+          "9": 3,
+          "10": 9,
+          "11": 7,
+          "12": 23,
+          "14": 15,
+          "NONE": 45
+        },
+        "reasons": {
+          "FULL_HAND_POINT_CONFIRMED": 19,
+          "FORWARD_BACKWARD_DISAGREEMENT": 2,
+          "APPEARANCE_AMBIGUOUS": 9,
+          "INDEX_MODEL_CONTINUITY": 4,
+          "IMAGE_MATCH": 37,
+          "INDEX_MODEL_IMAGE_CONFLICT": 6,
+          "INDEX_IDENTITY_RECONFIRM_REQUIRED": 2,
+          "INDEX_SHAFT_MATCH_NOT_TIP": 1,
+          "IMAGE_REFERENCE_CONFLICT": 19,
+          "FUSED_POINT_OUTSIDE_IMAGE": 1,
+          "FULL_HAND_AMBIGUOUS": 23,
+          "APPEARANCE_MISMATCH": 19,
+          "IMAGE_REFERENCE_EXPIRED": 3
+        }
+      },
+      "TOP": {
+        "processed": 107,
+        "fresh": 107,
+        "neuralHandOutput": 107,
+        "tracking": 70,
+        "ready": 64,
+        "quarantined": 34,
+        "coordinateConflictFrames": 0,
+        "firstBlockingStage": {
+          "5": 1,
+          "7": 28,
+          "9": 3,
+          "12": 5,
+          "14": 6,
+          "NONE": 64
+        },
+        "reasons": {
+          "APPEARANCE_MISMATCH": 28,
+          "FULL_HAND_AMBIGUOUS": 5,
+          "IMAGE_CONTINUITY_EXPIRED": 1,
+          "FULL_HAND_POINT_PENDING": 3,
+          "FULL_HAND_POINT_CONFIRMED": 70
+        }
+      },
+      "LEFT": {
+        "processed": 90,
+        "fresh": 90,
+        "neuralHandOutput": 90,
+        "tracking": 87,
+        "ready": 84,
+        "quarantined": 0,
+        "coordinateConflictFrames": 0,
+        "firstBlockingStage": {
+          "11": 2,
+          "12": 1,
+          "14": 3,
+          "NONE": 84
+        },
+        "reasons": {
+          "FULL_HAND_POINT_CONFIRMED": 55,
+          "FULL_HAND_MODEL_CONTINUITY": 2,
+          "FULL_HAND_AMBIGUOUS": 1,
+          "IMAGE_TIP_MODEL_ENDPOINT_UNCERTAIN": 30,
+          "IMAGE_OUTSIDE_OBSERVED_HAND": 2
+        }
+      },
+      "RIGHT": {
+        "processed": 89,
+        "fresh": 89,
+        "neuralHandOutput": 89,
+        "tracking": 13,
+        "ready": 13,
+        "quarantined": 0,
+        "coordinateConflictFrames": 76,
+        "firstBlockingStage": {
+          "7": 75,
+          "11": 1,
+          "NONE": 13
+        },
+        "reasons": {
+          "FULL_HAND_POINT_CONFIRMED": 12,
+          "IMAGE_TIP_MODEL_ENDPOINT_UNCERTAIN": 1,
+          "FULL_HAND_INDEX_CONFLICT": 1,
+          "APPEARANCE_MISMATCH": 75
+        }
+      },
+      "TOP_LEFT": {
+        "processed": 73,
+        "fresh": 73,
+        "neuralHandOutput": 73,
+        "tracking": 26,
+        "ready": 20,
+        "quarantined": 21,
+        "coordinateConflictFrames": 43,
+        "firstBlockingStage": {
+          "5": 1,
+          "7": 43,
+          "9": 1,
+          "10": 2,
+          "14": 6,
+          "NONE": 20
+        },
+        "reasons": {
+          "APPEARANCE_MISMATCH": 29,
+          "IMAGE_MOTION_TOO_LARGE": 14,
+          "IMAGE_CONTINUITY_EXPIRED": 1,
+          "FULL_HAND_POINT_PENDING": 3,
+          "APPEARANCE_AMBIGUOUS": 2,
+          "FULL_HAND_MODEL_CONTINUITY": 11,
+          "FULL_HAND_POINT_CONFIRMED": 13
+        }
+      },
+      "TOP_RIGHT": {
+        "processed": 74,
+        "fresh": 74,
+        "neuralHandOutput": 74,
+        "tracking": 46,
+        "ready": 37,
+        "quarantined": 20,
+        "coordinateConflictFrames": 0,
+        "firstBlockingStage": {
+          "5": 1,
+          "7": 23,
+          "8": 2,
+          "9": 2,
+          "14": 9,
+          "NONE": 37
+        },
+        "reasons": {
+          "FULL_HAND_MODEL_CONTINUITY": 9,
+          "FULL_HAND_POINT_CONFIRMED": 37,
+          "APPEARANCE_MISMATCH": 23,
+          "IMAGE_CONTINUITY_EXPIRED": 1,
+          "FULL_HAND_POINT_PENDING": 2,
+          "IMAGE_REFERENCE_CONFLICT": 2
+        }
+      },
+      "BOTTOM_LEFT": {
+        "processed": 71,
+        "fresh": 71,
+        "neuralHandOutput": 71,
+        "tracking": 36,
+        "ready": 27,
+        "quarantined": 19,
+        "coordinateConflictFrames": 0,
+        "firstBlockingStage": {
+          "5": 1,
+          "7": 25,
+          "9": 1,
+          "10": 8,
+          "14": 9,
+          "NONE": 27
+        },
+        "reasons": {
+          "FULL_HAND_POINT_CONFIRMED": 12,
+          "FULL_HAND_MODEL_CONTINUITY": 1,
+          "APPEARANCE_MISMATCH": 25,
+          "IMAGE_CONTINUITY_EXPIRED": 1,
+          "FULL_HAND_POINT_PENDING": 1,
+          "APPEARANCE_AMBIGUOUS": 8,
+          "IMAGE_MATCH": 10,
+          "INDEX_MODEL_CONTINUITY": 13
+        }
+      },
+      "BOTTOM_RIGHT": {
+        "processed": 71,
+        "fresh": 71,
+        "neuralHandOutput": 31,
+        "tracking": 13,
+        "ready": 12,
+        "quarantined": 0,
+        "coordinateConflictFrames": 0,
+        "firstBlockingStage": {
+          "5": 1,
+          "7": 23,
+          "9": 24,
+          "11": 5,
+          "12": 5,
+          "14": 1,
+          "NONE": 12
+        },
+        "reasons": {
+          "IMAGE_MATCH": 12,
+          "APPEARANCE_MISMATCH": 23,
+          "FULL_HAND_MODEL_CONTINUITY": 1,
+          "IMAGE_CONTINUITY_EXPIRED": 1,
+          "SHOW_INDEX_OR_SELECT_TIP": 15,
+          "FULL_HAND_POINT_PENDING": 9,
+          "FULL_HAND_INDEX_CONFLICT": 5,
+          "FULL_HAND_AMBIGUOUS": 5
+        }
+      },
+      "RELAXED": {
+        "processed": 109,
+        "fresh": 109,
+        "neuralHandOutput": 94,
+        "tracking": 41,
+        "ready": 32,
+        "quarantined": 9,
+        "coordinateConflictFrames": 12,
+        "firstBlockingStage": {
+          "5": 1,
+          "7": 15,
+          "9": 21,
+          "10": 4,
+          "11": 14,
+          "12": 13,
+          "14": 9,
+          "NONE": 32
+        },
+        "reasons": {
+          "FULL_HAND_POINT_PENDING": 8,
+          "IMAGE_CONTINUITY_EXPIRED": 1,
+          "SHOW_INDEX_OR_SELECT_TIP": 12,
+          "INDEX_MODEL_IMAGE_CONFLICT": 6,
+          "APPEARANCE_AMBIGUOUS": 4,
+          "FULL_HAND_INDEX_CONFLICT": 7,
+          "APPEARANCE_MISMATCH": 15,
+          "FULL_HAND_POINT_CONFIRMED": 40,
+          "IMAGE_OUTSIDE_OBSERVED_HAND": 1,
+          "SAME_HAND_POSITION_UNCERTAIN": 1,
+          "INDEX_IDENTITY_RECONFIRM_REQUIRED": 1,
+          "FULL_HAND_AMBIGUOUS": 13
+        }
+      },
+      "SWEEP": {
+        "processed": 180,
+        "fresh": 180,
+        "neuralHandOutput": 171,
+        "tracking": 11,
+        "ready": 3,
+        "quarantined": 45,
+        "coordinateConflictFrames": 24,
+        "firstBlockingStage": {
+          "5": 4,
+          "7": 62,
+          "8": 1,
+          "9": 17,
+          "10": 35,
+          "11": 24,
+          "12": 26,
+          "14": 8,
+          "NONE": 3
+        },
+        "reasons": {
+          "FULL_HAND_AMBIGUOUS": 26,
+          "APPEARANCE_MISMATCH": 56,
+          "IMAGE_CONTINUITY_EXPIRED": 4,
+          "FULL_HAND_POINT_PENDING": 20,
+          "FORWARD_BACKWARD_DISAGREEMENT": 3,
+          "FULL_HAND_MODEL_CONTINUITY": 2,
+          "INDEX_MODEL_CONTINUITY": 1,
+          "IMAGE_MATCH": 2,
+          "IMAGE_REFERENCE_CONFLICT": 1,
+          "FULL_HAND_POINT_CONFIRMED": 2,
+          "INDEX_MODEL_IMAGE_CONFLICT": 20,
+          "APPEARANCE_AMBIGUOUS": 35,
+          "SHOW_INDEX_OR_SELECT_TIP": 1,
+          "FULL_HAND_INDEX_CONFLICT": 4,
+          "IMAGE_MOTION_TOO_LARGE": 3
+        }
+      },
+      "OPEN_PALM": {
+        "processed": 91,
+        "fresh": 91,
+        "neuralHandOutput": 90,
+        "tracking": 0,
+        "ready": 0,
+        "quarantined": 0,
+        "coordinateConflictFrames": 0,
+        "firstBlockingStage": {
+          "5": 1,
+          "7": 5,
+          "9": 68,
+          "10": 9,
+          "11": 7,
+          "12": 1
+        },
+        "reasons": {
+          "FULL_HAND_POINT_PENDING": 2,
+          "APPEARANCE_AMBIGUOUS": 9,
+          "INDEX_MODEL_IMAGE_CONFLICT": 6,
+          "APPEARANCE_MISMATCH": 5,
+          "FULL_HAND_INDEX_CONFLICT": 1,
+          "FULL_HAND_AMBIGUOUS": 1,
+          "IMAGE_CONTINUITY_EXPIRED": 1,
+          "SHOW_INDEX_OR_SELECT_TIP": 66
+        }
+      },
+      "HIDE": {
+        "processed": 18,
+        "fresh": 18,
+        "neuralHandOutput": 18,
+        "tracking": 0,
+        "ready": 0,
+        "quarantined": 0,
+        "coordinateConflictFrames": 0,
+        "firstBlockingStage": {
+          "9": 18
+        },
+        "reasons": {
+          "SHOW_INDEX_OR_SELECT_TIP": 17,
+          "FULL_HAND_POINT_PENDING": 1
+        }
+      },
+      "RECOVER": {
+        "processed": 109,
+        "fresh": 109,
+        "neuralHandOutput": 84,
+        "tracking": 23,
+        "ready": 16,
+        "quarantined": 0,
+        "coordinateConflictFrames": 0,
+        "firstBlockingStage": {
+          "5": 1,
+          "7": 23,
+          "9": 22,
+          "10": 24,
+          "11": 16,
+          "14": 7,
+          "NONE": 16
+        },
+        "reasons": {
+          "FULL_HAND_CONTRARY_PENDING": 1,
+          "APPEARANCE_MISMATCH": 22,
+          "IMAGE_CONTINUITY_EXPIRED": 1,
+          "SHOW_INDEX_OR_SELECT_TIP": 8,
+          "FULL_HAND_POINT_PENDING": 10,
+          "APPEARANCE_AMBIGUOUS": 24,
+          "FORWARD_BACKWARD_DISAGREEMENT": 1,
+          "FULL_HAND_INDEX_CONFLICT": 16,
+          "FULL_HAND_MODEL_CONTINUITY": 1,
+          "FULL_HAND_CONTRARY_CONFIRMED": 3,
+          "FULL_HAND_POINT_CONFIRMED": 22
+        }
+      }
+    }
+  },
+  "controller": {
+    "processed": 1336,
+    "totalSamplePushes": 96,
+    "firstSaved": {
+      "index": 110,
+      "pts": 6.011,
+      "target": "Target 2 of 5",
+      "saved": 1
+    },
+    "firstHeld": {
+      "index": 299,
+      "pts": 16.462,
+      "target": "Target 2 of 5",
+      "saved": 1
+    },
+    "heldFrames": 1039,
+    "heldSamplePushes": 0,
+    "heldWithProducerReady": 308,
+    "interpretation": "CurrentrealLab+SampleWindowcounterfactualonrecordedguideinput. Savedtarget1staysinertafterunprovedlogicalreplacement;notanactualcalibrationjourney."
+  },
+  "candidates": [
+    {
+      "id": 1,
+      "variant": "ONE_AUTHORIZED_COORDINATE_ORIGIN_CORRECTNESS_REPAIR",
+      "name": "BOUNDED_ACCEPTED_INDEX_REFERENCE_BANK",
+      "status": "NO_OBSERVED_GAIN_GUARDED_REBIND_NOT_REACHED_CONCEPT_NOT_QUALIFIED",
+      "policy": {
+        "maximumReferences": 4,
+        "minimumInsertionGapMs": 120,
+        "duplicateTemplateCorrelation": 0.98,
+        "maximumUnsupportedAgeMs": 1200,
+        "search": 24,
+        "motion": 32,
+        "rho": 0.75,
+        "separation": 0.035,
+        "texture": 6,
+        "structure": 0.008,
+        "reverseSearch": 4,
+        "fb": 2,
+        "consensus": 2,
+        "recoveryFrames": 3,
+        "recoverySpanMs": 120,
+        "recoveryGapMs": 250,
+        "innovation": 8,
+        "currentFullHandRequired": true,
+        "currentGeometryCohortRequired": true,
+        "fixedSourceEpoch": true,
+        "registrationFrameActionable": false
+      },
+      "processed": 1336,
+      "baselineExactOutputReadinessParity": true,
+      "frozenExecutableAndInputsStable": true,
+      "tracking": {
+        "baseline": 504,
+        "candidate": 504
+      },
+      "ready": {
+        "baseline": 416,
+        "candidate": 416
+      },
+      "identityChanges": {
+        "baseline": 7,
+        "candidate": 7
+      },
+      "identityEventTimelineUnchanged": true,
+      "cpuCostMs": {
+        "baseline": {
+          "total": 1226.513799999999,
+          "median": 0.8759000000000015,
+          "p95": 1.9190000000000964,
+          "max": 7.027899999999988
+        },
+        "candidate": {
+          "total": 1531.7206000000033,
+          "median": 1.054700000000139,
+          "p95": 2.454400000000078,
+          "max": 46.80669999999964
+        },
+        "scope": "Interleaved Node adapter/tracker/readiness interpretation on cached NN and exact gray. Excludes NN, sensor, browser, display and recording. Development load; not a physical or end-to-end latency benchmark."
+      },
+      "metricCoverage": {
+        "baseline": {
+          "visiblePointingDenominator": 30,
+          "positions": 12,
+          "missing": 18,
+          "withinAnnotationCircle": 9,
+          "conditionalErrorNativePixels": {
+            "median": 5.447727359211245,
+            "p95": 18.850158743357465,
+            "max": 18.850158743357465
+          },
+          "negativeReferenceDenominator": 3,
+          "negativeReferencesWithPosition": 0
+        },
+        "candidate": {
+          "visiblePointingDenominator": 30,
+          "positions": 12,
+          "missing": 18,
+          "withinAnnotationCircle": 9,
+          "conditionalErrorNativePixels": {
+            "median": 5.447727359211245,
+            "p95": 18.850158743357465,
+            "max": 18.850158743357465
+          },
+          "negativeReferenceDenominator": 3,
+          "negativeReferencesWithPosition": 0
+        }
+      },
+      "byPrompt": {
+        "CENTER": {
+          "processed": 109,
+          "baselineTracking": 78,
+          "candidateTracking": 78,
+          "baselineReady": 63,
+          "candidateReady": 63,
+          "baselineIdentityChanges": 0,
+          "candidateIdentityChanges": 0,
+          "bankAttempts": 13,
+          "bankProposals": 6,
+          "probationFrames": 3,
+          "rebinds": 0
+        },
+        "BOTTOM": {
+          "processed": 145,
+          "baselineTracking": 60,
+          "candidateTracking": 60,
+          "baselineReady": 45,
+          "candidateReady": 45,
+          "baselineIdentityChanges": 0,
+          "candidateIdentityChanges": 0,
+          "bankAttempts": 23,
+          "bankProposals": 1,
+          "probationFrames": 0,
+          "rebinds": 0
+        },
+        "TOP": {
+          "processed": 107,
+          "baselineTracking": 70,
+          "candidateTracking": 70,
+          "baselineReady": 64,
+          "candidateReady": 64,
+          "baselineIdentityChanges": 1,
+          "candidateIdentityChanges": 1,
+          "bankAttempts": 0,
+          "bankProposals": 0,
+          "probationFrames": 0,
+          "rebinds": 0
+        },
+        "LEFT": {
+          "processed": 90,
+          "baselineTracking": 87,
+          "candidateTracking": 87,
+          "baselineReady": 84,
+          "candidateReady": 84,
+          "baselineIdentityChanges": 0,
+          "candidateIdentityChanges": 0,
+          "bankAttempts": 1,
+          "bankProposals": 1,
+          "probationFrames": 1,
+          "rebinds": 0
+        },
+        "RIGHT": {
+          "processed": 89,
+          "baselineTracking": 13,
+          "candidateTracking": 13,
+          "baselineReady": 13,
+          "candidateReady": 13,
+          "baselineIdentityChanges": 0,
+          "candidateIdentityChanges": 0,
+          "bankAttempts": 0,
+          "bankProposals": 0,
+          "probationFrames": 0,
+          "rebinds": 0
+        },
+        "TOP_LEFT": {
+          "processed": 73,
+          "baselineTracking": 26,
+          "candidateTracking": 26,
+          "baselineReady": 20,
+          "candidateReady": 20,
+          "baselineIdentityChanges": 1,
+          "candidateIdentityChanges": 1,
+          "bankAttempts": 10,
+          "bankProposals": 4,
+          "probationFrames": 4,
+          "rebinds": 0
+        },
+        "TOP_RIGHT": {
+          "processed": 74,
+          "baselineTracking": 46,
+          "candidateTracking": 46,
+          "baselineReady": 37,
+          "candidateReady": 37,
+          "baselineIdentityChanges": 1,
+          "candidateIdentityChanges": 1,
+          "bankAttempts": 28,
+          "bankProposals": 3,
+          "probationFrames": 3,
+          "rebinds": 0
+        },
+        "BOTTOM_LEFT": {
+          "processed": 71,
+          "baselineTracking": 36,
+          "candidateTracking": 36,
+          "baselineReady": 27,
+          "candidateReady": 27,
+          "baselineIdentityChanges": 1,
+          "candidateIdentityChanges": 1,
+          "bankAttempts": 22,
+          "bankProposals": 0,
+          "probationFrames": 0,
+          "rebinds": 0
+        },
+        "BOTTOM_RIGHT": {
+          "processed": 71,
+          "baselineTracking": 13,
+          "candidateTracking": 13,
+          "baselineReady": 12,
+          "candidateReady": 12,
+          "baselineIdentityChanges": 0,
+          "candidateIdentityChanges": 0,
+          "bankAttempts": 17,
+          "bankProposals": 0,
+          "probationFrames": 0,
+          "rebinds": 0
+        },
+        "RELAXED": {
+          "processed": 109,
+          "baselineTracking": 41,
+          "candidateTracking": 41,
+          "baselineReady": 32,
+          "candidateReady": 32,
+          "baselineIdentityChanges": 0,
+          "candidateIdentityChanges": 0,
+          "bankAttempts": 0,
+          "bankProposals": 0,
+          "probationFrames": 0,
+          "rebinds": 0
+        },
+        "SWEEP": {
+          "processed": 180,
+          "baselineTracking": 11,
+          "candidateTracking": 11,
+          "baselineReady": 3,
+          "candidateReady": 3,
+          "baselineIdentityChanges": 1,
+          "candidateIdentityChanges": 1,
+          "bankAttempts": 0,
+          "bankProposals": 0,
+          "probationFrames": 0,
+          "rebinds": 0
+        },
+        "OPEN_PALM": {
+          "processed": 91,
+          "baselineTracking": 0,
+          "candidateTracking": 0,
+          "baselineReady": 0,
+          "candidateReady": 0,
+          "baselineIdentityChanges": 0,
+          "candidateIdentityChanges": 0,
+          "bankAttempts": 0,
+          "bankProposals": 0,
+          "probationFrames": 0,
+          "rebinds": 0
+        },
+        "HIDE": {
+          "processed": 18,
+          "baselineTracking": 0,
+          "candidateTracking": 0,
+          "baselineReady": 0,
+          "candidateReady": 0,
+          "baselineIdentityChanges": 0,
+          "candidateIdentityChanges": 0,
+          "bankAttempts": 0,
+          "bankProposals": 0,
+          "probationFrames": 0,
+          "rebinds": 0
+        },
+        "RECOVER": {
+          "processed": 109,
+          "baselineTracking": 23,
+          "candidateTracking": 23,
+          "baselineReady": 16,
+          "candidateReady": 16,
+          "baselineIdentityChanges": 0,
+          "candidateIdentityChanges": 0,
+          "bankAttempts": 0,
+          "bankProposals": 0,
+          "probationFrames": 0,
+          "rebinds": 0
+        }
+      },
+      "firstOutputDivergence": null,
+      "changedOutputFrames": 0,
+      "gainedTrackingFrames": 0,
+      "lostTrackingFrames": 0,
+      "reachability": {
+        "bankAttempts": 114,
+        "proposals": 15,
+        "qualificationRejected": 4,
+        "probationFrames": 11,
+        "maximumSameReferenceFrames": 2,
+        "maximumSameReferenceSpanMs": 66.900146484375,
+        "completedRebinds": 0,
+        "proposalsOnPreviouslyMissingOutput": 2,
+        "proposalsByPrompt": {
+          "CENTER": 6,
+          "BOTTOM": 1,
+          "LEFT": 1,
+          "TOP_LEFT": 4,
+          "TOP_RIGHT": 3
+        }
+      },
+      "coordinateOriginVerification": {
+        "learning": "Each reference is captured only from this candidate own currently accepted FUSED measurement. Stored integer material center, capture fractional phase including refined peak, anatomical offset, published-tip offset, capture time and optical epoch satisfy a runtime coordinate equality assertion.",
+        "search": "Each reference searches around current semantic position minus its own material-to-tip offset; motion and cross-reference rivals are compared in transported coordinates.",
+        "rebind": "Only a same-source same-epoch live FULL_POINT geometry cohort with current 8px agreement can start 3-frame/120ms recovery. Explicit origin rebind is inside complete rollback checkpoint; registration frame is nonactionable. It was not reached in this corpus.",
+        "executedOriginAssertionsPassed": true,
+        "publishedRebindOriginCorrectness": "UNEXERCISED_NOT_PROVEN",
+        "nextMissingExperiment": "A separately source-frozen synthetic positive that actually completes same-reference 3/120 origin rebind plus adversarial lifecycle/rollback/source-epoch controls would be required before another full-corpus bank comparison. Not executed within this finite budget."
+      },
+      "implementationDigest": "b27caed5828dc913c089a205035b616d737f21285a42e1dba8a3a4496c109de4",
+      "receiptDigest": "1234e6bf80b4a1657d3dae1a5966f0cdbe9d063f67a1b5e71b75b6311126b8b2",
+      "limitations": [
+        "Private interpretation-only Node experiment, no new neural inference or physical acceptance; 30 sparse nonblind AI development pointing references and 3 explicit negatives do not constitute a complete identity or false-positive corpus.",
+        "Every bank entry records its own material center, phase, material-to-published-tip offset, capture clock and optical source epoch; search centers and the explicit rollback-protected rebind use that origin.",
+        "Bank learning now uses only this candidate own genuinely accepted FUSED captures; no baseline-oracle templates and no candidate-proposal/paused/model-only learning.",
+        "Rebind additionally requires current same-source qualified FULL_POINT, live selected coordinate/index permission, strict 8px model/material agreement, 3 current captures over120ms, same reference and <=250ms gaps. No alias or RIGHT accepted-conflict bypass.",
+        "The historical rebind registration capture remains nonactionable. Extra eligibility restrictions make this a conservative implementation, not a test of arbitrary reference-bank schemes.",
+        "CPU times exclude NN/browser/sensor/recording and include development load; no end-to-end latency claim."
+      ],
+      "originalUncorrectedVariant": {
+        "id": 1,
+        "name": "BOUNDED_ACCEPTED_INDEX_REFERENCE_BANK",
+        "status": "REGRESSION_WITH_COORDINATE_ORIGIN_IMPLEMENTATION_LIMIT",
+        "policy": {
+          "maximumReferences": 4,
+          "minimumInsertionGapMs": 120,
+          "duplicateTemplateCorrelation": 0.98,
+          "maximumUnsupportedAgeMs": 1200,
+          "search": 24,
+          "motion": 32,
+          "rho": 0.75,
+          "separation": 0.035,
+          "texture": 6,
+          "structure": 0.008,
+          "reverseSearch": 4,
+          "fb": 2,
+          "consensus": 2
+        },
+        "sourceStable": true,
+        "baselineExactOutputReadinessParity": true,
+        "processed": 1336,
+        "tracking": {
+          "baseline": 504,
+          "candidate": 264
+        },
+        "ready": {
+          "baseline": 416,
+          "candidate": 195
+        },
+        "identityChanges": {
+          "baseline": 7,
+          "candidate": 7
+        },
+        "cpuCostMs": {
+          "baseline": {
+            "total": 1643.9316000000006,
+            "median": 1.0420000000001437,
+            "p95": 2.7433999999998377,
+            "max": 53.89350000000013
+          },
+          "candidate": {
+            "total": 1924.9884000000025,
+            "median": 1.2597000000000662,
+            "p95": 3.1767000000000962,
+            "max": 28.0077
+          },
+          "scope": "Interleaved pairedNodeinterpretation includingadapter/tracker/readiness, samecachedNN/gray/clocks; excludesNN, camera/browser andfull-app latency. Currentdevelopmentload; nohardwareFPSclaim."
+        },
+        "metricCoverage": {
+          "baseline": {
+            "visiblePointingDenominator": 30,
+            "positions": 12,
+            "missing": 18,
+            "withinAnnotationCircle": 9,
+            "conditionalErrorNativePixels": {
+              "median": 5.447727359211245,
+              "p95": 18.850158743357465,
+              "max": 18.850158743357465
+            },
+            "negativeReferenceDenominator": 3,
+            "negativeReferencesWithPosition": 0
+          },
+          "candidate": {
+            "visiblePointingDenominator": 30,
+            "positions": 8,
+            "missing": 22,
+            "withinAnnotationCircle": 5,
+            "conditionalErrorNativePixels": {
+              "median": 5.565674418392957,
+              "p95": 18.850158743357465,
+              "max": 18.850158743357465
+            },
+            "negativeReferenceDenominator": 3,
+            "negativeReferencesWithPosition": 0
+          }
+        },
+        "byPrompt": {
+          "CENTER": {
+            "processed": 109,
+            "baselineTracking": 78,
+            "candidateTracking": 46,
+            "baselineReady": 63,
+            "candidateReady": 34
+          },
+          "BOTTOM": {
+            "processed": 145,
+            "baselineTracking": 60,
+            "candidateTracking": 9,
+            "baselineReady": 45,
+            "candidateReady": 1
+          },
+          "TOP": {
+            "processed": 107,
+            "baselineTracking": 70,
+            "candidateTracking": 12,
+            "baselineReady": 64,
+            "candidateReady": 12
+          },
+          "LEFT": {
+            "processed": 90,
+            "baselineTracking": 87,
+            "candidateTracking": 0,
+            "baselineReady": 84,
+            "candidateReady": 0
+          },
+          "RIGHT": {
+            "processed": 89,
+            "baselineTracking": 13,
+            "candidateTracking": 0,
+            "baselineReady": 13,
+            "candidateReady": 0
+          },
+          "TOP_LEFT": {
+            "processed": 73,
+            "baselineTracking": 26,
+            "candidateTracking": 27,
+            "baselineReady": 20,
+            "candidateReady": 21
+          },
+          "TOP_RIGHT": {
+            "processed": 74,
+            "baselineTracking": 46,
+            "candidateTracking": 46,
+            "baselineReady": 37,
+            "candidateReady": 37
+          },
+          "BOTTOM_LEFT": {
+            "processed": 71,
+            "baselineTracking": 36,
+            "candidateTracking": 36,
+            "baselineReady": 27,
+            "candidateReady": 27
+          },
+          "BOTTOM_RIGHT": {
+            "processed": 71,
+            "baselineTracking": 13,
+            "candidateTracking": 13,
+            "baselineReady": 12,
+            "candidateReady": 12
+          },
+          "RELAXED": {
+            "processed": 109,
+            "baselineTracking": 41,
+            "candidateTracking": 41,
+            "baselineReady": 32,
+            "candidateReady": 32
+          },
+          "SWEEP": {
+            "processed": 180,
+            "baselineTracking": 11,
+            "candidateTracking": 11,
+            "baselineReady": 3,
+            "candidateReady": 3
+          },
+          "OPEN_PALM": {
+            "processed": 91,
+            "baselineTracking": 0,
+            "candidateTracking": 0,
+            "baselineReady": 0,
+            "candidateReady": 0
+          },
+          "HIDE": {
+            "processed": 18,
+            "baselineTracking": 0,
+            "candidateTracking": 0,
+            "baselineReady": 0,
+            "candidateReady": 0
+          },
+          "RECOVER": {
+            "processed": 109,
+            "baselineTracking": 23,
+            "candidateTracking": 23,
+            "baselineReady": 16,
+            "candidateReady": 16
+          }
+        },
+        "implementationDigest": "4784175b979847a89bbe9805b4fc400def7b1ce2d6be027e4473a76bf9720740",
+        "receiptDigest": "611810b1eb18dcc70ec14e80a9e2b9c551723e8e58d0307b5215c35d9227508a",
+        "limitations": [
+          "Historicalmaterialtemplatefallbackdoesnotexplicitlytransportper-templateanatomicaloffset/imagephase. Thisrejectiondoesnotruleoutpropercoordinate-origin-awarebankarchitectures.",
+          "Firstbank-inducedconflictframe75followedbyhistory-dependentlosses;30sparsepositions12→8andinsidecircles9→5.",
+          "No source/cert/gesture/3percent/150mssafeguardrelaxation; noclaimallunlabelledoutputsarecorrect."
+        ],
+        "interpretation": "The original 264 TRACKING/195-ready regression substituted historical material templates under a current template offset. It remains an immutable negative for that implementation and cannot reject every reference-bank architecture."
+      }
+    },
+    {
+      "id": 2,
+      "name": "NORMALIZED_SOBEL_FINE_AND_HALF_SCALE_NCC",
+      "status": "NO_MATERIAL_IMPROVEMENT_REJECTED",
+      "policy": {
+        "representation": "SOBEL_MAGNITUDE_DIV4_CLAMP255_PLUS_HALF_SCALE_BOX_AVERAGE",
+        "fineAndHalfRequired": true,
+        "gradientCacheFrames": 3,
+        "maximumUnsupportedAgeMs": 1200,
+        "search": 24,
+        "motion": 32,
+        "rho": 0.75,
+        "separation": 0.035,
+        "texture": 6,
+        "structure": 0.008,
+        "reverseSearch": 4,
+        "fb": 2,
+        "consensus": 2
+      },
+      "sourceStable": true,
+      "baselineExactOutputReadinessParity": true,
+      "processed": 1336,
+      "tracking": {
+        "baseline": 504,
+        "candidate": 503
+      },
+      "ready": {
+        "baseline": 416,
+        "candidate": 412
+      },
+      "identityChanges": {
+        "baseline": 7,
+        "candidate": 7
+      },
+      "cpuCostMs": {
+        "baseline": {
+          "total": 1363.9104999999977,
+          "median": 0.9564999999997781,
+          "p95": 2.1341999999999643,
+          "max": 7.427300000000059
+        },
+        "candidate": {
+          "total": 1985.8035,
+          "median": 1.1812999999999647,
+          "p95": 4.560100000000148,
+          "max": 15.63110000000006
+        },
+        "scope": "Interleaved pairedNodeinterpretation includingadapter/tracker/readiness, samecachedNN/gray/clocks; excludesNN, camera/browser andfull-app latency. Currentdevelopmentload; nohardwareFPSclaim."
+      },
+      "metricCoverage": {
+        "baseline": {
+          "visiblePointingDenominator": 30,
+          "positions": 12,
+          "missing": 18,
+          "withinAnnotationCircle": 9,
+          "conditionalErrorNativePixels": {
+            "median": 5.447727359211245,
+            "p95": 18.850158743357465,
+            "max": 18.850158743357465
+          },
+          "negativeReferenceDenominator": 3,
+          "negativeReferencesWithPosition": 0
+        },
+        "candidate": {
+          "visiblePointingDenominator": 30,
+          "positions": 12,
+          "missing": 18,
+          "withinAnnotationCircle": 9,
+          "conditionalErrorNativePixels": {
+            "median": 5.447727359211245,
+            "p95": 18.850158743357465,
+            "max": 18.850158743357465
+          },
+          "negativeReferenceDenominator": 3,
+          "negativeReferencesWithPosition": 0
+        }
+      },
+      "byPrompt": {
+        "CENTER": {
+          "processed": 109,
+          "baselineTracking": 78,
+          "candidateTracking": 78,
+          "baselineReady": 63,
+          "candidateReady": 63
+        },
+        "BOTTOM": {
+          "processed": 145,
+          "baselineTracking": 60,
+          "candidateTracking": 60,
+          "baselineReady": 45,
+          "candidateReady": 45
+        },
+        "TOP": {
+          "processed": 107,
+          "baselineTracking": 70,
+          "candidateTracking": 70,
+          "baselineReady": 64,
+          "candidateReady": 64
+        },
+        "LEFT": {
+          "processed": 90,
+          "baselineTracking": 87,
+          "candidateTracking": 87,
+          "baselineReady": 84,
+          "candidateReady": 84
+        },
+        "RIGHT": {
+          "processed": 89,
+          "baselineTracking": 13,
+          "candidateTracking": 13,
+          "baselineReady": 13,
+          "candidateReady": 13
+        },
+        "TOP_LEFT": {
+          "processed": 73,
+          "baselineTracking": 26,
+          "candidateTracking": 26,
+          "baselineReady": 20,
+          "candidateReady": 20
+        },
+        "TOP_RIGHT": {
+          "processed": 74,
+          "baselineTracking": 46,
+          "candidateTracking": 45,
+          "baselineReady": 37,
+          "candidateReady": 33
+        },
+        "BOTTOM_LEFT": {
+          "processed": 71,
+          "baselineTracking": 36,
+          "candidateTracking": 36,
+          "baselineReady": 27,
+          "candidateReady": 27
+        },
+        "BOTTOM_RIGHT": {
+          "processed": 71,
+          "baselineTracking": 13,
+          "candidateTracking": 13,
+          "baselineReady": 12,
+          "candidateReady": 12
+        },
+        "RELAXED": {
+          "processed": 109,
+          "baselineTracking": 41,
+          "candidateTracking": 41,
+          "baselineReady": 32,
+          "candidateReady": 32
+        },
+        "SWEEP": {
+          "processed": 180,
+          "baselineTracking": 11,
+          "candidateTracking": 11,
+          "baselineReady": 3,
+          "candidateReady": 3
+        },
+        "OPEN_PALM": {
+          "processed": 91,
+          "baselineTracking": 0,
+          "candidateTracking": 0,
+          "baselineReady": 0,
+          "candidateReady": 0
+        },
+        "HIDE": {
+          "processed": 18,
+          "baselineTracking": 0,
+          "candidateTracking": 0,
+          "baselineReady": 0,
+          "candidateReady": 0
+        },
+        "RECOVER": {
+          "processed": 109,
+          "baselineTracking": 23,
+          "candidateTracking": 23,
+          "baselineReady": 16,
+          "candidateReady": 16
+        }
+      },
+      "implementationDigest": "8b712e32f24c86441b453a31748c454c667f21e6d8cdc8e85847b3b9db22e5fc",
+      "receiptDigest": "dd1666b58426a8905dcc0bba1a3606d4ac1d25993545d4e21004a95c806e8921",
+      "limitations": [
+        "Gradientcorrelationboundsareexperimentalrepresentationquality, notcalibratedprobabilities.",
+        "0newTRACKINGframes;1lostframe623viareferenceconflict;4readinessframeslost; RIGHT/BRunchanged.",
+        "30sparsepositions12/9insideunchangeddoesnotestablishunlabelledprecisionornewphysicalacceptance."
+      ]
+    }
+  ],
+  "decision": "NO_APPEARANCE_CANDIDATE_ADOPTION_BASELINE_RIGHT_AND_BOTTOM_RIGHT_LIMITS_REMAIN",
+  "unmeasured": {
+    "independentPhysicalHoldout": true,
+    "fullCalibrationForRejectedCandidates": true,
+    "actualSensorToDisplayLatency": true,
+    "stationaryJitterGroundTruth": true,
+    "motionLagGroundTruth": true,
+    "globalFalseAssociationRate": true
+  },
+  "limits": [
+    "Availabilitycountsarenotcorrectfingertipcoverage;spatialmetricsincludeall30visiblepointingrefswithmissingness.",
+    "Promptgroupsareguidedrequests,notper-frameanatomicalgroundtruth.",
+    "Noownerimages/landmarks/trajectories/labelcoordinates/absoluteprivatepaths/accounts/credentialsincludedhere.",
+    "NoNN/browser/camera/serviceorrepositoryeditsbythisworkstream.",
+    "Corrected bank yields 0 changed output frames and 0 actual rebinds. This is evidence of no benefit for the tested guarded implementation, not proof that all reference-bank concepts fail.",
+    "Sparse 30 pointing circles and 3 negative references cannot estimate a global false-association rate or physical calibration accuracy. Missingness remains in every denominator.",
+    "Current RIGHT13/89 and BOTTOM_RIGHT13/71 producer availability remain unresolved; no candidate bypassed the existing model/image contradiction, source or 150ms safeguards."
+  ],
+  "schemaVersion": 2,
+  "receiptLinks": {
+    "originalAggregateSha256": "7a03ecd5f98b91f21f7863f70130171c1e6b76383ac596c7a86de1119e031351",
+    "originalCloseoutSha256": "3163dd397a0feaa92cf0618d13e4c16043c7de11511dbf1c616a11b59d985894",
+    "passAWaterfallSummarySha256": "79eecd9c4c89e64de0ab08f6fda2562d96ebac464aa7a4907763379612c8d66e",
+    "allSixteenStageLedgerSha256": "7d9e0930f608369b9a3f4a3dd260b5a9c579d3f18b909ecacdd380ff9272acf5",
+    "stage15JoinedControllerSummarySha256": "37f8187cdbe39fd3853bb1c056e4382e968482035743da770976dda85747761f",
+    "allSixteenStagesWithCurrentControllerLedgerSha256": "ce1306f6cf933b22ed6f9004485f02b1eb50be54c70773ade572254b3ec9d5cc",
+    "correctedBankSummarySha256": "1234e6bf80b4a1657d3dae1a5966f0cdbe9d063f67a1b5e71b75b6311126b8b2",
+    "correctedBankRowsSha256": "d3b6b2b86f0724acc76d4a20b1155840e86e3e209b1e575fa9840896622b31c6"
+  },
+  "stoppingRule": "Two appearance candidates and one authorized candidate1 correctness repair exhausted. No parameter sweep, model/browser/camera run, production edit, or additional algorithm within this workstream."
+}

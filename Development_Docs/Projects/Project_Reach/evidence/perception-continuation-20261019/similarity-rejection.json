@@ -1,0 +1,87 @@
+{
+  "classification": "SAFE_AGGREGATE_BOUNDED_RESEARCH_REJECTION_NO_PRODUCT_CHANGE",
+  "candidate": "CURRENT_ANATOMY_PROPOSED_SIMILARITY_MATERIAL_REGISTRATION",
+  "frozenModuleSha256": "8be6bdaeb4672b7e2cf46cff57ab340afe18eeb4d37dbb934806fa967dddcea5",
+  "result": "REJECTED_UNQUALIFIED_NO_MEASURED_GAIN_AND_STALE_PROBATION_REGRESSION",
+  "development": {
+    "analyticRotationMechanismProposals": 3,
+    "probationFrames": 2,
+    "attemptedCommits": 1,
+    "commits": 1,
+    "rejectedCommits": 0,
+    "developerChecksPassed": 7,
+    "coverageImprovementClaim": false
+  },
+  "independentHeldout": {
+    "frames": 208,
+    "scenarios": 13,
+    "exactOutputDifferenceFrames": 0,
+    "eligibleProbes": 23,
+    "proposals": 0,
+    "probationFrames": 0,
+    "attemptedCommits": 0,
+    "commits": 0,
+    "rejectedCommits": 0,
+    "scope": "Independent analytic fixtures with labels hidden until candidate freeze; positive controls have baseline coordinate ceiling and do not exercise recovery."
+  },
+  "recordedDevelopmentComparison": {
+    "frames": 1336,
+    "baselineAcceptedOutputParityDifferences": 0,
+    "positions": {
+      "baseline": 504,
+      "candidate": 504
+    },
+    "ready": {
+      "baseline": 416,
+      "candidate": 416
+    },
+    "logicalIdentityChanges": {
+      "baseline": 7,
+      "candidate": 7
+    },
+    "nonblindVisiblePointingReferences": 30,
+    "positionsAtReferences": {
+      "baseline": 12,
+      "candidate": 12
+    },
+    "withinAnnotationCircle": {
+      "baseline": 9,
+      "candidate": 9
+    },
+    "explicitNegativeReferences": 3,
+    "positionsOnExplicitNegatives": {
+      "baseline": 0,
+      "candidate": 0
+    },
+    "eligibleProbes": 22,
+    "proposals": 0,
+    "probationFrames": 0,
+    "attemptedCommits": 0,
+    "commits": 0,
+    "rejectedCommits": 0,
+    "positionsGained": 0,
+    "positionsLost": 0,
+    "cpuMs": {
+      "baseline": {
+        "median": 1.6066,
+        "p95": 4.4564,
+        "total": 2624.3129
+      },
+      "candidate": {
+        "median": 1.64,
+        "p95": 4.5742,
+        "total": 2749.5755
+      },
+      "scope": "Paired Node interpretation under current machine load; excludes neural inference, camera, browser and display. Preserved recording clocks do not charge this additional compute against freshness."
+    }
+  },
+  "confirmedRegression": {
+    "rejectedStaleCaptures": 2,
+    "rejectionAgeMs": 151,
+    "erroneousResearchProbationAfterRejections": [1, 2],
+    "subsequentFreshCaptureCommits": 1,
+    "explanation": "Research __propose runs before superclass completion-clock validation and mutates __probation outside its checkpoint. Two frames rejected as stale can mature research proof used by a later current-image commit. Original product tracker was not edited."
+  },
+  "additionalReviewConcern": "Provisional candidate-only model/image contradiction can be discarded by restoring and rerunning baseline. No such adoption path was demonstrated safe.",
+  "decision": "Do not promote or repair after heldout. Preserve frozen source, original accepted product bytes, failed development evidence and all comparisons. RIGHT, BOTTOM_RIGHT and mixed motion remain unresolved; no physical reliability or Phase1readiness claim."
+}

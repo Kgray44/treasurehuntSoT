@@ -1,0 +1,721 @@
+{
+  "schemaVersion": 1,
+  "classification": "DEVELOPMENT_UI_REVIEW_NOT_PROTECTED_OR_PHYSICAL_ACCEPTANCE",
+  "applicationSource": "c36193d920418a1491db5286fca429663878d0e3",
+  "objective": "Clear Reach readiness, preserved calibration progress, independent checks and image-selection recovery, with usable responsive controls and truthful authority-gated numeric Admiralty reporting.",
+  "method": {
+    "kind": "INDEPENDENT_FILE_ONLY_REVIEW",
+    "currentImagesViewed": 32,
+    "selectedImagesForPublication": 28,
+    "allImageHashesRecorded": true,
+    "cohortResultsAndSourceReceiptsRead": true,
+    "newBrowserModelOrCameraStartedForReview": false,
+    "repositoryChangedByReview": false,
+    "acceptedVisualReferences": "The two Homeport desktop/mobile references inspected in the preserved initial review remain the visual comparison; they are not new current Reach acceptance receipts.",
+    "limits": "Still-image composition, task language and visible states only; functional assertions are separately source-bound browser results. No physical, protected or owner acceptance."
+  },
+  "reviewedImageCount": 32,
+  "publishedImageCount": 28,
+  "privateInputManifestSha256": "843b590ff510f94e2d5bb9c8f12033aed4f094852a57d028c84f7cd1a355d3d3",
+  "privateReviewSha256": "e581cd27cb6ddb9de1bbb45bee5a15f20e380989bc09ba1388a33972efeb92c0",
+  "disposition": "CURRENT_BOUNDED_UI_REVIEW_COMPLETE_WITH_NONBLOCKING_DEBT; NO_NEW_VISIBLE_PREVIEW_BLOCKER",
+  "findings": [
+    {
+      "id": "UI-C361-01",
+      "priority": "P2",
+      "category": "MOBILE_PAUSED_TARGET_VISIBILITY",
+      "fileId": "C02",
+      "sha256": "fd2750b7a7422e1fc1464d884025963832e87f86a2492a6fda98cd14b0cb7366",
+      "condition": "390x844 guided absolute playground, edge/ineligible posture, collection waiting, practice target at lower right.",
+      "observation": "The recovery banner overlays the lower playfield and covers most of the practice target. The same instruction is already readable above and below the plane. This is a spatial collision with the destination while recovery is paused.",
+      "recommendation": "In a later UI pass, put the recovery message outside the target field or avoid the current target region. Retain the pause/accuracy/source rules.",
+      "blockingForThisDevelopmentPreview": false,
+      "currentSourcePrecision": "In C06 the current independent-check Target1 is top-left and fully visible. Do not describe this new validation capture as covered, or silently relabel the older7627validation screenshot.",
+      "publishedFiles": [
+        "C02-mobile-detected-ineligible-viewport.png"
+      ]
+    },
+    {
+      "id": "UI-C361-02",
+      "priority": "P3",
+      "category": "GUIDED_SIMULATION_COPY",
+      "fileId": "C05",
+      "sha256": "7714ccd8e635076c7482d103e8395d0bc716f0a92c0931703144ee262b963ff5",
+      "observation": "The guided no-camera preparation state retains Stop camera & clear session and1hand detected vocabulary. Guided demo - no camera and the explicit simulation/accuracy disclaimer remain visible, so the mode is identifiable; source-aware control wording would reduce ambiguity.",
+      "recommendation": "Later use Stop demo/simulated-hand language for Guided. This is wording debt, not evidence of a current real-camera startup failure.",
+      "blockingForThisDevelopmentPreview": false,
+      "publishedFiles": [
+        "C05-mobile-tracking-viewport.png"
+      ]
+    }
+  ],
+  "observations": [
+    {
+      "category": "MOBILE_COMPOSITION_AND_TASK",
+      "fileIds": [
+        "C01",
+        "C02",
+        "C03",
+        "C04",
+        "C05",
+        "C06",
+        "C14"
+      ],
+      "observation": "The390px states show readable stage instructions, saved-target counts and progress with conventional Pause/Retry/Cancel/Recalibrate actions. No horizontal overlap or overflow is visible in the selected states. Long preparation/results surfaces require vertical scrolling. Controls do not rely on color alone; current stage and interruption reasons have text. Mobile banner/target collision remains explicitly recorded as debt."
+    },
+    {
+      "category": "PAUSE_RECOVERY_AND_INVALIDATION",
+      "fileIds": [
+        "C11",
+        "C12",
+        "C13",
+        "C14"
+      ],
+      "observation": "Brief occlusion says bring the same hand back/completed targets stay saved, retains33% current hold and1of9saved; recovery advances to2of9. Genuine context invalidation uses a separate amber Setup ended banner explaining inability to confirm the same hand/setup and the need for a fresh setup. Mobile interruption keeps1of5saved and actionable guidance near the active plane. Stills demonstrate this feedback distinction; the passing source-bound cases separately exercise timing/state behavior."
+    },
+    {
+      "category": "INDEPENDENT_RESULTS_AND_NUMERICAL_SCOPE",
+      "fileIds": [
+        "C07",
+        "C08",
+        "C09",
+        "C10"
+      ],
+      "observation": "Training completion says Independent check required and Not measured. Controlled actual-public-photo results then show ABS0.54% and relative independent-check success; they are not physical pointing ground truth. The deliberately failed guided check explicitly says all five targets were checked,10.31%95th-percentile error exceeded3.00%, setup is kept, with separate Retry independent check/Recalibrate actions. No held-out threshold relaxation or physical qualification can be inferred from a pass screenshot."
+    },
+    {
+      "category": "INDEX_APPEARANCE_VERSUS_GESTURE",
+      "fileIds": [
+        "C26",
+        "C27",
+        "C30",
+        "C31",
+        "C32"
+      ],
+      "observation": "The selected full-hand contrary view explicitly says Fingertip image matched - pointing paused, explains an image hint cannot override posture, and keeps55%hold/1of5saved. The positive counterpart says full-hand detection confirms pointing while image tracking keeps position continuous. A model-independent view labels0detected yet appearance tracked; stale callbacks instead show waiting for fresh tracking, no actionable image marker and saved targets kept. These are synthetic D0 behavior controls, not recognition proof or measured physical continuity. Tiny compact-camera rings alone would be ambiguous, but visible text provides the distinction."
+    },
+    {
+      "category": "MANUAL_SELECTION_CLARITY",
+      "fileIds": [
+        "C28",
+        "C29"
+      ],
+      "observation": "Failed manual acquisition plainly says the chosen fingertip could not be acquired or expired and the hand model will not replace the selection; it offers remarking or deliberate automatic selection. The mobile picker exposes arrows+Enter/Esc guidance, Cancel fingertip hint, Use automatic fingertip selection, preview-mirror and Stop controls without visible width overflow. The text states appearance cannot identify a finger by itself and selection persists after loss. Exact keyboard/focus and model-non-takeover behavior is supported by the separate8-case functional cohort, not by stills alone."
+    },
+    {
+      "category": "LOCAL_RECORDING_PRIVACY",
+      "fileIds": [
+        "C15"
+      ],
+      "observation": "The current public-photo recording review shows clean camera imagery, separate manual video/trace downloads and Delete recording. Copy distinguishes live overlay from default saved video, mirrored/re-encoded diagnostic video from raw sensor output, and prompt intent from ground truth. It discloses page-memory storage, no upload/fitting, visible background, limits and compositing overhead. Encoded pixel exclusion is separately proved by the targeted timing-successor test; the original whole-cohort duration failure stays recorded."
+    },
+    {
+      "category": "ADMIN_MEASUREMENTS_AND_PRIVACY",
+      "fileIds": [
+        "C18",
+        "C19",
+        "C20",
+        "C21",
+        "C22",
+        "C23"
+      ],
+      "observation": "Empty versus populated admin states show retained reports0then1, while distinct people/sessions remain Not collected. Coverage identifies client-reported data, missingness, complete report/page counts and retention. Performance uses pooled fixed percentile bins and explicit denominators; handedness classification score is not presence/tracking/pointing confidence, and numeric posture confidence is unavailable. The isolated synthetic report values are presentation fixtures, not fleet statistics or actual combined-user coverage."
+    },
+    {
+      "category": "ADMIN_AUTHORITY_POLICY_AND_RESPONSIVENESS",
+      "fileIds": [
+        "C16",
+        "C17",
+        "C24",
+        "C25"
+      ],
+      "observation": "Current/proposed policy, revision, reason, privileged assurance expiry/server recheck, confirmed receipt and immutable150ms/3%/15samples/600ms/one-frame rules are clearly separated. The mobile tabs and upper policy text wrap within390px. The two mobile admin screenshots do not show the lower editor or observer-denial notice; the3-case functional receipt separately verifies authority. Administrator10/20fixture changes must not be mistaken for global defaults15/60or left undocumented when sharing subsequent test results."
+    }
+  ],
+  "missingCoverage": [
+    "Still images cannot establish keyboard/screen-reader semantics, live announcement cadence, animation/reduced-motion behavior, exact stale/ghost timeout boundaries, physical identity continuity or sensor-to-display performance.",
+    "The current selected admin screenshots do not cover storage unavailable/recovery, invalid numeric input, expired assurance, revision conflict or privacy/history views, and the mobile captures stop above lower editor/read-only blocks.",
+    "Actual owner recognition failures, cold-acquisition/wrong-digit limits, current1.1Hzwebcam observation and its unresolved browser/window/load context are not closed by public-photo or headless synthetic controls.",
+    "No native iPhone AR installation/signing, RGB/IR/depth fusion, illumination support, physical screen-pointing accuracy or owner acceptance is established.",
+    "The protected experience-plan trusted-obligation issue remains separate; every reviewed browser receipt explicitly has qualificationfalse. This development review does not discharge that gate."
+  ],
+  "priorReviewReferences": [
+    {
+      "label": "Initial app7627bounded review",
+      "applicationSource": "7627a8f21a8c2829376a303798ee2a1445e96b3e",
+      "sha256": "2b6ea761f4308a61056fa4adc045a589620bc02c2a1d821f6600a7e3b8746fab",
+      "scope": "Preserved historical review, not rebound to c361."
+    },
+    {
+      "label": "Successor app7627fifty-one-image review",
+      "applicationSource": "7627a8f21a8c2829376a303798ee2a1445e96b3e",
+      "sha256": "aa134cc718491b0dd388d4a1161f71a3a14a670f494b782272d0270a042a1050",
+      "scope": "Preserves earlier failures/debt and narrower state coverage."
+    }
+  ],
+  "currentPrimaryCaseCount": 27,
+  "additionalTargetedRunCaseCount": 1,
+  "preservedConfoundedRunCaseCount": 8,
+  "allCurrentCohortOutcomes": [
+    {
+      "cohort": "browser-laboratory-20261018T001957-eaa2",
+      "role": "PRIMARY",
+      "fixtureContext": "Default policy; full16-case Laboratory cohort, including preserved recorder duration failure.",
+      "source": "c36193d920418a1491db5286fca429663878d0e3",
+      "builtSource": "c36193d920418a1491db5286fca429663878d0e3",
+      "testSource": "c36193d920418a1491db5286fca429663878d0e3",
+      "applicationUnchangedAtTestSource": true,
+      "sourceStableDuringRun": true,
+      "qualification": false,
+      "physicalAccuracyQualified": false,
+      "receiptSha256": "b1847bab8bd86531752871871449c2e2e1cda3a9c2b708edbb51049ab81ae876",
+      "resultSha256": "154ae9fc647cce172a11fa20ae265fb4b81adf98816b404e0ea784faf864e2c4",
+      "stats": {
+        "startTime": "2026-10-18T04:20:32.118Z",
+        "duration": 361601.678,
+        "expected": 15,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "title": "guided absolute experience, held-out check, playground, recovery and private export on laptop",
+          "status": "expected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 44899
+            }
+          ]
+        },
+        {
+          "title": "guided absolute experience, held-out check, playground, recovery and private export on mobile",
+          "status": "expected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 40260
+            }
+          ]
+        },
+        {
+          "title": "relative movement uses separate setup, check and cursor claims",
+          "status": "expected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 21685
+            }
+          ]
+        },
+        {
+          "title": "posture rejection preserves detection and lets the current target recover",
+          "status": "expected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 4769
+            }
+          ]
+        },
+        {
+          "title": "photographic video through the actual worker tracks noise, motion, partial occlusion and a second hand, then cleans up",
+          "status": "expected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 24604
+            }
+          ]
+        },
+        {
+          "title": "worker NONE has bounded lifecycle and recovery",
+          "status": "expected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 2774
+            }
+          ]
+        },
+        {
+          "title": "worker MODEL_UNAVAILABLE has bounded lifecycle and recovery",
+          "status": "expected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 2819
+            }
+          ]
+        },
+        {
+          "title": "camera denial has a useful retry and conventional demonstration",
+          "status": "expected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 2553
+            }
+          ]
+        },
+        {
+          "title": "viewport changes invalidate the fit and preserve camera availability; safe return excludes external URLs",
+          "status": "expected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 7500
+            }
+          ]
+        },
+        {
+          "title": "photographic worker completes nine real-landmark holds and five independent checks",
+          "status": "expected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 66294
+            }
+          ]
+        },
+        {
+          "title": "D0 encoded recorder video excludes the live skeleton by default and preserves the optional composite",
+          "status": "unexpected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "failed",
+              "retry": 0,
+              "durationMs": 6006
+            }
+          ]
+        },
+        {
+          "title": "local recorder waits for processed camera evidence before its first pointer start",
+          "status": "expected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 17090
+            }
+          ]
+        },
+        {
+          "title": "the local recording tool honors its flag and keeps video, raw trace and pause local",
+          "status": "expected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 20528
+            }
+          ]
+        },
+        {
+          "title": "a completed failed check explains the accuracy limit and keeps setup instead of silently repeating",
+          "status": "expected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 23279
+            }
+          ]
+        },
+        {
+          "title": "mobile interruptions keep the reason and saved targets beside the active target",
+          "status": "expected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 8504
+            }
+          ]
+        },
+        {
+          "title": "D0 controlled poses recover in the actual laboratory without losing completed targets",
+          "status": "expected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 57051
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cohort": "browser-admiralty-20261018T002643-eefa",
+      "role": "PRIMARY",
+      "fixtureContext": "Isolated synthetic administrator/observer/report fixture; deliberate policy revision0to1 changes normal15to10 and model60to20.",
+      "source": "c36193d920418a1491db5286fca429663878d0e3",
+      "builtSource": "c36193d920418a1491db5286fca429663878d0e3",
+      "testSource": "c36193d920418a1491db5286fca429663878d0e3",
+      "applicationUnchangedAtTestSource": true,
+      "sourceStableDuringRun": true,
+      "qualification": false,
+      "physicalAccuracyQualified": false,
+      "receiptSha256": "17896893979e8f81433b34ec49a93002549f9408a2edbc058e9c31ef729c2818",
+      "resultSha256": "01ca384bc04d3c844db8ed3aecaae50a17580b47b7ec46bbaa51fd530943aab1",
+      "stats": {
+        "startTime": "2026-10-18T04:26:46.989Z",
+        "duration": 41879.316999999995,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "title": "operator naturally reviews Reach reports and applies an assured revisioned model/capture policy",
+          "status": "expected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 19016
+            }
+          ]
+        },
+        {
+          "title": "observe-only operator reads Reach but cannot preview or execute policy",
+          "status": "expected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 6002
+            }
+          ]
+        },
+        {
+          "title": "mobile operator can inspect policy ranges and immutable safeguards without overflow",
+          "status": "expected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 8305
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cohort": "browser-index-20261018T003315-0cba",
+      "role": "PRIMARY",
+      "fixtureContext": "Fresh default-policy fixture after a task-owned backup/reset; complete8-case controlled Index cohort.",
+      "source": "c36193d920418a1491db5286fca429663878d0e3",
+      "builtSource": "c36193d920418a1491db5286fca429663878d0e3",
+      "testSource": "c36193d920418a1491db5286fca429663878d0e3",
+      "applicationUnchangedAtTestSource": true,
+      "sourceStableDuringRun": true,
+      "qualification": false,
+      "physicalAccuracyQualified": false,
+      "receiptSha256": "d00973e89f316323caa0e7fe1b32373e54606a5dccfe5fa20b18bfb8bea5a541",
+      "resultSha256": "cead630a0c5c908d6d3ea47856dda4962b2936c97a3c1f3c1d0d024c4d965d79",
+      "stats": {
+        "startTime": "2026-10-18T04:33:16.272Z",
+        "duration": 78858.298,
+        "expected": 8,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "title": "D0 image-relative control follows fresh appearance through model failure, motion and interruption",
+          "status": "expected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 16450
+            }
+          ]
+        },
+        {
+          "title": "D0 live setup opens empty before pointing and binds its first fresh source without restarting",
+          "status": "expected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 15543
+            }
+          ]
+        },
+        {
+          "title": "D0 display staleness between timely delayed captures preserves evidence while contrary frames pause it",
+          "status": "expected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 8337
+            }
+          ]
+        },
+        {
+          "title": "D0 manual image-only hints support mirrored click and natural keyboard while ambiguous pixels abstain",
+          "status": "expected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 7908
+            }
+          ]
+        },
+        {
+          "title": "D0 manual selection survives rejected pixels and expiry without silently returning to a model digit",
+          "status": "expected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 6813
+            }
+          ]
+        },
+        {
+          "title": "D0 full-hand authority pauses conflicts without changing image coordinates and manual hints cannot bypass it",
+          "status": "expected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 8741
+            }
+          ]
+        },
+        {
+          "title": "D0 stale model replies hide the image marker, pause collection and recover the same image source",
+          "status": "expected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 4168
+            }
+          ]
+        },
+        {
+          "title": "D0 adaptive pacing backs off on visible blur and event-loop duress, then actual pagehide releases resources",
+          "status": "expected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 9358
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cohort": "browser-index-20261018T002738-2f9f",
+      "role": "CONFOUNDED_PRIOR_STATE",
+      "fixtureContext": "Prior8-case Index cohort reused the administrator-modified policy10/20 revision1; all4pass/4fail outcomes are preserved, not substituted for defaults.",
+      "source": "c36193d920418a1491db5286fca429663878d0e3",
+      "builtSource": "c36193d920418a1491db5286fca429663878d0e3",
+      "testSource": "c36193d920418a1491db5286fca429663878d0e3",
+      "applicationUnchangedAtTestSource": true,
+      "sourceStableDuringRun": true,
+      "qualification": false,
+      "physicalAccuracyQualified": false,
+      "receiptSha256": "ec29d93f00b12f163cf00b5370da4f18c1f2edc8a9ee462750796d0d75ba4223",
+      "resultSha256": "352fbf1d4cb5828bcf82e5e0952611d2cc3d457a6205575369132557ce428165",
+      "stats": {
+        "startTime": "2026-10-18T04:27:40.434Z",
+        "duration": 161325.994,
+        "expected": 4,
+        "skipped": 0,
+        "unexpected": 4,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "title": "D0 image-relative control follows fresh appearance through model failure, motion and interruption",
+          "status": "unexpected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "failed",
+              "retry": 0,
+              "durationMs": 18146
+            }
+          ]
+        },
+        {
+          "title": "D0 live setup opens empty before pointing and binds its first fresh source without restarting",
+          "status": "unexpected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "failed",
+              "retry": 0,
+              "durationMs": 17633
+            }
+          ]
+        },
+        {
+          "title": "D0 display staleness between timely delayed captures preserves evidence while contrary frames pause it",
+          "status": "unexpected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "failed",
+              "retry": 0,
+              "durationMs": 23790
+            }
+          ]
+        },
+        {
+          "title": "D0 manual image-only hints support mirrored click and natural keyboard while ambiguous pixels abstain",
+          "status": "expected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 22189
+            }
+          ]
+        },
+        {
+          "title": "D0 manual selection survives rejected pixels and expiry without silently returning to a model digit",
+          "status": "unexpected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "failed",
+              "retry": 0,
+              "durationMs": 35408
+            }
+          ]
+        },
+        {
+          "title": "D0 full-hand authority pauses conflicts without changing image coordinates and manual hints cannot bypass it",
+          "status": "expected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 8885
+            }
+          ]
+        },
+        {
+          "title": "D0 stale model replies hide the image marker, pause collection and recover the same image source",
+          "status": "expected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 4377
+            }
+          ]
+        },
+        {
+          "title": "D0 adaptive pacing backs off on visible blur and event-loop duress, then actual pagehide releases resources",
+          "status": "expected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 9728
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "cohort": "browser-laboratory-20261018T003547-175e",
+      "role": "TARGETED_CORRECTION",
+      "fixtureContext": "One encoded-recorder repeat after a measurement-only synchronization successor; no application or1200ms assertion change.",
+      "source": "c36193d920418a1491db5286fca429663878d0e3",
+      "builtSource": "c36193d920418a1491db5286fca429663878d0e3",
+      "testSource": "e35745baf3dbb5a5e61ee5a0f4721d176c3af39f",
+      "applicationUnchangedAtTestSource": true,
+      "sourceStableDuringRun": true,
+      "qualification": false,
+      "physicalAccuracyQualified": false,
+      "receiptSha256": "dc4e91ebe3bf089b6f90bdc332bd6da7404a994213895d32c0120ca4f90faf80",
+      "resultSha256": "68bd3a92f43119fb6a8363787e26003ff022575b7082fa3fe1b07226096c9d45",
+      "stats": {
+        "startTime": "2026-10-18T04:35:48.540Z",
+        "duration": 6788.012,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "title": "D0 encoded recorder video excludes the live skeleton by default and preserves the optional composite",
+          "status": "expected",
+          "expectedStatus": "passed",
+          "attempts": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "durationMs": 5281
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "protectedAcceptance": false,
+  "physicalAcceptance": false,
+  "notes": [
+    "Every current primary16Laboratory,3Admiralty and8index case is recorded without filtering failed/skipped outcomes. Targeted correction runs are separately identified; no successor result relabels a failed primary cohort.",
+    "The prior Index cohort run under the administrator fixture policy10/20 is retained separately as confounded prior state; it is not the controlled default-policy primary Index cohort.",
+    "Earlier app7627 reviews and failures remain preserved under their original source and test identities; current evidence does not relabel them.",
+    "Synthetic administrator figures are not fleet measurements; photographic and analytic controls are not physical owner acceptance."
+  ]
+}

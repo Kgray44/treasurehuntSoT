@@ -1,0 +1,328 @@
+{
+  "schemaVersion": 1,
+  "classification": "engineering_evidence",
+  "evidenceTier": "DEVELOPMENT_ONLY",
+  "evidenceSource": "SYNTHETIC_TASK_ISOLATED_BROWSER_PROOF",
+  "numericFixtureClassification": "SYNTHETIC_NOT_FLEET",
+  "generatedAtUtc": "2026-10-18T00:08:09.271Z",
+  "sourceCommit": "9034912a44bbf1b3a216356529b6baa59ee75bcb",
+  "sourceStableDuringRun": true,
+  "codeInputs": [
+    {
+      "path": "src/components/admiralty/ReachAdminConsole.tsx",
+      "sha256": "92e40731c16b1b9130765064ab3e245518d25e0a73cdc05d923391d2477d750c"
+    },
+    {
+      "path": "src/components/admiralty/ReachAdminConsole.module.css",
+      "sha256": "7a64cef34d342b2c1c6ab3254cc81bbf8c545589d029eb931ddfe3556a961f82"
+    },
+    {
+      "path": "src/components/admiralty/AdmiraltyShell.tsx",
+      "sha256": "f18be8a95bc607dce4e54bb5b903a30a1b6839dae6f28fcd1fde62f95ee00b7e"
+    },
+    {
+      "path": "src/components/admiralty/AdminNav.tsx",
+      "sha256": "9cea10b4017b055406e85d5aa4df77a5a101f164a1e56c9d4fa8fe41f951ef79"
+    },
+    {
+      "path": "src/components/admiralty/AdminPrimitives.tsx",
+      "sha256": "c7a91ea8904cbb75f8090dda187bd2cec7fbfac15343c2b67b57389c3e3e132e"
+    },
+    {
+      "path": "src/app/admin/reach/page.tsx",
+      "sha256": "d801e54b38a1ec5ec3c5f876903c0af5c2836655f5567f71aa59d5ffec34d3b6"
+    },
+    {
+      "path": "src/app/admin/configuration/page.tsx",
+      "sha256": "9eb840a3e847a3a60ed808d7ac6b9da1bf31a7afe4b312c888ab5732b0e6f1e1"
+    },
+    {
+      "path": "src/app/admin/layout.tsx",
+      "sha256": "7db9de990b9f1a58610d9d9e9e663cdca78868c40e60e374dd6cd2f320aceeb6"
+    },
+    {
+      "path": "src/app/admin/page.tsx",
+      "sha256": "1d32127d7da7cacf258ae27c3f8173016e9982790d6f7b193d40496d558792d8"
+    },
+    {
+      "path": "src/app/layout.tsx",
+      "sha256": "f8276603d6788dd90dd9c55318f70083aafdad59a2f53e17f8dfe0e463d7733c"
+    },
+    {
+      "path": "src/app/globals.css",
+      "sha256": "4688a4cea4751f60f860fe1048eeab787b8194f459886dd7100a53466aa0a8c2"
+    },
+    {
+      "path": "src/admiralty/configuration-registry.ts",
+      "sha256": "289c03d7a7d18c69a5f65029162be9630b231f463e169653a1c07bc7611b8cc9"
+    },
+    {
+      "path": "src/admiralty/ports/operations-admin-read.ts",
+      "sha256": "13f0783b060f06c739f7f7cce43d62015d05e15e364aa4f45cc83704a70ca975"
+    },
+    {
+      "path": "src/admiralty/authorization.ts",
+      "sha256": "cc4bbf41fe74278d4811214627c511f8da25ce9c2514e183fa1a23fe066bb0fc"
+    },
+    {
+      "path": "src/admiralty/page-authorization.ts",
+      "sha256": "b1637a1517916940278544d9fa61befe122e422156eaec947596a0b9b8a843ff"
+    },
+    {
+      "path": "src/admiralty/assurance.ts",
+      "sha256": "5630d5e29a6ca2e2ad5f9bb22d01963c66c1ab92fabd6f8de883240ff81cdd7a"
+    },
+    {
+      "path": "src/admiralty/capabilities.ts",
+      "sha256": "9d3fa96b8f981c015b4753cd9afa9bb4b434118099894787752d3d6bb0e2cac2"
+    },
+    {
+      "path": "src/admiralty/read-models.ts",
+      "sha256": "5d8c68d808657d97e3ace8f5c97beaa80bd9f86a841fb6239e525791fd22d5bd"
+    },
+    {
+      "path": "src/admiralty/http.ts",
+      "sha256": "92cb0f9ae7bab942dfb9e249f1e4c4c5cc1a161349f5b0ed70590c482bfaa08a"
+    },
+    {
+      "path": "src/reach/runtime-policy.ts",
+      "sha256": "448e2d33406cc20d9c840491c1f889ba51b5fb484546752cdd425db85e85d235"
+    },
+    {
+      "path": "src/reach/admin-service.ts",
+      "sha256": "18a40903c9a30bef2a9fd87eb118a879770b3eb8f95875c29ad2fed4ecba2fc3"
+    },
+    {
+      "path": "src/reach/admin-commands.ts",
+      "sha256": "a863b3a5a6317b7232ce884eb47badc7087cfebc918879e98aebab61559e71e1"
+    },
+    {
+      "path": "src/reach/admin-storage.ts",
+      "sha256": "4689417fd735cce1cd64338410907b8fd32fe22e40df5bb2eb80ed4002092069"
+    },
+    {
+      "path": "src/reach/http.ts",
+      "sha256": "4ff632ece4aeada2819d750d97fd6ebca5376b8168c220ed7be324d0d02ed1bc"
+    },
+    {
+      "path": "src/reach/telemetry.ts",
+      "sha256": "1e0d341db7266dddb10b30e72f9f0560ebc57c41517978609492af022792a843"
+    },
+    {
+      "path": "src/app/api/admin/reach/route.ts",
+      "sha256": "ec33e6375bc5ab8ec8fb7cb3c497c5c79f00d3278b7d17d159ace8de82b40cee"
+    },
+    {
+      "path": "src/app/api/admin/assurance/route.ts",
+      "sha256": "426b6774ad16ecda6e17cef05e76cfe9e5b9bfad48e7acd423b309e29f972d8f"
+    },
+    {
+      "path": "src/app/api/admin/commands/reach-runtime-policy/preview/route.ts",
+      "sha256": "423cb90fb10070bff3c1b78149646093e55e43f102ae6acea079fde2a549e342"
+    },
+    {
+      "path": "src/app/api/admin/commands/reach-runtime-policy/execute/route.ts",
+      "sha256": "ee8300d2b4dc91516487490f1d874008846654058f57b82fc8039ed4380b236e"
+    },
+    {
+      "path": "src/app/api/reach/policy/route.ts",
+      "sha256": "704a257eb75859b8d8dd275ff151e48de6cadefed9c8dcd7239523f31c643058"
+    },
+    {
+      "path": "src/app/api/reach/telemetry/route.ts",
+      "sha256": "9aa17c83ff61a3adb636ad728fe7c6f0ecbfcd2dfee065a811f4435655128fa4"
+    },
+    {
+      "path": "src/app/api/auth/context/route.ts",
+      "sha256": "d0fe2faf8ff10e20ba777e379adad14e5092a7f01fefbd45b55ceeeba29e5db3"
+    },
+    {
+      "path": "prisma/schema.prisma",
+      "sha256": "3787e75a77e61913e34f8cd482bc9001fbce6a1f59d11e0438cde2008ca09e75"
+    },
+    {
+      "path": "tests/e2e/reach-admiralty.spec.ts",
+      "sha256": "357fc28a9bd43a2c6042f7beae164339d42f6865934cc868153c76d9ebc5c71e"
+    }
+  ],
+  "results": {
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "flaky": 0,
+    "durationMs": 54316.339,
+    "retries": 0
+  },
+  "cases": [
+    {
+      "title": "operator naturally reviews Reach reports and applies an assured revisioned model/capture policy",
+      "passed": true,
+      "durationMs": 37943,
+      "retries": 0
+    },
+    {
+      "title": "observe-only operator reads Reach but cannot preview or execute policy",
+      "passed": true,
+      "durationMs": 5844,
+      "retries": 0
+    },
+    {
+      "title": "mobile operator can inspect policy ranges and immutable safeguards without overflow",
+      "passed": true,
+      "durationMs": 5769,
+      "retries": 0
+    }
+  ],
+  "fixtureCoverage": {
+    "emptyBeforeSyntheticIngestion": true,
+    "numericReportsInserted": 1,
+    "actualIsolatedHttpIngestion": true,
+    "populatedNumericValuesAreSynthetic": true,
+    "observeOnlyMutationDenials": 2,
+    "fixtureViewports": [
+      {
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "width": 390,
+        "height": 844
+      }
+    ],
+    "reducedMotion": true,
+    "seriousOrCriticalAxeViolations": 0,
+    "horizontalOverflowObserved": false
+  },
+  "governedMutationCoverage": {
+    "canonicalPrivilegedAssurance": true,
+    "exactRevisionedPreview": true,
+    "explicitConfirmation": true,
+    "recordedReceiptAndHistory": true,
+    "observerCannotPreviewOrExecute": true
+  },
+  "independentReview": {
+    "kind": "INDEPENDENT_EXPERIENCE_FIRST_SOURCE_REVIEW",
+    "sourceCommit": "9034912a44bbf1b3a216356529b6baa59ee75bcb",
+    "reviewState": "ADMIRALTY_REVIEWED_FINAL_REACH_PACKET_PENDING",
+    "scope": "ADMIRALTY_UI_AND_BOUNDED_SOURCE",
+    "reachPacketReviewedByThisSummary": false,
+    "blockingFindings": 0,
+    "findings": [
+      {
+        "id": "REACH-REVIEW-MOBILE-TITLE",
+        "severity": "P3",
+        "blocking": false,
+        "description": "The sticky site header partly obscures the Reach title after the captured mobile tab scroll. Policy controls and tab labels remain readable."
+      }
+    ],
+    "currentBrowserGaps": [
+      "Unavailable, incomplete and invalid-policy renderings have focused component proof but are absent from this browser packet.",
+      "The full keyboard policy transaction and continuous motion playback are not established by viewport screenshots or sampled recording frames."
+    ]
+  },
+  "screenshots": [
+    {
+      "path": "SYNTHETIC-reach-admin-policy-mobile.png",
+      "sha256": "ba7a55ffa5178446d94557c692bb9429d0768d1018f342e5ab35c8d8d9701db4",
+      "bytes": 155802,
+      "width": 390,
+      "height": 844,
+      "classification": "SYNTHETIC_TASK_FIXTURE_VIEWPORT"
+    },
+    {
+      "path": "SYNTHETIC-reach-admin-observer-mobile.png",
+      "sha256": "a5bdfbdeb56f57fcfabd4bc3572e6fa09e6147a68876dfe1fc61150f21f4c987",
+      "bytes": 164349,
+      "width": 390,
+      "height": 844,
+      "classification": "SYNTHETIC_TASK_FIXTURE_VIEWPORT"
+    },
+    {
+      "path": "SYNTHETIC-reach-admin-calibration-desktop.png",
+      "sha256": "9f5c2b5e32b7793f0c420d4115bf9fbe40d4016c4227dd74e867a95dd1215817",
+      "bytes": 403000,
+      "width": 1440,
+      "height": 900,
+      "classification": "SYNTHETIC_TASK_FIXTURE_VIEWPORT"
+    },
+    {
+      "path": "SYNTHETIC-reach-admin-classification-score-desktop.png",
+      "sha256": "245c67234f50a01e26246cbdc6f62b9596e16be66a68258631bf2aed25e8fb4e",
+      "bytes": 358669,
+      "width": 1440,
+      "height": 900,
+      "classification": "SYNTHETIC_TASK_FIXTURE_VIEWPORT"
+    },
+    {
+      "path": "SYNTHETIC-reach-admin-counters-desktop.png",
+      "sha256": "bfb0cac28ca460a3d3800937ed5e4e9401c06265dc3bab15e766728be65d0f3d",
+      "bytes": 385741,
+      "width": 1440,
+      "height": 900,
+      "classification": "SYNTHETIC_TASK_FIXTURE_VIEWPORT"
+    },
+    {
+      "path": "SYNTHETIC-reach-admin-empty-desktop.png",
+      "sha256": "8f7ade3bbea4f23ae33db0ae9dd61727c71c3ea01b95b0f517292fbefdbdafa1",
+      "bytes": 492375,
+      "width": 1440,
+      "height": 900,
+      "classification": "SYNTHETIC_TASK_FIXTURE_VIEWPORT"
+    },
+    {
+      "path": "SYNTHETIC-reach-admin-performance-desktop.png",
+      "sha256": "f8db7e92b827a5b462f088aa3910e877a4acbd8ad4bd7f1416b0b99872db7408",
+      "bytes": 401794,
+      "width": 1440,
+      "height": 900,
+      "classification": "SYNTHETIC_TASK_FIXTURE_VIEWPORT"
+    },
+    {
+      "path": "SYNTHETIC-reach-admin-policy-confirmed-desktop.png",
+      "sha256": "df8c5b9290e1fa22f417c9e92cd5bfd34def49b871ec5164d34f76a4de790e77",
+      "bytes": 311784,
+      "width": 1440,
+      "height": 900,
+      "classification": "SYNTHETIC_TASK_FIXTURE_VIEWPORT"
+    },
+    {
+      "path": "SYNTHETIC-reach-admin-policy-preview-desktop.png",
+      "sha256": "be0976673215752a954b6010118b71fc92c6b00b25bd3cae50c1b884046a2b74",
+      "bytes": 293023,
+      "width": 1440,
+      "height": 900,
+      "classification": "SYNTHETIC_TASK_FIXTURE_VIEWPORT"
+    },
+    {
+      "path": "SYNTHETIC-reach-admin-populated-desktop.png",
+      "sha256": "d7762b953f7f2a03eb5f40f65f77099ffb65d3d863d3f0bfb914521245921ee6",
+      "bytes": 439418,
+      "width": 1440,
+      "height": 900,
+      "classification": "SYNTHETIC_TASK_FIXTURE_VIEWPORT"
+    }
+  ],
+  "privacy": {
+    "privateAbsolutePathsIncluded": false,
+    "tracesIncluded": false,
+    "videosIncluded": false,
+    "credentialsIncluded": false,
+    "cookiesIncluded": false,
+    "ownerRecordingsIncluded": false,
+    "rawNumericReportPayloadIncluded": false
+  },
+  "boundaries": {
+    "syntheticNumericValues": true,
+    "fleetPerformanceEstablished": false,
+    "distinctPeopleEstablished": false,
+    "physicalAccuracyQualified": false,
+    "physicalLatencyQualified": false,
+    "protectedQualification": false,
+    "ownerAcceptance": false
+  },
+  "limitations": [
+    "One task-isolated synthetic report exercises actual ingestion and rendering; its values are not real-user or fleet performance.",
+    "The separate Reach pointer, production camera lifecycle and physical webcam acceptance are not included in this Admiralty review.",
+    "Native recordings, browser traces and private fixture credentials remain outside the repository."
+  ]
+}

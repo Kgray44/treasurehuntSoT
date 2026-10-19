@@ -1,0 +1,257 @@
+{
+  "format": "REACH_THROUGHPUT_AND_RESOLUTION_DEVELOPMENT_SUMMARY",
+  "generatedAtUtc": "2026-10-17T22:52:55.452Z",
+  "classification": "engineering_evidence",
+  "evidenceTier": "DEVELOPMENT_ONLY",
+  "algorithmDigest": "8b2846e3959552912bf978c531d3099d56f15d7f9648ce08d8f23feb0fc63498",
+  "scope": "Public-photograph resampling/model tests and analytic exact NCC benchmark under existing gaming/development load. Not sensor exposure, physical motion, game FPS, screen pointing accuracy or protected qualification.",
+  "ncc": {
+    "format": "REACH_EXACT_NCC_PAIRED_DEVELOPMENT_BENCHMARK",
+    "at": "2026-10-17T22:47:51.527Z",
+    "baselineSourceCommit": "84a5f988e19bc6e69cedf55b5376311f8e88ec00",
+    "kernelSha256": "0b9106d72fe85357423c68ea420230e38f03521fcdfc8c184303173279439da7",
+    "workload": "Four searches per pair: current stable + seed reverse + current adaptive + previous reverse; identical full-resolution candidates,320x240 gray,15x15 templates,49x49 forward squares,9x9 reverse. Current/previous capture epochs advance each iteration. Twelve warmup pairs,60 measured pairs,AB/BA order alternates.",
+    "load": "Existing owner gaming load continues; other controlled probe timing excluded by parent coordination. Node core CPU only, excludes camera/model/readback/render/sensor/display.",
+    "qualityThresholdsChanged": false,
+    "physicalPerformanceQualified": false,
+    "results": [
+      {
+        "kind": "SPARSE_TEXTURE",
+        "pairedIterations": 60,
+        "exactOutputPairs": 60,
+        "scalarMs": {
+          "median": 4.038700000000063,
+          "p95": 8.124900000000025
+        },
+        "optimizedMs": {
+          "median": 1.6476999999999862,
+          "p95": 4.301400000000058
+        },
+        "pairedSpeedupMedian": 2.731056231678302,
+        "optimizedFasterPairs": 55,
+        "retainedScratchBytes": 87040
+      },
+      {
+        "kind": "DENSE_TEXTURE",
+        "pairedIterations": 60,
+        "exactOutputPairs": 60,
+        "scalarMs": {
+          "median": 5.820300000000088,
+          "p95": 11.083300000000236
+        },
+        "optimizedMs": {
+          "median": 3.778099999999995,
+          "p95": 8.455600000000231
+        },
+        "pairedSpeedupMedian": 1.432662313758148,
+        "optimizedFasterPairs": 42,
+        "retainedScratchBytes": 87040
+      },
+      {
+        "kind": "REPEATED_RIVAL",
+        "pairedIterations": 60,
+        "exactOutputPairs": 60,
+        "scalarMs": {
+          "median": 4.826100000000224,
+          "p95": 10.872199999999793
+        },
+        "optimizedMs": {
+          "median": 1.637000000000171,
+          "p95": 5.875700000000052
+        },
+        "pairedSpeedupMedian": 2.746232432127607,
+        "optimizedFasterPairs": 55,
+        "retainedScratchBytes": 87040
+      },
+      {
+        "kind": "FLAT_REJECTION",
+        "pairedIterations": 60,
+        "exactOutputPairs": 60,
+        "scalarMs": {
+          "median": 5.614000000000033,
+          "p95": 13.385899999999765
+        },
+        "optimizedMs": {
+          "median": 0.12700000000040745,
+          "p95": 1.0066999999999098
+        },
+        "pairedSpeedupMedian": 47.499999999900865,
+        "optimizedFasterPairs": 60,
+        "retainedScratchBytes": 87040
+      }
+    ]
+  },
+  "cpuGpuProbe": [
+    {
+      "delegate": "CPU",
+      "warmup": 5,
+      "measured": 60,
+      "totalMs": 7769.300048828125,
+      "medianInferenceMs": 111.70000000298023,
+      "p95InferenceMs": 149.09999999776483,
+      "medianCaptureAgeMs": 112.300048828125,
+      "p95CaptureAgeMs": 149.5,
+      "freshRate": 0.9666666666666667
+    },
+    {
+      "delegate": "GPU",
+      "warmup": 5,
+      "measured": 60,
+      "totalMs": 10438.60009765625,
+      "medianInferenceMs": 39.600000001490116,
+      "p95InferenceMs": 62.099999997764826,
+      "medianCaptureAgeMs": 40.10009765625,
+      "p95CaptureAgeMs": 62.89990234375,
+      "freshRate": 1
+    },
+    {
+      "delegate": "CPU",
+      "warmup": 5,
+      "measured": 60,
+      "totalMs": 8333.89990234375,
+      "medianInferenceMs": 118,
+      "p95InferenceMs": 154.40000000223517,
+      "medianCaptureAgeMs": 118.699951171875,
+      "p95CaptureAgeMs": 154.800048828125,
+      "freshRate": 0.9
+    }
+  ],
+  "gpuDisposition": {
+    "shippingBackend": "CPU_WASM",
+    "reason": "Faster GPU inference reproducibly returned zero hands in fit/stretch public two-hand fixture where CPU returned two. Known recognition regression blocked GPU adoption.",
+    "freshWorkerRepeatedGpuFitCounts": [0, 0],
+    "cpuSettledFitCount": 2
+  },
+  "captureResolution": {
+    "selectedCaptureWidth": 640,
+    "selectedCaptureHeight": 480,
+    "maximumAnalysisDimension": 320,
+    "defaultChanged": false,
+    "decision": "Keep original640x480 camera intent.320x240 is a promising later physical test candidate; lowering capture has not established a reliable model throughput advantage under varying load.",
+    "rows": [
+      {
+        "width": 640,
+        "height": 480,
+        "pixelCount": 307200,
+        "pixelReductionFraction": 0,
+        "modelMotionTipP95DifferenceSensorDiagonalFraction": 0,
+        "modelStationaryPointTipSpreadP95SensorDiagonalFraction": 0.000764694904642118,
+        "opticalPositionP95Original640Pixels": 1.15,
+        "pointInferenceMedianMs": 102.10000000149012,
+        "motionInferenceMedianMs": 99.5
+      },
+      {
+        "width": 480,
+        "height": 360,
+        "pixelCount": 172800,
+        "pixelReductionFraction": 0.4375,
+        "modelMotionTipP95DifferenceSensorDiagonalFraction": 0.0006508085414689681,
+        "modelStationaryPointTipSpreadP95SensorDiagonalFraction": 0.0006634171152021918,
+        "opticalPositionP95Original640Pixels": 1.15,
+        "pointInferenceMedianMs": 98.19999999925494,
+        "motionInferenceMedianMs": 110.30000000074506
+      },
+      {
+        "width": 320,
+        "height": 240,
+        "pixelCount": 76800,
+        "pixelReductionFraction": 0.75,
+        "modelMotionTipP95DifferenceSensorDiagonalFraction": 0.0013124050247324524,
+        "modelStationaryPointTipSpreadP95SensorDiagonalFraction": 0.000626662890110383,
+        "opticalPositionP95Original640Pixels": 1.15,
+        "pointInferenceMedianMs": 72.19999999925494,
+        "motionInferenceMedianMs": 110.80000000074506
+      },
+      {
+        "width": 256,
+        "height": 192,
+        "pixelCount": 49152,
+        "pixelReductionFraction": 0.84,
+        "modelMotionTipP95DifferenceSensorDiagonalFraction": 0.0015838977586105998,
+        "modelStationaryPointTipSpreadP95SensorDiagonalFraction": 0.0008121845046886332,
+        "opticalPositionP95Original640Pixels": 1.45,
+        "pointInferenceMedianMs": 88.30000000074506,
+        "motionInferenceMedianMs": 87.70000000298023
+      },
+      {
+        "width": 192,
+        "height": 144,
+        "pixelCount": 27648,
+        "pixelReductionFraction": 0.91,
+        "modelMotionTipP95DifferenceSensorDiagonalFraction": 0.0028816122997729877,
+        "modelStationaryPointTipSpreadP95SensorDiagonalFraction": 0.00109080637578413,
+        "opticalPositionP95Original640Pixels": 2.97,
+        "pointInferenceMedianMs": 78.40000000223517,
+        "motionInferenceMedianMs": 81.30000000074506
+      },
+      {
+        "width": 128,
+        "height": 96,
+        "pixelCount": 12288,
+        "pixelReductionFraction": 0.96,
+        "modelMotionTipP95DifferenceSensorDiagonalFraction": 0.004221476815532844,
+        "modelStationaryPointTipSpreadP95SensorDiagonalFraction": 0.0031164093226077752,
+        "opticalPositionP95Original640Pixels": 3.92,
+        "pointInferenceMedianMs": 107.19999999925494,
+        "motionInferenceMedianMs": 103.39999999850988
+      },
+      {
+        "width": 96,
+        "height": 72,
+        "pixelCount": 6912,
+        "pixelReductionFraction": 0.9775,
+        "modelMotionTipP95DifferenceSensorDiagonalFraction": 0.0062319512082883105,
+        "modelStationaryPointTipSpreadP95SensorDiagonalFraction": 0.00254110619110281,
+        "opticalPositionP95Original640Pixels": 6.25,
+        "pointInferenceMedianMs": 124.39999999850988,
+        "motionInferenceMedianMs": 115.19999999925494
+      },
+      {
+        "width": 64,
+        "height": 48,
+        "pixelCount": 3072,
+        "pixelReductionFraction": 0.99,
+        "modelMotionTipP95DifferenceSensorDiagonalFraction": 0.008527823801186364,
+        "modelStationaryPointTipSpreadP95SensorDiagonalFraction": 0.0031440659691309865,
+        "opticalPositionP95Original640Pixels": 12.91,
+        "pointInferenceMedianMs": 114.59999999776483,
+        "motionInferenceMedianMs": 119.80000000074506
+      }
+    ],
+    "limitations": [
+      "All resolutions have acquisition transitions: TWO initially one hand then two on11of12 samples; THUMB initially zero then one bent-index hand on11of12 samples. Warm and all-sample counts are both retained.",
+      "These are public static photographs/translations. Preserved model counts and heuristic posture decisions are not real live gesture or two-hand acceptance.",
+      "A15x15 optical patch occupies23.4% of64px width; raw hand detection at64 does not establish usable image-based fingertip locality.",
+      "Resolution was tested sequentially under existing gaming load. Initial/final640 timing varies even when tip coordinates are identical; speed differences can include scheduling, initialization and model temporal state.",
+      "Tiny-resolution apparent index anatomy may remain accepted while coordinates and inferred depth change. No low-resolution default should be selected from hand counts alone."
+    ],
+    "opticalImportantLimit": "All16 cases retained376/376 TRACKING samples and one identity, but64px capture had12.91 original-pixel P95 position error and about12.90px TOP bias. Tracking counts do not establish accuracy. Fixed15px patch spans30originalpx at320analysis and150originalpx at64capture.",
+    "timingControl": "Initial/final640 POINT medians102.1,76.9,93.6ms show varying load. Do not infer a controlled resolution speedup from sequential timing."
+  },
+  "sourceArtifactHashes": [
+    {
+      "role": "capture-resolution-fidelity-derived",
+      "sha256": "e3a5e05641d41fbadc0b858d04dbc1906c6f778082a9dc7369b2672801ce17b8"
+    },
+    {
+      "role": "optical-resolution-ladder-20261017T225114518Z-summary",
+      "sha256": "41b6e5c19a8d228e924b166e04dc4d85beaf52eba6a37b5efa31c518c4ab9e64"
+    },
+    {
+      "role": "pinned-model-cpu-gpu-gaming-probe",
+      "sha256": "f39ff64d1e2c78e85271d6084c77057a24a51d3c35b3a63401891c5879cd60a8"
+    },
+    {
+      "role": "pinned-model-gpu-cpu-two-hand-investigation",
+      "sha256": "e76b75dd9c3c0c65212dc6ad09c4b13e7bb6980c0d609fa552b77ab92fdd1029"
+    },
+    {
+      "role": "ncc-exact-paired-benchmark-1792277271530",
+      "sha256": "e0ff047716db98acde3159cdc692b828b497e1b5e684285be4fd55e16c415973"
+    }
+  ],
+  "physicalAccuracyQualified": false,
+  "physicalLatencyQualified": false,
+  "gamePerformanceQualified": false,
+  "protectedQualification": false
+}

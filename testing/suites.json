@@ -2958,7 +2958,8 @@
         "public/reach/**",
         "scripts/reach/**",
         "src/watchglass/hand-observation.ts",
-        "src/watchglass/hand-posture.ts"
+        "src/watchglass/hand-posture.ts",
+        "src/watchglass/image-signal.ts"
       ],
       "releaseGates": ["local-change", "subsystem", "cross-project", "mainline", "release-candidate"],
       "currentImplementationState": "owned-family",
@@ -2985,7 +2986,8 @@
         "src/app/devices/pair/page.tsx",
         "public/reach/**",
         "src/watchglass/hand-observation.ts",
-        "src/watchglass/hand-posture.ts"
+        "src/watchglass/hand-posture.ts",
+        "src/watchglass/image-signal.ts"
       ],
       "releaseGates": ["subsystem", "cross-project", "mainline", "release-candidate"],
       "currentImplementationState": "owned-browser-family",

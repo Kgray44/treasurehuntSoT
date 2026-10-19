@@ -3,7 +3,7 @@ title: Database and migrations
 audience: developer
 status: current
 canonical_for: database-migrations
-last_reviewed: 2026-08-09
+last_reviewed: 2026-10-18
 ---
 
 # Database and migrations
@@ -30,3 +30,14 @@ comparison caches, projections, raw snapshots, Player history, or live Voyage
 state. Run `npm run tideglass:migrations:sqlite` for the task-owned SQLite
 upgrade rehearsal. Production MySQL still requires a separately configured
 disposable rehearsal before application to an authorized target.
+
+Reach's branch development candidate adds the paired
+`202610180001_reach_admin_policy_telemetry` migration under both
+`prisma/migrations` (SQLite) and `prisma/mysql-migrations` (MySQL). The four
+models also appear in both Prisma schema projections. Apply only the matching
+provider's migration history. The focused Reach migration regression executes
+the SQLite DDL and checks policy revisions, idempotency uniqueness, indexes,
+paging and report expiry on an in-memory database. A full-history canonical
+SQLite bootstrap is separate from that test; neither proves production MySQL
+execution. Existing private preview databases are preserved by whole-database
+backup rather than reset.

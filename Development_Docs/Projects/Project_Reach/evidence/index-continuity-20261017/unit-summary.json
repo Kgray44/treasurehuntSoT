@@ -1,0 +1,250 @@
+{
+  "version": 1,
+  "classification": "engineering_evidence",
+  "evidenceTier": "DEVELOPMENT_ONLY",
+  "algorithm": {
+    "providerId": "watchglass.index-image",
+    "providerVersion": "1",
+    "algorithm": "BOUNDED_PHOTOMETRIC_NCC_V1",
+    "algorithmDigest": "8b2846e3959552912bf978c531d3099d56f15d7f9648ce08d8f23feb0fc63498"
+  },
+  "physicalAccuracyQualified": false,
+  "protectedQualification": false,
+  "sourceTreeSha256": "d184402854188ae3de1a5ddf02cf8eb12c928785e7458386eef2fd137251df21",
+  "role": "CURRENT_FROZEN_SOURCE_FOCUSED_UNIT_RESULTS",
+  "originalResultSha256": "fbe6714345ffa84b92d4617db885b73f745cafb6fbb57f2cb6a5f1cd3cc93680",
+  "results": {
+    "numTotalTestSuites": 71,
+    "numPassedTestSuites": 71,
+    "numFailedTestSuites": 0,
+    "numPendingTestSuites": 0,
+    "numTotalTests": 587,
+    "numPassedTests": 587,
+    "numFailedTests": 0,
+    "numPendingTests": 0,
+    "numTodoTests": 0,
+    "success": true
+  },
+  "actualTestFileCount": 36,
+  "runnerSuiteCountNote": "Vitest suite counts include nested describe blocks; actualTestFileCount counts result files.",
+  "fileResults": [
+    {
+      "path": "src/reach/acquisition.test.ts",
+      "status": "passed",
+      "assertions": 11,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/assets.test.ts",
+      "status": "passed",
+      "assertions": 1,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/browser-runtime-index-image.test.ts",
+      "status": "passed",
+      "assertions": 28,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/browser-runtime.test.ts",
+      "status": "passed",
+      "assertions": 5,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/calibration-profile.test.ts",
+      "status": "passed",
+      "assertions": 17,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/device-lab.test.ts",
+      "status": "passed",
+      "assertions": 1,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/end-on-pointing.test.ts",
+      "status": "passed",
+      "assertions": 14,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/foundation.test.ts",
+      "status": "passed",
+      "assertions": 15,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/hand-detection-authority.test.ts",
+      "status": "passed",
+      "assertions": 20,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/hand-worker.test.ts",
+      "status": "passed",
+      "assertions": 4,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/index-image-observation.test.ts",
+      "status": "passed",
+      "assertions": 29,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/index-image-readiness.test.ts",
+      "status": "passed",
+      "assertions": 28,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/index-image-tracker.test.ts",
+      "status": "passed",
+      "assertions": 83,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/index-ncc.test.ts",
+      "status": "passed",
+      "assertions": 18,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/index-priority.test.ts",
+      "status": "passed",
+      "assertions": 20,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/inference-backend.test.ts",
+      "status": "passed",
+      "assertions": 3,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/off-image-posture.test.ts",
+      "status": "passed",
+      "assertions": 22,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/partial-framing.test.ts",
+      "status": "passed",
+      "assertions": 19,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/point-filter.test.ts",
+      "status": "passed",
+      "assertions": 27,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/pointer-continuity.test.ts",
+      "status": "passed",
+      "assertions": 4,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/pointing-geometry.test.ts",
+      "status": "passed",
+      "assertions": 21,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/pointing-transition.test.ts",
+      "status": "passed",
+      "assertions": 7,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/pose-recording.test.ts",
+      "status": "passed",
+      "assertions": 12,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/pose-replay.test.ts",
+      "status": "passed",
+      "assertions": 10,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/provider-ambiguity.test.ts",
+      "status": "passed",
+      "assertions": 13,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/provider-index-continuity.test.ts",
+      "status": "passed",
+      "assertions": 18,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/provider-orientation.test.ts",
+      "status": "passed",
+      "assertions": 7,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/provider-recovery.test.ts",
+      "status": "passed",
+      "assertions": 49,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/ReachStage.test.tsx",
+      "status": "passed",
+      "assertions": 6,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/readiness-recovery.test.ts",
+      "status": "passed",
+      "assertions": 14,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/recognition.test.ts",
+      "status": "passed",
+      "assertions": 14,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/sample-high-rate.test.ts",
+      "status": "passed",
+      "assertions": 7,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/sample-recovery.test.ts",
+      "status": "passed",
+      "assertions": 10,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/tracking-pacer.test.ts",
+      "status": "passed",
+      "assertions": 12,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/trial-entry.test.ts",
+      "status": "passed",
+      "assertions": 13,
+      "failedAssertions": 0
+    },
+    {
+      "path": "src/reach/validation-reasons.test.ts",
+      "status": "passed",
+      "assertions": 5,
+      "failedAssertions": 0
+    }
+  ],
+  "scope": "Focused Reach and Watchglass unit suite only; no protected qualification, physical accuracy or owner acceptance claim.",
+  "appSourceCommit": "acda671618ae5313cc180da506b29bb36b4115f5"
+}

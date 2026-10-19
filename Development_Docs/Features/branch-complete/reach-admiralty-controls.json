@@ -1,0 +1,63 @@
+{
+  "id": "FT-B114",
+  "title": "Reach Runtime Governance and Numeric Operations",
+  "summary": "Authorized Admiralty operators inspect privacy-bounded live report distributions and independently checked calibration outcomes, then govern mandatory Reach availability, pacing and retention through exact revisioned previews, privileged assurance, explicit confirmation and audit receipts.",
+  "status": "BRANCH_COMPLETE_NOT_MERGED",
+  "program": "Project Reach and Admiralty",
+  "branch": "codex/reach-edge-motion-20261017",
+  "commit": "c36193d920418a1491db5286fca429663878d0e3",
+  "surfaces": ["/admin/reach", "/devices/reach", "/devices/reach/record"],
+  "subfeatures": [
+    "Canonical CONFIG_OBSERVE and CONFIG_OPERATE authority with governed policy preview, assurance, confirmation, idempotent receipt and audited revert",
+    "Mandatory global availability and phase/model pacing across Laboratory and local recorder with policy expiry, hidden-page stop and no automatic camera restart",
+    "Automatic bounded numeric reporting without account association, raw camera content, positions, landmarks, trajectories or per-user telemetry settings",
+    "Snapshot-consistent aggregation across every retained report with pooled fixed-bin percentiles, confidence means, explicit denominators and missingness",
+    "Separate absolute/relative training and held-out outcomes, empty/unavailable states and bounded revision-detail overflow while every retained report contributes to global numeric totals"
+  ],
+  "evidence": [
+    {
+      "kind": "commit",
+      "value": "c36193d920418a1491db5286fca429663878d0e3"
+    },
+    {
+      "kind": "path",
+      "value": "src/components/admiralty/ReachAdminConsole.tsx"
+    },
+    {
+      "kind": "path",
+      "value": "src/reach/runtime-policy.ts"
+    },
+    {
+      "kind": "path",
+      "value": "src/reach/telemetry.ts"
+    },
+    {
+      "kind": "test",
+      "value": "tests/e2e/reach-admiralty.spec.ts"
+    },
+    {
+      "kind": "test",
+      "value": "src/reach/admin-pagination.test.ts"
+    },
+    {
+      "kind": "completion-record",
+      "value": "Development_Docs/Projects/Project_Reach/Changes_From_Main_20261017.md"
+    },
+    {
+      "kind": "path",
+      "value": "Development_Docs/Projects/Project_Reach/evidence/index-continuity-20261017/development-c361-current-checks.json"
+    },
+    {
+      "kind": "path",
+      "value": "Development_Docs/Projects/Project_Reach/evidence/current-preview-c361-20261018/development-ui-review.json"
+    }
+  ],
+  "limitations": [
+    "Branch-complete software evidence is not protected-main integration, deployment, physical webcam performance or owner acceptance.",
+    "Client-reported aggregate windows do not establish distinct people, sessions or independent physical accuracy; sensor/display timing remains excluded.",
+    "Retention excludes expired records and purges them on reporting, collection or policy operations; no independent periodic deletion service is claimed.",
+    "The synthetic Admiralty fixture proves software reporting/governance behavior, not real-user coverage; final Reach physical tracking and protected-main integration remain separate.",
+    "Canonical artifact sealing and the trusted experience plan remain blocked; supplemental normal-build browser results do not establish protected integration readiness."
+  ],
+  "catalogVersion": 1
+}

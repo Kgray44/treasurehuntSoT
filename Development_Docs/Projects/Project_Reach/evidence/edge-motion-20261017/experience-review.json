@@ -1,0 +1,327 @@
+{
+  "schema_version": 1,
+  "classification": "engineering_evidence",
+  "review_kind": "independent_rendered_experience_review",
+  "project": "Project Reach",
+  "scope": "Development preview of comfortable hand pointing, saved calibration progress, uncertainty recovery, independent checks, and bounded practice.",
+  "reviewer": {
+    "identity": "/root/experience_critique_v2",
+    "role": "Independent visual review subagent",
+    "context": "Separate reviewer task with a visual-only brief. Initial rendered screenshots were inspected before any implementation source.",
+    "implementation_source_inspected": false,
+    "rendered_before_source": true,
+    "files_written": ["experience-review.json"],
+    "method": "Inspected supplied isolated Edge browser PNGs with view_image(detail=original); obtained PNG dimensions using System.Drawing. Did not run browser interactions, inspect app source, or infer physical performance from fixtures."
+  },
+  "source_binding": {
+    "initial_application_commit": "999918069ed3da6a7f444c1b04be494bc7cf7947",
+    "final_reviewed_application_commit": "53128badcb4dd0af8c1e0078ac930d7fabd9e0b6",
+    "provenance_basis": "Application commit and isolated capture-run provenance supplied by the implementation agent; rendered screenshot observations independently made by this reviewer.",
+    "test_harness_note": "Implementation agent reported a later test-only wait adjustment after final application commit; this reviewer did not inspect it. Visual findings bind to the unchanged application source above.",
+    "initial_capture_root": "D:/CodexRuntime/reach-edge-motion-20261017/browser-focused-evidence",
+    "final_capture_root": "D:/CodexRuntime/reach-edge-motion-20261017/browser-final-evidence",
+    "practice_capture_root": "D:/CodexRuntime/reach-edge-motion-20261017/browser-final-captures",
+    "canonical_image_references": "Image filenames below are relative to this report in Development_Docs/Projects/Project_Reach/evidence/edge-motion-20261017.",
+    "additional_initial_states_reviewed": {
+      "source": "999918069ed3da6a7f444c1b04be494bc7cf7947",
+      "root": "D:/CodexRuntime/reach-edge-motion-20261017/browser-focused-evidence",
+      "note": "Also inspected these original-run states before the final recaptures. Their portable final counterparts are listed in images_reviewed; initial versions are not used as final-candidate proof.",
+      "filenames": [
+        "D0-bottom-wrist-outside.png",
+        "D0-direct-camera-point.png",
+        "D0-duplicate-suppressed.png",
+        "D0-continuous-sweep.png",
+        "D0-foreshortened-point.png",
+        "D0-relaxed-point.png",
+        "D0-brief-occlusion.png",
+        "D0-recovered-saved-targets.png",
+        "D0-context-invalidation.png",
+        "D0-mobile-posture-interruption.png",
+        "D0-mobile-tracking-interruption.png"
+      ]
+    }
+  },
+  "objective_assessment": [
+    {
+      "dimension": "Hierarchy and state",
+      "observation": "Prepare, Calibrate, Check, and Explore use a consistent step strip and prominent current instruction. Final desktop check render aligns posture guidance with paused collection. Mobile interruption instructions and saved-target count precede the active target."
+    },
+    {
+      "dimension": "Comfort and framing",
+      "observation": "Rendered partial-hand states explicitly say wrist optional and remain eligible. Direct-camera and foreshortened states disclose inferred depth. These are fixture observations, not proof of comfortable or accurate physical performance."
+    },
+    {
+      "dimension": "Saved progress and recovery",
+      "observation": "Final occlusion image shows collection paused with 60% current hold progress and 1 of 9 targets saved; recovered image advances to target 3 with 2 of 9 saved. Context invalidation explains why setup must be repeated when continuity can no longer be confirmed."
+    },
+    {
+      "dimension": "Independent result honesty",
+      "observation": "Failed-check render reports all five targets checked, 10.31% error against a 3.00% limit, preserved setup, and steady-hold movement as a separate diagnostic rather than another pass/fail rule. Demo limitations remain visible."
+    },
+    {
+      "dimension": "Actions",
+      "observation": "Final failed-check Retry independent check and Recalibrate buttons follow the short outcome explanation before metrics and detailed help. Active calibration/check and practice retain ordinary pause, retry, cancel, or recalibrate controls as appropriate."
+    },
+    {
+      "dimension": "Mobile fit",
+      "observation": "390px-wide mobile fullpages fit one column without visible horizontal clipping. Interruption instructions are placed above the target and ordinary action controls precede the camera panel. Practice fullpage retains the full step strip, actions, camera preview, and guided controls."
+    },
+    {
+      "dimension": "Practice and uncertainty",
+      "observation": "Laptop and mobile practice identify an absolute estimate, show a bounded outlined region, and offer a practice target, Pause, and Recalibrate. Copy distinguishes held-out error from model confidence and says a faded last-seen marker never counts as a new sample."
+    },
+    {
+      "dimension": "Visual family",
+      "observation": "Dark teal panels, amber primary actions, mint tracking feedback, serif headings, and labeled controls are consistent across the supplied screens. Existing camera rendering was preserved."
+    }
+  ],
+  "initial_findings": [
+    {
+      "id": "REACH-VISUAL-01",
+      "severity": "P2",
+      "title": "Readiness headline contradicted paused posture state",
+      "status": "resolved_in_rendered_final_candidate",
+      "initial_source": "999918069ed3da6a7f444c1b04be494bc7cf7947",
+      "initial_images": ["review-before-last-seen.png"],
+      "initial_observation": "The initial desktop last-seen image said Your hand is ready while its own metadata said Point not yet recognized and Collection waiting, and the target panel said Collection paused.",
+      "final_source": "53128badcb4dd0af8c1e0078ac930d7fabd9e0b6",
+      "closure_images": [
+        "D0-last-seen-during-check.png",
+        "D0-posture-interruption.png",
+        "D0-mobile-posture-interruption.png"
+      ],
+      "closure_observation": "Final last-seen and posture images instead show Extend your index finger comfortably with matching point-not-recognized and waiting/paused feedback. The contradictory ready headline is absent in the inspected paused states.",
+      "closure_limit": "Rendered-state closure only; not a claim about every physical tracking transition."
+    },
+    {
+      "id": "REACH-VISUAL-02",
+      "severity": "P2",
+      "title": "Failed-check recovery actions followed lengthy metrics and explanation",
+      "status": "resolved_in_rendered_final_candidate",
+      "initial_source": "999918069ed3da6a7f444c1b04be494bc7cf7947",
+      "initial_images": ["review-before-failed-check.png"],
+      "initial_observation": "At 1280px image width, retry/recalibrate appeared around image y=1270 after metric rows and detailed explanation. A completed result required substantial scanning/scrolling to reach recovery.",
+      "final_source": "53128badcb4dd0af8c1e0078ac930d7fabd9e0b6",
+      "closure_images": ["D0-failed-check-explained.png"],
+      "closure_observation": "Retry independent check and Recalibrate now appear around image y=810 directly after the short result explanation, before metrics and expanded help.",
+      "closure_limit": "The result remains a vertically long page; closure concerns ordering and access to recovery, not a promise that every action fits above every viewport fold."
+    }
+  ],
+  "residual_observations": [
+    {
+      "id": "REACH-VISUAL-03",
+      "severity": "P3",
+      "status": "recorded_pending_physical_visibility_evidence",
+      "title": "Mint camera landmarks are faint over the bright fixture",
+      "images": ["D0-bottom-wrist-outside.png", "D0-direct-camera-point.png", "D0-foreshortened-point.png"],
+      "observation": "Pale mint landmarks and framing outline are less distinct against the light gray analytic camera fixture than on the dark guided-demo panel.",
+      "impact_limit": "The fixture establishes this rendered contrast observation only. Real camera backgrounds, lighting, and usability were not tested.",
+      "disposition": "Preserve existing owner-approved camera rendering for this preview. Carry the observation into later physical visibility review; no halo or shared camera-rendering change is requested by this report."
+    },
+    {
+      "id": "REACH-VISUAL-04",
+      "severity": "P3",
+      "status": "recorded_copy_polish",
+      "title": "Disabled setup helper omits tracking stability",
+      "images": ["D0-context-invalidation.png"],
+      "observation": "While the status asks the person to hold briefly while tracking settles, the disabled setup helper mentions only a framed hand and recognized point, which already appear true in the status metadata.",
+      "disposition": "A later copy improvement could include stable tracking in the unlock condition. The prominent settling instruction already gives a useful next action."
+    },
+    {
+      "id": "REACH-VISUAL-05",
+      "severity": "unconfirmed_observation",
+      "status": "focused_scroll_capture_composition_not_established_source_defect",
+      "title": "Some fullpage captures retain a shifted sticky navigation composition",
+      "images": ["D0-mobile-tracking-interruption.png", "D0-posture-interruption.png"],
+      "observation": "Focused-scroll fullpage captures can show a visible skip link and sticky navigation over the earlier heading/step area. ScrollTop0 desktop recaptures and the fullpage practice companions show normal heading/navigation/step ordering.",
+      "disposition": "Record capture-state ambiguity. Do not expand this preview into a shared navigation repair or claim a verified source defect from these images.",
+      "normal_order_references": [
+        "D0-last-seen-during-check.png",
+        "D0-failed-check-explained.png",
+        "laptop-playground.png",
+        "mobile-playground.png"
+      ]
+    }
+  ],
+  "limitations": [
+    "All D0 and guided captures are analytic/development fixtures. They do not prove physical pointing accuracy, comfort, reliability, lighting robustness, or real webcam behavior.",
+    "Static image review does not establish keyboard traversal, screen-reader behavior, timing, actual touch operation, or dynamic motion continuity.",
+    "No real private content was used by this review.",
+    "No Crossdeck or Sounding Line mutation or qualification was performed.",
+    "No protected acceptance, merge qualification, live-provider proof, or owner acceptance is claimed.",
+    "Physical testing and owner acceptance remain pending."
+  ],
+  "disposition": {
+    "status": "development_visual_review_complete_with_p3_observations",
+    "confirmed_open_p1": 0,
+    "confirmed_open_p2": 0,
+    "initial_p2_findings_closed_by_rendered_evidence": 2,
+    "protected_acceptance": false,
+    "physical_validation": "pending",
+    "owner_acceptance": "pending",
+    "summary": "No confirmed open P1/P2 visual findings in the supplied final candidate images. Both initial P2s were repaired and visually rechecked. Residual P3s and a focused-scroll capture observation are recorded without physical or protected acceptance."
+  },
+  "images_reviewed": [
+    {
+      "filename": "review-before-last-seen.png",
+      "phase": "initial",
+      "application_commit": "999918069ed3da6a7f444c1b04be494bc7cf7947",
+      "width_px": 1280,
+      "height_px": 1394,
+      "observation": "Initial headline said ready while metadata and last-seen collection were paused."
+    },
+    {
+      "filename": "review-before-failed-check.png",
+      "phase": "initial",
+      "application_commit": "999918069ed3da6a7f444c1b04be494bc7cf7947",
+      "width_px": 1280,
+      "height_px": 1758,
+      "observation": "Initial recovery actions followed metrics and detailed explanation at approximately image y=1270."
+    },
+    {
+      "filename": "D0-bottom-wrist-outside.png",
+      "phase": "final",
+      "application_commit": "53128badcb4dd0af8c1e0078ac930d7fabd9e0b6",
+      "width_px": 1280,
+      "height_px": 1266,
+      "observation": "Hand overlay reaches the camera bottom; partial hand and wrist optional are explicitly labeled; readiness remains eligible."
+    },
+    {
+      "filename": "D0-direct-camera-point.png",
+      "phase": "final",
+      "application_commit": "53128badcb4dd0af8c1e0078ac930d7fabd9e0b6",
+      "width_px": 1280,
+      "height_px": 1295,
+      "observation": "End-on hand rendering includes inferred-depth caveat and independent-check limitation."
+    },
+    {
+      "filename": "D0-duplicate-suppressed.png",
+      "phase": "final",
+      "application_commit": "53128badcb4dd0af8c1e0078ac930d7fabd9e0b6",
+      "width_px": 1280,
+      "height_px": 1266,
+      "observation": "Single visible hand overlay and one detected hand are consistent; suppression mechanics cannot be inferred from this static image alone."
+    },
+    {
+      "filename": "D0-continuous-sweep.png",
+      "phase": "final",
+      "application_commit": "53128badcb4dd0af8c1e0078ac930d7fabd9e0b6",
+      "width_px": 1280,
+      "height_px": 1295,
+      "observation": "Low hand position remains labeled partial hand and wrist optional; static image does not prove motion continuity."
+    },
+    {
+      "filename": "D0-foreshortened-point.png",
+      "phase": "final",
+      "application_commit": "53128badcb4dd0af8c1e0078ac930d7fabd9e0b6",
+      "width_px": 1280,
+      "height_px": 1295,
+      "observation": "Foreshortened overlay remains recognized with inferred-depth caveat."
+    },
+    {
+      "filename": "D0-relaxed-point.png",
+      "phase": "final",
+      "application_commit": "53128badcb4dd0af8c1e0078ac930d7fabd9e0b6",
+      "width_px": 1280,
+      "height_px": 1266,
+      "observation": "Ready, framed, recognized, and eligible feedback is consistent in Prepare."
+    },
+    {
+      "filename": "D0-posture-interruption.png",
+      "phase": "final",
+      "application_commit": "53128badcb4dd0af8c1e0078ac930d7fabd9e0b6",
+      "width_px": 1280,
+      "height_px": 1215,
+      "observation": "Paused posture instruction matches point not yet recognized and waiting; 1 of 9 saved remains visible."
+    },
+    {
+      "filename": "D0-brief-occlusion.png",
+      "phase": "final",
+      "application_commit": "53128badcb4dd0af8c1e0078ac930d7fabd9e0b6",
+      "width_px": 1280,
+      "height_px": 1182,
+      "observation": "Zero hands detected; paused instruction asks for same hand; 60% hold progress and 1 of 9 saved are visible."
+    },
+    {
+      "filename": "D0-recovered-saved-targets.png",
+      "phase": "final",
+      "application_commit": "53128badcb4dd0af8c1e0078ac930d7fabd9e0b6",
+      "width_px": 1280,
+      "height_px": 1163,
+      "observation": "Return to eligible tracking advances to target 3 with 2 of 9 saved; the new target begins at 0%."
+    },
+    {
+      "filename": "D0-context-invalidation.png",
+      "phase": "final",
+      "application_commit": "53128badcb4dd0af8c1e0078ac930d7fabd9e0b6",
+      "width_px": 1280,
+      "height_px": 1315,
+      "observation": "Returns to Prepare and explains that the same hand/setup cannot be confirmed; disabled setup button accompanies settling guidance."
+    },
+    {
+      "filename": "D0-mobile-posture-interruption.png",
+      "phase": "final",
+      "application_commit": "53128badcb4dd0af8c1e0078ac930d7fabd9e0b6",
+      "width_px": 390,
+      "height_px": 1640,
+      "observation": "390px mobile column puts posture instruction, collection paused, and 1 of 5 saved above target 2; ordinary controls fit below the stage."
+    },
+    {
+      "filename": "D0-mobile-tracking-interruption.png",
+      "phase": "final",
+      "application_commit": "53128badcb4dd0af8c1e0078ac930d7fabd9e0b6",
+      "width_px": 390,
+      "height_px": 1640,
+      "observation": "390px mobile column puts same-hand recovery and 1 of 5 saved above target 2; focused-scroll fullpage retains shifted sticky navigation."
+    },
+    {
+      "filename": "D0-failed-check-explained.png",
+      "phase": "final",
+      "application_commit": "53128badcb4dd0af8c1e0078ac930d7fabd9e0b6",
+      "width_px": 1280,
+      "height_px": 1758,
+      "observation": "10.31% versus 3.00%, preserved setup, and separate steady-hold diagnostic are explained; recovery controls now precede metrics/detail."
+    },
+    {
+      "filename": "D0-last-seen-during-check.png",
+      "phase": "final",
+      "application_commit": "53128badcb4dd0af8c1e0078ac930d7fabd9e0b6",
+      "width_px": 1280,
+      "height_px": 1414,
+      "observation": "Current posture instruction replaces the stale ready headline; last-seen panel and waiting metadata agree; saved progress remains explicit."
+    },
+    {
+      "filename": "laptop-playground-viewport.png",
+      "phase": "final",
+      "application_commit": "53128badcb4dd0af8c1e0078ac930d7fabd9e0b6",
+      "width_px": 1280,
+      "height_px": 800,
+      "observation": "1280x800 focused viewport shows bounded practice stage, preview, ordinary practice actions, and explanation of held-out error."
+    },
+    {
+      "filename": "mobile-playground-viewport.png",
+      "phase": "final",
+      "application_commit": "53128badcb4dd0af8c1e0078ac930d7fabd9e0b6",
+      "width_px": 390,
+      "height_px": 844,
+      "observation": "390x844 focused viewport shows experiment/demo labeling, bounded stage, posture feedback, and first rows of ordinary practice actions."
+    },
+    {
+      "filename": "laptop-playground.png",
+      "phase": "final",
+      "application_commit": "53128badcb4dd0af8c1e0078ac930d7fabd9e0b6",
+      "width_px": 1280,
+      "height_px": 1384,
+      "observation": "Fullpage companion shows normal header and four-step hierarchy plus the complete practice controls."
+    },
+    {
+      "filename": "mobile-playground.png",
+      "phase": "final",
+      "application_commit": "53128badcb4dd0af8c1e0078ac930d7fabd9e0b6",
+      "width_px": 390,
+      "height_px": 1965,
+      "observation": "Fullpage companion shows normal title/steps and all practice/camera/guided controls in one column without visible horizontal clipping."
+    }
+  ],
+  "review_completed_utc": "2026-10-17 19:59:10 UTC"
+}

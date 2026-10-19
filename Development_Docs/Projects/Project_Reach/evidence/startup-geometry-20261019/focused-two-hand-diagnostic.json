@@ -1,0 +1,281 @@
+{
+  "classification": "AUTHOR_READ_ONLY_FOCUSED_RAW_NEURAL_REPLAY_NOT_RUNTIME_INTERNAL_TRACE_OR_PHYSICAL",
+  "provenance": {
+    "implementationAuthorAlsoAnalyzed": true,
+    "independentlyAuthoredPerceptionLabels": false,
+    "realbrowserrawclocksrecordedunchanged": true
+  },
+  "inputs": [
+    {
+      "label": "summary-private.json",
+      "sha256": "1dc35400d7146600a6d63b6e57bb54ff9b180217ac9e0966c1c600a888f826f1"
+    },
+    {
+      "label": "passive-reach-clock-private.json",
+      "sha256": "357833100c2e9f0b7a4d67180f056844ca2a3fcbb2f82668827be1c32f15ee72"
+    },
+    {
+      "label": "replay-passive-receipt-private.json",
+      "sha256": "2df54793015082ef40f3806c50e36459e1742080aeb323cd0e5dd61a605f3688"
+    },
+    {
+      "label": "development-checkpoints-private.json",
+      "sha256": "b0fe16d73006c9f222a1a762c847be6dcf90b36d3d38c1c9d12edc57fb4bda42"
+    },
+    {
+      "label": "aggregate-safe.json",
+      "sha256": "c4787941c40b8921af25e098d2784f95338f3cd09693129745c70de3804fbff8"
+    },
+    {
+      "label": "input-binding-private.json",
+      "sha256": "c03ec9c00efae6486f7613a6da830f67a39209fe7d0e3c8d6ab8415775a4b4b2"
+    },
+    {
+      "label": "freeze-final-private.json",
+      "sha256": "5fa14ae76e823202d927cf4225b177d990a81cf71634552aaf3e83dfb5d27837"
+    }
+  ],
+  "sourcePins": {
+    "head": "cd34451832e2d0004492880ac1288ec31945d3b2",
+    "digest": "99e2c0e1fa4e5cf1ecbeb05f18b6ba32c6cc626c9e5cf0f00689a294f2a6031a",
+    "candidateFiles": [
+      {
+        "path": "src/reach/browser-runtime.ts",
+        "sha256": "3dd86ef22fda089f90b6847ee80b60c670176761c18775e0f6e91a9e137d5b88"
+      },
+      {
+        "path": "public/reach/recovery-provider.js",
+        "sha256": "fe68db187f9db74943e1f0c55c3ad76621a2c60591af84d950bb6c407f372ca9"
+      },
+      {
+        "path": "public/reach/recovery-worker.js",
+        "sha256": "4d8caa84874b76795b1acc1db975277ffb0329eb485d62eae20fe50712965222"
+      },
+      {
+        "path": "src/reach/ReachStage.tsx",
+        "sha256": "033519dba16a970997d64c98a7a4500105d4a1aa9f3dc23d138c191e5c2ce979"
+      }
+    ],
+    "beforeBuildSourceManifestSha256": "aad81b9868110f179c03d46ec29719313dddd8d2a9a47eed43a723f69b9e7b04",
+    "frozenManifestVerified": true
+  },
+  "denominators": {
+    "originalFullLaboratory": {
+      "startTime": "2026-10-19T20:15:29.406Z",
+      "duration": 158371.09,
+      "expected": 8,
+      "skipped": 0,
+      "unexpected": 2,
+      "flaky": 0
+    },
+    "focusedFirstThreeHolds": {
+      "startTime": "2026-10-19T20:34:55.764Z",
+      "duration": 17981.17,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "combinedRate": "NOT_COMBINED_DIFFERENT_EXPERIMENTS"
+  },
+  "originalFailureRetained": {
+    "photographicTarget4Expectation": "FAILED at original20second expectation timeout",
+    "finalState": "CHOOSE_HAND",
+    "rawResults": 222,
+    "rawPacketAgesOver150": 15,
+    "final5Seconds": {
+      "results": 57,
+      "rawHandsPerPacket": 2,
+      "packetAgesOver150": 0
+    },
+    "rawLandmarksAvailable": false
+  },
+  "focused": {
+    "status": "PASS_DEVELOPMENT_DIAGNOSTIC_ONLY",
+    "rawCounts": {
+      "init": 1,
+      "frame": 117,
+      "result": 116,
+      "ready": 1,
+      "error": 0
+    },
+    "rawHandCounts": {
+      "1": 91,
+      "2": 25
+    },
+    "ready": [
+      {
+        "worker": 1,
+        "type": "READY",
+        "generation": 3,
+        "backend": "CPU_WASM",
+        "providerPolicy": "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1",
+        "fallbackReason": "GPU_STARTUP_LATENCY_HEALTH_FAILED",
+        "capture": null,
+        "inferenceEpoch": null,
+        "receivedPage": 4058.9000000059605,
+        "receivedEpoch": 1792442101796.9,
+        "width": null,
+        "height": null,
+        "handCount": null,
+        "startupHealth": {
+          "classification": "SYNTHETIC_PREREADY_LATENCY_NECESSARY_CONDITION_ONLY",
+          "probeDimensions": {
+            "width": 640,
+            "height": 480
+          },
+          "geometryVersion": 3,
+          "mirrorTransform": "PREVIEW_X",
+          "livePixelQualification": false,
+          "attempts": [
+            {
+              "passed": false,
+              "delegate": "GPU",
+              "width": 640,
+              "height": 480,
+              "maximumElapsedMs": 150,
+              "outputsDiscarded": true,
+              "retainedRegionsCleared": true,
+              "probes": [
+                {
+                  "timestamp": -2,
+                  "elapsedMs": 325.2000000178814,
+                  "forcedRegions": 2,
+                  "discardedHandOutputs": 0
+                },
+                {
+                  "timestamp": -1,
+                  "elapsedMs": 337.19999998807907,
+                  "forcedRegions": 2,
+                  "discardedHandOutputs": 0
+                }
+              ]
+            },
+            {
+              "passed": true,
+              "delegate": "CPU",
+              "width": 640,
+              "height": 480,
+              "maximumElapsedMs": 150,
+              "outputsDiscarded": true,
+              "retainedRegionsCleared": true,
+              "probes": [
+                {
+                  "timestamp": -2,
+                  "elapsedMs": 62.10000002384186,
+                  "forcedRegions": 2,
+                  "discardedHandOutputs": 0
+                },
+                {
+                  "timestamp": -1,
+                  "elapsedMs": 62.39999997615814,
+                  "forcedRegions": 2,
+                  "discardedHandOutputs": 0
+                }
+              ]
+            }
+          ]
+        },
+        "fixtureCondition": "POINT"
+      }
+    ],
+    "packetAgeMs": {
+      "n": 116,
+      "min": 50.5,
+      "median": 60.80000001192093,
+      "p95": 92.59999999403954,
+      "max": 94.69999998807907
+    },
+    "pixelOriginToReceiptMs": {
+      "n": 116,
+      "min": 69.3000000059601,
+      "median": 106.09999999403954,
+      "p95": 145.40000001788212,
+      "max": 158.60000000000036
+    },
+    "rawPacketAgesOver150": 0,
+    "sourceReplay": {
+      "atPassiveReceiptClock": true,
+      "rows": 116,
+      "admitted": 114,
+      "rejected": 2,
+      "rejectionReasons": {
+        "Error: OBSERVATION_PIXEL_ORIGIN_STALE": 2
+      },
+      "rejectedClockScalars": [
+        {
+          "packetAgeMs": 92.59999999403954,
+          "pixelOriginAgeMs": 158.60000000000036
+        },
+        {
+          "packetAgeMs": 94.59999999403954,
+          "pixelOriginAgeMs": 155.3999999940388
+        }
+      ],
+      "maximumAdmittedCaptureGapMs": 195.69999998807907,
+      "firstTwoTransition": {
+        "packetAgeMs": 87,
+        "pixelOriginAgeMs": 129.89999999999964,
+        "rawHands": 2,
+        "incumbentRemainedContinuous": true,
+        "newHandAcquiredSeparately": true,
+        "bothHandAssessmentsFramedGeometryPointing": true,
+        "selectorCondition": "READY",
+        "changed": false
+      },
+      "TWOInterval": {
+        "rawRows": 25,
+        "admittedRows": 23,
+        "sameIncumbentSelectedRows": 23,
+        "selectedConditions": {
+          "READY": 23
+        },
+        "ambiguousHands": 0,
+        "actualUiBeforeCallbacks": {
+          "READY": 9,
+          "RECOVERING": 16
+        }
+      }
+    },
+    "target3Saved": {
+      "observed": true,
+      "elapsedFromMotionCompleteMs": 2340.4000000059605,
+      "statusReady": true
+    },
+    "cleanup": {
+      "browser": "PASS",
+      "server": "PASS",
+      "portReleased": true,
+      "sourceUnchanged": true,
+      "fixtureUnchanged": true,
+      "buildUnchanged": true,
+      "runtimeArchive": "PASS_ARCHIVED_OWNED_MUTABLE_COPY",
+      "trackCount": 0,
+      "workerCount": 0
+    }
+  },
+  "causalConclusion": {
+    "proven": [
+      "The focused browser reached original Target4of9 after the deliberate target3 TWO condition and original20second assertion.",
+      "At passive receipt clocks, exact pinned current adapter and selector preserve the original incumbent through all admitted TWO rows; rival acquires a separate local track.",
+      "Two raw packet ages were timely while their observed rVFC origin-to-receipt ages exceeded150ms; replay rejects those origins."
+    ],
+    "unproven": [
+      "The raw listener does not expose final runtime gate time, internal final admitted observations or every runtime status transition. Replay assignments are exact algorithm outputs under recorded receipt-clock admission, not direct browser internal IDs.",
+      "Transient observed RECOVERING can arise from runtime STALE_OR_INVALID_OBSERVATION callback (ReachLaboratory913..933), including capture-side presentation checks (browser-runtime721); no exact cause is attributed from this log.",
+      "Focused pass does not explain or resolve original full-order CHOOSE_HAND failure."
+    ],
+    "confounds": [
+      "Focused test omits preceding full-cohort cases and terminates after first3holds.",
+      "Focusedv2 intentionally omits the original full-spec test.beforeEach telemetry API route; network behavior differs.",
+      "Raw landmark cloning and DOM observation add instrumentation overhead."
+    ]
+  },
+  "limitations": [
+    "No physical image accuracy, continuous biometric identity or Phase1 mission acceptance.",
+    "Raw landmark output and local IDs remain private; safe aggregate contains no coordinates or opaque lease values.",
+    "Canonical Windows junction refusal remains unqualified.",
+    "No rerun-until-pass claim; one focused browser run and one offline replay.",
+    "Prepared next full-order raw diagnostic is a separate bounded future run, not a replacement for retained failure."
+  ]
+}

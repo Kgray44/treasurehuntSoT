@@ -7,6 +7,56 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model ReachRuntimePolicy {
+  id        String   @id @db.VarChar(64)
+  revision  Int
+  policy    String   @db.LongText
+  updatedAt DateTime @db.DateTime(3)
+}
+
+model ReachPolicyPreview {
+  id               String    @id @db.VarChar(36)
+  actorAccountId   String    @db.VarChar(191)
+  accountSessionId String    @db.VarChar(191)
+  fingerprint      String    @db.VarChar(64)
+  expectedRevision Int
+  expiresAt        DateTime  @db.DateTime(3)
+  usedAt           DateTime? @db.DateTime(3)
+  createdAt        DateTime  @db.DateTime(3)
+
+  @@index([expiresAt])
+}
+
+model ReachPolicyChange {
+  id                String   @id @db.VarChar(36)
+  actorAccountId    String   @db.VarChar(191)
+  accountSessionId  String   @db.VarChar(191)
+  idempotencyKey    String   @unique @db.VarChar(128)
+  fingerprint       String   @db.VarChar(64)
+  expectedRevision  Int
+  resultingRevision Int
+  beforeState       String   @db.LongText
+  afterState        String   @db.LongText
+  reason            String   @db.VarChar(240)
+  correlationId     String   @db.VarChar(36)
+  createdAt         DateTime @db.DateTime(3)
+
+  @@index([createdAt])
+}
+
+model ReachTelemetryReport {
+  id             String   @id @db.VarChar(36)
+  idempotencyKey String   @unique @db.VarChar(36)
+  fingerprint    String   @db.VarChar(64)
+  reportVersion  Int
+  report         String   @db.LongText
+  receivedAt     DateTime @db.DateTime(3)
+  expiresAt      DateTime @db.DateTime(3)
+
+  @@index([receivedAt])
+  @@index([expiresAt])
+}
+
 model AIQuotaCommandPreview {
   id                 String   @id
   actorAccountId     String

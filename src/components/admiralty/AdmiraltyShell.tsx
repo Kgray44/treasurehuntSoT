@@ -58,6 +58,7 @@ const navigation: readonly (AdminNavItem & { any: readonly AdmiraltyCapabilityId
     group: "Operations",
     any: ["CONFIG_OBSERVE"],
   },
+  { href: "/admin/reach", label: "Reach", shortLabel: "Reach", group: "Operations", any: ["CONFIG_OBSERVE"] },
   { href: "/admin/audit", label: "Audit", shortLabel: "Audit", group: "Investigation", any: ["AUDIT_OBSERVE"] },
   {
     href: "/admin/investigate",

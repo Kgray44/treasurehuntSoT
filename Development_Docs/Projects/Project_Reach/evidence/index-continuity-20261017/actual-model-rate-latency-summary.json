@@ -1,0 +1,1253 @@
+{
+  "format": "REACH_PUBLIC_ACTUAL_MODEL_RATE_LATENCY_AGGREGATE",
+  "version": 1,
+  "appSourceCommit": "a317922230e111ee6cae0b04a02c5b14a95cf8db",
+  "sourceStableDuringRun": true,
+  "startedAtUtc": "2026-10-17T23:31:51.538Z",
+  "endedAtUtc": "2026-10-17T23:34:35.611Z",
+  "workerBackend": "CPU_WASM",
+  "handModelDigest": "fbc2a30080c3c557093b5ddfc334698132eb341044ccee322ccf8bcf3607cde1",
+  "fixture": "Public licensed pointing_up.jpg hand photograph, translated on640x480 canvas; no owner recording or imagery.",
+  "fixtureSha256": "ecf8ca2611d08fa25948a4fc10710af9120e88243a54da6356bacea17ff3e36e",
+  "browserVersion": "155.0.4283.45",
+  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36 Edg/155.0.0.0",
+  "hardwareConcurrencyReported": 16,
+  "sourceHashes": {
+    "public/reach/hand-worker.js": "9450f53274dd9801f2261b0e7381ab2a9e34994a61a44d8ef3349d865bdcfc14",
+    "public/reach/vendor/asset-manifest.json": "4c51b53330e74244f068e4588b6cbd52b3d4f4e5a6673828ea40b1cc8dd83647",
+    "src/reach/browser-runtime.ts": "fddbf12d8885e45a12b8cd987f9ba24356f9814c3942771f764f8efff6a7c048",
+    "src/reach/tracking-pacer.ts": "6dda271f695a1326bbdbfcb23f3aebea035116fb72835471caa7ca368a6b833a",
+    "src/watchglass/hand-provider.ts": "c54a30cbdbe665a36278962c7492ef8583f7a7c208b4d9e26f997b45301f197e",
+    "src/watchglass/hand-posture.ts": "0049a16f687bc5c66fe053cfac2b8e709d35c85d43a59e401d4f7e0ada9133f1",
+    "src/watchglass/index-geometry.ts": "e5358f0a1f2b4c1165d5f27bfdd1e7caf8542e02e102d299f67fdd9ddf456d41",
+    "src/watchglass/hand-observation.ts": "b8c8e2ebb359e2d61c055b9531d9e630bcadf209823f153b1df83ee6a091a7f5",
+    "src/watchglass/hand-geometry.ts": "9ea7176a1af0472309d525aeba5dcae6f18ab6844e63627c4ffa4987a9a67f90",
+    "tests/e2e/fixtures/reach/pointing_up.jpg": "ecf8ca2611d08fa25948a4fc10710af9120e88243a54da6356bacea17ff3e36e",
+    "public/reach/vendor/vision_bundle.js": "1cdadf6c65d572330994f37be24fd575526480e4e7a2608ae1937be331c88c41",
+    "public/reach/vendor/wasm/vision_wasm_internal.js": "d69cf095836eb310de5a23af874b45d49a785b733fd12620e881773645b9a645",
+    "public/reach/vendor/wasm/vision_wasm_internal.wasm": "cb3ec20026a9aecc2a81a93c25630ceb5389297ddb7a5f0bd61dd09cde606b9b",
+    "public/reach/vendor/wasm/vision_wasm_nosimd_internal.js": "ae7960abc4a5d25c0800ea1cd0b237644dc95e8bdb2a312f60b4b5c5bf7b3ffd",
+    "public/reach/vendor/wasm/vision_wasm_nosimd_internal.wasm": "924274fcd5ac8985f6570a8573e7971b7bd2d580ba1b8f3beb0ba8f95db6347c",
+    "public/reach/vendor/LICENSE": "8707eef0533987efc5b155d64761eeb6e20793f50b9bd1a68dad1cf4719d0ed8",
+    "public/reach/vendor/hand_landmarker.task": "fbc2a30080c3c557093b5ddfc334698132eb341044ccee322ccf8bcf3607cde1"
+  },
+  "additionalAnalysisSourceHashes": {
+    "src/reach/observation.ts": "0622600a9a8b6dd15e8905f6e5bf33d117ff2786e50d93578b2d7a80d13e16b7"
+  },
+  "instrumentedWorkerSha256": "8d0f6a0f670b81aafa37f606190429f214afe971de6dfa46583b52617be472aa",
+  "harnessSha256": "682167933c1ac694324d8ff92e278d0b043621de7b2fec8c7e96e27afe15c2c9",
+  "analysisSha256": "d3e19f5b16768dc02dba6904bc824d9d91eaf793ccb0bfc88bcf3e59a94f3836",
+  "aggregationSha256": "986546db4749862aaed861547d5aa893d8b169feac544b5a3a34db82327f926e",
+  "execution": {
+    "actualPinnedCpuModel": true,
+    "timingInstrumentationOnly": true,
+    "fixedPrivateCapLimiter": true,
+    "productionPacerExecuted": false,
+    "productionAdapterAndPosture": "Offline current production ordering: adapter sees all actual returns, then unchanged ObservationGate filters eligibility. A separate fresh-only-before-association history is an alternative diagnostic, not runtime behavior.",
+    "opticalImageTrackerExecuted": false,
+    "fullApplicationExecuted": false,
+    "oneBitmapInFlight": true,
+    "queuedFrames": false,
+    "gameAndOtherServices": "Retained; no pause or shared-runtime changes",
+    "captureSize": {
+      "width": 640,
+      "height": 480
+    },
+    "ordersHz": [
+      [
+        5,
+        20,
+        10,
+        30,
+        15,
+        25
+      ],
+      [
+        25,
+        15,
+        30,
+        10,
+        20,
+        5
+      ]
+    ],
+    "stepOnsetsRelativeMs": [
+      2000,
+      2893,
+      3931,
+      4817,
+      5929,
+      6899
+    ],
+    "stepDisplacementPx": 64,
+    "continuousSpeedPxPerSecond": 128,
+    "frameTimestamp": "Actual rAF canvas draw epoch; source snapshot copied synchronously before async bitmap creation"
+  },
+  "thresholds": {
+    "maximumFreshPacketAgeMs": 150,
+    "productionClockFutureAllowanceMs": 5,
+    "firstDirectionDisplacementPx": 16,
+    "positionErrorBandPx": 8,
+    "staticJitterAmbiguityBandPx": 8,
+    "confirmation": "Two consecutive qualifying source captures; first-of-two and second-confirmation times reported separately"
+  },
+  "definitions": {
+    "latency": "Actual firstsource draw of a new phase to actual model result reception. Only post-onset source captures received before the next phase qualify; unresolved trials are counted.",
+    "coordinateReference": "Median model tip at a static baseline plus known photograph translation. This is an image displacement proxy, not physical fingertip ground truth.",
+    "freshPoint": "Unchanged production ObservationGate including150ms capture age and5ms clock allowance, then actual returned index geometry/pointing with nonambiguous production-order association. This omits fullapplication readiness/calibration arbitration.",
+    "identity": "The first-position metric permits a newly acquired identity and is not uninterrupted calibrated control. None of the72step-firstpositions were newlyACQUIRED here. Production-order offline association had0IDchanges; the explicitly alternative fresh-only history had4changes in4of12segments during motion/recovery.",
+    "nextRaf": "Time the result is available at the next browser rAF callback. No recognized-point draw or physical display measurement occurs.",
+    "achievedHz": "(N-1)/(last actual capture-first actual capture), separately for each repeat. Caps are ceilings, not achieved frame rates.",
+    "percentiles": "Nearest-rank. There are only12step trials/cap, so reported stepP95 equals the observed maximum and is not a stable population-tail estimate."
+  },
+  "total": {
+    "segments": 12,
+    "packets": 1292,
+    "freshAcceptedPackets": 1164,
+    "rejectedOver150MsPackets": 128,
+    "freshPostureEligiblePackets": 1080,
+    "visiblePhotoPackets": 1208,
+    "visibleRawNoHandPackets": 0,
+    "blankPackets": 84,
+    "blankRawHandDetections": 0,
+    "plannedStepTrials": 72,
+    "drawnStepTrials": 72,
+    "freshFirstPositionTrialsFound": 72,
+    "unresolvedTwoConsistentTrials": 1,
+    "productionOrderingAdapterTrackIdChanges": 0,
+    "alternativeFreshOnlyAdapterTrackIdChanges": 4,
+    "segmentsWithAlternativeFreshOnlyIdentityChanges": 4,
+    "firstFreshPositionNewIdentityTrials": 0,
+    "timeouts": 0,
+    "silentRetries": 0
+  },
+  "caps": [
+    {
+      "nominalCapHz": 5,
+      "repetitions": 2,
+      "achievedCaptureHzRange": {
+        "minimum": 4.866104894498426,
+        "maximum": 4.9776007586101745
+      },
+      "packets": 129,
+      "freshAcceptedPackets": 108,
+      "rejectedOver150MsPackets": 21,
+      "visibleSourcePackets": 123,
+      "rawSingleHandPackets": 123,
+      "allReturnPointingPackets": 123,
+      "freshPostureEligiblePackets": 102,
+      "plannedStepTrials": 12,
+      "drawnStepTrials": 12,
+      "neverDrawnStepTrials": 0,
+      "ambiguousBaselineStepTrials": 0,
+      "interpretableStepTrials": 12,
+      "firstSourceCaptureAfterActualOnsetMs": {
+        "n": 12,
+        "median": 85.89990234375,
+        "p95": 188,
+        "maximum": 188
+      },
+      "captureToModelReceiveMs": {
+        "n": 129,
+        "median": 111.800048828125,
+        "p95": 178.60009765625,
+        "maximum": 466.699951171875
+      },
+      "workerInferenceMs": {
+        "n": 129,
+        "median": 111.199951171875,
+        "p95": 178,
+        "maximum": 462.300048828125
+      },
+      "sourceDrawToCaptureMs": {
+        "n": 129,
+        "median": 6,
+        "p95": 13.39990234375,
+        "maximum": 18.199951171875
+      },
+      "sourceDrawToModelReceiveMs": {
+        "n": 129,
+        "median": 118.599853515625,
+        "p95": 184.099853515625,
+        "maximum": 470.10009765625
+      },
+      "captureToNextRafOpportunityMs": {
+        "n": 129,
+        "median": 114.800048828125,
+        "p95": 180.300048828125,
+        "maximum": 467.39990234375
+      },
+      "rawIndexFirst16PxDirectionMs": {
+        "n": 12,
+        "median": 221.89990234375,
+        "p95": 378.60009765625,
+        "maximum": 378.60009765625
+      },
+      "rawIndexFirstPositionWithin8PxMs": {
+        "n": 12,
+        "median": 221.89990234375,
+        "p95": 378.60009765625,
+        "maximum": 378.60009765625
+      },
+      "freshPointFirst16PxDirectionMs": {
+        "n": 12,
+        "median": 245.39990234375,
+        "p95": 717.400146484375,
+        "maximum": 717.400146484375
+      },
+      "freshPointFirstPositionWithin8PxMs": {
+        "n": 12,
+        "median": 245.39990234375,
+        "p95": 717.400146484375,
+        "maximum": 717.400146484375
+      },
+      "freshPointFirstOfTwoConsistentPositionsMs": {
+        "n": 12,
+        "median": 245.39990234375,
+        "p95": 717.400146484375,
+        "maximum": 717.400146484375
+      },
+      "freshPointSecondConfirmationMs": {
+        "n": 12,
+        "median": 446.89990234375,
+        "p95": 871.60009765625,
+        "maximum": 871.60009765625
+      },
+      "freshPointFirstPositionNextRafOpportunityMs": {
+        "n": 12,
+        "median": 248.300048828125,
+        "p95": 721.400146484375,
+        "maximum": 721.400146484375
+      },
+      "unresolvedFreshDirectionTrials": 0,
+      "unresolvedFreshPositionTrials": 0,
+      "unresolvedFreshTwoConsistentTrials": 0,
+      "staticTipJitterPx": {
+        "n": 10,
+        "median": 0.027644634246826172,
+        "p95": 0.4537248472951282,
+        "maximum": 0.4537248472951282
+      },
+      "continuousMotionCaptureCoordinateResidualPx": {
+        "n": 30,
+        "median": 0.7217721716203802,
+        "p95": 2.122953962758258,
+        "maximum": 2.5725620694266134
+      },
+      "continuousMotionReceiveCoordinateResidualPx": {
+        "n": 28,
+        "median": 16.650462017069657,
+        "p95": 22.863110083606138,
+        "maximum": 23.30088310761187
+      },
+      "blankPackets": 6,
+      "blankRawHandDetections": 0,
+      "visibleNoHandPackets": 0,
+      "productionOrderingAdapterTrackIdChanges": 0,
+      "alternativeFreshOnlyAdapterTrackIdChanges": 1,
+      "firstFreshPositionNewIdentityTrials": 0,
+      "rounds": [
+        {
+          "round": 0,
+          "order": 0,
+          "durationMs": 13065.5,
+          "achievedCaptureHz": 4.866104894498426,
+          "sourceDrawHz": 54.62303932902673,
+          "packets": 64,
+          "freshAcceptedPackets": 56,
+          "freshPostureEligiblePackets": 53,
+          "baselineJitterP95Px": 0.4537248472951282,
+          "firstFreshPointAcquisitionMs": 808,
+          "recoveryFreshPositionMs": 245.10009765625,
+          "productionOrderingAdapterTrackIdChanges": 0,
+          "alternativeFreshOnlyAdapterTrackIdChanges": 0,
+          "freshTtlCoverageProxyFraction": 0.15054911880285868,
+          "stepPositionLatencyMs": {
+            "n": 6,
+            "median": 218.7001953125,
+            "p95": 717.400146484375,
+            "maximum": 717.400146484375
+          },
+          "twoConsistentConfirmationLatencyMs": {
+            "n": 6,
+            "median": 389.10009765625,
+            "p95": 871.60009765625,
+            "maximum": 871.60009765625
+          }
+        },
+        {
+          "round": 1,
+          "order": 5,
+          "durationMs": 13069.10009765625,
+          "achievedCaptureHz": 4.9776007586101745,
+          "sourceDrawHz": 54.83732593915785,
+          "packets": 65,
+          "freshAcceptedPackets": 52,
+          "freshPostureEligiblePackets": 49,
+          "baselineJitterP95Px": 0.43737348889538186,
+          "firstFreshPointAcquisitionMs": 109.5,
+          "recoveryFreshPositionMs": 142.900146484375,
+          "productionOrderingAdapterTrackIdChanges": 0,
+          "alternativeFreshOnlyAdapterTrackIdChanges": 1,
+          "freshTtlCoverageProxyFraction": 0.1521604458453016,
+          "stepPositionLatencyMs": {
+            "n": 6,
+            "median": 245.39990234375,
+            "p95": 557,
+            "maximum": 557
+          },
+          "twoConsistentConfirmationLatencyMs": {
+            "n": 6,
+            "median": 446.89990234375,
+            "p95": 832.900146484375,
+            "maximum": 832.900146484375
+          }
+        }
+      ]
+    },
+    {
+      "nominalCapHz": 10,
+      "repetitions": 2,
+      "achievedCaptureHzRange": {
+        "minimum": 8.557815302628702,
+        "maximum": 8.69504987929355
+      },
+      "packets": 226,
+      "freshAcceptedPackets": 207,
+      "rejectedOver150MsPackets": 19,
+      "visibleSourcePackets": 214,
+      "rawSingleHandPackets": 214,
+      "allReturnPointingPackets": 214,
+      "freshPostureEligiblePackets": 195,
+      "plannedStepTrials": 12,
+      "drawnStepTrials": 12,
+      "neverDrawnStepTrials": 0,
+      "ambiguousBaselineStepTrials": 0,
+      "interpretableStepTrials": 12,
+      "firstSourceCaptureAfterActualOnsetMs": {
+        "n": 12,
+        "median": 41.599853515625,
+        "p95": 103.300048828125,
+        "maximum": 103.300048828125
+      },
+      "captureToModelReceiveMs": {
+        "n": 226,
+        "median": 107,
+        "p95": 167.39990234375,
+        "maximum": 215.5
+      },
+      "workerInferenceMs": {
+        "n": 226,
+        "median": 106.099853515625,
+        "p95": 167,
+        "maximum": 211.89990234375
+      },
+      "sourceDrawToCaptureMs": {
+        "n": 226,
+        "median": 9.39990234375,
+        "p95": 16.900146484375,
+        "maximum": 17.900146484375
+      },
+      "sourceDrawToModelReceiveMs": {
+        "n": 226,
+        "median": 115.89990234375,
+        "p95": 175.199951171875,
+        "maximum": 227.10009765625
+      },
+      "captureToNextRafOpportunityMs": {
+        "n": 226,
+        "median": 109.10009765625,
+        "p95": 168.699951171875,
+        "maximum": 218.699951171875
+      },
+      "rawIndexFirst16PxDirectionMs": {
+        "n": 12,
+        "median": 216.400146484375,
+        "p95": 286.800048828125,
+        "maximum": 286.800048828125
+      },
+      "rawIndexFirstPositionWithin8PxMs": {
+        "n": 12,
+        "median": 216.400146484375,
+        "p95": 286.800048828125,
+        "maximum": 286.800048828125
+      },
+      "freshPointFirst16PxDirectionMs": {
+        "n": 12,
+        "median": 225.099853515625,
+        "p95": 580.5,
+        "maximum": 580.5
+      },
+      "freshPointFirstPositionWithin8PxMs": {
+        "n": 12,
+        "median": 225.099853515625,
+        "p95": 580.5,
+        "maximum": 580.5
+      },
+      "freshPointFirstOfTwoConsistentPositionsMs": {
+        "n": 11,
+        "median": 225.099853515625,
+        "p95": 411.199951171875,
+        "maximum": 411.199951171875
+      },
+      "freshPointSecondConfirmationMs": {
+        "n": 11,
+        "median": 352.5,
+        "p95": 519.300048828125,
+        "maximum": 519.300048828125
+      },
+      "freshPointFirstPositionNextRafOpportunityMs": {
+        "n": 12,
+        "median": 231,
+        "p95": 581.800048828125,
+        "maximum": 581.800048828125
+      },
+      "unresolvedFreshDirectionTrials": 0,
+      "unresolvedFreshPositionTrials": 0,
+      "unresolvedFreshTwoConsistentTrials": 1,
+      "staticTipJitterPx": {
+        "n": 16,
+        "median": 0.04540694507892669,
+        "p95": 0.437225633750121,
+        "maximum": 0.437225633750121
+      },
+      "continuousMotionCaptureCoordinateResidualPx": {
+        "n": 53,
+        "median": 0.6319510850172079,
+        "p95": 1.7714857614099544,
+        "maximum": 3.0429251021705244
+      },
+      "continuousMotionReceiveCoordinateResidualPx": {
+        "n": 51,
+        "median": 12.027155011308453,
+        "p95": 21.70956321993501,
+        "maximum": 24.910999997322673
+      },
+      "blankPackets": 12,
+      "blankRawHandDetections": 0,
+      "visibleNoHandPackets": 0,
+      "productionOrderingAdapterTrackIdChanges": 0,
+      "alternativeFreshOnlyAdapterTrackIdChanges": 1,
+      "firstFreshPositionNewIdentityTrials": 0,
+      "rounds": [
+        {
+          "round": 0,
+          "order": 2,
+          "durationMs": 13105.39990234375,
+          "achievedCaptureHz": 8.69504987929355,
+          "sourceDrawHz": 54.93960438276134,
+          "packets": 114,
+          "freshAcceptedPackets": 107,
+          "freshPostureEligiblePackets": 101,
+          "baselineJitterP95Px": 0.4202461242675781,
+          "firstFreshPointAcquisitionMs": 108.699951171875,
+          "recoveryFreshPositionMs": 161,
+          "productionOrderingAdapterTrackIdChanges": 0,
+          "alternativeFreshOnlyAdapterTrackIdChanges": 0,
+          "freshTtlCoverageProxyFraction": 0.33272546252944174,
+          "stepPositionLatencyMs": {
+            "n": 6,
+            "median": 224.10009765625,
+            "p95": 580.5,
+            "maximum": 580.5
+          },
+          "twoConsistentConfirmationLatencyMs": {
+            "n": 5,
+            "median": 323.599853515625,
+            "p95": 519.300048828125,
+            "maximum": 519.300048828125
+          }
+        },
+        {
+          "round": 1,
+          "order": 3,
+          "durationMs": 13081.699951171875,
+          "achievedCaptureHz": 8.557815302628702,
+          "sourceDrawHz": 54.96269631017431,
+          "packets": 112,
+          "freshAcceptedPackets": 100,
+          "freshPostureEligiblePackets": 94,
+          "baselineJitterP95Px": 0.437225633750121,
+          "firstFreshPointAcquisitionMs": 286.2998046875,
+          "recoveryFreshPositionMs": 140.5,
+          "productionOrderingAdapterTrackIdChanges": 0,
+          "alternativeFreshOnlyAdapterTrackIdChanges": 1,
+          "freshTtlCoverageProxyFraction": 0.2931272725759347,
+          "stepPositionLatencyMs": {
+            "n": 6,
+            "median": 234.89990234375,
+            "p95": 336.60009765625,
+            "maximum": 336.60009765625
+          },
+          "twoConsistentConfirmationLatencyMs": {
+            "n": 6,
+            "median": 352.5,
+            "p95": 441.300048828125,
+            "maximum": 441.300048828125
+          }
+        }
+      ]
+    },
+    {
+      "nominalCapHz": 15,
+      "repetitions": 2,
+      "achievedCaptureHzRange": {
+        "minimum": 9.002423729465626,
+        "maximum": 9.222375567728088
+      },
+      "packets": 238,
+      "freshAcceptedPackets": 219,
+      "rejectedOver150MsPackets": 19,
+      "visibleSourcePackets": 223,
+      "rawSingleHandPackets": 223,
+      "allReturnPointingPackets": 223,
+      "freshPostureEligiblePackets": 204,
+      "plannedStepTrials": 12,
+      "drawnStepTrials": 12,
+      "neverDrawnStepTrials": 0,
+      "ambiguousBaselineStepTrials": 0,
+      "interpretableStepTrials": 12,
+      "firstSourceCaptureAfterActualOnsetMs": {
+        "n": 12,
+        "median": 50.699951171875,
+        "p95": 118.39990234375,
+        "maximum": 118.39990234375
+      },
+      "captureToModelReceiveMs": {
+        "n": 238,
+        "median": 105.800048828125,
+        "p95": 160.7998046875,
+        "maximum": 195.199951171875
+      },
+      "workerInferenceMs": {
+        "n": 238,
+        "median": 105.400146484375,
+        "p95": 159.89990234375,
+        "maximum": 194.39990234375
+      },
+      "sourceDrawToCaptureMs": {
+        "n": 238,
+        "median": 9.60009765625,
+        "p95": 17.10009765625,
+        "maximum": 18.10009765625
+      },
+      "sourceDrawToModelReceiveMs": {
+        "n": 238,
+        "median": 116.39990234375,
+        "p95": 171.5,
+        "maximum": 202.89990234375
+      },
+      "captureToNextRafOpportunityMs": {
+        "n": 238,
+        "median": 109.10009765625,
+        "p95": 164.10009765625,
+        "maximum": 198.099853515625
+      },
+      "rawIndexFirst16PxDirectionMs": {
+        "n": 12,
+        "median": 192.89990234375,
+        "p95": 292.199951171875,
+        "maximum": 292.199951171875
+      },
+      "rawIndexFirstPositionWithin8PxMs": {
+        "n": 12,
+        "median": 192.89990234375,
+        "p95": 292.199951171875,
+        "maximum": 292.199951171875
+      },
+      "freshPointFirst16PxDirectionMs": {
+        "n": 12,
+        "median": 257.699951171875,
+        "p95": 528.7998046875,
+        "maximum": 528.7998046875
+      },
+      "freshPointFirstPositionWithin8PxMs": {
+        "n": 12,
+        "median": 257.699951171875,
+        "p95": 528.7998046875,
+        "maximum": 528.7998046875
+      },
+      "freshPointFirstOfTwoConsistentPositionsMs": {
+        "n": 12,
+        "median": 257.699951171875,
+        "p95": 528.7998046875,
+        "maximum": 528.7998046875
+      },
+      "freshPointSecondConfirmationMs": {
+        "n": 12,
+        "median": 366.599853515625,
+        "p95": 666,
+        "maximum": 666
+      },
+      "freshPointFirstPositionNextRafOpportunityMs": {
+        "n": 12,
+        "median": 260.599853515625,
+        "p95": 533.89990234375,
+        "maximum": 533.89990234375
+      },
+      "unresolvedFreshDirectionTrials": 0,
+      "unresolvedFreshPositionTrials": 0,
+      "unresolvedFreshTwoConsistentTrials": 0,
+      "staticTipJitterPx": {
+        "n": 19,
+        "median": 0.05221401719625951,
+        "p95": 0.4727865809684097,
+        "maximum": 0.4727865809684097
+      },
+      "continuousMotionCaptureCoordinateResidualPx": {
+        "n": 51,
+        "median": 0.5853267398512819,
+        "p95": 1.5965421764896564,
+        "maximum": 2.230255768143518
+      },
+      "continuousMotionReceiveCoordinateResidualPx": {
+        "n": 49,
+        "median": 13.936497398585075,
+        "p95": 21.063948168437395,
+        "maximum": 24.173546196126736
+      },
+      "blankPackets": 15,
+      "blankRawHandDetections": 0,
+      "visibleNoHandPackets": 0,
+      "productionOrderingAdapterTrackIdChanges": 0,
+      "alternativeFreshOnlyAdapterTrackIdChanges": 1,
+      "firstFreshPositionNewIdentityTrials": 0,
+      "rounds": [
+        {
+          "round": 0,
+          "order": 4,
+          "durationMs": 13040.199951171875,
+          "achievedCaptureHz": 9.222375567728088,
+          "sourceDrawHz": 54.907553978722106,
+          "packets": 120,
+          "freshAcceptedPackets": 113,
+          "freshPostureEligiblePackets": 106,
+          "baselineJitterP95Px": 0.4699457930028317,
+          "firstFreshPointAcquisitionMs": 85.300048828125,
+          "recoveryFreshPositionMs": 100.599853515625,
+          "productionOrderingAdapterTrackIdChanges": 0,
+          "alternativeFreshOnlyAdapterTrackIdChanges": 0,
+          "freshTtlCoverageProxyFraction": 0.34836889509657254,
+          "stepPositionLatencyMs": {
+            "n": 6,
+            "median": 257.699951171875,
+            "p95": 528.7998046875,
+            "maximum": 528.7998046875
+          },
+          "twoConsistentConfirmationLatencyMs": {
+            "n": 6,
+            "median": 366.599853515625,
+            "p95": 666,
+            "maximum": 666
+          }
+        },
+        {
+          "round": 1,
+          "order": 1,
+          "durationMs": 13104.199951171875,
+          "achievedCaptureHz": 9.002423729465626,
+          "sourceDrawHz": 54.995837530892175,
+          "packets": 118,
+          "freshAcceptedPackets": 106,
+          "freshPostureEligiblePackets": 98,
+          "baselineJitterP95Px": 0.4727865809684097,
+          "firstFreshPointAcquisitionMs": 120.800048828125,
+          "recoveryFreshPositionMs": 127.5,
+          "productionOrderingAdapterTrackIdChanges": 0,
+          "alternativeFreshOnlyAdapterTrackIdChanges": 1,
+          "freshTtlCoverageProxyFraction": 0.320988658309561,
+          "stepPositionLatencyMs": {
+            "n": 6,
+            "median": 207.5,
+            "p95": 506.39990234375,
+            "maximum": 506.39990234375
+          },
+          "twoConsistentConfirmationLatencyMs": {
+            "n": 6,
+            "median": 330.5,
+            "p95": 641.699951171875,
+            "maximum": 641.699951171875
+          }
+        }
+      ]
+    },
+    {
+      "nominalCapHz": 20,
+      "repetitions": 2,
+      "achievedCaptureHzRange": {
+        "minimum": 8.373001657724409,
+        "maximum": 9.049143709255018
+      },
+      "packets": 227,
+      "freshAcceptedPackets": 203,
+      "rejectedOver150MsPackets": 24,
+      "visibleSourcePackets": 210,
+      "rawSingleHandPackets": 210,
+      "allReturnPointingPackets": 210,
+      "freshPostureEligiblePackets": 186,
+      "plannedStepTrials": 12,
+      "drawnStepTrials": 12,
+      "neverDrawnStepTrials": 0,
+      "ambiguousBaselineStepTrials": 0,
+      "interpretableStepTrials": 12,
+      "firstSourceCaptureAfterActualOnsetMs": {
+        "n": 12,
+        "median": 75.7001953125,
+        "p95": 118.39990234375,
+        "maximum": 118.39990234375
+      },
+      "captureToModelReceiveMs": {
+        "n": 227,
+        "median": 110.39990234375,
+        "p95": 159.5,
+        "maximum": 254.199951171875
+      },
+      "workerInferenceMs": {
+        "n": 227,
+        "median": 109.800048828125,
+        "p95": 159,
+        "maximum": 253.699951171875
+      },
+      "sourceDrawToCaptureMs": {
+        "n": 227,
+        "median": 8.800048828125,
+        "p95": 16.800048828125,
+        "maximum": 19.39990234375
+      },
+      "sourceDrawToModelReceiveMs": {
+        "n": 227,
+        "median": 118.699951171875,
+        "p95": 171.5,
+        "maximum": 261.699951171875
+      },
+      "captureToNextRafOpportunityMs": {
+        "n": 227,
+        "median": 113.60009765625,
+        "p95": 164.099853515625,
+        "maximum": 256.5
+      },
+      "rawIndexFirst16PxDirectionMs": {
+        "n": 12,
+        "median": 226.2998046875,
+        "p95": 349.89990234375,
+        "maximum": 349.89990234375
+      },
+      "rawIndexFirstPositionWithin8PxMs": {
+        "n": 12,
+        "median": 226.2998046875,
+        "p95": 349.89990234375,
+        "maximum": 349.89990234375
+      },
+      "freshPointFirst16PxDirectionMs": {
+        "n": 12,
+        "median": 351.60009765625,
+        "p95": 635.300048828125,
+        "maximum": 635.300048828125
+      },
+      "freshPointFirstPositionWithin8PxMs": {
+        "n": 12,
+        "median": 351.60009765625,
+        "p95": 635.300048828125,
+        "maximum": 635.300048828125
+      },
+      "freshPointFirstOfTwoConsistentPositionsMs": {
+        "n": 12,
+        "median": 351.60009765625,
+        "p95": 635.300048828125,
+        "maximum": 635.300048828125
+      },
+      "freshPointSecondConfirmationMs": {
+        "n": 12,
+        "median": 471.7001953125,
+        "p95": 744.300048828125,
+        "maximum": 744.300048828125
+      },
+      "freshPointFirstPositionNextRafOpportunityMs": {
+        "n": 12,
+        "median": 351.7001953125,
+        "p95": 636.199951171875,
+        "maximum": 636.199951171875
+      },
+      "unresolvedFreshDirectionTrials": 0,
+      "unresolvedFreshPositionTrials": 0,
+      "unresolvedFreshTwoConsistentTrials": 0,
+      "staticTipJitterPx": {
+        "n": 16,
+        "median": 0.044397594728152634,
+        "p95": 0.4537505477503454,
+        "maximum": 0.4537505477503454
+      },
+      "continuousMotionCaptureCoordinateResidualPx": {
+        "n": 50,
+        "median": 0.512960552531102,
+        "p95": 1.583960219425122,
+        "maximum": 3.033631017239063
+      },
+      "continuousMotionReceiveCoordinateResidualPx": {
+        "n": 48,
+        "median": 14.086414594078413,
+        "p95": 21.3544272288597,
+        "maximum": 22.843552821939753
+      },
+      "blankPackets": 17,
+      "blankRawHandDetections": 0,
+      "visibleNoHandPackets": 0,
+      "productionOrderingAdapterTrackIdChanges": 0,
+      "alternativeFreshOnlyAdapterTrackIdChanges": 0,
+      "firstFreshPositionNewIdentityTrials": 0,
+      "rounds": [
+        {
+          "round": 0,
+          "order": 1,
+          "durationMs": 13010.89990234375,
+          "achievedCaptureHz": 8.373001657724409,
+          "sourceDrawHz": 54.9285699863878,
+          "packets": 109,
+          "freshAcceptedPackets": 95,
+          "freshPostureEligiblePackets": 86,
+          "baselineJitterP95Px": 0.4537505477503454,
+          "firstFreshPointAcquisitionMs": 121.099853515625,
+          "recoveryFreshPositionMs": 167.199951171875,
+          "productionOrderingAdapterTrackIdChanges": 0,
+          "alternativeFreshOnlyAdapterTrackIdChanges": 0,
+          "freshTtlCoverageProxyFraction": 0.21876273510607824,
+          "stepPositionLatencyMs": {
+            "n": 6,
+            "median": 351.60009765625,
+            "p95": 635.300048828125,
+            "maximum": 635.300048828125
+          },
+          "twoConsistentConfirmationLatencyMs": {
+            "n": 6,
+            "median": 471.7001953125,
+            "p95": 744.300048828125,
+            "maximum": 744.300048828125
+          }
+        },
+        {
+          "round": 1,
+          "order": 4,
+          "durationMs": 13092.099853515625,
+          "achievedCaptureHz": 9.049143709255018,
+          "sourceDrawHz": 54.94463547525864,
+          "packets": 118,
+          "freshAcceptedPackets": 108,
+          "freshPostureEligiblePackets": 100,
+          "baselineJitterP95Px": 0.44456807902012624,
+          "firstFreshPointAcquisitionMs": 98.699951171875,
+          "recoveryFreshPositionMs": 125.199951171875,
+          "productionOrderingAdapterTrackIdChanges": 0,
+          "alternativeFreshOnlyAdapterTrackIdChanges": 0,
+          "freshTtlCoverageProxyFraction": 0.32234712008100813,
+          "stepPositionLatencyMs": {
+            "n": 6,
+            "median": 333.5,
+            "p95": 439.300048828125,
+            "maximum": 439.300048828125
+          },
+          "twoConsistentConfirmationLatencyMs": {
+            "n": 6,
+            "median": 453.5,
+            "p95": 550.10009765625,
+            "maximum": 550.10009765625
+          }
+        }
+      ]
+    },
+    {
+      "nominalCapHz": 25,
+      "repetitions": 2,
+      "achievedCaptureHzRange": {
+        "minimum": 8.816364409728935,
+        "maximum": 8.847446868080066
+      },
+      "packets": 231,
+      "freshAcceptedPackets": 209,
+      "rejectedOver150MsPackets": 22,
+      "visibleSourcePackets": 215,
+      "rawSingleHandPackets": 215,
+      "allReturnPointingPackets": 215,
+      "freshPostureEligiblePackets": 193,
+      "plannedStepTrials": 12,
+      "drawnStepTrials": 12,
+      "neverDrawnStepTrials": 0,
+      "ambiguousBaselineStepTrials": 0,
+      "interpretableStepTrials": 12,
+      "firstSourceCaptureAfterActualOnsetMs": {
+        "n": 12,
+        "median": 52.300048828125,
+        "p95": 105.89990234375,
+        "maximum": 105.89990234375
+      },
+      "captureToModelReceiveMs": {
+        "n": 231,
+        "median": 109.699951171875,
+        "p95": 162.10009765625,
+        "maximum": 210.10009765625
+      },
+      "workerInferenceMs": {
+        "n": 231,
+        "median": 109,
+        "p95": 161.60009765625,
+        "maximum": 209.5
+      },
+      "sourceDrawToCaptureMs": {
+        "n": 231,
+        "median": 9.599853515625,
+        "p95": 17.199951171875,
+        "maximum": 17.7001953125
+      },
+      "sourceDrawToModelReceiveMs": {
+        "n": 231,
+        "median": 120.300048828125,
+        "p95": 172.599853515625,
+        "maximum": 213.10009765625
+      },
+      "captureToNextRafOpportunityMs": {
+        "n": 231,
+        "median": 111.699951171875,
+        "p95": 166.699951171875,
+        "maximum": 214.89990234375
+      },
+      "rawIndexFirst16PxDirectionMs": {
+        "n": 12,
+        "median": 186.300048828125,
+        "p95": 268,
+        "maximum": 268
+      },
+      "rawIndexFirstPositionWithin8PxMs": {
+        "n": 12,
+        "median": 186.300048828125,
+        "p95": 268,
+        "maximum": 268
+      },
+      "freshPointFirst16PxDirectionMs": {
+        "n": 12,
+        "median": 234.900146484375,
+        "p95": 480.300048828125,
+        "maximum": 480.300048828125
+      },
+      "freshPointFirstPositionWithin8PxMs": {
+        "n": 12,
+        "median": 234.900146484375,
+        "p95": 480.300048828125,
+        "maximum": 480.300048828125
+      },
+      "freshPointFirstOfTwoConsistentPositionsMs": {
+        "n": 12,
+        "median": 234.900146484375,
+        "p95": 480.300048828125,
+        "maximum": 480.300048828125
+      },
+      "freshPointSecondConfirmationMs": {
+        "n": 12,
+        "median": 338.7998046875,
+        "p95": 605.099853515625,
+        "maximum": 605.099853515625
+      },
+      "freshPointFirstPositionNextRafOpportunityMs": {
+        "n": 12,
+        "median": 236.5,
+        "p95": 484.89990234375,
+        "maximum": 484.89990234375
+      },
+      "unresolvedFreshDirectionTrials": 0,
+      "unresolvedFreshPositionTrials": 0,
+      "unresolvedFreshTwoConsistentTrials": 0,
+      "staticTipJitterPx": {
+        "n": 17,
+        "median": 0.05749058150522515,
+        "p95": 0.4493162347300335,
+        "maximum": 0.4493162347300335
+      },
+      "continuousMotionCaptureCoordinateResidualPx": {
+        "n": 48,
+        "median": 0.6190017394578216,
+        "p95": 1.7140710013937752,
+        "maximum": 2.4182561646612593
+      },
+      "continuousMotionReceiveCoordinateResidualPx": {
+        "n": 46,
+        "median": 14.152523551878366,
+        "p95": 23.690920207116672,
+        "maximum": 26.066780796796696
+      },
+      "blankPackets": 16,
+      "blankRawHandDetections": 0,
+      "visibleNoHandPackets": 0,
+      "productionOrderingAdapterTrackIdChanges": 0,
+      "alternativeFreshOnlyAdapterTrackIdChanges": 1,
+      "firstFreshPositionNewIdentityTrials": 0,
+      "rounds": [
+        {
+          "round": 0,
+          "order": 5,
+          "durationMs": 13031.7001953125,
+          "achievedCaptureHz": 8.816364409728935,
+          "sourceDrawHz": 54.94294599084969,
+          "packets": 115,
+          "freshAcceptedPackets": 102,
+          "freshPostureEligiblePackets": 94,
+          "baselineJitterP95Px": 0.4493162347300335,
+          "firstFreshPointAcquisitionMs": 109.10009765625,
+          "recoveryFreshPositionMs": 127.39990234375,
+          "productionOrderingAdapterTrackIdChanges": 0,
+          "alternativeFreshOnlyAdapterTrackIdChanges": 1,
+          "freshTtlCoverageProxyFraction": 0.28958627478472154,
+          "stepPositionLatencyMs": {
+            "n": 6,
+            "median": 186.60009765625,
+            "p95": 380.5,
+            "maximum": 380.5
+          },
+          "twoConsistentConfirmationLatencyMs": {
+            "n": 6,
+            "median": 314.300048828125,
+            "p95": 487.199951171875,
+            "maximum": 487.199951171875
+          }
+        },
+        {
+          "round": 1,
+          "order": 0,
+          "durationMs": 13130.199951171875,
+          "achievedCaptureHz": 8.847446868080066,
+          "sourceDrawHz": 54.887252231316104,
+          "packets": 116,
+          "freshAcceptedPackets": 107,
+          "freshPostureEligiblePackets": 99,
+          "baselineJitterP95Px": 0.4419374379507576,
+          "firstFreshPointAcquisitionMs": 97.199951171875,
+          "recoveryFreshPositionMs": 148.7998046875,
+          "productionOrderingAdapterTrackIdChanges": 0,
+          "alternativeFreshOnlyAdapterTrackIdChanges": 0,
+          "freshTtlCoverageProxyFraction": 0.286834890321262,
+          "stepPositionLatencyMs": {
+            "n": 6,
+            "median": 234.900146484375,
+            "p95": 480.300048828125,
+            "maximum": 480.300048828125
+          },
+          "twoConsistentConfirmationLatencyMs": {
+            "n": 6,
+            "median": 341,
+            "p95": 605.099853515625,
+            "maximum": 605.099853515625
+          }
+        }
+      ]
+    },
+    {
+      "nominalCapHz": 30,
+      "repetitions": 2,
+      "achievedCaptureHzRange": {
+        "minimum": 8.961058090452868,
+        "maximum": 9.521745152817898
+      },
+      "packets": 241,
+      "freshAcceptedPackets": 218,
+      "rejectedOver150MsPackets": 23,
+      "visibleSourcePackets": 223,
+      "rawSingleHandPackets": 223,
+      "allReturnPointingPackets": 223,
+      "freshPostureEligiblePackets": 200,
+      "plannedStepTrials": 12,
+      "drawnStepTrials": 12,
+      "neverDrawnStepTrials": 0,
+      "ambiguousBaselineStepTrials": 0,
+      "interpretableStepTrials": 12,
+      "firstSourceCaptureAfterActualOnsetMs": {
+        "n": 12,
+        "median": 63.10009765625,
+        "p95": 108.400146484375,
+        "maximum": 108.400146484375
+      },
+      "captureToModelReceiveMs": {
+        "n": 241,
+        "median": 103.300048828125,
+        "p95": 160.199951171875,
+        "maximum": 209.300048828125
+      },
+      "workerInferenceMs": {
+        "n": 241,
+        "median": 102.800048828125,
+        "p95": 159.599853515625,
+        "maximum": 208.199951171875
+      },
+      "sourceDrawToCaptureMs": {
+        "n": 241,
+        "median": 9.199951171875,
+        "p95": 17.199951171875,
+        "maximum": 17.900146484375
+      },
+      "sourceDrawToModelReceiveMs": {
+        "n": 241,
+        "median": 114.199951171875,
+        "p95": 170.900146484375,
+        "maximum": 213
+      },
+      "captureToNextRafOpportunityMs": {
+        "n": 241,
+        "median": 106.10009765625,
+        "p95": 163,
+        "maximum": 214.400146484375
+      },
+      "rawIndexFirst16PxDirectionMs": {
+        "n": 12,
+        "median": 181.10009765625,
+        "p95": 286.400146484375,
+        "maximum": 286.400146484375
+      },
+      "rawIndexFirstPositionWithin8PxMs": {
+        "n": 12,
+        "median": 181.10009765625,
+        "p95": 286.400146484375,
+        "maximum": 286.400146484375
+      },
+      "freshPointFirst16PxDirectionMs": {
+        "n": 12,
+        "median": 181.10009765625,
+        "p95": 429.5,
+        "maximum": 429.5
+      },
+      "freshPointFirstPositionWithin8PxMs": {
+        "n": 12,
+        "median": 181.10009765625,
+        "p95": 429.5,
+        "maximum": 429.5
+      },
+      "freshPointFirstOfTwoConsistentPositionsMs": {
+        "n": 12,
+        "median": 181.10009765625,
+        "p95": 429.5,
+        "maximum": 429.5
+      },
+      "freshPointSecondConfirmationMs": {
+        "n": 12,
+        "median": 307.89990234375,
+        "p95": 526.60009765625,
+        "maximum": 526.60009765625
+      },
+      "freshPointFirstPositionNextRafOpportunityMs": {
+        "n": 12,
+        "median": 181.800048828125,
+        "p95": 431,
+        "maximum": 431
+      },
+      "unresolvedFreshDirectionTrials": 0,
+      "unresolvedFreshPositionTrials": 0,
+      "unresolvedFreshTwoConsistentTrials": 0,
+      "staticTipJitterPx": {
+        "n": 22,
+        "median": 0.05992557571575455,
+        "p95": 0.44085013285288294,
+        "maximum": 0.44340227078143407
+      },
+      "continuousMotionCaptureCoordinateResidualPx": {
+        "n": 47,
+        "median": 0.7597678153932625,
+        "p95": 1.541111293536764,
+        "maximum": 2.5734321533458977
+      },
+      "continuousMotionReceiveCoordinateResidualPx": {
+        "n": 45,
+        "median": 14.654868445280021,
+        "p95": 23.83037835710931,
+        "maximum": 26.006620153236586
+      },
+      "blankPackets": 18,
+      "blankRawHandDetections": 0,
+      "visibleNoHandPackets": 0,
+      "productionOrderingAdapterTrackIdChanges": 0,
+      "alternativeFreshOnlyAdapterTrackIdChanges": 0,
+      "firstFreshPositionNewIdentityTrials": 0,
+      "rounds": [
+        {
+          "round": 0,
+          "order": 3,
+          "durationMs": 13018.2998046875,
+          "achievedCaptureHz": 9.521745152817898,
+          "sourceDrawHz": 54.99992339075626,
+          "packets": 124,
+          "freshAcceptedPackets": 112,
+          "freshPostureEligiblePackets": 102,
+          "baselineJitterP95Px": 0.44340227078143407,
+          "firstFreshPointAcquisitionMs": 87.199951171875,
+          "recoveryFreshPositionMs": 133.199951171875,
+          "productionOrderingAdapterTrackIdChanges": 0,
+          "alternativeFreshOnlyAdapterTrackIdChanges": 0,
+          "freshTtlCoverageProxyFraction": 0.3696103419322815,
+          "stepPositionLatencyMs": {
+            "n": 6,
+            "median": 156.199951171875,
+            "p95": 336.400146484375,
+            "maximum": 336.400146484375
+          },
+          "twoConsistentConfirmationLatencyMs": {
+            "n": 6,
+            "median": 272.900146484375,
+            "p95": 446.800048828125,
+            "maximum": 446.800048828125
+          }
+        },
+        {
+          "round": 1,
+          "order": 2,
+          "durationMs": 13093.7998046875,
+          "achievedCaptureHz": 8.961058090452868,
+          "sourceDrawHz": 54.96269631017431,
+          "packets": 117,
+          "freshAcceptedPackets": 106,
+          "freshPostureEligiblePackets": 98,
+          "baselineJitterP95Px": 0.43805352130398906,
+          "firstFreshPointAcquisitionMs": 310.699951171875,
+          "recoveryFreshPositionMs": 105.900146484375,
+          "productionOrderingAdapterTrackIdChanges": 0,
+          "alternativeFreshOnlyAdapterTrackIdChanges": 0,
+          "freshTtlCoverageProxyFraction": 0.3158135175649317,
+          "stepPositionLatencyMs": {
+            "n": 6,
+            "median": 373.300048828125,
+            "p95": 429.5,
+            "maximum": 429.5
+          },
+          "twoConsistentConfirmationLatencyMs": {
+            "n": 6,
+            "median": 490,
+            "p95": 526.60009765625,
+            "maximum": 526.60009765625
+          }
+        }
+      ]
+    }
+  ],
+  "interpretation": [
+    "The CPUmodel path saturated around8.4–9.5actualHz at nominal10–30Hz. Nominal30Hz is not30recognized positions/s under this load.",
+    "Lowering the cap to5Hz did not materially reduce per-inference latency here and added sampling wait. No evidence from this smallprobe establishes a uniformly superior exact cap across10–30Hz; results are nonmonotonic under load.",
+    "Raw visible-hand detection was continuous on this fixture, but128packets were late. Current production-order offline association retained its identity in12/12segments. An alternative adapter that discards late returns before association changed identity in4/12segments, illustrating that raw detection and association policy cannot be conflated. Neither result proves continuous calibrated actions.",
+    "All72fresh first-position trials resolved, while one two-result confirmation was unresolved before its phase ended. These are controlled photo steps, notphysical hand-motion acceptance."
+  ],
+  "limitations": [
+    "Direct bitmap model path excludes camera exposure/readout, USB/video ingestion, optical tracker cost/arbitration, full application UI, compositor/panel presentation and human intent.",
+    "Current gaming load was preserved but not controlled or replayed deterministically; two interleaved repeats and12steps/cap do not establish causality or hardware worstcase guarantees.",
+    "Staticpublic photo translation has no natural hand deformation, motion blur, real occlusion geometry or monocular3D groundtruth.",
+    "The private fixedcap limiter is a benchmark control; shipping normal30Hz/calibration60Hz modes are separately tested source behavior.",
+    "FreshTTL coverage is a timestamp-union proxy, notactualUI/actions/readiness proof.",
+    "No3% held-out screen-calibration accuracy or protected/physical qualification is established."
+  ],
+  "artifactHashes": {
+    "rawSha256": "15cabcf285923fb22c3c69b9fa79abc15db0dfa7aabaeea319803c03769622c9",
+    "privateSummarySha256": "74960533495d246e510254dcc082254aefb596895a1bef0b755fd718be20dcef",
+    "sourceReceiptSha256": "97fc640db6d3e7078678a9a1647310251937798dcd23aeac81e70ba0e007efbb"
+  },
+  "analysisCorrection": {
+    "benchmarkRerun": false,
+    "originalPrivateSummaryPreserved": true,
+    "details": "The initial private derivation incorrectly required worker inferenceTime<=mainthread receipt exactly. Sixpackets differed by~0.1ms due to crossrealm clock precision. The corrected derivation executes unchanged production ObservationGate with its existing5ms allowance:128late,1164accepted. All reported step latencies are unchanged. The original private134-rejection summary remains historical evidence.",
+    "originalPrivateSummarySha256": "fe5559c7c53f164078b2bb6074ff00dd4ad05a5db00cce290c6e6c91167d7aec"
+  },
+  "physicalLatencyQualified": false,
+  "physicalRecognitionQualified": false,
+  "acceptedSmoothness": false,
+  "protectedQualification": false
+}

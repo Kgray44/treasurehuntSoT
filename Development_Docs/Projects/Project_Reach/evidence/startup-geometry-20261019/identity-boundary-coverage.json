@@ -1,0 +1,83 @@
+{
+  "classification": "AGGREGATE_DEVELOPMENT_LOGICAL_REPLACEMENT_REFERENCE_COVERAGE_NOT_ANATOMICAL_SWITCH_TRUTH",
+  "source": {
+    "pairedRawResultsSha256": "23ef09eb70e1e9e367cd561c698012492da0834fc03be09c547b9e5d63196cfe",
+    "baseBundleSha256": "83847083b960f4e20132e11e96e33350c9eda580d3e3d3f662991a3be35d4026",
+    "sealed79ReferenceSha256": "5cb024ad66904b5689575c5ecb9167ba3f7286aaff2d9b3492c8b16a8ef43f00"
+  },
+  "arms": {
+    "gpu": {
+      "packets": 1336,
+      "measuredPositions": 428,
+      "readinessEligible": 364,
+      "logicalIdChanges": 6,
+      "rejectedOrErrorFrames": 0,
+      "states": {
+        "UNSEEDED": 164,
+        "UNCERTAIN": 207,
+        "LOST": 537,
+        "TRACKING": 428
+      },
+      "parityWithExistingConditionalAggregate": true
+    },
+    "cpu": {
+      "packets": 1336,
+      "measuredPositions": 504,
+      "readinessEligible": 446,
+      "logicalIdChanges": 9,
+      "rejectedOrErrorFrames": 0,
+      "states": {
+        "UNSEEDED": 124,
+        "UNCERTAIN": 166,
+        "LOST": 542,
+        "TRACKING": 504
+      },
+      "parityWithExistingConditionalAggregate": true
+    }
+  },
+  "coverage": {
+    "gpu": {
+      "events": 6,
+      "anyBoundaryEndpointAnnotated": 0,
+      "bothBoundaryEndpointsAnnotated": 0,
+      "adjacentBeforeAfterAnnotated": 0,
+      "entireIdentityBoundaryAnnotated": 0,
+      "coarseVisibleSameIndexBoundary": 0,
+      "entireMeasuredReturnIntervalAnnotated": 0,
+      "unresolved": 6
+    },
+    "cpu": {
+      "events": 9,
+      "anyBoundaryEndpointAnnotated": 1,
+      "bothBoundaryEndpointsAnnotated": 0,
+      "adjacentBeforeAfterAnnotated": 0,
+      "entireIdentityBoundaryAnnotated": 0,
+      "coarseVisibleSameIndexBoundary": 0,
+      "entireMeasuredReturnIntervalAnnotated": 0,
+      "unresolved": 9
+    },
+    "cpuSpecificExactFrame": {
+      "events": 9,
+      "anyBoundaryEndpointAnnotated": 1,
+      "bothBoundaryEndpointsAnnotated": 0,
+      "adjacentBeforeAfterAnnotated": 0,
+      "entireIdentityBoundaryAnnotated": 0,
+      "coarseVisibleSameIndexBoundary": 0,
+      "entireMeasuredReturnIntervalAnnotated": 0,
+      "unresolved": 9
+    },
+    "sharedExactEventFrames": 0
+  },
+  "eventDefinition": "Every accepted nonnull logical trackId differing from the previous accepted nonnull trackId, excluding initial acquisition. This is exactly canonical summarizeArm logicalIdChanges; accepted includes nontracking states. Gaps withnull do not fabricate extra IDs.",
+  "exactFrameMatching": "CPU-specific means its firstnewID sourceframe has no GPU logical event at that exactsourceframe. No inferred cross-arm anatomical mapping; CPU9 minusGPU6 is not a list of three proven extra physicalswitches.",
+  "conclusion": "Existing79coarse annotations leave logical replacement boundaries unqualified unless explicit overlap shows a complete visible-index segment; missing labels remain missing. This measurement gap cannot establish correctness or acceptance.",
+  "limits": [
+    "Same1336pairednative inputs and frozen producer; exactexisting428/6and504/9aggregate parity required.",
+    "Input NDJSON .output fields are old retained historical outputs and were NOT used for newarm logical event mapping. Newcanonical replay outputs were captured afterunchangedimagegate.",
+    "Original capture/completion clocks are transplanted conditional clocks; this is not actual CPU freshness, inference, newcapture or displayperformance.",
+    "No newimages viewed, labels created, source tuned, thresholds changed or model executed. Existingsealed79annotations joined only by sourceindex andoriginalnativeSHA.",
+    "Local neural IDs and logical fingertip IDs are not physical/anatomical ground truth.",
+    "Coarse endpoint regions do not establish exact endpoint position; no newaccuracy or anatomicalswitch labels are manufactured.",
+    "All recording and reference data is exposed development; no physicalholdout or missionacceptance."
+  ]
+}

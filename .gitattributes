@@ -10,3 +10,9 @@ Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r3-owner-decision-pro
 Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r3-owner-decision-proposal-20261015/consumer-seam-confirmation.original.raw.txt -text -whitespace
 Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r3-review-cancellation-20261015/*.original.raw.txt -text -whitespace
 Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r4-recovery-20261015/*.original.raw.txt -text -whitespace
+# Preserve the exported Reach protocol receipt's original bytes and digest.
+Development_Docs/Projects/Project_Reach/evidence/index-continuity-20261017/recovery-provider-protocol-summary.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# Preserve Phase 1 comparative evidence bytes across Windows checkouts.
+Development_Docs/Projects/Project_Reach/evidence/perception-continuation-20261019/*.json -text
+Development_Docs/Projects/Project_Reach/evidence/startup-cap-20261019/*.json -text
+Development_Docs/Projects/Project_Reach/evidence/startup-geometry-20261019/*.json -text

@@ -4,6 +4,11 @@ import type { ComponentProps } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ReachLaboratory } from "./ReachLaboratory";
 import { SampleWindow } from "./sample-window";
+import { defaultReachRuntimePolicy } from "./runtime-policy";
+
+vi.mock("./runtime-policy-client", () => ({
+  useReachRuntimePolicy: () => ({ status: "READY", revision: 1, policy: defaultReachRuntimePolicy, refresh: () => {} }),
+}));
 
 // D0 ReactDOM interaction regression only: no camera, worker, physical accuracy or acceptance claim.
 vi.mock("./ReachStage", () => ({ ReachStage: () => null }));
@@ -65,13 +70,6 @@ function expectPrepared() {
   expect(screen.queryByLabelText(/^Target \d+ of \d+$/)).not.toBeInTheDocument();
 }
 
-function expectHonestRejection(guidance: string) {
-  expectPrepared();
-  // The separate session message must use current live guidance, not a stale "Your hand is ready" ref.
-  const message = laboratory().querySelector('p[aria-live="polite"]');
-  expect(message).toHaveTextContent(guidance);
-}
-
 function startDemo(condition: "NONE" | "TWO_HANDS" = "NONE") {
   render(<ReachLaboratory />);
   nativeClick(screen.getByRole("button", { name: "Explore guided demo" }));
@@ -88,6 +86,7 @@ function startDemo(condition: "NONE" | "TWO_HANDS" = "NONE") {
   expect(performance.now() - lastDemoObservationAt).toBe(0);
   nativeClick(screen.getByRole("radio", { name: "Absolute pointing" }));
   expect(laboratory()).toHaveAttribute("data-pointing-mode", "ABSOLUTE");
+  advance(600);
   expectPrepared();
 }
 
@@ -95,14 +94,6 @@ function startReadyDemo() {
   startDemo();
   expect(currentGuidance()).toBe("Your hand is ready. Keep a relaxed index point.");
   expect(setupButton()).toBeEnabled();
-}
-
-function restoreObservationsWithoutStarting() {
-  pauseDemoObservations = false;
-  advance(600);
-  expect(currentGuidance()).toBe("Your hand is ready. Keep a relaxed index point.");
-  expect(setupButton()).toBeEnabled();
-  expectPrepared();
 }
 
 beforeEach(() => {
@@ -159,14 +150,15 @@ describe("Reach explicit setup requests (D0 ReactDOM only)", () => {
     nativeClick(setupButton());
     expect(laboratory()).toHaveAttribute("data-step", "TRAINING");
     expect(screen.getByLabelText("Target 1 of 9")).toHaveAttribute("data-calibration-target", "true");
-    advance(500);
+    nativeClick(screen.getByRole("button", { name: "Move demo hand to target" }));
+    advance(1000);
     expect(deliveredDemoObservations).toBe(delivered);
     expect(sampling).not.toHaveBeenCalled();
     expect(screen.getByLabelText("Target 1 of 9")).toBeInTheDocument();
     expect(screen.queryByLabelText("Target 2 of 9")).not.toBeInTheDocument();
   });
 
-  it("rejects an explicit request beyond 300ms with current guidance and never queues an automatic start", () => {
+  it("opens an empty target beyond the old 300ms entry grace without treating stale evidence as a sample", () => {
     const sampling = vi.spyOn(SampleWindow.prototype, "push");
     startReadyDemo();
     pauseDemoObservations = true;
@@ -175,19 +167,22 @@ describe("Reach explicit setup requests (D0 ReactDOM only)", () => {
     const guidance = currentGuidance();
     expect(guidance).toBe("Waiting for fresh tracking. Hold here briefly.");
     nativeClick(setupButton());
-    expectHonestRejection(guidance);
-    expect(sampling).not.toHaveBeenCalled();
-    restoreObservationsWithoutStarting();
-    expect(sampling).not.toHaveBeenCalled();
-    nativeClick(setupButton());
+    expect(laboratory()).toHaveAttribute("data-step", "TRAINING");
     expect(screen.getByLabelText("Target 1 of 9")).toBeInTheDocument();
+    nativeClick(screen.getByRole("button", { name: "Move demo hand to target" }));
+    advance(1000);
+    expect(sampling).not.toHaveBeenCalled();
+    pauseDemoObservations = false;
+    advance(600);
+    expect(screen.getByLabelText("Target 1 of 9")).toBeInTheDocument();
+    expect(sampling).toHaveBeenCalled();
   });
 
   it.each([
-    ["NO_HAND", "Show your hand to the camera."],
-    ["POSTURE", "Extend your index finger naturally and relax your other fingers."],
+    ["NO_HAND", "Tracking paused. Bring the same hand back; completed targets stay saved."],
+    ["POSTURE", "Extend your index finger comfortably; a gentle bend and relaxed fingers are fine."],
     ["TWO_HANDS", "Choose the hand you want to use, or show just one pointing hand."],
-  ])("rejects %s with live guidance and requires a second explicit click after recovery", (fault, guidance) => {
+  ])("keeps an explicitly opened target empty during %s and resumes on fresh eligible recovery", (fault, guidance) => {
     const sampling = vi.spyOn(SampleWindow.prototype, "push");
     if (fault === "TWO_HANDS") {
       startDemo("TWO_HANDS");
@@ -197,15 +192,18 @@ describe("Reach explicit setup requests (D0 ReactDOM only)", () => {
       advance(600);
     }
     expect(currentGuidance()).toBe(guidance);
+    pauseDemoObservations = true;
     nativeClick(setupButton());
-    expectHonestRejection(guidance);
+    expect(laboratory()).toHaveAttribute("data-step", "TRAINING");
+    expect(screen.getByLabelText("Target 1 of 9")).toBeInTheDocument();
+    nativeClick(screen.getByRole("button", { name: "Move demo hand to target" }));
+    advance(1000);
     expect(sampling).not.toHaveBeenCalled();
     fireEvent.change(screen.getByRole("combobox", { name: "Demo tracking condition" }), { target: { value: "NONE" } });
+    pauseDemoObservations = false;
     advance(600);
     expect(currentGuidance()).toBe("Your hand is ready. Keep a relaxed index point.");
-    expectPrepared();
-    expect(sampling).not.toHaveBeenCalled();
-    nativeClick(setupButton());
     expect(screen.getByLabelText("Target 1 of 9")).toBeInTheDocument();
+    expect(sampling).toHaveBeenCalled();
   });
 });

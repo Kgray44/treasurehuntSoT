@@ -1,0 +1,357 @@
+{
+  "version": 1,
+  "classification": "engineering_evidence",
+  "role": "DEVELOPMENT_ONLY",
+  "qualification": false,
+  "protectedIntegration": false,
+  "protectedBase": "56b700bc2a45bee3ef2cdb5416439bae964f2233",
+  "implementationCommit": "a450b244cbb2e5fa9643f74b0c794d07a1fa3ab5",
+  "precedingContinuityAndRecorderCommit": "fd0f5fc89cb39f97909b6c7cd0477cef6206057a",
+  "sourceWorkingTreeMatchesImplementationAtEvidenceAssembly": true,
+  "sourceFiles": [
+    {
+      "path": "public/reach/hand-worker.js",
+      "sha256": "7848b396aea9113fecfcb48472f4fbe070f54f44902833b028cb2b187bed3446"
+    },
+    {
+      "path": "public/reach/vendor/asset-manifest.json",
+      "sha256": "4c51b53330e74244f068e4588b6cbd52b3d4f4e5a6673828ea40b1cc8dd83647"
+    },
+    {
+      "path": "scripts/reach/device-lab.ts",
+      "sha256": "456730e24b53b7abd44ee60334e417b9b33750f1a3f2c55934730f51400e40a5"
+    },
+    {
+      "path": "scripts/reach/replay-pose-recording.ts",
+      "sha256": "0a022ea0f3b89bb4e83a99411a90ba51cba1c5d5b583255203ea3364506e93ed"
+    },
+    {
+      "path": "src/app/devices/reach/page.tsx",
+      "sha256": "10767c391f51a66101c3b7a4a144411d83cdccbd71b7925692ddc9a63823f121"
+    },
+    {
+      "path": "src/app/devices/reach/record/page.tsx",
+      "sha256": "c441ce1ec80f05be2d741462a64e2480421af06a941e023f14a2d6f242087b9c"
+    },
+    {
+      "path": "src/reach/ReachLaboratory.module.css",
+      "sha256": "0c8c9024f259739ca55c555a575f4df19448ac5e4e86c83f52077ff39e7ba25c"
+    },
+    {
+      "path": "src/reach/ReachLaboratory.tsx",
+      "sha256": "a944855f7f4caf8f1565651621ffd78e39a93c9395b64e6ba44f3658673552b7"
+    },
+    {
+      "path": "src/reach/ReachPoseRecorder.module.css",
+      "sha256": "3ae49b10d1df4a664d2e9d357ed741dcc6b641fc6c2726a9901ce45e23b67569"
+    },
+    {
+      "path": "src/reach/ReachPoseRecorder.tsx",
+      "sha256": "0ca9dac49103619b50da328df261b1857e183e05b9c04e318e0e393e03c13a40"
+    },
+    {
+      "path": "src/reach/ReachStage.tsx",
+      "sha256": "96168af96b4a1a7190d3ee89933eac969eb318deab22abf2256974c38098f4e8"
+    },
+    {
+      "path": "src/reach/acquisition.test.ts",
+      "sha256": "bcd6cac70d3ea39d5b58cc0766993aec2684e3ec0df7ce2937faeb2cc3bd2c35"
+    },
+    {
+      "path": "src/reach/assets.test.ts",
+      "sha256": "609fe4d8eef05cc54be92888497559474f5b84ff1049598c5d53d229a0c56591"
+    },
+    {
+      "path": "src/reach/browser-runtime.test.ts",
+      "sha256": "2463238694f1bf819802bd9c633dddaf392b3939af22fc4e7389ac2cf1fa36fb"
+    },
+    {
+      "path": "src/reach/browser-runtime.ts",
+      "sha256": "bb4dd7f01d76ec21cd71a56763fd371f14d2961de50223d5d51d408237be8d6e"
+    },
+    {
+      "path": "src/reach/calibration.ts",
+      "sha256": "69e8c29b7b73ca80eef6ed5f3f98c3394a6969c8cdf6f8f1e0b4b44823a536b1"
+    },
+    {
+      "path": "src/reach/coordinates.ts",
+      "sha256": "d6332ad77599c58c6ea6edbc201939f95acf1682d033b170a7e6e3fc4e473888"
+    },
+    {
+      "path": "src/reach/device-lab.test.ts",
+      "sha256": "a008e1a6b232301301e2632480ada5d5d449df6e416dea67035556c37689c3d1"
+    },
+    {
+      "path": "src/reach/device-lab.ts",
+      "sha256": "68e1e9d5a4615eb702b366d7ab1a819759ab1811b9c9ffc9e1b6870eceea143c"
+    },
+    {
+      "path": "src/reach/end-on-pointing.test.ts",
+      "sha256": "e8c14c19b5c5514e960aa2acbf5f981de811a9a2d9e8c7d9c4435394c8c47dcb"
+    },
+    {
+      "path": "src/reach/foundation-scenarios.ts",
+      "sha256": "da92846654f3fe26284f11dc092c00ea3397b5ae03e307b55b9c5e3fb1d9726a"
+    },
+    {
+      "path": "src/reach/foundation.test.ts",
+      "sha256": "b87cdf8b7be1eba46e1b7d0123b160cbecdc66fee316e88bf34dd00b17c05616"
+    },
+    {
+      "path": "src/reach/observation.ts",
+      "sha256": "f3f178fc016a82ce2ae65c4c4ad7c906d182d372863bd637bb0fb08ce5ce9496"
+    },
+    {
+      "path": "src/reach/off-image-posture.test.ts",
+      "sha256": "fbec25a5770b9b6e3c2768e80d83c2e709bd9bd067a391bfa9073b35d9b12bf8"
+    },
+    {
+      "path": "src/reach/partial-framing.test.ts",
+      "sha256": "f3f04cbbdd7eadabdc322390e5014b31155c1f9cd9c04717eeabacc48a2de2de"
+    },
+    {
+      "path": "src/reach/point-filter.test.ts",
+      "sha256": "394b063ae1edf971502748de3d141c962e80333fac15bcdd309c9e101636344f"
+    },
+    {
+      "path": "src/reach/pointer-continuity.test.ts",
+      "sha256": "6454b19161ab7ca9e22a02778c4557142da77d3b1bde53d47795b9a6c699b060"
+    },
+    {
+      "path": "src/reach/pointer-continuity.ts",
+      "sha256": "c752b90b85e471bd7078905cd0425973f3b5090f77df91457e1b7abcc7bb7ace"
+    },
+    {
+      "path": "src/reach/pointing-geometry.test.ts",
+      "sha256": "a2484768625dbb8be2f24e16b00c73a36c7cddc4ffe44db0c678702af47aaa83"
+    },
+    {
+      "path": "src/reach/pointing-transition.test.ts",
+      "sha256": "9678e33371c1268701a25700bda3c15cd5eb6171062d04fd4c4483e13046314f"
+    },
+    {
+      "path": "src/reach/pose-recording.test.ts",
+      "sha256": "703eca4f61af742738831111f7cd764226b629e2346ffca0a974ceda2c40e8bd"
+    },
+    {
+      "path": "src/reach/pose-recording.ts",
+      "sha256": "3b20e783400c7dc60469ff88845a19240e4098adbeceb73747f9ca2facbe5b57"
+    },
+    {
+      "path": "src/reach/pose-replay.test.ts",
+      "sha256": "76c8eb623d1ee660b0e128c553177c8b810b89c71a4e8cb1915f271ec0b1bda8"
+    },
+    {
+      "path": "src/reach/privacy.ts",
+      "sha256": "552719adf54f1c391a85d6224849f43708e793c3a18687fa53ffb19fa4fbd874"
+    },
+    {
+      "path": "src/reach/provider-ambiguity.test.ts",
+      "sha256": "a706bafb36b76feb136be6ddbd5d29d351781b9c27fa3919426cba3b35f18d96"
+    },
+    {
+      "path": "src/reach/provider-orientation.test.ts",
+      "sha256": "daf471231d311460461023dc163490c404096cb7c46416c3462d1d73f5012bac"
+    },
+    {
+      "path": "src/reach/provider-recovery.test.ts",
+      "sha256": "4b918eb16efc1fc88f50c3a5cc48f55ea0f411516f18f6f52e38b558b3ffd322"
+    },
+    {
+      "path": "src/reach/readiness-recovery.test.ts",
+      "sha256": "fa51c7a965ccfda5aed72ee1b3191272a0b43e872b06f758add57f694fade9dd"
+    },
+    {
+      "path": "src/reach/recognition.test.ts",
+      "sha256": "a00ce549c113f91dda4786109373a1fc3fc85eb7cd6d883b6470337d4a82fba6"
+    },
+    {
+      "path": "src/reach/sample-recovery.test.ts",
+      "sha256": "d414444598a28b25d4ff2ab3d8ca885d41bc68998711e762120c718efb31da4b"
+    },
+    {
+      "path": "src/reach/sample-window.ts",
+      "sha256": "2db9f6e237c4eeb506deffb4382490c8b43ba4ed515e8b63c9c495b1eb06bb4d"
+    },
+    {
+      "path": "src/reach/synthetic.ts",
+      "sha256": "f685e6b9cd7f77233b95140461975555bf45b2508c98a7a16065e7cea4311c53"
+    },
+    {
+      "path": "src/reach/validation-reasons.test.ts",
+      "sha256": "80cee867a00e6a9927d8ba65ef8b32d034ccf8e1a2c78a169832a765dd9c1ff3"
+    },
+    {
+      "path": "src/reach/visualization.ts",
+      "sha256": "2a3f0f1e708adb020017ae4d051c469688a4598f26fdbf304c2559bf9bca997e"
+    },
+    {
+      "path": "src/watchglass/hand-geometry.ts",
+      "sha256": "9ea7176a1af0472309d525aeba5dcae6f18ab6844e63627c4ffa4987a9a67f90"
+    },
+    {
+      "path": "src/watchglass/hand-observation.ts",
+      "sha256": "6294def0c63d53bfaa17c0411eb47aaeb49ed0253dc663fad4c2634de259ec9b"
+    },
+    {
+      "path": "src/watchglass/hand-posture.ts",
+      "sha256": "eedb5feeac38c160a7d8d3ecc158f9132cc51c4712a150427dd055b2f425da27"
+    },
+    {
+      "path": "src/watchglass/hand-provider.ts",
+      "sha256": "8dd55c9fc6bda242f34176daaabb79d257b44eac6b1e1cdc00619c23dac799bd"
+    },
+    {
+      "path": "tests/e2e/fixtures/reach/pointing-poses.ts",
+      "sha256": "a642534b132a1f329046401e4ff5ecfcb7d5977e0abbf939d95d05f275e16f61"
+    },
+    {
+      "path": "tests/e2e/reach-laboratory.spec.ts",
+      "sha256": "229ebba8fed9208635fb08d324465310bfb827a761350d108dcfee93b18afd82"
+    },
+    {
+      "path": "tests/e2e/reach-recovery.spec.ts",
+      "sha256": "1d4e3c009badd5731547caddced13f7aeb27f206d9f7bd8c821374ea1dfefc0d"
+    }
+  ],
+  "cameraPipeline": {
+    "modelWorkerCaptureAndCameraRendererPreserved": true,
+    "workerSha256": "7848b396aea9113fecfcb48472f4fbe070f54f44902833b028cb2b187bed3446",
+    "optionalRecordingTap": "Passive raw-result observer before adapter; exceptions isolated; opt-in local tool only"
+  },
+  "checks": {
+    "unit": {
+      "passed": 286,
+      "failed": 0,
+      "files": 21
+    },
+    "typescript": "PASS",
+    "scopedEslint": "PASS",
+    "browser": {
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 155384.242,
+      "source": "isolated Edge contexts; task-owned database and loopback3137"
+    },
+    "docsValidate": "PASS",
+    "featureSync": "PASS_68_ENTRIES_NO_CATALOG_CHANGE",
+    "featureValidate": "PASS",
+    "experiencePlan": {
+      "status": "PASS_READ_ONLY_SCOPE_PLAN",
+      "qualification": false,
+      "candidate": "a450b244cbb2e5fa9643f74b0c794d07a1fa3ab5",
+      "contractIds": ["reach.phase1.foundation"],
+      "sourceDigest": "d2cab622228f6000fe4733bad77180d4b4af471b8e698c787ee0145a6eeba056",
+      "contractDigest": "1993beabf9085164f51c7e5119cf5dbe59ded2bec76d1f5e20df3887d1bed2f5"
+    }
+  },
+  "browserCoverage": [
+    "Public photographic input through unchanged worker: noise, movement, partial occlusion, second hand and cleanup",
+    "Public photographic worker: nine training holds plus five independent checks",
+    "Opt-in local recorder: loopback/flag gates, actual MediaRecorder output, raw trace, pause/resume, downloads and cleanup",
+    "Failed held-out result: all five targets counted, strict raw3%P95 gate and explicit retained-setup retry explanation",
+    "Analytic D0 poses: relaxed/direct-camera pointing, wrist clipping, bounded inferred secondary fingers, cropped-open rejection and independent index-tracking feedback",
+    "Analytic D0 motion/outlier/occlusion: eligibility, retained saved targets, paused unfinished evidence, recovery and focused visible genuine context-expiry alert"
+  ],
+  "visualReview": "experience-review.json",
+  "ownerRecordingAggregate": "physical-recording-replay-summary.json",
+  "artifacts": [
+    {
+      "file": "D0-bottom-wrist-outside.png",
+      "sha256": "c32f6b2611672b1349aff502c719f8dc1d7bd9daf5c09927f42f6e8ba86e8bae"
+    },
+    {
+      "file": "D0-brief-occlusion.png",
+      "sha256": "f987ddf7d4711bd18cd32b0caf64f5add064867ce091b2b6041335fe4f04f238"
+    },
+    {
+      "file": "D0-context-invalidation.png",
+      "sha256": "11895ab159159cff61d3be782f41d1f34514047cb663f027d9bcc48621c29fa7"
+    },
+    {
+      "file": "D0-continuous-sweep.png",
+      "sha256": "392896b24a3f21b158049c2fe9ea6590e64194adbd1b372cd33c99515775023b"
+    },
+    {
+      "file": "D0-cropped-finger-inference.png",
+      "sha256": "d16d7efa850da3ef63cca4ac1c2fdbca2b58eea5b3ef27dc96fc63c21b46b0ca"
+    },
+    {
+      "file": "D0-cropped-open-hand-rejected.png",
+      "sha256": "71be05305bea1e94708dc4daa334d26ee6701ea798f186cabfe98a060bc348c6"
+    },
+    {
+      "file": "D0-direct-camera-point.png",
+      "sha256": "ad9ccb7e68e62c9bf331e2219d194d2e07fbd6f3aa21b2365bfbf6a58b6b1ef0"
+    },
+    {
+      "file": "D0-duplicate-suppressed.png",
+      "sha256": "2c291d04256385576cf3a538bae84574339b669c801fc90f701de931ed982157"
+    },
+    {
+      "file": "D0-failed-check-explained.png",
+      "sha256": "d1f313b690c1fbc823b77ac72e2a8d95c9bf99ad8a13f0bbf5caf23d4b63c895"
+    },
+    {
+      "file": "D0-foreshortened-point.png",
+      "sha256": "891a272425db7feaa795c2666b6124179f0615d4b3f5959b6f6ec99e5db84e93"
+    },
+    {
+      "file": "D0-index-tracked-intent-uncertain.png",
+      "sha256": "797f3c02ced7bc44f509793338eecb0c2f8936771d822f14c9d78ebeee3a6032"
+    },
+    {
+      "file": "D0-last-seen-during-check.png",
+      "sha256": "b10563b4ee151a4f05292e5062dcb07479751abb9cee3610fc73082053f90f2b"
+    },
+    {
+      "file": "D0-posture-interruption.png",
+      "sha256": "f407caf348bcdd2279918f07baba242da6738f975197c5b1e08fdb718fc536b4"
+    },
+    {
+      "file": "D0-recovered-saved-targets.png",
+      "sha256": "80bcabcb019b1765131ad28e60d234ec8836b76d75a3052dc56f4052f9979956"
+    },
+    {
+      "file": "D0-relaxed-point.png",
+      "sha256": "2c291d04256385576cf3a538bae84574339b669c801fc90f701de931ed982157"
+    },
+    {
+      "file": "D1-local-recorder-active.png",
+      "sha256": "2075e4dc06e552f5bc0326a9a1a13551eac71b498b5962a78071035c4d2f34fa"
+    },
+    {
+      "file": "D1-local-recorder-review.png",
+      "sha256": "6a0215288f6e8afd9631350da46518a48026074f91d861869e45cbb770334c3d"
+    },
+    {
+      "file": "recorder-public-fixture-frame.png",
+      "sha256": "c16cfe439567b1e528a4f859fca0a4ce43247756a76546c10636aae48497ebf6"
+    },
+    {
+      "file": "review-before-local-recorder-review.png",
+      "sha256": "035f250c08116a180102b895ebec3a151d8597e34b0f2aa049ab48cf4f5d3043"
+    }
+  ],
+  "boundaries": {
+    "rawHeldOutAccuracyUnchanged": true,
+    "sourceAndClockGatesUnchanged": true,
+    "cameraFramesOrLandmarksInAggregateExports": false,
+    "ownerVideoLandmarksAndImagesCommitted": false,
+    "crossdeckOrSoundingLineRepairsTouched": false,
+    "protectedQualificationStarted": false,
+    "ownerSweepPerformedCorrectly": false,
+    "freshPhysicalTrialOfFinalSource": false,
+    "physicalAccuracyQualified": false,
+    "ownerAcceptance": "PENDING_NEW_WEBCAM_TRIAL"
+  },
+  "limitations": [
+    "Finite off-image non-index estimates are bounded to15% beyond the image and are explicitly monocular/inferred; observed index/core remain required.",
+    "Visible index tracking is independent of pointing intent. Hidden palm scale or other-finger intent cannot be established from an index alone.",
+    "The owner recording still has uncertain cropped poses and intervals with no model hand result; no claim of universal robustness or physical acceptance is made.",
+    "The physical sweep was not performed as prompted and is excluded from motion evidence; analytic movement is separately labeled D0.",
+    "True local identity expiry, camera/view/source changes and two-established-hand crossing still invalidate source-bound calibration.",
+    "Production acquisition replay of the finite guide completes4/5 relevant relative holds and4/9 absolute holds after700ms; remaining recorded holds lack enough agreeing evidence. The live untimed laboratory can keep waiting; physical completion/accuracy remains unproved."
+  ]
+}

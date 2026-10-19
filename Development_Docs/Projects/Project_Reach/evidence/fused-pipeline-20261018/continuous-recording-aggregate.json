@@ -1,0 +1,636 @@
+{
+  "format": "REACH_FUSED_CONTINUOUS_REPLAY_DEVELOPMENT_AGGREGATE",
+  "version": 1,
+  "qualification": false,
+  "physicalAccuracyQualified": false,
+  "sourceDescriptorDigest": "a270516b632bd60c9cddc4e449334b09946491824e2d734685d7e681ac097f14",
+  "boundary": "Offline producer/controller development diagnostics; not a live sensor, recognition, latency, calibration, held-out accuracy or owner-acceptance result.",
+  "controller": {
+    "testsPassed": 18,
+    "testFiles": 1,
+    "reportSha256": "6fa0ca7282e1627ec3b611e36619b75f924554c5b93cc5bce4b5c4ee9b542a54",
+    "testPath": "src/reach/ReachLaboratory-source-continuity.test.tsx",
+    "testSha256": "e8d1a28317e5916f252bcb7bfb52b12b8c1476ae3278f0702c4103aab9f092ec"
+  },
+  "fixtures": [
+    {
+      "id": "CLEAN_CONTINUOUS_659",
+      "sourceAggregateSha256": "f94ef6e8c5ce06f3479007bcad0ee7b7a638f0865aef6c950529e264c1dc7fcd",
+      "inputHashes": {
+        "nativeFrameManifest": "309663be8ff323de4546ff96b18f4bebe0e45e3d053758f2bfa6d72a4d5ada00",
+        "trace": "a6abf289dc609d52f68c19322a7a10c71290d8cd1beab0c6d4b0a6fcbab4e5b2",
+        "video": "a9ce5f9da201148efe11e9b50a2b185096271d30ed4a6877924949b2a0b4f73e"
+      },
+      "containsHistoricalRenderedOverlay": false,
+      "method": {
+        "frames": 659,
+        "trackerInstancesPerArm": 1,
+        "adaptersPerArm": 1,
+        "promptBoundaryResets": false,
+        "manualHints": false,
+        "newNeuralInference": false,
+        "rawHypothesisChronologyPreserved": true,
+        "nearestHypothesisReuses": 0,
+        "maximumAbsoluteImageTraceOffsetMs": 44.80000000447035,
+        "selectedImageGapsOver300ms": [],
+        "knownPixelOriginMetadataAvailable": false,
+        "sourceStableImportedFiles": true,
+        "runnerSha256": "2ad50e98c5a8e3b01bb6b01570eba466cfd8d0b4c4f4869608ffe56f839c3e9f"
+      },
+      "arms": [
+        {
+          "label": "c361-baseline",
+          "algorithm": {
+            "providerId": "watchglass.index-image",
+            "providerVersion": "1",
+            "algorithm": "BOUNDED_PHOTOMETRIC_NCC_V1",
+            "algorithmDigest": "491ae53971dc0352714c9849fdf2521a469b190130d6f408cc6cff4abf0f98eb"
+          },
+          "rawRecordsConsumed": 1467,
+          "rawGateRejections": 0,
+          "states": {
+            "TRACKING": 132,
+            "UNCERTAIN": 19,
+            "LOST": 45,
+            "UNSEEDED": 463
+          },
+          "externalIdentityChanges": 3,
+          "opticalEpochChangesWithinSameIdentity": 0,
+          "trackingCoordinateSources": {
+            "LEGACY_OPTICAL": 132
+          },
+          "trackingModelSupport": {
+            "MISSING": 132
+          },
+          "perPrompt": {
+            "CENTER": {
+              "frames": 52,
+              "states": {
+                "TRACKING": 51,
+                "UNCERTAIN": 1
+              }
+            },
+            "BOTTOM": {
+              "frames": 71,
+              "states": {
+                "TRACKING": 49,
+                "UNCERTAIN": 8,
+                "LOST": 14
+              }
+            },
+            "TOP": {
+              "frames": 52,
+              "states": {
+                "TRACKING": 11,
+                "UNCERTAIN": 2,
+                "LOST": 10,
+                "UNSEEDED": 29
+              }
+            },
+            "LEFT": {
+              "frames": 47,
+              "states": {
+                "UNSEEDED": 47
+              }
+            },
+            "RIGHT": {
+              "frames": 44,
+              "states": {
+                "UNSEEDED": 44
+              }
+            },
+            "TOP_LEFT": {
+              "frames": 35,
+              "states": {
+                "UNSEEDED": 35
+              }
+            },
+            "TOP_RIGHT": {
+              "frames": 35,
+              "states": {
+                "UNSEEDED": 35
+              }
+            },
+            "BOTTOM_LEFT": {
+              "frames": 36,
+              "states": {
+                "UNSEEDED": 36
+              }
+            },
+            "BOTTOM_RIGHT": {
+              "frames": 35,
+              "states": {
+                "UNSEEDED": 35
+              }
+            },
+            "RELAXED": {
+              "frames": 54,
+              "states": {
+                "UNSEEDED": 54
+              }
+            },
+            "SWEEP": {
+              "frames": 91,
+              "states": {
+                "UNSEEDED": 91
+              }
+            },
+            "OPEN_PALM": {
+              "frames": 44,
+              "states": {
+                "UNSEEDED": 44
+              }
+            },
+            "HIDE": {
+              "frames": 9,
+              "states": {
+                "TRACKING": 8,
+                "UNCERTAIN": 1
+              }
+            },
+            "RECOVER": {
+              "frames": 54,
+              "states": {
+                "TRACKING": 13,
+                "UNCERTAIN": 7,
+                "LOST": 21,
+                "UNSEEDED": 13
+              }
+            }
+          },
+          "sourceFiles": [
+            {
+              "path": "src/watchglass/hand-geometry.ts",
+              "sha256": "9ea7176a1af0472309d525aeba5dcae6f18ab6844e63627c4ffa4987a9a67f90"
+            },
+            {
+              "path": "src/watchglass/index-geometry.ts",
+              "sha256": "e5358f0a1f2b4c1165d5f27bfdd1e7caf8542e02e102d299f67fdd9ddf456d41"
+            },
+            {
+              "path": "src/watchglass/hand-posture.ts",
+              "sha256": "0049a16f687bc5c66fe053cfac2b8e709d35c85d43a59e401d4f7e0ada9133f1"
+            },
+            {
+              "path": "src/reach/hand-detection-authority.ts",
+              "sha256": "4e6b4dc7c324a4c56d8a2d887f7a0a069d387541a99cf9a3cff336c20de6e070"
+            },
+            {
+              "path": "src/reach/index-ncc.ts",
+              "sha256": "0b9106d72fe85357423c68ea420230e38f03521fcdfc8c184303173279439da7"
+            },
+            {
+              "path": "src/reach/index-image-tracker.ts",
+              "sha256": "8505ade64cdeb3dbb515e5a06417d37c36f09facbd86c806b5f3546e9bcb796c"
+            },
+            {
+              "path": "src/watchglass/hand-provider.ts",
+              "sha256": "7acef992b16de065f4fcc40ef898205a9424127e688032ade39e6cc7b0999c96"
+            },
+            {
+              "path": "src/watchglass/hand-observation.ts",
+              "sha256": "b8c8e2ebb359e2d61c055b9531d9e630bcadf209823f153b1df83ee6a091a7f5"
+            },
+            {
+              "path": "src/reach/observation.ts",
+              "sha256": "9e4b9c52d94c3eeac399bcb6faef15d4548a747a3acce67914e544766054ae97"
+            }
+          ]
+        },
+        {
+          "label": "candidate",
+          "algorithm": {
+            "providerId": "watchglass.index-image",
+            "providerVersion": "2",
+            "algorithm": "CONDITIONED_MODEL_IMAGE_FUSION_V1",
+            "algorithmDigest": "a270516b632bd60c9cddc4e449334b09946491824e2d734685d7e681ac097f14"
+          },
+          "rawRecordsConsumed": 1467,
+          "rawGateRejections": 0,
+          "states": {
+            "TRACKING": 139,
+            "UNCERTAIN": 18,
+            "LOST": 45,
+            "UNSEEDED": 457
+          },
+          "externalIdentityChanges": 2,
+          "opticalEpochChangesWithinSameIdentity": 1,
+          "trackingCoordinateSources": {
+            "IMAGE": 47,
+            "FUSED": 87,
+            "MODEL": 5
+          },
+          "trackingModelSupport": {
+            "MISSING": 47,
+            "FULL_HAND": 92
+          },
+          "perPrompt": {
+            "CENTER": {
+              "frames": 52,
+              "states": {
+                "TRACKING": 51,
+                "UNCERTAIN": 1
+              }
+            },
+            "BOTTOM": {
+              "frames": 71,
+              "states": {
+                "TRACKING": 49,
+                "UNCERTAIN": 8,
+                "LOST": 14
+              }
+            },
+            "TOP": {
+              "frames": 52,
+              "states": {
+                "TRACKING": 16,
+                "UNCERTAIN": 3,
+                "LOST": 10,
+                "UNSEEDED": 23
+              }
+            },
+            "LEFT": {
+              "frames": 47,
+              "states": {
+                "UNSEEDED": 47
+              }
+            },
+            "RIGHT": {
+              "frames": 44,
+              "states": {
+                "UNSEEDED": 44
+              }
+            },
+            "TOP_LEFT": {
+              "frames": 35,
+              "states": {
+                "UNSEEDED": 35
+              }
+            },
+            "TOP_RIGHT": {
+              "frames": 35,
+              "states": {
+                "UNSEEDED": 35
+              }
+            },
+            "BOTTOM_LEFT": {
+              "frames": 36,
+              "states": {
+                "UNSEEDED": 36
+              }
+            },
+            "BOTTOM_RIGHT": {
+              "frames": 35,
+              "states": {
+                "UNSEEDED": 35
+              }
+            },
+            "RELAXED": {
+              "frames": 54,
+              "states": {
+                "UNSEEDED": 54
+              }
+            },
+            "SWEEP": {
+              "frames": 91,
+              "states": {
+                "UNSEEDED": 91
+              }
+            },
+            "OPEN_PALM": {
+              "frames": 44,
+              "states": {
+                "UNSEEDED": 44
+              }
+            },
+            "HIDE": {
+              "frames": 9,
+              "states": {
+                "TRACKING": 9
+              }
+            },
+            "RECOVER": {
+              "frames": 54,
+              "states": {
+                "TRACKING": 14,
+                "UNCERTAIN": 6,
+                "LOST": 21,
+                "UNSEEDED": 13
+              }
+            }
+          },
+          "sourceFiles": [
+            {
+              "path": "src/watchglass/hand-geometry.ts",
+              "sha256": "9ea7176a1af0472309d525aeba5dcae6f18ab6844e63627c4ffa4987a9a67f90"
+            },
+            {
+              "path": "src/watchglass/index-geometry.ts",
+              "sha256": "e5358f0a1f2b4c1165d5f27bfdd1e7caf8542e02e102d299f67fdd9ddf456d41"
+            },
+            {
+              "path": "src/watchglass/hand-posture.ts",
+              "sha256": "0049a16f687bc5c66fe053cfac2b8e709d35c85d43a59e401d4f7e0ada9133f1"
+            },
+            {
+              "path": "src/reach/hand-detection-authority.ts",
+              "sha256": "d077b2563e205d96ebb2220a9645c5489bdf2b9179c29c359275e4cf63882125"
+            },
+            {
+              "path": "src/reach/index-ncc.ts",
+              "sha256": "1faac83c98ab05ead55ff9898e6f7f2f9c775172223ccb400a859cd1e6a7111b"
+            },
+            {
+              "path": "src/reach/index-image-tracker.ts",
+              "sha256": "3dce2d94e20e01836730a27d33859637d45f12ba7a4055f1347693ef7693666f"
+            },
+            {
+              "path": "src/watchglass/hand-provider.ts",
+              "sha256": "407cafb926b02095dace86b039246e1c39669b3cce8234bf26014805d8db4d92"
+            },
+            {
+              "path": "src/watchglass/hand-observation.ts",
+              "sha256": "cc30022376790270362749612a3c1c8dcdf50f670a817534d83853da331df294"
+            },
+            {
+              "path": "src/reach/observation.ts",
+              "sha256": "e9a3a11f47100416951ae8ae1b22b25c0aec9b69ab65723337eeccc4df4fc65f"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "HISTORICAL_COMPOSITE_BOTTOM_WINDOWS_293",
+      "sourceAggregateSha256": "bbe844f5df4bbf895d08472ff9f399daaf9e2502fff9b55aa9b1c5e91989d8c0",
+      "inputHashes": {
+        "nativeFrameManifest": "c2c87f320438787de083aa2c9cb46811245e1440e57910a88ea1281211fd635c",
+        "trace": "1ecb33169a710a0680133f97ded8848cb830d4002c80f45c5d5344d7a9e108cc",
+        "video": "82befe2eb01d08390e415b2c0085e36c7ca6ba8d9932489c06d32f09c9af5794"
+      },
+      "containsHistoricalRenderedOverlay": true,
+      "method": {
+        "frames": 293,
+        "trackerInstancesPerArm": 1,
+        "adaptersPerArm": 1,
+        "promptBoundaryResets": false,
+        "manualHints": false,
+        "newNeuralInference": false,
+        "rawHypothesisChronologyPreserved": true,
+        "nearestHypothesisReuses": 97,
+        "maximumAbsoluteImageTraceOffsetMs": 53.900000002235174,
+        "selectedImageGapsOver300ms": [
+          {
+            "fromMs": 13990,
+            "toMs": 38007,
+            "durationMs": 24017
+          }
+        ],
+        "knownPixelOriginMetadataAvailable": false,
+        "sourceStableImportedFiles": true,
+        "runnerSha256": "f465f431ffcbca0ec614a3be9094635889c6a0b211ea95b0327eab1286763bbe"
+      },
+      "arms": [
+        {
+          "label": "c361-baseline",
+          "algorithm": {
+            "providerId": "watchglass.index-image",
+            "providerVersion": "1",
+            "algorithm": "BOUNDED_PHOTOMETRIC_NCC_V1",
+            "algorithmDigest": "491ae53971dc0352714c9849fdf2521a469b190130d6f408cc6cff4abf0f98eb"
+          },
+          "rawRecordsConsumed": 567,
+          "rawGateRejections": 0,
+          "states": {
+            "TRACKING": 158,
+            "UNCERTAIN": 14,
+            "LOST": 113,
+            "UNSEEDED": 8
+          },
+          "externalIdentityChanges": 6,
+          "opticalEpochChangesWithinSameIdentity": 0,
+          "trackingCoordinateSources": {
+            "LEGACY_OPTICAL": 158
+          },
+          "trackingModelSupport": {
+            "MISSING": 158
+          },
+          "perPrompt": {
+            "BOTTOM": {
+              "frames": 146,
+              "states": {
+                "TRACKING": 96,
+                "UNCERTAIN": 5,
+                "LOST": 45
+              }
+            },
+            "BOTTOM_LEFT": {
+              "frames": 72,
+              "states": {
+                "TRACKING": 40,
+                "UNCERTAIN": 7,
+                "LOST": 25
+              }
+            },
+            "BOTTOM_RIGHT": {
+              "frames": 75,
+              "states": {
+                "TRACKING": 22,
+                "UNCERTAIN": 2,
+                "LOST": 43,
+                "UNSEEDED": 8
+              }
+            }
+          },
+          "sourceFiles": [
+            {
+              "path": "src/watchglass/hand-geometry.ts",
+              "sha256": "9ea7176a1af0472309d525aeba5dcae6f18ab6844e63627c4ffa4987a9a67f90"
+            },
+            {
+              "path": "src/watchglass/index-geometry.ts",
+              "sha256": "e5358f0a1f2b4c1165d5f27bfdd1e7caf8542e02e102d299f67fdd9ddf456d41"
+            },
+            {
+              "path": "src/watchglass/hand-posture.ts",
+              "sha256": "0049a16f687bc5c66fe053cfac2b8e709d35c85d43a59e401d4f7e0ada9133f1"
+            },
+            {
+              "path": "src/reach/hand-detection-authority.ts",
+              "sha256": "4e6b4dc7c324a4c56d8a2d887f7a0a069d387541a99cf9a3cff336c20de6e070"
+            },
+            {
+              "path": "src/reach/index-ncc.ts",
+              "sha256": "0b9106d72fe85357423c68ea420230e38f03521fcdfc8c184303173279439da7"
+            },
+            {
+              "path": "src/reach/index-image-tracker.ts",
+              "sha256": "8505ade64cdeb3dbb515e5a06417d37c36f09facbd86c806b5f3546e9bcb796c"
+            },
+            {
+              "path": "src/watchglass/hand-provider.ts",
+              "sha256": "7acef992b16de065f4fcc40ef898205a9424127e688032ade39e6cc7b0999c96"
+            },
+            {
+              "path": "src/watchglass/hand-observation.ts",
+              "sha256": "b8c8e2ebb359e2d61c055b9531d9e630bcadf209823f153b1df83ee6a091a7f5"
+            },
+            {
+              "path": "src/reach/observation.ts",
+              "sha256": "9e4b9c52d94c3eeac399bcb6faef15d4548a747a3acce67914e544766054ae97"
+            }
+          ]
+        },
+        {
+          "label": "candidate",
+          "algorithm": {
+            "providerId": "watchglass.index-image",
+            "providerVersion": "2",
+            "algorithm": "CONDITIONED_MODEL_IMAGE_FUSION_V1",
+            "algorithmDigest": "a270516b632bd60c9cddc4e449334b09946491824e2d734685d7e681ac097f14"
+          },
+          "rawRecordsConsumed": 567,
+          "rawGateRejections": 0,
+          "states": {
+            "TRACKING": 215,
+            "UNCERTAIN": 4,
+            "LOST": 73,
+            "UNSEEDED": 1
+          },
+          "externalIdentityChanges": 3,
+          "opticalEpochChangesWithinSameIdentity": 2,
+          "trackingCoordinateSources": {
+            "IMAGE": 9,
+            "FUSED": 156,
+            "MODEL": 50
+          },
+          "trackingModelSupport": {
+            "MISSING": 9,
+            "FULL_HAND": 42,
+            "REGISTERED_INDEX": 164
+          },
+          "perPrompt": {
+            "BOTTOM": {
+              "frames": 146,
+              "states": {
+                "TRACKING": 136,
+                "UNCERTAIN": 1,
+                "LOST": 9
+              }
+            },
+            "BOTTOM_LEFT": {
+              "frames": 72,
+              "states": {
+                "TRACKING": 49,
+                "UNCERTAIN": 2,
+                "LOST": 21
+              }
+            },
+            "BOTTOM_RIGHT": {
+              "frames": 75,
+              "states": {
+                "TRACKING": 30,
+                "UNCERTAIN": 1,
+                "LOST": 43,
+                "UNSEEDED": 1
+              }
+            }
+          },
+          "sourceFiles": [
+            {
+              "path": "src/watchglass/hand-geometry.ts",
+              "sha256": "9ea7176a1af0472309d525aeba5dcae6f18ab6844e63627c4ffa4987a9a67f90"
+            },
+            {
+              "path": "src/watchglass/index-geometry.ts",
+              "sha256": "e5358f0a1f2b4c1165d5f27bfdd1e7caf8542e02e102d299f67fdd9ddf456d41"
+            },
+            {
+              "path": "src/watchglass/hand-posture.ts",
+              "sha256": "0049a16f687bc5c66fe053cfac2b8e709d35c85d43a59e401d4f7e0ada9133f1"
+            },
+            {
+              "path": "src/reach/hand-detection-authority.ts",
+              "sha256": "d077b2563e205d96ebb2220a9645c5489bdf2b9179c29c359275e4cf63882125"
+            },
+            {
+              "path": "src/reach/index-ncc.ts",
+              "sha256": "1faac83c98ab05ead55ff9898e6f7f2f9c775172223ccb400a859cd1e6a7111b"
+            },
+            {
+              "path": "src/reach/index-image-tracker.ts",
+              "sha256": "3dce2d94e20e01836730a27d33859637d45f12ba7a4055f1347693ef7693666f"
+            },
+            {
+              "path": "src/watchglass/hand-provider.ts",
+              "sha256": "407cafb926b02095dace86b039246e1c39669b3cce8234bf26014805d8db4d92"
+            },
+            {
+              "path": "src/watchglass/hand-observation.ts",
+              "sha256": "cc30022376790270362749612a3c1c8dcdf50f670a817534d83853da331df294"
+            },
+            {
+              "path": "src/reach/observation.ts",
+              "sha256": "e9a3a11f47100416951ae8ae1b22b25c0aec9b69ab65723337eeccc4df4fc65f"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "preservedNegativeHistory": [
+    {
+      "descriptorDigest": "973f7207b71cbdd3834ddda9e9dd43da6a74da82462c888d29802b746a89b24d",
+      "fixture": "HISTORICAL_COMPOSITE_BOTTOM_WINDOWS_293",
+      "baselineTracking": 158,
+      "candidateTracking": 148,
+      "baselineIdentityChanges": 6,
+      "candidateIdentityChanges": 7,
+      "disposition": "Preserved; extra partial-index abstentions motivated separately optically registered index continuation."
+    }
+  ],
+  "limitations": [
+    "No raw camera media, landmarks, coordinates, device, track or account identifiers appear in this aggregate.",
+    "Video PNGs and the nearest recorded neural hypotheses are different exposures. Reuse and offsets are reported; this is not valid production capture pairing.",
+    "The original raw neural misses remain misses; no additional neural inference, sensor access, image recognition or ground-truth label was created.",
+    "Prompt labels are instructions, not verified physical hand locations or gesture truth.",
+    "The older bottom-window video contains a baked historical hand overlay, which may help or harm optical matching. It also has an unobserved24.017second image gap; its long spans are not continuous measured loss.",
+    "TRACKING counts are producer-qualified observations before readiness, sample collection, calibration and independent validation; greater coverage does not prove better accuracy.",
+    "The clean recording retains long model-missing intervals: left/right/corners remain unseeded. The new producer cannot recover a finger from absent model and lost image evidence.",
+    "Independent3% held-out accuracy,150ms capture freshness, source integrity and manual-selection exclusions are unchanged.",
+    "The two historical recordings do not declare pixel-origin timestamps. Their replay cannot verify the new known-origin freshness path; dedicated controller and rendering regressions do so."
+  ],
+  "sourceCommit": "5107ce22823a65f02735fbff50698172c86578a1",
+  "preservedPriorProjectionSha256": "aeea53a1a0ed5852f0c7d9e1d334300c294568b31c4b87a79d35e92ac52534ed",
+  "freshnessSuccessor": {
+    "knownPixelOriginAging": "Earliest known origin/dispatch time for controller entry, sample insertion, display aging and Stage expiration; dispatch evidence/filter clocks preserved.",
+    "historicalRecordingOrigin": "Unavailable; historical recordings retain dispatch-based fallback. These replays do not establish source-origin age acceptance.",
+    "behaviorCountsUnchangedFromPriorProjection": true
+  },
+  "uiImpactChecks": {
+    "testsPassed": 38,
+    "testFiles": 4,
+    "reportSha256": "6fa0ca7282e1627ec3b611e36619b75f924554c5b93cc5bce4b5c4ee9b542a54",
+    "scopedStrictTypeScript": "PASS",
+    "eslint": "PASS",
+    "prettier": "PASS",
+    "sourceFiles": [
+      {
+        "path": "src/reach/ReachLaboratory.tsx",
+        "sha256": "38870d026018d2575f81648c19736fc5ebe41dbd876581c68a1de971ff44fc41"
+      },
+      {
+        "path": "src/reach/ReachStage.tsx",
+        "sha256": "9ff9f00879cb29e96727f23ea3512dfa2ec44a7f4636a72db93e05287498df62"
+      },
+      {
+        "path": "src/reach/ReachLaboratory-source-continuity.test.tsx",
+        "sha256": "e8d1a28317e5916f252bcb7bfb52b12b8c1476ae3278f0702c4103aab9f092ec"
+      },
+      {
+        "path": "src/reach/ReachStage.test.tsx",
+        "sha256": "b91df7bbabfaa3c591a545d642536043b18a31d733e8d44d0562f1a515c3e30e"
+      }
+    ]
+  }
+}

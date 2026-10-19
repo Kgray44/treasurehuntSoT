@@ -1,0 +1,458 @@
+{
+  "version": 1,
+  "classification": "engineering_evidence",
+  "evidenceTier": "DEVELOPMENT_ONLY",
+  "algorithm": {
+    "providerId": "watchglass.index-image",
+    "providerVersion": "1",
+    "algorithm": "BOUNDED_PHOTOMETRIC_NCC_V1",
+    "algorithmDigest": "8b2846e3959552912bf978c531d3099d56f15d7f9648ce08d8f23feb0fc63498"
+  },
+  "physicalAccuracyQualified": false,
+  "protectedQualification": false,
+  "sourceTreeSha256": "d184402854188ae3de1a5ddf02cf8eb12c928785e7458386eef2fd137251df21",
+  "role": "ANALYTIC_TEXTURE_TRAJECTORY_CHARACTERIZATION",
+  "privateCharacterizationSha256": "ad4df2ca1654fff42f376e630f0bf04f0f5a7926ddad06cb2ad5922a3d1a57cc",
+  "descriptorSha256": "8b2846e3959552912bf978c531d3099d56f15d7f9648ce08d8f23feb0fc63498",
+  "algorithmDescriptor": {
+    "algorithm": "BOUNDED_PHOTOMETRIC_NCC_V1",
+    "policy": {
+      "radius": 7,
+      "minimumRadius": 4,
+      "search": 24,
+      "peakExclusionRadius": 3,
+      "minimumCorrelation": 0.75,
+      "minimumSeparation": 0.035,
+      "minimumTexture": 6,
+      "minimumStructure": 0.008,
+      "reverseSearch": 4,
+      "maximumForwardBackward": 2,
+      "maximumRecoveryMs": 1200,
+      "maximumCaptureAgeMs": 150,
+      "modelAgreementRadius": 8,
+      "predictionLimit": 16,
+      "maximumMotionStep": 32,
+      "maximumVelocity": 240,
+      "minimumGridDimension": 20,
+      "maximumGridDimension": 640,
+      "maximumAnalysisDimension": 320,
+      "maximumAdaptiveOnlyMs": 1200,
+      "maximumReferenceDisagreement": 2,
+      "referenceRefreshMinimumFrames": 3,
+      "referenceRefreshMinimumSpanMs": 120,
+      "referenceRefreshMaximumGapMs": 250,
+      "referenceRefreshModelAgreement": 2
+    },
+    "searchDomain": "PREVIOUS_AND_PREDICTED_SQUARE_UNION",
+    "searchKernel": "EXACT_INTEGER_INTEGRAL_MOMENTS_WITH_ORIGINAL_NCC_PRODUCT_AND_TIE_ORDER",
+    "templateUpdate": {
+      "reference": "STABLE_APPEARANCE_PATCH_AND_FRAME_WITH_TIGHT_MODEL_SUPPORTED_REFRESH_ONLY",
+      "adaptive": "LAST_ACCEPTED_IMAGE_PATCH",
+      "selection": "PREFER_FULL_QUALITY_REFERENCE_WITH_BOUNDED_ADAPTIVE_FALLBACK",
+      "consistency": "ABSTAIN_WHEN_BOTH_FULL_QUALITY_MATCHES_DISAGREE",
+      "reverse": "REFERENCE_TO_LAST_SUPPORTED_REFERENCE_FRAME_AND_ADAPTIVE_TO_PREVIOUS_ACCEPTED_FRAME",
+      "refresh": "ONLY_FAILED_REFERENCE_AND_FULL_QUALITY_ADAPTIVE_WITH_TIGHT_SOURCE_SCOPED_CONFIRMED_FULL_POINT",
+      "refreshFailures": [
+        "APPEARANCE_MISMATCH",
+        "FORWARD_BACKWARD_DISAGREEMENT"
+      ],
+      "stableSuccess": "NEVER_REFRESH_AND_CLEAR_REFRESH_COHORT",
+      "referenceExpiry": "NO_REFRESH_AFTER_ADAPTIVE_ONLY_BOUND",
+      "coordinateRebind": "NEVER_SNAP_TO_MODEL_OR_CHANGE_IMAGE_IDENTITY"
+    },
+    "lifecycle": "PREPARE_PIXELS_WITHOUT_COMMIT_THEN_SAME_CAPTURE_AUTHORITY_AND_FINAL_FRESHNESS_COMMIT",
+    "modelContrary": "LATCH_UNTIL_COHERENT_POINT_OR_NEW_HINT",
+    "wholeHandAuthority": {
+      "version": 2,
+      "promotion": {
+        "minimumFrames": 3,
+        "minimumSpanMs": 120,
+        "maximumGapMs": 250,
+        "source": "EXACT_MODEL_TRACK_AND_CONTEXT"
+      },
+      "contrary": "IMMEDIATE_COMPATIBLE_PAUSE_THEN_CONFIRMED_LATCH",
+      "ambiguous": "FRAME_LOCAL_ABSTENTION",
+      "conflict": "FRAME_LOCAL_PAUSE_WITHOUT_PROMOTION",
+      "positive": "COMPATIBLE_TEMPORAL_PROMOTION_WITHOUT_COORDINATE_REBIND",
+      "manualHint": "CANNOT_BYPASS_AVAILABLE_AUTHORITY",
+      "unavailable": "IMAGE_FALLBACK_WITH_RETAINED_CONTRARY",
+      "matchedPoint": "CURRENT_ACCEPTED_IMAGE_MATCH_DISPLAY_ONLY_NEVER_ACTION_OR_CALIBRATION",
+      "detection": {
+        "palm": {
+          "minimumSpan": 0.035,
+          "maximumSpan": 0.65,
+          "minimumAlong": 0.05,
+          "maximumAlong": 0.95,
+          "minimumRowSeparation": 0.05,
+          "maximumArchRatio": 0.65
+        },
+        "fingers": {
+          "minimumComplete": 2,
+          "minimumChainPalmRatio": 0.45,
+          "maximumChainPalmRatio": 3.5,
+          "minimumBonePalmRatio": 0.04,
+          "maximumBonePalmRatio": 1.5,
+          "minimumBone": 0.001,
+          "minimumMiddleProximalRatio": 0.22,
+          "maximumMiddleProximalRatio": 1.4,
+          "minimumDistalProximalRatio": 0.18,
+          "maximumDistalProximalRatio": 1.2
+        },
+        "index": {
+          "minimumProximalPalmRatio": 0.1,
+          "minimumDistalPalmRatio": 0.055,
+          "minimumStraightness": 0.78,
+          "minimumPipAlignment": 0.2,
+          "minimumDipAlignment": 0
+        },
+        "open": {
+          "minimumStraightness": 0.93,
+          "minimumPipAlignment": 0.7,
+          "minimumDipAlignment": 0.7,
+          "minimumCount": 2
+        },
+        "similar": {
+          "straightnessTolerance": 0.1,
+          "minimumPipAlignment": 0.3,
+          "minimumDipAlignment": 0.3,
+          "minimumCount": 2
+        },
+        "competing": {
+          "minimumStraightness": 0.96,
+          "minimumPipAlignment": 0.85,
+          "minimumDipAlignment": 0.85,
+          "minimumIndexAlignment": 0.35
+        },
+        "pinchPalmRatio": 0.18
+      }
+    },
+    "manualAnchor": "NEW_GENERATION",
+    "grayscale": [
+      77,
+      150,
+      29,
+      8
+    ]
+  },
+  "input": "Deterministic textured patch on static low-texture background,320x240 analysis image; triangular motion with reversals. No personal images or landmarks.",
+  "scope": "Core algorithm CPU only in Node, measured under development load; excludes browser readback, model inference, rendering and real hand appearance changes. Trajectories isolate optical matching with no whole-hand authority input; temporal arbitration is covered separately by focused tests. An emitted point is checked against known synthetic patch position; abstention is recorded rather than forced passing.",
+  "syntheticGroundTruthOnly": true,
+  "gestureAuthorityIncludedInTrajectories": false,
+  "results": [
+    {
+      "fps": 10,
+      "speedFrameWidthsPerSecond": 0.3,
+      "testFrames": 60,
+      "trackingFrames": 60,
+      "abstentionFrames": 0,
+      "states": {
+        "TRACKING": 60
+      },
+      "maximumAcceptedErrorAnalysisPixels": 2.842170943040401e-14,
+      "identityChangesOnEmittedPoints": 0,
+      "coreCpuMs": {
+        "median": 0.9522999999999797,
+        "p95": 5.171099999999967,
+        "maximum": 11.851499999999987
+      }
+    },
+    {
+      "fps": 10,
+      "speedFrameWidthsPerSecond": 0.6,
+      "testFrames": 60,
+      "trackingFrames": 60,
+      "abstentionFrames": 0,
+      "states": {
+        "TRACKING": 60
+      },
+      "maximumAcceptedErrorAnalysisPixels": 2.842170943040401e-14,
+      "identityChangesOnEmittedPoints": 0,
+      "coreCpuMs": {
+        "median": 0.5810000000000173,
+        "p95": 1.2201000000000022,
+        "maximum": 1.9711000000000354
+      }
+    },
+    {
+      "fps": 10,
+      "speedFrameWidthsPerSecond": 1,
+      "testFrames": 60,
+      "trackingFrames": 0,
+      "abstentionFrames": 60,
+      "states": {
+        "UNCERTAIN": 1,
+        "LOST": 12,
+        "UNSEEDED": 47
+      },
+      "maximumAcceptedErrorAnalysisPixels": null,
+      "identityChangesOnEmittedPoints": 0,
+      "coreCpuMs": {
+        "median": 0.024999999999977263,
+        "p95": 0.09959999999995262,
+        "maximum": 0.34039999999998827
+      }
+    },
+    {
+      "fps": 10,
+      "speedFrameWidthsPerSecond": 2,
+      "testFrames": 60,
+      "trackingFrames": 0,
+      "abstentionFrames": 60,
+      "states": {
+        "UNCERTAIN": 1,
+        "LOST": 12,
+        "UNSEEDED": 47
+      },
+      "maximumAcceptedErrorAnalysisPixels": null,
+      "identityChangesOnEmittedPoints": 0,
+      "coreCpuMs": {
+        "median": 0.037499999999965894,
+        "p95": 0.1984000000000492,
+        "maximum": 2.6441999999999553
+      }
+    },
+    {
+      "fps": 20,
+      "speedFrameWidthsPerSecond": 0.3,
+      "testFrames": 60,
+      "trackingFrames": 60,
+      "abstentionFrames": 0,
+      "states": {
+        "TRACKING": 60
+      },
+      "maximumAcceptedErrorAnalysisPixels": 2.842170943040401e-14,
+      "identityChangesOnEmittedPoints": 0,
+      "coreCpuMs": {
+        "median": 0.5768999999999096,
+        "p95": 0.8930000000000291,
+        "maximum": 1.02699999999993
+      }
+    },
+    {
+      "fps": 20,
+      "speedFrameWidthsPerSecond": 0.6,
+      "testFrames": 60,
+      "trackingFrames": 60,
+      "abstentionFrames": 0,
+      "states": {
+        "TRACKING": 60
+      },
+      "maximumAcceptedErrorAnalysisPixels": 2.842170943040401e-14,
+      "identityChangesOnEmittedPoints": 0,
+      "coreCpuMs": {
+        "median": 0.6238999999999351,
+        "p95": 1.184500000000071,
+        "maximum": 1.2095000000000482
+      }
+    },
+    {
+      "fps": 20,
+      "speedFrameWidthsPerSecond": 1,
+      "testFrames": 60,
+      "trackingFrames": 60,
+      "abstentionFrames": 0,
+      "states": {
+        "TRACKING": 60
+      },
+      "maximumAcceptedErrorAnalysisPixels": 2.842170943040401e-14,
+      "identityChangesOnEmittedPoints": 0,
+      "coreCpuMs": {
+        "median": 0.8563000000000329,
+        "p95": 1.6572999999999638,
+        "maximum": 2.25630000000001
+      }
+    },
+    {
+      "fps": 20,
+      "speedFrameWidthsPerSecond": 2,
+      "testFrames": 60,
+      "trackingFrames": 4,
+      "abstentionFrames": 56,
+      "states": {
+        "UNCERTAIN": 4,
+        "LOST": 52,
+        "TRACKING": 4
+      },
+      "maximumAcceptedErrorAnalysisPixels": 7.105427357601002e-15,
+      "identityChangesOnEmittedPoints": 0,
+      "coreCpuMs": {
+        "median": 0.0866999999999507,
+        "p95": 0.5728000000000293,
+        "maximum": 0.9968000000000075
+      }
+    },
+    {
+      "fps": 30,
+      "speedFrameWidthsPerSecond": 0.3,
+      "testFrames": 60,
+      "trackingFrames": 60,
+      "abstentionFrames": 0,
+      "states": {
+        "TRACKING": 60
+      },
+      "maximumAcceptedErrorAnalysisPixels": 2.842170943040401e-14,
+      "identityChangesOnEmittedPoints": 0,
+      "coreCpuMs": {
+        "median": 0.8876999999999953,
+        "p95": 1.862799999999993,
+        "maximum": 10.015999999999963
+      }
+    },
+    {
+      "fps": 30,
+      "speedFrameWidthsPerSecond": 0.6,
+      "testFrames": 60,
+      "trackingFrames": 60,
+      "abstentionFrames": 0,
+      "states": {
+        "TRACKING": 60
+      },
+      "maximumAcceptedErrorAnalysisPixels": 2.842170943040401e-14,
+      "identityChangesOnEmittedPoints": 0,
+      "coreCpuMs": {
+        "median": 0.6581999999999653,
+        "p95": 1.1749999999999545,
+        "maximum": 1.3994000000000142
+      }
+    },
+    {
+      "fps": 30,
+      "speedFrameWidthsPerSecond": 1,
+      "testFrames": 60,
+      "trackingFrames": 60,
+      "abstentionFrames": 0,
+      "states": {
+        "TRACKING": 60
+      },
+      "maximumAcceptedErrorAnalysisPixels": 2.842170943040401e-14,
+      "identityChangesOnEmittedPoints": 0,
+      "coreCpuMs": {
+        "median": 0.7187000000000126,
+        "p95": 0.990099999999984,
+        "maximum": 1.3547999999999547
+      }
+    },
+    {
+      "fps": 30,
+      "speedFrameWidthsPerSecond": 2,
+      "testFrames": 60,
+      "trackingFrames": 60,
+      "abstentionFrames": 0,
+      "states": {
+        "TRACKING": 60
+      },
+      "maximumAcceptedErrorAnalysisPixels": 2.842170943040401e-14,
+      "identityChangesOnEmittedPoints": 0,
+      "coreCpuMs": {
+        "median": 0.9147000000000389,
+        "p95": 1.7395999999999958,
+        "maximum": 2.180499999999938
+      }
+    },
+    {
+      "fps": 60,
+      "speedFrameWidthsPerSecond": 0.3,
+      "testFrames": 60,
+      "trackingFrames": 60,
+      "abstentionFrames": 0,
+      "states": {
+        "TRACKING": 60
+      },
+      "maximumAcceptedErrorAnalysisPixels": 1.4210854715202004e-14,
+      "identityChangesOnEmittedPoints": 0,
+      "coreCpuMs": {
+        "median": 0.8663999999999987,
+        "p95": 1.2415999999999485,
+        "maximum": 1.575900000000047
+      }
+    },
+    {
+      "fps": 60,
+      "speedFrameWidthsPerSecond": 0.6,
+      "testFrames": 60,
+      "trackingFrames": 60,
+      "abstentionFrames": 0,
+      "states": {
+        "TRACKING": 60
+      },
+      "maximumAcceptedErrorAnalysisPixels": 2.842170943040401e-14,
+      "identityChangesOnEmittedPoints": 0,
+      "coreCpuMs": {
+        "median": 0.5910999999999831,
+        "p95": 1.1598000000000184,
+        "maximum": 2.007000000000062
+      }
+    },
+    {
+      "fps": 60,
+      "speedFrameWidthsPerSecond": 1,
+      "testFrames": 60,
+      "trackingFrames": 60,
+      "abstentionFrames": 0,
+      "states": {
+        "TRACKING": 60
+      },
+      "maximumAcceptedErrorAnalysisPixels": 2.842170943040401e-14,
+      "identityChangesOnEmittedPoints": 0,
+      "coreCpuMs": {
+        "median": 0.5936999999998989,
+        "p95": 1.1510000000000673,
+        "maximum": 1.3228000000000293
+      }
+    },
+    {
+      "fps": 60,
+      "speedFrameWidthsPerSecond": 2,
+      "testFrames": 60,
+      "trackingFrames": 60,
+      "abstentionFrames": 0,
+      "states": {
+        "TRACKING": 60
+      },
+      "maximumAcceptedErrorAnalysisPixels": 2.842170943040401e-14,
+      "identityChangesOnEmittedPoints": 0,
+      "coreCpuMs": {
+        "median": 0.5704000000000633,
+        "p95": 0.7463999999999942,
+        "maximum": 1.2211999999999534
+      }
+    }
+  ],
+  "preservedLimitations": [
+    "High speed/low cadence can exceed the bounded union of previous/predicted24pixel searches and unchanged32pixel motion policy, and correctly abstain.",
+    "Texture rotation/blur/occlusion/repeated patterns and clipped-edge negative checks are in focused unit tests.",
+    "This is not a physical finger accuracy or latency qualification.",
+    "No actionable point is emitted for uncertain, lost or unseeded states. A separate fresh gray image match may be displayed during gesture pause and never enters samples or calibration. An actionable point is checked only against the synthetic patch position.",
+    "The concurrent Node run includes scheduling and JIT variation; measured CPU times are not hard bounds and exclude readback, inference, rendering and browser scheduling.",
+    "The deterministic patch does not reproduce every real fingertip appearance, end-on geometry, skin texture, blur, background distractor or illumination."
+  ],
+  "reversalRegressionTracking": [
+    {
+      "fps": 10,
+      "imageWidthsPerSecond": 0.6,
+      "historicalPreviousPredictedOnly": 25,
+      "currentTracked": 60,
+      "total": 60
+    },
+    {
+      "fps": 20,
+      "imageWidthsPerSecond": 1,
+      "historicalPreviousPredictedOnly": 15,
+      "currentTracked": 60,
+      "total": 60
+    },
+    {
+      "fps": 30,
+      "imageWidthsPerSecond": 2,
+      "historicalPreviousPredictedOnly": 39,
+      "currentTracked": 60,
+      "total": 60
+    }
+  ],
+  "ambiguityRegression": {
+    "scenario": "Identical candidate in the previous-position square but outside the predicted-position square",
+    "previousPredictedOnly": "POINT_EMITTED",
+    "currentUnion": "UNCERTAIN_APPEARANCE_AMBIGUOUS_NO_POINT",
+    "thresholdsUnchanged": true
+  }
+}

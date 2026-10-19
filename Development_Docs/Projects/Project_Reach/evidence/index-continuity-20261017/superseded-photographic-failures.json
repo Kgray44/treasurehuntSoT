@@ -1,0 +1,327 @@
+{
+  "version": 5,
+  "classification": "engineering_evidence",
+  "evidenceTier": "DEVELOPMENT_ONLY",
+  "purpose": "Retain eight historical source-bound development runs throughacda, including failed held-out accuracy checks and later entry/source/freshness/evidence interruptions. Each retains its own outcome; a future correction cannot rewrite it. Sanitized metadata only; no owner images, landmarks, coefficients or private paths.",
+  "appSource": {
+    "commit": "2d097dcbdf6a350f854ef6387fe70ff493a6ac73",
+    "algorithm": "BOUNDED_PHOTOMETRIC_NCC_V1",
+    "algorithmDigest": "b48867498df1d561f103eaeb1351a9c039597a08244ec8ac28d1211bb2359783"
+  },
+  "fixture": "PUBLIC_PHOTOGRAPHIC_HAND_TRANSLATIONS_THROUGH_REAL_PINNED_MODEL_AND_IMAGE_TRACKER",
+  "noOwnerFootage": true,
+  "physicalQualification": false,
+  "protectedQualification": false,
+  "acceptanceThresholdRawP95DiagonalFraction": 0.03,
+  "gateWasPreserved": true,
+  "causeDiagnosis": "Repeated-template image-patch walk was identified in a second diagnostic; stable-reference correction is being implemented separately. This file records failure observations and does not prove the repair.",
+  "runs": [
+    {
+      "id": "pre-correction-baseline15",
+      "outcome": "14 passed; photographic calibration case failed relative independent check",
+      "relative": {
+        "mapping": "INDEX_TIP_DISPLACEMENT_V2",
+        "status": "FAILED",
+        "rawValidationP95PercentUiRounded": 7.44,
+        "rawValidationJitterP95PercentUiRounded": 0.93,
+        "exactRawValidationP95DiagonalFraction": null,
+        "exactRawValidationJitterP95DiagonalFraction": null,
+        "trainingMetrics": null,
+        "missingDataReason": "Original test failed before exporting the relative aggregate. Only two-decimal UI percentages survived in its failure snapshot; do not treat those rounded values as full-precision measurements."
+      },
+      "artifactHashes": {
+        "failureSnapshotSha256": "1562743245ac0df6d8da127d95ff7db17f978b2dfa83066cf5425c9c4dda64de",
+        "playwrightReportSha256": "ad4176048ca5a90623a936cd1212de44ddc5aa9ab98e399d6c249718084b75a4"
+      }
+    },
+    {
+      "id": "pre-correction-diagnostic-repeat",
+      "outcome": "Photographic calibration completed all targets; relative independent check correctly failed",
+      "relative": {
+        "mapping": "INDEX_TIP_DISPLACEMENT_V2",
+        "status": "FAILED",
+        "trainingCount": 75,
+        "trainingResidualP95DiagonalFraction": 0.01677947519950158,
+        "trainingResidualMedianDiagonalFraction": 0.0063762005758100865,
+        "validationCount": 75,
+        "rawValidationP95DiagonalFraction": 0.0381093353427039,
+        "rawValidationMedianDiagonalFraction": 0.02244254807933326,
+        "rawValidationJitterP95DiagonalFraction": 0.008725327103740774,
+        "edgeValidationP95DiagonalFraction": 0.03653951004080562
+      },
+      "absolute": {
+        "mapping": "INDEX_TIP_AXIS_RIDGE_V1",
+        "status": "VALIDATED",
+        "trainingCount": 135,
+        "trainingResidualP95DiagonalFraction": 0.006552717629237544,
+        "trainingResidualMedianDiagonalFraction": 0.003459588780902733,
+        "validationCount": 75,
+        "rawValidationP95DiagonalFraction": 0.00639085094548719,
+        "rawValidationMedianDiagonalFraction": 0.003868331788325117,
+        "rawValidationJitterP95DiagonalFraction": 0.006756047667866618,
+        "edgeValidationP95DiagonalFraction": 0.00639085094548719
+      },
+      "artifactHashes": {
+        "aggregateSha256": "72254790d025ca668b6c864905b5599a4ee2488f789ed215951cee252d3810d6",
+        "playwrightReportSha256": "f52dbdaeccce16c064ba9beb9550599b99cd33cbd4c4901f8ad14c1b44e39b57"
+      }
+    },
+    {
+      "id": "stable-reference-baseline-before-trial-entry-fix",
+      "appSource": {
+        "commit": "a2b7f74cb8e6a2e2e1ab376878784a947372c8eb",
+        "algorithmDigest": "fbde35c0b737cd4da2211127d6f992f4b4c2573bfbd68e111b82773365f98f2b"
+      },
+      "sourceStableDuringRun": true,
+      "outcome": "13 passed; 2 failed",
+      "photographicCase": {
+        "status": "FAILED_BEFORE_CALIBRATION_STARTED",
+        "failedAssertion": "Target 1 of 9 visible",
+        "trainingStarted": false,
+        "heldOutAccuracyReached": false,
+        "rawValidationP95DiagonalFraction": null,
+        "rawValidationJitterP95DiagonalFraction": null,
+        "trainingMetrics": null,
+        "reason": "Native Begin dispatch raced an enabled-to-disabled150ms freshness transition before target collection. Trace supports disabled-control suppression or handler early-return; no relative accuracy was computed.",
+        "clickTimelineTraceMs": {
+          "readyExpectationResolved": 191145.423,
+          "beginBeforeSnapshotReadyEnabled": 191186.07,
+          "driverEnabledStableCheck": 191404.639,
+          "inputSnapshotStaleDisabled": 191443.282,
+          "nativeClickDispatch": 191447.549,
+          "nativeClickDone": 191460.309,
+          "afterSnapshotStillPrepare": 191466.696,
+          "targetAssertionEndsReadyEnabledPrepare": 201490.478
+        },
+        "initialModelObservationCount": 6,
+        "modelObservationCountAtRecoveredReady": 61,
+        "initialRecentModelHz": 3.2,
+        "initialAdaptiveTargetHz": 4.2,
+        "initialCaptureIntervalP95Ms": 363.6,
+        "initialCaptureToInferenceP95Ms": 127.1,
+        "entryGraceMs": 300,
+        "strictCollectionFreshnessMs": 150
+      },
+      "controlledSweepCase": {
+        "status": "FAILED_FRESHNESS_CONTINUITY_ASSERTION",
+        "moreThan60WorkerResultsAssertionPassed": true,
+        "waitingForFreshTrackingMessagesInFailedAssertion": 52,
+        "rawValidationP95DiagonalFraction": null,
+        "rawValidationJitterP95DiagonalFraction": null,
+        "trainingMetrics": null,
+        "interpretation": "The actual worker still produced more than60 results, but freshness interruptions were honestly reported. External load cause was not established. This is preserved as a failed software continuity run, not a new calibration accuracy measurement."
+      },
+      "gateWasPreserved": true,
+      "artifactHashes": {
+        "playwrightReportSha256": "a4691df77410a6fc1e074594fdc4fffa07cfe7563f6f9a43468b782df71511c9",
+        "sourceReceiptSha256": "65a6ac6d4e2b52adbb58a23dd5b47909eb8767f64b45af48445238f5faa0af7b",
+        "readOnlyDiagnosisSha256": "553bd79ec00d2ecb1039d5794ce0a7eb01c43d556e0571fde749a8f44f18d454"
+      },
+      "physicalQualification": false,
+      "protectedQualification": false
+    },
+    {
+      "id": "trial-entry-fixed-photographic-headless-before-runtime-restart",
+      "appSource": {
+        "commit": "84a5f988e19bc6e69cedf55b5376311f8e88ec00",
+        "algorithmDigest": "fbde35c0b737cd4da2211127d6f992f4b4c2573bfbd68e111b82773365f98f2b"
+      },
+      "sourceStableDuringRun": true,
+      "caseCounts": {
+        "failed": 1
+      },
+      "details": "Absolute nine-target training and five independent checks validated. Relative training lost image source identity before target5; no relative held-out accuracy was computed.",
+      "conditions": "Existing gaming load and long-running development server; fewer than5model updates/s, approximately22ms image tracking and121ms model inference were diagnosed. These are context observations, not controlled causal attribution.",
+      "absoluteIndependentValidationCompleted": true,
+      "relativeIndependentValidationCompleted": false,
+      "rawRelativeValidationP95DiagonalFraction": null,
+      "rawRelativeValidationJitterP95DiagonalFraction": null,
+      "failedCases": [
+        {
+          "title": "photographic worker completes nine real-landmark holds and five independent checks",
+          "status": "failed",
+          "durationMs": 121063,
+          "locator": "getByLabel('Target 5 of 5', { exact: true })",
+          "waitingForFreshMessagesInFailedAssertion": 0
+        }
+      ],
+      "acceptanceThresholdRawP95DiagonalFraction": 0.03,
+      "gateWasPreserved": true,
+      "artifactHashes": {
+        "playwrightReportSha256": "3c4585ba8c7c08ba887522fd81e2ddf6dfade081fdfcc2e1fdb21911231c0e43",
+        "sourceReceiptSha256": "7707d59c13665969abc6c0a54aa406c36a7dfc42e412ec6cda6126edfe48b0e8"
+      },
+      "physicalQualification": false,
+      "protectedQualification": false
+    },
+    {
+      "id": "trial-entry-fixed-photographic-headed-before-runtime-restart",
+      "appSource": {
+        "commit": "84a5f988e19bc6e69cedf55b5376311f8e88ec00",
+        "algorithmDigest": "fbde35c0b737cd4da2211127d6f992f4b4c2573bfbd68e111b82773365f98f2b"
+      },
+      "sourceStableDuringRun": true,
+      "caseCounts": {
+        "failed": 1
+      },
+      "details": "Absolute training lost model identity after four saved targets. No independent accuracy was computed.",
+      "conditions": "Existing gaming load, headed browser, original long-running development server.",
+      "absoluteIndependentValidationCompleted": false,
+      "relativeIndependentValidationCompleted": false,
+      "rawRelativeValidationP95DiagonalFraction": null,
+      "rawRelativeValidationJitterP95DiagonalFraction": null,
+      "failedCases": [
+        {
+          "title": "photographic worker completes nine real-landmark holds and five independent checks",
+          "status": "failed",
+          "durationMs": 40771,
+          "locator": "getByLabel('Target 5 of 9', { exact: true })",
+          "waitingForFreshMessagesInFailedAssertion": 0
+        }
+      ],
+      "acceptanceThresholdRawP95DiagonalFraction": 0.03,
+      "gateWasPreserved": true,
+      "artifactHashes": {
+        "playwrightReportSha256": "0efc3b36158cd21bda0938af2d5d4cb60153d0070825469e19757cff6ae74452",
+        "sourceReceiptSha256": "7707d59c13665969abc6c0a54aa406c36a7dfc42e412ec6cda6126edfe48b0e8"
+      },
+      "physicalQualification": false,
+      "protectedQualification": false
+    },
+    {
+      "id": "same-source-baseline-after-owned-runtime-restart",
+      "appSource": {
+        "commit": "84a5f988e19bc6e69cedf55b5376311f8e88ec00",
+        "algorithmDigest": "fbde35c0b737cd4da2211127d6f992f4b4c2573bfbd68e111b82773365f98f2b"
+      },
+      "sourceStableDuringRun": true,
+      "caseCounts": {
+        "passed": 12,
+        "failed": 3
+      },
+      "details": "Twelve of15cases passed. Photographic lifecycle case did not enter calibration. Photographic full-case ABS training/check validated, REL training completed, but REL independent validation stalled after one saved target while waiting for fresh eligible tracking. Controlled-pose continuity assertion reported fresh-tracking interruptions. No completed relative held-out accuracy result was computed.",
+      "conditions": "Only the owned Reach development server was gracefully restarted. Source stayed84a5; owner gaming load and other previews remained running. This run retained3 failures, so the runtime restart did not prove resolution.",
+      "absoluteIndependentValidationCompleted": true,
+      "relativeIndependentValidationCompleted": false,
+      "rawRelativeValidationP95DiagonalFraction": null,
+      "rawRelativeValidationJitterP95DiagonalFraction": null,
+      "failedCases": [
+        {
+          "title": "photographic video through the actual worker tracks noise, motion, partial occlusion and a second hand, then cleans up",
+          "status": "failed",
+          "durationMs": 23191,
+          "locator": "getByRole('button', { name: 'Pause calibration' })",
+          "waitingForFreshMessagesInFailedAssertion": 0
+        },
+        {
+          "title": "photographic worker completes nine real-landmark holds and five independent checks",
+          "status": "failed",
+          "durationMs": 99707,
+          "locator": "getByLabel('Target 3 of 5', { exact: true })",
+          "waitingForFreshMessagesInFailedAssertion": 0
+        },
+        {
+          "title": "D0 controlled poses recover in the actual laboratory without losing completed targets",
+          "status": "failed",
+          "durationMs": 44437,
+          "locator": null,
+          "waitingForFreshMessagesInFailedAssertion": 67
+        }
+      ],
+      "acceptanceThresholdRawP95DiagonalFraction": 0.03,
+      "gateWasPreserved": true,
+      "artifactHashes": {
+        "playwrightReportSha256": "4f04a80b9c18e337b82c543745ec320d430e50ba0b846642b215b0394d5b3715",
+        "sourceReceiptSha256": "7707d59c13665969abc6c0a54aa406c36a7dfc42e412ec6cda6126edfe48b0e8"
+      },
+      "physicalQualification": false,
+      "protectedQualification": false
+    },
+    {
+      "id": "cpu-throughput-source-before-fundamental-empty-entry-fix",
+      "appSource": {
+        "commit": "dc96ae72c71e538cf8f7039a266293b16952b385",
+        "algorithmDigest": "8b2846e3959552912bf978c531d3099d56f15d7f9648ce08d8f23feb0fc63498"
+      },
+      "sourceStableDuringRun": true,
+      "caseCounts": {
+        "passed": 1,
+        "failed": 2
+      },
+      "details": "Three affected actual-worker cases ran under the continuing gaming load. One passed. Photographic full-calibration case did not open Target1 afterStart; controlled-pose continuity reported freshness interruptions. No relative calibration accuracy result was computed. This run remained failed even though exact NCC kernel and paired workload optimizations were already present.",
+      "failedCases": [
+        {
+          "title": "photographic worker completes nine real-landmark holds and five independent checks",
+          "status": "failed",
+          "durationMs": 18382,
+          "locator": "getByLabel('Target 1 of 9', { exact: true })",
+          "waitingForFreshMessagesInFailedAssertion": 0
+        },
+        {
+          "title": "D0 controlled poses recover in the actual laboratory without losing completed targets",
+          "status": "failed",
+          "durationMs": 29841,
+          "locator": null,
+          "waitingForFreshMessagesInFailedAssertion": 16
+        }
+      ],
+      "relativeIndependentValidationCompleted": false,
+      "rawRelativeValidationP95DiagonalFraction": null,
+      "rawRelativeValidationJitterP95DiagonalFraction": null,
+      "acceptanceThresholdRawP95DiagonalFraction": 0.03,
+      "gateWasPreserved": true,
+      "interpretation": "Original no-interruption sweep assertion remained strict. Starting an empty setup later becomes an intentional entry behavior change; sample freshness and independent validation remain unchanged. Neither UI entry failure nor a freshness interruption is a measured held-out accuracy failure.",
+      "artifactHashes": {
+        "playwrightReportSha256": "684dab1d44f15155f8d13ef2e8f4cd6addf52b791732b1125b2f989f1d9e932e",
+        "sourceReceiptSha256": "54356c7ce8e9ac37ef66c212bca5e0c936337988268fb2ee9a693cb1ddc0d62a"
+      },
+      "physicalQualification": false,
+      "protectedQualification": false
+    },
+    {
+      "id": "empty-entry-fixed-baseline-before-display-clock-evidence-separation",
+      "appSource": {
+        "commit": "acda671618ae5313cc180da506b29bb36b4115f5",
+        "algorithmDigest": "8b2846e3959552912bf978c531d3099d56f15d7f9648ce08d8f23feb0fc63498"
+      },
+      "sourceStableDuringRun": true,
+      "caseCounts": {
+        "passed": 13,
+        "failed": 2
+      },
+      "details": "Full15-case actual-worker baseline:13 passed,2 failed. Photographic case completed nine ABS training holds but the first ABS independent-check target remained at0% before the next-target timeout. D0 controlled-pose continuity still reported freshness interruptions. No new completed held-out accuracy measurement or REL validation was computed.",
+      "failedCases": [
+        {
+          "title": "photographic worker completes nine real-landmark holds and five independent checks",
+          "status": "failed",
+          "durationMs": 74825,
+          "locator": "getByLabel('Target 2 of 5', { exact: true })",
+          "waitingForFreshMessagesInFailedAssertion": 0
+        },
+        {
+          "title": "D0 controlled poses recover in the actual laboratory without losing completed targets",
+          "status": "failed",
+          "durationMs": 32271,
+          "locator": null,
+          "waitingForFreshMessagesInFailedAssertion": 10
+        }
+      ],
+      "absoluteTrainingCompleted": true,
+      "absoluteIndependentValidationCompleted": false,
+      "relativeIndependentValidationCompleted": false,
+      "rawAbsoluteValidationP95DiagonalFraction": null,
+      "rawRelativeValidationP95DiagonalFraction": null,
+      "acceptanceThresholdRawP95DiagonalFraction": 0.03,
+      "gateWasPreserved": true,
+      "subsequentDiagnosis": "A separate deterministic audit reproduced display-watchdog pausing capture-time evidence: otherwise eligible captures could not accumulate. Separating stale UI/action display from accepted capture-time buffering is a subsequent correction requiring its own receipt; actual rejected/stale/ineligible observations must still pause collection.",
+      "interpretation": "This historical run remains a failed baseline. It does not demonstrate failure of the3% accuracy metric because complete held-out samples were never collected. The original zero-interruption D0 sweep assertion remains strict and its failure is retained.",
+      "artifactHashes": {
+        "playwrightReportSha256": "e477e8098d1fdae4bf71076b62e7cc11574e90b65e2d4749acd2e9804ca087ff",
+        "sourceReceiptSha256": "de65d05f86018b402048622821345358158c61de9cabe5d8f825e5512d49a69e"
+      },
+      "physicalQualification": false,
+      "protectedQualification": false
+    }
+  ],
+  "interpretation": "Each run remains tied to its own source. The first two correctly failed the unchanged3% raw held-out gate. The later run did not reach held-out validation and must not be described as an accuracy regression or a pass. A later passing source requires its own receipt."
+}

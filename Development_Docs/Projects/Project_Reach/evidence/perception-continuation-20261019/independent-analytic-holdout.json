@@ -1,0 +1,451 @@
+{
+  "classification": "SAFE_AGGREGATE_INDEPENDENT_KNOWN_ANALYTIC_RENDERING_ONLY",
+  "metricDefinitions": {
+    "coordinateFrame": "320x240 analysis pixel centers; not native camera, screen or physical units",
+    "withinRasterTolerance": "Synthetic target center distance at most 0.75 analysis pixels",
+    "outsideRasterTolerance": "Synthetic target center distance greater than 0.75 analysis pixels; separate from gross localization or digit identity",
+    "grossLocalizationFailure": "Synthetic target center distance greater than 8 analysis pixels",
+    "blankSemanticFalsePosition": "BLANK injects a hypothetical structurally valid full POINT model on blank pixels; emitted MODEL positions are a trusted-model counterexample, not measured false positives of the pinned neural model",
+    "cpu": "Sequential independent single runs, not interleaved performance comparison; excludes model inference, camera, display and physical latency",
+    "acceptance": "Analytic rendering thresholds do not replace existing calibration or physical accuracy requirements"
+  },
+  "inputSha256": "0652d74da3b38009969278171341cf744f6eae62f402bfd18395cced6d033e74",
+  "labelsSha256": "a530ed107e095509a774f3838879e6e31e99f57324bda9cb338abb65fb189dde",
+  "candidateModuleSha256": "8be6bdaeb4672b7e2cf46cff57ab340afe18eeb4d37dbb934806fa967dddcea5",
+  "baselineModuleSha256": "c2681ca4e91defc8e7d9fe620a586f49827cedb42ad5ef0e4ea4d7c016ffd9f6",
+  "candidateNotTunedOnHoldout": true,
+  "seedFrames": 52,
+  "evaluationFrames": 156,
+  "totalFrames": 208,
+  "candidateAggregate": {
+    "ROTATE": {
+      "frames": 24,
+      "observable": 24,
+      "emitted": 24,
+      "withinRasterTolerance": 17,
+      "outsideRasterTolerance": 7,
+      "semanticFalsePosition": 0,
+      "grossLocalizationFailure": 0,
+      "forbiddenAction": 0,
+      "identityChanges": 0,
+      "errors": 0,
+      "readySeedScenarios": 2,
+      "positionErrorPixels": {
+        "n": 24,
+        "median": 0.49131732748613655,
+        "p95": 1.0586374060926085,
+        "max": 1.4155098722231017
+      },
+      "cpu": {
+        "median": 1.8012999999999977,
+        "p95": 6.9328,
+        "total": 55.41900000000001
+      }
+    },
+    "SCALE": {
+      "frames": 24,
+      "observable": 24,
+      "emitted": 24,
+      "withinRasterTolerance": 13,
+      "outsideRasterTolerance": 11,
+      "semanticFalsePosition": 0,
+      "grossLocalizationFailure": 0,
+      "forbiddenAction": 0,
+      "identityChanges": 0,
+      "errors": 0,
+      "readySeedScenarios": 2,
+      "positionErrorPixels": {
+        "n": 24,
+        "median": 0.7219552193342,
+        "p95": 1.3600961499068356,
+        "max": 1.3771670171147055
+      },
+      "cpu": {
+        "median": 1.0346999999999866,
+        "p95": 1.4407999999999959,
+        "total": 26.444799999999958
+      }
+    },
+    "COMBINED": {
+      "frames": 24,
+      "observable": 24,
+      "emitted": 24,
+      "withinRasterTolerance": 14,
+      "outsideRasterTolerance": 10,
+      "semanticFalsePosition": 0,
+      "grossLocalizationFailure": 0,
+      "forbiddenAction": 0,
+      "identityChanges": 0,
+      "errors": 0,
+      "readySeedScenarios": 2,
+      "positionErrorPixels": {
+        "n": 24,
+        "median": 0.6059500736820296,
+        "p95": 2.396649113186046,
+        "max": 2.7088924786487314
+      },
+      "cpu": {
+        "median": 1.068099999999987,
+        "p95": 1.4869999999999948,
+        "total": 26.21479999999994
+      }
+    },
+    "WRONG_DIGIT": {
+      "frames": 12,
+      "observable": 12,
+      "emitted": 0,
+      "withinRasterTolerance": 0,
+      "outsideRasterTolerance": 0,
+      "semanticFalsePosition": 0,
+      "grossLocalizationFailure": 0,
+      "forbiddenAction": 0,
+      "identityChanges": 0,
+      "errors": 0,
+      "readySeedScenarios": 1,
+      "positionErrorPixels": null,
+      "cpu": {
+        "median": 1.3669000000000153,
+        "p95": 1.8395000000000152,
+        "total": 16.638400000000047
+      }
+    },
+    "COPIED_PATCH": {
+      "frames": 12,
+      "observable": 12,
+      "emitted": 12,
+      "withinRasterTolerance": 12,
+      "outsideRasterTolerance": 0,
+      "semanticFalsePosition": 0,
+      "grossLocalizationFailure": 0,
+      "forbiddenAction": 0,
+      "identityChanges": 0,
+      "errors": 0,
+      "readySeedScenarios": 1,
+      "positionErrorPixels": {
+        "n": 12,
+        "median": 3.980149543281186e-14,
+        "p95": 5.306866057708248e-14,
+        "max": 5.306866057708248e-14
+      },
+      "cpu": {
+        "median": 3.239900000000034,
+        "p95": 10.236199999999997,
+        "total": 45.88490000000019
+      }
+    },
+    "BLANK": {
+      "frames": 12,
+      "observable": 0,
+      "emitted": 12,
+      "withinRasterTolerance": 0,
+      "outsideRasterTolerance": 0,
+      "semanticFalsePosition": 12,
+      "grossLocalizationFailure": 0,
+      "forbiddenAction": 12,
+      "identityChanges": 0,
+      "errors": 0,
+      "readySeedScenarios": 1,
+      "positionErrorPixels": null,
+      "cpu": {
+        "median": 0.32119999999997617,
+        "p95": 0.5315000000000509,
+        "total": 3.8782999999999674
+      }
+    },
+    "BACKGROUND_COPY": {
+      "frames": 12,
+      "observable": 0,
+      "emitted": 0,
+      "withinRasterTolerance": 0,
+      "outsideRasterTolerance": 0,
+      "semanticFalsePosition": 0,
+      "grossLocalizationFailure": 0,
+      "forbiddenAction": 0,
+      "identityChanges": 0,
+      "errors": 0,
+      "readySeedScenarios": 1,
+      "positionErrorPixels": null,
+      "cpu": {
+        "median": 0.626199999999983,
+        "p95": 3.6152999999999906,
+        "total": 10.369999999999948
+      }
+    },
+    "END_ON": {
+      "frames": 12,
+      "observable": 0,
+      "emitted": 0,
+      "withinRasterTolerance": 0,
+      "outsideRasterTolerance": 0,
+      "semanticFalsePosition": 0,
+      "grossLocalizationFailure": 0,
+      "forbiddenAction": 0,
+      "identityChanges": 0,
+      "errors": 0,
+      "readySeedScenarios": 1,
+      "positionErrorPixels": null,
+      "cpu": {
+        "median": 0.5156000000000063,
+        "p95": 0.7576000000000249,
+        "total": 6.240000000000009
+      }
+    },
+    "STALE": {
+      "frames": 12,
+      "observable": 12,
+      "emitted": 0,
+      "withinRasterTolerance": 0,
+      "outsideRasterTolerance": 0,
+      "semanticFalsePosition": 0,
+      "grossLocalizationFailure": 0,
+      "forbiddenAction": 0,
+      "identityChanges": 0,
+      "errors": 12,
+      "readySeedScenarios": 1,
+      "positionErrorPixels": null,
+      "cpu": {
+        "median": 0.02590000000003556,
+        "p95": 0.07279999999997244,
+        "total": 0.34789999999986776
+      }
+    },
+    "CONTEXT": {
+      "frames": 12,
+      "observable": 12,
+      "emitted": 0,
+      "withinRasterTolerance": 0,
+      "outsideRasterTolerance": 0,
+      "semanticFalsePosition": 0,
+      "grossLocalizationFailure": 0,
+      "forbiddenAction": 0,
+      "identityChanges": 0,
+      "errors": 0,
+      "readySeedScenarios": 1,
+      "positionErrorPixels": null,
+      "cpu": {
+        "median": 1.1417000000000144,
+        "p95": 1.669399999999996,
+        "total": 14.061400000000106
+      }
+    }
+  },
+  "baselineAggregate": {
+    "ROTATE": {
+      "frames": 24,
+      "observable": 24,
+      "emitted": 24,
+      "withinRasterTolerance": 17,
+      "outsideRasterTolerance": 7,
+      "semanticFalsePosition": 0,
+      "grossLocalizationFailure": 0,
+      "forbiddenAction": 0,
+      "identityChanges": 0,
+      "errors": 0,
+      "readySeedScenarios": 2,
+      "positionErrorPixels": {
+        "n": 24,
+        "median": 0.49131732748613655,
+        "p95": 1.0586374060926085,
+        "max": 1.4155098722231017
+      },
+      "cpu": {
+        "median": 1.3168000000000006,
+        "p95": 2.3015000000000043,
+        "total": 35.09850000000004
+      }
+    },
+    "SCALE": {
+      "frames": 24,
+      "observable": 24,
+      "emitted": 24,
+      "withinRasterTolerance": 13,
+      "outsideRasterTolerance": 11,
+      "semanticFalsePosition": 0,
+      "grossLocalizationFailure": 0,
+      "forbiddenAction": 0,
+      "identityChanges": 0,
+      "errors": 0,
+      "readySeedScenarios": 2,
+      "positionErrorPixels": {
+        "n": 24,
+        "median": 0.7219552193342,
+        "p95": 1.3600961499068356,
+        "max": 1.3771670171147055
+      },
+      "cpu": {
+        "median": 0.8907000000000096,
+        "p95": 1.3083000000000027,
+        "total": 21.831799999999944
+      }
+    },
+    "COMBINED": {
+      "frames": 24,
+      "observable": 24,
+      "emitted": 24,
+      "withinRasterTolerance": 14,
+      "outsideRasterTolerance": 10,
+      "semanticFalsePosition": 0,
+      "grossLocalizationFailure": 0,
+      "forbiddenAction": 0,
+      "identityChanges": 0,
+      "errors": 0,
+      "readySeedScenarios": 2,
+      "positionErrorPixels": {
+        "n": 24,
+        "median": 0.6059500736820296,
+        "p95": 2.396649113186046,
+        "max": 2.7088924786487314
+      },
+      "cpu": {
+        "median": 0.8892999999999915,
+        "p95": 0.9451999999999998,
+        "total": 20.983399999999904
+      }
+    },
+    "WRONG_DIGIT": {
+      "frames": 12,
+      "observable": 12,
+      "emitted": 0,
+      "withinRasterTolerance": 0,
+      "outsideRasterTolerance": 0,
+      "semanticFalsePosition": 0,
+      "grossLocalizationFailure": 0,
+      "forbiddenAction": 0,
+      "identityChanges": 0,
+      "errors": 0,
+      "readySeedScenarios": 1,
+      "positionErrorPixels": null,
+      "cpu": {
+        "median": 1.0585000000000093,
+        "p95": 1.8024000000000058,
+        "total": 15.181399999999996
+      }
+    },
+    "COPIED_PATCH": {
+      "frames": 12,
+      "observable": 12,
+      "emitted": 12,
+      "withinRasterTolerance": 12,
+      "outsideRasterTolerance": 0,
+      "semanticFalsePosition": 0,
+      "grossLocalizationFailure": 0,
+      "forbiddenAction": 0,
+      "identityChanges": 0,
+      "errors": 0,
+      "readySeedScenarios": 1,
+      "positionErrorPixels": {
+        "n": 12,
+        "median": 3.980149543281186e-14,
+        "p95": 5.306866057708248e-14,
+        "max": 5.306866057708248e-14
+      },
+      "cpu": {
+        "median": 1.0187999999999988,
+        "p95": 1.252900000000011,
+        "total": 12.370700000000085
+      }
+    },
+    "BLANK": {
+      "frames": 12,
+      "observable": 0,
+      "emitted": 12,
+      "withinRasterTolerance": 0,
+      "outsideRasterTolerance": 0,
+      "semanticFalsePosition": 12,
+      "grossLocalizationFailure": 0,
+      "forbiddenAction": 12,
+      "identityChanges": 0,
+      "errors": 0,
+      "readySeedScenarios": 1,
+      "positionErrorPixels": null,
+      "cpu": {
+        "median": 0.13239999999998986,
+        "p95": 0.17609999999999104,
+        "total": 1.6584999999999752
+      }
+    },
+    "BACKGROUND_COPY": {
+      "frames": 12,
+      "observable": 0,
+      "emitted": 0,
+      "withinRasterTolerance": 0,
+      "outsideRasterTolerance": 0,
+      "semanticFalsePosition": 0,
+      "grossLocalizationFailure": 0,
+      "forbiddenAction": 0,
+      "identityChanges": 0,
+      "errors": 0,
+      "readySeedScenarios": 1,
+      "positionErrorPixels": null,
+      "cpu": {
+        "median": 0.6252000000000066,
+        "p95": 0.6948999999999899,
+        "total": 7.516599999999954
+      }
+    },
+    "END_ON": {
+      "frames": 12,
+      "observable": 0,
+      "emitted": 0,
+      "withinRasterTolerance": 0,
+      "outsideRasterTolerance": 0,
+      "semanticFalsePosition": 0,
+      "grossLocalizationFailure": 0,
+      "forbiddenAction": 0,
+      "identityChanges": 0,
+      "errors": 0,
+      "readySeedScenarios": 1,
+      "positionErrorPixels": null,
+      "cpu": {
+        "median": 0.5033999999999992,
+        "p95": 0.6050999999999931,
+        "total": 6.105700000000013
+      }
+    },
+    "STALE": {
+      "frames": 12,
+      "observable": 12,
+      "emitted": 0,
+      "withinRasterTolerance": 0,
+      "outsideRasterTolerance": 0,
+      "semanticFalsePosition": 0,
+      "grossLocalizationFailure": 0,
+      "forbiddenAction": 0,
+      "identityChanges": 0,
+      "errors": 12,
+      "readySeedScenarios": 1,
+      "positionErrorPixels": null,
+      "cpu": {
+        "median": 0.02740000000000009,
+        "p95": 0.07240000000001601,
+        "total": 0.39010000000010336
+      }
+    },
+    "CONTEXT": {
+      "frames": 12,
+      "observable": 12,
+      "emitted": 0,
+      "withinRasterTolerance": 0,
+      "outsideRasterTolerance": 0,
+      "semanticFalsePosition": 0,
+      "grossLocalizationFailure": 0,
+      "forbiddenAction": 0,
+      "identityChanges": 0,
+      "errors": 0,
+      "readySeedScenarios": 1,
+      "positionErrorPixels": null,
+      "cpu": {
+        "median": 0.9947999999999979,
+        "p95": 1.2691000000000088,
+        "total": 11.729600000000119
+      }
+    }
+  },
+  "exactOutputDifferences": 0,
+  "limits": [
+    "Synthetic analytic known material and coordinates only",
+    "No neural inference, webcam, physical truth or human review",
+    "Exact-clone scenarios require separate inspection of candidate registration; a correct qualified model output remains permitted",
+    "CPU timings cover local tracker only and are not capture-to-display latency"
+  ]
+}

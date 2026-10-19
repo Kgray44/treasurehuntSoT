@@ -1,0 +1,78 @@
+{
+  "classification": "STOPPED_CANVAS_REPAIR_CONTRACT_AND_STATIC_CHECKS_NOT_RENDERED_OR_PHYSICAL_ACCEPTANCE",
+  "startingHead": "cd34451832e2d0004492880ac1288ec31945d3b2",
+  "applicationFiles": [
+    {
+      "path": "src/reach/browser-runtime.ts",
+      "sha256": "3dd86ef22fda089f90b6847ee80b60c670176761c18775e0f6e91a9e137d5b88"
+    },
+    {
+      "path": "public/reach/recovery-provider.js",
+      "sha256": "fe68db187f9db74943e1f0c55c3ad76621a2c60591af84d950bb6c407f372ca9"
+    },
+    {
+      "path": "public/reach/recovery-worker.js",
+      "sha256": "4d8caa84874b76795b1acc1db975277ffb0329eb485d62eae20fe50712965222"
+    },
+    {
+      "path": "src/reach/ReachStage.tsx",
+      "sha256": "033519dba16a970997d64c98a7a4500105d4a1aa9f3dc23d138c191e5c2ce979"
+    }
+  ],
+  "independentFinding": "F-STOP-OVERLAY",
+  "regression": {
+    "before": {
+      "receiptSha256": "91d7e8cd82e0d30b4314037e12722b1eaf79d8695756d1708dd2bb9549fcb941",
+      "total": 11,
+      "passed": 7,
+      "failed": 4,
+      "pending": 0,
+      "files": 1,
+      "suiteGroups": 2
+    },
+    "after": {
+      "receiptSha256": "457eda9dd2d9c1fd1dc1fb83f9f306b2430c8e717760ab2276c5066f91ba1ede",
+      "total": 11,
+      "passed": 11,
+      "failed": 0,
+      "pending": 0,
+      "files": 1,
+      "suiteGroups": 2
+    },
+    "definition": "One existing inactive clear-count expectation strengthened from2to3; three new camera/pointer/initially-inactive cases. Existing active rendering assertions retained.",
+    "activeDrawingAndRafCleanupByteIdentical": true,
+    "oldCanvasSourceSha256": "9ff9f00879cb29e96727f23ea3512dfa2ec44a7f4636a72db93e05287498df62",
+    "oldCanvasTestSha256": "b91df7bbabfaa3c591a545d642536043b18a31d733e8d44d0562f1a515c3e30e"
+  },
+  "subsystem": {
+    "command": "vitest run src/reach src/watchglass src/sextant --maxWorkers=2",
+    "receiptSha256": "3175cefe9546e362208565d1a7d9b6d1f2c1882216659c23f54992fb7dea0af9",
+    "total": 1655,
+    "passed": 1655,
+    "failed": 0,
+    "pending": 0,
+    "files": 87,
+    "suiteGroups": 187,
+    "overlapsPrior1652": true
+  },
+  "staticChecks": {
+    "fullTypeScript": {
+      "command": "tsc --noEmit",
+      "exitCode": 0,
+      "toolSession": 33169,
+      "logSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "scopedEslint": {
+      "exitCode": 0,
+      "toolSession": 26911
+    }
+  },
+  "originalBrowserAssertionsRemoved": 0,
+  "addedBrowserChecks": "Actual nonzero camera pixels before Stop; every retained stage bitmap transparent after Stop and settling, with existing resource/no-further-activity checks retained.",
+  "browserRepairRecapture": "PENDING_SEPARATELY_SOURCE_BOUND_NEW_BUILD",
+  "limits": [
+    "Full unit count is not additive to the older1652cohort.",
+    "The unchanged three startup files retain their earlier independent fault evidence; this fourth canvas source requires new UI recapture.",
+    "No threshold, active perception, calibration fit or physical acceptance is inferred from mocked canvas checks."
+  ]
+}

@@ -3,13 +3,17 @@ import { test, expect, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+test.beforeEach(async ({ page }) => {
+  await page.route("**/api/reach/telemetry", (route) => route.fulfill({ status: 200, json: { accepted: true } }));
+});
 const status = (page: Page) => page.getByRole("status", { name: "Reach status" });
 async function demo(page: Page, mode: "ABSOLUTE" | "RELATIVE" = "ABSOLUTE") {
   await page.goto("/devices/pair");
   await page.getByRole("link", { name: "Find the Hand interaction laboratory" }).click();
-  await expect(page.getByRole("heading", { name: "Find your point." })).toBeVisible();
+  // The isolated development route may compile on its first natural navigation.
+  await expect(page.getByRole("heading", { name: "Find your point." })).toBeVisible({ timeout: 30000 });
   await page.getByRole("button", { name: "Explore guided demo" }).click();
-  await expect(status(page)).toContainText("Your hand is ready");
+  await expect(status(page)).toContainText("Your fingertip is ready");
   if (mode === "ABSOLUTE") await page.getByRole("radio", { name: /Absolute pointing/ }).check();
 }
 async function targets(page: Page, count: number) {
@@ -21,15 +25,14 @@ async function targets(page: Page, count: number) {
   }
   await expect(page.getByRole("button", { name: "Recalibrate", exact: true })).toBeVisible({ timeout: 7000 });
 }
-async function shot(page: Page, name: string, preserveView = false) {
+async function shot(page: Page, name: string) {
   if (process.env.REACH_CAPTURE_ROOT) {
     await mkdir(process.env.REACH_CAPTURE_ROOT, { recursive: true });
-    await page.screenshot({ path: path.join(process.env.REACH_CAPTURE_ROOT, `${name}-viewport.png`) });
-    if (preserveView) return;
-    await page.evaluate(() => window.scrollTo(0, 0));
-    await page.screenshot({ path: path.join(process.env.REACH_CAPTURE_ROOT, `${name}.png`), fullPage: true });
+    // Active camera/calibration evidence must not resize or scroll its viewport.
+    await page.screenshot({ path: path.join(process.env.REACH_CAPTURE_ROOT, `${name}-viewport.png`), fullPage: false });
   }
 }
+
 for (const viewport of [
   { width: 1280, height: 800, name: "laptop" },
   { width: 390, height: 844, name: "mobile" },
@@ -256,8 +259,11 @@ test("photographic video through the actual worker tracks noise, motion, partial
   await fakeCamera(page, photograph);
   await page.goto("/devices/reach");
   await page.getByRole("button", { name: "Enable live camera" }).click();
+  await page.getByRole("radio", { name: /Absolute pointing/ }).check();
   await expect(status(page)).toContainText("Your hand is ready", { timeout: 30000 });
-  expect((await telemetry(page)).observations).toBeGreaterThan(3);
+  // Readiness now updates without the old visual debounce. Independently wait
+  // for the worker evidence count instead of relying on that UI delay.
+  await expect.poll(async () => (await telemetry(page)).observations).toBeGreaterThan(3);
   await shot(page, "worker-photographic-tracking");
   await page.evaluate(() => {
     const t = (window as unknown as { reachTelemetry: { condition: string; x: number } }).reachTelemetry;
@@ -334,7 +340,7 @@ test("camera denial has a useful retry and conventional demonstration", async ({
   await expect(status(page)).toContainText("Camera access was declined");
   await shot(page, "camera-denied");
   await page.getByRole("button", { name: "Explore guided demo" }).click();
-  await expect(status(page)).toContainText("Your hand is ready");
+  await expect(status(page)).toContainText("Your fingertip is ready");
 });
 test("viewport changes invalidate the fit and preserve camera availability; safe return excludes external URLs", async ({
   page,
@@ -350,6 +356,7 @@ test("viewport changes invalidate the fit and preserve camera availability; safe
   await expect(status(page)).toContainText("Guided demo");
   await expect(page.getByRole("button", { name: "Begin nine-point calibration" })).toBeVisible();
   await expect(page.getByLabel("Target 2 of 9", { exact: true })).toHaveCount(0);
+  await shot(page, "viewport-invalidation");
   await page.goto("/devices/reach?returnTo=https://example.com");
   await expect(page.getByRole("link", { name: "← Device connections" })).toHaveAttribute("href", "/devices/pair");
 });
@@ -362,14 +369,78 @@ test("photographic worker completes nine real-landmark holds and five independen
   await fakeCamera(page, await readFile("tests/e2e/fixtures/reach/pointing_up.jpg"));
   await page.goto("/devices/reach");
   await page.getByRole("button", { name: "Enable live camera" }).click();
+  await page.getByRole("radio", { name: /Absolute pointing/ }).check();
   await expect(status(page)).toContainText("Your hand is ready", { timeout: 30000 });
   await page.getByRole("radio", { name: /Absolute pointing/ }).check();
+  const photographicHolds: object[] = [];
+  const imageSnapshot = async (stage: string, index: number, target: { x: number; y: number }, boundary: string) => {
+    photographicHolds.push(
+      await page.locator("section[data-image-state]").evaluate(
+        (section, context) => {
+          const element = section as HTMLElement;
+          const circle = section.querySelector('svg[aria-label="Finger image position"] circle');
+          return {
+            ...context,
+            at: performance.now(),
+            imageState: element.dataset.imageState,
+            reason: element.dataset.imageReason,
+            generation: element.dataset.imageTrackGeneration,
+            imageCapture: element.dataset.imageCaptureTime,
+            tip: circle ? { x: Number(circle.getAttribute("cx")), y: Number(circle.getAttribute("cy")) } : null,
+          };
+        },
+        { stage, index, target, boundary },
+      ),
+    );
+  };
+  const metricExportGeometry: object[] = [];
   const readMetrics = async () => {
+    const geometry = () =>
+      page.getByRole("group", { name: "Pointing practice area", exact: true }).evaluate((element) => {
+        const rect = element.getBoundingClientRect();
+        return {
+          rect: { x: rect.x, y: rect.y, width: rect.width, height: rect.height },
+          client: { width: element.clientWidth, height: element.clientHeight },
+          scroll: { x: scrollX, y: scrollY },
+          viewport: {
+            width: innerWidth,
+            height: innerHeight,
+            scale: visualViewport?.scale ?? 1,
+            dpr: devicePixelRatio,
+          },
+          step: document.querySelector("[data-step]")?.getAttribute("data-step"),
+        };
+      });
+    const before = await geometry();
+    const unchanged = async (boundary: string) => {
+      await page.evaluate(
+        () => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))),
+      );
+      const after = await geometry();
+      metricExportGeometry.push({ boundary, before, after });
+      await writeFile(
+        testInfo.outputPath("photographic-export-geometry.json"),
+        JSON.stringify(metricExportGeometry, null, 2),
+      );
+      expect(after).toEqual(before);
+      await expect(page.getByRole("alert", { name: "Setup ended" })).toHaveCount(0);
+    };
+    // This is diagnostic export instrumentation. Native DOM control activation
+    // avoids the driver's automatic scroll, which would honestly invalidate a
+    // screen-bound absolute fit. Natural export controls are exercised above.
     const summary = page.getByText("Session diagnostics & privacy", { exact: true });
-    if (!(await summary.locator("..").evaluate((element) => element.hasAttribute("open")))) await summary.click();
-    await page.getByRole("checkbox", { name: /I consent to downloading/ }).check();
+    if (!(await summary.locator("..").evaluate((element) => element.hasAttribute("open"))))
+      await summary.evaluate((element) => (element as HTMLElement).click());
+    await unchanged("diagnostics-open");
+    const consent = page.getByRole("checkbox", { name: /I consent to downloading/ });
+    if (!(await consent.isChecked())) await consent.evaluate((element) => (element as HTMLInputElement).click());
+    await expect(consent).toBeChecked();
+    await unchanged("download-consent");
+    const exportButton = page.getByRole("button", { name: "Export aggregate metrics" });
+    await expect(exportButton).toBeEnabled();
     const downloaded = page.waitForEvent("download");
-    await page.getByRole("button", { name: "Export aggregate metrics" }).click();
+    await exportButton.evaluate((element) => (element as HTMLButtonElement).click());
+    await unchanged("export-activated");
     return JSON.parse(await readFile((await (await downloaded).path())!, "utf8"));
   };
   const holdTargets = async (count: number, stage: string) => {
@@ -394,6 +465,7 @@ test("photographic worker completes nine real-landmark holds and five independen
           await new Promise((resolve) => setTimeout(resolve, 40));
         }
       }, point);
+      await imageSnapshot(stage, index, point, "motion-complete");
       if (stage === "TRAINING" && index === 2) {
         await page.evaluate(() => {
           (window as unknown as { reachTelemetry: { condition: string } }).reachTelemetry.condition = "TWO";
@@ -414,6 +486,11 @@ test("photographic worker completes nine real-landmark holds and five independen
           timeout: 20000,
         });
       else await expect(page.getByRole("button", { name: "Recalibrate", exact: true })).toBeVisible({ timeout: 20000 });
+      await imageSnapshot(stage, index, point, "target-saved");
+      await writeFile(
+        testInfo.outputPath("photographic-hold-image-points.json"),
+        JSON.stringify(photographicHolds, null, 2),
+      );
       await page.evaluate(() => {
         (window as unknown as { reachTelemetry: { condition: string } }).reachTelemetry.condition = "POINT";
       });
@@ -423,12 +500,12 @@ test("photographic worker completes nine real-landmark holds and five independen
   await holdTargets(9, "TRAINING");
   await expect(page.getByRole("button", { name: "Open pointing playground" })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Check five new targets" })).toBeEnabled();
-  await shot(page, "worker-nine-target-fit", true);
+  await shot(page, "worker-nine-target-fit");
   await page.getByRole("button", { name: "Check five new targets" }).click();
   await holdTargets(5, "VALIDATION");
-  await shot(page, "worker-independent-results", true);
+  await shot(page, "worker-independent-results");
   const absolute = await readMetrics();
-  expect(absolute.calibration.mapping).toBe("INDEX_AXIS_RIDGE_V1");
+  expect(absolute.calibration.mapping).toBe("INDEX_TIP_AXIS_RIDGE_V1");
   // Aggregate counts are raw samples; the visible target loop proves hold counts.
   expect(absolute.calibration.trainingCount).toBeGreaterThanOrEqual(9 * 15);
   expect(absolute.calibration.validationCount).toBeGreaterThanOrEqual(5 * 15);
@@ -446,17 +523,55 @@ test("photographic worker completes nine real-landmark holds and five independen
   await holdTargets(5, "RELATIVE_TRAINING");
   await page.getByRole("button", { name: "Check five new targets" }).click();
   await holdTargets(5, "RELATIVE_VALIDATION");
+  const relativeResult = await readMetrics();
+  await writeFile(
+    testInfo.outputPath("photographic-relative-check-result.json"),
+    JSON.stringify(relativeResult, null, 2),
+  );
+  expect(relativeResult.calibration.rawValidationP95DiagonalFraction).toBeLessThanOrEqual(0.03);
   await expect(page.getByText("Your independent check passed for this session.", { exact: true })).toBeVisible();
-  await shot(page, "worker-relative-results", true);
+  await shot(page, "worker-relative-results");
   await page.getByRole("button", { name: "Open pointing playground" }).click();
   const metrics = await readMetrics();
   expect(metrics.calibration.status).toBe("VALIDATED");
-  expect(metrics.calibration.mapping).toBe("RELATIVE_DISPLACEMENT_V1");
+  expect(metrics.calibration.mapping).toBe("INDEX_TIP_DISPLACEMENT_V2");
   expect(metrics.trialAggregates).toHaveLength(4);
   expect(metrics.timing.acquisitionMs).toHaveLength(24);
   expect(metrics.timing.inferenceCount).toBeGreaterThanOrEqual(15 * 24);
+  const stagePixels = () =>
+    page
+      .locator(
+        'canvas[aria-label="Live hand joints aligned with the camera image"], canvas[aria-label="Pointing feedback surface"]',
+      )
+      .evaluateAll((canvases) =>
+        canvases.map((element) => {
+          const canvas = element as HTMLCanvasElement;
+          const context = canvas.getContext("2d");
+          if (!context) throw new Error("Stage canvas context unavailable");
+          const pixels =
+            canvas.width && canvas.height ? context.getImageData(0, 0, canvas.width, canvas.height).data : [];
+          let visiblePixels = 0;
+          for (let index = 3; index < pixels.length; index += 4) if (pixels[index] > 0) visiblePixels++;
+          return {
+            label: canvas.getAttribute("aria-label"),
+            width: canvas.width,
+            height: canvas.height,
+            visiblePixels,
+          };
+        }),
+      );
+  const beforeStop = await stagePixels();
+  expect(
+    beforeStop.some(
+      (canvas) => canvas.label === "Live hand joints aligned with the camera image" && canvas.visiblePixels > 0,
+    ),
+  ).toBe(true);
   await page.getByRole("button", { name: "Stop camera & clear session" }).click();
   expect(await telemetry(page)).toMatchObject({ tracks: 0, workers: 0, prompts: 1 });
+  const afterStop = await stagePixels();
+  expect(afterStop.some((canvas) => canvas.label === "Live hand joints aligned with the camera image")).toBe(true);
+  expect(afterStop.every((canvas) => canvas.visiblePixels === 0)).toBe(true);
+  await shot(page, "worker-stopped-clear");
   await page.waitForTimeout(200);
   const stopped = await telemetry(page);
   await page.waitForTimeout(400);
@@ -464,6 +579,13 @@ test("photographic worker completes nine real-landmark holds and five independen
   expect(settled.observations).toBe(stopped.observations);
   expect(settled.draws).toBe(stopped.draws);
   expect(settled.canvasClears).toBe(stopped.canvasClears);
+  const afterSettle = await stagePixels();
+  expect(afterSettle.every((canvas) => canvas.visiblePixels === 0)).toBe(true);
+  await shot(page, "worker-stopped-settled");
+  await writeFile(
+    testInfo.outputPath("stopped-canvas-clear.json"),
+    JSON.stringify({ beforeStop, afterStop, afterSettle }, null, 2),
+  );
   const heapAfterStop = await page.evaluate(
     () => (performance as Performance & { memory?: { usedJSHeapSize: number } }).memory?.usedJSHeapSize ?? null,
   );

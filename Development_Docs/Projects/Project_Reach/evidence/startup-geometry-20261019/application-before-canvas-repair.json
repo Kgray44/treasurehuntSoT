@@ -1,0 +1,4318 @@
+{
+  "classification": "AUTHOR_READ_ONLY_TERMINAL_COHORT_CLOCK_ANALYSIS_NOT_PHYSICAL",
+  "selectedCohorts": ["laboratory", "index-image", "geometry-smoke"],
+  "analysisCodeSha256": "e096633368dcfd6b8398130cd73fc2c25fd0a1428ab46f51f3ad1cb13bc5d33d",
+  "terminalRun": {
+    "runtimeArchive": {
+      "status": "PASS_ARCHIVED_OWNED_MUTABLE_COPY"
+    },
+    "canonicalRefusal": "DEVELOPMENT_BUILD_LINK_OUTSIDE_DEPENDENCIES"
+  },
+  "sourcePins": {
+    "head": "cd34451832e2d0004492880ac1288ec31945d3b2",
+    "digest": "d854d3f23b35a03a17aac50e0cc19cd730a8f1bab1638734beffab7cab082a5f",
+    "candidateFiles": [
+      {
+        "path": "src/reach/browser-runtime.ts",
+        "sha256": "3dd86ef22fda089f90b6847ee80b60c670176761c18775e0f6e91a9e137d5b88"
+      },
+      {
+        "path": "public/reach/recovery-provider.js",
+        "sha256": "fe68db187f9db74943e1f0c55c3ad76621a2c60591af84d950bb6c407f372ca9"
+      },
+      {
+        "path": "public/reach/recovery-worker.js",
+        "sha256": "4d8caa84874b76795b1acc1db975277ffb0329eb485d62eae20fe50712965222"
+      }
+    ],
+    "beforeBuildSourceManifestSha256": "71d52a5fd24efc9d457fc7ea82429662938814f69728fce33b8fa0c6f4c8bb44",
+    "frozenManifestVerified": true
+  },
+  "inputs": [
+    {
+      "label": "input-binding",
+      "sha256": "e6e62f024459b6ac8eeee287e3209e7db8817a3a852476ddecba13f63befb1a8"
+    },
+    {
+      "label": "pre-build-source",
+      "sha256": "71d52a5fd24efc9d457fc7ea82429662938814f69728fce33b8fa0c6f4c8bb44"
+    },
+    {
+      "label": "all-cohort-terminal-summary",
+      "sha256": "b864bac60303705800ebda63eabdeb50008350ce9b52405e09323c27c71414c8"
+    },
+    {
+      "label": "laboratory-terminal-receipt",
+      "sha256": "e90e2ab0bfd98e47da49240eb81bd5f0b2ae6f99ac7a27edbf4d114b6adbe308"
+    },
+    {
+      "label": "laboratory-playwright-report",
+      "sha256": "c24e67788f5780a493c3e2e71a649490a4edd56f158909a5bc6c8136ceb76ccd"
+    },
+    {
+      "label": "laboratory:guided absolute experience, held-out check, playground, recovery and private export on laptop:passive",
+      "sha256": "6f616fb88435a8e74d8a9e4df9071f1d70f8aeada61bfa4d46a5d6702108c407"
+    },
+    {
+      "label": "laboratory:guided absolute experience, held-out check, playground, recovery and private export on mobile:passive",
+      "sha256": "1607c0240835cd9e74e08f9230a96298b6233c971d5cced21242a7b21e164777"
+    },
+    {
+      "label": "laboratory:relative movement uses separate setup, check and cursor claims:passive",
+      "sha256": "dc0d466a08b6211d53da962e383eb84f0706f7b73d1f13801125d75f13f2de02"
+    },
+    {
+      "label": "laboratory:posture rejection preserves detection and lets the current target recover:passive",
+      "sha256": "8d852be5c9f6d6e8b89ba3b6a0c01eebe04574d9213148b8be348f2ba10d905d"
+    },
+    {
+      "label": "laboratory:photographic video through the actual worker tracks noise, motion, partial occlusion and a second hand, then cleans up:original-metrics",
+      "sha256": "3902e6ed1cdf64b9bac163eaa912e0bd2bfe3d8bb95c37c107230d5a2e29ddfd"
+    },
+    {
+      "label": "laboratory:photographic video through the actual worker tracks noise, motion, partial occlusion and a second hand, then cleans up:passive",
+      "sha256": "ed5fc2eade3e15fdeadb2e803d76386ab4c71e82439d62c037db9ca167630b4e"
+    },
+    {
+      "label": "laboratory:worker NONE has bounded lifecycle and recovery:passive",
+      "sha256": "270835bcfa1782b03eb7d68af0619d4045114769bc0f9ff7d6b130c0a2bd09fd"
+    },
+    {
+      "label": "laboratory:worker MODEL_UNAVAILABLE has bounded lifecycle and recovery:passive",
+      "sha256": "87080c582fd1ebeea1def8525d8a570fcf1625fd26013c0fd926fc880f848d7c"
+    },
+    {
+      "label": "laboratory:camera denial has a useful retry and conventional demonstration:passive",
+      "sha256": "233d2d2768d59ed43572f3e5c1aadba1fb5b0b0b5eb3571809bbd8639df5b04b"
+    },
+    {
+      "label": "laboratory:viewport changes invalidate the fit and preserve camera availability; safe return excludes external URLs:passive",
+      "sha256": "ffc6293bce81e085128774ee44f4fdfb3094f5e1611173852e6b694896ae6a42"
+    },
+    {
+      "label": "laboratory:photographic worker completes nine real-landmark holds and five independent checks:original-metrics",
+      "sha256": "fb4213ab55ed93e70994db8ec95f5588d1a49ca6219758c0dd0ac1473131d545"
+    },
+    {
+      "label": "laboratory:photographic worker completes nine real-landmark holds and five independent checks:passive",
+      "sha256": "c594eaa707417438a9f20032ab0162d899ac048205452f957ab1684939ee0e1f"
+    },
+    {
+      "label": "index-image-terminal-receipt",
+      "sha256": "5087fab56efbd73bb8e4257fa2ef44c998401990f0095b317901cbc6f20eed9e"
+    },
+    {
+      "label": "index-image-playwright-report",
+      "sha256": "5aa2baf01e1ae2d65b8dc95d47274aadc100eb5b5302974a2aa766d8c51f78b5"
+    },
+    {
+      "label": "index-image:D0 image-relative control follows fresh appearance through model failure, motion and interruption:passive",
+      "sha256": "3cff20ad61f634c3cb6e0f09ad87c5e3c98e9378c6ea40d5e650e6fae4dd8beb"
+    },
+    {
+      "label": "index-image:D0 fused FULL motion and optical pose changes preserve calibration target 1 to 2:passive",
+      "sha256": "3d989a896f46293ed89f9009208b6c0f949e489a2f194617496236da22c5172b"
+    },
+    {
+      "label": "index-image:D0 fused INDEX motion and optical pose changes preserve calibration target 1 to 2:passive",
+      "sha256": "9ac78933f2df09c505854da0416076d53ccf0984bca2f08decd5676a99a60cd0"
+    },
+    {
+      "label": "index-image:D0 live setup opens empty before pointing and binds its first fresh source without restarting:passive",
+      "sha256": "c88bfba0d3d5f1f6321df48739ada7336d1e78b00fd498009db0117e73d39266"
+    },
+    {
+      "label": "index-image:D0 display staleness between timely delayed captures preserves evidence while contrary frames pause it:passive",
+      "sha256": "adef87a6020cf8c1a21da2326f5a2ca4132d56db82c3c91d80e0fa01a92e2863"
+    },
+    {
+      "label": "index-image:D0 manual image-only hints support mirrored click and natural keyboard while ambiguous pixels abstain:passive",
+      "sha256": "dcca449f3c9a27b3260a2f4c7d97242a84ab1ecb1975131381f4cf079c17299e"
+    },
+    {
+      "label": "index-image:D0 manual selection survives rejected pixels and expiry without silently returning to a model digit:passive",
+      "sha256": "296ec340e0bb0b80c419f6c4a5490e713e80a4c83673570fef006604cba88c19"
+    },
+    {
+      "label": "index-image:D0 desktop preserves completed targets inert through unverified fingertip replacement:passive",
+      "sha256": "24cb5c96b13b23da21d96656843f111078eca2a350bd926064ed261ebed6d26d"
+    },
+    {
+      "label": "index-image:D0 mobile preserves completed targets inert through unverified fingertip replacement:passive",
+      "sha256": "aec645cbbb54fb8ad485e5da0b259d99e275196c45491b0422e836a0d448ae08"
+    },
+    {
+      "label": "index-image:D0 full-hand authority pauses conflicts without changing image coordinates and manual hints cannot bypass it:passive",
+      "sha256": "ff17f68504649f493775e850a76988da947763ba91ce55f316e85cd500f51c4f"
+    },
+    {
+      "label": "index-image:D0 stale model replies hide the image marker, pause collection and recover the same image source:passive",
+      "sha256": "8abde8d811e0a35a2b8479c818ca2560f58fe36e3da35e9d85f8f773785f5468"
+    },
+    {
+      "label": "index-image:D0 adaptive pacing backs off on visible blur and event-loop duress, then actual pagehide releases resources:passive",
+      "sha256": "384ed185ea979b4a7d51d483dad72a6bc947ce8bd1040e9acababfe067666c0c"
+    },
+    {
+      "label": "geometry-smoke-terminal-receipt",
+      "sha256": "79619b0659c3d58767982aa7676817ea6c4da0a74ef2c675b784ab6cda81e679"
+    },
+    {
+      "label": "geometry-smoke-playwright-report",
+      "sha256": "08be9198cc38b6b9467425043f64e0a810acd8ab42136a29f789ff978690c4cd"
+    },
+    {
+      "label": "geometry-smoke:actual startup binds delivered gray canvas 401x683:passive",
+      "sha256": "5d563137e953f7e9d0c3561dbe72a0e4f6d1f17784f66836c6c59e384ac8b9cc"
+    },
+    {
+      "label": "geometry-smoke:actual startup binds delivered gray canvas 401x683:geometry",
+      "sha256": "c9aab7231bd2692fa9a0f1136efa3a134e1f0ab9c4fe64c4ed8869250f2beca9"
+    },
+    {
+      "label": "geometry-smoke:actual startup binds delivered gray canvas 801x449:passive",
+      "sha256": "f5a215d8320ebeed53ad439bcbf4da579e3941dc85693d227114a71a62bece72"
+    },
+    {
+      "label": "geometry-smoke:actual startup binds delivered gray canvas 801x449:geometry",
+      "sha256": "91f397fbe58b40768c5d43bba226092dc8d009f5966c3b4b3e5b172fc1ecf1f9"
+    }
+  ],
+  "cohorts": [
+    {
+      "name": "laboratory",
+      "stats": {
+        "startTime": "2026-10-19T19:53:48.529Z",
+        "duration": 180979.466,
+        "expected": 10,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cleanup": {
+        "browser": "PASS",
+        "server": "PASS",
+        "portReleased": true,
+        "sourceUnchanged": true,
+        "fixtureUnchanged": true,
+        "buildUnchanged": true
+      },
+      "cases": [
+        {
+          "title": "guided absolute experience, held-out check, playground, recovery and private export on laptop",
+          "category": "OTHER_LAB_GUIDED_OR_FAULT_CONTROL",
+          "verdict": "expected",
+          "actualStatus": "passed",
+          "clock": {
+            "available": true,
+            "nativeWorkerEvents": 0,
+            "nativeWorkerPaths": [],
+            "counts": {
+              "init": 0,
+              "ready": 0,
+              "frame": 0,
+              "result": 0,
+              "error": 0,
+              "paired": 0,
+              "unpaired": 0
+            },
+            "initGeometry": [],
+            "ready": [],
+            "rawHandCountHistogram": {},
+            "timing": {
+              "packetAgeMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToInferenceCompletionMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "dispatchToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToDispatchMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "inferenceCompletionToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "originConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "pageEpochAgeConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              }
+            },
+            "percentileConvention": "Nearest rank, sorted finite values at ceil(p*n); median uses p=.5.",
+            "rawFreshness": {
+              "atMost150Ms": 0,
+              "atLeast150Ms": 0,
+              "strictlyOver150Ms": 0,
+              "nonfiniteAge": 0
+            },
+            "integrity": {
+              "missingPriorReady": 0,
+              "changedBackendOrPolicy": 0,
+              "resultGeometryMismatch": 0,
+              "negativeOrFutureClocks": 0,
+              "diagnosticDroppedRows": {
+                "worker": 0,
+                "dispatch": 0,
+                "presented": 0
+              }
+            },
+            "presentationProxy": {
+              "eligiblePairedRows": 0,
+              "finiteCaptureTimeRows": 0,
+              "dimensionsMismatch": 0,
+              "invalidConditionalOrigin": 0,
+              "presentationToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToCaptureMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "callbackAgeOfPresentationMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalOriginStrictlyOver150AtReceipt": 0,
+              "limitation": "Latest observed rVFC at or before capture, never a later dispatch callback. Finite captureTime is used when present; null combines absent and nonfinite in the instrumentation, so presentation fallback is conditional. This is a presentation-origin proxy, not sensor exposure, exact final source-veto proof, display scanout or capture-to-visible latency."
+            },
+            "finalTelemetryCounts": {
+              "tracks": null,
+              "workers": null,
+              "prompts": null,
+              "observations": null,
+              "draws": null,
+              "canvasClears": null
+            },
+            "finalUiStates": [],
+            "measurementBoundary": "RESULT/hand counts are raw neural packets, not selected-index positions, anatomical accuracy, final freshness admission or calibration samples."
+          },
+          "originalTestMetrics": null,
+          "geometry": null
+        },
+        {
+          "title": "guided absolute experience, held-out check, playground, recovery and private export on mobile",
+          "category": "OTHER_LAB_GUIDED_OR_FAULT_CONTROL",
+          "verdict": "expected",
+          "actualStatus": "passed",
+          "clock": {
+            "available": true,
+            "nativeWorkerEvents": 0,
+            "nativeWorkerPaths": [],
+            "counts": {
+              "init": 0,
+              "ready": 0,
+              "frame": 0,
+              "result": 0,
+              "error": 0,
+              "paired": 0,
+              "unpaired": 0
+            },
+            "initGeometry": [],
+            "ready": [],
+            "rawHandCountHistogram": {},
+            "timing": {
+              "packetAgeMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToInferenceCompletionMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "dispatchToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToDispatchMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "inferenceCompletionToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "originConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "pageEpochAgeConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              }
+            },
+            "percentileConvention": "Nearest rank, sorted finite values at ceil(p*n); median uses p=.5.",
+            "rawFreshness": {
+              "atMost150Ms": 0,
+              "atLeast150Ms": 0,
+              "strictlyOver150Ms": 0,
+              "nonfiniteAge": 0
+            },
+            "integrity": {
+              "missingPriorReady": 0,
+              "changedBackendOrPolicy": 0,
+              "resultGeometryMismatch": 0,
+              "negativeOrFutureClocks": 0,
+              "diagnosticDroppedRows": {
+                "worker": 0,
+                "dispatch": 0,
+                "presented": 0
+              }
+            },
+            "presentationProxy": {
+              "eligiblePairedRows": 0,
+              "finiteCaptureTimeRows": 0,
+              "dimensionsMismatch": 0,
+              "invalidConditionalOrigin": 0,
+              "presentationToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToCaptureMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "callbackAgeOfPresentationMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalOriginStrictlyOver150AtReceipt": 0,
+              "limitation": "Latest observed rVFC at or before capture, never a later dispatch callback. Finite captureTime is used when present; null combines absent and nonfinite in the instrumentation, so presentation fallback is conditional. This is a presentation-origin proxy, not sensor exposure, exact final source-veto proof, display scanout or capture-to-visible latency."
+            },
+            "finalTelemetryCounts": {
+              "tracks": null,
+              "workers": null,
+              "prompts": null,
+              "observations": null,
+              "draws": null,
+              "canvasClears": null
+            },
+            "finalUiStates": [],
+            "measurementBoundary": "RESULT/hand counts are raw neural packets, not selected-index positions, anatomical accuracy, final freshness admission or calibration samples."
+          },
+          "originalTestMetrics": null,
+          "geometry": null
+        },
+        {
+          "title": "relative movement uses separate setup, check and cursor claims",
+          "category": "OTHER_LAB_GUIDED_OR_FAULT_CONTROL",
+          "verdict": "expected",
+          "actualStatus": "passed",
+          "clock": {
+            "available": true,
+            "nativeWorkerEvents": 0,
+            "nativeWorkerPaths": [],
+            "counts": {
+              "init": 0,
+              "ready": 0,
+              "frame": 0,
+              "result": 0,
+              "error": 0,
+              "paired": 0,
+              "unpaired": 0
+            },
+            "initGeometry": [],
+            "ready": [],
+            "rawHandCountHistogram": {},
+            "timing": {
+              "packetAgeMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToInferenceCompletionMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "dispatchToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToDispatchMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "inferenceCompletionToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "originConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "pageEpochAgeConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              }
+            },
+            "percentileConvention": "Nearest rank, sorted finite values at ceil(p*n); median uses p=.5.",
+            "rawFreshness": {
+              "atMost150Ms": 0,
+              "atLeast150Ms": 0,
+              "strictlyOver150Ms": 0,
+              "nonfiniteAge": 0
+            },
+            "integrity": {
+              "missingPriorReady": 0,
+              "changedBackendOrPolicy": 0,
+              "resultGeometryMismatch": 0,
+              "negativeOrFutureClocks": 0,
+              "diagnosticDroppedRows": {
+                "worker": 0,
+                "dispatch": 0,
+                "presented": 0
+              }
+            },
+            "presentationProxy": {
+              "eligiblePairedRows": 0,
+              "finiteCaptureTimeRows": 0,
+              "dimensionsMismatch": 0,
+              "invalidConditionalOrigin": 0,
+              "presentationToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToCaptureMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "callbackAgeOfPresentationMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalOriginStrictlyOver150AtReceipt": 0,
+              "limitation": "Latest observed rVFC at or before capture, never a later dispatch callback. Finite captureTime is used when present; null combines absent and nonfinite in the instrumentation, so presentation fallback is conditional. This is a presentation-origin proxy, not sensor exposure, exact final source-veto proof, display scanout or capture-to-visible latency."
+            },
+            "finalTelemetryCounts": {
+              "tracks": null,
+              "workers": null,
+              "prompts": null,
+              "observations": null,
+              "draws": null,
+              "canvasClears": null
+            },
+            "finalUiStates": [
+              {
+                "reachReadiness": "READY",
+                "imageState": "TRACKING",
+                "imageReason": "D0_SIMULATED_IMAGE_POSITION",
+                "imageCaptureTime": "19099.600000023842",
+                "imageInferenceTime": "19099.600000023842",
+                "imageModelAgreement": "UNAVAILABLE",
+                "fingertipCoordinateSource": "IMAGE",
+                "calibrationIdentity": "ACTIVE"
+              }
+            ],
+            "measurementBoundary": "RESULT/hand counts are raw neural packets, not selected-index positions, anatomical accuracy, final freshness admission or calibration samples."
+          },
+          "originalTestMetrics": null,
+          "geometry": null
+        },
+        {
+          "title": "posture rejection preserves detection and lets the current target recover",
+          "category": "OTHER_LAB_GUIDED_OR_FAULT_CONTROL",
+          "verdict": "expected",
+          "actualStatus": "passed",
+          "clock": {
+            "available": true,
+            "nativeWorkerEvents": 0,
+            "nativeWorkerPaths": [],
+            "counts": {
+              "init": 0,
+              "ready": 0,
+              "frame": 0,
+              "result": 0,
+              "error": 0,
+              "paired": 0,
+              "unpaired": 0
+            },
+            "initGeometry": [],
+            "ready": [],
+            "rawHandCountHistogram": {},
+            "timing": {
+              "packetAgeMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToInferenceCompletionMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "dispatchToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToDispatchMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "inferenceCompletionToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "originConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "pageEpochAgeConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              }
+            },
+            "percentileConvention": "Nearest rank, sorted finite values at ceil(p*n); median uses p=.5.",
+            "rawFreshness": {
+              "atMost150Ms": 0,
+              "atLeast150Ms": 0,
+              "strictlyOver150Ms": 0,
+              "nonfiniteAge": 0
+            },
+            "integrity": {
+              "missingPriorReady": 0,
+              "changedBackendOrPolicy": 0,
+              "resultGeometryMismatch": 0,
+              "negativeOrFutureClocks": 0,
+              "diagnosticDroppedRows": {
+                "worker": 0,
+                "dispatch": 0,
+                "presented": 0
+              }
+            },
+            "presentationProxy": {
+              "eligiblePairedRows": 0,
+              "finiteCaptureTimeRows": 0,
+              "dimensionsMismatch": 0,
+              "invalidConditionalOrigin": 0,
+              "presentationToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToCaptureMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "callbackAgeOfPresentationMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalOriginStrictlyOver150AtReceipt": 0,
+              "limitation": "Latest observed rVFC at or before capture, never a later dispatch callback. Finite captureTime is used when present; null combines absent and nonfinite in the instrumentation, so presentation fallback is conditional. This is a presentation-origin proxy, not sensor exposure, exact final source-veto proof, display scanout or capture-to-visible latency."
+            },
+            "finalTelemetryCounts": {
+              "tracks": null,
+              "workers": null,
+              "prompts": null,
+              "observations": null,
+              "draws": null,
+              "canvasClears": null
+            },
+            "finalUiStates": [
+              {
+                "reachReadiness": "READY",
+                "imageState": "UNSEEDED",
+                "imageReason": "UNSEEDED",
+                "imageCaptureTime": "",
+                "imageInferenceTime": "",
+                "imageModelAgreement": "UNAVAILABLE",
+                "fingertipCoordinateSource": "IMAGE",
+                "calibrationIdentity": "ACTIVE"
+              }
+            ],
+            "measurementBoundary": "RESULT/hand counts are raw neural packets, not selected-index positions, anatomical accuracy, final freshness admission or calibration samples."
+          },
+          "originalTestMetrics": null,
+          "geometry": null
+        },
+        {
+          "title": "photographic video through the actual worker tracks noise, motion, partial occlusion and a second hand, then cleans up",
+          "category": "PUBLIC_PHOTOGRAPHIC_CURRENT_NATIVE_WORKER",
+          "verdict": "expected",
+          "actualStatus": "passed",
+          "clock": {
+            "available": true,
+            "nativeWorkerEvents": 1,
+            "nativeWorkerPaths": ["/reach/recovery-worker.js"],
+            "counts": {
+              "init": 1,
+              "ready": 1,
+              "frame": 64,
+              "result": 63,
+              "error": 0,
+              "paired": 63,
+              "unpaired": 0
+            },
+            "initGeometry": [
+              {
+                "frameWidth": 640,
+                "frameHeight": 480,
+                "geometryVersion": 3,
+                "mirrorTransform": "PREVIEW_X"
+              }
+            ],
+            "ready": [
+              {
+                "backend": "CPU_WASM",
+                "providerPolicy": "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1",
+                "fallbackReason": "GPU_STARTUP_LATENCY_HEALTH_FAILED",
+                "startupHealth": {
+                  "classification": "SYNTHETIC_PREREADY_LATENCY_NECESSARY_CONDITION_ONLY",
+                  "probeDimensions": {
+                    "width": 640,
+                    "height": 480
+                  },
+                  "geometryVersion": 3,
+                  "mirrorTransform": "PREVIEW_X",
+                  "livePixelQualification": false,
+                  "attempts": [
+                    {
+                      "passed": false,
+                      "delegate": "GPU",
+                      "width": 640,
+                      "height": 480,
+                      "maximumElapsedMs": 150,
+                      "outputsDiscarded": true,
+                      "retainedRegionsCleared": true,
+                      "probes": [
+                        {
+                          "timestamp": -2,
+                          "elapsedMs": 354.40000000596046,
+                          "forcedRegions": 2,
+                          "discardedHandOutputs": 0
+                        },
+                        {
+                          "timestamp": -1,
+                          "elapsedMs": 339.69999998807907,
+                          "forcedRegions": 2,
+                          "discardedHandOutputs": 0
+                        }
+                      ]
+                    },
+                    {
+                      "passed": true,
+                      "delegate": "CPU",
+                      "width": 640,
+                      "height": 480,
+                      "maximumElapsedMs": 150,
+                      "outputsDiscarded": true,
+                      "retainedRegionsCleared": true,
+                      "probes": [
+                        {
+                          "timestamp": -2,
+                          "elapsedMs": 65.5,
+                          "forcedRegions": 2,
+                          "discardedHandOutputs": 0
+                        },
+                        {
+                          "timestamp": -1,
+                          "elapsedMs": 67.39999997615814,
+                          "forcedRegions": 2,
+                          "discardedHandOutputs": 0
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ],
+            "rawHandCountHistogram": {
+              "1": 58,
+              "2": 5
+            },
+            "timing": {
+              "packetAgeMs": {
+                "n": 63,
+                "min": 55.900000005960464,
+                "median": 66.80000001192093,
+                "p95": 90.09999999403954,
+                "max": 100.09999999403954
+              },
+              "captureToInferenceCompletionMs": {
+                "n": 63,
+                "min": 55.599853515625,
+                "median": 66.10009765625,
+                "p95": 89.999755859375,
+                "max": 99.999755859375
+              },
+              "dispatchToReceiptMs": {
+                "n": 63,
+                "min": 55,
+                "median": 65.699951171875,
+                "p95": 88.89990234375,
+                "max": 98.7998046875
+              },
+              "captureToDispatchMs": {
+                "n": 63,
+                "min": 0.3999999761581421,
+                "median": 0.9000000059604645,
+                "p95": 1.300000011920929,
+                "max": 2.9000000059604645
+              },
+              "inferenceCompletionToReceiptMs": {
+                "n": 63,
+                "min": 0.10009765625,
+                "median": 0.199951171875,
+                "p95": 2.10009765625,
+                "max": 10.5
+              },
+              "originConsistencyErrorMs": {
+                "n": 63,
+                "min": 0,
+                "median": 0,
+                "p95": 0,
+                "max": 0
+              },
+              "pageEpochAgeConsistencyErrorMs": {
+                "n": 63,
+                "min": 0,
+                "median": 4.884600639343262e-5,
+                "p95": 0.00019529461860656738,
+                "max": 0.00019529461860656738
+              }
+            },
+            "percentileConvention": "Nearest rank, sorted finite values at ceil(p*n); median uses p=.5.",
+            "rawFreshness": {
+              "atMost150Ms": 63,
+              "atLeast150Ms": 0,
+              "strictlyOver150Ms": 0,
+              "nonfiniteAge": 0
+            },
+            "integrity": {
+              "missingPriorReady": 0,
+              "changedBackendOrPolicy": 0,
+              "resultGeometryMismatch": 0,
+              "negativeOrFutureClocks": 0,
+              "diagnosticDroppedRows": {
+                "worker": 0,
+                "dispatch": 0,
+                "presented": 0
+              }
+            },
+            "presentationProxy": {
+              "eligiblePairedRows": 63,
+              "finiteCaptureTimeRows": 0,
+              "dimensionsMismatch": 0,
+              "invalidConditionalOrigin": 0,
+              "presentationToReceiptMs": {
+                "n": 63,
+                "min": 73.5,
+                "median": 110.40000001192129,
+                "p95": 146.30000002384168,
+                "max": 166.5000000238415
+              },
+              "conditionalRuntimeOriginToReceiptMs": {
+                "n": 63,
+                "min": 73.5,
+                "median": 110.40000001192129,
+                "p95": 146.30000002384168,
+                "max": 166.5000000238415
+              },
+              "conditionalRuntimeOriginToCaptureMs": {
+                "n": 63,
+                "min": 7.600000011920201,
+                "median": 41.1000000119202,
+                "p95": 69.89999999999964,
+                "max": 74.89999999999964
+              },
+              "callbackAgeOfPresentationMs": {
+                "n": 63,
+                "min": 0.3000000238425855,
+                "median": 14.200000023842222,
+                "p95": 18.800000017881757,
+                "max": 26.000000017881575
+              },
+              "conditionalOriginStrictlyOver150AtReceipt": 2,
+              "limitation": "Latest observed rVFC at or before capture, never a later dispatch callback. Finite captureTime is used when present; null combines absent and nonfinite in the instrumentation, so presentation fallback is conditional. This is a presentation-origin proxy, not sensor exposure, exact final source-veto proof, display scanout or capture-to-visible latency."
+            },
+            "finalTelemetryCounts": {
+              "tracks": 0,
+              "workers": 0,
+              "prompts": 1,
+              "observations": 63,
+              "draws": 205,
+              "canvasClears": 163
+            },
+            "finalUiStates": [
+              {
+                "reachReadiness": "NO_HAND",
+                "imageState": "UNSEEDED",
+                "imageReason": "UNSEEDED",
+                "imageCaptureTime": "",
+                "imageInferenceTime": "",
+                "imageModelAgreement": "UNAVAILABLE",
+                "fingertipCoordinateSource": "IMAGE",
+                "calibrationIdentity": "ACTIVE"
+              }
+            ],
+            "measurementBoundary": "RESULT/hand counts are raw neural packets, not selected-index positions, anatomical accuracy, final freshness admission or calibration samples."
+          },
+          "originalTestMetrics": {
+            "fixture": "official photographic frame replay",
+            "tier": "D1",
+            "boundary": "Software capture to canvas submission; excludes sensor exposure and display scanout",
+            "inferenceCount": 59,
+            "inferenceP95Ms": 87.19980466365814,
+            "captureIntervalP95Ms": 103,
+            "canvasSubmissionAgeP95Ms": 90.70000000000073,
+            "visualizationIntervalP95Ms": 183.30000000000018,
+            "acquisitionMs": [1815.1000000238419],
+            "recentModelCaptureHz": 11.318956273124906,
+            "adaptivePacing": {
+              "focused": true,
+              "calibrationCollecting": false,
+              "maximumHz": 15,
+              "phaseCaptureMaximumHz": 15,
+              "modelMaximumHz": 60,
+              "targetHz": 13.210618817839984,
+              "intervalMs": 75.69668111607099,
+              "smoothedTotalMs": 75.69668111607099,
+              "smoothedMainThreadMs": 1.1958114567512292,
+              "smoothedTimerLatenessMs": 4.21187125073934,
+              "mainThreadDutyLimit": 0.3,
+              "processingDutyLimit": 1
+            }
+          },
+          "geometry": null
+        },
+        {
+          "title": "worker NONE has bounded lifecycle and recovery",
+          "category": "OTHER_LAB_GUIDED_OR_FAULT_CONTROL",
+          "verdict": "expected",
+          "actualStatus": "passed",
+          "clock": {
+            "available": true,
+            "nativeWorkerEvents": 1,
+            "nativeWorkerPaths": ["/reach/recovery-worker.js"],
+            "counts": {
+              "init": 1,
+              "ready": 0,
+              "frame": 0,
+              "result": 0,
+              "error": 0,
+              "paired": 0,
+              "unpaired": 0
+            },
+            "initGeometry": [
+              {
+                "frameWidth": 640,
+                "frameHeight": 480,
+                "geometryVersion": 3,
+                "mirrorTransform": "PREVIEW_X"
+              }
+            ],
+            "ready": [],
+            "rawHandCountHistogram": {},
+            "timing": {
+              "packetAgeMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToInferenceCompletionMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "dispatchToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToDispatchMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "inferenceCompletionToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "originConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "pageEpochAgeConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              }
+            },
+            "percentileConvention": "Nearest rank, sorted finite values at ceil(p*n); median uses p=.5.",
+            "rawFreshness": {
+              "atMost150Ms": 0,
+              "atLeast150Ms": 0,
+              "strictlyOver150Ms": 0,
+              "nonfiniteAge": 0
+            },
+            "integrity": {
+              "missingPriorReady": 0,
+              "changedBackendOrPolicy": 0,
+              "resultGeometryMismatch": 0,
+              "negativeOrFutureClocks": 0,
+              "diagnosticDroppedRows": {
+                "worker": 0,
+                "dispatch": 0,
+                "presented": 0
+              }
+            },
+            "presentationProxy": {
+              "eligiblePairedRows": 0,
+              "finiteCaptureTimeRows": 0,
+              "dimensionsMismatch": 0,
+              "invalidConditionalOrigin": 0,
+              "presentationToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToCaptureMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "callbackAgeOfPresentationMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalOriginStrictlyOver150AtReceipt": 0,
+              "limitation": "Latest observed rVFC at or before capture, never a later dispatch callback. Finite captureTime is used when present; null combines absent and nonfinite in the instrumentation, so presentation fallback is conditional. This is a presentation-origin proxy, not sensor exposure, exact final source-veto proof, display scanout or capture-to-visible latency."
+            },
+            "finalTelemetryCounts": {
+              "tracks": 0,
+              "workers": 0,
+              "prompts": 1,
+              "observations": 0,
+              "draws": 4,
+              "canvasClears": 1
+            },
+            "finalUiStates": [
+              {
+                "reachReadiness": "NO_HAND",
+                "imageState": "UNSEEDED",
+                "imageReason": "UNSEEDED",
+                "imageCaptureTime": "",
+                "imageInferenceTime": "",
+                "imageModelAgreement": "UNAVAILABLE",
+                "fingertipCoordinateSource": "IMAGE",
+                "calibrationIdentity": "ACTIVE"
+              }
+            ],
+            "measurementBoundary": "RESULT/hand counts are raw neural packets, not selected-index positions, anatomical accuracy, final freshness admission or calibration samples."
+          },
+          "originalTestMetrics": null,
+          "geometry": null
+        },
+        {
+          "title": "worker MODEL_UNAVAILABLE has bounded lifecycle and recovery",
+          "category": "OTHER_LAB_GUIDED_OR_FAULT_CONTROL",
+          "verdict": "expected",
+          "actualStatus": "passed",
+          "clock": {
+            "available": true,
+            "nativeWorkerEvents": 2,
+            "nativeWorkerPaths": ["/reach/recovery-worker.js", "/reach/hand-worker.js"],
+            "counts": {
+              "init": 2,
+              "ready": 0,
+              "frame": 0,
+              "result": 0,
+              "error": 2,
+              "paired": 0,
+              "unpaired": 0
+            },
+            "initGeometry": [
+              {
+                "frameWidth": 640,
+                "frameHeight": 480,
+                "geometryVersion": 3,
+                "mirrorTransform": "PREVIEW_X"
+              },
+              {
+                "frameWidth": 640,
+                "frameHeight": 480,
+                "geometryVersion": 3,
+                "mirrorTransform": "PREVIEW_X"
+              }
+            ],
+            "ready": [],
+            "rawHandCountHistogram": {},
+            "timing": {
+              "packetAgeMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToInferenceCompletionMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "dispatchToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToDispatchMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "inferenceCompletionToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "originConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "pageEpochAgeConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              }
+            },
+            "percentileConvention": "Nearest rank, sorted finite values at ceil(p*n); median uses p=.5.",
+            "rawFreshness": {
+              "atMost150Ms": 0,
+              "atLeast150Ms": 0,
+              "strictlyOver150Ms": 0,
+              "nonfiniteAge": 0
+            },
+            "integrity": {
+              "missingPriorReady": 0,
+              "changedBackendOrPolicy": 0,
+              "resultGeometryMismatch": 0,
+              "negativeOrFutureClocks": 0,
+              "diagnosticDroppedRows": {
+                "worker": 0,
+                "dispatch": 0,
+                "presented": 0
+              }
+            },
+            "presentationProxy": {
+              "eligiblePairedRows": 0,
+              "finiteCaptureTimeRows": 0,
+              "dimensionsMismatch": 0,
+              "invalidConditionalOrigin": 0,
+              "presentationToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToCaptureMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "callbackAgeOfPresentationMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalOriginStrictlyOver150AtReceipt": 0,
+              "limitation": "Latest observed rVFC at or before capture, never a later dispatch callback. Finite captureTime is used when present; null combines absent and nonfinite in the instrumentation, so presentation fallback is conditional. This is a presentation-origin proxy, not sensor exposure, exact final source-veto proof, display scanout or capture-to-visible latency."
+            },
+            "finalTelemetryCounts": {
+              "tracks": 0,
+              "workers": 0,
+              "prompts": 1,
+              "observations": 0,
+              "draws": 2,
+              "canvasClears": 6
+            },
+            "finalUiStates": [
+              {
+                "reachReadiness": "ACQUIRING",
+                "imageState": "TRACKING",
+                "imageReason": "D0_SIMULATED_IMAGE_POSITION",
+                "imageCaptureTime": "818.2000000178814",
+                "imageInferenceTime": "818.2000000178814",
+                "imageModelAgreement": "UNAVAILABLE",
+                "fingertipCoordinateSource": "IMAGE",
+                "calibrationIdentity": "ACTIVE"
+              }
+            ],
+            "measurementBoundary": "RESULT/hand counts are raw neural packets, not selected-index positions, anatomical accuracy, final freshness admission or calibration samples."
+          },
+          "originalTestMetrics": null,
+          "geometry": null
+        },
+        {
+          "title": "camera denial has a useful retry and conventional demonstration",
+          "category": "OTHER_LAB_GUIDED_OR_FAULT_CONTROL",
+          "verdict": "expected",
+          "actualStatus": "passed",
+          "clock": {
+            "available": true,
+            "nativeWorkerEvents": 0,
+            "nativeWorkerPaths": [],
+            "counts": {
+              "init": 0,
+              "ready": 0,
+              "frame": 0,
+              "result": 0,
+              "error": 0,
+              "paired": 0,
+              "unpaired": 0
+            },
+            "initGeometry": [],
+            "ready": [],
+            "rawHandCountHistogram": {},
+            "timing": {
+              "packetAgeMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToInferenceCompletionMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "dispatchToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToDispatchMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "inferenceCompletionToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "originConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "pageEpochAgeConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              }
+            },
+            "percentileConvention": "Nearest rank, sorted finite values at ceil(p*n); median uses p=.5.",
+            "rawFreshness": {
+              "atMost150Ms": 0,
+              "atLeast150Ms": 0,
+              "strictlyOver150Ms": 0,
+              "nonfiniteAge": 0
+            },
+            "integrity": {
+              "missingPriorReady": 0,
+              "changedBackendOrPolicy": 0,
+              "resultGeometryMismatch": 0,
+              "negativeOrFutureClocks": 0,
+              "diagnosticDroppedRows": {
+                "worker": 0,
+                "dispatch": 0,
+                "presented": 0
+              }
+            },
+            "presentationProxy": {
+              "eligiblePairedRows": 0,
+              "finiteCaptureTimeRows": 0,
+              "dimensionsMismatch": 0,
+              "invalidConditionalOrigin": 0,
+              "presentationToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToCaptureMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "callbackAgeOfPresentationMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalOriginStrictlyOver150AtReceipt": 0,
+              "limitation": "Latest observed rVFC at or before capture, never a later dispatch callback. Finite captureTime is used when present; null combines absent and nonfinite in the instrumentation, so presentation fallback is conditional. This is a presentation-origin proxy, not sensor exposure, exact final source-veto proof, display scanout or capture-to-visible latency."
+            },
+            "finalTelemetryCounts": {
+              "tracks": null,
+              "workers": null,
+              "prompts": null,
+              "observations": null,
+              "draws": null,
+              "canvasClears": null
+            },
+            "finalUiStates": [
+              {
+                "reachReadiness": "READY",
+                "imageState": "TRACKING",
+                "imageReason": "D0_SIMULATED_IMAGE_POSITION",
+                "imageCaptureTime": "1301.0999999940395",
+                "imageInferenceTime": "1301.0999999940395",
+                "imageModelAgreement": "UNAVAILABLE",
+                "fingertipCoordinateSource": "IMAGE",
+                "calibrationIdentity": "ACTIVE"
+              }
+            ],
+            "measurementBoundary": "RESULT/hand counts are raw neural packets, not selected-index positions, anatomical accuracy, final freshness admission or calibration samples."
+          },
+          "originalTestMetrics": null,
+          "geometry": null
+        },
+        {
+          "title": "viewport changes invalidate the fit and preserve camera availability; safe return excludes external URLs",
+          "category": "OTHER_LAB_GUIDED_OR_FAULT_CONTROL",
+          "verdict": "expected",
+          "actualStatus": "passed",
+          "clock": {
+            "available": true,
+            "nativeWorkerEvents": 0,
+            "nativeWorkerPaths": [],
+            "counts": {
+              "init": 0,
+              "ready": 0,
+              "frame": 0,
+              "result": 0,
+              "error": 0,
+              "paired": 0,
+              "unpaired": 0
+            },
+            "initGeometry": [],
+            "ready": [],
+            "rawHandCountHistogram": {},
+            "timing": {
+              "packetAgeMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToInferenceCompletionMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "dispatchToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToDispatchMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "inferenceCompletionToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "originConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "pageEpochAgeConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              }
+            },
+            "percentileConvention": "Nearest rank, sorted finite values at ceil(p*n); median uses p=.5.",
+            "rawFreshness": {
+              "atMost150Ms": 0,
+              "atLeast150Ms": 0,
+              "strictlyOver150Ms": 0,
+              "nonfiniteAge": 0
+            },
+            "integrity": {
+              "missingPriorReady": 0,
+              "changedBackendOrPolicy": 0,
+              "resultGeometryMismatch": 0,
+              "negativeOrFutureClocks": 0,
+              "diagnosticDroppedRows": {
+                "worker": 0,
+                "dispatch": 0,
+                "presented": 0
+              }
+            },
+            "presentationProxy": {
+              "eligiblePairedRows": 0,
+              "finiteCaptureTimeRows": 0,
+              "dimensionsMismatch": 0,
+              "invalidConditionalOrigin": 0,
+              "presentationToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToCaptureMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "callbackAgeOfPresentationMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalOriginStrictlyOver150AtReceipt": 0,
+              "limitation": "Latest observed rVFC at or before capture, never a later dispatch callback. Finite captureTime is used when present; null combines absent and nonfinite in the instrumentation, so presentation fallback is conditional. This is a presentation-origin proxy, not sensor exposure, exact final source-veto proof, display scanout or capture-to-visible latency."
+            },
+            "finalTelemetryCounts": {
+              "tracks": null,
+              "workers": null,
+              "prompts": null,
+              "observations": null,
+              "draws": null,
+              "canvasClears": null
+            },
+            "finalUiStates": [
+              {
+                "reachReadiness": "NO_HAND",
+                "imageState": "UNSEEDED",
+                "imageReason": "UNSEEDED",
+                "imageCaptureTime": "",
+                "imageInferenceTime": "",
+                "imageModelAgreement": "UNAVAILABLE",
+                "fingertipCoordinateSource": "IMAGE",
+                "calibrationIdentity": "ACTIVE"
+              }
+            ],
+            "measurementBoundary": "RESULT/hand counts are raw neural packets, not selected-index positions, anatomical accuracy, final freshness admission or calibration samples."
+          },
+          "originalTestMetrics": null,
+          "geometry": null
+        },
+        {
+          "title": "photographic worker completes nine real-landmark holds and five independent checks",
+          "category": "PUBLIC_PHOTOGRAPHIC_CURRENT_NATIVE_WORKER",
+          "verdict": "expected",
+          "actualStatus": "passed",
+          "clock": {
+            "available": true,
+            "nativeWorkerEvents": 1,
+            "nativeWorkerPaths": ["/reach/recovery-worker.js"],
+            "counts": {
+              "init": 1,
+              "ready": 1,
+              "frame": 829,
+              "result": 828,
+              "error": 0,
+              "paired": 828,
+              "unpaired": 0
+            },
+            "initGeometry": [
+              {
+                "frameWidth": 640,
+                "frameHeight": 480,
+                "geometryVersion": 3,
+                "mirrorTransform": "PREVIEW_X"
+              }
+            ],
+            "ready": [
+              {
+                "backend": "CPU_WASM",
+                "providerPolicy": "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1",
+                "fallbackReason": "GPU_STARTUP_LATENCY_HEALTH_FAILED",
+                "startupHealth": {
+                  "classification": "SYNTHETIC_PREREADY_LATENCY_NECESSARY_CONDITION_ONLY",
+                  "probeDimensions": {
+                    "width": 640,
+                    "height": 480
+                  },
+                  "geometryVersion": 3,
+                  "mirrorTransform": "PREVIEW_X",
+                  "livePixelQualification": false,
+                  "attempts": [
+                    {
+                      "passed": false,
+                      "delegate": "GPU",
+                      "width": 640,
+                      "height": 480,
+                      "maximumElapsedMs": 150,
+                      "outputsDiscarded": true,
+                      "retainedRegionsCleared": true,
+                      "probes": [
+                        {
+                          "timestamp": -2,
+                          "elapsedMs": 347.09999999403954,
+                          "forcedRegions": 2,
+                          "discardedHandOutputs": 0
+                        },
+                        {
+                          "timestamp": -1,
+                          "elapsedMs": 349.30000001192093,
+                          "forcedRegions": 2,
+                          "discardedHandOutputs": 0
+                        }
+                      ]
+                    },
+                    {
+                      "passed": true,
+                      "delegate": "CPU",
+                      "width": 640,
+                      "height": 480,
+                      "maximumElapsedMs": 150,
+                      "outputsDiscarded": true,
+                      "retainedRegionsCleared": true,
+                      "probes": [
+                        {
+                          "timestamp": -2,
+                          "elapsedMs": 64.40000000596046,
+                          "forcedRegions": 2,
+                          "discardedHandOutputs": 0
+                        },
+                        {
+                          "timestamp": -1,
+                          "elapsedMs": 65.2999999821186,
+                          "forcedRegions": 2,
+                          "discardedHandOutputs": 0
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ],
+            "rawHandCountHistogram": {
+              "1": 795,
+              "2": 33
+            },
+            "timing": {
+              "packetAgeMs": {
+                "n": 828,
+                "min": 32.39999997615814,
+                "median": 60.400000005960464,
+                "p95": 82.2000000178814,
+                "max": 109.10000002384186
+              },
+              "captureToInferenceCompletionMs": {
+                "n": 828,
+                "min": 32.2001953125,
+                "median": 60.000244140625,
+                "p95": 80.500244140625,
+                "max": 108.7001953125
+              },
+              "dispatchToReceiptMs": {
+                "n": 828,
+                "min": 31.800048828125,
+                "median": 59.199951171875,
+                "p95": 80,
+                "max": 108.300048828125
+              },
+              "captureToDispatchMs": {
+                "n": 828,
+                "min": 0.09999999403953552,
+                "median": 0.9000000059604645,
+                "p95": 2,
+                "max": 5.9000000059604645
+              },
+              "inferenceCompletionToReceiptMs": {
+                "n": 828,
+                "min": 0.099853515625,
+                "median": 0.2998046875,
+                "p95": 0.7998046875,
+                "max": 12.39990234375
+              },
+              "originConsistencyErrorMs": {
+                "n": 828,
+                "min": 0,
+                "median": 0,
+                "p95": 0,
+                "max": 0
+              },
+              "pageEpochAgeConsistencyErrorMs": {
+                "n": 828,
+                "min": 0,
+                "median": 4.884600639343262e-5,
+                "p95": 0.00019532442092895508,
+                "max": 0.00019532442092895508
+              }
+            },
+            "percentileConvention": "Nearest rank, sorted finite values at ceil(p*n); median uses p=.5.",
+            "rawFreshness": {
+              "atMost150Ms": 828,
+              "atLeast150Ms": 0,
+              "strictlyOver150Ms": 0,
+              "nonfiniteAge": 0
+            },
+            "integrity": {
+              "missingPriorReady": 0,
+              "changedBackendOrPolicy": 0,
+              "resultGeometryMismatch": 0,
+              "negativeOrFutureClocks": 0,
+              "diagnosticDroppedRows": {
+                "worker": 0,
+                "dispatch": 0,
+                "presented": 0
+              }
+            },
+            "presentationProxy": {
+              "eligiblePairedRows": 828,
+              "finiteCaptureTimeRows": 0,
+              "dimensionsMismatch": 0,
+              "invalidConditionalOrigin": 0,
+              "presentationToReceiptMs": {
+                "n": 828,
+                "min": 42.200000011922384,
+                "median": 91.80000000596192,
+                "p95": 131.89999998807616,
+                "max": 165.00000001192166
+              },
+              "conditionalRuntimeOriginToReceiptMs": {
+                "n": 828,
+                "min": 42.200000011922384,
+                "median": 91.80000000596192,
+                "p95": 131.89999998807616,
+                "max": 165.00000001192166
+              },
+              "conditionalRuntimeOriginToCaptureMs": {
+                "n": 828,
+                "min": 6.69999999999709,
+                "median": 30.30000000000291,
+                "p95": 61.40000001192129,
+                "max": 69.90000001192129
+              },
+              "callbackAgeOfPresentationMs": {
+                "n": 828,
+                "min": 0.30000001192092896,
+                "median": 14.899999994038808,
+                "p95": 16.99999999404099,
+                "max": 24.799999994040263
+              },
+              "conditionalOriginStrictlyOver150AtReceipt": 7,
+              "limitation": "Latest observed rVFC at or before capture, never a later dispatch callback. Finite captureTime is used when present; null combines absent and nonfinite in the instrumentation, so presentation fallback is conditional. This is a presentation-origin proxy, not sensor exposure, exact final source-veto proof, display scanout or capture-to-visible latency."
+            },
+            "finalTelemetryCounts": {
+              "tracks": 0,
+              "workers": 0,
+              "prompts": 1,
+              "observations": 828,
+              "draws": 1203,
+              "canvasClears": 2177
+            },
+            "finalUiStates": [
+              {
+                "reachReadiness": "NO_HAND",
+                "imageState": "UNSEEDED",
+                "imageReason": "UNSEEDED",
+                "imageCaptureTime": "",
+                "imageInferenceTime": "",
+                "imageModelAgreement": "UNAVAILABLE",
+                "fingertipCoordinateSource": "IMAGE",
+                "calibrationIdentity": "ACTIVE"
+              }
+            ],
+            "measurementBoundary": "RESULT/hand counts are raw neural packets, not selected-index positions, anatomical accuracy, final freshness admission or calibration samples."
+          },
+          "originalTestMetrics": {
+            "fixture": "official photograph; smooth translation, pixel noise, incidental second hand and transient partial occlusion",
+            "tier": "D1",
+            "physicalQualification": "NOT_CLAIMED",
+            "absolute": {
+              "mapping": "INDEX_TIP_AXIS_RIDGE_V1",
+              "status": "VALIDATED",
+              "evidenceTier": "UNQUALIFIED",
+              "trainingCount": 135,
+              "trainingResidualP95DiagonalFraction": 0.00807043518218302,
+              "validationCount": 75,
+              "rawValidationP95DiagonalFraction": 0.006032149075124728,
+              "rawValidationJitterP95DiagonalFraction": 0.006266013798639449,
+              "edgeValidationP95DiagonalFraction": 0.005791254357554347,
+              "trainingResidualMedianDiagonalFraction": 0.0035340623131183808,
+              "rawValidationMedianDiagonalFraction": 0.0035226782708225805,
+              "physicalQualification": "PENDING"
+            },
+            "relative": {
+              "mapping": "INDEX_TIP_DISPLACEMENT_V2",
+              "status": "VALIDATED",
+              "evidenceTier": "UNQUALIFIED",
+              "trainingCount": 75,
+              "trainingResidualP95DiagonalFraction": 0.004327023596943818,
+              "validationCount": 75,
+              "rawValidationP95DiagonalFraction": 0.004537564400303348,
+              "rawValidationJitterP95DiagonalFraction": 0.006927675981166796,
+              "edgeValidationP95DiagonalFraction": 0.004537564400303348,
+              "trainingResidualMedianDiagonalFraction": 0.0024890771475929597,
+              "rawValidationMedianDiagonalFraction": 0.0026343900280190397,
+              "physicalQualification": "PENDING"
+            },
+            "boundary": "Software capture to canvas submission; excludes sensor exposure and display scanout",
+            "inferenceCount": 400,
+            "inferenceP95Ms": 60.40009766817093,
+            "captureIntervalP95Ms": 69.09999999403954,
+            "canvasSubmissionAgeP95Ms": 69.50000001191802,
+            "visualizationIntervalP95Ms": 83.29999999999563,
+            "acquisitionMs": [
+              1724.1000000238419, 2211.7999999821186, 4116.0999999940395, 2577.2000000178814, 2316.2999999821186,
+              1795.5, 2601.2000000178814, 2434.4000000059605, 2347.399999976158, 1748.0999999940395, 2069.199999988079,
+              2487.5, 2698.7000000178814, 2257.899999976158, 1455.5999999940395, 2020.2000000178814, 1649.5999999940395,
+              1400.199999988079, 1456.9000000059605, 1485.5, 2140.7999999821186, 1407, 1395.800000011921,
+              1404.9000000059605
+            ],
+            "recentModelCaptureHz": 18.938796123895358,
+            "adaptivePacing": {
+              "focused": true,
+              "calibrationCollecting": false,
+              "maximumHz": 15,
+              "phaseCaptureMaximumHz": 15,
+              "modelMaximumHz": 60,
+              "targetHz": 14.999999999999998,
+              "intervalMs": 66.66666666666667,
+              "smoothedTotalMs": 40.01302332535864,
+              "smoothedMainThreadMs": 6.384858754866933,
+              "smoothedTimerLatenessMs": 1.1566820089907999,
+              "mainThreadDutyLimit": 0.3,
+              "processingDutyLimit": 1
+            },
+            "uiMainThreadLongTasks": {
+              "supported": true,
+              "count": 1,
+              "totalDurationMs": 60,
+              "maxDurationMs": 60
+            },
+            "heap": {
+              "boundary": "Optional performance.memory.usedJSHeapSize snapshots; no forced GC or leak-free claim",
+              "beforeNavigation": 10000000,
+              "afterStop": 10000000
+            },
+            "cleanup": {
+              "tracks": 0,
+              "workers": 0,
+              "furtherObservations": 0,
+              "furtherVideoDraws": 0,
+              "furtherCanvasClears": 0
+            }
+          },
+          "geometry": null
+        }
+      ]
+    },
+    {
+      "name": "index-image",
+      "stats": {
+        "startTime": "2026-10-19T19:56:59.787Z",
+        "duration": 125055.846,
+        "expected": 11,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "cleanup": {
+        "browser": "PASS",
+        "server": "PASS",
+        "portReleased": true,
+        "sourceUnchanged": true,
+        "fixtureUnchanged": true,
+        "buildUnchanged": true
+      },
+      "cases": [
+        {
+          "title": "D0 image-relative control follows fresh appearance through model failure, motion and interruption",
+          "category": "D0_ANALYTIC_FIXTURE",
+          "verdict": "unexpected",
+          "actualStatus": "failed",
+          "clock": {
+            "available": true,
+            "nativeWorkerEvents": 0,
+            "nativeWorkerPaths": [],
+            "counts": {
+              "init": 0,
+              "ready": 0,
+              "frame": 0,
+              "result": 0,
+              "error": 0,
+              "paired": 0,
+              "unpaired": 0
+            },
+            "initGeometry": [],
+            "ready": [],
+            "rawHandCountHistogram": {},
+            "timing": {
+              "packetAgeMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToInferenceCompletionMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "dispatchToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToDispatchMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "inferenceCompletionToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "originConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "pageEpochAgeConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              }
+            },
+            "percentileConvention": "Nearest rank, sorted finite values at ceil(p*n); median uses p=.5.",
+            "rawFreshness": {
+              "atMost150Ms": 0,
+              "atLeast150Ms": 0,
+              "strictlyOver150Ms": 0,
+              "nonfiniteAge": 0
+            },
+            "integrity": {
+              "missingPriorReady": 0,
+              "changedBackendOrPolicy": 0,
+              "resultGeometryMismatch": 0,
+              "negativeOrFutureClocks": 0,
+              "diagnosticDroppedRows": {
+                "worker": 0,
+                "dispatch": 0,
+                "presented": 0
+              }
+            },
+            "presentationProxy": {
+              "eligiblePairedRows": 0,
+              "finiteCaptureTimeRows": 0,
+              "dimensionsMismatch": 0,
+              "invalidConditionalOrigin": 0,
+              "presentationToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToCaptureMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "callbackAgeOfPresentationMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalOriginStrictlyOver150AtReceipt": 0,
+              "limitation": "Latest observed rVFC at or before capture, never a later dispatch callback. Finite captureTime is used when present; null combines absent and nonfinite in the instrumentation, so presentation fallback is conditional. This is a presentation-origin proxy, not sensor exposure, exact final source-veto proof, display scanout or capture-to-visible latency."
+            },
+            "finalTelemetryCounts": {
+              "tracks": null,
+              "workers": null,
+              "prompts": null,
+              "observations": null,
+              "draws": null,
+              "canvasClears": null
+            },
+            "finalUiStates": [
+              {
+                "reachReadiness": "RECOVERING",
+                "imageState": "LOST",
+                "imageReason": "APPEARANCE_MISMATCH",
+                "imageCaptureTime": "12879.40000000596",
+                "imageInferenceTime": "12887.100000023842",
+                "imageModelAgreement": "UNAVAILABLE",
+                "fingertipCoordinateSource": "IMAGE",
+                "calibrationIdentity": "ACTIVE"
+              }
+            ],
+            "measurementBoundary": "RESULT/hand counts are raw neural packets, not selected-index positions, anatomical accuracy, final freshness admission or calibration samples."
+          },
+          "originalTestMetrics": null,
+          "geometry": null
+        },
+        {
+          "title": "D0 fused FULL motion and optical pose changes preserve calibration target 1 to 2",
+          "category": "D0_ANALYTIC_FIXTURE",
+          "verdict": "expected",
+          "actualStatus": "passed",
+          "clock": {
+            "available": true,
+            "nativeWorkerEvents": 0,
+            "nativeWorkerPaths": [],
+            "counts": {
+              "init": 0,
+              "ready": 0,
+              "frame": 0,
+              "result": 0,
+              "error": 0,
+              "paired": 0,
+              "unpaired": 0
+            },
+            "initGeometry": [],
+            "ready": [],
+            "rawHandCountHistogram": {},
+            "timing": {
+              "packetAgeMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToInferenceCompletionMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "dispatchToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToDispatchMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "inferenceCompletionToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "originConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "pageEpochAgeConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              }
+            },
+            "percentileConvention": "Nearest rank, sorted finite values at ceil(p*n); median uses p=.5.",
+            "rawFreshness": {
+              "atMost150Ms": 0,
+              "atLeast150Ms": 0,
+              "strictlyOver150Ms": 0,
+              "nonfiniteAge": 0
+            },
+            "integrity": {
+              "missingPriorReady": 0,
+              "changedBackendOrPolicy": 0,
+              "resultGeometryMismatch": 0,
+              "negativeOrFutureClocks": 0,
+              "diagnosticDroppedRows": {
+                "worker": 0,
+                "dispatch": 0,
+                "presented": 0
+              }
+            },
+            "presentationProxy": {
+              "eligiblePairedRows": 0,
+              "finiteCaptureTimeRows": 0,
+              "dimensionsMismatch": 0,
+              "invalidConditionalOrigin": 0,
+              "presentationToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToCaptureMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "callbackAgeOfPresentationMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalOriginStrictlyOver150AtReceipt": 0,
+              "limitation": "Latest observed rVFC at or before capture, never a later dispatch callback. Finite captureTime is used when present; null combines absent and nonfinite in the instrumentation, so presentation fallback is conditional. This is a presentation-origin proxy, not sensor exposure, exact final source-veto proof, display scanout or capture-to-visible latency."
+            },
+            "finalTelemetryCounts": {
+              "tracks": null,
+              "workers": null,
+              "prompts": null,
+              "observations": null,
+              "draws": null,
+              "canvasClears": null
+            },
+            "finalUiStates": [
+              {
+                "reachReadiness": "NO_HAND",
+                "imageState": "UNSEEDED",
+                "imageReason": "UNSEEDED",
+                "imageCaptureTime": "",
+                "imageInferenceTime": "",
+                "imageModelAgreement": "UNAVAILABLE",
+                "fingertipCoordinateSource": "IMAGE",
+                "calibrationIdentity": "ACTIVE"
+              }
+            ],
+            "measurementBoundary": "RESULT/hand counts are raw neural packets, not selected-index positions, anatomical accuracy, final freshness admission or calibration samples."
+          },
+          "originalTestMetrics": null,
+          "geometry": null
+        },
+        {
+          "title": "D0 fused INDEX motion and optical pose changes preserve calibration target 1 to 2",
+          "category": "D0_ANALYTIC_FIXTURE",
+          "verdict": "expected",
+          "actualStatus": "passed",
+          "clock": {
+            "available": true,
+            "nativeWorkerEvents": 0,
+            "nativeWorkerPaths": [],
+            "counts": {
+              "init": 0,
+              "ready": 0,
+              "frame": 0,
+              "result": 0,
+              "error": 0,
+              "paired": 0,
+              "unpaired": 0
+            },
+            "initGeometry": [],
+            "ready": [],
+            "rawHandCountHistogram": {},
+            "timing": {
+              "packetAgeMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToInferenceCompletionMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "dispatchToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToDispatchMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "inferenceCompletionToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "originConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "pageEpochAgeConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              }
+            },
+            "percentileConvention": "Nearest rank, sorted finite values at ceil(p*n); median uses p=.5.",
+            "rawFreshness": {
+              "atMost150Ms": 0,
+              "atLeast150Ms": 0,
+              "strictlyOver150Ms": 0,
+              "nonfiniteAge": 0
+            },
+            "integrity": {
+              "missingPriorReady": 0,
+              "changedBackendOrPolicy": 0,
+              "resultGeometryMismatch": 0,
+              "negativeOrFutureClocks": 0,
+              "diagnosticDroppedRows": {
+                "worker": 0,
+                "dispatch": 0,
+                "presented": 0
+              }
+            },
+            "presentationProxy": {
+              "eligiblePairedRows": 0,
+              "finiteCaptureTimeRows": 0,
+              "dimensionsMismatch": 0,
+              "invalidConditionalOrigin": 0,
+              "presentationToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToCaptureMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "callbackAgeOfPresentationMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalOriginStrictlyOver150AtReceipt": 0,
+              "limitation": "Latest observed rVFC at or before capture, never a later dispatch callback. Finite captureTime is used when present; null combines absent and nonfinite in the instrumentation, so presentation fallback is conditional. This is a presentation-origin proxy, not sensor exposure, exact final source-veto proof, display scanout or capture-to-visible latency."
+            },
+            "finalTelemetryCounts": {
+              "tracks": null,
+              "workers": null,
+              "prompts": null,
+              "observations": null,
+              "draws": null,
+              "canvasClears": null
+            },
+            "finalUiStates": [
+              {
+                "reachReadiness": "NO_HAND",
+                "imageState": "UNSEEDED",
+                "imageReason": "UNSEEDED",
+                "imageCaptureTime": "",
+                "imageInferenceTime": "",
+                "imageModelAgreement": "UNAVAILABLE",
+                "fingertipCoordinateSource": "IMAGE",
+                "calibrationIdentity": "ACTIVE"
+              }
+            ],
+            "measurementBoundary": "RESULT/hand counts are raw neural packets, not selected-index positions, anatomical accuracy, final freshness admission or calibration samples."
+          },
+          "originalTestMetrics": null,
+          "geometry": null
+        },
+        {
+          "title": "D0 live setup opens empty before pointing and binds its first fresh source without restarting",
+          "category": "D0_ANALYTIC_FIXTURE",
+          "verdict": "expected",
+          "actualStatus": "passed",
+          "clock": {
+            "available": true,
+            "nativeWorkerEvents": 0,
+            "nativeWorkerPaths": [],
+            "counts": {
+              "init": 0,
+              "ready": 0,
+              "frame": 0,
+              "result": 0,
+              "error": 0,
+              "paired": 0,
+              "unpaired": 0
+            },
+            "initGeometry": [],
+            "ready": [],
+            "rawHandCountHistogram": {},
+            "timing": {
+              "packetAgeMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToInferenceCompletionMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "dispatchToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToDispatchMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "inferenceCompletionToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "originConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "pageEpochAgeConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              }
+            },
+            "percentileConvention": "Nearest rank, sorted finite values at ceil(p*n); median uses p=.5.",
+            "rawFreshness": {
+              "atMost150Ms": 0,
+              "atLeast150Ms": 0,
+              "strictlyOver150Ms": 0,
+              "nonfiniteAge": 0
+            },
+            "integrity": {
+              "missingPriorReady": 0,
+              "changedBackendOrPolicy": 0,
+              "resultGeometryMismatch": 0,
+              "negativeOrFutureClocks": 0,
+              "diagnosticDroppedRows": {
+                "worker": 0,
+                "dispatch": 0,
+                "presented": 0
+              }
+            },
+            "presentationProxy": {
+              "eligiblePairedRows": 0,
+              "finiteCaptureTimeRows": 0,
+              "dimensionsMismatch": 0,
+              "invalidConditionalOrigin": 0,
+              "presentationToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToCaptureMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "callbackAgeOfPresentationMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalOriginStrictlyOver150AtReceipt": 0,
+              "limitation": "Latest observed rVFC at or before capture, never a later dispatch callback. Finite captureTime is used when present; null combines absent and nonfinite in the instrumentation, so presentation fallback is conditional. This is a presentation-origin proxy, not sensor exposure, exact final source-veto proof, display scanout or capture-to-visible latency."
+            },
+            "finalTelemetryCounts": {
+              "tracks": null,
+              "workers": null,
+              "prompts": null,
+              "observations": null,
+              "draws": null,
+              "canvasClears": null
+            },
+            "finalUiStates": [
+              {
+                "reachReadiness": "NO_HAND",
+                "imageState": "UNSEEDED",
+                "imageReason": "UNSEEDED",
+                "imageCaptureTime": "",
+                "imageInferenceTime": "",
+                "imageModelAgreement": "UNAVAILABLE",
+                "fingertipCoordinateSource": "IMAGE",
+                "calibrationIdentity": "ACTIVE"
+              }
+            ],
+            "measurementBoundary": "RESULT/hand counts are raw neural packets, not selected-index positions, anatomical accuracy, final freshness admission or calibration samples."
+          },
+          "originalTestMetrics": null,
+          "geometry": null
+        },
+        {
+          "title": "D0 display staleness between timely delayed captures preserves evidence while contrary frames pause it",
+          "category": "D0_ANALYTIC_FIXTURE",
+          "verdict": "expected",
+          "actualStatus": "passed",
+          "clock": {
+            "available": true,
+            "nativeWorkerEvents": 0,
+            "nativeWorkerPaths": [],
+            "counts": {
+              "init": 0,
+              "ready": 0,
+              "frame": 0,
+              "result": 0,
+              "error": 0,
+              "paired": 0,
+              "unpaired": 0
+            },
+            "initGeometry": [],
+            "ready": [],
+            "rawHandCountHistogram": {},
+            "timing": {
+              "packetAgeMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToInferenceCompletionMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "dispatchToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToDispatchMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "inferenceCompletionToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "originConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "pageEpochAgeConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              }
+            },
+            "percentileConvention": "Nearest rank, sorted finite values at ceil(p*n); median uses p=.5.",
+            "rawFreshness": {
+              "atMost150Ms": 0,
+              "atLeast150Ms": 0,
+              "strictlyOver150Ms": 0,
+              "nonfiniteAge": 0
+            },
+            "integrity": {
+              "missingPriorReady": 0,
+              "changedBackendOrPolicy": 0,
+              "resultGeometryMismatch": 0,
+              "negativeOrFutureClocks": 0,
+              "diagnosticDroppedRows": {
+                "worker": 0,
+                "dispatch": 0,
+                "presented": 0
+              }
+            },
+            "presentationProxy": {
+              "eligiblePairedRows": 0,
+              "finiteCaptureTimeRows": 0,
+              "dimensionsMismatch": 0,
+              "invalidConditionalOrigin": 0,
+              "presentationToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToCaptureMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "callbackAgeOfPresentationMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalOriginStrictlyOver150AtReceipt": 0,
+              "limitation": "Latest observed rVFC at or before capture, never a later dispatch callback. Finite captureTime is used when present; null combines absent and nonfinite in the instrumentation, so presentation fallback is conditional. This is a presentation-origin proxy, not sensor exposure, exact final source-veto proof, display scanout or capture-to-visible latency."
+            },
+            "finalTelemetryCounts": {
+              "tracks": null,
+              "workers": null,
+              "prompts": null,
+              "observations": null,
+              "draws": null,
+              "canvasClears": null
+            },
+            "finalUiStates": [
+              {
+                "reachReadiness": "NO_HAND",
+                "imageState": "UNSEEDED",
+                "imageReason": "UNSEEDED",
+                "imageCaptureTime": "",
+                "imageInferenceTime": "",
+                "imageModelAgreement": "UNAVAILABLE",
+                "fingertipCoordinateSource": "IMAGE",
+                "calibrationIdentity": "ACTIVE"
+              }
+            ],
+            "measurementBoundary": "RESULT/hand counts are raw neural packets, not selected-index positions, anatomical accuracy, final freshness admission or calibration samples."
+          },
+          "originalTestMetrics": null,
+          "geometry": null
+        },
+        {
+          "title": "D0 manual image-only hints support mirrored click and natural keyboard while ambiguous pixels abstain",
+          "category": "D0_ANALYTIC_FIXTURE",
+          "verdict": "expected",
+          "actualStatus": "passed",
+          "clock": {
+            "available": true,
+            "nativeWorkerEvents": 0,
+            "nativeWorkerPaths": [],
+            "counts": {
+              "init": 0,
+              "ready": 0,
+              "frame": 0,
+              "result": 0,
+              "error": 0,
+              "paired": 0,
+              "unpaired": 0
+            },
+            "initGeometry": [],
+            "ready": [],
+            "rawHandCountHistogram": {},
+            "timing": {
+              "packetAgeMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToInferenceCompletionMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "dispatchToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToDispatchMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "inferenceCompletionToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "originConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "pageEpochAgeConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              }
+            },
+            "percentileConvention": "Nearest rank, sorted finite values at ceil(p*n); median uses p=.5.",
+            "rawFreshness": {
+              "atMost150Ms": 0,
+              "atLeast150Ms": 0,
+              "strictlyOver150Ms": 0,
+              "nonfiniteAge": 0
+            },
+            "integrity": {
+              "missingPriorReady": 0,
+              "changedBackendOrPolicy": 0,
+              "resultGeometryMismatch": 0,
+              "negativeOrFutureClocks": 0,
+              "diagnosticDroppedRows": {
+                "worker": 0,
+                "dispatch": 0,
+                "presented": 0
+              }
+            },
+            "presentationProxy": {
+              "eligiblePairedRows": 0,
+              "finiteCaptureTimeRows": 0,
+              "dimensionsMismatch": 0,
+              "invalidConditionalOrigin": 0,
+              "presentationToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToCaptureMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "callbackAgeOfPresentationMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalOriginStrictlyOver150AtReceipt": 0,
+              "limitation": "Latest observed rVFC at or before capture, never a later dispatch callback. Finite captureTime is used when present; null combines absent and nonfinite in the instrumentation, so presentation fallback is conditional. This is a presentation-origin proxy, not sensor exposure, exact final source-veto proof, display scanout or capture-to-visible latency."
+            },
+            "finalTelemetryCounts": {
+              "tracks": null,
+              "workers": null,
+              "prompts": null,
+              "observations": null,
+              "draws": null,
+              "canvasClears": null
+            },
+            "finalUiStates": [
+              {
+                "reachReadiness": "NO_HAND",
+                "imageState": "UNSEEDED",
+                "imageReason": "UNSEEDED",
+                "imageCaptureTime": "",
+                "imageInferenceTime": "",
+                "imageModelAgreement": "UNAVAILABLE",
+                "fingertipCoordinateSource": "IMAGE",
+                "calibrationIdentity": "ACTIVE"
+              }
+            ],
+            "measurementBoundary": "RESULT/hand counts are raw neural packets, not selected-index positions, anatomical accuracy, final freshness admission or calibration samples."
+          },
+          "originalTestMetrics": null,
+          "geometry": null
+        },
+        {
+          "title": "D0 manual selection survives rejected pixels and expiry without silently returning to a model digit",
+          "category": "D0_ANALYTIC_FIXTURE",
+          "verdict": "expected",
+          "actualStatus": "passed",
+          "clock": {
+            "available": true,
+            "nativeWorkerEvents": 0,
+            "nativeWorkerPaths": [],
+            "counts": {
+              "init": 0,
+              "ready": 0,
+              "frame": 0,
+              "result": 0,
+              "error": 0,
+              "paired": 0,
+              "unpaired": 0
+            },
+            "initGeometry": [],
+            "ready": [],
+            "rawHandCountHistogram": {},
+            "timing": {
+              "packetAgeMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToInferenceCompletionMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "dispatchToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToDispatchMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "inferenceCompletionToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "originConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "pageEpochAgeConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              }
+            },
+            "percentileConvention": "Nearest rank, sorted finite values at ceil(p*n); median uses p=.5.",
+            "rawFreshness": {
+              "atMost150Ms": 0,
+              "atLeast150Ms": 0,
+              "strictlyOver150Ms": 0,
+              "nonfiniteAge": 0
+            },
+            "integrity": {
+              "missingPriorReady": 0,
+              "changedBackendOrPolicy": 0,
+              "resultGeometryMismatch": 0,
+              "negativeOrFutureClocks": 0,
+              "diagnosticDroppedRows": {
+                "worker": 0,
+                "dispatch": 0,
+                "presented": 0
+              }
+            },
+            "presentationProxy": {
+              "eligiblePairedRows": 0,
+              "finiteCaptureTimeRows": 0,
+              "dimensionsMismatch": 0,
+              "invalidConditionalOrigin": 0,
+              "presentationToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToCaptureMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "callbackAgeOfPresentationMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalOriginStrictlyOver150AtReceipt": 0,
+              "limitation": "Latest observed rVFC at or before capture, never a later dispatch callback. Finite captureTime is used when present; null combines absent and nonfinite in the instrumentation, so presentation fallback is conditional. This is a presentation-origin proxy, not sensor exposure, exact final source-veto proof, display scanout or capture-to-visible latency."
+            },
+            "finalTelemetryCounts": {
+              "tracks": null,
+              "workers": null,
+              "prompts": null,
+              "observations": null,
+              "draws": null,
+              "canvasClears": null
+            },
+            "finalUiStates": [
+              {
+                "reachReadiness": "NO_HAND",
+                "imageState": "UNSEEDED",
+                "imageReason": "UNSEEDED",
+                "imageCaptureTime": "",
+                "imageInferenceTime": "",
+                "imageModelAgreement": "UNAVAILABLE",
+                "fingertipCoordinateSource": "IMAGE",
+                "calibrationIdentity": "ACTIVE"
+              }
+            ],
+            "measurementBoundary": "RESULT/hand counts are raw neural packets, not selected-index positions, anatomical accuracy, final freshness admission or calibration samples."
+          },
+          "originalTestMetrics": null,
+          "geometry": null
+        },
+        {
+          "title": "D0 desktop preserves completed targets inert through unverified fingertip replacement",
+          "category": "D0_ANALYTIC_FIXTURE",
+          "verdict": "expected",
+          "actualStatus": "passed",
+          "clock": {
+            "available": true,
+            "nativeWorkerEvents": 0,
+            "nativeWorkerPaths": [],
+            "counts": {
+              "init": 0,
+              "ready": 0,
+              "frame": 0,
+              "result": 0,
+              "error": 0,
+              "paired": 0,
+              "unpaired": 0
+            },
+            "initGeometry": [],
+            "ready": [],
+            "rawHandCountHistogram": {},
+            "timing": {
+              "packetAgeMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToInferenceCompletionMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "dispatchToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToDispatchMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "inferenceCompletionToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "originConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "pageEpochAgeConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              }
+            },
+            "percentileConvention": "Nearest rank, sorted finite values at ceil(p*n); median uses p=.5.",
+            "rawFreshness": {
+              "atMost150Ms": 0,
+              "atLeast150Ms": 0,
+              "strictlyOver150Ms": 0,
+              "nonfiniteAge": 0
+            },
+            "integrity": {
+              "missingPriorReady": 0,
+              "changedBackendOrPolicy": 0,
+              "resultGeometryMismatch": 0,
+              "negativeOrFutureClocks": 0,
+              "diagnosticDroppedRows": {
+                "worker": 0,
+                "dispatch": 0,
+                "presented": 0
+              }
+            },
+            "presentationProxy": {
+              "eligiblePairedRows": 0,
+              "finiteCaptureTimeRows": 0,
+              "dimensionsMismatch": 0,
+              "invalidConditionalOrigin": 0,
+              "presentationToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToCaptureMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "callbackAgeOfPresentationMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalOriginStrictlyOver150AtReceipt": 0,
+              "limitation": "Latest observed rVFC at or before capture, never a later dispatch callback. Finite captureTime is used when present; null combines absent and nonfinite in the instrumentation, so presentation fallback is conditional. This is a presentation-origin proxy, not sensor exposure, exact final source-veto proof, display scanout or capture-to-visible latency."
+            },
+            "finalTelemetryCounts": {
+              "tracks": null,
+              "workers": null,
+              "prompts": null,
+              "observations": null,
+              "draws": null,
+              "canvasClears": null
+            },
+            "finalUiStates": [
+              {
+                "reachReadiness": "NO_HAND",
+                "imageState": "UNSEEDED",
+                "imageReason": "UNSEEDED",
+                "imageCaptureTime": "",
+                "imageInferenceTime": "",
+                "imageModelAgreement": "UNAVAILABLE",
+                "fingertipCoordinateSource": "IMAGE",
+                "calibrationIdentity": "ACTIVE"
+              }
+            ],
+            "measurementBoundary": "RESULT/hand counts are raw neural packets, not selected-index positions, anatomical accuracy, final freshness admission or calibration samples."
+          },
+          "originalTestMetrics": null,
+          "geometry": null
+        },
+        {
+          "title": "D0 mobile preserves completed targets inert through unverified fingertip replacement",
+          "category": "D0_ANALYTIC_FIXTURE",
+          "verdict": "expected",
+          "actualStatus": "passed",
+          "clock": {
+            "available": true,
+            "nativeWorkerEvents": 0,
+            "nativeWorkerPaths": [],
+            "counts": {
+              "init": 0,
+              "ready": 0,
+              "frame": 0,
+              "result": 0,
+              "error": 0,
+              "paired": 0,
+              "unpaired": 0
+            },
+            "initGeometry": [],
+            "ready": [],
+            "rawHandCountHistogram": {},
+            "timing": {
+              "packetAgeMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToInferenceCompletionMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "dispatchToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToDispatchMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "inferenceCompletionToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "originConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "pageEpochAgeConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              }
+            },
+            "percentileConvention": "Nearest rank, sorted finite values at ceil(p*n); median uses p=.5.",
+            "rawFreshness": {
+              "atMost150Ms": 0,
+              "atLeast150Ms": 0,
+              "strictlyOver150Ms": 0,
+              "nonfiniteAge": 0
+            },
+            "integrity": {
+              "missingPriorReady": 0,
+              "changedBackendOrPolicy": 0,
+              "resultGeometryMismatch": 0,
+              "negativeOrFutureClocks": 0,
+              "diagnosticDroppedRows": {
+                "worker": 0,
+                "dispatch": 0,
+                "presented": 0
+              }
+            },
+            "presentationProxy": {
+              "eligiblePairedRows": 0,
+              "finiteCaptureTimeRows": 0,
+              "dimensionsMismatch": 0,
+              "invalidConditionalOrigin": 0,
+              "presentationToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToCaptureMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "callbackAgeOfPresentationMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalOriginStrictlyOver150AtReceipt": 0,
+              "limitation": "Latest observed rVFC at or before capture, never a later dispatch callback. Finite captureTime is used when present; null combines absent and nonfinite in the instrumentation, so presentation fallback is conditional. This is a presentation-origin proxy, not sensor exposure, exact final source-veto proof, display scanout or capture-to-visible latency."
+            },
+            "finalTelemetryCounts": {
+              "tracks": null,
+              "workers": null,
+              "prompts": null,
+              "observations": null,
+              "draws": null,
+              "canvasClears": null
+            },
+            "finalUiStates": [
+              {
+                "reachReadiness": "NO_HAND",
+                "imageState": "UNSEEDED",
+                "imageReason": "UNSEEDED",
+                "imageCaptureTime": "",
+                "imageInferenceTime": "",
+                "imageModelAgreement": "UNAVAILABLE",
+                "fingertipCoordinateSource": "IMAGE",
+                "calibrationIdentity": "ACTIVE"
+              }
+            ],
+            "measurementBoundary": "RESULT/hand counts are raw neural packets, not selected-index positions, anatomical accuracy, final freshness admission or calibration samples."
+          },
+          "originalTestMetrics": null,
+          "geometry": null
+        },
+        {
+          "title": "D0 full-hand authority pauses conflicts without changing image coordinates and manual hints cannot bypass it",
+          "category": "D0_ANALYTIC_FIXTURE",
+          "verdict": "expected",
+          "actualStatus": "passed",
+          "clock": {
+            "available": true,
+            "nativeWorkerEvents": 0,
+            "nativeWorkerPaths": [],
+            "counts": {
+              "init": 0,
+              "ready": 0,
+              "frame": 0,
+              "result": 0,
+              "error": 0,
+              "paired": 0,
+              "unpaired": 0
+            },
+            "initGeometry": [],
+            "ready": [],
+            "rawHandCountHistogram": {},
+            "timing": {
+              "packetAgeMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToInferenceCompletionMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "dispatchToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToDispatchMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "inferenceCompletionToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "originConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "pageEpochAgeConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              }
+            },
+            "percentileConvention": "Nearest rank, sorted finite values at ceil(p*n); median uses p=.5.",
+            "rawFreshness": {
+              "atMost150Ms": 0,
+              "atLeast150Ms": 0,
+              "strictlyOver150Ms": 0,
+              "nonfiniteAge": 0
+            },
+            "integrity": {
+              "missingPriorReady": 0,
+              "changedBackendOrPolicy": 0,
+              "resultGeometryMismatch": 0,
+              "negativeOrFutureClocks": 0,
+              "diagnosticDroppedRows": {
+                "worker": 0,
+                "dispatch": 0,
+                "presented": 0
+              }
+            },
+            "presentationProxy": {
+              "eligiblePairedRows": 0,
+              "finiteCaptureTimeRows": 0,
+              "dimensionsMismatch": 0,
+              "invalidConditionalOrigin": 0,
+              "presentationToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToCaptureMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "callbackAgeOfPresentationMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalOriginStrictlyOver150AtReceipt": 0,
+              "limitation": "Latest observed rVFC at or before capture, never a later dispatch callback. Finite captureTime is used when present; null combines absent and nonfinite in the instrumentation, so presentation fallback is conditional. This is a presentation-origin proxy, not sensor exposure, exact final source-veto proof, display scanout or capture-to-visible latency."
+            },
+            "finalTelemetryCounts": {
+              "tracks": null,
+              "workers": null,
+              "prompts": null,
+              "observations": null,
+              "draws": null,
+              "canvasClears": null
+            },
+            "finalUiStates": [
+              {
+                "reachReadiness": "NO_HAND",
+                "imageState": "UNSEEDED",
+                "imageReason": "UNSEEDED",
+                "imageCaptureTime": "",
+                "imageInferenceTime": "",
+                "imageModelAgreement": "UNAVAILABLE",
+                "fingertipCoordinateSource": "IMAGE",
+                "calibrationIdentity": "ACTIVE"
+              }
+            ],
+            "measurementBoundary": "RESULT/hand counts are raw neural packets, not selected-index positions, anatomical accuracy, final freshness admission or calibration samples."
+          },
+          "originalTestMetrics": null,
+          "geometry": null
+        },
+        {
+          "title": "D0 stale model replies hide the image marker, pause collection and recover the same image source",
+          "category": "D0_ANALYTIC_FIXTURE",
+          "verdict": "expected",
+          "actualStatus": "passed",
+          "clock": {
+            "available": true,
+            "nativeWorkerEvents": 0,
+            "nativeWorkerPaths": [],
+            "counts": {
+              "init": 0,
+              "ready": 0,
+              "frame": 0,
+              "result": 0,
+              "error": 0,
+              "paired": 0,
+              "unpaired": 0
+            },
+            "initGeometry": [],
+            "ready": [],
+            "rawHandCountHistogram": {},
+            "timing": {
+              "packetAgeMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToInferenceCompletionMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "dispatchToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToDispatchMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "inferenceCompletionToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "originConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "pageEpochAgeConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              }
+            },
+            "percentileConvention": "Nearest rank, sorted finite values at ceil(p*n); median uses p=.5.",
+            "rawFreshness": {
+              "atMost150Ms": 0,
+              "atLeast150Ms": 0,
+              "strictlyOver150Ms": 0,
+              "nonfiniteAge": 0
+            },
+            "integrity": {
+              "missingPriorReady": 0,
+              "changedBackendOrPolicy": 0,
+              "resultGeometryMismatch": 0,
+              "negativeOrFutureClocks": 0,
+              "diagnosticDroppedRows": {
+                "worker": 0,
+                "dispatch": 0,
+                "presented": 0
+              }
+            },
+            "presentationProxy": {
+              "eligiblePairedRows": 0,
+              "finiteCaptureTimeRows": 0,
+              "dimensionsMismatch": 0,
+              "invalidConditionalOrigin": 0,
+              "presentationToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToCaptureMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "callbackAgeOfPresentationMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalOriginStrictlyOver150AtReceipt": 0,
+              "limitation": "Latest observed rVFC at or before capture, never a later dispatch callback. Finite captureTime is used when present; null combines absent and nonfinite in the instrumentation, so presentation fallback is conditional. This is a presentation-origin proxy, not sensor exposure, exact final source-veto proof, display scanout or capture-to-visible latency."
+            },
+            "finalTelemetryCounts": {
+              "tracks": null,
+              "workers": null,
+              "prompts": null,
+              "observations": null,
+              "draws": null,
+              "canvasClears": null
+            },
+            "finalUiStates": [
+              {
+                "reachReadiness": "NO_HAND",
+                "imageState": "UNSEEDED",
+                "imageReason": "UNSEEDED",
+                "imageCaptureTime": "",
+                "imageInferenceTime": "",
+                "imageModelAgreement": "UNAVAILABLE",
+                "fingertipCoordinateSource": "IMAGE",
+                "calibrationIdentity": "ACTIVE"
+              }
+            ],
+            "measurementBoundary": "RESULT/hand counts are raw neural packets, not selected-index positions, anatomical accuracy, final freshness admission or calibration samples."
+          },
+          "originalTestMetrics": null,
+          "geometry": null
+        },
+        {
+          "title": "D0 adaptive pacing backs off on visible blur and event-loop duress, then actual pagehide releases resources",
+          "category": "D0_ANALYTIC_FIXTURE",
+          "verdict": "expected",
+          "actualStatus": "passed",
+          "clock": {
+            "available": true,
+            "nativeWorkerEvents": 0,
+            "nativeWorkerPaths": [],
+            "counts": {
+              "init": 0,
+              "ready": 0,
+              "frame": 0,
+              "result": 0,
+              "error": 0,
+              "paired": 0,
+              "unpaired": 0
+            },
+            "initGeometry": [],
+            "ready": [],
+            "rawHandCountHistogram": {},
+            "timing": {
+              "packetAgeMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToInferenceCompletionMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "dispatchToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "captureToDispatchMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "inferenceCompletionToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "originConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "pageEpochAgeConsistencyErrorMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              }
+            },
+            "percentileConvention": "Nearest rank, sorted finite values at ceil(p*n); median uses p=.5.",
+            "rawFreshness": {
+              "atMost150Ms": 0,
+              "atLeast150Ms": 0,
+              "strictlyOver150Ms": 0,
+              "nonfiniteAge": 0
+            },
+            "integrity": {
+              "missingPriorReady": 0,
+              "changedBackendOrPolicy": 0,
+              "resultGeometryMismatch": 0,
+              "negativeOrFutureClocks": 0,
+              "diagnosticDroppedRows": {
+                "worker": 0,
+                "dispatch": 0,
+                "presented": 0
+              }
+            },
+            "presentationProxy": {
+              "eligiblePairedRows": 0,
+              "finiteCaptureTimeRows": 0,
+              "dimensionsMismatch": 0,
+              "invalidConditionalOrigin": 0,
+              "presentationToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToReceiptMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalRuntimeOriginToCaptureMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "callbackAgeOfPresentationMs": {
+                "n": 0,
+                "min": null,
+                "median": null,
+                "p95": null,
+                "max": null
+              },
+              "conditionalOriginStrictlyOver150AtReceipt": 0,
+              "limitation": "Latest observed rVFC at or before capture, never a later dispatch callback. Finite captureTime is used when present; null combines absent and nonfinite in the instrumentation, so presentation fallback is conditional. This is a presentation-origin proxy, not sensor exposure, exact final source-veto proof, display scanout or capture-to-visible latency."
+            },
+            "finalTelemetryCounts": {
+              "tracks": null,
+              "workers": null,
+              "prompts": null,
+              "observations": null,
+              "draws": null,
+              "canvasClears": null
+            },
+            "finalUiStates": [],
+            "measurementBoundary": "RESULT/hand counts are raw neural packets, not selected-index positions, anatomical accuracy, final freshness admission or calibration samples."
+          },
+          "originalTestMetrics": null,
+          "geometry": null
+        }
+      ]
+    },
+    {
+      "name": "geometry-smoke",
+      "stats": {
+        "startTime": "2026-10-19T19:59:18.644Z",
+        "duration": 15380.406,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cleanup": {
+        "browser": "PASS",
+        "server": "PASS",
+        "portReleased": true,
+        "sourceUnchanged": true,
+        "fixtureUnchanged": true,
+        "buildUnchanged": true
+      },
+      "cases": [
+        {
+          "title": "actual startup binds delivered gray canvas 401x683",
+          "category": "GRAY_CURRENT_NATIVE_WORKER_GEOMETRY_CONTROL",
+          "verdict": "expected",
+          "actualStatus": "passed",
+          "clock": {
+            "available": true,
+            "nativeWorkerEvents": 1,
+            "nativeWorkerPaths": ["/reach/recovery-worker.js"],
+            "counts": {
+              "init": 1,
+              "ready": 1,
+              "frame": 12,
+              "result": 12,
+              "error": 0,
+              "paired": 12,
+              "unpaired": 0
+            },
+            "initGeometry": [
+              {
+                "frameWidth": 401,
+                "frameHeight": 683,
+                "geometryVersion": 3,
+                "mirrorTransform": "PREVIEW_X"
+              }
+            ],
+            "ready": [
+              {
+                "backend": "CPU_WASM",
+                "providerPolicy": "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1",
+                "fallbackReason": "GPU_STARTUP_LATENCY_HEALTH_FAILED",
+                "startupHealth": {
+                  "classification": "SYNTHETIC_PREREADY_LATENCY_NECESSARY_CONDITION_ONLY",
+                  "probeDimensions": {
+                    "width": 401,
+                    "height": 683
+                  },
+                  "geometryVersion": 3,
+                  "mirrorTransform": "PREVIEW_X",
+                  "livePixelQualification": false,
+                  "attempts": [
+                    {
+                      "passed": false,
+                      "delegate": "GPU",
+                      "width": 401,
+                      "height": 683,
+                      "maximumElapsedMs": 150,
+                      "outputsDiscarded": true,
+                      "retainedRegionsCleared": true,
+                      "probes": [
+                        {
+                          "timestamp": -2,
+                          "elapsedMs": 322.09999999403954,
+                          "forcedRegions": 2,
+                          "discardedHandOutputs": 0
+                        },
+                        {
+                          "timestamp": -1,
+                          "elapsedMs": 318.7999999821186,
+                          "forcedRegions": 2,
+                          "discardedHandOutputs": 0
+                        }
+                      ]
+                    },
+                    {
+                      "passed": true,
+                      "delegate": "CPU",
+                      "width": 401,
+                      "height": 683,
+                      "maximumElapsedMs": 150,
+                      "outputsDiscarded": true,
+                      "retainedRegionsCleared": true,
+                      "probes": [
+                        {
+                          "timestamp": -2,
+                          "elapsedMs": 55.30000001192093,
+                          "forcedRegions": 2,
+                          "discardedHandOutputs": 0
+                        },
+                        {
+                          "timestamp": -1,
+                          "elapsedMs": 59.5,
+                          "forcedRegions": 2,
+                          "discardedHandOutputs": 0
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ],
+            "rawHandCountHistogram": {
+              "0": 12
+            },
+            "timing": {
+              "packetAgeMs": {
+                "n": 12,
+                "min": 28.599999994039536,
+                "median": 33,
+                "p95": 37,
+                "max": 37
+              },
+              "captureToInferenceCompletionMs": {
+                "n": 12,
+                "min": 28.39990234375,
+                "median": 32.699951171875,
+                "p95": 36.699951171875,
+                "max": 36.699951171875
+              },
+              "dispatchToReceiptMs": {
+                "n": 12,
+                "min": 27.900146484375,
+                "median": 32,
+                "p95": 35,
+                "max": 35
+              },
+              "captureToDispatchMs": {
+                "n": 12,
+                "min": 0.5999999940395355,
+                "median": 0.800000011920929,
+                "p95": 2.300000011920929,
+                "max": 2.300000011920929
+              },
+              "inferenceCompletionToReceiptMs": {
+                "n": 12,
+                "min": 0.199951171875,
+                "median": 0.2001953125,
+                "p95": 0.800048828125,
+                "max": 0.800048828125
+              },
+              "originConsistencyErrorMs": {
+                "n": 12,
+                "min": 0,
+                "median": 0,
+                "p95": 0,
+                "max": 0
+              },
+              "pageEpochAgeConsistencyErrorMs": {
+                "n": 12,
+                "min": 0,
+                "median": 4.881620407104492e-5,
+                "p95": 0.00019529461860656738,
+                "max": 0.00019529461860656738
+              }
+            },
+            "percentileConvention": "Nearest rank, sorted finite values at ceil(p*n); median uses p=.5.",
+            "rawFreshness": {
+              "atMost150Ms": 12,
+              "atLeast150Ms": 0,
+              "strictlyOver150Ms": 0,
+              "nonfiniteAge": 0
+            },
+            "integrity": {
+              "missingPriorReady": 0,
+              "changedBackendOrPolicy": 0,
+              "resultGeometryMismatch": 0,
+              "negativeOrFutureClocks": 0,
+              "diagnosticDroppedRows": {
+                "worker": 0,
+                "dispatch": 0,
+                "presented": 0
+              }
+            },
+            "presentationProxy": {
+              "eligiblePairedRows": 12,
+              "finiteCaptureTimeRows": 0,
+              "dimensionsMismatch": 0,
+              "invalidConditionalOrigin": 0,
+              "presentationToReceiptMs": {
+                "n": 12,
+                "min": 40.69999998807907,
+                "median": 66.59999999403954,
+                "p95": 96.7999999821186,
+                "max": 96.7999999821186
+              },
+              "conditionalRuntimeOriginToReceiptMs": {
+                "n": 12,
+                "min": 40.69999998807907,
+                "median": 66.59999999403954,
+                "p95": 96.7999999821186,
+                "max": 96.7999999821186
+              },
+              "conditionalRuntimeOriginToCaptureMs": {
+                "n": 12,
+                "min": 4.899999976158142,
+                "median": 37.99999999403963,
+                "p95": 65.59999999403954,
+                "max": 65.59999999403954
+              },
+              "callbackAgeOfPresentationMs": {
+                "n": 12,
+                "min": 1.5999999940395355,
+                "median": 13.599999999999909,
+                "p95": 16.5,
+                "max": 16.5
+              },
+              "conditionalOriginStrictlyOver150AtReceipt": 0,
+              "limitation": "Latest observed rVFC at or before capture, never a later dispatch callback. Finite captureTime is used when present; null combines absent and nonfinite in the instrumentation, so presentation fallback is conditional. This is a presentation-origin proxy, not sensor exposure, exact final source-veto proof, display scanout or capture-to-visible latency."
+            },
+            "finalTelemetryCounts": {
+              "tracks": null,
+              "workers": null,
+              "prompts": null,
+              "observations": null,
+              "draws": null,
+              "canvasClears": null
+            },
+            "finalUiStates": [
+              {
+                "reachReadiness": "NO_HAND",
+                "imageState": "UNSEEDED",
+                "imageReason": "UNSEEDED",
+                "imageCaptureTime": "",
+                "imageInferenceTime": "",
+                "imageModelAgreement": "UNAVAILABLE",
+                "fingertipCoordinateSource": "IMAGE",
+                "calibrationIdentity": "ACTIVE"
+              }
+            ],
+            "measurementBoundary": "RESULT/hand counts are raw neural packets, not selected-index positions, anatomical accuracy, final freshness admission or calibration samples."
+          },
+          "originalTestMetrics": null,
+          "geometry": {
+            "requested": {
+              "width": 401,
+              "height": 683
+            },
+            "delivered": {
+              "width": 401,
+              "height": 683
+            },
+            "resize": {
+              "requestedWidth": 403,
+              "requestedHeight": 687,
+              "atPage": 4655
+            },
+            "cleanup": {
+              "tracks": 0,
+              "workers": 0,
+              "prompts": 1,
+              "draws": 86
+            },
+            "limitations": [
+              "No physical camera or semantic hand accuracy claim.",
+              "Delivered dimensions, not requested canvas dimensions, bind the assertions.",
+              "Largest real canvas request is801x683; no16384 allocation."
+            ],
+            "limitationCorrection": "Original harness801x683 bounding label is inaccurate after portrait resize403x687; raw requested/delivered values retained."
+          }
+        },
+        {
+          "title": "actual startup binds delivered gray canvas 801x449",
+          "category": "GRAY_CURRENT_NATIVE_WORKER_GEOMETRY_CONTROL",
+          "verdict": "expected",
+          "actualStatus": "passed",
+          "clock": {
+            "available": true,
+            "nativeWorkerEvents": 1,
+            "nativeWorkerPaths": ["/reach/recovery-worker.js"],
+            "counts": {
+              "init": 1,
+              "ready": 1,
+              "frame": 7,
+              "result": 7,
+              "error": 0,
+              "paired": 7,
+              "unpaired": 0
+            },
+            "initGeometry": [
+              {
+                "frameWidth": 801,
+                "frameHeight": 449,
+                "geometryVersion": 3,
+                "mirrorTransform": "PREVIEW_X"
+              }
+            ],
+            "ready": [
+              {
+                "backend": "CPU_WASM",
+                "providerPolicy": "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1",
+                "fallbackReason": "GPU_STARTUP_LATENCY_HEALTH_FAILED",
+                "startupHealth": {
+                  "classification": "SYNTHETIC_PREREADY_LATENCY_NECESSARY_CONDITION_ONLY",
+                  "probeDimensions": {
+                    "width": 801,
+                    "height": 449
+                  },
+                  "geometryVersion": 3,
+                  "mirrorTransform": "PREVIEW_X",
+                  "livePixelQualification": false,
+                  "attempts": [
+                    {
+                      "passed": false,
+                      "delegate": "GPU",
+                      "width": 801,
+                      "height": 449,
+                      "maximumElapsedMs": 150,
+                      "outputsDiscarded": true,
+                      "retainedRegionsCleared": true,
+                      "probes": [
+                        {
+                          "timestamp": -2,
+                          "elapsedMs": 317.80000001192093,
+                          "forcedRegions": 2,
+                          "discardedHandOutputs": 0
+                        },
+                        {
+                          "timestamp": -1,
+                          "elapsedMs": 323.2000000178814,
+                          "forcedRegions": 2,
+                          "discardedHandOutputs": 0
+                        }
+                      ]
+                    },
+                    {
+                      "passed": true,
+                      "delegate": "CPU",
+                      "width": 801,
+                      "height": 449,
+                      "maximumElapsedMs": 150,
+                      "outputsDiscarded": true,
+                      "retainedRegionsCleared": true,
+                      "probes": [
+                        {
+                          "timestamp": -2,
+                          "elapsedMs": 57.099999994039536,
+                          "forcedRegions": 2,
+                          "discardedHandOutputs": 0
+                        },
+                        {
+                          "timestamp": -1,
+                          "elapsedMs": 60.900000005960464,
+                          "forcedRegions": 2,
+                          "discardedHandOutputs": 0
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ],
+            "rawHandCountHistogram": {
+              "0": 7
+            },
+            "timing": {
+              "packetAgeMs": {
+                "n": 7,
+                "min": 30.80000001192093,
+                "median": 34.30000001192093,
+                "p95": 35.900000005960464,
+                "max": 35.900000005960464
+              },
+              "captureToInferenceCompletionMs": {
+                "n": 7,
+                "min": 30.599853515625,
+                "median": 34,
+                "p95": 35.699951171875,
+                "max": 35.699951171875
+              },
+              "dispatchToReceiptMs": {
+                "n": 7,
+                "min": 30,
+                "median": 32.400146484375,
+                "p95": 34.800048828125,
+                "max": 34.800048828125
+              },
+              "captureToDispatchMs": {
+                "n": 7,
+                "min": 0.800000011920929,
+                "median": 1.0999999940395355,
+                "p95": 1.9000000059604645,
+                "max": 1.9000000059604645
+              },
+              "inferenceCompletionToReceiptMs": {
+                "n": 7,
+                "min": 0.199951171875,
+                "median": 0.199951171875,
+                "p95": 0.300048828125,
+                "max": 0.300048828125
+              },
+              "originConsistencyErrorMs": {
+                "n": 7,
+                "min": 0,
+                "median": 0,
+                "p95": 0,
+                "max": 0
+              },
+              "pageEpochAgeConsistencyErrorMs": {
+                "n": 7,
+                "min": 4.881620407104492e-5,
+                "median": 9.766221046447754e-5,
+                "p95": 0.00019532442092895508,
+                "max": 0.00019532442092895508
+              }
+            },
+            "percentileConvention": "Nearest rank, sorted finite values at ceil(p*n); median uses p=.5.",
+            "rawFreshness": {
+              "atMost150Ms": 7,
+              "atLeast150Ms": 0,
+              "strictlyOver150Ms": 0,
+              "nonfiniteAge": 0
+            },
+            "integrity": {
+              "missingPriorReady": 0,
+              "changedBackendOrPolicy": 0,
+              "resultGeometryMismatch": 0,
+              "negativeOrFutureClocks": 0,
+              "diagnosticDroppedRows": {
+                "worker": 0,
+                "dispatch": 0,
+                "presented": 0
+              }
+            },
+            "presentationProxy": {
+              "eligiblePairedRows": 7,
+              "finiteCaptureTimeRows": 0,
+              "dimensionsMismatch": 0,
+              "invalidConditionalOrigin": 0,
+              "presentationToReceiptMs": {
+                "n": 7,
+                "min": 55.30000000000018,
+                "median": 71.90000000596046,
+                "p95": 109.90000001192084,
+                "max": 109.90000001192084
+              },
+              "conditionalRuntimeOriginToReceiptMs": {
+                "n": 7,
+                "min": 55.30000000000018,
+                "median": 71.90000000596046,
+                "p95": 109.90000001192084,
+                "max": 109.90000001192084
+              },
+              "conditionalRuntimeOriginToCaptureMs": {
+                "n": 7,
+                "min": 19.399999994039717,
+                "median": 41.099999994039536,
+                "p95": 75.59999999999991,
+                "max": 75.59999999999991
+              },
+              "callbackAgeOfPresentationMs": {
+                "n": 7,
+                "min": 7.9000000059604645,
+                "median": 12.3000000059601,
+                "p95": 16.600000000000364,
+                "max": 16.600000000000364
+              },
+              "conditionalOriginStrictlyOver150AtReceipt": 0,
+              "limitation": "Latest observed rVFC at or before capture, never a later dispatch callback. Finite captureTime is used when present; null combines absent and nonfinite in the instrumentation, so presentation fallback is conditional. This is a presentation-origin proxy, not sensor exposure, exact final source-veto proof, display scanout or capture-to-visible latency."
+            },
+            "finalTelemetryCounts": {
+              "tracks": null,
+              "workers": null,
+              "prompts": null,
+              "observations": null,
+              "draws": null,
+              "canvasClears": null
+            },
+            "finalUiStates": [
+              {
+                "reachReadiness": "NO_HAND",
+                "imageState": "UNSEEDED",
+                "imageReason": "UNSEEDED",
+                "imageCaptureTime": "",
+                "imageInferenceTime": "",
+                "imageModelAgreement": "UNAVAILABLE",
+                "fingertipCoordinateSource": "IMAGE",
+                "calibrationIdentity": "ACTIVE"
+              }
+            ],
+            "measurementBoundary": "RESULT/hand counts are raw neural packets, not selected-index positions, anatomical accuracy, final freshness admission or calibration samples."
+          },
+          "originalTestMetrics": null,
+          "geometry": {
+            "requested": {
+              "width": 801,
+              "height": 449
+            },
+            "delivered": {
+              "width": 801,
+              "height": 449
+            },
+            "cleanup": {
+              "tracks": 0,
+              "workers": 0,
+              "prompts": 1,
+              "draws": 86
+            },
+            "limitations": [
+              "No physical camera or semantic hand accuracy claim.",
+              "Delivered dimensions, not requested canvas dimensions, bind the assertions.",
+              "Largest real canvas request is801x683; no16384 allocation."
+            ],
+            "limitationCorrection": "Original harness801x683 bounding label is inaccurate after portrait resize403x687; raw requested/delivered values retained."
+          }
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Every failed/skipped case remains in its original denominator.",
+    "Original canonical Windows-junction refusal remains FAIL; supplemental evidence grants no canonical acceptance.",
+    "Raw timely packets and hand counts do not establish selected-index or physical accuracy.",
+    "Original ReachTiming inferenceCount is a rolling buffer capped400 (src/reach/visualization.ts), not cumulative rawRESULT count or correct position count.",
+    "Instrumentation adds cost; no softwareGPU inference without actual renderer proof."
+  ],
+  "provenance": {
+    "implementationAuthorAlsoAnalyzed": true,
+    "independentlyAuthoredPerceptionLabels": false,
+    "realbrowserrawclocksrecordedunchanged": true,
+    "authorRole": "The same agent context implemented the private geometry-bound provider/worker candidate and provider unit tests, then analyzed these terminal browser clocks.",
+    "reviewerIndependence": "Separate computation from raw browser clocks does not establish reviewer independence from implementation. Fresh R1 visual review is a separate review role.",
+    "sourceScope": "This aggregate remains bound only to its recorded source head/digest/candidate files and cohorts. It is not proof for later UI changes, fingerprints, builds or browser cohorts.",
+    "previousVersionSha256": "f460b574ae7edde8da2db44db62d2a5485243115e3bbe96239112a366a251305",
+    "numericResultsChanged": false
+  }
+}

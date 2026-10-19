@@ -1,0 +1,826 @@
+{
+  "classification": "SAFE_AGGREGATE_DEVELOPMENT_ROI_BACKEND_COMPARISON_NOT_SELECTED_INDEX_OR_PHYSICAL_ACCEPTANCE",
+  "manifestSha256": "46b644f0cec47e774947a33ab809d35c8924e15766099d44016a99d6e027e867",
+  "resultsSha256": "23ef09eb70e1e9e367cd561c698012492da0834fc03be09c547b9e5d63196cfe",
+  "runnerSha256": "8f60afac514ac993d357a03314205c14db0a93f99d5688d448e66ead894bfcf0",
+  "workerSha256": "e0f0663f3b305ddb325c83ef4af85af8e36b7a3c0a5ae433f97ff8c2467a9cca",
+  "labelSha256": "6b3b8171f329f2a540ce8b6697fab6afe4ca580d4eac5116502983e0b6a176ae",
+  "labelProvenance": "PRIVATE_NONBLINDED_AI_VISUAL_DEVELOPMENT_PIXEL_REFERENCES_WITH_UNCERTAINTY",
+  "all": {
+    "packets": 1336,
+    "arms": [
+      {
+        "arm": "RETAINED_ROI_GPU",
+        "handOutputs": 1233,
+        "multipleHands": 20,
+        "finiteFirstIndexPositions": 1233,
+        "inFrameFirstIndexPositions": 1201,
+        "inferenceMs": {
+          "n": 1336,
+          "median": 7.555000007152557,
+          "p95": 11.514999985694885,
+          "maximum": 15.88500002026558
+        },
+        "roundTripMs": {
+          "n": 1336,
+          "median": 7.760000020265579,
+          "p95": 11.754999995231628,
+          "maximum": 16.099999994039536
+        }
+      },
+      {
+        "arm": "RETAINED_ROI_CPU",
+        "handOutputs": 1226,
+        "multipleHands": 24,
+        "finiteFirstIndexPositions": 1226,
+        "inFrameFirstIndexPositions": 1203,
+        "inferenceMs": {
+          "n": 1336,
+          "median": 32.339999973773956,
+          "p95": 46.62000000476837,
+          "maximum": 64.16999998688698
+        },
+        "roundTripMs": {
+          "n": 1336,
+          "median": 32.58000001311302,
+          "p95": 46.88499999046326,
+          "maximum": 64.47499999403954
+        }
+      }
+    ],
+    "endpointDifferenceNativePixels": {
+      "n": 1211,
+      "median": 3.006363675379261,
+      "p95": 40.41683734012618,
+      "maximum": 173.81594641487203
+    }
+  },
+  "byPrompt": {
+    "CENTER": {
+      "packets": 109,
+      "arms": [
+        {
+          "arm": "RETAINED_ROI_GPU",
+          "handOutputs": 98,
+          "multipleHands": 0,
+          "finiteFirstIndexPositions": 98,
+          "inFrameFirstIndexPositions": 98,
+          "inferenceMs": {
+            "n": 109,
+            "median": 7.575000017881393,
+            "p95": 9.550000011920929,
+            "maximum": 14.519999980926514
+          },
+          "roundTripMs": {
+            "n": 109,
+            "median": 7.769999980926514,
+            "p95": 9.935000002384186,
+            "maximum": 14.900000005960464
+          }
+        },
+        {
+          "arm": "RETAINED_ROI_CPU",
+          "handOutputs": 98,
+          "multipleHands": 1,
+          "finiteFirstIndexPositions": 98,
+          "inFrameFirstIndexPositions": 98,
+          "inferenceMs": {
+            "n": 109,
+            "median": 32.03499999642372,
+            "p95": 35.71999999880791,
+            "maximum": 47.78999999165535
+          },
+          "roundTripMs": {
+            "n": 109,
+            "median": 32.28000000119209,
+            "p95": 35.99499997496605,
+            "maximum": 48.06999999284744
+          }
+        }
+      ],
+      "endpointDifferenceNativePixels": {
+        "n": 98,
+        "median": 2.4293989663031583,
+        "p95": 6.971377976254972,
+        "maximum": 44.892219608454624
+      }
+    },
+    "BOTTOM": {
+      "packets": 145,
+      "arms": [
+        {
+          "arm": "RETAINED_ROI_GPU",
+          "handOutputs": 143,
+          "multipleHands": 2,
+          "finiteFirstIndexPositions": 143,
+          "inFrameFirstIndexPositions": 126,
+          "inferenceMs": {
+            "n": 145,
+            "median": 7.550000011920929,
+            "p95": 12.264999985694885,
+            "maximum": 15.075000017881393
+          },
+          "roundTripMs": {
+            "n": 145,
+            "median": 7.794999986886978,
+            "p95": 12.520000010728836,
+            "maximum": 15.280000001192093
+          }
+        },
+        {
+          "arm": "RETAINED_ROI_CPU",
+          "handOutputs": 124,
+          "multipleHands": 2,
+          "finiteFirstIndexPositions": 124,
+          "inFrameFirstIndexPositions": 108,
+          "inferenceMs": {
+            "n": 145,
+            "median": 32.71999999880791,
+            "p95": 50.06999999284744,
+            "maximum": 55.775000005960464
+          },
+          "roundTripMs": {
+            "n": 145,
+            "median": 33,
+            "p95": 50.30500000715256,
+            "maximum": 55.99000000953674
+          }
+        }
+      ],
+      "endpointDifferenceNativePixels": {
+        "n": 124,
+        "median": 10.93513706124715,
+        "p95": 45.827972154816266,
+        "maximum": 84.83028703334628
+      }
+    },
+    "TOP": {
+      "packets": 107,
+      "arms": [
+        {
+          "arm": "RETAINED_ROI_GPU",
+          "handOutputs": 107,
+          "multipleHands": 0,
+          "finiteFirstIndexPositions": 107,
+          "inFrameFirstIndexPositions": 107,
+          "inferenceMs": {
+            "n": 107,
+            "median": 7.015000015497208,
+            "p95": 8.284999996423721,
+            "maximum": 9.449999988079071
+          },
+          "roundTripMs": {
+            "n": 107,
+            "median": 7.219999998807907,
+            "p95": 8.540000021457672,
+            "maximum": 9.689999997615814
+          }
+        },
+        {
+          "arm": "RETAINED_ROI_CPU",
+          "handOutputs": 107,
+          "multipleHands": 0,
+          "finiteFirstIndexPositions": 107,
+          "inFrameFirstIndexPositions": 107,
+          "inferenceMs": {
+            "n": 107,
+            "median": 31.604999989271164,
+            "p95": 32.889999985694885,
+            "maximum": 45.78000000119209
+          },
+          "roundTripMs": {
+            "n": 107,
+            "median": 31.82499998807907,
+            "p95": 33.110000014305115,
+            "maximum": 46.08500000834465
+          }
+        }
+      ],
+      "endpointDifferenceNativePixels": {
+        "n": 107,
+        "median": 1.9014157981561575,
+        "p95": 11.794776312822801,
+        "maximum": 22.507420694503846
+      }
+    },
+    "LEFT": {
+      "packets": 90,
+      "arms": [
+        {
+          "arm": "RETAINED_ROI_GPU",
+          "handOutputs": 90,
+          "multipleHands": 0,
+          "finiteFirstIndexPositions": 90,
+          "inFrameFirstIndexPositions": 90,
+          "inferenceMs": {
+            "n": 90,
+            "median": 7.395000010728836,
+            "p95": 9.620000004768372,
+            "maximum": 10.860000014305115
+          },
+          "roundTripMs": {
+            "n": 90,
+            "median": 7.5799999833106995,
+            "p95": 9.810000002384186,
+            "maximum": 11.069999992847443
+          }
+        },
+        {
+          "arm": "RETAINED_ROI_CPU",
+          "handOutputs": 90,
+          "multipleHands": 0,
+          "finiteFirstIndexPositions": 90,
+          "inFrameFirstIndexPositions": 90,
+          "inferenceMs": {
+            "n": 90,
+            "median": 32.125,
+            "p95": 37.71999999880791,
+            "maximum": 44.91499999165535
+          },
+          "roundTripMs": {
+            "n": 90,
+            "median": 32.395000010728836,
+            "p95": 37.99500000476837,
+            "maximum": 45.10999998450279
+          }
+        }
+      ],
+      "endpointDifferenceNativePixels": {
+        "n": 90,
+        "median": 4.197507757228063,
+        "p95": 19.549484090432777,
+        "maximum": 114.20152429444175
+      }
+    },
+    "RIGHT": {
+      "packets": 89,
+      "arms": [
+        {
+          "arm": "RETAINED_ROI_GPU",
+          "handOutputs": 89,
+          "multipleHands": 0,
+          "finiteFirstIndexPositions": 89,
+          "inFrameFirstIndexPositions": 89,
+          "inferenceMs": {
+            "n": 89,
+            "median": 7.1700000166893005,
+            "p95": 10.979999989271164,
+            "maximum": 13.610000014305115
+          },
+          "roundTripMs": {
+            "n": 89,
+            "median": 7.370000004768372,
+            "p95": 11.159999996423721,
+            "maximum": 13.83500000834465
+          }
+        },
+        {
+          "arm": "RETAINED_ROI_CPU",
+          "handOutputs": 89,
+          "multipleHands": 0,
+          "finiteFirstIndexPositions": 89,
+          "inFrameFirstIndexPositions": 89,
+          "inferenceMs": {
+            "n": 89,
+            "median": 31.92500001192093,
+            "p95": 38.25,
+            "maximum": 55.08500000834465
+          },
+          "roundTripMs": {
+            "n": 89,
+            "median": 32.19999998807907,
+            "p95": 38.49000000953674,
+            "maximum": 55.349999994039536
+          }
+        }
+      ],
+      "endpointDifferenceNativePixels": {
+        "n": 89,
+        "median": 2.668512858686858,
+        "p95": 152.72483358158678,
+        "maximum": 169.2630602327107
+      }
+    },
+    "TOP_LEFT": {
+      "packets": 73,
+      "arms": [
+        {
+          "arm": "RETAINED_ROI_GPU",
+          "handOutputs": 73,
+          "multipleHands": 1,
+          "finiteFirstIndexPositions": 73,
+          "inFrameFirstIndexPositions": 73,
+          "inferenceMs": {
+            "n": 73,
+            "median": 6.939999997615814,
+            "p95": 8.655000001192093,
+            "maximum": 9.814999997615814
+          },
+          "roundTripMs": {
+            "n": 73,
+            "median": 7.094999998807907,
+            "p95": 8.824999988079071,
+            "maximum": 9.969999998807907
+          }
+        },
+        {
+          "arm": "RETAINED_ROI_CPU",
+          "handOutputs": 73,
+          "multipleHands": 1,
+          "finiteFirstIndexPositions": 73,
+          "inFrameFirstIndexPositions": 73,
+          "inferenceMs": {
+            "n": 73,
+            "median": 31.5,
+            "p95": 33.935000002384186,
+            "maximum": 45.4549999833107
+          },
+          "roundTripMs": {
+            "n": 73,
+            "median": 31.719999998807907,
+            "p95": 34.18000000715256,
+            "maximum": 45.66499999165535
+          }
+        }
+      ],
+      "endpointDifferenceNativePixels": {
+        "n": 73,
+        "median": 1.7333146916164965,
+        "p95": 6.304976969578554,
+        "maximum": 173.81594641487203
+      }
+    },
+    "TOP_RIGHT": {
+      "packets": 74,
+      "arms": [
+        {
+          "arm": "RETAINED_ROI_GPU",
+          "handOutputs": 74,
+          "multipleHands": 2,
+          "finiteFirstIndexPositions": 74,
+          "inFrameFirstIndexPositions": 72,
+          "inferenceMs": {
+            "n": 74,
+            "median": 6.96000000834465,
+            "p95": 8.2049999833107,
+            "maximum": 10.46000000834465
+          },
+          "roundTripMs": {
+            "n": 74,
+            "median": 7.16499999165535,
+            "p95": 8.389999985694885,
+            "maximum": 10.7049999833107
+          }
+        },
+        {
+          "arm": "RETAINED_ROI_CPU",
+          "handOutputs": 74,
+          "multipleHands": 2,
+          "finiteFirstIndexPositions": 74,
+          "inFrameFirstIndexPositions": 73,
+          "inferenceMs": {
+            "n": 74,
+            "median": 31.55000001192093,
+            "p95": 44.48499998450279,
+            "maximum": 45.55000001192093
+          },
+          "roundTripMs": {
+            "n": 74,
+            "median": 31.794999986886978,
+            "p95": 44.67500001192093,
+            "maximum": 45.894999980926514
+          }
+        }
+      ],
+      "endpointDifferenceNativePixels": {
+        "n": 74,
+        "median": 2.342673920447006,
+        "p95": 23.593168250044766,
+        "maximum": 134.04718284725547
+      }
+    },
+    "BOTTOM_LEFT": {
+      "packets": 71,
+      "arms": [
+        {
+          "arm": "RETAINED_ROI_GPU",
+          "handOutputs": 71,
+          "multipleHands": 1,
+          "finiteFirstIndexPositions": 71,
+          "inFrameFirstIndexPositions": 69,
+          "inferenceMs": {
+            "n": 71,
+            "median": 7.2249999940395355,
+            "p95": 9.870000004768372,
+            "maximum": 12.339999973773956
+          },
+          "roundTripMs": {
+            "n": 71,
+            "median": 7.434999972581863,
+            "p95": 10.189999997615814,
+            "maximum": 12.5799999833107
+          }
+        },
+        {
+          "arm": "RETAINED_ROI_CPU",
+          "handOutputs": 71,
+          "multipleHands": 1,
+          "finiteFirstIndexPositions": 71,
+          "inFrameFirstIndexPositions": 71,
+          "inferenceMs": {
+            "n": 71,
+            "median": 31.74500000476837,
+            "p95": 45.65500000119209,
+            "maximum": 45.82500001788139
+          },
+          "roundTripMs": {
+            "n": 71,
+            "median": 31.990000009536743,
+            "p95": 45.889999985694885,
+            "maximum": 46.0799999833107
+          }
+        }
+      ],
+      "endpointDifferenceNativePixels": {
+        "n": 71,
+        "median": 5.879803544037711,
+        "p95": 27.20095162309508,
+        "maximum": 42.54182854771481
+      }
+    },
+    "BOTTOM_RIGHT": {
+      "packets": 71,
+      "arms": [
+        {
+          "arm": "RETAINED_ROI_GPU",
+          "handOutputs": 30,
+          "multipleHands": 4,
+          "finiteFirstIndexPositions": 30,
+          "inFrameFirstIndexPositions": 30,
+          "inferenceMs": {
+            "n": 71,
+            "median": 7.094999998807907,
+            "p95": 10.034999996423721,
+            "maximum": 10.375
+          },
+          "roundTripMs": {
+            "n": 71,
+            "median": 7.264999985694885,
+            "p95": 10.234999984502792,
+            "maximum": 10.564999997615814
+          }
+        },
+        {
+          "arm": "RETAINED_ROI_CPU",
+          "handOutputs": 35,
+          "multipleHands": 3,
+          "finiteFirstIndexPositions": 35,
+          "inFrameFirstIndexPositions": 34,
+          "inferenceMs": {
+            "n": 71,
+            "median": 31.92500001192093,
+            "p95": 45.985000014305115,
+            "maximum": 46.46999999880791
+          },
+          "roundTripMs": {
+            "n": 71,
+            "median": 32.17499998211861,
+            "p95": 46.21500000357628,
+            "maximum": 46.75
+          }
+        }
+      ],
+      "endpointDifferenceNativePixels": {
+        "n": 27,
+        "median": 5.312737678455955,
+        "p95": 84.02022399343743,
+        "maximum": 102.87381883309857
+      }
+    },
+    "RELAXED": {
+      "packets": 109,
+      "arms": [
+        {
+          "arm": "RETAINED_ROI_GPU",
+          "handOutputs": 94,
+          "multipleHands": 2,
+          "finiteFirstIndexPositions": 94,
+          "inFrameFirstIndexPositions": 94,
+          "inferenceMs": {
+            "n": 109,
+            "median": 8.969999998807907,
+            "p95": 11.740000009536743,
+            "maximum": 14.945000022649765
+          },
+          "roundTripMs": {
+            "n": 109,
+            "median": 9.21000000834465,
+            "p95": 12.074999988079071,
+            "maximum": 15.194999992847443
+          }
+        },
+        {
+          "arm": "RETAINED_ROI_CPU",
+          "handOutputs": 94,
+          "multipleHands": 4,
+          "finiteFirstIndexPositions": 94,
+          "inFrameFirstIndexPositions": 94,
+          "inferenceMs": {
+            "n": 109,
+            "median": 34.21000000834465,
+            "p95": 45.89000001549721,
+            "maximum": 54.52499997615814
+          },
+          "roundTripMs": {
+            "n": 109,
+            "median": 34.474999994039536,
+            "p95": 46.13499999046326,
+            "maximum": 54.80500000715256
+          }
+        }
+      ],
+      "endpointDifferenceNativePixels": {
+        "n": 94,
+        "median": 3.1325923996323337,
+        "p95": 92.31446019285728,
+        "maximum": 98.28878083623775
+      }
+    },
+    "SWEEP": {
+      "packets": 180,
+      "arms": [
+        {
+          "arm": "RETAINED_ROI_GPU",
+          "handOutputs": 172,
+          "multipleHands": 8,
+          "finiteFirstIndexPositions": 172,
+          "inFrameFirstIndexPositions": 163,
+          "inferenceMs": {
+            "n": 180,
+            "median": 7.699999988079071,
+            "p95": 11.145000010728836,
+            "maximum": 14.134999990463257
+          },
+          "roundTripMs": {
+            "n": 180,
+            "median": 7.884999990463257,
+            "p95": 11.370000004768372,
+            "maximum": 14.365000009536743
+          }
+        },
+        {
+          "arm": "RETAINED_ROI_CPU",
+          "handOutputs": 178,
+          "multipleHands": 10,
+          "finiteFirstIndexPositions": 178,
+          "inFrameFirstIndexPositions": 174,
+          "inferenceMs": {
+            "n": 180,
+            "median": 33.110000014305115,
+            "p95": 48.520000010728836,
+            "maximum": 52.95000001788139
+          },
+          "roundTripMs": {
+            "n": 180,
+            "median": 33.35999998450279,
+            "p95": 48.75499999523163,
+            "maximum": 53.23499998450279
+          }
+        }
+      ],
+      "endpointDifferenceNativePixels": {
+        "n": 172,
+        "median": 8.879453477745765,
+        "p95": 75.28352928782907,
+        "maximum": 168.67132779293814
+      }
+    },
+    "OPEN_PALM": {
+      "packets": 91,
+      "arms": [
+        {
+          "arm": "RETAINED_ROI_GPU",
+          "handOutputs": 90,
+          "multipleHands": 0,
+          "finiteFirstIndexPositions": 90,
+          "inFrameFirstIndexPositions": 90,
+          "inferenceMs": {
+            "n": 91,
+            "median": 9.270000010728836,
+            "p95": 13.46000000834465,
+            "maximum": 14.875
+          },
+          "roundTripMs": {
+            "n": 91,
+            "median": 9.484999984502792,
+            "p95": 13.769999980926514,
+            "maximum": 15.155000001192093
+          }
+        },
+        {
+          "arm": "RETAINED_ROI_CPU",
+          "handOutputs": 91,
+          "multipleHands": 0,
+          "finiteFirstIndexPositions": 91,
+          "inFrameFirstIndexPositions": 91,
+          "inferenceMs": {
+            "n": 91,
+            "median": 35.43000000715256,
+            "p95": 45.28999999165535,
+            "maximum": 54.90999999642372
+          },
+          "roundTripMs": {
+            "n": 91,
+            "median": 35.695000022649765,
+            "p95": 45.65500000119209,
+            "maximum": 55.11999997496605
+          }
+        }
+      ],
+      "endpointDifferenceNativePixels": {
+        "n": 90,
+        "median": 1.5010924876420169,
+        "p95": 8.404618868894275,
+        "maximum": 17.09271641537126
+      }
+    },
+    "HIDE": {
+      "packets": 18,
+      "arms": [
+        {
+          "arm": "RETAINED_ROI_GPU",
+          "handOutputs": 18,
+          "multipleHands": 0,
+          "finiteFirstIndexPositions": 18,
+          "inFrameFirstIndexPositions": 18,
+          "inferenceMs": {
+            "n": 18,
+            "median": 8.435000002384186,
+            "p95": 11.895000010728836,
+            "maximum": 11.895000010728836
+          },
+          "roundTripMs": {
+            "n": 18,
+            "median": 8.685000002384186,
+            "p95": 12.174999982118607,
+            "maximum": 12.174999982118607
+          }
+        },
+        {
+          "arm": "RETAINED_ROI_CPU",
+          "handOutputs": 18,
+          "multipleHands": 0,
+          "finiteFirstIndexPositions": 18,
+          "inFrameFirstIndexPositions": 18,
+          "inferenceMs": {
+            "n": 18,
+            "median": 33.25999999046326,
+            "p95": 35.93000000715256,
+            "maximum": 35.93000000715256
+          },
+          "roundTripMs": {
+            "n": 18,
+            "median": 33.46500000357628,
+            "p95": 36.26500001549721,
+            "maximum": 36.26500001549721
+          }
+        }
+      ],
+      "endpointDifferenceNativePixels": {
+        "n": 18,
+        "median": 1.6830437664224291,
+        "p95": 10.153669462265498,
+        "maximum": 10.153669462265498
+      }
+    },
+    "RECOVER": {
+      "packets": 109,
+      "arms": [
+        {
+          "arm": "RETAINED_ROI_GPU",
+          "handOutputs": 84,
+          "multipleHands": 0,
+          "finiteFirstIndexPositions": 84,
+          "inFrameFirstIndexPositions": 82,
+          "inferenceMs": {
+            "n": 109,
+            "median": 9.784999996423721,
+            "p95": 14.075000017881393,
+            "maximum": 15.88500002026558
+          },
+          "roundTripMs": {
+            "n": 109,
+            "median": 10.030000001192093,
+            "p95": 14.310000002384186,
+            "maximum": 16.099999994039536
+          }
+        },
+        {
+          "arm": "RETAINED_ROI_CPU",
+          "handOutputs": 84,
+          "multipleHands": 0,
+          "finiteFirstIndexPositions": 84,
+          "inFrameFirstIndexPositions": 83,
+          "inferenceMs": {
+            "n": 109,
+            "median": 34.98499998450279,
+            "p95": 48.58000001311302,
+            "maximum": 64.16999998688698
+          },
+          "roundTripMs": {
+            "n": 109,
+            "median": 35.2950000166893,
+            "p95": 48.79499998688698,
+            "maximum": 64.47499999403954
+          }
+        }
+      ],
+      "endpointDifferenceNativePixels": {
+        "n": 84,
+        "median": 2.724975031093744,
+        "p95": 7.455164239374021,
+        "maximum": 16.873913518122485
+      }
+    }
+  },
+  "sparseDevelopmentReferences": [
+    {
+      "arm": "RETAINED_ROI_GPU",
+      "visibleReferenceDenominator": 30,
+      "matchingSourceFrames": 30,
+      "finitePredictions": 29,
+      "insideUncertaintyCircles": 20,
+      "centerDistanceNativePixels": {
+        "n": 29,
+        "median": 7.12029526313825,
+        "p95": 36.65780929830515,
+        "maximum": 41.40014297077166
+      },
+      "errorLowerBoundNativePixels": {
+        "n": 29,
+        "median": 0,
+        "p95": 23.657809298305153,
+        "maximum": 29.40014297077166
+      },
+      "errorUpperBoundNativePixels": {
+        "n": 29,
+        "median": 16.043887687595138,
+        "p95": 49.65780929830515,
+        "maximum": 53.40014297077166
+      }
+    },
+    {
+      "arm": "RETAINED_ROI_CPU",
+      "visibleReferenceDenominator": 30,
+      "matchingSourceFrames": 30,
+      "finitePredictions": 29,
+      "insideUncertaintyCircles": 21,
+      "centerDistanceNativePixels": {
+        "n": 29,
+        "median": 5.969386342218305,
+        "p95": 22.932911528695985,
+        "maximum": 100.7273236672306
+      },
+      "errorLowerBoundNativePixels": {
+        "n": 29,
+        "median": 0,
+        "p95": 12.932911528695985,
+        "maximum": 88.7273236672306
+      },
+      "errorUpperBoundNativePixels": {
+        "n": 29,
+        "median": 15.859235752578174,
+        "p95": 32.93291152869598,
+        "maximum": 112.7273236672306
+      }
+    }
+  ],
+  "pairedReferenceComparisons": {
+    "n": 28,
+    "cpuCenterCloser": 17,
+    "cpuCenterFarther": 11,
+    "cpuInsideGains": 3,
+    "cpuInsideLosses": 2
+  },
+  "firstRightConflict": {
+    "sourceFrame": 466,
+    "armEndpointDifferenceNativePixels": 18.849415279142157,
+    "clearsOriginalConflict": "NOT_DETERMINED_BY_RAW_NEURAL_DIFFERENCE_ALONE"
+  },
+  "missingMetrics": {
+    "independentPhysicalGroundTruth": "UNAVAILABLE",
+    "selectedIndexIdentitySwitches": "UNAVAILABLE_RAW_GRAPH_OUTPUT_IS_NOT_IDENTITY_ASSOCIATION",
+    "captureToVisibleLatency": "UNAVAILABLE_OFFLINE_NEURAL_ABLATION",
+    "physicalControllerSuccess": "UNAVAILABLE",
+    "confidenceIntervals": "UNAVAILABLE_ONE_SERIAL_NONRANDOM_DEVELOPMENT_SEQUENCE"
+  },
+  "sourceUnchanged": true,
+  "cleanupProved": true,
+  "decision": "PENDING_INDEPENDENT_REVIEW_NO_PRODUCTION_PROMOTION",
+  "limits": [
+    "Native PNG decode is distinct from original video worker pixels; compare the two new arms only.",
+    "Original capture deltas simulate cache time; current worker elapsed cost is measured separately and does not establish camera or visible latency.",
+    "Sparse V3 labels are nonblinded development references. No independent physical accuracy or holdout.",
+    "Neural raw output differences cannot authorize selected-index recovery without the unchanged identity/image/sample gates."
+  ]
+}

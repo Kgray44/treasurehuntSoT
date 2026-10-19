@@ -1,0 +1,398 @@
+{
+  "schemaVersion": 1,
+  "classification": "CONTROLLED_PUBLIC_PHOTO_DIRECT_BITMAP_GPU_RATE_RESPONSE_NOT_PHYSICAL_OR_APPLICATION_ACCEPTANCE",
+  "sourceStable": true,
+  "head": "f3fbffc0bb06b1245f77727ae2f428b0f4e69bc2",
+  "sourceHashes": {
+    "provider": "65cf027002c5596f1483393e0095bcfad39f0c78d5747c8cc56442862aedcf1a",
+    "worker": "2c51a99d8341eefbe9ddd8d3b3dfec98d5e6ffca41a8b6e447c6531ce23cd176",
+    "runtime": "1cdadf6c65d572330994f37be24fd575526480e4e7a2608ae1937be331c88c41",
+    "task": "fbc2a30080c3c557093b5ddfc334698132eb341044ccee322ccf8bcf3607cde1",
+    "fixture": "ecf8ca2611d08fa25948a4fc10710af9120e88243a54da6356bacea17ff3e36e",
+    "instrumentedWorker": "2d22edf897113162b758e7483c44e750ef1666f801922501dcdce576cf516d10",
+    "harness": "68705f8ddefcc33c7ac0df9fcce379d36b63711645565a3734d8f232da0d89d9",
+    "deriver": "7575a12bd8096bd255ea6e68f1670d7915cb1bd6f15137b7e255f5dadb81d6ce",
+    "raw": "a337370082b20565fc7215e84d98b02f4a651c9bae3ed5b36118b424f987535f"
+  },
+  "protocol": {
+    "rounds": 2,
+    "segments": 12,
+    "segmentMs": 13000,
+    "orders": [
+      [
+        5,
+        20,
+        10,
+        30,
+        15,
+        25
+      ],
+      [
+        25,
+        15,
+        30,
+        10,
+        20,
+        5
+      ]
+    ],
+    "nonPeriodicStepStartsMs": [
+      2000,
+      2893,
+      3931,
+      4817,
+      5929,
+      6899
+    ],
+    "stepDisplacementPixels": 64,
+    "firstDirectionPixels": 16,
+    "positionBandPixels": 8,
+    "baseline": "EACH_SEGMENT_ACTUAL_GPU_STATIC_MODEL_TIP_NO_CPU_OFFSET",
+    "singleBitmapInFlight": true,
+    "noBacklog": true,
+    "freshnessCeilingMs": 150
+  },
+  "startup": {
+    "readyMs": 8110.400146484375,
+    "containsDiscardedSyntheticBothNetworkCompilation": true,
+    "currentOptionalAppBudgetMs": 8000,
+    "withinOptionalAppBudget": false,
+    "currentOverallAppBudgetMs": 15000,
+    "withinOverallAppBudget": true,
+    "applicationSelectedThisGpuBackendProved": false
+  },
+  "counts": {
+    "packets": 2591,
+    "accepted": 2589,
+    "freshnessRejected": 2,
+    "freshPostureEligible": 2469,
+    "plannedSteps": 72,
+    "drawnSteps": 72,
+    "neverDrawnSteps": 0,
+    "interpretableBaselines": 12,
+    "unresolvedFreshFirstPosition": 0,
+    "unresolvedFreshTwoConsistent": 0,
+    "blankPackets": 120,
+    "blankRawHandDetections": 0,
+    "visibleNoHandPackets": 0,
+    "visibleMultipleHandPackets": 0
+  },
+  "caps": [
+    {
+      "nominalCapHz": 5,
+      "repeats": 2,
+      "achievedCaptureHz": {
+        "n": 2,
+        "median": 4.941207334506621,
+        "p95": 4.9743123968148115,
+        "maximum": 4.9743123968148115
+      },
+      "captureToReceiveMs": {
+        "n": 130,
+        "median": 44.099853515625,
+        "p95": 75.5,
+        "maximum": 278.800048828125
+      },
+      "inferenceMs": {
+        "n": 130,
+        "median": 42.7001953125,
+        "p95": 72.900146484375,
+        "maximum": 142.800048828125
+      },
+      "freshAcceptedPackets": 129,
+      "freshnessRejectedPackets": 1,
+      "stepTrials": 12,
+      "firstFreshPositionWithin8PixelsMs": {
+        "n": 12,
+        "median": 135.699951171875,
+        "p95": 251.7998046875,
+        "maximum": 251.7998046875
+      },
+      "firstOfTwoFreshPositionsMs": {
+        "n": 12,
+        "median": 135.699951171875,
+        "p95": 251.7998046875,
+        "maximum": 251.7998046875
+      },
+      "secondFreshConfirmationMs": {
+        "n": 12,
+        "median": 323.39990234375,
+        "p95": 426.699951171875,
+        "maximum": 426.699951171875
+      },
+      "firstSourceCaptureAfterOnsetMs": {
+        "n": 12,
+        "median": 87.60009765625,
+        "p95": 180.7998046875,
+        "maximum": 180.7998046875
+      },
+      "unresolvedFirstPositionTrials": 0,
+      "unresolvedTwoConsistentTrials": 0
+    },
+    {
+      "nominalCapHz": 10,
+      "repeats": 2,
+      "achievedCaptureHz": {
+        "n": 2,
+        "median": 9.865201161851125,
+        "p95": 9.891273306928708,
+        "maximum": 9.891273306928708
+      },
+      "captureToReceiveMs": {
+        "n": 258,
+        "median": 31.10009765625,
+        "p95": 50,
+        "maximum": 84.699951171875
+      },
+      "inferenceMs": {
+        "n": 258,
+        "median": 30.300048828125,
+        "p95": 48.300048828125,
+        "maximum": 81.300048828125
+      },
+      "freshAcceptedPackets": 258,
+      "freshnessRejectedPackets": 0,
+      "stepTrials": 12,
+      "firstFreshPositionWithin8PixelsMs": {
+        "n": 12,
+        "median": 88.5,
+        "p95": 142.400146484375,
+        "maximum": 142.400146484375
+      },
+      "firstOfTwoFreshPositionsMs": {
+        "n": 12,
+        "median": 88.5,
+        "p95": 142.400146484375,
+        "maximum": 142.400146484375
+      },
+      "secondFreshConfirmationMs": {
+        "n": 12,
+        "median": 172.10009765625,
+        "p95": 242.800048828125,
+        "maximum": 242.800048828125
+      },
+      "firstSourceCaptureAfterOnsetMs": {
+        "n": 12,
+        "median": 36.800048828125,
+        "p95": 100.10009765625,
+        "maximum": 100.10009765625
+      },
+      "unresolvedFirstPositionTrials": 0,
+      "unresolvedTwoConsistentTrials": 0
+    },
+    {
+      "nominalCapHz": 15,
+      "repeats": 2,
+      "achievedCaptureHz": {
+        "n": 2,
+        "median": 14.796547472256474,
+        "p95": 14.876823044923949,
+        "maximum": 14.876823044923949
+      },
+      "captureToReceiveMs": {
+        "n": 387,
+        "median": 33.300048828125,
+        "p95": 52.60009765625,
+        "maximum": 88.599853515625
+      },
+      "inferenceMs": {
+        "n": 387,
+        "median": 31.89990234375,
+        "p95": 50.39990234375,
+        "maximum": 83
+      },
+      "freshAcceptedPackets": 387,
+      "freshnessRejectedPackets": 0,
+      "stepTrials": 12,
+      "firstFreshPositionWithin8PixelsMs": {
+        "n": 12,
+        "median": 84.699951171875,
+        "p95": 122.60009765625,
+        "maximum": 122.60009765625
+      },
+      "firstOfTwoFreshPositionsMs": {
+        "n": 12,
+        "median": 84.699951171875,
+        "p95": 122.60009765625,
+        "maximum": 122.60009765625
+      },
+      "secondFreshConfirmationMs": {
+        "n": 12,
+        "median": 125,
+        "p95": 168.400146484375,
+        "maximum": 168.400146484375
+      },
+      "firstSourceCaptureAfterOnsetMs": {
+        "n": 12,
+        "median": 17.5,
+        "p95": 67.5,
+        "maximum": 67.5
+      },
+      "unresolvedFirstPositionTrials": 0,
+      "unresolvedTwoConsistentTrials": 0
+    },
+    {
+      "nominalCapHz": 20,
+      "repeats": 2,
+      "achievedCaptureHz": {
+        "n": 2,
+        "median": 19.22126823198176,
+        "p95": 19.542820944019926,
+        "maximum": 19.542820944019926
+      },
+      "captureToReceiveMs": {
+        "n": 505,
+        "median": 34.400146484375,
+        "p95": 59,
+        "maximum": 93.199951171875
+      },
+      "inferenceMs": {
+        "n": 505,
+        "median": 33.10009765625,
+        "p95": 55.800048828125,
+        "maximum": 92
+      },
+      "freshAcceptedPackets": 505,
+      "freshnessRejectedPackets": 0,
+      "stepTrials": 12,
+      "firstFreshPositionWithin8PixelsMs": {
+        "n": 12,
+        "median": 81.199951171875,
+        "p95": 107.699951171875,
+        "maximum": 107.699951171875
+      },
+      "firstOfTwoFreshPositionsMs": {
+        "n": 12,
+        "median": 81.199951171875,
+        "p95": 107.699951171875,
+        "maximum": 107.699951171875
+      },
+      "secondFreshConfirmationMs": {
+        "n": 12,
+        "median": 118,
+        "p95": 151.7001953125,
+        "maximum": 151.7001953125
+      },
+      "firstSourceCaptureAfterOnsetMs": {
+        "n": 12,
+        "median": 13.199951171875,
+        "p95": 45.699951171875,
+        "maximum": 45.699951171875
+      },
+      "unresolvedFirstPositionTrials": 0,
+      "unresolvedTwoConsistentTrials": 0
+    },
+    {
+      "nominalCapHz": 25,
+      "repeats": 2,
+      "achievedCaptureHz": {
+        "n": 2,
+        "median": 23.45624750825971,
+        "p95": 23.539067972881178,
+        "maximum": 23.539067972881178
+      },
+      "captureToReceiveMs": {
+        "n": 610,
+        "median": 34.300048828125,
+        "p95": 52.39990234375,
+        "maximum": 179.5
+      },
+      "inferenceMs": {
+        "n": 610,
+        "median": 33.099853515625,
+        "p95": 50.300048828125,
+        "maximum": 177.10009765625
+      },
+      "freshAcceptedPackets": 609,
+      "freshnessRejectedPackets": 1,
+      "stepTrials": 12,
+      "firstFreshPositionWithin8PixelsMs": {
+        "n": 12,
+        "median": 73,
+        "p95": 94.199951171875,
+        "maximum": 94.199951171875
+      },
+      "firstOfTwoFreshPositionsMs": {
+        "n": 12,
+        "median": 73,
+        "p95": 94.199951171875,
+        "maximum": 94.199951171875
+      },
+      "secondFreshConfirmationMs": {
+        "n": 12,
+        "median": 108,
+        "p95": 125.699951171875,
+        "maximum": 125.699951171875
+      },
+      "firstSourceCaptureAfterOnsetMs": {
+        "n": 12,
+        "median": 24.89990234375,
+        "p95": 39.900146484375,
+        "maximum": 39.900146484375
+      },
+      "unresolvedFirstPositionTrials": 0,
+      "unresolvedTwoConsistentTrials": 0
+    },
+    {
+      "nominalCapHz": 30,
+      "repeats": 2,
+      "achievedCaptureHz": {
+        "n": 2,
+        "median": 26.21474492436145,
+        "p95": 27.629199214992113,
+        "maximum": 27.629199214992113
+      },
+      "captureToReceiveMs": {
+        "n": 701,
+        "median": 31.5,
+        "p95": 50.5,
+        "maximum": 142
+      },
+      "inferenceMs": {
+        "n": 701,
+        "median": 30.5,
+        "p95": 48.800048828125,
+        "maximum": 141.199951171875
+      },
+      "freshAcceptedPackets": 701,
+      "freshnessRejectedPackets": 0,
+      "stepTrials": 12,
+      "firstFreshPositionWithin8PixelsMs": {
+        "n": 12,
+        "median": 61.300048828125,
+        "p95": 130.099853515625,
+        "maximum": 130.099853515625
+      },
+      "firstOfTwoFreshPositionsMs": {
+        "n": 12,
+        "median": 61.300048828125,
+        "p95": 130.099853515625,
+        "maximum": 130.099853515625
+      },
+      "secondFreshConfirmationMs": {
+        "n": 12,
+        "median": 97,
+        "p95": 179.099853515625,
+        "maximum": 179.099853515625
+      },
+      "firstSourceCaptureAfterOnsetMs": {
+        "n": 12,
+        "median": 14.89990234375,
+        "p95": 40.5,
+        "maximum": 40.5
+      },
+      "unresolvedFirstPositionTrials": 0,
+      "unresolvedTwoConsistentTrials": 0
+    }
+  ],
+  "caveats": [
+    "Actual pinned model inference on a public photograph, not fake landmarks. No camera sensor or owner footage was acquired.",
+    "Direct bitmap excludes physical sensor/video ingestion, optical NCC, full application UI/readiness/arbitration, display compositor/panel and human pointing intent.",
+    "A fresh <=150ms packet may arrive >150ms after an earlier scene motion onset at a low cap. No freshness threshold changed.",
+    "GPU startup8110.4ms exceeded the current optional8s fallback timer in this routed benchmark, although below total15s. Production may choose CPU; this is not proof GPU would be selected.",
+    "Concurrent gaming/dependency preparation load was preserved. Two repeats and12steps per cap do not establish a causal cap-tail ranking or backend-only comparison with historicalCPU data.",
+    "A raw photo-translation8pixel band is not the independent3percent calibrated screen-accuracy requirement or physical recognition proof.",
+    "All negative/blank and late outputs remain in packet denominators; first/second confirmation times are distinct.",
+    "No images, raw landmarks, source coordinates, private capture paths, account/camera/track/device identifiers are included in this aggregate."
+  ]
+}

@@ -1,4 +1,5 @@
 import { admiraltyPageOperator } from "@/admiralty/page-authorization";
+import Link from "next/link";
 import { getConfigurationProjection } from "@/admiralty/ports/operations-admin-read";
 import { CommunityOutboxRuntimePolicyPanel } from "@/components/admiralty/CommunityOutboxRuntimePolicyPanel";
 import { ChartroomPage, DetailList, EvidenceStrip, Panel, StatusBadge } from "@/components/admiralty/AdminPrimitives";
@@ -39,13 +40,31 @@ export default async function ConfigurationPage() {
           enabled={operator.capabilities.includes("CONFIG_OPERATE")}
         />
       </Panel>
-      <Panel title="Classified non-editable settings" kicker="No fake controls">
+      <Panel title="Reach runtime policy" kicker="Dedicated Reach owner controls">
+        <p>
+          {configuration.reachRuntimePolicy
+            ? `Revision ${configuration.reachRuntimePolicy.revision}.`
+            : "Reach policy is currently unavailable."}{" "}
+          Rate ceilings, availability, automatic aggregate reporting and the gated local recorder are managed in the
+          Reach console.
+        </p>
+        <Link href="/admin/reach">Open Reach administration</Link>
+      </Panel>
+      <Panel title="Classified non-editable settings" kicker="Managed by their stated owners">
         <div className="chartroom-cards chartroom-cards--configuration">
           {nonEditable.map((setting) => (
             <article key={setting.id}>
               <header>
                 <span>{setting.owner}</span>
-                <StatusBadge state={setting.configured ? "CONFIGURED" : "NOT_CONFIGURED"} />
+                <StatusBadge
+                  state={
+                    setting.effectiveValue === "Unavailable"
+                      ? "UNAVAILABLE"
+                      : setting.configured
+                        ? "CONFIGURED"
+                        : "NOT_CONFIGURED"
+                  }
+                />
               </header>
               <h2>{setting.name}</h2>
               <p>{setting.description}</p>

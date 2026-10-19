@@ -1,0 +1,2409 @@
+{
+  "classification": "AGGREGATE_BLIND157_AI_DEVELOPMENT_COARSE_REFERENCE_PAIRED_BACKEND_CONDITIONAL_REPLAY_NOT_ACCEPTANCE",
+  "createdUtc": "2026-10-19T20:25:37.511Z",
+  "source": {
+    "metricSealSha256": "6ca0356bad5b7f2be6b884caeaceeb29b7d17319175d64195c4885496fdfb67d",
+    "metricDefinitionSha256": "bc79b51326c17f32c56d232c452e3a8be6055cd420c3fde339c1f8b186677ac0",
+    "scorerSha256": "5c04d1940daba344309aec5f51b19b58361ece0a2048c37dbc75c565a822099e",
+    "rectangleMetricCodeSha256": "44feececa150bb06722aa5e0e62e55b8792e399bb1532aba98adf22ca11b7112",
+    "checkedPrior48V2ScorerSha256": "5e398569a9a654d67b916ca1c5570681f0c2eb1d475e21b9bd73413ffd97cf38",
+    "benchmarkRunnerSha256": "71de507c224bbc3c65b86ef1ff392d4bda9e9ed449ef9b517537ece52e831e6c",
+    "canonicalBundleSha256": "83847083b960f4e20132e11e96e33350c9eda580d3e3d3f662991a3be35d4026",
+    "pairedRawResultsSha256": "23ef09eb70e1e9e367cd561c698012492da0834fc03be09c547b9e5d63196cfe",
+    "pairedManifestSha256": "daafc7a9a3feff82ae19073e2b28d6a0a73f2b22459146efc43e0bb2d93078f6",
+    "planSha256": "424b98044f3bb71587e48295b54d7bde52623385eabd35c1a809e873a3bbac84",
+    "new157ReferencesSha256": "18ce44cf20101b67245dc2c7248cd929f9ca0834107eeb5493e3e9f63df9169e",
+    "sourcePngBindingsSha256": "63f9294bd25baf433bd1f769ab02312ecbab268f65a7b0e2bb6685ea7477401f",
+    "verifiedReferenceNativeSourceBindings": 157
+  },
+  "coordinateConvention": "MIRRORED_NATIVE_PIXEL_CENTERS; normalized model x becomes (1-x)*639, y becomes y*479; reference boxes unchanged.",
+  "referenceCohort": {
+    "planned": 157,
+    "reviewed": 157,
+    "unreviewed": 0,
+    "exactPointGroundTruth": 0,
+    "blindReviewerToOutputsSourceMetricsAndPriorReferences": true,
+    "samplingAfterEarlierDevelopmentCoverageAnalysis": true,
+    "independentPhysicalGroundTruth": false
+  },
+  "arms": {
+    "gpu": {
+      "historicalConditionalAll1336": {
+        "packets": 1336,
+        "measuredPositions": 428,
+        "readinessEligible": 364,
+        "logicalIdChanges": 6,
+        "rejectedOrErrorFrames": 0,
+        "states": {
+          "UNSEEDED": 164,
+          "UNCERTAIN": 207,
+          "LOST": 537,
+          "TRACKING": 428
+        },
+        "exactPriorCompact1336StateFreshnessIdParity": true,
+        "exactPriorConditionalAggregateParity": true
+      },
+      "new157": {
+        "referenceFrames": 157,
+        "labels": {
+          "tipVisibility": {
+            "VISIBLE": 102,
+            "AMBIGUOUS": 35,
+            "NOT_VISIBLE": 20
+          },
+          "anatomicalDigit": {
+            "INDEX": 129,
+            "UNRESOLVED": 28
+          },
+          "pointingIntent": {
+            "POINT": 120,
+            "UNRESOLVED": 37
+          },
+          "localAdjacentIndexContinuity": {
+            "UNRESOLVED": 66,
+            "SAME_VISIBLE_INDEX": 91
+          }
+        },
+        "coarseBoxes": 137,
+        "visibleIndexFrames": 102,
+        "visibleIndexPointingFrames": 102,
+        "modalities": {
+          "raw": {
+            "allAvailability": {
+              "referenceFrames": 157,
+              "available": 139,
+              "missing": 18
+            },
+            "visibleIndexBoxAssessment": {
+              "referenceFrames": 102,
+              "referenceFramesWithBox": 102,
+              "availablePositions": 97,
+              "missingPositions": 5,
+              "availableWithBox": 97,
+              "availableWithoutBox": 0,
+              "insideBox": 73,
+              "outsideBox": 24,
+              "outsideBoxDistanceLowerBoundPixels": {
+                "n": 97,
+                "median": 0,
+                "p95": 55.90266102552414,
+                "maximum": 102.78042767963795
+              },
+              "positiveOutsideDistanceLowerBoundPixels": {
+                "n": 24,
+                "median": 9.8690887093544,
+                "p95": 91.11279727685005,
+                "maximum": 102.78042767963795
+              }
+            },
+            "visibleIndexPointingBoxAssessment": {
+              "referenceFrames": 102,
+              "referenceFramesWithBox": 102,
+              "availablePositions": 97,
+              "missingPositions": 5,
+              "availableWithBox": 97,
+              "availableWithoutBox": 0,
+              "insideBox": 73,
+              "outsideBox": 24,
+              "outsideBoxDistanceLowerBoundPixels": {
+                "n": 97,
+                "median": 0,
+                "p95": 55.90266102552414,
+                "maximum": 102.78042767963795
+              },
+              "positiveOutsideDistanceLowerBoundPixels": {
+                "n": 24,
+                "median": 9.8690887093544,
+                "p95": 91.11279727685005,
+                "maximum": 102.78042767963795
+              }
+            },
+            "unresolvedLabelBoxDiagnosticNotIndexTruth": {
+              "referenceFrames": 35,
+              "referenceFramesWithBox": 35,
+              "availablePositions": 31,
+              "missingPositions": 4,
+              "availableWithBox": 31,
+              "availableWithoutBox": 0,
+              "insideBox": 26,
+              "outsideBox": 5,
+              "outsideBoxDistanceLowerBoundPixels": {
+                "n": 31,
+                "median": 0,
+                "p95": 66.3003217279911,
+                "maximum": 101.68935069441795
+              },
+              "positiveOutsideDistanceLowerBoundPixels": {
+                "n": 5,
+                "median": 33.85534477233887,
+                "p95": 101.68935069441795,
+                "maximum": 101.68935069441795
+              }
+            },
+            "explicitContrary": {
+              "referenceFrames": 0,
+              "available": 0
+            },
+            "explicitNonIndex": {
+              "referenceFrames": 0,
+              "available": 0
+            },
+            "notVisible": {
+              "referenceFrames": 20,
+              "available": 11
+            }
+          },
+          "measured": {
+            "allAvailability": {
+              "referenceFrames": 157,
+              "available": 0,
+              "missing": 157
+            },
+            "visibleIndexBoxAssessment": {
+              "referenceFrames": 102,
+              "referenceFramesWithBox": 102,
+              "availablePositions": 0,
+              "missingPositions": 102,
+              "availableWithBox": 0,
+              "availableWithoutBox": 0,
+              "insideBox": 0,
+              "outsideBox": 0,
+              "outsideBoxDistanceLowerBoundPixels": {
+                "n": 0,
+                "median": null,
+                "p95": null,
+                "maximum": null
+              },
+              "positiveOutsideDistanceLowerBoundPixels": {
+                "n": 0,
+                "median": null,
+                "p95": null,
+                "maximum": null
+              }
+            },
+            "visibleIndexPointingBoxAssessment": {
+              "referenceFrames": 102,
+              "referenceFramesWithBox": 102,
+              "availablePositions": 0,
+              "missingPositions": 102,
+              "availableWithBox": 0,
+              "availableWithoutBox": 0,
+              "insideBox": 0,
+              "outsideBox": 0,
+              "outsideBoxDistanceLowerBoundPixels": {
+                "n": 0,
+                "median": null,
+                "p95": null,
+                "maximum": null
+              },
+              "positiveOutsideDistanceLowerBoundPixels": {
+                "n": 0,
+                "median": null,
+                "p95": null,
+                "maximum": null
+              }
+            },
+            "unresolvedLabelBoxDiagnosticNotIndexTruth": {
+              "referenceFrames": 35,
+              "referenceFramesWithBox": 35,
+              "availablePositions": 0,
+              "missingPositions": 35,
+              "availableWithBox": 0,
+              "availableWithoutBox": 0,
+              "insideBox": 0,
+              "outsideBox": 0,
+              "outsideBoxDistanceLowerBoundPixels": {
+                "n": 0,
+                "median": null,
+                "p95": null,
+                "maximum": null
+              },
+              "positiveOutsideDistanceLowerBoundPixels": {
+                "n": 0,
+                "median": null,
+                "p95": null,
+                "maximum": null
+              }
+            },
+            "explicitContrary": {
+              "referenceFrames": 0,
+              "available": 0
+            },
+            "explicitNonIndex": {
+              "referenceFrames": 0,
+              "available": 0
+            },
+            "notVisible": {
+              "referenceFrames": 20,
+              "available": 0
+            }
+          },
+          "ready": {
+            "allAvailability": {
+              "referenceFrames": 157,
+              "available": 0,
+              "missing": 157
+            },
+            "visibleIndexBoxAssessment": {
+              "referenceFrames": 102,
+              "referenceFramesWithBox": 102,
+              "availablePositions": 0,
+              "missingPositions": 102,
+              "availableWithBox": 0,
+              "availableWithoutBox": 0,
+              "insideBox": 0,
+              "outsideBox": 0,
+              "outsideBoxDistanceLowerBoundPixels": {
+                "n": 0,
+                "median": null,
+                "p95": null,
+                "maximum": null
+              },
+              "positiveOutsideDistanceLowerBoundPixels": {
+                "n": 0,
+                "median": null,
+                "p95": null,
+                "maximum": null
+              }
+            },
+            "visibleIndexPointingBoxAssessment": {
+              "referenceFrames": 102,
+              "referenceFramesWithBox": 102,
+              "availablePositions": 0,
+              "missingPositions": 102,
+              "availableWithBox": 0,
+              "availableWithoutBox": 0,
+              "insideBox": 0,
+              "outsideBox": 0,
+              "outsideBoxDistanceLowerBoundPixels": {
+                "n": 0,
+                "median": null,
+                "p95": null,
+                "maximum": null
+              },
+              "positiveOutsideDistanceLowerBoundPixels": {
+                "n": 0,
+                "median": null,
+                "p95": null,
+                "maximum": null
+              }
+            },
+            "unresolvedLabelBoxDiagnosticNotIndexTruth": {
+              "referenceFrames": 35,
+              "referenceFramesWithBox": 35,
+              "availablePositions": 0,
+              "missingPositions": 35,
+              "availableWithBox": 0,
+              "availableWithoutBox": 0,
+              "insideBox": 0,
+              "outsideBox": 0,
+              "outsideBoxDistanceLowerBoundPixels": {
+                "n": 0,
+                "median": null,
+                "p95": null,
+                "maximum": null
+              },
+              "positiveOutsideDistanceLowerBoundPixels": {
+                "n": 0,
+                "median": null,
+                "p95": null,
+                "maximum": null
+              }
+            },
+            "explicitContrary": {
+              "referenceFrames": 0,
+              "available": 0
+            },
+            "explicitNonIndex": {
+              "referenceFrames": 0,
+              "available": 0
+            },
+            "notVisible": {
+              "referenceFrames": 20,
+              "available": 0
+            }
+          }
+        }
+      },
+      "byScenario": {
+        "RIGHT": {
+          "referenceFrames": 11,
+          "labels": {
+            "tipVisibility": {
+              "VISIBLE": 11
+            },
+            "anatomicalDigit": {
+              "INDEX": 11
+            },
+            "pointingIntent": {
+              "POINT": 11
+            },
+            "localAdjacentIndexContinuity": {
+              "UNRESOLVED": 1,
+              "SAME_VISIBLE_INDEX": 10
+            }
+          },
+          "coarseBoxes": 11,
+          "visibleIndexFrames": 11,
+          "visibleIndexPointingFrames": 11,
+          "modalities": {
+            "raw": {
+              "allAvailability": {
+                "referenceFrames": 11,
+                "available": 11,
+                "missing": 0
+              },
+              "visibleIndexBoxAssessment": {
+                "referenceFrames": 11,
+                "referenceFramesWithBox": 11,
+                "availablePositions": 11,
+                "missingPositions": 0,
+                "availableWithBox": 11,
+                "availableWithoutBox": 0,
+                "insideBox": 11,
+                "outsideBox": 0,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 11,
+                  "median": 0,
+                  "p95": 0,
+                  "maximum": 0
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                }
+              },
+              "visibleIndexPointingBoxAssessment": {
+                "referenceFrames": 11,
+                "referenceFramesWithBox": 11,
+                "availablePositions": 11,
+                "missingPositions": 0,
+                "availableWithBox": 11,
+                "availableWithoutBox": 0,
+                "insideBox": 11,
+                "outsideBox": 0,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 11,
+                  "median": 0,
+                  "p95": 0,
+                  "maximum": 0
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                }
+              },
+              "unresolvedLabelBoxDiagnosticNotIndexTruth": {
+                "referenceFrames": 0,
+                "referenceFramesWithBox": 0,
+                "availablePositions": 0,
+                "missingPositions": 0,
+                "availableWithBox": 0,
+                "availableWithoutBox": 0,
+                "insideBox": 0,
+                "outsideBox": 0,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                }
+              },
+              "explicitContrary": {
+                "referenceFrames": 0,
+                "available": 0
+              },
+              "explicitNonIndex": {
+                "referenceFrames": 0,
+                "available": 0
+              },
+              "notVisible": {
+                "referenceFrames": 0,
+                "available": 0
+              }
+            },
+            "measured": {
+              "allAvailability": {
+                "referenceFrames": 11,
+                "available": 0,
+                "missing": 11
+              },
+              "visibleIndexBoxAssessment": {
+                "referenceFrames": 11,
+                "referenceFramesWithBox": 11,
+                "availablePositions": 0,
+                "missingPositions": 11,
+                "availableWithBox": 0,
+                "availableWithoutBox": 0,
+                "insideBox": 0,
+                "outsideBox": 0,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                }
+              },
+              "visibleIndexPointingBoxAssessment": {
+                "referenceFrames": 11,
+                "referenceFramesWithBox": 11,
+                "availablePositions": 0,
+                "missingPositions": 11,
+                "availableWithBox": 0,
+                "availableWithoutBox": 0,
+                "insideBox": 0,
+                "outsideBox": 0,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                }
+              },
+              "unresolvedLabelBoxDiagnosticNotIndexTruth": {
+                "referenceFrames": 0,
+                "referenceFramesWithBox": 0,
+                "availablePositions": 0,
+                "missingPositions": 0,
+                "availableWithBox": 0,
+                "availableWithoutBox": 0,
+                "insideBox": 0,
+                "outsideBox": 0,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                }
+              },
+              "explicitContrary": {
+                "referenceFrames": 0,
+                "available": 0
+              },
+              "explicitNonIndex": {
+                "referenceFrames": 0,
+                "available": 0
+              },
+              "notVisible": {
+                "referenceFrames": 0,
+                "available": 0
+              }
+            },
+            "ready": {
+              "allAvailability": {
+                "referenceFrames": 11,
+                "available": 0,
+                "missing": 11
+              },
+              "visibleIndexBoxAssessment": {
+                "referenceFrames": 11,
+                "referenceFramesWithBox": 11,
+                "availablePositions": 0,
+                "missingPositions": 11,
+                "availableWithBox": 0,
+                "availableWithoutBox": 0,
+                "insideBox": 0,
+                "outsideBox": 0,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                }
+              },
+              "visibleIndexPointingBoxAssessment": {
+                "referenceFrames": 11,
+                "referenceFramesWithBox": 11,
+                "availablePositions": 0,
+                "missingPositions": 11,
+                "availableWithBox": 0,
+                "availableWithoutBox": 0,
+                "insideBox": 0,
+                "outsideBox": 0,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                }
+              },
+              "unresolvedLabelBoxDiagnosticNotIndexTruth": {
+                "referenceFrames": 0,
+                "referenceFramesWithBox": 0,
+                "availablePositions": 0,
+                "missingPositions": 0,
+                "availableWithBox": 0,
+                "availableWithoutBox": 0,
+                "insideBox": 0,
+                "outsideBox": 0,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                }
+              },
+              "explicitContrary": {
+                "referenceFrames": 0,
+                "available": 0
+              },
+              "explicitNonIndex": {
+                "referenceFrames": 0,
+                "available": 0
+              },
+              "notVisible": {
+                "referenceFrames": 0,
+                "available": 0
+              }
+            }
+          }
+        },
+        "SWEEP": {
+          "referenceFrames": 146,
+          "labels": {
+            "tipVisibility": {
+              "VISIBLE": 91,
+              "AMBIGUOUS": 35,
+              "NOT_VISIBLE": 20
+            },
+            "anatomicalDigit": {
+              "INDEX": 118,
+              "UNRESOLVED": 28
+            },
+            "pointingIntent": {
+              "POINT": 109,
+              "UNRESOLVED": 37
+            },
+            "localAdjacentIndexContinuity": {
+              "UNRESOLVED": 65,
+              "SAME_VISIBLE_INDEX": 81
+            }
+          },
+          "coarseBoxes": 126,
+          "visibleIndexFrames": 91,
+          "visibleIndexPointingFrames": 91,
+          "modalities": {
+            "raw": {
+              "allAvailability": {
+                "referenceFrames": 146,
+                "available": 128,
+                "missing": 18
+              },
+              "visibleIndexBoxAssessment": {
+                "referenceFrames": 91,
+                "referenceFramesWithBox": 91,
+                "availablePositions": 86,
+                "missingPositions": 5,
+                "availableWithBox": 86,
+                "availableWithoutBox": 0,
+                "insideBox": 62,
+                "outsideBox": 24,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 86,
+                  "median": 0,
+                  "p95": 55.90266102552414,
+                  "maximum": 102.78042767963795
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 24,
+                  "median": 9.8690887093544,
+                  "p95": 91.11279727685005,
+                  "maximum": 102.78042767963795
+                }
+              },
+              "visibleIndexPointingBoxAssessment": {
+                "referenceFrames": 91,
+                "referenceFramesWithBox": 91,
+                "availablePositions": 86,
+                "missingPositions": 5,
+                "availableWithBox": 86,
+                "availableWithoutBox": 0,
+                "insideBox": 62,
+                "outsideBox": 24,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 86,
+                  "median": 0,
+                  "p95": 55.90266102552414,
+                  "maximum": 102.78042767963795
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 24,
+                  "median": 9.8690887093544,
+                  "p95": 91.11279727685005,
+                  "maximum": 102.78042767963795
+                }
+              },
+              "unresolvedLabelBoxDiagnosticNotIndexTruth": {
+                "referenceFrames": 35,
+                "referenceFramesWithBox": 35,
+                "availablePositions": 31,
+                "missingPositions": 4,
+                "availableWithBox": 31,
+                "availableWithoutBox": 0,
+                "insideBox": 26,
+                "outsideBox": 5,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 31,
+                  "median": 0,
+                  "p95": 66.3003217279911,
+                  "maximum": 101.68935069441795
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 5,
+                  "median": 33.85534477233887,
+                  "p95": 101.68935069441795,
+                  "maximum": 101.68935069441795
+                }
+              },
+              "explicitContrary": {
+                "referenceFrames": 0,
+                "available": 0
+              },
+              "explicitNonIndex": {
+                "referenceFrames": 0,
+                "available": 0
+              },
+              "notVisible": {
+                "referenceFrames": 20,
+                "available": 11
+              }
+            },
+            "measured": {
+              "allAvailability": {
+                "referenceFrames": 146,
+                "available": 0,
+                "missing": 146
+              },
+              "visibleIndexBoxAssessment": {
+                "referenceFrames": 91,
+                "referenceFramesWithBox": 91,
+                "availablePositions": 0,
+                "missingPositions": 91,
+                "availableWithBox": 0,
+                "availableWithoutBox": 0,
+                "insideBox": 0,
+                "outsideBox": 0,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                }
+              },
+              "visibleIndexPointingBoxAssessment": {
+                "referenceFrames": 91,
+                "referenceFramesWithBox": 91,
+                "availablePositions": 0,
+                "missingPositions": 91,
+                "availableWithBox": 0,
+                "availableWithoutBox": 0,
+                "insideBox": 0,
+                "outsideBox": 0,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                }
+              },
+              "unresolvedLabelBoxDiagnosticNotIndexTruth": {
+                "referenceFrames": 35,
+                "referenceFramesWithBox": 35,
+                "availablePositions": 0,
+                "missingPositions": 35,
+                "availableWithBox": 0,
+                "availableWithoutBox": 0,
+                "insideBox": 0,
+                "outsideBox": 0,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                }
+              },
+              "explicitContrary": {
+                "referenceFrames": 0,
+                "available": 0
+              },
+              "explicitNonIndex": {
+                "referenceFrames": 0,
+                "available": 0
+              },
+              "notVisible": {
+                "referenceFrames": 20,
+                "available": 0
+              }
+            },
+            "ready": {
+              "allAvailability": {
+                "referenceFrames": 146,
+                "available": 0,
+                "missing": 146
+              },
+              "visibleIndexBoxAssessment": {
+                "referenceFrames": 91,
+                "referenceFramesWithBox": 91,
+                "availablePositions": 0,
+                "missingPositions": 91,
+                "availableWithBox": 0,
+                "availableWithoutBox": 0,
+                "insideBox": 0,
+                "outsideBox": 0,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                }
+              },
+              "visibleIndexPointingBoxAssessment": {
+                "referenceFrames": 91,
+                "referenceFramesWithBox": 91,
+                "availablePositions": 0,
+                "missingPositions": 91,
+                "availableWithBox": 0,
+                "availableWithoutBox": 0,
+                "insideBox": 0,
+                "outsideBox": 0,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                }
+              },
+              "unresolvedLabelBoxDiagnosticNotIndexTruth": {
+                "referenceFrames": 35,
+                "referenceFramesWithBox": 35,
+                "availablePositions": 0,
+                "missingPositions": 35,
+                "availableWithBox": 0,
+                "availableWithoutBox": 0,
+                "insideBox": 0,
+                "outsideBox": 0,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                }
+              },
+              "explicitContrary": {
+                "referenceFrames": 0,
+                "available": 0
+              },
+              "explicitNonIndex": {
+                "referenceFrames": 0,
+                "available": 0
+              },
+              "notVisible": {
+                "referenceFrames": 20,
+                "available": 0
+              }
+            }
+          }
+        }
+      }
+    },
+    "cpu": {
+      "historicalConditionalAll1336": {
+        "packets": 1336,
+        "measuredPositions": 504,
+        "readinessEligible": 446,
+        "logicalIdChanges": 9,
+        "rejectedOrErrorFrames": 0,
+        "states": {
+          "UNSEEDED": 124,
+          "UNCERTAIN": 166,
+          "LOST": 542,
+          "TRACKING": 504
+        },
+        "exactPriorCompact1336StateFreshnessIdParity": true,
+        "exactPriorConditionalAggregateParity": true
+      },
+      "new157": {
+        "referenceFrames": 157,
+        "labels": {
+          "tipVisibility": {
+            "VISIBLE": 102,
+            "AMBIGUOUS": 35,
+            "NOT_VISIBLE": 20
+          },
+          "anatomicalDigit": {
+            "INDEX": 129,
+            "UNRESOLVED": 28
+          },
+          "pointingIntent": {
+            "POINT": 120,
+            "UNRESOLVED": 37
+          },
+          "localAdjacentIndexContinuity": {
+            "UNRESOLVED": 66,
+            "SAME_VISIBLE_INDEX": 91
+          }
+        },
+        "coarseBoxes": 137,
+        "visibleIndexFrames": 102,
+        "visibleIndexPointingFrames": 102,
+        "modalities": {
+          "raw": {
+            "allAvailability": {
+              "referenceFrames": 157,
+              "available": 144,
+              "missing": 13
+            },
+            "visibleIndexBoxAssessment": {
+              "referenceFrames": 102,
+              "referenceFramesWithBox": 102,
+              "availablePositions": 96,
+              "missingPositions": 6,
+              "availableWithBox": 96,
+              "availableWithoutBox": 0,
+              "insideBox": 80,
+              "outsideBox": 16,
+              "outsideBoxDistanceLowerBoundPixels": {
+                "n": 96,
+                "median": 0,
+                "p95": 18.382115185260773,
+                "maximum": 29.120886474847794
+              },
+              "positiveOutsideDistanceLowerBoundPixels": {
+                "n": 16,
+                "median": 6.831497669219971,
+                "p95": 29.120886474847794,
+                "maximum": 29.120886474847794
+              }
+            },
+            "visibleIndexPointingBoxAssessment": {
+              "referenceFrames": 102,
+              "referenceFramesWithBox": 102,
+              "availablePositions": 96,
+              "missingPositions": 6,
+              "availableWithBox": 96,
+              "availableWithoutBox": 0,
+              "insideBox": 80,
+              "outsideBox": 16,
+              "outsideBoxDistanceLowerBoundPixels": {
+                "n": 96,
+                "median": 0,
+                "p95": 18.382115185260773,
+                "maximum": 29.120886474847794
+              },
+              "positiveOutsideDistanceLowerBoundPixels": {
+                "n": 16,
+                "median": 6.831497669219971,
+                "p95": 29.120886474847794,
+                "maximum": 29.120886474847794
+              }
+            },
+            "unresolvedLabelBoxDiagnosticNotIndexTruth": {
+              "referenceFrames": 35,
+              "referenceFramesWithBox": 35,
+              "availablePositions": 33,
+              "missingPositions": 2,
+              "availableWithBox": 33,
+              "availableWithoutBox": 0,
+              "insideBox": 27,
+              "outsideBox": 6,
+              "outsideBoxDistanceLowerBoundPixels": {
+                "n": 33,
+                "median": 0,
+                "p95": 10.7668337225914,
+                "maximum": 12.243341237306595
+              },
+              "positiveOutsideDistanceLowerBoundPixels": {
+                "n": 6,
+                "median": 9.460916519165039,
+                "p95": 12.243341237306595,
+                "maximum": 12.243341237306595
+              }
+            },
+            "explicitContrary": {
+              "referenceFrames": 0,
+              "available": 0
+            },
+            "explicitNonIndex": {
+              "referenceFrames": 0,
+              "available": 0
+            },
+            "notVisible": {
+              "referenceFrames": 20,
+              "available": 15
+            }
+          },
+          "measured": {
+            "allAvailability": {
+              "referenceFrames": 157,
+              "available": 5,
+              "missing": 152
+            },
+            "visibleIndexBoxAssessment": {
+              "referenceFrames": 102,
+              "referenceFramesWithBox": 102,
+              "availablePositions": 5,
+              "missingPositions": 97,
+              "availableWithBox": 5,
+              "availableWithoutBox": 0,
+              "insideBox": 5,
+              "outsideBox": 0,
+              "outsideBoxDistanceLowerBoundPixels": {
+                "n": 5,
+                "median": 0,
+                "p95": 0,
+                "maximum": 0
+              },
+              "positiveOutsideDistanceLowerBoundPixels": {
+                "n": 0,
+                "median": null,
+                "p95": null,
+                "maximum": null
+              }
+            },
+            "visibleIndexPointingBoxAssessment": {
+              "referenceFrames": 102,
+              "referenceFramesWithBox": 102,
+              "availablePositions": 5,
+              "missingPositions": 97,
+              "availableWithBox": 5,
+              "availableWithoutBox": 0,
+              "insideBox": 5,
+              "outsideBox": 0,
+              "outsideBoxDistanceLowerBoundPixels": {
+                "n": 5,
+                "median": 0,
+                "p95": 0,
+                "maximum": 0
+              },
+              "positiveOutsideDistanceLowerBoundPixels": {
+                "n": 0,
+                "median": null,
+                "p95": null,
+                "maximum": null
+              }
+            },
+            "unresolvedLabelBoxDiagnosticNotIndexTruth": {
+              "referenceFrames": 35,
+              "referenceFramesWithBox": 35,
+              "availablePositions": 0,
+              "missingPositions": 35,
+              "availableWithBox": 0,
+              "availableWithoutBox": 0,
+              "insideBox": 0,
+              "outsideBox": 0,
+              "outsideBoxDistanceLowerBoundPixels": {
+                "n": 0,
+                "median": null,
+                "p95": null,
+                "maximum": null
+              },
+              "positiveOutsideDistanceLowerBoundPixels": {
+                "n": 0,
+                "median": null,
+                "p95": null,
+                "maximum": null
+              }
+            },
+            "explicitContrary": {
+              "referenceFrames": 0,
+              "available": 0
+            },
+            "explicitNonIndex": {
+              "referenceFrames": 0,
+              "available": 0
+            },
+            "notVisible": {
+              "referenceFrames": 20,
+              "available": 0
+            }
+          },
+          "ready": {
+            "allAvailability": {
+              "referenceFrames": 157,
+              "available": 1,
+              "missing": 156
+            },
+            "visibleIndexBoxAssessment": {
+              "referenceFrames": 102,
+              "referenceFramesWithBox": 102,
+              "availablePositions": 1,
+              "missingPositions": 101,
+              "availableWithBox": 1,
+              "availableWithoutBox": 0,
+              "insideBox": 1,
+              "outsideBox": 0,
+              "outsideBoxDistanceLowerBoundPixels": {
+                "n": 1,
+                "median": 0,
+                "p95": 0,
+                "maximum": 0
+              },
+              "positiveOutsideDistanceLowerBoundPixels": {
+                "n": 0,
+                "median": null,
+                "p95": null,
+                "maximum": null
+              }
+            },
+            "visibleIndexPointingBoxAssessment": {
+              "referenceFrames": 102,
+              "referenceFramesWithBox": 102,
+              "availablePositions": 1,
+              "missingPositions": 101,
+              "availableWithBox": 1,
+              "availableWithoutBox": 0,
+              "insideBox": 1,
+              "outsideBox": 0,
+              "outsideBoxDistanceLowerBoundPixels": {
+                "n": 1,
+                "median": 0,
+                "p95": 0,
+                "maximum": 0
+              },
+              "positiveOutsideDistanceLowerBoundPixels": {
+                "n": 0,
+                "median": null,
+                "p95": null,
+                "maximum": null
+              }
+            },
+            "unresolvedLabelBoxDiagnosticNotIndexTruth": {
+              "referenceFrames": 35,
+              "referenceFramesWithBox": 35,
+              "availablePositions": 0,
+              "missingPositions": 35,
+              "availableWithBox": 0,
+              "availableWithoutBox": 0,
+              "insideBox": 0,
+              "outsideBox": 0,
+              "outsideBoxDistanceLowerBoundPixels": {
+                "n": 0,
+                "median": null,
+                "p95": null,
+                "maximum": null
+              },
+              "positiveOutsideDistanceLowerBoundPixels": {
+                "n": 0,
+                "median": null,
+                "p95": null,
+                "maximum": null
+              }
+            },
+            "explicitContrary": {
+              "referenceFrames": 0,
+              "available": 0
+            },
+            "explicitNonIndex": {
+              "referenceFrames": 0,
+              "available": 0
+            },
+            "notVisible": {
+              "referenceFrames": 20,
+              "available": 0
+            }
+          }
+        }
+      },
+      "byScenario": {
+        "RIGHT": {
+          "referenceFrames": 11,
+          "labels": {
+            "tipVisibility": {
+              "VISIBLE": 11
+            },
+            "anatomicalDigit": {
+              "INDEX": 11
+            },
+            "pointingIntent": {
+              "POINT": 11
+            },
+            "localAdjacentIndexContinuity": {
+              "UNRESOLVED": 1,
+              "SAME_VISIBLE_INDEX": 10
+            }
+          },
+          "coarseBoxes": 11,
+          "visibleIndexFrames": 11,
+          "visibleIndexPointingFrames": 11,
+          "modalities": {
+            "raw": {
+              "allAvailability": {
+                "referenceFrames": 11,
+                "available": 11,
+                "missing": 0
+              },
+              "visibleIndexBoxAssessment": {
+                "referenceFrames": 11,
+                "referenceFramesWithBox": 11,
+                "availablePositions": 11,
+                "missingPositions": 0,
+                "availableWithBox": 11,
+                "availableWithoutBox": 0,
+                "insideBox": 11,
+                "outsideBox": 0,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 11,
+                  "median": 0,
+                  "p95": 0,
+                  "maximum": 0
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                }
+              },
+              "visibleIndexPointingBoxAssessment": {
+                "referenceFrames": 11,
+                "referenceFramesWithBox": 11,
+                "availablePositions": 11,
+                "missingPositions": 0,
+                "availableWithBox": 11,
+                "availableWithoutBox": 0,
+                "insideBox": 11,
+                "outsideBox": 0,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 11,
+                  "median": 0,
+                  "p95": 0,
+                  "maximum": 0
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                }
+              },
+              "unresolvedLabelBoxDiagnosticNotIndexTruth": {
+                "referenceFrames": 0,
+                "referenceFramesWithBox": 0,
+                "availablePositions": 0,
+                "missingPositions": 0,
+                "availableWithBox": 0,
+                "availableWithoutBox": 0,
+                "insideBox": 0,
+                "outsideBox": 0,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                }
+              },
+              "explicitContrary": {
+                "referenceFrames": 0,
+                "available": 0
+              },
+              "explicitNonIndex": {
+                "referenceFrames": 0,
+                "available": 0
+              },
+              "notVisible": {
+                "referenceFrames": 0,
+                "available": 0
+              }
+            },
+            "measured": {
+              "allAvailability": {
+                "referenceFrames": 11,
+                "available": 3,
+                "missing": 8
+              },
+              "visibleIndexBoxAssessment": {
+                "referenceFrames": 11,
+                "referenceFramesWithBox": 11,
+                "availablePositions": 3,
+                "missingPositions": 8,
+                "availableWithBox": 3,
+                "availableWithoutBox": 0,
+                "insideBox": 3,
+                "outsideBox": 0,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 3,
+                  "median": 0,
+                  "p95": 0,
+                  "maximum": 0
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                }
+              },
+              "visibleIndexPointingBoxAssessment": {
+                "referenceFrames": 11,
+                "referenceFramesWithBox": 11,
+                "availablePositions": 3,
+                "missingPositions": 8,
+                "availableWithBox": 3,
+                "availableWithoutBox": 0,
+                "insideBox": 3,
+                "outsideBox": 0,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 3,
+                  "median": 0,
+                  "p95": 0,
+                  "maximum": 0
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                }
+              },
+              "unresolvedLabelBoxDiagnosticNotIndexTruth": {
+                "referenceFrames": 0,
+                "referenceFramesWithBox": 0,
+                "availablePositions": 0,
+                "missingPositions": 0,
+                "availableWithBox": 0,
+                "availableWithoutBox": 0,
+                "insideBox": 0,
+                "outsideBox": 0,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                }
+              },
+              "explicitContrary": {
+                "referenceFrames": 0,
+                "available": 0
+              },
+              "explicitNonIndex": {
+                "referenceFrames": 0,
+                "available": 0
+              },
+              "notVisible": {
+                "referenceFrames": 0,
+                "available": 0
+              }
+            },
+            "ready": {
+              "allAvailability": {
+                "referenceFrames": 11,
+                "available": 0,
+                "missing": 11
+              },
+              "visibleIndexBoxAssessment": {
+                "referenceFrames": 11,
+                "referenceFramesWithBox": 11,
+                "availablePositions": 0,
+                "missingPositions": 11,
+                "availableWithBox": 0,
+                "availableWithoutBox": 0,
+                "insideBox": 0,
+                "outsideBox": 0,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                }
+              },
+              "visibleIndexPointingBoxAssessment": {
+                "referenceFrames": 11,
+                "referenceFramesWithBox": 11,
+                "availablePositions": 0,
+                "missingPositions": 11,
+                "availableWithBox": 0,
+                "availableWithoutBox": 0,
+                "insideBox": 0,
+                "outsideBox": 0,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                }
+              },
+              "unresolvedLabelBoxDiagnosticNotIndexTruth": {
+                "referenceFrames": 0,
+                "referenceFramesWithBox": 0,
+                "availablePositions": 0,
+                "missingPositions": 0,
+                "availableWithBox": 0,
+                "availableWithoutBox": 0,
+                "insideBox": 0,
+                "outsideBox": 0,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                }
+              },
+              "explicitContrary": {
+                "referenceFrames": 0,
+                "available": 0
+              },
+              "explicitNonIndex": {
+                "referenceFrames": 0,
+                "available": 0
+              },
+              "notVisible": {
+                "referenceFrames": 0,
+                "available": 0
+              }
+            }
+          }
+        },
+        "SWEEP": {
+          "referenceFrames": 146,
+          "labels": {
+            "tipVisibility": {
+              "VISIBLE": 91,
+              "AMBIGUOUS": 35,
+              "NOT_VISIBLE": 20
+            },
+            "anatomicalDigit": {
+              "INDEX": 118,
+              "UNRESOLVED": 28
+            },
+            "pointingIntent": {
+              "POINT": 109,
+              "UNRESOLVED": 37
+            },
+            "localAdjacentIndexContinuity": {
+              "UNRESOLVED": 65,
+              "SAME_VISIBLE_INDEX": 81
+            }
+          },
+          "coarseBoxes": 126,
+          "visibleIndexFrames": 91,
+          "visibleIndexPointingFrames": 91,
+          "modalities": {
+            "raw": {
+              "allAvailability": {
+                "referenceFrames": 146,
+                "available": 133,
+                "missing": 13
+              },
+              "visibleIndexBoxAssessment": {
+                "referenceFrames": 91,
+                "referenceFramesWithBox": 91,
+                "availablePositions": 85,
+                "missingPositions": 6,
+                "availableWithBox": 85,
+                "availableWithoutBox": 0,
+                "insideBox": 69,
+                "outsideBox": 16,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 85,
+                  "median": 0,
+                  "p95": 18.382115185260773,
+                  "maximum": 29.120886474847794
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 16,
+                  "median": 6.831497669219971,
+                  "p95": 29.120886474847794,
+                  "maximum": 29.120886474847794
+                }
+              },
+              "visibleIndexPointingBoxAssessment": {
+                "referenceFrames": 91,
+                "referenceFramesWithBox": 91,
+                "availablePositions": 85,
+                "missingPositions": 6,
+                "availableWithBox": 85,
+                "availableWithoutBox": 0,
+                "insideBox": 69,
+                "outsideBox": 16,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 85,
+                  "median": 0,
+                  "p95": 18.382115185260773,
+                  "maximum": 29.120886474847794
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 16,
+                  "median": 6.831497669219971,
+                  "p95": 29.120886474847794,
+                  "maximum": 29.120886474847794
+                }
+              },
+              "unresolvedLabelBoxDiagnosticNotIndexTruth": {
+                "referenceFrames": 35,
+                "referenceFramesWithBox": 35,
+                "availablePositions": 33,
+                "missingPositions": 2,
+                "availableWithBox": 33,
+                "availableWithoutBox": 0,
+                "insideBox": 27,
+                "outsideBox": 6,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 33,
+                  "median": 0,
+                  "p95": 10.7668337225914,
+                  "maximum": 12.243341237306595
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 6,
+                  "median": 9.460916519165039,
+                  "p95": 12.243341237306595,
+                  "maximum": 12.243341237306595
+                }
+              },
+              "explicitContrary": {
+                "referenceFrames": 0,
+                "available": 0
+              },
+              "explicitNonIndex": {
+                "referenceFrames": 0,
+                "available": 0
+              },
+              "notVisible": {
+                "referenceFrames": 20,
+                "available": 15
+              }
+            },
+            "measured": {
+              "allAvailability": {
+                "referenceFrames": 146,
+                "available": 2,
+                "missing": 144
+              },
+              "visibleIndexBoxAssessment": {
+                "referenceFrames": 91,
+                "referenceFramesWithBox": 91,
+                "availablePositions": 2,
+                "missingPositions": 89,
+                "availableWithBox": 2,
+                "availableWithoutBox": 0,
+                "insideBox": 2,
+                "outsideBox": 0,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 2,
+                  "median": 0,
+                  "p95": 0,
+                  "maximum": 0
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                }
+              },
+              "visibleIndexPointingBoxAssessment": {
+                "referenceFrames": 91,
+                "referenceFramesWithBox": 91,
+                "availablePositions": 2,
+                "missingPositions": 89,
+                "availableWithBox": 2,
+                "availableWithoutBox": 0,
+                "insideBox": 2,
+                "outsideBox": 0,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 2,
+                  "median": 0,
+                  "p95": 0,
+                  "maximum": 0
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                }
+              },
+              "unresolvedLabelBoxDiagnosticNotIndexTruth": {
+                "referenceFrames": 35,
+                "referenceFramesWithBox": 35,
+                "availablePositions": 0,
+                "missingPositions": 35,
+                "availableWithBox": 0,
+                "availableWithoutBox": 0,
+                "insideBox": 0,
+                "outsideBox": 0,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                }
+              },
+              "explicitContrary": {
+                "referenceFrames": 0,
+                "available": 0
+              },
+              "explicitNonIndex": {
+                "referenceFrames": 0,
+                "available": 0
+              },
+              "notVisible": {
+                "referenceFrames": 20,
+                "available": 0
+              }
+            },
+            "ready": {
+              "allAvailability": {
+                "referenceFrames": 146,
+                "available": 1,
+                "missing": 145
+              },
+              "visibleIndexBoxAssessment": {
+                "referenceFrames": 91,
+                "referenceFramesWithBox": 91,
+                "availablePositions": 1,
+                "missingPositions": 90,
+                "availableWithBox": 1,
+                "availableWithoutBox": 0,
+                "insideBox": 1,
+                "outsideBox": 0,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 1,
+                  "median": 0,
+                  "p95": 0,
+                  "maximum": 0
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                }
+              },
+              "visibleIndexPointingBoxAssessment": {
+                "referenceFrames": 91,
+                "referenceFramesWithBox": 91,
+                "availablePositions": 1,
+                "missingPositions": 90,
+                "availableWithBox": 1,
+                "availableWithoutBox": 0,
+                "insideBox": 1,
+                "outsideBox": 0,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 1,
+                  "median": 0,
+                  "p95": 0,
+                  "maximum": 0
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                }
+              },
+              "unresolvedLabelBoxDiagnosticNotIndexTruth": {
+                "referenceFrames": 35,
+                "referenceFramesWithBox": 35,
+                "availablePositions": 0,
+                "missingPositions": 35,
+                "availableWithBox": 0,
+                "availableWithoutBox": 0,
+                "insideBox": 0,
+                "outsideBox": 0,
+                "outsideBoxDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                },
+                "positiveOutsideDistanceLowerBoundPixels": {
+                  "n": 0,
+                  "median": null,
+                  "p95": null,
+                  "maximum": null
+                }
+              },
+              "explicitContrary": {
+                "referenceFrames": 0,
+                "available": 0
+              },
+              "explicitNonIndex": {
+                "referenceFrames": 0,
+                "available": 0
+              },
+              "notVisible": {
+                "referenceFrames": 20,
+                "available": 0
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "paired": {
+    "allAvailabilityAndNonsemanticBoxDiagnostics": {
+      "raw": {
+        "referenceFrames": 157,
+        "referenceFramesWithBox": 137,
+        "availabilityGains": 11,
+        "availabilityGainsCpuRegion": {
+          "insideBox": 5,
+          "outsideBox": 1,
+          "boxUnknown": 5
+        },
+        "availabilityLosses": 6,
+        "availabilityLossesGpuRegion": {
+          "insideBox": 4,
+          "outsideBox": 1,
+          "boxUnknown": 1
+        },
+        "bothAvailableWithBox": 123,
+        "bothInside": 90,
+        "gpuOutsideCpuInside": 12,
+        "gpuInsideCpuOutside": 5,
+        "bothOutside": 16,
+        "bothMissing": 7
+      },
+      "measured": {
+        "referenceFrames": 157,
+        "referenceFramesWithBox": 137,
+        "availabilityGains": 5,
+        "availabilityGainsCpuRegion": {
+          "insideBox": 5,
+          "outsideBox": 0,
+          "boxUnknown": 0
+        },
+        "availabilityLosses": 0,
+        "availabilityLossesGpuRegion": {
+          "insideBox": 0,
+          "outsideBox": 0,
+          "boxUnknown": 0
+        },
+        "bothAvailableWithBox": 0,
+        "bothInside": 0,
+        "gpuOutsideCpuInside": 0,
+        "gpuInsideCpuOutside": 0,
+        "bothOutside": 0,
+        "bothMissing": 152
+      },
+      "ready": {
+        "referenceFrames": 157,
+        "referenceFramesWithBox": 137,
+        "availabilityGains": 1,
+        "availabilityGainsCpuRegion": {
+          "insideBox": 1,
+          "outsideBox": 0,
+          "boxUnknown": 0
+        },
+        "availabilityLosses": 0,
+        "availabilityLossesGpuRegion": {
+          "insideBox": 0,
+          "outsideBox": 0,
+          "boxUnknown": 0
+        },
+        "bothAvailableWithBox": 0,
+        "bothInside": 0,
+        "gpuOutsideCpuInside": 0,
+        "gpuInsideCpuOutside": 0,
+        "bothOutside": 0,
+        "bothMissing": 156
+      }
+    },
+    "visibleIndex": {
+      "raw": {
+        "referenceFrames": 102,
+        "referenceFramesWithBox": 102,
+        "availabilityGains": 3,
+        "availabilityGainsCpuRegion": {
+          "insideBox": 3,
+          "outsideBox": 0,
+          "boxUnknown": 0
+        },
+        "availabilityLosses": 4,
+        "availabilityLossesGpuRegion": {
+          "insideBox": 4,
+          "outsideBox": 0,
+          "boxUnknown": 0
+        },
+        "bothAvailableWithBox": 93,
+        "bothInside": 68,
+        "gpuOutsideCpuInside": 9,
+        "gpuInsideCpuOutside": 1,
+        "bothOutside": 15,
+        "bothMissing": 2
+      },
+      "measured": {
+        "referenceFrames": 102,
+        "referenceFramesWithBox": 102,
+        "availabilityGains": 5,
+        "availabilityGainsCpuRegion": {
+          "insideBox": 5,
+          "outsideBox": 0,
+          "boxUnknown": 0
+        },
+        "availabilityLosses": 0,
+        "availabilityLossesGpuRegion": {
+          "insideBox": 0,
+          "outsideBox": 0,
+          "boxUnknown": 0
+        },
+        "bothAvailableWithBox": 0,
+        "bothInside": 0,
+        "gpuOutsideCpuInside": 0,
+        "gpuInsideCpuOutside": 0,
+        "bothOutside": 0,
+        "bothMissing": 97
+      },
+      "ready": {
+        "referenceFrames": 102,
+        "referenceFramesWithBox": 102,
+        "availabilityGains": 1,
+        "availabilityGainsCpuRegion": {
+          "insideBox": 1,
+          "outsideBox": 0,
+          "boxUnknown": 0
+        },
+        "availabilityLosses": 0,
+        "availabilityLossesGpuRegion": {
+          "insideBox": 0,
+          "outsideBox": 0,
+          "boxUnknown": 0
+        },
+        "bothAvailableWithBox": 0,
+        "bothInside": 0,
+        "gpuOutsideCpuInside": 0,
+        "gpuInsideCpuOutside": 0,
+        "bothOutside": 0,
+        "bothMissing": 101
+      }
+    },
+    "visibleIndexPointing": {
+      "raw": {
+        "referenceFrames": 102,
+        "referenceFramesWithBox": 102,
+        "availabilityGains": 3,
+        "availabilityGainsCpuRegion": {
+          "insideBox": 3,
+          "outsideBox": 0,
+          "boxUnknown": 0
+        },
+        "availabilityLosses": 4,
+        "availabilityLossesGpuRegion": {
+          "insideBox": 4,
+          "outsideBox": 0,
+          "boxUnknown": 0
+        },
+        "bothAvailableWithBox": 93,
+        "bothInside": 68,
+        "gpuOutsideCpuInside": 9,
+        "gpuInsideCpuOutside": 1,
+        "bothOutside": 15,
+        "bothMissing": 2
+      },
+      "measured": {
+        "referenceFrames": 102,
+        "referenceFramesWithBox": 102,
+        "availabilityGains": 5,
+        "availabilityGainsCpuRegion": {
+          "insideBox": 5,
+          "outsideBox": 0,
+          "boxUnknown": 0
+        },
+        "availabilityLosses": 0,
+        "availabilityLossesGpuRegion": {
+          "insideBox": 0,
+          "outsideBox": 0,
+          "boxUnknown": 0
+        },
+        "bothAvailableWithBox": 0,
+        "bothInside": 0,
+        "gpuOutsideCpuInside": 0,
+        "gpuInsideCpuOutside": 0,
+        "bothOutside": 0,
+        "bothMissing": 97
+      },
+      "ready": {
+        "referenceFrames": 102,
+        "referenceFramesWithBox": 102,
+        "availabilityGains": 1,
+        "availabilityGainsCpuRegion": {
+          "insideBox": 1,
+          "outsideBox": 0,
+          "boxUnknown": 0
+        },
+        "availabilityLosses": 0,
+        "availabilityLossesGpuRegion": {
+          "insideBox": 0,
+          "outsideBox": 0,
+          "boxUnknown": 0
+        },
+        "bothAvailableWithBox": 0,
+        "bothInside": 0,
+        "gpuOutsideCpuInside": 0,
+        "gpuInsideCpuOutside": 0,
+        "bothOutside": 0,
+        "bothMissing": 101
+      }
+    }
+  },
+  "pairedByScenario": {
+    "RIGHT": {
+      "allAvailabilityAndNonsemanticBoxDiagnostics": {
+        "raw": {
+          "referenceFrames": 11,
+          "referenceFramesWithBox": 11,
+          "availabilityGains": 0,
+          "availabilityGainsCpuRegion": {
+            "insideBox": 0,
+            "outsideBox": 0,
+            "boxUnknown": 0
+          },
+          "availabilityLosses": 0,
+          "availabilityLossesGpuRegion": {
+            "insideBox": 0,
+            "outsideBox": 0,
+            "boxUnknown": 0
+          },
+          "bothAvailableWithBox": 11,
+          "bothInside": 11,
+          "gpuOutsideCpuInside": 0,
+          "gpuInsideCpuOutside": 0,
+          "bothOutside": 0,
+          "bothMissing": 0
+        },
+        "measured": {
+          "referenceFrames": 11,
+          "referenceFramesWithBox": 11,
+          "availabilityGains": 3,
+          "availabilityGainsCpuRegion": {
+            "insideBox": 3,
+            "outsideBox": 0,
+            "boxUnknown": 0
+          },
+          "availabilityLosses": 0,
+          "availabilityLossesGpuRegion": {
+            "insideBox": 0,
+            "outsideBox": 0,
+            "boxUnknown": 0
+          },
+          "bothAvailableWithBox": 0,
+          "bothInside": 0,
+          "gpuOutsideCpuInside": 0,
+          "gpuInsideCpuOutside": 0,
+          "bothOutside": 0,
+          "bothMissing": 8
+        },
+        "ready": {
+          "referenceFrames": 11,
+          "referenceFramesWithBox": 11,
+          "availabilityGains": 0,
+          "availabilityGainsCpuRegion": {
+            "insideBox": 0,
+            "outsideBox": 0,
+            "boxUnknown": 0
+          },
+          "availabilityLosses": 0,
+          "availabilityLossesGpuRegion": {
+            "insideBox": 0,
+            "outsideBox": 0,
+            "boxUnknown": 0
+          },
+          "bothAvailableWithBox": 0,
+          "bothInside": 0,
+          "gpuOutsideCpuInside": 0,
+          "gpuInsideCpuOutside": 0,
+          "bothOutside": 0,
+          "bothMissing": 11
+        }
+      },
+      "visibleIndex": {
+        "raw": {
+          "referenceFrames": 11,
+          "referenceFramesWithBox": 11,
+          "availabilityGains": 0,
+          "availabilityGainsCpuRegion": {
+            "insideBox": 0,
+            "outsideBox": 0,
+            "boxUnknown": 0
+          },
+          "availabilityLosses": 0,
+          "availabilityLossesGpuRegion": {
+            "insideBox": 0,
+            "outsideBox": 0,
+            "boxUnknown": 0
+          },
+          "bothAvailableWithBox": 11,
+          "bothInside": 11,
+          "gpuOutsideCpuInside": 0,
+          "gpuInsideCpuOutside": 0,
+          "bothOutside": 0,
+          "bothMissing": 0
+        },
+        "measured": {
+          "referenceFrames": 11,
+          "referenceFramesWithBox": 11,
+          "availabilityGains": 3,
+          "availabilityGainsCpuRegion": {
+            "insideBox": 3,
+            "outsideBox": 0,
+            "boxUnknown": 0
+          },
+          "availabilityLosses": 0,
+          "availabilityLossesGpuRegion": {
+            "insideBox": 0,
+            "outsideBox": 0,
+            "boxUnknown": 0
+          },
+          "bothAvailableWithBox": 0,
+          "bothInside": 0,
+          "gpuOutsideCpuInside": 0,
+          "gpuInsideCpuOutside": 0,
+          "bothOutside": 0,
+          "bothMissing": 8
+        },
+        "ready": {
+          "referenceFrames": 11,
+          "referenceFramesWithBox": 11,
+          "availabilityGains": 0,
+          "availabilityGainsCpuRegion": {
+            "insideBox": 0,
+            "outsideBox": 0,
+            "boxUnknown": 0
+          },
+          "availabilityLosses": 0,
+          "availabilityLossesGpuRegion": {
+            "insideBox": 0,
+            "outsideBox": 0,
+            "boxUnknown": 0
+          },
+          "bothAvailableWithBox": 0,
+          "bothInside": 0,
+          "gpuOutsideCpuInside": 0,
+          "gpuInsideCpuOutside": 0,
+          "bothOutside": 0,
+          "bothMissing": 11
+        }
+      },
+      "visibleIndexPointing": {
+        "raw": {
+          "referenceFrames": 11,
+          "referenceFramesWithBox": 11,
+          "availabilityGains": 0,
+          "availabilityGainsCpuRegion": {
+            "insideBox": 0,
+            "outsideBox": 0,
+            "boxUnknown": 0
+          },
+          "availabilityLosses": 0,
+          "availabilityLossesGpuRegion": {
+            "insideBox": 0,
+            "outsideBox": 0,
+            "boxUnknown": 0
+          },
+          "bothAvailableWithBox": 11,
+          "bothInside": 11,
+          "gpuOutsideCpuInside": 0,
+          "gpuInsideCpuOutside": 0,
+          "bothOutside": 0,
+          "bothMissing": 0
+        },
+        "measured": {
+          "referenceFrames": 11,
+          "referenceFramesWithBox": 11,
+          "availabilityGains": 3,
+          "availabilityGainsCpuRegion": {
+            "insideBox": 3,
+            "outsideBox": 0,
+            "boxUnknown": 0
+          },
+          "availabilityLosses": 0,
+          "availabilityLossesGpuRegion": {
+            "insideBox": 0,
+            "outsideBox": 0,
+            "boxUnknown": 0
+          },
+          "bothAvailableWithBox": 0,
+          "bothInside": 0,
+          "gpuOutsideCpuInside": 0,
+          "gpuInsideCpuOutside": 0,
+          "bothOutside": 0,
+          "bothMissing": 8
+        },
+        "ready": {
+          "referenceFrames": 11,
+          "referenceFramesWithBox": 11,
+          "availabilityGains": 0,
+          "availabilityGainsCpuRegion": {
+            "insideBox": 0,
+            "outsideBox": 0,
+            "boxUnknown": 0
+          },
+          "availabilityLosses": 0,
+          "availabilityLossesGpuRegion": {
+            "insideBox": 0,
+            "outsideBox": 0,
+            "boxUnknown": 0
+          },
+          "bothAvailableWithBox": 0,
+          "bothInside": 0,
+          "gpuOutsideCpuInside": 0,
+          "gpuInsideCpuOutside": 0,
+          "bothOutside": 0,
+          "bothMissing": 11
+        }
+      }
+    },
+    "SWEEP": {
+      "allAvailabilityAndNonsemanticBoxDiagnostics": {
+        "raw": {
+          "referenceFrames": 146,
+          "referenceFramesWithBox": 126,
+          "availabilityGains": 11,
+          "availabilityGainsCpuRegion": {
+            "insideBox": 5,
+            "outsideBox": 1,
+            "boxUnknown": 5
+          },
+          "availabilityLosses": 6,
+          "availabilityLossesGpuRegion": {
+            "insideBox": 4,
+            "outsideBox": 1,
+            "boxUnknown": 1
+          },
+          "bothAvailableWithBox": 112,
+          "bothInside": 79,
+          "gpuOutsideCpuInside": 12,
+          "gpuInsideCpuOutside": 5,
+          "bothOutside": 16,
+          "bothMissing": 7
+        },
+        "measured": {
+          "referenceFrames": 146,
+          "referenceFramesWithBox": 126,
+          "availabilityGains": 2,
+          "availabilityGainsCpuRegion": {
+            "insideBox": 2,
+            "outsideBox": 0,
+            "boxUnknown": 0
+          },
+          "availabilityLosses": 0,
+          "availabilityLossesGpuRegion": {
+            "insideBox": 0,
+            "outsideBox": 0,
+            "boxUnknown": 0
+          },
+          "bothAvailableWithBox": 0,
+          "bothInside": 0,
+          "gpuOutsideCpuInside": 0,
+          "gpuInsideCpuOutside": 0,
+          "bothOutside": 0,
+          "bothMissing": 144
+        },
+        "ready": {
+          "referenceFrames": 146,
+          "referenceFramesWithBox": 126,
+          "availabilityGains": 1,
+          "availabilityGainsCpuRegion": {
+            "insideBox": 1,
+            "outsideBox": 0,
+            "boxUnknown": 0
+          },
+          "availabilityLosses": 0,
+          "availabilityLossesGpuRegion": {
+            "insideBox": 0,
+            "outsideBox": 0,
+            "boxUnknown": 0
+          },
+          "bothAvailableWithBox": 0,
+          "bothInside": 0,
+          "gpuOutsideCpuInside": 0,
+          "gpuInsideCpuOutside": 0,
+          "bothOutside": 0,
+          "bothMissing": 145
+        }
+      },
+      "visibleIndex": {
+        "raw": {
+          "referenceFrames": 91,
+          "referenceFramesWithBox": 91,
+          "availabilityGains": 3,
+          "availabilityGainsCpuRegion": {
+            "insideBox": 3,
+            "outsideBox": 0,
+            "boxUnknown": 0
+          },
+          "availabilityLosses": 4,
+          "availabilityLossesGpuRegion": {
+            "insideBox": 4,
+            "outsideBox": 0,
+            "boxUnknown": 0
+          },
+          "bothAvailableWithBox": 82,
+          "bothInside": 57,
+          "gpuOutsideCpuInside": 9,
+          "gpuInsideCpuOutside": 1,
+          "bothOutside": 15,
+          "bothMissing": 2
+        },
+        "measured": {
+          "referenceFrames": 91,
+          "referenceFramesWithBox": 91,
+          "availabilityGains": 2,
+          "availabilityGainsCpuRegion": {
+            "insideBox": 2,
+            "outsideBox": 0,
+            "boxUnknown": 0
+          },
+          "availabilityLosses": 0,
+          "availabilityLossesGpuRegion": {
+            "insideBox": 0,
+            "outsideBox": 0,
+            "boxUnknown": 0
+          },
+          "bothAvailableWithBox": 0,
+          "bothInside": 0,
+          "gpuOutsideCpuInside": 0,
+          "gpuInsideCpuOutside": 0,
+          "bothOutside": 0,
+          "bothMissing": 89
+        },
+        "ready": {
+          "referenceFrames": 91,
+          "referenceFramesWithBox": 91,
+          "availabilityGains": 1,
+          "availabilityGainsCpuRegion": {
+            "insideBox": 1,
+            "outsideBox": 0,
+            "boxUnknown": 0
+          },
+          "availabilityLosses": 0,
+          "availabilityLossesGpuRegion": {
+            "insideBox": 0,
+            "outsideBox": 0,
+            "boxUnknown": 0
+          },
+          "bothAvailableWithBox": 0,
+          "bothInside": 0,
+          "gpuOutsideCpuInside": 0,
+          "gpuInsideCpuOutside": 0,
+          "bothOutside": 0,
+          "bothMissing": 90
+        }
+      },
+      "visibleIndexPointing": {
+        "raw": {
+          "referenceFrames": 91,
+          "referenceFramesWithBox": 91,
+          "availabilityGains": 3,
+          "availabilityGainsCpuRegion": {
+            "insideBox": 3,
+            "outsideBox": 0,
+            "boxUnknown": 0
+          },
+          "availabilityLosses": 4,
+          "availabilityLossesGpuRegion": {
+            "insideBox": 4,
+            "outsideBox": 0,
+            "boxUnknown": 0
+          },
+          "bothAvailableWithBox": 82,
+          "bothInside": 57,
+          "gpuOutsideCpuInside": 9,
+          "gpuInsideCpuOutside": 1,
+          "bothOutside": 15,
+          "bothMissing": 2
+        },
+        "measured": {
+          "referenceFrames": 91,
+          "referenceFramesWithBox": 91,
+          "availabilityGains": 2,
+          "availabilityGainsCpuRegion": {
+            "insideBox": 2,
+            "outsideBox": 0,
+            "boxUnknown": 0
+          },
+          "availabilityLosses": 0,
+          "availabilityLossesGpuRegion": {
+            "insideBox": 0,
+            "outsideBox": 0,
+            "boxUnknown": 0
+          },
+          "bothAvailableWithBox": 0,
+          "bothInside": 0,
+          "gpuOutsideCpuInside": 0,
+          "gpuInsideCpuOutside": 0,
+          "bothOutside": 0,
+          "bothMissing": 89
+        },
+        "ready": {
+          "referenceFrames": 91,
+          "referenceFramesWithBox": 91,
+          "availabilityGains": 1,
+          "availabilityGainsCpuRegion": {
+            "insideBox": 1,
+            "outsideBox": 0,
+            "boxUnknown": 0
+          },
+          "availabilityLosses": 0,
+          "availabilityLossesGpuRegion": {
+            "insideBox": 0,
+            "outsideBox": 0,
+            "boxUnknown": 0
+          },
+          "bothAvailableWithBox": 0,
+          "bothInside": 0,
+          "gpuOutsideCpuInside": 0,
+          "gpuInsideCpuOutside": 0,
+          "bothOutside": 0,
+          "bothMissing": 90
+        }
+      }
+    }
+  },
+  "eventCoverage": {
+    "gpu": {
+      "logicalReplacements": 6,
+      "bothBoundaryEndpointsAnnotated": 0,
+      "fullIntervalsAnnotated": 0,
+      "completeCoarseVisibleIndexContinuity": 0,
+      "unresolved": 6,
+      "fullMeasuredReturnIntervalsAnnotated": 0
+    },
+    "cpu": {
+      "logicalReplacements": 9,
+      "bothBoundaryEndpointsAnnotated": 2,
+      "fullIntervalsAnnotated": 2,
+      "completeCoarseVisibleIndexContinuity": 1,
+      "unresolved": 8,
+      "fullMeasuredReturnIntervalsAnnotated": 1
+    }
+  },
+  "definitions": {
+    "spatialAssessment": "Only inclusive coarse rectangle containment and Euclidean distance lower bound to rectangle: hypot(max(left-x,0,x-right),max(top-y,0,y-bottom)). No center point, RMS, exact coordinate GT, inferred error inside the rectangle, or interpolated endpoint. Lower bound zero is consistent with the subjective box, not proved exact correctness.",
+    "primarySemanticCohort": "tipVisibility=VISIBLE AND anatomicalDigit=INDEX AND pointingIntent=POINT. Report all source denominators, available, missing, with/without reference box. Also report VISIBLE+INDEX any intent separately. A rectangle with unresolved visibility/anatomy does not create index/pointing truth.",
+    "rawSelection": "Landmark8 only from exactly one returned hand, finite and within normalized [0,1]. Zero hands, multiple hands, invalid or off-frame coordinates are missing; no label-guided hand choice. This anatomical landmark availability is not pointer semantic classification.",
+    "freshMeasurement": "Use canonical isFreshMeasurement with acceptance, TRACKING, current accepted point, original capture binding, oldest known pixel origin <=150ms, and temporal measurement freshness. Original historical clocks are counterfactual and do not establish actual CPU live freshness or latency.",
+    "ready": "Measured output AND readiness.eligible; same point, a stricter separate availability cohort.",
+    "otherLabels": "Visibility, anatomical digit, apparent pointing intent and adjacent-frame continuity remain separate. Explicit CONTRARY and NON_INDEX outputs are reported only with their exact denominators; an absent control cohort is unavailable rather than zero false-positive risk. Ambiguous/unresolved box containment is a nonsemantic diagnostic only.",
+    "pairedComparison": "All retained labels. Separately report CPU availability gains/losses and classify their returned output as inside/outside/unknown box. Among both available with box, report both inside, GPU outside/CPU inside, GPU inside/CPU outside, both outside. No available-only accuracy claim, favorable label selection or independent-frame confidence intervals.",
+    "logicalBoundary": "Canonical accepted nonnull ID change, initial acquisition excluded and null gaps skipped. Local IDs are not physical identities. Qualify only coarse visible-index interval continuity if every packet between last accepted old ID and first accepted new ID is annotated VISIBLE INDEX and every immediately adjacent transition is explicitly SAME_VISIBLE_INDEX. Missing/ambiguous/unresolved labels block qualification. Also report last-fresh to first-fresh interval coverage separately; no physical identity switch or recovery truth is manufactured."
+  },
+  "limits": [
+    "New reviewer was blind to prior outputs/source/metrics/references. Sampling was selected after an earlier aggregate event-coverage analysis; exposed recording and all references remain AI development, not independently sampled physical holdout.",
+    "Subjective coarse rectangles and static apparent anatomy/intent are fallible. No exact endpoint, selected physical identity or field qualification.",
+    "Repeated frames are temporally correlated. No frame-count independence or confidence interval.",
+    "No new model inference, camera, recording, label creation, source changes, threshold changes or sweep. Replay only unchanged stored raw neural packets and gray planes.",
+    "The current UI/build browser cohort is independent from this historical conditional producer comparison; do not claim new post-UI capture/performance or physical calibration from replay."
+  ],
+  "conclusion": "Conditional availability and coarse-reference consistency are development observations. Unknown anatomy or continuity remains unknown; local logical replacement counts do not establish physical identity switches. No acceptance or physical correctness claim."
+}

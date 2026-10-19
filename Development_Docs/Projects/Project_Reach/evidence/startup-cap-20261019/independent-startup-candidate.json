@@ -1,0 +1,434 @@
+{
+  "classification": "SAFE_AGGREGATE_FOUR_ARM_INDEPENDENT_CLOCK_REVIEW_NOT_PHYSICAL_OR_PRODUCTION",
+  "assertions": {
+    "expectCallNodes": 180,
+    "assertionFingerprint": "2e4a37102ed0a2d2701a7ef1727f9dc727b55a31be4b7ec33d12bc64333eb2c9",
+    "allFourSpecsAssertionsIdentical": true
+  },
+  "fourthArmIntervention": "PRIVATE_FROZEN_RECOVERY_PROVIDER_AND_WORKER_RESPONSE_REPLACEMENT; PASSIVE_READY_METADATA; LIVE_RESULTS_UNALTERED",
+  "clockNormalization": "Match every RESULT to exact capture FRAME dispatch; pageEpoch=dispatch.epoch-dispatch.at; captureEpoch=capture+pageEpoch. No analyzer copy or cross-frame offset.",
+  "arms": {
+    "CPU_ORIGINAL": {
+      "status": "passed",
+      "testDurationMs": 4480,
+      "ready": [
+        {
+          "backend": "CPU_WASM",
+          "providerPolicy": "ORIGINAL_CPU_LEGACY_OMITTED"
+        }
+      ],
+      "rawResultCount": 56,
+      "frameDispatchCount": 56,
+      "matchedRawResults": 56,
+      "unmatchedFrameDispatches": 0,
+      "handCountHistogram": {
+        "1": 51,
+        "2": 5
+      },
+      "completionMs": {
+        "n": 56,
+        "min": 29.2001953125,
+        "median": 32.300048828125,
+        "p95": 46.2001953125,
+        "max": 104.800048828125
+      },
+      "arrivalMs": {
+        "n": 56,
+        "min": 29.300048828125,
+        "median": 32.5,
+        "p95": 46.2998046875,
+        "max": 104.89990234375
+      },
+      "returnTransportMs": {
+        "n": 56,
+        "min": -0.000244140625,
+        "median": 0.099853515625,
+        "p95": 0.7998046875,
+        "max": 1.599853515625
+      },
+      "captureToDispatchMs": {
+        "n": 56,
+        "min": 0.3999999761581421,
+        "median": 0.5999999940395355,
+        "p95": 1,
+        "max": 1.899999976158142
+      },
+      "originAgeAtCaptureMs": {
+        "n": 56,
+        "min": 1.900000000000091,
+        "median": 17.39999998807889,
+        "p95": 57.09999999999991,
+        "max": 60.59999998807916
+      },
+      "originAgeAtArrivalMs": {
+        "n": 56,
+        "min": 34.29990234375009,
+        "median": 50.39995118379602,
+        "p95": 90.29995117187491,
+        "max": 117.19990235567093
+      },
+      "completionAbove150ms": 0,
+      "arrivalAbove150ms": 0,
+      "originArrivalAbove150ms": 0,
+      "allCompletionTimesWithin150ms": true,
+      "allArrivalTimesWithin150ms": true,
+      "singleInferenceInFlightConfirmed": true,
+      "observedFixtureResultHz": 17.42810931500744,
+      "ownedCleanup": {
+        "test": "PASS",
+        "server": "PASS",
+        "portReleased": true
+      },
+      "sourceUnchanged": true,
+      "fixtureUnchanged": true,
+      "canonicalRefusal": "DEVELOPMENT_BUILD_LINK_OUTSIDE_DEPENDENCIES",
+      "qualification": false
+    },
+    "GPU_ACTUAL_ROI": {
+      "status": "failed",
+      "testDurationMs": 32762,
+      "ready": [
+        {
+          "backend": "GPU_WEBGL",
+          "providerPolicy": "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1"
+        }
+      ],
+      "rawResultCount": 82,
+      "frameDispatchCount": 83,
+      "matchedRawResults": 82,
+      "unmatchedFrameDispatches": 1,
+      "handCountHistogram": {
+        "1": 82
+      },
+      "completionMs": {
+        "n": 82,
+        "min": 289.800048828125,
+        "median": 331.000244140625,
+        "p95": 345,
+        "max": 352.300048828125
+      },
+      "arrivalMs": {
+        "n": 82,
+        "min": 290,
+        "median": 331.300048828125,
+        "p95": 345.699951171875,
+        "max": 352.5
+      },
+      "returnTransportMs": {
+        "n": 82,
+        "min": 0.099853515625,
+        "median": 0.199951171875,
+        "p95": 0.699951171875,
+        "max": 4.39990234375
+      },
+      "captureToDispatchMs": {
+        "n": 82,
+        "min": 0.4000000059604645,
+        "median": 0.800000011920929,
+        "p95": 1.7000000178813934,
+        "max": 4
+      },
+      "originAgeAtCaptureMs": {
+        "n": 82,
+        "min": 2.199999988079071,
+        "median": 39.69999999403808,
+        "p95": 70.90000000000009,
+        "max": 97.89999998211897
+      },
+      "originAgeAtArrivalMs": {
+        "n": 82,
+        "min": 319.49999998807834,
+        "median": 369.19990233779026,
+        "p95": 410.7999023437501,
+        "max": 430.20004881024397
+      },
+      "completionAbove150ms": 82,
+      "arrivalAbove150ms": 82,
+      "originArrivalAbove150ms": 82,
+      "allCompletionTimesWithin150ms": false,
+      "allArrivalTimesWithin150ms": false,
+      "singleInferenceInFlightConfirmed": true,
+      "observedFixtureResultHz": 2.9739668986447976,
+      "ownedCleanup": {
+        "test": "PASS",
+        "server": "PASS",
+        "portReleased": true
+      },
+      "sourceUnchanged": true,
+      "fixtureUnchanged": true,
+      "canonicalRefusal": "DEVELOPMENT_BUILD_LINK_OUTSIDE_DEPENDENCIES",
+      "qualification": false
+    },
+    "CPU_ACTUAL_ROI": {
+      "status": "passed",
+      "testDurationMs": 4726,
+      "ready": [
+        {
+          "backend": "CPU_WASM",
+          "providerPolicy": "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1"
+        }
+      ],
+      "rawResultCount": 60,
+      "frameDispatchCount": 60,
+      "matchedRawResults": 60,
+      "unmatchedFrameDispatches": 0,
+      "handCountHistogram": {
+        "1": 54,
+        "2": 6
+      },
+      "completionMs": {
+        "n": 60,
+        "min": 31.800048828125,
+        "median": 32.89990234375,
+        "p95": 46.699951171875,
+        "max": 51.89990234375
+      },
+      "arrivalMs": {
+        "n": 60,
+        "min": 32.099853515625,
+        "median": 33.199951171875,
+        "p95": 47.39990234375,
+        "max": 52.199951171875
+      },
+      "returnTransportMs": {
+        "n": 60,
+        "min": 0.099853515625,
+        "median": 0.2998046875,
+        "p95": 0.699951171875,
+        "max": 2.60009765625
+      },
+      "captureToDispatchMs": {
+        "n": 60,
+        "min": 0.3999999761581421,
+        "median": 0.5999999940395355,
+        "p95": 1.0999999940395355,
+        "max": 1.300000011920929
+      },
+      "originAgeAtCaptureMs": {
+        "n": 60,
+        "min": 2.9999999940396265,
+        "median": 10.900000000000091,
+        "p95": 53.80000001192093,
+        "max": 63.39999999403949
+      },
+      "originAgeAtArrivalMs": {
+        "n": 60,
+        "min": 35.59985350966463,
+        "median": 46.299999994039354,
+        "p95": 97.00000001788135,
+        "max": 110.79990233778949
+      },
+      "completionAbove150ms": 0,
+      "arrivalAbove150ms": 0,
+      "originArrivalAbove150ms": 0,
+      "allCompletionTimesWithin150ms": true,
+      "allArrivalTimesWithin150ms": true,
+      "singleInferenceInFlightConfirmed": true,
+      "observedFixtureResultHz": 17.706949977866312,
+      "ownedCleanup": {
+        "test": "PASS",
+        "server": "PASS",
+        "portReleased": true
+      },
+      "sourceUnchanged": true,
+      "fixtureUnchanged": true,
+      "canonicalRefusal": "DEVELOPMENT_BUILD_LINK_OUTSIDE_DEPENDENCIES",
+      "qualification": false
+    },
+    "STARTUP_SCREEN_SELECTED_CPU_ACTUAL_ROI": {
+      "status": "passed",
+      "testDurationMs": 6954,
+      "suiteDurationMs": 8231.486,
+      "workerCreated": 1,
+      "initializations": 1,
+      "errors": 0,
+      "rawResultCount": 55,
+      "frameDispatchCount": 55,
+      "matchedRawResults": 55,
+      "unmatchedFrameDispatches": 0,
+      "ready": {
+        "backend": "CPU_WASM",
+        "providerPolicy": "WATCHGLASS_ACTUAL_ROI_RECOVERY_V1",
+        "fallbackReason": "GPU_STARTUP_LATENCY_HEALTH_FAILED"
+      },
+      "handCountHistogram": {
+        "1": 50,
+        "2": 5
+      },
+      "completionMs": {
+        "n": 55,
+        "min": 32.10009765625,
+        "median": 33.7001953125,
+        "p95": 52.5,
+        "max": 53
+      },
+      "arrivalMs": {
+        "n": 55,
+        "min": 32.10009765625,
+        "median": 33.7001953125,
+        "p95": 52.60009765625,
+        "max": 53
+      },
+      "returnTransportMs": {
+        "n": 55,
+        "min": -0.10009765625,
+        "median": 0,
+        "p95": 0.89990234375,
+        "max": 9.89990234375
+      },
+      "captureToDispatchMs": {
+        "n": 55,
+        "min": 0.3999999761581421,
+        "median": 0.5999999940395355,
+        "p95": 0.800000011920929,
+        "max": 1
+      },
+      "originAgeAtCaptureMs": {
+        "n": 55,
+        "min": 1.8999999999996362,
+        "median": 12.799999994039354,
+        "p95": 55.39999999403972,
+        "max": 66.50000001788158
+      },
+      "originAgeAtArrivalMs": {
+        "n": 55,
+        "min": 35.200048828124636,
+        "median": 48.20009766221028,
+        "p95": 93.99999999403917,
+        "max": 109.79990234375009
+      },
+      "completionAbove150ms": 0,
+      "arrivalAbove150ms": 0,
+      "originArrivalAbove150ms": 0,
+      "singleInferenceInFlightConfirmed": true,
+      "metadataStableAfterReady": true,
+      "syntheticResultsAdmitted": 0,
+      "ownedCleanup": {
+        "test": "PASS",
+        "server": "PASS",
+        "portReleased": true,
+        "workerCountAfterPagehide": 0,
+        "tracksAfterPagehide": 0
+      },
+      "sourceUnchanged": true,
+      "fixtureUnchanged": true,
+      "canonicalRefusal": "DEVELOPMENT_BUILD_LINK_OUTSIDE_DEPENDENCIES",
+      "qualification": false
+    }
+  },
+  "startup": {
+    "initToReadyMs": 3036.800048828125,
+    "withinObserved12000ms": true,
+    "withinObserved15000ms": true,
+    "sameUnmodifiedParentOptionalAndTotalGates": true,
+    "initToReadyExcludesEarlierModelStartupSetup": true,
+    "health": {
+      "classification": "SYNTHETIC_PREREADY_LATENCY_NECESSARY_CONDITION_ONLY",
+      "attempts": [
+        {
+          "passed": false,
+          "delegate": "GPU",
+          "width": 640,
+          "height": 480,
+          "maximumElapsedMs": 150,
+          "probes": [
+            {
+              "timestamp": -2,
+              "elapsedMs": 268.40000000596046,
+              "forcedRegions": 2,
+              "discardedHandOutputs": 0
+            },
+            {
+              "timestamp": -1,
+              "elapsedMs": 274.09999999403954,
+              "forcedRegions": 2,
+              "discardedHandOutputs": 0
+            }
+          ],
+          "outputsDiscarded": true,
+          "retainedRegionsCleared": true,
+          "coverage": "FIXED_640X480_SYNTHETIC_GRAY_NECESSARY_CONDITION_NOT_LIVE_PIXEL_QUALIFICATION"
+        },
+        {
+          "passed": true,
+          "delegate": "CPU",
+          "width": 640,
+          "height": 480,
+          "maximumElapsedMs": 150,
+          "probes": [
+            {
+              "timestamp": -2,
+              "elapsedMs": 35.79999998211861,
+              "forcedRegions": 2,
+              "discardedHandOutputs": 0
+            },
+            {
+              "timestamp": -1,
+              "elapsedMs": 34.30000001192093,
+              "forcedRegions": 2,
+              "discardedHandOutputs": 0
+            }
+          ],
+          "outputsDiscarded": true,
+          "retainedRegionsCleared": true,
+          "coverage": "FIXED_640X480_SYNTHETIC_GRAY_NECESSARY_CONDITION_NOT_LIVE_PIXEL_QUALIFICATION"
+        }
+      ],
+      "fixedProbeDimensions": {
+        "width": 640,
+        "height": 480
+      },
+      "livePixelQualification": false
+    },
+    "createdWorkers": 1,
+    "parentLegacyOriginalFallbackObserved": false
+  },
+  "sourceFreeze": [
+    {
+      "name": "recovery-provider.js",
+      "sha256": "f0b3d74b7cd3c7014cd34b3ed91a44b01d5a9707e68d10552e09bd859eef2eed",
+      "matched": true
+    },
+    {
+      "name": "recovery-worker.js",
+      "sha256": "96736cb9503e7639e2033cca95d3e44283b021a92befccb0979dbb53835d221e",
+      "matched": true
+    }
+  ],
+  "productionUnchanged": true,
+  "sourceReview": [
+    {
+      "classification": "NO_ADDITIONAL_PRIVATE_MECHANISM_BLOCKER_IDENTIFIED",
+      "claim": "Frozen provider diff leaves graph nodes, model assets, thresholds, ROI retention and live RESULT construction unchanged; READY precedes all live FRAME dispatches. GPU and CPU are separate initialized graphs, and the source adapter is first created after truthful READY."
+    },
+    {
+      "classification": "PARENT_LEGACY_FALLBACK_RETAINED",
+      "claim": "RECOVERY_CPU_STARTUP_HEALTH_FAILED is a generic preREADY ERROR under current parent receive handling. The parent may then terminate this worker and start hand-worker.js ORIGINAL_CPU under its existing total startup budget. Thus this is not app-wide proof that every admitted graph passed the synthetic screen. This successful arm created one worker and did not take that parent fallback."
+    },
+    {
+      "classification": "FIXED_DIMENSION_PRIVATE_BOUND",
+      "claim": "The screen always probes 640x480 and INIT has no dimensions binding. This arm confirms all dispatched live frames are 640x480; broader production dimensions remain unqualified."
+    },
+    {
+      "classification": "NECESSARY_LATENCY_SCREEN_ONLY",
+      "claim": "Two gray full-image palm plus two forced-ROI inputs exercise inference/readback capacity; they do not test positive result material, same-index identity, independent coordinate accuracy, calibration or natural-motion continuity. The original current-image/150ms/identity/anatomy gates remain mandatory."
+    },
+    {
+      "classification": "STARTUP_ONLY_SELECTION",
+      "claim": "No established READY source is switched, so this private mechanism requires no inheritance across provider generations. It does not provide postREADY health recovery; any future live restart must retire the old source and invalidate calibration and all identity/image state under a new generation."
+    },
+    {
+      "classification": "PROBE_COST_BOUND",
+      "claim": "Elapsed timing starts before native-size allocation/fill and ends after synchronous submit/readback and canvas/output/cache cleanup. Both probes count; native-size compilation cost is not excluded beyond the original 64x64 warmup."
+    }
+  ],
+  "limitations": [
+    "Photographic canvas-video D1 evidence is not a physical webcam, fingertip accuracy or field reliability claim.",
+    "The four Chromium journeys are separate executions, not exact input-pixel paired trials; the GPU arm stops at the first readiness assertion and does not reach later CPU fixture stages.",
+    "INIT-to-READY is measured from recorded INIT dispatch, not from the earlier modelStartup assignment. The unmodified parent rejects READY at total15s or optional12s, and the actual live journey accepted READY; observed INIT-to-READY alone would not prove that earlier start time.",
+    "Tiny negative return-transport samples are retained as raw clock precision artifacts; they do not indicate negative transport latency.",
+    "Completion includes worker queue, upload, graph execution/GPU wait and decoding; this recording cannot separate those internal costs.",
+    "Actual backend numerical equality, independent localization/identity labels and natural-motion behavior are pending separately; do not promote on this latency receipt.",
+    "Canonical admission refusal DEVELOPMENT_BUILD_LINK_OUTSIDE_DEPENDENCIES remains preserved; these are supplemental owned-process runs."
+  ]
+}

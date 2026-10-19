@@ -1,0 +1,44 @@
+{
+  "classification": "CANONICAL_PRODUCT_EXPERIENCE_PLAN_ATTEMPT_NOT_CAPTURE_OR_QUALIFICATION",
+  "candidate": "a6c94e56dcae0648c83dc7cc9b3c245dffbbfb62",
+  "base": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
+  "argv": [
+    "scripts/sounding-line/experience-browser.mjs",
+    "--base",
+    "40491dd68ace88ee033b53fd264ddbfe303c6d28",
+    "--candidate",
+    "a6c94e56dcae0648c83dc7cc9b3c245dffbbfb62",
+    "--plan",
+    "true"
+  ],
+  "exit": {
+    "code": 1,
+    "signal": null,
+    "guardianExitCode": 1
+  },
+  "cleanup": {
+    "status": "PASS",
+    "directExitObserved": true,
+    "exitCode": 1,
+    "signal": null,
+    "treeReaped": true,
+    "streamsClosed": true,
+    "escalated": true,
+    "payloadExitCode": 1,
+    "elapsedMs": 3,
+    "ownership": "WINDOWS_JOB_OBJECT"
+  },
+  "sourceDigest": "99e2c0e1fa4e5cf1ecbeb05f18b6ba32c6cc626c9e5cf0f00689a294f2a6031a",
+  "sourceFiles": 2806,
+  "sourceUnchanged": true,
+  "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderrSha256": "419304be2aad67d3e787747968d9d137d021014343d9c3acad86b74a98350084",
+  "planParsed": false,
+  "applicable": null,
+  "failure": "PRODUCT_EXPERIENCE_TRUSTED_OBLIGATION_CHANGED:reach.phase1.foundation.absolute-calibration-and-recovery",
+  "noBuildServerBrowserLaunched": true,
+  "qualification": false,
+  "canonicalPlanSucceeded": false,
+  "captureAttempted": false,
+  "privateReceiptSha256": "8b4455d98578cd9ba0b4b934353765fdfc607953a47898c6fc26239f101491c6"
+}
