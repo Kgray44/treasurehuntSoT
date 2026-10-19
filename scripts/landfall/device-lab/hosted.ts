@@ -26,6 +26,7 @@ export async function dispatchLandfallHostedLab(
       "sextant-resources",
       "sextant-paired-clue",
       "sextant-community",
+      "sextant-authoring-resources",
       "android",
       "android-radio",
       "android-journal",
@@ -64,7 +65,13 @@ export async function dispatchLandfallHostedLab(
     throw new Error("LANDFALL_HOSTED_PROFILE_TARGET_REQUIRED");
   const typedTier = tier as "development" | "candidate" | "closure";
   if (
-    ["sextant-consumers", "sextant-resources", "sextant-paired-clue", "sextant-community"].includes(target) &&
+    [
+      "sextant-consumers",
+      "sextant-resources",
+      "sextant-paired-clue",
+      "sextant-community",
+      "sextant-authoring-resources",
+    ].includes(target) &&
     (tier !== "development" || selectedScenarios !== undefined || selectedProfiles !== undefined)
   )
     throw new Error("LANDFALL_HOSTED_SEXTANT_CONSUMERS_SCOPE_INVALID");
@@ -122,6 +129,7 @@ export async function dispatchLandfallHostedLab(
           "sextant-resources",
           "sextant-paired-clue",
           "sextant-community",
+          "sextant-authoring-resources",
         ].includes(target),
       ),
     )
@@ -135,11 +143,19 @@ export async function dispatchLandfallHostedLab(
             ? "Sextant distinct Creator and Crew clue comparison (development)"
             : target === "sextant-community"
               ? "Sextant ordinary public Community journeys (development)"
-              : "optimized first-party Phase 4",
+              : target === "sextant-authoring-resources"
+                ? "Sextant owned Creator authoring resources (development)"
+                : "optimized first-party Phase 4",
     )
     .replaceAll(
       "__BROWSER_SUITE__",
-      ["sextant-consumers", "sextant-resources", "sextant-paired-clue", "sextant-community"].includes(target)
+      [
+        "sextant-consumers",
+        "sextant-resources",
+        "sextant-paired-clue",
+        "sextant-community",
+        "sextant-authoring-resources",
+      ].includes(target)
         ? target
         : "landfall",
     )
@@ -189,9 +205,11 @@ export async function dispatchLandfallHostedLab(
             ? ["sextant-parallax-paired-journeys"]
             : target === "sextant-community"
               ? ["sextant-community-journeys"]
-              : target === "browser" || target === "all"
-                ? ["first-party-phase4-web"]
-                : [],
+              : target === "sextant-authoring-resources"
+                ? ["sextant-authoring-resource-journeys"]
+                : target === "browser" || target === "all"
+                  ? ["first-party-phase4-web"]
+                  : [],
     journal: target === "android-journal" || target === "all" ? ["first-party-native-journal-pair"] : [],
     background:
       target === "android-background" || target === "all"

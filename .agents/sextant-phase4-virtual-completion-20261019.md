@@ -193,3 +193,17 @@ the original run and its incomplete63-member encrypted diagnostics (LIMIT and
 FAILURE_ATTACHMENTS_INCOMPLETE) under the unchanged64MiB raw budget. One
 corrected-source development successor exercises the remaining public details,
 empty states/search and returns; no protected or rendered acceptance is inferred.
+
+Creator authoring resource continuation uses the existing nonce-owned separate
+Creator/Crew fixture and ordinary workspace/library entry. The fixed development
+selector sextant-authoring-resources reads six actual panes: empty Assets,
+Waypoints and Artifacts, absent Living Chart, current server Drydock checks and
+immutable Version review. Upload, world creation, Sea Trial execution, publication
+and populated chart/media panels remain separate. Verify the publication
+confirmation stays unchecked, both Voyage baselines and actual published
+snapshots/checksums/count stay unchanged, and return through Studio and Harbor.
+Source-predicted accessibility corrections label existing search/sort controls
+and replace nested Asset drawer/Scenario ledger asides with same-named sections.
+Preserve the ledger styling via its explicit class and every existing named-role
+assertion. Keep axe0 and 3000ms readiness checks. Registration, generic hierarchy
+references and development evidence grant no protected authoring acceptance.

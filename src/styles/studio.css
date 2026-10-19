@@ -1745,7 +1745,7 @@ html[data-voyage-theme="light"] .studio-no-editable-draft__details dt {
   grid-template-columns: minmax(180px, 0.38fr) minmax(0, 1fr);
   gap: 1rem;
 }
-.drydock-scenario-layout aside,
+.drydock-scenario-layout .drydock-scenario-ledger,
 .drydock-scenario-editor,
 .drydock-run-receipt {
   border: 1px solid rgba(201, 169, 95, 0.25);
@@ -1753,14 +1753,14 @@ html[data-voyage-theme="light"] .studio-no-editable-draft__details dt {
   padding: 1rem;
   background: rgba(2, 14, 16, 0.55);
 }
-.drydock-scenario-layout aside ul,
+.drydock-scenario-layout .drydock-scenario-ledger ul,
 .drydock-run-receipt ul,
 .drydock-run-receipt ol {
   margin: 0.75rem 0 0;
   padding: 0;
   list-style: none;
 }
-.drydock-scenario-layout aside button {
+.drydock-scenario-layout .drydock-scenario-ledger button {
   display: flex;
   width: 100%;
   justify-content: space-between;
@@ -1768,8 +1768,8 @@ html[data-voyage-theme="light"] .studio-no-editable-draft__details dt {
   margin-top: 0.4rem;
   text-align: left;
 }
-.drydock-scenario-layout aside button.active,
-.drydock-scenario-layout aside button:focus-visible {
+.drydock-scenario-layout .drydock-scenario-ledger button.active,
+.drydock-scenario-layout .drydock-scenario-ledger button:focus-visible {
   outline: 2px solid var(--brass-300);
   outline-offset: 2px;
 }

@@ -131,7 +131,7 @@ test("virtual Creator configures a Watchglass landmark and versioned independent
   await page.goto(`/studio/tales/${tale.id}/assets`);
   await page.getByRole("button", { name: "Upload media", exact: true }).click();
   await page
-    .getByRole("complementary", { name: "Asset drawer" })
+    .getByRole("region", { name: "Asset drawer" })
     .locator('input[type="file"]')
     .setInputFiles(await image("synthetic-virtual-positive", "#305060"));
   await expect
@@ -199,7 +199,7 @@ test("Creator uploads and aligns a floor, draws regions, configures natural refe
   const page = await context.newPage();
   await page.goto(`/studio/tales/${fixture.tale.id}/assets`);
   await page.getByRole("button", { name: "Upload media", exact: true }).click();
-  const upload = page.getByRole("complementary", { name: "Asset drawer" }).locator('input[type="file"]');
+  const upload = page.getByRole("region", { name: "Asset drawer" }).locator('input[type="file"]');
   await expect(upload).toBeAttached({ timeout: 45_000 });
   await upload.setInputFiles(
     await Promise.all([

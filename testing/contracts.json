@@ -8310,6 +8310,286 @@
           }
         ]
       }
+    },
+    {
+      "id": "sextant.shared-consumers.creator-authoring-resources",
+      "name": "Sextant actual Creator authoring resources and release-review continuity",
+      "authority": "project-sextant",
+      "owners": ["project-sextant", "project-homeport", "project-helm", "one-voyage"],
+      "critical": true,
+      "experience": {
+        "persona": "An ordinary authenticated synthetic Creator with genuine resource ownership and a separate crew member holding active Player participation",
+        "objective": "Read actual owned Creator asset, Waypoint, Artifact, Living Chart, Sea Trial and Version resources through ordinary authoring navigation and return to the same Harbor",
+        "visibleOutcome": "Actual library emptiness, absent chart setup, current server Drydock assessments and immutable Version review render without upload, simulation, publication or canonical progression mutation",
+        "integrationOwner": "Sextant shared-consumer verification; Homeport, Helm, Chronicle and One Voyage retain identity, ownership, authoring and progression authority",
+        "systems": ["project-sextant", "project-homeport", "project-helm", "project-chronicle", "one-voyage"],
+        "sourcePaths": [
+          "src/app/studio/tales/[taleId]/assets/page.tsx",
+          "src/app/studio/tales/[taleId]/locations/page.tsx",
+          "src/app/studio/tales/[taleId]/artifacts/page.tsx",
+          "src/app/studio/tales/[taleId]/landfall/page.tsx",
+          "src/app/studio/tales/[taleId]/trials/page.tsx",
+          "src/app/studio/tales/[taleId]/versions/page.tsx",
+          "src/components/studio/TaleEditor.tsx",
+          "src/components/studio/DrydockLaunchGate.tsx",
+          "src/components/studio/DrydockCompatibilityPanel.tsx",
+          "src/components/studio/DrydockScenarioLab.tsx",
+          "src/components/studio/LandfallWorkspace.tsx",
+          "src/components/studio/ShipwrightPublishingReview.tsx",
+          "src/styles/studio.css"
+        ],
+        "entryPoint": "/account",
+        "states": [
+          "ASSETS_READY",
+          "WAYPOINTS_READY",
+          "ARTIFACTS_READY",
+          "EMPTY_CHART_READY",
+          "DRYDOCK_READY",
+          "VERSION_REVIEW_READY",
+          "RETURNED"
+        ],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["CREATOR"],
+        "roleSetup": {
+          "CREATOR": {
+            "entryPoint": "/sign-in?returnTo=%2Faccount",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "sextant.resources@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Sextant-Resources-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "button",
+              "name": "Synthetic Sextant Captain",
+              "text": "Synthetic Sextant Captain"
+            }
+          }
+        },
+        "references": [
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected curated reference supplies readable task hierarchy and safe gateway navigation. Actual authoring resource layout remains subject to fresh source-bound capture and review.",
+            "preserve": "Readable hierarchy, named controls, visible ownership and safe return on constrained layouts; no authoring-specific layout acceptance inferred from generic references."
+          },
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected curated reference supplies readable task hierarchy and safe gateway navigation. Actual authoring resource layout remains subject to fresh source-bound capture and review.",
+            "preserve": "Readable hierarchy, named controls, visible ownership and safe return on constrained layouts; no authoring-specific layout acceptance inferred from generic references."
+          }
+        ],
+        "fixtureProfile": "generic",
+        "fixture": "sextant-resource-consumers-v1",
+        "recordingRequired": true,
+        "accessibility": "Named existing library search/sort controls and same-name sections keep keyboard and touch use within actual authoring resources; development checks axe on every loaded pane at desktop/mobile and both motion preferences",
+        "fallback": "Empty owned libraries and the absent Living Chart retain truthful actual data. Drydock and publication decisions come from the current server; unchecked publication confirmation remains disabled without claiming that the server can never verify this draft.",
+        "navigation": "Ordinary account menu opens All Workspaces, visible workspace entry opens the real library, and Personal Harbor returns to the same account Overview.",
+        "designTarget": "Preserve readable actual owner resources, labelled controls, distinct current Drydock facts, immutable published records and contextual returns. Generic curated references guide hierarchy only; actual authoring layout requires fresh rendered review.",
+        "browserTests": ["tests/e2e/sextant-authoring-resource-journeys.spec.ts"],
+        "limitations": [
+          "Source registration grants no rendered, protected, native, physical or owner acceptance. The existing resource fixture retains a real Creator owner with no active Player membership and a distinct crew member.",
+          "These journeys read empty asset/Waypoint/Artifact libraries and the absent-chart fallback. Populated libraries, upload/media processing, chart tools, online place/installation/field-test panels, actual Sea Trial execution and immutable publication remain separate obligations.",
+          "The development journey reads current server checksum/compatibility and publication-review outcomes, verifies both active-Voyage baselines and actual published snapshot/checksum/count remain unchanged, and performs no upload, world creation, trial execution or publication.",
+          "The stylesheet declaration is limited to these actual panes; other affected consumers keep their separate obligations. Curated generic references establish hierarchy only and do not grant authoring-specific reference/layout acceptance."
+        ],
+        "motion": {
+          "measurement": "Ordinary workspace and resource activation to the distinct response-rendered task, separately for desktop/mobile and reduced motion",
+          "feedbackBudgetMs": 3000
+        },
+        "continuity": {
+          "objective": "Keep the same actual owner account and preserve both independent active-Voyage baselines and pinned published editions",
+          "checks": [
+            {
+              "id": "owner-account",
+              "role": "button",
+              "name": "Synthetic Sextant Captain",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "journeys": [
+          {
+            "id": "ordinary-owned-authoring-resources-return",
+            "roles": ["CREATOR"],
+            "outcome": "Actual owned resources and current release assessments render with unchanged independent progression and published editions",
+            "steps": [
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Captain"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "All Workspaces"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Enter Creator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Edit Chronicle"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Assets"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "path": "/studio/tales/sextant-resource-chronicle/assets",
+                "text": "Asset Library",
+                "kind": "outcome",
+                "meaning": "The ordinary visible action renders actual authorized resource data or its truthful empty state, not a manufactured fixture response",
+                "state": "ASSETS_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Waypoints"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "path": "/studio/tales/sextant-resource-chronicle/locations",
+                "text": "Destinations and verification references",
+                "kind": "outcome",
+                "meaning": "The ordinary visible action renders actual authorized resource data or its truthful empty state, not a manufactured fixture response",
+                "state": "WAYPOINTS_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Artifacts"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "path": "/studio/tales/sextant-resource-chronicle/artifacts",
+                "text": "Lore and collection rewards",
+                "kind": "outcome",
+                "meaning": "The ordinary visible action renders actual authorized resource data or its truthful empty state, not a manufactured fixture response",
+                "state": "ARTIFACTS_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Living Chart"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "path": "/studio/tales/sextant-resource-chronicle/landfall",
+                "text": "Add a real place or virtual world to begin the Living Chart.",
+                "kind": "outcome",
+                "meaning": "The ordinary visible action renders actual authorized resource data or its truthful empty state, not a manufactured fixture response",
+                "state": "EMPTY_CHART_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Sea Trials"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Launch Gate",
+                "path": "/studio/tales/sextant-resource-chronicle/trials",
+                "text": "Exact source checksum:",
+                "kind": "outcome",
+                "meaning": "The ordinary visible action renders actual authorized resource data or its truthful empty state, not a manufactured fixture response"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Compatibility",
+                "path": "/studio/tales/sextant-resource-chronicle/trials",
+                "text": "Policy:"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Sea Trials",
+                "path": "/studio/tales/sextant-resource-chronicle/trials",
+                "text": "Sea Trials",
+                "state": "DRYDOCK_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Versions"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "path": "/studio/tales/sextant-resource-chronicle/versions",
+                "text": "Drydock release decision",
+                "kind": "outcome",
+                "meaning": "The ordinary visible action renders actual authorized resource data or its truthful empty state, not a manufactured fixture response",
+                "state": "VERSION_REVIEW_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "← Studio"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Captain"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "text": "Overview",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
     }
   ],
   "experiencePolicy": {

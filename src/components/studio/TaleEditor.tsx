@@ -3426,6 +3426,7 @@ export function TaleEditor({
                 value={assetSearch}
                 onChange={(event) => setAssetSearch(event.target.value)}
                 placeholder="Search names, tags, and roles"
+                aria-label="Search assets"
               />
               <span>{filteredAssets.length} assets</span>
             </div>
@@ -3583,8 +3584,13 @@ export function TaleEditor({
                 value={librarySearch}
                 onChange={(event) => setLibrarySearch(event.target.value)}
                 placeholder="Search Waypoints"
+                aria-label="Search Waypoints"
               />
-              <select value={librarySort} onChange={(event) => setLibrarySort(event.target.value as "name" | "region")}>
+              <select
+                aria-label="Sort Waypoints"
+                value={librarySort}
+                onChange={(event) => setLibrarySort(event.target.value as "name" | "region")}
+              >
                 <option value="name">Sort by name</option>
                 <option value="region">Sort by region</option>
               </select>
@@ -3619,8 +3625,13 @@ export function TaleEditor({
                 value={librarySearch}
                 onChange={(event) => setLibrarySearch(event.target.value)}
                 placeholder="Search artifacts"
+                aria-label="Search artifacts"
               />
-              <select value={librarySort} onChange={(event) => setLibrarySort(event.target.value as "name" | "region")}>
+              <select
+                aria-label="Sort artifacts"
+                value={librarySort}
+                onChange={(event) => setLibrarySort(event.target.value as "name" | "region")}
+              >
                 <option value="name">Sort by name</option>
               </select>
             </div>
@@ -3698,7 +3709,7 @@ export function TaleEditor({
           </LibraryPanel>
         )}
         {(assetDrawer || initialSection === "assets") && (
-          <aside className={`asset-drawer ${assetDrawer ? "open" : "page-open"}`} aria-label="Asset drawer">
+          <section className={`asset-drawer ${assetDrawer ? "open" : "page-open"}`} aria-label="Asset drawer">
             <header>
               <div>
                 <p className="eyebrow">Media hold</p>
@@ -3758,6 +3769,7 @@ export function TaleEditor({
                 value={assetSearch}
                 onChange={(event) => setAssetSearch(event.target.value)}
                 placeholder="Search media"
+                aria-label="Search media"
               />
               <select
                 value={assetUsage}
@@ -3834,7 +3846,7 @@ export function TaleEditor({
                 </button>
               ))}
             </div>
-          </aside>
+          </section>
         )}
         <StudioCommandPalette open={commandPaletteOpen} commands={studioCommands} onClose={closeCommandPalette} />
       </motion.main>

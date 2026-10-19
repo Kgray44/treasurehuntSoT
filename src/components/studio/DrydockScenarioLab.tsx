@@ -716,7 +716,7 @@ export function DrydockScenarioLab({ taleId, csrfToken }: { taleId: string; csrf
         </p>
       )}
       <div className="drydock-scenario-layout">
-        <aside aria-label="Saved Sea Trial Scenarios">
+        <section className="drydock-scenario-ledger" aria-label="Saved Sea Trial Scenarios">
           <strong>Revision ledger</strong>
           <p className="drydock-checksum">Source {sourceChecksum.slice(0, 12)}…</p>
           <label className="drydock-filter">
@@ -742,7 +742,7 @@ export function DrydockScenarioLab({ taleId, csrfToken }: { taleId: string; csrf
             ))}
           </ul>
           {!visibleScenarios.length && <p>No current Scenario matches this filter.</p>}
-        </aside>
+        </section>
         <div className="drydock-scenario-editor">
           <div className="settings-grid">
             <label>
