@@ -8,10 +8,23 @@ last_reviewed: 2026-10-19
 
 # Product Experience Engineering
 
-The [R19 source-bound preparation checkpoint](../../Programs/Sounding_Line/evidence/crossdeck-current-source-admission-20261019-r19/causal-disposition.md)
-records the consumed R18 failure and an uninstalled successor. The owner-supplied
-original private packet now has verified integrity, source and receipt bindings;
-its bounded development evidence supplies no consumer capture or acceptance authority.
+The [R19 source-bound checkpoint](../../Programs/Sounding_Line/evidence/crossdeck-current-source-admission-20261019-r19/causal-disposition.md)
+preserves its original preparation, private-packet validation and consumed R18
+failure. Later R19 capture success and blocked raw review9 remain separate facts.
+The [R20 approved boundary](../../Programs/Sounding_Line/evidence/crossdeck-acceptance-boundary-20261019-r20/causal-disposition.md)
+binds the exact three owner-approved contract clauses and real Refit transfer.
+Its protected installed record is required before the sole #721 owner takes one
+fresh source-bound capture and independent review10; this document grants none.
+
+Only R20's three original B1 instances may use
+`FUNCTIONAL_RESOLVED_EDITORIAL_DEFERRED`, preserving their original severity.
+Each requires current same-contract repair IDs, `functionalResolution` with
+`status: RESOLVED`, substantive observation and matching evidence IDs, plus an
+`editorialDeferral` bound to the exact adjudication digest, original review hashes,
+registered packet and per-contract ledger entry. Refit owner acceptance stays
+outstanding. B2 and every other blocker retain the normal full-resolution rules.
+No R19 capture compatibility, refund, counter reset, new general debt exemption
+or weaker functional/accessibility/security/continuity requirement is introduced.
 
 Engineering maintenance: [R8 historical format reconciliation](../../Engineering/Crossdeck_R8_Historical_Format_Reconciliation.md).
 Engineering maintenance: [complete changed-path buffer repair](../../Engineering/Experience_Changed_Path_Buffer_Repair.md).
