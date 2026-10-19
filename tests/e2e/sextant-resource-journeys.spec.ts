@@ -183,7 +183,7 @@ for (const viewport of [
           shellHeader!.y + shellHeader!.height - 1,
         );
         if (viewport.width > 760) {
-          const topbar = await page.locator(".editor-topbar").boundingBox();
+          const topbar = await page.getByRole("main").locator(".editor-topbar").boundingBox();
           expect(topbar).not.toBeNull();
           expect(topbar!.y, "Editor actions stay below the application masthead").toBeGreaterThanOrEqual(
             shellHeader!.y + shellHeader!.height - 1,
@@ -202,6 +202,7 @@ for (const viewport of [
         const more = page.getByRole("button", { name: "More", exact: true });
         await more.click();
         const moreSettings = page
+          .getByRole("main")
           .locator("#studio-more-actions")
           .getByRole("link", { name: "Chronicle settings", exact: true });
         await expect(moreSettings).toBeVisible();

@@ -284,3 +284,11 @@ Keep the pinned published bytes/checksum, failed fixtures and parser rules intac
 Source review is clear; fresh authoring execution remains required. Resource
 chrome also gives More a local stacking order above the rail and below the
 masthead, with ordinary open/first-link exposure/Escape-close proof and captures.
+
+At926a170b0f, authoring39337654035 passes all four variants (rendered review
+pending). Resource39337646202 passes three variants;1280-normal fails because
+the raw .editor-topbar locator matches the current task and an inert outgoing
+snapshot. Scope the same toolbar geometry assertion and More menu lookup to
+the accessible current main task. Preserve both containers, the original failed
+receipt, all geometry/hit-test/content assertions and every timing bound. This
+selector correction does not change product motion or infer rendered acceptance.
