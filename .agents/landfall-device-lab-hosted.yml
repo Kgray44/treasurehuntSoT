@@ -12,11 +12,12 @@ concurrency:
 jobs:
   browser:
     if: __RUN_BROWSER__
-    name: Browser / optimized first-party Phase 4
+    name: Browser / __BROWSER_JOB_NAME__
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
       LANDFALL_NEARBY_PAIRING_MODE: ephemeral-instance
+      SOUNDING_LINE_EVIDENCE_PURPOSE: DEVELOPMENT_ONLY
     steps:
       - uses: actions/checkout@v4
         with:
@@ -31,7 +32,7 @@ jobs:
       - name: Build and run isolated first-party browser contracts
         run: |
           browser_database="$GITHUB_WORKSPACE/artifacts/sounding-line/generic-__CANDIDATE_SHA12__/validation-isolated-$(date +%Y%m%d-%H%M%S%3N)-$(cat /proc/sys/kernel/random/uuid | tr -d '-').db"
-          npx --no-install tsx scripts/landfall/device-lab/configured-browser.ts __CANDIDATE_SHA__ "file:$browser_database"
+          npx --no-install tsx scripts/landfall/device-lab/configured-browser.ts __CANDIDATE_SHA__ "file:$browser_database" __BROWSER_SUITE__
       - uses: actions/upload-artifact@v4
         if: always()
         with:

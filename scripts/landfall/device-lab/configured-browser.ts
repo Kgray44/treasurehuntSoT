@@ -7,6 +7,8 @@ import { deviceLabSourceIdentity } from "./source";
 async function main() {
   const candidate = process.argv[2],
     databaseUrl = process.argv[3];
+  const suite = process.argv[4] ?? "landfall";
+  if (!["landfall", "sextant-consumers"].includes(suite)) throw new Error("LANDFALL_CONFIGURED_BROWSER_SUITE_INVALID");
   const source = await deviceLabSourceIdentity();
   if (
     !/^[a-f0-9]{40}$/.test(candidate ?? "") ||
@@ -39,13 +41,17 @@ async function main() {
       "--database-url",
       databaseUrl,
       "--",
-      "tests/e2e/landfall-phase1-live-position.spec.ts",
-      "tests/e2e/landfall-phase2.spec.ts",
-      "tests/e2e/landfall-closure.spec.ts",
-      "tests/e2e/landfall-phase3.spec.ts",
-      "tests/e2e/landfall-phase3-creator.spec.ts",
-      "tests/e2e/landfall-phase4.spec.ts",
-      "tests/e2e/landfall-offline-region.spec.ts",
+      ...(suite === "sextant-consumers"
+        ? ["tests/e2e/sextant-consumer-journeys.spec.ts"]
+        : [
+            "tests/e2e/landfall-phase1-live-position.spec.ts",
+            "tests/e2e/landfall-phase2.spec.ts",
+            "tests/e2e/landfall-closure.spec.ts",
+            "tests/e2e/landfall-phase3.spec.ts",
+            "tests/e2e/landfall-phase3-creator.spec.ts",
+            "tests/e2e/landfall-phase4.spec.ts",
+            "tests/e2e/landfall-offline-region.spec.ts",
+          ]),
     ],
     {
       windowsHide: true,
