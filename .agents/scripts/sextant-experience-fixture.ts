@@ -56,8 +56,59 @@ async function main() {
 /** Shared by the guarded capture producer and owned generic browser tests.
  * Callers must establish their task-owned synthetic database before seeding. */
 export async function seedSextantExperience() {
+  const databaseUrl = process.env.DATABASE_URL ?? "";
+  const databasePath = databaseUrl.startsWith("file:") ? databaseUrl.slice(5) : "";
+  const relative = path.relative(path.resolve("artifacts/sounding-line"), databasePath);
+  const nonceHash = process.env.FOREVER_VALIDATION_NONCE_HASH ?? "";
+  if (
+    process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic" ||
+    process.env.FOREVER_VALIDATION_ISOLATION !== "1" ||
+    process.env.SOUNDING_LINE_TASK_OWNED_HTTP !== "1" ||
+    !path.isAbsolute(databasePath) ||
+    !/^generic-[a-f0-9]{12}[\\/]validation-isolated-\d{8}-\d{9}-[a-f0-9]{32}\.db$/.test(relative) ||
+    !/^[a-f0-9]{64}$/.test(nonceHash) ||
+    (await db.platformAuditEvent.count({
+      where: {
+        action: "VALIDATION_DATABASE_IDENTITY",
+        resourceId: nonceHash,
+        correlationId: nonceHash,
+      },
+    })) !== 1
+  )
+    throw new Error("SEXTANT_SHARED_FIXTURE_OWNED_DATABASE_REQUIRED");
   const now = new Date();
   const accountId = "sextant-experience-navigator";
+  const existing = await db.userAccount.findUnique({
+    where: { id: accountId },
+    include: { emails: true, profile: true },
+  });
+  if (existing) {
+    // Preparation can already have seeded this same plan. Verify ownership and
+    // immutable content; never reset an authored draft, reading or progression.
+    const voyage = await db.taleSession.findUniqueOrThrow({ where: { id: "sextant-experience-voyage" } });
+    const tale = await db.chronicle.findUniqueOrThrow({ where: { id: "sextant-experience-chronicle" } });
+    if (!voyage.publishedVersionId) throw new Error("SEXTANT_EXISTING_FIXTURE_EDITION_MISSING");
+    const version = await db.publishedTaleVersion.findUniqueOrThrow({ where: { id: voyage.publishedVersionId } });
+    if (
+      existing.status !== "ACTIVE" ||
+      existing.profile?.displayName !== "Synthetic Sextant Navigator" ||
+      !existing.emails.some(
+        (email) => email.normalizedEmail === "sextant.experience@example.test" && email.isPrimary,
+      ) ||
+      tale.creatorAccountId !== accountId ||
+      voyage.taleId !== tale.id ||
+      version.taleId !== tale.id ||
+      createHash("sha256").update(version.contentSnapshot).digest("hex") !== version.checksum
+    )
+      throw new Error("SEXTANT_EXISTING_FIXTURE_IDENTITY_MISMATCH");
+    return {
+      accountId,
+      voyageId: voyage.id,
+      taleId: tale.id,
+      versionId: version.id,
+      activeId: "sextant-experience-note",
+    };
+  }
   const account = await db.userAccount.create({
     data: {
       id: accountId,

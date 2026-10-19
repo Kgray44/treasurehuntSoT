@@ -15,6 +15,7 @@ test.beforeAll(async () => {
   if (process.env.SOUNDING_LINE_SUITE_PROFILE !== "generic") throw new Error("SEXTANT_OWNED_BROWSER_REQUIRED");
   ensureGenericSoundingLineIsolation();
   fixture = await seedSextantExperience();
+  expect(await seedSextantExperience()).toEqual(fixture);
 });
 test.afterAll(() => db.$disconnect());
 
@@ -92,6 +93,13 @@ for (const viewport of [
         const lens = page.getByRole("dialog");
         await expect(lens).toContainText("Guided View");
         await expect(lens).toHaveAttribute("data-voyage-id", fixture.voyageId);
+        const note = lens.getByRole("article", {
+          name: "A parchment note bearing the Captain’s next clue.",
+          exact: true,
+        });
+        await expect(note).toContainText("The next bearing is written in the stars. Look for the northern light.");
+        await note.getByRole("button", { name: "Inspect", exact: true }).click();
+        await expect(note).toContainText("You are inspecting The Captain’s note.");
         await page.screenshot({ path: info.outputPath("guided-clue.png"), fullPage: true });
         await page.getByRole("button", { name: "Close Chronicle Lens", exact: true }).click();
         await expect(journal).toHaveAttribute("data-voyage-id", fixture.voyageId);
@@ -114,7 +122,13 @@ for (const viewport of [
           info.outputPath("consumer-receipt.json"),
           JSON.stringify(
             {
-              source: await deviceLabSourceIdentity(),
+              source: await deviceLabSourceIdentity([
+                "tests/e2e/sextant-consumer-journeys.spec.ts",
+                "tests/e2e/fixtures/landfall-closure.ts",
+                "tests/e2e/fixtures/sounding-line-isolation.ts",
+                ".agents/scripts/sextant-experience-fixture.ts",
+                "testing/contracts.json",
+              ]),
               viewport,
               reducedMotion,
               ordinarySignIn: true,
