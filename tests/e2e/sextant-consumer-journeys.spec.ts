@@ -1,4 +1,4 @@
-// @sounding-line-registration owner=project-sextant suite=browser.sextant contracts=sextant.phase4.native-context,sextant.shared-consumers.workspace-capabilities
+// @sounding-line-registration owner=project-sextant suite=browser.sextant contracts=sextant.phase4.native-context,sextant.shared-consumers.workspace-capabilities,sextant.shared-consumers.passport-sections
 import { test, expect, type Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { writeFile } from "node:fs/promises";
@@ -24,7 +24,7 @@ for (const viewport of [
   { width: 390, height: 844 },
 ]) {
   for (const reducedMotion of ["no-preference", "reduce"] as const) {
-    test(`ordinary sign-in, workspaces, Journal, Devices and Guided Lens ${viewport.width}px ${reducedMotion}`, async ({
+    test(`ordinary sign-in, workspaces, Passport, Journal, Devices and Guided Lens ${viewport.width}px ${reducedMotion}`, async ({
       browser,
       baseURL,
     }, info) => {
@@ -79,6 +79,42 @@ for (const viewport of [
         await accountMenu.click();
         await page.getByRole("link", { name: "Personal Harbor", exact: true }).click();
         await expect(page.getByRole("heading", { name: "Overview", exact: true })).toBeVisible();
+        const passportTimings: Record<string, number> = {};
+        const passportStart = await page.evaluate(() => performance.now());
+        await page.getByRole("link", { name: "Open Chronicle Passport", exact: true }).click();
+        await expect(page.getByRole("heading", { name: "A record you can return to", exact: true })).toBeVisible();
+        passportTimings.overview = (await page.evaluate(() => performance.now())) - passportStart;
+        expect(passportTimings.overview).toBeLessThanOrEqual(3000);
+        expect((await new AxeBuilder({ page }).include(".passport-shell").analyze()).violations).toEqual([]);
+        await page.screenshot({ path: info.outputPath("passport-overview.png") });
+        for (const [label, title, outcome] of [
+          ["Your Voyages", "Your Voyages", "Your private shelf"],
+          ["Timeline", "Timeline", "Your archive in time"],
+          ["People", "People", "Shared history"],
+          ["Statistics", "Statistics", "The record at a glance"],
+          ["Voyage Atlas", "Voyage Atlas", "Seasons in your archive"],
+          ["Memories", "Memories", "No private Memories yet"],
+          ["Artifacts", "Artifact Cabinet", "No artifacts found"],
+          ["Saved", "Saved from Community", "No eligible saved items"],
+        ] as const) {
+          const sectionStart = await page.evaluate(() => performance.now());
+          await page
+            .getByRole("navigation", { name: "Chronicle Passport sections", exact: true })
+            .getByRole("link", { name: label, exact: true })
+            .click();
+          const section = page.getByRole("region", { name: `${title} content`, exact: true });
+          await expect(section.getByRole("heading", { name: outcome, exact: true })).toBeVisible();
+          passportTimings[label] = (await page.evaluate(() => performance.now())) - sectionStart;
+          expect(passportTimings[label]).toBeLessThanOrEqual(3000);
+          expect((await new AxeBuilder({ page }).include(".passport-shell").analyze()).violations).toEqual([]);
+          await page.screenshot({ path: info.outputPath(`passport-${label.toLowerCase().replaceAll(" ", "-")}.png`) });
+          await page.getByRole("link", { name: "Personal Harbor", exact: true }).click();
+          await expect(page.getByRole("heading", { name: "Overview", exact: true })).toBeVisible();
+          await page.getByRole("link", { name: "Open Chronicle Passport", exact: true }).click();
+          await expect(page.getByRole("heading", { name: "A record you can return to", exact: true })).toBeVisible();
+        }
+        await page.getByRole("link", { name: "Personal Harbor", exact: true }).click();
+        await expect(page.getByRole("heading", { name: "Overview", exact: true })).toBeVisible();
         await accountMenu.click();
         await page.getByRole("link", { name: "All Workspaces", exact: true }).click();
         await page.getByRole("link", { name: "Return to Chronicle", exact: true }).click();
@@ -94,7 +130,17 @@ for (const viewport of [
         await page.getByRole("link", { name: "Devices", exact: true }).click();
         const devices = page.getByRole("region", { name: "Voyage devices", exact: true });
         await expect(devices).toHaveAttribute("data-voyage-id", fixture.voyageId);
-        await devices.getByRole("button", { name: "Use this device", exact: true }).click();
+        const deviceName = `Synthetic Sextant ${viewport.width} ${reducedMotion}`;
+        await devices.getByRole("textbox", { name: "Device name", exact: true }).fill(deviceName);
+        const register = devices.getByRole("button", { name: "Use this device", exact: true });
+        await expect(register).toBeEnabled();
+        const existingDeviceCount = await devices.getByRole("listitem").count();
+        await register.click();
+        const currentDevice = devices.getByRole("listitem").filter({
+          has: page.getByText(`${deviceName} · This device`, { exact: true }),
+        });
+        await expect(currentDevice).toHaveCount(1);
+        await expect(devices.getByRole("listitem")).toHaveCount(existingDeviceCount + 1);
         const input = page.getByRole("region", { name: "Optional device input", exact: true });
         await input.getByRole("button", { name: "Continue with screen controls", exact: true }).focus();
         await page.keyboard.press("Enter");
@@ -103,7 +149,7 @@ for (const viewport of [
           (await new AxeBuilder({ page }).include('[aria-label="Optional device input"]').analyze()).violations,
         ).toEqual([]);
         await page.screenshot({ path: info.outputPath("device-fallback.png"), fullPage: true });
-        await devices.getByRole("link", { name: "Continue Voyage", exact: true }).click();
+        await currentDevice.getByRole("link", { name: "Continue Voyage", exact: true }).click();
         await enterClosureJournal(page);
         await expect(journal).toHaveAttribute("data-voyage-id", fixture.voyageId);
         await page.getByRole("button", { name: "Open Chronicle Lens", exact: true }).click();
@@ -150,6 +196,9 @@ for (const viewport of [
               reducedMotion,
               ordinarySignIn: true,
               naturalEntryAndReturn: true,
+              passportSections: 9,
+              passportReadinessMs: passportTimings,
+              passportHistoricalDetailOrArtifactGrant: false,
               sameVoyage: fixture.voyageId,
               openingMs,
               unchangedCanonicalProgress: true,

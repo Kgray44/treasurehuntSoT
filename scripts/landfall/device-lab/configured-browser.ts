@@ -2,6 +2,11 @@ import { generateKeyPairSync } from "node:crypto";
 import { spawnSync } from "node:child_process";
 import path from "node:path";
 import { deviceLabSourceIdentity } from "./source";
+import { createBrowserDiagnosticSession } from "../../sounding-line/browser-diagnostics.mjs";
+import {
+  developmentDiagnosticBinding,
+  developmentSourceFingerprint,
+} from "../../sounding-line/develop-browser-suite.mjs";
 
 /** Ephemeral synthetic signing configuration, never a deployment key or saved artifact. */
 async function main() {
@@ -30,6 +35,13 @@ async function main() {
   )
     throw new Error("LANDFALL_CONFIGURED_BROWSER_DATABASE_REFUSED");
   const { privateKey } = generateKeyPairSync("ed25519");
+  const diagnostics =
+    suite === "sextant-consumers"
+      ? createBrowserDiagnosticSession(
+          process.cwd(),
+          developmentDiagnosticBinding(await developmentSourceFingerprint(process.cwd())),
+        )
+      : null;
   const result = spawnSync(
     process.execPath,
     [
@@ -58,6 +70,7 @@ async function main() {
       stdio: "inherit",
       env: {
         ...process.env,
+        ...diagnostics?.beginScope(),
         LANDFALL_LAB_SYNTHETIC_PACKAGES: "1",
         LANDFALL_PACKAGE_KEY_ID: "synthetic-device-lab-package",
         LANDFALL_PACKAGE_SIGNING_KEY: privateKey.export({ format: "pem", type: "pkcs8" }).toString(),
