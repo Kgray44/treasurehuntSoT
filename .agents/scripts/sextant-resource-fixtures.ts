@@ -2,7 +2,10 @@
 import { createHash } from "node:crypto";
 import { hash } from "bcryptjs";
 import { db } from "../../src/lib/db";
-import { saveStudioDraft, studioDraftSchema } from "../../src/chronicle/studio-service";
+import { getStudioTale, saveStudioDraft, studioDraftSchema } from "../../src/chronicle/studio-service";
+import { snapshotFromStudio } from "../../src/chronicle/snapshot";
+import { getDrydockBlockContract } from "../../src/drydock/contracts/registry";
+import type { PublishedTaleSnapshot } from "../../src/chronicle/types";
 import { closureVoyage } from "../../tests/e2e/fixtures/landfall-closure";
 import { seedSextantExperience } from "./sextant-experience-fixture";
 import { syntheticSpatialMoment } from "../../src/parallax/fixtures";
@@ -169,6 +172,29 @@ export async function seedSextantResourceExperiences(resourceCase: ResourceCase 
     data: { contentSnapshot, checksum: createHash("sha256").update(contentSnapshot).digest("hex") },
   });
   await db.chronicle.update({ where: { id: voyage.taleId }, data: { title, slug: snapshot.tale.slug } });
+  // The accepted closure producer supplies a runtime snapshot. Its legacy
+  // location fields and nextBlockId-only edges are not a Studio publishing
+  // contract. Construct the separate working draft from canonical defaults,
+  // retaining the already-pinned release bytes and the authored prose.
+  const draftChapters = structuredClone(snapshot.chapters) as PublishedTaleSnapshot["chapters"];
+  for (const chapter of draftChapters) {
+    for (const block of chapter.blocks) {
+      if (block.blockType !== "narrative" && block.blockType !== "taleComplete")
+        throw new Error("SEXTANT_RESOURCE_UNEXPECTED_DRAFT_BLOCK");
+      const contract = getDrydockBlockContract(block.blockType)!;
+      const configuration = structuredClone(contract.defaultConfiguration);
+      if (block.blockType === "narrative") {
+        configuration.heading = block.configuration.heading;
+        configuration.body = block.configuration.body;
+      }
+      block.schemaVersion = contract.currentVersion;
+      block.configuration = configuration;
+      block.completion = structuredClone(contract.defaultCompletion);
+      block.connections = block.nextBlockId
+        ? [{ targetBlockId: block.nextBlockId, connectionType: "DEFAULT", orderIndex: 0 }]
+        : [];
+    }
+  }
   const draft = await db.taleDraft.create({
     data: { taleId: voyage.taleId, createdBy: ownerId, createdByAccountId: ownerId },
   });
@@ -178,10 +204,11 @@ export async function seedSextantResourceExperiences(resourceCase: ResourceCase 
     studioDraftSchema.parse({
       autosaveVersion: draft.autosaveVersion,
       tale: snapshot.tale,
-      chapters: snapshot.chapters,
+      chapters: draftChapters,
     }),
     ownerId,
   );
+  snapshotFromStudio(await getStudioTale(voyage.taleId));
   return {
     ownerId,
     email,

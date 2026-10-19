@@ -262,3 +262,25 @@ synthetic Chronicle's three Sea Trials JSON requests. Keep every assertion,
 natural action and timing bound. Response observation is best-effort and never
 replaces a test failure. No upload, trial execution or publication is authorized
 by this diagnostic correction.
+
+Resource run39335372914 passes four variants at0b76873e4b but independent rendered
+review finds R39335372914-01 (Guest Crew inferred from absent legacy ownerLabel)
+and R39335372914-02 (desktop sticky topbar covers masthead/section rail). Preserve
+all46 originals and the failed rendered disposition. Use neutral Voyage crew
+fallback, retaining real labels. Group desktop actions+rail in one sticky
+container under the canonical shell header height, while mobile retains nonsticky
+actions and its compact sticky rail. Keep controls, responsive behavior and all
+existing assertions; add desktop chrome geometry and actual masthead exposure
+after the same autosave scroll. Require new source-bound execution and independent
+rendered review; passing browser assertions alone do not resolve either finding.
+
+Authoring run39336072158 clears settled-drawer axe in all four variants, then
+gets400 from the exact/scenarios request: its legacy runtime fixture Passage
+does not satisfy the Studio publishing contract. Suites and runs return200.
+Construct only the separate working draft from canonical contract defaults for
+its two known block types; retain prose, use current schema/default completion
+and explicitDEFAULTedges, and validate through production snapshotFromStudio.
+Keep the pinned published bytes/checksum, failed fixtures and parser rules intact.
+Source review is clear; fresh authoring execution remains required. Resource
+chrome also gives More a local stacking order above the rail and below the
+masthead, with ordinary open/first-link exposure/Escape-close proof and captures.

@@ -20,6 +20,9 @@ last_reviewed: 2026-10-19
 
 ### Corrected
 
+- The Captain Chronicle dashboard uses neutral Crew wording when its legacy label
+  is absent. Creator actions and section navigation share one desktop sticky
+  container below the application masthead; mobile keeps its compact section rail.
 - Captain's Chronicle dashboard uses a named section for its Chronicle navigation,
   preserving the panel's content and responsive styling within the main task.
 - The Sextant Phase 4 candidate clears Community query and advanced-filter

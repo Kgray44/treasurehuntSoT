@@ -1,0 +1,54 @@
+{
+  "source": {
+    "sourceSha": "0b76873e4ba45670c2c94378d785956fcbaad9a8",
+    "sourceTree": "a7506b978c7384959d6654499e5dcb326662fa83",
+    "dirty": false,
+    "sourceFingerprint": "4b601afc1666b1542e33f1e8f51cafc69e5df74e5684f7be36513d669dd8d3f4"
+  },
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "reducedMotion": "reduce",
+  "feedback": [
+    {
+      "task": "Captain library",
+      "elapsedMs": 242.64056499999788
+    },
+    {
+      "task": "Muster roster",
+      "elapsedMs": 281.0752620000021
+    },
+    {
+      "task": "Captain console",
+      "elapsedMs": 183.28563500000018
+    },
+    {
+      "task": "Published Chronicle dashboard",
+      "elapsedMs": 180.03085499999725
+    },
+    {
+      "task": "Same Voyage controls return",
+      "elapsedMs": 176.70611800000188
+    },
+    {
+      "task": "Player-safe projection",
+      "elapsedMs": 264.2595739999997
+    },
+    {
+      "task": "Creator library",
+      "elapsedMs": 267.1840940000002
+    }
+  ],
+  "ordinarySignIn": true,
+  "actualCaptainAuthority": "sextant-resource-voyage-1280-reduce",
+  "separatePlayerBaseline": "sextant-experience-voyage",
+  "crewChat": "ACTIVE_VOYAGE_DISABLED_NO_MESSAGE_SENT",
+  "cancelledCommandReview": true,
+  "playerSafePreview": true,
+  "creatorDraftSavedReopenedRestored": true,
+  "unchangedCanonicalProgress": true,
+  "unchangedPublishedEditions": true,
+  "qualification": false,
+  "physicalEvidence": false
+}

@@ -122,6 +122,8 @@ for (const viewport of [
           "href",
           `/captain/sessions/${fixture.voyageId}`,
         );
+        await expect(dashboard.locator(".captain-session-card")).toContainText("Voyage crew");
+        await expect(dashboard.locator(".captain-session-card")).not.toContainText("Guest Crew");
         expect((await new AxeBuilder({ page }).include(".captain-dashboard").analyze()).violations).toEqual([]);
         await dashboard.getByRole("heading", { level: 1 }).scrollIntoViewIfNeeded();
         await page.screenshot({ path: info.outputPath("captain-chronicle-dashboard.png") });
@@ -180,6 +182,41 @@ for (const viewport of [
         expect(authoringRail!.y, "Authoring navigation stays below the application masthead").toBeGreaterThanOrEqual(
           shellHeader!.y + shellHeader!.height - 1,
         );
+        if (viewport.width > 760) {
+          const topbar = await page.locator(".editor-topbar").boundingBox();
+          expect(topbar).not.toBeNull();
+          expect(topbar!.y, "Editor actions stay below the application masthead").toBeGreaterThanOrEqual(
+            shellHeader!.y + shellHeader!.height - 1,
+          );
+          expect(authoringRail!.y, "Authoring sections stay below editor actions").toBeGreaterThanOrEqual(
+            topbar!.y + topbar!.height - 1,
+          );
+        }
+        const mastheadIsExposed = await page.locator(".product-shell-header").evaluate((header) => {
+          const box = header.getBoundingClientRect();
+          return Boolean(
+            document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2)?.closest(".product-shell-header"),
+          );
+        });
+        expect(mastheadIsExposed, "The masthead remains above editor chrome after autosave scroll").toBe(true);
+        const more = page.getByRole("button", { name: "More", exact: true });
+        await more.click();
+        const moreSettings = page
+          .locator("#studio-more-actions")
+          .getByRole("link", { name: "Chronicle settings", exact: true });
+        await expect(moreSettings).toBeVisible();
+        expect(
+          await moreSettings.evaluate((link) => {
+            const box = link.getBoundingClientRect();
+            const target = document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2);
+            return target === link || Boolean(target && link.contains(target));
+          }),
+          "More actions stay exposed above the section rail",
+        ).toBe(true);
+        await page.screenshot({ path: info.outputPath("creator-more-actions.png") });
+        await more.press("Escape");
+        await expect(page.locator("#studio-more-actions")).toBeHidden();
+        await title.scrollIntoViewIfNeeded();
         expect((await new AxeBuilder({ page }).include(".tale-editor").analyze()).violations).toEqual([]);
         await page.screenshot({ path: info.outputPath("creator-draft-reopened.png") });
         const restore = page.waitForResponse(

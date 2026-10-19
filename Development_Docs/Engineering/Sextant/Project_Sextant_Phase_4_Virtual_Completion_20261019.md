@@ -509,3 +509,88 @@ The formal contract now includes the same open/close sequence. Independent sourc
 review, TypeScript and documentation/catalog checks pass. Run 39334344712 binds
 that source and is dispatched; no browser outcome is claimed yet. No media upload
 or authoring mutation is performed by this correction.
+
+The [Captain dashboard source checkpoint](phase4-source-reconciliation-dashboard-20261019.json)
+at `0b76873e4ba45670c2c94378d785956fcbaad9a8` records 176 affected surfaces and
+60 missing declarations. The live PlayerLibrary already exercised by the ordinary
+consumer journey now has its narrow declaration. Captain Library's actual
+Published Chronicles card opens the existing Chronicle dashboard; the extended
+resource test verifies its loaded Chronicle, one session card, exact same-session
+control link, axe and ordinary return, retaining every existing assertion and both
+active-Voyage/checksum baselines. The dashboard's nested aside becomes a named
+section, with all eight styling selectors retained against its explicit class.
+This source-predicted semantic correction grants no rendered acceptance.
+Independent source review is clear after distinguishing Chronicle title from
+separate Voyage/edition continuity checks. TypeScript, contract validation,
+four-variant discovery and documentation/catalog checks pass. Run 39335372914
+subsequently passes all four browser variants, with the original assertions intact.
+Independent review of all 20 PNGs finds two defects: R39335372914-01 infers
+Guest Crew from an absent legacy label despite the actual named account-backed
+membership; R39335372914-02 shows the desktop sticky editor topbar covering the
+masthead and rail after scroll. This run signs in only the resource owner; its
+Muster view is not Crew-authentication proof. All 46 original hashes and the frozen
+source fingerprint/tree match. All 28 recorded activations are below 3000 ms,
+maximum 1168.53 ms; dashboard entry is 171.32–202.30 ms and same-controls return
+148.10–184.40 ms. Runtime and transport cleanup pass. The
+[49 original files](evidence/20261019-captain-dashboard/publication-index.json)
+include the defective passing captures. Videos are hashed but unreviewed; mobile
+dashboard return controls lie below the captured viewport. The pending repair
+uses neutral Crew wording and one desktop sticky container for editor actions
+and sections below the canonical masthead height. Mobile retains its compact
+sticky section rail. New assertions cover desktop toolbar/rail placement and
+actual masthead hit-test exposure after the same autosave scroll. Fresh browser
+and independent rendered re-review are required.
+
+Authoring run 39334344712 subsequently fails all four variants. One audits the
+open drawer during an allowed 240 ms opening fade and reports ratio 1.57 on three
+controls; the existing final-state controls already specify white text. Three
+other variants reach Sea Trials but fail its loaded heading, with cause still
+unconfirmed. The [original subset](evidence/20261019-authoring-readiness-failure/publication-index.json)
+has COMPLETE diagnostics: 33 members, 47312710 raw bytes and 84135270 encrypted
+bytes. Runtime trees, ports and transport cleanup pass. The pending correction
+requires drawer opacity 1 within the existing 3000 ms measurement and observes
+only the fixed synthetic Chronicle's bounded Sea Trials response metadata. It
+preserves the animation, colors, assertions and limits.
+Source `fe7350036e5ded86eb68d832f5bf76b43396f85a` contains the settled-visible
+predicate and bounded response listener. Run 39336072158 passes the settled drawer
+audit in all four variants, then fails all four loaded Sea Trials headings. The
+bounded diagnostics identify `/scenarios` returning 400 because the fixture Passage
+does not satisfy its Drydock publishing contract; suites and runs return 200.
+The closure producer supplies runtime legacy fields and nextBlockId-only edges.
+The separate working draft now uses canonical defaults for its two known block
+types, retains narrative prose, adds explicit DEFAULT edges, and validates through
+production `snapshotFromStudio(getStudioTale(...))`. The pinned released snapshot
+and checksum remain unchanged by this draft construction. Existing fixture reuse
+does not reset failed state; no parser or publishing gate changes. Independent
+source review finds no remaining issue; fresh execution remains required. The
+[original failure subset](evidence/20261019-authoring-contract-failure/publication-index.json)
+records COMPLETE diagnostics: 37 members, 55299307 raw bytes and 98336378 encrypted
+bytes. Runtime and transport cleanup pass. The reviewer also confirms readiness
+and primary-error preservation in the previous test correction.
+
+Community diagnostic run 39334808571 at `32cfbe022f` again passes three variants.
+For 390-pixel normal motion, the Guide click returns but the path remains
+`/community/guides` through the heading timeout. Its incoming route remains
+interactive. This proves neither a failed detail response nor a product cause.
+The [original diagnostic subset](evidence/20261019-community-navigation-diagnostic/publication-index.json)
+records COMPLETE retention: 22 members, 56255407 raw bytes and 100025798 encrypted
+bytes, with runtime trees, ports and transport cleanup passing. The later source
+also makes failed navigation observation best-effort so it cannot replace the
+primary test error. Assertions and budgets remain unchanged.
+
+Independent source review of the preserved 175/63 checkpoint distinguishes the
+remaining software families without removing obligations: account lifecycle (8),
+Admiralty assurance/support (4), live Captain dashboard (2), public catalog and
+Tideglass (7), historical Passport/provenance (6), invitation/lobby/compatibility
+(9), Creator new/private resources (4), conditional Landfall/recovery panels (17),
+accepted Crossdeck display limits (1), authorized Spatial pilot (1), and retained
+components without found production imports (4). The dashboard's two paths and
+the existing PlayerLibrary declaration explain the three-gap reduction at the
+new 176/60 checkpoint. Legacy/source disposition still requires governance;
+compatibility redirects do not discharge entry/return evidence. The next bounded
+historical journey should genuinely complete its separate synthetic Voyage through
+production Player controls and grant an artifact through canonical recipient
+resolution, then use ordinary Passport materialization, Book, replay and Cabinet
+provenance. Direct history rows or seeded completion statuses cannot prove that
+production journey. Canonical Darwin process ownership remains a software
+prerequisite separate from deferred manual Apple provisioning.

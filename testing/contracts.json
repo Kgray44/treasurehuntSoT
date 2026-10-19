@@ -7730,6 +7730,24 @@
               },
               {
                 "action": "click",
+                "role": "button",
+                "name": "More"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Chronicle settings",
+                "path": "/studio/tales/sextant-resource-chronicle/settings",
+                "text": "Chronicle settings",
+                "state": "RESOURCE_READY"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "More"
+              },
+              {
+                "action": "click",
                 "role": "link",
                 "name": "← Studio"
               },

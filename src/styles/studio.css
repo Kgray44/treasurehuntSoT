@@ -438,10 +438,14 @@ html[data-voyage-theme="light"] .studio-no-editable-draft__details dt {
   min-height: 100vh;
   overflow-x: clip;
 }
-.editor-topbar {
+.editor-chrome {
   position: sticky;
-  z-index: 50;
-  top: 0;
+  z-index: calc(var(--z-navigation, 30) - 1);
+  top: var(--shell-header-height, 76px);
+}
+.editor-topbar {
+  position: relative;
+  z-index: 2;
   display: grid;
   grid-template-columns: minmax(250px, 1fr) auto minmax(14rem, auto) auto;
   align-items: center;
@@ -796,9 +800,8 @@ html[data-voyage-theme="light"] .studio-no-editable-draft__details dt {
   background: linear-gradient(90deg, #d7b76b, #f0d18a, transparent);
 }
 .editor-section-nav {
-  position: sticky;
-  z-index: calc(var(--z-navigation, 30) - 1);
-  top: var(--shell-header-height, 76px);
+  position: relative;
+  z-index: 1;
   display: flex;
   overflow-x: auto;
   max-width: 100%;
@@ -2644,8 +2647,17 @@ html[data-voyage-theme="light"] .studio-no-editable-draft__details dt {
   .contract-diagnostics dd {
     margin-bottom: 0.4rem;
   }
+  .editor-chrome {
+    display: contents;
+  }
+  .editor-section-nav {
+    position: sticky;
+    z-index: calc(var(--z-navigation, 30) - 2);
+    top: var(--shell-header-height, 76px);
+  }
   .editor-topbar {
-    position: static;
+    position: relative;
+    z-index: calc(var(--z-navigation, 30) - 1);
     display: block;
   }
   .editor-topbar > * {

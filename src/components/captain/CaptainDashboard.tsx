@@ -165,7 +165,7 @@ function SessionCard({ session, clock }: { session: Session; clock: number }) {
       </div>
       <p className="card-kicker">{session.previewMode ? "Preview Voyage" : `Version ${session.versionLabel}`}</p>
       <h3>{session.taleTitle}</h3>
-      <p>{session.ownerLabel ?? "Guest Crew"}</p>
+      <p>{session.ownerLabel ?? "Voyage crew"}</p>
       <dl>
         <div>
           <dt>Status</dt>

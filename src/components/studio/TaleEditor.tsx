@@ -2027,56 +2027,58 @@ export function TaleEditor({
         >
           <PublishHostBridge onReady={(host) => (publishHost.current = host)} />
         </SceneHost>
-        <StudioStatusHeader
-          taleId={taleId}
-          title={draft.tale.title}
-          canUndo={Boolean(past.length)}
-          canRedo={Boolean(future.length)}
-          saveState={saveState}
-          saveVisualState={saveVisualState}
-          validationState={validationStatus.state}
-          validationLabel={validationStatus.label}
-          validationDetail={validationStatus.detail}
-          publishState={publishState}
-          publishPermitted={publishState !== "publishing"}
-          publishedVersion={publishedVersion}
-          moreOpen={moreOpen}
-          reducedMotion={mode === "reduced"}
-          layoutDuration={layoutMotion.durationSeconds}
-          stateDuration={stateMotion.durationSeconds}
-          ceremonyDuration={resolvePlatformMotionToken("ceremony", mode).durationSeconds}
-          onUndo={undo}
-          onRedo={redo}
-          onPreview={() => void preview()}
-          onValidate={() => void validate()}
-          onOpenValidation={() => validation && setValidationPanelOpen(true)}
-          onPublish={openPublishingReview}
-          onOpenCommands={openCommandPalette}
-          onToggleMore={() => setMoreOpen((open) => !open)}
-          onCloseMore={() => setMoreOpen(false)}
-          onDuplicate={() => {
-            setMoreOpen(false);
-            void taleAction("duplicate");
-          }}
-          onArchive={() => {
-            setMoreOpen(false);
-            void taleAction("archive");
-          }}
-        />
-        <nav className="editor-section-nav" aria-label="Chronicle authoring sections">
-          {nav.map((item) => (
-            <Link
-              key={item}
-              className={initialSection === item ? "active" : ""}
-              href={item === "story" ? `/studio/tales/${taleId}` : `/studio/tales/${taleId}/${item}`}
-            >
-              {initialSection === item && (
-                <motion.span className="studio-active-section" layoutId="studio-active-section" />
-              )}
-              <span>{navLabels[item]}</span>
-            </Link>
-          ))}
-        </nav>
+        <div className="editor-chrome">
+          <StudioStatusHeader
+            taleId={taleId}
+            title={draft.tale.title}
+            canUndo={Boolean(past.length)}
+            canRedo={Boolean(future.length)}
+            saveState={saveState}
+            saveVisualState={saveVisualState}
+            validationState={validationStatus.state}
+            validationLabel={validationStatus.label}
+            validationDetail={validationStatus.detail}
+            publishState={publishState}
+            publishPermitted={publishState !== "publishing"}
+            publishedVersion={publishedVersion}
+            moreOpen={moreOpen}
+            reducedMotion={mode === "reduced"}
+            layoutDuration={layoutMotion.durationSeconds}
+            stateDuration={stateMotion.durationSeconds}
+            ceremonyDuration={resolvePlatformMotionToken("ceremony", mode).durationSeconds}
+            onUndo={undo}
+            onRedo={redo}
+            onPreview={() => void preview()}
+            onValidate={() => void validate()}
+            onOpenValidation={() => validation && setValidationPanelOpen(true)}
+            onPublish={openPublishingReview}
+            onOpenCommands={openCommandPalette}
+            onToggleMore={() => setMoreOpen((open) => !open)}
+            onCloseMore={() => setMoreOpen(false)}
+            onDuplicate={() => {
+              setMoreOpen(false);
+              void taleAction("duplicate");
+            }}
+            onArchive={() => {
+              setMoreOpen(false);
+              void taleAction("archive");
+            }}
+          />
+          <nav className="editor-section-nav" aria-label="Chronicle authoring sections">
+            {nav.map((item) => (
+              <Link
+                key={item}
+                className={initialSection === item ? "active" : ""}
+                href={item === "story" ? `/studio/tales/${taleId}` : `/studio/tales/${taleId}/${item}`}
+              >
+                {initialSection === item && (
+                  <motion.span className="studio-active-section" layoutId="studio-active-section" />
+                )}
+                <span>{navLabels[item]}</span>
+              </Link>
+            ))}
+          </nav>
+        </div>
         {error && (
           <div className="editor-error" role="alert">
             <span>{error}</span>
