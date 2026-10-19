@@ -218,3 +218,21 @@ compilation. A bounded checkout now selects the iOS app, pipeline, original mode
 resources and referenced test fixtures, avoiding unrelated retained evidence.
 The replacement run remains an unsigned device archive and cannot produce a
 TestFlight-installable build. No signing secrets have been installed.
+
+The [replacement archive passed](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39342416557)
+for candidate `bcca4fba851686b1cced11604daf5790a467b8bb`, transport
+`0050884d36499a4c42e7e78b99edc6d822e1805f`. Xcode 26.6 build 17F113 and
+iPhoneOS SDK 26.5 compiled the generic iOS Release application. Its bundle ID,
+version/build, origin, app-bound domain, camera/local-network explanations,
+absence of ATS exceptions, app icon, app privacy manifest and actual embedded
+GLTFKit2 privacy manifest passed archive assertions. The installed `altool`
+advertises an explicit `.p8` path option, which the signed path will use.
+Credential/temp cleanup passed. Both owned transport branches were removed
+with their expected head SHAs and absence verified; source branch is retained.
+
+[The verification receipt](evidence/ncl01-testflight-20261019/verification.json)
+hashes nine byte-exact original run/dispatch/cleanup/log records. The empty
+device archive log is retained as emitted by successful quiet Xcode output.
+The app executable digest is recorded in the original receipt. No IPA export,
+signing, upload, Apple processing, phone reachability, installation or physical
+AR behavior was established by this unsigned run.
