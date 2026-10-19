@@ -1,4 +1,5 @@
-import type { Point } from "./coordinates";
+/* REACH_RESEARCH_INSERT index-image-tracker.ts:1 BEGIN */import { registerResearchCounter, researchProbe, researchValue } from "./research-tape";
+/* REACH_RESEARCH_INSERT index-image-tracker.ts:1 END */import type { Point } from "./coordinates";
 import { fullHandDetectionPolicy } from "./hand-detection-authority";
 import { createNccScratch, searchNcc } from "./index-ncc";
 import { TemporalIndexTrack, temporalIndexPolicy, type TemporalIndexSnapshot } from "./temporal-index-track";
@@ -366,7 +367,8 @@ type PreparedImage = {
   matches: { stable: MatchEvaluation; adaptive: MatchEvaluation } | null;
 };
 const policy = indexImageAlgorithmDescriptor.policy;
-let nextAnchor = 0;
+let nextAnchor = 0;/* REACH_RESEARCH_INSERT index-image-tracker.ts:2 BEGIN */
+registerResearchCounter("nextAnchor", () => nextAnchor);/* REACH_RESEARCH_INSERT index-image-tracker.ts:2 END */
 const boundedPoint = (p: Point) =>
   Number.isFinite(p.x) && Number.isFinite(p.y) && p.x >= 0 && p.x <= 1 && p.y >= 0 && p.y <= 1;
 type ModelGeometry = NonNullable<IndexModelAnchor["geometry"]>;
@@ -1041,10 +1043,10 @@ export class IndexImageTracker {
         texture: null,
         forwardBackwardErrorPixels: null,
       };
-      const failed = (reason: string): MatchEvaluation => ({ accepted: null, reason, quality });
+      const failed = (reason: string): MatchEvaluation => /* REACH_RESEARCH_INSERT index-image-tracker.ts:3 BEGIN */researchValue("computeMatches.failed", /* REACH_RESEARCH_INSERT index-image-tracker.ts:3 END */({ accepted: null, reason, quality })/* REACH_RESEARCH_INSERT index-image-tracker.ts:4 BEGIN */, { found, previousPoint, predicted, origin, gap, template, history })/* REACH_RESEARCH_INSERT index-image-tracker.ts:4 END */;
       if (!found || found.correlation < policy.minimumCorrelation) return failed("APPEARANCE_MISMATCH");
       if (found.separation < policy.minimumSeparation) return failed("APPEARANCE_AMBIGUOUS");
-      if (Math.hypot(found.point.x - previousPoint.x, found.point.y - previousPoint.y) > policy.maximumMotionStep)
+      if (/* REACH_RESEARCH_INSERT index-image-tracker.ts:5 BEGIN */researchValue("computeMatches.motionDistance", /* REACH_RESEARCH_INSERT index-image-tracker.ts:5 END */Math.hypot(found.point.x - previousPoint.x, found.point.y - previousPoint.y)/* REACH_RESEARCH_INSERT index-image-tracker.ts:6 BEGIN */)/* REACH_RESEARCH_INSERT index-image-tracker.ts:6 END */ > policy.maximumMotionStep)
         return failed("IMAGE_MOTION_TOO_LARGE");
       const current = patch(frame, found.point, template.radius);
       quality.texture = current?.deviation ?? null;
@@ -2186,7 +2188,8 @@ export class IndexImageTracker {
         return result("UNCERTAIN", "FINGERTIP_RECONFIRMED_SETTLING");
       }
     } else if (!conditionedReady) this.modelOpticalCandidate = null;
-    const modelFallback = (): IndexImageObservation | null => {
+    const modelFallback = (): IndexImageObservation | null => {/* REACH_RESEARCH_INSERT index-image-tracker.ts:7 BEGIN */
+      researchProbe("modelFallback.guard", { conditionedReady, conditionedSource, modelPoint, modelReady, cueReady, modelQualified, cueQualified, currentGeometry, modelContinuity: this.modelContinuity, cueContinuity: this.cueContinuity, manualSelection: this.manualSelection, coordinateConflict: this.coordinateConflict, preparedMatches, model });/* REACH_RESEARCH_INSERT index-image-tracker.ts:7 END */
       if (!conditionedReady || !conditionedSource || !modelPoint || this.manualSelection || this.coordinateConflict)
         return null;
       const acceptedOptical = preparedMatches?.stable.accepted ?? preparedMatches?.adaptive.accepted;

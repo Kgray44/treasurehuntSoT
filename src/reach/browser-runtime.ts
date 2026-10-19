@@ -1,4 +1,7 @@
-import { BrowserCameraBroker, type CameraLease } from "@/sextant/camera";
+/* REACH_RESEARCH_INSERT browser-runtime.ts:1 BEGIN */import { installResearchTape, researchProbe, researchValue, researchContext, researchBitmap, researchCall } from "./research-tape";
+import { TemporalIndexTrack } from "./temporal-index-track";
+import { IndexSourceAssociation } from "./index-source-association";
+/* REACH_RESEARCH_INSERT browser-runtime.ts:1 END */import { BrowserCameraBroker, type CameraLease } from "@/sextant/camera";
 import { BrowserExposureAssistance } from "@/sextant/browser-exposure";
 import { browserVisualCapabilities, browserVisualCapabilityPolicy } from "@/sextant/browser-visual-capabilities";
 import { sampleImageSignal, type ImageLumaPlane } from "@/watchglass/image-signal";
@@ -39,7 +42,8 @@ import {
   type CaptureAssistanceAction,
   type CaptureAssistanceCandidate,
 } from "./capture-assistance";
-export type { IndexImageObservation } from "./index-image-tracker";
+/* REACH_RESEARCH_INSERT browser-runtime.ts:2 BEGIN */installResearchTape({ Tracker: IndexImageTracker, Adapter: BrowserHandAdapter, ModelGate: ObservationGate, ImageGate: IndexImageObservationGate, Temporal: TemporalIndexTrack, SourceAssociation: IndexSourceAssociation });
+/* REACH_RESEARCH_INSERT browser-runtime.ts:2 END */export type { IndexImageObservation } from "./index-image-tracker";
 /** Passive, opt-in input for the local development recorder. No identity or lease data. */
 export type RawHandInference = {
   result: unknown;
@@ -775,7 +779,8 @@ export class ReachBrowserRuntime {
                 if (this.imageContext) {
                   // This exact bitmap goes to the model below. Its clean pixels
                   // and model capture clock stay paired until RESULT arrives.
-                  this.imageContext.drawImage(bitmap, 0, 0, imageWidth, imageHeight);
+/* REACH_RESEARCH_INSERT browser-runtime.ts:3 BEGIN */                  researchBitmap("runtime.bitmap.draw", bitmap, { capture, generation, width, height, imageWidth, imageHeight });
+/* REACH_RESEARCH_INSERT browser-runtime.ts:3 END */                  this.imageContext.drawImage(bitmap, 0, 0, imageWidth, imageHeight);
                   imageSize = { width: imageWidth, height: imageHeight };
                 }
               } catch {
@@ -783,7 +788,8 @@ export class ReachBrowserRuntime {
                 this.preparedImage = null;
               }
             }
-            worker.postMessage({ type: "FRAME", bitmap, capture, generation }, [bitmap]);
+/* REACH_RESEARCH_INSERT browser-runtime.ts:4 BEGIN */            researchBitmap("runtime.bitmap.dispatch", bitmap, { capture, generation, width, height });
+/* REACH_RESEARCH_INSERT browser-runtime.ts:4 END */            worker.postMessage({ type: "FRAME", bitmap, capture, generation }, [bitmap]);
             this.timer = setTimeout(() => fail("INFERENCE_TIMEOUT"), 3000);
             if (imageSize && this.imageContext && this.imageTracker) {
               try {
@@ -803,7 +809,8 @@ export class ReachBrowserRuntime {
                 const hint = this.pendingIndexHint;
                 if (!hint || capture >= hint.requestedAt) {
                   if (hint) hint.attemptedCapture = capture;
-                  const token = this.imageTracker.prepare(
+/* REACH_RESEARCH_INSERT browser-runtime.ts:5 BEGIN */                  researchContext("runtime.prepare.context", { capture, generation, binding, hint, pendingIndexHint: this.pendingIndexHint, indexEnabled: this.indexEnabled, pendingFrameOrigin, imageSize });
+/* REACH_RESEARCH_INSERT browser-runtime.ts:5 END */                  const token = this.imageTracker.prepare(
                     { data: gray, ...imageSize, capture, received: performance.now() },
                     hint?.point,
                   );
@@ -918,7 +925,8 @@ export class ReachBrowserRuntime {
           inferencePolicy = selectedPolicy;
           legacyBackend = data.backend === undefined;
           legacyPolicy = data.providerPolicy === undefined;
-          adapter = new BrowserHandAdapter(binding, "UNQUALIFIED", selected, inferencePolicy);
+/* REACH_RESEARCH_INSERT browser-runtime.ts:1003 BEGIN */          researchContext("runtime.adapter.construct", { binding, tier: "UNQUALIFIED", backend: selected, policy: inferencePolicy });
+/* REACH_RESEARCH_INSERT browser-runtime.ts:1003 END */          adapter = new BrowserHandAdapter(binding, "UNQUALIFIED", selected, inferencePolicy);
           this.perception = {
             backend: selected,
             policy: inferencePolicy,
@@ -968,10 +976,11 @@ export class ReachBrowserRuntime {
           let indexReason = this.indexEnabled ? "INDEX_CAPTURE_NOT_PREPARED" : "INDEX_TRACKING_DISABLED";
           let gateTime = performance.now();
           const frameOrigin =
-            pendingFrameOrigin && pendingFrameOrigin.capture === data.capture ? pendingFrameOrigin.origin : null;
-          const originExpired = () => frameOrigin !== null && !originFresh(frameOrigin, performance.now());
+            pendingFrameOrigin && pendingFrameOrigin.capture === data.capture ? pendingFrameOrigin.origin : null;/* REACH_RESEARCH_INSERT browser-runtime.ts:6 BEGIN */
+          researchContext("runtime.result.context", { data, generation, binding, frameOrigin, pendingFrameOrigin, indexEnabled: this.indexEnabled, pendingImageCapture: this.pendingImageCapture, preparedImage: this.preparedImage, pendingIndexHint: this.pendingIndexHint });/* REACH_RESEARCH_INSERT browser-runtime.ts:6 END */
+          const originExpired = () => /* REACH_RESEARCH_INSERT browser-runtime.ts:7 BEGIN */researchValue("runtime.originExpired", /* REACH_RESEARCH_INSERT browser-runtime.ts:7 END */frameOrigin !== null && !originFresh(frameOrigin, /* REACH_RESEARCH_INSERT browser-runtime.ts:19 BEGIN */researchValue("runtime.originClock", /* REACH_RESEARCH_INSERT browser-runtime.ts:19 END */performance.now()/* REACH_RESEARCH_INSERT browser-runtime.ts:20 BEGIN */)/* REACH_RESEARCH_INSERT browser-runtime.ts:20 END */)/* REACH_RESEARCH_INSERT browser-runtime.ts:8 BEGIN */)/* REACH_RESEARCH_INSERT browser-runtime.ts:8 END */;
           const captureFresh = () =>
-            !originExpired() && performance.now() - data.capture <= reachImmutableSafety.maximumObservationAgeMs;
+            /* REACH_RESEARCH_INSERT browser-runtime.ts:9 BEGIN */researchValue("runtime.captureFresh", /* REACH_RESEARCH_INSERT browser-runtime.ts:9 END */!originExpired() && /* REACH_RESEARCH_INSERT browser-runtime.ts:21 BEGIN */researchValue("runtime.captureClock", /* REACH_RESEARCH_INSERT browser-runtime.ts:21 END */performance.now()/* REACH_RESEARCH_INSERT browser-runtime.ts:22 BEGIN */)/* REACH_RESEARCH_INSERT browser-runtime.ts:22 END */ - data.capture <= reachImmutableSafety.maximumObservationAgeMs/* REACH_RESEARCH_INSERT browser-runtime.ts:10 BEGIN */)/* REACH_RESEARCH_INSERT browser-runtime.ts:10 END */;
           try {
             if (!captureFresh()) throw new Error("OBSERVATION_PIXEL_ORIGIN_STALE");
             const gated: { observation: HandObservation | null } = { observation: null };
@@ -999,7 +1008,7 @@ export class ReachBrowserRuntime {
             if (!gated.observation) throw new Error("OBSERVATION_NOT_GATED");
             observation = gated.observation;
             modelReason = "ACCEPTED";
-            this.observe(observation);
+            /* REACH_RESEARCH_INSERT browser-runtime.ts:14 BEGIN */researchCall("runtime.modelConsumer", () => /* REACH_RESEARCH_INSERT browser-runtime.ts:14 END */this.observe(observation/* REACH_RESEARCH_INSERT browser-runtime.ts:1001 BEGIN */!/* REACH_RESEARCH_INSERT browser-runtime.ts:1001 END */)/* REACH_RESEARCH_INSERT browser-runtime.ts:15 BEGIN */, { observation })/* REACH_RESEARCH_INSERT browser-runtime.ts:15 END */;
             this.status("READY");
           } catch (error) {
             modelReason = frameRejectionReason(error, "MODEL_OBSERVATION_INVALID");
@@ -1029,7 +1038,7 @@ export class ReachBrowserRuntime {
           let modelAnchor: ReturnType<typeof selectIndexModelAnchor> = null;
           let modelSelectionFailed = false;
           try {
-            if (observation) modelAnchor = selectIndexModelAnchor(observation);
+            if (observation) modelAnchor = /* REACH_RESEARCH_INSERT browser-runtime.ts:11 BEGIN */researchCall("runtime.modelAnchor", () => /* REACH_RESEARCH_INSERT browser-runtime.ts:11 END */selectIndexModelAnchor(observation)/* REACH_RESEARCH_INSERT browser-runtime.ts:12 BEGIN */, { observation })/* REACH_RESEARCH_INSERT browser-runtime.ts:12 END */;
           } catch {
             modelSelectionFailed = true;
           }
@@ -1037,7 +1046,8 @@ export class ReachBrowserRuntime {
           if (this.indexObserve && this.indexEnabled && this.pendingImageCapture !== null) {
             let imageAccepted = false;
             try {
-              const received = performance.now();
+              const received = performance.now();/* REACH_RESEARCH_INSERT browser-runtime.ts:13 BEGIN */
+              researchProbe("runtime.image.receive", { received, capture: data.capture, prepared, frameOrigin, pendingImageCapture: this.pendingImageCapture, pendingIndexHint: this.pendingIndexHint });/* REACH_RESEARCH_INSERT browser-runtime.ts:13 END */
               indexReason = !observation
                 ? "INDEX_MODEL_OBSERVATION_REJECTED"
                 : modelSelectionFailed
@@ -1092,7 +1102,7 @@ export class ReachBrowserRuntime {
                 imageObservation = accepted;
                 indexReason = "ACCEPTED";
                 try {
-                  this.indexObserve(accepted);
+                  /* REACH_RESEARCH_INSERT browser-runtime.ts:16 BEGIN */researchCall("runtime.imageConsumer", () => /* REACH_RESEARCH_INSERT browser-runtime.ts:16 END */this.indexObserve/* REACH_RESEARCH_INSERT browser-runtime.ts:1002 BEGIN */!/* REACH_RESEARCH_INSERT browser-runtime.ts:1002 END */(accepted)/* REACH_RESEARCH_INSERT browser-runtime.ts:17 BEGIN */, { accepted })/* REACH_RESEARCH_INSERT browser-runtime.ts:17 END */;
                 } catch {
                   /* Optional consumer isolation. */
                 }
@@ -1128,7 +1138,8 @@ export class ReachBrowserRuntime {
           } catch {
             /* Optional measured signal cannot interrupt the hand/image pipeline. */
           }
-          const completed = performance.now();
+          const completed = performance.now();/* REACH_RESEARCH_INSERT browser-runtime.ts:18 BEGIN */
+          researchProbe("runtime.result.disposition", { capture: data.capture, completed, observation, imageObservation, modelAnchor, modelSelectionFailed, modelReason, indexReason, prepared, frameOrigin, imageSequence, indexEnabled: this.indexEnabled });/* REACH_RESEARCH_INSERT browser-runtime.ts:18 END */
           if (data.capture === lastCapture) {
             pacer.recordCompleted(
               data.capture,

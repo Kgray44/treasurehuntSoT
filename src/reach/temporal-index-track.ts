@@ -1,4 +1,5 @@
-import type { Point } from "./coordinates";
+/* REACH_RESEARCH_INSERT temporal-index-track.ts:1 BEGIN */import { registerResearchCounter } from "./research-tape";
+/* REACH_RESEARCH_INSERT temporal-index-track.ts:1 END */import type { Point } from "./coordinates";
 
 export const temporalIndexPolicy = {
   measurementFreshnessMs: 150,
@@ -33,7 +34,8 @@ type Evidence = {
   width: number;
   height: number;
 };
-let nextLogicalIndex = 0;
+let nextLogicalIndex = 0;/* REACH_RESEARCH_INSERT temporal-index-track.ts:2 BEGIN */
+registerResearchCounter("nextLogicalIndex", () => nextLogicalIndex);/* REACH_RESEARCH_INSERT temporal-index-track.ts:2 END */
 
 /** Session-local association, distinct from an optical template epoch and gesture.
  * The producer still owns measurement acceptance; this ledger cannot create one.
