@@ -5,7 +5,7 @@ import { chmodSync, cpSync, existsSync, mkdtempSync, mkdirSync, readFileSync, rm
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import {
   authenticateCompletedEvidence,
   authenticatedCompletedReceipt,
@@ -524,7 +524,7 @@ test(
         process.execPath,
         [
           "--import",
-          denyNetwork,
+          pathToFileURL(denyNetwork).href,
           path.join(authority, "scripts", "sounding-line", "ordinary.mjs"),
           "--mode",
           "ordinary",
