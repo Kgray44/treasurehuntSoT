@@ -27,15 +27,17 @@ independent review verifies210hashes/all120PNGs and clears the actual Guide poin
 and Search-hover repairs within the stated viewport limits. Creator form-ink
 recapture passes four with unchanged final baselines; independent70hash/30PNG
 review resolves the pale parchment heading/intro/helper finding and reviews the
-added Chapter/Edit and desktop empty-Inspector captures. The next Admiralty run
-passes Overview identity/accessibility but stops at a test expecting a heading
-where People renders plain empty-state text. Private Chronicle reaches actual
-synthetic inspection, import, verified export/download and draft reopening, then
-fails the editor audit on an invalid sortable-card role. Final return/baselines
-remain unproved. Its separate storage receipt records failure retention with
-process cleanup verified and no key retained. Source-reviewed repairs preserve
-the same named sortable group and assert actual People text; fresh runs are
-required. Original failures and encrypted diagnostics remain preserved.
+added Chapter/Edit and desktop empty-Inspector captures. Private Chronicle's
+sortable repair now passes four full synthetic inspect/import/verified encrypted
+download/draft-reopen/ordinary-return journeys with unchanged final baselines.
+Its separate storage receipt reports exact owned-root removal after canonical
+process cleanup; independent28PNG/storage review remains pending. Admiralty
+passes Overview and People searches, then stops at a dossier-title check matching
+both H1 and an AI-quota H2 with the same account name. A narrow H1/actual-main
+predicate correction awaits fresh execution. Original failures and encrypted
+diagnostics remain preserved. Account registration/recovery and reversible
+lifecycle source preparation uses the canonical isolated synthetic-email adapter;
+no account journey execution or acceptance is inferred.
 
 Two new formal contracts replace invalid prose checks with actual DOM identity
 or gateway selectors while retaining all prose requirements and unchanged backend

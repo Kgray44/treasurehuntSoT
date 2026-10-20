@@ -32,6 +32,7 @@ export async function dispatchLandfallHostedLab(
       "sextant-creator-entry",
       "sextant-admiralty",
       "sextant-private-content",
+      "sextant-account-recovery",
       "android",
       "android-radio",
       "android-journal",
@@ -81,6 +82,7 @@ export async function dispatchLandfallHostedLab(
       "sextant-creator-entry",
       "sextant-admiralty",
       "sextant-private-content",
+      "sextant-account-recovery",
     ].includes(target) &&
     (tier !== "development" || selectedScenarios !== undefined || selectedProfiles !== undefined)
   )
@@ -145,6 +147,7 @@ export async function dispatchLandfallHostedLab(
           "sextant-creator-entry",
           "sextant-admiralty",
           "sextant-private-content",
+          "sextant-account-recovery",
         ].includes(target),
       ),
     )
@@ -170,7 +173,9 @@ export async function dispatchLandfallHostedLab(
                         ? "Sextant ordinary Admiralty dossier and ungranted support (development)"
                         : target === "sextant-private-content"
                           ? "Sextant synthetic private package import and verified export (development)"
-                          : "optimized first-party Phase 4",
+                          : target === "sextant-account-recovery"
+                            ? "Sextant synthetic account verification, recovery and reversible lifecycle (development)"
+                            : "optimized first-party Phase 4",
     )
     .replaceAll(
       "__BROWSER_SUITE__",
@@ -185,6 +190,7 @@ export async function dispatchLandfallHostedLab(
         "sextant-creator-entry",
         "sextant-admiralty",
         "sextant-private-content",
+        "sextant-account-recovery",
       ].includes(target)
         ? target
         : "landfall",
@@ -247,9 +253,11 @@ export async function dispatchLandfallHostedLab(
                         ? ["sextant-admiralty-journeys"]
                         : target === "sextant-private-content"
                           ? ["sextant-private-content-journeys"]
-                          : target === "browser" || target === "all"
-                            ? ["first-party-phase4-web"]
-                            : [],
+                          : target === "sextant-account-recovery"
+                            ? ["sextant-account-recovery-journeys"]
+                            : target === "browser" || target === "all"
+                              ? ["first-party-phase4-web"]
+                              : [],
     journal: target === "android-journal" || target === "all" ? ["first-party-native-journal-pair"] : [],
     background:
       target === "android-background" || target === "all"

@@ -47,6 +47,11 @@ const resourceCases = [
   "private-content-1280-reduce",
   "private-content-390-no-preference",
   "private-content-390-reduce",
+  "account-recovery-default",
+  "account-recovery-1280-no-preference",
+  "account-recovery-1280-reduce",
+  "account-recovery-390-no-preference",
+  "account-recovery-390-reduce",
 ] as const;
 type ResourceCase = (typeof resourceCases)[number];
 

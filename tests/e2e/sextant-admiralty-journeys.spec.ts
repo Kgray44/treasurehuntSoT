@@ -108,7 +108,8 @@ for (const viewport of [
         await measure(
           "Actual authorized account dossier",
           () => target.click(),
-          () => expect(heading(fixture.targetDisplayName)).toBeVisible(),
+          () =>
+            expect(page.getByRole("heading", { level: 1, name: fixture.targetDisplayName, exact: true })).toBeVisible(),
         );
         await expect(page).toHaveURL(new RegExp(`/admin/people/${fixture.targetAccountId}$`));
         await capture("admiralty-dossier");

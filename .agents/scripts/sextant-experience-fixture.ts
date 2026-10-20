@@ -29,6 +29,7 @@ async function main() {
         "sextant-creator-entry-v1",
         "sextant-admiralty-consumers-v1",
         "sextant-private-content-consumers-v1",
+        "sextant-account-recovery-consumers-v1",
       ].includes(entry.experience?.fixture ?? ""),
     )
   )
@@ -116,6 +117,15 @@ async function main() {
   ) {
     const { seedSextantPrivateContentExperience } = await import("./sextant-private-content-fixture");
     await seedSextantPrivateContentExperience();
+  }
+  if (
+    plan.contracts.some(
+      (entry: { experience?: { fixture?: string } }) =>
+        entry.experience?.fixture === "sextant-account-recovery-consumers-v1",
+    )
+  ) {
+    const { seedSextantAccountRecoveryExperience } = await import("./sextant-account-recovery-fixture");
+    await seedSextantAccountRecoveryExperience();
   }
 }
 

@@ -9780,8 +9780,8 @@
               },
               {
                 "action": "assert",
-                "role": "heading",
-                "name": "Synthetic Sextant Crew-admiralty-default",
+                "role": "main",
+                "name": "",
                 "path": "/admin/people/sextant-resource-crew-admiralty-default",
                 "state": "DOSSIER_READY",
                 "kind": "outcome",
@@ -10030,6 +10030,193 @@
                 "role": "heading",
                 "name": "Overview",
                 "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "sextant.shared-consumers.account-recovery",
+      "name": "Sextant ordinary account preparation and synthetic recovery/lifecycle development",
+      "authority": "project-sextant",
+      "owners": [
+        "project-sextant",
+        "project-homeport",
+        "project-wayfarer",
+        "one-voyage"
+      ],
+      "critical": true,
+      "experience": {
+        "persona": "A reserved synthetic person creating and recovering one canonical account without real mail or private content",
+        "objective": "Prepare ordinary registration and password-recovery entry; development additionally completes actual production registration, synthetic email verification, password/email changes and reversible account lifecycle",
+        "visibleOutcome": "Readable account prerequisites and ordinary return are visible; the registered development journey proves actual canonical synthetic identity transitions and unchanged independent Voyage/edition baselines",
+        "integrationOwner": "Sextant shared-consumer verification; Homeport and Wayfarer retain canonical account, challenge, session, email and lifecycle ownership; One Voyage retains progression",
+        "systems": [
+          "project-sextant",
+          "project-homeport",
+          "project-wayfarer",
+          "one-voyage"
+        ],
+        "sourcePaths": [
+          "src/app/register/page.tsx",
+          "src/app/verify-email/page.tsx",
+          "src/app/reset-password/page.tsx",
+          "src/app/account/email-change/page.tsx",
+          "src/app/account/reactivate/page.tsx",
+          "src/app/account/cancel-deletion/page.tsx",
+          "src/components/wayfarer/AccountFlow.tsx",
+          "src/components/homeport/AccountSurfaces.tsx"
+        ],
+        "entryPoint": "/sign-in",
+        "states": [
+          "REGISTER_PREPARED",
+          "RESET_REQUEST_PREPARED",
+          "RETURNED"
+        ],
+        "devices": [
+          "DESKTOP",
+          "MOBILE"
+        ],
+        "roles": [
+          "ANONYMOUS"
+        ],
+        "references": [
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected Authentication family reference; actual registration/verification/recovery/lifecycle task states require fresh source-bound review.",
+            "preserve": "Readable named account fields, explicit secure outcome and ordinary return; no current recovery acceptance is inferred from historical references."
+          },
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected Authentication family reference; actual registration/verification/recovery/lifecycle task states require fresh source-bound review.",
+            "preserve": "Readable named account fields, explicit secure outcome and ordinary return; no current recovery acceptance is inferred from historical references."
+          }
+        ],
+        "fixtureProfile": "generic",
+        "fixture": "sextant-account-recovery-consumers-v1",
+        "recordingRequired": true,
+        "accessibility": "Named ordinary registration and recovery controls, actual task axe checks and viewport capture in four desktop/mobile normal/reduced-motion variants; lower lifecycle actions are scrolled into view and captured before activation.",
+        "fallback": "An incorrect verification code preserves the pending account; explicit password and exact reversible-lifecycle confirmations remain required. No account, challenge or lifecycle transition is seeded and no real email is sent.",
+        "navigation": "Ordinary sign-in Create Account opens registration, its visible sign-in help opens password recovery and its return link returns. Development follows the canonical synthetic email action routes, ordinary Personal Harbor navigation and actual production recovery redirects.",
+        "designTarget": "Readable identity/challenge and reversible lifecycle context, clear session-ending email confirmation, distinct delayed deletion/cancellation and a verified same-account return.",
+        "browserTests": [
+          "tests/e2e/sextant-account-recovery-journeys.spec.ts"
+        ],
+        "limitations": [
+          "Source registration and development evidence do not grant protected, native, physical or owner acceptance.",
+          "The formal declarative journey covers read-only registration/password-recovery preparation and ordinary return only. Positive creation, verification, reset, primary-email and lifecycle transitions remain development scope until canonical per-case mutable input/challenge-delivery binding is installed and qualified. No runner or authority fork is introduced.",
+          "Six route declarations include verification/reset/email-change/reactivation/cancel-deletion exercised only by the registered positive development test, not by the limited formal preparation journey. Declaration is not full acceptance.",
+          "Development uses four fixed distinct reserved identities after canonical nonce-owned database and exact candidate-specific synthetic-outbox guards. Existing accounts/profiles, unexpected mail configuration or symlinked outbox paths are refused; no hidden reset or outbox deletion is performed.",
+          "Only a newly production-created synthetic account is deactivated or scheduled for deletion, and it is restored through actual production reactivation/cancellation. No deletion worker, real account, real private data or external email provider is used.",
+          "Guest claim and merge require their own actual guest/invitation journeys and are not covered. Provider delivery quality, operational abuse controls, expired challenges/windows, real email, protected and owner acceptance remain separate.",
+          "DOM continuity observes the existing home-link href only. Registered development database assertions separately verify actual stable account id, verified primary email, changed credential, revoked sessions, reversible lifecycle records, no created Chronicle/membership and unchanged independent ACTIVE/edition baselines."
+        ],
+        "motion": {
+          "feedbackBudgetMs": 3000,
+          "measurement": "Actual ordinary account preparation and production registration, verification, password/email change, deactivation/reactivation and scheduling/cancellation to visible loaded outcomes. No sleeps, forced clicks, retries or increased budgets."
+        },
+        "continuity": {
+          "objective": "Retain the real shared home gateway while development verifies stable canonical synthetic account identity and untouched independent Voyage/edition baselines",
+          "checks": [
+            {
+              "id": "actual-home-gateway",
+              "role": "link",
+              "name": "Voyagewright home",
+              "attribute": "href"
+            }
+          ],
+          "requirements": [
+            "Verification rejection preserves the actual pending account and the valid synthetic challenge activates the same canonical account.",
+            "Actual reset replaces the credential and consumes its challenge; primary-email confirmation updates the same verified email record and ends all prior sessions.",
+            "Actual reversible deactivation/reactivation and delayed deletion/cancellation return the same new account to ACTIVE without running deletion or changing other accounts.",
+            "Both independent ACTIVE Voyage baselines and exact released edition bytes remain unchanged."
+          ]
+        },
+        "journeys": [
+          {
+            "id": "ordinary-account-registration-recovery-preparation-return",
+            "roles": [
+              "ANONYMOUS"
+            ],
+            "outcome": "A visitor reads actual registration/password-recovery prerequisites and returns to sign-in without creating an account or sending mail",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Create Account"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Create your account",
+                "text": "Create your account",
+                "path": "/register",
+                "state": "REGISTER_PREPARED",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "The actual registration form loads through ordinary sign-in navigation."
+              },
+              {
+                "action": "assert",
+                "role": "textbox",
+                "name": "Display name"
+              },
+              {
+                "action": "assert",
+                "role": "textbox",
+                "name": "Email"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Create account"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Already have an account? Sign in"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Forgot Password"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Forgot password",
+                "text": "Forgot password",
+                "path": "/forgot-password",
+                "state": "RESET_REQUEST_PREPARED",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "The actual recovery request form loads without sending a challenge."
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Send reset instructions"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Sign In"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Sign in",
+                "text": "Sign in",
+                "path": "/sign-in",
                 "state": "RETURNED",
                 "returnPath": true
               }
