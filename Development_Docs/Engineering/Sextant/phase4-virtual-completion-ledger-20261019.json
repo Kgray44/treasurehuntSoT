@@ -3538,6 +3538,88 @@
         "mergeAndFinalBaselinesReached": false,
         "successor": "SETTLED_CREW_OPACITY_WITHIN_ORIGINAL_MEASURES_AND_BOUNDED_NONSECRET_SECOND_LINK_METADATA_NO_PRODUCT_CAUSE_ASSUMED"
       }
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "5d440557c2051b47a23f0e634a604daad34f0fdd",
+      "transportSha": "a42e84c5681284d3a38e015395b6e9d2cefed2eb",
+      "runId": "39368740034",
+      "status": "HARVESTED_SUCCESS_FOUR_FULL_JOURNEYS_TERMINAL_CONFIRMATION_DISABLED_INDEPENDENT_REVIEW_PENDING",
+      "artifacts": 114,
+      "source": {
+        "sourceSha": "5d440557c2051b47a23f0e634a604daad34f0fdd",
+        "sourceTree": "aab93f6ac1284ab356b6b4a0ddcfe30295d8ce5e",
+        "dirty": false,
+        "sourceFingerprint": "543bfd5fa6127907e7532d551c4e8dbf809e9423e3af136720e71ef6f92d2f21"
+      },
+      "productionBuild": "PASS",
+      "qualification": false,
+      "cleanup": {
+        "runtime": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 0,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 0,
+            "elapsedMs": 3,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 143,
+            "elapsedMs": 58,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        },
+        "transport": {
+          "result": "PASS",
+          "ownedResources": ["refs/heads/codex/landfall-lab-5d440557c205-1792469810197"],
+          "remainingResources": []
+        }
+      },
+      "responseMs": {
+        "budget": 3000,
+        "points": 60,
+        "maximum": 1842.6960849999996
+      },
+      "assertions": {
+        "actualProductionRegistrationVerificationPasswordResetAndEmailChange": true,
+        "actualDeactivationReactivationAndScheduledDeletionCancellation": true,
+        "consumedConfirmationDisabledBeforeConfirmedCapture": true,
+        "finalSameAccountActiveWithNoChronicleOrMembership": true,
+        "unchangedActiveProgressAndEditionBytes": true
+      },
+      "independentRenderedReview": {
+        "reviewer": "/root/sextant_source_review",
+        "status": "PENDING",
+        "hashedFiles": 117,
+        "pngCount": 52,
+        "videoCount": 56,
+        "videos": "NOT_YET_VIEWED",
+        "priorFinding": "R39366698914-01"
+      },
+      "publication": "evidence/20261019-account-terminal-confirmation/publication-index.json"
     }
   ],
   "experience": {
@@ -3863,7 +3945,8 @@
     "evidence/20261019-account-recovery-lifecycle/publication-index.json",
     "evidence/20261019-invitation-pin-alert-diagnostic/publication-index.json",
     "evidence/20261019-account-clean-identity/publication-index.json",
-    "evidence/20261019-invitation-link-diagnostic/publication-index.json"
+    "evidence/20261019-invitation-link-diagnostic/publication-index.json",
+    "evidence/20261019-account-terminal-confirmation/publication-index.json"
   ],
   "currentProtectedBase": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
   "canonicalHostDependencies": [
@@ -3879,10 +3962,16 @@
   ],
   "pendingDevelopmentRuns": [
     {
-      "runId": "39368740034",
-      "sourceSha": "5d440557c2051b47a23f0e634a604daad34f0fdd",
-      "target": "sextant-account-recovery",
-      "scope": "TERMINAL_CONSUMED_EMAIL_CONFIRMATION_AND_PRESERVED_SIGNIN_RETURN_RECAPTURE"
+      "runId": "39369889786",
+      "sourceSha": "e408f97695371eedc303754415d207fa61c671cb",
+      "target": "sextant-private-content",
+      "scope": "ACTUAL_SETTLED_PRIVATE_IMPORT_CONFIRMATION_HOVER_CONTRAST_RECAPTURE"
+    },
+    {
+      "runId": "39369898967",
+      "sourceSha": "e408f97695371eedc303754415d207fa61c671cb",
+      "target": "sextant-invitation",
+      "scope": "SETTLED_CREW_AND_BOUNDED_SECOND_LINK_ORIGIN_RESOLVE_DIAGNOSTIC"
     }
   ]
 }
