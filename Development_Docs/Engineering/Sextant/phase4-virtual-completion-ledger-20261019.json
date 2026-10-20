@@ -2432,6 +2432,184 @@
           }
         ]
       }
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "fb8961fa94348a7e8c6f9ac3ca5ce9ede087dd74",
+      "transportSha": "f6c6fb936d7a8ab8cd0c34e83661c36d926c5032",
+      "runId": "39361561155",
+      "status": "HARVESTED_FAILURE_FOUR_VARIANTS_AFTER_PRIVATE_IMPORT_EXPORT_AND_CANONICAL_DRAFT_REOPEN",
+      "artifacts": 5,
+      "productionBuild": "PASS",
+      "qualification": false,
+      "cleanup": {
+        "runtime": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 1,
+            "elapsedMs": 3,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 143,
+            "elapsedMs": 30,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        },
+        "transport": {
+          "result": "PASS",
+          "ownedResources": [
+            "refs/heads/codex/landfall-lab-fb8961fa9434-1792464941237"
+          ],
+          "remainingResources": []
+        }
+      },
+      "publication": "evidence/20261019-private-sortable-diagnostic/publication-index.json",
+      "diagnostics": {
+        "retention": "INCOMPLETE",
+        "issues": [
+          "LIMIT",
+          "FAILURE_ATTACHMENTS_INCOMPLETE"
+        ],
+        "memberCount": 40,
+        "rawBytes": 56761031,
+        "ciphertextBytes": 100937042,
+        "fixedBudgetUnchanged": true,
+        "retainedPrivate": [
+          {
+            "sourcePath": "artifacts/landfall-device-lab/hosted-fb8961fa9434-1792464941237/run-39361561155/artifacts/landfall-browser-encrypted-failures-fb8961fa94348a7e8c6f9ac3ca5ce9ede087dd74/failure.encrypted",
+            "bytes": 100937042,
+            "sha256": "05863a294715bb5eba969d8ba7a75ddcb2469dafbdb47d2f692f812a5e422b0d",
+            "reason": "CANONICAL_PRIVATE_ENCRYPTED_BUNDLE_RETAINED_IN_OWNED_ARTIFACTS_NOT_COPIED_TO_GIT"
+          }
+        ]
+      },
+      "storageLifecycle": {
+        "classification": "ENGINEERING_SYNTHETIC_STORAGE_LIFECYCLE_NOT_ACCEPTANCE",
+        "status": "RETAINED_AFTER_FAILURE",
+        "sourceSha": "fb8961fa94348a7e8c6f9ac3ca5ce9ede087dd74",
+        "taskRoot": "/tmp/sextant-private-fb8961fa9434-KS27tT",
+        "ownershipId": "9e9ca0dc-7382-4900-97b1-50d0d5ac09f0",
+        "markerSha256": "fe08d1d49ce1d10c1e39c75a267ffd46a6eebe3b1bbaa61fc64b30ad77355e5b",
+        "processCleanupVerified": true,
+        "retentionReason": "PRESERVE_SYNTHETIC_FAILURE_STATE",
+        "keyPublished": false,
+        "keyRetained": false,
+        "sourceReceipt": "files/0004-9e9ca0dc-7382-4900-97b1-50d0d5ac09f0.json",
+        "absenceProved": false,
+        "scope": "RECEIPT_TIME_SYNTHETIC_FAILURE_RETENTION_NOT_CURRENT_RUNNER_PRESENCE"
+      },
+      "failure": {
+        "point": "REOPENED_CANONICAL_IMPORTED_DRAFT_AXE_ARIA_ALLOWED_ROLE_ARTICLE_ROLE_GROUP",
+        "allFourReachedActualImportVerifiedExportDownloadAndDraftReopen": true,
+        "finalAccountReturnAndImmutableBaselinesReached": false,
+        "successReceiptProduced": false,
+        "repair": "DIV_GROUP_HOST_PRESERVES_SORTABLE_SEMANTICS_CLASSES_IDS_LISTENERS_CONTENT_AND_FOCUS"
+      }
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "fb8961fa94348a7e8c6f9ac3ca5ce9ede087dd74",
+      "transportSha": "4374356a255474cbe59afc9f0b5b1f5a0b4ca814",
+      "runId": "39361539057",
+      "status": "HARVESTED_FAILURE_FOUR_VARIANTS_AT_PEOPLE_EMPTY_STATE_FALSE_HEADING_EXPECTATION",
+      "artifacts": 4,
+      "productionBuild": "PASS",
+      "qualification": false,
+      "cleanup": {
+        "runtime": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 1,
+            "elapsedMs": 2,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 143,
+            "elapsedMs": 56,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        },
+        "transport": {
+          "result": "PASS",
+          "ownedResources": [
+            "refs/heads/codex/landfall-lab-fb8961fa9434-1792464924837"
+          ],
+          "remainingResources": []
+        }
+      },
+      "publication": "evidence/20261019-admiralty-empty-state-diagnostic/publication-index.json",
+      "diagnostics": {
+        "retention": "COMPLETE",
+        "issues": [],
+        "memberCount": 21,
+        "rawBytes": 24160489,
+        "ciphertextBytes": 42967622,
+        "fixedBudgetUnchanged": true,
+        "retainedPrivate": [
+          {
+            "sourcePath": "artifacts/landfall-device-lab/hosted-fb8961fa9434-1792464924837/run-39361539057/artifacts/landfall-browser-encrypted-failures-fb8961fa94348a7e8c6f9ac3ca5ce9ede087dd74/failure.encrypted",
+            "bytes": 42967622,
+            "sha256": "4fd151c48a5c6820b4cd7d4fca8cacaaedbb3c1082f63de14f71e6d352c6e542",
+            "reason": "CANONICAL_PRIVATE_ENCRYPTED_BUNDLE_RETAINED_IN_OWNED_ARTIFACTS_NOT_COPIED_TO_GIT"
+          }
+        ]
+      },
+      "failure": {
+        "point": "REAL_PEOPLE_EMPTY_STATE_STRONG_TEXT_EXPECTED_AS_HEADING",
+        "firstOverviewIdentityAndAxeAssertionsPassed": true,
+        "renderedBannerAndMobileWrapAcceptance": false,
+        "dossierSupportAndFinalBaselinesReached": false,
+        "repair": "ASSERT_ACTUAL_VISIBLE_EMPTY_TEXT_AND_UNIQUE_MAIN_STATE_TEXT_PLUS_EXACT_PATH_NO_PRODUCT_EMPTY_STATE_CHANGE"
+      }
     }
   ],
   "experience": {
@@ -2446,7 +2624,7 @@
     "reachDiagnostics": "PROTECTED_ACCEPTED_ON_BASE",
     "historicalAccounting": "PRESERVED_SEXTANT_3_OF_3_CROSSDECK_10_OF_3_R1_2_OF_3",
     "registeredNewPlayerWorkspaceSurfaces": 2,
-    "remainingSoftware": "38 unregistered affected surfaces atfb8961fa94 across179affected. Creator form-ink recapture passes4 with independent30PNG clear; Community fresh7b pass4 with independent120PNG clear, preserved viewport/video limits. Admiralty initialrunfails4 atOverview (duplicatebanner desktop, hiddenoperator mobile), beforedossier/support/finalbaselines; narrow source-clear repair prepared. Private-content two-path source registration and owned full synthetic import/export development are independently source-clear and dispatched, with separate storage lifecycle proof still pending. Account/recovery/invitation/Landfall fixtures, fiveunhostedlegacycomponents, acceptedCrossdeck display andauthorizedSpatialpilot, formalreference/layout andprotectedqualification remain. Formal positive Creator/fileinput support andDarwin containment are canonical internalsoftware prerequisites; external/physical/owner gates remain separate.",
+    "remainingSoftware": "38 unregistered affected surfaces atfb8961fa94 across179affected. Private39361561155 fails4 after actual import/verified export/download/canonical draft reopening at invalid article role=group axe check; no finalsameowner/baseline proof. Storage receipt explicitly retains synthetic failure state with canonicalprocesscleanupverified, keynotpublished/retained and no absenceclaim. Admiralty39361539057 fails4 atPeople because EmptyState rendersstrongtext ratherthanheading; firstOverview identity/axe checks pass but no renderedacceptance orfinaldossier/support/baseline proof. Narrow sortable host/testtarget and actual emptytext/mainpredicate repairs are prepared, retaining all assertions. Prior Creator30PNG andCommunity120PNG reviews remain clear at exactsources and statedlimits. Account/recovery/invitation/Landfall, fiveunhostedlegacycomponents, acceptedCrossdeckdisplay/authorizedSpatialpilot, formalreference/layout andprotectedqualification remain. Canonical formal case/fileinput andDarwincontainment prerequisites andexternal/physical/owner gates stay separate.",
     "independentDevelopmentJourneyReview": {
       "source": "0d8b3c7841966a1d1c8b5dae21570b1043dc7915",
       "reviewer": "/root/sextant_source_review",
@@ -2718,7 +2896,9 @@
     "evidence/20261019-community-pointer-repair/publication-index.json",
     "evidence/20261019-creator-landmark-repair/publication-index.json",
     "evidence/20261019-creator-form-ink-repair/publication-index.json",
-    "evidence/20261019-admiralty-entry-diagnostic/publication-index.json"
+    "evidence/20261019-admiralty-entry-diagnostic/publication-index.json",
+    "evidence/20261019-private-sortable-diagnostic/publication-index.json",
+    "evidence/20261019-admiralty-empty-state-diagnostic/publication-index.json"
   ],
   "currentProtectedBase": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
   "canonicalHostDependencies": [
@@ -2732,18 +2912,5 @@
       "passingCompanionOrBuildIsNotProductExecution": true
     }
   ],
-  "pendingDevelopmentRuns": [
-    {
-      "runId": "39361539057",
-      "sourceSha": "fb8961fa94348a7e8c6f9ac3ca5ce9ede087dd74",
-      "target": "sextant-admiralty",
-      "scope": "SINGLE_BANNER_VISIBLE_MOBILE_OPERATOR_AND_ORDINARY_SAFE_RETURN_REPAIR"
-    },
-    {
-      "runId": "39361561155",
-      "sourceSha": "fb8961fa94348a7e8c6f9ac3ca5ce9ede087dd74",
-      "target": "sextant-private-content",
-      "scope": "FIRST_SYNTHETIC_PACKAGE_INSPECT_IMPORT_VERIFIED_DOWNLOAD_AND_SEPARATE_STORAGE_CLEANUP"
-    }
-  ]
+  "pendingDevelopmentRuns": []
 }

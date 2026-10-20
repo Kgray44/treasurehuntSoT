@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/sextant-admiralty-journeys.spec.ts"
+  ],
+  "status": "FAIL",
+  "failureCategory": "PRODUCT_FAILURE",
+  "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED",
+  "diagnosticBinding": {
+    "version": 1,
+    "runId": "50ffef54-73fa-4edb-96b3-b636db040792",
+    "scopeId": "955cd496-38f3-46b2-bc65-addcdc4ebc69",
+    "baseSha": "fb8961fa94348a7e8c6f9ac3ca5ce9ede087dd74",
+    "candidateSha": "fb8961fa94348a7e8c6f9ac3ca5ce9ede087dd74",
+    "planDigest": "5eef507dc70a5459b55f15505f2b6f8157a931d3df53cd8d23e1bb5a99a969d1"
+  }
+}

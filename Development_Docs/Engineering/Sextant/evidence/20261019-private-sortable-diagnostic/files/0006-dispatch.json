@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "candidateSha": "fb8961fa94348a7e8c6f9ac3ca5ce9ede087dd74",
+  "target": "sextant-private-content",
+  "tier": "development",
+  "profiles": {
+    "android": [
+      {
+        "profile": "primary-phone",
+        "api": 36,
+        "device": "pixel_7",
+        "ram": "3072M",
+        "memory": 3072,
+        "lowRam": ""
+      }
+    ],
+    "apple": [
+      "primary-phone"
+    ]
+  },
+  "scenarios": {
+    "appleDevices": [],
+    "browser": [
+      "sextant-private-content-journeys"
+    ],
+    "journal": [],
+    "background": [],
+    "radio": "uwb-native-peer-session,ble-native-generic-discovery,ble-native-ibeacon-discovery,ble-native-eddystone-uid-discovery",
+    "ios": "permission-denied-native,permission-revoked-mid-route,gps-perfect-walk,offline-native-canonical-reconcile,offline-lost-response-canonical-reconcile,offline-restart-canonical-reconcile,virtual-player-navigation,virtual-offline-canonical-reconcile,geofence-native-background-wake",
+    "android": "device-reboot,qr-native-camera-valid,permission-denied-native,permission-approximate-native,permission-revoked-mid-route,motion-walk,stationary,barometer-floor-change,orientation-turn,heading-turn,gps-perfect-walk,offline-native-canonical-reconcile,offline-lost-response-canonical-reconcile,offline-restart-canonical-reconcile,virtual-player-navigation,virtual-offline-canonical-reconcile,battery-normal,battery-low,battery-saver,charger-change",
+    "provider": "all"
+  },
+  "transportSha": "f6c6fb936d7a8ab8cd0c34e83661c36d926c5032",
+  "transportTree": "b6a05620f8fc7bb453bcda07ac1554f5c6c09c93",
+  "branch": "codex/landfall-lab-fb8961fa9434-1792464941237",
+  "workflow": "landfall-device-lab.yml",
+  "createdAt": "2026-10-20T02:55:44.548Z",
+  "cleanup": "PASS",
+  "runId": "39361561155",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39361561155",
+  "harvested": "C:\\Users\\kkids\\.codex\\worktrees\\sextant-phase4-completion\\Codex_TreasureHunt\\artifacts\\landfall-device-lab\\hosted-fb8961fa9434-1792464941237\\run-39361561155"
+}

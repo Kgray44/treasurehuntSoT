@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "classification": "ENGINEERING_EVIDENCE_ORIGINAL_BYTES_SUBSET_NOT_ACCEPTANCE",
+  "sourceSha": "fb8961fa94348a7e8c6f9ac3ca5ce9ede087dd74",
+  "runId": "39361539057",
+  "originalArtifacts": 4,
+  "publishedOriginalArtifacts": 3,
+  "retainedPrivate": [
+    {
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb8961fa9434-1792464924837/run-39361539057/artifacts/landfall-browser-encrypted-failures-fb8961fa94348a7e8c6f9ac3ca5ce9ede087dd74/failure.encrypted",
+      "bytes": 42967622,
+      "sha256": "4fd151c48a5c6820b4cd7d4fca8cacaaedbb3c1082f63de14f71e6d352c6e542",
+      "reason": "CANONICAL_PRIVATE_ENCRYPTED_BUNDLE_RETAINED_IN_OWNED_ARTIFACTS_NOT_COPIED_TO_GIT"
+    }
+  ],
+  "reviewFinding": "FOUR_FAILED_AT_REAL_PEOPLE_EMPTY_STATE_EXPECTING_HEADING_BUT_SOURCE_RENDERS_STRONG_NO_DOSSIER_OR_FINAL_BASELINE_PROOF",
+  "files": [
+    {
+      "path": "files/0001-retention.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb8961fa9434-1792464924837/run-39361539057/artifacts/landfall-browser-encrypted-failures-fb8961fa94348a7e8c6f9ac3ca5ce9ede087dd74/retention.json",
+      "bytes": 840,
+      "sha256": "c3b43ea37657afc669549da16ee2d27a699cb746e61296d1e12ae0338569e2cf"
+    },
+    {
+      "path": "files/0002-browser-runtime.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb8961fa9434-1792464924837/run-39361539057/artifacts/landfall-browser-fb8961fa94348a7e8c6f9ac3ca5ce9ede087dd74/browser-diagnostics/50ffef54-73fa-4edb-96b3-b636db040792/955cd496-38f3-46b2-bc65-addcdc4ebc69/browser-runtime.json",
+      "bytes": 3305,
+      "sha256": "dc070d8df56736e2ac00d539f3c07f039c613009b6faac811e28379aebfd0582"
+    },
+    {
+      "path": "files/0003-browser-suite-profile.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb8961fa9434-1792464924837/run-39361539057/artifacts/landfall-browser-fb8961fa94348a7e8c6f9ac3ca5ce9ede087dd74/browser-diagnostics/50ffef54-73fa-4edb-96b3-b636db040792/955cd496-38f3-46b2-bc65-addcdc4ebc69/browser-suite-profile.json",
+      "bytes": 619,
+      "sha256": "10a29df7b2b662b4cac325b262fa8959ac606837ce61b2335046011035b39c06"
+    },
+    {
+      "path": "files/0004-hosted-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb8961fa9434-1792464924837/run-39361539057/hosted-receipt.json",
+      "bytes": 1526,
+      "sha256": "edfebcc8cf55d39b8c4760531ddaad7ea27cab9b59f2099062605600935c3988"
+    },
+    {
+      "path": "files/0005-dispatch.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb8961fa9434-1792464924837/dispatch.json",
+      "bytes": 2033,
+      "sha256": "f155663efb082ba7f5b8c9707de87268d90b15b953087ffeef94f7336c1ff663"
+    },
+    {
+      "path": "files/0006-admiralty-39361539057.log",
+      "sourcePath": "artifacts/sextant-phase4/admiralty-39361539057.log",
+      "bytes": 397693,
+      "sha256": "67e75745e4023806a51d0ebe4e2ad30808c250ea0645f1c323137a8f87d45943"
+    }
+  ]
+}
