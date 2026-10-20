@@ -6,7 +6,7 @@
   "status": "IN_PROGRESS",
   "initialCandidate": "5ff2739776513b8f8ed20c1cb661c164216d0eeb",
   "protectedBase": "f6af0b0e151f15f1a23808413ccee531b9827ca7",
-  "currentSoftwareCandidate": "395940ad721ceb21465532b59b27826ef50e9690",
+  "currentSoftwareCandidate": "818ad35622324f68b30434602cb92a49fc5dc3ae",
   "pr": "https://github.com/Kgray44/treasurehuntSoT/pull/709",
   "independentSourceReview": {
     "reviewerContext": "/root/sextant_source_review",
@@ -150,6 +150,13 @@
       "source": "395940ad721ceb21465532b59b27826ef50e9690",
       "reviewer": "/root/sextant_source_review",
       "disposition": "FIXTURE_METADATA_EDITION_LABEL_LOADED_RESULT_AND_IMMERSIVE_RETURN_FINDINGS_REPAIRED_NO_REMAINING_SOURCE_FINDING",
+      "reviewerRanTests": false,
+      "scope": "SOURCE_ONLY_FRESH_BROWSER_AND_RENDERED_PROOF_REQUIRED"
+    },
+    "creatorEntry": {
+      "source": "818ad35622324f68b30434602cb92a49fc5dc3ae",
+      "reviewer": "/root/sextant_source_review",
+      "disposition": "EXACT_ROLE_WITNESS_AND_COMPLETE_RECEIPT_INPUT_SCOPE_FINDINGS_RESOLVED_FINAL_ACCOUNT_RETURN_REVIEWED_CLEAR",
       "reviewerRanTests": false,
       "scope": "SOURCE_ONLY_FRESH_BROWSER_AND_RENDERED_PROOF_REQUIRED"
     }
@@ -1865,7 +1872,7 @@
     "historicalObligations": 141,
     "historicalFamilies": 13,
     "currentAffectedSurfaces": 178,
-    "currentUnregisteredSurfaces": 45,
+    "currentUnregisteredSurfaces": 43,
     "protectedCapturedOrAcceptedByThisContinuation": 0,
     "developmentCapturedVariants": 4,
     "planner": "PRODUCT_EXPERIENCE_UNREGISTERED_SURFACE",
@@ -1873,7 +1880,7 @@
     "reachDiagnostics": "PROTECTED_ACCEPTED_ON_BASE",
     "historicalAccounting": "PRESERVED_SEXTANT_3_OF_3_CROSSDECK_10_OF_3_R1_2_OF_3",
     "registeredNewPlayerWorkspaceSurfaces": 2,
-    "remainingSoftware": "45 unregistered affected surfaces at395940ad72 across178affected. Latest Suite-row development bounds pass4; independent review resolves visible review clipping but finds version-label spill, repair/captures pending. History lower supplement and first catalog guest journey pass4 with independent visible-content review clear and explicit viewport/fallback limits. Catalog normal Journal opening is separately about10seconds, not a3000ms response. Community390normal artwork SPAN blocks stretched-link input; narrow CSS repair awaits fresh source execution. Creator entry WIP; account/recovery/invitation/Admiralty/private-content/Landfall fixtures, governed legacy disposition, formal references/layout and protected qualification remain. Darwin ownership, accepted Crossdeck and external/owner gates stay separate.",
+    "remainingSoftware": "43 unregistered affected surfaces at818ad35622 across178affected. Latest Suite-row development bounds pass4; independent review resolves visible review clipping but finds version-label spill, repair/captures pending. History lower supplement and first catalog guest journey pass4 with independent visible-content review clear and explicit viewport/fallback limits. Catalog normal Journal opening is separately about10seconds, not a3000ms response. Community390normal artwork SPAN blocks stretched-link input; narrow CSS repair awaits fresh source execution. Creator entry development dispatched; formal positive creation needs canonical case-specific support; account/recovery/invitation/Admiralty/private-content/Landfall fixtures, governed legacy disposition, formal references/layout and protected qualification remain. Darwin ownership, accepted Crossdeck and external/owner gates stay separate.",
     "independentDevelopmentJourneyReview": {
       "source": "0d8b3c7841966a1d1c8b5dae21570b1043dc7915",
       "reviewer": "/root/sextant_source_review",
@@ -1905,12 +1912,12 @@
     "registeredNewPassportSourcePaths": 14,
     "newlyRegisteredAffectedPassportSurfaces": 12,
     "sourceReconciliation": {
-      "path": "phase4-source-reconciliation-catalog-20261019.json",
-      "sha256": "d988a6015e4e3347a2348316e6f34292a9526af08b63c0c667bde03defe8b8d6",
-      "sourceSha": "395940ad721ceb21465532b59b27826ef50e9690",
+      "path": "phase4-source-reconciliation-creator-entry-20261019.json",
+      "sha256": "3be597150df6e2ed84099f141c66ed90ce790e041b86a22e7a23cb026e522e0e",
+      "sourceSha": "818ad35622324f68b30434602cb92a49fc5dc3ae",
       "baseSha": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
       "affected": 178,
-      "unregistered": 45,
+      "unregistered": 43,
       "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
     },
     "sourceReconciliations": [
@@ -1986,6 +1993,15 @@
         "affected": 178,
         "unregistered": 45,
         "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
+      },
+      {
+        "path": "phase4-source-reconciliation-creator-entry-20261019.json",
+        "sha256": "3be597150df6e2ed84099f141c66ed90ce790e041b86a22e7a23cb026e522e0e",
+        "sourceSha": "818ad35622324f68b30434602cb92a49fc5dc3ae",
+        "baseSha": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
+        "affected": 178,
+        "unregistered": 43,
+        "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
       }
     ],
     "consumerIndependentRenderedReviewSuccessor": {
@@ -2039,6 +2055,17 @@
       "reviewer": "/root/sextant_source_review",
       "settledDrawerAndLoadedSeaTrials": "PASS_ALL_FOUR",
       "scope": "DEVELOPMENT_ONLY_NOT_PROTECTED_ACCEPTANCE"
+    },
+    "formalPositiveCreatorCreation": {
+      "status": "OPEN_SOFTWARE_GAP",
+      "reason": "Canonical declarative runtime shares one fixture across device/motion cases and supports static fills; a fixed creation slug collides after the first case.",
+      "currentFormalScope": "SECURE_FORM_CANCELLATION_ORDINARY_RETURN",
+      "developmentScope": "FOUR_DISTINCT_OWNED_FIXTURES_ACTUAL_PRODUCTION_201_CREATION_REOPEN_AND_ACCOUNT_RETURN",
+      "notAuthorizedWorkarounds": [
+        "HIDDEN_DATA_RESET",
+        "PRODUCT_SLUG_CHANGE_FOR_TESTS",
+        "FALSE_POSITIVE_CREATION_ACCEPTANCE"
+      ]
     }
   },
   "externalGates": [
@@ -2106,6 +2133,12 @@
       "sourceSha": "7b785a39e3c2e059ec46c2035e28af6a8b1fbdb0",
       "target": "sextant-community",
       "scope": "DECORATIVE_ARTWORK_HIT_AREA_REPAIR_ORIGINAL_ACTION_RETAINED"
+    },
+    {
+      "runId": "39346148525",
+      "sourceSha": "818ad35622324f68b30434602cb92a49fc5dc3ae",
+      "target": "sextant-creator-entry",
+      "scope": "FIRST_DISTINCT_FIXTURE_ACTUAL_DRAFT_CREATION_AND_ACCOUNT_RETURN"
     }
   ]
 }

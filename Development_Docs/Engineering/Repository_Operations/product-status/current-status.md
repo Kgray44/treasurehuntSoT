@@ -16,7 +16,7 @@ idle/standby recovery and selected iOS permission/geofence cases pass with exact
 source and cleanup receipts. The actual Android WebView Device controls and paired
 Journal development cases pass. Normal iOS Devices proof requires canonical
 Darwin process-supervision support; broader rendered consumer acceptance remains
-pending. The public-catalog source checkpoint confirms 178 affected surfaces and 45
+pending. The Creator-entry source checkpoint confirms 178 affected surfaces and 43
 missing registrations. Fresh four-variant consumer/resource runs pass at their
 recorded sources; independent rendered review clears the Passport contrast, safe
 preview and mobile authoring-rail repairs. Distinct Creator/Crew development proof now passes with clear independent
@@ -40,6 +40,8 @@ normal Guide failure still needs a product cause;
 trusted pointer observations identify decorative artwork above its stretched
 link with no Guide request. Source-reviewed badge/pointer repairs and explicit
 Suite/badge captures run at `7b785a39e3`; results remain pending.
+Distinct-fixture Creator creation/account-return development runs at `818ad35622`;
+positive formal creation still needs canonical case-specific input/fixture support.
 Reach diagnostics are accepted on main; Crossdeck #721
 is still unmerged. The following R1 accounting and older qualification results
 retain their historical source identities.

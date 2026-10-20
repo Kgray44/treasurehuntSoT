@@ -14,7 +14,7 @@ The [2026-10-19 continuation](../../Sextant/Project_Sextant_Phase_4_Virtual_Comp
 adds focused corrections to native pause/revocation, expected-interruption
 recovery, compatible local attitude, late acknowledgements and truthful radio
 availability. It grants no completed-feature promotion or Phase 4 acceptance.
-The public-catalog source checkpoint has 178 affected surfaces and still requires 45 experience registrations,
+The Creator-entry source checkpoint has 178 affected surfaces and still requires 43 experience registrations,
 remaining consumer capture/review, normal iOS Device product proof and the
 separate D4/owner gates.
 Android WebView Device controls and paired Journal development cases pass;
@@ -36,6 +36,8 @@ explicit viewport/fallback limits and separately about ten-second normal Journal
 opening. Community's new diagnostic
 identifies decorative artwork above its stretched link. Narrow badge/pointer
 repairs run at `7b785a39e3`; their results and protected acceptance remain pending.
+Creator creation/account-return development runs at `818ad35622`; formal positive
+creation remains open pending canonical case-specific input/fixture support.
 The bounded continuation passes 327 focused tests, 59 D0/D1 scenarios, Android
 OS idle/standby recovery and three selected iOS permission/geofence scenarios.
 Every receipt retains its actual source; none promotes the feature to accepted.

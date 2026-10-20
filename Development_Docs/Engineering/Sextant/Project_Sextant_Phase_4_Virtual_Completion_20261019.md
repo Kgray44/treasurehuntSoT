@@ -884,3 +884,15 @@ account-menu return after reopening, audits/captures Overview and verifies the
 same owner before all final baseline/edition assertions. Independent source
 review is clear with no remaining finding; fresh hosted/rendered proof and the
 explicit positive formal-creation gap remain open.
+
+The [Creator-entry checkpoint](phase4-source-reconciliation-creator-entry-20261019.json)
+binds `818ad35622324f68b30434602cb92a49fc5dc3ae` to accepted main
+`40491dd68ace88ee033b53fd264ddbfe303c6d28`:178affected/43unregistered. The
+declaration adds the actual new-form page/component to prepared entry and
+cancellation coverage; it does not discharge positive formal creation. The
+planner remains BLOCKED, historical141paths/13families and campaign counts
+remain intact, and no capture/acceptance credit is inferred. Development
+run39346148525 exercises actual creation/reopen/account return with four distinct
+owned fixtures. Its result remains pending. Authoring39345439738 at `7b785a39e3`
+now passes all four including full badge-text containment and actual Suite/badge
+captures; its78downloaded artifacts await independent rendered review.
