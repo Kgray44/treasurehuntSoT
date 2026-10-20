@@ -1,0 +1,31 @@
+✖ task-owned HTTP proxy preserves its browser origin through backend redirects (75.676ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1407.7932
+
+✖ failing tests:
+
+test at tests\sounding-line\ordinary.test.mjs:1183:1
+✖ task-owned HTTP proxy preserves its browser origin through backend redirects (75.676ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'http://localhost:57448/player/invitation?synthetic=only#entry'
+  - 'http://127.0.0.1:57449/player/invitation?synthetic=only#entry'
+  
+      at TestContext.<anonymous> (file:///C:/Users/kkids/.codex/worktrees/sextant-http-redirect-prerequisite/Codex_TreasureHunt/tests/sounding-line/ordinary.test.mjs:1214:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'http://localhost:57448/player/invitation?synthetic=only#entry',
+    expected: 'http://127.0.0.1:57449/player/invitation?synthetic=only#entry',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
