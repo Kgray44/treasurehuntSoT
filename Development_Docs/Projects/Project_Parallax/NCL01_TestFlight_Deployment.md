@@ -3,7 +3,7 @@ title: NCL-01 first physical iPhone TestFlight deployment
 audience: engineering-owner
 status: preparation-in-progress
 canonical_for: ncl01-testflight-deployment-record
-last_reviewed: 2026-10-19
+last_reviewed: 2026-10-20
 ---
 
 # NCL-01 TestFlight deployment
@@ -16,14 +16,17 @@ are outside this deployment change.
 Team ID: `X2JZ9N65V2`. Bundle ID: `com.voyagewright.landfall`. Source baseline:
 `76d1787e1340e396bc95747293d43e57130b00ed`. Owned preparation branch:
 `codex/ncl01-testflight`. Paid Apple Developer enrollment and TestFlight installed
-on iPhone 17 Pro are owner-reported. No signed installation is established.
+on iPhone 17 Pro are owner-reported. On October 20 the owner reported installing
+the app through TestFlight and opening its working shell. Exact build readback,
+successful phone sign-in and physical AR behavior remain unverified.
 
 **Current gate:** private beta **0.1.0 (2)** is uploaded, processed and available
 in **NCL-01 Owner**. Apple reports `IN_BETA_TESTING` and the sole account holder
 as `INVITED`. [The current readiness receipt](evidence/ncl01-testflight-20261019/internal-testflight-ready-20261019.receipt.json)
-binds candidate `484183ac15badcfefd5b08cfd187e330e567fbf8`. Phone certificate
-trust, exact-build installation, physical native AR and owner acceptance are
-pending. Build 2 is consumed; resume observation rather than uploading it again.
+binds candidate `484183ac15badcfefd5b08cfd187e330e567fbf8`. Installation and app
+opening are now owner-reported; sign-in is the current owner blocker. Phone
+certificate trust, exact build readback, physical native AR and owner acceptance
+remain separate pending gates. Build 2 is consumed; do not upload it again.
 
 The owner has now created the explicit identifier and app record. Their screenshots
 show the correct team/bundle, **VoyageWright Landfall**, app Apple ID `6824734220`,
@@ -382,3 +385,27 @@ distribution certificate/profile secrets or uploading again. Its
 records `PASS`, Apple `VALID` and the existing internal-group attachment. The
 mode's `uploadAccepted: false` means that observation did not upload; it does not
 undo the separate successful upload receipt. No physical acceptance is inferred.
+
+## Owner installation and sign-in diagnosis, October 20
+
+The owner reports installing the TestFlight app and opening a working app shell.
+Ordinary sign-in then displayed **Those credentials were not accepted**.
+Exact phone build readback, successful native sign-in and physical AR have not
+been observed. Earlier readiness receipts remain immutable snapshots.
+
+The [scoped sign-in diagnostic](evidence/ncl01-testflight-20261019/sign-in-20261020.receipt.json)
+verified the exact isolated runtime database, ACTIVE account/profile and a match
+between the stored password hash and the existing private credential file. An
+ordinary sign-in request to the same `.18` origin passed normal certificate
+validation, returned 200, set a Secure session cookie and authenticated the
+session context. Only the diagnostic's own session was then signed out and
+verified revoked. Credentials, fixture, services, TLS and app source are unchanged.
+
+The running preview and beta use identical sign-in source. That exact 401 message
+comes from account/password validation; the UI uses a different message if a
+successful login cannot establish its session. The password is exact and is not
+trimmed. The cause of the phone's rejected attempt is not observed.
+An owner-only plaintext login aid at
+`D:\CodexTemp\ncl01-preview\VoyageWright-Sign-In.private.txt` shows the same email
+and password without JSON quotation marks or trailing commas. Clear saved
+autofill and copy only each value line. Its contents remain outside Git and chat.

@@ -3,7 +3,7 @@ title: NCL-01 isolated TestFlight deployment
 audience: automation
 status: current
 canonical_for: ncl01-testflight-deployment-context
-last_reviewed: 2026-10-19
+last_reviewed: 2026-10-20
 ---
 
 # NCL-01 first physical iPhone beta
@@ -43,7 +43,9 @@ only the existing account holder. A real signed device archive and App Store IPA
 export passed in run 39361959547. Run 39363249446 uploaded build 0.1.0 (2) at
 `484183ac15badcfefd5b08cfd187e330e567fbf8`; Apple processing is VALID. Current
 internal beta is IN_BETA_TESTING in NCL-01 Owner, sole account-holder INVITED.
-Phone trust, installation and physical tracking remain separate unproved gates. Do not repeat
+On October 20 the owner reported TestFlight installation and a working app shell,
+but ordinary sign-in returned "Those credentials were not accepted." Exact build
+readback, phone trust and physical tracking remain separate gates. Do not repeat
 certificate creation for a pipeline repair.
 
 The template `.agents/ncl01-testflight-hosted.yml` is transported as one generated
@@ -114,11 +116,21 @@ new agreement. Same existing internal group was attached after compliance cleare
 API/browser confirm Testing and Invited. Original failure stays immutable.
 Resume only observe mode for this build; future binary uploads need a new number.
 See the deployment record and current readiness receipt. Owner phone checks are
-deferred; completion remains physical TestFlight installation and real AR behavior.
+now in progress; completion remains successful native sign-in and real AR behavior.
 Observation run 39364087090 passed against the same compiled candidate/version/
 build without archive/re-upload or distribution secrets; retained originals bind
 Apple VALID, existing internal group and successful API-key cleanup. Its false
 uploadAccepted is specific to observe mode, not a reversal of the upload proof.
+
+October 20 sign-in diagnosis: existing file credential matches the ACTIVE account
+in the exact isolated runtime database. An ordinary POST over verified HTTPS .18
+returned 200, set a Secure session cookie, and authenticated the session context.
+The owned probe session was signed out and verified revoked. No password/database/
+TLS/runtime change. Password input is exact, not trimmed. An owner-only plaintext
+login aid at D:\CodexTemp\ncl01-preview\VoyageWright-Sign-In.private.txt presents the
+same existing values without JSON punctuation. Never publish its contents. Owner
+must retry only the email/password value lines after clearing autofill; do not
+infer a native phone sign-in or AR success from the server probe.
 
 Success is the owner installing this exact beta through TestFlight, opening
 native ARKit camera placement, seeing the original interactive 3D chest and
