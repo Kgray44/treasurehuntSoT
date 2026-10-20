@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "classification": "ENGINEERING_EVIDENCE_ORIGINAL_BYTES_SUBSET_NOT_ACCEPTANCE",
+  "sourceSha": "cf80de34ef3035bacd8f93b34ba9cca3bdd373f2",
+  "runId": "39368146964",
+  "originalArtifacts": 4,
+  "publishedOriginalArtifacts": 3,
+  "retainedPrivate": [
+    {
+      "sourcePath": "artifacts/landfall-device-lab/hosted-cf80de34ef30-1792469416286/run-39368146964/artifacts/landfall-browser-encrypted-failures-cf80de34ef3035bacd8f93b34ba9cca3bdd373f2/failure.encrypted",
+      "bytes": 89382410,
+      "sha256": "691a4a2e5d0aa52fe9810e657cb8a6211b20c818bcbdf2d982f51eede633afdf",
+      "reason": "CANONICAL_PRIVATE_ENCRYPTED_BUNDLE_RETAINED_IN_OWNED_ARTIFACTS_NOT_COPIED_TO_GIT"
+    }
+  ],
+  "reviewFinding": "DESKTOP_NORMAL_TRANSIENT_CREW_CARD_OPACITY_AXE_FAILURE_OTHER_THREE_ACTUAL_CLAIM_VERIFY_REOPEN_THEN_SECOND_SECURE_LINK_TITLE_UNAVAILABLE",
+  "files": [
+    {
+      "path": "files/0001-browser-runtime.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-cf80de34ef30-1792469416286/run-39368146964/artifacts/landfall-browser-cf80de34ef3035bacd8f93b34ba9cca3bdd373f2/browser-diagnostics/61191c3c-cf6f-4d65-be1b-b86beb38beaa/f31927cc-5886-4d37-8ec6-1b53f16e44e0/browser-runtime.json",
+      "bytes": 3382,
+      "sha256": "0636fd104a4cb307a7e54d85ae85e44b558cdd460f876b3a4a9a472c49e2c61d"
+    },
+    {
+      "path": "files/0002-browser-suite-profile.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-cf80de34ef30-1792469416286/run-39368146964/artifacts/landfall-browser-cf80de34ef3035bacd8f93b34ba9cca3bdd373f2/browser-diagnostics/61191c3c-cf6f-4d65-be1b-b86beb38beaa/f31927cc-5886-4d37-8ec6-1b53f16e44e0/browser-suite-profile.json",
+      "bytes": 620,
+      "sha256": "37fcb87115203f131b62e2d6a8b69d31be5d3cd895386b995eb7f4799f5e5a27"
+    },
+    {
+      "path": "files/0003-retention.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-cf80de34ef30-1792469416286/run-39368146964/artifacts/landfall-browser-encrypted-failures-cf80de34ef3035bacd8f93b34ba9cca3bdd373f2/retention.json",
+      "bytes": 882,
+      "sha256": "fb077245b729d974d436ed54451ec71db3bdfd3bd5dda1813a117b90b506fe58"
+    },
+    {
+      "path": "files/0004-hosted-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-cf80de34ef30-1792469416286/run-39368146964/hosted-receipt.json",
+      "bytes": 1526,
+      "sha256": "2ce2def959d49d1843917ad2b15c3ed06f22727226e58e95ffd690b33ebd4cd4"
+    },
+    {
+      "path": "files/0005-dispatch.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-cf80de34ef30-1792469416286/dispatch.json",
+      "bytes": 2035,
+      "sha256": "2642637409a74880a6247c7b573e463e6c313bf87b22b230de6eea2f989d98c0"
+    },
+    {
+      "path": "files/0006-invitation-39368146964.log",
+      "sourcePath": "artifacts/sextant-phase4/invitation-39368146964.log",
+      "bytes": 453399,
+      "sha256": "8243eb0c45814a2152a075dbf4814c11747b2d572be31992820935d22bf1e4cb"
+    }
+  ]
+}

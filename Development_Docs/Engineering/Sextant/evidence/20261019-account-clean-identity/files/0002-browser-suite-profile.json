@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/sextant-account-recovery-journeys.spec.ts"
+  ],
+  "status": "PASS",
+  "failureCategory": null,
+  "failureCode": null,
+  "diagnosticBinding": {
+    "version": 1,
+    "runId": "08f6ddd6-7911-4c51-ac0b-1705813df26c",
+    "scopeId": "f3763180-f399-4f39-b975-4cb4eeb35a7f",
+    "baseSha": "cf80de34ef3035bacd8f93b34ba9cca3bdd373f2",
+    "candidateSha": "cf80de34ef3035bacd8f93b34ba9cca3bdd373f2",
+    "planDigest": "988cf974347506e9e2386923c348e8e0c25d836053ef7719589c3f658e224e3b"
+  }
+}

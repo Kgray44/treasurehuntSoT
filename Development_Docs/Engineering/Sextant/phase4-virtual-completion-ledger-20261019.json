@@ -274,6 +274,12 @@
       "reviewer": "/root/sextant_source_review",
       "disposition": "SCOPED_ACTUAL_PIN_ERROR_AND_PRIVATE_OUTBOX_IGNORE_CLEAR",
       "scope": "SOURCE_ONLY_NOT_RENDERED_ACCEPTANCE"
+    },
+    "emailConfirmationContinuation": {
+      "source": "5d440557c2051b47a23f0e634a604daad34f0fdd",
+      "reviewer": "/root/sextant_source_review",
+      "disposition": "R39366698914_01_SOURCE_CORRECTION_CLEAR",
+      "scope": "SOURCE_ONLY_FRESH_RENDERED_REVIEW_REQUIRED"
     }
   },
   "localChecks": {
@@ -3065,12 +3071,27 @@
       },
       "independentRenderedReview": {
         "reviewer": "/root/sextant_source_review",
-        "status": "PENDING",
+        "status": "REPAIR_AND_RECAPTURE_HASH_AND_SOURCE_AUDIT_IN_PROGRESS",
         "hashedFiles": 86,
         "hostedArtifacts": 83,
         "pngCount": 36,
         "videoCount": 40,
-        "videos": "NOT_YET_VIEWED"
+        "videos": "NOT_YET_VIEWED",
+        "pngInspected": 36,
+        "resolvedFindings": ["R39363230222-01"],
+        "findings": [
+          {
+            "id": "R39366688335-01",
+            "priority": 2,
+            "classification": "PRODUCT_CONTRAST",
+            "scope": "MOBILE_ENABLED_CONFIRM_PRIVATE_IMPORT_DARK_INK_ON_DARK_GLOBAL_HOVER_BACKGROUND",
+            "images": [
+              "files/0030-private-content-plan-confirmation.png",
+              "files/0050-private-content-plan-confirmation.png"
+            ],
+            "repair": "SCOPED_ENABLED_PRIVATE_PRIMARY_HOVER_BRASS_BACKGROUND_AND_REAL_SETTLED_HOVER_CONTRAST_CAPTURE"
+          }
+        ]
       },
       "storage": {
         "schemaVersion": 1,
@@ -3160,12 +3181,22 @@
       },
       "independentRenderedReview": {
         "reviewer": "/root/sextant_source_review",
-        "status": "PENDING",
+        "status": "CLEAR_WITH_LIMITS",
         "hashedFiles": 93,
         "hostedArtifacts": 90,
         "pngCount": 40,
         "videoCount": 44,
-        "videos": "NOT_YET_VIEWED"
+        "videos": "HASH_ONLY_NOT_VIEWED",
+        "pngInspected": 40,
+        "sourceTree": "fff049868faa382c23c5e1a7f86cc115d4c4ee10",
+        "sourceFingerprint": "14e2cacec0cf6ef7125de1dbc83fdcbf8b4a7cf50e2d4ca47003d96e2f4d2ada",
+        "fingerprintBlobCount": 1952,
+        "resolvedFindings": ["R39364691371-01", "R39364691371-02"],
+        "findings": [],
+        "limits": [
+          "VIEWPORT_ONLY_NO_FULL_PAGE_OR_ANIMATION_ACCEPTANCE",
+          "NO_CONSENTED_SUPPORT_APPROVED_READ_NATIVE_PROTECTED_OR_OWNER_ACCEPTANCE"
+        ]
       },
       "assertions": {
         "unchangedCanonicalProgressAndEditionBytes": true,
@@ -3348,6 +3379,153 @@
         "point": "ACTUAL_WRONG_PIN_400_ERROR_ASSERTION_ALSO_MATCHES_NEXT_ROUTE_ANNOUNCER",
         "invitationAcceptClaimMergeAndFinalBaselinesReached": false,
         "repair": "SCOPE_SAME_ERROR_ASSERTION_AND_CAPTURE_TO_ACTUAL_INVITATION_MAIN"
+      }
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "cf80de34ef3035bacd8f93b34ba9cca3bdd373f2",
+      "transportSha": "55d1bfed16b55a97f2114fa21842e37b9f28ec56",
+      "runId": "39368155728",
+      "status": "HARVESTED_SUCCESS_FOUR_VARIANTS_CLEAN_IDENTITY_PRE_TERMINAL_CONFIRMATION_REPAIR",
+      "artifacts": 114,
+      "productionBuild": "PASS",
+      "qualification": false,
+      "cleanup": {
+        "runtime": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 0,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 0,
+            "elapsedMs": 3,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 143,
+            "elapsedMs": 57,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        },
+        "transport": {
+          "result": "PASS",
+          "ownedResources": ["refs/heads/codex/landfall-lab-cf80de34ef30-1792469421520"],
+          "remainingResources": []
+        }
+      },
+      "publication": "evidence/20261019-account-clean-identity/publication-index.json",
+      "source": {
+        "sourceSha": "cf80de34ef3035bacd8f93b34ba9cca3bdd373f2",
+        "sourceTree": "b10647638c03b195fe8c6a2c6305de36a6d2ac5b",
+        "dirty": false,
+        "sourceFingerprint": "868e0279da976a40acb6809beb3af0c948a8d8924744c4440198402215192331"
+      },
+      "responseMs": {
+        "budget": 3000,
+        "points": 60,
+        "maximum": 1129.806854999988
+      },
+      "independentRenderedReview": {
+        "status": "PENDING",
+        "priorFinding": "R39366698914-01_UNFIXED_AT_THIS_SOURCE"
+      }
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "cf80de34ef3035bacd8f93b34ba9cca3bdd373f2",
+      "transportSha": "c7ec0801956af39da1ab52ce17390b17dd292cdc",
+      "runId": "39368146964",
+      "status": "HARVESTED_FAILURE_ONE_TRANSIENT_CREW_AXE_THREE_SECOND_SECURE_LINK_TITLE",
+      "artifacts": 4,
+      "productionBuild": "PASS",
+      "qualification": false,
+      "cleanup": {
+        "runtime": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 1,
+            "elapsedMs": 4,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 143,
+            "elapsedMs": 30,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        },
+        "transport": {
+          "result": "PASS",
+          "ownedResources": ["refs/heads/codex/landfall-lab-cf80de34ef30-1792469416286"],
+          "remainingResources": []
+        }
+      },
+      "publication": "evidence/20261019-invitation-link-diagnostic/publication-index.json",
+      "diagnostics": {
+        "retention": "INCOMPLETE",
+        "issues": ["LIMIT", "FAILURE_ATTACHMENTS_INCOMPLETE"],
+        "memberCount": 42,
+        "rawBytes": 50260801,
+        "ciphertextBytes": 89382410,
+        "retainedPrivate": [
+          {
+            "sourcePath": "artifacts/landfall-device-lab/hosted-cf80de34ef30-1792469416286/run-39368146964/artifacts/landfall-browser-encrypted-failures-cf80de34ef3035bacd8f93b34ba9cca3bdd373f2/failure.encrypted",
+            "bytes": 89382410,
+            "sha256": "691a4a2e5d0aa52fe9810e657cb8a6211b20c818bcbdf2d982f51eede633afdf",
+            "reason": "CANONICAL_PRIVATE_ENCRYPTED_BUNDLE_RETAINED_IN_OWNED_ARTIFACTS_NOT_COPIED_TO_GIT"
+          }
+        ],
+        "fixedBudgetUnchanged": true
+      },
+      "failure": {
+        "desktopNormal": "WAITING_ROOM_AXE_DURING_CREW_CARD_OPACITY_ANIMATION",
+        "otherThree": "ACTUAL_CLAIM_VERIFICATION_LIBRARY_REOPEN_SIGNOUT_THEN_SECOND_SECURE_LINK_HAS_NO_EXPECTED_TITLE",
+        "mergeAndFinalBaselinesReached": false,
+        "successor": "SETTLED_CREW_OPACITY_WITHIN_ORIGINAL_MEASURES_AND_BOUNDED_NONSECRET_SECOND_LINK_METADATA_NO_PRODUCT_CAUSE_ASSUMED"
       }
     }
   ],
@@ -3672,7 +3850,9 @@
     "evidence/20261019-private-content-outcomes/publication-index.json",
     "evidence/20261019-admiralty-identity-recapture/publication-index.json",
     "evidence/20261019-account-recovery-lifecycle/publication-index.json",
-    "evidence/20261019-invitation-pin-alert-diagnostic/publication-index.json"
+    "evidence/20261019-invitation-pin-alert-diagnostic/publication-index.json",
+    "evidence/20261019-account-clean-identity/publication-index.json",
+    "evidence/20261019-invitation-link-diagnostic/publication-index.json"
   ],
   "currentProtectedBase": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
   "canonicalHostDependencies": [
@@ -3688,16 +3868,10 @@
   ],
   "pendingDevelopmentRuns": [
     {
-      "runId": "39368146964",
-      "sourceSha": "cf80de34ef3035bacd8f93b34ba9cca3bdd373f2",
-      "target": "sextant-invitation",
-      "scope": "ACTUAL_PIN_ERROR_SELECTOR_CORRECTION"
-    },
-    {
-      "runId": "39368155728",
-      "sourceSha": "cf80de34ef3035bacd8f93b34ba9cca3bdd373f2",
+      "runId": "39368740034",
+      "sourceSha": "5d440557c2051b47a23f0e634a604daad34f0fdd",
       "target": "sextant-account-recovery",
-      "scope": "CANONICAL_PRIVATE_OUTBOX_IGNORE_CLEAN_IDENTITY_PROOF_BEFORE_NEW_TERMINAL_CONFIRMATION_FINDING_REPAIR"
+      "scope": "TERMINAL_CONSUMED_EMAIL_CONFIRMATION_AND_PRESERVED_SIGNIN_RETURN_RECAPTURE"
     }
   ]
 }
