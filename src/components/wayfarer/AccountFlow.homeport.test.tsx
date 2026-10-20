@@ -68,6 +68,38 @@ describe("Homeport account lifecycle", () => {
     expect(screen.getByRole("link", { name: "Return to Sign In" })).toHaveAttribute("href", "/sign-in");
   });
 
+  it("keeps a confirmed email change terminal and preserves its sign-in return", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => ({ ok: true }) });
+    vi.stubGlobal("fetch", fetchMock);
+    currentUser.invalidate.mockResolvedValue({ status: "anonymous", authenticated: false });
+    const view = render(
+      <AccountFlow mode="email-change" query={{ token: "synthetic-consumable-token" }} initialCsrf="csrf" />,
+    );
+    const confirm = screen.getByRole("button", { name: "Confirm email change" });
+    fireEvent.click(confirm);
+    const success = "Your primary email was changed and existing sessions were ended. Sign in with the new address.";
+    expect(await screen.findByText(success)).toBeVisible();
+    expect(confirm).toBeDisabled();
+    // A duplicate form event must not resubmit a consumed challenge or clear success.
+    fireEvent.submit(view.container.querySelector("form")!);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(screen.getByText(success)).toBeVisible();
+    expect(screen.getByRole("link", { name: "Sign in with the new email" })).toHaveAttribute("href", "/sign-in");
+  });
+
+  it("allows correction after a rejected email confirmation", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue({ ok: false, json: async () => ({ error: "The confirmation is unavailable." }) });
+    vi.stubGlobal("fetch", fetchMock);
+    render(<AccountFlow mode="email-change" query={{ token: "synthetic-invalid-token" }} initialCsrf="csrf" />);
+    const confirm = screen.getByRole("button", { name: "Confirm email change" });
+    fireEvent.click(confirm);
+    expect(await screen.findByText("The confirmation is unavailable.")).toBeVisible();
+    expect(confirm).toBeEnabled();
+    expect(screen.queryByRole("link", { name: "Sign in with the new email" })).not.toBeInTheDocument();
+  });
+
   it("homeport.owner-correction.round3.patch-a.password-feedback is live, accessible, and quiet before confirmation typing", () => {
     render(<AccountFlow mode="register" />);
     expect(screen.queryByText("Passwords do not match.")).not.toBeInTheDocument();

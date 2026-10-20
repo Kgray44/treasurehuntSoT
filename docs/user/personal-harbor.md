@@ -3,7 +3,7 @@ title: Personal Harbor
 audience: product-users
 status: current
 canonical_for: personal-harbor
-last_reviewed: 2026-10-19
+last_reviewed: 2026-10-20
 ---
 
 # Personal Harbor
@@ -15,3 +15,5 @@ In the Sextant Phase 4 candidate, an unclaimed guest can open **Personal Informa
 ## Chronicle Passport
 
 **Chronicle Passport** is a separate destination for your private Voyage history and remembrance. Personal Harbor offers an **Open Chronicle Passport** action, while Passport owns its Timeline, People, statistics, memories, keepsakes, artifacts, and saved material. Use Personal Harbor for account management and Passport for what you experienced.
+
+In the Sextant candidate, a successful primary email change disables its consumed confirmation and keeps **Sign in with the new email** available. The candidate correction still requires experience qualification.

@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-10-19
+last_reviewed: 2026-10-20
 ---
 
 # Changelog
@@ -19,6 +19,9 @@ last_reviewed: 2026-10-19
 - Product Experience Engineering adds selective experience contracts and real-browser evidence to ordinary Sounding Line, with independent criticism, bounded repair, protected capture/review attestation and explicit spatial baseline debt. [Operations and proof](Development_Docs/Testing/Product_Experience/README.md) preserve product and owner acceptance authority.
 
 ### Corrected
+
+- The Sextant candidate keeps a successful primary email change terminal: its
+  consumed confirmation stays disabled and the sign-in return remains available.
 
 - Personal Information exposes the existing claim and merge paths for unclaimed
   guest accounts. Admiralty account-identity rows wrap long IDs while keeping

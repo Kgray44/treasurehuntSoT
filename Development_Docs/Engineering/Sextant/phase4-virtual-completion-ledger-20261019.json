@@ -268,6 +268,12 @@
       },
       "sourceRepairFindingIds": ["R39363230222-01", "R39364691371-01", "R39364691371-02"],
       "findingResolution": "FRESH_CAPTURE_AND_INDEPENDENT_REVIEW_PENDING"
+    },
+    "invitationAlertContinuation": {
+      "source": "cf80de34ef3035bacd8f93b34ba9cca3bdd373f2",
+      "reviewer": "/root/sextant_source_review",
+      "disposition": "SCOPED_ACTUAL_PIN_ERROR_AND_PRIVATE_OUTBOX_IGNORE_CLEAR",
+      "scope": "SOURCE_ONLY_NOT_RENDERED_ACCEPTANCE"
     }
   },
   "localChecks": {
@@ -3234,12 +3240,31 @@
       },
       "independentRenderedReview": {
         "reviewer": "/root/sextant_source_review",
-        "status": "PENDING",
+        "status": "IN_PROGRESS_CONFIRMED_EMAIL_CHANGE_TERMINAL_ACTION_FINDING",
         "hashedFiles": 117,
         "hostedArtifacts": 114,
         "pngCount": 52,
         "videoCount": 56,
-        "videos": "NOT_YET_VIEWED"
+        "videos": "NOT_YET_VIEWED",
+        "sourceFingerprintVerified": true,
+        "fingerprintBlobCount": 1952,
+        "sourceDisposition": "FROZEN_FINGERPRINT_MATCHES_ALL_FOUR_ORIGINAL_DIRTY_FLAGS_RETAINED_FULL_PORCELAIN_NOT_RECORDED",
+        "findings": [
+          {
+            "id": "R39366698914-01",
+            "priority": 2,
+            "classification": "PRODUCT_BEHAVIOR",
+            "scope": "SUCCESSFUL_EMAIL_CHANGE_LEAVES_CONSUMED_CONFIRMATION_ENABLED_SECOND_SUBMISSION_CAN_REMOVE_SUCCESS_AND_RETURN",
+            "images": [
+              "files/0006-account-email-change-confirmed.png",
+              "files/0034-account-email-change-confirmed.png",
+              "files/0062-account-email-change-confirmed.png",
+              "files/0090-account-email-change-confirmed.png"
+            ],
+            "repair": "TERMINAL_CONFIRMATION_STATE_BOUND_TO_ACTUAL_TOKEN_DISABLE_CONSUMED_ACTION_GUARD_DUPLICATE_SUBMIT_PRESERVE_SIGN_IN_RETURN",
+            "status": "SOURCE_REPAIR_PREPARED_FRESH_EXECUTION_AND_REVIEW_REQUIRED"
+          }
+        ]
       },
       "sourceDisposition": "DIRTY_TRUE_PRESERVED_NO_CLEAN_SOURCE_ACCEPTANCE",
       "assertions": {
@@ -3661,5 +3686,18 @@
       "passingCompanionOrBuildIsNotProductExecution": true
     }
   ],
-  "pendingDevelopmentRuns": []
+  "pendingDevelopmentRuns": [
+    {
+      "runId": "39368146964",
+      "sourceSha": "cf80de34ef3035bacd8f93b34ba9cca3bdd373f2",
+      "target": "sextant-invitation",
+      "scope": "ACTUAL_PIN_ERROR_SELECTOR_CORRECTION"
+    },
+    {
+      "runId": "39368155728",
+      "sourceSha": "cf80de34ef3035bacd8f93b34ba9cca3bdd373f2",
+      "target": "sextant-account-recovery",
+      "scope": "CANONICAL_PRIVATE_OUTBOX_IGNORE_CLEAN_IDENTITY_PROOF_BEFORE_NEW_TERMINAL_CONFIRMATION_FINDING_REPAIR"
+    }
+  ]
 }

@@ -232,6 +232,7 @@ for (const viewport of [
         await expect(accountStatus).toHaveText(
           "Your primary email was changed and existing sessions were ended. Sign in with the new address.",
         );
+        await expect(page.getByRole("button", { name: "Confirm email change", exact: true })).toBeDisabled();
         expect((await readAccount()).emails).toEqual([
           expect.objectContaining({ normalizedEmail: nextEmail, isPrimary: true, verificationState: "VERIFIED" }),
         ]);

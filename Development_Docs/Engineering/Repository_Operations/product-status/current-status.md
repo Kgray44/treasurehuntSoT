@@ -3,7 +3,7 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-10-19
+last_reviewed: 2026-10-20
 ---
 
 # Current status
@@ -25,19 +25,21 @@ independent review verifies210hashes/all120PNGs and clears the actual Guide poin
 and Search-hover repairs within the stated viewport limits. Creator form-ink
 recapture passes four with unchanged final baselines; independent70hash/30PNG
 review resolves the pale parchment heading/intro/helper finding and reviews the
-added Chapter/Edit and desktop empty-Inspector captures. Private Chronicle passes
-four complete synthetic round trips with unchanged final baselines and separate
-exact-root storage cleanup. Independent70hash/28PNG review finds an evidence-only
-mobile error/inspection-message capture gap. Admiralty passes four complete
-read-only dossier/support/return journeys; independent77hash/32PNG review finds
-mobile primary account-ID/Copy clipping and an operator/heading capture gap.
-Narrow layout and capture repairs await fresh execution. Account development
-reaches actual registration, verification and password reset, then fails at an
-ambiguous Passport/menu return link before email/lifecycle/final-baseline proof;
-the return now scopes the actual menu. Issued invitation/guest claim/merge source
-preparation uses canonical services and restores existing guest recovery links
-in Personal Information. No new browser or acceptance result follows from source
-review. Original failures, reviewed findings and encrypted diagnostics remain.
+added Chapter/Edit and desktop empty-Inspector captures. Private Chronicle outcome recapture39366688335 and Admiralty identity/masthead
+recapture39366678779 pass four variants at their frozen source, with separate
+runtime/transport cleanup and Private exact-root storage removal. Independent
+review is pending. Account39366698914 passes the full synthetic registration,
+password/email recovery and reversible lifecycle sequence, with unchanged final
+baselines. Its original dirty source flags remain under provenance review; the
+frozen source fingerprint matches all four receipts. Independent review finds
+R39366698914-01: successful email confirmation leaves its consumed action enabled.
+The candidate makes that success terminal and preserves its sign-in return;
+14 focused component cases pass, with fresh capture/review still required.
+Invitation39366710226 fails four at an ambiguous global alert selector after
+actual wrong-PIN rejection. The successor scopes the same error to the real
+invitation page. Original failures, findings and encrypted diagnostics remain.
+Landfall browser/native obligations, formal mutable bindings and protected
+qualification remain open.
 
 Two new formal contracts replace invalid prose checks with actual DOM identity
 or gateway selectors while retaining all prose requirements and unchanged backend
