@@ -222,6 +222,7 @@ for (const viewport of [
           await page.getByLabel("Invitation PIN", { exact: true }).fill("4826");
           const began = performance.now();
           const stages: Array<{ stage: string; elapsedMs: number; status?: number }> = [];
+          const requests: Array<Record<string, unknown>> = [];
           const record = (stage: string, status?: number) => {
             if (stages.length < 8)
               stages.push({ stage, elapsedMs: performance.now() - began, ...(status === undefined ? {} : { status }) });
@@ -233,7 +234,28 @@ for (const viewport of [
             if (pathname === `/api/player/playthroughs/${invitedId}` && value.request().method() === "GET")
               record("WAITING_ROOM_RESPONSE", value.status());
           };
+          const finished = (request: import("@playwright/test").Request) => {
+            const url = new URL(request.url());
+            if (requests.length >= 12 || url.origin !== new URL(page.url()).origin) return;
+            const operation =
+              url.pathname === "/api/invitations/accept" && request.method() === "POST"
+                ? "ACCEPT"
+                : url.pathname === `/player/playthroughs/${invitedId}`
+                  ? "DESTINATION"
+                  : null;
+            if (!operation) return;
+            const timing = request.timing();
+            const duration = (start: number, end: number) => (start >= 0 && end >= start ? end - start : null);
+            requests.push({
+              operation,
+              resource: ["document", "fetch"].includes(request.resourceType()) ? request.resourceType() : "OTHER",
+              responseWaitMs: duration(timing.requestStart, timing.responseStart),
+              responseReadMs: duration(timing.responseStart, timing.responseEnd),
+              totalMs: duration(0, timing.responseEnd),
+            });
+          };
           page.on("response", observe);
+          page.on("requestfinished", finished);
           const response = page.waitForResponse(
             (r) => new URL(r.url()).pathname === "/api/invitations/accept" && r.request().method() === "POST",
           );
@@ -253,7 +275,8 @@ for (const viewport of [
             );
           } finally {
             page.off("response", observe);
-            console.log("SEXTANT_INVITATION_ACCEPT_STAGES", JSON.stringify({ stages }));
+            page.off("requestfinished", finished);
+            console.log("SEXTANT_INVITATION_ACCEPT_STAGES", JSON.stringify({ stages, requests }));
           }
           expect((await response).status()).toBe(200);
           await expect(owner(name)).toBeVisible();

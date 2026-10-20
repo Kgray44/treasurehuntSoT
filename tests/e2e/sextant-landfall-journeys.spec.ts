@@ -25,7 +25,7 @@ for (const viewport of [
   { width: 390, height: 844 },
 ]) {
   for (const reducedMotion of ["no-preference", "reduce"] as const) {
-    for (const kind of ["physical", "virtual"] as const) {
+    for (const kind of ["physical", "physical-landmark", "virtual"] as const) {
       test.describe(`${kind} ${viewport.width}px ${reducedMotion}`, () => {
         test.use({ viewport, contextOptions: { reducedMotion } });
         test("ordinary populated authoring, readable Player Chart and same-owner return preserve progression", async ({
@@ -134,13 +134,13 @@ for (const viewport of [
             () => expect(page.getByRole("region", { name: "Landfall authoring workspace", exact: true })).toBeVisible(),
           );
           const workspace = page.getByRole("region", { name: "Landfall authoring workspace", exact: true });
-          const waypointName = kind === "physical" ? "Town arrival" : "Secret Isle";
+          const waypointName = kind !== "virtual" ? "Town arrival" : "Secret Isle";
           await workspace
             .locator(".landfall-object-list")
             .getByRole("button", { name: `Inspect waypoint ${waypointName}`, exact: true })
             .click();
           await capture("authoring-workspace", heading("Landfall", 2), ".landfall-workspace");
-          if (kind === "physical") {
+          if (kind !== "virtual") {
             const online = workspace.locator(".landfall-online-data-panel");
             await online.locator("summary").click();
             await measure(
@@ -221,15 +221,15 @@ for (const viewport of [
           await openClosureMap(page);
           const drawer = page.locator(".journal-objects-drawer.open");
           const chart = drawer.locator("[data-landfall-player-chart]:visible");
-          await expect(chart).toHaveAttribute("data-worldspace-kind", kind.toUpperCase());
+          await expect(chart).toHaveAttribute("data-worldspace-kind", kind === "virtual" ? "VIRTUAL" : "PHYSICAL");
           await expect(chart.getByRole("region", { name: "Context and floor guidance", exact: true })).toContainText(
-            kind === "physical"
+            kind !== "virtual"
               ? "Rooms, floors and exact objects need independent evidence"
               : "No live game position is assumed",
           );
           await expect(chart.locator(".landfall-presentation").getByRole("status")).toHaveText(
             new RegExp(
-              `^(The Living Chart is ready\\.|Route revealed: ${kind === "physical" ? "Town walk" : "Isle crossing"})$`,
+              `^(The Living Chart is ready\\.|Route revealed: ${kind !== "virtual" ? "Town walk" : "Isle crossing"})$`,
               "u",
             ),
           );
@@ -249,7 +249,7 @@ for (const viewport of [
           await capture("released-search-result", place, ".journal-objects-drawer.open");
           await search.getByRole("button", { name: "Clear place search", exact: true }).click();
           await expect(search.getByRole("searchbox")).toHaveValue("");
-          if (kind === "physical") {
+          if (kind !== "virtual") {
             // The actual browser host has no companion. Neither hidden native-only panel is fabricated.
             await expect(chart.getByRole("region", { name: "Optional background reminders", exact: true })).toHaveCount(
               0,
@@ -292,13 +292,23 @@ for (const viewport of [
               ".journal-objects-drawer.open",
             );
             const landmark = chart.getByRole("region", { name: "Natural landmark", exact: true });
-            await expect(landmark.getByRole("button", { name: "Open landmark camera", exact: true })).toBeDisabled();
-            await expect(landmark.getByRole("status")).toContainText("Reach the surrounding area before comparing");
-            await capture(
-              "landmark-prerequisite",
-              landmark.getByRole("button", { name: "Open landmark camera", exact: true }),
-              ".journal-objects-drawer.open",
-            );
+            if (kind === "physical") {
+              await expect(landmark).toHaveCount(0);
+              await expect(chart.getByRole("button", { name: "Open landmark camera", exact: true })).toHaveCount(0);
+              await capture(
+                "approximate-landmark-withheld",
+                chart.getByRole("region", { name: "Context and floor guidance", exact: true }),
+                ".journal-objects-drawer.open",
+              );
+            } else {
+              await expect(landmark.getByRole("button", { name: "Open landmark camera", exact: true })).toBeDisabled();
+              await expect(landmark.getByRole("status")).toContainText("Reach the surrounding area before comparing");
+              await capture(
+                "landmark-prerequisite",
+                landmark.getByRole("button", { name: "Open landmark camera", exact: true }),
+                ".journal-objects-drawer.open",
+              );
+            }
           } else {
             await expect(chart.getByRole("button", { name: "Use my location", exact: true })).toHaveCount(0);
             const region = chart.getByRole("region", { name: "Offline region", exact: true });

@@ -5968,7 +5968,7 @@
     "evidence/20261020-entry-claimed-voyage-diagnostic/publication-index.json",
     "evidence/20261020-android-background-return/publication-index.json"
   ],
-  "currentProtectedBase": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
+  "currentProtectedBase": "c0b29d78f7b4c6137c9eb393a10dd9a2112e68ed",
   "canonicalHostDependencies": [
     {
       "owner": "SOUNDING_LINE_PROCESS_OWNERSHIP",
@@ -5988,5 +5988,11 @@
     "runtimeAndRenderedProof": "REQUIRED",
     "qualification": false,
     "windowsProtocol": "MATCHED_BASELINE_FAILURE_1_PASS_13_FAIL_NOT_WAIVED"
+  },
+  "consumerScopePreparation20261020": {
+    "path": "evidence/20261020-consumer-scope-preparation/publication-index.json",
+    "qualification": false,
+    "sourceReview": "CLEAR_BOUNDED_SOURCE_ONLY_SEXTANT_SOURCE_REVIEW",
+    "runtime": "PENDING_NEW_SOURCE_ONLY"
   }
 }

@@ -142,7 +142,11 @@ for (const viewport of [
           () => page.getByRole("link", { name: "Manage this display", exact: true }).click(),
           () => expect(devices).toBeVisible(),
         );
-        await devices.getByLabel("Voyage", { exact: true }).selectOption(fixture.voyageId);
+        // Manage already binds this route to the actual Voyage. Its chooser is
+        // intentionally omitted while that binding is present.
+        await expect(devices).toHaveAttribute("data-voyage-id", fixture.voyageId);
+        await expect(page).toHaveURL(new URL(`/account/devices?voyage=${fixture.voyageId}`, page.url()).href);
+        await expect(devices.getByRole("combobox", { name: "Voyage", exact: true })).toHaveCount(0);
         const label = `Synthetic crew screen ${viewport.width} ${reducedMotion}`;
         await devices.getByLabel("Device name", { exact: true }).fill(label);
         const row = devices

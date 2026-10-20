@@ -1,0 +1,110 @@
+{
+  "classification": "LOCAL_SOURCE_PREPARATION_NOT_ACCEPTANCE",
+  "parentSource": "33b57bc37dc672e576083520a292c5d5fc458ef2",
+  "inputsDirtyAtTestTime": true,
+  "qualification": false,
+  "sourceInputs": [
+    {
+      "path": ".agents/scripts/sextant-landfall-fixture.ts",
+      "sha256": "060c22dbb040e6aa30a76010ea1548344d7b4a18a2c32e6b3a57196eed550a86"
+    },
+    {
+      "path": ".agents/scripts/sextant-landfall-physical-context.ts",
+      "sha256": "5dc478877fd78bac10ea7aa3811f30c380b72d349f2a9edb51327d1aad958a5b"
+    },
+    {
+      "path": ".agents/scripts/sextant-resource-fixtures.ts",
+      "sha256": "b44e371bb3792998c2ed5aa10d3d33f8be9b7bf798e4f16ce835f8e1611a5f35"
+    },
+    {
+      "path": "src/landfall/device-lab/sextant-consumer-fixture.test.ts",
+      "sha256": "59399ed79732519cdcc1a84e554bbb56c5f73ba17c6c29939ff15d0c97baaa88"
+    },
+    {
+      "path": "tests/e2e/sextant-entry-journeys.spec.ts",
+      "sha256": "6d816fd140260266f0f5a4b71ef591c7891ee096e6bfb291a76e0cf42776054c"
+    },
+    {
+      "path": "tests/e2e/sextant-landfall-journeys.spec.ts",
+      "sha256": "047b6e6572bd54c10f2eb4aa0f7e5e9bffbae81ae2ba9c34dcecb3429fd1bd46"
+    },
+    {
+      "path": "tests/e2e/sextant-invitation-journeys.spec.ts",
+      "sha256": "acc7da1c56a39e8d959c6d3d2ea7e0a8d41eaadbbb860738820cd4293599da49"
+    },
+    {
+      "path": "tests/e2e/fixtures/sextant-consumer-diagnostics.ts",
+      "sha256": "5623b8d193ad1bf1fbdd4dfc81c5598f6e97c6764d30211e907ac064b1de2193"
+    }
+  ],
+  "checks": {
+    "regressions": "27_PASS",
+    "typescript": "PASS_AFTER_PRESERVED_WORKER_EVALUATE_SIGNATURE_FAILURE",
+    "eslint": "PASS",
+    "chromiumDiscovery": 20,
+    "privacy": "APPROXIMATE_LANDMARK_WITHHELD_SEPARATE_GENERIC_MAP_RELEASED"
+  },
+  "independentSourceReview": "CLEAR_BOUNDED_SOURCE_ONLY_SEXTANT_SOURCE_REVIEW",
+  "files": [
+    {
+      "path": "files/0001-generic-physical-projection.log",
+      "sourcePath": "artifacts/sextant-phase4/generic-physical-projection.log",
+      "bytes": 1814,
+      "sha256": "b83b8332e2af0d017648fa8b02129cab153f88939ef797a4b0b567123e536b4e"
+    },
+    {
+      "path": "files/0002-generic-physical-projection-green.log",
+      "sourcePath": "artifacts/sextant-phase4/generic-physical-projection-green.log",
+      "bytes": 1620,
+      "sha256": "a3402e3609ef21ea51947dbebe456dbd6b5aaeb68beddda047274663cc5d7e86"
+    },
+    {
+      "path": "files/0003-generic-physical-projection-final.log",
+      "sourcePath": "artifacts/sextant-phase4/generic-physical-projection-final.log",
+      "bytes": 659,
+      "sha256": "95a93b3a92c0816e2a61fccca402762d7c2381ac4f4b52529d6cdc2b0f73e56f"
+    },
+    {
+      "path": "files/0004-consumer-scope-regressions.log",
+      "sourcePath": "artifacts/sextant-phase4/consumer-scope-regressions.log",
+      "bytes": 658,
+      "sha256": "0158aed46bac34b0b2691a39b6a8e2aef99be4eddff5403a46bdf4b8563e9c23"
+    },
+    {
+      "path": "files/0005-consumer-scope-typescript.log",
+      "sourcePath": "artifacts/sextant-phase4/consumer-scope-typescript.log",
+      "bytes": 3257,
+      "sha256": "7442561076d5c0c20e4bd3f261fae2ca4cb023227e3a87911eea30b2b0418be1"
+    },
+    {
+      "path": "files/0006-consumer-scope-typescript-final.log",
+      "sourcePath": "artifacts/sextant-phase4/consumer-scope-typescript-final.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "files/0007-consumer-scope-eslint-final.log",
+      "sourcePath": "artifacts/sextant-phase4/consumer-scope-eslint-final.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "files/0008-consumer-scope-discovery.log",
+      "sourcePath": "artifacts/sextant-phase4/consumer-scope-discovery.log",
+      "bytes": 3772,
+      "sha256": "b013e9828afddd4728e42ea24759f1d642e368888d4ba776ca286f29392529b1"
+    },
+    {
+      "path": "files/0009-consumer-scope-typescript-reviewed.log",
+      "sourcePath": "artifacts/sextant-phase4/consumer-scope-typescript-reviewed.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "files/0010-consumer-scope-eslint-reviewed.log",
+      "sourcePath": "artifacts/sextant-phase4/consumer-scope-eslint-reviewed.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

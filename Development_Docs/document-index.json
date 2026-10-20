@@ -5583,6 +5583,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261020-consumer-scope-preparation/publication-index.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Sextant/evidence/20261020-entry-claimed-voyage-diagnostic/files/0001-browser-runtime.json",
       "record_type": "engineering-record",
       "status": "current",

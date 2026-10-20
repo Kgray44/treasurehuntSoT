@@ -3,6 +3,30 @@ import type { Page, Response } from "@playwright/test";
 /** Passive, bounded metadata only. Never emit credentials, bodies, headers or URL queries. */
 export async function observeSextantSignIn(page: Page, expectedAccountId: string, exercise: () => Promise<void>) {
   const origin = new URL(page.url()).origin;
+  const installAuthObservation = () => {
+    const observed = window as Window & { __sextantAuthEvents?: Array<Record<string, unknown>> };
+    if (observed.__sextantAuthEvents) return;
+    const events: Array<Record<string, unknown>> = [];
+    Object.defineProperty(observed, "__sextantAuthEvents", { value: events });
+    for (const type of ["submit", "invalid"] as const)
+      document.addEventListener(
+        type,
+        (event) => {
+          if (events.length >= 12 || !location.pathname.endsWith("sign-in")) return;
+          const input = event.target;
+          events.push({
+            event: type === "submit" ? "SUBMIT" : "INVALID",
+            field:
+              input instanceof HTMLInputElement && ["login", "password"].includes(input.name)
+                ? input.name.toUpperCase()
+                : "OTHER",
+          });
+        },
+        true,
+      );
+  };
+  await page.addInitScript(installAuthObservation);
+  await page.evaluate(installAuthObservation);
   const observations: Array<Record<string, unknown>> = [];
   const pending: Promise<void>[] = [];
   let responses = 0;
@@ -69,6 +93,25 @@ export async function observeSextantSignIn(page: Page, expectedAccountId: string
       }
       const current = new URL(page.url());
       const cookies = await page.context().cookies(current.href);
+      const form = await page.evaluate(() => ({
+        documentIsSignIn: location.pathname.endsWith("sign-in"),
+        observerInstalled: Boolean((window as Window & { __sextantAuthEvents?: unknown[] }).__sextantAuthEvents),
+        events: (window as Window & { __sextantAuthEvents?: unknown[] }).__sextantAuthEvents ?? [],
+        fields: ["login", "password"].map((name) => {
+          const input = document.querySelector<HTMLInputElement>(`input[name="${name}"]`);
+          return {
+            field: name.toUpperCase(),
+            present: Boolean(input),
+            nonempty: input ? input.value.length > 0 : null,
+            disabled: input?.disabled ?? null,
+            valid: input?.validity.valid ?? null,
+            valueMissing: input?.validity.valueMissing ?? null,
+          };
+        }),
+        submitDisabled:
+          document.querySelector<HTMLButtonElement>("main.account-flow-page form button:not([type=button])")
+            ?.disabled ?? null,
+      }));
       console.log(
         "SEXTANT_SIGNIN_OBSERVATION",
         JSON.stringify({
@@ -84,6 +127,7 @@ export async function observeSextantSignIn(page: Page, expectedAccountId: string
                   ? "PILOT"
                   : "OTHER",
           sessionCookiePresent: cookies.some((cookie) => cookie.name === "wayfarer_account"),
+          form,
         }),
       );
     } catch {
@@ -168,19 +212,63 @@ export async function observeSextantOfflineShell(page: Page) {
     try {
       const state = await page.evaluate(async () => ({
         secureContext: isSecureContext,
+        documentIsJournal: /^\/player\/playthroughs\/[^/]+\/journal$/.test(location.pathname),
         controlled: Boolean(navigator.serviceWorker?.controller),
         events: (window as Window & { __sextantSWObservation?: unknown[] }).__sextantSWObservation ?? [],
         registrations:
           "serviceWorker" in navigator
             ? (await navigator.serviceWorker.getRegistrations()).slice(0, 4).map((registration) => ({
                 scopeMatches: new URL(registration.scope).pathname === "/player/",
+                scopeOriginMatches: new URL(registration.scope).origin === location.origin,
+                documentInScope: location.href.startsWith(registration.scope),
+                activeScriptMatches: registration.active
+                  ? new URL(registration.active.scriptURL).origin === location.origin &&
+                    new URL(registration.active.scriptURL).pathname === "/landfall-offline-sw.js"
+                  : null,
                 installing: registration.installing?.state ?? null,
                 waiting: registration.waiting?.state ?? null,
                 active: registration.active?.state ?? null,
               }))
             : [],
       }));
-      console.log("SEXTANT_OFFLINE_SHELL_OBSERVATION", JSON.stringify({ ...state, resources }));
+      const current = new URL(page.url());
+      const workers = [];
+      for (const worker of page
+        .context()
+        .serviceWorkers()
+        .filter((worker) => {
+          const url = new URL(worker.url());
+          return url.origin === current.origin && url.pathname === "/landfall-offline-sw.js";
+        })
+        .slice(0, 2)) {
+        // Read only. Do not claim clients, register workers or force navigation.
+        workers.push(
+          await worker.evaluate(async (currentPath) => {
+            const clients = (
+              self as unknown as {
+                clients: {
+                  matchAll(options: { type: string; includeUncontrolled: boolean }): Promise<Array<{ url: string }>>;
+                };
+              }
+            ).clients;
+            const summarize = (rows: Array<{ url: string }>) => ({
+              count: Math.min(rows.length, 16),
+              currentJournalPresent: rows.slice(0, 16).some((client) => new URL(client.url).pathname === currentPath),
+              journals: Math.min(
+                rows.filter((client) => /^\/player\/playthroughs\/[^/]+\/journal$/.test(new URL(client.url).pathname))
+                  .length,
+                16,
+              ),
+              signIns: Math.min(rows.filter((client) => new URL(client.url).pathname.endsWith("sign-in")).length, 16),
+            });
+            return {
+              all: summarize(await clients.matchAll({ type: "window", includeUncontrolled: true })),
+              controlled: summarize(await clients.matchAll({ type: "window", includeUncontrolled: false })),
+            };
+          }, current.pathname),
+        );
+      }
+      console.log("SEXTANT_OFFLINE_SHELL_OBSERVATION", JSON.stringify({ ...state, workers, resources }));
     } catch {
       console.warn("SEXTANT_OFFLINE_SHELL_OBSERVATION_UNAVAILABLE");
     }

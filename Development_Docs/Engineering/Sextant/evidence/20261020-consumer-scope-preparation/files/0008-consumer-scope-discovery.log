@@ -1,0 +1,22 @@
+Listing tests:
+  [chromium] › sextant-entry-journeys.spec.ts:29:11 › 1280px no-preference › ordinary connected-empty Display and unprepared pilot return preserve the actual Voyages
+  [chromium] › sextant-entry-journeys.spec.ts:29:11 › 1280px reduce › ordinary connected-empty Display and unprepared pilot return preserve the actual Voyages
+  [chromium] › sextant-entry-journeys.spec.ts:29:11 › 390px no-preference › ordinary connected-empty Display and unprepared pilot return preserve the actual Voyages
+  [chromium] › sextant-entry-journeys.spec.ts:29:11 › 390px reduce › ordinary connected-empty Display and unprepared pilot return preserve the actual Voyages
+  [chromium] › sextant-invitation-journeys.spec.ts:29:11 › 1280px no-preference › actual code/link invitations, PIN rejection, guest claim and existing-account merge preserve Voyage progress
+  [chromium] › sextant-invitation-journeys.spec.ts:29:11 › 1280px reduce › actual code/link invitations, PIN rejection, guest claim and existing-account merge preserve Voyage progress
+  [chromium] › sextant-invitation-journeys.spec.ts:29:11 › 390px no-preference › actual code/link invitations, PIN rejection, guest claim and existing-account merge preserve Voyage progress
+  [chromium] › sextant-invitation-journeys.spec.ts:29:11 › 390px reduce › actual code/link invitations, PIN rejection, guest claim and existing-account merge preserve Voyage progress
+  [chromium] › sextant-landfall-journeys.spec.ts:31:13 › physical 1280px no-preference › ordinary populated authoring, readable Player Chart and same-owner return preserve progression
+  [chromium] › sextant-landfall-journeys.spec.ts:31:13 › physical-landmark 1280px no-preference › ordinary populated authoring, readable Player Chart and same-owner return preserve progression
+  [chromium] › sextant-landfall-journeys.spec.ts:31:13 › virtual 1280px no-preference › ordinary populated authoring, readable Player Chart and same-owner return preserve progression
+  [chromium] › sextant-landfall-journeys.spec.ts:31:13 › physical 1280px reduce › ordinary populated authoring, readable Player Chart and same-owner return preserve progression
+  [chromium] › sextant-landfall-journeys.spec.ts:31:13 › physical-landmark 1280px reduce › ordinary populated authoring, readable Player Chart and same-owner return preserve progression
+  [chromium] › sextant-landfall-journeys.spec.ts:31:13 › virtual 1280px reduce › ordinary populated authoring, readable Player Chart and same-owner return preserve progression
+  [chromium] › sextant-landfall-journeys.spec.ts:31:13 › physical 390px no-preference › ordinary populated authoring, readable Player Chart and same-owner return preserve progression
+  [chromium] › sextant-landfall-journeys.spec.ts:31:13 › physical-landmark 390px no-preference › ordinary populated authoring, readable Player Chart and same-owner return preserve progression
+  [chromium] › sextant-landfall-journeys.spec.ts:31:13 › virtual 390px no-preference › ordinary populated authoring, readable Player Chart and same-owner return preserve progression
+  [chromium] › sextant-landfall-journeys.spec.ts:31:13 › physical 390px reduce › ordinary populated authoring, readable Player Chart and same-owner return preserve progression
+  [chromium] › sextant-landfall-journeys.spec.ts:31:13 › physical-landmark 390px reduce › ordinary populated authoring, readable Player Chart and same-owner return preserve progression
+  [chromium] › sextant-landfall-journeys.spec.ts:31:13 › virtual 390px reduce › ordinary populated authoring, readable Player Chart and same-owner return preserve progression
+Total: 20 tests in 3 files

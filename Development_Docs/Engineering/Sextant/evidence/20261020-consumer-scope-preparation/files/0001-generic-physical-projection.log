@@ -1,0 +1,41 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt
+
+·x
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/landfall/device-lab/sextant-consumer-fixture.test.ts > owned Sextant physical consumer fixture > withholds the approximate landmark and releases the separate generic fixture without changing the original map
+ZodError: [
+  {
+    "code": "custom",
+    "path": [
+      "maps",
+      0,
+      "renderer"
+    ],
+    "message": "Authored vector maps require a virtual vector renderer."
+  }
+]
+ ❯ parseLandfallDefinition src/landfall/schema.ts:795:35
+    793|
+    794| export function parseLandfallDefinition(value: unknown): LandfallDefin…
+    795|   return landfallDefinitionSchema.parse(value);
+       |                                   ^
+    796| }
+    797| export function serializeLandfallDefinition(value: LandfallDefinition)…
+ ❯ validateLandfallDefinition src/landfall/definition.ts:6:22
+ ❯ sextantGenericPhysicalDefinition .agents/scripts/sextant-landfall-physical-context.ts:50:10
+ ❯ src/landfall/device-lab/sextant-consumer-fixture.test.ts:35:21
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  02:27:24
+   Duration  1.11s (transform 96ms, setup 105ms, import 291ms, tests 9ms, environment 505ms)
+
