@@ -6,7 +6,7 @@
   "status": "IN_PROGRESS",
   "initialCandidate": "5ff2739776513b8f8ed20c1cb661c164216d0eeb",
   "protectedBase": "f6af0b0e151f15f1a23808413ccee531b9827ca7",
-  "currentSoftwareCandidate": "2f2013ab1a041c5ddc13652686d27ce124fdad6d",
+  "currentSoftwareCandidate": "bcf82bdce20a02790ecdb5df965bd630b7834ff3",
   "pr": "https://github.com/Kgray44/treasurehuntSoT/pull/709",
   "independentSourceReview": {
     "reviewerContext": "/root/sextant_source_review",
@@ -218,6 +218,27 @@
         "actualAxeAriaAllowedRoleRegression": "PASS",
         "typescript": "PASS",
         "selectedContractValidation": 2,
+        "docsValidation": "PASS",
+        "featureValidation": "PASS"
+      }
+    },
+    "accountRecoveryAndDossierTitleRepair": {
+      "source": "bcf82bdce20a02790ecdb5df965bd630b7834ff3",
+      "reviewer": "/root/sextant_source_review",
+      "disposition": "CLEAR_FOR_TWO_FIXED_DEVELOPMENT_RUNS_NOT_ACCEPTANCE",
+      "reviewerRanTests": false,
+      "scope": [
+        "EXACT_CANDIDATE_NONCE_DATABASE_AND_SYNTHETIC_OUTBOX_GUARDS_BEFORE_SEEDING",
+        "CURRENT_PRODUCTION_CREATED_ACCOUNT_BOUND_LATEST_SYNTHETIC_CHALLENGES_PRESERVING_OLD_ROWS",
+        "CURRENT_ACCESSIBLE_MAIN_AND_ORDINARY_MOBILE_DISCLOSURE_INNER_DANGER_SECTION_CONTROLS",
+        "ACTUAL_REGISTER_VERIFY_RESET_EMAIL_SESSION_END_REVERSIBLE_LIFECYCLE_AND_UNCHANGED_BASELINES",
+        "FORMAL_READONLY_PREPARATION_RETURN_AND_ACTUAL_HOME_HREF_CONTINUITY",
+        "ACTUAL_BROWSER_DOSSIER_H1_AND_UNIQUE_FORMAL_MAIN_TEXT_PATH"
+      ],
+      "builderVerification": {
+        "typescript": "PASS",
+        "selectedContractValidation": 2,
+        "browserCasesDiscovered": 8,
         "docsValidation": "PASS",
         "featureValidation": "PASS"
       }
@@ -2813,7 +2834,7 @@
     "historicalObligations": 141,
     "historicalFamilies": 13,
     "currentAffectedSurfaces": 178,
-    "currentUnregisteredSurfaces": 38,
+    "currentUnregisteredSurfaces": 32,
     "protectedCapturedOrAcceptedByThisContinuation": 0,
     "developmentCapturedVariants": 4,
     "planner": "PRODUCT_EXPERIENCE_UNREGISTERED_SURFACE",
@@ -2821,7 +2842,7 @@
     "reachDiagnostics": "PROTECTED_ACCEPTED_ON_BASE",
     "historicalAccounting": "PRESERVED_SEXTANT_3_OF_3_CROSSDECK_10_OF_3_R1_2_OF_3",
     "registeredNewPlayerWorkspaceSurfaces": 2,
-    "remainingSoftware": "38 unregistered at2f2013ab1a across179affected; declarations are not acceptance. Private39363230222 passes4 complete synthetic actual import/verified download/draft reopen/ordinary return/final unchanged ACTIVE-and-edition journeys; exact creation-bound root removal and canonical process/transport cleanup PASS. Independent28PNG/storage/source review pending;32videos hash-only. Admiralty39363220177 fails4 at dossier title matching actual H1 plus AI-quota H2; Overview/People empty-and-known searches reached, but support/final baselines unproved. Source successor selects actual H1 in browser and unique real main with same text/path in formal. Account/recovery preparation is independent WIP with actual synthetic-email and reversible lifecycle development, not execution. Invitation/Landfall, fiveunhostedlegacycomponents, acceptedCrossdeckdisplay/authorizedSpatialpilot, formal reference/layout/protected qualification remain. Canonical formal per-case/challenge/fileinput andDarwin containment prerequisites andexternal/physical/owner gates stay separate.",
+    "remainingSoftware": "32 unregistered atbcf82bdce2 across179affected; declarations are not acceptance. Private39363230222 passes4 complete synthetic actual import/verified download/draft reopen/ordinary return/final unchanged ACTIVE-and-edition journeys; exact creation-bound root removal and canonical process/transport cleanup PASS. Independent28PNG/storage/source review pending;32videos hash-only. Admiralty39363220177 fails4 at dossier title matching actual H1 plus AI-quota H2; Overview/People empty-and-known searches reached, but support/final baselines unproved. Source successor selects actual H1 in browser and unique real main with same text/path in formal. Six account/recovery route declarations are source-clear for actual synthetic-email and reversible-lifecycle development39364701888, with no execution/acceptance result yet. Invitation/Landfall, fiveunhostedlegacycomponents, acceptedCrossdeckdisplay/authorizedSpatialpilot, formal reference/layout/protected qualification remain. Canonical formal per-case/challenge/fileinput andDarwin containment prerequisites andexternal/physical/owner gates stay separate.",
     "independentDevelopmentJourneyReview": {
       "source": "0d8b3c7841966a1d1c8b5dae21570b1043dc7915",
       "reviewer": "/root/sextant_source_review",
@@ -2853,12 +2874,12 @@
     "registeredNewPassportSourcePaths": 14,
     "newlyRegisteredAffectedPassportSurfaces": 12,
     "sourceReconciliation": {
-      "path": "phase4-source-reconciliation-sortable-empty-20261019.json",
-      "sha256": "2391ddd2a0a33edff1ba797753a97992989cc8b14019eda64487e06d7cf19c9f",
-      "sourceSha": "2f2013ab1a041c5ddc13652686d27ce124fdad6d",
+      "path": "phase4-source-reconciliation-account-recovery-20261019.json",
+      "sha256": "dd4afd932d008be9b0e61ac694086a4b7618f68d2decc8b2a2f843f25ef299f7",
+      "sourceSha": "bcf82bdce20a02790ecdb5df965bd630b7834ff3",
       "baseSha": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
       "affected": 179,
-      "unregistered": 38,
+      "unregistered": 32,
       "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
     },
     "sourceReconciliations": [
@@ -2978,6 +2999,15 @@
         "baseSha": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
         "affected": 179,
         "unregistered": 38,
+        "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
+      },
+      {
+        "path": "phase4-source-reconciliation-account-recovery-20261019.json",
+        "sha256": "dd4afd932d008be9b0e61ac694086a4b7618f68d2decc8b2a2f843f25ef299f7",
+        "sourceSha": "bcf82bdce20a02790ecdb5df965bd630b7834ff3",
+        "baseSha": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
+        "affected": 179,
+        "unregistered": 32,
         "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
       }
     ],
@@ -3120,5 +3150,18 @@
       "passingCompanionOrBuildIsNotProductExecution": true
     }
   ],
-  "pendingDevelopmentRuns": []
+  "pendingDevelopmentRuns": [
+    {
+      "runId": "39364691371",
+      "sourceSha": "bcf82bdce20a02790ecdb5df965bd630b7834ff3",
+      "target": "sextant-admiralty",
+      "scope": "ACTUAL_H1_DOSSIER_TITLE_AND_UNIQUE_FORMAL_MAIN_PREDICATE"
+    },
+    {
+      "runId": "39364701888",
+      "sourceSha": "bcf82bdce20a02790ecdb5df965bd630b7834ff3",
+      "target": "sextant-account-recovery",
+      "scope": "FIRST_ACTUAL_SYNTHETIC_ACCOUNT_RECOVERY_AND_REVERSIBLE_LIFECYCLE_DEVELOPMENT"
+    }
+  ]
 }
