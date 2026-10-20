@@ -3666,7 +3666,7 @@
       "sourceSha": "e408f97695371eedc303754415d207fa61c671cb",
       "transportSha": "f52eb788b469cd42a587f19e81cfade48343a08b",
       "runId": "39369889786",
-      "status": "HARVESTED_SUCCESS_FOUR_PRIVATE_HOVER_RECAPTURES_REVIEW_PENDING",
+      "status": "HARVESTED_SUCCESS_FOUR_PRIVATE_HOVER_RECAPTURES_INDEPENDENT_REVIEW_CLEAR_WITH_LIMITS",
       "artifacts": 83,
       "productionBuild": "PASS",
       "qualification": false,
@@ -3746,12 +3746,25 @@
       },
       "independentRenderedReview": {
         "reviewer": "/root/sextant_source_review",
-        "status": "PENDING",
+        "status": "CLEAR_WITH_LIMITS",
         "hashedFiles": 86,
         "pngCount": 36,
         "videoCount": 40,
-        "videos": "NOT_YET_VIEWED",
-        "priorFinding": "R39366688335-01"
+        "videos": "HASH_ONLY_NOT_VIEWED",
+        "priorFinding": "R39366688335-01",
+        "hostedArtifacts": 83,
+        "pngInspected": 36,
+        "sourceTree": "e0925117895c19af2bec5737823278b343b4b19f",
+        "sourceFingerprint": "8f3d2fa1aba56e7693e20c7b9b04c3bf0de5a8754dbe128a521efbf80d0d17cf",
+        "fingerprintBlobCount": 1952,
+        "resolvedFindings": ["R39366688335-01"],
+        "findings": [],
+        "independentlyComputedContrast": 12.824422200794766,
+        "storageDisposition": "CREATION_BOUND_EXACT_ROOT_REMOVAL_AFTER_CANONICAL_PROCESS_CLEANUP_COHERENT_AT_RECEIPT_TIME_NO_MEMORY_ZEROIZATION_CLAIM",
+        "limits": [
+          "VIEWPORT_ONLY_MOBILE_HISTORY_ROWS_AND_UPPER_HEADINGS_NOT_ALL_VISIBLE",
+          "VIDEOS_HASH_ONLY_NO_ANIMATION_FORMAL_FILE_INPUT_NATIVE_PROTECTED_OR_OWNER_ACCEPTANCE"
+        ]
       }
     },
     {
@@ -3845,7 +3858,7 @@
     "reachDiagnostics": "PROTECTED_ACCEPTED_ON_BASE",
     "historicalAccounting": "PRESERVED_SEXTANT_3_OF_3_CROSSDECK_10_OF_3_R1_2_OF_3",
     "registeredNewPlayerWorkspaceSurfaces": 2,
-    "remainingSoftware": "At source7caf7cced2, 179 affected surfaces have7 missing declarations: five unhosted legacy components, accepted Crossdeck display and authorized Spatial pilot. The17 conditional Landfall declarations grant no execution or acceptance credit; eight browser journeys and separate native-host Background/Nearby/issued-return proof remain. Canonical task-owned HTTP redirect origin/cookie handling, Darwin containment and formal per-case/creation/file/challenge/issued-input bindings are internal software prerequisites. Account terminal confirmation is independently reviewed clear at5d440557; Admiralty identity/masthead is clear at91269. Private hover review remains pending at e408. Invitation merge/final proof remains blocked by its observed canonical redirect boundary. Formal reference/layout/protected qualification, physical/device/field and owner acceptance remain separately open.",
+    "remainingSoftware": "At source7caf7cced2, 179 affected surfaces have7 missing declarations: five unhosted legacy components, accepted Crossdeck display and authorized Spatial pilot. The17 conditional Landfall declarations grant no execution or acceptance credit; eight browser journeys and separate native-host Background/Nearby/issued-return proof remain. Canonical task-owned HTTP redirect origin/cookie handling, Darwin containment and formal per-case/creation/file/challenge/issued-input bindings are internal software prerequisites. Account terminal confirmation is independently reviewed clear at5d440557; Admiralty identity/masthead is clear at91269. Private hover is independently reviewed clear at e408, resolving R39366688335-01 within viewport limits. Invitation merge/final proof remains blocked by its observed canonical redirect boundary. Formal reference/layout/protected qualification, physical/device/field and owner acceptance remain separately open.",
     "independentDevelopmentJourneyReview": {
       "source": "0d8b3c7841966a1d1c8b5dae21570b1043dc7915",
       "reviewer": "/root/sextant_source_review",
