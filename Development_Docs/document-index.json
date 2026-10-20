@@ -9867,6 +9867,228 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/cli-owned-stop.public.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/cli-stop.public.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/custom-attempt1-owned-stop.public.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/custom-attempt1-stop.public.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/edge-attempt1-origin403.public.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/edge-attempt2-cwd500.public.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/edge-guards-pass.public.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/edge-paths-1792507776019.public.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/identity-binding.public.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/journal-path-diagnostic.public.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/local-auth-assets-streams-pass.public.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/local-ownership.public.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/local-verification-1792507839106/asset-checks.public.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/owner-cellular-presentation-report.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/ownership.public.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/production-build.public.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/production-readiness.public.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/production-router-readiness.public.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/public-https-auth-assets-streams-pass.public.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/public-verification-1792508371934/asset-checks.public.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/public-verification-1792509212815/asset-checks.public.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/publication.receipt.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/router-identity-binding.public.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/router-ownership.public.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/router-repair-20261020T150640698Z/stop.public.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/router-static-cache-1792508839759.public.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/static-assets-1792508703007/static-assets.public.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/static-assets-1792508812037/static-assets.public.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/static-assets-1792509212701196656/static-assets.public.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/static-assets-1792509212705195204/static-assets.public.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/static-assets-1792509212709189892/static-assets.public.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/static-assets-1792509212765152768/static-assets.public.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/static-assets-1792509212766182980/static-assets.public.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/static-assets-1792509212813147568/static-assets.public.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/static-assets-before-repair.public.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-20261020/static-assets-purge-urls.public.txt",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-routing-readonly-20261020.receipt.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/cloudflare-staging-readonly-20261020.receipt.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -9904,6 +10126,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/internal-testflight-ready-build3-20261020.receipt.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/internal-testflight-ready-build4-20261020.receipt.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -10138,6 +10366,54 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/signed-39434900108/verification.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/signed-39444433227/asc-upload.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/signed-39444433227/asc-validate.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/signed-39444433227/dispatch.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/signed-39444433227/github-run.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/signed-39444433227/ipa-metadata-verification.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/signed-39444433227/receipt.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/signed-39444433227/transport-cleanup.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/signed-39444433227/verification.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

@@ -1,7 +1,7 @@
 ---
 title: NCL-01 first physical iPhone TestFlight deployment
 audience: engineering-owner
-status: preparation-in-progress
+status: internal-beta-available-physical-validation-open
 canonical_for: ncl01-testflight-deployment-record
 last_reviewed: 2026-10-20
 ---
@@ -22,20 +22,21 @@ objects through its native AR camera. This is owner-reported physical display;
 exact build readback, measured tracking/alignment, Inspect and lifecycle behavior
 have not been verified.
 
-**Current gate:** private beta **0.1.0 (3)** is ready in the existing internal
-TestFlight group for `https://155.42.98.171:8449`.
-[Run 39434900108 passed](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39434900108)
-against candidate `3ac0dafc0174f4a7b7b5fb63c91aa49b01694730`; its
-[retained readiness receipt](evidence/ncl01-testflight-20261019/internal-testflight-ready-build3-20261020.receipt.json)
-records Apple `VALID`, `IN_BETA_TESTING` and attachment to **NCL-01 Owner**.
-The owner confirms warning-free Safari access to this new HTTPS origin.
-The owner subsequently confirmed the classroom Lens title and native camera,
-then reported objects appearing when looking around in the same session after
-an initially empty view. They do not accept the authored-scene appearance or
-placement fidelity. This owner report is separate from exact build readback,
-all-three-object confirmation, Inspect, measured tracking/drift and alignment.
-Full authored Scene/room-registration integration remains unfinished. Builds 2
-and 3 are consumed; do not upload either again.
+**Current gate:** private beta **0.1.0 (4)** is available in the existing internal
+TestFlight group for **https://ncl01.absoluterelativesystems.com**.
+[Run 39444433227 passed](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39444433227)
+against candidate `47ff42e4cb8b67e5fa2bfbc481a34d3d33490a18`; its
+[readiness receipt](evidence/ncl01-testflight-20261019/internal-testflight-ready-build4-20261020.receipt.json)
+binds Apple `VALID` / `IN_BETA_TESTING`, **NCL-01 Owner**, 13 exported-IPA checks
+and exact credential/transport cleanup. The public production preview passed
+normal TLS/auth/assets/Journal checks and repaired static-file delivery. Root
+visually confirmed styled, hydrated account sign-in after a normal reload.
+The owner reports cellular phone reachability, but corrected phone presentation,
+exact build 4 installation/native sign-in and AR are still owner gates. Earlier
+native camera/model visibility remains owner-reported; authored appearance,
+all-three-object confirmation, Inspect, tracking/drift and alignment remain
+unverified or unaccepted. Full Scene/room registration is unfinished. Builds 2,
+3 and 4 are consumed; never upload them again.
 
 The owner has now created the explicit identifier and app record. Their screenshots
 show the correct team/bundle, **VoyageWright Landfall**, app Apple ID `6824734220`,
@@ -159,6 +160,11 @@ remain true until new evidence establishes those gates.
 
 ## Laptop service and iPhone trust
 
+Build 4 uses the stable public HTTPS address and the
+[owned production services](#laptop-services-for-the-stable-address) below. It
+does not require installing the laptop preview CA. The following LAN history and
+commands preserve the earlier beta preview; they are not the stable-origin startup.
+
 An initial October 19 check found the laptop on Wi-Fi `10.4.48.166`, making its
 saved `.24` origin unreachable. A later read-only recheck after the owner returned
 to Wi-Fi `192.168.0.24/24` passed: `https://192.168.0.24:8449` and both original
@@ -227,11 +233,11 @@ substitute for them.
 
 ## Processing, installation and physical acceptance
 
-The signed pipeline uploaded build 3, Apple processing reached `VALID`, and the
+The signed pipeline uploaded build 4, Apple processing reached `VALID`, and the
 processed build was assigned to **TestFlight → Internal Testing → NCL-01 Owner**.
-Fresh API checks confirm `IN_BETA_TESTING`, `usesNonExemptEncryption=false` and
-the existing sole tester's state `INSTALLED`. That tester state reflects the
-existing app/tester and does not prove installation of build 3. The owner earlier
+Fresh API checks confirm `IN_BETA_TESTING` and `usesNonExemptEncryption=false`.
+The existing account-holder group is reused; availability does not prove build 4
+installation. The owner earlier
 reported native sign-in and original-model camera display. No duplicate
 invitation, external public testing group or App Store release was made. See Apple's
 [upload](https://developer.apple.com/help/app-store-connect/manage-builds/upload-builds)
@@ -239,10 +245,12 @@ and [internal testing](https://developer.apple.com/help/app-store-connect/test-a
 instructions.
 
 Open TestFlight, select **VoyageWright Landfall** and
-confirm **0.1.0 (3)**, then tap **Update** and **Open**. A new invitation is not
+confirm **0.1.0 (4)**, then tap **Update** and **Open**. A new invitation is not
 needed for the existing tester. Sign into the existing
-synthetic NCL account through the laptop origin; its login remains in the private
-local `D:\CodexTemp\ncl01-preview\access.private.json` file, outside Git/chat.
+synthetic NCL account through the stable address. The unchanged values are in
+`D:\CodexTemp\ncl01-preview\VoyageWright-Sign-In.private.txt`, outside Git/chat.
+No new account, CA profile or server-address entry is required. The laptop must
+stay awake and online; its production preview and Cloudflared must remain running.
 Open its released Voyage Journal, **Open Chronicle Lens**, then the explicitly
 offered **Use camera for local placement** action. Scan a well-lit textured horizontal
 surface; initial placement tries automatically for up to 15 seconds and can fall
@@ -258,9 +266,11 @@ static PBR objects; chest-lid and compass-needle articulation are unsupported.
 Record separate outcomes for (1) signed upload, (2) processed/internal-test
 availability, (3) exact-build TestFlight installation, (4) native camera/ARKit
 tracking and visible original models, (5) physical interaction/lifecycle behavior,
-and (6) owner acceptance. Build 3 upload/internal-test availability have retained
+and (6) owner acceptance. Build 4 upload/internal-test availability have retained
 software proof; installation, native sign-in and physical camera display are
-owner-reported, as is warning-free Safari access on the new classroom network.
+owner-reported for earlier trials, as is warning-free LAN Safari access. Cellular
+reachability on the stable hostname is owner-reported; exact build 4 connectivity
+and physical behavior have not yet been confirmed.
 The later classroom report below confirms owner-reported native object visibility,
 with exact build readback, all three objects, measured tracking/alignment,
 Inspect/lifecycle and authored-scene fidelity still unverified or unaccepted.
@@ -540,12 +550,137 @@ The owner selected Cloudflare and reports ownership of
 [read-only staging audit](evidence/ncl01-testflight-20261019/cloudflare-staging-readonly-20261020.receipt.json)
 passed normal TLS and observed a 302 to Cloudflare Access; it did not reach the
 application. The existing remotely managed Windows connector is healthy and was
-preserved. Its staging service target, source checkout and database remain unknown,
-so reuse or repointing is not established as safe. The native exact-origin policy
+preserved. That initial public audit did not identify its staging service target,
+source checkout or database. The native exact-origin policy
 currently blocks an external Access-login navigation and needs a deliberate design.
 
-The Cloudflare dashboard awaits owner sign-in before further read-only routing and
-Access-policy inspection. No tunnel, DNS, service, firewall or trust change has
-been made, no domain purchase is needed, and no build 4 has been dispatched.
-The fixed build 3 classroom origin remains current. A stable multi-network address
-and full authored-scene fidelity remain separate pending work.
+The owner completed Cloudflare sign-in. The subsequent
+[read-only routing receipt](evidence/ncl01-testflight-20261019/cloudflare-routing-readonly-20261020.receipt.json)
+records `ars-local-staging` serving staging at `http://localhost:3000` and audit at
+`http://localhost:3110`. The existing staging Access application is exact-host,
+with its **Test Users** policy; no wildcard application was observed. The source
+and database behind those other targets remain unproven and both routes are preserved.
+
+The separate address is **ncl01.absoluterelativesystems.com**, targeting
+the isolated production preview through strict loopback proxy `127.0.0.1:3159`.
+It uses the existing VoyageWright account and authorized asset delivery. A private
+tracked snapshot of `47ff42e4cb8b67e5fa2bfbc481a34d3d33490a18` passed a production
+webpack build and TypeScript checking without bypasses. The
+[production build receipt](evidence/ncl01-testflight-20261019/cloudflare-20261020/production-build.public.json)
+records 108 seconds, disabled outbound email/debug failpoints and unchanged
+credentials and both Voyages. The new runtime uses a separate generated output,
+cache and production configuration, preserving the existing LAN development server.
+
+The [strict edge guards](evidence/ncl01-testflight-20261019/cloudflare-20261020/edge-guards-pass.public.json)
+passed 10/10. The [authenticated local checks](evidence/ncl01-testflight-20261019/cloudflare-20261020/local-auth-assets-streams-pass.public.json)
+passed 14/14: Secure sign-in cookie, exact Journal HTML, authorized current-events
+stream/abort, three entities, both original GLB digests, unauthorized/stale denials
+and revocation of only the verifier's session. Both Voyages stayed unchanged.
+Independent review confirmed the receipt hash and exact-Origin unauthenticated
+401 versus foreign-Origin 403. Full Crossdeck streaming was not exercised; the
+authenticated request reached its schema guard without creating a surface.
+These are **loopback HTTP checks only**, not public TLS, browser AR or phone proof.
+
+Earlier [Origin 403](evidence/ncl01-testflight-20261019/cloudflare-20261020/edge-attempt1-origin403.public.json),
+[working-directory 500](evidence/ncl01-testflight-20261019/cloudflare-20261020/edge-attempt2-cwd500.public.json)
+and [incorrect Journal probe path](evidence/ncl01-testflight-20261019/cloudflare-20261020/journal-path-diagnostic.public.json)
+remain immutable diagnostics. The private custom production server now fixes its
+working directory and effective request URL behind exact Host/Origin/proto guards.
+Product Origin, CORS and authentication checks were not loosened.
+
+The owner explicitly approved the new public route at action time. Cloudflare
+confirmed its creation and automatic CNAME, while the authoritative route list
+preserved staging and audit unchanged. The
+[publication receipt](evidence/ncl01-testflight-20261019/cloudflare-20261020/publication.receipt.json)
+and [initial API readiness snapshot](evidence/ncl01-testflight-20261019/cloudflare-20261020/production-readiness.public.json)
+record the live route. The
+[public HTTPS checks](evidence/ncl01-testflight-20261019/cloudflare-20261020/public-https-auth-assets-streams-pass.public.json)
+passed 14/14 with normal platform TLS and no CA override: canonical sign-in,
+original authorized GLBs, Journal HTML/current-events stream and owned-session
+revocation. Both Voyages stayed unchanged. Independent receipt review passed.
+Ordinary Edge HTML navigation reached the home page, Player entry and account
+sign-in form without a security warning; no browser sign-in or progression was
+performed. That check did not establish CSS/JavaScript delivery or presentation.
+The owner then reported that the address opens on the phone using cellular data,
+but supplied an unstyled desktop sign-in screenshot. Root reproduced the missing
+styling. The [owner report](evidence/ncl01-testflight-20261019/cloudflare-20261020/owner-cellular-presentation-report.json)
+separates owner-reported cellular reachability from desktop image evidence and
+unverified native build4 connectivity. The
+[failed static-asset receipt](evidence/ncl01-testflight-20261019/cloudflare-20261020/static-assets-before-repair.public.json)
+records all 25 real HTML references (7 CSS/18 JS) returning 404 although built
+files exist. The private server's internal Next seam omitted router/static
+handling. The final repair uses the ordinary Next router, advertising only the
+fixed public HTTPS host/443 while actually listening on loopback 3158 behind both
+strict guards. Existing source, build output, auth, Origin and CORS checks remain.
+
+Cloudflare retained cached 404 variants after the origin repair. Root first purged
+the exact 25 preview asset URLs, then only the prefix
+`ncl01.absoluterelativesystems.com/_next/static` to clear Origin-keyed variants.
+Cloudflare's [single-file purge limitations](https://developers.cloudflare.com/cache/how-to/purge-cache/purge-by-single-file/)
+explain this narrower follow-up. No zone-wide/staging/audit purge, cache-rule,
+TTL, Development Mode or Access change occurred. The
+[final router readiness](evidence/ncl01-testflight-20261019/cloudflare-20261020/production-router-readiness.public.json)
+binds 150/150 ordinary-URL CSS/JS responses: three actual pages, 25 references per
+page and two Origin-header cases. This is not 150 unique files. All status,
+content-type, byte and built-file hashes matched without query bypass. The
+[post-router public checks](evidence/ncl01-testflight-20261019/cloudflare-20261020/public-verification-1792509212815/asset-checks.public.json)
+passed 14/14, including session revocation and unchanged Voyages. Independent
+review verified all 29 manifest members and exact current process identities.
+Root normal-reloaded the actual account sign-in page and inspected styled pixels;
+provider availability settled to its expected unavailable state, demonstrating
+client hydration. Browser credentials/progression were not used. Corrected phone
+presentation and build 4 native behavior remain separate owner gates. Earlier
+API, static/cache failures and ownership/readiness snapshots remain immutable.
+
+Build **0.1.0 (4)** was unused at preflight and uploaded against exact
+`47ff42e4cb8b67e5fa2bfbc481a34d3d33490a18` in
+[run 39444433227](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39444433227).
+[Signed verification](evidence/ncl01-testflight-20261019/signed-39444433227/verification.json)
+records SUCCESS, real device archive/export, Apple validation/upload,
+`VALID` / `IN_BETA_TESTING`, the existing **NCL-01 Owner** group and credential
+cleanup. All 13 exported-IPA identity/origin/host/icon/privacy/ATS checks passed;
+IPA SHA-256 is `571ab9dba3f0ed6ef0127c56b9ac347e01ea3f97dae0e417149d836f49234f4d`.
+The exact owned transport was deleted with its SHA lease and absence verified.
+Build 4 is consumed; never re-upload it. Its harvest manifest preserves the
+then-pending presentation gate; the separate
+[combined readiness receipt](evidence/ncl01-testflight-20261019/internal-testflight-ready-build4-20261020.receipt.json)
+binds the later repaired public preview. No additional native build was needed
+for the private server repair.
+Build 3 still targets the LAN address until the owner installs the stable-origin
+update. Changing Wi-Fi will then no longer itself require another app build; the
+laptop and its preview/tunnel services must remain running and online. This
+network update preserves the current native renderer and unfinished Scene/room
+registration scope. No domain purchase, existing service/route change, firewall
+change, global trust change or private credential change occurred.
+
+### Laptop services for the stable address
+
+The Windows **Cloudflared** service already starts automatically. Keep the laptop
+awake and connected to the Internet. Check/start the two owned production preview
+processes after a reboot using PowerShell:
+
+```powershell
+& 'D:\CodexTemp\ncl01-preview\cloudflare-ncl01-20261020\Start-OwnedCloudflarePreview.ps1'
+```
+
+The helper checks existing exact process identity before starting anything and
+refuses occupied ports or unexpected records. It starts only private production
+Next on loopback 3158 and its strict loopback proxy on 3159, using the existing
+canonical isolated database. The route remains configured in Cloudflare and the
+app keeps its stable HTTPS address. No preview CA installation is needed for this
+public address; normal certificate validation stays enabled.
+
+For intentional shutdown of only these two owned services:
+
+```powershell
+& 'D:\CodexTemp\ncl01-preview\cloudflare-ncl01-20261020\Stop-OwnedCloudflarePreview.ps1'
+```
+
+The [current ownership receipt](evidence/ncl01-testflight-20261019/cloudflare-20261020/router-ownership.public.json)
+binds exact process creation, instance/script hashes and single loopback listeners.
+Shutdown revalidates a held process handle, checks exit and port release, and
+preserves its records. New-launch failure cleanup is restricted to the process
+that launcher just created. Start syntax/idempotency passed; final shutdown code
+was reviewed and syntax-checked, but was not executed against the healthy public
+runtime. Existing LAN 3149/8448/8449 and staging/audit/Cloudflared are preserved.
+Keep private source/configuration, identity records, helpers and logs outside Git.

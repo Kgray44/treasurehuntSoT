@@ -205,13 +205,76 @@ The owner selected Cloudflare and owns absoluterelativesystems.com, with existin
 staging.absoluterelativesystems.com. Read-only public audit observed valid TLS and
 302 to Cloudflare Access, not app HTML or NCL source/database identity. Existing
 remotely managed Cloudflared Windows service is running/healthy and preserved;
-staging ingress target, checkout and database remain unknown. Never repoint shared
+staging checkout and database remain unknown. Never repoint shared
 staging or alter its connector without first proving ownership/target. Current
 native exact-origin navigation blocks external Access-login redirects; review
 authentication deliberately, retaining TLS and app/API authorization.
 
-Cloudflare dashboard in Edge tab 1591223954 is at owner login with handoff marked.
-Await owner sign-in, then inspect only the hostname service URL/Access policy.
-No tunnel/DNS/service/firewall/trust changes, build 4, or domain purchase occurred.
-Current beta still targets https://155.42.98.171:8449. Stable multi-network access
-and full authored Scene fidelity are pending; neither is completed by build 3.
+Owner sign-in is complete. Dashboard readback binds existing ars-local-staging
+routes staging -> http://localhost:3000 and audit -> http://localhost:3110, with
+default route settings. The exact-host staging Access app uses Test Users; no
+wildcard Access app was observed. Neither existing target has a current listener;
+that does not authorize reuse of its port or repointing. Preserve both routes.
+The owner explicitly approved publication of the prepared separate ncl01 route.
+Cloudflare confirmed Route added successfully and the automatic CNAME; the final
+three-route list preserves staging/audit and adds ncl01 -> http://127.0.0.1:3159,
+defaults. Its existing VoyageWright account/authenticated assets remain required.
+Do not repeat publication approval or weaken existing Access protections.
+
+Private runtime preparation is sealed under
+D:\CodexTemp\ncl01-preview\cloudflare-ncl01-20261020. Its tracked source snapshot is
+47ff42e4cb8b67e5fa2bfbc481a34d3d33490a18; the dedicated production webpack build and
+TypeScript check passed without bypasses. New loopback-only Next 3158 and strict
+proxy 3159 preserve the canonical isolated database and original laptop services.
+Local exact-public-Origin gates now pass: 10/10 edge guards and 14/14 canonical
+sign-in/asset/Journal/stream/logout checks, independently reviewed. This is
+loopback HTTP proof, not public TLS or phone proof. Full Crossdeck streaming was
+not exercised; its authenticated request reached schema validation without
+creating a surface. Failed origin/cwd/wrong-Journal-path diagnostics are retained
+under cloudflare-20261020. The corrected private server uses its dedicated cwd,
+fixed Host/proto guards and Next 16.3.8 URL normalization; product Origin/auth/CORS
+checks are unchanged. Following approved publication, normal PUBLIC HTTPS checks
+passed 14/14 using default platform trust/no CA override: Secure sign-in, original
+GLBs, Journal HTML/current-events SSE, authorization and own-session revocation;
+both Voyages stayed unchanged. Independent review passed. Ordinary Edge root,
+Player entry and account sign-in HTML navigation was reachable; no browser login
+or progression action was used. This was not CSS/hydration/presentation proof.
+The owner then reported phone cellular reachability and supplied an unstyled
+desktop sign-in screenshot; root reproduced it. All 25 referenced 7 CSS/18 JS
+failed 404 despite existing built files. API proofs remain scoped, not visual
+acceptance. The private 3158 router seam is now repaired using ordinary Next
+router/static handling, fixed advertised hostname/443 and actual loopback3158.
+Only the old owned3158 instance was stopped with creation/held-handle proof;
+edge3159 and all previous services stayed unchanged. Failed static/cache receipts
+are preserved. Exact25URL purge followed by only the new host's /_next/static
+prefix purge cleared cached Origin variants; no zone/staging/audit purge or cache
+configuration/Access change. Final150/150 checks cover three pages x25references
+x two header cases, ordinary URLs/no query bypass, exact types/bytes/hashes.
+Post-router normal public auth/asset/JournalSSE14/14 passed with owned revocation
+and unchanged Voyages. Root actual account sign-in normal reload has styled
+pixels and settled provider availability (hydration). Final readiness SHA
+a8102f434ef1efb64d4488f3f8cd5d6a00cf625225af82cc36c4924a37a6faa1;
+independent review verified all29 members and live router195824/edge195316.
+Corrected phone presentation/native build4 remain owner gates.
+
+Build 0.1.0 (4) was unused at preflight and run39444433227 is SUCCESS against
+exact47ff42e4 and https://ncl01.absoluterelativesystems.com. Actual device archive,
+App Store export/validation/upload and processing VALID passed; existing NCL-01
+Owner group is IN_BETA_TESTING. All13 IPA checks and credentials cleanup passed;
+the exact owned transport was deleted with SHA lease/absence proof. Builds2/3/4
+are consumed; never duplicate an upload. Harvest's presentation-pending snapshot
+is retained alongside later final public/router readiness. Build3 still targets
+the LAN origin and needs this one-time TestFlight4 update with the same account.
+Existing Cloudflared service, staging/audit, LAN3149/8448/8449, firewall, global
+trust and private credentials are unchanged. No domain purchase occurred.
+Phone installation/native connectivity and full authored Scene fidelity remain
+separate gates; public software proof does not complete them.
+
+Start/check only the new services using private Start-OwnedCloudflarePreview.ps1;
+intentional shutdown uses matching Stop-OwnedCloudflarePreview.ps1. Both are under
+the private runtime directory above. Helpers verify exact creation identity,
+instance/script hash and loopback listener; Stop uses a held process handle and
+checks exit/port release. New-launch failure cleanup only affects its newly
+created instance. Current immutable runtime script is serve-owned-production-router.mjs.
+Start idempotency passed; final Stop was reviewed, not executed
+against the healthy public runtime. Preserve its private records/identity helper.

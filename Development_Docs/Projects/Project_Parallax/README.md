@@ -62,13 +62,16 @@ Parallax does **not** own:
 
 - [NCL-01 TestFlight deployment](NCL01_TestFlight_Deployment.md) records the
   isolated signing path and owner-reported installation, native sign-in and
-  camera display of the original 3D models. Build 0.1.0 (3) is available in
-  internal TestFlight for the new classroom network. The separate classroom
+  camera display of the original 3D models. Build 0.1.0 (4) is available in
+  internal TestFlight for the stable public HTTPS address. The separate classroom
   Chronicle passed canonical publication, authenticated asset and accessible
   browser checks. The owner reports classroom objects visible when panning the
   native camera after an initially empty view; they do not accept the authored
   scene's appearance/placement. Exact phone build, all three objects, measured
   tracking/interactions and full room integration remain unverified or unfinished.
+  Owner-approved Cloudflare publication, public TLS/auth/Journal/static checks
+  and desktop sign-in presentation pass. Exact build 4 phone behavior is pending;
+  the owner reports cellular reachability. Existing routes/services are preserved.
   PR #741 is not merged.
 
 **Phase 3 is software-qualified and integrated on protected main through PR #711 at `0327eeb7`.** The [implementation and requirement reconciliation](Phase_3_Implementation.md) records semantic placement, bounded multi-entity staging, durable logical policies, remote authoring, optional metadata calibration and bounded discovery recovery. Ordinary Sounding Line passed all nine obligations, 1,739 tests and four product browser journeys. The clean landed tree passed 79 smoke tests and 26 fresh D0 scenarios. The [workstation design review](Phase_3_Workstation_Review.md) retains the first populated 3D approval.

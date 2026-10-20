@@ -1,0 +1,305 @@
+{
+  "schemaVersion": 1,
+  "task": "NCL01_CLOUDFLARE_PRODUCTION",
+  "status": "PUBLIC_PRODUCTION_PREVIEW_READY",
+  "observedAt": "2026-10-20T15:14:33.018Z",
+  "publicOrigin": "https://ncl01.absoluterelativesystems.com",
+  "proposedTunnelUpstream": "http://127.0.0.1:3159",
+  "privateProductionUpstream": "http://127.0.0.1:3158",
+  "transportScope": "NORMAL PUBLIC HTTPS443; platform trust without CA overrides; encrypted Cloudflare tunnel to guarded loopback-only production upstream",
+  "publicTlsVerified": true,
+  "publicRoutePublished": true,
+  "physicalPhoneEvidence": false,
+  "sourceCommit": "47ff42e4cb8b67e5fa2bfbc481a34d3d33490a18",
+  "sourceArchiveSha256": "ec29e209ed0846d8d3441bd9acdb3a3d7c3d8a4e125767a238b3805d81b175ac",
+  "sourceTrackedFiles": 6629,
+  "sourceTrackedBytes": 1552271816,
+  "sourceDependencyAndAuthComparisonsMatch": true,
+  "privateGeneratedTrackedChanges": [
+    {
+      "path": "tsconfig.json",
+      "reason": "Next production build adds its private generated type paths",
+      "sha256": "80b23413dcfbbf396ffc226d69ec7179834b05d32620228cc374bb27c497cb6b"
+    }
+  ],
+  "nextVersion": "16.3.8",
+  "buildMode": "production",
+  "buildId": "eXyUnl00AR1ll9_Wp9ix6",
+  "productionBuildAndTypecheck": "PASS",
+  "buildDurationMs": 108182,
+  "buildCheckBypasses": false,
+  "devHmrDebugExposed": false,
+  "productionAnimationLabCompiled": false,
+  "validationDatabaseIdentityExposed": false,
+  "strictFixedHostAndOrigin": true,
+  "httpsForwardedProtoRequired": true,
+  "httpGetRedirectsOnlyToFixedHttpsHost": true,
+  "secureCookieHttpOnlySameSiteLaxVerified": true,
+  "publicOriginRequestUrlCoherent": true,
+  "guardChecks": {
+    "passed": 10,
+    "total": 10
+  },
+  "authenticatedSceneAssetJournalAndStreamChecks": {
+    "passed": 14,
+    "total": 14
+  },
+  "journalHtml200": true,
+  "journalCurrentEventsSse200": true,
+  "journalStreamClientAborted": true,
+  "crossdeckUnauthenticatedExactOrigin401": true,
+  "crossdeckAuthenticatedExactOriginSchema400": true,
+  "fullCrossdeckStreamProven": false,
+  "canonicalVoyageIds": [
+    "cmv9yxc3u001i25do46ylmr89",
+    "cmvgr299f000v25o8koydyrcd"
+  ],
+  "bothVoyagesCanonicalProgressionUnchanged": true,
+  "publishedClassroomSceneChecksum": "13c1178ec10faae82ef92a7095b376380bcfbf0a1b436caaa7d51beb005edf6d",
+  "classroomEntityCount": 3,
+  "classroomSharedHorizontalFloorAnchor": true,
+  "models": [
+    {
+      "id": "treasure-chest",
+      "bytes": 630120,
+      "sha256": "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f"
+    },
+    {
+      "id": "brass-compass",
+      "bytes": 313396,
+      "sha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb"
+    }
+  ],
+  "ownProbeSessionRevoked": true,
+  "otherSessionsTouched": false,
+  "canonicalProgressionRequests": 0,
+  "resetOrPreparationRequests": 0,
+  "outboundEmailDisabled": true,
+  "syntheticEmailOnly": true,
+  "credentialsUnchanged": true,
+  "sharedDatabaseCloned": false,
+  "sourceWorktreesEdited": false,
+  "existing3149And8448And8449Preserved": true,
+  "cloudflaredServiceOrExistingRoutesChanged": false,
+  "firewallOrGlobalTrustChanged": false,
+  "ownedProcessRecords": {
+    "production": {
+      "pid": 195824,
+      "createdRecordAt": "2026-10-20T15:06:45.140Z",
+      "port": 3158,
+      "bindHost": "127.0.0.1",
+      "script": "serve-owned-production-router.mjs"
+    },
+    "edge": {
+      "pid": 195316,
+      "createdRecordAt": "2026-10-20T14:43:13.753Z",
+      "port": 3159,
+      "bindHost": "127.0.0.1",
+      "script": "loopback-edge.mjs"
+    }
+  },
+  "ownedPriorCandidateStopAndPortReleaseVerified": true,
+  "remainingOperations": [
+    "Bind the next native iOS beta to this fixed HTTPS origin and app-bound domain",
+    "Owner installs that TestFlight build and verifies native AR on the stable origin"
+  ],
+  "retainedFailedDiagnostics": [
+    {
+      "receipt": "next-production-start-attempt1.private.log",
+      "reason": "Direct Next config loader lacked CLI TS resolver; replaced by exact successful build configuration"
+    },
+    {
+      "receipt": "edge-paths-1792507561869.public.json",
+      "reason": "Original CLI server request URL used loopback origin; exact public Origin correctly rejected"
+    },
+    {
+      "receipt": "edge-paths-1792507681919.public.json",
+      "reason": "Custom server cross-drive cwd generated invalid manifest path; private server now chdir to source snapshot"
+    },
+    {
+      "receipt": "local-verification-1792507813739/asset-checks.public.json",
+      "reason": "Probe used wrong Journal route; owner session revoked; corrected to previously verified canonical Journal path"
+    },
+    {
+      "receipt": "static-assets-1792508703007/static-assets.public.json",
+      "reason": "Direct internal Next server returned404HTML for all25CSS/JS assets; earlier pass receipts covered API/SSE only"
+    },
+    {
+      "receipt": "static-assets-1792508812037/static-assets.public.json",
+      "reason": "Normal router fixed origin asset delivery but Cloudflare retained prior404cache entries"
+    },
+    {
+      "receipt": "router-static-cache-1792508839759.public.json",
+      "reason": "Ordinary URL404HIT versus samebytes local200 and query200MISS proved stale CDN cache; bypass was diagnostic only"
+    }
+  ],
+  "runtimeHelpers": [
+    {
+      "name": "serve-owned-production-router.mjs",
+      "sha256": "d16fb09b0eb5de61ef5b4b774a41a7c70dcb3259d486d8b568b695da50321da4"
+    },
+    {
+      "name": "loopback-edge.mjs",
+      "sha256": "8ea83ae489e25785803365fd1105e27b1dd9d9713372385e4a9e548351493b3a"
+    },
+    {
+      "name": "Start-OwnedCloudflarePreview.ps1",
+      "sha256": "7ae3e969239629a5e032ca66d5acc579aa06e9606aac17a3105e4446e12cca97"
+    },
+    {
+      "name": "Stop-OwnedCloudflarePreview.ps1",
+      "sha256": "454a5cf93d5724a309ab029d36aa27f8a6671a255d7a2be1e75d905a526a74b6"
+    },
+    {
+      "name": "OwnedRuntimeIdentity.ps1",
+      "sha256": "2cca812a43c298292bdb8f615f163a2cd96004ac7c9d437beff27dbbac950105"
+    },
+    {
+      "name": "verify-public-classroom-router.mjs",
+      "sha256": "e9cac849944854fb48b5545cd0a91a7aaa6cf5b4cb2a381f5a57c53a79230c02"
+    },
+    {
+      "name": "check-public-static-assets.mjs",
+      "sha256": "89b1c5d0654ee7ed3a2ca74f040386c961ff60fcaf95b8e3707c0421b31f7d31"
+    }
+  ],
+  "sanitizedReceipts": [
+    {
+      "name": "production-build.public.json",
+      "sha256": "8e2878270fcfb16934a20aaa6cf8eed34387ab15e3a7e6e4ddc35a6827f44414"
+    },
+    {
+      "name": "local-verification-1792507839106/asset-checks.public.json",
+      "sha256": "7bd93528088060a8359671aa88cb58a3aeed0c6dfd9f4a264998d64f37dd1539"
+    },
+    {
+      "name": "edge-paths-1792507776019.public.json",
+      "sha256": "bf95ab27bf87661c4677185cd8c09a0722e80819228c8f07de0247f6e955272a"
+    },
+    {
+      "name": "cli-stop.public.json",
+      "sha256": "9d8b3032e5f37d83b3d399bc4f9c9eb4770c4dc1270eaf9f4cdc57fcfb79b150"
+    },
+    {
+      "name": "custom-attempt1-stop.public.json",
+      "sha256": "fd2f954437a019293ede947ff2127c8c403f27a0fd00017a2b340e685309bbc0"
+    },
+    {
+      "name": "identity-binding.public.json",
+      "sha256": "334c2ef0069b02cb1c5522940161cdd52f0b075c7188fb62524d85d8fb2ca8e0"
+    },
+    {
+      "name": "public-verification-1792508371934/asset-checks.public.json",
+      "sha256": "4121e264201b21180158049a5cc1b133086dc21bfb76e722c5361ed6165b6d35"
+    },
+    {
+      "name": "ownership.public.json",
+      "sha256": "90b5e5de21250d457b7deb3a8b7964844019be031ac95a2e1c855f5c41b370f3"
+    },
+    {
+      "name": "static-assets-1792509212705195204/static-assets.public.json",
+      "sha256": "061f57ea46f84b11b9d7aabca55ddf65f32e1dbc3ef67105b2917fb2259f0bfc"
+    },
+    {
+      "name": "public-verification-1792509212815/asset-checks.public.json",
+      "sha256": "9b1725404f2af295f73d0cbe53af4249a24642ce2a1ed6c80004e7fb9e1cd088"
+    },
+    {
+      "name": "router-ownership.public.json",
+      "sha256": "b9c4f817a4885ef889bce289d8aa57e784b58a76c39908d3bcf5df8622e4cf3c"
+    },
+    {
+      "name": "router-identity-binding.public.json",
+      "sha256": "8586772eb481a5fed1946b6b1a7e5930639da9c74eb47b72f12aabba3d83cfdc"
+    },
+    {
+      "name": "router-repair-20261020T150640698Z/stop.public.json",
+      "sha256": "62fcf1bd5d5fdc1d2bafa4065fde498611266de83b5867931e74450e2078d6b3"
+    },
+    {
+      "name": "static-assets-purge-urls.public.txt",
+      "sha256": "65911314d8c3fe7b9afe0f324c798ff469021d48efcc0f8f5c93d991a69426c2"
+    },
+    {
+      "name": "static-assets-1792508703007/static-assets.public.json",
+      "sha256": "cda781a88f63657dfdb4a9dc496a26502bad200277d8b5aa2d7f73c72742d467"
+    },
+    {
+      "name": "static-assets-1792508812037/static-assets.public.json",
+      "sha256": "9fe5c3522cd7f3f46aa054f65fa8ba9052a945fa87562ca31ff6d57b531ffdc4"
+    },
+    {
+      "name": "router-static-cache-1792508839759.public.json",
+      "sha256": "801457300de0d0fc6d4b40d4e25d5da6f79453b59f4fe082b50569b1d67c6a6f"
+    },
+    {
+      "name": "static-assets-1792509212709189892/static-assets.public.json",
+      "sha256": "5120f67c40035b0269307f6c301b88ac56fb7c4ba6279f7ee801a6939f7300af"
+    },
+    {
+      "name": "static-assets-1792509212701196656/static-assets.public.json",
+      "sha256": "6cd0390b5ca144af4b810804d22ce2884ceb5d06e0125d19fbb1cc0fb993740b"
+    },
+    {
+      "name": "static-assets-1792509212765152768/static-assets.public.json",
+      "sha256": "9044fa141cad9f20ed939cc5dd7433f861ce9f8e13f858f3b705e7387e488530"
+    },
+    {
+      "name": "static-assets-1792509212766182980/static-assets.public.json",
+      "sha256": "9b30a35dd0d6b35b062d92bdd431227913c17fff8e76aa66bf7b7ce35fcecddf"
+    },
+    {
+      "name": "static-assets-1792509212813147568/static-assets.public.json",
+      "sha256": "62c28a5b21ff166cdb4d27f48b1e265487b54b1f05032184e4b2746f4e1fd1ac"
+    }
+  ],
+  "publicationConfirmation": "Parent observed successful owner-approved Cloudflare route and unchanged staging/audit route list",
+  "publicAuthAssetJournalAndSseChecks": {
+    "passed": 14,
+    "total": 14,
+    "redirectsFollowed": 0,
+    "normalPlatformTls": true,
+    "ownProbeSessionRevoked": true,
+    "bothVoyagesCanonicalProgressionUnchanged": true
+  },
+  "exactProcessCreationBinding": true,
+  "heldProcessHandleStopAndImmediateIdentityRevalidation": true,
+  "newLaunchFailureCleanupReviewed": true,
+  "finalStopHelperExecuted": false,
+  "startHelperExistingRuntimeIdempotency": "PASS",
+  "publicStaticAssetsVerified": true,
+  "cssAndJsStaticChecks": {
+    "passed": 150,
+    "total": 150,
+    "htmlDocuments": 3,
+    "requestsPerDocumentAndVariant": 25,
+    "cssPerDocument": 7,
+    "javascriptPerDocument": 18,
+    "headerVariants": [
+      "ordinaryNoOrigin",
+      "explicitExactPublicOrigin"
+    ],
+    "uniqueResources": 29,
+    "ordinaryHtmlUrls": true,
+    "queryBypassUsed": false,
+    "exactBuiltBytesAndDigests": true,
+    "normalPublicTls": true,
+    "documents": [
+      "/player/sign-in",
+      "/sign-in?returnTo=%2Fplayer%2Flibrary",
+      "/"
+    ]
+  },
+  "normalProductionRouter": true,
+  "advertisedNextHost": "ncl01.absoluterelativesystems.com",
+  "advertisedNextPort": 443,
+  "arbitraryHostTrustEnabled": false,
+  "staticCacheRepair": {
+    "initialTargetedCloudflarePurgeUrls": 25,
+    "finalPurgedPrefix": "ncl01.absoluterelativesystems.com/_next/static",
+    "wholeZonePurged": false,
+    "otherHostnamesOrCacheRulesChanged": false,
+    "bothHeaderVariantsOrdinaryUrlProofAfterPurge": true
+  },
+  "finalRuntimeStopHelperExecuted": false
+}

@@ -19,13 +19,17 @@ last_reviewed: 2026-10-20
   hosted archive/sign/export/upload workflow. [The deployment record](Development_Docs/Projects/Project_Parallax/NCL01_TestFlight_Deployment.md)
   retains signed-build evidence and current NFC entitlement compatibility. Private
   beta 0.1.0 (2) reached internal TestFlight. The owner reports installation,
-  native sign-in and camera display of the original models. Build 0.1.0 (3) is
-  available in internal TestFlight for the classroom network; its separate
+  native sign-in and camera display of the original models. Build 0.1.0 (3) was
+  uploaded for the classroom network; its separate
   classroom Chronicle passed publication, authenticated assets and accessible
   browser checks. The owner reports classroom objects appearing when panning the
   native camera after an initially empty view, but authored appearance/placement
   is not accepted. Exact phone build, all three objects and measured interactions
   remain unverified; full authored Scene/room-registration integration is unfinished.
+  Build 0.1.0 (4) is now available in internal TestFlight using an owner-approved
+  stable Cloudflare address and isolated production runtime. Repaired CSS/JS
+  routing and cached errors; normal public TLS/auth/Journal/static checks and
+  desktop sign-in presentation pass. Exact build 4 phone behavior is unverified.
 
 - NCL-01 begins a native Scene candidate with negotiated v2 delivery, exact SC02 chest/compass assets, authorized integrity-checked loading and native object selection through the existing Chronicle observation path. [The implementation record](Development_Docs/Projects/Project_Parallax/NCL01_Native_Scene_Vertical_Slice.md) separates contract/build evidence from pending browser integration, physical devices and owner acceptance.
 
