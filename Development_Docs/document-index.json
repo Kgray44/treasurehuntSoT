@@ -3231,6 +3231,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-media-first-successor-20261020-r21/causal-disposition.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-media-first-successor-20261020-r21/historical-ledger.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r10-ordinary-only-20261016/r9-consumed-frozen-publication.derived.json",
       "record_type": "program-record",
       "status": "preserved",
