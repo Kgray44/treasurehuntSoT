@@ -152,3 +152,7 @@ Development_Docs/Project_Harborlight_Phase_4_Implementation_Manifest.txt
 
 # Preserve reviewed Reach descriptor feasibility evidence bytes and hash.
 /Development_Docs/Projects/Project_Reach/evidence/descriptor-feasibility-20261020/safe-aggregate.json
+
+# Preserve reviewed Reach causal point tracker evidence bytes and hashes.
+/Development_Docs/Projects/Project_Reach/evidence/causal-point-tracker-20261020/sequence-aggregate.json
+/Development_Docs/Projects/Project_Reach/evidence/causal-point-tracker-20261020/native48-aggregate.json

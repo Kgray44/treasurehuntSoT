@@ -12,6 +12,8 @@ Reach is Voyagewright's reusable browser-first spatial interaction and intent sy
 
 ## Effective governing sources
 
+The [fixed causal point tracker experiment](Phase_1_Causal_Point_Tracker_20261020.md) rejects a licensed learned correspondence route: only 6/25 post-reference positive predictions land inside the reviewed circles versus 12/25 for the original cached neural output, with RIGHT regressions and all 874 native calls above 150 ms. All 1,336 rows and uncertainty states remain; production is unchanged and the perception mission remains incomplete.
+
 The [fixed descriptor observability experiment](Phase_1_Descriptor_Feasibility_20261020.md) finds no query in the registered DIP region, so its fixed query set cannot meet the existing distal-region material requirement. All 1,336 metadata rows and 873 later matching rows are retained; mutual descriptor proposals establish no recovery. The method is rejected, production tracking remains unchanged, and required RIGHT and mixed-motion improvement remains unresolved.
 
 The [fixed reflection inference experiment](Phase_1_Reflection_Inference_20261020.md) retains all 1,336 paired raw frames and fixed AI development references. Its localization gains are limited to BOTTOM-RIGHT, with no demonstrated RIGHT or mixed-motion gain and important SWEEP/BOTTOM availability regressions. The replacement is rejected, production tracking remains unchanged, and physical Phase 1 acceptance remains open.

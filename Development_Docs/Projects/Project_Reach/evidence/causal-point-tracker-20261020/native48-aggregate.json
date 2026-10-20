@@ -1,0 +1,4080 @@
+{
+  "classification": "SAFE_ALLOWLIST_OFFLINE_NATIVE48_AI_DEVELOPMENT_DIAGNOSTIC_AGGREGATE",
+  "qualification": false,
+  "allPrivateRowsRetained": {
+    "metadataStatusRows": 1336,
+    "referenceRows": 48,
+    "noRescoring": true
+  },
+  "all14AndAll": {
+    "ALL": {
+      "metadataRows": 1336,
+      "phases": {
+        "BEFORE_SEED": 462,
+        "SEED": 1,
+        "POSTSEED": 873
+      },
+      "methods": {
+        "CACHED_RAW_NN8": {
+          "statuses": {
+            "INVALID_OR_MISSING_RESULT": 0,
+            "ZERO_HANDS": 102,
+            "MULTIPLE_HANDS": 30,
+            "NON21_HAND": 0,
+            "NONFINITE_INDEX8": 0,
+            "OUT_OF_BOUNDS_INDEX8": 23,
+            "IN_BOUNDS_INDEX8": 1181
+          },
+          "rawFinite": 1204,
+          "rawMissing": 132,
+          "visible": 0,
+          "visibilityUnknown": 1336,
+          "inBounds": 1181,
+          "boundsUnknown": 0,
+          "diagnosticQualified": 1181,
+          "finiteButInvisible": 0,
+          "finiteOutOfBounds": 23
+        },
+        "TAPIR_RAW_TIP8": {
+          "statuses": {
+            "UNCOMPUTED_BEFORE_SEED": 462,
+            "VISIBLE_IN_BOUNDS": 197,
+            "INVISIBLE_AND_OUT_OF_BOUNDS": 0,
+            "MODEL_INVISIBLE": 677,
+            "OUT_OF_BOUNDS": 0
+          },
+          "rawFinite": 874,
+          "rawMissing": 462,
+          "visible": 197,
+          "visibilityUnknown": 462,
+          "inBounds": 874,
+          "boundsUnknown": 462,
+          "diagnosticQualified": 197,
+          "finiteButInvisible": 677,
+          "finiteOutOfBounds": 0
+        }
+      },
+      "references": {
+        "denominator": 48,
+        "positive": 31,
+        "positiveBeforeSeed": 6,
+        "positivePostseed": 25,
+        "contraryOverlap": 5,
+        "pointAvailable": 37,
+        "pointUnavailable": 11,
+        "visibility": {
+          "VISIBLE": 37,
+          "AMBIGUOUS": 6,
+          "NOT_VISIBLE": 5
+        },
+        "digit": {
+          "INDEX": 40,
+          "UNRESOLVED": 8
+        },
+        "gesture": {
+          "RELAXED_POINT_PLAUSIBLE": 10,
+          "POINT_PLAUSIBLE": 2,
+          "POINTING_PLAUSIBLE": 22,
+          "UNRESOLVED": 9,
+          "CONTRARY_OPEN_PALM": 5
+        },
+        "physicalIdentityUnknown": 48,
+        "methods": {
+          "CACHED_RAW_NN8": {
+            "all48Categories": {
+              "denominator": 48,
+              "rawFinite": 36,
+              "rawMissing": 12,
+              "diagnosticQualified": 36,
+              "diagnosticExcluded": 12,
+              "rawCircle": {
+                "available": 28,
+                "inside": 20,
+                "outside": 8,
+                "unavailable": 20
+              },
+              "qualifiedCircle": {
+                "available": 28,
+                "inside": 20,
+                "outside": 8,
+                "unavailable": 20
+              },
+              "statuses": {
+                "ZERO_HANDS": 10,
+                "IN_BOUNDS_INDEX8": 36,
+                "MULTIPLE_HANDS": 2
+              }
+            },
+            "positive31": {
+              "denominator": 31,
+              "rawFinite": 22,
+              "rawMissing": 9,
+              "diagnosticQualified": 22,
+              "diagnosticExcluded": 9,
+              "rawCircle": {
+                "available": 22,
+                "inside": 16,
+                "outside": 6,
+                "unavailable": 9
+              },
+              "qualifiedCircle": {
+                "available": 22,
+                "inside": 16,
+                "outside": 6,
+                "unavailable": 9
+              },
+              "statuses": {
+                "ZERO_HANDS": 7,
+                "IN_BOUNDS_INDEX8": 22,
+                "MULTIPLE_HANDS": 2
+              }
+            },
+            "postseedPositive25": {
+              "denominator": 25,
+              "rawFinite": 16,
+              "rawMissing": 9,
+              "diagnosticQualified": 16,
+              "diagnosticExcluded": 9,
+              "rawCircle": {
+                "available": 16,
+                "inside": 12,
+                "outside": 4,
+                "unavailable": 9
+              },
+              "qualifiedCircle": {
+                "available": 16,
+                "inside": 12,
+                "outside": 4,
+                "unavailable": 9
+              },
+              "statuses": {
+                "ZERO_HANDS": 7,
+                "IN_BOUNDS_INDEX8": 16,
+                "MULTIPLE_HANDS": 2
+              }
+            },
+            "contraryOverlap5": {
+              "denominator": 5,
+              "rawFinite": 5,
+              "rawMissing": 0,
+              "diagnosticQualified": 5,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 4,
+                "inside": 4,
+                "outside": 0,
+                "unavailable": 1
+              },
+              "qualifiedCircle": {
+                "available": 4,
+                "inside": 4,
+                "outside": 0,
+                "unavailable": 1
+              },
+              "statuses": {
+                "IN_BOUNDS_INDEX8": 5
+              }
+            }
+          },
+          "TAPIR_RAW_TIP8": {
+            "all48Categories": {
+              "denominator": 48,
+              "rawFinite": 42,
+              "rawMissing": 6,
+              "diagnosticQualified": 4,
+              "diagnosticExcluded": 44,
+              "rawCircle": {
+                "available": 31,
+                "inside": 7,
+                "outside": 24,
+                "unavailable": 17
+              },
+              "qualifiedCircle": {
+                "available": 3,
+                "inside": 3,
+                "outside": 0,
+                "unavailable": 45
+              },
+              "statuses": {
+                "MODEL_INVISIBLE": 38,
+                "VISIBLE_IN_BOUNDS": 4,
+                "UNCOMPUTED_BEFORE_SEED": 6
+              }
+            },
+            "positive31": {
+              "denominator": 31,
+              "rawFinite": 25,
+              "rawMissing": 6,
+              "diagnosticQualified": 2,
+              "diagnosticExcluded": 29,
+              "rawCircle": {
+                "available": 25,
+                "inside": 6,
+                "outside": 19,
+                "unavailable": 6
+              },
+              "qualifiedCircle": {
+                "available": 2,
+                "inside": 2,
+                "outside": 0,
+                "unavailable": 29
+              },
+              "statuses": {
+                "MODEL_INVISIBLE": 23,
+                "VISIBLE_IN_BOUNDS": 2,
+                "UNCOMPUTED_BEFORE_SEED": 6
+              }
+            },
+            "postseedPositive25": {
+              "denominator": 25,
+              "rawFinite": 25,
+              "rawMissing": 0,
+              "diagnosticQualified": 2,
+              "diagnosticExcluded": 23,
+              "rawCircle": {
+                "available": 25,
+                "inside": 6,
+                "outside": 19,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 2,
+                "inside": 2,
+                "outside": 0,
+                "unavailable": 23
+              },
+              "statuses": {
+                "MODEL_INVISIBLE": 23,
+                "VISIBLE_IN_BOUNDS": 2
+              }
+            },
+            "contraryOverlap5": {
+              "denominator": 5,
+              "rawFinite": 5,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 5,
+              "rawCircle": {
+                "available": 4,
+                "inside": 0,
+                "outside": 4,
+                "unavailable": 1
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 5
+              },
+              "statuses": {
+                "MODEL_INVISIBLE": 5
+              }
+            }
+          }
+        },
+        "pairedIntervals": {
+          "rawFinite": {
+            "UNCOMPUTED_BEFORE_SEED": 6,
+            "NOT_POSITIVE_REFERENCE": 17,
+            "UNPAIRED_MISSING": 9,
+            "RAW_INTERVAL_IMPROVEMENT": 1,
+            "RAW_INTERVAL_REGRESSION": 3,
+            "OVERLAPPING_UNCERTAINTY": 12
+          },
+          "qualified": {
+            "UNCOMPUTED_BEFORE_SEED": 6,
+            "NOT_POSITIVE_REFERENCE": 17,
+            "UNPAIRED_MISSING": 23,
+            "RAW_INTERVAL_IMPROVEMENT": 0,
+            "RAW_INTERVAL_REGRESSION": 0,
+            "OVERLAPPING_UNCERTAINTY": 2
+          }
+        }
+      }
+    },
+    "CENTER": {
+      "metadataRows": 109,
+      "phases": {
+        "BEFORE_SEED": 109,
+        "SEED": 0,
+        "POSTSEED": 0
+      },
+      "methods": {
+        "CACHED_RAW_NN8": {
+          "statuses": {
+            "INVALID_OR_MISSING_RESULT": 0,
+            "ZERO_HANDS": 11,
+            "MULTIPLE_HANDS": 0,
+            "NON21_HAND": 0,
+            "NONFINITE_INDEX8": 0,
+            "OUT_OF_BOUNDS_INDEX8": 0,
+            "IN_BOUNDS_INDEX8": 98
+          },
+          "rawFinite": 98,
+          "rawMissing": 11,
+          "visible": 0,
+          "visibilityUnknown": 109,
+          "inBounds": 98,
+          "boundsUnknown": 0,
+          "diagnosticQualified": 98,
+          "finiteButInvisible": 0,
+          "finiteOutOfBounds": 0
+        },
+        "TAPIR_RAW_TIP8": {
+          "statuses": {
+            "UNCOMPUTED_BEFORE_SEED": 109,
+            "VISIBLE_IN_BOUNDS": 0,
+            "INVISIBLE_AND_OUT_OF_BOUNDS": 0,
+            "MODEL_INVISIBLE": 0,
+            "OUT_OF_BOUNDS": 0
+          },
+          "rawFinite": 0,
+          "rawMissing": 109,
+          "visible": 0,
+          "visibilityUnknown": 109,
+          "inBounds": 0,
+          "boundsUnknown": 109,
+          "diagnosticQualified": 0,
+          "finiteButInvisible": 0,
+          "finiteOutOfBounds": 0
+        }
+      },
+      "references": {
+        "denominator": 0,
+        "positive": 0,
+        "positiveBeforeSeed": 0,
+        "positivePostseed": 0,
+        "contraryOverlap": 0,
+        "pointAvailable": 0,
+        "pointUnavailable": 0,
+        "visibility": {
+          "VISIBLE": 0,
+          "AMBIGUOUS": 0,
+          "NOT_VISIBLE": 0
+        },
+        "digit": {
+          "INDEX": 0,
+          "UNRESOLVED": 0
+        },
+        "gesture": {
+          "RELAXED_POINT_PLAUSIBLE": 0,
+          "POINT_PLAUSIBLE": 0,
+          "POINTING_PLAUSIBLE": 0,
+          "UNRESOLVED": 0,
+          "CONTRARY_OPEN_PALM": 0
+        },
+        "physicalIdentityUnknown": 0,
+        "methods": {
+          "CACHED_RAW_NN8": {
+            "all48Categories": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "positive31": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "postseedPositive25": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "contraryOverlap5": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            }
+          },
+          "TAPIR_RAW_TIP8": {
+            "all48Categories": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "positive31": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "postseedPositive25": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "contraryOverlap5": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            }
+          }
+        },
+        "pairedIntervals": {
+          "rawFinite": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "NOT_POSITIVE_REFERENCE": 0,
+            "UNPAIRED_MISSING": 0,
+            "RAW_INTERVAL_IMPROVEMENT": 0,
+            "RAW_INTERVAL_REGRESSION": 0,
+            "OVERLAPPING_UNCERTAINTY": 0
+          },
+          "qualified": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "NOT_POSITIVE_REFERENCE": 0,
+            "UNPAIRED_MISSING": 0,
+            "RAW_INTERVAL_IMPROVEMENT": 0,
+            "RAW_INTERVAL_REGRESSION": 0,
+            "OVERLAPPING_UNCERTAINTY": 0
+          }
+        }
+      }
+    },
+    "BOTTOM": {
+      "metadataRows": 145,
+      "phases": {
+        "BEFORE_SEED": 145,
+        "SEED": 0,
+        "POSTSEED": 0
+      },
+      "methods": {
+        "CACHED_RAW_NN8": {
+          "statuses": {
+            "INVALID_OR_MISSING_RESULT": 0,
+            "ZERO_HANDS": 1,
+            "MULTIPLE_HANDS": 0,
+            "NON21_HAND": 0,
+            "NONFINITE_INDEX8": 0,
+            "OUT_OF_BOUNDS_INDEX8": 16,
+            "IN_BOUNDS_INDEX8": 128
+          },
+          "rawFinite": 144,
+          "rawMissing": 1,
+          "visible": 0,
+          "visibilityUnknown": 145,
+          "inBounds": 128,
+          "boundsUnknown": 0,
+          "diagnosticQualified": 128,
+          "finiteButInvisible": 0,
+          "finiteOutOfBounds": 16
+        },
+        "TAPIR_RAW_TIP8": {
+          "statuses": {
+            "UNCOMPUTED_BEFORE_SEED": 145,
+            "VISIBLE_IN_BOUNDS": 0,
+            "INVISIBLE_AND_OUT_OF_BOUNDS": 0,
+            "MODEL_INVISIBLE": 0,
+            "OUT_OF_BOUNDS": 0
+          },
+          "rawFinite": 0,
+          "rawMissing": 145,
+          "visible": 0,
+          "visibilityUnknown": 145,
+          "inBounds": 0,
+          "boundsUnknown": 145,
+          "diagnosticQualified": 0,
+          "finiteButInvisible": 0,
+          "finiteOutOfBounds": 0
+        }
+      },
+      "references": {
+        "denominator": 0,
+        "positive": 0,
+        "positiveBeforeSeed": 0,
+        "positivePostseed": 0,
+        "contraryOverlap": 0,
+        "pointAvailable": 0,
+        "pointUnavailable": 0,
+        "visibility": {
+          "VISIBLE": 0,
+          "AMBIGUOUS": 0,
+          "NOT_VISIBLE": 0
+        },
+        "digit": {
+          "INDEX": 0,
+          "UNRESOLVED": 0
+        },
+        "gesture": {
+          "RELAXED_POINT_PLAUSIBLE": 0,
+          "POINT_PLAUSIBLE": 0,
+          "POINTING_PLAUSIBLE": 0,
+          "UNRESOLVED": 0,
+          "CONTRARY_OPEN_PALM": 0
+        },
+        "physicalIdentityUnknown": 0,
+        "methods": {
+          "CACHED_RAW_NN8": {
+            "all48Categories": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "positive31": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "postseedPositive25": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "contraryOverlap5": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            }
+          },
+          "TAPIR_RAW_TIP8": {
+            "all48Categories": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "positive31": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "postseedPositive25": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "contraryOverlap5": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            }
+          }
+        },
+        "pairedIntervals": {
+          "rawFinite": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "NOT_POSITIVE_REFERENCE": 0,
+            "UNPAIRED_MISSING": 0,
+            "RAW_INTERVAL_IMPROVEMENT": 0,
+            "RAW_INTERVAL_REGRESSION": 0,
+            "OVERLAPPING_UNCERTAINTY": 0
+          },
+          "qualified": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "NOT_POSITIVE_REFERENCE": 0,
+            "UNPAIRED_MISSING": 0,
+            "RAW_INTERVAL_IMPROVEMENT": 0,
+            "RAW_INTERVAL_REGRESSION": 0,
+            "OVERLAPPING_UNCERTAINTY": 0
+          }
+        }
+      }
+    },
+    "TOP": {
+      "metadataRows": 107,
+      "phases": {
+        "BEFORE_SEED": 107,
+        "SEED": 0,
+        "POSTSEED": 0
+      },
+      "methods": {
+        "CACHED_RAW_NN8": {
+          "statuses": {
+            "INVALID_OR_MISSING_RESULT": 0,
+            "ZERO_HANDS": 0,
+            "MULTIPLE_HANDS": 0,
+            "NON21_HAND": 0,
+            "NONFINITE_INDEX8": 0,
+            "OUT_OF_BOUNDS_INDEX8": 0,
+            "IN_BOUNDS_INDEX8": 107
+          },
+          "rawFinite": 107,
+          "rawMissing": 0,
+          "visible": 0,
+          "visibilityUnknown": 107,
+          "inBounds": 107,
+          "boundsUnknown": 0,
+          "diagnosticQualified": 107,
+          "finiteButInvisible": 0,
+          "finiteOutOfBounds": 0
+        },
+        "TAPIR_RAW_TIP8": {
+          "statuses": {
+            "UNCOMPUTED_BEFORE_SEED": 107,
+            "VISIBLE_IN_BOUNDS": 0,
+            "INVISIBLE_AND_OUT_OF_BOUNDS": 0,
+            "MODEL_INVISIBLE": 0,
+            "OUT_OF_BOUNDS": 0
+          },
+          "rawFinite": 0,
+          "rawMissing": 107,
+          "visible": 0,
+          "visibilityUnknown": 107,
+          "inBounds": 0,
+          "boundsUnknown": 107,
+          "diagnosticQualified": 0,
+          "finiteButInvisible": 0,
+          "finiteOutOfBounds": 0
+        }
+      },
+      "references": {
+        "denominator": 0,
+        "positive": 0,
+        "positiveBeforeSeed": 0,
+        "positivePostseed": 0,
+        "contraryOverlap": 0,
+        "pointAvailable": 0,
+        "pointUnavailable": 0,
+        "visibility": {
+          "VISIBLE": 0,
+          "AMBIGUOUS": 0,
+          "NOT_VISIBLE": 0
+        },
+        "digit": {
+          "INDEX": 0,
+          "UNRESOLVED": 0
+        },
+        "gesture": {
+          "RELAXED_POINT_PLAUSIBLE": 0,
+          "POINT_PLAUSIBLE": 0,
+          "POINTING_PLAUSIBLE": 0,
+          "UNRESOLVED": 0,
+          "CONTRARY_OPEN_PALM": 0
+        },
+        "physicalIdentityUnknown": 0,
+        "methods": {
+          "CACHED_RAW_NN8": {
+            "all48Categories": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "positive31": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "postseedPositive25": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "contraryOverlap5": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            }
+          },
+          "TAPIR_RAW_TIP8": {
+            "all48Categories": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "positive31": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "postseedPositive25": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "contraryOverlap5": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            }
+          }
+        },
+        "pairedIntervals": {
+          "rawFinite": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "NOT_POSITIVE_REFERENCE": 0,
+            "UNPAIRED_MISSING": 0,
+            "RAW_INTERVAL_IMPROVEMENT": 0,
+            "RAW_INTERVAL_REGRESSION": 0,
+            "OVERLAPPING_UNCERTAINTY": 0
+          },
+          "qualified": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "NOT_POSITIVE_REFERENCE": 0,
+            "UNPAIRED_MISSING": 0,
+            "RAW_INTERVAL_IMPROVEMENT": 0,
+            "RAW_INTERVAL_REGRESSION": 0,
+            "OVERLAPPING_UNCERTAINTY": 0
+          }
+        }
+      }
+    },
+    "LEFT": {
+      "metadataRows": 90,
+      "phases": {
+        "BEFORE_SEED": 90,
+        "SEED": 0,
+        "POSTSEED": 0
+      },
+      "methods": {
+        "CACHED_RAW_NN8": {
+          "statuses": {
+            "INVALID_OR_MISSING_RESULT": 0,
+            "ZERO_HANDS": 0,
+            "MULTIPLE_HANDS": 1,
+            "NON21_HAND": 0,
+            "NONFINITE_INDEX8": 0,
+            "OUT_OF_BOUNDS_INDEX8": 0,
+            "IN_BOUNDS_INDEX8": 89
+          },
+          "rawFinite": 89,
+          "rawMissing": 1,
+          "visible": 0,
+          "visibilityUnknown": 90,
+          "inBounds": 89,
+          "boundsUnknown": 0,
+          "diagnosticQualified": 89,
+          "finiteButInvisible": 0,
+          "finiteOutOfBounds": 0
+        },
+        "TAPIR_RAW_TIP8": {
+          "statuses": {
+            "UNCOMPUTED_BEFORE_SEED": 90,
+            "VISIBLE_IN_BOUNDS": 0,
+            "INVISIBLE_AND_OUT_OF_BOUNDS": 0,
+            "MODEL_INVISIBLE": 0,
+            "OUT_OF_BOUNDS": 0
+          },
+          "rawFinite": 0,
+          "rawMissing": 90,
+          "visible": 0,
+          "visibilityUnknown": 90,
+          "inBounds": 0,
+          "boundsUnknown": 90,
+          "diagnosticQualified": 0,
+          "finiteButInvisible": 0,
+          "finiteOutOfBounds": 0
+        }
+      },
+      "references": {
+        "denominator": 6,
+        "positive": 6,
+        "positiveBeforeSeed": 6,
+        "positivePostseed": 0,
+        "contraryOverlap": 0,
+        "pointAvailable": 6,
+        "pointUnavailable": 0,
+        "visibility": {
+          "VISIBLE": 6,
+          "AMBIGUOUS": 0,
+          "NOT_VISIBLE": 0
+        },
+        "digit": {
+          "INDEX": 6,
+          "UNRESOLVED": 0
+        },
+        "gesture": {
+          "RELAXED_POINT_PLAUSIBLE": 0,
+          "POINT_PLAUSIBLE": 0,
+          "POINTING_PLAUSIBLE": 6,
+          "UNRESOLVED": 0,
+          "CONTRARY_OPEN_PALM": 0
+        },
+        "physicalIdentityUnknown": 6,
+        "methods": {
+          "CACHED_RAW_NN8": {
+            "all48Categories": {
+              "denominator": 6,
+              "rawFinite": 6,
+              "rawMissing": 0,
+              "diagnosticQualified": 6,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 6,
+                "inside": 4,
+                "outside": 2,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 6,
+                "inside": 4,
+                "outside": 2,
+                "unavailable": 0
+              },
+              "statuses": {
+                "IN_BOUNDS_INDEX8": 6
+              }
+            },
+            "positive31": {
+              "denominator": 6,
+              "rawFinite": 6,
+              "rawMissing": 0,
+              "diagnosticQualified": 6,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 6,
+                "inside": 4,
+                "outside": 2,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 6,
+                "inside": 4,
+                "outside": 2,
+                "unavailable": 0
+              },
+              "statuses": {
+                "IN_BOUNDS_INDEX8": 6
+              }
+            },
+            "postseedPositive25": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "contraryOverlap5": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            }
+          },
+          "TAPIR_RAW_TIP8": {
+            "all48Categories": {
+              "denominator": 6,
+              "rawFinite": 0,
+              "rawMissing": 6,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 6,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 6
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 6
+              },
+              "statuses": {
+                "UNCOMPUTED_BEFORE_SEED": 6
+              }
+            },
+            "positive31": {
+              "denominator": 6,
+              "rawFinite": 0,
+              "rawMissing": 6,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 6,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 6
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 6
+              },
+              "statuses": {
+                "UNCOMPUTED_BEFORE_SEED": 6
+              }
+            },
+            "postseedPositive25": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "contraryOverlap5": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            }
+          }
+        },
+        "pairedIntervals": {
+          "rawFinite": {
+            "UNCOMPUTED_BEFORE_SEED": 6,
+            "NOT_POSITIVE_REFERENCE": 0,
+            "UNPAIRED_MISSING": 0,
+            "RAW_INTERVAL_IMPROVEMENT": 0,
+            "RAW_INTERVAL_REGRESSION": 0,
+            "OVERLAPPING_UNCERTAINTY": 0
+          },
+          "qualified": {
+            "UNCOMPUTED_BEFORE_SEED": 6,
+            "NOT_POSITIVE_REFERENCE": 0,
+            "UNPAIRED_MISSING": 0,
+            "RAW_INTERVAL_IMPROVEMENT": 0,
+            "RAW_INTERVAL_REGRESSION": 0,
+            "OVERLAPPING_UNCERTAINTY": 0
+          }
+        }
+      }
+    },
+    "RIGHT": {
+      "metadataRows": 89,
+      "phases": {
+        "BEFORE_SEED": 11,
+        "SEED": 1,
+        "POSTSEED": 77
+      },
+      "methods": {
+        "CACHED_RAW_NN8": {
+          "statuses": {
+            "INVALID_OR_MISSING_RESULT": 0,
+            "ZERO_HANDS": 0,
+            "MULTIPLE_HANDS": 0,
+            "NON21_HAND": 0,
+            "NONFINITE_INDEX8": 0,
+            "OUT_OF_BOUNDS_INDEX8": 0,
+            "IN_BOUNDS_INDEX8": 89
+          },
+          "rawFinite": 89,
+          "rawMissing": 0,
+          "visible": 0,
+          "visibilityUnknown": 89,
+          "inBounds": 89,
+          "boundsUnknown": 0,
+          "diagnosticQualified": 89,
+          "finiteButInvisible": 0,
+          "finiteOutOfBounds": 0
+        },
+        "TAPIR_RAW_TIP8": {
+          "statuses": {
+            "UNCOMPUTED_BEFORE_SEED": 11,
+            "VISIBLE_IN_BOUNDS": 3,
+            "INVISIBLE_AND_OUT_OF_BOUNDS": 0,
+            "MODEL_INVISIBLE": 75,
+            "OUT_OF_BOUNDS": 0
+          },
+          "rawFinite": 78,
+          "rawMissing": 11,
+          "visible": 3,
+          "visibilityUnknown": 11,
+          "inBounds": 78,
+          "boundsUnknown": 11,
+          "diagnosticQualified": 3,
+          "finiteButInvisible": 75,
+          "finiteOutOfBounds": 0
+        }
+      },
+      "references": {
+        "denominator": 12,
+        "positive": 11,
+        "positiveBeforeSeed": 0,
+        "positivePostseed": 11,
+        "contraryOverlap": 0,
+        "pointAvailable": 11,
+        "pointUnavailable": 1,
+        "visibility": {
+          "VISIBLE": 11,
+          "AMBIGUOUS": 1,
+          "NOT_VISIBLE": 0
+        },
+        "digit": {
+          "INDEX": 11,
+          "UNRESOLVED": 1
+        },
+        "gesture": {
+          "RELAXED_POINT_PLAUSIBLE": 0,
+          "POINT_PLAUSIBLE": 1,
+          "POINTING_PLAUSIBLE": 11,
+          "UNRESOLVED": 0,
+          "CONTRARY_OPEN_PALM": 0
+        },
+        "physicalIdentityUnknown": 12,
+        "methods": {
+          "CACHED_RAW_NN8": {
+            "all48Categories": {
+              "denominator": 12,
+              "rawFinite": 12,
+              "rawMissing": 0,
+              "diagnosticQualified": 12,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 11,
+                "inside": 9,
+                "outside": 2,
+                "unavailable": 1
+              },
+              "qualifiedCircle": {
+                "available": 11,
+                "inside": 9,
+                "outside": 2,
+                "unavailable": 1
+              },
+              "statuses": {
+                "IN_BOUNDS_INDEX8": 12
+              }
+            },
+            "positive31": {
+              "denominator": 11,
+              "rawFinite": 11,
+              "rawMissing": 0,
+              "diagnosticQualified": 11,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 11,
+                "inside": 9,
+                "outside": 2,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 11,
+                "inside": 9,
+                "outside": 2,
+                "unavailable": 0
+              },
+              "statuses": {
+                "IN_BOUNDS_INDEX8": 11
+              }
+            },
+            "postseedPositive25": {
+              "denominator": 11,
+              "rawFinite": 11,
+              "rawMissing": 0,
+              "diagnosticQualified": 11,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 11,
+                "inside": 9,
+                "outside": 2,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 11,
+                "inside": 9,
+                "outside": 2,
+                "unavailable": 0
+              },
+              "statuses": {
+                "IN_BOUNDS_INDEX8": 11
+              }
+            },
+            "contraryOverlap5": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            }
+          },
+          "TAPIR_RAW_TIP8": {
+            "all48Categories": {
+              "denominator": 12,
+              "rawFinite": 12,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 12,
+              "rawCircle": {
+                "available": 11,
+                "inside": 3,
+                "outside": 8,
+                "unavailable": 1
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 12
+              },
+              "statuses": {
+                "MODEL_INVISIBLE": 12
+              }
+            },
+            "positive31": {
+              "denominator": 11,
+              "rawFinite": 11,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 11,
+              "rawCircle": {
+                "available": 11,
+                "inside": 3,
+                "outside": 8,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 11
+              },
+              "statuses": {
+                "MODEL_INVISIBLE": 11
+              }
+            },
+            "postseedPositive25": {
+              "denominator": 11,
+              "rawFinite": 11,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 11,
+              "rawCircle": {
+                "available": 11,
+                "inside": 3,
+                "outside": 8,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 11
+              },
+              "statuses": {
+                "MODEL_INVISIBLE": 11
+              }
+            },
+            "contraryOverlap5": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            }
+          }
+        },
+        "pairedIntervals": {
+          "rawFinite": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "NOT_POSITIVE_REFERENCE": 1,
+            "UNPAIRED_MISSING": 0,
+            "RAW_INTERVAL_IMPROVEMENT": 0,
+            "RAW_INTERVAL_REGRESSION": 3,
+            "OVERLAPPING_UNCERTAINTY": 8
+          },
+          "qualified": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "NOT_POSITIVE_REFERENCE": 1,
+            "UNPAIRED_MISSING": 11,
+            "RAW_INTERVAL_IMPROVEMENT": 0,
+            "RAW_INTERVAL_REGRESSION": 0,
+            "OVERLAPPING_UNCERTAINTY": 0
+          }
+        }
+      }
+    },
+    "TOP_LEFT": {
+      "metadataRows": 73,
+      "phases": {
+        "BEFORE_SEED": 0,
+        "SEED": 0,
+        "POSTSEED": 73
+      },
+      "methods": {
+        "CACHED_RAW_NN8": {
+          "statuses": {
+            "INVALID_OR_MISSING_RESULT": 0,
+            "ZERO_HANDS": 0,
+            "MULTIPLE_HANDS": 1,
+            "NON21_HAND": 0,
+            "NONFINITE_INDEX8": 0,
+            "OUT_OF_BOUNDS_INDEX8": 0,
+            "IN_BOUNDS_INDEX8": 72
+          },
+          "rawFinite": 72,
+          "rawMissing": 1,
+          "visible": 0,
+          "visibilityUnknown": 73,
+          "inBounds": 72,
+          "boundsUnknown": 0,
+          "diagnosticQualified": 72,
+          "finiteButInvisible": 0,
+          "finiteOutOfBounds": 0
+        },
+        "TAPIR_RAW_TIP8": {
+          "statuses": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "VISIBLE_IN_BOUNDS": 32,
+            "INVISIBLE_AND_OUT_OF_BOUNDS": 0,
+            "MODEL_INVISIBLE": 41,
+            "OUT_OF_BOUNDS": 0
+          },
+          "rawFinite": 73,
+          "rawMissing": 0,
+          "visible": 32,
+          "visibilityUnknown": 0,
+          "inBounds": 73,
+          "boundsUnknown": 0,
+          "diagnosticQualified": 32,
+          "finiteButInvisible": 41,
+          "finiteOutOfBounds": 0
+        }
+      },
+      "references": {
+        "denominator": 0,
+        "positive": 0,
+        "positiveBeforeSeed": 0,
+        "positivePostseed": 0,
+        "contraryOverlap": 0,
+        "pointAvailable": 0,
+        "pointUnavailable": 0,
+        "visibility": {
+          "VISIBLE": 0,
+          "AMBIGUOUS": 0,
+          "NOT_VISIBLE": 0
+        },
+        "digit": {
+          "INDEX": 0,
+          "UNRESOLVED": 0
+        },
+        "gesture": {
+          "RELAXED_POINT_PLAUSIBLE": 0,
+          "POINT_PLAUSIBLE": 0,
+          "POINTING_PLAUSIBLE": 0,
+          "UNRESOLVED": 0,
+          "CONTRARY_OPEN_PALM": 0
+        },
+        "physicalIdentityUnknown": 0,
+        "methods": {
+          "CACHED_RAW_NN8": {
+            "all48Categories": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "positive31": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "postseedPositive25": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "contraryOverlap5": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            }
+          },
+          "TAPIR_RAW_TIP8": {
+            "all48Categories": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "positive31": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "postseedPositive25": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "contraryOverlap5": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            }
+          }
+        },
+        "pairedIntervals": {
+          "rawFinite": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "NOT_POSITIVE_REFERENCE": 0,
+            "UNPAIRED_MISSING": 0,
+            "RAW_INTERVAL_IMPROVEMENT": 0,
+            "RAW_INTERVAL_REGRESSION": 0,
+            "OVERLAPPING_UNCERTAINTY": 0
+          },
+          "qualified": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "NOT_POSITIVE_REFERENCE": 0,
+            "UNPAIRED_MISSING": 0,
+            "RAW_INTERVAL_IMPROVEMENT": 0,
+            "RAW_INTERVAL_REGRESSION": 0,
+            "OVERLAPPING_UNCERTAINTY": 0
+          }
+        }
+      }
+    },
+    "TOP_RIGHT": {
+      "metadataRows": 74,
+      "phases": {
+        "BEFORE_SEED": 0,
+        "SEED": 0,
+        "POSTSEED": 74
+      },
+      "methods": {
+        "CACHED_RAW_NN8": {
+          "statuses": {
+            "INVALID_OR_MISSING_RESULT": 0,
+            "ZERO_HANDS": 0,
+            "MULTIPLE_HANDS": 2,
+            "NON21_HAND": 0,
+            "NONFINITE_INDEX8": 0,
+            "OUT_OF_BOUNDS_INDEX8": 2,
+            "IN_BOUNDS_INDEX8": 70
+          },
+          "rawFinite": 72,
+          "rawMissing": 2,
+          "visible": 0,
+          "visibilityUnknown": 74,
+          "inBounds": 70,
+          "boundsUnknown": 0,
+          "diagnosticQualified": 70,
+          "finiteButInvisible": 0,
+          "finiteOutOfBounds": 2
+        },
+        "TAPIR_RAW_TIP8": {
+          "statuses": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "VISIBLE_IN_BOUNDS": 9,
+            "INVISIBLE_AND_OUT_OF_BOUNDS": 0,
+            "MODEL_INVISIBLE": 65,
+            "OUT_OF_BOUNDS": 0
+          },
+          "rawFinite": 74,
+          "rawMissing": 0,
+          "visible": 9,
+          "visibilityUnknown": 0,
+          "inBounds": 74,
+          "boundsUnknown": 0,
+          "diagnosticQualified": 9,
+          "finiteButInvisible": 65,
+          "finiteOutOfBounds": 0
+        }
+      },
+      "references": {
+        "denominator": 0,
+        "positive": 0,
+        "positiveBeforeSeed": 0,
+        "positivePostseed": 0,
+        "contraryOverlap": 0,
+        "pointAvailable": 0,
+        "pointUnavailable": 0,
+        "visibility": {
+          "VISIBLE": 0,
+          "AMBIGUOUS": 0,
+          "NOT_VISIBLE": 0
+        },
+        "digit": {
+          "INDEX": 0,
+          "UNRESOLVED": 0
+        },
+        "gesture": {
+          "RELAXED_POINT_PLAUSIBLE": 0,
+          "POINT_PLAUSIBLE": 0,
+          "POINTING_PLAUSIBLE": 0,
+          "UNRESOLVED": 0,
+          "CONTRARY_OPEN_PALM": 0
+        },
+        "physicalIdentityUnknown": 0,
+        "methods": {
+          "CACHED_RAW_NN8": {
+            "all48Categories": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "positive31": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "postseedPositive25": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "contraryOverlap5": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            }
+          },
+          "TAPIR_RAW_TIP8": {
+            "all48Categories": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "positive31": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "postseedPositive25": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "contraryOverlap5": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            }
+          }
+        },
+        "pairedIntervals": {
+          "rawFinite": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "NOT_POSITIVE_REFERENCE": 0,
+            "UNPAIRED_MISSING": 0,
+            "RAW_INTERVAL_IMPROVEMENT": 0,
+            "RAW_INTERVAL_REGRESSION": 0,
+            "OVERLAPPING_UNCERTAINTY": 0
+          },
+          "qualified": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "NOT_POSITIVE_REFERENCE": 0,
+            "UNPAIRED_MISSING": 0,
+            "RAW_INTERVAL_IMPROVEMENT": 0,
+            "RAW_INTERVAL_REGRESSION": 0,
+            "OVERLAPPING_UNCERTAINTY": 0
+          }
+        }
+      }
+    },
+    "BOTTOM_LEFT": {
+      "metadataRows": 71,
+      "phases": {
+        "BEFORE_SEED": 0,
+        "SEED": 0,
+        "POSTSEED": 71
+      },
+      "methods": {
+        "CACHED_RAW_NN8": {
+          "statuses": {
+            "INVALID_OR_MISSING_RESULT": 0,
+            "ZERO_HANDS": 0,
+            "MULTIPLE_HANDS": 3,
+            "NON21_HAND": 0,
+            "NONFINITE_INDEX8": 0,
+            "OUT_OF_BOUNDS_INDEX8": 1,
+            "IN_BOUNDS_INDEX8": 67
+          },
+          "rawFinite": 68,
+          "rawMissing": 3,
+          "visible": 0,
+          "visibilityUnknown": 71,
+          "inBounds": 67,
+          "boundsUnknown": 0,
+          "diagnosticQualified": 67,
+          "finiteButInvisible": 0,
+          "finiteOutOfBounds": 1
+        },
+        "TAPIR_RAW_TIP8": {
+          "statuses": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "VISIBLE_IN_BOUNDS": 47,
+            "INVISIBLE_AND_OUT_OF_BOUNDS": 0,
+            "MODEL_INVISIBLE": 24,
+            "OUT_OF_BOUNDS": 0
+          },
+          "rawFinite": 71,
+          "rawMissing": 0,
+          "visible": 47,
+          "visibilityUnknown": 0,
+          "inBounds": 71,
+          "boundsUnknown": 0,
+          "diagnosticQualified": 47,
+          "finiteButInvisible": 24,
+          "finiteOutOfBounds": 0
+        }
+      },
+      "references": {
+        "denominator": 0,
+        "positive": 0,
+        "positiveBeforeSeed": 0,
+        "positivePostseed": 0,
+        "contraryOverlap": 0,
+        "pointAvailable": 0,
+        "pointUnavailable": 0,
+        "visibility": {
+          "VISIBLE": 0,
+          "AMBIGUOUS": 0,
+          "NOT_VISIBLE": 0
+        },
+        "digit": {
+          "INDEX": 0,
+          "UNRESOLVED": 0
+        },
+        "gesture": {
+          "RELAXED_POINT_PLAUSIBLE": 0,
+          "POINT_PLAUSIBLE": 0,
+          "POINTING_PLAUSIBLE": 0,
+          "UNRESOLVED": 0,
+          "CONTRARY_OPEN_PALM": 0
+        },
+        "physicalIdentityUnknown": 0,
+        "methods": {
+          "CACHED_RAW_NN8": {
+            "all48Categories": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "positive31": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "postseedPositive25": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "contraryOverlap5": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            }
+          },
+          "TAPIR_RAW_TIP8": {
+            "all48Categories": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "positive31": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "postseedPositive25": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "contraryOverlap5": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            }
+          }
+        },
+        "pairedIntervals": {
+          "rawFinite": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "NOT_POSITIVE_REFERENCE": 0,
+            "UNPAIRED_MISSING": 0,
+            "RAW_INTERVAL_IMPROVEMENT": 0,
+            "RAW_INTERVAL_REGRESSION": 0,
+            "OVERLAPPING_UNCERTAINTY": 0
+          },
+          "qualified": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "NOT_POSITIVE_REFERENCE": 0,
+            "UNPAIRED_MISSING": 0,
+            "RAW_INTERVAL_IMPROVEMENT": 0,
+            "RAW_INTERVAL_REGRESSION": 0,
+            "OVERLAPPING_UNCERTAINTY": 0
+          }
+        }
+      }
+    },
+    "BOTTOM_RIGHT": {
+      "metadataRows": 71,
+      "phases": {
+        "BEFORE_SEED": 0,
+        "SEED": 0,
+        "POSTSEED": 71
+      },
+      "methods": {
+        "CACHED_RAW_NN8": {
+          "statuses": {
+            "INVALID_OR_MISSING_RESULT": 0,
+            "ZERO_HANDS": 40,
+            "MULTIPLE_HANDS": 7,
+            "NON21_HAND": 0,
+            "NONFINITE_INDEX8": 0,
+            "OUT_OF_BOUNDS_INDEX8": 0,
+            "IN_BOUNDS_INDEX8": 24
+          },
+          "rawFinite": 24,
+          "rawMissing": 47,
+          "visible": 0,
+          "visibilityUnknown": 71,
+          "inBounds": 24,
+          "boundsUnknown": 0,
+          "diagnosticQualified": 24,
+          "finiteButInvisible": 0,
+          "finiteOutOfBounds": 0
+        },
+        "TAPIR_RAW_TIP8": {
+          "statuses": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "VISIBLE_IN_BOUNDS": 14,
+            "INVISIBLE_AND_OUT_OF_BOUNDS": 0,
+            "MODEL_INVISIBLE": 57,
+            "OUT_OF_BOUNDS": 0
+          },
+          "rawFinite": 71,
+          "rawMissing": 0,
+          "visible": 14,
+          "visibilityUnknown": 0,
+          "inBounds": 71,
+          "boundsUnknown": 0,
+          "diagnosticQualified": 14,
+          "finiteButInvisible": 57,
+          "finiteOutOfBounds": 0
+        }
+      },
+      "references": {
+        "denominator": 12,
+        "positive": 9,
+        "positiveBeforeSeed": 0,
+        "positivePostseed": 9,
+        "contraryOverlap": 0,
+        "pointAvailable": 9,
+        "pointUnavailable": 3,
+        "visibility": {
+          "VISIBLE": 9,
+          "AMBIGUOUS": 0,
+          "NOT_VISIBLE": 3
+        },
+        "digit": {
+          "INDEX": 9,
+          "UNRESOLVED": 3
+        },
+        "gesture": {
+          "RELAXED_POINT_PLAUSIBLE": 9,
+          "POINT_PLAUSIBLE": 0,
+          "POINTING_PLAUSIBLE": 0,
+          "UNRESOLVED": 3,
+          "CONTRARY_OPEN_PALM": 0
+        },
+        "physicalIdentityUnknown": 12,
+        "methods": {
+          "CACHED_RAW_NN8": {
+            "all48Categories": {
+              "denominator": 12,
+              "rawFinite": 1,
+              "rawMissing": 11,
+              "diagnosticQualified": 1,
+              "diagnosticExcluded": 11,
+              "rawCircle": {
+                "available": 1,
+                "inside": 0,
+                "outside": 1,
+                "unavailable": 11
+              },
+              "qualifiedCircle": {
+                "available": 1,
+                "inside": 0,
+                "outside": 1,
+                "unavailable": 11
+              },
+              "statuses": {
+                "ZERO_HANDS": 9,
+                "MULTIPLE_HANDS": 2,
+                "IN_BOUNDS_INDEX8": 1
+              }
+            },
+            "positive31": {
+              "denominator": 9,
+              "rawFinite": 1,
+              "rawMissing": 8,
+              "diagnosticQualified": 1,
+              "diagnosticExcluded": 8,
+              "rawCircle": {
+                "available": 1,
+                "inside": 0,
+                "outside": 1,
+                "unavailable": 8
+              },
+              "qualifiedCircle": {
+                "available": 1,
+                "inside": 0,
+                "outside": 1,
+                "unavailable": 8
+              },
+              "statuses": {
+                "ZERO_HANDS": 6,
+                "MULTIPLE_HANDS": 2,
+                "IN_BOUNDS_INDEX8": 1
+              }
+            },
+            "postseedPositive25": {
+              "denominator": 9,
+              "rawFinite": 1,
+              "rawMissing": 8,
+              "diagnosticQualified": 1,
+              "diagnosticExcluded": 8,
+              "rawCircle": {
+                "available": 1,
+                "inside": 0,
+                "outside": 1,
+                "unavailable": 8
+              },
+              "qualifiedCircle": {
+                "available": 1,
+                "inside": 0,
+                "outside": 1,
+                "unavailable": 8
+              },
+              "statuses": {
+                "ZERO_HANDS": 6,
+                "MULTIPLE_HANDS": 2,
+                "IN_BOUNDS_INDEX8": 1
+              }
+            },
+            "contraryOverlap5": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            }
+          },
+          "TAPIR_RAW_TIP8": {
+            "all48Categories": {
+              "denominator": 12,
+              "rawFinite": 12,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 12,
+              "rawCircle": {
+                "available": 9,
+                "inside": 0,
+                "outside": 9,
+                "unavailable": 3
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 12
+              },
+              "statuses": {
+                "MODEL_INVISIBLE": 12
+              }
+            },
+            "positive31": {
+              "denominator": 9,
+              "rawFinite": 9,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 9,
+              "rawCircle": {
+                "available": 9,
+                "inside": 0,
+                "outside": 9,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 9
+              },
+              "statuses": {
+                "MODEL_INVISIBLE": 9
+              }
+            },
+            "postseedPositive25": {
+              "denominator": 9,
+              "rawFinite": 9,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 9,
+              "rawCircle": {
+                "available": 9,
+                "inside": 0,
+                "outside": 9,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 9
+              },
+              "statuses": {
+                "MODEL_INVISIBLE": 9
+              }
+            },
+            "contraryOverlap5": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            }
+          }
+        },
+        "pairedIntervals": {
+          "rawFinite": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "NOT_POSITIVE_REFERENCE": 3,
+            "UNPAIRED_MISSING": 8,
+            "RAW_INTERVAL_IMPROVEMENT": 0,
+            "RAW_INTERVAL_REGRESSION": 0,
+            "OVERLAPPING_UNCERTAINTY": 1
+          },
+          "qualified": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "NOT_POSITIVE_REFERENCE": 3,
+            "UNPAIRED_MISSING": 9,
+            "RAW_INTERVAL_IMPROVEMENT": 0,
+            "RAW_INTERVAL_REGRESSION": 0,
+            "OVERLAPPING_UNCERTAINTY": 0
+          }
+        }
+      }
+    },
+    "RELAXED": {
+      "metadataRows": 109,
+      "phases": {
+        "BEFORE_SEED": 0,
+        "SEED": 0,
+        "POSTSEED": 109
+      },
+      "methods": {
+        "CACHED_RAW_NN8": {
+          "statuses": {
+            "INVALID_OR_MISSING_RESULT": 0,
+            "ZERO_HANDS": 15,
+            "MULTIPLE_HANDS": 2,
+            "NON21_HAND": 0,
+            "NONFINITE_INDEX8": 0,
+            "OUT_OF_BOUNDS_INDEX8": 0,
+            "IN_BOUNDS_INDEX8": 92
+          },
+          "rawFinite": 92,
+          "rawMissing": 17,
+          "visible": 0,
+          "visibilityUnknown": 109,
+          "inBounds": 92,
+          "boundsUnknown": 0,
+          "diagnosticQualified": 92,
+          "finiteButInvisible": 0,
+          "finiteOutOfBounds": 0
+        },
+        "TAPIR_RAW_TIP8": {
+          "statuses": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "VISIBLE_IN_BOUNDS": 31,
+            "INVISIBLE_AND_OUT_OF_BOUNDS": 0,
+            "MODEL_INVISIBLE": 78,
+            "OUT_OF_BOUNDS": 0
+          },
+          "rawFinite": 109,
+          "rawMissing": 0,
+          "visible": 31,
+          "visibilityUnknown": 0,
+          "inBounds": 109,
+          "boundsUnknown": 0,
+          "diagnosticQualified": 31,
+          "finiteButInvisible": 78,
+          "finiteOutOfBounds": 0
+        }
+      },
+      "references": {
+        "denominator": 0,
+        "positive": 0,
+        "positiveBeforeSeed": 0,
+        "positivePostseed": 0,
+        "contraryOverlap": 0,
+        "pointAvailable": 0,
+        "pointUnavailable": 0,
+        "visibility": {
+          "VISIBLE": 0,
+          "AMBIGUOUS": 0,
+          "NOT_VISIBLE": 0
+        },
+        "digit": {
+          "INDEX": 0,
+          "UNRESOLVED": 0
+        },
+        "gesture": {
+          "RELAXED_POINT_PLAUSIBLE": 0,
+          "POINT_PLAUSIBLE": 0,
+          "POINTING_PLAUSIBLE": 0,
+          "UNRESOLVED": 0,
+          "CONTRARY_OPEN_PALM": 0
+        },
+        "physicalIdentityUnknown": 0,
+        "methods": {
+          "CACHED_RAW_NN8": {
+            "all48Categories": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "positive31": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "postseedPositive25": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "contraryOverlap5": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            }
+          },
+          "TAPIR_RAW_TIP8": {
+            "all48Categories": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "positive31": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "postseedPositive25": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "contraryOverlap5": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            }
+          }
+        },
+        "pairedIntervals": {
+          "rawFinite": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "NOT_POSITIVE_REFERENCE": 0,
+            "UNPAIRED_MISSING": 0,
+            "RAW_INTERVAL_IMPROVEMENT": 0,
+            "RAW_INTERVAL_REGRESSION": 0,
+            "OVERLAPPING_UNCERTAINTY": 0
+          },
+          "qualified": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "NOT_POSITIVE_REFERENCE": 0,
+            "UNPAIRED_MISSING": 0,
+            "RAW_INTERVAL_IMPROVEMENT": 0,
+            "RAW_INTERVAL_REGRESSION": 0,
+            "OVERLAPPING_UNCERTAINTY": 0
+          }
+        }
+      }
+    },
+    "SWEEP": {
+      "metadataRows": 180,
+      "phases": {
+        "BEFORE_SEED": 0,
+        "SEED": 0,
+        "POSTSEED": 180
+      },
+      "methods": {
+        "CACHED_RAW_NN8": {
+          "statuses": {
+            "INVALID_OR_MISSING_RESULT": 0,
+            "ZERO_HANDS": 9,
+            "MULTIPLE_HANDS": 13,
+            "NON21_HAND": 0,
+            "NONFINITE_INDEX8": 0,
+            "OUT_OF_BOUNDS_INDEX8": 2,
+            "IN_BOUNDS_INDEX8": 156
+          },
+          "rawFinite": 158,
+          "rawMissing": 22,
+          "visible": 0,
+          "visibilityUnknown": 180,
+          "inBounds": 156,
+          "boundsUnknown": 0,
+          "diagnosticQualified": 156,
+          "finiteButInvisible": 0,
+          "finiteOutOfBounds": 2
+        },
+        "TAPIR_RAW_TIP8": {
+          "statuses": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "VISIBLE_IN_BOUNDS": 48,
+            "INVISIBLE_AND_OUT_OF_BOUNDS": 0,
+            "MODEL_INVISIBLE": 132,
+            "OUT_OF_BOUNDS": 0
+          },
+          "rawFinite": 180,
+          "rawMissing": 0,
+          "visible": 48,
+          "visibilityUnknown": 0,
+          "inBounds": 180,
+          "boundsUnknown": 0,
+          "diagnosticQualified": 48,
+          "finiteButInvisible": 132,
+          "finiteOutOfBounds": 0
+        }
+      },
+      "references": {
+        "denominator": 12,
+        "positive": 5,
+        "positiveBeforeSeed": 0,
+        "positivePostseed": 5,
+        "contraryOverlap": 0,
+        "pointAvailable": 7,
+        "pointUnavailable": 5,
+        "visibility": {
+          "VISIBLE": 7,
+          "AMBIGUOUS": 3,
+          "NOT_VISIBLE": 2
+        },
+        "digit": {
+          "INDEX": 8,
+          "UNRESOLVED": 4
+        },
+        "gesture": {
+          "RELAXED_POINT_PLAUSIBLE": 1,
+          "POINT_PLAUSIBLE": 0,
+          "POINTING_PLAUSIBLE": 5,
+          "UNRESOLVED": 6,
+          "CONTRARY_OPEN_PALM": 0
+        },
+        "physicalIdentityUnknown": 12,
+        "methods": {
+          "CACHED_RAW_NN8": {
+            "all48Categories": {
+              "denominator": 12,
+              "rawFinite": 11,
+              "rawMissing": 1,
+              "diagnosticQualified": 11,
+              "diagnosticExcluded": 1,
+              "rawCircle": {
+                "available": 6,
+                "inside": 3,
+                "outside": 3,
+                "unavailable": 6
+              },
+              "qualifiedCircle": {
+                "available": 6,
+                "inside": 3,
+                "outside": 3,
+                "unavailable": 6
+              },
+              "statuses": {
+                "IN_BOUNDS_INDEX8": 11,
+                "ZERO_HANDS": 1
+              }
+            },
+            "positive31": {
+              "denominator": 5,
+              "rawFinite": 4,
+              "rawMissing": 1,
+              "diagnosticQualified": 4,
+              "diagnosticExcluded": 1,
+              "rawCircle": {
+                "available": 4,
+                "inside": 3,
+                "outside": 1,
+                "unavailable": 1
+              },
+              "qualifiedCircle": {
+                "available": 4,
+                "inside": 3,
+                "outside": 1,
+                "unavailable": 1
+              },
+              "statuses": {
+                "IN_BOUNDS_INDEX8": 4,
+                "ZERO_HANDS": 1
+              }
+            },
+            "postseedPositive25": {
+              "denominator": 5,
+              "rawFinite": 4,
+              "rawMissing": 1,
+              "diagnosticQualified": 4,
+              "diagnosticExcluded": 1,
+              "rawCircle": {
+                "available": 4,
+                "inside": 3,
+                "outside": 1,
+                "unavailable": 1
+              },
+              "qualifiedCircle": {
+                "available": 4,
+                "inside": 3,
+                "outside": 1,
+                "unavailable": 1
+              },
+              "statuses": {
+                "IN_BOUNDS_INDEX8": 4,
+                "ZERO_HANDS": 1
+              }
+            },
+            "contraryOverlap5": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            }
+          },
+          "TAPIR_RAW_TIP8": {
+            "all48Categories": {
+              "denominator": 12,
+              "rawFinite": 12,
+              "rawMissing": 0,
+              "diagnosticQualified": 3,
+              "diagnosticExcluded": 9,
+              "rawCircle": {
+                "available": 7,
+                "inside": 4,
+                "outside": 3,
+                "unavailable": 5
+              },
+              "qualifiedCircle": {
+                "available": 3,
+                "inside": 3,
+                "outside": 0,
+                "unavailable": 9
+              },
+              "statuses": {
+                "MODEL_INVISIBLE": 9,
+                "VISIBLE_IN_BOUNDS": 3
+              }
+            },
+            "positive31": {
+              "denominator": 5,
+              "rawFinite": 5,
+              "rawMissing": 0,
+              "diagnosticQualified": 2,
+              "diagnosticExcluded": 3,
+              "rawCircle": {
+                "available": 5,
+                "inside": 3,
+                "outside": 2,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 2,
+                "inside": 2,
+                "outside": 0,
+                "unavailable": 3
+              },
+              "statuses": {
+                "VISIBLE_IN_BOUNDS": 2,
+                "MODEL_INVISIBLE": 3
+              }
+            },
+            "postseedPositive25": {
+              "denominator": 5,
+              "rawFinite": 5,
+              "rawMissing": 0,
+              "diagnosticQualified": 2,
+              "diagnosticExcluded": 3,
+              "rawCircle": {
+                "available": 5,
+                "inside": 3,
+                "outside": 2,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 2,
+                "inside": 2,
+                "outside": 0,
+                "unavailable": 3
+              },
+              "statuses": {
+                "VISIBLE_IN_BOUNDS": 2,
+                "MODEL_INVISIBLE": 3
+              }
+            },
+            "contraryOverlap5": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            }
+          }
+        },
+        "pairedIntervals": {
+          "rawFinite": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "NOT_POSITIVE_REFERENCE": 7,
+            "UNPAIRED_MISSING": 1,
+            "RAW_INTERVAL_IMPROVEMENT": 1,
+            "RAW_INTERVAL_REGRESSION": 0,
+            "OVERLAPPING_UNCERTAINTY": 3
+          },
+          "qualified": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "NOT_POSITIVE_REFERENCE": 7,
+            "UNPAIRED_MISSING": 3,
+            "RAW_INTERVAL_IMPROVEMENT": 0,
+            "RAW_INTERVAL_REGRESSION": 0,
+            "OVERLAPPING_UNCERTAINTY": 2
+          }
+        }
+      }
+    },
+    "OPEN_PALM": {
+      "metadataRows": 91,
+      "phases": {
+        "BEFORE_SEED": 0,
+        "SEED": 0,
+        "POSTSEED": 91
+      },
+      "methods": {
+        "CACHED_RAW_NN8": {
+          "statuses": {
+            "INVALID_OR_MISSING_RESULT": 0,
+            "ZERO_HANDS": 1,
+            "MULTIPLE_HANDS": 0,
+            "NON21_HAND": 0,
+            "NONFINITE_INDEX8": 0,
+            "OUT_OF_BOUNDS_INDEX8": 0,
+            "IN_BOUNDS_INDEX8": 90
+          },
+          "rawFinite": 90,
+          "rawMissing": 1,
+          "visible": 0,
+          "visibilityUnknown": 91,
+          "inBounds": 90,
+          "boundsUnknown": 0,
+          "diagnosticQualified": 90,
+          "finiteButInvisible": 0,
+          "finiteOutOfBounds": 0
+        },
+        "TAPIR_RAW_TIP8": {
+          "statuses": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "VISIBLE_IN_BOUNDS": 9,
+            "INVISIBLE_AND_OUT_OF_BOUNDS": 0,
+            "MODEL_INVISIBLE": 82,
+            "OUT_OF_BOUNDS": 0
+          },
+          "rawFinite": 91,
+          "rawMissing": 0,
+          "visible": 9,
+          "visibilityUnknown": 0,
+          "inBounds": 91,
+          "boundsUnknown": 0,
+          "diagnosticQualified": 9,
+          "finiteButInvisible": 82,
+          "finiteOutOfBounds": 0
+        }
+      },
+      "references": {
+        "denominator": 5,
+        "positive": 0,
+        "positiveBeforeSeed": 0,
+        "positivePostseed": 0,
+        "contraryOverlap": 4,
+        "pointAvailable": 4,
+        "pointUnavailable": 1,
+        "visibility": {
+          "VISIBLE": 4,
+          "AMBIGUOUS": 1,
+          "NOT_VISIBLE": 0
+        },
+        "digit": {
+          "INDEX": 5,
+          "UNRESOLVED": 0
+        },
+        "gesture": {
+          "RELAXED_POINT_PLAUSIBLE": 0,
+          "POINT_PLAUSIBLE": 1,
+          "POINTING_PLAUSIBLE": 0,
+          "UNRESOLVED": 0,
+          "CONTRARY_OPEN_PALM": 4
+        },
+        "physicalIdentityUnknown": 5,
+        "methods": {
+          "CACHED_RAW_NN8": {
+            "all48Categories": {
+              "denominator": 5,
+              "rawFinite": 5,
+              "rawMissing": 0,
+              "diagnosticQualified": 5,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 4,
+                "inside": 4,
+                "outside": 0,
+                "unavailable": 1
+              },
+              "qualifiedCircle": {
+                "available": 4,
+                "inside": 4,
+                "outside": 0,
+                "unavailable": 1
+              },
+              "statuses": {
+                "IN_BOUNDS_INDEX8": 5
+              }
+            },
+            "positive31": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "postseedPositive25": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "contraryOverlap5": {
+              "denominator": 4,
+              "rawFinite": 4,
+              "rawMissing": 0,
+              "diagnosticQualified": 4,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 4,
+                "inside": 4,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 4,
+                "inside": 4,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {
+                "IN_BOUNDS_INDEX8": 4
+              }
+            }
+          },
+          "TAPIR_RAW_TIP8": {
+            "all48Categories": {
+              "denominator": 5,
+              "rawFinite": 5,
+              "rawMissing": 0,
+              "diagnosticQualified": 1,
+              "diagnosticExcluded": 4,
+              "rawCircle": {
+                "available": 4,
+                "inside": 0,
+                "outside": 4,
+                "unavailable": 1
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 5
+              },
+              "statuses": {
+                "VISIBLE_IN_BOUNDS": 1,
+                "MODEL_INVISIBLE": 4
+              }
+            },
+            "positive31": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "postseedPositive25": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "contraryOverlap5": {
+              "denominator": 4,
+              "rawFinite": 4,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 4,
+              "rawCircle": {
+                "available": 4,
+                "inside": 0,
+                "outside": 4,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 4
+              },
+              "statuses": {
+                "MODEL_INVISIBLE": 4
+              }
+            }
+          }
+        },
+        "pairedIntervals": {
+          "rawFinite": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "NOT_POSITIVE_REFERENCE": 5,
+            "UNPAIRED_MISSING": 0,
+            "RAW_INTERVAL_IMPROVEMENT": 0,
+            "RAW_INTERVAL_REGRESSION": 0,
+            "OVERLAPPING_UNCERTAINTY": 0
+          },
+          "qualified": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "NOT_POSITIVE_REFERENCE": 5,
+            "UNPAIRED_MISSING": 0,
+            "RAW_INTERVAL_IMPROVEMENT": 0,
+            "RAW_INTERVAL_REGRESSION": 0,
+            "OVERLAPPING_UNCERTAINTY": 0
+          }
+        }
+      }
+    },
+    "HIDE": {
+      "metadataRows": 18,
+      "phases": {
+        "BEFORE_SEED": 0,
+        "SEED": 0,
+        "POSTSEED": 18
+      },
+      "methods": {
+        "CACHED_RAW_NN8": {
+          "statuses": {
+            "INVALID_OR_MISSING_RESULT": 0,
+            "ZERO_HANDS": 0,
+            "MULTIPLE_HANDS": 0,
+            "NON21_HAND": 0,
+            "NONFINITE_INDEX8": 0,
+            "OUT_OF_BOUNDS_INDEX8": 0,
+            "IN_BOUNDS_INDEX8": 18
+          },
+          "rawFinite": 18,
+          "rawMissing": 0,
+          "visible": 0,
+          "visibilityUnknown": 18,
+          "inBounds": 18,
+          "boundsUnknown": 0,
+          "diagnosticQualified": 18,
+          "finiteButInvisible": 0,
+          "finiteOutOfBounds": 0
+        },
+        "TAPIR_RAW_TIP8": {
+          "statuses": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "VISIBLE_IN_BOUNDS": 0,
+            "INVISIBLE_AND_OUT_OF_BOUNDS": 0,
+            "MODEL_INVISIBLE": 18,
+            "OUT_OF_BOUNDS": 0
+          },
+          "rawFinite": 18,
+          "rawMissing": 0,
+          "visible": 0,
+          "visibilityUnknown": 0,
+          "inBounds": 18,
+          "boundsUnknown": 0,
+          "diagnosticQualified": 0,
+          "finiteButInvisible": 18,
+          "finiteOutOfBounds": 0
+        }
+      },
+      "references": {
+        "denominator": 1,
+        "positive": 0,
+        "positiveBeforeSeed": 0,
+        "positivePostseed": 0,
+        "contraryOverlap": 1,
+        "pointAvailable": 0,
+        "pointUnavailable": 1,
+        "visibility": {
+          "VISIBLE": 0,
+          "AMBIGUOUS": 1,
+          "NOT_VISIBLE": 0
+        },
+        "digit": {
+          "INDEX": 1,
+          "UNRESOLVED": 0
+        },
+        "gesture": {
+          "RELAXED_POINT_PLAUSIBLE": 0,
+          "POINT_PLAUSIBLE": 0,
+          "POINTING_PLAUSIBLE": 0,
+          "UNRESOLVED": 0,
+          "CONTRARY_OPEN_PALM": 1
+        },
+        "physicalIdentityUnknown": 1,
+        "methods": {
+          "CACHED_RAW_NN8": {
+            "all48Categories": {
+              "denominator": 1,
+              "rawFinite": 1,
+              "rawMissing": 0,
+              "diagnosticQualified": 1,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 1
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 1
+              },
+              "statuses": {
+                "IN_BOUNDS_INDEX8": 1
+              }
+            },
+            "positive31": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "postseedPositive25": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "contraryOverlap5": {
+              "denominator": 1,
+              "rawFinite": 1,
+              "rawMissing": 0,
+              "diagnosticQualified": 1,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 1
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 1
+              },
+              "statuses": {
+                "IN_BOUNDS_INDEX8": 1
+              }
+            }
+          },
+          "TAPIR_RAW_TIP8": {
+            "all48Categories": {
+              "denominator": 1,
+              "rawFinite": 1,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 1,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 1
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 1
+              },
+              "statuses": {
+                "MODEL_INVISIBLE": 1
+              }
+            },
+            "positive31": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "postseedPositive25": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "contraryOverlap5": {
+              "denominator": 1,
+              "rawFinite": 1,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 1,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 1
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 1
+              },
+              "statuses": {
+                "MODEL_INVISIBLE": 1
+              }
+            }
+          }
+        },
+        "pairedIntervals": {
+          "rawFinite": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "NOT_POSITIVE_REFERENCE": 1,
+            "UNPAIRED_MISSING": 0,
+            "RAW_INTERVAL_IMPROVEMENT": 0,
+            "RAW_INTERVAL_REGRESSION": 0,
+            "OVERLAPPING_UNCERTAINTY": 0
+          },
+          "qualified": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "NOT_POSITIVE_REFERENCE": 1,
+            "UNPAIRED_MISSING": 0,
+            "RAW_INTERVAL_IMPROVEMENT": 0,
+            "RAW_INTERVAL_REGRESSION": 0,
+            "OVERLAPPING_UNCERTAINTY": 0
+          }
+        }
+      }
+    },
+    "RECOVER": {
+      "metadataRows": 109,
+      "phases": {
+        "BEFORE_SEED": 0,
+        "SEED": 0,
+        "POSTSEED": 109
+      },
+      "methods": {
+        "CACHED_RAW_NN8": {
+          "statuses": {
+            "INVALID_OR_MISSING_RESULT": 0,
+            "ZERO_HANDS": 25,
+            "MULTIPLE_HANDS": 1,
+            "NON21_HAND": 0,
+            "NONFINITE_INDEX8": 0,
+            "OUT_OF_BOUNDS_INDEX8": 2,
+            "IN_BOUNDS_INDEX8": 81
+          },
+          "rawFinite": 83,
+          "rawMissing": 26,
+          "visible": 0,
+          "visibilityUnknown": 109,
+          "inBounds": 81,
+          "boundsUnknown": 0,
+          "diagnosticQualified": 81,
+          "finiteButInvisible": 0,
+          "finiteOutOfBounds": 2
+        },
+        "TAPIR_RAW_TIP8": {
+          "statuses": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "VISIBLE_IN_BOUNDS": 4,
+            "INVISIBLE_AND_OUT_OF_BOUNDS": 0,
+            "MODEL_INVISIBLE": 105,
+            "OUT_OF_BOUNDS": 0
+          },
+          "rawFinite": 109,
+          "rawMissing": 0,
+          "visible": 4,
+          "visibilityUnknown": 0,
+          "inBounds": 109,
+          "boundsUnknown": 0,
+          "diagnosticQualified": 4,
+          "finiteButInvisible": 105,
+          "finiteOutOfBounds": 0
+        }
+      },
+      "references": {
+        "denominator": 0,
+        "positive": 0,
+        "positiveBeforeSeed": 0,
+        "positivePostseed": 0,
+        "contraryOverlap": 0,
+        "pointAvailable": 0,
+        "pointUnavailable": 0,
+        "visibility": {
+          "VISIBLE": 0,
+          "AMBIGUOUS": 0,
+          "NOT_VISIBLE": 0
+        },
+        "digit": {
+          "INDEX": 0,
+          "UNRESOLVED": 0
+        },
+        "gesture": {
+          "RELAXED_POINT_PLAUSIBLE": 0,
+          "POINT_PLAUSIBLE": 0,
+          "POINTING_PLAUSIBLE": 0,
+          "UNRESOLVED": 0,
+          "CONTRARY_OPEN_PALM": 0
+        },
+        "physicalIdentityUnknown": 0,
+        "methods": {
+          "CACHED_RAW_NN8": {
+            "all48Categories": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "positive31": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "postseedPositive25": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "contraryOverlap5": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            }
+          },
+          "TAPIR_RAW_TIP8": {
+            "all48Categories": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "positive31": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "postseedPositive25": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            },
+            "contraryOverlap5": {
+              "denominator": 0,
+              "rawFinite": 0,
+              "rawMissing": 0,
+              "diagnosticQualified": 0,
+              "diagnosticExcluded": 0,
+              "rawCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "qualifiedCircle": {
+                "available": 0,
+                "inside": 0,
+                "outside": 0,
+                "unavailable": 0
+              },
+              "statuses": {}
+            }
+          }
+        },
+        "pairedIntervals": {
+          "rawFinite": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "NOT_POSITIVE_REFERENCE": 0,
+            "UNPAIRED_MISSING": 0,
+            "RAW_INTERVAL_IMPROVEMENT": 0,
+            "RAW_INTERVAL_REGRESSION": 0,
+            "OVERLAPPING_UNCERTAINTY": 0
+          },
+          "qualified": {
+            "UNCOMPUTED_BEFORE_SEED": 0,
+            "NOT_POSITIVE_REFERENCE": 0,
+            "UNPAIRED_MISSING": 0,
+            "RAW_INTERVAL_IMPROVEMENT": 0,
+            "RAW_INTERVAL_REGRESSION": 0,
+            "OVERLAPPING_UNCERTAINTY": 0
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "rawFinite": "Stored finiteTIP8 circle measurements, including model-invisible/out-of-bounds points, separately counted as diagnostics.",
+    "diagnosticQualified": "TAPIR: original visibleProbability>0.5 AND old-center inbounds. CachedNN8: original sole21/finiteXYZ/inbounds only; learnedvisibility UNKNOWN. Neither is application authority.",
+    "positiveDenominator": "All31; sixpreseed remainUNCOMPUTED. Fixed postseed25=RIGHT11+BOTTOM_RIGHT9+SWEEP5.",
+    "contrary": "Five contrary-open-palm labels overlap visibility categories; not extra samples and not a false-positive rate.",
+    "uncertainty": "Previously exposed AI development circle estimates10-15nativepixels; inclusive containment and inherited strict disjoint intervals, touching intervals overlap. No exact physicalGT.",
+    "intervalCounts": "All48 change categories preserved; missing does not earn improvement. Nonpositive and preseed rows remain separate.",
+    "costs": "Separate full-sequence checker aggregate; no latency/performance inference made here."
+  },
+  "unavailable": {
+    "physicalIdentityRate": "UNKNOWN",
+    "denseIdentitySwitchRate": "UNAVAILABLE",
+    "selectedIndexAuthority": "UNAVAILABLE",
+    "recoverySuccess": "UNAVAILABLE",
+    "physicalAccuracy": "UNAVAILABLE",
+    "currentCaptureDisplayLatency": "UNAVAILABLE"
+  },
+  "accepted62Provenance": {
+    "acceptedPositions": 504,
+    "rawAvailabilityComparedAsAcceptedGain": false,
+    "acceptedPositionComparisonPerformed": false
+  },
+  "sourcePins": [
+    {
+      "role": "scorerAdapter",
+      "bytes": 15814,
+      "sha256": "bf2d50570ac2a0c7e3d7f788d19416b217774676ed65856deff5f58c56b6ec4c"
+    },
+    {
+      "role": "probePayload",
+      "bytes": 15029,
+      "sha256": "17f7610863ab25462ee899f812ef13ee99aff9415e6e962c52a6876c4d205711"
+    },
+    {
+      "role": "probeBinding",
+      "bytes": 4789,
+      "sha256": "374bdf9bf1981e33bc2f0a04325d4a46e66caf9affcdc87b47d2388972f71a08"
+    },
+    {
+      "role": "sourceAudit",
+      "bytes": 36933,
+      "sha256": "de4b4315a3dc61d551ce974afa20919d9efdb667de68c7cce128f3f3131aec26"
+    },
+    {
+      "role": "originalReferences",
+      "bytes": 31268,
+      "sha256": "3f922d9051adb1a4fae8a7af1b5ab2d9031da233c420709506e949a210a40480"
+    },
+    {
+      "role": "derivedReferences",
+      "bytes": 17730,
+      "sha256": "2fd0319b52bc0800fb92c2d0336be5068caf1f84d64bec97dc3b2a3b602130ff"
+    },
+    {
+      "role": "legacyScorer",
+      "bytes": 7344,
+      "sha256": "69bee47af3057475a6c2906cf53eacf83e08c859469895d61617e007c5f71cef"
+    },
+    {
+      "role": "legacyProtocol",
+      "bytes": 4569,
+      "sha256": "02e3340a3ebc14264e312398c8819bfb5978641951aaa2e0f3d6b998fdaae26e"
+    },
+    {
+      "role": "legacyFreeze",
+      "bytes": 3082,
+      "sha256": "76848a0a25611089e8d81f48ad9e5e590db16bb9c6cc4bf91820c9a9fda32030"
+    },
+    {
+      "role": "originalCachedRows",
+      "bytes": 25963126,
+      "sha256": "3e33ae53b5097b66593209c561e446e0e528cd30e8fcbab618a1b1e89531dab1"
+    },
+    {
+      "role": "originalReachTrackerSource",
+      "bytes": 117207,
+      "sha256": "c3bfe20e82a4c9e6230b357bb2890b0eebf5add5930948f003e8b1bb8780ed56"
+    },
+    {
+      "role": "accepted62Receipt",
+      "bytes": 7225,
+      "sha256": "680e061fd5ec1e85059817eac7872b4b46b059cb683214d538b58496bb208540"
+    },
+    {
+      "role": "accepted62Review",
+      "bytes": 6313,
+      "sha256": "c5760a76d9c6ad4c006f8f41bda76e23055d14d13806427e3db153099677eee8"
+    }
+  ],
+  "provenance": {
+    "scoreSha256": "fa6a39e8655849b56bd01da5d2d8e95d9070e59d617a1c9668ff06992d2f5789",
+    "extractorProtocolSha256": "33ecea72f0d694a08fcd937fc0ccc61d58fcccc215bc6d06146551bd293e7ae0",
+    "scoringProtocolSha256": "33da8d66ad159b02d65acdb6b534be7887f27049aa514208a5916a12412907dd",
+    "extractorSourceSha256": "0a60746c9f192abefd6380c54a24ebc7f13b08c55105a7d2376b2e0035b832e7",
+    "resultsSha256": "2a7ea64d435182d2b2ce6953f28a41ea5d8c7e21afdf6997b0492da78131ad8d",
+    "finalSha256": "a640bab19606ad4d135f78e3687df20bd2fec8d98e2cc935d4848251cc30b919",
+    "ownedSha256": "43aee10b92ed015cf5d58d279b5081b141dd42aba42b56ffaa1865a4190e7824",
+    "probeFreezeSha256": "e7e29fcf3181e7aa1f578c72b95ed77c0332c39cdd98871d866512aa606ac35c"
+  }
+}
