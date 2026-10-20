@@ -40,8 +40,10 @@ signing secrets and API metadata are configured there; exact app API lookup pass
 The matching private signing key and App Store profile passed local validation
 and hosted keychain preflight. The verified NCL-01 Owner internal group contains
 only the existing account holder. A real signed device archive and App Store IPA
-export passed in run 39361959547. Apple upload/processing, phone installation and
-physical tracking remain separate unproved gates. Do not repeat
+export passed in run 39361959547. Run 39363249446 uploaded build 0.1.0 (2) at
+`484183ac15badcfefd5b08cfd187e330e567fbf8`; Apple processing is VALID. Current
+internal beta is IN_BETA_TESTING in NCL-01 Owner, sole account-holder INVITED.
+Phone trust, installation and physical tracking remain separate unproved gates. Do not repeat
 certificate creation for a pipeline repair.
 
 The template `.agents/ncl01-testflight-hosted.yml` is transported as one generated
@@ -83,7 +85,8 @@ First signed attempt 39361584467 at `fe6624fb` passed signing identity/profile
 checks but failed after XcodeGen succeeded, in the old generated-project mutation
 step. Cleanup passed; no archive/export/upload occurred. The repair uses a private
 XcodeGen include overlay scoped only to app Release signing, then checks all five
-effective signing settings before archive. Retain the failure; build 2 is unused.
+effective signing settings before archive. Retain the failure; that attempt did
+not consume build 2.
 
 Second signed attempt 39361959547 at `66089613` passed the effective signing
 settings, real device archive, signed entitlements, app record and IPA export.
@@ -91,14 +94,31 @@ It failed at ASC_VALIDATE before upload; cleanup passed. Raw altool response was
 discarded, so the exact rejection is unknown. The retained Xcode 26.40.1 tool help
 documents positional archive arguments and kebab-case API authentication flags;
 the retry uses those and retains only parsed, bounded, redacted error fields.
-Build 2 remains unused. Original failure logs and the signed IPA are retained.
+That attempt did not consume build 2. Original failure logs and the signed IPA
+are retained.
 
 Run 39362740884 at `c2aff376` then reached actual Apple validation and received
 90778: shipped NFC NDEF disallowed, TAG missing. Existing profile authorizes TAG
 and passed the updated validator; no new owner signing setup. App entitlement is
 now exactly TAG, preserving NFCNDEFReaderSession and purpose text. Signed-app
 assertion requires TAG only; profile validators require TAG authorization while
-allowing Apple's profile superset. Retain the failed diagnostic; build 2 unused.
+allowing Apple's profile superset. Retain the failed diagnostic; that attempt
+did not consume build 2.
+
+Current build 2 is now consumed by run 39363249446; never re-upload it. The upload
+run passed validation/upload/processing and retained overall failure at group
+attachment while MISSING_EXPORT_COMPLIANCE. The operator answered the displayed
+OS-excluding encryption question from the inspected Apple CryptoKit/Security/
+HTTPS implementation; usesNonExemptEncryption=false. No no-encryption claim or
+new agreement. Same existing internal group was attached after compliance cleared;
+API/browser confirm Testing and Invited. Original failure stays immutable.
+Resume only observe mode for this build; future binary uploads need a new number.
+See the deployment record and current readiness receipt. Owner phone checks are
+deferred; completion remains physical TestFlight installation and real AR behavior.
+Observation run 39364087090 passed against the same compiled candidate/version/
+build without archive/re-upload or distribution secrets; retained originals bind
+Apple VALID, existing internal group and successful API-key cleanup. Its false
+uploadAccepted is specific to observe mode, not a reversal of the upload proof.
 
 Success is the owner installing this exact beta through TestFlight, opening
 native ARKit camera placement, seeing the original interactive 3D chest and

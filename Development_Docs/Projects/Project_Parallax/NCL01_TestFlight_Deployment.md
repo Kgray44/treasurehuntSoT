@@ -18,6 +18,13 @@ Team ID: `X2JZ9N65V2`. Bundle ID: `com.voyagewright.landfall`. Source baseline:
 `codex/ncl01-testflight`. Paid Apple Developer enrollment and TestFlight installed
 on iPhone 17 Pro are owner-reported. No signed installation is established.
 
+**Current gate:** private beta **0.1.0 (2)** is uploaded, processed and available
+in **NCL-01 Owner**. Apple reports `IN_BETA_TESTING` and the sole account holder
+as `INVITED`. [The current readiness receipt](evidence/ncl01-testflight-20261019/internal-testflight-ready-20261019.receipt.json)
+binds candidate `484183ac15badcfefd5b08cfd187e330e567fbf8`. Phone certificate
+trust, exact-build installation, physical native AR and owner acceptance are
+pending. Build 2 is consumed; resume observation rather than uploading it again.
+
 The owner has now created the explicit identifier and app record. Their screenshots
 show the correct team/bundle, **VoyageWright Landfall**, app Apple ID `6824734220`,
 and version 1.0 in **Prepare for Submission**. The owner subsequently completed
@@ -162,18 +169,25 @@ Safari StrictMode/HMR corrections. After validating the network identity and
 verifying shutdown of any existing owned copies, run in separate terminals:
 
 ```powershell
+Set-Location -LiteralPath D:\CodexWorktrees\parallax-ncl01-physical-20261015\Codex_TreasureHunt
+$env:TEMP = 'D:\CodexTemp'
+$env:TMP = 'D:\CodexTemp'
 node D:\CodexTemp\ncl01-preview\restore-runtime-20261017\start-owned-app.mjs
 ```
 
 ```powershell
+Set-Location -LiteralPath D:\CodexWorktrees\parallax-ncl01-physical-20261015\Codex_TreasureHunt
+$env:TEMP = 'D:\CodexTemp'
+$env:TMP = 'D:\CodexTemp'
 node D:\CodexTemp\ncl01-preview\restore-runtime-20261017\https-preview-runtime.mjs --bootstrap
 ```
 
-Use the physical NCL checkout as the working directory. The startup scripts
-refuse stale IP/certificate configuration. Do not run initial preparation over
+The two services are currently running; these commands are for a later restart.
+Keep the laptop awake on Ethernet `192.168.0.18`; the phone may use Wi-Fi on the
+same LAN. The startup scripts refuse stale IP/certificate configuration. Do not run initial preparation over
 the retained fixture, disable TLS, change global trust, or stop unrelated processes.
 
-On the same Wi-Fi, the iPhone must first reach `http://<verified-laptop-ip>:8448`.
+On the same LAN, the iPhone must first reach `http://192.168.0.18:8448`.
 That page serves only the public test CA/help. Install its profile under
 **Settings → General → VPN & Device Management**, then enable its full trust under
 **Settings → General → About → Certificate Trust Settings**. Verify the fingerprint
@@ -184,20 +198,21 @@ substitute for them.
 
 ## Processing, installation and physical acceptance
 
-After secure credentials and a verified origin are available, run the signed
-pipeline, record the IPA digest/delivery result and observe Apple's processing.
-An upload success is not a processed build. Resolve actual export-compliance
-questions using the app's real encryption use; do not invent an exemption answer.
-In the app's **TestFlight → Internal Testing**, create **NCL-01 Owner**, add the
-owner's existing App Store Connect user and the processed build. No external
-public testing group or App Store release is requested. See Apple's
+The signed pipeline has uploaded build 2, Apple processing is `VALID`, and the
+processed build is assigned to **TestFlight → Internal Testing → NCL-01 Owner**.
+The existing account holder is the sole tester and is `INVITED`; no duplicate
+invitation was sent. No external public testing group or App Store release is
+requested. See Apple's
 [upload](https://developer.apple.com/help/app-store-connect/manage-builds/upload-builds)
 and [internal testing](https://developer.apple.com/help/app-store-connect/test-a-beta-version/add-internal-testers)
 instructions.
 
-Open the internal invitation on the iPhone, accept it in TestFlight, confirm
+Open Apple's internal invitation on the iPhone and choose **View in TestFlight**.
+Accept it in TestFlight, confirm
 **VoyageWright Landfall** and the expected version/build, then tap **Install** and
-**Open**. Sign into the existing synthetic NCL account through the laptop origin.
+**Open**. The exact expected version is **0.1.0 (2)**. Sign into the existing
+synthetic NCL account through the laptop origin; its login remains in the private
+local `D:\CodexTemp\ncl01-preview\access.private.json` file, outside Git/chat.
 Open its released Voyage Journal, **Open Chronicle Lens**, then the explicitly
 offered **Use camera for local placement** action. Scan a well-lit textured horizontal
 surface and deliberately place the original chest and compass. Observe actual
@@ -212,7 +227,9 @@ static PBR objects; chest-lid and compass-needle articulation are unsupported.
 Record separate outcomes for (1) signed upload, (2) processed/internal-test
 availability, (3) exact-build TestFlight installation, (4) native camera/ARKit
 tracking and visible original models, (5) physical interaction/lifecycle behavior,
-and (6) owner acceptance. All are pending unless supported by new evidence.
+and (6) owner acceptance. Upload and internal-test availability are proved by
+the new receipts. Phone trust, installation, physical behavior and owner
+acceptance remain pending; the owner deferred the phone network check.
 
 The first physical fixture is the existing non-adaptive local/surface Scene.
 Native activation can use the companion's existing local host path; broader
@@ -325,3 +342,43 @@ The signed application's entitlement must equal `[TAG]`, rejecting deprecated
 formats before export. Seven runner tests and 19 synthetic Windows signing cases
 pass, including rejection of NDEF-only profiles. Build 2 remains unused pending
 a fresh signed retry; all original model and native AR source bytes are preserved.
+
+## Uploaded beta and internal-test availability
+
+[Run 39363249446](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39363249446)
+at `484183ac15badcfefd5b08cfd187e330e567fbf8` passed signing, real device archive,
+App Store export, Apple validation and upload. Apple processed build
+`6964a888-1759-4982-8254-b0005dbad00f` as `VALID`. IPA size is 1,975,043 bytes;
+SHA-256 `6752f16f7a56a8a6816e0eb450a4d6fafa4d32783546e69316760eb3b03e9b6f`.
+[Original run evidence](evidence/ncl01-testflight-20261019/signed-39363249446/verification.json)
+preserves its overall failure: group attachment returned HTTP 422 while the
+build's beta detail was `MISSING_EXPORT_COMPLIANCE`. Upload itself succeeded;
+the failed original receipt is not rewritten. Credential cleanup passed.
+
+The app uses Apple CryptoKit AES-GCM for local encrypted storage, Security/
+Keychain key management, SHA-256 and Apple-managed HTTPS. No separate crypto
+implementation was found in the inspected native source, actual embedded
+GLTFKit2 binary/dependencies or targeted first-party client-library search.
+Apple's [documentation table](https://developer.apple.com/help/app-store-connect/reference/app-information/export-compliance-documentation-for-encryption/)
+requires no App Store Connect documentation for encryption limited to Apple's
+operating system. The displayed question separately excluded Apple's OS services
+from its standard-algorithm choice. The operator selected **None of the algorithms
+mentioned above** and saved that verified technical metadata. This does not mean
+the app uses no encryption; `usesNonExemptEncryption` is now `false` in Apple's
+build record. No new agreement or public App Store submission was made.
+
+After compliance cleared, the same build was attached to the existing internal
+group without re-upload. Fresh API and browser checks show **Testing** /
+`IN_BETA_TESTING`, exactly one matching account-holder tester, and **Invited**.
+The automatic invitation state was observed before any resend, so no duplicate
+invitation was sent. The readiness receipt records these distinct current gates;
+it explicitly leaves physical phone trust, installation and AR proof false.
+
+[Observation run 39364087090 passed](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39364087090)
+against the same exact compiled candidate, version and build. This API-only mode
+rechecked processing and the existing group attachment without receiving the
+distribution certificate/profile secrets or uploading again. Its
+[original observation and cleanup receipt](evidence/ncl01-testflight-20261019/observe-39364087090/verification.json)
+records `PASS`, Apple `VALID` and the existing internal-group attachment. The
+mode's `uploadAccepted: false` means that observation did not upload; it does not
+undo the separate successful upload receipt. No physical acceptance is inferred.
