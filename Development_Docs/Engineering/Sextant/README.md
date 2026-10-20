@@ -15,8 +15,8 @@ Its Display/pilot entry source checkpoint has 179 affected surfaces; 5 still lac
 registration. The historical 141-path mapping remains intact. Reach diagnostics
 are now protected-accepted; Crossdeck #721 remains unmerged. Earlier counts
 and failed campaigns remain historical evidence, not current acceptance.
-The [Display/pilot entry source reconciliation](phase4-source-reconciliation-display-pilot-entry-20261020.json)
-binds that count to `851500bd1e`; it grants no capture or acceptance credit.
+The [Display/pilot entry source reconciliation](phase4-source-reconciliation-consumer-repairs-20261020.json)
+binds that count to `91cffab32a`; it grants no capture or acceptance credit.
 Earlier source reconciliations and all failed or defective receipts remain intact.
 
 The [bounded Phase 4 follow-up ledger](phase4-acceptance-followup-r1-ledger.json)

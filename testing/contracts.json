@@ -10581,13 +10581,13 @@
       "critical": true,
       "experience": {
         "persona": "An ordinary claimed Crew member opening an incoming display bookmark before this tab is connected",
-        "objective": "Read the real disconnected display explanation and use Manage to return safely; development separately connects, assigns and removes the owned empty display through actual controls",
-        "visibleOutcome": "The disconnected display offers an honest connection explanation and returns to Devices and the same account",
+        "objective": "Read the actual disconnected display prerequisite, return through Manage, and register/remove only the current synthetic tab through ordinary Devices controls; development separately assigns the empty display role.",
+        "visibleOutcome": "The actual disconnected display returns to Devices; ordinary tab registration/removal keeps the same Crew and Voyage with no received share implied.",
         "integrationOwner": "Homeport retains identity/navigation; Crossdeck retains participation and display sharing; the existing pilot retains preparation and feedback. Sextant adds only consumer verification.",
         "systems": ["project-sextant", "project-homeport", "project-crossdeck"],
         "sourcePaths": ["src/app/devices/display/page.tsx", "src/components/crossdeck/CrossdeckDisplay.tsx"],
         "entryPoint": "/devices/display?voyage=sextant-resource-voyage-entry-default",
-        "states": ["DISPLAY_DISCONNECTED", "DEVICES_RETURN", "RETURNED"],
+        "states": ["DISPLAY_DISCONNECTED", "DEVICES_RETURN", "RETURNED", "DEVICE_REGISTERED", "DEVICE_REMOVED"],
         "devices": ["DESKTOP", "MOBILE"],
         "roles": ["PLAYER"],
         "roleSetup": {
@@ -10642,17 +10642,18 @@
         "recordingRequired": true,
         "accessibility": "Actual heading, alert, preparation region, ordinary links and account controls; development checks scoped axe, viewport overflow and actual target visibility at both sizes and motion settings.",
         "fallback": "A tab without its real owned Crew-display registration gets the existing connect-first explanation. No shared content or receiver is fabricated.",
-        "navigation": "An incoming display bookmark uses ordinary sign-in returnTo, then actual Manage, Devices and Personal Harbor links. Development additionally enters Devices through the account menu and changes only its own tab surface via real controls.",
+        "navigation": "An incoming display bookmark uses ordinary sign-in returnTo, then actual Manage, Devices and Personal Harbor controls. Development additionally enters Player Library, the same-Voyage Journal and its real Devices link.",
         "designTarget": "Readable existing entry/fallback with explicit prerequisites and a real return, without implying a populated shared view, prepared pilot or physical result.",
         "browserTests": ["tests/e2e/sextant-entry-journeys.spec.ts"],
         "limitations": [
           "Source declarations do not grant execution, rendered acceptance, protected custody, native, physical or owner acceptance.",
-          "The formal journey is read-only entry/fallback and return. The fixed development journey separately uses actual Crew register/role/remove controls and explicitly synthetic browser-local pilot note/reload/export.",
+          "Formal journeys cover disconnected incoming entry/return and ordinary default-role current-tab registration/removal only. The fixed development journey separately assigns/removes the empty shared display and uses explicitly synthetic browser-local pilot feedback.",
           "Existing accepted-main Crossdeck semantics are used; unmerged #721 is not consumed. A connected empty display does not prove a received share or populated crew view.",
           "The pilot fixture verifies or refuses the exact reserved owner and existing credential; it never resets identity, enables another environment, publishes, launches, cancels or prepares an adventure.",
           "Exact HEAD-derived nonce, owned database and persisted audit identity are checked before mutation. Two independent ACTIVE Voyages, events, memberships and exact edition bytes remain compared.",
           "Authentication references constrain readable hierarchy and ordinary identity/gateway controls only. Display and pilot layouts still require independent source-bound rendered review.",
-          "Five unhosted legacy components remain separately accountable. These current-route journeys do not cover or exempt retired paths."
+          "Five unhosted legacy components remain separately accountable. These current-route journeys do not cover or exempt retired paths.",
+          "The accepted declarative runner compares pathname only. Full query-bearing entryPoint and sign-in returnTo remain; exact Voyage/edition binding is separately asserted by the source-bound development journey. Initial page states are visible entry assertions; only actual subsequent actions are measured as transition outcomes."
         ],
         "motion": {
           "feedbackBudgetMs": 3000,
@@ -10685,17 +10686,15 @@
                 "role": "heading",
                 "name": "Crew display",
                 "text": "Crew display",
-                "path": "/devices/display?voyage=sextant-resource-voyage-entry-default"
+                "path": "/devices/display"
               },
               {
                 "action": "assert",
                 "role": "main",
                 "name": "",
                 "text": "Connect this device as a crew display first.",
-                "path": "/devices/display?voyage=sextant-resource-voyage-entry-default",
+                "path": "/devices/display",
                 "state": "DISPLAY_DISCONNECTED",
-                "kind": "outcome",
-                "feedbackBoundary": true,
                 "meaning": "The ordinary signed-in tab has no owned Crew-display surface, so its real connection prerequisite remains visible."
               },
               {
@@ -10708,11 +10707,148 @@
                 "role": "region",
                 "name": "Voyage devices",
                 "text": "Your Voyage, across your devices",
-                "path": "/account/devices?voyage=sextant-resource-voyage-entry-default",
+                "path": "/account/devices",
                 "state": "DEVICES_RETURN",
                 "kind": "outcome",
                 "feedbackBoundary": true,
                 "meaning": "Manage opens the real same-Voyage Devices panel without registering or sharing anything."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Crew-entry-default"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "text": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "ordinary-owned-device-register-remove-return",
+            "roles": ["PLAYER"],
+            "outcome": "The product creates the current tab surface through ordinary controls, identifies This device, removes it and returns to the same claimed Crew account without sharing or advancing the Voyage",
+            "steps": [
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Crew display",
+                "text": "Crew display",
+                "path": "/devices/display"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Connect this device as a crew display first.",
+                "path": "/devices/display",
+                "state": "DISPLAY_DISCONNECTED",
+                "meaning": "The ordinary signed-in tab has no owned Crew-display surface, so its real connection prerequisite remains visible."
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Manage this display"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Voyage devices",
+                "text": "Your Voyage, across your devices",
+                "path": "/account/devices",
+                "state": "DEVICES_RETURN",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "Manage opens the real same-Voyage Devices panel without registering or sharing anything."
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Device name",
+                "value": "Synthetic Sextant formal entry device"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Voyage devices",
+                "text": "Your Voyage, across your devices",
+                "absentRole": {
+                  "role": "combobox",
+                  "name": "Role for Synthetic Sextant formal entry device"
+                }
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Voyage devices",
+                "text": "Your Voyage, across your devices",
+                "absentRole": {
+                  "role": "button",
+                  "name": "Remove Synthetic Sextant formal entry device"
+                }
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Use this device"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Voyage devices",
+                "text": "Synthetic Sextant formal entry device · This device",
+                "path": "/account/devices",
+                "state": "DEVICE_REGISTERED",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "The ordinary canonical register action creates this tab identity; no UUID, membership or session is injected."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Remove Synthetic Sextant formal entry device"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Use this device",
+                "text": "Use this device",
+                "path": "/account/devices"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Voyage devices",
+                "text": "Device removed. Your Voyage is unchanged.",
+                "state": "DEVICE_REMOVED",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "absentRole": {
+                  "role": "combobox",
+                  "name": "Role for Synthetic Sextant formal entry device"
+                },
+                "meaning": "The actual remove action revokes only its owned surface; the original fixed-label preconditions refuse preserved failed state.",
+                "path": "/account/devices"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Voyage devices",
+                "text": "Device removed. Your Voyage is unchanged.",
+                "absentRole": {
+                  "role": "button",
+                  "name": "Remove Synthetic Sextant formal entry device"
+                }
               },
               {
                 "action": "click",
@@ -10817,7 +10953,8 @@
           "The pilot fixture verifies or refuses the exact reserved owner and existing credential; it never resets identity, enables another environment, publishes, launches, cancels or prepares an adventure.",
           "Exact HEAD-derived nonce, owned database and persisted audit identity are checked before mutation. Two independent ACTIVE Voyages, events, memberships and exact edition bytes remain compared.",
           "Authentication references constrain readable hierarchy and ordinary identity/gateway controls only. Display and pilot layouts still require independent source-bound rendered review.",
-          "Five unhosted legacy components remain separately accountable. These current-route journeys do not cover or exempt retired paths."
+          "Five unhosted legacy components remain separately accountable. These current-route journeys do not cover or exempt retired paths.",
+          "The accepted declarative runner compares pathname only. Full query-bearing entryPoint and sign-in returnTo remain; exact Voyage/edition binding is separately asserted by the source-bound development journey. Initial page states are visible entry assertions; only actual subsequent actions are measured as transition outcomes."
         ],
         "motion": {
           "feedbackBudgetMs": 3000,
@@ -10852,8 +10989,6 @@
                 "text": "The Lost Navigator’s Chart",
                 "path": "/dev/spatial-pilot",
                 "state": "PILOT_UNPREPARED",
-                "kind": "outcome",
-                "feedbackBoundary": true,
                 "meaning": "Ordinary reserved-owner sign-in reaches the existing gated synthetic pilot; no adventure has been prepared."
               },
               {

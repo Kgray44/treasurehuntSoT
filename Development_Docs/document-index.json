@@ -5541,6 +5541,114 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261020-entry-claimed-voyage-diagnostic/files/0001-browser-runtime.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261020-entry-claimed-voyage-diagnostic/files/0002-browser-suite-profile.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261020-entry-claimed-voyage-diagnostic/files/0003-retention.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261020-entry-claimed-voyage-diagnostic/files/0004-hosted-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261020-entry-claimed-voyage-diagnostic/files/0005-dispatch.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261020-entry-claimed-voyage-diagnostic/publication-index.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261020-invitation-stage-diagnostic/files/0001-browser-runtime.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261020-invitation-stage-diagnostic/files/0002-browser-suite-profile.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261020-invitation-stage-diagnostic/files/0003-retention.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261020-invitation-stage-diagnostic/files/0004-hosted-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261020-invitation-stage-diagnostic/files/0005-dispatch.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261020-invitation-stage-diagnostic/publication-index.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261020-landfall-activation-diagnostic/files/0001-browser-runtime.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261020-landfall-activation-diagnostic/files/0002-browser-suite-profile.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261020-landfall-activation-diagnostic/files/0003-retention.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261020-landfall-activation-diagnostic/files/0004-hosted-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261020-landfall-activation-diagnostic/files/0005-dispatch.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261020-landfall-activation-diagnostic/publication-index.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Sextant/evidence/71b46a0b/geofence-foreground-hierarchy.txt",
       "record_type": "engineering-record",
       "status": "current",
@@ -6016,6 +6124,12 @@
     },
     {
       "path": "Development_Docs/Engineering/Sextant/phase4-source-reconciliation-community-style-20261019.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/phase4-source-reconciliation-consumer-repairs-20261020.json",
       "record_type": "engineering-record",
       "status": "current",
       "canonical_for": null

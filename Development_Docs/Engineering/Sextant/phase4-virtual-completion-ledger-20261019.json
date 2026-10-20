@@ -6,7 +6,7 @@
   "status": "IN_PROGRESS",
   "initialCandidate": "5ff2739776513b8f8ed20c1cb661c164216d0eeb",
   "protectedBase": "f6af0b0e151f15f1a23808413ccee531b9827ca7",
-  "currentSoftwareCandidate": "851500bd1ec38f7df0a9ea8734d75e97de2de976",
+  "currentSoftwareCandidate": "91cffab32aa551ed36a13aa2d5097f736b0abf2b",
   "pr": "https://github.com/Kgray44/treasurehuntSoT/pull/709",
   "independentSourceReview": {
     "reviewerContext": "/root/sextant_source_review",
@@ -4224,6 +4224,1156 @@
         "displayOrPilotReached": false,
         "finalBaselinesReached": false
       }
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "91cffab32aa551ed36a13aa2d5097f736b0abf2b",
+      "transportSha": "21cccb9f2b3d46ff5f521b490aa88f5d7d3502f4",
+      "runId": "39377658809",
+      "status": "HARVESTED_FAILURE",
+      "artifacts": 4,
+      "productionBuild": "PASS",
+      "qualification": false,
+      "cleanup": {
+        "runtime": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 1,
+            "elapsedMs": 5,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 143,
+            "elapsedMs": 53,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        },
+        "transport": {
+          "result": "PASS",
+          "ownedResources": ["refs/heads/codex/landfall-lab-91cffab32aa5-1792475839878"],
+          "remainingResources": []
+        }
+      },
+      "diagnostics": {
+        "metadata": {
+          "version": 1,
+          "classification": "PRIVATE_FAILURE_DIAGNOSTICS_NOT_ACCEPTANCE",
+          "qualification": false,
+          "retention": "COMPLETE",
+          "format": "VW-POSTTECHNICAL-EVIDENCE-1",
+          "keyId": "f82684218e386d09e9120d0c7b54722e5833e5c18a3d7a8a73d94b9afead48bc",
+          "ciphertextDigest": "77898f6a966b8ddb079f0d681915c3ba093d639ffb0801afbf3637d11ae141c9",
+          "ciphertextBytes": 103033410,
+          "memberCount": 13,
+          "rawBytes": 57950611,
+          "worker": {
+            "exitCode": 1,
+            "signal": null
+          },
+          "issues": [],
+          "cleanup": "RAW_RETAINED_PRIVATE",
+          "diagnosticBinding": {
+            "version": 1,
+            "runId": "8b777234-5fc7-4a17-9e87-a9d096e3ea37",
+            "scopeId": "1614abd9-ae3d-4727-a5f0-1ae6bec80e69",
+            "baseSha": "91cffab32aa551ed36a13aa2d5097f736b0abf2b",
+            "candidateSha": "91cffab32aa551ed36a13aa2d5097f736b0abf2b",
+            "planDigest": "a542662900db7bc585826b15c3a978630da2dab4404805eb0161b5a317b4aa6c",
+            "sessionId": "698c4c96-2a04-48c2-9d3f-271a55bb1a3f"
+          }
+        },
+        "retainedPrivate": [
+          {
+            "sourcePath": "artifacts/landfall-device-lab/hosted-91cffab32aa5-1792475839878/run-39377658809/artifacts/landfall-browser-encrypted-failures-91cffab32aa551ed36a13aa2d5097f736b0abf2b/failure.encrypted",
+            "bytes": 103033410,
+            "sha256": "77898f6a966b8ddb079f0d681915c3ba093d639ffb0801afbf3637d11ae141c9",
+            "reason": "CANONICAL_PRIVATE_ENCRYPTED_BUNDLE_RETAINED_IN_OWNED_ARTIFACTS_NOT_COPIED_TO_GIT"
+          }
+        ],
+        "decrypted": false
+      },
+      "publication": "evidence/20261020-invitation-stage-diagnostic/publication-index.json",
+      "independentRenderedReview": {
+        "status": "NO_PUBLIC_CAPTURES_FROM_FAILED_WHOLE_SUITE",
+        "ciphertextNotDecrypted": true,
+        "acceptanceGranted": false
+      },
+      "finding": "THREE_PASS_ONE_DESKTOP_NORMAL_SECOND_ACCEPT_3253_46MS_OVER_3000_RESPONSE_1307_919MS_URL_2790_172MS_HEADING_2812_006MS_NO_PROVED_CAUSE_OR_PREFETCH_BENEFIT",
+      "caseCounts": {
+        "passed": 3,
+        "failed": 1
+      },
+      "failure": {
+        "case": "1280_NO_PREFERENCE_SECOND_ACCEPT",
+        "budgetMs": 3000,
+        "elapsedMs": 3253.4609889999992,
+        "cause": "UNPROVED",
+        "prefetchBenefit": "UNPROVED",
+        "failedCaseFinalBaselinesReached": false
+      },
+      "acceptStages": [
+        {
+          "stages": [
+            {
+              "stage": "ACCEPT_RESPONSE",
+              "elapsedMs": 433.0596060000007,
+              "status": 200
+            },
+            {
+              "stage": "DESTINATION_URL",
+              "elapsedMs": 1974.9355880000003
+            },
+            {
+              "stage": "HEADING_READY",
+              "elapsedMs": 1988.1805100000001
+            },
+            {
+              "stage": "CREW_SETTLED",
+              "elapsedMs": 2391.6592739999996
+            }
+          ]
+        },
+        {
+          "stages": [
+            {
+              "stage": "ACCEPT_RESPONSE",
+              "elapsedMs": 1307.9190789999993,
+              "status": 200
+            },
+            {
+              "stage": "DESTINATION_URL",
+              "elapsedMs": 2790.1719239999984
+            },
+            {
+              "stage": "HEADING_READY",
+              "elapsedMs": 2812.0056559999975
+            },
+            {
+              "stage": "CREW_SETTLED",
+              "elapsedMs": 3253.4609889999992
+            }
+          ]
+        },
+        {
+          "stages": [
+            {
+              "stage": "ACCEPT_RESPONSE",
+              "elapsedMs": 421.60957300000064,
+              "status": 200
+            },
+            {
+              "stage": "DESTINATION_URL",
+              "elapsedMs": 1948.5458989999997
+            },
+            {
+              "stage": "HEADING_READY",
+              "elapsedMs": 1973.8605770000004
+            },
+            {
+              "stage": "CREW_SETTLED",
+              "elapsedMs": 2000.143688000001
+            }
+          ]
+        },
+        {
+          "stages": [
+            {
+              "stage": "ACCEPT_RESPONSE",
+              "elapsedMs": 394.3131859999994,
+              "status": 200
+            },
+            {
+              "stage": "DESTINATION_URL",
+              "elapsedMs": 1984.283234999999
+            },
+            {
+              "stage": "HEADING_READY",
+              "elapsedMs": 1995.2106559999993
+            },
+            {
+              "stage": "CREW_SETTLED",
+              "elapsedMs": 2020.8440730000002
+            }
+          ]
+        },
+        {
+          "stages": [
+            {
+              "stage": "ACCEPT_RESPONSE",
+              "elapsedMs": 407.4386229999982,
+              "status": 200
+            },
+            {
+              "stage": "DESTINATION_URL",
+              "elapsedMs": 1947.5902700000006
+            },
+            {
+              "stage": "HEADING_READY",
+              "elapsedMs": 1961.9298350000026
+            },
+            {
+              "stage": "CREW_SETTLED",
+              "elapsedMs": 2350.889511000001
+            }
+          ]
+        },
+        {
+          "stages": [
+            {
+              "stage": "ACCEPT_RESPONSE",
+              "elapsedMs": 452.1770580000011,
+              "status": 200
+            },
+            {
+              "stage": "DESTINATION_URL",
+              "elapsedMs": 1939.5585930000016
+            },
+            {
+              "stage": "HEADING_READY",
+              "elapsedMs": 1955.952293000002
+            },
+            {
+              "stage": "CREW_SETTLED",
+              "elapsedMs": 2347.7017350000024
+            }
+          ]
+        },
+        {
+          "stages": [
+            {
+              "stage": "ACCEPT_RESPONSE",
+              "elapsedMs": 378.7898750000022,
+              "status": 200
+            },
+            {
+              "stage": "DESTINATION_URL",
+              "elapsedMs": 1926.9503729999997
+            },
+            {
+              "stage": "HEADING_READY",
+              "elapsedMs": 1936.580802000004
+            },
+            {
+              "stage": "CREW_SETTLED",
+              "elapsedMs": 1960.9654110000047
+            }
+          ]
+        },
+        {
+          "stages": [
+            {
+              "stage": "ACCEPT_RESPONSE",
+              "elapsedMs": 389.7460129999963,
+              "status": 200
+            },
+            {
+              "stage": "DESTINATION_URL",
+              "elapsedMs": 1951.2288520000002
+            },
+            {
+              "stage": "HEADING_READY",
+              "elapsedMs": 1961.6706249999988
+            },
+            {
+              "stage": "CREW_SETTLED",
+              "elapsedMs": 1985.63962300001
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "91cffab32aa551ed36a13aa2d5097f736b0abf2b",
+      "transportSha": "9a5c3f4386d177f9c3e5ebc4611e1facec518dbe",
+      "runId": "39377652511",
+      "status": "HARVESTED_FAILURE",
+      "artifacts": 4,
+      "productionBuild": "PASS",
+      "qualification": false,
+      "cleanup": {
+        "runtime": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 1,
+            "elapsedMs": 4,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 143,
+            "elapsedMs": 76,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        },
+        "transport": {
+          "result": "PASS",
+          "ownedResources": ["refs/heads/codex/landfall-lab-91cffab32aa5-1792475835264"],
+          "remainingResources": []
+        }
+      },
+      "diagnostics": {
+        "metadata": {
+          "version": 1,
+          "classification": "PRIVATE_FAILURE_DIAGNOSTICS_NOT_ACCEPTANCE",
+          "qualification": false,
+          "retention": "INCOMPLETE",
+          "format": "VW-POSTTECHNICAL-EVIDENCE-1",
+          "keyId": "f82684218e386d09e9120d0c7b54722e5833e5c18a3d7a8a73d94b9afead48bc",
+          "ciphertextDigest": "04eeabeb6839872edac797e815ded1e93d67aeaef28a6cdec986feaa4de2cc7d",
+          "ciphertextBytes": 39493562,
+          "memberCount": 92,
+          "rawBytes": 22179141,
+          "worker": {
+            "exitCode": 1,
+            "signal": null
+          },
+          "issues": ["FAILURE_ATTACHMENTS_INCOMPLETE", "MISSING_TRACE"],
+          "cleanup": "RAW_RETAINED_PRIVATE",
+          "diagnosticBinding": {
+            "version": 1,
+            "runId": "a37bc04d-d55f-4723-a4f0-5314acf58085",
+            "scopeId": "a137a604-d038-43a0-8689-0db6b429fef7",
+            "baseSha": "91cffab32aa551ed36a13aa2d5097f736b0abf2b",
+            "candidateSha": "91cffab32aa551ed36a13aa2d5097f736b0abf2b",
+            "planDigest": "a542662900db7bc585826b15c3a978630da2dab4404805eb0161b5a317b4aa6c",
+            "sessionId": "37eabba8-7a1a-4364-a24a-a5115a0a8417"
+          }
+        },
+        "retainedPrivate": [
+          {
+            "sourcePath": "artifacts/landfall-device-lab/hosted-91cffab32aa5-1792475835264/run-39377652511/artifacts/landfall-browser-encrypted-failures-91cffab32aa551ed36a13aa2d5097f736b0abf2b/failure.encrypted",
+            "bytes": 39493562,
+            "sha256": "04eeabeb6839872edac797e815ded1e93d67aeaef28a6cdec986feaa4de2cc7d",
+            "reason": "CANONICAL_PRIVATE_ENCRYPTED_BUNDLE_RETAINED_IN_OWNED_ARTIFACTS_NOT_COPIED_TO_GIT"
+          }
+        ],
+        "decrypted": false
+      },
+      "publication": "evidence/20261020-landfall-activation-diagnostic/publication-index.json",
+      "independentRenderedReview": {
+        "status": "NO_PUBLIC_CAPTURES_FROM_FAILED_WHOLE_SUITE",
+        "ciphertextNotDecrypted": true,
+        "acceptanceGranted": false
+      },
+      "finding": "ALL_SIXTEEN_SIGNINS_PASS_FOUR_PHYSICAL_APPROXIMATE_LANDMARKS_INTENTIONALLY_WITHHELD_FOUR_VIRTUAL_REGISTER_AND_ACTIVATE_BUT_UNCONTROLLED_CAUSE_UNPROVED",
+      "caseCounts": {
+        "passed": 0,
+        "failed": 8
+      },
+      "signInObservations": [
+        {
+          "signInPosts": 1,
+          "observations": [
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "anonymous",
+              "expectedIdentityMatches": false
+            },
+            {
+              "operation": "SIGN_IN",
+              "status": 200
+            },
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "authenticated",
+              "expectedIdentityMatches": true
+            }
+          ],
+          "originMatches": true,
+          "destination": "ACCOUNT",
+          "sessionCookiePresent": true
+        },
+        {
+          "signInPosts": 1,
+          "observations": [
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "anonymous",
+              "expectedIdentityMatches": false
+            },
+            {
+              "operation": "SIGN_IN",
+              "status": 200
+            },
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "authenticated",
+              "expectedIdentityMatches": true
+            }
+          ],
+          "originMatches": true,
+          "destination": "ACCOUNT",
+          "sessionCookiePresent": true
+        },
+        {
+          "signInPosts": 1,
+          "observations": [
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "anonymous",
+              "expectedIdentityMatches": false
+            },
+            {
+              "operation": "SIGN_IN",
+              "status": 200
+            },
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "authenticated",
+              "expectedIdentityMatches": true
+            }
+          ],
+          "originMatches": true,
+          "destination": "ACCOUNT",
+          "sessionCookiePresent": true
+        },
+        {
+          "signInPosts": 1,
+          "observations": [
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "anonymous",
+              "expectedIdentityMatches": false
+            },
+            {
+              "operation": "SIGN_IN",
+              "status": 200
+            },
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "authenticated",
+              "expectedIdentityMatches": true
+            }
+          ],
+          "originMatches": true,
+          "destination": "ACCOUNT",
+          "sessionCookiePresent": true
+        },
+        {
+          "signInPosts": 1,
+          "observations": [
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "anonymous",
+              "expectedIdentityMatches": false
+            },
+            {
+              "operation": "SIGN_IN",
+              "status": 200
+            },
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "authenticated",
+              "expectedIdentityMatches": true
+            }
+          ],
+          "originMatches": true,
+          "destination": "ACCOUNT",
+          "sessionCookiePresent": true
+        },
+        {
+          "signInPosts": 1,
+          "observations": [
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "anonymous",
+              "expectedIdentityMatches": false
+            },
+            {
+              "operation": "SIGN_IN",
+              "status": 200
+            },
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "authenticated",
+              "expectedIdentityMatches": true
+            }
+          ],
+          "originMatches": true,
+          "destination": "ACCOUNT",
+          "sessionCookiePresent": true
+        },
+        {
+          "signInPosts": 1,
+          "observations": [
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "anonymous",
+              "expectedIdentityMatches": false
+            },
+            {
+              "operation": "SIGN_IN",
+              "status": 200
+            },
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "authenticated",
+              "expectedIdentityMatches": true
+            }
+          ],
+          "originMatches": true,
+          "destination": "ACCOUNT",
+          "sessionCookiePresent": true
+        },
+        {
+          "signInPosts": 1,
+          "observations": [
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "anonymous",
+              "expectedIdentityMatches": false
+            },
+            {
+              "operation": "SIGN_IN",
+              "status": 200
+            },
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "authenticated",
+              "expectedIdentityMatches": true
+            }
+          ],
+          "originMatches": true,
+          "destination": "ACCOUNT",
+          "sessionCookiePresent": true
+        },
+        {
+          "signInPosts": 1,
+          "observations": [
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "anonymous",
+              "expectedIdentityMatches": false
+            },
+            {
+              "operation": "SIGN_IN",
+              "status": 200
+            },
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "authenticated",
+              "expectedIdentityMatches": true
+            }
+          ],
+          "originMatches": true,
+          "destination": "ACCOUNT",
+          "sessionCookiePresent": true
+        },
+        {
+          "signInPosts": 1,
+          "observations": [
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "anonymous",
+              "expectedIdentityMatches": false
+            },
+            {
+              "operation": "SIGN_IN",
+              "status": 200
+            },
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "authenticated",
+              "expectedIdentityMatches": true
+            }
+          ],
+          "originMatches": true,
+          "destination": "ACCOUNT",
+          "sessionCookiePresent": true
+        },
+        {
+          "signInPosts": 1,
+          "observations": [
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "anonymous",
+              "expectedIdentityMatches": false
+            },
+            {
+              "operation": "SIGN_IN",
+              "status": 200
+            },
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "authenticated",
+              "expectedIdentityMatches": true
+            }
+          ],
+          "originMatches": true,
+          "destination": "ACCOUNT",
+          "sessionCookiePresent": true
+        },
+        {
+          "signInPosts": 1,
+          "observations": [
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "anonymous",
+              "expectedIdentityMatches": false
+            },
+            {
+              "operation": "SIGN_IN",
+              "status": 200
+            },
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "authenticated",
+              "expectedIdentityMatches": true
+            }
+          ],
+          "originMatches": true,
+          "destination": "ACCOUNT",
+          "sessionCookiePresent": true
+        },
+        {
+          "signInPosts": 1,
+          "observations": [
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "anonymous",
+              "expectedIdentityMatches": false
+            },
+            {
+              "operation": "SIGN_IN",
+              "status": 200
+            },
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "authenticated",
+              "expectedIdentityMatches": true
+            }
+          ],
+          "originMatches": true,
+          "destination": "ACCOUNT",
+          "sessionCookiePresent": true
+        },
+        {
+          "signInPosts": 1,
+          "observations": [
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "anonymous",
+              "expectedIdentityMatches": false
+            },
+            {
+              "operation": "SIGN_IN",
+              "status": 200
+            },
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "authenticated",
+              "expectedIdentityMatches": true
+            }
+          ],
+          "originMatches": true,
+          "destination": "ACCOUNT",
+          "sessionCookiePresent": true
+        },
+        {
+          "signInPosts": 1,
+          "observations": [
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "anonymous",
+              "expectedIdentityMatches": false
+            },
+            {
+              "operation": "SIGN_IN",
+              "status": 200
+            },
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "authenticated",
+              "expectedIdentityMatches": true
+            }
+          ],
+          "originMatches": true,
+          "destination": "ACCOUNT",
+          "sessionCookiePresent": true
+        },
+        {
+          "signInPosts": 1,
+          "observations": [
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "anonymous",
+              "expectedIdentityMatches": false
+            },
+            {
+              "operation": "SIGN_IN",
+              "status": 200
+            },
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "authenticated",
+              "expectedIdentityMatches": true
+            }
+          ],
+          "originMatches": true,
+          "destination": "ACCOUNT",
+          "sessionCookiePresent": true
+        }
+      ],
+      "workerObservations": [
+        {
+          "secureContext": true,
+          "controlled": false,
+          "events": [
+            {
+              "event": "REGISTER_CALLED"
+            },
+            {
+              "event": "REGISTER_RESOLVED",
+              "scopeMatches": true
+            },
+            {
+              "event": "WORKER_STATE",
+              "state": "installing"
+            },
+            {
+              "event": "WORKER_STATE",
+              "state": "installed"
+            },
+            {
+              "event": "WORKER_STATE",
+              "state": "activating"
+            },
+            {
+              "event": "WORKER_STATE",
+              "state": "activated"
+            }
+          ],
+          "registrations": [
+            {
+              "scopeMatches": true,
+              "installing": null,
+              "waiting": null,
+              "active": "activated"
+            }
+          ],
+          "resources": []
+        },
+        {
+          "secureContext": true,
+          "controlled": false,
+          "events": [
+            {
+              "event": "REGISTER_CALLED"
+            },
+            {
+              "event": "REGISTER_RESOLVED",
+              "scopeMatches": true
+            },
+            {
+              "event": "WORKER_STATE",
+              "state": "installing"
+            },
+            {
+              "event": "WORKER_STATE",
+              "state": "installed"
+            },
+            {
+              "event": "WORKER_STATE",
+              "state": "activating"
+            },
+            {
+              "event": "WORKER_STATE",
+              "state": "activated"
+            }
+          ],
+          "registrations": [
+            {
+              "scopeMatches": true,
+              "installing": null,
+              "waiting": null,
+              "active": "activated"
+            }
+          ],
+          "resources": []
+        },
+        {
+          "secureContext": true,
+          "controlled": false,
+          "events": [
+            {
+              "event": "REGISTER_CALLED"
+            },
+            {
+              "event": "REGISTER_RESOLVED",
+              "scopeMatches": true
+            },
+            {
+              "event": "WORKER_STATE",
+              "state": "installing"
+            },
+            {
+              "event": "WORKER_STATE",
+              "state": "installed"
+            },
+            {
+              "event": "WORKER_STATE",
+              "state": "activating"
+            },
+            {
+              "event": "WORKER_STATE",
+              "state": "activated"
+            }
+          ],
+          "registrations": [
+            {
+              "scopeMatches": true,
+              "installing": null,
+              "waiting": null,
+              "active": "activated"
+            }
+          ],
+          "resources": []
+        },
+        {
+          "secureContext": true,
+          "controlled": false,
+          "events": [
+            {
+              "event": "REGISTER_CALLED"
+            },
+            {
+              "event": "REGISTER_RESOLVED",
+              "scopeMatches": true
+            },
+            {
+              "event": "WORKER_STATE",
+              "state": "installing"
+            },
+            {
+              "event": "WORKER_STATE",
+              "state": "installed"
+            },
+            {
+              "event": "WORKER_STATE",
+              "state": "activating"
+            },
+            {
+              "event": "WORKER_STATE",
+              "state": "activated"
+            }
+          ],
+          "registrations": [
+            {
+              "scopeMatches": true,
+              "installing": null,
+              "waiting": null,
+              "active": "activated"
+            }
+          ],
+          "resources": []
+        }
+      ],
+      "failure": {
+        "physical": {
+          "cases": 4,
+          "stage": "ACTUAL_PLAYER_CHART_AFTER_OPTIONAL_BLUETOOTH_INSTALLATION_AND_ONLINE_FALLBACKS",
+          "cause": "APPROXIMATE_REAL_WORLD_LANDMARK_INTENTIONALLY_WITHHELD_BY_CANONICAL_PROJECTION",
+          "incorrectExpectedControl": "DISABLED_LANDMARK_CAMERA",
+          "actualControlAbsent": true
+        },
+        "virtual": {
+          "cases": 4,
+          "stage": "AFTER_SIGNED_REGION_READY",
+          "registeredAndActivated": true,
+          "controller": false,
+          "cause": "UNPROVED_DOCUMENT_SCOPE_AND_CLIENT_CUSTODY_NOT_OBSERVED"
+        },
+        "finalBaselinesReached": false
+      }
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "91cffab32aa551ed36a13aa2d5097f736b0abf2b",
+      "transportSha": "a0be107aa1c416f1aa8ef4eaac4dc1099bce4101",
+      "runId": "39377646269",
+      "status": "HARVESTED_FAILURE",
+      "artifacts": 4,
+      "productionBuild": "PASS",
+      "qualification": false,
+      "cleanup": {
+        "runtime": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 1,
+            "elapsedMs": 2,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 143,
+            "elapsedMs": 54,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        },
+        "transport": {
+          "result": "PASS",
+          "ownedResources": ["refs/heads/codex/landfall-lab-91cffab32aa5-1792475830578"],
+          "remainingResources": []
+        }
+      },
+      "diagnostics": {
+        "metadata": {
+          "version": 1,
+          "classification": "PRIVATE_FAILURE_DIAGNOSTICS_NOT_ACCEPTANCE",
+          "qualification": false,
+          "retention": "INCOMPLETE",
+          "format": "VW-POSTTECHNICAL-EVIDENCE-1",
+          "keyId": "f82684218e386d09e9120d0c7b54722e5833e5c18a3d7a8a73d94b9afead48bc",
+          "ciphertextDigest": "a489d9b84400d0ec5ebd3561ab60e5e3b07bbd0bf39526a19147009e66aab95e",
+          "ciphertextBytes": 30612170,
+          "memberCount": 16,
+          "rawBytes": 17212430,
+          "worker": {
+            "exitCode": 1,
+            "signal": null
+          },
+          "issues": ["FAILURE_ATTACHMENTS_INCOMPLETE", "MISSING_TRACE"],
+          "cleanup": "RAW_RETAINED_PRIVATE",
+          "diagnosticBinding": {
+            "version": 1,
+            "runId": "0b1580ba-215c-4e70-9db8-513cf58e139d",
+            "scopeId": "95f84d30-edd9-473b-9e3d-b803351cef6b",
+            "baseSha": "91cffab32aa551ed36a13aa2d5097f736b0abf2b",
+            "candidateSha": "91cffab32aa551ed36a13aa2d5097f736b0abf2b",
+            "planDigest": "a542662900db7bc585826b15c3a978630da2dab4404805eb0161b5a317b4aa6c",
+            "sessionId": "33746b0a-2de8-4d1c-bfe6-a3d1665ca07f"
+          }
+        },
+        "retainedPrivate": [
+          {
+            "sourcePath": "artifacts/landfall-device-lab/hosted-91cffab32aa5-1792475830578/run-39377646269/artifacts/landfall-browser-encrypted-failures-91cffab32aa551ed36a13aa2d5097f736b0abf2b/failure.encrypted",
+            "bytes": 30612170,
+            "sha256": "a489d9b84400d0ec5ebd3561ab60e5e3b07bbd0bf39526a19147009e66aab95e",
+            "reason": "CANONICAL_PRIVATE_ENCRYPTED_BUNDLE_RETAINED_IN_OWNED_ARTIFACTS_NOT_COPIED_TO_GIT"
+          }
+        ],
+        "decrypted": false
+      },
+      "publication": "evidence/20261020-entry-claimed-voyage-diagnostic/publication-index.json",
+      "independentRenderedReview": {
+        "status": "NO_PUBLIC_CAPTURES_FROM_FAILED_WHOLE_SUITE",
+        "ciphertextNotDecrypted": true,
+        "acceptanceGranted": false
+      },
+      "finding": "THREE_CASES_SIGNIN_AND_REAL_JOURNAL_DEVICES_DISCONNECTED_RETURN_THEN_NONEXISTENT_VOYAGE_CHOOSER_ON_BOUND_ROUTE_ONE_MOBILE_REDUCED_SIGNIN_ZERO_POST_CAUSE_UNPROVED_NO_CONNECTED_DISPLAY_OR_PILOT_PROOF",
+      "caseCounts": {
+        "passed": 0,
+        "failed": 4
+      },
+      "signInObservations": [
+        {
+          "signInPosts": 1,
+          "observations": [
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "anonymous",
+              "expectedIdentityMatches": false
+            },
+            {
+              "operation": "SIGN_IN",
+              "status": 200
+            },
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "authenticated",
+              "expectedIdentityMatches": true
+            }
+          ],
+          "originMatches": true,
+          "destination": "ACCOUNT",
+          "sessionCookiePresent": true
+        },
+        {
+          "signInPosts": 1,
+          "observations": [
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "anonymous",
+              "expectedIdentityMatches": false
+            },
+            {
+              "operation": "SIGN_IN",
+              "status": 200
+            },
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "authenticated",
+              "expectedIdentityMatches": true
+            }
+          ],
+          "originMatches": true,
+          "destination": "ACCOUNT",
+          "sessionCookiePresent": true
+        },
+        {
+          "signInPosts": 1,
+          "observations": [
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "anonymous",
+              "expectedIdentityMatches": false
+            },
+            {
+              "operation": "SIGN_IN",
+              "status": 200
+            },
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "authenticated",
+              "expectedIdentityMatches": true
+            }
+          ],
+          "originMatches": true,
+          "destination": "ACCOUNT",
+          "sessionCookiePresent": true
+        },
+        {
+          "signInPosts": 0,
+          "observations": [
+            {
+              "operation": "CURRENT_USER",
+              "status": 200,
+              "state": "anonymous",
+              "expectedIdentityMatches": false
+            }
+          ],
+          "originMatches": true,
+          "destination": "SIGN_IN",
+          "sessionCookiePresent": false
+        }
+      ],
+      "failure": {
+        "claimedVoyage": {
+          "cases": 3,
+          "stage": "AFTER_REAL_LIBRARY_JOURNAL_AND_DISCONNECTED_DISPLAY_MANAGE_RETURN",
+          "cause": "BOUND_VOYAGE_ROUTE_HAS_NO_VOYAGE_CHOOSER",
+          "actualError": "SELECT_OPTION_WAIT_180000MS"
+        },
+        "mobileReduced": {
+          "cases": 1,
+          "stage": "INITIAL_SIGNIN",
+          "signInPosts": 0,
+          "currentUser": "ANONYMOUS",
+          "sessionCookiePresent": false,
+          "cause": "UNPROVED"
+        },
+        "connectedDisplayOrPilotReached": false,
+        "finalBaselinesReached": false
+      }
     }
   ],
   "experience": {
@@ -4238,7 +5388,7 @@
     "reachDiagnostics": "PROTECTED_ACCEPTED_ON_BASE",
     "historicalAccounting": "PRESERVED_SEXTANT_3_OF_3_CROSSDECK_10_OF_3_R1_2_OF_3",
     "registeredNewPlayerWorkspaceSurfaces": 2,
-    "remainingSoftware": "At source851500bd1e against protected mainc0b29d78f7,179 affected surfaces have5 missing declarations: the five unhosted legacy components. New existing Display/unprepared pilot entry declarations and17 conditional Landfall declarations grant no execution or acceptance credit. Canonical HTTP origin repair PR777 passed protected39372424118, merged atc0b29d78f7, passed landed/integrated2-test smokes and is consumed additively. Fresh Invitation merge/final, Landfall browser/native and entry rendered proof remain. Darwin containment and formal per-case/creation/file/challenge/issued-input binding are internal software prerequisites. Account5d440557,Privatee408 andAdmiralty91269 independent rendered findings are resolved within preserved viewport/video limits. Formal reference/layout/protected qualification, physical/device/field and owner acceptance remain separately open. The first2042 development runs are failed, not acceptance: Invitation3PASS/1second-accept3323.98ms budget failure despite all4correct second-link origin/cookie/resolve200; physicalLandfall4fixtureprivacy rejection, normalvirtual2SW-controllerabsence aftersignedregionready and reducedvirtual2unexplainedsign-inOverviewabsence; entrynormal2nonexistentDevicesaccountlink and reduced2unexplainedsign-inOverviewabsence. Original budgets/assertions, encrypted diagnostics and fullcleanup are retained; source-causal repairs/observations and fresh rendered review remain required.",
+    "remainingSoftware": "At source851500bd1e against protected mainc0b29d78f7,179 affected surfaces have5 missing declarations: the five unhosted legacy components. New existing Display/unprepared pilot entry declarations and17 conditional Landfall declarations grant no execution or acceptance credit. Canonical HTTP origin repair PR777 passed protected39372424118, merged atc0b29d78f7, passed landed/integrated2-test smokes and is consumed additively. Fresh Invitation merge/final, Landfall browser/native and entry rendered proof remain. Darwin containment and formal per-case/creation/file/challenge/issued-input binding are internal software prerequisites. Account5d440557,Privatee408 andAdmiralty91269 independent rendered findings are resolved within preserved viewport/video limits. Formal reference/layout/protected qualification, physical/device/field and owner acceptance remain separately open. The first2042 development runs are failed, not acceptance: Invitation3PASS/1second-accept3323.98ms budget failure despite all4correct second-link origin/cookie/resolve200; physicalLandfall4fixtureprivacy rejection, normalvirtual2SW-controllerabsence aftersignedregionready and reducedvirtual2unexplainedsign-inOverviewabsence; entrynormal2nonexistentDevicesaccountlink and reduced2unexplainedsign-inOverviewabsence. Original budgets/assertions, encrypted diagnostics and fullcleanup are retained; source-causal repairs/observations and fresh rendered review remain required. The91cffab successor stillfailswholeconsumeracceptance: Invitation3/4 withone3253.46ms secondaccept; Landfall16/16signinsworkbut4approxlandmarkswithheldand4virtualworkersactivatewithoutcontrol; Entry3boundVoyagechoosererrorsand1mobileReducedzeroPOSTunprovedsignin. Preserveallassertions,threefailedpacketsandcleanup. A separate ownedGENERICphysicalcontext, current-route predicate and bounded read-only scope/request observations remain; no equivalentretry or budgetincrease.",
     "independentDevelopmentJourneyReview": {
       "source": "0d8b3c7841966a1d1c8b5dae21570b1043dc7915",
       "reviewer": "/root/sextant_source_review",
@@ -4270,9 +5420,9 @@
     "registeredNewPassportSourcePaths": 14,
     "newlyRegisteredAffectedPassportSurfaces": 12,
     "sourceReconciliation": {
-      "path": "phase4-source-reconciliation-display-pilot-entry-20261020.json",
-      "sha256": "5ef9650b9abe49630d5f524d1b7b8d7dbd6350e01f631b51cabac56e0b79492b",
-      "sourceSha": "851500bd1ec38f7df0a9ea8734d75e97de2de976",
+      "path": "phase4-source-reconciliation-consumer-repairs-20261020.json",
+      "sha256": "87887b806f8c43f282ca16df10f1fa1b454755b3c83ba689eed5f0fbcf1d4137",
+      "sourceSha": "91cffab32aa551ed36a13aa2d5097f736b0abf2b",
       "baseSha": "c0b29d78f7b4c6137c9eb393a10dd9a2112e68ed",
       "affected": 179,
       "unregistered": 5,
@@ -4432,6 +5582,15 @@
         "affected": 179,
         "unregistered": 5,
         "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
+      },
+      {
+        "path": "phase4-source-reconciliation-consumer-repairs-20261020.json",
+        "sha256": "87887b806f8c43f282ca16df10f1fa1b454755b3c83ba689eed5f0fbcf1d4137",
+        "sourceSha": "91cffab32aa551ed36a13aa2d5097f736b0abf2b",
+        "baseSha": "c0b29d78f7b4c6137c9eb393a10dd9a2112e68ed",
+        "affected": 179,
+        "unregistered": 5,
+        "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
       }
     ],
     "consumerIndependentRenderedReviewSuccessor": {
@@ -4516,6 +5675,25 @@
       "consumedBy": "851500bd1ec38f7df0a9ea8734d75e97de2de976",
       "publication": "evidence/20261020-canonical-redirect-installation/publication-index.json",
       "consumerRecapture": "ACTUAL_SECOND_ISSUED_LINK_ORIGIN_COOKIE_AND_RESOLVE200_CORRECT_IN_FOUR_VARIANTS_39374178162_WHOLE_SUITE_FAILS_SEPARATE_3323_98MS_WAITING_ROOM_BUDGET"
+    },
+    "formalDeviceRegisterRemovePreparation": {
+      "status": "SOURCE_CLEAR_NOT_EXECUTED",
+      "workingContractSha256": "580522dfd06a02dc3e8c1c0a459c3ae62df3d300828875562c62736adf66852a",
+      "contract": "sextant.shared-consumers.display-entry",
+      "journey": "ordinary-owned-device-register-remove-return",
+      "sameLabelReadyPrecondition": true,
+      "ordinaryProductGeneratedIdentity": true,
+      "actualRemovalSettledWitness": true,
+      "initialStateAndPathnameMetadataCorrectedFor": [
+        "sextant.shared-consumers.display-entry",
+        "sextant.shared-consumers.pilot-entry"
+      ],
+      "noAuthorityProtocolOrBudgetChange": true,
+      "limits": [
+        "NO_DEFAULT_ROLE_TO_DISPLAY_ASSIGNMENT_OR_TRANSFER_PROOF",
+        "EXACT_QUERY_AND_EDITION_BINDING_REMAIN_DEVELOPMENT_ASSERTIONS",
+        "FIVE_UNHOSTED_AND_GLOBAL_PLANNER_GATE_REMAIN"
+      ]
     }
   },
   "externalGates": [
@@ -4583,7 +5761,10 @@
     "evidence/20261020-canonical-redirect-installation/publication-index.json",
     "evidence/20261019-invitation-proxy-consumption/publication-index.json",
     "evidence/20261019-landfall-first-execution/publication-index.json",
-    "evidence/20261019-display-pilot-first-execution/publication-index.json"
+    "evidence/20261019-display-pilot-first-execution/publication-index.json",
+    "evidence/20261020-invitation-stage-diagnostic/publication-index.json",
+    "evidence/20261020-landfall-activation-diagnostic/publication-index.json",
+    "evidence/20261020-entry-claimed-voyage-diagnostic/publication-index.json"
   ],
   "currentProtectedBase": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
   "canonicalHostDependencies": [
