@@ -79,7 +79,7 @@ def validate_profile(profile, now=None):
     require(entitlements.get("com.apple.developer.team-identifier") == TEAM, "PROFILE_ENTITLEMENT_TEAM_MISMATCH")
     require(entitlements.get("get-task-allow") is False, "DISTRIBUTION_PROFILE_REQUIRED")
     require(not profile.get("ProvisionedDevices") and not profile.get("ProvisionsAllDevices"), "APPSTORE_PROFILE_REQUIRED")
-    require("NDEF" in entitlements.get("com.apple.developer.nfc.readersession.formats", []), "PROFILE_NFC_REQUIRED")
+    require("TAG" in entitlements.get("com.apple.developer.nfc.readersession.formats", []), "PROFILE_NFC_REQUIRED")
     require(expiry > now + dt.timedelta(hours=1), "PROFILE_EXPIRED_OR_EXPIRING")
     require(re.fullmatch(r"[A-Fa-f0-9-]{36}", profile.get("UUID", "")), "PROFILE_UUID_INVALID")
     certificates = profile.get("DeveloperCertificates", [])
@@ -339,6 +339,7 @@ class Runner:
             self.run(["codesign", "--verify", "--deep", "--strict", str(app)])
             signed = plistlib.loads(self.run(["codesign", "-d", "--entitlements", ":-", str(app)]))
             require(signed.get("application-identifier") == f"{TEAM}.{BUNDLE}" and signed.get("get-task-allow") is False, "SIGNED_APP_ENTITLEMENTS_INVALID")
+            require(signed.get("com.apple.developer.nfc.readersession.formats") == ["TAG"], "SIGNED_APP_NFC_FORMAT_INVALID")
         # Neither archives, profiles, private keys nor signing diagnostic bundles are published.
 
     def token(self):

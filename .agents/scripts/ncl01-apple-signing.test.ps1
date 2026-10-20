@@ -69,7 +69,9 @@ function New-SyntheticProfile([hashtable]$Options = @{}) {
   $profileCertificate = if ($Options.ContainsKey('Certificate')) { $Options.Certificate } else { $certificate }
   $debug = if ($Options.Debug) { '<true/>' } else { '<false/>' }
   $beta = if ($Options.NoBeta) { '' } else { '<key>beta-reports-active</key><true/>' }
-  $nfc = if ($Options.NoNfc) { '' } else { '<key>com.apple.developer.nfc.readersession.formats</key><array><string>NDEF</string></array>' }
+  $nfc = if ($Options.NoNfc) { '' } elseif ($Options.LegacyNdefOnly) {
+    '<key>com.apple.developer.nfc.readersession.formats</key><array><string>NDEF</string></array>'
+  } else { '<key>com.apple.developer.nfc.readersession.formats</key><array><string>TAG</string></array>' }
   $devices = if ($Options.Devices) { '<key>ProvisionedDevices</key><array><string>SYNTHETIC-DEVICE</string></array>' } else { '' }
   $allDevices = if ($Options.AllDevices) { '<key>ProvisionsAllDevices</key><true/>' } else { '' }
   $plistText = @"
@@ -110,6 +112,7 @@ try {
   Assert-Rejected 'development entitlement' { Assert-AppStoreProfile (New-SyntheticProfile @{ Debug = $true }) $certificate }
   Assert-Rejected 'certificate mismatch' { Assert-AppStoreProfile (New-SyntheticProfile @{ Certificate = $otherCertificate }) $certificate }
   Assert-Rejected 'missing NFC entitlement' { Assert-AppStoreProfile (New-SyntheticProfile @{ NoNfc = $true }) $certificate }
+  Assert-Rejected 'legacy NDEF-only profile' { Assert-AppStoreProfile (New-SyntheticProfile @{ LegacyNdefOnly = $true }) $certificate }
   Assert-Rejected 'expired profile' { Assert-AppStoreProfile (New-SyntheticProfile @{ Expiry = [DateTimeOffset]::UtcNow.AddMinutes(-1) }) $certificate }
   Assert-Rejected 'device-bound profile' { Assert-AppStoreProfile (New-SyntheticProfile @{ Devices = $true }) $certificate }
   Assert-Rejected 'enterprise profile' { Assert-AppStoreProfile (New-SyntheticProfile @{ AllDevices = $true }) $certificate }

@@ -93,6 +93,13 @@ documents positional archive arguments and kebab-case API authentication flags;
 the retry uses those and retains only parsed, bounded, redacted error fields.
 Build 2 remains unused. Original failure logs and the signed IPA are retained.
 
+Run 39362740884 at `c2aff376` then reached actual Apple validation and received
+90778: shipped NFC NDEF disallowed, TAG missing. Existing profile authorizes TAG
+and passed the updated validator; no new owner signing setup. App entitlement is
+now exactly TAG, preserving NFCNDEFReaderSession and purpose text. Signed-app
+assertion requires TAG only; profile validators require TAG authorization while
+allowing Apple's profile superset. Retain the failed diagnostic; build 2 unused.
+
 Success is the owner installing this exact beta through TestFlight, opening
 native ARKit camera placement, seeing the original interactive 3D chest and
 compass anchored in the physical environment, and recording actual tracking,

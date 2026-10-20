@@ -32,8 +32,9 @@ certificate creation to repair a build-tool failure.
 1. Open [Apple Developer Identifiers](https://developer.apple.com/account/resources/identifiers/list)
    with team `X2JZ9N65V2`. Reuse or register an **App ID / App**, description
    **VoyageWright Landfall**, **Explicit** bundle ID `com.voyagewright.landfall`.
-   Enable **Near Field Communication Tag Reading**, matching the existing NDEF
-   entitlement. ARKit and camera access do not require a separate portal capability.
+   Enable **Near Field Communication Tag Reading**, authorizing the app's current
+   `TAG` entitlement. NDEF payload reading remains the existing runtime behavior.
+   ARKit and camera access do not require a separate portal capability.
 2. Open [App Store Connect Apps](https://appstoreconnect.apple.com/apps), **+ → New
    App**. Choose **iOS**, name **VoyageWright Landfall**, primary language **English
    (U.S.)**, the exact bundle ID, SKU **voyagewright-landfall-ios**, **Full Access**,
@@ -299,3 +300,28 @@ bounded error fields with known secrets, PEM material, JWTs and email addresses
 redacted. Unstructured responses and private nested fields are not published.
 Seven focused runner tests and three transport tests pass. Build 2 has not been
 uploaded; signed installation and physical AR remain pending.
+
+## NFC distribution entitlement correction
+
+[Run 39362740884](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39362740884)
+at `c2aff376990900a356f802fd639e5cf6cdaf099e` again passed signing, device archive
+and IPA export. The corrected tool invocation returned Apple's actual validation
+error 90778: the shipped NFC `NDEF` entitlement value is disallowed and `TAG` is
+missing for this SDK/deployment target. Upload did not begin. The
+[original diagnostic and failure proof](evidence/ncl01-testflight-20261019/signed-39362740884/verification.json)
+are retained with successful credential cleanup.
+
+The app now requests only `TAG`, as listed in Apple's
+[current entitlement documentation](https://developer.apple.com/documentation/bundleresources/entitlements/com.apple.developer.nfc.readersession.formats).
+An [Apple engineer confirms the deprecated NDEF value was replaced by TAG](https://developer.apple.com/forums/thread/781403?answerId=835720022#835720022).
+The existing `NFCNDEFReaderSession` implementation and NFC purpose text are
+unchanged. This is a distribution compatibility correction, not physical NFC
+qualification. The owner's existing profile already authorizes `TAG` alongside
+older values; it passed the updated exact-app/certificate/profile validator.
+No certificate, provisioning-profile or credential replacement is required.
+
+Both local and hosted preflights require profile authorization for `TAG`.
+The signed application's entitlement must equal `[TAG]`, rejecting deprecated
+formats before export. Seven runner tests and 19 synthetic Windows signing cases
+pass, including rejection of NDEF-only profiles. Build 2 remains unused pending
+a fresh signed retry; all original model and native AR source bytes are preserved.

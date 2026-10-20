@@ -117,7 +117,7 @@ function Assert-AppStoreProfile([byte[]]$ProfileBytes, $Certificate) {
     throw 'The profile is not a current matching App Store Connect distribution profile for this team, app and certificate.'
   }
   $nfc = Get-PlistValue $entitlements 'com.apple.developer.nfc.readersession.formats'
-  if (-not $nfc -or 'NDEF' -notin @($nfc.ChildNodes | ForEach-Object InnerText)) {
+  if (-not $nfc -or 'TAG' -notin @($nfc.ChildNodes | ForEach-Object InnerText)) {
     throw 'Enable NFC Tag Reading on the App ID and regenerate its App Store Connect profile.'
   }
 }

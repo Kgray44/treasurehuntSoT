@@ -56,7 +56,7 @@ class TestSigningBoundaries(unittest.TestCase):
         return {"ExpirationDate": dt.datetime(2030, 1, 1), "TeamIdentifier": [TEAM],
                 "UUID": "11111111-1111-1111-1111-111111111111", "DeveloperCertificates": [b"synthetic-public-cert"],
                 "Entitlements": {"application-identifier": f"{TEAM}.{BUNDLE}", "com.apple.developer.team-identifier": TEAM,
-                                 "get-task-allow": False, "com.apple.developer.nfc.readersession.formats": ["NDEF"]}}
+                                 "get-task-allow": False, "com.apple.developer.nfc.readersession.formats": ["TAG"]}}
 
     def test_exact_app_distribution_profile(self):
         profile = self.profile()
@@ -68,11 +68,16 @@ class TestSigningBoundaries(unittest.TestCase):
             with self.assertRaises(Failure):
                 validate_profile(changed)
         for key, value in (("application-identifier", f"{TEAM}.*"), ("get-task-allow", True),
-                           ("com.apple.developer.nfc.readersession.formats", [])):
+                           ("com.apple.developer.nfc.readersession.formats", []),
+                           ("com.apple.developer.nfc.readersession.formats", ["NDEF"])):
             changed = self.profile()
             changed["Entitlements"][key] = value
             with self.assertRaises(Failure):
                 validate_profile(changed)
+        # Apple profiles can authorize older formats alongside TAG. The shipped
+        # app requests only TAG; profile superset support must remain valid.
+        profile["Entitlements"]["com.apple.developer.nfc.readersession.formats"] = ["NDEF", "TAG", "PACE"]
+        self.assertEqual(validate_profile(profile), hashlib.sha1(b"synthetic-public-cert").hexdigest().upper())
 
     def test_ecdsa_jwt_padding(self):
         # R's leading sign byte must be stripped and S padded to 32 octets.
