@@ -144,18 +144,41 @@ Use canonical library, Chronicle publication and Voyage services in the existing
 owned isolated preview database; keep source photos/derived private geometry out
 of Git and do not rerun paid inference. No Crossdeck/Sounding Line/main changes.
 
-Laptop is now on Wi-Fi 155.42.98.171/24; old .18 listener is stale. The preview
-restoration agent owns guarded same-CA rebind and process/port cleanup; preserve
-October 17 StrictMode/HMR helpers. Release app origin/app-bound host are immutable,
-so build 0.1.0 (3) must target verified https://155.42.98.171:8449 after TLS health
-passes. Build 3 was unused at preflight. Existing OS-only encryption audit now
-supports explicit ITSAppUsesNonExemptEncryption=false with an archive assertion.
+Laptop is now on Wi-Fi 155.42.98.171/24. Guarded same-CA relay restoration and
+owned process/port cleanup passed, including 11 authenticated asset checks;
+preserve the October 17 StrictMode/HMR helpers. The owner subsequently confirmed
+Safari opens https://155.42.98.171:8449 without a warning, establishing owner-reported
+phone reachability/trust only. Release app origin/app-bound host are immutable,
+so build 0.1.0 (3) targets this verified origin. It was unused at preflight and
+passed run 39434900108 against candidate 3ac0dafc0174f4a7b7b5fb63c91aa49b01694730.
+Apple build fdb879e6-ac3c-49a5-9728-6634bf8b0a1f is VALID/IN_BETA_TESTING,
+attached to the existing NCL-01 Owner internal group. Build 3 is consumed; never
+re-upload it. Archive/export/validate/upload, signing cleanup and exact owned
+transport deletion/absence checks passed. Existing sole tester state INSTALLED
+does not prove build 3 installation. No duplicate invitation was sent.
+The IPA stays in ignored artifacts, while public source-bound receipts are
+retained under signed-39434900108 and the build 3 readiness receipt. Existing
+OS-only encryption audit supports explicit
+ITSAppUsesNonExemptEncryption=false with an archive assertion. Do not infer native
+build 3 connectivity, classroom registration or measured AR quality from Safari.
 
 Native supports original chest/compass only, static local/surface placement.
 It cannot recognize a classroom from photos, supply adaptive Environment evidence
 or resolve FIXED_WORLDSPACE anchors. Reuse the actual private reconstructed layout
 as authoring input and state estimated scale/manual floor-origin alignment honestly.
 Do not fabricate Environment pins, measured geometry or registration evidence.
+Canonical classroom publication is now complete: Voyage cmvgr299f000v25o8koydyrcd,
+Scene 13c1178ec10faae82ef92a7095b376380bcfbf0a1b436caaa7d51beb005edf6d,
+one shared horizontal anchor with a 40 cm middle-table chest and two 16 cm
+compasses. Independent HTTPS/API 11/11 and ordinary library/Journal/Lens/three
+accessible Guided cards passed; Guided has zero canvases and proves no 3D.
+The opening presentation fell back with its explicit usable-Journal notice;
+animation quality did not pass. Both Voyages' canonical progression stayed
+unchanged and the verifiers revoked only their own sessions. Public receipts
+are under evidence/ncl01-testflight-20261019/classroom-20261020; private photos,
+geometry/plans/helper/backup stay outside Git. Initial floor placement is automatic;
+Place repositions the shared anchor. No rotation/nudge or automatic room alignment.
+Physical classroom placement remains pending on the updated phone app.
 The requested official dark icon still awaits the exact owner-supplied artwork;
 do not substitute another design or let that missing asset block network testing.
 

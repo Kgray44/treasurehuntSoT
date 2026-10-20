@@ -22,15 +22,17 @@ objects through its native AR camera. This is owner-reported physical display;
 exact build readback, measured tracking/alignment, Inspect and lifecycle behavior
 have not been verified.
 
-**Current gate:** private beta **0.1.0 (2)** passed upload, processing and internal
-testing setup. [Its retained readiness receipt](evidence/ncl01-testflight-20261019/internal-testflight-ready-20261019.receipt.json)
-binds candidate `484183ac15badcfefd5b08cfd187e330e567fbf8`. The owner subsequently
-reported native sign-in and physical camera display of the original models.
-The laptop has moved to classroom Wi-Fi `155.42.98.171`; build 2 still binds the
-old `.18` origin. **0.1.0 (3)** is being prepared for the verified new HTTPS
-origin. Current-network phone reachability/trust, exact build readback, measured
-physical behavior and owner acceptance remain separate gates. Build 2 is consumed;
-do not upload it again.
+**Current gate:** private beta **0.1.0 (3)** is ready in the existing internal
+TestFlight group for `https://155.42.98.171:8449`.
+[Run 39434900108 passed](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39434900108)
+against candidate `3ac0dafc0174f4a7b7b5fb63c91aa49b01694730`; its
+[retained readiness receipt](evidence/ncl01-testflight-20261019/internal-testflight-ready-build3-20261020.receipt.json)
+records Apple `VALID`, `IN_BETA_TESTING` and attachment to **NCL-01 Owner**.
+The owner confirms warning-free Safari access to this new HTTPS origin.
+Their earlier native sign-in and original-model camera display report remains
+separate from build 3 installation, native connectivity and classroom placement,
+which are pending. Exact build readback, measured tracking/interactions and owner
+acceptance remain open. Builds 2 and 3 are consumed; do not upload either again.
 
 The owner has now created the explicit identifier and app record. Their screenshots
 show the correct team/bundle, **VoyageWright Landfall**, app Apple ID `6824734220`,
@@ -176,6 +178,10 @@ records normal TLS 1.3, HTTP 200 for the app/bootstrap, all 11 authenticated ass
 checks, and cleanup of only the probe's own session. These laptop checks do not
 establish iPhone reachability on the classroom network. Build 3 binds the new
 origin and app-bound host; there is no runtime server-address setting in build 2.
+The subsequent [owner phone report](evidence/ncl01-testflight-20261019/phone-https-1554298171-20261020.owner-report.json)
+confirms Safari opens the same new origin without a warning. This establishes
+owner-reported phone HTTPS reachability/trust, separately from build 3 native
+connectivity and classroom AR testing. The unchanged CA does not need reinstalling.
 
 The existing CA SHA-256 is
 `17ad9c5ccd0eb37f00b0062d6c8dcff72a368fb85553175402be5016b21ac8b6`;
@@ -203,37 +209,41 @@ Keep the laptop awake on Wi-Fi `155.42.98.171` and the phone on the same LAN.
 The startup scripts refuse stale IP/certificate configuration. Do not run initial preparation over
 the retained fixture, disable TLS, change global trust, or stop unrelated processes.
 
-On the same LAN, the iPhone must first reach `http://155.42.98.171:8448`.
-That page serves only the public test CA/help. Install its profile under
+Initial trust setup is needed only if this CA is not already installed and fully
+trusted. On the same LAN, open `http://155.42.98.171:8448`; that page serves only
+the public test CA/help. Install its profile under
 **Settings → General → VPN & Device Management**, then enable its full trust under
 **Settings → General → About → Certificate Trust Settings**. Verify the fingerprint
 against the retained CA and open the HTTPS origin without a certificate warning.
-An already installed and fully trusted copy of this unchanged CA can be retained;
-changing the laptop address does not require another CA profile.
+The owner already confirms warning-free HTTPS access on the current phone;
+retain its unchanged trusted CA without repeating this setup. Changing the laptop
+address does not require another CA profile.
 Allow the native app's Local Network and Camera prompts when testing. Actual
 phone reachability and trust must be observed on the phone; laptop probes cannot
 substitute for them.
 
 ## Processing, installation and physical acceptance
 
-The signed pipeline uploaded build 2, Apple processing reached `VALID`, and the
+The signed pipeline uploaded build 3, Apple processing reached `VALID`, and the
 processed build was assigned to **TestFlight → Internal Testing → NCL-01 Owner**.
-The sole account holder was invited and subsequently reported installation and
-native AR display. No duplicate invitation, external public testing group or
-App Store release is requested. Build 3 will use the same app and internal group
-for the classroom network. See Apple's
+Fresh API checks confirm `IN_BETA_TESTING`, `usesNonExemptEncryption=false` and
+the existing sole tester's state `INSTALLED`. That tester state reflects the
+existing app/tester and does not prove installation of build 3. The owner earlier
+reported native sign-in and original-model camera display. No duplicate
+invitation, external public testing group or App Store release was made. See Apple's
 [upload](https://developer.apple.com/help/app-store-connect/manage-builds/upload-builds)
 and [internal testing](https://developer.apple.com/help/app-store-connect/test-a-beta-version/add-internal-testers)
 instructions.
 
-Once build 3 is available, open TestFlight, select **VoyageWright Landfall** and
+Open TestFlight, select **VoyageWright Landfall** and
 confirm **0.1.0 (3)**, then tap **Update** and **Open**. A new invitation is not
 needed for the existing tester. Sign into the existing
 synthetic NCL account through the laptop origin; its login remains in the private
 local `D:\CodexTemp\ncl01-preview\access.private.json` file, outside Git/chat.
 Open its released Voyage Journal, **Open Chronicle Lens**, then the explicitly
 offered **Use camera for local placement** action. Scan a well-lit textured horizontal
-surface and deliberately place the original chest and compass. Observe actual
+surface; initial placement tries automatically for up to 15 seconds and can fall
+back if no valid surface is found. Observe actual
 3D depth/parallax while walking around them and test Inspect/Pick/Place as offered.
 Record tracking loss/recovery, background/foreground return and camera closure.
 Interactions remain observations; they do not independently advance One Voyage.
@@ -245,11 +255,11 @@ static PBR objects; chest-lid and compass-needle articulation are unsupported.
 Record separate outcomes for (1) signed upload, (2) processed/internal-test
 availability, (3) exact-build TestFlight installation, (4) native camera/ARKit
 tracking and visible original models, (5) physical interaction/lifecycle behavior,
-and (6) owner acceptance. Build 2 upload/internal-test availability have retained
+and (6) owner acceptance. Build 3 upload/internal-test availability have retained
 software proof; installation, native sign-in and physical camera display are
-owner-reported. Exact build readback, the new classroom network on the phone,
-measured tracking/alignment, Inspect/lifecycle and final owner acceptance remain
-pending.
+owner-reported, as is warning-free Safari access on the new classroom network.
+Exact build readback, build 3 native connectivity, measured tracking/alignment,
+Inspect/lifecycle and final owner acceptance remain pending.
 
 The first physical fixture is the existing non-adaptive local/surface Scene.
 Native activation can use the companion's existing local host path; broader
@@ -431,18 +441,68 @@ autofill and copy only each value line. Its contents remain outside Git and chat
 
 ## Classroom continuation, October 20
 
-The owner requests another private test Chronicle and a new Scene using the
-retained classroom reconstruction. That fixture is being prepared through the
-existing library, Chronicle publication and Voyage services. The original
-Chronicle/Voyage and account are preserved. Classroom photos and derived private
-geometry remain outside Git; no new paid reconstruction is part of this work.
+[The signed build 3 record](evidence/ncl01-testflight-20261019/signed-39434900108/verification.json)
+retains the exact dispatch, successful archive/export/validation/upload/processing,
+credential cleanup and owned transport-branch cleanup. Xcode 26.6 and iPhoneOS
+SDK 26.5 produced an IPA of 1,975,077 bytes, SHA-256
+`64d406c0b8a9e1fd468a3d605be995d0263c2211c01af2312f03fea0341801b8`.
+The IPA remains in ignored/GitHub artifacts; no signing materials were published.
+Its [13 exported-IPA checks](evidence/ncl01-testflight-20261019/signed-39434900108/ipa-metadata-verification.json)
+passed identity/version, origin/app-bound host, encryption metadata, camera/local
+network purposes, compiled icon and app/GLTFKit2 privacy manifests. This is
+distribution/resource proof, separate from the pending phone trial.
+
+The new private Chronicle **The Classroom Compass Trail — NCL01** is published
+through the existing library, Chronicle publication and Voyage services. Its
+Voyage is **NCL01 — Classroom Compass Trail**, ID `cmvgr299f000v25o8koydyrcd`;
+the [Journal](https://155.42.98.171:8449/player/playthroughs/cmvgr299f000v25o8koydyrcd/journal)
+is also discoverable under **My Chronicle Library → Active Voyages → Continue
+Adventure**. The original Chronicle/Voyage, account and credentials are preserved.
+The [sanitized fixture receipt](evidence/ncl01-testflight-20261019/classroom-20261020/classroom-ready.public.json)
+binds Scene checksum `13c1178ec10faae82ef92a7095b376380bcfbf0a1b436caaa7d51beb005edf6d`.
+
+Authoring reused owner Studio reconstruction revision 15 with 39 features from
+two protected photo-reconstruction sources, associated with IMG_8690/IMG_8691.
+The exact saved room digest is
+`1605b1ca0348f0a0893a2fd847ac7f8282647d9cabdc62a66887c4930ff7caf3`.
+The coordinate-source commit records source inspection, not a verified original
+inference commit; the original photo-label-to-source-ID order is also unverified.
+Photos, raw room geometry, private plans, helper and database backup remain
+outside Git. No new paid reconstruction was run.
+
+The authored layout has a 40 cm chest at the middle table and a 16 cm compass at
+each of the left and right tables, all under one shared horizontal anchor.
+Independent [HTTPS/API checks](evidence/ncl01-testflight-20261019/classroom-20261020/asset-checks.public.json)
+passed 11/11, including exact bindings and checksums for both original GLBs,
+the three authored positions and shared anchor. Both Voyages' canonical
+progression stayed unchanged; only the verifier's own session was revoked.
+
+The [ordinary browser review](evidence/ncl01-testflight-20261019/classroom-20261020/classroom-browser-review.public.json)
+passed library discovery, Journal opening, **Open Chronicle Lens** and all three
+accessible Guided clue cards. Guided View had zero canvases and supplies no
+browser 3D or native AR proof. On return from the library, the animated opening
+showed **The animated opening could not finish. The journal and page turning
+are ready.** Journal and Lens entry remained usable; animation quality did not
+pass. No Continue/completion action was used, both Voyages' canonical progression
+stayed unchanged, and the verification browser session was revoked and tab closed.
 
 The current native provider supports the original chest and compass, static
 local/surface placement and authored layout offsets. The reconstruction is
 authoring input with estimated scale and manual floor-origin registration; it
 does not establish a measured room map. Native adaptive Environment evidence,
 automatic classroom recognition and FIXED_WORLDSPACE registration remain
-unsupported. New classroom publication and owner placement proof are pending.
+unsupported. Classroom publication and ordinary software access are established;
+physical classroom placement remains pending.
+
+For the phone trial, stand at the intended floor origin facing the intended room
+direction before opening Lens. Aim the center of the camera at a clear floor
+patch and scan slowly; the horizontal-plane detector cannot distinguish floor
+from tabletop. Initial placement tries automatically for up to 15 seconds; it
+can fall back if no valid surface is found. To move the shared layout, select an
+object with Place enabled, aim the camera center at a new floor origin and tap
+**Place on a surface**. All three
+objects move together. There is no yaw/rotation or nudge control; check orientation
+visually. This manual procedure and estimated scale do not prove room registration.
 
 Build 3 changes only the configured network origin and declares the previously
 audited OS-only encryption metadata explicitly as
