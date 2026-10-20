@@ -1,8 +1,9 @@
 // A finite review11 provenance guard. Existing canonical review and media gates
 // still run; context/timing fields record provenance, not cryptographic identity.
 import { createHash } from "node:crypto";
-import { PAIRED_CASES, PAIRED_CONTRACTS } from "./experience-paired.mjs";
+import { PAIRED_CASES } from "./experience-paired.mjs";
 import { CURRENT_R20, R20_SCOPE } from "./experience-current-r20.mjs";
+import { validateMediaFirstObservationBytes } from "./experience-media-first-shared.mjs";
 
 export const R21_ID = "PE-X-CROSSDECK-CURRENT-VERIFY-20261020-R21";
 const freeze = (value) => {
@@ -69,10 +70,8 @@ const same = (left, right) => sha(JSON.stringify(ordered(left))) === sha(JSON.st
 const need = (condition, code) => {
   if (!condition) throw new Error(`PRODUCT_EXPERIENCE_R21_MEDIA_FIRST_${code}`);
 };
-const meaningful = (value) => typeof value === "string" && value.trim().length >= 12;
 const unique = (values) => Array.isArray(values) && values.length > 0 && new Set(values).size === values.length;
 const time = (value) => (typeof value === "string" ? Date.parse(value) : NaN);
-const uuid = (value) => /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/u.test(value ?? "");
 
 export function r21ReviewProvenanceBinding(plan, evidence) {
   if (plan.exception?.id !== R21_ID) return {};
@@ -82,14 +81,14 @@ export function r21ReviewProvenanceBinding(plan, evidence) {
   return { mediaFirstReviewDigest: sha(JSON.stringify(ordered(evidence.mediaFirstReview))) };
 }
 
-export function validateR21MediaFirstReview(plan, evidence, now = new Date()) {
+export function validatePinnedMediaFirstPlan(plan, { id, version, ordinal, policy }) {
   need(
-    plan?.exception?.id === R21_ID &&
-      plan.exception.version === 21 &&
+    plan?.exception?.id === id &&
+      plan.exception.version === version &&
       /^[a-f0-9]{64}$/u.test(plan.exception.recordDigest ?? "") &&
-      plan.exception.independentReviewOrdinal === 11 &&
+      plan.exception.independentReviewOrdinal === ordinal &&
       plan.exception.currentSourceAdmission?.kind === "CROSSDECK_CURRENT_SOURCE_ADMISSION_1" &&
-      same(plan.exception.currentSourceAdmission.reviewProtocol, R21_MEDIA_PROTOCOL) &&
+      same(plan.exception.currentSourceAdmission.reviewProtocol, policy) &&
       same(plan.exception.currentSourceAdmission.scopeAdjudication, R20_SCOPE) &&
       plan.sourceDigest === plan.exception.currentSourceAdmission.sourceDigest &&
       plan.contractDigest === R20_SCOPE.approvedContractDigest &&
@@ -99,74 +98,33 @@ export function validateR21MediaFirstReview(plan, evidence, now = new Date()) {
       plan.paired?.browserContexts === 6,
     "TRUSTED_PROTOCOL_REQUIRED",
   );
-  const protocol = evidence?.mediaFirstReview;
+  return plan;
+}
+export function validatePinnedMediaFirstReview(plan, evidence, now, selection) {
+  validatePinnedMediaFirstPlan(plan, selection);
+  const policy = selection.policy;
+  const protocol = evidence?.mediaFirstReview,
+    proof = protocol?.frozenFirstPass;
   need(
-    protocol?.kind === R21_MEDIA_PROTOCOL.kind &&
-      uuid(protocol.reviewerContext) &&
-      !R21_MEDIA_PROTOCOL.excludedReviewerContexts.includes(protocol.reviewerContext) &&
-      typeof protocol.reviewerTaskPath === "string" &&
-      protocol.reviewerTaskPath.startsWith("/root/") &&
-      !R21_MEDIA_PROTOCOL.excludedReviewerTaskPaths.includes(protocol.reviewerTaskPath) &&
-      protocol.builderContext === R21_MEDIA_PROTOCOL.consumerOwnerContext &&
-      protocol.criticCreation?.reviewerContext === protocol.reviewerContext &&
-      protocol.criticCreation.initialHistory === "NONE" &&
-      protocol.criticCreation.selectionVerifiedByContext === protocol.builderContext &&
-      time(protocol.criticCreation.createdAtUtc) >= time(R21_MEDIA_PROTOCOL.approvedAtUtcMinute),
-    "DISTINCT_UNEXPOSED_CRITIC_REQUIRED",
-  );
-  const proof = protocol.frozenFirstPass;
-  need(
-    proof?.encoding === R21_MEDIA_PROTOCOL.firstPassEncoding &&
-      typeof proof.content === "string" &&
-      proof.content.length <= R21_MEDIA_PROTOCOL.maximumFirstPassBytes &&
-      Number.isSafeInteger(proof.bytes) &&
-      proof.bytes > 0 &&
-      proof.bytes <= R21_MEDIA_PROTOCOL.maximumFirstPassBytes &&
-      /^[a-f0-9]{64}$/u.test(proof.sha256 ?? "") &&
-      !R21_MEDIA_PROTOCOL.forbiddenHistoricalObservationDigests.includes(proof.sha256),
+    proof?.encoding === policy.firstPassEncoding && typeof proof.content === "string",
     "ORIGINAL_FIRST_PASS_REQUIRED",
   );
-  const bytes = Buffer.from(proof.content, "utf8");
-  need(
-    bytes.toString("utf8") === proof.content && bytes.length === proof.bytes && sha(bytes) === proof.sha256,
-    "FROZEN_BYTES_CHANGED",
-  );
-  let first;
-  try {
-    first = JSON.parse(bytes.toString("utf8"));
-  } catch {
-    need(false, "FIRST_PASS_JSON_INVALID");
-  }
-  need(
-    first?.kind === R21_MEDIA_PROTOCOL.firstPassKind &&
-      first.reviewerContext === protocol.reviewerContext &&
-      first.reviewerTaskPath === protocol.reviewerTaskPath &&
-      first.builderContext === protocol.builderContext &&
-      same(first.criticCreation, protocol.criticCreation) &&
-      first.sourceDigest === plan.sourceDigest &&
-      first.contractDigest === plan.contractDigest &&
-      Number.isSafeInteger(evidence.captureArtifactId) &&
-      evidence.captureArtifactId > 0 &&
-      !R21_MEDIA_PROTOCOL.forbiddenHistoricalCaptureIds.includes(evidence.captureArtifactId) &&
-      first.captureArtifactId === evidence.captureArtifactId &&
-      same(first.exposureBeforeFreeze, R21_MEDIA_PROTOCOL.exposureBeforeFreeze) &&
-      same(first.criticSelection, R21_MEDIA_PROTOCOL.criticSelection) &&
-      first.genericContexts === 32 &&
-      first.pairedContexts === 6 &&
-      first.contexts === 38,
-    "FIRST_PASS_IDENTITY_OR_EXPOSURE_CHANGED",
-  );
-  const started = time(first.mediaInspectionStartedAt),
-    frozen = time(first.observationsFrozenAt),
+  const phase = validateMediaFirstObservationBytes({
+    plan,
+    protocol,
+    policy,
+    originalBytes: Buffer.from(proof.content, "utf8"),
+    expectedBytes: proof.bytes,
+    expectedSha256: proof.sha256,
+    captureArtifactId: evidence.captureArtifactId,
+    artifacts: evidence.artifacts,
+    now,
+  });
+  const frozen = time(phase.first.observationsFrozenAt),
     source = time(protocol.sourceInspectionStartedAt),
     completed = time(protocol.canonicalJudgmentsCompletedAt);
   need(
-    [started, frozen, source, completed].every(Number.isFinite) &&
-      started >= time(protocol.criticCreation.createdAtUtc) &&
-      started <= frozen &&
-      frozen < source &&
-      source <= completed &&
-      completed <= now.getTime(),
+    [source, completed].every(Number.isFinite) && frozen < source && source <= completed && completed <= now.getTime(),
     "MEDIA_BEFORE_SOURCE_CHRONOLOGY_REQUIRED",
   );
   need(
@@ -184,57 +142,14 @@ export function validateR21MediaFirstReview(plan, evidence, now = new Date()) {
       ),
     "SEVEN_EXPLICIT_JUDGMENTS_AND_CONTEXTS_REQUIRED",
   );
-  need(
-    Array.isArray(first.contractObservations) &&
-      first.contractObservations.length === 7 &&
-      unique(first.contractObservations.map((entry) => entry.contractId)) &&
-      same(first.contractObservations.map((entry) => entry.contractId).sort(), [...plan.contractIds].sort()),
-    "FIRST_PASS_CONTRACT_SCOPE_CHANGED",
-  );
-  need(Array.isArray(evidence.artifacts), "CURRENT_MEDIA_OBSERVATIONS_REQUIRED");
-  const artifacts = new Map(evidence.artifacts.map((artifact) => [artifact.id, artifact]));
-  const checkObservation = (observation, accepts) => {
-    need(
-      meaningful(observation?.observation) &&
-        unique(observation.evidenceIds) &&
-        observation.evidenceIds.every((id) => artifacts.has(id) && accepts(artifacts.get(id))),
-      "CURRENT_MEDIA_OBSERVATIONS_REQUIRED",
-    );
-  };
-  const observedMedia = (ids) => {
-    const types = new Set(ids.map((id) => artifacts.get(id).type));
-    need(types.has("screenshot") && (types.has("recording") || types.has("trace")), "TRANSITION_MEDIA_REQUIRED");
-  };
-  for (const observation of first.contractObservations) {
-    const review = evidence.reviews.find((entry) => entry.contractId === observation.contractId);
-    const dimensions = Object.keys(review.dimensions ?? {});
-    need(
-      dimensions.length === 17 && same(Object.keys(observation.dimensions ?? {}).sort(), dimensions.sort()),
-      "FIRST_PASS_DIMENSIONS_REQUIRED",
-    );
-    for (const dimension of dimensions)
-      checkObservation(observation.dimensions[dimension], (artifact) => artifact.contractId === observation.contractId);
-    observedMedia(Object.values(observation.dimensions).flatMap((dimension) => dimension.evidenceIds));
-  }
-  need(
-    Array.isArray(first.pairedObservations) &&
-      first.pairedObservations.length === 3 &&
-      unique(first.pairedObservations.map((entry) => entry.caseId)) &&
-      same(first.pairedObservations.map((entry) => entry.caseId).sort(), [...R21_MEDIA_PROTOCOL.pairedCaseIds].sort()),
-    "FIRST_PASS_PAIRED_SCOPE_CHANGED",
-  );
-  for (const paired of first.pairedObservations) {
-    need(same(Object.keys(paired.contexts ?? {}).sort(), ["DESKTOP", "MOBILE"]), "PAIRED_CONTEXTS_REQUIRED");
-    for (const device of ["DESKTOP", "MOBILE"]) {
-      checkObservation(
-        paired.contexts[device],
-        (artifact) =>
-          PAIRED_CONTRACTS.includes(artifact.contractId) &&
-          artifact.device === device &&
-          artifact.state === `PAIRED_${paired.caseId}`,
-      );
-      observedMedia(paired.contexts[device].evidenceIds);
-    }
-  }
-  return { reviewerContext: protocol.reviewerContext, frozenFirstPassSha256: proof.sha256 };
+  return { reviewerContext: phase.reviewerContext, frozenFirstPassSha256: phase.frozenFirstPassSha256 };
+}
+
+export function validateR21MediaFirstReview(plan, evidence, now = new Date()) {
+  return validatePinnedMediaFirstReview(plan, evidence, now, {
+    id: R21_ID,
+    version: 21,
+    ordinal: 11,
+    policy: R21_MEDIA_PROTOCOL,
+  });
 }
