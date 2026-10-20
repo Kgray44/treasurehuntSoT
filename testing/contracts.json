@@ -9338,7 +9338,8 @@
           "src/components/studio/NewTaleForm.tsx",
           "src/components/studio/StudioHome.tsx",
           "src/components/studio/StudioStatusHeader.tsx",
-          "src/components/studio/TaleEditor.tsx"
+          "src/components/studio/TaleEditor.tsx",
+          "src/components/homeport/AccountSurfaces.tsx"
         ],
         "entryPoint": "/account",
         "states": [

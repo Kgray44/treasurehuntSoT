@@ -940,3 +940,12 @@ semantics. Mixed product/control-plane source is rejected. A canonical extension
 therefore requires separate Sounding Line qualification, protected installation
 and landed verification before Sextant can consume it. It is not physical or
 manual-Apple work, and no candidate policy fork or acceptance waiver is used.
+
+The Creator landmark successor changes the actual Passage Library/Inspector and
+Profile setup notice to distinct named sections. IDs, classes, layout, content,
+motion and all browser creation/return/baseline checks remain unchanged. The
+owning final-return declaration now includes the actual AccountSurfaces renderer.
+Twenty-one existing TaleEditor/PersonalHarborLayout checks, full TypeScript and
+the updated contract validation pass. It is an accessibility correction rather
+than a completed feature expansion. Independent source review is clear; fresh
+browser/rendered proof remains required before claiming the repaired journey.

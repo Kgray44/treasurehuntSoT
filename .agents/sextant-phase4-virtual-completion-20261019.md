@@ -391,6 +391,24 @@ behavior to hide that limitation. NewTaleForm itself is unchanged. Source review
 fresh execution, rendered review and formal positive-creation support remain
 required before broader acceptance; declarations alone grant none.
 
+Creator818 development39346148525 fails all four after reaching actual creation.
+Desktop fails duplicate unnamed Studio Library/Inspector complementary landmarks;
+mobile reaches account return and fails the setup-prompt aside nested in main.
+Keep all content, motion, classes, IDs, control/creation/return/baseline assertions
+and change only those work-task containers to distinct named sections. Add the
+actual AccountSurfaces renderer to this final-return declaration. Original
+encrypted failure diagnostics remain retained; source/component/browser/rendered
+verification is required, with no publication or protected acceptance inferred.
+
+Community7b development39345446486 is CANCELLED at the unchanged20minute job limit:
+checkout's all-ref Git fetch stalls from00:04:40 to00:24:38 before dependencies,
+product/server/browser launch or runtime receipt. No Guide assertion ran and no
+runtime cleanup is proved; zero artifacts and the complete original log/dispatch
+receipt remain preserved. This is not a failed pointer repair or a transport leak.
+A single fresh fixed-target attempt at unchanged7b may retry this diagnosed
+pre-product infrastructure failure without increasing timeouts, weakening any
+assertion, or claiming application evidence from the cancelled job.
+
 Prepare the public catalog/Tideglass consumer family using a fixed synthetic
 PUBLIC Chronicle with two immutable fixture editions and a separate anonymous
 guest Voyage. Seed only after the canonical owned-isolation guard, refuse

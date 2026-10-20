@@ -20,6 +20,8 @@ last_reviewed: 2026-10-19
 
 ### Corrected
 
+- Studio's Passage library and Inspector use distinct named sections. Personal
+  Harbor's Profile setup notice uses a named section within its main task.
 - Community's decorative card artwork lets the stretched detail link receive
   pointer input. Long immutable edition labels wrap within their Studio badge.
 - Tideglass gives its current-edition notice and loaded edition comparison

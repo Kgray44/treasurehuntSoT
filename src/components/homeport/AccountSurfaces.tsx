@@ -152,7 +152,7 @@ export function AccountOverview() {
         </div>
       </section>
       {profile.setupPrompt ? (
-        <aside className="harbor-setup-prompt">
+        <section className="harbor-setup-prompt" aria-label={profile.setupPrompt.title}>
           <div>
             <strong>{profile.setupPrompt.title}</strong>
             <p>{profile.setupPrompt.detail}</p>
@@ -160,7 +160,7 @@ export function AccountOverview() {
           <Link className="button button--quiet" href={profile.setupPrompt.href}>
             Set handle
           </Link>
-        </aside>
+        </section>
       ) : null}
       <section className="harbor-passport-gateway" aria-labelledby="harbor-passport-gateway-title">
         <div>

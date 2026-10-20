@@ -2255,7 +2255,7 @@ export function TaleEditor({
               {dragAnnouncement}
             </p>
             <div className="editor-workbench">
-              <aside id="studio-library" className="block-library" tabIndex={-1}>
+              <section id="studio-library" className="block-library" tabIndex={-1} aria-label="Passage library">
                 <div>
                   <p className="eyebrow">Passage library</p>
                   <h2>Passages</h2>
@@ -2647,7 +2647,7 @@ export function TaleEditor({
                     </section>
                   </section>
                 )}
-              </aside>
+              </section>
               <section
                 ref={canvas}
                 id="studio-canvas"
@@ -2911,8 +2911,9 @@ export function TaleEditor({
                   </motion.article>
                 ))}
               </section>
-              <motion.aside
+              <motion.section
                 className={`block-inspector ${selected ? "has-selection" : "empty"}`}
+                aria-label="Passage Inspector"
                 data-inspector-state={selected ? "open" : "closed"}
                 initial={false}
                 animate={{
@@ -3177,7 +3178,7 @@ export function TaleEditor({
                     <p>Its content, presentation, verification, assets, and private notes will appear here.</p>
                   </div>
                 )}
-              </motion.aside>
+              </motion.section>
             </div>
             <DragOverlay dropAnimation={mode === "reduced" ? null : undefined}>
               {activeDragId && (

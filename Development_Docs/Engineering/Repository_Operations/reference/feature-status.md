@@ -33,9 +33,8 @@ authoring review clears prior visible clipping but finds long version-label spil
 Public catalog/guest/edition development passes four at `395940ad72`; independent
 review clears displayed content there and in the history supplement, with
 explicit viewport/fallback limits and separately about ten-second normal Journal
-opening. Community's new diagnostic
-identifies decorative artwork above its stretched link. Narrow badge/pointer
-badge repair passes four at `7b785a39e3` with independent full-label/Suite review
+opening. Community's new diagnostic identifies decorative artwork above its
+stretched link. The badge repair passes four at `7b785a39e3` with independent full-label/Suite review
 clear. Community stalls at checkout with no product evidence; one same-source
 retry runs. Creator creation/account-return at `818ad35622` exposes Studio and
 Overview landmark defects after creation; the narrow repair passes 21 component
