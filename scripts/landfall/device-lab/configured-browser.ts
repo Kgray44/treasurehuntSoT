@@ -25,6 +25,7 @@ async function main() {
       "sextant-admiralty",
       "sextant-private-content",
       "sextant-account-recovery",
+      "sextant-invitation",
     ].includes(suite)
   )
     throw new Error("LANDFALL_CONFIGURED_BROWSER_SUITE_INVALID");
@@ -113,15 +114,17 @@ async function main() {
                             ? ["tests/e2e/sextant-private-content-journeys.spec.ts"]
                             : suite === "sextant-account-recovery"
                               ? ["tests/e2e/sextant-account-recovery-journeys.spec.ts"]
-                              : [
-                                  "tests/e2e/landfall-phase1-live-position.spec.ts",
-                                  "tests/e2e/landfall-phase2.spec.ts",
-                                  "tests/e2e/landfall-closure.spec.ts",
-                                  "tests/e2e/landfall-phase3.spec.ts",
-                                  "tests/e2e/landfall-phase3-creator.spec.ts",
-                                  "tests/e2e/landfall-phase4.spec.ts",
-                                  "tests/e2e/landfall-offline-region.spec.ts",
-                                ]),
+                              : suite === "sextant-invitation"
+                                ? ["tests/e2e/sextant-invitation-journeys.spec.ts"]
+                                : [
+                                    "tests/e2e/landfall-phase1-live-position.spec.ts",
+                                    "tests/e2e/landfall-phase2.spec.ts",
+                                    "tests/e2e/landfall-closure.spec.ts",
+                                    "tests/e2e/landfall-phase3.spec.ts",
+                                    "tests/e2e/landfall-phase3-creator.spec.ts",
+                                    "tests/e2e/landfall-phase4.spec.ts",
+                                    "tests/e2e/landfall-offline-region.spec.ts",
+                                  ]),
       ],
       {
         windowsHide: true,

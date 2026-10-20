@@ -10224,6 +10224,186 @@
           }
         ]
       }
+    },
+    {
+      "id": "sextant.shared-consumers.invitation-guest-recovery",
+      "name": "Sextant unavailable invitation return and actual synthetic guest claim/merge development",
+      "authority": "project-sextant",
+      "owners": [
+        "project-sextant",
+        "project-homeport",
+        "project-wayfarer",
+        "one-voyage"
+      ],
+      "critical": true,
+      "experience": {
+        "persona": "A synthetic invited Player entering by an actually issued short code or secure link, then keeping a guest identity or explicitly merging into an existing claimed account",
+        "objective": "Show the honest unavailable invitation fallback and ordinary Player entry return; development additionally proves real issued invitation/PIN acceptance, guest account claim/verification and existing-account merge without advancing a Voyage",
+        "visibleOutcome": "Unavailable invitations return safely to actual Player entry; development returns the actual newly accepted Voyage through the visible Library for the same claimed or explicitly merged account with original progress retained",
+        "integrationOwner": "Sextant shared-consumer verification; One Voyage retains invitations, membership and progression; Homeport/Wayfarer retain canonical guest identity, claim, verification, merge and account navigation",
+        "systems": [
+          "project-sextant",
+          "project-homeport",
+          "project-wayfarer",
+          "one-voyage"
+        ],
+        "sourcePaths": [
+          "src/app/player/invitation/page.tsx",
+          "src/app/player/sign-in/page.tsx",
+          "src/app/player/playthroughs/[playthroughId]/page.tsx",
+          "src/app/account/claim/page.tsx",
+          "src/app/account/merge/page.tsx",
+          "src/app/join/[token]/route.ts",
+          "src/components/platform/InvitationCeremony.tsx",
+          "src/components/platform/PlayerSignIn.tsx",
+          "src/components/platform/PlayerVoyageRoom.tsx",
+          "src/components/homeport/AccountSurfaces.tsx",
+          "src/homeport/personal-harbor.ts"
+        ],
+        "entryPoint": "/join/sextant-invalid-invitation-token-2026",
+        "states": [
+          "UNAVAILABLE_INVITATION",
+          "PLAYER_ENTRY_READY",
+          "INVITATION_CODE_READY",
+          "RETURNED"
+        ],
+        "devices": [
+          "DESKTOP",
+          "MOBILE"
+        ],
+        "roles": [
+          "ANONYMOUS"
+        ],
+        "references": [
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected Authentication family reference; actual invitation ceremony, unavailable fallback, guest recovery and Waiting Room require fresh source-bound review.",
+            "preserve": "Readable named entry controls, explicit state/identity and safe return; no invitation/guest layout acceptance follows from historical Authentication references."
+          },
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected Authentication family reference; actual invitation ceremony, unavailable fallback, guest recovery and Waiting Room require fresh source-bound review.",
+            "preserve": "Readable named entry controls, explicit state/identity and safe return; no invitation/guest layout acceptance follows from historical Authentication references."
+          }
+        ],
+        "fixtureProfile": "generic",
+        "fixture": "sextant-invitation-consumers-v1",
+        "recordingRequired": true,
+        "accessibility": "Ordinary Player code/link entry and safe unavailable return, actual labelled PIN/error, Waiting Room, canonical guest-recovery links, claim/merge forms and Library reopen at desktop/mobile and normal/reduced motion. Development audits actual task surfaces and captures visible outcomes.",
+        "fallback": "A deliberately invalid synthetic link resolves to the actual unavailable ceremony without fabricating private Voyage details. A real wrong PIN preserves the invitation and absent guest account. Claim/merge stay behind their canonical account/session/CSRF and explicit credential/verification requirements.",
+        "navigation": "Actual issued short code through Player entry or actual secure link reaches the invitation ceremony, then production acceptance opens the Waiting Room. The ordinary owner menu opens Personal Harbor; Overview Personal Information exposes claim/merge only through canonical guest-recovery availability. Actual Library links reopen the same accepted Voyage.",
+        "designTarget": "Readable invitation provenance and PIN/rejection, honest guest versus claimed identity choices, explicit existing-account merge and same-Voyage return without progression.",
+        "browserTests": [
+          "tests/e2e/sextant-invitation-journeys.spec.ts"
+        ],
+        "limitations": [
+          "Source registration and development evidence do not grant protected, native, physical or owner acceptance.",
+          "Formal replay covers only the actual unavailable invitation fallback, return to Player entry, invitation-code preparation and ordinary account-tab return. Positive issued-code/link/PIN acceptance, guest claim/verification/merge and dynamic actual-Voyage routes require canonical per-case mutable/challenge/issued-invitation binding before formal qualification. No authority or runner fork is introduced.",
+          "Declared claim/merge/Waiting Room routes and their live components are exercised by the positive development test, not the limited formal unavailable-entry journey. Source declaration is not full acceptance.",
+          "Four distinct nonce-owned cases create one new INVITING Voyage and two unclaimed invited profiles through the existing canonical createPlaythroughAndInvitations service. Existing synthetic case Voyages/profiles/emails are refused; random issued credentials remain in memory, with no token/hash rewriting or reusable credential persistence.",
+          "The first actual guest is claimed and verified through the owned synthetic outbox; the second explicitly merges into its distinct existing claimed synthetic Crew account. Real account/email/private content, deletion workers, publication, Voyage launch, owner commands and progression are not used.",
+          "Canonical guest recovery availability is projected from the existing account/profile service into Personal Information; the visible links call existing claim/merge routes and APIs. No extra identity, permission, persistence or navigation authority is created.",
+          "DOM continuity observes only the real home href. Development separately asserts stable actual profile/account IDs and memberships, explicit MERGED target and old-session revocation, one-time invitation redemption, same actual Voyage Library links, unchanged prepared-Voyage progression and independent ACTIVE/membership/exact-edition baselines.",
+          "Expired/revoked/declined/account-required invitation states, operational abuse/provider delivery, physical/native and owner acceptance remain separate requirements."
+        ],
+        "motion": {
+          "feedbackBudgetMs": 3000,
+          "measurement": "Actual code lookup, PIN rejection, acceptance to loaded Waiting Room, explicit claim/verification/merge and same-Voyage Library reopening; no forced input, sleeps, retries or budget increases."
+        },
+        "continuity": {
+          "objective": "Keep the actual home gateway consistent while development verifies canonical guest recovery and preserved authoritative Voyage progress",
+          "checks": [
+            {
+              "id": "actual-home-gateway",
+              "role": "link",
+              "name": "Voyagewright home",
+              "attribute": "href"
+            }
+          ],
+          "requirements": [
+            "Wrong PIN must leave invitation redemption/membership and guest-account absence unchanged.",
+            "Actual claim/verification keeps the same guest account/profile and actual accepted membership.",
+            "Explicit merge moves the real invited membership and invitation target to the chosen existing claimed Crew profile, marks the guest MERGED and revokes its sessions.",
+            "Actual visible Library links reopen the same prepared Voyage without launching or advancing it; independent ACTIVE/membership/edition baselines remain unchanged."
+          ]
+        },
+        "journeys": [
+          {
+            "id": "unavailable-invitation-natural-player-entry-return",
+            "roles": [
+              "ANONYMOUS"
+            ],
+            "outcome": "An unavailable synthetic secure link shows the real safe invitation fallback and returns to ordinary Player entry without issuing an invitation or granting a session",
+            "steps": [
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "This invitation cannot be opened",
+                "text": "This invitation cannot be opened",
+                "path": "/player/invitation",
+                "state": "UNAVAILABLE_INVITATION"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Player Entry"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Open your Chronicle Library",
+                "text": "Open your Chronicle Library",
+                "path": "/player/sign-in",
+                "state": "PLAYER_ENTRY_READY",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "The real unavailable invitation offers an ordinary Player entry return without private Voyage details."
+              },
+              {
+                "action": "click",
+                "role": "tab",
+                "name": "Invitation code"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Invitation code",
+                "text": "Invitation code",
+                "path": "/player/sign-in",
+                "state": "INVITATION_CODE_READY",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "Actual short-code preparation appears without sending or accepting an invitation."
+              },
+              {
+                "action": "assert",
+                "role": "textbox",
+                "name": "Short code"
+              },
+              {
+                "action": "click",
+                "role": "tab",
+                "name": "Player account"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Player account",
+                "text": "Player account",
+                "path": "/player/sign-in",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
     }
 
   ],

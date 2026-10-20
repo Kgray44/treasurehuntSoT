@@ -146,6 +146,12 @@ for (const viewport of [
         );
         expect(await db.privateContentImport.count({ where: { ownerAccountId: fixture.ownerId } })).toBe(0);
         await capture("private-content-wrong-passphrase", heading("Inspect an encrypted package"));
+        const rejectedStatus = page.getByText("The private package could not be authenticated or opened.", {
+          exact: true,
+        });
+        await rejectedStatus.scrollIntoViewIfNeeded();
+        await expect(rejectedStatus).toBeInViewport({ ratio: 1 });
+        await capture("private-content-rejected-status", rejectedStatus);
         await secret.fill(passphrase);
         await measure(
           "Actual package inspection without import",
@@ -161,6 +167,17 @@ for (const viewport of [
         expect(await db.privateContentImport.count({ where: { ownerAccountId: fixture.ownerId } })).toBe(0);
         expect(await db.chronicle.count({ where: { creatorAccountId: fixture.ownerId } })).toBe(countBefore);
         await capture("private-content-inspected-plan", heading("Inspect an encrypted package"));
+        const inspectedStatus = page.getByText(
+          "Inspection succeeded. Import remains private and is not yet committed.",
+          { exact: true },
+        );
+        await inspectedStatus.scrollIntoViewIfNeeded();
+        await expect(inspectedStatus).toBeInViewport({ ratio: 1 });
+        await expect(page.getByRole("status").filter({ hasText: "Plan:" })).toBeInViewport({ ratio: 1 });
+        await expect(page.getByRole("button", { name: "Confirm private import", exact: true })).toBeInViewport({
+          ratio: 1,
+        });
+        await capture("private-content-plan-confirmation", inspectedStatus);
         let importId = "";
         await measure(
           "Actual explicitly confirmed private import",

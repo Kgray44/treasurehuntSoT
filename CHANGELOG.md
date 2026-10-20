@@ -20,6 +20,10 @@ last_reviewed: 2026-10-19
 
 ### Corrected
 
+- Personal Information exposes the existing claim and merge paths for unclaimed
+  guest accounts. Admiralty account-identity rows wrap long IDs while keeping
+  their Copy action within the viewport.
+
 - Studio sortable Passage cards use a valid element for their existing named
   group, preserving drag, focus, keyboard controls and displayed content.
 

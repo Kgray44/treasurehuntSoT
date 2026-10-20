@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const { db, materializeChronicleHistory, workspaceCapabilityOverview } = vi.hoisted(() => ({
   db: {
+    userAccount: { findUnique: vi.fn() },
     playerProfile: { findUnique: vi.fn() },
     externalIdentity: { count: vi.fn() },
     accountSession: { count: vi.fn() },
@@ -18,7 +19,26 @@ vi.mock("@/lib/db", () => ({ db }));
 vi.mock("@/wayfarer/chronicle-history", () => ({ materializeChronicleHistory }));
 vi.mock("@/homeport/workspace-capabilities", () => ({ workspaceCapabilityOverview }));
 
-import { passportOverview, personalHarborOverview } from "./personal-harbor";
+import { passportOverview, personalHarborOverview, personalInformation } from "./personal-harbor";
+
+describe("Guest account recovery availability", () => {
+  it.each(["GUEST_UNCLAIMED", "ACTIVE", "PENDING_VERIFICATION", "MERGED"])(
+    "homeport.phase7.account.canonical-lifecycle derives guest recovery from canonical %s status",
+    async (status) => {
+      db.userAccount.findUnique.mockResolvedValue({
+        id: "synthetic-account",
+        status,
+        createdAt: new Date("2026-10-19T00:00:00Z"),
+        updatedAt: new Date("2026-10-19T00:00:00Z"),
+        emails: [],
+        profile: { displayName: "Synthetic guest", updatedAt: new Date("2026-10-19T00:00:00Z") },
+      });
+      expect((await personalInformation("synthetic-account"))?.guestRecoveryAvailable).toBe(
+        status === "GUEST_UNCLAIMED",
+      );
+    },
+  );
+});
 
 describe("Chronicle Passport summary freshness", () => {
   let materializedRecords = 0;

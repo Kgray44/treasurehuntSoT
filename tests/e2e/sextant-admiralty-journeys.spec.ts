@@ -61,8 +61,13 @@ for (const viewport of [
         const emptyState = (name: string) => page.locator(".chartroom-empty").getByText(name, { exact: true });
         const capture = async (name: string, target = page.getByRole("heading", { level: 1 })) => {
           expect((await new AxeBuilder({ page }).include(".chartroom").analyze()).violations).toEqual([]);
-          await target.scrollIntoViewIfNeeded();
-          await expect(target).toBeInViewport();
+          await target.evaluate((node) => node.scrollIntoView({ block: "center", behavior: "instant" }));
+          await expect(target).toBeInViewport({ ratio: 1 });
+          const bounds = await target.boundingBox();
+          const banner = await page.locator(".product-shell-header").boundingBox();
+          expect(bounds).not.toBeNull();
+          expect(banner).not.toBeNull();
+          expect(bounds!.y).toBeGreaterThanOrEqual(banner!.y + banner!.height);
           await page.screenshot({ path: info.outputPath(`${name}.png`) });
         };
         await page.goto("/sign-in?returnTo=%2Faccount");
@@ -81,6 +86,11 @@ for (const viewport of [
           "ADMINISTRATOR",
         );
         await capture("admiralty-overview");
+        await capture(
+          "admiralty-operator-controls",
+          page.getByRole("group", { name: "Admiralty controls", exact: true }),
+        );
+        await expect(page.getByRole("group", { name: fixture.displayName, exact: true })).toBeInViewport({ ratio: 1 });
         const navigation = page.getByRole("navigation", { name: "Admiralty navigation", exact: true });
         await measure(
           "Bounded People station",
@@ -113,6 +123,13 @@ for (const viewport of [
         );
         await expect(page).toHaveURL(new RegExp(`/admin/people/${fixture.targetAccountId}$`));
         await capture("admiralty-dossier");
+        const identity = page.getByRole("main").locator(".chartroom-identity");
+        await expect(identity.locator("code")).toHaveText(fixture.targetAccountId);
+        const primaryCopy = identity.getByRole("button", { name: "Copy account ID", exact: true });
+        await capture("admiralty-primary-account-identifier", identity);
+        await expect(identity.locator("code")).toBeInViewport({ ratio: 1 });
+        await expect(primaryCopy).toBeEnabled();
+        await expect(primaryCopy).toBeInViewport({ ratio: 1 });
         const support = page.locator(".chartroom-panel").filter({ has: heading("Support access") });
         await expect(support).toHaveCount(1);
         await expect(support).toContainText("Verification required");

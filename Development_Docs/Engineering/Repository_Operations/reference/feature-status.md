@@ -27,17 +27,19 @@ independent review verifies210hashes/all120PNGs and clears the actual Guide poin
 and Search-hover repairs within the stated viewport limits. Creator form-ink
 recapture passes four with unchanged final baselines; independent70hash/30PNG
 review resolves the pale parchment heading/intro/helper finding and reviews the
-added Chapter/Edit and desktop empty-Inspector captures. Private Chronicle's
-sortable repair now passes four full synthetic inspect/import/verified encrypted
-download/draft-reopen/ordinary-return journeys with unchanged final baselines.
-Its separate storage receipt reports exact owned-root removal after canonical
-process cleanup; independent28PNG/storage review remains pending. Admiralty
-passes Overview and People searches, then stops at a dossier-title check matching
-both H1 and an AI-quota H2 with the same account name. A narrow H1/actual-main
-predicate correction awaits fresh execution. Original failures and encrypted
-diagnostics remain preserved. Account registration/recovery and reversible
-lifecycle source preparation uses the canonical isolated synthetic-email adapter;
-no account journey execution or acceptance is inferred.
+added Chapter/Edit and desktop empty-Inspector captures. Private Chronicle passes
+four complete synthetic round trips with unchanged final baselines and separate
+exact-root storage cleanup. Independent70hash/28PNG review finds an evidence-only
+mobile error/inspection-message capture gap. Admiralty passes four complete
+read-only dossier/support/return journeys; independent77hash/32PNG review finds
+mobile primary account-ID/Copy clipping and an operator/heading capture gap.
+Narrow layout and capture repairs await fresh execution. Account development
+reaches actual registration, verification and password reset, then fails at an
+ambiguous Passport/menu return link before email/lifecycle/final-baseline proof;
+the return now scopes the actual menu. Issued invitation/guest claim/merge source
+preparation uses canonical services and restores existing guest recovery links
+in Personal Information. No new browser or acceptance result follows from source
+review. Original failures, reviewed findings and encrypted diagnostics remain.
 
 Two new formal contracts replace invalid prose checks with actual DOM identity
 or gateway selectors while retaining all prose requirements and unchanged backend

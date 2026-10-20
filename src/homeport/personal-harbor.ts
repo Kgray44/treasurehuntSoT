@@ -39,6 +39,7 @@ export async function personalInformation(accountId: string) {
   return {
     accountId: account.id,
     accountStatus: humanAccountState(account.status, email?.verificationState === "VERIFIED"),
+    guestRecoveryAvailable: account.status === "GUEST_UNCLAIMED" && Boolean(account.profile),
     displayName: account.profile?.displayName ?? "Voyagewright account",
     primaryEmail: email?.displayEmail ?? null,
     emailVerificationState: email?.verificationState ?? "UNAVAILABLE",

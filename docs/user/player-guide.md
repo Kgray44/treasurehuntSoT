@@ -79,4 +79,6 @@ When the Chronicle permits it, **Confirm arrival myself** sends the configured l
 
 The Waiting Room shows safe crew invitation, readiness, and connection information. **Leave Waiting Room** returns to My Voyages. **Leave Voyage** ends only your membership after confirmation. If a Captain steps down, the Voyage can enter **Succession Hold** and show the choices available to you, such as taking Captaincy, continuing solo, or leaving.
 
+The Sextant Phase 4 candidate restores guest recovery through **Personal Harbor → Personal Information**. Choose **Claim this guest Voyage** to add and verify sign-in details, or **Use an existing account** to keep guest Voyages with an account you already use. These choices preserve saved Voyage progress; candidate experience qualification remains pending.
+
 See [Chronicle Passport](chronicle-passport.md) to revisit your private history.

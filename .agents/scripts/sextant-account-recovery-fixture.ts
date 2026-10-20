@@ -15,10 +15,7 @@ const cases = [
 ] as const;
 export type SextantAccountRecoveryCase = (typeof cases)[number];
 
-export async function seedSextantAccountRecoveryExperience(
-  key: SextantAccountRecoveryCase = "account-recovery-default",
-) {
-  if (!cases.includes(key)) throw new Error("SEXTANT_ACCOUNT_RECOVERY_CASE_INVALID");
+export function sextantOwnedSyntheticOutbox() {
   const candidate = execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8", windowsHide: true }).trim();
   const taskRoot = path.resolve(`.sounding-line-${candidate.slice(0, 12)}.outbox`);
   const outboxPath = path.join(taskRoot, "outbox", "messages.jsonl");
@@ -44,6 +41,14 @@ export async function seedSextantAccountRecoveryExperience(
     if (stat.isSymbolicLink() || (entry === outboxPath ? !stat.isFile() : !stat.isDirectory()))
       throw new Error("SEXTANT_ACCOUNT_OUTBOX_IDENTITY_REFUSED");
   }
+  return outboxPath;
+}
+
+export async function seedSextantAccountRecoveryExperience(
+  key: SextantAccountRecoveryCase = "account-recovery-default",
+) {
+  if (!cases.includes(key)) throw new Error("SEXTANT_ACCOUNT_RECOVERY_CASE_INVALID");
+  const outboxPath = sextantOwnedSyntheticOutbox();
   const fixture = await seedSextantResourceExperiences(key);
   const email = `sextant.${key}@example.test`;
   const nextEmail = `sextant.changed.${key}@example.test`;

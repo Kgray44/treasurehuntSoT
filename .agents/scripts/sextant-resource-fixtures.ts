@@ -52,6 +52,11 @@ const resourceCases = [
   "account-recovery-1280-reduce",
   "account-recovery-390-no-preference",
   "account-recovery-390-reduce",
+  "invitation-default",
+  "invitation-1280-no-preference",
+  "invitation-1280-reduce",
+  "invitation-390-no-preference",
+  "invitation-390-reduce",
 ] as const;
 type ResourceCase = (typeof resourceCases)[number];
 
@@ -67,7 +72,8 @@ export async function seedSextantResourceExperiences(resourceCase: ResourceCase 
   const email = `sextant.resources${suffix}@example.test`;
   const displayName = `Synthetic Sextant Captain${suffix}`;
   const paired = resourceCase.startsWith("paired-");
-  const crewEmail = paired || history ? `sextant.crew${suffix}@example.test` : null;
+  const crewEmail =
+    paired || history || resourceCase.startsWith("invitation-") ? `sextant.crew${suffix}@example.test` : null;
   const existing = await db.userAccount.findUnique({
     where: { id: ownerId },
     include: { profile: true, emails: true },

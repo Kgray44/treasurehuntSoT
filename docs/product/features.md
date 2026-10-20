@@ -48,6 +48,8 @@ Voyagewright is a private, role-aware home for shared Chronicle experiences.
 
 Players can accept invitations, use a personal library, follow a Chronicle through a Voyage, and keep private history in Chronicle Passport. Personal Harbor brings account, privacy, profile, and workspace choices together. See the [Player guide](../user/player-guide.md), [Personal Harbor](../user/personal-harbor.md), and [Chronicle Passport guide](../user/chronicle-passport.md).
 
+The Sextant Phase 4 candidate restores visible guest claim and existing-account merge entry in Personal Information, using the existing account services and preserving saved Voyage progress. Full candidate experience qualification remains pending.
+
 For a Landfall-enabled published Voyage, the Player Journal map drawer shows the released physical or virtual chart. On a supported physical chart, the Player can explicitly turn on foreground browser location to see a current-position marker with an accuracy indication, then stop it at once. Virtual charts do not request GPS. Local position confidence does not itself record a visit.
 
 ## Captain

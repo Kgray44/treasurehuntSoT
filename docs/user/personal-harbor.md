@@ -3,12 +3,14 @@ title: Personal Harbor
 audience: product-users
 status: current
 canonical_for: personal-harbor
-last_reviewed: 2026-09-21
+last_reviewed: 2026-10-19
 ---
 
 # Personal Harbor
 
 Personal Harbor is your account control center. Use it for your personal information, public Profile, preferences, accessibility, notifications, privacy and safety, connected sign-in methods, security, devices, Support Access, and account-data choices.
+
+In the Sextant Phase 4 candidate, an unclaimed guest can open **Personal Information** and choose **Claim this guest Voyage** to add sign-in details, or **Use an existing account** to move guest Voyages to that account. Claiming requires email verification; using an existing account requires its credentials and explicit confirmation. Saved Voyage progress is preserved. This candidate correction still requires full experience qualification.
 
 ## Chronicle Passport
 

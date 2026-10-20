@@ -106,7 +106,10 @@ for (const viewport of [
         };
         const returnToAccount = async () => {
           await owner.click();
-          await page.getByRole("link", { name: "Personal Harbor", exact: true }).click();
+          await page
+            .getByRole("dialog", { name: "Account navigation", exact: true })
+            .getByRole("link", { name: "Personal Harbor", exact: true })
+            .click();
           await expect(heading("Overview")).toBeVisible();
           await expect(owner).toBeVisible();
         };
