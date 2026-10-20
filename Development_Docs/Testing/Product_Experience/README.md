@@ -3,7 +3,7 @@ title: Product Experience Engineering operations
 audience: engineering
 status: current
 canonical_for: product-experience-engineering
-last_reviewed: 2026-10-19
+last_reviewed: 2026-10-20
 ---
 
 # Product Experience Engineering
@@ -13,8 +13,10 @@ preserves its original preparation, private-packet validation and consumed R18
 failure. Later R19 capture success and blocked raw review9 remain separate facts.
 The [R20 approved boundary](../../Programs/Sounding_Line/evidence/crossdeck-acceptance-boundary-20261019-r20/causal-disposition.md)
 binds the exact three owner-approved contract clauses and real Refit transfer.
-Its protected installed record is required before the sole #721 owner takes one
-fresh source-bound capture and independent review10; this document grants none.
+R20 capture succeeded, but its source-first raw review10 remains completed,
+spent, nonqualifying auxiliary evidence. The [R21 approved successor](../../Programs/Sounding_Line/evidence/crossdeck-media-first-successor-20261020-r21/causal-disposition.md)
+requires protected installation before the sole #721 owner takes preparation25
+and a distinct media-first independent review11; this document grants none.
 
 Only R20's three original B1 instances may use
 `FUNCTIONAL_RESOLVED_EDITORIAL_DEFERRED`, preserving their original severity.
@@ -25,6 +27,83 @@ registered packet and per-contract ledger entry. Refit owner acceptance stays
 outstanding. B2 and every other blocker retain the normal full-resolution rules.
 No R19 capture compatibility, refund, counter reset, new general debt exemption
 or weaker functional/accessibility/security/continuity requirement is introduced.
+
+## R21 media-first review11
+
+This finite successor preserves the original R20 raw review and clarification;
+neither becomes a canonical accepted judgment. Its current-base and paired
+execution bindings require a new capture. A distinct critic must start in a fresh
+context with no inherited source, fixtures, contract text, R19/R20 reports or
+blocker history. The existing cloud owner verifies the actual selection against
+every previous critic before giving the new critic any review material.
+
+Give the critic opaque source/contract identities, a neutral seventeen-dimension
+rubric and the original fresh media, without implementation, contract prose or
+builder rationale. Inspect screenshots and meaningful recording/decoded-trace
+sequences across all 32 generic and six paired contexts. Hashing a recording is
+not viewing its transitions. Record honest limitations rather than claiming an
+unobserved outcome.
+
+Before exposing source/contracts/fixtures/history, freeze one original UTF-8 JSON
+first pass with kind `CROSSDECK_MEDIA_FIRST_OBSERVATIONS_1`. It includes:
+
+- Actual `reviewerContext`, `reviewerTaskPath`, `builderContext` and
+  `criticCreation` from native creation metadata. The creation object contains
+  `reviewerContext`, `createdAtUtc`, `initialHistory: NONE` and
+  `selectionVerifiedByContext` equal to the cloud owner. Context IDs record
+  provenance; do not infer creation time or identity authentication from ID text.
+- Current opaque `sourceDigest`, `contractDigest`, `captureArtifactId`,
+  `genericContexts: 32`, `pairedContexts: 6`, `contexts: 38`,
+  `mediaInspectionStartedAt` and `observationsFrozenAt`.
+- `criticSelection` with `freshContext: true`,
+  `distinctFromAllPreviousCritics: true`, and
+  `inheritedSourceOrBuilderContext: false`; `exposureBeforeFreeze` with
+  `source`, `contracts`, `fixtures`, `historicalReports` and `blockerHistory`
+  all false. These must describe actual chronology.
+- Seven `contractObservations` with exact `contractId` and all seventeen
+  `dimensions`, each containing substantive `observation` and current
+  same-contract `evidenceIds`. Each contract references inspected screenshots
+  and recording or trace media.
+- Three `pairedObservations`, each with its canonical `caseId` and
+  `contexts.DESKTOP` / `contexts.MOBILE` observations and current paired media
+  IDs. Each context references screenshots and recording or trace media from
+  that exact paired case.
+
+Preserve these frozen original bytes privately. After the freeze, provide exact
+source/contracts and the adjudication history. The same fresh critic then issues
+seven explicit canonical `status: ACCEPTED` judgments only where all requirements
+pass, retaining actual separate context identities, packet digests, all seventeen
+dimensions, findings, cumulative iteration15/review11 and current repair evidence.
+B1's exact functional/editorial split and B2's full resolution remain mandatory.
+
+The existing canonical `candidate-review.json` carries a `mediaFirstReview`
+object; no additional publication path or review entitlement is created:
+
+```json
+{
+  "kind": "CROSSDECK_REVIEW11_MEDIA_FIRST_1",
+  "reviewerContext": "<actual new native context ID>",
+  "reviewerTaskPath": "<actual new critic task path>",
+  "builderContext": "01a14744-5390-77a1-8532-5c32db6980eb",
+  "criticCreation": "<same creation object frozen in the first pass>",
+  "sourceInspectionStartedAt": "<after the media-observation freeze>",
+  "canonicalJudgmentsCompletedAt": "<after source inspection>",
+  "frozenFirstPass": {
+    "encoding": "utf8-original-json",
+    "content": "<exact original first-pass UTF-8 JSON text>",
+    "bytes": "<original byte count, maximum 1048576>",
+    "sha256": "<original byte SHA-256>"
+  }
+}
+```
+
+Use actual objects, numbers and UTC timestamps in the report; the strings above
+describe fields. Every canonical review uses the same verified critic and builder
+identities, `independence: SEPARATE_CONTEXT` and
+`sourceInspectionOrder: EXPERIENCE_BEFORE_SOURCE`. Creation, inspection, freeze,
+source access and judgment times must be truthful and ordered. The finite guard
+checks consistency and original bytes; ordinary authenticated submission and all
+existing media, paired, accessibility, privacy and technical gates still apply.
 
 Engineering maintenance: [R8 historical format reconciliation](../../Engineering/Crossdeck_R8_Historical_Format_Reconciliation.md).
 Engineering maintenance: [complete changed-path buffer repair](../../Engineering/Experience_Changed_Path_Buffer_Repair.md).
