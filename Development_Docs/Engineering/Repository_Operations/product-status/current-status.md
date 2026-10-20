@@ -11,7 +11,7 @@ last_reviewed: 2026-10-20
 The [2026-10-19 Sextant continuation](../../Sextant/Project_Sextant_Phase_4_Virtual_Completion_20261019.md)
 retains source-bound provider proof: 327 focused checks and 59 D0/D1 scenarios,
 Android idle/standby recovery, selected iOS permission/geofence cases and Android
-WebView Devices/Journal development journeys. Later UI changes do not rerun those
+WebView Devices/Journal development journeys. Signed background-notice, registered guest reboot, active return and revoked fallback also pass run39377665326 with independent source audit and complete cleanup. That debug-APK/optimized-server proof uses FLP mock input, ADB permissions and a synthetic session bootstrap; it grants no ordinary sign-in/prompt, visual or physical acceptance. Later UI changes do not rerun those
 provider results. Normal iOS Devices requires canonical Darwin process ownership.
 The frozen Display/pilot entry checkpoint has 179 affected surfaces and 5 missing
 registrations; historical obligations and campaign accounting remain intact.

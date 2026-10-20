@@ -1,0 +1,261 @@
+{
+  "version": 1,
+  "scenarioId": "first-party-native-background-return",
+  "scope": "FULL_NOTICE_RETURN",
+  "entryMode": "ACTUAL_OS_NOTICE",
+  "scenarioVersion": 1,
+  "hostPlatform": "LINUX",
+  "environment": "ANDROID_EMULATOR",
+  "target": "android-emulator",
+  "osVersion": "16",
+  "runtimeVersion": "133.0.6943.137",
+  "providerVersions": {
+    "nativeBridge": "1",
+    "playServicesLocation": "21.3.0"
+  },
+  "publishedFixture": "landfall-first-party-native-return-v1",
+  "fixtureHash": "6058a7f18cdd6673b8f988073c69da9bced412ee32781ef03d16ea1d73994364",
+  "timing": "WALL_CLOCK",
+  "startedAt": "2026-10-20T06:03:08.998Z",
+  "endedAt": "2026-10-20T06:13:15.363Z",
+  "deviceConfiguration": {
+    "platform": "ANDROID",
+    "virtual": true,
+    "api": 36,
+    "model": "sdk_gphone64_x86_64",
+    "memoryKiB": 3048388,
+    "widthPixels": 1080,
+    "heightPixels": 2400,
+    "densityDpi": 420
+  },
+  "source": {
+    "sourceSha": "91cffab32aa551ed36a13aa2d5097f736b0abf2b",
+    "sourceTree": "31db5d5b8f1e821534f69d472f37db8695285bf6",
+    "dirty": false,
+    "sourceFingerprint": "3527b113dd07274af48a5d5e7222077ee2c6b707acac370b601c3141dcaa422f"
+  },
+  "sourceUnchanged": true,
+  "scenarios": [
+    {
+      "id": "geofence-native-background-wake",
+      "version": 2
+    },
+    {
+      "id": "device-reboot",
+      "version": 1
+    },
+    {
+      "id": "notification-return",
+      "version": 1
+    },
+    {
+      "id": "notification-revoked",
+      "version": 1
+    }
+  ],
+  "result": "PASS",
+  "failedStage": null,
+  "failureKind": null,
+  "failureTransport": null,
+  "failureDevice": null,
+  "firstReturnPageClosed": false,
+  "returnHopObservation": "HTTP_307_OBSERVED",
+  "deviceProfile": "primary-phone",
+  "evidenceClass": "EMULATOR_PROVEN",
+  "nativeBridge": "REAL_ANDROID_OS",
+  "firstPartyApi": "REAL_OPTIMIZED_APPLICATION",
+  "geofenceInput": "DOCUMENTED_FLP_MOCK_LOCATION",
+  "signedRegistration": true,
+  "backgroundStatus": 200,
+  "returnHopStatus": 307,
+  "settings": {
+    "screens": 4,
+    "serviceEntryObserved": true,
+    "accuracyEntryObserved": true,
+    "accuracySwitchBefore": "DISABLED",
+    "accuracySwitchAfter": "ENABLED",
+    "changed": true,
+    "accuracyControlObserved": true
+  },
+  "receiverRows": [
+    {
+      "stage": "FIRST_ACTUAL_BACKGROUND_NOTICE",
+      "counters": {
+        "received": 1,
+        "permissionDenied": 0,
+        "malformedOrError": 0,
+        "unsupportedTransition": 0,
+        "inactive": 0,
+        "appendRejected": 0,
+        "appended": 1,
+        "notices": 1
+      }
+    },
+    {
+      "stage": "POST_REBOOT_REAL_NOTICE",
+      "counters": {
+        "received": 2,
+        "permissionDenied": 0,
+        "malformedOrError": 0,
+        "unsupportedTransition": 0,
+        "inactive": 0,
+        "appendRejected": 0,
+        "appended": 2,
+        "notices": 2
+      }
+    }
+  ],
+  "fusedRows": [
+    {
+      "phase": "OUTSIDE_BASELINE",
+      "state": "DELIVERED",
+      "delivered": 36,
+      "mocking": true
+    },
+    {
+      "phase": "INSIDE_TRANSITION",
+      "state": "DELIVERED",
+      "delivered": 1,
+      "mocking": true
+    },
+    {
+      "phase": "OUTSIDE_BASELINE",
+      "state": "DELIVERED",
+      "delivered": 36,
+      "mocking": true
+    },
+    {
+      "phase": "INSIDE_TRANSITION",
+      "state": "DELIVERED",
+      "delivered": 1,
+      "mocking": true
+    }
+  ],
+  "reboot": {
+    "bootIdentityChanged": true,
+    "avdIdentityPreserved": true,
+    "elapsedMs": 23451
+  },
+  "bootState": "GRANTED",
+  "bootDiagnostics": {
+    "userUnlocked": true,
+    "packageStopped": false,
+    "bootBroadcastQueuedForPackage": false,
+    "elapsedMs": 23523
+  },
+  "bootRegistration": true,
+  "activeReturn": true,
+  "revokedReturn": true,
+  "canonicalAuthority": "ONE_VOYAGE_REAL_SQLITE",
+  "canonicalProgressionEvents": 0,
+  "canComplete": false,
+  "measurements": [
+    {
+      "stage": "FOREGROUND_JOURNAL",
+      "pssKiB": 91911
+    },
+    {
+      "stage": "OUTSIDE_BASELINE",
+      "elapsedMs": 180021.92818599998
+    },
+    {
+      "stage": "INSIDE_REAL_NOTICE",
+      "elapsedMs": 61.67766699998174
+    },
+    {
+      "stage": "ACTIVE_NOTICE_RETURN",
+      "elapsedMs": 17064.04994299996
+    },
+    {
+      "stage": "ACTIVE_NOTICE_RETURN",
+      "pssKiB": 99480
+    },
+    {
+      "stage": "OUTSIDE_BASELINE",
+      "elapsedMs": 180023.34326800006
+    },
+    {
+      "stage": "INSIDE_REAL_NOTICE",
+      "elapsedMs": 46.73427699995227
+    },
+    {
+      "stage": "REVOKED_NOTICE_RETURN_AFTER_REBOOT",
+      "elapsedMs": 11060.005770000047
+    },
+    {
+      "stage": "REVOKED_NOTICE_RETURN_AFTER_REBOOT",
+      "pssKiB": 108432
+    }
+  ],
+  "cpuMeasurements": [
+    {
+      "stage": "FOREGROUND_JOURNAL",
+      "elapsedMs": 15056.919847000012,
+      "capacity": "ALL_GUEST_VCPUS",
+      "nativeParentCpuPercent": 1.224,
+      "wholeGuestActiveCpuPercent": 10.201,
+      "rendererAttribution": "INCLUDED_IN_GUEST_NOT_SEPARATELY_ATTRIBUTED"
+    },
+    {
+      "stage": "ACTIVE_NOTICE_RETURN",
+      "elapsedMs": 15050.740466000047,
+      "capacity": "ALL_GUEST_VCPUS",
+      "nativeParentCpuPercent": 7.925,
+      "wholeGuestActiveCpuPercent": 18.185,
+      "rendererAttribution": "INCLUDED_IN_GUEST_NOT_SEPARATELY_ATTRIBUTED"
+    }
+  ],
+  "persistentSessionConfigured": true,
+  "coldLaunchReattachments": 0,
+  "webViewReattachments": 0,
+  "coldDiagnosticWire": [],
+  "coldSession": {
+    "cookiePresent": true,
+    "expectedCookie": true,
+    "persistent": true,
+    "httpOnly": true,
+    "cookieFutureOnGuest": true,
+    "databaseSessionActive": true,
+    "canonicalSessionEligible": true,
+    "playerProfileActive": true,
+    "signInDestination": false,
+    "singleAuthorizationCookie": true
+  },
+  "noticeControls": [
+    {
+      "phase": "FIRST",
+      "hierarchyAttempts": 1,
+      "controlObserved": true
+    },
+    {
+      "phase": "REVOKED",
+      "hierarchyAttempts": 1,
+      "controlObserved": true
+    }
+  ],
+  "serverReturnOutcomes": [
+    "RETURNED",
+    "UNAVAILABLE"
+  ],
+  "deniedRequestCookies": [],
+  "coldRecheckOutcomes": [],
+  "coldRecheckWire": null,
+  "deniedRequestSessions": [],
+  "preliminaryGrossBounds": {
+    "noticeReturnMs": 60000,
+    "fullJournalPssKiB": 524288,
+    "nativeParentCpuPercent": 50,
+    "cpuCapacity": "ALL_GUEST_VCPUS",
+    "passed": true
+  },
+  "physicalTimingProven": false,
+  "externalRequirements": [
+    "REAL_DEVICE_REQUIRED:OEM_SUSPENSION",
+    "FIELD_REQUIRED:GPS",
+    "REAL_DEVICE_REQUIRED:BATTERY_THERMAL"
+  ],
+  "cleanup": {
+    "result": "PASS",
+    "remainingResources": []
+  }
+}

@@ -1,0 +1,576 @@
+{
+  "version": 1,
+  "executor": "PRODUCTION_BACKGROUND_RETURN",
+  "host": {
+    "version": 1,
+    "hostPlatform": "linux",
+    "architecture": "x64",
+    "osVersion": "6.17.0-1022-azure",
+    "hosted": true,
+    "nodeVersion": "v24.19.0",
+    "android": {
+      "sdkConfigured": true,
+      "adb": "/usr/local/lib/android/sdk/platform-tools/adb",
+      "emulator": "/usr/local/lib/android/sdk/emulator/emulator",
+      "adbVersion": "Android Debug Bridge version 1.0.41",
+      "emulatorVersion": "Android emulator version 37.2.12.0 (build_id 16428233) (CL:N/A)"
+    },
+    "apple": {
+      "configured": false,
+      "xcodeVersion": null,
+      "runtimes": [],
+      "devices": []
+    }
+  },
+  "deviceProfile": "primary-phone",
+  "result": "PASS",
+  "failure": null,
+  "source": {
+    "sourceSha": "91cffab32aa551ed36a13aa2d5097f736b0abf2b",
+    "sourceTree": "31db5d5b8f1e821534f69d472f37db8695285bf6",
+    "dirty": false,
+    "sourceFingerprint": "1f349f6a96c799b7ff58e8862a6835fe74430702174584d3281b6f494711ef65"
+  },
+  "apkSha256": "709fa82c9b64759c9687abcf021d56444816f0de3320623535f3241d1bd3fbef",
+  "memoryBudget": {
+    "minimumTotalBytes": 12884901888,
+    "minimumAvailableBytes": 7516192768,
+    "stopBelowBytes": 1610612736,
+    "emulatorMemoryMiB": 3072
+  },
+  "memorySamples": [
+    {
+      "at": "2026-10-20T06:03:10.446Z",
+      "availableBytes": 14245380096
+    },
+    {
+      "at": "2026-10-20T06:03:17.016Z",
+      "availableBytes": 13980418048
+    },
+    {
+      "at": "2026-10-20T06:03:22.020Z",
+      "availableBytes": 13263912960
+    },
+    {
+      "at": "2026-10-20T06:03:27.018Z",
+      "availableBytes": 12873687040
+    },
+    {
+      "at": "2026-10-20T06:03:32.019Z",
+      "availableBytes": 12091392000
+    },
+    {
+      "at": "2026-10-20T06:03:37.020Z",
+      "availableBytes": 11398311936
+    },
+    {
+      "at": "2026-10-20T06:03:42.020Z",
+      "availableBytes": 11046993920
+    },
+    {
+      "at": "2026-10-20T06:03:47.034Z",
+      "availableBytes": 10878296064
+    },
+    {
+      "at": "2026-10-20T06:03:52.035Z",
+      "availableBytes": 10735681536
+    },
+    {
+      "at": "2026-10-20T06:03:57.026Z",
+      "availableBytes": 10729574400
+    },
+    {
+      "at": "2026-10-20T06:04:02.034Z",
+      "availableBytes": 10744385536
+    },
+    {
+      "at": "2026-10-20T06:04:07.024Z",
+      "availableBytes": 10697121792
+    },
+    {
+      "at": "2026-10-20T06:04:12.033Z",
+      "availableBytes": 10677600256
+    },
+    {
+      "at": "2026-10-20T06:04:17.028Z",
+      "availableBytes": 10620698624
+    },
+    {
+      "at": "2026-10-20T06:04:22.029Z",
+      "availableBytes": 10601209856
+    },
+    {
+      "at": "2026-10-20T06:04:27.043Z",
+      "availableBytes": 10523136000
+    },
+    {
+      "at": "2026-10-20T06:04:32.049Z",
+      "availableBytes": 10346676224
+    },
+    {
+      "at": "2026-10-20T06:04:37.029Z",
+      "availableBytes": 10278416384
+    },
+    {
+      "at": "2026-10-20T06:04:42.036Z",
+      "availableBytes": 10040033280
+    },
+    {
+      "at": "2026-10-20T06:04:47.033Z",
+      "availableBytes": 9931214848
+    },
+    {
+      "at": "2026-10-20T06:04:52.035Z",
+      "availableBytes": 10225938432
+    },
+    {
+      "at": "2026-10-20T06:04:57.033Z",
+      "availableBytes": 10221731840
+    },
+    {
+      "at": "2026-10-20T06:05:02.032Z",
+      "availableBytes": 10208743424
+    },
+    {
+      "at": "2026-10-20T06:05:07.033Z",
+      "availableBytes": 10232168448
+    },
+    {
+      "at": "2026-10-20T06:05:12.032Z",
+      "availableBytes": 10235727872
+    },
+    {
+      "at": "2026-10-20T06:05:17.032Z",
+      "availableBytes": 10240401408
+    },
+    {
+      "at": "2026-10-20T06:05:22.033Z",
+      "availableBytes": 10234408960
+    },
+    {
+      "at": "2026-10-20T06:05:27.032Z",
+      "availableBytes": 10231484416
+    },
+    {
+      "at": "2026-10-20T06:05:32.033Z",
+      "availableBytes": 10232979456
+    },
+    {
+      "at": "2026-10-20T06:05:37.040Z",
+      "availableBytes": 10228342784
+    },
+    {
+      "at": "2026-10-20T06:05:42.034Z",
+      "availableBytes": 10228244480
+    },
+    {
+      "at": "2026-10-20T06:05:47.035Z",
+      "availableBytes": 10224091136
+    },
+    {
+      "at": "2026-10-20T06:05:52.034Z",
+      "availableBytes": 10222542848
+    },
+    {
+      "at": "2026-10-20T06:05:57.035Z",
+      "availableBytes": 10224754688
+    },
+    {
+      "at": "2026-10-20T06:06:02.035Z",
+      "availableBytes": 10226941952
+    },
+    {
+      "at": "2026-10-20T06:06:07.035Z",
+      "availableBytes": 10224836608
+    },
+    {
+      "at": "2026-10-20T06:06:12.035Z",
+      "availableBytes": 10223546368
+    },
+    {
+      "at": "2026-10-20T06:06:17.034Z",
+      "availableBytes": 10221932544
+    },
+    {
+      "at": "2026-10-20T06:06:22.035Z",
+      "availableBytes": 10221199360
+    },
+    {
+      "at": "2026-10-20T06:06:27.035Z",
+      "availableBytes": 10220949504
+    },
+    {
+      "at": "2026-10-20T06:06:32.034Z",
+      "availableBytes": 10219925504
+    },
+    {
+      "at": "2026-10-20T06:06:37.035Z",
+      "availableBytes": 10230652928
+    },
+    {
+      "at": "2026-10-20T06:06:42.036Z",
+      "availableBytes": 10230579200
+    },
+    {
+      "at": "2026-10-20T06:06:47.035Z",
+      "availableBytes": 10229190656
+    },
+    {
+      "at": "2026-10-20T06:06:52.035Z",
+      "availableBytes": 10233835520
+    },
+    {
+      "at": "2026-10-20T06:06:57.036Z",
+      "availableBytes": 10232287232
+    },
+    {
+      "at": "2026-10-20T06:07:02.036Z",
+      "availableBytes": 10232741888
+    },
+    {
+      "at": "2026-10-20T06:07:07.037Z",
+      "availableBytes": 10232549376
+    },
+    {
+      "at": "2026-10-20T06:07:12.037Z",
+      "availableBytes": 10231517184
+    },
+    {
+      "at": "2026-10-20T06:07:17.036Z",
+      "availableBytes": 10232074240
+    },
+    {
+      "at": "2026-10-20T06:07:22.037Z",
+      "availableBytes": 10233032704
+    },
+    {
+      "at": "2026-10-20T06:07:27.036Z",
+      "availableBytes": 10250752000
+    },
+    {
+      "at": "2026-10-20T06:07:32.037Z",
+      "availableBytes": 10249293824
+    },
+    {
+      "at": "2026-10-20T06:07:37.038Z",
+      "availableBytes": 10246336512
+    },
+    {
+      "at": "2026-10-20T06:07:42.037Z",
+      "availableBytes": 10245570560
+    },
+    {
+      "at": "2026-10-20T06:07:47.038Z",
+      "availableBytes": 10244800512
+    },
+    {
+      "at": "2026-10-20T06:07:52.037Z",
+      "availableBytes": 10240360448
+    },
+    {
+      "at": "2026-10-20T06:07:57.037Z",
+      "availableBytes": 10240360448
+    },
+    {
+      "at": "2026-10-20T06:08:02.038Z",
+      "availableBytes": 10240380928
+    },
+    {
+      "at": "2026-10-20T06:08:07.037Z",
+      "availableBytes": 10240139264
+    },
+    {
+      "at": "2026-10-20T06:08:12.038Z",
+      "availableBytes": 10240139264
+    },
+    {
+      "at": "2026-10-20T06:08:17.038Z",
+      "availableBytes": 10239365120
+    },
+    {
+      "at": "2026-10-20T06:08:22.038Z",
+      "availableBytes": 10239107072
+    },
+    {
+      "at": "2026-10-20T06:08:27.038Z",
+      "availableBytes": 10239107072
+    },
+    {
+      "at": "2026-10-20T06:08:32.038Z",
+      "availableBytes": 10239356928
+    },
+    {
+      "at": "2026-10-20T06:08:37.038Z",
+      "availableBytes": 10239221760
+    },
+    {
+      "at": "2026-10-20T06:08:42.038Z",
+      "availableBytes": 10238738432
+    },
+    {
+      "at": "2026-10-20T06:08:47.044Z",
+      "availableBytes": 10165014528
+    },
+    {
+      "at": "2026-10-20T06:08:52.040Z",
+      "availableBytes": 10163789824
+    },
+    {
+      "at": "2026-10-20T06:08:57.040Z",
+      "availableBytes": 10162638848
+    },
+    {
+      "at": "2026-10-20T06:09:02.038Z",
+      "availableBytes": 10160709632
+    },
+    {
+      "at": "2026-10-20T06:09:07.038Z",
+      "availableBytes": 10160173056
+    },
+    {
+      "at": "2026-10-20T06:09:12.039Z",
+      "availableBytes": 10112577536
+    },
+    {
+      "at": "2026-10-20T06:09:17.039Z",
+      "availableBytes": 10116816896
+    },
+    {
+      "at": "2026-10-20T06:09:22.040Z",
+      "availableBytes": 10130399232
+    },
+    {
+      "at": "2026-10-20T06:09:27.044Z",
+      "availableBytes": 10155446272
+    },
+    {
+      "at": "2026-10-20T06:09:32.040Z",
+      "availableBytes": 10077065216
+    },
+    {
+      "at": "2026-10-20T06:09:37.047Z",
+      "availableBytes": 10009997312
+    },
+    {
+      "at": "2026-10-20T06:09:42.050Z",
+      "availableBytes": 9991274496
+    },
+    {
+      "at": "2026-10-20T06:09:47.045Z",
+      "availableBytes": 9943543808
+    },
+    {
+      "at": "2026-10-20T06:09:52.047Z",
+      "availableBytes": 9957441536
+    },
+    {
+      "at": "2026-10-20T06:09:57.049Z",
+      "availableBytes": 9955688448
+    },
+    {
+      "at": "2026-10-20T06:10:02.050Z",
+      "availableBytes": 9951432704
+    },
+    {
+      "at": "2026-10-20T06:10:07.056Z",
+      "availableBytes": 9940090880
+    },
+    {
+      "at": "2026-10-20T06:10:12.057Z",
+      "availableBytes": 9942941696
+    },
+    {
+      "at": "2026-10-20T06:10:17.056Z",
+      "availableBytes": 9937297408
+    },
+    {
+      "at": "2026-10-20T06:10:22.060Z",
+      "availableBytes": 9935962112
+    },
+    {
+      "at": "2026-10-20T06:10:27.062Z",
+      "availableBytes": 9935204352
+    },
+    {
+      "at": "2026-10-20T06:10:32.068Z",
+      "availableBytes": 9934655488
+    },
+    {
+      "at": "2026-10-20T06:10:37.071Z",
+      "availableBytes": 9933922304
+    },
+    {
+      "at": "2026-10-20T06:10:42.072Z",
+      "availableBytes": 9932816384
+    },
+    {
+      "at": "2026-10-20T06:10:47.075Z",
+      "availableBytes": 9931702272
+    },
+    {
+      "at": "2026-10-20T06:10:52.078Z",
+      "availableBytes": 9930936320
+    },
+    {
+      "at": "2026-10-20T06:10:57.083Z",
+      "availableBytes": 9945776128
+    },
+    {
+      "at": "2026-10-20T06:11:02.085Z",
+      "availableBytes": 9941602304
+    },
+    {
+      "at": "2026-10-20T06:11:07.087Z",
+      "availableBytes": 9937960960
+    },
+    {
+      "at": "2026-10-20T06:11:12.088Z",
+      "availableBytes": 9938120704
+    },
+    {
+      "at": "2026-10-20T06:11:17.092Z",
+      "availableBytes": 9936936960
+    },
+    {
+      "at": "2026-10-20T06:11:22.092Z",
+      "availableBytes": 9937117184
+    },
+    {
+      "at": "2026-10-20T06:11:27.096Z",
+      "availableBytes": 9937190912
+    },
+    {
+      "at": "2026-10-20T06:11:32.099Z",
+      "availableBytes": 9935904768
+    },
+    {
+      "at": "2026-10-20T06:11:37.103Z",
+      "availableBytes": 9934872576
+    },
+    {
+      "at": "2026-10-20T06:11:42.108Z",
+      "availableBytes": 9934888960
+    },
+    {
+      "at": "2026-10-20T06:11:47.109Z",
+      "availableBytes": 9934888960
+    },
+    {
+      "at": "2026-10-20T06:11:52.114Z",
+      "availableBytes": 9934950400
+    },
+    {
+      "at": "2026-10-20T06:11:57.115Z",
+      "availableBytes": 9934442496
+    },
+    {
+      "at": "2026-10-20T06:12:02.115Z",
+      "availableBytes": 9934184448
+    },
+    {
+      "at": "2026-10-20T06:12:07.118Z",
+      "availableBytes": 9933422592
+    },
+    {
+      "at": "2026-10-20T06:12:12.120Z",
+      "availableBytes": 9932136448
+    },
+    {
+      "at": "2026-10-20T06:12:17.125Z",
+      "availableBytes": 9931104256
+    },
+    {
+      "at": "2026-10-20T06:12:22.128Z",
+      "availableBytes": 9930592256
+    },
+    {
+      "at": "2026-10-20T06:12:27.129Z",
+      "availableBytes": 9930338304
+    },
+    {
+      "at": "2026-10-20T06:12:32.135Z",
+      "availableBytes": 9930870784
+    },
+    {
+      "at": "2026-10-20T06:12:37.134Z",
+      "availableBytes": 9930960896
+    },
+    {
+      "at": "2026-10-20T06:12:42.139Z",
+      "availableBytes": 9927864320
+    },
+    {
+      "at": "2026-10-20T06:12:47.141Z",
+      "availableBytes": 9926574080
+    },
+    {
+      "at": "2026-10-20T06:12:52.141Z",
+      "availableBytes": 9925541888
+    },
+    {
+      "at": "2026-10-20T06:12:57.147Z",
+      "availableBytes": 9925029888
+    },
+    {
+      "at": "2026-10-20T06:13:02.152Z",
+      "availableBytes": 9924263936
+    },
+    {
+      "at": "2026-10-20T06:13:07.147Z",
+      "availableBytes": 9831133184
+    },
+    {
+      "at": "2026-10-20T06:13:12.148Z",
+      "availableBytes": 9650692096
+    }
+  ],
+  "memoryViolated": false,
+  "serials": [
+    "emulator-5580"
+  ],
+  "avdNames": [
+    "landfall_radio_70bcacd254ac47cab7c67330d957ede6_0"
+  ],
+  "avdHome": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/radio-owner-70bcacd2-54ac-47ca-b7c6-7330d957ede6/avd",
+  "logs": [
+    "owned-adb.log",
+    "emulator-0.log"
+  ],
+  "cleanup": {
+    "result": "PASS",
+    "ownedResources": [
+      {
+        "pid": 4694,
+        "started": "42173",
+        "executable": "/usr/local/lib/android/sdk/platform-tools/adb"
+      },
+      {
+        "pid": 4706,
+        "started": "42192",
+        "executable": "/usr/local/lib/android/sdk/emulator/emulator"
+      },
+      {
+        "pid": 4711,
+        "started": "42200",
+        "executable": "/usr/local/lib/android/sdk/emulator/crashpad_handler"
+      },
+      {
+        "pid": 4764,
+        "started": "42227",
+        "executable": "/usr/local/lib/android/sdk/emulator/netsimd"
+      },
+      {
+        "pid": 5020,
+        "started": "46398",
+        "executable": "/usr/local/lib/android/sdk/platform-tools/adb"
+      },
+      {
+        "pid": 5858,
+        "started": "81033",
+        "executable": "/usr/local/lib/android/sdk/platform-tools/adb"
+      }
+    ],
+    "remainingResources": []
+  },
+  "endedAt": "2026-10-20T06:13:18.937Z"
+}

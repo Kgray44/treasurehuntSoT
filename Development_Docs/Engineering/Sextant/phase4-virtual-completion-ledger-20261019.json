@@ -5374,6 +5374,199 @@
         "connectedDisplayOrPilotReached": false,
         "finalBaselinesReached": false
       }
+    },
+    {
+      "platform": "ANDROID",
+      "tier": "D2_DEVELOPMENT_ONLY",
+      "sourceSha": "91cffab32aa551ed36a13aa2d5097f736b0abf2b",
+      "transportSha": "1f45ffcca3bf122b0752dc9430d6893731570cda",
+      "runId": "39377665326",
+      "status": "PASS_EMULATOR_SIGNED_NOTICE_REGISTERED_REBOOT_RETURN_REVOKED_FALLBACK",
+      "qualification": false,
+      "artifacts": 4,
+      "publication": "evidence/20261020-android-background-return/publication-index.json",
+      "source": {
+        "sourceSha": "91cffab32aa551ed36a13aa2d5097f736b0abf2b",
+        "sourceTree": "31db5d5b8f1e821534f69d472f37db8695285bf6",
+        "dirty": false,
+        "sourceFingerprint": "3527b113dd07274af48a5d5e7222077ee2c6b707acac370b601c3141dcaa422f"
+      },
+      "sourceUnchanged": true,
+      "scenarioId": "first-party-native-background-return",
+      "entryMode": "ACTUAL_OS_NOTICE",
+      "scope": "FULL_NOTICE_RETURN",
+      "debugNativeApkOptimizedServer": true,
+      "syntheticCanonicalSessionBootstrap": true,
+      "adbGrantedPermissions": true,
+      "documentedFlpMock": true,
+      "actualOsNotice": true,
+      "reboot": {
+        "bootIdentityChanged": true,
+        "avdIdentityPreserved": true,
+        "elapsedMs": 23451
+      },
+      "bootRegistration": true,
+      "activeReturn": true,
+      "revokedReturn": true,
+      "serverReturnOutcomes": ["RETURNED", "UNAVAILABLE"],
+      "canonicalProgressionEvents": 0,
+      "unchangedBlockSequenceAndEventCountVerified": true,
+      "measurements": [
+        {
+          "stage": "FOREGROUND_JOURNAL",
+          "pssKiB": 91911
+        },
+        {
+          "stage": "OUTSIDE_BASELINE",
+          "elapsedMs": 180021.92818599998
+        },
+        {
+          "stage": "INSIDE_REAL_NOTICE",
+          "elapsedMs": 61.67766699998174
+        },
+        {
+          "stage": "ACTIVE_NOTICE_RETURN",
+          "elapsedMs": 17064.04994299996
+        },
+        {
+          "stage": "ACTIVE_NOTICE_RETURN",
+          "pssKiB": 99480
+        },
+        {
+          "stage": "OUTSIDE_BASELINE",
+          "elapsedMs": 180023.34326800006
+        },
+        {
+          "stage": "INSIDE_REAL_NOTICE",
+          "elapsedMs": 46.73427699995227
+        },
+        {
+          "stage": "REVOKED_NOTICE_RETURN_AFTER_REBOOT",
+          "elapsedMs": 11060.005770000047
+        },
+        {
+          "stage": "REVOKED_NOTICE_RETURN_AFTER_REBOOT",
+          "pssKiB": 108432
+        }
+      ],
+      "preliminaryGrossBounds": {
+        "noticeReturnMs": 60000,
+        "fullJournalPssKiB": 524288,
+        "nativeParentCpuPercent": 50,
+        "cpuCapacity": "ALL_GUEST_VCPUS",
+        "passed": true
+      },
+      "cleanup": {
+        "native": {
+          "result": "PASS",
+          "remainingResources": []
+        },
+        "owner": {
+          "result": "PASS",
+          "ownedResources": [
+            {
+              "pid": 4694,
+              "started": "42173",
+              "executable": "/usr/local/lib/android/sdk/platform-tools/adb"
+            },
+            {
+              "pid": 4706,
+              "started": "42192",
+              "executable": "/usr/local/lib/android/sdk/emulator/emulator"
+            },
+            {
+              "pid": 4711,
+              "started": "42200",
+              "executable": "/usr/local/lib/android/sdk/emulator/crashpad_handler"
+            },
+            {
+              "pid": 4764,
+              "started": "42227",
+              "executable": "/usr/local/lib/android/sdk/emulator/netsimd"
+            },
+            {
+              "pid": 5020,
+              "started": "46398",
+              "executable": "/usr/local/lib/android/sdk/platform-tools/adb"
+            },
+            {
+              "pid": 5858,
+              "started": "81033",
+              "executable": "/usr/local/lib/android/sdk/platform-tools/adb"
+            }
+          ],
+          "remainingResources": []
+        },
+        "runtime": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 0,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 0,
+            "elapsedMs": 1,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 143,
+            "elapsedMs": 29,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        },
+        "transport": {
+          "result": "PASS",
+          "ownedResources": ["refs/heads/codex/landfall-lab-91cffab32aa5-1792475844551"],
+          "remainingResources": []
+        }
+      },
+      "independentReview": {
+        "reviewer": "/root/sextant_source_review",
+        "status": "CLEAR_WITH_EXPLICIT_LIMITS",
+        "hashedArtifacts": 4,
+        "artifactBytes": 21375,
+        "recomputedSourceTree": "31db5d5b8f1e821534f69d472f37db8695285bf6",
+        "baseFingerprint": {
+          "files": 1948,
+          "sha256": "1f349f6a96c799b7ff58e8862a6835fe74430702174584d3281b6f494711ef65"
+        },
+        "testFingerprint": {
+          "files": 1952,
+          "sha256": "3527b113dd07274af48a5d5e7222077ee2c6b707acac370b601c3141dcaa422f"
+        },
+        "actualSourceAssertionsReviewed": true,
+        "credentialPatternScan": "NO_MATCH_IN_FOUR_JSONS_AND_ORIGINAL_LOG",
+        "limits": [
+          "DEBUG_NATIVE_APK_WITH_OPTIMIZED_SERVER",
+          "DOCUMENTED_FLP_MOCK_INPUT",
+          "ADB_GRANTED_PERMISSIONS_NOT_PROMPT_PROOF",
+          "SYNTHETIC_CANONICAL_SESSION_BOOTSTRAP_NOT_ORDINARY_SIGNIN",
+          "NO_IMAGES_OR_VIDEOS_AND_NO_VISUAL_REVIEW",
+          "APK_AND_FIXTURE_PAYLOAD_BYTES_NOT_PUBLISHED_FOR_INDEPENDENT_REHASH",
+          "NO_PHYSICAL_OR_OWNER_OR_PROTECTED_PHASE_ACCEPTANCE"
+        ]
+      },
+      "physicalTimingProven": false,
+      "ownerAcceptance": false
     }
   ],
   "experience": {
@@ -5388,7 +5581,7 @@
     "reachDiagnostics": "PROTECTED_ACCEPTED_ON_BASE",
     "historicalAccounting": "PRESERVED_SEXTANT_3_OF_3_CROSSDECK_10_OF_3_R1_2_OF_3",
     "registeredNewPlayerWorkspaceSurfaces": 2,
-    "remainingSoftware": "At source851500bd1e against protected mainc0b29d78f7,179 affected surfaces have5 missing declarations: the five unhosted legacy components. New existing Display/unprepared pilot entry declarations and17 conditional Landfall declarations grant no execution or acceptance credit. Canonical HTTP origin repair PR777 passed protected39372424118, merged atc0b29d78f7, passed landed/integrated2-test smokes and is consumed additively. Fresh Invitation merge/final, Landfall browser/native and entry rendered proof remain. Darwin containment and formal per-case/creation/file/challenge/issued-input binding are internal software prerequisites. Account5d440557,Privatee408 andAdmiralty91269 independent rendered findings are resolved within preserved viewport/video limits. Formal reference/layout/protected qualification, physical/device/field and owner acceptance remain separately open. The first2042 development runs are failed, not acceptance: Invitation3PASS/1second-accept3323.98ms budget failure despite all4correct second-link origin/cookie/resolve200; physicalLandfall4fixtureprivacy rejection, normalvirtual2SW-controllerabsence aftersignedregionready and reducedvirtual2unexplainedsign-inOverviewabsence; entrynormal2nonexistentDevicesaccountlink and reduced2unexplainedsign-inOverviewabsence. Original budgets/assertions, encrypted diagnostics and fullcleanup are retained; source-causal repairs/observations and fresh rendered review remain required. The91cffab successor stillfailswholeconsumeracceptance: Invitation3/4 withone3253.46ms secondaccept; Landfall16/16signinsworkbut4approxlandmarkswithheldand4virtualworkersactivatewithoutcontrol; Entry3boundVoyagechoosererrorsand1mobileReducedzeroPOSTunprovedsignin. Preserveallassertions,threefailedpacketsandcleanup. A separate ownedGENERICphysicalcontext, current-route predicate and bounded read-only scope/request observations remain; no equivalentretry or budgetincrease.",
+    "remainingSoftware": "At source851500bd1e against protected mainc0b29d78f7,179 affected surfaces have5 missing declarations: the five unhosted legacy components. New existing Display/unprepared pilot entry declarations and17 conditional Landfall declarations grant no execution or acceptance credit. Canonical HTTP origin repair PR777 passed protected39372424118, merged atc0b29d78f7, passed landed/integrated2-test smokes and is consumed additively. Fresh Invitation merge/final, Landfall browser/native and entry rendered proof remain. Darwin containment and formal per-case/creation/file/challenge/issued-input binding are internal software prerequisites. Account5d440557,Privatee408 andAdmiralty91269 independent rendered findings are resolved within preserved viewport/video limits. Formal reference/layout/protected qualification, physical/device/field and owner acceptance remain separately open. The first2042 development runs are failed, not acceptance: Invitation3PASS/1second-accept3323.98ms budget failure despite all4correct second-link origin/cookie/resolve200; physicalLandfall4fixtureprivacy rejection, normalvirtual2SW-controllerabsence aftersignedregionready and reducedvirtual2unexplainedsign-inOverviewabsence; entrynormal2nonexistentDevicesaccountlink and reduced2unexplainedsign-inOverviewabsence. Original budgets/assertions, encrypted diagnostics and fullcleanup are retained; source-causal repairs/observations and fresh rendered review remain required. The91cffab successor stillfailswholeconsumeracceptance: Invitation3/4 withone3253.46ms secondaccept; Landfall16/16signinsworkbut4approxlandmarkswithheldand4virtualworkersactivatewithoutcontrol; Entry3boundVoyagechoosererrorsand1mobileReducedzeroPOSTunprovedsignin. Preserveallassertions,threefailedpacketsandcleanup. A separate ownedGENERICphysicalcontext, current-route predicate and bounded read-only scope/request observations remain; no equivalentretry or budgetincrease. The independent Android background consumer run39377665326 at91cffab passes actual OS notice return, real guest reboot/re-registration and revoked fallback with zero progression and fullcleanup. It uses a debugAPK/optimizedserver, FLPmock, ADBpermissions and synthetic sessionbootstrap; ordinary sign-in/prompt, visual and physical acceptance are not claimed. Do not repeat this passing native matrix equivalently.",
     "independentDevelopmentJourneyReview": {
       "source": "0d8b3c7841966a1d1c8b5dae21570b1043dc7915",
       "reviewer": "/root/sextant_source_review",
@@ -5694,6 +5887,14 @@
         "EXACT_QUERY_AND_EDITION_BINDING_REMAIN_DEVELOPMENT_ASSERTIONS",
         "FIVE_UNHOSTED_AND_GLOBAL_PLANNER_GATE_REMAIN"
       ]
+    },
+    "androidBackgroundNotificationReturn": {
+      "status": "PASS_EMULATOR_DEVELOPMENT_INDEPENDENT_SOURCE_AUDIT_CLEAR",
+      "sourceSha": "91cffab32aa551ed36a13aa2d5097f736b0abf2b",
+      "runId": "39377665326",
+      "publication": "evidence/20261020-android-background-return/publication-index.json",
+      "ordinarySigninOrPermissionPromptProof": false,
+      "visualOrPhysicalOrOwnerAcceptance": false
     }
   },
   "externalGates": [
@@ -5764,7 +5965,8 @@
     "evidence/20261019-display-pilot-first-execution/publication-index.json",
     "evidence/20261020-invitation-stage-diagnostic/publication-index.json",
     "evidence/20261020-landfall-activation-diagnostic/publication-index.json",
-    "evidence/20261020-entry-claimed-voyage-diagnostic/publication-index.json"
+    "evidence/20261020-entry-claimed-voyage-diagnostic/publication-index.json",
+    "evidence/20261020-android-background-return/publication-index.json"
   ],
   "currentProtectedBase": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
   "canonicalHostDependencies": [
