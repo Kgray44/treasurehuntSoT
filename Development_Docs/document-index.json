@@ -5409,6 +5409,24 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261020-canonical-redirect-installation/merged-pr.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261020-canonical-redirect-installation/protected-run.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261020-canonical-redirect-installation/publication-index.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Sextant/evidence/71b46a0b/geofence-foreground-hierarchy.txt",
       "record_type": "engineering-record",
       "status": "current",
@@ -5902,6 +5920,12 @@
     },
     {
       "path": "Development_Docs/Engineering/Sextant/phase4-source-reconciliation-dashboard-20261019.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/phase4-source-reconciliation-display-pilot-entry-20261020.json",
       "record_type": "engineering-record",
       "status": "current",
       "canonical_for": null

@@ -15,7 +15,7 @@ retains source-bound provider proof: 327 focused checks and 59 D0/D1 scenarios,
 Android idle/standby recovery, selected iOS permission/geofence cases and Android
 WebView Devices/Journal development journeys. Later UI changes do not rerun those
 provider results. Normal iOS Devices requires canonical Darwin process ownership.
-The frozen conditional Landfall checkpoint has 179 affected surfaces and 7 missing
+The frozen Display/pilot entry checkpoint has 179 affected surfaces and 5 missing
 registrations; historical obligations and campaign accounting remain intact.
 
 Independent rendered review clears the specified Passport, safe preview, mobile
@@ -47,8 +47,10 @@ actual wrong-PIN rejection. The successor scopes the same error to the real
 invitation page. Original failures, findings and encrypted diagnostics remain.
 Landfall now has 17 conditional source declarations with browser/native proof
 pending. The issued-link diagnostic observes an off-origin307, absent applicable
-pending cookie and resolve404; canonical transport repair remains internal software
-work. Formal mutable bindings and protected qualification remain open.
+pending cookie and resolve404. Canonical repair PR777 passes protected verification,
+lands atc0b29d78f7 and passes landed/integrated HTTP smokes. Fresh Invitation,
+Landfall and existing Display/unprepared pilot captures remain required.
+Darwin containment, formal mutable bindings and protected qualification remain open.
 
 Two new formal contracts replace invalid prose checks with actual DOM identity
 or gateway selectors while retaining all prose requirements and unchanged backend

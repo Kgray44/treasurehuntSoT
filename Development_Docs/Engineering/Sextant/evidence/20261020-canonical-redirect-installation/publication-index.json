@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "classification": "PROTECTED_CANONICAL_REPAIR_AND_LANDED_SMOKE_NOT_CONSUMER_ACCEPTANCE",
+  "repairPr": 777,
+  "protectedRun": "39372424118",
+  "candidate": "19f01e6710a9fc0eaa9283c6b24a7387b4db5524",
+  "landedMain": "c0b29d78f7b4c6137c9eb393a10dd9a2112e68ed",
+  "mergedAt": "2026-10-20T05:10:03Z",
+  "consumedBy": "851500bd1ec38f7df0a9ea8734d75e97de2de976",
+  "code": [
+    {
+      "path": "scripts/sounding-line/browser-authority.mjs",
+      "sha256": "4f0921a6080419c674c4c2373d5807f22a7daf8449f650fa14b873643e02454d"
+    },
+    {
+      "path": "tests/sounding-line/ordinary.test.mjs",
+      "sha256": "540f9ae9ff72c469588fb932527a92eab367c435917e09ccdf0255168d853512"
+    }
+  ],
+  "files": [
+    {
+      "path": "protected-run.log",
+      "bytes": 689898,
+      "sha256": "4e582c0e4e5860dc16f5b9a7770b2620dbc43f7772c683d78e1237c32b8dda68"
+    },
+    {
+      "path": "protected-run.json",
+      "bytes": 9570,
+      "sha256": "55d1171ea6171cf000e7a8621dc3902ec4c6cefa28fa6af3ebf871f2b538f52b"
+    },
+    {
+      "path": "merged-pr.json",
+      "bytes": 304,
+      "sha256": "2d8abafbc19612f128ac22969a7297e53390b5813deaaa1ed6a6a9c0d11c4ecd"
+    },
+    {
+      "path": "landed-smoke.log",
+      "bytes": 307,
+      "sha256": "4900246143075af7446ba16967f29da32ee16a1dd9d3d7e6fac79ab54702f614"
+    },
+    {
+      "path": "integrated-smoke.log",
+      "bytes": 307,
+      "sha256": "69696e6708439adbcb3d15a5fd693082eeac6b7f8a057ecd8d5344f0649a74ef"
+    }
+  ],
+  "independentSourceReview": "CLEAR",
+  "landedSmoke": "TWO_PASS_ZERO_FAIL_PROXY_PORT_RECLAIMED",
+  "integratedSmoke": "TWO_PASS_ZERO_FAIL_PROXY_PORT_RECLAIMED",
+  "limits": [
+    "INVITATION_LANDFALL_ENTRY_FRESH_RENDERED_PROOF_STILL_REQUIRED",
+    "DARWIN_CONTAINMENT_AND_FORMAL_MUTABLE_BINDINGS_REMAIN_OPEN",
+    "NO_PHASE_NATIVE_PHYSICAL_OR_OWNER_ACCEPTANCE"
+  ],
+  "retrievalIssues": [
+    {
+      "attempt": 1,
+      "status": "NETWORK_FAILURE",
+      "receivedBytes": 0,
+      "retainedPath": "C:/Users/kkids/.codex/worktrees/sextant-phase4-completion/Codex_TreasureHunt/artifacts/sextant-phase4/canonical-redirect-39372424118-retrieval-failed-1.log"
+    }
+  ]
+}
