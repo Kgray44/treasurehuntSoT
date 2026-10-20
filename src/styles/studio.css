@@ -2213,10 +2213,13 @@ html[data-voyage-theme="light"] .studio-no-editable-draft__details dt {
 .version-list article > span {
   display: grid;
   width: 62px;
-  height: 62px;
+  min-height: 62px;
+  padding: 0.45rem;
   place-items: center;
   border: 1px solid var(--brass-500);
-  border-radius: 50%;
+  border-radius: 0.75rem;
+  overflow-wrap: anywhere;
+  text-align: center;
 }
 .version-list article > span.current {
   color: #1a1306;

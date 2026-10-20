@@ -20,6 +20,8 @@ last_reviewed: 2026-10-19
 
 ### Corrected
 
+- Community's decorative card artwork lets the stretched detail link receive
+  pointer input. Long immutable edition labels wrap within their Studio badge.
 - Tideglass gives its current-edition notice and loaded edition comparison
   distinct landmark names when both appear together.
 - Community primary actions keep a light background and readable ink when hovered,

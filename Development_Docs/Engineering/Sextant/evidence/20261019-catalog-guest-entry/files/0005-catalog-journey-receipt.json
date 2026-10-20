@@ -1,0 +1,48 @@
+{
+  "source": {
+    "sourceSha": "395940ad721ceb21465532b59b27826ef50e9690",
+    "sourceTree": "0c4b618a58ab5573929f26ad07f34e312e2f05c1",
+    "dirty": false,
+    "sourceFingerprint": "82caa656f248d818326f5515f3316d7652cf7eb2d66392be4492cbe89df03a6d"
+  },
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "reducedMotion": "no-preference",
+  "feedback": [
+    {
+      "task": "Ordinary catalog entry",
+      "elapsedMs": 720.5614519999999
+    },
+    {
+      "task": "Public immutable preview",
+      "elapsedMs": 180.61016800000016
+    },
+    {
+      "task": "Actual Tideglass entry",
+      "elapsedMs": 144.40576099999998
+    },
+    {
+      "task": "Exact public edition comparison",
+      "elapsedMs": 980.5167369999999
+    },
+    {
+      "task": "Ordinary Voyage preparation",
+      "elapsedMs": 1131.653698
+    },
+    {
+      "task": "Canonical guest start acknowledged",
+      "elapsedMs": 421.7932670000009
+    }
+  ],
+  "journalOpeningMs": 9950.546305999998,
+  "actualGuestSessionId": "cmvfwvebp00020cqii69sd5pf",
+  "actualPublicEdition": "sextant-public-catalog-1280-no-preference-v2",
+  "guestCreationThroughOrdinaryControls": true,
+  "privateBaselinesAndPublicEditionsUnchanged": true,
+  "existingPublicComparisonServices": true,
+  "realPublishingReadinessProved": false,
+  "populatedCookieHistoryCovered": false,
+  "protectedQualification": false
+}

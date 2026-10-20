@@ -773,3 +773,53 @@ exercises the first public catalog/guest/edition journey at `395940ad72`.
 No conclusion is inferred while those runs are pending. Current product features
 and the player guide remain accurate; this partial consumer work and landmark
 correction require no feature-fragment change.
+
+All four latest runs are harvested with runtime tree/stream/port and transport
+cleanup passing. Authoring39343894046 at `3d2d430fe1` passes all four variants;
+independent review verifies70hashes/all32PNGs and clears the prior visible
+review/publish clipping. Its28feedback timings meet3000ms, maximum695.982603ms.
+The [73 originals](evidence/20261019-authoring-suite-repair/publication-index.json)
+retain a new P2 finding R39343894046-01: the full immutable-version label spills
+from a fixed62px gold circle onto the dark background in every variant. The
+repair preserves the full label, wraps it inside a height-growing rounded badge
+and adds text-fragment containment plus explicit badge captures. An isolated
+source-CSS check contains the full label after the change; this is not product
+acceptance. The actual Scenario Suite row also gets an explicit scroll/capture
+because it remains offscreen in the prior images despite descendant bounds PASS.
+Drydock still honestly needs missing BASELINE evidence; unchecked confirmation,
+disabled publication, empty resources and no Living Chart grant no readiness.
+
+History39343917005 at the same source passes all four with the new lower Detail,
+Book source/people and authority targets. Its [68 originals](evidence/20261019-history-lower-captures/publication-index.json)
+are retained; independent rendered review remains pending. Public catalog
+39344041978 at `395940ad72` also passes all four, retaining [85 originals](evidence/20261019-catalog-guest-entry/publication-index.json).
+It exercises actual public edition comparison, empty compatibility history,
+ordinary guest creation and the same-Voyage catalog return. Independent rendered
+review is pending; authenticated variants, populated browser history and real
+publication remain distinct. No current-source acceptance is inferred from a
+passing development run.
+
+Community39343957811 at `3d2d430fe1` again passes three and fails390normal Guide
+entry. Its [six-file original subset](evidence/20261019-community-artwork-diagnostic/publication-index.json)
+shows trusted clicks at client195/794 landing on the decorative artwork SPAN,
+outside the actual anchor, with no request. The correct incoming card begins
+at12/744 and its title is at31/950. Source places that decorative symbol at
+z-index1 above the stretched link at0. An isolated source-CSS point experiment
+reproduces SPAN/no-anchor at that geometry and changes it to A/anchor with
+pointer-events:none on the noninteractive artwork. Ordinary isolated link
+activation succeeds before and after, so full route timing is not reproduced or
+claimed. The narrow repair preserves image semantics, text, secondary actions,
+Creator links and the original hosted action, timing, observations and budgets.
+Its encrypted original remains outside Git:100305814bytes, SHA256
+`cb29c313a3999fc0d12399bcd71e914c8626431d3f374613299db8dd2740e5ca`.
+All232published originals retain exact bytes; videos are hashed, not reviewed.
+
+Independent source audit confirms the normal iOS Devices prerequisite: the
+canonical process wrapper selects its Linux guardian on every non-Windows host,
+and that guardian requires prctl/procfs/pidfd before launching a payload. No
+creation-bound Darwin guardian exists in the scoped repository. Process-group
+termination and bounded commands are not equivalent ownership proof. Completing
+that host adapter requires the Device Lab/Sounding Line ownership design and
+adversarial Darwin lifecycle qualification; historical39311000104 cleanupFAIL
+and its separate native/transport facts remain unchanged. No equivalent Apple
+product rerun, manual setup or cleanup bypass is authorized by this diagnosis.

@@ -1520,6 +1520,295 @@
           }
         ]
       }
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "3d2d430fe1b09a254a3f3b7a708a1f1ede6b2914",
+      "transportSha": "27c78d5b7d5f145808700e4185d94be05af9022d",
+      "runId": "39343894046",
+      "status": "HARVESTED_SUCCESS_FOUR_VARIANTS_PRIOR_REVIEW_CLIPPING_RESOLVED_NEW_BADGE_SPILL_FINDING",
+      "artifacts": 70,
+      "productionBuild": "PASS",
+      "qualification": false,
+      "cleanup": {
+        "runtime": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 0,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 0,
+            "elapsedMs": 4,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 143,
+            "elapsedMs": 54,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        },
+        "transport": {
+          "result": "PASS",
+          "ownedResources": [
+            "refs/heads/codex/landfall-lab-3d2d430fe1b0-1792453745811"
+          ],
+          "remainingResources": []
+        }
+      },
+      "publication": "evidence/20261019-authoring-suite-repair/publication-index.json",
+      "independentRenderedReview": {
+        "reviewer": "/root/sextant_source_review",
+        "originalHashesVerified": 70,
+        "pngInspected": 32,
+        "sourceFingerprint": "8c6f60229267faadbfcf40918c94120371486de921cc110d8635fcac252f5221",
+        "sourceTree": "244d84a78e68c4a84334acdafadd359416d44bce",
+        "finding": "R39343894046_01_P2_LONG_VERSION_LABEL_SPILLS_FROM_FIXED_CIRCLE",
+        "videosReviewed": false,
+        "limits": [
+          "SUITE_ROW_OFFSCREEN_DESPITE_ORIGINAL_DESCENDANT_BOUNDS_PASS",
+          "NO_POPULATED_RESOURCES_WORLD_OR_PUBLICATION_READINESS",
+          "NO_NATIVE_PROTECTED_OR_OWNER_ACCEPTANCE"
+        ]
+      },
+      "activationTimings": 28,
+      "maximumMeasuredReadinessMs": 695.982603,
+      "priorVisibleReviewPublishClippingResolved": true,
+      "canonicalProgressAndEditionBytesUnchanged": true
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "3d2d430fe1b09a254a3f3b7a708a1f1ede6b2914",
+      "transportSha": "cfd951ab36258c96b2013a7ef45419a1920937b6",
+      "runId": "39343917005",
+      "status": "HARVESTED_SUCCESS_FOUR_VARIANTS_LOWER_CAPTURE_SUPPLEMENT_RENDERED_REVIEW_PENDING",
+      "artifacts": 65,
+      "productionBuild": "PASS",
+      "qualification": false,
+      "cleanup": {
+        "runtime": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 0,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 0,
+            "elapsedMs": 4,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 143,
+            "elapsedMs": 52,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        },
+        "transport": {
+          "result": "PASS",
+          "ownedResources": [
+            "refs/heads/codex/landfall-lab-3d2d430fe1b0-1792453759664"
+          ],
+          "remainingResources": []
+        }
+      },
+      "publication": "evidence/20261019-history-lower-captures/publication-index.json"
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "395940ad721ceb21465532b59b27826ef50e9690",
+      "transportSha": "f0983dd69af9fb571d441dc9aa483876c32c8a1c",
+      "runId": "39344041978",
+      "status": "HARVESTED_SUCCESS_FOUR_VARIANTS_FIRST_GUEST_CATALOG_JOURNEY_RENDERED_REVIEW_PENDING",
+      "artifacts": 82,
+      "productionBuild": "PASS",
+      "qualification": false,
+      "cleanup": {
+        "runtime": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 0,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 0,
+            "elapsedMs": 3,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 143,
+            "elapsedMs": 30,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        },
+        "transport": {
+          "result": "PASS",
+          "ownedResources": [
+            "refs/heads/codex/landfall-lab-395940ad721c-1792453829190"
+          ],
+          "remainingResources": []
+        }
+      },
+      "publication": "evidence/20261019-catalog-guest-entry/publication-index.json"
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "3d2d430fe1b09a254a3f3b7a708a1f1ede6b2914",
+      "transportSha": "f4d26a6b13212bd285104ed1d14c1e931773e05b",
+      "runId": "39343957811",
+      "status": "HARVESTED_FAILURE_ONE_MOBILE_GUIDE_DECORATIVE_ARTWORK_POINTER_TARGET_THREE_PASS",
+      "artifacts": 4,
+      "productionBuild": "PASS",
+      "qualification": false,
+      "cleanup": {
+        "runtime": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 1,
+            "elapsedMs": 2,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 143,
+            "elapsedMs": 54,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        },
+        "transport": {
+          "result": "PASS",
+          "ownedResources": [
+            "refs/heads/codex/landfall-lab-3d2d430fe1b0-1792453784463"
+          ],
+          "remainingResources": []
+        }
+      },
+      "publication": "evidence/20261019-community-artwork-diagnostic/publication-index.json",
+      "pointerDiagnostic": {
+        "variant": "390_NORMAL",
+        "trusted": true,
+        "target": "SPAN",
+        "ancestor": "community-card__art community-card__art--guide",
+        "client": {
+          "x": 195,
+          "y": 794
+        },
+        "originalAnchorInPath": false,
+        "cardRect": {
+          "x": 12,
+          "y": 744,
+          "width": 366,
+          "height": 526
+        },
+        "expectedLinkRect": {
+          "x": 31,
+          "y": 950,
+          "width": 245,
+          "height": 23
+        },
+        "requests": 0,
+        "responses": 0,
+        "scope": "BOUNDED_PASSIVE_OBSERVATION_NO_FULL_ROUTE_CAUSALITY_INFERRED"
+      },
+      "isolatedCssExperiment": "SAME_POINT_TRUSTED_SPAN_NO_ANCHOR_BECOMES_ANCHOR_WITH_ARTWORK_POINTER_EVENTS_NONE; ORDINARY_LOCATOR_LINK_CLICK_PASSES_BOTH_ISOLATED_VERSIONS; NOT_PRODUCT_ACCEPTANCE",
+      "diagnostics": {
+        "retention": "COMPLETE",
+        "issues": [],
+        "memberCount": 22,
+        "rawBytes": 56412918,
+        "ciphertextBytes": 100305814,
+        "fixedBudgetUnchanged": true,
+        "retainedPrivate": [
+          {
+            "sourcePath": "artifacts/landfall-device-lab/hosted-3d2d430fe1b0-1792453784463/run-39343957811/artifacts/landfall-browser-encrypted-failures-3d2d430fe1b09a254a3f3b7a708a1f1ede6b2914/failure.encrypted",
+            "bytes": 100305814,
+            "sha256": "cb29c313a3999fc0d12399bcd71e914c8626431d3f374613299db8dd2740e5ca",
+            "reason": "CANONICAL_PRIVATE_ENCRYPTED_BUNDLE_RETAINED_IN_OWNED_ARTIFACTS_NOT_COPIED_TO_GIT"
+          }
+        ]
+      }
     }
   ],
   "experience": {
@@ -1534,7 +1823,7 @@
     "reachDiagnostics": "PROTECTED_ACCEPTED_ON_BASE",
     "historicalAccounting": "PRESERVED_SEXTANT_3_OF_3_CROSSDECK_10_OF_3_R1_2_OF_3",
     "registeredNewPlayerWorkspaceSurfaces": 2,
-    "remainingSoftware": "45 unregistered affected surfaces at395940ad72 across178affected; Suite-row repair, targeted lower history captures and passive Community pointer geometry run at3d2d430fe1; public catalog guest/edition journey runs at395940ad72. No result inferred while pending. Account/recovery/invitation/Admiralty/Creator/Landfall fixtures, governed legacy disposition, formal reference/layout review and protected capture/qualification remain. Canonical Darwin supervision, accepted Crossdeck source and physical/owner gates stay separate.",
+    "remainingSoftware": "45 unregistered affected surfaces at395940ad72 across178affected. Latest Suite-row development bounds pass4; independent review resolves visible review clipping but finds version-label spill, repair/captures pending. History lower supplement and first catalog guest journey pass4 with independent rendered review pending. Community390normal artwork SPAN blocks stretched-link input; narrow CSS repair awaits fresh source execution. Creator entry WIP; account/recovery/invitation/Admiralty/private-content/Landfall fixtures, governed legacy disposition, formal references/layout and protected qualification remain. Darwin ownership, accepted Crossdeck and external/owner gates stay separate.",
     "independentDevelopmentJourneyReview": {
       "source": "0d8b3c7841966a1d1c8b5dae21570b1043dc7915",
       "reviewer": "/root/sextant_source_review",
@@ -1737,7 +2026,11 @@
     "evidence/20261019-history-landmark-failure/publication-index.json",
     "evidence/20261019-history-spread-repair/publication-index.json",
     "evidence/20261019-authoring-node-diagnostic/publication-index.json",
-    "evidence/20261019-community-pointer-diagnostic/publication-index.json"
+    "evidence/20261019-community-pointer-diagnostic/publication-index.json",
+    "evidence/20261019-authoring-suite-repair/publication-index.json",
+    "evidence/20261019-history-lower-captures/publication-index.json",
+    "evidence/20261019-catalog-guest-entry/publication-index.json",
+    "evidence/20261019-community-artwork-diagnostic/publication-index.json"
   ],
   "currentProtectedBase": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
   "canonicalHostDependencies": [
@@ -1751,30 +2044,5 @@
       "passingCompanionOrBuildIsNotProductExecution": true
     }
   ],
-  "pendingDevelopmentRuns": [
-    {
-      "runId": "39343894046",
-      "sourceSha": "3d2d430fe1b09a254a3f3b7a708a1f1ede6b2914",
-      "target": "sextant-authoring-resources",
-      "scope": "SUITE_ROW_REPAIR"
-    },
-    {
-      "runId": "39343917005",
-      "sourceSha": "3d2d430fe1b09a254a3f3b7a708a1f1ede6b2914",
-      "target": "sextant-history",
-      "scope": "LOWER_CONTENT_CAPTURE_SUPPLEMENT"
-    },
-    {
-      "runId": "39343957811",
-      "sourceSha": "3d2d430fe1b09a254a3f3b7a708a1f1ede6b2914",
-      "target": "sextant-community",
-      "scope": "NEW_PASSIVE_CARD_POINTER_DIAGNOSTIC"
-    },
-    {
-      "runId": "39344041978",
-      "sourceSha": "395940ad721ceb21465532b59b27826ef50e9690",
-      "target": "sextant-catalog",
-      "scope": "FIRST_PUBLIC_CATALOG_GUEST_JOURNEY"
-    }
-  ]
+  "pendingDevelopmentRuns": []
 }

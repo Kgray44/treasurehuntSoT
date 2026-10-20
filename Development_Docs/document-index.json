@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-10-19",
+  "generated_at": "2026-10-20",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -903,6 +903,60 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-authoring-suite-repair/files/0001-browser-runtime.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-authoring-suite-repair/files/0002-browser-suite-profile.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-authoring-suite-repair/files/0008-authoring-resource-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-authoring-suite-repair/files/0025-authoring-resource-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-authoring-suite-repair/files/0042-authoring-resource-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-authoring-suite-repair/files/0059-authoring-resource-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-authoring-suite-repair/files/0071-hosted-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-authoring-suite-repair/files/0072-dispatch.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-authoring-suite-repair/publication-index.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Sextant/evidence/20261019-captain-dashboard/files/0001-browser-runtime.json",
       "record_type": "engineering-record",
       "status": "current",
@@ -952,6 +1006,96 @@
     },
     {
       "path": "Development_Docs/Engineering/Sextant/evidence/20261019-captain-dashboard/publication-index.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-catalog-guest-entry/files/0001-browser-runtime.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-catalog-guest-entry/files/0002-browser-suite-profile.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-catalog-guest-entry/files/0005-catalog-journey-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-catalog-guest-entry/files/0025-catalog-journey-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-catalog-guest-entry/files/0045-catalog-journey-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-catalog-guest-entry/files/0065-catalog-journey-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-catalog-guest-entry/files/0083-hosted-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-catalog-guest-entry/files/0084-dispatch.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-catalog-guest-entry/publication-index.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-community-artwork-diagnostic/files/0001-browser-runtime.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-community-artwork-diagnostic/files/0002-browser-suite-profile.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-community-artwork-diagnostic/files/0003-retention.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-community-artwork-diagnostic/files/0004-hosted-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-community-artwork-diagnostic/files/0005-dispatch.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-community-artwork-diagnostic/publication-index.json",
       "record_type": "engineering-record",
       "status": "current",
       "canonical_for": null
@@ -1330,6 +1474,60 @@
     },
     {
       "path": "Development_Docs/Engineering/Sextant/evidence/20261019-history-landmark-failure/publication-index.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-history-lower-captures/files/0001-browser-runtime.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-history-lower-captures/files/0002-browser-suite-profile.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-history-lower-captures/files/0012-history-journey-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-history-lower-captures/files/0027-history-journey-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-history-lower-captures/files/0043-history-journey-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-history-lower-captures/files/0059-history-journey-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-history-lower-captures/files/0066-hosted-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-history-lower-captures/files/0067-dispatch.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-history-lower-captures/publication-index.json",
       "record_type": "engineering-record",
       "status": "current",
       "canonical_for": null

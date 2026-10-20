@@ -199,6 +199,12 @@ for (const viewport of [
           await page.getByRole("heading", { level: 2, name: heading, exact: true }).scrollIntoViewIfNeeded();
           await expect(page.getByRole("heading", { level: 2, name: heading, exact: true })).toBeInViewport();
           await page.screenshot({ path: info.outputPath(`authoring-${label.toLowerCase().replaceAll(" ", "-")}.png`) });
+          if (label === "Sea Trials") {
+            const suite = page.getByRole("region", { name: "Scenario Suite controls", exact: true });
+            await suite.scrollIntoViewIfNeeded();
+            await expect(suite).toBeInViewport();
+            await page.screenshot({ path: info.outputPath("authoring-scenario-suite.png") });
+          }
           if (label === "Versions") {
             const confirmation = page
               .getByRole("region", { name: "Review and publish", exact: true })
@@ -206,6 +212,29 @@ for (const viewport of [
             await confirmation.scrollIntoViewIfNeeded();
             await expect(confirmation).toBeInViewport();
             await page.screenshot({ path: info.outputPath("authoring-publication-confirmation.png") });
+            const badges = page.locator(".version-list article[data-version-lock='immutable'] > span");
+            await expect(badges).toHaveCount(releaseCount);
+            for (let index = 0; index < releaseCount; index++) {
+              const badge = badges.nth(index);
+              await badge.scrollIntoViewIfNeeded();
+              await expect(badge).toBeInViewport();
+              expect(
+                await badge.evaluate((element) => {
+                  const box = element.getBoundingClientRect();
+                  const range = document.createRange();
+                  range.selectNodeContents(element);
+                  return [...range.getClientRects()].every(
+                    (rect) =>
+                      rect.left >= box.left - 1 &&
+                      rect.right <= box.right + 1 &&
+                      rect.top >= box.top - 1 &&
+                      rect.bottom <= box.bottom + 1,
+                  );
+                }),
+                "Entire immutable edition label remains inside its badge",
+              ).toBe(true);
+              await page.screenshot({ path: info.outputPath(`authoring-version-label-${index + 1}.png`) });
+            }
           }
         }
         await page.getByRole("link", { name: "← Studio", exact: true }).click();

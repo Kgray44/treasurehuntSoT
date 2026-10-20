@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "topology": "BUILT_SERVER_TASK_OWNED_RUNTIME",
+  "baseURL": "http://127.0.0.1:41875",
+  "failureCategory": "PRODUCT_FAILURE",
+  "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED",
+  "lifecycle": {
+    "capture": "FAIL",
+    "fixture": "NOT_STARTED",
+    "cleanup": {
+      "browser": {
+        "status": "PASS",
+        "directExitObserved": true,
+        "exitCode": 1,
+        "signal": null,
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": false,
+        "payloadExitCode": 1,
+        "elapsedMs": 2,
+        "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+      },
+      "fixture": {
+        "status": "NOT_STARTED",
+        "treeReaped": true,
+        "streamsClosed": true
+      },
+      "server": {
+        "status": "PASS",
+        "directExitObserved": true,
+        "exitCode": 1,
+        "signal": null,
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": false,
+        "payloadExitCode": 143,
+        "elapsedMs": 54,
+        "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+      },
+      "proxy": {
+        "status": "PASS"
+      },
+      "portsReleased": true,
+      "status": "PASS"
+    },
+    "privateFailureDiagnostics": {
+      "browser": {
+        "version": 1,
+        "classification": "PRIVATE_FAILURE_DIAGNOSTICS_NOT_ACCEPTANCE",
+        "qualification": false,
+        "worker": {
+          "exitCode": 1,
+          "signal": null
+        },
+        "retention": "COMPLETE",
+        "issues": [],
+        "cleanup": "RAW_RETAINED_PRIVATE",
+        "format": "VW-POSTTECHNICAL-EVIDENCE-1",
+        "keyId": "f82684218e386d09e9120d0c7b54722e5833e5c18a3d7a8a73d94b9afead48bc",
+        "ciphertextDigest": "cb29c313a3999fc0d12399bcd71e914c8626431d3f374613299db8dd2740e5ca",
+        "ciphertextBytes": 100305814,
+        "memberCount": 22,
+        "rawBytes": 56412918,
+        "cleanupInventoryDigest": "8d0dfe8d48bb446823ca9e0505665949675f3f93e948ba4538afbf3bd039d242",
+        "publication": {
+          "status": "STAGED",
+          "publicationId": "cd1adda8-c521-4a73-93b1-d27963c30d76",
+          "diagnosticRetention": "COMPLETE",
+          "files": 2,
+          "uploadPaths": [
+            "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/sounding-line/private-browser-failure-publication/cd1adda8-c521-4a73-93b1-d27963c30d76/failure.encrypted",
+            "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/sounding-line/private-browser-failure-publication/cd1adda8-c521-4a73-93b1-d27963c30d76/retention.json"
+          ],
+          "qualification": false,
+          "output": {
+            "status": "CAPTURED_NOT_UPLOADED",
+            "qualification": false
+          }
+        }
+      }
+    },
+    "cancelled": false
+  },
+  "timings": {
+    "serverPreparationMs": 4,
+    "serverReadinessMs": 1300,
+    "browserExecutionMs": 145173,
+    "infrastructureFailureWaitMs": 0,
+    "cleanupMs": 1446
+  },
+  "diagnosticBinding": {
+    "version": 1,
+    "runId": "6fa4fa70-e3fd-47f0-adc3-32c0e177a797",
+    "scopeId": "4ed1d341-60a6-427e-919d-b009afccb371",
+    "baseSha": "3d2d430fe1b09a254a3f3b7a708a1f1ede6b2914",
+    "candidateSha": "3d2d430fe1b09a254a3f3b7a708a1f1ede6b2914",
+    "planDigest": "74632a7862bc8ce3060a1ff887df14333d62f689b68b16c2a816591769e809fb"
+  }
+}

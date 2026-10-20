@@ -29,11 +29,14 @@ the neutral Crew wording, editor chrome and More menu. Original failures and
 defective passing captures remain preserved. Protected acceptance remains pending.
 The historical completion/provenance successor passes four variants with clear
 independent review of visible content. Lower Book/provenance captures remain
-incomplete. The Suite-row repair, lower history captures and a new passive Guide
-geometry diagnostic run at `3d2d430fe1`; the first public catalog/guest/edition
-journey runs at `395940ad72`. Their results remain pending. Community's mobile
+incomplete. At `3d2d430fe1` the Suite-row bounds and lower history capture journeys
+pass all four; independent authoring review clears visible review clipping but
+finds an overflowing version badge, now awaiting repair proof. The lower history
+and first public catalog/guest/edition journey at `395940ad72` await independent
+rendered review after four development passes. Community's mobile
 normal Guide failure still needs a product cause;
-trusted pointer observations show a non-link target with no Guide request.
+trusted pointer observations identify decorative artwork above its stretched
+link with no Guide request. Its narrow pointer repair awaits fresh source proof.
 Reach diagnostics are accepted on main; Crossdeck #721
 is still unmerged. The following R1 accounting and older qualification results
 retain their historical source identities.

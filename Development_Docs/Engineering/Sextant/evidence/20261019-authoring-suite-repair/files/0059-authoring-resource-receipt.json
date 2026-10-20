@@ -1,0 +1,54 @@
+{
+  "source": {
+    "sourceSha": "3d2d430fe1b09a254a3f3b7a708a1f1ede6b2914",
+    "sourceTree": "244d84a78e68c4a84334acdafadd359416d44bce",
+    "dirty": false,
+    "sourceFingerprint": "8c6f60229267faadbfcf40918c94120371486de921cc110d8635fcac252f5221"
+  },
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "reducedMotion": "reduce",
+  "feedback": [
+    {
+      "task": "Assets response",
+      "elapsedMs": 580.9292229999992
+    },
+    {
+      "task": "Open actual Asset drawer",
+      "elapsedMs": 99.93205599999783
+    },
+    {
+      "task": "Waypoints response",
+      "elapsedMs": 167.006607000003
+    },
+    {
+      "task": "Artifacts response",
+      "elapsedMs": 176.98948599999858
+    },
+    {
+      "task": "Living Chart response",
+      "elapsedMs": 186.9453250000006
+    },
+    {
+      "task": "Sea Trials response",
+      "elapsedMs": 421.1026070000007
+    },
+    {
+      "task": "Versions response",
+      "elapsedMs": 180.81882000000041
+    }
+  ],
+  "ordinarySignInAndResourceOwnership": true,
+  "authoringSections": 6,
+  "noMediaUploaded": true,
+  "noWorldCreated": true,
+  "noTrialRun": true,
+  "noPublication": true,
+  "unchangedCanonicalProgress": true,
+  "unchangedPublishedEditions": true,
+  "populatedLibrariesAndChartToolsCovered": false,
+  "protectedQualification": false,
+  "physicalEvidence": false
+}

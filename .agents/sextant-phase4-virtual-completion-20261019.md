@@ -391,3 +391,23 @@ browser/rendered evidence, formal references and protected qualification remain.
 Anonymous-only and empty-cookie-history coverage cannot discharge authenticated
 or populated-cookie conditional obligations. This fixture does not prove actual
 publishing readiness, native behavior, protected custody or owner acceptance.
+
+Authoring39343894046 passes all four with original horizontal bounds intact;
+independent32PNG review clears the prior visible review/publish clipping but
+finds R39343894046-01: long immutable edition labels spill from the fixed62px
+circle. Keep the complete label, wrap it inside a height-growing rounded badge,
+assert every text fragment is contained, and capture each actual badge. Also
+capture the actual Scenario Suite controls after ordinary scroll; prior images
+do not show that row even though the descendant bounds passed.
+
+Community39343957811 again fails390normal. New passive geometry identifies the
+decorative artwork SPAN at client195/794 inside the correct incoming card; its
+z-index1 is above the stretched link's z-index0. A source-CSS isolated point
+experiment reproduces a trusted SPAN/no-anchor click at the same geometry and
+changes it to the actual anchor when the noninteractive artwork has pointer
+events disabled. A separate ordinary link click passes both isolated versions;
+this is not a reproduction of full route timing or product acceptance. Apply
+only pointer-events:none to the artwork, retain its image semantics and content,
+all secondary action/Creator links, original title activation, timing, passive
+observation, privacy and diagnostic budget. Fresh source-bound execution and
+independent rendered review remain required; no unchanged equivalent sweep.

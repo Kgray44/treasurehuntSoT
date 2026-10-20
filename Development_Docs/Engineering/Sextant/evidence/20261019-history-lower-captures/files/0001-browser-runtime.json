@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "topology": "BUILT_SERVER_TASK_OWNED_RUNTIME",
+  "baseURL": "http://127.0.0.1:45067",
+  "failureCategory": null,
+  "failureCode": null,
+  "lifecycle": {
+    "capture": "PASS",
+    "fixture": "NOT_STARTED",
+    "cleanup": {
+      "browser": {
+        "status": "PASS",
+        "directExitObserved": true,
+        "exitCode": 0,
+        "signal": null,
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": false,
+        "payloadExitCode": 0,
+        "elapsedMs": 4,
+        "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+      },
+      "fixture": {
+        "status": "NOT_STARTED",
+        "treeReaped": true,
+        "streamsClosed": true
+      },
+      "server": {
+        "status": "PASS",
+        "directExitObserved": true,
+        "exitCode": 1,
+        "signal": null,
+        "treeReaped": true,
+        "streamsClosed": true,
+        "escalated": false,
+        "payloadExitCode": 143,
+        "elapsedMs": 52,
+        "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+      },
+      "proxy": {
+        "status": "PASS"
+      },
+      "portsReleased": true,
+      "status": "PASS"
+    },
+    "privateFailureDiagnostics": {
+      "browser": {
+        "version": 1,
+        "classification": "PRIVATE_FAILURE_DIAGNOSTICS_NOT_ACCEPTANCE",
+        "qualification": false,
+        "worker": {
+          "exitCode": 0,
+          "signal": null
+        },
+        "retention": "NOT_REQUIRED",
+        "issues": [],
+        "cleanup": "RAW_RETAINED_PRIVATE",
+        "publication": {
+          "status": "NOT_REQUIRED",
+          "qualification": false
+        }
+      }
+    },
+    "cancelled": false
+  },
+  "timings": {
+    "serverPreparationMs": 5,
+    "serverReadinessMs": 1241,
+    "browserExecutionMs": 89446,
+    "infrastructureFailureWaitMs": 0,
+    "cleanupMs": 54
+  },
+  "diagnosticBinding": {
+    "version": 1,
+    "runId": "636809ca-b447-477b-b4e0-7f44bb69fa8d",
+    "scopeId": "ef9363b3-50f9-4de7-9d7e-1cec6deaf00c",
+    "baseSha": "3d2d430fe1b09a254a3f3b7a708a1f1ede6b2914",
+    "candidateSha": "3d2d430fe1b09a254a3f3b7a708a1f1ede6b2914",
+    "planDigest": "74632a7862bc8ce3060a1ff887df14333d62f689b68b16c2a816591769e809fb"
+  }
+}
