@@ -149,3 +149,6 @@ Development_Docs/Project_Harborlight_Phase_4_Implementation_Manifest.txt
 # Preserve reviewed Reach reflection experiment evidence bytes and hashes.
 /Development_Docs/Projects/Project_Reach/evidence/reflection-inference-20261020/raw-pair-summary.json
 /Development_Docs/Projects/Project_Reach/evidence/reflection-inference-20261020/reference-summary.json
+
+# Preserve reviewed Reach descriptor feasibility evidence bytes and hash.
+/Development_Docs/Projects/Project_Reach/evidence/descriptor-feasibility-20261020/safe-aggregate.json

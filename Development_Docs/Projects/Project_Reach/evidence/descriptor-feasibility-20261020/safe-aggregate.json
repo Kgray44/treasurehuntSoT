@@ -1,0 +1,820 @@
+{
+  "classification": "PRIVATE_SAFE_FIXED_ORB_PROPOSAL_DIAGNOSTIC_NOT_RECOVERY_OR_AUTHORITY",
+  "qualification": false,
+  "pass": true,
+  "sourcePins": {
+    "producerFreezeSha256": "a7887c28c8b1fdbc0e5cc5d9b8eabcb416dcf368441044303d8601f58dadda7a",
+    "checkerSourceSha256": "2b8c5675d3e36442b2d5729bc1a1d9c5717597a0b051a76e238b9a6f3d0af6c4",
+    "finalSha256": "bafedee8238b9df83c8718eca0cd7941c1b2a4465e128c7283c500a512544de2",
+    "ownedSha256": "4cb96bf0a79b2476b5fee8977662fd990147f47bc9b62b7639e5f36093690e6d",
+    "referenceFeatureFileSha256": "b923eae460bee30a009052bf738490876092a94f8f64c976c35d2e06e3b9ca84",
+    "resultsSha256": "70a0df3fa2de365533166b9bef7248e586dd66538a802542b2adc9520e1a84cf",
+    "graySha256": "bbfed087bf8379266b4127eb25ce033c4b5af54cbb43ef208e3b65a97accc569",
+    "chronologySha256": "3e33ae53b5097b66593209c561e446e0e528cd30e8fcbab618a1b1e89531dab1"
+  },
+  "admission": {
+    "payloadPass": true,
+    "ownedJobPass": true,
+    "treeReaped": true,
+    "streamsClosed": true,
+    "allPinsRechecked": true,
+    "sourceHeadMatchesFrozenReceipt": true
+  },
+  "verification": {
+    "metadataRows": 1336,
+    "grayPlanes": 1336,
+    "grayBytes": 102604800,
+    "fullPoolMatchRecordsRecomputed": 1746,
+    "all14Strata": 14,
+    "missingRows": 0,
+    "sampledRows": 0
+  },
+  "reference": {
+    "globalFeatureCount": 361,
+    "registeredRegionQueryCount": 2,
+    "interpretation": "REGISTERED_REGION_QUERIES_PRESENT",
+    "rawFinalStatus": "RAW_DESCRIPTOR_PROPOSALS_RETAINED_NOT_RECOVERY"
+  },
+  "all": {
+    "metadataRows": 1336,
+    "featureFrames": 873,
+    "beforeReference": 462,
+    "referenceOnly": 1,
+    "noQueryFrames": 0,
+    "framesWithMutualNearest": 455,
+    "framesWithStrictlyUniqueMutual": 368,
+    "framesWithDipAndOtherDistinctCenters15px": 0,
+    "costs": {
+      "featureExtractionMs": {
+        "totalMetadataRows": 1336,
+        "expectedComputedRows": 874,
+        "count": 874,
+        "uncomputedByDesign": 462,
+        "missingWhenExpected": 0,
+        "invalid": 0,
+        "min": 0.6584,
+        "median": 0.8304,
+        "p95": 0.9656,
+        "max": 1.8646,
+        "sum": 740.0399
+      },
+      "matchingMs": {
+        "totalMetadataRows": 1336,
+        "expectedComputedRows": 873,
+        "count": 873,
+        "uncomputedByDesign": 463,
+        "missingWhenExpected": 0,
+        "invalid": 0,
+        "min": 0.4655,
+        "median": 0.9937,
+        "p95": 1.1996,
+        "max": 2.1902,
+        "sum": 887.1842
+      },
+      "rowWallMs": {
+        "totalMetadataRows": 1336,
+        "expectedComputedRows": 1336,
+        "count": 1336,
+        "uncomputedByDesign": 0,
+        "missingWhenExpected": 0,
+        "invalid": 0,
+        "min": 0.0684,
+        "median": 2.0025500000000003,
+        "p95": 2.4621,
+        "max": 3.5299,
+        "sum": 1932.5633
+      }
+    }
+  },
+  "byStep": {
+    "CENTER": {
+      "metadataRows": 109,
+      "featureFrames": 0,
+      "beforeReference": 109,
+      "referenceOnly": 0,
+      "noQueryFrames": 0,
+      "framesWithMutualNearest": 0,
+      "framesWithStrictlyUniqueMutual": 0,
+      "framesWithDipAndOtherDistinctCenters15px": 0,
+      "costs": {
+        "featureExtractionMs": {
+          "totalMetadataRows": 109,
+          "expectedComputedRows": 0,
+          "count": 0,
+          "uncomputedByDesign": 109,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": null,
+          "median": null,
+          "p95": null,
+          "max": null,
+          "sum": 0.0
+        },
+        "matchingMs": {
+          "totalMetadataRows": 109,
+          "expectedComputedRows": 0,
+          "count": 0,
+          "uncomputedByDesign": 109,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": null,
+          "median": null,
+          "p95": null,
+          "max": null,
+          "sum": 0.0
+        },
+        "rowWallMs": {
+          "totalMetadataRows": 109,
+          "expectedComputedRows": 109,
+          "count": 109,
+          "uncomputedByDesign": 0,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": 0.0687,
+          "median": 0.0698,
+          "p95": 0.082,
+          "max": 0.2274,
+          "sum": 8.0994
+        }
+      }
+    },
+    "BOTTOM": {
+      "metadataRows": 145,
+      "featureFrames": 0,
+      "beforeReference": 145,
+      "referenceOnly": 0,
+      "noQueryFrames": 0,
+      "framesWithMutualNearest": 0,
+      "framesWithStrictlyUniqueMutual": 0,
+      "framesWithDipAndOtherDistinctCenters15px": 0,
+      "costs": {
+        "featureExtractionMs": {
+          "totalMetadataRows": 145,
+          "expectedComputedRows": 0,
+          "count": 0,
+          "uncomputedByDesign": 145,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": null,
+          "median": null,
+          "p95": null,
+          "max": null,
+          "sum": 0.0
+        },
+        "matchingMs": {
+          "totalMetadataRows": 145,
+          "expectedComputedRows": 0,
+          "count": 0,
+          "uncomputedByDesign": 145,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": null,
+          "median": null,
+          "p95": null,
+          "max": null,
+          "sum": 0.0
+        },
+        "rowWallMs": {
+          "totalMetadataRows": 145,
+          "expectedComputedRows": 145,
+          "count": 145,
+          "uncomputedByDesign": 0,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": 0.0685,
+          "median": 0.0691,
+          "p95": 0.0784,
+          "max": 0.098,
+          "sum": 10.2533
+        }
+      }
+    },
+    "TOP": {
+      "metadataRows": 107,
+      "featureFrames": 0,
+      "beforeReference": 107,
+      "referenceOnly": 0,
+      "noQueryFrames": 0,
+      "framesWithMutualNearest": 0,
+      "framesWithStrictlyUniqueMutual": 0,
+      "framesWithDipAndOtherDistinctCenters15px": 0,
+      "costs": {
+        "featureExtractionMs": {
+          "totalMetadataRows": 107,
+          "expectedComputedRows": 0,
+          "count": 0,
+          "uncomputedByDesign": 107,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": null,
+          "median": null,
+          "p95": null,
+          "max": null,
+          "sum": 0.0
+        },
+        "matchingMs": {
+          "totalMetadataRows": 107,
+          "expectedComputedRows": 0,
+          "count": 0,
+          "uncomputedByDesign": 107,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": null,
+          "median": null,
+          "p95": null,
+          "max": null,
+          "sum": 0.0
+        },
+        "rowWallMs": {
+          "totalMetadataRows": 107,
+          "expectedComputedRows": 107,
+          "count": 107,
+          "uncomputedByDesign": 0,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": 0.0684,
+          "median": 0.0692,
+          "p95": 0.0733,
+          "max": 0.0859,
+          "sum": 7.4524
+        }
+      }
+    },
+    "LEFT": {
+      "metadataRows": 90,
+      "featureFrames": 0,
+      "beforeReference": 90,
+      "referenceOnly": 0,
+      "noQueryFrames": 0,
+      "framesWithMutualNearest": 0,
+      "framesWithStrictlyUniqueMutual": 0,
+      "framesWithDipAndOtherDistinctCenters15px": 0,
+      "costs": {
+        "featureExtractionMs": {
+          "totalMetadataRows": 90,
+          "expectedComputedRows": 0,
+          "count": 0,
+          "uncomputedByDesign": 90,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": null,
+          "median": null,
+          "p95": null,
+          "max": null,
+          "sum": 0.0
+        },
+        "matchingMs": {
+          "totalMetadataRows": 90,
+          "expectedComputedRows": 0,
+          "count": 0,
+          "uncomputedByDesign": 90,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": null,
+          "median": null,
+          "p95": null,
+          "max": null,
+          "sum": 0.0
+        },
+        "rowWallMs": {
+          "totalMetadataRows": 90,
+          "expectedComputedRows": 90,
+          "count": 90,
+          "uncomputedByDesign": 0,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": 0.0684,
+          "median": 0.0694,
+          "p95": 0.0743,
+          "max": 0.0857,
+          "sum": 6.3073
+        }
+      }
+    },
+    "RIGHT": {
+      "metadataRows": 89,
+      "featureFrames": 77,
+      "beforeReference": 11,
+      "referenceOnly": 1,
+      "noQueryFrames": 0,
+      "framesWithMutualNearest": 28,
+      "framesWithStrictlyUniqueMutual": 21,
+      "framesWithDipAndOtherDistinctCenters15px": 0,
+      "costs": {
+        "featureExtractionMs": {
+          "totalMetadataRows": 89,
+          "expectedComputedRows": 78,
+          "count": 78,
+          "uncomputedByDesign": 11,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": 0.6584,
+          "median": 0.8076,
+          "p95": 0.9352,
+          "max": 1.8646,
+          "sum": 64.7985
+        },
+        "matchingMs": {
+          "totalMetadataRows": 89,
+          "expectedComputedRows": 77,
+          "count": 77,
+          "uncomputedByDesign": 12,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": 0.4655,
+          "median": 0.9354,
+          "p95": 1.087,
+          "max": 1.2198,
+          "sum": 71.7232
+        },
+        "rowWallMs": {
+          "totalMetadataRows": 89,
+          "expectedComputedRows": 89,
+          "count": 89,
+          "uncomputedByDesign": 0,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": 0.0689,
+          "median": 2.0267,
+          "p95": 2.3447,
+          "max": 2.3966,
+          "sum": 160.6164
+        }
+      }
+    },
+    "TOP_LEFT": {
+      "metadataRows": 73,
+      "featureFrames": 73,
+      "beforeReference": 0,
+      "referenceOnly": 0,
+      "noQueryFrames": 0,
+      "framesWithMutualNearest": 23,
+      "framesWithStrictlyUniqueMutual": 18,
+      "framesWithDipAndOtherDistinctCenters15px": 0,
+      "costs": {
+        "featureExtractionMs": {
+          "totalMetadataRows": 73,
+          "expectedComputedRows": 73,
+          "count": 73,
+          "uncomputedByDesign": 0,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": 0.7538,
+          "median": 0.9094,
+          "p95": 1.0709,
+          "max": 1.4571,
+          "sum": 65.9064
+        },
+        "matchingMs": {
+          "totalMetadataRows": 73,
+          "expectedComputedRows": 73,
+          "count": 73,
+          "uncomputedByDesign": 0,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": 0.7545,
+          "median": 1.1222,
+          "p95": 1.3334,
+          "max": 1.5962,
+          "sum": 77.637
+        },
+        "rowWallMs": {
+          "totalMetadataRows": 73,
+          "expectedComputedRows": 73,
+          "count": 73,
+          "uncomputedByDesign": 0,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": 1.766,
+          "median": 2.3602,
+          "p95": 2.7748,
+          "max": 3.2524,
+          "sum": 167.6256
+        }
+      }
+    },
+    "TOP_RIGHT": {
+      "metadataRows": 74,
+      "featureFrames": 74,
+      "beforeReference": 0,
+      "referenceOnly": 0,
+      "noQueryFrames": 0,
+      "framesWithMutualNearest": 45,
+      "framesWithStrictlyUniqueMutual": 40,
+      "framesWithDipAndOtherDistinctCenters15px": 0,
+      "costs": {
+        "featureExtractionMs": {
+          "totalMetadataRows": 74,
+          "expectedComputedRows": 74,
+          "count": 74,
+          "uncomputedByDesign": 0,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": 0.7961,
+          "median": 0.8795,
+          "p95": 0.9988,
+          "max": 1.0873,
+          "sum": 65.8418
+        },
+        "matchingMs": {
+          "totalMetadataRows": 74,
+          "expectedComputedRows": 74,
+          "count": 74,
+          "uncomputedByDesign": 0,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": 0.9619,
+          "median": 1.0815000000000001,
+          "p95": 1.1894,
+          "max": 2.1902,
+          "sum": 81.1956
+        },
+        "rowWallMs": {
+          "totalMetadataRows": 74,
+          "expectedComputedRows": 74,
+          "count": 74,
+          "uncomputedByDesign": 0,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": 2.0694,
+          "median": 2.2862999999999998,
+          "p95": 2.5284,
+          "max": 3.4525,
+          "sum": 171.2075
+        }
+      }
+    },
+    "BOTTOM_LEFT": {
+      "metadataRows": 71,
+      "featureFrames": 71,
+      "beforeReference": 0,
+      "referenceOnly": 0,
+      "noQueryFrames": 0,
+      "framesWithMutualNearest": 57,
+      "framesWithStrictlyUniqueMutual": 51,
+      "framesWithDipAndOtherDistinctCenters15px": 0,
+      "costs": {
+        "featureExtractionMs": {
+          "totalMetadataRows": 71,
+          "expectedComputedRows": 71,
+          "count": 71,
+          "uncomputedByDesign": 0,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": 0.6977,
+          "median": 0.796,
+          "p95": 0.9369,
+          "max": 1.1362,
+          "sum": 58.0593
+        },
+        "matchingMs": {
+          "totalMetadataRows": 71,
+          "expectedComputedRows": 71,
+          "count": 71,
+          "uncomputedByDesign": 0,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": 0.6624,
+          "median": 0.933,
+          "p95": 1.0996,
+          "max": 1.1251,
+          "sum": 67.2562
+        },
+        "rowWallMs": {
+          "totalMetadataRows": 71,
+          "expectedComputedRows": 71,
+          "count": 71,
+          "uncomputedByDesign": 0,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": 1.5897,
+          "median": 2.0176,
+          "p95": 2.3287,
+          "max": 2.429,
+          "sum": 146.1245
+        }
+      }
+    },
+    "BOTTOM_RIGHT": {
+      "metadataRows": 71,
+      "featureFrames": 71,
+      "beforeReference": 0,
+      "referenceOnly": 0,
+      "noQueryFrames": 0,
+      "framesWithMutualNearest": 26,
+      "framesWithStrictlyUniqueMutual": 19,
+      "framesWithDipAndOtherDistinctCenters15px": 0,
+      "costs": {
+        "featureExtractionMs": {
+          "totalMetadataRows": 71,
+          "expectedComputedRows": 71,
+          "count": 71,
+          "uncomputedByDesign": 0,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": 0.7608,
+          "median": 0.7966,
+          "p95": 0.9513,
+          "max": 0.9863,
+          "sum": 57.3371
+        },
+        "matchingMs": {
+          "totalMetadataRows": 71,
+          "expectedComputedRows": 71,
+          "count": 71,
+          "uncomputedByDesign": 0,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": 0.8306,
+          "median": 0.9107,
+          "p95": 1.0827,
+          "max": 1.1746,
+          "sum": 65.9234
+        },
+        "rowWallMs": {
+          "totalMetadataRows": 71,
+          "expectedComputedRows": 71,
+          "count": 71,
+          "uncomputedByDesign": 0,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": 1.8532,
+          "median": 2.0003,
+          "p95": 2.3645,
+          "max": 2.7612,
+          "sum": 144.6815
+        }
+      }
+    },
+    "RELAXED": {
+      "metadataRows": 109,
+      "featureFrames": 109,
+      "beforeReference": 0,
+      "referenceOnly": 0,
+      "noQueryFrames": 0,
+      "framesWithMutualNearest": 55,
+      "framesWithStrictlyUniqueMutual": 38,
+      "framesWithDipAndOtherDistinctCenters15px": 0,
+      "costs": {
+        "featureExtractionMs": {
+          "totalMetadataRows": 109,
+          "expectedComputedRows": 109,
+          "count": 109,
+          "uncomputedByDesign": 0,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": 0.7576,
+          "median": 0.8821,
+          "p95": 0.9431,
+          "max": 1.0855,
+          "sum": 95.0702
+        },
+        "matchingMs": {
+          "totalMetadataRows": 109,
+          "expectedComputedRows": 109,
+          "count": 109,
+          "uncomputedByDesign": 0,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": 0.842,
+          "median": 1.1703,
+          "p95": 1.2495,
+          "max": 1.9286,
+          "sum": 122.3126
+        },
+        "rowWallMs": {
+          "totalMetadataRows": 109,
+          "expectedComputedRows": 109,
+          "count": 109,
+          "uncomputedByDesign": 0,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": 1.8634,
+          "median": 2.4086,
+          "p95": 2.5797,
+          "max": 3.2467,
+          "sum": 254.2793
+        }
+      }
+    },
+    "SWEEP": {
+      "metadataRows": 180,
+      "featureFrames": 180,
+      "beforeReference": 0,
+      "referenceOnly": 0,
+      "noQueryFrames": 0,
+      "framesWithMutualNearest": 101,
+      "framesWithStrictlyUniqueMutual": 80,
+      "framesWithDipAndOtherDistinctCenters15px": 0,
+      "costs": {
+        "featureExtractionMs": {
+          "totalMetadataRows": 180,
+          "expectedComputedRows": 180,
+          "count": 180,
+          "uncomputedByDesign": 0,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": 0.7661,
+          "median": 0.8127,
+          "p95": 0.9526,
+          "max": 1.5895,
+          "sum": 150.4695
+        },
+        "matchingMs": {
+          "totalMetadataRows": 180,
+          "expectedComputedRows": 180,
+          "count": 180,
+          "uncomputedByDesign": 0,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": 0.8312,
+          "median": 0.9613,
+          "p95": 1.1532,
+          "max": 1.836,
+          "sum": 179.2374
+        },
+        "rowWallMs": {
+          "totalMetadataRows": 180,
+          "expectedComputedRows": 180,
+          "count": 180,
+          "uncomputedByDesign": 0,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": 1.883,
+          "median": 2.0748499999999996,
+          "p95": 2.4155,
+          "max": 3.5299,
+          "sum": 384.6737
+        }
+      }
+    },
+    "OPEN_PALM": {
+      "metadataRows": 91,
+      "featureFrames": 91,
+      "beforeReference": 0,
+      "referenceOnly": 0,
+      "noQueryFrames": 0,
+      "framesWithMutualNearest": 47,
+      "framesWithStrictlyUniqueMutual": 38,
+      "framesWithDipAndOtherDistinctCenters15px": 0,
+      "costs": {
+        "featureExtractionMs": {
+          "totalMetadataRows": 91,
+          "expectedComputedRows": 91,
+          "count": 91,
+          "uncomputedByDesign": 0,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": 0.7496,
+          "median": 0.8323,
+          "p95": 0.9011,
+          "max": 0.9723,
+          "sum": 75.9215
+        },
+        "matchingMs": {
+          "totalMetadataRows": 91,
+          "expectedComputedRows": 91,
+          "count": 91,
+          "uncomputedByDesign": 0,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": 0.766,
+          "median": 1.0346,
+          "p95": 1.1056,
+          "max": 1.2946,
+          "sum": 92.7734
+        },
+        "rowWallMs": {
+          "totalMetadataRows": 91,
+          "expectedComputedRows": 91,
+          "count": 91,
+          "uncomputedByDesign": 0,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": 1.7712,
+          "median": 2.1808,
+          "p95": 2.3222,
+          "max": 2.5698,
+          "sum": 196.5237
+        }
+      }
+    },
+    "HIDE": {
+      "metadataRows": 18,
+      "featureFrames": 18,
+      "beforeReference": 0,
+      "referenceOnly": 0,
+      "noQueryFrames": 0,
+      "framesWithMutualNearest": 8,
+      "framesWithStrictlyUniqueMutual": 8,
+      "framesWithDipAndOtherDistinctCenters15px": 0,
+      "costs": {
+        "featureExtractionMs": {
+          "totalMetadataRows": 18,
+          "expectedComputedRows": 18,
+          "count": 18,
+          "uncomputedByDesign": 0,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": 0.7231,
+          "median": 0.8172,
+          "p95": 1.2234,
+          "max": 1.2234,
+          "sum": 15.1663
+        },
+        "matchingMs": {
+          "totalMetadataRows": 18,
+          "expectedComputedRows": 18,
+          "count": 18,
+          "uncomputedByDesign": 0,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": 0.6856,
+          "median": 0.9624999999999999,
+          "p95": 1.1584,
+          "max": 1.1584,
+          "sum": 17.0681
+        },
+        "rowWallMs": {
+          "totalMetadataRows": 18,
+          "expectedComputedRows": 18,
+          "count": 18,
+          "uncomputedByDesign": 0,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": 1.6479,
+          "median": 2.08065,
+          "p95": 2.7676,
+          "max": 2.7676,
+          "sum": 37.7244
+        }
+      }
+    },
+    "RECOVER": {
+      "metadataRows": 109,
+      "featureFrames": 109,
+      "beforeReference": 0,
+      "referenceOnly": 0,
+      "noQueryFrames": 0,
+      "framesWithMutualNearest": 65,
+      "framesWithStrictlyUniqueMutual": 55,
+      "framesWithDipAndOtherDistinctCenters15px": 0,
+      "costs": {
+        "featureExtractionMs": {
+          "totalMetadataRows": 109,
+          "expectedComputedRows": 109,
+          "count": 109,
+          "uncomputedByDesign": 0,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": 0.7488,
+          "median": 0.838,
+          "p95": 0.904,
+          "max": 1.3904,
+          "sum": 91.4693
+        },
+        "matchingMs": {
+          "totalMetadataRows": 109,
+          "expectedComputedRows": 109,
+          "count": 109,
+          "uncomputedByDesign": 0,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": 0.8283,
+          "median": 1.0453,
+          "p95": 1.149,
+          "max": 1.5896,
+          "sum": 112.0573
+        },
+        "rowWallMs": {
+          "totalMetadataRows": 109,
+          "expectedComputedRows": 109,
+          "count": 109,
+          "uncomputedByDesign": 0,
+          "missingWhenExpected": 0,
+          "invalid": 0,
+          "min": 1.835,
+          "median": 2.2019,
+          "p95": 2.4192,
+          "max": 2.7596,
+          "sum": 236.9943
+        }
+      }
+    }
+  },
+  "statusCounts": {
+    "NO_REFERENCE_YET": 462,
+    "REFERENCE_ONLY": 1,
+    "UNATTRIBUTED_DESCRIPTOR_PROPOSALS_ONLY": 873
+  },
+  "emptyCurrentFeaturePools": 0,
+  "wholePayloadPerfCounterElapsedMs": 2612.7611,
+  "limits": [
+    "All descriptor matches are unattributed proposals, not selected material, index/source identity, fingertip positions, recovery, readiness, sample eligibility or mission acceptance.",
+    "Keypoint centers inside old15px support do not establish descriptor-footprint ownership; no correspondence correctness labels were used.",
+    "Forward best2 uses the full current pool and reverse best2 the full reference pool; ties may use any actually minimal returned index and two distinct top2 indices. Fewer than2 in either direction never grants strict uniqueness.",
+    "rowWallMs is pre-persistence and excludes JSON serialization/write/flush. Whole payload perf_counter includes setup/IO; components overlap and are never added or inverted into production throughput.",
+    "Historical capture ages are chronology only, not camera/display freshness. No current image keypoints, descriptor bytes, coordinates, per-frame IDs or source-ID strings are exported.",
+    "SAFE counts retain ALL+all14 prompt strata and before/reference/no-query/uncomputed states. No winner, fusion, threshold or outcome-based selection."
+  ]
+}

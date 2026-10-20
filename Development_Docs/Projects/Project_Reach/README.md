@@ -12,6 +12,8 @@ Reach is Voyagewright's reusable browser-first spatial interaction and intent sy
 
 ## Effective governing sources
 
+The [fixed descriptor observability experiment](Phase_1_Descriptor_Feasibility_20261020.md) finds no query in the registered DIP region, so its fixed query set cannot meet the existing distal-region material requirement. All 1,336 metadata rows and 873 later matching rows are retained; mutual descriptor proposals establish no recovery. The method is rejected, production tracking remains unchanged, and required RIGHT and mixed-motion improvement remains unresolved.
+
 The [fixed reflection inference experiment](Phase_1_Reflection_Inference_20261020.md) retains all 1,336 paired raw frames and fixed AI development references. Its localization gains are limited to BOTTOM-RIGHT, with no demonstrated RIGHT or mixed-motion gain and important SWEEP/BOTTOM availability regressions. The replacement is rejected, production tracking remains unchanged, and physical Phase 1 acceptance remains open.
 
 The [complete image and identity diagnostic](Phase_1_Complete_Image_Diagnostic_20261019.md) preserves all 1,336 original frames with exact observer parity and a complete selected-observation chronology of the separate mixed-motion failure. RIGHT retains identity while current coordinate reproof fails; BOTTOM-RIGHT and SWEEP contain different loss mechanisms. No perception candidate is nominated, the sealed analytic controls remain unexecuted, and physical reliability remains unresolved.
