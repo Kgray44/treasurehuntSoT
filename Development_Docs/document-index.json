@@ -669,6 +669,42 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-admiralty-entry-diagnostic/files/0001-browser-runtime.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-admiralty-entry-diagnostic/files/0002-browser-suite-profile.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-admiralty-entry-diagnostic/files/0003-retention.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-admiralty-entry-diagnostic/files/0004-hosted-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-admiralty-entry-diagnostic/files/0005-dispatch.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-admiralty-entry-diagnostic/publication-index.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Sextant/evidence/20261019-authoring-bounds-failure/files/0001-browser-runtime.json",
       "record_type": "engineering-record",
       "status": "current",
@@ -1564,6 +1600,60 @@
     },
     {
       "path": "Development_Docs/Engineering/Sextant/evidence/20261019-contrast-repair/publication-index.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-creator-form-ink-repair/files/0001-browser-runtime.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-creator-form-ink-repair/files/0002-browser-suite-profile.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-creator-form-ink-repair/files/0008-creator-entry-journey-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-creator-form-ink-repair/files/0024-creator-entry-journey-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-creator-form-ink-repair/files/0041-creator-entry-journey-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-creator-form-ink-repair/files/0059-creator-entry-journey-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-creator-form-ink-repair/files/0071-hosted-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-creator-form-ink-repair/files/0072-dispatch.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261019-creator-form-ink-repair/publication-index.json",
       "record_type": "engineering-record",
       "status": "current",
       "canonical_for": null

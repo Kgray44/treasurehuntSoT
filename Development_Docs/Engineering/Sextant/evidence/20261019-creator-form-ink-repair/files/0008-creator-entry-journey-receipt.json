@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "classification": "ENGINEERING_SYNTHETIC_CREATOR_ENTRY_DEVELOPMENT_NOT_ACCEPTANCE",
+  "source": {
+    "sourceSha": "c518c1680993021279c3c9fc3af0414612d7a10a",
+    "sourceTree": "08c37b483119ba0196af8be391eeb52ee43e57d7",
+    "dirty": false,
+    "sourceFingerprint": "fe177cf4d88194174824288d520839be29dc46712b6d8a519e078d6474447399"
+  },
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "reducedMotion": "no-preference",
+  "baseline": [
+    {
+      "id": "sextant-experience-voyage",
+      "status": "ACTIVE",
+      "currentSequence": 4,
+      "currentBlockId": "sextant-experience-note",
+      "publishedVersionId": "cmvg2o27e00085qstfm6x6cat"
+    },
+    {
+      "id": "sextant-resource-voyage-creator-entry-390-no-preference",
+      "status": "ACTIVE",
+      "currentSequence": 4,
+      "currentBlockId": "sextant-resource-passage-creator-entry-390-no-preference",
+      "publishedVersionId": "cmvg2onjn001q5qstj858rgg3"
+    }
+  ],
+  "feedback": [
+    {
+      "task": "Ordinary Creator workspace entry",
+      "elapsedMs": 607.0034040000028
+    },
+    {
+      "task": "Prepared new Chronicle form",
+      "elapsedMs": 384.48440899999696
+    },
+    {
+      "task": "Reopen secure creation form",
+      "elapsedMs": 374.9988070000036
+    },
+    {
+      "task": "Actual private Chronicle creation",
+      "elapsedMs": 548.6611909999992
+    },
+    {
+      "task": "Reopen actual new draft",
+      "elapsedMs": 444.6402589999998
+    },
+    {
+      "task": "Ordinary Personal Harbor return",
+      "elapsedMs": 576.6742950000043
+    }
+  ],
+  "created": {
+    "taleId": "cmvg2or30000v5qrkeqx1xswy",
+    "draftId": "cmvg2or33000x5qrk6fa7aq4q",
+    "status": "DRAFT",
+    "visibility": "PRIVATE",
+    "versions": 0,
+    "sessions": 0
+  },
+  "cancellationCreatedNothing": true,
+  "ordinaryAccountReturn": true,
+  "exactReleasedBytesUnchanged": true,
+  "coverUploadCovered": false,
+  "privatePackageWorkflowCovered": false,
+  "publishingReadinessProved": false,
+  "protectedAcceptance": false
+}

@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "candidateSha": "c518c1680993021279c3c9fc3af0414612d7a10a",
+  "target": "sextant-admiralty",
+  "tier": "development",
+  "profiles": {
+    "android": [
+      {
+        "profile": "primary-phone",
+        "api": 36,
+        "device": "pixel_7",
+        "ram": "3072M",
+        "memory": 3072,
+        "lowRam": ""
+      }
+    ],
+    "apple": [
+      "primary-phone"
+    ]
+  },
+  "scenarios": {
+    "appleDevices": [],
+    "browser": [
+      "sextant-admiralty-journeys"
+    ],
+    "journal": [],
+    "background": [],
+    "radio": "uwb-native-peer-session,ble-native-generic-discovery,ble-native-ibeacon-discovery,ble-native-eddystone-uid-discovery",
+    "ios": "permission-denied-native,permission-revoked-mid-route,gps-perfect-walk,offline-native-canonical-reconcile,offline-lost-response-canonical-reconcile,offline-restart-canonical-reconcile,virtual-player-navigation,virtual-offline-canonical-reconcile,geofence-native-background-wake",
+    "android": "device-reboot,qr-native-camera-valid,permission-denied-native,permission-approximate-native,permission-revoked-mid-route,motion-walk,stationary,barometer-floor-change,orientation-turn,heading-turn,gps-perfect-walk,offline-native-canonical-reconcile,offline-lost-response-canonical-reconcile,offline-restart-canonical-reconcile,virtual-player-navigation,virtual-offline-canonical-reconcile,battery-normal,battery-low,battery-saver,charger-change",
+    "provider": "all"
+  },
+  "transportSha": "89ec129c0057192c58419b66400e12342f995382",
+  "transportTree": "d0ba8392fdd69b2cb66bb6ed7839472b3c0f1a89",
+  "branch": "codex/landfall-lab-c518c1680993-1792463559981",
+  "workflow": "landfall-device-lab.yml",
+  "createdAt": "2026-10-20T02:32:51.111Z",
+  "cleanup": "PASS",
+  "runId": "39359511054",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39359511054",
+  "harvested": "C:\\Users\\kkids\\.codex\\worktrees\\sextant-phase4-completion\\Codex_TreasureHunt\\artifacts\\landfall-device-lab\\hosted-c518c1680993-1792463559981\\run-39359511054"
+}
