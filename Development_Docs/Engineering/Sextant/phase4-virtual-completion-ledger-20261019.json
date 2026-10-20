@@ -6,7 +6,7 @@
   "status": "IN_PROGRESS",
   "initialCandidate": "5ff2739776513b8f8ed20c1cb661c164216d0eeb",
   "protectedBase": "f6af0b0e151f15f1a23808413ccee531b9827ca7",
-  "currentSoftwareCandidate": "8c902b9967978f096f2f6376f4b9a6ac16f4ab4a",
+  "currentSoftwareCandidate": "c518c1680993021279c3c9fc3af0414612d7a10a",
   "pr": "https://github.com/Kgray44/treasurehuntSoT/pull/709",
   "independentSourceReview": {
     "reviewerContext": "/root/sextant_source_review",
@@ -159,6 +159,28 @@
       "disposition": "EXACT_ROLE_WITNESS_AND_COMPLETE_RECEIPT_INPUT_SCOPE_FINDINGS_RESOLVED_FINAL_ACCOUNT_RETURN_REVIEWED_CLEAR",
       "reviewerRanTests": false,
       "scope": "SOURCE_ONLY_FRESH_BROWSER_AND_RENDERED_PROOF_REQUIRED"
+    },
+    "admiraltyAndCreatorContrast": {
+      "source": "c518c1680993021279c3c9fc3af0414612d7a10a",
+      "reviewer": "/root/sextant_source_review",
+      "disposition": "CLEAR_FOR_TWO_FIXED_DEVELOPMENT_RUNS_NOT_ACCEPTANCE",
+      "reviewerRanTests": false,
+      "scope": [
+        "GUARDED_CANONICAL_ADMIRALTY_OPERATOR_FIXTURE",
+        "LIVE_DOSSIER_AND_UNGRANTED_SUPPORT_JOURNEY",
+        "NAMED_OPERATOR_GROUP_IDENTITY_CONTINUITY",
+        "TWO_PROSE_CHECKS_CORRECTED_REQUIREMENTS_PRESERVED",
+        "LOCAL_PARCHMENT_HEADING_BODY_TOKENS",
+        "RESPONSIVE_EMPTY_INSPECTOR_EXPECTATION_AND_CHAPTER_EDIT_CAPTURES"
+      ],
+      "builderVerification": {
+        "componentTests": 2,
+        "typescript": "PASS",
+        "selectedContractValidation": 3,
+        "browserCasesDiscovered": 8,
+        "docsValidation": "PASS",
+        "featureValidation": "PASS"
+      }
     }
   },
   "localChecks": {
@@ -2204,7 +2226,7 @@
     "historicalObligations": 141,
     "historicalFamilies": 13,
     "currentAffectedSurfaces": 178,
-    "currentUnregisteredSurfaces": 43,
+    "currentUnregisteredSurfaces": 40,
     "protectedCapturedOrAcceptedByThisContinuation": 0,
     "developmentCapturedVariants": 4,
     "planner": "PRODUCT_EXPERIENCE_UNREGISTERED_SURFACE",
@@ -2212,7 +2234,7 @@
     "reachDiagnostics": "PROTECTED_ACCEPTED_ON_BASE",
     "historicalAccounting": "PRESERVED_SEXTANT_3_OF_3_CROSSDECK_10_OF_3_R1_2_OF_3",
     "registeredNewPlayerWorkspaceSurfaces": 2,
-    "remainingSoftware": "43 unregistered affected surfaces at8c902b9967 across178affected. Creator four complete journeys resolve reached landmark axe findings and preserve final baselines, but independent20PNG review finds pale heading/body/helper text on parchment R39353027923-01. Narrow local token repair and additive lower mobile captures are prepared. Fresh Community39352498402 passes4 after pre-product checkout cancellation; independent rendered review pending. Formal continuity in two new declarations requires selector-object correction preserving prose/backend assertions. Live Admiralty read-only fixture/registration is in preparation. Account/recovery/invitation/private-content/Landfall fixtures, governed legacy disposition, formal reference/layout, positive formal creation and protected qualification remain. Darwin ownership, accepted Crossdeck and external/owner gates stay separate.",
+    "remainingSoftware": "40 unregistered affected surfaces atc518c16809 across178affected. Live Admiralty three-path registration and ordinary dossier/ungranted-support fixture are independently source-clear; fresh fixed development run required. Creator form-ink correction and responsive lower captures source-clear; fresh development recapture required. Community39352498402 passes4 at7b with independent rendered review pending. Account/recovery/invitation/private-content/Landfall fixture and capture work, five unhosted legacy components, accepted Crossdeck display and authorized Spatial pilot remain unregistered; formal reference/layout and protected qualification remain. Formal positive Creator creation and normal Darwin process ownership require canonical internal software prerequisites. External/physical/owner gates remain separate.",
     "independentDevelopmentJourneyReview": {
       "source": "0d8b3c7841966a1d1c8b5dae21570b1043dc7915",
       "reviewer": "/root/sextant_source_review",
@@ -2244,12 +2266,12 @@
     "registeredNewPassportSourcePaths": 14,
     "newlyRegisteredAffectedPassportSurfaces": 12,
     "sourceReconciliation": {
-      "path": "phase4-source-reconciliation-creator-landmark-20261019.json",
-      "sha256": "0a7feedc37241026acaca47b26b8e4a64143051ed662cdf1c4839f86dc88c728",
-      "sourceSha": "8c902b9967978f096f2f6376f4b9a6ac16f4ab4a",
+      "path": "phase4-source-reconciliation-admiralty-20261019.json",
+      "sha256": "ccc393ac020398326849bd531b3d3faca918cdf1e96dabd042d6640e763181b4",
+      "sourceSha": "c518c1680993021279c3c9fc3af0414612d7a10a",
       "baseSha": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
       "affected": 178,
-      "unregistered": 43,
+      "unregistered": 40,
       "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
     },
     "sourceReconciliations": [
@@ -2342,6 +2364,15 @@
         "baseSha": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
         "affected": 178,
         "unregistered": 43,
+        "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
+      },
+      {
+        "path": "phase4-source-reconciliation-admiralty-20261019.json",
+        "sha256": "ccc393ac020398326849bd531b3d3faca918cdf1e96dabd042d6640e763181b4",
+        "sourceSha": "c518c1680993021279c3c9fc3af0414612d7a10a",
+        "baseSha": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
+        "affected": 178,
+        "unregistered": 40,
         "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
       }
     ],

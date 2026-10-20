@@ -15,7 +15,7 @@ retains source-bound provider proof: 327 focused checks and 59 D0/D1 scenarios,
 Android idle/standby recovery, selected iOS permission/geofence cases and Android
 WebView Devices/Journal development journeys. Later UI changes do not rerun those
 provider results. Normal iOS Devices requires canonical Darwin process ownership.
-The frozen Creator landmark checkpoint has 178 affected surfaces and 43 missing
+The frozen live Admiralty checkpoint has 178 affected surfaces and 40 missing
 registrations; historical obligations and campaign accounting remain intact.
 
 Independent rendered review clears the specified Passport, safe preview, mobile
