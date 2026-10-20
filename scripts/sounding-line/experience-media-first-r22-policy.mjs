@@ -1,6 +1,8 @@
 import { R21_MEDIA_PROTOCOL } from "./experience-media-first-r21.mjs";
 
 export const R22_ID = "PE-X-CROSSDECK-CURRENT-VERIFY-20261020-R22";
+// Review12 was never performed during preparation26; its original protocol remains required.
+export const R23_ID = "PE-X-CROSSDECK-CURRENT-VERIFY-20261020-R23";
 export const R22_MEDIA_PROTOCOL = Object.freeze({
   ...R21_MEDIA_PROTOCOL,
   kind: "CROSSDECK_REVIEW12_PRE_SOURCE_ADMISSION_1",

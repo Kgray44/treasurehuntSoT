@@ -1,3 +1,4 @@
+import { CURRENT_R23 } from "./experience-current-r23.mjs";
 import { CURRENT_R22 } from "./experience-current-r22.mjs";
 import { validatePreSourceCaptureBinding } from "./experience-review-source-gate.mjs";
 // A finite Crossdeck admission exception, not a second qualification authority.
@@ -315,6 +316,19 @@ function r3FamilyRelated(root, candidateSha) {
   }
 }
 export function selectTrustedExceptions(records) {
+  if (records.some((record) => isCurrentAdmissionRecord(record) && record.version === 23)) {
+    if (records.length !== 23 || digest(records.slice(0, 22)) !== CURRENT_R23.previousRecordsDigest)
+      fail("CURRENT_R23_PREDECESSOR_REGISTRY_CHANGED");
+    selectTrustedExceptions(records.slice(0, 22));
+    const successor = records[22];
+    if (!isCurrentAdmissionRecord(successor) || successor.version !== 23)
+      fail("CURRENT_R23_PREDECESSOR_REGISTRY_CHANGED");
+    validateCurrentAdmissionRecord(successor, {
+      legacyRecord: records.find((record) => record.id === CROSSDECK_R14.id),
+      legacyCurrentRecord: records[21],
+    });
+    return [successor];
+  }
   if (records.some((record) => isCurrentAdmissionRecord(record) && record.version === 22)) {
     if (records.length !== 22 || digest(records.slice(0, 21)) !== CURRENT_R22.previousRecordsDigest)
       fail("CURRENT_R22_PREDECESSOR_REGISTRY_CHANGED");
@@ -654,6 +668,7 @@ export const trustedExceptions = (root, baseSha) => {
       "ls-tree",
       baseSha,
       "--",
+      "scripts/sounding-line/experience-current-r23.mjs",
       "scripts/sounding-line/experience-current-r22.mjs",
       "scripts/sounding-line/experience-current-r21.mjs",
       "scripts/sounding-line/experience-current-r20.mjs",
@@ -670,7 +685,9 @@ export const trustedExceptions = (root, baseSha) => {
   );
   // The adapter at the requested base cannot reactivate an older grant by removal.
   // Historical bases without this protected adapter retain their exact readers.
-  if (sentinels.has("scripts/sounding-line/experience-current-r22.mjs"))
+  if (sentinels.has("scripts/sounding-line/experience-current-r23.mjs"))
+    validateCurrentAdmissionRegistry(registry, undefined, { requiredVersion: 23 });
+  else if (sentinels.has("scripts/sounding-line/experience-current-r22.mjs"))
     validateCurrentAdmissionRegistry(registry, undefined, { requiredVersion: 22 });
   else if (sentinels.has("scripts/sounding-line/experience-current-r21.mjs"))
     validateCurrentAdmissionRegistry(registry, undefined, { requiredVersion: 21 });
