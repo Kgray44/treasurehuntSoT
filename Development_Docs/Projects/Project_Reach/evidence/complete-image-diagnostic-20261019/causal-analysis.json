@@ -1,0 +1,218 @@
+{
+  "classification": "AUTHOR_READ_ONLY_SOURCE_BOUND_CAUSAL_DIAGNOSTIC_NOT_PERCEPTION_ACCEPTANCE",
+  "qualification": false,
+  "terminal": "FINITE_DIAGNOSTIC_ITERATION_COMPLETE_NO_PERCEPTION_CANDIDATE_NOMINATED_OR_ACCEPTED",
+  "provenance": {
+    "instrumentationAuthorAlsoAnalyzed": true,
+    "independentlyAuthoredPhysicalLabels": false,
+    "hiddenControlsUsed": false,
+    "analysisOperations": "Bounded scalar-ledger JSON aggregation and original-source reads only; no tracking API, model, observer, pixel/blob decoding, or candidate execution."
+  },
+  "pins": {
+    "ledgerGzipSha256": "2c8d45dd7b1249970444b268de6fd7e5151d75bee6ab68cd80b98131063ef76e",
+    "decodedSha256": "209ba542c5f78ee4d7a41c3037aa9ba5d62c1f43f15a18f607c6b5f1ff87aa18",
+    "decodedBytes": 26216208,
+    "diagnosticReceiptSha256": "680e061fd5ec1e85059817eac7872b4b46b059cb683214d538b58496bb208540",
+    "independentCausalLedgerReviewSha256": "c5760a76d9c6ad4c006f8f41bda76e23055d14d13806427e3db153099677eee8",
+    "observerSuffixSha256": "6348944defbb12418dfb52f26e7771dca1ee3e51415c2a6fd65638870ecb1ebb",
+    "preOutcomeSourceBranchMapSha256": "2e7ad7947af8b79d784423415d790843de6f7c61b48557c2f53e235b1ea001c6",
+    "rawAvailabilitySha256": "d51513eeb9a8f8bbf7817b510a858732c695d5e79060e96a6f21c8ee65be1be4",
+    "privateCauseNoteSha256": "91c37104178428b1ccb8b7ed7cf576a818117081fe99ad4852afe4c3e059005e",
+    "researchCommit": "3b0367f09e4ae72fc536585ca44509890c1fd2b5",
+    "researchApplicationFileCount": 2807,
+    "researchApplicationDigest": "3c65e27765fd3ce34cb2b110190494cc59c03a6e51db01bf0bfebd127c265562",
+    "originalDecisionSource": {
+      "src/reach/index-image-tracker.ts": {
+        "commit": "62ebde00a7dd9c623a20b46e20d6f4e9d63dfe99",
+        "sha256": "c3bfe20e82a4c9e6230b357bb2890b0eebf5add5930948f003e8b1bb8780ed56",
+        "bytes": 117207
+      },
+      "src/reach/index-source-association.ts": {
+        "commit": "62ebde00a7dd9c623a20b46e20d6f4e9d63dfe99",
+        "sha256": "1ca4dc9d8a61bc67ef561c809840acebc31c06bf441cf237df4e8379de71e7b1",
+        "bytes": 7328
+      },
+      "src/reach/temporal-index-track.ts": {
+        "commit": "62ebde00a7dd9c623a20b46e20d6f4e9d63dfe99",
+        "sha256": "6bcd6bd47b6d2cecddd339f927bd56929068c2533b13105eec9adce078ea4610",
+        "bytes": 9148
+      }
+    }
+  },
+  "sourcePointerConvention": "Every file:line pointer below is from archived original commit62ebde00a7dd9c623a20b46e20d6f4e9d63dfe99, not the instrumentation line offsets in the earlier private note. Reviewed inverse stripping preserves those original decision bytes.",
+  "coverage": {
+    "orderedFrames": 1336,
+    "semanticParityMatching": 1336,
+    "semanticParityMismatching": 0,
+    "coldStartViolations": 0,
+    "promptResets": 0,
+    "sampling": false,
+    "historicalFreshInputPackets": 1336,
+    "positions": 504,
+    "missingOrUnusablePositions": 832,
+    "readinessEligible": 416,
+    "readinessScope": "Tracker readiness eligibility only; not calibration, UI sample, physical accuracy, or owner acceptance."
+  },
+  "timingBoundary": {
+    "finding": "The observed losses are not explained by uniform stale-input or final-gate rejection. The diagnostic reuses original cached clocks and frozen freshness callbacks. It measures no new camera, display, sensor, or live processing latency.",
+    "internalVsExternal": "A current hand identity, completed packet, or internally retained association does not itself supply an accepted coordinate or a calibration sample."
+  },
+  "strata": {
+    "RIGHT": {
+      "frames": 89,
+      "positions": 13,
+      "states": {
+        "TRACKING": 13,
+        "UNCERTAIN": 2,
+        "LOST": 74
+      },
+      "rawInputs": {
+        "oneHand": 89,
+        "finiteInBoundsIndex8": 89
+      },
+      "timeline": [
+        {
+          "sourceFrameRange": [
+            453,
+            465
+          ],
+          "finding": "Thirteen admitted positions precede loss; the final one reports endpoint uncertainty."
+        },
+        {
+          "sourceFrame": 466,
+          "finding": "Current registered same-source full POINT evidence contradicts accepted stable/adaptive material localization. FULL_HAND_INDEX_CONFLICT latches coordinateConflict, revokes index coordinate permission and model registration, and preserves only current hand identity. This is a genuine program-level coordinate contradiction, not a determination of which coordinate is physically correct."
+        },
+        {
+          "sourceFrameRange": [
+            467,
+            541
+          ],
+          "finding": "Seventy-five fallback calls have conditionedReady=false. Fifty-seven qualified current geometry cohorts reach the old-finger reconfirmation appearance call, and every such appearanceSupportsIndex call returns false. No logical generation replacement occurs in RIGHT."
+        }
+      ],
+      "sourceBoundary": "POINT remains POINT after source association in88 of89 frames; the remaining frame has unavailable full authority. Incoming source identity equals the selected trusted source throughout. This is not the foreign-source quarantine transform that precedes the first SWEEP loss. Source-association reference expiry later occurs, but does not remove the delivered same-source full POINT evidence.",
+      "temporalBoundary": "Current hand identity is renewed throughout while coordinateSupport stays false after the conflict. Selected logical identity survival is distinct from coordinate permission and cannot justify publication.",
+      "referenceBoundary": "The last observed sourceAnatomy refresh and last finger-reference refresh occur on different preloss frames; neither is a per-region proof that an old reference remains valid after pose change.",
+      "decisiveObservedBlocker": "Old-finger appearance reconfirmation returns false on all57 exercised qualified attempts. The ledger does not record which forward/reverse, texture, separation, distal-region, or second-region condition failed.",
+      "methodImplication": "A proposal explicitly barred under genuine coordinateConflict cannot address the principal RIGHT loss by itself."
+    },
+    "BOTTOM_RIGHT": {
+      "frames": 71,
+      "positions": 13,
+      "states": {
+        "TRACKING": 13,
+        "UNCERTAIN": 20,
+        "LOST": 23,
+        "UNSEEDED": 15
+      },
+      "rawInputs": {
+        "zeroHands": 40,
+        "oneHand": 24,
+        "twoHands": 7
+      },
+      "timeline": [
+        {
+          "sourceFrameRange": [
+            760,
+            771
+          ],
+          "finding": "Twelve image positions continue before appearance loss."
+        },
+        {
+          "sourceFrameRange": [
+            772,
+            774
+          ],
+          "finding": "Appearance fails while a current full POINT cohort progresses through probation; a qualified associated model fallback supplies one position. Its optical registration candidate has only one frame."
+        },
+        {
+          "sourceFrame": 775,
+          "finding": "Current model evidence disappears and that registration candidate is cleared; no completed current optical reanchor is proved."
+        },
+        {
+          "sourceFrame": 796,
+          "finding": "The old selected logical identity expires; fifteen subsequent frames are unseeded. Later raw candidates do not establish a published logical position by the end of this stratum."
+        }
+      ],
+      "distinction": "No coordinateConflict is observed in this stratum. Neural absence, failed old-image correspondence, and interrupted registration coexist; the RIGHT reconfirmation appearance call is not exercised here. Null model anchors are not equivalent to zero raw hands."
+    },
+    "SWEEP": {
+      "frames": 180,
+      "positions": 11,
+      "states": {
+        "TRACKING": 11,
+        "UNCERTAIN": 74,
+        "LOST": 94,
+        "UNSEEDED": 1
+      },
+      "rawInputs": {
+        "zeroHands": 9,
+        "oneHand": 158,
+        "twoHands": 13
+      },
+      "timeline": [
+        {
+          "sourceFrameRange": [
+            940,
+            964
+          ],
+          "finding": "The sequence enters from the preceding prompt already under unlatched foreign-source quarantine. Current full-quality old material retains only the already selected image identity clock; position remains paused."
+        },
+        {
+          "sourceFrame": 965,
+          "finding": "Old-image appearance first fails after that paused interval; selected identity later expires."
+        },
+        {
+          "sourceFrameRange": [
+            993,
+            1004
+          ],
+          "finding": "Qualified current proof establishes a new outer logical identity and a short recovery; a reference-conflict frame interrupts otherwise admitted positions."
+        },
+        {
+          "sourceFrame": 1005,
+          "finding": "Registered index-cue disagreement latches a genuine coordinateConflict, a separate failure episode from the initial unlatched pause."
+        },
+        {
+          "sourceFrameRange": [
+            1029,
+            1119
+          ],
+          "finding": "That selected identity expires; later raw reseeding, ambiguity, missing current geometry, and appearance failures do not establish further positions."
+        }
+      ],
+      "distinction": "Seventeen POINT, eighteen unavailable-authority, and ten contrary-authority inputs are transformed to AMBIGUOUS by source association. Only fourteen of105 fallback calls have current valid geometry; three have a qualified full model cohort and two full-model readiness. This stratum contains multiple causal paths, not a single motion-window or freshness failure."
+    }
+  },
+  "sourceMap": {
+    "registeredCoordinateConflictAndPermissionRevocation": "src/reach/index-image-tracker.ts:1458-1496",
+    "oldMaterialReproof": "src/reach/index-image-tracker.ts:1075-1131",
+    "reconfirmationBeforePermissionRestoration": "src/reach/index-image-tracker.ts:2145-2188",
+    "fallbackRequiresConditionedCurrentProofAndNoConflict": "src/reach/index-image-tracker.ts:2189-2239",
+    "pausePreservesNoTrustedPositionTemplateOrMotion": "src/reach/index-image-tracker.ts:2362-2392",
+    "identityEvidencePassedToTemporal": "src/reach/index-image-tracker.ts:855-885",
+    "temporalExpiryAndIdentityOnlyRetention": "src/reach/temporal-index-track.ts:99-144",
+    "sourceReferenceExpiry": "src/reach/index-source-association.ts:135-150"
+  },
+  "factsVsInference": {
+    "established": "Complete scalar program chronology, original-source guard paths, model delivery and source transformations, actual appearance-function booleans, outer temporal identity transitions, and unchanged baseline availability.",
+    "inferenceOnly": "Pose or appearance change may invalidate old material reproof. A frozen search domain may contribute during unlatched ambiguity; that is not the whole RIGHT mechanism and is not coordinate truth.",
+    "unavailable": "Per-region old-finger failure reasons, unprobed local quarantined-search eligibility, independent exact physical endpoint labels, true same-finger material correspondence, new capture/display latency, calibration and physical correctness."
+  },
+  "constraintsPreserved": [
+    "Selected-index and current-source proof",
+    "Genuine coordinate-conflict latch and independent current-image reproof",
+    "Existing150ms freshness and transactional rollback",
+    "Existing1200ms identity/reference expiry",
+    "Original anatomy and coordinate bounds",
+    "No trusted position/template/velocity update from paused disputed material",
+    "No publication solely because an ambiguity source disappears"
+  ],
+  "closure": {
+    "availabilityImprovement": false,
+    "productionPerceptionChange": false,
+    "newCandidateNomination": false,
+    "hiddenAnalyticControls": "Sealed and unexecuted; no hidden payloads or labels used in this causal analysis.",
+    "remainingMission": "RIGHT and mixed-motion reliability and independent physical accuracy remain unresolved. The finite deliverable is newly measured source-bound causality, not a recovered method."
+  }
+}

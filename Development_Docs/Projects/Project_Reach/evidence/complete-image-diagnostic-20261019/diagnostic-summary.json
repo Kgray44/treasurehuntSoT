@@ -1,0 +1,334 @@
+{
+  "version": 1,
+  "classification": "SAFE_AGGREGATE_ENGINEERING_EVIDENCE",
+  "publicationStatus": "ROOT_REVIEWED_FOR_REPOSITORY_PUBLICATION_NO_PERCEPTION_ACCEPTANCE",
+  "iterationStatus": "FINITE_DIAGNOSTIC_ITERATION_CLOSED_GOAL_INCOMPLETE",
+  "qualification": false,
+  "missionComplete": false,
+  "productionPerceptionChange": false,
+  "candidateAccepted": false,
+  "methodGainQualified": false,
+  "inputReceiptSha256": {
+    "actual1336Diagnostic": "680e061fd5ec1e85059817eac7872b4b46b059cb683214d538b58496bb208540",
+    "actual1336IndependentReview": "c5760a76d9c6ad4c006f8f41bda76e23055d14d13806427e3db153099677eee8",
+    "actual1336PreviousResourceFailureReview": "0686b9a8019846115c9c71a39803b6a54fc598c88c4f4e5fc5b8b09f08c849f6",
+    "rawDeliveryAvailability": "d51513eeb9a8f8bbf7817b510a858732c695d5e79060e96a6f21c8ee65be1be4",
+    "sourceBoundCausalDiagnostic": "c933a88088b4e37ba98cac50eb615af6139cc29260156405dfcb4188f40b1f9c",
+    "d0CompleteChronologyIndependentReview": "90b0794cc070e988ac4d18298d1e991a508624deaa3bd9bfbbddb68a699ccaf5",
+    "d0FirstOuterReplacementInspection": "b233c77cfcbd08506e313855daf0da4198dc274a15ba0f7565849448b0be6257",
+    "d0FixedDomainNccResult": "916e229f72fdcf9071a255cd232dff9b933e572d35a671159422738dc16b8ff5",
+    "d0FixedDomainNccIndependentReview": "c1c31020712a494ed56394fc28da9f03080206c37382f89a50461748e6778d09",
+    "actual1336MockContracts": "84d854c50a799d0309fd90d17cc37fe50965b60bc44894154bc465fdedab863f",
+    "losslessCodecContracts": "03aa82b2e75411e33d420e7f830a2d2bf45a9cec1337859d9c3136521e678d14",
+    "chronologySemanticContracts": "5ab54afeca6e82b326d379de7e21a6a356fb092ec807557aa390d4edff282b60",
+    "chronologyStorageIntegrationContracts": "b7b00e1e2c43ac1e189fb36311e3c492aee77b32d59c2f5134ecaf709fd70636",
+    "heldPrototypeSourceFreeze": "2de1f2c1246a5d8129dc65f844910e5a0dfed6841cc2bd3080ef4b09e182a8da",
+    "heldPrototypeIndependentStaticHold": "04cbf7d56a1b8843a60ffbef2aeec834256183f1dada6f1c23a9b7d92c28d574"
+  },
+  "cachedConsentedRecording": {
+    "cohort": "ONE_EXPOSED_DEVELOPMENT_RECORDING_CACHED_1336_PACKETS",
+    "packets": 1336,
+    "promptResets": 0,
+    "unchangedSourceVersusReadOnlyObservedSource": {
+      "comparedRows": 1336,
+      "matchingRows": 1336,
+      "mismatchingRows": 0,
+      "allReturnedFieldsAndReadonlyCountersExact": true,
+      "excludedFromSemanticParity": [
+        "independently_measured_processing_cost_only"
+      ],
+      "meaning": "Instrumentation noninterference for this cached interpretation; not a new perception comparison or correctness gain."
+    },
+    "baselineAvailability": {
+      "measuredPositions": 504,
+      "missingOrUnusablePositions": 832,
+      "readinessEligible": 416,
+      "logicalIdChanges": 7,
+      "rejectedOrErrorFrames": 0,
+      "promptStrata": {
+        "RIGHT": {
+          "measuredPositions": 13,
+          "packets": 89
+        },
+        "BOTTOM_RIGHT": {
+          "measuredPositions": 13,
+          "packets": 71
+        },
+        "SWEEP": {
+          "measuredPositions": 11,
+          "packets": 180
+        }
+      },
+      "meaning": "Availability and readiness are separate. Prompt names are instructions, not verified pose labels. Logical ID changes are not anatomical identity switches."
+    },
+    "rawPacketDelivery": {
+      "packets": 1336,
+      "zeroRawHandFrames": 102,
+      "oneRawHandFrames": 1204,
+      "twoRawHandFrames": 30,
+      "framesWithAnyRawHand": 1234,
+      "rawHandArrays": 1264,
+      "rawHandArraysWith21Slots": 1264,
+      "rawSlot8FiniteXyzHands": 1264,
+      "rawSlot8OutOfBoundsXyHands": 25,
+      "rawSlot8VisibilityExactlyZeroHands": 1264,
+      "strata": {
+        "LEFT": {
+          "frames": 90,
+          "framesWithAnyRawHand": 90
+        },
+        "RIGHT": {
+          "frames": 89,
+          "oneRawHandFrames": 89,
+          "framesWithAnyInBoundsRawSlot8": 89
+        },
+        "BOTTOM_RIGHT": {
+          "frames": 71,
+          "zeroRawHandFrames": 40,
+          "oneRawHandFrames": 24,
+          "twoRawHandFrames": 7,
+          "framesWithAnyRawHand": 31
+        },
+        "SWEEP": {
+          "frames": 180,
+          "zeroRawHandFrames": 9,
+          "oneRawHandFrames": 158,
+          "twoRawHandFrames": 13,
+          "framesWithAnyRawHand": 171,
+          "framesWithAnyInBoundsRawSlot8": 169
+        }
+      },
+      "meaning": "Raw hand/slot availability does not establish valid full POINT, selected anatomical index, correctness, presence confidence or permission. Zero raw visibility values are not a calibrated absence score."
+    },
+    "completeScalarLedger": {
+      "frames": 1336,
+      "beforeAfterStates": 1336,
+      "noSampling": true,
+      "openFramesOrCalls": 0,
+      "rejectedFrames": 0,
+      "decodedBytes": 26216208,
+      "gzipBytes": 1041418,
+      "finalReceiptBytes": 7225,
+      "combinedEncodedAndReceiptBytes": 1048643,
+      "maximumFinalFrameBytes": 30062,
+      "perFrameCapBytes": 65536,
+      "fixedDecodedCapBytes": 33554432,
+      "fixedCombinedCapBytes": 4194304,
+      "exactBoundedReadbackVerified": true
+    },
+    "sourceBoundCausalDiagnostic": {
+      "assessment": "AUTHOR_READ_ONLY_SOURCE_BOUND_DIAGNOSTIC_NOT_PERCEPTION_ACCEPTANCE",
+      "instrumentationAuthorAlsoPerformedAnalysis": true,
+      "RIGHT": {
+        "programLevelRegisteredCoordinateConflict": true,
+        "physicalCorrectSideOfDisagreementKnown": false,
+        "postAssociationPointAuthorityFrames": 88,
+        "packets": 89,
+        "fallbackCalls": 75,
+        "fallbackCallsNotReady": 75,
+        "qualifiedOldFingerReproofAttempts": 57,
+        "oldFingerReproofFalseReturns": 57,
+        "logicalGenerationReplacementWithinStratum": false,
+        "finding": "Same-source registered coordinate contradiction revokes coordinate permission. Current hand identity survives separately. Every exercised qualified old-finger appearance reproof returns false; an unlatched-only proposal cannot by itself address this principal loss.",
+        "unavailable": "Which inner region, forward/reverse, texture, separation, distal-region or second-region condition caused each false return is not observed."
+      },
+      "BOTTOM_RIGHT": {
+        "observedCoordinateConflicts": 0,
+        "rawEmptyFrames": 40,
+        "packets": 71,
+        "finding": "Missing raw hands, failed old-image correspondence and interrupted current optical registration coexist. This is distinct from the RIGHT registered-conflict reproof path. A null model anchor is not the same event as zero raw hands."
+      },
+      "SWEEP": {
+        "packets": 180,
+        "initialUnlatchedForeignSourceAmbiguity": true,
+        "laterRegisteredIndexCueCoordinateConflict": true,
+        "finding": "Initial paused image identity retention, later appearance failure and expiry, short qualified reacquisition, and a separate registered index disagreement occur. A single motion-window or freshness explanation is insufficient."
+      },
+      "meaning": "Observed program evidence and source expressions separate failure paths; they do not identify a physically correct coordinate, establish anatomical continuity or nominate an accepted candidate."
+    },
+    "retainedPreviousResourceFailure": {
+      "matchedRows": 16,
+      "mismatchingRows": 0,
+      "requiredRows": 1336,
+      "completed": false,
+      "underlyingFailure": "OBSERVER_LEDGER_LIMIT",
+      "outerFailure": "FULL_PARITY_COVERAGE_REQUIRED",
+      "gzipLedgerProduced": false,
+      "partialCausalAcceptance": false,
+      "meaning": "Preserved incomplete resource failure;16 matches did not establish full parity or a cause."
+    },
+    "timingAndUncertainty": [
+      "Original cached capture/prepare/completed clocks and callbacks were reused; this is not fresh inference, live CPU freshness or capture-to-visible latency.",
+      "Observer processing overhead is not production tracking performance.",
+      "One serially correlated exposed development recording; frame counts do not justify independent binomial confidence intervals.",
+      "This iteration adds no independent physical endpoint or continuous anatomical identity ground truth."
+    ]
+  },
+  "syntheticD0": {
+    "cohort": "ANALYTIC_FAKE_WORKER_BROAD_MIXED_MOTION_CASE",
+    "originalBrowserSuite": {
+      "passed": 11,
+      "total": 12,
+      "broadIdentityAssertionPassed": false
+    },
+    "completeChronology": {
+      "frames": 191,
+      "frameRecords": 3527,
+      "lifecycleRows": 191,
+      "lifecycleRowsWithOrderOnlyNeighborAnnotations": 191,
+      "requiredInputsMissing": 0,
+      "excludedPostFreezeTailCalls": 63,
+      "decodedBytes": 6527471,
+      "auditedBulkBytes": 6524633,
+      "gzipBytes": 197276,
+      "finalReceiptBytes": 20792,
+      "combinedEncodedAndReceiptBytes": 218068,
+      "fixedDecodedCapBytes": 33554432,
+      "fixedCombinedCapBytes": 4194304,
+      "all191Returned": true,
+      "completeThrowOrTemporalRestorePopulationEstablished": false
+    },
+    "firstCommittedLossAndReplacement": [
+      {
+        "frame": 23,
+        "finding": "Last accepted position before first loss."
+      },
+      {
+        "frame": 24,
+        "finding": "First full-hand index conflict; this row does not establish a genuine selected-source contradiction or latched coordinate conflict."
+      },
+      {
+        "frames": [
+          25,
+          26,
+          27
+        ],
+        "finding": "Current optical evidence retains the old selected association during quarantined model ambiguity, without renewing the accepted position or trusted templates. Frame27 is the last committed identity renewal before expiry."
+      },
+      {
+        "frame": 28,
+        "finding": "First appearance mismatch. Both matching evaluations reject low correlation; fallback is not ready. This is distinct from a motion-limit rejection."
+      },
+      {
+        "frames": [
+          28,
+          44
+        ],
+        "finding": "No new identity renewal. Accepted position and trusted material remain frozen while recorded freshness checks pass."
+      },
+      {
+        "frame": 35,
+        "finding": "Source-association trust expires separately from the later image-based temporal identity lifetime."
+      },
+      {
+        "frame": 45,
+        "finding": "Nested tracker expiry and temporal expiry produce an outer committed, gate-returned identity loss. This is not a direct replacement."
+      },
+      {
+        "frames": [
+          46,
+          47
+        ],
+        "finding": "An internal new raw template exists but automatic proof is pending; no new outer logical identity is published yet."
+      },
+      {
+        "frame": 48,
+        "finding": "Current full-POINT probation completes; the first outer committed, gate-returned and runtime-published new logical identity appears."
+      }
+    ],
+    "fixedDomainNccDiagnostic": {
+      "fixedDomains": 2,
+      "originalCorrelation": 0.2440798561066464,
+      "originalFirstRejection": "APPEARANCE_MISMATCH",
+      "alternateDomainCorrelation": 0.9999999999999997,
+      "alternateDomainSeparation": 0.7559201438933533,
+      "alternateReverseError": 0,
+      "originalFrozenTrustedMotionBoundPassesAlternate": false,
+      "trackingApiExecutedForThisPixelDiagnostic": false,
+      "permissionOrRecoveryQualified": false,
+      "meaning": "A local analytic pixel diagnostic, not a recovery gain. High correlation at an alternate fixed domain does not satisfy the preserved trusted-origin motion bound, selected-index proof, controller permission or physical truth."
+    },
+    "limits": [
+      "Analytic producer labels are not independently measured physical hand identity or fingertip accuracy.",
+      "Complete RETURN, transient temporal state, gate RETURN, runtime publication and UI sample admission remain separate boundaries.",
+      "Lifecycle ordinal-neighbor annotations are not exact causal capture joins.",
+      "The first-loss chronology and fixed pixel comparisons do not establish a complete perception repair or end-to-end gain."
+    ]
+  },
+  "separateValidationCohorts": {
+    "countsMustNotBeSummed": true,
+    "actual1336ObserverMockContracts": {
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "applicationApiExecuted": false
+    },
+    "losslessCodecPureContracts": {
+      "passed": 16,
+      "applicationApiExecuted": false
+    },
+    "priorChronologySemanticContracts": {
+      "passed": 42,
+      "applicationApiExecuted": false
+    },
+    "chronologyStorageIntegrationContracts": {
+      "passed": 11,
+      "applicationApiExecuted": false
+    },
+    "meaning": "Different proof cohorts and revisions; these are not a combined independent perception test count."
+  },
+  "heldWork": {
+    "independentControls": {
+      "status": "SEALED_UNEXECUTED"
+    },
+    "poseMaterialPrototype": {
+      "status": "STATIC_HOLD_UNEXECUTED",
+      "plannedPureTests": 8,
+      "pureTestsExecuted": false,
+      "fixedExposureTrialExecuted": false,
+      "priorRejectedSimilarityClassOverlap": true,
+      "newIndependentMethodBasisEstablished": false,
+      "staticOriginalComparisonRetentionIssueUnrepaired": true,
+      "candidateAccepted": false
+    },
+    "perceptionCandidate": null
+  },
+  "privacy": {
+    "strictAllowlistDraft": true,
+    "privateFilePathsIncluded": false,
+    "rawCoordinatesIncluded": false,
+    "sourceIdentityStringsIncluded": false,
+    "pixelsOrLandmarksIncluded": false,
+    "sealedControlContentIncluded": false,
+    "binding": "Receipt hashes only; private raw evidence remains outside this aggregate."
+  },
+  "remainingUnavailable": [
+    "Independent physical selected-index and endpoint truth for complete natural-motion trajectories.",
+    "A materially distinct candidate with trustworthy gains and regressions under independent evaluation.",
+    "Fresh capture-to-visible latency and complete physical controller/calibration reliability.",
+    "Mission acceptance or readiness for Phase2."
+  ],
+  "rootPublicationReview": {
+    "sourceDraftSha256": "6487e20a08543c54b6dbe6cb31c9636e16473e23e551c5c0364bb659ce7103b3",
+    "reviewScope": "Claims, denominators, privacy and exact source/input binding only; no perception acceptance."
+  },
+  "sourceAndInputPins": {
+    "retainedApplicationCommit": "62ebde00a7dd9c623a20b46e20d6f4e9d63dfe99",
+    "originalApiModuleSha256": "2c5089d677b47d204b926eb0449d40be3e67cd3b4567bd419941a06cc165994c",
+    "observerSourceFreezeSha256": "7f299af6a67f885fcc5b6dba89da90fccf32cf69990a6c3072b652c85cacb020",
+    "originalInputs": {
+      "receipt": {
+        "bytes": 45661,
+        "sha256": "ef3b12d133097648f7d6b97f7898718979afd6f2a7756e9392faf29e5a9a02e0"
+      },
+      "results": {
+        "bytes": 25963126,
+        "sha256": "3e33ae53b5097b66593209c561e446e0e528cd30e8fcbab618a1b1e89531dab1"
+      },
+      "gray": {
+        "bytes": 102604800,
+        "sha256": "bbfed087bf8379266b4127eb25ce033c4b5af54cbb43ef208e3b65a97accc569"
+      }
+    }
+  }
+}

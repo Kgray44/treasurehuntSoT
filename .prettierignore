@@ -139,5 +139,9 @@ Development_Docs/Project_Harborlight_Phase_4_Implementation_Manifest.txt
 /Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/dependency-readiness/attempt-3/contextSeal.json
 /Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/dependency-readiness/attempt-3/nativeReceipt.json
 /Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/dependency-readiness/attempt-3/browserReceipt.json
+
+# Preserve reviewed Reach diagnostic evidence bytes and hashes.
+/Development_Docs/Projects/Project_Reach/evidence/complete-image-diagnostic-20261019/causal-analysis.json
+/Development_Docs/Projects/Project_Reach/evidence/complete-image-diagnostic-20261019/diagnostic-summary.json
 /Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/dependency-readiness/attempt-3/setupReceipt.json
 /Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/dependency-readiness/attempt-3/dependencyManifest.json

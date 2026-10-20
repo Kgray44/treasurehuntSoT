@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-10-19",
+  "generated_at": "2026-10-20",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -9441,6 +9441,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/complete-image-diagnostic-20261019/causal-analysis.json",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/complete-image-diagnostic-20261019/diagnostic-summary.json",
+      "record_type": "validation-evidence",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Reach/evidence/continuity-recording-20261017/experience-review.json",
       "record_type": "validation-evidence",
       "status": "preserved",
@@ -10075,6 +10087,12 @@
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/Phase_1_Complete_Image_Diagnostic_20261019.md",
+      "record_type": "engineering-record",
+      "status": "preserved",
+      "canonical_for": "reach-phase1-complete-image-diagnostic-20261019"
     },
     {
       "path": "Development_Docs/Projects/Project_Reach/Phase_1_Perception_Continuation_20261019.md",

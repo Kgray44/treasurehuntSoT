@@ -12,6 +12,8 @@ Reach is Voyagewright's reusable browser-first spatial interaction and intent sy
 
 ## Effective governing sources
 
+The [complete image and identity diagnostic](Phase_1_Complete_Image_Diagnostic_20261019.md) preserves all 1,336 original frames with exact observer parity and a complete selected-observation chronology of the separate mixed-motion failure. RIGHT retains identity while current coordinate reproof fails; BOTTOM-RIGHT and SWEEP contain different loss mechanisms. No perception candidate is nominated, the sealed analytic controls remain unexecuted, and physical reliability remains unresolved.
+
 The [startup capacity and geometry integration](Phase_1_Startup_Capacity_Integration_20261019.md) binds startup probes and live images to delivered camera geometry and evaluates automatic CPU selection before tracking. Current subsystem and independent fault checks pass; application validation, mixed-motion continuity and physical acceptance remain separate and incomplete.
 
 The [backend latency and terminal-cap experiments](Phase_1_Startup_And_Cap_Experiments_20261019.md) reproduce late GPU completion and test a private startup capacity screen that selects the existing ROI provider on CPU. Paired CPU/GPU outputs differ; new blind AI references support six additional conditional RIGHT positions, while mixed-motion continuity remains unproved and BOTTOM-RIGHT regressions are retained. A separately frozen contour detector is rejected as recovery authority. Production source and physical readiness remain unchanged.
