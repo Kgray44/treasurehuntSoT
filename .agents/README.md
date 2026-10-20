@@ -42,6 +42,7 @@ not authorize restarting a completed phase.
 - [Crossdeck R14 instrumented whole qualification](crossdeck-r14-instrumented-qualification.md)
 - [Crossdeck R19 source preparation and protected installation gates](crossdeck-r19-source-preparation.md)
 - [Crossdeck R20 approved acceptance-boundary amendment](crossdeck-r20-acceptance-boundary.md)
+- [Crossdeck R21 fresh capture and media-first review successor](crossdeck-r21-media-first-successor.md)
 - [Parallax A1 owned task contract](parallax-a1-task-contract.md)
 - [Parallax A1 agreed Studio interface](parallax-a1-studio-interface.md)
 - [Sextant Phase 3 owned implementation context](sextant-phase3.md)
