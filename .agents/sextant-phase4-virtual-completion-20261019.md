@@ -8,6 +8,17 @@ last_reviewed: 2026-10-20
 
 # Sextant Phase 4 virtual completion
 
+The unattended continuation also prepares the fixed development target
+`sextant-entry` for existing Display and unprepared synthetic pilot entry.
+Use ordinary claimed-Crew and reserved-pilot sign-in, current UI controls and
+owned exact-source fixtures. Do not invoke pilot preparation/replay, issue pairing
+credentials or claim populated sharing from an empty display. Preserve all five
+unhosted legacy obligations. Source review is clear after scoped alert, database
+preflight ordering and actual feedback-restoration timing repairs. Execution and
+rendered review remain required after canonical HTTP repair PR777 is installed
+through normal protected checks and landed smoke. This target grants no protected
+campaign reset, native, hardware or owner acceptance.
+
 Owner request: 2026-10-19, existing PR #709, UNATTENDED_CONTINUATION.
 Goal: maximum genuine Phase 4 software and virtual completion, no Phase 5.
 The [engineering record](../Development_Docs/Engineering/Sextant/Project_Sextant_Phase_4_Virtual_Completion_20261019.md)

@@ -1039,3 +1039,30 @@ Private39369889786 at `e408f97695371eedc303754415d207fa61c671cb` passes four ful
 The [conditional Landfall source reconciliation](phase4-source-reconciliation-landfall-conditional-20261019.json) binds `7caf7cced2e6df4c372afe8704a271ff2777f0cf` to accepted main `40491dd68ace88ee033b53fd264ddbfe303c6d28`:179 affected surfaces,7 missing declarations, historical141 paths/13 families preserved and planner BLOCKED. Seventeen newly declared conditional Landfall paths remain subject to actual browser/native execution and independent rendered review. Remaining seven are five unhosted legacy components plus accepted-Crossdeck display and authorized Spatial pilot; no host, exemption, deletion or acceptance credit is manufactured. Account/Admiralty reviewed source identities and Private/invitation pending outcomes remain separate. Canonical HTTP redirect handling, Darwin containment and formal mutable/file/challenge/issued-input bindings are internal software prerequisites, not physical or owner-input gates.
 
 Independent Private39369889786 review verifies all86 originals (14262649 bytes), all36 PNGs, four clean receipts and1952 frozen source blobs. Actual hovered plan-confirmation captures0010/0030/0050/0070 resolve R39366688335-01 in all four variants; independently computed opaque-ink/background contrast is12.824422200794766:1. All24 feedback points pass, maximum407.705041ms. The fresh creation-bound store df0b1081-e391-4698-8463-a112c488a39b reports exact-root removal after canonical process cleanup, rootAbsent true and keyPublished false at2026-10-20T04:37:39.363Z. Runtime/profile/transport tree, stream and port cleanup pass. No new material captured-state finding remains. All40 videos remain hash-only; mobile history rows and upper headings are not all visible in every viewport. Formal positive file input, native behavior, current-host inspection, memory zeroization, protected integration and owner acceptance remain outside this conclusion. Earlier defective source and receipts remain unchanged.
+
+The accepted-main source audit identifies two more bounded entry obligations.
+New Display and pilot declarations cover the actual signed-in incoming
+disconnected-display fallback/Manage return and the authorized unprepared pilot's
+Player Library/account return. Existing declarations remain semantically unchanged.
+The fixed `sextant-entry` development target contains four desktop/mobile/motion
+journeys that additionally register the actual Crew device, assign its existing
+display role, open its connected empty display, remove it through ordinary
+controls, and exercise an explicitly synthetic local pilot note/reload/export.
+No share, pairing code, pilot preparation, publication, launch or cancellation
+is fabricated or invoked. A connected empty display is not received content;
+the default private note cannot establish a populated shared Crew view.
+
+Independent source review resolves three preparation findings: alerts are scoped
+to the actual display main; the canonical database basename is checked before
+pilot mutation; the unchanged3000ms restoration boundary waits for the actual
+restored synthetic note. The fixture uses the existing exact-HEAD nonce/path/HTTP
+preflight and persisted audit marker before mutation, verifies or refuses the
+reserved pilot and credential, and never resets an existing identity or prepared
+pilot. Executable negative checks refuse invalid nonce and noncanonical database
+before writes. Two independent ACTIVE sessions, events, memberships and exact
+edition bytes are compared. Formal entry declarations are narrower than these
+development mutations. Source review and declaration validation do not establish
+execution, rendered review, canonical installation, native or owner acceptance.
+The five unhosted legacy paths remain accountable; current replacements do not
+cover them. The separate [canonical HTTP repair PR777](https://github.com/Kgray44/treasurehuntSoT/pull/777)
+must pass protected verification and landed smoke before dependent captures.

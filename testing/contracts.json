@@ -10572,6 +10572,336 @@
           }
         ]
       }
+    },
+    {
+      "id": "sextant.shared-consumers.display-entry",
+      "name": "Sextant existing crew display entry and honest disconnected fallback",
+      "authority": "project-sextant",
+      "owners": ["project-sextant", "project-homeport", "project-crossdeck"],
+      "critical": true,
+      "experience": {
+        "persona": "An ordinary claimed Crew member opening an incoming display bookmark before this tab is connected",
+        "objective": "Read the real disconnected display explanation and use Manage to return safely; development separately connects, assigns and removes the owned empty display through actual controls",
+        "visibleOutcome": "The disconnected display offers an honest connection explanation and returns to Devices and the same account",
+        "integrationOwner": "Homeport retains identity/navigation; Crossdeck retains participation and display sharing; the existing pilot retains preparation and feedback. Sextant adds only consumer verification.",
+        "systems": ["project-sextant", "project-homeport", "project-crossdeck"],
+        "sourcePaths": ["src/app/devices/display/page.tsx", "src/components/crossdeck/CrossdeckDisplay.tsx"],
+        "entryPoint": "/devices/display?voyage=sextant-resource-voyage-entry-default",
+        "states": ["DISPLAY_DISCONNECTED", "DEVICES_RETURN", "RETURNED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["PLAYER"],
+        "roleSetup": {
+          "PLAYER": {
+            "entryPoint": "/sign-in?returnTo=%2Fdevices%2Fdisplay%3Fvoyage%3Dsextant-resource-voyage-entry-default",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "sextant.crew-entry-default@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Sextant-Crew-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "heading",
+              "name": "Crew display",
+              "text": "Crew display"
+            }
+          }
+        },
+        "references": [
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected Authentication reference supplies readable hierarchy and ordinary identity/gateway controls only; actual Display/pilot layouts require separate source-bound rendered review.",
+            "preserve": "Readable hierarchy, explicit prerequisites and safe return; no Display/pilot-specific visual acceptance follows from this reference."
+          },
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected Authentication reference supplies readable hierarchy and ordinary identity/gateway controls only; actual Display/pilot layouts require separate source-bound rendered review.",
+            "preserve": "Readable hierarchy, explicit prerequisites and safe return; no Display/pilot-specific visual acceptance follows from this reference."
+          }
+        ],
+        "fixtureProfile": "generic",
+        "fixture": "sextant-display-pilot-entry-v1",
+        "recordingRequired": true,
+        "accessibility": "Actual heading, alert, preparation region, ordinary links and account controls; development checks scoped axe, viewport overflow and actual target visibility at both sizes and motion settings.",
+        "fallback": "A tab without its real owned Crew-display registration gets the existing connect-first explanation. No shared content or receiver is fabricated.",
+        "navigation": "An incoming display bookmark uses ordinary sign-in returnTo, then actual Manage, Devices and Personal Harbor links. Development additionally enters Devices through the account menu and changes only its own tab surface via real controls.",
+        "designTarget": "Readable existing entry/fallback with explicit prerequisites and a real return, without implying a populated shared view, prepared pilot or physical result.",
+        "browserTests": ["tests/e2e/sextant-entry-journeys.spec.ts"],
+        "limitations": [
+          "Source declarations do not grant execution, rendered acceptance, protected custody, native, physical or owner acceptance.",
+          "The formal journey is read-only entry/fallback and return. The fixed development journey separately uses actual Crew register/role/remove controls and explicitly synthetic browser-local pilot note/reload/export.",
+          "Existing accepted-main Crossdeck semantics are used; unmerged #721 is not consumed. A connected empty display does not prove a received share or populated crew view.",
+          "The pilot fixture verifies or refuses the exact reserved owner and existing credential; it never resets identity, enables another environment, publishes, launches, cancels or prepares an adventure.",
+          "Exact HEAD-derived nonce, owned database and persisted audit identity are checked before mutation. Two independent ACTIVE Voyages, events, memberships and exact edition bytes remain compared.",
+          "Authentication references constrain readable hierarchy and ordinary identity/gateway controls only. Display and pilot layouts still require independent source-bound rendered review.",
+          "Five unhosted legacy components remain separately accountable. These current-route journeys do not cover or exempt retired paths."
+        ],
+        "motion": {
+          "feedbackBudgetMs": 3000,
+          "measurement": "Actual entry/fallback/return feedback; development reports registration, role, removal, local feedback restoration and ordinary return separately within3000ms."
+        },
+        "continuity": {
+          "objective": "Retain the actual home gateway across existing entry and return; development independently compares canonical persisted progression",
+          "checks": [
+            {
+              "id": "actual-home-gateway",
+              "role": "link",
+              "name": "Voyagewright home",
+              "attribute": "href"
+            }
+          ],
+          "requirements": [
+            "A surface role or local note never advances a Voyage.",
+            "Display sharing requires explicit canonical transfer; empty display is not received content.",
+            "Unprepared pilot entry is not hardware or owner acceptance."
+          ]
+        },
+        "journeys": [
+          {
+            "id": "ordinary-incoming-disconnected-display-manage-return",
+            "roles": ["PLAYER"],
+            "outcome": "The actual disconnected display explains its prerequisite and returns to Devices and the same claimed Crew account",
+            "steps": [
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Crew display",
+                "text": "Crew display",
+                "path": "/devices/display?voyage=sextant-resource-voyage-entry-default"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Connect this device as a crew display first.",
+                "path": "/devices/display?voyage=sextant-resource-voyage-entry-default",
+                "state": "DISPLAY_DISCONNECTED",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "The ordinary signed-in tab has no owned Crew-display surface, so its real connection prerequisite remains visible."
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Manage this display"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Voyage devices",
+                "text": "Your Voyage, across your devices",
+                "path": "/account/devices?voyage=sextant-resource-voyage-entry-default",
+                "state": "DEVICES_RETURN",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "Manage opens the real same-Voyage Devices panel without registering or sharing anything."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Crew-entry-default"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "text": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "sextant.shared-consumers.pilot-entry",
+      "name": "Sextant gated unprepared synthetic pilot entry and safe return",
+      "authority": "project-sextant",
+      "owners": ["project-sextant", "project-homeport", "spatial-pilot"],
+      "critical": true,
+      "experience": {
+        "persona": "The reserved synthetic pilot owner inspecting the existing unprepared session",
+        "objective": "Read the unprepared synthetic session, explicit hardware and owner pending boundaries, and return without provisioning",
+        "visibleOutcome": "The gated owner session remains unprepared and returns through actual Player Library and account controls",
+        "integrationOwner": "Homeport retains identity/navigation; Crossdeck retains participation and display sharing; the existing pilot retains preparation and feedback. Sextant adds only consumer verification.",
+        "systems": ["project-sextant", "project-homeport", "spatial-pilot"],
+        "sourcePaths": ["src/app/dev/spatial-pilot/page.tsx", "src/spatial-pilot/OwnerSeaTrials.tsx"],
+        "entryPoint": "/dev/spatial-pilot",
+        "states": ["PILOT_UNPREPARED", "LIBRARY_RETURN", "RETURNED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["PLAYER"],
+        "roleSetup": {
+          "PLAYER": {
+            "entryPoint": "/sign-in?returnTo=%2Fdev%2Fspatial-pilot",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "sextant.pilot@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Sextant-Pilot-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "heading",
+              "name": "The Lost Navigator’s Chart",
+              "text": "The Lost Navigator’s Chart"
+            }
+          }
+        },
+        "references": [
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected Authentication reference supplies readable hierarchy and ordinary identity/gateway controls only; actual Display/pilot layouts require separate source-bound rendered review.",
+            "preserve": "Readable hierarchy, explicit prerequisites and safe return; no Display/pilot-specific visual acceptance follows from this reference."
+          },
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected Authentication reference supplies readable hierarchy and ordinary identity/gateway controls only; actual Display/pilot layouts require separate source-bound rendered review.",
+            "preserve": "Readable hierarchy, explicit prerequisites and safe return; no Display/pilot-specific visual acceptance follows from this reference."
+          }
+        ],
+        "fixtureProfile": "generic",
+        "fixture": "sextant-display-pilot-entry-v1",
+        "recordingRequired": true,
+        "accessibility": "Actual heading, alert, preparation region, ordinary links and account controls; development checks scoped axe, viewport overflow and actual target visibility at both sizes and motion settings.",
+        "fallback": "The session explicitly retains OWNER_ACCEPTANCE_PENDING and OWNER_PHYSICAL_ACCEPTANCE_PENDING. Prepare and Start fresh remain uninvoked.",
+        "navigation": "Ordinary sign-in uses the authorized existing owner-route returnTo; the actual footer Player Library and account menu complete the return.",
+        "designTarget": "Readable existing entry/fallback with explicit prerequisites and a real return, without implying a populated shared view, prepared pilot or physical result.",
+        "browserTests": ["tests/e2e/sextant-entry-journeys.spec.ts"],
+        "limitations": [
+          "Source declarations do not grant execution, rendered acceptance, protected custody, native, physical or owner acceptance.",
+          "The formal journey is read-only entry/fallback and return. The fixed development journey separately uses actual Crew register/role/remove controls and explicitly synthetic browser-local pilot note/reload/export.",
+          "Existing accepted-main Crossdeck semantics are used; unmerged #721 is not consumed. A connected empty display does not prove a received share or populated crew view.",
+          "The pilot fixture verifies or refuses the exact reserved owner and existing credential; it never resets identity, enables another environment, publishes, launches, cancels or prepares an adventure.",
+          "Exact HEAD-derived nonce, owned database and persisted audit identity are checked before mutation. Two independent ACTIVE Voyages, events, memberships and exact edition bytes remain compared.",
+          "Authentication references constrain readable hierarchy and ordinary identity/gateway controls only. Display and pilot layouts still require independent source-bound rendered review.",
+          "Five unhosted legacy components remain separately accountable. These current-route journeys do not cover or exempt retired paths."
+        ],
+        "motion": {
+          "feedbackBudgetMs": 3000,
+          "measurement": "Actual entry/fallback/return feedback; development reports registration, role, removal, local feedback restoration and ordinary return separately within3000ms."
+        },
+        "continuity": {
+          "objective": "Retain the actual home gateway across existing entry and return; development independently compares canonical persisted progression",
+          "checks": [
+            {
+              "id": "actual-home-gateway",
+              "role": "link",
+              "name": "Voyagewright home",
+              "attribute": "href"
+            }
+          ],
+          "requirements": [
+            "A surface role or local note never advances a Voyage.",
+            "Display sharing requires explicit canonical transfer; empty display is not received content.",
+            "Unprepared pilot entry is not hardware or owner acceptance."
+          ]
+        },
+        "journeys": [
+          {
+            "id": "ordinary-gated-unprepared-pilot-library-return",
+            "roles": ["PLAYER"],
+            "outcome": "The actual authorized owner route stays unprepared, displays its pending boundaries and returns without a provision action",
+            "steps": [
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "The Lost Navigator’s Chart",
+                "text": "The Lost Navigator’s Chart",
+                "path": "/dev/spatial-pilot",
+                "state": "PILOT_UNPREPARED",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "Ordinary reserved-owner sign-in reaches the existing gated synthetic pilot; no adventure has been prepared."
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Session preparation",
+                "text": "OWNER_ACCEPTANCE_PENDING · OWNER_PHYSICAL_ACCEPTANCE_PENDING",
+                "path": "/dev/spatial-pilot"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Player Library"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "My Chronicle Library",
+                "text": "My Chronicle Library",
+                "path": "/player/library",
+                "state": "LIBRARY_RETURN",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "The actual pilot footer returns to ordinary Player Library."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Pilot"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "text": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
     }
   ],
   "experiencePolicy": {

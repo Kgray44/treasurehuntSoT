@@ -35,6 +35,7 @@ export async function dispatchLandfallHostedLab(
       "sextant-account-recovery",
       "sextant-invitation",
       "sextant-landfall",
+      "sextant-entry",
       "android",
       "android-radio",
       "android-journal",
@@ -87,6 +88,7 @@ export async function dispatchLandfallHostedLab(
       "sextant-account-recovery",
       "sextant-invitation",
       "sextant-landfall",
+      "sextant-entry",
     ].includes(target) &&
     (tier !== "development" || selectedScenarios !== undefined || selectedProfiles !== undefined)
   )
@@ -154,6 +156,7 @@ export async function dispatchLandfallHostedLab(
           "sextant-account-recovery",
           "sextant-invitation",
           "sextant-landfall",
+          "sextant-entry",
         ].includes(target),
       ),
     )
@@ -185,7 +188,9 @@ export async function dispatchLandfallHostedLab(
                               ? "Sextant issued invitations and synthetic guest claim/merge (development)"
                               : target === "sextant-landfall"
                                 ? "Sextant populated physical and virtual Landfall consumers (development)"
-                                : "optimized first-party Phase 4",
+                                : target === "sextant-entry"
+                                  ? "Sextant existing Display and unprepared pilot entry (development)"
+                                  : "optimized first-party Phase 4",
     )
     .replaceAll(
       "__BROWSER_SUITE__",
@@ -203,6 +208,7 @@ export async function dispatchLandfallHostedLab(
         "sextant-account-recovery",
         "sextant-invitation",
         "sextant-landfall",
+        "sextant-entry",
       ].includes(target)
         ? target
         : "landfall",
@@ -271,9 +277,11 @@ export async function dispatchLandfallHostedLab(
                               ? ["sextant-invitation-journeys"]
                               : target === "sextant-landfall"
                                 ? ["sextant-landfall-journeys"]
-                                : target === "browser" || target === "all"
-                                  ? ["first-party-phase4-web"]
-                                  : [],
+                                : target === "sextant-entry"
+                                  ? ["sextant-entry-journeys"]
+                                  : target === "browser" || target === "all"
+                                    ? ["first-party-phase4-web"]
+                                    : [],
     journal: target === "android-journal" || target === "all" ? ["first-party-native-journal-pair"] : [],
     background:
       target === "android-background" || target === "all"
