@@ -33,8 +33,13 @@ isolated development beta, signing and upload after credentials are configured.
 
 Team ID `X2JZ9N65V2`; bundle ID `com.voyagewright.landfall`; iPhone 17 Pro.
 Paid membership and TestFlight installation are owner-reported. App record,
-certificate/profile/API configuration, signed distribution, Apple processing,
-installation and physical tracking are separate unproved gates.
+identifier and team are now visible in the owner's Apple screenshots; numeric app
+Apple ID `6824734220` is configured as `NCL01_ASC_APP_ID` in the dedicated GitHub
+environment. Certificate/profile/API configuration, signed distribution, Apple
+processing, installation and physical tracking remain separate unproved gates.
+The signed-in certificate list is empty. The CSR upload form is prepared, but
+the Edge extension's local-file access blocks automated attachment. Leave that
+selection to the owner; do not broaden extension permissions to work around it.
 
 The template `.agents/ncl01-testflight-hosted.yml` is transported as one generated
 workflow file on an owned `codex/ncl01-testflight-*` push branch. The job checks
@@ -60,9 +65,12 @@ feature sync/validation. Keep failed receipts and exact candidate identities.
 Do not use broad repository qualification to produce this isolated beta.
 
 Before a signed build bind the actual intended testing LAN origin, preserve TLS
-and validate the certificate. October 19 laptop Wi-Fi is `10.4.48.166`, while
-retained relay configuration is `192.168.0.24`; the latter is currently not
-assigned. Do not mistake an unsigned archive origin for verified phone reachability.
+and validate the certificate. The initial October 19 observation found the laptop
+on `10.4.48.166`; it has since returned to configured Wi-Fi `192.168.0.24`.
+Fresh read-only probes returned 200 for bootstrap, HTTPS app and both original
+GLBs with normal TLS 1.3 validation. Existing services and CA are unchanged.
+The CA expires October 22 at 20:08:04 UTC. Phone reachability/trust remains an
+owner check; do not infer it from those laptop probes.
 
 Success is the owner installing this exact beta through TestFlight, opening
 native ARKit camera placement, seeing the original interactive 3D chest and

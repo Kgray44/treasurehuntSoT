@@ -18,6 +18,14 @@ Team ID: `X2JZ9N65V2`. Bundle ID: `com.voyagewright.landfall`. Source baseline:
 `codex/ncl01-testflight`. Paid Apple Developer enrollment and TestFlight installed
 on iPhone 17 Pro are owner-reported. No signed installation is established.
 
+The owner has now created the explicit identifier and app record. Their screenshots
+show the correct team/bundle, **VoyageWright Landfall**, app Apple ID `6824734220`,
+and version 1.0 in **Prepare for Submission**. The app ID has been configured in
+the dedicated GitHub environment; do not ask the owner for it again. The signed-in
+Apple certificate list remains empty. The personal setup remaining is the
+distribution certificate, matching profile and App Store Connect team API key
+described in steps 3–6 below. Confirm NFC before generating the profile.
+
 ## Actions the account owner completes
 
 1. Open [Apple Developer Identifiers](https://developer.apple.com/account/resources/identifiers/list)
@@ -83,6 +91,12 @@ Non-secret environment variables: `NCL01_ASC_KEY_ID`, `NCL01_ASC_ISSUER_ID`,
 `NCL01_INTERNAL_GROUP_ID` after it exists. The runner validates actual certificate
 and profile contents before archive. No credentials are currently configured.
 
+Only the non-secret app ID is currently configured. Certificate/profile/API-key
+secrets, Key ID and Issuer ID are still pending. The Edge certificate-upload form
+is prepared; local-file attachment is blocked by the browser extension's current
+file permissions. The owner can select the public CSR manually with **Choose
+File**; no browser-permission expansion is required.
+
 The source-bound workflow uses a hosted macOS runner, verifies Xcode 26 or later,
 generates the Xcode project, archives the real iOS target, exports an App Store
 Connect IPA, and uploads in explicit upload mode. An unsigned mode verifies device
@@ -123,13 +137,13 @@ remain true until new evidence establishes those gates.
 
 ## Laptop service and iPhone trust
 
-On October 19 the retained configured origin is `https://192.168.0.24:8449`, but
-the laptop is on Wi-Fi `10.4.48.166`. The saved IP is unassigned and its public
-probe times out. Local application port 3149 returns HTTP 200; this does not prove
-phone reachability. Before signing, return to the intended testing LAN or rebind
-only the owned relay leaf/configuration while retaining its existing CA. Confirm
-the actual assigned address and validate normal TLS; then bind that origin into
-the beta. A network-address change after installation may require a new beta.
+An initial October 19 check found the laptop on Wi-Fi `10.4.48.166`, making its
+saved `.24` origin unreachable. A later read-only recheck after the owner returned
+to Wi-Fi `192.168.0.24/24` passed: `https://192.168.0.24:8449` and both original
+GLB endpoints returned 200 with normal TLS 1.3 validation; bootstrap port 8448
+also returned 200. Existing services and CA were preserved. This is the verified
+laptop origin for the next signed build. Phone reachability and trust remain
+separate owner checks. A later network-address change may require a new beta.
 
 The existing CA SHA-256 is
 `17ad9c5ccd0eb37f00b0062d6c8dcff72a368fb85553175402be5016b21ac8b6`;
