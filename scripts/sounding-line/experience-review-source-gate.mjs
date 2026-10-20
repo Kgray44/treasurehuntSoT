@@ -3,7 +3,7 @@ import { closeSync, fsyncSync, mkdirSync, openSync, readFileSync, writeFileSync 
 import { execFileSync } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { R22_ID, R22_MEDIA_PROTOCOL } from "./experience-media-first-r22-policy.mjs";
+import { R22_ID, R23_ID, R22_MEDIA_PROTOCOL } from "./experience-media-first-r22-policy.mjs";
 import { validatePinnedMediaFirstPlan } from "./experience-media-first-r21.mjs";
 import {
   mediaFirstDigest,
@@ -17,7 +17,10 @@ const need = (condition, code) => {
 const same = (left, right) => mediaFirstDigest(left) === mediaFirstDigest(right);
 const time = (value) => (typeof value === "string" ? Date.parse(value) : NaN);
 const sha = (value, length = 64) => new RegExp(`^[a-f0-9]{${length}}$`, "u").test(value ?? "");
-const selection = { id: R22_ID, version: 22, ordinal: 12, policy: R22_MEDIA_PROTOCOL };
+const selections = Object.freeze({
+  [R22_ID]: { id: R22_ID, version: 22, ordinal: 12, policy: R22_MEDIA_PROTOCOL },
+  [R23_ID]: { id: R23_ID, version: 23, ordinal: 12, policy: R22_MEDIA_PROTOCOL },
+});
 export const SOURCE_GATE_VALIDATOR_PATHS = Object.freeze([
   "scripts/sounding-line/experience-media-first-shared.mjs",
   "scripts/sounding-line/experience-review-dimensions.mjs",
@@ -52,7 +55,7 @@ export async function loadProtectedPreSourceCapture({ root, plan, captureArtifac
   const { trustedExceptions, exceptionStore, githubRequest, requireSuccessfulReservation } = await import(
     "./experience-exception.mjs"
   );
-  const record = trustedExceptions(root, plan.baseSha).find((entry) => entry.id === R22_ID);
+  const record = trustedExceptions(root, plan.baseSha).find((entry) => entry.id === plan.exception?.id);
   need(record, "INSTALLED_RECORD_REQUIRED");
   const request = githubRequest(record.repository),
     store = exceptionStore({ record, request });
@@ -81,6 +84,8 @@ export async function stageMediaFirstSource({
   readSourcePacket = readFileSync,
   persist = durableWrite,
 }) {
+  const selection = selections[plan.exception?.id];
+  need(selection, "FIXED_SUCCESSOR_REQUIRED");
   validatePinnedMediaFirstPlan(plan, selection);
   const output = path.resolve(outputDirectory);
   mkdirSync(output, { mode: 0o700 }); // An existing run is never overwritten or resumed.
@@ -267,7 +272,7 @@ export function validatePreSourceAdmissionReceipts(plan, evidence, now = new Dat
   return { admission, stage, disclosure };
 }
 export function validatePreSourceCaptureBinding(plan, evidence, capture, prepare, root) {
-  if (plan.exception?.id !== R22_ID) return;
+  if (![R22_ID, R23_ID].includes(plan.exception?.id)) return;
   const { admission } = validatePreSourceAdmissionReceipts(plan, evidence);
   need(
     admission.capture.indexDigest === mediaFirstDigest(capture) &&

@@ -28,6 +28,33 @@ outstanding. B2 and every other blocker retain the normal full-resolution rules.
 No R19 capture compatibility, refund, counter reset, new general debt exemption
 or weaker functional/accessibility/security/continuity requirement is introduced.
 
+## R23 bounded checkout recovery
+
+The [checkout recovery disposition](../../Programs/Sounding_Line/evidence/crossdeck-checkout-recovery-20261020-r23/causal-disposition.md)
+preserves cancelled preparation 26 and its zero-artifact outcome. The original
+reservation remains spent; review 12 was not performed. Completed preparations 26/
+next 27, completed reviews 11/remaining 12, iteration 16 and original expiry remain.
+The R22 pre-source schema, native freshness and report/seal/attestation rules
+below apply unchanged to the fixed R23 successor; no prior R22 receipt can supply
+the current record binding.
+
+Preparation fetches only its exact pinned authority commit at depth 1, while the
+candidate keeps full history at depth 0. Named authority/candidate/evidence
+checkout steps have a hard ten-minute step deadline and explicit Git progress.
+This bounds a silent checkout stall; it is not a ten-minute browser-suite cap or
+an inactivity-specific detector. The preparation job remains 40 minutes. Retain
+actual provider step start, latest progress and completion timestamps. During
+the one replacement, the existing owner/coordinator checks at intervals no
+greater than 60 seconds and stops a no-progress checkout by its ten-minute
+deadline. No fallback fetch, automatic rerun, refund or reset is authorized.
+
+The existing #721 owner reconciles only after the independently reviewed
+maintenance source is protected-qualified, merged and handed off. It alone owns
+the one replacement capture and still-unperformed review 12, then remaining
+submission/ordinary/technical/replay closure. Maintenance dispatches none of
+these stages. Transfer cause remains unknown; source-only checkout tests and
+maintenance CI do not claim successful hosted consumer preparation.
+
 ## R22 actual-byte pre-source admission
 
 The [R22 recovery disposition](../../Programs/Sounding_Line/evidence/crossdeck-pre-source-byte-gate-20261020-r22/causal-disposition.md)

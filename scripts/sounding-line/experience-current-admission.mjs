@@ -1,11 +1,19 @@
 import {
+  CURRENT_R23,
+  R23_BASE_ADOPTION,
+  R23_PRESERVED_PROOFS,
+  R23_CHECKOUT_RECOVERY,
+  CURRENT_R22_FAILED_PREPARATION,
+  CURRENT_R22_FAILED_RUN,
+} from "./experience-current-r23.mjs";
+import {
   CURRENT_R22,
   R22_BASE_ADOPTION,
   R22_PRESERVED_PROOFS,
   CURRENT_R21_NONQUALIFYING_CAPTURE,
   CURRENT_R21_SUCCESSFUL_RUN,
 } from "./experience-current-r22.mjs";
-import { validateR22MediaFirstReview } from "./experience-media-first-r22.mjs";
+import { validateR22MediaFirstReview, validateR23MediaFirstReview } from "./experience-media-first-r22.mjs";
 // Inert until a complete, separately reviewed record is installed on protected base.
 // This module installs no record, namespace, execution allowance, or source identity.
 import { createHash } from "node:crypto";
@@ -121,8 +129,16 @@ export function validateCurrentAdmissionRecord(record, { now = new Date(), legac
   const successor20 = record?.version === CURRENT_R20.version;
   const successor21 = record?.version === CURRENT_R21.version;
   const successor22 = record?.version === CURRENT_R22.version;
+  const successor23 = record?.version === CURRENT_R23.version;
   const successor =
-    successor16 || successor17 || successor18 || successor19 || successor20 || successor21 || successor22;
+    successor16 ||
+    successor17 ||
+    successor18 ||
+    successor19 ||
+    successor20 ||
+    successor21 ||
+    successor22 ||
+    successor23;
   need(
     isCurrentAdmissionRecord(record) &&
       (record.version === 15 || successor) &&
@@ -141,26 +157,28 @@ export function validateCurrentAdmissionRecord(record, { now = new Date(), legac
     "RECORD_INVALID",
   );
   need(
-    (successor22
-      ? same(record.predecessor, CURRENT_R21_NONQUALIFYING_CAPTURE)
-      : successor21
-        ? same(record.predecessor, CURRENT_R20_NONQUALIFYING_CAPTURE)
-        : successor20
-          ? same(record.predecessor, CURRENT_R19_BLOCKED_CAPTURE)
-          : successor19
-            ? same(record.predecessor, CURRENT_R18_FAILED_PREPARATION)
-            : successor18
-              ? same(record.predecessor, CURRENT_R17_BLOCKED_CAPTURE)
-              : successor17
-                ? same(record.predecessor, CURRENT_R16_FAILED_PREPARATION)
-                : successor16
-                  ? same(record.predecessor, CURRENT_R15_FAILED_PREPARATION)
-                  : record.predecessor?.id === CURRENT_LEGACY.id &&
-                    record.predecessor.recordDigest === CURRENT_LEGACY.recordDigest &&
-                    record.predecessor.qualifyCommit === CURRENT_LEGACY.qualifyCommit &&
-                    record.predecessor.runId === CURRENT_LEGACY.runId &&
-                    sha(record.predecessor.qualifyPayloadDigest, 64) &&
-                    Number.isFinite(Date.parse(record.predecessor.campaignEpoch))) &&
+    (successor23
+      ? same(record.predecessor, CURRENT_R22_FAILED_PREPARATION)
+      : successor22
+        ? same(record.predecessor, CURRENT_R21_NONQUALIFYING_CAPTURE)
+        : successor21
+          ? same(record.predecessor, CURRENT_R20_NONQUALIFYING_CAPTURE)
+          : successor20
+            ? same(record.predecessor, CURRENT_R19_BLOCKED_CAPTURE)
+            : successor19
+              ? same(record.predecessor, CURRENT_R18_FAILED_PREPARATION)
+              : successor18
+                ? same(record.predecessor, CURRENT_R17_BLOCKED_CAPTURE)
+                : successor17
+                  ? same(record.predecessor, CURRENT_R16_FAILED_PREPARATION)
+                  : successor16
+                    ? same(record.predecessor, CURRENT_R15_FAILED_PREPARATION)
+                    : record.predecessor?.id === CURRENT_LEGACY.id &&
+                      record.predecessor.recordDigest === CURRENT_LEGACY.recordDigest &&
+                      record.predecessor.qualifyCommit === CURRENT_LEGACY.qualifyCommit &&
+                      record.predecessor.runId === CURRENT_LEGACY.runId &&
+                      sha(record.predecessor.qualifyPayloadDigest, 64) &&
+                      Number.isFinite(Date.parse(record.predecessor.campaignEpoch))) &&
       sha(record.frozenReferenceSha) &&
       sha(record.frozenTrees?.src) &&
       sha(a.protectedBaseAncestorSha) &&
@@ -508,10 +526,72 @@ export function validateCurrentAdmissionRecord(record, { now = new Date(), legac
       "R22_SCOPE_OR_SPENT_HISTORY_CHANGED",
     );
   }
+  if (successor23) {
+    const immutablePaths = new Set([
+      ...record.immutableHistory.map((entry) => entry.path),
+      ...R21_PRESERVED_PROOFS.map((entry) => entry.path),
+      ...R22_PRESERVED_PROOFS.map((entry) => entry.path),
+      ...R23_PRESERVED_PROOFS.map((entry) => entry.path),
+    ]);
+    need(
+      record.id === CURRENT_R23.id &&
+        record.frozenReferenceSha === CURRENT_R23.frozenReferenceSha &&
+        same(record.ownerApproval, CURRENT_R23.ownerApproval) &&
+        now.getTime() >= Date.parse(CURRENT_R23.ownerApproval.approvedAtUtc) &&
+        a.protectedOverlay.every((entry) => !immutablePaths.has(entry.path)) &&
+        a.preservationRevision === CURRENT_R23.preservationRevision &&
+        a.protectedBaseAncestorSha === CURRENT_R23.protectedBaseAncestorSha &&
+        record.expiresAt === CURRENT_R23.expiresAt &&
+        same(a.cumulativeHistory, CURRENT_R23.cumulativeHistory) &&
+        a.requiredReviewIterations === CURRENT_R23.requiredReviewIterations &&
+        record.remainingIndependentReviewOrdinal === CURRENT_R23.remainingIndependentReviewOrdinal &&
+        hash(a.legacyR14History) === CURRENT_R23.legacyR14HistoryDigest &&
+        hash(record.immutableHistory) === CURRENT_R23.immutableHistoryDigest &&
+        a.historicalRuns.length === 25 &&
+        hash(a.historicalRuns.slice(0, 24)) === CURRENT_R23.previousRunsDigest &&
+        same(a.historicalRuns[24], CURRENT_R22_FAILED_RUN) &&
+        record.contractDigest === R20_SCOPE.approvedContractDigest &&
+        same(a.scopeAdjudication, R20_SCOPE) &&
+        same(a.adjudication, CURRENT_R20.adjudication) &&
+        same(a.acceptedBaseAdoption, R21_BASE_ADOPTION) &&
+        same(a.frozenInputAdoption, R23_BASE_ADOPTION) &&
+        same(a.preservedR21Proofs, R22_PRESERVED_PROOFS) &&
+        same(a.preservedR22Proofs, R23_PRESERVED_PROOFS) &&
+        same(a.checkoutRecovery, R23_CHECKOUT_RECOVERY) &&
+        same(a.preservedR20Proofs, R21_PRESERVED_PROOFS) &&
+        same(a.reviewProtocol, CURRENT_R23.reviewProtocol) &&
+        same(a.caps, { capture: 1, review: 1, ordinary: 1, technical: 1, replay: 1 }) &&
+        record.contexts === 32 &&
+        a.contextCount === 38 &&
+        a.pairedBrowserContexts === 6 &&
+        same([...record.contractIds].sort(), [...requiredContracts].sort()) &&
+        same([...record.requiredTechnicalBrowserTests].sort(), [...requiredBrowsers].sort()) &&
+        (legacyCurrentRecord === undefined || hash(legacyCurrentRecord) === CURRENT_R23.previousRecordDigest),
+      "R23_SCOPE_OR_SPENT_HISTORY_CHANGED",
+    );
+  }
   return record;
 }
 
 export function validateCurrentAdmissionRegistry(registry, now, { requiredVersion } = {}) {
+  if (
+    requiredVersion === 23 ||
+    (requiredVersion === undefined &&
+      registry?.exceptions?.some((record) => isCurrentAdmissionRecord(record) && record.version === 23))
+  ) {
+    need(registry?.version === 1 && registry.exceptions.length === 23, "R23_REGISTRY_INVALID");
+    const prior = { ...registry, exceptions: registry.exceptions.slice(0, 22) };
+    need(hash(prior) === CURRENT_R23.previousRegistryDigest, "R23_PREDECESSOR_REGISTRY_CHANGED");
+    validateCurrentAdmissionRegistry(prior, now, { requiredVersion: 22 });
+    const current = registry.exceptions[22];
+    need(current?.version === 23 && isCurrentAdmissionRecord(current), "R23_REGISTRY_INVALID");
+    validateCurrentAdmissionRecord(current, {
+      now,
+      legacyRecord: prior.exceptions.find((record) => record.id === CURRENT_LEGACY.id),
+      legacyCurrentRecord: prior.exceptions[21],
+    });
+    return current;
+  }
   if (
     requiredVersion === 22 ||
     (requiredVersion === undefined &&
@@ -714,7 +794,7 @@ export function bindCurrentAdmission({ root, record, plan, baseSha, candidateSha
             .filter(Boolean),
         })
       : new Map();
-  if ([19, 20, 21, 22].includes(record.version)) {
+  if ([19, 20, 21, 22, 23].includes(record.version)) {
     const inherited = inventory(root, CURRENT_R18.frozenReferenceSha);
     validateCurrentProductRepair({
       priorRepair: inventory(root, CURRENT_R18.repairReferenceSha),
@@ -733,7 +813,9 @@ export function bindCurrentAdmission({ root, record, plan, baseSha, candidateSha
     });
     repairs = validateCurrentR19ProductRepair({
       priorRepair: inventory(root, CURRENT_R19.repairReferenceSha),
-      reference: [20, 21, 22].includes(record.version) ? inventory(root, CURRENT_R19.frozenReferenceSha) : reference,
+      reference: [20, 21, 22, 23].includes(record.version)
+        ? inventory(root, CURRENT_R19.frozenReferenceSha)
+        : reference,
       candidate,
       actualRepairPaths: git(root, [
         "diff",
@@ -747,14 +829,14 @@ export function bindCurrentAdmission({ root, record, plan, baseSha, candidateSha
         .filter(Boolean),
     });
   }
-  if ([20, 21, 22].includes(record.version)) {
-    const contractReference = [21, 22].includes(record.version)
+  if ([20, 21, 22, 23].includes(record.version)) {
+    const contractReference = [21, 22, 23].includes(record.version)
       ? CURRENT_R20.frozenReferenceSha
       : record.frozenReferenceSha;
     git(root, ["merge-base", "--is-ancestor", R20_SCOPE.originalCandidateSha, contractReference]);
     validateR20ContractSource({
       before: inventory(root, R20_SCOPE.originalCandidateSha),
-      after: [21, 22].includes(record.version) ? inventory(root, contractReference) : reference,
+      after: [21, 22, 23].includes(record.version) ? inventory(root, contractReference) : reference,
       actualPaths: git(root, ["diff", "--name-only", "--no-renames", R20_SCOPE.originalCandidateSha, contractReference])
         .trim()
         .split(/\r?\n/u)
@@ -763,7 +845,7 @@ export function bindCurrentAdmission({ root, record, plan, baseSha, candidateSha
       amended: JSON.parse(git(root, ["show", `${contractReference}:testing/contracts.json`])),
     });
   }
-  if ([21, 22].includes(record.version)) {
+  if ([21, 22, 23].includes(record.version)) {
     need(
       git(root, ["rev-parse", `${CURRENT_R21.frozenReferenceSha}^{tree}`]).trim() === CURRENT_R21.frozenReferenceTree,
       "R21_FROZEN_INPUT_TREE_CHANGED",
@@ -788,12 +870,20 @@ export function bindCurrentAdmission({ root, record, plan, baseSha, candidateSha
         .filter(Boolean),
     });
   }
-  if (record.version === 22) {
+  if ([22, 23].includes(record.version)) {
     need(
-      git(root, ["rev-parse", `${record.frozenReferenceSha}^{tree}`]).trim() === CURRENT_R22.frozenReferenceTree &&
-        git(root, ["rev-list", "--parents", "-n", "1", record.frozenReferenceSha]).trim() ===
-          [record.frozenReferenceSha, ...R22_BASE_ADOPTION.parents].join(" "),
+      git(root, ["rev-parse", `${CURRENT_R22.frozenReferenceSha}^{tree}`]).trim() === CURRENT_R22.frozenReferenceTree &&
+        git(root, ["rev-list", "--parents", "-n", "1", CURRENT_R22.frozenReferenceSha]).trim() ===
+          [CURRENT_R22.frozenReferenceSha, ...R22_BASE_ADOPTION.parents].join(" "),
       "R22_FROZEN_INPUT_CHANGED",
+    );
+  }
+  if (record.version === 23) {
+    need(
+      git(root, ["rev-parse", `${record.frozenReferenceSha}^{tree}`]).trim() === CURRENT_R23.frozenReferenceTree &&
+        git(root, ["rev-list", "--parents", "-n", "1", record.frozenReferenceSha]).trim() ===
+          [record.frozenReferenceSha, ...R23_BASE_ADOPTION.parents].join(" "),
+      "R23_FROZEN_INPUT_CHANGED",
     );
   }
   for (const file of originalProductPaths)
@@ -805,7 +895,7 @@ export function bindCurrentAdmission({ root, record, plan, baseSha, candidateSha
   for (const id of requiredContracts.filter((id) => id !== "reach.phase1.foundation")) {
     const actualContract = structuredClone(currentContracts.find((contract) => contract.id === id));
     const approved =
-      [20, 21, 22].includes(record.version) && R20_SCOPE.contractChanges.find((entry) => entry.contractId === id);
+      [20, 21, 22, 23].includes(record.version) && R20_SCOPE.contractChanges.find((entry) => entry.contractId === id);
     if (approved) {
       need(actualContract?.experience?.designTarget === approved.newValue, "R20_CONTRACT_SCOPE_CHANGED");
       actualContract.experience.designTarget = approved.oldValue;
@@ -861,11 +951,11 @@ export function bindCurrentAdmission({ root, record, plan, baseSha, candidateSha
       same(ledger.historicalRuns, a.historicalRuns),
     "LEDGER_CHANGED",
   );
-  if ([18, 19, 20, 21, 22].includes(record.version))
+  if ([18, 19, 20, 21, 22, 23].includes(record.version))
     need(same(ledger.consumedR17, CURRENT_R17_BLOCKED_CAPTURE), "R18_BLOCKED_REVIEW_PROOF_CHANGED");
-  if ([19, 20, 21, 22].includes(record.version))
+  if ([19, 20, 21, 22, 23].includes(record.version))
     need(same(ledger.consumedR18, CURRENT_R18_FAILED_PREPARATION), "R19_FAILED_PREPARATION_PROOF_CHANGED");
-  if ([20, 21, 22].includes(record.version)) {
+  if ([20, 21, 22, 23].includes(record.version)) {
     need(same(ledger.consumedR19, CURRENT_R19_BLOCKED_CAPTURE), "R20_BLOCKED_REVIEW_PROOF_CHANGED");
     const adjudication = JSON.parse(readProof(a.adjudication).toString());
     need(same(adjudication.scope, R20_SCOPE), "R20_ADJUDICATION_PROOF_CHANGED");
@@ -882,23 +972,36 @@ export function bindCurrentAdmission({ root, record, plan, baseSha, candidateSha
       ]),
     });
   }
-  if ([21, 22].includes(record.version)) {
+  if ([21, 22, 23].includes(record.version)) {
     need(
       same(ledger.consumedR20, CURRENT_R20_NONQUALIFYING_CAPTURE) &&
         same(ledger.acceptedBaseAdoption, R21_BASE_ADOPTION) &&
-        same(ledger.reviewProtocol, record.version === 22 ? CURRENT_R22.reviewProtocol : CURRENT_R21.reviewProtocol),
+        same(
+          ledger.reviewProtocol,
+          [22, 23].includes(record.version) ? CURRENT_R22.reviewProtocol : CURRENT_R21.reviewProtocol,
+        ),
       "R21_NONQUALIFYING_REVIEW_PROOF_CHANGED",
     );
     for (const proof of R21_PRESERVED_PROOFS) readProof(proof);
   }
-  if (record.version === 22) {
+  if ([22, 23].includes(record.version)) {
     need(
       same(ledger.consumedR21, CURRENT_R21_NONQUALIFYING_CAPTURE) &&
-        same(ledger.frozenInputAdoption, R22_BASE_ADOPTION) &&
+        same(ledger.frozenInputAdoption, record.version === 23 ? R23_BASE_ADOPTION : R22_BASE_ADOPTION) &&
         same(ledger.preservedR21Proofs, R22_PRESERVED_PROOFS),
       "R22_SPENT_FIRST_PASS_PROOF_CHANGED",
     );
     for (const proof of R22_PRESERVED_PROOFS) readProof(proof);
+  }
+  if (record.version === 23) {
+    need(
+      same(ledger.consumedR22, CURRENT_R22_FAILED_PREPARATION) &&
+        same(ledger.ownerApproval, CURRENT_R23.ownerApproval) &&
+        same(ledger.preservedR22Proofs, R23_PRESERVED_PROOFS) &&
+        same(ledger.checkoutRecovery, R23_CHECKOUT_RECOVERY),
+      "R23_CHECKOUT_FAILURE_PROOF_CHANGED",
+    );
+    for (const proof of R23_PRESERVED_PROOFS) readProof(proof);
   }
   readProof(a.disposition);
   return currentAdmissionBinding(record);
@@ -1038,12 +1141,13 @@ export function validateCurrentAdmissionEvidence(plan, evidence, automatedOnly =
     );
   if (plan.exception.version === 21) validateR21MediaFirstReview(plan, evidence);
   if (plan.exception.version === 22) validateR22MediaFirstReview(plan, evidence);
-  if ([18, 19, 20, 21, 22].includes(plan.exception.version)) {
+  if (plan.exception.version === 23) validateR23MediaFirstReview(plan, evidence);
+  if ([18, 19, 20, 21, 22, 23].includes(plan.exception.version)) {
     for (const previous of CURRENT_R17_BLOCKED_CAPTURE.blockedReview.blockingFindings)
       for (const contractId of previous.contractIds) {
         const review = evidence.reviews.find((entry) => entry.contractId === contractId);
         const findings = review?.findings?.filter((entry) => entry.id === previous.id);
-        if ([20, 21, 22].includes(plan.exception.version) && previous.id === "R17-R8-B1") {
+        if ([20, 21, 22, 23].includes(plan.exception.version) && previous.id === "R17-R8-B1") {
           need(findings?.length === 1, "R20_ADJUDICATED_FINDING_REQUIRED");
           validateScopedR20Finding({ plan, finding: findings[0], contractId, artifacts: evidence.artifacts });
           continue;
@@ -1164,8 +1268,8 @@ export function assertCurrentAdmissionCap(record, stage) {
 }
 export async function validateCurrentFailedPreparation({ record, request, storeFor }) {
   validateCurrentAdmissionRecord(record);
-  need([16, 17, 18, 19, 20, 21, 22].includes(record.version), "R16_RECORD_REQUIRED");
-  const preparations = [18, 19, 20, 21, 22].includes(record.version)
+  need([16, 17, 18, 19, 20, 21, 22, 23].includes(record.version), "R16_RECORD_REQUIRED");
+  const preparations = [18, 19, 20, 21, 22, 23].includes(record.version)
     ? [CURRENT_R15_FAILED_PREPARATION, CURRENT_R16_FAILED_PREPARATION]
     : record.version === 17
       ? [CURRENT_R15_FAILED_PREPARATION, record.predecessor]
@@ -1209,7 +1313,7 @@ export async function validateCurrentFailedPreparation({ record, request, storeF
 // A successful capture followed by an actual blocked independent review is not a failed capture.
 export async function validateCurrentR18FailedPreparation({ record, request, storeFor, observedRun }) {
   validateCurrentAdmissionRecord(record);
-  need([19, 20, 21, 22].includes(record.version), "R19_RECORD_REQUIRED");
+  need([19, 20, 21, 22, 23].includes(record.version), "R19_RECORD_REQUIRED");
   const p = CURRENT_R18_FAILED_PREPARATION;
   const spent = storeFor({ id: p.id, custody: { namespace: `sounding-line-exceptions/${p.id}` } });
   const prepare = await spent.read("prepare");
@@ -1263,7 +1367,7 @@ export async function validateCurrentR18FailedPreparation({ record, request, sto
 
 export async function validateCurrentBlockedReviewPredecessor({ record, request, storeFor, observedRun }) {
   validateCurrentAdmissionRecord(record);
-  need([18, 19, 20, 21, 22].includes(record.version), "R18_RECORD_REQUIRED");
+  need([18, 19, 20, 21, 22, 23].includes(record.version), "R18_RECORD_REQUIRED");
   const p = CURRENT_R17_BLOCKED_CAPTURE;
   const spent = storeFor({ id: p.id, custody: { namespace: `sounding-line-exceptions/${p.id}` } });
   const prepare = await spent.read("prepare");
@@ -1315,7 +1419,7 @@ export async function validateCurrentBlockedReviewPredecessor({ record, request,
 }
 export async function validateCurrentR19BlockedCapture({ record, request, storeFor, observedRun }) {
   validateCurrentAdmissionRecord(record);
-  need([20, 21, 22].includes(record.version), "R20_RECORD_REQUIRED");
+  need([20, 21, 22, 23].includes(record.version), "R20_RECORD_REQUIRED");
   const p = CURRENT_R19_BLOCKED_CAPTURE;
   const spent = storeFor({ id: p.id, custody: { namespace: `sounding-line-exceptions/${p.id}` } });
   const prepare = await spent.read("prepare");
@@ -1369,7 +1473,7 @@ export async function validateCurrentR19BlockedCapture({ record, request, storeF
 
 export async function validateCurrentR20NonqualifyingCapture({ record, request, storeFor, observedRun }) {
   validateCurrentAdmissionRecord(record);
-  need([21, 22].includes(record.version), "R21_RECORD_REQUIRED");
+  need([21, 22, 23].includes(record.version), "R21_RECORD_REQUIRED");
   const p = CURRENT_R20_NONQUALIFYING_CAPTURE;
   const spent = storeFor({ id: p.id, custody: { namespace: `sounding-line-exceptions/${p.id}` } });
   const prepare = await spent.read("prepare");
@@ -1423,7 +1527,7 @@ export async function validateCurrentR20NonqualifyingCapture({ record, request, 
 
 export async function validateCurrentR21NonqualifyingCapture({ record, request, storeFor, observedRun }) {
   validateCurrentAdmissionRecord(record);
-  need(record.version === 22, "R22_RECORD_REQUIRED");
+  need([22, 23].includes(record.version), "R22_RECORD_REQUIRED");
   const p = CURRENT_R21_NONQUALIFYING_CAPTURE;
   const spent = storeFor({ id: p.id, custody: { namespace: `sounding-line-exceptions/${p.id}` } });
   const prepare = await spent.read("prepare");
@@ -1475,9 +1579,84 @@ export async function validateCurrentR21NonqualifyingCapture({ record, request, 
   return prepare;
 }
 
+export async function validateCurrentR22FailedPreparation({ record, request, storeFor, observedRun }) {
+  validateCurrentAdmissionRecord(record);
+  need(record.version === 23, "R23_RECORD_REQUIRED");
+  const p = CURRENT_R22_FAILED_PREPARATION;
+  const spent = storeFor({ id: p.id, custody: { namespace: `sounding-line-exceptions/${p.id}` } });
+  const prepare = await spent.read("prepare");
+  need(prepare?.commitSha === p.prepareCommit, "R22_SPENT_PREPARATION_CHANGED");
+  const { commitSha, ...payload } = prepare;
+  need(
+    commitSha === p.prepareCommit &&
+      hash(payload) === p.preparePayloadDigest &&
+      Buffer.byteLength(JSON.stringify(payload)) === p.preparePayloadBytes &&
+      payload.version === 1 &&
+      payload.exceptionId === p.id &&
+      payload.binding?.exception?.id === p.id &&
+      payload.binding.exception.version === 22 &&
+      payload.binding.exception.recordDigest === p.recordDigest &&
+      payload.binding.baseSha === p.baseSha &&
+      payload.binding.sourceDigest === p.sourceDigest &&
+      payload.binding.contractDigest === p.contractDigest &&
+      payload.candidateSha === p.candidateSha &&
+      payload.run?.runId === p.runId &&
+      payload.run.runAttempt === 1 &&
+      payload.run.workflowId === p.workflowId &&
+      payload.run.actor === "Kgray44" &&
+      payload.run.headSha === p.headSha &&
+      payload.run.headBranch === p.headBranch &&
+      payload.run.event === p.event &&
+      payload.run.createdAt === p.createdAt &&
+      payload.run.displayTitle === CURRENT_R22_FAILED_RUN.displayTitle &&
+      payload.status === "PREPARE_AND_REVIEW12_RESERVED_VALIDATION_PENDING" &&
+      payload.independentReviewsCompleted === 11 &&
+      payload.reservedIndependentReviewOrdinal === 12,
+    "R22_SPENT_PREPARATION_CHANGED",
+  );
+  for (const slot of p.absentSlots) need(!(await spent.read(slot)), "R22_UNEXPECTED_SUCCESS_SLOT");
+  const run = observedRun ?? (await request(`actions/runs/${p.runId}`));
+  need(same(currentRunIdentity(run), CURRENT_R22_FAILED_RUN), "R22_FAILED_CAPTURE_CHANGED");
+  const candidate = await request(`git/commits/${p.candidateSha}`);
+  need(candidate?.tree?.sha === p.candidateTree, "R22_CANDIDATE_TREE_CHANGED");
+  const jobs = await request(`actions/runs/${p.runId}/jobs?per_page=100`);
+  need(
+    jobs?.total_count === p.jobs.length &&
+      Array.isArray(jobs.jobs) &&
+      jobs.jobs.length === p.jobs.length &&
+      same(
+        jobs.jobs
+          .map((job) => ({ id: job.id, name: job.name, conclusion: job.conclusion }))
+          .sort((a, b) => a.id - b.id),
+        [...p.jobs].sort((a, b) => a.id - b.id),
+      ),
+    "R22_CHECKOUT_BOUNDARY_CHANGED",
+  );
+  const preparation = jobs.jobs.find((job) => job.id === p.checkout.jobId);
+  const checkout = preparation?.steps?.find((step) => step.number === p.checkout.stepNumber);
+  need(
+    checkout?.name === "Run actions/checkout@v4" &&
+      checkout.status === "completed" &&
+      checkout.conclusion === p.checkout.conclusion &&
+      checkout.started_at === p.checkout.startedAt &&
+      checkout.completed_at === p.checkout.completedAt &&
+      preparation.steps.filter((step) => step.number >= 3 && step.number <= 13).length === 11 &&
+      preparation.steps
+        .filter((step) => step.number >= 3 && step.number <= 13)
+        .every((step) => step.conclusion === "skipped"),
+    "R22_CHECKOUT_BOUNDARY_CHANGED",
+  );
+  const artifacts = await request(`actions/runs/${p.runId}/artifacts?per_page=100`);
+  need(
+    artifacts?.total_count === 0 && Array.isArray(artifacts.artifacts) && artifacts.artifacts.length === 0,
+    "R22_UNEXPECTED_ARTIFACT",
+  );
+  return prepare;
+}
+
 export async function validateCurrentAdmissionPredecessors({ record, request, storeFor }) {
   validateCurrentAdmissionRecord(record);
-  const successor = [16, 17, 18, 19, 20, 21, 22].includes(record.version);
+  const successor = [16, 17, 18, 19, 20, 21, 22, 23].includes(record.version);
   const legacyPredecessor = successor ? CURRENT_R15_LEGACY_PREDECESSOR : record.predecessor;
   const previous = storeFor({
     id: CURRENT_LEGACY.id,
@@ -1506,40 +1685,47 @@ export async function validateCurrentAdmissionPredecessors({ record, request, st
     need(same(currentRunIdentity(actual), expected), "HISTORICAL_RUN_CHANGED");
     observed.push(actual);
   }
-  if ([18, 19, 20, 21, 22].includes(record.version))
+  if ([18, 19, 20, 21, 22, 23].includes(record.version))
     await validateCurrentBlockedReviewPredecessor({
       record,
       request,
       storeFor,
       observedRun: observed.find((run) => run.id === CURRENT_R17_BLOCKED_CAPTURE.runId),
     });
-  if ([19, 20, 21, 22].includes(record.version))
+  if ([19, 20, 21, 22, 23].includes(record.version))
     await validateCurrentR18FailedPreparation({
       record,
       request,
       storeFor,
       observedRun: observed.find((run) => run.id === CURRENT_R18_FAILED_PREPARATION.runId),
     });
-  if ([20, 21, 22].includes(record.version))
+  if ([20, 21, 22, 23].includes(record.version))
     await validateCurrentR19BlockedCapture({
       record,
       request,
       storeFor,
       observedRun: observed.find((run) => run.id === CURRENT_R19_BLOCKED_CAPTURE.runId),
     });
-  if ([21, 22].includes(record.version))
+  if ([21, 22, 23].includes(record.version))
     await validateCurrentR20NonqualifyingCapture({
       record,
       request,
       storeFor,
       observedRun: observed.find((run) => run.id === CURRENT_R20_NONQUALIFYING_CAPTURE.runId),
     });
-  if (record.version === 22)
+  if ([22, 23].includes(record.version))
     await validateCurrentR21NonqualifyingCapture({
       record,
       request,
       storeFor,
       observedRun: observed.find((run) => run.id === CURRENT_R21_NONQUALIFYING_CAPTURE.runId),
+    });
+  if (record.version === 23)
+    await validateCurrentR22FailedPreparation({
+      record,
+      request,
+      storeFor,
+      observedRun: observed.find((run) => run.id === CURRENT_R22_FAILED_PREPARATION.runId),
     });
   need(
     Array.isArray(legacyPredecessor.artifacts) && legacyPredecessor.artifacts.length > 0,
@@ -1550,7 +1736,7 @@ export async function validateCurrentAdmissionPredecessors({ record, request, st
       expected,
       runId: CURRENT_LEGACY.runId,
     })),
-    ...([19, 20, 21, 22].includes(record.version)
+    ...([19, 20, 21, 22, 23].includes(record.version)
       ? [CURRENT_R15_FAILED_PREPARATION, CURRENT_R16_FAILED_PREPARATION]
       : record.version === 18
         ? [CURRENT_R15_FAILED_PREPARATION, CURRENT_R16_FAILED_PREPARATION]
