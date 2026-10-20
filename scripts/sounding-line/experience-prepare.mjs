@@ -15,7 +15,7 @@ import { captureAndPublishExperience, createCaptureSubmission } from "./experien
 import { loadTrustedExperienceArtifact, verifyTrustedExperienceAttestation } from "./experience-attestation.mjs";
 import { buildPlan } from "./ordinary.mjs";
 import { exceptionStore, trustedExceptions, sealedReviewIdentity } from "./experience-exception.mjs";
-import { r21ReviewProvenanceBinding } from "./experience-media-first-r21.mjs";
+import { mediaFirstReviewProvenanceBinding } from "./experience-media-first-binding.mjs";
 
 export function createReviewSubmission({ baseSha, plan, evidence, exceptionFields = {}, submittedBy }) {
   return {
@@ -26,7 +26,7 @@ export function createReviewSubmission({ baseSha, plan, evidence, exceptionField
     captureArtifactId: evidence.captureArtifactId,
     reviews: evidence.reviews,
     ...(plan.paired ? { pairedEvidenceDigest: experienceDigest(evidence.pairedEvidence) } : {}),
-    ...r21ReviewProvenanceBinding(plan, evidence),
+    ...mediaFirstReviewProvenanceBinding(plan, evidence),
     submittedBy,
     ownerAcceptance: "NOT_CLAIMED",
   };

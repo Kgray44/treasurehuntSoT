@@ -1,3 +1,4 @@
+import { REVIEW_DIMENSIONS } from "./experience-review-dimensions.mjs";
 import { inheritSourceFailure, sourceDiagnosticGit } from "./source-diagnostics.mjs";
 import { createHash } from "node:crypto";
 import { r8FormatEvidencePlan, validateR8FormatEvidenceIdentity } from "./experience-r8-format.mjs";
@@ -11,25 +12,7 @@ import { isCurrentAdmissionPlan } from "./experience-current-admission.mjs";
 
 // This module is loaded alongside the protected-main Sounding Line verifier.
 // Candidate declarations can add obligations, never remove trusted obligations.
-export const REVIEW_DIMENSIONS = [
-  "composition",
-  "hierarchy",
-  "typography",
-  "spacing",
-  "controls",
-  "contrast",
-  "consistency",
-  "states",
-  "responsive",
-  "keyboard",
-  "focus",
-  "feedback",
-  "motion",
-  "continuity",
-  "complexity",
-  "role-outcomes",
-  "fallbacks",
-];
+export { REVIEW_DIMENSIONS } from "./experience-review-dimensions.mjs";
 export const FINDING_CLASSES = [
   "CRITICAL_PRODUCT_DEFECT",
   "MAJOR_EXPERIENCE_DEFECT",
