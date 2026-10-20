@@ -5535,6 +5535,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Sextant/evidence/20261020-consumer-repair-preparation/publication-index.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Sextant/evidence/71b46a0b/geofence-foreground-hierarchy.txt",
       "record_type": "engineering-record",
       "status": "current",

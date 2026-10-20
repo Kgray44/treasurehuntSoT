@@ -1,0 +1,138 @@
+{
+  "classification": "LOCAL_SOURCE_PREPARATION_NOT_ACCEPTANCE",
+  "parentSource": "25957d953f322364c34fbc375c1982a10ecd7011",
+  "inputsDirtyAtTestTime": true,
+  "qualification": false,
+  "sourceInputs": [
+    {
+      "path": ".agents/landfall-device-lab-hosted.yml",
+      "sha256": "394aadf5f9870e377e694ad60cd3e57ec33ee99fbf8ebe019e1e13fd892ed6cb",
+      "gitIndexBytes": 23415,
+      "gitIndexSha256": "394aadf5f9870e377e694ad60cd3e57ec33ee99fbf8ebe019e1e13fd892ed6cb"
+    },
+    {
+      "path": ".agents/scripts/sextant-landfall-fixture.ts",
+      "sha256": "4e0b4e9e132f53182492a997ff4e818c65281949bcf1d7e1809073eb4c2c6912",
+      "gitIndexBytes": 7501,
+      "gitIndexSha256": "4e0b4e9e132f53182492a997ff4e818c65281949bcf1d7e1809073eb4c2c6912"
+    },
+    {
+      "path": ".agents/scripts/sextant-landfall-physical-context.ts",
+      "sha256": "df92e96144e6ae32e963d5d4350b7ff8d2a304d9ea1cced2ff873f028ed734fe",
+      "gitIndexBytes": 2082,
+      "gitIndexSha256": "df92e96144e6ae32e963d5d4350b7ff8d2a304d9ea1cced2ff873f028ed734fe"
+    },
+    {
+      "path": "src/landfall/device-lab/sextant-consumer-fixture.test.ts",
+      "sha256": "e0c4a7d5dd2d30cb81e3414fe86fc621d71bb84d08f6799fd0dd3c1e1df01797",
+      "gitIndexBytes": 1650,
+      "gitIndexSha256": "e0c4a7d5dd2d30cb81e3414fe86fc621d71bb84d08f6799fd0dd3c1e1df01797"
+    },
+    {
+      "path": "src/components/wayfarer/AccountFlow.tsx",
+      "sha256": "82ecbc1b48037e216c4a83c2b9866b12e59097561998b7f622594620700a0cb7",
+      "gitIndexBytes": 29382,
+      "gitIndexSha256": "82ecbc1b48037e216c4a83c2b9866b12e59097561998b7f622594620700a0cb7"
+    },
+    {
+      "path": "src/components/wayfarer/AccountFlow.homeport.test.tsx",
+      "sha256": "45c10d9ffa311d511fc83e3a758ab9d97d2744e27450ac2275e007461a729a10",
+      "gitIndexBytes": 13083,
+      "gitIndexSha256": "45c10d9ffa311d511fc83e3a758ab9d97d2744e27450ac2275e007461a729a10"
+    },
+    {
+      "path": "src/components/platform/InvitationCeremony.tsx",
+      "sha256": "f4be70139ab2ad63507ba952118709195cd187d90d5cafc353b859d385279dae",
+      "gitIndexBytes": 32095,
+      "gitIndexSha256": "f4be70139ab2ad63507ba952118709195cd187d90d5cafc353b859d385279dae"
+    },
+    {
+      "path": "src/components/platform/InvitationCeremony.test.tsx",
+      "sha256": "05a29874ed78b9c65f2f2f0b1b06d2f50e9fdbeb2e61933382192139041e05c2",
+      "gitIndexBytes": 14700,
+      "gitIndexSha256": "05a29874ed78b9c65f2f2f0b1b06d2f50e9fdbeb2e61933382192139041e05c2"
+    },
+    {
+      "path": "tests/e2e/fixtures/sextant-consumer-diagnostics.ts",
+      "sha256": "373f227a5cfcc5b6cd7d707bb8049ebf8f91038d3ce7fb7eb2936f84c58aca31",
+      "gitIndexBytes": 7225,
+      "gitIndexSha256": "373f227a5cfcc5b6cd7d707bb8049ebf8f91038d3ce7fb7eb2936f84c58aca31"
+    },
+    {
+      "path": "tests/e2e/sextant-entry-journeys.spec.ts",
+      "sha256": "e8dbce97205d9c69394889d0e026ff0d0e4a78ae984d1ed62c34cb9bf6b8e401",
+      "gitIndexBytes": 16897,
+      "gitIndexSha256": "e8dbce97205d9c69394889d0e026ff0d0e4a78ae984d1ed62c34cb9bf6b8e401"
+    },
+    {
+      "path": "tests/e2e/sextant-invitation-journeys.spec.ts",
+      "sha256": "c509e364bfcda867a289f9efcea68652a8e5034354a1b37e7e51fff73b954a14",
+      "gitIndexBytes": 25186,
+      "gitIndexSha256": "c509e364bfcda867a289f9efcea68652a8e5034354a1b37e7e51fff73b954a14"
+    },
+    {
+      "path": "tests/e2e/sextant-landfall-journeys.spec.ts",
+      "sha256": "0e64970c0034ca67f709fb53a1c2d516a04ea6396edd31b81a009b2afffe17df",
+      "gitIndexBytes": 24028,
+      "gitIndexSha256": "0e64970c0034ca67f709fb53a1c2d516a04ea6396edd31b81a009b2afffe17df"
+    }
+  ],
+  "checks": {
+    "regressionRed": "2_FAIL_23_PASS_METHOD_GET_AND_MISSING_POST_ACCEPT_PREFETCH",
+    "finalVitest": "26_PASS_0_FAIL",
+    "typescript": "PASS",
+    "eslint": "ZERO_ERRORS_ONE_EXISTING_WARNING",
+    "chromiumDiscovery": 16,
+    "backgroundWorkflowParsed": "PASS_NONCE_SAFE_UPLOADS_BUDGET_UNCHANGED",
+    "windowsPublicationProtocol": {
+      "candidate": "1_PASS_13_FAIL",
+      "acceptedMain": "1_PASS_13_FAIL",
+      "sameFailureCases": true,
+      "candidateTestDelta": "EXISTING_CANONICAL_TEMP_REALPATH_FIXTURE_ADAPTATION_PRODUCTION_PROTOCOL_IDENTICAL",
+      "baselineSource": "c0b29d78f7b4c6137c9eb393a10dd9a2112e68ed",
+      "status": "NOT_WAIVED_LINUX_EXECUTION_REQUIRED"
+    }
+  },
+  "files": [
+    {
+      "path": "files/0001-consumer-repair-regressions-red.log",
+      "bytes": 2502,
+      "sha256": "e1c9a2547be829e05d27b5b1767b4b01c0d5f28d43af78587e3c56917562157f"
+    },
+    {
+      "path": "files/0002-consumer-repair-regressions-final.log",
+      "bytes": 712,
+      "sha256": "48fd3633239a5cf851319e2ede57d718a2959704e9b83f865e558d2da912916d"
+    },
+    {
+      "path": "files/0003-consumer-repair-typescript-final.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "files/0004-consumer-repair-eslint.log",
+      "bytes": 1794,
+      "sha256": "4926fb2c41badb2f2d3783fc40fe2b26c0a535d94af698221e3722d6d6785995"
+    },
+    {
+      "path": "files/0005-consumer-repair-eslint-final.log",
+      "bytes": 261,
+      "sha256": "4b6058669ff7dd3e407fb431546fb4fdecc2f9fe07bc01059ca3803cf90c0f0f"
+    },
+    {
+      "path": "files/0006-consumer-repair-discovery.log",
+      "bytes": 2988,
+      "sha256": "8d0ffc86666eb0cbd2ef4bbbeab1f7020ff66c3129682b60c22eecdbd6030b31"
+    },
+    {
+      "path": "files/0007-background-publication-protocol.log",
+      "bytes": 18317,
+      "sha256": "53e04a2af3e55fc33a3eca60011800e2c9351798d7cf69dcc293781815f24e15"
+    },
+    {
+      "path": "files/0008-background-publication-protocol-c0b29-baseline.log",
+      "bytes": 18527,
+      "sha256": "0d2ef2f95211e1a7772751e6997d00a6b81111414d4e70a35589c397f992c106"
+    }
+  ]
+}

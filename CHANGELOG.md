@@ -20,6 +20,10 @@ last_reviewed: 2026-10-20
 
 ### Corrected
 
+- The Sextant candidate keeps credential/challenge forms inactive until hydration
+  and uses POST. Invitation route preparation follows successful acceptance while
+  preserving its confirmation ceremony and handoff limits.
+
 - Living Chart uses a named inspector section inside Studio and gives waypoint
   inspection buttons distinct accessible action names. Map names remain visible.
 

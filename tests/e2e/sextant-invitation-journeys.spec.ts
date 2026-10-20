@@ -220,19 +220,41 @@ for (const viewport of [
         );
         const accept = async (name: string) => {
           await page.getByLabel("Invitation PIN", { exact: true }).fill("4826");
+          const began = performance.now();
+          const stages: Array<{ stage: string; elapsedMs: number; status?: number }> = [];
+          const record = (stage: string, status?: number) => {
+            if (stages.length < 8)
+              stages.push({ stage, elapsedMs: performance.now() - began, ...(status === undefined ? {} : { status }) });
+          };
+          const observe = (value: Response) => {
+            const pathname = new URL(value.url()).pathname;
+            if (pathname === "/api/invitations/accept" && value.request().method() === "POST")
+              record("ACCEPT_RESPONSE", value.status());
+            if (pathname === `/api/player/playthroughs/${invitedId}` && value.request().method() === "GET")
+              record("WAITING_ROOM_RESPONSE", value.status());
+          };
+          page.on("response", observe);
           const response = page.waitForResponse(
             (r) => new URL(r.url()).pathname === "/api/invitations/accept" && r.request().method() === "POST",
           );
-          await measure(
-            "Actual invitation acceptance to waiting room",
-            () => page.getByRole("button", { name: "Accept and Join Voyage", exact: true }).click(),
-            async () => {
-              await expect(page).toHaveURL(new RegExp(`/player/playthroughs/${invitedId}$`));
-              await expect(main).toHaveClass(/muster-scene/u);
-              await expect(heading(fixture.title)).toBeVisible();
-              await settledCrew();
-            },
-          );
+          try {
+            await measure(
+              "Actual invitation acceptance to waiting room",
+              () => page.getByRole("button", { name: "Accept and Join Voyage", exact: true }).click(),
+              async () => {
+                await expect(page).toHaveURL(new RegExp(`/player/playthroughs/${invitedId}$`));
+                record("DESTINATION_URL");
+                await expect(main).toHaveClass(/muster-scene/u);
+                await expect(heading(fixture.title)).toBeVisible();
+                record("HEADING_READY");
+                await settledCrew();
+                record("CREW_SETTLED");
+              },
+            );
+          } finally {
+            page.off("response", observe);
+            console.log("SEXTANT_INVITATION_ACCEPT_STAGES", JSON.stringify({ stages }));
+          }
           expect((await response).status()).toBe(200);
           await expect(owner(name)).toBeVisible();
         };

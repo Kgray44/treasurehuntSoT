@@ -50,7 +50,7 @@ pending. The issued-link diagnostic observes an off-origin307, absent applicable
 pending cookie and resolve404. Canonical repair PR777 passes protected verification,
 lands atc0b29d78f7 and passes landed/integrated HTTP smokes. Fresh Invitation,
 Landfall and existing Display/unprepared pilot captures remain required.
-Darwin containment, formal mutable bindings and protected qualification remain open.
+The first2042 runs fail: Invitation3/4 passes but one3323.98ms handoff exceeds3000ms; Landfall has4physical fixture privacy failures,2normal virtual controller failures and2reduced virtual sign-in failures; entry has2invalid menu-link and2reduced sign-in failures. Source corrections retain account hydration safety, actual Journal Devices entry, coherent physical privacy and post-accept route preparation. Fresh runs and bounded sign-in/service-worker observations remain required. Darwin containment, formal mutable bindings and protected qualification remain open.
 
 Two new formal contracts replace invalid prose checks with actual DOM identity
 or gateway selectors while retaining all prose requirements and unchanged backend

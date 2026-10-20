@@ -13,6 +13,7 @@ import { validateLandfallDefinition } from "../../src/landfall/definition";
 import { closureVoyage } from "../../tests/e2e/fixtures/landfall-closure";
 import { seedSextantResourceExperiences } from "./sextant-resource-fixtures";
 import { sextantOwnedSyntheticOutbox } from "./sextant-account-recovery-fixture";
+import { prepareSextantPhysicalContext } from "./sextant-landfall-physical-context";
 
 type Variant = "default" | "1280-no-preference" | "1280-reduce" | "390-no-preference" | "390-reduce";
 export type SextantLandfallKind = "physical" | "virtual";
@@ -59,7 +60,7 @@ export async function seedSextantLandfallExperience(kind: SextantLandfallKind, v
     {
       virtual: kind === "virtual",
       image: kind === "virtual",
-      contextual: true,
+      contextual: kind === "virtual",
       offlineRegion: kind === "virtual",
       captain: true,
       fixtureIds: {
@@ -80,18 +81,6 @@ export async function seedSextantLandfallExperience(kind: SextantLandfallKind, v
   snapshot.tale.slug = `sextant-landfall-${suffix}`;
   const definition = structuredClone(voyage.definition);
   if (kind === "physical") {
-    const worldspace = definition.worldspaces.find((item) => item.id === "town")!;
-    worldspace.observationPolicy.allowedSources.push("NATIVE_LOCATION");
-    worldspace.privacyPolicy.classification = "GENERIC";
-    const waypoint = definition.waypoints.find((item) => item.id === "town-arrival")!;
-    waypoint.installations = [
-      {
-        id: "synthetic-optional-installation",
-        medium: "QR",
-        label: "Synthetic optional tag",
-        accessibilityAlternative: "Use the readable observation or Captain path.",
-      },
-    ];
     const buffer = await sharp({ create: { width: 400, height: 300, channels: 3, background: "#305060" } })
       .png()
       .toBuffer();
@@ -118,19 +107,7 @@ export async function seedSextantLandfallExperience(kind: SextantLandfallKind, v
         processingState: variant.processingState,
       })),
     });
-    waypoint.landmarkId = "synthetic-field-landmark";
-    definition.context!.landmarks.push({
-      id: waypoint.landmarkId,
-      regionId: waypoint.regionId!,
-      waypointId: waypoint.id,
-      name: "Synthetic field arch",
-      privacyClassification: "GENERIC",
-      referenceAssetIds: [asset.id],
-      negativeReferenceAssetIds: [],
-      minimumFrames: 2,
-      guidance: "Use the readable observation or Captain path when surrounding-area evidence is unavailable.",
-      fallback: waypoint.fallback,
-    });
+    prepareSextantPhysicalContext(definition, asset.id);
   }
   snapshot.landfall = validateLandfallDefinition(definition);
   // Finish this new synthetic edition before browser entry; existing baseline editions stay byte-identical.

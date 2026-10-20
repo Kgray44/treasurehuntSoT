@@ -3,7 +3,7 @@ title: Getting started
 audience: user
 status: current
 canonical_for: getting-started
-last_reviewed: 2026-09-21
+last_reviewed: 2026-10-20
 ---
 
 # Getting started
@@ -16,6 +16,10 @@ last_reviewed: 2026-09-21
 4. Open your library and choose the Chronicle or Voyage you were invited to join.
 
 You should arrive at the right library or workspace. If an invitation does not work, ask your Captain to check it and see [troubleshooting](troubleshooting.md).
+
+In the Sextant candidate, sign-in fields become available when the page is ready
+to handle the account request. After an invitation is accepted, its confirmation
+continues into the same Voyage. Browser qualification remains in progress.
 
 ## Accessibility and privacy
 

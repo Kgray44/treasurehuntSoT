@@ -1,0 +1,24 @@
+
+C:\Users\kkids\.codex\worktrees\sextant-phase4-lab-completion\Codex_TreasureHunt\src\components\platform\InvitationCeremony.tsx
+  357:16  warning  'cause' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\kkids\.codex\worktrees\sextant-phase4-lab-completion\Codex_TreasureHunt\src\components\wayfarer\AccountFlow.tsx
+  58:19  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\Users\kkids\.codex\worktrees\sextant-phase4-lab-completion\Codex_TreasureHunt\src\components\wayfarer\AccountFlow.tsx:58:19
+  56 |   const [busy, setBusy] = useState(false);
+  57 |   const [clientReady, setClientReady] = useState(false);
+> 58 |   useEffect(() => setClientReady(true), []);
+     |                   ^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  59 |   const [confirmedEmailChangeToken, setConfirmedEmailChangeToken] = useState<string | null>(null);
+  60 |   const [csrf, setCsrf] = useState(
+  61 |     () => initialCsrf || (typeof window === "undefined" ? "" : (sessionStorage.getItem("wayfarer-csrf") ?? "")),  react-hooks/set-state-in-effect
+
+✖ 2 problems (1 error, 1 warning)
+

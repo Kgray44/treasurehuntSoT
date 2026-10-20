@@ -1,5 +1,6 @@
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { renderToString } from "react-dom/server";
 import { AccountFlow } from "./AccountFlow";
 
 const navigation = vi.hoisted(() => ({ replace: vi.fn(), refresh: vi.fn() }));
@@ -18,6 +19,26 @@ describe("Homeport account lifecycle", () => {
     vi.unstubAllGlobals();
     vi.clearAllMocks();
     currentUser.state = { status: "anonymous", authenticated: false };
+  });
+
+  it("keeps server-rendered credentials and challenges inert until the submit handler is hydrated", () => {
+    for (const mode of [
+      "register",
+      "sign-in",
+      "forgot",
+      "reset",
+      "verify",
+      "email-change",
+      "claim",
+      "merge",
+    ] as const) {
+      const root = document.createElement("div");
+      root.innerHTML = renderToString(<AccountFlow mode={mode} query={{ token: "synthetic-challenge" }} />);
+      const form = root.querySelector("form")!;
+      expect(form.method, mode).toBe("post");
+      for (const input of form.querySelectorAll("input")) expect(input.disabled, `${mode}:${input.name}`).toBe(true);
+      expect(form.querySelector("button")!.disabled, mode).toBe(true);
+    }
   });
 
   it("homeport.signin.lifecycle-links exposes account creation and recovery", () => {

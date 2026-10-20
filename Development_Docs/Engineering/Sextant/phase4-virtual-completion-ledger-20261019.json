@@ -4597,5 +4597,13 @@
       "passingCompanionOrBuildIsNotProductExecution": true
     }
   ],
-  "pendingDevelopmentRuns": []
+  "pendingDevelopmentRuns": [],
+  "consumerRepairPreparation20261020": {
+    "path": "evidence/20261020-consumer-repair-preparation/publication-index.json",
+    "parentSource": "25957d953f322364c34fbc375c1982a10ecd7011",
+    "sourceReview": "CLEAR_CONSUMER_SCOPE",
+    "runtimeAndRenderedProof": "REQUIRED",
+    "qualification": false,
+    "windowsProtocol": "MATCHED_BASELINE_FAILURE_1_PASS_13_FAIL_NOT_WAIVED"
+  }
 }

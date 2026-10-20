@@ -7,6 +7,7 @@ import { deviceLabSourceIdentity } from "../../scripts/device-lab/source";
 import { seedSextantLandfallExperience } from "../../.agents/scripts/sextant-landfall-fixture";
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
 import { auditNativeGeolocation, geoAudit, enterClosureJournal, openClosureMap } from "./fixtures/landfall-closure";
+import { observeSextantSignIn, observeSextantOfflineShell } from "./fixtures/sextant-consumer-diagnostics";
 
 test.describe.configure({ mode: "default", timeout: 180000 });
 // Offline authorization and installation/pairing credentials must never enter traces.
@@ -40,6 +41,7 @@ for (const viewport of [
               | "390-reduce",
           );
           await auditNativeGeolocation(context);
+          const reportOfflineShell = kind === "virtual" ? await observeSextantOfflineShell(page) : null;
           const voyageIds = [fixture.voyageId, fixture.playerVoyageId, fixture.landfallVoyageId];
           const readProgress = () =>
             db.taleSession.findMany({
@@ -106,16 +108,18 @@ for (const viewport of [
             expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
             await page.screenshot({ path: info.outputPath(`landfall-${kind}-${name}.png`) });
           };
-          const signIn = async (email: string, password: string, name: string) => {
+          const signIn = async (email: string, password: string, name: string, accountId: string) => {
             await page.goto("/sign-in?returnTo=%2Faccount");
-            await page.getByLabel("Email or Player name", { exact: true }).fill(email);
-            await page.getByLabel("Password", { exact: true }).fill(password);
-            await page.getByRole("button", { name: "Sign in", exact: true }).click();
-            await expect(heading("Overview")).toBeVisible();
-            await expect(menu(name)).toBeVisible();
+            await observeSextantSignIn(page, accountId, async () => {
+              await page.getByLabel("Email or Player name", { exact: true }).fill(email);
+              await page.getByLabel("Password", { exact: true }).fill(password);
+              await page.getByRole("button", { name: "Sign in", exact: true }).click();
+              await expect(heading("Overview")).toBeVisible();
+              await expect(menu(name)).toBeVisible();
+            });
           };
 
-          await signIn(fixture.email, "Synthetic-Sextant-Resources-2026!", fixture.displayName);
+          await signIn(fixture.email, "Synthetic-Sextant-Resources-2026!", fixture.displayName, fixture.ownerId);
           await accountDestination(fixture.displayName, "All Workspaces");
           await page.getByRole("link", { name: "Enter Creator", exact: true }).click();
           const card = page.locator("article.tale-studio-card").filter({ has: heading(fixture.landfallTitle, 2) });
@@ -191,7 +195,12 @@ for (const viewport of [
             .click();
           await expect(page).toHaveURL(/\/$/u);
 
-          await signIn(fixture.crewEmail!, "Synthetic-Sextant-Crew-2026!", fixture.crewDisplayName);
+          await signIn(
+            fixture.crewEmail!,
+            "Synthetic-Sextant-Crew-2026!",
+            fixture.crewDisplayName,
+            fixture.crewAccountId,
+          );
           await accountDestination(fixture.crewDisplayName, "Player");
           await expect(heading("My Chronicle Library")).toBeVisible();
           const actualVoyage = page
@@ -320,7 +329,11 @@ for (const viewport of [
                 .getAttribute("max")) as string,
             );
             await capture("offline-region-ready", region.getByRole("status"), ".journal-objects-drawer.open");
-            await expect.poll(() => page.evaluate(() => Boolean(navigator.serviceWorker.controller))).toBe(true);
+            try {
+              await expect.poll(() => page.evaluate(() => Boolean(navigator.serviceWorker.controller))).toBe(true);
+            } finally {
+              await reportOfflineShell?.();
+            }
             await context.setOffline(true);
             try {
               await measure(
@@ -383,10 +396,12 @@ for (const viewport of [
                 source: await deviceLabSourceIdentity([
                   "tests/e2e/sextant-landfall-journeys.spec.ts",
                   ".agents/scripts/sextant-landfall-fixture.ts",
+                  ".agents/scripts/sextant-landfall-physical-context.ts",
                   ".agents/scripts/sextant-resource-fixtures.ts",
                   ".agents/scripts/sextant-experience-fixture.ts",
                   ".agents/scripts/sextant-account-recovery-fixture.ts",
                   "tests/e2e/fixtures/landfall-closure.ts",
+                  "tests/e2e/fixtures/sextant-consumer-diagnostics.ts",
                   "tests/e2e/fixtures/sounding-line-isolation.ts",
                   "testing/contracts.json",
                 ]),

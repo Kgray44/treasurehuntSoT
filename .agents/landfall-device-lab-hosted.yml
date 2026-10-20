@@ -482,7 +482,13 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
       - run: npx --no-install playwright install --with-deps chromium
+      - name: Bind private failure publication to the Android background execution
+        id: android-background-private-source
+        run: node --input-type=module -e 'import{appendFileSync}from"node:fs";import{randomUUID}from"node:crypto";appendFileSync(process.env.GITHUB_OUTPUT,`nonce=${randomUUID()}\n`);'
       - name: Build optimized server with ephemeral memory-only signing and exercise real notices
+        id: android-background-execution
+        env:
+          SOUNDING_LINE_PRIVATE_FAILURE_PUBLICATION_NONCE: ${{ steps.android-background-private-source.outputs.nonce }}
         run: |
           export ANDROID_SDK_ROOT="$ANDROID_HOME"
           npx --no-install tsx scripts/landfall/device-lab/native-background-run.ts __CANDIDATE_SHA__
@@ -495,5 +501,17 @@ jobs:
             artifacts/landfall-device-lab/**/native-background-return-receipt.json
             artifacts/sounding-line/browser-runtime.json
             artifacts/sounding-line/browser-suite-profile.json
-            test-results
           retention-days: 14
+      - uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: landfall-android-background-passing-results-${{ matrix.profile }}-__CANDIDATE_SHA__
+          path: test-results
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        if: ${{ always() && steps.android-background-execution.outputs.private_browser_failure_publish == steps.android-background-private-source.outputs.nonce && steps.android-background-execution.outputs.private_browser_failure_paths != '' }}
+        with:
+          name: landfall-android-background-encrypted-failures-${{ matrix.profile }}-__CANDIDATE_SHA__
+          path: ${{ steps.android-background-execution.outputs.private_browser_failure_paths }}
+          if-no-files-found: error
+          retention-days: 90

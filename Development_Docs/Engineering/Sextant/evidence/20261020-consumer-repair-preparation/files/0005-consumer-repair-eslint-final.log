@@ -1,0 +1,6 @@
+
+C:\Users\kkids\.codex\worktrees\sextant-phase4-lab-completion\Codex_TreasureHunt\src\components\platform\InvitationCeremony.tsx
+  357:16  warning  'cause' is defined but never used  @typescript-eslint/no-unused-vars
+
+✖ 1 problem (0 errors, 1 warning)
+

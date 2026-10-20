@@ -7,6 +7,8 @@ import { db } from "../../src/lib/db";
 import { deviceLabSourceIdentity } from "../../scripts/device-lab/source";
 import { seedSextantEntryExperience, type SextantEntryCase } from "../../.agents/scripts/sextant-entry-fixture";
 import { ensureGenericSoundingLineIsolation } from "./fixtures/sounding-line-isolation";
+import { enterClosureJournal } from "./fixtures/landfall-closure";
+import { observeSextantSignIn } from "./fixtures/sextant-consumer-diagnostics";
 
 test.describe.configure({ mode: "default", timeout: 180000 });
 // No pairing code or installation credential is issued. Network traces stay off.
@@ -84,20 +86,48 @@ for (const viewport of [
           expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
           await page.screenshot({ path: info.outputPath(`entry-${name}.png`) });
         };
-        const signIn = async (email: string, password: string, destination: string, ready: () => Promise<unknown>) => {
+        const signIn = async (
+          email: string,
+          password: string,
+          accountId: string,
+          destination: string,
+          ready: () => Promise<unknown>,
+        ) => {
           await page.goto(`/sign-in?returnTo=${encodeURIComponent(destination)}`);
-          await page.getByLabel("Email or Player name", { exact: true }).fill(email);
-          await page.getByLabel("Password", { exact: true }).fill(password);
-          await measure("Ordinary sign-in to " + destination, () => menu("Sign in").click(), ready);
+          await observeSextantSignIn(page, accountId, async () => {
+            await page.getByLabel("Email or Player name", { exact: true }).fill(email);
+            await page.getByLabel("Password", { exact: true }).fill(password);
+            await measure("Ordinary sign-in to " + destination, () => menu("Sign in").click(), ready);
+          });
         };
         const crewName = fixture.crewDisplayName;
-        await signIn(fixture.crewEmail!, "Synthetic-Sextant-Crew-2026!", "/account", () =>
+        await signIn(fixture.crewEmail!, "Synthetic-Sextant-Crew-2026!", fixture.crewAccountId, "/account", () =>
           expect(heading("Overview")).toBeVisible(),
         );
-        await accountDestination(crewName, "Devices");
+        await accountDestination(crewName, "Player");
+        await expect(heading("My Chronicle Library")).toBeVisible();
+        const voyageCard = page.locator("article.player-tale-card").filter({ has: heading(fixture.title) });
+        const voyageEntry = voyageCard.locator(".card-actions > a.brass-button");
+        await expect(voyageEntry).toHaveAttribute("href", `/player/playthroughs/${fixture.voyageId}/journal`);
+        const journalResponse = page.waitForResponse(
+          (response) =>
+            new URL(response.url()).pathname === `/api/play/sessions/${fixture.voyageId}` &&
+            response.request().method() === "GET" &&
+            response.status() === 200,
+        );
+        await voyageEntry.click();
+        await enterClosureJournal(page);
+        const journalBody = await (await journalResponse).json();
+        expect(journalBody.session.versionId).toBe(fixture.versionId);
+        const journal = page.getByRole("main", { name: "Voyage Journal", exact: true });
+        await expect(journal).toHaveAttribute("data-voyage-id", fixture.voyageId);
+        await page.getByRole("button", { name: "Replay full opening", exact: true }).click();
+        await expect(journal.getByRole("link", { name: "Devices", exact: true })).toBeVisible({ timeout: 15000 });
+        await journal.getByRole("link", { name: "Devices", exact: true }).click();
         const devices = page.getByRole("region", { name: "Voyage devices", exact: true });
         const display = page.locator("main.page-shell").filter({ has: heading("Crew display") });
         await expect(devices).toBeVisible();
+        await expect(devices).toHaveAttribute("data-voyage-id", fixture.voyageId);
         // An incoming bookmarked display has no tab-owned surface yet. Exercise
         // its real fallback and ordinary Manage return before registering here.
         await measure(
@@ -175,7 +205,7 @@ for (const viewport of [
           if (new URL(request.url()).pathname === "/api/dev/spatial-pilot" && request.method() === "POST")
             pilotProvisionPosts++;
         });
-        await signIn(fixture.pilot.email, fixture.pilot.password, "/dev/spatial-pilot", () =>
+        await signIn(fixture.pilot.email, fixture.pilot.password, fixture.pilot.id, "/dev/spatial-pilot", () =>
           expect(heading("The Lost Navigator’s Chart")).toBeVisible(),
         );
         await expect(menu("Prepare the adventure")).toBeEnabled();
@@ -233,6 +263,7 @@ for (const viewport of [
             {
               source: await deviceLabSourceIdentity([
                 "tests/e2e/sextant-entry-journeys.spec.ts",
+                "tests/e2e/fixtures/sextant-consumer-diagnostics.ts",
                 ".agents/scripts/sextant-entry-fixture.ts",
                 ".agents/scripts/sextant-resource-fixtures.ts",
                 ".agents/scripts/sextant-experience-fixture.ts",

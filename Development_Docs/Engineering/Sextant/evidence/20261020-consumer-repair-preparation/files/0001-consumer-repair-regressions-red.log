@@ -1,0 +1,47 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt
+
+x·················x······
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/components/platform/InvitationCeremony.test.tsx > InvitationCeremony > does not enter accepted state or route until the server accepts the invitation
+AssertionError: expected "vi.fn()" to be called once with arguments: [ '/player/playthroughs/voyage-1' ]
+
+Number of calls: 0
+
+ ❯ src/components/platform/InvitationCeremony.test.tsx:178:33
+    176|     accept.resolve(response(200, { ok: true, playthroughId: "voyage-1"…
+    177|     await waitFor(() => expect(handoff).toHaveBeenCalledWith("/player/…
+    178|     expect(navigation.prefetch).toHaveBeenCalledExactlyOnceWith("/play…
+       |                                 ^
+    179|     expect(screen.getByRole("main")).toHaveAttribute("data-invitation-…
+    180|     await waitFor(() =>
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/components/wayfarer/AccountFlow.homeport.test.tsx > Homeport account lifecycle > keeps server-rendered credentials and challenges inert until the submit handler is hydrated
+AssertionError: register: expected 'get' to be 'post' // Object.is equality
+
+Expected: "post"
+Received: "get"
+
+ ❯ src/components/wayfarer/AccountFlow.homeport.test.tsx:29:33
+     27|       root.innerHTML = renderToString(<AccountFlow mode={mode} query={…
+     28|       const form = root.querySelector("form")!;
+     29|       expect(form.method, mode).toBe("post");
+       |                                 ^
+     30|       for (const input of form.querySelectorAll("input")) expect(input…
+     31|       expect(form.querySelector("button")!.disabled, mode).toBe(true);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 23 passed (25)
+   Start at  01:47:49
+   Duration  26.68s (transform 319ms, setup 4.86s, import 9.26s, tests 4.71s, environment 24.72s)
+

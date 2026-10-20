@@ -8,6 +8,11 @@ last_reviewed: 2026-10-20
 
 # Voyagewright features
 
+The Sextant candidate keeps account credential forms inactive until their submit
+handler is ready and uses POST for native submission. Accepted invitation routes
+can prepare during the existing confirmation ceremony. These corrections still
+require fresh consumer execution and do not change account or Voyage authority.
+
 The Sextant Phase 4 implementation candidate adds native capability projection,
 shared foreground motion/position acquisition, bounded native vibration feedback
 and optional input controls on the ordinary Devices page. Discovery does not start
