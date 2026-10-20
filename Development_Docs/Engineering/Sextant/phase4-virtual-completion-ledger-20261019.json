@@ -6,7 +6,7 @@
   "status": "IN_PROGRESS",
   "initialCandidate": "5ff2739776513b8f8ed20c1cb661c164216d0eeb",
   "protectedBase": "f6af0b0e151f15f1a23808413ccee531b9827ca7",
-  "currentSoftwareCandidate": "c518c1680993021279c3c9fc3af0414612d7a10a",
+  "currentSoftwareCandidate": "fb8961fa94348a7e8c6f9ac3ca5ce9ede087dd74",
   "pr": "https://github.com/Kgray44/treasurehuntSoT/pull/709",
   "independentSourceReview": {
     "reviewerContext": "/root/sextant_source_review",
@@ -177,6 +177,28 @@
         "componentTests": 2,
         "typescript": "PASS",
         "selectedContractValidation": 3,
+        "browserCasesDiscovered": 8,
+        "docsValidation": "PASS",
+        "featureValidation": "PASS"
+      }
+    },
+    "privateContentAndAdmiraltyRepair": {
+      "source": "fb8961fa94348a7e8c6f9ac3ca5ce9ede087dd74",
+      "reviewer": "/root/sextant_source_review",
+      "disposition": "CLEAR_FOR_TWO_FIXED_DEVELOPMENT_RUNS_NOT_ACCEPTANCE",
+      "reviewerRanTests": false,
+      "scope": [
+        "REAL_OPERATOR_MOBILE_CONTEXT_AND_SINGLE_GLOBAL_BANNER",
+        "ACTUAL_OUTER_TOKENIZED_SAFE_RETURN",
+        "CANONICAL_SYNTHETIC_PACKAGE_IMPORT_EXPORT_AND_DOWNLOAD",
+        "CREATION_BOUND_EXTERNAL_STORAGE_RETENTION_AND_VERIFIED_CLEANUP",
+        "EXACT_EMPTY_HISTORY_PREDICATE_WITH_FORMAL_FILE_INPUT_LIMIT"
+      ],
+      "builderVerification": {
+        "admiraltyComponentTests": 2,
+        "storageOwnershipTests": 5,
+        "typescript": "PASS",
+        "selectedContractValidation": 2,
         "browserCasesDiscovered": 8,
         "docsValidation": "PASS",
         "featureValidation": "PASS"
@@ -2416,7 +2438,7 @@
     "historicalObligations": 141,
     "historicalFamilies": 13,
     "currentAffectedSurfaces": 178,
-    "currentUnregisteredSurfaces": 40,
+    "currentUnregisteredSurfaces": 38,
     "protectedCapturedOrAcceptedByThisContinuation": 0,
     "developmentCapturedVariants": 4,
     "planner": "PRODUCT_EXPERIENCE_UNREGISTERED_SURFACE",
@@ -2424,7 +2446,7 @@
     "reachDiagnostics": "PROTECTED_ACCEPTED_ON_BASE",
     "historicalAccounting": "PRESERVED_SEXTANT_3_OF_3_CROSSDECK_10_OF_3_R1_2_OF_3",
     "registeredNewPlayerWorkspaceSurfaces": 2,
-    "remainingSoftware": "40 unregistered affected surfaces atc518c16809 across178affected. Creator form-ink recapture passes4 with independent30PNG clear; Community fresh7b pass4 with independent120PNG clear, preserved viewport/video limits. Admiralty initialrunfails4 atOverview (duplicatebanner desktop, hiddenoperator mobile), beforedossier/support/finalbaselines; narrow source-clear repair prepared. Private-content two-path registration and full synthetic import/export development fixture are in preparation with owned external storage and separate lifecycle receipt; no run or acceptance yet. Account/recovery/invitation/Landfall fixtures, fiveunhostedlegacycomponents, acceptedCrossdeck display andauthorizedSpatialpilot, formalreference/layout andprotectedqualification remain. Formal positive Creator/fileinput support andDarwin containment are canonical internalsoftware prerequisites; external/physical/owner gates remain separate.",
+    "remainingSoftware": "38 unregistered affected surfaces atfb8961fa94 across179affected. Creator form-ink recapture passes4 with independent30PNG clear; Community fresh7b pass4 with independent120PNG clear, preserved viewport/video limits. Admiralty initialrunfails4 atOverview (duplicatebanner desktop, hiddenoperator mobile), beforedossier/support/finalbaselines; narrow source-clear repair prepared. Private-content two-path source registration and owned full synthetic import/export development are independently source-clear and dispatched, with separate storage lifecycle proof still pending. Account/recovery/invitation/Landfall fixtures, fiveunhostedlegacycomponents, acceptedCrossdeck display andauthorizedSpatialpilot, formalreference/layout andprotectedqualification remain. Formal positive Creator/fileinput support andDarwin containment are canonical internalsoftware prerequisites; external/physical/owner gates remain separate.",
     "independentDevelopmentJourneyReview": {
       "source": "0d8b3c7841966a1d1c8b5dae21570b1043dc7915",
       "reviewer": "/root/sextant_source_review",
@@ -2456,12 +2478,12 @@
     "registeredNewPassportSourcePaths": 14,
     "newlyRegisteredAffectedPassportSurfaces": 12,
     "sourceReconciliation": {
-      "path": "phase4-source-reconciliation-admiralty-20261019.json",
-      "sha256": "ccc393ac020398326849bd531b3d3faca918cdf1e96dabd042d6640e763181b4",
-      "sourceSha": "c518c1680993021279c3c9fc3af0414612d7a10a",
+      "path": "phase4-source-reconciliation-private-content-20261019.json",
+      "sha256": "4fcd7d5941348bc6a3df91cc676753cfd4ca5fdac04c020d5d1b486c24e208a3",
+      "sourceSha": "fb8961fa94348a7e8c6f9ac3ca5ce9ede087dd74",
       "baseSha": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
-      "affected": 178,
-      "unregistered": 40,
+      "affected": 179,
+      "unregistered": 38,
       "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
     },
     "sourceReconciliations": [
@@ -2563,6 +2585,15 @@
         "baseSha": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
         "affected": 178,
         "unregistered": 40,
+        "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
+      },
+      {
+        "path": "phase4-source-reconciliation-private-content-20261019.json",
+        "sha256": "4fcd7d5941348bc6a3df91cc676753cfd4ca5fdac04c020d5d1b486c24e208a3",
+        "sourceSha": "fb8961fa94348a7e8c6f9ac3ca5ce9ede087dd74",
+        "baseSha": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
+        "affected": 179,
+        "unregistered": 38,
         "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
       }
     ],
@@ -2701,5 +2732,18 @@
       "passingCompanionOrBuildIsNotProductExecution": true
     }
   ],
-  "pendingDevelopmentRuns": []
+  "pendingDevelopmentRuns": [
+    {
+      "runId": "39361539057",
+      "sourceSha": "fb8961fa94348a7e8c6f9ac3ca5ce9ede087dd74",
+      "target": "sextant-admiralty",
+      "scope": "SINGLE_BANNER_VISIBLE_MOBILE_OPERATOR_AND_ORDINARY_SAFE_RETURN_REPAIR"
+    },
+    {
+      "runId": "39361561155",
+      "sourceSha": "fb8961fa94348a7e8c6f9ac3ca5ce9ede087dd74",
+      "target": "sextant-private-content",
+      "scope": "FIRST_SYNTHETIC_PACKAGE_INSPECT_IMPORT_VERIFIED_DOWNLOAD_AND_SEPARATE_STORAGE_CLEANUP"
+    }
+  ]
 }
