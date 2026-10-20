@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/sextant-landfall-journeys.spec.ts"
+  ],
+  "status": "FAIL",
+  "failureCategory": "PRODUCT_FAILURE",
+  "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED",
+  "diagnosticBinding": {
+    "version": 1,
+    "runId": "927c995f-da51-479c-9325-a9ce929a195d",
+    "scopeId": "e8e3926c-892b-4431-aa3d-3506ebfeddb5",
+    "baseSha": "2042f3e5e8b1474cf46a7555346cfe1e6328449e",
+    "candidateSha": "2042f3e5e8b1474cf46a7555346cfe1e6328449e",
+    "planDigest": "715a350e85c88ebaa5e7f903def80728753ad51a91fe369e1dbd9bf3aa2e4a98"
+  }
+}

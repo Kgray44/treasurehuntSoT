@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "candidateSha": "2042f3e5e8b1474cf46a7555346cfe1e6328449e",
+  "transportSha": "d28db60801ac5e879bea7283a7b53a2962dc7f5d",
+  "runId": "39374178162",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39374178162",
+  "conclusion": "failure",
+  "artifacts": [
+    {
+      "path": "artifacts/landfall-browser-2042f3e5e8b1474cf46a7555346cfe1e6328449e/browser-diagnostics/99605dd7-60b8-4107-a70d-0460f5c1462c/e07b3594-906d-499a-a37a-adf3fee83c3e/browser-runtime.json",
+      "sha256": "705c541812ca6c9644193c4ddcdf8d439559dddccc978fab53e69acdab8b29f6"
+    },
+    {
+      "path": "artifacts/landfall-browser-2042f3e5e8b1474cf46a7555346cfe1e6328449e/browser-diagnostics/99605dd7-60b8-4107-a70d-0460f5c1462c/e07b3594-906d-499a-a37a-adf3fee83c3e/browser-suite-profile.json",
+      "sha256": "492ed5fbbc5ee877294236ad2a0b969c284e87bcfee9c31c03a2ec9472c720b8"
+    },
+    {
+      "path": "artifacts/landfall-browser-encrypted-failures-2042f3e5e8b1474cf46a7555346cfe1e6328449e/failure.encrypted",
+      "sha256": "107e3af20fa51492d12277ddc6f998b9d3d255518e50d81d1c1f0896a85e8c03"
+    },
+    {
+      "path": "artifacts/landfall-browser-encrypted-failures-2042f3e5e8b1474cf46a7555346cfe1e6328449e/retention.json",
+      "sha256": "a6707855b735f78b332aeed6145a51a862fb60c5a4f57a33ee78d958ffda2282"
+    }
+  ],
+  "artifactState": "AVAILABLE",
+  "cleanup": {
+    "result": "PASS",
+    "ownedResources": [
+      "refs/heads/codex/landfall-lab-2042f3e5e8b1-1792473498897"
+    ],
+    "remainingResources": []
+  }
+}

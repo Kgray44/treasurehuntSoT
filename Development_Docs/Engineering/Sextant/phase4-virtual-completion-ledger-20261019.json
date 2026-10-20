@@ -3871,6 +3871,359 @@
         "productOrProxyRepair": "NOT_IMPLEMENTED_CANONICAL_TRANSPORT_CAUSAL_TEST_REQUIRED",
         "unchangedEquivalentRetry": "NOT_AUTHORIZED_BY_THIS_RECORD"
       }
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "2042f3e5e8b1474cf46a7555346cfe1e6328449e",
+      "transportSha": "d28db60801ac5e879bea7283a7b53a2962dc7f5d",
+      "runId": "39374178162",
+      "status": "HARVESTED_FAILURE_THREE_PASSED_ONE_SECOND_ACCEPT_WAITING_ROOM_OVER_3000MS",
+      "artifacts": 4,
+      "productionBuild": "PASS",
+      "qualification": false,
+      "cleanup": {
+        "runtime": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 1,
+            "elapsedMs": 4,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 143,
+            "elapsedMs": 61,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        },
+        "transport": {
+          "result": "PASS",
+          "ownedResources": ["refs/heads/codex/landfall-lab-2042f3e5e8b1-1792473498897"],
+          "remainingResources": []
+        }
+      },
+      "diagnostics": {
+        "metadata": {
+          "version": 1,
+          "classification": "PRIVATE_FAILURE_DIAGNOSTICS_NOT_ACCEPTANCE",
+          "qualification": false,
+          "retention": "COMPLETE",
+          "format": "VW-POSTTECHNICAL-EVIDENCE-1",
+          "keyId": "f82684218e386d09e9120d0c7b54722e5833e5c18a3d7a8a73d94b9afead48bc",
+          "ciphertextDigest": "107e3af20fa51492d12277ddc6f998b9d3d255518e50d81d1c1f0896a85e8c03",
+          "ciphertextBytes": 106922658,
+          "memberCount": 13,
+          "rawBytes": 60138312,
+          "worker": {
+            "exitCode": 1,
+            "signal": null
+          },
+          "issues": [],
+          "cleanup": "RAW_RETAINED_PRIVATE",
+          "diagnosticBinding": {
+            "version": 1,
+            "runId": "99605dd7-60b8-4107-a70d-0460f5c1462c",
+            "scopeId": "e07b3594-906d-499a-a37a-adf3fee83c3e",
+            "baseSha": "2042f3e5e8b1474cf46a7555346cfe1e6328449e",
+            "candidateSha": "2042f3e5e8b1474cf46a7555346cfe1e6328449e",
+            "planDigest": "715a350e85c88ebaa5e7f903def80728753ad51a91fe369e1dbd9bf3aa2e4a98",
+            "sessionId": "67a0ed79-e9cc-417a-822e-8cebed353acb"
+          }
+        },
+        "retainedPrivate": [
+          {
+            "sourcePath": "artifacts/landfall-device-lab/hosted-2042f3e5e8b1-1792473498897/run-39374178162/artifacts/landfall-browser-encrypted-failures-2042f3e5e8b1474cf46a7555346cfe1e6328449e/failure.encrypted",
+            "bytes": 106922658,
+            "sha256": "107e3af20fa51492d12277ddc6f998b9d3d255518e50d81d1c1f0896a85e8c03",
+            "reason": "CANONICAL_PRIVATE_ENCRYPTED_BUNDLE_RETAINED_IN_OWNED_ARTIFACTS_NOT_COPIED_TO_GIT"
+          }
+        ],
+        "decrypted": false
+      },
+      "publication": "evidence/20261019-invitation-proxy-consumption/publication-index.json",
+      "independentRenderedReview": {
+        "status": "NO_PUBLIC_CAPTURES_FROM_FAILED_WHOLE_SUITE",
+        "ciphertextNotDecrypted": true,
+        "acceptanceGranted": false
+      },
+      "caseCounts": {
+        "passed": 3,
+        "failed": 1,
+        "independentlyReviewed": false
+      },
+      "failure": {
+        "case": "1280_NO_PREFERENCE",
+        "operation": "SECOND_ACCEPT_WAITING_ROOM_SETTLED_CREW",
+        "elapsedMs": 3323.9819800000005,
+        "budgetMs": 3000,
+        "finalAssertionsForFailedCaseReached": false
+      },
+      "actualSecondLink": {
+        "variants": 4,
+        "redirectStatus": 307,
+        "originMatches": true,
+        "pendingCookiePresent": true,
+        "resolveStatus": 200,
+        "expectedInvitationIdentityMatches": true
+      }
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "2042f3e5e8b1474cf46a7555346cfe1e6328449e",
+      "transportSha": "acc14f761ef4353cdf646a3c79be7d64e771b0df",
+      "runId": "39374185331",
+      "status": "HARVESTED_FAILURE_FOUR_PHYSICAL_PRIVACY_TWO_NORMAL_VIRTUAL_SW_TWO_REDUCED_VIRTUAL_SIGNIN",
+      "artifacts": 4,
+      "productionBuild": "PASS",
+      "qualification": false,
+      "cleanup": {
+        "runtime": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 1,
+            "elapsedMs": 3,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 143,
+            "elapsedMs": 30,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        },
+        "transport": {
+          "result": "PASS",
+          "ownedResources": ["refs/heads/codex/landfall-lab-2042f3e5e8b1-1792473503610"],
+          "remainingResources": []
+        }
+      },
+      "diagnostics": {
+        "metadata": {
+          "version": 1,
+          "classification": "PRIVATE_FAILURE_DIAGNOSTICS_NOT_ACCEPTANCE",
+          "qualification": false,
+          "retention": "INCOMPLETE",
+          "format": "VW-POSTTECHNICAL-EVIDENCE-1",
+          "keyId": "f82684218e386d09e9120d0c7b54722e5833e5c18a3d7a8a73d94b9afead48bc",
+          "ciphertextDigest": "6329e471f2dd0e5ee3407e50e25921095bcbbe08d1101f1d2c6147813d26ba8f",
+          "ciphertextBytes": 14667030,
+          "memberCount": 35,
+          "rawBytes": 8236030,
+          "worker": {
+            "exitCode": 1,
+            "signal": null
+          },
+          "issues": ["FAILURE_ATTACHMENTS_INCOMPLETE", "MISSING_TRACE"],
+          "cleanup": "RAW_RETAINED_PRIVATE",
+          "diagnosticBinding": {
+            "version": 1,
+            "runId": "927c995f-da51-479c-9325-a9ce929a195d",
+            "scopeId": "e8e3926c-892b-4431-aa3d-3506ebfeddb5",
+            "baseSha": "2042f3e5e8b1474cf46a7555346cfe1e6328449e",
+            "candidateSha": "2042f3e5e8b1474cf46a7555346cfe1e6328449e",
+            "planDigest": "715a350e85c88ebaa5e7f903def80728753ad51a91fe369e1dbd9bf3aa2e4a98",
+            "sessionId": "416697d3-5fda-4c48-b2da-b65801557c39"
+          }
+        },
+        "retainedPrivate": [
+          {
+            "sourcePath": "artifacts/landfall-device-lab/hosted-2042f3e5e8b1-1792473503610/run-39374185331/artifacts/landfall-browser-encrypted-failures-2042f3e5e8b1474cf46a7555346cfe1e6328449e/failure.encrypted",
+            "bytes": 14667030,
+            "sha256": "6329e471f2dd0e5ee3407e50e25921095bcbbe08d1101f1d2c6147813d26ba8f",
+            "reason": "CANONICAL_PRIVATE_ENCRYPTED_BUNDLE_RETAINED_IN_OWNED_ARTIFACTS_NOT_COPIED_TO_GIT"
+          }
+        ],
+        "decrypted": false
+      },
+      "publication": "evidence/20261019-landfall-first-execution/publication-index.json",
+      "independentRenderedReview": {
+        "status": "NO_PUBLIC_CAPTURES_FROM_FAILED_WHOLE_SUITE",
+        "ciphertextNotDecrypted": true,
+        "acceptanceGranted": false
+      },
+      "failure": {
+        "physical": {
+          "cases": 4,
+          "stage": "FIXTURE_BEFORE_BROWSER",
+          "actualError": "Region cannot expose more precise privacy than its map.",
+          "cause": "CONTEXTUAL_CLOSURE_HELPER_USES_FICTIONAL_REGION_ON_APPROXIMATE_PHYSICAL_MAP"
+        },
+        "virtual": {
+          "normal": {
+            "cases": 2,
+            "stage": "AFTER_REAL_SIGNED_OFFLINE_REGION_READY_BEFORE_OFFLINE_RELOAD",
+            "actualError": "SERVICE_WORKER_CONTROLLER_POLL_FALSE",
+            "cause": "UNPROVED"
+          },
+          "reduced": {
+            "cases": 2,
+            "stage": "INITIAL_OWNER_SIGNIN",
+            "actualError": "OVERVIEW_READINESS_ABSENT",
+            "cause": "UNPROVED"
+          }
+        },
+        "finalBaselinesReached": false
+      }
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "2042f3e5e8b1474cf46a7555346cfe1e6328449e",
+      "transportSha": "9438d5db4220d56f0e090629139af47ab35f6b4e",
+      "runId": "39374192315",
+      "status": "HARVESTED_FAILURE_NORMAL_NONEXISTENT_DEVICES_MENU_REDUCED_SIGNIN_OVERVIEW_UNPROVED",
+      "artifacts": 4,
+      "productionBuild": "PASS",
+      "qualification": false,
+      "cleanup": {
+        "runtime": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 1,
+            "elapsedMs": 2,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 143,
+            "elapsedMs": 29,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        },
+        "transport": {
+          "result": "PASS",
+          "ownedResources": ["refs/heads/codex/landfall-lab-2042f3e5e8b1-1792473508164"],
+          "remainingResources": []
+        }
+      },
+      "diagnostics": {
+        "metadata": {
+          "version": 1,
+          "classification": "PRIVATE_FAILURE_DIAGNOSTICS_NOT_ACCEPTANCE",
+          "qualification": false,
+          "retention": "INCOMPLETE",
+          "format": "VW-POSTTECHNICAL-EVIDENCE-1",
+          "keyId": "f82684218e386d09e9120d0c7b54722e5833e5c18a3d7a8a73d94b9afead48bc",
+          "ciphertextDigest": "0e9c9dc26a71ecd8117a784e62aeee658581a699423c294d3305ade4ac5a4ab0",
+          "ciphertextBytes": 16175470,
+          "memberCount": 13,
+          "rawBytes": 9092938,
+          "worker": {
+            "exitCode": 1,
+            "signal": null
+          },
+          "issues": ["FAILURE_ATTACHMENTS_INCOMPLETE", "MISSING_TRACE"],
+          "cleanup": "RAW_RETAINED_PRIVATE",
+          "diagnosticBinding": {
+            "version": 1,
+            "runId": "7d68a77d-e2f9-46da-9ecf-0e4fbecff022",
+            "scopeId": "39bcc351-c240-41e9-8860-2e275c4bd252",
+            "baseSha": "2042f3e5e8b1474cf46a7555346cfe1e6328449e",
+            "candidateSha": "2042f3e5e8b1474cf46a7555346cfe1e6328449e",
+            "planDigest": "715a350e85c88ebaa5e7f903def80728753ad51a91fe369e1dbd9bf3aa2e4a98",
+            "sessionId": "18a31b35-64be-4463-855d-6a857f3c90cf"
+          }
+        },
+        "retainedPrivate": [
+          {
+            "sourcePath": "artifacts/landfall-device-lab/hosted-2042f3e5e8b1-1792473508164/run-39374192315/artifacts/landfall-browser-encrypted-failures-2042f3e5e8b1474cf46a7555346cfe1e6328449e/failure.encrypted",
+            "bytes": 16175470,
+            "sha256": "0e9c9dc26a71ecd8117a784e62aeee658581a699423c294d3305ade4ac5a4ab0",
+            "reason": "CANONICAL_PRIVATE_ENCRYPTED_BUNDLE_RETAINED_IN_OWNED_ARTIFACTS_NOT_COPIED_TO_GIT"
+          }
+        ],
+        "decrypted": false
+      },
+      "publication": "evidence/20261019-display-pilot-first-execution/publication-index.json",
+      "independentRenderedReview": {
+        "status": "NO_PUBLIC_CAPTURES_FROM_FAILED_WHOLE_SUITE",
+        "ciphertextNotDecrypted": true,
+        "acceptanceGranted": false
+      },
+      "failure": {
+        "normal": {
+          "cases": 2,
+          "stage": "AFTER_SUCCESSFUL_ORDINARY_SIGN_IN",
+          "actualError": "ACCOUNT_NAVIGATION_DEVICES_LINK_DOES_NOT_EXIST",
+          "timeoutMs": 180000
+        },
+        "reduced": {
+          "cases": 2,
+          "stage": "SIGN_IN_OVERVIEW_READINESS",
+          "actualError": "OVERVIEW_NOT_FOUND",
+          "cause": "UNPROVED"
+        },
+        "displayOrPilotReached": false,
+        "finalBaselinesReached": false
+      }
     }
   ],
   "experience": {
@@ -3885,7 +4238,7 @@
     "reachDiagnostics": "PROTECTED_ACCEPTED_ON_BASE",
     "historicalAccounting": "PRESERVED_SEXTANT_3_OF_3_CROSSDECK_10_OF_3_R1_2_OF_3",
     "registeredNewPlayerWorkspaceSurfaces": 2,
-    "remainingSoftware": "At source851500bd1e against protected mainc0b29d78f7,179 affected surfaces have5 missing declarations: the five unhosted legacy components. New existing Display/unprepared pilot entry declarations and17 conditional Landfall declarations grant no execution or acceptance credit. Canonical HTTP origin repair PR777 passed protected39372424118, merged atc0b29d78f7, passed landed/integrated2-test smokes and is consumed additively. Fresh Invitation merge/final, Landfall browser/native and entry rendered proof remain. Darwin containment and formal per-case/creation/file/challenge/issued-input binding are internal software prerequisites. Account5d440557,Privatee408 andAdmiralty91269 independent rendered findings are resolved within preserved viewport/video limits. Formal reference/layout/protected qualification, physical/device/field and owner acceptance remain separately open.",
+    "remainingSoftware": "At source851500bd1e against protected mainc0b29d78f7,179 affected surfaces have5 missing declarations: the five unhosted legacy components. New existing Display/unprepared pilot entry declarations and17 conditional Landfall declarations grant no execution or acceptance credit. Canonical HTTP origin repair PR777 passed protected39372424118, merged atc0b29d78f7, passed landed/integrated2-test smokes and is consumed additively. Fresh Invitation merge/final, Landfall browser/native and entry rendered proof remain. Darwin containment and formal per-case/creation/file/challenge/issued-input binding are internal software prerequisites. Account5d440557,Privatee408 andAdmiralty91269 independent rendered findings are resolved within preserved viewport/video limits. Formal reference/layout/protected qualification, physical/device/field and owner acceptance remain separately open. The first2042 development runs are failed, not acceptance: Invitation3PASS/1second-accept3323.98ms budget failure despite all4correct second-link origin/cookie/resolve200; physicalLandfall4fixtureprivacy rejection, normalvirtual2SW-controllerabsence aftersignedregionready and reducedvirtual2unexplainedsign-inOverviewabsence; entrynormal2nonexistentDevicesaccountlink and reduced2unexplainedsign-inOverviewabsence. Original budgets/assertions, encrypted diagnostics and fullcleanup are retained; source-causal repairs/observations and fresh rendered review remain required.",
     "independentDevelopmentJourneyReview": {
       "source": "0d8b3c7841966a1d1c8b5dae21570b1043dc7915",
       "reviewer": "/root/sextant_source_review",
@@ -4162,7 +4515,7 @@
       "landedMain": "c0b29d78f7b4c6137c9eb393a10dd9a2112e68ed",
       "consumedBy": "851500bd1ec38f7df0a9ea8734d75e97de2de976",
       "publication": "evidence/20261020-canonical-redirect-installation/publication-index.json",
-      "consumerRecapture": "NOT_YET_EXECUTED"
+      "consumerRecapture": "ACTUAL_SECOND_ISSUED_LINK_ORIGIN_COOKIE_AND_RESOLVE200_CORRECT_IN_FOUR_VARIANTS_39374178162_WHOLE_SUITE_FAILS_SEPARATE_3323_98MS_WAITING_ROOM_BUDGET"
     }
   },
   "externalGates": [
@@ -4227,7 +4580,10 @@
     "evidence/20261019-account-terminal-confirmation/publication-index.json",
     "evidence/20261019-private-confirmation-hover/publication-index.json",
     "evidence/20261019-invitation-origin-diagnostic/publication-index.json",
-    "evidence/20261020-canonical-redirect-installation/publication-index.json"
+    "evidence/20261020-canonical-redirect-installation/publication-index.json",
+    "evidence/20261019-invitation-proxy-consumption/publication-index.json",
+    "evidence/20261019-landfall-first-execution/publication-index.json",
+    "evidence/20261019-display-pilot-first-execution/publication-index.json"
   ],
   "currentProtectedBase": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
   "canonicalHostDependencies": [

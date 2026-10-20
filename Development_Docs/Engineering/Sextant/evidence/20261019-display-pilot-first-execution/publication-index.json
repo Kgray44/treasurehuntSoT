@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "classification": "ENGINEERING_EVIDENCE_ORIGINAL_BYTES_SUBSET_NOT_ACCEPTANCE",
+  "sourceSha": "2042f3e5e8b1474cf46a7555346cfe1e6328449e",
+  "runId": "39374192315",
+  "originalArtifacts": 4,
+  "publishedOriginalArtifacts": 3,
+  "retainedPrivate": [
+    {
+      "sourcePath": "artifacts/landfall-device-lab/hosted-2042f3e5e8b1-1792473508164/run-39374192315/artifacts/landfall-browser-encrypted-failures-2042f3e5e8b1474cf46a7555346cfe1e6328449e/failure.encrypted",
+      "bytes": 16175470,
+      "sha256": "0e9c9dc26a71ecd8117a784e62aeee658581a699423c294d3305ade4ac5a4ab0",
+      "reason": "CANONICAL_PRIVATE_ENCRYPTED_BUNDLE_RETAINED_IN_OWNED_ARTIFACTS_NOT_COPIED_TO_GIT"
+    }
+  ],
+  "reviewFinding": "NORMAL_VARIANTS_SIGN_IN_THEN_NONEXISTENT_ACCOUNT_MENU_DEVICES_LINK_REDUCED_VARIANTS_OVERVIEW_NOT_FOUND_CAUSE_UNPROVED_NO_DISPLAY_PILOT_OR_FINAL_BASELINE_PROOF",
+  "files": [
+    {
+      "path": "files/0001-browser-runtime.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-2042f3e5e8b1-1792473508164/run-39374192315/artifacts/landfall-browser-2042f3e5e8b1474cf46a7555346cfe1e6328449e/browser-diagnostics/7d68a77d-e2f9-46da-9ecf-0e4fbecff022/39bcc351-c240-41e9-8860-2e275c4bd252/browser-runtime.json",
+      "bytes": 3388,
+      "sha256": "e850ca70008ff5d9c19e262577c6b6ddf7c686d4b7c59b52a8a92769718d4fca"
+    },
+    {
+      "path": "files/0002-browser-suite-profile.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-2042f3e5e8b1-1792473508164/run-39374192315/artifacts/landfall-browser-2042f3e5e8b1474cf46a7555346cfe1e6328449e/browser-diagnostics/7d68a77d-e2f9-46da-9ecf-0e4fbecff022/39bcc351-c240-41e9-8860-2e275c4bd252/browser-suite-profile.json",
+      "bytes": 615,
+      "sha256": "63ac7de6d463502b3b4286851330550db47d8b8f3c45dc2075ddbe7c8d208115"
+    },
+    {
+      "path": "files/0003-retention.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-2042f3e5e8b1-1792473508164/run-39374192315/artifacts/landfall-browser-encrypted-failures-2042f3e5e8b1474cf46a7555346cfe1e6328449e/retention.json",
+      "bytes": 889,
+      "sha256": "27d747acb9a299db408e7247d1d3bf576e8c97d24d43c2f4b109b9db4902c447"
+    },
+    {
+      "path": "files/0004-hosted-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-2042f3e5e8b1-1792473508164/run-39374192315/hosted-receipt.json",
+      "bytes": 1526,
+      "sha256": "eaa6065b9cb9f39f2867e3fbfd7df1db617e338a469ba164b8cf3a9c7b76fbce"
+    },
+    {
+      "path": "files/0005-dispatch.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-2042f3e5e8b1-1792473508164/dispatch.json",
+      "bytes": 2029,
+      "sha256": "2859640c17f83beab88d51c07281a8d1af0ea129259efaff33a5d3b362f2ac52"
+    },
+    {
+      "path": "files/0006-entry-39374192315.log",
+      "sourcePath": "artifacts/sextant-phase4/entry-39374192315.log",
+      "bytes": 372562,
+      "sha256": "de0a3cdb3a1c47481c10669942c9e85389c953fb20514ac5a98c2f170134df02"
+    }
+  ]
+}
