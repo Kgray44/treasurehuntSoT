@@ -6,7 +6,7 @@
   "status": "IN_PROGRESS",
   "initialCandidate": "5ff2739776513b8f8ed20c1cb661c164216d0eeb",
   "protectedBase": "f6af0b0e151f15f1a23808413ccee531b9827ca7",
-  "currentSoftwareCandidate": "818ad35622324f68b30434602cb92a49fc5dc3ae",
+  "currentSoftwareCandidate": "8c902b9967978f096f2f6376f4b9a6ac16f4ab4a",
   "pr": "https://github.com/Kgray44/treasurehuntSoT/pull/709",
   "independentSourceReview": {
     "reviewerContext": "/root/sextant_source_review",
@@ -2057,6 +2057,147 @@
         "runtimeCleanupProved": false,
         "oneFreshExactSourceRetry": "39352498402"
       }
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "7b785a39e3c2e059ec46c2035e28af6a8b1fbdb0",
+      "transportSha": "d8c27f0f76a14348a0b2c4747096d250e83362af",
+      "runId": "39352498402",
+      "status": "HARVESTED_SUCCESS_FOUR_VARIANTS_RENDERED_REVIEW_PENDING",
+      "artifacts": 210,
+      "productionBuild": "PASS",
+      "qualification": false,
+      "cleanup": {
+        "runtime": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 0,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 0,
+            "elapsedMs": 2,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 143,
+            "elapsedMs": 56,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        },
+        "transport": {
+          "result": "PASS",
+          "ownedResources": [
+            "refs/heads/codex/landfall-lab-7b785a39e3c2-1792458974319"
+          ],
+          "remainingResources": []
+        }
+      },
+      "publication": "evidence/20261019-community-pointer-repair/publication-index.json"
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "8c902b9967978f096f2f6376f4b9a6ac16f4ab4a",
+      "transportSha": "3a626dd8970ece0f35dee246ca2cd0cb537fa9f4",
+      "runId": "39353027923",
+      "status": "HARVESTED_SUCCESS_FOUR_VARIANTS_RENDERED_PARCHMENT_TEXT_DEFECT",
+      "artifacts": 50,
+      "productionBuild": "PASS",
+      "qualification": false,
+      "cleanup": {
+        "runtime": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 0,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 0,
+            "elapsedMs": 3,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 143,
+            "elapsedMs": 54,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        },
+        "transport": {
+          "result": "PASS",
+          "ownedResources": [
+            "refs/heads/codex/landfall-lab-8c902b996797-1792459318884"
+          ],
+          "remainingResources": []
+        }
+      },
+      "publication": "evidence/20261019-creator-landmark-repair/publication-index.json",
+      "independentRenderedReview": {
+        "reviewer": "/root/sextant_source_review",
+        "originalHashesVerified": 50,
+        "pngInspected": 20,
+        "videosHashed": 24,
+        "videosReviewed": false,
+        "sourceTree": "83b44e874fc9695c0b6477eaeebc212be6978484",
+        "sourceFingerprint": "0481738e0ca068b50abe5f59dbd96d7f890a1ed6b769e6c0f7862e090cb7732b",
+        "sourceBlobs": 1948,
+        "finding": {
+          "id": "R39353027923-01",
+          "priority": 2,
+          "classification": "MATERIAL_VISIBLE_CONTRAST_DEFECT",
+          "detail": "All four new-form heading/explanation and optional-cover helper captures use pale foreground against parchment despite axe zero violations."
+        },
+        "limits": [
+          "MOBILE_DRAFT_CAPTURE_ONLY_PASSAGE_LIBRARY_NOT_LOWER_CHAPTER_CANVAS_OR_INSPECTOR",
+          "MOBILE_LIBRARY_EDIT_ACTION_OFFSCREEN_THOUGH_REOPEN_PASSES",
+          "NO_FORMAL_POSITIVE_CREATION_PROTECTED_NATIVE_PHYSICAL_OR_OWNER_ACCEPTANCE"
+        ]
+      },
+      "activationTimings": 24,
+      "maximumMeasuredReadinessMs": 916.342792,
+      "cancellationCreatedNothing": true,
+      "actualPrivateDraftCreatedAndReopened": true,
+      "canonicalProgressAndEditionBytesUnchanged": true,
+      "landmarkAxeFindingsResolved": true
     }
   ],
   "experience": {
@@ -2071,7 +2212,7 @@
     "reachDiagnostics": "PROTECTED_ACCEPTED_ON_BASE",
     "historicalAccounting": "PRESERVED_SEXTANT_3_OF_3_CROSSDECK_10_OF_3_R1_2_OF_3",
     "registeredNewPlayerWorkspaceSurfaces": 2,
-    "remainingSoftware": "43 unregistered affected surfaces at818ad35622 across178affected. Authoring full-label/Suite captures and bounds pass4 with independent40PNG review clear within viewport/empty-resource limits. History/catalog visible-content review clear with explicit fallback/viewport limits; normal catalog Journal opening separately about10seconds. Community7b checkout cancelled before product, single exact-source infrastructure retry pending. Creator actual creation reached but desktop Studio/mobile Profile setup landmarks fail4; narrow named-section repair underway. Formal positive creation needs canonical case-specific support; account/recovery/invitation/Admiralty/private-content/Landfall fixtures, governed legacy disposition, formal reference/layout and protected qualification remain. Darwin ownership, accepted Crossdeck and external/owner gates stay separate.",
+    "remainingSoftware": "43 unregistered affected surfaces at8c902b9967 across178affected. Creator four complete journeys resolve reached landmark axe findings and preserve final baselines, but independent20PNG review finds pale heading/body/helper text on parchment R39353027923-01. Narrow local token repair and additive lower mobile captures are prepared. Fresh Community39352498402 passes4 after pre-product checkout cancellation; independent rendered review pending. Formal continuity in two new declarations requires selector-object correction preserving prose/backend assertions. Live Admiralty read-only fixture/registration is in preparation. Account/recovery/invitation/private-content/Landfall fixtures, governed legacy disposition, formal reference/layout, positive formal creation and protected qualification remain. Darwin ownership, accepted Crossdeck and external/owner gates stay separate.",
     "independentDevelopmentJourneyReview": {
       "source": "0d8b3c7841966a1d1c8b5dae21570b1043dc7915",
       "reviewer": "/root/sextant_source_review",
@@ -2103,9 +2244,9 @@
     "registeredNewPassportSourcePaths": 14,
     "newlyRegisteredAffectedPassportSurfaces": 12,
     "sourceReconciliation": {
-      "path": "phase4-source-reconciliation-creator-entry-20261019.json",
-      "sha256": "3be597150df6e2ed84099f141c66ed90ce790e041b86a22e7a23cb026e522e0e",
-      "sourceSha": "818ad35622324f68b30434602cb92a49fc5dc3ae",
+      "path": "phase4-source-reconciliation-creator-landmark-20261019.json",
+      "sha256": "0a7feedc37241026acaca47b26b8e4a64143051ed662cdf1c4839f86dc88c728",
+      "sourceSha": "8c902b9967978f096f2f6376f4b9a6ac16f4ab4a",
       "baseSha": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
       "affected": 178,
       "unregistered": 43,
@@ -2189,6 +2330,15 @@
         "path": "phase4-source-reconciliation-creator-entry-20261019.json",
         "sha256": "3be597150df6e2ed84099f141c66ed90ce790e041b86a22e7a23cb026e522e0e",
         "sourceSha": "818ad35622324f68b30434602cb92a49fc5dc3ae",
+        "baseSha": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
+        "affected": 178,
+        "unregistered": 43,
+        "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
+      },
+      {
+        "path": "phase4-source-reconciliation-creator-landmark-20261019.json",
+        "sha256": "0a7feedc37241026acaca47b26b8e4a64143051ed662cdf1c4839f86dc88c728",
+        "sourceSha": "8c902b9967978f096f2f6376f4b9a6ac16f4ab4a",
         "baseSha": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
         "affected": 178,
         "unregistered": 43,
@@ -2301,7 +2451,9 @@
     "evidence/20261019-community-artwork-diagnostic/publication-index.json",
     "evidence/20261019-authoring-label-repair/publication-index.json",
     "evidence/20261019-creator-landmark-failure/publication-index.json",
-    "evidence/20261019-community-checkout-cancelled/publication-index.json"
+    "evidence/20261019-community-checkout-cancelled/publication-index.json",
+    "evidence/20261019-community-pointer-repair/publication-index.json",
+    "evidence/20261019-creator-landmark-repair/publication-index.json"
   ],
   "currentProtectedBase": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
   "canonicalHostDependencies": [
@@ -2315,12 +2467,5 @@
       "passingCompanionOrBuildIsNotProductExecution": true
     }
   ],
-  "pendingDevelopmentRuns": [
-    {
-      "runId": "39352498402",
-      "sourceSha": "7b785a39e3c2e059ec46c2035e28af6a8b1fbdb0",
-      "target": "sextant-community",
-      "scope": "SINGLE_FRESH_ATTEMPT_AFTER_PRE_PRODUCT_CHECKOUT_CANCELLATION_SAME_BUDGET"
-    }
-  ]
+  "pendingDevelopmentRuns": []
 }

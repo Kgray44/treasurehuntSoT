@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/sextant-creator-entry-journeys.spec.ts"
+  ],
+  "status": "PASS",
+  "failureCategory": null,
+  "failureCode": null,
+  "diagnosticBinding": {
+    "version": 1,
+    "runId": "0dc08477-989d-410f-b091-03957b21da7d",
+    "scopeId": "a1fe1476-596a-445f-8652-83461dfa3b09",
+    "baseSha": "8c902b9967978f096f2f6376f4b9a6ac16f4ab4a",
+    "candidateSha": "8c902b9967978f096f2f6376f4b9a6ac16f4ab4a",
+    "planDigest": "4ee775d0c53922d93162f0bda952aa7f04ec8e2d552f205766ae5ef30ab85d0b"
+  }
+}
