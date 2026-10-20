@@ -266,11 +266,7 @@
         "docsValidation": "PASS",
         "featureValidation": "PASS"
       },
-      "sourceRepairFindingIds": [
-        "R39363230222-01",
-        "R39364691371-01",
-        "R39364691371-02"
-      ],
+      "sourceRepairFindingIds": ["R39363230222-01", "R39364691371-01", "R39364691371-02"],
       "findingResolution": "FRESH_CAPTURE_AND_INDEPENDENT_REVIEW_PENDING"
     }
   },
@@ -412,10 +408,7 @@
         "failed": 0,
         "unsupported": 0
       },
-      "scope": [
-        "android-doze-recovery",
-        "android-standby-recovery"
-      ],
+      "scope": ["android-doze-recovery", "android-standby-recovery"],
       "osReadback": "ENTRY_AND_WAKE_CONFIRMED",
       "nativeInstrumentation": "PASS",
       "cleanup": "PASS",
@@ -575,10 +568,7 @@
         "retention": "INCOMPLETE",
         "members": 15,
         "rawBytes": 64004083,
-        "issues": [
-          "LIMIT",
-          "FAILURE_ATTACHMENTS_INCOMPLETE"
-        ],
+        "issues": ["LIMIT", "FAILURE_ATTACHMENTS_INCOMPLETE"],
         "fixedBudgetUnchanged": true
       },
       "cleanup": "RUNTIME_PORTS_AND_TRANSPORT_PASS",
@@ -656,9 +646,7 @@
       "maximumResourceReadinessMs": 1268.988870000001,
       "renderedReview": "PREVIEW_TEXT_LEGIBLE_AND_AUTHORING_RAIL_CLEARS_MASTHEAD_ALL_FOUR_VARIANTS_NO_NEW_MATERIAL_DEFECT_IN_EIGHT_REPAIR_CAPTURES",
       "cleanup": "RUNTIME_TREES_PORTS_AND_TRANSPORT_PASS",
-      "limits": [
-        "DEVELOPMENT_RENDERED_REVIEW_NOT_PROTECTED_NATIVE_PHYSICAL_OR_OWNER_ACCEPTANCE"
-      ]
+      "limits": ["DEVELOPMENT_RENDERED_REVIEW_NOT_PROTECTED_NATIVE_PHYSICAL_OR_OWNER_ACCEPTANCE"]
     },
     {
       "platform": "CHROMIUM",
@@ -687,9 +675,7 @@
       "qualification": false,
       "diagnostics": {
         "retention": "INCOMPLETE",
-        "issues": [
-          "MANIFEST_INVALID"
-        ],
+        "issues": ["MANIFEST_INVALID"],
         "memberCount": 25,
         "rawBytes": 42052355,
         "ciphertextBytes": 74779850,
@@ -713,10 +699,7 @@
       "ordinaryEntryAndTenDistrictsReached": true,
       "diagnostics": {
         "retention": "INCOMPLETE",
-        "issues": [
-          "LIMIT",
-          "FAILURE_ATTACHMENTS_INCOMPLETE"
-        ],
+        "issues": ["LIMIT", "FAILURE_ATTACHMENTS_INCOMPLETE"],
         "memberCount": 63,
         "rawBytes": 50910077,
         "ciphertextBytes": 90550950,
@@ -760,27 +743,18 @@
       "qualification": false,
       "failures": [
         {
-          "variants": [
-            "1280-no-preference",
-            "1280-reduce",
-            "390-reduce"
-          ],
+          "variants": ["1280-no-preference", "1280-reduce", "390-reduce"],
           "failure": "CLEAR_SEARCH_RETURNED_TO_EARLIER_URL_AND_RESTORED_OLD_DRAFT_QUERY"
         },
         {
-          "variants": [
-            "390-no-preference"
-          ],
+          "variants": ["390-no-preference"],
           "failure": "GUIDE_DETAIL_HEADING_NOT_FOUND",
           "cause": "UNCONFIRMED_NOT_EXPLAINED_BY_CLEAR_FIX"
         }
       ],
       "diagnostics": {
         "retention": "INCOMPLETE",
-        "issues": [
-          "LIMIT",
-          "FAILURE_ATTACHMENTS_INCOMPLETE"
-        ],
+        "issues": ["LIMIT", "FAILURE_ATTACHMENTS_INCOMPLETE"],
         "memberCount": 90,
         "rawBytes": 64726615,
         "ciphertextBytes": 115132058,
@@ -978,9 +952,7 @@
         },
         "transport": {
           "result": "PASS",
-          "ownedResources": [
-            "refs/heads/codex/landfall-lab-fe7350036e5d-1792449350361"
-          ],
+          "ownedResources": ["refs/heads/codex/landfall-lab-fe7350036e5d-1792449350361"],
           "remainingResources": []
         }
       }
@@ -1034,9 +1006,7 @@
         },
         "transport": {
           "result": "PASS",
-          "ownedResources": [
-            "refs/heads/codex/landfall-lab-926a170b0fe6-1792450196141"
-          ],
+          "ownedResources": ["refs/heads/codex/landfall-lab-926a170b0fe6-1792450196141"],
           "remainingResources": []
         }
       },
@@ -1103,9 +1073,7 @@
         },
         "transport": {
           "result": "PASS",
-          "ownedResources": [
-            "refs/heads/codex/landfall-lab-926a170b0fe6-1792450191776"
-          ],
+          "ownedResources": ["refs/heads/codex/landfall-lab-926a170b0fe6-1792450191776"],
           "remainingResources": []
         }
       },
@@ -1176,9 +1144,7 @@
         },
         "transport": {
           "result": "PASS",
-          "ownedResources": [
-            "refs/heads/codex/landfall-lab-ff7b5d0e4f9f-1792450783609"
-          ],
+          "ownedResources": ["refs/heads/codex/landfall-lab-ff7b5d0e4f9f-1792450783609"],
           "remainingResources": []
         }
       },
@@ -1245,9 +1211,7 @@
         },
         "transport": {
           "result": "PASS",
-          "ownedResources": [
-            "refs/heads/codex/landfall-lab-bdb99837af8e-1792451179627"
-          ],
+          "ownedResources": ["refs/heads/codex/landfall-lab-bdb99837af8e-1792451179627"],
           "remainingResources": []
         }
       },
@@ -1321,9 +1285,7 @@
         },
         "transport": {
           "result": "PASS",
-          "ownedResources": [
-            "refs/heads/codex/landfall-lab-79a49bbe9c08-1792451421819"
-          ],
+          "ownedResources": ["refs/heads/codex/landfall-lab-79a49bbe9c08-1792451421819"],
           "remainingResources": []
         }
       },
@@ -1394,9 +1356,7 @@
         },
         "transport": {
           "result": "PASS",
-          "ownedResources": [
-            "refs/heads/codex/landfall-lab-b601c604c34c-1792451495461"
-          ],
+          "ownedResources": ["refs/heads/codex/landfall-lab-b601c604c34c-1792451495461"],
           "remainingResources": []
         }
       },
@@ -1467,9 +1427,7 @@
         },
         "transport": {
           "result": "PASS",
-          "ownedResources": [
-            "refs/heads/codex/landfall-lab-08adc7effd0c-1792452512048"
-          ],
+          "ownedResources": ["refs/heads/codex/landfall-lab-08adc7effd0c-1792452512048"],
           "remainingResources": []
         }
       },
@@ -1544,9 +1502,7 @@
         },
         "transport": {
           "result": "PASS",
-          "ownedResources": [
-            "refs/heads/codex/landfall-lab-08adc7effd0c-1792452507591"
-          ],
+          "ownedResources": ["refs/heads/codex/landfall-lab-08adc7effd0c-1792452507591"],
           "remainingResources": []
         }
       },
@@ -1617,9 +1573,7 @@
         },
         "transport": {
           "result": "PASS",
-          "ownedResources": [
-            "refs/heads/codex/landfall-lab-08adc7effd0c-1792452516380"
-          ],
+          "ownedResources": ["refs/heads/codex/landfall-lab-08adc7effd0c-1792452516380"],
           "remainingResources": []
         }
       },
@@ -1690,9 +1644,7 @@
         },
         "transport": {
           "result": "PASS",
-          "ownedResources": [
-            "refs/heads/codex/landfall-lab-3d2d430fe1b0-1792453745811"
-          ],
+          "ownedResources": ["refs/heads/codex/landfall-lab-3d2d430fe1b0-1792453745811"],
           "remainingResources": []
         }
       },
@@ -1765,9 +1717,7 @@
         },
         "transport": {
           "result": "PASS",
-          "ownedResources": [
-            "refs/heads/codex/landfall-lab-3d2d430fe1b0-1792453759664"
-          ],
+          "ownedResources": ["refs/heads/codex/landfall-lab-3d2d430fe1b0-1792453759664"],
           "remainingResources": []
         }
       },
@@ -1846,9 +1796,7 @@
         },
         "transport": {
           "result": "PASS",
-          "ownedResources": [
-            "refs/heads/codex/landfall-lab-395940ad721c-1792453829190"
-          ],
+          "ownedResources": ["refs/heads/codex/landfall-lab-395940ad721c-1792453829190"],
           "remainingResources": []
         }
       },
@@ -1929,9 +1877,7 @@
         },
         "transport": {
           "result": "PASS",
-          "ownedResources": [
-            "refs/heads/codex/landfall-lab-3d2d430fe1b0-1792453784463"
-          ],
+          "ownedResources": ["refs/heads/codex/landfall-lab-3d2d430fe1b0-1792453784463"],
           "remainingResources": []
         }
       },
@@ -2029,9 +1975,7 @@
         },
         "transport": {
           "result": "PASS",
-          "ownedResources": [
-            "refs/heads/codex/landfall-lab-7b785a39e3c2-1792454667906"
-          ],
+          "ownedResources": ["refs/heads/codex/landfall-lab-7b785a39e3c2-1792454667906"],
           "remainingResources": []
         }
       },
@@ -2106,9 +2050,7 @@
         },
         "transport": {
           "result": "PASS",
-          "ownedResources": [
-            "refs/heads/codex/landfall-lab-818ad3562232-1792455079070"
-          ],
+          "ownedResources": ["refs/heads/codex/landfall-lab-818ad3562232-1792455079070"],
           "remainingResources": []
         }
       },
@@ -2153,9 +2095,7 @@
         "runtime": "NO_RUNTIME_RECEIPT_NOT_PROVED",
         "transport": {
           "result": "PASS",
-          "ownedResources": [
-            "refs/heads/codex/landfall-lab-7b785a39e3c2-1792454672439"
-          ],
+          "ownedResources": ["refs/heads/codex/landfall-lab-7b785a39e3c2-1792454672439"],
           "remainingResources": []
         }
       },
@@ -2220,9 +2160,7 @@
         },
         "transport": {
           "result": "PASS",
-          "ownedResources": [
-            "refs/heads/codex/landfall-lab-7b785a39e3c2-1792458974319"
-          ],
+          "ownedResources": ["refs/heads/codex/landfall-lab-7b785a39e3c2-1792458974319"],
           "remainingResources": []
         }
       },
@@ -2309,9 +2247,7 @@
         },
         "transport": {
           "result": "PASS",
-          "ownedResources": [
-            "refs/heads/codex/landfall-lab-8c902b996797-1792459318884"
-          ],
+          "ownedResources": ["refs/heads/codex/landfall-lab-8c902b996797-1792459318884"],
           "remainingResources": []
         }
       },
@@ -2393,9 +2329,7 @@
         },
         "transport": {
           "result": "PASS",
-          "ownedResources": [
-            "refs/heads/codex/landfall-lab-c518c1680993-1792463516836"
-          ],
+          "ownedResources": ["refs/heads/codex/landfall-lab-c518c1680993-1792463516836"],
           "remainingResources": []
         }
       },
@@ -2471,9 +2405,7 @@
         },
         "transport": {
           "result": "PASS",
-          "ownedResources": [
-            "refs/heads/codex/landfall-lab-c518c1680993-1792463559981"
-          ],
+          "ownedResources": ["refs/heads/codex/landfall-lab-c518c1680993-1792463559981"],
           "remainingResources": []
         }
       },
@@ -2551,19 +2483,14 @@
         },
         "transport": {
           "result": "PASS",
-          "ownedResources": [
-            "refs/heads/codex/landfall-lab-fb8961fa9434-1792464941237"
-          ],
+          "ownedResources": ["refs/heads/codex/landfall-lab-fb8961fa9434-1792464941237"],
           "remainingResources": []
         }
       },
       "publication": "evidence/20261019-private-sortable-diagnostic/publication-index.json",
       "diagnostics": {
         "retention": "INCOMPLETE",
-        "issues": [
-          "LIMIT",
-          "FAILURE_ATTACHMENTS_INCOMPLETE"
-        ],
+        "issues": ["LIMIT", "FAILURE_ATTACHMENTS_INCOMPLETE"],
         "memberCount": 40,
         "rawBytes": 56761031,
         "ciphertextBytes": 100937042,
@@ -2649,9 +2576,7 @@
         },
         "transport": {
           "result": "PASS",
-          "ownedResources": [
-            "refs/heads/codex/landfall-lab-fb8961fa9434-1792464924837"
-          ],
+          "ownedResources": ["refs/heads/codex/landfall-lab-fb8961fa9434-1792464924837"],
           "remainingResources": []
         }
       },
@@ -2729,9 +2654,7 @@
         },
         "transport": {
           "result": "PASS",
-          "ownedResources": [
-            "refs/heads/codex/landfall-lab-2f2013ab1a04-1792466055349"
-          ],
+          "ownedResources": ["refs/heads/codex/landfall-lab-2f2013ab1a04-1792466055349"],
           "remainingResources": []
         }
       },
@@ -2859,9 +2782,7 @@
         },
         "transport": {
           "result": "PASS",
-          "ownedResources": [
-            "refs/heads/codex/landfall-lab-2f2013ab1a04-1792466048040"
-          ],
+          "ownedResources": ["refs/heads/codex/landfall-lab-2f2013ab1a04-1792466048040"],
           "remainingResources": []
         }
       },
@@ -2938,9 +2859,7 @@
         },
         "transport": {
           "result": "PASS",
-          "ownedResources": [
-            "refs/heads/codex/landfall-lab-bcf82bdce20a-1792467049142"
-          ],
+          "ownedResources": ["refs/heads/codex/landfall-lab-bcf82bdce20a-1792467049142"],
           "remainingResources": []
         }
       },
@@ -2979,10 +2898,7 @@
             "priority": 2,
             "classification": "PRODUCT_LAYOUT",
             "scope": "MOBILE_PRIMARY_ACCOUNT_ID_ROW_AND_COPY_CONTROL_CLIPPED_BY_NONWRAPPING_FLEX_AND_HORIZONTAL_CLIP",
-            "images": [
-              "files/0004-admiralty-dossier.png",
-              "files/0022-admiralty-dossier.png"
-            ],
+            "images": ["files/0004-admiralty-dossier.png", "files/0022-admiralty-dossier.png"],
             "repair": "WRAP_IDENTITY_ROW_AND_HANDLE_GROUP_AND_SCOPED_FULL_IDENTIFIER_TEXT_WITH_NONSHRINKING_COPY"
           },
           {
@@ -3049,9 +2965,7 @@
         },
         "transport": {
           "result": "PASS",
-          "ownedResources": [
-            "refs/heads/codex/landfall-lab-bcf82bdce20a-1792467056036"
-          ],
+          "ownedResources": ["refs/heads/codex/landfall-lab-bcf82bdce20a-1792467056036"],
           "remainingResources": []
         }
       },
@@ -3076,6 +2990,339 @@
         "point": "AFTER_ACTUAL_REGISTER_WRONG_VALID_VERIFY_AND_PASSWORD_RESET_AT_PASSPORT_ACCOUNT_MENU_RETURN_LINK_STRICT_MULTIPLE",
         "emailChangeLifecycleAndFinalBaselinesReached": false,
         "repair": "SCOPE_EXISTING_PERSONAL_HARBOR_LINK_TO_ACTUAL_OPEN_ACCOUNT_NAVIGATION_DIALOG"
+      }
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "91269f5ccf0f8d46c377fe1c47a513be283164dc",
+      "transportSha": "b471b16044d8d6fbb5916175ff28a91218ffb316",
+      "runId": "39366688335",
+      "status": "HARVESTED_SUCCESS_FOUR_VARIANTS_INDEPENDENT_REVIEW_PENDING",
+      "artifacts": 83,
+      "productionBuild": "PASS",
+      "qualification": false,
+      "cleanup": {
+        "runtime": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 0,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 0,
+            "elapsedMs": 2,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 143,
+            "elapsedMs": 53,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        },
+        "transport": {
+          "result": "PASS",
+          "ownedResources": ["refs/heads/codex/landfall-lab-91269f5ccf0f-1792468429818"],
+          "remainingResources": []
+        }
+      },
+      "publication": "evidence/20261019-private-content-outcomes/publication-index.json",
+      "source": {
+        "sourceSha": "91269f5ccf0f8d46c377fe1c47a513be283164dc",
+        "sourceTree": "fff049868faa382c23c5e1a7f86cc115d4c4ee10",
+        "dirty": false,
+        "sourceFingerprint": "cf8d419efec2a5de0680d3509969dd889dcf9027a49ac48979ff82ae25b01130"
+      },
+      "responseMs": {
+        "budget": 3000,
+        "points": 20,
+        "maximum": 392.0639169999995
+      },
+      "independentRenderedReview": {
+        "reviewer": "/root/sextant_source_review",
+        "status": "PENDING",
+        "hashedFiles": 86,
+        "hostedArtifacts": 83,
+        "pngCount": 36,
+        "videoCount": 40,
+        "videos": "NOT_YET_VIEWED"
+      },
+      "storage": {
+        "schemaVersion": 1,
+        "classification": "ENGINEERING_SYNTHETIC_STORAGE_LIFECYCLE_NOT_ACCEPTANCE",
+        "sourceSha": "91269f5ccf0f8d46c377fe1c47a513be283164dc",
+        "ownershipId": "968f4c22-cd95-4f4e-96db-e2dd98b7c656",
+        "taskRoot": "/tmp/sextant-private-91269f5ccf0f-bv11CD",
+        "createdRealPath": "/tmp/sextant-private-91269f5ccf0f-bv11CD",
+        "markerSha256": "5c25e5fdb0dba3b13fff55442fcb8da2a83e2e45a15cf85711d732493e9ea727",
+        "createdAt": "2026-10-20T03:56:45.767Z",
+        "status": "PASS_REMOVED_AFTER_CANONICAL_PROCESS_CLEANUP",
+        "keyPublished": false,
+        "processCleanupVerified": true,
+        "finishedAt": "2026-10-20T03:58:59.365Z",
+        "rootAbsent": true
+      },
+      "assertions": {
+        "actualEncryptedDownloadAndCanonicalProjectionVerified": true,
+        "unchangedActiveProgressAndEditionBytes": true,
+        "noPublishedVersionOrVoyageCreated": true
+      }
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "91269f5ccf0f8d46c377fe1c47a513be283164dc",
+      "transportSha": "81b941b431c9cfe147cd014a4786860356e65357",
+      "runId": "39366678779",
+      "status": "HARVESTED_SUCCESS_FOUR_VARIANTS_INDEPENDENT_REVIEW_PENDING",
+      "artifacts": 90,
+      "productionBuild": "PASS",
+      "qualification": false,
+      "cleanup": {
+        "runtime": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 0,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 0,
+            "elapsedMs": 2,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 143,
+            "elapsedMs": 56,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        },
+        "transport": {
+          "result": "PASS",
+          "ownedResources": ["refs/heads/codex/landfall-lab-91269f5ccf0f-1792468422728"],
+          "remainingResources": []
+        }
+      },
+      "publication": "evidence/20261019-admiralty-identity-recapture/publication-index.json",
+      "source": {
+        "sourceSha": "91269f5ccf0f8d46c377fe1c47a513be283164dc",
+        "sourceTree": "fff049868faa382c23c5e1a7f86cc115d4c4ee10",
+        "dirty": false,
+        "sourceFingerprint": "14e2cacec0cf6ef7125de1dbc83fdcbf8b4a7cf50e2d4ca47003d96e2f4d2ada"
+      },
+      "responseMs": {
+        "budget": 3000,
+        "points": 28,
+        "maximum": 566.51181
+      },
+      "independentRenderedReview": {
+        "reviewer": "/root/sextant_source_review",
+        "status": "PENDING",
+        "hashedFiles": 93,
+        "hostedArtifacts": 90,
+        "pngCount": 40,
+        "videoCount": 44,
+        "videos": "NOT_YET_VIEWED"
+      },
+      "assertions": {
+        "unchangedCanonicalProgressAndEditionBytes": true,
+        "requestsGrantsAndAssuranceCounts": "ZERO_TO_ZERO",
+        "noConsentRequestAssuranceApprovedReadOrCommand": true
+      }
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "91269f5ccf0f8d46c377fe1c47a513be283164dc",
+      "transportSha": "f01f44582273af0725a87f23ed30d9de3e30d63b",
+      "runId": "39366698914",
+      "status": "HARVESTED_SUCCESS_FOUR_VARIANTS_DIRTY_SOURCE_IDENTITY_AUDIT_AND_INDEPENDENT_REVIEW_PENDING",
+      "artifacts": 114,
+      "productionBuild": "PASS",
+      "qualification": false,
+      "cleanup": {
+        "runtime": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 0,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 0,
+            "elapsedMs": 4,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 143,
+            "elapsedMs": 58,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        },
+        "transport": {
+          "result": "PASS",
+          "ownedResources": ["refs/heads/codex/landfall-lab-91269f5ccf0f-1792468436626"],
+          "remainingResources": []
+        }
+      },
+      "publication": "evidence/20261019-account-recovery-lifecycle/publication-index.json",
+      "source": {
+        "sourceSha": "91269f5ccf0f8d46c377fe1c47a513be283164dc",
+        "sourceTree": "fff049868faa382c23c5e1a7f86cc115d4c4ee10",
+        "dirty": true,
+        "sourceFingerprint": "868e0279da976a40acb6809beb3af0c948a8d8924744c4440198402215192331"
+      },
+      "responseMs": {
+        "budget": 3000,
+        "points": 60,
+        "maximum": 1853.8002730000007
+      },
+      "independentRenderedReview": {
+        "reviewer": "/root/sextant_source_review",
+        "status": "PENDING",
+        "hashedFiles": 117,
+        "hostedArtifacts": 114,
+        "pngCount": 52,
+        "videoCount": 56,
+        "videos": "NOT_YET_VIEWED"
+      },
+      "sourceDisposition": "DIRTY_TRUE_PRESERVED_NO_CLEAN_SOURCE_ACCEPTANCE",
+      "assertions": {
+        "actualProductionRegistrationVerificationPasswordResetAndEmailChange": true,
+        "actualDeactivationReactivationAndScheduledDeletionCancellation": true,
+        "finalSameAccountActiveWithNoChronicleOrMembership": true,
+        "unchangedActiveProgressAndEditionBytes": true
+      }
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "91269f5ccf0f8d46c377fe1c47a513be283164dc",
+      "transportSha": "a0b762e9357add3e4b82db8e213e32c523df7970",
+      "runId": "39366710226",
+      "status": "HARVESTED_FAILURE_FOUR_VARIANTS_AT_WRONG_PIN_ERROR_SELECTOR",
+      "artifacts": 4,
+      "productionBuild": "PASS",
+      "qualification": false,
+      "cleanup": {
+        "runtime": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 1,
+            "elapsedMs": 2,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 143,
+            "elapsedMs": 57,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        },
+        "transport": {
+          "result": "PASS",
+          "ownedResources": ["refs/heads/codex/landfall-lab-91269f5ccf0f-1792468443700"],
+          "remainingResources": []
+        }
+      },
+      "publication": "evidence/20261019-invitation-pin-alert-diagnostic/publication-index.json",
+      "diagnostics": {
+        "retention": "COMPLETE",
+        "issues": [],
+        "memberCount": 25,
+        "rawBytes": 31874207,
+        "ciphertextBytes": 56683618,
+        "fixedBudgetUnchanged": true,
+        "retainedPrivate": [
+          {
+            "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468443700/run-39366710226/artifacts/landfall-browser-encrypted-failures-91269f5ccf0f8d46c377fe1c47a513be283164dc/failure.encrypted",
+            "bytes": 56683618,
+            "sha256": "b2958988bde7f65d644fe2d7eaa9bbbe9fbe2ee455178677f2a47fed1f28da24",
+            "reason": "CANONICAL_PRIVATE_ENCRYPTED_BUNDLE_RETAINED_IN_OWNED_ARTIFACTS_NOT_COPIED_TO_GIT"
+          }
+        ]
+      },
+      "failure": {
+        "point": "ACTUAL_WRONG_PIN_400_ERROR_ASSERTION_ALSO_MATCHES_NEXT_ROUTE_ANNOUNCER",
+        "invitationAcceptClaimMergeAndFinalBaselinesReached": false,
+        "repair": "SCOPE_SAME_ERROR_ASSERTION_AND_CAPTURE_TO_ACTUAL_INVITATION_MAIN"
       }
     }
   ],
@@ -3396,7 +3643,11 @@
     "evidence/20261019-private-group-repair/publication-index.json",
     "evidence/20261019-admiralty-dossier-title-diagnostic/publication-index.json",
     "evidence/20261019-admiralty-dossier-ready/publication-index.json",
-    "evidence/20261019-account-passport-return-diagnostic/publication-index.json"
+    "evidence/20261019-account-passport-return-diagnostic/publication-index.json",
+    "evidence/20261019-private-content-outcomes/publication-index.json",
+    "evidence/20261019-admiralty-identity-recapture/publication-index.json",
+    "evidence/20261019-account-recovery-lifecycle/publication-index.json",
+    "evidence/20261019-invitation-pin-alert-diagnostic/publication-index.json"
   ],
   "currentProtectedBase": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
   "canonicalHostDependencies": [
@@ -3410,30 +3661,5 @@
       "passingCompanionOrBuildIsNotProductExecution": true
     }
   ],
-  "pendingDevelopmentRuns": [
-    {
-      "runId": "39366678779",
-      "sourceSha": "91269f5ccf0f8d46c377fe1c47a513be283164dc",
-      "target": "sextant-admiralty",
-      "scope": "MOBILE_PRIMARY_IDENTIFIER_WRAP_AND_ACTUAL_MASTHEAD_FULL_VIEWPORT_RECAPTURE"
-    },
-    {
-      "runId": "39366688335",
-      "sourceSha": "91269f5ccf0f8d46c377fe1c47a513be283164dc",
-      "target": "sextant-private-content",
-      "scope": "ACTUAL_ERROR_AND_INSPECTION_PLAN_SUCCESS_CONFIRM_RECAPTURE"
-    },
-    {
-      "runId": "39366698914",
-      "sourceSha": "91269f5ccf0f8d46c377fe1c47a513be283164dc",
-      "target": "sextant-account-recovery",
-      "scope": "ACTUAL_OPEN_MENU_PASSPORT_RETURN_REPAIR"
-    },
-    {
-      "runId": "39366710226",
-      "sourceSha": "91269f5ccf0f8d46c377fe1c47a513be283164dc",
-      "target": "sextant-invitation",
-      "scope": "FIRST_ACTUAL_ISSUED_INVITATIONS_AND_CANONICAL_GUEST_CLAIM_MERGE_DEVELOPMENT"
-    }
-  ]
+  "pendingDevelopmentRuns": []
 }

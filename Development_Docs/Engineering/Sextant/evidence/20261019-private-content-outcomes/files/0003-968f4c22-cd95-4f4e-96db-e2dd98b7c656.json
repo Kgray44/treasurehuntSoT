@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "classification": "ENGINEERING_SYNTHETIC_STORAGE_LIFECYCLE_NOT_ACCEPTANCE",
+  "sourceSha": "91269f5ccf0f8d46c377fe1c47a513be283164dc",
+  "ownershipId": "968f4c22-cd95-4f4e-96db-e2dd98b7c656",
+  "taskRoot": "/tmp/sextant-private-91269f5ccf0f-bv11CD",
+  "createdRealPath": "/tmp/sextant-private-91269f5ccf0f-bv11CD",
+  "markerSha256": "5c25e5fdb0dba3b13fff55442fcb8da2a83e2e45a15cf85711d732493e9ea727",
+  "createdAt": "2026-10-20T03:56:45.767Z",
+  "status": "PASS_REMOVED_AFTER_CANONICAL_PROCESS_CLEANUP",
+  "keyPublished": false,
+  "processCleanupVerified": true,
+  "finishedAt": "2026-10-20T03:58:59.365Z",
+  "rootAbsent": true
+}
