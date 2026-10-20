@@ -3,7 +3,7 @@ title: Project Parallax engineering home
 audience: product-engineering
 status: phase-3-software-qualified-mainline
 canonical_for: project-parallax-engineering-home
-last_reviewed: 2026-10-19
+last_reviewed: 2026-10-20
 ---
 
 # Project Parallax
@@ -61,9 +61,10 @@ Parallax does **not** own:
 ## Current implementation status
 
 - [NCL-01 TestFlight deployment](NCL01_TestFlight_Deployment.md) records the
-  isolated signing path and processed internal beta 0.1.0 (2), with the sole owner
-  invited. Phone installation and physical ARKit acceptance remain pending;
-  PR #741 is not merged.
+  isolated signing path and owner-reported installation, native sign-in and
+  camera display of the original 3D models. Build 0.1.0 (3) is being prepared for
+  the new classroom network; exact build readback, measured tracking/interaction
+  quality and physical acceptance remain pending. PR #741 is not merged.
 
 **Phase 3 is software-qualified and integrated on protected main through PR #711 at `0327eeb7`.** The [implementation and requirement reconciliation](Phase_3_Implementation.md) records semantic placement, bounded multi-entity staging, durable logical policies, remote authoring, optional metadata calibration and bounded discovery recovery. Ordinary Sounding Line passed all nine obligations, 1,739 tests and four product browser journeys. The clean landed tree passed 79 smoke tests and 26 fresh D0 scenarios. The [workstation design review](Phase_3_Workstation_Review.md) retains the first populated 3D approval.
 

@@ -44,8 +44,10 @@ export passed in run 39361959547. Run 39363249446 uploaded build 0.1.0 (2) at
 `484183ac15badcfefd5b08cfd187e330e567fbf8`; Apple processing is VALID. Current
 internal beta is IN_BETA_TESTING in NCL-01 Owner, sole account-holder INVITED.
 On October 20 the owner reported TestFlight installation and a working app shell,
-but ordinary sign-in returned "Those credentials were not accepted." Exact build
-readback, phone trust and physical tracking remain separate gates. Do not repeat
+then confirmed successful sign-in and seeing the original 3D objects through the
+native AR camera. This is owner-reported physical display, not measured alignment,
+Inspect/lifecycle or tracking-quality qualification. Exact build readback and
+phone trust remain separate gates. Do not repeat
 certificate creation for a pipeline repair.
 
 The template `.agents/ncl01-testflight-hosted.yml` is transported as one generated
@@ -131,6 +133,31 @@ login aid at D:\CodexTemp\ncl01-preview\VoyageWright-Sign-In.private.txt present
 same existing values without JSON punctuation. Never publish its contents. Owner
 must retry only the email/password value lines after clearing autofill; do not
 infer a native phone sign-in or AR success from the server probe.
+
+## October 20 classroom continuation
+
+The owner subsequently confirmed visible original 3D models through the physical
+iPhone native AR camera. They request ANOTHER private test Chronicle and NEW Scene
+using the retained IMG_8690/IMG_8691 classroom reconstruction, with objects placed
+for a further phone test. Preserve the original Chronicle/Voyage and account.
+Use canonical library, Chronicle publication and Voyage services in the existing
+owned isolated preview database; keep source photos/derived private geometry out
+of Git and do not rerun paid inference. No Crossdeck/Sounding Line/main changes.
+
+Laptop is now on Wi-Fi 155.42.98.171/24; old .18 listener is stale. The preview
+restoration agent owns guarded same-CA rebind and process/port cleanup; preserve
+October 17 StrictMode/HMR helpers. Release app origin/app-bound host are immutable,
+so build 0.1.0 (3) must target verified https://155.42.98.171:8449 after TLS health
+passes. Build 3 was unused at preflight. Existing OS-only encryption audit now
+supports explicit ITSAppUsesNonExemptEncryption=false with an archive assertion.
+
+Native supports original chest/compass only, static local/surface placement.
+It cannot recognize a classroom from photos, supply adaptive Environment evidence
+or resolve FIXED_WORLDSPACE anchors. Reuse the actual private reconstructed layout
+as authoring input and state estimated scale/manual floor-origin alignment honestly.
+Do not fabricate Environment pins, measured geometry or registration evidence.
+The requested official dark icon still awaits the exact owner-supplied artwork;
+do not substitute another design or let that missing asset block network testing.
 
 Success is the owner installing this exact beta through TestFlight, opening
 native ARKit camera placement, seeing the original interactive 3D chest and

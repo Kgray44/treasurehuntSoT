@@ -324,6 +324,7 @@ class Runner:
         info = plistlib.loads((app / "Info.plist").read_bytes())
         require(info.get("CFBundleIdentifier") == BUNDLE, "ARCHIVE_BUNDLE_MISMATCH")
         require(info.get("CFBundleShortVersionString") == self.args.version and info.get("CFBundleVersion") == self.args.build, "ARCHIVE_VERSION_MISMATCH")
+        require(info.get("ITSAppUsesNonExemptEncryption") is False, "ARCHIVE_ENCRYPTION_METADATA_REQUIRED")
         require(info.get("LandfallOrigin") == self.args.origin and info.get("WKAppBoundDomains") == [self.args.host], "ARCHIVE_ORIGIN_MISMATCH")
         require(info.get("NSCameraUsageDescription") and info.get("NSLocalNetworkUsageDescription"), "ARCHIVE_PRIVACY_STRINGS_REQUIRED")
         require(not info.get("NSAppTransportSecurity"), "ARCHIVE_ATS_EXCEPTIONS_FORBIDDEN")

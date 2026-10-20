@@ -17,16 +17,20 @@ Team ID: `X2JZ9N65V2`. Bundle ID: `com.voyagewright.landfall`. Source baseline:
 `76d1787e1340e396bc95747293d43e57130b00ed`. Owned preparation branch:
 `codex/ncl01-testflight`. Paid Apple Developer enrollment and TestFlight installed
 on iPhone 17 Pro are owner-reported. On October 20 the owner reported installing
-the app through TestFlight and opening its working shell. Exact build readback,
-successful phone sign-in and physical AR behavior remain unverified.
+the app through TestFlight, successfully signing in and seeing the original 3D
+objects through its native AR camera. This is owner-reported physical display;
+exact build readback, measured tracking/alignment, Inspect and lifecycle behavior
+have not been verified.
 
-**Current gate:** private beta **0.1.0 (2)** is uploaded, processed and available
-in **NCL-01 Owner**. Apple reports `IN_BETA_TESTING` and the sole account holder
-as `INVITED`. [The current readiness receipt](evidence/ncl01-testflight-20261019/internal-testflight-ready-20261019.receipt.json)
-binds candidate `484183ac15badcfefd5b08cfd187e330e567fbf8`. Installation and app
-opening are now owner-reported; sign-in is the current owner blocker. Phone
-certificate trust, exact build readback, physical native AR and owner acceptance
-remain separate pending gates. Build 2 is consumed; do not upload it again.
+**Current gate:** private beta **0.1.0 (2)** passed upload, processing and internal
+testing setup. [Its retained readiness receipt](evidence/ncl01-testflight-20261019/internal-testflight-ready-20261019.receipt.json)
+binds candidate `484183ac15badcfefd5b08cfd187e330e567fbf8`. The owner subsequently
+reported native sign-in and physical camera display of the original models.
+The laptop has moved to classroom Wi-Fi `155.42.98.171`; build 2 still binds the
+old `.18` origin. **0.1.0 (3)** is being prepared for the verified new HTTPS
+origin. Current-network phone reachability/trust, exact build readback, measured
+physical behavior and owner acceptance remain separate gates. Build 2 is consumed;
+do not upload it again.
 
 The owner has now created the explicit identifier and app record. Their screenshots
 show the correct team/bundle, **VoyageWright Landfall**, app Apple ID `6824734220`,
@@ -164,6 +168,15 @@ records this gate. The `.18` origin is bound into the signed beta attempt. Phone
 reachability/trust remain separate owner checks, explicitly deferred until later.
 A subsequent network-address change may require a new beta.
 
+On October 20 the laptop moved to Wi-Fi `155.42.98.171/24`. The owned relay was
+rebound to `https://155.42.98.171:8449` while preserving the existing CA, keys,
+public profile, original fixture and reviewed runtime helpers. The
+[sanitized classroom network receipt](evidence/ncl01-testflight-20261019/https-origin-1554298171-20261020.receipt.json)
+records normal TLS 1.3, HTTP 200 for the app/bootstrap, all 11 authenticated asset
+checks, and cleanup of only the probe's own session. These laptop checks do not
+establish iPhone reachability on the classroom network. Build 3 binds the new
+origin and app-bound host; there is no runtime server-address setting in build 2.
+
 The existing CA SHA-256 is
 `17ad9c5ccd0eb37f00b0062d6c8dcff72a368fb85553175402be5016b21ac8b6`;
 it expires October 22, 2026 at 20:08:04 UTC. Renewal is an explicit later operation,
@@ -186,34 +199,36 @@ node D:\CodexTemp\ncl01-preview\restore-runtime-20261017\https-preview-runtime.m
 ```
 
 The two services are currently running; these commands are for a later restart.
-Keep the laptop awake on Ethernet `192.168.0.18`; the phone may use Wi-Fi on the
-same LAN. The startup scripts refuse stale IP/certificate configuration. Do not run initial preparation over
+Keep the laptop awake on Wi-Fi `155.42.98.171` and the phone on the same LAN.
+The startup scripts refuse stale IP/certificate configuration. Do not run initial preparation over
 the retained fixture, disable TLS, change global trust, or stop unrelated processes.
 
-On the same LAN, the iPhone must first reach `http://192.168.0.18:8448`.
+On the same LAN, the iPhone must first reach `http://155.42.98.171:8448`.
 That page serves only the public test CA/help. Install its profile under
 **Settings → General → VPN & Device Management**, then enable its full trust under
 **Settings → General → About → Certificate Trust Settings**. Verify the fingerprint
 against the retained CA and open the HTTPS origin without a certificate warning.
+An already installed and fully trusted copy of this unchanged CA can be retained;
+changing the laptop address does not require another CA profile.
 Allow the native app's Local Network and Camera prompts when testing. Actual
 phone reachability and trust must be observed on the phone; laptop probes cannot
 substitute for them.
 
 ## Processing, installation and physical acceptance
 
-The signed pipeline has uploaded build 2, Apple processing is `VALID`, and the
-processed build is assigned to **TestFlight → Internal Testing → NCL-01 Owner**.
-The existing account holder is the sole tester and is `INVITED`; no duplicate
-invitation was sent. No external public testing group or App Store release is
-requested. See Apple's
+The signed pipeline uploaded build 2, Apple processing reached `VALID`, and the
+processed build was assigned to **TestFlight → Internal Testing → NCL-01 Owner**.
+The sole account holder was invited and subsequently reported installation and
+native AR display. No duplicate invitation, external public testing group or
+App Store release is requested. Build 3 will use the same app and internal group
+for the classroom network. See Apple's
 [upload](https://developer.apple.com/help/app-store-connect/manage-builds/upload-builds)
 and [internal testing](https://developer.apple.com/help/app-store-connect/test-a-beta-version/add-internal-testers)
 instructions.
 
-Open Apple's internal invitation on the iPhone and choose **View in TestFlight**.
-Accept it in TestFlight, confirm
-**VoyageWright Landfall** and the expected version/build, then tap **Install** and
-**Open**. The exact expected version is **0.1.0 (2)**. Sign into the existing
+Once build 3 is available, open TestFlight, select **VoyageWright Landfall** and
+confirm **0.1.0 (3)**, then tap **Update** and **Open**. A new invitation is not
+needed for the existing tester. Sign into the existing
 synthetic NCL account through the laptop origin; its login remains in the private
 local `D:\CodexTemp\ncl01-preview\access.private.json` file, outside Git/chat.
 Open its released Voyage Journal, **Open Chronicle Lens**, then the explicitly
@@ -230,9 +245,11 @@ static PBR objects; chest-lid and compass-needle articulation are unsupported.
 Record separate outcomes for (1) signed upload, (2) processed/internal-test
 availability, (3) exact-build TestFlight installation, (4) native camera/ARKit
 tracking and visible original models, (5) physical interaction/lifecycle behavior,
-and (6) owner acceptance. Upload and internal-test availability are proved by
-the new receipts. Phone trust, installation, physical behavior and owner
-acceptance remain pending; the owner deferred the phone network check.
+and (6) owner acceptance. Build 2 upload/internal-test availability have retained
+software proof; installation, native sign-in and physical camera display are
+owner-reported. Exact build readback, the new classroom network on the phone,
+measured tracking/alignment, Inspect/lifecycle and final owner acceptance remain
+pending.
 
 The first physical fixture is the existing non-adaptive local/surface Scene.
 Native activation can use the companion's existing local host path; broader
@@ -388,10 +405,12 @@ undo the separate successful upload receipt. No physical acceptance is inferred.
 
 ## Owner installation and sign-in diagnosis, October 20
 
-The owner reports installing the TestFlight app and opening a working app shell.
-Ordinary sign-in then displayed **Those credentials were not accepted**.
-Exact phone build readback, successful native sign-in and physical AR have not
-been observed. Earlier readiness receipts remain immutable snapshots.
+The owner initially reported installing the TestFlight app and opening a working
+app shell, followed by **Those credentials were not accepted** during sign-in.
+They later confirmed successful sign-in and visible original 3D objects through
+the native camera. This later owner report does not supply exact build readback
+or measured physical tracking/interaction evidence. Earlier readiness and failed
+sign-in receipts remain immutable snapshots.
 
 The [scoped sign-in diagnostic](evidence/ncl01-testflight-20261019/sign-in-20261020.receipt.json)
 verified the exact isolated runtime database, ACTIVE account/profile and a match
@@ -409,3 +428,24 @@ An owner-only plaintext login aid at
 `D:\CodexTemp\ncl01-preview\VoyageWright-Sign-In.private.txt` shows the same email
 and password without JSON quotation marks or trailing commas. Clear saved
 autofill and copy only each value line. Its contents remain outside Git and chat.
+
+## Classroom continuation, October 20
+
+The owner requests another private test Chronicle and a new Scene using the
+retained classroom reconstruction. That fixture is being prepared through the
+existing library, Chronicle publication and Voyage services. The original
+Chronicle/Voyage and account are preserved. Classroom photos and derived private
+geometry remain outside Git; no new paid reconstruction is part of this work.
+
+The current native provider supports the original chest and compass, static
+local/surface placement and authored layout offsets. The reconstruction is
+authoring input with estimated scale and manual floor-origin registration; it
+does not establish a measured room map. Native adaptive Environment evidence,
+automatic classroom recognition and FIXED_WORLDSPACE registration remain
+unsupported. New classroom publication and owner placement proof are pending.
+
+Build 3 changes only the configured network origin and declares the previously
+audited OS-only encryption metadata explicitly as
+`ITSAppUsesNonExemptEncryption=false`; the archive must verify that value. The
+requested official dark compass icon still awaits the exact artwork and is not
+being replaced with another design as part of this network update.

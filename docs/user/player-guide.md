@@ -3,12 +3,12 @@ title: Player guide
 audience: player
 status: current
 canonical_for: player-guide
-last_reviewed: 2026-10-19
+last_reviewed: 2026-10-20
 ---
 
 # Player guide
 
-The NCL-01 native 3D candidate is still in validation. A supported candidate companion can load a released chest or compass, place it on a detected surface and inspect the actual object; unsupported scenes retain Guided View. Laptop-hosted iOS testing requires local-network permission and trusted HTTPS. Private TestFlight beta **0.1.0 (2)** is available to the invited owner; installation and physical tracking quality remain unverified. [Deployment instructions](../../Development_Docs/Projects/Project_Parallax/NCL01_TestFlight_Deployment.md) and [the native engineering record](../../Development_Docs/Projects/Project_Parallax/NCL01_Native_Scene_Vertical_Slice.md) track the remaining acceptance gates.
+The NCL-01 native 3D candidate is still in validation. A supported candidate companion can load a released chest or compass, place it on a detected surface and inspect the actual object; unsupported scenes retain Guided View. Laptop-hosted iOS testing requires local-network permission and trusted HTTPS. The owner reports installing the TestFlight app, signing in and seeing the original objects through its native camera. Build **0.1.0 (3)** is being prepared for the new classroom network; exact build readback and tracking/interaction quality remain unverified. [Deployment instructions](../../Development_Docs/Projects/Project_Parallax/NCL01_TestFlight_Deployment.md) and [the native engineering record](../../Development_Docs/Projects/Project_Parallax/NCL01_Native_Scene_Vertical_Slice.md) track the remaining acceptance gates.
 
 Connect your screens through **Devices** using
 the same account and Voyage. The Journal's **Send to...** lets you choose another
