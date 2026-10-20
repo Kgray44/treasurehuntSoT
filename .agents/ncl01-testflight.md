@@ -187,8 +187,18 @@ records this tier; preserve earlier false-flag readiness/software snapshots.
 Exact phone build, all three objects, Inspect/Pick/Place, measured tracking/drift
 and alignment are unverified. Full authored Scene/room-registration integration
 remains unfinished; do not classify rendering visibility as NCL-01 completion.
-The requested official dark icon still awaits the exact owner-supplied artwork;
-do not substitute another design or let that missing asset block network testing.
+The official artwork was unavailable for builds2/3/4. The owner has now attached
+and designated the dark brass compass PNG as the official VoyageWright icon.
+Its exact1254RGB original is retained at native/ios/Branding/VoyageWright-AppIcon.source.png,
+SHA71a2979a8a2ab6a43f3ec9fa1d7f14fb7147deda5887883f22a22a382cd240bc.
+The iOS AppIcon uses the entire artwork resized1024RGB with Pillow12.2.0 LANCZOS;
+fileSHAf60c10774d2e206cee973f62d2528cc3a989d422cf2ec2aa3df80c4d40562b3b.
+Source/output and exact decoded pixels were independently reviewed. Preserve
+composition, background and margins; no generative redraw. Build0.1.0(5) is next,
+same stable origin and signing setup. Require real archive/export/upload/Apple
+processing, existing internal group, cleanup and compiled icon verification.
+Do not equate compiled-resource bytes with the source PNG hash. This cosmetic
+change does not alter AR behavior or require restarting the private preview.
 
 Success is the owner installing this exact beta through TestFlight, opening
 native ARKit camera placement, seeing the original interactive 3D chest and

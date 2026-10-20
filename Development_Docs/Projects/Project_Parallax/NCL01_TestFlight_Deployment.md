@@ -136,7 +136,7 @@ It is the existing companion's native presenter, reached through the same releas
 Player Scene; a Safari Guided View is not the native test.
 
 The source adds explicit marketing/build versions and a 1024-pixel opaque app icon.
-Icon artwork comes from existing `public/animations/stills/compass-fallback.svg`
+The initial builds 2/3/4 used `public/animations/stills/compass-fallback.svg`
 (SHA-256 `110c7aaca2ef27b4c1c63d31538fe062cea810637a89b4d869b20ec7bdbc3088`),
 flattened on its dark teal `#102729` background. Packaged PNG SHA-256:
 `41f3169ad68559c7d3b64ac9dbddb3a31560232d14ecc256c5b3247d18367104`.
@@ -144,6 +144,20 @@ Conversion used sharp 0.35.5/libvips 8.18.7, density 288, resize 1024×1024,
 flatten, remove alpha, PNG compression 9/adaptiveFiltering false/palette false;
 the existing artwork's Georgia font came from the Windows host. Original artwork
 and model bytes are unchanged. The output has been visually inspected.
+
+The owner subsequently supplied and designated the official dark brass compass
+artwork. Its byte-identical 1254-square RGB original is retained at
+`native/ios/Branding/VoyageWright-AppIcon.source.png`. The iOS catalog now uses
+the full image resized to 1024-square RGB with Pillow 12.2.0 LANCZOS, preserving
+the dark texture, compass/leaf/star and original margins. Source SHA-256 is
+`71a2979a8a2ab6a43f3ec9fa1d7f14fb7147deda5887883f22a22a382cd240bc`;
+packaged PNG SHA-256 is
+`f60c10774d2e206cee973f62d2528cc3a989d422cf2ec2aa3df80c4d40562b3b`.
+The [source artwork receipt](evidence/ncl01-testflight-20261019/app-icon-20261020/source-artwork-verification.json)
+records source identity, output pixels/metadata and independent visual review.
+Existing AppIcon catalog selection stays unchanged. Build **0.1.0 (5)** is being
+prepared with the same stable origin; compiled-icon verification and actual
+TestFlight availability remain gates. This icon update preserves native behavior.
 
 The bundled privacy manifest declares app-local UserDefaults reason `CA92.1`
 and elapsed-time system-uptime reason `35F9.1`. It does not claim a complete
@@ -522,8 +536,8 @@ visually. This manual procedure and estimated scale do not prove room registrati
 Build 3 changes only the configured network origin and declares the previously
 audited OS-only encryption metadata explicitly as
 `ITSAppUsesNonExemptEncryption=false`; the archive must verify that value. The
-requested official dark compass icon still awaits the exact artwork and is not
-being replaced with another design as part of this network update.
+official dark compass artwork had not been supplied at that build-3 snapshot.
+Its later owner-authorized replacement is recorded above and ships separately.
 
 ### Owner classroom visibility report
 

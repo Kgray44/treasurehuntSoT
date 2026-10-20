@@ -14,6 +14,11 @@ last_reviewed: 2026-10-20
 
 ### Engineering
 
+- Prepared the owner-supplied official dark brass compass as the iOS companion
+  app icon, preserving its full artwork and retaining the original source.
+  Build 0.1.0 (5) is being prepared for the same stable test address; compiled
+  packaging and TestFlight availability remain pending.
+
 - Prepared an isolated NCL-01 iOS development-beta path with explicit app versions,
   an existing-artwork app icon, required-reason privacy metadata and a separate
   hosted archive/sign/export/upload workflow. [The deployment record](Development_Docs/Projects/Project_Parallax/NCL01_TestFlight_Deployment.md)
