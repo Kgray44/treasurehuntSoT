@@ -615,6 +615,30 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Repository_Operations/evidence/20261020-darwin-primitives/files/0001-observations.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Repository_Operations/evidence/20261020-darwin-primitives/files/0003-hosted-receipt.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Repository_Operations/evidence/20261020-darwin-primitives/files/0004-dispatch.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Repository_Operations/evidence/20261020-darwin-primitives/publication-index.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Repository_Operations/evidence/20261020-loopback-redirect/accepted-main-matched-failures.json",
       "record_type": "engineering-record",
       "status": "current",

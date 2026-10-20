@@ -35,3 +35,5 @@ stream, port, browser, CoreSimulator, pidversion, exclusive UID lease or private
 artifact ownership proof. Keep the production `owned-process.mjs` and iOS Devices
 runner unchanged. A real canonical repair needs separate review, adversarial
 verification and protected installation before consumer recapture.
+
+Hosted39380061140 completed at84feecb: ports/audit identity pass, all three task_terminate calls return5; direct children reaped, isolated UIDs empty. Exit status/elapsed were not exported. Five originals are permanent under Repository_Operations evidence. Apple XNU deliberately rejects BSD tasks in task_terminate. Do not retry equivalently or claim guardian acceptance. Any audit-token signal investigation stays separately source-reviewed and limited to finite known direct children.

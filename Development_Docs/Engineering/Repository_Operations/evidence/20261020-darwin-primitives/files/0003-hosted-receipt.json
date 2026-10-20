@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "candidateSha": "84feecb88f67c9e34475905642794e60bdbd64cb",
+  "transportSha": "3f10af7703eecf6d7a46590f81eef3f9d4cf9d9b",
+  "runId": "39380061140",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39380061140",
+  "conclusion": "success",
+  "artifacts": [
+    {
+      "path": "artifacts/darwin-primitives-84feecb88f67c9e34475905642794e60bdbd64cb/observations.json",
+      "sha256": "257a6b8cb81547f64c9b5bbdccd16238efe578165f73925f8756b633e9181e43"
+    },
+    {
+      "path": "artifacts/darwin-primitives-84feecb88f67c9e34475905642794e60bdbd64cb/source.sha256",
+      "sha256": "56872098aada10ace286f3e6f0c60c151ebc43bc3340f0c2d611603a08471eb9"
+    }
+  ],
+  "artifactState": "AVAILABLE",
+  "cleanup": {
+    "result": "PASS",
+    "ownedResources": [
+      "refs/heads/codex/landfall-lab-84feecb88f67-1792477388425"
+    ],
+    "remainingResources": []
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "candidateSha": "84feecb88f67c9e34475905642794e60bdbd64cb",
+  "target": "darwin-primitives",
+  "tier": "development",
+  "profiles": {
+    "android": [
+      {
+        "profile": "primary-phone",
+        "api": 36,
+        "device": "pixel_7",
+        "ram": "3072M",
+        "memory": 3072,
+        "lowRam": ""
+      }
+    ],
+    "apple": [
+      "primary-phone"
+    ]
+  },
+  "scenarios": {
+    "browser": [],
+    "journal": [],
+    "background": [],
+    "radio": "uwb-native-peer-session,ble-native-generic-discovery,ble-native-ibeacon-discovery,ble-native-eddystone-uid-discovery",
+    "ios": "permission-denied-native,permission-revoked-mid-route,gps-perfect-walk,offline-native-canonical-reconcile,offline-lost-response-canonical-reconcile,offline-restart-canonical-reconcile,virtual-player-navigation,virtual-offline-canonical-reconcile,geofence-native-background-wake",
+    "android": "device-reboot,qr-native-camera-valid,permission-denied-native,permission-approximate-native,permission-revoked-mid-route,motion-walk,stationary,barometer-floor-change,orientation-turn,heading-turn,gps-perfect-walk,offline-native-canonical-reconcile,offline-lost-response-canonical-reconcile,offline-restart-canonical-reconcile,virtual-player-navigation,virtual-offline-canonical-reconcile,battery-normal,battery-low,battery-saver,charger-change",
+    "provider": "all"
+  },
+  "transportSha": "3f10af7703eecf6d7a46590f81eef3f9d4cf9d9b",
+  "transportTree": "08f1d2d1876525bc97d9530affb116c21af41663",
+  "branch": "codex/landfall-lab-84feecb88f67-1792477388425",
+  "workflow": "landfall-device-lab.yml",
+  "createdAt": "2026-10-20T06:23:11.458Z",
+  "cleanup": "PASS",
+  "runId": "39380061140",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39380061140",
+  "harvested": "C:\\Users\\kkids\\.codex\\worktrees\\sextant-http-redirect-prerequisite\\Codex_TreasureHunt\\artifacts\\landfall-device-lab\\hosted-84feecb88f67-1792477388425\\run-39380061140"
+}

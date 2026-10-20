@@ -1,0 +1,47 @@
+{
+  "classification": "HOST_PRIMITIVE_FEASIBILITY_NOT_ACCEPTANCE",
+  "sourceSha": "84feecb88f67c9e34475905642794e60bdbd64cb",
+  "transportSha": "3f10af7703eecf6d7a46590f81eef3f9d4cf9d9b",
+  "runId": "39380061140",
+  "conclusion": "OBSERVATION_COMPLETED_TASK_TERMINATION_UNUSABLE",
+  "sourceFileSha256": "6d378387bc7943213f122839f394daa7df43d9bd432c0f86609d733d009bdcde",
+  "independentReview": "sextant_source_review",
+  "limitations": [
+    "EXIT_SIGNAL_STATUS_AND_ELAPSED_NOT_EXPORTED",
+    "NO_DESCENDANT_OR_SERVICE_CONTAINMENT",
+    "NO_EXCLUSIVE_UID_LEASE",
+    "NO_GUARDIAN_ACCEPTANCE"
+  ],
+  "files": [
+    {
+      "path": "files/0001-observations.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-84feecb88f67-1792477388425/run-39380061140/artifacts/darwin-primitives-84feecb88f67c9e34475905642794e60bdbd64cb/observations.json",
+      "bytes": 1204,
+      "sha256": "257a6b8cb81547f64c9b5bbdccd16238efe578165f73925f8756b633e9181e43"
+    },
+    {
+      "path": "files/0002-source.sha256",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-84feecb88f67-1792477388425/run-39380061140/artifacts/darwin-primitives-84feecb88f67c9e34475905642794e60bdbd64cb/source.sha256",
+      "bytes": 110,
+      "sha256": "56872098aada10ace286f3e6f0c60c151ebc43bc3340f0c2d611603a08471eb9"
+    },
+    {
+      "path": "files/0003-hosted-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-84feecb88f67-1792477388425/run-39380061140/hosted-receipt.json",
+      "bytes": 891,
+      "sha256": "3409b2095b3c1b5728f7385a1a896abf61434cc0d4d0ef98ccf1a2ee9d233ebd"
+    },
+    {
+      "path": "files/0004-dispatch.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-84feecb88f67-1792477388425/dispatch.json",
+      "bytes": 1978,
+      "sha256": "1c3782eacf99e011bc2d171a3f4cf7b4d812159e6b0acadca1c4d3c6fa2fe634"
+    },
+    {
+      "path": "files/0005-run.log",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-84feecb88f67-1792477388425/run-39380061140/run.log",
+      "bytes": 108639,
+      "sha256": "80586bb71394d7322f1c27e69baf546cadd9fdf4613db426563c0e2584fa7d04"
+    }
+  ]
+}
