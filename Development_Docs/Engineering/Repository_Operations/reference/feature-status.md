@@ -35,8 +35,11 @@ review clears displayed content there and in the history supplement, with
 explicit viewport/fallback limits and separately about ten-second normal Journal
 opening. Community's new diagnostic
 identifies decorative artwork above its stretched link. Narrow badge/pointer
-repairs run at `7b785a39e3`; their results and protected acceptance remain pending.
-Creator creation/account-return development runs at `818ad35622`; formal positive
+badge repair passes four at `7b785a39e3` with independent full-label/Suite review
+clear. Community stalls at checkout with no product evidence; one same-source
+retry runs. Creator creation/account-return at `818ad35622` exposes Studio and
+Overview landmark defects after creation; the narrow repair passes 21 component
+tests and awaits browser proof. Protected acceptance remains pending. Formal positive
 creation remains open pending canonical case-specific input/fixture support.
 The bounded continuation passes 327 focused tests, 59 D0/D1 scenarios, Android
 OS idle/standby recovery and three selected iOS permission/geofence scenarios.

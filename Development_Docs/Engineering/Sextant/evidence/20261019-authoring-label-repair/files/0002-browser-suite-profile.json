@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/sextant-authoring-resource-journeys.spec.ts"
+  ],
+  "status": "PASS",
+  "failureCategory": null,
+  "failureCode": null,
+  "diagnosticBinding": {
+    "version": 1,
+    "runId": "a00b60d9-f260-4459-a57f-5d4cf8858068",
+    "scopeId": "b48bc09a-d027-4bec-be82-2159f5199f27",
+    "baseSha": "7b785a39e3c2e059ec46c2035e28af6a8b1fbdb0",
+    "candidateSha": "7b785a39e3c2e059ec46c2035e28af6a8b1fbdb0",
+    "planDigest": "e0691d9b85d7f85db572033895a7f3a73a7e563484b79468fffc878a84703ca4"
+  }
+}

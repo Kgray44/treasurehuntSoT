@@ -1866,6 +1866,197 @@
           }
         ]
       }
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "7b785a39e3c2e059ec46c2035e28af6a8b1fbdb0",
+      "transportSha": "1d13659530b6c3dd5076a41540f5b9b3f840590e",
+      "runId": "39345439738",
+      "status": "HARVESTED_SUCCESS_FOUR_VARIANTS_INDEPENDENT_40_PNG_REVIEW_FULL_LABEL_REPAIR_CLEAR",
+      "artifacts": 78,
+      "productionBuild": "PASS",
+      "qualification": false,
+      "cleanup": {
+        "runtime": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 0,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 0,
+            "elapsedMs": 2,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 143,
+            "elapsedMs": 56,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        },
+        "transport": {
+          "result": "PASS",
+          "ownedResources": [
+            "refs/heads/codex/landfall-lab-7b785a39e3c2-1792454667906"
+          ],
+          "remainingResources": []
+        }
+      },
+      "publication": "evidence/20261019-authoring-label-repair/publication-index.json",
+      "independentRenderedReview": {
+        "reviewer": "/root/sextant_source_review",
+        "originalHashesVerified": 78,
+        "pngInspected": 40,
+        "sourceFingerprint": "7560b1e214c1715112298c4ee6e03168a67aedf91f72e7a617785e0ace53fa32",
+        "sourceTree": "5c565596ccc26b93bbf9750994b49a6ada3a5fc3",
+        "sourceBlobs": 1946,
+        "finding": "R39343894046_01_RESOLVED_FULL_LABEL_INSIDE_BADGE_ALL_FOUR_SUITE_CONTROLS_VISIBLE_AND_FIT",
+        "videosHashed": 32,
+        "videosReviewed": false,
+        "limits": [
+          "VIEWPORT_ONLY_NOT_ALL_REVIEW_CONTENT_TOGETHER",
+          "LATER_MOBILE_RAIL_SELECTION_MAY_BE_OFFSCREEN",
+          "NO_POPULATED_LIBRARIES_CHART_TOOLS_TRIAL_OR_PUBLICATION_READINESS",
+          "NO_NATIVE_PROTECTED_OR_OWNER_ACCEPTANCE"
+        ]
+      },
+      "activationTimings": 28,
+      "maximumMeasuredReadinessMs": 779.283266,
+      "canonicalProgressAndEditionBytesUnchanged": true
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "818ad35622324f68b30434602cb92a49fc5dc3ae",
+      "transportSha": "10736adf0325a9f9811e532f4148dfbda2c2601b",
+      "runId": "39346148525",
+      "status": "HARVESTED_FAILURE_FOUR_VARIANTS_AFTER_ACTUAL_CREATION_EDITOR_OR_ACCOUNT_LANDMARKS",
+      "artifacts": 4,
+      "productionBuild": "PASS",
+      "qualification": false,
+      "cleanup": {
+        "runtime": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 1,
+            "elapsedMs": 2,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 143,
+            "elapsedMs": 57,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        },
+        "transport": {
+          "result": "PASS",
+          "ownedResources": [
+            "refs/heads/codex/landfall-lab-818ad3562232-1792455079070"
+          ],
+          "remainingResources": []
+        }
+      },
+      "publication": "evidence/20261019-creator-landmark-failure/publication-index.json",
+      "failure": {
+        "desktop": "DUPLICATE_UNNAMED_COMPLEMENTARY_STUDIO_LIBRARY_AND_EMPTY_INSPECTOR_AFTER_PRODUCTION_DRAFT_CREATION",
+        "mobile": "NESTED_COMPLEMENTARY_PROFILE_SETUP_PROMPT_AT_FINAL_ACCOUNT_RETURN",
+        "limits": [
+          "FINAL_PROGRESS_AND_EDITION_ASSERTIONS_NOT_REACHED",
+          "NO_SUCCESS_JOURNEY_RECEIPT_OR_RENDERED_ACCEPTANCE"
+        ],
+        "plannedRepair": "NAMED_SECTIONS_PRESERVE_CONTENT_CLASSES_IDS_MOTION_AND_ALL_ASSERTIONS"
+      },
+      "diagnostics": {
+        "retention": "COMPLETE",
+        "issues": [],
+        "memberCount": 33,
+        "rawBytes": 51830984,
+        "ciphertextBytes": 92167766,
+        "fixedBudgetUnchanged": true,
+        "retainedPrivate": [
+          {
+            "sourcePath": "artifacts/landfall-device-lab/hosted-818ad3562232-1792455079070/run-39346148525/artifacts/landfall-browser-encrypted-failures-818ad35622324f68b30434602cb92a49fc5dc3ae/failure.encrypted",
+            "bytes": 92167766,
+            "sha256": "2295318c74f3afc0d542d2c9516bdf9bcbd0c9db8abe088353bd53993e2d0237",
+            "reason": "CANONICAL_PRIVATE_ENCRYPTED_BUNDLE_RETAINED_IN_OWNED_ARTIFACTS_NOT_COPIED_TO_GIT"
+          }
+        ]
+      }
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "7b785a39e3c2e059ec46c2035e28af6a8b1fbdb0",
+      "transportSha": "fd3650af5ae86f9a3746a8f345be319a924bb776",
+      "runId": "39345446486",
+      "status": "HARVESTED_CANCELLED_CHECKOUT_FETCH_STALL_ZERO_PRODUCT_ARTIFACTS",
+      "artifacts": 0,
+      "productionBuild": "NOT_STARTED_CHECKOUT_STALL",
+      "qualification": false,
+      "cleanup": {
+        "runtime": "NO_RUNTIME_RECEIPT_NOT_PROVED",
+        "transport": {
+          "result": "PASS",
+          "ownedResources": [
+            "refs/heads/codex/landfall-lab-7b785a39e3c2-1792454672439"
+          ],
+          "remainingResources": []
+        }
+      },
+      "publication": "evidence/20261019-community-checkout-cancelled/publication-index.json",
+      "infrastructure": {
+        "phase": "ACTIONS_CHECKOUT_ALL_REF_GIT_FETCH",
+        "startedAt": "2026-10-20T00:04:40.310Z",
+        "cancelledAt": "2026-10-20T00:24:38.479Z",
+        "jobBudgetMinutes": 20,
+        "budgetUnchanged": true,
+        "applicationOrGuideAssertionRan": false,
+        "runtimeCleanupProved": false,
+        "oneFreshExactSourceRetry": "39352498402"
+      }
     }
   ],
   "experience": {
@@ -1880,7 +2071,7 @@
     "reachDiagnostics": "PROTECTED_ACCEPTED_ON_BASE",
     "historicalAccounting": "PRESERVED_SEXTANT_3_OF_3_CROSSDECK_10_OF_3_R1_2_OF_3",
     "registeredNewPlayerWorkspaceSurfaces": 2,
-    "remainingSoftware": "43 unregistered affected surfaces at818ad35622 across178affected. Latest Suite-row development bounds pass4; independent review resolves visible review clipping but finds version-label spill, repair/captures pending. History lower supplement and first catalog guest journey pass4 with independent visible-content review clear and explicit viewport/fallback limits. Catalog normal Journal opening is separately about10seconds, not a3000ms response. Community390normal artwork SPAN blocks stretched-link input; narrow CSS repair awaits fresh source execution. Creator entry development dispatched; formal positive creation needs canonical case-specific support; account/recovery/invitation/Admiralty/private-content/Landfall fixtures, governed legacy disposition, formal references/layout and protected qualification remain. Darwin ownership, accepted Crossdeck and external/owner gates stay separate.",
+    "remainingSoftware": "43 unregistered affected surfaces at818ad35622 across178affected. Authoring full-label/Suite captures and bounds pass4 with independent40PNG review clear within viewport/empty-resource limits. History/catalog visible-content review clear with explicit fallback/viewport limits; normal catalog Journal opening separately about10seconds. Community7b checkout cancelled before product, single exact-source infrastructure retry pending. Creator actual creation reached but desktop Studio/mobile Profile setup landmarks fail4; narrow named-section repair underway. Formal positive creation needs canonical case-specific support; account/recovery/invitation/Admiralty/private-content/Landfall fixtures, governed legacy disposition, formal reference/layout and protected qualification remain. Darwin ownership, accepted Crossdeck and external/owner gates stay separate.",
     "independentDevelopmentJourneyReview": {
       "source": "0d8b3c7841966a1d1c8b5dae21570b1043dc7915",
       "reviewer": "/root/sextant_source_review",
@@ -2107,7 +2298,10 @@
     "evidence/20261019-authoring-suite-repair/publication-index.json",
     "evidence/20261019-history-lower-captures/publication-index.json",
     "evidence/20261019-catalog-guest-entry/publication-index.json",
-    "evidence/20261019-community-artwork-diagnostic/publication-index.json"
+    "evidence/20261019-community-artwork-diagnostic/publication-index.json",
+    "evidence/20261019-authoring-label-repair/publication-index.json",
+    "evidence/20261019-creator-landmark-failure/publication-index.json",
+    "evidence/20261019-community-checkout-cancelled/publication-index.json"
   ],
   "currentProtectedBase": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
   "canonicalHostDependencies": [
@@ -2123,22 +2317,10 @@
   ],
   "pendingDevelopmentRuns": [
     {
-      "runId": "39345439738",
-      "sourceSha": "7b785a39e3c2e059ec46c2035e28af6a8b1fbdb0",
-      "target": "sextant-authoring-resources",
-      "scope": "FULL_EDITION_BADGE_AND_EXPLICIT_SUITE_CAPTURE"
-    },
-    {
-      "runId": "39345446486",
+      "runId": "39352498402",
       "sourceSha": "7b785a39e3c2e059ec46c2035e28af6a8b1fbdb0",
       "target": "sextant-community",
-      "scope": "DECORATIVE_ARTWORK_HIT_AREA_REPAIR_ORIGINAL_ACTION_RETAINED"
-    },
-    {
-      "runId": "39346148525",
-      "sourceSha": "818ad35622324f68b30434602cb92a49fc5dc3ae",
-      "target": "sextant-creator-entry",
-      "scope": "FIRST_DISTINCT_FIXTURE_ACTUAL_DRAFT_CREATION_AND_ACCOUNT_RETURN"
+      "scope": "SINGLE_FRESH_ATTEMPT_AFTER_PRE_PRODUCT_CHECKOUT_CANCELLATION_SAME_BUDGET"
     }
   ]
 }

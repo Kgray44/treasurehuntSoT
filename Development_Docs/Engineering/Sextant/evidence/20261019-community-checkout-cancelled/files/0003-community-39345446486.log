@@ -1,0 +1,141 @@
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	﻿2026-10-20T00:04:39.1117308Z Current runner version: '2.337.0'
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:39.1139895Z ##[group]Runner Image Provisioner
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:39.1140741Z Hosted Compute Agent
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:39.1141269Z Version: 20261015.610
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:39.1141788Z Commit: 267fdb4e8bbec4ab5ea31367f3a00d5c480c7656
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:39.1142460Z Build Date: 2026-10-14T17:06:54Z
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:39.1143187Z Worker ID: {603ba3a8-b870-4c46-9dd5-d92376f5aa55}
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:39.1144083Z Region: westus3
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:39.1144602Z Cloud: Azure
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:39.1145065Z ##[endgroup]
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:39.1146339Z ##[group]Operating System
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:39.1146927Z Ubuntu
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:39.1147442Z 24.04.5
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:39.1147902Z LTS
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:39.1148352Z ##[endgroup]
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:39.1148884Z ##[group]Runner Image
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:39.1149395Z Image: ubuntu-24.04
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:39.1149888Z Version: 20261018.339.1
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:39.1151056Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261018.339/images/ubuntu/Ubuntu2404-Readme.md
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:39.1152361Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261018.339
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:39.1153378Z ##[endgroup]
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:39.1154394Z ##[group]GITHUB_TOKEN Permissions
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:39.1156157Z Contents: read
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:39.1156649Z Metadata: read
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:39.1157213Z ##[endgroup]
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:39.1158934Z Secret source: Actions
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:39.1159841Z Cache mode: write
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:39.1160427Z Prepare workflow directory
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:39.1485260Z Prepare all required actions
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:39.1525534Z Getting action download info
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:39.4423174Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:39.5507845Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:39.6638597Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.0207587Z Complete job name: Browser / Sextant ordinary public Community journeys (development)
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.0833011Z ##[group]Run actions/checkout@v4
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.0833769Z with:
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.0834152Z   ref: 7b785a39e3c2e059ec46c2035e28af6a8b1fbdb0
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.0834611Z   fetch-depth: 0
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.0834985Z   repository: Kgray44/treasurehuntSoT
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.0838148Z   token: ***
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.0838488Z   ssh-strict: true
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.0838837Z   ssh-user: git
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.0839193Z   persist-credentials: true
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.0839583Z   clean: true
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.0839935Z   sparse-checkout-cone-mode: true
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.0840341Z   fetch-tags: false
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.0840697Z   show-progress: true
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.0841047Z   lfs: false
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.0841370Z   submodules: false
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.0841720Z   set-safe-directory: true
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.0842110Z   allow-unsafe-pr-checkout: false
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.0843228Z env:
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.0843634Z   LANDFALL_NEARBY_PAIRING_MODE: ephemeral-instance
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.0844225Z   SOUNDING_LINE_EVIDENCE_PURPOSE: DEVELOPMENT_ONLY
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.0844687Z ##[endgroup]
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.1711541Z Syncing repository: Kgray44/treasurehuntSoT
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.1734427Z ##[group]Getting Git version info
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.1735457Z Working directory is '/home/runner/work/treasurehuntSoT/treasurehuntSoT'
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.1736756Z [command]/usr/bin/git version
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.1874431Z git version 2.55.0
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.1924128Z ##[endgroup]
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.1950274Z Temporarily overriding HOME='/home/runner/work/_temp/8f0a07bd-be99-4783-91e0-df76b6ccb5f9' before making global git config changes
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.1960540Z Adding repository directory to the temporary git global config as a safe directory
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.1962145Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/treasurehuntSoT/treasurehuntSoT
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.1965316Z Deleting the contents of '/home/runner/work/treasurehuntSoT/treasurehuntSoT'
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.1966312Z ##[group]Initializing the repository
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.1966939Z [command]/usr/bin/git init /home/runner/work/treasurehuntSoT/treasurehuntSoT
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.2040058Z hint: Using 'master' as the name for the initial branch. This default branch name
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.2041644Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.2043125Z hint: to use in all of your new repositories, which will suppress this warning,
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.2044214Z hint: call:
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.2044824Z hint:
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.2045539Z hint: 	git config --global init.defaultBranch <name>
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.2046381Z hint:
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.2047165Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.2048496Z hint: 'development'. The just-created branch can be renamed via this command:
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.2049618Z hint:
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.2050276Z hint: 	git branch -m <name>
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.2051020Z hint:
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.2051923Z hint: Disable this message with "git config set advice.defaultBranchName false"
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.2053743Z Initialized empty Git repository in /home/runner/work/treasurehuntSoT/treasurehuntSoT/.git/
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.2056200Z [command]/usr/bin/git remote add origin https://github.com/Kgray44/treasurehuntSoT
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.2095676Z ##[endgroup]
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.2096728Z ##[group]Disabling automatic garbage collection
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.2099534Z [command]/usr/bin/git config --local gc.auto 0
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.2135568Z ##[endgroup]
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.2141481Z ##[group]Setting up auth
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.2142692Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.2176986Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.2511729Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.2549332Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.2764411Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.2800489Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.3040834Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.3092452Z ##[endgroup]
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.3093760Z ##[group]Fetching the repository
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:04:40.3101522Z [command]/usr/bin/git -c protocol.version=2 fetch --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.4794109Z ##[error]The operation was canceled.
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.4886381Z ##[group]Run actions/upload-artifact@v4
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.4886626Z with:
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.4886867Z   name: landfall-browser-7b785a39e3c2e059ec46c2035e28af6a8b1fbdb0
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.4887726Z   path: artifacts/sounding-line/browser-runtime.json
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	artifacts/sounding-line/browser-suite-profile.json
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	artifacts/sounding-line/browser-diagnostics/**/browser-runtime.json
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	artifacts/sounding-line/browser-diagnostics/**/browser-suite-profile.json
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.4888500Z   retention-days: 14
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.4888686Z   if-no-files-found: warn
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.4888881Z   compression-level: 6
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.4889056Z   overwrite: false
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.4889233Z   include-hidden-files: false
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.4889423Z env:
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.4889608Z   LANDFALL_NEARBY_PAIRING_MODE: ephemeral-instance
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.4890113Z   SOUNDING_LINE_EVIDENCE_PURPOSE: DEVELOPMENT_ONLY
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.4890356Z ##[endgroup]
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.6315971Z (node:2382) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.6317007Z (Use `node --trace-deprecation ...` to show where the warning was created)
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.6360364Z Multiple search paths detected. Calculating the least common ancestor of all paths
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.6384063Z The least common ancestor is /home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/sounding-line. This will be the root directory of the artifact
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.6398799Z ##[warning]No files were found with the provided path: artifacts/sounding-line/browser-runtime.json
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	artifacts/sounding-line/browser-suite-profile.json
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	artifacts/sounding-line/browser-diagnostics/**/browser-runtime.json
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	artifacts/sounding-line/browser-diagnostics/**/browser-suite-profile.json. No artifacts will be uploaded.
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.6541930Z Post job cleanup.
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.7450264Z [command]/usr/bin/git version
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.7487088Z git version 2.55.0
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.7517229Z Temporarily overriding HOME='/home/runner/work/_temp/b1c715bf-d1df-459f-8fad-f88f9c066d13' before making global git config changes
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.7518648Z Adding repository directory to the temporary git global config as a safe directory
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.7521801Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/treasurehuntSoT/treasurehuntSoT
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.7556655Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.7593522Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.7828170Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.7852962Z http.https://github.com/.extraheader
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.7861852Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.7892579Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.8106127Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.8145079Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.8512126Z Cleaning up orphan processes
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.8763922Z Terminate orphan process: pid (2098) (git)
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.8837646Z Terminate orphan process: pid (2099) (git)
+Browser / Sextant ordinary public Community journeys (development)	UNKNOWN STEP	2026-10-20T00:24:38.8904181Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

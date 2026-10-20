@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "candidateSha": "7b785a39e3c2e059ec46c2035e28af6a8b1fbdb0",
+  "transportSha": "fd3650af5ae86f9a3746a8f345be319a924bb776",
+  "runId": "39345446486",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39345446486",
+  "conclusion": "cancelled",
+  "artifacts": [],
+  "artifactState": "NOT_PRODUCED",
+  "cleanup": {
+    "result": "PASS",
+    "ownedResources": [
+      "refs/heads/codex/landfall-lab-7b785a39e3c2-1792454672439"
+    ],
+    "remainingResources": []
+  }
+}

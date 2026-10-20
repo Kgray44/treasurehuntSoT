@@ -39,8 +39,12 @@ seconds. Community's mobile
 normal Guide failure still needs a product cause;
 trusted pointer observations identify decorative artwork above its stretched
 link with no Guide request. Source-reviewed badge/pointer repairs and explicit
-Suite/badge captures run at `7b785a39e3`; results remain pending.
-Distinct-fixture Creator creation/account-return development runs at `818ad35622`;
+Suite/badge captures at `7b785a39e3` pass four with independent review resolving
+the full-label spill and showing Suite controls fit. Community's first repair
+attempt stalls in checkout with no product evidence; one exact-source retry runs.
+Distinct-fixture Creator creation/account-return at `818ad35622` exposes Studio
+and Overview landmark defects after actual draft creation; their narrow repair
+passes 21 existing component tests and awaits fresh browser proof.
 positive formal creation still needs canonical case-specific input/fixture support.
 Reach diagnostics are accepted on main; Crossdeck #721
 is still unmerged. The following R1 accounting and older qualification results

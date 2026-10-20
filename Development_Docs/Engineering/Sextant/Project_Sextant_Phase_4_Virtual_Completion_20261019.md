@@ -896,3 +896,47 @@ run39346148525 exercises actual creation/reopen/account return with four distinc
 owned fixtures. Its result remains pending. Authoring39345439738 at `7b785a39e3`
 now passes all four including full badge-text containment and actual Suite/badge
 captures; its78downloaded artifacts await independent rendered review.
+
+Independent authoring39345439738 review verifies all78hashes/all40PNGs and frozen
+source/tree/fingerprint. R39343894046-01 is resolved: every full version label
+wraps within its readable gold badge, and explicit Scenario Suite images show
+both controls fitting at1280/390. Its28response points meet3000ms, maximum
+779.283266ms; runtime tree/streams/ports and transport cleanup pass. The
+[81 originals](evidence/20261019-authoring-label-repair/publication-index.json)
+preserve viewport/empty-resource limits: later mobile rail selection may be
+offscreen and all review content is not visible together. No upload, World,
+Trial or publication occurred; Drydock missing BASELINE still prevents readiness.
+All32videos are hashed, not viewed. No new material issue is visible in these
+six-pane/drawer/review captures, with no broader acceptance inferred.
+
+Creator39346148525 at `818ad35622` fails all four after actual production draft
+creation. Its [six-file original subset](evidence/20261019-creator-landmark-failure/publication-index.json)
+retains desktop duplicate unnamed Library/empty Inspector landmarks and mobile
+Profile setup aside nested in the Overview main. Mobile reaches ordinary account
+return; final progress/edition assertions are not reached, so no complete journey
+or unchanged-final-state claim is made. Its private encrypted original remains
+at the indexed owned location:92167766bytes, SHA256
+`2295318c74f3afc0d542d2c9516bdf9bcbd0c9db8abe088353bd53993e2d0237`.
+Runtime/transport cleanup pass. The narrow successor changes only those task
+containers to distinct named sections, preserving classes/IDs, content, motion,
+controls, creation and final assertions. Twenty-one existing component tests
+and TypeScript pass; fresh browser/rendered proof remains required.
+
+Community39345446486 at `7b785a39e3` is CANCELLED after the unchanged20minute job
+budget. Its [three original records](evidence/20261019-community-checkout-cancelled/publication-index.json)
+show checkout's all-ref Git fetch stalling from00:04:40 to00:24:38UTC. No dependency
+step, application build, product/browser launch, Guide assertion or runtime
+receipt occurs, and zero artifacts are uploaded. Runtime cleanup is not proved;
+the exact owned transport branch is released with its separate PASS receipt.
+This establishes no pointer-repair outcome. One fresh exact-source fixed-target
+attempt39352498402 follows the diagnosed pre-product infrastructure cancellation,
+retaining timeout, actions and budgets. All90new published originals retain
+exact bytes; no encrypted private bundle is copied into Git or decrypted.
+
+The positive formal-creation gap is an internal Sounding Line prerequisite.
+Protected ordinary checks out its base authority, imports that authority's runner
+and replays through it; candidate-side changes cannot activate new input/route
+semantics. Mixed product/control-plane source is rejected. A canonical extension
+therefore requires separate Sounding Line qualification, protected installation
+and landed verification before Sextant can consume it. It is not physical or
+manual-Apple work, and no candidate policy fork or acceptance waiver is used.
