@@ -1,3 +1,5 @@
+import { CURRENT_R22 } from "./experience-current-r22.mjs";
+import { validatePreSourceCaptureBinding } from "./experience-review-source-gate.mjs";
 // A finite Crossdeck admission exception, not a second qualification authority.
 import { execFileSync } from "node:child_process";
 import { createHash, randomUUID } from "node:crypto";
@@ -28,7 +30,7 @@ import { CURRENT_R18 } from "./experience-current-r18.mjs";
 import { CURRENT_R19 } from "./experience-current-r19.mjs";
 import { CURRENT_R20 } from "./experience-current-r20.mjs";
 import { CURRENT_R21 } from "./experience-current-r21.mjs";
-import { r21ReviewProvenanceBinding } from "./experience-media-first-r21.mjs";
+import { mediaFirstReviewProvenanceBinding } from "./experience-media-first-binding.mjs";
 import {
   CROSSDECK_R3,
   validateR3Record,
@@ -313,6 +315,19 @@ function r3FamilyRelated(root, candidateSha) {
   }
 }
 export function selectTrustedExceptions(records) {
+  if (records.some((record) => isCurrentAdmissionRecord(record) && record.version === 22)) {
+    if (records.length !== 22 || digest(records.slice(0, 21)) !== CURRENT_R22.previousRecordsDigest)
+      fail("CURRENT_R22_PREDECESSOR_REGISTRY_CHANGED");
+    selectTrustedExceptions(records.slice(0, 21));
+    const successor = records[21];
+    if (!isCurrentAdmissionRecord(successor) || successor.version !== 22)
+      fail("CURRENT_R22_PREDECESSOR_REGISTRY_CHANGED");
+    validateCurrentAdmissionRecord(successor, {
+      legacyRecord: records.find((record) => record.id === CROSSDECK_R14.id),
+      legacyCurrentRecord: records[20],
+    });
+    return [successor];
+  }
   if (records.some((record) => isCurrentAdmissionRecord(record) && record.version === 21)) {
     if (records.length !== 21 || digest(records.slice(0, 20)) !== CURRENT_R21.previousRecordsDigest)
       fail("CURRENT_R21_PREDECESSOR_REGISTRY_CHANGED");
@@ -639,6 +654,7 @@ export const trustedExceptions = (root, baseSha) => {
       "ls-tree",
       baseSha,
       "--",
+      "scripts/sounding-line/experience-current-r22.mjs",
       "scripts/sounding-line/experience-current-r21.mjs",
       "scripts/sounding-line/experience-current-r20.mjs",
       "scripts/sounding-line/experience-current-r19.mjs",
@@ -654,7 +670,9 @@ export const trustedExceptions = (root, baseSha) => {
   );
   // The adapter at the requested base cannot reactivate an older grant by removal.
   // Historical bases without this protected adapter retain their exact readers.
-  if (sentinels.has("scripts/sounding-line/experience-current-r21.mjs"))
+  if (sentinels.has("scripts/sounding-line/experience-current-r22.mjs"))
+    validateCurrentAdmissionRegistry(registry, undefined, { requiredVersion: 22 });
+  else if (sentinels.has("scripts/sounding-line/experience-current-r21.mjs"))
     validateCurrentAdmissionRegistry(registry, undefined, { requiredVersion: 21 });
   else if (sentinels.has("scripts/sounding-line/experience-current-r20.mjs"))
     validateCurrentAdmissionRegistry(registry, undefined, { requiredVersion: 20 });
@@ -1037,7 +1055,7 @@ export function sealedReviewIdentity(plan, evidence) {
     artifactsDigest: digest(evidence.artifacts),
     journeysDigest: digest(evidence.journeys),
     ...(plan.paired ? { pairedEvidenceDigest: digest(evidence.pairedEvidence) } : {}),
-    ...r21ReviewProvenanceBinding(plan, evidence),
+    ...mediaFirstReviewProvenanceBinding(plan, evidence),
   };
 }
 export async function validateExceptionSubmissionEvidence({ root, plan, mode, candidateSha, evidenceRoot = root }) {
@@ -2208,6 +2226,7 @@ export async function verifyExceptionAttestation({
   const captureSeal = await store.read("capture");
   const reviewSlot = `review${record.remainingIndependentReviewOrdinal}`;
   const sealed = await store.read(reviewSlot);
+  validatePreSourceCaptureBinding(plan, evidence, capture, prepare, root);
   if (
     !captureSeal ||
     digest(captureSeal.provenance) !== digest(capture.trustedArtifact) ||
