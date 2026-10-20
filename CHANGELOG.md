@@ -22,8 +22,10 @@ last_reviewed: 2026-10-20
   native sign-in and camera display of the original models. Build 0.1.0 (3) is
   available in internal TestFlight for the classroom network; its separate
   classroom Chronicle passed publication, authenticated assets and accessible
-  browser checks. Exact-build phone installation, physical classroom placement,
-  measured tracking/interaction quality and ARKit acceptance remain pending.
+  browser checks. The owner reports classroom objects appearing when panning the
+  native camera after an initially empty view, but authored appearance/placement
+  is not accepted. Exact phone build, all three objects and measured interactions
+  remain unverified; full authored Scene/room-registration integration is unfinished.
 
 - NCL-01 begins a native Scene candidate with negotiated v2 delivery, exact SC02 chest/compass assets, authorized integrity-checked loading and native object selection through the existing Chronicle observation path. [The implementation record](Development_Docs/Projects/Project_Parallax/NCL01_Native_Scene_Vertical_Slice.md) separates contract/build evidence from pending browser integration, physical devices and owner acceptance.
 

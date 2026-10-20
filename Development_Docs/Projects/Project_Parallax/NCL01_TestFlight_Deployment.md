@@ -29,10 +29,13 @@ against candidate `3ac0dafc0174f4a7b7b5fb63c91aa49b01694730`; its
 [retained readiness receipt](evidence/ncl01-testflight-20261019/internal-testflight-ready-build3-20261020.receipt.json)
 records Apple `VALID`, `IN_BETA_TESTING` and attachment to **NCL-01 Owner**.
 The owner confirms warning-free Safari access to this new HTTPS origin.
-Their earlier native sign-in and original-model camera display report remains
-separate from build 3 installation, native connectivity and classroom placement,
-which are pending. Exact build readback, measured tracking/interactions and owner
-acceptance remain open. Builds 2 and 3 are consumed; do not upload either again.
+The owner subsequently confirmed the classroom Lens title and native camera,
+then reported objects appearing when looking around in the same session after
+an initially empty view. They do not accept the authored-scene appearance or
+placement fidelity. This owner report is separate from exact build readback,
+all-three-object confirmation, Inspect, measured tracking/drift and alignment.
+Full authored Scene/room-registration integration remains unfinished. Builds 2
+and 3 are consumed; do not upload either again.
 
 The owner has now created the explicit identifier and app record. Their screenshots
 show the correct team/bundle, **VoyageWright Landfall**, app Apple ID `6824734220`,
@@ -258,8 +261,9 @@ tracking and visible original models, (5) physical interaction/lifecycle behavio
 and (6) owner acceptance. Build 3 upload/internal-test availability have retained
 software proof; installation, native sign-in and physical camera display are
 owner-reported, as is warning-free Safari access on the new classroom network.
-Exact build readback, build 3 native connectivity, measured tracking/alignment,
-Inspect/lifecycle and final owner acceptance remain pending.
+The later classroom report below confirms owner-reported native object visibility,
+with exact build readback, all three objects, measured tracking/alignment,
+Inspect/lifecycle and authored-scene fidelity still unverified or unaccepted.
 
 The first physical fixture is the existing non-adaptive local/surface Scene.
 Native activation can use the companion's existing local host path; broader
@@ -491,8 +495,9 @@ local/surface placement and authored layout offsets. The reconstruction is
 authoring input with estimated scale and manual floor-origin registration; it
 does not establish a measured room map. Native adaptive Environment evidence,
 automatic classroom recognition and FIXED_WORLDSPACE registration remain
-unsupported. Classroom publication and ordinary software access are established;
-physical classroom placement remains pending.
+unsupported. Classroom publication and ordinary software access are established.
+The owner later reports objects visible in the native camera; faithful classroom
+placement and full authored-scene appearance remain unfinished and unaccepted.
 
 For the phone trial, stand at the intended floor origin facing the intended room
 direction before opening Lens. Aim the center of the camera at a clear floor
@@ -509,3 +514,38 @@ audited OS-only encryption metadata explicitly as
 `ITSAppUsesNonExemptEncryption=false`; the archive must verify that value. The
 requested official dark compass icon still awaits the exact artwork and is not
 being replaced with another design as part of this network update.
+
+### Owner classroom visibility report
+
+The [new immutable owner-report receipt](evidence/ncl01-testflight-20261019/classroom-20261020/phone-native-visibility.owner-report.json)
+records the correct **The Classroom Compass Trail** title, camera opening and
+an initially empty view with no reported error/status text. When asked to look
+around in that same session without replacing the layout, the owner answered
+**Yes, objects appear when I look around**. They then explained that the objects
+do not show the authored scene as wanted. This establishes owner-reported object
+visibility, not accepted placement or appearance fidelity. Exact phone build,
+all three objects, Inspect/Pick/Place, measured tracking/drift and room alignment
+were not verified. Earlier readiness/software receipts remain unchanged snapshots.
+
+The current native provider renders a limited static chest/compass layout around
+a manually chosen shared floor origin. Full authored Scene behavior and automatic
+registration to the reconstructed classroom are unfinished. Panning visibility
+does not prove those capabilities or close NCL-01 acceptance.
+
+## Stable HTTPS origin follow-up
+
+The owner selected Cloudflare and reports ownership of
+`absoluterelativesystems.com`, with existing staging at
+`staging.absoluterelativesystems.com`. The
+[read-only staging audit](evidence/ncl01-testflight-20261019/cloudflare-staging-readonly-20261020.receipt.json)
+passed normal TLS and observed a 302 to Cloudflare Access; it did not reach the
+application. The existing remotely managed Windows connector is healthy and was
+preserved. Its staging service target, source checkout and database remain unknown,
+so reuse or repointing is not established as safe. The native exact-origin policy
+currently blocks an external Access-login navigation and needs a deliberate design.
+
+The Cloudflare dashboard awaits owner sign-in before further read-only routing and
+Access-policy inspection. No tunnel, DNS, service, firewall or trust change has
+been made, no domain purchase is needed, and no build 4 has been dispatched.
+The fixed build 3 classroom origin remains current. A stable multi-network address
+and full authored-scene fidelity remain separate pending work.

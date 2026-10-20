@@ -178,7 +178,15 @@ unchanged and the verifiers revoked only their own sessions. Public receipts
 are under evidence/ncl01-testflight-20261019/classroom-20261020; private photos,
 geometry/plans/helper/backup stay outside Git. Initial floor placement is automatic;
 Place repositions the shared anchor. No rotation/nudge or automatic room alignment.
-Physical classroom placement remains pending on the updated phone app.
+The owner subsequently confirmed the correct Classroom Compass Trail Lens title,
+native camera opening and an initially empty view without status/error text.
+Panning in that same session without replacement revealed objects. Owner wording:
+"Yes, objects appear when I look around". They do not accept the authored scene's
+appearance/placement. New immutable phone-native-visibility.owner-report.json
+records this tier; preserve earlier false-flag readiness/software snapshots.
+Exact phone build, all three objects, Inspect/Pick/Place, measured tracking/drift
+and alignment are unverified. Full authored Scene/room-registration integration
+remains unfinished; do not classify rendering visibility as NCL-01 completion.
 The requested official dark icon still awaits the exact owner-supplied artwork;
 do not substitute another design or let that missing asset block network testing.
 
@@ -190,3 +198,20 @@ processing, internal-test availability and Safari Guided View never complete it.
 Adaptive/native environment evidence and broader Crossdeck registry integration
 remain separate limitations; use the existing non-adaptive synthetic local/
 surface Scene for the first physical test. No duplicate demo state or engine.
+
+## Stable origin continuation
+
+The owner selected Cloudflare and owns absoluterelativesystems.com, with existing
+staging.absoluterelativesystems.com. Read-only public audit observed valid TLS and
+302 to Cloudflare Access, not app HTML or NCL source/database identity. Existing
+remotely managed Cloudflared Windows service is running/healthy and preserved;
+staging ingress target, checkout and database remain unknown. Never repoint shared
+staging or alter its connector without first proving ownership/target. Current
+native exact-origin navigation blocks external Access-login redirects; review
+authentication deliberately, retaining TLS and app/API authorization.
+
+Cloudflare dashboard in Edge tab 1591223954 is at owner login with handoff marked.
+Await owner sign-in, then inspect only the hostname service URL/Access policy.
+No tunnel/DNS/service/firewall/trust changes, build 4, or domain purchase occurred.
+Current beta still targets https://155.42.98.171:8449. Stable multi-network access
+and full authored Scene fidelity are pending; neither is completed by build 3.
