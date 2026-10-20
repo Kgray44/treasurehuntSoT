@@ -32,11 +32,14 @@ independent review of visible content. Lower Book/provenance captures remain
 incomplete. At `3d2d430fe1` the Suite-row bounds and lower history capture journeys
 pass all four; independent authoring review clears visible review clipping but
 finds an overflowing version badge, now awaiting repair proof. The lower history
-and first public catalog/guest/edition journey at `395940ad72` await independent
-rendered review after four development passes. Community's mobile
+and first public catalog/guest/edition journey at `395940ad72` pass independent
+review of displayed content after four development passes, with explicit
+viewport/fallback limits. Full normal Journal opening is separately about ten
+seconds. Community's mobile
 normal Guide failure still needs a product cause;
 trusted pointer observations identify decorative artwork above its stretched
-link with no Guide request. Its narrow pointer repair awaits fresh source proof.
+link with no Guide request. Source-reviewed badge/pointer repairs and explicit
+Suite/badge captures run at `7b785a39e3`; results remain pending.
 Reach diagnostics are accepted on main; Crossdeck #721
 is still unmerged. The following R1 accounting and older qualification results
 retain their historical source identities.

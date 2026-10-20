@@ -1602,7 +1602,7 @@
       "sourceSha": "3d2d430fe1b09a254a3f3b7a708a1f1ede6b2914",
       "transportSha": "cfd951ab36258c96b2013a7ef45419a1920937b6",
       "runId": "39343917005",
-      "status": "HARVESTED_SUCCESS_FOUR_VARIANTS_LOWER_CAPTURE_SUPPLEMENT_RENDERED_REVIEW_PENDING",
+      "status": "HARVESTED_SUCCESS_FOUR_VARIANTS_LOWER_CAPTURE_SUPPLEMENT_RENDERED_VISIBLE_CONTENT_CLEAR_WITH_LIMITS",
       "artifacts": 65,
       "productionBuild": "PASS",
       "qualification": false,
@@ -1651,7 +1651,31 @@
           "remainingResources": []
         }
       },
-      "publication": "evidence/20261019-history-lower-captures/publication-index.json"
+      "publication": "evidence/20261019-history-lower-captures/publication-index.json",
+      "independentRenderedReview": {
+        "reviewer": "/root/sextant_source_review",
+        "originalHashesVerified": 65,
+        "pngInspected": 40,
+        "sourceFingerprint": "027964885d8dc118cc173e98906f669ae44dafaa0b1784fb0d72466b2a8412e3",
+        "sourceTree": "244d84a78e68c4a84334acdafadd359416d44bce",
+        "sourceBlobs": 1946,
+        "finding": "NO_NEW_MATERIAL_DEFECT_IN_DISPLAYED_CONTENT",
+        "videosHashed": 19,
+        "videosReviewed": false,
+        "limits": [
+          "CAPTAIN_UNAVAILABLE_AND_CHAPTER_HISTORY_NOT_RETAINED_NOT_POPULATED_CHRONOLOGY_PROOF",
+          "SOME_REPLAY_FRAMES_PAGE_TURN_FALLBACK_OR_BLANK_CURRENT_LEAF_NOT_ANIMATION_OR_EVERY_PAGE_PROOF",
+          "NO_NATIVE_PROTECTED_OR_OWNER_ACCEPTANCE"
+        ]
+      },
+      "activationTimings": 32,
+      "maximumMeasuredReadinessMs": 1583.380141,
+      "separateJournalOrReplayOpeningMs": {
+        "minimum": 494.016397,
+        "maximum": 2653.943784,
+        "scope": "SEPARATE_FROM_3000_MS_SELECTED_CONTROL_BOUNDARIES"
+      },
+      "canonicalProgressAndEditionBytesUnchanged": true
     },
     {
       "platform": "CHROMIUM",
@@ -1659,7 +1683,7 @@
       "sourceSha": "395940ad721ceb21465532b59b27826ef50e9690",
       "transportSha": "f0983dd69af9fb571d441dc9aa483876c32c8a1c",
       "runId": "39344041978",
-      "status": "HARVESTED_SUCCESS_FOUR_VARIANTS_FIRST_GUEST_CATALOG_JOURNEY_RENDERED_REVIEW_PENDING",
+      "status": "HARVESTED_SUCCESS_FOUR_VARIANTS_FIRST_GUEST_CATALOG_JOURNEY_RENDERED_VISIBLE_CONTENT_CLEAR_WITH_LIMITS",
       "artifacts": 82,
       "productionBuild": "PASS",
       "qualification": false,
@@ -1708,7 +1732,33 @@
           "remainingResources": []
         }
       },
-      "publication": "evidence/20261019-catalog-guest-entry/publication-index.json"
+      "publication": "evidence/20261019-catalog-guest-entry/publication-index.json",
+      "independentRenderedReview": {
+        "reviewer": "/root/sextant_source_review",
+        "originalHashesVerified": 82,
+        "pngInspected": 36,
+        "sourceFingerprint": "82caa656f248d818326f5515f3316d7652cf7eb2d66392be4492cbe89df03a6d",
+        "sourceTree": "0c4b618a58ab5573929f26ad07f34e312e2f05c1",
+        "sourceBlobs": 1946,
+        "finding": "NO_NEW_MATERIAL_DEFECT_IN_DISPLAYED_CONTENT",
+        "videosHashed": 40,
+        "videosReviewed": false,
+        "limits": [
+          "LOWER_ACTIONS_OUTSIDE_SOME_VIEWPORT_CAPTURES",
+          "MOBILE_JOURNAL_TEXT_PARTLY_OUTSIDE_OR_BEHIND_FIXED_CONTROL_AREAS_NOT_COMPLETE_PAGE_OR_SCROLL_PROOF",
+          "NORMAL_JOURNAL_OPENINGS_9950_546306_AND_10394_922496_MS_SEPARATE_FROM_3000_MS_CONTROL_BOUNDARIES",
+          "NO_POPULATED_COOKIE_HISTORY_SIGNED_IN_CATALOG_REAL_PUBLICATION_OR_ANIMATION_QUALITY_PROOF",
+          "NO_NATIVE_PROTECTED_OR_OWNER_ACCEPTANCE"
+        ]
+      },
+      "activationTimings": 24,
+      "maximumMeasuredReadinessMs": 1574.479016,
+      "separateJournalOrReplayOpeningMs": {
+        "minimum": 739.273888,
+        "maximum": 10394.922496,
+        "scope": "SEPARATE_FROM_3000_MS_SELECTED_CONTROL_BOUNDARIES"
+      },
+      "canonicalProgressAndEditionBytesUnchanged": true
     },
     {
       "platform": "CHROMIUM",
@@ -1823,7 +1873,7 @@
     "reachDiagnostics": "PROTECTED_ACCEPTED_ON_BASE",
     "historicalAccounting": "PRESERVED_SEXTANT_3_OF_3_CROSSDECK_10_OF_3_R1_2_OF_3",
     "registeredNewPlayerWorkspaceSurfaces": 2,
-    "remainingSoftware": "45 unregistered affected surfaces at395940ad72 across178affected. Latest Suite-row development bounds pass4; independent review resolves visible review clipping but finds version-label spill, repair/captures pending. History lower supplement and first catalog guest journey pass4 with independent rendered review pending. Community390normal artwork SPAN blocks stretched-link input; narrow CSS repair awaits fresh source execution. Creator entry WIP; account/recovery/invitation/Admiralty/private-content/Landfall fixtures, governed legacy disposition, formal references/layout and protected qualification remain. Darwin ownership, accepted Crossdeck and external/owner gates stay separate.",
+    "remainingSoftware": "45 unregistered affected surfaces at395940ad72 across178affected. Latest Suite-row development bounds pass4; independent review resolves visible review clipping but finds version-label spill, repair/captures pending. History lower supplement and first catalog guest journey pass4 with independent visible-content review clear and explicit viewport/fallback limits. Catalog normal Journal opening is separately about10seconds, not a3000ms response. Community390normal artwork SPAN blocks stretched-link input; narrow CSS repair awaits fresh source execution. Creator entry WIP; account/recovery/invitation/Admiralty/private-content/Landfall fixtures, governed legacy disposition, formal references/layout and protected qualification remain. Darwin ownership, accepted Crossdeck and external/owner gates stay separate.",
     "independentDevelopmentJourneyReview": {
       "source": "0d8b3c7841966a1d1c8b5dae21570b1043dc7915",
       "reviewer": "/root/sextant_source_review",
@@ -2044,5 +2094,18 @@
       "passingCompanionOrBuildIsNotProductExecution": true
     }
   ],
-  "pendingDevelopmentRuns": []
+  "pendingDevelopmentRuns": [
+    {
+      "runId": "39345439738",
+      "sourceSha": "7b785a39e3c2e059ec46c2035e28af6a8b1fbdb0",
+      "target": "sextant-authoring-resources",
+      "scope": "FULL_EDITION_BADGE_AND_EXPLICIT_SUITE_CAPTURE"
+    },
+    {
+      "runId": "39345446486",
+      "sourceSha": "7b785a39e3c2e059ec46c2035e28af6a8b1fbdb0",
+      "target": "sextant-community",
+      "scope": "DECORATIVE_ARTWORK_HIT_AREA_REPAIR_ORIGINAL_ACTION_RETAINED"
+    }
+  ]
 }

@@ -30,10 +30,12 @@ unconfirmed. The historical completion/provenance successor passes four variants
 with clear review of visible content and incomplete lower Book/provenance captures.
 Suite-row bounds and lower history captures pass four variants at `3d2d430fe1`;
 authoring review clears prior visible clipping but finds long version-label spill.
-Public catalog/guest/edition development passes four at `395940ad72`; its images
-and the history supplement await independent review. Community's new diagnostic
+Public catalog/guest/edition development passes four at `395940ad72`; independent
+review clears displayed content there and in the history supplement, with
+explicit viewport/fallback limits and separately about ten-second normal Journal
+opening. Community's new diagnostic
 identifies decorative artwork above its stretched link. Narrow badge/pointer
-repairs and protected acceptance remain pending.
+repairs run at `7b785a39e3`; their results and protected acceptance remain pending.
 The bounded continuation passes 327 focused tests, 59 D0/D1 scenarios, Android
 OS idle/standby recovery and three selected iOS permission/geofence scenarios.
 Every receipt retains its actual source; none promotes the feature to accepted.

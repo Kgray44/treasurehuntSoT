@@ -823,3 +823,32 @@ that host adapter requires the Device Lab/Sounding Line ownership design and
 adversarial Darwin lifecycle qualification; historical39311000104 cleanupFAIL
 and its separate native/transport facts remain unchanged. No equivalent Apple
 product rerun, manual setup or cleanup bypass is authorized by this diagnosis.
+
+Independent review of history39343917005 now verifies all65hashes/all40PNGs,
+source/tree/fingerprint and four clean receipts, with no new material defect in
+displayed content. Its32response points meet3000ms, maximum1583.380141ms; separate
+replay opening is494.016397–2653.943784ms. Lower Detail actions, private Book and
+the authority sentence are readable, with mobile wrapping intact. The Book
+honestly shows Captain unavailable and chapter history not retained: this is
+not populated chapter-chronology proof. Some replay frames show page-turn fallback
+or a blank current leaf, proving the visible read-only notice/controls rather
+than animation quality or every page. All19videos are hashed, not viewed.
+
+Independent catalog39344041978 review verifies all82hashes/all36PNGs and exact
+source/tree/fingerprint across1946blobs, with no material defect in displayed
+content. Its24control response points meet3000ms, maximum1574.479016ms. Full
+Journal opening is separately9950.546306ms desktop normal and10394.922496ms mobile
+normal, versus739.273888–744.364765ms reduced; these are not sub3000ms full openings.
+The actual201 creates a guest with no account, pinsv2 and returns through the
+same production-issued continuation. Guest/private baselines and edition bytes
+remain asserted. Comparison truthfully shows no recorded Voyage and only public
+metadata differences. Some lower actions remain outside viewports; mobile
+Journal text is partly outside/behind fixed controls, so complete-page readability
+and full scroll behavior are not established. All40videos are hashed, not viewed.
+Authenticated catalog, populated-cookie history and real publishing remain open.
+
+Source-reviewed badge/pointer repairs and explicit Suite/badge captures are frozen
+at `7b785a39e3c2e059ec46c2035e28af6a8b1fbdb0`. Authoring39345439738 and Community
+39345446486 run in development with the original actions, assertions and budgets.
+No result is inferred while pending. These reviews and captures remain separate
+from protected custody, physical/native evidence and owner acceptance.
