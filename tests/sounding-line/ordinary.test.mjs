@@ -2057,3 +2057,4 @@ test("generic browser credentials are ephemeral and restricted to the isolated p
   for (const profile of ["homeport-phase3", "lanternwake-phase3", "harborlight-phase2", "unknown"])
     assert.deepEqual(isolatedBrowserFixtureCredentials(profile), {});
 });
+import "./experience-checkout-recovery.test.mjs";
