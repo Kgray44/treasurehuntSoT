@@ -87,6 +87,17 @@ def validate_profile(profile, now=None):
     return hashlib.sha1(certificates[0]).hexdigest().upper()
 
 
+def signing_overlay(root, identity, profile_uuid):
+    """Override only the app's Release signing; retain the checked-in project spec."""
+    return {
+        "include": [{"path": str(root / "native/ios/project.yml"), "relativePaths": True}],
+        "targets": {"LandfallCompanion": {"settings": {"configs": {"Release": {
+            "CODE_SIGNING_ALLOWED": "YES", "CODE_SIGN_STYLE": "Manual", "DEVELOPMENT_TEAM": TEAM,
+            "CODE_SIGN_IDENTITY": identity, "PROVISIONING_PROFILE_SPECIFIER": profile_uuid,
+        }}}}},
+    }
+
+
 class Runner:
     def __init__(self, args):
         self.args = args
@@ -126,6 +137,11 @@ class Runner:
                     output = output.replace(value, "[REDACTED]")
             output = re.sub(r"eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+", "[REDACTED_TOKEN]", output)
             (self.public / f"{self.stage.lower()}.log").write_text(output, encoding="utf-8")
+        if result.returncode:
+            # Record only the executable and exit status, never command arguments
+            # (security import arguments contain the PKCS#12 password).
+            self.receipt["failedTool"] = Path(command[0]).name
+            self.receipt["failedExitCode"] = result.returncode
         require(result.returncode == 0, f"COMMAND_FAILED_{self.stage}")
         return result.stdout
 
@@ -190,23 +206,21 @@ class Runner:
         self.api_key.chmod(0o600)
         self.run(["openssl", "pkey", "-in", str(self.api_key), "-noout", "-check"])
 
-    def configure_app_signing(self, project):
-        contents = json.loads(self.run(["plutil", "-convert", "json", "-o", "-", str(project)]))
-        objects = contents["objects"]
-        targets = [obj for obj in objects.values() if obj.get("isa") == "PBXNativeTarget" and obj.get("name") == "LandfallCompanion"]
-        require(len(targets) == 1, "SINGLE_APP_TARGET_REQUIRED")
-        configs = objects[targets[0]["buildConfigurationList"]]["buildConfigurations"]
-        found = False
-        for key in configs:
-            config = objects[key]
-            if config["name"] != "Release":
-                continue
-            found = True
-            settings = config.get("buildSettings", {})
-            settings.update({"CODE_SIGNING_ALLOWED": "YES", "CODE_SIGN_STYLE": "Manual", "DEVELOPMENT_TEAM": TEAM,
-                             "CODE_SIGN_IDENTITY": self.identity, "PROVISIONING_PROFILE_SPECIFIER": self.profile_uuid})
-            self.run(["plutil", "-replace", f"objects.{key}.buildSettings", "-json", json.dumps(settings), str(project)])
-        require(found, "RELEASE_APP_CONFIGURATION_REQUIRED")
+    def verify_app_signing(self, project):
+        self.stage = "SIGNING_SETTINGS_VALIDATION"
+        targets = json.loads(self.run([
+            "xcodebuild", "-quiet", "-showBuildSettings", "-json", "-project", str(project),
+            "-scheme", "LandfallCompanion", "-configuration", "Release", "-destination", "generic/platform=iOS",
+        ]))
+        apps = [target for target in targets if target.get("target") == "LandfallCompanion"]
+        require(len(apps) == 1, "SINGLE_APP_TARGET_REQUIRED")
+        settings = apps[0]["buildSettings"]
+        for name, expected in {
+            "CODE_SIGNING_ALLOWED": "YES", "CODE_SIGN_STYLE": "Manual", "DEVELOPMENT_TEAM": TEAM,
+            "CODE_SIGN_IDENTITY": self.identity, "PROVISIONING_PROFILE_SPECIFIER": self.profile_uuid,
+        }.items():
+            require(settings.get(name) == expected, f"APP_SIGNING_SETTING_INVALID_{name}")
+        self.receipt["appTargetSigningSettingsValidated"] = True
 
     def archive(self):
         self.stage = "TOOLCHAIN"
@@ -226,11 +240,17 @@ class Runner:
         self.receipt["altoolKeyLookup"] = "EXPLICIT_P8_PATH" if self.explicit_p8 else "API_PRIVATE_KEYS_DIR"
         if self.args.mode == "upload":
             self.configure_signing()
+        spec = self.root / "native/ios/project.yml"
+        if self.args.mode == "upload":
+            spec = self.private_file("signed-project.json", json.dumps(
+                signing_overlay(self.root, self.identity, self.profile_uuid)).encode("utf-8"))
         self.stage = "PROJECT_GENERATION"
-        self.run(["xcodegen", "generate", "--spec", "native/ios/project.yml"], public_log=True)
+        project_root = self.root / "native/ios"
+        self.run(["xcodegen", "generate", "--spec", str(spec),
+                  "--project-root", str(project_root), "--project", str(project_root)], public_log=True)
         project = self.root / "native/ios/LandfallCompanion.xcodeproj"
         if self.args.mode == "upload":
-            self.configure_app_signing(project / "project.pbxproj")
+            self.verify_app_signing(project)
         self.stage = "DEVICE_ARCHIVE"
         self.archive_path = self.temp / "LandfallCompanion.xcarchive"
         args = ["xcodebuild", "-quiet", "-project", str(project), "-scheme", "LandfallCompanion", "-configuration", "Release",

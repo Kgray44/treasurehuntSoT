@@ -35,11 +35,13 @@ Team ID `X2JZ9N65V2`; bundle ID `com.voyagewright.landfall`; iPhone 17 Pro.
 Paid membership and TestFlight installation are owner-reported. App record,
 identifier and team are now visible in the owner's Apple screenshots; numeric app
 Apple ID `6824734220` is configured as `NCL01_ASC_APP_ID` in the dedicated GitHub
-environment. Certificate/profile/API configuration, signed distribution, Apple
-processing, installation and physical tracking remain separate unproved gates.
-The signed-in certificate list is empty. The CSR upload form is prepared, but
-the Edge extension's local-file access blocks automated attachment. Leave that
-selection to the owner; do not broaden extension permissions to work around it.
+environment. The owner completed certificate/profile/team API key setup. All four
+signing secrets and API metadata are configured there; exact app API lookup passed.
+The matching private signing key and App Store profile passed local validation
+and hosted keychain preflight. The verified NCL-01 Owner internal group contains
+only the existing account holder. Signed distribution, Apple processing, phone
+installation and physical tracking remain separate unproved gates. Do not repeat
+certificate creation for a pipeline repair.
 
 The template `.agents/ncl01-testflight-hosted.yml` is transported as one generated
 workflow file on an owned `codex/ncl01-testflight-*` push branch. The job checks
@@ -69,8 +71,18 @@ and validate the certificate. The initial October 19 observation found the lapto
 on `10.4.48.166`; it has since returned to configured Wi-Fi `192.168.0.24`.
 Fresh read-only probes returned 200 for bootstrap, HTTPS app and both original
 GLBs with normal TLS 1.3 validation. Existing services and CA are unchanged.
-The CA expires October 22 at 20:08:04 UTC. Phone reachability/trust remains an
-owner check; do not infer it from those laptop probes.
+The laptop subsequently selected Ethernet `192.168.0.18`; the retained `.18` leaf
+and configuration were restored without changing CA, keys, public profile or
+fixture. Owned process/port cleanup and 11 authenticated asset checks passed;
+current origin is `https://192.168.0.18:8449`. The CA expires October 22 at
+20:08:04 UTC. Phone reachability/trust remains an owner check explicitly deferred
+until later; do not infer it from laptop probes or keep asking during preparation.
+
+First signed attempt 39361584467 at `fe6624fb` passed signing identity/profile
+checks but failed after XcodeGen succeeded, in the old generated-project mutation
+step. Cleanup passed; no archive/export/upload occurred. The repair uses a private
+XcodeGen include overlay scoped only to app Release signing, then checks all five
+effective signing settings before archive. Retain the failure; build 2 is unused.
 
 Success is the owner installing this exact beta through TestFlight, opening
 native ARKit camera placement, seeing the original interactive 3D chest and

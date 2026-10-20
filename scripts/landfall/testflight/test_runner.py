@@ -8,10 +8,22 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from runner import BUNDLE, Failure, TEAM, cleanup_owned, signature_raw, validate_origin, validate_profile
+from runner import BUNDLE, Failure, TEAM, cleanup_owned, signature_raw, signing_overlay, validate_origin, validate_profile
 
 
 class TestSigningBoundaries(unittest.TestCase):
+    def test_signing_is_scoped_to_release_app_and_preserves_included_source_paths(self):
+        root = Path("/owned/workspace with spaces")
+        overlay = signing_overlay(root, "synthetic-public-identity", "11111111-1111-1111-1111-111111111111")
+        self.assertEqual(overlay["include"], [{"path": str(root / "native/ios/project.yml"), "relativePaths": True}])
+        self.assertNotIn("settings", overlay)
+        self.assertEqual(list(overlay["targets"]), ["LandfallCompanion"])
+        app = overlay["targets"]["LandfallCompanion"]["settings"]
+        self.assertNotIn("base", app)
+        self.assertEqual(list(app["configs"]), ["Release"])
+        self.assertEqual(app["configs"]["Release"]["DEVELOPMENT_TEAM"], TEAM)
+        self.assertEqual(app["configs"]["Release"]["CODE_SIGNING_ALLOWED"], "YES")
+
     def profile(self):
         return {"ExpirationDate": dt.datetime(2030, 1, 1), "TeamIdentifier": [TEAM],
                 "UUID": "11111111-1111-1111-1111-111111111111", "DeveloperCertificates": [b"synthetic-public-cert"],

@@ -20,11 +20,12 @@ on iPhone 17 Pro are owner-reported. No signed installation is established.
 
 The owner has now created the explicit identifier and app record. Their screenshots
 show the correct team/bundle, **VoyageWright Landfall**, app Apple ID `6824734220`,
-and version 1.0 in **Prepare for Submission**. The app ID has been configured in
-the dedicated GitHub environment; do not ask the owner for it again. The signed-in
-Apple certificate list remains empty. The personal setup remaining is the
-distribution certificate, matching profile and App Store Connect team API key
-described in steps 3–6 below. Confirm NFC before generating the profile.
+and version 1.0 in **Prepare for Submission**. The owner subsequently completed
+the distribution certificate, matching NFC-enabled profile and team API key.
+Those inputs passed local validation; the dedicated GitHub environment contains
+all four required secrets and API metadata. Exact bundle API lookup passed. The
+following steps retain the completed owner setup as a reference; do not repeat
+certificate creation to repair a build-tool failure.
 
 ## Actions the account owner completes
 
@@ -89,13 +90,14 @@ Environment secrets:
 Non-secret environment variables: `NCL01_ASC_KEY_ID`, `NCL01_ASC_ISSUER_ID`,
 `NCL01_ASC_APP_ID`. An internal group's identifier can be supplied as
 `NCL01_INTERNAL_GROUP_ID` after it exists. The runner validates actual certificate
-and profile contents before archive. No credentials are currently configured.
+and profile contents before archive. Credentials are configured; their contents
+remain outside source, logs and chat.
 
-Only the non-secret app ID is currently configured. Certificate/profile/API-key
-secrets, Key ID and Issuer ID are still pending. The Edge certificate-upload form
-is prepared; local-file attachment is blocked by the browser extension's current
-file permissions. The owner can select the public CSR manually with **Choose
-File**; no browser-permission expansion is required.
+The initial browser file-attachment restriction was resolved by the owner's manual
+CSR selection. No browser-permission expansion was required. The existing account
+holder is verified as the sole tester in NCL-01 Owner, an internal group with no
+public link. Its identifier is configured for processed-build attachment. No
+external testing group was created.
 
 The source-bound workflow uses a hosted macOS runner, verifies Xcode 26 or later,
 generates the Xcode project, archives the real iOS target, exports an App Store
@@ -141,9 +143,15 @@ An initial October 19 check found the laptop on Wi-Fi `10.4.48.166`, making its
 saved `.24` origin unreachable. A later read-only recheck after the owner returned
 to Wi-Fi `192.168.0.24/24` passed: `https://192.168.0.24:8449` and both original
 GLB endpoints returned 200 with normal TLS 1.3 validation; bootstrap port 8448
-also returned 200. Existing services and CA were preserved. This is the verified
-laptop origin for the next signed build. Phone reachability and trust remain
-separate owner checks. A later network-address change may require a new beta.
+also returned 200. The laptop later selected Ethernet `.18` as preferred, leaving
+`.24` deprecated. The retained `.18` leaf/configuration were restored with the
+same CA and keys after verified owned process shutdown and port release. App,
+bootstrap and all 11 authenticated model/revision/session-cleanup checks passed
+at `https://192.168.0.18:8449`; the synthetic Voyage and Scene stayed unchanged.
+[The sanitized restoration receipt](evidence/ncl01-testflight-20261019/https-origin-192168018-20261019.receipt.json)
+records this gate. The `.18` origin is bound into the signed beta attempt. Phone
+reachability/trust remain separate owner checks, explicitly deferred until later.
+A subsequent network-address change may require a new beta.
 
 The existing CA SHA-256 is
 `17ad9c5ccd0eb37f00b0062d6c8dcff72a368fb85553175402be5016b21ac8b6`;
@@ -231,7 +239,7 @@ That initial run was canceled during its full-repository checkout before app
 compilation. A bounded checkout now selects the iOS app, pipeline, original model
 resources and referenced test fixtures, avoiding unrelated retained evidence.
 The replacement run remains an unsigned device archive and cannot produce a
-TestFlight-installable build. No signing secrets have been installed.
+TestFlight-installable build. No signing secrets had been installed at that point.
 
 The [replacement archive passed](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39342416557)
 for candidate `bcca4fba851686b1cced11604daf5790a467b8bb`, transport
@@ -250,3 +258,22 @@ device archive log is retained as emitted by successful quiet Xcode output.
 The app executable digest is recorded in the original receipt. No IPA export,
 signing, upload, Apple processing, phone reachability, installation or physical
 AR behavior was established by this unsigned run.
+
+## First signed attempt and focused repair
+
+[Run 39361584467](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39361584467)
+at `fe6624fb62106794fd479e5f57e0e50c35c2d08c` passed profile/private signing
+identity validation but failed in PROJECT_GENERATION after XcodeGen succeeded.
+Its [original failure and cleanup proof](evidence/ncl01-testflight-20261019/signed-39361584467/verification.json)
+are retained. No device archive, export or upload occurred; build 2 remains unused.
+The exact failing plutil command was not logged, so a specific root cause is not
+claimed. The old path attempted post-generation mutation of an OpenStep project.
+
+The correction uses XcodeGen's supported include/merge mechanism: a private JSON
+overlay references the unchanged project specification and overrides only the
+app's Release signing settings. Both spec root and project output remain native/ios.
+Before archive, effective settings must match all five expected signing fields.
+Dependency/test targets retain their unsigned defaults. Failed commands now retain
+only tool name and exit code; command arguments and credential output stay private.
+Focused checks pass 3 transport and 5 runner tests, including app-only scope.
+Independent source review found no blocker to the fresh hosted signed retry.
