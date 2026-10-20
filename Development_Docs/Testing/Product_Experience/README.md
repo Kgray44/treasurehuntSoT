@@ -33,7 +33,8 @@ or weaker functional/accessibility/security/continuity requirement is introduced
 This finite successor preserves the original R20 raw review and clarification;
 neither becomes a canonical accepted judgment. Its current-base and paired
 execution bindings require a new capture. A distinct critic must start in a fresh
-context with no inherited source, fixtures, contract text, R19/R20 reports or
+child context (`fork_turns: none`) with an actual `/root/<new critic>` task path
+and no inherited source, fixtures, contract text, R19/R20 reports or
 blocker history. The existing cloud owner verifies the actual selection against
 every previous critic before giving the new critic any review material.
 
@@ -104,6 +105,12 @@ identities, `independence: SEPARATE_CONTEXT` and
 source access and judgment times must be truthful and ordered. The finite guard
 checks consistency and original bytes; ordinary authenticated submission and all
 existing media, paired, accessibility, privacy and technical gates still apply.
+The immutable review11 seal and protected `review.json` both bind
+`mediaFirstReviewDigest` to the complete envelope, including original observation
+text, byte identity, critic creation and chronology. Authenticated attestation
+rejects any substituted envelope, even if it independently passes the protocol
+and retains the same canonical judgments and media. Other review formats retain
+their existing identities.
 
 Engineering maintenance: [R8 historical format reconciliation](../../Engineering/Crossdeck_R8_Historical_Format_Reconciliation.md).
 Engineering maintenance: [complete changed-path buffer repair](../../Engineering/Experience_Changed_Path_Buffer_Repair.md).

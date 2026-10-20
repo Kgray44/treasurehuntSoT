@@ -74,7 +74,11 @@ canonical judgments with actual builder/reviewer context identities. The
 [operations guide](../../../../Testing/Product_Experience/README.md) specifies
 the canonical embedded first-pass envelope. Context and timing fields record
 provenance; they do not cryptographically prove human identity or chronology.
-The owner must verify the real fresh-context selection and media/source order.
+The owner must verify the real fresh child-context selection with no inherited
+history and media/source order. The complete embedded envelope digest is bound
+into the immutable review11 seal, protected review report and authenticated
+attestation; replacing it requires a different seal even if the replacement is
+otherwise valid. Historical review formats retain their original identities.
 
 R20's exact three B1 component splits and real Refit transfers remain unchanged.
 Functional readability, operable controls, accessibility, privacy/security,

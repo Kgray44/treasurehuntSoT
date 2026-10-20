@@ -30,10 +30,14 @@ invented. Next preparation is 25, independent review 11, cumulative iteration 15
 Exactly one capture, review, ordinary, technical and replay remain available.
 No refund, reset, rerun, paid call, editorial redesign or compatibility route.
 
-Bind review11 to a distinct fresh critic. Preserve its original media-first
+Bind review11 to a distinct fresh child critic created without inherited history
+(`fork_turns: none`); record its actual `/root/<new critic>` task path and native
+context identity. Preserve its original media-first
 observations before any source, contracts, fixtures, historical reports or
 blocker history are exposed, then require seven explicit canonical judgments
-and context identities. Identity/chronology fields record provenance; the owner
+and context identities. Bind the complete `mediaFirstReview` envelope digest
+through the immutable review11 seal, protected review report and attestation.
+Identity/chronology fields record provenance; the owner
 must verify the actual process. Existing functional, accessibility, privacy,
 technical, B1/B2, paired execution, authenticated submission and strict protection
 gates remain required.

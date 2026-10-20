@@ -28,6 +28,7 @@ import { CURRENT_R18 } from "./experience-current-r18.mjs";
 import { CURRENT_R19 } from "./experience-current-r19.mjs";
 import { CURRENT_R20 } from "./experience-current-r20.mjs";
 import { CURRENT_R21 } from "./experience-current-r21.mjs";
+import { r21ReviewProvenanceBinding } from "./experience-media-first-r21.mjs";
 import {
   CROSSDECK_R3,
   validateR3Record,
@@ -1036,6 +1037,7 @@ export function sealedReviewIdentity(plan, evidence) {
     artifactsDigest: digest(evidence.artifacts),
     journeysDigest: digest(evidence.journeys),
     ...(plan.paired ? { pairedEvidenceDigest: digest(evidence.pairedEvidence) } : {}),
+    ...r21ReviewProvenanceBinding(plan, evidence),
   };
 }
 export async function validateExceptionSubmissionEvidence({ root, plan, mode, candidateSha, evidenceRoot = root }) {

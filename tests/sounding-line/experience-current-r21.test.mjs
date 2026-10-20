@@ -69,6 +69,7 @@ function fixture(t) {
   registry.exceptions.push(record);
   return { registry, record };
 }
+export { fixture as r21RegistryFixture };
 test("generation21 preserves twenty literal records, seven reconciliations, review10 auxiliary truth and honest next ordinals", (t) => {
   const { registry, record } = fixture(t);
   assert.equal(createHash("sha256").update(raw).digest("hex"), CURRENT_R21.previousRegistryRawSha256);

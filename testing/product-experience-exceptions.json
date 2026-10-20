@@ -116451,7 +116451,7 @@
         "kind": "CROSSDECK_CURRENT_SOURCE_ADMISSION_1",
         "protectedBaseAncestorSha": "c0b29d78f7b4c6137c9eb393a10dd9a2112e68ed",
         "preservationRevision": "43b5f4d55b6ac751ed9b2e05d4e4cace38544c4f",
-        "sourceDigest": "5b980fcecc3c632fb5668daff2c80f7e0228f970954b143d5dfb6e0aaee44a0c",
+        "sourceDigest": "1b8fccd170072032369a70ebe17b622678f1c7b3f81a818fc02d853afeb03f96",
         "contextCount": 38,
         "pairedBrowserContexts": 6,
         "requiredObligationIds": [
@@ -116505,7 +116505,7 @@
         },
         "disposition": {
           "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-media-first-successor-20261020-r21/causal-disposition.md",
-          "sha256": "694ffb99f3c83fdcd5deb2e1ea2af4c1b96208c075dcede856e899e828ded72c"
+          "sha256": "882ab06803d4208461fb8027eab0ab875225a594d41ed3a54c00f6dc9b3c4462"
         },
         "protectedOverlay": [
           {
@@ -116522,9 +116522,9 @@
             "oldMode": null,
             "oldBlob": null,
             "newMode": "100644",
-            "newBlob": "b9e45aca7bf889230a42b121187fa168eec6a6d3",
+            "newBlob": "ca7cb5e6704e7e92e521446583b3be09a9fe5658",
             "candidateMode": "100644",
-            "candidateBlob": "b9e45aca7bf889230a42b121187fa168eec6a6d3"
+            "candidateBlob": "ca7cb5e6704e7e92e521446583b3be09a9fe5658"
           },
           {
             "path": "Development_Docs/Programs/Other/Ledgerlight/Project_Ledgerlight_Documentation_Migration_Matrix.csv",
@@ -116540,9 +116540,9 @@
             "oldMode": null,
             "oldBlob": null,
             "newMode": "100644",
-            "newBlob": "a09cfffd53c0bb90b8ca15482f038d85cdc47ff4",
+            "newBlob": "0e163810df5871b61a82d0ddf8a8347d7b1ca3d1",
             "candidateMode": "100644",
-            "candidateBlob": "a09cfffd53c0bb90b8ca15482f038d85cdc47ff4"
+            "candidateBlob": "0e163810df5871b61a82d0ddf8a8347d7b1ca3d1"
           },
           {
             "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-media-first-successor-20261020-r21/historical-ledger.json",
@@ -116558,9 +116558,9 @@
             "oldMode": "100644",
             "oldBlob": "268d7aa4853cd034a261a55e3ef2a10a5d929bf6",
             "newMode": "100644",
-            "newBlob": "3787b6fbcfce02e2c8a8816fe6b59e6d011f9a0b",
+            "newBlob": "4a2c1c40ba69d0d6705a15c9e2712f9b44a75c2c",
             "candidateMode": "100644",
-            "candidateBlob": "966fe072b90e6987384f02bb7034e3d2e11cf5a9"
+            "candidateBlob": "77178692fa28682d94a5ca8b7fd120fe91bd3d99"
           },
           {
             "path": "Development_Docs/document-index.json",
@@ -116570,6 +116570,15 @@
             "newBlob": "60b3499b40e3369d737ea4d1ebc7c9d4c45780dc",
             "candidateMode": "100644",
             "candidateBlob": "1ce214d5d954900fcb193ce67c5ada84dadb83bb"
+          },
+          {
+            "path": "scripts/sounding-line/experience-attestation.mjs",
+            "oldMode": "100644",
+            "oldBlob": "7a0b9737838fd856dcb9515b8a5dbee43cfef46b",
+            "newMode": "100644",
+            "newBlob": "5e7c57144298a021f04fcfd9bef2223f3ed5f5a7",
+            "candidateMode": "100644",
+            "candidateBlob": "5e7c57144298a021f04fcfd9bef2223f3ed5f5a7"
           },
           {
             "path": "scripts/sounding-line/experience-current-admission.mjs",
@@ -116594,18 +116603,27 @@
             "oldMode": "100644",
             "oldBlob": "84f80ec73324452618f9a5a1b236833562aafcc9",
             "newMode": "100644",
-            "newBlob": "0f2c0f6ed9766008a3beb6d2ecd5a4daa5985a8a",
+            "newBlob": "aa45f25b94591d3a36b699a6ad823f7ea9759dbf",
             "candidateMode": "100644",
-            "candidateBlob": "0f2c0f6ed9766008a3beb6d2ecd5a4daa5985a8a"
+            "candidateBlob": "aa45f25b94591d3a36b699a6ad823f7ea9759dbf"
           },
           {
             "path": "scripts/sounding-line/experience-media-first-r21.mjs",
             "oldMode": null,
             "oldBlob": null,
             "newMode": "100644",
-            "newBlob": "7d2bc280f3381a25d43238995ce72d5a4c4c72da",
+            "newBlob": "c8defe1c779323061500da52d1889f09ff4d7afb",
             "candidateMode": "100644",
-            "candidateBlob": "7d2bc280f3381a25d43238995ce72d5a4c4c72da"
+            "candidateBlob": "c8defe1c779323061500da52d1889f09ff4d7afb"
+          },
+          {
+            "path": "scripts/sounding-line/experience-prepare.mjs",
+            "oldMode": "100644",
+            "oldBlob": "67631615f70478ac529de0439dadf01d21c18522",
+            "newMode": "100644",
+            "newBlob": "a3a7586a35998e1cf4843d4576734d99110765db",
+            "candidateMode": "100644",
+            "candidateBlob": "a3a7586a35998e1cf4843d4576734d99110765db"
           },
           {
             "path": "scripts/sounding-line/experience-scope-adjudication.mjs",
@@ -116621,18 +116639,18 @@
             "oldMode": "100644",
             "oldBlob": "85607151174f70a1ff7950772c015b5fad81d1cc",
             "newMode": "100644",
-            "newBlob": "56c14260d09e23fcc339c0d3fc21f0295606d520",
+            "newBlob": "1904f3642db49da795647a200ee07d7f41ebc088",
             "candidateMode": "100644",
-            "candidateBlob": "56c14260d09e23fcc339c0d3fc21f0295606d520"
+            "candidateBlob": "1904f3642db49da795647a200ee07d7f41ebc088"
           },
           {
             "path": "tests/sounding-line/experience-current-r21.test.mjs",
             "oldMode": null,
             "oldBlob": null,
             "newMode": "100644",
-            "newBlob": "0f8a09b4ee69cee25569ab38b82b3d53ff4d61a0",
+            "newBlob": "9a4247c00d7fff0430a5a6dfa6e1deddacd0912a",
             "candidateMode": "100644",
-            "candidateBlob": "0f8a09b4ee69cee25569ab38b82b3d53ff4d61a0"
+            "candidateBlob": "9a4247c00d7fff0430a5a6dfa6e1deddacd0912a"
           },
           {
             "path": "tests/sounding-line/experience-exception.test.mjs",
@@ -116648,9 +116666,9 @@
             "oldMode": null,
             "oldBlob": null,
             "newMode": "100644",
-            "newBlob": "6d47f1a8453c725cdd27973afd5a40ca8b214648",
+            "newBlob": "750953040e7164538cc7379f8ff8949b9ee300d2",
             "candidateMode": "100644",
-            "candidateBlob": "6d47f1a8453c725cdd27973afd5a40ca8b214648"
+            "candidateBlob": "750953040e7164538cc7379f8ff8949b9ee300d2"
           }
         ],
         "historicalRuns": [

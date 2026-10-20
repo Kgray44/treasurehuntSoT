@@ -74,6 +74,14 @@ const unique = (values) => Array.isArray(values) && values.length > 0 && new Set
 const time = (value) => (typeof value === "string" ? Date.parse(value) : NaN);
 const uuid = (value) => /^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/u.test(value ?? "");
 
+export function r21ReviewProvenanceBinding(plan, evidence) {
+  if (plan.exception?.id !== R21_ID) return {};
+  need(evidence?.mediaFirstReview && typeof evidence.mediaFirstReview === "object", "ORIGINAL_FIRST_PASS_REQUIRED");
+  // Sort envelope keys, retaining the exact original observation text inside it.
+  // A different valid first pass or chronology must require a different seal.
+  return { mediaFirstReviewDigest: sha(JSON.stringify(ordered(evidence.mediaFirstReview))) };
+}
+
 export function validateR21MediaFirstReview(plan, evidence, now = new Date()) {
   need(
     plan?.exception?.id === R21_ID &&

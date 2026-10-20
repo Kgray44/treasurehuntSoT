@@ -8,6 +8,7 @@ import { PAIRED_CASES, PAIRED_CONTRACTS } from "../../scripts/sounding-line/expe
 import {
   R21_ID,
   R21_MEDIA_PROTOCOL,
+  r21ReviewProvenanceBinding,
   validateR21MediaFirstReview,
 } from "../../scripts/sounding-line/experience-media-first-r21.mjs";
 
@@ -151,12 +152,14 @@ test("R21 accepts a byte-frozen independent media phase followed by seven explic
 });
 test("R21 accepts reordered provenance fields while retaining the exact frozen observation bytes", () => {
   const f = fixture(),
-    original = f.evidence.mediaFirstReview.frozenFirstPass.content;
+    original = f.evidence.mediaFirstReview.frozenFirstPass.content,
+    binding = r21ReviewProvenanceBinding(f.plan, f.evidence);
   f.evidence.mediaFirstReview.criticCreation = Object.fromEntries(
     Object.entries(f.evidence.mediaFirstReview.criticCreation).reverse(),
   );
   f.validate();
   assert.equal(f.evidence.mediaFirstReview.frozenFirstPass.content, original);
+  assert.deepEqual(r21ReviewProvenanceBinding(f.plan, f.evidence), binding);
 });
 
 test("R21 rejects source/contract/fixture/history exposure even when the canonical order flag claims media-first", () => {
