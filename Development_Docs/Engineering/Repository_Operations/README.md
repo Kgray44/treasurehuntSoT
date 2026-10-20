@@ -3,7 +3,7 @@ title: Repository operations records
 audience: engineering
 status: current
 canonical_for: repository-operations-records
-last_reviewed: 2026-09-21
+last_reviewed: 2026-10-20
 ---
 
 # Repository operations records
@@ -15,3 +15,6 @@ This internal collection contains development, deployment, configuration, testin
 - `reference/` contains internal command, environment, route, and capability reference records.
 - `product-status/` retains historical project and owner-review status records.
 - `templates/` contains internal engineering templates.
+
+The [owned HTTP redirect repair](developer/Sounding_Line_Loopback_Redirect_Repair_20261020.md)
+records a focused canonical runtime correction and its retained qualification limits.
