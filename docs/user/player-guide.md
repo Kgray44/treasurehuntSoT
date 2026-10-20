@@ -21,6 +21,11 @@ the laptop must stay awake and online with its preview services running. The
 [deployment instructions](../../Development_Docs/Projects/Project_Parallax/NCL01_TestFlight_Deployment.md)
 include saved start/stop procedures.
 
+The owner-approved icon revision makes the compass larger and centers its needle
+pivot. It is prepared for **0.1.0 (6)**; that update is not yet confirmed available.
+This changes the artwork only. The account, stable address and AR controls are
+the same.
+
 Find **The Classroom Compass Trail — NCL01** under **My Chronicle Library → Active
 Voyages**. The owner reports objects appearing when looking around in an earlier
 native camera trial, following an initially empty view. The current layout uses

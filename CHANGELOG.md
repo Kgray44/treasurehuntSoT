@@ -14,6 +14,12 @@ last_reviewed: 2026-10-20
 
 ### Engineering
 
+- Saved the owner-approved tighter compass as the official VoyageWright logo and
+  updated the iOS icon with its needle pivot centered to subpixel precision.
+  The original owner artwork and build-5 receipts are retained alongside the
+  edited revision's source and independent measurements. Build 0.1.0 (6)
+  distribution is pending; build 5 remains available. AR behavior is unchanged.
+
 - Replaced the iOS companion app icon with the owner-supplied official dark brass
   compass, preserving its full artwork and retaining the original source. Build 0.1.0 (5)
   is available in internal TestFlight at the same stable address. Both packaged

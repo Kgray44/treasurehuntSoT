@@ -191,10 +191,10 @@ The official artwork was unavailable for builds2/3/4. The owner has now attached
 and designated the dark brass compass PNG as the official VoyageWright icon.
 Its exact1254RGB original is retained at native/ios/Branding/VoyageWright-AppIcon.source.png,
 SHA71a2979a8a2ab6a43f3ec9fa1d7f14fb7147deda5887883f22a22a382cd240bc.
-The iOS AppIcon uses the entire artwork resized1024RGB with Pillow12.2.0 LANCZOS;
+Build5 used the entire artwork resized1024RGB with Pillow12.2.0 LANCZOS;
 fileSHAf60c10774d2e206cee973f62d2528cc3a989d422cf2ec2aa3df80c4d40562b3b.
-Source/output and exact decoded pixels were independently reviewed. Preserve
-composition, background and margins; no generative redraw. Build0.1.0(5) is now
+Source/output and exact decoded pixels were independently reviewed. That historical
+build preserved composition, background and margins without a generative redraw. Build0.1.0(5) is
 available at the same stable origin and signing setup. Run39463443972 SUCCESS
 binds exact785eb61ed33b2e261ae944c53f53c95886e4c521, real archive/export/upload,
 Apple VALID/IN_BETA_TESTING and existing NCL-01 Owner group. All13 IPA checks,
@@ -207,6 +207,26 @@ signed-39463443972 plus internal-testflight-ready-build5-20261020.receipt.json.
 Build5 is consumed; never upload it again. Owner exact-build installation/Home
 Screen appearance is still open. This cosmetic change does not alter AR behavior
 or require restarting the private preview; website/Android icons were not changed.
+
+The owner subsequently approved the tighter emblem preview, requested the needle
+pivot centered on the square and explicitly authorized proceeding without another
+user check. The current saved official logo is
+native/ios/Branding/VoyageWright-Logo.official.png, opaque1254RGB,
+SHA59aa4f4054561fe83ede9e514d41abedbb35da90ded5d52fd89f398a1013d7d9.
+The1024RGB iOS AppIcon is
+SHAf85442a36f1697d47b3d1c8814f44100a72b564145e3960a295ba2233874219f.
+The original owner source above is unchanged. Retain the distinct generated
+positional refinement at native/ios/Branding/VoyageWright-Logo.centered-refinement.source.png;
+this revision includes generative image editing and mechanical subpixel alignment,
+not a byte-identical original or pure crop. Final packaging uses sharp0.35.5/
+libvips8.18.7, mirrored32px background padding, bicubic translation and Lanczos3
+resize. The independent final-center-review.original.json in
+app-icon-centered-20261020 records multiple subpixel pivot measurements; preserve
+its method-dependent uncertainty rather than claiming zero mathematical error.
+Build0.1.0(6) is prepared for the same isolated signing/upload path; it is not yet
+proved uploaded, processed or available. Until that proof is retained, build5 is
+the available internal beta. This artwork-only revision changes no camera/AR,
+TLS, services, account, data or Scene behavior; website/Android icons are unchanged.
 
 Success is the owner installing this exact beta through TestFlight, opening
 native ARKit camera placement, seeing the original interactive 3D chest and

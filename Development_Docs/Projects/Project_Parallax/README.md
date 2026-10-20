@@ -65,6 +65,10 @@ Parallax does **not** own:
   camera display of the original 3D models. Build 0.1.0 (5) is available in
   internal TestFlight with the official owner-supplied dark compass icon and the
   stable public HTTPS address. Both compiled icon resources were inspected.
+  The owner approved a tighter, pivot-centered revision; the reusable
+  [official logo](../../../../native/ios/Branding/VoyageWright-Logo.official.png)
+  and iOS icon are saved and independently reviewed. Build 0.1.0 (6) distribution
+  is pending; the original owner artwork and build-5 proof are preserved.
   The separate classroom
   Chronicle passed canonical publication, authenticated asset and accessible
   browser checks. The owner reports classroom objects visible when panning the

@@ -14,7 +14,7 @@ acceptance. PR #741 remains unmerged. Protected main, Crossdeck and Sounding Lin
 are outside this deployment change.
 
 Team ID: `X2JZ9N65V2`. Bundle ID: `com.voyagewright.landfall`. Source baseline:
-`76d1787e1340e396bc95747293d43e57130b00ed`. Owned preparation branch:
+`76d1787e1340e396bc95747293d43e57130b00ed`. Initial owned preparation branch:
 `codex/ncl01-testflight`. Paid Apple Developer enrollment and TestFlight installed
 on iPhone 17 Pro are owner-reported. On October 20 the owner reported installing
 the app through TestFlight, successfully signing in and seeing the original 3D
@@ -39,6 +39,15 @@ native camera/model visibility remains owner-reported; authored appearance,
 all-three-object confirmation, Inspect, tracking/drift and alignment remain
 unverified or unaccepted. Full Scene/room registration is unfinished. Builds 2,
 3, 4 and 5 are consumed; never upload them again.
+
+**Approved icon revision:** the owner approved the tighter compass framing, then
+requested the needle pivot centered and authorized completion without another
+preview check. The [saved official logo](../../../../native/ios/Branding/VoyageWright-Logo.official.png)
+and 1024-pixel iOS icon are prepared for **0.1.0 (6)**. Independent image review
+confirms subpixel centering, with the compass, leaf and star retained. This is an
+edited revision; the owner's original remains unchanged. Build 6 upload,
+processing and internal availability are pending; build 5 remains available.
+This revision is prepared on owned branch `codex/ncl01-testflight-icon-center`.
 
 The owner has now created the explicit identifier and app record. Their screenshots
 show the correct team/bundle, **VoyageWright Landfall**, app Apple ID `6824734220`,
@@ -149,7 +158,7 @@ and model bytes are unchanged. The output has been visually inspected.
 
 The owner subsequently supplied and designated the official dark brass compass
 artwork. Its byte-identical 1254-square RGB original is retained at
-`native/ios/Branding/VoyageWright-AppIcon.source.png`. The iOS catalog now uses
+`native/ios/Branding/VoyageWright-AppIcon.source.png`. Build 5 used
 the full image resized to 1024-square RGB with Pillow 12.2.0 LANCZOS, preserving
 the dark texture, compass/leaf/star and original margins. Source SHA-256 is
 `71a2979a8a2ab6a43f3ec9fa1d7f14fb7147deda5887883f22a22a382cd240bc`;
@@ -171,6 +180,32 @@ appearance remains an owner check after updating. Native behavior is preserved.
 retains the separate original and decoded resource identities;
 [signed verification](evidence/ncl01-testflight-20261019/signed-39463443972/verification.json)
 binds archive/export, Apple processing and credential/transport cleanup.
+
+The owner-approved subsequent revision makes the emblem larger and centers the
+needle pivot. Its reusable opaque 1254-square RGB official logo is
+[`native/ios/Branding/VoyageWright-Logo.official.png`](../../../../native/ios/Branding/VoyageWright-Logo.official.png),
+SHA-256 `59aa4f4054561fe83ede9e514d41abedbb35da90ded5d52fd89f398a1013d7d9`.
+The iOS catalog's opaque 1024-square RGB PNG is now
+`f85442a36f1697d47b3d1c8814f44100a72b564145e3960a295ba2233874219f`.
+The retained
+[`VoyageWright-Logo.centered-refinement.source.png`](../../../../native/ios/Branding/VoyageWright-Logo.centered-refinement.source.png)
+records the generated positional refinement separately from the byte-identical
+owner original. Generative image editing refined the framing/position; final
+mechanical packaging used sharp 0.35.5/libvips 8.18.7, mirrored 32-pixel background
+padding, bicubic subpixel translation and Lanczos3 resize. This is an edited logo
+revision rather than an unchanged-source resize or pure crop. The historical
+build-5 receipt above remains unchanged.
+
+The [independent center review](evidence/ncl01-testflight-20261019/app-icon-centered-20261020/final-center-review.original.json)
+measures the 1024-pixel icon pivot at `(511.6214, 511.5015)` against canvas center
+`(511.5, 511.5)`; all recorded methods place it within 0.16 pixel on each axis.
+The 1254-pixel logo's radial inner-edge fit places it at `(626.5058, 626.4207)`
+against `(626.5, 626.5)`. Shading, antialiasing and the illustrated aperture's
+noncircularity produce method-dependent subpixel estimates; this is not a claim
+of mathematically zero error. Build **0.1.0 (6)** is the next isolated upload;
+its signed/compiled resources and Apple availability remain to be verified.
+This cosmetic revision preserves the native camera/AR implementation, Scene,
+account, HTTPS origin and services. Website and Android icons are unchanged.
 
 The bundled privacy manifest declares app-local UserDefaults reason `CA92.1`
 and elapsed-time system-uptime reason `35F9.1`. It does not claim a complete
