@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "classification": "ENGINEERING_SYNTHETIC_PRIVATE_CONTENT_DEVELOPMENT_NOT_ACCEPTANCE",
+  "source": {
+    "sourceSha": "2f2013ab1a041c5ddc13652686d27ce124fdad6d",
+    "sourceTree": "5f27217d9623e4d697aeb7094e8ba0430cc5054b",
+    "dirty": false,
+    "sourceFingerprint": "4358ed3cdcac8f5e6aceb258d871045083710e28934acff2ef6c8af1131ad791"
+  },
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "reducedMotion": "no-preference",
+  "baseline": [
+    {
+      "id": "sextant-experience-voyage",
+      "status": "ACTIVE",
+      "currentBlockId": "sextant-experience-note",
+      "currentSequence": 4,
+      "publishedVersionId": "cmvg46imh00080cxazql57o04"
+    },
+    {
+      "id": "sextant-resource-voyage-private-content-1280-no-preference",
+      "status": "ACTIVE",
+      "currentBlockId": "sextant-resource-passage-private-content-1280-no-preference",
+      "currentSequence": 4,
+      "publishedVersionId": "cmvg46ixl000q0cxa56avsduj"
+    }
+  ],
+  "feedback": [
+    {
+      "task": "Ordinary Private Chronicle entry",
+      "elapsedMs": 334.3479749999997
+    },
+    {
+      "task": "Actual rejected package authentication",
+      "elapsedMs": 200.30169699999988
+    },
+    {
+      "task": "Actual package inspection without import",
+      "elapsedMs": 192.18015299999934
+    },
+    {
+      "task": "Actual explicitly confirmed private import",
+      "elapsedMs": 256.0760360000004
+    },
+    {
+      "task": "Actual verified encrypted export",
+      "elapsedMs": 232.23388200000045
+    }
+  ],
+  "importId": "b03442aa-1aad-40c9-bc57-e1dd79e88ecc",
+  "taleId": "sh_bce7e26ef5af10893ab8ad7a67dc",
+  "packageId": "sextant-package-private-content-1280-no-preference",
+  "exportedSha256": "d87aa6f88b55a7ee87f4e0a6e5c977d6c49a1a49eb2e221fb947e90250c98108",
+  "actualEncryptedDownloadAndCanonicalProjectionVerified": true,
+  "wrongPassphraseCreatesNothing": true,
+  "inspectionCreatesNothing": true,
+  "passphraseClearedAfterImportAndExport": true,
+  "unchangedActiveProgressAndEditionBytes": true,
+  "noPublishedVersionOrVoyageCreated": true,
+  "assetsIncluded": 0,
+  "realPrivateContentUsed": false,
+  "formalPositiveFileInputCovered": false,
+  "protectedAcceptance": false
+}

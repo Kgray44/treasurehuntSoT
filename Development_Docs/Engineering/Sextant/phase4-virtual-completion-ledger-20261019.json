@@ -2628,6 +2628,185 @@
         "dossierSupportAndFinalBaselinesReached": false,
         "repair": "ASSERT_ACTUAL_VISIBLE_EMPTY_TEXT_AND_UNIQUE_MAIN_STATE_TEXT_PLUS_EXACT_PATH_NO_PRODUCT_EMPTY_STATE_CHANGE"
       }
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "2f2013ab1a041c5ddc13652686d27ce124fdad6d",
+      "transportSha": "2f28f37c1586772f58cc532dc6bd5409ae43056a",
+      "runId": "39363230222",
+      "status": "HARVESTED_SUCCESS_FOUR_VARIANTS_INDEPENDENT_RENDERED_REVIEW_PENDING",
+      "artifacts": 67,
+      "productionBuild": "PASS",
+      "qualification": false,
+      "cleanup": {
+        "runtime": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 0,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 0,
+            "elapsedMs": 2,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 143,
+            "elapsedMs": 30,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        },
+        "transport": {
+          "result": "PASS",
+          "ownedResources": [
+            "refs/heads/codex/landfall-lab-2f2013ab1a04-1792466055349"
+          ],
+          "remainingResources": []
+        }
+      },
+      "publication": "evidence/20261019-private-group-repair/publication-index.json",
+      "source": {
+        "sourceSha": "2f2013ab1a041c5ddc13652686d27ce124fdad6d",
+        "sourceTree": "5f27217d9623e4d697aeb7094e8ba0430cc5054b",
+        "dirty": false,
+        "sourceFingerprint": "4358ed3cdcac8f5e6aceb258d871045083710e28934acff2ef6c8af1131ad791"
+      },
+      "responseMs": {
+        "budget": 3000,
+        "points": 20,
+        "maximum": 431.62868700000035
+      },
+      "storageLifecycle": {
+        "schemaVersion": 1,
+        "classification": "ENGINEERING_SYNTHETIC_STORAGE_LIFECYCLE_NOT_ACCEPTANCE",
+        "sourceSha": "2f2013ab1a041c5ddc13652686d27ce124fdad6d",
+        "ownershipId": "bbe3ef43-b214-4b44-986f-12805600b1cb",
+        "taskRoot": "/tmp/sextant-private-2f2013ab1a04-utbk1o",
+        "createdRealPath": "/tmp/sextant-private-2f2013ab1a04-utbk1o",
+        "markerSha256": "9ea8fb3c7e63a9a90bae6a3cd979323d9d009db94fda9c114615db270eec6b7f",
+        "createdAt": "2026-10-20T03:17:21.863Z",
+        "status": "PASS_REMOVED_AFTER_CANONICAL_PROCESS_CLEANUP",
+        "keyPublished": false,
+        "processCleanupVerified": true,
+        "finishedAt": "2026-10-20T03:19:52.749Z",
+        "rootAbsent": true,
+        "sourceReceipt": "files/0003-bbe3ef43-b214-4b44-986f-12805600b1cb.json",
+        "scope": "RECEIPT_TIME_EXACT_CREATION_BOUND_SYNTHETIC_ROOT_REMOVED_AFTER_CANONICAL_PROCESS_CLEANUP"
+      },
+      "independentRenderedReview": {
+        "status": "PENDING",
+        "pngCount": 28,
+        "videoCount": 32
+      },
+      "assertions": {
+        "wrongPassphraseAndInspectionCreateNothing": true,
+        "actualOwnedCompletedPrivateDraftImport": true,
+        "actualEncryptedDownloadCanonicalProjectionAndReopen": true,
+        "finalSameOwnerReturnAndUnchangedActiveProgressEditionBytes": true,
+        "noPublishedVersionOrVoyageCreated": true,
+        "assetsIncluded": 0,
+        "realPrivateContentUsed": false,
+        "formalPositiveFileInputCovered": false
+      }
+    },
+    {
+      "platform": "CHROMIUM",
+      "tier": "D1_DEVELOPMENT_ONLY",
+      "sourceSha": "2f2013ab1a041c5ddc13652686d27ce124fdad6d",
+      "transportSha": "0339fac401bb3d77bb069ecd0fbc7d8844f73baf",
+      "runId": "39363220177",
+      "status": "HARVESTED_FAILURE_FOUR_VARIANTS_AT_DUPLICATE_DOSSIER_TITLE_LOCATOR",
+      "artifacts": 4,
+      "productionBuild": "PASS",
+      "qualification": false,
+      "cleanup": {
+        "runtime": {
+          "browser": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 1,
+            "elapsedMs": 4,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "fixture": {
+            "status": "NOT_STARTED",
+            "treeReaped": true,
+            "streamsClosed": true
+          },
+          "server": {
+            "status": "PASS",
+            "directExitObserved": true,
+            "exitCode": 1,
+            "signal": null,
+            "treeReaped": true,
+            "streamsClosed": true,
+            "escalated": false,
+            "payloadExitCode": 143,
+            "elapsedMs": 52,
+            "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+          },
+          "proxy": {
+            "status": "PASS"
+          },
+          "portsReleased": true,
+          "status": "PASS"
+        },
+        "transport": {
+          "result": "PASS",
+          "ownedResources": [
+            "refs/heads/codex/landfall-lab-2f2013ab1a04-1792466048040"
+          ],
+          "remainingResources": []
+        }
+      },
+      "publication": "evidence/20261019-admiralty-dossier-title-diagnostic/publication-index.json",
+      "diagnostics": {
+        "retention": "COMPLETE",
+        "issues": [],
+        "memberCount": 33,
+        "rawBytes": 45991719,
+        "ciphertextBytes": 81786858,
+        "fixedBudgetUnchanged": true,
+        "retainedPrivate": [
+          {
+            "sourcePath": "artifacts/landfall-device-lab/hosted-2f2013ab1a04-1792466048040/run-39363220177/artifacts/landfall-browser-encrypted-failures-2f2013ab1a041c5ddc13652686d27ce124fdad6d/failure.encrypted",
+            "bytes": 81786858,
+            "sha256": "d120a8f204ca551840fe39d7dc8cead4f671630e2d17f7a71f47804b4f77b98c",
+            "reason": "CANONICAL_PRIVATE_ENCRYPTED_BUNDLE_RETAINED_IN_OWNED_ARTIFACTS_NOT_COPIED_TO_GIT"
+          }
+        ]
+      },
+      "failure": {
+        "point": "REAL_DOSSIER_H1_AND_AI_QUOTA_H2_SHARE_CANONICAL_DISPLAY_NAME_STRICT_MULTIPLE_HEADING",
+        "overviewIdentityAndAxeAndPeopleEmptyKnownSearchReached": true,
+        "dossierSupportAndFinalBaselineAcceptance": false,
+        "repair": "ACTUAL_BROWSER_H1_AND_UNIQUE_FORMAL_MAIN_PLUS_SAME_TEXT_EXACT_PATH_NO_PRODUCT_HEADING_CHANGE"
+      }
     }
   ],
   "experience": {
@@ -2642,7 +2821,7 @@
     "reachDiagnostics": "PROTECTED_ACCEPTED_ON_BASE",
     "historicalAccounting": "PRESERVED_SEXTANT_3_OF_3_CROSSDECK_10_OF_3_R1_2_OF_3",
     "registeredNewPlayerWorkspaceSurfaces": 2,
-    "remainingSoftware": "38 unregistered affected surfaces atfb8961fa94 across179affected. Private39361561155 fails4 after actual import/verified export/download/canonical draft reopening at invalid article role=group axe check; no finalsameowner/baseline proof. Storage receipt explicitly retains synthetic failure state with canonicalprocesscleanupverified, keynotpublished/retained and no absenceclaim. Admiralty39361539057 fails4 atPeople because EmptyState rendersstrongtext ratherthanheading; firstOverview identity/axe checks pass but no renderedacceptance orfinaldossier/support/baseline proof. Narrow sortable host/testtarget and actual emptytext/mainpredicate repairs are prepared, retaining all assertions. Prior Creator30PNG andCommunity120PNG reviews remain clear at exactsources and statedlimits. Account/recovery/invitation/Landfall, fiveunhostedlegacycomponents, acceptedCrossdeckdisplay/authorizedSpatialpilot, formalreference/layout andprotectedqualification remain. Canonical formal case/fileinput andDarwincontainment prerequisites andexternal/physical/owner gates stay separate.",
+    "remainingSoftware": "38 unregistered at2f2013ab1a across179affected; declarations are not acceptance. Private39363230222 passes4 complete synthetic actual import/verified download/draft reopen/ordinary return/final unchanged ACTIVE-and-edition journeys; exact creation-bound root removal and canonical process/transport cleanup PASS. Independent28PNG/storage/source review pending;32videos hash-only. Admiralty39363220177 fails4 at dossier title matching actual H1 plus AI-quota H2; Overview/People empty-and-known searches reached, but support/final baselines unproved. Source successor selects actual H1 in browser and unique real main with same text/path in formal. Account/recovery preparation is independent WIP with actual synthetic-email and reversible lifecycle development, not execution. Invitation/Landfall, fiveunhostedlegacycomponents, acceptedCrossdeckdisplay/authorizedSpatialpilot, formal reference/layout/protected qualification remain. Canonical formal per-case/challenge/fileinput andDarwin containment prerequisites andexternal/physical/owner gates stay separate.",
     "independentDevelopmentJourneyReview": {
       "source": "0d8b3c7841966a1d1c8b5dae21570b1043dc7915",
       "reviewer": "/root/sextant_source_review",
@@ -2925,7 +3104,9 @@
     "evidence/20261019-creator-form-ink-repair/publication-index.json",
     "evidence/20261019-admiralty-entry-diagnostic/publication-index.json",
     "evidence/20261019-private-sortable-diagnostic/publication-index.json",
-    "evidence/20261019-admiralty-empty-state-diagnostic/publication-index.json"
+    "evidence/20261019-admiralty-empty-state-diagnostic/publication-index.json",
+    "evidence/20261019-private-group-repair/publication-index.json",
+    "evidence/20261019-admiralty-dossier-title-diagnostic/publication-index.json"
   ],
   "currentProtectedBase": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
   "canonicalHostDependencies": [
@@ -2939,18 +3120,5 @@
       "passingCompanionOrBuildIsNotProductExecution": true
     }
   ],
-  "pendingDevelopmentRuns": [
-    {
-      "runId": "39363220177",
-      "sourceSha": "2f2013ab1a041c5ddc13652686d27ce124fdad6d",
-      "target": "sextant-admiralty",
-      "scope": "ACTUAL_PEOPLE_EMPTY_STATE_TEXT_PREDICATE"
-    },
-    {
-      "runId": "39363230222",
-      "sourceSha": "2f2013ab1a041c5ddc13652686d27ce124fdad6d",
-      "target": "sextant-private-content",
-      "scope": "VALID_SORTABLE_GROUP_AFTER_ACTUAL_IMPORT_EXPORT_REOPEN"
-    }
-  ]
+  "pendingDevelopmentRuns": []
 }
