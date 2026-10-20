@@ -15,6 +15,22 @@ import { captureAndPublishExperience, createCaptureSubmission } from "./experien
 import { loadTrustedExperienceArtifact, verifyTrustedExperienceAttestation } from "./experience-attestation.mjs";
 import { buildPlan } from "./ordinary.mjs";
 import { exceptionStore, trustedExceptions, sealedReviewIdentity } from "./experience-exception.mjs";
+import { r21ReviewProvenanceBinding } from "./experience-media-first-r21.mjs";
+
+export function createReviewSubmission({ baseSha, plan, evidence, exceptionFields = {}, submittedBy }) {
+  return {
+    baseSha,
+    sourceDigest: plan.sourceDigest,
+    contractDigest: plan.contractDigest,
+    ...exceptionFields,
+    captureArtifactId: evidence.captureArtifactId,
+    reviews: evidence.reviews,
+    ...(plan.paired ? { pairedEvidenceDigest: experienceDigest(evidence.pairedEvidence) } : {}),
+    ...r21ReviewProvenanceBinding(plan, evidence),
+    submittedBy,
+    ownerAcceptance: "NOT_CLAIMED",
+  };
+}
 
 export async function writeCaptureOutputs(paths, environment = process.env, workspacePrefix = "candidate") {
   if (!environment.GITHUB_OUTPUT) return;
@@ -193,17 +209,7 @@ async function main() {
     await writeFile(
       path.join(receiptRoot, "review.json"),
       JSON.stringify(
-        {
-          baseSha,
-          sourceDigest: plan.sourceDigest,
-          contractDigest: plan.contractDigest,
-          ...exceptionFields,
-          captureArtifactId: evidence.captureArtifactId,
-          reviews: evidence.reviews,
-          ...(plan.paired ? { pairedEvidenceDigest: experienceDigest(evidence.pairedEvidence) } : {}),
-          submittedBy: process.env.GITHUB_ACTOR,
-          ownerAcceptance: "NOT_CLAIMED",
-        },
+        createReviewSubmission({ baseSha, plan, evidence, exceptionFields, submittedBy: process.env.GITHUB_ACTOR }),
         null,
         2,
       ) + "\n",

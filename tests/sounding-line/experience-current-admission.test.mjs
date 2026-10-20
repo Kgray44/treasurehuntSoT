@@ -1,6 +1,9 @@
 // Inert source/HTTP fixtures only. None of these records is installed or grants a run.
 import "./experience-current-r19.test.mjs";
 import "./experience-current-r20.test.mjs";
+import { r21RegistryFixture } from "./experience-current-r21.test.mjs";
+import { mediaFirstFixture } from "./experience-media-first-r21.test.mjs";
+import { createReviewSubmission } from "../../scripts/sounding-line/experience-prepare.mjs";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { createHash } from "node:crypto";
@@ -1578,8 +1581,9 @@ function zip(files) {
   end.writeUInt32LE(offset, 16);
   return Buffer.concat([...locals, directory, end]);
 }
-function loaderFixture(t) {
-  const record = fixtureRecord(t),
+function loaderFixture(t, generation21 = false) {
+  const successor = generation21 ? r21RegistryFixture(t) : null;
+  const record = successor?.record ?? fixtureRecord(t),
     root = mkdtempSync(path.join(tmpdir(), "current-admission-http-only-"));
   t.after(() => rmSync(root, { recursive: true, force: true }));
   const git = (...args) =>
@@ -1589,8 +1593,8 @@ function loaderFixture(t) {
   git("config", "user.email", "fixture@example.invalid");
   git("remote", "add", "origin", "https://github.com/Kgray44/treasurehuntSoT.git");
   mkdirSync(path.join(root, "testing"));
-  const registry = structuredClone(historicalRegistry);
-  registry.exceptions.push(record);
+  const registry = successor?.registry ?? structuredClone(historicalRegistry);
+  if (!successor) registry.exceptions.push(record);
   writeFileSync(path.join(root, "testing/product-experience-exceptions.json"), JSON.stringify(registry));
   git("add", ".");
   git("commit", "--quiet", "-m", "explicit inert source-only fixture");
@@ -1614,22 +1618,43 @@ function loaderFixture(t) {
     captureArtifactId: 1001,
     reviewArtifactId: 1002,
   };
+  let media;
+  if (generation21) {
+    media = mediaFirstFixture();
+    plan.paired = { browserContexts: 6 };
+    Object.assign(media.plan, plan);
+    media.first.sourceDigest = plan.sourceDigest;
+    media.first.captureArtifactId = evidence.captureArtifactId;
+    media.evidence.captureArtifactId = evidence.captureArtifactId;
+    for (const item of media.evidence.artifacts) {
+      const extension = { screenshot: ".png", recording: ".webm", trace: ".zip" }[item.type];
+      Object.assign(item, {
+        path: `Development_Docs/Testing/Product_Experience/evidence/${item.id}${extension}`,
+        sha256: "f".repeat(64),
+        role: "PLAYER",
+        motionMode: "REDUCED",
+      });
+    }
+    media.seal();
+    Object.assign(evidence, media.evidence, { pairedEvidence: { cases: [] } });
+  }
   const reservation = {
     binding: exceptionBinding(plan),
     candidateSha: plan.candidateSha,
     run: { runId: 601, headSha: plan.baseSha, headBranch: "main", event: "workflow_dispatch", actor: "Kgray44" },
   };
   const capture = { ...evidence, exceptionPreparationReservation: sha(701) };
-  const review = {
+  const review = createReviewSubmission({
     baseSha: plan.baseSha,
-    sourceDigest: plan.sourceDigest,
-    contractDigest: plan.contractDigest,
-    exception: plan.exception,
-    exceptionPreparationReservation: sha(701),
-    exceptionReviewSeal: sha(703),
-    captureArtifactId: evidence.captureArtifactId,
-    reviews: evidence.reviews,
-  };
+    plan,
+    evidence,
+    exceptionFields: {
+      exception: plan.exception,
+      exceptionPreparationReservation: sha(701),
+      exceptionReviewSeal: sha(703),
+    },
+    submittedBy: "Kgray44",
+  });
   const archives = { 1001: zip({ "capture.json": capture }), 1002: zip({ "review.json": review }) };
   const run = (id) => ({
     id,
@@ -1678,7 +1703,7 @@ function loaderFixture(t) {
   slot("prepare", reservation, 701, 801, 901);
   slot("capture", { ...reservation, provenance: trustedCapture }, 702, 802, 902);
   slot(
-    "review8",
+    `review${record.remainingIndependentReviewOrdinal}`,
     { ...reservation, run: { ...reservation.run, runId: 602 }, reviewIdentity: sealedReviewIdentity(plan, evidence) },
     703,
     803,
@@ -1716,6 +1741,8 @@ function loaderFixture(t) {
     responses,
     archives,
     calls,
+    media,
+    review,
     verify: () => verifyTrustedExperienceAttestation({ root, plan, evidence }),
   };
 }
@@ -1741,6 +1768,40 @@ test("real current custody cannot borrow an absent or mismatched review seal", a
   const f = loaderFixture(t);
   f.responses.set(`git/ref/tags/${f.record.custody.namespace}/review8`, null);
   await assert.rejects(f.verify(), /SEALED_EVIDENCE_MISMATCH/u);
+});
+
+test("R21 authenticates the complete frozen media provenance through report and immutable seal", async (t) => {
+  const f = loaderFixture(t, true);
+  f.media.validate();
+  const sealed = sealedReviewIdentity(f.plan, f.evidence);
+  assert.match(sealed.mediaFirstReviewDigest, /^[a-f0-9]{64}$/u);
+  assert.equal(f.review.mediaFirstReviewDigest, sealed.mediaFirstReviewDigest);
+  assert.equal((await f.verify()).status, "PASS");
+  const canonical = hash({ reviews: f.evidence.reviews, artifacts: f.evidence.artifacts });
+  f.evidence.mediaFirstReview.canonicalJudgmentsCompletedAt = "2026-10-20T14:10:01Z";
+  f.media.validate();
+  assert.notEqual(sealedReviewIdentity(f.plan, f.evidence).mediaFirstReviewDigest, sealed.mediaFirstReviewDigest);
+  await assert.rejects(f.verify(), /TRUSTED_CAPTURE_OR_REVIEW_MISMATCH/u);
+  f.evidence.mediaFirstReview.canonicalJudgmentsCompletedAt = "2026-10-20T14:10:00Z";
+  f.media.first.contractObservations[0].dimensions.hierarchy.observation += " A different valid original observation.";
+  f.media.seal();
+  f.media.validate();
+  assert.equal(hash({ reviews: f.evidence.reviews, artifacts: f.evidence.artifacts }), canonical);
+  const replacement = sealedReviewIdentity(f.plan, f.evidence);
+  assert.notEqual(replacement.mediaFirstReviewDigest, sealed.mediaFirstReviewDigest);
+  await assert.rejects(f.verify(), /TRUSTED_CAPTURE_OR_REVIEW_MISMATCH/u);
+
+  // Even a new authenticated report for B cannot replace the immutable A seal.
+  const replaceReport = (report) => {
+    f.archives[1002] = zip({ "review.json": report });
+    f.responses.get("actions/artifacts/1002").digest = `sha256:${bytesHash(f.archives[1002])}`;
+  };
+  replaceReport({ ...f.review, mediaFirstReviewDigest: replacement.mediaFirstReviewDigest });
+  await assert.rejects(f.verify(), /SEALED_EVIDENCE_MISMATCH/u);
+  const missing = { ...f.review };
+  delete missing.mediaFirstReviewDigest;
+  replaceReport(missing);
+  await assert.rejects(f.verify(), /TRUSTED_CAPTURE_OR_REVIEW_MISMATCH/u);
 });
 
 function finalFixture(t, identity = {}, options = {}) {
