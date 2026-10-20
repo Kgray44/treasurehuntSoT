@@ -6,7 +6,7 @@
   "status": "IN_PROGRESS",
   "initialCandidate": "5ff2739776513b8f8ed20c1cb661c164216d0eeb",
   "protectedBase": "f6af0b0e151f15f1a23808413ccee531b9827ca7",
-  "currentSoftwareCandidate": "bcf82bdce20a02790ecdb5df965bd630b7834ff3",
+  "currentSoftwareCandidate": "91269f5ccf0f8d46c377fe1c47a513be283164dc",
   "pr": "https://github.com/Kgray44/treasurehuntSoT/pull/709",
   "independentSourceReview": {
     "reviewerContext": "/root/sextant_source_review",
@@ -242,6 +242,36 @@
         "docsValidation": "PASS",
         "featureValidation": "PASS"
       }
+    },
+    "invitationGuestRecoveryAndScopedRecaptures": {
+      "source": "91269f5ccf0f8d46c377fe1c47a513be283164dc",
+      "reviewer": "/root/sextant_source_review",
+      "disposition": "CLEAR_FOR_FOUR_FIXED_DEVELOPMENT_RUNS_NOT_ACCEPTANCE",
+      "reviewerRanTests": false,
+      "scope": [
+        "CANONICAL_PERSONAL_INFORMATION_GUEST_AVAILABILITY_AND_EXISTING_CLAIM_MERGE_LINKS",
+        "ACTUAL_ISSUED_CODE_SECURE_LINK_PIN_GUEST_CLAIM_VERIFICATION_AND_EXPLICIT_EXISTING_ACCOUNT_MERGE",
+        "EXACT_PRE_REJECTION_VIEWED_INVITATION_AND_COMPLETE_INVITED_MEMBERSHIP_CAUSAL_BOUNDARIES",
+        "ACTUAL_LIBRARY_REOPEN_WITH_UNCHANGED_PREPARED_AND_ACTIVE_PROGRESS_MEMBERSHIP_EDITION_BASELINES",
+        "FORMAL_ACTUAL_INVALID_LINK_FALLBACK_AND_PLAYER_ENTRY_PREPARATION_ONLY",
+        "ADDITIVE_PRIVATE_OUTCOME_STATUS_PLAN_CONFIRM_CAPTURE",
+        "SCOPED_ADMIRALTY_IDENTITY_WRAPPING_AND_ACTUAL_MASTHEAD_PRIMARY_ID_FULL_VIEWPORT_CAPTURE",
+        "ACCOUNT_RETURN_SCOPED_TO_ACTUAL_OPEN_MENU"
+      ],
+      "builderVerification": {
+        "serviceAndComponentTests": 10,
+        "typescript": "PASS",
+        "selectedContractValidation": 4,
+        "newInvitationBrowserCasesDiscovered": 8,
+        "docsValidation": "PASS",
+        "featureValidation": "PASS"
+      },
+      "sourceRepairFindingIds": [
+        "R39363230222-01",
+        "R39364691371-01",
+        "R39364691371-02"
+      ],
+      "findingResolution": "FRESH_CAPTURE_AND_INDEPENDENT_REVIEW_PENDING"
     }
   },
   "localChecks": {
@@ -3053,7 +3083,7 @@
     "historicalObligations": 141,
     "historicalFamilies": 13,
     "currentAffectedSurfaces": 178,
-    "currentUnregisteredSurfaces": 32,
+    "currentUnregisteredSurfaces": 24,
     "protectedCapturedOrAcceptedByThisContinuation": 0,
     "developmentCapturedVariants": 4,
     "planner": "PRODUCT_EXPERIENCE_UNREGISTERED_SURFACE",
@@ -3061,7 +3091,7 @@
     "reachDiagnostics": "PROTECTED_ACCEPTED_ON_BASE",
     "historicalAccounting": "PRESERVED_SEXTANT_3_OF_3_CROSSDECK_10_OF_3_R1_2_OF_3",
     "registeredNewPlayerWorkspaceSurfaces": 2,
-    "remainingSoftware": "32unregistered atbcf82bdce2 across179affected; declarations are not acceptance. Private39363230222 passes4 fullsyntheticjourneys/process/transport/exact-rootstoragecleanup,70originalhashes/28PNG independentreview coherent exceptR39363230222-01 evidence-only outcome-messagecapturegap. Admiralty39364691371 passes4 fullread-onlyjourneys/28timings/finalbaselines with77hashes/32PNG reviewed;R39364691371-01 mobileprimaryidentifier/Copyclipping andR-02 masthead/headingcapturegap require repair/recapture. Account39364701888 fails4 after actualregister/verify/reset atduplicatePersonalHarborlinks before email/lifecycle/finalbaselines; scopeactualopenedaccountdialog. Issuedinvitation/guestclaim/merge preparation now addressesactualexistingPersonalInformationguestentry throughcanonicalavailability; source/executionreviewpending. Landfall, fiveunhostedlegacycomponents, acceptedCrossdeckdisplay/authorizedSpatialpilot, formal reference/layout/protected qualification remain. Canonical formal per-case/challenge/fileinput andDarwincontainment prerequisites andexternal/physical/owner gates remain separate.",
+    "remainingSoftware": "24unregistered at91269f5ccf across179affected; declarations are not acceptance. Private39363230222 passes4 fullsyntheticjourneys/process/transport/exact-rootstoragecleanup,70originalhashes/28PNG independentreview coherent exceptR39363230222-01 evidence-only outcome-messagecapturegap. Admiralty39364691371 passes4 fullread-onlyjourneys/28timings/finalbaselines with77hashes/32PNG reviewed;R39364691371-01 mobileprimaryidentifier/Copyclipping andR-02 masthead/headingcapturegap require repair/recapture. Account39364701888 fails4 after actualregister/verify/reset atduplicatePersonalHarborlinks before email/lifecycle/finalbaselines; scopeactualopenedaccountdialog. Eight issued-invitation/guest-recovery paths are now declared with independentlysource-clear canonicalavailability/actualguestdevelopment and three narrow priorrepair targets; fourfixed91269runs pendingexecution/renderedreview. Landfall, fiveunhostedlegacycomponents, acceptedCrossdeckdisplay/authorizedSpatialpilot, formal reference/layout/protected qualification remain. Canonical formal per-case/challenge/fileinput andDarwincontainment prerequisites andexternal/physical/owner gates remain separate.",
     "independentDevelopmentJourneyReview": {
       "source": "0d8b3c7841966a1d1c8b5dae21570b1043dc7915",
       "reviewer": "/root/sextant_source_review",
@@ -3093,12 +3123,12 @@
     "registeredNewPassportSourcePaths": 14,
     "newlyRegisteredAffectedPassportSurfaces": 12,
     "sourceReconciliation": {
-      "path": "phase4-source-reconciliation-account-recovery-20261019.json",
-      "sha256": "dd4afd932d008be9b0e61ac694086a4b7618f68d2decc8b2a2f843f25ef299f7",
-      "sourceSha": "bcf82bdce20a02790ecdb5df965bd630b7834ff3",
+      "path": "phase4-source-reconciliation-invitation-guest-20261019.json",
+      "sha256": "4ca9b3be44192954755b1ad786890706fd6fa88eec8ce15d74d8f0f3f3ea4e3c",
+      "sourceSha": "91269f5ccf0f8d46c377fe1c47a513be283164dc",
       "baseSha": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
       "affected": 179,
-      "unregistered": 32,
+      "unregistered": 24,
       "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
     },
     "sourceReconciliations": [
@@ -3227,6 +3257,15 @@
         "baseSha": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
         "affected": 179,
         "unregistered": 32,
+        "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
+      },
+      {
+        "path": "phase4-source-reconciliation-invitation-guest-20261019.json",
+        "sha256": "4ca9b3be44192954755b1ad786890706fd6fa88eec8ce15d74d8f0f3f3ea4e3c",
+        "sourceSha": "91269f5ccf0f8d46c377fe1c47a513be283164dc",
+        "baseSha": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
+        "affected": 179,
+        "unregistered": 24,
         "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
       }
     ],
@@ -3371,5 +3410,30 @@
       "passingCompanionOrBuildIsNotProductExecution": true
     }
   ],
-  "pendingDevelopmentRuns": []
+  "pendingDevelopmentRuns": [
+    {
+      "runId": "39366678779",
+      "sourceSha": "91269f5ccf0f8d46c377fe1c47a513be283164dc",
+      "target": "sextant-admiralty",
+      "scope": "MOBILE_PRIMARY_IDENTIFIER_WRAP_AND_ACTUAL_MASTHEAD_FULL_VIEWPORT_RECAPTURE"
+    },
+    {
+      "runId": "39366688335",
+      "sourceSha": "91269f5ccf0f8d46c377fe1c47a513be283164dc",
+      "target": "sextant-private-content",
+      "scope": "ACTUAL_ERROR_AND_INSPECTION_PLAN_SUCCESS_CONFIRM_RECAPTURE"
+    },
+    {
+      "runId": "39366698914",
+      "sourceSha": "91269f5ccf0f8d46c377fe1c47a513be283164dc",
+      "target": "sextant-account-recovery",
+      "scope": "ACTUAL_OPEN_MENU_PASSPORT_RETURN_REPAIR"
+    },
+    {
+      "runId": "39366710226",
+      "sourceSha": "91269f5ccf0f8d46c377fe1c47a513be283164dc",
+      "target": "sextant-invitation",
+      "scope": "FIRST_ACTUAL_ISSUED_INVITATIONS_AND_CANONICAL_GUEST_CLAIM_MERGE_DEVELOPMENT"
+    }
+  ]
 }
