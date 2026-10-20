@@ -1,0 +1,467 @@
+{
+  "classification": "AUTHOR_SEPARATE_PYTHON_IMPLEMENTATION_VERIFIES_RAW_AI_DEVELOPMENT_SCORE_NOT_PHYSICAL_PERCEPTION",
+  "qualification": false,
+  "status": "ALL48_SCORES_AND_DENOMINATORS_MATCH",
+  "pins": {
+    "review": "7da4a62bab0dc4a9003bb8a6a12942d2486f7a0db22c3186630977d1001503f3",
+    "raw": "5be8db7ffcee3da9ef19d511e68c7ea095630baa22abe11dc36bb7119d60094e",
+    "refs": "2fd0319b52bc0800fb92c2d0336be5068caf1f84d64bec97dc3b2a3b602130ff",
+    "scored": "70af310e054e0fe4181f6f3b5ca82790b2ce34e4403cf176e08f135dde1fcdff"
+  },
+  "verification": {
+    "rows": 48,
+    "memberships": {
+      "total": 48,
+      "positive": 31,
+      "negativeOverlap": 5,
+      "visibility": {
+        "VISIBLE": 37,
+        "AMBIGUOUS": 6,
+        "NOT_VISIBLE": 5
+      },
+      "digit": {
+        "INDEX": 40,
+        "UNRESOLVED": 8
+      },
+      "gesture": {
+        "RELAXED_POINT_PLAUSIBLE": 10,
+        "POINT_PLAUSIBLE": 2,
+        "UNRESOLVED": 9,
+        "POINTING_PLAUSIBLE": 22,
+        "CONTRARY_OPEN_PALM": 5
+      }
+    },
+    "scalarOrStructuralComparisons": 1890,
+    "allMatched": true,
+    "maximumAbsoluteNumericalDifference": 2.842170943040401e-14,
+    "tolerancePixels": 1e-10,
+    "privateRecomputationSha256": "7df156dd03d4358dc5298449e6af28e7d1570fc3a640ceb7d5656b35dc97e8a3"
+  },
+  "overall": {
+    "referenceRows": 48,
+    "positiveDenominator": 31,
+    "negativeOverlap": 5,
+    "positiveArms": {
+      "ORIGINAL_CPU": {
+        "usable": 28,
+        "missing": 3,
+        "insideCircle": 21,
+        "outsideCircle": 7
+      },
+      "REFLECTED_CPU": {
+        "usable": 27,
+        "missing": 4,
+        "insideCircle": 26,
+        "outsideCircle": 1
+      }
+    },
+    "positiveAvailabilityTransitions": {
+      "ORIGINAL_ONLY": 2,
+      "REFLECTED_ONLY": 1,
+      "BOTH_VALID": 26,
+      "BOTH_MISSING": 2
+    },
+    "positiveCircleTransitions": {
+      "OUTSIDE->MISSING": 2,
+      "MISSING->INSIDE": 1,
+      "INSIDE->INSIDE": 21,
+      "MISSING->MISSING": 2,
+      "OUTSIDE->INSIDE": 4,
+      "OUTSIDE->OUTSIDE": 1
+    },
+    "positivePairedIntervals": {
+      "UNPAIRED_MISSING": 5,
+      "OVERLAPPING_UNCERTAINTY": 22,
+      "RAW_INTERVAL_IMPROVEMENT": 4
+    },
+    "allReferenceStatuses": {
+      "ORIGINAL_CPU": {
+        "IN_BOUNDS_INDEX8": 42,
+        "ZERO_HANDS": 6
+      },
+      "REFLECTED_CPU": {
+        "MULTIPLE_HANDS": 3,
+        "IN_BOUNDS_INDEX8": 42,
+        "ZERO_HANDS": 3
+      }
+    },
+    "negativeRawEndpointAvailability": {
+      "ORIGINAL_CPU": 5,
+      "REFLECTED_CPU": 5
+    }
+  },
+  "all14PromptStrata": [
+    {
+      "prompt": "CENTER",
+      "packets": 109,
+      "soleInBoundsSlot8": [
+        97,
+        98
+      ],
+      "referenceRows": 0,
+      "positiveRefs": 0,
+      "contraryOverlap": 0,
+      "positiveUsable": [
+        0,
+        0
+      ],
+      "positiveInside": [
+        0,
+        0
+      ],
+      "positiveAvailabilityTransitions": {},
+      "positiveCircleTransitions": {},
+      "positivePairedIntervals": {}
+    },
+    {
+      "prompt": "BOTTOM",
+      "packets": 145,
+      "soleInBoundsSlot8": [
+        107,
+        81
+      ],
+      "referenceRows": 0,
+      "positiveRefs": 0,
+      "contraryOverlap": 0,
+      "positiveUsable": [
+        0,
+        0
+      ],
+      "positiveInside": [
+        0,
+        0
+      ],
+      "positiveAvailabilityTransitions": {},
+      "positiveCircleTransitions": {},
+      "positivePairedIntervals": {}
+    },
+    {
+      "prompt": "TOP",
+      "packets": 107,
+      "soleInBoundsSlot8": [
+        107,
+        107
+      ],
+      "referenceRows": 0,
+      "positiveRefs": 0,
+      "contraryOverlap": 0,
+      "positiveUsable": [
+        0,
+        0
+      ],
+      "positiveInside": [
+        0,
+        0
+      ],
+      "positiveAvailabilityTransitions": {},
+      "positiveCircleTransitions": {},
+      "positivePairedIntervals": {}
+    },
+    {
+      "prompt": "LEFT",
+      "packets": 90,
+      "soleInBoundsSlot8": [
+        90,
+        90
+      ],
+      "referenceRows": 6,
+      "positiveRefs": 6,
+      "contraryOverlap": 0,
+      "positiveUsable": [
+        6,
+        6
+      ],
+      "positiveInside": [
+        6,
+        6
+      ],
+      "positiveAvailabilityTransitions": {
+        "BOTH_VALID": 6
+      },
+      "positiveCircleTransitions": {
+        "INSIDE->INSIDE": 6
+      },
+      "positivePairedIntervals": {
+        "OVERLAPPING_UNCERTAINTY": 6
+      }
+    },
+    {
+      "prompt": "RIGHT",
+      "packets": 89,
+      "soleInBoundsSlot8": [
+        89,
+        89
+      ],
+      "referenceRows": 12,
+      "positiveRefs": 11,
+      "contraryOverlap": 0,
+      "positiveUsable": [
+        11,
+        11
+      ],
+      "positiveInside": [
+        11,
+        11
+      ],
+      "positiveAvailabilityTransitions": {
+        "BOTH_VALID": 11
+      },
+      "positiveCircleTransitions": {
+        "INSIDE->INSIDE": 11
+      },
+      "positivePairedIntervals": {
+        "OVERLAPPING_UNCERTAINTY": 11
+      }
+    },
+    {
+      "prompt": "TOP_LEFT",
+      "packets": 73,
+      "soleInBoundsSlot8": [
+        72,
+        73
+      ],
+      "referenceRows": 0,
+      "positiveRefs": 0,
+      "contraryOverlap": 0,
+      "positiveUsable": [
+        0,
+        0
+      ],
+      "positiveInside": [
+        0,
+        0
+      ],
+      "positiveAvailabilityTransitions": {},
+      "positiveCircleTransitions": {},
+      "positivePairedIntervals": {}
+    },
+    {
+      "prompt": "TOP_RIGHT",
+      "packets": 74,
+      "soleInBoundsSlot8": [
+        71,
+        73
+      ],
+      "referenceRows": 0,
+      "positiveRefs": 0,
+      "contraryOverlap": 0,
+      "positiveUsable": [
+        0,
+        0
+      ],
+      "positiveInside": [
+        0,
+        0
+      ],
+      "positiveAvailabilityTransitions": {},
+      "positiveCircleTransitions": {},
+      "positivePairedIntervals": {}
+    },
+    {
+      "prompt": "BOTTOM_LEFT",
+      "packets": 71,
+      "soleInBoundsSlot8": [
+        70,
+        70
+      ],
+      "referenceRows": 0,
+      "positiveRefs": 0,
+      "contraryOverlap": 0,
+      "positiveUsable": [
+        0,
+        0
+      ],
+      "positiveInside": [
+        0,
+        0
+      ],
+      "positiveAvailabilityTransitions": {},
+      "positiveCircleTransitions": {},
+      "positivePairedIntervals": {}
+    },
+    {
+      "prompt": "BOTTOM_RIGHT",
+      "packets": 71,
+      "soleInBoundsSlot8": [
+        31,
+        51
+      ],
+      "referenceRows": 12,
+      "positiveRefs": 9,
+      "contraryOverlap": 0,
+      "positiveUsable": [
+        6,
+        6
+      ],
+      "positiveInside": [
+        0,
+        5
+      ],
+      "positiveAvailabilityTransitions": {
+        "ORIGINAL_ONLY": 1,
+        "REFLECTED_ONLY": 1,
+        "BOTH_MISSING": 2,
+        "BOTH_VALID": 5
+      },
+      "positiveCircleTransitions": {
+        "OUTSIDE->MISSING": 1,
+        "MISSING->INSIDE": 1,
+        "MISSING->MISSING": 2,
+        "OUTSIDE->INSIDE": 4,
+        "OUTSIDE->OUTSIDE": 1
+      },
+      "positivePairedIntervals": {
+        "UNPAIRED_MISSING": 4,
+        "RAW_INTERVAL_IMPROVEMENT": 4,
+        "OVERLAPPING_UNCERTAINTY": 1
+      }
+    },
+    {
+      "prompt": "RELAXED",
+      "packets": 109,
+      "soleInBoundsSlot8": [
+        90,
+        109
+      ],
+      "referenceRows": 0,
+      "positiveRefs": 0,
+      "contraryOverlap": 0,
+      "positiveUsable": [
+        0,
+        0
+      ],
+      "positiveInside": [
+        0,
+        0
+      ],
+      "positiveAvailabilityTransitions": {},
+      "positiveCircleTransitions": {},
+      "positivePairedIntervals": {}
+    },
+    {
+      "prompt": "SWEEP",
+      "packets": 180,
+      "soleInBoundsSlot8": [
+        165,
+        155
+      ],
+      "referenceRows": 12,
+      "positiveRefs": 5,
+      "contraryOverlap": 0,
+      "positiveUsable": [
+        5,
+        4
+      ],
+      "positiveInside": [
+        4,
+        4
+      ],
+      "positiveAvailabilityTransitions": {
+        "BOTH_VALID": 4,
+        "ORIGINAL_ONLY": 1
+      },
+      "positiveCircleTransitions": {
+        "INSIDE->INSIDE": 4,
+        "OUTSIDE->MISSING": 1
+      },
+      "positivePairedIntervals": {
+        "OVERLAPPING_UNCERTAINTY": 4,
+        "UNPAIRED_MISSING": 1
+      }
+    },
+    {
+      "prompt": "OPEN_PALM",
+      "packets": 91,
+      "soleInBoundsSlot8": [
+        91,
+        91
+      ],
+      "referenceRows": 5,
+      "positiveRefs": 0,
+      "contraryOverlap": 4,
+      "positiveUsable": [
+        0,
+        0
+      ],
+      "positiveInside": [
+        0,
+        0
+      ],
+      "positiveAvailabilityTransitions": {},
+      "positiveCircleTransitions": {},
+      "positivePairedIntervals": {}
+    },
+    {
+      "prompt": "HIDE",
+      "packets": 18,
+      "soleInBoundsSlot8": [
+        18,
+        18
+      ],
+      "referenceRows": 1,
+      "positiveRefs": 0,
+      "contraryOverlap": 1,
+      "positiveUsable": [
+        0,
+        0
+      ],
+      "positiveInside": [
+        0,
+        0
+      ],
+      "positiveAvailabilityTransitions": {},
+      "positiveCircleTransitions": {},
+      "positivePairedIntervals": {}
+    },
+    {
+      "prompt": "RECOVER",
+      "packets": 109,
+      "soleInBoundsSlot8": [
+        83,
+        83
+      ],
+      "referenceRows": 0,
+      "positiveRefs": 0,
+      "contraryOverlap": 0,
+      "positiveUsable": [
+        0,
+        0
+      ],
+      "positiveInside": [
+        0,
+        0
+      ],
+      "positiveAvailabilityTransitions": {},
+      "positiveCircleTransitions": {},
+      "positivePairedIntervals": {}
+    }
+  ],
+  "interpretation": {
+    "RIGHT": "No measured improvement on11positive development references: both11inside and11solevalid. This is sparse raw endpoint consistency, not safe tracker recovery or dense accuracy.",
+    "BOTTOM_RIGHT": "All4strict disjoint-interval improvements are here. Ninepositive refs: inside0to5, valid6to6; fouroutside-toinside,one missing-toinside,one outside-to-missing,two bothmissing,one bothoutside.",
+    "SWEEP": "No measured inside-circle or disjoint-interval gain. Fivepositive refs: inside4to4,valid5to4. One originaloutside becomes reflectedmultiple/missing.",
+    "overall": "Inside21to26/31;solevalid28to27/31. Fourdisjoint pairedraw improvements,zero disjointregressions,22overlaps,fiveunpaired. No arm fusion, production method or selected-ID proof follows.",
+    "contraryOverlap": "All5contrary references have raw endpoints in botharms. Rawslot8 availability is not an accepted pointer or false-positive rate."
+  },
+  "limits": [
+    "Existing nonblinded AI development estimates with uncertainty, not physical groundtruth or untouched holdout.",
+    "Scoring raw slot8 does not establish selected digit or gesture; wrongDigitUNKNOWN.",
+    "Sparse references cannot establish accuracy on every RIGHT/SWEEP/BR frame.",
+    "Contrary overlap records raw endpoint availability, not false pointer authority.",
+    "No fusion, source alias, temporal identity, freshness/calibration/readiness or recovery evaluation.",
+    "Conditional errors retain explicit changing usable denominators; missing transitions reported separately.",
+    "Prompt labels are instructions, not verified current gesture or hand absence.",
+    "The new original/reflectedCPU paired saved-native inputs do not replace historicalGPU/cached-tracker504/1336 or RIGHT13/89.",
+    "All4disjoint improvements are in one development recording/one stratum; not independent trials or a physical holdout."
+  ],
+  "operations": {
+    "scorerAuthorAlsoRecomputed": true,
+    "implementation": "Separately written Python math/JSON/hash operations; frozen JS scorer not imported/executed.",
+    "modelApiBrowserImageGrayDecoded": false,
+    "hiddenControlsAccessed": false
+  },
+  "pairArrayOrder": [
+    "ORIGINAL_CPU",
+    "REFLECTED_CPU"
+  ]
+}

@@ -3,7 +3,7 @@ title: Project Reach engineering home
 audience: product-engineering
 status: integrated-foundation-preview
 canonical_for: project-reach-engineering-home
-last_reviewed: 2026-10-19
+last_reviewed: 2026-10-20
 ---
 
 # Project Reach engineering home
@@ -11,6 +11,8 @@ last_reviewed: 2026-10-19
 Reach is Voyagewright's reusable browser-first spatial interaction and intent system. Phase 1's browser hand laboratory, observation/coordinate foundation and independent calibration workflow are integrated as a foundation preview through [PR #697](https://github.com/Kgray44/treasurehuntSoT/pull/697), main commit `7284b0dfaa31037d074d27df0f27b968f3977000`, after the [required Mainline Decision](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38113725340) passed. Landed source/asset verification passed. Physical webcam and held-out calibration, accuracy, jitter, exposure-to-visible latency, ergonomics and owner acceptance remain open; full Phase 1 is not accepted. See the [implementation and validation record](Project_Reach_Phase_1_Implementation_and_Validation_Record.md). Later-phase target acquisition, selection, manipulation and owner integrations are not implemented by this phase.
 
 ## Effective governing sources
+
+The [fixed reflection inference experiment](Phase_1_Reflection_Inference_20261020.md) retains all 1,336 paired raw frames and fixed AI development references. Its localization gains are limited to BOTTOM-RIGHT, with no demonstrated RIGHT or mixed-motion gain and important SWEEP/BOTTOM availability regressions. The replacement is rejected, production tracking remains unchanged, and physical Phase 1 acceptance remains open.
 
 The [complete image and identity diagnostic](Phase_1_Complete_Image_Diagnostic_20261019.md) preserves all 1,336 original frames with exact observer parity and a complete selected-observation chronology of the separate mixed-motion failure. RIGHT retains identity while current coordinate reproof fails; BOTTOM-RIGHT and SWEEP contain different loss mechanisms. No perception candidate is nominated, the sealed analytic controls remain unexecuted, and physical reliability remains unresolved.
 

@@ -11095,6 +11095,24 @@
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/Phase_1_Reflection_Inference_20261020.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/reflection-inference-20261020/raw-pair-summary.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/reflection-inference-20261020/reference-summary.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
     }
   ]
 }
