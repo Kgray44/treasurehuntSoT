@@ -25,13 +25,15 @@ independent review verifies210hashes/all120PNGs and clears the actual Guide poin
 and Search-hover repairs within the stated viewport limits. Creator form-ink
 recapture passes four with unchanged final baselines; independent70hash/30PNG
 review resolves the pale parchment heading/intro/helper finding and reviews the
-added Chapter/Edit and desktop empty-Inspector captures. Admiralty's first live
-run fails at Overview on duplicate banners and hidden mobile operator context,
-before dossier/support/final-baseline proof; a source-clear control-group/mobile
-identity and visible Safe-return correction awaits recapture. Private Chronicle
-registration and full synthetic import/export development are prepared with
-owned external storage, ephemeral keys and a separate checked lifecycle receipt;
-no real private content or hosted import/export acceptance is claimed.
+added Chapter/Edit and desktop empty-Inspector captures. The next Admiralty run
+passes Overview identity/accessibility but stops at a test expecting a heading
+where People renders plain empty-state text. Private Chronicle reaches actual
+synthetic inspection, import, verified export/download and draft reopening, then
+fails the editor audit on an invalid sortable-card role. Final return/baselines
+remain unproved. Its separate storage receipt records failure retention with
+process cleanup verified and no key retained. Source-reviewed repairs preserve
+the same named sortable group and assert actual People text; fresh runs are
+required. Original failures and encrypted diagnostics remain preserved.
 
 Two new formal contracts replace invalid prose checks with actual DOM identity
 or gateway selectors while retaining all prose requirements and unchanged backend

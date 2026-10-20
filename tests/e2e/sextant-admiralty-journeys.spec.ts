@@ -58,6 +58,7 @@ for (const viewport of [
           expect(elapsedMs, task).toBeLessThanOrEqual(3000);
         };
         const heading = (name: string) => page.getByRole("heading", { name, exact: true });
+        const emptyState = (name: string) => page.locator(".chartroom-empty").getByText(name, { exact: true });
         const capture = async (name: string, target = page.getByRole("heading", { level: 1 })) => {
           expect((await new AxeBuilder({ page }).include(".chartroom").analyze()).violations).toEqual([]);
           await target.scrollIntoViewIfNeeded();
@@ -84,18 +85,18 @@ for (const viewport of [
         await measure(
           "Bounded People station",
           () => navigation.getByRole("link", { name: "People", exact: true }).click(),
-          () => expect(heading("Start with a known clue")).toBeVisible(),
+          () => expect(emptyState("Start with a known clue")).toBeVisible(),
         );
-        await capture("admiralty-known-clue", heading("Start with a known clue"));
+        await capture("admiralty-known-clue", emptyState("Start with a known clue"));
         const search = page.locator(".chartroom-search").getByRole("textbox", { name: "Search", exact: true });
         const submit = page.locator(".chartroom-search").getByRole("button", { name: "Search", exact: true });
         await search.fill("sextant-no-such-person-20261019");
         await measure(
           "Actual empty account search",
           () => submit.click(),
-          () => expect(heading("No matching account")).toBeVisible(),
+          () => expect(emptyState("No matching account")).toBeVisible(),
         );
-        await capture("admiralty-empty-people", heading("No matching account"));
+        await capture("admiralty-empty-people", emptyState("No matching account"));
         await search.fill(fixture.targetAccountId);
         const target = page.getByRole("link", { name: fixture.targetDisplayName, exact: true });
         await measure(

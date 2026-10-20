@@ -20,6 +20,9 @@ last_reviewed: 2026-10-19
 
 ### Corrected
 
+- Studio sortable Passage cards use a valid element for their existing named
+  group, preserving drag, focus, keyboard controls and displayed content.
+
 - The new Chronicle form uses parchment ink for headings, explanatory text and
   cover-image help. Admiralty exposes its real operator summary as a named group,
   keeps it readable on mobile and uses a named inner control group beneath the

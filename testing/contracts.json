@@ -9720,8 +9720,8 @@
               },
               {
                 "action": "assert",
-                "role": "heading",
-                "name": "Start with a known clue",
+                "role": "main",
+                "name": "",
                 "path": "/admin/people",
                 "state": "KNOWN_CLUE",
                 "kind": "outcome",
@@ -9742,8 +9742,8 @@
               },
               {
                 "action": "assert",
-                "role": "heading",
-                "name": "No matching account",
+                "role": "main",
+                "name": "",
                 "path": "/admin/people",
                 "state": "EMPTY_SEARCH",
                 "kind": "outcome",

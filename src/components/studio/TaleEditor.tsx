@@ -2776,7 +2776,7 @@ export function TaleEditor({
                             <SortableStoryBlock key={block.id} id={block.id}>
                               {(attributes, listeners) => (
                                 <>
-                                  <article
+                                  <div
                                     {...attributes}
                                     {...listeners}
                                     role="group"
@@ -2893,7 +2893,7 @@ export function TaleEditor({
                                         ↓
                                       </button>
                                     </div>
-                                  </article>
+                                  </div>
                                   <DropZone
                                     id={`drop:${chapterIndex}:${blockIndex + 1}`}
                                     onDrop={(event) => drop(event, chapterIndex, blockIndex + 1)}
