@@ -162,7 +162,29 @@ export function stripTaskOwnedCookieSecurity(value) {
   return value.replace(/;\s*Secure(?=;|$)/giu, "");
 }
 
-async function startTaskOwnedHttpProxy({ port, backendPort }) {
+function taskOwnedRedirectLocation(value, { port, backendPort }) {
+  if (typeof value !== "string" || !/^(?:http:\/\/|\/\/)/iu.test(value)) return value;
+  try {
+    const destination = new URL(value, "http://127.0.0.1");
+    if (
+      destination.protocol !== "http:" ||
+      !["127.0.0.1", "localhost", "[::1]"].includes(destination.hostname) ||
+      destination.port !== String(backendPort) ||
+      destination.username ||
+      destination.password
+    )
+      return value;
+    // Only the owned backend origin is translated. The browser must return to
+    // the configured proxy origin that received its host-only pending cookie.
+    // Never derive this destination from incoming Host/forwarded headers.
+    destination.host = `127.0.0.1:${port}`;
+    return destination.href;
+  } catch {
+    return value;
+  }
+}
+
+export async function startTaskOwnedHttpProxy({ port, backendPort }) {
   const sockets = new Set();
   const proxy = createHttpServer((incoming, outgoing) => {
     const upstream = requestHttp(
@@ -177,6 +199,8 @@ async function startTaskOwnedHttpProxy({ port, backendPort }) {
         const headers = { ...response.headers };
         if (Array.isArray(headers["set-cookie"]))
           headers["set-cookie"] = headers["set-cookie"].map(stripTaskOwnedCookieSecurity);
+        if (typeof headers.location === "string")
+          headers.location = taskOwnedRedirectLocation(headers.location, { port, backendPort });
         outgoing.writeHead(response.statusCode ?? 502, headers);
         response.pipe(outgoing);
       },

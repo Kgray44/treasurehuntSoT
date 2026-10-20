@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "classification": "ENGINEERING_LOCAL_DEVELOPMENT_NOT_PROTECTED_OR_PHASE_ACCEPTANCE",
+  "base": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
+  "branch": "codex/sounding-line-loopback-redirects",
+  "sourceBinding": "WORKING_TREE_BYTE_HASHES_PROTECTED_CHECK_BINDS_FUTURE_COMMIT",
+  "node": "v24.18.0",
+  "sources": [
+    {
+      "path": "scripts/sounding-line/browser-authority.mjs",
+      "sha256": "4f0921a6080419c674c4c2373d5807f22a7daf8449f650fa14b873643e02454d"
+    },
+    {
+      "path": "tests/sounding-line/ordinary.test.mjs",
+      "sha256": "540f9ae9ff72c469588fb932527a92eab367c435917e09ccdf0255168d853512"
+    }
+  ],
+  "files": [
+    {
+      "path": "baseline-red.log",
+      "bytes": 1312,
+      "sha256": "960a7600e86959fec16e5b9a7b685894b507983e46dfd29563f50ca3d9cf3eb1"
+    },
+    {
+      "path": "accepted-main-redirect-red.log",
+      "bytes": 1428,
+      "sha256": "567b5dbc95b9aa20a78f40378c8adc7b34d60422e05cde84e1cad67b0386abb9"
+    },
+    {
+      "path": "accepted-main-redirect-red.json",
+      "bytes": 552,
+      "sha256": "a0f5dabe1860cb4100df9dab631f4a9e5efe8f174d7cb3dd3170d0cd9295e60c"
+    },
+    {
+      "path": "focused-green.log",
+      "bytes": 307,
+      "sha256": "8fa821ece7cb7be0d36ed6893078604d6fd276ab24cbf35dbd64da2bb104a225"
+    },
+    {
+      "path": "regression-green.log",
+      "bytes": 52938,
+      "sha256": "29e86637b98b211a39e9d059a954fd02572414cedc7749c43e07e33e0c3d3e02"
+    },
+    {
+      "path": "accepted-main-matched-failures.log",
+      "bytes": 22369,
+      "sha256": "6c304e21ca8acd19ea4f46e1e144e898dcc183c93e088b6dc46d19e6fac4f179"
+    },
+    {
+      "path": "accepted-main-matched-failures.json",
+      "bytes": 3124,
+      "sha256": "e523df70e98ab843830455bc2ed557deba8532cade1a1d70aaa0e8e6040d3911"
+    },
+    {
+      "path": "typecheck.log",
+      "bytes": 66,
+      "sha256": "87cbed0ffc784c19ac32b5eb5829e31eca5ebd6ea4b569718fa3d43d88a58e8d"
+    },
+    {
+      "path": "privacy-with-nested-main.log",
+      "bytes": 21873,
+      "sha256": "732e6c13bd65e0fb0b9f5a3a59375fc2241817af84b9c746dc6069db90064834"
+    },
+    {
+      "path": "privacy.log",
+      "bytes": 625,
+      "sha256": "b96e378eb9e520c6fb5613826223234b6100dc8756b7fbbc9008b29d25455bf0"
+    }
+  ],
+  "causalTest": {
+    "status": "RED_ON_ACCEPTED_MAIN_EXPORT_ONLY_INSTRUMENTATION_GREEN_ON_REPAIR",
+    "sameFinalTestBytes": true,
+    "guardTestsPassed": 2,
+    "redirectCases": 13,
+    "backendCookies": "SYNTHETIC_ONLY_NO_BROWSER_COOKIE_TRANSMISSION_PROOF",
+    "proxyCleanup": "PASS_PORT_RECLAIMED"
+  },
+  "broaderLocalRegression": {
+    "tests": 165,
+    "passed": 152,
+    "failed": 13,
+    "matchedAcceptedMainFailures": 13,
+    "disposition": "FAILURES_PRESERVED_NO_WAIVER_PROTECTED_LINUX_REQUIRED"
+  },
+  "typescript": {
+    "status": "PASS_AFTER_LOCKED_PRISMA_CLIENT_GENERATION",
+    "initialUninitializedClientCheck": "FAILED_BEFORE_GENERATION_NOT_A_PRODUCT_REGRESSION"
+  },
+  "privacy": {
+    "status": "PASS",
+    "firstNestedBaselineScan": "FAILED_NESTED_ACCEPTED_MAIN_RELOCATED_WITHOUT_SCANNER_CHANGES",
+    "retainedOriginalLog": "privacy-with-nested-main.log"
+  },
+  "baselineStorage": {
+    "ownerRoot": "C:/Users/kkids/.codex/worktrees/sextant-http-redirect-prerequisite",
+    "archive": "accepted-main-40491dd68.tar",
+    "archiveSha256": "0a409c72a270d0dab11cbe887504af903e3d875bde02c5cc1c239c5abac3ab8b",
+    "extracted": "matched-main-baseline",
+    "relocation": "EXPLICIT_VERIFIED_TASK_OWNED_DIRECTORY_OUTSIDE_SCANNED_CHECKOUT_NO_DELETION"
+  },
+  "independentReview": {
+    "reviewer": "/root/sextant_source_review",
+    "status": "SOURCE_CLEAR_WITH_UNCHANGED_ISOLATION_AND_QUALIFICATION_LIMITS",
+    "reviewerRanTests": false
+  },
+  "limits": [
+    "NO_FRESH_SUCCESSFUL_INVITATION_MERGE_BROWSER_PROOF",
+    "NO_CANONICAL_INSTALLATION_UNTIL_PROTECTED_CHECK_MERGE_AND_LANDED_SMOKE",
+    "NO_DARWIN_CONTAINMENT_FORMAL_MUTABLE_BINDING_NATIVE_PHYSICAL_OR_OWNER_ACCEPTANCE"
+  ]
+}
