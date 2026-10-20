@@ -597,7 +597,31 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Repository_Operations/developer/Sounding_Line_Loopback_Redirect_Repair_20261020.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Repository_Operations/developer/testing.md",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Repository_Operations/evidence/20261020-loopback-redirect/accepted-main-matched-failures.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Repository_Operations/evidence/20261020-loopback-redirect/accepted-main-redirect-red.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Repository_Operations/evidence/20261020-loopback-redirect/local-evidence.json",
       "record_type": "engineering-record",
       "status": "current",
       "canonical_for": null
