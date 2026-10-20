@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/sextant-account-recovery-journeys.spec.ts"
+  ],
+  "status": "FAIL",
+  "failureCategory": "PRODUCT_FAILURE",
+  "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED",
+  "diagnosticBinding": {
+    "version": 1,
+    "runId": "07ad414d-533c-4825-a5a5-a94916a0be91",
+    "scopeId": "6e87c81f-ae68-4b2e-9b1f-3c3c780ee8c6",
+    "baseSha": "bcf82bdce20a02790ecdb5df965bd630b7834ff3",
+    "candidateSha": "bcf82bdce20a02790ecdb5df965bd630b7834ff3",
+    "planDigest": "a7031bb31eef337d8e25644653ddf9ccdfbdece062a4163b4f661e20c8ac4576"
+  }
+}

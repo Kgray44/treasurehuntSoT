@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "classification": "ENGINEERING_SYNTHETIC_ADMIRALTY_DEVELOPMENT_NOT_ACCEPTANCE",
+  "source": {
+    "sourceSha": "bcf82bdce20a02790ecdb5df965bd630b7834ff3",
+    "sourceTree": "d1d7b532d1ea42bfbf5af7b3a2e44e564fee3c07",
+    "dirty": false,
+    "sourceFingerprint": "a749adab0428f4f63beadccc8b1cfbfe3a10653f3cdb2fe504fb527953efa985"
+  },
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "reducedMotion": "no-preference",
+  "baseline": [
+    {
+      "id": "sextant-experience-voyage",
+      "status": "ACTIVE",
+      "currentBlockId": "sextant-experience-note",
+      "currentSequence": 4,
+      "publishedVersionId": "cmvg4rc4v00085qsyv5xe2plq"
+    },
+    {
+      "id": "sextant-resource-voyage-admiralty-1280-no-preference",
+      "status": "ACTIVE",
+      "currentBlockId": "sextant-resource-passage-admiralty-1280-no-preference",
+      "currentSequence": 4,
+      "publishedVersionId": "cmvg4rceh000q5qsyhahisk8k"
+    }
+  ],
+  "feedback": [
+    {
+      "task": "Ordinary Admiralty entry",
+      "elapsedMs": 506.0690029999996
+    },
+    {
+      "task": "Bounded People station",
+      "elapsedMs": 516.2554410000002
+    },
+    {
+      "task": "Actual empty account search",
+      "elapsedMs": 188.4275400000006
+    },
+    {
+      "task": "Actual synthetic Crew search",
+      "elapsedMs": 167.42570999999953
+    },
+    {
+      "task": "Actual authorized account dossier",
+      "elapsedMs": 470.996889
+    },
+    {
+      "task": "Actual conditional Tideglass fields",
+      "elapsedMs": 55.61611300000004
+    },
+    {
+      "task": "Ordinary Admiralty account return",
+      "elapsedMs": 246.72390199999973
+    }
+  ],
+  "privilegedBefore": {
+    "requests": 0,
+    "grants": 0,
+    "assurance": 0
+  },
+  "privilegedAfter": {
+    "requests": 0,
+    "grants": 0,
+    "assurance": 0
+  },
+  "ordinaryCanonicalOperatorEntry": true,
+  "unchangedCanonicalProgressAndEditionBytes": true,
+  "noConsentRequestAssuranceApprovedReadOrCommand": true,
+  "readAuditMetadataMayBeAppended": true,
+  "consentedSupportReadCovered": false,
+  "legacyAdmiraltyConsoleHostCovered": false,
+  "protectedAcceptance": false
+}
