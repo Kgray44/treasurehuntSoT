@@ -1,0 +1,2006 @@
+{
+  "classification": "SAFE_AGGREGATE_COPY_OF_FROZEN_RAW_XY_NATIVE48_AI_DEVELOPMENT_SCORER_NOT_PHYSICAL_GT_OR_REACH_ACCEPTANCE",
+  "pass": true,
+  "qualification": false,
+  "sourceScoreSha256": "b1f58dff1f09ac405ee3c1bdc97f27900641d07a6ebb68849e731cb73731d658",
+  "executionReceiptSha256": "a299ee2582e205c79b50079bd904e0bb348d205f0d368a7024c002228d0d5e40",
+  "protocolSha256": "e1063ebcd438756ce064786bb31dc0e8f5a7640204c7f8a0973652e65644da36",
+  "evaluatorFreezeSha256": "8307d71c4bd017e506d59e0c826dc38b05532aa8bfaf5b236d4988d58e5f03e2",
+  "probeFreezeSha256": "e05c5d460736d38e8c589f222865f3d6bcb343453ecc1778edc5505a036a8d35",
+  "resultsSha256": "b8b766c193bfcdd1d30370b8cc400841a720e3f2c14545b01aa9ec63f7f93556",
+  "finalSha256": "7f9c6903b92072d89a506994b6bd7c001b48a7ff32adb797eec7248df90d1ca7",
+  "ownedSha256": "9e6c9e45d64381629014cfa2be4737c6f42163b85f9043fb4168895b90852401",
+  "admissionSha256": "f5c0fec4a9e83de533007e8df790691fce54e4510061fb6ecc91e9f57c373fc5",
+  "copyPolicy": "Exact all14AndAll/unmeasured/limits subobjects from the already frozen scorer output. No recomputation, frame selection, coordinates, per-frame IDs, paths, raw landmarks or media. Same-author extraction; independent numerical review remains separate.",
+  "all14AndAll": {
+    "ALL": {
+      "frameDenominator": 1336,
+      "rawAvailabilityPair": {
+        "BOTH_PROPOSALS": 1141,
+        "CANDIDATE_ONLY_PROPOSAL": 105,
+        "BASELINE_ONLY_PROPOSAL": 40,
+        "BOTH_MISSING": 50
+      },
+      "methods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "statuses": {
+            "ZERO_RAW_REGIONS": 110,
+            "MULTIPLE_RAW_REGIONS": 24,
+            "SINGLE_NO_VALID_TIP": 0,
+            "SINGLE_INBOUNDS_PROPOSAL": 1181,
+            "SINGLE_OUT_OF_BOUNDS_TIP": 21
+          },
+          "rawFinite": 1202,
+          "singleProposal": 1181,
+          "missingSingleProposal": 155
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "statuses": {
+            "ZERO_RAW_REGIONS": 56,
+            "MULTIPLE_RAW_REGIONS": 30,
+            "SINGLE_NO_VALID_TIP": 0,
+            "SINGLE_INBOUNDS_PROPOSAL": 1246,
+            "SINGLE_OUT_OF_BOUNDS_TIP": 4
+          },
+          "rawFinite": 1250,
+          "singleProposal": 1246,
+          "missingSingleProposal": 90
+        }
+      },
+      "referenceDenominator": 48,
+      "positiveDenominator": 31,
+      "contraryOverlapDenominator": 5,
+      "missingReferencePoint": 11,
+      "visibility": {
+        "VISIBLE": 37,
+        "AMBIGUOUS": 6,
+        "NOT_VISIBLE": 5
+      },
+      "digit": {
+        "INDEX": 40,
+        "UNRESOLVED": 8
+      },
+      "gesture": {
+        "RELAXED_POINT_PLAUSIBLE": 10,
+        "POINT_PLAUSIBLE": 2,
+        "UNRESOLVED": 9,
+        "POINTING_PLAUSIBLE": 22,
+        "CONTRARY_OPEN_PALM": 5
+      },
+      "positiveMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "circleCompatible": 21,
+          "outsideCircle": 7,
+          "missingProposal": 3,
+          "lowerDistanceBoundPixels": {
+            "count": 28,
+            "min": 0,
+            "median": 0,
+            "p95": 116.39735064585486,
+            "max": 117.4557390017059
+          },
+          "upperDistanceBoundPixels": {
+            "count": 28,
+            "min": 11.976413160539693,
+            "median": 16.408556805077204,
+            "p95": 146.39735064585486,
+            "max": 147.4557390017059
+          }
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "circleCompatible": 28,
+          "outsideCircle": 2,
+          "missingProposal": 1,
+          "lowerDistanceBoundPixels": {
+            "count": 30,
+            "min": 0,
+            "median": 0,
+            "p95": 1.015853010347966,
+            "max": 113.90618613451039
+          },
+          "upperDistanceBoundPixels": {
+            "count": 30,
+            "min": 12.546537176063326,
+            "median": 17.271109892376145,
+            "p95": 27.729238509280584,
+            "max": 143.9061861345104
+          }
+        }
+      },
+      "positiveCirclePair": {
+        "MISSING_TO_MISSING": 0,
+        "MISSING_TO_INSIDE": 2,
+        "MISSING_TO_OUTSIDE": 1,
+        "INSIDE_TO_MISSING": 0,
+        "INSIDE_TO_INSIDE": 20,
+        "INSIDE_TO_OUTSIDE": 1,
+        "OUTSIDE_TO_MISSING": 1,
+        "OUTSIDE_TO_INSIDE": 6,
+        "OUTSIDE_TO_OUTSIDE": 0
+      },
+      "positiveIntervalPair": {
+        "UNPAIRED_MISSING": 4,
+        "CANDIDATE_INTERVAL_IMPROVEMENT": 4,
+        "CANDIDATE_INTERVAL_REGRESSION": 0,
+        "OVERLAPPING_UNCERTAINTY": 23
+      },
+      "contraryMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "denominator": 5,
+          "singleProposal": 5,
+          "missingProposal": 0,
+          "referencePointMissing": 1
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "denominator": 5,
+          "singleProposal": 5,
+          "missingProposal": 0,
+          "referencePointMissing": 1
+        }
+      },
+      "nonpositiveMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "denominator": 17,
+          "singleProposal": 14,
+          "missingProposal": 3
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "denominator": 17,
+          "singleProposal": 16,
+          "missingProposal": 1
+        }
+      },
+      "circleCompatibleGains": 8,
+      "circleCompatibleLosses": 1
+    },
+    "CENTER": {
+      "frameDenominator": 109,
+      "rawAvailabilityPair": {
+        "BOTH_PROPOSALS": 94,
+        "CANDIDATE_ONLY_PROPOSAL": 1,
+        "BASELINE_ONLY_PROPOSAL": 3,
+        "BOTH_MISSING": 11
+      },
+      "methods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "statuses": {
+            "ZERO_RAW_REGIONS": 11,
+            "MULTIPLE_RAW_REGIONS": 1,
+            "SINGLE_NO_VALID_TIP": 0,
+            "SINGLE_INBOUNDS_PROPOSAL": 97,
+            "SINGLE_OUT_OF_BOUNDS_TIP": 0
+          },
+          "rawFinite": 97,
+          "singleProposal": 97,
+          "missingSingleProposal": 12
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "statuses": {
+            "ZERO_RAW_REGIONS": 11,
+            "MULTIPLE_RAW_REGIONS": 3,
+            "SINGLE_NO_VALID_TIP": 0,
+            "SINGLE_INBOUNDS_PROPOSAL": 95,
+            "SINGLE_OUT_OF_BOUNDS_TIP": 0
+          },
+          "rawFinite": 95,
+          "singleProposal": 95,
+          "missingSingleProposal": 14
+        }
+      },
+      "referenceDenominator": 0,
+      "positiveDenominator": 0,
+      "contraryOverlapDenominator": 0,
+      "missingReferencePoint": 0,
+      "visibility": {},
+      "digit": {},
+      "gesture": {},
+      "positiveMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "circleCompatible": 0,
+          "outsideCircle": 0,
+          "missingProposal": 0,
+          "lowerDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          },
+          "upperDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          }
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "circleCompatible": 0,
+          "outsideCircle": 0,
+          "missingProposal": 0,
+          "lowerDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          },
+          "upperDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          }
+        }
+      },
+      "positiveCirclePair": {
+        "MISSING_TO_MISSING": 0,
+        "MISSING_TO_INSIDE": 0,
+        "MISSING_TO_OUTSIDE": 0,
+        "INSIDE_TO_MISSING": 0,
+        "INSIDE_TO_INSIDE": 0,
+        "INSIDE_TO_OUTSIDE": 0,
+        "OUTSIDE_TO_MISSING": 0,
+        "OUTSIDE_TO_INSIDE": 0,
+        "OUTSIDE_TO_OUTSIDE": 0
+      },
+      "positiveIntervalPair": {
+        "UNPAIRED_MISSING": 0,
+        "CANDIDATE_INTERVAL_IMPROVEMENT": 0,
+        "CANDIDATE_INTERVAL_REGRESSION": 0,
+        "OVERLAPPING_UNCERTAINTY": 0
+      },
+      "contraryMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0,
+          "referencePointMissing": 0
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0,
+          "referencePointMissing": 0
+        }
+      },
+      "nonpositiveMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0
+        }
+      },
+      "circleCompatibleGains": 0,
+      "circleCompatibleLosses": 0
+    },
+    "BOTTOM": {
+      "frameDenominator": 145,
+      "rawAvailabilityPair": {
+        "BOTH_PROPOSALS": 103,
+        "CANDIDATE_ONLY_PROPOSAL": 24,
+        "BASELINE_ONLY_PROPOSAL": 4,
+        "BOTH_MISSING": 14
+      },
+      "methods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "statuses": {
+            "ZERO_RAW_REGIONS": 21,
+            "MULTIPLE_RAW_REGIONS": 2,
+            "SINGLE_NO_VALID_TIP": 0,
+            "SINGLE_INBOUNDS_PROPOSAL": 107,
+            "SINGLE_OUT_OF_BOUNDS_TIP": 15
+          },
+          "rawFinite": 122,
+          "singleProposal": 107,
+          "missingSingleProposal": 38
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "statuses": {
+            "ZERO_RAW_REGIONS": 16,
+            "MULTIPLE_RAW_REGIONS": 0,
+            "SINGLE_NO_VALID_TIP": 0,
+            "SINGLE_INBOUNDS_PROPOSAL": 127,
+            "SINGLE_OUT_OF_BOUNDS_TIP": 2
+          },
+          "rawFinite": 129,
+          "singleProposal": 127,
+          "missingSingleProposal": 18
+        }
+      },
+      "referenceDenominator": 0,
+      "positiveDenominator": 0,
+      "contraryOverlapDenominator": 0,
+      "missingReferencePoint": 0,
+      "visibility": {},
+      "digit": {},
+      "gesture": {},
+      "positiveMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "circleCompatible": 0,
+          "outsideCircle": 0,
+          "missingProposal": 0,
+          "lowerDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          },
+          "upperDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          }
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "circleCompatible": 0,
+          "outsideCircle": 0,
+          "missingProposal": 0,
+          "lowerDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          },
+          "upperDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          }
+        }
+      },
+      "positiveCirclePair": {
+        "MISSING_TO_MISSING": 0,
+        "MISSING_TO_INSIDE": 0,
+        "MISSING_TO_OUTSIDE": 0,
+        "INSIDE_TO_MISSING": 0,
+        "INSIDE_TO_INSIDE": 0,
+        "INSIDE_TO_OUTSIDE": 0,
+        "OUTSIDE_TO_MISSING": 0,
+        "OUTSIDE_TO_INSIDE": 0,
+        "OUTSIDE_TO_OUTSIDE": 0
+      },
+      "positiveIntervalPair": {
+        "UNPAIRED_MISSING": 0,
+        "CANDIDATE_INTERVAL_IMPROVEMENT": 0,
+        "CANDIDATE_INTERVAL_REGRESSION": 0,
+        "OVERLAPPING_UNCERTAINTY": 0
+      },
+      "contraryMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0,
+          "referencePointMissing": 0
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0,
+          "referencePointMissing": 0
+        }
+      },
+      "nonpositiveMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0
+        }
+      },
+      "circleCompatibleGains": 0,
+      "circleCompatibleLosses": 0
+    },
+    "TOP": {
+      "frameDenominator": 107,
+      "rawAvailabilityPair": {
+        "BOTH_PROPOSALS": 107,
+        "CANDIDATE_ONLY_PROPOSAL": 0,
+        "BASELINE_ONLY_PROPOSAL": 0,
+        "BOTH_MISSING": 0
+      },
+      "methods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "statuses": {
+            "ZERO_RAW_REGIONS": 0,
+            "MULTIPLE_RAW_REGIONS": 0,
+            "SINGLE_NO_VALID_TIP": 0,
+            "SINGLE_INBOUNDS_PROPOSAL": 107,
+            "SINGLE_OUT_OF_BOUNDS_TIP": 0
+          },
+          "rawFinite": 107,
+          "singleProposal": 107,
+          "missingSingleProposal": 0
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "statuses": {
+            "ZERO_RAW_REGIONS": 0,
+            "MULTIPLE_RAW_REGIONS": 0,
+            "SINGLE_NO_VALID_TIP": 0,
+            "SINGLE_INBOUNDS_PROPOSAL": 107,
+            "SINGLE_OUT_OF_BOUNDS_TIP": 0
+          },
+          "rawFinite": 107,
+          "singleProposal": 107,
+          "missingSingleProposal": 0
+        }
+      },
+      "referenceDenominator": 0,
+      "positiveDenominator": 0,
+      "contraryOverlapDenominator": 0,
+      "missingReferencePoint": 0,
+      "visibility": {},
+      "digit": {},
+      "gesture": {},
+      "positiveMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "circleCompatible": 0,
+          "outsideCircle": 0,
+          "missingProposal": 0,
+          "lowerDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          },
+          "upperDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          }
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "circleCompatible": 0,
+          "outsideCircle": 0,
+          "missingProposal": 0,
+          "lowerDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          },
+          "upperDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          }
+        }
+      },
+      "positiveCirclePair": {
+        "MISSING_TO_MISSING": 0,
+        "MISSING_TO_INSIDE": 0,
+        "MISSING_TO_OUTSIDE": 0,
+        "INSIDE_TO_MISSING": 0,
+        "INSIDE_TO_INSIDE": 0,
+        "INSIDE_TO_OUTSIDE": 0,
+        "OUTSIDE_TO_MISSING": 0,
+        "OUTSIDE_TO_INSIDE": 0,
+        "OUTSIDE_TO_OUTSIDE": 0
+      },
+      "positiveIntervalPair": {
+        "UNPAIRED_MISSING": 0,
+        "CANDIDATE_INTERVAL_IMPROVEMENT": 0,
+        "CANDIDATE_INTERVAL_REGRESSION": 0,
+        "OVERLAPPING_UNCERTAINTY": 0
+      },
+      "contraryMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0,
+          "referencePointMissing": 0
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0,
+          "referencePointMissing": 0
+        }
+      },
+      "nonpositiveMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0
+        }
+      },
+      "circleCompatibleGains": 0,
+      "circleCompatibleLosses": 0
+    },
+    "LEFT": {
+      "frameDenominator": 90,
+      "rawAvailabilityPair": {
+        "BOTH_PROPOSALS": 90,
+        "CANDIDATE_ONLY_PROPOSAL": 0,
+        "BASELINE_ONLY_PROPOSAL": 0,
+        "BOTH_MISSING": 0
+      },
+      "methods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "statuses": {
+            "ZERO_RAW_REGIONS": 0,
+            "MULTIPLE_RAW_REGIONS": 0,
+            "SINGLE_NO_VALID_TIP": 0,
+            "SINGLE_INBOUNDS_PROPOSAL": 90,
+            "SINGLE_OUT_OF_BOUNDS_TIP": 0
+          },
+          "rawFinite": 90,
+          "singleProposal": 90,
+          "missingSingleProposal": 0
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "statuses": {
+            "ZERO_RAW_REGIONS": 0,
+            "MULTIPLE_RAW_REGIONS": 0,
+            "SINGLE_NO_VALID_TIP": 0,
+            "SINGLE_INBOUNDS_PROPOSAL": 90,
+            "SINGLE_OUT_OF_BOUNDS_TIP": 0
+          },
+          "rawFinite": 90,
+          "singleProposal": 90,
+          "missingSingleProposal": 0
+        }
+      },
+      "referenceDenominator": 6,
+      "positiveDenominator": 6,
+      "contraryOverlapDenominator": 0,
+      "missingReferencePoint": 0,
+      "visibility": {
+        "VISIBLE": 6
+      },
+      "digit": {
+        "INDEX": 6
+      },
+      "gesture": {
+        "POINTING_PLAUSIBLE": 6
+      },
+      "positiveMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "circleCompatible": 6,
+          "outsideCircle": 0,
+          "missingProposal": 0,
+          "lowerDistanceBoundPixels": {
+            "count": 6,
+            "min": 0,
+            "median": 0,
+            "p95": 0,
+            "max": 0
+          },
+          "upperDistanceBoundPixels": {
+            "count": 6,
+            "min": 14.786421923474114,
+            "median": 15.081189624368232,
+            "p95": 17.832297647280882,
+            "max": 17.832297647280882
+          }
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "circleCompatible": 5,
+          "outsideCircle": 1,
+          "missingProposal": 0,
+          "lowerDistanceBoundPixels": {
+            "count": 6,
+            "min": 0,
+            "median": 0,
+            "p95": 1.015853010347966,
+            "max": 1.015853010347966
+          },
+          "upperDistanceBoundPixels": {
+            "count": 6,
+            "min": 16.810590648223283,
+            "median": 22.46673548041196,
+            "p95": 25.015853010347968,
+            "max": 25.015853010347968
+          }
+        }
+      },
+      "positiveCirclePair": {
+        "MISSING_TO_MISSING": 0,
+        "MISSING_TO_INSIDE": 0,
+        "MISSING_TO_OUTSIDE": 0,
+        "INSIDE_TO_MISSING": 0,
+        "INSIDE_TO_INSIDE": 5,
+        "INSIDE_TO_OUTSIDE": 1,
+        "OUTSIDE_TO_MISSING": 0,
+        "OUTSIDE_TO_INSIDE": 0,
+        "OUTSIDE_TO_OUTSIDE": 0
+      },
+      "positiveIntervalPair": {
+        "UNPAIRED_MISSING": 0,
+        "CANDIDATE_INTERVAL_IMPROVEMENT": 0,
+        "CANDIDATE_INTERVAL_REGRESSION": 0,
+        "OVERLAPPING_UNCERTAINTY": 6
+      },
+      "contraryMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0,
+          "referencePointMissing": 0
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0,
+          "referencePointMissing": 0
+        }
+      },
+      "nonpositiveMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0
+        }
+      },
+      "circleCompatibleGains": 0,
+      "circleCompatibleLosses": 1
+    },
+    "RIGHT": {
+      "frameDenominator": 89,
+      "rawAvailabilityPair": {
+        "BOTH_PROPOSALS": 89,
+        "CANDIDATE_ONLY_PROPOSAL": 0,
+        "BASELINE_ONLY_PROPOSAL": 0,
+        "BOTH_MISSING": 0
+      },
+      "methods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "statuses": {
+            "ZERO_RAW_REGIONS": 0,
+            "MULTIPLE_RAW_REGIONS": 0,
+            "SINGLE_NO_VALID_TIP": 0,
+            "SINGLE_INBOUNDS_PROPOSAL": 89,
+            "SINGLE_OUT_OF_BOUNDS_TIP": 0
+          },
+          "rawFinite": 89,
+          "singleProposal": 89,
+          "missingSingleProposal": 0
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "statuses": {
+            "ZERO_RAW_REGIONS": 0,
+            "MULTIPLE_RAW_REGIONS": 0,
+            "SINGLE_NO_VALID_TIP": 0,
+            "SINGLE_INBOUNDS_PROPOSAL": 89,
+            "SINGLE_OUT_OF_BOUNDS_TIP": 0
+          },
+          "rawFinite": 89,
+          "singleProposal": 89,
+          "missingSingleProposal": 0
+        }
+      },
+      "referenceDenominator": 12,
+      "positiveDenominator": 11,
+      "contraryOverlapDenominator": 0,
+      "missingReferencePoint": 1,
+      "visibility": {
+        "AMBIGUOUS": 1,
+        "VISIBLE": 11
+      },
+      "digit": {
+        "UNRESOLVED": 1,
+        "INDEX": 11
+      },
+      "gesture": {
+        "POINT_PLAUSIBLE": 1,
+        "POINTING_PLAUSIBLE": 11
+      },
+      "positiveMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "circleCompatible": 11,
+          "outsideCircle": 0,
+          "missingProposal": 0,
+          "lowerDistanceBoundPixels": {
+            "count": 11,
+            "min": 0,
+            "median": 0,
+            "p95": 0,
+            "max": 0
+          },
+          "upperDistanceBoundPixels": {
+            "count": 11,
+            "min": 13.02404741294744,
+            "median": 16.449643663051614,
+            "p95": 21.41122760543363,
+            "max": 21.41122760543363
+          }
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "circleCompatible": 11,
+          "outsideCircle": 0,
+          "missingProposal": 0,
+          "lowerDistanceBoundPixels": {
+            "count": 11,
+            "min": 0,
+            "median": 0,
+            "p95": 0,
+            "max": 0
+          },
+          "upperDistanceBoundPixels": {
+            "count": 11,
+            "min": 12.546537176063326,
+            "median": 15.57539934295746,
+            "p95": 17.05144100909951,
+            "max": 17.05144100909951
+          }
+        }
+      },
+      "positiveCirclePair": {
+        "MISSING_TO_MISSING": 0,
+        "MISSING_TO_INSIDE": 0,
+        "MISSING_TO_OUTSIDE": 0,
+        "INSIDE_TO_MISSING": 0,
+        "INSIDE_TO_INSIDE": 11,
+        "INSIDE_TO_OUTSIDE": 0,
+        "OUTSIDE_TO_MISSING": 0,
+        "OUTSIDE_TO_INSIDE": 0,
+        "OUTSIDE_TO_OUTSIDE": 0
+      },
+      "positiveIntervalPair": {
+        "UNPAIRED_MISSING": 0,
+        "CANDIDATE_INTERVAL_IMPROVEMENT": 0,
+        "CANDIDATE_INTERVAL_REGRESSION": 0,
+        "OVERLAPPING_UNCERTAINTY": 11
+      },
+      "contraryMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0,
+          "referencePointMissing": 0
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0,
+          "referencePointMissing": 0
+        }
+      },
+      "nonpositiveMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "denominator": 1,
+          "singleProposal": 1,
+          "missingProposal": 0
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "denominator": 1,
+          "singleProposal": 1,
+          "missingProposal": 0
+        }
+      },
+      "circleCompatibleGains": 0,
+      "circleCompatibleLosses": 0
+    },
+    "TOP_LEFT": {
+      "frameDenominator": 73,
+      "rawAvailabilityPair": {
+        "BOTH_PROPOSALS": 57,
+        "CANDIDATE_ONLY_PROPOSAL": 1,
+        "BASELINE_ONLY_PROPOSAL": 15,
+        "BOTH_MISSING": 0
+      },
+      "methods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "statuses": {
+            "ZERO_RAW_REGIONS": 0,
+            "MULTIPLE_RAW_REGIONS": 1,
+            "SINGLE_NO_VALID_TIP": 0,
+            "SINGLE_INBOUNDS_PROPOSAL": 72,
+            "SINGLE_OUT_OF_BOUNDS_TIP": 0
+          },
+          "rawFinite": 72,
+          "singleProposal": 72,
+          "missingSingleProposal": 1
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "statuses": {
+            "ZERO_RAW_REGIONS": 0,
+            "MULTIPLE_RAW_REGIONS": 15,
+            "SINGLE_NO_VALID_TIP": 0,
+            "SINGLE_INBOUNDS_PROPOSAL": 58,
+            "SINGLE_OUT_OF_BOUNDS_TIP": 0
+          },
+          "rawFinite": 58,
+          "singleProposal": 58,
+          "missingSingleProposal": 15
+        }
+      },
+      "referenceDenominator": 0,
+      "positiveDenominator": 0,
+      "contraryOverlapDenominator": 0,
+      "missingReferencePoint": 0,
+      "visibility": {},
+      "digit": {},
+      "gesture": {},
+      "positiveMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "circleCompatible": 0,
+          "outsideCircle": 0,
+          "missingProposal": 0,
+          "lowerDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          },
+          "upperDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          }
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "circleCompatible": 0,
+          "outsideCircle": 0,
+          "missingProposal": 0,
+          "lowerDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          },
+          "upperDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          }
+        }
+      },
+      "positiveCirclePair": {
+        "MISSING_TO_MISSING": 0,
+        "MISSING_TO_INSIDE": 0,
+        "MISSING_TO_OUTSIDE": 0,
+        "INSIDE_TO_MISSING": 0,
+        "INSIDE_TO_INSIDE": 0,
+        "INSIDE_TO_OUTSIDE": 0,
+        "OUTSIDE_TO_MISSING": 0,
+        "OUTSIDE_TO_INSIDE": 0,
+        "OUTSIDE_TO_OUTSIDE": 0
+      },
+      "positiveIntervalPair": {
+        "UNPAIRED_MISSING": 0,
+        "CANDIDATE_INTERVAL_IMPROVEMENT": 0,
+        "CANDIDATE_INTERVAL_REGRESSION": 0,
+        "OVERLAPPING_UNCERTAINTY": 0
+      },
+      "contraryMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0,
+          "referencePointMissing": 0
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0,
+          "referencePointMissing": 0
+        }
+      },
+      "nonpositiveMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0
+        }
+      },
+      "circleCompatibleGains": 0,
+      "circleCompatibleLosses": 0
+    },
+    "TOP_RIGHT": {
+      "frameDenominator": 74,
+      "rawAvailabilityPair": {
+        "BOTH_PROPOSALS": 67,
+        "CANDIDATE_ONLY_PROPOSAL": 3,
+        "BASELINE_ONLY_PROPOSAL": 4,
+        "BOTH_MISSING": 0
+      },
+      "methods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "statuses": {
+            "ZERO_RAW_REGIONS": 0,
+            "MULTIPLE_RAW_REGIONS": 2,
+            "SINGLE_NO_VALID_TIP": 0,
+            "SINGLE_INBOUNDS_PROPOSAL": 71,
+            "SINGLE_OUT_OF_BOUNDS_TIP": 1
+          },
+          "rawFinite": 72,
+          "singleProposal": 71,
+          "missingSingleProposal": 3
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "statuses": {
+            "ZERO_RAW_REGIONS": 0,
+            "MULTIPLE_RAW_REGIONS": 4,
+            "SINGLE_NO_VALID_TIP": 0,
+            "SINGLE_INBOUNDS_PROPOSAL": 70,
+            "SINGLE_OUT_OF_BOUNDS_TIP": 0
+          },
+          "rawFinite": 70,
+          "singleProposal": 70,
+          "missingSingleProposal": 4
+        }
+      },
+      "referenceDenominator": 0,
+      "positiveDenominator": 0,
+      "contraryOverlapDenominator": 0,
+      "missingReferencePoint": 0,
+      "visibility": {},
+      "digit": {},
+      "gesture": {},
+      "positiveMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "circleCompatible": 0,
+          "outsideCircle": 0,
+          "missingProposal": 0,
+          "lowerDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          },
+          "upperDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          }
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "circleCompatible": 0,
+          "outsideCircle": 0,
+          "missingProposal": 0,
+          "lowerDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          },
+          "upperDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          }
+        }
+      },
+      "positiveCirclePair": {
+        "MISSING_TO_MISSING": 0,
+        "MISSING_TO_INSIDE": 0,
+        "MISSING_TO_OUTSIDE": 0,
+        "INSIDE_TO_MISSING": 0,
+        "INSIDE_TO_INSIDE": 0,
+        "INSIDE_TO_OUTSIDE": 0,
+        "OUTSIDE_TO_MISSING": 0,
+        "OUTSIDE_TO_INSIDE": 0,
+        "OUTSIDE_TO_OUTSIDE": 0
+      },
+      "positiveIntervalPair": {
+        "UNPAIRED_MISSING": 0,
+        "CANDIDATE_INTERVAL_IMPROVEMENT": 0,
+        "CANDIDATE_INTERVAL_REGRESSION": 0,
+        "OVERLAPPING_UNCERTAINTY": 0
+      },
+      "contraryMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0,
+          "referencePointMissing": 0
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0,
+          "referencePointMissing": 0
+        }
+      },
+      "nonpositiveMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0
+        }
+      },
+      "circleCompatibleGains": 0,
+      "circleCompatibleLosses": 0
+    },
+    "BOTTOM_LEFT": {
+      "frameDenominator": 71,
+      "rawAvailabilityPair": {
+        "BOTH_PROPOSALS": 65,
+        "CANDIDATE_ONLY_PROPOSAL": 1,
+        "BASELINE_ONLY_PROPOSAL": 5,
+        "BOTH_MISSING": 0
+      },
+      "methods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "statuses": {
+            "ZERO_RAW_REGIONS": 0,
+            "MULTIPLE_RAW_REGIONS": 1,
+            "SINGLE_NO_VALID_TIP": 0,
+            "SINGLE_INBOUNDS_PROPOSAL": 70,
+            "SINGLE_OUT_OF_BOUNDS_TIP": 0
+          },
+          "rawFinite": 70,
+          "singleProposal": 70,
+          "missingSingleProposal": 1
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "statuses": {
+            "ZERO_RAW_REGIONS": 5,
+            "MULTIPLE_RAW_REGIONS": 0,
+            "SINGLE_NO_VALID_TIP": 0,
+            "SINGLE_INBOUNDS_PROPOSAL": 66,
+            "SINGLE_OUT_OF_BOUNDS_TIP": 0
+          },
+          "rawFinite": 66,
+          "singleProposal": 66,
+          "missingSingleProposal": 5
+        }
+      },
+      "referenceDenominator": 0,
+      "positiveDenominator": 0,
+      "contraryOverlapDenominator": 0,
+      "missingReferencePoint": 0,
+      "visibility": {},
+      "digit": {},
+      "gesture": {},
+      "positiveMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "circleCompatible": 0,
+          "outsideCircle": 0,
+          "missingProposal": 0,
+          "lowerDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          },
+          "upperDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          }
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "circleCompatible": 0,
+          "outsideCircle": 0,
+          "missingProposal": 0,
+          "lowerDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          },
+          "upperDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          }
+        }
+      },
+      "positiveCirclePair": {
+        "MISSING_TO_MISSING": 0,
+        "MISSING_TO_INSIDE": 0,
+        "MISSING_TO_OUTSIDE": 0,
+        "INSIDE_TO_MISSING": 0,
+        "INSIDE_TO_INSIDE": 0,
+        "INSIDE_TO_OUTSIDE": 0,
+        "OUTSIDE_TO_MISSING": 0,
+        "OUTSIDE_TO_INSIDE": 0,
+        "OUTSIDE_TO_OUTSIDE": 0
+      },
+      "positiveIntervalPair": {
+        "UNPAIRED_MISSING": 0,
+        "CANDIDATE_INTERVAL_IMPROVEMENT": 0,
+        "CANDIDATE_INTERVAL_REGRESSION": 0,
+        "OVERLAPPING_UNCERTAINTY": 0
+      },
+      "contraryMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0,
+          "referencePointMissing": 0
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0,
+          "referencePointMissing": 0
+        }
+      },
+      "nonpositiveMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0
+        }
+      },
+      "circleCompatibleGains": 0,
+      "circleCompatibleLosses": 0
+    },
+    "BOTTOM_RIGHT": {
+      "frameDenominator": 71,
+      "rawAvailabilityPair": {
+        "BOTH_PROPOSALS": 29,
+        "CANDIDATE_ONLY_PROPOSAL": 39,
+        "BASELINE_ONLY_PROPOSAL": 2,
+        "BOTH_MISSING": 1
+      },
+      "methods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "statuses": {
+            "ZERO_RAW_REGIONS": 36,
+            "MULTIPLE_RAW_REGIONS": 3,
+            "SINGLE_NO_VALID_TIP": 0,
+            "SINGLE_INBOUNDS_PROPOSAL": 31,
+            "SINGLE_OUT_OF_BOUNDS_TIP": 1
+          },
+          "rawFinite": 32,
+          "singleProposal": 31,
+          "missingSingleProposal": 40
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "statuses": {
+            "ZERO_RAW_REGIONS": 1,
+            "MULTIPLE_RAW_REGIONS": 2,
+            "SINGLE_NO_VALID_TIP": 0,
+            "SINGLE_INBOUNDS_PROPOSAL": 68,
+            "SINGLE_OUT_OF_BOUNDS_TIP": 0
+          },
+          "rawFinite": 68,
+          "singleProposal": 68,
+          "missingSingleProposal": 3
+        }
+      },
+      "referenceDenominator": 12,
+      "positiveDenominator": 9,
+      "contraryOverlapDenominator": 0,
+      "missingReferencePoint": 3,
+      "visibility": {
+        "VISIBLE": 9,
+        "NOT_VISIBLE": 3
+      },
+      "digit": {
+        "INDEX": 9,
+        "UNRESOLVED": 3
+      },
+      "gesture": {
+        "RELAXED_POINT_PLAUSIBLE": 9,
+        "UNRESOLVED": 3
+      },
+      "positiveMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "circleCompatible": 0,
+          "outsideCircle": 6,
+          "missingProposal": 3,
+          "lowerDistanceBoundPixels": {
+            "count": 6,
+            "min": 1.5055539484647156,
+            "median": 68.48179565589098,
+            "p95": 117.4557390017059,
+            "max": 117.4557390017059
+          },
+          "upperDistanceBoundPixels": {
+            "count": 6,
+            "min": 30.45176589226754,
+            "median": 96.48179565589098,
+            "p95": 147.4557390017059,
+            "max": 147.4557390017059
+          }
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "circleCompatible": 8,
+          "outsideCircle": 1,
+          "missingProposal": 0,
+          "lowerDistanceBoundPixels": {
+            "count": 9,
+            "min": 0,
+            "median": 0,
+            "p95": 113.90618613451039,
+            "max": 113.90618613451039
+          },
+          "upperDistanceBoundPixels": {
+            "count": 9,
+            "min": 16.343045109734433,
+            "median": 22.39425987656545,
+            "p95": 143.9061861345104,
+            "max": 143.9061861345104
+          }
+        }
+      },
+      "positiveCirclePair": {
+        "MISSING_TO_MISSING": 0,
+        "MISSING_TO_INSIDE": 2,
+        "MISSING_TO_OUTSIDE": 1,
+        "INSIDE_TO_MISSING": 0,
+        "INSIDE_TO_INSIDE": 0,
+        "INSIDE_TO_OUTSIDE": 0,
+        "OUTSIDE_TO_MISSING": 0,
+        "OUTSIDE_TO_INSIDE": 6,
+        "OUTSIDE_TO_OUTSIDE": 0
+      },
+      "positiveIntervalPair": {
+        "UNPAIRED_MISSING": 3,
+        "CANDIDATE_INTERVAL_IMPROVEMENT": 4,
+        "CANDIDATE_INTERVAL_REGRESSION": 0,
+        "OVERLAPPING_UNCERTAINTY": 2
+      },
+      "contraryMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0,
+          "referencePointMissing": 0
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0,
+          "referencePointMissing": 0
+        }
+      },
+      "nonpositiveMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "denominator": 3,
+          "singleProposal": 0,
+          "missingProposal": 3
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "denominator": 3,
+          "singleProposal": 3,
+          "missingProposal": 0
+        }
+      },
+      "circleCompatibleGains": 8,
+      "circleCompatibleLosses": 0
+    },
+    "RELAXED": {
+      "frameDenominator": 109,
+      "rawAvailabilityPair": {
+        "BOTH_PROPOSALS": 90,
+        "CANDIDATE_ONLY_PROPOSAL": 19,
+        "BASELINE_ONLY_PROPOSAL": 0,
+        "BOTH_MISSING": 0
+      },
+      "methods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "statuses": {
+            "ZERO_RAW_REGIONS": 15,
+            "MULTIPLE_RAW_REGIONS": 4,
+            "SINGLE_NO_VALID_TIP": 0,
+            "SINGLE_INBOUNDS_PROPOSAL": 90,
+            "SINGLE_OUT_OF_BOUNDS_TIP": 0
+          },
+          "rawFinite": 90,
+          "singleProposal": 90,
+          "missingSingleProposal": 19
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "statuses": {
+            "ZERO_RAW_REGIONS": 0,
+            "MULTIPLE_RAW_REGIONS": 0,
+            "SINGLE_NO_VALID_TIP": 0,
+            "SINGLE_INBOUNDS_PROPOSAL": 109,
+            "SINGLE_OUT_OF_BOUNDS_TIP": 0
+          },
+          "rawFinite": 109,
+          "singleProposal": 109,
+          "missingSingleProposal": 0
+        }
+      },
+      "referenceDenominator": 0,
+      "positiveDenominator": 0,
+      "contraryOverlapDenominator": 0,
+      "missingReferencePoint": 0,
+      "visibility": {},
+      "digit": {},
+      "gesture": {},
+      "positiveMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "circleCompatible": 0,
+          "outsideCircle": 0,
+          "missingProposal": 0,
+          "lowerDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          },
+          "upperDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          }
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "circleCompatible": 0,
+          "outsideCircle": 0,
+          "missingProposal": 0,
+          "lowerDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          },
+          "upperDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          }
+        }
+      },
+      "positiveCirclePair": {
+        "MISSING_TO_MISSING": 0,
+        "MISSING_TO_INSIDE": 0,
+        "MISSING_TO_OUTSIDE": 0,
+        "INSIDE_TO_MISSING": 0,
+        "INSIDE_TO_INSIDE": 0,
+        "INSIDE_TO_OUTSIDE": 0,
+        "OUTSIDE_TO_MISSING": 0,
+        "OUTSIDE_TO_INSIDE": 0,
+        "OUTSIDE_TO_OUTSIDE": 0
+      },
+      "positiveIntervalPair": {
+        "UNPAIRED_MISSING": 0,
+        "CANDIDATE_INTERVAL_IMPROVEMENT": 0,
+        "CANDIDATE_INTERVAL_REGRESSION": 0,
+        "OVERLAPPING_UNCERTAINTY": 0
+      },
+      "contraryMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0,
+          "referencePointMissing": 0
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0,
+          "referencePointMissing": 0
+        }
+      },
+      "nonpositiveMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0
+        }
+      },
+      "circleCompatibleGains": 0,
+      "circleCompatibleLosses": 0
+    },
+    "SWEEP": {
+      "frameDenominator": 180,
+      "rawAvailabilityPair": {
+        "BOTH_PROPOSALS": 158,
+        "CANDIDATE_ONLY_PROPOSAL": 14,
+        "BASELINE_ONLY_PROPOSAL": 7,
+        "BOTH_MISSING": 1
+      },
+      "methods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "statuses": {
+            "ZERO_RAW_REGIONS": 2,
+            "MULTIPLE_RAW_REGIONS": 10,
+            "SINGLE_NO_VALID_TIP": 0,
+            "SINGLE_INBOUNDS_PROPOSAL": 165,
+            "SINGLE_OUT_OF_BOUNDS_TIP": 3
+          },
+          "rawFinite": 168,
+          "singleProposal": 165,
+          "missingSingleProposal": 15
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "statuses": {
+            "ZERO_RAW_REGIONS": 0,
+            "MULTIPLE_RAW_REGIONS": 6,
+            "SINGLE_NO_VALID_TIP": 0,
+            "SINGLE_INBOUNDS_PROPOSAL": 172,
+            "SINGLE_OUT_OF_BOUNDS_TIP": 2
+          },
+          "rawFinite": 174,
+          "singleProposal": 172,
+          "missingSingleProposal": 8
+        }
+      },
+      "referenceDenominator": 12,
+      "positiveDenominator": 5,
+      "contraryOverlapDenominator": 0,
+      "missingReferencePoint": 5,
+      "visibility": {
+        "AMBIGUOUS": 3,
+        "NOT_VISIBLE": 2,
+        "VISIBLE": 7
+      },
+      "digit": {
+        "UNRESOLVED": 4,
+        "INDEX": 8
+      },
+      "gesture": {
+        "UNRESOLVED": 6,
+        "POINTING_PLAUSIBLE": 5,
+        "RELAXED_POINT_PLAUSIBLE": 1
+      },
+      "positiveMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "circleCompatible": 4,
+          "outsideCircle": 1,
+          "missingProposal": 0,
+          "lowerDistanceBoundPixels": {
+            "count": 5,
+            "min": 0,
+            "median": 0,
+            "p95": 7.540077540793696,
+            "max": 7.540077540793696
+          },
+          "upperDistanceBoundPixels": {
+            "count": 5,
+            "min": 11.976413160539693,
+            "median": 13.634192623788723,
+            "p95": 35.540077540793696,
+            "max": 35.540077540793696
+          }
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "circleCompatible": 4,
+          "outsideCircle": 0,
+          "missingProposal": 1,
+          "lowerDistanceBoundPixels": {
+            "count": 4,
+            "min": 0,
+            "median": 0,
+            "p95": 0,
+            "max": 0
+          },
+          "upperDistanceBoundPixels": {
+            "count": 4,
+            "min": 17.271109892376145,
+            "median": 18.029834289962658,
+            "p95": 21.584645431127296,
+            "max": 21.584645431127296
+          }
+        }
+      },
+      "positiveCirclePair": {
+        "MISSING_TO_MISSING": 0,
+        "MISSING_TO_INSIDE": 0,
+        "MISSING_TO_OUTSIDE": 0,
+        "INSIDE_TO_MISSING": 0,
+        "INSIDE_TO_INSIDE": 4,
+        "INSIDE_TO_OUTSIDE": 0,
+        "OUTSIDE_TO_MISSING": 1,
+        "OUTSIDE_TO_INSIDE": 0,
+        "OUTSIDE_TO_OUTSIDE": 0
+      },
+      "positiveIntervalPair": {
+        "UNPAIRED_MISSING": 1,
+        "CANDIDATE_INTERVAL_IMPROVEMENT": 0,
+        "CANDIDATE_INTERVAL_REGRESSION": 0,
+        "OVERLAPPING_UNCERTAINTY": 4
+      },
+      "contraryMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0,
+          "referencePointMissing": 0
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0,
+          "referencePointMissing": 0
+        }
+      },
+      "nonpositiveMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "denominator": 7,
+          "singleProposal": 7,
+          "missingProposal": 0
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "denominator": 7,
+          "singleProposal": 6,
+          "missingProposal": 1
+        }
+      },
+      "circleCompatibleGains": 0,
+      "circleCompatibleLosses": 0
+    },
+    "OPEN_PALM": {
+      "frameDenominator": 91,
+      "rawAvailabilityPair": {
+        "BOTH_PROPOSALS": 91,
+        "CANDIDATE_ONLY_PROPOSAL": 0,
+        "BASELINE_ONLY_PROPOSAL": 0,
+        "BOTH_MISSING": 0
+      },
+      "methods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "statuses": {
+            "ZERO_RAW_REGIONS": 0,
+            "MULTIPLE_RAW_REGIONS": 0,
+            "SINGLE_NO_VALID_TIP": 0,
+            "SINGLE_INBOUNDS_PROPOSAL": 91,
+            "SINGLE_OUT_OF_BOUNDS_TIP": 0
+          },
+          "rawFinite": 91,
+          "singleProposal": 91,
+          "missingSingleProposal": 0
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "statuses": {
+            "ZERO_RAW_REGIONS": 0,
+            "MULTIPLE_RAW_REGIONS": 0,
+            "SINGLE_NO_VALID_TIP": 0,
+            "SINGLE_INBOUNDS_PROPOSAL": 91,
+            "SINGLE_OUT_OF_BOUNDS_TIP": 0
+          },
+          "rawFinite": 91,
+          "singleProposal": 91,
+          "missingSingleProposal": 0
+        }
+      },
+      "referenceDenominator": 5,
+      "positiveDenominator": 0,
+      "contraryOverlapDenominator": 4,
+      "missingReferencePoint": 1,
+      "visibility": {
+        "AMBIGUOUS": 1,
+        "VISIBLE": 4
+      },
+      "digit": {
+        "INDEX": 5
+      },
+      "gesture": {
+        "POINT_PLAUSIBLE": 1,
+        "CONTRARY_OPEN_PALM": 4
+      },
+      "positiveMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "circleCompatible": 0,
+          "outsideCircle": 0,
+          "missingProposal": 0,
+          "lowerDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          },
+          "upperDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          }
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "circleCompatible": 0,
+          "outsideCircle": 0,
+          "missingProposal": 0,
+          "lowerDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          },
+          "upperDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          }
+        }
+      },
+      "positiveCirclePair": {
+        "MISSING_TO_MISSING": 0,
+        "MISSING_TO_INSIDE": 0,
+        "MISSING_TO_OUTSIDE": 0,
+        "INSIDE_TO_MISSING": 0,
+        "INSIDE_TO_INSIDE": 0,
+        "INSIDE_TO_OUTSIDE": 0,
+        "OUTSIDE_TO_MISSING": 0,
+        "OUTSIDE_TO_INSIDE": 0,
+        "OUTSIDE_TO_OUTSIDE": 0
+      },
+      "positiveIntervalPair": {
+        "UNPAIRED_MISSING": 0,
+        "CANDIDATE_INTERVAL_IMPROVEMENT": 0,
+        "CANDIDATE_INTERVAL_REGRESSION": 0,
+        "OVERLAPPING_UNCERTAINTY": 0
+      },
+      "contraryMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "denominator": 4,
+          "singleProposal": 4,
+          "missingProposal": 0,
+          "referencePointMissing": 0
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "denominator": 4,
+          "singleProposal": 4,
+          "missingProposal": 0,
+          "referencePointMissing": 0
+        }
+      },
+      "nonpositiveMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "denominator": 5,
+          "singleProposal": 5,
+          "missingProposal": 0
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "denominator": 5,
+          "singleProposal": 5,
+          "missingProposal": 0
+        }
+      },
+      "circleCompatibleGains": 0,
+      "circleCompatibleLosses": 0
+    },
+    "HIDE": {
+      "frameDenominator": 18,
+      "rawAvailabilityPair": {
+        "BOTH_PROPOSALS": 18,
+        "CANDIDATE_ONLY_PROPOSAL": 0,
+        "BASELINE_ONLY_PROPOSAL": 0,
+        "BOTH_MISSING": 0
+      },
+      "methods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "statuses": {
+            "ZERO_RAW_REGIONS": 0,
+            "MULTIPLE_RAW_REGIONS": 0,
+            "SINGLE_NO_VALID_TIP": 0,
+            "SINGLE_INBOUNDS_PROPOSAL": 18,
+            "SINGLE_OUT_OF_BOUNDS_TIP": 0
+          },
+          "rawFinite": 18,
+          "singleProposal": 18,
+          "missingSingleProposal": 0
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "statuses": {
+            "ZERO_RAW_REGIONS": 0,
+            "MULTIPLE_RAW_REGIONS": 0,
+            "SINGLE_NO_VALID_TIP": 0,
+            "SINGLE_INBOUNDS_PROPOSAL": 18,
+            "SINGLE_OUT_OF_BOUNDS_TIP": 0
+          },
+          "rawFinite": 18,
+          "singleProposal": 18,
+          "missingSingleProposal": 0
+        }
+      },
+      "referenceDenominator": 1,
+      "positiveDenominator": 0,
+      "contraryOverlapDenominator": 1,
+      "missingReferencePoint": 1,
+      "visibility": {
+        "AMBIGUOUS": 1
+      },
+      "digit": {
+        "INDEX": 1
+      },
+      "gesture": {
+        "CONTRARY_OPEN_PALM": 1
+      },
+      "positiveMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "circleCompatible": 0,
+          "outsideCircle": 0,
+          "missingProposal": 0,
+          "lowerDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          },
+          "upperDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          }
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "circleCompatible": 0,
+          "outsideCircle": 0,
+          "missingProposal": 0,
+          "lowerDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          },
+          "upperDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          }
+        }
+      },
+      "positiveCirclePair": {
+        "MISSING_TO_MISSING": 0,
+        "MISSING_TO_INSIDE": 0,
+        "MISSING_TO_OUTSIDE": 0,
+        "INSIDE_TO_MISSING": 0,
+        "INSIDE_TO_INSIDE": 0,
+        "INSIDE_TO_OUTSIDE": 0,
+        "OUTSIDE_TO_MISSING": 0,
+        "OUTSIDE_TO_INSIDE": 0,
+        "OUTSIDE_TO_OUTSIDE": 0
+      },
+      "positiveIntervalPair": {
+        "UNPAIRED_MISSING": 0,
+        "CANDIDATE_INTERVAL_IMPROVEMENT": 0,
+        "CANDIDATE_INTERVAL_REGRESSION": 0,
+        "OVERLAPPING_UNCERTAINTY": 0
+      },
+      "contraryMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "denominator": 1,
+          "singleProposal": 1,
+          "missingProposal": 0,
+          "referencePointMissing": 1
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "denominator": 1,
+          "singleProposal": 1,
+          "missingProposal": 0,
+          "referencePointMissing": 1
+        }
+      },
+      "nonpositiveMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "denominator": 1,
+          "singleProposal": 1,
+          "missingProposal": 0
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "denominator": 1,
+          "singleProposal": 1,
+          "missingProposal": 0
+        }
+      },
+      "circleCompatibleGains": 0,
+      "circleCompatibleLosses": 0
+    },
+    "RECOVER": {
+      "frameDenominator": 109,
+      "rawAvailabilityPair": {
+        "BOTH_PROPOSALS": 83,
+        "CANDIDATE_ONLY_PROPOSAL": 3,
+        "BASELINE_ONLY_PROPOSAL": 0,
+        "BOTH_MISSING": 23
+      },
+      "methods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "statuses": {
+            "ZERO_RAW_REGIONS": 25,
+            "MULTIPLE_RAW_REGIONS": 0,
+            "SINGLE_NO_VALID_TIP": 0,
+            "SINGLE_INBOUNDS_PROPOSAL": 83,
+            "SINGLE_OUT_OF_BOUNDS_TIP": 1
+          },
+          "rawFinite": 84,
+          "singleProposal": 83,
+          "missingSingleProposal": 26
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "statuses": {
+            "ZERO_RAW_REGIONS": 23,
+            "MULTIPLE_RAW_REGIONS": 0,
+            "SINGLE_NO_VALID_TIP": 0,
+            "SINGLE_INBOUNDS_PROPOSAL": 86,
+            "SINGLE_OUT_OF_BOUNDS_TIP": 0
+          },
+          "rawFinite": 86,
+          "singleProposal": 86,
+          "missingSingleProposal": 23
+        }
+      },
+      "referenceDenominator": 0,
+      "positiveDenominator": 0,
+      "contraryOverlapDenominator": 0,
+      "missingReferencePoint": 0,
+      "visibility": {},
+      "digit": {},
+      "gesture": {},
+      "positiveMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "circleCompatible": 0,
+          "outsideCircle": 0,
+          "missingProposal": 0,
+          "lowerDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          },
+          "upperDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          }
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "circleCompatible": 0,
+          "outsideCircle": 0,
+          "missingProposal": 0,
+          "lowerDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          },
+          "upperDistanceBoundPixels": {
+            "count": 0,
+            "min": null,
+            "median": null,
+            "p95": null,
+            "max": null
+          }
+        }
+      },
+      "positiveCirclePair": {
+        "MISSING_TO_MISSING": 0,
+        "MISSING_TO_INSIDE": 0,
+        "MISSING_TO_OUTSIDE": 0,
+        "INSIDE_TO_MISSING": 0,
+        "INSIDE_TO_INSIDE": 0,
+        "INSIDE_TO_OUTSIDE": 0,
+        "OUTSIDE_TO_MISSING": 0,
+        "OUTSIDE_TO_INSIDE": 0,
+        "OUTSIDE_TO_OUTSIDE": 0
+      },
+      "positiveIntervalPair": {
+        "UNPAIRED_MISSING": 0,
+        "CANDIDATE_INTERVAL_IMPROVEMENT": 0,
+        "CANDIDATE_INTERVAL_REGRESSION": 0,
+        "OVERLAPPING_UNCERTAINTY": 0
+      },
+      "contraryMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0,
+          "referencePointMissing": 0
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0,
+          "referencePointMissing": 0
+        }
+      },
+      "nonpositiveMethods": {
+        "BASELINE_NATIVE_CPU_RAW_NN8": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0
+        },
+        "CANDIDATE_HAND5_CPU_RAW_XY": {
+          "denominator": 0,
+          "singleProposal": 0,
+          "missingProposal": 0
+        }
+      },
+      "circleCompatibleGains": 0,
+      "circleCompatibleLosses": 0
+    }
+  },
+  "unmeasured": {
+    "physicalIdentitySwitchRate": null,
+    "physicalRecoverySuccessOrDelay": null,
+    "physicalJitter": null,
+    "fullPhysicalAccuracy": null,
+    "captureToDisplayLatency": null,
+    "liveFreshMeasurementAvailability": null,
+    "calibrationUsability": null,
+    "reason": "Sparse exposed AI developmentcircles and rawofflineXY are insufficient for these metrics."
+  },
+  "limits": [
+    "Allqualificationfalse; rawmodelproposals never Reach observations, acceptedpositions, source/identity authority or calibration samples.",
+    "All48references are exposed AIdevelopment estimates with10-15pixeluncertainty, not physicaltruth/heldout/exactendpointlabels.",
+    "Zero/one/multipledetections and promptnames do not prove selectedanatomicalindex or absence/gesturetruth.",
+    "Candidate and retainedCPU comparator share sourcePNG identity but have different detector/pose/preprocessing/runtime pipelines; not a weights-only controlled comparison.",
+    "31positive denominator includes6LEFT,11RIGHT,9BOTTOM_RIGHT,5SWEEP; previousTAPIR25postseed results cannot supply the present denominator.",
+    "No all-pose or nearest-reference selection, newthreshold, newlabel, tracking, source policy, manualconfirmation or hidden32 access.",
+    "A raw circle-compatible gain alone does not establish mission acceptance; all regressions, missingness and unmeasured identity/latency limitations persist."
+  ],
+  "acceptedReachPositionComparisonPerformed": false,
+  "newModelOrApiCalls": 0,
+  "DWrites": 0
+}

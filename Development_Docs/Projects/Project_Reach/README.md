@@ -12,6 +12,8 @@ Reach is Voyagewright's reusable browser-first spatial interaction and intent sy
 
 ## Effective governing sources
 
+The [dedicated hand model diagnostic](Phase_1_Hand_Model_Diagnostic_20261020.md) finds a BOTTOM-RIGHT raw localization signal: coarse positive development circle compatibility changes from 0/9 to 8/9, while RIGHT remains 11/11, SWEEP 4/5 and LEFT falls from 6/6 to 5/6. All 1,336 sources and 48 references remain. Actual offline CPU core median/P95 are 81.2662/120.1046 ms, with 17 frames over 150 ms. These XY-only proposals have no selected-identity or measurement authority; no production candidate is nominated and Phase 1 remains incomplete.
+
 The [fixed causal point tracker experiment](Phase_1_Causal_Point_Tracker_20261020.md) rejects a licensed learned correspondence route: only 6/25 post-reference positive predictions land inside the reviewed circles versus 12/25 for the original cached neural output, with RIGHT regressions and all 874 native calls above 150 ms. All 1,336 rows and uncertainty states remain; production is unchanged and the perception mission remains incomplete.
 
 The [fixed descriptor observability experiment](Phase_1_Descriptor_Feasibility_20261020.md) finds no query in the registered DIP region, so its fixed query set cannot meet the existing distal-region material requirement. All 1,336 metadata rows and 873 later matching rows are retained; mutual descriptor proposals establish no recovery. The method is rejected, production tracking remains unchanged, and required RIGHT and mixed-motion improvement remains unresolved.

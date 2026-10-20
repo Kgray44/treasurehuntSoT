@@ -20,3 +20,6 @@ Development_Docs/Projects/Project_Reach/evidence/complete-image-diagnostic-20261
 Development_Docs/Projects/Project_Reach/evidence/reflection-inference-20261020/*.json -text
 Development_Docs/Projects/Project_Reach/evidence/descriptor-feasibility-20261020/*.json -text
 Development_Docs/Projects/Project_Reach/evidence/causal-point-tracker-20261020/*.json -text
+
+# Preserve reviewed Reach dedicated hand model diagnostic evidence bytes.
+Development_Docs/Projects/Project_Reach/evidence/hand-model-diagnostic-20261020/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

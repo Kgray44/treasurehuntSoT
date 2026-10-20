@@ -1,0 +1,1999 @@
+{
+  "schemaVersion": 1,
+  "classification": "OFFLINE_FIXED_RAW_XY_CPU_COST_ARITHMETIC_NOT_LIVE_OR_PERCEPTION_ACCEPTANCE",
+  "qualification": false,
+  "hashReferences": {
+    "extractorFreeze": "9e6cbb39de22e536276d4b7e6ff495951224f48d6fe9c21e44d43fb4b3ed1128",
+    "results": "b8b766c193bfcdd1d30370b8cc400841a720e3f2c14545b01aa9ec63f7f93556",
+    "final": "7f9c6903b92072d89a506994b6bd7c001b48a7ff32adb797eec7248df90d1ca7",
+    "owned": "9e6c9e45d64381629014cfa2be4737c6f42163b85f9043fb4168895b90852401",
+    "probeFreeze": "e05c5d460736d38e8c589f222865f3d6bcb343453ecc1778edc5505a036a8d35",
+    "preflightReview": "419b9a515d95c87f1cd61ec1f76ca200965be0624a44a60b164fdaab95b66ff5",
+    "payloadSource": "b6d87c41d5e02014cf24f503ade4dee8a785d992ac4ff0488ccc0b4973cf6f85",
+    "coreSource": "e349eb6ec19b12a3e22e334d3bd19df96fe3120d03ec8ba3caf81379de833676",
+    "probeProtocol": "66d5e872095de36d30ba85313ddaa4d4d68744ca252bf35d24372d14ba48edb4"
+  },
+  "statistics": {
+    "median": "statistics.median; even sample count averages the two central values",
+    "p95": "nearest rank: sorted[ceil(0.95*n)-1]",
+    "over150": "strictly greater than150ms",
+    "warmupsExcluded": 0,
+    "rowsExcluded": 0,
+    "nestedMetricsAreNotIndependentTotals": true
+  },
+  "runtime": {
+    "python": "3.12.10",
+    "numpy": "2.2.6",
+    "opencv": "4.12.0",
+    "onnxruntime": "1.31.0",
+    "provider": "CPUExecutionProvider",
+    "ortIntraThreads": 4,
+    "ortInterThreads": 1,
+    "opencvThreads": 1
+  },
+  "all14AndAll": {
+    "ALL": {
+      "counts": {
+        "rows": 1336,
+        "detectorCalls": 1336,
+        "poseCalls": 1310,
+        "zeroDetections": 56,
+        "singleDetection": 1250,
+        "multipleDetections": 30,
+        "candidateRawFiniteTip": 1250,
+        "candidateInboundsSingleProposal": 1246,
+        "baselineRawFiniteTip": 1202,
+        "baselineInboundsSingleProposal": 1181,
+        "pipelineOver150ms": 17
+      },
+      "timingsMs": {
+        "detectorPreprocessMs": {
+          "count": 1336,
+          "min": 1.7705,
+          "median": 5.1646,
+          "p95": 11.062,
+          "max": 30.68,
+          "strictlyOver150ms": 0
+        },
+        "detectorInferenceMs": {
+          "count": 1336,
+          "min": 6.3808,
+          "median": 17.54875,
+          "p95": 28.3536,
+          "max": 68.079,
+          "strictlyOver150ms": 0
+        },
+        "detectorDecodeMs": {
+          "count": 1336,
+          "min": 0.1038,
+          "median": 0.2042,
+          "p95": 1.0988,
+          "max": 5.2975,
+          "strictlyOver150ms": 0
+        },
+        "posePreprocessMs": {
+          "count": 1310,
+          "min": 1.1813,
+          "median": 3.151,
+          "p95": 9.2913,
+          "max": 15.8819,
+          "strictlyOver150ms": 0
+        },
+        "poseInferenceMs": {
+          "count": 1310,
+          "min": 34.7103,
+          "median": 49.8072,
+          "p95": 67.3075,
+          "max": 110.892,
+          "strictlyOver150ms": 0
+        },
+        "poseDecodeMs": {
+          "count": 1310,
+          "min": 0.2277,
+          "median": 0.44035,
+          "p95": 2.3781,
+          "max": 12.0097,
+          "strictlyOver150ms": 0
+        },
+        "rowPosePreprocessSumMs": {
+          "count": 1336,
+          "min": 0,
+          "median": 3.10015,
+          "p95": 9.3459,
+          "max": 23.7182,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseInferenceSumMs": {
+          "count": 1336,
+          "min": 0,
+          "median": 49.5761,
+          "p95": 72.2308,
+          "max": 153.8009,
+          "strictlyOver150ms": 1
+        },
+        "rowPoseDecodeSumMs": {
+          "count": 1336,
+          "min": 0,
+          "median": 0.43645,
+          "p95": 2.3928,
+          "max": 12.0097,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseStagesSumMs": {
+          "count": 1336,
+          "min": 0,
+          "median": 53.4969,
+          "p95": 80.3827,
+          "max": 179.1482,
+          "strictlyOver150ms": 1
+        },
+        "corePipelineMs": {
+          "count": 1336,
+          "min": 16.6405,
+          "median": 81.2662,
+          "p95": 120.1046,
+          "max": 207.8312,
+          "strictlyOver150ms": 17
+        },
+        "pngReadHashDecodeMs": {
+          "count": 1336,
+          "min": 2.7292,
+          "median": 6.53285,
+          "p95": 12.3906,
+          "max": 23.8438,
+          "strictlyOver150ms": 0
+        },
+        "rowBeforeSerializationAndOuterBgrHashMs": {
+          "count": 1336,
+          "min": 21.982,
+          "median": 87.93305000000001,
+          "p95": 129.6717,
+          "max": 222.0814,
+          "strictlyOver150ms": 30
+        },
+        "rowIoWriteMs": {
+          "count": 1336,
+          "min": 0.0728,
+          "median": 0.3724,
+          "p95": 1.9563,
+          "max": 8.5903,
+          "strictlyOver150ms": 0
+        }
+      }
+    },
+    "CENTER": {
+      "counts": {
+        "rows": 109,
+        "detectorCalls": 109,
+        "poseCalls": 101,
+        "zeroDetections": 11,
+        "singleDetection": 95,
+        "multipleDetections": 3,
+        "candidateRawFiniteTip": 95,
+        "candidateInboundsSingleProposal": 95,
+        "baselineRawFiniteTip": 97,
+        "baselineInboundsSingleProposal": 97,
+        "pipelineOver150ms": 1
+      },
+      "timingsMs": {
+        "detectorPreprocessMs": {
+          "count": 109,
+          "min": 2.4,
+          "median": 5.5746,
+          "p95": 11.062,
+          "max": 13.4871,
+          "strictlyOver150ms": 0
+        },
+        "detectorInferenceMs": {
+          "count": 109,
+          "min": 7.9044,
+          "median": 18.0344,
+          "p95": 26.9394,
+          "max": 32.8837,
+          "strictlyOver150ms": 0
+        },
+        "detectorDecodeMs": {
+          "count": 109,
+          "min": 0.1295,
+          "median": 0.2371,
+          "p95": 1.6457,
+          "max": 5.2975,
+          "strictlyOver150ms": 0
+        },
+        "posePreprocessMs": {
+          "count": 101,
+          "min": 1.3657,
+          "median": 3.045,
+          "p95": 8.8311,
+          "max": 11.085,
+          "strictlyOver150ms": 0
+        },
+        "poseInferenceMs": {
+          "count": 101,
+          "min": 39.1198,
+          "median": 51.0318,
+          "p95": 63.9057,
+          "max": 83.6512,
+          "strictlyOver150ms": 0
+        },
+        "poseDecodeMs": {
+          "count": 101,
+          "min": 0.2444,
+          "median": 0.4538,
+          "p95": 2.764,
+          "max": 8.032,
+          "strictlyOver150ms": 0
+        },
+        "rowPosePreprocessSumMs": {
+          "count": 109,
+          "min": 0,
+          "median": 2.9058,
+          "p95": 8.9151,
+          "max": 11.085,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseInferenceSumMs": {
+          "count": 109,
+          "min": 0,
+          "median": 49.8132,
+          "p95": 64.6062,
+          "max": 119.8349,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseDecodeSumMs": {
+          "count": 109,
+          "min": 0,
+          "median": 0.4478,
+          "p95": 2.764,
+          "max": 8.032,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseStagesSumMs": {
+          "count": 109,
+          "min": 0,
+          "median": 53.4443,
+          "p95": 72.5006,
+          "max": 124.82440000000001,
+          "strictlyOver150ms": 0
+        },
+        "corePipelineMs": {
+          "count": 109,
+          "min": 18.6107,
+          "median": 82.6965,
+          "p95": 111.4222,
+          "max": 159.0638,
+          "strictlyOver150ms": 1
+        },
+        "pngReadHashDecodeMs": {
+          "count": 109,
+          "min": 3.1843,
+          "median": 6.0979,
+          "p95": 12.6878,
+          "max": 16.9187,
+          "strictlyOver150ms": 0
+        },
+        "rowBeforeSerializationAndOuterBgrHashMs": {
+          "count": 109,
+          "min": 21.982,
+          "median": 88.1916,
+          "p95": 118.5482,
+          "max": 164.9056,
+          "strictlyOver150ms": 4
+        },
+        "rowIoWriteMs": {
+          "count": 109,
+          "min": 0.0736,
+          "median": 0.3535,
+          "p95": 2.3494,
+          "max": 8.5903,
+          "strictlyOver150ms": 0
+        }
+      }
+    },
+    "BOTTOM": {
+      "counts": {
+        "rows": 145,
+        "detectorCalls": 145,
+        "poseCalls": 129,
+        "zeroDetections": 16,
+        "singleDetection": 129,
+        "multipleDetections": 0,
+        "candidateRawFiniteTip": 129,
+        "candidateInboundsSingleProposal": 127,
+        "baselineRawFiniteTip": 122,
+        "baselineInboundsSingleProposal": 107,
+        "pipelineOver150ms": 0
+      },
+      "timingsMs": {
+        "detectorPreprocessMs": {
+          "count": 145,
+          "min": 2.4456,
+          "median": 5.2955,
+          "p95": 12.4709,
+          "max": 13.9723,
+          "strictlyOver150ms": 0
+        },
+        "detectorInferenceMs": {
+          "count": 145,
+          "min": 10.3689,
+          "median": 18.1215,
+          "p95": 29.4302,
+          "max": 38.1262,
+          "strictlyOver150ms": 0
+        },
+        "detectorDecodeMs": {
+          "count": 145,
+          "min": 0.1345,
+          "median": 0.257,
+          "p95": 1.317,
+          "max": 2.9662,
+          "strictlyOver150ms": 0
+        },
+        "posePreprocessMs": {
+          "count": 129,
+          "min": 1.3457,
+          "median": 2.9925,
+          "p95": 10.1722,
+          "max": 12.4424,
+          "strictlyOver150ms": 0
+        },
+        "poseInferenceMs": {
+          "count": 129,
+          "min": 37.7985,
+          "median": 52.1532,
+          "p95": 70.5147,
+          "max": 98.3838,
+          "strictlyOver150ms": 0
+        },
+        "poseDecodeMs": {
+          "count": 129,
+          "min": 0.249,
+          "median": 0.4368,
+          "p95": 2.1927,
+          "max": 12.0097,
+          "strictlyOver150ms": 0
+        },
+        "rowPosePreprocessSumMs": {
+          "count": 145,
+          "min": 0,
+          "median": 2.7701,
+          "p95": 10.0804,
+          "max": 12.4424,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseInferenceSumMs": {
+          "count": 145,
+          "min": 0,
+          "median": 51.1878,
+          "p95": 70.044,
+          "max": 98.3838,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseDecodeSumMs": {
+          "count": 145,
+          "min": 0,
+          "median": 0.4172,
+          "p95": 2.1318,
+          "max": 12.0097,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseStagesSumMs": {
+          "count": 145,
+          "min": 0,
+          "median": 54.6502,
+          "p95": 78.5159,
+          "max": 105.14729999999999,
+          "strictlyOver150ms": 0
+        },
+        "corePipelineMs": {
+          "count": 145,
+          "min": 20.7161,
+          "median": 84.4664,
+          "p95": 116.3521,
+          "max": 149.2296,
+          "strictlyOver150ms": 0
+        },
+        "pngReadHashDecodeMs": {
+          "count": 145,
+          "min": 2.7292,
+          "median": 6.0015,
+          "p95": 11.0727,
+          "max": 13.1334,
+          "strictlyOver150ms": 0
+        },
+        "rowBeforeSerializationAndOuterBgrHashMs": {
+          "count": 145,
+          "min": 30.5273,
+          "median": 90.4144,
+          "p95": 124.708,
+          "max": 159.6671,
+          "strictlyOver150ms": 1
+        },
+        "rowIoWriteMs": {
+          "count": 145,
+          "min": 0.0743,
+          "median": 0.3684,
+          "p95": 2.8362,
+          "max": 6.4747,
+          "strictlyOver150ms": 0
+        }
+      }
+    },
+    "TOP": {
+      "counts": {
+        "rows": 107,
+        "detectorCalls": 107,
+        "poseCalls": 107,
+        "zeroDetections": 0,
+        "singleDetection": 107,
+        "multipleDetections": 0,
+        "candidateRawFiniteTip": 107,
+        "candidateInboundsSingleProposal": 107,
+        "baselineRawFiniteTip": 107,
+        "baselineInboundsSingleProposal": 107,
+        "pipelineOver150ms": 0
+      },
+      "timingsMs": {
+        "detectorPreprocessMs": {
+          "count": 107,
+          "min": 2.6255,
+          "median": 5.2763,
+          "p95": 12.2569,
+          "max": 15.7459,
+          "strictlyOver150ms": 0
+        },
+        "detectorInferenceMs": {
+          "count": 107,
+          "min": 8.5395,
+          "median": 17.7437,
+          "p95": 30.2569,
+          "max": 33.0387,
+          "strictlyOver150ms": 0
+        },
+        "detectorDecodeMs": {
+          "count": 107,
+          "min": 0.1207,
+          "median": 0.1971,
+          "p95": 0.9823,
+          "max": 2.7716,
+          "strictlyOver150ms": 0
+        },
+        "posePreprocessMs": {
+          "count": 107,
+          "min": 1.4107,
+          "median": 3.5219,
+          "p95": 9.6927,
+          "max": 10.4272,
+          "strictlyOver150ms": 0
+        },
+        "poseInferenceMs": {
+          "count": 107,
+          "min": 39.0212,
+          "median": 51.1186,
+          "p95": 64.1007,
+          "max": 83.8983,
+          "strictlyOver150ms": 0
+        },
+        "poseDecodeMs": {
+          "count": 107,
+          "min": 0.2356,
+          "median": 0.5003,
+          "p95": 2.2556,
+          "max": 4.8521,
+          "strictlyOver150ms": 0
+        },
+        "rowPosePreprocessSumMs": {
+          "count": 107,
+          "min": 1.4107,
+          "median": 3.5219,
+          "p95": 9.6927,
+          "max": 10.4272,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseInferenceSumMs": {
+          "count": 107,
+          "min": 39.0212,
+          "median": 51.1186,
+          "p95": 64.1007,
+          "max": 83.8983,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseDecodeSumMs": {
+          "count": 107,
+          "min": 0.2356,
+          "median": 0.5003,
+          "p95": 2.2556,
+          "max": 4.8521,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseStagesSumMs": {
+          "count": 107,
+          "min": 43.4482,
+          "median": 56.7065,
+          "p95": 70.7118,
+          "max": 89.98670000000001,
+          "strictlyOver150ms": 0
+        },
+        "corePipelineMs": {
+          "count": 107,
+          "min": 65.9143,
+          "median": 83.7691,
+          "p95": 111.8299,
+          "max": 135.5109,
+          "strictlyOver150ms": 0
+        },
+        "pngReadHashDecodeMs": {
+          "count": 107,
+          "min": 3.0677,
+          "median": 7.8786,
+          "p95": 12.2179,
+          "max": 15.5806,
+          "strictlyOver150ms": 0
+        },
+        "rowBeforeSerializationAndOuterBgrHashMs": {
+          "count": 107,
+          "min": 73.5714,
+          "median": 91.203,
+          "p95": 124.2816,
+          "max": 144.9629,
+          "strictlyOver150ms": 0
+        },
+        "rowIoWriteMs": {
+          "count": 107,
+          "min": 0.1617,
+          "median": 0.3523,
+          "p95": 1.8575,
+          "max": 4.2348,
+          "strictlyOver150ms": 0
+        }
+      }
+    },
+    "LEFT": {
+      "counts": {
+        "rows": 90,
+        "detectorCalls": 90,
+        "poseCalls": 90,
+        "zeroDetections": 0,
+        "singleDetection": 90,
+        "multipleDetections": 0,
+        "candidateRawFiniteTip": 90,
+        "candidateInboundsSingleProposal": 90,
+        "baselineRawFiniteTip": 90,
+        "baselineInboundsSingleProposal": 90,
+        "pipelineOver150ms": 0
+      },
+      "timingsMs": {
+        "detectorPreprocessMs": {
+          "count": 90,
+          "min": 2.4109,
+          "median": 5.2913,
+          "p95": 10.8692,
+          "max": 15.0235,
+          "strictlyOver150ms": 0
+        },
+        "detectorInferenceMs": {
+          "count": 90,
+          "min": 6.5719,
+          "median": 17.046599999999998,
+          "p95": 27.9432,
+          "max": 31.2083,
+          "strictlyOver150ms": 0
+        },
+        "detectorDecodeMs": {
+          "count": 90,
+          "min": 0.1147,
+          "median": 0.1668,
+          "p95": 0.9272,
+          "max": 1.92,
+          "strictlyOver150ms": 0
+        },
+        "posePreprocessMs": {
+          "count": 90,
+          "min": 1.2819,
+          "median": 2.9258,
+          "p95": 8.5768,
+          "max": 9.5196,
+          "strictlyOver150ms": 0
+        },
+        "poseInferenceMs": {
+          "count": 90,
+          "min": 36.9043,
+          "median": 47.25255,
+          "p95": 61.8008,
+          "max": 79.9082,
+          "strictlyOver150ms": 0
+        },
+        "poseDecodeMs": {
+          "count": 90,
+          "min": 0.2457,
+          "median": 0.42545,
+          "p95": 2.0105,
+          "max": 7.7683,
+          "strictlyOver150ms": 0
+        },
+        "rowPosePreprocessSumMs": {
+          "count": 90,
+          "min": 1.2819,
+          "median": 2.9258,
+          "p95": 8.5768,
+          "max": 9.5196,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseInferenceSumMs": {
+          "count": 90,
+          "min": 36.9043,
+          "median": 47.25255,
+          "p95": 61.8008,
+          "max": 79.9082,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseDecodeSumMs": {
+          "count": 90,
+          "min": 0.2457,
+          "median": 0.42545,
+          "p95": 2.0105,
+          "max": 7.7683,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseStagesSumMs": {
+          "count": 90,
+          "min": 39.35,
+          "median": 51.463499999999996,
+          "p95": 66.5926,
+          "max": 84.0829,
+          "strictlyOver150ms": 0
+        },
+        "corePipelineMs": {
+          "count": 90,
+          "min": 59.3472,
+          "median": 77.22215,
+          "p95": 103.2803,
+          "max": 121.0937,
+          "strictlyOver150ms": 0
+        },
+        "pngReadHashDecodeMs": {
+          "count": 90,
+          "min": 3.326,
+          "median": 6.577299999999999,
+          "p95": 12.6422,
+          "max": 14.2519,
+          "strictlyOver150ms": 0
+        },
+        "rowBeforeSerializationAndOuterBgrHashMs": {
+          "count": 90,
+          "min": 66.2561,
+          "median": 84.9031,
+          "p95": 112.3667,
+          "max": 133.3405,
+          "strictlyOver150ms": 0
+        },
+        "rowIoWriteMs": {
+          "count": 90,
+          "min": 0.1861,
+          "median": 0.37244999999999995,
+          "p95": 2.0588,
+          "max": 4.0707,
+          "strictlyOver150ms": 0
+        }
+      }
+    },
+    "RIGHT": {
+      "counts": {
+        "rows": 89,
+        "detectorCalls": 89,
+        "poseCalls": 89,
+        "zeroDetections": 0,
+        "singleDetection": 89,
+        "multipleDetections": 0,
+        "candidateRawFiniteTip": 89,
+        "candidateInboundsSingleProposal": 89,
+        "baselineRawFiniteTip": 89,
+        "baselineInboundsSingleProposal": 89,
+        "pipelineOver150ms": 0
+      },
+      "timingsMs": {
+        "detectorPreprocessMs": {
+          "count": 89,
+          "min": 2.3979,
+          "median": 5.7457,
+          "p95": 10.9716,
+          "max": 11.4439,
+          "strictlyOver150ms": 0
+        },
+        "detectorInferenceMs": {
+          "count": 89,
+          "min": 6.3808,
+          "median": 17.3721,
+          "p95": 25.3585,
+          "max": 37.0803,
+          "strictlyOver150ms": 0
+        },
+        "detectorDecodeMs": {
+          "count": 89,
+          "min": 0.1161,
+          "median": 0.1707,
+          "p95": 0.8344,
+          "max": 3.0965,
+          "strictlyOver150ms": 0
+        },
+        "posePreprocessMs": {
+          "count": 89,
+          "min": 1.1813,
+          "median": 3.3747,
+          "p95": 8.9239,
+          "max": 11.8483,
+          "strictlyOver150ms": 0
+        },
+        "poseInferenceMs": {
+          "count": 89,
+          "min": 38.097,
+          "median": 48.9784,
+          "p95": 64.776,
+          "max": 84.8766,
+          "strictlyOver150ms": 0
+        },
+        "poseDecodeMs": {
+          "count": 89,
+          "min": 0.234,
+          "median": 0.4615,
+          "p95": 2.6099,
+          "max": 4.802,
+          "strictlyOver150ms": 0
+        },
+        "rowPosePreprocessSumMs": {
+          "count": 89,
+          "min": 1.1813,
+          "median": 3.3747,
+          "p95": 8.9239,
+          "max": 11.8483,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseInferenceSumMs": {
+          "count": 89,
+          "min": 38.097,
+          "median": 48.9784,
+          "p95": 64.776,
+          "max": 84.8766,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseDecodeSumMs": {
+          "count": 89,
+          "min": 0.234,
+          "median": 0.4615,
+          "p95": 2.6099,
+          "max": 4.802,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseStagesSumMs": {
+          "count": 89,
+          "min": 43.0218,
+          "median": 52.833,
+          "p95": 70.4897,
+          "max": 88.5932,
+          "strictlyOver150ms": 0
+        },
+        "corePipelineMs": {
+          "count": 89,
+          "min": 61.4489,
+          "median": 81.6258,
+          "p95": 104.5303,
+          "max": 121.3599,
+          "strictlyOver150ms": 0
+        },
+        "pngReadHashDecodeMs": {
+          "count": 89,
+          "min": 3.0523,
+          "median": 5.7595,
+          "p95": 12.5366,
+          "max": 14.088,
+          "strictlyOver150ms": 0
+        },
+        "rowBeforeSerializationAndOuterBgrHashMs": {
+          "count": 89,
+          "min": 66.7233,
+          "median": 87.9397,
+          "p95": 118.7851,
+          "max": 127.2925,
+          "strictlyOver150ms": 0
+        },
+        "rowIoWriteMs": {
+          "count": 89,
+          "min": 0.181,
+          "median": 0.376,
+          "p95": 2.6086,
+          "max": 5.621,
+          "strictlyOver150ms": 0
+        }
+      }
+    },
+    "TOP_LEFT": {
+      "counts": {
+        "rows": 73,
+        "detectorCalls": 73,
+        "poseCalls": 88,
+        "zeroDetections": 0,
+        "singleDetection": 58,
+        "multipleDetections": 15,
+        "candidateRawFiniteTip": 58,
+        "candidateInboundsSingleProposal": 58,
+        "baselineRawFiniteTip": 72,
+        "baselineInboundsSingleProposal": 72,
+        "pipelineOver150ms": 9
+      },
+      "timingsMs": {
+        "detectorPreprocessMs": {
+          "count": 73,
+          "min": 2.5234,
+          "median": 5.1419,
+          "p95": 10.4698,
+          "max": 11.5841,
+          "strictlyOver150ms": 0
+        },
+        "detectorInferenceMs": {
+          "count": 73,
+          "min": 7.1776,
+          "median": 16.1537,
+          "p95": 27.7553,
+          "max": 32.3569,
+          "strictlyOver150ms": 0
+        },
+        "detectorDecodeMs": {
+          "count": 73,
+          "min": 0.1204,
+          "median": 0.1956,
+          "p95": 1.0228,
+          "max": 1.845,
+          "strictlyOver150ms": 0
+        },
+        "posePreprocessMs": {
+          "count": 88,
+          "min": 1.457,
+          "median": 3.31765,
+          "p95": 8.8913,
+          "max": 12.9442,
+          "strictlyOver150ms": 0
+        },
+        "poseInferenceMs": {
+          "count": 88,
+          "min": 34.7103,
+          "median": 47.7,
+          "p95": 69.4107,
+          "max": 89.4719,
+          "strictlyOver150ms": 0
+        },
+        "poseDecodeMs": {
+          "count": 88,
+          "min": 0.2295,
+          "median": 0.42145,
+          "p95": 2.3781,
+          "max": 5.6512,
+          "strictlyOver150ms": 0
+        },
+        "rowPosePreprocessSumMs": {
+          "count": 73,
+          "min": 1.457,
+          "median": 4.2677,
+          "p95": 9.6772,
+          "max": 23.7182,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseInferenceSumMs": {
+          "count": 73,
+          "min": 34.7103,
+          "median": 47.0325,
+          "p95": 122.75139999999999,
+          "max": 153.8009,
+          "strictlyOver150ms": 1
+        },
+        "rowPoseDecodeSumMs": {
+          "count": 73,
+          "min": 0.2427,
+          "median": 0.6,
+          "p95": 2.7314,
+          "max": 5.6512,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseStagesSumMs": {
+          "count": 73,
+          "min": 36.735,
+          "median": 51.4159,
+          "p95": 130.9145,
+          "max": 179.1482,
+          "strictlyOver150ms": 1
+        },
+        "corePipelineMs": {
+          "count": 73,
+          "min": 57.1772,
+          "median": 75.4863,
+          "p95": 172.8106,
+          "max": 207.8312,
+          "strictlyOver150ms": 9
+        },
+        "pngReadHashDecodeMs": {
+          "count": 73,
+          "min": 2.9383,
+          "median": 6.3599,
+          "p95": 13.6266,
+          "max": 14.4234,
+          "strictlyOver150ms": 0
+        },
+        "rowBeforeSerializationAndOuterBgrHashMs": {
+          "count": 73,
+          "min": 63.2192,
+          "median": 83.6653,
+          "p95": 180.4755,
+          "max": 222.0814,
+          "strictlyOver150ms": 11
+        },
+        "rowIoWriteMs": {
+          "count": 73,
+          "min": 0.184,
+          "median": 0.3997,
+          "p95": 1.8658,
+          "max": 6.9521,
+          "strictlyOver150ms": 0
+        }
+      }
+    },
+    "TOP_RIGHT": {
+      "counts": {
+        "rows": 74,
+        "detectorCalls": 74,
+        "poseCalls": 78,
+        "zeroDetections": 0,
+        "singleDetection": 70,
+        "multipleDetections": 4,
+        "candidateRawFiniteTip": 70,
+        "candidateInboundsSingleProposal": 70,
+        "baselineRawFiniteTip": 72,
+        "baselineInboundsSingleProposal": 71,
+        "pipelineOver150ms": 4
+      },
+      "timingsMs": {
+        "detectorPreprocessMs": {
+          "count": 74,
+          "min": 2.8133,
+          "median": 6.539899999999999,
+          "p95": 12.0657,
+          "max": 30.68,
+          "strictlyOver150ms": 0
+        },
+        "detectorInferenceMs": {
+          "count": 74,
+          "min": 12.8146,
+          "median": 19.1917,
+          "p95": 33.0563,
+          "max": 45.3553,
+          "strictlyOver150ms": 0
+        },
+        "detectorDecodeMs": {
+          "count": 74,
+          "min": 0.1189,
+          "median": 0.19774999999999998,
+          "p95": 1.2238,
+          "max": 5.1194,
+          "strictlyOver150ms": 0
+        },
+        "posePreprocessMs": {
+          "count": 78,
+          "min": 1.5312,
+          "median": 3.6914,
+          "p95": 10.4538,
+          "max": 15.8819,
+          "strictlyOver150ms": 0
+        },
+        "poseInferenceMs": {
+          "count": 78,
+          "min": 39.9971,
+          "median": 52.6914,
+          "p95": 85.0435,
+          "max": 110.892,
+          "strictlyOver150ms": 0
+        },
+        "poseDecodeMs": {
+          "count": 78,
+          "min": 0.2476,
+          "median": 0.4734,
+          "p95": 2.4385,
+          "max": 3.3367,
+          "strictlyOver150ms": 0
+        },
+        "rowPosePreprocessSumMs": {
+          "count": 74,
+          "min": 1.5312,
+          "median": 3.8795,
+          "p95": 10.4922,
+          "max": 15.8819,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseInferenceSumMs": {
+          "count": 74,
+          "min": 39.9971,
+          "median": 53.262649999999994,
+          "p95": 105.6644,
+          "max": 116.4759,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseDecodeSumMs": {
+          "count": 74,
+          "min": 0.2476,
+          "median": 0.4843,
+          "p95": 2.4385,
+          "max": 3.3367,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseStagesSumMs": {
+          "count": 74,
+          "min": 43.518,
+          "median": 60.593900000000005,
+          "p95": 115.22099999999999,
+          "max": 125.1908,
+          "strictlyOver150ms": 0
+        },
+        "corePipelineMs": {
+          "count": 74,
+          "min": 65.3545,
+          "median": 88.49055,
+          "p95": 156.6304,
+          "max": 168.0961,
+          "strictlyOver150ms": 4
+        },
+        "pngReadHashDecodeMs": {
+          "count": 74,
+          "min": 3.6882,
+          "median": 9.51735,
+          "p95": 14.448,
+          "max": 23.8438,
+          "strictlyOver150ms": 0
+        },
+        "rowBeforeSerializationAndOuterBgrHashMs": {
+          "count": 74,
+          "min": 69.2417,
+          "median": 99.8048,
+          "p95": 164.3889,
+          "max": 183.1348,
+          "strictlyOver150ms": 6
+        },
+        "rowIoWriteMs": {
+          "count": 74,
+          "min": 0.1912,
+          "median": 0.39170000000000005,
+          "p95": 2.3702,
+          "max": 4.8244,
+          "strictlyOver150ms": 0
+        }
+      }
+    },
+    "BOTTOM_LEFT": {
+      "counts": {
+        "rows": 71,
+        "detectorCalls": 71,
+        "poseCalls": 66,
+        "zeroDetections": 5,
+        "singleDetection": 66,
+        "multipleDetections": 0,
+        "candidateRawFiniteTip": 66,
+        "candidateInboundsSingleProposal": 66,
+        "baselineRawFiniteTip": 70,
+        "baselineInboundsSingleProposal": 70,
+        "pipelineOver150ms": 1
+      },
+      "timingsMs": {
+        "detectorPreprocessMs": {
+          "count": 71,
+          "min": 3.0183,
+          "median": 6.379,
+          "p95": 12.42,
+          "max": 12.991,
+          "strictlyOver150ms": 0
+        },
+        "detectorInferenceMs": {
+          "count": 71,
+          "min": 12.3153,
+          "median": 19.0004,
+          "p95": 28.7764,
+          "max": 33.1913,
+          "strictlyOver150ms": 0
+        },
+        "detectorDecodeMs": {
+          "count": 71,
+          "min": 0.1097,
+          "median": 0.2545,
+          "p95": 1.4278,
+          "max": 2.5658,
+          "strictlyOver150ms": 0
+        },
+        "posePreprocessMs": {
+          "count": 66,
+          "min": 1.7482,
+          "median": 3.61275,
+          "p95": 10.932,
+          "max": 11.8181,
+          "strictlyOver150ms": 0
+        },
+        "poseInferenceMs": {
+          "count": 66,
+          "min": 39.7374,
+          "median": 54.9107,
+          "p95": 75.4956,
+          "max": 109.1902,
+          "strictlyOver150ms": 0
+        },
+        "poseDecodeMs": {
+          "count": 66,
+          "min": 0.2861,
+          "median": 0.44499999999999995,
+          "p95": 2.6469,
+          "max": 8.835,
+          "strictlyOver150ms": 0
+        },
+        "rowPosePreprocessSumMs": {
+          "count": 71,
+          "min": 0,
+          "median": 3.4037,
+          "p95": 10.932,
+          "max": 11.8181,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseInferenceSumMs": {
+          "count": 71,
+          "min": 0,
+          "median": 54.6594,
+          "p95": 75.4956,
+          "max": 109.1902,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseDecodeSumMs": {
+          "count": 71,
+          "min": 0,
+          "median": 0.4383,
+          "p95": 2.6469,
+          "max": 8.835,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseStagesSumMs": {
+          "count": 71,
+          "min": 0,
+          "median": 60.6026,
+          "p95": 80.3827,
+          "max": 117.2701,
+          "strictlyOver150ms": 0
+        },
+        "corePipelineMs": {
+          "count": 71,
+          "min": 24.1213,
+          "median": 89.6294,
+          "p95": 121.5644,
+          "max": 170.4164,
+          "strictlyOver150ms": 1
+        },
+        "pngReadHashDecodeMs": {
+          "count": 71,
+          "min": 3.4363,
+          "median": 7.3411,
+          "p95": 13.3464,
+          "max": 14.4387,
+          "strictlyOver150ms": 0
+        },
+        "rowBeforeSerializationAndOuterBgrHashMs": {
+          "count": 71,
+          "min": 34.1919,
+          "median": 99.798,
+          "p95": 132.5173,
+          "max": 178.1793,
+          "strictlyOver150ms": 1
+        },
+        "rowIoWriteMs": {
+          "count": 71,
+          "min": 0.0904,
+          "median": 0.3729,
+          "p95": 1.8692,
+          "max": 5.3005,
+          "strictlyOver150ms": 0
+        }
+      }
+    },
+    "BOTTOM_RIGHT": {
+      "counts": {
+        "rows": 71,
+        "detectorCalls": 71,
+        "poseCalls": 72,
+        "zeroDetections": 1,
+        "singleDetection": 68,
+        "multipleDetections": 2,
+        "candidateRawFiniteTip": 68,
+        "candidateInboundsSingleProposal": 68,
+        "baselineRawFiniteTip": 32,
+        "baselineInboundsSingleProposal": 31,
+        "pipelineOver150ms": 1
+      },
+      "timingsMs": {
+        "detectorPreprocessMs": {
+          "count": 71,
+          "min": 2.6841,
+          "median": 6.1855,
+          "p95": 11.2342,
+          "max": 13.5357,
+          "strictlyOver150ms": 0
+        },
+        "detectorInferenceMs": {
+          "count": 71,
+          "min": 13.4124,
+          "median": 19.4564,
+          "p95": 28.0637,
+          "max": 44.814,
+          "strictlyOver150ms": 0
+        },
+        "detectorDecodeMs": {
+          "count": 71,
+          "min": 0.1275,
+          "median": 0.2303,
+          "p95": 1.4067,
+          "max": 3.6829,
+          "strictlyOver150ms": 0
+        },
+        "posePreprocessMs": {
+          "count": 72,
+          "min": 1.6419,
+          "median": 3.1818,
+          "p95": 9.2436,
+          "max": 12.3421,
+          "strictlyOver150ms": 0
+        },
+        "poseInferenceMs": {
+          "count": 72,
+          "min": 37.911,
+          "median": 52.671099999999996,
+          "p95": 69.0214,
+          "max": 83.3197,
+          "strictlyOver150ms": 0
+        },
+        "poseDecodeMs": {
+          "count": 72,
+          "min": 0.2472,
+          "median": 0.4554,
+          "p95": 1.4575,
+          "max": 1.8007,
+          "strictlyOver150ms": 0
+        },
+        "rowPosePreprocessSumMs": {
+          "count": 71,
+          "min": 0,
+          "median": 3.1372,
+          "p95": 9.2606,
+          "max": 12.3997,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseInferenceSumMs": {
+          "count": 71,
+          "min": 0,
+          "median": 52.5897,
+          "p95": 69.7662,
+          "max": 107.9194,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseDecodeSumMs": {
+          "count": 71,
+          "min": 0,
+          "median": 0.4538,
+          "p95": 1.4575,
+          "max": 2.3683,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseStagesSumMs": {
+          "count": 71,
+          "min": 0,
+          "median": 56.6156,
+          "p95": 76.4989,
+          "max": 122.6874,
+          "strictlyOver150ms": 0
+        },
+        "corePipelineMs": {
+          "count": 71,
+          "min": 33.8167,
+          "median": 89.6822,
+          "p95": 121.9581,
+          "max": 160.0253,
+          "strictlyOver150ms": 1
+        },
+        "pngReadHashDecodeMs": {
+          "count": 71,
+          "min": 3.2189,
+          "median": 6.5735,
+          "p95": 11.2319,
+          "max": 11.7529,
+          "strictlyOver150ms": 0
+        },
+        "rowBeforeSerializationAndOuterBgrHashMs": {
+          "count": 71,
+          "min": 41.3708,
+          "median": 96.7515,
+          "p95": 132.8463,
+          "max": 168.741,
+          "strictlyOver150ms": 2
+        },
+        "rowIoWriteMs": {
+          "count": 71,
+          "min": 0.0944,
+          "median": 0.4349,
+          "p95": 2.3071,
+          "max": 3.6942,
+          "strictlyOver150ms": 0
+        }
+      }
+    },
+    "RELAXED": {
+      "counts": {
+        "rows": 109,
+        "detectorCalls": 109,
+        "poseCalls": 109,
+        "zeroDetections": 0,
+        "singleDetection": 109,
+        "multipleDetections": 0,
+        "candidateRawFiniteTip": 109,
+        "candidateInboundsSingleProposal": 109,
+        "baselineRawFiniteTip": 90,
+        "baselineInboundsSingleProposal": 90,
+        "pipelineOver150ms": 0
+      },
+      "timingsMs": {
+        "detectorPreprocessMs": {
+          "count": 109,
+          "min": 1.7705,
+          "median": 4.1811,
+          "p95": 9.8746,
+          "max": 12.9313,
+          "strictlyOver150ms": 0
+        },
+        "detectorInferenceMs": {
+          "count": 109,
+          "min": 9.0572,
+          "median": 16.8111,
+          "p95": 23.9187,
+          "max": 28.3251,
+          "strictlyOver150ms": 0
+        },
+        "detectorDecodeMs": {
+          "count": 109,
+          "min": 0.1038,
+          "median": 0.175,
+          "p95": 0.6184,
+          "max": 1.6332,
+          "strictlyOver150ms": 0
+        },
+        "posePreprocessMs": {
+          "count": 109,
+          "min": 1.309,
+          "median": 2.7359,
+          "p95": 8.0121,
+          "max": 10.4893,
+          "strictlyOver150ms": 0
+        },
+        "poseInferenceMs": {
+          "count": 109,
+          "min": 37.1266,
+          "median": 48.0942,
+          "p95": 57.9153,
+          "max": 63.7663,
+          "strictlyOver150ms": 0
+        },
+        "poseDecodeMs": {
+          "count": 109,
+          "min": 0.2301,
+          "median": 0.4051,
+          "p95": 1.9094,
+          "max": 3.1522,
+          "strictlyOver150ms": 0
+        },
+        "rowPosePreprocessSumMs": {
+          "count": 109,
+          "min": 1.309,
+          "median": 2.7359,
+          "p95": 8.0121,
+          "max": 10.4893,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseInferenceSumMs": {
+          "count": 109,
+          "min": 37.1266,
+          "median": 48.0942,
+          "p95": 57.9153,
+          "max": 63.7663,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseDecodeSumMs": {
+          "count": 109,
+          "min": 0.2301,
+          "median": 0.4051,
+          "p95": 1.9094,
+          "max": 3.1522,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseStagesSumMs": {
+          "count": 109,
+          "min": 39.534099999999995,
+          "median": 51.2828,
+          "p95": 63.384,
+          "max": 67.0661,
+          "strictlyOver150ms": 0
+        },
+        "corePipelineMs": {
+          "count": 109,
+          "min": 60.0848,
+          "median": 75.3633,
+          "p95": 90.2659,
+          "max": 100.3833,
+          "strictlyOver150ms": 0
+        },
+        "pngReadHashDecodeMs": {
+          "count": 109,
+          "min": 3.0227,
+          "median": 6.14,
+          "p95": 11.267,
+          "max": 14.6578,
+          "strictlyOver150ms": 0
+        },
+        "rowBeforeSerializationAndOuterBgrHashMs": {
+          "count": 109,
+          "min": 68.4539,
+          "median": 83.8535,
+          "p95": 100.2426,
+          "max": 113.6834,
+          "strictlyOver150ms": 0
+        },
+        "rowIoWriteMs": {
+          "count": 109,
+          "min": 0.2005,
+          "median": 0.3571,
+          "p95": 1.4712,
+          "max": 4.9425,
+          "strictlyOver150ms": 0
+        }
+      }
+    },
+    "SWEEP": {
+      "counts": {
+        "rows": 180,
+        "detectorCalls": 180,
+        "poseCalls": 186,
+        "zeroDetections": 0,
+        "singleDetection": 174,
+        "multipleDetections": 6,
+        "candidateRawFiniteTip": 174,
+        "candidateInboundsSingleProposal": 172,
+        "baselineRawFiniteTip": 168,
+        "baselineInboundsSingleProposal": 165,
+        "pipelineOver150ms": 1
+      },
+      "timingsMs": {
+        "detectorPreprocessMs": {
+          "count": 180,
+          "min": 1.9815,
+          "median": 4.65005,
+          "p95": 10.6499,
+          "max": 12.7306,
+          "strictlyOver150ms": 0
+        },
+        "detectorInferenceMs": {
+          "count": 180,
+          "min": 10.1146,
+          "median": 18.481749999999998,
+          "p95": 29.6336,
+          "max": 68.079,
+          "strictlyOver150ms": 0
+        },
+        "detectorDecodeMs": {
+          "count": 180,
+          "min": 0.1093,
+          "median": 0.20795000000000002,
+          "p95": 1.1314,
+          "max": 3.8221,
+          "strictlyOver150ms": 0
+        },
+        "posePreprocessMs": {
+          "count": 186,
+          "min": 1.2241,
+          "median": 3.0471,
+          "p95": 8.9662,
+          "max": 12.7988,
+          "strictlyOver150ms": 0
+        },
+        "poseInferenceMs": {
+          "count": 186,
+          "min": 38.0365,
+          "median": 51.5702,
+          "p95": 74.836,
+          "max": 100.8406,
+          "strictlyOver150ms": 0
+        },
+        "poseDecodeMs": {
+          "count": 186,
+          "min": 0.2656,
+          "median": 0.43115000000000003,
+          "p95": 2.1189,
+          "max": 4.569,
+          "strictlyOver150ms": 0
+        },
+        "rowPosePreprocessSumMs": {
+          "count": 180,
+          "min": 1.2241,
+          "median": 3.0084999999999997,
+          "p95": 9.086,
+          "max": 13.896999999999998,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseInferenceSumMs": {
+          "count": 180,
+          "min": 38.0365,
+          "median": 52.4,
+          "p95": 84.9559,
+          "max": 106.92060000000001,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseDecodeSumMs": {
+          "count": 180,
+          "min": 0.2796,
+          "median": 0.44594999999999996,
+          "p95": 2.1189,
+          "max": 4.569,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseStagesSumMs": {
+          "count": 180,
+          "min": 40.6786,
+          "median": 56.49,
+          "p95": 90.1339,
+          "max": 117.6961,
+          "strictlyOver150ms": 0
+        },
+        "corePipelineMs": {
+          "count": 180,
+          "min": 61.9021,
+          "median": 84.89865,
+          "p95": 126.9286,
+          "max": 177.4217,
+          "strictlyOver150ms": 1
+        },
+        "pngReadHashDecodeMs": {
+          "count": 180,
+          "min": 2.8208,
+          "median": 6.67085,
+          "p95": 12.6139,
+          "max": 17.9588,
+          "strictlyOver150ms": 0
+        },
+        "rowBeforeSerializationAndOuterBgrHashMs": {
+          "count": 180,
+          "min": 68.748,
+          "median": 91.8988,
+          "p95": 134.4214,
+          "max": 195.7603,
+          "strictlyOver150ms": 5
+        },
+        "rowIoWriteMs": {
+          "count": 180,
+          "min": 0.1729,
+          "median": 0.4114,
+          "p95": 1.9092,
+          "max": 7.227,
+          "strictlyOver150ms": 0
+        }
+      }
+    },
+    "OPEN_PALM": {
+      "counts": {
+        "rows": 91,
+        "detectorCalls": 91,
+        "poseCalls": 91,
+        "zeroDetections": 0,
+        "singleDetection": 91,
+        "multipleDetections": 0,
+        "candidateRawFiniteTip": 91,
+        "candidateInboundsSingleProposal": 91,
+        "baselineRawFiniteTip": 91,
+        "baselineInboundsSingleProposal": 91,
+        "pipelineOver150ms": 0
+      },
+      "timingsMs": {
+        "detectorPreprocessMs": {
+          "count": 91,
+          "min": 2.0046,
+          "median": 4.5016,
+          "p95": 10.4169,
+          "max": 11.8528,
+          "strictlyOver150ms": 0
+        },
+        "detectorInferenceMs": {
+          "count": 91,
+          "min": 7.8238,
+          "median": 17.09,
+          "p95": 23.9606,
+          "max": 31.2588,
+          "strictlyOver150ms": 0
+        },
+        "detectorDecodeMs": {
+          "count": 91,
+          "min": 0.1208,
+          "median": 0.1851,
+          "p95": 1.426,
+          "max": 4.3983,
+          "strictlyOver150ms": 0
+        },
+        "posePreprocessMs": {
+          "count": 91,
+          "min": 1.3431,
+          "median": 3.299,
+          "p95": 9.5872,
+          "max": 13.4123,
+          "strictlyOver150ms": 0
+        },
+        "poseInferenceMs": {
+          "count": 91,
+          "min": 38.2297,
+          "median": 48.7054,
+          "p95": 62.0918,
+          "max": 67.6788,
+          "strictlyOver150ms": 0
+        },
+        "poseDecodeMs": {
+          "count": 91,
+          "min": 0.2277,
+          "median": 0.4252,
+          "p95": 3.0275,
+          "max": 4.6834,
+          "strictlyOver150ms": 0
+        },
+        "rowPosePreprocessSumMs": {
+          "count": 91,
+          "min": 1.3431,
+          "median": 3.299,
+          "p95": 9.5872,
+          "max": 13.4123,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseInferenceSumMs": {
+          "count": 91,
+          "min": 38.2297,
+          "median": 48.7054,
+          "p95": 62.0918,
+          "max": 67.6788,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseDecodeSumMs": {
+          "count": 91,
+          "min": 0.2277,
+          "median": 0.4252,
+          "p95": 3.0275,
+          "max": 4.6834,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseStagesSumMs": {
+          "count": 91,
+          "min": 42.1592,
+          "median": 52.7585,
+          "p95": 69.584,
+          "max": 77.13419999999999,
+          "strictlyOver150ms": 0
+        },
+        "corePipelineMs": {
+          "count": 91,
+          "min": 66.5115,
+          "median": 78.1685,
+          "p95": 100.62,
+          "max": 116.0732,
+          "strictlyOver150ms": 0
+        },
+        "pngReadHashDecodeMs": {
+          "count": 91,
+          "min": 3.5055,
+          "median": 6.497,
+          "p95": 11.4213,
+          "max": 14.8224,
+          "strictlyOver150ms": 0
+        },
+        "rowBeforeSerializationAndOuterBgrHashMs": {
+          "count": 91,
+          "min": 71.0244,
+          "median": 85.1854,
+          "p95": 109.43,
+          "max": 125.0737,
+          "strictlyOver150ms": 0
+        },
+        "rowIoWriteMs": {
+          "count": 91,
+          "min": 0.1795,
+          "median": 0.3985,
+          "p95": 1.5136,
+          "max": 8.1426,
+          "strictlyOver150ms": 0
+        }
+      }
+    },
+    "HIDE": {
+      "counts": {
+        "rows": 18,
+        "detectorCalls": 18,
+        "poseCalls": 18,
+        "zeroDetections": 0,
+        "singleDetection": 18,
+        "multipleDetections": 0,
+        "candidateRawFiniteTip": 18,
+        "candidateInboundsSingleProposal": 18,
+        "baselineRawFiniteTip": 18,
+        "baselineInboundsSingleProposal": 18,
+        "pipelineOver150ms": 0
+      },
+      "timingsMs": {
+        "detectorPreprocessMs": {
+          "count": 18,
+          "min": 2.3561,
+          "median": 4.521850000000001,
+          "p95": 11.6611,
+          "max": 11.6611,
+          "strictlyOver150ms": 0
+        },
+        "detectorInferenceMs": {
+          "count": 18,
+          "min": 7.3683,
+          "median": 16.51195,
+          "p95": 26.0445,
+          "max": 26.0445,
+          "strictlyOver150ms": 0
+        },
+        "detectorDecodeMs": {
+          "count": 18,
+          "min": 0.1268,
+          "median": 0.17295,
+          "p95": 1.9124,
+          "max": 1.9124,
+          "strictlyOver150ms": 0
+        },
+        "posePreprocessMs": {
+          "count": 18,
+          "min": 1.7753,
+          "median": 3.40245,
+          "p95": 7.8714,
+          "max": 7.8714,
+          "strictlyOver150ms": 0
+        },
+        "poseInferenceMs": {
+          "count": 18,
+          "min": 37.2707,
+          "median": 45.9422,
+          "p95": 54.4573,
+          "max": 54.4573,
+          "strictlyOver150ms": 0
+        },
+        "poseDecodeMs": {
+          "count": 18,
+          "min": 0.2281,
+          "median": 0.433,
+          "p95": 7.0935,
+          "max": 7.0935,
+          "strictlyOver150ms": 0
+        },
+        "rowPosePreprocessSumMs": {
+          "count": 18,
+          "min": 1.7753,
+          "median": 3.40245,
+          "p95": 7.8714,
+          "max": 7.8714,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseInferenceSumMs": {
+          "count": 18,
+          "min": 37.2707,
+          "median": 45.9422,
+          "p95": 54.4573,
+          "max": 54.4573,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseDecodeSumMs": {
+          "count": 18,
+          "min": 0.2281,
+          "median": 0.433,
+          "p95": 7.0935,
+          "max": 7.0935,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseStagesSumMs": {
+          "count": 18,
+          "min": 43.419399999999996,
+          "median": 50.38250000000001,
+          "p95": 63.450199999999995,
+          "max": 63.450199999999995,
+          "strictlyOver150ms": 0
+        },
+        "corePipelineMs": {
+          "count": 18,
+          "min": 64.1749,
+          "median": 73.2016,
+          "p95": 97.0806,
+          "max": 97.0806,
+          "strictlyOver150ms": 0
+        },
+        "pngReadHashDecodeMs": {
+          "count": 18,
+          "min": 3.3423,
+          "median": 5.7338000000000005,
+          "p95": 11.5593,
+          "max": 11.5593,
+          "strictlyOver150ms": 0
+        },
+        "rowBeforeSerializationAndOuterBgrHashMs": {
+          "count": 18,
+          "min": 69.4299,
+          "median": 80.39189999999999,
+          "p95": 102.2265,
+          "max": 102.2265,
+          "strictlyOver150ms": 0
+        },
+        "rowIoWriteMs": {
+          "count": 18,
+          "min": 0.2503,
+          "median": 0.36665000000000003,
+          "p95": 2.1261,
+          "max": 2.1261,
+          "strictlyOver150ms": 0
+        }
+      }
+    },
+    "RECOVER": {
+      "counts": {
+        "rows": 109,
+        "detectorCalls": 109,
+        "poseCalls": 86,
+        "zeroDetections": 23,
+        "singleDetection": 86,
+        "multipleDetections": 0,
+        "candidateRawFiniteTip": 86,
+        "candidateInboundsSingleProposal": 86,
+        "baselineRawFiniteTip": 84,
+        "baselineInboundsSingleProposal": 83,
+        "pipelineOver150ms": 0
+      },
+      "timingsMs": {
+        "detectorPreprocessMs": {
+          "count": 109,
+          "min": 1.9328,
+          "median": 4.627,
+          "p95": 9.0854,
+          "max": 10.686,
+          "strictlyOver150ms": 0
+        },
+        "detectorInferenceMs": {
+          "count": 109,
+          "min": 8.1391,
+          "median": 15.6773,
+          "p95": 23.277,
+          "max": 40.7433,
+          "strictlyOver150ms": 0
+        },
+        "detectorDecodeMs": {
+          "count": 109,
+          "min": 0.1234,
+          "median": 0.1928,
+          "p95": 0.6636,
+          "max": 2.0488,
+          "strictlyOver150ms": 0
+        },
+        "posePreprocessMs": {
+          "count": 86,
+          "min": 1.3562,
+          "median": 2.8719,
+          "p95": 7.5498,
+          "max": 11.2197,
+          "strictlyOver150ms": 0
+        },
+        "poseInferenceMs": {
+          "count": 86,
+          "min": 35.0513,
+          "median": 43.95625,
+          "p95": 52.0023,
+          "max": 63.8373,
+          "strictlyOver150ms": 0
+        },
+        "poseDecodeMs": {
+          "count": 86,
+          "min": 0.2364,
+          "median": 0.41869999999999996,
+          "p95": 1.8895,
+          "max": 4.4429,
+          "strictlyOver150ms": 0
+        },
+        "rowPosePreprocessSumMs": {
+          "count": 109,
+          "min": 0,
+          "median": 2.4789,
+          "p95": 7.4037,
+          "max": 11.2197,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseInferenceSumMs": {
+          "count": 109,
+          "min": 0,
+          "median": 42.1352,
+          "p95": 51.4443,
+          "max": 63.8373,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseDecodeSumMs": {
+          "count": 109,
+          "min": 0,
+          "median": 0.3973,
+          "p95": 1.7259,
+          "max": 4.4429,
+          "strictlyOver150ms": 0
+        },
+        "rowPoseStagesSumMs": {
+          "count": 109,
+          "min": 0,
+          "median": 46.4669,
+          "p95": 56.572199999999995,
+          "max": 67.4578,
+          "strictlyOver150ms": 0
+        },
+        "corePipelineMs": {
+          "count": 109,
+          "min": 16.6405,
+          "median": 68.9747,
+          "p95": 83.4436,
+          "max": 107.9263,
+          "strictlyOver150ms": 0
+        },
+        "pngReadHashDecodeMs": {
+          "count": 109,
+          "min": 2.8719,
+          "median": 5.8417,
+          "p95": 9.8862,
+          "max": 11.5805,
+          "strictlyOver150ms": 0
+        },
+        "rowBeforeSerializationAndOuterBgrHashMs": {
+          "count": 109,
+          "min": 22.4104,
+          "median": 75.2566,
+          "p95": 90.749,
+          "max": 113.3727,
+          "strictlyOver150ms": 0
+        },
+        "rowIoWriteMs": {
+          "count": 109,
+          "min": 0.0728,
+          "median": 0.3124,
+          "p95": 0.8549,
+          "max": 1.7886,
+          "strictlyOver150ms": 0
+        }
+      }
+    }
+  },
+  "sequence": {
+    "rows": 1336,
+    "wallMs": 123719.4348,
+    "offlineInputLoopFramesPerSecond": 10.798626765145874,
+    "includes": "recordingloop,source checks,PNGread/hash/decode,core,outerBGRhash,serialization,bufferedwrites,counters,periodiclogs,streamclose",
+    "excludes": "runtimeimports,modelsessionsetup,inputbaselineparse,finalresultretentionhash,finalreceipt"
+  },
+  "coldSessionConstruction": {
+    "detectorSessionConstructionMs": 163.5467,
+    "poseSessionConstructionMs": 300.9449,
+    "recordedImportDurationMs": null
+  },
+  "verification": {
+    "allProducerCounterComparisons": 165,
+    "counterMismatches": 0,
+    "nestedIntervalChecks": 2672,
+    "nestedIntervalMismatches": 0,
+    "rowIoArrayCount": 1336,
+    "rowBeforeArrayCount": 1336,
+    "poseCallCount": 1310,
+    "completeRows": 1336
+  },
+  "limits": [
+    "OfflineCPUcost only; no camera/capture/display/current-frame-age or productionthroughput measured.",
+    "Historicalbaseline inference costs are not a concurrent comparator and are not analyzed here.",
+    "Per-pose samples pool calls; per-row pose sums includezero whennone. Corepipeline contains component stages; rowBefore contains PNG/core and excludes outerBGRhash/serialization; those intervals must not be added as independenttotals.",
+    "No coordinates,labels,identity,quality,recovery or annotation scoring is performed."
+  ]
+}

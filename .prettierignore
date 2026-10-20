@@ -156,3 +156,7 @@ Development_Docs/Project_Harborlight_Phase_4_Implementation_Manifest.txt
 # Preserve reviewed Reach causal point tracker evidence bytes and hashes.
 /Development_Docs/Projects/Project_Reach/evidence/causal-point-tracker-20261020/sequence-aggregate.json
 /Development_Docs/Projects/Project_Reach/evidence/causal-point-tracker-20261020/native48-aggregate.json
+
+# Preserve reviewed Reach hand model diagnostic evidence bytes and hashes.
+/Development_Docs/Projects/Project_Reach/evidence/hand-model-diagnostic-20261020/native48-aggregate.json
+/Development_Docs/Projects/Project_Reach/evidence/hand-model-diagnostic-20261020/timing-aggregate.json
