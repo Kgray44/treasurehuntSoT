@@ -28,6 +28,74 @@ outstanding. B2 and every other blocker retain the normal full-resolution rules.
 No R19 capture compatibility, refund, counter reset, new general debt exemption
 or weaker functional/accessibility/security/continuity requirement is introduced.
 
+## R22 actual-byte pre-source admission
+
+The [R22 recovery disposition](../../Programs/Sounding_Line/evidence/crossdeck-pre-source-byte-gate-20261020-r22/causal-disposition.md)
+preserves successful R21 capture and its spent, malformed review11. The existing
+owner/custodian must use the controlled source gate for the replacement review12.
+A parsed JSON/count/citation summary cannot release source. No later canonical
+judgments or fabricated ACCEPTED rows are needed to run the first-pass check.
+
+Keep the fresh critic's initial context free of source, contracts, history,
+producer review packets and builder rationale. Provide only neutral identities,
+rubric and current media. After actual viewing, freeze the original UTF-8 JSON
+using the canonical first-pass fields below. Do not replace evidenceIds with
+mediaIds, or caseId/contexts with scenario/devices. Missing evidence fails the
+check; do not invent citations or observations to fill required fields.
+
+The custodian prepares a private source-pointer/text packet, keeping it away
+from the critic, then runs the installed accepted-base gate:
+
+```sh
+node <accepted-authority>/scripts/sounding-line/experience-review-source-gate.mjs --workspace <owned-candidate-checkout> --base <accepted-main> --candidate <exact-captured-candidate> --identity <actual-critic-metadata.json> --observations <frozen-original.json> --bytes <original-byte-count> --sha256 <original-byte-sha256> --capture <current-protected-capture-artifact-id> --packet <custodian-only-source-packet.txt> --output <new-private-output-directory>
+```
+
+The identity file supplies the fixed R22 protocol kind and actual reviewer,
+task path, builder and criticCreation metadata. The command reads the actual
+frozen file, authenticates the current capture/original prepare, and applies the
+same first-pass predicates used by final review. It fsyncs create-only
+first-pass.original.json and pre-source-admission.original.json before reading
+the input source packet. Only source-packet.released.original.txt from a
+successful new output directory may be handed to the critic. Preserve every
+failure; a failed check grants no repair/refund/retry entitlement.
+
+The command returns PASS_STAGED_NOT_DISCLOSED, with a separate
+source-packet-stage.original.json. It does not send a message or claim source
+was disclosed. The existing authorized custodian delivers the exact released
+packet through the native reviewer route and verifies the real native message
+and earliest exposure time. An ambiguous/failed send is not DELIVERED.
+
+The final mediaFirstReview envelope includes the exact preSourceAdmission and
+sourcePacketStage objects from the retained originals, plus sourceDisclosure:
+
+```json
+{
+  "kind": "CROSSDECK_NATIVE_SOURCE_DISCLOSURE_1",
+  "status": "DELIVERED",
+  "preSourceAdmissionDigest": "<shared semantic digest of exact PASS object>",
+  "sourcePacketStageDigest": "<shared semantic digest of exact STAGED object>",
+  "reviewerContext": "<actual same fresh critic>",
+  "verifiedByContext": "01a14744-5390-77a1-8532-5c32db6980eb",
+  "nativeMessageId": "<actual verified native disclosure message ID>",
+  "sourcePacketSha256": "<exact staged packet hash>",
+  "startedAtUtc": "<earliest actual source exposure; matches sourceInspectionStartedAt>",
+  "completedAtUtc": "<actual successful handoff completion>"
+}
+```
+
+Use actual objects, numbers, identifiers and UTC times. PASS must precede packet
+staging and native disclosure; completed disclosure precedes final judgments.
+The protected report and immutable review12 seal bind the complete envelope and
+all three receipt digests. Attestation compares the protected original capture
+index/preparation and installed validator blobs. This is controlled-route
+provenance, not cryptographic proof of a human identity or absence of independent
+source browsing; actual fresh-context/exposure verification remains mandatory.
+
+The seven explicit final judgments, all17 dimensions, B1/B2 findings, paired
+witnesses, functional/accessibility/privacy and technical evidence remain
+required. Counts are preparations25/next26, reviews11/next12 and iteration16;
+all original expiry, failures, authority caps and downstream ownership remain.
+
 ## R21 media-first review11
 
 This finite successor preserves the original R20 raw review and clarification;
