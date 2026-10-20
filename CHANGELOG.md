@@ -21,7 +21,9 @@ last_reviewed: 2026-10-19
 ### Corrected
 
 - The new Chronicle form uses parchment ink for headings, explanatory text and
-  cover-image help. Admiralty exposes its real operator summary as a named group.
+  cover-image help. Admiralty exposes its real operator summary as a named group,
+  keeps it readable on mobile and uses a named inner control group beneath the
+  ordinary global banner.
 
 - Studio's Passage library and Inspector use distinct named sections. Personal
   Harbor's Profile setup notice uses a named section within its main task.

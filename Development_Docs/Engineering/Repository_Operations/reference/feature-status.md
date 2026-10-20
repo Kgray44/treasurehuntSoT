@@ -22,20 +22,24 @@ Independent rendered review clears the specified Passport, safe preview, mobile
 rail, Captain wording/editor chrome, authoring full-label/Suite and displayed
 historical/catalog repairs at their recorded sources. Viewport, empty-resource
 and chronology-fallback limits remain; normal catalog Journal opening is separately
-about ten seconds. Fresh Community development passes four variants after a
-pre-product checkout cancellation; independent rendered review remains pending.
-Creator creation/reopen/account return passes four with final unchanged baselines
-and repaired landmark axe checks, but rendered review finds pale form heading,
-explanation and helper text on parchment. A local heading/body token correction
-and additive lower mobile captures are prepared. Live Admiralty registration
-prepares bounded account/dossier and ungranted support journeys; fresh source-bound
-execution and review remain required. Its real operator summary gains a named
-noninteractive group for accessible signed-in context.
+about ten seconds. Fresh Community development passes four after a pre-product checkout cancellation;
+independent review verifies210hashes/all120PNGs and clears the actual Guide pointer
+and Search-hover repairs within the stated viewport limits. Creator form-ink
+recapture passes four with unchanged final baselines; independent70hash/30PNG
+review resolves the pale parchment heading/intro/helper finding and reviews the
+added Chapter/Edit and desktop empty-Inspector captures. Admiralty's first live
+run fails at Overview on duplicate banners and hidden mobile operator context,
+before dossier/support/final-baseline proof; a source-clear control-group/mobile
+identity and visible Safe-return correction awaits recapture. Private Chronicle
+registration and full synthetic import/export development are prepared with
+owned external storage, ephemeral keys and a separate checked lifecycle receipt;
+no real private content or hosted import/export acceptance is claimed.
 
 Two new formal contracts replace invalid prose checks with actual DOM identity
 or gateway selectors while retaining all prose requirements and unchanged backend
 browser assertions. DOM continuity does not prove database continuity. Positive
-formal creation still requires a canonical Sounding Line case/input extension.
+formal creation and private-package file input still require canonical Sounding
+Line support.
 Account/recovery/invitation/private-content/Landfall work, legacy disposition,
 formal reference/layout and protected qualification remain. Reach diagnostics
 are accepted; Crossdeck #721 remains unmerged and unconsumed. No completed

@@ -92,7 +92,7 @@ export function AdmiraltyShell({
       <a className="chartroom-skip" href="#chartroom-main">
         Skip to command center content
       </a>
-      <header className="chartroom-masthead">
+      <div className="chartroom-masthead" role="group" aria-label="Admiralty controls">
         <Link href="/admin" className="chartroom-brand">
           <span aria-hidden="true">✦</span>
           <span>
@@ -108,7 +108,7 @@ export function AdmiraltyShell({
           <Link href="/account">Return to account</Link>
           <SignOutButton />
         </div>
-      </header>
+      </div>
       <AdminNav items={items} />
       <main id="chartroom-main" tabIndex={-1}>
         {children}

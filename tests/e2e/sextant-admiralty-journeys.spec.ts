@@ -133,7 +133,7 @@ for (const viewport of [
         await support.getByRole("combobox", { name: "Scoped category", exact: true }).selectOption("ACCOUNT_STATE");
         await measure(
           "Ordinary Admiralty account return",
-          () => page.getByRole("link", { name: "Return to account", exact: true }).click(),
+          () => page.getByRole("link", { name: "Safe return", exact: true }).click(),
           () => expect(heading("Overview")).toBeVisible(),
         );
         await expect(page.getByRole("button", { name: fixture.displayName, exact: true })).toBeVisible();

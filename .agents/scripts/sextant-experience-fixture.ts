@@ -28,6 +28,7 @@ async function main() {
         "sextant-catalog-consumers-v1",
         "sextant-creator-entry-v1",
         "sextant-admiralty-consumers-v1",
+        "sextant-private-content-consumers-v1",
       ].includes(entry.experience?.fixture ?? ""),
     )
   )
@@ -106,6 +107,15 @@ async function main() {
   ) {
     const { seedSextantAdmiraltyExperience } = await import("./sextant-admiralty-fixture");
     await seedSextantAdmiraltyExperience();
+  }
+  if (
+    plan.contracts.some(
+      (entry: { experience?: { fixture?: string } }) =>
+        entry.experience?.fixture === "sextant-private-content-consumers-v1",
+    )
+  ) {
+    const { seedSextantPrivateContentExperience } = await import("./sextant-private-content-fixture");
+    await seedSextantPrivateContentExperience();
   }
 }
 

@@ -932,7 +932,11 @@
     grid-template-columns: 1fr auto;
   }
   .chartroom-operator {
-    display: none;
+    grid-column: 1 / -1;
+    order: 1;
+    min-width: 0;
+    text-align: left;
+    overflow-wrap: anywhere;
   }
   .chartroom-actions > a {
     display: none;

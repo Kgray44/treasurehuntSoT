@@ -30,6 +30,8 @@ describe("AdmiraltyShell operator context", () => {
     expect(operator).toHaveTextContent("Synthetic operator");
     expect(operator).toHaveTextContent("ADMINISTRATOR");
     expect(within(operator).queryByRole("button")).not.toBeInTheDocument();
+    expect(screen.getByRole("group", { name: "Admiralty controls" })).toContainElement(operator);
+    expect(screen.queryByRole("banner")).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Return to account" })).toHaveAttribute("href", "/account");
   });
 });

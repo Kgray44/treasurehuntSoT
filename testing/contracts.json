@@ -9574,7 +9574,8 @@
           "src/components/admiralty/AdmiraltyShell.tsx",
           "src/components/admiralty/DossierSupportPanel.tsx",
           "src/components/admiralty/AdminPrimitives.tsx",
-          "src/components/admiralty/AdminNav.tsx"
+          "src/components/admiralty/AdminNav.tsx",
+          "src/styles/admiralty.css"
         ],
         "entryPoint": "/account",
         "states": [
@@ -9645,7 +9646,7 @@
         "recordingRequired": true,
         "accessibility": "Actual account-menu entry, named Admiralty navigation, bounded labelled People search, real synthetic dossier and support fields at desktop/mobile and normal/reduced motion; development audits all actual task surfaces.",
         "fallback": "People does not enumerate accounts without a known clue; a nonmatching synthetic search shows its real empty result. Ungranted support controls preserve required verification, consent and exact comparison-pair requirements; no authority or content is fabricated.",
-        "navigation": "Authenticated ordinary account menu opens Admiralty. Its actual People station and known account link open the dossier. Return to account reaches Overview with the same canonical owner.",
+        "navigation": "Authenticated ordinary account menu opens Admiralty. Its actual People station and known account link open the dossier. The outer shell Safe return reaches Overview with the same canonical owner.",
         "designTarget": "Preserve real operator identity, bounded account finding, readable dossier metadata and explicit ungranted support state with visible ordinary return.",
         "browserTests": [
           "tests/e2e/sextant-admiralty-journeys.spec.ts"
@@ -9797,7 +9798,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "Return to account"
+                "name": "Safe return"
               },
               {
                 "action": "assert",
@@ -9813,6 +9814,224 @@
                 "name": "Synthetic Sextant Captain-admiralty-default",
                 "path": "/account",
                 "text": "Synthetic Sextant Captain-admiralty-default"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "sextant.shared-consumers.private-content",
+      "name": "Sextant ordinary Private Chronicle workspace preparation and return",
+      "authority": "project-sextant",
+      "owners": [
+        "project-sextant",
+        "project-homeport",
+        "sealed-hold",
+        "one-voyage"
+      ],
+      "critical": true,
+      "experience": {
+        "persona": "An authorized synthetic Creator entering the existing Private Chronicle workspace through ordinary Studio navigation",
+        "objective": "Inspect the real private-package preparation controls, honest empty import history and verified-export prerequisites, then return to the same ordinary account",
+        "visibleOutcome": "Actual package selection, passphrase, disabled inspection/import/export prerequisites and empty history remain explicit without exposing private data or silently importing content",
+        "integrationOwner": "Sextant shared-consumer verification; Sealed Hold retains encrypted archive, storage, import/export and privacy ownership; Chronicle retains canonical materialization; Homeport retains account navigation; One Voyage retains progression",
+        "systems": [
+          "project-sextant",
+          "sealed-hold",
+          "project-homeport",
+          "one-voyage"
+        ],
+        "sourcePaths": [
+          "src/app/studio/private-content/page.tsx",
+          "src/components/studio/PrivateContentConsole.tsx",
+          "src/components/studio/StudioHome.tsx"
+        ],
+        "entryPoint": "/account",
+        "states": [
+          "PRIVATE_WORKSPACE_READY",
+          "EMPTY_HISTORY",
+          "RETURNED"
+        ],
+        "devices": [
+          "DESKTOP",
+          "MOBILE"
+        ],
+        "roles": [
+          "CREATOR"
+        ],
+        "roleSetup": {
+          "CREATOR": {
+            "entryPoint": "/sign-in?returnTo=%2Faccount",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "sextant.resources-private-content-default@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Sextant-Resources-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "button",
+              "name": "Synthetic Sextant Captain-private-content-default",
+              "text": "Synthetic Sextant Captain-private-content-default"
+            }
+          }
+        },
+        "references": [
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected generic authoring/account hierarchy reference only; actual private-package workspace requires fresh source-bound review.",
+            "preserve": "Readable ownership, named task controls, explicit private-state boundaries and safe return. No private-package layout acceptance inferred from generic references."
+          },
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected generic authoring/account hierarchy reference only; actual private-package workspace requires fresh source-bound review.",
+            "preserve": "Readable ownership, named task controls, explicit private-state boundaries and safe return. No private-package layout acceptance inferred from generic references."
+          }
+        ],
+        "fixtureProfile": "generic",
+        "fixture": "sextant-private-content-consumers-v1",
+        "recordingRequired": true,
+        "accessibility": "Actual named package-selection, labelled passphrase, import/export prerequisites and history controls at desktop/mobile with both motion preferences. Development audits loaded empty/error/plan/import/export and actual canonical draft task surfaces.",
+        "fallback": "Missing file/passphrase keeps inspection disabled; no inspected plan keeps import disabled; no completed import keeps export disabled. Actual wrong-passphrase rejection creates no import. No real private content, media, provider or remote key is used.",
+        "navigation": "Ordinary account menu opens All Workspaces and Enter Creator. Studio Private Chronicle opens its actual private workspace; the ordinary owner menu returns to Personal Harbor.",
+        "designTarget": "Readable private package workflow, explicit inspection versus committed import, honest history and export prerequisites, same canonical ownership and safe account return.",
+        "browserTests": [
+          "tests/e2e/sextant-private-content-journeys.spec.ts"
+        ],
+        "limitations": [
+          "Source registration and development evidence do not grant protected, native, physical or owner acceptance.",
+          "The formal declarative journey covers empty workspace preparation and ordinary return only. Positive file selection/import/export needs canonical formal file-input support and distinct mutable per-case input/fixture binding; no authority or runner fork is added here.",
+          "Development uses four distinct nonce-owned accounts and encrypted synthetic packages, real production wrong-passphrase/inspection/import/export controls, downloaded byte comparison, canonical draft reopening and unchanged ACTIVE/projection baselines. These are development assertions, not formal protected proof.",
+          "Private storage/staging/provider roots are fresh owned temporary directories outside the checkout, and the local master key is ephemeral process configuration. Existing configured private stores/keys are refused; no shared/private owner content is used.",
+          "The package has one synthetic narrative draft and no assets. Media scanning/derivatives, remote providers, operational repair, migrations, real private payloads, publication readiness and owner acceptance remain separate requirements.",
+          "DOM identity continuity observes only the actual account button; preserved backend requirements are established separately by the registered browser test.",
+          "The formal empty-history predicate checks the actual named history region and its empty-state text. Disabled prerequisite attributes are asserted by the registered full development browser spec; the canonical declarative assertion does not inspect disabled attributes."
+        ],
+        "motion": {
+          "feedbackBudgetMs": 3000,
+          "measurement": "Ordinary Private Chronicle entry and development actual rejected/valid inspection, explicit import and verified export to loaded responses. No sleeps, forced clicks, retries or increased budgets."
+        },
+        "continuity": {
+          "objective": "Preserve actual canonical Creator identity while independent ACTIVE progress and published edition bytes remain unchanged",
+          "checks": [
+            {
+              "id": "same-owner-account",
+              "role": "button",
+              "name": "Synthetic Sextant Captain-private-content-default",
+              "attribute": "aria-label"
+            }
+          ],
+          "requirements": [
+            "Development verifies wrong passphrase and successful inspection each create no import or Chronicle.",
+            "Explicit production confirmation creates exactly one completed owned private import and canonical private DRAFT, no published version or Voyage.",
+            "Actual downloaded encrypted export bytes match the server response and decrypt through the canonical package service to the current canonical synthetic draft.",
+            "Both independent ACTIVE Voyage baselines and exact published edition bytes remain unchanged; the passphrase clears after import and export."
+          ]
+        },
+        "journeys": [
+          {
+            "id": "ordinary-private-workspace-empty-preparation-return",
+            "roles": [
+              "CREATOR"
+            ],
+            "outcome": "An actual Creator inspects honest private-package prerequisites and empty history, then returns to the same ordinary account without importing or publishing",
+            "steps": [
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Captain-private-content-default"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "All Workspaces"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Enter Creator"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Private Chronicle"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Private content",
+                "text": "Private content",
+                "path": "/studio/private-content",
+                "state": "PRIVATE_WORKSPACE_READY",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "The actual private workspace loads through ordinary authorized Studio navigation without silently importing content."
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Select protected package",
+                "state": "PRIVATE_WORKSPACE_READY"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Inspect package"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Confirm private import"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Export verified package"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Private import history",
+                "state": "EMPTY_HISTORY",
+                "text": "No private import has completed in this workspace yet.",
+                "path": "/studio/private-content"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Captain-private-content-default"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
               }
             ]
           }

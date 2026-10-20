@@ -42,6 +42,11 @@ const resourceCases = [
   "admiralty-390-no-preference",
   "admiralty-390-reduce",
   "admiralty-default",
+  "private-content-default",
+  "private-content-1280-no-preference",
+  "private-content-1280-reduce",
+  "private-content-390-no-preference",
+  "private-content-390-reduce",
 ] as const;
 type ResourceCase = (typeof resourceCases)[number];
 
