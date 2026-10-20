@@ -15,8 +15,8 @@ Its Private Chronicle source checkpoint has 179 affected surfaces; 38 still lack
 registration. The historical 141-path mapping remains intact. Reach diagnostics
 are now protected-accepted; Crossdeck #721 remains unmerged. Earlier counts
 and failed campaigns remain historical evidence, not current acceptance.
-The [Private Chronicle source reconciliation](phase4-source-reconciliation-private-content-20261019.json)
-binds that count to `fb8961fa94`; it grants no capture or acceptance credit.
+The [sortable/empty-state source reconciliation](phase4-source-reconciliation-sortable-empty-20261019.json)
+binds that count to `2f2013ab1a`; it grants no capture or acceptance credit.
 Earlier source reconciliations and all failed or defective receipts remain intact.
 
 The [bounded Phase 4 follow-up ledger](phase4-acceptance-followup-r1-ledger.json)

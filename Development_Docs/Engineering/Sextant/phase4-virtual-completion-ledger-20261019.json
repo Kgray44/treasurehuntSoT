@@ -6,7 +6,7 @@
   "status": "IN_PROGRESS",
   "initialCandidate": "5ff2739776513b8f8ed20c1cb661c164216d0eeb",
   "protectedBase": "f6af0b0e151f15f1a23808413ccee531b9827ca7",
-  "currentSoftwareCandidate": "fb8961fa94348a7e8c6f9ac3ca5ce9ede087dd74",
+  "currentSoftwareCandidate": "2f2013ab1a041c5ddc13652686d27ce124fdad6d",
   "pr": "https://github.com/Kgray44/treasurehuntSoT/pull/709",
   "independentSourceReview": {
     "reviewerContext": "/root/sextant_source_review",
@@ -200,6 +200,24 @@
         "typescript": "PASS",
         "selectedContractValidation": 2,
         "browserCasesDiscovered": 8,
+        "docsValidation": "PASS",
+        "featureValidation": "PASS"
+      }
+    },
+    "sortableAndEmptyStateRepair": {
+      "source": "2f2013ab1a041c5ddc13652686d27ce124fdad6d",
+      "reviewer": "/root/sextant_source_review",
+      "disposition": "CLEAR_FOR_TWO_FIXED_DEVELOPMENT_RUNS_NOT_ACCEPTANCE",
+      "reviewerRanTests": false,
+      "scope": [
+        "VALID_NAMED_SORTABLE_GROUP_PRESERVING_DND_FOCUS_IDS_AND_CONTENT",
+        "ACTUAL_EMPTY_STATE_MAIN_TEXT_PATH_AND_OUTCOME_CHANGE"
+      ],
+      "builderVerification": {
+        "taleEditorTests": 19,
+        "actualAxeAriaAllowedRoleRegression": "PASS",
+        "typescript": "PASS",
+        "selectedContractValidation": 2,
         "docsValidation": "PASS",
         "featureValidation": "PASS"
       }
@@ -2656,9 +2674,9 @@
     "registeredNewPassportSourcePaths": 14,
     "newlyRegisteredAffectedPassportSurfaces": 12,
     "sourceReconciliation": {
-      "path": "phase4-source-reconciliation-private-content-20261019.json",
-      "sha256": "4fcd7d5941348bc6a3df91cc676753cfd4ca5fdac04c020d5d1b486c24e208a3",
-      "sourceSha": "fb8961fa94348a7e8c6f9ac3ca5ce9ede087dd74",
+      "path": "phase4-source-reconciliation-sortable-empty-20261019.json",
+      "sha256": "2391ddd2a0a33edff1ba797753a97992989cc8b14019eda64487e06d7cf19c9f",
+      "sourceSha": "2f2013ab1a041c5ddc13652686d27ce124fdad6d",
       "baseSha": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
       "affected": 179,
       "unregistered": 38,
@@ -2769,6 +2787,15 @@
         "path": "phase4-source-reconciliation-private-content-20261019.json",
         "sha256": "4fcd7d5941348bc6a3df91cc676753cfd4ca5fdac04c020d5d1b486c24e208a3",
         "sourceSha": "fb8961fa94348a7e8c6f9ac3ca5ce9ede087dd74",
+        "baseSha": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
+        "affected": 179,
+        "unregistered": 38,
+        "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
+      },
+      {
+        "path": "phase4-source-reconciliation-sortable-empty-20261019.json",
+        "sha256": "2391ddd2a0a33edff1ba797753a97992989cc8b14019eda64487e06d7cf19c9f",
+        "sourceSha": "2f2013ab1a041c5ddc13652686d27ce124fdad6d",
         "baseSha": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
         "affected": 179,
         "unregistered": 38,
@@ -2912,5 +2939,18 @@
       "passingCompanionOrBuildIsNotProductExecution": true
     }
   ],
-  "pendingDevelopmentRuns": []
+  "pendingDevelopmentRuns": [
+    {
+      "runId": "39363220177",
+      "sourceSha": "2f2013ab1a041c5ddc13652686d27ce124fdad6d",
+      "target": "sextant-admiralty",
+      "scope": "ACTUAL_PEOPLE_EMPTY_STATE_TEXT_PREDICATE"
+    },
+    {
+      "runId": "39363230222",
+      "sourceSha": "2f2013ab1a041c5ddc13652686d27ce124fdad6d",
+      "target": "sextant-private-content",
+      "scope": "VALID_SORTABLE_GROUP_AFTER_ACTUAL_IMPORT_EXPORT_REOPEN"
+    }
+  ]
 }
