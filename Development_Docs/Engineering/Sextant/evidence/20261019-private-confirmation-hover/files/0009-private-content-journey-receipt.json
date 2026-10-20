@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "classification": "ENGINEERING_SYNTHETIC_PRIVATE_CONTENT_DEVELOPMENT_NOT_ACCEPTANCE",
+  "source": {
+    "sourceSha": "e408f97695371eedc303754415d207fa61c671cb",
+    "sourceTree": "e0925117895c19af2bec5737823278b343b4b19f",
+    "dirty": false,
+    "sourceFingerprint": "8f3d2fa1aba56e7693e20c7b9b04c3bf0de5a8754dbe128a521efbf80d0d17cf"
+  },
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "reducedMotion": "no-preference",
+  "baseline": [
+    {
+      "id": "sextant-experience-voyage",
+      "status": "ACTIVE",
+      "currentBlockId": "sextant-experience-note",
+      "currentSequence": 4,
+      "publishedVersionId": "cmvg6ydt900080cz3a1i4b8ms"
+    },
+    {
+      "id": "sextant-resource-voyage-private-content-1280-no-preference",
+      "status": "ACTIVE",
+      "currentBlockId": "sextant-resource-passage-private-content-1280-no-preference",
+      "currentSequence": 4,
+      "publishedVersionId": "cmvg6ye3p000q0cz3k6sl4luw"
+    }
+  ],
+  "feedback": [
+    {
+      "task": "Ordinary Private Chronicle entry",
+      "elapsedMs": 307.9951999999994
+    },
+    {
+      "task": "Actual rejected package authentication",
+      "elapsedMs": 264.42763699999887
+    },
+    {
+      "task": "Actual package inspection without import",
+      "elapsedMs": 186.05607899999995
+    },
+    {
+      "task": "Settled readable private confirmation hover",
+      "elapsedMs": 80.07054299999982
+    },
+    {
+      "task": "Actual explicitly confirmed private import",
+      "elapsedMs": 238.72937099999945
+    },
+    {
+      "task": "Actual verified encrypted export",
+      "elapsedMs": 235.645430999999
+    }
+  ],
+  "importId": "41ab09c1-eb87-42f4-b278-2921e5215699",
+  "taleId": "sh_1d4bc4f33b0e21cc138448af4498",
+  "packageId": "sextant-package-private-content-1280-no-preference",
+  "exportedSha256": "fec4b251b54ea05ef26ce5f3972138567445c9f103c4a6112e3da0c980cc2107",
+  "actualEncryptedDownloadAndCanonicalProjectionVerified": true,
+  "wrongPassphraseCreatesNothing": true,
+  "inspectionCreatesNothing": true,
+  "passphraseClearedAfterImportAndExport": true,
+  "unchangedActiveProgressAndEditionBytes": true,
+  "noPublishedVersionOrVoyageCreated": true,
+  "assetsIncluded": 0,
+  "confirmationHoverContrast": 12.824422200794766,
+  "realPrivateContentUsed": false,
+  "formalPositiveFileInputCovered": false,
+  "protectedAcceptance": false
+}
