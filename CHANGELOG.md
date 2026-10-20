@@ -20,6 +20,9 @@ last_reviewed: 2026-10-20
 
 ### Corrected
 
+- Living Chart uses a named inspector section inside Studio and gives waypoint
+  inspection buttons distinct accessible action names. Map names remain visible.
+
 - Private Chronicle import confirmation retains readable ink and brass fill while
   hovered in the Sextant candidate.
 

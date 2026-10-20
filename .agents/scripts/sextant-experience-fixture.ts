@@ -31,6 +31,7 @@ async function main() {
         "sextant-private-content-consumers-v1",
         "sextant-account-recovery-consumers-v1",
         "sextant-invitation-consumers-v1",
+        "sextant-landfall-consumers-v1",
       ].includes(entry.experience?.fixture ?? ""),
     )
   )
@@ -135,6 +136,14 @@ async function main() {
   ) {
     const { seedSextantInvitationBase } = await import("./sextant-invitation-fixture");
     await seedSextantInvitationBase();
+  }
+  if (
+    plan.contracts.some(
+      (entry: { experience?: { fixture?: string } }) => entry.experience?.fixture === "sextant-landfall-consumers-v1",
+    )
+  ) {
+    const { seedSextantLandfallExperience } = await import("./sextant-landfall-fixture");
+    await seedSextantLandfallExperience("physical");
   }
 }
 

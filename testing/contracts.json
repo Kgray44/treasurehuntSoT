@@ -8997,25 +8997,14 @@
       "id": "sextant.shared-consumers.public-chronicle",
       "name": "Sextant public Chronicle catalog, edition comparison and compatibility guest entry",
       "authority": "project-sextant",
-      "owners": [
-        "project-sextant",
-        "project-homeport",
-        "project-harborlight",
-        "one-voyage"
-      ],
+      "owners": ["project-sextant", "project-homeport", "project-harborlight", "one-voyage"],
       "critical": true,
       "experience": {
         "persona": "An anonymous visitor choosing a public synthetic Chronicle and entering its released Voyage through ordinary supported guest controls",
         "objective": "Inspect the actual public Chronicle and exact editions before beginning one authorized compatibility Voyage, then find the same Voyage in the public catalog and return home",
         "visibleOutcome": "The visitor reads public editions and preparation without creating a Voyage, sees honest empty browser history, then starts one guest Voyage pinned to the current edition and returns through the catalog",
         "integrationOwner": "Sextant shared-consumer verification; Chronicle owns public catalog/preparation, Tideglass owns server-projected comparison, One Voyage owns guest progression/authorization, Lanternwake owns the Journal",
-        "systems": [
-          "project-sextant",
-          "project-chronicle",
-          "project-tideglass",
-          "one-voyage",
-          "project-lanternwake"
-        ],
+        "systems": ["project-sextant", "project-chronicle", "project-tideglass", "one-voyage", "project-lanternwake"],
         "sourcePaths": [
           "src/app/tales/page.tsx",
           "src/app/chronicles/[taleSlug]/page.tsx",
@@ -9040,13 +9029,8 @@
           "SAME_VOYAGE_RETURN",
           "RETURNED"
         ],
-        "devices": [
-          "DESKTOP",
-          "MOBILE"
-        ],
-        "roles": [
-          "ANONYMOUS"
-        ],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["ANONYMOUS"],
         "fixtureProfile": "generic",
         "fixture": "sextant-catalog-consumers-v1",
         "recordingRequired": true,
@@ -9072,9 +9056,7 @@
         "fallback": "Missing cover uses the existing honest fallback. No browser history is shown before the guest session cookie exists. Public comparison stays server-projected; no private source or readiness badge is fabricated.",
         "navigation": "Gateway global navigation opens Explore Chronicles; filter the actual published card, follow preview/comparison/preparation/history links, then begin through the public form. The immersive Journal's brand returns home, where ordinary Explore navigation opens the same cookie-backed catalog continuation; brand home completes the return.",
         "designTarget": "Preserve public edition identity, readable catalog and safe comparison hierarchy, explicit guest preparation, actual released Journal and truthful same-Voyage return. Keep private ACTIVE fixture resources absent from public cards.",
-        "browserTests": [
-          "tests/e2e/sextant-catalog-journeys.spec.ts"
-        ],
+        "browserTests": ["tests/e2e/sextant-catalog-journeys.spec.ts"],
         "limitations": [
           "Source registration and development evidence are not protected, native, physical or owner acceptance.",
           "The fixture creates two canonical immutable synthetic public snapshots atomically and verifies all metadata/checksums on reuse. This is not real publication or Drydock readiness proof.",
@@ -9106,9 +9088,7 @@
         "journeys": [
           {
             "id": "public-course-editions-guest-and-return",
-            "roles": [
-              "ANONYMOUS"
-            ],
+            "roles": ["ANONYMOUS"],
             "outcome": "An anonymous visitor inspects exact public editions, prepares without side effects, starts the actual current-edition guest Voyage and returns to its catalog continuation and home",
             "steps": [
               {
@@ -9323,25 +9303,14 @@
       "id": "sextant.shared-consumers.creator-entry",
       "name": "Sextant ordinary new Chronicle form, cancellation and Creator return",
       "authority": "project-sextant",
-      "owners": [
-        "project-sextant",
-        "project-homeport",
-        "project-helm",
-        "one-voyage"
-      ],
+      "owners": ["project-sextant", "project-homeport", "project-helm", "one-voyage"],
       "critical": true,
       "experience": {
         "persona": "An authorized synthetic Creator entering the actual new Chronicle form from the ordinary Studio library",
         "objective": "Prepare the secure new Chronicle form, inspect its real controls, abandon unsaved entries and return through the ordinary Creator library and Personal Harbor",
         "visibleOutcome": "The actual secure creation form loads, Cancel discards unsaved input, and ordinary library/account return preserves independent ACTIVE Voyages and released edition bytes",
         "integrationOwner": "Sextant shared-consumer verification; Chronicle retains draft creation and library ownership, Homeport retains account/workspace entry, One Voyage retains progression",
-        "systems": [
-          "project-sextant",
-          "project-homeport",
-          "project-helm",
-          "project-chronicle",
-          "one-voyage"
-        ],
+        "systems": ["project-sextant", "project-homeport", "project-helm", "project-chronicle", "one-voyage"],
         "sourcePaths": [
           "src/app/studio/tales/new/page.tsx",
           "src/components/studio/NewTaleForm.tsx",
@@ -9352,19 +9321,9 @@
           "src/styles/studio.css"
         ],
         "entryPoint": "/account",
-        "states": [
-          "CREATOR_LIBRARY",
-          "FORM_READY",
-          "CANCELLED",
-          "RETURNED"
-        ],
-        "devices": [
-          "DESKTOP",
-          "MOBILE"
-        ],
-        "roles": [
-          "CREATOR"
-        ],
+        "states": ["CREATOR_LIBRARY", "FORM_READY", "CANCELLED", "RETURNED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["CREATOR"],
         "roleSetup": {
           "CREATOR": {
             "entryPoint": "/sign-in?returnTo=%2Faccount",
@@ -9419,9 +9378,7 @@
         "fallback": "Unprepared secure form keeps submit disabled; creation errors remain explicit. No cover is uploaded, no release is published, and no readiness evidence is manufactured.",
         "navigation": "Ordinary account menu to All Workspaces and Enter Creator; Studio Create Chronicle link opens the form; Cancel returns to Studio and the account menu returns to Personal Harbor.",
         "designTarget": "Readable secure form and visible cancel/submit controls with consistent Creator identity and unchanged released/Voyage baselines.",
-        "browserTests": [
-          "tests/e2e/sextant-creator-entry-journeys.spec.ts"
-        ],
+        "browserTests": ["tests/e2e/sextant-creator-entry-journeys.spec.ts"],
         "limitations": [
           "Source registration and development evidence are not protected, native, physical or owner acceptance.",
           "Development uses separate fixed owned fixtures for all four device/motion cases and actually creates/reopens one private draft through production controls; cancellation and immutable baseline assertions remain. No cover upload, private package workflow or publication readiness is exercised.",
@@ -9451,9 +9408,7 @@
         "journeys": [
           {
             "id": "ordinary-new-chronicle-preparation-cancel-and-return",
-            "roles": [
-              "CREATOR"
-            ],
+            "roles": ["CREATOR"],
             "outcome": "The actual secure creation form loads and cancellation returns without creating a Chronicle or altering an ACTIVE Voyage",
             "steps": [
               {
@@ -9548,24 +9503,14 @@
       "id": "sextant.shared-consumers.admiralty-dossier",
       "name": "Sextant ordinary Admiralty entry, account dossier and ungranted support return",
       "authority": "project-sextant",
-      "owners": [
-        "project-sextant",
-        "project-admiralty",
-        "project-homeport",
-        "one-voyage"
-      ],
+      "owners": ["project-sextant", "project-admiralty", "project-homeport", "one-voyage"],
       "critical": true,
       "experience": {
         "persona": "A nonce-owned synthetic operator using existing canonical global Administrator authority to inspect one known synthetic account",
         "objective": "Enter Admiralty through ordinary account navigation, read bounded People results and the actual account dossier, inspect ungranted support controls and return to the same account",
         "visibleOutcome": "Actual authorized operator, bounded account search, known synthetic dossier and explicit privileged-verification/consent boundaries remain visible without performing a support request or read",
         "integrationOwner": "Sextant consumer verification; Admiralty retains canonical operator authorization, account projections, consent and audit ownership; Homeport retains ordinary account navigation; One Voyage retains progression",
-        "systems": [
-          "project-sextant",
-          "project-admiralty",
-          "project-homeport",
-          "one-voyage"
-        ],
+        "systems": ["project-sextant", "project-admiralty", "project-homeport", "one-voyage"],
         "sourcePaths": [
           "src/app/admin/layout.tsx",
           "src/app/admin/page.tsx",
@@ -9587,13 +9532,8 @@
           "UNGRANTED_SUPPORT",
           "RETURNED"
         ],
-        "devices": [
-          "DESKTOP",
-          "MOBILE"
-        ],
-        "roles": [
-          "ADMINISTRATOR"
-        ],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["ADMINISTRATOR"],
         "roleSetup": {
           "ADMINISTRATOR": {
             "entryPoint": "/sign-in?returnTo=%2Faccount",
@@ -9648,9 +9588,7 @@
         "fallback": "People does not enumerate accounts without a known clue; a nonmatching synthetic search shows its real empty result. Ungranted support controls preserve required verification, consent and exact comparison-pair requirements; no authority or content is fabricated.",
         "navigation": "Authenticated ordinary account menu opens Admiralty. Its actual People station and known account link open the dossier. The outer shell Safe return reaches Overview with the same canonical owner.",
         "designTarget": "Preserve real operator identity, bounded account finding, readable dossier metadata and explicit ungranted support state with visible ordinary return.",
-        "browserTests": [
-          "tests/e2e/sextant-admiralty-journeys.spec.ts"
-        ],
+        "browserTests": ["tests/e2e/sextant-admiralty-journeys.spec.ts"],
         "limitations": [
           "Source registration and development evidence do not grant protected, native, physical or owner acceptance.",
           "Only the reserved synthetic owner receives the existing canonical global Administrator assignment after the owned database guard; unexpected or revoked roles are refused. No parallel permission or identity system is introduced.",
@@ -9687,9 +9625,7 @@
         "journeys": [
           {
             "id": "ordinary-known-account-ungranted-support-return",
-            "roles": [
-              "ADMINISTRATOR"
-            ],
+            "roles": ["ADMINISTRATOR"],
             "outcome": "An actual authorized operator reads one known synthetic account and the ungranted support boundary, then returns to the same ordinary account without privileged actions",
             "steps": [
               {
@@ -9824,42 +9760,23 @@
       "id": "sextant.shared-consumers.private-content",
       "name": "Sextant ordinary Private Chronicle workspace preparation and return",
       "authority": "project-sextant",
-      "owners": [
-        "project-sextant",
-        "project-homeport",
-        "sealed-hold",
-        "one-voyage"
-      ],
+      "owners": ["project-sextant", "project-homeport", "sealed-hold", "one-voyage"],
       "critical": true,
       "experience": {
         "persona": "An authorized synthetic Creator entering the existing Private Chronicle workspace through ordinary Studio navigation",
         "objective": "Inspect the real private-package preparation controls, honest empty import history and verified-export prerequisites, then return to the same ordinary account",
         "visibleOutcome": "Actual package selection, passphrase, disabled inspection/import/export prerequisites and empty history remain explicit without exposing private data or silently importing content",
         "integrationOwner": "Sextant shared-consumer verification; Sealed Hold retains encrypted archive, storage, import/export and privacy ownership; Chronicle retains canonical materialization; Homeport retains account navigation; One Voyage retains progression",
-        "systems": [
-          "project-sextant",
-          "sealed-hold",
-          "project-homeport",
-          "one-voyage"
-        ],
+        "systems": ["project-sextant", "sealed-hold", "project-homeport", "one-voyage"],
         "sourcePaths": [
           "src/app/studio/private-content/page.tsx",
           "src/components/studio/PrivateContentConsole.tsx",
           "src/components/studio/StudioHome.tsx"
         ],
         "entryPoint": "/account",
-        "states": [
-          "PRIVATE_WORKSPACE_READY",
-          "EMPTY_HISTORY",
-          "RETURNED"
-        ],
-        "devices": [
-          "DESKTOP",
-          "MOBILE"
-        ],
-        "roles": [
-          "CREATOR"
-        ],
+        "states": ["PRIVATE_WORKSPACE_READY", "EMPTY_HISTORY", "RETURNED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["CREATOR"],
         "roleSetup": {
           "CREATOR": {
             "entryPoint": "/sign-in?returnTo=%2Faccount",
@@ -9914,9 +9831,7 @@
         "fallback": "Missing file/passphrase keeps inspection disabled; no inspected plan keeps import disabled; no completed import keeps export disabled. Actual wrong-passphrase rejection creates no import. No real private content, media, provider or remote key is used.",
         "navigation": "Ordinary account menu opens All Workspaces and Enter Creator. Studio Private Chronicle opens its actual private workspace; the ordinary owner menu returns to Personal Harbor.",
         "designTarget": "Readable private package workflow, explicit inspection versus committed import, honest history and export prerequisites, same canonical ownership and safe account return.",
-        "browserTests": [
-          "tests/e2e/sextant-private-content-journeys.spec.ts"
-        ],
+        "browserTests": ["tests/e2e/sextant-private-content-journeys.spec.ts"],
         "limitations": [
           "Source registration and development evidence do not grant protected, native, physical or owner acceptance.",
           "The formal declarative journey covers empty workspace preparation and ordinary return only. Positive file selection/import/export needs canonical formal file-input support and distinct mutable per-case input/fixture binding; no authority or runner fork is added here.",
@@ -9950,9 +9865,7 @@
         "journeys": [
           {
             "id": "ordinary-private-workspace-empty-preparation-return",
-            "roles": [
-              "CREATOR"
-            ],
+            "roles": ["CREATOR"],
             "outcome": "An actual Creator inspects honest private-package prerequisites and empty history, then returns to the same ordinary account without importing or publishing",
             "steps": [
               {
@@ -10042,24 +9955,14 @@
       "id": "sextant.shared-consumers.account-recovery",
       "name": "Sextant ordinary account preparation and synthetic recovery/lifecycle development",
       "authority": "project-sextant",
-      "owners": [
-        "project-sextant",
-        "project-homeport",
-        "project-wayfarer",
-        "one-voyage"
-      ],
+      "owners": ["project-sextant", "project-homeport", "project-wayfarer", "one-voyage"],
       "critical": true,
       "experience": {
         "persona": "A reserved synthetic person creating and recovering one canonical account without real mail or private content",
         "objective": "Prepare ordinary registration and password-recovery entry; development additionally completes actual production registration, synthetic email verification, password/email changes and reversible account lifecycle",
         "visibleOutcome": "Readable account prerequisites and ordinary return are visible; the registered development journey proves actual canonical synthetic identity transitions and unchanged independent Voyage/edition baselines",
         "integrationOwner": "Sextant shared-consumer verification; Homeport and Wayfarer retain canonical account, challenge, session, email and lifecycle ownership; One Voyage retains progression",
-        "systems": [
-          "project-sextant",
-          "project-homeport",
-          "project-wayfarer",
-          "one-voyage"
-        ],
+        "systems": ["project-sextant", "project-homeport", "project-wayfarer", "one-voyage"],
         "sourcePaths": [
           "src/app/register/page.tsx",
           "src/app/verify-email/page.tsx",
@@ -10071,18 +9974,9 @@
           "src/components/homeport/AccountSurfaces.tsx"
         ],
         "entryPoint": "/sign-in",
-        "states": [
-          "REGISTER_PREPARED",
-          "RESET_REQUEST_PREPARED",
-          "RETURNED"
-        ],
-        "devices": [
-          "DESKTOP",
-          "MOBILE"
-        ],
-        "roles": [
-          "ANONYMOUS"
-        ],
+        "states": ["REGISTER_PREPARED", "RESET_REQUEST_PREPARED", "RETURNED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["ANONYMOUS"],
         "references": [
           {
             "family": "Authentication",
@@ -10108,9 +10002,7 @@
         "fallback": "An incorrect verification code preserves the pending account; explicit password and exact reversible-lifecycle confirmations remain required. No account, challenge or lifecycle transition is seeded and no real email is sent.",
         "navigation": "Ordinary sign-in Create Account opens registration, its visible sign-in help opens password recovery and its return link returns. Development follows the canonical synthetic email action routes, ordinary Personal Harbor navigation and actual production recovery redirects.",
         "designTarget": "Readable identity/challenge and reversible lifecycle context, clear session-ending email confirmation, distinct delayed deletion/cancellation and a verified same-account return.",
-        "browserTests": [
-          "tests/e2e/sextant-account-recovery-journeys.spec.ts"
-        ],
+        "browserTests": ["tests/e2e/sextant-account-recovery-journeys.spec.ts"],
         "limitations": [
           "Source registration and development evidence do not grant protected, native, physical or owner acceptance.",
           "The formal declarative journey covers read-only registration/password-recovery preparation and ordinary return only. Positive creation, verification, reset, primary-email and lifecycle transitions remain development scope until canonical per-case mutable input/challenge-delivery binding is installed and qualified. No runner or authority fork is introduced.",
@@ -10144,9 +10036,7 @@
         "journeys": [
           {
             "id": "ordinary-account-registration-recovery-preparation-return",
-            "roles": [
-              "ANONYMOUS"
-            ],
+            "roles": ["ANONYMOUS"],
             "outcome": "A visitor reads actual registration/password-recovery prerequisites and returns to sign-in without creating an account or sending mail",
             "steps": [
               {
@@ -10229,24 +10119,14 @@
       "id": "sextant.shared-consumers.invitation-guest-recovery",
       "name": "Sextant unavailable invitation return and actual synthetic guest claim/merge development",
       "authority": "project-sextant",
-      "owners": [
-        "project-sextant",
-        "project-homeport",
-        "project-wayfarer",
-        "one-voyage"
-      ],
+      "owners": ["project-sextant", "project-homeport", "project-wayfarer", "one-voyage"],
       "critical": true,
       "experience": {
         "persona": "A synthetic invited Player entering by an actually issued short code or secure link, then keeping a guest identity or explicitly merging into an existing claimed account",
         "objective": "Show the honest unavailable invitation fallback and ordinary Player entry return; development additionally proves real issued invitation/PIN acceptance, guest account claim/verification and existing-account merge without advancing a Voyage",
         "visibleOutcome": "Unavailable invitations return safely to actual Player entry; development returns the actual newly accepted Voyage through the visible Library for the same claimed or explicitly merged account with original progress retained",
         "integrationOwner": "Sextant shared-consumer verification; One Voyage retains invitations, membership and progression; Homeport/Wayfarer retain canonical guest identity, claim, verification, merge and account navigation",
-        "systems": [
-          "project-sextant",
-          "project-homeport",
-          "project-wayfarer",
-          "one-voyage"
-        ],
+        "systems": ["project-sextant", "project-homeport", "project-wayfarer", "one-voyage"],
         "sourcePaths": [
           "src/app/player/invitation/page.tsx",
           "src/app/player/sign-in/page.tsx",
@@ -10261,19 +10141,9 @@
           "src/homeport/personal-harbor.ts"
         ],
         "entryPoint": "/join/sextant-invalid-invitation-token-2026",
-        "states": [
-          "UNAVAILABLE_INVITATION",
-          "PLAYER_ENTRY_READY",
-          "INVITATION_CODE_READY",
-          "RETURNED"
-        ],
-        "devices": [
-          "DESKTOP",
-          "MOBILE"
-        ],
-        "roles": [
-          "ANONYMOUS"
-        ],
+        "states": ["UNAVAILABLE_INVITATION", "PLAYER_ENTRY_READY", "INVITATION_CODE_READY", "RETURNED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["ANONYMOUS"],
         "references": [
           {
             "family": "Authentication",
@@ -10299,9 +10169,7 @@
         "fallback": "A deliberately invalid synthetic link resolves to the actual unavailable ceremony without fabricating private Voyage details. A real wrong PIN preserves the invitation and absent guest account. Claim/merge stay behind their canonical account/session/CSRF and explicit credential/verification requirements.",
         "navigation": "Actual issued short code through Player entry or actual secure link reaches the invitation ceremony, then production acceptance opens the Waiting Room. The ordinary owner menu opens Personal Harbor; Overview Personal Information exposes claim/merge only through canonical guest-recovery availability. Actual Library links reopen the same accepted Voyage.",
         "designTarget": "Readable invitation provenance and PIN/rejection, honest guest versus claimed identity choices, explicit existing-account merge and same-Voyage return without progression.",
-        "browserTests": [
-          "tests/e2e/sextant-invitation-journeys.spec.ts"
-        ],
+        "browserTests": ["tests/e2e/sextant-invitation-journeys.spec.ts"],
         "limitations": [
           "Source registration and development evidence do not grant protected, native, physical or owner acceptance.",
           "Formal replay covers only the actual unavailable invitation fallback, return to Player entry, invitation-code preparation and ordinary account-tab return. Positive issued-code/link/PIN acceptance, guest claim/verification/merge and dynamic actual-Voyage routes require canonical per-case mutable/challenge/issued-invitation binding before formal qualification. No authority or runner fork is introduced.",
@@ -10336,9 +10204,7 @@
         "journeys": [
           {
             "id": "unavailable-invitation-natural-player-entry-return",
-            "roles": [
-              "ANONYMOUS"
-            ],
+            "roles": ["ANONYMOUS"],
             "outcome": "An unavailable synthetic secure link shows the real safe invitation fallback and returns to ordinary Player entry without issuing an invitation or granting a session",
             "steps": [
               {
@@ -10404,8 +10270,309 @@
           }
         ]
       }
+    },
+    {
+      "id": "sextant.shared-consumers.landfall",
+      "name": "Sextant conditional Landfall authoring, Journal, offline and native-host consumers",
+      "authority": "project-sextant",
+      "owners": ["project-sextant", "project-landfall", "project-watchglass", "project-homeport", "one-voyage"],
+      "critical": true,
+      "experience": {
+        "persona": "A synthetic Creator inspecting an owned populated Living Chart and a distinct claimed Crew account reading its actual authorized Voyage",
+        "objective": "Exercise populated authoring, actual unconfigured optional services, honest physical and virtual guidance, released-place search and signed offline recovery without advancing a Voyage; separately verify native-only controls through the existing companion",
+        "visibleOutcome": "The Creator can read its real configured Chart and save an explicitly incomplete zero-sample fallback preview; the distinct Crew can open the actual released Journal, read capability prerequisites, restore authorized offline content and return to the same account with progression unchanged",
+        "integrationOwner": "Sextant shared-consumer verification; Landfall owns navigation and offline charts, Watchglass owns interpretation, Homeport owns identity/navigation, and One Voyage owns authoritative events and progression",
+        "systems": ["project-sextant", "project-landfall", "project-watchglass", "project-homeport", "one-voyage"],
+        "sourcePaths": [
+          "src/app/player/landfall-return/page.tsx",
+          "src/app/player/offline-landfall/page.tsx",
+          "src/components/player/journal/LandfallBackgroundPanel.tsx",
+          "src/components/player/journal/LandfallBlePanel.tsx",
+          "src/components/player/journal/LandfallContextGuidance.tsx",
+          "src/components/player/journal/LandfallInstallationPanel.tsx",
+          "src/components/player/journal/LandfallJournalChart.tsx",
+          "src/components/player/journal/LandfallLandmarkPanel.tsx",
+          "src/components/player/journal/LandfallNearbyPanel.tsx",
+          "src/components/player/journal/LandfallOfflineRegionPanel.tsx",
+          "src/components/player/journal/LandfallOnlineDataPanel.tsx",
+          "src/components/player/journal/LandfallPlaceSearch.tsx",
+          "src/components/player/journal/LandfallPresentation.tsx",
+          "src/components/player/journal/OfflineLandfallJournal.tsx",
+          "src/components/studio/LandfallFieldTestPanel.tsx",
+          "src/components/studio/LandfallInstallationPanel.tsx",
+          "src/components/studio/LandfallOnlinePlacePanel.tsx",
+          "src/components/studio/LandfallWorkspace.tsx"
+        ],
+        "entryPoint": "/account",
+        "states": ["AUTHORING_READY", "INSTALLATION_PREPARED", "PLAYER_LIBRARY_READY", "RETURNED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["CREATOR", "PLAYER"],
+        "roleSetup": {
+          "CREATOR": {
+            "entryPoint": "/sign-in?returnTo=%2Faccount",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "sextant.resources-landfall-physical-default@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Sextant-Resources-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "button",
+              "name": "Synthetic Sextant Captain-landfall-physical-default",
+              "text": "Synthetic Sextant Captain-landfall-physical-default"
+            }
+          },
+          "PLAYER": {
+            "entryPoint": "/sign-in?returnTo=%2Faccount",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "sextant.crew-landfall-physical-default@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Sextant-Crew-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "button",
+              "name": "Synthetic Sextant Crew-landfall-physical-default",
+              "text": "Synthetic Sextant Crew-landfall-physical-default"
+            }
+          }
+        },
+        "references": [
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected Authentication reference supplies readable hierarchy and ordinary identity/gateway controls only; actual Landfall Chart, offline and native layouts require separate source-bound rendered review.",
+            "preserve": "Readable hierarchy, explicit prerequisites and safe return. No Landfall-specific visual acceptance follows from a generic Authentication reference."
+          },
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected Authentication reference supplies readable hierarchy and ordinary identity/gateway controls only; actual Landfall Chart, offline and native layouts require separate source-bound rendered review.",
+            "preserve": "Readable hierarchy, explicit prerequisites and safe return. No Landfall-specific visual acceptance follows from a generic Authentication reference."
+          }
+        ],
+        "fixtureProfile": "generic",
+        "fixture": "sextant-landfall-consumers-v1",
+        "recordingRequired": true,
+        "accessibility": "Named current Chart inspector and actual form/fieldset/status controls, responsive ordinary navigation and scoped axe at desktop/mobile and both motion preferences. No hidden native panel is fabricated in a browser.",
+        "fallback": "Unconfigured first-party online and installation services expose their real unavailable responses. Camera comparison stays disabled without surrounding-area evidence. Ordinary browsers omit native-only background/nearby panels and retain the disabled Bluetooth companion explanation. Invalid incoming return handles go safely to Player entry.",
+        "navigation": "Ordinary sign-in and account/workspace controls open Creator Library, its actual Chronicle and Living Chart; the distinct Crew uses actual Player Library links and the real Journal/Map drawer, then the ordinary account return. Previously authorized offline reload uses the existing public shell and online return.",
+        "designTarget": "Readable populated map, distinct authoring versus released state, explicit consent/prerequisites, truthful absence, verified offline preparation and local removal, and same-owner return without progression.",
+        "browserTests": [
+          "tests/e2e/sextant-landfall-journeys.spec.ts",
+          "tests/e2e/landfall-native-journal.spec.ts",
+          "tests/e2e/landfall-native-nearby.spec.ts",
+          "tests/e2e/landfall-native-background.spec.ts"
+        ],
+        "limitations": [
+          "Declarations do not establish experience acceptance, protected qualification, native or physical behavior, or owner acceptance.",
+          "The formal journeys are limited to read-only populated physical authoring/installation preparation and actual claimed-Crew Library preparation/return. Formal live Chart, native controls, field-receipt mutation and signed offline lease/download/restore/remove remain unproved by those declarations.",
+          "The fixed development target exercises eight distinct physical/virtual desktop/mobile/motion cases through real owner and Crew sign-in, actual Creator/Player navigation, unconfigured services, one explicit INCOMPLETE fallback preview receipt, signed virtual offline preparation/download/restoration/removal and invalid notification fallback.",
+          "Physical browser cases do not start geolocation, camera, motion, heading, background or nearby acquisition. Their true unavailable/disabled/absent states do not prove native-positive rendering. Background/nearby and valid issued notification return retain separate existing Android companion targets and source-bound proof requirements.",
+          "New fixture creation reuses exact HEAD-derived nonce/database/HTTP preflight and audit guard before mutation, refuses existing case state, rejects configured or symlinked asset roots, and uses only generated synthetic first-party images. Initial synthetic editions are completed before browser entry; all three independent ACTIVE sessions, event rows, memberships and exact edition bytes are compared afterwards.",
+          "The current-contract working draft is separate from the initialized runtime fixture. Viewing/selection leaves draft source and autosave revision unchanged; only one deliberate zero-sample FALLBACK_PREVIEW receipt is saved, explicitly INCOMPLETE rather than a physical walk.",
+          "Trace recording stays off because signed offline authorization, pairing and installation credentials may enter network data. No installation token is issued or captured. Virtual offline reload restores already authorized content with a verified region present; no cache purge or intercepted transport is used, so this journey does not isolate which restore store supplied each resource.",
+          "Whole-Journal cold readiness retains the existing30000ms Landfall scope; signed offline operations retain15000ms and optional-control feedback3000ms. These scopes are reported separately and do not relax other contracts.",
+          "Existing native-host tests require owned virtual-device/companion infrastructure; emulator execution does not establish physical radio accuracy, location fidelity, camera quality, signed deployment, field presence or owner acceptance. Canonical Darwin process containment remains a separate internal software prerequisite."
+        ],
+        "motion": {
+          "feedbackBudgetMs": 3000,
+          "measurement": "Formal read-only workspace/Library preparation response; development separately reports existing whole-Journal cold30000ms, offline15000ms and optional feedback3000ms scopes without sleeps, forced input, retries or budget increases."
+        },
+        "continuity": {
+          "objective": "Keep the actual home gateway stable while development separately proves unchanged canonical sessions/events/memberships/edition bytes across distinct owner/Crew journeys",
+          "checks": [
+            {
+              "id": "actual-home-gateway",
+              "role": "link",
+              "name": "Voyagewright home",
+              "attribute": "href"
+            }
+          ],
+          "requirements": [
+            "Browser/native capability presentation never changes authoritative progression.",
+            "Viewing another map or selecting a released place does not establish physical or game location.",
+            "Offline content needs previously authorized unexpired access; ordinary return reauthorizes the actual same Voyage.",
+            "Draft preview receipts are explicit incomplete synthetic results and do not prove a physical walk."
+          ]
+        },
+        "journeys": [
+          {
+            "id": "ordinary-populated-physical-authoring-preparation-return",
+            "roles": ["CREATOR"],
+            "outcome": "The actual owned populated Chart and installation preparation render with a safe ordinary return and no field receipt or authoring mutation",
+            "steps": [
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Captain-landfall-physical-default"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "All Workspaces"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Enter Creator"
+              },
+              {
+                "action": "fill",
+                "role": "searchbox",
+                "name": "Search",
+                "value": "Synthetic Sextant field Chart"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Edit Chronicle"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Living Chart"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Landfall authoring workspace",
+                "text": "Chart objects",
+                "path": "/studio/tales/sextant-landfall-chronicle-physical-default/landfall",
+                "state": "AUTHORING_READY",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "The ordinary Living Chart action opens the real populated authoring workspace for the fixed owned synthetic Chronicle."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Inspect waypoint Town arrival"
+              },
+              {
+                "action": "assert",
+                "role": "group",
+                "name": "Optional QR and NFC installations",
+                "text": "Copies can be scanned elsewhere",
+                "path": "/studio/tales/sextant-landfall-chronicle-physical-default/landfall",
+                "state": "INSTALLATION_PREPARED",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "Selecting the actual physical waypoint exposes its existing readable installation configuration and fallback, without issuing a token."
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "← Studio"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Captain-landfall-physical-default"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "text": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "ordinary-claimed-crew-landfall-library-preparation-return",
+            "roles": ["PLAYER"],
+            "outcome": "The actual claimed Crew sees its authorized Landfall Voyage in the ordinary Player Library and returns to its account without opening a mutable native or offline control",
+            "steps": [
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Crew-landfall-physical-default"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Player"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "My Chronicle Library",
+                "text": "My Chronicle Library",
+                "path": "/player/library",
+                "state": "PLAYER_LIBRARY_READY",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "The ordinary Player destination opens the actual claimed-Crew Library, with its authorized synthetic Landfall Voyage still present."
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Synthetic Sextant field Chart",
+                "path": "/player/library"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Crew-landfall-physical-default"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "text": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
     }
-
   ],
   "experiencePolicy": {
     "version": 1,

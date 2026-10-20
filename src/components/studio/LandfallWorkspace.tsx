@@ -1024,7 +1024,7 @@ export function LandfallWorkspace({
               />
               {placeName && <p>Next waypoint name: {placeName}</p>}
             </div>
-            <aside className="landfall-inspector">
+            <section className="landfall-inspector" aria-label="Chart object inspector">
               <h3>Chart objects</h3>
               <div className="landfall-object-list">
                 <button type="button" aria-pressed={selectedId === map.id} onClick={() => setSelectedId(map.id)}>
@@ -1034,6 +1034,7 @@ export function LandfallWorkspace({
                   <button
                     type="button"
                     key={item.id}
+                    aria-label={`Inspect waypoint ${item.visibility.hiddenUntilRevealed ? "Hidden · " : ""}${item.name}`}
                     aria-pressed={selectedId === item.id}
                     onClick={() => setSelectedId(item.id)}
                   >
@@ -2620,7 +2621,7 @@ export function LandfallWorkspace({
               {!selectedMap && !selectedWaypoint && !selectedRoute && (
                 <p>Select the map, a waypoint, or a route to inspect it. Use the drawing tools to place geometry.</p>
               )}
-            </aside>
+            </section>
           </div>
           <LandfallContextEditor
             definition={definition}

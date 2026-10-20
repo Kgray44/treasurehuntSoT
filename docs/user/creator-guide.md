@@ -43,3 +43,5 @@ If publication cannot continue, your draft stays available for review and repair
 Related: [Captain guide](captain-guide.md) and [accessibility](accessibility.md).
 
 In the Sextant candidate, the enabled **Confirm private import** action keeps its brass background and readable ink while hovered. This visual correction still requires candidate experience qualification.
+
+The Sextant candidate names the Living Chart inspector **Chart object inspector**. Its waypoint controls announce **Inspect waypoint** before the place name, distinguishing them from the same place on the map. This accessibility correction remains under candidate qualification.

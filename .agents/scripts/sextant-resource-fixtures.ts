@@ -57,6 +57,16 @@ const resourceCases = [
   "invitation-1280-reduce",
   "invitation-390-no-preference",
   "invitation-390-reduce",
+  "landfall-physical-default",
+  "landfall-physical-1280-no-preference",
+  "landfall-physical-1280-reduce",
+  "landfall-physical-390-no-preference",
+  "landfall-physical-390-reduce",
+  "landfall-virtual-default",
+  "landfall-virtual-1280-no-preference",
+  "landfall-virtual-1280-reduce",
+  "landfall-virtual-390-no-preference",
+  "landfall-virtual-390-reduce",
 ] as const;
 type ResourceCase = (typeof resourceCases)[number];
 
@@ -73,7 +83,9 @@ export async function seedSextantResourceExperiences(resourceCase: ResourceCase 
   const displayName = `Synthetic Sextant Captain${suffix}`;
   const paired = resourceCase.startsWith("paired-");
   const crewEmail =
-    paired || history || resourceCase.startsWith("invitation-") ? `sextant.crew${suffix}@example.test` : null;
+    paired || history || resourceCase.startsWith("invitation-") || resourceCase.startsWith("landfall-")
+      ? `sextant.crew${suffix}@example.test`
+      : null;
   const existing = await db.userAccount.findUnique({
     where: { id: ownerId },
     include: { profile: true, emails: true },
