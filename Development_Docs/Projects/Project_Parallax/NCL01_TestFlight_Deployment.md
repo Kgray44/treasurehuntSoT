@@ -22,21 +22,23 @@ objects through its native AR camera. This is owner-reported physical display;
 exact build readback, measured tracking/alignment, Inspect and lifecycle behavior
 have not been verified.
 
-**Current gate:** private beta **0.1.0 (4)** is available in the existing internal
+**Current gate:** private beta **0.1.0 (5)** is available in the existing internal
 TestFlight group for **https://ncl01.absoluterelativesystems.com**.
-[Run 39444433227 passed](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39444433227)
-against candidate `47ff42e4cb8b67e5fa2bfbc481a34d3d33490a18`; its
-[readiness receipt](evidence/ncl01-testflight-20261019/internal-testflight-ready-build4-20261020.receipt.json)
+[Run 39463443972 passed](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39463443972)
+against candidate `785eb61ed33b2e261ae944c53f53c95886e4c521`; its
+[readiness receipt](evidence/ncl01-testflight-20261019/internal-testflight-ready-build5-20261020.receipt.json)
 binds Apple `VALID` / `IN_BETA_TESTING`, **NCL-01 Owner**, 13 exported-IPA checks
-and exact credential/transport cleanup. The public production preview passed
+and exact credential/transport cleanup. It packages the owner-supplied official
+dark brass compass icon; both compiled icon resources changed from build 4 and
+were visually inspected. The public production preview passed
 normal TLS/auth/assets/Journal checks and repaired static-file delivery. Root
 visually confirmed styled, hydrated account sign-in after a normal reload.
 The owner reports cellular phone reachability, but corrected phone presentation,
-exact build 4 installation/native sign-in and AR are still owner gates. Earlier
+exact build 5 installation/icon appearance/native sign-in and AR are still owner gates. Earlier
 native camera/model visibility remains owner-reported; authored appearance,
 all-three-object confirmation, Inspect, tracking/drift and alignment remain
 unverified or unaccepted. Full Scene/room registration is unfinished. Builds 2,
-3 and 4 are consumed; never upload them again.
+3, 4 and 5 are consumed; never upload them again.
 
 The owner has now created the explicit identifier and app record. Their screenshots
 show the correct team/bundle, **VoyageWright Landfall**, app Apple ID `6824734220`,
@@ -155,9 +157,20 @@ packaged PNG SHA-256 is
 `f60c10774d2e206cee973f62d2528cc3a989d422cf2ec2aa3df80c4d40562b3b`.
 The [source artwork receipt](evidence/ncl01-testflight-20261019/app-icon-20261020/source-artwork-verification.json)
 records source identity, output pixels/metadata and independent visual review.
-Existing AppIcon catalog selection stays unchanged. Build **0.1.0 (5)** is being
-prepared with the same stable origin; compiled-icon verification and actual
-TestFlight availability remain gates. This icon update preserves native behavior.
+Existing AppIcon catalog selection stays unchanged. Build **0.1.0 (5)** is now
+available in **NCL-01 Owner** at the same stable origin. Its signed archive,
+exported IPA and Apple processing passed. Source PNG hashes are bound to exact
+candidate `785eb61e`; compiled icon bytes have their own separate identities.
+Both 120-pixel iPhone and 152-pixel iPad packaged icon resources changed from
+build 4, and root visually inspected losslessly decoded viewing copies of both.
+No resized or redrawn preview substituted for the actual packaged icon. The
+signed verification records the exact compiled resource hashes. Phone home-screen
+appearance remains an owner check after updating. Native behavior is preserved.
+
+[Compiled-icon proof](evidence/ncl01-testflight-20261019/signed-39463443972/compiled-icon-verification.json)
+retains the separate original and decoded resource identities;
+[signed verification](evidence/ncl01-testflight-20261019/signed-39463443972/verification.json)
+binds archive/export, Apple processing and credential/transport cleanup.
 
 The bundled privacy manifest declares app-local UserDefaults reason `CA92.1`
 and elapsed-time system-uptime reason `35F9.1`. It does not claim a complete
@@ -174,7 +187,7 @@ remain true until new evidence establishes those gates.
 
 ## Laptop service and iPhone trust
 
-Build 4 uses the stable public HTTPS address and the
+Builds 4 and 5 use the stable public HTTPS address and the
 [owned production services](#laptop-services-for-the-stable-address) below. It
 does not require installing the laptop preview CA. The following LAN history and
 commands preserve the earlier beta preview; they are not the stable-origin startup.
@@ -247,10 +260,10 @@ substitute for them.
 
 ## Processing, installation and physical acceptance
 
-The signed pipeline uploaded build 4, Apple processing reached `VALID`, and the
+The signed pipeline uploaded build 5, Apple processing reached `VALID`, and the
 processed build was assigned to **TestFlight → Internal Testing → NCL-01 Owner**.
 Fresh API checks confirm `IN_BETA_TESTING` and `usesNonExemptEncryption=false`.
-The existing account-holder group is reused; availability does not prove build 4
+The existing account-holder group is reused; availability does not prove build 5
 installation. The owner earlier
 reported native sign-in and original-model camera display. No duplicate
 invitation, external public testing group or App Store release was made. See Apple's
@@ -259,7 +272,8 @@ and [internal testing](https://developer.apple.com/help/app-store-connect/test-a
 instructions.
 
 Open TestFlight, select **VoyageWright Landfall** and
-confirm **0.1.0 (4)**, then tap **Update** and **Open**. A new invitation is not
+confirm **0.1.0 (5)**, then tap **Update** and **Open**. The official compass icon
+is packaged in this build. A new invitation is not
 needed for the existing tester. Sign into the existing
 synthetic NCL account through the stable address. The unchanged values are in
 `D:\CodexTemp\ncl01-preview\VoyageWright-Sign-In.private.txt`, outside Git/chat.
@@ -280,10 +294,10 @@ static PBR objects; chest-lid and compass-needle articulation are unsupported.
 Record separate outcomes for (1) signed upload, (2) processed/internal-test
 availability, (3) exact-build TestFlight installation, (4) native camera/ARKit
 tracking and visible original models, (5) physical interaction/lifecycle behavior,
-and (6) owner acceptance. Build 4 upload/internal-test availability have retained
+and (6) owner acceptance. Build 5 upload/internal-test availability have retained
 software proof; installation, native sign-in and physical camera display are
 owner-reported for earlier trials, as is warning-free LAN Safari access. Cellular
-reachability on the stable hostname is owner-reported; exact build 4 connectivity
+reachability on the stable hostname is owner-reported; exact build 5 connectivity
 and physical behavior have not yet been confirmed.
 The later classroom report below confirms owner-reported native object visibility,
 with exact build readback, all three objects, measured tracking/alignment,

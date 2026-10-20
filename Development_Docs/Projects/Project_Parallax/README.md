@@ -62,15 +62,17 @@ Parallax does **not** own:
 
 - [NCL-01 TestFlight deployment](NCL01_TestFlight_Deployment.md) records the
   isolated signing path and owner-reported installation, native sign-in and
-  camera display of the original 3D models. Build 0.1.0 (4) is available in
-  internal TestFlight for the stable public HTTPS address. The separate classroom
+  camera display of the original 3D models. Build 0.1.0 (5) is available in
+  internal TestFlight with the official owner-supplied dark compass icon and the
+  stable public HTTPS address. Both compiled icon resources were inspected.
+  The separate classroom
   Chronicle passed canonical publication, authenticated asset and accessible
   browser checks. The owner reports classroom objects visible when panning the
   native camera after an initially empty view; they do not accept the authored
   scene's appearance/placement. Exact phone build, all three objects, measured
   tracking/interactions and full room integration remain unverified or unfinished.
   Owner-approved Cloudflare publication, public TLS/auth/Journal/static checks
-  and desktop sign-in presentation pass. Exact build 4 phone behavior is pending;
+  and desktop sign-in presentation pass. Exact build 5 phone behavior is pending;
   the owner reports cellular reachability. Existing routes/services are preserved.
   PR #741 is not merged.
 

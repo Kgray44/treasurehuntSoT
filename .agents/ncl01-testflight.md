@@ -194,11 +194,19 @@ SHA71a2979a8a2ab6a43f3ec9fa1d7f14fb7147deda5887883f22a22a382cd240bc.
 The iOS AppIcon uses the entire artwork resized1024RGB with Pillow12.2.0 LANCZOS;
 fileSHAf60c10774d2e206cee973f62d2528cc3a989d422cf2ec2aa3df80c4d40562b3b.
 Source/output and exact decoded pixels were independently reviewed. Preserve
-composition, background and margins; no generative redraw. Build0.1.0(5) is next,
-same stable origin and signing setup. Require real archive/export/upload/Apple
-processing, existing internal group, cleanup and compiled icon verification.
-Do not equate compiled-resource bytes with the source PNG hash. This cosmetic
-change does not alter AR behavior or require restarting the private preview.
+composition, background and margins; no generative redraw. Build0.1.0(5) is now
+available at the same stable origin and signing setup. Run39463443972 SUCCESS
+binds exact785eb61ed33b2e261ae944c53f53c95886e4c521, real archive/export/upload,
+Apple VALID/IN_BETA_TESTING and existing NCL-01 Owner group. All13 IPA checks,
+credentials cleanup and exact transport SHA-lease deletion/absence passed.
+Official/source hashes match the candidate; both compiled icon resources and
+Assets.car changed from build4. Root viewed the actual120iPhone/152iPad compiled
+icons through lossless CgBI decode copies, no resize/redraw, and confirmed the
+official artwork. Preserve distinct original/decoded/source hashes. Evidence is
+signed-39463443972 plus internal-testflight-ready-build5-20261020.receipt.json.
+Build5 is consumed; never upload it again. Owner exact-build installation/Home
+Screen appearance is still open. This cosmetic change does not alter AR behavior
+or require restarting the private preview; website/Android icons were not changed.
 
 Success is the owner installing this exact beta through TestFlight, opening
 native ARKit camera placement, seeing the original interactive 3D chest and

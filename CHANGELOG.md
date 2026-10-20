@@ -14,10 +14,11 @@ last_reviewed: 2026-10-20
 
 ### Engineering
 
-- Prepared the owner-supplied official dark brass compass as the iOS companion
-  app icon, preserving its full artwork and retaining the original source.
-  Build 0.1.0 (5) is being prepared for the same stable test address; compiled
-  packaging and TestFlight availability remain pending.
+- Replaced the iOS companion app icon with the owner-supplied official dark brass
+  compass, preserving its full artwork and retaining the original source. Build 0.1.0 (5)
+  is available in internal TestFlight at the same stable address. Both packaged
+  icon resources were verified and visually inspected; phone appearance remains
+  an owner check after updating.
 
 - Prepared an isolated NCL-01 iOS development-beta path with explicit app versions,
   an existing-artwork app icon, required-reason privacy metadata and a separate
@@ -31,7 +32,7 @@ last_reviewed: 2026-10-20
   native camera after an initially empty view, but authored appearance/placement
   is not accepted. Exact phone build, all three objects and measured interactions
   remain unverified; full authored Scene/room-registration integration is unfinished.
-  Build 0.1.0 (4) is now available in internal TestFlight using an owner-approved
+  Build 0.1.0 (4) reached internal TestFlight using an owner-approved
   stable Cloudflare address and isolated production runtime. Repaired CSS/JS
   routing and cached errors; normal public TLS/auth/Journal/static checks and
   desktop sign-in presentation pass. Exact build 4 phone behavior is unverified.
