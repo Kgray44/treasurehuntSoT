@@ -212,8 +212,7 @@ test("generation21 accepts only exact accepted-base inheritance and keeps produc
   );
 });
 
-function integratedEvidence(record) {
-  const f = mediaFirstFixture();
+export function integratedEvidence(record, f = mediaFirstFixture()) {
   f.plan.exception = currentAdmissionBinding(record);
   f.plan.sourceDigest = record.currentSourceAdmission.sourceDigest;
   f.first.sourceDigest = f.plan.sourceDigest;
@@ -228,9 +227,9 @@ function integratedEvidence(record) {
     });
   for (const review of f.evidence.reviews) {
     Object.assign(review, {
-      iterations: 15,
-      independentReviewOrdinal: 11,
-      cumulativeHistory: structuredClone(CURRENT_R21.cumulativeHistory),
+      iterations: record.currentSourceAdmission.requiredReviewIterations,
+      independentReviewOrdinal: record.remainingIndependentReviewOrdinal,
+      cumulativeHistory: structuredClone(record.currentSourceAdmission.cumulativeHistory),
     });
     review.findings = CURRENT_R17_BLOCKED_CAPTURE.blockedReview.blockingFindings
       .filter((p) => p.contractIds.includes(review.contractId))

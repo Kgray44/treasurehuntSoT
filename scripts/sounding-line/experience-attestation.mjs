@@ -1,3 +1,4 @@
+import { validatePreSourceCaptureBinding } from "./experience-review-source-gate.mjs";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { inflateRawSync } from "node:zlib";
@@ -5,7 +6,7 @@ import { experienceDigest } from "./product-experience.mjs";
 import { verifyExceptionAttestation } from "./experience-exception.mjs";
 import { r8FormatEvidencePlan, validateR8FormatEvidenceIdentity } from "./experience-r8-format.mjs";
 import { isCurrentAdmissionPlan, validateCurrentCaptureIdentity } from "./experience-current-admission.mjs";
-import { r21ReviewProvenanceBinding } from "./experience-media-first-r21.mjs";
+import { mediaFirstReviewProvenanceBinding } from "./experience-media-first-binding.mjs";
 
 const fail = (code) => {
   throw new Error(`PRODUCT_EXPERIENCE_${code}`);
@@ -139,6 +140,7 @@ export async function verifyTrustedExperienceAttestation({
     policy: plan.attestationPolicy,
   });
   validateCurrentCaptureIdentity(currentPlan, capture, evidence);
+  validatePreSourceCaptureBinding(currentPlan, evidence, capture, undefined, root);
   const identities = (artifacts) =>
     artifacts.map(({ id, sha256, type, contractId, state, device, role, motionMode }) => ({
       id,
@@ -157,7 +159,9 @@ export async function verifyTrustedExperienceAttestation({
     (plan.paired && review.pairedEvidenceDigest !== experienceDigest(evidence.pairedEvidence)) ||
     review.captureArtifactId !== evidence.captureArtifactId ||
     experienceDigest(review.reviews) !== experienceDigest(evidence.reviews) ||
-    Object.entries(r21ReviewProvenanceBinding(currentPlan, evidence)).some(([key, value]) => review[key] !== value)
+    Object.entries(mediaFirstReviewProvenanceBinding(currentPlan, evidence)).some(
+      ([key, value]) => review[key] !== value,
+    )
   )
     fail("TRUSTED_CAPTURE_OR_REVIEW_MISMATCH");
   const exceptionCustody = await verifyExceptionAttestation({
