@@ -19,6 +19,14 @@ import {
   CURRENT_R19_SUCCESSFUL_RUN,
 } from "./experience-current-r20.mjs";
 import {
+  CURRENT_R21,
+  R21_BASE_ADOPTION,
+  R21_PRESERVED_PROOFS,
+  CURRENT_R20_NONQUALIFYING_CAPTURE,
+  CURRENT_R20_SUCCESSFUL_RUN,
+} from "./experience-current-r21.mjs";
+import { validateR21MediaFirstReview } from "./experience-media-first-r21.mjs";
+import {
   validateR20ScopeRecord,
   validateR20ContractSource,
   validateR20TransferDocuments,
@@ -103,7 +111,8 @@ export function validateCurrentAdmissionRecord(record, { now = new Date(), legac
   const successor18 = record?.version === CURRENT_R18.version;
   const successor19 = record?.version === CURRENT_R19.version;
   const successor20 = record?.version === CURRENT_R20.version;
-  const successor = successor16 || successor17 || successor18 || successor19 || successor20;
+  const successor21 = record?.version === CURRENT_R21.version;
+  const successor = successor16 || successor17 || successor18 || successor19 || successor20 || successor21;
   need(
     isCurrentAdmissionRecord(record) &&
       (record.version === 15 || successor) &&
@@ -122,22 +131,24 @@ export function validateCurrentAdmissionRecord(record, { now = new Date(), legac
     "RECORD_INVALID",
   );
   need(
-    (successor20
-      ? same(record.predecessor, CURRENT_R19_BLOCKED_CAPTURE)
-      : successor19
-        ? same(record.predecessor, CURRENT_R18_FAILED_PREPARATION)
-        : successor18
-          ? same(record.predecessor, CURRENT_R17_BLOCKED_CAPTURE)
-          : successor17
-            ? same(record.predecessor, CURRENT_R16_FAILED_PREPARATION)
-            : successor16
-              ? same(record.predecessor, CURRENT_R15_FAILED_PREPARATION)
-              : record.predecessor?.id === CURRENT_LEGACY.id &&
-                record.predecessor.recordDigest === CURRENT_LEGACY.recordDigest &&
-                record.predecessor.qualifyCommit === CURRENT_LEGACY.qualifyCommit &&
-                record.predecessor.runId === CURRENT_LEGACY.runId &&
-                sha(record.predecessor.qualifyPayloadDigest, 64) &&
-                Number.isFinite(Date.parse(record.predecessor.campaignEpoch))) &&
+    (successor21
+      ? same(record.predecessor, CURRENT_R20_NONQUALIFYING_CAPTURE)
+      : successor20
+        ? same(record.predecessor, CURRENT_R19_BLOCKED_CAPTURE)
+        : successor19
+          ? same(record.predecessor, CURRENT_R18_FAILED_PREPARATION)
+          : successor18
+            ? same(record.predecessor, CURRENT_R17_BLOCKED_CAPTURE)
+            : successor17
+              ? same(record.predecessor, CURRENT_R16_FAILED_PREPARATION)
+              : successor16
+                ? same(record.predecessor, CURRENT_R15_FAILED_PREPARATION)
+                : record.predecessor?.id === CURRENT_LEGACY.id &&
+                  record.predecessor.recordDigest === CURRENT_LEGACY.recordDigest &&
+                  record.predecessor.qualifyCommit === CURRENT_LEGACY.qualifyCommit &&
+                  record.predecessor.runId === CURRENT_LEGACY.runId &&
+                  sha(record.predecessor.qualifyPayloadDigest, 64) &&
+                  Number.isFinite(Date.parse(record.predecessor.campaignEpoch))) &&
       sha(record.frozenReferenceSha) &&
       sha(record.frozenTrees?.src) &&
       sha(a.protectedBaseAncestorSha) &&
@@ -406,10 +417,66 @@ export function validateCurrentAdmissionRecord(record, { now = new Date(), legac
       "R20_SCOPE_OR_SPENT_HISTORY_CHANGED",
     );
   }
+  if (successor21) {
+    const immutablePaths = new Set([
+      ...record.immutableHistory.map((entry) => entry.path),
+      ...R21_PRESERVED_PROOFS.map((entry) => entry.path),
+    ]);
+    need(
+      record.id === CURRENT_R21.id &&
+        record.frozenReferenceSha === CURRENT_R21.frozenReferenceSha &&
+        same(record.ownerApproval, CURRENT_R21.ownerApproval) &&
+        now.getTime() >= Date.parse(CURRENT_R21.ownerApproval.approvedAtUtcMinute) &&
+        a.protectedOverlay.every((entry) => !immutablePaths.has(entry.path)) &&
+        a.preservationRevision === CURRENT_R21.preservationRevision &&
+        a.protectedBaseAncestorSha === CURRENT_R21.protectedBaseAncestorSha &&
+        record.expiresAt === CURRENT_R21.expiresAt &&
+        same(a.cumulativeHistory, CURRENT_R21.cumulativeHistory) &&
+        a.requiredReviewIterations === CURRENT_R21.requiredReviewIterations &&
+        record.remainingIndependentReviewOrdinal === CURRENT_R21.remainingIndependentReviewOrdinal &&
+        hash(a.legacyR14History) === CURRENT_R21.legacyR14HistoryDigest &&
+        hash(record.immutableHistory) === CURRENT_R21.immutableHistoryDigest &&
+        a.historicalRuns.length === 23 &&
+        hash(a.historicalRuns.slice(0, 22)) === CURRENT_R21.previousRunsDigest &&
+        same(a.historicalRuns[22], CURRENT_R20_SUCCESSFUL_RUN) &&
+        record.contractDigest === R20_SCOPE.approvedContractDigest &&
+        same(a.scopeAdjudication, R20_SCOPE) &&
+        same(a.adjudication, CURRENT_R20.adjudication) &&
+        same(a.acceptedBaseAdoption, R21_BASE_ADOPTION) &&
+        same(a.preservedR20Proofs, R21_PRESERVED_PROOFS) &&
+        same(a.reviewProtocol, CURRENT_R21.reviewProtocol) &&
+        same(a.caps, { capture: 1, review: 1, ordinary: 1, technical: 1, replay: 1 }) &&
+        record.contexts === 32 &&
+        a.contextCount === 38 &&
+        a.pairedBrowserContexts === 6 &&
+        same([...record.contractIds].sort(), [...requiredContracts].sort()) &&
+        same([...record.requiredTechnicalBrowserTests].sort(), [...requiredBrowsers].sort()) &&
+        (legacyCurrentRecord === undefined || hash(legacyCurrentRecord) === CURRENT_R21.previousRecordDigest),
+      "R21_SCOPE_OR_SPENT_HISTORY_CHANGED",
+    );
+  }
   return record;
 }
 
 export function validateCurrentAdmissionRegistry(registry, now, { requiredVersion } = {}) {
+  if (
+    requiredVersion === 21 ||
+    (requiredVersion === undefined &&
+      registry?.exceptions?.some((record) => isCurrentAdmissionRecord(record) && record.version === 21))
+  ) {
+    need(registry?.version === 1 && registry.exceptions.length === 21, "R21_REGISTRY_INVALID");
+    const prior = { ...registry, exceptions: registry.exceptions.slice(0, 20) };
+    need(hash(prior) === CURRENT_R21.previousRegistryDigest, "R21_PREDECESSOR_REGISTRY_CHANGED");
+    validateCurrentAdmissionRegistry(prior, now, { requiredVersion: 20 });
+    const current = registry.exceptions[20];
+    need(current?.version === 21 && isCurrentAdmissionRecord(current), "R21_REGISTRY_INVALID");
+    validateCurrentAdmissionRecord(current, {
+      now,
+      legacyRecord: prior.exceptions.find((record) => record.id === CURRENT_LEGACY.id),
+      legacyCurrentRecord: prior.exceptions[19],
+    });
+    return current;
+  }
   if (
     requiredVersion === 20 ||
     (requiredVersion === undefined &&
@@ -576,7 +643,7 @@ export function bindCurrentAdmission({ root, record, plan, baseSha, candidateSha
             .filter(Boolean),
         })
       : new Map();
-  if ([19, 20].includes(record.version)) {
+  if ([19, 20, 21].includes(record.version)) {
     const inherited = inventory(root, CURRENT_R18.frozenReferenceSha);
     validateCurrentProductRepair({
       priorRepair: inventory(root, CURRENT_R18.repairReferenceSha),
@@ -595,7 +662,7 @@ export function bindCurrentAdmission({ root, record, plan, baseSha, candidateSha
     });
     repairs = validateCurrentR19ProductRepair({
       priorRepair: inventory(root, CURRENT_R19.repairReferenceSha),
-      reference: record.version === 20 ? inventory(root, CURRENT_R19.frozenReferenceSha) : reference,
+      reference: [20, 21].includes(record.version) ? inventory(root, CURRENT_R19.frozenReferenceSha) : reference,
       candidate,
       actualRepairPaths: git(root, [
         "diff",
@@ -609,23 +676,43 @@ export function bindCurrentAdmission({ root, record, plan, baseSha, candidateSha
         .filter(Boolean),
     });
   }
-  if (record.version === 20) {
-    git(root, ["merge-base", "--is-ancestor", R20_SCOPE.originalCandidateSha, record.frozenReferenceSha]);
+  if ([20, 21].includes(record.version)) {
+    const contractReference = record.version === 21 ? CURRENT_R20.frozenReferenceSha : record.frozenReferenceSha;
+    git(root, ["merge-base", "--is-ancestor", R20_SCOPE.originalCandidateSha, contractReference]);
     validateR20ContractSource({
       before: inventory(root, R20_SCOPE.originalCandidateSha),
-      after: reference,
+      after: record.version === 21 ? inventory(root, contractReference) : reference,
+      actualPaths: git(root, ["diff", "--name-only", "--no-renames", R20_SCOPE.originalCandidateSha, contractReference])
+        .trim()
+        .split(/\r?\n/u)
+        .filter(Boolean),
+      original: JSON.parse(git(root, ["show", `${R20_SCOPE.originalCandidateSha}:testing/contracts.json`])),
+      amended: JSON.parse(git(root, ["show", `${contractReference}:testing/contracts.json`])),
+    });
+  }
+  if (record.version === 21) {
+    need(
+      git(root, ["rev-parse", `${record.frozenReferenceSha}^{tree}`]).trim() === CURRENT_R21.frozenReferenceTree,
+      "R21_FROZEN_INPUT_TREE_CHANGED",
+    );
+    need(
+      git(root, ["rev-list", "--parents", "-n", "1", record.frozenReferenceSha]).trim() ===
+        [record.frozenReferenceSha, ...R21_BASE_ADOPTION.parents].join(" "),
+      "R21_FROZEN_INPUT_HISTORY_CHANGED",
+    );
+    validateCurrentR21AcceptedBaseAdoption({
+      original: inventory(root, R21_BASE_ADOPTION.originalCandidateSha),
+      reference,
       actualPaths: git(root, [
         "diff",
         "--name-only",
         "--no-renames",
-        R20_SCOPE.originalCandidateSha,
+        R21_BASE_ADOPTION.originalCandidateSha,
         record.frozenReferenceSha,
       ])
         .trim()
         .split(/\r?\n/u)
         .filter(Boolean),
-      original: JSON.parse(git(root, ["show", `${R20_SCOPE.originalCandidateSha}:testing/contracts.json`])),
-      amended: JSON.parse(git(root, ["show", `${record.frozenReferenceSha}:testing/contracts.json`])),
     });
   }
   for (const file of originalProductPaths)
@@ -636,7 +723,8 @@ export function bindCurrentAdmission({ root, record, plan, baseSha, candidateSha
     currentContracts = contractsAt(candidateSha);
   for (const id of requiredContracts.filter((id) => id !== "reach.phase1.foundation")) {
     const actualContract = structuredClone(currentContracts.find((contract) => contract.id === id));
-    const approved = record.version === 20 && R20_SCOPE.contractChanges.find((entry) => entry.contractId === id);
+    const approved =
+      [20, 21].includes(record.version) && R20_SCOPE.contractChanges.find((entry) => entry.contractId === id);
     if (approved) {
       need(actualContract?.experience?.designTarget === approved.newValue, "R20_CONTRACT_SCOPE_CHANGED");
       actualContract.experience.designTarget = approved.oldValue;
@@ -692,26 +780,57 @@ export function bindCurrentAdmission({ root, record, plan, baseSha, candidateSha
       same(ledger.historicalRuns, a.historicalRuns),
     "LEDGER_CHANGED",
   );
-  if ([18, 19, 20].includes(record.version))
+  if ([18, 19, 20, 21].includes(record.version))
     need(same(ledger.consumedR17, CURRENT_R17_BLOCKED_CAPTURE), "R18_BLOCKED_REVIEW_PROOF_CHANGED");
-  if ([19, 20].includes(record.version))
+  if ([19, 20, 21].includes(record.version))
     need(same(ledger.consumedR18, CURRENT_R18_FAILED_PREPARATION), "R19_FAILED_PREPARATION_PROOF_CHANGED");
-  if (record.version === 20) {
+  if ([20, 21].includes(record.version)) {
     need(same(ledger.consumedR19, CURRENT_R19_BLOCKED_CAPTURE), "R20_BLOCKED_REVIEW_PROOF_CHANGED");
     const adjudication = JSON.parse(readProof(a.adjudication).toString());
     need(same(adjudication.scope, R20_SCOPE), "R20_ADJUDICATION_PROOF_CHANGED");
     validateR20TransferDocuments({
       registry: JSON.parse(readProof(R20_SCOPE.refit.registryProof).toString()),
       previousRegistry: JSON.parse(
-        git(root, ["show", `${a.protectedBaseAncestorSha}:${R20_SCOPE.refit.registryProof.path}`]),
+        git(root, ["show", `${CURRENT_R20.protectedBaseAncestorSha}:${R20_SCOPE.refit.registryProof.path}`]),
       ),
       packet: readProof(R20_SCOPE.refit.packetProof).toString(),
       ledger: readProof(R20_SCOPE.refit.ledgerProof).toString(),
-      previousLedger: git(root, ["show", `${a.protectedBaseAncestorSha}:${R20_SCOPE.refit.ledgerProof.path}`]),
+      previousLedger: git(root, [
+        "show",
+        `${CURRENT_R20.protectedBaseAncestorSha}:${R20_SCOPE.refit.ledgerProof.path}`,
+      ]),
     });
+  }
+  if (record.version === 21) {
+    need(
+      same(ledger.consumedR20, CURRENT_R20_NONQUALIFYING_CAPTURE) &&
+        same(ledger.acceptedBaseAdoption, R21_BASE_ADOPTION) &&
+        same(ledger.reviewProtocol, CURRENT_R21.reviewProtocol),
+      "R21_NONQUALIFYING_REVIEW_PROOF_CHANGED",
+    );
+    for (const proof of R21_PRESERVED_PROOFS) readProof(proof);
   }
   readProof(a.disposition);
   return currentAdmissionBinding(record);
+}
+
+// Only the exact already-accepted PR777 inheritance may separate frozen C20
+// from the owner's normal-history input. This grants no capture compatibility.
+export function validateCurrentR21AcceptedBaseAdoption({ original, reference, actualPaths }) {
+  const changes = new Map(R21_BASE_ADOPTION.paths.map((entry) => [entry.path, entry]));
+  need(same([...actualPaths].sort(), [...changes.keys()].sort()), "R21_ACCEPTED_BASE_ADOPTION_CHANGED");
+  const metadata = (entry, prefix) =>
+    entry[`${prefix}Mode`] === null ? undefined : `${entry[`${prefix}Mode`]} blob ${entry[`${prefix}Blob`]}`;
+  for (const path of new Set([...original.keys(), ...reference.keys()])) {
+    const change = changes.get(path);
+    need(
+      change
+        ? original.get(path) === metadata(change, "old") && reference.get(path) === metadata(change, "new")
+        : original.get(path) === reference.get(path),
+      "R21_ACCEPTED_BASE_ADOPTION_CHANGED",
+    );
+  }
+  return true;
 }
 
 // Pure exact-file comparison. Production bindCurrentAdmission validates the fixed
@@ -827,12 +946,13 @@ export function validateCurrentAdmissionEvidence(plan, evidence, automatedOnly =
             new Set(review.findings.map((finding) => finding.id)).size === review.findings.length)),
       "REVIEW_HISTORY_CHANGED",
     );
-  if ([18, 19, 20].includes(plan.exception.version)) {
+  if (plan.exception.version === 21) validateR21MediaFirstReview(plan, evidence);
+  if ([18, 19, 20, 21].includes(plan.exception.version)) {
     for (const previous of CURRENT_R17_BLOCKED_CAPTURE.blockedReview.blockingFindings)
       for (const contractId of previous.contractIds) {
         const review = evidence.reviews.find((entry) => entry.contractId === contractId);
         const findings = review?.findings?.filter((entry) => entry.id === previous.id);
-        if (plan.exception.version === 20 && previous.id === "R17-R8-B1") {
+        if ([20, 21].includes(plan.exception.version) && previous.id === "R17-R8-B1") {
           need(findings?.length === 1, "R20_ADJUDICATED_FINDING_REQUIRED");
           validateScopedR20Finding({ plan, finding: findings[0], contractId, artifacts: evidence.artifacts });
           continue;
@@ -953,8 +1073,8 @@ export function assertCurrentAdmissionCap(record, stage) {
 }
 export async function validateCurrentFailedPreparation({ record, request, storeFor }) {
   validateCurrentAdmissionRecord(record);
-  need([16, 17, 18, 19, 20].includes(record.version), "R16_RECORD_REQUIRED");
-  const preparations = [18, 19, 20].includes(record.version)
+  need([16, 17, 18, 19, 20, 21].includes(record.version), "R16_RECORD_REQUIRED");
+  const preparations = [18, 19, 20, 21].includes(record.version)
     ? [CURRENT_R15_FAILED_PREPARATION, CURRENT_R16_FAILED_PREPARATION]
     : record.version === 17
       ? [CURRENT_R15_FAILED_PREPARATION, record.predecessor]
@@ -998,7 +1118,7 @@ export async function validateCurrentFailedPreparation({ record, request, storeF
 // A successful capture followed by an actual blocked independent review is not a failed capture.
 export async function validateCurrentR18FailedPreparation({ record, request, storeFor, observedRun }) {
   validateCurrentAdmissionRecord(record);
-  need([19, 20].includes(record.version), "R19_RECORD_REQUIRED");
+  need([19, 20, 21].includes(record.version), "R19_RECORD_REQUIRED");
   const p = CURRENT_R18_FAILED_PREPARATION;
   const spent = storeFor({ id: p.id, custody: { namespace: `sounding-line-exceptions/${p.id}` } });
   const prepare = await spent.read("prepare");
@@ -1052,7 +1172,7 @@ export async function validateCurrentR18FailedPreparation({ record, request, sto
 
 export async function validateCurrentBlockedReviewPredecessor({ record, request, storeFor, observedRun }) {
   validateCurrentAdmissionRecord(record);
-  need([18, 19, 20].includes(record.version), "R18_RECORD_REQUIRED");
+  need([18, 19, 20, 21].includes(record.version), "R18_RECORD_REQUIRED");
   const p = CURRENT_R17_BLOCKED_CAPTURE;
   const spent = storeFor({ id: p.id, custody: { namespace: `sounding-line-exceptions/${p.id}` } });
   const prepare = await spent.read("prepare");
@@ -1104,7 +1224,7 @@ export async function validateCurrentBlockedReviewPredecessor({ record, request,
 }
 export async function validateCurrentR19BlockedCapture({ record, request, storeFor, observedRun }) {
   validateCurrentAdmissionRecord(record);
-  need(record.version === 20, "R20_RECORD_REQUIRED");
+  need([20, 21].includes(record.version), "R20_RECORD_REQUIRED");
   const p = CURRENT_R19_BLOCKED_CAPTURE;
   const spent = storeFor({ id: p.id, custody: { namespace: `sounding-line-exceptions/${p.id}` } });
   const prepare = await spent.read("prepare");
@@ -1156,9 +1276,63 @@ export async function validateCurrentR19BlockedCapture({ record, request, storeF
   return prepare;
 }
 
+export async function validateCurrentR20NonqualifyingCapture({ record, request, storeFor, observedRun }) {
+  validateCurrentAdmissionRecord(record);
+  need(record.version === 21, "R21_RECORD_REQUIRED");
+  const p = CURRENT_R20_NONQUALIFYING_CAPTURE;
+  const spent = storeFor({ id: p.id, custody: { namespace: `sounding-line-exceptions/${p.id}` } });
+  const prepare = await spent.read("prepare");
+  need(prepare?.commitSha === p.prepareCommit, "R20_SPENT_PREPARATION_CHANGED");
+  const { commitSha, ...payload } = prepare;
+  need(
+    commitSha === p.prepareCommit &&
+      hash(payload) === p.preparePayloadDigest &&
+      payload.version === 1 &&
+      payload.exceptionId === p.id &&
+      payload.binding?.exception?.id === p.id &&
+      payload.binding.exception.version === 20 &&
+      payload.binding.exception.recordDigest === p.recordDigest &&
+      payload.binding.baseSha === p.baseSha &&
+      payload.binding.sourceDigest === p.sourceDigest &&
+      payload.binding.contractDigest === p.contractDigest &&
+      payload.candidateSha === p.candidateSha &&
+      payload.run?.runId === p.runId &&
+      payload.run.runAttempt === 1 &&
+      payload.run.actor === "Kgray44" &&
+      payload.run.workflowId === p.workflowId &&
+      payload.run.headSha === p.headSha &&
+      payload.run.headBranch === p.headBranch &&
+      payload.run.event === p.event &&
+      payload.run.createdAt === p.createdAt &&
+      payload.run.displayTitle === CURRENT_R20_SUCCESSFUL_RUN.displayTitle &&
+      payload.status === "PREPARE_AND_REVIEW10_RESERVED_VALIDATION_PENDING" &&
+      payload.independentReviewsCompleted === 9 &&
+      payload.reservedIndependentReviewOrdinal === 10,
+    "R20_SPENT_PREPARATION_CHANGED",
+  );
+  for (const slot of p.absentSlots) need(!(await spent.read(slot)), "R20_UNEXPECTED_SUCCESS_SLOT");
+  const run = observedRun ?? (await request(`actions/runs/${p.runId}`));
+  need(same(currentRunIdentity(run), CURRENT_R20_SUCCESSFUL_RUN), "R20_SUCCESSFUL_CAPTURE_CHANGED");
+  const candidate = await request(`git/commits/${p.candidateSha}`);
+  need(candidate?.tree?.sha === p.candidateTree, "R20_CANDIDATE_TREE_CHANGED");
+  for (const expected of p.artifacts) {
+    const artifact = await request(`actions/artifacts/${expected.id}`);
+    need(
+      artifact?.id === expected.id &&
+        artifact.expired === false &&
+        artifact.size_in_bytes === expected.bytes &&
+        artifact.digest === `sha256:${expected.sha256}` &&
+        artifact.workflow_run?.id === p.runId &&
+        artifact.workflow_run.head_sha === p.headSha,
+      "R20_SUCCESSFUL_CAPTURE_ARTIFACT_CHANGED",
+    );
+  }
+  return prepare;
+}
+
 export async function validateCurrentAdmissionPredecessors({ record, request, storeFor }) {
   validateCurrentAdmissionRecord(record);
-  const successor = [16, 17, 18, 19, 20].includes(record.version);
+  const successor = [16, 17, 18, 19, 20, 21].includes(record.version);
   const legacyPredecessor = successor ? CURRENT_R15_LEGACY_PREDECESSOR : record.predecessor;
   const previous = storeFor({
     id: CURRENT_LEGACY.id,
@@ -1187,26 +1361,33 @@ export async function validateCurrentAdmissionPredecessors({ record, request, st
     need(same(currentRunIdentity(actual), expected), "HISTORICAL_RUN_CHANGED");
     observed.push(actual);
   }
-  if ([18, 19, 20].includes(record.version))
+  if ([18, 19, 20, 21].includes(record.version))
     await validateCurrentBlockedReviewPredecessor({
       record,
       request,
       storeFor,
       observedRun: observed.find((run) => run.id === CURRENT_R17_BLOCKED_CAPTURE.runId),
     });
-  if ([19, 20].includes(record.version))
+  if ([19, 20, 21].includes(record.version))
     await validateCurrentR18FailedPreparation({
       record,
       request,
       storeFor,
       observedRun: observed.find((run) => run.id === CURRENT_R18_FAILED_PREPARATION.runId),
     });
-  if (record.version === 20)
+  if ([20, 21].includes(record.version))
     await validateCurrentR19BlockedCapture({
       record,
       request,
       storeFor,
       observedRun: observed.find((run) => run.id === CURRENT_R19_BLOCKED_CAPTURE.runId),
+    });
+  if (record.version === 21)
+    await validateCurrentR20NonqualifyingCapture({
+      record,
+      request,
+      storeFor,
+      observedRun: observed.find((run) => run.id === CURRENT_R20_NONQUALIFYING_CAPTURE.runId),
     });
   need(
     Array.isArray(legacyPredecessor.artifacts) && legacyPredecessor.artifacts.length > 0,
@@ -1217,7 +1398,7 @@ export async function validateCurrentAdmissionPredecessors({ record, request, st
       expected,
       runId: CURRENT_LEGACY.runId,
     })),
-    ...([19, 20].includes(record.version)
+    ...([19, 20, 21].includes(record.version)
       ? [CURRENT_R15_FAILED_PREPARATION, CURRENT_R16_FAILED_PREPARATION]
       : record.version === 18
         ? [CURRENT_R15_FAILED_PREPARATION, CURRENT_R16_FAILED_PREPARATION]
