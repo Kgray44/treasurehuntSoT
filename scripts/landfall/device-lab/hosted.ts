@@ -21,6 +21,7 @@ export async function dispatchLandfallHostedLab(
     ![
       "all",
       "provider",
+      "darwin-primitives",
       "browser",
       "android",
       "android-radio",
@@ -32,6 +33,11 @@ export async function dispatchLandfallHostedLab(
   )
     throw new Error("LANDFALL_HOSTED_TARGET_INVALID");
   if (!["development", "candidate", "closure"].includes(tier)) throw new Error("LANDFALL_HOSTED_TIER_INVALID");
+  if (
+    target === "darwin-primitives" &&
+    (tier !== "development" || selectedScenarios !== undefined || selectedProfiles !== undefined)
+  )
+    throw new Error("LANDFALL_HOSTED_DARWIN_PRIMITIVES_SCOPE_INVALID");
   if (
     target === "android-journal" &&
     selectedScenarios !== undefined &&
@@ -83,6 +89,7 @@ export async function dispatchLandfallHostedLab(
     .replaceAll("__CANDIDATE_SHA12__", candidate.slice(0, 12))
     .replaceAll("__CANDIDATE_SHA__", candidate)
     .replaceAll("__RUN_PROVIDERS__", String(target === "all" || target === "provider"))
+    .replaceAll("__RUN_DARWIN_PRIMITIVES__", String(target === "darwin-primitives"))
     .replaceAll("__RUN_BROWSER__", String(target === "all" || target === "browser"))
     .replaceAll("__RUN_APPLE__", String(target === "all" || target === "ios"))
     .replaceAll(

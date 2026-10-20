@@ -10,6 +10,43 @@ concurrency:
   group: landfall-device-lab-${{ github.ref_name }}
   cancel-in-progress: false
 jobs:
+  darwin-primitives:
+    if: __RUN_DARWIN_PRIMITIVES__
+    name: Host / Darwin task-port feasibility (development only)
+    runs-on: macos-15
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: __CANDIDATE_SHA__
+          fetch-depth: 0
+      - name: Observe only finite owned direct children; no guardian or account installation
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_ACTIONS" = true
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$(git rev-parse HEAD)" = __CANDIDATE_SHA__
+          umask 077
+          mkdir -p artifacts/sounding-line/darwin-primitives
+          clang -Wall -Wextra -Werror .agents/scripts/darwin-process-primitives.c -o "$RUNNER_TEMP/darwin-primitives-build" -lbsm -lproc
+          owned_probe=$(sudo -n mktemp -d /private/tmp/vw-darwin-primitives.XXXXXXXX)
+          case "$owned_probe" in /private/tmp/vw-darwin-primitives.*) ;; *) exit 1 ;; esac
+          cleanup_probe() {
+            sudo -n rm -f -- "$owned_probe/probe"
+            sudo -n rmdir -- "$owned_probe"
+          }
+          trap cleanup_probe EXIT
+          sudo -n install -m 700 "$RUNNER_TEMP/darwin-primitives-build" "$owned_probe/probe"
+          sudo -n env GITHUB_ACTIONS=true RUNNER_ENVIRONMENT=github-hosted "$owned_probe/probe" __CANDIDATE_SHA__ > artifacts/sounding-line/darwin-primitives/observations.json
+          shasum -a 256 .agents/scripts/darwin-process-primitives.c > artifacts/sounding-line/darwin-primitives/source.sha256
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: darwin-primitives-__CANDIDATE_SHA__
+          path: artifacts/sounding-line/darwin-primitives
+          if-no-files-found: warn
+          retention-days: 14
   browser:
     if: __RUN_BROWSER__
     name: Browser / optimized first-party Phase 4
