@@ -3,7 +3,7 @@ title: Sextant Phase 4 virtual completion continuation
 audience: engineering
 status: in-progress-not-phase-acceptance
 canonical_for: sextant-phase4-virtual-completion-20261019
-last_reviewed: 2026-10-19
+last_reviewed: 2026-10-20
 ---
 
 # Sextant Phase 4 virtual completion continuation
@@ -1007,3 +1007,5 @@ Four fixed runs at `91269f5ccf0f8d46c377fe1c47a513be283164dc` are harvested with
 The account run39366698914 reaches real registration, wrong/valid verification, password replacement, primary email confirmation, deactivation/reactivation, scheduled deletion/cancellation, same-owner return and final unchanged independent ACTIVE/edition baselines. Its original receipts explicitly report `dirty: true`, tree `fff049868faa382c23c5e1a7f86cc115d4c4ee10` and fingerprint `868e0279da976a40acb6809beb3af0c948a8d8924744c4440198402215192331`. That provenance issue requires source/runtime-output investigation; passing assertions alone do not establish clean-source acceptance.
 
 The [invitation failure](evidence/20261019-invitation-pin-alert-diagnostic/publication-index.json) preserves six originals. Run39366710226 fails four variants after actual short-code lookup and wrong-PIN rejection: a global alert selector matches both the real PIN error and Next's route announcer. No valid acceptance, claim, merge or final-baseline proof follows. The narrow successor scopes the unchanged error text and capture to the actual invitation main; every PIN response, immediate invitation/membership boundary and final assertion remains. Its56683618-byte encrypted diagnostic remains at the indexed owned location with SHA256 `b2958988bde7f65d644fe2d7eaa9bbbe9fbe2ee455178677f2a47fed1f28da24`; no decryption or retention-budget change occurred. These302 originals are engineering evidence and grant no formal, protected, native, physical or owner acceptance.
+
+The39366710226 successor scopes both the actual wrong-PIN alert assertion and its screenshot target to `main.invitation-page`, excluding the global route announcer while retaining the same error text, response400, immediate invitation/membership checks and every final invariant/timing budget. Full TypeScript, focused ESLint and formatting pass. The canonical generic browser runner writes transactional challenge deliveries to `.sounding-line-SHA12.outbox/outbox/messages.jsonl`; these task-local outputs are now ignored to keep challenge material out of Git. This does not modify runtime paths, source identity, validation guards or historical dirty receipts. The old account run remains dirty/unaccepted as clean-source proof pending independent audit; a fresh fixed account run will establish the successor identity explicitly. Neither source correction changes a completed catalog capability.

@@ -108,5 +108,7 @@ next-env.d.ts
 
 # task-local validation receipts
 /artifacts/
+# Canonical generic-browser transactional test deliveries can contain challenges.
+/.sounding-line-*.outbox/
 # Retired root planning document. Do not reintroduce it without an active owner-approved system.
 PLANS.md

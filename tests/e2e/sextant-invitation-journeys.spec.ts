@@ -190,7 +190,10 @@ for (const viewport of [
         await measure(
           "Actual wrong invitation PIN rejection",
           () => page.getByRole("button", { name: "Accept and Join Voyage", exact: true }).click(),
-          () => expect(page.getByRole("alert")).toHaveText("The invitation PIN was not accepted."),
+          () =>
+            expect(page.locator("main.invitation-page").getByRole("alert")).toHaveText(
+              "The invitation PIN was not accepted.",
+            ),
         );
         expect((await rejected).status()).toBe(400);
         expect(
@@ -202,7 +205,11 @@ for (const viewport of [
         ).toEqual(beforeWrongInvitations);
         expect(await readInvitedMemberships()).toEqual(beforeWrongMemberships);
         expect((await db.playerProfile.findUniqueOrThrow({ where: { id: claimProfileId } })).accountId).toBeNull();
-        await capture("invitation-pin-rejected", page.getByRole("alert"), ".invitation-page");
+        await capture(
+          "invitation-pin-rejected",
+          page.locator("main.invitation-page").getByRole("alert"),
+          ".invitation-page",
+        );
         const accept = async (name: string) => {
           await page.getByLabel("Invitation PIN", { exact: true }).fill("4826");
           const response = page.waitForResponse(
