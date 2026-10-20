@@ -62,13 +62,14 @@ Parallax does **not** own:
 
 - [NCL-01 TestFlight deployment](NCL01_TestFlight_Deployment.md) records the
   isolated signing path and owner-reported installation, native sign-in and
-  camera display of the original 3D models. Build 0.1.0 (5) is available in
-  internal TestFlight with the official owner-supplied dark compass icon and the
-  stable public HTTPS address. Both compiled icon resources were inspected.
-  The owner approved a tighter, pivot-centered revision; the reusable
+  camera display of the original 3D models. Build 0.1.0 (6) is available in
+  internal TestFlight with the owner-approved larger, pivot-centered official
+  dark compass icon and the stable public HTTPS address. The reusable
   [official logo](../../../../native/ios/Branding/VoyageWright-Logo.official.png)
-  and iOS icon are saved and independently reviewed. Build 0.1.0 (6) distribution
-  is pending; the original owner artwork and build-5 proof are preserved.
+  and iOS icon are saved and independently reviewed. Signed archive/export/upload
+  and Apple processing passed; actual compiled icons were verified and visually
+  inspected. The original owner artwork and build-5 proof are
+  preserved.
   The separate classroom
   Chronicle passed canonical publication, authenticated asset and accessible
   browser checks. The owner reports classroom objects visible when panning the
@@ -76,7 +77,7 @@ Parallax does **not** own:
   scene's appearance/placement. Exact phone build, all three objects, measured
   tracking/interactions and full room integration remain unverified or unfinished.
   Owner-approved Cloudflare publication, public TLS/auth/Journal/static checks
-  and desktop sign-in presentation pass. Exact build 5 phone behavior is pending;
+  and desktop sign-in presentation pass. Exact build 6 phone behavior is unverified;
   the owner reports cellular reachability. Existing routes/services are preserved.
   PR #741 is not merged.
 

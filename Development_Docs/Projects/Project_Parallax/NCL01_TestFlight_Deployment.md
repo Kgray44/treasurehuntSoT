@@ -22,31 +22,33 @@ objects through its native AR camera. This is owner-reported physical display;
 exact build readback, measured tracking/alignment, Inspect and lifecycle behavior
 have not been verified.
 
-**Current gate:** private beta **0.1.0 (5)** is available in the existing internal
+**Current gate:** private beta **0.1.0 (6)** is available in the existing internal
 TestFlight group for **https://ncl01.absoluterelativesystems.com**.
-[Run 39463443972 passed](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39463443972)
-against candidate `785eb61ed33b2e261ae944c53f53c95886e4c521`; its
-[readiness receipt](evidence/ncl01-testflight-20261019/internal-testflight-ready-build5-20261020.receipt.json)
-binds Apple `VALID` / `IN_BETA_TESTING`, **NCL-01 Owner**, 13 exported-IPA checks
-and exact credential/transport cleanup. It packages the owner-supplied official
-dark brass compass icon; both compiled icon resources changed from build 4 and
-were visually inspected. The public production preview passed
+[Run 39517035615 passed](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39517035615)
+against candidate `fbd3c7402cec3ae3d374b73c218968bc07daa06a`; its
+[readiness receipt](evidence/ncl01-testflight-20261019/internal-testflight-ready-build6-20261020.receipt.json)
+binds signed archive/export/upload, Apple `VALID` / `IN_BETA_TESTING`, the existing
+**NCL-01 Owner** group, 13 exported-IPA checks and credential cleanup. Both actual
+compiled icon resources were verified and visually inspected: the owner-approved
+tighter official compass, leaf and star are intact, with the needle pivot centered.
+Exact transport deletion with an expected-SHA lease and fresh absence proof passed.
+The public production preview passed
 normal TLS/auth/assets/Journal checks and repaired static-file delivery. Root
 visually confirmed styled, hydrated account sign-in after a normal reload.
 The owner reports cellular phone reachability, but corrected phone presentation,
-exact build 5 installation/icon appearance/native sign-in and AR are still owner gates. Earlier
+exact build 6 installation/icon appearance/native sign-in and AR remain unverified. Earlier
 native camera/model visibility remains owner-reported; authored appearance,
 all-three-object confirmation, Inspect, tracking/drift and alignment remain
 unverified or unaccepted. Full Scene/room registration is unfinished. Builds 2,
-3, 4 and 5 are consumed; never upload them again.
+3, 4, 5 and 6 are consumed; never upload them again.
 
 **Approved icon revision:** the owner approved the tighter compass framing, then
 requested the needle pivot centered and authorized completion without another
 preview check. The [saved official logo](../../../../native/ios/Branding/VoyageWright-Logo.official.png)
-and 1024-pixel iOS icon are prepared for **0.1.0 (6)**. Independent image review
+and 1024-pixel iOS icon are included in **0.1.0 (6)**. Independent image review
 confirms subpixel centering, with the compass, leaf and star retained. This is an
 edited revision; the owner's original remains unchanged. Build 6 upload,
-processing and internal availability are pending; build 5 remains available.
+processing and internal availability have passed.
 This revision is prepared on owned branch `codex/ncl01-testflight-icon-center`.
 
 The owner has now created the explicit identifier and app record. Their screenshots
@@ -166,8 +168,8 @@ packaged PNG SHA-256 is
 `f60c10774d2e206cee973f62d2528cc3a989d422cf2ec2aa3df80c4d40562b3b`.
 The [source artwork receipt](evidence/ncl01-testflight-20261019/app-icon-20261020/source-artwork-verification.json)
 records source identity, output pixels/metadata and independent visual review.
-Existing AppIcon catalog selection stays unchanged. Build **0.1.0 (5)** is now
-available in **NCL-01 Owner** at the same stable origin. Its signed archive,
+Existing AppIcon catalog selection stays unchanged. Build **0.1.0 (5)** reached
+**NCL-01 Owner** at the same stable origin. Its signed archive,
 exported IPA and Apple processing passed. Source PNG hashes are bound to exact
 candidate `785eb61e`; compiled icon bytes have their own separate identities.
 Both 120-pixel iPhone and 152-pixel iPad packaged icon resources changed from
@@ -202,8 +204,21 @@ measures the 1024-pixel icon pivot at `(511.6214, 511.5015)` against canvas cent
 The 1254-pixel logo's radial inner-edge fit places it at `(626.5058, 626.4207)`
 against `(626.5, 626.5)`. Shading, antialiasing and the illustrated aperture's
 noncircularity produce method-dependent subpixel estimates; this is not a claim
-of mathematically zero error. Build **0.1.0 (6)** is the next isolated upload;
-its signed/compiled resources and Apple availability remain to be verified.
+of mathematically zero error. Build **0.1.0 (6)** passed signed archive/export,
+upload and Apple processing against candidate `fbd3c7402cec3ae3d374b73c218968bc07daa06a`.
+Apple build `3d3af465-cef2-4363-8ac8-0adea36fc9f0` is `VALID` /
+`IN_BETA_TESTING` in **NCL-01 Owner**, with `usesNonExemptEncryption=false`.
+The exported IPA is 5,389,779 bytes, SHA-256
+`7c074fffbb1b4531865dfe1684a222fa064063782b480a2e7f693d4e2231aabd`.
+The [signed verification](evidence/ncl01-testflight-20261019/signed-39517035615/verification.json)
+retains the software distribution proof. All 13 exported-IPA checks passed.
+The [compiled-icon verification](evidence/ncl01-testflight-20261019/signed-39517035615/compiled-icon-verification.json)
+records that the actual 120-pixel iPhone icon, 152-pixel iPad icon and `Assets.car`
+changed from build 5. Root visually inspected losslessly decoded copies of both
+packaged icons and confirmed the larger centered compass, leaf and star.
+Exact transport deletion with an expected-SHA lease and fresh absence proof passed.
+The signed verification manifest binds 18 retained evidence members; phone appearance
+is unverified.
 This cosmetic revision preserves the native camera/AR implementation, Scene,
 account, HTTPS origin and services. Website and Android icons are unchanged.
 
@@ -295,10 +310,10 @@ substitute for them.
 
 ## Processing, installation and physical acceptance
 
-The signed pipeline uploaded build 5, Apple processing reached `VALID`, and the
+The signed pipeline uploaded build 6, Apple processing reached `VALID`, and the
 processed build was assigned to **TestFlight → Internal Testing → NCL-01 Owner**.
 Fresh API checks confirm `IN_BETA_TESTING` and `usesNonExemptEncryption=false`.
-The existing account-holder group is reused; availability does not prove build 5
+The existing account-holder group is reused; availability does not prove build 6
 installation. The owner earlier
 reported native sign-in and original-model camera display. No duplicate
 invitation, external public testing group or App Store release was made. See Apple's
@@ -307,7 +322,7 @@ and [internal testing](https://developer.apple.com/help/app-store-connect/test-a
 instructions.
 
 Open TestFlight, select **VoyageWright Landfall** and
-confirm **0.1.0 (5)**, then tap **Update** and **Open**. The official compass icon
+confirm **0.1.0 (6)**, then tap **Update** and **Open**. The larger, centered official compass icon
 is packaged in this build. A new invitation is not
 needed for the existing tester. Sign into the existing
 synthetic NCL account through the stable address. The unchanged values are in
@@ -329,10 +344,10 @@ static PBR objects; chest-lid and compass-needle articulation are unsupported.
 Record separate outcomes for (1) signed upload, (2) processed/internal-test
 availability, (3) exact-build TestFlight installation, (4) native camera/ARKit
 tracking and visible original models, (5) physical interaction/lifecycle behavior,
-and (6) owner acceptance. Build 5 upload/internal-test availability have retained
+and (6) owner acceptance. Build 6 upload/internal-test availability have retained
 software proof; installation, native sign-in and physical camera display are
 owner-reported for earlier trials, as is warning-free LAN Safari access. Cellular
-reachability on the stable hostname is owner-reported; exact build 5 connectivity
+reachability on the stable hostname is owner-reported; exact build 6 connectivity
 and physical behavior have not yet been confirmed.
 The later classroom report below confirms owner-reported native object visibility,
 with exact build readback, all three objects, measured tracking/alignment,

@@ -194,8 +194,8 @@ SHA71a2979a8a2ab6a43f3ec9fa1d7f14fb7147deda5887883f22a22a382cd240bc.
 Build5 used the entire artwork resized1024RGB with Pillow12.2.0 LANCZOS;
 fileSHAf60c10774d2e206cee973f62d2528cc3a989d422cf2ec2aa3df80c4d40562b3b.
 Source/output and exact decoded pixels were independently reviewed. That historical
-build preserved composition, background and margins without a generative redraw. Build0.1.0(5) is
-available at the same stable origin and signing setup. Run39463443972 SUCCESS
+build preserved composition, background and margins without a generative redraw. Build0.1.0(5)
+reached the same stable origin and signing setup. Run39463443972 SUCCESS
 binds exact785eb61ed33b2e261ae944c53f53c95886e4c521, real archive/export/upload,
 Apple VALID/IN_BETA_TESTING and existing NCL-01 Owner group. All13 IPA checks,
 credentials cleanup and exact transport SHA-lease deletion/absence passed.
@@ -223,9 +223,22 @@ libvips8.18.7, mirrored32px background padding, bicubic translation and Lanczos3
 resize. The independent final-center-review.original.json in
 app-icon-centered-20261020 records multiple subpixel pivot measurements; preserve
 its method-dependent uncertainty rather than claiming zero mathematical error.
-Build0.1.0(6) is prepared for the same isolated signing/upload path; it is not yet
-proved uploaded, processed or available. Until that proof is retained, build5 is
-the available internal beta. This artwork-only revision changes no camera/AR,
+Build0.1.0(6) is available in the same existing NCL-01 Owner internal group.
+Run39517035615 SUCCESS binds candidatefbd3c7402cec3ae3d374b73c218968bc07daa06a,
+signed archive/export/upload, Applebuild3d3af465-cef2-4363-8ac8-0adea36fc9f0
+VALID/IN_BETA_TESTING and signing cleanup; usesNonExemptEncryption=false.
+IPA5389779B SHA7c074fffbb1b4531865dfe1684a222fa064063782b480a2e7f693d4e2231aabd.
+Evidence is signed-39517035615/verification.json and
+internal-testflight-ready-build6-20261020.receipt.json. All13 exportedIPAchecks
+passed. Both actual120/152 compiled icons and Assets.car changed from5; root
+visually inspected losslessly decoded viewing copies and confirmed the larger
+centered official compass, leaf and star. compiled-icon-verification.json retains
+their separate identities. Exact transportb59a7915fb615ff2e1d85059448610b3aaa04830
+deletion with expectedSHAlease and fresh absence proof passed. The signed
+verification manifest binds18 retained members. Build6 is
+consumed; never upload it again. Exact-build phone installation/icon appearance/
+native behavior remain unverified; no further owner preview approval is required.
+This artwork-only revision changes no camera/AR,
 TLS, services, account, data or Scene behavior; website/Android icons are unchanged.
 
 Success is the owner installing this exact beta through TestFlight, opening
