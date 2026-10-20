@@ -280,6 +280,11 @@
       "reviewer": "/root/sextant_source_review",
       "disposition": "R39366698914_01_SOURCE_CORRECTION_CLEAR",
       "scope": "SOURCE_ONLY_FRESH_RENDERED_REVIEW_REQUIRED"
+    },
+    "privateHoverAndInvitationDiagnosticPreparation": {
+      "reviewer": "/root/sextant_source_review",
+      "disposition": "SCOPED_PRIVATE_HOVER_AND_EXISTING_BUDGET_OPACITY_READINESS_AND_NONSECRET_DIAGNOSTICS_SOURCE_CLEAR",
+      "scope": "SOURCE_ONLY_FRESH_EXECUTION_AND_RENDERED_REVIEW_REQUIRED"
     }
   },
   "localChecks": {
@@ -3071,12 +3076,12 @@
       },
       "independentRenderedReview": {
         "reviewer": "/root/sextant_source_review",
-        "status": "REPAIR_AND_RECAPTURE_HASH_AND_SOURCE_AUDIT_IN_PROGRESS",
+        "status": "REPAIR_AND_RECAPTURE",
         "hashedFiles": 86,
         "hostedArtifacts": 83,
         "pngCount": 36,
         "videoCount": 40,
-        "videos": "NOT_YET_VIEWED",
+        "videos": "HASH_ONLY_NOT_VIEWED",
         "pngInspected": 36,
         "resolvedFindings": ["R39363230222-01"],
         "findings": [
@@ -3091,7 +3096,11 @@
             ],
             "repair": "SCOPED_ENABLED_PRIVATE_PRIMARY_HOVER_BRASS_BACKGROUND_AND_REAL_SETTLED_HOVER_CONTRAST_CAPTURE"
           }
-        ]
+        ],
+        "sourceTree": "fff049868faa382c23c5e1a7f86cc115d4c4ee10",
+        "sourceFingerprint": "cf8d419efec2a5de0680d3509969dd889dcf9027a49ac48979ff82ae25b01130",
+        "fingerprintBlobCount": 1952,
+        "storageDisposition": "CREATION_BOUND_EXACT_ROOT_REMOVAL_AFTER_CANONICAL_PROCESS_CLEANUP_COHERENT_AT_RECEIPT_TIME_NO_MEMORY_ZEROIZATION_CLAIM"
       },
       "storage": {
         "schemaVersion": 1,
@@ -3271,12 +3280,12 @@
       },
       "independentRenderedReview": {
         "reviewer": "/root/sextant_source_review",
-        "status": "IN_PROGRESS_CONFIRMED_EMAIL_CHANGE_TERMINAL_ACTION_FINDING",
+        "status": "REPAIR_AND_RECAPTURE",
         "hashedFiles": 117,
         "hostedArtifacts": 114,
         "pngCount": 52,
         "videoCount": 56,
-        "videos": "NOT_YET_VIEWED",
+        "videos": "HASH_ONLY_NOT_VIEWED",
         "sourceFingerprintVerified": true,
         "fingerprintBlobCount": 1952,
         "sourceDisposition": "FROZEN_FINGERPRINT_MATCHES_ALL_FOUR_ORIGINAL_DIRTY_FLAGS_RETAINED_FULL_PORCELAIN_NOT_RECORDED",
@@ -3295,7 +3304,9 @@
             "repair": "TERMINAL_CONFIRMATION_STATE_BOUND_TO_ACTUAL_TOKEN_DISABLE_CONSUMED_ACTION_GUARD_DUPLICATE_SUBMIT_PRESERVE_SIGN_IN_RETURN",
             "status": "SOURCE_REPAIR_PREPARED_FRESH_EXECUTION_AND_REVIEW_REQUIRED"
           }
-        ]
+        ],
+        "pngInspected": 52,
+        "scope": "ALL_52_PNG_SOURCE_AND_RUNTIME_REVIEW_COMPLETE_DIRTY_PROVENANCE_QUALIFIED"
       },
       "sourceDisposition": "DIRTY_TRUE_PRESERVED_NO_CLEAN_SOURCE_ACCEPTANCE",
       "assertions": {

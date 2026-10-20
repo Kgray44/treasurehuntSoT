@@ -20,6 +20,9 @@ last_reviewed: 2026-10-20
 
 ### Corrected
 
+- Private Chronicle import confirmation retains readable ink and brass fill while
+  hovered in the Sextant candidate.
+
 - The Sextant candidate keeps a successful primary email change terminal: its
   consumed confirmation stays disabled and the sign-in return remains available.
 

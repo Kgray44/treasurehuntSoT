@@ -177,6 +177,38 @@ for (const viewport of [
         await expect(page.getByRole("button", { name: "Confirm private import", exact: true })).toBeInViewport({
           ratio: 1,
         });
+        const confirmImport = page.getByRole("button", { name: "Confirm private import", exact: true });
+        await measure(
+          "Settled readable private confirmation hover",
+          () => confirmImport.hover(),
+          async () => {
+            await expect(confirmImport).toHaveCSS("background-color", "rgb(240, 213, 148)");
+            await expect(confirmImport).toHaveCSS("background-image", "none");
+            await expect(confirmImport).toHaveCSS("color", "rgb(27, 19, 6)");
+          },
+        );
+        const confirmationHoverContrast = await confirmImport.evaluate((element) => {
+          const style = getComputedStyle(element);
+          const luminance = (css: string) => {
+            const channels = css
+              .match(/[\d.]+/g)
+              ?.slice(0, 3)
+              .map(Number);
+            if (channels?.length !== 3) throw new Error("SEXTANT_PRIVATE_CONFIRMATION_COLOR_UNAVAILABLE");
+            return channels
+              .map((channel) => {
+                const value = channel / 255;
+                return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+              })
+              .reduce((sum, value, index) => sum + value * [0.2126, 0.7152, 0.0722][index], 0);
+          };
+          const foreground = luminance(style.color),
+            background = luminance(style.backgroundColor);
+          return (Math.max(foreground, background) + 0.05) / (Math.min(foreground, background) + 0.05);
+        });
+        expect(confirmationHoverContrast, "Hovered private confirmation stays readable").toBeGreaterThanOrEqual(4.5);
+        await expect(confirmImport).toBeInViewport({ ratio: 1 });
+        await expect(inspectedStatus).toBeInViewport({ ratio: 1 });
         await capture("private-content-plan-confirmation", inspectedStatus);
         let importId = "";
         await measure(
@@ -314,6 +346,7 @@ for (const viewport of [
               unchangedActiveProgressAndEditionBytes: true,
               noPublishedVersionOrVoyageCreated: true,
               assetsIncluded: 0,
+              confirmationHoverContrast,
               realPrivateContentUsed: false,
               formalPositiveFileInputCovered: false,
               protectedAcceptance: false,

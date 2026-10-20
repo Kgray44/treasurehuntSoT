@@ -1,5 +1,5 @@
 // @sounding-line-registration owner=project-sextant suite=browser.sextant contracts=sextant.shared-consumers.invitation-guest-recovery
-import { test, expect, type Locator } from "@playwright/test";
+import { test, expect, type Locator, type Response } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { existsSync, readFileSync } from "node:fs";
 import { writeFile } from "node:fs/promises";
@@ -28,6 +28,7 @@ for (const viewport of [
       test.use({ viewport, contextOptions: { reducedMotion } });
       test("actual code/link invitations, PIN rejection, guest claim and existing-account merge preserve Voyage progress", async ({
         page,
+        context,
         baseURL,
       }, info) => {
         if (!baseURL) throw new Error("SEXTANT_INVITATION_BASE_URL_REQUIRED");
@@ -78,7 +79,13 @@ for (const viewport of [
         const main = page.getByRole("main");
         const heading = (name: string) => page.getByRole("heading", { name, exact: true, level: 1 });
         const owner = (name: string) => page.getByRole("button", { name, exact: true });
+        const settledCrew = async () => {
+          const cards = main.locator(".muster-crew-card");
+          await expect(cards.first()).toBeVisible();
+          for (const card of await cards.all()) await expect(card).toHaveCSS("opacity", "1");
+        };
         const capture = async (name: string, target: Locator, scope: string) => {
+          if (scope === ".muster-scene") await settledCrew();
           expect((await new AxeBuilder({ page }).include(scope).analyze()).violations).toEqual([]);
           await target.scrollIntoViewIfNeeded();
           await expect(target).toBeInViewport({ ratio: 1 });
@@ -119,6 +126,7 @@ for (const viewport of [
               await expect(page).toHaveURL(new RegExp(`/player/playthroughs/${invitedId}$`));
               await expect(main).toHaveClass(/muster-scene/u);
               await expect(heading(fixture.title)).toBeVisible();
+              await settledCrew();
             },
           );
           await expect(owner(name)).toBeVisible();
@@ -222,6 +230,7 @@ for (const viewport of [
               await expect(page).toHaveURL(new RegExp(`/player/playthroughs/${invitedId}$`));
               await expect(main).toHaveClass(/muster-scene/u);
               await expect(heading(fixture.title)).toBeVisible();
+              await settledCrew();
             },
           );
           expect((await response).status()).toBe(200);
@@ -297,9 +306,72 @@ for (const viewport of [
         await expect(page).toHaveURL(new URL("/", baseURL).toString());
 
         // Follow the second actually issued secure link; no cookie or session is fabricated.
-        await page.goto(new URL(mergeInvitation.link).pathname);
-        await expect(page).toHaveURL(/\/player\/invitation$/u);
-        await expect(heading(fixture.title)).toBeVisible();
+        const linkPath = new URL(mergeInvitation.link).pathname;
+        const observations: Array<Record<string, unknown>> = [];
+        const pendingObservations: Promise<void>[] = [];
+        let observedResponses = 0;
+        const observeSecondLink = (response: Response) => {
+          const pathname = new URL(response.url()).pathname;
+          if (![linkPath, "/api/invitations/resolve"].includes(pathname) || observedResponses++ >= 6) return;
+          pendingObservations.push(
+            (async () => {
+              if (pathname === linkPath) {
+                const location = response.headers().location;
+                observations.push({
+                  operation: "ISSUED_LINK_REDIRECT",
+                  status: response.status(),
+                  redirectOriginMatchesBase: location
+                    ? new URL(location, response.url()).origin === new URL(baseURL).origin
+                    : null,
+                });
+              } else {
+                const result = (await response.json().catch(() => null)) as {
+                  code?: string;
+                  invitation?: { id?: string };
+                } | null;
+                observations.push({
+                  operation: "ACTUAL_PENDING_INVITATION_RESOLVE",
+                  status: response.status(),
+                  code: [
+                    "INVALID",
+                    "EXPIRED",
+                    "REVOKED",
+                    "REPLACED",
+                    "DECLINED",
+                    "CONSUMED",
+                    "ACCOUNT_REQUIRED",
+                  ].includes(result?.code ?? "")
+                    ? result!.code
+                    : null,
+                  invitationMatchesSecondIssuedIdentity: result?.invitation?.id === mergeInvitation.id,
+                });
+              }
+            })(),
+          );
+        };
+        page.on("response", observeSecondLink);
+        try {
+          await page.goto(linkPath);
+          await expect(page).toHaveURL(/\/player\/invitation$/u);
+          await expect(heading(fixture.title)).toBeVisible();
+        } finally {
+          page.off("response", observeSecondLink);
+          // Metadata only; diagnostic faults never replace the actual browser assertion.
+          try {
+            await Promise.allSettled(pendingObservations);
+            const cookies = await context.cookies(page.url());
+            console.log(
+              "SEXTANT_INVITATION_SECOND_LINK",
+              JSON.stringify({
+                observations,
+                currentOriginMatchesBase: new URL(page.url()).origin === new URL(baseURL).origin,
+                pendingCookiePresent: cookies.some((cookie) => cookie.name === "chronicle_pending_invitation"),
+              }),
+            );
+          } catch {
+            console.warn("SEXTANT_INVITATION_SECOND_LINK_DIAGNOSTIC_UNAVAILABLE");
+          }
+        }
         await expect(page.getByLabel("Your display name", { exact: true })).toHaveValue(fixture.mergeName);
         await capture("invitation-secure-link-prepared", heading(fixture.title), ".invitation-page");
         await accept(fixture.mergeName);

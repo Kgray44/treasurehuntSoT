@@ -73,3 +73,5 @@ Voyagewright provides role-aware access, privacy settings, accessible interactio
 Landfall's protected physical/virtual v1.1 implementation adds authored-unit virtual context and bounded independent-source qualification. Physical rooms default to private Chronicle-authorized evaluation; broad approximate regions use intentionally reduced precision. A two-source physical check combines foreground location and deliberate Player confirmation. Watchglass remains unconfigured with an authored fallback. The [amendment record](../../Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_3_v1.1_Amendment_Record.md) records exact protected qualification, full acceptance and landed closure evidence.
 
 In the Sextant candidate, a successful primary email change disables its consumed confirmation and keeps **Sign in with the new email** available. The candidate correction still requires experience qualification.
+
+The candidate also preserves the readable brass confirmation action while hovering over a private package import. This correction remains under experience qualification.

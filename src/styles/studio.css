@@ -2898,6 +2898,10 @@ html[data-voyage-theme="light"] .studio-no-editable-draft__details dt {
 .studio-private-content__import {
   grid-row: span 2;
 }
+.studio-private-content .tale-card-actions button.primary:hover:not(:disabled) {
+  color: #1b1306;
+  background: var(--brass-100);
+}
 .studio-private-content__history {
   grid-column: 2;
 }

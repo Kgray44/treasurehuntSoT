@@ -29,8 +29,9 @@ recapture passes four with unchanged final baselines; independent70hash/30PNG
 review resolves the pale parchment heading/intro/helper finding and reviews the
 added Chapter/Edit and desktop empty-Inspector captures. Private Chronicle outcome recapture39366688335 and Admiralty identity/masthead
 recapture39366678779 pass four variants at their frozen source, with separate
-runtime/transport cleanup and Private exact-root storage removal. Independent
-review is pending. Account39366698914 passes the full synthetic registration,
+runtime/transport cleanup and Private exact-root storage removal. Independent Admiralty review clears all 40 PNGs and resolves both prior findings.
+Private review resolves its capture gap but finds dark ink on the mobile import
+confirmation hover; a scoped repair and actual hover contrast check await recapture. Account39366698914 passes the full synthetic registration,
 password/email recovery and reversible lifecycle sequence, with unchanged final
 baselines. Its original dirty source flags remain under provenance review; the
 frozen source fingerprint matches all four receipts. Independent review finds
