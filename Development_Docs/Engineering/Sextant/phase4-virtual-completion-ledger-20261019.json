@@ -6,7 +6,7 @@
   "status": "IN_PROGRESS",
   "initialCandidate": "5ff2739776513b8f8ed20c1cb661c164216d0eeb",
   "protectedBase": "f6af0b0e151f15f1a23808413ccee531b9827ca7",
-  "currentSoftwareCandidate": "91269f5ccf0f8d46c377fe1c47a513be283164dc",
+  "currentSoftwareCandidate": "7caf7cced2e6df4c372afe8704a271ff2777f0cf",
   "pr": "https://github.com/Kgray44/treasurehuntSoT/pull/709",
   "independentSourceReview": {
     "reviewerContext": "/root/sextant_source_review",
@@ -285,6 +285,33 @@
       "reviewer": "/root/sextant_source_review",
       "disposition": "SCOPED_PRIVATE_HOVER_AND_EXISTING_BUDGET_OPACITY_READINESS_AND_NONSECRET_DIAGNOSTICS_SOURCE_CLEAR",
       "scope": "SOURCE_ONLY_FRESH_EXECUTION_AND_RENDERED_REVIEW_REQUIRED"
+    },
+    "landfallConditionalPreparation": {
+      "source": "7caf7cced2e6df4c372afe8704a271ff2777f0cf",
+      "reviewer": "/root/sextant_source_review",
+      "disposition": "SOURCE_CLEAR_WITH_LIMITED_FORMAL_COVERAGE_AND_SEPARATE_NATIVE_OBLIGATIONS",
+      "reviewerRanTests": false,
+      "scope": [
+        "EXACT_CURRENT_CANDIDATE_PREFLIGHT_BEFORE_BASELINE_MUTATION",
+        "OWNED_SYNTHETIC_ASSETS_CURRENT_STRICT_DRAFT_CONTRACTS",
+        "ORDINARY_DISTINCT_OWNER_CREW_AUTHORING_AND_PLAYER_JOURNEYS",
+        "EXPLICIT_ZERO_SAMPLE_INCOMPLETE_FALLBACK_RECEIPT",
+        "HONEST_BROWSER_NATIVE_ABSENCE_AND_CAPABILITY_PREREQUISITES",
+        "SIGNED_OFFLINE_PREPARATION_DOWNLOAD_AUTHORIZED_RELOAD_RETURN_REMOVAL",
+        "INVALID_NOTIFICATION_SAFE_RETURN",
+        "NAMED_INSPECTOR_PURPOSEFUL_ACTION_NAMES_AND_EXISTING_ASSERTIONS",
+        "ACTUAL_EXECUTED_HELPER_FINGERPRINTS_AND_PRIOR_CONTRACT_SEMANTIC_PRESERVATION"
+      ],
+      "builderVerification": {
+        "focusedLandfallTests": 20,
+        "typescript": "PASS",
+        "eslint": "PASS",
+        "selectedContractValidation": "PASS",
+        "strictCurrentDraftConfigurationChecks": "PASS",
+        "docsValidation": "PASS",
+        "featureValidation": "PASS"
+      },
+      "runtimeDisposition": "NOT_EXECUTED_CANONICAL_REDIRECT_TRANSPORT_PREREQUISITE_REQUIRES_CAUSAL_TEST"
     }
   },
   "localChecks": {
@@ -3810,7 +3837,7 @@
     "historicalObligations": 141,
     "historicalFamilies": 13,
     "currentAffectedSurfaces": 178,
-    "currentUnregisteredSurfaces": 24,
+    "currentUnregisteredSurfaces": 7,
     "protectedCapturedOrAcceptedByThisContinuation": 0,
     "developmentCapturedVariants": 4,
     "planner": "PRODUCT_EXPERIENCE_UNREGISTERED_SURFACE",
@@ -3818,7 +3845,7 @@
     "reachDiagnostics": "PROTECTED_ACCEPTED_ON_BASE",
     "historicalAccounting": "PRESERVED_SEXTANT_3_OF_3_CROSSDECK_10_OF_3_R1_2_OF_3",
     "registeredNewPlayerWorkspaceSurfaces": 2,
-    "remainingSoftware": "24unregistered at91269f5ccf across179affected; declarations are not acceptance. Private39363230222 passes4 fullsyntheticjourneys/process/transport/exact-rootstoragecleanup,70originalhashes/28PNG independentreview coherent exceptR39363230222-01 evidence-only outcome-messagecapturegap. Admiralty39364691371 passes4 fullread-onlyjourneys/28timings/finalbaselines with77hashes/32PNG reviewed;R39364691371-01 mobileprimaryidentifier/Copyclipping andR-02 masthead/headingcapturegap require repair/recapture. Account39364701888 fails4 after actualregister/verify/reset atduplicatePersonalHarborlinks before email/lifecycle/finalbaselines; scopeactualopenedaccountdialog. Eight issued-invitation/guest-recovery paths are now declared with independentlysource-clear canonicalavailability/actualguestdevelopment and three narrow priorrepair targets; fourfixed91269runs pendingexecution/renderedreview. Landfall, fiveunhostedlegacycomponents, acceptedCrossdeckdisplay/authorizedSpatialpilot, formal reference/layout/protected qualification remain. Canonical formal per-case/challenge/fileinput andDarwincontainment prerequisites andexternal/physical/owner gates remain separate.",
+    "remainingSoftware": "At source7caf7cced2, 179 affected surfaces have7 missing declarations: five unhosted legacy components, accepted Crossdeck display and authorized Spatial pilot. The17 conditional Landfall declarations grant no execution or acceptance credit; eight browser journeys and separate native-host Background/Nearby/issued-return proof remain. Canonical task-owned HTTP redirect origin/cookie handling, Darwin containment and formal per-case/creation/file/challenge/issued-input bindings are internal software prerequisites. Account terminal confirmation is independently reviewed clear at5d440557; Admiralty identity/masthead is clear at91269. Private hover review remains pending at e408. Invitation merge/final proof remains blocked by its observed canonical redirect boundary. Formal reference/layout/protected qualification, physical/device/field and owner acceptance remain separately open.",
     "independentDevelopmentJourneyReview": {
       "source": "0d8b3c7841966a1d1c8b5dae21570b1043dc7915",
       "reviewer": "/root/sextant_source_review",
@@ -3850,12 +3877,12 @@
     "registeredNewPassportSourcePaths": 14,
     "newlyRegisteredAffectedPassportSurfaces": 12,
     "sourceReconciliation": {
-      "path": "phase4-source-reconciliation-invitation-guest-20261019.json",
-      "sha256": "4ca9b3be44192954755b1ad786890706fd6fa88eec8ce15d74d8f0f3f3ea4e3c",
-      "sourceSha": "91269f5ccf0f8d46c377fe1c47a513be283164dc",
+      "path": "phase4-source-reconciliation-landfall-conditional-20261019.json",
+      "sha256": "1a4b728cb6e888da44300929b664542192af0ebf049b278c48e4e468972d02ea",
+      "sourceSha": "7caf7cced2e6df4c372afe8704a271ff2777f0cf",
       "baseSha": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
       "affected": 179,
-      "unregistered": 24,
+      "unregistered": 7,
       "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
     },
     "sourceReconciliations": [
@@ -3993,6 +4020,15 @@
         "baseSha": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
         "affected": 179,
         "unregistered": 24,
+        "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
+      },
+      {
+        "path": "phase4-source-reconciliation-landfall-conditional-20261019.json",
+        "sha256": "1a4b728cb6e888da44300929b664542192af0ebf049b278c48e4e468972d02ea",
+        "sourceSha": "7caf7cced2e6df4c372afe8704a271ff2777f0cf",
+        "baseSha": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
+        "affected": 179,
+        "unregistered": 7,
         "classification": "SOURCE_ONLY_NOT_CAPTURE_OR_ACCEPTANCE"
       }
     ],

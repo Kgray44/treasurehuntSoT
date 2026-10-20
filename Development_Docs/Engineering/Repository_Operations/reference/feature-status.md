@@ -15,7 +15,7 @@ retains source-bound provider proof: 327 focused checks and 59 D0/D1 scenarios,
 Android idle/standby recovery, selected iOS permission/geofence cases and Android
 WebView Devices/Journal development journeys. Later UI changes do not rerun those
 provider results. Normal iOS Devices requires canonical Darwin process ownership.
-The frozen invitation/guest checkpoint has 179 affected surfaces and 24 missing
+The frozen conditional Landfall checkpoint has 179 affected surfaces and 7 missing
 registrations; historical obligations and campaign accounting remain intact.
 
 Independent rendered review clears the specified Passport, safe preview, mobile
@@ -37,12 +37,16 @@ baselines. Its original dirty source flags remain under provenance review; the
 frozen source fingerprint matches all four receipts. Independent review finds
 R39366698914-01: successful email confirmation leaves its consumed action enabled.
 The candidate makes that success terminal and preserves its sign-in return;
-14 focused component cases pass, with fresh capture/review still required.
+14 focused component cases pass. Fresh 5d440557 account capture passes all four
+journeys with clean source; independent 117-file/52-PNG review resolves the
+terminal-confirmation finding within its viewport limits.
 Invitation39366710226 fails four at an ambiguous global alert selector after
 actual wrong-PIN rejection. The successor scopes the same error to the real
 invitation page. Original failures, findings and encrypted diagnostics remain.
-Landfall browser/native obligations, formal mutable bindings and protected
-qualification remain open.
+Landfall now has 17 conditional source declarations with browser/native proof
+pending. The issued-link diagnostic observes an off-origin307, absent applicable
+pending cookie and resolve404; canonical transport repair remains internal software
+work. Formal mutable bindings and protected qualification remain open.
 
 Two new formal contracts replace invalid prose checks with actual DOM identity
 or gateway selectors while retaining all prose requirements and unchanged backend
