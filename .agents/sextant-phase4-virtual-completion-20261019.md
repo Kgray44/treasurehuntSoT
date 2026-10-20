@@ -409,6 +409,19 @@ A single fresh fixed-target attempt at unchanged7b may retry this diagnosed
 pre-product infrastructure failure without increasing timeouts, weakening any
 assertion, or claiming application evidence from the cancelled job.
 
+Prepare the live Admiralty shared-consumer paths through the ordinary account
+menu, Platform Overview, bounded People search, actual synthetic Crew dossier,
+ungranted Support controls and Return to account. Use only a fixed owned
+synthetic ADMINISTRATOR assignment in the existing canonical registry/database;
+the base isolation guard must run before any role inspection/write. Do not
+request consent, verify privileged assurance, perform approved reads, change
+quotas/lifecycle, send messages or invoke commands. Preserve both ACTIVE Voyage
+baselines, exact edition bytes and support/assurance counts. Capture actual
+loaded/empty data and the conditional Tideglass fields without inventing grants.
+AdmiraltyConsole has no production import in current src; retain that historical
+obligation for governed legacy disposition, with no invented host or coverage.
+This is read-only consumer preparation, not broad Admiralty or protected acceptance.
+
 Prepare the public catalog/Tideglass consumer family using a fixed synthetic
 PUBLIC Chronicle with two immutable fixture editions and a separate anonymous
 guest Voyage. Seed only after the canonical owned-isolation guard, refuse
@@ -445,3 +458,7 @@ only pointer-events:none to the artwork, retain its image semantics and content,
 all secondary action/Creator links, original title activation, timing, passive
 observation, privacy and diagnostic budget. Fresh source-bound execution and
 independent rendered review remain required; no unchanged equivalent sweep.
+
+Creator39353027923 passes4 complete journeys with independently verified50hashes/20PNGs and final unchanged state. R39353027923-01 remains a rendered parchment text defect. Correct only local new-form heading/body tokens, retain controls and add actual lower Chapter/Inspector/Edit captures. Community39352498402 passes4 after the pre-product checkout cancellation; rendered review remains pending. Publish all266 originals and retain prior failed records.
+
+Admiralty's named operator group preserves actual canonical name/roles and capability-filtered navigation. Formal setup must not depend on a menu left open before page.goto(entryPoint); use actual owner-button entry/final and operator-group outcome aria-label continuity. Do not fabricate DOM identity or infer backend invariants from it. Narrative checks in public-chronicle/creator-entry must remain as requirements with real selector objects, without weakening original database assertions or changing authority.

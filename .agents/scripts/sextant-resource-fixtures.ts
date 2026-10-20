@@ -37,6 +37,11 @@ const resourceCases = [
   "creator-entry-390-no-preference",
   "creator-entry-390-reduce",
   "creator-entry-default",
+  "admiralty-1280-no-preference",
+  "admiralty-1280-reduce",
+  "admiralty-390-no-preference",
+  "admiralty-390-reduce",
+  "admiralty-default",
 ] as const;
 type ResourceCase = (typeof resourceCases)[number];
 

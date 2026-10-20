@@ -135,6 +135,14 @@ for (const viewport of [
         expect(await db.taleSession.count({ where: { taleId: created.id } })).toBe(0);
         expect(await db.chronicle.count({ where: { creatorAccountId: fixture.ownerId } })).toBe(countBefore + 1);
         await capture("creator-entry-draft", ".tale-editor");
+        const chapterTitle = page.getByRole("textbox", { name: "Chapter 1 title", exact: true });
+        await expect(chapterTitle).toHaveValue("A synthetic opening");
+        await capture("creator-entry-chapter", ".tale-editor", chapterTitle);
+        await capture(
+          "creator-entry-inspector",
+          ".tale-editor",
+          page.getByRole("region", { name: "Passage Inspector", exact: true }),
+        );
         await page.getByRole("link", { name: "← Studio", exact: true }).click();
         const card = page
           .locator(".tale-studio-card")
@@ -142,6 +150,11 @@ for (const viewport of [
         await expect(card).toHaveCount(1);
         await expect(card).toContainText("Not published");
         await capture("creator-entry-library", ".studio-home", card.getByRole("heading", { level: 2 }));
+        await capture(
+          "creator-entry-library-edit",
+          ".studio-home",
+          card.getByRole("link", { name: "Edit Chronicle", exact: true }),
+        );
         await measure(
           "Reopen actual new draft",
           () => card.getByRole("link", { name: "Edit Chronicle", exact: true }).click(),

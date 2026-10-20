@@ -30,6 +30,7 @@ export async function dispatchLandfallHostedLab(
       "sextant-history",
       "sextant-catalog",
       "sextant-creator-entry",
+      "sextant-admiralty",
       "android",
       "android-radio",
       "android-journal",
@@ -77,6 +78,7 @@ export async function dispatchLandfallHostedLab(
       "sextant-history",
       "sextant-catalog",
       "sextant-creator-entry",
+      "sextant-admiralty",
     ].includes(target) &&
     (tier !== "development" || selectedScenarios !== undefined || selectedProfiles !== undefined)
   )
@@ -139,6 +141,7 @@ export async function dispatchLandfallHostedLab(
           "sextant-history",
           "sextant-catalog",
           "sextant-creator-entry",
+          "sextant-admiralty",
         ].includes(target),
       ),
     )
@@ -160,7 +163,9 @@ export async function dispatchLandfallHostedLab(
                     ? "Sextant public catalog, editions and compatibility preparation (development)"
                     : target === "sextant-creator-entry"
                       ? "Sextant ordinary Creator new Chronicle entry (development)"
-                      : "optimized first-party Phase 4",
+                      : target === "sextant-admiralty"
+                        ? "Sextant ordinary Admiralty dossier and ungranted support (development)"
+                        : "optimized first-party Phase 4",
     )
     .replaceAll(
       "__BROWSER_SUITE__",
@@ -173,6 +178,7 @@ export async function dispatchLandfallHostedLab(
         "sextant-history",
         "sextant-catalog",
         "sextant-creator-entry",
+        "sextant-admiralty",
       ].includes(target)
         ? target
         : "landfall",
@@ -231,9 +237,11 @@ export async function dispatchLandfallHostedLab(
                     ? ["sextant-catalog-journeys"]
                     : target === "sextant-creator-entry"
                       ? ["sextant-creator-entry-journeys"]
-                      : target === "browser" || target === "all"
-                        ? ["first-party-phase4-web"]
-                        : [],
+                      : target === "sextant-admiralty"
+                        ? ["sextant-admiralty-journeys"]
+                        : target === "browser" || target === "all"
+                          ? ["first-party-phase4-web"]
+                          : [],
     journal: target === "android-journal" || target === "all" ? ["first-party-native-journal-pair"] : [],
     background:
       target === "android-background" || target === "all"

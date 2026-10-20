@@ -9080,11 +9080,20 @@
           "The fixture creates two canonical immutable synthetic public snapshots atomically and verifies all metadata/checksums on reuse. This is not real publication or Drydock readiness proof.",
           "Only anonymous guest presentation is exercised here; signed-in alias presentation and populated compatibility-cookie history remain distinct obligations.",
           "The actual guest session ID is minted by production start controls. Development binds its URL/membership/current edition to database truth; the formal journey follows dynamic links and actual Journal state without inventing a static ID.",
-          "Journal opening duration is recorded separately; selected 3000ms feedback boundaries do not claim a full opening animation completes within that duration. No progression beyond the first released Passage, real media, location or private content is used."
+          "Journal opening duration is recorded separately; selected 3000ms feedback boundaries do not claim a full opening animation completes within that duration. No progression beyond the first released Passage, real media, location or private content is used.",
+          "Formal continuity checks observe the actual DOM account identity or gateway destination only. The preserved continuity requirements describe separately registered development database assertions and are not established by a DOM attribute digest."
         ],
         "continuity": {
           "objective": "Keep one public Chronicle, exact current edition and actual newly created guest Voyage while all private ACTIVE baselines and public edition bytes remain unchanged",
           "checks": [
+            {
+              "id": "same-gateway-return",
+              "role": "link",
+              "name": "Voyagewright home",
+              "attribute": "href"
+            }
+          ],
+          "requirements": [
             "Development verifies no session before actual Begin Voyage and exactly one afterward with an anonymous active membership.",
             "Exact public edition bytes/checksums and both independent private ACTIVE baselines remain unchanged.",
             "The catalog continuation href equals the actual production-issued guest session URL; final read-only return does not advance its progress."
@@ -9339,7 +9348,8 @@
           "src/components/studio/StudioHome.tsx",
           "src/components/studio/StudioStatusHeader.tsx",
           "src/components/studio/TaleEditor.tsx",
-          "src/components/homeport/AccountSurfaces.tsx"
+          "src/components/homeport/AccountSurfaces.tsx",
+          "src/styles/studio.css"
         ],
         "entryPoint": "/account",
         "states": [
@@ -9415,7 +9425,8 @@
         "limitations": [
           "Source registration and development evidence are not protected, native, physical or owner acceptance.",
           "Development uses separate fixed owned fixtures for all four device/motion cases and actually creates/reopens one private draft through production controls; cancellation and immutable baseline assertions remain. No cover upload, private package workflow or publication readiness is exercised.",
-          "The formal declarative journey currently covers prepared form/cancellation/return only. Its runtime shares a fixture across device/motion cases and has only static fill values, so a fixed creation slug would collide after the first case. Positive formal creation needs canonical case-specific fixture/input support and remains an explicit acceptance gap; no hidden reset or product workaround is used."
+          "The formal declarative journey currently covers prepared form/cancellation/return only. Its runtime shares a fixture across device/motion cases and has only static fill values, so a fixed creation slug would collide after the first case. Positive formal creation needs canonical case-specific fixture/input support and remains an explicit acceptance gap; no hidden reset or product workaround is used.",
+          "Formal continuity checks observe the actual DOM account identity or gateway destination only. The preserved continuity requirements describe separately registered development database assertions and are not established by a DOM attribute digest."
         ],
         "motion": {
           "feedbackBudgetMs": 3000,
@@ -9424,6 +9435,14 @@
         "continuity": {
           "objective": "Preserve existing ACTIVE Voyages and exact published editions while viewing/cancelling the new Chronicle form",
           "checks": [
+            {
+              "id": "owner-account",
+              "role": "button",
+              "name": "Synthetic Sextant Captain-creator-entry-default",
+              "attribute": "aria-label"
+            }
+          ],
+          "requirements": [
             "Development asserts cancellation creates no Chronicle.",
             "Actual development creation produces exactly one private DRAFT, one Chapter, no published version and no Voyage; returned library and reopen use its actual production-issued identity.",
             "Both independent ACTIVE baselines and exact released bytes remain unchanged."
@@ -9524,7 +9543,283 @@
           }
         ]
       }
+    },
+    {
+      "id": "sextant.shared-consumers.admiralty-dossier",
+      "name": "Sextant ordinary Admiralty entry, account dossier and ungranted support return",
+      "authority": "project-sextant",
+      "owners": [
+        "project-sextant",
+        "project-admiralty",
+        "project-homeport",
+        "one-voyage"
+      ],
+      "critical": true,
+      "experience": {
+        "persona": "A nonce-owned synthetic operator using existing canonical global Administrator authority to inspect one known synthetic account",
+        "objective": "Enter Admiralty through ordinary account navigation, read bounded People results and the actual account dossier, inspect ungranted support controls and return to the same account",
+        "visibleOutcome": "Actual authorized operator, bounded account search, known synthetic dossier and explicit privileged-verification/consent boundaries remain visible without performing a support request or read",
+        "integrationOwner": "Sextant consumer verification; Admiralty retains canonical operator authorization, account projections, consent and audit ownership; Homeport retains ordinary account navigation; One Voyage retains progression",
+        "systems": [
+          "project-sextant",
+          "project-admiralty",
+          "project-homeport",
+          "one-voyage"
+        ],
+        "sourcePaths": [
+          "src/app/admin/layout.tsx",
+          "src/app/admin/page.tsx",
+          "src/app/admin/people/page.tsx",
+          "src/app/admin/people/[accountId]/page.tsx",
+          "src/components/admiralty/AdmiraltyShell.tsx",
+          "src/components/admiralty/DossierSupportPanel.tsx",
+          "src/components/admiralty/AdminPrimitives.tsx",
+          "src/components/admiralty/AdminNav.tsx"
+        ],
+        "entryPoint": "/account",
+        "states": [
+          "ADMIRALTY_READY",
+          "KNOWN_CLUE",
+          "EMPTY_SEARCH",
+          "KNOWN_PERSON",
+          "DOSSIER_READY",
+          "UNGRANTED_SUPPORT",
+          "RETURNED"
+        ],
+        "devices": [
+          "DESKTOP",
+          "MOBILE"
+        ],
+        "roles": [
+          "ADMINISTRATOR"
+        ],
+        "roleSetup": {
+          "ADMINISTRATOR": {
+            "entryPoint": "/sign-in?returnTo=%2Faccount",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "sextant.resources-admiralty-default@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Sextant-Resources-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "button",
+              "name": "Synthetic Sextant Captain-admiralty-default",
+              "text": "Synthetic Sextant Captain-admiralty-default"
+            }
+          }
+        },
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected generic gateway hierarchy reference only; actual Admiralty layout and support-control presentation require fresh source-bound review.",
+            "preserve": "Readable ownership, named navigation, visible safe return and constrained keyboard/touch controls; no Admiralty acceptance inferred from this reference."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected generic gateway hierarchy reference only; actual Admiralty layout and support-control presentation require fresh source-bound review.",
+            "preserve": "Readable ownership, named navigation, visible safe return and constrained keyboard/touch controls; no Admiralty acceptance inferred from this reference."
+          }
+        ],
+        "fixtureProfile": "generic",
+        "fixture": "sextant-admiralty-consumers-v1",
+        "recordingRequired": true,
+        "accessibility": "Actual account-menu entry, named Admiralty navigation, bounded labelled People search, real synthetic dossier and support fields at desktop/mobile and normal/reduced motion; development audits all actual task surfaces.",
+        "fallback": "People does not enumerate accounts without a known clue; a nonmatching synthetic search shows its real empty result. Ungranted support controls preserve required verification, consent and exact comparison-pair requirements; no authority or content is fabricated.",
+        "navigation": "Authenticated ordinary account menu opens Admiralty. Its actual People station and known account link open the dossier. Return to account reaches Overview with the same canonical owner.",
+        "designTarget": "Preserve real operator identity, bounded account finding, readable dossier metadata and explicit ungranted support state with visible ordinary return.",
+        "browserTests": [
+          "tests/e2e/sextant-admiralty-journeys.spec.ts"
+        ],
+        "limitations": [
+          "Source registration and development evidence do not grant protected, native, physical or owner acceptance.",
+          "Only the reserved synthetic owner receives the existing canonical global Administrator assignment after the owned database guard; unexpected or revoked roles are refused. No parallel permission or identity system is introduced.",
+          "No privileged assurance, consent request, grant, approved support read or command is performed. Read audit metadata may be appended. Consented support and operational outcomes remain separate requirements.",
+          "The old AdmiraltyConsole component has no production host found in current source and is not declared covered by these live routes.",
+          "Formal continuity observes the actual canonical operator name across ordinary account and Admiralty shells. Unchanged development database baselines retain progression and support requirements; a DOM identity digest alone does not establish backend continuity or authorization.",
+          "Development additionally selects the existing Tideglass scope to inspect its actual conditional immutable-pair fields without submitting; the formal journey here inspects the ungranted account-state controls only."
+        ],
+        "motion": {
+          "feedbackBudgetMs": 3000,
+          "measurement": "Ordinary Admiralty entry, bounded empty/known account search, dossier and account return to actual loaded outcomes; no sleeps, forced clicks or increased timeouts."
+        },
+        "continuity": {
+          "objective": "Preserve the same actual canonical signed-in operator name across account and Admiralty shells while independent ACTIVE Voyage progress and exact released bytes remain unchanged",
+          "checks": [
+            {
+              "id": "same-canonical-operator",
+              "role": "button",
+              "name": "Synthetic Sextant Captain-admiralty-default",
+              "attribute": "aria-label",
+              "destination": {
+                "role": "group",
+                "name": "Synthetic Sextant Captain-admiralty-default",
+                "attribute": "aria-label"
+              }
+            }
+          ],
+          "requirements": [
+            "Development asserts both ACTIVE Voyage baselines and exact published edition bytes remain unchanged.",
+            "Development asserts no support request, grant or privileged assurance is created.",
+            "Formal account-button/operator-group identity digests complement same-owner return assertions; these DOM observations do not establish database invariants or canonical authorization."
+          ]
+        },
+        "journeys": [
+          {
+            "id": "ordinary-known-account-ungranted-support-return",
+            "roles": [
+              "ADMINISTRATOR"
+            ],
+            "outcome": "An actual authorized operator reads one known synthetic account and the ungranted support boundary, then returns to the same ordinary account without privileged actions",
+            "steps": [
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Captain-admiralty-default"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Admiralty"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Platform Overview",
+                "path": "/admin",
+                "state": "ADMIRALTY_READY",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "The actual canonical operator enters the live Admiralty shell through ordinary account navigation.",
+                "text": "Platform Overview"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "People"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Start with a known clue",
+                "path": "/admin/people",
+                "state": "KNOWN_CLUE",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "No account directory is enumerated without a bounded clue.",
+                "text": "Start with a known clue"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Search",
+                "value": "sextant-no-such-person-20261019"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Search"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "No matching account",
+                "path": "/admin/people",
+                "state": "EMPTY_SEARCH",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "The real bounded query reports an honest empty result.",
+                "text": "No matching account"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Search",
+                "value": "sextant-resource-crew-admiralty-default"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Search"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Synthetic Sextant Crew-admiralty-default",
+                "path": "/admin/people",
+                "state": "KNOWN_PERSON",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "The real bounded account search resolves the owned synthetic Crew account.",
+                "text": "Synthetic Sextant Crew-admiralty-default"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Synthetic Sextant Crew-admiralty-default"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Synthetic Sextant Crew-admiralty-default",
+                "path": "/admin/people/sextant-resource-crew-admiralty-default",
+                "state": "DOSSIER_READY",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "The actual authorized account dossier loads without private content or invented permissions.",
+                "text": "Synthetic Sextant Crew-admiralty-default"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Verify for privileged work",
+                "state": "UNGRANTED_SUPPORT"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to account"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Synthetic Sextant Captain-admiralty-default",
+                "path": "/account",
+                "text": "Synthetic Sextant Captain-admiralty-default"
+              }
+            ]
+          }
+        ]
+      }
     }
+
   ],
   "experiencePolicy": {
     "version": 1,

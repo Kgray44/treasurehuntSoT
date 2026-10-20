@@ -9,46 +9,35 @@ last_reviewed: 2026-10-19
 # Current status
 
 The [2026-10-19 Sextant continuation](../../Sextant/Project_Sextant_Phase_4_Virtual_Completion_20261019.md)
-reconciles current accepted main and repairs native location pause, bounded
-interruption recovery, relative-attitude sharing and stale output replies.
-The expanded source passes 327 focused checks and 59 D0/D1 scenarios. Android
-idle/standby recovery and selected iOS permission/geofence cases pass with exact
-source and cleanup receipts. The actual Android WebView Device controls and paired
-Journal development cases pass. Normal iOS Devices proof requires canonical
-Darwin process-supervision support; broader rendered consumer acceptance remains
-pending. The Creator-entry source checkpoint confirms 178 affected surfaces and 43
-missing registrations. Fresh four-variant consumer/resource runs pass at their
-recorded sources; independent rendered review clears the Passport contrast, safe
-preview and mobile authoring-rail repairs. Distinct Creator/Crew development proof now passes with clear independent
-rendered review. Community passes four variants, with earlier intermittent Guide
-cause unconfirmed and a hovered Search glyph contrast repair awaiting recapture.
-Authoring passes the settled drawer and loaded Sea Trials checks in four variants,
-but independent review retains mobile publication-review and Scenario-ledger overflow.
-The Captain resource rerun passes four variants with clear independent review of
-the neutral Crew wording, editor chrome and More menu. Original failures and
-defective passing captures remain preserved. Protected acceptance remains pending.
-The historical completion/provenance successor passes four variants with clear
-independent review of visible content. Lower Book/provenance captures remain
-incomplete. At `3d2d430fe1` the Suite-row bounds and lower history capture journeys
-pass all four; independent authoring review clears visible review clipping but
-finds an overflowing version badge, now awaiting repair proof. The lower history
-and first public catalog/guest/edition journey at `395940ad72` pass independent
-review of displayed content after four development passes, with explicit
-viewport/fallback limits. Full normal Journal opening is separately about ten
-seconds. Community's mobile
-normal Guide failure still needs a product cause;
-trusted pointer observations identify decorative artwork above its stretched
-link with no Guide request. Source-reviewed badge/pointer repairs and explicit
-Suite/badge captures at `7b785a39e3` pass four with independent review resolving
-the full-label spill and showing Suite controls fit. Community's first repair
-attempt stalls in checkout with no product evidence; one exact-source retry runs.
-Distinct-fixture Creator creation/account-return at `818ad35622` exposes Studio
-and Overview landmark defects after actual draft creation; their narrow repair
-passes 21 existing component tests and awaits fresh browser proof.
-positive formal creation still needs canonical case-specific input/fixture support.
-Reach diagnostics are accepted on main; Crossdeck #721
-is still unmerged. The following R1 accounting and older qualification results
-retain their historical source identities.
+retains source-bound provider proof: 327 focused checks and 59 D0/D1 scenarios,
+Android idle/standby recovery, selected iOS permission/geofence cases and Android
+WebView Devices/Journal development journeys. Later UI changes do not rerun those
+provider results. Normal iOS Devices requires canonical Darwin process ownership.
+The frozen Creator landmark checkpoint has 178 affected surfaces and 43 missing
+registrations; historical obligations and campaign accounting remain intact.
+
+Independent rendered review clears the specified Passport, safe preview, mobile
+rail, Captain wording/editor chrome, authoring full-label/Suite and displayed
+historical/catalog repairs at their recorded sources. Viewport, empty-resource
+and chronology-fallback limits remain; normal catalog Journal opening is separately
+about ten seconds. Fresh Community development passes four variants after a
+pre-product checkout cancellation; independent rendered review remains pending.
+Creator creation/reopen/account return passes four with final unchanged baselines
+and repaired landmark axe checks, but rendered review finds pale form heading,
+explanation and helper text on parchment. A local heading/body token correction
+and additive lower mobile captures are prepared. Live Admiralty registration
+prepares bounded account/dossier and ungranted support journeys; fresh source-bound
+execution and review remain required. Its real operator summary gains a named
+noninteractive group for accessible signed-in context.
+
+Two new formal contracts replace invalid prose checks with actual DOM identity
+or gateway selectors while retaining all prose requirements and unchanged backend
+browser assertions. DOM continuity does not prove database continuity. Positive
+formal creation still requires a canonical Sounding Line case/input extension.
+Account/recovery/invitation/private-content/Landfall work, legacy disposition,
+formal reference/layout and protected qualification remain. Reach diagnostics
+are accepted; Crossdeck #721 remains unmerged and unconsumed. No completed
+feature, native/physical or owner acceptance is promoted.
 
 Sextant's separately authorized R1 follow-up preserves its original exhausted 3/3
 campaign. The synthetic route identity repair passed its isolated canonical-writer

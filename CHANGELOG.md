@@ -20,6 +20,9 @@ last_reviewed: 2026-10-19
 
 ### Corrected
 
+- The new Chronicle form uses parchment ink for headings, explanatory text and
+  cover-image help. Admiralty exposes its real operator summary as a named group.
+
 - Studio's Passage library and Inspector use distinct named sections. Personal
   Harbor's Profile setup notice uses a named section within its main task.
 - Community's decorative card artwork lets the stretched detail link receive
