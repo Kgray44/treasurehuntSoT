@@ -9309,6 +9309,220 @@
           }
         ]
       }
+    },
+    {
+      "id": "sextant.shared-consumers.creator-entry",
+      "name": "Sextant ordinary new Chronicle form, cancellation and Creator return",
+      "authority": "project-sextant",
+      "owners": [
+        "project-sextant",
+        "project-homeport",
+        "project-helm",
+        "one-voyage"
+      ],
+      "critical": true,
+      "experience": {
+        "persona": "An authorized synthetic Creator entering the actual new Chronicle form from the ordinary Studio library",
+        "objective": "Prepare the secure new Chronicle form, inspect its real controls, abandon unsaved entries and return through the ordinary Creator library and Personal Harbor",
+        "visibleOutcome": "The actual secure creation form loads, Cancel discards unsaved input, and ordinary library/account return preserves independent ACTIVE Voyages and released edition bytes",
+        "integrationOwner": "Sextant shared-consumer verification; Chronicle retains draft creation and library ownership, Homeport retains account/workspace entry, One Voyage retains progression",
+        "systems": [
+          "project-sextant",
+          "project-homeport",
+          "project-helm",
+          "project-chronicle",
+          "one-voyage"
+        ],
+        "sourcePaths": [
+          "src/app/studio/tales/new/page.tsx",
+          "src/components/studio/NewTaleForm.tsx",
+          "src/components/studio/StudioHome.tsx",
+          "src/components/studio/StudioStatusHeader.tsx",
+          "src/components/studio/TaleEditor.tsx"
+        ],
+        "entryPoint": "/account",
+        "states": [
+          "CREATOR_LIBRARY",
+          "FORM_READY",
+          "CANCELLED",
+          "RETURNED"
+        ],
+        "devices": [
+          "DESKTOP",
+          "MOBILE"
+        ],
+        "roles": [
+          "CREATOR"
+        ],
+        "roleSetup": {
+          "CREATOR": {
+            "entryPoint": "/sign-in?returnTo=%2Faccount",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "sextant.resources-creator-entry-default@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Sextant-Resources-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "button",
+              "name": "Synthetic Sextant Captain-creator-entry-default",
+              "text": "Synthetic Sextant Captain-creator-entry-default"
+            }
+          }
+        },
+        "references": [
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected workspace/authoring hierarchy reference only; new Chronicle form and actual creation require fresh source-bound review.",
+            "preserve": "Readable fields, explicit creation/cancellation and ordinary returns. No new-form or creation acceptance inferred from this reference."
+          },
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Existing protected workspace/authoring hierarchy reference only; new Chronicle form and actual creation require fresh source-bound review.",
+            "preserve": "Readable fields, explicit creation/cancellation and ordinary returns. No new-form or creation acceptance inferred from this reference."
+          }
+        ],
+        "fixtureProfile": "generic",
+        "fixture": "sextant-creator-entry-v1",
+        "recordingRequired": true,
+        "accessibility": "Actual labelled title/address/chapter, metadata/select and optional cover controls; secure submit, cancellation and desktop/mobile normal/reduced motion. Development audits the form, actual new draft and returned library.",
+        "fallback": "Unprepared secure form keeps submit disabled; creation errors remain explicit. No cover is uploaded, no release is published, and no readiness evidence is manufactured.",
+        "navigation": "Ordinary account menu to All Workspaces and Enter Creator; Studio Create Chronicle link opens the form; Cancel returns to Studio and the account menu returns to Personal Harbor.",
+        "designTarget": "Readable secure form and visible cancel/submit controls with consistent Creator identity and unchanged released/Voyage baselines.",
+        "browserTests": [
+          "tests/e2e/sextant-creator-entry-journeys.spec.ts"
+        ],
+        "limitations": [
+          "Source registration and development evidence are not protected, native, physical or owner acceptance.",
+          "Development uses separate fixed owned fixtures for all four device/motion cases and actually creates/reopens one private draft through production controls; cancellation and immutable baseline assertions remain. No cover upload, private package workflow or publication readiness is exercised.",
+          "The formal declarative journey currently covers prepared form/cancellation/return only. Its runtime shares a fixture across device/motion cases and has only static fill values, so a fixed creation slug would collide after the first case. Positive formal creation needs canonical case-specific fixture/input support and remains an explicit acceptance gap; no hidden reset or product workaround is used."
+        ],
+        "motion": {
+          "feedbackBudgetMs": 3000,
+          "measurement": "Ordinary Creator entry, secure form readiness, actual development creation and reopening to loaded response state; no sleeps, forced clicks or motion bypass."
+        },
+        "continuity": {
+          "objective": "Preserve existing ACTIVE Voyages and exact published editions while viewing/cancelling the new Chronicle form",
+          "checks": [
+            "Development asserts cancellation creates no Chronicle.",
+            "Actual development creation produces exactly one private DRAFT, one Chapter, no published version and no Voyage; returned library and reopen use its actual production-issued identity.",
+            "Both independent ACTIVE baselines and exact released bytes remain unchanged."
+          ]
+        },
+        "journeys": [
+          {
+            "id": "ordinary-new-chronicle-preparation-cancel-and-return",
+            "roles": [
+              "CREATOR"
+            ],
+            "outcome": "The actual secure creation form loads and cancellation returns without creating a Chronicle or altering an ACTIVE Voyage",
+            "steps": [
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Captain-creator-entry-default"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "All Workspaces"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Enter Creator"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Voyagewright Studio",
+                "text": "Voyagewright Studio",
+                "path": "/studio/library",
+                "state": "CREATOR_LIBRARY",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "The actual authorized Creator library loads through ordinary workspace entry."
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Create Chronicle"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Create and open Chronicle",
+                "text": "Create and open Chronicle",
+                "path": "/studio/tales/new",
+                "state": "FORM_READY",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "The canonical form has loaded its secure creation token and offers explicit submit."
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Title",
+                "value": "Synthetic cancelled course"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Cancel"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Voyagewright Studio",
+                "text": "Voyagewright Studio",
+                "path": "/studio/library",
+                "state": "CANCELLED",
+                "kind": "outcome",
+                "feedbackBoundary": true,
+                "meaning": "Cancel returns to the actual library without committing unsaved form input."
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Synthetic Sextant Captain-creator-entry-default"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Personal Harbor"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Overview",
+                "text": "Overview",
+                "path": "/account",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
     }
   ],
   "experiencePolicy": {

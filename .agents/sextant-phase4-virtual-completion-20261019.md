@@ -375,6 +375,22 @@ and pointer-events, scroll-root and viewport offsets. This discriminates overlay
 card hit area and transition geometry without a delay/retry/forced click or
 speculative product change. Preserve all original failures and diagnostic budgets.
 
+Prepare ordinary Creator new-Chronicle entry with separate fixed owned cases for
+each desktop/mobile/motion variant. Through actual workspace/library controls,
+inspect the secure form, cancel without a Chronicle write, create one private
+DRAFT using the production201, verify its actual owner/draft/one empty Chapter,
+return to Library and reopen the exact new identity. Preserve both independent
+ACTIVE baselines and exact release bytes; no cover upload, private package,
+publication, hidden authoring or progression action is permitted by this case.
+The fixed development-only sextant-creator-entry target accepts no profile or
+scenario overrides. Its formal contract covers secure preparation/cancellation
+and ordinary return. Positive formal creation remains open: the current canonical
+declarative runner shares a fixture across cases and only supports static fills,
+so a fixed creation slug would collide. Do not reset data or change product slug
+behavior to hide that limitation. NewTaleForm itself is unchanged. Source review,
+fresh execution, rendered review and formal positive-creation support remain
+required before broader acceptance; declarations alone grant none.
+
 Prepare the public catalog/Tideglass consumer family using a fixed synthetic
 PUBLIC Chronicle with two immutable fixture editions and a separate anonymous
 guest Voyage. Seed only after the canonical owned-isolation guard, refuse

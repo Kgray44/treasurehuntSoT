@@ -852,3 +852,35 @@ at `7b785a39e3c2e059ec46c2035e28af6a8b1fbdb0`. Authoring39345439738 and Communit
 39345446486 run in development with the original actions, assertions and budgets.
 No result is inferred while pending. These reviews and captures remain separate
 from protected custody, physical/native evidence and owner acceptance.
+
+The next Creator increment prepares four separate fixed owned fixtures for
+ordinary library entry, secure new-Chronicle form, cancellation, actual private
+draft creation, library return and reopen. The production201 supplies the new
+identity; assertions bind its canonical owner/draft/one empty Chapter and no
+published version or Voyage. Cancellation creates no Chronicle, and both
+independent ACTIVE baselines and exact released bytes remain unchanged. No
+cover is uploaded, no private package is imported and no publication readiness
+is inferred. The product form is unchanged; TypeScript, eight-test discovery
+(four Chromium cases plus default WebKit listing) and contract validation pass.
+The fixed hosted target selects only the four Chromium development cases.
+
+Its formal declaration covers actual secure preparation/cancellation/return.
+Positive formal creation remains an explicit gap because the current canonical
+declarative runner shares a fixture across device/motion cases with static input
+values; a fixed new slug collides after the first case. No data reset, product
+slug workaround, hidden write or acceptance exemption is introduced. Source
+review and fresh source-bound development/rendered results remain required;
+formal case-specific fixture/input support must precede protected positive
+creation proof. This partial consumer preparation changes no completed feature
+availability or machine-readable feature fragment.
+
+Independent Creator-entry source review found and repaired an unsuffixed exact
+role-setup witness and an incomplete receipt fingerprint scope. The final witness
+matches the fixed fixture owner; receipts bind the test, resource/base fixtures
+and contract input. The real Address label includes its visible /play/ prefix,
+and owner identity is asserted from canonical storage rather than a public
+projection that intentionally omits it. The journey now also measures ordinary
+account-menu return after reopening, audits/captures Overview and verifies the
+same owner before all final baseline/edition assertions. Independent source
+review is clear with no remaining finding; fresh hosted/rendered proof and the
+explicit positive formal-creation gap remain open.
