@@ -138,11 +138,15 @@ for (const viewport of [
         const chapterTitle = page.getByRole("textbox", { name: "Chapter 1 title", exact: true });
         await expect(chapterTitle).toHaveValue("A synthetic opening");
         await capture("creator-entry-chapter", ".tale-editor", chapterTitle);
-        await capture(
-          "creator-entry-inspector",
-          ".tale-editor",
-          page.getByRole("region", { name: "Passage Inspector", exact: true }),
-        );
+        const emptyInspector = page.locator(".block-inspector");
+        await expect(emptyInspector).toHaveAttribute("data-inspector-state", "closed");
+        if (viewport.width <= 760) await expect(emptyInspector).toBeHidden();
+        else
+          await capture(
+            "creator-entry-inspector",
+            ".tale-editor",
+            page.getByRole("region", { name: "Passage Inspector", exact: true }),
+          );
         await page.getByRole("link", { name: "← Studio", exact: true }).click();
         const card = page
           .locator(".tale-studio-card")
