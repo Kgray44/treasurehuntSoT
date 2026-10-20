@@ -98,6 +98,59 @@ def signing_overlay(root, identity, profile_uuid):
     }
 
 
+def altool_command(action, ipa, key_id, issuer, api_key=None):
+    """Xcode 26 altool takes the archive as the action's positional value."""
+    require(action in ("validate", "upload"), "ALTOOL_ACTION_INVALID")
+    flag = "--validate-app" if action == "validate" else "--upload-package"
+    command = ["xcrun", "altool", flag, str(ipa), "--api-key", key_id,
+               "--api-issuer", issuer, "--output-format", "json"]
+    if api_key:
+        command.extend(["--p8-file-path", str(api_key)])
+    return command
+
+
+def altool_diagnostics(output, secret_values=()):
+    """Keep bounded error fields, never altool's raw response or authentication."""
+    def scrub(value):
+        for secret in secret_values:
+            if secret:
+                value = value.replace(secret, "[REDACTED]")
+                for line in secret.splitlines():
+                    if line.strip():
+                        value = value.replace(line.strip(), "[REDACTED]")
+        value = re.sub(r"-----BEGIN [^-]+-----.*?-----END [^-]+-----", "[REDACTED_KEY]", value, flags=re.S)
+        value = re.sub(r"eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+", "[REDACTED_TOKEN]", value)
+        value = re.sub(r"[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Za-z0-9.-]+", "[REDACTED_EMAIL]", value)
+        return value[:800]
+
+    # xcrun may prefix the JSON with its tool-path banner. Parse JSON only;
+    # unstructured output is deliberately not copied into public artifacts.
+    decoder = json.JSONDecoder()
+    parsed = None
+    for match in re.finditer(r"\{", output[:2_000_000]):
+        try:
+            value, _ = decoder.raw_decode(output, match.start())
+            if isinstance(value, dict):
+                parsed = value
+                break
+        except ValueError:
+            continue
+    messages = []
+    if parsed is not None:
+        for key in ("product-errors", "errors", "messages"):
+            entries = parsed.get(key, [])
+            if not isinstance(entries, list):
+                continue
+            for entry in entries[:8]:
+                if not isinstance(entry, dict):
+                    continue
+                safe = {name: scrub(str(entry[name])) for name in ("code", "title", "message", "detail", "description")
+                        if isinstance(entry.get(name), (str, int, float))}
+                if safe:
+                    messages.append(safe)
+    return {"jsonResponseParsed": parsed is not None, "messages": messages[:8]}
+
+
 class Runner:
     def __init__(self, args):
         self.args = args
@@ -127,8 +180,13 @@ class Runner:
                                              "previousKeychains": self.previous_keychains}), encoding="utf-8")
         self.ownership.chmod(0o600)
 
-    def run(self, command, *, data=None, public_log=False, env=None):
+    def run(self, command, *, data=None, public_log=False, env=None, altool_result=False):
         result = subprocess.run(command, input=data, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env)
+        if altool_result:
+            diagnostic = altool_diagnostics((result.stdout + result.stderr).decode("utf-8", errors="replace"),
+                                           [os.environ.get(name, "") for name in SECRET_NAMES])
+            diagnostic["exitCode"] = result.returncode
+            (self.public / f"{self.stage.lower()}.json").write_text(json.dumps(diagnostic, indent=2) + "\n", encoding="utf-8")
         if public_log:
             output = (result.stdout + result.stderr).decode("utf-8", errors="replace")
             for name in SECRET_NAMES:
@@ -336,11 +394,10 @@ class Runner:
         upload_env = {**os.environ, "API_PRIVATE_KEYS_DIR": str(self.api_key.parent)}
         for action in ("validate", "upload"):
             self.stage = f"ASC_{action.upper()}"
-            command = ["xcrun", "altool", f"--{action}-app", "--type", "ios", "--file", str(ipa),
-                       "--apiKey", self.key_id, "--apiIssuer", self.issuer, "--output-format", "json"]
-            if self.explicit_p8:
-                command.extend(["--p8-file-path", str(self.api_key)])
-            self.run(command, env=upload_env)
+            command = altool_command(action, ipa, self.key_id, self.issuer,
+                                     self.api_key if self.explicit_p8 else None)
+            self.run(command, env=upload_env, altool_result=True)
+            self.receipt[f"apple{action.title()}Passed"] = True
         self.receipt["uploadAccepted"] = True
         self.receipt["appleProcessing"] = "WAITING"
         self.save()

@@ -39,8 +39,9 @@ environment. The owner completed certificate/profile/team API key setup. All fou
 signing secrets and API metadata are configured there; exact app API lookup passed.
 The matching private signing key and App Store profile passed local validation
 and hosted keychain preflight. The verified NCL-01 Owner internal group contains
-only the existing account holder. Signed distribution, Apple processing, phone
-installation and physical tracking remain separate unproved gates. Do not repeat
+only the existing account holder. A real signed device archive and App Store IPA
+export passed in run 39361959547. Apple upload/processing, phone installation and
+physical tracking remain separate unproved gates. Do not repeat
 certificate creation for a pipeline repair.
 
 The template `.agents/ncl01-testflight-hosted.yml` is transported as one generated
@@ -83,6 +84,14 @@ checks but failed after XcodeGen succeeded, in the old generated-project mutatio
 step. Cleanup passed; no archive/export/upload occurred. The repair uses a private
 XcodeGen include overlay scoped only to app Release signing, then checks all five
 effective signing settings before archive. Retain the failure; build 2 is unused.
+
+Second signed attempt 39361959547 at `66089613` passed the effective signing
+settings, real device archive, signed entitlements, app record and IPA export.
+It failed at ASC_VALIDATE before upload; cleanup passed. Raw altool response was
+discarded, so the exact rejection is unknown. The retained Xcode 26.40.1 tool help
+documents positional archive arguments and kebab-case API authentication flags;
+the retry uses those and retains only parsed, bounded, redacted error fields.
+Build 2 remains unused. Original failure logs and the signed IPA are retained.
 
 Success is the owner installing this exact beta through TestFlight, opening
 native ARKit camera placement, seeing the original interactive 3D chest and

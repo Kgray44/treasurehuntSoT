@@ -8,10 +8,38 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from runner import BUNDLE, Failure, TEAM, cleanup_owned, signature_raw, signing_overlay, validate_origin, validate_profile
+from runner import BUNDLE, Failure, TEAM, altool_command, altool_diagnostics, cleanup_owned, signature_raw, signing_overlay, validate_origin, validate_profile
 
 
 class TestSigningBoundaries(unittest.TestCase):
+    def test_current_altool_arguments_bind_ipa_and_authentication_without_legacy_flags(self):
+        for action, flag in (("validate", "--validate-app"), ("upload", "--upload-package")):
+            ipa, key = Path("/owned/app with spaces.ipa"), Path("/private/key.p8")
+            command = altool_command(action, ipa, "PUBLICKEY1", "public-issuer", key)
+            self.assertEqual(command[:4], ["xcrun", "altool", flag, str(ipa)])
+            self.assertEqual(command[4:], ["--api-key", "PUBLICKEY1", "--api-issuer", "public-issuer", "--output-format", "json", "--p8-file-path", str(key)])
+        with self.assertRaises(Failure):
+            altool_command("delete", "app.ipa", "key", "issuer")
+
+    def test_altool_diagnostics_discard_unstructured_and_private_fields_and_redact_messages(self):
+        secret = "synthetic-test-secret"
+        token = "eyJheader.payload.signature"
+        pem = "-----BEGIN PRIVATE KEY-----\nsynthetic-key-body\n-----END PRIVATE KEY-----"
+        raw = "tool banner\n" + json.dumps({"product-errors": [{"code": -1000,
+            "message": f"Rejected {secret} {token} {pem} owner@example.invalid",
+            "userInfo": {"private": "DO_NOT_PUBLISH"}}], "authentication": "DO_NOT_PUBLISH"})
+        result = altool_diagnostics(raw, [secret, pem])
+        public = json.dumps(result)
+        self.assertTrue(result["jsonResponseParsed"])
+        self.assertEqual(result["messages"][0]["code"], "-1000")
+        for value in (secret, token, "synthetic-key-body", "owner@example.invalid", "DO_NOT_PUBLISH"):
+            self.assertNotIn(value, public)
+        self.assertEqual(altool_diagnostics("unstructured private output"), {"jsonResponseParsed": False, "messages": []})
+        self.assertNotIn("synthetic-key-body", json.dumps(altool_diagnostics(json.dumps({"errors": [{"message": "partial synthetic-key-body"}]}), [pem])))
+        bounded = altool_diagnostics(json.dumps({"errors": [{"detail": "x" * 1000}] * 12}))
+        self.assertEqual(len(bounded["messages"]), 8)
+        self.assertEqual(len(bounded["messages"][0]["detail"]), 800)
+
     def test_signing_is_scoped_to_release_app_and_preserves_included_source_paths(self):
         root = Path("/owned/workspace with spaces")
         overlay = signing_overlay(root, "synthetic-public-identity", "11111111-1111-1111-1111-111111111111")

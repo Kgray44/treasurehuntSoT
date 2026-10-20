@@ -277,3 +277,25 @@ Dependency/test targets retain their unsigned defaults. Failed commands now reta
 only tool name and exit code; command arguments and credential output stay private.
 Focused checks pass 3 transport and 5 runner tests, including app-only scope.
 Independent source review found no blocker to the fresh hosted signed retry.
+
+## Signed archive/export and Apple tool compatibility
+
+[Run 39361959547](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39361959547)
+at `6608961356252381a2c1d53a92d460377f1f743b` passed all five effective signing
+settings, the real iOS device archive, signed entitlements, exact app-record lookup
+and App Store IPA export. The 1,975,041-byte IPA SHA-256 is
+`f7ba1697b248fd52f3efbe2fe64178c1de5af760b0a391d60a43ad695a8487df`.
+It remains in the owned artifact directory and GitHub run artifact. The
+[byte-exact original receipts and logs](evidence/ncl01-testflight-20261019/signed-39361959547/verification.json)
+are retained; the temporary transport branch was removed with its expected SHA
+and absence verified. Credential cleanup passed.
+
+Apple validation exited 1 before upload. Its response was discarded by the old
+runner, so no specific Apple validation error is claimed. The actual retained
+altool 26.40.1 help documents `--validate-app <filepath>`,
+`--upload-package <filepath>`, `--api-key` and `--api-issuer`; the old runner mixed
+legacy arguments. The correction follows that exact help and saves only parsed,
+bounded error fields with known secrets, PEM material, JWTs and email addresses
+redacted. Unstructured responses and private nested fields are not published.
+Seven focused runner tests and three transport tests pass. Build 2 has not been
+uploaded; signed installation and physical AR remain pending.
