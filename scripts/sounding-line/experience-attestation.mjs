@@ -5,6 +5,7 @@ import { experienceDigest } from "./product-experience.mjs";
 import { verifyExceptionAttestation } from "./experience-exception.mjs";
 import { r8FormatEvidencePlan, validateR8FormatEvidenceIdentity } from "./experience-r8-format.mjs";
 import { isCurrentAdmissionPlan, validateCurrentCaptureIdentity } from "./experience-current-admission.mjs";
+import { r21ReviewProvenanceBinding } from "./experience-media-first-r21.mjs";
 
 const fail = (code) => {
   throw new Error(`PRODUCT_EXPERIENCE_${code}`);
@@ -155,7 +156,8 @@ export async function verifyTrustedExperienceAttestation({
     experienceDigest(capture.pairedEvidence ?? null) !== experienceDigest(evidence.pairedEvidence ?? null) ||
     (plan.paired && review.pairedEvidenceDigest !== experienceDigest(evidence.pairedEvidence)) ||
     review.captureArtifactId !== evidence.captureArtifactId ||
-    experienceDigest(review.reviews) !== experienceDigest(evidence.reviews)
+    experienceDigest(review.reviews) !== experienceDigest(evidence.reviews) ||
+    Object.entries(r21ReviewProvenanceBinding(currentPlan, evidence)).some(([key, value]) => review[key] !== value)
   )
     fail("TRUSTED_CAPTURE_OR_REVIEW_MISMATCH");
   const exceptionCustody = await verifyExceptionAttestation({

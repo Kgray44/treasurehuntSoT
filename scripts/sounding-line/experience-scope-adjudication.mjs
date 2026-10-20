@@ -1,6 +1,7 @@
 // Exact owner-approved R20 finding split. This is not a general debt exemption.
 import { createHash } from "node:crypto";
 import { CURRENT_R20, R20_SCOPE } from "./experience-current-r20.mjs";
+import { CURRENT_R21 } from "./experience-current-r21.mjs";
 
 export const R20_DEFERRED_DISPOSITION = "FUNCTIONAL_RESOLVED_EDITORIAL_DEFERRED";
 const hash = (value) =>
@@ -58,13 +59,14 @@ export function validateR20ContractSource({ before, after, actualPaths, original
 }
 
 export function validateScopedR20Finding({ plan, finding, contractId, artifacts }) {
+  const current = plan?.exception?.version === 21 ? CURRENT_R21 : CURRENT_R20;
   need(
-    plan?.exception?.id === CURRENT_R20.id &&
-      plan.exception.version === 20 &&
+    plan?.exception?.id === current.id &&
+      plan.exception.version === current.version &&
       plan.exception.currentSourceAdmission?.kind === "CROSSDECK_CURRENT_SOURCE_ADMISSION_1" &&
       /^[a-f0-9]{64}$/u.test(plan.exception.recordDigest ?? "") &&
-      plan.exception.independentReviewOrdinal === CURRENT_R20.remainingIndependentReviewOrdinal &&
-      plan.exception.frozenReferenceSha === CURRENT_R20.frozenReferenceSha &&
+      plan.exception.independentReviewOrdinal === current.remainingIndependentReviewOrdinal &&
+      plan.exception.frozenReferenceSha === current.frozenReferenceSha &&
       same(plan.exception.currentSourceAdmission?.scopeAdjudication, R20_SCOPE) &&
       plan.sourceDigest === plan.exception.currentSourceAdmission.sourceDigest &&
       plan.contractDigest === R20_SCOPE.approvedContractDigest &&
