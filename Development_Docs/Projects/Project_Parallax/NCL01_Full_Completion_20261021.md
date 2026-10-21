@@ -12,7 +12,7 @@ This engineering record binds the October 21 unattended completion mission to
 the original ten-item contract. It grants no product, physical or protected-main
 acceptance. The owner is unavailable; independently attainable work continues.
 
-## Reconciled source
+## Initial source reconciliation
 
 | Source                                        | Exact identity and disposition                                                                  |
 | --------------------------------------------- | ----------------------------------------------------------------------------------------------- |
@@ -229,7 +229,7 @@ The [a86 iOS failure review](evidence/ncl01-full-completion-20261021/ios-3961337
 preserves run 39613376449: 28 passed, one failed and one driver-only case was
 intentionally skipped. All seven current viewport phases and the actual
 production mesh/accessibility and atomic graph assertions passed within the
-same five-second setup deadline. Original compass/chest raster proof passed
+same five-second setup deadline. Original chest/compass raster proof passed
 with 8,301/2,509 populated pixels, zero empty/removed pixels and the unchanged
 20-second raster bound. The sole failure was the real fixed Return button's
 large-text title clipping: height 64.6667 versus required 83.3333. A required
@@ -436,6 +436,132 @@ and an independent source review. Native shipping source, signing, cleanup,
 retention, upload policy and beta 7 are unchanged. A fresh unsigned Mac archive
 must execute this new proof; archive-only metadata 8 consumes no Apple build
 number. It cannot be substituted for a signed installation or physical AR.
+
+### Repaired Lab source: Intel result and independent investigation
+
+Run [39631967141](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39631967141)
+tested frozen Lab repair `b4cea94abc64fc6e02dfa5f241242eda3888d4b3`, tree
+`2f93d21e056a6143b0b9dfd26f2f6ede91eb7d69`, on actual Intel x64/macOS
+26.6.1/Xcode 26.6. Its
+[independently reviewed originals](evidence/ncl01-full-completion-20261021/ios-39631967141.json)
+retain 29 passing native tests, zero failures and one expected driver skip.
+All seven attached-window frame phases passed their original shared five-second
+bound. Actual Metal rendering completed in 3,379.64 ms within the original
+20-second bound; recognizable original chest/compass frames contain 8,301/2,509
+populated pixels, with zero for empty/removed frames. Native cleanup passed.
+
+Joined execution selected the intended latest-supported iOS 26.5 runtime but
+still failed at `IOS_BOOT_DEVICE` before the driver started: every known route
+count and completed-action count is zero. Its actual database/server/Simulator
+cleanup passed. The retained wrapper error does not establish child exit code,
+signal, killed state, duration, stderr or underlying boot cause. The location
+permission step was skipped; camera permission is not proven. Presentation hit
+the unchanged 30-minute job limit, then failed artifact upload with an absent
+xcresult staging file. No current assertion, final 31-test result, window state
+or presentation cleanup is claimed. The whole run remains unsuccessful.
+
+A separate read-only
+[scene-configuration investigation](evidence/ncl01-full-completion-20261021/ios-scene-configuration-investigation.json)
+checked the actual earlier compiled Info.plists, 15 retained originals and nine
+unchanged source blobs. Missing explicit UIKit Scene manifest is not a demonstrated
+cause: the same compiled SwiftUI configuration created a foreground UIWindowScene
+and passed attached-window and Home/return checks. No speculative production
+manifest or initializer change was made. This does not explain the earlier blank
+Reduced Motion launch.
+
+One unchanged-source comparison, run
+[39637797267](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39637797267),
+uses the existing standard `macos-26` Apple Silicon runner with the same b4 source,
+all selected suites, original assertions and original time limits. That explicit
+runner label successfully acquired the fresh Release archive host; it is distinct
+from the earlier unacquired `macos-latest` alias. Selection is not execution or
+acceptance; its result remains pending until original evidence is retained.
+
+That comparison's presentation job subsequently failed to acquire a hosted
+machine and executed zero steps; its primary companion step completed successfully
+and joined execution remains independently observed. No full-31 result follows
+from this split outcome.
+
+An additive focused diagnostic uses the same shared Device Lab and the same two
+existing UI methods: actual XXXL portrait/landscape and the real Settings/Home
+Reduced Motion route. It preserves their assertions, actions, time limits and
+the existing 30-minute job envelope. Only the explicit development/primary-phone
+target enables it; the default full-31 and companion-29 paths remain unchanged.
+It does not repeat native graphics, publish an app-success pointer or write a
+successful generic summary. A strict one-pass/no-failure/no-skip result is needed
+for each selected component, and the two-test diagnostic is emitted only after
+owned Simulator deletion is verified. Its result cannot satisfy the full-31
+gate or be combined synthetically with another run. Independent review found
+and repaired a failure-retention ambiguity before execution: a passing last
+component after a later export failure now remains nested under an explicit
+diagnostic failure, rather than a generic success summary. No native app or
+test-method source changed. Fresh focused execution is still required.
+The [preflight record](evidence/ncl01-full-completion-20261021/ios-presentation-diagnostic-preflight.json)
+binds 25 passing host guards (eight new diagnostic, ten strict-combiner and seven
+existing runner tests), focused TypeScript/lint/format checks, exact source blobs
+and preserved original diagnostics. These are not native test counts or a
+synthetic addition to the retained 495-test suite.
+
+### Fresh Release artifact and artwork verification
+
+Unsigned Mac run
+[39633902301](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39633902301)
+passed at candidate `2f8aa894959f8e363759b39f745e055ca899a9bf`, tree
+`cadc8fd0815190f2d3c59b99b017a70d431e4bff`. The
+[archive receipt](evidence/ncl01-full-completion-20261021/ios-unsigned-archive-2f8aa894.json)
+records all 20 source/archive/cleanup/proof assertions passing with actual
+Xcode 26.6 and iPhoneOS SDK 26.5. The Release executable is 503,056 bytes,
+SHA256 `9aa73770560f7f5ef5ccf5fefa5559fa7bb1b01fd10cefeb295845ef08e7f15b`,
+identical to the earlier a523 archive. The known DEBUG camera-free enablement
+switch is absent in the three declared encodings; this is not a claim that all
+fixture code or protocol strings are absent. The actual binary was checked by
+the source-bound Mac verifier and is not a public artifact or a second local
+byte scan.
+
+The actual 120/152-pixel compiled icons and lossless viewing copies are retained.
+Independent decoding and
+[visual review](evidence/ncl01-full-completion-20261021/compiled-icon-review-39633902301.json)
+passed: both original compiled resources are byte-identical to approved beta 7,
+and the gold compass ring, needle, upper-right star and folded page remain
+contained with the approved composition. All 22 private originals were rehashed
+independently. Cleanup passed. This archive used metadata 0.1.0 (8) only; upload
+did not start, no Apple build number was consumed and internal beta 7 is unchanged.
+
+The [independent source-reuse review](evidence/ncl01-full-completion-20261021/source-reuse-review-2f8aa894.json)
+positively verifies six declared source scopes, the new b4 Lab helper closure,
+all 39 retained host test blobs, 658 preserved historical evidence/artwork blobs
+and the original model/logo hashes. It binds exactly to main `185f5fd3`, not a
+future main or a new CI result. Hosted native qualification remains separate.
+
+Three completed task-only temporary workflow refs were removed with exact
+expected-SHA leases after their original evidence was retained and verified;
+the [cleanup receipt](evidence/ncl01-full-completion-20261021/completed-transports-through-2f8-cleanup.json)
+confirms remote absence. The active ARM run, implementation branch, all historical
+development/TestFlight branches, worktrees, failed receipts and live owner
+services were preserved.
+
+### Publication-time preview checks
+
+The later [live ownership check](evidence/ncl01-full-completion-20261021/preview-publication-live-check.json)
+again verified both known preview components and unchanged neighboring process
+creations at 17:01 UTC. It started or archived nothing, sent zero signals and
+changed no legacy metadata or Cloudflared service. Its source remains
+`47ff42e4cb8b67e5fa2bfbc481a34d3d33490a18`, not the completion candidate.
+
+One normal-TLS Python urllib request returned
+[HTTP 403](evidence/ncl01-full-completion-20261021/preview-publication-urllib-403.json);
+it was not retried and fetched no assets. A distinct actual
+[fresh default Chromium session](evidence/ncl01-full-completion-20261021/preview-publication-browser.json)
+reached a complete sign-in document with HTTP 200, no observed interstitial and
+24 successful correctly typed CSS/JS responses: 22 of 23 declared references and
+two dynamic chunks. One polyfill reference was unrequested, with its reason
+unestablished; complete reference coverage is not claimed. The initial strict
+coverage failure and Python 403 remain preserved. A client-path difference was
+observed, without proving its cause. Fixed read-only scope blocked off-origin
+analytics and a same-origin Cloudflare telemetry POST; no challenge interaction,
+login, supplied authentication/cookies, header spoofing, TLS/proxy changes or
+service/database action occurred. Browser cleanup observed child exit zero.
+These checks do not qualify private-account writes, a new deployment or iPhone AR.
 
 ## Original ten requirements: current disposition
 

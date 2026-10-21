@@ -12,6 +12,11 @@ import {
   androidGraphicsProbeTemplate,
   validateAndroidGraphicsProbeTransport,
 } from "./android-graphics-probe";
+import {
+  hostedApplePresentationDiagnostic,
+  applePresentationDiagnosticTemplate,
+  applePresentationDiagnosticMetadata,
+} from "./apple-presentation-diagnostic";
 
 const execute = promisify(execFile);
 type HostedIosRunner = "macos-latest" | "macos-26" | "macos-26-intel";
@@ -22,7 +27,8 @@ export function hostedIosRunnerLabel(value: unknown, target: unknown): HostedIos
   if (value === undefined) return undefined;
   if (value !== "macos-latest" && value !== "macos-26" && value !== "macos-26-intel")
     throw new Error("LANDFALL_HOSTED_IOS_RUNNER_INVALID");
-  if (target !== "ios" && target !== "ios-presentation") throw new Error("LANDFALL_HOSTED_IOS_RUNNER_TARGET_REQUIRED");
+  if (target !== "ios" && target !== "ios-presentation" && target !== "ios-presentation-diagnostic")
+    throw new Error("LANDFALL_HOSTED_IOS_RUNNER_TARGET_REQUIRED");
   return value;
 }
 
@@ -115,11 +121,19 @@ export async function dispatchLandfallHostedLab(
       "android-background",
       "ios",
       "ios-presentation",
+      "ios-presentation-diagnostic",
     ].includes(target)
   )
     throw new Error("LANDFALL_HOSTED_TARGET_INVALID");
   if (!["development", "candidate", "closure"].includes(tier)) throw new Error("LANDFALL_HOSTED_TIER_INVALID");
   const appleRunner = hostedIosRunnerLabel(iosRunner, target);
+  const presentationDiagnostic = hostedApplePresentationDiagnostic(
+    target,
+    tier,
+    selectedScenarios,
+    selectedProfiles,
+    graphicsBackend,
+  );
   if (
     target === "android-journal" &&
     selectedScenarios !== undefined &&
@@ -134,7 +148,15 @@ export async function dispatchLandfallHostedLab(
     throw new Error("LANDFALL_HOSTED_BACKGROUND_SCENARIO_INVALID");
   if (
     selectedProfiles !== undefined &&
-    !["android", "android-radio", "android-journal", "android-background", "ios", "ios-presentation"].includes(target)
+    ![
+      "android",
+      "android-radio",
+      "android-journal",
+      "android-background",
+      "ios",
+      "ios-presentation",
+      "ios-presentation-diagnostic",
+    ].includes(target)
   )
     throw new Error("LANDFALL_HOSTED_PROFILE_TARGET_REQUIRED");
   const typedTier = tier as "development" | "candidate" | "closure";
@@ -156,7 +178,11 @@ export async function dispatchLandfallHostedLab(
   const selectedApple = hostedDeviceLabProfiles(
     "ios",
     typedTier,
-    target === "ios-presentation" ? "primary-phone" : target === "ios" ? selectedProfiles : undefined,
+    target === "ios-presentation" || presentationDiagnostic
+      ? "primary-phone"
+      : target === "ios"
+        ? selectedProfiles
+        : undefined,
   );
   const androidProfiles = selectedAndroid.map(androidDeviceLabProvisioning);
   const appleProfiles = selectedApple;
@@ -168,7 +194,10 @@ export async function dispatchLandfallHostedLab(
     throw new Error("LANDFALL_HOSTED_RADIO_PROFILE_UNSUPPORTED");
   await labTool("git", ["cat-file", "-e", `${candidate}^{commit}`]);
   const template = await labTool("git", ["show", `${candidate}:.agents/landfall-device-lab-hosted.yml`]);
-  const workflow = hostedIosRunnerTemplate(androidGraphicsProbeTemplate(template, probeBackend), appleRunner)
+  const workflow = hostedIosRunnerTemplate(
+    applePresentationDiagnosticTemplate(androidGraphicsProbeTemplate(template, probeBackend), presentationDiagnostic),
+    appleRunner,
+  )
     .replaceAll("__CANDIDATE_SHA12__", candidate.slice(0, 12))
     .replaceAll("__CANDIDATE_SHA__", candidate)
     .replaceAll("__RUN_PROVIDERS__", String(target === "all" || target === "provider"))
@@ -177,9 +206,10 @@ export async function dispatchLandfallHostedLab(
     .replaceAll(
       "__RUN_APPLE_PRESENTATION__",
       String(
-        tier === "closure" &&
-          ["all", "ios", "ios-presentation"].includes(target) &&
-          appleProfiles.includes("primary-phone"),
+        presentationDiagnostic ||
+          (tier === "closure" &&
+            ["all", "ios", "ios-presentation"].includes(target) &&
+            appleProfiles.includes("primary-phone")),
       ),
     )
     // A separate primary-only OS notice job keeps closure coverage explicit
@@ -236,6 +266,7 @@ export async function dispatchLandfallHostedLab(
     .replaceAll("__RADIO_SCENARIOS__", scenarios.radio);
   const graphicsProbe = androidGraphicsProbeMetadata(probeBackend, selectedWorkflow);
   const iosRunnerSelection = hostedIosRunnerMetadata(appleRunner, selectedWorkflow);
+  const presentationDiagnosticSelection = applePresentationDiagnosticMetadata(presentationDiagnostic, selectedWorkflow);
   const runId = `${candidate.slice(0, 12)}-${Date.now()}`;
   const destination = path.join(root, "artifacts", "landfall-device-lab", `hosted-${runId}`);
   await mkdir(destination, { recursive: true });
@@ -275,6 +306,7 @@ export async function dispatchLandfallHostedLab(
       cleanup: "PENDING",
       ...(graphicsProbe ? { graphicsProbe } : {}),
       ...(iosRunnerSelection ? { iosRunner: iosRunnerSelection } : {}),
+      ...(presentationDiagnosticSelection ? { presentationDiagnostic: presentationDiagnosticSelection } : {}),
     };
     await writeFile(path.join(destination, "dispatch.json"), JSON.stringify(receipt, null, 2));
     return receipt;

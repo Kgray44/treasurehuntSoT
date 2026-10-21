@@ -9,33 +9,61 @@ import {
   selectLatestSupportedAppleRuntime,
 } from "../../../src/device-lab/apple-runtime";
 import { combineApplePresentationSummaries } from "../../../src/landfall/device-lab/apple-test-summary";
+import {
+  appleBuildScope,
+  appleBuildFailureSummary,
+  applePresentationDiagnosticResult,
+  applePresentationDiagnosticTests,
+} from "./apple-presentation-diagnostic";
 
 let executionStage = "DISCOVERY";
 let failureStage: string | null = null;
 async function main() {
   if (process.platform !== "darwin") throw new Error("LANDFALL_APPLE_REQUIRES_MACOS");
   const root = process.cwd();
-  const scope = process.argv[2] ?? "all";
-  if (!["all", "companion-only"].includes(scope)) throw new Error("LANDFALL_APPLE_BUILD_SCOPE_INVALID");
-  const presentationRequired = scope === "all";
   const profile = deviceLabProfileSchema.parse(process.env.LANDFALL_LAB_PROFILE ?? "primary-phone");
+  const scope = appleBuildScope(process.argv[2], profile, process.argv.slice(3));
+  const presentationDiagnostic = scope === "presentation-diagnostic";
+  const presentationRequired = scope === "all" || presentationDiagnostic;
+  const diagnosticSourceSha = presentationDiagnostic ? (await labTool("git", ["rev-parse", "HEAD"])).trim() : undefined;
+  const diagnosticSourceTree = presentationDiagnostic
+    ? (await labTool("git", ["rev-parse", "HEAD^{tree}"])).trim()
+    : undefined;
+  if (
+    presentationDiagnostic &&
+    ![diagnosticSourceSha, diagnosticSourceTree].every(
+      (value) => typeof value === "string" && /^[a-f0-9]{40}$/.test(value),
+    )
+  )
+    throw new Error("LANDFALL_APPLE_PRESENTATION_DIAGNOSTIC_SOURCE_INVALID");
   const destination = path.join(root, "artifacts", "landfall-device-lab", "apple-build");
   await mkdir(destination, { recursive: true });
   let resultPath = path.join(destination, "NativeTests.xcresult");
-  const presentationTests = [
-    "LandfallCompanionUiTests/NativeLifecycleTests/testOwnedSimulatorLargeTextAndOrientation",
-    "LandfallCompanionUiTests/NativeLifecycleTests/testOwnedSimulatorReducedMotionSetting",
-  ];
+  const presentationTests = [...applePresentationDiagnosticTests];
+  let diagnosticResult: ReturnType<typeof applePresentationDiagnosticResult> | undefined;
   await writeFile(
     path.join(destination, "build-scope.json"),
     JSON.stringify(
-      {
-        scope: presentationRequired ? "COMPANION_AND_PRESENTATION" : "COMPANION_ONLY",
-        requiredPassingTests: presentationRequired ? 31 : 29,
-        excludedPresentationTests: presentationRequired ? [] : presentationTests,
-        independentPresentationReceiptRequired: !presentationRequired,
-        presentationAcceptance: false,
-      },
+      presentationDiagnostic
+        ? {
+            scope: "TWO_PRESENTATION_TESTS_ONLY",
+            candidateSha: diagnosticSourceSha,
+            candidateTree: diagnosticSourceTree,
+            role: "DEVELOPMENT_ONLY",
+            qualification: false,
+            strictFull31Satisfied: false,
+            requiredPassingTests: 2,
+            selectedTests: presentationTests,
+            native29Repeated: false,
+            presentationAcceptance: false,
+          }
+        : {
+            scope: presentationRequired ? "COMPANION_AND_PRESENTATION" : "COMPANION_ONLY",
+            requiredPassingTests: presentationRequired ? 31 : 29,
+            excludedPresentationTests: presentationRequired ? [] : presentationTests,
+            independentPresentationReceiptRequired: !presentationRequired,
+            presentationAcceptance: false,
+          },
       null,
       2,
     ),
@@ -186,9 +214,11 @@ async function main() {
         "CODE_SIGNING_ALLOWED=YES",
         "CODE_SIGN_IDENTITY=-",
         "LANDFALL_LAB_PRESENTATION=1",
-        ...(presentationRequired
-          ? [`-skip-testing:${presentationTests[1]}`]
-          : presentationTests.map((test) => `-skip-testing:${test}`)),
+        ...(presentationDiagnostic
+          ? [`-only-testing:${presentationTests[0]}`]
+          : presentationRequired
+            ? [`-skip-testing:${presentationTests[1]}`]
+            : presentationTests.map((test) => `-skip-testing:${test}`)),
         "test",
       ],
       1200000,
@@ -272,24 +302,29 @@ async function main() {
       ]);
       await writeFile(path.join(destination, "reduced-motion-test-summary.json"), motionSummary);
       const motionTests = JSON.parse(motionSummary);
-      nativeTests = combineApplePresentationSummaries(nativeTests, motionTests);
+      if (presentationDiagnostic) diagnosticResult = applePresentationDiagnosticResult(nativeTests, motionTests);
+      else nativeTests = combineApplePresentationSummaries(nativeTests, motionTests);
     }
-    await writeFile(path.join(destination, "test-summary.json"), JSON.stringify(nativeTests, null, 2));
-    // The only expected package-build skip is the canonical scenario driver,
-    // which requires its separately started endpoint. The companion-only job
-    // excludes exactly two presentation tests; their independent closure job
-    // still requires all 31 passes, including the NCL asset/Scene tests, and
-    // cannot be substituted by this receipt.
-    if (
-      ![nativeTests.failedTests, nativeTests.passedTests, nativeTests.skippedTests].every(Number.isInteger) ||
-      nativeTests.failedTests !== 0 ||
-      nativeTests.passedTests < (presentationRequired ? 31 : 29) ||
-      nativeTests.skippedTests < 0 ||
-      nativeTests.skippedTests > 1
-    )
-      throw new Error(
-        presentationRequired ? "LANDFALL_APPLE_PRESENTATION_TESTS_REQUIRED" : "LANDFALL_APPLE_COMPANION_TESTS_REQUIRED",
-      );
+    if (!presentationDiagnostic) {
+      await writeFile(path.join(destination, "test-summary.json"), JSON.stringify(nativeTests, null, 2));
+      // The only expected package-build skip is the canonical scenario driver,
+      // which requires its separately started endpoint. The companion-only job
+      // excludes exactly two presentation tests; their independent closure job
+      // still requires all 31 passes, including the NCL asset/Scene tests, and
+      // cannot be substituted by this receipt.
+      if (
+        ![nativeTests.failedTests, nativeTests.passedTests, nativeTests.skippedTests].every(Number.isInteger) ||
+        nativeTests.failedTests !== 0 ||
+        nativeTests.passedTests < (presentationRequired ? 31 : 29) ||
+        nativeTests.skippedTests < 0 ||
+        nativeTests.skippedTests > 1
+      )
+        throw new Error(
+          presentationRequired
+            ? "LANDFALL_APPLE_PRESENTATION_TESTS_REQUIRED"
+            : "LANDFALL_APPLE_COMPANION_TESTS_REQUIRED",
+        );
+    }
     executionStage = "EXPORT_XCTEST_ATTACHMENTS";
     // Keep native capability values inspectable on the harvesting host. The
     // passing assertion alone cannot establish the Simulator's NI capability.
@@ -307,22 +342,23 @@ async function main() {
         "--output-path",
         path.join(destination, "reduced-motion-attachments"),
       ]);
-    await writeFile(
-      path.join(root, "artifacts", "landfall-device-lab", "apple-app.json"),
-      JSON.stringify({
-        app: path.join(
-          destination,
-          "DerivedData",
-          "Build",
-          "Products",
-          "Debug-iphonesimulator",
-          "LandfallCompanion.app",
-        ),
-        runtime: runtime.id,
-        deviceType: deviceType.identifier,
-        profile,
-      }),
-    );
+    if (!presentationDiagnostic)
+      await writeFile(
+        path.join(root, "artifacts", "landfall-device-lab", "apple-app.json"),
+        JSON.stringify({
+          app: path.join(
+            destination,
+            "DerivedData",
+            "Build",
+            "Products",
+            "Debug-iphonesimulator",
+            "LandfallCompanion.app",
+          ),
+          runtime: runtime.id,
+          deviceType: deviceType.identifier,
+          profile,
+        }),
+      );
   } catch (error) {
     failureStage = executionStage;
     const hasResult = await stat(resultPath).then(
@@ -359,7 +395,8 @@ async function main() {
         );
       });
     }
-    await writeFile(path.join(destination, "test-summary.json"), summary);
+    const retainedFailureSummary = appleBuildFailureSummary(presentationDiagnostic, summary);
+    await writeFile(path.join(destination, retainedFailureSummary.file), retainedFailureSummary.content);
     process.stderr.write(`${summary.slice(-16000)}\n`);
     throw error;
   } finally {
@@ -376,6 +413,23 @@ async function main() {
     );
   }
   if (!clean) throw new Error("LANDFALL_APPLE_CLEANUP_FAILED");
+  if (diagnosticResult)
+    await writeFile(
+      path.join(destination, "presentation-diagnostic.json"),
+      JSON.stringify(
+        {
+          ...diagnosticResult,
+          candidateSha: diagnosticSourceSha,
+          candidateTree: diagnosticSourceTree,
+          nodeProcessArchitecture: process.arch,
+          runtime: runtime.id,
+          profile,
+          cleanup: "PASS",
+        },
+        null,
+        2,
+      ),
+    );
 }
 main().catch(async (error) => {
   const diagnostic =

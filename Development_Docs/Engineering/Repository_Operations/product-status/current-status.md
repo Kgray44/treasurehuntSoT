@@ -11,8 +11,8 @@ last_reviewed: 2026-10-21
 The [October 21 NCL-01 completion ledger](../../../Projects/Project_Parallax/NCL01_Full_Completion_20261021.md)
 records a current-main reconciliation with all approved TestFlight descendants,
 native Inspect/placement/lifecycle corrections and ongoing source-bound software
-qualification. Protected experience planning remains blocked by the accepted
-Crossdeck continuity design dependency. Existing beta 7 is unchanged; physical
+qualification. Protected experience planning requires an accepted Crossdeck
+continuity design; that dependency has not landed. Existing beta 7 is unchanged; physical
 and owner acceptance remain outstanding.
 
 NCL-01 shared/native 3D work remains an unaccepted implementation candidate. Existing companion and One Voyage authorities are preserved. The [private beta deployment record](../../../Projects/Project_Parallax/NCL01_TestFlight_Deployment.md) records available internal TestFlight **0.1.0 (7)** with the owner-approved original-artwork crop as the official compass logo/icon, at the approved stable Cloudflare address and with the preserved classroom fixture. Build 6's generative artwork/color changes were owner-rejected and are no longer official. The original beta readiness receipt passed public TLS, auth/assets/Journal streaming, repaired CSS/JS delivery and desktop sign-in presentation. Current preview health is tracked separately in the completion ledger. The owner reports cellular reachability. Existing staging, audit and LAN services are preserved; exact build-7 installation/icon appearance/native behavior remain unverified.

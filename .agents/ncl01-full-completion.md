@@ -44,14 +44,44 @@ separate real Reduced Motion failed with blank/no-Window app. Preserve that
 unexplained direct Settings-launch failure. One Home-screen entry and granular
 presentation diagnostics require fresh proof under the original ten seconds.
 Collector repair strictly joins30+1 with no failed/extra-skipped components.
-Shipping native source/archive remains a523; no new beta is implied.
+Shipping native source remains a523; no new beta is implied. Lab repair b4cea94a
+on Intel run39631967141 again passed29/0/1 and original Metal raster/mesh/frame
+barriers. Joined boot still failed before driver start on the now-correct26.5
+runtime; the retained wrapper error does not establish child timeout/cause.
+Cleanup passed. Presentation hit the unchanged30-minute job envelope and failed
+artifact retention; no current assertion,31-pass result or cleanup proof exists.
+One unchanged b4 comparison, run39637797267, uses standard `macos-26` with the
+same suites/assertions/bounds. Do not dispatch an equivalent retry or promote
+runner selection to execution. Preserve earlier blank/no-Window Motion failure;
+actual compiled SwiftUI configuration also created a foreground UIWindowScene,
+so no speculative manifest/initializer repair is supported by the evidence.
+
+Release-proof source2f8aa894, treecadc8fd0, passed unsigned Mac archive39633902301
+on Xcode26.6/SDK26.5:20 source/archive/cleanup/proof assertions, actual compiled
+icons byte-identical to approved beta7 and independently decoded/viewed. The
+known DEBUG camera-free switch is absent in three encodings, not every fixture
+protocol/code string. Archive metadata8 consumed no Apple build number and no
+upload occurred. Sixteen focused verifier/signing tests pass. No shipping native,
+origin, signing identity, upload policy or beta7 replacement is implied.
+
+The full ARM presentation job did not acquire a host and executed zero steps;
+its primary companion step succeeded, joined result still separate. The additive
+`ios-presentation-diagnostic` target is development-only and primary-phone-only,
+with no scenario or graphics overrides. It runs exactly the existing two UI
+methods under their original assertions/actions/bounds and existing30-minute job.
+Use the existing hosted dispatcher with the frozen source, target and development
+tier, plus an allowlisted iOS runner. Default full31 and companion29 paths remain
+unchanged. Its explicit two-test receipt is non-qualifying, emitted only after
+cleanup; it cannot replace full31 or be combined with another run. No generic
+success summary or apple-app pointer is published. A failure after a passing
+component stays an explicit diagnostic failure. Do not request owner participation.
 Task branch: `codex/ncl01-full-completion`. Assembly `a8d862680a` merges the
 complete `cd597b1274bddad70118b77dd65b13969dd55a8d` TestFlight descendant,
 including original PR741 `76d1787e1340e396bc95747293d43e57130b00ed`, into main.
 Preserve existing branches/worktrees and use PR741 if normal ancestry permits.
 
 PR781 `182233e0f6d11a5dd5f74f35e01183b633b6ec8f` and Crossdeck PR721
-`245e5128afa00e6c888818a698ebd37717d81a3d` remain open proposals/candidates.
+`8dd97d7a63989cc7ee0fde7e8e178b515e2d8a94` remain open proposals/candidates.
 They are not accepted authority. Do not copy unfinished Crossdeck implementation
 or consume its finite capture/review allowance. NCL-02/03 are excluded.
 

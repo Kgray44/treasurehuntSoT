@@ -29,9 +29,11 @@ and has not replaced that installed beta.
 In that candidate, the native Lens explains model preparation, surface search
 and limited tracking. Tap a visible object, or aim at it and choose **Select
 object at center**, then choose **Inspect selected
-object** to open the result in the Player. The Player records an authorized
-observation before showing accepted inspection; a connection or access failure
-stays visible and does not advance the Voyage. **Return to Guided View** remains
+object** to open the result in the Player. During an active passage, the Player
+records an authorized observation before showing accepted inspection. Revisiting
+a passage shows its inspection without recording a new observation or changing
+progress. A connection or access failure stays visible and does not advance the
+Voyage. **Return to Guided View** remains
 available while the camera is preparing or waiting. These changes still require
 physical acceptance and protected integration; current software results are in the
 [completion ledger](../../Development_Docs/Projects/Project_Parallax/NCL01_Full_Completion_20261021.md).
