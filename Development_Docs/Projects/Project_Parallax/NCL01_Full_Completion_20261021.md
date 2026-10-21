@@ -10,7 +10,16 @@ last_reviewed: 2026-10-21
 
 This engineering record binds the October 21 unattended completion mission to
 the original ten-item contract. It grants no product, physical or protected-main
-acceptance. The owner is unavailable; independently attainable work continues.
+acceptance. The unattended execution preserves the external acceptance boundaries.
+
+The current coherent software checkpoint is `98a127e0`, based on protected main
+`d699de95`. Both companions have original-model rendering and joined native
+input/Player-return development proof. The independent full iOS presentation
+profile passes 31/0/1; accepted browser/Crossdeck integration and physical
+acceptance remain open. Read the [current ten-item matrix](#original-ten-requirements-current-disposition)
+and [device handoff](#proposed-physical-acceptance-handoff) for the present
+disposition. The chronological sections preserve earlier failed and superseded
+receipts; they do not collectively imply a fresh full-suite pass.
 
 ## Initial source reconciliation
 
@@ -474,13 +483,15 @@ One unchanged-source comparison, run
 uses the existing standard `macos-26` Apple Silicon runner with the same b4 source,
 all selected suites, original assertions and original time limits. That explicit
 runner label successfully acquired the fresh Release archive host; it is distinct
-from the earlier unacquired `macos-latest` alias. Selection is not execution or
-acceptance; its result remains pending until original evidence is retained.
+from the earlier unacquired `macos-latest` alias. Selection itself is not
+execution or acceptance; the completed component evidence is retained below.
 
 That comparison's presentation job subsequently failed to acquire a hosted
-machine and executed zero steps; its primary companion step completed successfully
-and joined execution remains independently observed. No full-31 result follows
-from this split outcome.
+machine and executed zero steps. Its primary companion29/0/1, joined
+OS-input/Player-return and location-denial steps passed with owned cleanup. The
+whole run failed; no full-31 result follows from this split outcome. The
+[independent review](evidence/ncl01-full-completion-20261021/ios-39637797267.json)
+preserves each component's actual result.
 
 An additive focused diagnostic uses the same shared Device Lab and the same two
 existing UI methods: actual XXXL portrait/landscape and the real Settings/Home
@@ -563,24 +574,92 @@ login, supplied authentication/cookies, header spoofing, TLS/proxy changes or
 service/database action occurred. Browser cleanup observed child exit zero.
 These checks do not qualify private-account writes, a new deployment or iPhone AR.
 
+### Coherent current-main checkpoint 98a127e0
+
+Normal merge `98a127e0254d5324b0afeeb44e22b26ee46ea9a3` consumes protected main
+`d699de9568ea355a363223dd88f747536b450688`. Its accepted PR784 changes replay
+artifact-root infrastructure, without changing shipping native/browser source,
+granting NCL product acceptance or transferring Crossdeck consumer authority.
+The [read-only readiness record](evidence/ncl01-full-completion-20261021/integration-readiness-98a127e0.json)
+binds the required Crossdeck experience-design gate to this source. The first
+malformed wrapper invocation is retained separately and establishes no design
+result. PR721 is open/draft at `8dd97d7a63989cc7ee0fde7e8e178b515e2d8a94`;
+PR781 remains an unaccepted proposal at `182233e0f6d11a5dd5f74f35e01183b633b6ec8f`.
+
+The final preparation refresh at 17:55 UTC fetched main again and confirmed the
+same `d699de95` head. PR721 remains open/draft at the same `8dd97d7a` source;
+PR781 remains open at the same `182233e0` proposal. Existing PR741 is still an
+open draft at `76d1787e`, verified as an ancestor of this candidate. A normal
+fast-forward can preserve that PR and every historical branch; no successor,
+force rewrite or attempt through the known protected integration hold is needed.
+
+The [completed ARM primary review](evidence/ncl01-full-completion-20261021/ios-39637797267.json)
+records native29/0/1, seven original frame phases, actual original-model Metal
+pixels and joined OS-input/real-SQLite rejection/visible Player/same-Voyage return.
+Location-denial and owned cleanup pass. Its independent presentation job acquired
+no host and executed zero steps; the whole run failed. This component success is
+neither full31 nor physical acceptance and does not explain prior Intel failures.
+
+### Final iOS presentation qualification at 98a127e0
+
+The standalone existing ARM presentation profile
+[39644586302](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39644586302)
+completed successfully at source `98a127e0254d5324b0afeeb44e22b26ee46ea9a3`.
+The [independent review](evidence/ncl01-full-completion-20261021/ios-39644586302.json)
+keeps the actual first bundle **30 passes / zero failures / one expected
+driver-only skip** separate from the actual Reduced Motion bundle **one pass /
+zero failures / zero skips**. The unchanged strict combiner reports **31 passes /
+zero failures / one expected skip**, total 32 and zero expected failures. This
+is one complete supported profile, not a sum of primary29 and a diagnostic.
+
+The actual XXXL portrait and landscape screenshots contain readable unconfigured
+fallback content. The separate OS Settings test enables the real Reduce Motion
+switch, enters through Home once, observes a foreground readable app window
+under the original ten seconds and restores the original setting. The retained
+Settings screenshot is explicitly **before selection**, showing the initial
+disabled state; it is not visual proof of the enabled state. The actual enabled
+and restored-state assertions pass. Root independently viewed both orientations,
+the Settings screenshot and the app fallback, and parsed all three summaries.
+Owned Simulator cleanup reports PASS with one owned resource and zero remaining.
+This proves bounded Simulator presentation, not active camera/AR tracking or
+assistive hardware acceptance. The unconfigured shell is intentional test
+content; the separate Release archive verifies the configured stable origin.
+
+The separate focused Intel diagnostic
+[39642636045](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39642636045)
+was cancelled at its original job envelope. Its
+[retained partial review](evidence/ncl01-full-completion-20261021/ios-39642636045.json)
+contains a passing first UI method, but no final Reduced Motion, combined
+diagnostic or cleanup result. No missing assertion or cleanup is inferred.
+The complete ARM profile does not identify that cancellation's cause or explain
+the historical Home/direct Settings blank-launch failures. No further equivalent
+run, assertion change, timeout increase or speculative production repair follows.
+
 ## Original ten requirements: current disposition
 
-This matrix describes the bounded original-model milestone at frozen repair
-`a523b828`, with Intel native proof at `79df8c58`. Fresh joined/Reduced Motion qualification remains pending. It does not promote the milestone
-to physical, owner or protected-main acceptance.
+The coherent software source is `98a127e0254d5324b0afeeb44e22b26ee46ea9a3`,
+tree `591415b2ec6cf5a9675cb326a7e2db1226ce8d51`, based on accepted main
+`d699de9568ea355a363223dd88f747536b450688`. Shipping iOS remains a523;
+Android remains a86; browser/canonical runtime remains 26da4135. The
+[independent source review](evidence/ncl01-full-completion-20261021/source-reuse-review-98a127e0.json)
+binds retained proof to these exact unchanged scopes and explicitly separates
+the new diagnostic CLI. The [post-merge host checks](evidence/ncl01-full-completion-20261021/ios-diagnostic-98a127e0-preflight.json)
+passed full TypeScript, focused lint and 25 guards with clean identical source
+fingerprints. Native proof is independently bound to its own producer; counts
+from different runs are not combined into a full-suite acceptance.
 
-| #   | Implemented behavior                                                                                                                                                                                                             | Software evidence                                                                                                                                                                                                                                                                         | Physical evidence and remaining limitation                                                                                                                                                              | Acceptance disposition                                         |
-| --- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| 1   | Published canonical Scene delivers original SC02 chest and compass; authenticated, checksum-verified GLBs retain their identity and license.                                                                                     | Shared v1/v2, schema, authorization and corruption assertions; original native raster/geometry receipts.                                                                                                                                                                                  | Earlier owner-reported iPhone display is not acceptance of this source. Browser/Crossdeck end-to-end release remains gated.                                                                             | Implemented; integrated acceptance open.                       |
-| 2   | Canonical parent/resolved transforms and entity IDs, embedded glTF hierarchy/materials, metric width, rotation and bottom pivot; strict visibility, eligibility and Scene replacement.                                           | Three-entity/hierarchy/update fixtures; native model bounds, root transforms, distinct geometry selection and hidden/occluding-mesh negatives.                                                                                                                                            | Actual scale/alignment/drift unmeasured. Relative layout uses a chosen surface origin; it does not recognize the classroom.                                                                             | Software verified; physical fidelity open.                     |
-| 3   | Existing ARKit/SceneKit app loads original GLBs, stages graphs atomically, picks actual meshes, clears/cancels and offers accessible exit/Guided fallback.                                                                       | Intel 39625033481 passes 29 native tests, original raster/mesh/frame barriers and corrected XXXL Return. Presentation first bundle passes 30; separate Motion and joined boot fail and are retained. Unsigned Release archive 39619394225 passes.                                         | No current-source physical test receipt.                                                                                                                                                                | Implemented; current qualification pending.                    |
-| 4   | Existing ARCore/Filament app uses the same contract and original models, actual GPU picks, surface/local placement, input guards and disposal.                                                                                   | Android 39613042290: 16 methods, both original GLBs, MotionEvent and accessibility actions, four decoded frames; joined journey and permission scenario pass. Native source unchanged in a523.                                                                                            | No physical Android available. Full lint remains FAIL with eight matched baseline errors; Release lintVital/builds pass separately.                                                                     | Software verified; physical acceptance open.                   |
-| 5   | Capability-checked world-tracking sessions, horizontal/vertical surface placement where available, provider-frame anchors, explicit failure/limited-tracking feedback and recovery handling.                                     | Provider-frame/placement/state/cancellation tests and compiled native implementations.                                                                                                                                                                                                    | Real anchoring, interruption, relocalization and drift require both platforms' hardware. No automatic reconstructed-room registration.                                                                  | Software implemented; physical acceptance open.                |
-| 6   | Browser/native share immutable Scene/edition, eligibility, transforms and authored fallback; bounded adapter reuses admitted tracking/camera custody without inventing plane support or metric scale.                            | Adapter/capability/lifecycle tests and canonical Guided/D1 journeys; browser runtime source unchanged from successful Linux run 39607851877.                                                                                                                                              | No accepted live metric browser provider; Crossdeck PR721 design/participation contract is unmerged. Ordinary browser remains Guided.                                                                   | Independent adapter implemented; integration blocked.          |
-| 7   | Actual native mesh selection emits canonical Inspect intent; pending/error/accepted Player handling and same-Voyage return replace premature local success. Standard center-selection and Guided alternatives remain accessible. | Android actual input → real SQLite SIMULATION_REJECTED → visible Player error/return passes. iOS Intel actual selection passes; its joined run fails before driver startup. Positive authorized canonical response/selected content is separately verified by real-app D1 mock transport. | A camera-free rejection and mocked native transport are not an accepted physical native Inspect. New iOS join and physical positive paths remain open.                                                  | Implemented; qualification/physical acceptance open.           |
-| 8   | One account/Player/Voyage/edition/Scene authority, current membership/CSRF/checksum checks, eligibility, scoped idempotency and stale/revoked rejection. Native input never progresses the Chronicle independently.              | Real SQLite D1 positive/duplicate/foreign/stale/revocation scenarios: one authorized observation, no progression event/sequence change. Native simulation: zero observations/events.                                                                                                      | Real-device joined positive observation remains unqualified.                                                                                                                                            | Canonical software verified; integrated physical proof open.   |
-| 9   | Close/reopen, pending escape, cancellation during staging, epoch/session supersession, late-response rejection, revoked Lens teardown, network failure and native resource cleanup.                                              | Host/Lens/controller assertions; Android native/joined/permission cleanup; iOS graph/state/ordinary Home tests and cleanup retain their own source identities.                                                                                                                            | Active-camera backgrounding, camera permission changes and tracking recovery require hardware. Historical Home failure 38840109053 remains unexplained.                                                 | Software implemented; current iOS/physical qualification open. |
-| 10  | Source/tree identities, reproducible locked builds, original artifact hashes, privacy checks, declared unsupported profile and original failed receipts; existing PR741 is reusable by normal fast-forward.                      | 495 tests/39 files at a86; a523 matches retained scopes; new pre-freeze TSC/lint/14 tests; Android builds/237 JVM assertions and current hosted pass; unsigned iOS archives retain exact identities.                                                                                      | Intel native pass is retained; fresh joined/Motion proof pending. Unsigned Release archive 39619394225 passes. No ordinary Mainline Decision, merge, landed smoke, new signed beta or owner acceptance. | Development evidence available; integration/owner gates open.  |
+| #   | Implemented behavior                                                                                                                                       | Software verification                                                                                                                                                                                     | Physical evidence and remaining limitation                                                                                                                        | Acceptance disposition                                                 |
+| --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| 1   | Published canonical Scene delivers the original authenticated, checksum-verified SC02 chest and compass.                                                   | Shared v1/v2/schema/asset negatives and actual native original-model raster/geometry.                                                                                                                     | Earlier untagged owner iPhone report is not acceptance of this source; integrated browser release remains gated.                                                  | Implemented; integrated acceptance open.                               |
+| 2   | Canonical IDs, hierarchy, resolved transforms, metric widths, rotations, bottom pivots, materials, visibility and Scene replacement.                       | Three-entity/hierarchy/update fixtures; both native original bounds, transforms and mesh hit/miss guards.                                                                                                 | Scale, alignment and drift require hardware; selected surface origin does not recognize classroom tables.                                                         | Software verified; physical fidelity open.                             |
+| 3   | ARKit/SceneKit original GLB loading, atomic staging, actual mesh selection, cancellation and accessible return/fallback.                                   | ARM39637797267 native29/0/1 and joined input/Player return pass. Independent ARM39644586302 full31/0/1 passes, with actual XXXL/Reduced Motion and cleanup. Release39633902301 passes.                    | No current-source physical receipt. Separate Intel diagnostic was cancelled after its first UI pass; the complete ARM profile is independently satisfied.         | Software verified; physical acceptance open.                           |
+| 4   | ARCore/Filament equivalent contract/models, GPU picking, local/surface placement, input guards and disposal.                                               | Android39613042290:16 methods, original GPU frames, actual pointer/accessibility input, joined Player/SQLite and cleanup pass. Builds/237 JVM assertions/Release lintVital pass.                          | No Android hardware. Full lint retains eight matched baseline errors; it is not all-lint PASS.                                                                    | Software verified; physical acceptance open.                           |
+| 5   | Capability-checked tracking sessions, supported horizontal/vertical placement, provider-frame anchors, limited/failure feedback and recovery.              | Compiled native implementations plus frame/placement/state/cancellation tests.                                                                                                                            | Actual anchoring, relocalization, drift and camera interruption require both platforms' hardware. Automatic reconstructed-room registration is excluded.          | Software implemented; physical acceptance open.                        |
+| 6   | Shared immutable Scene/edition/IDs and authored fallback; bounded browser adapter reuses existing camera/session custody and requires admitted metric6DoF. | Adapter/capability/lifecycle tests and canonical Guided/D1 journeys at Linux39607851877; runtime source unchanged.                                                                                        | No admitted live metric browser provider or accepted PR721 participation/design contract. Ordinary browser remains Guided; no plane capability is invented.       | Independent adapter implemented; live integration blocked.             |
+| 7   | Native mesh emits Inspect intent; canonical pending/error/accepted Player presentation and same-Voyage return; accessible center selection.                | Both platforms' actual OS input reaches real SQLite SIMULATION_REJECTED/visible Player/return with zero mutation. Separate D1 mocked-native transport proves authorized selected content and idempotency. | Simulation rejection and D1 mock are not a positive physical native Inspect; real touch/assistive acceptance is open.                                             | Implemented and component-tested; physical/integrated acceptance open. |
+| 8   | One account/Player/Voyage/edition/Scene authority with membership, CSRF, eligibility, checksum, expiry/idempotency and stale/revoked rejection.            | Real SQLite D1:one authorized observation, no progression/sequence change; both native simulations:zero observations/progression.                                                                         | Positive real-device joined observation remains unqualified.                                                                                                      | Canonical software verified; physical join open.                       |
+| 9   | Close/reopen, pending escape, staged cancellation, epoch/session supersession, late-response rejection, revocation and resource cleanup.                   | Host/Lens/controller tests; both native/joined/location-denial cleanups pass. Full31 includes the original real Settings/Home/foreground/restore assertions and owned Simulator cleanup.                  | Active camera/permission/tracking behavior requires hardware. Historical Home38840109053 and direct Settings blank-launch causes remain unexplained.              | Software checks pass; physical qualification remains open.             |
+| 10  | Exact source/tree, locked builds, original artifact hashes, unsupported-profile disclosure, privacy scans and preserved failed evidence.                   | Retained495/39; separate current25 guards/full TSC/lint; iOS full31; Android builds/native16; unsigned Release20 checks and compiled-icon review; exact scope reuse.                                      | No ordinary Mainline Decision, merge, landed smoke, new signed beta or owner acceptance is claimed. Exact publication source is separate from the preserved beta. | Development proof recorded; integration and external acceptance open.  |
 
 ## Supported profile and product/security result
 
@@ -611,6 +690,37 @@ POSITION_NO_SCALE is never treated as metres; plane capability remains false
 where unavailable. Required accepted design/participation and a genuinely
 supported origin-authorized provider must precede final integrated qualification.
 
+## Final engineering disposition
+
+**NCL-01 IMPLEMENTATION COMPLETE / INTEGRATION BLOCKED.** All independently
+attainable bounded source work, native builds and supported software profiles
+are complete. This does not accept the original both-platform physical milestone.
+The independent review found no additional bounded native source gap; accepted
+Crossdeck continuity/design, an admitted live browser provider and protected
+review remain unavailable. PR721 has not completed its own acceptance, protected
+merge or landed verification. Its finite authority was not consumed.
+
+The tested full software checkpoint is `98a127e0`; the exact source remains
+`98a127e0254d5324b0afeeb44e22b26ee46ea9a3`, tree
+`591415b2ec6cf5a9675cb326a7e2db1226ce8d51`. Final publication adds only
+reviewed documentation, generated documentation indexes and sealed evidence.
+A separate committed-tree comparison verifies unchanged code, workflows, locked
+configuration and every historical receipt. The exact publication commit/tree
+are recorded on [existing draft PR741](https://github.com/Kgray44/treasurehuntSoT/pull/741).
+The task branch remains `codex/ncl01-full-completion`. No successor, history
+rewrite, ordinary Sounding Line acceptance, Mainline Decision, protected merge
+or landed smoke is claimed. Main remains `d699de9568ea355a363223dd88f747536b450688`
+at the final fetch.
+
+The [final temporary-ref cleanup](evidence/ncl01-full-completion-20261021/completed-final-transports-cleanup.json)
+removes only completed task-owned transports with exact expected-SHA leases and
+verified remote absence. Historical branches, failed receipts, TestFlight beta7,
+the owned worktree and live owner services remain preserved. Ref deletion does
+not imply native cleanup for the cancelled Intel diagnostic. New evidence and
+intermediates remain on C:; no broad cleanup or private-content relocation occurred.
+Product features, current status, feature status, Player guidance and changelog
+were reviewed; no accepted completed-feature promotion warrants a catalog change.
+
 ## Proposed physical acceptance handoff
 
 These are reproducible review steps and suggested evidence, not an amendment to
@@ -635,5 +745,6 @@ review, owner iPhone testing and physical Android hardware. Signing/export and
 matching web deployment remain task-owned distribution work when the coherent
 candidate is ready; no missing Apple enrollment/access is asserted. Native
 screenshots/raster frames, an uploaded IPA or
-Guided View cannot close those rows. The final candidate/source and integration
-disposition must be recorded after current software qualification completes.
+Guided View cannot close those rows. PR741 records the exact publication
+identity and held integration state; this ledger preserves each underlying test
+producer rather than assigning fresh tests to documentation-only commits.

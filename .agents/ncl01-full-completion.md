@@ -12,6 +12,14 @@ Project Trim adaptation; integration/product-phase; UNATTENDED_CONTINUATION.
 The owner's October 21 completion directive supersedes the historical beta-only
 no-merge restriction for this task, subject to all current protected-main,
 experience, security and physical acceptance requirements. No owner questions.
+The owner's continuation/final-qualification addendum, SHA256
+`13f2d34a5535c3671f2771ec8724a6e409274e86ad566cca9a10521660f0e495`,
+supplements that directive. Continue this worktree; retain the already-running
+UI jobs before considering another attempt. Preserve original assertions and
+bounds, stop equivalent retries, and publish the existing draft candidate after
+all attainable work is finished. Crossdeck remains held until its own accepted
+qualification, protected merge and landed verification; an advancing unaccepted
+head is not a reason to rebuild NCL or repeatedly poll it.
 
 Initial protected baseline: `e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab`.
 Reconciled protected main: `e1a86f98e56d68e8e87e3704d17439489ff1a170`
@@ -64,8 +72,28 @@ protocol/code string. Archive metadata8 consumed no Apple build number and no
 upload occurred. Sixteen focused verifier/signing tests pass. No shipping native,
 origin, signing identity, upload policy or beta7 replacement is implied.
 
-The full ARM presentation job did not acquire a host and executed zero steps;
-its primary companion step succeeded, joined result still separate. The additive
+Current coherent source is `98a127e0254d5324b0afeeb44e22b26ee46ea9a3`, tree
+`591415b2ec6cf5a9675cb326a7e2db1226ce8d51`. It normally merges protected main
+`d699de9568ea355a363223dd88f747536b450688` (PR784 replay-artifact-root
+infrastructure); that repair grants no Crossdeck consumer authority. PR721 is
+now open/draft at the same `8dd97d7a` head; PR781 is still an unaccepted proposal.
+The read-only exact-source plan still stops at required Crossdeck experience
+design. Do not execute ordinary product qualification or merge through that hold.
+
+ARM run39637797267 completed primary29/0/1, all seven original frame phases,
+original Metal raster and the joined actual-input/real-SQLite rejection/visible
+Player/same-Voyage-return journey. Location-denial and owned cleanup passed.
+Its independent presentation job acquired no host and executed zero steps;
+the whole run failed. This is component proof, not full31 acceptance. Preserve
+the earlier unexplained Intel and Home failures without assigning their cause.
+Standalone full31 ARM profile39644586302 completed successfully at98 after the
+primary ARM job finished. Its actual first30/0/1 and separate Motion1/0/0 combine
+strictly to31/0/1; XXXL orientations, original Motion/Home/foreground/restore
+assertions and owned cleanup pass. Root independently viewed actual UI and
+rehashed all38 original files. No further iOS run is needed without invalidation.
+This is development proof, not physical, protected or owner acceptance.
+
+The additive
 `ios-presentation-diagnostic` target is development-only and primary-phone-only,
 with no scenario or graphics overrides. It runs exactly the existing two UI
 methods under their original assertions/actions/bounds and existing30-minute job.
@@ -74,7 +102,17 @@ tier, plus an allowlisted iOS runner. Default full31 and companion29 paths remai
 unchanged. Its explicit two-test receipt is non-qualifying, emitted only after
 cleanup; it cannot replace full31 or be combined with another run. No generic
 success summary or apple-app pointer is published. A failure after a passing
-component stays an explicit diagnostic failure. Do not request owner participation.
+component stays an explicit diagnostic failure. Intel diagnostic39642636045 was
+cancelled at its original30-minute envelope: first UI method passed, separate
+Motion/finaldiagnostic/cleanup result unretained. Root rehashed all15 originals.
+It cannot be combined with primary29 or replace an independent full31 result.
+Current exact-source full TypeScript,
+focused lint and25 guards pass; scoped source reuse independently verifies the
+unchanged shipping/runtime sources and original artifacts. Do not request owner
+participation. All independently attainable source and software preparation is
+complete; publish through existing draft PR741 with the exact metadata-only
+source comparison and preserve the integration hold. Do not reopen qualified
+scopes without actual invalidation.
 Task branch: `codex/ncl01-full-completion`. Assembly `a8d862680a` merges the
 complete `cd597b1274bddad70118b77dd65b13969dd55a8d` TestFlight descendant,
 including original PR741 `76d1787e1340e396bc95747293d43e57130b00ed`, into main.

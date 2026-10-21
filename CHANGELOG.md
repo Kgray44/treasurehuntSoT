@@ -18,8 +18,11 @@ last_reviewed: 2026-10-21
   TestFlight descendants, makes native Inspect await canonical Player handling,
   preserves eligible mesh selection across redraws, adds accessible native
   loading/tracking guidance and rejects stale or revoked Scene interactions.
-  Focused software and native qualification continues in the
+  Source-bound shared, Android, iOS native/joined and unsigned Release development
+  checks pass within the scopes recorded in the
   [completion ledger](Development_Docs/Projects/Project_Parallax/NCL01_Full_Completion_20261021.md).
+  Independent iOS presentation passes 31/0/1 on the supported ARM profile;
+  failed and cancelled historical runs remain preserved without causal closure.
   Physical acceptance, accepted browser/Crossdeck integration and protected
   mainline acceptance remain separate gates. Existing beta 7 and its artwork
   are preserved.

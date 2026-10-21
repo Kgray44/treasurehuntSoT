@@ -14,8 +14,10 @@ The [October 21 completion candidate](../../Development_Docs/Projects/Project_Pa
 reconciles current main with the later internal TestFlight source and approved
 official artwork. It adds native placement guidance, canonical Inspect outcome
 presentation, an accessible center-selection control, stricter entity eligibility
-and session cleanup. Focused host, Android emulator and unsigned iOS archive
-checks pass; current iOS Simulator qualification is tracked separately. These
+and session cleanup. Focused host, Android emulator, iOS native/joined Simulator
+and unsigned Release archive checks pass within their recorded scopes. The
+independent iOS presentation profile passes 31 tests with one expected driver skip;
+cancelled partial runs remain preserved. These
 changes do not establish measured room
 alignment, physical acceptance, browser-provider availability or a new beta.
 

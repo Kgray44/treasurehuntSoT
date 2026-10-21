@@ -10,8 +10,10 @@ last_reviewed: 2026-10-21
 
 The [October 21 NCL-01 completion ledger](../../../Projects/Project_Parallax/NCL01_Full_Completion_20261021.md)
 records a current-main reconciliation with all approved TestFlight descendants,
-native Inspect/placement/lifecycle corrections and ongoing source-bound software
-qualification. Protected experience planning requires an accepted Crossdeck
+native Inspect/placement/lifecycle corrections and source-bound shared, Android,
+iOS native/joined and unsigned Release development evidence. Independent iOS
+presentation passes 31/0/1 on the supported ARM profile; partial Intel failures
+remain preserved. Protected experience planning requires an accepted Crossdeck
 continuity design; that dependency has not landed. Existing beta 7 is unchanged; physical
 and owner acceptance remain outstanding.
 

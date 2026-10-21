@@ -55,9 +55,13 @@ preserves the edge and Cloudflared; it is not a full-stack stop or a health
 check. Do not blindly invoke the historical D: whole-stack Start/Stop helpers:
 their original production process metadata is stale. Preserve those originals.
 
-Normal public TLS checks returned 200 for sign-in and all 25 referenced static
-assets. These anonymous checks do not prove private-account/database integrity
-or physical AR. Only an inactive task-owned derived Gradle cache was relocated
+Earlier public TLS checks returned 200 for sign-in and all 25 referenced static
+assets. A later fresh Chromium session returned a complete sign-in document and
+24 actual successful CSS/JS responses (22 of 23 declared references plus two
+dynamic chunks); one polyfill reference was unrequested. A distinct Python
+client's HTTP403 is retained without an established cause or security change.
+These anonymous checks do not prove private-account/database integrity or
+physical AR. Only an inactive task-owned derived Gradle cache was relocated
 to C:, retaining every file and its original D: path, to recover about 391 MiB.
 Storage remains constrained; keep new temporary state on C:. See the current
 [engineering ledger](../Development_Docs/Projects/Project_Parallax/NCL01_Full_Completion_20261021.md)

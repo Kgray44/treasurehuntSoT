@@ -1,0 +1,520 @@
+{
+  "schemaVersion": 1,
+  "role": "INDEPENDENT_SOURCE_BOUND_IOS_PRESENTATION_REVIEW",
+  "qualification": false,
+  "reviewedAtUtc": "2026-10-21T17:59:30.684Z",
+  "runId": 39644586302,
+  "candidate": "98a127e0254d5324b0afeeb44e22b26ee46ea9a3",
+  "candidateTree": "591415b2ec6cf5a9675cb326a7e2db1226ce8d51",
+  "environment": {
+    "architecture": "arm64",
+    "darwinKernelRelease": "25.6.0",
+    "macOS": "26.6.2",
+    "macOSProvenance": "Actual xcresult environmentDescription",
+    "xcode": "Xcode 26.6\nBuild version 17F113",
+    "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-26-5"
+  },
+  "buildScope": {
+    "scope": "COMPANION_AND_PRESENTATION",
+    "requiredPassingTests": 31,
+    "excludedPresentationTests": [],
+    "independentPresentationReceiptRequired": false,
+    "presentationAcceptance": false
+  },
+  "firstBundle": {
+    "result": "Passed",
+    "passedTests": 30,
+    "failedTests": 0,
+    "skippedTests": 1,
+    "expectedFailures": 0,
+    "totalTestCount": 31
+  },
+  "largeText": {
+    "settings": "ACTUAL_OWNED_SIMULATOR_SETTINGS",
+    "contentSize": "ACCESSIBILITY_XXXL",
+    "appearance": "DARK",
+    "fixture": "UNCONFIGURED_READABLE_FALLBACK",
+    "portraitBounds": {
+      "text": {
+        "x": 16,
+        "y": 63,
+        "width": 346,
+        "height": 373.3333333333333
+      },
+      "orientation": 1,
+      "deviceImage": {
+        "width": 390,
+        "height": 844,
+        "orientation": 0
+      },
+      "window": {
+        "x": 0,
+        "width": 390,
+        "y": 0,
+        "height": 844
+      },
+      "landscape": false
+    },
+    "landscapeBounds": {
+      "window": {
+        "height": 390,
+        "y": 0,
+        "width": 844,
+        "x": 0
+      },
+      "text": {
+        "x": 63,
+        "y": 16,
+        "width": 637,
+        "height": 187.33333333333334
+      },
+      "landscape": true,
+      "orientation": 3,
+      "deviceImage": {
+        "height": 390,
+        "width": 844,
+        "orientation": 2
+      }
+    },
+    "actualDeviceScreensIndependentlyViewed": true,
+    "productionJournalRenderingProven": false,
+    "physicalAssistiveTechnologyProven": false
+  },
+  "attachments": [
+    {
+      "role": "test-attachments/Owned production controller viewport setup - inspect-only",
+      "test": "ParallaxSceneDeliveryTests/testAtomicGraphReplacementRejectsMissingModelAndStopsStaleInput()",
+      "kind": ".json"
+    },
+    {
+      "role": "test-attachments/Owned production controller viewport setup - no-actions",
+      "test": "ParallaxSceneDeliveryTests/testAtomicGraphReplacementRejectsMissingModelAndStopsStaleInput()",
+      "kind": ".json"
+    },
+    {
+      "role": "test-attachments/Owned production controller viewport setup - revoked-selection",
+      "test": "ParallaxSceneDeliveryTests/testAtomicGraphReplacementRejectsMissingModelAndStopsStaleInput()",
+      "kind": ".json"
+    },
+    {
+      "role": "test-attachments/Owned production controller viewport setup - closer-unrelated-mesh",
+      "test": "ParallaxSceneDeliveryTests/testAtomicGraphReplacementRejectsMissingModelAndStopsStaleInput()",
+      "kind": ".json"
+    },
+    {
+      "role": "test-attachments/Owned production controller viewport setup - hidden",
+      "test": "ParallaxSceneDeliveryTests/testAtomicGraphReplacementRejectsMissingModelAndStopsStaleInput()",
+      "kind": ".json"
+    },
+    {
+      "role": "test-attachments/Owned production controller viewport setup - rejected-replacement",
+      "test": "ParallaxSceneDeliveryTests/testAtomicGraphReplacementRejectsMissingModelAndStopsStaleInput()",
+      "kind": ".json"
+    },
+    {
+      "role": "test-attachments/ncl01-scenekit-catalog",
+      "test": "ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+      "kind": ".json"
+    },
+    {
+      "role": "test-attachments/brass-compass-removed",
+      "test": "ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+      "kind": ".png"
+    },
+    {
+      "role": "test-attachments/brass-compass-populated",
+      "test": "ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+      "kind": ".png"
+    },
+    {
+      "role": "test-attachments/brass-compass-empty",
+      "test": "ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+      "kind": ".png"
+    },
+    {
+      "role": "test-attachments/treasure-chest-removed",
+      "test": "ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+      "kind": ".png"
+    },
+    {
+      "role": "test-attachments/treasure-chest-populated",
+      "test": "ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+      "kind": ".png"
+    },
+    {
+      "role": "test-attachments/treasure-chest-empty",
+      "test": "ParallaxSceneDeliveryTests/testCatalogGLBLoadsRealGeometryAndMaterialsWithoutCamera()",
+      "kind": ".png"
+    },
+    {
+      "role": "test-attachments/Owned production controller viewport setup - initial-input",
+      "test": "ParallaxSceneDeliveryTests/testProductionControllerMeshInputAndInspectOnlyEmitIntent()",
+      "kind": ".json"
+    },
+    {
+      "role": "test-attachments/Owned landscape actual bounds",
+      "test": "NativeLifecycleTests/testOwnedSimulatorLargeTextAndOrientation()",
+      "kind": ".json"
+    },
+    {
+      "role": "test-attachments/Owned device landscape screen",
+      "test": "NativeLifecycleTests/testOwnedSimulatorLargeTextAndOrientation()",
+      "kind": ".png"
+    },
+    {
+      "role": "test-attachments/Owned large-text landscape fallback",
+      "test": "NativeLifecycleTests/testOwnedSimulatorLargeTextAndOrientation()",
+      "kind": ".png"
+    },
+    {
+      "role": "test-attachments/Owned portrait actual bounds",
+      "test": "NativeLifecycleTests/testOwnedSimulatorLargeTextAndOrientation()",
+      "kind": ".json"
+    },
+    {
+      "role": "test-attachments/Owned device portrait screen",
+      "test": "NativeLifecycleTests/testOwnedSimulatorLargeTextAndOrientation()",
+      "kind": ".png"
+    },
+    {
+      "role": "test-attachments/Owned large-text portrait fallback",
+      "test": "NativeLifecycleTests/testOwnedSimulatorLargeTextAndOrientation()",
+      "kind": ".png"
+    },
+    {
+      "role": "test-attachments/Owned Home background state observations",
+      "test": "NativeLifecycleTests/testUnconfiguredShellReturnsFromHome()",
+      "kind": ".json"
+    },
+    {
+      "role": "reduced-motion-attachments/Owned reduced-motion fallback",
+      "test": "NativeLifecycleTests/testOwnedSimulatorReducedMotionSetting()",
+      "kind": ".png"
+    },
+    {
+      "role": "reduced-motion-attachments/Owned reduced-motion actual hierarchy",
+      "test": "NativeLifecycleTests/testOwnedSimulatorReducedMotionSetting()",
+      "kind": ".txt"
+    },
+    {
+      "role": "reduced-motion-attachments/Owned reduced-motion foreground presentation",
+      "test": "NativeLifecycleTests/testOwnedSimulatorReducedMotionSetting()",
+      "kind": ".json"
+    },
+    {
+      "role": "reduced-motion-attachments/Owned Motion settings before selection",
+      "test": "NativeLifecycleTests/testOwnedSimulatorReducedMotionSetting()",
+      "kind": ".png"
+    }
+  ],
+  "originals": [
+    {
+      "role": "test-attachments-manifest",
+      "sha256": "013cedeb9d11d837c2ef1139b999a8461e9a036e93adc9b368ff41d08fc0e148",
+      "bytes": 13360
+    },
+    {
+      "role": "test-attachments/Owned production controller viewport setup - inspect-only",
+      "sha256": "c68b30191b26cba4924f47710f7a3178c22de01d04fd764878ce26f1a60f2fbd",
+      "bytes": 336
+    },
+    {
+      "role": "test-attachments/Owned production controller viewport setup - no-actions",
+      "sha256": "28afa141e30e71c2f70941f2648646ee65742cbf97d07071431b7ad8aee2bc97",
+      "bytes": 334
+    },
+    {
+      "role": "test-attachments/Owned production controller viewport setup - revoked-selection",
+      "sha256": "73a431f500f27f688e613296dcbeec33c6079b414047e014280033741e759418",
+      "bytes": 341
+    },
+    {
+      "role": "test-attachments/Owned production controller viewport setup - closer-unrelated-mesh",
+      "sha256": "47c588fa14c3b36645588d2f704017a5f64d76443ec73fa24f41c2a878866b12",
+      "bytes": 345
+    },
+    {
+      "role": "test-attachments/Owned production controller viewport setup - hidden",
+      "sha256": "d4fb5ab92f409a9ec61c88f967f511e16e0c76aa9cdb824ab011b8a259881929",
+      "bytes": 330
+    },
+    {
+      "role": "test-attachments/Owned production controller viewport setup - rejected-replacement",
+      "sha256": "a94d3f2e6d845068ab862a8f96df14f3e0335116ba7eceedcc1b81076e8a4e10",
+      "bytes": 344
+    },
+    {
+      "role": "test-attachments/ncl01-scenekit-catalog",
+      "sha256": "19620a5c9fe298b019f3da42252474b677f1603f8fdd0ee12b994981e4fea3fb",
+      "bytes": 14009
+    },
+    {
+      "role": "test-attachments/brass-compass-removed",
+      "sha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+      "bytes": 1306
+    },
+    {
+      "role": "test-attachments/brass-compass-populated",
+      "sha256": "591e56dfbcfa694f0e89410a394878eb3149c861aa6ed9920cc170f21487b432",
+      "bytes": 5725
+    },
+    {
+      "role": "test-attachments/brass-compass-empty",
+      "sha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+      "bytes": 1306
+    },
+    {
+      "role": "test-attachments/treasure-chest-removed",
+      "sha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+      "bytes": 1306
+    },
+    {
+      "role": "test-attachments/treasure-chest-populated",
+      "sha256": "6e98d12823330be77e97490b28d5ffb7159799ba4987353c0ba06861fe7d6381",
+      "bytes": 7237
+    },
+    {
+      "role": "test-attachments/treasure-chest-empty",
+      "sha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+      "bytes": 1306
+    },
+    {
+      "role": "test-attachments/Owned production controller viewport setup - initial-input",
+      "sha256": "449d05e5223d7710f54e1f1d4166f4eaa483fbe9d8979b501bc5637ce2758dc7",
+      "bytes": 337
+    },
+    {
+      "role": "test-attachments/Owned landscape actual bounds",
+      "sha256": "dbcfa86c607f2f88759132b4c4e238cdabfae22cf8af3783697b82f5ae013359",
+      "bytes": 202
+    },
+    {
+      "role": "test-attachments/Owned device landscape screen",
+      "sha256": "9231c3e3b330bc69959215bd40fe74b21e059a61bccd71304163442ee743cd23",
+      "bytes": 146152
+    },
+    {
+      "role": "test-attachments/Owned large-text landscape fallback",
+      "sha256": "c7981d58c1bc85995129b2573567ecb7621566def659dcb990e0149c53cdb37f",
+      "bytes": 106047
+    },
+    {
+      "role": "test-attachments/Owned portrait actual bounds",
+      "sha256": "54735401d832ee57ec355381020c7b71ae76e01dc788a24c130363a5b9fa4999",
+      "bytes": 203
+    },
+    {
+      "role": "test-attachments/Owned device portrait screen",
+      "sha256": "4266f535d7781ada7b2adc998153019eb8946a708e81cfcd98c45c3f8b976552",
+      "bytes": 137159
+    },
+    {
+      "role": "test-attachments/Owned large-text portrait fallback",
+      "sha256": "4266f535d7781ada7b2adc998153019eb8946a708e81cfcd98c45c3f8b976552",
+      "bytes": 137159
+    },
+    {
+      "role": "test-attachments/Owned Home background state observations",
+      "sha256": "b9678f7235680a86e7bc62e125bc75554dcf721bd045bb34dc677996b206262c",
+      "bytes": 111
+    },
+    {
+      "role": "reduced-motion-attachments-manifest",
+      "sha256": "16c6976f9db60e881c38224ab0628c23b6efd331d2f9d2c9f07287608cebc323",
+      "bytes": 2090
+    },
+    {
+      "role": "reduced-motion-attachments/Owned reduced-motion fallback",
+      "sha256": "21a20a20ae251b2b5bbe9bce48a9c3e478d8db86c5b97d6a17f3d86256831d75",
+      "bytes": 66812
+    },
+    {
+      "role": "reduced-motion-attachments/Owned reduced-motion actual hierarchy",
+      "sha256": "036ff38b6ce71bf10015a3ad53d4951cec37fd1983a3127ba110b4d93238e13b",
+      "bytes": 1378
+    },
+    {
+      "role": "reduced-motion-attachments/Owned reduced-motion foreground presentation",
+      "sha256": "b549cc7e6ea68223427f9e7f4b8cc78b1d4138ca34affd95b38ca4af2ae36403",
+      "bytes": 67
+    },
+    {
+      "role": "reduced-motion-attachments/Owned Motion settings before selection",
+      "sha256": "7e6ced7b0b2260e02959add6af9239c4a2a81317918260e1bd97e2811d8ea4da",
+      "bytes": 174183
+    },
+    {
+      "role": "build-scope.json",
+      "sha256": "7240596b9e94017e1c46a35fb115efbec2a3ae102aea2cfb6fb429a7c9a835de",
+      "bytes": 194
+    },
+    {
+      "role": "native-test-summary.json",
+      "sha256": "b56afc65ceac4195eaabb5210c9b0477d937f6fc62461d4e241f40b7efdab9ae",
+      "bytes": 1282
+    },
+    {
+      "role": "reduced-motion-test-summary.json",
+      "sha256": "558c5308194f04fdc9ea73f864e85359385c8b45c8d4b88ac90ec8c8e0bd6eee",
+      "bytes": 989
+    },
+    {
+      "role": "test-summary.json",
+      "sha256": "0ff7e98b34c909a842b8648372a9c2dbb9f588d5cb3ed28566d9fea1f834c3fc",
+      "bytes": 437
+    },
+    {
+      "role": "cleanup.json",
+      "sha256": "695d05ef490f88b008a05241f31602e3fb30ca075fdaf205f64a96b785831525",
+      "bytes": 99
+    },
+    {
+      "role": "capabilities.json",
+      "sha256": "c6e36223d4b3ab7f069c9358cff082c7ee0c25cae7919dd1156cf8f0d1ba6ebb",
+      "bytes": 16217
+    },
+    {
+      "role": "presentation-environment.json",
+      "sha256": "8ae54170f12cfb24589e2999c72a63e3c3c5f8c6e20dd8c8caf643cb6545a03b",
+      "bytes": 255
+    },
+    {
+      "role": "settings-environment.json",
+      "sha256": "85f8dea9f4dcce3e1cf7bf773dc3902449b03ad5576dd3226e79ae82f6e668b0",
+      "bytes": 80
+    },
+    {
+      "role": "orientation-configuration.json",
+      "sha256": "e81a49d4c70cefa92d113f94495fe1cb25a15d33fe40f46f6cfc5d2f2864f5a9",
+      "bytes": 443
+    },
+    {
+      "role": "runtime-selection.json",
+      "sha256": "c3e6e0896902914f970c32ccd7b25bf7d12a9ee733252931867273f2a7768f1d",
+      "bytes": 131
+    },
+    {
+      "role": "original-job-log",
+      "sha256": "f42b51367432b21053851f31cc5de85d19117a1d29bf095d5e75650b6394bf54",
+      "bytes": 77762
+    }
+  ],
+  "transport": "8dc438b5704c8f748c769a55b373080a349e9d29",
+  "transportTree": "83bb10bf835c0c1db444ebfcd79744ae45c569bb",
+  "workflowSha256": "ce3222420dacd3a7166dbf3a460ff33e3d750b898eb79347bdf13932b37c4da1",
+  "requestedRunner": "macos-26",
+  "workflowConclusion": "success",
+  "result": "PASS_FULL31_SOFTWARE_ONLY",
+  "combined": {
+    "result": "Passed",
+    "passedTests": 31,
+    "failedTests": 0,
+    "skippedTests": 1,
+    "expectedFailures": 0,
+    "totalTestCount": 32,
+    "strictFull31Satisfied": true
+  },
+  "reducedMotion": {
+    "result": "Passed",
+    "passedTests": 1,
+    "failedTests": 0,
+    "skippedTests": 0,
+    "expectedFailures": 0,
+    "totalTestCount": 1,
+    "foregroundPresentation": {
+      "readableFallback": true,
+      "foregroundObserved": true,
+      "windowCount": 1
+    },
+    "settingsBeforeSelectionScreenshotIndependentlyViewed": true,
+    "settingsScreenshotShows": "OFF before selection; not visual ON proof",
+    "sourceAssertions": "Passed test enables actual Settings Reduce Motion switch, waits value1 within10s, enters Home once and launches app once, waits foreground/window/readable within10s, restores original switch value within10s.",
+    "actualFallbackScreenshotIndependentlyViewed": true,
+    "actualHierarchyRetained": true
+  },
+  "viewportPhases": [
+    {
+      "phase": "inspect-only",
+      "withinSharedSetupDeadline": true,
+      "renderCallbackObserved": true,
+      "sharedSetupBudgetSeconds": 5
+    },
+    {
+      "phase": "no-actions",
+      "withinSharedSetupDeadline": true,
+      "renderCallbackObserved": true,
+      "sharedSetupBudgetSeconds": 5
+    },
+    {
+      "phase": "revoked-selection",
+      "withinSharedSetupDeadline": true,
+      "renderCallbackObserved": true,
+      "sharedSetupBudgetSeconds": 5
+    },
+    {
+      "phase": "closer-unrelated-mesh",
+      "withinSharedSetupDeadline": true,
+      "renderCallbackObserved": true,
+      "sharedSetupBudgetSeconds": 5
+    },
+    {
+      "phase": "hidden",
+      "withinSharedSetupDeadline": true,
+      "renderCallbackObserved": true,
+      "sharedSetupBudgetSeconds": 5
+    },
+    {
+      "phase": "rejected-replacement",
+      "withinSharedSetupDeadline": true,
+      "renderCallbackObserved": true,
+      "sharedSetupBudgetSeconds": 5
+    },
+    {
+      "phase": "initial-input",
+      "withinSharedSetupDeadline": true,
+      "renderCallbackObserved": true,
+      "sharedSetupBudgetSeconds": 5
+    }
+  ],
+  "raster": {
+    "result": "PASS",
+    "deadlineSeconds": 20,
+    "sealedElapsedMs": 2024.7152083333049,
+    "metalDeviceAvailable": true,
+    "readableCompletedTarget": true,
+    "assets": [
+      {
+        "assetId": "treasure-chest",
+        "sourceSha256": "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f",
+        "geometryNodes": 7,
+        "materialInstances": 4,
+        "emptyNontransparentPixels": 0,
+        "populatedNontransparentPixels": 8301,
+        "removedNontransparentPixels": 0
+      },
+      {
+        "assetId": "brass-compass",
+        "sourceSha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+        "geometryNodes": 4,
+        "materialInstances": 4,
+        "emptyNontransparentPixels": 0,
+        "populatedNontransparentPixels": 2509,
+        "removedNontransparentPixels": 0
+      }
+    ],
+    "fixtureCreatesARSession": false,
+    "physicalTrackingProven": false
+  },
+  "cleanup": {
+    "result": "PASS",
+    "remainingResourceCount": 0,
+    "ownedSimulatorAbsenceCheckedByExistingCollector": true
+  },
+  "limits": [
+    "Full31 independently satisfied by this original run; not assembled from primary29 plus a two-test diagnostic.",
+    "Simulator software proof, not physical AR tracking, calibrated classroom registration, physical assistive technology, Crossdeck acceptance or new TestFlight deployment.",
+    "Actual landscape device screenshot and recorded window/text bounds establish readable landscape. App-only screenshot differs in orientation/crop and remains unchanged.",
+    "Before-selection Motion image shows OFF. Enable/restore proof is source-bound passing actual Settings assertions, not a visually ON screenshot.",
+    "Historical source, fixture, infrastructure and Home failures remain retained without retrospective cause claims."
+  ]
+}
