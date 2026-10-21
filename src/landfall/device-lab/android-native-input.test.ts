@@ -24,6 +24,23 @@ function fixture() {
       manualReturnVerified: true,
       loadingAndTrackingGatesVerified: true,
       latePickAfterCloseRejected: true,
+      accessibilityCenter: {
+        inputMethod: "ACCESSIBILITY_ACTION_CLICK",
+        meshSelected: true,
+        hiddenBackgroundMissVerified: true,
+        loadingAndTrackingGatesVerified: true,
+        manualReturnVerified: true,
+        closedGuardVerified: true,
+        pickIntentCount: 1,
+        inspectIntentCount: 1,
+        intents: ["PICK", "INSPECT"].map((interactionType) => ({
+          type: "parallax-interaction",
+          sessionId: `native-accessible-${assetId}`,
+          epoch: 1,
+          entityId: `fixture-model-${assetId}`,
+          interactionType,
+        })),
+      },
       intents: ["PICK", "INSPECT"].map((interactionType) => ({
         type: "parallax-interaction",
         sessionId: `native-input-${assetId}`,
@@ -76,6 +93,41 @@ it("rejects entity substitution, stale binding, duplicate assets and reversed ac
     },
     (value: ReturnType<typeof fixture>) => {
       value.assets[0].intents.reverse();
+    },
+  ]) {
+    const value = fixture();
+    mutate(value);
+    expect(() => parseAndroidNativeInputProof(JSON.stringify(value))).toThrow();
+  }
+});
+
+it("requires actual accessibility input assertions and a distinct coherent canonical entity binding", () => {
+  for (const field of [
+    "meshSelected",
+    "hiddenBackgroundMissVerified",
+    "loadingAndTrackingGatesVerified",
+    "manualReturnVerified",
+    "closedGuardVerified",
+  ]) {
+    const value = fixture();
+    Object.assign(value.assets[0].accessibilityCenter, { [field]: false });
+    expect(() => parseAndroidNativeInputProof(JSON.stringify(value))).toThrow();
+  }
+  for (const mutate of [
+    (value: ReturnType<typeof fixture>) => {
+      value.assets[0].accessibilityCenter.inputMethod = "PERFORM_CLICK_MOCK";
+    },
+    (value: ReturnType<typeof fixture>) => {
+      value.assets[0].accessibilityCenter.intents[0].entityId = value.assets[1].entityId;
+    },
+    (value: ReturnType<typeof fixture>) => {
+      value.assets[0].accessibilityCenter.intents[1].epoch++;
+    },
+    (value: ReturnType<typeof fixture>) => {
+      for (const event of value.assets[0].accessibilityCenter.intents) event.sessionId = "native-input-brass-compass";
+    },
+    (value: ReturnType<typeof fixture>) => {
+      value.assets[0].accessibilityCenter.intents.reverse();
     },
   ]) {
     const value = fixture();

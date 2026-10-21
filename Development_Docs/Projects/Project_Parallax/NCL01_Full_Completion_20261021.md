@@ -14,16 +14,17 @@ acceptance. The owner is unavailable; independently attainable work continues.
 
 ## Reconciled source
 
-| Source                                        | Exact identity and disposition                                                      |
-| --------------------------------------------- | ----------------------------------------------------------------------------------- |
-| Fetched protected main                        | `e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab`                                          |
-| Original PR741, open draft                    | `76d1787e1340e396bc95747293d43e57130b00ed`                                          |
-| TestFlight branch                             | `6f4872a5946203b7f0fa4c1eab9546fff1a35646`                                          |
-| Latest approved artwork/TestFlight descendant | `cd597b1274bddad70118b77dd65b13969dd55a8d`                                          |
-| Coherent initial assembly                     | `a8d862680a`, main plus complete TestFlight descendant; no product source conflicts |
-| PR781, proposed governance                    | `182233e0f6d11a5dd5f74f35e01183b633b6ec8f`, open, not accepted                      |
-| Crossdeck PR721                               | `fbf59c35a0acc67e3cf2251139cf080c25af44f6`, open draft, not accepted                |
-| Browser provider branch, unaccepted           | `8d00278d1fb8f2ff1cab051c3cf9a4329df9d499`                                          |
+| Source                                        | Exact identity and disposition                                                                  |
+| --------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Initial fetched protected main                | `e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab`                                                      |
+| Reconciled protected main                     | `e1a86f98e56d68e8e87e3704d17439489ff1a170`, assembly `9abd26ba892f7715d32601e4d12058eae1acfb4e` |
+| Original PR741, open draft                    | `76d1787e1340e396bc95747293d43e57130b00ed`                                                      |
+| TestFlight branch                             | `6f4872a5946203b7f0fa4c1eab9546fff1a35646`                                                      |
+| Latest approved artwork/TestFlight descendant | `cd597b1274bddad70118b77dd65b13969dd55a8d`                                                      |
+| Coherent initial assembly                     | `a8d862680a`, main plus complete TestFlight descendant; no product source conflicts             |
+| PR781, proposed governance                    | `182233e0f6d11a5dd5f74f35e01183b633b6ec8f`, open, not accepted                                  |
+| Crossdeck PR721                               | `245e5128afa00e6c888818a698ebd37717d81a3d`, open draft, not accepted                            |
+| Browser provider branch, unaccepted           | `8d00278d1fb8f2ff1cab051c3cf9a4329df9d499`                                                      |
 
 The original brief's SHA256 is
 `5fa3b9bacba83dea8137ca6b18826f8df5cd12c8fbeb17ae23e9d7ded496690e`.
@@ -92,7 +93,10 @@ cleanup. It proves host preparation only, not UIKit touch or AR tracking.
 Hosted iOS Device Lab run
 [39554652785](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39554652785)
 binds that candidate through transport
-`17842aaa7ea06fe35516ab6b1c16c4a8477b4fec`. It is in progress. No new beta,
+`17842aaa7ea06fe35516ab6b1c16c4a8477b4fec`. It failed: 27 tests passed, two new
+viewport fixtures failed, and one driver-only test was intentionally skipped.
+The separate joined original-mesh/Inspect/canonical-rejection/return journey
+passed. Both results and the original failed receipt remain separate. No new beta,
 external tester, signing identity or protected-main change was made.
 
 The exact-checkpoint web production build compiled on Windows, but focused
@@ -100,8 +104,63 @@ runtime preparation failed closed at `DEVELOPMENT_BUILD_LINK_OUTSIDE_DEPENDENCIE
 Its original private failure is retained; no runner guard was weakened. The
 existing protected-source Linux focused workflow
 [39555492351](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39555492351)
-is running the two D1 native-bridge/real-auth/real-SQLite Player journeys against
-the same candidate. D1 emulation is not a native mesh or physical touch receipt.
+failed while running the D1 native-bridge/real-auth/real-SQLite Player journeys.
+Encrypted original diagnostics remain preserved; their retention reports missing
+video and decryption is unavailable. D1 emulation is not a native mesh or physical
+touch receipt.
+
+### Frozen implementation checkpoint 26da4135
+
+The [affected software receipt](evidence/ncl01-full-completion-20261021/software.json)
+binds 39 files / 493 passing tests to clean commit
+`26da4135d851ee67a0c685a0726486739612d1e2`, tree
+`ad5d8c03f683b68ed89d2f263e182f5878bed070`, with identical before/after
+source fingerprints. TypeScript, focused lint and formatting passed. The
+[preservation receipt](evidence/ncl01-full-completion-20261021/preservation-and-source-equivalence.json)
+verifies 658 original evidence/artwork Git blobs and original GLB/logo hashes.
+The current-main assembly leaves that runtime/native/test source unchanged.
+
+The [Linux focused review](evidence/ncl01-full-completion-20261021/browser-focused.json)
+binds successful run 39607851877 to that exact candidate and protected workflow
+source `e1a86f98`. It verifies real application authentication/SQLite, pending
+Inspect, canonical response, denial/idempotency/revocation and same-Voyage return
+assertions. Source declares two platform cases; exact executed counts and report
+digest were not retained publicly. Cleanup passed. This is development proof.
+
+The [unsigned iOS archive review](evidence/ncl01-full-completion-20261021/ios-unsigned-archive.json)
+records successful run 39608114180 using Xcode 26.6 / SDK 26.5, the existing
+bundle/origin, version 0.1.0 and archive-only build metadata 8. App Store upload
+was skipped; no Apple build number was consumed and beta 7 remains unchanged.
+The actual Release archive metadata was validated on the Mac. Its binary was
+not published, so independent compiled-icon/Release-binary scans are unavailable.
+
+The [Android checkpoint receipt](evidence/ncl01-full-completion-20261021/android-39607861703.json)
+retains run 39607861703: all 16 native instrumentation methods passed with
+original chest/compass pixels, actual mesh picks, OS pointer input, large-text
+escape and disposal. The later joined Player harness failed to locate an
+on-screen control; no last UI hierarchy had been retained, so its exact missing
+or ambiguous control remains unknown. The following permission scenario did not
+execute. Native and joined cleanup passed. This is an aggregate failure.
+
+iOS run 39607854995 passed 28 tests, failed one later graph-replacement hit
+assertion and intentionally skipped one driver-only case. Initial attached-view
+mesh selection and the production-controller Inspect/redraw test passed. The
+independent joined original-mesh/canonical-rejection/return journey passed with
+zero observations/progression and full cleanup. Its aggregate failure is retained.
+A per-mutation render-readiness fixture correction is being investigated within
+one shared original five-second setup budget; the original raster budget remains
+unchanged. The old Home/background failure remains unexplained.
+
+The [matched Android lint comparison](evidence/ncl01-full-completion-20261021/android-lint-baseline.json)
+reproduces all eight full-lint errors on exact protected-main native source.
+Full lint remains FAIL; it is not relabeled a pass. Release lintVital and builds
+pass separately. Candidate warning differences are retained.
+
+Current repairs add a standard accessible center-selection button through each
+real native mesh picker and use the established Device Lab WebView driver for
+HTML controls, retaining OS input for native Scene/Inspect. Joined failures now
+preserve bounded stage/control/hash diagnostics before cleanup. None of these
+fixtures may claim physical tracking, authorized physical Inspect or progression.
 
 ### Confirmed protected integration boundary
 
@@ -112,4 +171,8 @@ The required accepted design is unavailable on protected main. PR721 remains
 its owner's unmerged work. This task neither copies that candidate nor consumes
 its finite capture/review allowance. Ordinary mainline qualification and merge
 cannot be claimed through this boundary; independent NCL implementation and
-development verification continue.
+development verification continue. Planning on current-main assembly `9abd26ba`
+against protected `e1a86f98` reproduces the same exact required-design gate.
+Crossdeck's R24 infrastructure adoption grants this task no consumer allowance.
+Protected integration also remains held while the Crossdeck owner completes its
+own recovery/qualification; this task does not advance main.

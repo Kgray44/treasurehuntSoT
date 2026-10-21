@@ -15,3 +15,4 @@ Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r4-recovery-20261015/
 # Preserve exact NCL receipt/capture bytes and original emitted log whitespace.
 Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/** -text -whitespace
 Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/** -text -whitespace
+Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/** -text -whitespace

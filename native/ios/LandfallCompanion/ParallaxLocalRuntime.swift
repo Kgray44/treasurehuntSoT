@@ -19,6 +19,10 @@ private final class ParallaxActionButton: UIButton {
         super.layoutSubviews()
         if measuredWidth != bounds.width {measuredWidth=bounds.width;invalidateIntrinsicContentSize()}
     }
+    override func accessibilityActivate() -> Bool {
+        guard isEnabled,isUserInteractionEnabled,!isHidden,alpha > 0 else {return false}
+        sendActions(for:.touchUpInside);return true
+    }
 }
 
 /// Foreground, local-only AR provider. No frames, meshes, calibration images or world maps leave this controller.
@@ -28,6 +32,7 @@ final class ParallaxLocalRuntime: UIViewController, ARSCNViewDelegate, ARSession
     let softwareFixture: Bool
     private let status = UILabel()
     private let controls = UIStackView()
+    private let selectCenterButton = ParallaxActionButton(type:.system)
     private let inspectButton = ParallaxActionButton(type:.system)
     private let placeButton = ParallaxActionButton(type:.system)
     private let returnButton = ParallaxActionButton(type:.system)
@@ -92,7 +97,7 @@ final class ParallaxLocalRuntime: UIViewController, ARSCNViewDelegate, ARSession
         scene.autoenablesDefaultLighting = true; view.addSubview(scene)
         scene.accessibilityIdentifier="parallax.native.scene"
         scene.isAccessibilityElement=true;scene.accessibilityLabel=softwareFixture ? "Camera-free 3D scene" : "Camera 3D scene"
-        scene.accessibilityHint="Tap a visible object. Return to Guided View to read and select objects without the camera."
+        scene.accessibilityHint="Tap a visible object or use Select object at center. Return to Guided View to read and select objects without the camera."
         if softwareFixture {
             scene.scene=SCNScene()
             let camera=SCNNode();camera.camera=SCNCamera();camera.camera?.zNear=0.01;camera.camera?.zFar=100
@@ -113,7 +118,7 @@ final class ParallaxLocalRuntime: UIViewController, ARSCNViewDelegate, ARSession
             statusTop=fidelity.bottomAnchor
         }
         controls.axis = .vertical;controls.spacing=10;controls.translatesAutoresizingMaskIntoConstraints=false
-        for (button,name,identifier,action) in [(inspectButton,"Inspect selected object","parallax.native.inspect",#selector(inspect)),(placeButton,"Place on a surface","parallax.native.place",#selector(place)),(returnButton,"Return to Guided View","parallax.native.return",#selector(closeLens))] {
+        for (button,name,identifier,action) in [(selectCenterButton,"Select object at center","parallax.native.selectCenter",#selector(selectCenter)),(inspectButton,"Inspect selected object","parallax.native.inspect",#selector(inspect)),(placeButton,"Place on a surface","parallax.native.place",#selector(place)),(returnButton,"Return to Guided View","parallax.native.return",#selector(closeLens))] {
             button.setTitle(name,for:.normal);button.setTitleColor(.white,for:.normal);button.setTitleColor(.lightGray,for:.disabled)
             button.accessibilityIdentifier=identifier;button.titleLabel?.font = .preferredFont(forTextStyle:.body)
             button.titleLabel?.adjustsFontForContentSizeCategory=true;button.titleLabel?.numberOfLines=0
@@ -155,6 +160,12 @@ final class ParallaxLocalRuntime: UIViewController, ARSCNViewDelegate, ARSession
     @objc private func pick(_ gesture:UITapGestureRecognizer){
         select(at:gesture.location(in:scene))
     }
+    @objc private func selectCenter(){
+        guard inputAvailable else {return}
+        if select(at:CGPoint(x:scene.bounds.midX,y:scene.bounds.midY)) == nil {
+            UIAccessibility.post(notification:.announcement,argument:"No selectable object at the center. Look around and try again, or return to Guided View.")
+        }
+    }
     private var inputAvailable: Bool { active && !openingPlayer && phase == "READY" && (softwareFixture || lastTracking == "NORMAL") }
     @discardableResult func select(at point: CGPoint) -> String? {
         guard inputAvailable,point.x.isFinite,point.y.isFinite,scene.bounds.contains(point) else { return nil }
@@ -182,13 +193,14 @@ final class ParallaxLocalRuntime: UIViewController, ARSCNViewDelegate, ARSession
         else if openingPlayer { message="Opening this object in the Player. If it does not return, use Return to Guided View." }
         else if phase == "FAILED" { message="The 3D scene could not load. Return to Guided View to retry or continue." }
         else if phase == "LOADING" { message=loadingProgress+" Keep the app open, or return to Guided View." }
-        else if softwareFixture { message="\(nodes.count) objects loaded. Tap a visible object, then Inspect." }
+        else if softwareFixture { message="\(nodes.count) objects loaded. Tap an object or use Select object at center, then Inspect." }
         else if lastTracking == "LIMITED_EXCESSIVE_MOTION" { message="Move more slowly to recover tracking. Objects are hidden until tracking returns." }
         else if lastTracking == "LIMITED_FEATURES" { message="Aim at a well-lit, textured surface to recover tracking. Objects are hidden until tracking returns." }
         else if ["RELOCALIZING","INTERRUPTED","LOST"].contains(lastTracking) { message="Tracking paused. Return near the place you began, or return to Guided View." }
-        else if phase == "READY",lastTracking == "NORMAL" { message=selected == nil ? "\(nodes.count) objects loaded. Look around, then tap an object to select it. Placement uses the chosen surface; it does not recognize this room." : "Object selected. Inspect opens it in the Player. Place uses the surface at the center of the camera." }
+        else if phase == "READY",lastTracking == "NORMAL" { message=selected == nil ? "\(nodes.count) objects loaded. Look around, then tap an object or use Select object at center. Placement uses the chosen surface; it does not recognize this room." : "Object selected. Inspect opens it in the Player. Place uses the surface at the center of the camera." }
         else { message="Move slowly and aim the center of the camera at the intended surface. Finding a surface can take a moment. Return to Guided View whenever you like." }
         if status.text != message { status.text=message;UIAccessibility.post(notification:.announcement,argument:message) }
+        selectCenterButton.isEnabled=inputAvailable
         inspectButton.isEnabled=inputAvailable && selected.map{permits($0,"INSPECT")} == true
         placeButton.isEnabled=inputAvailable && !softwareFixture && selected.map{permits($0,"PLACE")} == true
         returnButton.isEnabled=active

@@ -5,10 +5,12 @@ import path from "node:path";
 import assert from "node:assert/strict";
 import { build } from "esbuild";
 import { z } from "zod";
+import { _android, type AndroidDevice, type Page } from "playwright";
 import { createDeviceLabVoyage } from "./one-voyage";
 import { deviceLabSourceIdentity } from "./source";
 import { discoverDeviceLabHost, labBinaryTool, labTool } from "./host";
-import { nativeLensControl } from "../../../src/landfall/device-lab/native-lens-control";
+import { boundedAndroidDriver } from "./android-driver";
+import { nativeLensControl, nativeLensPlayerVisible } from "../../../src/landfall/device-lab/native-lens-control";
 import { syntheticSpatialMoment } from "../../../src/parallax/fixtures";
 import { materializeSpatialVersion } from "../../../src/parallax/publication";
 
@@ -45,6 +47,13 @@ async function main() {
   let device: string | undefined;
   let androidSerial: string | undefined;
   let androidReverse: string | undefined;
+  let androidDevices: AndroidDevice[] = [];
+  let androidAcquisition: Promise<AndroidDevice[]> | undefined;
+  let androidAcquisitionSettled = true;
+  let androidPageAttachment: Promise<Page | null> | undefined;
+  let androidPageAttachmentSettled = true;
+  let androidPage: Page | undefined;
+  let androidTeardown = false;
   const adb = (args: string[], timeout = 30000) =>
     labTool(
       host.android.adb!,
@@ -61,6 +70,9 @@ async function main() {
     stopped = false;
   let current: { index: number; action: z.infer<typeof actionSchema> } | null = null;
   let cleanup = false;
+  let executionStage = "PREPARE_OWNED_LAB";
+  let observedControl: Parameters<typeof nativeLensControl>[1] | null = null;
+  let lastAndroidHierarchy: string | null = null;
   const wait = async (condition: () => boolean, timeout: number) => {
     const until = Date.now() + timeout;
     while (!condition()) {
@@ -289,6 +301,7 @@ async function main() {
       assert.equal(rejected.status, 409);
       assert.equal(evidence[0]?.disposition, "SIMULATION_REJECTED");
     } else if (android) {
+      executionStage = "ANDROID_LAUNCH";
       androidSerial = process.env.ANDROID_SERIAL ?? "emulator-5554";
       assert.match(androidSerial, /^emulator-[0-9]+$/);
       assert.match(process.env.LANDFALL_LAB_ADB_PORT ?? "5037", /^[0-9]{1,5}$/);
@@ -319,40 +332,77 @@ async function main() {
         "true",
       ]);
       await wait(() => ready, 60000);
+      executionStage = "ANDROID_ATTACH_OWNED_WEBVIEW";
+      androidAcquisitionSettled = false;
+      androidAcquisition = _android
+        .devices({
+          host: "127.0.0.1",
+          port: Number(process.env.LANDFALL_LAB_ADB_PORT ?? "5037"),
+          omitDriverInstall: true,
+        })
+        .then(async (found) => {
+          // A setup deadline does not cancel the underlying acquisition. Own
+          // its late result and close every connection if teardown has begun.
+          if (androidTeardown) {
+            const closed = await Promise.allSettled(
+              found.map((item) => boundedAndroidDriver(item.close(), undefined, 15000)),
+            );
+            assert.ok(
+              closed.every((item) => item.status === "fulfilled"),
+              "PARALLAX_ANDROID_LATE_CLEANUP_FAILED",
+            );
+            return [];
+          }
+          androidDevices = found;
+          return found;
+        })
+        .finally(() => {
+          androidAcquisitionSettled = true;
+        });
+      await boundedAndroidDriver(androidAcquisition);
+      const androidDevice = androidDevices.find((item) => item.serial() === androidSerial);
+      assert.ok(androidDevice, "OWNED_ANDROID_WEBVIEW_DEVICE_MISSING");
+      const webView = await androidDevice.webView({ pkg: "com.voyagewright.landfall" }, { timeout: 20000 });
+      androidPageAttachmentSettled = false;
+      androidPageAttachment = webView
+        .page()
+        .then(async (attached) => {
+          if (androidTeardown) {
+            await boundedAndroidDriver(attached.context().close(), undefined, 15000);
+            return null;
+          }
+          androidPage = attached;
+          return attached;
+        })
+        .finally(() => {
+          androidPageAttachmentSettled = true;
+        });
+      const page = await boundedAndroidDriver(androidPageAttachment);
+      assert.ok(page, "OWNED_ANDROID_WEBVIEW_ATTACHMENT_CANCELLED");
+      assert.equal(new URL(page.url()).origin, origin, "OWNED_ANDROID_WEBVIEW_ORIGIN_MISMATCH");
+      assert.equal(new URL(page.url()).pathname, "/player", "OWNED_ANDROID_WEBVIEW_PATH_MISMATCH");
+      page.setDefaultTimeout(20000);
       const hierarchy = async () => {
         await adb(["shell", "uiautomator", "dump", "/sdcard/ncl01-owned-lens.xml"]);
-        return adb(["shell", "cat", "/sdcard/ncl01-owned-lens.xml"]);
+        lastAndroidHierarchy = await adb(["shell", "cat", "/sdcard/ncl01-owned-lens.xml"]);
+        return lastAndroidHierarchy;
       };
-      const observe = async (control: Parameters<typeof nativeLensControl>[1], timeout = 20000, scroll = false) => {
+      const observe = async (control: "SCENE" | "INSPECT", timeout = 20000) => {
+        observedControl = control;
         const until = Date.now() + timeout;
-        let swipes = 0;
         while (Date.now() < until) {
           const xml = await hierarchy();
+          if (Date.now() >= until) throw new Error("PARALLAX_ANDROID_CONTROL_DEADLINE_EXCEEDED");
           try {
             return nativeLensControl(xml, control);
           } catch (error) {
-            if (scroll && swipes < 3) {
-              const web = nativeLensControl(xml, "WEBVIEW").bounds;
-              const x = Math.floor((web.left + web.right) / 2);
-              await adb([
-                "shell",
-                "input",
-                "swipe",
-                String(x),
-                String(Math.floor(web.top + (web.bottom - web.top) * 0.8)),
-                String(x),
-                String(Math.floor(web.top + (web.bottom - web.top) * 0.2)),
-                "350",
-              ]);
-              swipes++;
-            }
             if (Date.now() >= until) throw error;
           }
         }
         throw new Error("PARALLAX_ANDROID_CONTROL_UNOBSERVED");
       };
-      const tap = async (control: Parameters<typeof nativeLensControl>[1], scroll = false) => {
-        const target = await observe(control, 20000, scroll);
+      const tap = async (control: "SCENE" | "INSPECT") => {
+        const target = await observe(control);
         await adb(["shell", "input", "tap", String(target.x), String(target.y)]);
       };
       const capture = async (file: "native-selected.png" | "canonical-rejection.png" | "same-voyage-return.png") => {
@@ -372,22 +422,52 @@ async function main() {
           sha256: createHash("sha256").update(screenshot).digest("hex"),
         });
       };
-      await tap("OPEN");
-      await tap("START", true);
+      executionStage = "ANDROID_OPEN_LENS";
+      // Use the shared Device Lab's real WebView driver for HTML controls.
+      // Their DOM roles need not map to a particular Android AX widget class.
+      // Native mesh and Inspect input below still use actual OS pointer taps.
+      await page.getByRole("button", { name: "Open camera-free Lens", exact: true }).click();
+      const lens = page.getByRole("dialog", { name: moment.version.title, exact: true });
+      executionStage = "ANDROID_START_NATIVE";
+      await lens.getByRole("button", { name: "Open camera-free Device Lab", exact: true }).click();
       results.set(0, "PASS");
+      executionStage = "ANDROID_LOAD_MODELS";
       const untilLoaded = Date.now() + 30000;
       while (!(await hierarchy()).includes("objects loaded")) {
         if (Date.now() >= untilLoaded) throw new Error("PARALLAX_ANDROID_MODELS_NOT_READY");
       }
+      executionStage = "ANDROID_SELECT_MESH";
       await tap("SCENE");
       results.set(1, "PASS");
       await capture("native-selected.png");
+      executionStage = "ANDROID_INSPECT_INTENT";
       await tap("INSPECT");
-      await observe("ERROR", 20000, true);
+      executionStage = "ANDROID_CANONICAL_REJECTION";
+      const rejectionDeadline = Date.now() + 20000;
+      await lens
+        .getByText(
+          "Camera-free simulation cannot record a real native observation. Your Voyage progress has not changed.",
+          { exact: true },
+        )
+        .waitFor({ state: "visible", timeout: Math.max(1, rejectionDeadline - Date.now()) });
+      let playerVisible = false;
+      while (Date.now() < rejectionDeadline) {
+        const xml = await hierarchy();
+        if (Date.now() >= rejectionDeadline) break;
+        if (nativeLensPlayerVisible(xml)) {
+          playerVisible = true;
+          break;
+        }
+      }
+      assert.ok(playerVisible, "PARALLAX_ANDROID_PLAYER_STILL_COVERED_BY_NATIVE_OVERLAY");
       results.set(2, "PASS");
       await capture("canonical-rejection.png");
-      await tap("CLOSE");
-      await observe("VOYAGE");
+      executionStage = "ANDROID_RETURN_TO_VOYAGE";
+      await lens.getByRole("button", { name: "Close Chronicle Lens", exact: true }).click();
+      await lens.waitFor({ state: "hidden" });
+      await page
+        .getByRole("heading", { name: "Synthetic Device Lab Voyage", exact: true })
+        .waitFor({ state: "visible" });
       results.set(3, "PASS");
       await wait(() => evidence.some((item) => item.interactionType === "INSPECT"), 15000);
       assert.ok(
@@ -499,14 +579,76 @@ async function main() {
         2,
       ),
     );
+  } catch (error) {
+    // Keep the actual last owned UI observation before cleanup destroys it.
+    // This diagnostic cannot authorize a target, supply substitute coordinates,
+    // relax a deadline or turn a failed journey into a passing receipt. Raw XML
+    // is a private synthetic-lab artifact and must not be published into Git.
+    const hierarchyBytes = lastAndroidHierarchy === null ? null : Buffer.from(lastAndroidHierarchy);
+    const preserveHierarchy = hierarchyBytes !== null && hierarchyBytes.length <= 262144;
+    if (preserveHierarchy) await writeFile(path.join(destination, "android-ui.private.original.xml"), hierarchyBytes);
+    await writeFile(
+      path.join(destination, "execution-failure.json"),
+      JSON.stringify(
+        {
+          schemaVersion: 1,
+          role: "DEVELOPMENT_ONLY",
+          qualification: false,
+          source,
+          result: "FAIL",
+          stage: executionStage,
+          control: observedControl,
+          code: error instanceof Error && /^[A-Z0-9_]+$/.test(error.message) ? error.message : "NATIVE_LAB_FAILURE",
+          clientReady: ready,
+          clientFailed: failed,
+          completedActions: [...results],
+          privateHierarchy: hierarchyBytes
+            ? {
+                retained: preserveHierarchy,
+                bytes: hierarchyBytes.length,
+                sha256: createHash("sha256").update(hierarchyBytes).digest("hex"),
+              }
+            : null,
+          physicalTrackingProven: false,
+        },
+        null,
+        2,
+      ),
+    );
+    throw error;
   } finally {
+    androidTeardown = true;
     stopped = true;
     abort.abort();
     await runner?.catch(() => undefined);
     let simulatorRemoved = !device,
       androidReleased = !androidSerial,
+      androidConnectionsClosed = androidDevices.length === 0,
       databaseRemoved = false,
       serverClosed = !server;
+    const connectionCleanup = (async () => {
+      // Observe each pending setup and still close known connections if another
+      // cleanup step fails. Device closure precedes app/data teardown, so an
+      // app force-stop cannot race a normal CDP context close.
+      const acquisition = androidAcquisition
+        ? await Promise.allSettled([boundedAndroidDriver(androidAcquisition, undefined, 15000)])
+        : [];
+      const pageClosed = androidPage
+        ? await Promise.allSettled([boundedAndroidDriver(androidPage.context().close(), undefined, 15000)])
+        : [];
+      const devicesClosed = await Promise.allSettled(
+        androidDevices.map((item) => boundedAndroidDriver(item.close(), undefined, 15000)),
+      );
+      const attachment = androidPageAttachment
+        ? await Promise.allSettled([boundedAndroidDriver(androidPageAttachment, undefined, 15000)])
+        : [];
+      androidConnectionsClosed =
+        androidAcquisitionSettled &&
+        androidPageAttachmentSettled &&
+        [...acquisition, ...pageClosed, ...devicesClosed, ...attachment].every((item) => item.status === "fulfilled");
+      assert.ok(androidConnectionsClosed, "PARALLAX_ANDROID_CONNECTION_CLEANUP_FAILED");
+    })();
+    void connectionCleanup.catch(() => undefined);
     const outcomes = await Promise.allSettled([
       (async () => {
         if (!device) return;
@@ -529,6 +671,7 @@ async function main() {
       })(),
       (async () => {
         if (!androidSerial) return;
+        await connectionCleanup.catch(() => undefined);
         const released = await Promise.allSettled([
           (async () => {
             await adb(["shell", "am", "force-stop", "com.voyagewright.landfall"]);
@@ -548,11 +691,13 @@ async function main() {
         androidReleased = released.every((operation) => operation.status === "fulfilled");
         assert.ok(androidReleased, "PARALLAX_ANDROID_LAB_CLEANUP_FAILED");
       })(),
+      connectionCleanup,
     ]);
     cleanup =
       outcomes.every((outcome) => outcome.status === "fulfilled") &&
       simulatorRemoved &&
       androidReleased &&
+      androidConnectionsClosed &&
       databaseRemoved &&
       serverClosed;
     await writeFile(
@@ -564,6 +709,7 @@ async function main() {
           ownedServerClosed: serverClosed,
           ownedSimulatorDeleted: simulatorRemoved,
           ownedAndroidReleased: androidReleased,
+          ownedAndroidConnectionsClosed: androidConnectionsClosed,
           failedCleanupOperations: outcomes.flatMap((outcome, index) => (outcome.status === "rejected" ? [index] : [])),
         },
         null,

@@ -157,9 +157,16 @@ final class ParallaxModelRenderingFixture {
         assertTrue("Actual Filament frame contains rasterized model geometry", visiblePixels > 32);
         result.put("renderedNontransparentPixels", visiblePixels).put("renderedFrame", renderedFrame);
         stage("NATIVE_INPUT_BEGIN:" + fixtureAsset);
-        inputEvidence.put(ParallaxNativeInputFixture.run(activity, target.get(), inputHost.get(), runtime.get(),
-            renderedFrame, assetId, entityId, () -> draw(runtime.get(), entityId, dimensions, rootTransform)));
+        JSONObject nativeInput = ParallaxNativeInputFixture.run(activity, target.get(), inputHost.get(), runtime.get(),
+            renderedFrame, assetId, entityId, () -> draw(runtime.get(), entityId, dimensions, rootTransform));
         stage("NATIVE_INPUT_COMPLETE:" + fixtureAsset);
+        stage("ACCESSIBILITY_INPUT_BEGIN:" + fixtureAsset);
+        nativeInput.put("accessibilityCenter", ParallaxNativeInputFixture.accessibilityCenter(activity, target.get(),
+            inputHost.get(), runtime.get(), assetId, entityId,
+            () -> draw(runtime.get(), entityId, dimensions, rootTransform),
+            () -> draw(runtime.get(), entityId, dimensions, rootTransform, false)));
+        inputEvidence.put(nativeInput);
+        stage("ACCESSIBILITY_INPUT_COMPLETE:" + fixtureAsset);
         onMain(() -> {
           stage("CLEAR_BEGIN:" + fixtureAsset);
           runtime.get().activate(Collections.emptyMap());
@@ -230,6 +237,9 @@ final class ParallaxModelRenderingFixture {
     assertEquals("Original Z pivot is centered", translation[2], (bounds[2] + bounds[5]) / 2, TOLERANCE);
   }
   private static void draw(ParallaxModelRenderer runtime, String id, float[] dimensions, float[] model) throws Exception {
+    draw(runtime, id, dimensions, model, true);
+  }
+  private static void draw(ParallaxModelRenderer runtime, String id, float[] dimensions, float[] model, boolean visible) throws Exception {
     com.google.android.filament.View view = field(runtime, "view");
     float size = Math.max(dimensions[0], Math.max(dimensions[1], dimensions[2])) * 1.25f;
     float targetY = .17f + dimensions[1] * 1.25f / 2;
@@ -237,7 +247,8 @@ final class ParallaxModelRenderingFixture {
     Matrix.setLookAtM(cameraView, 0, .23f + size * 1.2f, targetY + size, -.31f + size * 2.2f, .23f, targetY, -.31f, 0, 1, 0);
     assertTrue(Matrix.invertM(cameraModel, 0, cameraView, 0));
     Matrix.perspectiveM(projection, 0, 45, (float) view.getViewport().width / view.getViewport().height, .01f, 100);
-    runtime.frame(projection, cameraModel, Collections.singletonMap(id, model), Collections.singleton(id), true, 1, System.nanoTime());
+    runtime.frame(projection, cameraModel, Collections.singletonMap(id, model),
+        visible ? Collections.singleton(id) : Collections.emptySet(), true, 1, System.nanoTime());
   }
   private static final class PickObservation {
     final String kind, expected;

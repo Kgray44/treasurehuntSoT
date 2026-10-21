@@ -97,3 +97,24 @@ export function nativeLensControl(xml: string, control: NativeLensControl) {
     throw new Error("NATIVE_LENS_BOUNDS_INVALID");
   return { x: Math.floor((left + right) / 2), y: Math.floor((top + bottom) / 2), bounds: { left, top, right, bottom } };
 }
+
+/** DOM visibility alone cannot prove that the native dialog stopped covering
+ * the Player. Observe the actual owned WebView and absence of native controls
+ * before accepting the joined Player outcome. No coordinates come from this.
+ */
+export function nativeLensPlayerVisible(xml: string): boolean {
+  const owned = nodes(xml).filter(
+    (node) => node.package === "com.voyagewright.landfall" && node["visible-to-user"] !== "false",
+  );
+  return (
+    owned.some((node) => node.class === "android.webkit.WebView") &&
+    !owned.some(
+      (node) =>
+        node["content-desc"] === labels.SCENE ||
+        (node.class === "android.widget.Button" &&
+          [labels.INSPECT, labels.RETURN, "Select object at center"].some(
+            (label) => node.text === label || node["content-desc"] === label,
+          )),
+    )
+  );
+}

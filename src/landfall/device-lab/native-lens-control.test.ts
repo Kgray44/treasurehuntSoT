@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { nativeLensControl, type NativeLensControl } from "./native-lens-control";
+import { nativeLensControl, nativeLensPlayerVisible, type NativeLensControl } from "./native-lens-control";
 
 const labels: Record<NativeLensControl, string> = {
   OPEN: "Open camera-free Lens",
@@ -30,6 +30,23 @@ function hierarchy(...children: string[]) {
 }
 
 describe("owned Android Lens UI observations (synthetic parser tests only)", () => {
+  it("requires the actual owned WebView and no native overlay, including disabled pending controls", () => {
+    const web = node({ class: "android.webkit.WebView", text: "" });
+    expect(nativeLensPlayerVisible(hierarchy(web))).toBe(true);
+    expect(nativeLensPlayerVisible(hierarchy(web, web))).toBe(true);
+    expect(nativeLensPlayerVisible(hierarchy())).toBe(false);
+    expect(nativeLensPlayerVisible(hierarchy(node({ class: "android.webkit.WebView", package: "foreign.app" })))).toBe(
+      false,
+    );
+    for (const overlay of [
+      node({ class: "android.view.TextureView", text: "", "content-desc": labels.SCENE }),
+      node({ text: labels.INSPECT, enabled: "false" }),
+      node({ text: labels.RETURN }),
+      node({ text: "Select object at center", enabled: "false" }),
+    ])
+      expect(nativeLensPlayerVisible(hierarchy(web, overlay))).toBe(false);
+    expect(() => nativeLensPlayerVisible("<invalid />")).toThrow("NATIVE_LENS_XML_INVALID");
+  });
   it("locates each exact control and returns its observed bounds and integer center", () => {
     for (const control of Object.keys(labels) as NativeLensControl[]) {
       const attributes: Record<string, string> =

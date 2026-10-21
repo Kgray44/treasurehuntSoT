@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Gravity;
 import android.view.ContextThemeWrapper;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
@@ -101,12 +102,15 @@ final class ParallaxNativeInputFixture {
             View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY));
         viewport.layout(0, 0, width, height);
         Button escape = (Button) text(input, "Return to Guided View"); assertNotNull(escape);
+        Button center = (Button) text(input, "Select object at center"); assertNotNull(center);
         assertEquals(2, largeText.getResources().getConfiguration().fontScale, 0.001f);
         assertTrue("The layout uses actual enlarged text metrics", escape.getTextSize() > 16 * density);
         Rect bounds = new Rect(0, 0, escape.getWidth(), escape.getHeight());
         viewport.offsetDescendantRectToMyCoords(escape, bounds);
         assertTrue("The full Return control remains within the declared large-text viewport", new Rect(0, 0, width, height).contains(bounds));
         assertTrue("Return remains enabled while inspection is pending", escape.isEnabled());
+        assertFalse("Center selection remains blocked while inspection is pending", center.isEnabled());
+        assertTrue("The center selection alternative keeps its accessible touch height", center.getHeight() >= Math.round(48 * density));
         assertTrue("Return keeps its accessible touch height", escape.getHeight() >= Math.round(48 * density));
         assertNotNull(escape.getLayout());
         assertTrue("The entire large-text Return label is laid out without vertical clipping",
@@ -132,6 +136,96 @@ final class ParallaxNativeInputFixture {
     }
     assertTrue("Owned native input completed within its separate ten second budget", done.getAsBoolean());
     assertTrue("Native input budget is not extended by a slow frame", SystemClock.elapsedRealtime() <= deadline);
+  }
+  private static void accessibilityClick(View view) {
+    assertNotNull(view);
+    onMain(() -> {
+      AccessibilityNodeInfo node = view.createAccessibilityNodeInfo();
+      assertTrue("The standard button exposes an enabled accessibility click", node.isEnabled() && node.isClickable()
+          && node.getActionList().contains(AccessibilityNodeInfo.AccessibilityAction.ACTION_CLICK));
+      assertTrue("The Android accessibility action reaches the real control",
+          view.performAccessibilityAction(AccessibilityNodeInfo.ACTION_CLICK, null));
+    });
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+  }
+
+  static JSONObject accessibilityCenter(Activity activity, View target, ViewGroup host,
+      ParallaxModelRenderer renderer, String assetId, String entityId, FramePump visible, FramePump hidden) throws Exception {
+    AtomicReference<ParallaxInteractionView> controls = new AtomicReference<>();
+    AtomicReference<String> selected = new AtomicReference<>();
+    AtomicInteger requests = new AtomicInteger(), callbacks = new AtomicInteger(), emitted = new AtomicInteger(), returns = new AtomicInteger();
+    List<JSONObject> intents = new ArrayList<>();
+    ParallaxSceneTransfer identity = new ParallaxSceneTransfer("native-accessible-" + assetId, 1);
+    Consumer<String> intent = action -> {
+      try { intents.add(ParallaxLocalRuntime.interactionIntent(identity, selected.get(), action)); emitted.incrementAndGet(); }
+      catch (JSONException error) { throw new AssertionError(error); }
+    };
+    try {
+      onMain(() -> {
+        ParallaxInteractionView input = new ParallaxInteractionView(activity, target,
+            (x, y, result) -> {
+              assertEquals(target.getWidth() / 2f, x, 0); assertEquals(target.getHeight() / 2f, y, 0);
+              requests.incrementAndGet(); renderer.pick(x, y, result);
+            }, hit -> {
+              selected.set(hit);
+              controls.get().update("NORMAL", false, false, hit == null ? Collections.emptySet()
+                  : new HashSet<>(Arrays.asList("PICK", "INSPECT", "PLACE")));
+              if (hit != null) intent.accept("PICK");
+              callbacks.incrementAndGet();
+            }, intent, () -> { returns.incrementAndGet(); controls.get().close(); });
+        controls.set(input); host.addView(input);
+      });
+      InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+      View center = text(controls.get(), "Select object at center"); assertNotNull(center);
+      onMain(() -> {
+        assertFalse("Loading blocks accessible selection", center.isEnabled());
+        center.performAccessibilityAction(AccessibilityNodeInfo.ACTION_CLICK, null);
+        controls.get().update("LOST", false, false, Collections.emptySet());
+        assertFalse("Lost tracking blocks accessible selection", center.isEnabled());
+        center.performAccessibilityAction(AccessibilityNodeInfo.ACTION_CLICK, null);
+        controls.get().update("NORMAL", false, true, Collections.emptySet());
+        assertFalse("Failed loading blocks accessible selection", center.isEnabled());
+        center.performAccessibilityAction(AccessibilityNodeInfo.ACTION_CLICK, null);
+        assertEquals("Blocked accessibility actions never request a GPU pick", 0, requests.get());
+        controls.get().update("NORMAL", false, false, Collections.emptySet());
+        try { hidden.frame(); } catch (Exception failure) { throw new AssertionError(failure); }
+      });
+      accessibilityClick(center);
+      pump(hidden, () -> callbacks.get() == 1);
+      assertNull("A hidden original model is a genuine background miss", selected.get());
+      assertEquals("A miss cannot choose the first entity or emit PICK", 0, emitted.get());
+      View inspect = text(controls.get(), "Inspect selected object"); assertNotNull(inspect);
+      onMain(() -> {
+        assertFalse("A hidden/background model cannot enable Inspect", inspect.isEnabled());
+        inspect.performAccessibilityAction(AccessibilityNodeInfo.ACTION_CLICK, null);
+        try { visible.frame(); } catch (Exception failure) { throw new AssertionError(failure); }
+      });
+      accessibilityClick(center);
+      pump(visible, () -> callbacks.get() == 2);
+      assertEquals("Accessible center selection resolves the actual original mesh owner", entityId, selected.get());
+      assertEquals("Each enabled center action requests exactly one real GPU pick", 2, requests.get());
+      assertEquals("Only the genuine hit emits one PICK", 1, emitted.get());
+      accessibilityClick(inspect);
+      assertEquals("Accessible Inspect emits one existing intent, with no duplicate PICK", 2, emitted.get());
+      for (int i = 0; i < intents.size(); i++) {
+        JSONObject event = intents.get(i);
+        assertEquals(identity.sessionId, event.getString("sessionId")); assertEquals(1, event.getInt("epoch"));
+        assertEquals(entityId, event.getString("entityId")); assertEquals("parallax-interaction", event.getString("type"));
+        assertEquals(i == 0 ? "PICK" : "INSPECT", event.getString("interactionType")); assertEquals(5, event.length());
+      }
+      onMain(() -> assertFalse("Pending canonical recording blocks another center selection", center.isEnabled()));
+      accessibilityClick(text(controls.get(), "Return to Guided View"));
+      assertEquals("The standard accessible Return remains available", 1, returns.get());
+      onMain(() -> center.performAccessibilityAction(AccessibilityNodeInfo.ACTION_CLICK, null));
+      assertEquals("Closed controls cannot acquire another selection", 2, requests.get());
+      assertEquals(2, intents.size());
+      return new JSONObject().put("inputMethod", "ACCESSIBILITY_ACTION_CLICK").put("meshSelected", true)
+          .put("hiddenBackgroundMissVerified", true).put("loadingAndTrackingGatesVerified", true)
+          .put("manualReturnVerified", true).put("closedGuardVerified", true)
+          .put("pickIntentCount", 1).put("inspectIntentCount", 1).put("intents", new JSONArray(intents));
+    } finally {
+      onMain(() -> { if (controls.get() != null) { controls.get().close(); host.removeView(controls.get()); } });
+    }
   }
   static JSONObject run(Activity activity, View target, ViewGroup host, ParallaxModelRenderer renderer,
       JSONObject frame, String assetId, String entityId, FramePump pump) throws Exception {

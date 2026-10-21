@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "role": "INDEPENDENT_READ_ONLY_DEVELOPMENT_EVIDENCE_REVIEW",
+  "qualification": false,
+  "run": {
+    "id": 39607851877,
+    "attempt": 1,
+    "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39607851877",
+    "workflow": ".github/workflows/sounding-line-focused-repair.yml",
+    "workflowId": 323936468,
+    "checkSuiteId": 107336148223,
+    "jobId": 119248630110,
+    "conclusion": "success",
+    "startedAt": "2026-10-21T13:25:27Z",
+    "completedAt": "2026-10-21T13:31:17Z",
+    "runner": "Ubuntu 24.04.5",
+    "chromium": "141.0.7390.37 / Playwright v1194"
+  },
+  "identity": {
+    "authorityCommit": "e1a86f98e56d68e8e87e3704d17439489ff1a170",
+    "candidateCommit": "26da4135d851ee67a0c685a0726486739612d1e2",
+    "selector": "tests/e2e/parallax-native-authority.spec.ts",
+    "workflowBlob": "df4ac2f46f4c4a9736a55ac27c4a1a43ebe25c1a",
+    "helperBlob": "0b5fa3e62d7da95d7ed42a02eb4692262c5d4371",
+    "testBlob": "8c7afc37864aa64b5313b45925994bcd40732f8e",
+    "nativeAdapterBlob": "cb7ec284ed71e23938949e9bcec42363013ded41",
+    "runtimeBlob": "d483f0ce693c9b2886270fd4a318aa8a973bbdf3",
+    "lensBlob": "ac8813814d275940b012d0dec368729efba26753",
+    "preparedManifestSha256": "7c9eeda3484a49f1bc7aa8a1c00404e88e3cbc4fda1c23c3198d1d67850e2ccb"
+  },
+  "retained": {
+    "artifactsCount": 0,
+    "runLog": "run.log",
+    "runLogSha256": "5b638c83b35f48f0ca49180949dc9f5f3c3b16d0e3e372a9669893df8a09b125",
+    "artifactInventory": "artifacts.json",
+    "playwrightReport": null,
+    "playwrightReportSha256": null,
+    "screenshotsOrTrace": null
+  },
+  "tests": {
+    "declaredPlatformCases": [
+      "IOS",
+      "ANDROID"
+    ],
+    "declaredCount": 2,
+    "actualReportedCountIndependentlyAvailable": null,
+    "helperPassGuards": {
+      "selectedPositiveInteger": true,
+      "skipped": 0,
+      "flaky": 0,
+      "unexpected": 0,
+      "sourceBuildDependencyFingerprintsUnchanged": true,
+      "cleanupStatus": "PASS"
+    },
+    "execution": {
+      "project": "chromium",
+      "workers": 1,
+      "retries": 0,
+      "repeatEach": 1
+    },
+    "assertionsReviewed": [
+      "Three authored entities and exact Scene checksum",
+      "No accepted inspection or success before gated POST200",
+      "Exact selected compass visible in Guided Player after accepted NATIVE receipt",
+      "Same receipt idempotency; mismatched actor/Voyage/edition/instance/entity/checksum/type/time/synthetic rejected",
+      "Invalid CSRF rejected; removed membership rejected",
+      "Exactly one observation, no progression events/current block/sequence mutation",
+      "Dialog accessibility serious/critical violations absent; close restores Journal opener focus",
+      "Late obsolete native event adds no observation"
+    ],
+    "fixtureCorrection": "START audit identity explicitly whitelists sessionId and epoch; production strict tracking validation unchanged"
+  },
+  "cleanup": {
+    "browser": {
+      "exitCode": 0,
+      "status": "PASS",
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": false
+    },
+    "proxy": {
+      "outcome": "CLOSED"
+    },
+    "server": {
+      "exitCode": 1,
+      "status": "PASS",
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": false
+    },
+    "authorityFailureCategory": null,
+    "authorityFailureCode": null,
+    "testFinallyReviewed": [
+      "Private BrowserContext close",
+      "Owned synthetic Chronicle delete",
+      "Owned synthetic UserAccount delete",
+      "Prisma disconnect"
+    ]
+  },
+  "concerns": [
+    "Success workflow uploads no artifacts; actualSelectedCases/report digest/build fingerprints cannot be independently re-read from the ephemeral private files.",
+    "Source declares two cases and the successful protected helper enforces nonzero cases with zero skipped/flaky/unexpected, but exact observed 2/2 is an inference rather than independently retained count evidence.",
+    "Five MaxListenersExceededWarning entries remain nonfatal public diagnostics; no cleanup failure reported.",
+    "D1 uses a mock native transport and proves neither native mesh raster/input nor physical AR tracking.",
+    "Original failed receipts were neither accessed nor modified; fresh pass does not rewrite their outcome."
+  ],
+  "lateMain": {
+    "from": "e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+    "to": "e1a86f98e56d68e8e87e3704d17439489ff1a170",
+    "focusedWorkflowHelperAndContractsUnchanged": true,
+    "latestMainAncestorOfCandidate": false,
+    "ordinaryWriteAuthorityNowRequiresTrustedBaseIdentity": true,
+    "selectedCheckoutRestrictedToPullRequest721": true,
+    "R24AdoptionUsed": false,
+    "gate": "R24 is exact retained R23/Crossdeck maintenance adoption with frozen source/contract/media/custody pins, not an NCL experience design or acceptance allowance. testing/contracts.json retains Crossdeck experienceIntent without experienceDesign. Reconcile latest main and qualify the exact resulting candidate through its own applicable gates."
+  },
+  "sourceEdits": false,
+  "ciDispatch": false,
+  "prMutations": false
+}

@@ -7,15 +7,19 @@ import UIKit
 import ARKit
 @testable import LandfallCompanion
 
-/// A single render callback establishes the test view's real viewport. It is
-/// neither a GPU-completion assertion nor an AR tracking observation.
+/// A matched frame after a graph mutation establishes the test view's current
+/// viewport. It is neither GPU-completion nor an AR tracking observation.
 private final class ParallaxViewportRenderProbe: NSObject, SCNSceneRendererDelegate {
     private let rendered: XCTestExpectation
     private let lock=NSLock()
     private var observed=false
+    private var frameTime:TimeInterval?
     init(_ rendered:XCTestExpectation) {self.rendered=rendered}
+    func renderer(_ renderer:SCNSceneRenderer,willRenderScene scene:SCNScene,atTime time:TimeInterval) {
+        lock.lock();if !observed {frameTime=time};lock.unlock()
+    }
     func renderer(_ renderer:SCNSceneRenderer,didRenderScene scene:SCNScene,atTime time:TimeInterval) {
-        lock.lock();let first = !observed;observed=true;lock.unlock()
+        lock.lock();let first = !observed && frameTime == time;if first {observed=true};lock.unlock()
         if first {rendered.fulfill()}
     }
 }
@@ -44,21 +48,25 @@ final class ParallaxSceneDeliveryTests: XCTestCase {
         window.rootViewController=runtime;window.makeKeyAndVisible();window.layoutIfNeeded();runtime.view.layoutIfNeeded()
         return (window,previous)
     }
-    @MainActor private func requireRenderedViewport(_ scene:SCNView,in window:UIWindow) throws {
+    @MainActor private func requireRenderedViewport(_ scene:SCNView,in window:UIWindow,deadline:TimeInterval,phase:String) throws {
         XCTAssertTrue(scene.window === window);XCTAssertTrue(window.isKeyWindow)
         XCTAssertGreaterThan(scene.bounds.width,0);XCTAssertGreaterThan(scene.bounds.height,0)
-        let rendered=expectation(description:"Owned SceneKit view completes its first viewport render")
+        let rendered=expectation(description:"Owned SceneKit view renders the current \(phase) graph")
         let probe=ParallaxViewportRenderProbe(rendered),previousDelegate=scene.delegate
         let continuous=scene.rendersContinuously
+        SCNTransaction.flush()
         scene.delegate=probe;scene.rendersContinuously=true;scene.setNeedsDisplay()
         defer {scene.rendersContinuously=continuous;scene.delegate=previousDelegate}
-        let observed=XCTWaiter.wait(for:[rendered],timeout:5) == .completed
+        // Every mutation shares the one original five-second setup deadline.
+        // This is a frame barrier, never a retry until a desired hit appears.
+        let observed=XCTWaiter.wait(for:[rendered],timeout:max(0,deadline-ProcessInfo.processInfo.systemUptime)) == .completed
+        let withinDeadline=ProcessInfo.processInfo.systemUptime <= deadline
         let projected=scene.projectPoint(SCNVector3(0,0,-1))
         let coordinates=[Double(projected.x),Double(projected.y),Double(projected.z)]
-        let evidence:[String:Any]=["evidenceClass":"SIMULATOR_TEST_VIEWPORT_SETUP_ONLY","attachedToOwnedWindow":scene.window === window,"ownedWindowKey":window.isKeyWindow,"renderCallbackObserved":observed,"viewportWidth":Double(scene.bounds.width),"viewportHeight":Double(scene.bounds.height),"pointOfViewAssigned":scene.pointOfView != nil,"projectedCenter":coordinates.map{ $0.isFinite ? $0 as Any : NSNull() }]
+        let evidence:[String:Any]=["evidenceClass":"SIMULATOR_TEST_VIEWPORT_SETUP_ONLY","phase":phase,"sharedSetupBudgetSeconds":5,"withinSharedSetupDeadline":withinDeadline,"attachedToOwnedWindow":scene.window === window,"ownedWindowKey":window.isKeyWindow,"renderCallbackObserved":observed,"viewportWidth":Double(scene.bounds.width),"viewportHeight":Double(scene.bounds.height),"pointOfViewAssigned":scene.pointOfView != nil,"projectedCenter":coordinates.map{ $0.isFinite ? $0 as Any : NSNull() }]
         let attachment=XCTAttachment(data:try JSONSerialization.data(withJSONObject:evidence,options:[.sortedKeys]),uniformTypeIdentifier:"public.json")
-        attachment.name="Owned production controller viewport setup";attachment.lifetime = .keepAlways;add(attachment)
-        guard observed else {throw NSError(domain:"NCLViewportFixture",code:1,userInfo:[NSLocalizedDescriptionKey:"Owned SceneKit viewport did not render within its original five-second setup budget"])}
+        attachment.name="Owned production controller viewport setup - "+phase;attachment.lifetime = .keepAlways;add(attachment)
+        guard observed,withinDeadline else {throw NSError(domain:"NCLViewportFixture",code:1,userInfo:[NSLocalizedDescriptionKey:"Owned SceneKit viewport did not render within its original shared five-second setup budget"])}
         XCTAssertTrue(coordinates.allSatisfy{$0.isFinite})
         XCTAssertEqual(Double(projected.x),Double(scene.bounds.midX),accuracy:0.5)
         XCTAssertEqual(Double(projected.y),Double(scene.bounds.midY),accuracy:0.5)
@@ -75,8 +83,15 @@ final class ParallaxSceneDeliveryTests: XCTestCase {
         let prototype=SCNNode();let mesh=SCNNode(geometry:SCNBox(width:0.8,height:0.8,length:0.8,chamferRadius:0));mesh.name="fixture-mesh";prototype.addChildNode(mesh)
         let digest=try XCTUnwrap(ParallaxAssetCache.Model.parse(model("treasure-chest"))).sha256
         XCTAssertTrue(runtime.activate([inputEntity()],models:[digest:prototype]))
-        try requireRenderedViewport(scene,in:window.owned)
+        let viewportDeadline=ProcessInfo.processInfo.systemUptime+5
+        try requireRenderedViewport(scene,in:window.owned,deadline:viewportDeadline,phase:"initial-input")
         var events:[[String:Any]]=[];runtime.emit={events.append($0)}
+        let selectCenter=try XCTUnwrap(view(runtime.view,identifier:"parallax.native.selectCenter") as? UIButton)
+        XCTAssertTrue(selectCenter.isEnabled);XCTAssertEqual(selectCenter.title(for:.normal),"Select object at center")
+        XCTAssertTrue(selectCenter.accessibilityActivate(),"The ordinary accessible button must activate the same production mesh picker")
+        XCTAssertEqual(events.compactMap{$0["entityId"] as? String},["actual-chest"])
+        XCTAssertEqual(events.compactMap{$0["interactionType"] as? String},["PICK"])
+        events.removeAll()
         let center=CGPoint(x:scene.bounds.midX,y:scene.bounds.midY)
         XCTAssertEqual(runtime.select(at:center),"actual-chest","Selection must come from the production SceneKit hit path")
         let inspect=try XCTUnwrap(view(runtime.view,identifier:"parallax.native.inspect") as? UIButton)
@@ -94,11 +109,12 @@ final class ParallaxSceneDeliveryTests: XCTestCase {
         var selectionRedrawReplies:[Bool]=[]
         runtime.renderScene(redraw) {selectionRedrawReplies.append($0)}
         XCTAssertEqual(selectionRedrawReplies,[true]);XCTAssertTrue(inspect.isEnabled,"PICK → real renderScene redraw must retain the eligible selection for Inspect")
-        inspect.sendActions(for:.touchUpInside);inspect.sendActions(for:.touchUpInside)
+        XCTAssertTrue(inspect.accessibilityActivate());inspect.sendActions(for:.touchUpInside)
         XCTAssertEqual(events.compactMap{$0["interactionType"] as? String},["PICK","INSPECT"])
         XCTAssertTrue(events.allSatisfy{$0["type"] as? String == "parallax-lab-interaction" && $0["synthetic"] as? Bool == true && $0["sessionId"] as? String == "native-input" && $0["epoch"] as? Int == 1})
         XCTAssertNil(runtime.presentedViewController,"Native Inspect must not show a premature local success")
         XCTAssertFalse(inspect.isEnabled);XCTAssertTrue(status.text?.contains("Opening this object in the Player") == true)
+        XCTAssertFalse(selectCenter.isEnabled);XCTAssertFalse(selectCenter.accessibilityActivate(),"Pending canonical Inspect cannot reopen native input")
         var redrawReplies:[Bool]=[]
         runtime.renderScene(redraw) {redrawReplies.append($0)}
         XCTAssertEqual(redrawReplies,[true],"Exercise the real COMMIT renderScene path during a pending Inspect")
@@ -121,22 +137,32 @@ final class ParallaxSceneDeliveryTests: XCTestCase {
         let digest=try XCTUnwrap(ParallaxAssetCache.Model.parse(model("treasure-chest"))).sha256
         XCTAssertTrue(runtime.activate([inputEntity()],models:[digest:prototype]))
         XCTAssertFalse(runtime.activate([inputEntity("replacement")],models:[:]),"A failed model must never turn into a text plane")
-        try requireRenderedViewport(scene,in:window.owned)
+        let viewportDeadline=ProcessInfo.processInfo.systemUptime+5
+        try requireRenderedViewport(scene,in:window.owned,deadline:viewportDeadline,phase:"rejected-replacement")
         let center=CGPoint(x:scene.bounds.midX,y:scene.bounds.midY)
         XCTAssertEqual(runtime.select(at:center),"actual-chest","Rejected replacement leaves the complete old graph intact")
         var hidden=inputEntity();hidden["visible"]=false
-        XCTAssertTrue(runtime.activate([hidden],models:[digest:prototype]));XCTAssertNil(runtime.select(at:center))
+        XCTAssertTrue(runtime.activate([hidden],models:[digest:prototype]))
+        try requireRenderedViewport(scene,in:window.owned,deadline:viewportDeadline,phase:"hidden")
+        XCTAssertNil(runtime.select(at:center))
         XCTAssertTrue(runtime.activate([inputEntity()],models:[digest:prototype]))
         // An unrelated closer mesh occludes the real entity. A miss is never
         // replaced with the first entity or a same-name impostor.
         let unrelated=SCNNode(geometry:SCNPlane(width:1,height:1));unrelated.name="actual-chest";unrelated.position=SCNVector3(0,0,-0.5)
-        scene.scene?.rootNode.addChildNode(unrelated);XCTAssertNil(runtime.select(at:center));unrelated.removeFromParentNode()
+        scene.scene?.rootNode.addChildNode(unrelated)
+        try requireRenderedViewport(scene,in:window.owned,deadline:viewportDeadline,phase:"closer-unrelated-mesh")
+        XCTAssertNil(runtime.select(at:center));unrelated.removeFromParentNode()
         var revoked=inputEntity();revoked["selectable"]=false
-        XCTAssertTrue(runtime.activate([revoked],models:[digest:prototype]));XCTAssertNil(runtime.select(at:center))
+        XCTAssertTrue(runtime.activate([revoked],models:[digest:prototype]))
+        try requireRenderedViewport(scene,in:window.owned,deadline:viewportDeadline,phase:"revoked-selection")
+        XCTAssertNil(runtime.select(at:center))
         var noActions=inputEntity();noActions["interactions"]=[] as [String]
-        XCTAssertTrue(runtime.activate([noActions],models:[digest:prototype]));XCTAssertNil(runtime.select(at:center))
+        XCTAssertTrue(runtime.activate([noActions],models:[digest:prototype]))
+        try requireRenderedViewport(scene,in:window.owned,deadline:viewportDeadline,phase:"no-actions")
+        XCTAssertNil(runtime.select(at:center))
         var inspectOnly=inputEntity();inspectOnly["interactions"]=["INSPECT"]
         XCTAssertTrue(runtime.activate([inspectOnly],models:[digest:prototype]))
+        try requireRenderedViewport(scene,in:window.owned,deadline:viewportDeadline,phase:"inspect-only")
         var intents:[[String:Any]]=[];runtime.emit={intents.append($0)}
         XCTAssertEqual(runtime.select(at:center),"actual-chest","INSPECT-only authored content is still selectable")
         XCTAssertTrue(intents.isEmpty,"Selection cannot manufacture a forbidden PICK intent")
@@ -177,6 +203,8 @@ final class ParallaxSceneDeliveryTests: XCTestCase {
             parent.view.frame=CGRect(origin:.zero,size:size);runtime.view.frame=parent.view.bounds
             parent.view.setNeedsLayout();parent.view.layoutIfNeeded();runtime.view.setNeedsLayout();runtime.view.layoutIfNeeded()
             let escape=try XCTUnwrap(view(runtime.view,identifier:"parallax.native.return") as? UIButton)
+            let selectCenter=try XCTUnwrap(view(runtime.view,identifier:"parallax.native.selectCenter") as? UIButton)
+            XCTAssertGreaterThanOrEqual(selectCenter.bounds.height,48)
             XCTAssertTrue(escape.isEnabled);XCTAssertTrue(runtime.view.bounds.contains(escape.convert(escape.bounds,to:runtime.view)))
             XCTAssertGreaterThanOrEqual(escape.bounds.height,48)
             let label=try XCTUnwrap(escape.titleLabel)

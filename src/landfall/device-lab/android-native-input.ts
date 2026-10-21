@@ -33,6 +33,17 @@ const proof = z.strictObject({
         loadingAndTrackingGatesVerified: z.literal(true),
         latePickAfterCloseRejected: z.literal(true),
         intents: z.array(intent).length(2),
+        accessibilityCenter: z.strictObject({
+          inputMethod: z.literal("ACCESSIBILITY_ACTION_CLICK"),
+          meshSelected: z.literal(true),
+          hiddenBackgroundMissVerified: z.literal(true),
+          loadingAndTrackingGatesVerified: z.literal(true),
+          manualReturnVerified: z.literal(true),
+          closedGuardVerified: z.literal(true),
+          pickIntentCount: z.literal(1),
+          inspectIntentCount: z.literal(1),
+          intents: z.array(intent).length(2),
+        }),
       }),
     )
     .length(2),
@@ -44,15 +55,21 @@ export function parseAndroidNativeInputProof(raw: string) {
   const value = proof.parse(JSON.parse(raw));
   if (new Set(value.assets.map((asset) => asset.assetId)).size !== 2) throw new Error("NATIVE_INPUT_IDENTITY_MISMATCH");
   for (const asset of value.assets) {
-    if (
-      asset.entityId !== `fixture-model-${asset.assetId}` ||
-      asset.intents[0].interactionType !== "PICK" ||
-      asset.intents[1].interactionType !== "INSPECT" ||
-      asset.intents.some((event) => event.entityId !== asset.entityId) ||
-      asset.intents[0].sessionId !== asset.intents[1].sessionId ||
-      asset.intents.some((event) => event.sessionId !== `native-input-${asset.assetId}` || event.epoch !== 1)
-    )
-      throw new Error("NATIVE_INPUT_IDENTITY_MISMATCH");
+    if (asset.entityId !== `fixture-model-${asset.assetId}`) throw new Error("NATIVE_INPUT_IDENTITY_MISMATCH");
+    for (const [events, prefix] of [
+      [asset.intents, "native-input"],
+      [asset.accessibilityCenter.intents, "native-accessible"],
+    ] as const) {
+      if (
+        events[0].interactionType !== "PICK" ||
+        events[1].interactionType !== "INSPECT" ||
+        events.some(
+          (event) =>
+            event.entityId !== asset.entityId || event.sessionId !== `${prefix}-${asset.assetId}` || event.epoch !== 1,
+        )
+      )
+        throw new Error("NATIVE_INPUT_IDENTITY_MISMATCH");
+    }
   }
   return value;
 }

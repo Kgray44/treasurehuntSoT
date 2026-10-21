@@ -18,7 +18,7 @@ final class ParallaxInteractionView extends LinearLayout {
   private final View target;
   private final TextView status;
   private final LinearLayout content;
-  private final Button inspect, place, guided;
+  private final Button selectCenter, inspect, place, guided;
   private final Picker picker;
   private final Consumer<String> selected, action;
   private final Runnable returned;
@@ -49,11 +49,12 @@ final class ParallaxInteractionView extends LinearLayout {
     addView(scroll, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0, 1));
     status = new TextView(context); status.setTextColor(Color.WHITE); status.setTextSize(16);
     status.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE); content.addView(status);
+    selectCenter = button(context, "Select object at center", "SELECT_CENTER");
     inspect = button(context, "Inspect selected object", "INSPECT");
     place = button(context, "Place selected object", "PLACE");
     guided = button(context, "Return to Guided View", "GUIDED");
     target.setContentDescription(BuildConfig.DEBUG && softwareFixture ? "Camera-free 3D scene"
-        : "Spatial objects. Tap a visible object to select it. Guided View is also available.");
+        : "Spatial objects. Tap a visible object or use Select object at center. Guided View is also available.");
     target.setOnTouchListener((view, event) -> touch(view, event));
     refresh();
   }
@@ -67,6 +68,9 @@ final class ParallaxInteractionView extends LinearLayout {
     button.setOnClickListener(view -> {
       if (closed) return;
       if (kind.equals("GUIDED")) { returned.run(); return; }
+      if (kind.equals("SELECT_CENTER")) {
+        requestPick(target.getWidth() / 2f, target.getHeight() / 2f); return;
+      }
       if (!ready() || !actions.contains(kind)) return;
       if (kind.equals("INSPECT")) { awaiting = true; pickGeneration++; refresh(); }
       action.accept(kind);
@@ -103,11 +107,17 @@ final class ParallaxInteractionView extends LinearLayout {
     if (!tap || !ready() || !Float.isFinite(x) || !Float.isFinite(y)
         || x < 0 || y < 0 || x >= target.getWidth() || y >= target.getHeight()
         || Math.hypot(x - downX, y - downY) > touchSlop) return true;
+    requestPick(x, y);
+    view.performClick(); return true;
+  }
+
+  private void requestPick(float x, float y) {
+    if (!ready() || !Float.isFinite(x) || !Float.isFinite(y)
+        || x < 0 || y < 0 || x >= target.getWidth() || y >= target.getHeight()) return;
     long generation = ++pickGeneration;
     picker.pick(x, y, hit -> {
       if (generation == pickGeneration && ready()) selected.accept(hit);
     });
-    view.performClick(); return true;
   }
 
   void update(String tracking, boolean loading, boolean failed, Set<String> actions) {
@@ -120,16 +130,17 @@ final class ParallaxInteractionView extends LinearLayout {
   }
 
   private void refresh() {
+    selectCenter.setEnabled(ready());
     inspect.setEnabled(ready() && actions.contains("INSPECT"));
     place.setEnabled(ready() && !softwareFixture && actions.contains("PLACE")); guided.setEnabled(!closed);
     status.setText(closed ? "Camera View closed."
         : awaiting ? "Returning to the Player to record this inspection. Guided View remains available."
         : failed ? "The object could not be loaded. Return to Guided View to continue with the same clue."
         : loading ? "Loading the released scene. Return to Guided View at any time."
-        : BuildConfig.DEBUG && softwareFixture ? "Camera-free objects loaded. Tap an object, then Inspect. No AR tracking or physical proof."
+        : BuildConfig.DEBUG && softwareFixture ? "Camera-free objects loaded. Tap an object or select at center, then Inspect. No AR tracking or physical proof."
         : tracking.equals("LIMITED_LOW_LIGHT") ? "More light is needed. Move slowly or return to Guided View."
         : !tracking.equals("NORMAL") ? "Finding the space again. Move slowly or return to Guided View."
-        : actions.isEmpty() ? "Tap a visible object to select it. Guided View has the same clue."
+        : actions.isEmpty() ? "Tap a visible object, or select the object at the center of the view. Guided View has the same clue."
         : "Object selected. Inspect it, or point at a suitable surface before choosing Place.");
   }
 

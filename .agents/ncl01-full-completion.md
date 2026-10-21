@@ -13,14 +13,17 @@ The owner's October 21 completion directive supersedes the historical beta-only
 no-merge restriction for this task, subject to all current protected-main,
 experience, security and physical acceptance requirements. No owner questions.
 
-Protected baseline: `e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab`.
+Initial protected baseline: `e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab`.
+Reconciled protected main: `e1a86f98e56d68e8e87e3704d17439489ff1a170`
+in assembly `9abd26ba892f7715d32601e4d12058eae1acfb4e`; native/product
+implementation remains byte-identical to tested checkpoint `26da4135d851`.
 Task branch: `codex/ncl01-full-completion`. Assembly `a8d862680a` merges the
 complete `cd597b1274bddad70118b77dd65b13969dd55a8d` TestFlight descendant,
 including original PR741 `76d1787e1340e396bc95747293d43e57130b00ed`, into main.
 Preserve existing branches/worktrees and use PR741 if normal ancestry permits.
 
 PR781 `182233e0f6d11a5dd5f74f35e01183b633b6ec8f` and Crossdeck PR721
-`fbf59c35a0acc67e3cf2251139cf080c25af44f6` remain open proposals/candidates.
+`245e5128afa00e6c888818a698ebd37717d81a3d` remain open proposals/candidates.
 They are not accepted authority. Do not copy unfinished Crossdeck implementation
 or consume its finite capture/review allowance. NCL-02/03 are excluded.
 
