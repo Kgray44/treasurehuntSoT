@@ -1,13 +1,53 @@
 "use client";
 import { createBrowserUuid } from "@/lib/browser-uuid";
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
-import { ParallaxLensRuntime, type LensSnapshot } from "@/parallax/runtime";
-import { unknownState } from "@/sextant/contracts";
-import type { InstanceBinding, SpatialMoment } from "@/parallax/contracts";
+import { ParallaxLensRuntime, type LensSnapshot, type SpatialRuntimeAdapter } from "@/parallax/runtime";
+import { unknownState, type CapabilityState } from "@/sextant/contracts";
+import type { InstanceBinding, InteractionReceipt, SpatialMoment } from "@/parallax/contracts";
 import { NativeSpatialAdapter } from "@/parallax/native";
 import { landfallNativeHost } from "@/landfall/native-bridge";
 import styles from "./ChronicleLens.module.css";
 import { fieldConsentDisclosure, type FieldMetadata } from "@/parallax/field-contracts";
+
+class LensAccessError extends Error {}
+type LoadedBinding = {
+  moment: SpatialMoment;
+  binding: InstanceBinding;
+  replayOnly: boolean;
+  fieldObservationId?: string | null;
+};
+type SpatialSelection = (id: string, type: "PICK" | "INSPECT" | "PLACE", signal: AbortSignal) => void;
+export interface ChronicleLensAdapter extends SpatialRuntimeAdapter {
+  discover?(): Promise<{ supported: boolean }>;
+  authorize?(): Promise<CapabilityState>;
+}
+const deviceLabContext = createContext<((select: SpatialSelection) => ChronicleLensAdapter) | null>(null);
+const accessFailure = (status: number, message: string) =>
+  [401, 403, 404, 409, 410].includes(status) ? new LensAccessError(message) : new Error(message);
+const bindingIdentity = (value: LoadedBinding) =>
+  JSON.stringify([
+    value.binding.sessionId,
+    value.binding.chronicleVersionId,
+    value.binding.blockId,
+    value.binding.actorId,
+    value.binding.runId,
+    value.moment.version.id,
+    value.moment.version.checksum,
+    value.moment.attachment.id,
+  ]);
+async function boundedLensOperation<T>(operation: Promise<T>): Promise<T> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  try {
+    return await Promise.race([
+      operation,
+      new Promise<never>((_, reject) => {
+        timer = setTimeout(() => reject(new Error("Waiting for connection. Return to the Lens and retry.")), 15000);
+      }),
+    ]);
+  } finally {
+    clearTimeout(timer);
+  }
+}
 
 function LensMark() {
   return (
@@ -79,7 +119,11 @@ export function ChronicleLensEntry({
                     `/api/player/playthroughs/${encodeURIComponent(voyage.sessionId)}/parallax?block=${encodeURIComponent(blockId)}`,
                     { cache: "no-store" },
                   );
-                  if (!response.ok) throw new Error("The released spatial moment could not be opened.");
+                  if (!response.ok)
+                    throw accessFailure(
+                      response.status,
+                      "This released passage is no longer available. Return to your Journal.",
+                    );
                   return response.json();
                 }
               : undefined
@@ -96,7 +140,10 @@ export function ChronicleLensEntry({
                     },
                   );
                   if (!response.ok)
-                    throw new Error("This interaction could not be recorded. Try again while this passage is active.");
+                    throw accessFailure(
+                      response.status,
+                      "This interaction could not be recorded. Try again while this passage is active.",
+                    );
                 }
               : undefined
           }
@@ -123,6 +170,31 @@ export function ChronicleLensEntry({
     </div>
   );
 }
+export type ChronicleLensProps = {
+  moment: SpatialMoment;
+  binding: InstanceBinding;
+  replayOnly: boolean;
+  loadBinding?: () => Promise<LoadedBinding>;
+  record?: (receipt: unknown) => Promise<void>;
+  onClose: () => void;
+  field?: (body: unknown) => Promise<{ observationId?: string; withdrawn?: boolean }>;
+};
+
+/** Explicit existing Device Lab bundle injection. Ordinary Player callers cannot
+ * enable this through a URL, storage value, host event or runtime capability.
+ * Simulated receipts still pass through the unchanged production authorizer.
+ */
+export function ChronicleLensDeviceLab({
+  createAdapter,
+  ...props
+}: ChronicleLensProps & { createAdapter: (select: SpatialSelection) => ChronicleLensAdapter }) {
+  return (
+    <deviceLabContext.Provider value={createAdapter}>
+      <ChronicleLens {...props} />
+    </deviceLabContext.Provider>
+  );
+}
+
 export function ChronicleLens({
   moment,
   binding,
@@ -131,20 +203,8 @@ export function ChronicleLens({
   record,
   onClose,
   field,
-}: {
-  moment: SpatialMoment;
-  binding: InstanceBinding;
-  replayOnly: boolean;
-  loadBinding?: () => Promise<{
-    moment: SpatialMoment;
-    binding: InstanceBinding;
-    replayOnly: boolean;
-    fieldObservationId?: string | null;
-  }>;
-  record?: (receipt: unknown) => Promise<void>;
-  onClose: () => void;
-  field?: (body: unknown) => Promise<{ observationId?: string; withdrawn?: boolean }>;
-}) {
+}: ChronicleLensProps) {
+  const createLabAdapter = useContext(deviceLabContext);
   const dialog = useRef<HTMLDialogElement>(null),
     runtime = useRef<ParallaxLensRuntime | null>(null);
   const [state, setState] = useState<LensSnapshot | null>(null),
@@ -152,8 +212,26 @@ export function ChronicleLens({
     [busy, setBusy] = useState(false),
     [observed, setObserved] = useState(false),
     [activeMoment, setActiveMoment] = useState(moment);
-  const native = useRef<NativeSpatialAdapter | null>(null),
-    nativeInteraction = useRef<((id: string, type: "PICK" | "INSPECT" | "PLACE") => void) | null>(null);
+  const native = useRef<ChronicleLensAdapter | null>(null),
+    nativeInteraction = useRef<SpatialSelection | null>(null);
+  const lifecycle = useRef(0),
+    mounted = useRef(false),
+    operationBusy = useRef(false),
+    accessInvalid = useRef(false),
+    intentTail = useRef(Promise.resolve()),
+    opening = useRef<Promise<void> | null>(null),
+    pinned = useRef<LoadedBinding | null>(null),
+    replayRef = useRef(replayOnly);
+  const [accessLost, setAccessLost] = useState(false);
+  const scopeKey = JSON.stringify([
+    binding.sessionId,
+    binding.chronicleVersionId,
+    binding.blockId,
+    binding.actorId,
+    binding.runId,
+    moment.version.checksum,
+    !!createLabAdapter,
+  ]);
   const [nativeAvailable, setNativeAvailable] = useState(false);
   const [replay, setReplay] = useState(replayOnly);
   const [pending, setPending] = useState<Awaited<ReturnType<ParallaxLensRuntime["interact"]>> | null>(null);
@@ -169,13 +247,30 @@ export function ChronicleLens({
     [manualSurface, setManualSurface] = useState<FieldMetadata["surface"]>("TABLE");
   useEffect(() => {
     let active = true;
+    const generation = ++lifecycle.current;
+    mounted.current = true;
+    operationBusy.current = false;
+    accessInvalid.current = false;
+    intentTail.current = Promise.resolve();
     const previous = document.activeElement as HTMLElement | null;
     const view = dialog.current;
     view?.showModal();
     async function initialize() {
       try {
+        // Reset the previous opening at the asynchronous session boundary.
+        await Promise.resolve();
+        if (!active || generation !== lifecycle.current) return;
+        setAccessLost(false);
+        setBusy(false);
+        setState(null);
+        setPending(null);
+        setObserved(false);
+        setError(null);
+        setNativeAvailable(false);
         const bound = loadBinding ? await loadBinding() : { moment, binding, replayOnly, fieldObservationId: null };
-        if (!active) return;
+        if (!active || generation !== lifecycle.current) return;
+        pinned.current = bound;
+        replayRef.current = bound.replayOnly;
         setReplay(bound.replayOnly);
         setActiveMoment(bound.moment);
         setFieldId(bound.fieldObservationId ?? "");
@@ -185,7 +280,7 @@ export function ChronicleLens({
           {
             camera: unknownState(),
             replayOnly: bound.replayOnly,
-            environment: "PRODUCTION",
+            environment: createLabAdapter ? "DEVICE_LAB" : "PRODUCTION",
             searchClock: () => performance.now(),
             searchTimeStore:
               loadBinding && !bound.replayOnly
@@ -209,25 +304,31 @@ export function ChronicleLens({
           },
           () => new Date(),
           (s) => {
-            if (active) setState(s);
+            if (active && generation === lifecycle.current) setState(s);
           },
         );
         runtime.current = lens;
         await lens.open();
-        if (landfallNativeHost()) {
-          const adapter = new NativeSpatialAdapter((id, type) => nativeInteraction.current?.(id, type));
+        if (!active || generation !== lifecycle.current || runtime.current !== lens) return;
+        if (createLabAdapter || landfallNativeHost()) {
+          const selected: SpatialSelection = (id, type, signal) => nativeInteraction.current?.(id, type, signal);
+          const adapter = createLabAdapter ? createLabAdapter(selected) : new NativeSpatialAdapter(selected);
+          if (createLabAdapter && adapter.mode !== "SIMULATED")
+            throw new Error("Device Lab requires an explicitly simulated provider.");
           try {
-            const capability = await adapter.discover();
-            if (active && capability.supported) {
+            const capability = adapter.discover ? await adapter.discover() : { supported: true };
+            if (active && generation === lifecycle.current && capability.supported) {
               native.current = adapter;
               setNativeAvailable(true);
             }
-          } catch {
+          } catch (cause) {
+            if (createLabAdapter) throw cause;
             /* Older native builds keep Guided View. */
           }
         }
       } catch (e) {
-        if (active) setError(e instanceof Error ? e.message : "This spatial moment is unavailable.");
+        if (active && generation === lifecycle.current)
+          setError(e instanceof Error ? e.message : "This spatial moment is unavailable.");
       }
     }
     void initialize();
@@ -247,76 +348,190 @@ export function ChronicleLens({
     }, 1000);
     return () => {
       active = false;
+      mounted.current = false;
+      intentTail.current = Promise.resolve();
+      nativeInteraction.current = null;
+      native.current = null;
+      pinned.current = null;
       clearInterval(discoveryTick);
       window.removeEventListener("blur", lock);
       window.removeEventListener("focus", unlock);
       document.removeEventListener("visibilitychange", pause);
-      void runtime.current?.close();
+      void runtime.current?.close().catch(() => undefined);
       runtime.current = null;
       view?.close();
       previous?.focus();
     };
     // A Lens opening binds one immutable passage until it closes.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  async function interact(entityId: string, type: "PICK" | "INSPECT" | "PLACE") {
-    if (!runtime.current || busy) return;
+  }, [scopeKey]);
+  function currentScope(lens: ParallaxLensRuntime, generation: number) {
+    return mounted.current && generation === lifecycle.current && runtime.current === lens && !accessInvalid.current;
+  }
+  async function verifyBinding(lens: ParallaxLensRuntime, generation: number) {
+    if (loadBinding) {
+      const latest = await boundedLensOperation(loadBinding());
+      if (!currentScope(lens, generation)) return false;
+      if (!pinned.current || bindingIdentity(latest) !== bindingIdentity(pinned.current))
+        throw new LensAccessError("This passage or account changed. Close the Lens and reopen it from your Journal.");
+      replayRef.current = latest.replayOnly;
+      setReplay(latest.replayOnly);
+    }
+    return currentScope(lens, generation);
+  }
+  function showFailure(cause: unknown, lens: ParallaxLensRuntime, generation: number) {
+    if (!currentScope(lens, generation)) return;
+    setError(cause instanceof Error ? cause.message : "The Lens could not finish this interaction.");
+    if (cause instanceof LensAccessError) {
+      accessInvalid.current = true;
+      setAccessLost(true);
+      setNativeAvailable(false);
+      setPending(null);
+      setObserved(false);
+      setBusy(false);
+      operationBusy.current = false;
+      intentTail.current = Promise.resolve();
+      void lens.close().catch(() => undefined);
+    }
+  }
+  async function interact(
+    entityId: string,
+    type: "PICK" | "INSPECT" | "PLACE",
+    fromProvider = false,
+    sourceSignal?: AbortSignal,
+  ) {
+    const lens = runtime.current,
+      generation = lifecycle.current;
+    if (!lens || operationBusy.current || !currentScope(lens, generation)) return;
+    if (fromProvider && (sourceSignal?.aborted || lens.read().mode === "GUIDED")) return;
+    operationBusy.current = true;
     setBusy(true);
     setError(null);
     setObserved(false);
+    let receipt: InteractionReceipt | undefined;
+    let failed = false;
     try {
-      const receipt = await runtime.current.interact(entityId, type, createBrowserUuid());
+      if (!(await verifyBinding(lens, generation))) return;
+      if (fromProvider && (sourceSignal?.aborted || lens.read().mode === "GUIDED")) return;
+      receipt = await lens.interact(entityId, type, createBrowserUuid());
+      if (!currentScope(lens, generation)) return;
       setPending(receipt);
-      if (!replay && record) await record(receipt);
+      if (!replayRef.current && record) await boundedLensOperation(record(receipt));
+      if (!currentScope(lens, generation)) return;
       setPending(null);
       setObserved(true);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "The Lens could not finish this interaction.");
+      failed = true;
+      showFailure(e, lens, generation);
     } finally {
-      setBusy(false);
+      if (fromProvider && (type === "INSPECT" || failed) && currentScope(lens, generation)) {
+        try {
+          await lens.useGuidedView({ inspection: failed ? undefined : receipt });
+        } catch (cause) {
+          showFailure(cause, lens, generation);
+        }
+      }
+      if (currentScope(lens, generation)) {
+        operationBusy.current = false;
+        setBusy(false);
+      }
     }
   }
   useEffect(() => {
-    nativeInteraction.current = (id, type) => {
-      void interact(id, type);
+    nativeInteraction.current = (id, type, signal) => {
+      const lens = runtime.current,
+        generation = lifecycle.current;
+      if (!lens || signal.aborted || !currentScope(lens, generation)) return;
+      // A mesh PICK and the following Inspect button can arrive before the first
+      // observation finishes. Keep order without losing Inspect behind UI busy.
+      intentTail.current = intentTail.current
+        .catch(() => undefined)
+        .then(async () => {
+          await opening.current?.catch(() => undefined);
+          if (!signal.aborted && currentScope(lens, generation)) await interact(id, type, true, signal);
+        });
     };
   });
-  async function openNative() {
-    if (!native.current || !runtime.current) return;
+  async function openProvider() {
+    const provider = native.current,
+      lens = runtime.current,
+      generation = lifecycle.current;
+    if (!provider || !lens || operationBusy.current || !currentScope(lens, generation)) return;
+    operationBusy.current = true;
     setBusy(true);
     setError(null);
     try {
-      const camera = await native.current.authorize();
-      await runtime.current.updateDeviceContext(camera);
-      await runtime.current.open(native.current);
-    } catch {
-      setError("The camera view is unavailable. The same clue is here in Guided View.");
+      if (!(await verifyBinding(lens, generation))) return;
+      if (provider.mode !== "SIMULATED") {
+        if (!provider.authorize) throw new Error("This camera provider is unavailable.");
+        const camera = await provider.authorize();
+        if (!currentScope(lens, generation)) return;
+        await lens.updateDeviceContext(camera);
+      }
+      if (currentScope(lens, generation)) await lens.open(provider);
+    } catch (cause) {
+      showFailure(cause, lens, generation);
     } finally {
-      setBusy(false);
+      if (currentScope(lens, generation)) {
+        operationBusy.current = false;
+        setBusy(false);
+      }
+    }
+  }
+  async function openNative() {
+    const operation = openProvider();
+    opening.current = operation;
+    try {
+      await operation;
+    } finally {
+      if (opening.current === operation) opening.current = null;
     }
   }
   async function retry() {
-    if (!pending || !record || replay) return;
+    const lens = runtime.current,
+      generation = lifecycle.current;
+    if (!pending || !record || !lens || operationBusy.current || !currentScope(lens, generation)) return;
+    operationBusy.current = true;
     setBusy(true);
     try {
-      await record(pending);
+      if (!(await verifyBinding(lens, generation))) return;
+      if (!replayRef.current) await boundedLensOperation(record(pending));
+      if (!currentScope(lens, generation)) return;
+      if (pending.interactionType === "INSPECT" && lens.read().mode === "GUIDED") {
+        await lens.useGuidedView({ inspection: pending });
+        if (!currentScope(lens, generation)) return;
+      }
       setPending(null);
       setError(null);
       setObserved(true);
-    } catch {
-      setError("This interaction is still waiting to be recorded.");
+    } catch (cause) {
+      showFailure(cause, lens, generation);
     } finally {
-      setBusy(false);
+      if (currentScope(lens, generation)) {
+        operationBusy.current = false;
+        setBusy(false);
+      }
     }
   }
+  function closeLens() {
+    mounted.current = false;
+    ++lifecycle.current;
+    intentTail.current = Promise.resolve();
+    nativeInteraction.current = null;
+    native.current = null;
+    const lens = runtime.current;
+    runtime.current = null;
+    void lens?.close().catch(() => undefined);
+    onClose();
+  }
   return (
-    <dialog ref={dialog} className={styles.lens} aria-labelledby="chronicle-lens-title" onCancel={onClose}>
+    <dialog ref={dialog} className={styles.lens} aria-labelledby="chronicle-lens-title" onCancel={closeLens}>
       <header>
         <div>
           <p>Chronicle Lens</p>
           <h2 id="chronicle-lens-title">{activeMoment.version.title}</h2>
         </div>
-        <button type="button" onClick={onClose} aria-label="Close Chronicle Lens">
+        <button type="button" onClick={closeLens} aria-label="Close Chronicle Lens">
           ×
         </button>
       </header>
@@ -324,13 +539,21 @@ export function ChronicleLens({
         <div className={styles.compass} aria-hidden="true">
           <LensMark />
         </div>
-        <p className={styles.viewLabel}>{state?.mode === "NATIVE" ? "Camera View" : "Guided View"}</p>
+        <p className={styles.viewLabel}>
+          {state?.mode === "SIMULATED"
+            ? "Camera-free Device Lab"
+            : state?.mode === "NATIVE"
+              ? "Camera View"
+              : "Guided View"}
+        </p>
         <p className={styles.narrative}>
-          {activeMoment.attachment.overrides.narrative ?? activeMoment.version.fallback.narrative}
+          {accessLost
+            ? "This Lens is no longer available. Return to your Journal."
+            : (activeMoment.attachment.overrides.narrative ?? activeMoment.version.fallback.narrative)}
         </p>
         <div className={styles.objects}>
           {activeMoment.version.entities
-            .filter((e) => state?.visibleEntityIds.includes(e.id))
+            .filter((e) => !accessLost && state?.visibleEntityIds.includes(e.id))
             .map((e) => (
               <article
                 key={e.id}
@@ -347,7 +570,10 @@ export function ChronicleLens({
                 <h3>{e.name}</h3>
                 <p>{e.content}</p>
                 <div className={styles.controls}>
-                  {e.interactions.map((type) => (
+                  {(activeMoment.version.studio?.layers.find((layer) => layer.entityId === e.id)?.selectable === false
+                    ? []
+                    : e.interactions
+                  ).map((type) => (
                     <button
                       type="button"
                       key={type}
@@ -364,7 +590,7 @@ export function ChronicleLens({
                     </button>
                   ))}
                 </div>
-                {state?.inspectedEntityId === e.id && (
+                {observed && state?.inspectedEntityId === e.id && (
                   <p className={styles.inspected}>
                     You are inspecting {e.name}. {e.alternativeText}
                   </p>
@@ -524,9 +750,9 @@ export function ChronicleLens({
             <p aria-live="polite">{fieldStatus}</p>
           </details>
         )}
-        {nativeAvailable && (
+        {nativeAvailable && !accessLost && (
           <button type="button" disabled={busy} onClick={() => void openNative()}>
-            Use camera for local placement
+            {createLabAdapter ? "Open camera-free Device Lab" : "Use camera for local placement"}
           </button>
         )}
         <p role="status">
@@ -534,7 +760,9 @@ export function ChronicleLens({
             ? replay
               ? "Revisited. Your Voyage progress stays the same."
               : "Interaction recorded. Continue through the passage when you are ready."
-            : (state?.guidance ?? "Opening this passage’s spatial moment…")}
+            : accessLost
+              ? "This Lens is closed. Return to your Journal."
+              : (state?.guidance ?? "Opening this passage’s spatial moment…")}
         </p>
         <p>Readable, seated, and camera-free. The clue keeps its meaning here.</p>
         {error && <p role="alert">{error}</p>}

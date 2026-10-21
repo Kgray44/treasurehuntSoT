@@ -476,6 +476,13 @@ describe("ChronicleJournalSession mounted synchronous teardown", () => {
     expect(dialog).not.toBeNull();
     expect(dialog.closest('[data-testid="physical-journal-book"],[inert]')).toBeNull();
     expect(screen.getByText(/The next bearing is written in the stars/)).toBeVisible();
+    await act(async () => {
+      ControlledEventSource.instances.at(-1)!.dispatchEvent(new Event("access-revoked"));
+      await flushMicrotasks();
+    });
+    expect(view.container.querySelector("dialog")).toBeNull();
+    expect(screen.queryByRole("button", { name: "Open Chronicle Lens" })).toBeNull();
+    expect(screen.getByText("Access revoked")).toBeVisible();
     view.unmount();
   });
 

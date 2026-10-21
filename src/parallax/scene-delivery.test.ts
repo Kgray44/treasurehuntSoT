@@ -94,6 +94,56 @@ describe("NCL-01 universal scene delivery", () => {
     }
     expect(sceneDeliverySchema.parse({ ...source, entities: [] }).entities).toEqual([]);
   });
+  it("suppresses editor-only model staging without losing parent frames or invisible future SHOW assets", () => {
+    const m = modelScene(),
+      parent = m.version.entities[0];
+    const child = structuredClone(parent);
+    child.id = "runtime-compass";
+    child.parentEntityId = parent.id;
+    child.transform.position.x = 1;
+    m.version.entities.push(child);
+    m.version.studio = {
+      ...emptyStudioContent(),
+      layers: [
+        { entityId: parent.id, visible: true, selectable: true, locked: false, tags: [], audience: "EDITOR_ONLY" },
+        { entityId: child.id, visible: false, selectable: true, locked: false, tags: [], audience: "BOTH" },
+      ],
+      behaviors: [{ id: "show-child", trigger: "TIMER", action: "SHOW", targetEntityId: child.id, delayMs: 1000 }],
+    };
+    const transforms = new Map([
+      [parent.id, { ...identityTransform(), position: { x: 2, y: 0, z: 0 } }],
+      [child.id, { ...identityTransform(), position: { x: 3, y: 0, z: 0 } }],
+    ]);
+    const scene = createSceneDelivery({
+      version: m.version,
+      instanceId: "instance:model:run",
+      playthroughId: "voyage",
+      blockId: "block",
+      transforms,
+      visibleEntityIds: [parent.id],
+      elapsedMs: 0,
+    });
+    expect(scene.entities[0]).toMatchObject({
+      id: parent.id,
+      element: { enabled: false },
+      visible: false,
+      selectable: false,
+      transform: transforms.get(parent.id),
+    });
+    expect(scene.entities[0].model).toBeUndefined();
+    expect(scene.entities[1]).toMatchObject({
+      id: child.id,
+      parentEntityId: parent.id,
+      element: { enabled: true },
+      visible: false,
+      model: { assetId: "brass-compass" },
+      transform: transforms.get(child.id),
+    });
+    expect(parent.element!.enabled).toBe(true);
+    expect(scene.requirements).toContain("MODEL_GLB");
+    m.version.studio.behaviors = [];
+    expect(sceneRequirements(m.version)).not.toContain("MODEL_GLB");
+  });
   it("preserves authored effect/timeline semantics while capability gating unimplemented presentations", () => {
     const m = modelScene();
     expect(supportsSceneDelivery(m.version, ["WORLD_TRACKING", "PLANE_PLACEMENT", "MODEL_GLB"])).toBe(true);

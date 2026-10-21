@@ -3,6 +3,8 @@ import SceneKit
 import GLTFKit2
 import CryptoKit
 import simd
+import UIKit
+import ARKit
 @testable import LandfallCompanion
 
 final class ParallaxSceneDeliveryTests: XCTestCase {
@@ -11,6 +13,137 @@ final class ParallaxSceneDeliveryTests: XCTestCase {
         let chest=id == "treasure-chest"
         return ["assetId":id,"version":"1.0.0","sha256":chest ? "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f" : "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
                 "byteLength":chest ? 630120:313396,"url":"/api/player/playthroughs/fixture-voyage/parallax/assets/"+id+"?block=fixture-block&versionChecksum="+checksum,"format":"GLB","metersPerUnit":1,"sourceWidthMeters":chest ? 0.8:0.16]
+    }
+    private func view(_ root:UIView,identifier:String) -> UIView? {
+        if root.accessibilityIdentifier == identifier { return root }
+        for child in root.subviews { if let found=view(child,identifier:identifier) { return found } }
+        return nil
+    }
+    private func inputEntity(_ id:String="actual-chest",x:Double=0) -> [String:Any] {
+        ["id":id,"content":"Canonical content is handled in the Player, never a local success dialog.","widthMeters":0.4,
+         "transform":["position":["x":x,"y":0.0,"z":-1.0],"rotation":["x":0.0,"y":0.0,"z":0.0,"w":1.0],"scale":1.0],
+         "model":model("treasure-chest"),"visible":true,"selectable":true,"opacity":1.0,"interactions":["PICK","INSPECT","PLACE"]]
+    }
+    @MainActor func testProductionControllerMeshInputAndInspectOnlyEmitIntent() throws {
+        #if DEBUG && targetEnvironment(simulator)
+        let runtime=ParallaxLocalRuntime(sessionId:"native-input",epoch:1,deliveryVersion:2,versionChecksum:checksum,instanceId:"native-input",origin:URL(string:"http://127.0.0.1:3137"),softwareFixture:true)
+        runtime.loadViewIfNeeded();runtime.view.frame=CGRect(x:0,y:0,width:400,height:800);runtime.view.layoutIfNeeded()
+        defer { runtime.stop() }
+        let scene=try XCTUnwrap(view(runtime.view,identifier:"parallax.native.scene") as? SCNView)
+        XCTAssertFalse(scene is ARSCNView);XCTAssertTrue(runtime.softwareFixture)
+        // This focused input test uses a synthetic mesh. The separate immutable
+        // catalog raster test and joined Device Lab route use the original GLBs.
+        let prototype=SCNNode();let mesh=SCNNode(geometry:SCNBox(width:0.8,height:0.8,length:0.8,chamferRadius:0));mesh.name="fixture-mesh";prototype.addChildNode(mesh)
+        let digest=try XCTUnwrap(ParallaxAssetCache.Model.parse(model("treasure-chest"))).sha256
+        XCTAssertTrue(runtime.activate([inputEntity()],models:[digest:prototype]))
+        var events:[[String:Any]]=[];runtime.emit={events.append($0)}
+        let center=CGPoint(x:scene.bounds.midX,y:scene.bounds.midY)
+        XCTAssertEqual(runtime.select(at:center),"actual-chest","Selection must come from the production SceneKit hit path")
+        let inspect=try XCTUnwrap(view(runtime.view,identifier:"parallax.native.inspect") as? UIButton)
+        let place=try XCTUnwrap(view(runtime.view,identifier:"parallax.native.place") as? UIButton)
+        let status=try XCTUnwrap(view(runtime.view,identifier:"parallax.native.status") as? UILabel)
+        let fidelity=try XCTUnwrap(view(runtime.view,identifier:"parallax.native.fidelity") as? UILabel)
+        XCTAssertTrue(fidelity.text?.contains("No AR tracking or physical proof") == true)
+        XCTAssertTrue(inspect.isEnabled);XCTAssertFalse(place.isEnabled,"Camera-free fixture cannot claim a surface")
+        let fixtureURL=try XCTUnwrap(Bundle(for:Self.self).url(forResource:"native-delivery-v2",withExtension:"json"))
+        let fixture=try XCTUnwrap(try JSONSerialization.jsonObject(with:Data(contentsOf:fixtureURL)) as? [String:Any])
+        let sceneCases=try XCTUnwrap(fixture["sceneCases"] as? [[String:Any]])
+        var redraw=try XCTUnwrap(sceneCases.first?["scene"] as? [String:Any])
+        var identity=try XCTUnwrap(redraw["identity"] as? [String:Any]);identity["versionChecksum"]=checksum;identity["instanceId"]="native-input";redraw["identity"]=identity
+        var text=try XCTUnwrap((redraw["entities"] as? [[String:Any]])?.first);text.removeValue(forKey:"model");text.removeValue(forKey:"element");text["id"]="actual-chest";redraw["entities"]=[text]
+        var selectionRedrawReplies:[Bool]=[]
+        runtime.renderScene(redraw) {selectionRedrawReplies.append($0)}
+        XCTAssertEqual(selectionRedrawReplies,[true]);XCTAssertTrue(inspect.isEnabled,"PICK → real renderScene redraw must retain the eligible selection for Inspect")
+        inspect.sendActions(for:.touchUpInside);inspect.sendActions(for:.touchUpInside)
+        XCTAssertEqual(events.compactMap{$0["interactionType"] as? String},["PICK","INSPECT"])
+        XCTAssertTrue(events.allSatisfy{$0["type"] as? String == "parallax-lab-interaction" && $0["synthetic"] as? Bool == true && $0["sessionId"] as? String == "native-input" && $0["epoch"] as? Int == 1})
+        XCTAssertNil(runtime.presentedViewController,"Native Inspect must not show a premature local success")
+        XCTAssertFalse(inspect.isEnabled);XCTAssertTrue(status.text?.contains("Opening this object in the Player") == true)
+        var redrawReplies:[Bool]=[]
+        runtime.renderScene(redraw) {redrawReplies.append($0)}
+        XCTAssertEqual(redrawReplies,[true],"Exercise the real COMMIT renderScene path during a pending Inspect")
+        XCTAssertTrue(status.text?.contains("Opening this object in the Player") == true,"A real redraw must preserve pending canonical handling")
+        inspect.sendActions(for:.touchUpInside)
+        XCTAssertEqual(events.compactMap{$0["interactionType"] as? String},["PICK","INSPECT"])
+        XCTAssertNil(runtime.placement(alignment:"HORIZONTAL"))
+        XCTAssertEqual(status.font,.preferredFont(forTextStyle:.body));XCTAssertTrue(status.adjustsFontForContentSizeCategory)
+        #else
+        throw XCTSkip("The camera-free input fixture is restricted to DEBUG Simulator builds.")
+        #endif
+    }
+    @MainActor func testAtomicGraphReplacementRejectsMissingModelAndStopsStaleInput() throws {
+        #if DEBUG && targetEnvironment(simulator)
+        let runtime=ParallaxLocalRuntime(sessionId:"native-cancel",epoch:1,deliveryVersion:2,origin:URL(string:"http://127.0.0.1:3137"),softwareFixture:true)
+        runtime.loadViewIfNeeded();runtime.view.frame=CGRect(x:0,y:0,width:400,height:800);runtime.view.layoutIfNeeded()
+        let scene=try XCTUnwrap(view(runtime.view,identifier:"parallax.native.scene") as? SCNView)
+        let prototype=SCNNode(geometry:SCNBox(width:0.8,height:0.8,length:0.8,chamferRadius:0))
+        let digest=try XCTUnwrap(ParallaxAssetCache.Model.parse(model("treasure-chest"))).sha256
+        XCTAssertTrue(runtime.activate([inputEntity()],models:[digest:prototype]))
+        XCTAssertFalse(runtime.activate([inputEntity("replacement")],models:[:]),"A failed model must never turn into a text plane")
+        let center=CGPoint(x:scene.bounds.midX,y:scene.bounds.midY)
+        XCTAssertEqual(runtime.select(at:center),"actual-chest","Rejected replacement leaves the complete old graph intact")
+        var hidden=inputEntity();hidden["visible"]=false
+        XCTAssertTrue(runtime.activate([hidden],models:[digest:prototype]));XCTAssertNil(runtime.select(at:center))
+        XCTAssertTrue(runtime.activate([inputEntity()],models:[digest:prototype]))
+        // An unrelated closer mesh occludes the real entity. A miss is never
+        // replaced with the first entity or a same-name impostor.
+        let unrelated=SCNNode(geometry:SCNPlane(width:1,height:1));unrelated.name="actual-chest";unrelated.position=SCNVector3(0,0,-0.5)
+        scene.scene?.rootNode.addChildNode(unrelated);XCTAssertNil(runtime.select(at:center));unrelated.removeFromParentNode()
+        var revoked=inputEntity();revoked["selectable"]=false
+        XCTAssertTrue(runtime.activate([revoked],models:[digest:prototype]));XCTAssertNil(runtime.select(at:center))
+        var noActions=inputEntity();noActions["interactions"]=[] as [String]
+        XCTAssertTrue(runtime.activate([noActions],models:[digest:prototype]));XCTAssertNil(runtime.select(at:center))
+        var inspectOnly=inputEntity();inspectOnly["interactions"]=["INSPECT"]
+        XCTAssertTrue(runtime.activate([inspectOnly],models:[digest:prototype]))
+        var intents:[[String:Any]]=[];runtime.emit={intents.append($0)}
+        XCTAssertEqual(runtime.select(at:center),"actual-chest","INSPECT-only authored content is still selectable")
+        XCTAssertTrue(intents.isEmpty,"Selection cannot manufacture a forbidden PICK intent")
+        let inspect=try XCTUnwrap(view(runtime.view,identifier:"parallax.native.inspect") as? UIButton)
+        XCTAssertTrue(inspect.isEnabled);inspect.sendActions(for:.touchUpInside)
+        XCTAssertEqual(intents.compactMap{$0["interactionType"] as? String},["INSPECT"])
+        var terminations=0;runtime.terminated={terminations += 1};runtime.stop();runtime.stop()
+        XCTAssertEqual(terminations,1);XCTAssertNil(runtime.select(at:center));XCTAssertFalse(runtime.activate([inputEntity()],models:[digest:prototype]))
+        let closed=try XCTUnwrap(view(runtime.view,identifier:"parallax.native.status") as? UILabel);XCTAssertEqual(closed.text,"The camera scene has closed.")
+        #else
+        throw XCTSkip("The camera-free input fixture is restricted to DEBUG Simulator builds.")
+        #endif
+    }
+    func testCameraFreeOriginGateNeverAcceptsRemoteOrCredentialedOrigins() {
+        XCTAssertTrue(ParallaxLocalRuntime.isLoopbackLabOrigin(URL(string:"http://127.0.0.1:3137")))
+        for raw in ["https://127.0.0.1:3137","http://localhost:3137","http://127.0.0.1","http://127.0.0.1:3137/","http://user@127.0.0.1:3137","http://127.0.0.1:3137?flag=1","http://example.com:3137"] {
+            XCTAssertFalse(ParallaxLocalRuntime.isLoopbackLabOrigin(URL(string:raw)),raw)
+        }
+    }
+    @MainActor func testTrackingTransitionsStopWithoutStaleEmissions() {
+        // State-machine input only: this is not an ARSession or tracking receipt.
+        let runtime=ParallaxLocalRuntime(sessionId:"tracking-input",epoch:4)
+        var events:[[String:Any]]=[];runtime.emit={events.append($0)}
+        for state in ["NORMAL","NORMAL","NORMAL","NORMAL","LIMITED_FEATURES","RELOCALIZING","NORMAL"] {runtime.applyTrackingState(state)}
+        XCTAssertEqual(events.compactMap{$0["state"] as? String},["NORMAL","NORMAL","NORMAL","LIMITED_FEATURES","RELOCALIZING","NORMAL"])
+        runtime.stop();let stoppedCount=events.count;runtime.applyTrackingState("NORMAL")
+        XCTAssertEqual(events.count,stoppedCount);XCTAssertEqual(events.last?["state"] as? String,"INTERRUPTED")
+        XCTAssertTrue(events.allSatisfy{$0["sessionId"] as? String == "tracking-input" && $0["epoch"] as? Int == 4})
+    }
+    @MainActor func testCameraFreeOverlayKeepsEscapeVisibleWithLargeTextAndRotation() throws {
+        #if DEBUG && targetEnvironment(simulator)
+        let parent=UIViewController()
+        let runtime=ParallaxLocalRuntime(sessionId:"native-large-text",epoch:1,origin:URL(string:"http://127.0.0.1:3137"),softwareFixture:true)
+        parent.addChild(runtime);parent.view.addSubview(runtime.view);runtime.didMove(toParent:parent)
+        parent.setOverrideTraitCollection(UITraitCollection(preferredContentSizeCategory:.accessibilityExtraExtraExtraLarge),forChild:runtime)
+        defer {runtime.stop()}
+        for size in [CGSize(width:390,height:844),CGSize(width:844,height:390)] {
+            parent.view.frame=CGRect(origin:.zero,size:size);runtime.view.frame=parent.view.bounds
+            parent.view.setNeedsLayout();parent.view.layoutIfNeeded();runtime.view.setNeedsLayout();runtime.view.layoutIfNeeded()
+            let escape=try XCTUnwrap(view(runtime.view,identifier:"parallax.native.return") as? UIButton)
+            XCTAssertTrue(escape.isEnabled);XCTAssertTrue(runtime.view.bounds.contains(escape.convert(escape.bounds,to:runtime.view)))
+            XCTAssertGreaterThanOrEqual(escape.bounds.height,48)
+            let label=try XCTUnwrap(escape.titleLabel)
+            let text=label.sizeThatFits(CGSize(width:escape.bounds.width-escape.contentEdgeInsets.left-escape.contentEdgeInsets.right,height:CGFloat.greatestFiniteMagnitude))
+            XCTAssertGreaterThanOrEqual(escape.bounds.height+1,text.height+escape.contentEdgeInsets.top+escape.contentEdgeInsets.bottom,"Escape title must not clip at the declared Dynamic Type size")
+        }
+        #else
+        throw XCTSkip("The camera-free overlay fixture is restricted to DEBUG Simulator builds.")
+        #endif
     }
     func testAuthorizedAssetReferencesAndIntegrity() throws {
         let usage=try XCTUnwrap(Bundle(for:LandfallCompanion.self).object(forInfoDictionaryKey:"NSLocalNetworkUsageDescription") as? String)

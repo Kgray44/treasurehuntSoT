@@ -40,6 +40,17 @@ public final class ParallaxDeliveryFixtures {
     JSONArray cases = fixtures.getJSONArray("sceneCases");
     JSONObject golden = cases.getJSONObject(0).getJSONObject("scene"), identity = golden.getJSONObject("identity");
     String checksum = identity.getString("versionChecksum"), instance = identity.getString("instanceId");
+    for (Object invalidVersion : new Object[] {2.5, "2", true})
+      check(!ParallaxSceneDelivery.valid(new JSONObject(golden.toString()).put("schemaVersion", invalidVersion), checksum, instance), "non-literal schema version rejected");
+    check(!ParallaxSceneDelivery.valid(new JSONObject(golden.toString()).put("transformKind", "AUTHORED"), checksum, instance), "unresolved transform kind rejected");
+    check(!ParallaxSceneDelivery.valid(new JSONObject(golden.toString()).put("coordinateFrame", "LOCAL_Z_UP"), checksum, instance), "incompatible coordinate frame rejected");
+    String selected = golden.getJSONArray("entities").getJSONObject(0).getString("id");
+    check(selected.equals(ParallaxSceneDelivery.retainedSelection(selected, golden.getJSONArray("entities"))), "same-scene redraw preserves chosen entity");
+    check(ParallaxSceneDelivery.retainedSelection(selected, new JSONArray()) == null, "removed entity cannot retain selection");
+    for (String flag : new String[] {"visible", "selectable"}) {
+      JSONArray disabled = new JSONArray(golden.getJSONArray("entities").toString()); disabled.getJSONObject(0).put(flag, false);
+      check(ParallaxSceneDelivery.retainedSelection(selected, disabled) == null, "hidden or disabled entity cannot retain selection");
+    }
     for (int i = 0; i < cases.length(); i++) {
       JSONObject c = cases.getJSONObject(i), scene = c.getJSONObject("scene");
       check(ParallaxSceneDelivery.valid(scene, checksum, instance) == c.getBoolean("accepted"), c.getString("name"));

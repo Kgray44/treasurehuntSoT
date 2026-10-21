@@ -12,7 +12,7 @@ import {
   type Anchor,
 } from "./contracts";
 import { composeTransform } from "./transforms";
-import { evaluateSpatialBehavior, type SpatialInput } from "./behavior";
+import { evaluateSpatialBehavior, runtimePresentableEntityIds, type SpatialInput } from "./behavior";
 import type { CapabilityState } from "@/sextant/contracts";
 import {
   resolveAdaptiveScene,
@@ -394,7 +394,19 @@ export class ParallaxLensRuntime {
       });
     }
   }
-  async useGuidedView() {
+  async useGuidedView(options: { inspection?: InteractionReceipt } = {}) {
+    if (this.snapshot.state === "CLOSED") return;
+    const parsed = receiptSchema.safeParse(options.inspection);
+    const inspection = parsed.success ? parsed.data : undefined;
+    const retained = inspection && this.ledger.get(inspection.idempotencyKey);
+    const inspectedEntityId =
+      retained?.interactionType === "INSPECT" &&
+      retained.entityId === inspection?.entityId &&
+      retained.instanceId === this.instanceId &&
+      retained.versionChecksum === this.moment.version.checksum &&
+      JSON.stringify(retained) === JSON.stringify(inspection)
+        ? retained.entityId
+        : null;
     this.timers.forEach(clearTimeout);
     this.timers = [];
     const epoch = ++this.epoch;
@@ -428,6 +440,8 @@ export class ParallaxLensRuntime {
     });
     await this.draw();
     if (epoch !== this.epoch) return;
+    if (inspectedEntityId && this.snapshot.visibleEntityIds.includes(inspectedEntityId))
+      this.update({ selectedEntityId: inspectedEntityId, inspectedEntityId });
     this.updateSearchActivity({ lensOpen: true, permission: true, tracking: true, inSearchRegion: true });
   }
   updateSearchActivity(activity: Partial<SearchActivity>) {
@@ -466,9 +480,10 @@ export class ParallaxLensRuntime {
     const states = evaluateSpatialBehavior(this.moment.version, this.spatialInputs, elapsed);
     const a = this.moment.version.adaptive;
     const currentReveal = a?.revealOrder.find((id) => !this.discovered.has(id)) ?? a?.revealOrder.at(-1);
+    const presentable = runtimePresentableEntityIds(this.moment.version);
     const visible = this.moment.version.entities.filter((e) =>
       this.snapshot.mode === "GUIDED"
-        ? this.moment.version.studio?.layers.find((l) => l.entityId === e.id)?.audience !== "EDITOR_ONLY"
+        ? presentable.has(e.id)
         : states[e.id].visible && (!currentReveal || !a?.revealOrder.includes(e.id) || e.id === currentReveal),
     );
     return { visible, highlightedEntityIds: visible.filter((e) => states[e.id].highlighted).map((e) => e.id) };
@@ -673,9 +688,23 @@ export class ParallaxLensRuntime {
     this.timers = [];
     this.normalSamples = 0;
     this.interactionPending = false;
-    this.update({ state: "CLOSED", anchors: {}, selectedEntityId: null, inspectedEntityId: null });
+    this.update({
+      state: "CLOSED",
+      anchors: {},
+      selectedEntityId: null,
+      inspectedEntityId: null,
+      visibleEntityIds: [],
+      highlightedEntityIds: [],
+    });
     await this.adapter.stop().catch(() => undefined);
     if (epoch !== this.epoch) return;
-    this.update({ state: "CLOSED", anchors: {}, selectedEntityId: null, inspectedEntityId: null });
+    this.update({
+      state: "CLOSED",
+      anchors: {},
+      selectedEntityId: null,
+      inspectedEntityId: null,
+      visibleEntityIds: [],
+      highlightedEntityIds: [],
+    });
   }
 }

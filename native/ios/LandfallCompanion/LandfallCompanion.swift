@@ -105,15 +105,20 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
               JSONSerialization.isValidJSONObject(request), let encoded = try? JSONSerialization.data(withJSONObject: request), encoded.count <= 16384 else { replyHandler(nil, "INVALID_NATIVE_REQUEST"); return }
         let payload = request["payload"] as? [String: Any] ?? [:]
         switch operation {
-        case "SPATIAL_STATE": replyHandler(ParallaxLocalRuntime.state(),nil)
+        case "SPATIAL_STATE":
+            var state=ParallaxLocalRuntime.state()
+            if ParallaxLocalRuntime.softwareFixtureEnabled(origin:origin) {state["softwareFixture"]="SCENEKIT_CAMERA_FREE_V1"}
+            replyHandler(state,nil)
         case "SPATIAL_PERMISSION":
             guard foreground else {replyHandler(["supported":false,"permission":"RESTRICTED"],nil);return}
             ParallaxLocalRuntime.permission(reply:replyHandler)
         case "SPATIAL_START":
-            guard foreground,!power.critical,ParallaxLocalRuntime.state()["supported"] as? Bool == true,ParallaxLocalRuntime.state()["permission"] as? String == "GRANTED",let presenter=web?.window?.rootViewController,presenter.presentedViewController == nil,spatial == nil else {replyHandler(["accepted":false],nil);return}
+            let softwareFixture=ParallaxLocalRuntime.softwareFixtureEnabled(origin:origin)
+            let cameraAuthorized=ParallaxLocalRuntime.state()["supported"] as? Bool == true && ParallaxLocalRuntime.state()["permission"] as? String == "GRANTED"
+            guard foreground,!power.critical,softwareFixture || cameraAuthorized,let presenter=web?.window?.rootViewController,presenter.presentedViewController == nil,spatial == nil else {replyHandler(["accepted":false],nil);return}
             guard ParallaxSceneTransfer.validStart(payload), let sessionId=payload["sessionId"] as? String, let epoch=payload["epoch"] as? Int else { replyHandler(["accepted":false],nil);return }
             let deliveryVersion=payload["sceneTransferVersion"] as? Int ?? 1
-            let controller=ParallaxLocalRuntime(sessionId:sessionId,epoch:epoch,deliveryVersion:deliveryVersion,versionChecksum:payload["versionChecksum"] as? String,instanceId:payload["instanceId"] as? String,origin:origin,cookies:{ [weak self] done in
+            let controller=ParallaxLocalRuntime(sessionId:sessionId,epoch:epoch,deliveryVersion:deliveryVersion,versionChecksum:payload["versionChecksum"] as? String,instanceId:payload["instanceId"] as? String,origin:origin,softwareFixture:softwareFixture,cookies:{ [weak self] done in
                 guard let self=self,self.foreground,let web=self.web,self.accepts(web.url) else { done([]);return }
                 web.configuration.websiteDataStore.httpCookieStore.getAllCookies(done)
             });controller.emit={ [weak self] value in self?.event(value) };controller.modalPresentationStyle = .fullScreen

@@ -118,7 +118,8 @@ final class ParallaxModelRenderer {
   }
 
   void pick(float x, float y, Consumer<String> result) {
-    if (closed || swapchain == null || width < 1 || height < 1) { result.accept(null); return; }
+    if (closed || swapchain == null || width < 1 || height < 1 || !Float.isFinite(x) || !Float.isFinite(y)
+        || x < 0 || y < 0 || x >= width || y >= height) { result.accept(null); return; }
     long generation = sceneGeneration;
     view.pick(Math.max(0, Math.min(width - 1, (int) x)),
         Math.max(0, Math.min(height - 1, height - 1 - (int) y)), main,

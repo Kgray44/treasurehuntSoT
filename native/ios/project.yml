@@ -64,6 +64,7 @@ targets:
       environmentVariables:
         LANDFALL_LAB_ORIGIN: $(LANDFALL_LAB_ORIGIN)
         LANDFALL_LAB_PRESENTATION: $(LANDFALL_LAB_PRESENTATION)
+        LANDFALL_LAB_CAMERA_FREE: $(LANDFALL_LAB_CAMERA_FREE)
   LandfallCompanionTests:
     type: bundle.unit-test
     platform: iOS

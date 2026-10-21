@@ -5,9 +5,10 @@ import { unknownState } from "@/sextant/contracts";
 import { resolvedTransformSchema, type Anchor, type Transform } from "./contracts";
 import { encodeScene, sceneChunks, sceneDigest, sceneTransferLimits } from "./scene-transfer";
 import { composeTransform } from "./transforms";
-import type { SpatialRuntimeAdapter, SpatialRuntimeEvent } from "./runtime";
+import type { RuntimeMode, SpatialRuntimeAdapter, SpatialRuntimeEvent } from "./runtime";
 import type { SpatialVersion } from "./contracts";
 import { encodeSceneDelivery, supportsSceneDelivery, type SceneDelivery } from "./scene-delivery";
+import { runtimePresentableEntityIds } from "./behavior";
 
 async function nativeRequest(
   operation: Parameters<typeof landfallNativeRequest>[0],
@@ -35,6 +36,7 @@ const stateSchema = z.strictObject({
     .max(2)
     .optional(),
   capabilities: z.array(z.string().min(1).max(80)).max(32).optional(),
+  softwareFixture: z.enum(["SCENEKIT_CAMERA_FREE_V1", "FILAMENT_CAMERA_FREE_V1"]).optional(),
 });
 const poseReply = z.strictObject({ pose: resolvedTransformSchema.nullable() });
 const trackingSchema = z.strictObject({
@@ -57,9 +59,9 @@ const trackingSchema = z.strictObject({
 /** Generic permissions stay with Sextant. Parallax consumes world tracking and plane poses, not raw camera frames. */
 export class NativeSpatialAdapter implements SpatialRuntimeAdapter {
   readonly providerId: string;
-  readonly mode = "NATIVE" as const;
-  readonly worldTracking = true;
-  readonly planePlacement = true;
+  readonly mode: RuntimeMode = "NATIVE";
+  readonly worldTracking: boolean = true;
+  readonly planePlacement: boolean = true;
   private remove: (() => void) | undefined;
   private started = false;
   private signal: AbortSignal | undefined;
@@ -74,7 +76,14 @@ export class NativeSpatialAdapter implements SpatialRuntimeAdapter {
     const r = stateSchema.parse(await nativeRequest("SPATIAL_PERMISSION"));
     return r.permission;
   });
-  constructor(private readonly selected: (entityId: string, type: "PICK" | "INSPECT" | "PLACE") => void = () => {}) {
+  protected readonly interactionEvent: string = "parallax-interaction";
+  constructor(
+    private readonly selected: (
+      entityId: string,
+      type: "PICK" | "INSPECT" | "PLACE",
+      signal: AbortSignal,
+    ) => void = () => {},
+  ) {
     const host = landfallNativeHost();
     if (!host) throw new Error("PARALLAX_NATIVE_NOT_CONFIGURED");
     this.providerId = `parallax.${host.platform.toLowerCase()}.local.v1`;
@@ -86,9 +95,10 @@ export class NativeSpatialAdapter implements SpatialRuntimeAdapter {
     return { ...state, supported: state.supported && state.sceneTransferVersion === 1 };
   }
   supportsScene(scene: SpatialVersion) {
+    const presentable = runtimePresentableEntityIds(scene);
     return (
       supportsSceneDelivery(scene, this.capabilities) &&
-      (!scene.entities.some((e) => e.element?.enabled) || this.deliveryVersion === 2)
+      (!scene.entities.some((e) => presentable.has(e.id) && e.element?.enabled) || this.deliveryVersion === 2)
     );
   }
   async authorize() {
@@ -140,15 +150,16 @@ export class NativeSpatialAdapter implements SpatialRuntimeAdapter {
       const parsed = trackingSchema.safeParse(data);
       if (parsed.success) {
         if (parsed.data.state === "INTERRUPTED") interrupted();
-        else if (this.started) c.emit({ type: "TRACKING", state: parsed.data.state });
+        else if (this.started && this.mode !== "SIMULATED") c.emit({ type: "TRACKING", state: parsed.data.state });
       }
       if (
         this.started &&
-        data?.type === "parallax-interaction" &&
+        data?.type === this.interactionEvent &&
+        (this.mode !== "SIMULATED" || data.synthetic === true) &&
         typeof data.entityId === "string" &&
         ["PICK", "INSPECT", "PLACE"].includes(data.interactionType)
       )
-        this.selected(data.entityId, data.interactionType);
+        this.selected(data.entityId, data.interactionType, c.signal);
     };
     window.addEventListener("landfall-native-event", receive);
     this.remove = () => window.removeEventListener("landfall-native-event", receive);
@@ -236,9 +247,12 @@ export class NativeSpatialAdapter implements SpatialRuntimeAdapter {
           .map(({ id, kind, content, widthMeters, transform }) => ({ id, kind, content, widthMeters, transform })),
       );
     }
-    if (!scene.requirements.every((r) => this.capabilities.includes(r)))
+    if (!this.supportsDeliveryRequirements(scene.requirements))
       throw new Error("PARALLAX_NATIVE_CAPABILITY_UNAVAILABLE");
     return this.transfer(encodeSceneDelivery(scene), 2);
+  }
+  protected supportsDeliveryRequirements(requirements: readonly string[]) {
+    return requirements.every((r) => this.capabilities.includes(r));
   }
   private async transfer(bytes: Uint8Array, version: 1 | 2) {
     if (!this.started || this.transferring) throw new Error("PARALLAX_NATIVE_TRANSFER_UNAVAILABLE");

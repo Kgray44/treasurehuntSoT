@@ -65,6 +65,7 @@ final class ParallaxAssetCache: NSObject, URLSessionDataDelegate {
         return true
     }
     private let origin: URL?
+    private let softwareFixture: Bool
     private let cookies: (@escaping ([HTTPCookie]) -> Void) -> Void
     private let directory: URL
     private var session: URLSession?
@@ -72,14 +73,19 @@ final class ParallaxAssetCache: NSObject, URLSessionDataDelegate {
     private var pending: Model?
     private var completion: ((URL?) -> Void)?
     private var bytes=Data(), stopped=false
-    init(origin: URL?, cookies: @escaping (@escaping ([HTTPCookie]) -> Void) -> Void) {
+    init(origin: URL?, softwareFixture requestedFixture: Bool = false, cookies: @escaping (@escaping ([HTTPCookie]) -> Void) -> Void) {
         self.origin=origin; self.cookies=cookies
+        #if DEBUG && targetEnvironment(simulator)
+        softwareFixture=requestedFixture && ParallaxLocalRuntime.isLoopbackLabOrigin(origin)
+        #else
+        softwareFixture=false
+        #endif
         directory=FileManager.default.temporaryDirectory.appendingPathComponent("parallax-assets-"+UUID().uuidString,isDirectory:true)
         super.init()
     }
     func load(_ model: Model, completion: @escaping (URL?) -> Void) {
         guard !stopped, task == nil, self.completion == nil,
-              let origin=origin, origin.scheme == "https", let url=URL(string:model.path,relativeTo:origin)?.absoluteURL,
+              let origin=origin, origin.scheme == "https" || softwareFixture, let url=URL(string:model.path,relativeTo:origin)?.absoluteURL,
               url.host == origin.host, url.port == origin.port else { completion(nil); return }
         let local=directory.appendingPathComponent(model.sha256+".glb")
         if let data=try? Data(contentsOf:local,options:.mappedIfSafe), Self.verified(data,model:model) { completion(local); return }

@@ -39,6 +39,18 @@ public final class ParallaxTests {
       InstrumentationRegistry.getInstrumentation().waitForIdleSync();
     }
     assertEquals(2,events.get());assertEquals(2,owners.get());
+    InstrumentationRegistry.getInstrumentation().runOnMainSync(() -> {
+      AtomicInteger unstartedOwners = new AtomicInteger();
+      ParallaxLocalRuntime unstarted = new ParallaxLocalRuntime(activity.getActivity(), event -> fail("Unstarted provider emits no tracking"),
+          "never-started", 1, unstartedOwners::incrementAndGet);
+      unstarted.stop(); unstarted.stop();
+      assertEquals("Unstarted ownership is released once", 1, unstartedOwners.get());
+      assertFalse("A disposed provider cannot reopen acquisition", unstarted.start());
+      try {
+        java.lang.reflect.Field worker = ParallaxLocalRuntime.class.getDeclaredField("assetWorker"); worker.setAccessible(true);
+        assertTrue("Closing before AR acquisition also closes the asset worker", ((java.util.concurrent.ExecutorService) worker.get(unstarted)).isShutdown());
+      } catch (Exception failure) { throw new AssertionError(failure); }
+    });
   }
   @Test public void sharedBoundaryFixtures() throws Exception {
     try(java.io.InputStream stream=InstrumentationRegistry.getInstrumentation().getContext().getAssets().open("native-boundary-v1.json")) {

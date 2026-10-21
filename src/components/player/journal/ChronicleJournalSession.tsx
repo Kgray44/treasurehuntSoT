@@ -1433,7 +1433,7 @@ function ChronicleJournalSessionIdentity({
           </aside>
         ) : null}
 
-        {journalReady && spatialBlocks.length > 0 && (
+        {journalReady && connection !== "revoked" && spatialBlocks.length > 0 && (
           <ParallaxJournalProvider sessionId={sessionId} csrfToken={state.csrfToken ?? ""}>
             <section aria-label="Spatial moments in your released passages">
               {spatialBlocks.map((block) => (

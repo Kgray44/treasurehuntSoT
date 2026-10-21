@@ -15,6 +15,15 @@ final class ParallaxSceneDelivery {
     Iterator<String> keys = object.keys(); while (keys.hasNext()) actual.add(keys.next());
     return actual.containsAll(required) && actual.stream().allMatch(k -> required.contains(k) || optional.contains(k));
   }
+  static String retainedSelection(String selected, JSONArray entities) {
+    if (selected == null) return null;
+    for (int i = 0; i < entities.length(); i++) {
+      JSONObject entity = entities.optJSONObject(i);
+      if (entity != null && selected.equals(entity.optString("id"))
+          && entity.optBoolean("visible", true) && entity.optBoolean("selectable", true)) return selected;
+    }
+    return null;
+  }
   static boolean surfaceQuadCorrection(JSONObject scene, JSONObject entity) {
     if (scene.optInt("schemaVersion") != 2 || entity.has("model")) return false;
     JSONArray anchors = scene.optJSONArray("anchors");
@@ -30,7 +39,11 @@ final class ParallaxSceneDelivery {
     try {
       if (!keys(scene, set("schemaVersion", "transformKind", "coordinateFrame", "identity", "units",
           "entities", "anchors", "requirements", "presentation", "fallback"), set())
-          || scene.getInt("schemaVersion") != 2 || !scene.getString("units").equals("METERS")) return false;
+          || !(scene.opt("schemaVersion") instanceof Number)
+          || scene.getDouble("schemaVersion") != 2
+          || !scene.optString("transformKind").equals("RESOLVED_LOCAL_V1")
+          || !scene.optString("coordinateFrame").equals("LOCAL_Y_UP_NEGATIVE_Z")
+          || !scene.getString("units").equals("METERS")) return false;
       JSONObject identity = scene.getJSONObject("identity");
       if (!keys(identity, set("definitionId", "versionId", "versionChecksum", "instanceId"), set("environment"))
           || !id(identity.opt("definitionId")) || !id(identity.opt("versionId"))

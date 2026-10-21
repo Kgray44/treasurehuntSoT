@@ -10,6 +10,7 @@ import {
   parseFilamentSceneProof,
   validateFilamentFramePng,
 } from "../../../src/landfall/device-lab/android-scene-rendering";
+import { parseAndroidNativeInputProof } from "../../../src/landfall/device-lab/android-native-input";
 
 type AdbTool = (args: string[], timeout?: number) => Promise<string>;
 const diagnosticByteLimit = 256 * 1024;
@@ -318,6 +319,7 @@ async function main() {
   let filamentStageCaptureSha256: string | null = null;
   let sensorPerformanceSha256: string | null = null;
   let sceneRenderingSha256: string | null = null;
+  let nativeInputSha256: string | null = null;
   const active = await adb(["shell", "ps", "-A", "-o", "NAME"]);
   if (active.split(/\r?\n/).some((name) => /^(com\.voyagewright\.landfall)(?:\.test)?(?::.*)?$/.test(name.trim())))
     throw new Error("LANDFALL_NATIVE_TEST_APP_ALREADY_ACTIVE");
@@ -439,6 +441,17 @@ async function main() {
       const sceneSerialized = JSON.stringify(sceneProof, null, 2);
       await writeFile(path.join(destination, "native-scene-rendering.json"), sceneSerialized);
       sceneRenderingSha256 = createHash("sha256").update(sceneSerialized).digest("hex");
+      stage = "NATIVE_INPUT_EXPORT";
+      const inputRaw = await adb([
+        "shell",
+        "run-as",
+        "com.voyagewright.landfall",
+        "cat",
+        "files/ncl01-native-input.json",
+      ]);
+      const inputSerialized = JSON.stringify(parseAndroidNativeInputProof(inputRaw), null, 2);
+      await writeFile(path.join(destination, "native-input.json"), inputSerialized);
+      nativeInputSha256 = createHash("sha256").update(inputSerialized).digest("hex");
     }
   } catch (error) {
     passed = false;
@@ -488,6 +501,7 @@ async function main() {
           testApkSha256,
           sensorPerformanceSha256,
           sceneRenderingSha256,
+          nativeInputSha256,
           cleanup: { result: cleanup ? "PASS" : "FAIL" },
         },
         null,

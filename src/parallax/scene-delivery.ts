@@ -13,6 +13,7 @@ import { spatialElementSchema } from "./element-contracts";
 import { environmentReferenceSchema } from "./environment-reference";
 import { studioContentSchema } from "./studio-contracts";
 import { adaptiveContentSchema } from "./adaptive-contracts";
+import { runtimePresentableEntityIds } from "./behavior";
 
 /** A delivery revision never changes the immutable authored Scene/checksum format. */
 export const sceneDeliveryCapabilities = ["WORLD_TRACKING", "PLANE_PLACEMENT", "MODEL_GLB"] as const;
@@ -124,11 +125,12 @@ export type SceneDelivery = z.infer<typeof sceneDeliverySchema>;
 
 export function sceneRequirements(version: SpatialVersion): string[] {
   const required = new Set<string>(["WORLD_TRACKING"]);
+  const presentable = runtimePresentableEntityIds(version);
   if (version.anchors.some((a) => a.kind === "SURFACE_RELATIVE")) required.add("PLANE_PLACEMENT");
   if (version.anchors.some((a) => a.kind === "DEVICE_RELATIVE")) required.add("DEVICE_RELATIVE");
   if (version.anchors.some((a) => a.kind === "FIXED_WORLDSPACE")) required.add("FIXED_WORLDSPACE");
   for (const e of version.entities) {
-    if (!e.element?.enabled) continue;
+    if (!presentable.has(e.id) || !e.element?.enabled) continue;
     if (e.element.kind === "PHYSICAL_ASSET") {
       required.add("MODEL_GLB");
       if (!(initialModelIds as readonly string[]).includes(e.element.modelId))
@@ -137,8 +139,9 @@ export function sceneRequirements(version: SpatialVersion): string[] {
     } else required.add(e.element.kind);
     if (e.element.playback) required.add("ELEMENT_TIMELINE");
   }
-  if (version.studio?.assets.length) required.add("IMPORTED_MEDIA");
-  if (version.studio?.behaviors.some((b) => b.action === "HIGHLIGHT")) required.add("HIGHLIGHT");
+  if (version.studio?.assets.some((a) => presentable.has(a.entityId))) required.add("IMPORTED_MEDIA");
+  if (version.studio?.behaviors.some((b) => b.action === "HIGHLIGHT" && presentable.has(b.targetEntityId)))
+    required.add("HIGHLIGHT");
   return [...required].sort();
 }
 export function supportsSceneDelivery(version: SpatialVersion, capabilities: readonly string[]) {
@@ -173,6 +176,7 @@ export function createSceneDelivery(input: {
   reducedMotion?: boolean;
 }): SceneDelivery {
   const v = input.version;
+  const presentable = runtimePresentableEntityIds(v);
   return sceneDeliverySchema.parse({
     schemaVersion: 2,
     transformKind: "RESOLVED_LOCAL_V1",
@@ -195,11 +199,12 @@ export function createSceneDelivery(input: {
       authoredTransform: e.transform,
       ...(e.parentEntityId ? { parentEntityId: e.parentEntityId } : {}),
       interactions: e.interactions,
-      visible: input.visibleEntityIds.includes(e.id) && (!e.element || e.element.enabled),
-      selectable: v.studio?.layers.find((l) => l.entityId === e.id)?.selectable !== false,
+      visible: presentable.has(e.id) && input.visibleEntityIds.includes(e.id),
+      selectable: presentable.has(e.id) && v.studio?.layers.find((l) => l.entityId === e.id)?.selectable !== false,
       opacity: 1,
-      ...(e.element ? { element: e.element } : {}),
-      ...(e.element?.enabled &&
+      ...(e.element ? { element: presentable.has(e.id) ? e.element : { ...e.element, enabled: false } } : {}),
+      ...(presentable.has(e.id) &&
+      e.element?.enabled &&
       e.element.kind === "PHYSICAL_ASSET" &&
       (initialModelIds as readonly string[]).includes(e.element.modelId)
         ? {

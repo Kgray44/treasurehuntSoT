@@ -53,6 +53,7 @@ not authorize restarting a completed phase.
 - [Parallax A1 agreed Studio interface](parallax-a1-studio-interface.md)
 - [Sextant Phase 3 owned implementation context](sextant-phase3.md)
 - [Parallax Phase 3 owned implementation and workstation correction context](parallax-phase3.md)
+- [NCL-01 autonomous completion context](ncl01-full-completion.md)
 
 - [Spatial baseline review and Crossdeck realtime context](spatial-review-crossdeck-realtime.md)
 - [Landfall Phase 4 closure context](landfall-phase4.md)

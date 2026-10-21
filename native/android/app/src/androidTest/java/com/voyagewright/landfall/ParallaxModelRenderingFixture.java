@@ -9,6 +9,8 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.view.TextureView;
 import android.view.ViewGroup;
+import android.view.Gravity;
+import android.widget.LinearLayout;
 import androidx.test.platform.app.InstrumentationRegistry;
 import com.google.android.filament.*;
 import com.google.android.filament.android.UiHelper;
@@ -49,18 +51,28 @@ final class ParallaxModelRenderingFixture {
   }
 
   static void run(Activity activity) throws Exception {
+    ParallaxNativeInputFixture.verifyLargeTextEscapeLayout(activity);
     AtomicReference<Dialog> dialog = new AtomicReference<>();
     AtomicReference<ParallaxModelRenderer> runtime = new AtomicReference<>();
+    AtomicReference<TextureView> target = new AtomicReference<>();
+    AtomicReference<LinearLayout> inputHost = new AtomicReference<>();
     JSONArray evidence = new JSONArray();
+    JSONArray inputEvidence = new JSONArray();
     Engine[] engine = new Engine[1];
     try {
       onMain(() -> {
         stage("SURFACE_CREATE_BEGIN");
         Dialog owned = new Dialog(activity, android.R.style.Theme_Material_NoActionBar_Fullscreen);
         dialog.set(owned);
-        TextureView surface = new TextureView(activity); surface.setOpaque(false);
-        owned.setContentView(surface, new ViewGroup.LayoutParams(256, 256));
-        owned.show(); owned.getWindow().setLayout(256, 256);
+        TextureView surface = new TextureView(activity); surface.setOpaque(false); target.set(surface);
+        LinearLayout presentation = new LinearLayout(activity); presentation.setOrientation(LinearLayout.VERTICAL);
+        presentation.setGravity(Gravity.CENTER_HORIZONTAL);
+        presentation.addView(surface, new LinearLayout.LayoutParams(256, 256));
+        LinearLayout controls = new LinearLayout(activity); controls.setOrientation(LinearLayout.VERTICAL);
+        inputHost.set(controls); presentation.addView(controls,
+            new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        owned.setContentView(presentation); owned.show();
+        owned.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         stage("SURFACE_CREATE_COMPLETE");
         stage("ENGINE_CREATE_BEGIN");
         runtime.set(new ParallaxModelRenderer(surface));
@@ -144,6 +156,10 @@ final class ParallaxModelRenderingFixture {
         stage("READBACK_COMPLETE:" + fixtureAsset);
         assertTrue("Actual Filament frame contains rasterized model geometry", visiblePixels > 32);
         result.put("renderedNontransparentPixels", visiblePixels).put("renderedFrame", renderedFrame);
+        stage("NATIVE_INPUT_BEGIN:" + fixtureAsset);
+        inputEvidence.put(ParallaxNativeInputFixture.run(activity, target.get(), inputHost.get(), runtime.get(),
+            renderedFrame, assetId, entityId, () -> draw(runtime.get(), entityId, dimensions, rootTransform)));
+        stage("NATIVE_INPUT_COMPLETE:" + fixtureAsset);
         onMain(() -> {
           stage("CLEAR_BEGIN:" + fixtureAsset);
           runtime.get().activate(Collections.emptyMap());
@@ -174,6 +190,13 @@ final class ParallaxModelRenderingFixture {
           .put("renderer", "FILAMENT_1_75_1_OPENGL").put("fixtureUsesCamera", false).put("fixtureCreatesARCoreSession", false)
           .put("physicalTrackingProven", false).put("engineDisposed", true).put("assets", evidence);
       Files.write(new java.io.File(activity.getFilesDir(), "ncl01-filament-catalog.json").toPath(), report.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
+      JSONObject inputReport = new JSONObject().put("schemaVersion", 1).put("evidenceClass", "INSTRUMENTED_NATIVE_INPUT_ONLY")
+          .put("fixtureUsesCamera", false).put("fixtureCreatesARCoreSession", false).put("physicalTrackingProven", false)
+          .put("canonicalOutcomeProven", false).put("inputMethod", "INSTRUMENTATION_SEND_POINTER_SYNC")
+          .put("largeTextEscapeLayoutVerified", true)
+          .put("intentBinding", "SYNTHETIC_SESSION_PRODUCTION_EVENT_FACTORY").put("assets", inputEvidence);
+      Files.write(new java.io.File(activity.getFilesDir(), "ncl01-native-input.json").toPath(),
+          inputReport.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8));
     } finally {
       onMain(() -> {
         stage("DISPOSE_FINALIZER_BEGIN");

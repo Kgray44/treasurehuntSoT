@@ -226,3 +226,26 @@ it("does not apply stale PLACE rollback or Guided fallback to a reopened epoch",
   expect(lens.read().anchors[anchor.id].version).toBe(1);
   expect(fresh.native.stop).not.toHaveBeenCalled();
 });
+
+it("retains only an exact runtime INSPECT receipt on deliberate Guided return and never reopens a closed Lens", async () => {
+  const provider = adapter(),
+    lens = runtime(moment([], true));
+  await lens.open(provider.native);
+  const receipt = await lens.interact("captains-note", "INSPECT", "accepted-inspect");
+  await lens.useGuidedView({ inspection: { ...receipt, actorId: "foreign-player" } });
+  expect(lens.read()).toMatchObject({ mode: "GUIDED", inspectedEntityId: null, selectedEntityId: null });
+  await lens.useGuidedView({ inspection: receipt });
+  expect(lens.read()).toMatchObject({
+    mode: "GUIDED",
+    inspectedEntityId: "captains-note",
+    selectedEntityId: "captains-note",
+  });
+  await lens.close();
+  await lens.useGuidedView({ inspection: receipt });
+  expect(lens.read()).toMatchObject({
+    state: "CLOSED",
+    inspectedEntityId: null,
+    selectedEntityId: null,
+    visibleEntityIds: [],
+  });
+});
