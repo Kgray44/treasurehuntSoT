@@ -8,6 +8,8 @@ last_reviewed: 2026-10-21
 
 # Reach Phase 1 automatic recovery continuation
 
+The later [moving-search safety investigation](Phase_1_Moving_Search_Safety_20261021.md) tests a distinct conditional association path. It demonstrates analytic recovery but rejects the candidate after an unsupported transplanted terminal becomes actionable. This report's earlier methods and immutable aggregates retain their original outcomes; no application improvement is claimed.
+
 **NO INTEGRATED RECOVERY GAIN; PHASE 1 NOT READY.** This continuation prioritizes automatic recovery with the existing MediaPipe observations. One private historical anatomical-material view bank passes its development controls but makes no change on the complete original recording. It is rejected without retuning. The application retains 504 measured positions, 416 readiness-eligible observations and seven logical identity replacements across 1,336 chronological observations. RIGHT remains 13/89.
 
 Subsequent fixed screens also fail to justify integration. Dense consecutive-image flow cannot uniquely distinguish the selected material at its first hop. A separate paired learned RGB tracker improves raw RIGHT circle compatibility from 0/11 to 2/11, but both arms mark all 11 positive references invisible and every native inference exceeds 150 ms. This limited raw localization gain does not fix automatic recovery. The original mixed-motion failure and all calibration acceptance requirements remain open.
