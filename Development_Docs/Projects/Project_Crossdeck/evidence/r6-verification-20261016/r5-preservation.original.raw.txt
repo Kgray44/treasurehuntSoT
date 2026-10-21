@@ -1,0 +1,1384 @@
+{
+  "classification": "EXACT_R5_ORIGINAL_ARCHIVE_COPIES_NO_RUNTIME_EXECUTION",
+  "status": "PASS",
+  "acceptedBase": "0abaf7fd37b6ee8185d522dcba2d1bf7133a1c09",
+  "recordDigest": "11b5fef74f3944ea6cb95b6afdb29c8ec125deda1e3a8a1ebbdc83014b70e787",
+  "candidateBeforeArchive": "2d564ff160015150b535919a44f023d84fd7331a",
+  "reference": "a9232900658a583785b33abbf081fffea98fd392",
+  "mediaFiles": 228,
+  "mediaBytes": 469472935,
+  "existingHistoryFiles": 177,
+  "packetFiles": 49,
+  "originalPathsRewritten": false,
+  "archiveRows": [
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1.png",
+      "blob": "c7846bb258e65d1656bd95defced0d8afb344a39",
+      "sha256": "694cd536cba7eaf400ef960bc84ace27cf70e6cdede1af6fb9ce1b5b2ca457ef"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3.png",
+      "blob": "1ea1c16551b21442d6726fb2055e6e7e6e22279c",
+      "sha256": "59f921134e7fdb3b92f7c0f96e199228a12e71456e28c0ff0840cca3e5c35cbd"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRAINING-7.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRAINING-7.png",
+      "blob": "b56c8b4110960180f864578d872a5990ed7c7aba",
+      "sha256": "647f06b90bf637231f3364898e8eee7577ed53b65196ad7ba5ef007f71be3d0d"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-PAUSED-9.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-PAUSED-9.png",
+      "blob": "3874d5bc48242fdd753312b3f1e0e36793cc36ff",
+      "sha256": "0f6f8de008d003269346d4ca86215d968300b0c3e6c95c742bf7029ec6a1f3b2"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-FIT_READY-28.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-FIT_READY-28.png",
+      "blob": "8e9049e7c65bfb6f8068e4d3ab6732b8ff3078d0",
+      "sha256": "1c5ffd0e2a77fb604bc54e6cb56c0931dd844333e12fa43db65f216288db9a14"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-VALIDATION-30.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-VALIDATION-30.png",
+      "blob": "e2e36bc413abd48d30bd3b780e3a3433627aa3cb",
+      "sha256": "c132e87cf313dd68aea69815826582c277aaeb21a3143c022f70043d848fd56c"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RESULTS-40.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RESULTS-40.png",
+      "blob": "e2959bafb6d2a5fee22c00ff38aa5962f3bcc759",
+      "sha256": "ebf1b4c4c628d813da94373b33223a3314d5f0e3ffd4d732d387e47207808c90"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-PLAYGROUND-42.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-PLAYGROUND-42.png",
+      "blob": "86c413982399db3bc064a81fac82da92449b19ba",
+      "sha256": "6093f7ff9b34ad0182db7b30bfc2c825fba2d9f2bcbd927528258354c86c59d1"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-MULTIPLE_HANDS-49.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-MULTIPLE_HANDS-49.png",
+      "blob": "3d5c68d6815c923b87623379adb34130fd2673c4",
+      "sha256": "8f0dda037dbdfc1d717f4640d3e2472758368e853c49d1566cbdc904dabfb4bf"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55.png",
+      "blob": "ad9afe7c89931f4864728d96ca26676d2ff5be5c",
+      "sha256": "11354353d25ea52a37e53e52cb05a728abd24d94feaa2277489c2ef12ec7a92c"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-57.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-57.png",
+      "blob": "589f449d9b9c173c0c0c610f0185352ecf2bc875",
+      "sha256": "7777cc33a66fe6296f853f440bf7dd2d0130badfd76ca2f02ebf37515ab00ffc"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL.trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL.trace.zip",
+      "blob": "2ea2ce499c5a6872c2ae0256d3b6a06783e547b3",
+      "sha256": "5cb83c5341d297925a6d1cfcb54ffcf71a2eeb59d9c760877a607925fdc08cd0"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/5c26bd17ef7316977d5baa004ca70702.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/5c26bd17ef7316977d5baa004ca70702.webm",
+      "blob": "12b3223f2eb1d46a9f9add45bc7d575aaae014e1",
+      "sha256": "db66450b4d44f853dcfbaeb759387902f9fe0909db2c075221acecaffa92a074"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-WELCOME-1.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-WELCOME-1.png",
+      "blob": "c7846bb258e65d1656bd95defced0d8afb344a39",
+      "sha256": "694cd536cba7eaf400ef960bc84ace27cf70e6cdede1af6fb9ce1b5b2ca457ef"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-TRACKING-3.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-TRACKING-3.png",
+      "blob": "d2c71b83d76476b23adc2c7ae890a1e4ddef4c00",
+      "sha256": "bcf9ef7dcf810c3abdc553ec2f68bf5f1045b826c6d77c38d230fa47fec6c4a3"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-TRAINING-7.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-TRAINING-7.png",
+      "blob": "b56c8b4110960180f864578d872a5990ed7c7aba",
+      "sha256": "647f06b90bf637231f3364898e8eee7577ed53b65196ad7ba5ef007f71be3d0d"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-PAUSED-9.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-PAUSED-9.png",
+      "blob": "380966cc54c06a9074a0fce7582a05d8da54ba84",
+      "sha256": "0517f04d289ae940853c5cdd6b2da74e8575d8964cdd00cc704c4e1b61a54123"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-FIT_READY-28.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-FIT_READY-28.png",
+      "blob": "7bf6c32f1f59a371c13de9f016aad84715a1ae8d",
+      "sha256": "382383c37b3e547008bd53cfb0de209ce5b223599c1313cf241f6ab64e240069"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-VALIDATION-30.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-VALIDATION-30.png",
+      "blob": "c20782754f418946d98725b642cf9d43265eb6d4",
+      "sha256": "6a9fb547d2592403dedc5c059631ff7ecfdda3c03b0b77c6a09fd6d82950718a"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-RESULTS-40.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-RESULTS-40.png",
+      "blob": "bcaee420a040e440cc888e6f44d7fee8660a6ea0",
+      "sha256": "8d42ef1d9d28d48be609642cfbe3e0aacee9a2f9015d00c2e218164306478d88"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-PLAYGROUND-42.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-PLAYGROUND-42.png",
+      "blob": "ef568d42710a60d250690704f56ff2eaa0a84d9c",
+      "sha256": "2bd723fb1a27bd0f9e9126b268906644f97c73813d327a3c9e0975d26814c25b"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-MULTIPLE_HANDS-49.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-MULTIPLE_HANDS-49.png",
+      "blob": "576b3e6999727eab367fa068cfb3faa9605d9e51",
+      "sha256": "119119621c0cde411e08e6fe40843e9c53b651fb4a06a39568985f4d919d42d5"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-DETECTED_INELIGIBLE-55.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-DETECTED_INELIGIBLE-55.png",
+      "blob": "c0b18fb737145068cf839e7580e90981cf2999df",
+      "sha256": "8e54338fa282a262d9eb3b9665b10a197dc47ab72a2ac93ad4b7571f21fdb9bc"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-57.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-57.png",
+      "blob": "801552ce25f4e393f67067c8a36dc2d989a29c37",
+      "sha256": "a1cd04095da94fdfc3a26d19f9329aacbc0a25febab523a2a25ae6152b159d9a"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED.trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED.trace.zip",
+      "blob": "b15860cff008d50a96228f778ba5596595f93f01",
+      "sha256": "3b34ae9c8f893bf8564947c5fd819a2ed082204fb022f7592d38de697676997a"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/89a8ff382eb3897baa503813d6a00d74.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/89a8ff382eb3897baa503813d6a00d74.webm",
+      "blob": "fb9c1ae64391a91e80fa539ebd628f3bbb623ae9",
+      "sha256": "ddb32f9914eca2990c66be1c9edd317b543cc0da9ed4dc0781d0b288270278ec"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1.png",
+      "blob": "c7846bb258e65d1656bd95defced0d8afb344a39",
+      "sha256": "694cd536cba7eaf400ef960bc84ace27cf70e6cdede1af6fb9ce1b5b2ca457ef"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3.png",
+      "blob": "d2c71b83d76476b23adc2c7ae890a1e4ddef4c00",
+      "sha256": "bcf9ef7dcf810c3abdc553ec2f68bf5f1045b826c6d77c38d230fa47fec6c4a3"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_TRAINING-5.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_TRAINING-5.png",
+      "blob": "44bf8062075681616b5e6bf051c5d7125c794062",
+      "sha256": "589cd8bfdc74b2fa8d0804e9e75f2f75c895e5c2fc0e11c1df4cff772bf13a20"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_VALIDATION-17.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_VALIDATION-17.png",
+      "blob": "322899473f03d6363ad6d0f78261dc02ed86a964",
+      "sha256": "f5ca1c71395223c930cee09e97c0f8c8834c74109df926743f0ad580bab8ca7f"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_RESULTS-27.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_RESULTS-27.png",
+      "blob": "df385f468c179691365d8b24582c2993663f6055",
+      "sha256": "ba109baf6141f2b63505e0f8e147a2ce4ddde66459037ed9e763e275a168107d"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RETURNED-31.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RETURNED-31.png",
+      "blob": "589f449d9b9c173c0c0c610f0185352ecf2bc875",
+      "sha256": "7777cc33a66fe6296f853f440bf7dd2d0130badfd76ca2f02ebf37515ab00ffc"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL.trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL.trace.zip",
+      "blob": "eb67e9f9ff250445452b93157359ba1338044bc8",
+      "sha256": "36176a405c2c44a99bef426c0c12855c196e3cc4663a7deff67b7f1295294435"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/b331d5bf8f0e30b5751489e491cab68a.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/b331d5bf8f0e30b5751489e491cab68a.webm",
+      "blob": "2cad027d98f185ffd27f8c202683c7e796fbb3b1",
+      "sha256": "224137f1c82ca0ae948ef41dcb8ba2a9655e1d45371906a3ce011e7047632f37"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-WELCOME-1.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-WELCOME-1.png",
+      "blob": "c7846bb258e65d1656bd95defced0d8afb344a39",
+      "sha256": "694cd536cba7eaf400ef960bc84ace27cf70e6cdede1af6fb9ce1b5b2ca457ef"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-TRACKING-3.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-TRACKING-3.png",
+      "blob": "d2c71b83d76476b23adc2c7ae890a1e4ddef4c00",
+      "sha256": "bcf9ef7dcf810c3abdc553ec2f68bf5f1045b826c6d77c38d230fa47fec6c4a3"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-RELATIVE_TRAINING-5.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-RELATIVE_TRAINING-5.png",
+      "blob": "44bf8062075681616b5e6bf051c5d7125c794062",
+      "sha256": "589cd8bfdc74b2fa8d0804e9e75f2f75c895e5c2fc0e11c1df4cff772bf13a20"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-RELATIVE_VALIDATION-17.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-RELATIVE_VALIDATION-17.png",
+      "blob": "7e4df9850c8158874edf344f975d2e5a068ec7bb",
+      "sha256": "29048e71c08e2f1fad90642cd71181e390f07a4fe6162403f68dda2d6a545daa"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-RELATIVE_RESULTS-27.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-RELATIVE_RESULTS-27.png",
+      "blob": "e3e42fc34f8f6fd2853cc97a0990db9daeee49a9",
+      "sha256": "fd034a488da6149c5687dc7fd4121c869d2bd5fc9bbbf2ed8cd4393e9280acbb"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-RETURNED-31.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-RETURNED-31.png",
+      "blob": "589f449d9b9c173c0c0c610f0185352ecf2bc875",
+      "sha256": "7777cc33a66fe6296f853f440bf7dd2d0130badfd76ca2f02ebf37515ab00ffc"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED.trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED.trace.zip",
+      "blob": "ec9a13df01a7f42317efe225d9c1495696a3068f",
+      "sha256": "1677b451f8ffaf602e83cab678779ca2049aaa73d149b43e6c8a6749945ce421"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/cc00683f81b5c6d3b950189c3a188cc3.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/cc00683f81b5c6d3b950189c3a188cc3.webm",
+      "blob": "c8908bd181abe879fe288040c2351393cebfb337",
+      "sha256": "a53654bcb7535c8df51e662dd3399d313836582e50eb7bf75d96d53357b24350"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1.png",
+      "blob": "c7846bb258e65d1656bd95defced0d8afb344a39",
+      "sha256": "694cd536cba7eaf400ef960bc84ace27cf70e6cdede1af6fb9ce1b5b2ca457ef"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-CAMERA_UNAVAILABLE-3.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-CAMERA_UNAVAILABLE-3.png",
+      "blob": "1363e3b9d1f7db024ea0f27c32271c1685110c38",
+      "sha256": "5d9dfffa801a8cd08766bb0510effdfea79cbf30164ea81b27ff7bd4287a8e95"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-TRACKING-5.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-TRACKING-5.png",
+      "blob": "d2c71b83d76476b23adc2c7ae890a1e4ddef4c00",
+      "sha256": "bcf9ef7dcf810c3abdc553ec2f68bf5f1045b826c6d77c38d230fa47fec6c4a3"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-7.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-7.png",
+      "blob": "589f449d9b9c173c0c0c610f0185352ecf2bc875",
+      "sha256": "7777cc33a66fe6296f853f440bf7dd2d0130badfd76ca2f02ebf37515ab00ffc"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL.trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL.trace.zip",
+      "blob": "93c330b491e450d5a13e72e770f16c88f3a89e27",
+      "sha256": "39fef113c41bd5d8f75a5b1e7eb6a775dec14c30f5371d289aab5f2537bc169e"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/48d2d26a9dc36afaab6d4917b7537952.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/48d2d26a9dc36afaab6d4917b7537952.webm",
+      "blob": "08aacc33591e880126995b34a97df60ce37edb19",
+      "sha256": "74a3c1f07d9aa765bb576d2aaf26e6e1d0df0e49c6917d7b897bd58dcf02d4ba"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-WELCOME-1.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-WELCOME-1.png",
+      "blob": "c7846bb258e65d1656bd95defced0d8afb344a39",
+      "sha256": "694cd536cba7eaf400ef960bc84ace27cf70e6cdede1af6fb9ce1b5b2ca457ef"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-CAMERA_UNAVAILABLE-3.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-CAMERA_UNAVAILABLE-3.png",
+      "blob": "1363e3b9d1f7db024ea0f27c32271c1685110c38",
+      "sha256": "5d9dfffa801a8cd08766bb0510effdfea79cbf30164ea81b27ff7bd4287a8e95"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-TRACKING-5.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-TRACKING-5.png",
+      "blob": "04351a34343588255cbc83dd16c92d378ee55136",
+      "sha256": "3f4986578f36521bfbad66f7d7612a19d3a224fdb78050c9b54e2b1b61810bc4"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-7.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-7.png",
+      "blob": "589f449d9b9c173c0c0c610f0185352ecf2bc875",
+      "sha256": "7777cc33a66fe6296f853f440bf7dd2d0130badfd76ca2f02ebf37515ab00ffc"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED.trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED.trace.zip",
+      "blob": "9e975d2840c7ba955d47077bb19a1b8fa08dc7eb",
+      "sha256": "4569c57ae95768a86fecc77cfa58367404f502a6f575dd47886796c2cd9769a7"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/88c204555a33b91b34e167502290b2c7.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/88c204555a33b91b34e167502290b2c7.webm",
+      "blob": "ffe72bf6da56cebac2ce8af37a9b55a206792ed6",
+      "sha256": "34e1120adcfa9c09f4780990788f2aaefce82006dfb50029109fba7e2d0f4e75"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-WELCOME-1.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-WELCOME-1.png",
+      "blob": "92d4b99cb9213502e5a605ff0ae6e14b17bbc93b",
+      "sha256": "9139e3dd51054ac1d420823db33650c3d76ba8d97a615019ca0b664229d950c5"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-TRACKING-3.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-TRACKING-3.png",
+      "blob": "6e7953606a24482784acc141fd822adacb66b5c0",
+      "sha256": "2c2ec2286f00bb7b856e35658c435dacea3ff3f84f3df48eb5fd839091f6715b"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-TRAINING-7.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-TRAINING-7.png",
+      "blob": "1533de38fffc03314fd6541980a50a4b047ecfa3",
+      "sha256": "9b55fcccc12c052a8b0f1875b0b15bbeec26c723430d4a55bd5a055a227d88be"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-PAUSED-9.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-PAUSED-9.png",
+      "blob": "d051e152f719452a9518fafa406b86d701b37ca4",
+      "sha256": "cf1f4d4c083a744d66b2f9c2f815b25935015cbe8d4dd09d36ca49709b60e6b2"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-FIT_READY-28.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-FIT_READY-28.png",
+      "blob": "9256a642b0b88bb01f2b5491e94ba386ed098e05",
+      "sha256": "939fed13f03105ce5bb99458bbc52a26c9056612acd3a02a8cd961513c0d5406"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-VALIDATION-30.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-VALIDATION-30.png",
+      "blob": "b9046d5b66416a683efc6a1ab75265a16c174a60",
+      "sha256": "5805a69806b26ac0040ef66b7aafc9f9bb095cf4559ebb518d73d5beaf807007"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RESULTS-40.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RESULTS-40.png",
+      "blob": "df4436230a3ba1d866e3403f1355e4b6af0ef679",
+      "sha256": "93ef1b7ecd7249f0a4525244652624811bac080577320dbdf419ccfd5f434577"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-PLAYGROUND-42.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-PLAYGROUND-42.png",
+      "blob": "cfc80408bebe3a2bc4f9e5faed2d038031182e9a",
+      "sha256": "05dbef433a48a776833c491d01239016777c5151f378ff29f6674a96524eadc5"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-MULTIPLE_HANDS-49.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-MULTIPLE_HANDS-49.png",
+      "blob": "16def0e19d27275d9c1497fd11aab79b22cd3287",
+      "sha256": "1f5774c206a22ad981023550c2999aa1cf769253eda9e95c9f0076523a2d6033"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55.png",
+      "blob": "4cb1e8d7a5f4bc90e6fcb00bf0c8f3a2cd0386ff",
+      "sha256": "cddc281748e26b819c25d0d1e546909896186b804c68f503169f28b6a0216b48"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-57.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-57.png",
+      "blob": "45975865f68d2aa1d540c9f6589edea8243f80e6",
+      "sha256": "da163b02af66f57c216d96d28b4f27d779d4fa273800792aae05fc2aa5b0b9fc"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL.trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL.trace.zip",
+      "blob": "c9d18c0af42ef7152ff6b0624ad53601babb13d3",
+      "sha256": "05bfd49078aa7f2f66a2a79b2641612af1e922766e1c41cfc104638984d890e7"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/0ed8cb9613959366398a5175bcaa43b7.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/0ed8cb9613959366398a5175bcaa43b7.webm",
+      "blob": "823edd8e9b4ff334f7de7a4f214d10cee629a5fd",
+      "sha256": "68cd16b5aa824dcc54a3e9ffd6f889f24b5fbfec20c211c8cdde9da57bd53dde"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-WELCOME-1.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-WELCOME-1.png",
+      "blob": "d3d1ce0c78869fe1c9b72211d5b776f6d241a839",
+      "sha256": "f131ab87ca5333448159f7ecaefadc3be17e73c3a93586bd80a3e4ae7450af96"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-TRACKING-3.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-TRACKING-3.png",
+      "blob": "7b5cba4632726fec3e9bb500a50ae3f62842e6a0",
+      "sha256": "1f08009e2a6954e4c2cf39fb4a370ab81417bebcfbbb47d5f283220634c66e7a"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-TRAINING-7.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-TRAINING-7.png",
+      "blob": "1533de38fffc03314fd6541980a50a4b047ecfa3",
+      "sha256": "9b55fcccc12c052a8b0f1875b0b15bbeec26c723430d4a55bd5a055a227d88be"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-PAUSED-9.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-PAUSED-9.png",
+      "blob": "4dd769b44054aaa1bb12ad81d861da156d25eaeb",
+      "sha256": "80d5a44eeeda16227363f516f6499d9025d9caeaab2cbedfc6ee630f879f1573"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-FIT_READY-28.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-FIT_READY-28.png",
+      "blob": "9256a642b0b88bb01f2b5491e94ba386ed098e05",
+      "sha256": "939fed13f03105ce5bb99458bbc52a26c9056612acd3a02a8cd961513c0d5406"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-VALIDATION-30.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-VALIDATION-30.png",
+      "blob": "58b6881b26e018e3003fefae56de4ab96894497e",
+      "sha256": "6665ec91bb38e3c2e6fd46bc6cfe03a3868005b5e7ef580654cb57fb3f598dcd"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-RESULTS-40.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-RESULTS-40.png",
+      "blob": "9dfa219a24a339ae6e3ce6e7737c42167aafc07e",
+      "sha256": "bf1d733c709c5320b0feeff08ef4fb5a30d769d22474bf3cf5a5b03b1963ea64"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-PLAYGROUND-42.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-PLAYGROUND-42.png",
+      "blob": "001082e5e0c6fcf29a0231b03683f628c18bd7c6",
+      "sha256": "dd1143b0ec28c6aefb023702255a09a788054cf9c24f5375efe61edac4bf88f6"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-MULTIPLE_HANDS-49.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-MULTIPLE_HANDS-49.png",
+      "blob": "0facc4901351a114aba58851b4a0d77c0258c25e",
+      "sha256": "e09231898179c24b21554ba0e5ae8a972ec842e178a63057c22af59f11222799"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-DETECTED_INELIGIBLE-55.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-DETECTED_INELIGIBLE-55.png",
+      "blob": "2b3f09b6dbb1867dcacac19e466baeac431bb716",
+      "sha256": "185ef5bf80f0dc2f46ef2679d053bea946054c89009127eaeb22d8758a4cbfdb"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-57.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-57.png",
+      "blob": "5b2a78bb10fbedf7d143bea9739b52c24e3cc940",
+      "sha256": "beccde3cdeba18b42c413fd111c0247549ffc486e39adfc95fdefd9f9a5742f4"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED.trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED.trace.zip",
+      "blob": "275e093692db98339effe1dc57407aa738aa943c",
+      "sha256": "35e7b3f47aa820bb3d38fded8f267f0bc59b90443707e9e7b7f97101e08e3bc4"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/83b0f5059e51e5122356cb39a380e69b.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/83b0f5059e51e5122356cb39a380e69b.webm",
+      "blob": "3e8ebc2e494ab0a93d925607437ce4f9d3c9405f",
+      "sha256": "2fabda7244f7b2cafe59c4349f9598e452261cdef9b989a21527185c270c0223"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-WELCOME-1.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-WELCOME-1.png",
+      "blob": "92d4b99cb9213502e5a605ff0ae6e14b17bbc93b",
+      "sha256": "9139e3dd51054ac1d420823db33650c3d76ba8d97a615019ca0b664229d950c5"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-TRACKING-3.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-TRACKING-3.png",
+      "blob": "6e7953606a24482784acc141fd822adacb66b5c0",
+      "sha256": "2c2ec2286f00bb7b856e35658c435dacea3ff3f84f3df48eb5fd839091f6715b"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RELATIVE_TRAINING-5.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RELATIVE_TRAINING-5.png",
+      "blob": "52c483de409f0141b9e6ac16f4fd8ee1df5b034f",
+      "sha256": "ab69bcfae46a6f574d340151965fc86588509cb1007844c29bd5519ed0986d2e"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RELATIVE_VALIDATION-17.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RELATIVE_VALIDATION-17.png",
+      "blob": "ff6193bab5b6fce33789e2502a123796a4beeff4",
+      "sha256": "bb0a05f73ebe17b3a1a5216ec61343b6370165df59cd432b900a5472a45459f4"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RELATIVE_RESULTS-27.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RELATIVE_RESULTS-27.png",
+      "blob": "c51b030fdce82a9a470b3804719e3ea59398e17f",
+      "sha256": "989bdcb1ce94c127ec29d57d4b00701e54b14ebf02fd8dd6292c237faf9c8749"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RETURNED-31.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RETURNED-31.png",
+      "blob": "5b2a78bb10fbedf7d143bea9739b52c24e3cc940",
+      "sha256": "beccde3cdeba18b42c413fd111c0247549ffc486e39adfc95fdefd9f9a5742f4"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL.trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL.trace.zip",
+      "blob": "3b225b24ec432c390f7ceea722d13c32dcc748c3",
+      "sha256": "0fd13a19bc203668d20e12781f10fd16c17c0b78b786327e5c441f270ab57e43"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/31752d2ae870f466d57956f9defc204e.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/31752d2ae870f466d57956f9defc204e.webm",
+      "blob": "83473fdfc435539bf077dd85342ae820a08d5cb6",
+      "sha256": "c2d3467fbb1cbfe1d79436ffa426077e0f8cba25eb81f0acb9618cf83723dafc"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-WELCOME-1.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-WELCOME-1.png",
+      "blob": "d3d1ce0c78869fe1c9b72211d5b776f6d241a839",
+      "sha256": "f131ab87ca5333448159f7ecaefadc3be17e73c3a93586bd80a3e4ae7450af96"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-TRACKING-3.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-TRACKING-3.png",
+      "blob": "7b5cba4632726fec3e9bb500a50ae3f62842e6a0",
+      "sha256": "1f08009e2a6954e4c2cf39fb4a370ab81417bebcfbbb47d5f283220634c66e7a"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RELATIVE_TRAINING-5.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RELATIVE_TRAINING-5.png",
+      "blob": "52c483de409f0141b9e6ac16f4fd8ee1df5b034f",
+      "sha256": "ab69bcfae46a6f574d340151965fc86588509cb1007844c29bd5519ed0986d2e"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RELATIVE_VALIDATION-17.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RELATIVE_VALIDATION-17.png",
+      "blob": "f184f8fcc3c1abe46d77f0241ee7ec5f59c93c12",
+      "sha256": "7406d247d5a533d876a8bb9bd443a6bbb171c8e2e5004d5691345924def882c1"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RELATIVE_RESULTS-27.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RELATIVE_RESULTS-27.png",
+      "blob": "d30102851cdf7faebe2ce1692b85038e1fc34753",
+      "sha256": "68f640ae4fead9692a03a84433613c1cc7fdeb7890c3f9ccf79af4936762d480"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RETURNED-31.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RETURNED-31.png",
+      "blob": "5b2a78bb10fbedf7d143bea9739b52c24e3cc940",
+      "sha256": "beccde3cdeba18b42c413fd111c0247549ffc486e39adfc95fdefd9f9a5742f4"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED.trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED.trace.zip",
+      "blob": "5621dd65a7daa432fbc566d5967438b285317229",
+      "sha256": "c4bc145cef37894584765f344304fa113a94cefd02551a92b7ab978f55c3ef05"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/247d157c090afe9ff24e6ee6234cb6e8.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/247d157c090afe9ff24e6ee6234cb6e8.webm",
+      "blob": "85c5b60d6ccf2419ade1024d96d97d45b43eca17",
+      "sha256": "df857ad406e8029874152bea86fae812753e28311c1f29246a247ae8f017e07f"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-WELCOME-1.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-WELCOME-1.png",
+      "blob": "92d4b99cb9213502e5a605ff0ae6e14b17bbc93b",
+      "sha256": "9139e3dd51054ac1d420823db33650c3d76ba8d97a615019ca0b664229d950c5"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-CAMERA_UNAVAILABLE-3.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-CAMERA_UNAVAILABLE-3.png",
+      "blob": "9368cb50436846773870bd6c5fec9fd1b14f4911",
+      "sha256": "589f796ed041e20aecb7732f8b16586b1fc72fc1c41eadccafaea1fd2384dc96"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-TRACKING-5.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-TRACKING-5.png",
+      "blob": "8f208f609316620c607e3d1a7a8638f63de119a2",
+      "sha256": "77567ec65a26278a8fa8a153cdbaa4b520f4217dbdb9636440b660bc97117484"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-7.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-7.png",
+      "blob": "5b2a78bb10fbedf7d143bea9739b52c24e3cc940",
+      "sha256": "beccde3cdeba18b42c413fd111c0247549ffc486e39adfc95fdefd9f9a5742f4"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL.trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL.trace.zip",
+      "blob": "06b41099cb892cfaf3d2770194f0cd6452e45a3f",
+      "sha256": "21d953f3b15a44a30bfa7b19631e80844e6ecfeb94b856e9b1ed110ac17e3bbe"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/4ef96b06c2c5d3be84200646d74a8470.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/4ef96b06c2c5d3be84200646d74a8470.webm",
+      "blob": "b569c6fbe4d633c2d1cda824007e66c19fc07b92",
+      "sha256": "a7b8717cca3079f0447538129dde006d97f3de807d8fa2a2090c6f3412f0dd84"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-WELCOME-1.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-WELCOME-1.png",
+      "blob": "d3d1ce0c78869fe1c9b72211d5b776f6d241a839",
+      "sha256": "f131ab87ca5333448159f7ecaefadc3be17e73c3a93586bd80a3e4ae7450af96"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-CAMERA_UNAVAILABLE-3.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-CAMERA_UNAVAILABLE-3.png",
+      "blob": "cdf941619c21b5f34a236b211c43b9c5d58deac9",
+      "sha256": "510036802005b1667cb2dac5c8e39333d191a50843da50d4561bd5819855e3d1"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-TRACKING-5.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-TRACKING-5.png",
+      "blob": "8f208f609316620c607e3d1a7a8638f63de119a2",
+      "sha256": "77567ec65a26278a8fa8a153cdbaa4b520f4217dbdb9636440b660bc97117484"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-7.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-7.png",
+      "blob": "5b2a78bb10fbedf7d143bea9739b52c24e3cc940",
+      "sha256": "beccde3cdeba18b42c413fd111c0247549ffc486e39adfc95fdefd9f9a5742f4"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED.trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED.trace.zip",
+      "blob": "13aaa0a704770526433d5de8726968145e82fd51",
+      "sha256": "1dbf345a450a1c0bf3295f9c382ffe1e1ad1a155a80587d6edb61586a248929e"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/f134570392d8898a8fefb48d79a37753.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/f134570392d8898a8fefb48d79a37753.webm",
+      "blob": "cde7451f78b8d379af2ad7cd2527422422ed5505",
+      "sha256": "f45232f93441a34ef031565bbfebea19294bc2f41982761cea2d73e749ae4275"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0.png",
+      "blob": "6d38958b8e0cdd6ed1c2947883f04f30d0a7cdee",
+      "sha256": "a74dfda70ec8a0a325b2a0204197c1961ab0dba587c7a5bbc7d4ec44d79f6c88"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3.png",
+      "blob": "c847c36d348914337b8d9a5f4f947b20eaef70dd",
+      "sha256": "1d4316086e1b96bfd1c9d6c77eb5a0d1a395acaa4efe5ae7ade1b8ea09c35f1f"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-INSPECTED-6.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-INSPECTED-6.png",
+      "blob": "c6e89793fc04e563bb40d9c2005840dbd05f303d",
+      "sha256": "3ab1f819f4cb408e1b0290fe5ee319426bbf07282d6a25716ca6b6ec0dd31acf"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-RETURNED-8.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-RETURNED-8.png",
+      "blob": "f6c06a51f32e97ced860e23c7e8c30cc77b9407d",
+      "sha256": "8e6cd085cfe4ef68dbe6981f540b30aa266b95f39cd1d5b08d154abd63de6639"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL.trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL.trace.zip",
+      "blob": "b513f959bff8342795cfbadde82917f2a59febb3",
+      "sha256": "97b7c92443f1cf625c0819ab16f4d69a329a4fee4ebeff1c50dd32f6959466a3"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/94a76ec512699b3b7f051bdbbbb2c511.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/94a76ec512699b3b7f051bdbbbb2c511.webm",
+      "blob": "033fbde7419e23a928d808134da3d6d2efb2254c",
+      "sha256": "4465f73641cd9e07f145553e3b10f4316506513621fac565d80c436d74491bcb"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-JOURNAL_READY-0.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-JOURNAL_READY-0.png",
+      "blob": "885f7247185f1b1b3070e2398e5ba9657c1312dc",
+      "sha256": "75af474bda97fd26ab739a19f8b6352627198957500980a03ccb70f8c21c7d28"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-LENS_READY-3.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-LENS_READY-3.png",
+      "blob": "1236a3a5b8cd4ee40c5a9e1ad55be5daf21e7961",
+      "sha256": "8e826a297078acc3c8f6d3cc31b087989d83346eb55dd00deeedd0fdace05b66"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-INSPECTED-6.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-INSPECTED-6.png",
+      "blob": "3c944af3d99c17396c9eeca6e273646984250aba",
+      "sha256": "1240c7cc87a703389aad86fde17efa2bc2a2990a4e73b27af39e7c46063c203d"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-RETURNED-8.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-RETURNED-8.png",
+      "blob": "a942f390cbd3e045fb6fe682c47c58d0c5b5eee5",
+      "sha256": "3192e94b3a096f941b7ef7508b54b5b2f25629906d89887dc88509642a70148a"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED.trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED.trace.zip",
+      "blob": "12eacfa5a0eb78b7c2a08ca16003e8c582a7f666",
+      "sha256": "69df02b5748bcfed10269254878ffbd66ebae23c0c7a0a6f2f9741af516b384f"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/239bd7d830bf327f81b1c715a5bd6acb.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/239bd7d830bf327f81b1c715a5bd6acb.webm",
+      "blob": "b98784abae2255ed8c818a555b4869a4e1419a54",
+      "sha256": "1a6e1b5cd6cedef64bfe06547e8d175c46bdf4ead68d54ead048ad5965de161f"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0.png",
+      "blob": "3e857076f139625e4c3bfd1059348398e19e1557",
+      "sha256": "27e06c20382e0a54f26f295ee7fdda5a53cf3a8dbdcf4593941549faf85110fd"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-LENS_READY-3.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-LENS_READY-3.png",
+      "blob": "8f740d1f9251bfbfa82db70cf9f5a1effe10b378",
+      "sha256": "9ebdcb97ae994cd43190e75e9d346d958013aada00a7c4ffe16e06108ab41f17"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-INSPECTED-6.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-INSPECTED-6.png",
+      "blob": "996253d3e91213586c7a5030f32fc061f6a4b637",
+      "sha256": "c6ae559a056fc149bc7082646fa0833e200d0c517b390204bde6204dbf1d27ca"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-RETURNED-8.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-RETURNED-8.png",
+      "blob": "91aa96ba80b4d5056ce2cf8b842bf20d87f7cb13",
+      "sha256": "1a8d11b2f3789ac9c33432321704b1cf744f5fc8221410b2d88f51a9feca8822"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL.trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL.trace.zip",
+      "blob": "6d3c025c3da7b169916f86898fa48adea3d6b488",
+      "sha256": "efe7148dd657f02051c0d2663af91adbc12a9fa6bbfe917cd97ff5b0973a9dd1"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/ae0e223872e16f3d020f2eb3290eaf92.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/ae0e223872e16f3d020f2eb3290eaf92.webm",
+      "blob": "69af68856867a8ea4c60952e800a6afddaac7c10",
+      "sha256": "9b9da697437989bc7f9d32c8529c3eac2009410adf098ab43c7405cf2a493d1d"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-JOURNAL_READY-0.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-JOURNAL_READY-0.png",
+      "blob": "9b5236b3f74d97fd9d7d5846a067a94d577a0c2f",
+      "sha256": "249c0556902e1309c94818f69e6ae4a1442c5f7cd31d7184079cbfbf3074928c"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-LENS_READY-3.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-LENS_READY-3.png",
+      "blob": "ecca63ef6286116d599f8b75cdbfc3de40f2fab4",
+      "sha256": "d38aa8e8ac2e24c7313222647e1f012b9e5f9db6515eb3dbb14235dd287dbe33"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-INSPECTED-6.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-INSPECTED-6.png",
+      "blob": "003cb48ec94121b63313683bf3508412ea866ef1",
+      "sha256": "2dda033173165d435506347e2c2dbbbbbbd661024aebc63e8f3cee52eefb90eb"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-RETURNED-8.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-RETURNED-8.png",
+      "blob": "ce469d82768b53c6e1728776e5a966f56f408774",
+      "sha256": "a663a7404ea1deb2cb5916b405261d5fcbe4327e8a0dd131b38402b1471d72b1"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED.trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED.trace.zip",
+      "blob": "1971fc0a3a109f982170516ae19fe28bca17a217",
+      "sha256": "5aa6177ff09c9a2d330de6e9b99e4c982e59cff009f6dd54d1d7ab2b9c299924"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/1fc4d7a5ab91308df8ef9e9ad526f2ef.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/1fc4d7a5ab91308df8ef9e9ad526f2ef.webm",
+      "blob": "1ca31bbb78838bc2a6cfce455bb43e31df8333b4",
+      "sha256": "127ab258ed1bbef19aef26a7446213478320fdcfd5db80df0282c79dc74d3998"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0.png",
+      "blob": "6d38958b8e0cdd6ed1c2947883f04f30d0a7cdee",
+      "sha256": "a74dfda70ec8a0a325b2a0204197c1961ab0dba587c7a5bbc7d4ec44d79f6c88"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-CONNECT_READY-3.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-CONNECT_READY-3.png",
+      "blob": "ab9c901e733970ef4f110ade8e8feb9090169765",
+      "sha256": "fa8679d7e5611ce6588fa1c715fe10a35e22bea195c3f3cc1e1b4ded29174e8a"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-RETURNED-5.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-RETURNED-5.png",
+      "blob": "bbf448d41dcd983fc62fbf4e09c945bc65eecadb",
+      "sha256": "2966175b259b576922a8ff5bc9fd331702bd23175c880a7500f70ee7e02c29dc"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL.trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL.trace.zip",
+      "blob": "2dfffd5c65ba924c51a9fb3bf7b7d799924e2ba3",
+      "sha256": "7e50be956265ee1a2e55e45455dd7486793c081dccc82b0c19a8bb72cdf2de00"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/f2918c677804af3f7f8d28f199cdb4f2.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/f2918c677804af3f7f8d28f199cdb4f2.webm",
+      "blob": "8f72a1f1d5dbbd6183069e4d7925d291be55239d",
+      "sha256": "de6d5d47f8adb78cd0f682aed7c388f31441e5bdb08485f716ef14f75890eac4"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-JOURNAL_READY-0.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-JOURNAL_READY-0.png",
+      "blob": "c3fb175cc52053f307a0dacc2f0c68a4bf88539e",
+      "sha256": "acc293e4119b581fab5764fa703b3b7a45bb2c6db1a91fe8a1ad85f0fcc0ab92"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-CONNECT_READY-3.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-CONNECT_READY-3.png",
+      "blob": "036216160a90d48d0cd9a0c1060e562690555444",
+      "sha256": "046ebec4e18ff5b3a7889e70252a40ffb1df7fafe7d5a28e72ef72ecf8149422"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-RETURNED-5.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-RETURNED-5.png",
+      "blob": "2e178bf234d59e3b08f12d3f58b0226f14da496b",
+      "sha256": "ff49f3504579cfad9a8e36c778cf06809ea36fff26b58508aaf8cd218cc2afaa"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED.trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED.trace.zip",
+      "blob": "c8b2f2c14589e5419245bd3882a71a9de3a31c3b",
+      "sha256": "016f7f1be8f06e07453f2db2609c14d2dd08ecf36711f9bf745bca82329adf55"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/989e3f60e8a71fe1301ecece9869ef08.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/989e3f60e8a71fe1301ecece9869ef08.webm",
+      "blob": "d3c94d212eed087e2c40a1750f220c5e8cd30a7a",
+      "sha256": "a6c77502c345a005d12221c4e73103a56182122100c5764e02ece24e6985c52a"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0.png",
+      "blob": "e7503892125f5ecbfb2f93a3679f17e19b090a8e",
+      "sha256": "51de28528d4461c35f421d463963ef2fd09da82d34de38c58ba5003eb04ecbf6"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-CONNECT_READY-3.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-CONNECT_READY-3.png",
+      "blob": "65bc6b3ada66f1e39ae5ad3e2196b2aaa7e2ad17",
+      "sha256": "58b26bfc69100f38d195588d906bee365ab9d7f4d39f2a8f092f069788c35c55"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-RETURNED-5.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-RETURNED-5.png",
+      "blob": "83574f8475d2e3f8af12bf4f21820a1c7a4eba1b",
+      "sha256": "923dcf928024b0c286115df60166e429081ae5910bd6813b8fa3c656c0916e70"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL.trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL.trace.zip",
+      "blob": "d5b6f69ebca249584456294e4c569df2a14541d4",
+      "sha256": "fca1f66fd518e8e1157f201414af5fcf4e741eb6cb67b17d96ab8cd5cfe1c35a"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/4ea997a2d9fc9e49adec59d9fd97fdd3.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/4ea997a2d9fc9e49adec59d9fd97fdd3.webm",
+      "blob": "eaaf5146842196a7a02f5eb6defad45ba73e99fd",
+      "sha256": "c15a1b4fe758d6b168092979337d23fe6620a5eb7b60227b1749822bd5f5d1f2"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-JOURNAL_READY-0.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-JOURNAL_READY-0.png",
+      "blob": "efade859055e0c6fb15492cd3baa864304988d05",
+      "sha256": "47e565db291442f6095303c690865684319d577fc7f2405cf01ae595d03fdd86"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-CONNECT_READY-3.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-CONNECT_READY-3.png",
+      "blob": "18aed8fc263775a24da3763caf6c29d8bad59e26",
+      "sha256": "fdbf85928dd4a3f693831dd07cfae43ec0771ac8de39ffc0fa60d21d3ea37dff"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-RETURNED-5.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-RETURNED-5.png",
+      "blob": "e713ff92bde304b3b1e30fb08658df5ff46dc734",
+      "sha256": "90aff5db5f78dce3cc2c267dd6aad98c0a1abddbaa80e668978750674eed0883"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED.trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED.trace.zip",
+      "blob": "aa985201d668522afda998c93170228225c74882",
+      "sha256": "a6f7e31f0fbae84c90f192256a3b7bbbe02729aca91bbbfdaed0d4bcdaca5f47"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/efa23532461edb12b51483feaa2d8aa2.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/efa23532461edb12b51483feaa2d8aa2.webm",
+      "blob": "2a5211a6a96606b04881f13613628ce7b40ea4e2",
+      "sha256": "7c031849aaa877dde19b1a3da5ed0711701a5f7467ee1e1ac2988f48bf8dd0dd"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-PLAYER_ENTRY_READY-0.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-PLAYER_ENTRY_READY-0.png",
+      "blob": "22de95d1d38e57fc7bec946921685729d647512f",
+      "sha256": "905959742429a2799045fcd851a5422c29327d5a38b81b55f2162e27db291121"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-SIGN_IN_READY-4.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-SIGN_IN_READY-4.png",
+      "blob": "ffa29f3b7a711727689695208c82f3b828e6ba21",
+      "sha256": "fc85574881d62c70c9dadd9df3334c332024bf65a3b12a9058c62f50c16b15e2"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-RECOVERY_READY-6.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-RECOVERY_READY-6.png",
+      "blob": "d457fa74e9076ad1ba4b43bd52e0d31de08de20d",
+      "sha256": "388643266002d2957522c8c63cf2bbc4e3d4df444ab121efac13f6454427f993"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-10.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-10.png",
+      "blob": "589f449d9b9c173c0c0c610f0185352ecf2bc875",
+      "sha256": "7777cc33a66fe6296f853f440bf7dd2d0130badfd76ca2f02ebf37515ab00ffc"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL.trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL.trace.zip",
+      "blob": "f084241050b25b1c6865c4864a8042af03600995",
+      "sha256": "de287ef3ccde0a076a28d54c2118777535b132d49c4d8d31d3e181120aa8e191"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/37ced62494c8cbfa2bf49f302edac874.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/37ced62494c8cbfa2bf49f302edac874.webm",
+      "blob": "7e63b7fc80e3d0603c5414bbdb536a460405643e",
+      "sha256": "153cf0307a57239d592ea3084393b0a87052348f455d67ffd9ac868a6006f1b6"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-PLAYER_ENTRY_READY-0.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-PLAYER_ENTRY_READY-0.png",
+      "blob": "22de95d1d38e57fc7bec946921685729d647512f",
+      "sha256": "905959742429a2799045fcd851a5422c29327d5a38b81b55f2162e27db291121"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-SIGN_IN_READY-4.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-SIGN_IN_READY-4.png",
+      "blob": "49f53aa04368348cd2e41f82dcf2aff0a239c6b8",
+      "sha256": "51d031641c14dffd45fa097cbe406bf6fa5892a1ddbddd6bbbfd5cb582cca441"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RECOVERY_READY-6.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RECOVERY_READY-6.png",
+      "blob": "d457fa74e9076ad1ba4b43bd52e0d31de08de20d",
+      "sha256": "388643266002d2957522c8c63cf2bbc4e3d4df444ab121efac13f6454427f993"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-10.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-10.png",
+      "blob": "801552ce25f4e393f67067c8a36dc2d989a29c37",
+      "sha256": "a1cd04095da94fdfc3a26d19f9329aacbc0a25febab523a2a25ae6152b159d9a"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED.trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED.trace.zip",
+      "blob": "0f9730f9cbb28de5880f5976c8be065f79a8dd2c",
+      "sha256": "d0f1626c74d2d8550328a39abaa41f18d96b71cc6c55d0e76acb7b8ff5ca2c6f"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/19fcc99ebc42d34693983db01265b174.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/19fcc99ebc42d34693983db01265b174.webm",
+      "blob": "a6644de4d5235fdc3b3d53c75dc28b5be0d129bf",
+      "sha256": "77f40adf3cedb078122be3eb685e2aa7aeaf5e66e47cf07363f8f5c87572a3f2"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-PLAYER_ENTRY_READY-0.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-PLAYER_ENTRY_READY-0.png",
+      "blob": "2c9991b48e422aeb3b6e22170a18660adf3db5c0",
+      "sha256": "784445add4be8528a092b9f186905f510dfcfb1570c64e74d6dd55274bbd5d01"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-SIGN_IN_READY-4.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-SIGN_IN_READY-4.png",
+      "blob": "97472441be7c572beed8783f26f5bf1d752460a6",
+      "sha256": "7b900b39fee756409dde39e6e9d5e91db3d7896f7ce8a0721e9c2a8f26e1f19b"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-RECOVERY_READY-6.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-RECOVERY_READY-6.png",
+      "blob": "6a2e7381fa8357727f529a35c4de163fa882dda1",
+      "sha256": "5d09c61425c12a724716d52adef46426c93daf6662bd86fa137e3ebdc00fa99f"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-10.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-10.png",
+      "blob": "45975865f68d2aa1d540c9f6589edea8243f80e6",
+      "sha256": "da163b02af66f57c216d96d28b4f27d779d4fa273800792aae05fc2aa5b0b9fc"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL.trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL.trace.zip",
+      "blob": "972243e8e7f20f18c9cd94d467de62737f0b7a32",
+      "sha256": "5f32c6442647ed3723e08704eb52991050adf69b7b7d186daa0ef9d9315ea583"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/2e2c79776e5dbd0947509ca3e64bb48e.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/2e2c79776e5dbd0947509ca3e64bb48e.webm",
+      "blob": "3d9adc8dbc321db131383176b5554092525add07",
+      "sha256": "e5aaf09b527c4018eba88024860c78c96cdcb9bdf4b209217c9d4ec64ef2f150"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-PLAYER_ENTRY_READY-0.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-PLAYER_ENTRY_READY-0.png",
+      "blob": "1b0fb14d1ffd6d7f136aaefbf62ef40e69eff53e",
+      "sha256": "43a25d6e180ffae7841c81cd3e5d051f681350c1811792ab102e03f2e108f9a2"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-SIGN_IN_READY-4.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-SIGN_IN_READY-4.png",
+      "blob": "97472441be7c572beed8783f26f5bf1d752460a6",
+      "sha256": "7b900b39fee756409dde39e6e9d5e91db3d7896f7ce8a0721e9c2a8f26e1f19b"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-RECOVERY_READY-6.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-RECOVERY_READY-6.png",
+      "blob": "6a2e7381fa8357727f529a35c4de163fa882dda1",
+      "sha256": "5d09c61425c12a724716d52adef46426c93daf6662bd86fa137e3ebdc00fa99f"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-10.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-10.png",
+      "blob": "45975865f68d2aa1d540c9f6589edea8243f80e6",
+      "sha256": "da163b02af66f57c216d96d28b4f27d779d4fa273800792aae05fc2aa5b0b9fc"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED.trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED.trace.zip",
+      "blob": "d8472fc4f6abb2242a334ea0831c78044f3d7f59",
+      "sha256": "5958d4b69daa8a8cb954daee183e4f6d294e24e555995749afc00064ac3ee4e4"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/775a642fecdb6d5e8808496cef27b6b0.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/775a642fecdb6d5e8808496cef27b6b0.webm",
+      "blob": "7eebd360b9206b5e24fe26445237c6a323c69643",
+      "sha256": "cba7781b4b60d1498f5234d1bd2a23c289a8d9c225329ae469f29111d06a67da"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-COMPANION_READY-0.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-COMPANION_READY-0.png",
+      "blob": "33782eab67bd6c42e38e3cd73c5cff9275725d94",
+      "sha256": "962ac940c909724a05d34a3df06cb537700e6789f81ec9fea33e2f2183b10040"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-LIBRARY_READY-3.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-LIBRARY_READY-3.png",
+      "blob": "b2234156ce21cebf8d93bfaeef0f71acc927c626",
+      "sha256": "77c0eaed0a08258a2edc2d2a9bb2196cf9bbe246ef09fefcbd33d0d83b8ada41"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-RETURNED-7.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-RETURNED-7.png",
+      "blob": "6566ad3359e6a74ed441cb9a1cb0264a06e6f31c",
+      "sha256": "3822e530dc02c2685ba5e2514095ad1142a1b66f1f866b941d99b3a46c082822"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL.trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL.trace.zip",
+      "blob": "2c96a9ac52404ed26a55a825d62f80584c8130db",
+      "sha256": "ba1c64c807bfd72c88c0244970c41ddad7d872495e02111f56f740a719c3ed7c"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/abbfefcf77bd0764278c7a0643bfbb2e.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/abbfefcf77bd0764278c7a0643bfbb2e.webm",
+      "blob": "93703a33ec50eb219eb13690b6616158ad8ab782",
+      "sha256": "98689fc186abc0316c0af80e8fce44da8d6866cb432510ce15cf780b37432ea8"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-COMPANION_READY-0.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-COMPANION_READY-0.png",
+      "blob": "084a2024dd3a383bab41f758dfdfdb1c3f1a5392",
+      "sha256": "4cfbd0995d01ac2a185a7e065814c34c05cb046f40d355bfcd97f3c25c507e91"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-LIBRARY_READY-3.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-LIBRARY_READY-3.png",
+      "blob": "e36d42f31e00743bf1b050220b97e3c15c48faeb",
+      "sha256": "acb73465e5ea9c8b39497130e4af51b02f8e7446b9339a66167dbd6f5a30361d"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-RETURNED-7.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-RETURNED-7.png",
+      "blob": "4173d0abe3868c2485f818837f9ff80788ca76f9",
+      "sha256": "cf8f40b5e1772b13239c1442023aa06f5003c252193bd2042b3775a145c9f3d3"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED.trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED.trace.zip",
+      "blob": "b6f580ed29da3c59b4da48839e72f6d6eb3ae989",
+      "sha256": "61242eb0386bd9f893f0e08ec0718f70fdd411159a7d41a237d2186b0c89d677"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/8d0b5eb089eda4201ca1789598e32fd4.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/8d0b5eb089eda4201ca1789598e32fd4.webm",
+      "blob": "40380c154a495ba0af24be7b5393bde56c006e10",
+      "sha256": "a5da345cc1ec710a7cfc00069a718766387a673525ae50ee816a4ccae74e6368"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-COMPANION_READY-0.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-COMPANION_READY-0.png",
+      "blob": "daf72776881a48a019a4d8175fb8e4189873030a",
+      "sha256": "abb7536b8f975f5ca06463b39d15fe49b56bfa2b3a6d428fba30a731dd2f3701"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-LIBRARY_READY-3.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-LIBRARY_READY-3.png",
+      "blob": "fc21c1e0e1c3c392ef34c47ba6404bc412e7f4de",
+      "sha256": "604fd332c5595d12490f34d5628c07107464739fdc286a97d2c95bcc45739399"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-7.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-7.png",
+      "blob": "28adfb059333512e475202a75c499cd41b5955e7",
+      "sha256": "4f813bd761596fef88521dda3d7cff598ddb8cb6e09e3b724b602f4e70ac65c1"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL.trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL.trace.zip",
+      "blob": "de5dc79cae11ca0c840c2d0c52a8ef96c8846560",
+      "sha256": "5c05121a739276cf0bd8f4ac6e4d6b57005c1ed08dfd95d79abb0f4c480e3eca"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/b307ee79de96623f5155e5b152001ca4.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/b307ee79de96623f5155e5b152001ca4.webm",
+      "blob": "901e485aa053c3f3b8ceafd00f1dd222c4d3efc5",
+      "sha256": "8e04023ea815f86650b108d6707b15363b3bf6a28e92d744e457538b82f7e5a3"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-COMPANION_READY-0.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-COMPANION_READY-0.png",
+      "blob": "daf72776881a48a019a4d8175fb8e4189873030a",
+      "sha256": "abb7536b8f975f5ca06463b39d15fe49b56bfa2b3a6d428fba30a731dd2f3701"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-LIBRARY_READY-3.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-LIBRARY_READY-3.png",
+      "blob": "12e7ad747819ab9c1b9dd305ada2c382b3811854",
+      "sha256": "8c5662d56a17cb9cf7cc028f4d5a48adc8b67757252cf25cf6ceebdd10b1d2f8"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-RETURNED-7.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-RETURNED-7.png",
+      "blob": "22e4cef7ea58081e72fba0b2b3ccabcc198c6960",
+      "sha256": "250ab1071762fc64cbd5135fc142d488a86fe4ea5e5d33125c40e2b2a6b7347f"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED.trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED.trace.zip",
+      "blob": "59dbb2f13949717fce0a762a0085a744e922f94c",
+      "sha256": "48153e2b926beca2e4f84c61852435ae46e01f06a6c186c38502f83ba83b4eab"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/6f0d5e31169143d26911e59c007875a8.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/6f0d5e31169143d26911e59c007875a8.webm",
+      "blob": "d2a47c8b3596fd564483a76cf64a797c5088f56b",
+      "sha256": "2f6ada8f995471f7bc82dea8d7c5bccdd6e288d890c01ce3c8bbea68befe2f3b"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0.png",
+      "blob": "33782eab67bd6c42e38e3cd73c5cff9275725d94",
+      "sha256": "962ac940c909724a05d34a3df06cb537700e6789f81ec9fea33e2f2183b10040"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3.png",
+      "blob": "4e61bae07aad906b6faca6418cd14919cb4a423e",
+      "sha256": "da4c6d75ebac7a4c91cc46af225546556a34188a095ed68e1e511b008fed5ad5"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-CHART_READY-7.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-CHART_READY-7.png",
+      "blob": "21d11fa74ba112608037edce3478e5ea6900f749",
+      "sha256": "41ce24d6d6e4fd7ef60e4d7f5ba23d91e90d530b2c7e054214165d745f535f51"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-ARTIFACT_READY-13.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-ARTIFACT_READY-13.png",
+      "blob": "f5451e64735becc7650554ae4ac88db0b8a042a0",
+      "sha256": "6dc02ebca9c4ddd77022f4a49cfa97c6c31e2342c6789c1fcf4dcc0ab7272043"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-JOURNAL_RESTORED-16.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-JOURNAL_RESTORED-16.png",
+      "blob": "5645625bd8fba0f5215d641c077ffdd5443a0e60",
+      "sha256": "94670bca45aeae1d7b0df81db366d9068720a3b078c188753bfb6c8550939533"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-RETURNED-20.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-RETURNED-20.png",
+      "blob": "bdc3c373990aa036d671009d55f09be90ba14727",
+      "sha256": "c04ef2b406f5f357d63e3a1684b1e004cfbad12550113c7c680622540de05179"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL.trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL.trace.zip",
+      "blob": "f2c17f271f4fe79f2fde9a568deb99ded853765d",
+      "sha256": "bc8212226712535afcb86ac1c61c75bb83ae64a5d419cd1adfb97fe8eae06366"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/ce6294fe542d7b56d8d5bd92ccdbaffb.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/ce6294fe542d7b56d8d5bd92ccdbaffb.webm",
+      "blob": "686b33aea4f6132c3cee91406533badddd200911",
+      "sha256": "3cbc5c6eaead12aa30746ef9862a41b1942731ffa6b953aa6608f92333756d9e"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-JOURNAL_READY-0.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-JOURNAL_READY-0.png",
+      "blob": "33782eab67bd6c42e38e3cd73c5cff9275725d94",
+      "sha256": "962ac940c909724a05d34a3df06cb537700e6789f81ec9fea33e2f2183b10040"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-LENS_READY-3.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-LENS_READY-3.png",
+      "blob": "b3369294a8201a4d431638234f1676f99a6cce3d",
+      "sha256": "a4a17176f1450590159932e5bc81fc2725535d4c40cd8055bd3539b1553e509d"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-CHART_READY-7.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-CHART_READY-7.png",
+      "blob": "a43688e77a41fcea56a7aa351236fd1391e3fb8a",
+      "sha256": "a549a6e9ac0771d67aea450cdf0ccb205ea5604eb20546f21cc1a096967451b2"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-ARTIFACT_READY-13.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-ARTIFACT_READY-13.png",
+      "blob": "80b2300e1f6f9ea024a67e2952432fb045523c8a",
+      "sha256": "4d5b151822cb69f21cb99e692cd932f3d471812443104451822b59678474bd0b"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-JOURNAL_RESTORED-16.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-JOURNAL_RESTORED-16.png",
+      "blob": "af298caffb4dff84c8c11d0c8390e88576788f33",
+      "sha256": "fe1b65d0b40037c924fe722396ab04cf2ba9cedea96301ec81d68927b018480e"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-RETURNED-20.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-RETURNED-20.png",
+      "blob": "7ce7aba06c9bc71ecf8731e29ca9af862a4f98ee",
+      "sha256": "cadbac2dbbd47a55bc4e7312b83a71ba31ae54b93c2764cac8a4b817f770af0a"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED.trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED.trace.zip",
+      "blob": "d378bb573725a19cbc8cdd69a2b6a2afa5ead858",
+      "sha256": "2808e99a641e45ed8de89eff76e8ed794704e4bad36cd1e9895094d7cadf1c85"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/a8c1c3ad8c162ca79c5e51e09311c73c.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/a8c1c3ad8c162ca79c5e51e09311c73c.webm",
+      "blob": "8e936d9ca81ff67dead5cb820a18477a8c7319a2",
+      "sha256": "3b71a374d65b15fc0258c57998e159661da4754f2c1ac4fb1e85124249ffc687"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0.png",
+      "blob": "daf72776881a48a019a4d8175fb8e4189873030a",
+      "sha256": "abb7536b8f975f5ca06463b39d15fe49b56bfa2b3a6d428fba30a731dd2f3701"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-LENS_READY-3.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-LENS_READY-3.png",
+      "blob": "f12318c14008cbbda2a80e6825d33cada104fb78",
+      "sha256": "a098af0e2ffc4388501784004238930f8dc50d96da24510d98e329eec541fe4b"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-CHART_READY-7.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-CHART_READY-7.png",
+      "blob": "e394b0bf5685176faf7406e8d4d1adb05e182d9c",
+      "sha256": "993e8268e838a2afa249f25f9659273da70341457d303b98612bfe999807be63"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-ARTIFACT_READY-13.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-ARTIFACT_READY-13.png",
+      "blob": "be35d882a09ac0d7cb7bf5e9579e69a1474dbade",
+      "sha256": "0b5623660da0a9caa3f5c0897859e18f593f71dd8f026230b642003a41558962"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-JOURNAL_RESTORED-16.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-JOURNAL_RESTORED-16.png",
+      "blob": "1c1444d8367844f0f86e349731ee1110d3873c1b",
+      "sha256": "84b7a22dc9ed2e8cae6a7e1be5e6edc11118fed15530b79347226ee4c2bd380b"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-RETURNED-20.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-RETURNED-20.png",
+      "blob": "498ba766222fcfcb05a83971b9218c128f5eb960",
+      "sha256": "f67fba08bc6205aef5f34ce7cc0c0b6f0a3baca6e1e1be7a71c824a6bbc7c635"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL.trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL.trace.zip",
+      "blob": "d88d112a6440b71da512fe831397cf3139ff4e96",
+      "sha256": "f1b59b11c157a8f5701e91288c51421b1a55b1f56803158e29ddebb8aecb8371"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/63ee921450fa630ac4dd70dab87947e5.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/63ee921450fa630ac4dd70dab87947e5.webm",
+      "blob": "af45acc1d9c4d0c9a4080dcabc2cb1e4347cb828",
+      "sha256": "120aecd1e5eb15fd29d5687647cf5d7e14841b893e347a0e3527c88ef30957f0"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-JOURNAL_READY-0.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-JOURNAL_READY-0.png",
+      "blob": "daf72776881a48a019a4d8175fb8e4189873030a",
+      "sha256": "abb7536b8f975f5ca06463b39d15fe49b56bfa2b3a6d428fba30a731dd2f3701"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-LENS_READY-3.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-LENS_READY-3.png",
+      "blob": "256cf07dbabc816beecfd9e99ed99196b7da8dca",
+      "sha256": "dbf09c7b0284edde41777e3e26fb85566f12d8d3625c44d54c1e976b842d839e"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-CHART_READY-7.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-CHART_READY-7.png",
+      "blob": "4d0d2866777420a329c9e15277cd3de2cf85b3c2",
+      "sha256": "adc48a7c6c97c8545ce9200d3003691df580d3acb476164fb7298801dfe7450b"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-ARTIFACT_READY-13.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-ARTIFACT_READY-13.png",
+      "blob": "9881cd5dd37970a03f0ae4afff0cfad40d799b76",
+      "sha256": "1f2a90570b79865ea90a5498570097d6a535871ffe5eab38a3f004991c9aba68"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-JOURNAL_RESTORED-16.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-JOURNAL_RESTORED-16.png",
+      "blob": "4b2cfe8cbf20c3dd124eed5502869dcce23af46c",
+      "sha256": "ae1b779506c45cd399ed0153cef0f210a4d43730c6a26fd5a72048fca387be61"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-RETURNED-20.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-RETURNED-20.png",
+      "blob": "b9eed740f671fb292c808fc1e78b7d25ed1cb5de",
+      "sha256": "59c9754c22fa9e9a5b6976c3adbde0a85dcd3be26d5b41aea96c47689999b831"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED.trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED.trace.zip",
+      "blob": "23f0cb7cbb7f9f88b8b1c99d49c51c703bde58b7",
+      "sha256": "172c2ff6a82cfa4a92b4d856524a98514bf91c942d58626e1335e5639f223cf6"
+    },
+    {
+      "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/3a089bc6eac5b3215962514b7003a8dd.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r6-verification-20261016/history/r5-media/3a089bc6eac5b3215962514b7003a8dd.webm",
+      "blob": "1edb852ea0b3d4c2090ee9a7b7b3f5eb486aaa2a",
+      "sha256": "64c75aed8ae151f770cdc5df5a55007eafeb2fbc00657b123952cea5aed24ebd"
+    }
+  ],
+  "recordedAt": "2026-10-16T06:22:20.788Z"
+}

@@ -1,0 +1,30 @@
+{
+  "qualification": false,
+  "kind": "SYNTAX_ONLY_NOT_RUNTIME_OR_TYPECHECK",
+  "results": [
+    {
+      "path": "src/components/crossdeck/CrossdeckDevices.test.tsx",
+      "errors": []
+    },
+    {
+      "path": "src/components/crossdeck/CrossdeckDevices.tsx",
+      "errors": []
+    },
+    {
+      "path": "src/components/player/journal/ChronicleJournalSession.test.ts",
+      "errors": []
+    },
+    {
+      "path": "src/components/player/journal/ChronicleJournalSession.tsx",
+      "errors": []
+    },
+    {
+      "path": "src/components/player/parallax/ChronicleLens.test.tsx",
+      "errors": []
+    },
+    {
+      "path": "src/components/player/parallax/ChronicleLens.tsx",
+      "errors": []
+    }
+  ]
+}

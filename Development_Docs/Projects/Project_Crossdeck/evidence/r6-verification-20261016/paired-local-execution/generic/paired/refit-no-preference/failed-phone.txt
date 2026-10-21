@@ -1,0 +1,101 @@
+Skip to main content
+✦
+Voyagewright
+Return
+CS
+Exit to My Voyages
+
+This immersive experience uses its authored appearance. Your appearance preference applies on standard product surfaces.
+
+← Chronicle Library
+
+THE ISLAND COURSE
+
+Voyage
+Synthetic Crossdeck refit Voyage
+Connect another device
+Send to This computer
+
+Connection restored. Check your current view status above.
+
+Captain channel connected
+Motion: full
+Replay full openingReplay short opening
+
+ACTIVE VOYAGE
+
+Synthetic closure v1 Voyage Journal
+
+The Captain releases each Passage for this Voyage.
+
+The animated opening could not finish. The journal and page turning are ready.
+
+— 4 —
+Follow the lanterns
+
+The harbour falls quiet behind you. Across the tide, the island’s lanterns mark a course through the old gardens.
+
+Keep the Chart close. The Captain’s note carries your next bearing.
+
+The canonical Chart is shown when you read this Passage.
+
+← Previous
+Page 4 of 10
+Next →
+1
+The island course
+RELEASED
+Show journal presentation details
+×
+Charts and locations
+
+Imaginary Isles
+
+Current objective: Secret Isle
+
+Offline chart: saved. First-party map assets: ready. This authored chart does not need external tiles. Last synchronized sequence 7 at 3:22:51 AM. Offline shell: requires connection until prepared. Pending evidence: 0.
+
+No offline region prepared.
+
+Partial regions need a connection to resume. Stale regions need a refresh after the Voyage changes. Refresh checks the current released version; hidden future content is excluded.
+
+Removing this device's offline region preserves your saved Chronicle history. External tiles and online suggestions are not included.
+
+Prepare offline region
+Isle crossing
+Secret Isle · next
+Find a place on your released maps
+
+Search stays on this device. Selecting a place changes your view; it does not confirm arrival.
+
+Secret Isle
+Isle crossing
+
+Fallback: Use Confirm arrival myself when you have checked the objective.
+
+The Living Chart is ready.
+
+Confirm arrival myself
+
+Virtual chart ready. No live virtual position source is connected.
+
+The island course
+completed
+Chapters
+Map
+Artifacts
+Messages
+
+CURRENT OBJECTIVE
+
+Voyage complete
+active
+Return to Current Objective
+Continue Voyage
+A message between worlds
+
+A spatial moment is tucked into this passage.
+
+Open Chronicle Lens
+
+A new page was released: Voyage complete.

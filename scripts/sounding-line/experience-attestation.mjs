@@ -1,3 +1,10 @@
+import {
+  isReviewedEvidenceAdoption,
+  historicalReviewedPlan,
+  validateReviewedIdentity,
+  reviewedEvidenceAdoption,
+} from "./experience-reviewed-adoption.mjs";
+import { validatePreSourceCaptureBinding } from "./experience-review-source-gate.mjs";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { inflateRawSync } from "node:zlib";
@@ -5,6 +12,7 @@ import { experienceDigest } from "./product-experience.mjs";
 import { verifyExceptionAttestation } from "./experience-exception.mjs";
 import { r8FormatEvidencePlan, validateR8FormatEvidenceIdentity } from "./experience-r8-format.mjs";
 import { isCurrentAdmissionPlan, validateCurrentCaptureIdentity } from "./experience-current-admission.mjs";
+import { mediaFirstReviewProvenanceBinding } from "./experience-media-first-binding.mjs";
 
 const fail = (code) => {
   throw new Error(`PRODUCT_EXPERIENCE_${code}`);
@@ -121,6 +129,10 @@ export async function verifyTrustedExperienceAttestation({
   if (!plan.applicable) return { status: "NOT_APPLICABLE" };
   if (!plan.attestationPolicy?.required) fail("TRUSTED_ATTESTATION_POLICY_MISSING");
   const currentPlan = plan;
+  if (isReviewedEvidenceAdoption(plan)) {
+    validateReviewedIdentity(plan, evidence);
+    plan = historicalReviewedPlan(plan);
+  }
   validateR8FormatEvidenceIdentity(plan, evidence);
   plan = r8FormatEvidencePlan(plan);
   const capture = await loadArtifact({
@@ -137,7 +149,14 @@ export async function verifyTrustedExperienceAttestation({
     kind: "review",
     policy: plan.attestationPolicy,
   });
-  validateCurrentCaptureIdentity(currentPlan, capture, evidence);
+  validateCurrentCaptureIdentity(isReviewedEvidenceAdoption(currentPlan) ? plan : currentPlan, capture, evidence);
+  validatePreSourceCaptureBinding(
+    isReviewedEvidenceAdoption(currentPlan) ? plan : currentPlan,
+    evidence,
+    capture,
+    undefined,
+    root,
+  );
   const identities = (artifacts) =>
     artifacts.map(({ id, sha256, type, contractId, state, device, role, motionMode }) => ({
       id,
@@ -155,7 +174,10 @@ export async function verifyTrustedExperienceAttestation({
     experienceDigest(capture.pairedEvidence ?? null) !== experienceDigest(evidence.pairedEvidence ?? null) ||
     (plan.paired && review.pairedEvidenceDigest !== experienceDigest(evidence.pairedEvidence)) ||
     review.captureArtifactId !== evidence.captureArtifactId ||
-    experienceDigest(review.reviews) !== experienceDigest(evidence.reviews)
+    experienceDigest(review.reviews) !== experienceDigest(evidence.reviews) ||
+    Object.entries(
+      mediaFirstReviewProvenanceBinding(isReviewedEvidenceAdoption(currentPlan) ? plan : currentPlan, evidence),
+    ).some(([key, value]) => review[key] !== value)
   )
     fail("TRUSTED_CAPTURE_OR_REVIEW_MISMATCH");
   const exceptionCustody = await verifyExceptionAttestation({
@@ -168,6 +190,7 @@ export async function verifyTrustedExperienceAttestation({
   });
   return {
     status: "PASS",
+    ...reviewedEvidenceAdoption(currentPlan),
     ...(exceptionCustody ? { exception: currentPlan.exception, exceptionCustody } : {}),
     ...(isCurrentAdmissionPlan(currentPlan)
       ? {

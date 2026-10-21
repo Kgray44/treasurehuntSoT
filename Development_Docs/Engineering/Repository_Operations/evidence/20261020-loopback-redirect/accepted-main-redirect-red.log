@@ -1,0 +1,31 @@
+✖ task-owned HTTP proxy preserves its browser origin through backend redirects (38.9124ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 420.854
+
+✖ failing tests:
+
+test at tests\sounding-line\ordinary.test.mjs:1183:1
+✖ task-owned HTTP proxy preserves its browser origin through backend redirects (38.9124ms)
+  AssertionError [ERR_ASSERTION]: http://localhost:64731/player/invitation?synthetic=only%2Fvalue&again=1#entry
+  + actual - expected
+  
+  + 'http://localhost:64731/player/invitation?synthetic=only%2Fvalue&again=1#entry'
+  - 'http://127.0.0.1:64732/player/invitation?synthetic=only%2Fvalue&again=1#entry'
+  
+      at TestContext.<anonymous> (file:///C:/Users/kkids/.codex/worktrees/sextant-http-redirect-prerequisite/Codex_TreasureHunt/artifacts/loopback-redirect/accepted-main/tests/sounding-line/ordinary.test.mjs:1238:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1332:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'http://localhost:64731/player/invitation?synthetic=only%2Fvalue&again=1#entry',
+    expected: 'http://127.0.0.1:64732/player/invitation?synthetic=only%2Fvalue&again=1#entry',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

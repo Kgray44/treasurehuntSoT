@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "classification": "FINITE_INFRASTRUCTURE_READINESS_NO_PRODUCT_JOURNEYS",
+  "status": "RESERVED",
+  "policyDigest": "c3eca238565d710cd2392818a0409b2ab7ae998e28d322c600500d18a04cf9d2",
+  "root": "/workspace/crossdeck-cloud-repair",
+  "stage": "corrected",
+  "attempt": 1,
+  "ownerPid": 185616,
+  "startedAt": "2026-10-17T04:26:37.539Z",
+  "databaseUrl": "file:/workspace/crossdeck-cloud-repair/artifacts/sounding-line/generic-3037e3f6c2ae/validation-isolated-20261017-042637539-56c5a1462ef440128edf139d23a9fda6.db",
+  "binding": {
+    "version": 1,
+    "exceptionId": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R13",
+    "recordDigest": "a6689ebab490ed81f313cf4bc5e2e597181c012ad43645120698b2faef097359",
+    "baseSha": "24fb189a90435ccb6021b63fd6953603ae090bc0",
+    "candidateSha": "3037e3f6c2ae517e160cf5982f8a03b87672bdf3",
+    "candidateTree": "4bdad60f1c08e7bbac7b3606b1dbfa5126c00a9c",
+    "sourceDigest": "a63073cbf3850900c91a25979467bb68f3930812e23af3f6daab00b21ab5d17a",
+    "contractDigest": "33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274",
+    "sourceManifestSha256": "9078f192a0480cb7898513c9e6c724d8694a3cba91d0c0b31e7005aafb0181d2",
+    "environmentDigest": "f2c53a7e67ec5d127393ceed487510edab2a3a225b1bf83dcddd74ee24f58a9c",
+    "stage": "corrected",
+    "manifestSha256": "929d1963b17a78306df6d4822ed51dca8578061ef2b6d9c3ce9db195f3d9d624",
+    "attempt": 1,
+    "lease": "c529efa2-ee2f-46ad-99e3-5adcd35d5988"
+  }
+}

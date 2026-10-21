@@ -2,9 +2,67 @@
 *.cmd text eol=crlf
 # Preserve immutable synthetic evaluation archive bytes across Windows checkouts.
 Development_Docs/Projects/Project_Parallax/evidence/owner-refinements/model-comparison/*.json.txt -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# Preserve the actual Windows stage log, including native line endings/spacing.
+Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/two-device-stage.log -text -whitespace
+
+Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/protected-capture-38277482404.log -text -whitespace
+
+Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/protected-capture-run-38277482404.raw.txt -text -whitespace
+
+Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/protected-capture-job-114906394818.raw.txt -text -whitespace
+
+Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-integration-e643d3acc6f8/protected-capture-artifacts-38277482404.raw.txt -text -whitespace
+
+Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-diagnostic-retry-ca3941201375/capture-retry-38302871905-terminal.log -text -whitespace
+
+Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-diagnostic-retry-ca3941201375/terminal-run-38302871905.raw.txt -text -whitespace
+
+Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-diagnostic-retry-ca3941201375/terminal-job-114989802954.raw.txt -text -whitespace
+
+Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-diagnostic-retry-ca3941201375/terminal-artifacts-38302871905.raw.txt -text -whitespace
+
+Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-reach-entry-restoration-20261012/stage-receipt.original.raw.txt -text -whitespace
+Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-reach-entry-restoration-20261012/local-focused-stage.original.log -text -whitespace
+
+Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-reach-entry-restoration-20261012/active-run-preflight.original.raw.txt -text -whitespace
+Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-reach-entry-restoration-20261012/dispatch-cli.original.raw.txt -text -whitespace
+Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-reach-entry-restoration-20261012/run.initial.original.raw.txt -text -whitespace
+Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-reach-entry-restoration-20261012/jobs.initial.original.raw.txt -text -whitespace
+
+Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-reach-entry-restoration-20261012/reach-entry-38316566108-terminal-run.original.raw.txt -text -whitespace
+Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-reach-entry-restoration-20261012/reach-entry-38316566108-terminal-jobs.original.raw.txt -text -whitespace
+Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-reach-entry-restoration-20261012/reach-entry-38316566108-terminal-artifacts.original.raw.txt -text -whitespace
+Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-reach-entry-restoration-20261012/reach-entry-38316566108-terminal.original.log -text -whitespace
+Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-reach-entry-restoration-20261012/reach-entry-38316566108-terminal-check.original.raw.txt -text -whitespace
+Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-reach-entry-restoration-20261012/reach-entry-38316566108-terminal-annotations.original.raw.txt -text -whitespace
+
+Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-main4baa-reconciliation-20261015/merge-tree.original.raw.txt -text -whitespace
+Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-main4baa-reconciliation-20261015/README-conflict.original.raw.txt -text -whitespace -diff
 
 Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-proposal-20261015/current-policy-regression.original.log -text -whitespace
 Development_Docs/Programs/Sounding_Line/evidence/crossdeck-final-verification-control-plane-20261015/*.original.log -text -whitespace
+Development_Docs/Testing/Product_Experience/history/crossdeck-generic-c9f7f908/** -text
+Development_Docs/Testing/Product_Experience/history/crossdeck-generic-bb69eed0/** -text
+Development_Docs/Testing/Product_Experience/history/crossdeck-generic-63c64e8d/** -text
+Development_Docs/Testing/Product_Experience/history/crossdeck-generic-87bb2939/** -text
+
+# Preserve exact finite-preparation logs and original evidence-record bytes.
+Development_Docs/Projects/Project_Crossdeck/evidence/final-verification-20261015/preparation-job-116511222954.original.log -text -whitespace -diff
+Development_Docs/Projects/Project_Crossdeck/evidence/r2-verification-20261015/*.original.log -text -whitespace -diff
+Development_Docs/Projects/Project_Crossdeck/evidence/r2-verification-20261015/*.original.raw.txt -text -whitespace -diff
+Development_Docs/Projects/Project_Crossdeck/evidence/r2-verification-20261015/independent-review3/*.original.raw.txt -text -whitespace -diff
+Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/*.original.raw.txt -text -whitespace -diff
+Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/*.original.log -text -whitespace -diff
+Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/packets/*.original.raw.txt -text -whitespace -diff
+Development_Docs/Projects/Project_Crossdeck/evidence/r3-verification-20261015/independent-review4/*.original.raw.txt -text -whitespace -diff
+Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/*.original.raw.txt -text -whitespace -diff
+Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/*.original.log -text -whitespace -diff
+Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/packets/*.original.raw.txt -text -whitespace -diff
+Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/independent-review5/*.original.raw.txt -text -whitespace -diff
+Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/*.original.raw.txt -text -whitespace -diff
+Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/*.original.log -text -whitespace -diff
+Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/packets/*.original.raw.txt -text -whitespace -diff
+Development_Docs/Projects/Project_Crossdeck/evidence/r5-verification-20261015/independent-review6/*.original.raw.txt -text -whitespace -diff
 Development_Docs/Programs/Sounding_Line/evidence/context-setup-replay-20261015/browser-proof/** -text
 Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r3-owner-decision-proposal-20261015/review3/*.original.raw.txt -text -whitespace
 Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r3-owner-decision-proposal-20261015/consumer-seam-confirmation.original.raw.txt -text -whitespace
@@ -63,3 +121,8 @@ Development_Docs/Projects/Project_Parallax/evidence/integration-preparation-2026
 # Original October 11 owner-review baseline: preserve its producing bytes.
 Experience_Images/Spatial_Studio_20261011/** -text -whitespace
 Development_Docs/Projects/Project_Parallax/Spatial_Studio_Visual_Review_20261011.md -text -whitespace
+
+/Development_Docs/Engineering/Repository_Operations/evidence/20261020-loopback-redirect/** -text -whitespace
+
+# Additive accepted-main reconciliation receipts retain original producer bytes.
+Development_Docs/Projects/Project_Parallax/evidence/protected-integration-20261021/** -text -whitespace

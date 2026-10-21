@@ -39,8 +39,8 @@
     "project-wakebook"
   ],
   "totals": {
-    "routeFiles": 346,
-    "pages": 109,
+    "routeFiles": 348,
+    "pages": 111,
     "services": 237,
     "sourceDiscoveredPages": 109,
     "sourceDiscoveredServices": 237,
@@ -25685,6 +25685,182 @@
       "targetDisposition": "WAKEBOOK_PHASE_1_OWNER_PRIVATE_SERVICE",
       "status": "BRANCH_COMPLETE_NOT_MERGED",
       "notes": "Owner-private Journey Detail cover endpoint; it returns only retained safe cover media and has no ordinary navigation."
+    },
+    {
+      "routeId": "route-page-devices-companion",
+      "routePattern": "/devices/companion",
+      "implementationSource": "src/app/devices/companion/page.tsx",
+      "kind": "page",
+      "classification": "CONTEXTUAL_DYNAMIC",
+      "ownerProject": "project-homeport",
+      "productArea": "Player",
+      "shellMode": "IMMERSIVE",
+      "logicalParent": "/player/library",
+      "currentVisibleEntries": [
+        {
+          "entryId": "crossdeck-open-personal-companion",
+          "sourceRouteOrFile": "src/components/crossdeck/CrossdeckDevices.tsx",
+          "controlLabel": "Join the Chronicle / Open your connected companion",
+          "desktopAvailable": true,
+          "mobileAvailable": true,
+          "requiredCapability": "PLAYER",
+          "missingCapabilityBehavior": "AUTHENTICATION_AND_OWN_SURFACE_AUTHORIZATION_REQUIRED"
+        }
+      ],
+      "currentDesktopPath": [
+        "Active Chronicle",
+        "Connect another device",
+        "/devices/pair",
+        "Join the Chronicle",
+        "/devices/companion"
+      ],
+      "currentMobilePath": [
+        "Scan Chronicle connection code or open /devices/pair",
+        "Join the Chronicle",
+        "/devices/companion"
+      ],
+      "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
+      "capabilityRequirements": ["PLAYER"],
+      "returnOrBackRoute": "/player/library",
+      "emptyStateAction": "Retry connection or Return to Chronicle",
+      "dynamicSourceRouteOrContentSource": "Crossdeck claim response resolves an authorized own AccountSession surface and Voyage; query voyage is not authorization.",
+      "compatibilityAliases": [],
+      "redirects": ["/player/sign-in"],
+      "currentSupportedStates": [
+        "INITIAL_LOADING",
+        "READY_POPULATED",
+        "READY_EMPTY",
+        "AUTH_REQUIRED",
+        "SESSION_REVOKED_OR_INVALID",
+        "PERMISSION_RESTRICTED",
+        "OFFLINE_OR_DEGRADED",
+        "RECOVERABLE_ERROR",
+        "MUTATION_PENDING",
+        "MUTATION_FAILURE"
+      ],
+      "currentJourneys": [],
+      "currentVisualEvidenceIds": [],
+      "currentMaturity": "PARTIAL",
+      "directUrlRequired": false,
+      "orphanedOrdinaryRoute": false,
+      "targetDisposition": "CONTEXTUAL_COMPANION_WITH_IMMERSIVE_PLAYER_EXIT",
+      "status": "IMPLEMENTED_PENDING_EXPERIENCE_VALIDATION",
+      "notes": "Use an authorized personal companion purpose in the active Voyage and return to the Chronicle. Final exact-source desktop/mobile, normal/reduced motion and independent review evidence remains pending; historical Homeport acceptance does not accept this refit.",
+      "phase5Implementation": {
+        "state": "SOURCE_RECONCILED",
+        "classification": "CONTEXTUAL_DYNAMIC",
+        "logicalParentRouteId": "route-page-player-library",
+        "entryEdgeIds": ["crossdeck-open-personal-companion"],
+        "exitEdgeIds": ["context-player-exit"],
+        "currentDisposition": "REACHABLE_CONTEXTUAL",
+        "scope": "Post-Phase-7 owned extension; source metadata only, not historical Phase 5 browser acceptance."
+      },
+      "crossdeckRefitReconciliation": {
+        "state": "IMPLEMENTED_PENDING_EXACT_SOURCE_EXPERIENCE_VALIDATION",
+        "reviewedAt": "2026-10-11",
+        "baseSha": "6d13c357be93514c94e7f36db1a8c930265e65e2",
+        "routePatterns": ["/devices/companion", "/devices/display"],
+        "integrationOwner": "project-homeport",
+        "specialistOwner": "project-crossdeck",
+        "sourceAuthority": "src/navigation/route-classification.ts",
+        "navigationAuthority": "src/navigation/registry.ts",
+        "candidateSource": "UNCOMMITTED_REFIT_DRAFT",
+        "evidenceIds": [],
+        "ownerAcceptance": "NOT_CLAIMED",
+        "testContracts": [
+          "homeport.shell.crossdeck-companion",
+          "crossdeck.refit.companion",
+          "crossdeck.phase2.continuity"
+        ]
+      }
+    },
+    {
+      "routeId": "route-page-devices-display",
+      "routePattern": "/devices/display",
+      "implementationSource": "src/app/devices/display/page.tsx",
+      "kind": "page",
+      "classification": "CONTEXTUAL_DYNAMIC",
+      "ownerProject": "project-homeport",
+      "productArea": "Player",
+      "shellMode": "IMMERSIVE",
+      "logicalParent": "/player/library",
+      "currentVisibleEntries": [
+        {
+          "entryId": "crossdeck-open-crew-display",
+          "sourceRouteOrFile": "src/components/crossdeck/CrossdeckDevices.tsx",
+          "controlLabel": "Join the Chronicle with Crew display purpose / Open this connected device",
+          "desktopAvailable": true,
+          "mobileAvailable": true,
+          "requiredCapability": "PLAYER",
+          "missingCapabilityBehavior": "AUTHENTICATION_AND_OWN_SURFACE_AUTHORIZATION_REQUIRED"
+        }
+      ],
+      "currentDesktopPath": [
+        "Active Chronicle",
+        "Connect another device",
+        "/devices/pair",
+        "Join the Chronicle",
+        "/devices/display"
+      ],
+      "currentMobilePath": [
+        "Scan Chronicle connection code or open /devices/pair",
+        "Join the Chronicle",
+        "/devices/display"
+      ],
+      "authenticationRequirement": "AUTHENTICATED_PLAYER_REQUIRED",
+      "capabilityRequirements": ["PLAYER"],
+      "returnOrBackRoute": "/player/library",
+      "emptyStateAction": "Receive an explicitly shared view or Exit to My Voyages",
+      "dynamicSourceRouteOrContentSource": "Crossdeck claim response resolves an authorized own AccountSession surface and Voyage; query voyage is not authorization.",
+      "compatibilityAliases": [],
+      "redirects": [],
+      "currentSupportedStates": [
+        "INITIAL_LOADING",
+        "READY_POPULATED",
+        "READY_EMPTY",
+        "AUTH_REQUIRED",
+        "SESSION_REVOKED_OR_INVALID",
+        "PERMISSION_RESTRICTED",
+        "OFFLINE_OR_DEGRADED",
+        "RECOVERABLE_ERROR",
+        "MUTATION_PENDING",
+        "MUTATION_FAILURE"
+      ],
+      "currentJourneys": [],
+      "currentVisualEvidenceIds": [],
+      "currentMaturity": "PARTIAL",
+      "directUrlRequired": false,
+      "orphanedOrdinaryRoute": false,
+      "targetDisposition": "CONTEXTUAL_COMPANION_WITH_IMMERSIVE_PLAYER_EXIT",
+      "status": "IMPLEMENTED_PENDING_EXPERIENCE_VALIDATION",
+      "notes": "Receive an explicitly crew-shared view without exposing private Journal content. Final exact-source desktop/mobile, normal/reduced motion and independent review evidence remains pending; historical Homeport acceptance does not accept this refit.",
+      "phase5Implementation": {
+        "state": "SOURCE_RECONCILED",
+        "classification": "CONTEXTUAL_DYNAMIC",
+        "logicalParentRouteId": "route-page-player-library",
+        "entryEdgeIds": ["crossdeck-open-crew-display"],
+        "exitEdgeIds": ["context-player-exit"],
+        "currentDisposition": "REACHABLE_CONTEXTUAL",
+        "scope": "Post-Phase-7 owned extension; source metadata only, not historical Phase 5 browser acceptance."
+      },
+      "crossdeckRefitReconciliation": {
+        "state": "IMPLEMENTED_PENDING_EXACT_SOURCE_EXPERIENCE_VALIDATION",
+        "reviewedAt": "2026-10-11",
+        "baseSha": "6d13c357be93514c94e7f36db1a8c930265e65e2",
+        "routePatterns": ["/devices/companion", "/devices/display"],
+        "integrationOwner": "project-homeport",
+        "specialistOwner": "project-crossdeck",
+        "sourceAuthority": "src/navigation/route-classification.ts",
+        "navigationAuthority": "src/navigation/registry.ts",
+        "candidateSource": "UNCOMMITTED_REFIT_DRAFT",
+        "evidenceIds": [],
+        "ownerAcceptance": "NOT_CLAIMED",
+        "testContracts": [
+          "homeport.shell.crossdeck-companion",
+          "crossdeck.refit.companion",
+          "crossdeck.phase2.continuity"
+        ]
+      }
     }
   ],
   "phase1Implementation": {
@@ -25918,5 +26094,32 @@
       "Postmark live delivery is blocked by external configuration",
       "Production MySQL and physical assistive-technology validation remain external"
     ]
+  },
+  "crossdeckRefitReconciliation": {
+    "state": "IMPLEMENTED_PENDING_EXACT_SOURCE_EXPERIENCE_VALIDATION",
+    "reviewedAt": "2026-10-11",
+    "baseSha": "6d13c357be93514c94e7f36db1a8c930265e65e2",
+    "routePatterns": ["/devices/companion", "/devices/display"],
+    "integrationOwner": "project-homeport",
+    "specialistOwner": "project-crossdeck",
+    "sourceAuthority": "src/navigation/route-classification.ts",
+    "navigationAuthority": "src/navigation/registry.ts",
+    "candidateSource": "UNCOMMITTED_REFIT_DRAFT",
+    "evidenceIds": [],
+    "ownerAcceptance": "NOT_CLAIMED",
+    "currentSourceCensus": {
+      "sourceCount": 443,
+      "counts": {
+        "page": 128,
+        "route": 306,
+        "layout": 7,
+        "not-found": 0,
+        "error": 2
+      },
+      "humanRouteCount": 128,
+      "serviceRouteCount": 306
+    },
+    "historicalSourceIdentityPreserved": true,
+    "scope": "Only the two owned device routes/screens are reconciled. Historical discovered totals and phase records remain source-bound; broader pre-existing source-census omissions are not claimed resolved."
   }
 }

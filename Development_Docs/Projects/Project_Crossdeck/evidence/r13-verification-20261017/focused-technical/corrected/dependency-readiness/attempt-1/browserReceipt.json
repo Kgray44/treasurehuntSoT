@@ -1,0 +1,161 @@
+{
+  "version": 1,
+  "binding": {
+    "version": 1,
+    "exceptionId": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R13",
+    "recordDigest": "a6689ebab490ed81f313cf4bc5e2e597181c012ad43645120698b2faef097359",
+    "baseSha": "24fb189a90435ccb6021b63fd6953603ae090bc0",
+    "candidateSha": "3037e3f6c2ae517e160cf5982f8a03b87672bdf3",
+    "candidateTree": "4bdad60f1c08e7bbac7b3606b1dbfa5126c00a9c",
+    "sourceDigest": "a63073cbf3850900c91a25979467bb68f3930812e23af3f6daab00b21ab5d17a",
+    "contractDigest": "33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274",
+    "sourceManifestSha256": "9078f192a0480cb7898513c9e6c724d8694a3cba91d0c0b31e7005aafb0181d2",
+    "environmentDigest": "f2c53a7e67ec5d127393ceed487510edab2a3a225b1bf83dcddd74ee24f58a9c",
+    "stage": "corrected",
+    "manifestSha256": "929d1963b17a78306df6d4822ed51dca8578061ef2b6d9c3ce9db195f3d9d624",
+    "attempt": 1,
+    "lease": "c529efa2-ee2f-46ad-99e3-5adcd35d5988"
+  },
+  "classification": "FINITE_INFRASTRUCTURE_READINESS_NO_PRODUCT_JOURNEYS",
+  "status": "PASS",
+  "probe": "CHROMIUM_LAUNCH_CLOSE_WITHOUT_PAGE",
+  "contexts": 0,
+  "pages": 0,
+  "captures": 0,
+  "startedAt": "2026-10-17T04:29:09.191Z",
+  "dependencies": {
+    "package": {
+      "path": "/workspace/crossdeck-cloud-repair/node_modules/playwright-core/package.json",
+      "sha256": "428ba2490bb4eec3a9bf62838207d35318ecfb6677801ae770445bfa52007c27"
+    },
+    "browsers": {
+      "path": "/workspace/crossdeck-cloud-repair/node_modules/playwright-core/browsers.json",
+      "sha256": "1387ec667390e31e49040aa2c81d27720b38d32c7892d1a50c7f85b187e926c1"
+    },
+    "cacheDirectory": "/tmp/crossdeck-playwright-cache",
+    "revision": "1194",
+    "executables": [
+      {
+        "name": "chromium",
+        "path": "/tmp/crossdeck-playwright-cache/chromium-1194/chrome-linux/chrome",
+        "sha256": "85918a9937192b78da8edb51c38a7af4920ac6bd9ba19939ecb0bb724d5a1a95"
+      },
+      {
+        "name": "chromium-headless-shell",
+        "path": "/tmp/crossdeck-playwright-cache/chromium_headless_shell-1194/chrome-linux/headless_shell",
+        "sha256": "6c82af1bb96955970f0ff50884bcbd75f200222414dc136076ada667bf4628d1"
+      }
+    ],
+    "system": {
+      "platform": "linux",
+      "architecture": "x64",
+      "release": "6.18.44",
+      "osRelease": {
+        "path": "/etc/os-release",
+        "type": "symlink",
+        "target": "../usr/lib/os-release",
+        "resolved": {
+          "path": "/usr/lib/os-release",
+          "sha256": "14c430da04c2d571793fc68a8f5e17fce3d7a746e316c3f23192590861b18bd7"
+        }
+      },
+      "libraries": [
+        {
+          "name": "libnss3.so",
+          "path": "/usr/lib/x86_64-linux-gnu/libnss3.so",
+          "sha256": "b13e6eedabfe3d1cc2aa6d3d75da9cbfe894902d22a8012fff7f1ada25b7d0ed"
+        },
+        {
+          "name": "libnspr4.so",
+          "path": "/usr/lib/x86_64-linux-gnu/libnspr4.so",
+          "sha256": "bd0acf4c8a3e08970b0a187d4e2cbb52fefe2b5ccb9761d86b21d18d5f109830"
+        },
+        {
+          "name": "libatk-1.0.so.0",
+          "path": "/usr/lib/x86_64-linux-gnu/libatk-1.0.so.0.25611.1",
+          "sha256": "07c8e8031a545009ab45cb317ff4b2ac712d50b5cc4e1fbb6b1fdf19016d321a"
+        },
+        {
+          "name": "libatk-bridge-2.0.so.0",
+          "path": "/usr/lib/x86_64-linux-gnu/libatk-bridge-2.0.so.0.0.0",
+          "sha256": "1cdf8a4540c1c7093de9afa2ad71180d8fe21f2dd049d463239820cc87416a8b"
+        },
+        {
+          "name": "libX11.so.6",
+          "path": "/usr/lib/x86_64-linux-gnu/libX11.so.6.4.0",
+          "sha256": "b03e563b316b8b53c7988f0ee91d6656cc425538e00947a8b14482d179e80099"
+        },
+        {
+          "name": "libxcb.so.1",
+          "path": "/usr/lib/x86_64-linux-gnu/libxcb.so.1.1.0",
+          "sha256": "a1cde2cec9b7b8b38e4cca450c55c63651efb80a2458d76964b56b763043f533"
+        },
+        {
+          "name": "libxkbcommon.so.0",
+          "path": "/usr/lib/x86_64-linux-gnu/libxkbcommon.so.0.0.0",
+          "sha256": "9f26c41577e0e036cbf42352e85b13db6bce953fb730555b4fc7de5362dc93bb"
+        },
+        {
+          "name": "libgbm.so.1",
+          "path": "/usr/lib/x86_64-linux-gnu/libgbm.so.1.0.0",
+          "sha256": "ab1e16db65ef9809ee3bc2925c611dcb15e2d78a510c310f0193716c16ea6c2e"
+        },
+        {
+          "name": "libasound.so.2",
+          "path": "/usr/lib/x86_64-linux-gnu/libasound.so.2.0.0",
+          "sha256": "0faa79c7a37189b9efcd9bff5874cd1af1c05b0cc66831733087d84cbe87e811"
+        },
+        {
+          "name": "libcups.so.2",
+          "path": "/usr/lib/x86_64-linux-gnu/libcups.so.2",
+          "sha256": "4a1b185e46ed19f279a437d16619c0bfec8a0c21a25afc1b3e85320f4d219e4c"
+        },
+        {
+          "name": "libdrm.so.2",
+          "path": "/usr/lib/x86_64-linux-gnu/libdrm.so.2.124.0",
+          "sha256": "eb7a0ac1a08aa514ed9615c137d72b4b5b84dc252aa2da30b6ae712ec6378e00"
+        },
+        {
+          "name": "libpango-1.0.so.0",
+          "path": "/usr/lib/x86_64-linux-gnu/libpango-1.0.so.0.5600.3",
+          "sha256": "3aeb194a48f427b907d77986cc8b1d7a2f43f8dab6a91abb3fa0416d5b071132"
+        },
+        {
+          "name": "libcairo.so.2",
+          "path": "/usr/lib/x86_64-linux-gnu/libcairo.so.2.11804.4",
+          "sha256": "55e6961d9c35923426aca75b85e10d69977428ffb6569719be13a87eb4fcab66"
+        },
+        {
+          "name": "libatspi.so.0",
+          "path": "/usr/lib/x86_64-linux-gnu/libatspi.so.0.0.1",
+          "sha256": "133c9ad85748ed520c3fb6ffdd3fcdfc3068ad41c0946574b87b509b7c9c7cc0"
+        },
+        {
+          "name": "libglib-2.0.so.0",
+          "path": "/usr/lib/x86_64-linux-gnu/libglib-2.0.so.0.8400.4",
+          "sha256": "b084b1bbf7423d056ad21d2ace1f9820942ae7c68381d2de1d6b2fb3d80f2ece"
+        },
+        {
+          "name": "libgio-2.0.so.0",
+          "path": "/usr/lib/x86_64-linux-gnu/libgio-2.0.so.0.8400.4",
+          "sha256": "e810958d49398493c33795e0b5326bfcd54a984840899f0409024f2bab99cc80"
+        },
+        {
+          "name": "libdbus-1.so.3",
+          "path": "/usr/lib/x86_64-linux-gnu/libdbus-1.so.3.38.3",
+          "sha256": "f8c5475204730fa615547b10b642d7e27e5954ed1c12c47507743f2b486ba5a0"
+        },
+        {
+          "name": "libexpat.so.1",
+          "path": "/usr/lib/x86_64-linux-gnu/libexpat.so.1.12.3",
+          "sha256": "0fd7d092bd0bf5dcc29f31daaba2bad993b0d18a1ab771fb844e0a6dfa8efe18"
+        }
+      ]
+    }
+  },
+  "cleanup": {
+    "status": "PASS",
+    "browserClosed": true
+  },
+  "completedAt": "2026-10-17T04:29:13.190Z"
+}

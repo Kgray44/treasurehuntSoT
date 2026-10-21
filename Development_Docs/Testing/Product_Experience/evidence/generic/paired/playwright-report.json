@@ -1,0 +1,477 @@
+{
+  "config": {
+    "configFile": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/candidate/playwright.config.ts",
+    "rootDir": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/candidate/tests/e2e",
+    "forbidOnly": true,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "ci": {
+        "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+        "commitHash": "e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+        "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39520615298"
+      },
+      "gitCommit": {
+        "shortHash": "f5e0cddde",
+        "hash": "f5e0cddde5c626648bc264f93819836a49c04d33",
+        "subject": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate",
+        "body": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate\n\nPreserve C22 and all original evidence and consumed attempts.\nAdopt accepted main e0056ff3 through normal history without product,\ncontract, fixture or evidence edits.\n",
+        "author": {
+          "name": "Codex",
+          "email": "codex@openai.com",
+          "time": 1792541275000
+        },
+        "committer": {
+          "name": "Codex",
+          "email": "codex@openai.com",
+          "time": 1792541275000
+        },
+        "branch": "HEAD"
+      },
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/candidate/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+            "commitHash": "e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39520615298"
+          },
+          "gitCommit": {
+            "shortHash": "f5e0cddde",
+            "hash": "f5e0cddde5c626648bc264f93819836a49c04d33",
+            "subject": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate",
+            "body": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate\n\nPreserve C22 and all original evidence and consumed attempts.\nAdopt accepted main e0056ff3 through normal history without product,\ncontract, fixture or evidence edits.\n",
+            "author": {
+              "name": "Codex",
+              "email": "codex@openai.com",
+              "time": 1792541275000
+            },
+            "committer": {
+              "name": "Codex",
+              "email": "codex@openai.com",
+              "time": 1792541275000
+            },
+            "branch": "HEAD"
+          },
+          "actualWorkers": 1
+        },
+        "id": "phase3-readonly-setup",
+        "name": "phase3-readonly-setup",
+        "testDir": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/candidate/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/phase3-readonly-setup\\.setup\\.ts/u"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/candidate/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+            "commitHash": "e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39520615298"
+          },
+          "gitCommit": {
+            "shortHash": "f5e0cddde",
+            "hash": "f5e0cddde5c626648bc264f93819836a49c04d33",
+            "subject": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate",
+            "body": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate\n\nPreserve C22 and all original evidence and consumed attempts.\nAdopt accepted main e0056ff3 through normal history without product,\ncontract, fixture or evidence edits.\n",
+            "author": {
+              "name": "Codex",
+              "email": "codex@openai.com",
+              "time": 1792541275000
+            },
+            "committer": {
+              "name": "Codex",
+              "email": "codex@openai.com",
+              "time": 1792541275000
+            },
+            "branch": "HEAD"
+          },
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/candidate/tests/e2e",
+        "testIgnore": [
+          "/phase3-readonly-setup\\.setup\\.ts/u",
+          "/harborlight-phase2\\.spec\\.ts/u",
+          "/harborlight-phase3\\.spec\\.ts/u",
+          "/harborlight-phase4\\.spec\\.ts/u",
+          "/admiralty-phase1\\.spec\\.ts/u"
+        ],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/candidate/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+            "commitHash": "e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39520615298"
+          },
+          "gitCommit": {
+            "shortHash": "f5e0cddde",
+            "hash": "f5e0cddde5c626648bc264f93819836a49c04d33",
+            "subject": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate",
+            "body": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate\n\nPreserve C22 and all original evidence and consumed attempts.\nAdopt accepted main e0056ff3 through normal history without product,\ncontract, fixture or evidence edits.\n",
+            "author": {
+              "name": "Codex",
+              "email": "codex@openai.com",
+              "time": 1792541275000
+            },
+            "committer": {
+              "name": "Codex",
+              "email": "codex@openai.com",
+              "time": 1792541275000
+            },
+            "branch": "HEAD"
+          },
+          "actualWorkers": 1
+        },
+        "id": "admiralty-phase1",
+        "name": "admiralty-phase1",
+        "testDir": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/candidate/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/admiralty-phase1\\.spec\\.ts/u"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/candidate/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+            "commitHash": "e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39520615298"
+          },
+          "gitCommit": {
+            "shortHash": "f5e0cddde",
+            "hash": "f5e0cddde5c626648bc264f93819836a49c04d33",
+            "subject": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate",
+            "body": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate\n\nPreserve C22 and all original evidence and consumed attempts.\nAdopt accepted main e0056ff3 through normal history without product,\ncontract, fixture or evidence edits.\n",
+            "author": {
+              "name": "Codex",
+              "email": "codex@openai.com",
+              "time": 1792541275000
+            },
+            "committer": {
+              "name": "Codex",
+              "email": "codex@openai.com",
+              "time": 1792541275000
+            },
+            "branch": "HEAD"
+          },
+          "actualWorkers": 1
+        },
+        "id": "harborlight-phase2",
+        "name": "harborlight-phase2",
+        "testDir": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/candidate/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/harborlight-phase2\\.spec\\.ts/u"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/candidate/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+            "commitHash": "e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39520615298"
+          },
+          "gitCommit": {
+            "shortHash": "f5e0cddde",
+            "hash": "f5e0cddde5c626648bc264f93819836a49c04d33",
+            "subject": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate",
+            "body": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate\n\nPreserve C22 and all original evidence and consumed attempts.\nAdopt accepted main e0056ff3 through normal history without product,\ncontract, fixture or evidence edits.\n",
+            "author": {
+              "name": "Codex",
+              "email": "codex@openai.com",
+              "time": 1792541275000
+            },
+            "committer": {
+              "name": "Codex",
+              "email": "codex@openai.com",
+              "time": 1792541275000
+            },
+            "branch": "HEAD"
+          },
+          "actualWorkers": 1
+        },
+        "id": "harborlight-phase3",
+        "name": "harborlight-phase3",
+        "testDir": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/candidate/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/harborlight-phase3\\.spec\\.ts/u"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/candidate/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+            "commitHash": "e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39520615298"
+          },
+          "gitCommit": {
+            "shortHash": "f5e0cddde",
+            "hash": "f5e0cddde5c626648bc264f93819836a49c04d33",
+            "subject": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate",
+            "body": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate\n\nPreserve C22 and all original evidence and consumed attempts.\nAdopt accepted main e0056ff3 through normal history without product,\ncontract, fixture or evidence edits.\n",
+            "author": {
+              "name": "Codex",
+              "email": "codex@openai.com",
+              "time": 1792541275000
+            },
+            "committer": {
+              "name": "Codex",
+              "email": "codex@openai.com",
+              "time": 1792541275000
+            },
+            "branch": "HEAD"
+          },
+          "actualWorkers": 1
+        },
+        "id": "harborlight-phase4",
+        "name": "harborlight-phase4",
+        "testDir": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/candidate/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "/harborlight-phase4\\.spec\\.ts/u"
+        ],
+        "timeout": 240000
+      },
+      {
+        "outputDir": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/candidate/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Kgray44/treasurehuntSoT/commit/e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+            "commitHash": "e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+            "buildHref": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39520615298"
+          },
+          "gitCommit": {
+            "shortHash": "f5e0cddde",
+            "hash": "f5e0cddde5c626648bc264f93819836a49c04d33",
+            "subject": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate",
+            "body": "Merge accepted R23 checkout recovery authority into frozen Crossdeck candidate\n\nPreserve C22 and all original evidence and consumed attempts.\nAdopt accepted main e0056ff3 through normal history without product,\ncontract, fixture or evidence edits.\n",
+            "author": {
+              "name": "Codex",
+              "email": "codex@openai.com",
+              "time": 1792541275000
+            },
+            "committer": {
+              "name": "Codex",
+              "email": "codex@openai.com",
+              "time": 1792541275000
+            },
+            "branch": "HEAD"
+          },
+          "actualWorkers": 1
+        },
+        "id": "webkit-mobile",
+        "name": "webkit-mobile",
+        "testDir": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/candidate/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 240000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.56.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "crossdeck-experience-refit.spec.ts",
+      "file": "crossdeck-experience-refit.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "complete multi-device experience · no-preference",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 38714,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-21T00:41:30.489Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "eaee6e498f685fa0f405-39e31452bc8424cc89fa",
+          "file": "crossdeck-experience-refit.spec.ts",
+          "line": 52,
+          "column": 7
+        },
+        {
+          "title": "complete multi-device experience · reduce",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 40974,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-21T00:42:09.332Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "eaee6e498f685fa0f405-a651dbc18c2d72534e8f",
+          "file": "crossdeck-experience-refit.spec.ts",
+          "line": 52,
+          "column": 7
+        }
+      ]
+    },
+    {
+      "title": "crossdeck-refit-recovery.spec.ts",
+      "file": "crossdeck-refit-recovery.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "recover pairing and transfers while preserving shared-screen privacy",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 30317,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "buffer": "eyJzdGF0dXMiOiJTT1VORElOR19MSU5FX1NVSVRFX0lTT0xBVElPTl9SRUFEWSIsInByb2ZpbGUiOiJnZW5lcmljIn0K"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "Author only this synthetic edition’s Map for crew visibility",
+                      "duration": 6
+                    }
+                  ],
+                  "startTime": "2026-10-21T00:42:50.336Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "944bee6c1097f4f4312c-1b7d149a659d601850de",
+          "file": "crossdeck-refit-recovery.spec.ts",
+          "line": 73,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-21T00:41:27.160Z",
+    "duration": 113644.773,
+    "expected": 3,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

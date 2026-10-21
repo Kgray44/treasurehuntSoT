@@ -1,0 +1,500 @@
+{
+  "objective": "Connect another device from the active Chronicle without losing my place",
+  "contract": {
+    "id": "crossdeck.phase2.continuity",
+    "name": "Crossdeck ordered durable handoff, acknowledgment, custody, continuity and shared-display privacy",
+    "authority": "project-crossdeck",
+    "owners": [
+      "project-crossdeck",
+      "wayfarer",
+      "player-journal"
+    ],
+    "critical": true,
+    "experience": {
+      "persona": "An authorized Player continuing a persisted private synthetic Voyage across personal screens",
+      "integrationOwner": "Crossdeck experience refit integration",
+      "systems": [
+        "project-crossdeck",
+        "project-parallax",
+        "one-voyage",
+        "project-landfall",
+        "player-journal"
+      ],
+      "sourcePaths": [
+        "src/crossdeck",
+        "src/components/crossdeck",
+        "src/components/player/journal/ChronicleJournalSession.tsx",
+        "src/app/devices",
+        "src/app/account/devices",
+        "src/components/player/journal",
+        "src/app/player/playthroughs/[playthroughId]/journal",
+        "src/app/play/[taleSlug]/session/[sessionId]",
+        "src/app/player/offline-landfall"
+      ],
+      "projectionPaths": [
+        "src/app/api/crossdeck",
+        "src/app/api/play/sessions",
+        "src/app/api/player/playthroughs",
+        "src/app/api/player/sessions"
+      ],
+      "devices": [
+        "DESKTOP",
+        "MOBILE"
+      ],
+      "roles": [
+        "PLAYER"
+      ],
+      "accessibility": "Every named control is keyboard reachable with visible focus; reduced motion preserves the same task, hierarchy, purpose and safe return.",
+      "fallback": "Guided Lens preserves the released clue without camera permission; unavailable device purposes remain explained and disabled while Journal and safe return remain available.",
+      "references": [
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted task hierarchy and contextual navigation inform the new device composition; the companion still requires its own independent rendered review.",
+          "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
+        },
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted task hierarchy and contextual navigation inform the new device composition; the companion still requires its own independent rendered review.",
+          "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
+        }
+      ],
+      "homeportScreenIds": [
+        "screen-page-player-playthroughs-playthroughid-journal"
+      ],
+      "browserTests": [
+        "tests/e2e/crossdeck-experience-refit.spec.ts",
+        "tests/e2e/crossdeck-refit-recovery.spec.ts"
+      ],
+      "fixtureProfile": "generic",
+      "recordingRequired": true,
+      "continuity": {
+        "objective": "Keep the same authorized Voyage and immutable edition through connection, purpose changes and return without inventing progression authority.",
+        "checks": [
+          {
+            "id": "same-voyage",
+            "role": "region",
+            "name": "Voyage context",
+            "attribute": "data-experience-voyage"
+          },
+          {
+            "id": "same-edition",
+            "role": "region",
+            "name": "Voyage context",
+            "attribute": "data-experience-version"
+          }
+        ]
+      },
+      "motion": {
+        "measurement": "Keyboard activation to the changed visible connection or canonical companion outcome",
+        "feedbackBudgetMs": 5000,
+        "justification": "Bound the isolated browser transition to useful visible feedback within five seconds, including authorized network projection and supported motion; this is no physical-device performance claim."
+      },
+      "limitations": [
+        "Canonical synthetic account/session setup proves authorization and persisted membership; it does not grant owner acceptance, camera/native spatial capability or real-phone proof.",
+        "Actual two-context pairing, handoff acknowledgement, revocation and restricted shared-display privacy remain covered by the dedicated browser specification; the single-context capture signs in and registers through the actual product UI.",
+        "The existing generic seed owns only a deterministic synthetic account and persisted edition in a guarded nonce database; real sign-in, authorization and device registration establish each capture surface without injected cookies or tab storage.",
+        "The guarded persisted fixture represents an already-opened active Voyage. Every primary entry waits for visible Journal tools, and companion return proves the canonical returning Journal and its replay control rather than assuming a first-open dialog in each signed-in context.",
+        "The same synthetic canonical account owns its primary email, one verified secondary email and existing-style Player username. Six-contract captures retain all twenty desktop/mobile and normal/reduced contexts while respecting the unchanged six-per-login sign-in guard; no account/session injection or auth bypass is used."
+      ],
+      "objective": "Connect another device from the active Chronicle without losing my place",
+      "visibleOutcome": "The active Journal opens a contextual private phone connection with QR/code guidance and returns directly to the same Chronicle",
+      "entryPoint": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "states": [
+        "JOURNAL_READY",
+        "CONNECT_READY",
+        "RETURNED"
+      ],
+      "navigation": "Open the Journal, use Connect another device, inspect contextual pairing instructions, then Continue the Chronicle in the same Voyage.",
+      "designTarget": "Keep the book and its primary reading task dominant; use one quiet contextual connection control, a focused phone dialog with scan-first guidance and a direct return.",
+      "roleSetup": {
+        "PLAYER": {
+          "entryPoint": "/sign-in?returnTo=%2Fplayer%2Fplaythroughs%2F00000000-0000-4000-8000-00000000cd11%2Fjournal",
+          "steps": [
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Email or Player name",
+              "value": "crossdeck-review-navigator"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Password",
+              "value": "Synthetic-Crossdeck-Review-2026!"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Sign in"
+            },
+            {
+              "action": "wait",
+              "role": "navigation",
+              "name": "Journal tools"
+            }
+          ],
+          "witness": {
+            "role": "region",
+            "name": "Voyage context",
+            "text": "Synthetic Crossdeck refit Voyage"
+          }
+        }
+      },
+      "journeys": [
+        {
+          "id": "contextual-connect-return",
+          "roles": [
+            "PLAYER"
+          ],
+          "outcome": "A Player finds contextual phone connection from the active Journal and returns to the same released reading task",
+          "steps": [
+            {
+              "action": "assert",
+              "role": "navigation",
+              "name": "Journal tools",
+              "text": "chapters",
+              "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+              "state": "JOURNAL_READY"
+            },
+            {
+              "action": "assert",
+              "role": "main",
+              "name": "",
+              "text": "Synthetic Crossdeck refit Voyage",
+              "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Connect another device"
+            },
+            {
+              "action": "assert",
+              "role": "dialog",
+              "name": "Bring your phone aboard",
+              "kind": "outcome",
+              "text": "Sign in with the same Voyagewright account.",
+              "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+              "meaning": "The contextual control produces private phone joining guidance for this Voyage while retaining the active book.",
+              "state": "CONNECT_READY",
+              "feedbackBoundary": true
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Continue the Chronicle"
+            },
+            {
+              "action": "assert",
+              "role": "navigation",
+              "name": "Journal tools",
+              "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+              "absentRole": {
+                "role": "dialog",
+                "name": "Bring your phone aboard"
+              },
+              "returnPath": true,
+              "state": "RETURNED"
+            }
+          ]
+        }
+      ]
+    },
+    "experienceIntent": {
+      "objective": "Use my phone as a Chronicle Lens while continuing the same Voyage on desktop",
+      "visibleOutcome": "A contextual pairing flow reaches a role-appropriate Lens with the same identity, Voyage and safe return",
+      "integrationOwner": "Crossdeck and Parallax experience integration",
+      "systems": [
+        "project-crossdeck",
+        "project-parallax",
+        "one-voyage"
+      ],
+      "sourcePaths": [
+        "src/crossdeck",
+        "src/components/crossdeck"
+      ],
+      "persona": "A Creator or Player completing the named human objective",
+      "entryPoint": "CONTEXTUAL_VOYAGE_OR_STUDIO_ENTRY_REQUIRED",
+      "devices": [
+        "DESKTOP",
+        "MOBILE"
+      ],
+      "accessibility": "Provide keyboard/touch operation and a meaningful supported alternate experience.",
+      "baselineDebt": [
+        {
+          "id": "PE-DEBT-CROSSDECK-LENS",
+          "fingerprint": "96ec2717127c177a4afa98b8a9c5cbbf974d57eb1dd56e46b09bb323b7fcd2e9",
+          "status": "OWNER_REPORTED_BASELINE_REQUIRES_RENDERED_CONFIRMATION",
+          "repairOwner": "Spatial Experience Refit",
+          "repairPath": "Development_Docs/Testing/Product_Experience/Spatial_Refit_Readiness.md",
+          "ledger": "Development_Docs/Projects/Project_Homeport/Homeport_Nonconformity_Ledger.csv",
+          "deficiency": "Role persistence and account-level device setup do not establish a contextual Chronicle Lens experience."
+        }
+      ],
+      "limitation": "This campaign defines the required experience and tracks existing debt; it does not implement Spatial Experience Refit."
+    }
+  },
+  "sourceDigest": "5154d0703cae427ef1ac559b3f1affabce65278105b84859a5f7c5edaf347f18",
+  "artifacts": [
+    {
+      "id": "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0.png",
+      "sha256": "f5dcb7246b61b88186a0e0c210e736d9accb9930cf34c44cf8937966cc6a9d51",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.phase2.continuity",
+      "state": "JOURNAL_READY",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-CONNECT_READY-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-CONNECT_READY-3.png",
+      "sha256": "009b430659d0387da06774005de761e5ff2e001e3bc0eacd48b0d62f74805b20",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.phase2.continuity",
+      "state": "CONNECT_READY",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-RETURNED-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-RETURNED-5.png",
+      "sha256": "82012e8938a29354dd91d384d7b7186cc99c8415a3f3619ce35278a61fd99e67",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.phase2.continuity",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL.trace.zip",
+      "sha256": "5ab9db4d53c1d2dcf72614acefc964e221f276ce7d7b9cfefe07e21f8963f274",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.phase2.continuity",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/edff92199bda98cf44754c6ca6e3faac.webm",
+      "sha256": "5af08b1ceae74d1e797a4ef2d3079af5298b53301e0dfce3e61b64ee41c28340",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.phase2.continuity",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-JOURNAL_READY-0",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-JOURNAL_READY-0.png",
+      "sha256": "a146947c525c8b7774a297584a73eee216361aeaec271c48a21514e224b03428",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.phase2.continuity",
+      "state": "JOURNAL_READY",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-CONNECT_READY-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-CONNECT_READY-3.png",
+      "sha256": "a23e5439e14a776bbaf3bc89023d58409a570bba7fb4231350742b86014f3ace",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.phase2.continuity",
+      "state": "CONNECT_READY",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-RETURNED-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-RETURNED-5.png",
+      "sha256": "92dc41e759a40f74e34040b96692d0bdc9a8aee894f5ce8d9cdf7f6ddabf6b3c",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.phase2.continuity",
+      "state": "RETURNED",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED.trace.zip",
+      "sha256": "153c566cdf24a45b6944bc5ca11b928b313121f281f235eee522e17562fae7bd",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.phase2.continuity",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/f3cb80152ee89fff52f2801abe381b1f.webm",
+      "sha256": "e09c9b97775d3efce8c8872eb466d2596949afc92bfc399d2493227ce84c8a02",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.phase2.continuity",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0.png",
+      "sha256": "51de28528d4461c35f421d463963ef2fd09da82d34de38c58ba5003eb04ecbf6",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.phase2.continuity",
+      "state": "JOURNAL_READY",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-CONNECT_READY-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-CONNECT_READY-3.png",
+      "sha256": "63a6f4f3b23cd59b45cf775e63b2133270e8c6079a63331e22aa6626df2eb267",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.phase2.continuity",
+      "state": "CONNECT_READY",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-RETURNED-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-RETURNED-5.png",
+      "sha256": "923dcf928024b0c286115df60166e429081ae5910bd6813b8fa3c656c0916e70",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.phase2.continuity",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL.trace.zip",
+      "sha256": "434a7f2a30134e98805f4f498d9ea8d147d3cfd1bf48a0f40d6b20520ad89fa4",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.phase2.continuity",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/89fef412fa6f6d6907da6ee271a0dea4.webm",
+      "sha256": "fc035c38533c9c9457b54ba6cbc12c280e5eb40b8203843af673586d3dd92d0d",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.phase2.continuity",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL"
+    },
+    {
+      "id": "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-JOURNAL_READY-0",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-JOURNAL_READY-0.png",
+      "sha256": "47e565db291442f6095303c690865684319d577fc7f2405cf01ae595d03fdd86",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.phase2.continuity",
+      "state": "JOURNAL_READY",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-CONNECT_READY-3",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-CONNECT_READY-3.png",
+      "sha256": "30f05eec6bb58bbc9dde1f1007f197fa86f7854ad07fd1f1532695cab71ba400",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.phase2.continuity",
+      "state": "CONNECT_READY",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-RETURNED-5",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-RETURNED-5.png",
+      "sha256": "90aff5db5f78dce3cc2c267dd6aad98c0a1abddbaa80e668978750674eed0883",
+      "type": "screenshot",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.phase2.continuity",
+      "state": "RETURNED",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-trace",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED.trace.zip",
+      "sha256": "d455ff6bfbea74fc9ebe0c16a207aa93c98cff148880c52340e57ae0b9fb0c8e",
+      "type": "trace",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.phase2.continuity",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    },
+    {
+      "id": "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-recording",
+      "path": "Development_Docs/Testing/Product_Experience/evidence/generic/fa47c5e2b925b9a4b527c677d89fba8b.webm",
+      "sha256": "081b0521faa0387a106af84ef1be3ea08d7e0a9eee52763ac6eb37c96853b08a",
+      "type": "recording",
+      "origin": "ACTUAL_APPLICATION",
+      "contractId": "crossdeck.phase2.continuity",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED"
+    }
+  ],
+  "packetDigest": "1a6924444e0ca85330b00b772ed276414f5720584c8b5f88dbf5ba6213929264",
+  "instructions": "Inspect rendered images and recordings before source. Record concrete evidence for every dimension. Builder rationale is intentionally excluded. Return review JSON; do not infer owner acceptance.",
+  "reviewDimensions": [
+    "composition",
+    "hierarchy",
+    "typography",
+    "spacing",
+    "controls",
+    "contrast",
+    "consistency",
+    "states",
+    "responsive",
+    "keyboard",
+    "focus",
+    "feedback",
+    "motion",
+    "continuity",
+    "complexity",
+    "role-outcomes",
+    "fallbacks"
+  ],
+  "builderRationaleIncluded": false
+}

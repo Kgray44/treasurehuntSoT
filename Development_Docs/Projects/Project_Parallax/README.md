@@ -3,7 +3,7 @@ title: Project Parallax engineering home
 audience: product-engineering
 status: phase-3-software-qualified-mainline
 canonical_for: project-parallax-engineering-home
-last_reviewed: 2026-10-19
+last_reviewed: 2026-10-21
 ---
 
 # Project Parallax
@@ -17,7 +17,8 @@ Its governing promise is simple even though the machinery behind it is emphatica
 > **Creators author spatial intent. Parallax solves spatial implementation.**
 
 - [Original October 11 owner-review baseline](Spatial_Studio_Visual_Review_20261011.md) preserves its original product source and pending owner-review status; its inactive producers remain evidence only.
-- [Complete current-main integration preparation](Integration_Preparation_20261019.md) records exact PR containment, superseded implementations, conflict resolutions and integrated verification while Crossdeck's protected acceptance remains pending.
+- [Protected integration after Crossdeck landing](Protected_Integration_20261021.md) records the sole #776 ownership agreement, accepted-main reconciliation and fresh qualification gates.
+- [Complete current-main integration preparation](Integration_Preparation_20261019.md) records exact PR containment, superseded implementations, conflict resolutions and integrated verification at its original October 19 Crossdeck boundary.
 - [Working drafts and unified Library lifecycle](Spatial_Library_Lifecycle_20261014.md) records deliberate membership, independent environments, named copies, recovery and verification boundaries.
 - [SC-00 integration handoff](SC_00_Integration_Handoff_20261015.md) maps Inspector/Library selection and persistence contracts, pending SC-01 interfaces, parallel ownership and remaining acceptance.
 - [SC-00B combined Inspector review](SC00B_Combined_Inspector_Review_20261015.md) links 70 current rendered screenshots, seven passing synthetic Inspector journeys, a passing unapplied Assistant preview journey, and eight local semantic contexts across desktop/phone and normal/reduced motion. It retains source-bound recordings, independent local review with no remaining actionable finding, and the preceding owner acceptance plus corrected-source review and protected qualification boundaries. The [property preservation matrix](SC00B_Property_Capability_Matrix.md) maps old and typed controls to their canonical edit paths.

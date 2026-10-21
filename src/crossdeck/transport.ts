@@ -161,8 +161,12 @@ export function createHttpSyncTransport(
         });
         current.addEventListener("crossdeck-ended", () => {
           if (!live()) return;
-          failed(new SyncTransportError("Device access ended.", 403));
-          stop();
+          // A canonical purpose change also ends a stream bound to the old role.
+          // Clear its projection, then let the current HTTP authority distinguish
+          // a permitted role change from revoked access before opening a new stream.
+          closeEvents();
+          failed(new Error("Checking this device’s current access."));
+          void tick(true).then(() => openEvents());
         });
         current.addEventListener("error", () => {
           if (!live()) return;

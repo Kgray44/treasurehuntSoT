@@ -1,0 +1,68 @@
+{
+  "classification": "ENGINEERING_EVIDENCE_CONSUMED_ORDINARY3_EXACT_ORIGINAL_RECORDS_AND_UNCHANGED_DIAGNOSIS",
+  "runId": 38948434772,
+  "sourceDigest": "8c4a27ed0a7368b56a1552d11fcc0006cb7bb348af18504480c7678c5647fa3f",
+  "decisionArtifactId": 12068487536,
+  "decisionArtifactServerDigest": "sha256:3c3bf79e45d7235bbca961243484482bd83aef3c203aa6b4d1e5eeed78526804",
+  "qualificationReservation": "e24188d5654921f7ffc91c69d6d8be12d7d40ece",
+  "qualifyPayloadDigest": "22da785317e514446297ada68a7fca0ad83c1c1198dc8da55ca69f1f3bd9e306",
+  "entries": [
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary3-failed-20261016/run.original.raw.txt",
+      "mode": "100644",
+      "gitBlob": "8a9fc010a39cf261a0561b08ba9ce464b7a5838a",
+      "sha256": "ae2e7d57fec3de03bae2f8c97a77df00c9050ac6aa235d815b0cf3d3256c04cb",
+      "bytes": 13202,
+      "classification": "ORIGINAL_SERVER_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary3-failed-20261016/jobs.original.raw.txt",
+      "mode": "100644",
+      "gitBlob": "1182f66aa8ba4356b7560b463765f323724826cb",
+      "sha256": "2cb13471782d866a33b966ee078212a100a34627f1694f62b4a776af49fd0450",
+      "bytes": 11921,
+      "classification": "ORIGINAL_SERVER_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary3-failed-20261016/artifacts.original.raw.txt",
+      "mode": "100644",
+      "gitBlob": "03639a968632b871e08b7f7b2a91c01a4afbfcf8",
+      "sha256": "33374accab44044f6e1297905b8391aaadddc3f73e01cbf12db68cf97ea99269",
+      "bytes": 797,
+      "classification": "ORIGINAL_SERVER_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary3-failed-20261016/protected-run.original.log",
+      "mode": "100644",
+      "gitBlob": "f8f2e6d7cc5f96ac62358f31c8d541a3ee19cb46",
+      "sha256": "0e8e4824655e2c341490ed738129b8b1136adfa757f240178f8e2e36cd6214e4",
+      "bytes": 3000354,
+      "classification": "ORIGINAL_SERVER_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary3-failed-20261016/decision-12068487536.original.zip",
+      "mode": "100644",
+      "gitBlob": "1e42a80eee68eb2df01f930fb0663be246efbcc3",
+      "sha256": "3c3bf79e45d7235bbca961243484482bd83aef3c203aa6b4d1e5eeed78526804",
+      "bytes": 119107,
+      "classification": "ORIGINAL_SERVER_ARCHIVE"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary3-failed-20261016/hosted-source-diagnosis.original.raw.txt",
+      "mode": "100644",
+      "gitBlob": "b02e43c420556f3329e64caba22ba4f19e770afb",
+      "sha256": "39351c821f1cccb55df8088f681f6eaf929a89c3b7ad2a405f3acfc08be95e69",
+      "bytes": 2888,
+      "classification": "UNCHANGED_SOURCE_AND_HOSTED_DIAGNOSIS_OBSERVATION"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary3-failed-20261016/consumed-custody.observation.original.raw.txt",
+      "mode": "100644",
+      "gitBlob": "18da80fb7eb409fac997d716ffd7d08ac64ab8b2",
+      "sha256": "dc8f9c957eaf90ed16aca166a4612628c75ff4ac8fdb59542096d172f0a8a65e",
+      "bytes": 20785,
+      "classification": "UNCHANGED_NORMALIZED_GET_ONLY_CUSTODY_OBSERVATION_NOT_RAW_HTTP"
+    }
+  ],
+  "originalCaptureReviewUnchanged": true
+}

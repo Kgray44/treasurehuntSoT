@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "qualification": false,
+  "kind": "ACTUAL_ACCEPTED_MAIN_MERGE_CONFLICT_RESOLUTION",
+  "candidateParent": "6119eb58ae06a50236c396d4a6d27f9d9ae36f7c",
+  "acceptedMain": "aaff919428ef9ab421579415ce3409949724760d",
+  "resolvedFiles": 14,
+  "allPreparedHashesMatchWorkingBytes": true,
+  "unmergedPaths": 0,
+  "contractCount": 501,
+  "protectedExperiencePolicyExact": true,
+  "records": [
+    {
+      "path": ".gitattributes",
+      "bytes": 14012,
+      "sha256": "9823b0dab0f3878dc387fa95d81da6bf5863e3a767cef77010193e696e065a1c"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "bytes": 74885,
+      "sha256": "e52fa0f5b1a51c4be04e490cd2d51ea6035257a01d0f03acfd45b0c5716bfb4f"
+    },
+    {
+      "path": ".agents/README.md",
+      "bytes": 5111,
+      "sha256": "904b8e4bb38a98d0b627279855da337cb1ae3aaf59a0a51e31f15e00e3a2b17c"
+    },
+    {
+      "path": "testing/contracts.json",
+      "bytes": 356036,
+      "sha256": "2bcafa1770663a7e3eecb8a817fd7a8c73ac50375d45d41c7db5bc41b7f461f9"
+    },
+    {
+      "path": "Development_Docs/Engineering/Repository_Operations/product-status/current-status.md",
+      "bytes": 25722,
+      "sha256": "9006c7d00e000c2c3d6b9d6c90406959dba935dbfe905f19b4be12c71a9878af"
+    },
+    {
+      "path": "Development_Docs/Engineering/Repository_Operations/reference/feature-status.md",
+      "bytes": 27741,
+      "sha256": "03f17ca6641d025d094015f9e42c00e5a3420ebe7d27cfb54245fb9b03962f14"
+    },
+    {
+      "path": "docs/product/features.md",
+      "bytes": 9163,
+      "sha256": "e2c97efb49d32393e5f845e51244e2e062d7bb1edf5b2db34c253485235cd71e"
+    },
+    {
+      "path": "docs/user/player-guide.md",
+      "bytes": 8839,
+      "sha256": "a09489dbbbec8ee64cfd14705a7aa330644d849e052918697819599c45dee5ac"
+    },
+    {
+      "path": "src/components/crossdeck/CrossdeckDevices.test.tsx",
+      "bytes": 18507,
+      "sha256": "31954ed320c2fc1ef011c89e85f11abdc119b360a05d0f34fb90fe089047a090"
+    },
+    {
+      "path": "src/components/crossdeck/CrossdeckDevices.tsx",
+      "bytes": 21291,
+      "sha256": "2255b42466ef0364029ba01e3b9a81bdeeca4c7e8d78ee75896c8174f042eb37"
+    },
+    {
+      "path": "src/components/player/journal/ChronicleJournalSession.test.ts",
+      "bytes": 58661,
+      "sha256": "a7a8f3b3f675aa9ea41cb329957aedf0bb818153fc563edd0f2ef8bf959fd44e"
+    },
+    {
+      "path": "src/components/player/journal/ChronicleJournalSession.tsx",
+      "bytes": 69592,
+      "sha256": "22de034ed5c18142b709055be09dc5ad6832af244fb750fc229715d0fd383275"
+    },
+    {
+      "path": "src/components/player/parallax/ChronicleLens.test.tsx",
+      "bytes": 11398,
+      "sha256": "4472c5975d1eef5fceade6aa3a69e3f5e75aebc8137741a350f698cd328f40d8"
+    },
+    {
+      "path": "src/components/player/parallax/ChronicleLens.tsx",
+      "bytes": 24410,
+      "sha256": "62831d18fc339c044eaf372d1305ae5204357e8a4053454165239156e0857e40"
+    }
+  ]
+}

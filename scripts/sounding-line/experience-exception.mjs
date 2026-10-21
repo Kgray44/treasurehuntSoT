@@ -1,3 +1,15 @@
+import { CURRENT_R24, assertR24Mode, validateR24Custody } from "./experience-current-r24.mjs";
+import { CURRENT_R25, assertR25Mode } from "./experience-current-r25.mjs";
+import { CURRENT_R26, assertR26Mode } from "./experience-current-r26.mjs";
+import {
+  isReviewedEvidenceAdoption,
+  historicalReviewedPlan,
+  validateReviewedIdentity,
+  reviewedEvidenceAdoption,
+} from "./experience-reviewed-adoption.mjs";
+import { CURRENT_R23 } from "./experience-current-r23.mjs";
+import { CURRENT_R22 } from "./experience-current-r22.mjs";
+import { validatePreSourceCaptureBinding } from "./experience-review-source-gate.mjs";
 // A finite Crossdeck admission exception, not a second qualification authority.
 import { execFileSync } from "node:child_process";
 import { createHash, randomUUID } from "node:crypto";
@@ -27,6 +39,8 @@ import { CURRENT_R17 } from "./experience-current-r17.mjs";
 import { CURRENT_R18 } from "./experience-current-r18.mjs";
 import { CURRENT_R19 } from "./experience-current-r19.mjs";
 import { CURRENT_R20 } from "./experience-current-r20.mjs";
+import { CURRENT_R21 } from "./experience-current-r21.mjs";
+import { mediaFirstReviewProvenanceBinding } from "./experience-media-first-binding.mjs";
 import {
   CROSSDECK_R3,
   validateR3Record,
@@ -311,6 +325,69 @@ function r3FamilyRelated(root, candidateSha) {
   }
 }
 export function selectTrustedExceptions(records) {
+  if (records.some((record) => record.version === 26)) {
+    if (records.length !== 26 || digest(records.slice(0, 25)) !== CURRENT_R26.previousRecordsDigest)
+      fail("R26_PREDECESSOR_REGISTRY_CHANGED");
+    selectTrustedExceptions(records.slice(0, 25));
+    const successor = records[25];
+    validateCurrentAdmissionRecord(successor, { legacyCurrentRecord: records[24] });
+    return [successor];
+  }
+  if (records.some((record) => record.version === 25)) {
+    if (records.length !== 25 || digest(records.slice(0, 24)) !== CURRENT_R25.previousRecordsDigest)
+      fail("R25_PREDECESSOR_REGISTRY_CHANGED");
+    selectTrustedExceptions(records.slice(0, 24));
+    const successor = records[24];
+    validateCurrentAdmissionRecord(successor, { legacyCurrentRecord: records[23] });
+    return [successor];
+  }
+  if (records.some((record) => record.version === 24)) {
+    if (records.length !== 24 || digest(records.slice(0, 23)) !== CURRENT_R24.previousRecordsDigest)
+      fail("R24_PREDECESSOR_REGISTRY_CHANGED");
+    selectTrustedExceptions(records.slice(0, 23));
+    const successor = records[23];
+    validateCurrentAdmissionRecord(successor, { legacyCurrentRecord: records[22] });
+    return [successor];
+  }
+  if (records.some((record) => isCurrentAdmissionRecord(record) && record.version === 23)) {
+    if (records.length !== 23 || digest(records.slice(0, 22)) !== CURRENT_R23.previousRecordsDigest)
+      fail("CURRENT_R23_PREDECESSOR_REGISTRY_CHANGED");
+    selectTrustedExceptions(records.slice(0, 22));
+    const successor = records[22];
+    if (!isCurrentAdmissionRecord(successor) || successor.version !== 23)
+      fail("CURRENT_R23_PREDECESSOR_REGISTRY_CHANGED");
+    validateCurrentAdmissionRecord(successor, {
+      legacyRecord: records.find((record) => record.id === CROSSDECK_R14.id),
+      legacyCurrentRecord: records[21],
+    });
+    return [successor];
+  }
+  if (records.some((record) => isCurrentAdmissionRecord(record) && record.version === 22)) {
+    if (records.length !== 22 || digest(records.slice(0, 21)) !== CURRENT_R22.previousRecordsDigest)
+      fail("CURRENT_R22_PREDECESSOR_REGISTRY_CHANGED");
+    selectTrustedExceptions(records.slice(0, 21));
+    const successor = records[21];
+    if (!isCurrentAdmissionRecord(successor) || successor.version !== 22)
+      fail("CURRENT_R22_PREDECESSOR_REGISTRY_CHANGED");
+    validateCurrentAdmissionRecord(successor, {
+      legacyRecord: records.find((record) => record.id === CROSSDECK_R14.id),
+      legacyCurrentRecord: records[20],
+    });
+    return [successor];
+  }
+  if (records.some((record) => isCurrentAdmissionRecord(record) && record.version === 21)) {
+    if (records.length !== 21 || digest(records.slice(0, 20)) !== CURRENT_R21.previousRecordsDigest)
+      fail("CURRENT_R21_PREDECESSOR_REGISTRY_CHANGED");
+    selectTrustedExceptions(records.slice(0, 20));
+    const successor = records[20];
+    if (!isCurrentAdmissionRecord(successor) || successor.version !== 21)
+      fail("CURRENT_R21_PREDECESSOR_REGISTRY_CHANGED");
+    validateCurrentAdmissionRecord(successor, {
+      legacyRecord: records.find((record) => record.id === CROSSDECK_R14.id),
+      legacyCurrentRecord: records[19],
+    });
+    return [successor];
+  }
   if (records.some((record) => isCurrentAdmissionRecord(record) && record.version === 20)) {
     if (records.length !== 20 || digest(records.slice(0, 19)) !== CURRENT_R20.previousRecordsDigest)
       fail("CURRENT_R20_PREDECESSOR_REGISTRY_CHANGED");
@@ -624,6 +701,12 @@ export const trustedExceptions = (root, baseSha) => {
       "ls-tree",
       baseSha,
       "--",
+      "scripts/sounding-line/experience-current-r26.mjs",
+      "scripts/sounding-line/experience-current-r25.mjs",
+      "scripts/sounding-line/experience-current-r24.mjs",
+      "scripts/sounding-line/experience-current-r23.mjs",
+      "scripts/sounding-line/experience-current-r22.mjs",
+      "scripts/sounding-line/experience-current-r21.mjs",
       "scripts/sounding-line/experience-current-r20.mjs",
       "scripts/sounding-line/experience-current-r19.mjs",
       "scripts/sounding-line/experience-current-r18.mjs",
@@ -638,7 +721,19 @@ export const trustedExceptions = (root, baseSha) => {
   );
   // The adapter at the requested base cannot reactivate an older grant by removal.
   // Historical bases without this protected adapter retain their exact readers.
-  if (sentinels.has("scripts/sounding-line/experience-current-r20.mjs"))
+  if (sentinels.has("scripts/sounding-line/experience-current-r26.mjs"))
+    return [validateCurrentAdmissionRegistry(registry, undefined, { requiredVersion: 26 })];
+  if (sentinels.has("scripts/sounding-line/experience-current-r25.mjs"))
+    return [validateCurrentAdmissionRegistry(registry, undefined, { requiredVersion: 25 })];
+  if (sentinels.has("scripts/sounding-line/experience-current-r24.mjs"))
+    return [validateCurrentAdmissionRegistry(registry, undefined, { requiredVersion: 24 })];
+  if (sentinels.has("scripts/sounding-line/experience-current-r23.mjs"))
+    validateCurrentAdmissionRegistry(registry, undefined, { requiredVersion: 23 });
+  else if (sentinels.has("scripts/sounding-line/experience-current-r22.mjs"))
+    validateCurrentAdmissionRegistry(registry, undefined, { requiredVersion: 22 });
+  else if (sentinels.has("scripts/sounding-line/experience-current-r21.mjs"))
+    validateCurrentAdmissionRegistry(registry, undefined, { requiredVersion: 21 });
+  else if (sentinels.has("scripts/sounding-line/experience-current-r20.mjs"))
     validateCurrentAdmissionRegistry(registry, undefined, { requiredVersion: 20 });
   else if (sentinels.has("scripts/sounding-line/experience-current-r19.mjs"))
     validateCurrentAdmissionRegistry(registry, undefined, { requiredVersion: 19 });
@@ -1019,6 +1114,7 @@ export function sealedReviewIdentity(plan, evidence) {
     artifactsDigest: digest(evidence.artifacts),
     journeysDigest: digest(evidence.journeys),
     ...(plan.paired ? { pairedEvidenceDigest: digest(evidence.pairedEvidence) } : {}),
+    ...mediaFirstReviewProvenanceBinding(plan, evidence),
   };
 }
 export async function validateExceptionSubmissionEvidence({ root, plan, mode, candidateSha, evidenceRoot = root }) {
@@ -1098,6 +1194,25 @@ export function exceptionStore({ record, request }) {
 // Explicit historical evidence view. It cannot read an old qualification slot
 // or create any reservation, and is never a fallback for the current namespace.
 export function historicalExceptionContext({ root, plan, request }) {
+  if (isReviewedEvidenceAdoption(plan)) {
+    const historical = historicalReviewedPlan(plan),
+      record = exceptionRecords(root, plan.baseSha).find((value) => value.id === historical.exception.id);
+    if (!record || digest(record) !== CURRENT_R24.previousRecordDigest) fail("R24_HISTORICAL_RECORD_CHANGED");
+    const original = exceptionStore({ record, request });
+    return {
+      record,
+      plan: historical,
+      store: {
+        read(slot) {
+          if (!CURRENT_R24.custody.some((pin) => pin.slot === slot)) fail("R24_HISTORICAL_SLOT_FORBIDDEN");
+          return original.read(slot);
+        },
+        create() {
+          fail("R24_HISTORICAL_WRITE_FORBIDDEN");
+        },
+      },
+    };
+  }
   if (!ordinaryOnly(plan.exception?.id)) {
     const record = trustedExceptions(root, plan.baseSha).find((value) => value.id === plan.exception?.id);
     return { record, plan, store: exceptionStore({ record, request }) };
@@ -1121,6 +1236,10 @@ export function historicalExceptionContext({ root, plan, request }) {
   };
 }
 async function validateHistoricalExceptionCustody({ root, plan, request }) {
+  if (isReviewedEvidenceAdoption(plan)) {
+    const context = historicalExceptionContext({ root, plan, request });
+    return validateR24Custody(context);
+  }
   if (!plan.exception?.nonExecutingReconciliation) return;
   if (ordinaryOnly(plan.exception?.id)) {
     const context = historicalExceptionContext({ root, plan, request });
@@ -1834,9 +1953,13 @@ async function campaignHistory({ root, record, plan, mode, run, request, now, pr
   const since = new Date(
     predecessor ? record.predecessor.campaignEpoch : record.ownerApproval.approvedAtUtcMinute,
   ).toISOString();
+  const executionFloor = Date.parse(
+    record.ownerApproval.executionNotBeforeUtc ?? record.ownerApproval.approvedAtUtcMinute,
+  );
   if (
-    Date.parse(run.createdAt) <
-    Date.parse(record.ownerApproval.executionNotBeforeUtc ?? record.ownerApproval.approvedAtUtcMinute)
+    !Number.isFinite(executionFloor) ||
+    Date.parse(run.createdAt) < executionFloor ||
+    (record.version === 26 && Date.parse(run.createdAt) > Date.parse(CURRENT_R26.ownerApproval.executionDeadlineUtc))
   )
     fail("HISTORY_EPOCH_INVALID");
   const range = encodeURIComponent(`${since}..${run.createdAt}`),
@@ -1923,6 +2046,20 @@ async function campaignHistory({ root, record, plan, mode, run, request, now, pr
       return false;
     }
   }
+  return validateCampaignHistoryInventory({ record, mode, run, request, preflight, predecessors, all, recognized });
+}
+// This read-only inventory result grants no reservation. Production always
+// authenticates all predecessors and fetches a complete inventory above.
+export async function validateCampaignHistoryInventory({
+  record,
+  mode,
+  run,
+  request,
+  preflight,
+  predecessors,
+  all,
+  recognized,
+}) {
   for (const item of all.values()) {
     if (predecessors.some((p) => item.id === p.id)) {
       if (ordinaryOnly(record.id) || isCurrentAdmissionRecord(record)) {
@@ -1988,6 +2125,8 @@ async function campaignHistory({ root, record, plan, mode, run, request, now, pr
         fail("HISTORY_DRAFT_SKIP_UNVERIFIABLE");
       continue;
     }
+    if ([24, 25, 26].includes(record.version) && item.id !== run.runId)
+      fail(`R${record.version}_UNLISTED_CAMPAIGN_RUN`);
     const earlier =
       Date.parse(item.created_at) < Date.parse(run.createdAt) ||
       (item.created_at === run.createdAt && item.id < run.runId);
@@ -2014,6 +2153,13 @@ async function campaignHistory({ root, record, plan, mode, run, request, now, pr
   };
 }
 export async function reserveExceptionStage({ root, record, plan, mode, run, store, request, now }) {
+  if ([24, 25, 26].includes(record?.version)) {
+    if (!isReviewedEvidenceAdoption(plan) || record.id !== plan.exception.id)
+      fail(`R${record.version}_RECORD_PLAN_CHANGED`);
+    assertR24Mode(plan, mode);
+    assertR25Mode(plan, mode);
+    assertR26Mode(plan, mode);
+  }
   if (isCurrentAdmissionRecord(record)) {
     if (!["capture", "review", "ordinary", "verify"].includes(mode)) fail("MODE_FORBIDDEN");
     if (mode !== "verify") assertCurrentAdmissionCap(record, mode);
@@ -2178,6 +2324,11 @@ export async function verifyExceptionAttestation({
   const currentRecord = trustedExceptions(root, plan.baseSha).find((value) => value.id === plan.exception.id);
   const api = request ?? createRequest(currentRecord.repository);
   const context = historicalExceptionContext({ root, plan, request: api });
+  if (isReviewedEvidenceAdoption(plan)) {
+    validateReviewedIdentity(plan, evidence);
+    await validateHistoricalExceptionCustody({ root, plan, request: api });
+    plan = context.plan;
+  }
   if (plan.exception.nonExecutingReconciliation) {
     await validateHistoricalExceptionCustody({ root, plan, request: api });
     plan = r8FormatEvidencePlan(plan);
@@ -2189,6 +2340,7 @@ export async function verifyExceptionAttestation({
   const captureSeal = await store.read("capture");
   const reviewSlot = `review${record.remainingIndependentReviewOrdinal}`;
   const sealed = await store.read(reviewSlot);
+  validatePreSourceCaptureBinding(plan, evidence, capture, prepare, root);
   if (
     !captureSeal ||
     digest(captureSeal.provenance) !== digest(capture.trustedArtifact) ||
@@ -2206,6 +2358,7 @@ export async function verifyExceptionAttestation({
   return {
     prepareReservation: prepare.commitSha,
     reviewSeal: sealed.commitSha,
+    ...reviewedEvidenceAdoption(actualPlan),
     ...(actualPlan.exception.nonExecutingReconciliation
       ? { nonExecutingReconciliation: actualPlan.exception.nonExecutingReconciliation }
       : {}),
@@ -2382,6 +2535,13 @@ export async function assertExceptionExecution({
     return value;
   });
   withReplayAdmissionSubstage("EXECUTOR_CONTEXT", () => {
+    if (
+      isReviewedEvidenceAdoption(actual) &&
+      (environment.SOUNDING_LINE_EXCEPTION_PHASE !== "qualify" ||
+        plan.localProof ||
+        Object.keys(environment).some((key) => /^SOUNDING_LINE_R[0-9]+_LOCAL_LEASE$/u.test(key) && environment[key]))
+    )
+      fail("R24_CURRENT_QUALIFICATION_REQUIRED");
     if (
       actual.exception.nonExecutingReconciliation &&
       (environment.SOUNDING_LINE_EXCEPTION_PHASE !== "qualify" ||
@@ -2779,6 +2939,9 @@ async function main() {
   const mode = event.inputs?.experience_mode ?? "ordinary";
   if (!["ordinary", "capture", "review", "verify"].includes(mode)) fail("MODE_FORBIDDEN");
   assertOrdinaryOnlyMode({ exception: { id: record.id } }, mode);
+  if (record.version === 24) assertR24Mode({ exception: { id: record.id, version: 24 } }, mode);
+  if (record.version === 25) assertR25Mode({ exception: { id: record.id, version: 25 } }, mode);
+  if (record.version === 26) assertR26Mode({ exception: { id: record.id, version: 26 } }, mode);
   // Reserve before validation/downloads/setup can fail or be cancelled. The raw
   // source identity is an observation; it grants no admission until the complete
   // protected plan and all normal evidence gates subsequently validate it.

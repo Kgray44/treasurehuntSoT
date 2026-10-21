@@ -1,0 +1,35 @@
+{
+  "classification": "Engineering owner-authorized correction provenance",
+  "requestKey": "ld-920579d7c69676fc47fd66d55c5857d4ef5cf6d4e3364d5013a3e842427f6023",
+  "ownerThreadId": "01a12d5e-eb9a-7a72-aecb-adfa3c59a89a",
+  "receivedOwnerInstruction": "you are explicitly owner authorized to apply the proposed reconciliation, and merge to main",
+  "existingReservation": {
+    "state": "created",
+    "threadId": "01a12d5e-eb9a-7a72-aecb-adfa3c59a89a",
+    "projectId": "fd21b701-3215-417a-a413-0a17e02badbb",
+    "hostId": "local",
+    "turnId": "NOT_RETURNED_IN_RESERVATION"
+  },
+  "priorHead": "975f4f44b0cf46f47903656ac65fd8fa63fc8b64",
+  "protectedBase": "602f83efdb16b7ea75980f07fa3a3d976c496860",
+  "sourceFiles": ["src/app/devices/pair/page.tsx"],
+  "patch": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-diagnostic-retry-ca3941201375/restore-reach-pair-entry.proposed.patch",
+  "applied": true,
+  "scope": "Restore accepted next/link laboratory entry while preserving CrossdeckDevices pairing, metadata and authentication. Fresh qualification then protected merge only after PASS.",
+  "historicalFailureRuns": [38277482404, 38302871905],
+  "acceptedHelperBlobs": {
+    "browserAuthority": "295b67e1976fe128ceff2fde726d69b6cb25a2c1",
+    "experienceBrowser": "483b225c782f1aa44e1dcb62507c6b0b188ff04d"
+  },
+  "nativeGoal": {
+    "status": "paused",
+    "objective": "Original referenced pasted-text objective",
+    "resumeOperation": "UNAVAILABLE",
+    "replacementCreated": false,
+    "tokensUsed": 2565200,
+    "timeUsedSeconds": 6537,
+    "measurementScope": "Native Goal historical accumulated counters; not current continuation billing"
+  },
+  "ownerAcceptance": "NOT_CLAIMED",
+  "recordedUtc": "2026-10-12T22:19:39.810Z"
+}

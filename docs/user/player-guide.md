@@ -3,16 +3,31 @@ title: Player guide
 audience: player
 status: current
 canonical_for: player-guide
-last_reviewed: 2026-10-15
+last_reviewed: 2026-10-21
 ---
 
 # Player guide
 
-Connect your screens through **Devices** using
-the same account and Voyage. In the active candidate, select **Use this device**
-on the source screen, then **Create pairing code**. Each new code works once and
-lasts up to ten minutes; its countdown and the same button let you renew it after
-expiry. Joining a device never advances the story. The Journal's **Send to...** lets you choose another
+In the active Journal, choose **Connect another device** and scan the code with
+your phone, or choose **Use a code instead**. Sign in with the same Voyagewright
+account on the phone and join the Chronicle. **Continue the Chronicle** closes
+the connection dialog and returns to your place in the book.
+
+On the companion, **Change companion purpose** offers **Chronicle Lens**,
+**Voyage Chart** and **Journal companion** when their released content is
+available. Lens opens the actual spatial clue in Guided View; Chart keeps the
+current objective visible; Journal companion presents released passages with
+standard or larger reading size. **More purposes** includes released artifacts
+and the crew display. Unavailable purposes explain what is missing.
+**Return to Chronicle** opens the full Journal for the same Voyage. The Journal
+remembers your reading position; **Return to Current Objective** takes you to the
+latest passage.
+
+If an opening effect cannot finish, the Journal explains its readable fallback
+above the pages. Once the pages are ready, **Continue Voyage** remains available
+to advance the current Voyage.
+
+The Journal's **Send to...** lets you choose another
 active device and send the current released map, note or artifact. Choose **Receive**
 on that device to open it. Your original view stays recoverable while it arrives.
 Private notes require confirmation. If the controlling device goes away, choose
@@ -21,6 +36,9 @@ content explicitly shared with the crew. Connected screens refresh when a transf
 changes. Returning to the page or restoring your connection checks the current
 view immediately; interrupted updates remain recoverable. Physical-device and
 owner walkthrough acceptance remain separate from the integrated software.
+
+Use Personal Harbor's device preferences and security controls to review or
+remove account sessions. See [account security](account-security.md).
 
 When a released passage includes a spatial moment, choose **Open Chronicle Lens** to read and interact with its clue in Guided View. The same clue stays readable without a camera, while seated or using a keyboard. A compatible native companion can offer local camera placement. Closing the camera, using Android Back, or losing its permission returns the moment to Guided View; reopen it explicitly for a fresh camera session. Lens interactions are recorded separately from Voyage progression. Revisited passages preserve their meaning without changing progress.
 

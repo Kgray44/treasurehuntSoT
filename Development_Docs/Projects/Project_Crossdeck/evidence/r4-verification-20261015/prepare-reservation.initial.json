@@ -1,0 +1,16 @@
+{
+  "classification": "Authenticated preparation15 reservation exists; workflow still in progress, not capture acceptance",
+  "ref": {
+    "ref": "refs/tags/sounding-line-exceptions/PE-X-CROSSDECK-FINAL-VERIFY-20261015-R4/prepare",
+    "node_id": "REF_kwDOTatV2toAUnJlZnMvdGFncy9zb3VuZGluZy1saW5lLWV4Y2VwdGlvbnMvUEUtWC1DUk9TU0RFQ0stRklOQUwtVkVSSUZZLTIwMjYxMDE1LVI0L3ByZXBhcmU",
+    "url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/git/refs/tags/sounding-line-exceptions/PE-X-CROSSDECK-FINAL-VERIFY-20261015-R4/prepare",
+    "object": {
+      "sha": "ab215f42af06e5b5942a9d562595dea3af5a5a6a",
+      "type": "commit",
+      "url": "https://api.github.com/repos/Kgray44/treasurehuntSoT/git/commits/ab215f42af06e5b5942a9d562595dea3af5a5a6a"
+    }
+  },
+  "custodyJobId": 116695472183,
+  "custodySeconds": 202,
+  "status": "RESERVED_IN_PROGRESS"
+}

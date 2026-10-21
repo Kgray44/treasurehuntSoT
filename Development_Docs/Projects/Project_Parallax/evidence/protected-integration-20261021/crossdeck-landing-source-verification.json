@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "qualification": false,
+  "kind": "ACCEPTED_CROSSDECK_BOUNDARY_READBACK",
+  "landedCommit": "aaff919428ef9ab421579415ce3409949724760d",
+  "qualifiedHead": "6168c3668cfd2c590ea89bb2e5c01813835e56d8",
+  "landedTree": "6a8b3d8a2a2a24dd9a964e255b2c3034f450e0a7",
+  "qualifiedTree": "6a8b3d8a2a2a24dd9a964e255b2c3034f450e0a7",
+  "landedParents": [
+    "597c22c20a9b5e725baf06565746df2562cdf98e",
+    "6168c3668cfd2c590ea89bb2e5c01813835e56d8"
+  ],
+  "treeEqual": true,
+  "requiredMainlineDecision": "SUCCESS",
+  "protectedRunId": 39656414105,
+  "landedSmoke": "Published independent docs/features/evidence smoke PASS; preserved PR readback",
+  "thisCandidateQualification": "PENDING"
+}

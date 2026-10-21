@@ -1,0 +1,247 @@
+{
+  "classification": "ENGINEERING_EVIDENCE_ACCEPTED_MAINTENANCE_PROVENANCE_NOT_CONSUMER_QUALIFICATION",
+  "version": 1,
+  "archive": {
+    "path": "accepted-authority-originals.zip",
+    "bytes": 268855,
+    "sha256": "5bbc01f717f5a4eb32ae14d0ba0641dae8dd2cb78b1f39fffcca20074af6be23"
+  },
+  "entries": [
+    {
+      "path": "originals/authority-r9-landed-verification.json",
+      "bytes": 2972,
+      "sha256": "0cf2e85905f1d00f5c482947ba8382bff53456508445dc804161209bd5389c70",
+      "group": "CURRENT_ACCEPTED_AUTHORITY_PROVENANCE",
+      "classification": "INDEPENDENT_DERIVED_READ_ONLY_OBSERVATION"
+    },
+    {
+      "path": "originals/authority749-artifacts.accepted.original.raw.txt",
+      "bytes": 32,
+      "sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c",
+      "group": "CURRENT_ACCEPTED_AUTHORITY_PROVENANCE",
+      "classification": "ORIGINAL_SERVER_OUTPUT"
+    },
+    {
+      "path": "originals/authority749-candidate.accepted.original.raw.txt",
+      "bytes": 1166,
+      "sha256": "b335b7d50cb6a5d84f4375157ec444f33b8beeffe1563fababf2c019f1fe7e26",
+      "group": "CURRENT_ACCEPTED_AUTHORITY_PROVENANCE",
+      "classification": "ORIGINAL_SERVER_OUTPUT"
+    },
+    {
+      "path": "originals/authority749-comments.accepted.original.raw.txt",
+      "bytes": 7355,
+      "sha256": "c6724b6117e030e312fab99fd3c0fa281eee4ff0f516d0c06b8f82c4135adfcc",
+      "group": "CURRENT_ACCEPTED_AUTHORITY_PROVENANCE",
+      "classification": "ORIGINAL_SERVER_OUTPUT"
+    },
+    {
+      "path": "originals/authority749-commit.accepted.original.raw.txt",
+      "bytes": 2740,
+      "sha256": "e9b3eeb7d09b8a40832133612ff0a30459e30a4cbffcdbef9dd185ca994292ad",
+      "group": "CURRENT_ACCEPTED_AUTHORITY_PROVENANCE",
+      "classification": "ORIGINAL_SERVER_OUTPUT"
+    },
+    {
+      "path": "originals/authority749-jobs.accepted.original.raw.txt",
+      "bytes": 11957,
+      "sha256": "0f64f3c3f0e8645cfd6b925f53c1b76ea0181dd99edecefdc6ba913f7d26f0cd",
+      "group": "CURRENT_ACCEPTED_AUTHORITY_PROVENANCE",
+      "classification": "ORIGINAL_SERVER_OUTPUT"
+    },
+    {
+      "path": "originals/authority749-landed-verification.json",
+      "bytes": 2767,
+      "sha256": "40c6b6f46aad7234e85be57f454dd96810ab725d1fda40bdfc5c2cd33c5c0648",
+      "group": "CURRENT_ACCEPTED_AUTHORITY_PROVENANCE",
+      "classification": "INDEPENDENT_DERIVED_READ_ONLY_OBSERVATION"
+    },
+    {
+      "path": "originals/authority749-linux.accepted.original.log",
+      "bytes": 526846,
+      "sha256": "eb5ffdbfd62320f61e56dd680ecd09474d6bb3c03f61c0b1fdeb8753feda8ea7",
+      "group": "CURRENT_ACCEPTED_AUTHORITY_PROVENANCE",
+      "classification": "ORIGINAL_SERVER_OUTPUT"
+    },
+    {
+      "path": "originals/authority749-pr.accepted.original.raw.txt",
+      "bytes": 18629,
+      "sha256": "3d16b84392f2273aec2d7900497cc94bdb26e4c0eb1e002d4b9e10da8cd33f0a",
+      "group": "CURRENT_ACCEPTED_AUTHORITY_PROVENANCE",
+      "classification": "ORIGINAL_SERVER_OUTPUT"
+    },
+    {
+      "path": "originals/authority749-run.accepted.original.raw.txt",
+      "bytes": 12709,
+      "sha256": "b189dc039f145c5e44ece3a5f2eb7417ce96aab5295cb940e4d71aa1efb53abd",
+      "group": "CURRENT_ACCEPTED_AUTHORITY_PROVENANCE",
+      "classification": "ORIGINAL_SERVER_OUTPUT"
+    },
+    {
+      "path": "originals/authority750-approved-source.verified.json",
+      "bytes": 1653,
+      "sha256": "bfd2268e43708310816c2a035c310af37d7ca4bfd35e16ed3e5a71746c6a0aea",
+      "group": "SUPERSEDED_NONACCEPTING_MAINTENANCE",
+      "classification": "INDEPENDENT_DERIVED_READ_ONLY_OBSERVATION"
+    },
+    {
+      "path": "originals/authority750-artifacts.accepted.original.raw.txt",
+      "bytes": 32,
+      "sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c",
+      "group": "CURRENT_ACCEPTED_AUTHORITY_PROVENANCE",
+      "classification": "ORIGINAL_SERVER_OUTPUT"
+    },
+    {
+      "path": "originals/authority750-commit.accepted.original.raw.txt",
+      "bytes": 2764,
+      "sha256": "3a20f70cb8b34b60c6d64efade36cde9a46ff9014ff66c93c8abec2808399eda",
+      "group": "CURRENT_ACCEPTED_AUTHORITY_PROVENANCE",
+      "classification": "ORIGINAL_SERVER_OUTPUT"
+    },
+    {
+      "path": "originals/authority750-generic-history-marker.diagnosis.json",
+      "bytes": 1017,
+      "sha256": "0e8467b8c4f7c5f41435f216f5f2258315a118c334e2c4a1c5e479ad9e2e3fe1",
+      "group": "SUPERSEDED_NONACCEPTING_MAINTENANCE",
+      "classification": "INDEPENDENT_DERIVED_READ_ONLY_OBSERVATION"
+    },
+    {
+      "path": "originals/authority750-handoff.accepted.original.raw.txt",
+      "bytes": 7811,
+      "sha256": "71aa8b5fb172d0fb4c7b09d675c5f7f87427052a4a6ac4f04e43718e8ae08cd1",
+      "group": "CURRENT_ACCEPTED_AUTHORITY_PROVENANCE",
+      "classification": "ORIGINAL_SERVER_OUTPUT"
+    },
+    {
+      "path": "originals/authority750-independent-review.original.raw.txt",
+      "bytes": 17890,
+      "sha256": "f0e7aa88b80f6f35b6a404cd8ff40f76549d9460e84016b562718a68de14be7a",
+      "group": "SUPERSEDED_NONACCEPTING_MAINTENANCE",
+      "classification": "ORIGINAL_INDEPENDENT_REVIEW_RECEIPT"
+    },
+    {
+      "path": "originals/authority750-jobs.accepted.original.raw.txt",
+      "bytes": 11957,
+      "sha256": "4e6223db58bae0e637f3cbe9e274039f4a91b6c4d15e53196b589f6c59b9c5f9",
+      "group": "CURRENT_ACCEPTED_AUTHORITY_PROVENANCE",
+      "classification": "ORIGINAL_SERVER_OUTPUT"
+    },
+    {
+      "path": "originals/authority750-linux.accepted.original.log",
+      "bytes": 531422,
+      "sha256": "4854561799f002dfaa43a358f1fef2ae9df14b1f6ca03cbdbda084278cba5ad6",
+      "group": "CURRENT_ACCEPTED_AUTHORITY_PROVENANCE",
+      "classification": "ORIGINAL_SERVER_OUTPUT"
+    },
+    {
+      "path": "originals/authority750-main.accepted.original.raw.txt",
+      "bytes": 344,
+      "sha256": "8db4b057e01c75cd4a99e9f21e9dcb5245c06953d5210b3b989f2077b06c0b65",
+      "group": "CURRENT_ACCEPTED_AUTHORITY_PROVENANCE",
+      "classification": "ORIGINAL_SERVER_OUTPUT"
+    },
+    {
+      "path": "originals/authority750-original-failure-and-unused-new-custody.original.json",
+      "bytes": 12236,
+      "sha256": "19e961ff692fc8b52f867c31c99edb3870263e3970c1a7160274671524958b57",
+      "group": "CURRENT_ACCEPTED_AUTHORITY_PROVENANCE",
+      "classification": "INDEPENDENT_DERIVED_READ_ONLY_OBSERVATION"
+    },
+    {
+      "path": "originals/authority750-pr.accepted.original.raw.txt",
+      "bytes": 21510,
+      "sha256": "310b61318cab79c6efa27fbf2318ff66385324c346e4315032f52e3317212e06",
+      "group": "CURRENT_ACCEPTED_AUTHORITY_PROVENANCE",
+      "classification": "ORIGINAL_SERVER_OUTPUT"
+    },
+    {
+      "path": "originals/authority750-pr.reviewed-before-acceptance.original.raw.txt",
+      "bytes": 19196,
+      "sha256": "378f3d0f4942b17bfa974a8c90c4f5bfafb1e3c10d76980f49dade26ee0e1e96",
+      "group": "SUPERSEDED_NONACCEPTING_MAINTENANCE",
+      "classification": "ORIGINAL_SERVER_OUTPUT"
+    },
+    {
+      "path": "originals/authority750-review-comment.reviewed-before-acceptance.original.raw.txt",
+      "bytes": 21996,
+      "sha256": "337fec6a70f46c073a09677db7bb315f627cac9121dbed5d6db65b5259e60b02",
+      "group": "SUPERSEDED_NONACCEPTING_MAINTENANCE",
+      "classification": "ORIGINAL_SERVER_OUTPUT"
+    },
+    {
+      "path": "originals/authority750-run.accepted.original.raw.txt",
+      "bytes": 12713,
+      "sha256": "f0a41a84c1dbf28993d5ab732f435a17b96faf3716641aded1633865067070e5",
+      "group": "CURRENT_ACCEPTED_AUTHORITY_PROVENANCE",
+      "classification": "ORIGINAL_SERVER_OUTPUT"
+    },
+    {
+      "path": "originals/authority750-v1-artifacts.terminal.original.raw.txt",
+      "bytes": 32,
+      "sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c",
+      "group": "SUPERSEDED_NONACCEPTING_MAINTENANCE",
+      "classification": "ORIGINAL_SERVER_OUTPUT"
+    },
+    {
+      "path": "originals/authority750-v1-jobs.terminal.original.raw.txt",
+      "bytes": 11957,
+      "sha256": "fcb8f76af104645e139585e34348649d6584eae0429200816f0ab2ef8d698067",
+      "group": "SUPERSEDED_NONACCEPTING_MAINTENANCE",
+      "classification": "ORIGINAL_SERVER_OUTPUT"
+    },
+    {
+      "path": "originals/authority750-v1-nonaccepting-disposition.json",
+      "bytes": 1711,
+      "sha256": "ac861ffe9431b3c4bb3e541ca83a55074c5453b09fa3b361a10dcb9775d3a3e4",
+      "group": "SUPERSEDED_NONACCEPTING_MAINTENANCE",
+      "classification": "INDEPENDENT_DERIVED_READ_ONLY_OBSERVATION"
+    },
+    {
+      "path": "originals/authority750-v1-run.terminal.original.log",
+      "bytes": 451401,
+      "sha256": "339893474075eb7467287cfae58309bbb34ad83453edafc34c7910d444052c85",
+      "group": "SUPERSEDED_NONACCEPTING_MAINTENANCE",
+      "classification": "ORIGINAL_SERVER_OUTPUT"
+    },
+    {
+      "path": "originals/authority750-v1-run.terminal.original.raw.txt",
+      "bytes": 13205,
+      "sha256": "31977ad8bfb5f76ce8954cffe64f10e446314ba974748812f269b903901c9aa3",
+      "group": "SUPERSEDED_NONACCEPTING_MAINTENANCE",
+      "classification": "ORIGINAL_SERVER_OUTPUT"
+    },
+    {
+      "path": "originals/authority750-v2-approved-source.verified.json",
+      "bytes": 1778,
+      "sha256": "aa63896a5d160507e335a0fc4d10c778626a27636df28ecf06d4d4ab4ce292d3",
+      "group": "CURRENT_ACCEPTED_AUTHORITY_PROVENANCE",
+      "classification": "INDEPENDENT_DERIVED_READ_ONLY_OBSERVATION"
+    },
+    {
+      "path": "originals/authority750-v2-independent-review.original.raw.txt",
+      "bytes": 27619,
+      "sha256": "2824a8234d742b44a57c499485716c10aec6f04191fb6a73472aca43db145169",
+      "group": "CURRENT_ACCEPTED_AUTHORITY_PROVENANCE",
+      "classification": "ORIGINAL_INDEPENDENT_REVIEW_RECEIPT"
+    },
+    {
+      "path": "originals/authority750-v2-pr.reviewed-before-acceptance.original.raw.txt",
+      "bytes": 20305,
+      "sha256": "eed1df4545fd9cfef7341f65cd653738ffd4451746b943759a1e3150fe4830f2",
+      "group": "CURRENT_ACCEPTED_AUTHORITY_PROVENANCE",
+      "classification": "ORIGINAL_SERVER_OUTPUT"
+    },
+    {
+      "path": "originals/authority750-v2-review-comment.reviewed-before-acceptance.original.raw.txt",
+      "bytes": 33162,
+      "sha256": "9ad55914d9a4d493e01a82684f8cd93bc038704f7ffae9bd22188312cd379e20",
+      "group": "CURRENT_ACCEPTED_AUTHORITY_PROVENANCE",
+      "classification": "ORIGINAL_SERVER_OUTPUT"
+    }
+  ],
+  "source": "8c4a27ed0a7368b56a1552d11fcc0006cb7bb348af18504480c7678c5647fa3f",
+  "acceptedMainSha": "2e2efa5b8b02e9e5dd0bb0b15d9b23c2f694d7ed",
+  "originalCaptureAndReviewUnchanged": true,
+  "ordinary3Outcome": "NOT_CLAIMED_AT_PUBLICATION",
+  "observedAtUtc": "2026-10-16T18:17:52.724Z"
+}

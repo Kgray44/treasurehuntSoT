@@ -3,7 +3,7 @@ title: Repository automation guidance
 audience: automation
 status: current
 canonical_for: repository-automation-guidance
-last_reviewed: 2026-10-19
+last_reviewed: 2026-10-21
 ---
 
 # Repository automation guidance
@@ -13,14 +13,18 @@ evidence remain in their governed documentation locations. Each context packet
 retains its own task scope, ownership and evidence boundaries; older packets do
 not authorize restarting a completed phase.
 
+- [Parallax protected integration continuation](parallax-protected-integration-20261021.md)
 - [Complete Parallax integration preparation](parallax-integration-preparation-20261019.md)
 - [Focused development and final verification](testing-workflow.md)
 - [Automatic Product Experience Engineering workflow](product-experience-workflow.md)
 - [Working drafts and unified Library continuation](parallax-library-lifecycle.md)
 - [Spatial Studio complete overhaul contract](parallax-studio-overhaul.md)
+- [Crossdeck refit publication checkpoint](crossdeck-refit-checkpoint.md)
 - [Sounding Line capture lifecycle repair context](capture-lifecycle-repair.md)
 - [Sounding Line browser receipt diagnostic context](browser-receipt-diagnostics.md)
 - [Sounding Line replay failure diagnostic repair](replay-failure-diagnostics.md)
+- [Current replay artifact folder correction](replay-artifact-root-repair.md)
+- [Crossdeck R26 finite replay-folder successor](crossdeck-r26-replay-path-successor.md)
 - [Replay admission Git failure observations](replay-admission-git-diagnostics.md)
 - [Crossdeck ordinary6 finite hosted source diagnostic](crossdeck-ordinary6-source-diagnostic.md)
 - [Crossdeck ordinary6 finite posttechnical diagnostic](crossdeck-ordinary6-posttechnical-diagnostic.md)
@@ -45,6 +49,11 @@ not authorize restarting a completed phase.
 - [Crossdeck R14 instrumented whole qualification](crossdeck-r14-instrumented-qualification.md)
 - [Crossdeck R19 source preparation and protected installation gates](crossdeck-r19-source-preparation.md)
 - [Crossdeck R20 approved acceptance-boundary amendment](crossdeck-r20-acceptance-boundary.md)
+- [Crossdeck R21 fresh capture and media-first review successor](crossdeck-r21-media-first-successor.md)
+- [Crossdeck R22 actual-byte pre-source admission recovery](crossdeck-r22-pre-source-byte-gate.md)
+- [Crossdeck R23 exact-authority checkout recovery](crossdeck-r23-checkout-recovery.md)
+- [Crossdeck R24 ordinary checkout and retained review recovery](crossdeck-r24-ordinary-recovery.md)
+- [Crossdeck R25 finite ordinary budget recovery](crossdeck-r25-precommand-recovery.md)
 - [Parallax A1 owned task contract](parallax-a1-task-contract.md)
 - [Parallax A1 agreed Studio interface](parallax-a1-studio-interface.md)
 - [Sextant Phase 3 owned implementation context](sextant-phase3.md)

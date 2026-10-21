@@ -1,0 +1,646 @@
+{
+  "classification": "ENGINEERING_EVIDENCE_ACCEPTED_AUTHORITY_AND_POLICY_SOURCE_PROOF_NOT_CONSUMER_QUALIFICATION",
+  "version": 1,
+  "archive": {
+    "path": "accepted-authority-originals.zip",
+    "bytes": 4721780,
+    "sha256": "e62a002491ad693a8b76df1d6549f78e7522c1e3b7473eb149bb5c15375cb09f"
+  },
+  "entries": [
+    {
+      "path": "originals/authority752-accepted-landed.verified.json",
+      "bytes": 6693,
+      "sha256": "fc832a4a8bb882ee3b5385d6ca8868450f1fd9b7fe554c52e6f97ab763d65197",
+      "group": "AUTHOR_CREATED_READ_ONLY_OBSERVATION",
+      "classification": "AUTHOR_CREATED_READ_ONLY_OBSERVATION"
+    },
+    {
+      "path": "originals/authority752-approved-source.verified.json",
+      "bytes": 2037,
+      "sha256": "ec62bdaf6f9dadacd63e02357e24f9524e13d1ae5a32cf61eed7a3dcd444b361",
+      "group": "AUTHOR_CREATED_READ_ONLY_OBSERVATION",
+      "classification": "AUTHOR_CREATED_READ_ONLY_OBSERVATION"
+    },
+    {
+      "path": "originals/authority752-artifacts.whole-pass.original.raw",
+      "bytes": 32,
+      "sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/authority752-commit.accepted.original.raw",
+      "bytes": 2750,
+      "sha256": "e726f838aa4bfd27c05bd09f89ede629a8ad13ed0eacf6e641d1ccf4180ccf99",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/authority752-consumer-pr.accepted.original.raw",
+      "bytes": 17464,
+      "sha256": "9e5385c6939f70573890bbd543ca1d74a8af84d152b0291b0c5af90963dc45e0",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/authority752-handoff-comment.accepted.original.raw",
+      "bytes": 8389,
+      "sha256": "b239ecb0ecfbf536fc08a204135df47e1e583aa514c9de3a29bbbc94793c33f9",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/authority752-jobs.whole-pass.original.raw",
+      "bytes": 11961,
+      "sha256": "3eacf90255b3b5f15b1adba6c088efe1bc55992fb761b70c3607476f05834c38",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/authority752-linux.whole-pass.original.log",
+      "bytes": 531070,
+      "sha256": "0af7203875329810ac472fdf6a42188748079eed2d8fbfd7fe4e49f325b969df",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/authority752-live-custody.observation.json",
+      "bytes": 36100,
+      "sha256": "293442560e2246a65153e43a4e5b9ea0b72729e1ec72002ff099ca9def5c1832",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/authority752-main.accepted.original.raw",
+      "bytes": 344,
+      "sha256": "33450ddfd50b3eca77d13b017e61ff6aea528f51bddb9d25fe2a99f779632ddf",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/authority752-owner-accepted-authority-originals.zip.accepted.original.raw",
+      "bytes": 2222615,
+      "sha256": "4a2df1005166b021d6dd6fd74cde6456dac2cde884c4bbaccd5862ca820b0c7c",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/authority752-owner-accepted-authority-preservation-index.json.accepted.original.raw",
+      "bytes": 12554,
+      "sha256": "36725af39c27e6b4e079f4b488c1b8499465753f42210293311c1d9abd234add",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/authority752-owner-accepted-main-handoff.md.accepted.original.raw",
+      "bytes": 6907,
+      "sha256": "0b1d16c0ed523136e8524b8cbb8aaae90e76ce15f44c4eab7b164d9044b4b508",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/authority752-owner-landed-custody-refs.json.accepted.original.raw",
+      "bytes": 5773,
+      "sha256": "223bade2de834c7ce565594f7ff68f834c0458771978a7ef4ce2b28b8aa11f0c",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/authority752-owner-landed-live-full-history.json.accepted.original.raw",
+      "bytes": 2538826,
+      "sha256": "90c7a3dd7d19a3217a2c059896deb2b1357daf94195792c1899304d564fa2d67",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/authority752-owner-landed-main-ref.original.raw.json.accepted.original.raw",
+      "bytes": 344,
+      "sha256": "33450ddfd50b3eca77d13b017e61ff6aea528f51bddb9d25fe2a99f779632ddf",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/authority752-owner-landed-r10-refs.original.raw.json.accepted.original.raw",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/authority752-owner-landed-r8-refs.original.raw.json.accepted.original.raw",
+      "bytes": 2876,
+      "sha256": "e0e9fa6fbd640af40af88ea674582e049ebeed8ff572920b670c29b25c908f56",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/authority752-owner-landed-r9-refs.original.raw.json.accepted.original.raw",
+      "bytes": 572,
+      "sha256": "ff5b3bb793a48c13cf54b22542a5c186c4373a4e5bf66934821a0e71b1ad88d9",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/authority752-owner-landed-smoke.stderr.txt.accepted.original.raw",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/authority752-owner-landed-smoke.stdout.txt.accepted.original.raw",
+      "bytes": 3227,
+      "sha256": "4e566c7af8646828550dce6b7d6ffbc2ed302dec27c58e27b379837265d62d4c",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/authority752-owner-landed-verification.receipt.json.accepted.original.raw",
+      "bytes": 1460,
+      "sha256": "b002440d3411ea46d85f7f02d3bce3b6df617cc75731db1bf41f2456b4463bb0",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/authority752-owner-protected-jobs.original.raw.json.accepted.original.raw",
+      "bytes": 11961,
+      "sha256": "3eacf90255b3b5f15b1adba6c088efe1bc55992fb761b70c3607476f05834c38",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/authority752-owner-protected-linux-success.receipt.json.accepted.original.raw",
+      "bytes": 2488,
+      "sha256": "80883d38cfce7c2d7810ef6fd698081c2c0efb524115e1fc3d271b1bc9ede82f",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/authority752-owner-protected-run.cli.log.txt.accepted.original.raw",
+      "bytes": 531070,
+      "sha256": "0af7203875329810ac472fdf6a42188748079eed2d8fbfd7fe4e49f325b969df",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/authority752-owner-protected-run.logs.original.zip.accepted.original.raw",
+      "bytes": 140125,
+      "sha256": "11795ec288f118cf3a2c055fd95daa68088da3abddd00f3b64c6e61f8d653359",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/authority752-owner-protected-run.original.raw.json.accepted.original.raw",
+      "bytes": 13237,
+      "sha256": "d10df4be027754b3a63a8686449d0841777caa9db54aa57c5051a92cbf16e4f5",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/authority752-pr.accepted.original.raw",
+      "bytes": 20290,
+      "sha256": "3a57785838b6152264589fadccbff4923cc13b1538d30237284062c2faf98848",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/authority752-pr.approved.original.raw",
+      "bytes": 19047,
+      "sha256": "15bb45de8f4ced568f2a96e287edd4d3fcd3391f53fe47ea33ebceaf62350fa1",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/authority752-review-comment.approved.original.raw",
+      "bytes": 15043,
+      "sha256": "9e4e1e4b3246b8a7f23b1ffd3f1325c6ac473712616998b925706f7d73992b14",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/authority752-review-receipt.approved.original.raw",
+      "bytes": 12180,
+      "sha256": "79926d71282391e291b51e28e765a61fc75decc0f2b8c544a7dd1b1785ff321a",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/authority752-run.whole-pass.original.raw",
+      "bytes": 12734,
+      "sha256": "ef1b53ed422cf9d1b3ceb7a1b20bfed65df6a5a77548c846cefb3b478159fccd",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/authority752-source-manifest.approved.original.raw",
+      "bytes": 3399,
+      "sha256": "11bd5563d827cb3cc32b5d3194305f7c59334ab3f09c1b76f92af7b307b7d71c",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/authority752-whole-linux.verified.json",
+      "bytes": 1797,
+      "sha256": "c0f522490557ca1d6cbb70ceeed019462d7ba1aa53cc04cc9a3c17fd76e54b55",
+      "group": "AUTHOR_CREATED_READ_ONLY_OBSERVATION",
+      "classification": "AUTHOR_CREATED_READ_ONLY_OBSERVATION"
+    },
+    {
+      "path": "originals/initial-nonaccepting-policy.preservation.json",
+      "bytes": 1088,
+      "sha256": "d9fe1cfae55d25d7a0cc50147e599cc6279a84c4210f63c0e193c6de2ca4394e",
+      "group": "NONACCEPTING_SOURCE_POLICY_HISTORY",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/initial-nonaccepting-policy.stderr.original.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "group": "NONACCEPTING_SOURCE_POLICY_HISTORY",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/initial-nonaccepting-policy.stdout.original.txt",
+      "bytes": 124140,
+      "sha256": "dd15b534ab784bc0a3f66ee5be5d4abde57d9cf6ee23693858c3b5ac679655a2",
+      "group": "NONACCEPTING_SOURCE_POLICY_HISTORY",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/policy-v2-timeout-0.original.txt",
+      "bytes": 48785,
+      "sha256": "d9904a668d95b66b7d91dccbc77d800fab76a7608cf3331410af28e30f109877",
+      "group": "NONACCEPTING_SOURCE_POLICY_HISTORY",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/policy-v2-timeout-1.original.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "group": "NONACCEPTING_SOURCE_POLICY_HISTORY",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/policy-v2-timeout-2.original.txt",
+      "bytes": 3062,
+      "sha256": "cbb04020bfbc137189c1eda89e74dd370c147aab79ac34c3478b6af657a25ae8",
+      "group": "NONACCEPTING_SOURCE_POLICY_HISTORY",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/policy-v2-timeout-3.original.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "group": "NONACCEPTING_SOURCE_POLICY_HISTORY",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/policy-v2-timeout.preservation.json",
+      "bytes": 1591,
+      "sha256": "c717b32e09fb59fd88567f13d25f897f6f2d916ffcfbc4a9f20b18767ae1451d",
+      "group": "NONACCEPTING_SOURCE_POLICY_HISTORY",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/prior-review-history-0-neutral-context-independent-review-e3a87adad.json",
+      "bytes": 10683,
+      "sha256": "6744cea4e3983d0a997b2559e78f0e8b36709a7fecc8db11b0592746897ec15d",
+      "group": "NONACCEPTING_SOURCE_POLICY_HISTORY",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/prior-review-history-1-neutral-context-independent-review-39eeb155.json",
+      "bytes": 4449,
+      "sha256": "d32f40357767c4e0968e48fe897d2050ad53facd32ec866e8e66c2c3823d6b7a",
+      "group": "NONACCEPTING_SOURCE_POLICY_HISTORY",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/prior-review-history-2-registered-policy.stdout.txt",
+      "bytes": 124140,
+      "sha256": "dd15b534ab784bc0a3f66ee5be5d4abde57d9cf6ee23693858c3b5ac679655a2",
+      "group": "NONACCEPTING_SOURCE_POLICY_HISTORY",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/prior-review-history-3-registered-policy.stdout.txt",
+      "bytes": 48785,
+      "sha256": "d9904a668d95b66b7d91dccbc77d800fab76a7608cf3331410af28e30f109877",
+      "group": "NONACCEPTING_SOURCE_POLICY_HISTORY",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/r10-merged-policy-complete-obligations.json.original.raw",
+      "bytes": 2210430,
+      "sha256": "7574a26076b2727a605f472b63733a67bc511a71ef3f8f803162cc2184734bbc",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/r10-merged-policy-complete-source-checkout-filter.receipt.json.original.raw",
+      "bytes": 1005,
+      "sha256": "61b7dfe91c354518eccb56557e510773a28817043c76800a03f7d16f179abfb2",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/r10-merged-policy-complete-tracked-source.manifest.json.original.raw",
+      "bytes": 3629775,
+      "sha256": "19d8d026f8ad3427502673c9be9eb5f563a5811ff386f1754cd3a58f0db8315a",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/r10-merged-policy-complete-tracked-source.supplement.receipt.json.original.raw",
+      "bytes": 1312,
+      "sha256": "a3e27b395001423e34356e4791320b1c75f3772c7a924316db237d16d1216e9f",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/r10-merged-policy-independent-complete-source-verification.json.original.raw",
+      "bytes": 3455,
+      "sha256": "e69091b85e3d3a3082806dc604c24eb54ece976023693bc6d279d4e08575ff63",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/r10-merged-policy-merged-policy.receipt.json.original.raw",
+      "bytes": 801067,
+      "sha256": "1b6aa137ac6d4eb6e5f0db9daa66550407fe2d870f7d459eba44a9ba00384038",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/r10-merged-policy-policy-progress-reporter.mjs.original.raw",
+      "bytes": 814,
+      "sha256": "a32c392e41eb0396e6b2407a72b2a5a220304d130c3533cde155ec04a83ebb6d",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/r10-merged-policy-registered-policy.progress.jsonl.original.raw",
+      "bytes": 180210,
+      "sha256": "29be194d160a38dac87bf1bd8c7084e3e62c1dd7c3bac490e1c2e16f3e02f6e3",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/r10-merged-policy-registered-policy.stderr.txt.original.raw",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/r10-merged-policy-registered-policy.stdout.txt.original.raw",
+      "bytes": 120050,
+      "sha256": "e119c7d463503cc6830cec92adc4c792e76b06b9251e9dff8203bc334ce8fbcd",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/r10-merged-policy-registered-policy.terminal.json.original.raw",
+      "bytes": 1252,
+      "sha256": "e3239d4d46ea28d3d9365390798983c37bbf071dcafda84294beb4376afaf432",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/r10-merged-policy-runtime-test-config.manifest.json.original.raw",
+      "bytes": 703079,
+      "sha256": "0283053b46bcc4e97f70c692b359ccd7f5557d78893c4133ee4cf076a32c6e69",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/r10-merged-policy-source-tuple.json.original.raw",
+      "bytes": 794529,
+      "sha256": "42ddacfebffd5d0286c1147472e6a703eac3a71788ac4a25804a9edfa9d67fb7",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/r10-merged-policy.independent-readonly.json",
+      "bytes": 4050,
+      "sha256": "4b2c803f12d283cb42d2a11426030d418130fff683cd6262fb9faa1a8e3eacf3",
+      "group": "AUTHOR_CREATED_READ_ONLY_OBSERVATION",
+      "classification": "AUTHOR_CREATED_READ_ONLY_OBSERVATION"
+    },
+    {
+      "path": "originals/repair-full-policy.independent-readonly.json",
+      "bytes": 2701,
+      "sha256": "b9f084757de87675d3e29098ea57e7c80f46a62c33fd441df882a91cebeac06e",
+      "group": "AUTHOR_CREATED_READ_ONLY_OBSERVATION",
+      "classification": "AUTHOR_CREATED_READ_ONLY_OBSERVATION"
+    },
+    {
+      "path": "originals/repair-policy-v3-policy-fixture.receipt.json.original.raw",
+      "bytes": 8603,
+      "sha256": "586d1be24a4a2f024f0244d629888540e4cede934f890403e21f6fce269a11c9",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/repair-policy-v3-policy-progress-reporter.mjs.original.raw",
+      "bytes": 847,
+      "sha256": "b84af4855f8f521f9d6cd937cb259c21b71d6a31834f3f77e3b19365b83b7b60",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/repair-policy-v3-registered-policy.progress.jsonl.original.raw",
+      "bytes": 174622,
+      "sha256": "632ac1be422ac389d3448fba945706218cfcf95884f0565b0a5a8fe9cd938427",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/repair-policy-v3-registered-policy.stderr.txt.original.raw",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/repair-policy-v3-registered-policy.stdout.txt.original.raw",
+      "bytes": 116940,
+      "sha256": "ccbd060adf13e068ee88c213d52af29a213bd4113fc8e2f1c87380bf6e20339c",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/repair-policy-v3-registered-policy.terminal.json.original.raw",
+      "bytes": 1055,
+      "sha256": "20d29a9fe7718fbecac906f568a4e527a000a4a691e4be633d59420e2aff90bf",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/repair751-accepted-landed.verified.json",
+      "bytes": 3229,
+      "sha256": "5ab5db0660cdf73762c03d745b677c2a5cc4244b3a2a8dd23d97afbd6c47c7ca",
+      "group": "AUTHOR_CREATED_READ_ONLY_OBSERVATION",
+      "classification": "AUTHOR_CREATED_READ_ONLY_OBSERVATION"
+    },
+    {
+      "path": "originals/repair751-approved-source.verified.json",
+      "bytes": 1533,
+      "sha256": "a42e55d70457f8aafcf274ba1d02c236fc4897353857b388a828fd815a861db6",
+      "group": "AUTHOR_CREATED_READ_ONLY_OBSERVATION",
+      "classification": "AUTHOR_CREATED_READ_ONLY_OBSERVATION"
+    },
+    {
+      "path": "originals/repair751-artifacts.whole-pass.original.raw",
+      "bytes": 32,
+      "sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/repair751-commit.accepted.original.raw",
+      "bytes": 2770,
+      "sha256": "02df479e8149ec0f9327cf836276d0c28c92172fe7142e61bdb80e7578f4fe94",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/repair751-handoff.accepted.original.raw",
+      "bytes": 2874,
+      "sha256": "6c69f79f05f0c9e3d5b49dffc8d88dec9e6e2f4cee7de69cdd2c27e36bedb072",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/repair751-jobs.whole-pass.original.raw",
+      "bytes": 11997,
+      "sha256": "2c49e32f390340a4fe692535a7124df7324f13b41329c7913516b31136252858",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/repair751-linux.whole-pass.original.log",
+      "bytes": 530462,
+      "sha256": "e5872274579cf9150b45d132eab7ab2e47c47f5878d6ef464daea5edfdf7ac86",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/repair751-main.accepted.original.raw",
+      "bytes": 344,
+      "sha256": "28a720ddaa140c5bcea93a2ef046ed4cce55bab5c00fbff6d2acb53962b9da4a",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/repair751-owner-landed-receipt.accepted.original.raw",
+      "bytes": 763,
+      "sha256": "cce414caceab02e1e6b6ca0f4a7f9e97fe75875199b30c98edeee855314fbe5e",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/repair751-owner-landed-stderr.accepted.original.raw",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/repair751-owner-landed-stdout.accepted.original.raw",
+      "bytes": 32274,
+      "sha256": "0ba3d59c72f99b4459dd7f7bb624e1eca73a0568be385b10afe6e9f0da0fb676",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/repair751-owner-protected-jobs.original.raw.json.accepted.original.raw",
+      "bytes": 11997,
+      "sha256": "2c49e32f390340a4fe692535a7124df7324f13b41329c7913516b31136252858",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/repair751-owner-protected-receipt.accepted.original.raw",
+      "bytes": 2484,
+      "sha256": "e15b1bee4f727b4935a747b72ee0454e50d6fcbd15489cca70932e3b400939cc",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/repair751-owner-protected-run.cli.log.txt.accepted.original.raw",
+      "bytes": 530462,
+      "sha256": "e5872274579cf9150b45d132eab7ab2e47c47f5878d6ef464daea5edfdf7ac86",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/repair751-owner-protected-run.logs.original.zip.accepted.original.raw",
+      "bytes": 141113,
+      "sha256": "16d9964460c10372881257de30319ab0456445555030ac48348cde8fc470062e",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/repair751-owner-protected-run.original.raw.json.accepted.original.raw",
+      "bytes": 13234,
+      "sha256": "4f6afd1015ccf6ea8caf5745b688f1f99842630f5b64ede7707a90badeb6869c",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/repair751-pr.accepted.original.raw",
+      "bytes": 19018,
+      "sha256": "747a684505adb3776b356e065d117256f27cf0235b91a1a10b57a412e3bd2ffd",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/repair751-pr.approved.original.raw",
+      "bytes": 17902,
+      "sha256": "a9920968203337c2bf1e5874b0bc260af119e536fcad9915a0e0643f0ac507ba",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/repair751-review-comment.approved.original.raw",
+      "bytes": 13810,
+      "sha256": "d3d760b70a2a96fb7855005c1221eff3b646cdde67e7485538280a3c1a1d72d1",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/repair751-review-receipt.approved.original.raw",
+      "bytes": 10917,
+      "sha256": "970bafc2be4450722d626cc547dd41aac574c8ee5b2a6ca2e2bdacbeed903083",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/repair751-run.whole-pass.original.raw",
+      "bytes": 13234,
+      "sha256": "4f6afd1015ccf6ea8caf5745b688f1f99842630f5b64ede7707a90badeb6869c",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/repair751-source-manifest.approved.original.raw",
+      "bytes": 2019,
+      "sha256": "717425b0dd3e26d5498c56300b64391bf56f1e619d4f1787791343bbb0cd842b",
+      "group": "ACCEPTED_AUTHORITY_AND_SOURCE_PROOF",
+      "classification": "UNCHANGED_RETAINED_SOURCE_BYTES"
+    },
+    {
+      "path": "originals/repair751-whole-linux.verified.json",
+      "bytes": 1778,
+      "sha256": "26b3ad116da3a373f64103ea38cee0fa734011bc1fbd123bb54167cded37e782",
+      "group": "AUTHOR_CREATED_READ_ONLY_OBSERVATION",
+      "classification": "AUTHOR_CREATED_READ_ONLY_OBSERVATION"
+    }
+  ],
+  "acceptedMainSha": "b7935ad2f68a278ef49f0618ec3b72263b0fb8b9",
+  "currentSourceDigest": "6f065402d448c4330a2f70f4048551de9fc89c37e0c95eae70bcb7553f269b10",
+  "originalCaptureAndReviewUnchanged": true,
+  "ordinary4Outcome": "NOT_CLAIMED_AT_PUBLICATION",
+  "observedAt": "2026-10-16T20:59:47.130Z"
+}

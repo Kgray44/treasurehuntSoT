@@ -1,0 +1,15 @@
+{
+  "classification": "Engineering original mechanical preflight bytes",
+  "files": [
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-main4baa-reconciliation-20261015/merge-tree.original.raw.txt",
+      "bytes": 495,
+      "sha256": "e02900868e2120a26d061d1218cd07454fcf04dfaf5e391b2f0fe02c34f99d6d"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-main4baa-reconciliation-20261015/README-conflict.original.raw.txt",
+      "bytes": 1920,
+      "sha256": "cbaddde9b70ce3171f96b4c3cc3b88790c7735c34bd69972cea4baca4bc3ba19"
+    }
+  ]
+}

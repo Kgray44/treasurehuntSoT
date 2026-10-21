@@ -3,7 +3,7 @@ title: Spatial Experience Refit readiness inputs
 audience: engineering
 status: current
 canonical_for: spatial-experience-refit-readiness
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-15
 ---
 
 # Spatial Experience Refit readiness
@@ -33,3 +33,9 @@ The reusable A–H fixtures already protect these failure classes. The real acco
 recovery journey exercises the permanent capture/review/acceptance process.
 The next refit can use this process directly; it must not create another policy,
 role-label-only test, acceptance authority or animation system.
+
+## Crossdeck rendered outcome
+
+`PE-DEBT-CROSSDECK-LENS` is closed for the promised browser software outcome: contextual connection reaches the actual published-clue Guided Lens on the same authorized Voyage with safe return. Fresh protected preparation FIFTEEN, separate-context review FIVE and authenticated review 38820570426 bind source `4446bc23b1393a4d` / base `a2495fd1`; the [R4 record](../../Projects/Project_Crossdeck/Spatial_Experience_Refit_R4_Verification_20261015.md) preserves originals and prior failures. The existing Homeport ledger records the current disposition; immutable baseline contract ID/fingerprint and original concern remain historical context. [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) records the exact protected qualification and integration decision.
+
+This closure establishes the supported Guided View, not native/world-tracked AR, physical/field reliability or owner product acceptance. The other three debt IDs above retain their independently owned status; this Crossdeck refit does not close them.

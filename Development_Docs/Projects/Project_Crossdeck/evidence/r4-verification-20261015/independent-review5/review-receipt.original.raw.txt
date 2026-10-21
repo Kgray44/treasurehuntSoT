@@ -1,0 +1,1327 @@
+{
+  "classification": "DEFINITIVE_INDEPENDENT_REVIEW_FIVE_RECEIPT",
+  "reviewerContext": "/root/final_product_review_5",
+  "builderContext": "/root",
+  "independence": "SEPARATE_CONTEXT",
+  "iterations": 11,
+  "independentReviewOrdinal": 5,
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "sourceIdentity": {
+    "baseSha": "a2495fd14efd5ade67832e18fd260f32da98b3b2",
+    "candidateSha": "19687c12e20ef69e6519903b14e56a145df2d7e7",
+    "candidateTree": "b8df76fca5532a71799f052ed74f1129c0311429",
+    "sourceDigest": "4446bc23b1393a4d762a007a21b62d96980a8b9949e4f7741ae51617d07319b5",
+    "contractDigest": "4ee636786ea5b2fedd375c3567441f151caa668d98934b01e98161c4c88c44ec",
+    "frozenReference": "97cdcad1b60210efef07ac3bcbe407abda936baf",
+    "productSrcTree": "4eb7fe5f50a039ae5434822892ae761f92eabec7",
+    "frozenReferenceSrcTree": "4eb7fe5f50a039ae5434822892ae761f92eabec7",
+    "productSrcEqual": true,
+    "frozenRegistryAndTargetedSpecifications": [
+      {
+        "path": "testing/contracts.json",
+        "candidateGitBlob": "eb8324379b3348cacf9e2ecbd592c5899ee5a63b",
+        "referenceGitBlob": "eb8324379b3348cacf9e2ecbd592c5899ee5a63b",
+        "equal": true,
+        "inspection": "Read-only Git object identity comparison; targeted tests were not executed or used as the experience verdict."
+      },
+      {
+        "path": "tests/e2e/crossdeck-experience-refit.spec.ts",
+        "candidateGitBlob": "96b86fcfcd97218aefce740e1bad758726c84dcb",
+        "referenceGitBlob": "96b86fcfcd97218aefce740e1bad758726c84dcb",
+        "equal": true,
+        "inspection": "Read-only Git object identity comparison; targeted tests were not executed or used as the experience verdict."
+      },
+      {
+        "path": "tests/e2e/crossdeck-refit-recovery.spec.ts",
+        "candidateGitBlob": "884bab36709894d234f2307c37bc5ba9ed8152ef",
+        "referenceGitBlob": "884bab36709894d234f2307c37bc5ba9ed8152ef",
+        "equal": true,
+        "inspection": "Read-only Git object identity comparison; targeted tests were not executed or used as the experience verdict."
+      },
+      {
+        "path": "tests/e2e/reach-laboratory.spec.ts",
+        "candidateGitBlob": "4b227802acc7e676b748b94eb65ddf6532ba121b",
+        "referenceGitBlob": "4b227802acc7e676b748b94eb65ddf6532ba121b",
+        "equal": true,
+        "inspection": "Read-only Git object identity comparison; targeted tests were not executed or used as the experience verdict."
+      },
+      {
+        "path": "tests/e2e/homeport-phase2.spec.ts",
+        "candidateGitBlob": "a6e74a12f0b00cfd68d1d676fe15370ca8e5f1b1",
+        "referenceGitBlob": "a6e74a12f0b00cfd68d1d676fe15370ca8e5f1b1",
+        "equal": true,
+        "inspection": "Read-only Git object identity comparison; targeted tests were not executed or used as the experience verdict."
+      }
+    ]
+  },
+  "originalStageRoot": "D:/CrossdeckR4Capture-38814444774",
+  "packetBindings": [
+    {
+      "contractId": "crossdeck.phase2.continuity",
+      "packetPath": "D:/CrossdeckR4Capture-38814444774/Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.phase2.continuity-review-packet.json",
+      "packetFileSha256": "8a78f4693e4e899bc9ab7265225580a34ef47c44c9d552394cf7f00f3d94ae1c",
+      "packetDigest": "89f7c738d62ff03596ea9562022659b0d829b5574e60fde629a24dda3a7a3175",
+      "recomputedPacketDigest": "89f7c738d62ff03596ea9562022659b0d829b5574e60fde629a24dda3a7a3175",
+      "orderedOriginalManifestMetadataEqual": true,
+      "artifactCount": 20,
+      "artifactIds": [
+        "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+        "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-CONNECT_READY-3",
+        "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-RETURNED-5",
+        "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-trace",
+        "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-recording",
+        "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-JOURNAL_READY-0",
+        "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-CONNECT_READY-3",
+        "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-RETURNED-5",
+        "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-trace",
+        "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-recording",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-CONNECT_READY-3",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-RETURNED-5",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-trace",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-recording",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-JOURNAL_READY-0",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-CONNECT_READY-3",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-RETURNED-5",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-trace",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-recording"
+      ]
+    },
+    {
+      "contractId": "crossdeck.refit.companion",
+      "packetPath": "D:/CrossdeckR4Capture-38814444774/Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.companion-review-packet.json",
+      "packetFileSha256": "1d63f4b39b0db1da69cd04c6d21387da0293b5a1373212bf9ddf6844f036bd12",
+      "packetDigest": "8585751259a9d770cc5fddceb4a991571e8cc9c991f743638cca26baed7f08b9",
+      "recomputedPacketDigest": "8585751259a9d770cc5fddceb4a991571e8cc9c991f743638cca26baed7f08b9",
+      "orderedOriginalManifestMetadataEqual": true,
+      "artifactCount": 32,
+      "artifactIds": [
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-CHART_READY-7",
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-ARTIFACT_READY-13",
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-JOURNAL_RESTORED-16",
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-RETURNED-20",
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-trace",
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-recording",
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-JOURNAL_READY-0",
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-LENS_READY-3",
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-CHART_READY-7",
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-ARTIFACT_READY-13",
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-JOURNAL_RESTORED-16",
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-RETURNED-20",
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-trace",
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-recording",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-CHART_READY-7",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-ARTIFACT_READY-13",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-JOURNAL_RESTORED-16",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-RETURNED-20",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-trace",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-recording",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-JOURNAL_READY-0",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-LENS_READY-3",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-CHART_READY-7",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-ARTIFACT_READY-13",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-JOURNAL_RESTORED-16",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-RETURNED-20",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-trace",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-recording"
+      ]
+    },
+    {
+      "contractId": "crossdeck.refit.published-lens",
+      "packetPath": "D:/CrossdeckR4Capture-38814444774/Development_Docs/Testing/Product_Experience/evidence/generic/crossdeck.refit.published-lens-review-packet.json",
+      "packetFileSha256": "df4a51e3bbad5b6d7335e85fc92905df72aa51537f27240affb4b64d8a37993e",
+      "packetDigest": "d85a028cc64d10a11ee9b5c640ae6e5c64e38d2d7d96999c03eacd07757448ab",
+      "recomputedPacketDigest": "d85a028cc64d10a11ee9b5c640ae6e5c64e38d2d7d96999c03eacd07757448ab",
+      "orderedOriginalManifestMetadataEqual": true,
+      "artifactCount": 24,
+      "artifactIds": [
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-INSPECTED-6",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-RETURNED-8",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-trace",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-recording",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-JOURNAL_READY-0",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-INSPECTED-6",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-RETURNED-8",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-trace",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-recording",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-INSPECTED-6",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-RETURNED-8",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-trace",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-recording",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-JOURNAL_READY-0",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-LENS_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-INSPECTED-6",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-RETURNED-8",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-trace",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-recording"
+      ]
+    },
+    {
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "packetPath": "D:/CrossdeckR4Capture-38814444774/Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-access-recovery-review-packet.json",
+      "packetFileSha256": "565e3a3cd11743cb48b9904b4e6a8145ee8d03374f4393287570627d97f73658",
+      "packetDigest": "a242b0ba99ac7bbf5998b30f17e1b3b48772290a00c6aec823f613a725f7e45f",
+      "recomputedPacketDigest": "a242b0ba99ac7bbf5998b30f17e1b3b48772290a00c6aec823f613a725f7e45f",
+      "orderedOriginalManifestMetadataEqual": true,
+      "artifactCount": 24,
+      "artifactIds": [
+        "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-PLAYER_ENTRY_READY-0",
+        "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-SIGN_IN_READY-4",
+        "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-RECOVERY_READY-6",
+        "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-10",
+        "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+        "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-recording",
+        "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-PLAYER_ENTRY_READY-0",
+        "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-SIGN_IN_READY-4",
+        "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RECOVERY_READY-6",
+        "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-10",
+        "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+        "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-recording",
+        "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-PLAYER_ENTRY_READY-0",
+        "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-SIGN_IN_READY-4",
+        "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-RECOVERY_READY-6",
+        "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-10",
+        "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-trace",
+        "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-recording",
+        "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-PLAYER_ENTRY_READY-0",
+        "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-SIGN_IN_READY-4",
+        "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-RECOVERY_READY-6",
+        "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-10",
+        "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-trace",
+        "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-recording"
+      ]
+    },
+    {
+      "contractId": "homeport.shell.crossdeck-companion-mobile",
+      "packetPath": "D:/CrossdeckR4Capture-38814444774/Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-mobile-review-packet.json",
+      "packetFileSha256": "177e776c348b913a83a0f49a06a7091750f877ed471ff946eb86640daf692c69",
+      "packetDigest": "1e0bc89306648153a33bed78ff2ca161929fa81ff7ec04696272fc47ba2ebc3b",
+      "recomputedPacketDigest": "1e0bc89306648153a33bed78ff2ca161929fa81ff7ec04696272fc47ba2ebc3b",
+      "orderedOriginalManifestMetadataEqual": true,
+      "artifactCount": 10,
+      "artifactIds": [
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-COMPANION_READY-0",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-7",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-trace",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-recording",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-COMPANION_READY-0",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-RETURNED-7",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-trace",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-recording"
+      ]
+    },
+    {
+      "contractId": "homeport.shell.crossdeck-companion",
+      "packetPath": "D:/CrossdeckR4Capture-38814444774/Development_Docs/Testing/Product_Experience/evidence/generic/homeport.shell.crossdeck-companion-review-packet.json",
+      "packetFileSha256": "8ca71d60004febde5411a56d97eb1ff45399938d881d7c3436e3b11e3e2fb282",
+      "packetDigest": "c7835b71fc35ee25ba262c69651d59792896fbde10727102f09c83c0305b19a2",
+      "recomputedPacketDigest": "c7835b71fc35ee25ba262c69651d59792896fbde10727102f09c83c0305b19a2",
+      "orderedOriginalManifestMetadataEqual": true,
+      "artifactCount": 10,
+      "artifactIds": [
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-COMPANION_READY-0",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-RETURNED-7",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-trace",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-recording",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-COMPANION_READY-0",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-LIBRARY_READY-3",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-RETURNED-7",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-trace",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-recording"
+      ]
+    },
+    {
+      "contractId": "reach.phase1.foundation",
+      "packetPath": "D:/CrossdeckR4Capture-38814444774/Development_Docs/Testing/Product_Experience/evidence/generic/reach.phase1.foundation-review-packet.json",
+      "packetFileSha256": "4179095dcb161bddd1610ab6f76e87a5c167b5d9df6d422e476df0fd4809f1c9",
+      "packetDigest": "8214e9d0096feaadb1670a4372939b8d526ae94e97bd8b213b8f1a04e653d653",
+      "recomputedPacketDigest": "8214e9d0096feaadb1670a4372939b8d526ae94e97bd8b213b8f1a04e653d653",
+      "orderedOriginalManifestMetadataEqual": true,
+      "artifactCount": 108,
+      "artifactIds": [
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRAINING-7",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-PAUSED-9",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-FIT_READY-28",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-VALIDATION-30",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RESULTS-40",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-PLAYGROUND-42",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-MULTIPLE_HANDS-49",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-57",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-recording",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-WELCOME-1",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-TRACKING-3",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-TRAINING-7",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-PAUSED-9",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-FIT_READY-28",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-VALIDATION-30",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-RESULTS-40",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-PLAYGROUND-42",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-MULTIPLE_HANDS-49",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-DETECTED_INELIGIBLE-55",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-57",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-recording",
+        "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1",
+        "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3",
+        "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_TRAINING-5",
+        "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_VALIDATION-17",
+        "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RELATIVE_RESULTS-27",
+        "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-RETURNED-31",
+        "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-trace",
+        "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-recording",
+        "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-WELCOME-1",
+        "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-TRACKING-3",
+        "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-RELATIVE_TRAINING-5",
+        "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-RELATIVE_VALIDATION-17",
+        "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-RELATIVE_RESULTS-27",
+        "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-RETURNED-31",
+        "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-trace",
+        "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-recording",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-CAMERA_UNAVAILABLE-3",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-TRACKING-5",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-7",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-recording",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-WELCOME-1",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-CAMERA_UNAVAILABLE-3",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-TRACKING-5",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-7",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-recording",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-WELCOME-1",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-TRACKING-3",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-TRAINING-7",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-PAUSED-9",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-FIT_READY-28",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-VALIDATION-30",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RESULTS-40",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-PLAYGROUND-42",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-MULTIPLE_HANDS-49",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-DETECTED_INELIGIBLE-55",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-57",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-trace",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-recording",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-WELCOME-1",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-TRACKING-3",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-TRAINING-7",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-PAUSED-9",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-FIT_READY-28",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-VALIDATION-30",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-RESULTS-40",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-PLAYGROUND-42",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-MULTIPLE_HANDS-49",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-DETECTED_INELIGIBLE-55",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-57",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-trace",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-recording",
+        "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-WELCOME-1",
+        "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-TRACKING-3",
+        "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RELATIVE_TRAINING-5",
+        "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RELATIVE_VALIDATION-17",
+        "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RELATIVE_RESULTS-27",
+        "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-RETURNED-31",
+        "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-trace",
+        "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-recording",
+        "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-WELCOME-1",
+        "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-TRACKING-3",
+        "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RELATIVE_TRAINING-5",
+        "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RELATIVE_VALIDATION-17",
+        "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RELATIVE_RESULTS-27",
+        "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-RETURNED-31",
+        "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-trace",
+        "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-recording",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-WELCOME-1",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-CAMERA_UNAVAILABLE-3",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-TRACKING-5",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-RETURNED-7",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-trace",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-recording",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-WELCOME-1",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-CAMERA_UNAVAILABLE-3",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-TRACKING-5",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-RETURNED-7",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-trace",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-recording"
+      ]
+    }
+  ],
+  "counts": {
+    "contracts": 7,
+    "contractDimensionJudgments": 119,
+    "originals": 228,
+    "originalBytes": 435008411,
+    "screenshots": 164,
+    "recordings": 32,
+    "traces": 32,
+    "contexts": 32,
+    "distinctJourneys": 9,
+    "acceptedReferenceImages": 4,
+    "screenshotSheets": 44,
+    "recordingSeconds": 419.08,
+    "completeTimelineSamples": 887,
+    "completeTimelineSheets": 97,
+    "nativeCadenceWindows": 5,
+    "nativeWindowFrames": 214,
+    "nativeWindowSheets": 27,
+    "acceptedContracts": 7,
+    "blockedContracts": 0,
+    "openMinorPolishFindings": 1,
+    "currentMandatoryBlockingFindings": 0
+  },
+  "inspectionOrder": {
+    "experienceInspectionStartRecord": {
+      "path": "D:/Codex_Task_Artifacts/Crossdeck_Refit_01a12d5e_20261012/r4-a249/independent-review5/inspection-start.json",
+      "bytes": 169,
+      "sha256": "1c5ec3be5b52b7e875a9eab25efdf13bc14cb536d5f6e3c3a5577ff4960fa60f"
+    },
+    "experienceBeforeSourceCheckpoint": {
+      "path": "D:/Codex_Task_Artifacts/Crossdeck_Refit_01a12d5e_20261012/r4-a249/independent-review5/experience-before-source.json",
+      "bytes": 1764,
+      "sha256": "0f485d0e6e0ee5a96d1bfc8d961c9cb3ebdac064a93c6fd25a3902105a3c54f4"
+    },
+    "experienceInspectionCompletedBeforeSourceUtc": "2026-10-15T22:39:15.976801+00:00",
+    "sourceInspectionBeganAfterCheckpoint": true,
+    "firstSourceReadExactTime": "Not separately instrumented; lower bound is the saved experience completion checkpoint. Subsequent read-only commands inspected the owned candidate.",
+    "experienceFirstMethod": "All original-bound screenshot sheets at 720x450 desktop and native 390x844 mobile, selected desktop originals at full 1440x900; complete 2 fps chronological recording sheets plus native 25 fps windows; all original trace ZIP action/navigation/keyboard/console streams, with manifest continuity and feedback observations as supporting evidence.",
+    "laterCorroboration": "After source inspection, selected original screenshots were reopened at full/native size to confirm fine detail. This did not replace or reorder the completed experience-first inspection.",
+    "excluded": "Earlier independent-review3/4 files, prior verdicts, builder design rationale and root design/verification prose were not read."
+  },
+  "inspectedOriginals": {
+    "allIdsAndPreservedMetadata": {
+      "path": "D:/Codex_Task_Artifacts/Crossdeck_Refit_01a12d5e_20261012/r4-a249/independent-review5/original-inventory.json",
+      "bytes": 264457,
+      "sha256": "ac1bfc51ca9ecd7664e202619da4ba63b5d5a5cc33a93497d948206f5ae088a5"
+    },
+    "screenshots": {
+      "method": "All 164 originals visually inspected through 44 labeled original-bound sheets: desktop rendered at 720 by 450, phone at native 390 by 844. Selected originals opened directly at full/native resolution. The 12 listed IDs were additionally rechecked directly after the experience-first checkpoint; earlier direct checks are not given invented file-level timestamps.",
+      "sheetIndex": {
+        "path": "D:/Codex_Task_Artifacts/Crossdeck_Refit_01a12d5e_20261012/r4-a249/independent-review5/screenshot-diagnostic-index.json",
+        "bytes": 26645,
+        "sha256": "2c0b6c5f10136474d04dd62ff08b19b6e58e749a4a927f941ce637efb8b8138e"
+      },
+      "additionalFullResolutionRecheckedIds": [
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-7",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-ARTIFACT_READY-13",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-RESULTS-40",
+        "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-CONNECT_READY-3",
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-CHART_READY-7",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-INSPECTED-6",
+        "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-PLAYER_ENTRY_READY-0",
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+        "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-SIGN_IN_READY-4",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-LIBRARY_READY-3",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-RETURNED-8",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-CAMERA_UNAVAILABLE-3"
+      ]
+    },
+    "recordings": {
+      "method": "All 32 originals decoded across the full start-to-end timeline, with every approximately 2 fps chronological sheet visually read. Five suspicious windows inspected at native 25 fps, every decoded frame. Initial and output-seek derivative window sheets have equal SHA256 bytes.",
+      "completeTimelineIndex": {
+        "path": "D:/Codex_Task_Artifacts/Crossdeck_Refit_01a12d5e_20261012/r4-a249/independent-review5/recording-diagnostic-index.json",
+        "bytes": 47923,
+        "sha256": "fc91ddefdbef31282107e0faca4376323218e8a910d4ae63584c4a7de52bf342"
+      },
+      "originalBoundTimelines": [
+        {
+          "id": "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-recording",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/generic/ffa2cc07f923444c366052ef9164e82e.webm",
+          "sha256": "223870e0754d2a597bede74340909044c3d608db9e4fdefda070f73c62346b7f",
+          "inspectedRangeSeconds": [
+            0,
+            9.32
+          ],
+          "approximateSampleRateFps": 2,
+          "sampleFrames": 20,
+          "diagnosticSheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\00-00-00.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\00-00-01.jpg"
+          ]
+        },
+        {
+          "id": "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-recording",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/generic/83dadeefcf47a78a4ffd748f8b221043.webm",
+          "sha256": "61e3d17f73d9c56b96bb96e612fe692c953da54cf67ffeed5660e17d52d31ece",
+          "inspectedRangeSeconds": [
+            0,
+            5.92
+          ],
+          "approximateSampleRateFps": 2,
+          "sampleFrames": 13,
+          "diagnosticSheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\00-01-00.jpg"
+          ]
+        },
+        {
+          "id": "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-recording",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/generic/6a756138f0e7e0eaccd0e18cddb3ca49.webm",
+          "sha256": "7c12c94ee9da17f8ec9034d117a3ae4c3ede52493383553d704d04fbddfd4fcf",
+          "inspectedRangeSeconds": [
+            0,
+            9.16
+          ],
+          "approximateSampleRateFps": 2,
+          "sampleFrames": 20,
+          "diagnosticSheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\00-02-00.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\00-02-01.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\00-02-02.jpg"
+          ]
+        },
+        {
+          "id": "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-recording",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/generic/3c3f10a006d1849343cde9f9b5fb3871.webm",
+          "sha256": "f988f449cb2cffe3708761aac551ed6efa76d7e0e6d97fbcaa045c82840bc4a3",
+          "inspectedRangeSeconds": [
+            0,
+            5.12
+          ],
+          "approximateSampleRateFps": 2,
+          "sampleFrames": 12,
+          "diagnosticSheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\00-03-00.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\00-03-01.jpg"
+          ]
+        },
+        {
+          "id": "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-recording",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/generic/245ac2f3670b07e85f359664eec7de6a.webm",
+          "sha256": "804b2e98864ce5b3474ca9cbed5991623b1f0c099ca60de483d19f54ff5fb5c9",
+          "inspectedRangeSeconds": [
+            0,
+            10.28
+          ],
+          "approximateSampleRateFps": 2,
+          "sampleFrames": 22,
+          "diagnosticSheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\01-00-00.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\01-00-01.jpg"
+          ]
+        },
+        {
+          "id": "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-recording",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/generic/c7263306896a8322ca78faf0836cf45f.webm",
+          "sha256": "9b8ecd338a30998b0c899e81c6000bf12782fcd4eca84e5984441d72378b3356",
+          "inspectedRangeSeconds": [
+            0,
+            10.88
+          ],
+          "approximateSampleRateFps": 2,
+          "sampleFrames": 23,
+          "diagnosticSheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\01-01-00.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\01-01-01.jpg"
+          ]
+        },
+        {
+          "id": "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-recording",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/generic/6a261e627790d733a1d90cc9f8ed490f.webm",
+          "sha256": "f9de6eb5e27047a12610cbe7057e38425f982eceed2c8ac56adc902784667bec",
+          "inspectedRangeSeconds": [
+            0,
+            9.64
+          ],
+          "approximateSampleRateFps": 2,
+          "sampleFrames": 21,
+          "diagnosticSheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\01-02-00.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\01-02-01.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\01-02-02.jpg"
+          ]
+        },
+        {
+          "id": "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-recording",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/generic/1d8422e0f3a153a2971eaff5a5986a19.webm",
+          "sha256": "c80104a27dd66abde024bb7ae009ed295a350e58e4ecf7c9f59a6ae42c2e6293",
+          "inspectedRangeSeconds": [
+            0,
+            9.8
+          ],
+          "approximateSampleRateFps": 2,
+          "sampleFrames": 21,
+          "diagnosticSheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\01-03-00.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\01-03-01.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\01-03-02.jpg"
+          ]
+        },
+        {
+          "id": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-recording",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/generic/0dedce825bed39b429e7d36562711a2e.webm",
+          "sha256": "b07ed0bc773e2b96144e30a5cac4de5c1270ef5a142cfb5a20c302e572649b51",
+          "inspectedRangeSeconds": [
+            0,
+            10.08
+          ],
+          "approximateSampleRateFps": 2,
+          "sampleFrames": 22,
+          "diagnosticSheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\02-00-00.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\02-00-01.jpg"
+          ]
+        },
+        {
+          "id": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-recording",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/generic/e946872ee959ee7c9e37fe258b75b805.webm",
+          "sha256": "112075d747a34b24412bdab5c5ef1191c57bb66bb4e7df5dd52bd2c0302a408a",
+          "inspectedRangeSeconds": [
+            0,
+            6.64
+          ],
+          "approximateSampleRateFps": 2,
+          "sampleFrames": 15,
+          "diagnosticSheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\02-01-00.jpg"
+          ]
+        },
+        {
+          "id": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-recording",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/generic/7a521d8d2efd96fa9694d03348aca985.webm",
+          "sha256": "df53527f779f8b09d093998f879c2f883b80ad008e0014eda2fa4b3c4b190702",
+          "inspectedRangeSeconds": [
+            0,
+            9.28
+          ],
+          "approximateSampleRateFps": 2,
+          "sampleFrames": 20,
+          "diagnosticSheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\02-02-00.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\02-02-01.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\02-02-02.jpg"
+          ]
+        },
+        {
+          "id": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-recording",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/generic/be92a9addc339d52fb7a30b708b52a0d.webm",
+          "sha256": "4fab9d3db24f79aba8004a6a19ae6dc289f33f4191966bb9946583e6bca253af",
+          "inspectedRangeSeconds": [
+            0,
+            5.84
+          ],
+          "approximateSampleRateFps": 2,
+          "sampleFrames": 13,
+          "diagnosticSheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\02-03-00.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\02-03-01.jpg"
+          ]
+        },
+        {
+          "id": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-recording",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/generic/9765b7f527c075a4f9fc12ae1795e700.webm",
+          "sha256": "5f9f3ed16a50f1d64a2e6907ea459641accc5231b368659b7b9dff5e3b6bf1a9",
+          "inspectedRangeSeconds": [
+            0,
+            4.92
+          ],
+          "approximateSampleRateFps": 2,
+          "sampleFrames": 11,
+          "diagnosticSheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\03-00-00.jpg"
+          ]
+        },
+        {
+          "id": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-recording",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/generic/3c4ee080ae769132edfec94b28d271ad.webm",
+          "sha256": "b3a48a38f31e6feeed3e41e47f83146b57fce037b9cb64f7134f0d038688932c",
+          "inspectedRangeSeconds": [
+            0,
+            4.28
+          ],
+          "approximateSampleRateFps": 2,
+          "sampleFrames": 10,
+          "diagnosticSheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\03-01-00.jpg"
+          ]
+        },
+        {
+          "id": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-recording",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/generic/07bb304b246842d63b6847bfbb04242a.webm",
+          "sha256": "b19c266105475ea1374ffdc843a800a31a918ff21a9bc65517daa36bbc12268f",
+          "inspectedRangeSeconds": [
+            0,
+            4.2
+          ],
+          "approximateSampleRateFps": 2,
+          "sampleFrames": 10,
+          "diagnosticSheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\03-02-00.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\03-02-01.jpg"
+          ]
+        },
+        {
+          "id": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-recording",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/generic/7fa50a7d18c84a47b4e1dcc0350355ad.webm",
+          "sha256": "a70cbb702da4e2dce40d8da1f29394596b4c1cbbbd92e5648e9334bac2a8b65f",
+          "inspectedRangeSeconds": [
+            0,
+            4.04
+          ],
+          "approximateSampleRateFps": 2,
+          "sampleFrames": 10,
+          "diagnosticSheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\03-03-00.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\03-03-01.jpg"
+          ]
+        },
+        {
+          "id": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-recording",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/generic/aa1826ce445726ca21b135c2bb9dd8cb.webm",
+          "sha256": "7a81e9a83a7aef075c596e15920ffad26735073abe9f8f4b899c4284c2feca58",
+          "inspectedRangeSeconds": [
+            0,
+            8.32
+          ],
+          "approximateSampleRateFps": 2,
+          "sampleFrames": 18,
+          "diagnosticSheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\04-00-00.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\04-00-01.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\04-00-02.jpg"
+          ]
+        },
+        {
+          "id": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-recording",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/generic/9ce6c403ec98e510e3595cf849e51f66.webm",
+          "sha256": "999cc55da7ab135cf3482eb2a254183ba0f3bb2bc53653d3c9370ba58daaf094",
+          "inspectedRangeSeconds": [
+            0,
+            6.44
+          ],
+          "approximateSampleRateFps": 2,
+          "sampleFrames": 14,
+          "diagnosticSheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\04-01-00.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\04-01-01.jpg"
+          ]
+        },
+        {
+          "id": "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-recording",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/generic/6567f93e8fb9384882041343caa33ef4.webm",
+          "sha256": "8292636e647f14432aa880019a1e32b0703bfb539d9902cb177ae459b8e2deea",
+          "inspectedRangeSeconds": [
+            0,
+            8.8
+          ],
+          "approximateSampleRateFps": 2,
+          "sampleFrames": 19,
+          "diagnosticSheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\05-00-00.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\05-00-01.jpg"
+          ]
+        },
+        {
+          "id": "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-recording",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/generic/985c4278a2f8e0545f0498382cb1e810.webm",
+          "sha256": "a3290d03519d988c3da1a7eff59737d1e2b7e7842b5ff4848ef3b5c91fd09e3b",
+          "inspectedRangeSeconds": [
+            0,
+            6.72
+          ],
+          "approximateSampleRateFps": 2,
+          "sampleFrames": 15,
+          "diagnosticSheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\05-01-00.jpg"
+          ]
+        },
+        {
+          "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-recording",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/generic/c3dd83f75401c03bc276b5f2e00e9b99.webm",
+          "sha256": "692b4a6fc879deb94f1b540cee74bc27ffbea53f2bce6cc22da6dc57343333cd",
+          "inspectedRangeSeconds": [
+            0,
+            40.12
+          ],
+          "approximateSampleRateFps": 2,
+          "sampleFrames": 82,
+          "diagnosticSheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-00-00.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-00-01.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-00-02.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-00-03.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-00-04.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-00-05.jpg"
+          ]
+        },
+        {
+          "id": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-recording",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/generic/90ac61d4e2e1747fb87010ebc7b2d62b.webm",
+          "sha256": "e08659cbd857c65d14f143e0f13c18af839a6ec6a9fb9d736d4d2da5a72a916f",
+          "inspectedRangeSeconds": [
+            0,
+            39.0
+          ],
+          "approximateSampleRateFps": 2,
+          "sampleFrames": 80,
+          "diagnosticSheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-01-00.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-01-01.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-01-02.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-01-03.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-01-04.jpg"
+          ]
+        },
+        {
+          "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-recording",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/generic/b330f8f8e17e8863e68d8f4b551d0b4d.webm",
+          "sha256": "423a72f1bcff63764477c4448a2d2de591c4a50479653176bb2f27aaaf113f99",
+          "inspectedRangeSeconds": [
+            0,
+            24.28
+          ],
+          "approximateSampleRateFps": 2,
+          "sampleFrames": 50,
+          "diagnosticSheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-02-00.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-02-01.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-02-02.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-02-03.jpg"
+          ]
+        },
+        {
+          "id": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-recording",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/generic/21194ed259f3a03b4df0adf815c4d2fa.webm",
+          "sha256": "d370c067e0aa6eb9d1279d862cb97339c197b5a1131c90edb0f7e17d3a722676",
+          "inspectedRangeSeconds": [
+            0,
+            24.0
+          ],
+          "approximateSampleRateFps": 2,
+          "sampleFrames": 50,
+          "diagnosticSheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-03-00.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-03-01.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-03-02.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-03-03.jpg"
+          ]
+        },
+        {
+          "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-recording",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/generic/3ca4afef660a92ac4504ce72749e314b.webm",
+          "sha256": "9390b45b93e148a87490c779989a8701a5328e2828eb0d60572e492ef9cb9912",
+          "inspectedRangeSeconds": [
+            0,
+            6.16
+          ],
+          "approximateSampleRateFps": 2,
+          "sampleFrames": 14,
+          "diagnosticSheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-04-00.jpg"
+          ]
+        },
+        {
+          "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-recording",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/generic/f19ee122f064023ad1738390b01f599f.webm",
+          "sha256": "819ccef93a90a94ee713733bd6e2b08a9c7ffddf0c9726fead8fe2dce9568fab",
+          "inspectedRangeSeconds": [
+            0,
+            5.92
+          ],
+          "approximateSampleRateFps": 2,
+          "sampleFrames": 13,
+          "diagnosticSheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-05-00.jpg"
+          ]
+        },
+        {
+          "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-recording",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/generic/d8a8a47dbededdfe3da4934edd7fc9d5.webm",
+          "sha256": "61fb2b86fb41f5d4b7c8027d5bfa204120058fb9fd8cb4d63e077ca76a486136",
+          "inspectedRangeSeconds": [
+            0,
+            37.28
+          ],
+          "approximateSampleRateFps": 2,
+          "sampleFrames": 76,
+          "diagnosticSheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-06-00.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-06-01.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-06-02.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-06-03.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-06-04.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-06-05.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-06-06.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-06-07.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-06-08.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-06-09.jpg"
+          ]
+        },
+        {
+          "id": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-recording",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/generic/b22b8e684bb004e2c172f9a36c6387da.webm",
+          "sha256": "52ef211ff9d8259625e7e735133c78bcb9d53a98038c33fecc1d60f97dad5427",
+          "inspectedRangeSeconds": [
+            0,
+            36.76
+          ],
+          "approximateSampleRateFps": 2,
+          "sampleFrames": 75,
+          "diagnosticSheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-07-00.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-07-01.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-07-02.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-07-03.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-07-04.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-07-05.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-07-06.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-07-07.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-07-08.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-07-09.jpg"
+          ]
+        },
+        {
+          "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-recording",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/generic/8292bcc9044337cf28424e6e679fcf06.webm",
+          "sha256": "c80cfb28161ab19a50755b7c87311e659ddb5aa4f117bc0988f923ad8a3578a0",
+          "inspectedRangeSeconds": [
+            0,
+            22.84
+          ],
+          "approximateSampleRateFps": 2,
+          "sampleFrames": 47,
+          "diagnosticSheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-08-00.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-08-01.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-08-02.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-08-03.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-08-04.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-08-05.jpg"
+          ]
+        },
+        {
+          "id": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-recording",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/generic/a9b3d476a77c10c0671eeac945210662.webm",
+          "sha256": "e9608447aeed4d51e2bbb984a926f31213d53a2e558a6f6c8a1fbe65e7cc1784",
+          "inspectedRangeSeconds": [
+            0,
+            22.64
+          ],
+          "approximateSampleRateFps": 2,
+          "sampleFrames": 47,
+          "diagnosticSheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-09-00.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-09-01.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-09-02.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-09-03.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-09-04.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-09-05.jpg"
+          ]
+        },
+        {
+          "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-recording",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/generic/4c4602f72942a0774bb0a21bb1c097c6.webm",
+          "sha256": "7ba2dac6a1463276bc17221bd3b53cd14556ce8d5a880cd3dc55f49c5f323c97",
+          "inspectedRangeSeconds": [
+            0,
+            5.56
+          ],
+          "approximateSampleRateFps": 2,
+          "sampleFrames": 13,
+          "diagnosticSheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-10-00.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-10-01.jpg"
+          ]
+        },
+        {
+          "id": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-recording",
+          "path": "Development_Docs/Testing/Product_Experience/evidence/generic/f09df8ad433806bb11ab32fae63b06cb.webm",
+          "sha256": "8c085981b8e9f8aab80adc0f3c8640e5c35fff04be4d5dbd918104144460dd58",
+          "inspectedRangeSeconds": [
+            0,
+            4.84
+          ],
+          "approximateSampleRateFps": 2,
+          "sampleFrames": 11,
+          "diagnosticSheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-11-00.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\temporal\\06-11-01.jpg"
+          ]
+        }
+      ],
+      "nativeWindows": [
+        {
+          "recordingId": "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-recording",
+          "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/6a756138f0e7e0eaccd0e18cddb3ca49.webm",
+          "originalSha256": "7c12c94ee9da17f8ec9034d117a3ae4c3ede52493383553d704d04fbddfd4fcf",
+          "startSeconds": 7.7,
+          "endSeconds": 8.6,
+          "reason": "phone-dialog-scroll-and-return",
+          "cadence": "native 25 fps, every decoded frame in window",
+          "frameCount": 22,
+          "sheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\dense-accurate\\0-00.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\dense-accurate\\0-01.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\dense-accurate\\0-02.jpg"
+          ]
+        },
+        {
+          "recordingId": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-recording",
+          "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/0dedce825bed39b429e7d36562711a2e.webm",
+          "originalSha256": "b07ed0bc773e2b96144e30a5cac4de5c1270ef5a142cfb5a20c302e572649b51",
+          "startSeconds": 9.0,
+          "endSeconds": 10.08,
+          "reason": "lens-close-reading-position",
+          "cadence": "native 25 fps, every decoded frame in window",
+          "frameCount": 27,
+          "sheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\dense-accurate\\1-00.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\dense-accurate\\1-01.jpg"
+          ]
+        },
+        {
+          "recordingId": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-recording",
+          "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/aa1826ce445726ca21b135c2bb9dd8cb.webm",
+          "originalSha256": "7a81e9a83a7aef075c596e15920ffad26735073abe9f8f4b899c4284c2feca58",
+          "startSeconds": 6.5,
+          "endSeconds": 8.32,
+          "reason": "mobile-return-continue-visibility",
+          "cadence": "native 25 fps, every decoded frame in window",
+          "frameCount": 45,
+          "sheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\dense-accurate\\2-00.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\dense-accurate\\2-01.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\dense-accurate\\2-02.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\dense-accurate\\2-03.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\dense-accurate\\2-04.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\dense-accurate\\2-05.jpg"
+          ]
+        },
+        {
+          "recordingId": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-recording",
+          "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/4c4602f72942a0774bb0a21bb1c097c6.webm",
+          "originalSha256": "7ba2dac6a1463276bc17221bd3b53cd14556ce8d5a880cd3dc55f49c5f323c97",
+          "startSeconds": 2.2,
+          "endSeconds": 4.800000000000001,
+          "reason": "camera-failure-to-ready",
+          "cadence": "native 25 fps, every decoded frame in window",
+          "frameCount": 65,
+          "sheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\dense-accurate\\3-00.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\dense-accurate\\3-01.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\dense-accurate\\3-02.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\dense-accurate\\3-03.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\dense-accurate\\3-04.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\dense-accurate\\3-05.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\dense-accurate\\3-06.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\dense-accurate\\3-07.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\dense-accurate\\3-08.jpg"
+          ]
+        },
+        {
+          "recordingId": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-recording",
+          "originalPath": "Development_Docs/Testing/Product_Experience/evidence/generic/b22b8e684bb004e2c172f9a36c6387da.webm",
+          "originalSha256": "52ef211ff9d8259625e7e735133c78bcb9d53a98038c33fecc1d60f97dad5427",
+          "startSeconds": 33.0,
+          "endSeconds": 35.2,
+          "reason": "reach-mobile-condition-feedback",
+          "cadence": "native 25 fps, every decoded frame in window",
+          "frameCount": 55,
+          "sheets": [
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\dense-accurate\\4-00.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\dense-accurate\\4-01.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\dense-accurate\\4-02.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\dense-accurate\\4-03.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\dense-accurate\\4-04.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\dense-accurate\\4-05.jpg",
+            "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\independent-review5\\dense-accurate\\4-06.jpg"
+          ]
+        }
+      ],
+      "duplicateDiagnosticWindowEquality": [
+        {
+          "recordingId": "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-recording",
+          "allOriginalDiagnosticAndAccurateDiagnosticSheetBytesEqual": true
+        },
+        {
+          "recordingId": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-recording",
+          "allOriginalDiagnosticAndAccurateDiagnosticSheetBytesEqual": true
+        },
+        {
+          "recordingId": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-recording",
+          "allOriginalDiagnosticAndAccurateDiagnosticSheetBytesEqual": true
+        },
+        {
+          "recordingId": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-recording",
+          "allOriginalDiagnosticAndAccurateDiagnosticSheetBytesEqual": true
+        },
+        {
+          "recordingId": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-recording",
+          "allOriginalDiagnosticAndAccurateDiagnosticSheetBytesEqual": true
+        }
+      ]
+    },
+    "traces": {
+      "method": "All 32 original ZIP trace streams inspected for navigation, control activation, Tab/Enter, focus-related actions, timing and errors; meaningful outcomes cross-checked visually. No browser or replay launched.",
+      "compactSummary": {
+        "path": "D:/Codex_Task_Artifacts/Crossdeck_Refit_01a12d5e_20261012/r4-a249/independent-review5/trace-inspection-summary.json",
+        "bytes": 145874,
+        "sha256": "c9f1552a4833d5832623eacf4740c3125edd0b177b7697ab852b0e7e29531711"
+      },
+      "originalTraceIds": [
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+        "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-trace",
+        "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-trace",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-trace",
+        "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-trace",
+        "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-trace",
+        "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-trace",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-trace",
+        "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-trace",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-trace",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-trace",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-trace",
+        "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-trace",
+        "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-trace",
+        "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-trace",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-trace",
+        "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-trace",
+        "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+        "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+        "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-trace",
+        "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-trace",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-trace",
+        "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-trace",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-trace",
+        "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-trace",
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-trace",
+        "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-trace",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-trace",
+        "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-trace"
+      ]
+    },
+    "references": [
+      {
+        "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+        "bytes": 676078,
+        "sha256": "4c1c6c44de8007dec2a05fda240249f4e87b56b7b6f7fe2335323f2e7f5cc024",
+        "inspection": "Opened visually during experience-first inspection",
+        "use": "Desktop dark teal/brass composition, shell identity and serif hierarchy; not an exact content/layout template"
+      },
+      {
+        "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+        "bytes": 336360,
+        "sha256": "661f40c43a7dc7a3f55376675a282e1c10a6562b284235f2be93fb733a0e7477",
+        "inspection": "Opened visually during experience-first inspection",
+        "use": "Narrow shell/material/hierarchy reference; not proof of companion or Reach behavior"
+      },
+      {
+        "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
+        "bytes": 572176,
+        "sha256": "12ae1399d658c90d08417354d697df56ab0ac3b918d679bd4a9f6083a86508b6",
+        "inspection": "Opened visually during experience-first inspection",
+        "use": "Desktop parchment, dark ink and account task hierarchy"
+      },
+      {
+        "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png",
+        "bytes": 180692,
+        "sha256": "e052348f01efb6dc4f5ac46bef64371895c2133f70df634e3cedd376b4bee8a1",
+        "inspection": "Opened visually during experience-first inspection",
+        "use": "Mobile sign-in parchment and readable task hierarchy"
+      }
+    ]
+  },
+  "sourceFilesInspectedAfterExperience": [
+    {
+      "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/src/components/crossdeck/CrossdeckCompanion.tsx",
+      "bytes": 21465,
+      "sha256": "5ead5ddb250de06b5ca2572d69ee50d4bd164e5496fcaf8b5dc38407ba63103f",
+      "reviewedSections": "35-515: released-content projection, Journal/chart/artifact consumers, purpose choices, focus handoff, authorized context and returns"
+    },
+    {
+      "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/src/components/crossdeck/CrossdeckCompanionGateway.tsx",
+      "bytes": 3023,
+      "sha256": "a379920517d9bea2784a3c64169792c57435bf3b6a0ba3409b40a59eb899962b",
+      "reviewedSections": "1-210: authorized surface and same-Voyage gating, signed-out reconnect and separate shared surface"
+    },
+    {
+      "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/src/components/crossdeck/CrossdeckDevices.tsx",
+      "bytes": 21291,
+      "sha256": "2255b42466ef0364029ba01e3b9a81bdeeca4c7e8d78ee75896c8174f042eb37",
+      "reviewedSections": "190-365: contextual connection, QR/code, native dialog and trigger-focus restoration"
+    },
+    {
+      "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/src/components/crossdeck/CrossdeckDevices.module.css",
+      "bytes": 9572,
+      "sha256": "ef96a8d33d3d45c396c3782fb2bb7e0e50b39015c699f8d3222ab7e06b0acdf5",
+      "reviewedSections": "120-265: dialog sizing, overflow, QR and action sizing"
+    },
+    {
+      "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/src/components/player/parallax/ChronicleLens.tsx",
+      "bytes": 22509,
+      "sha256": "26db75a4b5f73c974815f72d776fe576d48ca346c1361a64246db3cf0a9052f7",
+      "reviewedSections": "185-410: immutable published moment, guided/native availability, interaction feedback, cleanup and focus return"
+    },
+    {
+      "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/src/components/player/journal/ChronicleJournalSession.tsx",
+      "bytes": 68371,
+      "sha256": "6d592143bda083148da034f1eed8b07587d06967f7ee6fb47531c5bcc5e01e9f",
+      "reviewedSections": "Selected tool/objective/inert matches and 1480-1550: Journal tool availability and canonical context integration"
+    },
+    {
+      "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/src/styles/chronicle.css",
+      "bytes": 52325,
+      "sha256": "1177316e2b4b6b46ebeab620f9e830983e87e19f0c7097e65e1038b6cfc588a1",
+      "reviewedSections": "2008-2122: narrow-viewport tools, objective, tab positions and bottom clearance"
+    },
+    {
+      "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/src/components/platform/PlayerSignIn.module.css",
+      "bytes": 286,
+      "sha256": "ef0d2bd8fa0652ff8f449b031f3d24491554bbf682e69619284cce19bff29884",
+      "reviewedSections": "Final 85 lines: parchment prose and link contrast"
+    },
+    {
+      "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/src/app/player/sign-in/page.tsx",
+      "bytes": 1348,
+      "sha256": "ea9152c291f97a968041a660fb67f6ca7c396ccdff6c598a5985c7d1b614cb87",
+      "reviewedSections": "1-90: canonical account capability and safe return"
+    },
+    {
+      "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/src/homeport/return-to.ts",
+      "bytes": 1995,
+      "sha256": "ed70fb9246d741e6d7cfd8edbe916311d44e87e7ef7fbc43a11a40b2f5ec3c19",
+      "reviewedSections": "1-120: local and capability-authorized return destination handling"
+    },
+    {
+      "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/src/components/shell/ProductShell.tsx",
+      "bytes": 24633,
+      "sha256": "d684ef9d71fa4f49fbb7d0c46aded8503a726d239935965ca7344c521d788a85",
+      "reviewedSections": "Selected focus/route/inert matches and 155-185: overlay cleanup and keyboard handoff"
+    },
+    {
+      "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/src/crossdeck/experiences.ts",
+      "bytes": 3683,
+      "sha256": "8aaa834807f448b390fd0a3dde0cf6c59e0bfa574a96b0a6a4dfe582b935921a",
+      "reviewedSections": "1-92: human purpose labels, availability/reasons and advanced disclosure"
+    },
+    {
+      "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/src/reach/ReachLaboratory.tsx",
+      "bytes": 54750,
+      "sha256": "0e1af7b1ce63023b5858793ee1876efbc0f15a4957f2073bcf0ef1579cfeaa25",
+      "reviewedSections": "Selected stage/recovery matches; 245-298 and 735-815 actually read in final narrow corroboration: sample collection, independent check, explicit demo and mobile task guidance"
+    },
+    {
+      "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/scripts/sounding-line/product-experience.mjs",
+      "bytes": 36834,
+      "sha256": "9ef133bb3ded071205b5e418488f366d41fdf4afb0721b4dc4d457960acee5c0",
+      "reviewedSections": "1-115, 730-830, final export region and finding/disposition matches: dimension/finding schema and packet digest export; imported pure experienceDigest only"
+    },
+    {
+      "path": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/scripts/sounding-line/experience-browser.mjs",
+      "bytes": 32054,
+      "sha256": "d6c77e2f0739bc1ac4449e187d2440de0e21bb1f2e3aeef624c487cdff9119b5",
+      "reviewedSections": "495-550: original packet binding formula and ordered captures"
+    }
+  ],
+  "incomingExecutionFacts": {
+    "classification": "PROVIDED_EXECUTION_FACTS_NOT_THIS_REVIEWER_VERDICT",
+    "preparation": "FIFTEEN",
+    "runId": "38814444774",
+    "attempt": 1,
+    "reportedConclusion": "SUCCESS",
+    "exceptionId": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R4",
+    "exceptionDigest": "3b4e21f9b75689a7e88f0e4ea7ba450b46d71fd9b6fe9a9852ac9836f212434d",
+    "captureArtifact": {
+      "id": "12009949926",
+      "bytes": 1259580006,
+      "sha256": "bc21c7f921ad6a0afce9c5fd7fd23b17290c4d7b58e9534bcd8637c96ae5b5fd"
+    },
+    "lifecycleArtifact": {
+      "id": "12011465112",
+      "sha256": "b3bf48100bec026555d4cee2c03fb82d3d3fc97acd62cac45dedee825e76c33e"
+    },
+    "reportedTrustedPreparation": "ab215f42af06e5b5942a9d562595dea3af5a5a6a",
+    "reportedValidationAndCleanup": "Trusted load, automated-only validation, capture/browser/server/proxy cleanup and port release PASS; no new execution by reviewer.",
+    "producerPlanIdentity": {
+      "path": "D:/Codex_Task_Artifacts/Crossdeck_Refit_01a12d5e_20261012/r4-a249/protected-capture-plan.original.json",
+      "bytes": 485096,
+      "sha256": "0542a8aeec02f3606c07cee91286a024a2d7d5ed57383e0554b1156cdc978ebc",
+      "inspection": "Original producer plan identity hashed; relevant capture identity/inventory scope read, no builder design explanation used"
+    }
+  },
+  "acceptanceScope": "Seven captured Product Experience contract objectives are accepted with 119 independent dimension judgments and one current open MINOR_POLISH finding. This is neither overall release completion nor owner/KG, hosted, live-provider, two-context technical or hardware acceptance.",
+  "whatWasNotProven": [
+    "No application, browser, capture, fixture, tests, repository validator workflow or provider call was run by this reviewer. Report-authoring scripts, image/video decoding, read-only Git identity inspection and digest/hash calculations only.",
+    "Single-context captures show connection guidance, same-Voyage purpose content, local feedback and safe returns. Actual two-context pairing, acknowledged handoff, revocation and restricted shared-display privacy remain a later mandatory technical gate.",
+    "Fresh mobile returned Continue Voyage was viewport-visible and trial-clicked in NORMAL and REDUCED. Trial clicks do not activate continuation. No fresh cd17 or persistent progression is inferred.",
+    "Older actual continuation is historical supporting proof on a different base/source; it does not replace fresh R4 qualification or establish current-base continuation.",
+    "Camera-free Guided Lens and camera-off Reach demo results do not establish live camera accuracy, native AR, real-person pointing, physical-phone behavior, actual scanning, native capabilities or field ergonomics.",
+    "Canonical account navigation was inspected, not successful account login, recovery email delivery or live external provider authentication.",
+    "No hosted/deployment, owner/KG acceptance, physical hardware acceptance or live-provider proof is claimed.",
+    "Temporal inspection used all complete 2 fps diagnostic timelines plus every native frame in five targeted windows. It was not real-time human playback of every 25 fps frame of all 32 videos. Output-rate sample timestamps are approximate; targeted windows are decoded temporal ranges, not invented new original evidence.",
+    "Trace inspection covers recorded action/navigation/keyboard/timing/console streams and their rendered outcomes; frame-snapshot references were not reconstructed into a complete DOM, and no full backend correctness or network-custody audit is claimed.",
+    "Captured contrast and focus are visual judgments supported by rendered originals and producer observations; no new assistive-technology, zoom, colorimeter or physical accessibility session was run."
+  ],
+  "historicalSupportingProof": {
+    "assessmentReport": {
+      "path": "D:/Codex_Task_Artifacts/Crossdeck_Refit_01a12d5e_20261012/r4-a249/independent-review5/review-analysis.json",
+      "bytes": 23780,
+      "sha256": "42206e329ad9ffad2bc40c4920afdcd1aa6f853d5c75cbe3959218936e0bc7d8"
+    },
+    "classification": "HISTORICAL_SUPPORT_ONLY_NOT_FRESH_R4_QUALIFICATION",
+    "actualContinueEnterInOldNormalAndReducedTraces": true,
+    "separateOldDatabaseIdentities": 2,
+    "freshContinueActivationClaimed": false,
+    "freshPersistentCd17OutcomeClaimed": false,
+    "historicalIdsInFreshDimensions": false
+  },
+  "fileHashInventory": {
+    "originals": {
+      "path": "D:/Codex_Task_Artifacts/Crossdeck_Refit_01a12d5e_20261012/r4-a249/independent-review5/original-inventory.json",
+      "bytes": 264457,
+      "sha256": "ac1bfc51ca9ecd7664e202619da4ba63b5d5a5cc33a93497d948206f5ae088a5"
+    },
+    "diagnostics": {
+      "path": "D:/Codex_Task_Artifacts/Crossdeck_Refit_01a12d5e_20261012/r4-a249/independent-review5/diagnostic-inventory.json",
+      "bytes": 480874,
+      "sha256": "6549328188f90f8063f5687563fc7565c914513d05f2efe92556601c972cd9a1"
+    },
+    "reviews": {
+      "path": "D:/Codex_Task_Artifacts/Crossdeck_Refit_01a12d5e_20261012/r4-a249/independent-review5/reviews.json",
+      "bytes": 108286,
+      "sha256": "b1ba52860eef74bed952fb31b2e5c998edb519a26fe907b72c8e6defe2c7088e"
+    },
+    "analysis": {
+      "path": "D:/Codex_Task_Artifacts/Crossdeck_Refit_01a12d5e_20261012/r4-a249/independent-review5/review-analysis.json",
+      "bytes": 23780,
+      "sha256": "42206e329ad9ffad2bc40c4920afdcd1aa6f853d5c75cbe3959218936e0bc7d8"
+    },
+    "compactTraces": {
+      "path": "D:/Codex_Task_Artifacts/Crossdeck_Refit_01a12d5e_20261012/r4-a249/independent-review5/trace-inspection-summary.json",
+      "bytes": 145874,
+      "sha256": "c9f1552a4833d5832623eacf4740c3125edd0b177b7697ab852b0e7e29531711"
+    },
+    "receiptSelfHash": "Published externally in final-inventory.json and final handoff; self-hash intentionally omitted to avoid a circular digest.",
+    "finalInventorySelfHash": "Published in final handoff; the inventory omits its own entry."
+  },
+  "finality": {
+    "status": "FINAL",
+    "completedAtUtc": "2026-10-15T22:54:16.951274+00:00",
+    "statement": "This is the definitive fifth independent review. No further edits will be made after finality is declared to the parent, except a strictly structural same-review correction expressly requested by the parent. No sixth review, repair, replay or capture is authorized by this report."
+  },
+  "ownerAcceptance": "NOT_CLAIMED",
+  "physicalHardwareAcceptance": "NOT_CLAIMED",
+  "hostedDeploymentAcceptance": "NOT_CLAIMED",
+  "liveProviderProof": "NOT_CLAIMED",
+  "hardwareNativeArProof": "NOT_CLAIMED",
+  "twoContextTechnicalGate": "NOT_PROVEN_BY_THIS_SINGLE_CONTEXT_REVIEW",
+  "repositoryChanges": false,
+  "featureCatalog": "NO CHANGE REQUIRED"
+}

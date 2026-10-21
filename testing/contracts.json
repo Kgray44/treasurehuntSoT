@@ -387,899 +387,199 @@
       }
     },
     {
-      "id": "parallax.sc00b.inspector.experience",
-      "name": "Contextual Spatial Inspector authoring and scene return",
-      "authority": "project-parallax",
-      "owners": ["project-parallax"],
-      "critical": true,
-      "experience": {
-        "persona": "A Creator editing a spatial scene with an ordinary object selected",
-        "objective": "Find common object edits, spatial relationships and scene settings without losing selection or authored data",
-        "visibleOutcome": "Properties, Spatial context and Scene settings each show real controls; Guided, Standard and Engineering change presentation depth while canonical edits remain reversible and saved",
-        "integrationOwner": "Parallax Spatial Studio Inspector",
-        "systems": ["project-parallax"],
-        "sourcePaths": ["src/components/studio/parallax", "src/app/studio/parallax"],
-        "projectionPaths": ["src/parallax/authoring.ts", "src/parallax/workspace-layout.ts", "src/parallax/element-authoring.ts", "src/parallax/environment-authoring.ts"],
-        "entryPoint": "/studio/library",
-        "states": ["SCENE", "PROPERTIES", "CONTEXT", "INVALID_SELECTION", "RESTORED_SELECTION", "RETURNED"],
-        "devices": ["DESKTOP", "MOBILE"],
-        "roles": ["CREATOR"],
-        "accessibility": "Rail destinations and fields work by keyboard with visible focus; readable controls and the Guided fallback retain meaning with reduced motion.",
-        "fallback": "When the 3D renderer is unavailable, scene and object content remain readable through the Inspector and the same owned draft history.",
-        "navigation": "Creator Library opens Spatial Studio; Scene Hierarchy selects an object; the right rail switches between properties, spatial context and scene settings; the Creator returns to the Library.",
-        "designTarget": "Use an identity-led Inspector with immediate object actions, a compact stack of common controls, contextual placement and relationship tools, technical precision at Engineering depth, and three purposeful rail destinations with clear active state.",
-        "references": [
-          {
-            "family": "Gateway / public entry",
-            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
-            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
-            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
-            "reason": "Accepted hierarchy and coherent shell provide a standard for clearly differentiated destinations.",
-            "preserve": "Readable navigation, an explicit active destination and a focused content hierarchy."
-          },
-          {
-            "family": "Gateway / public entry",
-            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
-            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
-            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
-            "reason": "Accepted constrained layout preserves navigation and readable controls.",
-            "preserve": "Accessible mobile hierarchy and reliable contextual navigation."
-          }
-        ],
-        "homeportScreenIds": ["screen-page-studio-library", "screen-page-studio"],
-        "homeportJourneyIds": ["B"],
-        "browserTests": ["tests/e2e/parallax-sc00b-combined.spec.ts"],
-        "fixtureProfile": "generic",
-        "recordingRequired": true,
-        "limitations": [
-          "Typed effects and room geometry are Web Studio previews; native Player alternatives, physical AR, real-room accuracy and owner product acceptance require separate proof."
-        ],
-        "roleSetup": {
-          "CREATOR": {
-            "entryPoint": "/sign-in?returnTo=%2Fstudio%2Flibrary",
-            "steps": [
-              { "action": "fill", "role": "textbox", "name": "Email or Player name", "value": "parallax-review-creator@example.test" },
-              { "action": "fill", "role": "textbox", "name": "Password", "value": "Synthetic-Parallax-Review-2026!" },
-              { "action": "click", "role": "button", "name": "Sign in" }
-            ],
-            "witness": { "role": "heading", "name": "Voyagewright Studio", "text": "Voyagewright Studio" }
-          }
-        },
-        "motion": {
-          "measurement": "Visible rail action to rendered contextual Inspector heading",
-          "feedbackBudgetMs": 3000
-        },
-        "journeys": [
-          {
-            "id": "creator-inspector-context-and-return",
-            "roles": ["CREATOR"],
-            "outcome": "A Creator enters the actual Inspector, travels across all three rail destinations with the same object selected and returns to the Creator Library",
-            "steps": [
-              { "action": "click", "role": "link", "name": "Spatial Studio" },
-              { "action": "click", "role": "button", "name": "Open Scene Hierarchy" },
-              { "action": "click", "role": "button", "name": "Desk Map parchment" },
-              { "action": "click", "role": "button", "name": "Open scene settings" },
-              { "action": "assert", "role": "heading", "name": "Scene settings", "text": "Scene settings", "path": "/studio/parallax", "state": "SCENE", "kind": "outcome", "meaning": "Scene fallback, Library and version controls have a real rail destination while object selection is retained.", "feedbackBoundary": true },
-              { "action": "click", "role": "button", "name": "Open object properties" },
-              { "action": "assert", "role": "complementary", "name": "Spatial inspector", "text": "Edit what this item is", "path": "/studio/parallax", "state": "PROPERTIES", "kind": "outcome", "meaning": "The selected object's common edits and quick actions return without reselecting it.", "feedbackBoundary": true },
-              { "action": "click", "role": "button", "name": "Open spatial context" },
-              { "action": "assert", "role": "heading", "name": "Spatial context", "text": "Spatial context", "path": "/studio/parallax", "state": "CONTEXT", "kind": "outcome", "meaning": "Placement, relationships and behavior links are available for the same selected object.", "feedbackBoundary": true },
-              { "action": "click", "role": "link", "name": "← Creator Studio" },
-              { "action": "assert", "role": "heading", "name": "Voyagewright Studio", "text": "Voyagewright Studio", "path": "/studio/library", "state": "RETURNED", "returnPath": true }
-            ]
-          },
-          {
-            "id": "creator-inspector-removal-recovery-and-return",
-            "roles": ["CREATOR"],
-            "outcome": "A Creator sees an explicit unavailable selection after deletion, restores the object through Undo and returns to the Library",
-            "steps": [
-              { "action": "click", "role": "link", "name": "Spatial Studio" },
-              { "action": "click", "role": "button", "name": "Open Scene Hierarchy" },
-              { "action": "click", "role": "button", "name": "Desk Map parchment" },
-              { "action": "click", "role": "button", "name": "Open object properties" },
-              { "action": "click", "role": "button", "name": "Duplicate" },
-              { "action": "click", "role": "button", "name": "Delete" },
-              { "action": "assert", "role": "region", "name": "Unavailable selection", "text": "Selection unavailable", "path": "/studio/parallax", "state": "INVALID_SELECTION", "kind": "outcome", "meaning": "A removed object is identified as unavailable instead of silently showing unrelated scene controls.", "feedbackBoundary": true },
-              { "action": "click", "role": "button", "name": "Undo last edit" },
-              { "action": "assert", "role": "complementary", "name": "Spatial inspector", "text": "Edit what this item is", "path": "/studio/parallax", "state": "RESTORED_SELECTION", "kind": "outcome", "meaning": "Undo restores the selected object's editable Inspector without changing selection identity.", "feedbackBoundary": true },
-              { "action": "click", "role": "link", "name": "← Creator Studio" },
-              { "action": "assert", "role": "heading", "name": "Voyagewright Studio", "text": "Voyagewright Studio", "path": "/studio/library", "state": "RETURNED", "returnPath": true }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "id": "parallax.floating-controls.experience",
-      "name": "Floating Spatial Assistant controls and Creator continuity",
+      "id": "crossdeck.refit.published-lens",
+      "name": "Crossdeck published spatial clue Player consumer",
       "authority": "one-voyage",
       "owners": ["spatial-pilot", "one-voyage", "project-crossdeck", "reach"],
       "critical": true,
       "experience": {
-        "persona": "A Creator authoring a real spatial scene with assistance and ordinary editor controls",
-        "objective": "Move and resize floating assistance while retaining a full-sized spatial scene and reachable bottom composer",
-        "visibleOutcome": "A Creator moves and resizes floating assistance, sees confirmed window feedback, docks it and returns to the same Creator Library",
-        "integrationOwner": "Parallax floating assistance experience integration",
-        "systems": ["project-parallax", "project-crossdeck", "one-voyage"],
-        "sourcePaths": ["src/components/studio/parallax", "src/app/studio/parallax"],
-        "projectionPaths": ["src/parallax"],
-        "entryPoint": "/studio/library",
-        "states": [
-          "EDITOR_READY",
-          "ASSISTANT_READY",
-          "ASSISTANT_RESIZED",
-          "ASSISTANT_MOVED",
-          "ASSISTANT_DOCKED",
-          "RETURNED"
+        "persona": "An authorized Player receiving a Creator-published spatial clue in a persisted private Voyage",
+        "integrationOwner": "Parallax published-clue delivery with Crossdeck continuity",
+        "systems": ["project-crossdeck", "project-parallax", "one-voyage", "project-landfall", "player-journal"],
+        "sourcePaths": [
+          "src/components/player/parallax",
+          "src/components/player/journal",
+          "src/app/player/playthroughs/[playthroughId]/journal",
+          "src/app/play/[taleSlug]/session/[sessionId]",
+          "src/app/player/offline-landfall"
+        ],
+        "projectionPaths": [
+          "src/app/api/crossdeck",
+          "src/app/api/play/sessions",
+          "src/app/api/player/playthroughs",
+          "src/app/api/player/sessions"
         ],
         "devices": ["DESKTOP", "MOBILE"],
-        "roles": ["CREATOR"],
-        "accessibility": "Keyboard entry and visible focus reach assistance, docking and return; readable themes and reduced motion retain meaning. Floating title and all edge/corner handles support arrow keys, with Shift for larger steps.",
-        "fallback": "Without a configured credential or AI allowance, ordinary authoring and guided placement controls remain available.",
-        "navigation": "Creator Library opens Spatial Studio; assistance overlays the scene; closing and returning restores the ordinary Creator Library.",
-        "designTarget": "Use an entirely light or dark blue authoring workspace with separated title/status, clear populated dock sections, and an assistant overlay that never shrinks the canvas. Floating assistance can move and resize inside the visible Studio; the composer remains at the bottom and saved window geometry never changes authored content.",
+        "roles": ["PLAYER"],
+        "accessibility": "Every named control is keyboard reachable with visible focus; reduced motion preserves the same task, hierarchy, purpose and safe return.",
+        "fallback": "Guided Lens preserves the released clue without camera permission; unavailable device purposes remain explained and disabled while Journal and safe return remain available.",
         "references": [
           {
             "family": "Gateway / public entry",
             "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
             "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
             "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
-            "reason": "Accepted public entry establishes hierarchy and a coherent shell around distinct role destinations.",
-            "preserve": "Visible account access, clear destinations, cinematic composition and a usable reduced-motion equivalent."
+            "reason": "Accepted task hierarchy and contextual navigation inform the new device composition; the companion still requires its own independent rendered review.",
+            "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
           },
           {
             "family": "Gateway / public entry",
             "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
             "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
             "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
-            "reason": "Accepted constrained gateway keeps the same destinations and account access.",
-            "preserve": "Mobile task hierarchy, readable controls and contextual navigation."
+            "reason": "Accepted task hierarchy and contextual navigation inform the new device composition; the companion still requires its own independent rendered review.",
+            "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
           }
         ],
-        "homeportScreenIds": ["screen-page-studio-library", "screen-page-studio"],
-        "homeportJourneyIds": ["B"],
-        "browserTests": [
-          "tests/e2e/parallax-owner-refinements.spec.ts",
-          "tests/e2e/parallax-assistant-presentation.spec.ts",
-          "tests/e2e/parallax-spatial-assistant.spec.ts",
-          "tests/e2e/parallax-workstation.spec.ts"
-        ],
+        "homeportScreenIds": ["screen-page-player-playthroughs-playthroughid-journal"],
+        "browserTests": ["tests/e2e/crossdeck-experience-refit.spec.ts", "tests/e2e/crossdeck-refit-recovery.spec.ts"],
         "fixtureProfile": "generic",
         "recordingRequired": true,
+        "continuity": {
+          "objective": "Keep the same authorized Voyage and immutable edition through connection, purpose changes and return without inventing progression authority.",
+          "checks": [
+            {
+              "id": "same-voyage",
+              "role": "region",
+              "name": "Voyage context",
+              "attribute": "data-experience-voyage"
+            },
+            {
+              "id": "same-edition",
+              "role": "region",
+              "name": "Voyage context",
+              "attribute": "data-experience-version"
+            }
+          ]
+        },
+        "motion": {
+          "measurement": "Keyboard activation to the changed visible connection or canonical companion outcome",
+          "feedbackBudgetMs": 5000,
+          "justification": "Bound the isolated browser transition to useful visible feedback within five seconds, including authorized network projection and supported motion; this is no physical-device performance claim."
+        },
         "limitations": [
-          "This bounded Creator correction does not claim a Player Lens refit, physical touch/AR acceptance, live model corpus qualification, or owner product acceptance. The protected spatial-pilot experienceIntent and its owner-reported Player debt remain unchanged."
+          "Canonical synthetic account/session setup proves authorization and persisted membership; it does not grant owner acceptance, camera/native spatial capability or real-phone proof.",
+          "Actual two-context pairing, handoff acknowledgement, revocation and restricted shared-display privacy remain covered by the dedicated browser specification; the single-context capture signs in and registers through the actual product UI.",
+          "This focused consumer contract delivers an already published synthetic Creator-authored clue. Creator Studio authoring and publication retain their existing qualification scope; no new authoring or native camera acceptance is claimed.",
+          "The existing generic seed owns only a deterministic synthetic account and persisted edition in a guarded nonce database; real sign-in, authorization and device registration establish each capture surface without injected cookies or tab storage.",
+          "The guarded persisted fixture represents an already-opened active Voyage. Every primary entry waits for visible Journal tools, and companion return proves the canonical returning Journal and its replay control rather than assuming a first-open dialog in each signed-in context.",
+          "The same synthetic canonical account owns its primary email, one verified secondary email and existing-style Player username. Six-contract captures retain all twenty desktop/mobile and normal/reduced contexts while respecting the unchanged six-per-login sign-in guard; no account/session injection or auth bypass is used."
         ],
+        "objective": "Read and inspect the actual published spatial clue while keeping the same Voyage",
+        "visibleOutcome": "A released Creator-authored spatial moment opens its canonical Guided Lens, meaningful inspection and a direct return to the same published Voyage",
+        "entryPoint": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+        "states": ["JOURNAL_READY", "LENS_READY", "INSPECTED", "RETURNED"],
+        "navigation": "Open the active Journal, open its released Chronicle Lens, inspect the actual clue, then close Lens and return to the same Journal.",
+        "designTarget": "Preserve the published clue and readable Guided hierarchy, with truthful camera availability, keyboard inspection and an immediate contextual close/return.",
         "roleSetup": {
-          "CREATOR": {
-            "entryPoint": "/sign-in?returnTo=%2Fstudio%2Flibrary",
+          "PLAYER": {
+            "entryPoint": "/sign-in?returnTo=%2Fplayer%2Fplaythroughs%2F00000000-0000-4000-8000-00000000cd11%2Fjournal",
             "steps": [
               {
                 "action": "fill",
                 "role": "textbox",
                 "name": "Email or Player name",
-                "value": "parallax-review-floating-creator@example.test"
+                "value": "crossdeck-review@example.test"
               },
               {
                 "action": "fill",
                 "role": "textbox",
                 "name": "Password",
-                "value": "Synthetic-Parallax-Review-2026!"
+                "value": "Synthetic-Crossdeck-Review-2026!"
               },
               {
                 "action": "click",
                 "role": "button",
                 "name": "Sign in"
+              },
+              {
+                "action": "wait",
+                "role": "navigation",
+                "name": "Journal tools"
               }
             ],
             "witness": {
-              "role": "heading",
-              "name": "Voyagewright Studio",
-              "text": "Voyagewright Studio"
+              "role": "region",
+              "name": "Voyage context",
+              "text": "Synthetic Crossdeck refit Voyage"
             }
           }
         },
-        "continuity": {
-          "objective": "The same authenticated Creator identity survives the Studio entry, assistance review and return to the canonical Chronicle library.",
-          "checks": [
-            {
-              "id": "creator-identity",
-              "role": "button",
-              "name": "Synthetic Parallax Floating Creator",
-              "attribute": "aria-label"
-            }
-          ]
-        },
-        "motion": {
-          "measurement": "Visible keyboard action to rendered editor or assistance feedback",
-          "feedbackBudgetMs": 3000
-        },
         "journeys": [
           {
-            "id": "creator-floating-window-controls-and-return",
-            "roles": ["CREATOR"],
-            "outcome": "A Creator moves and resizes floating assistance through accessible handles, docks it, and returns to the same library.",
+            "id": "published-clue-inspect-return",
+            "roles": ["PLAYER"],
+            "outcome": "The published spatial attachment reaches canonical Guided Lens, offers actual Inspect interaction and returns to the same authorized edition",
             "steps": [
               {
-                "action": "click",
-                "role": "link",
-                "name": "Spatial Studio"
+                "action": "assert",
+                "role": "navigation",
+                "name": "Journal tools",
+                "text": "chapters",
+                "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+                "state": "JOURNAL_READY"
               },
               {
                 "action": "assert",
                 "role": "main",
                 "name": "",
-                "text": "Ask Parallax",
-                "path": "/studio/parallax",
-                "state": "EDITOR_READY",
+                "text": "Synthetic Crossdeck refit Voyage",
+                "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open Chronicle Lens"
+              },
+              {
+                "action": "assert",
                 "kind": "outcome",
-                "meaning": "The natural Creator Library entry opens the usable spatial editing workspace with scene and contextual authoring actions.",
+                "role": "dialog",
+                "name": "A message between worlds",
+                "text": "The next bearing is written in the stars. Look for the northern light.",
+                "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+                "meaning": "The canonical published spatial attachment presents its actual released clue without substituting a role label or service result.",
+                "state": "LENS_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "assert",
+                "role": "dialog",
+                "name": "A message between worlds",
+                "text": "Guided View"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Inspect"
+              },
+              {
+                "action": "assert",
+                "kind": "outcome",
+                "role": "article",
+                "name": "A parchment note bearing the Captain’s next clue.",
+                "text": "You are inspecting The Captain’s note.",
+                "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+                "meaning": "Inspection changes the visible canonical entity state and records a meaningful Lens interaction independently from Voyage progression.",
+                "state": "INSPECTED",
                 "feedbackBoundary": true
               },
               {
                 "action": "click",
                 "role": "button",
-                "name": "Ask Parallax"
+                "name": "Close Chronicle Lens"
               },
               {
                 "action": "assert",
-                "role": "region",
-                "name": "Spatial Assistant",
-                "text": "Spatial Assistant",
-                "path": "/studio/parallax",
-                "state": "ASSISTANT_READY",
-                "kind": "outcome",
-                "meaning": "The assistance action opens a usable contextual idea composer and review area alongside the actual scene.",
-                "feedbackBoundary": true
-              },
-              {
-                "action": "click",
-                "role": "button",
-                "name": "Resize floating Spatial Assistant bottom right"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowLeft"
-              },
-              {
-                "action": "assert",
-                "role": "region",
-                "name": "Ask Parallax workspace",
-                "text": "Window resized",
-                "path": "/studio/parallax",
-                "state": "ASSISTANT_RESIZED",
-                "kind": "outcome",
-                "meaning": "The corner handle visibly acknowledges keyboard resizing while assistance remains usable over the scene.",
-                "feedbackBoundary": true
-              },
-              {
-                "action": "click",
-                "role": "button",
-                "name": "Move floating Spatial Assistant"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowRight"
-              },
-              {
-                "action": "assert",
-                "role": "region",
-                "name": "Ask Parallax workspace",
-                "text": "Window moved",
-                "path": "/studio/parallax",
-                "state": "ASSISTANT_MOVED",
-                "kind": "outcome",
-                "meaning": "After reducing the floating width, the title handle visibly acknowledges keyboard movement while the composer remains reachable.",
-                "feedbackBoundary": true
-              },
-              {
-                "action": "click",
-                "role": "button",
-                "name": "Dock assistance"
-              },
-              {
-                "action": "assert",
-                "role": "region",
-                "name": "Ask Parallax workspace",
-                "text": "Float assistance",
-                "path": "/studio/parallax",
-                "state": "ASSISTANT_DOCKED",
-                "kind": "outcome",
-                "meaning": "Docking attaches contextual assistance over the existing scene while exposing an explicit return to floating assistance.",
-                "feedbackBoundary": true
-              },
-              {
-                "action": "click",
-                "role": "button",
-                "name": "Close assistance"
-              },
-              {
-                "action": "click",
-                "role": "link",
-                "name": "\u2190 Creator Studio"
-              },
-              {
-                "action": "assert",
-                "role": "heading",
-                "name": "Voyagewright Studio",
-                "text": "Voyagewright Studio",
-                "path": "/studio/library",
-                "state": "RETURNED",
-                "returnPath": true
-              }
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "id": "parallax.rooms-and-surfaces.experience",
-      "name": "Named room previews and surface-aligned Creator placement",
-      "authority": "one-voyage",
-      "owners": ["spatial-pilot", "one-voyage", "project-crossdeck", "reach"],
-      "critical": true,
-      "experience": {
-        "persona": "A Creator authoring a real spatial scene with assistance and ordinary editor controls",
-        "objective": "Explore ten meaningfully distinct room previews and align a clue to whole room surfaces",
-        "visibleOutcome": "Named environments show room-specific scenery; the Creator snaps a clue to a wall and returns to the same Library",
-        "integrationOwner": "Parallax rooms and surface placement integration",
-        "systems": ["project-parallax", "project-crossdeck", "one-voyage"],
-        "sourcePaths": ["src/components/studio/parallax", "src/app/studio/parallax"],
-        "projectionPaths": ["src/parallax"],
-        "entryPoint": "/studio/library",
-        "states": [
-          "EDITOR_READY",
-          "RETURNED",
-          "SURFACES_READY",
-          "SURFACE_SNAPPED",
-          "ROOM_LIVING_ROOM",
-          "ROOM_DORM",
-          "ROOM_OFFICE",
-          "ROOM_CLASSROOM",
-          "ROOM_GALLERY",
-          "ROOM_TRAIL",
-          "ROOM_PLAZA",
-          "ROOM_EMPTY",
-          "ROOM_CLUTTERED"
-        ],
-        "devices": ["DESKTOP", "MOBILE"],
-        "roles": ["CREATOR"],
-        "accessibility": "Keyboard entry and visible focus reach assistance, docking and return; readable themes and reduced motion retain meaning. Floating title and all edge/corner handles support arrow keys, with Shift for larger steps.",
-        "fallback": "Without a configured credential or AI allowance, ordinary authoring and guided placement controls remain available.",
-        "navigation": "Creator Library opens Spatial Studio; assistance overlays the scene; closing and returning restores the ordinary Creator Library.",
-        "designTarget": "Use an entirely light or dark blue authoring workspace with separated title/status, clear populated dock sections, and an assistant overlay that never shrinks the canvas. Floating assistance can move and resize inside the visible Studio; the composer remains at the bottom and saved window geometry never changes authored content. The Surfaces control outlines complete current room planes and offers a compact accessible picker. Selecting a wall or furniture aligns the object to its normal, with clear manual/automatic placement language and ordinary Undo. Each named synthetic environment has its own meaningful layout and furnishings, an empty room contains only its shell, and changing environments frames the complete scene. The strengthened construction candidate must show complete thick architecture with true window/door apertures, grounded or explicitly supported/mounted furnishings, legitimate stacks, and continuous trail terrain/path geometry. Independent exact-feature findings remain separate from confidence and visual quality. Compare all ten reference rooms at normal working sizes and retain actual renderer cost and instance-bound measurements.",
-        "references": [
-          {
-            "family": "Gateway / public entry",
-            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
-            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
-            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
-            "reason": "Accepted public entry establishes hierarchy and a coherent shell around distinct role destinations.",
-            "preserve": "Visible account access, clear destinations, cinematic composition and a usable reduced-motion equivalent."
-          },
-          {
-            "family": "Gateway / public entry",
-            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
-            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
-            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
-            "reason": "Accepted constrained gateway keeps the same destinations and account access.",
-            "preserve": "Mobile task hierarchy, readable controls and contextual navigation."
-          }
-        ],
-        "homeportScreenIds": ["screen-page-studio-library", "screen-page-studio"],
-        "homeportJourneyIds": ["B"],
-        "browserTests": [
-          "tests/e2e/parallax-surfaces.spec.ts",
-          "tests/e2e/parallax-rooms.spec.ts",
-          "tests/e2e/parallax-direct-placement.spec.ts"
-        ],
-        "fixtureProfile": "generic",
-        "recordingRequired": true,
-        "limitations": [
-          "This bounded Creator correction does not claim a Player Lens refit, physical touch/AR acceptance, live model corpus qualification, or owner product acceptance. The protected spatial-pilot experienceIntent and its owner-reported Player debt remain unchanged."
-        ],
-        "roleSetup": {
-          "CREATOR": {
-            "entryPoint": "/sign-in?returnTo=%2Fstudio%2Flibrary",
-            "steps": [
-              {
-                "action": "fill",
-                "role": "textbox",
-                "name": "Email or Player name",
-                "value": "parallax-review-rooms-creator@example.test"
-              },
-              {
-                "action": "fill",
-                "role": "textbox",
-                "name": "Password",
-                "value": "Synthetic-Parallax-Review-2026!"
-              },
-              {
-                "action": "click",
-                "role": "button",
-                "name": "Sign in"
-              }
-            ],
-            "witness": {
-              "role": "heading",
-              "name": "Voyagewright Studio",
-              "text": "Voyagewright Studio"
-            }
-          }
-        },
-        "continuity": {
-          "objective": "The same authenticated Creator identity survives the Studio entry, assistance review and return to the canonical Chronicle library.",
-          "checks": [
-            {
-              "id": "creator-identity",
-              "role": "button",
-              "name": "Synthetic Parallax Rooms Creator",
-              "attribute": "aria-label"
-            }
-          ]
-        },
-        "motion": {
-          "measurement": "Visible keyboard action to rendered editor or assistance feedback",
-          "feedbackBudgetMs": 3000
-        },
-        "journeys": [
-          {
-            "id": "creator-named-rooms-surface-snap-and-return",
-            "roles": ["CREATOR"],
-            "outcome": "Named environments show room-specific scenery; the Creator snaps a clue to a wall and returns to the same Library",
-            "steps": [
-              {
-                "action": "click",
-                "role": "link",
-                "name": "Spatial Studio"
-              },
-              {
-                "action": "assert",
-                "role": "main",
-                "name": "",
-                "text": "Working draft saved",
-                "path": "/studio/parallax",
-                "state": "EDITOR_READY",
-                "kind": "outcome",
-                "meaning": "The natural Creator Library entry opens the usable spatial editing workspace with scene and contextual authoring actions.",
-                "feedbackBoundary": true
-              },
-              {
-                "action": "click",
-                "role": "button",
-                "name": "Toggle spatial overlays"
-              },
-              {
-                "action": "assert",
-                "role": "region",
-                "name": "Spatial canvas",
-                "text": "Room surfaces",
-                "path": "/studio/parallax",
-                "state": "SURFACES_READY",
-                "kind": "outcome",
-                "meaning": "Full room surfaces and a keyboard-accessible picker are available without an AI call.",
-                "feedbackBoundary": true
-              },
-              {
-                "action": "click",
-                "role": "button",
-                "name": "wall left"
-              },
-              {
-                "action": "assert",
-                "role": "region",
-                "name": "Spatial canvas",
-                "text": "snapped and aligned to wall left",
-                "path": "/studio/parallax",
-                "state": "SURFACE_SNAPPED",
-                "kind": "outcome",
-                "meaning": "The selected object snaps and aligns to the side wall through the visible manual placement control.",
-                "feedbackBoundary": true
-              },
-              {
-                "action": "click",
-                "role": "button",
-                "name": "Toggle spatial overlays"
-              },
-              {
-                "action": "click",
-                "role": "combobox",
-                "name": "Environment"
-              },
-              {
-                "action": "keyboard",
-                "key": "Home"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "Enter"
-              },
-              {
-                "action": "assert",
-                "role": "region",
-                "name": "Spatial canvas",
-                "text": "Preview: Living room",
-                "path": "/studio/parallax",
-                "state": "ROOM_LIVING_ROOM",
-                "kind": "outcome",
-                "meaning": "The Creator selects Living room through the ordinary environment control and sees its named room-specific scene."
-              },
-              {
-                "action": "click",
-                "role": "combobox",
-                "name": "Environment"
-              },
-              {
-                "action": "keyboard",
-                "key": "Home"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "Enter"
-              },
-              {
-                "action": "assert",
-                "role": "region",
-                "name": "Spatial canvas",
-                "text": "Preview: Small dorm",
-                "path": "/studio/parallax",
-                "state": "ROOM_DORM",
-                "kind": "outcome",
-                "meaning": "The Creator selects Small dorm through the ordinary environment control and sees its named room-specific scene."
-              },
-              {
-                "action": "click",
-                "role": "combobox",
-                "name": "Environment"
-              },
-              {
-                "action": "keyboard",
-                "key": "Home"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "Enter"
-              },
-              {
-                "action": "assert",
-                "role": "region",
-                "name": "Spatial canvas",
-                "text": "Preview: Office",
-                "path": "/studio/parallax",
-                "state": "ROOM_OFFICE",
-                "kind": "outcome",
-                "meaning": "The Creator selects Office through the ordinary environment control and sees its named room-specific scene."
-              },
-              {
-                "action": "click",
-                "role": "combobox",
-                "name": "Environment"
-              },
-              {
-                "action": "keyboard",
-                "key": "Home"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "Enter"
-              },
-              {
-                "action": "assert",
-                "role": "region",
-                "name": "Spatial canvas",
-                "text": "Preview: Classroom",
-                "path": "/studio/parallax",
-                "state": "ROOM_CLASSROOM",
-                "kind": "outcome",
-                "meaning": "The Creator selects Classroom through the ordinary environment control and sees its named room-specific scene."
-              },
-              {
-                "action": "click",
-                "role": "combobox",
-                "name": "Environment"
-              },
-              {
-                "action": "keyboard",
-                "key": "Home"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "Enter"
-              },
-              {
-                "action": "assert",
-                "role": "region",
-                "name": "Spatial canvas",
-                "text": "Preview: Gallery",
-                "path": "/studio/parallax",
-                "state": "ROOM_GALLERY",
-                "kind": "outcome",
-                "meaning": "The Creator selects Gallery through the ordinary environment control and sees its named room-specific scene."
-              },
-              {
-                "action": "click",
-                "role": "combobox",
-                "name": "Environment"
-              },
-              {
-                "action": "keyboard",
-                "key": "Home"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "Enter"
-              },
-              {
-                "action": "assert",
-                "role": "region",
-                "name": "Spatial canvas",
-                "text": "Preview: Outdoor trail",
-                "path": "/studio/parallax",
-                "state": "ROOM_TRAIL",
-                "kind": "outcome",
-                "meaning": "The Creator selects Outdoor trail through the ordinary environment control and sees its named room-specific scene."
-              },
-              {
-                "action": "click",
-                "role": "combobox",
-                "name": "Environment"
-              },
-              {
-                "action": "keyboard",
-                "key": "Home"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "Enter"
-              },
-              {
-                "action": "assert",
-                "role": "region",
-                "name": "Spatial canvas",
-                "text": "Preview: Plaza",
-                "path": "/studio/parallax",
-                "state": "ROOM_PLAZA",
-                "kind": "outcome",
-                "meaning": "The Creator selects Plaza through the ordinary environment control and sees its named room-specific scene."
-              },
-              {
-                "action": "click",
-                "role": "combobox",
-                "name": "Environment"
-              },
-              {
-                "action": "keyboard",
-                "key": "Home"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "Enter"
-              },
-              {
-                "action": "assert",
-                "role": "region",
-                "name": "Spatial canvas",
-                "text": "Preview: Empty room",
-                "path": "/studio/parallax",
-                "state": "ROOM_EMPTY",
-                "kind": "outcome",
-                "meaning": "The Creator selects Empty room through the ordinary environment control and sees its named room-specific scene."
-              },
-              {
-                "action": "click",
-                "role": "combobox",
-                "name": "Environment"
-              },
-              {
-                "action": "keyboard",
-                "key": "Home"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "ArrowDown"
-              },
-              {
-                "action": "keyboard",
-                "key": "Enter"
-              },
-              {
-                "action": "assert",
-                "role": "region",
-                "name": "Spatial canvas",
-                "text": "Preview: Cluttered room",
-                "path": "/studio/parallax",
-                "state": "ROOM_CLUTTERED",
-                "kind": "outcome",
-                "meaning": "The Creator selects Cluttered room through the ordinary environment control and sees its named room-specific scene."
-              },
-              {
-                "action": "click",
-                "role": "link",
-                "name": "\u2190 Creator Studio"
-              },
-              {
-                "action": "assert",
-                "role": "heading",
-                "name": "Voyagewright Studio",
-                "text": "Voyagewright Studio",
-                "path": "/studio/library",
-                "state": "RETURNED",
-                "returnPath": true
+                "role": "navigation",
+                "name": "Journal tools",
+                "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+                "absentRole": {
+                  "role": "dialog",
+                  "name": "A message between worlds"
+                },
+                "returnPath": true,
+                "state": "RETURNED"
               }
             ]
           }
@@ -5001,6 +4301,184 @@
       "authority": "project-crossdeck",
       "owners": ["project-crossdeck", "wayfarer", "player-journal"],
       "critical": true,
+      "experience": {
+        "pairedEvidence": {
+          "version": 1,
+          "caseIds": ["crossdeck-pair-normal", "crossdeck-pair-reduced", "crossdeck-pair-adverse"]
+        },
+        "persona": "An authorized Player continuing a persisted private synthetic Voyage across personal screens",
+        "integrationOwner": "Crossdeck experience refit integration",
+        "systems": ["project-crossdeck", "project-parallax", "one-voyage", "project-landfall", "player-journal"],
+        "sourcePaths": [
+          "src/crossdeck",
+          "src/components/crossdeck",
+          "src/components/player/journal/ChronicleJournalSession.tsx",
+          "src/app/devices",
+          "src/app/account/devices",
+          "src/components/player/journal",
+          "src/app/player/playthroughs/[playthroughId]/journal",
+          "src/app/play/[taleSlug]/session/[sessionId]",
+          "src/app/player/offline-landfall"
+        ],
+        "projectionPaths": [
+          "src/app/api/crossdeck",
+          "src/app/api/play/sessions",
+          "src/app/api/player/playthroughs",
+          "src/app/api/player/sessions"
+        ],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["PLAYER"],
+        "accessibility": "Every named control is keyboard reachable with visible focus; reduced motion preserves the same task, hierarchy, purpose and safe return.",
+        "fallback": "Guided Lens preserves the released clue without camera permission; unavailable device purposes remain explained and disabled while Journal and safe return remain available.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted task hierarchy and contextual navigation inform the new device composition; the companion still requires its own independent rendered review.",
+            "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted task hierarchy and contextual navigation inform the new device composition; the companion still requires its own independent rendered review.",
+            "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-player-playthroughs-playthroughid-journal"],
+        "browserTests": ["tests/e2e/crossdeck-experience-refit.spec.ts", "tests/e2e/crossdeck-refit-recovery.spec.ts"],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "continuity": {
+          "objective": "Keep the same authorized Voyage and immutable edition through connection, purpose changes and return without inventing progression authority.",
+          "checks": [
+            {
+              "id": "same-voyage",
+              "role": "region",
+              "name": "Voyage context",
+              "attribute": "data-experience-voyage"
+            },
+            {
+              "id": "same-edition",
+              "role": "region",
+              "name": "Voyage context",
+              "attribute": "data-experience-version"
+            }
+          ]
+        },
+        "motion": {
+          "measurement": "Keyboard activation to the changed visible connection or canonical companion outcome",
+          "feedbackBudgetMs": 5000,
+          "justification": "Bound the isolated browser transition to useful visible feedback within five seconds, including authorized network projection and supported motion; this is no physical-device performance claim."
+        },
+        "limitations": [
+          "Canonical synthetic account/session setup proves authorization and persisted membership; it does not grant owner acceptance, camera/native spatial capability or real-phone proof.",
+          "Actual two-context pairing, handoff acknowledgement, revocation and restricted shared-display privacy remain covered by the dedicated browser specification; the single-context capture signs in and registers through the actual product UI.",
+          "The existing generic seed owns only a deterministic synthetic account and persisted edition in a guarded nonce database; real sign-in, authorization and device registration establish each capture surface without injected cookies or tab storage.",
+          "The guarded persisted fixture represents an already-opened active Voyage. Every primary entry waits for visible Journal tools, and companion return proves the canonical returning Journal and its replay control rather than assuming a first-open dialog in each signed-in context.",
+          "The same synthetic canonical account owns its primary email, one verified secondary email and existing-style Player username. Six-contract captures retain all twenty desktop/mobile and normal/reduced contexts while respecting the unchanged six-per-login sign-in guard; no account/session injection or auth bypass is used."
+        ],
+        "objective": "Connect another device from the active Chronicle without losing my place",
+        "visibleOutcome": "The active Journal opens a contextual private phone connection with QR/code guidance and returns directly to the same Chronicle",
+        "entryPoint": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+        "states": ["JOURNAL_READY", "CONNECT_READY", "RETURNED"],
+        "navigation": "Open the Journal, use Connect another device, inspect contextual pairing instructions, then Continue the Chronicle in the same Voyage.",
+        "designTarget": "Keep the current passage legible and reachable, with operable contextual connection controls, focused QR/code guidance and direct return to the same Chronicle. Preserve an unobscured current heading and the existing substantive first-viewport reading-area and hit-test requirements. Editorial first-viewport dominance, utility grouping and appearance refinement are assigned to Project Refit; obstruction, unreadability and inaccessible controls remain Crossdeck blockers.",
+        "roleSetup": {
+          "PLAYER": {
+            "entryPoint": "/sign-in?returnTo=%2Fplayer%2Fplaythroughs%2F00000000-0000-4000-8000-00000000cd11%2Fjournal",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "crossdeck-review-navigator"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Crossdeck-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              },
+              {
+                "action": "wait",
+                "role": "navigation",
+                "name": "Journal tools"
+              }
+            ],
+            "witness": {
+              "role": "region",
+              "name": "Voyage context",
+              "text": "Synthetic Crossdeck refit Voyage"
+            }
+          }
+        },
+        "journeys": [
+          {
+            "id": "contextual-connect-return",
+            "roles": ["PLAYER"],
+            "outcome": "A Player finds contextual phone connection from the active Journal and returns to the same released reading task",
+            "steps": [
+              {
+                "action": "assert",
+                "role": "navigation",
+                "name": "Journal tools",
+                "text": "chapters",
+                "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+                "state": "JOURNAL_READY"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Synthetic Crossdeck refit Voyage",
+                "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Connect another device"
+              },
+              {
+                "action": "assert",
+                "role": "dialog",
+                "name": "Bring your phone aboard",
+                "kind": "outcome",
+                "text": "Sign in with the same Voyagewright account.",
+                "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+                "meaning": "The contextual control produces private phone joining guidance for this Voyage while retaining the active book.",
+                "state": "CONNECT_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Continue the Chronicle"
+              },
+              {
+                "action": "assert",
+                "role": "navigation",
+                "name": "Journal tools",
+                "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+                "absentRole": {
+                  "role": "dialog",
+                  "name": "Bring your phone aboard"
+                },
+                "returnPath": true,
+                "state": "RETURNED"
+              }
+            ]
+          }
+        ]
+      },
       "experienceIntent": {
         "objective": "Use my phone as a Chronicle Lens while continuing the same Voyage on desktop",
         "visibleOutcome": "A contextual pairing flow reaches a role-appropriate Lens with the same identity, Voyage and safe return",
@@ -5455,7 +4933,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "\u2190 Device connections"
+                "name": "← Device connections"
               },
               {
                 "action": "assert",
@@ -5652,7 +5130,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "\u2190 Device connections"
+                "name": "← Device connections"
               },
               {
                 "action": "assert",
@@ -5719,7 +5197,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "\u2190 Device connections"
+                "name": "← Device connections"
               },
               {
                 "action": "assert",
@@ -5763,6 +5241,1923 @@
           }
         ],
         "limitation": "This campaign defines the required experience and tracks existing debt; it does not implement Spatial Experience Refit."
+      }
+    },
+    {
+      "id": "homeport.shell.crossdeck-access-recovery",
+      "name": "Homeport readable Player account recovery after companion access ends",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "project-crossdeck"],
+      "critical": true,
+      "experience": {
+        "persona": "A signed-out Player returning to the canonical account task after a companion connection loses access",
+        "objective": "Read the Player account entry, use canonical sign-in and recovery, and safely return to the phone connection task",
+        "visibleOutcome": "Readable Player account instructions and links lead to one canonical account flow and a contextual return to the connection task",
+        "integrationOwner": "Project Homeport account experience integration",
+        "systems": ["project-homeport"],
+        "sourcePaths": [
+          "src/app/player/sign-in",
+          "src/components/platform/PlayerSignIn.tsx",
+          "src/components/platform/PlayerSignIn.module.css"
+        ],
+        "projectionPaths": ["src/components/wayfarer/AccountFlow.tsx", "src/homeport/return-to.ts"],
+        "entryPoint": "/player/sign-in?returnTo=%2Fdevices%2Fpair",
+        "states": ["PLAYER_ENTRY_READY", "SIGN_IN_READY", "RECOVERY_READY", "RETURNED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["ANONYMOUS"],
+        "accessibility": "The parchment entry has readable explanation and recovery links; keyboard focus reaches every account and contextual return action without horizontal overflow.",
+        "fallback": "The existing canonical account flow remains usable without an identity provider; expired or revoked private companion content is not presented by this anonymous entry.",
+        "navigation": "Player account entry opens canonical sign-in; Forgot Password and Return to Sign In retain the safe return intent; Return to previous page restores the phone connection task.",
+        "designTarget": "Preserve the current parchment account ledger and its hierarchy, with material-appropriate ink, explicit account actions and a readable safe return.",
+        "references": [
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-003-sign-in-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "The accepted narrow task composition uses one visible objective and a clear recovery/return hierarchy.",
+            "preserve": "Readable task-first typography, grouped fields, useful recovery links, intentional narrow-mobile layout."
+          },
+          {
+            "family": "Authentication",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-004-sign-in-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "The accepted mobile account ledger keeps fields and recovery actions readable and reachable.",
+            "preserve": "Readable task-first typography, grouped fields, useful recovery links, intentional narrow-mobile layout."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-player-sign-in", "screen-page-sign-in", "screen-page-forgot-password"],
+        "homeportJourneyIds": ["C"],
+        "browserTests": ["tests/e2e/crossdeck-experience-refit.spec.ts", "tests/e2e/homeport-phase2.spec.ts"],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "motion": {
+          "measurement": "Keyboard activation to the changed visible canonical sign-in, recovery or connection return",
+          "feedbackBudgetMs": 5000,
+          "justification": "Bound visible account-route feedback in normal and reduced motion within five seconds, without claiming physical-device performance."
+        },
+        "limitations": [
+          "This anonymous recovery composition does not replace authenticated same-person/Voyage pairing, transfer or revocation proof in the Crossdeck contracts.",
+          "Live mail delivery, OAuth, physical phone, assistive technology and owner acceptance are not established by this browser journey."
+        ],
+        "journeys": [
+          {
+            "id": "player-entry-account-recovery",
+            "roles": ["ANONYMOUS"],
+            "outcome": "A signed-out Player reaches canonical account recovery through readable controls and returns safely to the phone connection task",
+            "steps": [
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "path": "/player/sign-in",
+                "text": "Open your Chronicle Library",
+                "state": "PLAYER_ENTRY_READY"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Create Account"
+              },
+              {
+                "action": "assert",
+                "role": "link",
+                "name": "Forgot Password"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Continue to account sign-in"
+              },
+              {
+                "action": "assert",
+                "kind": "outcome",
+                "role": "main",
+                "name": "",
+                "path": "/sign-in",
+                "text": "One Voyagewright account",
+                "meaning": "The contextual Player entry opens the actual canonical account form",
+                "state": "SIGN_IN_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Forgot Password"
+              },
+              {
+                "action": "assert",
+                "kind": "outcome",
+                "role": "main",
+                "name": "",
+                "path": "/forgot-password",
+                "text": "Send reset instructions",
+                "meaning": "Recovery presents the actual email reset task while retaining safe return intent",
+                "state": "RECOVERY_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Sign In"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Sign in",
+                "path": "/sign-in"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to previous page"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Bring the adventure with you",
+                "path": "/devices/pair",
+                "returnPath": true,
+                "state": "RETURNED",
+                "feedbackBoundary": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "homeport.shell.crossdeck-companion",
+      "name": "Homeport immersive companion contextual exit and same-Voyage re-entry",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "project-crossdeck", "one-voyage"],
+      "critical": true,
+      "experience": {
+        "persona": "An authorized Player leaving a companion purpose and returning to the same active Voyage",
+        "integrationOwner": "Homeport immersive companion shell with Crossdeck continuity",
+        "systems": ["project-homeport", "project-crossdeck", "one-voyage"],
+        "sourcePaths": [
+          "src/navigation",
+          "src/components/shell",
+          "src/app/layout.tsx",
+          "src/app/devices/companion",
+          "src/app/devices/display",
+          "src/app/player/library/page.tsx",
+          "src/components/platform/PlayerLibrary.tsx",
+          "src/styles/platform.css"
+        ],
+        "projectionPaths": ["src/app/api/auth/context", "src/app/api/player/library", "src/app/api/play/sessions"],
+        "devices": ["DESKTOP"],
+        "roles": ["PLAYER"],
+        "accessibility": "Every named control is keyboard reachable with visible focus; reduced motion preserves the same task, hierarchy, purpose and safe return.",
+        "fallback": "Guided Lens preserves the released clue without camera permission; unavailable device purposes remain explained and disabled while Journal and safe return remain available.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted task hierarchy and contextual navigation inform the new device composition; the companion still requires its own independent rendered review.",
+            "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted task hierarchy and contextual navigation inform the new device composition; the companion still requires its own independent rendered review.",
+            "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-player-playthroughs-playthroughid-journal"],
+        "browserTests": [
+          "tests/e2e/homeport-phase2.spec.ts",
+          "tests/e2e/crossdeck-experience-refit.spec.ts",
+          "tests/e2e/crossdeck-refit-recovery.spec.ts"
+        ],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "continuity": {
+          "objective": "Keep the same canonical signed-in person through immersive companion, ordinary library and the same-Voyage Journal return.",
+          "checks": [
+            {
+              "id": "same-authorized-person",
+              "role": "button",
+              "name": "Crossdeck synthetic navigator",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "motion": {
+          "measurement": "Keyboard activation to the changed visible connection or canonical companion outcome",
+          "feedbackBudgetMs": 5000,
+          "justification": "Bound the isolated browser transition to useful visible feedback within five seconds, including authorized network projection and supported motion; this is no physical-device performance claim."
+        },
+        "limitations": [
+          "Canonical synthetic account/session setup proves authorization and persisted membership; it does not grant owner acceptance, camera/native spatial capability or real-phone proof.",
+          "Actual two-context pairing, handoff acknowledgement, revocation and restricted shared-display privacy remain covered by the dedicated browser specification; the single-context capture signs in and registers through the actual product UI.",
+          "The existing canonical profile control supplies a rendered person witness; authenticated API/session checks bind it to the actual synthetic account. The final exact Voyage path proves contextual re-entry. Ordinary anonymous account-recovery obligations remain unchanged in their existing contract.",
+          "The existing generic seed owns only a deterministic synthetic account and persisted edition in a guarded nonce database; real sign-in, authorization and device registration establish each capture surface without injected cookies or tab storage.",
+          "The guarded persisted fixture represents an already-opened active Voyage. Every primary entry waits for visible Journal tools, and companion return proves the canonical returning Journal and its replay control rather than assuming a first-open dialog in each signed-in context.",
+          "The same synthetic canonical account owns its primary email, one verified secondary email and existing-style Player username. Six-contract captures retain all twenty desktop/mobile and normal/reduced contexts while respecting the unchanged six-per-login sign-in guard; no account/session injection or auth bypass is used."
+        ],
+        "objective": "Leave the companion through its contextual navigation and reopen the same adventure",
+        "visibleOutcome": "The immersive companion has a usable contextual library exit, the authorized library shows the current adventure, and its visible Continue action returns to the same Voyage",
+        "entryPoint": "/devices/companion?voyage=00000000-0000-4000-8000-00000000cd11",
+        "states": ["COMPANION_READY", "LIBRARY_READY", "RETURNED"],
+        "navigation": "Exit to My Voyages opens the authorized Chronicle Library; Continue Adventure restores the same current Voyage.",
+        "designTarget": "Keep the companion immersive, preserve compact account/context controls, and make the safe library exit and re-entry readable on desktop and phone.",
+        "roleSetup": {
+          "PLAYER": {
+            "entryPoint": "/sign-in?returnTo=%2Faccount%2Fdevices%3Fvoyage%3D00000000-0000-4000-8000-00000000cd11",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "crossdeck-review@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Crossdeck-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Device name",
+                "value": "Phone"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Use this device"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Open on this device"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Change companion purpose"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Journal companion"
+              }
+            ],
+            "witness": {
+              "role": "region",
+              "name": "Journal companion",
+              "text": "The harbour falls quiet behind you."
+            }
+          }
+        },
+        "journeys": [
+          {
+            "id": "companion-context-exit-return",
+            "roles": ["PLAYER"],
+            "outcome": "An authorized Player exits immersive companion presentation through visible Homeport context controls, finds the current adventure and returns to the same Voyage",
+            "steps": [
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Journal companion",
+                "text": "The harbour falls quiet behind you.",
+                "state": "COMPANION_READY"
+              },
+              {
+                "action": "assert",
+                "role": "navigation",
+                "name": "Contextual navigation",
+                "text": "Exit to My Voyages",
+                "absentRole": {
+                  "role": "navigation",
+                  "name": "Global navigation"
+                }
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Exit to My Voyages"
+              },
+              {
+                "action": "assert",
+                "kind": "outcome",
+                "role": "main",
+                "name": "",
+                "text": "Synthetic Crossdeck refit Voyage",
+                "path": "/player/library",
+                "meaning": "The companion context exit opens the authorized Chronicle Library with the same current adventure, rather than leaving a trapped or generic account task.",
+                "state": "LIBRARY_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "My Chronicle Library"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Continue Adventure"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Replay full opening"
+              },
+              {
+                "action": "assert",
+                "role": "navigation",
+                "name": "Journal tools",
+                "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+                "returnPath": true,
+                "state": "RETURNED"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "homeport.shell.crossdeck-companion-mobile",
+      "name": "Homeport immersive companion contextual exit and same-Voyage re-entry · handheld",
+      "authority": "project-homeport",
+      "owners": ["project-homeport", "project-crossdeck", "one-voyage"],
+      "critical": true,
+      "experience": {
+        "persona": "An authorized Player leaving a companion purpose and returning to the same active Voyage",
+        "integrationOwner": "Homeport immersive companion shell with Crossdeck continuity",
+        "systems": ["project-homeport", "project-crossdeck", "one-voyage"],
+        "sourcePaths": [
+          "src/navigation",
+          "src/components/shell",
+          "src/app/layout.tsx",
+          "src/app/devices/companion",
+          "src/app/devices/display",
+          "src/app/player/library/page.tsx",
+          "src/components/platform/PlayerLibrary.tsx",
+          "src/styles/platform.css"
+        ],
+        "projectionPaths": ["src/app/api/auth/context", "src/app/api/player/library", "src/app/api/play/sessions"],
+        "devices": ["MOBILE"],
+        "roles": ["PLAYER"],
+        "accessibility": "Every named control is keyboard reachable with visible focus; reduced motion preserves the same task, hierarchy, purpose and safe return.",
+        "fallback": "Guided Lens preserves the released clue without camera permission; unavailable device purposes remain explained and disabled while Journal and safe return remain available.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted task hierarchy and contextual navigation inform the new device composition; the companion still requires its own independent rendered review.",
+            "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted task hierarchy and contextual navigation inform the new device composition; the companion still requires its own independent rendered review.",
+            "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-player-playthroughs-playthroughid-journal"],
+        "browserTests": [
+          "tests/e2e/homeport-phase2.spec.ts",
+          "tests/e2e/crossdeck-experience-refit.spec.ts",
+          "tests/e2e/crossdeck-refit-recovery.spec.ts"
+        ],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "continuity": {
+          "objective": "Keep the same canonical signed-in person through immersive companion, ordinary library and the same-Voyage Journal return.",
+          "checks": [
+            {
+              "id": "same-authorized-person",
+              "role": "button",
+              "name": "Crossdeck synthetic navigator",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "motion": {
+          "measurement": "Keyboard activation to the changed visible connection or canonical companion outcome",
+          "feedbackBudgetMs": 5000,
+          "justification": "Bound the isolated browser transition to useful visible feedback within five seconds, including authorized network projection and supported motion; this is no physical-device performance claim."
+        },
+        "limitations": [
+          "Canonical synthetic account/session setup proves authorization and persisted membership; it does not grant owner acceptance, camera/native spatial capability or real-phone proof.",
+          "Actual two-context pairing, handoff acknowledgement, revocation and restricted shared-display privacy remain covered by the dedicated browser specification; the single-context capture signs in and registers through the actual product UI.",
+          "The existing canonical profile control supplies a rendered person witness; authenticated API/session checks bind it to the actual synthetic account. The final exact Voyage path proves contextual re-entry. Ordinary anonymous account-recovery obligations remain unchanged in their existing contract.",
+          "The existing generic seed owns only a deterministic synthetic account and persisted edition in a guarded nonce database; real sign-in, authorization and device registration establish each capture surface without injected cookies or tab storage.",
+          "The guarded persisted fixture represents an already-opened active Voyage. Every primary entry waits for visible Journal tools, and companion return proves the canonical returning Journal and its replay control rather than assuming a first-open dialog in each signed-in context.",
+          "The same synthetic canonical account owns its primary email, one verified secondary email and existing-style Player username. Six-contract captures retain all twenty desktop/mobile and normal/reduced contexts while respecting the unchanged six-per-login sign-in guard; no account/session injection or auth bypass is used."
+        ],
+        "objective": "Leave the companion through its contextual navigation and reopen the same adventure",
+        "visibleOutcome": "The immersive companion has a usable contextual library exit, the authorized library shows the current adventure, and its visible Continue action returns to the same Voyage",
+        "entryPoint": "/devices/companion?voyage=00000000-0000-4000-8000-00000000cd11",
+        "states": ["COMPANION_READY", "LIBRARY_READY", "RETURNED"],
+        "navigation": "Exit to My Voyages opens the authorized Chronicle Library; Continue Adventure restores the same current Voyage.",
+        "designTarget": "Keep account/context controls and safe library exit and same-Voyage re-entry readable, discoverable and operable on desktop and phone in both motion modes. Relative passage/chrome composition after return and editorial appearance refinement are assigned to Project Refit; no functional, accessibility or continuity defect is deferred.",
+        "roleSetup": {
+          "PLAYER": {
+            "entryPoint": "/sign-in?returnTo=%2Faccount%2Fdevices%3Fvoyage%3D00000000-0000-4000-8000-00000000cd11",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "crossdeck-review+companion@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Crossdeck-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Device name",
+                "value": "Phone"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Use this device"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Open on this device"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Change companion purpose"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Journal companion"
+              }
+            ],
+            "witness": {
+              "role": "region",
+              "name": "Journal companion",
+              "text": "The harbour falls quiet behind you."
+            }
+          }
+        },
+        "journeys": [
+          {
+            "id": "companion-context-exit-return",
+            "roles": ["PLAYER"],
+            "outcome": "An authorized Player exits immersive companion presentation through visible Homeport context controls, finds the current adventure and returns to the same Voyage",
+            "steps": [
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Journal companion",
+                "text": "The harbour falls quiet behind you.",
+                "state": "COMPANION_READY"
+              },
+              {
+                "action": "assert",
+                "role": "navigation",
+                "name": "Contextual navigation",
+                "text": "Exit to My Voyages",
+                "absentRole": {
+                  "role": "navigation",
+                  "name": "Global navigation"
+                }
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Exit to My Voyages"
+              },
+              {
+                "action": "assert",
+                "kind": "outcome",
+                "role": "main",
+                "name": "",
+                "text": "Synthetic Crossdeck refit Voyage",
+                "path": "/player/library",
+                "meaning": "The companion context exit opens the authorized Chronicle Library with the same current adventure, rather than leaving a trapped or generic account task.",
+                "state": "LIBRARY_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "My Chronicle Library"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Continue Adventure"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Replay full opening"
+              },
+              {
+                "action": "assert",
+                "role": "navigation",
+                "name": "Journal tools",
+                "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+                "returnPath": true,
+                "state": "RETURNED"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Continue Voyage",
+                "unobscured": true
+              }
+            ]
+          }
+        ],
+        "localContinuationProof": {
+          "steps": [
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Continue Voyage"
+            },
+            {
+              "action": "assert",
+              "kind": "outcome",
+              "role": "main",
+              "name": "",
+              "text": "Voyage complete",
+              "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+              "state": "RETURNED",
+              "meaning": "The Player activates the unobscured Continue Voyage control and the same authorized Voyage Journal visibly advances from Follow the lanterns to Voyage complete."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion",
+      "name": "Crossdeck canonical companion Lens, Chart, Journal, artifact and return experience",
+      "authority": "project-crossdeck",
+      "owners": ["project-crossdeck", "project-parallax", "landfall", "player-journal"],
+      "critical": true,
+      "experience": {
+        "pairedEvidence": {
+          "version": 1,
+          "caseIds": ["crossdeck-pair-normal", "crossdeck-pair-reduced", "crossdeck-pair-adverse"]
+        },
+        "persona": "An authorized Player continuing a persisted private synthetic Voyage across personal screens",
+        "integrationOwner": "Crossdeck experience refit integration",
+        "systems": ["project-crossdeck", "project-parallax", "one-voyage", "project-landfall", "player-journal"],
+        "sourcePaths": [
+          "src/crossdeck",
+          "src/components/crossdeck",
+          "src/components/player/journal/ChronicleJournalSession.tsx",
+          "src/app/devices",
+          "src/app/account/devices",
+          "src/components/player/journal",
+          "src/app/player/playthroughs/[playthroughId]/journal",
+          "src/app/play/[taleSlug]/session/[sessionId]",
+          "src/app/player/offline-landfall",
+          "src/styles/chronicle.css"
+        ],
+        "projectionPaths": [
+          "src/app/api/crossdeck",
+          "src/app/api/play/sessions",
+          "src/app/api/player/playthroughs",
+          "src/app/api/player/sessions"
+        ],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["PLAYER"],
+        "accessibility": "Every named control is keyboard reachable with visible focus; reduced motion preserves the same task, hierarchy, purpose and safe return.",
+        "fallback": "Guided Lens preserves the released clue without camera permission; unavailable device purposes remain explained and disabled while Journal and safe return remain available.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted task hierarchy and contextual navigation inform the new device composition; the companion still requires its own independent rendered review.",
+            "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted task hierarchy and contextual navigation inform the new device composition; the companion still requires its own independent rendered review.",
+            "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-player-playthroughs-playthroughid-journal"],
+        "browserTests": ["tests/e2e/crossdeck-experience-refit.spec.ts", "tests/e2e/crossdeck-refit-recovery.spec.ts"],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "continuity": {
+          "objective": "Keep the same authorized Voyage and immutable edition through connection, purpose changes and return without inventing progression authority.",
+          "checks": [
+            {
+              "id": "same-voyage",
+              "role": "region",
+              "name": "Voyage context",
+              "attribute": "data-experience-voyage"
+            },
+            {
+              "id": "same-edition",
+              "role": "region",
+              "name": "Voyage context",
+              "attribute": "data-experience-version"
+            }
+          ]
+        },
+        "motion": {
+          "measurement": "Keyboard activation to the changed visible connection or canonical companion outcome",
+          "feedbackBudgetMs": 5000,
+          "justification": "Bound the isolated browser transition to useful visible feedback within five seconds, including authorized network projection and supported motion; this is no physical-device performance claim."
+        },
+        "limitations": [
+          "Canonical synthetic account/session setup proves authorization and persisted membership; it does not grant owner acceptance, camera/native spatial capability or real-phone proof.",
+          "Actual two-context pairing, handoff acknowledgement, revocation and restricted shared-display privacy remain covered by the dedicated browser specification; the single-context capture signs in and registers through the actual product UI.",
+          "The existing generic seed owns only a deterministic synthetic account and persisted edition in a guarded nonce database; real sign-in, authorization and device registration establish each capture surface without injected cookies or tab storage.",
+          "The guarded persisted fixture represents an already-opened active Voyage. Every primary entry waits for visible Journal tools, and companion return proves the canonical returning Journal and its replay control rather than assuming a first-open dialog in each signed-in context.",
+          "The same synthetic canonical account owns its primary email, one verified secondary email and existing-style Player username. Six-contract captures retain all twenty desktop/mobile and normal/reduced contexts while respecting the unchanged six-per-login sign-in guard; no account/session injection or auth bypass is used."
+        ],
+        "objective": "Use my connected screen as a meaningful Lens, Chart, Journal or artifact companion for the same Chronicle",
+        "visibleOutcome": "Changing companion purpose opens the canonical released clue, actual Voyage chart, readable full passage or released artifact and returns to the same immutable Chronicle",
+        "entryPoint": "/devices/companion?voyage=00000000-0000-4000-8000-00000000cd11",
+        "states": ["JOURNAL_READY", "LENS_READY", "CHART_READY", "ARTIFACT_READY", "JOURNAL_RESTORED", "RETURNED"],
+        "navigation": "Begin on the authorized paired companion; Change companion purpose reaches Lens, Chart, Journal and Artifact viewer; Return to Chronicle opens the original Journal.",
+        "designTarget": "Give each purpose its full readable workspace beneath one Chronicle identity and connection status, with discoverable, operable purpose selection and persistent unobscured return, camera-free meaningful Lens and actual map objectives. Editorial ranking and grouping of purpose/connection utilities and appearance refinement are assigned to Project Refit after all functional reading, purpose and return criteria pass.",
+        "roleSetup": {
+          "PLAYER": {
+            "entryPoint": "/sign-in?returnTo=%2Faccount%2Fdevices%3Fvoyage%3D00000000-0000-4000-8000-00000000cd11",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "crossdeck-review+companion@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Crossdeck-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Device name",
+                "value": "Phone"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Use this device"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Open on this device"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Change companion purpose"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Journal companion"
+              }
+            ],
+            "witness": {
+              "role": "region",
+              "name": "Journal companion",
+              "text": "The harbour falls quiet behind you."
+            }
+          }
+        },
+        "journeys": [
+          {
+            "id": "companion-purpose-return",
+            "roles": ["PLAYER"],
+            "outcome": "A Player experiences released Lens content, the actual current Chart and complete Journal/artifact content before safely returning to the same Chronicle",
+            "steps": [
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Journal companion",
+                "text": "The harbour falls quiet behind you.",
+                "state": "JOURNAL_READY"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Change companion purpose"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Chronicle Lens"
+              },
+              {
+                "action": "assert",
+                "role": "dialog",
+                "name": "A message between worlds",
+                "kind": "outcome",
+                "text": "The next bearing is written in the stars. Look for the northern light.",
+                "path": "/devices/companion",
+                "meaning": "Purpose selection opens the canonical guided spatial moment and its released clue, rather than retaining a role label.",
+                "state": "LENS_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Close Chronicle Lens"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Change companion purpose"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Voyage Chart"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Chart companion",
+                "kind": "outcome",
+                "text": "Current objective: Secret Isle",
+                "path": "/devices/companion",
+                "meaning": "The Chart purpose renders the canonical released virtual map and its current authored objective for this Voyage.",
+                "state": "CHART_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Voyage Chart"
+              },
+              {
+                "action": "assert",
+                "role": "img",
+                "name": "Virtual Landfall chart"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Change companion purpose"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "More purposes"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Artifact viewer"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Artifact viewer",
+                "kind": "outcome",
+                "text": "A small compass worn smooth by a hundred voyages.",
+                "path": "/devices/companion",
+                "meaning": "The artifact purpose renders the actual released keepsake and its readable description for the same immutable edition.",
+                "state": "ARTIFACT_READY",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Change companion purpose"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Journal companion"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Journal companion",
+                "kind": "outcome",
+                "text": "The harbour falls quiet behind you.",
+                "path": "/devices/companion",
+                "meaning": "Returning to Journal restores full readable released passage content while the primary screen keeps its reading state.",
+                "state": "JOURNAL_RESTORED",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Use larger reading size"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Return to Chronicle"
+              },
+              {
+                "action": "assert",
+                "role": "button",
+                "name": "Replay full opening"
+              },
+              {
+                "action": "assert",
+                "role": "navigation",
+                "name": "Journal tools",
+                "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+                "returnPath": true,
+                "state": "RETURNED"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "parallax.floating-controls.experience",
+      "name": "Floating Spatial Assistant controls and Creator continuity",
+      "authority": "one-voyage",
+      "owners": ["spatial-pilot", "one-voyage", "project-crossdeck", "reach"],
+      "critical": true,
+      "experience": {
+        "persona": "A Creator authoring a real spatial scene with assistance and ordinary editor controls",
+        "objective": "Move and resize floating assistance while retaining a full-sized spatial scene and reachable bottom composer",
+        "visibleOutcome": "A Creator moves and resizes floating assistance, sees confirmed window feedback, docks it and returns to the same Creator Library",
+        "integrationOwner": "Parallax floating assistance experience integration",
+        "systems": ["project-parallax", "project-crossdeck", "one-voyage"],
+        "sourcePaths": ["src/components/studio/parallax", "src/app/studio/parallax"],
+        "projectionPaths": ["src/parallax"],
+        "entryPoint": "/studio/library",
+        "states": [
+          "EDITOR_READY",
+          "ASSISTANT_READY",
+          "ASSISTANT_RESIZED",
+          "ASSISTANT_MOVED",
+          "ASSISTANT_DOCKED",
+          "RETURNED"
+        ],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["CREATOR"],
+        "accessibility": "Keyboard entry and visible focus reach assistance, docking and return; readable themes and reduced motion retain meaning. Floating title and all edge/corner handles support arrow keys, with Shift for larger steps.",
+        "fallback": "Without a configured credential or AI allowance, ordinary authoring and guided placement controls remain available.",
+        "navigation": "Creator Library opens Spatial Studio; assistance overlays the scene; closing and returning restores the ordinary Creator Library.",
+        "designTarget": "Use an entirely light or dark blue authoring workspace with separated title/status, clear populated dock sections, and an assistant overlay that never shrinks the canvas. Floating assistance can move and resize inside the visible Studio; the composer remains at the bottom and saved window geometry never changes authored content.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted public entry establishes hierarchy and a coherent shell around distinct role destinations.",
+            "preserve": "Visible account access, clear destinations, cinematic composition and a usable reduced-motion equivalent."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted constrained gateway keeps the same destinations and account access.",
+            "preserve": "Mobile task hierarchy, readable controls and contextual navigation."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-studio-library", "screen-page-studio"],
+        "homeportJourneyIds": ["B"],
+        "browserTests": [
+          "tests/e2e/parallax-owner-refinements.spec.ts",
+          "tests/e2e/parallax-assistant-presentation.spec.ts",
+          "tests/e2e/parallax-spatial-assistant.spec.ts",
+          "tests/e2e/parallax-workstation.spec.ts"
+        ],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "limitations": [
+          "This bounded Creator correction does not claim a Player Lens refit, physical touch/AR acceptance, live model corpus qualification, or owner product acceptance. The protected spatial-pilot experienceIntent and its owner-reported Player debt remain unchanged."
+        ],
+        "roleSetup": {
+          "CREATOR": {
+            "entryPoint": "/sign-in?returnTo=%2Fstudio%2Flibrary",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "parallax-review-floating-creator@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Parallax-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "heading",
+              "name": "Voyagewright Studio",
+              "text": "Voyagewright Studio"
+            }
+          }
+        },
+        "continuity": {
+          "objective": "The same authenticated Creator identity survives the Studio entry, assistance review and return to the canonical Chronicle library.",
+          "checks": [
+            {
+              "id": "creator-identity",
+              "role": "button",
+              "name": "Synthetic Parallax Floating Creator",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "motion": {
+          "measurement": "Visible keyboard action to rendered editor or assistance feedback",
+          "feedbackBudgetMs": 3000
+        },
+        "journeys": [
+          {
+            "id": "creator-floating-window-controls-and-return",
+            "roles": ["CREATOR"],
+            "outcome": "A Creator moves and resizes floating assistance through accessible handles, docks it, and returns to the same library.",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Spatial Studio"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Ask Parallax",
+                "path": "/studio/parallax",
+                "state": "EDITOR_READY",
+                "kind": "outcome",
+                "meaning": "The natural Creator Library entry opens the usable spatial editing workspace with scene and contextual authoring actions.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Ask Parallax"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial Assistant",
+                "text": "Spatial Assistant",
+                "path": "/studio/parallax",
+                "state": "ASSISTANT_READY",
+                "kind": "outcome",
+                "meaning": "The assistance action opens a usable contextual idea composer and review area alongside the actual scene.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Resize floating Spatial Assistant bottom right"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowLeft"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Ask Parallax workspace",
+                "text": "Window resized",
+                "path": "/studio/parallax",
+                "state": "ASSISTANT_RESIZED",
+                "kind": "outcome",
+                "meaning": "The corner handle visibly acknowledges keyboard resizing while assistance remains usable over the scene.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Move floating Spatial Assistant"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowRight"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Ask Parallax workspace",
+                "text": "Window moved",
+                "path": "/studio/parallax",
+                "state": "ASSISTANT_MOVED",
+                "kind": "outcome",
+                "meaning": "After reducing the floating width, the title handle visibly acknowledges keyboard movement while the composer remains reachable.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Dock assistance"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Ask Parallax workspace",
+                "text": "Float assistance",
+                "path": "/studio/parallax",
+                "state": "ASSISTANT_DOCKED",
+                "kind": "outcome",
+                "meaning": "Docking attaches contextual assistance over the existing scene while exposing an explicit return to floating assistance.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Close assistance"
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "← Creator Studio"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Voyagewright Studio",
+                "text": "Voyagewright Studio",
+                "path": "/studio/library",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "parallax.sc00b.inspector.experience",
+      "name": "Contextual Spatial Inspector authoring and scene return",
+      "authority": "project-parallax",
+      "owners": ["project-parallax"],
+      "critical": true,
+      "experience": {
+        "persona": "A Creator editing a spatial scene with an ordinary object selected",
+        "objective": "Find common object edits, spatial relationships and scene settings without losing selection or authored data",
+        "visibleOutcome": "Properties, Spatial context and Scene settings each show real controls; Guided, Standard and Engineering change presentation depth while canonical edits remain reversible and saved",
+        "integrationOwner": "Parallax Spatial Studio Inspector",
+        "systems": ["project-parallax"],
+        "sourcePaths": ["src/components/studio/parallax", "src/app/studio/parallax"],
+        "projectionPaths": [
+          "src/parallax/authoring.ts",
+          "src/parallax/workspace-layout.ts",
+          "src/parallax/element-authoring.ts",
+          "src/parallax/environment-authoring.ts"
+        ],
+        "entryPoint": "/studio/library",
+        "states": ["SCENE", "PROPERTIES", "CONTEXT", "INVALID_SELECTION", "RESTORED_SELECTION", "RETURNED"],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["CREATOR"],
+        "accessibility": "Rail destinations and fields work by keyboard with visible focus; readable controls and the Guided fallback retain meaning with reduced motion.",
+        "fallback": "When the 3D renderer is unavailable, scene and object content remain readable through the Inspector and the same owned draft history.",
+        "navigation": "Creator Library opens Spatial Studio; Scene Hierarchy selects an object; the right rail switches between properties, spatial context and scene settings; the Creator returns to the Library.",
+        "designTarget": "Use an identity-led Inspector with immediate object actions, a compact stack of common controls, contextual placement and relationship tools, technical precision at Engineering depth, and three purposeful rail destinations with clear active state.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted hierarchy and coherent shell provide a standard for clearly differentiated destinations.",
+            "preserve": "Readable navigation, an explicit active destination and a focused content hierarchy."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted constrained layout preserves navigation and readable controls.",
+            "preserve": "Accessible mobile hierarchy and reliable contextual navigation."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-studio-library", "screen-page-studio"],
+        "homeportJourneyIds": ["B"],
+        "browserTests": ["tests/e2e/parallax-sc00b-combined.spec.ts"],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "limitations": [
+          "Typed effects and room geometry are Web Studio previews; native Player alternatives, physical AR, real-room accuracy and owner product acceptance require separate proof."
+        ],
+        "roleSetup": {
+          "CREATOR": {
+            "entryPoint": "/sign-in?returnTo=%2Fstudio%2Flibrary",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "parallax-review-creator@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Parallax-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "heading",
+              "name": "Voyagewright Studio",
+              "text": "Voyagewright Studio"
+            }
+          }
+        },
+        "motion": {
+          "measurement": "Visible rail action to rendered contextual Inspector heading",
+          "feedbackBudgetMs": 3000
+        },
+        "journeys": [
+          {
+            "id": "creator-inspector-context-and-return",
+            "roles": ["CREATOR"],
+            "outcome": "A Creator enters the actual Inspector, travels across all three rail destinations with the same object selected and returns to the Creator Library",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Spatial Studio"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open Scene Hierarchy"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Desk Map parchment"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open scene settings"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Scene settings",
+                "text": "Scene settings",
+                "path": "/studio/parallax",
+                "state": "SCENE",
+                "kind": "outcome",
+                "meaning": "Scene fallback, Library and version controls have a real rail destination while object selection is retained.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open object properties"
+              },
+              {
+                "action": "assert",
+                "role": "complementary",
+                "name": "Spatial inspector",
+                "text": "Edit what this item is",
+                "path": "/studio/parallax",
+                "state": "PROPERTIES",
+                "kind": "outcome",
+                "meaning": "The selected object's common edits and quick actions return without reselecting it.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open spatial context"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Spatial context",
+                "text": "Spatial context",
+                "path": "/studio/parallax",
+                "state": "CONTEXT",
+                "kind": "outcome",
+                "meaning": "Placement, relationships and behavior links are available for the same selected object.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "← Creator Studio"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Voyagewright Studio",
+                "text": "Voyagewright Studio",
+                "path": "/studio/library",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          },
+          {
+            "id": "creator-inspector-removal-recovery-and-return",
+            "roles": ["CREATOR"],
+            "outcome": "A Creator sees an explicit unavailable selection after deletion, restores the object through Undo and returns to the Library",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Spatial Studio"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open Scene Hierarchy"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Desk Map parchment"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Open object properties"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Duplicate"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Delete"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Unavailable selection",
+                "text": "Selection unavailable",
+                "path": "/studio/parallax",
+                "state": "INVALID_SELECTION",
+                "kind": "outcome",
+                "meaning": "A removed object is identified as unavailable instead of silently showing unrelated scene controls.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Undo last edit"
+              },
+              {
+                "action": "assert",
+                "role": "complementary",
+                "name": "Spatial inspector",
+                "text": "Edit what this item is",
+                "path": "/studio/parallax",
+                "state": "RESTORED_SELECTION",
+                "kind": "outcome",
+                "meaning": "Undo restores the selected object's editable Inspector without changing selection identity.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "← Creator Studio"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Voyagewright Studio",
+                "text": "Voyagewright Studio",
+                "path": "/studio/library",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "parallax.rooms-and-surfaces.experience",
+      "name": "Named room previews and surface-aligned Creator placement",
+      "authority": "one-voyage",
+      "owners": ["spatial-pilot", "one-voyage", "project-crossdeck", "reach"],
+      "critical": true,
+      "experience": {
+        "persona": "A Creator authoring a real spatial scene with assistance and ordinary editor controls",
+        "objective": "Explore ten meaningfully distinct room previews and align a clue to whole room surfaces",
+        "visibleOutcome": "Named environments show room-specific scenery; the Creator snaps a clue to a wall and returns to the same Library",
+        "integrationOwner": "Parallax rooms and surface placement integration",
+        "systems": ["project-parallax", "project-crossdeck", "one-voyage"],
+        "sourcePaths": ["src/components/studio/parallax", "src/app/studio/parallax"],
+        "projectionPaths": ["src/parallax"],
+        "entryPoint": "/studio/library",
+        "states": [
+          "EDITOR_READY",
+          "RETURNED",
+          "SURFACES_READY",
+          "SURFACE_SNAPPED",
+          "ROOM_LIVING_ROOM",
+          "ROOM_DORM",
+          "ROOM_OFFICE",
+          "ROOM_CLASSROOM",
+          "ROOM_GALLERY",
+          "ROOM_TRAIL",
+          "ROOM_PLAZA",
+          "ROOM_EMPTY",
+          "ROOM_CLUTTERED"
+        ],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["CREATOR"],
+        "accessibility": "Keyboard entry and visible focus reach assistance, docking and return; readable themes and reduced motion retain meaning. Floating title and all edge/corner handles support arrow keys, with Shift for larger steps.",
+        "fallback": "Without a configured credential or AI allowance, ordinary authoring and guided placement controls remain available.",
+        "navigation": "Creator Library opens Spatial Studio; assistance overlays the scene; closing and returning restores the ordinary Creator Library.",
+        "designTarget": "Use an entirely light or dark blue authoring workspace with separated title/status, clear populated dock sections, and an assistant overlay that never shrinks the canvas. Floating assistance can move and resize inside the visible Studio; the composer remains at the bottom and saved window geometry never changes authored content. The Surfaces control outlines complete current room planes and offers a compact accessible picker. Selecting a wall or furniture aligns the object to its normal, with clear manual/automatic placement language and ordinary Undo. Each named synthetic environment has its own meaningful layout and furnishings, an empty room contains only its shell, and changing environments frames the complete scene. The strengthened construction candidate must show complete thick architecture with true window/door apertures, grounded or explicitly supported/mounted furnishings, legitimate stacks, and continuous trail terrain/path geometry. Independent exact-feature findings remain separate from confidence and visual quality. Compare all ten reference rooms at normal working sizes and retain actual renderer cost and instance-bound measurements.",
+        "references": [
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted public entry establishes hierarchy and a coherent shell around distinct role destinations.",
+            "preserve": "Visible account access, clear destinations, cinematic composition and a usable reduced-motion equivalent."
+          },
+          {
+            "family": "Gateway / public entry",
+            "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+            "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+            "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+            "reason": "Accepted constrained gateway keeps the same destinations and account access.",
+            "preserve": "Mobile task hierarchy, readable controls and contextual navigation."
+          }
+        ],
+        "homeportScreenIds": ["screen-page-studio-library", "screen-page-studio"],
+        "homeportJourneyIds": ["B"],
+        "browserTests": [
+          "tests/e2e/parallax-surfaces.spec.ts",
+          "tests/e2e/parallax-rooms.spec.ts",
+          "tests/e2e/parallax-direct-placement.spec.ts"
+        ],
+        "fixtureProfile": "generic",
+        "recordingRequired": true,
+        "limitations": [
+          "This bounded Creator correction does not claim a Player Lens refit, physical touch/AR acceptance, live model corpus qualification, or owner product acceptance. The protected spatial-pilot experienceIntent and its owner-reported Player debt remain unchanged."
+        ],
+        "roleSetup": {
+          "CREATOR": {
+            "entryPoint": "/sign-in?returnTo=%2Fstudio%2Flibrary",
+            "steps": [
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Email or Player name",
+                "value": "parallax-review-rooms-creator@example.test"
+              },
+              {
+                "action": "fill",
+                "role": "textbox",
+                "name": "Password",
+                "value": "Synthetic-Parallax-Review-2026!"
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Sign in"
+              }
+            ],
+            "witness": {
+              "role": "heading",
+              "name": "Voyagewright Studio",
+              "text": "Voyagewright Studio"
+            }
+          }
+        },
+        "continuity": {
+          "objective": "The same authenticated Creator identity survives the Studio entry, assistance review and return to the canonical Chronicle library.",
+          "checks": [
+            {
+              "id": "creator-identity",
+              "role": "button",
+              "name": "Synthetic Parallax Rooms Creator",
+              "attribute": "aria-label"
+            }
+          ]
+        },
+        "motion": {
+          "measurement": "Visible keyboard action to rendered editor or assistance feedback",
+          "feedbackBudgetMs": 3000
+        },
+        "journeys": [
+          {
+            "id": "creator-named-rooms-surface-snap-and-return",
+            "roles": ["CREATOR"],
+            "outcome": "Named environments show room-specific scenery; the Creator snaps a clue to a wall and returns to the same Library",
+            "steps": [
+              {
+                "action": "click",
+                "role": "link",
+                "name": "Spatial Studio"
+              },
+              {
+                "action": "assert",
+                "role": "main",
+                "name": "",
+                "text": "Working draft saved",
+                "path": "/studio/parallax",
+                "state": "EDITOR_READY",
+                "kind": "outcome",
+                "meaning": "The natural Creator Library entry opens the usable spatial editing workspace with scene and contextual authoring actions.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Toggle spatial overlays"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial canvas",
+                "text": "Room surfaces",
+                "path": "/studio/parallax",
+                "state": "SURFACES_READY",
+                "kind": "outcome",
+                "meaning": "Full room surfaces and a keyboard-accessible picker are available without an AI call.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "wall left"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial canvas",
+                "text": "snapped and aligned to wall left",
+                "path": "/studio/parallax",
+                "state": "SURFACE_SNAPPED",
+                "kind": "outcome",
+                "meaning": "The selected object snaps and aligns to the side wall through the visible manual placement control.",
+                "feedbackBoundary": true
+              },
+              {
+                "action": "click",
+                "role": "button",
+                "name": "Toggle spatial overlays"
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Environment"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial canvas",
+                "text": "Preview: Living room",
+                "path": "/studio/parallax",
+                "state": "ROOM_LIVING_ROOM",
+                "kind": "outcome",
+                "meaning": "The Creator selects Living room through the ordinary environment control and sees its named room-specific scene."
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Environment"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial canvas",
+                "text": "Preview: Small dorm",
+                "path": "/studio/parallax",
+                "state": "ROOM_DORM",
+                "kind": "outcome",
+                "meaning": "The Creator selects Small dorm through the ordinary environment control and sees its named room-specific scene."
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Environment"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial canvas",
+                "text": "Preview: Office",
+                "path": "/studio/parallax",
+                "state": "ROOM_OFFICE",
+                "kind": "outcome",
+                "meaning": "The Creator selects Office through the ordinary environment control and sees its named room-specific scene."
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Environment"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial canvas",
+                "text": "Preview: Classroom",
+                "path": "/studio/parallax",
+                "state": "ROOM_CLASSROOM",
+                "kind": "outcome",
+                "meaning": "The Creator selects Classroom through the ordinary environment control and sees its named room-specific scene."
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Environment"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial canvas",
+                "text": "Preview: Gallery",
+                "path": "/studio/parallax",
+                "state": "ROOM_GALLERY",
+                "kind": "outcome",
+                "meaning": "The Creator selects Gallery through the ordinary environment control and sees its named room-specific scene."
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Environment"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial canvas",
+                "text": "Preview: Outdoor trail",
+                "path": "/studio/parallax",
+                "state": "ROOM_TRAIL",
+                "kind": "outcome",
+                "meaning": "The Creator selects Outdoor trail through the ordinary environment control and sees its named room-specific scene."
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Environment"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial canvas",
+                "text": "Preview: Plaza",
+                "path": "/studio/parallax",
+                "state": "ROOM_PLAZA",
+                "kind": "outcome",
+                "meaning": "The Creator selects Plaza through the ordinary environment control and sees its named room-specific scene."
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Environment"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial canvas",
+                "text": "Preview: Empty room",
+                "path": "/studio/parallax",
+                "state": "ROOM_EMPTY",
+                "kind": "outcome",
+                "meaning": "The Creator selects Empty room through the ordinary environment control and sees its named room-specific scene."
+              },
+              {
+                "action": "click",
+                "role": "combobox",
+                "name": "Environment"
+              },
+              {
+                "action": "keyboard",
+                "key": "Home"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "ArrowDown"
+              },
+              {
+                "action": "keyboard",
+                "key": "Enter"
+              },
+              {
+                "action": "assert",
+                "role": "region",
+                "name": "Spatial canvas",
+                "text": "Preview: Cluttered room",
+                "path": "/studio/parallax",
+                "state": "ROOM_CLUTTERED",
+                "kind": "outcome",
+                "meaning": "The Creator selects Cluttered room through the ordinary environment control and sees its named room-specific scene."
+              },
+              {
+                "action": "click",
+                "role": "link",
+                "name": "← Creator Studio"
+              },
+              {
+                "action": "assert",
+                "role": "heading",
+                "name": "Voyagewright Studio",
+                "text": "Voyagewright Studio",
+                "path": "/studio/library",
+                "state": "RETURNED",
+                "returnPath": true
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -6003,7 +7398,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "\u2190 Creator Studio"
+                "name": "← Creator Studio"
               },
               {
                 "action": "assert",
@@ -6125,7 +7520,7 @@
               {
                 "action": "click",
                 "role": "link",
-                "name": "\u2190 Creator Studio"
+                "name": "← Creator Studio"
               },
               {
                 "action": "assert",
@@ -7026,22 +8421,14 @@
       "id": "parallax.spatial-community-publishing.experience",
       "name": "Creator spatial Community publishing",
       "authority": "one-voyage",
-      "owners": [
-        "project-parallax",
-        "harborlight",
-        "project-homeport"
-      ],
+      "owners": ["project-parallax", "harborlight", "project-homeport"],
       "critical": true,
       "experience": {
         "persona": "A Creator saving and sharing an owned spatial definition",
         "objective": "Save a private spatial definition, inspect the contextual Community publishing steps and server package, then return without accidental publication",
         "visibleOutcome": "One Studio wizard identifies the exact saved source, offers public Profile setup with a return to the same item and Environment version when required, shows included content, license and rights, and presents a server verified package with readable effect, behavior and animation definitions before explicit submission. An approved installed Asset or Composition with modification rights offers a credited copy into a separate private Scene while its pinned Library release stays read-only",
         "integrationOwner": "Parallax SC-07A direct spatial Community publishing",
-        "systems": [
-          "project-parallax",
-          "harborlight",
-          "project-homeport"
-        ],
+        "systems": ["project-parallax", "harborlight", "project-homeport"],
         "sourcePaths": [
           "src/components/studio/parallax/SpatialCommunityPublisher.tsx",
           "src/components/studio/parallax/SpatialContentLibrary.tsx",
@@ -7078,13 +8465,8 @@
           "PACKAGE_REVIEWED",
           "RETURNED"
         ],
-        "devices": [
-          "DESKTOP",
-          "MOBILE"
-        ],
-        "roles": [
-          "CREATOR"
-        ],
+        "devices": ["DESKTOP", "MOBILE"],
+        "roles": ["CREATOR"],
         "accessibility": "Labeled controls, native modal focus, keyboard steps, visible errors, Escape recovery and narrow layout support the complete review. A missing public Profile shows an actionable link above the narrow-screen footer.",
         "fallback": "A missing public Profile blocks the first publishing step, offers direct Profile setup and returns to the same private saved source and selected immutable Environment version after a valid public handle is saved. Other failed Community preflights leave that source intact with a specific correction or retry.",
         "navigation": "Creator Library opens Studio; saved asset, Effect, Composition, Scene and Environment details open one Community wizard; Profile setup returns to that saved definition or selected Environment version; close restores Studio and the Creator Studio link returns to Library. An approved installed Asset or Composition returns to pinned Library inspection, and licensed credited reuse targets a separate private Scene.",
@@ -7107,17 +8489,9 @@
             "preserve": "Readable narrow controls and contextual navigation."
           }
         ],
-        "homeportScreenIds": [
-          "screen-page-studio-library",
-          "screen-page-studio",
-          "screen-page-account-profile"
-        ],
-        "homeportJourneyIds": [
-          "B"
-        ],
-        "browserTests": [
-          "tests/e2e/parallax-spatial-community.spec.ts"
-        ],
+        "homeportScreenIds": ["screen-page-studio-library", "screen-page-studio", "screen-page-account-profile"],
+        "homeportJourneyIds": ["B"],
+        "browserTests": ["tests/e2e/parallax-spatial-community.spec.ts"],
         "fixtureProfile": "generic",
         "recordingRequired": true,
         "limitations": [
@@ -7166,9 +8540,7 @@
         "journeys": [
           {
             "id": "creator-saved-scene-community-package-review",
-            "roles": [
-              "CREATOR"
-            ],
+            "roles": ["CREATOR"],
             "outcome": "The Creator saves a private spatial definition, reviews the actual Community package and rights, and returns without publishing",
             "steps": [
               {

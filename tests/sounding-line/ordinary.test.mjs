@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { execFileSync, spawnSync } from "node:child_process";
 import { EventEmitter } from "node:events";
+import { createServer as createHttpServer } from "node:http";
 import { mkdtempSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { createServer as createTcpServer } from "node:net";
 import { tmpdir } from "node:os";
@@ -13,6 +14,7 @@ import {
   assertBrowserAuthorityTopology,
   browserRuntimeReceipt,
   runBrowserAuthority,
+  startTaskOwnedHttpProxy,
   stopProxy,
   stripTaskOwnedCookieSecurity,
   taskOwnedCookieAdapterRequired,
@@ -1178,6 +1180,65 @@ test("task-owned cookie adaptation is nonce-gated to the isolated Phase 3 runtim
   );
 });
 
+test("task-owned HTTP proxy preserves its browser origin through backend redirects", async (t) => {
+  let location;
+  let upstreamHost;
+  const backend = createHttpServer((incoming, outgoing) => {
+    upstreamHost = incoming.headers.host;
+    outgoing.writeHead(307, {
+      location,
+      connection: "close",
+      "set-cookie": "pending=synthetic-only; Path=/; Secure; HttpOnly; SameSite=Lax",
+    });
+    outgoing.end();
+  });
+  t.after(async () => {
+    backend.closeAllConnections();
+    await new Promise((resolve) => backend.close(resolve));
+  });
+  await new Promise((resolve, reject) => {
+    backend.once("error", reject);
+    backend.listen(0, "127.0.0.1", resolve);
+  });
+  const backendPort = backend.address().port;
+  const port = await unusedPort();
+  const proxy = await startTaskOwnedHttpProxy({ port, backendPort });
+  t.after(async () => {
+    assert.deepEqual(await stopProxy(proxy), { status: "PASS" });
+    await portCanBeReclaimed(port);
+  });
+  const suffix = "/player/invitation?synthetic=only%2Fvalue&again=1#entry";
+  const browserDestination = `http://127.0.0.1:${port}${suffix}`;
+  const translations = [
+    [`http://localhost:${backendPort}${suffix}`, browserDestination],
+    [`http://127.0.0.1:${backendPort}${suffix}`, browserDestination],
+    [`http://[::1]:${backendPort}${suffix}`, browserDestination],
+    [`//localhost:${backendPort}${suffix}`, browserDestination],
+    [suffix, suffix],
+    ["../player/invitation", "../player/invitation"],
+    ["#entry", "#entry"],
+    [`https://localhost:${backendPort}${suffix}`, `https://localhost:${backendPort}${suffix}`],
+    [`http://localhost:${port}${suffix}`, `http://localhost:${port}${suffix}`],
+    [`http://localhost.invalid:${backendPort}${suffix}`, `http://localhost.invalid:${backendPort}${suffix}`],
+    [`//example.invalid:${backendPort}${suffix}`, `//example.invalid:${backendPort}${suffix}`],
+    [`http://synthetic@localhost:${backendPort}${suffix}`, `http://synthetic@localhost:${backendPort}${suffix}`],
+    ["http://[invalid", "http://[invalid"],
+  ];
+  for (const [backendLocation, expected] of translations) {
+    location = backendLocation;
+    const response = await fetch(`http://127.0.0.1:${port}/join/synthetic-only`, {
+      redirect: "manual",
+      signal: AbortSignal.timeout(3000),
+      headers: { host: "untrusted.invalid", "x-forwarded-host": "untrusted.invalid" },
+    });
+    await response.arrayBuffer();
+    assert.equal(response.status, 307);
+    assert.equal(upstreamHost, `127.0.0.1:${backendPort}`);
+    assert.equal(response.headers.get("set-cookie"), "pending=synthetic-only; Path=/; HttpOnly; SameSite=Lax");
+    assert.equal(response.headers.get("location"), expected, backendLocation);
+  }
+});
+
 test("task-owned browser suites configure a task-owned synthetic email adapter", () => {
   const source = readFileSync("scripts/sounding-line/run-browser-suite.mjs", "utf8");
   assert.match(source, /genericTaskRoot = path\.join\(root, `\.sounding-line-\$\{sha\.slice\(0, 12\)\}\.outbox`\)/u);
@@ -1996,3 +2057,4 @@ test("generic browser credentials are ephemeral and restricted to the isolated p
   for (const profile of ["homeport-phase3", "lanternwake-phase3", "harborlight-phase2", "unknown"])
     assert.deepEqual(isolatedBrowserFixtureCredentials(profile), {});
 });
+import "./experience-checkout-recovery.test.mjs";

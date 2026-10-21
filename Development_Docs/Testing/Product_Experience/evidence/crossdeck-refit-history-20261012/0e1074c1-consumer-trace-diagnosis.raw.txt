@@ -1,0 +1,3102 @@
+{
+  "actualAxeCalls": [
+    {
+      "filename": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL.trace.zip",
+      "callId": "call@3598",
+      "startTime": 71193.075,
+      "method": "evaluateExpression",
+      "expressionPrefix": "({\n  context,\n  options\n}) => {\n  return window.axe.runPartial(context, options);\n}",
+      "includesAxeRun": true
+    },
+    {
+      "filename": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL.trace.zip",
+      "callId": "call@4691",
+      "startTime": 90877.855,
+      "method": "evaluateExpression",
+      "expressionPrefix": "({\n  context,\n  options\n}) => {\n  return window.axe.runPartial(context, options);\n}",
+      "includesAxeRun": true
+    },
+    {
+      "filename": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED.trace.zip",
+      "callId": "call@3955",
+      "startTime": 74139.286,
+      "method": "evaluateExpression",
+      "expressionPrefix": "({\n  context,\n  options\n}) => {\n  return window.axe.runPartial(context, options);\n}",
+      "includesAxeRun": true
+    },
+    {
+      "filename": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED.trace.zip",
+      "callId": "call@4969",
+      "startTime": 97887.659,
+      "method": "evaluateExpression",
+      "expressionPrefix": "({\n  context,\n  options\n}) => {\n  return window.axe.runPartial(context, options);\n}",
+      "includesAxeRun": true
+    }
+  ],
+  "snapshots": [
+    {
+      "filename": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL.trace.zip",
+      "callId": "call@3610",
+      "snapshotName": "before@call@3598",
+      "timestamp": 71193.655,
+      "url": "http://127.0.0.1:61445/devices/pair",
+      "matches": [
+        {
+          "text": "Your Chronicle, with you",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "full"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-public shell-mode-PUBLIC_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-transition",
+                "data-route-state": "ready"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/devices/pair",
+                "data-route-role": "incoming",
+                "data-route-interactive": "true",
+                "style": "opacity: 0; transform: translateY(1.18302px); pointer-events: auto;"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-content",
+                "data-route-content-hidden": "false"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {}
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "CrossdeckDevices-module__XfCrNG__onboarding"
+              }
+            },
+            {
+              "tag": "P",
+              "attributes": {
+                "class": "CrossdeckDevices-module__XfCrNG__eyebrow"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL.trace.zip",
+      "callId": "call@3610",
+      "snapshotName": "after@call@3598",
+      "timestamp": 71260.839,
+      "url": "http://127.0.0.1:61445/devices/pair",
+      "matches": [
+        {
+          "text": "Your Chronicle, with you",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "full"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-public shell-mode-PUBLIC_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-transition",
+                "data-route-state": "ready"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/devices/pair",
+                "data-route-role": "incoming",
+                "data-route-interactive": "true",
+                "style": "opacity: 0; transform: translateY(0.327724px); pointer-events: auto;"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-content",
+                "data-route-content-hidden": "false"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {}
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "CrossdeckDevices-module__XfCrNG__onboarding"
+              }
+            },
+            {
+              "tag": "P",
+              "attributes": {
+                "class": "CrossdeckDevices-module__XfCrNG__eyebrow"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL.trace.zip",
+      "callId": "call@3610",
+      "snapshotName": "before@call@3614",
+      "timestamp": 71428.556,
+      "url": "http://127.0.0.1:61445/devices/pair",
+      "matches": [
+        {
+          "text": "Your Chronicle, with you",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "full"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-public shell-mode-PUBLIC_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-transition",
+                "data-route-state": "settled"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/devices/pair",
+                "data-route-role": "incoming",
+                "data-route-interactive": "true",
+                "style": "opacity: 0; transform: none; pointer-events: auto;"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-content",
+                "data-route-content-hidden": "false"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {}
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "CrossdeckDevices-module__XfCrNG__onboarding"
+              }
+            },
+            {
+              "tag": "P",
+              "attributes": {
+                "class": "CrossdeckDevices-module__XfCrNG__eyebrow"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL.trace.zip",
+      "callId": "call@4703",
+      "snapshotName": "before@call@4691",
+      "timestamp": 90879.255,
+      "url": "http://127.0.0.1:61445/player/library",
+      "matches": [
+        {
+          "text": "",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "full"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-player shell-mode-WORKSPACE_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-transition",
+                "data-route-state": "ready"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/devices/companion",
+                "data-route-role": "outgoing",
+                "data-route-interactive": "false",
+                "aria-hidden": "true",
+                "inert": "",
+                "style": "opacity: 1; pointer-events: none;"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {
+                "class": "CrossdeckCompanion-module__imzf2G__companion",
+                "data-motion-mode": "full"
+              }
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "CrossdeckCompanion-module__imzf2G__workspace"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "CrossdeckCompanion-module__imzf2G__selector"
+              }
+            },
+            {
+              "tag": "SELECT",
+              "attributes": {}
+            }
+          ]
+        },
+        {
+          "text": "",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "full"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-player shell-mode-WORKSPACE_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-transition",
+                "data-route-state": "ready"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/devices/companion",
+                "data-route-role": "outgoing",
+                "data-route-interactive": "false",
+                "aria-hidden": "true",
+                "inert": "",
+                "style": "opacity: 1; pointer-events: none;"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {
+                "class": "CrossdeckCompanion-module__imzf2G__companion",
+                "data-motion-mode": "full"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "CrossdeckCompanion-module__imzf2G__transfer"
+              }
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "CrossdeckDevices-module__XfCrNG__handoff"
+              }
+            },
+            {
+              "tag": "DIALOG",
+              "attributes": {
+                "class": "CrossdeckDevices-module__XfCrNG__sendDialog"
+              }
+            },
+            {
+              "tag": "DETAILS",
+              "attributes": {
+                "class": "CrossdeckDevices-module__XfCrNG__advanced"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {}
+            },
+            {
+              "tag": "SELECT",
+              "attributes": {}
+            }
+          ]
+        },
+        {
+          "text": "",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "full"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-player shell-mode-WORKSPACE_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-transition",
+                "data-route-state": "ready"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/player/library",
+                "data-route-role": "incoming",
+                "data-route-interactive": "true",
+                "style": "opacity: 0; transform: translateY(1.01717px); pointer-events: auto;"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-content",
+                "data-route-content-hidden": "false"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {
+                "class": "player-library",
+                "data-motion-mode": "full",
+                "style": "opacity: 0; transform: translateY(7.57152px);"
+              }
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "library-tools"
+              }
+            },
+            {
+              "tag": "LABEL",
+              "attributes": {}
+            },
+            {
+              "tag": "INPUT",
+              "attributes": {
+                "placeholder": "Title, Captain, voyage, or year",
+                "type": "search"
+              }
+            }
+          ]
+        },
+        {
+          "text": "",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "full"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-player shell-mode-WORKSPACE_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-transition",
+                "data-route-state": "ready"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/player/library",
+                "data-route-role": "incoming",
+                "data-route-interactive": "true",
+                "style": "opacity: 0; transform: translateY(1.01717px); pointer-events: auto;"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-content",
+                "data-route-content-hidden": "false"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {
+                "class": "player-library",
+                "data-motion-mode": "full",
+                "style": "opacity: 0; transform: translateY(7.57152px);"
+              }
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "library-tools"
+              }
+            },
+            {
+              "tag": "LABEL",
+              "attributes": {}
+            },
+            {
+              "tag": "SELECT",
+              "attributes": {}
+            }
+          ]
+        },
+        {
+          "text": "",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "full"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-player shell-mode-WORKSPACE_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-transition",
+                "data-route-state": "ready"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/player/library",
+                "data-route-role": "incoming",
+                "data-route-interactive": "true",
+                "style": "opacity: 0; transform: translateY(1.01717px); pointer-events: auto;"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-content",
+                "data-route-content-hidden": "false"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {
+                "class": "player-library",
+                "data-motion-mode": "full",
+                "style": "opacity: 0; transform: translateY(7.57152px);"
+              }
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "library-tools"
+              }
+            },
+            {
+              "tag": "LABEL",
+              "attributes": {}
+            },
+            {
+              "tag": "SELECT",
+              "attributes": {}
+            }
+          ]
+        },
+        {
+          "text": "Gallery",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "full"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-player shell-mode-WORKSPACE_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-transition",
+                "data-route-state": "ready"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/player/library",
+                "data-route-role": "incoming",
+                "data-route-interactive": "true",
+                "style": "opacity: 0; transform: translateY(1.01717px); pointer-events: auto;"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-content",
+                "data-route-content-hidden": "false"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {
+                "class": "player-library",
+                "data-motion-mode": "full",
+                "style": "opacity: 0; transform: translateY(7.57152px);"
+              }
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "library-tools"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "view-toggle"
+              }
+            },
+            {
+              "tag": "BUTTON",
+              "attributes": {
+                "class": "active",
+                "aria-pressed": "true"
+              }
+            }
+          ]
+        },
+        {
+          "text": "Leave Voyage",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "full"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-player shell-mode-WORKSPACE_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-transition",
+                "data-route-state": "ready"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/player/library",
+                "data-route-role": "incoming",
+                "data-route-interactive": "true",
+                "style": "opacity: 0; transform: translateY(1.01717px); pointer-events: auto;"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-content",
+                "data-route-content-hidden": "false"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {
+                "class": "player-library",
+                "data-motion-mode": "full",
+                "style": "opacity: 0; transform: translateY(7.57152px);"
+              }
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "library-group"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "player-card-grid gallery",
+                "style": "opacity: 1;"
+              }
+            },
+            {
+              "tag": "ARTICLE",
+              "attributes": {
+                "class": "player-tale-card state-in-progress",
+                "style": "opacity: 1; transform: none;"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "tale-card-copy"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "card-actions"
+              }
+            },
+            {
+              "tag": "BUTTON",
+              "attributes": {
+                "class": "button-danger"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL.trace.zip",
+      "callId": "call@4703",
+      "snapshotName": "after@call@4691",
+      "timestamp": 90990.732,
+      "url": "http://127.0.0.1:61445/player/library",
+      "matches": [
+        {
+          "text": "",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "full"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-player shell-mode-WORKSPACE_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-transition",
+                "data-route-state": "ready"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/devices/companion",
+                "data-route-role": "outgoing",
+                "data-route-interactive": "false",
+                "aria-hidden": "true",
+                "inert": "",
+                "style": "opacity: 1; pointer-events: none;"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {
+                "class": "CrossdeckCompanion-module__imzf2G__companion",
+                "data-motion-mode": "full"
+              }
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "CrossdeckCompanion-module__imzf2G__workspace"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "CrossdeckCompanion-module__imzf2G__selector"
+              }
+            },
+            {
+              "tag": "SELECT",
+              "attributes": {}
+            }
+          ]
+        },
+        {
+          "text": "",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "full"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-player shell-mode-WORKSPACE_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-transition",
+                "data-route-state": "ready"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/devices/companion",
+                "data-route-role": "outgoing",
+                "data-route-interactive": "false",
+                "aria-hidden": "true",
+                "inert": "",
+                "style": "opacity: 1; pointer-events: none;"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {
+                "class": "CrossdeckCompanion-module__imzf2G__companion",
+                "data-motion-mode": "full"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "CrossdeckCompanion-module__imzf2G__transfer"
+              }
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "CrossdeckDevices-module__XfCrNG__handoff"
+              }
+            },
+            {
+              "tag": "DIALOG",
+              "attributes": {
+                "class": "CrossdeckDevices-module__XfCrNG__sendDialog"
+              }
+            },
+            {
+              "tag": "DETAILS",
+              "attributes": {
+                "class": "CrossdeckDevices-module__XfCrNG__advanced"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {}
+            },
+            {
+              "tag": "SELECT",
+              "attributes": {}
+            }
+          ]
+        },
+        {
+          "text": "",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "full"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-player shell-mode-WORKSPACE_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-transition",
+                "data-route-state": "ready"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/player/library",
+                "data-route-role": "incoming",
+                "data-route-interactive": "true",
+                "style": "opacity: 0; transform: translateY(0.0703119px); pointer-events: auto;"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-content",
+                "data-route-content-hidden": "false"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {
+                "class": "player-library",
+                "data-motion-mode": "full",
+                "style": "opacity: 0; transform: translateY(1.46483px);"
+              }
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "library-tools"
+              }
+            },
+            {
+              "tag": "LABEL",
+              "attributes": {}
+            },
+            {
+              "tag": "INPUT",
+              "attributes": {
+                "placeholder": "Title, Captain, voyage, or year",
+                "type": "search"
+              }
+            }
+          ]
+        },
+        {
+          "text": "",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "full"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-player shell-mode-WORKSPACE_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-transition",
+                "data-route-state": "ready"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/player/library",
+                "data-route-role": "incoming",
+                "data-route-interactive": "true",
+                "style": "opacity: 0; transform: translateY(0.0703119px); pointer-events: auto;"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-content",
+                "data-route-content-hidden": "false"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {
+                "class": "player-library",
+                "data-motion-mode": "full",
+                "style": "opacity: 0; transform: translateY(1.46483px);"
+              }
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "library-tools"
+              }
+            },
+            {
+              "tag": "LABEL",
+              "attributes": {}
+            },
+            {
+              "tag": "SELECT",
+              "attributes": {}
+            }
+          ]
+        },
+        {
+          "text": "",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "full"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-player shell-mode-WORKSPACE_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-transition",
+                "data-route-state": "ready"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/player/library",
+                "data-route-role": "incoming",
+                "data-route-interactive": "true",
+                "style": "opacity: 0; transform: translateY(0.0703119px); pointer-events: auto;"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-content",
+                "data-route-content-hidden": "false"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {
+                "class": "player-library",
+                "data-motion-mode": "full",
+                "style": "opacity: 0; transform: translateY(1.46483px);"
+              }
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "library-tools"
+              }
+            },
+            {
+              "tag": "LABEL",
+              "attributes": {}
+            },
+            {
+              "tag": "SELECT",
+              "attributes": {}
+            }
+          ]
+        },
+        {
+          "text": "Gallery",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "full"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-player shell-mode-WORKSPACE_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-transition",
+                "data-route-state": "ready"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/player/library",
+                "data-route-role": "incoming",
+                "data-route-interactive": "true",
+                "style": "opacity: 0; transform: translateY(0.0703119px); pointer-events: auto;"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-content",
+                "data-route-content-hidden": "false"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {
+                "class": "player-library",
+                "data-motion-mode": "full",
+                "style": "opacity: 0; transform: translateY(1.46483px);"
+              }
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "library-tools"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "view-toggle"
+              }
+            },
+            {
+              "tag": "BUTTON",
+              "attributes": {
+                "class": "active",
+                "aria-pressed": "true"
+              }
+            }
+          ]
+        },
+        {
+          "text": "Leave Voyage",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "full"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-player shell-mode-WORKSPACE_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-transition",
+                "data-route-state": "ready"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/player/library",
+                "data-route-role": "incoming",
+                "data-route-interactive": "true",
+                "style": "opacity: 0; transform: translateY(0.0703119px); pointer-events: auto;"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-content",
+                "data-route-content-hidden": "false"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {
+                "class": "player-library",
+                "data-motion-mode": "full",
+                "style": "opacity: 0; transform: translateY(1.46483px);"
+              }
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "library-group"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "player-card-grid gallery",
+                "style": "opacity: 1;"
+              }
+            },
+            {
+              "tag": "ARTICLE",
+              "attributes": {
+                "class": "player-tale-card state-in-progress",
+                "style": "opacity: 1; transform: none;"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "tale-card-copy"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "card-actions"
+              }
+            },
+            {
+              "tag": "BUTTON",
+              "attributes": {
+                "class": "button-danger"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL.trace.zip",
+      "callId": "call@4703",
+      "snapshotName": "before@call@4707",
+      "timestamp": 91199.972,
+      "url": "http://127.0.0.1:61445/player/library",
+      "matches": [
+        {
+          "text": "",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "full"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-player shell-mode-WORKSPACE_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-transition",
+                "data-route-state": "settled"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/player/library",
+                "data-route-role": "incoming",
+                "data-route-interactive": "true",
+                "style": "opacity: 1; transform: none; pointer-events: auto;"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-content",
+                "data-route-content-hidden": "false"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {
+                "class": "player-library",
+                "data-motion-mode": "full",
+                "style": "opacity: 0; transform: translateY(0.0003983px);"
+              }
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "library-tools"
+              }
+            },
+            {
+              "tag": "LABEL",
+              "attributes": {}
+            },
+            {
+              "tag": "INPUT",
+              "attributes": {
+                "placeholder": "Title, Captain, voyage, or year",
+                "type": "search"
+              }
+            }
+          ]
+        },
+        {
+          "text": "",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "full"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-player shell-mode-WORKSPACE_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-transition",
+                "data-route-state": "settled"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/player/library",
+                "data-route-role": "incoming",
+                "data-route-interactive": "true",
+                "style": "opacity: 1; transform: none; pointer-events: auto;"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-content",
+                "data-route-content-hidden": "false"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {
+                "class": "player-library",
+                "data-motion-mode": "full",
+                "style": "opacity: 0; transform: translateY(0.0003983px);"
+              }
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "library-tools"
+              }
+            },
+            {
+              "tag": "LABEL",
+              "attributes": {}
+            },
+            {
+              "tag": "SELECT",
+              "attributes": {}
+            }
+          ]
+        },
+        {
+          "text": "",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "full"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-player shell-mode-WORKSPACE_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-transition",
+                "data-route-state": "settled"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/player/library",
+                "data-route-role": "incoming",
+                "data-route-interactive": "true",
+                "style": "opacity: 1; transform: none; pointer-events: auto;"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-content",
+                "data-route-content-hidden": "false"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {
+                "class": "player-library",
+                "data-motion-mode": "full",
+                "style": "opacity: 0; transform: translateY(0.0003983px);"
+              }
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "library-tools"
+              }
+            },
+            {
+              "tag": "LABEL",
+              "attributes": {}
+            },
+            {
+              "tag": "SELECT",
+              "attributes": {}
+            }
+          ]
+        },
+        {
+          "text": "Gallery",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "full"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-player shell-mode-WORKSPACE_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-transition",
+                "data-route-state": "settled"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/player/library",
+                "data-route-role": "incoming",
+                "data-route-interactive": "true",
+                "style": "opacity: 1; transform: none; pointer-events: auto;"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-content",
+                "data-route-content-hidden": "false"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {
+                "class": "player-library",
+                "data-motion-mode": "full",
+                "style": "opacity: 0; transform: translateY(0.0003983px);"
+              }
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "library-tools"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "view-toggle"
+              }
+            },
+            {
+              "tag": "BUTTON",
+              "attributes": {
+                "class": "active",
+                "aria-pressed": "true"
+              }
+            }
+          ]
+        },
+        {
+          "text": "Leave Voyage",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "full"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-player shell-mode-WORKSPACE_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-transition",
+                "data-route-state": "settled"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/player/library",
+                "data-route-role": "incoming",
+                "data-route-interactive": "true",
+                "style": "opacity: 1; transform: none; pointer-events: auto;"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-content",
+                "data-route-content-hidden": "false"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {
+                "class": "player-library",
+                "data-motion-mode": "full",
+                "style": "opacity: 0; transform: translateY(0.0003983px);"
+              }
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "library-group"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "player-card-grid gallery",
+                "style": "opacity: 1;"
+              }
+            },
+            {
+              "tag": "ARTICLE",
+              "attributes": {
+                "class": "player-tale-card state-in-progress",
+                "style": "opacity: 1; transform: none;"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "tale-card-copy"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "card-actions"
+              }
+            },
+            {
+              "tag": "BUTTON",
+              "attributes": {
+                "class": "button-danger"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED.trace.zip",
+      "callId": "call@3967",
+      "snapshotName": "before@call@3955",
+      "timestamp": 74139.766,
+      "url": "http://127.0.0.1:61445/devices/pair",
+      "matches": [
+        {
+          "text": "Your Chronicle, with you",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "reduced"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-public shell-mode-PUBLIC_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/devices/pair",
+                "data-route-state": "settled"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {}
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "CrossdeckDevices-module__XfCrNG__onboarding"
+              }
+            },
+            {
+              "tag": "P",
+              "attributes": {
+                "class": "CrossdeckDevices-module__XfCrNG__eyebrow"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED.trace.zip",
+      "callId": "call@3967",
+      "snapshotName": "after@call@3955",
+      "timestamp": 74198.894,
+      "url": "http://127.0.0.1:61445/devices/pair",
+      "matches": [
+        {
+          "text": "Your Chronicle, with you",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "reduced"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-public shell-mode-PUBLIC_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/devices/pair",
+                "data-route-state": "settled"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {}
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "CrossdeckDevices-module__XfCrNG__onboarding"
+              }
+            },
+            {
+              "tag": "P",
+              "attributes": {
+                "class": "CrossdeckDevices-module__XfCrNG__eyebrow"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED.trace.zip",
+      "callId": "call@3967",
+      "snapshotName": "before@call@3971",
+      "timestamp": 74363.379,
+      "url": "http://127.0.0.1:61445/devices/pair",
+      "matches": [
+        {
+          "text": "Your Chronicle, with you",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "reduced"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-public shell-mode-PUBLIC_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/devices/pair",
+                "data-route-state": "settled"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {}
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "CrossdeckDevices-module__XfCrNG__onboarding"
+              }
+            },
+            {
+              "tag": "P",
+              "attributes": {
+                "class": "CrossdeckDevices-module__XfCrNG__eyebrow"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED.trace.zip",
+      "callId": "call@4981",
+      "snapshotName": "before@call@4969",
+      "timestamp": 97889.187,
+      "url": "http://127.0.0.1:61445/player/library",
+      "matches": [
+        {
+          "text": "",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "reduced"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-player shell-mode-WORKSPACE_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/player/library",
+                "data-route-state": "settled"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {
+                "class": "player-library",
+                "data-motion-mode": "reduced",
+                "style": "opacity: 1; transform: none;"
+              }
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "library-tools"
+              }
+            },
+            {
+              "tag": "LABEL",
+              "attributes": {}
+            },
+            {
+              "tag": "INPUT",
+              "attributes": {
+                "placeholder": "Title, Captain, voyage, or year",
+                "type": "search"
+              }
+            }
+          ]
+        },
+        {
+          "text": "",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "reduced"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-player shell-mode-WORKSPACE_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/player/library",
+                "data-route-state": "settled"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {
+                "class": "player-library",
+                "data-motion-mode": "reduced",
+                "style": "opacity: 1; transform: none;"
+              }
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "library-tools"
+              }
+            },
+            {
+              "tag": "LABEL",
+              "attributes": {}
+            },
+            {
+              "tag": "SELECT",
+              "attributes": {}
+            }
+          ]
+        },
+        {
+          "text": "",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "reduced"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-player shell-mode-WORKSPACE_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/player/library",
+                "data-route-state": "settled"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {
+                "class": "player-library",
+                "data-motion-mode": "reduced",
+                "style": "opacity: 1; transform: none;"
+              }
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "library-tools"
+              }
+            },
+            {
+              "tag": "LABEL",
+              "attributes": {}
+            },
+            {
+              "tag": "SELECT",
+              "attributes": {}
+            }
+          ]
+        },
+        {
+          "text": "Gallery",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "reduced"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-player shell-mode-WORKSPACE_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/player/library",
+                "data-route-state": "settled"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {
+                "class": "player-library",
+                "data-motion-mode": "reduced",
+                "style": "opacity: 1; transform: none;"
+              }
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "library-tools"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "view-toggle"
+              }
+            },
+            {
+              "tag": "BUTTON",
+              "attributes": {
+                "class": "active",
+                "aria-pressed": "true"
+              }
+            }
+          ]
+        },
+        {
+          "text": "Leave Voyage",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "reduced"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-player shell-mode-WORKSPACE_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/player/library",
+                "data-route-state": "settled"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {
+                "class": "player-library",
+                "data-motion-mode": "reduced",
+                "style": "opacity: 1; transform: none;"
+              }
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "library-group"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "player-card-grid gallery",
+                "style": "opacity: 1;"
+              }
+            },
+            {
+              "tag": "ARTICLE",
+              "attributes": {
+                "class": "player-tale-card state-in-progress",
+                "style": "opacity: 1; transform: none;"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "tale-card-copy"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "card-actions"
+              }
+            },
+            {
+              "tag": "BUTTON",
+              "attributes": {
+                "class": "button-danger"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED.trace.zip",
+      "callId": "call@4981",
+      "snapshotName": "after@call@4969",
+      "timestamp": 97984.954,
+      "url": "http://127.0.0.1:61445/player/library",
+      "matches": [
+        {
+          "text": "",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "reduced"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-player shell-mode-WORKSPACE_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/player/library",
+                "data-route-state": "settled"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {
+                "class": "player-library",
+                "data-motion-mode": "reduced",
+                "style": "opacity: 1; transform: none;"
+              }
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "library-tools"
+              }
+            },
+            {
+              "tag": "LABEL",
+              "attributes": {}
+            },
+            {
+              "tag": "INPUT",
+              "attributes": {
+                "placeholder": "Title, Captain, voyage, or year",
+                "type": "search"
+              }
+            }
+          ]
+        },
+        {
+          "text": "",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "reduced"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-player shell-mode-WORKSPACE_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/player/library",
+                "data-route-state": "settled"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {
+                "class": "player-library",
+                "data-motion-mode": "reduced",
+                "style": "opacity: 1; transform: none;"
+              }
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "library-tools"
+              }
+            },
+            {
+              "tag": "LABEL",
+              "attributes": {}
+            },
+            {
+              "tag": "SELECT",
+              "attributes": {}
+            }
+          ]
+        },
+        {
+          "text": "",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "reduced"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-player shell-mode-WORKSPACE_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/player/library",
+                "data-route-state": "settled"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {
+                "class": "player-library",
+                "data-motion-mode": "reduced",
+                "style": "opacity: 1; transform: none;"
+              }
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "library-tools"
+              }
+            },
+            {
+              "tag": "LABEL",
+              "attributes": {}
+            },
+            {
+              "tag": "SELECT",
+              "attributes": {}
+            }
+          ]
+        },
+        {
+          "text": "Gallery",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "reduced"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-player shell-mode-WORKSPACE_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/player/library",
+                "data-route-state": "settled"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {
+                "class": "player-library",
+                "data-motion-mode": "reduced",
+                "style": "opacity: 1; transform: none;"
+              }
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "library-tools"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "view-toggle"
+              }
+            },
+            {
+              "tag": "BUTTON",
+              "attributes": {
+                "class": "active",
+                "aria-pressed": "true"
+              }
+            }
+          ]
+        },
+        {
+          "text": "Leave Voyage",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "reduced"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-player shell-mode-WORKSPACE_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/player/library",
+                "data-route-state": "settled"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {
+                "class": "player-library",
+                "data-motion-mode": "reduced",
+                "style": "opacity: 1; transform: none;"
+              }
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "library-group"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "player-card-grid gallery",
+                "style": "opacity: 1;"
+              }
+            },
+            {
+              "tag": "ARTICLE",
+              "attributes": {
+                "class": "player-tale-card state-in-progress",
+                "style": "opacity: 1; transform: none;"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "tale-card-copy"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "card-actions"
+              }
+            },
+            {
+              "tag": "BUTTON",
+              "attributes": {
+                "class": "button-danger"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED.trace.zip",
+      "callId": "call@4981",
+      "snapshotName": "before@call@4985",
+      "timestamp": 98184.518,
+      "url": "http://127.0.0.1:61445/player/library",
+      "matches": [
+        {
+          "text": "",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "reduced"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-player shell-mode-WORKSPACE_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/player/library",
+                "data-route-state": "settled"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {
+                "class": "player-library",
+                "data-motion-mode": "reduced",
+                "style": "opacity: 1; transform: none;"
+              }
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "library-tools"
+              }
+            },
+            {
+              "tag": "LABEL",
+              "attributes": {}
+            },
+            {
+              "tag": "INPUT",
+              "attributes": {
+                "placeholder": "Title, Captain, voyage, or year",
+                "type": "search"
+              }
+            }
+          ]
+        },
+        {
+          "text": "",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "reduced"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-player shell-mode-WORKSPACE_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/player/library",
+                "data-route-state": "settled"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {
+                "class": "player-library",
+                "data-motion-mode": "reduced",
+                "style": "opacity: 1; transform: none;"
+              }
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "library-tools"
+              }
+            },
+            {
+              "tag": "LABEL",
+              "attributes": {}
+            },
+            {
+              "tag": "SELECT",
+              "attributes": {}
+            }
+          ]
+        },
+        {
+          "text": "",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "reduced"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-player shell-mode-WORKSPACE_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/player/library",
+                "data-route-state": "settled"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {
+                "class": "player-library",
+                "data-motion-mode": "reduced",
+                "style": "opacity: 1; transform: none;"
+              }
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "library-tools"
+              }
+            },
+            {
+              "tag": "LABEL",
+              "attributes": {}
+            },
+            {
+              "tag": "SELECT",
+              "attributes": {}
+            }
+          ]
+        },
+        {
+          "text": "Gallery",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "reduced"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-player shell-mode-WORKSPACE_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/player/library",
+                "data-route-state": "settled"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {
+                "class": "player-library",
+                "data-motion-mode": "reduced",
+                "style": "opacity: 1; transform: none;"
+              }
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "library-tools"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "view-toggle"
+              }
+            },
+            {
+              "tag": "BUTTON",
+              "attributes": {
+                "class": "active",
+                "aria-pressed": "true"
+              }
+            }
+          ]
+        },
+        {
+          "text": "Leave Voyage",
+          "chain": [
+            {
+              "tag": "HTML",
+              "attributes": {
+                "data-voyage-theme": "dark",
+                "data-motion-preference": "full",
+                "style": "--account-text-scale: 1;",
+                "data-motion-level": "reduced"
+              }
+            },
+            {
+              "tag": "BODY",
+              "attributes": {}
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell workspace-player shell-mode-WORKSPACE_STANDARD"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-shell-content"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "product-route-layer",
+                "data-route-layer": "/player/library",
+                "data-route-state": "settled"
+              }
+            },
+            {
+              "tag": "MAIN",
+              "attributes": {
+                "class": "player-library",
+                "data-motion-mode": "reduced",
+                "style": "opacity: 1; transform: none;"
+              }
+            },
+            {
+              "tag": "SECTION",
+              "attributes": {
+                "class": "library-group"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "player-card-grid gallery",
+                "style": "opacity: 1;"
+              }
+            },
+            {
+              "tag": "ARTICLE",
+              "attributes": {
+                "class": "player-tale-card state-in-progress",
+                "style": "opacity: 1; transform: none;"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "tale-card-copy"
+              }
+            },
+            {
+              "tag": "DIV",
+              "attributes": {
+                "class": "card-actions"
+              }
+            },
+            {
+              "tag": "BUTTON",
+              "attributes": {
+                "class": "button-danger"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "evidenceIdentity": {
+    "candidateSha": "0e1074c1cf3e7abbe7dd572c6cb828cf45419dc4",
+    "sourceDigest": "6f1069cc9a41414fc7735235fe864b3e5c4f4c842de09cb49872cbd71903b654",
+    "inspection": "Preserved trace snapshots and current unchanged consumer source; no new runtime."
+  },
+  "authoredColors": [
+    {
+      "consumer": "Crossdeck onboarding eyebrow",
+      "foreground": "var(--accent-primary) = #c9a95f",
+      "background": "var(--surface-default) = #07191c",
+      "source": "src/components/crossdeck/CrossdeckDevices.module.css:24"
+    },
+    {
+      "consumer": "Library input/select",
+      "foreground": "var(--parchment-50) = #f6edd6",
+      "background": "#061719",
+      "source": "src/styles/platform.css:706"
+    },
+    {
+      "consumer": "Library active Gallery",
+      "foreground": "#1c150a",
+      "background": "var(--brass-100) = #f0d594",
+      "source": "src/styles/platform.css:717"
+    },
+    {
+      "consumer": "Library Leave Voyage",
+      "foreground": "#ffe2de",
+      "background": "color-mix(in srgb, var(--crimson-700) 72%, var(--surface-default))",
+      "source": "src/styles/tokens.css:340"
+    }
+  ],
+  "interpretation": "Normal trace snapshot inline opacity zero records authored start values while the motion compositor runs. Axe reports effective composite foreground/background colors. Source assigns opacity entrances to the observed route and Library main ancestors. Reduced traces render these consumers opaque under the canonical motion level override. Exact intermediate computed alpha was not directly sampled."
+}

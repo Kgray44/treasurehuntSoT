@@ -154,11 +154,22 @@ async function finishTargets(page: Page, count: number) {
   await expect(page.getByRole("button", { name: "Recalibrate", exact: true })).toBeVisible({ timeout: 7000 });
 }
 
+async function anonymousPairingReady(page: Page) {
+  const pairing = page.getByRole("region", { name: "Connect your phone", exact: true });
+  await expect(
+    pairing.getByRole("heading", { level: 1, name: "Bring the adventure with you", exact: true }),
+  ).toBeVisible();
+  const signIn = pairing.getByRole("link", { name: "Sign in", exact: true });
+  await expect(signIn).toBeVisible();
+  await expect(signIn).toHaveAttribute("href", "/sign-in?returnTo=%2Fdevices%2Fpair");
+  await expect(pairing.getByRole("textbox", { name: "Connection code", exact: true })).toHaveCount(0);
+}
+
 async function returnByKeyboard(page: Page) {
   await tabTo(page, page.getByRole("link", { name: "← Device connections", exact: true }));
   await page.keyboard.press("Enter");
   await settled(page, "/devices/pair");
-  await expect(page.getByRole("heading", { name: "Bring your other device aboard", exact: true })).toBeVisible();
+  await anonymousPairingReady(page);
 }
 
 test.afterAll(() => db.$disconnect());
@@ -173,7 +184,7 @@ for (const viewport of viewports) {
       await page.emulateMedia({ reducedMotion });
       await page.goto("/devices/pair");
       await settled(page, "/devices/pair");
-      await expect(page.getByRole("heading", { name: "Bring your other device aboard", exact: true })).toBeVisible();
+      await anonymousPairingReady(page);
       await auditWholePage(page, info, "PAIR_INITIAL");
 
       const skip = page.getByRole("link", { name: "Skip to main content", exact: true });
@@ -269,13 +280,34 @@ for (const viewport of viewports) {
         await page.setViewportSize({ width: viewport.width, height: viewport.height });
         await page.emulateMedia({ reducedMotion });
         await authenticateClosure(context, account, baseURL);
-        await page.goto(new URL("/devices/pair", baseURL).href);
+        const [devicesResponse] = await Promise.all([
+          page.waitForResponse(
+            (response) =>
+              response.request().method() === "GET" && new URL(response.url()).pathname === "/api/crossdeck",
+          ),
+          page.goto(new URL("/devices/pair", baseURL).href),
+        ]);
+        expect(devicesResponse.status()).toBe(200);
+        const devicesPayload = await devicesResponse.json();
+        expect(devicesPayload.csrfToken).toEqual(expect.any(String));
+        expect(devicesPayload.csrfToken).not.toBe("");
+        expect(devicesPayload.surfaces).toEqual([]);
+        expect(devicesPayload.voyages).toEqual([]);
         await settled(page, "/devices/pair");
-        const devices = page.getByRole("region", { name: "Voyage devices", exact: true });
-        await expect(devices.getByRole("status")).toHaveText(
-          "Choose a Voyage or enter the code from your other screen.",
-        );
-        await expect(page.getByRole("link", { name: "Sign in to connect", exact: true })).toHaveCount(0);
+        const pairing = page.getByRole("region", { name: "Connect your phone", exact: true });
+        await expect(
+          pairing.getByRole("heading", { level: 1, name: "Bring the adventure with you", exact: true }),
+        ).toBeVisible();
+        const connectionCode = pairing.getByRole("textbox", { name: "Connection code", exact: true });
+        await expect(connectionCode).toBeVisible();
+        await expect(connectionCode).toBeEditable();
+        await expect(connectionCode).toHaveValue("");
+        const joinChronicle = pairing.getByRole("button", { name: "Join the Chronicle", exact: true });
+        await expect(joinChronicle).toBeVisible();
+        await expect(joinChronicle).toBeDisabled();
+        // The intended empty status is hidden by .status:empty; this checks DOM text, not visibility.
+        await expect(pairing.getByRole("status", { includeHidden: true })).toHaveText("");
+        await expect(pairing.getByRole("link", { name: "Sign in", exact: true })).toHaveCount(0);
         await expect(
           page.getByRole("button", { name: "Reach accessibility synthetic navigator", exact: true }),
         ).toBeVisible();

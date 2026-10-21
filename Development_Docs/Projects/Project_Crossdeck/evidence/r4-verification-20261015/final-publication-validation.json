@@ -1,0 +1,48 @@
+{
+  "classification": "Actual final publication checks; unchanged product, authenticated evidence and ordinary decision remain distinct",
+  "status": "PASS",
+  "checkedAt": "2026-10-15T23:10:15.872Z",
+  "checks": {
+    "documentation": "PASS",
+    "featureCatalog": "PASS",
+    "stagedPrivateContent": "PASS",
+    "frozenProductAnd68HistoricalBlobs": "PASS",
+    "independentReviewFive": "ACCEPTED_7_CONTRACTS_119_DIMENSIONS",
+    "canonicalAuthenticatedAttestation": "PASS"
+  },
+  "captureRunId": 38814444774,
+  "reviewRunId": 38820570426,
+  "captureArtifactId": 12009949926,
+  "reviewArtifactId": 12012399990,
+  "reviewSeal": "de1f2097ac8c21093ed5917c6bda5886c6f53d1e",
+  "sourceDigest": "4446bc23b1393a4d762a007a21b62d96980a8b9949e4f7741ae51617d07319b5",
+  "contractDigest": "4ee636786ea5b2fedd375c3567441f151caa668d98934b01e98161c4c88c44ec",
+  "openMinorPolish": [
+    "IR5-LENS-DESKTOP-EDGE-CLEARANCE"
+  ],
+  "ordinaryInvocations": 0,
+  "ownerAcceptance": "NOT_CLAIMED",
+  "physicalHardwareAcceptance": "NOT_CLAIMED",
+  "files": [
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/final-docs.original.log",
+      "bytes": 131,
+      "sha256": "d02f2021a89bb9b41404eb5ad11fe876e8712693098268f49d04df9637019523"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/final-features.original.log",
+      "bytes": 146,
+      "sha256": "7d11fb632475739e55ea6c7020e410a3fe00753023e9a2a2c74f1fe110e7df3a"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/final-private.original.log",
+      "bytes": 166,
+      "sha256": "f076c6e278ef7ad2daba9c487469ffa64dc42a849566d84291df81cee79e142c"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r4-verification-20261015/final-staged-freeze.verified.json",
+      "bytes": 634,
+      "sha256": "528186aeb5fb8507214e902341f1c0afc851e5520a487abba799db1ecf3c7202"
+    }
+  ]
+}

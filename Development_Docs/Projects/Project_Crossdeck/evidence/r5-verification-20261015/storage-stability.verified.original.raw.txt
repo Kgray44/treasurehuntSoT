@@ -1,0 +1,43 @@
+{
+  "classification": "Source-bound two-sample storage stability and verified independent D write paths",
+  "status": "PASS_D_ONLY_CURRENT_STORAGE_STABILITY",
+  "checkedAt": "2026-10-16T02:32:44.2439659Z",
+  "candidateSha": "6dcabd5401b22e606e13a2b92202d15f8e3176e1",
+  "baseSha": "f935ab3efd6eb5943cdea8a08f65c9cf55c45d95",
+  "cFreeBytes": 47418875904,
+  "dFreeBytes": 106828496896,
+  "firstSample": {
+    "classification": "Actual source-bound stable-storage sample; existing C binaries and Git alternate are read-only inputs",
+    "candidateSha": "6dcabd5401b22e606e13a2b92202d15f8e3176e1",
+    "baseSha": "f935ab3efd6eb5943cdea8a08f65c9cf55c45d95",
+    "checkedAt": "2026-10-16T02:31:34.6303483Z",
+    "cFreeBytes": 47412494336,
+    "dFreeBytes": 106828500992,
+    "paths": {
+      "checkout": "D:\\CodexWorktrees\\crossdeck-consumer-721-final-20261015",
+      "gitDirectory": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/.git",
+      "gitObjects": "D:\\CodexWorktrees\\crossdeck-consumer-721-final-20261015\\.git\\objects",
+      "dependencies": "D:\\CodexWorktrees\\crossdeck-consumer-721-final-20261015\\node_modules",
+      "temp": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\temp",
+      "npmCache": "D:\\CodexDependencies\\crossdeck-r4-npm-cache"
+    },
+    "dWritePathParentReparseCheck": "PASS_NO_REPARSE_TARGET",
+    "minimumCBytes": 32212254720,
+    "minimumDBytes": 10737418240
+  },
+  "sampleIntervalSeconds": 70.2439659,
+  "cFloorBytes": 32212254720,
+  "dFloorBytes": 10737418240,
+  "paths": {
+    "checkout": "D:\\CodexWorktrees\\crossdeck-consumer-721-final-20261015",
+    "gitDirectory": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/.git",
+    "gitObjects": "D:\\CodexWorktrees\\crossdeck-consumer-721-final-20261015\\.git\\objects",
+    "dependencies": "D:\\CodexWorktrees\\crossdeck-consumer-721-final-20261015\\node_modules",
+    "temp": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r4-a249\\temp",
+    "npmCache": "D:\\CodexDependencies\\crossdeck-r4-npm-cache"
+  },
+  "parentReparseCheck": "PASS_NO_REPARSE_TARGET",
+  "sharedCStateChanges": 0,
+  "storageHoldPredicate": "ACCEPTED_R5_AND_PLAN_DRAFT_PREDECESSOR_PASS_WITH_CURRENT_STABLE_D_ONLY_STORAGE",
+  "ownerAcceptance": "NOT_CLAIMED"
+}

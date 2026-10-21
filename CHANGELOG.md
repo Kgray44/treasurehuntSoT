@@ -3,12 +3,12 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-10-19
+last_reviewed: 2026-10-21
 ---
 
 # Changelog
 
-The [complete Parallax integration preparation](Development_Docs/Projects/Project_Parallax/Integration_Preparation_20261019.md) consolidates the adopted
+The October 19 [complete Parallax integration preparation](Development_Docs/Projects/Project_Parallax/Integration_Preparation_20261019.md) consolidates the adopted
 Studio overhaul on current protected main, preserves historical source and
 records, and repairs integrated save, focus, placement recovery, Timeline and
 Guided fallback behavior. The source-bound local verification matrix and
@@ -31,6 +31,16 @@ This preparation does not promote mainline feature availability.
 Candidate branch: named mixed asset/room groups and editable scoped environment exclusion zones have focused browser evidence, independent review and bounded owner presentation acceptance. Reconstruction now prioritizes warnings for fitted estimated placements so bounded review cannot hide a geometry adjustment. Whole-Studio and physical AR acceptance remain open.
 
 ## Unreleased
+
+- Reconciled the Spatial Studio candidate with accepted Crossdeck connection and
+  companion flows while preserving BrowserRoomView, motion, released-scene
+  revisits, above-book Lens access and immutable Voyage context. The
+  [October 21 integration checkpoint](Development_Docs/Projects/Project_Parallax/Protected_Integration_20261021.md)
+  records the resolved conflicts and pending fresh qualification.
+- Crossdeck's refit landed through protected PR #721 at `aaff9194`, after successful
+  R26 and independent landed documentation, Feature Catalog and evidence smoke.
+  Its earlier consumed failures remain preserved; physical/native and owner
+  acceptance remain separate.
 
 - Local Parallax root `e93d1e885a33` adopts the reviewed saved-Asset placement repairs. Production build/full TypeScript and three focused Chromium journeys pass; a separate incoming-source replay passes 104 focused checks. Independent root-media review finds no material visible regression in the bounded flows. The initial wrong-browser-cache launch failure stays archived; installed Undo/Redo, general solid fit, protected integration and physical iPhone AR remain unqualified.
 - SC-00C bounded saved-Asset placement repair `c5b977c81` preserves a single physical model's authored scale and root animation when returning from Library to a checked surface. Physical assemblies with extra parts fail visibly without changing the Scene until their complete geometry can be reviewed. Follow-on source `9491faf6a` lets the full physical planner handle keyboard search at the resolved model size; a small-table keyboard/pointer regression brings five focused suites to 79/79. The next entry records its focused independent rereview and browser proof.
@@ -301,6 +311,8 @@ Candidate branch: named mixed asset/room groups and editable scoped environment 
 - Product Experience Engineering adds selective experience contracts and real-browser evidence to ordinary Sounding Line, with independent criticism, bounded repair, protected capture/review attestation and explicit spatial baseline debt. [Operations and proof](Development_Docs/Testing/Product_Experience/README.md) preserve product and owner acceptance authority.
 
 ### Corrected
+
+- Crossdeck refit candidate adds contextual QR/code connection from the active Chronicle, supported companion purposes, distinct browser Guided Lens/Chart/Journal/artifact/crew views, natural send/receive controls and recoverable continuation. Original protected capture, seven-contract/119-judgment independent review and authenticated submission passed for the historical source. The [R11 source record](Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R11_Verification_20261017.md) and [consumed ordinary5 failure](Development_Docs/Projects/Project_Crossdeck/Ordinary5_Disposition_20261017.md) remain preserved. Later [R14 ordinary7](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39037804106) also failed. At that historical checkpoint, [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) remained draft and unqualified; later R26 qualification and landing are recorded above. Earlier consumed failures, including [ordinary4](Development_Docs/Projects/Project_Crossdeck/Ordinary4_Disposition_20261016.md), remain unchanged. Physical/native and owner acceptance remain separate.
 
 - Device connections has a primary page heading in both account states. Reach guidance and the pointing area expose meaningful semantic structure while preserving their controls and focus behavior. Full-page accessibility regressions retain all violation severities and distinguish incomplete checks from passes.
 - Reach setup requests remain operable by keyboard and touch during brief tracking changes. Activation checks current readiness and responds with polite guidance instead of losing the request; existing setup guards remain in force, and no automatic start is queued. The default return to device connections restores the page top so the laboratory entry stays clear of the header.
