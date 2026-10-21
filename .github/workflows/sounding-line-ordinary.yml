@@ -61,23 +61,44 @@ jobs:
       phase: ${{ steps.custody.outputs.phase }}
     steps:
       - uses: actions/checkout@v4
+        timeout-minutes: 10
         with:
-          ref: ${{ github.sha }}
+          ref: ${{ github.event.pull_request.base.sha || inputs.base_sha }}
           path: authority
           fetch-depth: 1
+          fetch-tags: false
+          show-progress: true
           persist-credentials: false
       - uses: actions/checkout@v4
+        if: ${{ !(github.event.pull_request.number == 721 || inputs.pr_number == '721') }}
+        timeout-minutes: 10
         with:
           ref: ${{ github.event.pull_request.head.sha || inputs.candidate_sha }}
           path: candidate
           fetch-depth: 0
+          show-progress: true
           persist-credentials: false
+      - name: Set up protected checkout runtime
+        if: ${{ github.event.pull_request.number == 721 || inputs.pr_number == '721' }}
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: authority/.nvmrc
+      - name: Checkout selected complete consumer history
+        if: ${{ github.event.pull_request.number == 721 || inputs.pr_number == '721' }}
+        timeout-minutes: 10
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || inputs.base_sha }}
+          CANDIDATE_SHA: ${{ github.event.pull_request.head.sha || inputs.candidate_sha }}
+        run: node authority/scripts/sounding-line/experience-selected-checkout.mjs --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA"
       - uses: actions/checkout@v4
         if: inputs.experience_mode == 'review' || inputs.experience_mode == 'verify'
+        timeout-minutes: 10
         with:
           ref: ${{ inputs.evidence_ref || inputs.candidate_sha }}
           path: evidence
           fetch-depth: 1
+          fetch-tags: false
+          show-progress: true
           persist-credentials: false
       - uses: actions/setup-node@v4
         with:
@@ -118,12 +139,25 @@ jobs:
         id: candidate-checkout
         uses: actions/checkout@v4
         timeout-minutes: 10
+        if: ${{ !(github.event.pull_request.number == 721 || inputs.pr_number == '721') }}
         with:
           ref: ${{ inputs.candidate_sha }}
           path: candidate
           fetch-depth: 0
           show-progress: true
           persist-credentials: false
+      - name: Set up protected checkout runtime
+        if: ${{ github.event.pull_request.number == 721 || inputs.pr_number == '721' }}
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: authority/.nvmrc
+      - name: Checkout selected complete consumer history
+        if: ${{ github.event.pull_request.number == 721 || inputs.pr_number == '721' }}
+        timeout-minutes: 10
+        env:
+          BASE_SHA: ${{ inputs.base_sha }}
+          CANDIDATE_SHA: ${{ inputs.candidate_sha }}
+        run: node authority/scripts/sounding-line/experience-selected-checkout.mjs --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA"
       - name: Checkout review evidence
         id: evidence-checkout
         uses: actions/checkout@v4
@@ -234,16 +268,34 @@ jobs:
             echo "repository=${{ github.repository }}" >> "$GITHUB_OUTPUT"
           fi
       - uses: actions/checkout@v4
+        timeout-minutes: 10
         with:
           ref: ${{ steps.source.outputs.base }}
           path: authority
           fetch-depth: 1
+          fetch-tags: false
+          show-progress: true
       - uses: actions/checkout@v4
+        if: ${{ !(github.event.pull_request.number == 721 || inputs.pr_number == '721') }}
+        timeout-minutes: 10
         with:
           repository: ${{ steps.source.outputs.repository }}
           ref: ${{ steps.source.outputs.candidate }}
           path: candidate
           fetch-depth: 0
+          show-progress: true
+      - name: Set up protected checkout runtime
+        if: ${{ github.event.pull_request.number == 721 || inputs.pr_number == '721' }}
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: authority/.nvmrc
+      - name: Checkout selected complete consumer history
+        if: ${{ github.event.pull_request.number == 721 || inputs.pr_number == '721' }}
+        timeout-minutes: 10
+        env:
+          BASE_SHA: ${{ steps.source.outputs.base }}
+          CANDIDATE_SHA: ${{ steps.source.outputs.candidate }}
+        run: node authority/scripts/sounding-line/experience-selected-checkout.mjs --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA"
       - uses: actions/setup-node@v4
         with:
           node-version-file: authority/.nvmrc
@@ -388,18 +440,35 @@ jobs:
         run: test "$CUSTODY_RESULT" = success && test "$VERIFICATION_RESULT" = success
       - uses: actions/checkout@v4
         if: needs.campaign-custody.outputs.campaign == 'true'
+        timeout-minutes: 10
         with:
-          ref: ${{ github.sha }}
+          ref: ${{ github.event.pull_request.base.sha || inputs.base_sha }}
           path: authority
-          fetch-depth: 0
+          fetch-depth: 1
+          fetch-tags: false
+          show-progress: true
           persist-credentials: false
       - uses: actions/checkout@v4
-        if: needs.campaign-custody.outputs.campaign == 'true'
+        if: ${{ needs.campaign-custody.outputs.campaign == 'true' && !(github.event.pull_request.number == 721 || inputs.pr_number == '721') }}
+        timeout-minutes: 10
         with:
           ref: ${{ github.event.pull_request.head.sha || inputs.candidate_sha }}
           path: candidate
           fetch-depth: 0
+          show-progress: true
           persist-credentials: false
+      - name: Set up protected checkout runtime
+        if: ${{ needs.campaign-custody.outputs.campaign == 'true' && (github.event.pull_request.number == 721 || inputs.pr_number == '721') }}
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: authority/.nvmrc
+      - name: Checkout selected complete consumer history
+        if: ${{ needs.campaign-custody.outputs.campaign == 'true' && (github.event.pull_request.number == 721 || inputs.pr_number == '721') }}
+        timeout-minutes: 10
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || inputs.base_sha }}
+          CANDIDATE_SHA: ${{ github.event.pull_request.head.sha || inputs.candidate_sha }}
+        run: node authority/scripts/sounding-line/experience-selected-checkout.mjs --workspace candidate --base "$BASE_SHA" --candidate "$CANDIDATE_SHA"
       - uses: actions/setup-node@v4
         if: needs.campaign-custody.outputs.campaign == 'true'
         with:
