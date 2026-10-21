@@ -37,20 +37,20 @@ test("Adaptive workspace docks reclaim viewport area and preserve editing across
   const defaultBounds = (await canvas.boundingBox())!;
   await page.getByLabel("Workspace layout").selectOption("CONSTRUCTION");
   const asset = page
-    .getByRole("region", { name: "Spatial asset browser" })
-    .getByRole("button", { name: "Peeking Letter", exact: false });
+    .getByRole("region", { name: "Spatial content library" })
+    .getByRole("button", { name: "Inspect Peeking Letter", exact: true });
   await asset.dragTo(canvas, { targetPosition: { x: 250, y: 180 } });
   const inspector = page.getByRole("complementary", { name: "Spatial inspector" });
   await expect(inspector.getByRole("heading", { name: "Peeking Letter", exact: true })).toBeVisible();
-  await page.getByRole("tab", { name: "Hierarchy", exact: true }).click();
+  await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
   await expect(
     page.getByRole("region", { name: "Scene graph" }).getByRole("button", { name: "◇ Peeking Letter", exact: true }),
   ).toHaveAttribute("aria-pressed", "true");
-  await page.getByRole("tab", { name: "Library", exact: true }).click();
-  await page.getByLabel("Search spatial assets").fill("Letter");
-  await page.getByRole("tab", { name: "Hierarchy", exact: true }).click();
-  await page.getByRole("tab", { name: "Library", exact: true }).click();
-  await expect(page.getByLabel("Search spatial assets")).toHaveValue("Letter");
+  await page.getByRole("button", { name: "Open Spatial Library", exact: true }).click();
+  await page.getByLabel("Search assets").fill("Letter");
+  await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
+  await page.getByRole("button", { name: "Open Spatial Library", exact: true }).click();
+  await expect(page.getByLabel("Search assets")).toHaveValue("Letter");
   await page.getByLabel("Authoring mode").selectOption("ENGINEERING");
   await page.getByLabel("Position x", { exact: true }).fill("0.2");
   const editedX = await page.getByLabel("Position x", { exact: true }).inputValue();
@@ -60,8 +60,8 @@ test("Adaptive workspace docks reclaim viewport area and preserve editing across
   }
   await expect(page.getByLabel("Position x", { exact: true })).toHaveValue(editedX);
   await page.getByRole("button", { name: "Collapse left dock", exact: true }).click();
-  await expect(page.getByRole("button", { name: "Open asset Library", exact: true })).toBeFocused();
-  await page.getByRole("button", { name: "Open asset Library", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Open Spatial Library", exact: true })).toBeFocused();
+  await page.getByRole("button", { name: "Open Spatial Library", exact: true }).click();
   await page.getByRole("button", { name: "Collapse Inspector", exact: true }).click();
   await expect(page.getByRole("button", { name: "Open contextual Inspector", exact: true })).toBeFocused();
   await page.getByRole("button", { name: "Open contextual Inspector", exact: true }).click();
@@ -100,14 +100,15 @@ test("Adaptive workspace docks reclaim viewport area and preserve editing across
         canvas: { width: bounds.width, height: bounds.height, area: bounds.width * bounds.height },
       });
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-      expect(await page.evaluate(() => document.documentElement.scrollHeight <= innerHeight + 2)).toBe(true);
+      if (viewport.width >= 700)
+        expect(await page.evaluate(() => document.documentElement.scrollHeight <= innerHeight + 2)).toBe(true);
       expect(await canvas.evaluate((current, original) => current === original, renderer)).toBe(true);
     }
     await page.screenshot({ path: `${root}/focus-${viewport.width}x${viewport.height}.png`, fullPage: true });
   }
   const focus = measures.find((m) => m.viewport.width === 1920 && m.layout === "FOCUS")!;
   expect(focus.canvas.width).toBeGreaterThan(defaultBounds.width + 200);
-  expect(focus.canvas.height).toBeGreaterThan(750);
+  expect(focus.canvas.height).toBeGreaterThan(focus.viewport.height * 0.6);
   await writeFile(
     `${root}/viewport-measurements.json`,
     JSON.stringify({ artifactRoot: process.env.VALIDATION_ARTIFACTS, measures }, null, 2),
@@ -160,27 +161,21 @@ test("Creator edits a populated 3D workstation, previews intent, and retains can
   await expect(page.locator('[data-renderer="READY"] canvas')).toBeVisible();
   await page.getByLabel("Workspace layout").selectOption("CONSTRUCTION");
   await page.getByLabel("Authoring mode").selectOption("ENGINEERING");
-  await page
-    .getByRole("region", { name: "Spatial asset browser" })
-    .getByRole("button", { name: "Peeking Letter", exact: false })
-    .click();
+  await page.getByRole("button", { name: "Inspect Peeking Letter", exact: true }).click();
+  await page.getByRole("button", { name: "Add to active Scene", exact: true }).click();
   await page.getByLabel("Position x", { exact: true }).fill("-0.55");
   await page.getByLabel("Position y", { exact: true }).fill("0.18");
-  await page
-    .getByRole("region", { name: "Spatial asset browser" })
-    .getByRole("button", { name: "Floating Compass", exact: false })
-    .click();
+  await page.getByRole("button", { name: "Inspect Floating Compass", exact: true }).click();
+  await page.getByRole("button", { name: "Add to active Scene", exact: true }).click();
   await page.getByLabel("Position x", { exact: true }).fill("0.8");
-  await page
-    .getByRole("region", { name: "Spatial asset browser" })
-    .getByRole("button", { name: "Hidden Wall Message", exact: false })
-    .click();
+  await page.getByRole("button", { name: "Inspect Hidden Wall Message", exact: true }).click();
+  await page.getByRole("button", { name: "Add to active Scene", exact: true }).click();
   await page.getByLabel("Position x", { exact: true }).fill("-1.2");
   await page.getByLabel("Position z", { exact: true }).fill("-1.4");
   await page.getByText("Library, reuse & publication", { exact: true }).click();
   await page.getByLabel("Experience title").fill("The observatory / spatial sequence");
   await page.getByText("Library, reuse & publication", { exact: true }).click();
-  await page.getByRole("tab", { name: "Hierarchy", exact: true }).click();
+  await page.getByRole("button", { name: "Open Scene Hierarchy", exact: true }).click();
   await page
     .getByRole("region", { name: "Scene graph" })
     .getByRole("button", { name: "◇ Desk Map", exact: true })

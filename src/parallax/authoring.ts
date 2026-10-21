@@ -41,7 +41,9 @@ export type Edit =
   | {
       type: "CONTENT";
       entityId: string;
-      patch: Partial<Pick<SpatialEntity, "name" | "content" | "alternativeText" | "widthMeters" | "interactions">>;
+      patch: Partial<
+        Pick<SpatialEntity, "name" | "content" | "alternativeText" | "widthMeters" | "interactions" | "element">
+      >;
     }
   | { type: "BEHAVIOR"; behavior: StudioContent["behaviors"][number] }
   | { type: "FALLBACK"; narrative: string }
@@ -155,13 +157,13 @@ export function worldTransform(content: DraftContent, entityId: string): Transfo
 }
 
 /** Synthetic room frames are preview-only; surface offsets remain relative to the selected native surface. */
-export function referenceSurfaceFrame(anchor: Anchor): Transform {
+export function referenceSurfaceFrame(anchor: Anchor, upright = false): Transform {
   if (anchor.kind !== "SURFACE_RELATIVE") return identityTransform();
   return {
     ...identityTransform(),
     position: { x: 0, y: anchor.alignment === "HORIZONTAL" ? 0.75 : 1.4, z: -1 },
     rotation:
-      anchor.alignment === "HORIZONTAL"
+      anchor.alignment === "HORIZONTAL" && !upright
         ? { x: -Math.SQRT1_2, y: 0, z: 0, w: Math.SQRT1_2 }
         : identityTransform().rotation,
   };
@@ -171,7 +173,12 @@ export function previewEntityTransform(content: DraftContent, entityId: string):
   const entity = content.entities.find((e) => e.id === entityId);
   if (!entity) throw new Error("Choose an existing spatial entity.");
   const anchor = content.anchors.find((a) => a.id === entity.anchorId)!;
-  return composeTransform(referenceSurfaceFrame(anchor), worldTransform(content, entityId));
+  let frameEntity = entity;
+  while (frameEntity.parentEntityId) frameEntity = content.entities.find((e) => e.id === frameEntity.parentEntityId)!;
+  return composeTransform(
+    referenceSurfaceFrame(anchor, Boolean(frameEntity.element)),
+    worldTransform(content, entityId),
+  );
 }
 
 export function editSpatialDraft(input: SpatialDraft, edit: Edit): SpatialDraft {
@@ -334,6 +341,8 @@ export function editSpatialDraft(input: SpatialDraft, edit: Edit): SpatialDraft 
       );
       studio.assets = studio.assets.filter((a) => a.entityId !== entity.id);
       studio.visionReferences = studio.visionReferences.filter((a) => a.entityId !== entity.id);
+      if (next.content.environmentPlacements)
+        next.content.environmentPlacements = next.content.environmentPlacements.filter((p) => p.entityId !== entity.id);
       if (next.content.adaptive) {
         const adaptive = next.content.adaptive;
         adaptive.recipes = adaptive.recipes.filter((r) => r.entityId !== entity.id);

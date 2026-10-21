@@ -3,7 +3,7 @@ title: Parallax Spatial Studio Creator guide
 audience: creators
 status: current
 canonical_for: parallax-spatial-studio-guide
-last_reviewed: 2026-10-12
+last_reviewed: 2026-10-15
 ---
 
 # Build a spatial experience
@@ -15,7 +15,7 @@ The [Phase 3 implementation](Phase_3_Implementation.md) and [refined workstation
 - Add a visual asset to the current scene from the asset browser, or drag it into the viewport. **New scene** opens a separate spatial moment.
 - Select an object in the scene or hierarchy. Choose **Move**, **Rotate** or **Scale** to use its gizmo. Drag empty space to orbit, Shift-drag to pan and scroll to zoom. Plan and elevation views help inspect placement; precise inspector controls and keyboard movement remain available.
 - Collapse the library or inspector to enlarge the viewport. Resize a dock from its edge, or focus the separator and use arrow keys.
-- In the [workspace refinement candidate](Phase_3_Workspace_Refinement.md), choose Spatial Editing, Scene Construction, Behavior Authoring or Focus / Immersive from **Workspace layout**. The left rail opens shared Library, Hierarchy and Saved tabs. The Inspector exposes contextual accordion sections; the bottom strip opens Timeline, Simulation, Diagnostics or Events. Drag a dock edge or use its separator arrow keys. **Reset Workspace Layout** restores the default; presentation preferences never edit the scene.
+- In the [workspace refinement candidate](Phase_3_Workspace_Refinement.md), choose Spatial Editing, Scene Construction, Behavior Authoring or Focus / Immersive from **Workspace layout**. The left rail opens Spatial Library or Scene Hierarchy. The Library itself has Assets, Environments, Scenes, Effects and Compositions tabs. The Inspector exposes contextual accordion sections; the bottom strip opens Timeline, Simulation, Diagnostics or Events. Drag a dock edge or use its separator arrow keys. **Reset Workspace Layout** restores the default; presentation preferences never edit the scene.
 - **Ask Parallax** opens floating assistance; **Dock assistance** overlays it on the scene. Drag the floating title to move the window and any edge or corner to resize it; focused handles also accept arrow keys and Shift for larger steps. The composer stays at the bottom. The default command bar stays compact. **Scene actions** contains Drydock validation and immutable version creation, and **Library, reuse & publication** contains library metadata and Chronicle attachment.
 - Enter a supported placement instruction in spatial assistance. **Preview placement** shows the proposed scene without saving it; inspect the result, then approve or discard. Unsupported instructions explain their limits. Provider availability is explicit; supported phrase rules remain available without AI.
 - For adaptive objects, **Move** highlights safe synthetic surfaces. Choosing one edits the surface/context intent; the resolver continues to enforce clearance, reach and safety rules. Compare environments before publishing.
@@ -35,6 +35,18 @@ Undo and redo apply to ordinary editing and accepted AI proposals. When configur
 
 If a save conflicts with another revision, preserve your work as a new fork or reload the authoritative item. An immutable version is never overwritten. Synthetic previews are authoring aids; representative-device acceptance and physical tracking qualification remain separate.
 
+## Use models, lights and compositions
+
+The refitted Library groups original models and classic presets under Assets, lighting and spatial effects under Effects, and reusable assemblies under Compositions. Search by name or description, choose a source, then inspect an item. Use **Add to active Scene**, a card's action menu or drag a supported card into the viewport. Dragged physical models indicate a compatible floor, table or wall target and refuse an invalid drop; effect drops use their type-specific initial position for Inspector adjustment. Original model cards show their packaged thumbnails. The newly added object is selected in the Inspector; ordinary placement, transforms, Undo and save controls remain available. Preview-only cards explain why insertion is unavailable.
+
+To preview Ghostly Presence, add it from Compositions. Its blue light, mist, particles and synthesized ambience remain separate children in Hierarchy. Adjust each child, enable an entrance envelope, then play the existing timeline. Enable preview audio deliberately to hear positional ambience; pause or mute stops it. Reduced motion keeps stable effects. Point and spot lights affect the actual scene; ambient light fills the scene and has no meaningful position or range control.
+
+Select the composition root and use **Save selected composition**. Open **Compositions** in Spatial Library and choose **Add composition** to add an independent copy to another fixed Scene. Saving a Scene and reloading it retains its elements, child relationships and authored timing. Imported arbitrary models/audio, volumetric fog, occlusion-aware projection, live cloth simulation and automatic proximity triggers are not provided by these controls. Current Player/native adapters preserve meaning through Guided View for the new element types.
+
+Open **Environments** to inspect built-in, owned or reconstructed places, then choose **View associated Scenes** or **Manage Environment**. Opening details does not edit a place. Under **Scenes**, filter by Environment, open an owned Scene, or use its rename, collection, favorite, duplicate and archive actions. Archiving a working Scene preserves immutable versions and Chronicle references. Private saved items and published Community content have distinct lifecycles; Community installation and publishing are not available from this Library candidate. See the [SC-00C implementation record](SC_00C_Spatial_Library_Refit.md) for its validation state.
+
+The [SC-02 record](SC02_Assets_and_Effects.md) identifies current qualification and the original assets' licensing provenance.
+
 ## Author an adaptive scene remotely
 
 Choose Remote Semantic Placement in the placement controls. Select preferred surfaces and surrounding context, then refine height, orientation, concealment, clearance, reach and allowed substitutes. A supported phrase such as placing a map near furniture can produce a reviewable structured recipe without an AI provider. Unsupported or ambiguous phrases explain the limit; use the guided controls to finish the recipe.
@@ -52,3 +64,11 @@ Players can decline optional feedback and continue normally. The consent explana
 Open Field Quality for an owned definition. Simulation and physical reports appear separately. Review eligible feedback against the current draft, make a bounded recipe adjustment and acknowledge Creator Reviewed before Calibrated. Changing the recipe invalidates the old acknowledgement. A stale or concurrent review must be refreshed. Verified requires later independent eligible reports for the calibrated released version; it is not a physical AR certification label.
 
 Create a new immutable Spatial Library version and attach that exact version before the Chronicle's normal validation, Suite and publication review. Earlier published versions remain unchanged. Feedback withdrawal deletes the original retained report; already published reviewed recipes may remain without that report.
+
+## Reuse one Environment across Scenes
+
+In the SC-01 candidate, the strip above the canvas identifies the active Scene and its pinned Environment revision. Open **Manage Scenes** to create an Environment, create independent Scenes from its baseline, duplicate a Scene, rename, archive, save, preview or compare. The gallery lists the Scenes belonging to the selected Environment. Each Scene keeps its own objects, transforms, visibility and behaviors.
+
+Use **Edit Environment** for shared room dimensions, furniture, architecture and semantic features. Built-in Environments open as owned copies. Saving creates a new Environment revision; existing Scenes keep their prior pins. Open **Review Environment impact**, inspect the changes and affected placements, then update each working Scene deliberately. Undo restores the previous association. Released Scene versions and existing Chronicle bindings remain unchanged.
+
+Environment editing has its own Undo/Redo and explicit Save/Discard controls. Scene edits use the ordinary Studio history and save queue. The [SC-01 implementation record](SC_01_Environment_and_Scene_Manager.md) tracks browser and integration qualification; synthetic previews do not establish physical room or AR accuracy.

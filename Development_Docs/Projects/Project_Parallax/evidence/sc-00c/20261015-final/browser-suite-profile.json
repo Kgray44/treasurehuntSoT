@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/parallax-sc00c-library.spec.ts",
+    "tests/e2e/parallax-owner-refinements.spec.ts"
+  ],
+  "status": "PASS",
+  "failureCategory": null,
+  "failureCode": null
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "candidate": "bcbbd2b58954e63accef47d94a7f4a1867bc3a48",
+  "tree": "575c252ef3c30f2c083540352da7938bae51195f",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-15T04:58:44.250Z",
+  "finishedAt": "2026-10-15T05:05:23.041Z",
+  "exitCode": 1,
+  "recordings": [
+    {
+      "file": "parallax-sc00c-library-Lib-33cea-nages-owned-spatial-content-chromium-video.webm",
+      "sha256": "162c2ef6e3bce2792997d86837bf8b3ef30d58676c43fb0d0c5410e271ce7ce3"
+    }
+  ]
+}

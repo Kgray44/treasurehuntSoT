@@ -1,0 +1,1797 @@
+[
+  {
+    "content": {
+      "schemaVersion": 1,
+      "id": "builtin:bedroom",
+      "name": "Bedroom",
+      "description": "Reusable bedroom structure. Scene objects and behaviors are authored separately.",
+      "origin": "BUILTIN",
+      "sourceLabel": "Parallax built-in Bedroom",
+      "width": 4,
+      "depth": 4,
+      "horizontal": true,
+      "vertical": true,
+      "light": "NORMAL",
+      "clutter": 0.3,
+      "tracking": true,
+      "evidence": {
+        "schemaVersion": 1,
+        "frameId": "synthetic-builtin:bedroom",
+        "source": "SIMULATED",
+        "reliableTracking": true,
+        "viewerPosition": {
+          "x": 0,
+          "y": 1.2,
+          "z": 1.4
+        },
+        "candidates": [
+          {
+            "id": "table-left",
+            "surface": "TABLE",
+            "context": ["FURNITURE"],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": -0.88,
+              "y": 0.75,
+              "z": -0.8
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "desk-right",
+            "surface": "DESK",
+            "context": ["FURNITURE", "WINDOW"],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": 0.88,
+              "y": 0.8,
+              "z": -1
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "table-entry",
+            "surface": "TABLE",
+            "context": ["FURNITURE", "ENTRANCE"],
+            "region": "ENTRANCE_REGION",
+            "position": {
+              "x": 0.8,
+              "y": 0.7,
+              "z": 0.88
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "shelf-entry",
+            "surface": "SHELF",
+            "context": ["FURNITURE", "ENTRANCE"],
+            "region": "ENTRANCE_REGION",
+            "position": {
+              "x": -0.88,
+              "y": 1.1,
+              "z": 0.88
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "wall-window",
+            "surface": "WALL",
+            "context": ["WINDOW"],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": 1.2,
+              "y": 1.2,
+              "z": -1.8
+            },
+            "normal": {
+              "x": 0,
+              "y": 0,
+              "z": 1
+            },
+            "widthMeters": 2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "floor-furniture",
+            "surface": "FLOOR",
+            "context": ["FURNITURE"],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": -0.8,
+              "y": 0,
+              "z": -0.4
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "free-space",
+            "surface": "OPEN_SPACE",
+            "context": [],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": 0,
+              "y": 0.8,
+              "z": -1.2
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "unsafe-walkway",
+            "surface": "FLOOR",
+            "context": ["WALKWAY", "ENTRANCE"],
+            "region": "ENTRANCE_REGION",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": false,
+            "occluded": false
+          }
+        ]
+      },
+      "fixtures": []
+    },
+    "reference": {
+      "environmentId": "builtin:bedroom",
+      "versionId": "builtin:bedroom:e1",
+      "revision": 1,
+      "checksum": "040ce2f52a44a07911a10f633d9f04b469d955e6ffdc9976f30595511ac2e833"
+    }
+  },
+  {
+    "content": {
+      "schemaVersion": 1,
+      "id": "builtin:living-room",
+      "name": "Living room",
+      "description": "Reusable living room structure. Scene objects and behaviors are authored separately.",
+      "origin": "BUILTIN",
+      "sourceLabel": "Parallax built-in Living room",
+      "width": 6,
+      "depth": 5,
+      "horizontal": true,
+      "vertical": true,
+      "light": "NORMAL",
+      "clutter": 0.4,
+      "tracking": true,
+      "evidence": {
+        "schemaVersion": 1,
+        "frameId": "synthetic-builtin:living-room",
+        "source": "SIMULATED",
+        "reliableTracking": true,
+        "viewerPosition": {
+          "x": 0,
+          "y": 1.2,
+          "z": 1.75
+        },
+        "candidates": [
+          {
+            "id": "table-left",
+            "surface": "TABLE",
+            "context": ["FURNITURE"],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": -1.32,
+              "y": 0.75,
+              "z": -1
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "desk-right",
+            "surface": "DESK",
+            "context": ["FURNITURE", "WINDOW"],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": 1.32,
+              "y": 0.8,
+              "z": -1.25
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "table-entry",
+            "surface": "TABLE",
+            "context": ["FURNITURE", "ENTRANCE"],
+            "region": "ENTRANCE_REGION",
+            "position": {
+              "x": 1.2,
+              "y": 0.7,
+              "z": 1.1
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "shelf-entry",
+            "surface": "SHELF",
+            "context": ["FURNITURE", "ENTRANCE"],
+            "region": "ENTRANCE_REGION",
+            "position": {
+              "x": -1.32,
+              "y": 1.1,
+              "z": 1.1
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "wall-window",
+            "surface": "WALL",
+            "context": ["WINDOW"],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": 1.8,
+              "y": 1.2,
+              "z": -2.25
+            },
+            "normal": {
+              "x": 0,
+              "y": 0,
+              "z": 1
+            },
+            "widthMeters": 2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "floor-furniture",
+            "surface": "FLOOR",
+            "context": ["FURNITURE"],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": -1.2,
+              "y": 0,
+              "z": -0.5
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "free-space",
+            "surface": "OPEN_SPACE",
+            "context": [],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": 0,
+              "y": 0.8,
+              "z": -1.5
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "unsafe-walkway",
+            "surface": "FLOOR",
+            "context": ["WALKWAY", "ENTRANCE"],
+            "region": "ENTRANCE_REGION",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": false,
+            "occluded": false
+          }
+        ]
+      },
+      "fixtures": []
+    },
+    "reference": {
+      "environmentId": "builtin:living-room",
+      "versionId": "builtin:living-room:e1",
+      "revision": 1,
+      "checksum": "c5e2f7f9d195aa31e9c0b24fadfe2bd3d44b31eadd23399afb7b472d4009f8cf"
+    }
+  },
+  {
+    "content": {
+      "schemaVersion": 1,
+      "id": "builtin:dorm",
+      "name": "Small dorm",
+      "description": "Reusable small dorm structure. Scene objects and behaviors are authored separately.",
+      "origin": "BUILTIN",
+      "sourceLabel": "Parallax built-in Small dorm",
+      "width": 2.5,
+      "depth": 3,
+      "horizontal": true,
+      "vertical": true,
+      "light": "LOW",
+      "clutter": 0.7,
+      "tracking": true,
+      "evidence": {
+        "schemaVersion": 1,
+        "frameId": "synthetic-builtin:dorm",
+        "source": "SIMULATED",
+        "reliableTracking": true,
+        "viewerPosition": {
+          "x": 0,
+          "y": 1.2,
+          "z": 1.05
+        },
+        "candidates": [
+          {
+            "id": "table-left",
+            "surface": "TABLE",
+            "context": ["FURNITURE"],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": -0.55,
+              "y": 0.75,
+              "z": -0.6
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "desk-right",
+            "surface": "DESK",
+            "context": ["FURNITURE", "WINDOW"],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": 0.55,
+              "y": 0.8,
+              "z": -0.75
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "table-entry",
+            "surface": "TABLE",
+            "context": ["FURNITURE", "ENTRANCE"],
+            "region": "ENTRANCE_REGION",
+            "position": {
+              "x": 0.5,
+              "y": 0.7,
+              "z": 0.66
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "shelf-entry",
+            "surface": "SHELF",
+            "context": ["FURNITURE", "ENTRANCE"],
+            "region": "ENTRANCE_REGION",
+            "position": {
+              "x": -0.55,
+              "y": 1.1,
+              "z": 0.66
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "wall-window",
+            "surface": "WALL",
+            "context": ["WINDOW"],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": 0.75,
+              "y": 1.2,
+              "z": -1.35
+            },
+            "normal": {
+              "x": 0,
+              "y": 0,
+              "z": 1
+            },
+            "widthMeters": 2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "floor-furniture",
+            "surface": "FLOOR",
+            "context": ["FURNITURE"],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": -0.5,
+              "y": 0,
+              "z": -0.3
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "free-space",
+            "surface": "OPEN_SPACE",
+            "context": [],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": 0,
+              "y": 0.8,
+              "z": -0.9
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "unsafe-walkway",
+            "surface": "FLOOR",
+            "context": ["WALKWAY", "ENTRANCE"],
+            "region": "ENTRANCE_REGION",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": false,
+            "occluded": false
+          }
+        ]
+      },
+      "fixtures": []
+    },
+    "reference": {
+      "environmentId": "builtin:dorm",
+      "versionId": "builtin:dorm:e1",
+      "revision": 1,
+      "checksum": "5a1d51b84dea5593861b02fb85092738eccd129f1dcb40e00efd74bc760fac9a"
+    }
+  },
+  {
+    "content": {
+      "schemaVersion": 1,
+      "id": "builtin:office",
+      "name": "Office",
+      "description": "Reusable office structure. Scene objects and behaviors are authored separately.",
+      "origin": "BUILTIN",
+      "sourceLabel": "Parallax built-in Office",
+      "width": 5,
+      "depth": 5,
+      "horizontal": true,
+      "vertical": true,
+      "light": "NORMAL",
+      "clutter": 0.2,
+      "tracking": true,
+      "evidence": {
+        "schemaVersion": 1,
+        "frameId": "synthetic-builtin:office",
+        "source": "SIMULATED",
+        "reliableTracking": true,
+        "viewerPosition": {
+          "x": 0,
+          "y": 1.2,
+          "z": 1.75
+        },
+        "candidates": [
+          {
+            "id": "table-left",
+            "surface": "TABLE",
+            "context": ["FURNITURE"],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": -1.1,
+              "y": 0.75,
+              "z": -1
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "desk-right",
+            "surface": "DESK",
+            "context": ["FURNITURE", "WINDOW"],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": 1.1,
+              "y": 0.8,
+              "z": -1.25
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "table-entry",
+            "surface": "TABLE",
+            "context": ["FURNITURE", "ENTRANCE"],
+            "region": "ENTRANCE_REGION",
+            "position": {
+              "x": 1,
+              "y": 0.7,
+              "z": 1.1
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "shelf-entry",
+            "surface": "SHELF",
+            "context": ["FURNITURE", "ENTRANCE"],
+            "region": "ENTRANCE_REGION",
+            "position": {
+              "x": -1.1,
+              "y": 1.1,
+              "z": 1.1
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "wall-window",
+            "surface": "WALL",
+            "context": ["WINDOW"],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": 1.5,
+              "y": 1.2,
+              "z": -2.25
+            },
+            "normal": {
+              "x": 0,
+              "y": 0,
+              "z": 1
+            },
+            "widthMeters": 2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "floor-furniture",
+            "surface": "FLOOR",
+            "context": ["FURNITURE"],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": -1,
+              "y": 0,
+              "z": -0.5
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "free-space",
+            "surface": "OPEN_SPACE",
+            "context": [],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": 0,
+              "y": 0.8,
+              "z": -1.5
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "unsafe-walkway",
+            "surface": "FLOOR",
+            "context": ["WALKWAY", "ENTRANCE"],
+            "region": "ENTRANCE_REGION",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": false,
+            "occluded": false
+          }
+        ]
+      },
+      "fixtures": []
+    },
+    "reference": {
+      "environmentId": "builtin:office",
+      "versionId": "builtin:office:e1",
+      "revision": 1,
+      "checksum": "3cf35c1b0efd2b21441d445ef4075f17d6f497679a08b86d665afcde2076e33b"
+    }
+  },
+  {
+    "content": {
+      "schemaVersion": 1,
+      "id": "builtin:classroom",
+      "name": "Classroom",
+      "description": "Reusable classroom structure. Scene objects and behaviors are authored separately.",
+      "origin": "BUILTIN",
+      "sourceLabel": "Parallax built-in Classroom",
+      "width": 9,
+      "depth": 7,
+      "horizontal": true,
+      "vertical": true,
+      "light": "NORMAL",
+      "clutter": 0.4,
+      "tracking": true,
+      "evidence": {
+        "schemaVersion": 1,
+        "frameId": "synthetic-builtin:classroom",
+        "source": "SIMULATED",
+        "reliableTracking": true,
+        "viewerPosition": {
+          "x": 0,
+          "y": 1.2,
+          "z": 2.45
+        },
+        "candidates": [
+          {
+            "id": "table-left",
+            "surface": "TABLE",
+            "context": ["FURNITURE"],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": -1.98,
+              "y": 0.75,
+              "z": -1.4
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "desk-right",
+            "surface": "DESK",
+            "context": ["FURNITURE", "WINDOW"],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": 1.98,
+              "y": 0.8,
+              "z": -1.75
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "table-entry",
+            "surface": "TABLE",
+            "context": ["FURNITURE", "ENTRANCE"],
+            "region": "ENTRANCE_REGION",
+            "position": {
+              "x": 1.8,
+              "y": 0.7,
+              "z": 1.54
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "shelf-entry",
+            "surface": "SHELF",
+            "context": ["FURNITURE", "ENTRANCE"],
+            "region": "ENTRANCE_REGION",
+            "position": {
+              "x": -1.98,
+              "y": 1.1,
+              "z": 1.54
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "wall-window",
+            "surface": "WALL",
+            "context": ["WINDOW"],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": 2.7,
+              "y": 1.2,
+              "z": -3.15
+            },
+            "normal": {
+              "x": 0,
+              "y": 0,
+              "z": 1
+            },
+            "widthMeters": 2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "floor-furniture",
+            "surface": "FLOOR",
+            "context": ["FURNITURE"],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": -1.8,
+              "y": 0,
+              "z": -0.7
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "free-space",
+            "surface": "OPEN_SPACE",
+            "context": [],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": 0,
+              "y": 0.8,
+              "z": -2.1
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "unsafe-walkway",
+            "surface": "FLOOR",
+            "context": ["WALKWAY", "ENTRANCE"],
+            "region": "ENTRANCE_REGION",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": false,
+            "occluded": false
+          }
+        ]
+      },
+      "fixtures": []
+    },
+    "reference": {
+      "environmentId": "builtin:classroom",
+      "versionId": "builtin:classroom:e1",
+      "revision": 1,
+      "checksum": "5061265754be1f2760f65d280138821db6f79e5364ba2d1d95b8beb442ddd121"
+    }
+  },
+  {
+    "content": {
+      "schemaVersion": 1,
+      "id": "builtin:gallery",
+      "name": "Gallery",
+      "description": "Reusable gallery structure. Scene objects and behaviors are authored separately.",
+      "origin": "BUILTIN",
+      "sourceLabel": "Parallax built-in Gallery",
+      "width": 8,
+      "depth": 8,
+      "horizontal": false,
+      "vertical": true,
+      "light": "LOW",
+      "clutter": 0.1,
+      "tracking": true,
+      "evidence": {
+        "schemaVersion": 1,
+        "frameId": "synthetic-builtin:gallery",
+        "source": "SIMULATED",
+        "reliableTracking": true,
+        "viewerPosition": {
+          "x": 0,
+          "y": 1.2,
+          "z": 2.8
+        },
+        "candidates": [
+          {
+            "id": "wall-window",
+            "surface": "WALL",
+            "context": ["WINDOW"],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": 2.4,
+              "y": 1.2,
+              "z": -3.6
+            },
+            "normal": {
+              "x": 0,
+              "y": 0,
+              "z": 1
+            },
+            "widthMeters": 2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "floor-furniture",
+            "surface": "FLOOR",
+            "context": ["FURNITURE"],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": -1.6,
+              "y": 0,
+              "z": -0.8
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "free-space",
+            "surface": "OPEN_SPACE",
+            "context": [],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": 0,
+              "y": 0.8,
+              "z": -2.4
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "unsafe-walkway",
+            "surface": "FLOOR",
+            "context": ["WALKWAY", "ENTRANCE"],
+            "region": "ENTRANCE_REGION",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": false,
+            "occluded": false
+          }
+        ]
+      },
+      "fixtures": []
+    },
+    "reference": {
+      "environmentId": "builtin:gallery",
+      "versionId": "builtin:gallery:e1",
+      "revision": 1,
+      "checksum": "f1da570db36479aee4256efa54f4a883a841b7786878f1978ed69d8d003074f4"
+    }
+  },
+  {
+    "content": {
+      "schemaVersion": 1,
+      "id": "builtin:trail",
+      "name": "Outdoor trail",
+      "description": "Reusable outdoor trail structure. Scene objects and behaviors are authored separately.",
+      "origin": "BUILTIN",
+      "sourceLabel": "Parallax built-in Outdoor trail",
+      "width": 3,
+      "depth": 12,
+      "horizontal": false,
+      "vertical": false,
+      "light": "NORMAL",
+      "clutter": 0.6,
+      "tracking": true,
+      "evidence": {
+        "schemaVersion": 1,
+        "frameId": "synthetic-builtin:trail",
+        "source": "SIMULATED",
+        "reliableTracking": true,
+        "viewerPosition": {
+          "x": 0,
+          "y": 1.2,
+          "z": 4.2
+        },
+        "candidates": [
+          {
+            "id": "floor-furniture",
+            "surface": "FLOOR",
+            "context": ["FURNITURE"],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": -0.6,
+              "y": 0,
+              "z": -1.2
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "free-space",
+            "surface": "OPEN_SPACE",
+            "context": [],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": 0,
+              "y": 0.8,
+              "z": -3.6
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "unsafe-walkway",
+            "surface": "FLOOR",
+            "context": ["WALKWAY", "ENTRANCE"],
+            "region": "ENTRANCE_REGION",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": false,
+            "occluded": false
+          }
+        ]
+      },
+      "fixtures": []
+    },
+    "reference": {
+      "environmentId": "builtin:trail",
+      "versionId": "builtin:trail:e1",
+      "revision": 1,
+      "checksum": "e6d3ce0d815a52befa194ef6f8aaec2da8d0dfb882457ca1e646746b682f23cb"
+    }
+  },
+  {
+    "content": {
+      "schemaVersion": 1,
+      "id": "builtin:plaza",
+      "name": "Plaza",
+      "description": "Reusable plaza structure. Scene objects and behaviors are authored separately.",
+      "origin": "BUILTIN",
+      "sourceLabel": "Parallax built-in Plaza",
+      "width": 12,
+      "depth": 12,
+      "horizontal": false,
+      "vertical": false,
+      "light": "NORMAL",
+      "clutter": 0.1,
+      "tracking": true,
+      "evidence": {
+        "schemaVersion": 1,
+        "frameId": "synthetic-builtin:plaza",
+        "source": "SIMULATED",
+        "reliableTracking": true,
+        "viewerPosition": {
+          "x": 0,
+          "y": 1.2,
+          "z": 4.2
+        },
+        "candidates": [
+          {
+            "id": "floor-furniture",
+            "surface": "FLOOR",
+            "context": ["FURNITURE"],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": -2.4,
+              "y": 0,
+              "z": -1.2
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "free-space",
+            "surface": "OPEN_SPACE",
+            "context": [],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": 0,
+              "y": 0.8,
+              "z": -3.6
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "unsafe-walkway",
+            "surface": "FLOOR",
+            "context": ["WALKWAY", "ENTRANCE"],
+            "region": "ENTRANCE_REGION",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.95,
+            "seatedReachable": true,
+            "safe": false,
+            "occluded": false
+          }
+        ]
+      },
+      "fixtures": []
+    },
+    "reference": {
+      "environmentId": "builtin:plaza",
+      "versionId": "builtin:plaza:e1",
+      "revision": 1,
+      "checksum": "a4b14f26c4328a4f10e7ac35650d7ec1a7000ff424b96cb9f5a5b7321ead3949"
+    }
+  },
+  {
+    "content": {
+      "schemaVersion": 1,
+      "id": "builtin:empty",
+      "name": "Empty room",
+      "description": "Reusable empty room structure. Scene objects and behaviors are authored separately.",
+      "origin": "BUILTIN",
+      "sourceLabel": "Parallax built-in Empty room",
+      "width": 4,
+      "depth": 4,
+      "horizontal": false,
+      "vertical": true,
+      "light": "NORMAL",
+      "clutter": 0,
+      "tracking": false,
+      "evidence": {
+        "schemaVersion": 1,
+        "frameId": "synthetic-builtin:empty",
+        "source": "SIMULATED",
+        "reliableTracking": false,
+        "viewerPosition": {
+          "x": 0,
+          "y": 1.2,
+          "z": 1.4
+        },
+        "candidates": [
+          {
+            "id": "wall-window",
+            "surface": "WALL",
+            "context": ["WINDOW"],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": 1.2,
+              "y": 1.2,
+              "z": -1.8
+            },
+            "normal": {
+              "x": 0,
+              "y": 0,
+              "z": 1
+            },
+            "widthMeters": 2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.45,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "unsafe-walkway",
+            "surface": "FLOOR",
+            "context": ["WALKWAY", "ENTRANCE"],
+            "region": "ENTRANCE_REGION",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.35,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.45,
+            "seatedReachable": true,
+            "safe": false,
+            "occluded": false
+          }
+        ]
+      },
+      "fixtures": []
+    },
+    "reference": {
+      "environmentId": "builtin:empty",
+      "versionId": "builtin:empty:e1",
+      "revision": 1,
+      "checksum": "c2b5b602aa71665ba53c1b614da46e807c888a1869fba4b73e8bca8f47e765e8"
+    }
+  },
+  {
+    "content": {
+      "schemaVersion": 1,
+      "id": "builtin:cluttered",
+      "name": "Cluttered room",
+      "description": "Reusable cluttered room structure. Scene objects and behaviors are authored separately.",
+      "origin": "BUILTIN",
+      "sourceLabel": "Parallax built-in Cluttered room",
+      "width": 2,
+      "depth": 2,
+      "horizontal": true,
+      "vertical": false,
+      "light": "LOW",
+      "clutter": 0.9,
+      "tracking": false,
+      "evidence": {
+        "schemaVersion": 1,
+        "frameId": "synthetic-builtin:cluttered",
+        "source": "SIMULATED",
+        "reliableTracking": false,
+        "viewerPosition": {
+          "x": 0,
+          "y": 1.2,
+          "z": 0.7
+        },
+        "candidates": [
+          {
+            "id": "table-left",
+            "surface": "TABLE",
+            "context": ["FURNITURE"],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": -0.44,
+              "y": 0.75,
+              "z": -0.4
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.05,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.45,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "desk-right",
+            "surface": "DESK",
+            "context": ["FURNITURE", "WINDOW"],
+            "region": "CURRENT_ROOM",
+            "position": {
+              "x": 0.44,
+              "y": 0.8,
+              "z": -0.5
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.05,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.45,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "table-entry",
+            "surface": "TABLE",
+            "context": ["FURNITURE", "ENTRANCE"],
+            "region": "ENTRANCE_REGION",
+            "position": {
+              "x": 0.4,
+              "y": 0.7,
+              "z": 0.44
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.05,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.45,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "shelf-entry",
+            "surface": "SHELF",
+            "context": ["FURNITURE", "ENTRANCE"],
+            "region": "ENTRANCE_REGION",
+            "position": {
+              "x": -0.44,
+              "y": 1.1,
+              "z": 0.44
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.05,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.45,
+            "seatedReachable": true,
+            "safe": true,
+            "occluded": false
+          },
+          {
+            "id": "unsafe-walkway",
+            "surface": "FLOOR",
+            "context": ["WALKWAY", "ENTRANCE"],
+            "region": "ENTRANCE_REGION",
+            "position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "normal": {
+              "x": 0,
+              "y": 1,
+              "z": 0
+            },
+            "widthMeters": 1.2,
+            "depthMeters": 1.2,
+            "clearanceMeters": 0.05,
+            "reachMeters": 1,
+            "visibility": 0.85,
+            "confidence": 0.45,
+            "seatedReachable": true,
+            "safe": false,
+            "occluded": false
+          }
+        ]
+      },
+      "fixtures": []
+    },
+    "reference": {
+      "environmentId": "builtin:cluttered",
+      "versionId": "builtin:cluttered:e1",
+      "revision": 1,
+      "checksum": "581e2242263ece36ef4690e2786196821b15f08020caa58c5acc2d5f76f35adf"
+    }
+  }
+]

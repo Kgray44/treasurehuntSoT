@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "candidate": "2c943256361fa922f7dc964be9a2649c65142a16",
+  "tree": "c30d97307255804cd2c5db9b4d4ecc56d47cc130",
+  "packageLockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+  "provider": "SYNTHETIC_UNPAID",
+  "startedAt": "2026-10-15T05:35:58.245Z",
+  "finishedAt": "2026-10-15T05:38:04.568Z",
+  "exitCode": 0,
+  "recordings": [
+    {
+      "file": "parallax-workstation-Adapt-eb567-g-across-layouts-and-reload-chromium-video-1.webm",
+      "sha256": "8ab3f32295609370615abaff73891736dd83fc1fb6b7e91d5be0de45448b3d47"
+    },
+    {
+      "file": "parallax-workstation-Adapt-eb567-g-across-layouts-and-reload-chromium-video.webm",
+      "sha256": "f4043af31af79b1aaecefa9344fb69f98d0193b79976594789f0cab8c14ff78e"
+    },
+    {
+      "file": "parallax-workstation-Creat-0d3fb-d-retains-canonical-history-chromium-video-1.webm",
+      "sha256": "62fbaaf72b029126b06f8ecb9ca6ea771bc846ccb078cc77093f19272aee47b0"
+    },
+    {
+      "file": "parallax-workstation-Creat-0d3fb-d-retains-canonical-history-chromium-video-2.webm",
+      "sha256": "70d23ce5ff536285bbc69f4d282c22f58792027159e69f9bf7bf7d8a1c9cc681"
+    },
+    {
+      "file": "parallax-workstation-Creat-0d3fb-d-retains-canonical-history-chromium-video.webm",
+      "sha256": "0bb509dc2b314cba35ce860644e5bd408058c53baf5b1ae24f7764e484819f8c"
+    }
+  ]
+}

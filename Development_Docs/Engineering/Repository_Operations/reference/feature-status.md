@@ -3,8 +3,12 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-15
 ---
+
+SC-00C's [Spatial Library refit](../../../Projects/Project_Parallax/SC_00C_Spatial_Library_Refit.md) is an unmerged candidate for unified discovery and reuse across Assets, Environments, Scenes, Effects and Compositions. It consumes the separately owned SC-01 and SC-02 contracts; browser/visual qualification, protected integration and owner acceptance remain open.
+
+SC-01 adds a candidate Environment and Scene Manager with versioned shared geometry, independent Scene identities, explicit revision-impact review and a future immutable Chronicle reference contract. Focused tests and the production-browser demonstration pass. Independent supporting review is in progress; protected integration is blocked by the selected Crossdeck experience-design dependency. See the [implementation record](../../../Projects/Project_Parallax/SC_01_Environment_and_Scene_Manager.md).
 
 The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.md) is an isolated synthetic implementation in qualification. It exercises accepted platform contracts; its combined physical/owner session remains pending and it does not promote later spatial phases.
 
@@ -75,3 +79,7 @@ Correction Round 3 includes governed Profile imagery/cropping and identity propa
 Patch A is integrated on main and locally exact-source validated. A later protected-staging origin correction passes anonymous and synthetic-authenticated desktop journeys but still requires the owner's physical-phone run. It is not deployed, and Round 3 remains `PENDING_OWNER_DECISION`.
 
 Sounding Line FT-033 includes selective Product Experience Engineering: visible semantic outcomes, real-browser responsive/keyboard evidence, bounded independent review, immutable protected-workflow capture/review attestation and baseline-debt discipline. See [operations](../../../Testing/Product_Experience/README.md). This does not complete Spatial Experience Refit.
+
+## SC-02 status
+
+SC-02 extends Spatial Studio with original modeled assets, typed lights and effects, synthesized spatial ambience and reusable editable compositions. Qualification is tracked in the [SC-02 record](../../../Projects/Project_Parallax/SC02_Assets_and_Effects.md). Current native and Player presentation uses Guided alternatives for these element types. Asset renders, browser journey verification, protected qualification and owner acceptance remain separate.
