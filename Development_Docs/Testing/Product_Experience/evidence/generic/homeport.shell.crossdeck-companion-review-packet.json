@@ -4,20 +4,12 @@
     "id": "homeport.shell.crossdeck-companion",
     "name": "Homeport immersive companion contextual exit and same-Voyage re-entry",
     "authority": "project-homeport",
-    "owners": [
-      "project-homeport",
-      "project-crossdeck",
-      "one-voyage"
-    ],
+    "owners": ["project-homeport", "project-crossdeck", "one-voyage"],
     "critical": true,
     "experience": {
       "persona": "An authorized Player leaving a companion purpose and returning to the same active Voyage",
       "integrationOwner": "Homeport immersive companion shell with Crossdeck continuity",
-      "systems": [
-        "project-homeport",
-        "project-crossdeck",
-        "one-voyage"
-      ],
+      "systems": ["project-homeport", "project-crossdeck", "one-voyage"],
       "sourcePaths": [
         "src/navigation",
         "src/components/shell",
@@ -28,17 +20,9 @@
         "src/components/platform/PlayerLibrary.tsx",
         "src/styles/platform.css"
       ],
-      "projectionPaths": [
-        "src/app/api/auth/context",
-        "src/app/api/player/library",
-        "src/app/api/play/sessions"
-      ],
-      "devices": [
-        "DESKTOP"
-      ],
-      "roles": [
-        "PLAYER"
-      ],
+      "projectionPaths": ["src/app/api/auth/context", "src/app/api/player/library", "src/app/api/play/sessions"],
+      "devices": ["DESKTOP"],
+      "roles": ["PLAYER"],
       "accessibility": "Every named control is keyboard reachable with visible focus; reduced motion preserves the same task, hierarchy, purpose and safe return.",
       "fallback": "Guided Lens preserves the released clue without camera permission; unavailable device purposes remain explained and disabled while Journal and safe return remain available.",
       "references": [
@@ -59,9 +43,7 @@
           "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
         }
       ],
-      "homeportScreenIds": [
-        "screen-page-player-playthroughs-playthroughid-journal"
-      ],
+      "homeportScreenIds": ["screen-page-player-playthroughs-playthroughid-journal"],
       "browserTests": [
         "tests/e2e/homeport-phase2.spec.ts",
         "tests/e2e/crossdeck-experience-refit.spec.ts",
@@ -96,11 +78,7 @@
       "objective": "Leave the companion through its contextual navigation and reopen the same adventure",
       "visibleOutcome": "The immersive companion has a usable contextual library exit, the authorized library shows the current adventure, and its visible Continue action returns to the same Voyage",
       "entryPoint": "/devices/companion?voyage=00000000-0000-4000-8000-00000000cd11",
-      "states": [
-        "COMPANION_READY",
-        "LIBRARY_READY",
-        "RETURNED"
-      ],
+      "states": ["COMPANION_READY", "LIBRARY_READY", "RETURNED"],
       "navigation": "Exit to My Voyages opens the authorized Chronicle Library; Continue Adventure restores the same current Voyage.",
       "designTarget": "Keep the companion immersive, preserve compact account/context controls, and make the safe library exit and re-entry readable on desktop and phone.",
       "roleSetup": {
@@ -161,9 +139,7 @@
       "journeys": [
         {
           "id": "companion-context-exit-return",
-          "roles": [
-            "PLAYER"
-          ],
+          "roles": ["PLAYER"],
           "outcome": "An authorized Player exits immersive companion presentation through visible Homeport context controls, finds the current adventure and returns to the same Voyage",
           "steps": [
             {

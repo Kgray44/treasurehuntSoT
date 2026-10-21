@@ -4,31 +4,16 @@
     "id": "crossdeck.refit.companion",
     "name": "Crossdeck canonical companion Lens, Chart, Journal, artifact and return experience",
     "authority": "project-crossdeck",
-    "owners": [
-      "project-crossdeck",
-      "project-parallax",
-      "landfall",
-      "player-journal"
-    ],
+    "owners": ["project-crossdeck", "project-parallax", "landfall", "player-journal"],
     "critical": true,
     "experience": {
       "pairedEvidence": {
         "version": 1,
-        "caseIds": [
-          "crossdeck-pair-normal",
-          "crossdeck-pair-reduced",
-          "crossdeck-pair-adverse"
-        ]
+        "caseIds": ["crossdeck-pair-normal", "crossdeck-pair-reduced", "crossdeck-pair-adverse"]
       },
       "persona": "An authorized Player continuing a persisted private synthetic Voyage across personal screens",
       "integrationOwner": "Crossdeck experience refit integration",
-      "systems": [
-        "project-crossdeck",
-        "project-parallax",
-        "one-voyage",
-        "project-landfall",
-        "player-journal"
-      ],
+      "systems": ["project-crossdeck", "project-parallax", "one-voyage", "project-landfall", "player-journal"],
       "sourcePaths": [
         "src/crossdeck",
         "src/components/crossdeck",
@@ -47,13 +32,8 @@
         "src/app/api/player/playthroughs",
         "src/app/api/player/sessions"
       ],
-      "devices": [
-        "DESKTOP",
-        "MOBILE"
-      ],
-      "roles": [
-        "PLAYER"
-      ],
+      "devices": ["DESKTOP", "MOBILE"],
+      "roles": ["PLAYER"],
       "accessibility": "Every named control is keyboard reachable with visible focus; reduced motion preserves the same task, hierarchy, purpose and safe return.",
       "fallback": "Guided Lens preserves the released clue without camera permission; unavailable device purposes remain explained and disabled while Journal and safe return remain available.",
       "references": [
@@ -74,13 +54,8 @@
           "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
         }
       ],
-      "homeportScreenIds": [
-        "screen-page-player-playthroughs-playthroughid-journal"
-      ],
-      "browserTests": [
-        "tests/e2e/crossdeck-experience-refit.spec.ts",
-        "tests/e2e/crossdeck-refit-recovery.spec.ts"
-      ],
+      "homeportScreenIds": ["screen-page-player-playthroughs-playthroughid-journal"],
+      "browserTests": ["tests/e2e/crossdeck-experience-refit.spec.ts", "tests/e2e/crossdeck-refit-recovery.spec.ts"],
       "fixtureProfile": "generic",
       "recordingRequired": true,
       "continuity": {
@@ -115,14 +90,7 @@
       "objective": "Use my connected screen as a meaningful Lens, Chart, Journal or artifact companion for the same Chronicle",
       "visibleOutcome": "Changing companion purpose opens the canonical released clue, actual Voyage chart, readable full passage or released artifact and returns to the same immutable Chronicle",
       "entryPoint": "/devices/companion?voyage=00000000-0000-4000-8000-00000000cd11",
-      "states": [
-        "JOURNAL_READY",
-        "LENS_READY",
-        "CHART_READY",
-        "ARTIFACT_READY",
-        "JOURNAL_RESTORED",
-        "RETURNED"
-      ],
+      "states": ["JOURNAL_READY", "LENS_READY", "CHART_READY", "ARTIFACT_READY", "JOURNAL_RESTORED", "RETURNED"],
       "navigation": "Begin on the authorized paired companion; Change companion purpose reaches Lens, Chart, Journal and Artifact viewer; Return to Chronicle opens the original Journal.",
       "designTarget": "Give each purpose its full readable workspace beneath one Chronicle identity and connection status, with discoverable, operable purpose selection and persistent unobscured return, camera-free meaningful Lens and actual map objectives. Editorial ranking and grouping of purpose/connection utilities and appearance refinement are assigned to Project Refit after all functional reading, purpose and return criteria pass.",
       "roleSetup": {
@@ -183,9 +151,7 @@
       "journeys": [
         {
           "id": "companion-purpose-return",
-          "roles": [
-            "PLAYER"
-          ],
+          "roles": ["PLAYER"],
           "outcome": "A Player experiences released Lens content, the actual current Chart and complete Journal/artifact content before safely returning to the same Chronicle",
           "steps": [
             {

@@ -4,30 +4,16 @@
     "id": "crossdeck.phase2.continuity",
     "name": "Crossdeck ordered durable handoff, acknowledgment, custody, continuity and shared-display privacy",
     "authority": "project-crossdeck",
-    "owners": [
-      "project-crossdeck",
-      "wayfarer",
-      "player-journal"
-    ],
+    "owners": ["project-crossdeck", "wayfarer", "player-journal"],
     "critical": true,
     "experience": {
       "pairedEvidence": {
         "version": 1,
-        "caseIds": [
-          "crossdeck-pair-normal",
-          "crossdeck-pair-reduced",
-          "crossdeck-pair-adverse"
-        ]
+        "caseIds": ["crossdeck-pair-normal", "crossdeck-pair-reduced", "crossdeck-pair-adverse"]
       },
       "persona": "An authorized Player continuing a persisted private synthetic Voyage across personal screens",
       "integrationOwner": "Crossdeck experience refit integration",
-      "systems": [
-        "project-crossdeck",
-        "project-parallax",
-        "one-voyage",
-        "project-landfall",
-        "player-journal"
-      ],
+      "systems": ["project-crossdeck", "project-parallax", "one-voyage", "project-landfall", "player-journal"],
       "sourcePaths": [
         "src/crossdeck",
         "src/components/crossdeck",
@@ -45,13 +31,8 @@
         "src/app/api/player/playthroughs",
         "src/app/api/player/sessions"
       ],
-      "devices": [
-        "DESKTOP",
-        "MOBILE"
-      ],
-      "roles": [
-        "PLAYER"
-      ],
+      "devices": ["DESKTOP", "MOBILE"],
+      "roles": ["PLAYER"],
       "accessibility": "Every named control is keyboard reachable with visible focus; reduced motion preserves the same task, hierarchy, purpose and safe return.",
       "fallback": "Guided Lens preserves the released clue without camera permission; unavailable device purposes remain explained and disabled while Journal and safe return remain available.",
       "references": [
@@ -72,13 +53,8 @@
           "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
         }
       ],
-      "homeportScreenIds": [
-        "screen-page-player-playthroughs-playthroughid-journal"
-      ],
-      "browserTests": [
-        "tests/e2e/crossdeck-experience-refit.spec.ts",
-        "tests/e2e/crossdeck-refit-recovery.spec.ts"
-      ],
+      "homeportScreenIds": ["screen-page-player-playthroughs-playthroughid-journal"],
+      "browserTests": ["tests/e2e/crossdeck-experience-refit.spec.ts", "tests/e2e/crossdeck-refit-recovery.spec.ts"],
       "fixtureProfile": "generic",
       "recordingRequired": true,
       "continuity": {
@@ -113,11 +89,7 @@
       "objective": "Connect another device from the active Chronicle without losing my place",
       "visibleOutcome": "The active Journal opens a contextual private phone connection with QR/code guidance and returns directly to the same Chronicle",
       "entryPoint": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
-      "states": [
-        "JOURNAL_READY",
-        "CONNECT_READY",
-        "RETURNED"
-      ],
+      "states": ["JOURNAL_READY", "CONNECT_READY", "RETURNED"],
       "navigation": "Open the Journal, use Connect another device, inspect contextual pairing instructions, then Continue the Chronicle in the same Voyage.",
       "designTarget": "Keep the current passage legible and reachable, with operable contextual connection controls, focused QR/code guidance and direct return to the same Chronicle. Preserve an unobscured current heading and the existing substantive first-viewport reading-area and hit-test requirements. Editorial first-viewport dominance, utility grouping and appearance refinement are assigned to Project Refit; obstruction, unreadability and inaccessible controls remain Crossdeck blockers.",
       "roleSetup": {
@@ -157,9 +129,7 @@
       "journeys": [
         {
           "id": "contextual-connect-return",
-          "roles": [
-            "PLAYER"
-          ],
+          "roles": ["PLAYER"],
           "outcome": "A Player finds contextual phone connection from the active Journal and returns to the same released reading task",
           "steps": [
             {
@@ -218,21 +188,11 @@
       "objective": "Use my phone as a Chronicle Lens while continuing the same Voyage on desktop",
       "visibleOutcome": "A contextual pairing flow reaches a role-appropriate Lens with the same identity, Voyage and safe return",
       "integrationOwner": "Crossdeck and Parallax experience integration",
-      "systems": [
-        "project-crossdeck",
-        "project-parallax",
-        "one-voyage"
-      ],
-      "sourcePaths": [
-        "src/crossdeck",
-        "src/components/crossdeck"
-      ],
+      "systems": ["project-crossdeck", "project-parallax", "one-voyage"],
+      "sourcePaths": ["src/crossdeck", "src/components/crossdeck"],
       "persona": "A Creator or Player completing the named human objective",
       "entryPoint": "CONTEXTUAL_VOYAGE_OR_STUDIO_ENTRY_REQUIRED",
-      "devices": [
-        "DESKTOP",
-        "MOBILE"
-      ],
+      "devices": ["DESKTOP", "MOBILE"],
       "accessibility": "Provide keyboard/touch operation and a meaningful supported alternate experience.",
       "baselineDebt": [
         {

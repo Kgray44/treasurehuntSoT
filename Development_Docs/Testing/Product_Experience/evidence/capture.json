@@ -73,13 +73,7 @@
       "independentReviewsCompleted": 11,
       "reservedIndependentReviewOrdinal": 12,
       "independentReviewPerformed": false,
-      "absentSlots": [
-        "capture",
-        "review-submit",
-        "review12",
-        "qualify",
-        "qualified"
-      ]
+      "absentSlots": ["capture", "review-submit", "review12", "qualify", "qualified"]
     },
     "currentSourceAdmission": {
       "kind": "CROSSDECK_CURRENT_SOURCE_ADMISSION_1",
@@ -911,11 +905,7 @@
         "genericContexts": 32,
         "pairedContexts": 6,
         "contexts": 38,
-        "pairedCaseIds": [
-          "crossdeck-pair-normal",
-          "crossdeck-pair-reduced",
-          "crossdeck-pair-adverse"
-        ],
+        "pairedCaseIds": ["crossdeck-pair-normal", "crossdeck-pair-reduced", "crossdeck-pair-adverse"],
         "excludedReviewerContexts": [
           "01a15541-acdd-7222-b4cf-419be67320ee",
           "01a13d1d-9489-73f3-94df-1122ba234d14",
@@ -941,11 +931,7 @@
           "2a94d11bca9535653a3a3bbf55d9a1eb505e0851211f15068c62790aabcf857d",
           "09072285f1bbb1ae09f69860b8127a5670daf2de09107321194f4daf5539d7a3"
         ],
-        "forbiddenHistoricalCaptureIds": [
-          12220506702,
-          12207090441,
-          12281169039
-        ],
+        "forbiddenHistoricalCaptureIds": [12220506702, 12207090441, 12281169039],
         "firstPassKind": "CROSSDECK_MEDIA_FIRST_OBSERVATIONS_1",
         "firstPassEncoding": "utf8-original-json",
         "maximumFirstPassBytes": 1048576,
@@ -965,10 +951,7 @@
         "acceptedBaseSha": "c0b29d78f7b4c6137c9eb393a10dd9a2112e68ed",
         "frozenReferenceSha": "5dab333a4699d0feb95b07118d0986fcd34f527f",
         "frozenReferenceTree": "7a5c155ecba67d8467d2606aaf115dd428974c9a",
-        "parents": [
-          "eb40c12559604214210977e8bc498f22fea059ce",
-          "c0b29d78f7b4c6137c9eb393a10dd9a2112e68ed"
-        ],
+        "parents": ["eb40c12559604214210977e8bc498f22fea059ce", "c0b29d78f7b4c6137c9eb393a10dd9a2112e68ed"],
         "paths": [
           {
             "path": ".gitattributes",
@@ -1141,10 +1124,7 @@
         "acceptedBaseSha": "bfea71aad2c7fafdec0590ba1ac09ee3399e08d5",
         "frozenReferenceSha": "4b2ba61983faf29a3b6f41e24509f2aae023be6f",
         "frozenReferenceTree": "9c61e98c14ed12b0d9f1266448ffe7fdcbcf82d1",
-        "parents": [
-          "58436ab51dcf8696609fe4a172b8aed2eca33efc",
-          "bfea71aad2c7fafdec0590ba1ac09ee3399e08d5"
-        ]
+        "parents": ["58436ab51dcf8696609fe4a172b8aed2eca33efc", "bfea71aad2c7fafdec0590ba1ac09ee3399e08d5"]
       },
       "preservedR21Proofs": [
         {
@@ -7635,17 +7615,13 @@
         {
           "id": "same-voyage",
           "before": "bc88b6e7f16c7d2bcc7a95f1342148e1bea2ec860477367399e039a0151ac47d",
-          "atOutcomes": [
-            "bc88b6e7f16c7d2bcc7a95f1342148e1bea2ec860477367399e039a0151ac47d"
-          ],
+          "atOutcomes": ["bc88b6e7f16c7d2bcc7a95f1342148e1bea2ec860477367399e039a0151ac47d"],
           "after": "bc88b6e7f16c7d2bcc7a95f1342148e1bea2ec860477367399e039a0151ac47d"
         },
         {
           "id": "same-edition",
           "before": "77502009167b889434f56f42d7bf36999491c2bfe0cfcaaea207f4421c6aed08",
-          "atOutcomes": [
-            "77502009167b889434f56f42d7bf36999491c2bfe0cfcaaea207f4421c6aed08"
-          ],
+          "atOutcomes": ["77502009167b889434f56f42d7bf36999491c2bfe0cfcaaea207f4421c6aed08"],
           "after": "77502009167b889434f56f42d7bf36999491c2bfe0cfcaaea207f4421c6aed08"
         }
       ],
@@ -7702,17 +7678,13 @@
         {
           "id": "same-voyage",
           "before": "bc88b6e7f16c7d2bcc7a95f1342148e1bea2ec860477367399e039a0151ac47d",
-          "atOutcomes": [
-            "bc88b6e7f16c7d2bcc7a95f1342148e1bea2ec860477367399e039a0151ac47d"
-          ],
+          "atOutcomes": ["bc88b6e7f16c7d2bcc7a95f1342148e1bea2ec860477367399e039a0151ac47d"],
           "after": "bc88b6e7f16c7d2bcc7a95f1342148e1bea2ec860477367399e039a0151ac47d"
         },
         {
           "id": "same-edition",
           "before": "77502009167b889434f56f42d7bf36999491c2bfe0cfcaaea207f4421c6aed08",
-          "atOutcomes": [
-            "77502009167b889434f56f42d7bf36999491c2bfe0cfcaaea207f4421c6aed08"
-          ],
+          "atOutcomes": ["77502009167b889434f56f42d7bf36999491c2bfe0cfcaaea207f4421c6aed08"],
           "after": "77502009167b889434f56f42d7bf36999491c2bfe0cfcaaea207f4421c6aed08"
         }
       ],
@@ -7769,17 +7741,13 @@
         {
           "id": "same-voyage",
           "before": "bc88b6e7f16c7d2bcc7a95f1342148e1bea2ec860477367399e039a0151ac47d",
-          "atOutcomes": [
-            "bc88b6e7f16c7d2bcc7a95f1342148e1bea2ec860477367399e039a0151ac47d"
-          ],
+          "atOutcomes": ["bc88b6e7f16c7d2bcc7a95f1342148e1bea2ec860477367399e039a0151ac47d"],
           "after": "bc88b6e7f16c7d2bcc7a95f1342148e1bea2ec860477367399e039a0151ac47d"
         },
         {
           "id": "same-edition",
           "before": "77502009167b889434f56f42d7bf36999491c2bfe0cfcaaea207f4421c6aed08",
-          "atOutcomes": [
-            "77502009167b889434f56f42d7bf36999491c2bfe0cfcaaea207f4421c6aed08"
-          ],
+          "atOutcomes": ["77502009167b889434f56f42d7bf36999491c2bfe0cfcaaea207f4421c6aed08"],
           "after": "77502009167b889434f56f42d7bf36999491c2bfe0cfcaaea207f4421c6aed08"
         }
       ],
@@ -7836,17 +7804,13 @@
         {
           "id": "same-voyage",
           "before": "bc88b6e7f16c7d2bcc7a95f1342148e1bea2ec860477367399e039a0151ac47d",
-          "atOutcomes": [
-            "bc88b6e7f16c7d2bcc7a95f1342148e1bea2ec860477367399e039a0151ac47d"
-          ],
+          "atOutcomes": ["bc88b6e7f16c7d2bcc7a95f1342148e1bea2ec860477367399e039a0151ac47d"],
           "after": "bc88b6e7f16c7d2bcc7a95f1342148e1bea2ec860477367399e039a0151ac47d"
         },
         {
           "id": "same-edition",
           "before": "77502009167b889434f56f42d7bf36999491c2bfe0cfcaaea207f4421c6aed08",
-          "atOutcomes": [
-            "77502009167b889434f56f42d7bf36999491c2bfe0cfcaaea207f4421c6aed08"
-          ],
+          "atOutcomes": ["77502009167b889434f56f42d7bf36999491c2bfe0cfcaaea207f4421c6aed08"],
           "after": "77502009167b889434f56f42d7bf36999491c2bfe0cfcaaea207f4421c6aed08"
         }
       ],
@@ -8151,9 +8115,7 @@
         {
           "id": "same-authorized-person",
           "before": "bc73b0fbe6463c87fe7779135ed527f993c8bcf745c4f03aaa7b783a480483c9",
-          "atOutcomes": [
-            "bc73b0fbe6463c87fe7779135ed527f993c8bcf745c4f03aaa7b783a480483c9"
-          ],
+          "atOutcomes": ["bc73b0fbe6463c87fe7779135ed527f993c8bcf745c4f03aaa7b783a480483c9"],
           "after": "bc73b0fbe6463c87fe7779135ed527f993c8bcf745c4f03aaa7b783a480483c9"
         }
       ],
@@ -8210,9 +8172,7 @@
         {
           "id": "same-authorized-person",
           "before": "bc73b0fbe6463c87fe7779135ed527f993c8bcf745c4f03aaa7b783a480483c9",
-          "atOutcomes": [
-            "bc73b0fbe6463c87fe7779135ed527f993c8bcf745c4f03aaa7b783a480483c9"
-          ],
+          "atOutcomes": ["bc73b0fbe6463c87fe7779135ed527f993c8bcf745c4f03aaa7b783a480483c9"],
           "after": "bc73b0fbe6463c87fe7779135ed527f993c8bcf745c4f03aaa7b783a480483c9"
         }
       ],
@@ -8277,9 +8237,7 @@
         {
           "id": "same-authorized-person",
           "before": "bc73b0fbe6463c87fe7779135ed527f993c8bcf745c4f03aaa7b783a480483c9",
-          "atOutcomes": [
-            "bc73b0fbe6463c87fe7779135ed527f993c8bcf745c4f03aaa7b783a480483c9"
-          ],
+          "atOutcomes": ["bc73b0fbe6463c87fe7779135ed527f993c8bcf745c4f03aaa7b783a480483c9"],
           "after": "bc73b0fbe6463c87fe7779135ed527f993c8bcf745c4f03aaa7b783a480483c9"
         }
       ],
@@ -8344,9 +8302,7 @@
         {
           "id": "same-authorized-person",
           "before": "bc73b0fbe6463c87fe7779135ed527f993c8bcf745c4f03aaa7b783a480483c9",
-          "atOutcomes": [
-            "bc73b0fbe6463c87fe7779135ed527f993c8bcf745c4f03aaa7b783a480483c9"
-          ],
+          "atOutcomes": ["bc73b0fbe6463c87fe7779135ed527f993c8bcf745c4f03aaa7b783a480483c9"],
           "after": "bc73b0fbe6463c87fe7779135ed527f993c8bcf745c4f03aaa7b783a480483c9"
         }
       ],

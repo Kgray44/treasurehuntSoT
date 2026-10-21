@@ -4,31 +4,17 @@
     "id": "reach.phase1.foundation",
     "name": "Reach Phase 1 observation, calibration and laboratory foundation",
     "authority": "reach",
-    "owners": [
-      "reach",
-      "project-sextant",
-      "watchglass"
-    ],
+    "owners": ["reach", "project-sextant", "watchglass"],
     "critical": true,
     "experienceIntent": {
       "objective": "Point at calibration targets using my real hand and understand whether I can act",
       "visibleOutcome": "Detected hand, tracking quality, gesture classification and calibration eligibility remain visibly distinct",
       "integrationOwner": "Reach calibration experience integration",
-      "systems": [
-        "reach",
-        "project-sextant",
-        "watchglass"
-      ],
-      "sourcePaths": [
-        "src/reach",
-        "src/components/reach"
-      ],
+      "systems": ["reach", "project-sextant", "watchglass"],
+      "sourcePaths": ["src/reach", "src/components/reach"],
       "persona": "A Creator or Player completing the named human objective",
       "entryPoint": "CONTEXTUAL_VOYAGE_OR_STUDIO_ENTRY_REQUIRED",
-      "devices": [
-        "DESKTOP",
-        "MOBILE"
-      ],
+      "devices": ["DESKTOP", "MOBILE"],
       "accessibility": "Provide keyboard/touch operation and a meaningful supported alternate experience.",
       "baselineDebt": [
         {
@@ -48,16 +34,8 @@
       "objective": "Enable a camera, see honest tracking, calibrate and independently check pointing, practice, recover and return naturally",
       "visibleOutcome": "A coherent staged camera and pointing workspace with visible acquisition, distinct recognition stages, safe recovery and independent results",
       "integrationOwner": "Reach calibration experience integration",
-      "systems": [
-        "reach",
-        "project-sextant",
-        "watchglass"
-      ],
-      "sourcePaths": [
-        "src/reach",
-        "src/app/devices/reach",
-        "src/app/devices/pair/page.tsx"
-      ],
+      "systems": ["reach", "project-sextant", "watchglass"],
+      "sourcePaths": ["src/reach", "src/app/devices/reach", "src/app/devices/pair/page.tsx"],
       "projectionPaths": [
         "src/watchglass/hand-observation.ts",
         "src/watchglass/hand-provider.ts",
@@ -83,13 +61,8 @@
         "CAMERA_UNAVAILABLE",
         "RETURNED"
       ],
-      "devices": [
-        "DESKTOP",
-        "MOBILE"
-      ],
-      "roles": [
-        "ANONYMOUS"
-      ],
+      "devices": ["DESKTOP", "MOBILE"],
+      "roles": ["ANONYMOUS"],
       "accessibility": "Keyboard, touch and ordinary buttons operate setup, pause, retry, deletion, export and return. The setup request remains operable by keyboard and touch; activation checks current readiness, either opens setup under the existing guards or keeps preparation visible with polite live guidance, and never queues an automatic start. A disclosed guided demo explains the full flow without a camera.",
       "fallback": "Camera failure gives a plain-language explanation, retry and a guided conventional demonstration. All Voyagewright navigation remains conventional.",
       "navigation": "Existing device connections link opens Reach; the visible return clears owned camera resources and restores device connections; safe contextual return is accepted.",
@@ -142,15 +115,11 @@
         "Camera movement can be undetectable. Calibration is session-only and must be repeated after placement, identity or geometry changes.",
         "Phase 2 target selection, Phase 3 manipulation and Crossdeck Air Handoff are not implemented by this laboratory."
       ],
-      "resolvedDebtIds": [
-        "PE-DEBT-REACH-STAGES"
-      ],
+      "resolvedDebtIds": ["PE-DEBT-REACH-STAGES"],
       "journeys": [
         {
           "id": "absolute-calibration-and-recovery",
-          "roles": [
-            "ANONYMOUS"
-          ],
+          "roles": ["ANONYMOUS"],
           "outcome": "A person enters naturally, understands tracking, completes nine training and five independent targets, practices, sees detected ineligible hands and safely returns",
           "steps": [
             {
@@ -476,9 +445,7 @@
         },
         {
           "id": "relative-movement-and-check",
-          "roles": [
-            "ANONYMOUS"
-          ],
+          "roles": ["ANONYMOUS"],
           "outcome": "A person uses a comfortable movement setup, independently checks cursor control and practices without an absolute-accuracy claim",
           "steps": [
             {
@@ -675,9 +642,7 @@
         },
         {
           "id": "camera-unavailability-and-conventional-recovery",
-          "roles": [
-            "ANONYMOUS"
-          ],
+          "roles": ["ANONYMOUS"],
           "outcome": "A person understands an unavailable camera and completes a useful conventional demonstration before returning",
           "steps": [
             {

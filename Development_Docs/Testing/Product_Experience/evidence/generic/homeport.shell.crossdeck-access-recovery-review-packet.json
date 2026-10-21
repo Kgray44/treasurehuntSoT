@@ -4,42 +4,24 @@
     "id": "homeport.shell.crossdeck-access-recovery",
     "name": "Homeport readable Player account recovery after companion access ends",
     "authority": "project-homeport",
-    "owners": [
-      "project-homeport",
-      "project-crossdeck"
-    ],
+    "owners": ["project-homeport", "project-crossdeck"],
     "critical": true,
     "experience": {
       "persona": "A signed-out Player returning to the canonical account task after a companion connection loses access",
       "objective": "Read the Player account entry, use canonical sign-in and recovery, and safely return to the phone connection task",
       "visibleOutcome": "Readable Player account instructions and links lead to one canonical account flow and a contextual return to the connection task",
       "integrationOwner": "Project Homeport account experience integration",
-      "systems": [
-        "project-homeport"
-      ],
+      "systems": ["project-homeport"],
       "sourcePaths": [
         "src/app/player/sign-in",
         "src/components/platform/PlayerSignIn.tsx",
         "src/components/platform/PlayerSignIn.module.css"
       ],
-      "projectionPaths": [
-        "src/components/wayfarer/AccountFlow.tsx",
-        "src/homeport/return-to.ts"
-      ],
+      "projectionPaths": ["src/components/wayfarer/AccountFlow.tsx", "src/homeport/return-to.ts"],
       "entryPoint": "/player/sign-in?returnTo=%2Fdevices%2Fpair",
-      "states": [
-        "PLAYER_ENTRY_READY",
-        "SIGN_IN_READY",
-        "RECOVERY_READY",
-        "RETURNED"
-      ],
-      "devices": [
-        "DESKTOP",
-        "MOBILE"
-      ],
-      "roles": [
-        "ANONYMOUS"
-      ],
+      "states": ["PLAYER_ENTRY_READY", "SIGN_IN_READY", "RECOVERY_READY", "RETURNED"],
+      "devices": ["DESKTOP", "MOBILE"],
+      "roles": ["ANONYMOUS"],
       "accessibility": "The parchment entry has readable explanation and recovery links; keyboard focus reaches every account and contextual return action without horizontal overflow.",
       "fallback": "The existing canonical account flow remains usable without an identity provider; expired or revoked private companion content is not presented by this anonymous entry.",
       "navigation": "Player account entry opens canonical sign-in; Forgot Password and Return to Sign In retain the safe return intent; Return to previous page restores the phone connection task.",
@@ -62,18 +44,9 @@
           "preserve": "Readable task-first typography, grouped fields, useful recovery links, intentional narrow-mobile layout."
         }
       ],
-      "homeportScreenIds": [
-        "screen-page-player-sign-in",
-        "screen-page-sign-in",
-        "screen-page-forgot-password"
-      ],
-      "homeportJourneyIds": [
-        "C"
-      ],
-      "browserTests": [
-        "tests/e2e/crossdeck-experience-refit.spec.ts",
-        "tests/e2e/homeport-phase2.spec.ts"
-      ],
+      "homeportScreenIds": ["screen-page-player-sign-in", "screen-page-sign-in", "screen-page-forgot-password"],
+      "homeportJourneyIds": ["C"],
+      "browserTests": ["tests/e2e/crossdeck-experience-refit.spec.ts", "tests/e2e/homeport-phase2.spec.ts"],
       "fixtureProfile": "generic",
       "recordingRequired": true,
       "motion": {
@@ -88,9 +61,7 @@
       "journeys": [
         {
           "id": "player-entry-account-recovery",
-          "roles": [
-            "ANONYMOUS"
-          ],
+          "roles": ["ANONYMOUS"],
           "outcome": "A signed-out Player reaches canonical account recovery through readable controls and returns safely to the phone connection task",
           "steps": [
             {

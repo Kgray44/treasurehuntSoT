@@ -4,23 +4,12 @@
     "id": "crossdeck.refit.published-lens",
     "name": "Crossdeck published spatial clue Player consumer",
     "authority": "one-voyage",
-    "owners": [
-      "spatial-pilot",
-      "one-voyage",
-      "project-crossdeck",
-      "reach"
-    ],
+    "owners": ["spatial-pilot", "one-voyage", "project-crossdeck", "reach"],
     "critical": true,
     "experience": {
       "persona": "An authorized Player receiving a Creator-published spatial clue in a persisted private Voyage",
       "integrationOwner": "Parallax published-clue delivery with Crossdeck continuity",
-      "systems": [
-        "project-crossdeck",
-        "project-parallax",
-        "one-voyage",
-        "project-landfall",
-        "player-journal"
-      ],
+      "systems": ["project-crossdeck", "project-parallax", "one-voyage", "project-landfall", "player-journal"],
       "sourcePaths": [
         "src/components/player/parallax",
         "src/components/player/journal",
@@ -34,13 +23,8 @@
         "src/app/api/player/playthroughs",
         "src/app/api/player/sessions"
       ],
-      "devices": [
-        "DESKTOP",
-        "MOBILE"
-      ],
-      "roles": [
-        "PLAYER"
-      ],
+      "devices": ["DESKTOP", "MOBILE"],
+      "roles": ["PLAYER"],
       "accessibility": "Every named control is keyboard reachable with visible focus; reduced motion preserves the same task, hierarchy, purpose and safe return.",
       "fallback": "Guided Lens preserves the released clue without camera permission; unavailable device purposes remain explained and disabled while Journal and safe return remain available.",
       "references": [
@@ -61,13 +45,8 @@
           "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
         }
       ],
-      "homeportScreenIds": [
-        "screen-page-player-playthroughs-playthroughid-journal"
-      ],
-      "browserTests": [
-        "tests/e2e/crossdeck-experience-refit.spec.ts",
-        "tests/e2e/crossdeck-refit-recovery.spec.ts"
-      ],
+      "homeportScreenIds": ["screen-page-player-playthroughs-playthroughid-journal"],
+      "browserTests": ["tests/e2e/crossdeck-experience-refit.spec.ts", "tests/e2e/crossdeck-refit-recovery.spec.ts"],
       "fixtureProfile": "generic",
       "recordingRequired": true,
       "continuity": {
@@ -103,12 +82,7 @@
       "objective": "Read and inspect the actual published spatial clue while keeping the same Voyage",
       "visibleOutcome": "A released Creator-authored spatial moment opens its canonical Guided Lens, meaningful inspection and a direct return to the same published Voyage",
       "entryPoint": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
-      "states": [
-        "JOURNAL_READY",
-        "LENS_READY",
-        "INSPECTED",
-        "RETURNED"
-      ],
+      "states": ["JOURNAL_READY", "LENS_READY", "INSPECTED", "RETURNED"],
       "navigation": "Open the active Journal, open its released Chronicle Lens, inspect the actual clue, then close Lens and return to the same Journal.",
       "designTarget": "Preserve the published clue and readable Guided hierarchy, with truthful camera availability, keyboard inspection and an immediate contextual close/return.",
       "roleSetup": {
@@ -148,9 +122,7 @@
       "journeys": [
         {
           "id": "published-clue-inspect-return",
-          "roles": [
-            "PLAYER"
-          ],
+          "roles": ["PLAYER"],
           "outcome": "The published spatial attachment reaches canonical Guided Lens, offers actual Inspect interaction and returns to the same authorized edition",
           "steps": [
             {
