@@ -1,0 +1,278 @@
+{
+  "content": {
+    "id": "sc02-Storage:draft",
+    "definitionId": "sc02-Storage",
+    "semanticVersion": "1.0.0",
+    "schemaVersion": 1,
+    "title": "Storage collection",
+    "studio": {
+      "schemaVersion": 1,
+      "layers": [
+        {
+          "entityId": "sc02-Storage:asset0",
+          "tags": [],
+          "visible": true,
+          "locked": false,
+          "selectable": true,
+          "audience": "BOTH"
+        },
+        {
+          "entityId": "sc02-Storage:asset1",
+          "tags": [],
+          "visible": true,
+          "locked": false,
+          "selectable": true,
+          "audience": "BOTH"
+        },
+        {
+          "entityId": "sc02-Storage:asset2",
+          "tags": [],
+          "visible": true,
+          "locked": false,
+          "selectable": true,
+          "audience": "BOTH"
+        },
+        {
+          "entityId": "sc02-Storage:asset3",
+          "tags": [],
+          "visible": true,
+          "locked": false,
+          "selectable": true,
+          "audience": "BOTH"
+        },
+        {
+          "entityId": "sc02-Storage:asset4",
+          "tags": [],
+          "visible": true,
+          "locked": false,
+          "selectable": true,
+          "audience": "BOTH"
+        }
+      ],
+      "behaviors": [],
+      "assets": [],
+      "visionReferences": [],
+      "minimumRuntime": "PARALLAX_2",
+      "capabilityDependencies": [],
+      "compatibilityNotes": "Guided View preserves the authored meaning. Asset dependencies require a compatible renderer.",
+      "provenance": {
+        "origin": "PRESET",
+        "generator": "Parallax Spatial Studio",
+        "license": "Creator owned"
+      }
+    },
+    "anchors": [
+      {
+        "id": "sc02-Storage:elements",
+        "kind": "LOCAL_WORLD",
+        "frameId": "sc02-local",
+        "transform": {
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        }
+      }
+    ],
+    "entities": [
+      {
+        "id": "sc02-Storage:asset0",
+        "name": "Wardrobe",
+        "kind": "MARKER",
+        "element": {
+          "enabled": true,
+          "kind": "PHYSICAL_ASSET",
+          "modelId": "wardrobe",
+          "packageVersion": "1.0.0",
+          "articulation": 0
+        },
+        "anchorId": "sc02-Storage:elements",
+        "coordinateSpace": "LOCAL_SESSION",
+        "transform": {
+          "position": {
+            "x": -2.2,
+            "y": 0,
+            "z": -1.25
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        },
+        "widthMeters": 1.15,
+        "content": "Double paneled doors, cornice, recessed panels and brass drop handles.",
+        "alternativeText": "Double paneled doors, cornice, recessed panels and brass drop handles.",
+        "interactions": ["INSPECT", "PLACE"],
+        "visibility": "RELEASED",
+        "sharingScope": "PERSONAL"
+      },
+      {
+        "id": "sc02-Storage:asset1",
+        "name": "Dresser",
+        "kind": "MARKER",
+        "element": {
+          "enabled": true,
+          "kind": "PHYSICAL_ASSET",
+          "modelId": "dresser",
+          "packageVersion": "1.0.0",
+          "articulation": 0
+        },
+        "anchorId": "sc02-Storage:elements",
+        "coordinateSpace": "LOCAL_SESSION",
+        "transform": {
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": -1.25
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        },
+        "widthMeters": 1.05,
+        "content": "Three graduated drawers with inset borders, paired pulls and bracket feet.",
+        "alternativeText": "Three graduated drawers with inset borders, paired pulls and bracket feet.",
+        "interactions": ["INSPECT", "PLACE"],
+        "visibility": "RELEASED",
+        "sharingScope": "PERSONAL"
+      },
+      {
+        "id": "sc02-Storage:asset2",
+        "name": "Cabinet",
+        "kind": "MARKER",
+        "element": {
+          "enabled": true,
+          "kind": "PHYSICAL_ASSET",
+          "modelId": "cabinet",
+          "packageVersion": "1.0.0",
+          "articulation": 0
+        },
+        "anchorId": "sc02-Storage:elements",
+        "coordinateSpace": "LOCAL_SESSION",
+        "transform": {
+          "position": {
+            "x": 2.2,
+            "y": 0,
+            "z": -1.25
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        },
+        "widthMeters": 0.8,
+        "content": "Glazed display cabinet with muntins, internal shelves and ceramic vessels.",
+        "alternativeText": "Glazed display cabinet with muntins, internal shelves and ceramic vessels.",
+        "interactions": ["INSPECT", "PLACE"],
+        "visibility": "RELEASED",
+        "sharingScope": "PERSONAL"
+      },
+      {
+        "id": "sc02-Storage:asset3",
+        "name": "Travel trunk",
+        "kind": "MARKER",
+        "element": {
+          "enabled": true,
+          "kind": "PHYSICAL_ASSET",
+          "modelId": "travel-trunk",
+          "packageVersion": "1.0.0",
+          "articulation": 0
+        },
+        "anchorId": "sc02-Storage:elements",
+        "coordinateSpace": "LOCAL_SESSION",
+        "transform": {
+          "position": {
+            "x": -2.2,
+            "y": 0,
+            "z": 1.25
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        },
+        "widthMeters": 0.85,
+        "content": "Leather bound steamer trunk with straps, rivets, corner protectors and side grips.",
+        "alternativeText": "Leather bound steamer trunk with straps, rivets, corner protectors and side grips.",
+        "interactions": ["INSPECT", "PLACE"],
+        "visibility": "RELEASED",
+        "sharingScope": "PERSONAL"
+      },
+      {
+        "id": "sc02-Storage:asset4",
+        "name": "Treasure chest",
+        "kind": "MARKER",
+        "element": {
+          "enabled": true,
+          "kind": "PHYSICAL_ASSET",
+          "modelId": "treasure-chest",
+          "packageVersion": "1.0.0",
+          "articulation": 0
+        },
+        "anchorId": "sc02-Storage:elements",
+        "coordinateSpace": "LOCAL_SESSION",
+        "transform": {
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 1.25
+          },
+          "rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "scale": 1
+        },
+        "widthMeters": 0.8,
+        "content": "Staved arched lid, iron bands, corner nails, hasp and recessed chest interior.",
+        "alternativeText": "Staved arched lid, iron bands, corner nails, hasp and recessed chest interior.",
+        "interactions": ["INSPECT", "PLACE"],
+        "visibility": "RELEASED",
+        "sharingScope": "PERSONAL"
+      }
+    ],
+    "placementPolicy": "FIXED",
+    "privacyClass": "LOCAL_EPHEMERAL",
+    "fallback": {
+      "mode": "GUIDED",
+      "narrative": "Read and inspect the same clue here, without a camera or precision movement.",
+      "preservesMeaning": true
+    },
+    "accessibility": {
+      "seated": true,
+      "keyboard": true,
+      "reducedMotion": true,
+      "soundIndependent": true
+    }
+  },
+  "scope": "MY_LIBRARY",
+  "chronicleId": null,
+  "category": "MOMENT",
+  "tags": [],
+  "collection": "",
+  "favorite": false,
+  "lineage": null
+}

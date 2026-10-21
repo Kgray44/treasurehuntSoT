@@ -8,6 +8,8 @@ import { simulationEnvironments } from "@/parallax/studio-validation";
 import { resolveAdaptiveScene, type Candidate } from "@/parallax/adaptive";
 import { syntheticEnvironmentEvidence } from "@/parallax/adaptive-authoring";
 import type { createWorkstation, ViewportState } from "./spatial-workstation";
+import { elementEnvelope } from "@/parallax/element-contracts";
+import { useMotionMode } from "@/animation/motion/useMotionMode";
 import styles from "./SpatialStudio.module.css";
 
 export function SpatialCanvas(props: {
@@ -23,11 +25,23 @@ export function SpatialCanvas(props: {
   environmentId: string;
   timeMs: number;
   inputs: SpatialInput[];
+  playing?: boolean;
 }) {
   const { draft, selectedId, onSelect, onPreset, mode, preview, environmentId, timeMs, inputs } = props;
   const host = useRef<HTMLDivElement>(null),
     engine = useRef<ReturnType<typeof createWorkstation> | null>(null);
   const latest = useRef(props);
+  const motion = useMotionMode();
+  const [audioEnabled, setAudioEnabled] = useState(false);
+  const [quality, setQuality] = useState<"LOW" | "MEDIUM" | "HIGH">("MEDIUM");
+  const [viewControlsOpen, setViewControlsOpen] = useState(true);
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 700px)");
+    const sync = () => setViewControlsOpen(!query.matches);
+    sync();
+    query.addEventListener("change", sync);
+    return () => query.removeEventListener("change", sync);
+  }, []);
   useEffect(() => {
     latest.current = props;
   });
@@ -64,6 +78,14 @@ export function SpatialCanvas(props: {
         : previewEntityTransform(draft.content, id);
   };
   const states = evaluateSpatialBehavior(draft.content, inputs, timeMs, preview === "EDITOR");
+  const envelope = (id: string): number => {
+    const entity = draft.content.entities.find((e) => e.id === id)!;
+    return (
+      (states[id].visible ? 1 : 0) *
+      (entity.element ? elementEnvelope(entity.element, timeMs, preview === "EDITOR") : 1) *
+      (entity.parentEntityId ? envelope(entity.parentEntityId) : 1)
+    );
+  };
   const commitWorld = (id: string, world: Transform) => {
     const p = latest.current,
       e = p.draft.content.entities.find((e) => e.id === id)!;
@@ -80,7 +102,7 @@ export function SpatialCanvas(props: {
       placement?.transform ??
       (e.parentEntityId
         ? previewEntityTransform(p.draft.content, e.parentEntityId)
-        : composeTransform(referenceSurfaceFrame(a), a.transform));
+        : composeTransform(referenceSurfaceFrame(a, Boolean(e.element)), a.transform));
     const local = composeTransform(inverseTransform(parent), world);
     if (p.draft.content.adaptive) local.position = { x: 0, y: 0, z: 0 };
     p.onEdit({ type: "TRANSFORM", entityId: id, transform: local });
@@ -133,6 +155,7 @@ export function SpatialCanvas(props: {
       cancelled = true;
       engine.current?.dispose();
       engine.current = null;
+      setAudioEnabled(false);
     };
   }, [fallback]);
   useEffect(() => {
@@ -141,7 +164,8 @@ export function SpatialCanvas(props: {
       objects: draft.content.entities.map((entity) => ({
         entity,
         world: resolvedWorld(entity.id),
-        visible: states[entity.id].visible,
+        visible: envelope(entity.id) > 0,
+        envelope: envelope(entity.id),
         highlighted: states[entity.id].highlighted || (props.highlightedEntityIds?.includes(entity.id) ?? false),
         selectable: states[entity.id].selectable,
         locked: draft.content.studio?.layers.find((l) => l.entityId === entity.id)?.locked ?? false,
@@ -156,6 +180,10 @@ export function SpatialCanvas(props: {
       adaptive: Boolean(adaptive),
       editable: preview === "EDITOR",
       inspection: mode === "ENGINEERING",
+      timeMs,
+      audio: audioEnabled && Boolean(props.playing) && preview !== "EDITOR",
+      reducedMotion: motion.mode === "reduced",
+      quality,
     });
   });
   const selected = draft.content.entities.find((e) => e.id === selectedId);
@@ -200,41 +228,81 @@ export function SpatialCanvas(props: {
           ◈<small>Surfaces</small>
         </button>
       </div>
-      <div className={styles.viewInstrument}>
-        <select
-          aria-label="Camera perspective"
-          value={view}
-          onChange={(e) => {
-            setView(e.target.value);
-            engine.current?.view(e.target.value);
-          }}
-        >
-          <option value="perspective">Perspective</option>
-          <option value="plan">Plan / orthographic</option>
-          <option value="front">Front elevation</option>
-        </select>
-        <button onClick={() => engine.current?.view("selection")} title="Frame selected object">
-          Frame selection
-        </button>
-        <button
-          onClick={() => {
-            setView("perspective");
-            engine.current?.view();
-          }}
-        >
-          Reset view
-        </button>
-        {mode !== "GUIDED" && (
+      <details
+        className={styles.viewInstrument}
+        open={viewControlsOpen}
+        onToggle={(event) => setViewControlsOpen(event.currentTarget.open)}
+      >
+        <summary>View &amp; audio controls</summary>
+        <div className={styles.viewControlBody}>
           <select
-            aria-label="Gizmo coordinate space"
-            value={space}
-            onChange={(e) => setSpace(e.target.value as typeof space)}
+            aria-label="Renderer quality"
+            value={quality}
+            onChange={(e) => setQuality(e.target.value as typeof quality)}
           >
-            <option value="world">World coordinates</option>
-            <option value="local">Local coordinates</option>
+            <option value="LOW">Low quality</option>
+            <option value="MEDIUM">Medium quality</option>
+            <option value="HIGH">High quality</option>
           </select>
-        )}
-      </div>
+          <button
+            aria-pressed={audioEnabled}
+            aria-describedby="parallax-canvas-feedback"
+            onClick={async () => {
+              if (audioEnabled) {
+                setAudioEnabled(false);
+                engine.current?.stopAudio();
+                setFeedback("Preview audio muted. Authored meaning remains available as text.");
+                return;
+              }
+              try {
+                const current = engine.current;
+                if (!current) throw new Error("Audio preview has no active renderer");
+                await current.enableAudio();
+                setAudioEnabled(true);
+                setFeedback("Preview audio enabled. Play the timeline to hear authored ambience.");
+              } catch {
+                setFeedback("Preview audio is unavailable. All authored meaning remains available as text.");
+              }
+            }}
+          >
+            {audioEnabled ? "Mute preview audio" : "Enable preview audio"}
+          </button>
+          <select
+            aria-label="Camera perspective"
+            value={view}
+            onChange={(e) => {
+              setView(e.target.value);
+              engine.current?.view(e.target.value);
+            }}
+          >
+            <option value="perspective">Perspective</option>
+            <option value="plan">Plan / orthographic</option>
+            <option value="front">Front elevation</option>
+          </select>
+          <button onClick={() => engine.current?.view("selection")} title="Frame selected object">
+            Frame selection
+          </button>
+          <button onClick={() => engine.current?.view("scene")}>Frame scene</button>
+          <button
+            onClick={() => {
+              setView("perspective");
+              engine.current?.view();
+            }}
+          >
+            Reset view
+          </button>
+          {mode !== "GUIDED" && (
+            <select
+              aria-label="Gizmo coordinate space"
+              value={space}
+              onChange={(e) => setSpace(e.target.value as typeof space)}
+            >
+              <option value="world">World coordinates</option>
+              <option value="local">Local coordinates</option>
+            </select>
+          )}
+        </div>
+      </details>
       {fallback ? (
         <div className={styles.guidedPreview}>
           <p className={styles.eyebrow}>GUIDED / CAMERA FREE</p>
@@ -265,7 +333,9 @@ export function SpatialCanvas(props: {
             <span>{selected ? "SELECTED OBJECT" : "SCENE"}</span>
             <strong>{selected?.name ?? draft.content.title}</strong>
             {selected && props.onInspect && <button onClick={props.onInspect}>Edit selected object</button>}
-            <small>{adaptive ? adaptive.quality.replaceAll("_", " ") : "Fixed authored placement"}</small>
+            <small className={adaptive ? undefined : styles.fixedPlacementCaption}>
+              {adaptive ? adaptive.quality.replaceAll("_", " ") : "Fixed authored placement"}
+            </small>
             {mode === "ENGINEERING" && selected && (
               <code>
                 {Object.values(resolvedWorld(selected.id).position)
@@ -289,10 +359,14 @@ export function SpatialCanvas(props: {
         </span>
       </div>
       <p className={styles.canvasHint}>
-        {adaptive && tool === "translate"
-          ? "Choose a highlighted safe surface to edit semantic intent. Exact positions remain resolver-owned."
-          : "Drag empty space to orbit · Shift-drag to pan · Scroll to zoom · Choose a gizmo to edit."}{" "}
-        <span>{feedback}</span>
+        <span className={adaptive && tool === "translate" ? undefined : styles.pointerHint}>
+          {adaptive && tool === "translate"
+            ? "Choose a highlighted safe surface to edit semantic intent. Exact positions remain resolver-owned."
+            : "Drag empty space to orbit · Shift-drag to pan · Scroll to zoom · Choose a gizmo to edit."}{" "}
+        </span>
+        <span id="parallax-canvas-feedback" aria-live="polite" aria-atomic="true">
+          {feedback}
+        </span>
       </p>
       <div className={styles.keyboardObjects} aria-label="Keyboard spatial selection">
         {draft.content.entities.map((e) => (
