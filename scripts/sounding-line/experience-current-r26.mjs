@@ -212,6 +212,7 @@ export const CURRENT_R26 = freeze({
     "tests/sounding-line/experience-current-admission.test.mjs",
     "tests/sounding-line/experience-capture-publication.test.mjs",
     "tests/sounding-line/experience-r26.test.mjs",
+    "tests/sounding-line/experience-exception.test.mjs",
   ],
   previousRecordsDigest: "52e851a3f82fa1a18db54f9c7150cfdba836d4c827fda07d1e067d9550f968d8",
 });

@@ -2669,7 +2669,7 @@ test("R3 Git admission permits only the bounded repair and freezes every other r
     "testing/product-experience-exceptions.json",
     JSON.stringify({ version: 1, exceptions: [template, successorTemplate, r3Template] }),
   );
-  // This synthetic base predates R13, R14, R16, R17, R18 and R19; its three historical grants must not
+  // This synthetic base predates the later grants through R26; its three historical grants must not
   // inherit the installed-source sentinel from the current repository tree.
   run([
     "update-index",
@@ -2681,6 +2681,7 @@ test("R3 Git admission permits only the bounded repair and freezes every other r
     "scripts/sounding-line/experience-current-r18.mjs",
     "scripts/sounding-line/experience-current-r19.mjs",
     "scripts/sounding-line/experience-current-r20.mjs",
+    "scripts/sounding-line/experience-current-r26.mjs",
     "scripts/sounding-line/experience-current-r25.mjs",
     "scripts/sounding-line/experience-current-r24.mjs",
     "scripts/sounding-line/experience-current-r23.mjs",

@@ -69,5 +69,10 @@ Independent review, normal protected Ubuntu qualification, strict integration
 and independent landed verification remain separate gates. This record does not
 declare that qualification, consumer execution or #721 acceptance complete.
 
+The historical R3 Git-admission fixture constructs a synthetic three-record base
+from the committed head. It removes the R26 sentinel with the other later
+sentinels so that its historical assertions run against their original scope.
+The production R26 sentinel and every historical assertion remain required.
+
 Only the existing #721 owner controls the one consumer trigger after actual
 installed-source admission and verified draft publication sequencing.

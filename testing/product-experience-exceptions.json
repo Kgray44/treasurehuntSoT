@@ -160746,7 +160746,7 @@
         "kind": "CROSSDECK_CURRENT_SOURCE_ADMISSION_1",
         "protectedBaseAncestorSha": "185f5fd368ec16a77cb5fe92e7813d7ca4ac6418",
         "preservationRevision": "43b5f4d55b6ac751ed9b2e05d4e4cace38544c4f",
-        "sourceDigest": "de5a414f886de86885db51f520853804ee2de2f5974a48350a9a76874071ab1d",
+        "sourceDigest": "780b8216318f79bd8eb0d48d8150bef8b23905deaa40f193273e76f71e7a8734",
         "contextCount": 38,
         "pairedBrowserContexts": 6,
         "requiredObligationIds": [
@@ -160800,7 +160800,7 @@
         },
         "disposition": {
           "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-replay-path-successor-20261021-r26/causal-disposition.md",
-          "sha256": "48eb9918718100de9c79f0782f89b4e78ba7cece48f86474a92e43136ac56c74"
+          "sha256": "d021bd1ad3599bb096d8bbd516b2e3c29a26d64071bc45bbf8f9b08d9b030226"
         },
         "protectedOverlay": [
           {
@@ -160844,9 +160844,9 @@
             "oldMode": null,
             "oldBlob": null,
             "newMode": "100644",
-            "newBlob": "1d8c9cdc3430ae90ff59ad35d7af927a4d6edec0",
+            "newBlob": "c9174d7b0d150c5bcc25f668ab6842c25d789e19",
             "candidateMode": "100644",
-            "candidateBlob": "1d8c9cdc3430ae90ff59ad35d7af927a4d6edec0"
+            "candidateBlob": "c9174d7b0d150c5bcc25f668ab6842c25d789e19"
           },
           {
             "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-replay-path-successor-20261021-r26/historical-ledger.json",
@@ -160898,9 +160898,9 @@
             "oldMode": null,
             "oldBlob": null,
             "newMode": "100644",
-            "newBlob": "bdd3e08a60d00f4a91a1f9434c3d765cf7e2f1ef",
+            "newBlob": "6d6de7a12e08dd1b578731a9d1bd86ed581c7100",
             "candidateMode": "100644",
-            "candidateBlob": "bdd3e08a60d00f4a91a1f9434c3d765cf7e2f1ef"
+            "candidateBlob": "6d6de7a12e08dd1b578731a9d1bd86ed581c7100"
           },
           {
             "path": "scripts/sounding-line/experience-exception.mjs",
@@ -160937,6 +160937,15 @@
             "newBlob": "c1b0fe8eef32c6a80a43445f856c62f1600818d5",
             "candidateMode": "100644",
             "candidateBlob": "c1b0fe8eef32c6a80a43445f856c62f1600818d5"
+          },
+          {
+            "path": "tests/sounding-line/experience-exception.test.mjs",
+            "oldMode": "100644",
+            "oldBlob": "af5b02025475b30e2c4c5a9f9491612979ebd229",
+            "newMode": "100644",
+            "newBlob": "485b78ac9cc3256d5687c033a170ce2b25723e0e",
+            "candidateMode": "100644",
+            "candidateBlob": "485b78ac9cc3256d5687c033a170ce2b25723e0e"
           },
           {
             "path": "tests/sounding-line/experience-r26.test.mjs",
