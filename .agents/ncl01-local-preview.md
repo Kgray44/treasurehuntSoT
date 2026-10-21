@@ -3,10 +3,72 @@ title: NCL-01 owned laptop preview operations
 audience: automation
 status: current
 canonical_for: parallax-ncl01-laptop-preview-operations
-last_reviewed: 2026-10-15
+last_reviewed: 2026-10-21
 ---
 
 # NCL-01 laptop preview
+
+## Current stable-origin operations
+
+Use `https://ncl01.absoluterelativesystems.com` with ordinary public TLS and the
+existing TestFlight **0.1.0 (7)**. Phone and laptop need not share Wi-Fi. The
+laptop must remain awake and connected, with its existing Cloudflared service
+and the owned loopback production/edge listeners on 3158/3159 running. No new
+certificate profile, domain, tunnel, route, trust exception or Apple setup is
+required. Keep the existing staging/audit routes and all unrelated services.
+
+The preserved preview runs source
+`47ff42e4cb8b67e5fa2bfbc481a34d3d33490a18`; it is not the new completion
+candidate. Its build/database remain in the original private D: location.
+Runtime ownership, temporary files, logs and reviewed procedures now live in
+`C:\Users\kkids\.codex\tmp\ncl01-full-completion\preview-runtime`.
+Use PowerShell 7.5 or newer (verified host: 7.6.5).
+
+Check both known live components without restarting, starting or archiving them:
+
+```powershell
+$nclRuntime = Join-Path $env:USERPROFILE '.codex\tmp\ncl01-full-completion\preview-runtime'
+pwsh -NoProfile -File (Join-Path $nclRuntime 'Start-OwnedPreview.ps1') --validate-current-live-only
+```
+
+After a reboot, use the same reviewed wrapper without the validation argument:
+
+```powershell
+$nclRuntime = Join-Path $env:USERPROFILE '.codex\tmp\ncl01-full-completion\preview-runtime'
+pwsh -NoProfile -File (Join-Path $nclRuntime 'Start-OwnedPreview.ps1')
+```
+
+It verifies known live instances rather than restarting them, or starts the
+production listener before the edge when absent. Before archiving exact C:
+stale records/logs, it requires matching recorded source/instance and proof that
+the recorded process and console creations are gone or their PIDs were reused.
+Unknown processes/ports, partial bindings and live-but-unlistened processes
+fail closed. Both components are preflighted before any start/archive.
+Cloudflared must already be running; the wrapper does not change its service,
+DNS, security policy or routes. Prepared reboot/start behavior is distinct from
+the non-disruptive current-live verification; do not claim a reboot test that
+was not performed.
+
+`Stop-OwnedProduction.ps1` in that same directory stops only the exact held
+3158 production creation and verifies expected console exit/port release. It
+preserves the edge and Cloudflared; it is not a full-stack stop or a health
+check. Do not blindly invoke the historical D: whole-stack Start/Stop helpers:
+their original production process metadata is stale. Preserve those originals.
+
+Normal public TLS checks returned 200 for sign-in and all 25 referenced static
+assets. These anonymous checks do not prove private-account/database integrity
+or physical AR. Only an inactive task-owned derived Gradle cache was relocated
+to C:, retaining every file and its original D: path, to recover about 391 MiB.
+Storage remains constrained; keep new temporary state on C:. See the current
+[engineering ledger](../Development_Docs/Projects/Project_Parallax/NCL01_Full_Completion_20261021.md)
+for recovery, health and source-bound evidence.
+
+## Historical LAN preview and evidence
+
+The addresses, local CA, no-enrollment/installation observations, D:-only Git
+instructions and start commands below are retained historical snapshots. They
+do not override the current stable-origin operations above or authorize
+re-preparation of the private fixture.
 
 These helpers operate only the synthetic NCL-01 fixture in
 `D:\CodexTemp\ncl01-preview`, from the owned `codex/parallax-ncl01` worktree.

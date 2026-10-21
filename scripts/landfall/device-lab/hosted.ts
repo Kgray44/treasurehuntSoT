@@ -1,4 +1,5 @@
 import { execFile } from "node:child_process";
+import { createHash } from "node:crypto";
 import { promisify } from "node:util";
 import { mkdir, writeFile, rm } from "node:fs/promises";
 import path from "node:path";
@@ -13,6 +14,84 @@ import {
 } from "./android-graphics-probe";
 
 const execute = promisify(execFile);
+type HostedIosRunner = "macos-latest" | "macos-26" | "macos-26-intel";
+const appleJobs = ["apple", "apple-notice", "apple-presentation"] as const;
+
+/** A platform-only transport option cannot redirect other Device Lab targets. */
+export function hostedIosRunnerLabel(value: unknown, target: unknown): HostedIosRunner | undefined {
+  if (value === undefined) return undefined;
+  if (value !== "macos-latest" && value !== "macos-26" && value !== "macos-26-intel")
+    throw new Error("LANDFALL_HOSTED_IOS_RUNNER_INVALID");
+  if (target !== "ios" && target !== "ios-presentation") throw new Error("LANDFALL_HOSTED_IOS_RUNNER_TARGET_REQUIRED");
+  return value;
+}
+
+function appleJobRunner(workflow: string, job: (typeof appleJobs)[number]) {
+  const jobs = [...workflow.matchAll(new RegExp(`^  ${job}:\\r?\\n`, "gm"))];
+  if (jobs.length !== 1) throw new Error("LANDFALL_HOSTED_IOS_RUNNER_TEMPLATE_AMBIGUOUS");
+  const start = jobs[0].index! + jobs[0][0].length;
+  const next = /^  [A-Za-z0-9_-]+:\r?$/m.exec(workflow.slice(start));
+  const end = next ? start + next.index : workflow.length;
+  const labels = [...workflow.slice(start, end).matchAll(/^    runs-on: ([a-z0-9-]+)\r?$/gm)];
+  if (labels.length !== 1) throw new Error("LANDFALL_HOSTED_IOS_RUNNER_TEMPLATE_INVALID");
+  return { label: labels[0][1], offset: start + labels[0].index! + "    runs-on: ".length };
+}
+
+/** Preserve every byte except the three existing Apple jobs' runner labels. */
+export function hostedIosRunnerTemplate(template: string, requested: HostedIosRunner | undefined): string {
+  const runner = hostedIosRunnerLabel(requested, "ios");
+  if (runner === undefined) return template;
+  let workflow = template;
+  for (const job of appleJobs) {
+    const { label, offset } = appleJobRunner(workflow, job);
+    if (label !== "macos-latest") throw new Error("LANDFALL_HOSTED_IOS_RUNNER_TEMPLATE_INVALID");
+    workflow = workflow.slice(0, offset) + runner + workflow.slice(offset + label.length);
+  }
+  return workflow;
+}
+
+export function hostedIosRunnerMetadata(runner: HostedIosRunner | undefined, workflow: string) {
+  if (runner === undefined) return undefined;
+  hostedIosRunnerLabel(runner, "ios");
+  if (appleJobs.some((job) => appleJobRunner(workflow, job).label !== runner))
+    throw new Error("LANDFALL_HOSTED_IOS_RUNNER_WORKFLOW_INVALID");
+  return {
+    kind: "HOSTED_IOS_RUNNER_SELECTION_ONLY" as const,
+    requested: runner,
+    effective: runner,
+    jobs: [...appleJobs],
+    expectedArchitecture: runner === "macos-26-intel" ? "x64" : "arm64",
+    actualEnvironmentObserved: false,
+    workflowSha256: createHash("sha256").update(workflow).digest("hex"),
+    limits: [
+      "Runner selection is not execution, graphics, canonical acceptance or physical-device evidence.",
+      "Host discovery and the complete selected suite must run on this environment; prior ARM results cannot qualify Intel.",
+    ],
+  };
+}
+
+/** Keep the legacy positionals while making the alternate runner explicit. */
+export function parseHostedLabArguments(args: readonly string[]) {
+  const positional: string[] = [];
+  let iosRunner: HostedIosRunner | undefined;
+  for (let index = 0; index < args.length; index++) {
+    const value = args[index];
+    if (value === "--ios-runner") {
+      if (iosRunner !== undefined || index + 1 >= args.length)
+        throw new Error("LANDFALL_HOSTED_IOS_RUNNER_ARGUMENT_INVALID");
+      const selected = args[++index];
+      if (selected !== "macos-latest" && selected !== "macos-26" && selected !== "macos-26-intel")
+        throw new Error("LANDFALL_HOSTED_IOS_RUNNER_INVALID");
+      iosRunner = selected;
+    } else {
+      if (value.startsWith("--")) throw new Error("LANDFALL_HOSTED_ARGUMENT_INVALID");
+      positional.push(value);
+    }
+  }
+  if (positional.length > 6) throw new Error("LANDFALL_HOSTED_ARGUMENT_INVALID");
+  return { positional, iosRunner: hostedIosRunnerLabel(iosRunner, positional[1] ?? "all") };
+}
+
 /** Ephemeral CI transport only. It never mutates the checkout, default branch, or protected testing authority. */
 export async function dispatchLandfallHostedLab(
   candidate: string,
@@ -22,6 +101,7 @@ export async function dispatchLandfallHostedLab(
   selectedScenarios?: string,
   selectedProfiles?: string,
   graphicsBackend?: string,
+  iosRunner?: string,
 ) {
   if (!/^[a-f0-9]{40}$/.test(candidate)) throw new Error("LANDFALL_HOSTED_CANDIDATE_INVALID");
   if (
@@ -39,6 +119,7 @@ export async function dispatchLandfallHostedLab(
   )
     throw new Error("LANDFALL_HOSTED_TARGET_INVALID");
   if (!["development", "candidate", "closure"].includes(tier)) throw new Error("LANDFALL_HOSTED_TIER_INVALID");
+  const appleRunner = hostedIosRunnerLabel(iosRunner, target);
   if (
     target === "android-journal" &&
     selectedScenarios !== undefined &&
@@ -87,7 +168,7 @@ export async function dispatchLandfallHostedLab(
     throw new Error("LANDFALL_HOSTED_RADIO_PROFILE_UNSUPPORTED");
   await labTool("git", ["cat-file", "-e", `${candidate}^{commit}`]);
   const template = await labTool("git", ["show", `${candidate}:.agents/landfall-device-lab-hosted.yml`]);
-  const workflow = androidGraphicsProbeTemplate(template, probeBackend)
+  const workflow = hostedIosRunnerTemplate(androidGraphicsProbeTemplate(template, probeBackend), appleRunner)
     .replaceAll("__CANDIDATE_SHA12__", candidate.slice(0, 12))
     .replaceAll("__CANDIDATE_SHA__", candidate)
     .replaceAll("__RUN_PROVIDERS__", String(target === "all" || target === "provider"))
@@ -154,6 +235,7 @@ export async function dispatchLandfallHostedLab(
     .replaceAll("__PROVIDER_SCENARIOS__", scenarios.provider)
     .replaceAll("__RADIO_SCENARIOS__", scenarios.radio);
   const graphicsProbe = androidGraphicsProbeMetadata(probeBackend, selectedWorkflow);
+  const iosRunnerSelection = hostedIosRunnerMetadata(appleRunner, selectedWorkflow);
   const runId = `${candidate.slice(0, 12)}-${Date.now()}`;
   const destination = path.join(root, "artifacts", "landfall-device-lab", `hosted-${runId}`);
   await mkdir(destination, { recursive: true });
@@ -192,6 +274,7 @@ export async function dispatchLandfallHostedLab(
       createdAt: new Date().toISOString(),
       cleanup: "PENDING",
       ...(graphicsProbe ? { graphicsProbe } : {}),
+      ...(iosRunnerSelection ? { iosRunner: iosRunnerSelection } : {}),
     };
     await writeFile(path.join(destination, "dispatch.json"), JSON.stringify(receipt, null, 2));
     return receipt;
@@ -201,16 +284,20 @@ export async function dispatchLandfallHostedLab(
 }
 
 if (process.argv[1]?.endsWith("hosted.ts")) {
-  const candidate = process.argv[2] ?? "";
-  dispatchLandfallHostedLab(
-    candidate,
-    process.cwd(),
-    process.argv[3] ?? "all",
-    process.argv[4] ?? "development",
-    process.argv[5],
-    process.argv[6],
-    process.argv[7],
-  )
+  Promise.resolve()
+    .then(() => {
+      const { positional, iosRunner } = parseHostedLabArguments(process.argv.slice(2));
+      return dispatchLandfallHostedLab(
+        positional[0] ?? "",
+        process.cwd(),
+        positional[1] ?? "all",
+        positional[2] ?? "development",
+        positional[3],
+        positional[4],
+        positional[5],
+        iosRunner,
+      );
+    })
     .then((receipt) => process.stdout.write(`${JSON.stringify(receipt, null, 2)}\n`))
     .catch(() => {
       process.stderr.write("LANDFALL_HOSTED_DISPATCH_FAILED\n");

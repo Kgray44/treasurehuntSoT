@@ -32,6 +32,14 @@ The [native vertical-slice record](NCL01_Native_Scene_Vertical_Slice.md) and
 [TestFlight record](NCL01_TestFlight_Deployment.md) retain original receipts.
 This task does not rewrite the proposed NCL charter or its author's status record.
 
+The original brief's section 10 defines the ten-item first-model vertical slice
+and explicitly defers richer elements/effects/occlusion/scanning/shared anchors
+and full presentation to separately validated increments afterward. This
+mission implements that bounded contract and truthful capability fallback; it
+does not claim that those richer software capabilities are implemented and
+merely awaiting physical receipts. The original brief and current owner scope,
+not unaccepted PR781, establish this boundary.
+
 ## Initial ten-item disposition
 
 | #   | Requirement                      | Initial classification                                   | Existing proof and actual remaining work                                                                                                                                                        |
@@ -239,3 +247,154 @@ readiness observation, granular iOS stages and private bounded tool-output
 retention discriminate driver startup from page/bundle/Scene/JavaScript startup
 without changing any timeout or acceptance gate. Retention failure cannot skip
 independent resource cleanup.
+
+### Frozen iOS repair a523b828
+
+Commit `a523b8287231b44c3cc30c5ebb6fba6954e6d95a`, tree
+`6e845da363d51dbae3ce79a7503d9b504e82b7eb`, freezes that minimal Return
+layout correction and the reviewed iOS diagnostics. TypeScript, targeted ESLint
+and 14 native-input/collector regression tests passed before freezing; the
+[pre-freeze check](evidence/ncl01-full-completion-20261021/ios-repair-preflight.json)
+retains the exact checked Git blobs. The
+[source comparison](evidence/ncl01-full-completion-20261021/a523b828-source-equivalence.json)
+verifies their equality to this commit, unchanged Android native/collector and
+canonical/browser source, and all 658 original evidence/artwork blobs. Fresh iOS
+Device Lab and unsigned archive runs are required; no Android graphics rerun or
+new distributed beta is justified by unchanged Android source.
+
+The [a523 unsigned archive review](evidence/ncl01-full-completion-20261021/ios-unsigned-archive-a523b828.json)
+records successful run 39619394225, Xcode 26.6 / iOS SDK 26.5, with actual Release
+executable SHA256 `9aa73770560f7f5ef5ccf5fefa5559fa7bb1b01fd10cefeb295845ef08e7f15b`.
+Bundle/origin/version/permission/privacy assertions and signing-state cleanup
+passed. Upload was skipped, Apple processing did not start, and beta 7 remains
+unchanged. Actual binary/compiled-icon pixels were not retained for independent
+inspection; their availability limit is explicit in that review.
+
+The first a523 Device Lab job, run 39619309485, did not execute. GitHub's
+annotation states that the hosted runner was not acquired after multiple
+attempts, with macOS arm64 capacity notices. Its primary job had zero steps and
+zero artifacts. The [scheduler receipt](evidence/ncl01-full-completion-20261021/ios-39619309485.scheduler-review.json)
+preserves that external acquisition failure separately from application tests;
+it proves neither a repaired layout nor a failed assertion. A supported runner
+alternative is being checked against the existing shared Device Lab.
+
+The reviewed dispatcher now permits an explicit allowlisted iOS-only runner
+selection without changing defaults or any selected test/job/timeout. The
+[retained preflight](evidence/ncl01-full-completion-20261021/ios-runner-preflight.json)
+records 14 passing guard tests and successful focused ESLint/format checks;
+TypeScript also passed. The supported `macos-26-intel` label uses a different
+architecture/pool from the reported arm64 acquisition constraint; availability
+is not presumed. Its documented Xcode/Simulator support does not substitute
+for an executed build, graph, geometry or graphics assertion. One fresh selected
+run includes primary companion/joined tests and the existing independent full
+presentation suite. The permission scenario verifies location denial, not
+camera permission or camera-loss recovery.
+
+### Preserved laptop preview recovery
+
+The stable public origin remains `https://ncl01.absoluterelativesystems.com`.
+Its preserved web source is `47ff42e4cb8b67e5fa2bfbc481a34d3d33490a18`,
+not this new native/canonical candidate. The old Next process stopped responding;
+the [recovery receipt](evidence/ncl01-full-completion-20261021/preserved-preview-recovery.json)
+records replacement of only that creation-bound owned worker. The build,
+database, edge, Cloudflare service, normal TLS/host/origin guards and unrelated
+listeners were preserved. Earlier unsuccessful diagnostic/restart receipts are
+retained; the original hang's cause was not established.
+
+The [independent restored health check](evidence/ncl01-full-completion-20261021/preserved-preview-health.restored.json)
+verified normal certificate/hostname validation, HTTP 200 for the sign-in page
+and all 25 referenced assets with their expected CSS/JavaScript content types.
+No account credentials, cookies or private database were inspected by that
+check. It does not establish private-account integrity, native candidate
+deployment, or a new iPhone/cellular result.
+
+D: had no free space. The [bounded cache relocation](evidence/ncl01-full-completion-20261021/preserved-preview-cache-relocation.json)
+verified all 8,466 files / 405,298,183 bytes of one inactive task-owned derived
+Gradle transforms cache before and after copying to C:. The original D: cache
+path remains a junction to those identical bytes; deleting only the verified
+retained duplicate recovered 410,316,800 bytes. Private databases, room media,
+source, dependency installations, original evidence and unrelated files were
+not relocation targets. Active operations belong in the
+[preview automation packet](../../../.agents/ncl01-local-preview.md).
+
+The [current procedure verification](evidence/ncl01-full-completion-20261021/preserved-preview-current-readiness.json)
+binds the seven private helper hashes. Its one reviewed current-live-only call
+verified both known listeners/process/console creations twice with zero starts,
+archives, signals or restarts and unchanged protected neighbors. Automatic
+post-reboot stale-record handling and start order are prepared and reviewed,
+not exercised against the healthy services. Account/data integrity is not
+inferred from process ownership or anonymous reachability.
+
+## Original ten requirements: current disposition
+
+This matrix describes the bounded original-model milestone at frozen repair
+`a523b828`. Fresh iOS qualification is pending. It does not promote the milestone
+to physical, owner or protected-main acceptance.
+
+| #   | Implemented behavior                                                                                                                                                                                                             | Software evidence                                                                                                                                                                                                                                                           | Physical evidence and remaining limitation                                                                                                                              | Acceptance disposition                                         |
+| --- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| 1   | Published canonical Scene delivers original SC02 chest and compass; authenticated, checksum-verified GLBs retain their identity and license.                                                                                     | Shared v1/v2, schema, authorization and corruption assertions; original native raster/geometry receipts.                                                                                                                                                                    | Earlier owner-reported iPhone display is not acceptance of this source. Browser/Crossdeck end-to-end release remains gated.                                             | Implemented; integrated acceptance open.                       |
+| 2   | Canonical parent/resolved transforms and entity IDs, embedded glTF hierarchy/materials, metric width, rotation and bottom pivot; strict visibility, eligibility and Scene replacement.                                           | Three-entity/hierarchy/update fixtures; native model bounds, root transforms, distinct geometry selection and hidden/occluding-mesh negatives.                                                                                                                              | Actual scale/alignment/drift unmeasured. Relative layout uses a chosen surface origin; it does not recognize the classroom.                                             | Software verified; physical fidelity open.                     |
+| 3   | Existing ARKit/SceneKit app loads original GLBs, stages graphs atomically, picks actual meshes, clears/cancels and offers accessible exit/Guided fallback.                                                                       | a86 original raster and mesh tests pass; its Return-clipping failure is retained. a523 repairs compression; unsigned Release archive 39619394225 passes; fresh Simulator pending.                                                                                           | No current-source physical test receipt.                                                                                                                                | Implemented; current qualification pending.                    |
+| 4   | Existing ARCore/Filament app uses the same contract and original models, actual GPU picks, surface/local placement, input guards and disposal.                                                                                   | Android 39613042290: 16 methods, both original GLBs, MotionEvent and accessibility actions, four decoded frames; joined journey and permission scenario pass. Native source unchanged in a523.                                                                              | No physical Android available. Full lint remains FAIL with eight matched baseline errors; Release lintVital/builds pass separately.                                     | Software verified; physical acceptance open.                   |
+| 5   | Capability-checked world-tracking sessions, horizontal/vertical surface placement where available, provider-frame anchors, explicit failure/limited-tracking feedback and recovery handling.                                     | Provider-frame/placement/state/cancellation tests and compiled native implementations.                                                                                                                                                                                      | Real anchoring, interruption, relocalization and drift require both platforms' hardware. No automatic reconstructed-room registration.                                  | Software implemented; physical acceptance open.                |
+| 6   | Browser/native share immutable Scene/edition, eligibility, transforms and authored fallback; bounded adapter reuses admitted tracking/camera custody without inventing plane support or metric scale.                            | Adapter/capability/lifecycle tests and canonical Guided/D1 journeys; browser runtime source unchanged from successful Linux run 39607851877.                                                                                                                                | No accepted live metric browser provider; Crossdeck PR721 design/participation contract is unmerged. Ordinary browser remains Guided.                                   | Independent adapter implemented; integration blocked.          |
+| 7   | Actual native mesh selection emits canonical Inspect intent; pending/error/accepted Player handling and same-Voyage return replace premature local success. Standard center-selection and Guided alternatives remain accessible. | Android actual input → real SQLite SIMULATION_REJECTED → visible Player error/return passes. iOS a86 actual selection passes, but its joined readiness fails. Positive authorized canonical response/selected content is separately verified by real-app D1 mock transport. | A camera-free rejection and mocked native transport are not an accepted physical native Inspect. New iOS join and physical positive paths remain open.                  | Implemented; qualification/physical acceptance open.           |
+| 8   | One account/Player/Voyage/edition/Scene authority, current membership/CSRF/checksum checks, eligibility, scoped idempotency and stale/revoked rejection. Native input never progresses the Chronicle independently.              | Real SQLite D1 positive/duplicate/foreign/stale/revocation scenarios: one authorized observation, no progression event/sequence change. Native simulation: zero observations/events.                                                                                        | Real-device joined positive observation remains unqualified.                                                                                                            | Canonical software verified; integrated physical proof open.   |
+| 9   | Close/reopen, pending escape, cancellation during staging, epoch/session supersession, late-response rejection, revoked Lens teardown, network failure and native resource cleanup.                                              | Host/Lens/controller assertions; Android native/joined/permission cleanup; iOS graph/state/ordinary Home tests and cleanup retain their own source identities.                                                                                                              | Active-camera backgrounding, camera permission changes and tracking recovery require hardware. Historical Home failure 38840109053 remains unexplained.                 | Software implemented; current iOS/physical qualification open. |
+| 10  | Source/tree identities, reproducible locked builds, original artifact hashes, privacy checks, declared unsupported profile and original failed receipts; existing PR741 is reusable by normal fast-forward.                      | 495 tests/39 files at a86; a523 matches retained scopes; new pre-freeze TSC/lint/14 tests; Android builds/237 JVM assertions and current hosted pass; unsigned iOS archives retain exact identities.                                                                        | Fresh a523 Simulator run pending; unsigned Release archive 39619394225 passes. No ordinary Mainline Decision, merge, landed smoke, new signed beta or owner acceptance. | Development evidence available; integration/owner gates open.  |
+
+## Supported profile and product/security result
+
+The supported native slice is the canonical original catalog models and bounded
+Scene transforms/visibility/Inspect/local placement. Imported generic assets,
+rich timelines/effects/articulation, depth occlusion, reconstruction ingestion,
+persistent/shared anchors and automatic semantic room registration are not
+advertised. Essential unsupported content receives capability negotiation and
+the authored Guided fallback. NCL-02/03 work was not started; PR781 remains a
+proposal, including its future registration/fidelity and semantics assignments.
+
+The private classroom record was not overwritten or used as a mutable test
+database. Its original immutable Scene/Environment reference and one middle-table
+chest/two side-table compasses are retained. Software uses synthetic analogues.
+Signing identities/secrets, private certificates, account credentials, Cloudflare
+policy and unrelated services are preserved. Public Git receipts contain only
+sanitized source/result/hash metadata; raw system logs, transient device IDs and
+synthetic database/driver artifacts remain in owned private storage. Repository
+and staged privacy scans pass at their recorded checkpoints.
+
+The browser provider seam is not an admitted live browser implementation. Exact
+Crossdeck source `245e5128afa00e6c888818a698ebd37717d81a3d` is an open draft,
+and source `8d00278d1fb8f2ff1cab051c3cf9a4329df9d499` is unaccepted provider
+work. No Crossdeck implementation or finite qualification authority was absorbed;
+the proposed provider is not treated as an accepted production dependency.
+POSITION_NO_SCALE is never treated as metres; plane capability remains false
+where unavailable. Required accepted design/participation and a genuinely
+supported origin-authorized provider must precede final integrated qualification.
+
+## Proposed physical acceptance handoff
+
+These are reproducible review steps and suggested evidence, not an amendment to
+the accepted contract or newly ratified repetition/recording requirements.
+
+Use a future signed internal build bound to the final qualified implementation
+commit, paired with its coherent web source. Beta **0.1.0 (7)** and unsigned
+archive metadata **8** do not identify that new installation. This task does not
+request a reinstall or perform additional Apple enrollment, App ID creation,
+tester invitations or external distribution.
+
+| Test                         | Exact future operation                                                                                                                                                                                                                                                                                          | Expected result and evidence                                                                                                                                                                                                                                                                                                    |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Source and Scene identity    | On iPhone 17 Pro and a supported physical Android device, record app version/build/source; open the same isolated released Voyage/edition and three-entity classroom analogue. Record Scene checksum, instance and original asset checksums privately.                                                          | Both companions bind the same immutable edition and Scene. Original chest `2e31b5ee…22e6f` and compasses `5af1158b…82ccb`; no placeholder. Record exact build/source, not merely a camera screenshot.                                                                                                                           |
+| Local placement and identity | Open Chronicle Lens; grant camera access; slowly scan a textured horizontal surface and select the intended surface origin. Look around/walk around the three-object layout. Repeat supported vertical placement separately; if unavailable, verify explicit fallback.                                          | Useful preparing/search/ready/limited states; one chest and two compasses with their authored relative offsets, metric scale/orientation and bottom pivots. Record a private video and measured apparent scale/drift; no automatic match to classroom tables is promised.                                                       |
+| Positive native Inspect      | Tap the visible chest mesh, Inspect, return to the same Voyage; repeat for each compass. Test a background miss and the standard accessible center-selection control. With an isolated authorized diagnostic query, compare canonical observation/event counts before/after and repeat the same action receipt. | Selected entity/content match exactly; accepted result appears only after canonical authorization. Same account/Voyage/edition/Scene on return; idempotent observation and zero independent progression. Collect actual touch/assistive evidence and a sanitized canonical receipt; recording is one suggested evidence format. |
+| Lifecycle and failure        | As a repeatable review procedure, close/reopen Lens three times; background/foreground with active camera; interrupt tracking by obscuring the camera, then uncover; interrupt network during load/Inspect; revoke camera permission in system settings and reopen.                                             | Explicit limited/error/Guided recovery; visible usable exit; no stale object, response, callback or closed Scene revival. Record timings/status transitions and actual camera/session behavior privately. Historical Home failure is not presumed explained.                                                                    |
+| Accessibility and quality    | Exercise largest text in portrait/landscape and VoiceOver/TalkBack selection/Inspect/return; measure first-model latency, sustained frame behavior, memory/thermal/battery and tracking stability on actual devices.                                                                                            | Unclipped reachable controls, consistent selected identity, usable authored fallback, no unexpected capture/upload. Preserve measured results and limitations without inventing unratified fidelity thresholds.                                                                                                                 |
+
+External gates are the accepted Crossdeck/provider integration and protected
+review, owner iPhone testing and physical Android hardware. Signing/export and
+matching web deployment remain task-owned distribution work when the coherent
+candidate is ready; no missing Apple enrollment/access is asserted. Native
+screenshots/raster frames, an uploaded IPA or
+Guided View cannot close those rows. The final candidate/source and integration
+disposition must be recorded after current software qualification completes.

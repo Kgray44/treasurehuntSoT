@@ -20,6 +20,18 @@ in assembly `9abd26ba892f7715d32601e4d12058eae1acfb4e`. Frozen implementation
 `982f254e7e54ac28e08aac93a75db427496a4d90`, adds accessible real-mesh center
 selection and current native qualification. Production browser/canonical source
 is byte-identical to focused-browser checkpoint `26da4135d851`.
+Frozen iOS repair `a523b8287231b44c3cc30c5ebb6fba6954e6d95a`, tree
+`6e845da363d51dbae3ce79a7503d9b504e82b7eb`, preserves the qualified Android
+and browser source. It changes only native Return compression priority and
+non-authoritative iOS lab diagnostics; fresh iOS execution/archive are required.
+The a523 unsigned archive passed. Its first Simulator job never acquired a
+hosted runner (run 39619309485, zero steps/artifacts). The existing Device Lab
+now accepts an explicit allowlisted iOS-only `--ios-runner macos-26-intel`
+transport option; default labels, jobs, assertions and timeouts are unchanged.
+Use one selected primary-phone closure run with `permission-denied-native` to
+exercise companion tests, joined native input and independent presentation.
+The permission scenario concerns location, not camera. Observe the actual Intel
+environment and full suites; prior ARM graphics cannot qualify Intel execution.
 Task branch: `codex/ncl01-full-completion`. Assembly `a8d862680a` merges the
 complete `cd597b1274bddad70118b77dd65b13969dd55a8d` TestFlight descendant,
 including original PR741 `76d1787e1340e396bc95747293d43e57130b00ed`, into main.
@@ -42,14 +54,22 @@ shared owner owns Parallax contracts/assets/Lens and bounded browser adapters.
 Only the shared owner changes shared delivery semantics. Root integrates/tests.
 
 All mutable resources belong to this C:-hosted managed worktree or exact task
-temporary roots. D: is full: retain its existing files; place new runtime
-ownership, logs and temporary state on C:. A creation-bound restart of only the
+temporary roots. The owned preview's hung Next worker was replaced through
+creation-bound process checks; runtime ownership, logs and temporary state now
+live on C:. A verified relocation of only an unused derived Gradle transforms
+cache retained every file on C: and recovered about 391 MiB on D:. Keep new
+temporary state on C:; do not infer healthy private-account writes from that
+small storage margin. A creation-bound restart of only the
 same task's hung Next process may retain the identical D:-hosted build/database
 and normal application behavior; it does not prove storage or account health.
 Preserve all live
 laptop preview/tunnel services, private accounts, classroom Chronicle/media and
 other projects. Use disposable synthetic accounts/databases. No private keys,
 tokens, cookies, room photographs or reconstructed media in Git/logs/receipts.
+The reviewed C: preview wrapper's one live-only verification passed without
+starting, archiving or restarting either service. Reboot start/archive behavior
+is prepared, not executed. Follow the current preview packet, never stale D:
+whole-stack process metadata.
 
 Preserve official original-crop logo and AppIcon SHA256
 `4fd7beec45947a02d40c99159e19ee87f7c4fea6db32bf18db9224b23a1a1f73`.

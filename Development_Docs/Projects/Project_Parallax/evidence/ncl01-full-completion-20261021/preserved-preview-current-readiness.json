@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "OWNED_PREVIEW_RECOVERY_CURRENT_LIVE_PROCEDURE_AND_CACHE",
+  "result": "PASS",
+  "sourceCommit": "47ff42e4cb8b67e5fa2bfbc481a34d3d33490a18",
+  "runtimeReplacementPreviouslyPerformed": true,
+  "currentLiveOnlyExecutedOnce": true,
+  "currentLiveOnlyResult": {
+    "schemaVersion": 1,
+    "result": "PASS",
+    "mode": "VALIDATE_CURRENT_LIVE_ONLY",
+    "knownComponentsVerified": 2,
+    "startedComponents": [],
+    "staleCArchives": [],
+    "unknownPortsOrProcessesAccepted": false,
+    "healthyServicesRestarted": false,
+    "signalsSentByWrapper": 0,
+    "legacyDMetadataModified": false,
+    "cloudflaredServiceModified": false,
+    "neighborsCreationIdentitiesUnchanged": true,
+    "sourceCommit": "47ff42e4cb8b67e5fa2bfbc481a34d3d33490a18",
+    "anonymousHttpOrAuthHealthQualifiedByThisCheck": false,
+    "at": "2026-10-21T15:07:49.0774727Z"
+  },
+  "rebootBranchPreparedOnly": true,
+  "rebootBranchExecuted": false,
+  "stopProcedureExecuted": false,
+  "anonymousLocalHttp11Status": 200,
+  "anonymousPublicNormalTlsStatus": 200,
+  "ownBoundedPublicAssets": {
+    "checked": 8,
+    "passed": 8
+  },
+  "independentRootAll25AssetEvidenceSeparate": true,
+  "firstFetchLocal403Preserved": true,
+  "originalCompositeFailureCauseStillUnproved": true,
+  "outer45sObserverIncompletePreserved": true,
+  "laterRealIdentityReadyVerified": true,
+  "cacheRelocation": {
+    "allHashesMatched": true,
+    "result": "PASS",
+    "runtimeNeighborCreationIdentitiesUnchanged": true,
+    "dFreeAfterBytes": 410316800,
+    "dFreeBeforeBytes": 0,
+    "logicalBytes": 405298183.0,
+    "receiptSha256": "3d806000fadad2422a0a1d8c60a32e7d78ff2900e393efdfb4bd0698fcf9a64b",
+    "files": 8466
+  },
+  "procedureSha256": "8daa1a783e3873153fb9a8ffbf30a786cde177cbde6f88126147dd4735d76b0e",
+  "validatedLiveReceiptSha256": "29fa135e4dac04fadf76dee4ad7031a0cad892096b1ef53a2b99608be2d77ed3",
+  "scripts": [
+    {
+      "file": "Start-OwnedPreview.ps1",
+      "byteLength": 16654,
+      "sha256": "3d5146136829ec33665133b8cfbfdb00ff6ab79175419e1e2b373c11440d1dce"
+    },
+    {
+      "file": "Start-OwnedProduction.ps1",
+      "byteLength": 9505,
+      "sha256": "9441050c036fcab55d3bbe2eebb595c8c48ae379b99335eb41a97ad791b80d37"
+    },
+    {
+      "file": "Stop-OwnedProduction.ps1",
+      "byteLength": 7746,
+      "sha256": "f0e44ac5625f65c3ca2004a171341f0a11d77f698f84261490294a6fa820acdd"
+    },
+    {
+      "file": "Start-OwnedEdge.ps1",
+      "byteLength": 9485,
+      "sha256": "3fab1c49c6f54b3aaa9c07abf71edf6e81e648728d1fc1ea5477f59f672d7b24"
+    },
+    {
+      "file": "Owned-Preview-Console.ps1",
+      "byteLength": 3648,
+      "sha256": "2ea1fcac70ca66fc5c4462ef44c77b3d9c7b33818f01b8dcb9f722d9e5ae8375"
+    },
+    {
+      "file": "serve-owned-production-router.mjs",
+      "byteLength": 6885,
+      "sha256": "0fc89520c59ce30230cb76637f66c232ea66f5daea1af04ffa1b9df93739663a"
+    },
+    {
+      "file": "loopback-edge-owned-state.mjs",
+      "byteLength": 8222,
+      "sha256": "f1b30352eee7dea94a75afc86e37b4bedd93d4854f483fb5d8225731f4197b28"
+    }
+  ],
+  "privateDatabaseDirectReadOrEdit": false,
+  "authenticatedDataIntegrityClaimed": false,
+  "physicalOrOwnerAcceptanceClaimed": false,
+  "globalTrustServiceDnsRouteChanged": false,
+  "at": "2026-10-21T15:09:05.5555526Z"
+}

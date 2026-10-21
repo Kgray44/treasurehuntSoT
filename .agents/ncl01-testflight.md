@@ -3,10 +3,35 @@ title: NCL-01 isolated TestFlight deployment
 audience: automation
 status: current
 canonical_for: ncl01-testflight-deployment-context
-last_reviewed: 2026-10-20
+last_reviewed: 2026-10-21
 ---
 
 # NCL-01 first physical iPhone beta
+
+## Current continuation boundary
+
+The October 21 [completion packet](ncl01-full-completion.md) governs the current
+unattended implementation. Its owner authorization permits eligible protected
+integration only through existing policy; the historical beta-only no-merge
+scope below does not override that newer request. Crossdeck ownership and all
+required protected acceptance gates remain intact.
+
+Current retained internal beta is **0.1.0 (7)** at
+`5c79701f027a7e035a1a486f96db182e24f25942`, signed run 39521997164, with the
+approved original-crop official artwork. No new signed upload was made by the
+completion work. Bundle, team, internal group, signing configuration and
+`https://ncl01.absoluterelativesystems.com` are preserved. Enrollment, App ID,
+certificates and initial installation are already complete; do not repeat them.
+
+The preserved web preview still runs `47ff42e4`, independently of the new
+completion candidate. Use the current C:-owned procedures in
+[preview operations](ncl01-local-preview.md). Old D: whole-stack process records
+are stale after the October 21 creation-bound worker recovery. The older
+addresses, beta numbers, installation gates and commands below are historical
+observations, not current operational instructions. Their original receipts
+remain unchanged.
+
+## Historical isolated-beta execution
 
 LAUNCHDECK_PROJECT_TRIM_ADAPTATION; profile security-sensitive infrastructure;
 execution UNATTENDED_CONTINUATION. No hard token budget. The owner authorizes an
@@ -333,7 +358,7 @@ acceptance. The private 3158 router seam is now repaired using ordinary Next
 router/static handling, fixed advertised hostname/443 and actual loopback3158.
 Only the old owned3158 instance was stopped with creation/held-handle proof;
 edge3159 and all previous services stayed unchanged. Failed static/cache receipts
-are preserved. Exact25URL purge followed by only the new host's /_next/static
+are preserved. Exact25URL purge followed by only the new host's /\_next/static
 prefix purge cleared cached Origin variants; no zone/staging/audit purge or cache
 configuration/Access change. Final150/150 checks cover three pages x25references
 x two header cases, ordinary URLs/no query bypass, exact types/bytes/hashes.

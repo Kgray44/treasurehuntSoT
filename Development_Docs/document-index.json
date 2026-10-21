@@ -10221,6 +10221,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/a523b828-source-equivalence.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/a86c3636-source-equivalence.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -10281,7 +10287,25 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/ios-39619309485.scheduler-review.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/ios-repair-preflight.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/ios-runner-preflight.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/ios-unsigned-archive-a523b828.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -10305,7 +10329,31 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/preserved-preview-cache-relocation.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/preserved-preview-current-readiness.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/preserved-preview-health.failed.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/preserved-preview-health.restored.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/preserved-preview-recovery.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
