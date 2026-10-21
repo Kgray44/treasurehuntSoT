@@ -137,6 +137,14 @@ public final class LandfallActivity extends androidx.activity.ComponentActivity 
     try { proxy.postMessage(new JSONObject().put("id", id).put("value", value).toString()); } catch (Exception ignored) {}
   }
   private JSONObject state(String value) throws Exception { return new JSONObject().put("state", value); }
+  private boolean cameraFreeFixture() {
+    return BuildConfig.DEBUG && ParallaxModelCache.allowedSoftwareFixture(true, origin, getIntent().getBooleanExtra("labCameraFree", false));
+  }
+  private JSONObject spatialState() throws Exception {
+    JSONObject value = ParallaxLocalRuntime.state(this);
+    if (BuildConfig.DEBUG && cameraFreeFixture()) value.put("softwareFixture", "FILAMENT_CAMERA_FREE_V1");
+    return value;
+  }
   private String permission() {
     if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) return "GRANTED";
     if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) return "APPROXIMATE";
@@ -150,9 +158,10 @@ public final class LandfallActivity extends androidx.activity.ComponentActivity 
     JSONObject payload = request.optJSONObject("payload");
     if (payload == null) payload = new JSONObject();
     switch (operation) {
-      case "SPATIAL_STATE": reply(proxy,id,ParallaxLocalRuntime.state(this)); break;
+      case "SPATIAL_STATE": reply(proxy,id,spatialState()); break;
       case "SPATIAL_PERMISSION":
         if(!foreground || spatialPermissionReply!=null){reply(proxy,id,new JSONObject().put("supported",false).put("permission","RESTRICTED"));break;}
+        if(cameraFreeFixture()){reply(proxy,id,spatialState());break;}
         if(checkSelfPermission(Manifest.permission.CAMERA)==PackageManager.PERMISSION_GRANTED){reply(proxy,id,ParallaxLocalRuntime.state(this));break;}
         spatialPermissionReply=()->{try{reply(proxy,id,ParallaxLocalRuntime.state(this));}catch(Exception ignored){}};
         requestPermissions(new String[]{Manifest.permission.CAMERA},49);break;
@@ -160,7 +169,7 @@ public final class LandfallActivity extends androidx.activity.ComponentActivity 
         if(!foreground || spatial!=null || power.critical()){reply(proxy,id,new JSONObject().put("accepted",false));break;}
         String spatialSession=payload.optString("sessionId"); int spatialEpoch=payload.optInt("epoch",-1);
         if(!ParallaxSceneTransfer.validStart(payload)){reply(proxy,id,new JSONObject().put("accepted",false));break;}
-        ParallaxLocalRuntime owner=new ParallaxLocalRuntime(this,value->{try{event(value);}catch(Exception ignored){}},spatialSession,spatialEpoch,()->{if(spatial!=null && spatial.transfer.sessionId.equals(spatialSession))spatial=null;},payload.getInt("sceneTransferVersion"),payload.getString("versionChecksum"),payload.getString("instanceId"),origin);
+        ParallaxLocalRuntime owner=new ParallaxLocalRuntime(this,value->{try{event(value);}catch(Exception ignored){}},spatialSession,spatialEpoch,()->{if(spatial!=null && spatial.transfer.sessionId.equals(spatialSession))spatial=null;},payload.getInt("sceneTransferVersion"),payload.getString("versionChecksum"),payload.getString("instanceId"),origin,cameraFreeFixture());
         spatial=owner; boolean started=owner.start(); if(!started && spatial==owner)spatial=null;
         reply(proxy,id,new JSONObject().put("accepted",started).put("sceneTransferVersion",payload.getInt("sceneTransferVersion")).put("sessionId",spatialSession).put("epoch",spatialEpoch));break;
       case "SPATIAL_PLACE":reply(proxy,id,spatial==null || !spatial.transfer.matches(payload)?new JSONObject().put("pose",JSONObject.NULL):spatial.placement(payload.optString("alignment")));break;

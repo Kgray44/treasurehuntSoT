@@ -7,6 +7,19 @@ import UIKit
 import ARKit
 @testable import LandfallCompanion
 
+/// A single render callback establishes the test view's real viewport. It is
+/// neither a GPU-completion assertion nor an AR tracking observation.
+private final class ParallaxViewportRenderProbe: NSObject, SCNSceneRendererDelegate {
+    private let rendered: XCTestExpectation
+    private let lock=NSLock()
+    private var observed=false
+    init(_ rendered:XCTestExpectation) {self.rendered=rendered}
+    func renderer(_ renderer:SCNSceneRenderer,didRenderScene scene:SCNScene,atTime time:TimeInterval) {
+        lock.lock();let first = !observed;observed=true;lock.unlock()
+        if first {rendered.fulfill()}
+    }
+}
+
 final class ParallaxSceneDeliveryTests: XCTestCase {
     private let checksum=String(repeating:"a",count:64)
     private func model(_ id: String) -> [String:Any] {
@@ -24,11 +37,37 @@ final class ParallaxSceneDeliveryTests: XCTestCase {
          "transform":["position":["x":x,"y":0.0,"z":-1.0],"rotation":["x":0.0,"y":0.0,"z":0.0,"w":1.0],"scale":1.0],
          "model":model("treasure-chest"),"visible":true,"selectable":true,"opacity":1.0,"interactions":["PICK","INSPECT","PLACE"]]
     }
+    @MainActor private func fixtureWindow(_ runtime:ParallaxLocalRuntime) throws -> (owned:UIWindow,previous:UIWindow?) {
+        let scene=try XCTUnwrap(UIApplication.shared.connectedScenes.compactMap{$0 as? UIWindowScene}.first(where:{$0.activationState == .foregroundActive}),"Owned test host needs a foreground window scene")
+        let previous=scene.windows.first(where:{$0.isKeyWindow})
+        let window=UIWindow(windowScene:scene);window.frame=CGRect(x:0,y:0,width:400,height:800)
+        window.rootViewController=runtime;window.makeKeyAndVisible();window.layoutIfNeeded();runtime.view.layoutIfNeeded()
+        return (window,previous)
+    }
+    @MainActor private func requireRenderedViewport(_ scene:SCNView,in window:UIWindow) throws {
+        XCTAssertTrue(scene.window === window);XCTAssertTrue(window.isKeyWindow)
+        XCTAssertGreaterThan(scene.bounds.width,0);XCTAssertGreaterThan(scene.bounds.height,0)
+        let rendered=expectation(description:"Owned SceneKit view completes its first viewport render")
+        let probe=ParallaxViewportRenderProbe(rendered),previousDelegate=scene.delegate
+        let continuous=scene.rendersContinuously
+        scene.delegate=probe;scene.rendersContinuously=true;scene.setNeedsDisplay()
+        defer {scene.rendersContinuously=continuous;scene.delegate=previousDelegate}
+        let observed=XCTWaiter.wait(for:[rendered],timeout:5) == .completed
+        let projected=scene.projectPoint(SCNVector3(0,0,-1))
+        let coordinates=[Double(projected.x),Double(projected.y),Double(projected.z)]
+        let evidence:[String:Any]=["evidenceClass":"SIMULATOR_TEST_VIEWPORT_SETUP_ONLY","attachedToOwnedWindow":scene.window === window,"ownedWindowKey":window.isKeyWindow,"renderCallbackObserved":observed,"viewportWidth":Double(scene.bounds.width),"viewportHeight":Double(scene.bounds.height),"pointOfViewAssigned":scene.pointOfView != nil,"projectedCenter":coordinates.map{ $0.isFinite ? $0 as Any : NSNull() }]
+        let attachment=XCTAttachment(data:try JSONSerialization.data(withJSONObject:evidence,options:[.sortedKeys]),uniformTypeIdentifier:"public.json")
+        attachment.name="Owned production controller viewport setup";attachment.lifetime = .keepAlways;add(attachment)
+        guard observed else {throw NSError(domain:"NCLViewportFixture",code:1,userInfo:[NSLocalizedDescriptionKey:"Owned SceneKit viewport did not render within its original five-second setup budget"])}
+        XCTAssertTrue(coordinates.allSatisfy{$0.isFinite})
+        XCTAssertEqual(Double(projected.x),Double(scene.bounds.midX),accuracy:0.5)
+        XCTAssertEqual(Double(projected.y),Double(scene.bounds.midY),accuracy:0.5)
+    }
     @MainActor func testProductionControllerMeshInputAndInspectOnlyEmitIntent() throws {
         #if DEBUG && targetEnvironment(simulator)
         let runtime=ParallaxLocalRuntime(sessionId:"native-input",epoch:1,deliveryVersion:2,versionChecksum:checksum,instanceId:"native-input",origin:URL(string:"http://127.0.0.1:3137"),softwareFixture:true)
-        runtime.loadViewIfNeeded();runtime.view.frame=CGRect(x:0,y:0,width:400,height:800);runtime.view.layoutIfNeeded()
-        defer { runtime.stop() }
+        let window=try fixtureWindow(runtime)
+        defer {runtime.stop();window.owned.isHidden=true;window.owned.rootViewController=nil;window.previous?.makeKey()}
         let scene=try XCTUnwrap(view(runtime.view,identifier:"parallax.native.scene") as? SCNView)
         XCTAssertFalse(scene is ARSCNView);XCTAssertTrue(runtime.softwareFixture)
         // This focused input test uses a synthetic mesh. The separate immutable
@@ -36,6 +75,7 @@ final class ParallaxSceneDeliveryTests: XCTestCase {
         let prototype=SCNNode();let mesh=SCNNode(geometry:SCNBox(width:0.8,height:0.8,length:0.8,chamferRadius:0));mesh.name="fixture-mesh";prototype.addChildNode(mesh)
         let digest=try XCTUnwrap(ParallaxAssetCache.Model.parse(model("treasure-chest"))).sha256
         XCTAssertTrue(runtime.activate([inputEntity()],models:[digest:prototype]))
+        try requireRenderedViewport(scene,in:window.owned)
         var events:[[String:Any]]=[];runtime.emit={events.append($0)}
         let center=CGPoint(x:scene.bounds.midX,y:scene.bounds.midY)
         XCTAssertEqual(runtime.select(at:center),"actual-chest","Selection must come from the production SceneKit hit path")
@@ -74,12 +114,14 @@ final class ParallaxSceneDeliveryTests: XCTestCase {
     @MainActor func testAtomicGraphReplacementRejectsMissingModelAndStopsStaleInput() throws {
         #if DEBUG && targetEnvironment(simulator)
         let runtime=ParallaxLocalRuntime(sessionId:"native-cancel",epoch:1,deliveryVersion:2,origin:URL(string:"http://127.0.0.1:3137"),softwareFixture:true)
-        runtime.loadViewIfNeeded();runtime.view.frame=CGRect(x:0,y:0,width:400,height:800);runtime.view.layoutIfNeeded()
+        let window=try fixtureWindow(runtime)
+        defer {runtime.stop();window.owned.isHidden=true;window.owned.rootViewController=nil;window.previous?.makeKey()}
         let scene=try XCTUnwrap(view(runtime.view,identifier:"parallax.native.scene") as? SCNView)
         let prototype=SCNNode(geometry:SCNBox(width:0.8,height:0.8,length:0.8,chamferRadius:0))
         let digest=try XCTUnwrap(ParallaxAssetCache.Model.parse(model("treasure-chest"))).sha256
         XCTAssertTrue(runtime.activate([inputEntity()],models:[digest:prototype]))
         XCTAssertFalse(runtime.activate([inputEntity("replacement")],models:[:]),"A failed model must never turn into a text plane")
+        try requireRenderedViewport(scene,in:window.owned)
         let center=CGPoint(x:scene.bounds.midX,y:scene.bounds.midY)
         XCTAssertEqual(runtime.select(at:center),"actual-chest","Rejected replacement leaves the complete old graph intact")
         var hidden=inputEntity();hidden["visible"]=false

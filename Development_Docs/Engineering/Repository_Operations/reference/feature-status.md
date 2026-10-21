@@ -3,12 +3,18 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-10-20
+last_reviewed: 2026-10-21
 ---
 
 The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.md) is an isolated synthetic implementation in qualification. It exercises accepted platform contracts; its combined physical/owner session remains pending and it does not promote later spatial phases.
 
 # Feature status
+
+The [NCL-01 completion candidate](../../../Projects/Project_Parallax/NCL01_Full_Completion_20261021.md)
+adds native canonical-outcome presentation and recovery corrections to the
+reconciled implementation. Software qualification continues; the missing accepted
+Crossdeck experience design, live browser-provider integration and physical
+acceptance prevent feature promotion. Internal beta 7 remains the deployed build.
 
 NCL-01 is in implementation, with v1-compatible shared Scene delivery and native GLB loading under development. [Evidence and limitations](../../../Projects/Project_Parallax/NCL01_Native_Scene_Vertical_Slice.md) distinguish source/contract/build checks from browser integration, physical AR and owner acceptance. [The private beta deployment record](../../../Projects/Project_Parallax/NCL01_TestFlight_Deployment.md) records available internal TestFlight build 7 with the owner-approved direct-original crop as the official logo/icon, the stable Cloudflare origin and preserved classroom fixture. Build 6's generative artwork/color changes were owner-rejected and are no longer official. Normal public TLS/auth/assets/Journal/static delivery and desktop sign-in presentation pass. The owner reports cellular reachability and earlier objects visible when panning native AR, but authored appearance/placement is not accepted. Exact build-7 phone behavior, all three objects and measured tracking/interactions remain unverified; full Scene/room registration is unfinished. Feature Catalog promotion remains deferred.
 

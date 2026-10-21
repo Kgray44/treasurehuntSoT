@@ -3,12 +3,19 @@ title: Voyagewright features
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-10-15
+last_reviewed: 2026-10-21
 ---
 
 # Voyagewright features
 
 NCL-01 is an implementation candidate for shared 3D Scene delivery in the existing native companions. It reuses the original SC02 chest and compass assets; protected integration, complete browser AR integration, physical tracking and owner acceptance remain pending. See the [native Scene evidence record](../../Development_Docs/Projects/Project_Parallax/NCL01_Native_Scene_Vertical_Slice.md).
+
+The [October 21 completion candidate](../../Development_Docs/Projects/Project_Parallax/NCL01_Full_Completion_20261021.md)
+reconciles current main with the later internal TestFlight source and approved
+official artwork. It adds native placement guidance, canonical Inspect outcome
+presentation, stricter entity eligibility and session cleanup. Software
+qualification is in progress; these changes do not establish measured room
+alignment, physical acceptance, browser-provider availability or a new beta.
 
 Parallax A1 is software-qualified on main through protected PR #710 at `ee8caa83`, after ordinary Sounding Line PASS and 118 landed smoke checks. Spatial Studio provides reviewed natural-language proposals, actual canvas preview, atomic saved Apply and ordinary history with adaptive ownership preserved. Admiralty supplies durable AI accounting and global policy; per-user controls use the existing People dossier. Five production-browser journeys pass, and six authorized live calls returned validated structured responses with settled usage. Catalog FT-B112 records availability with assistance disabled by default. The owner accepted the later revised presentation; finite model testing and physical quality retain their stated limits; see the [implementation record](../../Development_Docs/Projects/Project_Parallax/Parallax_A1_Implementation_and_Qualification.md).
 

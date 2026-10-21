@@ -209,6 +209,7 @@ jobs:
           disable-animations: true
           script: |
             npx --no-install tsx scripts/landfall/device-lab/android-test.ts
+            npx --no-install tsx scripts/landfall/device-lab/parallax-native-run.ts --android
             npm run landfall:device-lab -- --platform android --scenario __ANDROID_SCENARIOS__
       - uses: actions/upload-artifact@v4
         if: always()

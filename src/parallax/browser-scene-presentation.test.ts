@@ -139,6 +139,36 @@ it("applies resolved child transforms once while retaining authored parent ident
   presenter.dispose();
 });
 
+it("keeps a disabled editor parent as a frame and stages an invisible future SHOW child for later exact picking", async () => {
+  const scene = new T.Scene(),
+    camera = new T.PerspectiveCamera();
+  const presenter = new BrowserScenePresentation(scene, camera, { origin, fetchAsset });
+  const source = delivery(),
+    parent = source.entities[0],
+    child = structuredClone(parent);
+  child.id = "future-runtime-compass";
+  child.parentEntityId = parent.id;
+  child.visible = false;
+  child.transform.position.x = 3;
+  parent.element!.enabled = false;
+  parent.model = undefined;
+  parent.visible = false;
+  parent.selectable = false;
+  parent.transform.position.x = 2;
+  source.entities.push(child);
+  const ray = new T.Raycaster(new T.Vector3(3, 1, 0), new T.Vector3(0, -1, 0));
+  await presenter.renderScene(source);
+  expect(fetchAsset).toHaveBeenCalledTimes(1);
+  expect(presenter.pick(ray)).toBeNull();
+  expect(scene.getObjectByName(`entity:${parent.id}`)!.children).toHaveLength(0);
+  child.visible = true;
+  await presenter.renderScene(source);
+  expect(presenter.pick(ray)).toBe(child.id);
+  expect(fetchAsset).toHaveBeenCalledTimes(1);
+  expect(scene.getObjectByName(`entity:${child.id}`)!.getWorldPosition(new T.Vector3()).x).toBe(3);
+  presenter.dispose();
+});
+
 it("rejects corrupted bytes before parsing and fails closed instead of exposing an earlier revision", async () => {
   const scene = new T.Scene(),
     camera = new T.PerspectiveCamera();

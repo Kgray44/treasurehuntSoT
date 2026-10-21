@@ -16,10 +16,27 @@ final class ParallaxModelCache {
   static final long MODEL_BYTES = 32L * 1024 * 1024, CACHE_BYTES = 96L * 1024 * 1024;
   private final File directory;
   private final URI origin;
+  private final boolean softwareFixture;
 
   ParallaxModelCache(Context context, String configuredOrigin) {
+    this(context, configuredOrigin, false);
+  }
+  ParallaxModelCache(Context context, String configuredOrigin, boolean requestedFixture) {
     directory = new File(context.getCacheDir(), "parallax-models-v1");
     origin = URI.create(configuredOrigin.isEmpty() ? "https://unconfigured.invalid" : configuredOrigin);
+    softwareFixture = BuildConfig.DEBUG && allowedSoftwareFixture(true, configuredOrigin, requestedFixture);
+  }
+  static boolean allowedSoftwareFixture(boolean debugBuild, String configuredOrigin, boolean requested) {
+    if (BuildConfig.DEBUG) {
+      if (!debugBuild || !requested) return false;
+      try {
+        URI uri = URI.create(configuredOrigin);
+        return "http".equals(uri.getScheme()) && "127.0.0.1".equals(uri.getHost())
+            && uri.getPort() > 0 && uri.getPort() <= 65535 && "".equals(uri.getRawPath())
+            && uri.getUserInfo() == null && uri.getRawQuery() == null && uri.getRawFragment() == null;
+      } catch (RuntimeException invalid) { return false; }
+    }
+    return false;
   }
 
   static boolean validReference(JSONObject model) {
@@ -79,7 +96,7 @@ final class ParallaxModelCache {
   }
 
   synchronized byte[] load(JSONObject model) throws Exception {
-    if (!validReference(model) || !origin.getScheme().equals("https")
+    if (!validReference(model) || !(origin.getScheme().equals("https") || (BuildConfig.DEBUG && softwareFixture))
         || origin.getHost() == null || origin.getUserInfo() != null)
       throw new IOException("PARALLAX_ASSET_REFERENCE_REJECTED");
     if (!directory.isDirectory() && !directory.mkdirs()) throw new IOException("PARALLAX_CACHE_UNAVAILABLE");
@@ -89,7 +106,7 @@ final class ParallaxModelCache {
     URI resource = origin.resolve(model.getString("url"));
     // Resolve only the configured application's path. Redirects and caller supplied hosts are forbidden.
     if (!Objects.equals(resource.getHost(), origin.getHost()) || resource.getPort() != origin.getPort()
-        || !resource.getScheme().equals("https")) throw new IOException("PARALLAX_ASSET_ORIGIN_REJECTED");
+        || !resource.getScheme().equals(origin.getScheme())) throw new IOException("PARALLAX_ASSET_ORIGIN_REJECTED");
     HttpURLConnection connection = (HttpURLConnection) resource.toURL().openConnection();
     connection.setInstanceFollowRedirects(false);
     connection.setConnectTimeout(15000); connection.setReadTimeout(15000);

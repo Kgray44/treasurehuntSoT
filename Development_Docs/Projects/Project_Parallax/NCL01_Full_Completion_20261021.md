@@ -69,3 +69,47 @@ protections are preserved. Physical tests and new approvals remain external.
 
 Implementation, exact candidate tests and final integration disposition will be
 appended here as they occur. Initial reconciliation is not a completion claim.
+
+### Native checkpoint 42a970b4
+
+Checkpoint `42a970b40ec8c50fd828a2c9cf8977d64939ebcf` contains the joined
+canonical Inspect UI, explicit simulated native test adapter, strict eligibility,
+editor-only delivery projection, native loading/tracking guidance, retained
+selection across redraws and cancellation/revocation handling. TypeScript passed;
+the affected shared/Lens/Journal suite passed 452 tests across 33 files. Targeted
+collector/security tests passed separately. This is development evidence.
+
+Android compiled offline using C:-owned Gradle 8.11.1, AGP 8.9.2, SDK 36 and Java
+21.0.10. Existing v1 JVM assertions passed 167; expanded v2 assertions passed 54.
+Those native input and large-text layout fixtures had compiled but had not yet
+executed at this checkpoint. The actual native GPU/input route remains separate.
+
+The owned loopback/SQLite harness preflight passed: canonical released binding,
+exact original chest byte count/checksum, actual bundled Lens, rejection of
+SIMULATED evidence, zero observation/progression mutation and database/server
+cleanup. It proves host preparation only, not UIKit touch or AR tracking.
+
+Hosted iOS Device Lab run
+[39554652785](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39554652785)
+binds that candidate through transport
+`17842aaa7ea06fe35516ab6b1c16c4a8477b4fec`. It is in progress. No new beta,
+external tester, signing identity or protected-main change was made.
+
+The exact-checkpoint web production build compiled on Windows, but focused
+runtime preparation failed closed at `DEVELOPMENT_BUILD_LINK_OUTSIDE_DEPENDENCIES`.
+Its original private failure is retained; no runner guard was weakened. The
+existing protected-source Linux focused workflow
+[39555492351](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39555492351)
+is running the two D1 native-bridge/real-auth/real-SQLite Player journeys against
+the same candidate. D1 emulation is not a native mesh or physical touch receipt.
+
+### Confirmed protected integration boundary
+
+Read-only experience planning from exact checkpoint `42a970b4` against fetched
+main `e0056ff3` fails with
+`PRODUCT_EXPERIENCE_EXPERIENCE_DESIGN_REQUIRED:crossdeck.phase2.continuity:Crossdeck and Parallax experience integration`.
+The required accepted design is unavailable on protected main. PR721 remains
+its owner's unmerged work. This task neither copies that candidate nor consumes
+its finite capture/review allowance. Ordinary mainline qualification and merge
+cannot be claimed through this boundary; independent NCL implementation and
+development verification continue.

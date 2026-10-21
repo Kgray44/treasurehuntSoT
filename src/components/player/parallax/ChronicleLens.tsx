@@ -544,7 +544,9 @@ export function ChronicleLens({
             ? "Camera-free Device Lab"
             : state?.mode === "NATIVE"
               ? "Camera View"
-              : "Guided View"}
+              : state?.mode === "BROWSER"
+                ? "Browser Camera View"
+                : "Guided View"}
         </p>
         <p className={styles.narrative}>
           {accessLost

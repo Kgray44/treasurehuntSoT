@@ -27,11 +27,17 @@ final class ParallaxInteractionView extends LinearLayout {
   private boolean loading = true, failed, awaiting, closed, down;
   private float downX, downY;
   private final int touchSlop;
+  private final boolean softwareFixture;
   private long pickGeneration;
 
   ParallaxInteractionView(Context context, View target, Picker picker, Consumer<String> selected,
       Consumer<String> action, Runnable returned) {
+    this(context, target, picker, selected, action, returned, false);
+  }
+  ParallaxInteractionView(Context context, View target, Picker picker, Consumer<String> selected,
+      Consumer<String> action, Runnable returned, boolean softwareFixture) {
     super(context);
+    this.softwareFixture = BuildConfig.DEBUG && softwareFixture;
     this.target = target; this.picker = picker; this.selected = selected;
     this.action = action; this.returned = returned;
     touchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
@@ -46,13 +52,15 @@ final class ParallaxInteractionView extends LinearLayout {
     inspect = button(context, "Inspect selected object", "INSPECT");
     place = button(context, "Place selected object", "PLACE");
     guided = button(context, "Return to Guided View", "GUIDED");
-    target.setContentDescription("Spatial objects. Tap a visible object to select it. Guided View is also available.");
+    target.setContentDescription(BuildConfig.DEBUG && softwareFixture ? "Camera-free 3D scene"
+        : "Spatial objects. Tap a visible object to select it. Guided View is also available.");
     target.setOnTouchListener((view, event) -> touch(view, event));
     refresh();
   }
 
   private Button button(Context context, String label, String kind) {
     Button button = new Button(context); button.setText(label); button.setTextColor(Color.WHITE);
+    button.setAllCaps(false);
     button.setSingleLine(false); button.setHorizontallyScrolling(false); button.setTextSize(16);
     button.setBackgroundTintList(android.content.res.ColorStateList.valueOf(0xff16303b));
     button.setMinHeight(Math.round(48 * getResources().getDisplayMetrics().density));
@@ -80,7 +88,7 @@ final class ParallaxInteractionView extends LinearLayout {
     super.onMeasure(widthSpec, MeasureSpec.makeMeasureSpec(maximum, MeasureSpec.AT_MOST));
   }
 
-  private boolean ready() { return !closed && !loading && !failed && !awaiting && tracking.equals("NORMAL"); }
+  private boolean ready() { return !closed && !loading && !failed && !awaiting && (softwareFixture || tracking.equals("NORMAL")); }
 
   private boolean touch(View view, MotionEvent event) {
     if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
@@ -113,11 +121,12 @@ final class ParallaxInteractionView extends LinearLayout {
 
   private void refresh() {
     inspect.setEnabled(ready() && actions.contains("INSPECT"));
-    place.setEnabled(ready() && actions.contains("PLACE")); guided.setEnabled(!closed);
+    place.setEnabled(ready() && !softwareFixture && actions.contains("PLACE")); guided.setEnabled(!closed);
     status.setText(closed ? "Camera View closed."
         : awaiting ? "Returning to the Player to record this inspection. Guided View remains available."
         : failed ? "The object could not be loaded. Return to Guided View to continue with the same clue."
         : loading ? "Loading the released scene. Return to Guided View at any time."
+        : BuildConfig.DEBUG && softwareFixture ? "Camera-free objects loaded. Tap an object, then Inspect. No AR tracking or physical proof."
         : tracking.equals("LIMITED_LOW_LIGHT") ? "More light is needed. Move slowly or return to Guided View."
         : !tracking.equals("NORMAL") ? "Finding the space again. Move slowly or return to Guided View."
         : actions.isEmpty() ? "Tap a visible object to select it. Guided View has the same clue."

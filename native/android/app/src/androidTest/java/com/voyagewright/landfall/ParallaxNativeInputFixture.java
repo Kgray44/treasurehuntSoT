@@ -50,6 +50,36 @@ final class ParallaxNativeInputFixture {
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
   }
   private static void tap(View view) { tap(view, view.getWidth() / 2f, view.getHeight() / 2f); }
+  static void verifySoftwareProvider(Activity activity) {
+    AtomicReference<ParallaxLocalRuntime> owner = new AtomicReference<>();
+    AtomicReference<android.app.Dialog> dialog = new AtomicReference<>();
+    AtomicInteger terminated = new AtomicInteger(); List<JSONObject> events = new ArrayList<>();
+    try {
+      onMain(() -> {
+        try {
+          ParallaxLocalRuntime runtime = new ParallaxLocalRuntime(activity, events::add, "camera-free-controller", 1,
+              terminated::incrementAndGet, 2, String.join("", Collections.nCopies(64, "a")), "fixture-instance",
+              "http://127.0.0.1:3137", true);
+          owner.set(runtime); assertTrue(runtime.softwareFixture); assertTrue(runtime.start());
+          for (String name : new String[] {"session", "surface"}) {
+            java.lang.reflect.Field field = ParallaxLocalRuntime.class.getDeclaredField(name); field.setAccessible(true);
+            assertNull("Software fixture cannot acquire an ARCore session or camera surface", field.get(runtime));
+          }
+          java.lang.reflect.Field field = ParallaxLocalRuntime.class.getDeclaredField("dialog"); field.setAccessible(true);
+          dialog.set((android.app.Dialog) field.get(runtime)); assertTrue(dialog.get().isShowing());
+          assertTrue(runtime.placement("HORIZONTAL").isNull("pose"));
+        } catch (Exception error) { throw new AssertionError(error); }
+      });
+      InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+      View root = dialog.get().getWindow().getDecorView();
+      assertNotNull(text(root, "Device Lab: camera-free software fixture. No AR tracking or physical proof."));
+      View escape = text(root, "Return to Guided View"); assertNotNull(escape); tap(escape);
+      assertFalse("Actual Return dismisses the camera-free controller", dialog.get().isShowing());
+      assertEquals(1, terminated.get());
+      assertTrue("Software frames never publish world tracking or measured capabilities", events.stream().allMatch(event ->
+          event.optString("type").equals("parallax-tracking") && event.optString("state").equals("INTERRUPTED")));
+    } finally { onMain(() -> { if (owner.get() != null) owner.get().stop(); }); }
+  }
   static void verifyLargeTextEscapeLayout(Activity activity) {
     onMain(() -> {
       Configuration configuration = new Configuration(activity.getResources().getConfiguration());

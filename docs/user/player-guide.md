@@ -3,7 +3,7 @@ title: Player guide
 audience: player
 status: current
 canonical_for: player-guide
-last_reviewed: 2026-10-20
+last_reviewed: 2026-10-21
 ---
 
 # Player guide
@@ -22,8 +22,18 @@ the laptop must stay awake and online with its preview services running. The
 [deployment instructions](../../Development_Docs/Projects/Project_Parallax/NCL01_TestFlight_Deployment.md)
 include saved start/stop procedures.
 
-This update changes the artwork only. The account, stable address and AR controls
-are the same.
+Build 7 changes the artwork only. The account, stable address and AR controls
+are the same. The separate October 21 completion candidate is in qualification
+and has not replaced that installed beta.
+
+In that candidate, the native Lens explains model preparation, surface search
+and limited tracking. Tap a visible object, then choose **Inspect selected
+object** to open the result in the Player. The Player records an authorized
+observation before showing accepted inspection; a connection or access failure
+stays visible and does not advance the Voyage. **Return to Guided View** remains
+available while the camera is preparing or waiting. These changes still require
+current-source native and physical acceptance; see the
+[completion ledger](../../Development_Docs/Projects/Project_Parallax/NCL01_Full_Completion_20261021.md).
 
 Find **The Classroom Compass Trail — NCL01** under **My Chronicle Library → Active
 Voyages**. The owner reports objects appearing when looking around in an earlier

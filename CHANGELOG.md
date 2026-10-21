@@ -14,6 +14,16 @@ last_reviewed: 2026-10-20
 
 ### Engineering
 
+- NCL-01's October 21 candidate reconciles current main and the approved
+  TestFlight descendants, makes native Inspect await canonical Player handling,
+  preserves eligible mesh selection across redraws, adds accessible native
+  loading/tracking guidance and rejects stale or revoked Scene interactions.
+  Focused software and native qualification continues in the
+  [completion ledger](Development_Docs/Projects/Project_Parallax/NCL01_Full_Completion_20261021.md).
+  Physical acceptance, accepted browser/Crossdeck integration and protected
+  mainline acceptance remain separate gates. Existing beta 7 and its artwork
+  are preserved.
+
 - Reach review can continue at cumulative iteration four only through a source-bound policy installed on protected main for existing PR #766. The blocked third review, full product evidence and ordinary protected integration requirements remain intact. [Continuation and review gap](Development_Docs/Engineering/Reach_Product_Review_Continuation_20261017.md).
 - Ordinary verification starts completed-evidence intake without awaiting its own command module. A cold command regression checks that failures reach the canonical decision writer. [Startup behavior](Development_Docs/Engineering/Ordinary_Verifier_Cold_Startup_Repair.md) preserves the evidence and qualification requirements.
 - Corrected the official VoyageWright logo and iOS icon to the owner's approved

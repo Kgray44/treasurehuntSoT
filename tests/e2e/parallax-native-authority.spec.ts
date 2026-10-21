@@ -34,7 +34,9 @@ async function emulateNativeTransport(context: BrowserContext, platform: "IOS" |
               capabilities: ["WORLD_TRACKING", "PLANE_PLACEMENT", "MODEL_GLB"],
             };
           if (operation === "SPATIAL_START") {
-            audit.start = payload;
+            // A tracking event carries only its session/epoch identity. Do not
+            // spread START-only checksum/transfer fields into the strict wire event.
+            audit.start = { sessionId: payload.sessionId, epoch: payload.epoch };
             return { accepted: true, sceneTransferVersion: 2, sessionId: payload.sessionId, epoch: payload.epoch };
           }
           if (operation === "SPATIAL_SCENE_BEGIN") audit.chunks = [];

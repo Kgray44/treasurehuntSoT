@@ -287,7 +287,7 @@ export const receiptSchema = z
     anchorId: spatialId,
     anchorVersion: z.number().int().positive(),
     observedAt: z.string().datetime(),
-    mode: z.enum(["GUIDED", "NATIVE", "SIMULATED"]),
+    mode: z.enum(["GUIDED", "NATIVE", "BROWSER", "SIMULATED"]),
     providerId: spatialId,
     synthetic: z.boolean(),
     authority: z.literal("NONAUTHORITATIVE"),
@@ -295,5 +295,7 @@ export const receiptSchema = z
   .superRefine((r, ctx) => {
     if (r.synthetic !== (r.mode === "SIMULATED"))
       ctx.addIssue({ code: "custom", message: "PARALLAX_SYNTHETIC_PROVENANCE_INVALID" });
+    if (r.mode === "BROWSER" && !r.providerId.startsWith("parallax.browser."))
+      ctx.addIssue({ code: "custom", message: "PARALLAX_BROWSER_PROVENANCE_INVALID" });
   });
 export type InteractionReceipt = z.infer<typeof receiptSchema>;

@@ -40,6 +40,11 @@ public final class ParallaxDeliveryFixtures {
     JSONArray cases = fixtures.getJSONArray("sceneCases");
     JSONObject golden = cases.getJSONObject(0).getJSONObject("scene"), identity = golden.getJSONObject("identity");
     String checksum = identity.getString("versionChecksum"), instance = identity.getString("instanceId");
+    check(ParallaxModelCache.allowedSoftwareFixture(true, "http://127.0.0.1:3137", true), "explicit DEBUG loopback fixture allowed");
+    check(!ParallaxModelCache.allowedSoftwareFixture(false, "http://127.0.0.1:3137", true), "release cannot enable software HTTP fixture");
+    check(!ParallaxModelCache.allowedSoftwareFixture(true, "http://127.0.0.1:3137", false), "launch flag is mandatory");
+    for (String origin : new String[] {"https://127.0.0.1:3137", "http://localhost:3137", "http://10.0.2.2:3137", "http://127.0.0.1", "http://127.0.0.1:0", "http://127.0.0.1:65536", "http://127.0.0.1:3137/", "http://user@127.0.0.1:3137", "http://127.0.0.1:3137?flag=1", "http://example.com:3137"})
+      check(!ParallaxModelCache.allowedSoftwareFixture(true, origin, true), "non-lab software origin rejected");
     for (Object invalidVersion : new Object[] {2.5, "2", true})
       check(!ParallaxSceneDelivery.valid(new JSONObject(golden.toString()).put("schemaVersion", invalidVersion), checksum, instance), "non-literal schema version rejected");
     check(!ParallaxSceneDelivery.valid(new JSONObject(golden.toString()).put("transformKind", "AUTHORED"), checksum, instance), "unresolved transform kind rejected");

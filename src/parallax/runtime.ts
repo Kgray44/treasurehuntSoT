@@ -38,7 +38,7 @@ export type TrackingState =
   | "LOST"
   | "UNSUPPORTED";
 const bindingCrew = (binding: InstanceBinding) => binding.sessionId;
-export type RuntimeMode = "GUIDED" | "NATIVE" | "SIMULATED";
+export type RuntimeMode = "GUIDED" | "NATIVE" | "BROWSER" | "SIMULATED";
 export type SpatialRuntimeEvent =
   | { type: "TRACKING"; state: TrackingState }
   | { type: "ANCHOR_LOST"; anchorId: string };
@@ -235,7 +235,7 @@ export class ParallaxLensRuntime {
       (!candidate.supportsScene || candidate.supportsScene(this.moment.version)) &&
       (!this.moment.version.entities.some((e) => e.element?.enabled) || !!candidate.renderScene) &&
       (candidate.mode === "SIMULATED" ||
-        (candidate.mode === "NATIVE" && candidate.worldTracking && this.usableCamera()))
+        (["NATIVE", "BROWSER"].includes(candidate.mode) && candidate.worldTracking && this.usableCamera()))
         ? candidate
         : new GuidedSpatialAdapter();
     this.update({
@@ -474,7 +474,7 @@ export class ParallaxLensRuntime {
   }
   async updateDeviceContext(camera: CapabilityState) {
     this.context.camera = camera;
-    if (this.adapter.mode === "NATIVE" && !this.usableCamera()) await this.useGuidedView();
+    if (["NATIVE", "BROWSER"].includes(this.adapter.mode) && !this.usableCamera()) await this.useGuidedView();
   }
   private presentation(elapsed = this.now().getTime() - this.startedAt) {
     const states = evaluateSpatialBehavior(this.moment.version, this.spatialInputs, elapsed);

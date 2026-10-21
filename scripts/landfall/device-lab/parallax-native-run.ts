@@ -7,7 +7,8 @@ import { build } from "esbuild";
 import { z } from "zod";
 import { createDeviceLabVoyage } from "./one-voyage";
 import { deviceLabSourceIdentity } from "./source";
-import { discoverDeviceLabHost, labTool } from "./host";
+import { discoverDeviceLabHost, labBinaryTool, labTool } from "./host";
+import { nativeLensControl } from "../../../src/landfall/device-lab/native-lens-control";
 import { syntheticSpatialMoment } from "../../../src/parallax/fixtures";
 import { materializeSpatialVersion } from "../../../src/parallax/publication";
 
@@ -28,22 +29,33 @@ const actions = [
 
 async function main() {
   const preflight = process.argv.length === 3 && process.argv[2] === "--preflight";
-  if (process.argv.length > 2 && !preflight) throw new Error("PARALLAX_NATIVE_LAB_ARGUMENT_INVALID");
+  const android = process.argv.length === 3 && process.argv[2] === "--android";
+  if (process.argv.length > 2 && !preflight && !android) throw new Error("PARALLAX_NATIVE_LAB_ARGUMENT_INVALID");
   const root = process.cwd();
   const source = await deviceLabSourceIdentity();
   if (!preflight) assert.equal(source.dirty, false, "Freeze a coherent source before native execution.");
   const host = await discoverDeviceLabHost();
-  if (!preflight) assert.equal(host.apple.configured, true, "HOSTED_MACOS_XCODE_REQUIRED");
+  if (!preflight && !android) assert.equal(host.apple.configured, true, "HOSTED_MACOS_XCODE_REQUIRED");
+  if (android) assert.ok(host.android.adb && process.env.GITHUB_ACTIONS === "true", "OWNED_HOSTED_ANDROID_REQUIRED");
   const destination = path.join(root, "artifacts", "landfall-device-lab", `parallax-native-${Date.now()}`);
   await mkdir(destination, { recursive: true });
   const voyage = await createDeviceLabVoyage(path.join(destination, "authority"));
   const csrf = randomBytes(32).toString("hex");
   let server: ReturnType<typeof createServer> | undefined;
   let device: string | undefined;
+  let androidSerial: string | undefined;
+  let androidReverse: string | undefined;
+  const adb = (args: string[], timeout = 30000) =>
+    labTool(
+      host.android.adb!,
+      ["-P", process.env.LANDFALL_LAB_ADB_PORT ?? "5037", "-s", androidSerial!, ...args],
+      timeout,
+    );
   let runner: Promise<string> | undefined;
   const abort = new AbortController();
   const results = new Map<number, string>();
   const evidence: { entityId: string; interactionType: string; synthetic: boolean; disposition: string }[] = [];
+  const screenshots: { file: string; sha256: string; bytes: number }[] = [];
   let ready = false,
     failed = false,
     stopped = false;
@@ -276,6 +288,115 @@ async function main() {
       });
       assert.equal(rejected.status, 409);
       assert.equal(evidence[0]?.disposition, "SIMULATION_REJECTED");
+    } else if (android) {
+      androidSerial = process.env.ANDROID_SERIAL ?? "emulator-5554";
+      assert.match(androidSerial, /^emulator-[0-9]+$/);
+      assert.match(process.env.LANDFALL_LAB_ADB_PORT ?? "5037", /^[0-9]{1,5}$/);
+      const devices = await labTool(host.android.adb!, ["-P", process.env.LANDFALL_LAB_ADB_PORT ?? "5037", "devices"]);
+      assert.ok(
+        devices.split(/\r?\n/).some((line) => line.trim() === `${androidSerial}\tdevice`),
+        "OWNED_ANDROID_NOT_READY",
+      );
+      const reverse = `tcp:${address.port}`;
+      assert.ok(
+        !(await adb(["reverse", "--list"])).split(/\r?\n/).some((line) => line.split(/\s+/).includes(reverse)),
+        "OWNED_ANDROID_REVERSE_OCCUPIED",
+      );
+      await adb(["reverse", reverse, reverse]);
+      androidReverse = reverse;
+      await adb(["shell", "am", "force-stop", "com.voyagewright.landfall"]);
+      await adb([
+        "shell",
+        "am",
+        "start",
+        "-n",
+        "com.voyagewright.landfall/.LandfallActivity",
+        "--es",
+        "labOrigin",
+        origin,
+        "--ez",
+        "labCameraFree",
+        "true",
+      ]);
+      await wait(() => ready, 60000);
+      const hierarchy = async () => {
+        await adb(["shell", "uiautomator", "dump", "/sdcard/ncl01-owned-lens.xml"]);
+        return adb(["shell", "cat", "/sdcard/ncl01-owned-lens.xml"]);
+      };
+      const observe = async (control: Parameters<typeof nativeLensControl>[1], timeout = 20000, scroll = false) => {
+        const until = Date.now() + timeout;
+        let swipes = 0;
+        while (Date.now() < until) {
+          const xml = await hierarchy();
+          try {
+            return nativeLensControl(xml, control);
+          } catch (error) {
+            if (scroll && swipes < 3) {
+              const web = nativeLensControl(xml, "WEBVIEW").bounds;
+              const x = Math.floor((web.left + web.right) / 2);
+              await adb([
+                "shell",
+                "input",
+                "swipe",
+                String(x),
+                String(Math.floor(web.top + (web.bottom - web.top) * 0.8)),
+                String(x),
+                String(Math.floor(web.top + (web.bottom - web.top) * 0.2)),
+                "350",
+              ]);
+              swipes++;
+            }
+            if (Date.now() >= until) throw error;
+          }
+        }
+        throw new Error("PARALLAX_ANDROID_CONTROL_UNOBSERVED");
+      };
+      const tap = async (control: Parameters<typeof nativeLensControl>[1], scroll = false) => {
+        const target = await observe(control, 20000, scroll);
+        await adb(["shell", "input", "tap", String(target.x), String(target.y)]);
+      };
+      const capture = async (file: "native-selected.png" | "canonical-rejection.png" | "same-voyage-return.png") => {
+        const screenshot = await labBinaryTool(host.android.adb!, [
+          "-P",
+          process.env.LANDFALL_LAB_ADB_PORT ?? "5037",
+          "-s",
+          androidSerial!,
+          "exec-out",
+          "screencap",
+          "-p",
+        ]);
+        await writeFile(path.join(destination, file), screenshot);
+        screenshots.push({
+          file,
+          bytes: screenshot.length,
+          sha256: createHash("sha256").update(screenshot).digest("hex"),
+        });
+      };
+      await tap("OPEN");
+      await tap("START", true);
+      results.set(0, "PASS");
+      const untilLoaded = Date.now() + 30000;
+      while (!(await hierarchy()).includes("objects loaded")) {
+        if (Date.now() >= untilLoaded) throw new Error("PARALLAX_ANDROID_MODELS_NOT_READY");
+      }
+      await tap("SCENE");
+      results.set(1, "PASS");
+      await capture("native-selected.png");
+      await tap("INSPECT");
+      await observe("ERROR", 20000, true);
+      results.set(2, "PASS");
+      await capture("canonical-rejection.png");
+      await tap("CLOSE");
+      await observe("VOYAGE");
+      results.set(3, "PASS");
+      await wait(() => evidence.some((item) => item.interactionType === "INSPECT"), 15000);
+      assert.ok(
+        evidence.every(
+          (item) => item.entityId === "fixture-native-chest" && item.disposition === "SIMULATION_REJECTED",
+        ),
+      );
+      await capture("same-voyage-return.png");
+      assert.deepEqual(await deviceLabSourceIdentity(), source, "PARALLAX_NATIVE_LAB_SOURCE_CHANGED");
     } else {
       const runtime = host.apple.runtimes
         .filter((item) => item.id.includes("iOS"))
@@ -360,7 +481,11 @@ async function main() {
           qualification: false,
           source,
           result: "PASS",
-          evidenceClass: preflight ? "HOST_PREFLIGHT_ONLY" : "SIMULATOR_NATIVE_INPUT_CANONICAL_REJECTION_ONLY",
+          evidenceClass: preflight
+            ? "HOST_PREFLIGHT_ONLY"
+            : android
+              ? "EMULATOR_NATIVE_INPUT_CANONICAL_REJECTION_ONLY"
+              : "SIMULATOR_NATIVE_INPUT_CANONICAL_REJECTION_ONLY",
           physicalTrackingProven: false,
           positivePhysicalInspectProven: false,
           realSQLite: true,
@@ -368,6 +493,7 @@ async function main() {
           observationRowsAdded: 0,
           actions: [...results],
           evidence,
+          screenshots,
         },
         null,
         2,
@@ -378,6 +504,7 @@ async function main() {
     abort.abort();
     await runner?.catch(() => undefined);
     let simulatorRemoved = !device,
+      androidReleased = !androidSerial,
       databaseRemoved = false,
       serverClosed = !server;
     const outcomes = await Promise.allSettled([
@@ -400,10 +527,32 @@ async function main() {
       (async () => {
         databaseRemoved = await voyage.cleanup();
       })(),
+      (async () => {
+        if (!androidSerial) return;
+        const released = await Promise.allSettled([
+          (async () => {
+            await adb(["shell", "am", "force-stop", "com.voyagewright.landfall"]);
+            assert.ok((await adb(["shell", "pm", "clear", "com.voyagewright.landfall"])).includes("Success"));
+          })(),
+          adb(["shell", "rm", "-f", "/sdcard/ncl01-owned-lens.xml"]),
+          (async () => {
+            if (!androidReverse) return;
+            await adb(["reverse", "--remove", androidReverse]);
+            assert.ok(
+              !(await adb(["reverse", "--list"]))
+                .split(/\r?\n/)
+                .some((line) => line.split(/\s+/).includes(androidReverse!)),
+            );
+          })(),
+        ]);
+        androidReleased = released.every((operation) => operation.status === "fulfilled");
+        assert.ok(androidReleased, "PARALLAX_ANDROID_LAB_CLEANUP_FAILED");
+      })(),
     ]);
     cleanup =
       outcomes.every((outcome) => outcome.status === "fulfilled") &&
       simulatorRemoved &&
+      androidReleased &&
       databaseRemoved &&
       serverClosed;
     await writeFile(
@@ -414,6 +563,7 @@ async function main() {
           databaseRemoved,
           ownedServerClosed: serverClosed,
           ownedSimulatorDeleted: simulatorRemoved,
+          ownedAndroidReleased: androidReleased,
           failedCleanupOperations: outcomes.flatMap((outcome, index) => (outcome.status === "rejected" ? [index] : [])),
         },
         null,

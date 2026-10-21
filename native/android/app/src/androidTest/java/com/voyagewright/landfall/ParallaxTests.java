@@ -15,6 +15,7 @@ public final class ParallaxTests {
   @Rule public ActivityTestRule<LandfallActivity> activity = new ActivityTestRule<>(LandfallActivity.class);
   @Test public void originalCatalogLoadsAndRendersThroughFilament() throws Exception {
     ParallaxModelRenderingFixture.run(activity.getActivity());
+    ParallaxNativeInputFixture.verifySoftwareProvider(activity.getActivity());
   }
   @Test public void actualDialogBackAndProgrammaticDismissAreIdempotent() throws Exception {
     AtomicInteger events=new AtomicInteger(), owners=new AtomicInteger();
