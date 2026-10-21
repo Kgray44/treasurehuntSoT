@@ -3,10 +3,11 @@ title: Native Chronicle Lens Series Program Charter v1.0
 audience: product-engineering
 status: proposed-governing-charter-awaiting-protected-review
 canonical_for: native-chronicle-lens-series-program-charter
-last_reviewed: 2026-10-20
+last_reviewed: 2026-10-21
 version: 1.0
 document_id: VW-PARALLAX-NCL-CHARTER-1.0
 repository_baseline: e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab
+integration_reference: aaff919428ef9ab421579415ce3409949724760d
 ---
 
 # Native Chronicle Lens Series Program Charter v1.0
@@ -29,6 +30,8 @@ repository_baseline: e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab
 | Snapshot                        | Protected `origin/main` at `e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab`, fetched October 20, 2026, America/New_York                                        |
 
 This charter establishes one discoverable program beneath existing owners. It does not replace a governing constitution, reopen a closed project, authorize an implementation phase, or accept an unmerged candidate. Requirements describe the intended native experience; the linked status record describes what was actually implemented and demonstrated. A requirement written here is not an implementation claim.
+
+**October 21 integration refresh:** Crossdeck #721 has landed at `aaff919428ef9ab421579415ce3409949724760d`; its accepted continuity design is now present upstream. The pending #776 Studio integration precedes #781 in the agreed queue. This charter's original source/subset snapshot below remains dated October 20; the [status record](../../Projects/Project_Parallax/NCL01_Implementation_and_Acceptance_Status.md) supplies current PR identities and distinguishes the cleared upstream prerequisite from unaccepted NCL consumer/native work. No current-base adoption, native product acceptance or future-increment ratification is implied by this refresh.
 
 MUST and MUST NOT are mandatory within the accepted increment's scope. SHOULD requires an explained disposition. MAY describes an optional supported capability. Future increment proposals and proposed numerical qualification profiles remain inactive until their stated owner decisions are recorded. Existing higher-authority gates remain effective throughout.
 
@@ -435,7 +438,7 @@ Development of independent native adapters, contract fixtures and isolated regis
 
 ## 13. Current NCL-01 disposition and owner observations
 
-NCL-01 is **IMPLEMENTED IN PART**, **SIMULATOR/EMULATOR VERIFIED** for identified components, **PHYSICAL-DEVICE OWNER OBSERVED** for limited iPhone feasibility/visibility, **BLOCKED BY INTEGRATION** for governed browser/Crossdeck closure, and **NOT YET ACCEPTED INTO PROTECTED MAIN**. It is not fully accepted.
+The October 20 evidence establishes **IMPLEMENTED IN PART**, **SIMULATOR/EMULATOR VERIFIED** for identified components and **PHYSICAL-DEVICE OWNER OBSERVED** for limited iPhone feasibility/visibility. As of October 21, the Crossdeck upstream prerequisite has landed; the distinct NCL-01 product candidate still needs its own exact-source consumer/native and physical acceptance and is **NOT YET ACCEPTED INTO PROTECTED MAIN**. The original blocked integration evidence remains a historical outcome, not a current assertion that #721 is unmerged. NCL-01 is not declared fully accepted.
 
 The owner directly confirms an Apple Developer account, installation of the native app on an actual iPhone, a successful simple bedroom native AR experience, and a positive impression of that real-hardware demo. Preserve these as **OWNER-REPORTED PHYSICAL DEVICE OBSERVATIONS**. They establish meaningful feasibility and must not be erased by an older “no signing/device installation yet” snapshot.
 
@@ -473,6 +476,7 @@ This is the sole NCL series charter topic. The status record is its factual comp
 
 Changing increment ownership or a mandatory acceptance requirement needs an explicit owner decision and reconciliation with parent authority. Routine updates must not rewrite preserved Parallax constitutions, reassign One Voyage progression, alter historical receipts or promote a partial feature in the Feature Catalog. Documentation acceptance authorizes only this governance deliverable; implementation and deployment need their own bounded task and current acceptance process.
 
-| Version | Date       | Change                                                                                                                                                                   |
-| ------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 1.0     | 2026-10-20 | Establish subordinate NCL program governance, evidence tiers, initial-milestone boundary and explicitly proposed future increment contracts; no product behavior changed |
+| Version              | Date       | Change                                                                                                                                                                   |
+| -------------------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1.0                  | 2026-10-20 | Establish subordinate NCL program governance, evidence tiers, initial-milestone boundary and explicitly proposed future increment contracts; no product behavior changed |
+| 1.0 review candidate | 2026-10-21 | Record landed Crossdeck prerequisite and pending Studio-before-charter integration order; preserve original source/evidence snapshot and unratified increment boundaries |

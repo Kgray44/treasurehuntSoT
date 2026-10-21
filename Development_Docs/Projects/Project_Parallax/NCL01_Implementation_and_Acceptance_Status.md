@@ -3,15 +3,27 @@ title: NCL-01 Implementation and Acceptance Status
 audience: product-engineering
 status: partial-implementation-physical-observations-mainline-acceptance-open
 canonical_for: ncl01-implementation-and-acceptance-status
-last_reviewed: 2026-10-20
+last_reviewed: 2026-10-21
 repository_baseline: e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab
+integration_reference: aaff919428ef9ab421579415ce3409949724760d
 ---
 
 # NCL-01 Implementation and Acceptance Status
 
-**Disposition:** NCL-01 has implemented and virtually verified a substantial shared-delivery/native-model subset. Later TestFlight work establishes signed internal iOS beta distribution, and the owner reports useful native AR behavior on an iPhone. The initial both-platform milestone, authored-room fidelity, complete native interaction/lifecycle qualification, governed browser/Crossdeck integration and protected-main acceptance remain open.
+**Current integration disposition — October 21:** Crossdeck #721 has landed; the previously missing upstream continuity design is now present in accepted main. This clears that upstream prerequisite without accepting NCL's own consumer/native candidate. #776 Studio precedes #781 in the agreed integration queue. #741 remains a distinct draft/unmerged product-owner lane; no native or physical acceptance is added by this documentation refresh.
 
-This is the factual companion to the [NCL Series Charter v1.0](../../Programs/Spatial_Experience/NCL_Native_Chronicle_Lens_Program_Charter_v1.0.md). It reconciles preserved records; it does not rewrite them or grant implementation/merge authority. Snapshot date: **October 20, 2026, America/New_York**. GitHub timestamps just after midnight October 21 UTC refer to that local evening.
+| Refreshed identity                                                                    | Exact source / current state                                                                                                                                                                                 | Evidence boundary                                                                                                                                                                                                                                                                     |
+| ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Accepted main / merged #721                                                           | `aaff919428ef9ab421579415ce3409949724760d`; merged from `6168c3668cfd2c590ea89bb2e5c01813835e56d8`                                                                                                           | Both trees equal `6a8b3d8a2a2a24dd9a964e255b2c3034f450e0a7`; [R26 run 39656414105/1](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39656414105) metadata is completed/success. `testing/contracts.json` contains the actual `crossdeck.phase2.continuity` experience design |
+| Pending [#776 Studio](https://github.com/Kgray44/treasurehuntSoT/pull/776)            | Published head `6119eb58ae06a50236c396d4a6d27f9d9ae36f7c`, draft/unmerged; existing owner's clean local reconciliation `871431cd0827d42551c8a8b9d2d7fde5e16c1f77`, parents published head then accepted main | Local committed source is not a published or qualified replacement head. The owner's `Development_Docs/Projects/Project_Parallax/Protected_Integration_20261021.md` at that local commit retains fresh qualification gates                                                            |
+| [#781 Charter](https://github.com/Kgray44/treasurehuntSoT/pull/781)                   | Published head `182233e0f6d11a5dd5f74f35e01183b633b6ec8f`, open/unmerged                                                                                                                                     | Original [run 39540522128](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39540522128) checks passed on the older candidate/base. They do not qualify a future post-#776 reconciliation                                                                                      |
+| Current [#741 product candidate](https://github.com/Kgray44/treasurehuntSoT/pull/741) | `347a401ca8e1cb2086c51a8db95be687d124412c`, draft/unmerged; API-reported base `d699de9568ea355a363223dd88f747536b450688`                                                                                     | Its owner reports newer native/browser work and TestFlight-descendant reconciliation. This bounded refresh verifies PR identity/status, not those newer test or physical claims; consult that owner's source-bound records                                                            |
+
+The current accepted continuity contract is not proof that this older charter branch has adopted it or that #741's native/browser integration is qualified. #781 must retain both its NCL additions and #776's accepted documentation when the actual Studio landing is available. No merge or protected run was started during this preparation.
+
+**Preserved October 20 disposition:** NCL-01 has implemented and virtually verified a substantial shared-delivery/native-model subset. Later TestFlight work establishes signed internal iOS beta distribution, and the owner reports useful native AR behavior on an iPhone. The initial both-platform milestone, authored-room fidelity, complete native interaction/lifecycle qualification, governed browser/Crossdeck integration and protected-main acceptance remained open at that snapshot.
+
+This is the factual companion to the [NCL Series Charter v1.0](../../Programs/Spatial_Experience/NCL_Native_Chronicle_Lens_Program_Charter_v1.0.md). It reconciles preserved records; it does not rewrite them or grant implementation/merge authority. Sections 1–5 below retain the original **October 20, 2026, America/New_York** source/evidence snapshot. The dated October 21 refresh above supersedes its present-tense PR/dependency state only. GitHub timestamps just after midnight October 21 UTC refer to the prior local evening.
 
 ## 1. Verified source and PR identities
 
@@ -128,7 +140,7 @@ The source set is bounded to the identities above, relevant parent/adjacent-owne
 
 Application/native implementation, schemas/migrations, deployment configuration, signing material, active implementation branches, shared runtimes and existing evidence are outside this change. Historical reports, screenshots, model bytes and failed receipts remain at their original paths and identities. No implementation defect is repaired here, no capability is promoted in the Feature Catalog, and no next engineering increment is started.
 
-### Publication validation
+### Original October 20 publication validation
 
 Focused checks passed in the dedicated documentation worktree: `npm run docs:index`, `npm run docs:validate`, the four existing `npm run test:docs` cases, `npm run features:sync`, `npm run features:validate`, changed-file Prettier checks and `git diff --check`. The catalog regenerated from 68 entries without changing catalog bytes or fragments.
 
