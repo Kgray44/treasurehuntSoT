@@ -103,24 +103,37 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 40
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout exact protected authority
+        id: authority-checkout
+        uses: actions/checkout@v4
+        timeout-minutes: 10
         with:
           ref: ${{ inputs.base_sha }}
           path: authority
-          fetch-depth: 0
+          fetch-depth: 1
+          fetch-tags: false
+          show-progress: true
           persist-credentials: false
-      - uses: actions/checkout@v4
+      - name: Checkout complete candidate history
+        id: candidate-checkout
+        uses: actions/checkout@v4
+        timeout-minutes: 10
         with:
           ref: ${{ inputs.candidate_sha }}
           path: candidate
           fetch-depth: 0
+          show-progress: true
           persist-credentials: false
-      - uses: actions/checkout@v4
+      - name: Checkout review evidence
+        id: evidence-checkout
+        uses: actions/checkout@v4
+        timeout-minutes: 10
         if: inputs.experience_mode != 'capture'
         with:
           ref: ${{ inputs.evidence_ref || inputs.candidate_sha }}
           path: evidence
           fetch-depth: 1
+          show-progress: true
           persist-credentials: false
       - uses: actions/setup-node@v4
         with:

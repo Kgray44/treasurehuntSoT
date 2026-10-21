@@ -1,3 +1,4 @@
+import { CURRENT_R23 } from "./experience-current-r23.mjs";
 import { CURRENT_R22 } from "./experience-current-r22.mjs";
 // Exact owner-approved R20 finding split. This is not a general debt exemption.
 import { createHash } from "node:crypto";
@@ -61,7 +62,13 @@ export function validateR20ContractSource({ before, after, actualPaths, original
 
 export function validateScopedR20Finding({ plan, finding, contractId, artifacts }) {
   const current =
-    plan?.exception?.version === 22 ? CURRENT_R22 : plan?.exception?.version === 21 ? CURRENT_R21 : CURRENT_R20;
+    plan?.exception?.version === 23
+      ? CURRENT_R23
+      : plan?.exception?.version === 22
+        ? CURRENT_R22
+        : plan?.exception?.version === 21
+          ? CURRENT_R21
+          : CURRENT_R20;
   need(
     plan?.exception?.id === current.id &&
       plan.exception.version === current.version &&
