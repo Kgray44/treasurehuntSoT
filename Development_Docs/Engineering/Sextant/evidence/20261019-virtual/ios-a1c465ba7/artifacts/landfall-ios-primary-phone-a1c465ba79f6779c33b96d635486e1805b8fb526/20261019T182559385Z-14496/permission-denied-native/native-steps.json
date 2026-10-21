@@ -1,0 +1,55 @@
+{
+  "steps": [
+    {
+      "index": 0,
+      "action": "PERMISSION",
+      "state": "PASS",
+      "translation": {
+        "method": "OS_PERMISSION_CONTROL",
+        "limitation": "Current native grants are checked without prompting. Android grant changes may terminate and relaunch the owned app; physical settings UX remains external."
+      }
+    },
+    {
+      "index": 1,
+      "action": "LOCATION",
+      "state": "PASS",
+      "reason": "OS_PERMISSION_PREVENTED_ACQUISITION",
+      "translation": {
+        "method": "OS_PERMISSION_CONTROL",
+        "limitation": "Current native grants are checked without prompting. Android grant changes may terminate and relaunch the owned app; physical settings UX remains external."
+      }
+    },
+    {
+      "index": 2,
+      "action": "ASSERT",
+      "state": "PASS",
+      "translation": {
+        "method": "SHARED_WEB_CONTRACT"
+      }
+    },
+    {
+      "index": 3,
+      "action": "ASSERT",
+      "state": "PASS",
+      "translation": {
+        "method": "SHARED_WEB_CONTRACT"
+      }
+    },
+    {
+      "index": 4,
+      "action": "ASSERT",
+      "state": "PASS",
+      "translation": {
+        "method": "REAL_CANONICAL_AUTHORITY"
+      }
+    }
+  ],
+  "cleanup": {
+    "result": "PASS",
+    "ownedResources": [
+      "loopback-native-lab-server",
+      "DCB1D18E-A90F-4E42-9EF4-A6F0A5EF1A06"
+    ],
+    "remainingResources": []
+  }
+}

@@ -385,6 +385,8 @@ html[data-voyage-theme="light"] .studio-no-editable-draft__details dt {
   padding: 2rem;
 }
 .new-tale-sheet {
+  --text-heading: var(--parchment-ink);
+  --text-body: var(--parchment-ink);
   width: min(900px, 100%);
   border: 1px solid rgba(201, 169, 95, 0.35);
   border-radius: 24px;
@@ -438,10 +440,14 @@ html[data-voyage-theme="light"] .studio-no-editable-draft__details dt {
   min-height: 100vh;
   overflow-x: clip;
 }
-.editor-topbar {
+.editor-chrome {
   position: sticky;
-  z-index: 50;
-  top: 0;
+  z-index: calc(var(--z-navigation, 30) - 1);
+  top: var(--shell-header-height, 76px);
+}
+.editor-topbar {
+  position: relative;
+  z-index: 2;
   display: grid;
   grid-template-columns: minmax(250px, 1fr) auto minmax(14rem, auto) auto;
   align-items: center;
@@ -796,9 +802,8 @@ html[data-voyage-theme="light"] .studio-no-editable-draft__details dt {
   background: linear-gradient(90deg, #d7b76b, #f0d18a, transparent);
 }
 .editor-section-nav {
-  position: sticky;
-  z-index: 45;
-  top: 76px;
+  position: relative;
+  z-index: 1;
   display: flex;
   overflow-x: auto;
   max-width: 100%;
@@ -1745,22 +1750,23 @@ html[data-voyage-theme="light"] .studio-no-editable-draft__details dt {
   grid-template-columns: minmax(180px, 0.38fr) minmax(0, 1fr);
   gap: 1rem;
 }
-.drydock-scenario-layout aside,
+.drydock-scenario-layout .drydock-scenario-ledger,
 .drydock-scenario-editor,
 .drydock-run-receipt {
+  min-width: 0;
   border: 1px solid rgba(201, 169, 95, 0.25);
   border-radius: 12px;
   padding: 1rem;
   background: rgba(2, 14, 16, 0.55);
 }
-.drydock-scenario-layout aside ul,
+.drydock-scenario-layout .drydock-scenario-ledger ul,
 .drydock-run-receipt ul,
 .drydock-run-receipt ol {
   margin: 0.75rem 0 0;
   padding: 0;
   list-style: none;
 }
-.drydock-scenario-layout aside button {
+.drydock-scenario-layout .drydock-scenario-ledger button {
   display: flex;
   width: 100%;
   justify-content: space-between;
@@ -1768,8 +1774,8 @@ html[data-voyage-theme="light"] .studio-no-editable-draft__details dt {
   margin-top: 0.4rem;
   text-align: left;
 }
-.drydock-scenario-layout aside button.active,
-.drydock-scenario-layout aside button:focus-visible {
+.drydock-scenario-layout .drydock-scenario-ledger button.active,
+.drydock-scenario-layout .drydock-scenario-ledger button:focus-visible {
   outline: 2px solid var(--brass-300);
   outline-offset: 2px;
 }
@@ -1858,7 +1864,18 @@ html[data-voyage-theme="light"] .studio-no-editable-draft__details dt {
 }
 .drydock-filter input,
 .drydock-run-actions select {
+  min-width: 0;
   width: 100%;
+}
+.drydock-scenario-editor .settings-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.drydock-scenario-editor .settings-grid > label {
+  min-width: 0;
+}
+.drydock-scenario-editor .settings-grid input,
+.drydock-scenario-editor .settings-grid select {
+  min-width: 0;
 }
 .drydock-json-fields section,
 .drydock-advanced-json,
@@ -1917,7 +1934,11 @@ html[data-voyage-theme="light"] .studio-no-editable-draft__details dt {
   justify-content: space-between;
 }
 .drydock-suite-panel input {
+  min-width: 0;
   flex: 1;
+}
+.drydock-suite-panel > div {
+  flex-wrap: wrap;
 }
 .drydock-suite-panel ul {
   display: grid;
@@ -1999,8 +2020,9 @@ html[data-voyage-theme="light"] .studio-no-editable-draft__details dt {
 }
 @media (max-width: 780px) {
   .drydock-scenario-layout,
-  .drydock-json-fields {
-    grid-template-columns: 1fr;
+  .drydock-json-fields,
+  .drydock-scenario-editor .settings-grid {
+    grid-template-columns: minmax(0, 1fr);
   }
   .drydock-run-receipt ol li {
     align-items: start;
@@ -2193,10 +2215,13 @@ html[data-voyage-theme="light"] .studio-no-editable-draft__details dt {
 .version-list article > span {
   display: grid;
   width: 62px;
-  height: 62px;
+  min-height: 62px;
+  padding: 0.45rem;
   place-items: center;
   border: 1px solid var(--brass-500);
-  border-radius: 50%;
+  border-radius: 0.75rem;
+  overflow-wrap: anywhere;
+  text-align: center;
 }
 .version-list article > span.current {
   color: #1a1306;
@@ -2216,6 +2241,9 @@ html[data-voyage-theme="light"] .studio-no-editable-draft__details dt {
 }
 .studio-publishing-review {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
+  overflow-wrap: anywhere;
   gap: 1rem;
   margin-bottom: 1.25rem;
   border: 1px solid rgba(201, 169, 95, 0.38);
@@ -2231,6 +2259,7 @@ html[data-voyage-theme="light"] .studio-no-editable-draft__details dt {
 }
 .studio-publishing-stages {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.75rem;
   margin: 0;
   padding: 0;
@@ -2644,8 +2673,17 @@ html[data-voyage-theme="light"] .studio-no-editable-draft__details dt {
   .contract-diagnostics dd {
     margin-bottom: 0.4rem;
   }
+  .editor-chrome {
+    display: contents;
+  }
+  .editor-section-nav {
+    position: sticky;
+    z-index: calc(var(--z-navigation, 30) - 2);
+    top: var(--shell-header-height, 76px);
+  }
   .editor-topbar {
-    position: static;
+    position: relative;
+    z-index: calc(var(--z-navigation, 30) - 1);
     display: block;
   }
   .editor-topbar > * {
@@ -2669,7 +2707,6 @@ html[data-voyage-theme="light"] .studio-no-editable-draft__details dt {
     align-items: start;
   }
   .editor-section-nav {
-    top: 0;
     width: 100%;
     padding-inline: 0.5rem;
   }
@@ -2860,6 +2897,10 @@ html[data-voyage-theme="light"] .studio-no-editable-draft__details dt {
 }
 .studio-private-content__import {
   grid-row: span 2;
+}
+.studio-private-content .tale-card-actions button.primary:hover:not(:disabled) {
+  color: #1b1306;
+  background: var(--brass-100);
 }
 .studio-private-content__history {
   grid-column: 2;

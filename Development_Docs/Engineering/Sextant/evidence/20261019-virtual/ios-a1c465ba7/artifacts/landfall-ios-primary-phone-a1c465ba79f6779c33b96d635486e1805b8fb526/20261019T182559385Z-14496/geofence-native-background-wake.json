@@ -1,0 +1,211 @@
+{
+  "version": 1,
+  "scenarioId": "geofence-native-background-wake",
+  "scenarioVersion": 2,
+  "seed": 1729,
+  "sourceSha": "a1c465ba79f6779c33b96d635486e1805b8fb526",
+  "sourceTree": "48faa16123f7f39f2bdb2200e42c30caea360973",
+  "sourceFingerprint": "8978074623377fe183abb1bf7b396656b713e7e12e46e5e985d9aeef7ef274fb",
+  "dirty": false,
+  "target": "ios-simulator",
+  "hostPlatform": "darwin",
+  "environment": "native-platform-and-origin-bound-webview",
+  "deviceProfile": "primary-phone",
+  "deviceConfiguration": {
+    "platform": "IOS",
+    "virtual": true,
+    "runtime": "com.apple.CoreSimulator.SimRuntime.iOS-26-5",
+    "deviceType": "com.apple.CoreSimulator.SimDeviceType.iPhone-17e"
+  },
+  "osVersion": "com.apple.CoreSimulator.SimRuntime.iOS-26-5",
+  "runtimeVersion": "Xcode 26.6\nBuild version 17F113",
+  "providerVersions": {
+    "GEOFENCE": "landfall-contract-v1",
+    "LOCATION": "landfall-contract-v1",
+    "NOTIFICATION": "landfall-contract-v1"
+  },
+  "publishedFixture": "landfall-device-lab-v1",
+  "fixtureHash": "54cc5a5adaf3d8ca5e715706a0a833be0be00df5872de62e0d461a6147db18a7",
+  "timing": "WALL_CLOCK",
+  "toleranceMs": 2000,
+  "startedAt": "2026-10-19T18:29:28.155Z",
+  "endedAt": "2026-10-19T18:38:22.866Z",
+  "evidenceClass": "SIMULATOR_PROVEN",
+  "result": "PASS",
+  "steps": [
+    {
+      "index": 0,
+      "action": "LOCATION",
+      "state": "PASS",
+      "translation": {
+        "method": "OS_LOCATION_INJECTION",
+        "limitation": "Bounded repeated OS coordinate delivery within one step does not prove field GPS accuracy, multipath or sensor physics; injection counts are recorded separately."
+      }
+    },
+    {
+      "index": 1,
+      "action": "NATIVE_GEOFENCE",
+      "state": "PASS",
+      "translation": {
+        "method": "OS_GEOFENCE_REGISTRATION",
+        "limitation": "Documented simctl location inputs exercise actual Core Location registration and encrypted delegate-delivered hints. No injected delegate callback, physical timing or arrival claim."
+      }
+    },
+    {
+      "index": 2,
+      "action": "LIFECYCLE",
+      "state": "PASS",
+      "translation": {
+        "method": "OS_LIFECYCLE",
+        "limitation": "Simulator/emulator lifecycle does not prove physical-device OEM suspension policy."
+      }
+    },
+    {
+      "index": 3,
+      "action": "NATIVE_GEOFENCE",
+      "state": "PASS",
+      "translation": {
+        "method": "OS_GEOFENCE_TRANSITION",
+        "limitation": "Documented simctl location inputs exercise actual Core Location registration and encrypted delegate-delivered hints. No injected delegate callback, physical timing or arrival claim."
+      }
+    },
+    {
+      "index": 4,
+      "action": "LIFECYCLE",
+      "state": "PASS",
+      "translation": {
+        "method": "OS_LIFECYCLE",
+        "limitation": "Simulator/emulator lifecycle does not prove physical-device OEM suspension policy."
+      }
+    },
+    {
+      "index": 5,
+      "action": "ASSERT",
+      "state": "PASS",
+      "translation": {
+        "method": "SHARED_WEB_CONTRACT"
+      }
+    },
+    {
+      "index": 6,
+      "action": "ASSERT",
+      "state": "PASS",
+      "translation": {
+        "method": "SHARED_WEB_CONTRACT"
+      }
+    },
+    {
+      "index": 7,
+      "action": "ASSERT",
+      "state": "PASS",
+      "translation": {
+        "method": "REAL_CANONICAL_AUTHORITY"
+      }
+    },
+    {
+      "index": 8,
+      "action": "NATIVE_GEOFENCE",
+      "state": "PASS",
+      "translation": {
+        "method": "OS_GEOFENCE_REGISTRATION",
+        "limitation": "Documented simctl location inputs exercise actual Core Location registration and encrypted delegate-delivered hints. No injected delegate callback, physical timing or arrival claim."
+      }
+    },
+    {
+      "index": 9,
+      "action": "ASSERT",
+      "state": "PASS",
+      "translation": {
+        "method": "SHARED_WEB_CONTRACT"
+      }
+    }
+  ],
+  "canonicalProgressionEvents": 0,
+  "canonicalAuthority": "ONE_VOYAGE_REAL_SQLITE",
+  "authorityFixtureHash": "ed951b7086333d2ea7f685e316df0963adf3c62d7ebba845bb8e65d21a8d4223",
+  "artifacts": [
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182559385Z-14496/geofence-native-background-wake/native-final.png",
+      "sha256": "5562ee33233e6cacc09c23b7661bd277d9713e63423780e26e4119b0f7527f83",
+      "kind": "SCREENSHOT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182559385Z-14496/geofence-native-background-wake/native-action-performance.json",
+      "sha256": "e1d73a25b1a97ffe5f950f6736e491012f2d75f5f10c55576949baddde92042f",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182559385Z-14496/geofence-native-background-wake/native-guest-reboots.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182559385Z-14496/geofence-native-background-wake/native-client-readiness.json",
+      "sha256": "60647248202edd2a82314df3c1cc47a003c1f27215aad65fc12825f684f60fc3",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182559385Z-14496/geofence-native-background-wake/native-apple-lifecycle-delivery.json",
+      "sha256": "a8a1193719e905c1cf603fc589ed73652b511cff28a58af555de57ae93781212",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182559385Z-14496/geofence-native-background-wake/native-apple-lifecycle-trace.json",
+      "sha256": "b40c8b76494ed95e8b33fce4d53e1ebcd452a24169d4413a811096108a5289ac",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182559385Z-14496/geofence-native-background-wake/native-apple-input-diagnostics.json",
+      "sha256": "be75320d1c6803d4d577518ede90ed55d5bc434529937fcba7bd96071675a0f1",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182559385Z-14496/geofence-native-background-wake/native-location-controls.json",
+      "sha256": "10cbcf038f03db049b6fa0aaf61c2465949eab951c94ead463f63b9cbc19c638",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182559385Z-14496/geofence-native-background-wake/native-location-diagnostics.json",
+      "sha256": "abdcae0ed8148a5b6caa223c39982fd4902e645856fed4ad37aa86cd5264df3e",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182559385Z-14496/geofence-native-background-wake/native-startups.json",
+      "sha256": "7d318df060efbd0f1a890deffff8d1a8494394efe3b5dc6c0fa3e838054286c4",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182559385Z-14496/geofence-native-background-wake/native-ui-driver.json",
+      "sha256": "68c63afd106c08f6bf7a1d350a8f91a7f3b6a3e8ef6b63fd01183e4a9434dc6f",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182559385Z-14496/geofence-native-background-wake/authority/receipt.json",
+      "sha256": "4d85b990fe83158a8a3798cb4163b2ef6f03aded363359ce0511e94b12b30904",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182559385Z-14496/geofence-native-background-wake/authority-command-diagnostics.json",
+      "sha256": "96db428c2b0b3d79e120e89e43ecad6a039e378947fc8efd7a513465f20667c9",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182559385Z-14496/geofence-native-background-wake/native-steps.json",
+      "sha256": "dab9a82e3ab8113c8320b0088d4c1ad9233e00ecc6975cd5b8ecdf5d297028c8",
+      "kind": "TEST_RESULT"
+    }
+  ],
+  "externalRequirements": [
+    "REAL_DEVICE_REQUIRED:SUSPENSION",
+    "REAL_DEVICE_REQUIRED:OEM_PROCESS_POLICY",
+    "REAL_DEVICE_REQUIRED:FIELD_ENVIRONMENT"
+  ],
+  "cleanup": {
+    "result": "PASS",
+    "ownedResources": [
+      "loopback-native-lab-server",
+      "B9072673-C3B1-43CE-B0A4-E6042623A45B"
+    ],
+    "remainingResources": []
+  }
+}

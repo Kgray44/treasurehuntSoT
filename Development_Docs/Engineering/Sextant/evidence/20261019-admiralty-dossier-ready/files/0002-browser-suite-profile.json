@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/sextant-admiralty-journeys.spec.ts"
+  ],
+  "status": "PASS",
+  "failureCategory": null,
+  "failureCode": null,
+  "diagnosticBinding": {
+    "version": 1,
+    "runId": "449804a4-a3e7-4411-8421-2fb418abf6dd",
+    "scopeId": "6b888198-2f7d-4d35-a289-ea293934fa19",
+    "baseSha": "bcf82bdce20a02790ecdb5df965bd630b7834ff3",
+    "candidateSha": "bcf82bdce20a02790ecdb5df965bd630b7834ff3",
+    "planDigest": "a7031bb31eef337d8e25644653ddf9ccdfbdece062a4163b4f661e20c8ac4576"
+  }
+}

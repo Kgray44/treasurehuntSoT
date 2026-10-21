@@ -44,6 +44,7 @@ type Lease = {
   provider: SextantProvider;
   lastDelivered: number;
   first: boolean;
+  endedReason?: string;
   timer?: ReturnType<typeof setTimeout>;
 };
 type Active = {
@@ -157,6 +158,8 @@ export class SextantLeaseBroker {
         !this.foreground ||
         this.disposed ||
         request.expiresAt <= this.now() ||
+        lease.endedReason !== undefined ||
+        !this.capabilityAvailable(provider, c.id) ||
         this.active.get(provider.definition.providerId)?.controller.signal.aborted ||
         !this.permissions.state(c.permission).enabled ||
         !["GRANTED", "NOT_REQUIRED"].includes(this.permissions.state(c.permission).permission) ||
@@ -226,10 +229,14 @@ export class SextantLeaseBroker {
             signal: active.controller.signal,
             updateClass,
             emit: (sample) => this.sample(active, sample),
-            fail: () => {
-              this.failed.add(id);
+            fail: (interruption) => {
+              if (this.active.get(id) !== active || active.controller.signal.aborted) return;
+              if (!interruption) this.failed.add(id);
               active.controller.abort();
-              void this.cancelWhere((l) => l.provider === provider, "PROVIDER_FAILED").catch(() => {});
+              void this.cancelWhere(
+                (l) => l.provider === provider,
+                interruption ? `PROVIDER_${interruption}` : "PROVIDER_FAILED",
+              ).catch(() => {});
             },
           }),
         active.controller.signal,
@@ -248,6 +255,10 @@ export class SextantLeaseBroker {
   }
   private sample(active: Active, sample: ProviderSample) {
     if (active.controller.signal.aborted || !this.foreground || this.disposed) return;
+    if (!this.capabilityAvailable(active.provider, sample.capabilityId)) {
+      void this.revalidateCapabilities().catch(() => {});
+      return;
+    }
     const now = this.now();
     let observation: Observation;
     try {
@@ -267,7 +278,8 @@ export class SextantLeaseBroker {
       return;
     }
     for (const lease of [...this.leases.values()]) {
-      if (lease.provider !== active.provider || lease.request.capabilityId !== sample.capabilityId) continue;
+      if (lease.endedReason || lease.provider !== active.provider || lease.request.capabilityId !== sample.capabilityId)
+        continue;
       const permission = this.permissions.state(this.capabilities.get(sample.capabilityId).permission);
       if (now >= lease.request.expiresAt) {
         void this.release(lease.id, "EXPIRED").catch(() => {});
@@ -295,9 +307,14 @@ export class SextantLeaseBroker {
   }
   private async end(lease: Lease, reason: string) {
     if (!this.leases.delete(lease.id)) return;
+    this.endConsumer(lease, reason);
+    await this.reconcile(lease.provider);
+  }
+  private endConsumer(lease: Lease, reason: string) {
+    if (lease.endedReason) return;
+    lease.endedReason = reason;
     clearTimeout(lease.timer);
     this.deliver(lease, { type: "ENDED", reason });
-    await this.reconcile(lease.provider);
   }
   release(id: string, reason = "CONSUMER_RELEASED") {
     return this.serial(async () => {
@@ -327,6 +344,30 @@ export class SextantLeaseBroker {
   sweep() {
     return this.cancelWhere((l) => l.request.expiresAt <= this.now(), "EXPIRED");
   }
+  private capabilityAvailable(provider: SextantProvider, capabilityId: string) {
+    try {
+      const state = stateSchema.parse(provider.discover(capabilityId));
+      return (
+        state.support === "SUPPORTED" &&
+        ["AVAILABLE", "DEGRADED"].includes(state.availability) &&
+        state.lifecycle !== "SUSPENDED" &&
+        !["DENIED", "RESTRICTED"].includes(state.permission)
+      );
+    } catch {
+      return false;
+    }
+  }
+  /** Capture lost leases now, so a fast restoration cannot retain old dwell or
+   * queued observations. Other available capabilities sharing a provider remain owned. */
+  revalidateCapabilities() {
+    const lost = new Set(
+      [...this.leases.values()]
+        .filter((l) => !this.capabilityAvailable(l.provider, l.request.capabilityId))
+        .map((l) => l.id),
+    );
+    for (const lease of this.leases.values()) if (lost.has(lease.id)) this.endConsumer(lease, "CAPABILITY_UNAVAILABLE");
+    return this.cancelWhere((l) => lost.has(l.id), "CAPABILITY_UNAVAILABLE");
+  }
   setForeground(visible: boolean) {
     this.foreground = visible;
     if (!visible) for (const a of this.active.values()) a.controller.abort();
@@ -335,7 +376,7 @@ export class SextantLeaseBroker {
   async switchProvider(leaseId: string) {
     return this.serial(async () => {
       const lease = this.leases.get(leaseId);
-      if (!lease) throw new Error("SEXTANT_LEASE_UNKNOWN");
+      if (!lease || lease.endedReason) throw new Error("SEXTANT_LEASE_UNKNOWN");
       const next = this.providers.candidates(lease.request.capabilityId, lease.request.frames).find(
         (p) =>
           p !== lease.provider &&

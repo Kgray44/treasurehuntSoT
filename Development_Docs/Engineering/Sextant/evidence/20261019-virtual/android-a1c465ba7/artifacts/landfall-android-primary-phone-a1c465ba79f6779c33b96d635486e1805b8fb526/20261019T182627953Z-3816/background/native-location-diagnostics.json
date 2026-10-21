@@ -1,0 +1,23 @@
+[
+  {
+    "index": 0,
+    "diagnostic": {
+      "received": 1,
+      "invalid": 0,
+      "stale": 0,
+      "future": 0,
+      "outOfBounds": 0,
+      "insufficientAccuracy": 0,
+      "withinRequestedBounds": 1,
+      "canonicalObservations": 1,
+      "firstQualifiedFixElapsedMs": 3713.7000000000116,
+      "acquisition": {
+        "provider": "gps",
+        "registered": true,
+        "enabled": true,
+        "permission": "GRANTED",
+        "nativeCallbacks": 1
+      }
+    }
+  }
+]

@@ -1,0 +1,43 @@
+{
+  "source": {
+    "sourceSha": "a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167",
+    "sourceTree": "96696e3ef6902a76f792743e660fe75b984140b5",
+    "dirty": false,
+    "sourceFingerprint": "25ab32afc932c7f66cd873800cfbea78a061cf6bc939c0b66d5157aa7b2a41a1"
+  },
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "reducedMotion": "no-preference",
+  "feedback": [
+    {
+      "task": "Published clue before",
+      "elapsedMs": 137.30447099999947
+    },
+    {
+      "task": "Creator working Save",
+      "elapsedMs": 250.3614860000016
+    },
+    {
+      "task": "Creator working reopen",
+      "elapsedMs": 955.8551240000015
+    },
+    {
+      "task": "Published clue after-working-save",
+      "elapsedMs": 177.353575000001
+    }
+  ],
+  "crewCreatorSafetyLockPreserved": true,
+  "owner": "sextant-resource-owner-paired-1280-no-preference",
+  "voyage": "sextant-resource-voyage-paired-1280-no-preference",
+  "ordinarySeparateSignIns": true,
+  "workingDraftSavedReopenedRestored": true,
+  "publishedClueComparedBeforeAndAfter": true,
+  "unchangedCanonicalProgress": true,
+  "unchangedPublishedEdition": true,
+  "olderSinglePersonaContractSatisfied": false,
+  "protectedQualification": false,
+  "nativeExecution": false,
+  "physicalEvidence": false
+}

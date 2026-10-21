@@ -1,0 +1,49 @@
+{
+  "version": 2,
+  "scenarioId": "sextant.magnetic-disturbance",
+  "scenarioVersion": 1,
+  "owningProject": "SEXTANT",
+  "scenarioFingerprint": "51cde26ce60488f2c24716eba64fe936eb644d384f201f87ae0bb7066a20f0ab",
+  "source": {
+    "sourceSha": "58d3e51db2948d206be0a62f5a47cb022f27d286",
+    "sourceTree": "57b9a21896631c1c6f9e80f0a87eaa84d476d330",
+    "sourceFingerprint": "d0aca965151cc6150b0231795132392b68dadc8fa75ba5118e83d4b53fafafe8",
+    "dirty": false
+  },
+  "baseSha": "f6af0b0e151f15f1a23808413ccee531b9827ca7",
+  "tier": "D0",
+  "profile": "synthetic",
+  "hostOs": "win32 10.0.26300",
+  "runtimeVersion": "v24.18.0",
+  "capabilitySnapshot": [
+    "device.magnetic-field"
+  ],
+  "physicalOrVirtual": "VIRTUAL",
+  "startedAt": "2026-10-19T18:54:31.654Z",
+  "completedAt": "2026-10-19T18:54:31.656Z",
+  "assertions": [
+    {
+      "id": "sextant.phase3.magnetic-disturbance",
+      "state": "PASS"
+    }
+  ],
+  "evidenceClass": "PROVIDER_SIMULATION_PROVEN",
+  "unsupportedCapabilities": [],
+  "requiredFutureGates": [
+    "D4_REAL_DEVICE_REQUIRED_FOR_PHYSICAL_CLAIMS",
+    "D5_FIELD_REQUIRED_FOR_FIELD_CLAIMS",
+    "OWNER_ACCEPTANCE_REQUIRED"
+  ],
+  "artifacts": [],
+  "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+  "cleanupReceipt": {
+    "result": "PASS",
+    "ownedResources": [
+      "synthetic-media-resources",
+      "emulated-radio-listeners",
+      "bounded-nearby-timers"
+    ],
+    "remainingResources": []
+  },
+  "passFailDisposition": "PASS"
+}

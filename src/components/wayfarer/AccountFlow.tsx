@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { useCurrentUser } from "@/components/auth/CurrentUserProvider";
 import { authorizedReturnTo, safeReturnTo } from "@/homeport/return-to";
 import { assessPassword } from "@/wayfarer/password-policy";
@@ -48,12 +48,18 @@ function primaryActionLabel(mode: Exclude<Mode, "security">) {
   }[mode];
 }
 
+const subscribeToHydration = () => () => undefined;
+const hydratedSnapshot = () => true;
+const serverHydrationSnapshot = () => false;
+
 export function AccountFlow({ mode, query, initialCsrf = "", maskedEmail }: Props) {
   const router = useRouter();
   const { state: currentUser, invalidate } = useCurrentUser();
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const clientReady = useSyncExternalStore(subscribeToHydration, hydratedSnapshot, serverHydrationSnapshot);
+  const [confirmedEmailChangeToken, setConfirmedEmailChangeToken] = useState<string | null>(null);
   const [csrf, setCsrf] = useState(
     () => initialCsrf || (typeof window === "undefined" ? "" : (sessionStorage.getItem("wayfarer-csrf") ?? "")),
   );
@@ -80,6 +86,7 @@ export function AccountFlow({ mode, query, initialCsrf = "", maskedEmail }: Prop
   const returnTo = safeReturnTo(query?.returnTo ?? query?.return, "");
   const reason = query?.reason ?? "";
   const queryToken = query?.token ?? "";
+  const emailChangeConfirmed = mode === "email-change" && confirmedEmailChangeToken === queryToken;
   const passwordAssessment = assessPassword(values.password ?? "", {
     email: values.email,
     displayName: values.displayName,
@@ -89,6 +96,7 @@ export function AccountFlow({ mode, query, initialCsrf = "", maskedEmail }: Prop
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (!clientReady || emailChangeConfirmed) return;
     setBusy(true);
     setError("");
     setMessage("");
@@ -165,6 +173,7 @@ export function AccountFlow({ mode, query, initialCsrf = "", maskedEmail }: Prop
         router.replace(authorizedReturnTo(body?.next ?? returnTo, nextContext, "/passport"));
         router.refresh();
       } else if (mode === "email-change") {
+        setConfirmedEmailChangeToken(queryToken);
         sessionStorage.removeItem("wayfarer-csrf");
         await invalidate();
         setMessage("Your primary email was changed and existing sessions were ended. Sign in with the new address.");
@@ -412,7 +421,7 @@ export function AccountFlow({ mode, query, initialCsrf = "", maskedEmail }: Prop
             <Link href={authorizedReturnTo(returnTo, currentUser, "/passport")}>Continue without signing in again</Link>
           </p>
         ) : null}
-        <form onSubmit={submit} aria-describedby="account-status">
+        <form method="post" onSubmit={submit} aria-describedby="account-status">
           {fields.map((field) => {
             const fieldError = fieldErrors[field];
             const describedBy =
@@ -476,7 +485,7 @@ export function AccountFlow({ mode, query, initialCsrf = "", maskedEmail }: Prop
                               : "new-password"
                             : "nickname"
                   }
-                  disabled={busy}
+                  disabled={!clientReady || busy}
                   required
                 />
                 {field === "password" && mode === "register" ? (
@@ -512,9 +521,11 @@ export function AccountFlow({ mode, query, initialCsrf = "", maskedEmail }: Prop
               </div>
             );
           })}
-          {(mode === "reset" || mode === "email-change") && <input name="token" type="hidden" value={queryToken} />}
+          {(mode === "reset" || mode === "email-change") && (
+            <input name="token" type="hidden" value={queryToken} disabled={!clientReady} />
+          )}
           {mode === "merge" && <p>Confirming preserves your guest voyage history in this account.</p>}
-          <button className="brass-button" disabled={busy}>
+          <button className="brass-button" disabled={!clientReady || busy || emailChangeConfirmed}>
             {busy ? "Working…" : primaryActionLabel(mode)}
           </button>
         </form>
@@ -594,7 +605,7 @@ export function AccountFlow({ mode, query, initialCsrf = "", maskedEmail }: Prop
             Return to Sign In
           </Link>
         ) : null}
-        {mode === "email-change" && message ? (
+        {emailChangeConfirmed ? (
           <Link className="account-flow-nav" href="/sign-in">
             Sign in with the new email
           </Link>

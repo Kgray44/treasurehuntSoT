@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "measurementClass": "OS_SCENARIO_ACTION_WALL_CLOCK",
+  "physicalTimingProven": false,
+  "measurements": [
+    {
+      "index": 0,
+      "action": "SENSOR",
+      "elapsedMs": 343.6651619999975,
+      "preliminaryBudgetMs": 120000,
+      "state": "PASS"
+    },
+    {
+      "index": 1,
+      "action": "SENSOR",
+      "elapsedMs": 334.1652469999972,
+      "preliminaryBudgetMs": 120000,
+      "state": "PASS"
+    },
+    {
+      "index": 2,
+      "action": "ASSERT",
+      "elapsedMs": 200.02449299999716,
+      "preliminaryBudgetMs": 120000,
+      "state": "PASS"
+    },
+    {
+      "index": 3,
+      "action": "ASSERT",
+      "elapsedMs": 0.03177999999752501,
+      "preliminaryBudgetMs": 120000,
+      "state": "PASS"
+    },
+    {
+      "index": 4,
+      "action": "ASSERT",
+      "elapsedMs": 18.91163900000538,
+      "preliminaryBudgetMs": 120000,
+      "state": "PASS"
+    }
+  ]
+}

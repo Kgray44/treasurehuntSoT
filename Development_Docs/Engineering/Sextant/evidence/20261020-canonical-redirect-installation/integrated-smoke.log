@@ -1,0 +1,10 @@
+✔ task-owned cookie adaptation is nonce-gated to the isolated Phase 3 runtime (1.8549ms)
+✔ task-owned HTTP proxy preserves its browser origin through backend redirects (78.7962ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 526.8288

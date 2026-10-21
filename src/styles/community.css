@@ -385,6 +385,7 @@ html[data-voyage-theme="light"] :where(.community-button--quiet, .community-filt
 
 .community-card__art {
   position: relative;
+  pointer-events: none;
   display: grid;
   min-height: 10.5rem;
   place-items: center;
@@ -624,6 +625,11 @@ html[data-voyage-theme="light"] :where(.community-button--quiet, .community-filt
   border-color: color-mix(in srgb, var(--community-brass) 70%, transparent);
   color: var(--community-ink);
   background: linear-gradient(135deg, #e2cb91, var(--community-brass));
+}
+
+html .community-harbor .community-button--primary:hover:not(:disabled) {
+  color: var(--community-ink);
+  background: #e2cb91;
 }
 
 .community-button--quiet {

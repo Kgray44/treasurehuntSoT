@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "classification": "ENGINEERING_EVIDENCE_ORIGINAL_BYTES_NOT_ACCEPTANCE",
+  "sourceSha": "91cffab32aa551ed36a13aa2d5097f736b0abf2b",
+  "runId": "39377665326",
+  "originalArtifacts": 4,
+  "publishedOriginalArtifacts": 4,
+  "retainedPrivate": [],
+  "reviewFinding": "INDEPENDENT_SOURCE_AND_RECEIPT_AUDIT_CLEAR_WITH_EMULATOR_SESSION_BOOTSTRAP_AND_NO_VISUAL_PHYSICAL_LIMITS",
+  "files": [
+    {
+      "path": "files/0001-native-background-return-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91cffab32aa5-1792475844551/run-39377665326/artifacts/landfall-android-background-primary-phone-91cffab32aa551ed36a13aa2d5097f736b0abf2b/landfall-device-lab/radio-owner-70bcacd2-54ac-47ca-b7c6-7330d957ede6/native-background-return-receipt.json",
+      "bytes": 6521,
+      "sha256": "fe0c25702e405a104eae80e76a7802b786739482e78a273ae33d7ce49ce9512f"
+    },
+    {
+      "path": "files/0002-radio-owner-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91cffab32aa5-1792475844551/run-39377665326/artifacts/landfall-android-background-primary-phone-91cffab32aa551ed36a13aa2d5097f736b0abf2b/landfall-device-lab/radio-owner-70bcacd2-54ac-47ca-b7c6-7330d957ede6/radio-owner-receipt.json",
+      "bytes": 13337,
+      "sha256": "842fff7e6da04ffe757cac6ed86eefdbf650ff61299e1a3c4d0811466f6c802f"
+    },
+    {
+      "path": "files/0003-browser-runtime.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91cffab32aa5-1792475844551/run-39377665326/artifacts/landfall-android-background-primary-phone-91cffab32aa551ed36a13aa2d5097f736b0abf2b/sounding-line/browser-runtime.json",
+      "bytes": 1328,
+      "sha256": "df3d9e903735b146c26b75c4a296367301575b312da2c1e4f80a4867cf289ae1"
+    },
+    {
+      "path": "files/0004-browser-suite-profile.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91cffab32aa5-1792475844551/run-39377665326/artifacts/landfall-android-background-primary-phone-91cffab32aa551ed36a13aa2d5097f736b0abf2b/sounding-line/browser-suite-profile.json",
+      "bytes": 189,
+      "sha256": "94f5e9276e6730640248ce543a83ebfe6f6a50642ae10f1044ec37267dac873c"
+    },
+    {
+      "path": "files/0005-hosted-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91cffab32aa5-1792475844551/run-39377665326/hosted-receipt.json",
+      "bytes": 1596,
+      "sha256": "29a16e205d695fd629de007f7f7faf00df01c1fd9e14edb4b4a007336d899765"
+    },
+    {
+      "path": "files/0006-dispatch.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91cffab32aa5-1792475844551/dispatch.json",
+      "bytes": 2048,
+      "sha256": "52c80f5036fc089104174198dd9c2fdc3fc9a5c8f74692e9b066a5575a1f0219"
+    },
+    {
+      "path": "files/0007-android-background-39377665326.log",
+      "sourcePath": "artifacts/sextant-phase4/android-background-39377665326.log",
+      "bytes": 444324,
+      "sha256": "c3b0756005160fb810123d2c896f0a4fe26118d3557556ad38bda9de63a89690"
+    }
+  ],
+  "independentReview": {
+    "reviewer": "/root/sextant_source_review",
+    "status": "CLEAR_WITH_EXPLICIT_LIMITS",
+    "hashedArtifacts": 4,
+    "artifactBytes": 21375,
+    "recomputedSourceTree": "31db5d5b8f1e821534f69d472f37db8695285bf6",
+    "baseFingerprint": {
+      "files": 1948,
+      "sha256": "1f349f6a96c799b7ff58e8862a6835fe74430702174584d3281b6f494711ef65"
+    },
+    "testFingerprint": {
+      "files": 1952,
+      "sha256": "3527b113dd07274af48a5d5e7222077ee2c6b707acac370b601c3141dcaa422f"
+    },
+    "actualSourceAssertionsReviewed": true,
+    "credentialPatternScan": "NO_MATCH_IN_FOUR_JSONS_AND_ORIGINAL_LOG",
+    "limits": [
+      "DEBUG_NATIVE_APK_WITH_OPTIMIZED_SERVER",
+      "DOCUMENTED_FLP_MOCK_INPUT",
+      "ADB_GRANTED_PERMISSIONS_NOT_PROMPT_PROOF",
+      "SYNTHETIC_CANONICAL_SESSION_BOOTSTRAP_NOT_ORDINARY_SIGNIN",
+      "NO_IMAGES_OR_VIDEOS_AND_NO_VISUAL_REVIEW",
+      "APK_AND_FIXTURE_PAYLOAD_BYTES_NOT_PUBLISHED_FOR_INDEPENDENT_REHASH",
+      "NO_PHYSICAL_OR_OWNER_OR_PROTECTED_PHASE_ACCEPTANCE"
+    ]
+  }
+}

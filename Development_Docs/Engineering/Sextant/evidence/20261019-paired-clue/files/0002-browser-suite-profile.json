@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/sextant-parallax-paired-journeys.spec.ts"
+  ],
+  "status": "PASS",
+  "failureCategory": null,
+  "failureCode": null,
+  "diagnosticBinding": {
+    "version": 1,
+    "runId": "bb75e5a1-47eb-49e6-843f-5f0ed6fd7b70",
+    "scopeId": "61f7065b-ac39-4808-8ff4-57ace37570b4",
+    "baseSha": "a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167",
+    "candidateSha": "a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167",
+    "planDigest": "d1244fc5213f5b541ada0dce72ba1b7a2127a5aae967157ebd4d2de620e6ae3e"
+  }
+}

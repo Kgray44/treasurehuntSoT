@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "classification": "ENGINEERING_SYNTHETIC_CREATOR_ENTRY_DEVELOPMENT_NOT_ACCEPTANCE",
+  "source": {
+    "sourceSha": "c518c1680993021279c3c9fc3af0414612d7a10a",
+    "sourceTree": "08c37b483119ba0196af8be391eeb52ee43e57d7",
+    "dirty": false,
+    "sourceFingerprint": "fe177cf4d88194174824288d520839be29dc46712b6d8a519e078d6474447399"
+  },
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "reducedMotion": "no-preference",
+  "baseline": [
+    {
+      "id": "sextant-experience-voyage",
+      "status": "ACTIVE",
+      "currentSequence": 4,
+      "currentBlockId": "sextant-experience-note",
+      "publishedVersionId": "cmvg2o27e00085qstfm6x6cat"
+    },
+    {
+      "id": "sextant-resource-voyage-creator-entry-1280-no-preference",
+      "status": "ACTIVE",
+      "currentSequence": 4,
+      "currentBlockId": "sextant-resource-passage-creator-entry-1280-no-preference",
+      "publishedVersionId": "cmvg2o2qo000q5qst0bfm6303"
+    }
+  ],
+  "feedback": [
+    {
+      "task": "Ordinary Creator workspace entry",
+      "elapsedMs": 903.0901350000004
+    },
+    {
+      "task": "Prepared new Chronicle form",
+      "elapsedMs": 314.5300219999999
+    },
+    {
+      "task": "Reopen secure creation form",
+      "elapsedMs": 424.49006199999894
+    },
+    {
+      "task": "Actual private Chronicle creation",
+      "elapsedMs": 727.3158279999989
+    },
+    {
+      "task": "Reopen actual new draft",
+      "elapsedMs": 151.94882099999813
+    },
+    {
+      "task": "Ordinary Personal Harbor return",
+      "elapsedMs": 589.2848999999987
+    }
+  ],
+  "created": {
+    "taleId": "cmvg2o7bf00075qrkfofuhqzk",
+    "draftId": "cmvg2o7bn00095qrk3eh2sxlt",
+    "status": "DRAFT",
+    "visibility": "PRIVATE",
+    "versions": 0,
+    "sessions": 0
+  },
+  "cancellationCreatedNothing": true,
+  "ordinaryAccountReturn": true,
+  "exactReleasedBytesUnchanged": true,
+  "coverUploadCovered": false,
+  "privatePackageWorkflowCovered": false,
+  "publishingReadinessProved": false,
+  "protectedAcceptance": false
+}

@@ -1,0 +1,28 @@
+{
+  "sourceSha": "820178bf043e1ffd3c366eaa5037d5d148653e51",
+  "sourceTree": "e5dfae89a2e4c66330e888b0298ac5ef628ca082",
+  "classification": "LOCAL_THREE_CONSUMER_CAPTURE_NOT_COMPLETE_COVERAGE_OR_PROTECTED_ACCEPTANCE",
+  "ordinarySignIn": "PASS",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "protectedReplay": "NOT_PROVEN",
+  "results": [
+    {
+      "contractId": "crossdeck.phase2.continuity",
+      "status": "FAILED_ACTUAL_JOURNEY",
+      "reason": "locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('link', { name: 'Devices', exact: true }) to be visible\u001b[22m\n",
+      "outputDirectory": "artifacts/sextant-experience-local-820178bf043e/crossdeck.phase2.continuity"
+    },
+    {
+      "contractId": "sextant.phase3.field-context",
+      "status": "FAILED_ACTUAL_JOURNEY",
+      "reason": "locator.waitFor: Error: strict mode violation: getByRole('link', { name: 'Continue Voyage', exact: true }) resolved to 2 elements:\n    1) <a href=\"/play/landfall-closure-4e9c8c36-f819-4f07-8677-5dc1d942087b/session/sextant-experience-voyage\">Continue Voyage</a> aka getByRole('link', { name: 'Continu",
+      "outputDirectory": "artifacts/sextant-experience-local-820178bf043e/sextant.phase3.field-context"
+    },
+    {
+      "contractId": "sextant.phase4.native-context",
+      "status": "FAILED_ACTUAL_JOURNEY",
+      "reason": "locator.waitFor: Error: strict mode violation: getByRole('link', { name: 'Continue Voyage', exact: true }) resolved to 2 elements:\n    1) <a href=\"/play/landfall-closure-4e9c8c36-f819-4f07-8677-5dc1d942087b/session/sextant-experience-voyage\">Continue Voyage</a> aka getByRole('link', { name: 'Continu",
+      "outputDirectory": "artifacts/sextant-experience-local-820178bf043e/sextant.phase4.native-context"
+    }
+  ]
+}

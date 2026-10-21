@@ -3,10 +3,94 @@ title: Current status
 audience: product
 status: current
 canonical_for: product-current-status
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-20
 ---
 
 # Current status
+
+The [2026-10-19 Sextant continuation](../../Sextant/Project_Sextant_Phase_4_Virtual_Completion_20261019.md)
+retains source-bound provider proof: 327 focused checks and 59 D0/D1 scenarios,
+Android idle/standby recovery, selected iOS permission/geofence cases and Android
+WebView Devices/Journal development journeys. Signed background-notice, registered guest reboot, active return and revoked fallback also pass run39377665326 with independent source audit and complete cleanup. That debug-APK/optimized-server proof uses FLP mock input, ADB permissions and a synthetic session bootstrap; it grants no ordinary sign-in/prompt, visual or physical acceptance. Later UI changes do not rerun those
+provider results. Normal iOS Devices requires canonical Darwin process ownership.
+The frozen Display/pilot entry checkpoint has 179 affected surfaces and 5 missing
+registrations; historical obligations and campaign accounting remain intact.
+
+Independent rendered review clears the specified Passport, safe preview, mobile
+rail, Captain wording/editor chrome, authoring full-label/Suite and displayed
+historical/catalog repairs at their recorded sources. Viewport, empty-resource
+and chronology-fallback limits remain; normal catalog Journal opening is separately
+about ten seconds. Fresh Community development passes four after a pre-product checkout cancellation;
+independent review verifies210hashes/all120PNGs and clears the actual Guide pointer
+and Search-hover repairs within the stated viewport limits. Creator form-ink
+recapture passes four with unchanged final baselines; independent70hash/30PNG
+review resolves the pale parchment heading/intro/helper finding and reviews the
+added Chapter/Edit and desktop empty-Inspector captures. Private Chronicle outcome recapture39366688335 and Admiralty identity/masthead
+recapture39366678779 pass four variants at their frozen source, with separate
+runtime/transport cleanup and Private exact-root storage removal. Independent Admiralty review clears all 40 PNGs and resolves both prior findings.
+Private hover recapture39369889786 passes four variants at e408f97695; independent
+86-file/36-PNG review resolves the hover finding with12.824:1 contrast.
+Fresh exact-root storage removal follows canonical process cleanup. Viewport,
+video, formal, native and protected limits remain. Account39366698914 passes the full synthetic registration,
+password/email recovery and reversible lifecycle sequence, with unchanged final
+baselines. Its original dirty source flags remain under provenance review; the
+frozen source fingerprint matches all four receipts. Independent review finds
+R39366698914-01: successful email confirmation leaves its consumed action enabled.
+The candidate makes that success terminal and preserves its sign-in return;
+14 focused component cases pass. Fresh 5d440557 account capture passes all four
+journeys with clean source; independent 117-file/52-PNG review resolves the
+terminal-confirmation finding within its viewport limits.
+Invitation39366710226 fails four at an ambiguous global alert selector after
+actual wrong-PIN rejection. The successor scopes the same error to the real
+invitation page. Original failures, findings and encrypted diagnostics remain.
+Landfall now has 17 conditional source declarations with browser/native proof
+pending. The issued-link diagnostic observes an off-origin307, absent applicable
+pending cookie and resolve404. Canonical repair PR777 passes protected verification,
+lands atc0b29d78f7 and passes landed/integrated HTTP smokes. Fresh Invitation,
+Landfall and existing Display/unprepared pilot captures remain required.
+The first2042 runs fail: Invitation3/4 passes but one3323.98ms handoff exceeds3000ms; Landfall has4physical fixture privacy failures,2normal virtual controller failures and2reduced virtual sign-in failures; entry has2invalid menu-link and2reduced sign-in failures. Source corrections retain account hydration safety, actual Journal Devices entry, coherent physical privacy and post-accept route preparation. Fresh runs and bounded sign-in/service-worker observations remain required. At91cffab, Landfall signs in all16times but retains4intentional approximate landmark omissions and4uncontrolled activated workers; Invitation again passes3/4 with one3253.46ms handoff; entry has3bound-route chooser errors and1zeroPOST mobile-reduced sign-in failure. Originals and cleanup pass custody checks; no full consumer/rendered acceptance follows. Additive ordinary formal Device register/remove preparation uses existing runner actions and preserves its global gates. Darwin containment, formal mutable bindings and protected qualification remain open.
+
+Two new formal contracts replace invalid prose checks with actual DOM identity
+or gateway selectors while retaining all prose requirements and unchanged backend
+browser assertions. DOM continuity does not prove database continuity. Positive
+formal creation and private-package file input still require canonical Sounding
+Line support.
+Account/recovery/invitation/private-content/Landfall work, legacy disposition,
+formal reference/layout and protected qualification remain. Reach diagnostics
+are accepted; Crossdeck #721 remains unmerged and unconsumed. No completed
+feature, native/physical or owner acceptance is promoted.
+
+Sextant's separately authorized R1 follow-up preserves its original exhausted 3/3
+campaign. The synthetic route identity repair passed its isolated canonical-writer
+check. A recorded Crossdeck/Helm boundary permits the compatibility wrapper to use
+the unchanged authorization seam; the shared Journal's 28 regression checks pass.
+Actual route continuity and full consumer acceptance still require capture. R1 is
+at iteration 2/3 with no recapture after correcting a trusted-reference binding.
+The R1 source registered 12 journeys on 22 paths; accepted Reach main added
+one pairing declaration. That source blocked 118 unregistered paths,
+and all original 141 require final-source capture/acceptance. The earlier password
+role blocker is refuted by installed Playwright source. Reach diagnostics are now
+accepted; the conditional Crossdeck retry remains unmerged.
+See the [follow-up ledger](../../Sextant/phase4-acceptance-followup-r1-ledger.json).
+
+Historical Sextant Phase 4 receipts describe an implementation candidate with native ownership, canonical
+transport, coordinated shared-lab scenarios and ordinary Devices controls under
+qualification. Four Android virtual profiles passed their registered scenarios;
+actual native Devices controls and OS lifecycle checks passed. Apple native tests,
+including the corrected Home transition, passed. Broader Apple execution retained
+geofence foreground-acknowledgement and lost-response failures; the normal Apple
+Devices journey still requires actual proof. Corrected Android registered background
+return, reboot and revoked return passed with zero progression and cleanup. Combined
+root/ordinary software checks passed at c21c8cd9; the subsequent phone correction
+and scoped Apple qualification changes require fresh receipts. Required D4 core real-device
+bring-up and formal acceptance remain open. See the
+[Phase 4 record](../../Sextant/Project_Sextant_Phase_4_Implementation_Record.md).
+
+At Apple source `71b46a0b`, the native baseline passed 29 tests with one expected skip. The ordered geofence trace records background delivery and will-enter notifications, but no returned scene activation or foreground dispatch. A read-only export shows the actual Motion & Fitness prompt covering that return. Normal product execution failed before sign-in because its exact query mismatched the existing uppercase native labels; the same permission prompt interrupted that page. The run retains 7,588 original files. Local synthetic sign-in passed, while all three desktop journeys stopped behind the first-open Journal dialog; independent review requires repair and recapture. Unused fitness-service cleanup, selectors and ordinary opening journeys have bounded source repairs awaiting actual execution. Global consumer coverage, protected authenticated replay, final software qualification, physical bring-up and formal acceptance remain open.
+
+Source035 completed its production build and ordinary sign-in, and reached the actual Devices and Guided Lens. All three captures nevertheless failed. Independent review confirmed pale Lens clue text and route/returning-state contract mismatches. A bounded local ink and journey repair requires recapture and the final review cycle;141 uncovered shared consumers and native/physical qualification remain open.
+
+At source `820178bf`, the build, 54 focused tests and 53 D0/D1 scenarios passed with cleanup. Actual first opening and screen fallback were observed, but all three consumer journeys failed. Final independent review is BLOCK_WITH_EVIDENCE at the three-iteration cap: split Journal reading state, ambiguous continuation and fixture route mismatch remain; Lens/mobile/reduced/Creator proof is incomplete. Both native handoffs are explicitly held. The Phase 4 record retains all 12 reviewed assets and original receipts. Further repeated repair or native dispatch requires its specific release trigger.
 
 Parallax A1 is software-qualified on main through protected PR #710 at `ee8caa83`, after ordinary Sounding Line PASS and 118 landed smoke checks. Spatial Studio provides reviewed natural-language proposals, actual canvas preview, atomic saved Apply and ordinary history with adaptive ownership preserved. Admiralty supplies durable AI accounting and global policy; per-user controls use the existing People dossier. Five production-browser journeys pass, and six authorized live calls returned validated structured responses with settled usage. Catalog FT-B112 records availability with assistance disabled by default. The owner accepted the later revised presentation; finite model testing and physical quality retain their stated limits; see the [implementation record](../../../Projects/Project_Parallax/Parallax_A1_Implementation_and_Qualification.md).
 

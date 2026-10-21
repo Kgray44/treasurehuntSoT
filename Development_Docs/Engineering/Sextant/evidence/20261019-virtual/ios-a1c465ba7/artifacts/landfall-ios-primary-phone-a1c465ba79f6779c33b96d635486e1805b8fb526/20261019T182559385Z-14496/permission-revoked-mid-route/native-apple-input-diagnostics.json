@@ -1,0 +1,14 @@
+[
+  {
+    "index": 0,
+    "phase": "LOCATION",
+    "attempt": 1,
+    "state": "ATTEMPT"
+  },
+  {
+    "index": 0,
+    "phase": "LOCATION",
+    "attempt": 1,
+    "state": "ACKNOWLEDGED"
+  }
+]

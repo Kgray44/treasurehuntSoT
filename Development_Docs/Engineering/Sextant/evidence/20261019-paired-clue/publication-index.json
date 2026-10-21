@@ -1,0 +1,280 @@
+{
+  "schemaVersion": 1,
+  "classification": "ENGINEERING_EVIDENCE_ORIGINAL_BYTES_NOT_ACCEPTANCE",
+  "sourceSha": "a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167",
+  "runId": "39331079907",
+  "artifacts": 42,
+  "reviewFinding": "INDEPENDENT_RENDERED_REVIEW_CLEAR_TWELVE_CAPTURES_WITH_LIMITS_NOT_PROTECTED_ACCEPTANCE",
+  "files": [
+    {
+      "path": "files/0001-browser-runtime.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/browser-diagnostics/bb75e5a1-47eb-49e6-843f-5f0ed6fd7b70/61f7065b-ac39-4808-8ff4-57ace37570b4/browser-runtime.json",
+      "bytes": 2176,
+      "sha256": "5835d39ce7353ae57f33fc6a23ad7fb9fef642b90f18ff5f627561ea0e0e5809"
+    },
+    {
+      "path": "files/0002-browser-suite-profile.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/browser-diagnostics/bb75e5a1-47eb-49e6-843f-5f0ed6fd7b70/61f7065b-ac39-4808-8ff4-57ace37570b4/browser-suite-profile.json",
+      "bytes": 559,
+      "sha256": "2013ef6b3d259b301a679a478d5685315cb8adc9c6d05162be95802391e27449"
+    },
+    {
+      "path": "files/0003-video-44362f6d984cc92686e45211f5ffdcc22292138d.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-61570-t-Crew-Player-s-pinned-clue-chromium/attachments/video-44362f6d984cc92686e45211f5ffdcc22292138d.webm",
+      "bytes": 2207295,
+      "sha256": "ae0e722d9c535c8c126c57bfac1774e29803b21bed13f2f3ec092e3607b5f937"
+    },
+    {
+      "path": "files/0004-creator-working-clue-reopened.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-61570-t-Crew-Player-s-pinned-clue-chromium/creator-working-clue-reopened.png",
+      "bytes": 112505,
+      "sha256": "eb3bd03fa221e40bd5db52530e996dccaa6ec41a3acb806984507cbc23e730e2"
+    },
+    {
+      "path": "files/0005-crew-after-working-save-published-clue.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-61570-t-Crew-Player-s-pinned-clue-chromium/crew-after-working-save-published-clue.png",
+      "bytes": 159561,
+      "sha256": "e0c638e7103054f6ced165498b244bf4cad1b4f799bd86fc390045ad68b58b78"
+    },
+    {
+      "path": "files/0006-crew-before-published-clue.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-61570-t-Crew-Player-s-pinned-clue-chromium/crew-before-published-clue.png",
+      "bytes": 161110,
+      "sha256": "86ca48962f5a8edf55ef24e7ee1c4b6d9b4d463ffb0906291de41ccc5d71d584"
+    },
+    {
+      "path": "files/0007-6b6e28642c040d9df6adf078f86976ac.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-61570-t-Crew-Player-s-pinned-clue-chromium/crew-recording/6b6e28642c040d9df6adf078f86976ac.webm",
+      "bytes": 1209,
+      "sha256": "212e76305638c82456410ecda7a3476cdfcb3702a2e8d936c887f12a78040d5b"
+    },
+    {
+      "path": "files/0008-6d8dc4cc34d18e2d9f89565c2371290e.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-61570-t-Crew-Player-s-pinned-clue-chromium/crew-recording/6d8dc4cc34d18e2d9f89565c2371290e.webm",
+      "bytes": 2207295,
+      "sha256": "ae0e722d9c535c8c126c57bfac1774e29803b21bed13f2f3ec092e3607b5f937"
+    },
+    {
+      "path": "files/0009-ea508b1ea64d5f7104f4dfb479ed0f09.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-61570-t-Crew-Player-s-pinned-clue-chromium/crew-recording/ea508b1ea64d5f7104f4dfb479ed0f09.webm",
+      "bytes": 1209,
+      "sha256": "d3832b1e494d958f139bb24490094beb5d98ea850e73df3da70efc1247525d1f"
+    },
+    {
+      "path": "files/0010-paired-creator-player-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-61570-t-Crew-Player-s-pinned-clue-chromium/paired-creator-player-receipt.json",
+      "bytes": 1249,
+      "sha256": "ef05d1c882b4578193d1481f6fc9a9044b2eb380b7a694d37dbe7956a2ffb003"
+    },
+    {
+      "path": "files/0011-video-1.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-61570-t-Crew-Player-s-pinned-clue-chromium/video-1.webm",
+      "bytes": 1932,
+      "sha256": "572179fa626542b3aeba96f43faabff1e5277f831b3f8f86984d0ce599f94111"
+    },
+    {
+      "path": "files/0012-video.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-61570-t-Crew-Player-s-pinned-clue-chromium/video.webm",
+      "bytes": 1771715,
+      "sha256": "789cec751da4a841552b91068d129c040fd5e03cded06550c1217a1506eeb529"
+    },
+    {
+      "path": "files/0013-video-909185800dc02854219353852e5b8287779ca971.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-94104-t-Crew-Player-s-pinned-clue-chromium/attachments/video-909185800dc02854219353852e5b8287779ca971.webm",
+      "bytes": 1851593,
+      "sha256": "3d09ede81f7d41383f36e74122615ec97bfbb254b1db5846cd78c48c80b46218"
+    },
+    {
+      "path": "files/0014-creator-working-clue-reopened.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-94104-t-Crew-Player-s-pinned-clue-chromium/creator-working-clue-reopened.png",
+      "bytes": 276204,
+      "sha256": "eec09b17a6c935569109db77eab8c02268f979082cc2a50be92908be4ab3d41c"
+    },
+    {
+      "path": "files/0015-crew-after-working-save-published-clue.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-94104-t-Crew-Player-s-pinned-clue-chromium/crew-after-working-save-published-clue.png",
+      "bytes": 358119,
+      "sha256": "bfecbaff6c8cab5530e42a043acefaca79700a75b3b9bff8df8b243d6a9df846"
+    },
+    {
+      "path": "files/0016-crew-before-published-clue.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-94104-t-Crew-Player-s-pinned-clue-chromium/crew-before-published-clue.png",
+      "bytes": 358119,
+      "sha256": "bfecbaff6c8cab5530e42a043acefaca79700a75b3b9bff8df8b243d6a9df846"
+    },
+    {
+      "path": "files/0017-01c19379d560ae37b7728ca0c62c04fd.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-94104-t-Crew-Player-s-pinned-clue-chromium/crew-recording/01c19379d560ae37b7728ca0c62c04fd.webm",
+      "bytes": 1851593,
+      "sha256": "3d09ede81f7d41383f36e74122615ec97bfbb254b1db5846cd78c48c80b46218"
+    },
+    {
+      "path": "files/0018-67bc74894f7eca9265435f5d001104ad.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-94104-t-Crew-Player-s-pinned-clue-chromium/crew-recording/67bc74894f7eca9265435f5d001104ad.webm",
+      "bytes": 2633,
+      "sha256": "3b7ac87b42da64b470f243ead74f089575f7c51bfefb727be3bbddc73e815c4a"
+    },
+    {
+      "path": "files/0019-c5755e81bc3c01e01c310d92864d2681.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-94104-t-Crew-Player-s-pinned-clue-chromium/crew-recording/c5755e81bc3c01e01c310d92864d2681.webm",
+      "bytes": 2633,
+      "sha256": "dce7efb9124a7e5c373492d2ae1e0cc57e6590e45264c354deb871686c742f2a"
+    },
+    {
+      "path": "files/0020-paired-creator-player-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-94104-t-Crew-Player-s-pinned-clue-chromium/paired-creator-player-receipt.json",
+      "bytes": 1229,
+      "sha256": "2772ff4b4f107ad4ebfd5ac7d3cba9f4c37c47d18ed27a2aeb76e19475750a2d"
+    },
+    {
+      "path": "files/0021-video-1.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-94104-t-Crew-Player-s-pinned-clue-chromium/video-1.webm",
+      "bytes": 1894,
+      "sha256": "e6a0c238151477851af6c3b37b0390afd052e55c7d68c55774b17f827cd55ce9"
+    },
+    {
+      "path": "files/0022-video.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-94104-t-Crew-Player-s-pinned-clue-chromium/video.webm",
+      "bytes": 1012994,
+      "sha256": "d6e0c7da4da108ce9cd97b9df17e7d694ab554a566775a6c472a54192f926426"
+    },
+    {
+      "path": "files/0023-video-8f7109729ad8fa0688aa264eb7e85fb51b4b6dc7.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-b4179-t-Crew-Player-s-pinned-clue-chromium/attachments/video-8f7109729ad8fa0688aa264eb7e85fb51b4b6dc7.webm",
+      "bytes": 1394728,
+      "sha256": "e89ceccc507fc2e646c2f2d74fd42ae57fa059b42a98b90285843ea70073b8a9"
+    },
+    {
+      "path": "files/0024-creator-working-clue-reopened.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-b4179-t-Crew-Player-s-pinned-clue-chromium/creator-working-clue-reopened.png",
+      "bytes": 111762,
+      "sha256": "61c9c15004245f69c328ec754a4a3f92fb1b7272483d551489c087f11fba8268"
+    },
+    {
+      "path": "files/0025-crew-after-working-save-published-clue.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-b4179-t-Crew-Player-s-pinned-clue-chromium/crew-after-working-save-published-clue.png",
+      "bytes": 159854,
+      "sha256": "09d564e1766fe5745536ba74590e34dc37da6ff70ee275714ef6fcf0dd3e911b"
+    },
+    {
+      "path": "files/0026-crew-before-published-clue.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-b4179-t-Crew-Player-s-pinned-clue-chromium/crew-before-published-clue.png",
+      "bytes": 159854,
+      "sha256": "da596e8b9309558253fc7a022e010fb3c088412532659dff3d8fe4dfe1f23339"
+    },
+    {
+      "path": "files/0027-7d55e9c812f96d5035c8b5f5c8516600.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-b4179-t-Crew-Player-s-pinned-clue-chromium/crew-recording/7d55e9c812f96d5035c8b5f5c8516600.webm",
+      "bytes": 1209,
+      "sha256": "55802fa45263cb3b9d0bbba01d1d599aeeda3dfa4699d7021b6f9038601a769d"
+    },
+    {
+      "path": "files/0028-bad5632d3b7d8f0662cd23fe2a8c61b3.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-b4179-t-Crew-Player-s-pinned-clue-chromium/crew-recording/bad5632d3b7d8f0662cd23fe2a8c61b3.webm",
+      "bytes": 1209,
+      "sha256": "160793e291099c3145e25dfa0516934bb07a76a37d54c4af5719295ba7bdb8e8"
+    },
+    {
+      "path": "files/0029-cd58ea6d03297190a5282b1953e018d4.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-b4179-t-Crew-Player-s-pinned-clue-chromium/crew-recording/cd58ea6d03297190a5282b1953e018d4.webm",
+      "bytes": 1394728,
+      "sha256": "e89ceccc507fc2e646c2f2d74fd42ae57fa059b42a98b90285843ea70073b8a9"
+    },
+    {
+      "path": "files/0030-paired-creator-player-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-b4179-t-Crew-Player-s-pinned-clue-chromium/paired-creator-player-receipt.json",
+      "bytes": 1229,
+      "sha256": "0bfa31c7c7030d381d07940a917b15f4ff164f2895fcdc0c1e60c7e7b0acea34"
+    },
+    {
+      "path": "files/0031-video-1.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-b4179-t-Crew-Player-s-pinned-clue-chromium/video-1.webm",
+      "bytes": 1782,
+      "sha256": "7d78a68d5db9ff36314049e5a94727d6d4374aa8a4806156f88e3ae569705c28"
+    },
+    {
+      "path": "files/0032-video.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-b4179-t-Crew-Player-s-pinned-clue-chromium/video.webm",
+      "bytes": 1050436,
+      "sha256": "d16448824a886e68742ebacfaa847c6b57d186faf38a35ffe0c387a2999c2cf9"
+    },
+    {
+      "path": "files/0033-video-a720f2588ad6d6ba310165dbea18da66f126a50f.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-c99c3-t-Crew-Player-s-pinned-clue-chromium/attachments/video-a720f2588ad6d6ba310165dbea18da66f126a50f.webm",
+      "bytes": 3174412,
+      "sha256": "555eccf822e96df61807e8c613b3fa2fcbea0c51ee42b4fc22ec78662056e4f7"
+    },
+    {
+      "path": "files/0034-creator-working-clue-reopened.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-c99c3-t-Crew-Player-s-pinned-clue-chromium/creator-working-clue-reopened.png",
+      "bytes": 277250,
+      "sha256": "357dfd21c1d8bb6d957ba8d5d46b45c51e901f81756336e01a94ac6a164d5966"
+    },
+    {
+      "path": "files/0035-crew-after-working-save-published-clue.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-c99c3-t-Crew-Player-s-pinned-clue-chromium/crew-after-working-save-published-clue.png",
+      "bytes": 363139,
+      "sha256": "a93b45b8b743c33b100f83e0b4263f31321872c4d5b24898d8c2f54377e80bf2"
+    },
+    {
+      "path": "files/0036-crew-before-published-clue.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-c99c3-t-Crew-Player-s-pinned-clue-chromium/crew-before-published-clue.png",
+      "bytes": 359561,
+      "sha256": "fc69ada9cec50bf1f9a3f472b2c047b7b66a03813b2769f99eff0e7078c8cf96"
+    },
+    {
+      "path": "files/0037-2a41210dc7ba5cfa84a4b294da5f6173.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-c99c3-t-Crew-Player-s-pinned-clue-chromium/crew-recording/2a41210dc7ba5cfa84a4b294da5f6173.webm",
+      "bytes": 3174412,
+      "sha256": "555eccf822e96df61807e8c613b3fa2fcbea0c51ee42b4fc22ec78662056e4f7"
+    },
+    {
+      "path": "files/0038-818910e230cdc51e5fbed656b90eb1a3.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-c99c3-t-Crew-Player-s-pinned-clue-chromium/crew-recording/818910e230cdc51e5fbed656b90eb1a3.webm",
+      "bytes": 2589,
+      "sha256": "afd5daef7c81dcb9969570325d5dd7b528832e42b3f89d3cac12b899c6ed8f9b"
+    },
+    {
+      "path": "files/0039-c5ac6fdf190ee2ecced053e040be9fc7.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-c99c3-t-Crew-Player-s-pinned-clue-chromium/crew-recording/c5ac6fdf190ee2ecced053e040be9fc7.webm",
+      "bytes": 2633,
+      "sha256": "1ef16478894ddf41be825985d29f95b19823997c7ef63c7e98c2e26bca2b763b"
+    },
+    {
+      "path": "files/0040-paired-creator-player-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-c99c3-t-Crew-Player-s-pinned-clue-chromium/paired-creator-player-receipt.json",
+      "bytes": 1250,
+      "sha256": "cc92e01b548088ea0c18690074204c30b43df973b81b222cebd47a5d4c05089a"
+    },
+    {
+      "path": "files/0041-video-1.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-c99c3-t-Crew-Player-s-pinned-clue-chromium/video-1.webm",
+      "bytes": 1825,
+      "sha256": "c913167a5bbe53c0b2ec71717436bc634ef49c82be21c41c0598bb40823447dc"
+    },
+    {
+      "path": "files/0042-video.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/artifacts/landfall-browser-passing-results-a9d8bdd7b4d8e4822de879c5be4d1fdc015f9167/artifacts/sounding-line/private-browser-failures/85dadf3e-cb70-4800-90d6-e10807767266/results/sextant-parallax-paired-jo-c99c3-t-Crew-Player-s-pinned-clue-chromium/video.webm",
+      "bytes": 1584883,
+      "sha256": "a68e4a210674277dbe1af19d93396f910fdccf8f607d9f4b42da625f16903c7f"
+    },
+    {
+      "path": "files/0043-hosted-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/run-39331079907/hosted-receipt.json",
+      "bytes": 17093,
+      "sha256": "2179844e19ddf7ca25ee724427752e7531a03cb05cf1c2c2a6fe90cb533d2606"
+    },
+    {
+      "path": "files/0044-dispatch.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-a9d8bdd7b4d8-1792446855946/dispatch.json",
+      "bytes": 2045,
+      "sha256": "2619cabf8ab85db7aec8000c61879fd07e7c896399dec17ddad29dabbd7c9f13"
+    },
+    {
+      "path": "files/0045-paired-39331079907.log",
+      "sourcePath": "artifacts/sextant-phase4/paired-39331079907.log",
+      "bytes": 336107,
+      "sha256": "1470cddb5e682d00f091a2cc2ef0de2218b61d5e2d2581209aeabf1e95dbf6b0"
+    }
+  ]
+}

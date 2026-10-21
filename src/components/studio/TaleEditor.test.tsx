@@ -1,5 +1,6 @@
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import axe from "axe-core";
 import { TaleEditor } from "./TaleEditor";
 import type { EditorData } from "./studio-types";
 
@@ -244,7 +245,7 @@ describe("Voyagewright Studio editor motion and authority", () => {
     render(<TaleEditor taleId="tale-1" authenticated />);
 
     await screen.findByRole("heading", { name: "A Test Chronicle" });
-    const card = screen.getByText("Opening Scene").closest<HTMLElement>("article")!;
+    const card = screen.getByText("Opening Scene").closest<HTMLElement>("[data-block-id]")!;
     const motionWrapper = card.closest<HTMLElement>("[data-post-drop-layout-wrapper='true']")!;
     expect(motionWrapper).toBeInTheDocument();
     expect(motionWrapper.parentElement).toHaveAttribute("data-dnd-transform-owner", "true");
@@ -261,9 +262,13 @@ describe("Voyagewright Studio editor motion and authority", () => {
     render(<TaleEditor taleId="tale-1" authenticated />);
     await screen.findByRole("heading", { name: "A Test Chronicle" });
 
-    const first = screen.getByText("Opening Scene").closest<HTMLElement>("article")!;
-    const second = screen.getByText("Second Scene").closest<HTMLElement>("article")!;
+    const first = screen.getByText("Opening Scene").closest<HTMLElement>("[data-block-id]")!;
+    const second = screen.getByText("Second Scene").closest<HTMLElement>("[data-block-id]")!;
     expect(screen.getByRole("group", { name: "Passage: Opening Scene" })).toBe(first);
+    const semantics = await axe.run(document.querySelector(".tale-editor")!, {
+      runOnly: { type: "rule", values: ["aria-allowed-role"] },
+    });
+    expect(semantics.violations).toEqual([]);
     expect(within(first).getByRole("button", { name: "Select Opening Scene" })).toBeVisible();
     expect(within(first).getByRole("button", { name: "Move Passage down" })).toBeVisible();
     expect(first).toHaveAttribute("aria-roledescription", "sortable");
@@ -301,7 +306,7 @@ describe("Voyagewright Studio editor motion and authority", () => {
     render(<TaleEditor taleId="tale-1" authenticated />);
     await screen.findByRole("heading", { name: "A Test Chronicle" });
 
-    const target = screen.getByText("Large Passage 20").closest<HTMLElement>("article")!;
+    const target = screen.getByText("Large Passage 20").closest<HTMLElement>("[data-block-id]")!;
     fireEvent.click(target);
     expect(await screen.findByRole("textbox", { name: "Passage title" })).toHaveValue("Large Passage 20");
     expect(
@@ -343,7 +348,7 @@ describe("Voyagewright Studio editor motion and authority", () => {
     });
     expect(issue).toHaveTextContent("Connect the Passage to a terminal.");
     fireEvent.click(issue);
-    const card = screen.getByText("Opening Scene").closest<HTMLElement>("article")!;
+    const card = screen.getByText("Opening Scene").closest<HTMLElement>("[data-block-id]")!;
 
     expect(card).toHaveAttribute("data-validation-error", "true");
     expect(await screen.findByText(/A reachable Passage cannot statically reach a terminal/)).toBeInTheDocument();
@@ -383,7 +388,7 @@ describe("Voyagewright Studio editor motion and authority", () => {
     render(<TaleEditor taleId="tale-1" authenticated />);
     await screen.findByRole("heading", { name: "A Test Chronicle" });
 
-    const opening = screen.getByText("Opening Scene").closest<HTMLElement>("article")!;
+    const opening = screen.getByText("Opening Scene").closest<HTMLElement>("[data-block-id]")!;
     fireEvent.click(opening);
     const level = screen.getByRole("combobox", { name: "Authoring level" });
     expect(level).toHaveValue("GUIDED");
@@ -492,7 +497,7 @@ describe("Voyagewright Studio editor motion and authority", () => {
     render(<TaleEditor taleId="tale-1" authenticated />);
     await screen.findByRole("heading", { name: "A Test Chronicle" });
 
-    fireEvent.click(screen.getByText("Set the lantern flag").closest<HTMLElement>("article")!);
+    fireEvent.click(screen.getByText("Set the lantern flag").closest<HTMLElement>("[data-block-id]")!);
     fireEvent.click(screen.getByRole("button", { name: "Load declared variables" }));
     const search = await screen.findByRole("searchbox", { name: "Search declared variables" });
     fireEvent.change(search, { target: { value: "lantern" } });
@@ -504,7 +509,7 @@ describe("Voyagewright Studio editor motion and authority", () => {
     expect(screen.queryByRole("option", { name: "Increase by" })).not.toBeInTheDocument();
     expect(screen.getByText(/Tracks whether the crew recovered/)).toBeVisible();
 
-    fireEvent.click(screen.getByText("Check the lantern").closest<HTMLElement>("article")!);
+    fireEvent.click(screen.getByText("Check the lantern").closest<HTMLElement>("[data-block-id]")!);
     fireEvent.click(screen.getByRole("button", { name: "Add ALL group" }));
     fireEvent.click(screen.getByRole("button", { name: "Add ANY group" }));
     fireEvent.click(screen.getByRole("button", { name: "Add contains check" }));
@@ -539,7 +544,7 @@ describe("Voyagewright Studio editor motion and authority", () => {
     render(<TaleEditor taleId="tale-1" authenticated />);
     await screen.findByRole("heading", { name: "A Test Chronicle" });
 
-    fireEvent.click(screen.getByText("Future compass").closest<HTMLElement>("article")!);
+    fireEvent.click(screen.getByText("Future compass").closest<HTMLElement>("[data-block-id]")!);
     const inspector = screen
       .getByLabelText("Selected Passage tools")
       .parentElement?.querySelector(".contract-aware-inspector");
@@ -556,7 +561,7 @@ describe("Voyagewright Studio editor motion and authority", () => {
     render(<TaleEditor taleId="tale-1" authenticated />);
     await screen.findByRole("heading", { name: "A Test Chronicle" });
 
-    fireEvent.click(screen.getByText("Opening Scene").closest<HTMLElement>("article")!);
+    fireEvent.click(screen.getByText("Opening Scene").closest<HTMLElement>("[data-block-id]")!);
     expect(await screen.findByText("Migration requires server confirmation")).toBeVisible();
     fireEvent.change(screen.getByRole("combobox", { name: "Authoring level" }), { target: { value: "ENGINEERING" } });
     expect(screen.getByText(/Draft v1; current v2/)).toBeVisible();
@@ -658,13 +663,13 @@ describe("Voyagewright Studio editor motion and authority", () => {
     await screen.findByRole("button", { name: /Opening Scene needs a destination/ });
     fireEvent.click(screen.getByRole("button", { name: "Open static graph outline" }));
     expect(await screen.findByRole("region", { name: "Static graph outline" })).toHaveTextContent("No terminal path.");
-    expect(screen.getByText("Opening Scene").closest("article")).toHaveAttribute(
+    expect(screen.getByText("Opening Scene").closest("[data-block-id]")).toHaveAttribute(
       "data-drydock-graph-state",
       expect.stringContaining("DRYDOCK_GRAPH_NO_TERMINAL_PATH"),
     );
     expect(screen.getByLabelText("Static graph analysis")).toHaveTextContent("No terminal path.");
     fireEvent.click(screen.getByRole("button", { name: "narrative (block-1)" }));
-    await waitFor(() => expect(screen.getByText("Opening Scene").closest("article")).toHaveFocus());
+    await waitFor(() => expect(screen.getByText("Opening Scene").closest("[data-block-id]")).toHaveFocus());
   });
 
   it("does not remove a block until the draft save succeeds and reconciles an authoritative undo", async () => {
@@ -681,7 +686,7 @@ describe("Voyagewright Studio editor motion and authority", () => {
         .mockResolvedValueOnce(response(200, { autosaveVersion: 5, savedAt: "2026-07-19T12:02:00.000Z" })),
     );
     render(<TaleEditor taleId="tale-1" authenticated />);
-    const card = (await screen.findByText("Opening Scene")).closest<HTMLElement>("article")!;
+    const card = (await screen.findByText("Opening Scene")).closest<HTMLElement>("[data-block-id]")!;
     fireEvent.click(card);
     fireEvent.click(await screen.findByRole("button", { name: "Delete Passage" }));
     fireEvent.click(within(screen.getByRole("dialog")).getByRole("button", { name: "Delete Passage" }));
@@ -880,7 +885,7 @@ describe("Voyagewright Studio editor motion and authority", () => {
     render(<TaleEditor taleId="tale-1" authenticated />);
     await screen.findByRole("heading", { name: "A Test Chronicle" });
 
-    fireEvent.click(screen.getByText("Opening Scene").closest<HTMLElement>("article")!);
+    fireEvent.click(screen.getByText("Opening Scene").closest<HTMLElement>("[data-block-id]")!);
     fireEvent.click(screen.getByRole("tab", { name: "Reuse" }));
     fireEvent.click(await screen.findByRole("button", { name: "Apply to selected Passage" }));
 

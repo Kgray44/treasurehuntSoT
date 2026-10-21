@@ -31,6 +31,7 @@ it("presents contextual consent before prompting, with a usable accessible alter
   fireEvent.click(screen.getByRole("button", { name: "Use screen controls" }));
   await waitFor(() => expect(alternative).toHaveBeenCalledTimes(1));
   expect(runtime.status("sextant.orientation.relative").paused).toBe(true);
+  await waitFor(() => expect(screen.getByText("Device input is paused.")).toBeVisible());
   await runtime.dispose();
 });
 it("keeps the alternative available when the browser is unsupported", async () => {

@@ -1,0 +1,276 @@
+{
+  "source": "820178bf043e1ffd3c366eaa5037d5d148653e51",
+  "tree": "e5dfae89a2e4c66330e888b0298ac5ef628ca082",
+  "sourceFingerprint": "c2bc73cb7daa8a7f1c416ca2ae88a6787e4a95356989fca301fcfe1aca237cdd",
+  "count": 53,
+  "result": "PASS",
+  "cleanup": "PASS_ALL_53",
+  "classification": "D0_D1_ONLY_NOT_NATIVE_OR_PHYSICAL_PROOF",
+  "files": [
+    {
+      "name": "sextant.bounded-haptics.json",
+      "sha256": "f1dd5544df399c32e1ff7854a077bda32395d063c3e0a89faf6cfcdcdecc6f3f",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.capability-authored-fallback.json",
+      "sha256": "180f08b993e6e5d7eff51090f4b525fa260c53519e8c3fbcd6c2d626b74ae244",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.capability-supported.json",
+      "sha256": "30db6f5674ca9437bfd3371c434d80354321624959c4145267eb29723222b1e0",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.capability-unavailable.json",
+      "sha256": "d6bb14f7a0f9d967f9429aea6cefb24d45145d027c0f9064f39b642151a471b6",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.consumer-lease-sharing.json",
+      "sha256": "f120f0b45e6a5da1aa5e13caf1db0ec7f2df5b0b80b98e2c5be1bc3d9940fe42",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.coordinated-cadence-reset.json",
+      "sha256": "f09b0cd2e213e13707f867ae6c801d6cd78a7ed53210caccf844e4199fb34b2c",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.coordinated-calibration-fallback.json",
+      "sha256": "9b482e19e4063691f3e0601a2dc3b4b1b0805b319395cf926e9b97a71ad88b7e",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.coordinated-clock-fallback.json",
+      "sha256": "2bdd95e92aa286c61e7e041998d2abd3027aeef6a3affa61455635852ffdbc87",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.coordinated-crossdeck-negotiation.json",
+      "sha256": "89d559b0c91522353bbda16502426c2d453aecb2f343f7ec9df5d98877b5d6d8",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.coordinated-interference-fallback.json",
+      "sha256": "33d1abfa4b17b99e93abb1dfef821cdfa37f3688afa38938c9c37fc6c7199f79",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.coordinated-lifecycle-reset.json",
+      "sha256": "de6be68e649de129b6e52832ce511a044db58dbce58af29794c827a0cacf2446",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.coordinated-magnetic-background.json",
+      "sha256": "4b51114f58b7e9700f11fca1fafe15795770390c7d185b6a91aa1ea790e6de6f",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.coordinated-magnetic-hysteresis.json",
+      "sha256": "99c247cd8473cae6ac46ff71a28886bf6100e8ab8d74a8f541167e3a1bfc6177",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.coordinated-magnetic-prop.json",
+      "sha256": "fc859f90d3f82f42bf7e860f8de42845e7210adb6e402c9775bf95d4b8024d4a",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.coordinated-magnetic-receding.json",
+      "sha256": "aac9721c94029256af85291114ebbe6574910580977b96015f61917dba650a2d",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.coordinated-magnetic-recovery.json",
+      "sha256": "06b1b7fae6886c7aa1e3a201566b6a812f120f39842459892082d1e904fe4038",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.coordinated-magnetic-spike.json",
+      "sha256": "605b81a3ce4c23074ccbd029d309696392e2fce551048488a77efb1d44726bd9",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.coordinated-nearby-reconnect.json",
+      "sha256": "b953b96f74c79eb2b8d165f5fa2972ed2e7ee4fd98fbb03e0376c29a4ec7b953",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.coordinated-order-reset.json",
+      "sha256": "2fc87934111f5d6440d822e38eb9ce4c6156220919bae97005b02812ba23c2fa",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.coordinated-rotation-field.json",
+      "sha256": "6bf100f04bd3a29d0c99506c35115b1607256ce5c5befe02deda9814acf03988",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.coordinated-stale-fallback.json",
+      "sha256": "b3338cc46a4a94721d4ed7f389fc0beba3f63f6d83485a8bf58adbb411415792",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.coordinated-trajectory-pressure.json",
+      "sha256": "c81a00960d583cf1d1aaf91cf92ac8b1d8482d2ea4c35b6033ca944ca0e1cadc",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.deliberate-turns.json",
+      "sha256": "b8b3b0e528b5e43ee11bcec0e0fdd897b694960e2c8422c5cc8627b258aa3c52",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.field-privacy-threats.json",
+      "sha256": "6029ca9f371ae5cd7d7402498c653fb147e26e48405b2780c8dcf97686a0b5b0",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.frame-normalization.json",
+      "sha256": "1d72e2dfb81b234986513a9d644887d8ce23e976e1a8363ce2df2c478419b60c",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.low-quality-observation.json",
+      "sha256": "c261718b5b95b57caf27eb7239ab1c2426dc9272d46e9c5222e53c54fdacccb4",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.magnetic-baseline-trend.json",
+      "sha256": "e1583d33b697204b4ff5b2a512df785faf677a62b00c6e9f1820bc9cd6133745",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.magnetic-disturbance.json",
+      "sha256": "e78f8cd789ea8aa60db68888700ce2195e70a3db99516bd4c837196625628f52",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.media-denied-busy.json",
+      "sha256": "e5d48a7e0ee020ae3d35ec6e7abfb0bafff28d8fa97abe39cea294af0ecc8c92",
+      "tier": "D1"
+    },
+    {
+      "name": "sextant.media-shared-cleanup.json",
+      "sha256": "98d17f9c2ed8262d32d2dc5de0b4d348a95f6b4123c64eaff6016e49294f5b78",
+      "tier": "D1"
+    },
+    {
+      "name": "sextant.media-source-generation.json",
+      "sha256": "c491d7ac8c392544ae9cdd5dcff632425b9722ece26a90e51859f8189e18bf3e",
+      "tier": "D1"
+    },
+    {
+      "name": "sextant.nearby-peer-replay.json",
+      "sha256": "6fab6aea9649061c8d875cfe6b0f577dcaa3a34645e9627dde0c62a4450eb188",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.pedometer-pause-restart.json",
+      "sha256": "b7bd1affa6727f32e790c310db36b60b2ca47e3f48c1db2612ddcd1caa680094",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.permission-denied.json",
+      "sha256": "888095c2765af1fa00f6e90adb95a579d5ec2ca352f33262a8b0d7546be9c92b",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.permission-revoked.json",
+      "sha256": "c9ad20b0d271eb0a4519ca28c42db3ec1dea981f9d3a4b1a3ea7bf7382ba24e3",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.pressure-relative-climb.json",
+      "sha256": "9e82aa54e614cc3060f4501f451f961c805cd3f95295ea954295c904fb2fd29b",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.pressure-weather-drift.json",
+      "sha256": "5ceccc660f2b80b479982b12b29963dcd84b3a4c7da4f050659ae1ea8e2e6d5e",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.provider-switch.json",
+      "sha256": "fe655641724f7f4f189695c271d2dc1f2e88ac544efc40f8b0a74a3615965be4",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.simulation-identity.json",
+      "sha256": "c428aa659fac72a911219e7cb600ac873482fbff4e968bd59bb4a0a7e14552bf",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.stale-observation.json",
+      "sha256": "ca57c1fe9ffce41d52fe64bbccf9125b800ea8ed52d693e807d775f2a0006b4b",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.walking-spin-rejection.json",
+      "sha256": "6eff34752255a2e9ba0617d7543057e64eb5f8f7b72f8104afc8bd2693eb3b50",
+      "tier": "D0"
+    },
+    {
+      "name": "sextant.web-accessible-fallback.json",
+      "sha256": "ddcc2ce8be1c44a1c890d8f17b249e3d0c513cad6ee0b9fb06d7572d73143911",
+      "tier": "D1"
+    },
+    {
+      "name": "sextant.web-ble-denied.json",
+      "sha256": "cc14ed0dd1db43fed1fc8923cab3b7f23d6d7ed066f6c5c023ff747d873af082",
+      "tier": "D1"
+    },
+    {
+      "name": "sextant.web-ble-disconnect.json",
+      "sha256": "d5fa90075e1e5bb94c280c877dfabe00e9275ef46d6910973cdf16ecd30a4ad4",
+      "tier": "D1"
+    },
+    {
+      "name": "sextant.web-gravity-separation.json",
+      "sha256": "aee09c694a59d2e1a1c97c2e85153956f28679ff5b8cb4d31a23fe368bf2a89f",
+      "tier": "D1"
+    },
+    {
+      "name": "sextant.web-heading-wrap.json",
+      "sha256": "6b4de8a2ea04f507126045b61c016485b2f52a2c205de5636bd3234d95116fbd",
+      "tier": "D1"
+    },
+    {
+      "name": "sextant.web-nearby-background.json",
+      "sha256": "65fb52d3e4636c3a13f3d2b59316cd872c04585a7e0b66eab8b13b3460f29d86",
+      "tier": "D1"
+    },
+    {
+      "name": "sextant.web-nfc-malformed.json",
+      "sha256": "3e11b764aa9d436eb99f34d6294870262a315780270fe7009ba44d845fe89160",
+      "tier": "D1"
+    },
+    {
+      "name": "sextant.web-nfc-strict-read.json",
+      "sha256": "8cba917a0b5557e4c70d509c78aec8acedbfc7eed56cdd5a2de7e128cd6a267d",
+      "tier": "D1"
+    },
+    {
+      "name": "sextant.web-permission-pause.json",
+      "sha256": "c372575d56c35555ec27fa6f6cc329801908aa72cb7c7c00f9d76a9654a94c76",
+      "tier": "D1"
+    },
+    {
+      "name": "sextant.web-relative-fallback.json",
+      "sha256": "af1eb088a73d9964d0864e134cbd0417f7c89f3ced180e30bfd6150a78ec080d",
+      "tier": "D1"
+    },
+    {
+      "name": "sextant.web-screen-rotation.json",
+      "sha256": "9c7ad3356de5ee3fd3b86e00e27687e5b809fcae7ef3090df48e287ea2fd2bee",
+      "tier": "D1"
+    },
+    {
+      "name": "sextant.web-sharing-lifecycle.json",
+      "sha256": "e26b87cdfde2434cee2bc5cc658b4ca356bdf642fe1702440f74e76a5cc6534c",
+      "tier": "D1"
+    }
+  ]
+}

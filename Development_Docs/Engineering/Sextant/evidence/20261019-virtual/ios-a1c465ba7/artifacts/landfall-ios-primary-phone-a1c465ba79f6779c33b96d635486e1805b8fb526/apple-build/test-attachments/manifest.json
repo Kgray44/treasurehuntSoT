@@ -1,0 +1,47 @@
+[
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "230459F1-6A9E-49B5-AE7E-A0CA34366E36",
+        "deviceName" : "landfall-owned-5779",
+        "exportedFileName" : "3ADD7B2F-80E5-4187-8FFC-8F35264FF960.json",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "installation-framework-capabilities-and-inactive-guards_0_3088FDF1-7943-43DF-A15D-7309BC7DD063.json",
+        "timestamp" : 1792434312.23
+      }
+    ],
+    "testIdentifier" : "InstallationInteractionTests/testActualFrameworkCapabilitiesAndInactiveAcquisition()",
+    "testIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/InstallationInteractionTests/testActualFrameworkCapabilitiesAndInactiveAcquisition"
+  },
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "230459F1-6A9E-49B5-AE7E-A0CA34366E36",
+        "deviceName" : "landfall-owned-5779",
+        "exportedFileName" : "7C5967B8-7455-4B09-8BB8-8BA108386865.json",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "nearby-interaction-framework-capability_0_0A61F135-DB5E-4E64-9E09-BEFCD94F6CB7.json",
+        "timestamp" : 1792434312.641
+      }
+    ],
+    "testIdentifier" : "NearbyInteractionTests/testFrameworkCapabilityAndInactiveLifecycle()",
+    "testIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/NearbyInteractionTests/testFrameworkCapabilityAndInactiveLifecycle"
+  },
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "230459F1-6A9E-49B5-AE7E-A0CA34366E36",
+        "deviceName" : "landfall-owned-5779",
+        "exportedFileName" : "C1463DAF-6673-47B3-9447-039E73EBE8DE.json",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "native-lease-performance_0_4F4357B8-7B08-4642-B329-08B15CEF796C.json",
+        "timestamp" : 1792434313.155
+      }
+    ],
+    "testIdentifier" : "PrivateStoreTests/testBoundedNativeLeaseEncryptionAndRestorePerformance()",
+    "testIdentifierURL" : "test://com.apple.xcode/LandfallCompanion/LandfallCompanionTests/PrivateStoreTests/testBoundedNativeLeaseEncryptionAndRestorePerformance"
+  }
+]

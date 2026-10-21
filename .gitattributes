@@ -1,4 +1,10 @@
 * text=auto eol=lf
+/Development_Docs/Engineering/Sextant/evidence/20261019-virtual/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-product/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-consumers/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-resources/** -text -whitespace
+/Development_Docs/Engineering/Sextant/phase4-source-reconciliation-passport-20261019.json -text -whitespace
+/Development_Docs/Engineering/Sextant/phase4-source-reconciliation-resources-20261019.json -text -whitespace
 *.cmd text eol=crlf
 # Preserve immutable synthetic evaluation archive bytes across Windows checkouts.
 Development_Docs/Projects/Project_Parallax/evidence/owner-refinements/model-comparison/*.json.txt -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
@@ -11,4 +17,90 @@ Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r3-owner-decision-pro
 Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r3-review-cancellation-20261015/*.original.raw.txt -text -whitespace
 Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r4-recovery-20261015/*.original.raw.txt -text -whitespace
 
+/Development_Docs/Engineering/Sextant/evidence/20261019-contrast-repair/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-resource-repair/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-paired-setup-failure/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-paired-dialog-failure/** -text -whitespace
+/Development_Docs/Engineering/Sextant/phase4-source-reconciliation-styles-20261019.json -text -whitespace
+/Development_Docs/Engineering/Sextant/phase4-source-reconciliation-community-20261019.json -text -whitespace
+
+/Development_Docs/Engineering/Sextant/evidence/20261019-paired-clue/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-community-landmark-failure/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-community-clear-failure/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-authoring-drawer-failure/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-community-guide-failure/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-authoring-readiness-failure/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-community-navigation-diagnostic/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-captain-dashboard/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-authoring-contract-failure/** -text -whitespace
+/Development_Docs/Engineering/Sextant/phase4-source-reconciliation-dashboard-20261019.json -text -whitespace
+/Development_Docs/Engineering/Sextant/phase4-source-reconciliation-authoring-20261019.json -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-authoring-mobile-overflow/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-resource-selector-failure/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-resource-chrome-repair/** -text -whitespace
+/Development_Docs/Engineering/Sextant/phase4-source-reconciliation-history-20261019.json -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-community-hover-finding/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-authoring-bounds-failure/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-history-landmark-failure/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-history-spread-repair/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-authoring-node-diagnostic/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-community-pointer-diagnostic/** -text -whitespace
+/Development_Docs/Engineering/Sextant/phase4-source-reconciliation-frontier-20261019.json -text -whitespace
+/Development_Docs/Engineering/Sextant/phase4-source-reconciliation-community-style-20261019.json -text -whitespace
+/Development_Docs/Engineering/Sextant/phase4-source-reconciliation-catalog-20261019.json -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-authoring-suite-repair/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-history-lower-captures/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-catalog-guest-entry/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-community-artwork-diagnostic/** -text -whitespace
+/Development_Docs/Engineering/Sextant/phase4-source-reconciliation-creator-entry-20261019.json -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-authoring-label-repair/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-creator-landmark-failure/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-community-checkout-cancelled/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-community-pointer-repair/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-creator-landmark-repair/** -text -whitespace
+/Development_Docs/Engineering/Sextant/phase4-source-reconciliation-creator-landmark-20261019.json -text -whitespace
+/Development_Docs/Engineering/Sextant/phase4-source-reconciliation-admiralty-20261019.json -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-creator-form-ink-repair/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-admiralty-entry-diagnostic/** -text -whitespace
+/Development_Docs/Engineering/Sextant/phase4-source-reconciliation-private-content-20261019.json -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-private-sortable-diagnostic/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-admiralty-empty-state-diagnostic/** -text -whitespace
+/Development_Docs/Engineering/Sextant/phase4-source-reconciliation-sortable-empty-20261019.json -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-private-group-repair/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-admiralty-dossier-title-diagnostic/** -text -whitespace
+/Development_Docs/Engineering/Sextant/phase4-source-reconciliation-account-recovery-20261019.json -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-admiralty-dossier-ready/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-account-passport-return-diagnostic/** -text -whitespace
+/Development_Docs/Engineering/Sextant/phase4-source-reconciliation-invitation-guest-20261019.json -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-private-content-outcomes/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-admiralty-identity-recapture/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-account-recovery-lifecycle/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-invitation-pin-alert-diagnostic/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-account-clean-identity/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-invitation-link-diagnostic/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-account-terminal-confirmation/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-private-confirmation-hover/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-invitation-origin-diagnostic/** -text -whitespace
+/Development_Docs/Engineering/Sextant/phase4-source-reconciliation-landfall-conditional-20261019.json -text -whitespace
 /Development_Docs/Engineering/Repository_Operations/evidence/20261020-loopback-redirect/** -text -whitespace
+
+/Development_Docs/Engineering/Sextant/evidence/20261020-canonical-redirect-installation/** -text -whitespace
+
+/Development_Docs/Engineering/Sextant/phase4-source-reconciliation-display-pilot-entry-20261020.json -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-invitation-proxy-consumption/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-landfall-first-execution/** -text -whitespace
+/Development_Docs/Engineering/Sextant/evidence/20261019-display-pilot-first-execution/** -text -whitespace
+
+Development_Docs/Engineering/Sextant/evidence/20261020-consumer-repair-preparation/files/** -text -whitespace
+
+/Development_Docs/Engineering/Sextant/evidence/20261020-invitation-stage-diagnostic/** -text -whitespace
+
+/Development_Docs/Engineering/Sextant/evidence/20261020-landfall-activation-diagnostic/** -text -whitespace
+
+/Development_Docs/Engineering/Sextant/evidence/20261020-entry-claimed-voyage-diagnostic/** -text -whitespace
+
+/Development_Docs/Engineering/Sextant/phase4-source-reconciliation-consumer-repairs-20261020.json -text -whitespace
+
+/Development_Docs/Engineering/Sextant/evidence/20261020-android-background-return/** -text -whitespace
+
+/Development_Docs/Engineering/Sextant/evidence/20261020-consumer-scope-preparation/files/** -text -whitespace

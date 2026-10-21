@@ -194,6 +194,10 @@ export function CommunityDiscoveryBrowser({
   function clear() {
     const next = new URLSearchParams(current);
     for (const key of [...discoveryKeys, "cursor"]) next.delete(key);
+    // Returning to an earlier URL must not resurrect that URL's old unsent
+    // search/filter drafts. Clear both controls against the destination state.
+    setQueryState({ source: next.toString(), value: "" });
+    setAdvancedState({ source: next.toString(), value: advancedDraftFrom(next) });
     navigate(next);
   }
 

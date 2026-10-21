@@ -1,0 +1,2204 @@
+{
+  "schemaVersion": 1,
+  "classification": "ENGINEERING_EVIDENCE_SOURCE_ONLY_NOT_ACCEPTANCE",
+  "generatedAt": "2026-10-19T23:50:48.784Z",
+  "baseSha": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
+  "candidateSha": "395940ad721ceb21465532b59b27826ef50e9690",
+  "candidateTree": "0c4b618a58ab5573929f26ad07f34e312e2f05c1",
+  "current": {
+    "affectedSurfaces": 178,
+    "unregistered": 45,
+    "surfaces": [
+      {
+        "path": "src/app/account/accessibility/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.personal-harbor"
+        ]
+      },
+      {
+        "path": "src/app/account/cancel-deletion/page.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/app/account/claim/page.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/app/account/data/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.personal-harbor"
+        ]
+      },
+      {
+        "path": "src/app/account/devices/page.tsx",
+        "contracts": [
+          "crossdeck.phase2.continuity",
+          "sextant.phase3.field-context",
+          "sextant.phase4.native-context"
+        ]
+      },
+      {
+        "path": "src/app/account/email-change/page.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/app/account/linked-identities/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.personal-harbor"
+        ]
+      },
+      {
+        "path": "src/app/account/merge/page.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/app/account/notifications/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.personal-harbor"
+        ]
+      },
+      {
+        "path": "src/app/account/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.personal-harbor"
+        ]
+      },
+      {
+        "path": "src/app/account/personal-information/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.personal-harbor"
+        ]
+      },
+      {
+        "path": "src/app/account/preferences/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.personal-harbor"
+        ]
+      },
+      {
+        "path": "src/app/account/privacy/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.personal-harbor"
+        ]
+      },
+      {
+        "path": "src/app/account/profile/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.personal-harbor"
+        ]
+      },
+      {
+        "path": "src/app/account/reactivate/page.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/app/account/roles/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.workspace-capabilities"
+        ]
+      },
+      {
+        "path": "src/app/account/security/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.personal-harbor"
+        ]
+      },
+      {
+        "path": "src/app/account/sessions/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.personal-harbor"
+        ]
+      },
+      {
+        "path": "src/app/account/support-access/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.personal-harbor"
+        ]
+      },
+      {
+        "path": "src/app/admin/layout.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/app/admin/people/[accountId]/page.tsx",
+        "contracts": [
+          "admiralty.phase1.registry"
+        ]
+      },
+      {
+        "path": "src/app/captain/library/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.captain-resources"
+        ]
+      },
+      {
+        "path": "src/app/captain/sessions/[sessionId]/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.captain-resources"
+        ]
+      },
+      {
+        "path": "src/app/captain/tales/[taleId]/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.captain-resources"
+        ]
+      },
+      {
+        "path": "src/app/captain/voyages/[playthroughId]/muster/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.captain-resources"
+        ]
+      },
+      {
+        "path": "src/app/captain/voyages/[playthroughId]/player-preview/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.captain-resources"
+        ]
+      },
+      {
+        "path": "src/app/chronicles/[taleSlug]/compare/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.public-chronicle"
+        ]
+      },
+      {
+        "path": "src/app/chronicles/[taleSlug]/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.public-chronicle"
+        ]
+      },
+      {
+        "path": "src/app/community/[slug]/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.public-community"
+        ]
+      },
+      {
+        "path": "src/app/community/artifacts/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.public-community"
+        ]
+      },
+      {
+        "path": "src/app/community/audio/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.public-community"
+        ]
+      },
+      {
+        "path": "src/app/community/chronicles/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.public-community"
+        ]
+      },
+      {
+        "path": "src/app/community/collections/[slug]/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.public-community"
+        ]
+      },
+      {
+        "path": "src/app/community/collections/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.public-community"
+        ]
+      },
+      {
+        "path": "src/app/community/creators/[handle]/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.public-community"
+        ]
+      },
+      {
+        "path": "src/app/community/creators/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.public-community"
+        ]
+      },
+      {
+        "path": "src/app/community/featured/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.public-community"
+        ]
+      },
+      {
+        "path": "src/app/community/guides/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.public-community"
+        ]
+      },
+      {
+        "path": "src/app/community/maps/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.public-community"
+        ]
+      },
+      {
+        "path": "src/app/community/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.public-community"
+        ]
+      },
+      {
+        "path": "src/app/community/templates/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.public-community"
+        ]
+      },
+      {
+        "path": "src/app/community/voyage-logs/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.public-community"
+        ]
+      },
+      {
+        "path": "src/app/dev/spatial-pilot/page.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/app/devices/display/page.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/app/devices/pair/page.tsx",
+        "contracts": [
+          "reach.phase1.foundation"
+        ]
+      },
+      {
+        "path": "src/app/forgot-password/page.tsx",
+        "contracts": [
+          "homeport.transition.auth-routes"
+        ]
+      },
+      {
+        "path": "src/app/layout.tsx",
+        "contracts": [
+          "sextant.shared-consumers.shell-identity"
+        ]
+      },
+      {
+        "path": "src/app/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.shell-identity"
+        ]
+      },
+      {
+        "path": "src/app/passport/artifacts/[artifactId]/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.completed-history"
+        ]
+      },
+      {
+        "path": "src/app/passport/artifacts/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.passport-sections",
+          "sextant.shared-consumers.completed-history"
+        ]
+      },
+      {
+        "path": "src/app/passport/atlas/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.passport-sections"
+        ]
+      },
+      {
+        "path": "src/app/passport/history/[recordId]/book/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.completed-history"
+        ]
+      },
+      {
+        "path": "src/app/passport/history/[recordId]/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.completed-history"
+        ]
+      },
+      {
+        "path": "src/app/passport/history/[recordId]/replay/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.completed-history"
+        ]
+      },
+      {
+        "path": "src/app/passport/history/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.passport-sections",
+          "sextant.shared-consumers.completed-history"
+        ]
+      },
+      {
+        "path": "src/app/passport/memories/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.passport-sections"
+        ]
+      },
+      {
+        "path": "src/app/passport/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.passport-sections"
+        ]
+      },
+      {
+        "path": "src/app/passport/people/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.passport-sections"
+        ]
+      },
+      {
+        "path": "src/app/passport/saved/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.passport-sections"
+        ]
+      },
+      {
+        "path": "src/app/passport/statistics/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.passport-sections"
+        ]
+      },
+      {
+        "path": "src/app/passport/timeline/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.passport-sections"
+        ]
+      },
+      {
+        "path": "src/app/play/[taleSlug]/history/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.public-chronicle"
+        ]
+      },
+      {
+        "path": "src/app/play/[taleSlug]/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.public-chronicle"
+        ]
+      },
+      {
+        "path": "src/app/play/[taleSlug]/session/[sessionId]/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.public-chronicle"
+        ]
+      },
+      {
+        "path": "src/app/player/invitation/page.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/app/player/landfall-return/page.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/app/player/library/page.tsx",
+        "contracts": [
+          "sextant.phase4.native-context"
+        ]
+      },
+      {
+        "path": "src/app/player/offline-landfall/page.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/app/player/playthroughs/[playthroughId]/journal/page.tsx",
+        "contracts": [
+          "crossdeck.phase2.continuity",
+          "sextant.phase3.field-context",
+          "sextant.phase4.native-context"
+        ]
+      },
+      {
+        "path": "src/app/player/playthroughs/[playthroughId]/page.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/app/player/sign-in/page.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/app/register/page.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/app/reset-password/page.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/app/sign-in/page.tsx",
+        "contracts": [
+          "homeport.transition.auth-routes"
+        ]
+      },
+      {
+        "path": "src/app/studio/library/page.tsx",
+        "contracts": [
+          "sextant.phase4.native-context",
+          "sextant.shared-consumers.creator-draft"
+        ]
+      },
+      {
+        "path": "src/app/studio/parallax/page.tsx",
+        "contracts": [
+          "spatial-pilot.experience",
+          "parallax.floating-controls.experience"
+        ]
+      },
+      {
+        "path": "src/app/studio/private-content/page.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/app/studio/tales/[taleId]/artifacts/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.creator-authoring-resources"
+        ]
+      },
+      {
+        "path": "src/app/studio/tales/[taleId]/assets/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.creator-authoring-resources"
+        ]
+      },
+      {
+        "path": "src/app/studio/tales/[taleId]/landfall/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.creator-authoring-resources"
+        ]
+      },
+      {
+        "path": "src/app/studio/tales/[taleId]/locations/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.creator-authoring-resources"
+        ]
+      },
+      {
+        "path": "src/app/studio/tales/[taleId]/page.tsx",
+        "contracts": [
+          "sextant.phase4.native-context",
+          "sextant.shared-consumers.creator-draft"
+        ]
+      },
+      {
+        "path": "src/app/studio/tales/[taleId]/settings/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.creator-draft"
+        ]
+      },
+      {
+        "path": "src/app/studio/tales/[taleId]/trials/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.creator-authoring-resources"
+        ]
+      },
+      {
+        "path": "src/app/studio/tales/[taleId]/versions/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.creator-authoring-resources"
+        ]
+      },
+      {
+        "path": "src/app/studio/tales/new/page.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/app/tales/page.tsx",
+        "contracts": [
+          "sextant.shared-consumers.public-chronicle"
+        ]
+      },
+      {
+        "path": "src/app/verify-email/page.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/components/admiralty/AdmiraltyConsole.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/components/admiralty/AdmiraltyShell.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/components/admiralty/DossierSupportPanel.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/components/auth/CurrentUserProvider.tsx",
+        "contracts": [
+          "sextant.shared-consumers.shell-identity"
+        ]
+      },
+      {
+        "path": "src/components/auth/SignOutButton.tsx",
+        "contracts": [
+          "sextant.shared-consumers.shell-identity"
+        ]
+      },
+      {
+        "path": "src/components/captain/CaptainCommandConsole.tsx",
+        "contracts": [
+          "sextant.shared-consumers.captain-resources"
+        ]
+      },
+      {
+        "path": "src/components/captain/CaptainDashboard.tsx",
+        "contracts": [
+          "sextant.shared-consumers.captain-resources"
+        ]
+      },
+      {
+        "path": "src/components/captain/CaptainMusterRoom.tsx",
+        "contracts": [
+          "sextant.shared-consumers.captain-resources"
+        ]
+      },
+      {
+        "path": "src/components/captain/CaptainOperationalPanel.tsx",
+        "contracts": [
+          "sextant.shared-consumers.captain-resources"
+        ]
+      },
+      {
+        "path": "src/components/captain/CaptainSessionControl.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/components/community/CommunityCardGrid.tsx",
+        "contracts": [
+          "sextant.shared-consumers.public-community"
+        ]
+      },
+      {
+        "path": "src/components/community/CommunityCommentThread.tsx",
+        "contracts": [
+          "sextant.shared-consumers.public-community"
+        ]
+      },
+      {
+        "path": "src/components/community/CommunityDiscoveryBrowser.tsx",
+        "contracts": [
+          "sextant.shared-consumers.public-community"
+        ]
+      },
+      {
+        "path": "src/components/community/CommunityReviewList.tsx",
+        "contracts": [
+          "sextant.shared-consumers.public-community"
+        ]
+      },
+      {
+        "path": "src/components/community/PublicCommunitySection.tsx",
+        "contracts": [
+          "sextant.shared-consumers.public-community"
+        ]
+      },
+      {
+        "path": "src/components/crossdeck/CrossdeckDevices.tsx",
+        "contracts": [
+          "crossdeck.phase2.continuity"
+        ]
+      },
+      {
+        "path": "src/components/crossdeck/CrossdeckDisplay.tsx",
+        "contracts": [
+          "crossdeck.phase2.continuity"
+        ]
+      },
+      {
+        "path": "src/components/crossdeck/CrossdeckHandoff.tsx",
+        "contracts": [
+          "crossdeck.phase2.continuity"
+        ]
+      },
+      {
+        "path": "src/components/gm/Quartermaster.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/components/homeport/AccountSurfaces.tsx",
+        "contracts": [
+          "sextant.shared-consumers.personal-harbor"
+        ]
+      },
+      {
+        "path": "src/components/homeport/AuthenticatedHarborPage.tsx",
+        "contracts": [
+          "sextant.shared-consumers.personal-harbor"
+        ]
+      },
+      {
+        "path": "src/components/homeport/PassportSurfaces.tsx",
+        "contracts": [
+          "sextant.shared-consumers.passport-sections",
+          "sextant.shared-consumers.completed-history"
+        ]
+      },
+      {
+        "path": "src/components/homeport/PersonalHarborLayout.tsx",
+        "contracts": [
+          "sextant.shared-consumers.personal-harbor"
+        ]
+      },
+      {
+        "path": "src/components/homeport/PreferenceRuntimeBridge.tsx",
+        "contracts": [
+          "sextant.shared-consumers.shell-identity"
+        ]
+      },
+      {
+        "path": "src/components/homeport/WorkspaceCapabilityDashboard.tsx",
+        "contracts": [
+          "sextant.shared-consumers.workspace-capabilities"
+        ]
+      },
+      {
+        "path": "src/components/landing/HarborLanding.tsx",
+        "contracts": [
+          "sextant.shared-consumers.shell-identity"
+        ]
+      },
+      {
+        "path": "src/components/muster/CrewChat.tsx",
+        "contracts": [
+          "sextant.shared-consumers.captain-resources"
+        ]
+      },
+      {
+        "path": "src/components/muster/MusterRoom.tsx",
+        "contracts": [
+          "sextant.shared-consumers.captain-resources"
+        ]
+      },
+      {
+        "path": "src/components/platform/CaptainLibrary.tsx",
+        "contracts": [
+          "sextant.shared-consumers.captain-resources"
+        ]
+      },
+      {
+        "path": "src/components/platform/InvitationCeremony.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/components/platform/PlayerLibrary.tsx",
+        "contracts": [
+          "sextant.shared-consumers.workspace-capabilities"
+        ]
+      },
+      {
+        "path": "src/components/platform/PlayerSafePreview.tsx",
+        "contracts": [
+          "sextant.shared-consumers.captain-resources"
+        ]
+      },
+      {
+        "path": "src/components/platform/PlayerSignIn.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/components/platform/PlayerVoyageRoom.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/components/platform/StaffSignIn.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/components/player/journal/ChronicleJournalPage.tsx",
+        "contracts": [
+          "sextant.shared-consumers.completed-history",
+          "sextant.shared-consumers.public-chronicle"
+        ]
+      },
+      {
+        "path": "src/components/player/journal/ChronicleJournalSession.tsx",
+        "contracts": [
+          "crossdeck.phase2.continuity",
+          "sextant.phase3.field-context",
+          "sextant.phase4.native-context",
+          "sextant.shared-consumers.completed-history",
+          "sextant.shared-consumers.public-chronicle"
+        ]
+      },
+      {
+        "path": "src/components/player/journal/LandfallBackgroundPanel.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/components/player/journal/LandfallBlePanel.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/components/player/journal/LandfallContextGuidance.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/components/player/journal/LandfallInstallationPanel.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/components/player/journal/LandfallJournalChart.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/components/player/journal/LandfallLandmarkPanel.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/components/player/journal/LandfallNearbyPanel.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/components/player/journal/LandfallOfflineRegionPanel.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/components/player/journal/LandfallOnlineDataPanel.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/components/player/journal/LandfallPlaceSearch.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/components/player/journal/LandfallPresentation.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/components/player/journal/OfflineLandfallJournal.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/components/player/parallax/ChronicleLens.module.css",
+        "contracts": [
+          "sextant.phase4.native-context"
+        ]
+      },
+      {
+        "path": "src/components/player/parallax/ChronicleLens.tsx",
+        "contracts": [
+          "sextant.phase4.native-context"
+        ]
+      },
+      {
+        "path": "src/components/shell/ProductShell.tsx",
+        "contracts": [
+          "sextant.shared-consumers.shell-identity"
+        ]
+      },
+      {
+        "path": "src/components/studio/DrydockCompatibilityPanel.tsx",
+        "contracts": [
+          "sextant.shared-consumers.creator-authoring-resources"
+        ]
+      },
+      {
+        "path": "src/components/studio/DrydockLaunchGate.tsx",
+        "contracts": [
+          "sextant.shared-consumers.creator-authoring-resources"
+        ]
+      },
+      {
+        "path": "src/components/studio/DrydockScenarioLab.tsx",
+        "contracts": [
+          "sextant.shared-consumers.creator-authoring-resources"
+        ]
+      },
+      {
+        "path": "src/components/studio/LandfallFieldTestPanel.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/components/studio/LandfallInstallationPanel.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/components/studio/LandfallOnlinePlacePanel.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/components/studio/LandfallWorkspace.tsx",
+        "contracts": [
+          "sextant.shared-consumers.creator-authoring-resources"
+        ]
+      },
+      {
+        "path": "src/components/studio/NewTaleForm.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/components/studio/PrivateContentConsole.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/components/studio/ShipwrightPublishingReview.tsx",
+        "contracts": [
+          "sextant.shared-consumers.creator-authoring-resources"
+        ]
+      },
+      {
+        "path": "src/components/studio/StudioHome.tsx",
+        "contracts": [
+          "sextant.phase4.native-context",
+          "sextant.shared-consumers.creator-draft"
+        ]
+      },
+      {
+        "path": "src/components/studio/TaleEditor.tsx",
+        "contracts": [
+          "sextant.phase4.native-context",
+          "sextant.shared-consumers.creator-draft",
+          "sextant.shared-consumers.creator-authoring-resources"
+        ]
+      },
+      {
+        "path": "src/components/studio/TaleEditorSection.tsx",
+        "contracts": [
+          "sextant.phase4.native-context",
+          "sextant.shared-consumers.creator-draft"
+        ]
+      },
+      {
+        "path": "src/components/studio/parallax/SpatialAssistant.tsx",
+        "contracts": [
+          "spatial-pilot.experience",
+          "parallax.floating-controls.experience",
+          "sextant.phase4.native-context"
+        ]
+      },
+      {
+        "path": "src/components/studio/parallax/SpatialFieldQuality.tsx",
+        "contracts": [
+          "spatial-pilot.experience",
+          "parallax.floating-controls.experience",
+          "sextant.phase4.native-context"
+        ]
+      },
+      {
+        "path": "src/components/studio/parallax/SpatialStudio.tsx",
+        "contracts": [
+          "spatial-pilot.experience",
+          "parallax.floating-controls.experience",
+          "sextant.phase4.native-context"
+        ]
+      },
+      {
+        "path": "src/components/tales/TaleCatalog.tsx",
+        "contracts": [
+          "sextant.shared-consumers.public-chronicle"
+        ]
+      },
+      {
+        "path": "src/components/tales/TaleStart.tsx",
+        "contracts": [
+          "sextant.shared-consumers.public-chronicle"
+        ]
+      },
+      {
+        "path": "src/components/tideglass/TideglassPassage.tsx",
+        "contracts": [
+          "sextant.shared-consumers.public-chronicle"
+        ]
+      },
+      {
+        "path": "src/components/wakebook/AuthenticatedPassportPage.tsx",
+        "contracts": [
+          "sextant.shared-consumers.passport-sections"
+        ]
+      },
+      {
+        "path": "src/components/wakebook/PassportLayout.tsx",
+        "contracts": [
+          "sextant.shared-consumers.passport-sections"
+        ]
+      },
+      {
+        "path": "src/components/wakebook/WakebookInsights.tsx",
+        "contracts": [
+          "sextant.shared-consumers.passport-sections"
+        ]
+      },
+      {
+        "path": "src/components/wakebook/WakebookVoyageBook.tsx",
+        "contracts": [
+          "sextant.shared-consumers.completed-history"
+        ]
+      },
+      {
+        "path": "src/components/wakebook/WakebookVoyageDetail.tsx",
+        "contracts": [
+          "sextant.shared-consumers.completed-history"
+        ]
+      },
+      {
+        "path": "src/components/wayfarer/AccountFlow.tsx",
+        "contracts": [
+          "homeport.transition.auth-routes"
+        ]
+      },
+      {
+        "path": "src/components/wayfarer/ChroniclePassport.tsx",
+        "contracts": []
+      },
+      {
+        "path": "src/sextant/DeviceCapabilitiesPanel.module.css",
+        "contracts": [
+          "sextant.phase3.field-context"
+        ]
+      },
+      {
+        "path": "src/sextant/DeviceCapabilitiesPanel.tsx",
+        "contracts": [
+          "sextant.phase3.field-context"
+        ]
+      },
+      {
+        "path": "src/sextant/DeviceContextControls.tsx",
+        "contracts": [
+          "sextant.phase3.field-context"
+        ]
+      },
+      {
+        "path": "src/sextant/MagneticHuntControls.tsx",
+        "contracts": [
+          "sextant.phase3.field-context"
+        ]
+      },
+      {
+        "path": "src/spatial-pilot/Compass.tsx",
+        "contracts": [
+          "sextant.phase4.native-context"
+        ]
+      },
+      {
+        "path": "src/spatial-pilot/OwnerSeaTrials.tsx",
+        "contracts": [
+          "sextant.phase4.native-context"
+        ]
+      },
+      {
+        "path": "src/spatial-pilot/PilotRibbon.tsx",
+        "contracts": [
+          "sextant.phase4.native-context"
+        ]
+      },
+      {
+        "path": "src/styles/chronicle.css",
+        "contracts": [
+          "sextant.shared-consumers.captain-resources"
+        ]
+      },
+      {
+        "path": "src/styles/community.css",
+        "contracts": [
+          "sextant.shared-consumers.public-community"
+        ]
+      },
+      {
+        "path": "src/styles/personal-harbor.css",
+        "contracts": [
+          "sextant.shared-consumers.passport-sections"
+        ]
+      },
+      {
+        "path": "src/styles/platform.css",
+        "contracts": [
+          "sextant.shared-consumers.captain-resources"
+        ]
+      },
+      {
+        "path": "src/styles/studio.css",
+        "contracts": [
+          "sextant.shared-consumers.creator-draft",
+          "sextant.shared-consumers.creator-authoring-resources"
+        ]
+      }
+    ]
+  },
+  "historical": {
+    "recordedObligations": 141,
+    "uniquePaths": 141,
+    "families": [
+      {
+        "id": "account-settings",
+        "owner": "project-homeport",
+        "paths": [
+          {
+            "path": "src/app/account/accessibility/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.personal-harbor"
+            ]
+          },
+          {
+            "path": "src/app/account/data/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.personal-harbor"
+            ]
+          },
+          {
+            "path": "src/app/account/linked-identities/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.personal-harbor"
+            ]
+          },
+          {
+            "path": "src/app/account/notifications/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.personal-harbor"
+            ]
+          },
+          {
+            "path": "src/app/account/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.personal-harbor"
+            ]
+          },
+          {
+            "path": "src/app/account/personal-information/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.personal-harbor"
+            ]
+          },
+          {
+            "path": "src/app/account/preferences/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.personal-harbor"
+            ]
+          },
+          {
+            "path": "src/app/account/privacy/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.personal-harbor"
+            ]
+          },
+          {
+            "path": "src/app/account/profile/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.personal-harbor"
+            ]
+          },
+          {
+            "path": "src/app/account/security/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.personal-harbor"
+            ]
+          },
+          {
+            "path": "src/app/account/sessions/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.personal-harbor"
+            ]
+          },
+          {
+            "path": "src/app/account/support-access/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.personal-harbor"
+            ]
+          },
+          {
+            "path": "src/components/homeport/AccountSurfaces.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.personal-harbor"
+            ]
+          },
+          {
+            "path": "src/components/homeport/AuthenticatedHarborPage.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.personal-harbor"
+            ]
+          },
+          {
+            "path": "src/components/homeport/PersonalHarborLayout.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.personal-harbor"
+            ]
+          }
+        ],
+        "supportGaps": [
+          "Actual capture/review remains absent.",
+          "Profile image upload/cropping, lifecycle mutations and live identity providers are not claimed by this account-task qualification."
+        ]
+      },
+      {
+        "id": "account-access-recovery",
+        "owner": "wayfarer",
+        "paths": [
+          {
+            "path": "src/app/account/cancel-deletion/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/app/account/claim/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/app/account/email-change/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/app/account/merge/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/app/account/reactivate/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/app/register/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/app/reset-password/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/app/verify-email/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/components/platform/PlayerSignIn.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/components/platform/StaffSignIn.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          }
+        ],
+        "supportGaps": [
+          "Claim, merge, email-change, cancellation and reactivation require canonical nonce-owned token/lifecycle fixtures; none is supplied by the current Sextant fixture.",
+          "Synthetic outbox delivery and ordinary token entry must be bound to real flow-specific data before registration; no live mail/provider call is authorized."
+        ]
+      },
+      {
+        "id": "workspace-capabilities",
+        "owner": "project-helm",
+        "paths": [
+          {
+            "path": "src/app/account/roles/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.workspace-capabilities"
+            ]
+          },
+          {
+            "path": "src/components/homeport/WorkspaceCapabilityDashboard.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.workspace-capabilities"
+            ]
+          }
+        ],
+        "supportGaps": [
+          "Current closureVoyage call does not set captain:true; captainAccountId is absent for this fixture.",
+          "Captain/privileged workspaces need their own canonical resource authority and ordinary visible outcome, not added labels."
+        ]
+      },
+      {
+        "id": "passport-archive",
+        "owner": "project-wakebook",
+        "paths": [
+          {
+            "path": "src/app/passport/artifacts/[artifactId]/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.completed-history"
+            ]
+          },
+          {
+            "path": "src/app/passport/artifacts/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.passport-sections",
+              "sextant.shared-consumers.completed-history"
+            ]
+          },
+          {
+            "path": "src/app/passport/atlas/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.passport-sections"
+            ]
+          },
+          {
+            "path": "src/app/passport/history/[recordId]/book/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.completed-history"
+            ]
+          },
+          {
+            "path": "src/app/passport/history/[recordId]/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.completed-history"
+            ]
+          },
+          {
+            "path": "src/app/passport/history/[recordId]/replay/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.completed-history"
+            ]
+          },
+          {
+            "path": "src/app/passport/history/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.passport-sections",
+              "sextant.shared-consumers.completed-history"
+            ]
+          },
+          {
+            "path": "src/app/passport/memories/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.passport-sections"
+            ]
+          },
+          {
+            "path": "src/app/passport/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.passport-sections"
+            ]
+          },
+          {
+            "path": "src/app/passport/people/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.passport-sections"
+            ]
+          },
+          {
+            "path": "src/app/passport/saved/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.passport-sections"
+            ]
+          },
+          {
+            "path": "src/app/passport/statistics/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.passport-sections"
+            ]
+          },
+          {
+            "path": "src/app/passport/timeline/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.passport-sections"
+            ]
+          },
+          {
+            "path": "src/components/homeport/PassportSurfaces.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.passport-sections",
+              "sextant.shared-consumers.completed-history"
+            ]
+          },
+          {
+            "path": "src/components/wakebook/AuthenticatedPassportPage.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.passport-sections"
+            ]
+          },
+          {
+            "path": "src/components/wakebook/PassportLayout.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.passport-sections"
+            ]
+          },
+          {
+            "path": "src/components/wakebook/WakebookVoyageBook.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.completed-history"
+            ]
+          },
+          {
+            "path": "src/components/wakebook/WakebookVoyageDetail.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.completed-history"
+            ]
+          },
+          {
+            "path": "src/components/wayfarer/ChroniclePassport.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          }
+        ],
+        "supportGaps": [
+          "History detail/book/replay and artifact detail require separate synthetic canonical historical/grant data.",
+          "No completion, reader-state or progress may be secretly written to the active Sextant Voyage to populate these views."
+        ]
+      },
+      {
+        "id": "community-discovery",
+        "owner": "harborlight",
+        "paths": [
+          {
+            "path": "src/app/community/[slug]/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.public-community"
+            ]
+          },
+          {
+            "path": "src/app/community/artifacts/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.public-community"
+            ]
+          },
+          {
+            "path": "src/app/community/audio/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.public-community"
+            ]
+          },
+          {
+            "path": "src/app/community/chronicles/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.public-community"
+            ]
+          },
+          {
+            "path": "src/app/community/collections/[slug]/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.public-community"
+            ]
+          },
+          {
+            "path": "src/app/community/collections/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.public-community"
+            ]
+          },
+          {
+            "path": "src/app/community/creators/[handle]/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.public-community"
+            ]
+          },
+          {
+            "path": "src/app/community/creators/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.public-community"
+            ]
+          },
+          {
+            "path": "src/app/community/featured/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.public-community"
+            ]
+          },
+          {
+            "path": "src/app/community/guides/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.public-community"
+            ]
+          },
+          {
+            "path": "src/app/community/maps/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.public-community"
+            ]
+          },
+          {
+            "path": "src/app/community/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.public-community"
+            ]
+          },
+          {
+            "path": "src/app/community/templates/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.public-community"
+            ]
+          },
+          {
+            "path": "src/app/community/voyage-logs/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.public-community"
+            ]
+          },
+          {
+            "path": "src/components/community/CommunityCardGrid.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.public-community"
+            ]
+          },
+          {
+            "path": "src/components/community/CommunityCommentThread.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.public-community"
+            ]
+          },
+          {
+            "path": "src/components/community/CommunityDiscoveryBrowser.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.public-community"
+            ]
+          },
+          {
+            "path": "src/components/community/PublicCommunitySection.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.public-community"
+            ]
+          }
+        ],
+        "supportGaps": [
+          "Published listing, collection, public Creator, guide and consented Voyage Log data must use existing canonical eligibility/privacy seams.",
+          "Harbor Home appears in both the hero and district navigator; exact unscoped role/name is ambiguous. Each affected action needs a real unique control or an explicitly agreed named-ancestor support boundary; no selector patch is inferred.",
+          "Search control is role searchbox/name Search public Community Harbor, not a guessed textbox."
+        ]
+      },
+      {
+        "id": "captain-crew",
+        "owner": "project-helm",
+        "paths": [
+          {
+            "path": "src/app/captain/library/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.captain-resources"
+            ]
+          },
+          {
+            "path": "src/app/captain/sessions/[sessionId]/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.captain-resources"
+            ]
+          },
+          {
+            "path": "src/app/captain/tales/[taleId]/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.captain-resources"
+            ]
+          },
+          {
+            "path": "src/app/captain/voyages/[playthroughId]/muster/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.captain-resources"
+            ]
+          },
+          {
+            "path": "src/app/captain/voyages/[playthroughId]/player-preview/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.captain-resources"
+            ]
+          },
+          {
+            "path": "src/components/captain/CaptainCommandConsole.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.captain-resources"
+            ]
+          },
+          {
+            "path": "src/components/captain/CaptainDashboard.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.captain-resources"
+            ]
+          },
+          {
+            "path": "src/components/captain/CaptainMusterRoom.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.captain-resources"
+            ]
+          },
+          {
+            "path": "src/components/captain/CaptainOperationalPanel.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.captain-resources"
+            ]
+          },
+          {
+            "path": "src/components/captain/CaptainSessionControl.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/components/gm/Quartermaster.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/components/muster/CrewChat.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.captain-resources"
+            ]
+          },
+          {
+            "path": "src/components/muster/MusterRoom.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.captain-resources"
+            ]
+          },
+          {
+            "path": "src/components/platform/CaptainLibrary.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.captain-resources"
+            ]
+          }
+        ],
+        "supportGaps": [
+          "Use existing closureVoyage captain option or domain fixtures with a separate authorized synthetic persona; do not treat CREATOR assignment as Captain authority.",
+          "Crew chat/operational recovery needs synthetic members and real published passage context."
+        ]
+      },
+      {
+        "id": "player-entry",
+        "owner": "one-voyage",
+        "paths": [
+          {
+            "path": "src/app/chronicles/[taleSlug]/compare/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.public-chronicle"
+            ]
+          },
+          {
+            "path": "src/app/chronicles/[taleSlug]/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.public-chronicle"
+            ]
+          },
+          {
+            "path": "src/app/play/[taleSlug]/history/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.public-chronicle"
+            ]
+          },
+          {
+            "path": "src/app/play/[taleSlug]/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.public-chronicle"
+            ]
+          },
+          {
+            "path": "src/app/play/[taleSlug]/session/[sessionId]/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.public-chronicle"
+            ]
+          },
+          {
+            "path": "src/app/player/invitation/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/app/player/playthroughs/[playthroughId]/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/app/player/sign-in/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/app/tales/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.public-chronicle"
+            ]
+          },
+          {
+            "path": "src/components/platform/InvitationCeremony.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/components/platform/PlayerLibrary.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.workspace-capabilities"
+            ]
+          },
+          {
+            "path": "src/components/platform/PlayerSafePreview.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.captain-resources"
+            ]
+          },
+          {
+            "path": "src/components/platform/PlayerVoyageRoom.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/components/tales/TaleCatalog.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.public-chronicle"
+            ]
+          },
+          {
+            "path": "src/components/tales/TaleStart.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.public-chronicle"
+            ]
+          },
+          {
+            "path": "src/components/tideglass/TideglassPassage.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.public-chronicle"
+            ]
+          }
+        ],
+        "supportGaps": [
+          "Returning-reader preparation must complete the visible first opening and retain its recording. Current trusted replay loop creates fresh role contexts and the helper does not accept undocumented conditional setup steps.",
+          "Invitation/revoked states, legacy cookie continuation, edition comparison and completed-history returns require separate canonical synthetic data or ordinary flow preparation.",
+          "Actual compatibility route continuity is not inferred from companion return: frozen Crossdeck Return to Chronicle goes to /player/playthroughs/<id>/journal."
+        ]
+      },
+      {
+        "id": "landfall-player-recovery",
+        "owner": "landfall",
+        "paths": [
+          {
+            "path": "src/app/player/landfall-return/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/app/player/offline-landfall/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/components/player/journal/LandfallBackgroundPanel.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/components/player/journal/LandfallBlePanel.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/components/player/journal/LandfallContextGuidance.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/components/player/journal/LandfallInstallationPanel.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/components/player/journal/LandfallJournalChart.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/components/player/journal/LandfallLandmarkPanel.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/components/player/journal/LandfallNearbyPanel.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/components/player/journal/LandfallOfflineRegionPanel.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/components/player/journal/LandfallOnlineDataPanel.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/components/player/journal/LandfallPlaceSearch.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/components/player/journal/LandfallPresentation.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/components/player/journal/OfflineLandfallJournal.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          }
+        ],
+        "supportGaps": [
+          "Reuse existing Landfall closure/native/offline-region fixtures with fictional coordinates and canonical evidence bounds.",
+          "No browser or injected observation may be promoted to native or D4 hardware proof; no active-Voyage progress is injected."
+        ]
+      },
+      {
+        "id": "creator-source-consumers",
+        "owner": "one-voyage",
+        "paths": [
+          {
+            "path": "src/app/studio/private-content/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/app/studio/tales/[taleId]/artifacts/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.creator-authoring-resources"
+            ]
+          },
+          {
+            "path": "src/app/studio/tales/[taleId]/assets/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.creator-authoring-resources"
+            ]
+          },
+          {
+            "path": "src/app/studio/tales/[taleId]/landfall/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.creator-authoring-resources"
+            ]
+          },
+          {
+            "path": "src/app/studio/tales/[taleId]/locations/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.creator-authoring-resources"
+            ]
+          },
+          {
+            "path": "src/app/studio/tales/[taleId]/settings/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.creator-draft"
+            ]
+          },
+          {
+            "path": "src/app/studio/tales/[taleId]/trials/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.creator-authoring-resources"
+            ]
+          },
+          {
+            "path": "src/app/studio/tales/[taleId]/versions/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.creator-authoring-resources"
+            ]
+          },
+          {
+            "path": "src/app/studio/tales/new/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/components/studio/DrydockCompatibilityPanel.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.creator-authoring-resources"
+            ]
+          },
+          {
+            "path": "src/components/studio/DrydockLaunchGate.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.creator-authoring-resources"
+            ]
+          },
+          {
+            "path": "src/components/studio/DrydockScenarioLab.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.creator-authoring-resources"
+            ]
+          },
+          {
+            "path": "src/components/studio/LandfallFieldTestPanel.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/components/studio/LandfallInstallationPanel.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/components/studio/LandfallOnlinePlacePanel.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/components/studio/LandfallWorkspace.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.creator-authoring-resources"
+            ]
+          },
+          {
+            "path": "src/components/studio/NewTaleForm.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/components/studio/PrivateContentConsole.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/components/studio/ShipwrightPublishingReview.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.creator-authoring-resources"
+            ]
+          }
+        ],
+        "supportGaps": [
+          "Assets/artifacts, trials, versions, location/installation, private-content and Drydock/Shipwright states need real synthetic domain data or an explicit honest-empty contract.",
+          "Title persistence/comparison must use the actual save/reopen path; no new edition publication, paid AI call or A1 restart is claimed.",
+          "File/media workflows exceed static fill/click if an observed upload is required; use existing domain tooling/evidence under a recorded supported boundary."
+        ]
+      },
+      {
+        "id": "crossdeck-surfaces",
+        "owner": "project-crossdeck",
+        "paths": [
+          {
+            "path": "src/app/devices/display/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/app/devices/pair/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "reach.phase1.foundation"
+            ]
+          }
+        ],
+        "supportGaps": [
+          "Consume exact accepted UI/test and preserve its complete contracts only after actual protected acceptance.",
+          "Pairing requires a real private challenge from the actual flow; existing static journey fill cannot silently read or manufacture an observed random code. Use the domain-supported two-device boundary and receipts.",
+          "Keep the accepted unnamed main plus Voyage/edition attributes; update own selectors instead of breaking frozen exact-name obligations."
+        ]
+      },
+      {
+        "id": "admiralty-shell",
+        "owner": "project-admiralty",
+        "paths": [
+          {
+            "path": "src/app/admin/layout.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/components/admiralty/AdmiraltyConsole.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/components/admiralty/AdmiraltyShell.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          },
+          {
+            "path": "src/components/admiralty/DossierSupportPanel.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          }
+        ],
+        "supportGaps": [
+          "Retain the accepted operator contract unchanged and verify its existing synthetic producer binding.",
+          "Additional Shell/dossier/support cases require canonical scoped grants, assurance and synthetic subjects/consent; no security relaxation or privileged enum-only witness."
+        ]
+      },
+      {
+        "id": "shared-shell-runtime",
+        "owner": "platform-foundation",
+        "paths": [
+          {
+            "path": "src/app/layout.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.shell-identity"
+            ]
+          },
+          {
+            "path": "src/app/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.shell-identity"
+            ]
+          },
+          {
+            "path": "src/components/auth/CurrentUserProvider.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.shell-identity"
+            ]
+          },
+          {
+            "path": "src/components/auth/SignOutButton.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.shell-identity"
+            ]
+          },
+          {
+            "path": "src/components/homeport/PreferenceRuntimeBridge.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.shell-identity"
+            ]
+          },
+          {
+            "path": "src/components/landing/HarborLanding.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.shell-identity"
+            ]
+          },
+          {
+            "path": "src/components/shell/ProductShell.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": [
+              "sextant.shared-consumers.shell-identity"
+            ]
+          }
+        ],
+        "supportGaps": [
+          "No rendered sign-out or preference capture is available yet.",
+          "Canonical gateway href continuity does not claim persistence of the deliberately ended identity or native sensor cleanup."
+        ]
+      },
+      {
+        "id": "development-synthetic-pilot",
+        "owner": "project-parallax",
+        "paths": [
+          {
+            "path": "src/app/dev/spatial-pilot/page.tsx",
+            "exists": true,
+            "currentlyAffected": true,
+            "contracts": []
+          }
+        ],
+        "supportGaps": [
+          "Use existing spatial-pilot fixture/owner authorization; do not enable a debug route, bypass its gate or present it as production consumer acceptance."
+        ]
+      }
+    ]
+  },
+  "planner": {
+    "status": "BLOCKED",
+    "reason": "PRODUCT_EXPERIENCE_UNREGISTERED_SURFACE:src/app/account/cancel-deletion/page.tsx,src/app/account/claim/page.tsx,src/app/account/email-change/page.tsx,src/app/account/merge/page.tsx,src/app/account/reactivate/page.tsx,src/app/admin/layout.tsx,src/app/dev/spatial-pilot/page.tsx,src/app/devices/display/page.tsx,src/app/player/invitation/page.tsx,src/app/player/landfall-return/page.tsx,src/app/player/offline-landfall/page.tsx,src/app/player/playthroughs/[playthroughId]/page.tsx,src/app/player/sign-in/page.tsx,src/app/register/page.tsx,src/app/reset-password/page.tsx,src/app/studio/private-content/page.tsx,src/app/studio/tales/new/page.tsx,src/app/verify-email/page.tsx,src/components/admiralty/AdmiraltyConsole.tsx,src/components/admiralty/AdmiraltyShell.tsx,src/components/admiralty/DossierSupportPanel.tsx,src/components/captain/CaptainSessionControl.tsx,src/components/gm/Quartermaster.tsx,src/components/platform/InvitationCeremony.tsx,src/components/platform/PlayerSignIn.tsx,src/components/platform/PlayerVoyageRoom.tsx,src/components/platform/StaffSignIn.tsx,src/components/player/journal/LandfallBackgroundPanel.tsx,src/components/player/journal/LandfallBlePanel.tsx,src/components/player/journal/LandfallContextGuidance.tsx,src/components/player/journal/LandfallInstallationPanel.tsx,src/components/player/journal/LandfallJournalChart.tsx,src/components/player/journal/LandfallLandmarkPanel.tsx,src/components/player/journal/LandfallNearbyPanel.tsx,src/components/player/journal/LandfallOfflineRegionPanel.tsx,src/components/player/journal/LandfallOnlineDataPanel.tsx,src/components/player/journal/LandfallPlaceSearch.tsx,src/components/player/journal/LandfallPresentation.tsx,src/components/player/journal/OfflineLandfallJournal.tsx,src/components/studio/LandfallFieldTestPanel.tsx,src/components/studio/LandfallInstallationPanel.tsx,src/components/studio/LandfallOnlinePlacePanel.tsx,src/components/studio/NewTaleForm.tsx,src/components/studio/PrivateContentConsole.tsx,src/components/wayfarer/ChroniclePassport.tsx"
+  },
+  "acceptance": "NOT_GRANTED",
+  "historicalReceipts": "UNCHANGED_ORIGINAL_SOURCE_IDENTITIES"
+}

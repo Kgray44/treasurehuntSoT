@@ -1,0 +1,167 @@
+{
+  "source": {
+    "sourceSha": "7b785a39e3c2e059ec46c2035e28af6a8b1fbdb0",
+    "sourceTree": "5c565596ccc26b93bbf9750994b49a6ada3a5fc3",
+    "dirty": false,
+    "sourceFingerprint": "facf028644d53ebe95c58892e7fb871761136fd9af66634498cb036a4d8aede8"
+  },
+  "fixture": {
+    "manifestSha256": "6818975d1d09d26278d6e8aa0b338eaa5a0b96c333abd3279fc8c8941e779d86",
+    "producerSha256": "017ad8d48340c26fd0f427f0054060363027f4541d35d9288dc80ba0a5c27e75",
+    "fixtureVersion": "homeport-phase4-synthetic-v1",
+    "playerVoyageId": "sextant-experience-voyage",
+    "playerVersionId": "cmvfzz1ed00080cypw5yxmx7y",
+    "publicSlugs": [
+      "lantern-coast-chronicle",
+      "paper-stars-chronicle",
+      "clockwork-reef-chronicle",
+      "signal-flag-artifact",
+      "paper-compass-artifact",
+      "glass-beacon-artifact",
+      "quiet-watch-template",
+      "fictional-crescent-map-pack",
+      "harbor-bell-audio-pack",
+      "fog-bank-blocked-chronicle"
+    ],
+    "ineligibleSlugs": [
+      "sealed-drawer-private",
+      "unlisted-moon-chart",
+      "quarantined-signal",
+      "removed-old-chart",
+      "archived-superseded-chart"
+    ]
+  },
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "reducedMotion": "reduce",
+  "feedback": [
+    {
+      "task": "Ordinary Community entry",
+      "elapsedMs": 683.0591029999996
+    },
+    {
+      "task": "Featured district",
+      "elapsedMs": 498.5941779999994
+    },
+    {
+      "task": "Chronicles district",
+      "elapsedMs": 290.48562200000015
+    },
+    {
+      "task": "Artifacts district",
+      "elapsedMs": 206.29811999999947
+    },
+    {
+      "task": "Templates district",
+      "elapsedMs": 172.4672869999995
+    },
+    {
+      "task": "Maps district",
+      "elapsedMs": 146.03258199999982
+    },
+    {
+      "task": "Audio and reveals district",
+      "elapsedMs": 185.19298999999592
+    },
+    {
+      "task": "Creators district",
+      "elapsedMs": 187.37000799999805
+    },
+    {
+      "task": "Collections district",
+      "elapsedMs": 179.57848000000376
+    },
+    {
+      "task": "Guides district",
+      "elapsedMs": 184.95566900000267
+    },
+    {
+      "task": "Voyage Logs district",
+      "elapsedMs": 169.39552999999432
+    },
+    {
+      "task": "The Lantern Coast detail",
+      "elapsedMs": 444.8570380000019
+    },
+    {
+      "task": "The Lantern Coast return",
+      "elapsedMs": 221.53250200000184
+    },
+    {
+      "task": "Glass Beacon Model detail",
+      "elapsedMs": 230.46018699998967
+    },
+    {
+      "task": "Glass Beacon Model return",
+      "elapsedMs": 254.37840099999448
+    },
+    {
+      "task": "Captain Almanac detail",
+      "elapsedMs": 283.36884999999893
+    },
+    {
+      "task": "Captain Almanac return",
+      "elapsedMs": 117.29822599999898
+    },
+    {
+      "task": "Maker Lumen detail",
+      "elapsedMs": 251.56963199999882
+    },
+    {
+      "task": "Maker Lumen return",
+      "elapsedMs": 271.74126200001047
+    },
+    {
+      "task": "Harbor Starter Charts detail",
+      "elapsedMs": 206.81379099999322
+    },
+    {
+      "task": "Harbor Starter Charts return",
+      "elapsedMs": 245.33716500000446
+    },
+    {
+      "task": "Empty Chart Case detail",
+      "elapsedMs": 143.58226000001014
+    },
+    {
+      "task": "Empty Chart Case return",
+      "elapsedMs": 177.06689699999697
+    },
+    {
+      "task": "Reading the Weathered Chart detail",
+      "elapsedMs": 198.72370599998976
+    },
+    {
+      "task": "Reading the Weathered Chart return",
+      "elapsedMs": 175.53509200000553
+    },
+    {
+      "task": "Fictional Lantern Voyage Log detail",
+      "elapsedMs": 164.10045899999386
+    },
+    {
+      "task": "Fictional Lantern Voyage Log return",
+      "elapsedMs": 255.7834739999962
+    },
+    {
+      "task": "Actual empty public search",
+      "elapsedMs": 283.6656359999906
+    },
+    {
+      "task": "Settled readable Search hover",
+      "elapsedMs": 67.26987300001201
+    }
+  ],
+  "anonymous": true,
+  "ordinaryEntryAndReturn": true,
+  "publicDistricts": 10,
+  "publicDetails": 8,
+  "actualEmptySearch": true,
+  "hiddenLinksAbsent": true,
+  "unchangedCanonicalProgress": true,
+  "unchangedPublishedEdition": true,
+  "protectedQualification": false,
+  "physicalEvidence": false
+}

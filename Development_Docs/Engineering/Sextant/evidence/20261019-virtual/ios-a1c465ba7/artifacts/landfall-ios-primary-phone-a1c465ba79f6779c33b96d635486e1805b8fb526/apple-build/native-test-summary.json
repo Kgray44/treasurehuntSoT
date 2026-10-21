@@ -1,0 +1,49 @@
+{
+  "devicesAndConfigurations" : [
+    {
+      "device" : {
+        "architecture" : "arm64",
+        "deviceId" : "230459F1-6A9E-49B5-AE7E-A0CA34366E36",
+        "deviceName" : "landfall-owned-5779",
+        "modelName" : "iPhone 17e",
+        "osBuildNumber" : "23F77",
+        "osVersion" : "26.5",
+        "platform" : "iOS Simulator"
+      },
+      "expectedFailures" : 0,
+      "failedTests" : 0,
+      "passedTests" : 31,
+      "skippedTests" : 1,
+      "testPlanConfiguration" : {
+        "configurationId" : "1",
+        "configurationName" : "Test Scheme Action"
+      }
+    }
+  ],
+  "environmentDescription" : "LandfallCompanion · Built with macOS 26.6.2",
+  "expectedFailures" : 0,
+  "failedTests" : 0,
+  "finishTime" : 1792434346.034,
+  "passedTests" : 31,
+  "result" : "Passed",
+  "skippedTests" : 1,
+  "startTime" : 1792434263.573,
+  "statistics" : [
+    {
+      "subtitle" : "1 test run",
+      "title" : "1 test collected performance metrics"
+    }
+  ],
+  "testFailures" : [
+
+  ],
+  "title" : "Test - LandfallCompanion",
+  "topInsights" : [
+    {
+      "category" : "Longest Test Runs",
+      "impact" : "57% of duration",
+      "text" : "1 longest test run with outlier durations exceeding 0.24s (three standard deviations)"
+    }
+  ],
+  "totalTestCount" : 32
+}

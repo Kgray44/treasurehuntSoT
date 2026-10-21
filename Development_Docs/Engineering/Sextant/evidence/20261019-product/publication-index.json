@@ -1,0 +1,361 @@
+{
+  "schemaVersion": 1,
+  "classification": "ENGINEERING_EVIDENCE_ORIGINAL_BYTES_NOT_ACCEPTANCE",
+  "files": [
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-native-nearby-rea-6e797-ckground-clears-the-session-chromium/attachments/native-device-controls-62d6923562a7973dc640729afd6317bf2ee4e6cf.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-native-nearby-rea-6e797-ckground-clears-the-session-chromium/attachments/native-device-controls-62d6923562a7973dc640729afd6317bf2ee4e6cf.png",
+      "bytes": 732547,
+      "sha256": "2919c47d245bd1710717ed36a304b94ee17aa91ad578667a428fbfcc5201d5c0"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-native-nearby-rea-6e797-ckground-clears-the-session-chromium/attachments/native-device-controls-boundary-446ceb15c130a80b56e83bf5369cf8fb23965489.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-native-nearby-rea-6e797-ckground-clears-the-session-chromium/attachments/native-device-controls-boundary-446ceb15c130a80b56e83bf5369cf8fb23965489.json",
+      "bytes": 525,
+      "sha256": "9fd8af3d4635bfe8e61d1001c83c8fb47b499284739f7fd50d390bdd5a75dd5c"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-native-nearby-rea-6e797-ckground-clears-the-session-chromium/attachments/native-device-controls-full-page-7dafe745ffc3805404e280b3af0b9166fbda9df3.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-native-nearby-rea-6e797-ckground-clears-the-session-chromium/attachments/native-device-controls-full-page-7dafe745ffc3805404e280b3af0b9166fbda9df3.png",
+      "bytes": 2831346,
+      "sha256": "93d90c0f7f316b4d3522e9f6b4f547614dba2d32599df8289d50ba41ddab1769"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-native-nearby-rea-6e797-ckground-clears-the-session-chromium/attachments/native-nearby-stopped-b8a687729182d8b9a0fa60e764792a1a0cd78592.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-native-nearby-rea-6e797-ckground-clears-the-session-chromium/attachments/native-nearby-stopped-b8a687729182d8b9a0fa60e764792a1a0cd78592.png",
+      "bytes": 1294558,
+      "sha256": "cf23ce4cf8d928395053cfd4a9abcb1d2c2c916da983bae1286381bc4f1c1c51"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-native-nearby-rea-6e797-ckground-clears-the-session-chromium/native-device-controls-boundary.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-native-nearby-rea-6e797-ckground-clears-the-session-chromium/native-device-controls-boundary.json",
+      "bytes": 525,
+      "sha256": "9fd8af3d4635bfe8e61d1001c83c8fb47b499284739f7fd50d390bdd5a75dd5c"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-native-nearby-rea-6e797-ckground-clears-the-session-chromium/native-device-controls-full-page.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-native-nearby-rea-6e797-ckground-clears-the-session-chromium/native-device-controls-full-page.png",
+      "bytes": 2831346,
+      "sha256": "93d90c0f7f316b4d3522e9f6b4f547614dba2d32599df8289d50ba41ddab1769"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-native-nearby-rea-6e797-ckground-clears-the-session-chromium/native-device-controls.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-native-nearby-rea-6e797-ckground-clears-the-session-chromium/native-device-controls.png",
+      "bytes": 732547,
+      "sha256": "2919c47d245bd1710717ed36a304b94ee17aa91ad578667a428fbfcc5201d5c0"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-native-nearby-rea-6e797-ckground-clears-the-session-chromium/native-nearby-stopped.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-native-nearby-rea-6e797-ckground-clears-the-session-chromium/native-nearby-stopped.png",
+      "bytes": 1294558,
+      "sha256": "cf23ce4cf8d928395053cfd4a9abcb1d2c2c916da983bae1286381bc4f1c1c51"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-measures-c-72fa6-large-released-waypoint-set-chromium/landfall-chart-performance.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-measures-c-72fa6-large-released-waypoint-set-chromium/landfall-chart-performance.json",
+      "bytes": 893,
+      "sha256": "737c1e1fb021f31b6d79d2194c4864776e79b2685b3898d4b8a7257fc366033f"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-online-bac-07e45-and-never-write-progression-chromium/attachments/online-map-sharing-choice-1cf33686c0ded3c7ec91354495251a45f205d180.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-online-bac-07e45-and-never-write-progression-chromium/attachments/online-map-sharing-choice-1cf33686c0ded3c7ec91354495251a45f205d180.png",
+      "bytes": 160832,
+      "sha256": "9393f8a8463aec7cd91fe9d15e7cef9f24793a6f779612300abd2df06100999f"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-online-bac-07e45-and-never-write-progression-chromium/online-map-sharing-choice.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-online-bac-07e45-and-never-write-progression-chromium/online-map-sharing-choice.png",
+      "bytes": 160832,
+      "sha256": "9393f8a8463aec7cd91fe9d15e7cef9f24793a6f779612300abd2df06100999f"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-B-de62d--readable-fallback-at-375px-chromium/attachments/bluetooth-absent-readable-fallback-b677a1f647bfe628b4aa69b8dddf432022d9a51c.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-B-de62d--readable-fallback-at-375px-chromium/attachments/bluetooth-absent-readable-fallback-b677a1f647bfe628b4aa69b8dddf432022d9a51c.png",
+      "bytes": 409986,
+      "sha256": "8d9411c475654efd337f1107bfd285d58fe9dadf9c64f4d9fad1a45084178b3a"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-B-de62d--readable-fallback-at-375px-chromium/bluetooth-absent-readable-fallback.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-B-de62d--readable-fallback-at-375px-chromium/bluetooth-absent-readable-fallback.png",
+      "bytes": 409986,
+      "sha256": "8d9411c475654efd337f1107bfd285d58fe9dadf9c64f4d9fad1a45084178b3a"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-B-de62d--readable-fallback-at-375px-chromium/bluetooth-evidence-class.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-B-de62d--readable-fallback-at-375px-chromium/bluetooth-evidence-class.json",
+      "bytes": 154,
+      "sha256": "0869c7f12183b9f5adaa9bf19f628b95f4b5c4116aaec3ec2c6f24a0cd6a664a"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-B-f210e-readable-fallback-at-1280px-chromium/attachments/bluetooth-absent-readable-fallback-6b98bfe26c356e90b7272e12174bc99974296e08.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-B-f210e-readable-fallback-at-1280px-chromium/attachments/bluetooth-absent-readable-fallback-6b98bfe26c356e90b7272e12174bc99974296e08.png",
+      "bytes": 777703,
+      "sha256": "40c09a3be02e791a97c9660fdbb4f7f6373e488fd60a9986089dba96f7249a05"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-B-f210e-readable-fallback-at-1280px-chromium/bluetooth-absent-readable-fallback.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-B-f210e-readable-fallback-at-1280px-chromium/bluetooth-absent-readable-fallback.png",
+      "bytes": 777703,
+      "sha256": "40c09a3be02e791a97c9660fdbb4f7f6373e488fd60a9986089dba96f7249a05"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-B-f210e-readable-fallback-at-1280px-chromium/bluetooth-evidence-class.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-B-f210e-readable-fallback-at-1280px-chromium/bluetooth-evidence-class.json",
+      "bytes": 154,
+      "sha256": "0869c7f12183b9f5adaa9bf19f628b95f4b5c4116aaec3ec2c6f24a0cd6a664a"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-o-5a60a-nd-no-progression-at-1280px-chromium/attachments/online-data-cleared-cf2b5a9cf912bb2a66c2c07c8b6fbf32686329eb.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-o-5a60a-nd-no-progression-at-1280px-chromium/attachments/online-data-cleared-cf2b5a9cf912bb2a66c2c07c8b6fbf32686329eb.png",
+      "bytes": 600361,
+      "sha256": "3c9ab638174a61c536bf77ebc0b89cf2f49ed157d6720f6a979914459cf669a4"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-o-5a60a-nd-no-progression-at-1280px-chromium/online-data-cleared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-o-5a60a-nd-no-progression-at-1280px-chromium/online-data-cleared.png",
+      "bytes": 600361,
+      "sha256": "3c9ab638174a61c536bf77ebc0b89cf2f49ed157d6720f6a979914459cf669a4"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-o-c3fc7-and-no-progression-at-375px-chromium/attachments/online-data-cleared-bf447a3696318b1e0168bba507087dd637272e05.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-o-c3fc7-and-no-progression-at-375px-chromium/attachments/online-data-cleared-bf447a3696318b1e0168bba507087dd637272e05.png",
+      "bytes": 236849,
+      "sha256": "bd3f1f844fbd9c5ad36116de836ed88e62aabb14164931bda4cef7ac972b46e8"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-o-c3fc7-and-no-progression-at-375px-chromium/online-data-cleared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-o-c3fc7-and-no-progression-at-375px-chromium/online-data-cleared.png",
+      "bytes": 236849,
+      "sha256": "bd3f1f844fbd9c5ad36116de836ed88e62aabb14164931bda4cef7ac972b46e8"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-s-3c36a-ccessible-fallback-at-375px-chromium/attachments/signed-installation-cleared-e39f4946c069051641b9e26c79e1a68352128347.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-s-3c36a-ccessible-fallback-at-375px-chromium/attachments/signed-installation-cleared-e39f4946c069051641b9e26c79e1a68352128347.png",
+      "bytes": 326465,
+      "sha256": "c7ca335a65d7dda72f4c3f8e9d6bc5a21ab1a0287ec622e34dcd51792ebd9ff1"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-s-3c36a-ccessible-fallback-at-375px-chromium/signed-installation-cleared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-s-3c36a-ccessible-fallback-at-375px-chromium/signed-installation-cleared.png",
+      "bytes": 326465,
+      "sha256": "c7ca335a65d7dda72f4c3f8e9d6bc5a21ab1a0287ec622e34dcd51792ebd9ff1"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-s-3c36a-ccessible-fallback-at-375px-chromium/signed-installation-evidence-class.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-s-3c36a-ccessible-fallback-at-375px-chromium/signed-installation-evidence-class.json",
+      "bytes": 281,
+      "sha256": "c3b97828865aa90aaca36b9f17775b34104c8f0fa434867c07946b887f992d35"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-s-cbbd8-cessible-fallback-at-1280px-chromium/attachments/signed-installation-cleared-0ce2fd2bd9e0f94bb5326a4c5d92c22d7da080e2.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-s-cbbd8-cessible-fallback-at-1280px-chromium/attachments/signed-installation-cleared-0ce2fd2bd9e0f94bb5326a4c5d92c22d7da080e2.png",
+      "bytes": 712598,
+      "sha256": "bf46248eb1a8f73f310dd1f620923710a8efccbc84bdb3dd1b432ee0e17e30bf"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-s-cbbd8-cessible-fallback-at-1280px-chromium/signed-installation-cleared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-s-cbbd8-cessible-fallback-at-1280px-chromium/signed-installation-cleared.png",
+      "bytes": 712598,
+      "sha256": "bf46248eb1a8f73f310dd1f620923710a8efccbc84bdb3dd1b432ee0e17e30bf"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-s-cbbd8-cessible-fallback-at-1280px-chromium/signed-installation-evidence-class.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-optional-s-cbbd8-cessible-fallback-at-1280px-chromium/signed-installation-evidence-class.json",
+      "bytes": 281,
+      "sha256": "c3b97828865aa90aaca36b9f17775b34104c8f0fa434867c07946b887f992d35"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-private-co-32580-e-and-cancels-on-background-chromium/attachments/nearby-browser-stage-80792002602c84532872ec92b430f69e0ab4b337.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-private-co-32580-e-and-cancels-on-background-chromium/attachments/nearby-browser-stage-80792002602c84532872ec92b430f69e0ab4b337.json",
+      "bytes": 59,
+      "sha256": "a138c78109e7ce8a18851d28b9be6ee6018941453e34e5b536d0ca8148ae6e8c"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-private-co-32580-e-and-cancels-on-background-chromium/attachments/nearby-companion-stopped-0119e28982c6144f72fb43165fbd57c9e4970268.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-private-co-32580-e-and-cancels-on-background-chromium/attachments/nearby-companion-stopped-0119e28982c6144f72fb43165fbd57c9e4970268.png",
+      "bytes": 265820,
+      "sha256": "df05d7d55811e0ece3d05b2c88f3e0817f686aae0a89ca8c2749b460d10fac76"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-private-co-32580-e-and-cancels-on-background-chromium/nearby-browser-stage.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-private-co-32580-e-and-cancels-on-background-chromium/nearby-browser-stage.json",
+      "bytes": 59,
+      "sha256": "a138c78109e7ce8a18851d28b9be6ee6018941453e34e5b536d0ca8148ae6e8c"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-private-co-32580-e-and-cancels-on-background-chromium/nearby-companion-stopped.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-private-co-32580-e-and-cancels-on-background-chromium/nearby-companion-stopped.png",
+      "bytes": 265820,
+      "sha256": "df05d7d55811e0ece3d05b2c88f3e0817f686aae0a89ca8c2749b460d10fac76"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-released-p-3b766-he-view-in-VIRTUAL-at-375px-chromium/attachments/released-place-map-67849fe4bf48d758d26e965888d56df682b79e4b.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-released-p-3b766-he-view-in-VIRTUAL-at-375px-chromium/attachments/released-place-map-67849fe4bf48d758d26e965888d56df682b79e4b.png",
+      "bytes": 171733,
+      "sha256": "b9b89766e93c96cc94d2dc26f4d15693311f7690653f5b12d56e2d525fa1d244"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-released-p-3b766-he-view-in-VIRTUAL-at-375px-chromium/attachments/released-place-selected-ed7854edf0fb497b5d6ca48339cc1a4b38a04035.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-released-p-3b766-he-view-in-VIRTUAL-at-375px-chromium/attachments/released-place-selected-ed7854edf0fb497b5d6ca48339cc1a4b38a04035.png",
+      "bytes": 188364,
+      "sha256": "0a503c2490db157bce462889e424fe7caecb10198296ce2b3b0fee541836d373"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-released-p-3b766-he-view-in-VIRTUAL-at-375px-chromium/released-place-map.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-released-p-3b766-he-view-in-VIRTUAL-at-375px-chromium/released-place-map.png",
+      "bytes": 171733,
+      "sha256": "b9b89766e93c96cc94d2dc26f4d15693311f7690653f5b12d56e2d525fa1d244"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-released-p-3b766-he-view-in-VIRTUAL-at-375px-chromium/released-place-selected.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-released-p-3b766-he-view-in-VIRTUAL-at-375px-chromium/released-place-selected.png",
+      "bytes": 188364,
+      "sha256": "0a503c2490db157bce462889e424fe7caecb10198296ce2b3b0fee541836d373"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-released-p-4fefc--view-in-PHYSICAL-at-1280px-chromium/attachments/released-place-map-a31484ddd7b47cbc9150b944e5cb6fcf103d6b0d.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-released-p-4fefc--view-in-PHYSICAL-at-1280px-chromium/attachments/released-place-map-a31484ddd7b47cbc9150b944e5cb6fcf103d6b0d.png",
+      "bytes": 490639,
+      "sha256": "a95f48beaff38ccdbc35bf5d1cf64d09e908b1276fe45b7fc31138df468a893e"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-released-p-4fefc--view-in-PHYSICAL-at-1280px-chromium/attachments/released-place-selected-71cf3e2cc6593c052dac8a069adec3fef878296d.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-released-p-4fefc--view-in-PHYSICAL-at-1280px-chromium/attachments/released-place-selected-71cf3e2cc6593c052dac8a069adec3fef878296d.png",
+      "bytes": 519218,
+      "sha256": "e7fc8a444b0f58a6b3ed8163580c06f0b55eb5c6f0ff1c7ae72181f9841541bf"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-released-p-4fefc--view-in-PHYSICAL-at-1280px-chromium/released-place-map.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-released-p-4fefc--view-in-PHYSICAL-at-1280px-chromium/released-place-map.png",
+      "bytes": 490639,
+      "sha256": "a95f48beaff38ccdbc35bf5d1cf64d09e908b1276fe45b7fc31138df468a893e"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-released-p-4fefc--view-in-PHYSICAL-at-1280px-chromium/released-place-selected.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-released-p-4fefc--view-in-PHYSICAL-at-1280px-chromium/released-place-selected.png",
+      "bytes": 519218,
+      "sha256": "e7fc8a444b0f58a6b3ed8163580c06f0b55eb5c6f0ff1c7ae72181f9841541bf"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-released-p-6b914-e-view-in-VIRTUAL-at-1280px-chromium/attachments/released-place-map-1775369ad8fca9582265aeb33ee3d3f3f51757cb.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-released-p-6b914-e-view-in-VIRTUAL-at-1280px-chromium/attachments/released-place-map-1775369ad8fca9582265aeb33ee3d3f3f51757cb.png",
+      "bytes": 491734,
+      "sha256": "66cc9d894b8861d89b8f9a3c89026ef2f8abd022fd084a0f42d59136f0f35dd7"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-released-p-6b914-e-view-in-VIRTUAL-at-1280px-chromium/attachments/released-place-selected-176a120bd664da5bd752424c7fc91cc22de66f74.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-released-p-6b914-e-view-in-VIRTUAL-at-1280px-chromium/attachments/released-place-selected-176a120bd664da5bd752424c7fc91cc22de66f74.png",
+      "bytes": 519603,
+      "sha256": "c4c2dd94870a15bad5d7c5293ab6aecc2d214ccc5f959da95f87ff81bf4fb628"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-released-p-6b914-e-view-in-VIRTUAL-at-1280px-chromium/released-place-map.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-released-p-6b914-e-view-in-VIRTUAL-at-1280px-chromium/released-place-map.png",
+      "bytes": 491734,
+      "sha256": "66cc9d894b8861d89b8f9a3c89026ef2f8abd022fd084a0f42d59136f0f35dd7"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-released-p-6b914-e-view-in-VIRTUAL-at-1280px-chromium/released-place-selected.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-released-p-6b914-e-view-in-VIRTUAL-at-1280px-chromium/released-place-selected.png",
+      "bytes": 519603,
+      "sha256": "c4c2dd94870a15bad5d7c5293ab6aecc2d214ccc5f959da95f87ff81bf4fb628"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-released-p-849c9-e-view-in-PHYSICAL-at-375px-chromium/attachments/released-place-map-bee21d482fe604737ea009b449138f276d2190ac.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-released-p-849c9-e-view-in-PHYSICAL-at-375px-chromium/attachments/released-place-map-bee21d482fe604737ea009b449138f276d2190ac.png",
+      "bytes": 176766,
+      "sha256": "44f06a4dbfce430f2eae0566f96122c98669ad05b4709f5ba4041feecb0571f7"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-released-p-849c9-e-view-in-PHYSICAL-at-375px-chromium/attachments/released-place-selected-a864d65410f6d5a2f8b7ff334a1c7f76f97af7dc.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-released-p-849c9-e-view-in-PHYSICAL-at-375px-chromium/attachments/released-place-selected-a864d65410f6d5a2f8b7ff334a1c7f76f97af7dc.png",
+      "bytes": 189775,
+      "sha256": "da6b2d1cdfecc367dd931a26768a16fa23abf3dd9cc2b5d8a6cd034b123b7681"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-released-p-849c9-e-view-in-PHYSICAL-at-375px-chromium/released-place-map.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-released-p-849c9-e-view-in-PHYSICAL-at-375px-chromium/released-place-map.png",
+      "bytes": 176766,
+      "sha256": "44f06a4dbfce430f2eae0566f96122c98669ad05b4709f5ba4041feecb0571f7"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-released-p-849c9-e-view-in-PHYSICAL-at-375px-chromium/released-place-selected.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-passing-results-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-phase4-released-p-849c9-e-view-in-PHYSICAL-at-375px-chromium/released-place-selected.png",
+      "bytes": 189775,
+      "sha256": "da6b2d1cdfecc367dd931a26768a16fa23abf3dd9cc2b5d8a6cd034b123b7681"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-device-lab/radio-owner-0439773e-8c48-4860-b587-5940e1dc0e4b/native-journal-pair-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-device-lab/radio-owner-0439773e-8c48-4860-b587-5940e1dc0e4b/native-journal-pair-receipt.json",
+      "bytes": 3772,
+      "sha256": "ec1dafa4c4398025893fb53f10f8785e118815d8ca9f6a4ac3ba085b303c7747"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-device-lab/radio-owner-0439773e-8c48-4860-b587-5940e1dc0e4b/radio-owner-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-device-lab/radio-owner-0439773e-8c48-4860-b587-5940e1dc0e4b/radio-owner-receipt.json",
+      "bytes": 9171,
+      "sha256": "86c4a71840f0336de7f28f562715d93cf6f1df02434535e97c594d041698ff16"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/sounding-line/browser-runtime.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/sounding-line/browser-runtime.json",
+      "bytes": 1329,
+      "sha256": "b0eb9765d1b887fb93768e780e9046d042336eeced2ed150ecb59af25639e5d4"
+    },
+    {
+      "path": "android-product-39309009723/landfall-android-journal-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/sounding-line/browser-suite-profile.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/artifacts/landfall-android-journal-primary-phone-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/sounding-line/browser-suite-profile.json",
+      "bytes": 226,
+      "sha256": "c9a6f583b6af9266b9625a300d9583ae6c5a6c2bd9ae249bc20efbe0d747aae7"
+    },
+    {
+      "path": "android-product-39309009723/hosted-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437141402/run-39309009723/hosted-receipt.json",
+      "bytes": 17659,
+      "sha256": "08f3d50626af76f6178534035ff9dd599fd803ed9aa4e3e861cebae05b94f9bf"
+    },
+    {
+      "path": "failed-39306514221/hosted-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-58d3e51db294-1792436084024/run-39306514221/hosted-receipt.json",
+      "bytes": 1490383,
+      "sha256": "30ec9611cb2099096bbe786d994abb3036cda06e9e9c7531230bbb5e012ed28d"
+    },
+    {
+      "path": "failed-39307522697/hosted-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-1c8fc3abbbc2-1792436508447/run-39307522697/hosted-receipt.json",
+      "bytes": 727,
+      "sha256": "661959f971ca2a4ea8243996ca4326faf5be25df5b0acad0e0315c5668a9a8d1"
+    },
+    {
+      "path": "failed-39308990232/hosted-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437132799/run-39308990232/hosted-receipt.json",
+      "bytes": 905,
+      "sha256": "4c41e0a448efad60e08e991a856c5bd0b0a576f9d11ede2ca8b62b3991b48adb"
+    },
+    {
+      "path": "failed-39309002270/hosted-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437136565/run-39309002270/hosted-receipt.json",
+      "bytes": 992771,
+      "sha256": "08baf9aa919a8c11cf897de316a8441a166d2e4bad208e3f10c5cf742f5408d3"
+    },
+    {
+      "path": "apple-build-39309002270/apple-app.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437136565/run-39309002270/artifacts/sextant-ios-devices-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-device-lab/apple-app.json",
+      "bytes": 427,
+      "sha256": "708f04df0d734dc5c19d9114c418ab20a8a094569f369a8c35926140a41ae77a"
+    },
+    {
+      "path": "apple-build-39309002270/apple-build/prepared-product-test.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437136565/run-39309002270/artifacts/sextant-ios-devices-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-device-lab/apple-build/prepared-product-test.json",
+      "bytes": 212,
+      "sha256": "4447dc513d06da3b1893f15e60885ff994506f4f8bc590dceb9994aec9416809"
+    },
+    {
+      "path": "apple-build-39309002270/apple-build/cleanup.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-fb937bbd04a9-1792437136565/run-39309002270/artifacts/sextant-ios-devices-fb937bbd04a98b07dd94b325682ceb654c8c4c5c/landfall-device-lab/apple-build/cleanup.json",
+      "bytes": 99,
+      "sha256": "17c368fca8608230c89f449da44109e507f853ee2d3d4948629de6065d5f41a7"
+    }
+  ],
+  "sourceBinding": "EACH_ORIGINAL_HOSTED_RECEIPT_RETAINS_ITS_OWN_CANDIDATE_AND_TRANSPORT"
+}

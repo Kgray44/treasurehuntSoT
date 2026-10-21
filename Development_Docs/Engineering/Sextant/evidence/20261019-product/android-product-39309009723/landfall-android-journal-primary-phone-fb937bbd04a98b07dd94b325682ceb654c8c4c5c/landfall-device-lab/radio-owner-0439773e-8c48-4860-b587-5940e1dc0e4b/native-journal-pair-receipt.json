@@ -1,0 +1,167 @@
+{
+  "version": 1,
+  "deviceProfile": "primary-phone",
+  "configurations": [
+    {
+      "platform": "ANDROID",
+      "virtual": true,
+      "api": 36,
+      "model": "sdk_gphone64_x86_64",
+      "memoryKiB": 3048392,
+      "widthPixels": 1080,
+      "heightPixels": 2400,
+      "densityDpi": 420
+    },
+    {
+      "platform": "ANDROID",
+      "virtual": true,
+      "api": 36,
+      "model": "sdk_gphone64_x86_64",
+      "memoryKiB": 3048396,
+      "widthPixels": 1080,
+      "heightPixels": 2400,
+      "densityDpi": 420
+    }
+  ],
+  "source": {
+    "sourceSha": "fb937bbd04a98b07dd94b325682ceb654c8c4c5c",
+    "sourceTree": "a52bc4d149c6f25b068e545a509120702c2d79a8",
+    "dirty": false,
+    "sourceFingerprint": "a80729d2c272a25f70519fd427d2d55d63b422453af73ba2a980904f621134d6"
+  },
+  "sourceUnchanged": true,
+  "evidenceClass": "EMULATOR_PROVEN",
+  "nativeBridge": "REAL_ANDROID_OS",
+  "firstPartyApi": "REAL_OPTIMIZED_APPLICATION",
+  "validatedReportsObservedOnBoth": true,
+  "nativeStopObserved": true,
+  "peerVerified": false,
+  "canComplete": false,
+  "uncertainty": "UNKNOWN",
+  "canonicalAuthority": "ONE_VOYAGE_REAL_SQLITE",
+  "canonicalProgressionEvents": 0,
+  "result": "PASS",
+  "failedStage": null,
+  "failedDeviceIndex": null,
+  "journalResponseStatus": 200,
+  "failureKind": null,
+  "failureTool": null,
+  "failureChecks": null,
+  "nativePageErrors": [],
+  "failedFirstPartyRequests": 4,
+  "nearbyHttp": [
+    {
+      "deviceIndex": 0,
+      "operation": "STATUS",
+      "status": 200,
+      "failure": null
+    },
+    {
+      "deviceIndex": 0,
+      "operation": "CREATE",
+      "status": 200,
+      "failure": null,
+      "leaseClockBand": "WITHIN_CLIENT_45S"
+    },
+    {
+      "deviceIndex": 1,
+      "operation": "STATUS",
+      "status": 200,
+      "failure": null
+    },
+    {
+      "deviceIndex": 1,
+      "operation": "JOIN",
+      "status": 200,
+      "failure": null,
+      "leaseClockBand": "WITHIN_CLIENT_45S"
+    },
+    {
+      "deviceIndex": 0,
+      "operation": "READ",
+      "status": 200,
+      "failure": null,
+      "leaseClockBand": "WITHIN_CLIENT_45S"
+    },
+    {
+      "deviceIndex": 0,
+      "operation": "STOP",
+      "status": 200,
+      "failure": null
+    },
+    {
+      "deviceIndex": 1,
+      "operation": "STOP",
+      "status": 200,
+      "failure": null
+    }
+  ],
+  "failedPageState": null,
+  "journalStates": [
+    {
+      "deviceIndex": 0,
+      "status": 200,
+      "shellVisible": true,
+      "nativeBridgeAvailable": true,
+      "authRedirect": false
+    },
+    {
+      "deviceIndex": 1,
+      "status": 200,
+      "shellVisible": true,
+      "nativeBridgeAvailable": true,
+      "authRedirect": false
+    }
+  ],
+  "pairingDiagnostics": [],
+  "nativePreparationDiagnostics": [
+    {
+      "deviceIndex": 0,
+      "category": "CAPABILITIES_READY"
+    },
+    {
+      "deviceIndex": 1,
+      "category": "CAPABILITIES_READY"
+    }
+  ],
+  "openingGeometryDiagnostic": null,
+  "systemUiWaitInteractions": 1,
+  "interactionForeground": [
+    {
+      "phase": "CREATE",
+      "deviceIndex": 0,
+      "observed": true,
+      "mapReopened": false,
+      "controlsExpanded": false
+    },
+    {
+      "phase": "JOIN",
+      "deviceIndex": 1,
+      "observed": true,
+      "mapReopened": false,
+      "controlsExpanded": false
+    },
+    {
+      "phase": "START",
+      "deviceIndex": 0,
+      "observed": true,
+      "mapReopened": false,
+      "controlsExpanded": false
+    },
+    {
+      "phase": "STOP",
+      "deviceIndex": 1,
+      "observed": true,
+      "mapReopened": false,
+      "controlsExpanded": false
+    }
+  ],
+  "openingControl": "OBSERVED_DOM_AND_NATIVE_BOUNDS_OS_TOUCH",
+  "externalRequirements": [
+    "REAL_DEVICE_REQUIRED:RF"
+  ],
+  "cleanup": {
+    "result": "PASS",
+    "remainingResources": []
+  }
+}

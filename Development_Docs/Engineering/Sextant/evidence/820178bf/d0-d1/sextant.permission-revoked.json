@@ -1,0 +1,46 @@
+{
+  "version": 2,
+  "scenarioId": "sextant.permission-revoked",
+  "scenarioVersion": 1,
+  "owningProject": "SEXTANT",
+  "scenarioFingerprint": "ecae26b216b74b5395b9b76a8bb9e92b40d85e87c9a33610c52b66a87865604f",
+  "source": {
+    "sourceSha": "820178bf043e1ffd3c366eaa5037d5d148653e51",
+    "sourceTree": "e5dfae89a2e4c66330e888b0298ac5ef628ca082",
+    "sourceFingerprint": "c2bc73cb7daa8a7f1c416ca2ae88a6787e4a95356989fca301fcfe1aca237cdd",
+    "dirty": false
+  },
+  "baseSha": "81fa477c5099b259e0d3bd8e8e0e6e52a7dc02bb",
+  "tier": "D0",
+  "profile": "synthetic",
+  "hostOs": "win32 10.0.26300",
+  "runtimeVersion": "v24.18.0",
+  "capabilitySnapshot": [
+    "device.permission-state"
+  ],
+  "physicalOrVirtual": "VIRTUAL",
+  "startedAt": "2026-10-12T07:00:54.761Z",
+  "completedAt": "2026-10-12T07:00:54.762Z",
+  "assertions": [
+    {
+      "id": "sextant.phase1.permission-revoked",
+      "state": "PASS"
+    }
+  ],
+  "evidenceClass": "PROVIDER_SIMULATION_PROVEN",
+  "unsupportedCapabilities": [],
+  "requiredFutureGates": [
+    "D4_REAL_DEVICE_REQUIRED_FOR_PHYSICAL_CLAIMS",
+    "D5_FIELD_REQUIRED_FOR_FIELD_CLAIMS"
+  ],
+  "artifacts": [],
+  "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+  "cleanupReceipt": {
+    "result": "PASS",
+    "ownedResources": [
+      "synthetic-provider"
+    ],
+    "remainingResources": []
+  },
+  "passFailDisposition": "PASS"
+}

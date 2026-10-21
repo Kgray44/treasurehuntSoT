@@ -57,11 +57,13 @@ export async function closureVoyage(
     authoredDefinition?: LandfallDefinition;
     fusion?: boolean;
     offlineRegion?: boolean;
+    fixtureIds?: { tale: string; session: string; chapter: string; active: string; next: string };
   } = {},
 ) {
   const suffix = randomUUID();
   const tale = await db.chronicle.create({
     data: {
+      ...(options.fixtureIds ? { id: options.fixtureIds.tale } : {}),
       slug: `landfall-closure-${suffix}`,
       title: "Synthetic Landfall closure Voyage",
       creatorId: owner.profileId,
@@ -202,9 +204,9 @@ export async function closureVoyage(
         assetIds: assets.map((asset) => asset.id),
       },
     };
-  const chapterId = `chapter-${suffix}`;
-  const activeId = `active-${suffix}`;
-  const nextId = `next-${suffix}`;
+  const chapterId = options.fixtureIds?.chapter ?? `chapter-${suffix}`;
+  const activeId = options.fixtureIds?.active ?? `active-${suffix}`;
+  const nextId = options.fixtureIds?.next ?? `next-${suffix}`;
   const configuration: Record<string, unknown> = {
     heading: "Explore the chart",
     body: "Follow the released course",
@@ -313,6 +315,7 @@ export async function closureVoyage(
   await db.chronicle.update({ where: { id: tale.id }, data: { latestPublishedVersionId: version.id } });
   const session = await db.taleSession.create({
     data: {
+      ...(options.fixtureIds ? { id: options.fixtureIds.session } : {}),
       taleId: tale.id,
       publishedVersionId: version.id,
       accessTokenHash: createHash("sha256").update(randomUUID()).digest("hex"),

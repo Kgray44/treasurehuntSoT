@@ -1,0 +1,158 @@
+{
+  "version": 1,
+  "candidateSha": "58d3e51db2948d206be0a62f5a47cb022f27d286",
+  "transportSha": "985814e4686399e7698799b858e3afb7092f5c09",
+  "runId": "39306503567",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39306503567",
+  "conclusion": "success",
+  "artifacts": [
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-doze-recovery/authority/receipt.json",
+      "sha256": "4d85b990fe83158a8a3798cb4163b2ef6f03aded363359ce0511e94b12b30904"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-doze-recovery/authority/worker-cleanup.json",
+      "sha256": "e8ef499cb820eec097bb6e7c6318ed06add5450bd8422606cd35242352f97435"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-doze-recovery/authority-command-diagnostics.json",
+      "sha256": "ada1b8cf01b423a83bf34b6ad7a30ad1ff51d8dd92096d676476019908caf544"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-doze-recovery/native-action-performance.json",
+      "sha256": "07d8c247ca960b54360b6935e425a7da6dc823d67b40f963774e1699f94d58b1"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-doze-recovery/native-apple-input-diagnostics.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-doze-recovery/native-client-readiness.json",
+      "sha256": "34bb578116833e7e6a658d97b5cfc36eae5569f862c8e5f13b7b70f98cc8c9f3"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-doze-recovery/native-final.png",
+      "sha256": "a060db42299d3b9ea73b7638669336d1dcef9a2c26809a47e6233524b1441e90"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-doze-recovery/native-guest-reboots.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-doze-recovery/native-idle-controls.json",
+      "sha256": "639c11ec4c78fe591dded45ff45cf4b16c94c28f18c3ba6c7d92285e65df70c9"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-doze-recovery/native-location-controls.json",
+      "sha256": "932c641c6a68a8c5febde99df4e290647ab5a0fe62dbfad4e22ec4e016d913b3"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-doze-recovery/native-location-diagnostics.json",
+      "sha256": "0b1280e667e01f6033c5f9933b05ac9b8f2db161d4b9447552351cf064c1cfb2"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-doze-recovery/native-startups.json",
+      "sha256": "7d318df060efbd0f1a890deffff8d1a8494394efe3b5dc6c0fa3e838054286c4"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-doze-recovery/native-steps.json",
+      "sha256": "590d873949e8a1b28d0c978ca65f43df7e6b1ca1ef1a586bad6efdc552b8f65c"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-doze-recovery.json",
+      "sha256": "19d037cc9e813edf63469445637a558c729a88cd11b744c75467d9d056e89c76"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-standby-recovery/authority/receipt.json",
+      "sha256": "4d85b990fe83158a8a3798cb4163b2ef6f03aded363359ce0511e94b12b30904"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-standby-recovery/authority/worker-cleanup.json",
+      "sha256": "e8ef499cb820eec097bb6e7c6318ed06add5450bd8422606cd35242352f97435"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-standby-recovery/authority-command-diagnostics.json",
+      "sha256": "4f57934412371abbe2cd1d60f869c07d76092240a2033c1d38bc3baff3a66d7d"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-standby-recovery/native-action-performance.json",
+      "sha256": "a7ffcfff16fe8cb0c7098d19dc9e651efc6a4d2d6ae616f396b169b0879097bc"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-standby-recovery/native-apple-input-diagnostics.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-standby-recovery/native-client-readiness.json",
+      "sha256": "40003e2531066eb75eec51443461b50d9ef31eb5818c1bc6226528f0b51f0b0c"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-standby-recovery/native-final.png",
+      "sha256": "40ccd20de9d3cda98290270d8145519b108e2ddfded1ea7b8e15017dbe7fc012"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-standby-recovery/native-guest-reboots.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-standby-recovery/native-idle-controls.json",
+      "sha256": "5bb7af8916b61993fa0408d9ccd369a2d376157846ead3fcd5a87528e06cf4ac"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-standby-recovery/native-location-controls.json",
+      "sha256": "6bbe5e5629a50930c64c1a772a4951a6f77bab42db8d151a8a65b1003263625a"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-standby-recovery/native-location-diagnostics.json",
+      "sha256": "b54a6905e168a245ee32a20af2fb8018a551ba0b2ba87c3d69c360e4c0ec41c1"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-standby-recovery/native-startups.json",
+      "sha256": "7d318df060efbd0f1a890deffff8d1a8494394efe3b5dc6c0fa3e838054286c4"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-standby-recovery/native-steps.json",
+      "sha256": "590d873949e8a1b28d0c978ca65f43df7e6b1ca1ef1a586bad6efdc552b8f65c"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/android-standby-recovery.json",
+      "sha256": "6fd77afe7e6426421ed99bef4cb9564e692006bb66ad0a20ec21c33683e8ce47"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/capabilities.json",
+      "sha256": "c686a8a4dcf7f70c7cc3f2d8a3b111521bb3d27618788128aa76ea1a5f9c33c4"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/20261019T190049052Z-3559/summary.json",
+      "sha256": "3a56edeca9eb21513519dd1f252aa3cb76361221049c2d955c252c9ff56330c5"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/android-native-tests-1792436394062/instrumentation.txt",
+      "sha256": "6b970cf0fc9f623de8b2144a09aae97d150c52fd80a83e02dbae62427f57f759"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/android-native-tests-1792436394062/native-sensor-performance.json",
+      "sha256": "a82b08a714c5e5ae7bf89a6739b737d08c668bfa59ebdf9af2884feb4e3bbae7"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/android-native-tests-1792436394062/receipt.json",
+      "sha256": "fe5785f18d148f7b14b77ee84e8120eff2a09a68b29b008d35320fffde0a8a52"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/camera-fixture.json",
+      "sha256": "92e07304da094740f8aba5bb5853c1a18f056ac7b155b1642f2f622007bac092"
+    },
+    {
+      "path": "artifacts/landfall-android-primary-phone-58d3e51db2948d206be0a62f5a47cb022f27d286/camera-qr.png",
+      "sha256": "14a96ba6f50e4d6c38491e0e177dcae2f14cce9c2bc008a26f155e1598d07ba6"
+    }
+  ],
+  "artifactState": "AVAILABLE",
+  "cleanup": {
+    "result": "PASS",
+    "ownedResources": [
+      "refs/heads/codex/landfall-lab-58d3e51db294-1792436076444"
+    ],
+    "remainingResources": []
+  }
+}

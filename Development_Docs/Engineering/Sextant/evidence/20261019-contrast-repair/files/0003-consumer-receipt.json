@@ -1,0 +1,36 @@
+{
+  "source": {
+    "sourceSha": "23d697925d2a2505f4c9d91f8c6660337bedf266",
+    "sourceTree": "91b68ae74d030384315e481843c173ce881fd7a6",
+    "dirty": false,
+    "sourceFingerprint": "96f428035dfbf2e4d6eee1cec2f91c766bcbe9a08a1cd9ed763bb44d69edb0f1"
+  },
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "reducedMotion": "no-preference",
+  "ordinarySignIn": true,
+  "naturalEntryAndReturn": true,
+  "passportSections": 9,
+  "passportReadinessMs": {
+    "overview": 2071.5,
+    "Your Voyages": 544,
+    "Timeline": 528.0999999999767,
+    "People": 477.80000000004657,
+    "Statistics": 404.4000000000233,
+    "Voyage Atlas": 479.30000000004657,
+    "Memories": 318.5999999999767,
+    "Artifacts": 447.4000000000233,
+    "Saved": 494.69999999995343
+  },
+  "passportHistoricalDetailOrArtifactGrant": false,
+  "sameVoyage": "sextant-experience-voyage",
+  "openingMs": 9990,
+  "unchangedCanonicalProgress": true,
+  "unchangedPublishedEdition": true,
+  "evidence": "D1_REAL_BROWSER_SYNTHETIC_PERSISTED_VOYAGE",
+  "nativeExecution": false,
+  "physicalEvidence": false,
+  "qualification": false
+}

@@ -1,5 +1,6 @@
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { renderToString } from "react-dom/server";
 import { AccountFlow } from "./AccountFlow";
 
 const navigation = vi.hoisted(() => ({ replace: vi.fn(), refresh: vi.fn() }));
@@ -18,6 +19,26 @@ describe("Homeport account lifecycle", () => {
     vi.unstubAllGlobals();
     vi.clearAllMocks();
     currentUser.state = { status: "anonymous", authenticated: false };
+  });
+
+  it("keeps server-rendered credentials and challenges inert until the submit handler is hydrated", () => {
+    for (const mode of [
+      "register",
+      "sign-in",
+      "forgot",
+      "reset",
+      "verify",
+      "email-change",
+      "claim",
+      "merge",
+    ] as const) {
+      const root = document.createElement("div");
+      root.innerHTML = renderToString(<AccountFlow mode={mode} query={{ token: "synthetic-challenge" }} />);
+      const form = root.querySelector("form")!;
+      expect(form.method, mode).toBe("post");
+      for (const input of form.querySelectorAll("input")) expect(input.disabled, `${mode}:${input.name}`).toBe(true);
+      expect(form.querySelector("button")!.disabled, mode).toBe(true);
+    }
   });
 
   it("homeport.signin.lifecycle-links exposes account creation and recovery", () => {
@@ -66,6 +87,38 @@ describe("Homeport account lifecycle", () => {
   it("homeport.owner-correction.round3.patch-a recovery returns to ordinary sign-in", () => {
     render(<AccountFlow mode="forgot" />);
     expect(screen.getByRole("link", { name: "Return to Sign In" })).toHaveAttribute("href", "/sign-in");
+  });
+
+  it("keeps a confirmed email change terminal and preserves its sign-in return", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => ({ ok: true }) });
+    vi.stubGlobal("fetch", fetchMock);
+    currentUser.invalidate.mockResolvedValue({ status: "anonymous", authenticated: false });
+    const view = render(
+      <AccountFlow mode="email-change" query={{ token: "synthetic-consumable-token" }} initialCsrf="csrf" />,
+    );
+    const confirm = screen.getByRole("button", { name: "Confirm email change" });
+    fireEvent.click(confirm);
+    const success = "Your primary email was changed and existing sessions were ended. Sign in with the new address.";
+    expect(await screen.findByText(success)).toBeVisible();
+    expect(confirm).toBeDisabled();
+    // A duplicate form event must not resubmit a consumed challenge or clear success.
+    fireEvent.submit(view.container.querySelector("form")!);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(screen.getByText(success)).toBeVisible();
+    expect(screen.getByRole("link", { name: "Sign in with the new email" })).toHaveAttribute("href", "/sign-in");
+  });
+
+  it("allows correction after a rejected email confirmation", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue({ ok: false, json: async () => ({ error: "The confirmation is unavailable." }) });
+    vi.stubGlobal("fetch", fetchMock);
+    render(<AccountFlow mode="email-change" query={{ token: "synthetic-invalid-token" }} initialCsrf="csrf" />);
+    const confirm = screen.getByRole("button", { name: "Confirm email change" });
+    fireEvent.click(confirm);
+    expect(await screen.findByText("The confirmation is unavailable.")).toBeVisible();
+    expect(confirm).toBeEnabled();
+    expect(screen.queryByRole("link", { name: "Sign in with the new email" })).not.toBeInTheDocument();
   });
 
   it("homeport.owner-correction.round3.patch-a.password-feedback is live, accessible, and quiet before confirmation typing", () => {

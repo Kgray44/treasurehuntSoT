@@ -1,0 +1,19 @@
+{
+  "" : {
+    "diagnostics" : "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanionUiTests.build/Objects-normal/arm64/LandfallCompanionUiTests-primary.dia",
+    "emit-module-dependencies" : "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanionUiTests.build/Objects-normal/arm64/LandfallCompanionUiTests-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanionUiTests.build/Objects-normal/arm64/LandfallCompanionUiTests-primary-emit-module.dia",
+    "pch" : "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanionUiTests.build/Objects-normal/arm64/LandfallCompanionUiTests-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanionUiTests.build/Objects-normal/arm64/LandfallCompanionUiTests-primary.swiftdeps"
+  },
+  "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/native/ios/LandfallCompanionUiTests/NativeLifecycleTests.swift" : {
+    "const-values" : "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanionUiTests.build/Objects-normal/arm64/NativeLifecycleTests.swiftconstvalues",
+    "dependencies" : "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanionUiTests.build/Objects-normal/arm64/NativeLifecycleTests.d",
+    "diagnostics" : "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanionUiTests.build/Objects-normal/arm64/NativeLifecycleTests.dia",
+    "index-unit-output-path" : "/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanionUiTests.build/Objects-normal/arm64/NativeLifecycleTests.o",
+    "llvm-bc" : "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanionUiTests.build/Objects-normal/arm64/NativeLifecycleTests.bc",
+    "object" : "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanionUiTests.build/Objects-normal/arm64/NativeLifecycleTests.o",
+    "swift-dependencies" : "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanionUiTests.build/Objects-normal/arm64/NativeLifecycleTests.swiftdeps",
+    "swiftmodule" : "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/apple-build/DerivedData/Build/Intermediates.noindex/LandfallCompanion.build/Debug-iphonesimulator/LandfallCompanionUiTests.build/Objects-normal/arm64/NativeLifecycleTests~partial.swiftmodule"
+  }
+}

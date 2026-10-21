@@ -1,0 +1,386 @@
+{
+  "schemaVersion": 1,
+  "sourceSha": "820178bf043e1ffd3c366eaa5037d5d148653e51",
+  "sourceTree": "e5dfae89a2e4c66330e888b0298ac5ef628ca082",
+  "originalPacketDigest": "5c3ffbbb03f35231bf522b99bf3c1a4e0a149db9e4e3010e162866d5f2c65ee1",
+  "classification": "BYTE_IDENTICAL_ENGINEERING_RETENTION_OF_FAILED_REVIEW_NOT_ACCEPTANCE",
+  "mapping": [
+    {
+      "id": "ordinary-first-entry/fec4781661e4d60f0ff5eff811d9f5e5.webm",
+      "originalPath": "artifacts/sextant-experience-local-820178bf043e/ordinary-first-entry/fec4781661e4d60f0ff5eff811d9f5e5.webm",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/ordinary-first-entry/fec4781661e4d60f0ff5eff811d9f5e5.webm",
+      "sha256": "9cb86fe9b0f6dcfff5d40f454b14cb9e3adbb16f6bacce9bb4361d548ea9938d"
+    },
+    {
+      "id": "ordinary-first-entry/FIRST_OPEN_READY.png",
+      "originalPath": "artifacts/sextant-experience-local-820178bf043e/ordinary-first-entry/FIRST_OPEN_READY.png",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/ordinary-first-entry/FIRST_OPEN_READY.png",
+      "sha256": "9cb4bc3454cdc0215a02fd8185bfeb7582c4d15c3cb0545535e1a551b47859f3"
+    },
+    {
+      "id": "ordinary-first-entry/JOURNAL_READY.png",
+      "originalPath": "artifacts/sextant-experience-local-820178bf043e/ordinary-first-entry/JOURNAL_READY.png",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/ordinary-first-entry/JOURNAL_READY.png",
+      "sha256": "56f68e792894721956af8a69cd54e821682460379a7fe47ca0b198b6c7ac997c"
+    },
+    {
+      "id": "crossdeck.phase2.continuity/2ba1d4245512b9a991e8cec6f5095efc.webm",
+      "originalPath": "artifacts/sextant-experience-local-820178bf043e/crossdeck.phase2.continuity/2ba1d4245512b9a991e8cec6f5095efc.webm",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/crossdeck.phase2.continuity/2ba1d4245512b9a991e8cec6f5095efc.webm",
+      "sha256": "d298d02bbf9c27b792f238f58a97e5c143569dbbc2bfe01b5ea42d4abd720036"
+    },
+    {
+      "id": "crossdeck.phase2.continuity/crossdeck.phase2.continuity-device-to-readable-lens-DESKTOP-PLAYER-NORMAL-DEVICE_JOINED-5.png",
+      "originalPath": "artifacts/sextant-experience-local-820178bf043e/crossdeck.phase2.continuity/crossdeck.phase2.continuity-device-to-readable-lens-DESKTOP-PLAYER-NORMAL-DEVICE_JOINED-5.png",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/crossdeck.phase2.continuity/crossdeck.phase2.continuity-device-to-readable-lens-DESKTOP-PLAYER-NORMAL-DEVICE_JOINED-5.png",
+      "sha256": "afa91c40851334bc3b7b6f3ecb93cff6527544275af1f205c9eacdf1f5427a76"
+    },
+    {
+      "id": "crossdeck.phase2.continuity/crossdeck.phase2.continuity-device-to-readable-lens-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-2.png",
+      "originalPath": "artifacts/sextant-experience-local-820178bf043e/crossdeck.phase2.continuity/crossdeck.phase2.continuity-device-to-readable-lens-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-2.png",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/crossdeck.phase2.continuity/crossdeck.phase2.continuity-device-to-readable-lens-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-2.png",
+      "sha256": "93fd2a20d00ce7bd523566f8900eaff5823095f044df3cc67372dad6a924b814"
+    },
+    {
+      "id": "sextant.phase3.field-context/3b53318ef179983a991de9168cef3748.webm",
+      "originalPath": "artifacts/sextant-experience-local-820178bf043e/sextant.phase3.field-context/3b53318ef179983a991de9168cef3748.webm",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/sextant.phase3.field-context/3b53318ef179983a991de9168cef3748.webm",
+      "sha256": "d2a3aaf5d51ea90df280fa73d4e2a82c622c55bcc519c228b4d915205af0d85b"
+    },
+    {
+      "id": "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-DEVICE_CAPABILITIES_READY-4.png",
+      "originalPath": "artifacts/sextant-experience-local-820178bf043e/sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-DEVICE_CAPABILITIES_READY-4.png",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-DEVICE_CAPABILITIES_READY-4.png",
+      "sha256": "e38bb5d2834bd8ad14aeee4b7c4f2333e2884d6281e4ec98bd2066e7a8752293"
+    },
+    {
+      "id": "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-2.png",
+      "originalPath": "artifacts/sextant-experience-local-820178bf043e/sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-2.png",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-2.png",
+      "sha256": "ceb9d8dc30a3b427a0f8f80fd42def30ebaf52559e1190b17312d082e4d137a8"
+    },
+    {
+      "id": "sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-SCREEN_FALLBACK_READY-8.png",
+      "originalPath": "artifacts/sextant-experience-local-820178bf043e/sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-SCREEN_FALLBACK_READY-8.png",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/sextant.phase3.field-context/sextant.phase3.field-context-instrument-screen-fallback-DESKTOP-PLAYER-NORMAL-SCREEN_FALLBACK_READY-8.png",
+      "sha256": "8f8f6adec916368d67fecf78c957c317907fc8e371813560b94f28297b2ce63d"
+    },
+    {
+      "id": "sextant.phase4.native-context/efc366109569de4c4125659ae49fb59e.webm",
+      "originalPath": "artifacts/sextant-experience-local-820178bf043e/sextant.phase4.native-context/efc366109569de4c4125659ae49fb59e.webm",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/sextant.phase4.native-context/efc366109569de4c4125659ae49fb59e.webm",
+      "sha256": "54ed75b1216fdaec6ae72fa6fb763b0c716541f29506fd69a25c493999535b72"
+    },
+    {
+      "id": "sextant.phase4.native-context/sextant.phase4.native-context-player-published-guided-clue-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-2.png",
+      "originalPath": "artifacts/sextant-experience-local-820178bf043e/sextant.phase4.native-context/sextant.phase4.native-context-player-published-guided-clue-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-2.png",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/sextant.phase4.native-context/sextant.phase4.native-context-player-published-guided-clue-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-2.png",
+      "sha256": "c9f58f4a4b5227e4a7555c58899e4ddb7ea223495d0ab4bb63d267095171016a"
+    },
+    {
+      "originalPath": "artifacts/sextant-final-bounded-review-packet-820178bf043e.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/original-review-packet.json",
+      "sha256": "efdd88eb48b7716f8971809d40a64e4a750c70c886b4941e4c681c761096ab43"
+    },
+    {
+      "originalPath": "artifacts/sextant-experience-local-820178bf043e/attempt.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/actual-attempt.json",
+      "sha256": "570fc26c4d65be747ddb92360fcd0d9a3c7b7fae567011ec76043d385a7ebe1f"
+    },
+    {
+      "originalPath": "artifacts/sextant-experience-local-820178bf043e/runtime-receipt.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/runtime-cleanup.json",
+      "sha256": "912a50dff767bd348992ebe0aa71b8352357e41731ab61ecb42911071c887b23"
+    },
+    {
+      "originalPath": "artifacts/sextant-experience-local-820178bf043e/completed-build.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/completed-build.json",
+      "sha256": "fc2efec08b431a9a6feeff79f612b9015ab9fd73ab2000a93422657e58fc6277"
+    },
+    {
+      "originalPath": "artifacts/sextant-experience-local-820178bf043e/ordinary-first-entry/receipt.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/first-entry-receipt.json",
+      "sha256": "4c9d07157c191179c11677984053d2a8c3f66f37e5cd18ca31e7a0b98dd00eed"
+    },
+    {
+      "originalPath": "artifacts/sextant-experience-plan-820178bf043e-summary.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/uncovered-consumers.json",
+      "sha256": "fd8fc8985397dea223d172410515948e15bd4ee6c5b9a49bec50321d4907dde7"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/archive-manifest.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1-archive-manifest.json",
+      "sha256": "6105a57ba21347b946b96a0d06d237c04248b705ef61c97d0b81e84f9b0270b3"
+    },
+    {
+      "originalPath": "artifacts/sextant-final-bounded-independent-review-820178bf043e.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/independent-review.json",
+      "sha256": "9b48d309b4bbec2d6f533d7f5b38f972b5f948f864e1ad00607bdf482b36d84d"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.bounded-haptics.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.bounded-haptics.json",
+      "sha256": "f1dd5544df399c32e1ff7854a077bda32395d063c3e0a89faf6cfcdcdecc6f3f"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.capability-authored-fallback.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.capability-authored-fallback.json",
+      "sha256": "180f08b993e6e5d7eff51090f4b525fa260c53519e8c3fbcd6c2d626b74ae244"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.capability-supported.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.capability-supported.json",
+      "sha256": "30db6f5674ca9437bfd3371c434d80354321624959c4145267eb29723222b1e0"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.capability-unavailable.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.capability-unavailable.json",
+      "sha256": "d6bb14f7a0f9d967f9429aea6cefb24d45145d027c0f9064f39b642151a471b6"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.consumer-lease-sharing.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.consumer-lease-sharing.json",
+      "sha256": "f120f0b45e6a5da1aa5e13caf1db0ec7f2df5b0b80b98e2c5be1bc3d9940fe42"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.coordinated-cadence-reset.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.coordinated-cadence-reset.json",
+      "sha256": "f09b0cd2e213e13707f867ae6c801d6cd78a7ed53210caccf844e4199fb34b2c"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.coordinated-calibration-fallback.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.coordinated-calibration-fallback.json",
+      "sha256": "9b482e19e4063691f3e0601a2dc3b4b1b0805b319395cf926e9b97a71ad88b7e"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.coordinated-clock-fallback.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.coordinated-clock-fallback.json",
+      "sha256": "2bdd95e92aa286c61e7e041998d2abd3027aeef6a3affa61455635852ffdbc87"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.coordinated-crossdeck-negotiation.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.coordinated-crossdeck-negotiation.json",
+      "sha256": "89d559b0c91522353bbda16502426c2d453aecb2f343f7ec9df5d98877b5d6d8"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.coordinated-interference-fallback.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.coordinated-interference-fallback.json",
+      "sha256": "33d1abfa4b17b99e93abb1dfef821cdfa37f3688afa38938c9c37fc6c7199f79"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.coordinated-lifecycle-reset.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.coordinated-lifecycle-reset.json",
+      "sha256": "de6be68e649de129b6e52832ce511a044db58dbce58af29794c827a0cacf2446"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.coordinated-magnetic-background.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.coordinated-magnetic-background.json",
+      "sha256": "4b51114f58b7e9700f11fca1fafe15795770390c7d185b6a91aa1ea790e6de6f"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.coordinated-magnetic-hysteresis.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.coordinated-magnetic-hysteresis.json",
+      "sha256": "99c247cd8473cae6ac46ff71a28886bf6100e8ab8d74a8f541167e3a1bfc6177"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.coordinated-magnetic-prop.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.coordinated-magnetic-prop.json",
+      "sha256": "fc859f90d3f82f42bf7e860f8de42845e7210adb6e402c9775bf95d4b8024d4a"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.coordinated-magnetic-receding.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.coordinated-magnetic-receding.json",
+      "sha256": "aac9721c94029256af85291114ebbe6574910580977b96015f61917dba650a2d"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.coordinated-magnetic-recovery.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.coordinated-magnetic-recovery.json",
+      "sha256": "06b1b7fae6886c7aa1e3a201566b6a812f120f39842459892082d1e904fe4038"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.coordinated-magnetic-spike.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.coordinated-magnetic-spike.json",
+      "sha256": "605b81a3ce4c23074ccbd029d309696392e2fce551048488a77efb1d44726bd9"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.coordinated-nearby-reconnect.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.coordinated-nearby-reconnect.json",
+      "sha256": "b953b96f74c79eb2b8d165f5fa2972ed2e7ee4fd98fbb03e0376c29a4ec7b953"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.coordinated-order-reset.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.coordinated-order-reset.json",
+      "sha256": "2fc87934111f5d6440d822e38eb9ce4c6156220919bae97005b02812ba23c2fa"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.coordinated-rotation-field.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.coordinated-rotation-field.json",
+      "sha256": "6bf100f04bd3a29d0c99506c35115b1607256ce5c5befe02deda9814acf03988"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.coordinated-stale-fallback.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.coordinated-stale-fallback.json",
+      "sha256": "b3338cc46a4a94721d4ed7f389fc0beba3f63f6d83485a8bf58adbb411415792"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.coordinated-trajectory-pressure.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.coordinated-trajectory-pressure.json",
+      "sha256": "c81a00960d583cf1d1aaf91cf92ac8b1d8482d2ea4c35b6033ca944ca0e1cadc"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.deliberate-turns.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.deliberate-turns.json",
+      "sha256": "b8b3b0e528b5e43ee11bcec0e0fdd897b694960e2c8422c5cc8627b258aa3c52"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.field-privacy-threats.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.field-privacy-threats.json",
+      "sha256": "6029ca9f371ae5cd7d7402498c653fb147e26e48405b2780c8dcf97686a0b5b0"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.frame-normalization.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.frame-normalization.json",
+      "sha256": "1d72e2dfb81b234986513a9d644887d8ce23e976e1a8363ce2df2c478419b60c"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.low-quality-observation.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.low-quality-observation.json",
+      "sha256": "c261718b5b95b57caf27eb7239ab1c2426dc9272d46e9c5222e53c54fdacccb4"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.magnetic-baseline-trend.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.magnetic-baseline-trend.json",
+      "sha256": "e1583d33b697204b4ff5b2a512df785faf677a62b00c6e9f1820bc9cd6133745"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.magnetic-disturbance.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.magnetic-disturbance.json",
+      "sha256": "e78f8cd789ea8aa60db68888700ce2195e70a3db99516bd4c837196625628f52"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.media-denied-busy.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.media-denied-busy.json",
+      "sha256": "e5d48a7e0ee020ae3d35ec6e7abfb0bafff28d8fa97abe39cea294af0ecc8c92"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.media-shared-cleanup.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.media-shared-cleanup.json",
+      "sha256": "98d17f9c2ed8262d32d2dc5de0b4d348a95f6b4123c64eaff6016e49294f5b78"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.media-source-generation.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.media-source-generation.json",
+      "sha256": "c491d7ac8c392544ae9cdd5dcff632425b9722ece26a90e51859f8189e18bf3e"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.nearby-peer-replay.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.nearby-peer-replay.json",
+      "sha256": "6fab6aea9649061c8d875cfe6b0f577dcaa3a34645e9627dde0c62a4450eb188"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.pedometer-pause-restart.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.pedometer-pause-restart.json",
+      "sha256": "b7bd1affa6727f32e790c310db36b60b2ca47e3f48c1db2612ddcd1caa680094"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.permission-denied.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.permission-denied.json",
+      "sha256": "888095c2765af1fa00f6e90adb95a579d5ec2ca352f33262a8b0d7546be9c92b"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.permission-revoked.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.permission-revoked.json",
+      "sha256": "c9ad20b0d271eb0a4519ca28c42db3ec1dea981f9d3a4b1a3ea7bf7382ba24e3"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.pressure-relative-climb.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.pressure-relative-climb.json",
+      "sha256": "9e82aa54e614cc3060f4501f451f961c805cd3f95295ea954295c904fb2fd29b"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.pressure-weather-drift.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.pressure-weather-drift.json",
+      "sha256": "5ceccc660f2b80b479982b12b29963dcd84b3a4c7da4f050659ae1ea8e2e6d5e"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.provider-switch.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.provider-switch.json",
+      "sha256": "fe655641724f7f4f189695c271d2dc1f2e88ac544efc40f8b0a74a3615965be4"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.simulation-identity.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.simulation-identity.json",
+      "sha256": "c428aa659fac72a911219e7cb600ac873482fbff4e968bd59bb4a0a7e14552bf"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.stale-observation.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.stale-observation.json",
+      "sha256": "ca57c1fe9ffce41d52fe64bbccf9125b800ea8ed52d693e807d775f2a0006b4b"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.walking-spin-rejection.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.walking-spin-rejection.json",
+      "sha256": "6eff34752255a2e9ba0617d7543057e64eb5f8f7b72f8104afc8bd2693eb3b50"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.web-accessible-fallback.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.web-accessible-fallback.json",
+      "sha256": "ddcc2ce8be1c44a1c890d8f17b249e3d0c513cad6ee0b9fb06d7572d73143911"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.web-ble-denied.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.web-ble-denied.json",
+      "sha256": "cc14ed0dd1db43fed1fc8923cab3b7f23d6d7ed066f6c5c023ff747d873af082"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.web-ble-disconnect.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.web-ble-disconnect.json",
+      "sha256": "d5fa90075e1e5bb94c280c877dfabe00e9275ef46d6910973cdf16ecd30a4ad4"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.web-gravity-separation.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.web-gravity-separation.json",
+      "sha256": "aee09c694a59d2e1a1c97c2e85153956f28679ff5b8cb4d31a23fe368bf2a89f"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.web-heading-wrap.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.web-heading-wrap.json",
+      "sha256": "6b4de8a2ea04f507126045b61c016485b2f52a2c205de5636bd3234d95116fbd"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.web-nearby-background.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.web-nearby-background.json",
+      "sha256": "65fb52d3e4636c3a13f3d2b59316cd872c04585a7e0b66eab8b13b3460f29d86"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.web-nfc-malformed.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.web-nfc-malformed.json",
+      "sha256": "3e11b764aa9d436eb99f34d6294870262a315780270fe7009ba44d845fe89160"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.web-nfc-strict-read.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.web-nfc-strict-read.json",
+      "sha256": "8cba917a0b5557e4c70d509c78aec8acedbfc7eed56cdd5a2de7e128cd6a267d"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.web-permission-pause.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.web-permission-pause.json",
+      "sha256": "c372575d56c35555ec27fa6f6cc329801908aa72cb7c7c00f9d76a9654a94c76"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.web-relative-fallback.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.web-relative-fallback.json",
+      "sha256": "af1eb088a73d9964d0864e134cbd0417f7c89f3ced180e30bfd6150a78ec080d"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.web-screen-rotation.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.web-screen-rotation.json",
+      "sha256": "9c7ad3356de5ee3fd3b86e00e27687e5b809fcae7ef3090df48e287ea2fd2bee"
+    },
+    {
+      "originalPath": "artifacts/sextant-device-lab-820178bf043e/sextant.web-sharing-lifecycle.json",
+      "retainedPath": "Development_Docs/Engineering/Sextant/evidence/820178bf/d0-d1/sextant.web-sharing-lifecycle.json",
+      "sha256": "e26b87cdfde2434cee2bc5cc658b4ca356bdf642fe1702440f74e76a5cc6534c"
+    }
+  ]
+}

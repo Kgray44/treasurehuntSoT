@@ -1,0 +1,255 @@
+✖ output starts disabled and enables only one exact genuine current-runtime memory batch (6.0478ms)
+✖ JSON clones and arbitrary shaped path records cannot enable upload (2.8074ms)
+✖ a genuine publication from before the sink lifetime cannot be replayed (2.5113ms)
+✖ preexisting publish=true and unterminated multiline leave final selection disabled and empty (10.3516ms)
+✖ duplicate publication and duplicate finish disable final selection instead of overwriting it (3.1554ms)
+✖ success and empty scopes emit no upload paths and cannot overwrite a failed batch with success (2.803ms)
+✖ current fixture and browser collectors batch their four exact files once (2.9362ms)
+✖ output batch write fault preserves worker failure and leaves final publish=false (2.7621ms)
+✖ callback failure is separate from the original worker and encrypted retention result (2.6106ms)
+✖ an absent local workflow output keeps the actual collector result without claiming upload (2.7246ms)
+✖ oversized preexisting output is reset without loading or selecting its raw paths (2.5476ms)
+✖ initialization failure is explicitly unready before any collector callback or worker (3.2292ms)
+✔ actual CLI refuses invalid output initialization before any server or Playwright worker launch (259.9277ms)
+✖ missing or invalid independent nonce cannot initialize or match the workflow gate (2.5766ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 1
+ℹ fail 13
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 563.6372
+
+✖ failing tests:
+
+test at tests\sounding-line\private-browser-failure-output.test.mjs:82:1
+✖ output starts disabled and enables only one exact genuine current-runtime memory batch (6.0478ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - 'false'
+  
+      at TestContext.<anonymous> (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/tests/sounding-line/private-browser-failure-output.test.mjs:84:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1325:25)
+      at Test.start (node:internal/test_runner/test:1191:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: 'false',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\sounding-line\private-browser-failure-output.test.mjs:95:1
+✖ JSON clones and arbitrary shaped path records cannot enable upload (2.8074ms)
+  TypeError: process.getuid is not a function
+      at privateDirectory (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/scripts/sounding-line/private-browser-failure.mjs:58:28)
+      at createBrowserFailureRetention (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/scripts/sounding-line/private-browser-failure.mjs:178:3)
+      at createPublishableBrowserFailureRetention (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/scripts/sounding-line/private-browser-failure-publication.mjs:322:21)
+      at collect (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/tests/sounding-line/private-browser-failure-output.test.mjs:54:19)
+      at TestContext.<anonymous> (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/tests/sounding-line/private-browser-failure-output.test.mjs:98:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1325:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:911:18)
+      at Test.postRun (node:internal/test_runner/test:1465:19)
+      at Test.run (node:internal/test_runner/test:1390:12)
+
+test at tests\sounding-line\private-browser-failure-output.test.mjs:109:1
+✖ a genuine publication from before the sink lifetime cannot be replayed (2.5113ms)
+  TypeError: process.getuid is not a function
+      at privateDirectory (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/scripts/sounding-line/private-browser-failure.mjs:58:28)
+      at createBrowserFailureRetention (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/scripts/sounding-line/private-browser-failure.mjs:178:3)
+      at createPublishableBrowserFailureRetention (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/scripts/sounding-line/private-browser-failure-publication.mjs:322:21)
+      at collect (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/tests/sounding-line/private-browser-failure-output.test.mjs:54:19)
+      at TestContext.<anonymous> (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/tests/sounding-line/private-browser-failure-output.test.mjs:111:13)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1325:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:911:18)
+      at Test.postRun (node:internal/test_runner/test:1465:19)
+      at Test.run (node:internal/test_runner/test:1390:12)
+
+test at tests\sounding-line\private-browser-failure-output.test.mjs:117:1
+✖ preexisting publish=true and unterminated multiline leave final selection disabled and empty (10.3516ms)
+  AssertionError [ERR_ASSERTION]: complete GitHub multiline output
+      at outputs (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/tests/sounding-line/private-browser-failure-output.test.mjs:29:7)
+      at TestContext.<anonymous> (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/tests/sounding-line/private-browser-failure-output.test.mjs:119:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1325:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:911:18)
+      at Test.postRun (node:internal/test_runner/test:1465:19)
+      at Test.run (node:internal/test_runner/test:1390:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:911:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tests\sounding-line\private-browser-failure-output.test.mjs:127:1
+✖ duplicate publication and duplicate finish disable final selection instead of overwriting it (3.1554ms)
+  TypeError: process.getuid is not a function
+      at privateDirectory (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/scripts/sounding-line/private-browser-failure.mjs:58:28)
+      at createBrowserFailureRetention (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/scripts/sounding-line/private-browser-failure.mjs:178:3)
+      at createPublishableBrowserFailureRetention (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/scripts/sounding-line/private-browser-failure-publication.mjs:322:21)
+      at collect (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/tests/sounding-line/private-browser-failure-output.test.mjs:54:19)
+      at TestContext.<anonymous> (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/tests/sounding-line/private-browser-failure-output.test.mjs:129:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1325:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:911:18)
+      at Test.postRun (node:internal/test_runner/test:1465:19)
+      at Test.run (node:internal/test_runner/test:1390:12)
+
+test at tests\sounding-line\private-browser-failure-output.test.mjs:136:1
+✖ success and empty scopes emit no upload paths and cannot overwrite a failed batch with success (2.803ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'DISABLE_FAILED'
+  - 'DISABLED'
+            ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/tests/sounding-line/private-browser-failure-output.test.mjs:138:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1325:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:911:18)
+      at Test.postRun (node:internal/test_runner/test:1465:19)
+      at Test.run (node:internal/test_runner/test:1390:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:911:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'DISABLE_FAILED',
+    expected: 'DISABLED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\sounding-line\private-browser-failure-output.test.mjs:145:1
+✖ current fixture and browser collectors batch their four exact files once (2.9362ms)
+  TypeError: process.getuid is not a function
+      at privateDirectory (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/scripts/sounding-line/private-browser-failure.mjs:58:28)
+      at createBrowserFailureRetention (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/scripts/sounding-line/private-browser-failure.mjs:178:3)
+      at createPublishableBrowserFailureRetention (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/scripts/sounding-line/private-browser-failure-publication.mjs:322:21)
+      at collect (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/tests/sounding-line/private-browser-failure-output.test.mjs:54:19)
+      at TestContext.<anonymous> (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/tests/sounding-line/private-browser-failure-output.test.mjs:147:21)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1325:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:911:18)
+      at Test.postRun (node:internal/test_runner/test:1465:19)
+      at Test.run (node:internal/test_runner/test:1390:12)
+
+test at tests\sounding-line\private-browser-failure-output.test.mjs:155:1
+✖ output batch write fault preserves worker failure and leaves final publish=false (2.7621ms)
+  TypeError: process.getuid is not a function
+      at privateDirectory (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/scripts/sounding-line/private-browser-failure.mjs:58:28)
+      at createBrowserFailureRetention (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/scripts/sounding-line/private-browser-failure.mjs:178:3)
+      at createPublishableBrowserFailureRetention (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/scripts/sounding-line/private-browser-failure-publication.mjs:322:21)
+      at collect (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/tests/sounding-line/private-browser-failure-output.test.mjs:54:19)
+      at TestContext.<anonymous> (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/tests/sounding-line/private-browser-failure-output.test.mjs:157:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1325:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:911:18)
+      at Test.postRun (node:internal/test_runner/test:1465:19)
+      at Test.run (node:internal/test_runner/test:1390:12)
+
+test at tests\sounding-line\private-browser-failure-output.test.mjs:182:1
+✖ callback failure is separate from the original worker and encrypted retention result (2.6106ms)
+  TypeError: process.getuid is not a function
+      at privateDirectory (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/scripts/sounding-line/private-browser-failure.mjs:58:28)
+      at createBrowserFailureRetention (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/scripts/sounding-line/private-browser-failure.mjs:178:3)
+      at createPublishableBrowserFailureRetention (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/scripts/sounding-line/private-browser-failure-publication.mjs:322:21)
+      at collect (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/tests/sounding-line/private-browser-failure-output.test.mjs:54:19)
+      at TestContext.<anonymous> (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/tests/sounding-line/private-browser-failure-output.test.mjs:184:14)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1325:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:911:18)
+      at Test.postRun (node:internal/test_runner/test:1465:19)
+      at Test.run (node:internal/test_runner/test:1390:12)
+
+test at tests\sounding-line\private-browser-failure-output.test.mjs:193:1
+✖ an absent local workflow output keeps the actual collector result without claiming upload (2.7246ms)
+  TypeError: process.getuid is not a function
+      at privateDirectory (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/scripts/sounding-line/private-browser-failure.mjs:58:28)
+      at createBrowserFailureRetention (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/scripts/sounding-line/private-browser-failure.mjs:178:3)
+      at createPublishableBrowserFailureRetention (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/scripts/sounding-line/private-browser-failure-publication.mjs:322:21)
+      at collect (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/tests/sounding-line/private-browser-failure-output.test.mjs:54:19)
+      at TestContext.<anonymous> (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/tests/sounding-line/private-browser-failure-output.test.mjs:196:18)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1325:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:911:18)
+      at Test.postRun (node:internal/test_runner/test:1465:19)
+      at Test.run (node:internal/test_runner/test:1390:12)
+
+test at tests\sounding-line\private-browser-failure-output.test.mjs:203:1
+✖ oversized preexisting output is reset without loading or selecting its raw paths (2.5476ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/tests/sounding-line/private-browser-failure-output.test.mjs:205:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1325:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:911:18)
+      at Test.postRun (node:internal/test_runner/test:1465:19)
+      at Test.run (node:internal/test_runner/test:1390:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:911:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\sounding-line\private-browser-failure-output.test.mjs:211:1
+✖ initialization failure is explicitly unready before any collector callback or worker (3.2292ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'DISABLE_FAILED'
+  - 'DISABLED'
+            ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/tests/sounding-line/private-browser-failure-output.test.mjs:226:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1325:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:911:18)
+      at Test.postRun (node:internal/test_runner/test:1465:19)
+      at Test.run (node:internal/test_runner/test:1390:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:911:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'DISABLE_FAILED',
+    expected: 'DISABLED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\sounding-line\private-browser-failure-output.test.mjs:254:1
+✖ missing or invalid independent nonce cannot initialize or match the workflow gate (2.5766ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'DISABLE_FAILED'
+  - 'DISABLED'
+            ^
+  
+      at TestContext.<anonymous> (file:///C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt/tests/sounding-line/private-browser-failure-output.test.mjs:259:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1325:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:911:18)
+      at Test.postRun (node:internal/test_runner/test:1465:19)
+      at Test.run (node:internal/test_runner/test:1390:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:911:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'DISABLE_FAILED',
+    expected: 'DISABLED',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

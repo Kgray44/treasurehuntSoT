@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/sextant-invitation-journeys.spec.ts"
+  ],
+  "status": "FAIL",
+  "failureCategory": "PRODUCT_FAILURE",
+  "failureCode": "SOUNDING_LINE_BROWSER_PRODUCT_FAILURE:PLAYWRIGHT_EXITED",
+  "diagnosticBinding": {
+    "version": 1,
+    "runId": "8b777234-5fc7-4a17-9e87-a9d096e3ea37",
+    "scopeId": "1614abd9-ae3d-4727-a5f0-1ae6bec80e69",
+    "baseSha": "91cffab32aa551ed36a13aa2d5097f736b0abf2b",
+    "candidateSha": "91cffab32aa551ed36a13aa2d5097f736b0abf2b",
+    "planDigest": "a542662900db7bc585826b15c3a978630da2dab4404805eb0161b5a317b4aa6c"
+  }
+}

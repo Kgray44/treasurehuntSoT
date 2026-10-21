@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "classification": "ENGINEERING_SYNTHETIC_ACCOUNT_RECOVERY_DEVELOPMENT_NOT_ACCEPTANCE",
+  "source": {
+    "sourceSha": "5d440557c2051b47a23f0e634a604daad34f0fdd",
+    "sourceTree": "aab93f6ac1284ab356b6b4a0ddcfe30295d8ce5e",
+    "dirty": false,
+    "sourceFingerprint": "543bfd5fa6127907e7532d551c4e8dbf809e9423e3af136720e71ef6f92d2f21"
+  },
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "reducedMotion": "reduce",
+  "accountId": "cmvg6l64u006l0cwbsjwhsqjm",
+  "baseline": [
+    {
+      "id": "sextant-experience-voyage",
+      "status": "ACTIVE",
+      "currentSequence": 4,
+      "currentBlockId": "sextant-experience-note",
+      "publishedVersionId": "cmvg6jhlw00080cxmm45nfih1"
+    },
+    {
+      "id": "sextant-resource-voyage-account-recovery-390-reduce",
+      "status": "ACTIVE",
+      "currentSequence": 4,
+      "currentBlockId": "sextant-resource-passage-account-recovery-390-reduce",
+      "publishedVersionId": "cmvg6l4qm00280cxmgaz616aw"
+    }
+  ],
+  "feedback": [
+    {
+      "task": "Ordinary Create Account entry",
+      "elapsedMs": 301.3983249999874
+    },
+    {
+      "task": "Actual reserved account registration",
+      "elapsedMs": 499.4660060000024
+    },
+    {
+      "task": "Actual synthetic email verification",
+      "elapsedMs": 191.25534399999015
+    },
+    {
+      "task": "Actual synthetic password reset request",
+      "elapsedMs": 155.02657499999623
+    },
+    {
+      "task": "Actual password replacement",
+      "elapsedMs": 925.2763859999977
+    },
+    {
+      "task": "Ordinary Personal Information section entry",
+      "elapsedMs": 185.95653599999787
+    },
+    {
+      "task": "Actual synthetic primary email request",
+      "elapsedMs": 452.3793149999983
+    },
+    {
+      "task": "Actual primary email confirmation",
+      "elapsedMs": 160.29274399999122
+    },
+    {
+      "task": "Same canonical account with replacement credentials",
+      "elapsedMs": 949.0800750000053
+    },
+    {
+      "task": "Ordinary Data & Account section entry",
+      "elapsedMs": 107.06333699999959
+    },
+    {
+      "task": "Actual reversible deactivation",
+      "elapsedMs": 929.7922759999929
+    },
+    {
+      "task": "Actual account reactivation",
+      "elapsedMs": 927.2460750000027
+    },
+    {
+      "task": "Ordinary Data & Account section entry",
+      "elapsedMs": 140.16656899999361
+    },
+    {
+      "task": "Actual delayed deletion request",
+      "elapsedMs": 506.6246830000018
+    },
+    {
+      "task": "Actual scheduled deletion cancellation",
+      "elapsedMs": 933.8687930000015
+    }
+  ],
+  "actualProductionRegistrationVerificationPasswordResetAndEmailChange": true,
+  "actualDeactivationReactivationAndScheduledDeletionCancellation": true,
+  "finalSameAccountActiveWithNoChronicleOrMembership": true,
+  "unchangedActiveProgressAndEditionBytes": true,
+  "syntheticEmailOnly": true,
+  "challengeValuesPublishedInReceipt": false,
+  "guestClaimOrMergeCovered": false,
+  "formalPositiveMutationCovered": false,
+  "protectedAcceptance": false
+}

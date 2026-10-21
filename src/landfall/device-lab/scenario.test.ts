@@ -35,6 +35,18 @@ describe("canonical Device Lab scenarios", () => {
     const logical = await new LandfallProviderScenarioExecutor(scenario).run();
     expect(logical.steps.some((step) => step.state === "UNSUPPORTED")).toBe(true);
   });
+  it.each(["doze", "standby"])("requires real Android OS %s entry, recovery and readback", (mode) => {
+    const scenario = landfallDeviceScenario(`android-${mode}-recovery`);
+    expect(scenario.targets).toEqual(["android-emulator"]);
+    expect(scenario.canonicalAuthority).toBe("ONE_VOYAGE");
+    expect(scenario.timeline.filter((s) => s.action.type === "ANDROID_IDLE").map((s) => s.action)).toEqual([
+      { type: "ANDROID_IDLE", mode: mode.toUpperCase(), enabled: true },
+      { type: "ANDROID_IDLE", mode: mode.toUpperCase(), enabled: false },
+    ]);
+    expect(
+      scenario.timeline.filter((s) => s.action.type === "ASSERT" && s.action.field === "canonicalProgressionEvents"),
+    ).toHaveLength(2);
+  });
   it("uses two distinct nearby physical route points for fresh native fixes in versioned arrival scenarios", () => {
     for (const id of [
       "gps-perfect-walk",
@@ -44,9 +56,15 @@ describe("canonical Device Lab scenarios", () => {
     ]) {
       const scenario = landfallDeviceScenario(id);
       const locations = scenario.timeline.map((step) => step.action).filter((action) => action.type === "LOCATION");
-      expect(scenario.version).toBe(id === "offline-restart-canonical-reconcile" ? 3 : 2);
+      expect(scenario.version).toBe(
+        ["offline-restart-canonical-reconcile", "offline-lost-response-canonical-reconcile"].includes(id) ? 3 : 2,
+      );
       expect(scenario.publishedFixture).toBe(
-        id === "offline-restart-canonical-reconcile" ? "landfall-device-lab-restart-v2" : "landfall-device-lab-v1",
+        id === "offline-restart-canonical-reconcile"
+          ? "landfall-device-lab-restart-v2"
+          : id === "offline-lost-response-canonical-reconcile"
+            ? "landfall-device-lab-lost-response-v2"
+            : "landfall-device-lab-v1",
       );
       expect(locations).toHaveLength(2);
       expect(locations[0].coordinate).not.toEqual(locations[1].coordinate);

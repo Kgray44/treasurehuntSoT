@@ -1,0 +1,77 @@
+{
+  "source": {
+    "sourceSha": "08adc7effd0cc96c3456e13421fd5c106bae7978",
+    "sourceTree": "b5d92737f4a44394386671b956ce58d54ac93d19",
+    "dirty": false,
+    "sourceFingerprint": "6ee4d585ee7043a8c8e34f1ea3486a7295b7773ae50a9dd4956a57cb423ebd65"
+  },
+  "fixture": {
+    "ownerId": "sextant-resource-owner-history-390-no-preference",
+    "email": "sextant.resources-history-390-no-preference@example.test",
+    "displayName": "Synthetic Sextant Captain-history-390-no-preference",
+    "crewEmail": "sextant.crew-history-390-no-preference@example.test",
+    "crewAccountId": "sextant-resource-crew-history-390-no-preference",
+    "crewDisplayName": "Synthetic Sextant Crew-history-390-no-preference",
+    "voyageId": "sextant-resource-voyage-history-390-no-preference",
+    "taleId": "sextant-resource-chronicle-history-390-no-preference",
+    "versionId": "cmvfw3ouy00230crwdzunl1an",
+    "playerVoyageId": "sextant-experience-voyage",
+    "title": "Synthetic Sextant remembered Voyage"
+  },
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "reducedMotion": "no-preference",
+  "feedback": [
+    {
+      "task": "Narrative response and next action",
+      "elapsedMs": 113.5360920000021
+    },
+    {
+      "task": "Personal grant response and next action",
+      "elapsedMs": 183.6478350000034
+    },
+    {
+      "task": "Canonical Voyage completion and read-only feedback",
+      "elapsedMs": 173.8065820000047
+    },
+    {
+      "task": "Completed Your Voyages",
+      "elapsedMs": 611.0017099999968
+    },
+    {
+      "task": "Actual completed Voyage Detail",
+      "elapsedMs": 1582.3967600000033
+    },
+    {
+      "task": "Actual private Voyage Book",
+      "elapsedMs": 150.9580679999999
+    },
+    {
+      "task": "Actual personal Artifact Cabinet",
+      "elapsedMs": 578.2191880000028
+    },
+    {
+      "task": "Actual personal provenance",
+      "elapsedMs": 365.6010380000007
+    }
+  ],
+  "replayOpeningMs": 1021.4341710000008,
+  "completion": {
+    "sessionId": "sextant-resource-voyage-history-390-no-preference",
+    "eventCount": 15,
+    "actualPlayerPostAndCanonicalCompletion": true
+  },
+  "provenance": {
+    "historyRecordId": "cmvfw3pd1003r0cqotloveexp",
+    "artifactRecordId": "cmvfw46s600510cqo245ncp86",
+    "grantId": "cc1f0450-f4a5-4e3d-bf84-76ab98a7a924",
+    "recipientPolicy": "ALL_ACTIVE_PLAYERS"
+  },
+  "noSeededHistoryCompletionOrReceipt": true,
+  "unchangedCompletedProgressAndEdition": true,
+  "unchangedIndependentActiveVoyage": true,
+  "protectedQualification": false,
+  "physicalEvidence": false
+}

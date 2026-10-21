@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import QRCode from "qrcode";
 import { CHALLENGE_MS, HEARTBEAT_MS, roles, type SurfaceRole } from "@/crossdeck/contracts";
 import type { SurfaceDto } from "@/crossdeck/service";
@@ -27,6 +27,7 @@ export function CrossdeckDevices({
   initialVoyage?: string;
   compact?: boolean;
 }) {
+  const connectionDescriptionId = useId();
   const [surfaces, setSurfaces] = useState<SurfaceDto[]>([]);
   const [voyages, setVoyages] = useState<{ id: string; title: string }[]>([]);
   const [voyage, setVoyage] = useState(initialVoyage);
@@ -221,8 +222,19 @@ export function CrossdeckDevices({
   if (compact)
     return (
       <span className={styles.compact}>
-        <Link href={`/account/devices?voyage=${encodeURIComponent(voyage)}`}>
-          Devices{surfaces.length > 0 ? ` · ${surfaces.filter((s) => s.presence === "ACTIVE").length} connected` : ""}
+        <Link
+          href={`/account/devices?voyage=${encodeURIComponent(voyage)}`}
+          data-voyage-id={voyage || undefined}
+          aria-label="Devices"
+          aria-describedby={surfaces.length > 0 ? connectionDescriptionId : undefined}
+        >
+          Devices
+          {surfaces.length > 0 ? (
+            <span id={connectionDescriptionId}>
+              {" "}
+              · {surfaces.filter((s) => s.presence === "ACTIVE").length} connected
+            </span>
+          ) : null}
         </Link>
       </span>
     );
@@ -243,7 +255,7 @@ export function CrossdeckDevices({
     );
   const here = surfaces.find((s) => s.surfaceId === ownId);
   return (
-    <section className={styles.panel} aria-label="Voyage devices">
+    <section className={styles.panel} aria-label="Voyage devices" data-voyage-id={voyage || undefined}>
       <div className={styles.masthead}>
         <p className="eyebrow">One Player · Many screens</p>
         <h2>Your Voyage, across your devices</h2>

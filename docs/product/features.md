@@ -3,10 +3,35 @@ title: Voyagewright features
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-20
 ---
 
 # Voyagewright features
+
+The Sextant candidate keeps account credential forms inactive until their submit
+handler is ready and uses POST for native submission. Accepted invitation routes
+can prepare during the existing confirmation ceremony. These corrections still
+require fresh consumer execution and do not change account or Voyage authority.
+
+The Sextant Phase 4 implementation candidate adds native capability projection,
+shared foreground motion/position acquisition, bounded native vibration feedback
+and optional input controls on the ordinary Devices page. Discovery does not start
+sensors. Screen alternatives remain available. The [Phase 4 record](../../Development_Docs/Engineering/Sextant/Project_Sextant_Phase_4_Implementation_Record.md)
+separates source qualification, virtual native execution and the required physical
+core bring-up gate. Phase 4 is not formally accepted or integrated.
+
+The current Phase 4 continuation corrects location pause/revocation, explicit
+recovery after bounded native interruptions, shared local attitude and late
+sensor/feedback responses. Supported radios report their actual permission and
+operational availability. These corrections remain subject to virtual and
+consumer qualification in the [continuation record](../../Development_Docs/Engineering/Sextant/Project_Sextant_Phase_4_Virtual_Completion_20261019.md).
+Android virtual-device controls now have development evidence. Normal iOS Devices
+and broader consumer experience acceptance remain pending.
+
+The candidate's compatibility Journal route uses existing exact-Voyage
+authorization so identity Players select canonical reader state and legacy
+continuations retain their local state. This correction still requires rendered
+journey validation and does not change Chronicle progression or publish an edition.
 
 Parallax A1 is software-qualified on main through protected PR #710 at `ee8caa83`, after ordinary Sounding Line PASS and 118 landed smoke checks. Spatial Studio provides reviewed natural-language proposals, actual canvas preview, atomic saved Apply and ordinary history with adaptive ownership preserved. Admiralty supplies durable AI accounting and global policy; per-user controls use the existing People dossier. Five production-browser journeys pass, and six authorized live calls returned validated structured responses with settled usage. Catalog FT-B112 records availability with assistance disabled by default. The owner accepted the later revised presentation; finite model testing and physical quality retain their stated limits; see the [implementation record](../../Development_Docs/Projects/Project_Parallax/Parallax_A1_Implementation_and_Qualification.md).
 
@@ -27,6 +52,8 @@ Voyagewright is a private, role-aware home for shared Chronicle experiences.
 ## Player and Personal Harbor
 
 Players can accept invitations, use a personal library, follow a Chronicle through a Voyage, and keep private history in Chronicle Passport. Personal Harbor brings account, privacy, profile, and workspace choices together. See the [Player guide](../user/player-guide.md), [Personal Harbor](../user/personal-harbor.md), and [Chronicle Passport guide](../user/chronicle-passport.md).
+
+The Sextant Phase 4 candidate restores visible guest claim and existing-account merge entry in Personal Information, using the existing account services and preserving saved Voyage progress. Full candidate experience qualification remains pending.
 
 For a Landfall-enabled published Voyage, the Player Journal map drawer shows the released physical or virtual chart. On a supported physical chart, the Player can explicitly turn on foreground browser location to see a current-position marker with an accuracy indication, then stop it at once. Virtual charts do not request GPS. Local position confidence does not itself record a visit.
 
@@ -49,3 +76,7 @@ Landfall contextual Charts support aligned floor/site maps, hierarchical regions
 Voyagewright provides role-aware access, privacy settings, accessible interaction patterns, and consent-based Support Access when assistance is needed. See [privacy and safety](../user/privacy.md), [accessibility](../user/accessibility.md), and [Support Access](../user/support-access.md).
 
 Landfall's protected physical/virtual v1.1 implementation adds authored-unit virtual context and bounded independent-source qualification. Physical rooms default to private Chronicle-authorized evaluation; broad approximate regions use intentionally reduced precision. A two-source physical check combines foreground location and deliberate Player confirmation. Watchglass remains unconfigured with an authored fallback. The [amendment record](../../Development_Docs/Projects/Project_Landfall/Project_Landfall_Phase_3_v1.1_Amendment_Record.md) records exact protected qualification, full acceptance and landed closure evidence.
+
+In the Sextant candidate, a successful primary email change disables its consumed confirmation and keeps **Sign in with the new email** available. The candidate correction still requires experience qualification.
+
+The candidate also preserves the readable brass confirmation action while hovering over a private package import. This correction remains under experience qualification.

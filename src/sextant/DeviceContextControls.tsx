@@ -48,12 +48,15 @@ export function DeviceContextControls({
     setMessage("");
     try {
       if (status.paused) runtime.resume(true);
-      const decision = await runtime.enable({
-        ...purpose,
-        consent,
-        userInitiated: true,
-        retry: status.permission === "DENIED",
-      });
+      const decision = await runtime.enable(
+        {
+          ...purpose,
+          consent,
+          userInitiated: true,
+          retry: status.permission === "DENIED",
+        },
+        capabilityId,
+      );
       if (generation.current !== startedGeneration) return;
       if (decision === "GRANTED") {
         setMessage("Ready. Device input stays local and stops when you pause or leave this screen.");
@@ -71,7 +74,7 @@ export function DeviceContextControls({
     : status.freshness === "STALE"
       ? "The device reading is out of date."
       : disabled
-        ? "This browser cannot provide this device input."
+        ? "This device cannot provide this input."
         : status.permission === "DENIED"
           ? "Device permission was declined."
           : status.freshness === "FRESH"
@@ -84,7 +87,7 @@ export function DeviceContextControls({
     >
       <p>{purpose.purpose}</p>
       <p role="status" aria-live="polite">
-        {message || explanation}
+        {status.paused ? explanation : message || explanation}
       </p>
       <label htmlFor={id} className="mt-3 flex items-center gap-2">
         <input

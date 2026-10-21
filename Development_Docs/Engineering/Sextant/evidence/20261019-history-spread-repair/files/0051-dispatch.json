@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "candidateSha": "08adc7effd0cc96c3456e13421fd5c106bae7978",
+  "target": "sextant-history",
+  "tier": "development",
+  "profiles": {
+    "android": [
+      {
+        "profile": "primary-phone",
+        "api": 36,
+        "device": "pixel_7",
+        "ram": "3072M",
+        "memory": 3072,
+        "lowRam": ""
+      }
+    ],
+    "apple": [
+      "primary-phone"
+    ]
+  },
+  "scenarios": {
+    "appleDevices": [],
+    "browser": [
+      "sextant-history-journeys"
+    ],
+    "journal": [],
+    "background": [],
+    "radio": "uwb-native-peer-session,ble-native-generic-discovery,ble-native-ibeacon-discovery,ble-native-eddystone-uid-discovery",
+    "ios": "permission-denied-native,permission-revoked-mid-route,gps-perfect-walk,offline-native-canonical-reconcile,offline-lost-response-canonical-reconcile,offline-restart-canonical-reconcile,virtual-player-navigation,virtual-offline-canonical-reconcile,geofence-native-background-wake",
+    "android": "device-reboot,qr-native-camera-valid,permission-denied-native,permission-approximate-native,permission-revoked-mid-route,motion-walk,stationary,barometer-floor-change,orientation-turn,heading-turn,gps-perfect-walk,offline-native-canonical-reconcile,offline-lost-response-canonical-reconcile,offline-restart-canonical-reconcile,virtual-player-navigation,virtual-offline-canonical-reconcile,battery-normal,battery-low,battery-saver,charger-change",
+    "provider": "all"
+  },
+  "transportSha": "d3b38952c4c17ab6932d42b149936b508fee4ba5",
+  "transportTree": "9d200382c9d8770711f6bf9e0fbc106aa31e54db",
+  "branch": "codex/landfall-lab-08adc7effd0c-1792452512048",
+  "workflow": "landfall-device-lab.yml",
+  "createdAt": "2026-10-19T23:28:34.533Z",
+  "cleanup": "PASS",
+  "runId": "39341796252",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39341796252",
+  "harvested": "C:\\Users\\kkids\\.codex\\worktrees\\sextant-phase4-completion\\Codex_TreasureHunt\\artifacts\\landfall-device-lab\\hosted-08adc7effd0c-1792452512048\\run-39341796252"
+}

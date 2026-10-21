@@ -182,7 +182,7 @@ function JournalBlock({
     return (
       <section
         className={`journal-block ${motionClass} journal-${block.journalKind}-page part-${part}`}
-        aria-label={block.title}
+        aria-label={part === "secondary" ? `${block.title} · continued` : block.title}
       >
         <p className="eyebrow">
           {journalEyebrow(block)} · {stateLabel}

@@ -39,6 +39,7 @@ export const deviceLabActionSchema = z.discriminatedUnion("type", [
     thermal: z.boolean(),
     doze: z.boolean(),
   }),
+  z.strictObject({ type: z.literal("ANDROID_IDLE"), mode: z.enum(["DOZE", "STANDBY"]), enabled: z.boolean() }),
   z.strictObject({ type: z.literal("PROVIDER"), family: providerFamilySchema, health: providerHealthSchema }),
   z.strictObject({
     type: z.literal("REMOTE_DATA"),
@@ -184,7 +185,11 @@ export const deviceLabScenarioSchema = z
     description: z.string().min(1).max(1000),
     seed: z.number().int().min(1).max(2147483647),
     worldspace: z.enum(["PHYSICAL", "VIRTUAL"]),
-    publishedFixture: z.enum(["landfall-device-lab-v1", "landfall-device-lab-restart-v2"]),
+    publishedFixture: z.enum([
+      "landfall-device-lab-v1",
+      "landfall-device-lab-restart-v2",
+      "landfall-device-lab-lost-response-v2",
+    ]),
     canonicalAuthority: z.enum(["NONE", "ONE_VOYAGE"]).default("NONE"),
     targets: z.array(deviceLabTargetSchema).min(1).max(6),
     deviceProfiles: z

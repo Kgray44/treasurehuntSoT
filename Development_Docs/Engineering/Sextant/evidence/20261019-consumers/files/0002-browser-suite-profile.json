@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/sextant-consumer-journeys.spec.ts"
+  ],
+  "status": "PASS",
+  "failureCategory": null,
+  "failureCode": null,
+  "diagnosticBinding": {
+    "version": 1,
+    "runId": "58cd80ab-20a1-41ed-80c7-8e471919d965",
+    "scopeId": "4887606b-0266-489f-bccd-3747f964c5f7",
+    "baseSha": "450af3f4794e8e290db8484b36d17631390086ff",
+    "candidateSha": "450af3f4794e8e290db8484b36d17631390086ff",
+    "planDigest": "c6c1a59147b0830272bf91daa7bd0f3697a402d5aff0c507552a05c6b5a1a894"
+  }
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "index": 0,
+    "phase": "LOCATION",
+    "attempt": 1,
+    "state": "ATTEMPT"
+  },
+  {
+    "index": 0,
+    "phase": "LOCATION",
+    "attempt": 1,
+    "state": "ACKNOWLEDGED"
+  },
+  {
+    "index": 3,
+    "phase": "OUTSIDE_BASELINE",
+    "attempt": 1,
+    "state": "ATTEMPT"
+  },
+  {
+    "index": 3,
+    "phase": "OUTSIDE_BASELINE",
+    "attempt": 1,
+    "state": "ACKNOWLEDGED"
+  },
+  {
+    "index": 3,
+    "phase": "INSIDE_TRANSITION",
+    "attempt": 1,
+    "state": "ATTEMPT"
+  },
+  {
+    "index": 3,
+    "phase": "INSIDE_TRANSITION",
+    "attempt": 1,
+    "state": "ACKNOWLEDGED"
+  }
+]

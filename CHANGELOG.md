@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-10-12
+last_reviewed: 2026-10-20
 ---
 
 # Changelog
@@ -19,6 +19,94 @@ last_reviewed: 2026-10-12
 - Product Experience Engineering adds selective experience contracts and real-browser evidence to ordinary Sounding Line, with independent criticism, bounded repair, protected capture/review attestation and explicit spatial baseline debt. [Operations and proof](Development_Docs/Testing/Product_Experience/README.md) preserve product and owner acceptance authority.
 
 ### Corrected
+
+- The Sextant candidate keeps credential/challenge forms inactive until hydration
+  and uses POST. Invitation route preparation follows successful acceptance while
+  preserving its confirmation ceremony and handoff limits.
+
+- Living Chart uses a named inspector section inside Studio and gives waypoint
+  inspection buttons distinct accessible action names. Map names remain visible.
+
+- Private Chronicle import confirmation retains readable ink and brass fill while
+  hovered in the Sextant candidate.
+
+- The Sextant candidate keeps a successful primary email change terminal: its
+  consumed confirmation stays disabled and the sign-in return remains available.
+
+- Personal Information exposes the existing claim and merge paths for unclaimed
+  guest accounts. Admiralty account-identity rows wrap long IDs while keeping
+  their Copy action within the viewport.
+
+- Studio sortable Passage cards use a valid element for their existing named
+  group, preserving drag, focus, keyboard controls and displayed content.
+
+- The new Chronicle form uses parchment ink for headings, explanatory text and
+  cover-image help. Admiralty exposes its real operator summary as a named group,
+  keeps it readable on mobile and uses a named inner control group beneath the
+  ordinary global banner.
+
+- Studio's Passage library and Inspector use distinct named sections. Personal
+  Harbor's Profile setup notice uses a named section within its main task.
+- Community's decorative card artwork lets the stretched detail link receive
+  pointer input. Long immutable edition labels wrap within their Studio badge.
+- Tideglass gives its current-edition notice and loaded edition comparison
+  distinct landmark names when both appear together.
+- Community primary actions keep a light background and readable ink when hovered,
+  including the Search icon. Journal continuation pages have distinct landmark names
+  matching their visible continued headings.
+- The Journal's historical-volume notice uses a named section within the main
+  reading task, preserving its read-only content and styling.
+- Creator publication review wraps release checksums and stage content within its
+  card. Sea Trials keeps its Scenario ledger and editor fields within narrow cards;
+  its Suite save row can wrap and its flexible title field can shrink.
+- The Captain Chronicle dashboard uses neutral Crew wording when its legacy label
+  is absent. Creator actions and section navigation share one desktop sticky
+  container below the application masthead; mobile keeps its compact section rail.
+- Captain's Chronicle dashboard uses a named section for its Chronicle navigation,
+  preserving the panel's content and responsive styling within the main task.
+- The Sextant Phase 4 candidate clears Community query and advanced-filter
+  drafts when returning from a search to the default Harbor. An older unsent
+  query no longer returns after choosing Clear search and filters.
+- Community listing reviews use unique heading IDs and one review landmark;
+  anonymous comment/review prompts use valid sections within the main content.
+- Creator library search and sort controls have explicit accessible names.
+  Asset drawer and saved Sea Trial scenarios use valid named sections with
+  their existing content, controls and styling.
+- The Sextant Phase 4 consumer continuation corrects Voyage Atlas availability
+  semantics to use a named section within the private Passport, avoiding an
+  incorrectly nested complementary landmark. The Muster Chronicle card uses
+  the same valid section semantics. Accessibility assertions remain.
+- The private Passport intro heading inherits its card's dark text color so it
+  stays readable on the pale gold background.
+- The Captain's safe Player preview uses dark heading, body and metadata text
+  on its pale preview sheet, keeping the projected Passage readable.
+- Creator authoring navigation stays below the application masthead on mobile
+  and desktop so it cannot cover the logo, navigation or account controls.
+- Spatial Studio's named Library and Inspector panels use valid section
+  landmarks within its main workspace.
+
+- Sextant's Phase 4 candidate pauses and revokes native location alongside other
+  optional input, permits a fresh explicit acquisition after expected native
+  interruptions, isolates late sensor/output replies from newer leases, and
+  preserves compatible local orientation sharing. Native radio declarations
+  distinguish support, permission and operational availability. Current virtual
+  qualification and consumer acceptance remain required.
+
+- The Sextant Phase 4 candidate's compatibility Journal route now uses the existing
+  exact-Voyage authorization result to select canonical identity reader state.
+  Legacy continuation retains local reader state. Rendered continuation and final
+  Phase 4 acceptance remain under qualification.
+
+- The Sextant Phase 4 candidate applies local parchment ink to the Guided Lens
+  title and clue, preserving the object-kind hierarchy. Its returning-reader
+  rehearsal follows canonical Voyage routes and explicitly measures full-opening
+  replay. Actual recapture and independent acceptance remain required.
+
+- The Sextant Phase 4 candidate defers unused native fitness services during
+  empty-lease cleanup and preserves explicit optional-input acquisition. Journal
+  opening and Devices actions have stable accessible names with their visible
+  return/connection descriptions retained. Fresh native and consumer experience
+  qualification remains required; this candidate is not formal Phase 4 acceptance.
 
 - Device connections has a primary page heading in both account states. Reach guidance and the pointing area expose meaningful semantic structure while preserving their controls and focus behavior. Full-page accessibility regressions retain all violation severities and distinguish incomplete checks from passes.
 - Reach setup requests remain operable by keyboard and touch during brief tracking changes. Activation checks current readiness and responds with polite guidance instead of losing the request; existing setup guards remain in force, and no automatic start is queued. The default return to device connections restores the page top so the laboratory entry stays clear of the header.
@@ -44,6 +132,13 @@ last_reviewed: 2026-10-12
 - Sextant gesture acquisition refuses incompatible slow delivery before sensor acquisition and cleans all owned leases on failure/abort/interruption. Parallax native scenes use bounded versioned UTF-8 chunks, independent resolved geometry validation and idempotent session-bound termination including Android Back. Existing published checksums, Guided accessibility and One Voyage progression authority are retained. See the [correction receipt](Development_Docs/Engineering/Device_Lab/Sextant_Parallax_Correction_Receipt.md) for qualification and remaining physical/owner gates.
 
 ### Added
+
+- Sextant Phase 4 candidate adds canonical Android/iOS motion and position leases,
+  native hardware/radio/power ownership, acknowledged native haptics, coordinated
+  sensor/fault scenarios and consented optional-input controls on Devices.
+  The [implementation record](Development_Docs/Engineering/Sextant/Project_Sextant_Phase_4_Implementation_Record.md)
+  retains failed native runs and outstanding software, physical D4 and owner gates;
+  this is not formal Phase 4 acceptance or protected integration.
 
 - Parallax A1 integrates reviewed Spatial Assistant proposals, bounded private follow-up context, shared Windows server credential support and durable Admiralty AI controls through protected PR #710 at `ee8caa83`. Per-user policy uses the existing People dossier. Real canvas preview, atomic saved Apply and ordinary history preserve adaptive ownership; the unmetered legacy network path is retired. Ordinary Sounding Line, five production-browser journeys, six bounded live calls and 118 landed smoke checks pass their recorded software boundaries. Assistance remains disabled by default, and owner visual/full-corpus/physical acceptance remain separate; see the [implementation record](Development_Docs/Projects/Project_Parallax/Parallax_A1_Implementation_and_Qualification.md).
 

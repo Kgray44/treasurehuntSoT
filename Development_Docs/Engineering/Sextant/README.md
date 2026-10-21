@@ -3,12 +3,48 @@ title: Sextant implementation and consumer integration
 audience: product-engineering
 status: current
 canonical_for: sextant-phase1-implementation
-last_reviewed: 2026-10-10
+last_reviewed: 2026-10-20
 ---
 
 # Sextant — Device Context
 
-[Phase 3 - Read the Field](Project_Sextant_Phase_3_Implementation_Receipt.md) is an isolated local candidate for rich magnetic/pressure/step semantics, media declarations, bounded optional BLE/NFC, secure ranging contracts, safe magnetic reference controls and versioned Drydock requirements. Its D0/D1 software evidence is distinct from D2/native, D4/D5, protected mainline and owner acceptance. Reuse the existing runtime's `advanced` context; media factories and authenticated peer meaning remain with their consumers.
+The [2026-10-19 virtual completion continuation](Project_Sextant_Phase_4_Virtual_Completion_20261019.md)
+reconciles the existing draft with current main, inventories every Phase 4 gate,
+and records focused provider corrections and new source-bound virtual work.
+Its Display/pilot entry source checkpoint has 179 affected surfaces; 5 still lack experience
+registration. The historical 141-path mapping remains intact. Reach diagnostics
+are now protected-accepted; Crossdeck #721 remains unmerged. Earlier counts
+and failed campaigns remain historical evidence, not current acceptance.
+The [Display/pilot entry source reconciliation](phase4-source-reconciliation-consumer-repairs-20261020.json)
+binds that count to `91cffab32a`; it grants no capture or acceptance credit.
+Earlier source reconciliations and all failed or defective receipts remain intact.
+
+The [bounded Phase 4 follow-up ledger](phase4-acceptance-followup-r1-ledger.json)
+preserves the exhausted original campaign and records the separately authorized
+R1 budget. Its first fixture repair passed the
+[isolated canonical-writer check](phase4-followup-r1-fixture-verification.json).
+The [Journal route boundary](phase4-journal-route-boundary-r1.json) records the
+agreement before the one delegated wrapper edit. The
+[shared Journal regression](phase4-followup-r1-journal-regression.json) passed 28
+checks without claiming rendered route proof. The
+[shared consumer designs](phase4-shared-consumer-design-r1.json) remain proposals,
+with complete ownership/fixture/entry/outcome/return mapping for 141 surfaces.
+At the R1 source, two declarations registered 12 journeys on 22 paths, with 118
+paths lacking declarations. The current continuation adds two Player-workspace
+paths and the continuation registers the actual Passport sections; all 141
+historical paths still require final-source acceptance. The
+[installed selector correction](phase4-password-selector-correction-r1.json)
+refutes the earlier password-role blocker without changing the helper. Reach's
+observability predecessor is now accepted on protected main. Crossdeck's
+conditional retry remains unmerged.
+The separate R1 ledger now counts a second pre-review declaration repair for
+protected reference binding, with zero recaptures. Accepted Reach PR716 is merged
+additively; its pairing declaration accounts for the one-path difference from the
+earlier 119 count. No current candidate experience is accepted by registration.
+Required coverage, independent review, ordinary qualification and D4 acceptance
+remain open; these preparation records do not discharge them.
+
+[Phase 3 - Read the Field](Project_Sextant_Phase_3_Implementation_Receipt.md) is integrated on protected main for rich magnetic/pressure/step semantics, media declarations, bounded optional BLE/NFC, secure ranging contracts, safe magnetic reference controls and versioned Drydock requirements. Its D0/D1 software evidence is distinct from native parity, D4/D5 and owner acceptance. Reuse the existing runtime's `advanced` context; media factories and authenticated peer meaning remain with their consumers.
 
 [Phase 2 — Hold the Horizon](Project_Sextant_Phase_2_Implementation_Receipt.md) adds real web event-family providers, normalized attitude/motion, six bounded device gestures, semantic haptics and accessible consent/status controls. Software qualification is separate from physical hardware evidence.
 
@@ -16,13 +52,15 @@ New consumers use `webSextantRuntime(window, navigator)` once per active surface
 
 Relative/absolute reference, quaternion normalization, separate gravity/linear/including-gravity observations, gyro rad/s axes, stability dwell/hysteresis, semantic freshness and interruption reset are enforced before device intent. All example gestures require a nonempty alternative. `beginGesture()` uses one shared acquisition contract and deterministically refuses LOW_RATE/PASSIVE before sensors start. INTERACTIVE or an explicitly bounded burst is required; no battery/lifetime escalation is automatic. It coordinates required semantic leases and cleans every lease on partial failure, abort or an ended channel. It returns an explicit release function; consumers release on unmount. Surface owners dispose on session end/sign-out.
 
-`runtime.haptics.request()` executes bounded semantic cues with a mandatory visual/text alternative. `setHapticPreferences()` supplies user and reduced-sensory policy. Basic vibration support and API acceptance do not guarantee a physical sensation. Important information always has another presentation path.
+`runtime.haptics.requestAsync()` executes bounded semantic cues with a mandatory visual/text alternative. `setHapticPreferences()` supplies user and reduced-sensory policy. Basic vibration support and API acceptance do not guarantee a physical sensation. Important information always has another presentation path.
 
 The [post-mainline correction receipt](../Device_Lab/Sextant_Parallax_Correction_Receipt.md) records the shared six-gesture acquisition policy, refusal boundaries and cleanup/continuity regressions separately from the retained phase evidence.
 
-The shared CLI now executes all 20 Sextant D0/D1 scenarios. Select one with `npm run sextant:device-lab -- --scenario sextant.web-heading-wrap`. Emulated browser events are D1, synthetic semantics are D0, and neither is physical qualification. Optional Generic Sensor providers are not necessary for the event-family plateau and are not claimed.
+The shared CLI now executes all 53 Sextant D0/D1 scenarios. Select one with `npm run sextant:device-lab -- --scenario sextant.web-heading-wrap`. Emulated browser events are D1, synthetic semantics are D0, and neither is physical qualification. Optional Generic Sensor providers are not necessary for the event-family plateau and are not claimed.
 
 Landfall's existing foreground context API remains compatible; generic acquisition lives in Sextant and shares its listener hub. Landfall still owns navigation/context meaning. New consumer code does not import raw Device Orientation/Motion or Vibration APIs.
+
+[Phase 4 — Take It Afield](Project_Sextant_Phase_4_Implementation_Record.md) is in development. The existing hosted Android and Apple lab has been activated on the accepted base; new native owners and semantic integration still require their own qualification. Formal Phase 4 acceptance requires D4 core bring-up.
 
 ## Preserved Phase 1 — Set the Sextant
 

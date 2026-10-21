@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "classification": "ENGINEERING_SYNTHETIC_CREATOR_ENTRY_DEVELOPMENT_NOT_ACCEPTANCE",
+  "source": {
+    "sourceSha": "c518c1680993021279c3c9fc3af0414612d7a10a",
+    "sourceTree": "08c37b483119ba0196af8be391eeb52ee43e57d7",
+    "dirty": false,
+    "sourceFingerprint": "fe177cf4d88194174824288d520839be29dc46712b6d8a519e078d6474447399"
+  },
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "reducedMotion": "reduce",
+  "baseline": [
+    {
+      "id": "sextant-experience-voyage",
+      "status": "ACTIVE",
+      "currentSequence": 4,
+      "currentBlockId": "sextant-experience-note",
+      "publishedVersionId": "cmvg2o27e00085qstfm6x6cat"
+    },
+    {
+      "id": "sextant-resource-voyage-creator-entry-390-reduce",
+      "status": "ACTIVE",
+      "currentSequence": 4,
+      "currentBlockId": "sextant-resource-passage-creator-entry-390-reduce",
+      "publishedVersionId": "cmvg2ovzc00285qst7r8r0209"
+    }
+  ],
+  "feedback": [
+    {
+      "task": "Ordinary Creator workspace entry",
+      "elapsedMs": 252.7279439999984
+    },
+    {
+      "task": "Prepared new Chronicle form",
+      "elapsedMs": 190.8879620000007
+    },
+    {
+      "task": "Reopen secure creation form",
+      "elapsedMs": 180.0469260000027
+    },
+    {
+      "task": "Actual private Chronicle creation",
+      "elapsedMs": 479.83866699999635
+    },
+    {
+      "task": "Reopen actual new draft",
+      "elapsedMs": 163.79393600000185
+    },
+    {
+      "task": "Ordinary Personal Harbor return",
+      "elapsedMs": 230.3068310000017
+    }
+  ],
+  "created": {
+    "taleId": "cmvg2oyrt00175qrkini7rag4",
+    "draftId": "cmvg2oyru00195qrkujlk5cjw",
+    "status": "DRAFT",
+    "visibility": "PRIVATE",
+    "versions": 0,
+    "sessions": 0
+  },
+  "cancellationCreatedNothing": true,
+  "ordinaryAccountReturn": true,
+  "exactReleasedBytesUnchanged": true,
+  "coverUploadCovered": false,
+  "privatePackageWorkflowCovered": false,
+  "publishingReadinessProved": false,
+  "protectedAcceptance": false
+}

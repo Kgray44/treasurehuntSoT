@@ -122,7 +122,7 @@ export interface SextantProvider {
     signal: AbortSignal;
     updateClass: UpdateClass;
     emit: (sample: ProviderSample) => void;
-    fail: () => void;
+    fail: (interruption?: "EXPIRED" | "BACKGROUND" | "POWER" | "PERMISSION") => void;
   }): Promise<void>;
   setUpdateClass(updateClass: UpdateClass): void;
   stop(): Promise<void>;

@@ -1,0 +1,12 @@
+[
+  {
+    "restarted": false,
+    "leaseRestored": false,
+    "publicShellControlled": true
+  },
+  {
+    "restarted": true,
+    "leaseRestored": true,
+    "publicShellControlled": true
+  }
+]

@@ -497,6 +497,14 @@ export function InvitationCeremony({ onRouteHandoff, onRouteRecovery }: Invitati
         }
         const result = { ok: true as const, playthroughId: body.playthroughId };
         if (action === "accept" && result.playthroughId) {
+          // Only the committed accept response establishes this destination and
+          // its identity cookie. Overlap optional route preparation with the
+          // unchanged ceremony and readable accepted pause.
+          try {
+            router.prefetch(`/player/playthroughs/${result.playthroughId}`);
+          } catch {
+            // Optional preparation cannot change the authoritative handoff.
+          }
           // A valid canonical membership must not leave a Player stranded if an
           // optional presentation runtime never settles. The normal ceremony
           // completes first; this is a bounded, single-fire recovery handoff.

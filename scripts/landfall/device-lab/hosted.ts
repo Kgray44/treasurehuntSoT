@@ -22,12 +22,27 @@ export async function dispatchLandfallHostedLab(
       "all",
       "provider",
       "browser",
+      "sextant-consumers",
+      "sextant-resources",
+      "sextant-paired-clue",
+      "sextant-community",
+      "sextant-authoring-resources",
+      "sextant-history",
+      "sextant-catalog",
+      "sextant-creator-entry",
+      "sextant-admiralty",
+      "sextant-private-content",
+      "sextant-account-recovery",
+      "sextant-invitation",
+      "sextant-landfall",
+      "sextant-entry",
       "android",
       "android-radio",
       "android-journal",
       "android-background",
       "ios",
       "ios-presentation",
+      "ios-devices",
     ].includes(target)
   )
     throw new Error("LANDFALL_HOSTED_TARGET_INVALID");
@@ -46,10 +61,45 @@ export async function dispatchLandfallHostedLab(
     throw new Error("LANDFALL_HOSTED_BACKGROUND_SCENARIO_INVALID");
   if (
     selectedProfiles !== undefined &&
-    !["android", "android-radio", "android-journal", "android-background", "ios", "ios-presentation"].includes(target)
+    ![
+      "android",
+      "android-radio",
+      "android-journal",
+      "android-background",
+      "ios",
+      "ios-presentation",
+      "ios-devices",
+    ].includes(target)
   )
     throw new Error("LANDFALL_HOSTED_PROFILE_TARGET_REQUIRED");
   const typedTier = tier as "development" | "candidate" | "closure";
+  if (
+    [
+      "sextant-consumers",
+      "sextant-resources",
+      "sextant-paired-clue",
+      "sextant-community",
+      "sextant-authoring-resources",
+      "sextant-history",
+      "sextant-catalog",
+      "sextant-creator-entry",
+      "sextant-admiralty",
+      "sextant-private-content",
+      "sextant-account-recovery",
+      "sextant-invitation",
+      "sextant-landfall",
+      "sextant-entry",
+    ].includes(target) &&
+    (tier !== "development" || selectedScenarios !== undefined || selectedProfiles !== undefined)
+  )
+    throw new Error("LANDFALL_HOSTED_SEXTANT_CONSUMERS_SCOPE_INVALID");
+  if (
+    target === "ios-devices" &&
+    (tier !== "development" ||
+      selectedScenarios !== undefined ||
+      (selectedProfiles !== undefined && selectedProfiles !== "primary-phone"))
+  )
+    throw new Error("LANDFALL_HOSTED_APPLE_DEVICES_SCOPE_INVALID");
   const selectedAndroid = hostedDeviceLabProfiles(
     "android",
     typedTier,
@@ -67,7 +117,11 @@ export async function dispatchLandfallHostedLab(
   const selectedApple = hostedDeviceLabProfiles(
     "ios",
     typedTier,
-    target === "ios-presentation" ? "primary-phone" : target === "ios" ? selectedProfiles : undefined,
+    ["ios-presentation", "ios-devices"].includes(target)
+      ? "primary-phone"
+      : target === "ios"
+        ? selectedProfiles
+        : undefined,
   );
   const androidProfiles = selectedAndroid.map(androidDeviceLabProvisioning);
   const appleProfiles = selectedApple;
@@ -83,8 +137,84 @@ export async function dispatchLandfallHostedLab(
     .replaceAll("__CANDIDATE_SHA12__", candidate.slice(0, 12))
     .replaceAll("__CANDIDATE_SHA__", candidate)
     .replaceAll("__RUN_PROVIDERS__", String(target === "all" || target === "provider"))
-    .replaceAll("__RUN_BROWSER__", String(target === "all" || target === "browser"))
+    .replaceAll(
+      "__RUN_BROWSER__",
+      String(
+        [
+          "all",
+          "browser",
+          "sextant-consumers",
+          "sextant-resources",
+          "sextant-paired-clue",
+          "sextant-community",
+          "sextant-authoring-resources",
+          "sextant-history",
+          "sextant-catalog",
+          "sextant-creator-entry",
+          "sextant-admiralty",
+          "sextant-private-content",
+          "sextant-account-recovery",
+          "sextant-invitation",
+          "sextant-landfall",
+          "sextant-entry",
+        ].includes(target),
+      ),
+    )
+    .replaceAll(
+      "__BROWSER_JOB_NAME__",
+      target === "sextant-consumers"
+        ? "Sextant ordinary consumer journeys (development)"
+        : target === "sextant-resources"
+          ? "Sextant Captain and Creator resources (development)"
+          : target === "sextant-paired-clue"
+            ? "Sextant distinct Creator and Crew clue comparison (development)"
+            : target === "sextant-community"
+              ? "Sextant ordinary public Community journeys (development)"
+              : target === "sextant-authoring-resources"
+                ? "Sextant owned Creator authoring resources (development)"
+                : target === "sextant-history"
+                  ? "Sextant completed historical Passport journeys (development)"
+                  : target === "sextant-catalog"
+                    ? "Sextant public catalog, editions and compatibility preparation (development)"
+                    : target === "sextant-creator-entry"
+                      ? "Sextant ordinary Creator new Chronicle entry (development)"
+                      : target === "sextant-admiralty"
+                        ? "Sextant ordinary Admiralty dossier and ungranted support (development)"
+                        : target === "sextant-private-content"
+                          ? "Sextant synthetic private package import and verified export (development)"
+                          : target === "sextant-account-recovery"
+                            ? "Sextant synthetic account verification, recovery and reversible lifecycle (development)"
+                            : target === "sextant-invitation"
+                              ? "Sextant issued invitations and synthetic guest claim/merge (development)"
+                              : target === "sextant-landfall"
+                                ? "Sextant populated physical and virtual Landfall consumers (development)"
+                                : target === "sextant-entry"
+                                  ? "Sextant existing Display and unprepared pilot entry (development)"
+                                  : "optimized first-party Phase 4",
+    )
+    .replaceAll(
+      "__BROWSER_SUITE__",
+      [
+        "sextant-consumers",
+        "sextant-resources",
+        "sextant-paired-clue",
+        "sextant-community",
+        "sextant-authoring-resources",
+        "sextant-history",
+        "sextant-catalog",
+        "sextant-creator-entry",
+        "sextant-admiralty",
+        "sextant-private-content",
+        "sextant-account-recovery",
+        "sextant-invitation",
+        "sextant-landfall",
+        "sextant-entry",
+      ].includes(target)
+        ? target
+        : "landfall",
+    )
     .replaceAll("__RUN_APPLE__", String(target === "all" || target === "ios"))
+    .replaceAll("__RUN_APPLE_DEVICES__", String(target === "ios-devices"))
     .replaceAll(
       "__RUN_APPLE_PRESENTATION__",
       String(
@@ -119,7 +249,39 @@ export async function dispatchLandfallHostedLab(
     .replaceAll("__ANDROID_PROFILES__", JSON.stringify(androidProfiles))
     .replaceAll("__APPLE_PROFILES__", JSON.stringify(appleProfiles));
   const scenarios = {
-    browser: target === "browser" || target === "all" ? ["first-party-phase4-web"] : [],
+    appleDevices: target === "ios-devices" ? ["sextant-native-apple-devices"] : [],
+    browser:
+      target === "sextant-consumers"
+        ? ["sextant-consumer-journeys"]
+        : target === "sextant-resources"
+          ? ["sextant-resource-journeys"]
+          : target === "sextant-paired-clue"
+            ? ["sextant-parallax-paired-journeys"]
+            : target === "sextant-community"
+              ? ["sextant-community-journeys"]
+              : target === "sextant-authoring-resources"
+                ? ["sextant-authoring-resource-journeys"]
+                : target === "sextant-history"
+                  ? ["sextant-history-journeys"]
+                  : target === "sextant-catalog"
+                    ? ["sextant-catalog-journeys"]
+                    : target === "sextant-creator-entry"
+                      ? ["sextant-creator-entry-journeys"]
+                      : target === "sextant-admiralty"
+                        ? ["sextant-admiralty-journeys"]
+                        : target === "sextant-private-content"
+                          ? ["sextant-private-content-journeys"]
+                          : target === "sextant-account-recovery"
+                            ? ["sextant-account-recovery-journeys"]
+                            : target === "sextant-invitation"
+                              ? ["sextant-invitation-journeys"]
+                              : target === "sextant-landfall"
+                                ? ["sextant-landfall-journeys"]
+                                : target === "sextant-entry"
+                                  ? ["sextant-entry-journeys"]
+                                  : target === "browser" || target === "all"
+                                    ? ["first-party-phase4-web"]
+                                    : [],
     journal: target === "android-journal" || target === "all" ? ["first-party-native-journal-pair"] : [],
     background:
       target === "android-background" || target === "all"

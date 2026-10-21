@@ -292,7 +292,10 @@ test("physical Creator walk uses native fixes and saves only a source-bound sani
   const page = await context.newPage();
   await page.goto(`/studio/tales/${tale.id}/landfall`);
   await expect(page.getByRole("region", { name: "Landfall authoring workspace" })).toBeVisible({ timeout: 45_000 });
-  await page.getByRole("complementary").getByRole("button", { name: "Town arrival", exact: true }).click();
+  await page
+    .getByRole("region", { name: "Chart object inspector", exact: true })
+    .getByRole("button", { name: "Inspect waypoint Town arrival", exact: true })
+    .click();
   const panel = page.getByRole("region", { name: "Creator field test" });
   expect((await geoAudit(page)).calls).toBe(0);
   await panel.getByRole("button", { name: "Start test walk" }).click();
@@ -314,17 +317,23 @@ test("physical Creator walk uses native fixes and saves only a source-bound sani
   await page.getByRole("combobox", { name: "Worldspace", exact: true }).selectOption("isles");
   await expect.poll(async () => (await geoAudit(page)).active.length).toBe(0);
   await page.getByRole("combobox", { name: "Worldspace", exact: true }).selectOption("town");
-  await page.getByRole("complementary").getByRole("button", { name: "Town arrival", exact: true }).click();
+  await page
+    .getByRole("region", { name: "Chart object inspector", exact: true })
+    .getByRole("button", { name: "Inspect waypoint Town arrival", exact: true })
+    .click();
   await context.setOffline(true);
   await panel.getByRole("button", { name: "Save walk receipt" }).click();
   await expect(panel).toContainText("No receipt was saved");
   expect(await db.landfallFieldTestReceipt.count({ where: { draftId: draft.id } })).toBe(1);
   await context.setOffline(false);
   await page
-    .getByRole("complementary")
+    .getByRole("region", { name: "Chart object inspector", exact: true })
     .getByRole("textbox", { name: "Name", exact: true })
     .fill("Edited synthetic arrival");
-  await page.getByRole("complementary").getByRole("textbox", { name: "Name", exact: true }).press("Tab");
+  await page
+    .getByRole("region", { name: "Chart object inspector", exact: true })
+    .getByRole("textbox", { name: "Name", exact: true })
+    .press("Tab");
   await expect(panel.getByRole("button", { name: "Start test walk" })).toBeDisabled();
   await expect
     .poll(async () => (await db.taleDraft.findUniqueOrThrow({ where: { id: draft.id } })).autosaveVersion)
@@ -349,7 +358,10 @@ test("physical Creator walk uses native fixes and saves only a source-bound sani
   await page.goto("/studio/library");
   await expect.poll(async () => (await geoAudit(page)).active.length).toBe(0);
   await page.goto(`/studio/tales/${tale.id}/landfall`);
-  await page.getByRole("complementary").getByRole("button", { name: "Edited synthetic arrival", exact: true }).click();
+  await page
+    .getByRole("region", { name: "Chart object inspector", exact: true })
+    .getByRole("button", { name: "Inspect waypoint Edited synthetic arrival", exact: true })
+    .click();
   const cdp = await context.newCDPSession(page);
   const target = await cdp.send("Target.getTargetInfo");
   await cdp.send("Browser.setPermission", {

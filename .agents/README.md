@@ -49,6 +49,10 @@ not authorize restarting a completed phase.
 - [Parallax A1 owned task contract](parallax-a1-task-contract.md)
 - [Parallax A1 agreed Studio interface](parallax-a1-studio-interface.md)
 - [Sextant Phase 3 owned implementation context](sextant-phase3.md)
+- [Sextant Phase 4 owned implementation context](sextant-phase4.md)
+- [Sextant Phase 4 bounded acceptance follow-up R1](sextant-phase4-acceptance-followup-r1.md)
+- [Sextant Phase 4 virtual completion continuation](sextant-phase4-virtual-completion-20261019.md)
+
 - [Parallax Phase 3 owned implementation and workstation correction context](parallax-phase3.md)
 
 - [Spatial baseline review and Crossdeck realtime context](spatial-review-crossdeck-realtime.md)

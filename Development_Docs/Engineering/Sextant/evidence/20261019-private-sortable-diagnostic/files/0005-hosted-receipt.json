@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "candidateSha": "fb8961fa94348a7e8c6f9ac3ca5ce9ede087dd74",
+  "transportSha": "f6c6fb936d7a8ab8cd0c34e83661c36d926c5032",
+  "runId": "39361561155",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39361561155",
+  "conclusion": "failure",
+  "artifacts": [
+    {
+      "path": "artifacts/landfall-browser-encrypted-failures-fb8961fa94348a7e8c6f9ac3ca5ce9ede087dd74/failure.encrypted",
+      "sha256": "05863a294715bb5eba969d8ba7a75ddcb2469dafbdb47d2f692f812a5e422b0d"
+    },
+    {
+      "path": "artifacts/landfall-browser-encrypted-failures-fb8961fa94348a7e8c6f9ac3ca5ce9ede087dd74/retention.json",
+      "sha256": "31a68bd754869646d5264a6fe5e268cfd05b246724994dba9b0af91e0e8884f7"
+    },
+    {
+      "path": "artifacts/landfall-browser-fb8961fa94348a7e8c6f9ac3ca5ce9ede087dd74/browser-diagnostics/9b40d5b9-61e2-403b-a124-99765e6d5279/3ffc7bde-5bee-4531-b6be-7c592edef8a8/browser-runtime.json",
+      "sha256": "dbf3466d24988729a35097141e5baea5e37878aec3548e0842ef68af521f0262"
+    },
+    {
+      "path": "artifacts/landfall-browser-fb8961fa94348a7e8c6f9ac3ca5ce9ede087dd74/browser-diagnostics/9b40d5b9-61e2-403b-a124-99765e6d5279/3ffc7bde-5bee-4531-b6be-7c592edef8a8/browser-suite-profile.json",
+      "sha256": "3ea1e773a0137c83a39e649334a564f5b062f7875348fbf9ab7e39576ceaa75c"
+    },
+    {
+      "path": "artifacts/landfall-browser-fb8961fa94348a7e8c6f9ac3ca5ce9ede087dd74/private-content-storage/9e9ca0dc-7382-4900-97b1-50d0d5ac09f0.json",
+      "sha256": "d8aa1dc02eb52468e9df3b8510c83bfccbf0e3b956380d74505e6d856ff144d3"
+    }
+  ],
+  "artifactState": "AVAILABLE",
+  "cleanup": {
+    "result": "PASS",
+    "ownedResources": [
+      "refs/heads/codex/landfall-lab-fb8961fa9434-1792464941237"
+    ],
+    "remainingResources": []
+  }
+}

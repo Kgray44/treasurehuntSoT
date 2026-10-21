@@ -3,7 +3,7 @@ title: Creator guide
 audience: creator
 status: current
 canonical_for: creator-guide
-last_reviewed: 2026-10-03
+last_reviewed: 2026-10-20
 ---
 
 # Creator guide
@@ -41,3 +41,7 @@ Open **Versions**, then choose **Review and publish**. Save your draft, review t
 If publication cannot continue, your draft stays available for review and repair. Use only material you are authorized to handle, especially when importing or sharing private content.
 
 Related: [Captain guide](captain-guide.md) and [accessibility](accessibility.md).
+
+In the Sextant candidate, the enabled **Confirm private import** action keeps its brass background and readable ink while hovered. This visual correction still requires candidate experience qualification.
+
+The Sextant candidate names the Living Chart inspector **Chart object inspector**. Its waypoint controls announce **Inspect waypoint** before the place name, distinguishing them from the same place on the map. This accessibility correction remains under candidate qualification.

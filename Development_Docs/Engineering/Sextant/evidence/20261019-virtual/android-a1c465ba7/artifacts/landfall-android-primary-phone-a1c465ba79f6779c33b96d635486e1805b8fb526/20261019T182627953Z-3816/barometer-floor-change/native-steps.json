@@ -1,0 +1,57 @@
+{
+  "steps": [
+    {
+      "index": 0,
+      "action": "SENSOR",
+      "state": "PASS",
+      "translation": {
+        "method": "OS_SENSOR_CONTROL",
+        "limitation": "Controlled virtual sensor vectors traverse SensorManager, the native bridge and production context adapter. Physical drift and environmental fidelity remain external."
+      }
+    },
+    {
+      "index": 1,
+      "action": "SENSOR",
+      "state": "PASS",
+      "translation": {
+        "method": "OS_SENSOR_CONTROL",
+        "limitation": "Controlled virtual sensor vectors traverse SensorManager, the native bridge and production context adapter. Physical drift and environmental fidelity remain external."
+      }
+    },
+    {
+      "index": 2,
+      "action": "ASSERT",
+      "state": "PASS",
+      "translation": {
+        "method": "SHARED_WEB_CONTRACT"
+      }
+    },
+    {
+      "index": 3,
+      "action": "ASSERT",
+      "state": "PASS",
+      "translation": {
+        "method": "SHARED_WEB_CONTRACT"
+      }
+    },
+    {
+      "index": 4,
+      "action": "ASSERT",
+      "state": "PASS",
+      "translation": {
+        "method": "REAL_CANONICAL_AUTHORITY"
+      }
+    }
+  ],
+  "cleanup": {
+    "result": "PASS",
+    "ownedResources": [
+      "loopback-native-lab-server",
+      "native-app-process",
+      "native-app-private-data",
+      "owned-adb-reverse",
+      "android-sensor-pressure"
+    ],
+    "remainingResources": []
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "version": 1,
+  "scenarioId": "stationary",
+  "scenarioVersion": 2,
+  "seed": 1729,
+  "sourceSha": "a1c465ba79f6779c33b96d635486e1805b8fb526",
+  "sourceTree": "48faa16123f7f39f2bdb2200e42c30caea360973",
+  "sourceFingerprint": "8978074623377fe183abb1bf7b396656b713e7e12e46e5e985d9aeef7ef274fb",
+  "dirty": false,
+  "target": "android-emulator",
+  "hostPlatform": "linux",
+  "environment": "native-platform-and-origin-bound-webview",
+  "deviceProfile": "primary-phone",
+  "deviceConfiguration": {
+    "platform": "ANDROID",
+    "virtual": true,
+    "api": 36,
+    "model": "sdk_gphone64_x86_64",
+    "memoryKiB": 3048396,
+    "widthPixels": 1080,
+    "heightPixels": 2400,
+    "densityDpi": 420
+  },
+  "osVersion": "16",
+  "runtimeVersion": "Android API 36; null",
+  "providerVersions": {
+    "MOTION": "landfall-contract-v1"
+  },
+  "publishedFixture": "landfall-device-lab-v1",
+  "fixtureHash": "54cc5a5adaf3d8ca5e715706a0a833be0be00df5872de62e0d461a6147db18a7",
+  "timing": "WALL_CLOCK",
+  "toleranceMs": 2000,
+  "startedAt": "2026-10-19T18:26:47.166Z",
+  "endedAt": "2026-10-19T18:27:02.675Z",
+  "evidenceClass": "EMULATOR_PROVEN",
+  "result": "PASS",
+  "steps": [
+    {
+      "index": 0,
+      "action": "SENSOR",
+      "state": "PASS",
+      "translation": {
+        "method": "OS_SENSOR_CONTROL",
+        "limitation": "Controlled virtual sensor vectors traverse SensorManager, the native bridge and production context adapter. Physical drift and environmental fidelity remain external."
+      }
+    },
+    {
+      "index": 1,
+      "action": "ASSERT",
+      "state": "PASS",
+      "translation": {
+        "method": "SHARED_WEB_CONTRACT"
+      }
+    },
+    {
+      "index": 2,
+      "action": "ASSERT",
+      "state": "PASS",
+      "translation": {
+        "method": "SHARED_WEB_CONTRACT"
+      }
+    },
+    {
+      "index": 3,
+      "action": "ASSERT",
+      "state": "PASS",
+      "translation": {
+        "method": "REAL_CANONICAL_AUTHORITY"
+      }
+    }
+  ],
+  "canonicalProgressionEvents": 0,
+  "canonicalAuthority": "ONE_VOYAGE_REAL_SQLITE",
+  "authorityFixtureHash": "ed951b7086333d2ea7f685e316df0963adf3c62d7ebba845bb8e65d21a8d4223",
+  "artifacts": [
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182627953Z-3816/stationary/native-final.png",
+      "sha256": "6c8ff166d84a7b6f2226b2436732c7176b5ba6b1e95c46335420dbe7faf1b2cc",
+      "kind": "SCREENSHOT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182627953Z-3816/stationary/native-action-performance.json",
+      "sha256": "05dbe96e9e081f276503f1e2b36433b0524cfe06adec165f2c66ce4e79e350ad",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182627953Z-3816/stationary/native-guest-reboots.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182627953Z-3816/stationary/native-client-readiness.json",
+      "sha256": "19aa80e867b2a50aa7f3cc4e4d5e9f6e3d03a60d84f4e591f5fc8f393abdfc07",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182627953Z-3816/stationary/native-apple-input-diagnostics.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182627953Z-3816/stationary/native-location-controls.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182627953Z-3816/stationary/native-location-diagnostics.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182627953Z-3816/stationary/native-startups.json",
+      "sha256": "7d318df060efbd0f1a890deffff8d1a8494394efe3b5dc6c0fa3e838054286c4",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182627953Z-3816/stationary/authority/receipt.json",
+      "sha256": "4d85b990fe83158a8a3798cb4163b2ef6f03aded363359ce0511e94b12b30904",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182627953Z-3816/stationary/authority-command-diagnostics.json",
+      "sha256": "4b95902b2b2a38a0dd4a0cb5b9c3c30d72166e19b11716fd06e2d3439b049800",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T182627953Z-3816/stationary/native-steps.json",
+      "sha256": "c667efc60ba2ea601964f99409cc4504797cc57447ce9b5be9bc4ea59b23da62",
+      "kind": "TEST_RESULT"
+    }
+  ],
+  "externalRequirements": [
+    "REAL_DEVICE_REQUIRED:SENSOR_DRIFT"
+  ],
+  "cleanup": {
+    "result": "PASS",
+    "ownedResources": [
+      "loopback-native-lab-server",
+      "native-app-process",
+      "native-app-private-data",
+      "owned-adb-reverse",
+      "android-sensor-acceleration"
+    ],
+    "remainingResources": []
+  }
+}

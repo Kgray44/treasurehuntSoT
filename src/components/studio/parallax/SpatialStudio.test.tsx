@@ -223,8 +223,8 @@ it("keeps layout switches and panel preferences out of canonical edits and retai
   fireEvent.click(screen.getByRole("tab", { name: "Library" }));
   expect(screen.getByLabelText("Search spatial assets")).toHaveValue("Letter");
   fireEvent.change(screen.getByLabelText("Workspace layout"), { target: { value: "FOCUS" } });
-  expect(screen.queryByRole("complementary", { name: "Spatial Library" })).toBeNull();
-  expect(screen.queryByRole("complementary", { name: "Spatial inspector" })).toBeNull();
+  expect(screen.queryByRole("region", { name: "Spatial Library" })).toBeNull();
+  expect(screen.queryByRole("region", { name: "Spatial inspector" })).toBeNull();
   fireEvent.change(screen.getByLabelText("Workspace layout"), { target: { value: "BEHAVIOR" } });
   expect(screen.getByRole("tabpanel", { name: "Timeline" })).toBeVisible();
   fireEvent.click(screen.getByRole("button", { name: "Reset Workspace Layout" }));

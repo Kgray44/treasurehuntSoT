@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "measurementClass": "OS_SCENARIO_ACTION_WALL_CLOCK",
+  "physicalTimingProven": false,
+  "measurements": [
+    {
+      "index": 0,
+      "action": "LOCATION",
+      "elapsedMs": 1640.8179999999702,
+      "preliminaryBudgetMs": 150000,
+      "state": "PASS"
+    },
+    {
+      "index": 1,
+      "action": "NATIVE_GEOFENCE",
+      "elapsedMs": 204.37075000000186,
+      "preliminaryBudgetMs": 390000,
+      "state": "PASS"
+    },
+    {
+      "index": 2,
+      "action": "LIFECYCLE",
+      "elapsedMs": 1651.3821660000249,
+      "preliminaryBudgetMs": 120000,
+      "state": "PASS"
+    },
+    {
+      "index": 3,
+      "action": "NATIVE_GEOFENCE",
+      "elapsedMs": 361769.33479100006,
+      "preliminaryBudgetMs": 390000,
+      "state": "PASS"
+    },
+    {
+      "index": 4,
+      "action": "LIFECYCLE",
+      "elapsedMs": 1927.278292000061,
+      "preliminaryBudgetMs": 120000,
+      "state": "PASS"
+    },
+    {
+      "index": 5,
+      "action": "ASSERT",
+      "elapsedMs": 104.39970800001174,
+      "preliminaryBudgetMs": 120000,
+      "state": "PASS"
+    },
+    {
+      "index": 6,
+      "action": "ASSERT",
+      "elapsedMs": 0.02420799992978573,
+      "preliminaryBudgetMs": 120000,
+      "state": "PASS"
+    },
+    {
+      "index": 7,
+      "action": "ASSERT",
+      "elapsedMs": 80.9352090000175,
+      "preliminaryBudgetMs": 120000,
+      "state": "PASS"
+    },
+    {
+      "index": 8,
+      "action": "NATIVE_GEOFENCE",
+      "elapsedMs": 207.13329199992586,
+      "preliminaryBudgetMs": 390000,
+      "state": "PASS"
+    },
+    {
+      "index": 9,
+      "action": "ASSERT",
+      "elapsedMs": 109.16479100007564,
+      "preliminaryBudgetMs": 120000,
+      "state": "PASS"
+    }
+  ]
+}

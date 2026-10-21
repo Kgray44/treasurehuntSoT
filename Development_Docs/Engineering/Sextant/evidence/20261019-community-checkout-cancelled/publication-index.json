@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "classification": "ENGINEERING_EVIDENCE_ORIGINAL_BYTES_NOT_ACCEPTANCE",
+  "sourceSha": "7b785a39e3c2e059ec46c2035e28af6a8b1fbdb0",
+  "runId": "39345446486",
+  "originalArtifacts": 0,
+  "publishedOriginalArtifacts": 0,
+  "retainedPrivate": [],
+  "reviewFinding": "TWENTY_MINUTE_CHECKOUT_ALL_REF_FETCH_CANCELLED_ZERO_ARTIFACTS_NO_PRODUCT_RUNTIME_OR_CLEANUP_RECEIPT",
+  "files": [
+    {
+      "path": "files/0001-hosted-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-7b785a39e3c2-1792454672439/run-39345446486/hosted-receipt.json",
+      "bytes": 498,
+      "sha256": "9b40742419ee1bc73f126249b4d6d50666fb2cf0d9272946c6acf8190cfaab11"
+    },
+    {
+      "path": "files/0002-dispatch.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-7b785a39e3c2-1792454672439/dispatch.json",
+      "bytes": 2033,
+      "sha256": "dd57967c3d98d5f9d64b6dedf9140368fa90aee26c60aaf4bb0962ca8cb6b460"
+    },
+    {
+      "path": "files/0003-community-39345446486.log",
+      "sourcePath": "artifacts/sextant-phase4/community-39345446486.log",
+      "bytes": 22755,
+      "sha256": "f3245f127fa75a88683a1ff68a33cbeec61236d7a6e4df4039d4cedc21d23b6c"
+    }
+  ]
+}

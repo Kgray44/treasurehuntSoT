@@ -152,7 +152,7 @@ export function AccountOverview() {
         </div>
       </section>
       {profile.setupPrompt ? (
-        <aside className="harbor-setup-prompt">
+        <section className="harbor-setup-prompt" aria-label={profile.setupPrompt.title}>
           <div>
             <strong>{profile.setupPrompt.title}</strong>
             <p>{profile.setupPrompt.detail}</p>
@@ -160,7 +160,7 @@ export function AccountOverview() {
           <Link className="button button--quiet" href={profile.setupPrompt.href}>
             Set handle
           </Link>
-        </aside>
+        </section>
       ) : null}
       <section className="harbor-passport-gateway" aria-labelledby="harbor-passport-gateway-title">
         <div>
@@ -750,6 +750,7 @@ type PersonalInfoDto = {
   emailVerificationState: string;
   emailVerifiedAt: string | null;
   accountStatus: string;
+  guestRecoveryAvailable: boolean;
   createdAt: string;
   revision: string;
   emailChange: { status: string; reason: string };
@@ -826,6 +827,23 @@ export function PersonalInformation() {
   const value = info.state.value;
   return (
     <div className="harbor-stack">
+      {value.guestRecoveryAvailable && (
+        <section className="harbor-panel" aria-labelledby="guest-account-recovery-title">
+          <h2 id="guest-account-recovery-title">Keep your guest Voyage</h2>
+          <p>
+            Create sign-in details for this guest account, or move its Voyages to an existing account. Your saved Voyage
+            progress is preserved.
+          </p>
+          <div className="personal-harbor__actions">
+            <Link className="button button--primary" href="/account/claim">
+              Claim this guest Voyage
+            </Link>
+            <Link className="button" href="/account/merge">
+              Use an existing account
+            </Link>
+          </div>
+        </section>
+      )}
       <form className="harbor-panel harbor-form" onSubmit={save}>
         <h2>Personal information</h2>
         <label>

@@ -1,0 +1,314 @@
+{
+  "version": 1,
+  "candidateSha": "bcf82bdce20a02790ecdb5df965bd630b7834ff3",
+  "transportSha": "0cd1eaced2fd36803d32e3896573060268a8c94a",
+  "runId": "39364691371",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39364691371",
+  "conclusion": "success",
+  "artifacts": [
+    {
+      "path": "artifacts/landfall-browser-bcf82bdce20a02790ecdb5df965bd630b7834ff3/browser-diagnostics/449804a4-a3e7-4411-8421-2fb418abf6dd/6b888198-2f7d-4d35-a289-ea293934fa19/browser-runtime.json",
+      "sha256": "4ab5e219c43a91c3d44819d35f3e818d1fdfa0e1143e1e24965b3a5a82e98392"
+    },
+    {
+      "path": "artifacts/landfall-browser-bcf82bdce20a02790ecdb5df965bd630b7834ff3/browser-diagnostics/449804a4-a3e7-4411-8421-2fb418abf6dd/6b888198-2f7d-4d35-a289-ea293934fa19/browser-suite-profile.json",
+      "sha256": "13ade3914443cacc447d9bbb0a35e27c78961392cbf5fa53d0311209b6e81552"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0a824-nd-ungranted-support-return-chromium/admiralty-account-return.png",
+      "sha256": "26e756cd9c3601eb7623ea0a9a75f6e9afcc877532abb5a1f837271a1f07c107"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0a824-nd-ungranted-support-return-chromium/admiralty-dossier.png",
+      "sha256": "686d916424a74649e906365919e5f2562a59eaa1d8d6bb02dfd1f42d98068077"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0a824-nd-ungranted-support-return-chromium/admiralty-empty-people.png",
+      "sha256": "710b6a8e2d5848d0ca473f35eae3b5ece34efbf517dd12b9cefbb5f57763f9e8"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0a824-nd-ungranted-support-return-chromium/admiralty-journey-receipt.json",
+      "sha256": "ba2689b94443835980c111a935cbc682b4ab30260b8a02be6b8228b99e50a62a"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0a824-nd-ungranted-support-return-chromium/admiralty-known-clue.png",
+      "sha256": "f0ccd4d60fbc4d280ef2acadc1e9c67903aa088a2926e1552449034c1e43cc4b"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0a824-nd-ungranted-support-return-chromium/admiralty-overview.png",
+      "sha256": "ecf71190439912c65ea70bb3f1407b175dbaa7abea9e391c4c31177f77681c5a"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0a824-nd-ungranted-support-return-chromium/admiralty-target-search.png",
+      "sha256": "8b8cb06c68adde7ee8b47ceb349a96e325effe181c2cdb9ce52f147ee1541aa7"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0a824-nd-ungranted-support-return-chromium/admiralty-ungranted-support.png",
+      "sha256": "988b7eb8a0bad3ac563d8a793578b6209ae88e02fe6796569a1ec693432f954f"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0a824-nd-ungranted-support-return-chromium/admiralty-ungranted-tideglass.png",
+      "sha256": "b3c952993a0e7058a286ba883e924e0f73fdfa4897e4002e344d243d10004d5a"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0a824-nd-ungranted-support-return-chromium/video-1.webm",
+      "sha256": "9a51ca47ee88e7008629510e9230bf5c6f17ef9219bed8e14b883069411f622e"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0a824-nd-ungranted-support-return-chromium/video-2.webm",
+      "sha256": "b61c2c629ba1dbf294d607f5e9e75c3dd26e1aebe6ac9f4b1124c504b2466566"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0a824-nd-ungranted-support-return-chromium/video-3.webm",
+      "sha256": "9c1e41879ef6cf741f762a3e5ae26ddcd5acaa5c85d53b6aecb94ca02849da15"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0a824-nd-ungranted-support-return-chromium/video-4.webm",
+      "sha256": "7b750d84816f8932f783f1207a0bd9c0fa0260f8edfc0e2818f21869025f2f0c"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0a824-nd-ungranted-support-return-chromium/video-5.webm",
+      "sha256": "dd9fbdc5df68a8cfae9462820da76144042ac615af5176ee31703afddba87394"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0a824-nd-ungranted-support-return-chromium/video-6.webm",
+      "sha256": "cf307c19af0c29e093880b7c5fb9c1e269932a5c09066bd2f1299dad765479bc"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0a824-nd-ungranted-support-return-chromium/video-7.webm",
+      "sha256": "6a58f780bd0cd10576348be73b8e4ad67770374d945e63f5362695a4c050dee3"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0a824-nd-ungranted-support-return-chromium/video-8.webm",
+      "sha256": "4ddf58aedf095f6dc4441bb3c93d5134cba42765d37948a47c64aad352bc27f0"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0a824-nd-ungranted-support-return-chromium/video.webm",
+      "sha256": "9c947ea9c3fcc772c45badb120437474e149fdb79e08b4a0ce180fe4fc0172be"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0f2ed-nd-ungranted-support-return-chromium/admiralty-account-return.png",
+      "sha256": "d0e0a3a485ae16f6316cc2d65826a51bf03a0014c1500e1bbe7badc3fcfff42d"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0f2ed-nd-ungranted-support-return-chromium/admiralty-dossier.png",
+      "sha256": "eed4edfc59fd496954d29091dc0975d965c5fc750e0f8daa7a470dc7a99f4b80"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0f2ed-nd-ungranted-support-return-chromium/admiralty-empty-people.png",
+      "sha256": "520ebd68ab849063af3f175725067762da77cadbc93ae00fe851a15fa7bfd85c"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0f2ed-nd-ungranted-support-return-chromium/admiralty-journey-receipt.json",
+      "sha256": "1b2a4532ef82339107243ed7f2b7a4c784d5e60f5f3c50e1f6eb8e4da9fbeb35"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0f2ed-nd-ungranted-support-return-chromium/admiralty-known-clue.png",
+      "sha256": "3cf8ead0afc9594773ab72be01a567010b5727b37824e01719bc72d968a294c6"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0f2ed-nd-ungranted-support-return-chromium/admiralty-overview.png",
+      "sha256": "abc95d07dc33d98f6316c8e7ec885ead77bf93ab9144a2362859eed7eee792af"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0f2ed-nd-ungranted-support-return-chromium/admiralty-target-search.png",
+      "sha256": "d8c35c8decef25380eb8d81ce349bfa28f32e1a4a284cff943ddb4d259ced4c1"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0f2ed-nd-ungranted-support-return-chromium/admiralty-ungranted-support.png",
+      "sha256": "f6ce1b3183dbae0b7c1420d2d9f465d5d5561c8ac817fb3cc8ce5f078a1b4c72"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0f2ed-nd-ungranted-support-return-chromium/admiralty-ungranted-tideglass.png",
+      "sha256": "b3c952993a0e7058a286ba883e924e0f73fdfa4897e4002e344d243d10004d5a"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0f2ed-nd-ungranted-support-return-chromium/video-1.webm",
+      "sha256": "1084a81e9793d6cb1d6a78e161abe95219bb00c507c824526cc366846ea76979"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0f2ed-nd-ungranted-support-return-chromium/video-2.webm",
+      "sha256": "5d74427e63897feae0defe61eca908a50c08fa513e393bbe046db415b8092d89"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0f2ed-nd-ungranted-support-return-chromium/video-3.webm",
+      "sha256": "ee1a6f2b619c43fcea85202dcf00388dd59ddb7b19d55d1ea10c201427cea10d"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0f2ed-nd-ungranted-support-return-chromium/video-4.webm",
+      "sha256": "e2a27d3795db761ca3b07e3e7e45b1184f137015a2e1d5769e876dd3108a0011"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0f2ed-nd-ungranted-support-return-chromium/video-5.webm",
+      "sha256": "db4c9d325857098d0a8f91ffa693a9be474a6f6ca2a06592b81a64f50c40a9db"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0f2ed-nd-ungranted-support-return-chromium/video-6.webm",
+      "sha256": "314d54325bb494ae7fb2aaeb412a5deedd277491372f6dc77b6171488977bd68"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0f2ed-nd-ungranted-support-return-chromium/video-7.webm",
+      "sha256": "f9f31a99744bc74780f7185465883f6af8c37e5a79dc341aecbd344a640b490d"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0f2ed-nd-ungranted-support-return-chromium/video-8.webm",
+      "sha256": "942baa65234c59566fc7177e80e13f2fbd3a8a5d033b2f44580e8f8e456b6abd"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-0f2ed-nd-ungranted-support-return-chromium/video.webm",
+      "sha256": "a02fa7c19ab130ae2cfdec7642af43d90a1f9911848115758d4548f158fa53a2"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-ae049-nd-ungranted-support-return-chromium/admiralty-account-return.png",
+      "sha256": "474a1488cd50ddf0b10c11072edc9f59cae8346dc87aada930735d7bcd4b2c37"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-ae049-nd-ungranted-support-return-chromium/admiralty-dossier.png",
+      "sha256": "88a52ea97d63a5fb28516eb93ed2724a58f4d1306ecabda75acdd11658a514e9"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-ae049-nd-ungranted-support-return-chromium/admiralty-empty-people.png",
+      "sha256": "d6c5555443fd8211d4e1a98b3881c29e00625a528bcfc19e0506923ce115a670"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-ae049-nd-ungranted-support-return-chromium/admiralty-journey-receipt.json",
+      "sha256": "25d829adf4d48f4661f773eba5887d136282695064e068bb71ce122f3f33cb08"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-ae049-nd-ungranted-support-return-chromium/admiralty-known-clue.png",
+      "sha256": "040b81e0ad081f282ec35acda5a4c2c69409e619eabf6a85ca5898357954e111"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-ae049-nd-ungranted-support-return-chromium/admiralty-overview.png",
+      "sha256": "2a7729662715de35e72252334d35cbedc4fb44d879f432106cc151f037572aed"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-ae049-nd-ungranted-support-return-chromium/admiralty-target-search.png",
+      "sha256": "990f49eb3814e4bd6e80b348a8aa2f6b1484c73b3f5cc80de35787756e592ba7"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-ae049-nd-ungranted-support-return-chromium/admiralty-ungranted-support.png",
+      "sha256": "fcdc6f3eb0e232d8de2f34b8a4e628a9a1c010ddf14a37f58afba654a378ef30"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-ae049-nd-ungranted-support-return-chromium/admiralty-ungranted-tideglass.png",
+      "sha256": "4e17936af4f5fbe56b92d3e0234b9ab7f33327d99de945d2d5295bb98f6a5c83"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-ae049-nd-ungranted-support-return-chromium/video-1.webm",
+      "sha256": "a8a3a4d7c509458064c97be38417edd3f3bd62e494275838426a63e1a83477a6"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-ae049-nd-ungranted-support-return-chromium/video-2.webm",
+      "sha256": "63014dc941c412ac881018e25332775ea70b739f2b58235f5c02b4775bb6f4b1"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-ae049-nd-ungranted-support-return-chromium/video-3.webm",
+      "sha256": "091123c14daf9c3568655ffe64070b482a5638b5b54cedd61775eff9f40ae79c"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-ae049-nd-ungranted-support-return-chromium/video-4.webm",
+      "sha256": "04cd16b3bd50b5598f0f3137e442c559f272f7618bdffaf0c94b53a3c5bc9386"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-ae049-nd-ungranted-support-return-chromium/video-5.webm",
+      "sha256": "4d3b75e507863fdb1a3edc4f5d65fa3ba5b58c6da3fb68ad4a37306cefb8ab74"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-ae049-nd-ungranted-support-return-chromium/video-6.webm",
+      "sha256": "efcc8d5bd9a5802069cffa7e8afd3af41ec1d6a9f864e472eb1fc1db23e2a12b"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-ae049-nd-ungranted-support-return-chromium/video-7.webm",
+      "sha256": "097b4a87dc4dff950e9d8243f7ccefe23badf74c6509641db9707286267d8c11"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-ae049-nd-ungranted-support-return-chromium/video-8.webm",
+      "sha256": "a8e86c206c4dde52e762aff0befbf794092e2c2ece63af89004eeb5301575cb8"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-ae049-nd-ungranted-support-return-chromium/video.webm",
+      "sha256": "aac7d278f26a3b9420c0bd7dca939e327ab614a511eff7dd458a2320eca7bd54"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-cc979-nd-ungranted-support-return-chromium/admiralty-account-return.png",
+      "sha256": "a480b65dcde0448dbdb14804f11c81bfa052fe1ba0122ec4193e0de024fa99c8"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-cc979-nd-ungranted-support-return-chromium/admiralty-dossier.png",
+      "sha256": "47f0b37bb9c7a32995343c24c9b550ac459285d93c6a3a0bce1117f06a7841c0"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-cc979-nd-ungranted-support-return-chromium/admiralty-empty-people.png",
+      "sha256": "eba0cf9eef906891672bae5463a4cf6bf9228819a3c859c78eac09ae57c07f97"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-cc979-nd-ungranted-support-return-chromium/admiralty-journey-receipt.json",
+      "sha256": "af6a8f16703bc740710293281a0b61bf9bdb1250abdb262d2fdd3e1a61acf91c"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-cc979-nd-ungranted-support-return-chromium/admiralty-known-clue.png",
+      "sha256": "906e2a865e1a3a936dbd490f33600b1d25e80f129720f5a72004a1b025a46b65"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-cc979-nd-ungranted-support-return-chromium/admiralty-overview.png",
+      "sha256": "bc44062900039b327077a1508f64cfe8729cbad70ebf72b4d47074a943216039"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-cc979-nd-ungranted-support-return-chromium/admiralty-target-search.png",
+      "sha256": "064ab66252027a493550ae67f838fb9f2fece54ff22f7632e6939080c072c30b"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-cc979-nd-ungranted-support-return-chromium/admiralty-ungranted-support.png",
+      "sha256": "0687b43f067ee8408e7f9bba1d640463cd5206b5d31404d47cb64aa05c7b4de6"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-cc979-nd-ungranted-support-return-chromium/admiralty-ungranted-tideglass.png",
+      "sha256": "20339cc8a3170354a0cc0948d530e92ed705e4b8f3bbb1a6b22c84398ca9fc51"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-cc979-nd-ungranted-support-return-chromium/video-1.webm",
+      "sha256": "237ae5ffe5a0d9daeebc7d9d28e2a6a473bad2837b23f397e26267522674c3e9"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-cc979-nd-ungranted-support-return-chromium/video-2.webm",
+      "sha256": "57c4ca521a7e97044839927b50034264d62b355b7d6d902d3ad3a5cd631b2648"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-cc979-nd-ungranted-support-return-chromium/video-3.webm",
+      "sha256": "3360cbb82a80a69cd619c8863b5810799edf1e3bc2e7633e595c7e2098cf7075"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-cc979-nd-ungranted-support-return-chromium/video-4.webm",
+      "sha256": "34e9ac8550b483847179284598ea4a86a0e8329c50e380e44f50d87dd9385210"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-cc979-nd-ungranted-support-return-chromium/video-5.webm",
+      "sha256": "a2b87cafc288eddf4ed9c8cad0e39b4fa422526ac73703be27f03a0294f6b2f7"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-cc979-nd-ungranted-support-return-chromium/video-6.webm",
+      "sha256": "49ddf0a13daa63b5e69d37e095a47fcc8b68e9403fe48e9f97c7e5ee7f81f7f2"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-cc979-nd-ungranted-support-return-chromium/video-7.webm",
+      "sha256": "540ef1d9930f44e620035b372f694049823bcbe77fe67eca0472e51dda58a503"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-cc979-nd-ungranted-support-return-chromium/video-8.webm",
+      "sha256": "71e7b3c973a78ef3148404c6374839ab9743ba539c3504be1decd87f839675a5"
+    },
+    {
+      "path": "artifacts/landfall-browser-passing-results-bcf82bdce20a02790ecdb5df965bd630b7834ff3/artifacts/sounding-line/private-browser-failures/a5288393-1656-4280-9889-fd26fb5ac8ca/results/sextant-admiralty-journeys-cc979-nd-ungranted-support-return-chromium/video.webm",
+      "sha256": "9b7c88a6abebcc054b0a8ff271afe8912d78b16765f448f59bf11febbd2e8d0b"
+    }
+  ],
+  "artifactState": "AVAILABLE",
+  "cleanup": {
+    "result": "PASS",
+    "ownedResources": [
+      "refs/heads/codex/landfall-lab-bcf82bdce20a-1792467049142"
+    ],
+    "remainingResources": []
+  }
+}

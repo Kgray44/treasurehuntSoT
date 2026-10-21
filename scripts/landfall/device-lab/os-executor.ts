@@ -7,12 +7,15 @@ import { discoverDeviceLabHost, labBinaryTool, labTool } from "./host";
 import { startDeviceLabAuthority } from "./authority-client";
 import { deliverDeviceLabPosition } from "./location-control";
 import { rebootOwnedAndroidGuest } from "../../../src/landfall/device-lab/android-reboot";
+import { ownedAndroidIdleControl } from "../../../src/landfall/device-lab/android-idle";
 import { setOwnedAppleLabPosition } from "../../../src/landfall/device-lab/apple-location-input";
 import { deviceLabSourceIdentity } from "./source";
 import { inspectOwnedAndroidLocationAccuracy } from "./android-location-settings";
 import { startOwnedAndroidFusedInput } from "./android-fused-input";
 import {
   deviceLabStartupStageSchema,
+  deviceLabAppleLifecycleDeliverySchema,
+  deviceLabAppleLifecycleTraceSchema,
   type DeviceLabStartupStage,
 } from "../../../src/landfall/device-lab/startup-diagnostics";
 import { playerLandfallEvidenceSchema } from "../../../src/landfall/player-evidence-contract";
@@ -455,6 +458,7 @@ export async function executeLandfallOsScenario(
   let ownedDevice: string | null = null;
   let androidSerial: string | null = null;
   let androidPowerMode: string | null = null;
+  let androidIdle: ReturnType<typeof ownedAndroidIdleControl> | undefined;
   let androidLocationBaseline: string | null = null;
   let androidRotationBaseline: { automatic: string; rotation: string } | null = null;
   const androidSensorBaselines = new Map<AndroidControlledSensor, readonly number[]>();
@@ -939,6 +943,28 @@ export async function executeLandfallOsScenario(
             await wait(() => results.has(index), 30000);
             steps.push(results.get(index)!);
           } else steps.push({ index, action: "LIFECYCLE", state: "PASS" });
+          continue;
+        }
+        if (step.action.type === "ANDROID_IDLE") {
+          if (target !== "android-emulator" || !androidSerial || deviceConfiguration?.virtual !== true || foreground) {
+            steps.push({
+              index,
+              action: "ANDROID_IDLE",
+              state: "UNSUPPORTED",
+              reason: "BACKGROUND_VIRTUAL_ANDROID_REQUIRED",
+            });
+            continue;
+          }
+          androidIdle ??= ownedAndroidIdleControl(
+            { virtual: true, serial: androidSerial },
+            {
+              adb,
+              now: Date.now,
+              delay: (ms) => new Promise((resolve) => setTimeout(resolve, ms)),
+            },
+          );
+          await androidIdle.set(step.action.mode, step.action.enabled);
+          steps.push({ index, action: "ANDROID_IDLE", state: "PASS" });
           continue;
         }
         if (!foreground) {
@@ -1559,6 +1585,104 @@ export async function executeLandfallOsScenario(
       kind: "TEST_RESULT",
     });
     const controlFile = path.join(destination, "native-location-controls.json");
+    if (target === "ios-simulator" && ownedDevice) {
+      let ownedContainer: string | null = null;
+      let delivery: ReturnType<typeof deviceLabAppleLifecycleDeliverySchema.parse> | null = null;
+      let collectionStage: "APP_CONTAINER" | "READ" | "VALIDATE" = "APP_CONTAINER";
+      let unavailableReason:
+        | "APP_CONTAINER_TIMEOUT"
+        | "APP_CONTAINER_LOOKUP_FAILED"
+        | "FILE_ABSENT"
+        | "FILE_READ_FAILED"
+        | "INVALID_DIAGNOSTICS"
+        | null = null;
+      try {
+        const container = (
+          await labTool(
+            "xcrun",
+            ["simctl", "get_app_container", ownedDevice, "com.voyagewright.landfall", "data"],
+            30000,
+          )
+        ).trim();
+        if (!path.isAbsolute(container) || container.includes("\n")) throw new Error("OWNED_APP_CONTAINER_REQUIRED");
+        ownedContainer = container;
+        collectionStage = "READ";
+        const raw = await readFile(
+          path.join(container, "Library", "Application Support", "landfall-lifecycle-debug.json"),
+          "utf8",
+        );
+        collectionStage = "VALIDATE";
+        if (raw.length > 2048) throw new Error("OWNED_LIFECYCLE_DIAGNOSTIC_TOO_LARGE");
+        delivery = deviceLabAppleLifecycleDeliverySchema.parse(JSON.parse(raw));
+      } catch (error) {
+        const failure = (error ?? {}) as { code?: unknown; killed?: unknown };
+        unavailableReason =
+          collectionStage === "APP_CONTAINER"
+            ? failure.killed === true
+              ? "APP_CONTAINER_TIMEOUT"
+              : "APP_CONTAINER_LOOKUP_FAILED"
+            : collectionStage === "READ"
+              ? failure.code === "ENOENT"
+                ? "FILE_ABSENT"
+                : "FILE_READ_FAILED"
+              : "INVALID_DIAGNOSTICS";
+        /* Missing diagnostics remain unproven; they cannot turn a failed step into PASS. */
+      }
+      const file = path.join(destination, "native-apple-lifecycle-delivery.json");
+      await writeFile(
+        file,
+        JSON.stringify(
+          { version: 1, state: delivery ? "OBSERVED" : "UNAVAILABLE", delivery, unavailableReason },
+          null,
+          2,
+        ),
+      );
+      artifacts.push({
+        path: file,
+        sha256: createHash("sha256")
+          .update(await readFile(file))
+          .digest("hex"),
+        kind: "TEST_RESULT",
+      });
+      let trace: ReturnType<typeof deviceLabAppleLifecycleTraceSchema.parse> | null = null;
+      let traceReason: typeof unavailableReason = unavailableReason;
+      if (ownedContainer) {
+        let traceStage: "READ" | "VALIDATE" = "READ";
+        try {
+          const raw = await readFile(
+            path.join(ownedContainer, "Library", "Application Support", "landfall-lifecycle-trace.json"),
+            "utf8",
+          );
+          traceStage = "VALIDATE";
+          if (raw.length > 32768) throw new Error("OWNED_LIFECYCLE_TRACE_TOO_LARGE");
+          trace = deviceLabAppleLifecycleTraceSchema.parse(JSON.parse(raw));
+          traceReason = null;
+        } catch (error) {
+          traceReason =
+            traceStage === "VALIDATE"
+              ? "INVALID_DIAGNOSTICS"
+              : (error as { code?: unknown })?.code === "ENOENT"
+                ? "FILE_ABSENT"
+                : "FILE_READ_FAILED";
+        }
+      }
+      const traceFile = path.join(destination, "native-apple-lifecycle-trace.json");
+      await writeFile(
+        traceFile,
+        JSON.stringify(
+          { version: 1, state: trace ? "OBSERVED" : "UNAVAILABLE", trace, unavailableReason: traceReason },
+          null,
+          2,
+        ),
+      );
+      artifacts.push({
+        path: traceFile,
+        sha256: createHash("sha256")
+          .update(await readFile(traceFile))
+          .digest("hex"),
+        kind: "TEST_RESULT",
+      });
+    }
     const appleInputFile = path.join(destination, "native-apple-input-diagnostics.json");
     await writeFile(appleInputFile, JSON.stringify(appleInputDiagnostics, null, 2));
     artifacts.push({
@@ -1711,6 +1835,7 @@ export async function executeLandfallOsScenario(
     if (androidSerial) await adb(["shell", "am", "force-stop", "com.voyagewright.landfall"]).catch(() => undefined);
     if (androidSerial) await adb(["reverse", "--remove", `tcp:${port}`]).catch(() => undefined);
     if (androidSerial) {
+      if (androidIdle) remainingResources.push(...(await androidIdle.cleanup()));
       if (androidRotationBaseline !== null) {
         for (const [key, value] of [
           ["accelerometer_rotation", androidRotationBaseline.automatic],
@@ -1865,7 +1990,7 @@ export async function executeLandfallOsScenario(
                         limitation:
                           "Simulator/emulator lifecycle does not prove physical-device OEM suspension policy.",
                       }
-                    : action?.type === "POWER"
+                    : action?.type === "POWER" || action?.type === "ANDROID_IDLE"
                       ? {
                           method: "OS_POWER_CONTROL",
                           limitation:
@@ -1902,12 +2027,24 @@ export async function executeLandfallOsScenario(
             ...(fusedInput ? ["android-fused-mock-input", "native-location-lab-private-data"] : []),
             ...[...androidSensorBaselines.keys()].map((sensor) => `android-sensor-${sensor}`),
             ...(androidPowerMode !== null ? ["android-power-fixture", "android-battery-fixture"] : []),
+            ...(androidIdle ? ["android-forced-idle", "android-app-standby-baseline"] : []),
           ]
         : []),
     ],
     remainingResources,
   };
   await writeFile(path.join(destination, "native-steps.json"), JSON.stringify({ steps, cleanup }, null, 2));
+  if (androidIdle) {
+    const file = path.join(destination, "native-idle-controls.json");
+    await writeFile(file, JSON.stringify({ observations: androidIdle.observations, cleanup }, null, 2));
+    artifacts.push({
+      path: file,
+      sha256: createHash("sha256")
+        .update(await readFile(file))
+        .digest("hex"),
+      kind: "TEST_RESULT",
+    });
+  }
   const stepsFile = path.join(destination, "native-steps.json");
   artifacts.push({
     path: stepsFile,

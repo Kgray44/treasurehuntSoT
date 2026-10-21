@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/sextant-history-journeys.spec.ts"
+  ],
+  "status": "PASS",
+  "failureCategory": null,
+  "failureCode": null,
+  "diagnosticBinding": {
+    "version": 1,
+    "runId": "636809ca-b447-477b-b4e0-7f44bb69fa8d",
+    "scopeId": "ef9363b3-50f9-4de7-9d7e-1cec6deaf00c",
+    "baseSha": "3d2d430fe1b09a254a3f3b7a708a1f1ede6b2914",
+    "candidateSha": "3d2d430fe1b09a254a3f3b7a708a1f1ede6b2914",
+    "planDigest": "74632a7862bc8ce3060a1ff887df14333d62f689b68b16c2a816591769e809fb"
+  }
+}

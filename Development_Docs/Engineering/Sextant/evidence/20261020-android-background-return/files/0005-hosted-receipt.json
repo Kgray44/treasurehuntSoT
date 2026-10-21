@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "candidateSha": "91cffab32aa551ed36a13aa2d5097f736b0abf2b",
+  "transportSha": "1f45ffcca3bf122b0752dc9430d6893731570cda",
+  "runId": "39377665326",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39377665326",
+  "conclusion": "success",
+  "artifacts": [
+    {
+      "path": "artifacts/landfall-android-background-primary-phone-91cffab32aa551ed36a13aa2d5097f736b0abf2b/landfall-device-lab/radio-owner-70bcacd2-54ac-47ca-b7c6-7330d957ede6/native-background-return-receipt.json",
+      "sha256": "fe0c25702e405a104eae80e76a7802b786739482e78a273ae33d7ce49ce9512f"
+    },
+    {
+      "path": "artifacts/landfall-android-background-primary-phone-91cffab32aa551ed36a13aa2d5097f736b0abf2b/landfall-device-lab/radio-owner-70bcacd2-54ac-47ca-b7c6-7330d957ede6/radio-owner-receipt.json",
+      "sha256": "842fff7e6da04ffe757cac6ed86eefdbf650ff61299e1a3c4d0811466f6c802f"
+    },
+    {
+      "path": "artifacts/landfall-android-background-primary-phone-91cffab32aa551ed36a13aa2d5097f736b0abf2b/sounding-line/browser-runtime.json",
+      "sha256": "df3d9e903735b146c26b75c4a296367301575b312da2c1e4f80a4867cf289ae1"
+    },
+    {
+      "path": "artifacts/landfall-android-background-primary-phone-91cffab32aa551ed36a13aa2d5097f736b0abf2b/sounding-line/browser-suite-profile.json",
+      "sha256": "94f5e9276e6730640248ce543a83ebfe6f6a50642ae10f1044ec37267dac873c"
+    }
+  ],
+  "artifactState": "AVAILABLE",
+  "cleanup": {
+    "result": "PASS",
+    "ownedResources": [
+      "refs/heads/codex/landfall-lab-91cffab32aa5-1792475844551"
+    ],
+    "remainingResources": []
+  }
+}

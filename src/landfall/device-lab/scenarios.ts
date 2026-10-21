@@ -575,6 +575,11 @@ restartFixture.version = 3;
 restartFixture.publishedFixture = "landfall-device-lab-restart-v2";
 restartFixture.description =
   "Actual offline/restart reconciliation under an explicitly authored 600-second synthetic evidence window. Original sample clocks and the default 30-second stale-evidence policy remain intact.";
+const lostResponseFixture = cases.find((item) => item.id === "offline-lost-response-canonical-reconcile")!;
+lostResponseFixture.version = 3;
+lostResponseFixture.publishedFixture = "landfall-device-lab-lost-response-v2";
+lostResponseFixture.description =
+  "Actual lost-response retry and canonical duplicate reconciliation under an explicitly authored 600-second synthetic evidence window. Original sample clocks, idempotency and the default 30-second stale-evidence policy remain intact.";
 
 scenario(
   "uwb-native-peer-session",
@@ -786,6 +791,35 @@ cases[cases.length - 1].targets = ["ios-simulator"];
 cases[cases.length - 1].timing = "WALL_CLOCK";
 cases[cases.length - 1].description =
   "Actual Apple notification permission prompt refusal and production native DENIED callback, with no physical acquisition, progression or inferred permission from UI acknowledgment. Native clearing and owned cleanup remain required; no callback or permission-result injection.";
+
+for (const mode of ["DOZE", "STANDBY"] as const) {
+  scenario(
+    `android-${mode.toLowerCase()}-recovery`,
+    ["LOCATION"],
+    [
+      power(false),
+      location({ coordinate: physicalCoordinate(44.02, -72) }),
+      lifecycle("BACKGROUND"),
+      lifecycle("SCREEN_LOCKED"),
+      { type: "ANDROID_IDLE", mode, enabled: true },
+      assertion("completionRequests", 0),
+      assertion("canonicalProgressionEvents", 0),
+      { type: "ANDROID_IDLE", mode, enabled: false },
+      lifecycle("FOREGROUND"),
+      location({ coordinate: physicalCoordinate(44.02, -72) }),
+      assertion("completionRequests", 0),
+      assertion("canonicalProgressionEvents", 0),
+      assertion("serverConfirmed", false),
+    ],
+    ["SUSPENSION", "OEM_PROCESS_POLICY", "BATTERY"],
+    "ONE_VOYAGE",
+  );
+  const current = cases[cases.length - 1];
+  current.targets = ["android-emulator"];
+  current.timing = "WALL_CLOCK";
+  current.description =
+    "Actual documented Android forced idle or app standby, OS readback while backgrounded, no inferred progression, fresh foreground fix after wake, and verified idle/standby/battery cleanup. No physical endurance or OEM policy claim.";
+}
 
 export function landfallDeviceScenarios(): DeviceLabScenario[] {
   return structuredClone(cases);

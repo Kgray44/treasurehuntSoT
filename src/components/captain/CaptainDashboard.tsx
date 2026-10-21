@@ -107,7 +107,7 @@ export function CaptainDashboard({ authenticated, taleFilter }: { authenticated:
         </article>
       </section>
       <div className="captain-layout">
-        <aside>
+        <section className="captain-chronicle-navigation" aria-label="Available Chronicles">
           <p className="eyebrow">Available Chronicles</p>
           {tales.map((tale) => (
             <Link className={tale.id === taleFilter ? "active" : ""} key={tale.id} href={`/captain/tales/${tale.id}`}>
@@ -117,7 +117,7 @@ export function CaptainDashboard({ authenticated, taleFilter }: { authenticated:
               </span>
             </Link>
           ))}
-        </aside>
+        </section>
         <section className="captain-sessions">
           <header>
             <h2>{taleFilter ? tales.find((tale) => tale.id === taleFilter)?.title : "All Voyages"}</h2>
@@ -165,7 +165,7 @@ function SessionCard({ session, clock }: { session: Session; clock: number }) {
       </div>
       <p className="card-kicker">{session.previewMode ? "Preview Voyage" : `Version ${session.versionLabel}`}</p>
       <h3>{session.taleTitle}</h3>
-      <p>{session.ownerLabel ?? "Guest Crew"}</p>
+      <p>{session.ownerLabel ?? "Voyage crew"}</p>
       <dl>
         <div>
           <dt>Status</dt>

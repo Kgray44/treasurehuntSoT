@@ -2027,56 +2027,58 @@ export function TaleEditor({
         >
           <PublishHostBridge onReady={(host) => (publishHost.current = host)} />
         </SceneHost>
-        <StudioStatusHeader
-          taleId={taleId}
-          title={draft.tale.title}
-          canUndo={Boolean(past.length)}
-          canRedo={Boolean(future.length)}
-          saveState={saveState}
-          saveVisualState={saveVisualState}
-          validationState={validationStatus.state}
-          validationLabel={validationStatus.label}
-          validationDetail={validationStatus.detail}
-          publishState={publishState}
-          publishPermitted={publishState !== "publishing"}
-          publishedVersion={publishedVersion}
-          moreOpen={moreOpen}
-          reducedMotion={mode === "reduced"}
-          layoutDuration={layoutMotion.durationSeconds}
-          stateDuration={stateMotion.durationSeconds}
-          ceremonyDuration={resolvePlatformMotionToken("ceremony", mode).durationSeconds}
-          onUndo={undo}
-          onRedo={redo}
-          onPreview={() => void preview()}
-          onValidate={() => void validate()}
-          onOpenValidation={() => validation && setValidationPanelOpen(true)}
-          onPublish={openPublishingReview}
-          onOpenCommands={openCommandPalette}
-          onToggleMore={() => setMoreOpen((open) => !open)}
-          onCloseMore={() => setMoreOpen(false)}
-          onDuplicate={() => {
-            setMoreOpen(false);
-            void taleAction("duplicate");
-          }}
-          onArchive={() => {
-            setMoreOpen(false);
-            void taleAction("archive");
-          }}
-        />
-        <nav className="editor-section-nav" aria-label="Chronicle authoring sections">
-          {nav.map((item) => (
-            <Link
-              key={item}
-              className={initialSection === item ? "active" : ""}
-              href={item === "story" ? `/studio/tales/${taleId}` : `/studio/tales/${taleId}/${item}`}
-            >
-              {initialSection === item && (
-                <motion.span className="studio-active-section" layoutId="studio-active-section" />
-              )}
-              <span>{navLabels[item]}</span>
-            </Link>
-          ))}
-        </nav>
+        <div className="editor-chrome">
+          <StudioStatusHeader
+            taleId={taleId}
+            title={draft.tale.title}
+            canUndo={Boolean(past.length)}
+            canRedo={Boolean(future.length)}
+            saveState={saveState}
+            saveVisualState={saveVisualState}
+            validationState={validationStatus.state}
+            validationLabel={validationStatus.label}
+            validationDetail={validationStatus.detail}
+            publishState={publishState}
+            publishPermitted={publishState !== "publishing"}
+            publishedVersion={publishedVersion}
+            moreOpen={moreOpen}
+            reducedMotion={mode === "reduced"}
+            layoutDuration={layoutMotion.durationSeconds}
+            stateDuration={stateMotion.durationSeconds}
+            ceremonyDuration={resolvePlatformMotionToken("ceremony", mode).durationSeconds}
+            onUndo={undo}
+            onRedo={redo}
+            onPreview={() => void preview()}
+            onValidate={() => void validate()}
+            onOpenValidation={() => validation && setValidationPanelOpen(true)}
+            onPublish={openPublishingReview}
+            onOpenCommands={openCommandPalette}
+            onToggleMore={() => setMoreOpen((open) => !open)}
+            onCloseMore={() => setMoreOpen(false)}
+            onDuplicate={() => {
+              setMoreOpen(false);
+              void taleAction("duplicate");
+            }}
+            onArchive={() => {
+              setMoreOpen(false);
+              void taleAction("archive");
+            }}
+          />
+          <nav className="editor-section-nav" aria-label="Chronicle authoring sections">
+            {nav.map((item) => (
+              <Link
+                key={item}
+                className={initialSection === item ? "active" : ""}
+                href={item === "story" ? `/studio/tales/${taleId}` : `/studio/tales/${taleId}/${item}`}
+              >
+                {initialSection === item && (
+                  <motion.span className="studio-active-section" layoutId="studio-active-section" />
+                )}
+                <span>{navLabels[item]}</span>
+              </Link>
+            ))}
+          </nav>
+        </div>
         {error && (
           <div className="editor-error" role="alert">
             <span>{error}</span>
@@ -2253,7 +2255,7 @@ export function TaleEditor({
               {dragAnnouncement}
             </p>
             <div className="editor-workbench">
-              <aside id="studio-library" className="block-library" tabIndex={-1}>
+              <section id="studio-library" className="block-library" tabIndex={-1} aria-label="Passage library">
                 <div>
                   <p className="eyebrow">Passage library</p>
                   <h2>Passages</h2>
@@ -2645,7 +2647,7 @@ export function TaleEditor({
                     </section>
                   </section>
                 )}
-              </aside>
+              </section>
               <section
                 ref={canvas}
                 id="studio-canvas"
@@ -2774,7 +2776,7 @@ export function TaleEditor({
                             <SortableStoryBlock key={block.id} id={block.id}>
                               {(attributes, listeners) => (
                                 <>
-                                  <article
+                                  <div
                                     {...attributes}
                                     {...listeners}
                                     role="group"
@@ -2891,7 +2893,7 @@ export function TaleEditor({
                                         ↓
                                       </button>
                                     </div>
-                                  </article>
+                                  </div>
                                   <DropZone
                                     id={`drop:${chapterIndex}:${blockIndex + 1}`}
                                     onDrop={(event) => drop(event, chapterIndex, blockIndex + 1)}
@@ -2909,8 +2911,9 @@ export function TaleEditor({
                   </motion.article>
                 ))}
               </section>
-              <motion.aside
+              <motion.section
                 className={`block-inspector ${selected ? "has-selection" : "empty"}`}
+                aria-label="Passage Inspector"
                 data-inspector-state={selected ? "open" : "closed"}
                 initial={false}
                 animate={{
@@ -3175,7 +3178,7 @@ export function TaleEditor({
                     <p>Its content, presentation, verification, assets, and private notes will appear here.</p>
                   </div>
                 )}
-              </motion.aside>
+              </motion.section>
             </div>
             <DragOverlay dropAnimation={mode === "reduced" ? null : undefined}>
               {activeDragId && (
@@ -3426,6 +3429,7 @@ export function TaleEditor({
                 value={assetSearch}
                 onChange={(event) => setAssetSearch(event.target.value)}
                 placeholder="Search names, tags, and roles"
+                aria-label="Search assets"
               />
               <span>{filteredAssets.length} assets</span>
             </div>
@@ -3583,8 +3587,13 @@ export function TaleEditor({
                 value={librarySearch}
                 onChange={(event) => setLibrarySearch(event.target.value)}
                 placeholder="Search Waypoints"
+                aria-label="Search Waypoints"
               />
-              <select value={librarySort} onChange={(event) => setLibrarySort(event.target.value as "name" | "region")}>
+              <select
+                aria-label="Sort Waypoints"
+                value={librarySort}
+                onChange={(event) => setLibrarySort(event.target.value as "name" | "region")}
+              >
                 <option value="name">Sort by name</option>
                 <option value="region">Sort by region</option>
               </select>
@@ -3619,8 +3628,13 @@ export function TaleEditor({
                 value={librarySearch}
                 onChange={(event) => setLibrarySearch(event.target.value)}
                 placeholder="Search artifacts"
+                aria-label="Search artifacts"
               />
-              <select value={librarySort} onChange={(event) => setLibrarySort(event.target.value as "name" | "region")}>
+              <select
+                aria-label="Sort artifacts"
+                value={librarySort}
+                onChange={(event) => setLibrarySort(event.target.value as "name" | "region")}
+              >
                 <option value="name">Sort by name</option>
               </select>
             </div>
@@ -3698,7 +3712,7 @@ export function TaleEditor({
           </LibraryPanel>
         )}
         {(assetDrawer || initialSection === "assets") && (
-          <aside className={`asset-drawer ${assetDrawer ? "open" : "page-open"}`} aria-label="Asset drawer">
+          <section className={`asset-drawer ${assetDrawer ? "open" : "page-open"}`} aria-label="Asset drawer">
             <header>
               <div>
                 <p className="eyebrow">Media hold</p>
@@ -3758,6 +3772,7 @@ export function TaleEditor({
                 value={assetSearch}
                 onChange={(event) => setAssetSearch(event.target.value)}
                 placeholder="Search media"
+                aria-label="Search media"
               />
               <select
                 value={assetUsage}
@@ -3834,7 +3849,7 @@ export function TaleEditor({
                 </button>
               ))}
             </div>
-          </aside>
+          </section>
         )}
         <StudioCommandPalette open={commandPaletteOpen} commands={studioCommands} onClose={closeCommandPalette} />
       </motion.main>

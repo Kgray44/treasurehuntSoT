@@ -5,7 +5,7 @@ import { AnimationAuthorityContext } from "@/animation/hosts/SceneHostContext";
 import { SceneHostRegistry } from "@/animation/hosts/scene-host-registry";
 import { invitationResolveTimeoutMs, InvitationCeremony } from "./InvitationCeremony";
 
-const navigation = vi.hoisted(() => ({ push: vi.fn(), refresh: vi.fn() }));
+const navigation = vi.hoisted(() => ({ push: vi.fn(), refresh: vi.fn(), prefetch: vi.fn() }));
 const director = vi.hoisted(() => ({ play: vi.fn(), cancel: vi.fn(), skip: vi.fn() }));
 const invalidateCurrentUser = vi.hoisted(() => vi.fn().mockResolvedValue({ status: "authenticated" }));
 
@@ -172,8 +172,10 @@ describe("InvitationCeremony", () => {
 
     expect(screen.getByRole("main")).toHaveAttribute("data-invitation-state", "pin-validating");
     expect(handoff).not.toHaveBeenCalled();
+    expect(navigation.prefetch).not.toHaveBeenCalled();
     accept.resolve(response(200, { ok: true, playthroughId: "voyage-1" }));
     await waitFor(() => expect(handoff).toHaveBeenCalledWith("/player/playthroughs/voyage-1", expect.any(AbortSignal)));
+    expect(navigation.prefetch).toHaveBeenCalledExactlyOnceWith("/player/playthroughs/voyage-1");
     expect(screen.getByRole("main")).toHaveAttribute("data-invitation-state", "accepted");
     await waitFor(() =>
       expect(screen.getByRole("button", { name: "Invitation accepted" })).toHaveAttribute("aria-busy", "false"),
@@ -182,6 +184,9 @@ describe("InvitationCeremony", () => {
   });
 
   it("pushes the accepted Player route without refreshing the spent invitation route", async () => {
+    navigation.prefetch.mockImplementationOnce(() => {
+      throw new Error("synthetic optional preparation failure");
+    });
     const fetch = vi
       .fn()
       .mockResolvedValueOnce(response(200, { invitation, csrfToken: "csrf" }))
@@ -308,5 +313,6 @@ describe("InvitationCeremony", () => {
     expect(await screen.findByRole("alert")).toHaveTextContent("PIN was not accepted");
     expect(screen.getByLabelText("Invitation PIN")).toHaveValue("");
     expect(screen.getByRole("main")).toHaveAttribute("data-invitation-state", "pin-required");
+    expect(navigation.prefetch).not.toHaveBeenCalled();
   });
 });

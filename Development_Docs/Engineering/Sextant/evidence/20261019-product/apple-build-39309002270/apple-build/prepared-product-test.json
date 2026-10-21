@@ -1,0 +1,7 @@
+{
+  "scope": "BUILD_FOR_TESTING_NO_XCTEST_EXECUTION",
+  "testRun": "LandfallCompanion_iphonesimulator26.5-arm64.xctestrun",
+  "uiTestProductPrepared": true,
+  "testsExecuted": 0,
+  "nativeTestAcceptance": false
+}

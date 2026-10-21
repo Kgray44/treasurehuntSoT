@@ -1,0 +1,2650 @@
+{
+  "schemaVersion": 1,
+  "classification": "ENGINEERING_EVIDENCE_MACHINE_READABLE",
+  "status": "PARTIAL_VIRTUAL_QUALIFICATION_NOT_PHASE_ACCEPTANCE",
+  "generatedAt": "2026-10-11T20:14:42.711Z",
+  "sourcePolicy": "Every result preserves its original source and tested input fingerprint. Later UI changes do not relabel these receipts.",
+  "ordinary": {
+    "runId": "38169764018",
+    "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38169764018",
+    "candidateSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+    "candidateTree": "4902cf7164cd00e1c49d5c10f00b2fae25bfa073",
+    "baseSha": "efa689f20d2a9dead852135302dd6961c9f0f0d2",
+    "decision": "PASS",
+    "selectedUnits": 316,
+    "selectedBrowsers": ["tests/e2e/landfall-native-nearby.spec.ts", "tests/e2e/sextant-phase4.spec.ts"],
+    "finalization": {
+      "authority": "SOUNDING_LINE_EVIDENCE_FINALIZER",
+      "requiredObligations": 10,
+      "closure": [
+        {
+          "obligationId": "preflight.640e4530f717230bfdaa89ea",
+          "receiptId": "sl14-7efcca18343bf8eb2cde53da728085bb",
+          "satisfied": true
+        },
+        {
+          "obligationId": "preflight.095f00f3300c06f2979015ce",
+          "receiptId": "sl14-481e77dad8be37d8d0e68f24b243f158",
+          "satisfied": true
+        },
+        {
+          "obligationId": "preflight.b6afec1badc6d034b0aaa5a0",
+          "receiptId": "sl14-c4a8ef832958ec5ad37242f61187f7e7",
+          "satisfied": true
+        },
+        {
+          "obligationId": "preflight.06bb2802ffe5ab9677efa486",
+          "receiptId": "sl14-008ce89f925336cc1d1780d1563b3674",
+          "satisfied": true
+        },
+        {
+          "obligationId": "preflight.bda79721781de0679d88e863",
+          "receiptId": "sl14-09951b0a21c93b12dfbfe82680f53e5f",
+          "satisfied": true
+        },
+        {
+          "obligationId": "unit.dd40ac15a999fd53e20f7625",
+          "receiptId": "sl14-1137b91b88ada991e84e7c800f1b772a",
+          "satisfied": true
+        },
+        {
+          "obligationId": "preflight.626397032f8030d2781f7950",
+          "receiptId": "sl14-0434ac3445a12ee975dbfa21cc09f9ff",
+          "satisfied": true
+        },
+        {
+          "obligationId": "migration.881c319da844d6391aac0892",
+          "receiptId": "sl14-f370e4a91d198df4b5574f273090fa59",
+          "satisfied": true
+        },
+        {
+          "obligationId": "preflight.c4b855894796fe28f107fbee",
+          "receiptId": "sl14-7eee044c4ad9495409f3833fd883333b",
+          "satisfied": true
+        },
+        {
+          "obligationId": "browser.50e0161cb8ac97096a469763",
+          "receiptId": "sl14-91f280259d9e35decd9d7f32192a78a3",
+          "satisfied": true
+        }
+      ],
+      "remainder": [],
+      "counts": {
+        "FRESH": 5,
+        "PRESERVED": 0,
+        "REBOUND": 0,
+        "INVALIDATED": 5,
+        "CONSERVATIVE_FALLBACK": 0
+      },
+      "errors": [],
+      "decision": "PASS"
+    }
+  },
+  "results": {
+    "primary": {
+      "runId": "38169456020",
+      "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38169456020",
+      "sourceSha": "a54cabc334a3574cbef55e4f9718175c286fbccf",
+      "transportSha": "31042b6197471ef40aa9ed6533ac548b77b8676b",
+      "result": "success",
+      "artifactCount": 269,
+      "transportCleanup": {
+        "result": "PASS",
+        "ownedResources": ["refs/heads/codex/landfall-lab-a54cabc334a3-1791748008839"],
+        "remainingResources": []
+      },
+      "retainedHostedReceiptSha256": "245529f71763d4ef7053a2ad800bc48624a823da7a26a7497fa5f33e84fc38d4",
+      "scenarioSummaries": [
+        {
+          "version": 1,
+          "sourceSha": "a54cabc334a3574cbef55e4f9718175c286fbccf",
+          "sourceTree": "79b1c0b70feb01ae888b75d90cef81f82d660a76",
+          "sourceFingerprint": "c591f5ae3b07d2c10c94bd6063793b6d1aa973e7c0d23aa358ca0abdfe900f45",
+          "dirty": false,
+          "target": "android-emulator",
+          "total": 20,
+          "passed": 20,
+          "failed": 0,
+          "unsupported": 0,
+          "notConfigured": 0,
+          "artifactDirectory": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261011T195131621Z-3513"
+        }
+      ],
+      "nativeInstrumentation": [
+        {
+          "version": 1,
+          "sourceSha": "a54cabc334a3574cbef55e4f9718175c286fbccf",
+          "sourceTree": "79b1c0b70feb01ae888b75d90cef81f82d660a76",
+          "dirty": false,
+          "sourceFingerprint": "c591f5ae3b07d2c10c94bd6063793b6d1aa973e7c0d23aa358ca0abdfe900f45",
+          "sourceUnchanged": true,
+          "sourceBinding": "CHECKOUT_SNAPSHOT_AND_EXACT_APK",
+          "evidenceClass": "EMULATOR_PROVEN",
+          "result": "PASS",
+          "failure": null,
+          "canonicalProgressionEvents": null,
+          "androidVersion": "16",
+          "appSha256": "39c4a9c5774c9fe77452129372080f4a5d3214bcf2e5e4597ce4cb250c4bb6bd",
+          "testApkSha256": "63133d5f90314832bd2f764bbc7c61c49ed041fb99567fa453af2dfebdedaa74",
+          "sensorPerformanceSha256": "46d1eedd86341f508c98a07886312fe51b2941b0fa147896f1f77ff539afbccf",
+          "cleanup": {
+            "result": "PASS"
+          },
+          "instrumentation": "OK (19 tests)"
+        }
+      ],
+      "sensorPerformance": [
+        {
+          "version": 1,
+          "measurementClass": "NATIVE_SENSOR_ADAPTER_INSTRUMENTATION",
+          "api": 36,
+          "sampleCount": 3,
+          "physicalEnergyProven": false,
+          "budgets": {
+            "activeCpuMsPerTwoSecondInterval": 1000,
+            "processPssKiB": 262144,
+            "incrementalPssKiB": 32768
+          },
+          "samples": [
+            {
+              "baselineElapsedMs": 1000,
+              "baselineCpuMs": 0,
+              "baselinePssKiB": 56538,
+              "activeElapsedMs": 2000,
+              "activeCpuMs": 18,
+              "activePssKiB": 56520,
+              "pssDeltaKiB": -18,
+              "callbacks": 48,
+              "stopVerified": true
+            },
+            {
+              "baselineElapsedMs": 1000,
+              "baselineCpuMs": 1,
+              "baselinePssKiB": 56358,
+              "activeElapsedMs": 2000,
+              "activeCpuMs": 12,
+              "activePssKiB": 56230,
+              "pssDeltaKiB": -128,
+              "callbacks": 48,
+              "stopVerified": true
+            },
+            {
+              "baselineElapsedMs": 1001,
+              "baselineCpuMs": 0,
+              "baselinePssKiB": 55698,
+              "activeElapsedMs": 2000,
+              "activeCpuMs": 16,
+              "activePssKiB": 43319,
+              "pssDeltaKiB": -12379,
+              "callbacks": 48,
+              "stopVerified": true
+            }
+          ]
+        }
+      ]
+    },
+    "profiles": {
+      "runId": "38169916074",
+      "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38169916074",
+      "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+      "transportSha": "91d7dbc043818d988cef275f40fa63877ab441d0",
+      "result": "success",
+      "artifactCount": 807,
+      "transportCleanup": {
+        "result": "PASS",
+        "ownedResources": ["refs/heads/codex/landfall-lab-0f8ac1974da2-1791748410523"],
+        "remainingResources": []
+      },
+      "retainedHostedReceiptSha256": "ed4909acef637ccb5275046f985e2861865c142714af951bbab659cc7c861db6",
+      "scenarioSummaries": [
+        {
+          "version": 1,
+          "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+          "sourceTree": "4902cf7164cd00e1c49d5c10f00b2fae25bfa073",
+          "sourceFingerprint": "c591f5ae3b07d2c10c94bd6063793b6d1aa973e7c0d23aa358ca0abdfe900f45",
+          "dirty": false,
+          "target": "android-emulator",
+          "total": 20,
+          "passed": 20,
+          "failed": 0,
+          "unsupported": 0,
+          "notConfigured": 0,
+          "artifactDirectory": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261011T195910158Z-3806"
+        },
+        {
+          "version": 1,
+          "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+          "sourceTree": "4902cf7164cd00e1c49d5c10f00b2fae25bfa073",
+          "sourceFingerprint": "c591f5ae3b07d2c10c94bd6063793b6d1aa973e7c0d23aa358ca0abdfe900f45",
+          "dirty": false,
+          "target": "android-emulator",
+          "total": 20,
+          "passed": 20,
+          "failed": 0,
+          "unsupported": 0,
+          "notConfigured": 0,
+          "artifactDirectory": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261011T195829100Z-3437"
+        },
+        {
+          "version": 1,
+          "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+          "sourceTree": "4902cf7164cd00e1c49d5c10f00b2fae25bfa073",
+          "sourceFingerprint": "c591f5ae3b07d2c10c94bd6063793b6d1aa973e7c0d23aa358ca0abdfe900f45",
+          "dirty": false,
+          "target": "android-emulator",
+          "total": 20,
+          "passed": 20,
+          "failed": 0,
+          "unsupported": 0,
+          "notConfigured": 0,
+          "artifactDirectory": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261011T195827660Z-3436"
+        }
+      ],
+      "nativeInstrumentation": [
+        {
+          "version": 1,
+          "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+          "sourceTree": "4902cf7164cd00e1c49d5c10f00b2fae25bfa073",
+          "dirty": false,
+          "sourceFingerprint": "c591f5ae3b07d2c10c94bd6063793b6d1aa973e7c0d23aa358ca0abdfe900f45",
+          "sourceUnchanged": true,
+          "sourceBinding": "CHECKOUT_SNAPSHOT_AND_EXACT_APK",
+          "evidenceClass": "EMULATOR_PROVEN",
+          "result": "PASS",
+          "failure": null,
+          "canonicalProgressionEvents": null,
+          "androidVersion": "15",
+          "appSha256": "37d6c486cff7b9aa7ea213bf96f59e073e63e494060f32312d814f2421b01b7d",
+          "testApkSha256": "7e08b752640866ad6da0e6507168e240bda18b664c84e1eb3dd2b393b658c144",
+          "sensorPerformanceSha256": "776d0c1a1ff20245326209c9c1cc3ce63552f9ba21445b51d50c33dd32520b95",
+          "cleanup": {
+            "result": "PASS"
+          },
+          "instrumentation": "OK (19 tests)"
+        },
+        {
+          "version": 1,
+          "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+          "sourceTree": "4902cf7164cd00e1c49d5c10f00b2fae25bfa073",
+          "dirty": false,
+          "sourceFingerprint": "c591f5ae3b07d2c10c94bd6063793b6d1aa973e7c0d23aa358ca0abdfe900f45",
+          "sourceUnchanged": true,
+          "sourceBinding": "CHECKOUT_SNAPSHOT_AND_EXACT_APK",
+          "evidenceClass": "EMULATOR_PROVEN",
+          "result": "PASS",
+          "failure": null,
+          "canonicalProgressionEvents": null,
+          "androidVersion": "16",
+          "appSha256": "5d1218a42c957873eb2c4673c891e69efb4d7e11d05e12b56df347acc7606024",
+          "testApkSha256": "ec47758fe537e826e6a5a92432957cb1493c35cf86a4ed2a11507061e6ab5eaa",
+          "sensorPerformanceSha256": "b085c4887666687abb2cb26722bf505012483e4e587104580d3dcef1dbcd5104",
+          "cleanup": {
+            "result": "PASS"
+          },
+          "instrumentation": "OK (19 tests)"
+        },
+        {
+          "version": 1,
+          "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+          "sourceTree": "4902cf7164cd00e1c49d5c10f00b2fae25bfa073",
+          "dirty": false,
+          "sourceFingerprint": "c591f5ae3b07d2c10c94bd6063793b6d1aa973e7c0d23aa358ca0abdfe900f45",
+          "sourceUnchanged": true,
+          "sourceBinding": "CHECKOUT_SNAPSHOT_AND_EXACT_APK",
+          "evidenceClass": "EMULATOR_PROVEN",
+          "result": "PASS",
+          "failure": null,
+          "canonicalProgressionEvents": null,
+          "androidVersion": "16",
+          "appSha256": "641ee7e3ba8a7a5fdbf7205e26a1ca0523e61cd265fe9250e4eeac3a36970989",
+          "testApkSha256": "57e276876d1b46a90dbeb9d7382ba8c7a541a7ab64125b60a8d8e3dc0e87116e",
+          "sensorPerformanceSha256": "c052d3dead3bb1baebddd9b8c13579466cbec3bba200d971a86f248e938c39ae",
+          "cleanup": {
+            "result": "PASS"
+          },
+          "instrumentation": "OK (19 tests)"
+        }
+      ],
+      "sensorPerformance": [
+        {
+          "version": 1,
+          "measurementClass": "NATIVE_SENSOR_ADAPTER_INSTRUMENTATION",
+          "api": 35,
+          "sampleCount": 3,
+          "physicalEnergyProven": false,
+          "budgets": {
+            "activeCpuMsPerTwoSecondInterval": 1000,
+            "processPssKiB": 262144,
+            "incrementalPssKiB": 32768
+          },
+          "samples": [
+            {
+              "baselineElapsedMs": 1000,
+              "baselineCpuMs": 1,
+              "baselinePssKiB": 52123,
+              "activeElapsedMs": 2000,
+              "activeCpuMs": 27,
+              "activePssKiB": 52257,
+              "pssDeltaKiB": 134,
+              "callbacks": 50,
+              "stopVerified": true
+            },
+            {
+              "baselineElapsedMs": 1000,
+              "baselineCpuMs": 0,
+              "baselinePssKiB": 52268,
+              "activeElapsedMs": 2000,
+              "activeCpuMs": 10,
+              "activePssKiB": 52325,
+              "pssDeltaKiB": 57,
+              "callbacks": 48,
+              "stopVerified": true
+            },
+            {
+              "baselineElapsedMs": 1000,
+              "baselineCpuMs": 0,
+              "baselinePssKiB": 52167,
+              "activeElapsedMs": 2000,
+              "activeCpuMs": 15,
+              "activePssKiB": 52320,
+              "pssDeltaKiB": 153,
+              "callbacks": 48,
+              "stopVerified": true
+            }
+          ]
+        },
+        {
+          "version": 1,
+          "measurementClass": "NATIVE_SENSOR_ADAPTER_INSTRUMENTATION",
+          "api": 36,
+          "sampleCount": 3,
+          "physicalEnergyProven": false,
+          "budgets": {
+            "activeCpuMsPerTwoSecondInterval": 1000,
+            "processPssKiB": 262144,
+            "incrementalPssKiB": 32768
+          },
+          "samples": [
+            {
+              "baselineElapsedMs": 1001,
+              "baselineCpuMs": 1,
+              "baselinePssKiB": 35313,
+              "activeElapsedMs": 2001,
+              "activeCpuMs": 32,
+              "activePssKiB": 31665,
+              "pssDeltaKiB": -3648,
+              "callbacks": 48,
+              "stopVerified": true
+            },
+            {
+              "baselineElapsedMs": 1006,
+              "baselineCpuMs": 0,
+              "baselinePssKiB": 29646,
+              "activeElapsedMs": 2000,
+              "activeCpuMs": 12,
+              "activePssKiB": 28604,
+              "pssDeltaKiB": -1042,
+              "callbacks": 50,
+              "stopVerified": true
+            },
+            {
+              "baselineElapsedMs": 1000,
+              "baselineCpuMs": 0,
+              "baselinePssKiB": 28591,
+              "activeElapsedMs": 2000,
+              "activeCpuMs": 17,
+              "activePssKiB": 28465,
+              "pssDeltaKiB": -126,
+              "callbacks": 48,
+              "stopVerified": true
+            }
+          ]
+        },
+        {
+          "version": 1,
+          "measurementClass": "NATIVE_SENSOR_ADAPTER_INSTRUMENTATION",
+          "api": 36,
+          "sampleCount": 3,
+          "physicalEnergyProven": false,
+          "budgets": {
+            "activeCpuMsPerTwoSecondInterval": 1000,
+            "processPssKiB": 262144,
+            "incrementalPssKiB": 32768
+          },
+          "samples": [
+            {
+              "baselineElapsedMs": 1001,
+              "baselineCpuMs": 1,
+              "baselinePssKiB": 55995,
+              "activeElapsedMs": 2000,
+              "activeCpuMs": 16,
+              "activePssKiB": 56126,
+              "pssDeltaKiB": 131,
+              "callbacks": 48,
+              "stopVerified": true
+            },
+            {
+              "baselineElapsedMs": 1001,
+              "baselineCpuMs": 0,
+              "baselinePssKiB": 55951,
+              "activeElapsedMs": 2000,
+              "activeCpuMs": 10,
+              "activePssKiB": 55501,
+              "pssDeltaKiB": -450,
+              "callbacks": 48,
+              "stopVerified": true
+            },
+            {
+              "baselineElapsedMs": 1000,
+              "baselineCpuMs": 0,
+              "baselinePssKiB": 55485,
+              "activeElapsedMs": 2000,
+              "activeCpuMs": 22,
+              "activePssKiB": 55653,
+              "pssDeltaKiB": 168,
+              "callbacks": 48,
+              "stopVerified": true
+            }
+          ]
+        }
+      ]
+    },
+    "nativeConsumer": {
+      "runId": "38169900062",
+      "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38169900062",
+      "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+      "transportSha": "b1a8eacf034cb8b5372479614244d90a3a4f67fa",
+      "result": "success",
+      "artifactCount": 49,
+      "transportCleanup": {
+        "result": "PASS",
+        "ownedResources": ["refs/heads/codex/landfall-lab-0f8ac1974da2-1791748395754"],
+        "remainingResources": []
+      },
+      "retainedHostedReceiptSha256": "a74ca5142201639966e36f4035bf912509b8886d9c2ec59c4cff69e5e1a46a12",
+      "scenarioSummaries": [],
+      "nativeInstrumentation": [],
+      "sensorPerformance": [],
+      "nativeConsumerReceipt": {
+        "version": 1,
+        "deviceProfile": "primary-phone",
+        "configurations": [
+          {
+            "platform": "ANDROID",
+            "virtual": true,
+            "api": 36,
+            "model": "sdk_gphone64_x86_64",
+            "memoryKiB": 3048392,
+            "widthPixels": 1080,
+            "heightPixels": 2400,
+            "densityDpi": 420
+          },
+          {
+            "platform": "ANDROID",
+            "virtual": true,
+            "api": 36,
+            "model": "sdk_gphone64_x86_64",
+            "memoryKiB": 3048392,
+            "widthPixels": 1080,
+            "heightPixels": 2400,
+            "densityDpi": 420
+          }
+        ],
+        "source": {
+          "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+          "sourceTree": "4902cf7164cd00e1c49d5c10f00b2fae25bfa073",
+          "dirty": false,
+          "sourceFingerprint": "e42faf1a14fca7aba99b75a5008ec01e5e595e12c68075b8ba79a3e804e984be"
+        },
+        "sourceUnchanged": true,
+        "evidenceClass": "EMULATOR_PROVEN",
+        "nativeBridge": "REAL_ANDROID_OS",
+        "firstPartyApi": "REAL_OPTIMIZED_APPLICATION",
+        "validatedReportsObservedOnBoth": true,
+        "nativeStopObserved": true,
+        "peerVerified": false,
+        "canComplete": false,
+        "uncertainty": "UNKNOWN",
+        "canonicalAuthority": "ONE_VOYAGE_REAL_SQLITE",
+        "canonicalProgressionEvents": 0,
+        "result": "PASS",
+        "failedStage": null,
+        "failedDeviceIndex": null,
+        "journalResponseStatus": 200,
+        "failureKind": null,
+        "failureTool": null,
+        "failureChecks": null,
+        "nativePageErrors": [],
+        "failedFirstPartyRequests": 7,
+        "nearbyHttp": [
+          {
+            "deviceIndex": 0,
+            "operation": "STATUS",
+            "status": 200,
+            "failure": null
+          },
+          {
+            "deviceIndex": 0,
+            "operation": "CREATE",
+            "status": 200,
+            "failure": null,
+            "leaseClockBand": "BEYOND_CLIENT_45S"
+          },
+          {
+            "deviceIndex": 1,
+            "operation": "STATUS",
+            "status": 200,
+            "failure": null
+          },
+          {
+            "deviceIndex": 1,
+            "operation": "JOIN",
+            "status": 200,
+            "failure": null,
+            "leaseClockBand": "WITHIN_CLIENT_45S"
+          },
+          {
+            "deviceIndex": 0,
+            "operation": "READ",
+            "status": 200,
+            "failure": null,
+            "leaseClockBand": "WITHIN_CLIENT_45S"
+          },
+          {
+            "deviceIndex": 0,
+            "operation": "STOP",
+            "status": 200,
+            "failure": null
+          },
+          {
+            "deviceIndex": 1,
+            "operation": "STOP",
+            "status": 200,
+            "failure": null
+          }
+        ],
+        "failedPageState": null,
+        "journalStates": [
+          {
+            "deviceIndex": 0,
+            "status": 200,
+            "shellVisible": true,
+            "nativeBridgeAvailable": true,
+            "authRedirect": false
+          },
+          {
+            "deviceIndex": 1,
+            "status": 200,
+            "shellVisible": true,
+            "nativeBridgeAvailable": true,
+            "authRedirect": false
+          }
+        ],
+        "pairingDiagnostics": [],
+        "nativePreparationDiagnostics": [
+          {
+            "deviceIndex": 0,
+            "category": "CAPABILITIES_READY"
+          },
+          {
+            "deviceIndex": 1,
+            "category": "CAPABILITIES_READY"
+          }
+        ],
+        "openingGeometryDiagnostic": null,
+        "systemUiWaitInteractions": 0,
+        "interactionForeground": [
+          {
+            "phase": "CREATE",
+            "deviceIndex": 0,
+            "observed": true,
+            "mapReopened": false,
+            "controlsExpanded": false
+          },
+          {
+            "phase": "JOIN",
+            "deviceIndex": 1,
+            "observed": true,
+            "mapReopened": false,
+            "controlsExpanded": false
+          },
+          {
+            "phase": "START",
+            "deviceIndex": 0,
+            "observed": true,
+            "mapReopened": false,
+            "controlsExpanded": false
+          },
+          {
+            "phase": "STOP",
+            "deviceIndex": 1,
+            "observed": true,
+            "mapReopened": false,
+            "controlsExpanded": false
+          }
+        ],
+        "openingControl": "OBSERVED_DOM_AND_NATIVE_BOUNDS_OS_TOUCH",
+        "externalRequirements": ["REAL_DEVICE_REQUIRED:RF"],
+        "cleanup": {
+          "result": "PASS",
+          "remainingResources": []
+        }
+      }
+    },
+    "rootBrowser": {
+      "runId": "38170318327",
+      "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38170318327",
+      "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+      "transportSha": "ab0512d4ab7ae2586656eb7e764c2291dc93ee35",
+      "result": "success",
+      "artifactCount": 14,
+      "transportCleanup": {
+        "result": "PASS",
+        "ownedResources": ["refs/heads/codex/landfall-lab-0f8ac1974da2-1791748776379"],
+        "remainingResources": []
+      },
+      "retainedHostedReceiptSha256": "813b2141a5a1cddd59ea49019e306f63280b239ff45db514dd4614c3c2917043",
+      "scenarioSummaries": [],
+      "nativeInstrumentation": [],
+      "sensorPerformance": [],
+      "root": {
+        "files": 526,
+        "totalTests": 3205,
+        "passed": 3205,
+        "failed": 0,
+        "pending": 0,
+        "todo": 0,
+        "success": true,
+        "node": "v24.19.0",
+        "npm": "11.17.0",
+        "sourceTree": "4902cf7164cd00e1c49d5c10f00b2fae25bfa073",
+        "trackedSourceClean": true
+      },
+      "screenshots": [
+        {
+          "path": "artifacts/landfall-browser-0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68/test-results/sextant-phase4-optional-in-8e041--fallback-and-accessibility-chromium/devices-1280.png",
+          "sha256": "ed0ef35eefda42c5f1dc6291babc93e63a620799590dfc4fc9122904a79b44e0"
+        },
+        {
+          "path": "artifacts/landfall-browser-0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68/test-results/sextant-phase4-optional-in-a7e39--fallback-and-accessibility-chromium/devices-390.png",
+          "sha256": "8829d44214939f7d527ff2f30037a1ef02987aec898f119fd0e0e5d3ba18fbf5"
+        }
+      ]
+    },
+    "osLifecycle": {
+      "runId": "38171250062",
+      "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38171250062",
+      "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+      "transportSha": "c253c9055c6f58a996156973f791691b2ef56b6c",
+      "result": "success",
+      "artifactCount": 59,
+      "cleanup": {
+        "result": "PASS",
+        "ownedResources": ["refs/heads/codex/landfall-lab-0f8ac1974da2-1791749569610"],
+        "remainingResources": []
+      },
+      "summaries": [
+        {
+          "version": 1,
+          "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+          "sourceTree": "4902cf7164cd00e1c49d5c10f00b2fae25bfa073",
+          "sourceFingerprint": "c591f5ae3b07d2c10c94bd6063793b6d1aa973e7c0d23aa358ca0abdfe900f45",
+          "dirty": false,
+          "target": "android-emulator",
+          "total": 4,
+          "passed": 4,
+          "failed": 0,
+          "unsupported": 0,
+          "notConfigured": 0,
+          "artifactDirectory": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261011T202139750Z-3705"
+        }
+      ],
+      "scenarios": [],
+      "simulatorCleanup": {
+        "result": "PASS",
+        "remainingResources": []
+      }
+    },
+    "correctedNativeControls": {
+      "runId": "38171499881",
+      "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38171499881",
+      "sourceSha": "e03ffe37a45cc12dad7598c7b8c878f0cd466811",
+      "transportSha": "09acc16be7d9d6ab9da37ced9392bf76e39d8b2a",
+      "result": "success",
+      "artifactCount": 51,
+      "cleanup": {
+        "result": "PASS",
+        "ownedResources": ["refs/heads/codex/landfall-lab-e03ffe37a45c-1791749779255"],
+        "remainingResources": []
+      },
+      "summaries": [],
+      "scenarios": [],
+      "nativeConsumer": {
+        "version": 1,
+        "deviceProfile": "primary-phone",
+        "configurations": [
+          {
+            "platform": "ANDROID",
+            "virtual": true,
+            "api": 36,
+            "model": "sdk_gphone64_x86_64",
+            "memoryKiB": 3048392,
+            "widthPixels": 1080,
+            "heightPixels": 2400,
+            "densityDpi": 420
+          },
+          {
+            "platform": "ANDROID",
+            "virtual": true,
+            "api": 36,
+            "model": "sdk_gphone64_x86_64",
+            "memoryKiB": 3048392,
+            "widthPixels": 1080,
+            "heightPixels": 2400,
+            "densityDpi": 420
+          }
+        ],
+        "source": {
+          "sourceSha": "e03ffe37a45cc12dad7598c7b8c878f0cd466811",
+          "sourceTree": "f566397a7998a05c9063df8e5ac5dc2cb901a396",
+          "dirty": false,
+          "sourceFingerprint": "620220a10dfd56b4522c7945c3243dbec99d100e85b783221cabb3971f798b82"
+        },
+        "sourceUnchanged": true,
+        "evidenceClass": "EMULATOR_PROVEN",
+        "nativeBridge": "REAL_ANDROID_OS",
+        "firstPartyApi": "REAL_OPTIMIZED_APPLICATION",
+        "validatedReportsObservedOnBoth": true,
+        "nativeStopObserved": true,
+        "peerVerified": false,
+        "canComplete": false,
+        "uncertainty": "UNKNOWN",
+        "canonicalAuthority": "ONE_VOYAGE_REAL_SQLITE",
+        "canonicalProgressionEvents": 0,
+        "result": "PASS",
+        "failedStage": null,
+        "failedDeviceIndex": null,
+        "journalResponseStatus": 200,
+        "failureKind": null,
+        "failureTool": null,
+        "failureChecks": null,
+        "nativePageErrors": [],
+        "failedFirstPartyRequests": 7,
+        "nearbyHttp": [
+          {
+            "deviceIndex": 0,
+            "operation": "STATUS",
+            "status": 200,
+            "failure": null
+          },
+          {
+            "deviceIndex": 0,
+            "operation": "CREATE",
+            "status": 200,
+            "failure": null,
+            "leaseClockBand": "WITHIN_CLIENT_45S"
+          },
+          {
+            "deviceIndex": 1,
+            "operation": "STATUS",
+            "status": 200,
+            "failure": null
+          },
+          {
+            "deviceIndex": 1,
+            "operation": "JOIN",
+            "status": 200,
+            "failure": null,
+            "leaseClockBand": "WITHIN_CLIENT_45S"
+          },
+          {
+            "deviceIndex": 0,
+            "operation": "READ",
+            "status": 200,
+            "failure": null,
+            "leaseClockBand": "WITHIN_CLIENT_45S"
+          },
+          {
+            "deviceIndex": 0,
+            "operation": "STOP",
+            "status": 200,
+            "failure": null
+          },
+          {
+            "deviceIndex": 1,
+            "operation": "STOP",
+            "status": 200,
+            "failure": null
+          }
+        ],
+        "failedPageState": null,
+        "journalStates": [
+          {
+            "deviceIndex": 0,
+            "status": 200,
+            "shellVisible": true,
+            "nativeBridgeAvailable": true,
+            "authRedirect": false
+          },
+          {
+            "deviceIndex": 1,
+            "status": 200,
+            "shellVisible": true,
+            "nativeBridgeAvailable": true,
+            "authRedirect": false
+          }
+        ],
+        "pairingDiagnostics": [],
+        "nativePreparationDiagnostics": [
+          {
+            "deviceIndex": 0,
+            "category": "CAPABILITIES_READY"
+          },
+          {
+            "deviceIndex": 1,
+            "category": "CAPABILITIES_READY"
+          }
+        ],
+        "openingGeometryDiagnostic": null,
+        "systemUiWaitInteractions": 0,
+        "interactionForeground": [
+          {
+            "phase": "CREATE",
+            "deviceIndex": 0,
+            "observed": true,
+            "mapReopened": false,
+            "controlsExpanded": false
+          },
+          {
+            "phase": "JOIN",
+            "deviceIndex": 1,
+            "observed": true,
+            "mapReopened": false,
+            "controlsExpanded": false
+          },
+          {
+            "phase": "START",
+            "deviceIndex": 0,
+            "observed": true,
+            "mapReopened": false,
+            "controlsExpanded": false
+          },
+          {
+            "phase": "STOP",
+            "deviceIndex": 1,
+            "observed": true,
+            "mapReopened": false,
+            "controlsExpanded": false
+          }
+        ],
+        "openingControl": "OBSERVED_DOM_AND_NATIVE_BOUNDS_OS_TOUCH",
+        "externalRequirements": ["REAL_DEVICE_REQUIRED:RF"],
+        "cleanup": {
+          "result": "PASS",
+          "remainingResources": []
+        }
+      },
+      "nativeControls": {
+        "version": 1,
+        "source": {
+          "sourceSha": "e03ffe37a45cc12dad7598c7b8c878f0cd466811",
+          "sourceTree": "f566397a7998a05c9063df8e5ac5dc2cb901a396",
+          "dirty": false,
+          "sourceFingerprint": "620220a10dfd56b4522c7945c3243dbec99d100e85b783221cabb3971f798b82"
+        },
+        "deviceProfile": "primary-phone",
+        "nativeBridge": "ACTUAL_ANDROID_WEBVIEW",
+        "passiveDiscovery": true,
+        "motionSupported": true,
+        "osSamplesObserved": 10,
+        "pausedAndFallback": true,
+        "physicalMotionProven": false,
+        "progressionWriter": false
+      }
+    },
+    "primaryUwbRequalification": {
+      "runId": "38171814218",
+      "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38171814218",
+      "sourceSha": "e03ffe37a45cc12dad7598c7b8c878f0cd466811",
+      "transportSha": "84ca90d8c12640484c83ff982bf12a0a52b79054",
+      "result": "success",
+      "artifactCount": 12,
+      "cleanup": {
+        "result": "PASS",
+        "ownedResources": ["refs/heads/codex/landfall-lab-e03ffe37a45c-1791750041099"],
+        "remainingResources": []
+      },
+      "summaries": [
+        {
+          "version": 1,
+          "sourceSha": "e03ffe37a45cc12dad7598c7b8c878f0cd466811",
+          "sourceTree": "f566397a7998a05c9063df8e5ac5dc2cb901a396",
+          "sourceFingerprint": "a610d0bd667c9f8ebedb5fb15814ef15b578e33a74c228f6346222c8d854588d",
+          "dirty": false,
+          "target": "android-emulator",
+          "total": 1,
+          "passed": 1,
+          "failed": 0,
+          "unsupported": 0,
+          "notConfigured": 0,
+          "artifactDirectory": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261011T202646975Z-4379"
+        }
+      ],
+      "scenarios": [
+        {
+          "version": 1,
+          "scenarioId": "uwb-native-peer-session",
+          "scenarioVersion": 1,
+          "seed": 1729,
+          "sourceSha": "e03ffe37a45cc12dad7598c7b8c878f0cd466811",
+          "sourceTree": "f566397a7998a05c9063df8e5ac5dc2cb901a396",
+          "sourceFingerprint": "a610d0bd667c9f8ebedb5fb15814ef15b578e33a74c228f6346222c8d854588d",
+          "dirty": false,
+          "target": "android-emulator",
+          "hostPlatform": "linux",
+          "environment": "native-platform-and-origin-bound-webview",
+          "deviceProfile": "primary-phone",
+          "deviceConfiguration": {
+            "platform": "ANDROID",
+            "virtual": true,
+            "api": 36,
+            "model": "sdk_gphone64_x86_64",
+            "memoryKiB": 3048392,
+            "widthPixels": 1080,
+            "heightPixels": 2400,
+            "densityDpi": 420
+          },
+          "osVersion": "16",
+          "runtimeVersion": "Android emulator version 37.2.12.0 (build_id 16428233) (CL:N/A)",
+          "providerVersions": {
+            "UWB": "landfall-contract-v1"
+          },
+          "publishedFixture": "landfall-device-lab-v1",
+          "fixtureHash": "54cc5a5adaf3d8ca5e715706a0a833be0be00df5872de62e0d461a6147db18a7",
+          "timing": "WALL_CLOCK",
+          "toleranceMs": 2000,
+          "startedAt": "2026-10-11T20:26:49.436Z",
+          "endedAt": "2026-10-11T20:27:51.047Z",
+          "evidenceClass": "EMULATOR_PROVEN",
+          "result": "PASS",
+          "steps": [
+            {
+              "index": 0,
+              "action": "NEARBY",
+              "state": "PASS",
+              "translation": {
+                "method": "OS_NEARBY_SESSION",
+                "limitation": "Real native reports through simulated radios; uncertainty and peer identity remain unverified. No RF accuracy or pose-control claim."
+              }
+            },
+            {
+              "index": 1,
+              "action": "ASSERT",
+              "state": "PASS",
+              "translation": {
+                "method": "OS_NEARBY_SESSION",
+                "limitation": "Real native reports through simulated radios; uncertainty and peer identity remain unverified. No RF accuracy or pose-control claim."
+              }
+            },
+            {
+              "index": 2,
+              "action": "NEARBY",
+              "state": "PASS",
+              "translation": {
+                "method": "OS_NEARBY_SESSION",
+                "limitation": "Real native reports through simulated radios; uncertainty and peer identity remain unverified. No RF accuracy or pose-control claim."
+              }
+            },
+            {
+              "index": 3,
+              "action": "ASSERT",
+              "state": "PASS",
+              "translation": {
+                "method": "OS_NEARBY_SESSION",
+                "limitation": "Real native reports through simulated radios; uncertainty and peer identity remain unverified. No RF accuracy or pose-control claim."
+              }
+            },
+            {
+              "index": 4,
+              "action": "ASSERT",
+              "state": "PASS",
+              "translation": {
+                "method": "REAL_CANONICAL_AUTHORITY",
+                "limitation": "Real native reports through simulated radios; uncertainty and peer identity remain unverified. No RF accuracy or pose-control claim."
+              }
+            }
+          ],
+          "canonicalProgressionEvents": 0,
+          "canonicalAuthority": "ONE_VOYAGE_REAL_SQLITE",
+          "authorityFixtureHash": "ed951b7086333d2ea7f685e316df0963adf3c62d7ebba845bb8e65d21a8d4223",
+          "artifacts": [
+            {
+              "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261011T202646975Z-4379/uwb-native-peer-session/native-radio-session.json",
+              "sha256": "021f5221715a8aa57dcaaf1a1b195213cd76482ca44fbb24318c11be70c61050",
+              "kind": "TEST_RESULT"
+            }
+          ],
+          "externalRequirements": ["REAL_DEVICE_REQUIRED:RF"],
+          "cleanup": {
+            "result": "PASS",
+            "ownedResources": [
+              "radio-canonical-authority",
+              "radio-loopback-server",
+              "app:emulator-5580",
+              "reverse:emulator-5580",
+              "app:emulator-5582",
+              "reverse:emulator-5582"
+            ],
+            "remainingResources": []
+          }
+        }
+      ],
+      "simulatorCleanup": {
+        "result": "PASS",
+        "remainingResources": []
+      }
+    },
+    "backgroundReturnFailure": {
+      "runId": "38170904429",
+      "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38170904429",
+      "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+      "transportSha": "0ea19394d657675d490b570a435fdaa804d140cb",
+      "result": "failure",
+      "artifactCount": 4,
+      "cleanup": {
+        "result": "PASS",
+        "ownedResources": ["refs/heads/codex/landfall-lab-0f8ac1974da2-1791749271784"],
+        "remainingResources": []
+      },
+      "summaries": [],
+      "scenarios": [],
+      "backgroundReturn": {
+        "version": 1,
+        "scenarioId": "first-party-native-background-return",
+        "scope": "FULL_NOTICE_RETURN",
+        "entryMode": "ACTUAL_OS_NOTICE",
+        "scenarioVersion": 1,
+        "hostPlatform": "LINUX",
+        "environment": "ANDROID_EMULATOR",
+        "target": "android-emulator",
+        "osVersion": "16",
+        "runtimeVersion": "133.0.6943.137",
+        "providerVersions": {
+          "nativeBridge": "1",
+          "playServicesLocation": "21.3.0"
+        },
+        "publishedFixture": "landfall-first-party-native-return-v1",
+        "fixtureHash": "b4bb0d396eff2e75b07a7ddfe21fa85ecf017e0876dff7a7960366dc7de29a73",
+        "timing": "WALL_CLOCK",
+        "startedAt": "2026-10-11T20:15:43.608Z",
+        "endedAt": "2026-10-11T20:18:27.877Z",
+        "deviceConfiguration": {
+          "platform": "ANDROID",
+          "virtual": true,
+          "api": 36,
+          "model": "sdk_gphone64_x86_64",
+          "memoryKiB": 3048388,
+          "widthPixels": 1080,
+          "heightPixels": 2400,
+          "densityDpi": 420
+        },
+        "source": {
+          "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+          "sourceTree": "4902cf7164cd00e1c49d5c10f00b2fae25bfa073",
+          "dirty": false,
+          "sourceFingerprint": "abfc9e1a84fda5297efb72b7b7d30ab5df6d4c66c9d72a6c01b48c33655d12d5"
+        },
+        "sourceUnchanged": true,
+        "scenarios": [
+          {
+            "id": "geofence-native-background-wake",
+            "version": 2
+          },
+          {
+            "id": "device-reboot",
+            "version": 1
+          },
+          {
+            "id": "notification-return",
+            "version": 1
+          },
+          {
+            "id": "notification-revoked",
+            "version": 1
+          }
+        ],
+        "result": "FAIL",
+        "failedStage": "FIRST_PARTY_REGISTER",
+        "failureKind": "TIMEOUT",
+        "failureTransport": {
+          "ownerCancelled": false,
+          "pageClosed": false,
+          "code": null,
+          "processKilled": false
+        },
+        "failureDevice": {
+          "transport": "DEVICE",
+          "appRunning": true,
+          "geofence": {
+            "stage": "ADD_FAILED",
+            "failure": "NOT_AVAILABLE"
+          }
+        },
+        "firstReturnPageClosed": null,
+        "returnHopObservation": "UNOBSERVED",
+        "deviceProfile": "primary-phone",
+        "evidenceClass": "EXECUTION_FAILED",
+        "nativeBridge": "REAL_ANDROID_OS",
+        "firstPartyApi": "REAL_OPTIMIZED_APPLICATION",
+        "geofenceInput": "DOCUMENTED_FLP_MOCK_LOCATION",
+        "signedRegistration": true,
+        "backgroundStatus": 200,
+        "returnHopStatus": null,
+        "settings": {
+          "screens": 2,
+          "serviceEntryObserved": true,
+          "accuracyEntryObserved": false,
+          "accuracySwitchBefore": "UNOBSERVED",
+          "accuracySwitchAfter": "UNOBSERVED",
+          "changed": false,
+          "accuracyControlObserved": false
+        },
+        "receiverRows": [],
+        "fusedRows": [],
+        "reboot": null,
+        "bootState": null,
+        "bootDiagnostics": null,
+        "bootRegistration": false,
+        "activeReturn": false,
+        "revokedReturn": false,
+        "canonicalAuthority": "ONE_VOYAGE_REAL_SQLITE",
+        "canonicalProgressionEvents": 0,
+        "canComplete": false,
+        "measurements": [
+          {
+            "stage": "FOREGROUND_JOURNAL",
+            "pssKiB": 86527
+          }
+        ],
+        "cpuMeasurements": [
+          {
+            "stage": "FOREGROUND_JOURNAL",
+            "elapsedMs": 15064.979380999983,
+            "capacity": "ALL_GUEST_VCPUS",
+            "nativeParentCpuPercent": 0.902,
+            "wholeGuestActiveCpuPercent": 56.651,
+            "rendererAttribution": "INCLUDED_IN_GUEST_NOT_SEPARATELY_ATTRIBUTED"
+          }
+        ],
+        "persistentSessionConfigured": true,
+        "coldLaunchReattachments": 0,
+        "webViewReattachments": 0,
+        "coldDiagnosticWire": [],
+        "coldSession": null,
+        "noticeControls": [],
+        "serverReturnOutcomes": [],
+        "deniedRequestCookies": [],
+        "coldRecheckOutcomes": [],
+        "coldRecheckWire": null,
+        "deniedRequestSessions": [],
+        "preliminaryGrossBounds": {
+          "noticeReturnMs": 60000,
+          "fullJournalPssKiB": 524288,
+          "nativeParentCpuPercent": 50,
+          "cpuCapacity": "ALL_GUEST_VCPUS",
+          "passed": false
+        },
+        "physicalTimingProven": false,
+        "externalRequirements": [
+          "REAL_DEVICE_REQUIRED:OEM_SUSPENSION",
+          "FIELD_REQUIRED:GPS",
+          "REAL_DEVICE_REQUIRED:BATTERY_THERMAL"
+        ],
+        "cleanup": {
+          "result": "PASS",
+          "remainingResources": []
+        }
+      },
+      "correction": "Owned settings probe now waits boundedly for the observed public Location Accuracy entry after service navigation. Fresh execution required; failure is preserved."
+    },
+    "radioPartialFailure": {
+      "runId": "38170875594",
+      "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38170875594",
+      "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+      "transportSha": "e91df3ab82c9821ffa621eaf07a9274312cd367f",
+      "result": "failure",
+      "artifactCount": 42,
+      "cleanup": {
+        "result": "PASS",
+        "ownedResources": ["refs/heads/codex/landfall-lab-0f8ac1974da2-1791749245192"],
+        "remainingResources": []
+      },
+      "summaries": [
+        {
+          "version": 1,
+          "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+          "sourceTree": "4902cf7164cd00e1c49d5c10f00b2fae25bfa073",
+          "sourceFingerprint": "c591f5ae3b07d2c10c94bd6063793b6d1aa973e7c0d23aa358ca0abdfe900f45",
+          "dirty": false,
+          "target": "android-emulator",
+          "total": 4,
+          "passed": 4,
+          "failed": 0,
+          "unsupported": 0,
+          "notConfigured": 0,
+          "artifactDirectory": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261011T201338927Z-4384"
+        },
+        {
+          "version": 1,
+          "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+          "sourceTree": "4902cf7164cd00e1c49d5c10f00b2fae25bfa073",
+          "sourceFingerprint": "c591f5ae3b07d2c10c94bd6063793b6d1aa973e7c0d23aa358ca0abdfe900f45",
+          "dirty": false,
+          "target": "android-emulator",
+          "total": 4,
+          "passed": 3,
+          "failed": 1,
+          "unsupported": 0,
+          "notConfigured": 0,
+          "artifactDirectory": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261011T201411363Z-4470"
+        }
+      ],
+      "scenarios": [
+        {
+          "version": 1,
+          "scenarioId": "uwb-native-peer-session",
+          "scenarioVersion": 1,
+          "seed": 1729,
+          "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+          "sourceTree": "4902cf7164cd00e1c49d5c10f00b2fae25bfa073",
+          "sourceFingerprint": "c591f5ae3b07d2c10c94bd6063793b6d1aa973e7c0d23aa358ca0abdfe900f45",
+          "dirty": false,
+          "target": "android-emulator",
+          "hostPlatform": "linux",
+          "environment": "native-platform-and-origin-bound-webview",
+          "deviceProfile": "low-resource",
+          "deviceConfiguration": {
+            "platform": "ANDROID",
+            "virtual": true,
+            "api": 36,
+            "model": "sdk_gphone64_x86_64",
+            "memoryKiB": 1503184,
+            "widthPixels": 1080,
+            "heightPixels": 1920,
+            "densityDpi": 420
+          },
+          "osVersion": "16",
+          "runtimeVersion": "Android emulator version 37.2.12.0 (build_id 16428233) (CL:N/A)",
+          "providerVersions": {
+            "UWB": "landfall-contract-v1"
+          },
+          "publishedFixture": "landfall-device-lab-v1",
+          "fixtureHash": "54cc5a5adaf3d8ca5e715706a0a833be0be00df5872de62e0d461a6147db18a7",
+          "timing": "WALL_CLOCK",
+          "toleranceMs": 2000,
+          "startedAt": "2026-10-11T20:13:41.049Z",
+          "endedAt": "2026-10-11T20:14:58.975Z",
+          "evidenceClass": "EMULATOR_PROVEN",
+          "result": "PASS",
+          "steps": [
+            {
+              "index": 0,
+              "action": "NEARBY",
+              "state": "PASS",
+              "translation": {
+                "method": "OS_NEARBY_SESSION",
+                "limitation": "Real native reports through simulated radios; uncertainty and peer identity remain unverified. No RF accuracy or pose-control claim."
+              }
+            },
+            {
+              "index": 1,
+              "action": "ASSERT",
+              "state": "PASS",
+              "translation": {
+                "method": "OS_NEARBY_SESSION",
+                "limitation": "Real native reports through simulated radios; uncertainty and peer identity remain unverified. No RF accuracy or pose-control claim."
+              }
+            },
+            {
+              "index": 2,
+              "action": "NEARBY",
+              "state": "PASS",
+              "translation": {
+                "method": "OS_NEARBY_SESSION",
+                "limitation": "Real native reports through simulated radios; uncertainty and peer identity remain unverified. No RF accuracy or pose-control claim."
+              }
+            },
+            {
+              "index": 3,
+              "action": "ASSERT",
+              "state": "PASS",
+              "translation": {
+                "method": "OS_NEARBY_SESSION",
+                "limitation": "Real native reports through simulated radios; uncertainty and peer identity remain unverified. No RF accuracy or pose-control claim."
+              }
+            },
+            {
+              "index": 4,
+              "action": "ASSERT",
+              "state": "PASS",
+              "translation": {
+                "method": "REAL_CANONICAL_AUTHORITY",
+                "limitation": "Real native reports through simulated radios; uncertainty and peer identity remain unverified. No RF accuracy or pose-control claim."
+              }
+            }
+          ],
+          "canonicalProgressionEvents": 0,
+          "canonicalAuthority": "ONE_VOYAGE_REAL_SQLITE",
+          "authorityFixtureHash": "ed951b7086333d2ea7f685e316df0963adf3c62d7ebba845bb8e65d21a8d4223",
+          "artifacts": [
+            {
+              "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261011T201338927Z-4384/uwb-native-peer-session/native-radio-session.json",
+              "sha256": "35a4303d66975005e921b65545edc6d8685c7321ce62f6611d5d896e1fabd83b",
+              "kind": "TEST_RESULT"
+            }
+          ],
+          "externalRequirements": ["REAL_DEVICE_REQUIRED:RF"],
+          "cleanup": {
+            "result": "PASS",
+            "ownedResources": [
+              "radio-canonical-authority",
+              "radio-loopback-server",
+              "app:emulator-5580",
+              "reverse:emulator-5580",
+              "app:emulator-5582",
+              "reverse:emulator-5582"
+            ],
+            "remainingResources": []
+          }
+        },
+        {
+          "version": 1,
+          "scenarioId": "uwb-native-peer-session",
+          "scenarioVersion": 1,
+          "seed": 1729,
+          "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+          "sourceTree": "4902cf7164cd00e1c49d5c10f00b2fae25bfa073",
+          "sourceFingerprint": "c591f5ae3b07d2c10c94bd6063793b6d1aa973e7c0d23aa358ca0abdfe900f45",
+          "dirty": false,
+          "target": "android-emulator",
+          "hostPlatform": "linux",
+          "environment": "native-platform-and-origin-bound-webview",
+          "deviceProfile": "primary-phone",
+          "deviceConfiguration": {
+            "platform": "ANDROID",
+            "virtual": true,
+            "api": 36,
+            "model": "sdk_gphone64_x86_64",
+            "memoryKiB": 3048392,
+            "widthPixels": 1080,
+            "heightPixels": 2400,
+            "densityDpi": 420
+          },
+          "osVersion": "16",
+          "runtimeVersion": "Android emulator version 37.2.12.0 (build_id 16428233) (CL:N/A)",
+          "providerVersions": {
+            "UWB": "landfall-contract-v1"
+          },
+          "publishedFixture": "landfall-device-lab-v1",
+          "fixtureHash": "54cc5a5adaf3d8ca5e715706a0a833be0be00df5872de62e0d461a6147db18a7",
+          "timing": "WALL_CLOCK",
+          "toleranceMs": 2000,
+          "startedAt": "2026-10-11T20:14:13.408Z",
+          "endedAt": "2026-10-11T20:15:05.032Z",
+          "evidenceClass": "EXECUTION_FAILED",
+          "result": "FAIL",
+          "steps": [
+            {
+              "index": 0,
+              "action": "NEARBY",
+              "state": "FAIL",
+              "reason": "LANDFALL_RADIO_PREPARATION_FAILED"
+            }
+          ],
+          "canonicalProgressionEvents": 0,
+          "canonicalAuthority": "ONE_VOYAGE_REAL_SQLITE",
+          "authorityFixtureHash": "ed951b7086333d2ea7f685e316df0963adf3c62d7ebba845bb8e65d21a8d4223",
+          "artifacts": [
+            {
+              "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261011T201411363Z-4470/uwb-native-peer-session/native-radio-session.json",
+              "sha256": "489b6dcfac318dcf2d09a3fb49e9c069e7a2aee3d2a8ef8ad3b2831470fcae19",
+              "kind": "TEST_RESULT"
+            }
+          ],
+          "externalRequirements": ["REAL_DEVICE_REQUIRED:RF"],
+          "cleanup": {
+            "result": "PASS",
+            "ownedResources": [
+              "radio-canonical-authority",
+              "radio-loopback-server",
+              "app:emulator-5580",
+              "reverse:emulator-5580",
+              "app:emulator-5582",
+              "reverse:emulator-5582"
+            ],
+            "remainingResources": []
+          }
+        }
+      ],
+      "simulatorCleanup": {
+        "result": "PASS",
+        "remainingResources": []
+      }
+    },
+    "applePresentation": {
+      "runId": "38170965786",
+      "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38170965786",
+      "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+      "transportSha": "224855eb713adcaaf2420358fe50667a18333481",
+      "result": "success",
+      "artifactCount": 4732,
+      "cleanup": {
+        "result": "PASS",
+        "ownedResources": ["refs/heads/codex/landfall-lab-0f8ac1974da2-1791749327218"],
+        "remainingResources": []
+      },
+      "summaries": [
+        {
+          "devicesAndConfigurations": [
+            {
+              "device": {
+                "architecture": "arm64",
+                "deviceId": "FEBA60F7-6048-4368-8707-58E44EACC544",
+                "deviceName": "landfall-owned-3175",
+                "modelName": "iPhone 17e",
+                "osBuildNumber": "23F77",
+                "osVersion": "26.5",
+                "platform": "iOS Simulator"
+              },
+              "expectedFailures": 0,
+              "failedTests": 0,
+              "passedTests": 30,
+              "skippedTests": 1,
+              "testPlanConfiguration": {
+                "configurationId": "1",
+                "configurationName": "Test Scheme Action"
+              }
+            }
+          ],
+          "environmentDescription": "LandfallCompanion · Built with macOS 26.6.2",
+          "expectedFailures": 0,
+          "failedTests": 0,
+          "finishTime": 1791750131.744,
+          "passedTests": 30,
+          "result": "Passed",
+          "skippedTests": 1,
+          "startTime": 1791749740.003,
+          "statistics": [
+            {
+              "subtitle": "1 test run",
+              "title": "1 test collected performance metrics"
+            }
+          ],
+          "testFailures": [],
+          "title": "Test - LandfallCompanion",
+          "topInsights": [
+            {
+              "category": "Longest Test Runs",
+              "impact": "67% of duration",
+              "text": "2 longest test runs with outlier durations exceeding 2.99s (three standard deviations)"
+            }
+          ],
+          "totalTestCount": 31
+        },
+        {
+          "devicesAndConfigurations": [
+            {
+              "device": {
+                "architecture": "arm64",
+                "deviceId": "FEBA60F7-6048-4368-8707-58E44EACC544",
+                "deviceName": "landfall-owned-3175",
+                "modelName": "iPhone 17e",
+                "osBuildNumber": "23F77",
+                "osVersion": "26.5",
+                "platform": "iOS Simulator"
+              },
+              "expectedFailures": 0,
+              "failedTests": 0,
+              "passedTests": 1,
+              "skippedTests": 0,
+              "testPlanConfiguration": {
+                "configurationId": "1",
+                "configurationName": "Test Scheme Action"
+              }
+            }
+          ],
+          "environmentDescription": "LandfallCompanion · Built with macOS 26.6.2",
+          "expectedFailures": 0,
+          "failedTests": 0,
+          "finishTime": 1791750252.878,
+          "passedTests": 1,
+          "result": "Passed",
+          "skippedTests": 0,
+          "startTime": 1791750153.542,
+          "statistics": [],
+          "testFailures": [],
+          "title": "Test - LandfallCompanion",
+          "topInsights": [],
+          "totalTestCount": 1
+        },
+        {
+          "environmentDescription": "LandfallCompanion · Built with macOS 26.6.2",
+          "expectedFailures": 0,
+          "failedTests": 0,
+          "finishTime": 1791750252.878,
+          "passedTests": 31,
+          "result": "Passed",
+          "skippedTests": 1,
+          "startTime": 1791749740.003,
+          "testFailures": [],
+          "title": "Test - LandfallCompanion",
+          "totalTestCount": 32,
+          "componentSummaries": ["native-test-summary.json", "reduced-motion-test-summary.json"]
+        }
+      ],
+      "scenarios": [],
+      "simulatorCleanup": {
+        "result": "PASS",
+        "ownedResources": ["FEBA60F7-6048-4368-8707-58E44EACC544"],
+        "remainingResources": []
+      },
+      "limits": "Actual simulator XCTest, Home transition, UIKit unconfigured-shell large-text/rotation fallback and observed OS Reduce Motion setting. It does not establish normal Devices-page Apple UX or physical hardware."
+    },
+    "correctedOrdinary": {
+      "runId": "38171494446",
+      "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38171494446",
+      "sourceSha": "e03ffe37a45cc12dad7598c7b8c878f0cd466811",
+      "sourceTree": "f566397a7998a05c9063df8e5ac5dc2cb901a396",
+      "baseSha": "efa689f20d2a9dead852135302dd6961c9f0f0d2",
+      "decision": "PASS",
+      "selectedUnits": 316,
+      "browserTests": ["tests/e2e/landfall-native-nearby.spec.ts", "tests/e2e/sextant-phase4.spec.ts"],
+      "finalization": {
+        "authority": "SOUNDING_LINE_EVIDENCE_FINALIZER",
+        "requiredObligations": 10,
+        "closure": [
+          {
+            "obligationId": "preflight.b295d8321e1a896ebe5f1bba",
+            "receiptId": "sl14-c75e08b8d524f54688e101f08021d868",
+            "satisfied": true
+          },
+          {
+            "obligationId": "preflight.71f0983f1a37c0ead27290f2",
+            "receiptId": "sl14-bb6656df187e00fb4a87456265b0bfa7",
+            "satisfied": true
+          },
+          {
+            "obligationId": "preflight.b6afec1badc6d034b0aaa5a0",
+            "receiptId": "sl14-6e0dd5f1a8b24fb4e8da8c820905772c",
+            "satisfied": true
+          },
+          {
+            "obligationId": "preflight.06bb2802ffe5ab9677efa486",
+            "receiptId": "sl14-d3bc875aa5f24414f83a36faf624c4d6",
+            "satisfied": true
+          },
+          {
+            "obligationId": "preflight.bda79721781de0679d88e863",
+            "receiptId": "sl14-a1186a6ead09647e7beb9d4aabed110a",
+            "satisfied": true
+          },
+          {
+            "obligationId": "unit.dd40ac15a999fd53e20f7625",
+            "receiptId": "sl14-ca688cf3827dfc5fe0d451dc94e28826",
+            "satisfied": true
+          },
+          {
+            "obligationId": "preflight.626397032f8030d2781f7950",
+            "receiptId": "sl14-c0cd5f0a6de6b32bc6ac26945e661bd2",
+            "satisfied": true
+          },
+          {
+            "obligationId": "migration.881c319da844d6391aac0892",
+            "receiptId": "sl14-1e17625832564ce828be473c8550f6a4",
+            "satisfied": true
+          },
+          {
+            "obligationId": "preflight.0db2c08b52501f8a00cb7e48",
+            "receiptId": "sl14-c582d00f98dff9086ea1f81cef1979db",
+            "satisfied": true
+          },
+          {
+            "obligationId": "browser.50e0161cb8ac97096a469763",
+            "receiptId": "sl14-a594d73266add94b3eb8daccae91b3c4",
+            "satisfied": true
+          }
+        ],
+        "remainder": [],
+        "counts": {
+          "FRESH": 3,
+          "PRESERVED": 0,
+          "REBOUND": 3,
+          "INVALIDATED": 4,
+          "CONSERVATIVE_FALLBACK": 0
+        },
+        "errors": [],
+        "decision": "PASS"
+      }
+    }
+  },
+  "limitations": [
+    "Original source receipts only; UI/control follow-up requires fresh ordinary/browser/native consumer qualification",
+    "Native OS and explicitly injected provider assertions remain separate",
+    "Emulator performance does not establish physical power/thermal behavior or long-duration leak freedom",
+    "Remote D4 core bring-up lacks authorized provider/project access and signing configuration",
+    "No formal Phase 4 acceptance, protected merge, release or Phase 5 authority"
+  ],
+  "updatedAt": "2026-10-11T22:02:42.184Z",
+  "acceptedMainReconciliation": {
+    "baseSha": "af867c011eb0c3c4d39cfe0d0bfef7c596fdbbbf",
+    "baseTree": "2456cb6cf7091048d17d5e5d52b865b97ded9d6e",
+    "ownedMergeSha": "6130b7a7539697425f06965ab005c14dae97ab5c",
+    "ownedMergeTree": "2728c26d3d1aecf5336d301eabb2cc21331a14d6",
+    "lockSha256": "1dc07127fe4874a0d63baaf36fd4b644b1cbb0c37860312b11873c103a56b373",
+    "nativeSourceChangedFromPreviousCandidate": false,
+    "sharedRegistryDeclarations": 125,
+    "localFeedback": {
+      "node": "24.18.0",
+      "npm": "11.9.0",
+      "tests": 913,
+      "files": 112,
+      "result": "PASS",
+      "report": "artifacts/sextant-integration-6130b7a7-vitest.json",
+      "typecheck": "PASS",
+      "docs": "PASS",
+      "catalog": "PASS_66_ACCEPTED_ENTRIES_NO_SEXTANT_PHASE4_PROMOTION"
+    },
+    "freshHostedCombinedSourceQualification": "REQUIRED",
+    "olderReceiptPolicy": "Original source SHA, lock, tree and fingerprint retained; no whole-source equivalence claimed after accepted package/schema/spatial changes."
+  },
+  "terminalFollowup": {
+    "at": "2026-10-11T21:40:34.420Z",
+    "status": "PARTIAL_NOT_PHASE_ACCEPTANCE",
+    "predecessorSoftware": {
+      "sourceSha": "c21c8cd9ce58e01c4aa74681c25d65f4f2061eff",
+      "sourceTree": "7cdd23d0847e47ee00ea01de576ca5d1bef650a6",
+      "baseSha": "af867c011eb0c3c4d39cfe0d0bfef7c596fdbbbf",
+      "ordinary": {
+        "focusedConsumerRegression": 913,
+        "files": 112,
+        "D0D1": 53,
+        "source": "c21c8cd9ce58e01c4aa74681c25d65f4f2061eff",
+        "ordinaryRun": 38173726401,
+        "ordinary": "PASS_EXACT_CANDIDATE_BASE_TREE",
+        "rootBrowserRun": 38173786484,
+        "rootBrowser": "PASS_HARVESTED",
+        "backgroundRun": 38173731438,
+        "background": "PASS_HARVESTED",
+        "ordinaryUnitFiles": 318,
+        "ordinaryTests": 2163,
+        "ordinaryObligations": 10,
+        "ordinaryBrowser": {
+          "passed": 2,
+          "skippedNativeCase": 1,
+          "nativeProvenByThisRun": false
+        }
+      },
+      "combinedRoot": {
+        "status": "PASS_HARVESTED_CONTRACT_CONSUMED",
+        "runId": 38173786484,
+        "sourceSha": "c21c8cd9ce58e01c4aa74681c25d65f4f2061eff",
+        "baseSha": "af867c011eb0c3c4d39cfe0d0bfef7c596fdbbbf",
+        "contract": "artifacts/sextant-combined-root-c21c8cd9ce58-contract.json",
+        "dispatch": "artifacts/landfall-device-lab/hosted-c21c8cd9ce58-1791751739262/dispatch.json",
+        "reason": "Accepted main changed package/Prisma/spatial inputs; previous root remains consumed and retained.",
+        "cleanup": "PASS",
+        "tests": 3268,
+        "files": 533,
+        "failed": 0,
+        "pending": 0,
+        "artifacts": 14,
+        "toolchain": {
+          "node": "24.19.0",
+          "npm": "11.17.0"
+        },
+        "databaseCleanup": "PASS_DATABASE_REMOVED",
+        "browser": {
+          "cases": 2,
+          "result": "PASS",
+          "desktop": 1280,
+          "mobile": 390,
+          "visuallyReviewed": true,
+          "scope": "Generic browser/native-transport double; not D2/D3 hardware",
+          "runtimeCleanupMs": 27
+        }
+      }
+    },
+    "results": {
+      "androidSignedBackgroundReturn": {
+        "runId": 38173731438,
+        "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38173731438",
+        "sourceSha": "c21c8cd9ce58e01c4aa74681c25d65f4f2061eff",
+        "transportSha": "e19e7191d56873719700c988dbe4a0effb70fcfe",
+        "conclusion": "success",
+        "files": 4,
+        "transportCleanup": {
+          "result": "PASS",
+          "ownedResources": ["refs/heads/codex/landfall-lab-c21c8cd9ce58-1791751690537"],
+          "remainingResources": []
+        },
+        "receiptFile": "artifacts/landfall-device-lab/hosted-c21c8cd9ce58-1791751690537/run-38173731438/hosted-receipt.json",
+        "receiptSha256": "b266a1f6371608717d8b9d557e31e40d0b2c212a0c0b06b4bfde5cd83fbadfed",
+        "native": {
+          "result": "PASS",
+          "source": {
+            "sourceSha": "c21c8cd9ce58e01c4aa74681c25d65f4f2061eff",
+            "sourceTree": "7cdd23d0847e47ee00ea01de576ca5d1bef650a6",
+            "dirty": false,
+            "sourceFingerprint": "7a94936a2f7113dd5489d44a80a7fe5e9f8ba89594ecadf3d38870b14a989187"
+          },
+          "settings": {
+            "screens": 4,
+            "serviceEntryObserved": true,
+            "accuracyEntryObserved": true,
+            "accuracySwitchBefore": "DISABLED",
+            "accuracySwitchAfter": "ENABLED",
+            "changed": true,
+            "accuracyControlObserved": true
+          },
+          "signedRegistration": true,
+          "entryMode": "ACTUAL_OS_NOTICE",
+          "geofenceInput": "DOCUMENTED_FLP_MOCK_LOCATION",
+          "reboot": {
+            "bootIdentityChanged": true,
+            "avdIdentityPreserved": true,
+            "elapsedMs": 33291
+          },
+          "bootRegistration": true,
+          "activeReturn": true,
+          "revokedReturn": true,
+          "canonicalProgressionEvents": 0,
+          "cleanup": {
+            "result": "PASS",
+            "remainingResources": []
+          },
+          "physicalTimingProven": false
+        }
+      },
+      "appleCompatibilityTablet": {
+        "runId": 38170962062,
+        "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38170962062",
+        "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+        "transportSha": "dbb4d260157c7915e6bd83a4580e8d59c2fa3117",
+        "conclusion": "failure",
+        "files": 14964,
+        "transportCleanup": {
+          "result": "PASS",
+          "ownedResources": ["refs/heads/codex/landfall-lab-0f8ac1974da2-1791749323559"],
+          "remainingResources": []
+        },
+        "receiptFile": "artifacts/landfall-device-lab/hosted-0f8ac1974da2-1791749323559/run-38170962062/hosted-receipt.json",
+        "receiptSha256": "3bf526f4b0c23f3d87de12d6ac3a63694a27f0f20d52092e6ea117a56573aba4",
+        "summary": [
+          {
+            "version": 1,
+            "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+            "sourceTree": "4902cf7164cd00e1c49d5c10f00b2fae25bfa073",
+            "sourceFingerprint": "c591f5ae3b07d2c10c94bd6063793b6d1aa973e7c0d23aa358ca0abdfe900f45",
+            "dirty": false,
+            "target": "ios-simulator",
+            "total": 9,
+            "passed": 8,
+            "failed": 1,
+            "unsupported": 0,
+            "notConfigured": 0,
+            "artifactDirectory": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261011T201625161Z-19964"
+          },
+          {
+            "version": 1,
+            "sourceSha": "0f8ac1974da20b2c6f5e6b2f1556d2005ff35e68",
+            "sourceTree": "4902cf7164cd00e1c49d5c10f00b2fae25bfa073",
+            "sourceFingerprint": "c591f5ae3b07d2c10c94bd6063793b6d1aa973e7c0d23aa358ca0abdfe900f45",
+            "dirty": false,
+            "target": "ios-simulator",
+            "total": 9,
+            "passed": 7,
+            "failed": 2,
+            "unsupported": 0,
+            "notConfigured": 0,
+            "artifactDirectory": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261011T201943731Z-17789"
+          }
+        ],
+        "failures": [
+          "compatibility geofence: foreground client timeout despite XCTest PASS",
+          "tablet geofence: foreground client timeout despite XCTest PASS",
+          "tablet lost response: OS location tool timeout"
+        ]
+      },
+      "appleNarrowFailure": {
+        "runId": 38174199753,
+        "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38174199753",
+        "sourceSha": "c21c8cd9ce58e01c4aa74681c25d65f4f2061eff",
+        "transportSha": "7cda58f6b8c7c274ffc1da967d7a749d4418ecc1",
+        "conclusion": "failure",
+        "files": 6115,
+        "transportCleanup": {
+          "result": "PASS",
+          "ownedResources": ["refs/heads/codex/landfall-lab-c21c8cd9ce58-1791752105048"],
+          "remainingResources": []
+        },
+        "receiptFile": "artifacts/landfall-device-lab/hosted-c21c8cd9ce58-1791752105048/run-38174199753/hosted-receipt.json",
+        "receiptSha256": "e8016061c75537d0895fd51e6783cb289e7bf8cf1c35b1631868f103b615b576",
+        "summary": [
+          {
+            "version": 1,
+            "sourceSha": "c21c8cd9ce58e01c4aa74681c25d65f4f2061eff",
+            "sourceTree": "7cdd23d0847e47ee00ea01de576ca5d1bef650a6",
+            "sourceFingerprint": "c514603d1952c402a0b21a7a39fc1b90c5f28fc62584faf0ac88de27bde755c4",
+            "dirty": false,
+            "target": "ios-simulator",
+            "total": 2,
+            "passed": 0,
+            "failed": 2,
+            "unsupported": 0,
+            "notConfigured": 0,
+            "artifactDirectory": "/Users/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261011T210320156Z-17977"
+          }
+        ],
+        "failures": [
+          "offline-lost-response-canonical-reconcile: authority LANDFALL_EVIDENCE_STALE after actual location delivery",
+          "geofence-native-background-wake: actual XCTest foreground PASS, WebView LANDFALL_NATIVE_CLIENT_TIMEOUT"
+        ]
+      }
+    },
+    "acceptedPhoneCorrection": {
+      "mainSha": "678dd1156d39537d288ba3c2e5ce5c6efc2259d0",
+      "ownedMerge": "18f3515c423c5f7557d74ba1e16713e655b18d1b"
+    },
+    "nextQualification": {
+      "appleNormalProductUi": "IMPLEMENTED_AWAITING_ACTUAL_EXECUTION",
+      "geofenceDiagnostics": "BOUNDED_DEBUG_COUNTERS_NOT_A_REPAIR",
+      "lostResponsePolicy": "EXPLICIT_SYNTHETIC_TEN_MINUTE_PUBLISHED_WINDOW; original timestamps; product defaults and stale cases preserved"
+    },
+    "formalD4": "NOT_PROVEN_NO_AUTHORIZED_PROVIDER_SIGNING"
+  },
+  "appleProductCompilerFollowup": {
+    "recordedAt": "2026-10-11T22:02:42.182Z",
+    "sourceSha": "4f3e3a424bd931b43e2182a8544f1892de13e49c",
+    "sourceTree": "d20cdf38033f4d6036bb0033f55692dd39b3754c",
+    "ordinary": {
+      "runId": "38177846432",
+      "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38177846432",
+      "baseSha": "678dd1156d39537d288ba3c2e5ce5c6efc2259d0",
+      "decision": "PASS",
+      "finalization": {
+        "authority": "SOUNDING_LINE_EVIDENCE_FINALIZER",
+        "requiredObligations": 10,
+        "closure": [
+          {
+            "obligationId": "preflight.dfbb9608eac5a4afbd9461f4",
+            "receiptId": "sl14-52d3575886d809001eb3a21f0c7f269a",
+            "satisfied": true
+          },
+          {
+            "obligationId": "preflight.53d6a0a19ed318f3844a3e65",
+            "receiptId": "sl14-2067fb539452409f4dcc21b8a07537fb",
+            "satisfied": true
+          },
+          {
+            "obligationId": "preflight.b6afec1badc6d034b0aaa5a0",
+            "receiptId": "sl14-00c26521224b167557f890a388914327",
+            "satisfied": true
+          },
+          {
+            "obligationId": "preflight.06bb2802ffe5ab9677efa486",
+            "receiptId": "sl14-b1e5e6c87e8d61fde21ec0fe517062c8",
+            "satisfied": true
+          },
+          {
+            "obligationId": "preflight.bda79721781de0679d88e863",
+            "receiptId": "sl14-24b2c8e14b4c3431f55bead7de7381f9",
+            "satisfied": true
+          },
+          {
+            "obligationId": "unit.174de9cbbedad2ba41fa84dc",
+            "receiptId": "sl14-14ac23b1948b26f72941ea28ac7385bb",
+            "satisfied": true
+          },
+          {
+            "obligationId": "preflight.626397032f8030d2781f7950",
+            "receiptId": "sl14-b36dd1f5dcfce6739cf5993c8ab8c91e",
+            "satisfied": true
+          },
+          {
+            "obligationId": "migration.881c319da844d6391aac0892",
+            "receiptId": "sl14-d37724b3c93425a6b0048fe37025b0ca",
+            "satisfied": true
+          },
+          {
+            "obligationId": "preflight.b36b1612f84c63ac9842de6a",
+            "receiptId": "sl14-48e4635606bf8b899a8af4ff7195810d",
+            "satisfied": true
+          },
+          {
+            "obligationId": "browser.50e0161cb8ac97096a469763",
+            "receiptId": "sl14-b0775bd947d96487ee3853c00090fa28",
+            "satisfied": true
+          }
+        ],
+        "remainder": [],
+        "counts": {
+          "FRESH": 4,
+          "PRESERVED": 0,
+          "REBOUND": 2,
+          "INVALIDATED": 4,
+          "CONSERVATIVE_FALLBACK": 0
+        },
+        "errors": [],
+        "decision": "PASS"
+      },
+      "tests": 2173,
+      "files": 322,
+      "browser": {
+        "passed": 2,
+        "skippedNative": 2,
+        "selected": [
+          "tests/e2e/landfall-native-nearby.spec.ts",
+          "tests/e2e/sextant-native-apple-devices.spec.ts",
+          "tests/e2e/sextant-phase4.spec.ts"
+        ],
+        "qualification": {
+          "version": 1,
+          "topology": "BUILT_SERVER_TASK_OWNED_RUNTIME",
+          "baseURL": "http://127.0.0.1:34661",
+          "failureCategory": null,
+          "failureCode": null,
+          "timings": {
+            "serverPreparationMs": 3,
+            "serverReadinessMs": 1548,
+            "browserExecutionMs": 8689,
+            "infrastructureFailureWaitMs": 0,
+            "cleanupMs": 28
+          }
+        },
+        "nativeProven": false
+      },
+      "receiptFile": "artifacts/ordinary-38177846432-evidence/sounding-line-ordinary-4f3e3a424bd931b43e2182a8544f1892de13e49c/ordinary-decision.json",
+      "receiptSha256": "85b679835f220e193476130473b6d00bf40c128bcbf0eef7f8be317b190b9213"
+    },
+    "native": {
+      "runId": "38177781664",
+      "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38177781664",
+      "transportSha": "dab4cd7045e860f044471261204e407f2d7bad61",
+      "result": "FAIL_COMPILER",
+      "error": "NativeLifecycleTests.swift:47: XCUIElement has no count",
+      "nativeTestsExecuted": 0,
+      "canonicalScenariosExecuted": 0,
+      "productJourneyExecuted": false,
+      "files": 3164,
+      "nativeCleanup": {
+        "result": "PASS",
+        "ownedResources": ["15FFD59C-5C36-447E-9238-3846D85896F8"],
+        "remainingResources": []
+      },
+      "transportCleanup": {
+        "result": "PASS",
+        "ownedResources": ["refs/heads/codex/landfall-lab-4f3e3a424bd9-1791755216924"],
+        "remainingResources": []
+      },
+      "receiptFile": "artifacts/landfall-device-lab/hosted-4f3e3a424bd9-1791755216924/run-38177781664/hosted-receipt.json",
+      "receiptSha256": "bdb45b6a3898f406685b9bd7d8bc775a28c325d4527bea5fe9bc89c9906d8a8f"
+    },
+    "correction": "First matching actual static-text element with bounded waitForExistence; same refusal requirement, no weakened test",
+    "retry": "ONE_DISTINCT_CORRECTED_SOURCE_PRIMARY_MAC_CONTRACT",
+    "phaseAcceptance": false
+  },
+  "appleGeofenceAndProductFollowup": {
+    "recordedAt": "2026-10-11T22:45:42.511Z",
+    "sourceSha": "df8d73b12d93e21deade813cc71aa497a31a33b9",
+    "sourceTree": "e6301193426cf5b5ac051a6443a51bb05212e950",
+    "originalBaseSha": "678dd1156d39537d288ba3c2e5ce5c6efc2259d0",
+    "runId": "38178875138",
+    "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38178875138",
+    "transportSha": "ae5dc1526c6850d769ed4efbdcd2855c3d2ebff8",
+    "receiptFile": "artifacts/landfall-device-lab/hosted-df8d73b12d93-1791756203870/run-38178875138/hosted-receipt.json",
+    "receiptSha256": "39a06081ed62c6298087b6c1e202eeafa96656c3a7a698504fc496b5a571c691",
+    "artifactFiles": 6035,
+    "nativeBaseline": {
+      "passed": 29,
+      "failed": 0,
+      "skipped": 1,
+      "cleanup": {
+        "result": "PASS",
+        "ownedResources": ["F64201C8-90B9-430D-BC1D-C8767F5CDC10"],
+        "remainingResources": []
+      }
+    },
+    "lostResponse": {
+      "result": "PASS",
+      "scenarioVersion": 3,
+      "publishedFixture": "landfall-device-lab-lost-response-v2",
+      "canonicalProgressionEvents": 1,
+      "steps": 10,
+      "cleanup": {
+        "result": "PASS",
+        "ownedResources": ["loopback-native-lab-server", "62E42966-71D6-4482-929F-CDCFBFE487BD"],
+        "remainingResources": []
+      },
+      "rerun": "NOT_REQUIRED_FOR_TRANSPORT_OR_DIAGNOSTIC_CORRECTION"
+    },
+    "geofence": {
+      "result": "FAIL",
+      "failedStep": {
+        "index": 4,
+        "action": "LIFECYCLE",
+        "state": "FAIL",
+        "reason": "LANDFALL_NATIVE_CLIENT_TIMEOUT",
+        "translation": {
+          "method": "OS_LIFECYCLE",
+          "limitation": "Simulator/emulator lifecycle does not prove physical-device OEM suspension policy."
+        }
+      },
+      "canonicalProgressionEvents": 0,
+      "cleanup": {
+        "result": "PASS",
+        "ownedResources": ["loopback-native-lab-server", "4F636626-BCFF-48FB-938F-764E184BE403"],
+        "remainingResources": []
+      },
+      "actualXCTest": {
+        "version": 1,
+        "toolExit": "PASS",
+        "finalizationDeadlineMs": 240000,
+        "finalizationTimedOut": false,
+        "finalizationElapsedMs": 58391,
+        "testCounts": {
+          "result": "PASS",
+          "passed": 1,
+          "failed": 0,
+          "skipped": 0
+        }
+      },
+      "clientStages": [
+        {
+          "stage": "ENTRY",
+          "elapsedMs": 320310
+        },
+        {
+          "stage": "RESTORE_LEASE",
+          "elapsedMs": 320338
+        },
+        {
+          "stage": "LEASE_RESTORED",
+          "elapsedMs": 320340
+        },
+        {
+          "stage": "REGISTER_WORKER",
+          "elapsedMs": 320346
+        },
+        {
+          "stage": "WAITING_WORKER",
+          "elapsedMs": 320376
+        },
+        {
+          "stage": "WAITING_CONTROL",
+          "elapsedMs": 320476
+        },
+        {
+          "stage": "WORKER_CONTROLLED",
+          "elapsedMs": 320481
+        },
+        {
+          "stage": "PERMISSION_READ",
+          "elapsedMs": 320577
+        },
+        {
+          "stage": "SCENARIO_RECEIVED",
+          "elapsedMs": 320592
+        },
+        {
+          "stage": "PASSIVE_PERMISSION",
+          "elapsedMs": 320592
+        },
+        {
+          "stage": "READY_POST",
+          "elapsedMs": 320603
+        },
+        {
+          "stage": "CONTROL_STEP_RECEIVED",
+          "elapsedMs": 320725
+        },
+        {
+          "stage": "CONTROL_RESULT_PREPARED",
+          "elapsedMs": 325647
+        },
+        {
+          "stage": "CONTROL_STEP_RECEIVED",
+          "elapsedMs": 326504
+        },
+        {
+          "stage": "CONTROL_RESULT_PREPARED",
+          "elapsedMs": 326553
+        },
+        {
+          "stage": "LIFECYCLE_BACKGROUND",
+          "elapsedMs": 330036
+        }
+      ],
+      "delivery": {
+        "version": 1,
+        "state": "UNAVAILABLE",
+        "delivery": null
+      },
+      "cause": "UNESTABLISHED_NO_FOREGROUND_CLIENT_ACK_AND_DELIVERY_DIAGNOSTICS_UNAVAILABLE"
+    },
+    "product": {
+      "result": "NOT_EXECUTED_TRANSPORT_SHELL_PARSE_FAILURE",
+      "nativeTestExecuted": false,
+      "syntheticRuntimeCreated": false,
+      "reason": "Missing closing single quote in owned nonce-generation shell command",
+      "correctedShellPreflight": {
+        "result": "PASS",
+        "syntax": "ACTUAL_GENERATED_SHELL_BASH_N",
+        "nonce": "ACTUAL_NODE_NONCE_ACCEPTED_FORMAT",
+        "executedCleanup": false,
+        "createdAt": "2026-10-11T22:43:08.691Z"
+      }
+    },
+    "transportCleanup": {
+      "result": "PASS",
+      "ownedResources": ["refs/heads/codex/landfall-lab-df8d73b12d93-1791756203870"],
+      "remainingResources": []
+    },
+    "nextScope": "ONE_PRIMARY_MAC_GEOFENCE_DIAGNOSTICS_AND_UNEXECUTED_NORMAL_DEVICES_JOURNEY",
+    "acceptedMainReconciliation": {
+      "baseSha": "ee8caa83e79b6b5802f8773689e802705c5154d3",
+      "ownedMerge": "43c89fd80679d809e7fadb150eb3b739b38b0314",
+      "changes": "Accepted Parallax A1 and Prisma schema; preserve owning source/docs, fresh combined qualification required"
+    },
+    "phaseAccepted": false
+  },
+  "appleObservedLifecycleAndProductBuildFollowup": {
+    "recordedAt": "2026-10-11T23:29:43.935Z",
+    "sourceSha": "b6bc6c2205fc39780c9e72be84e661ce88b69ad6",
+    "sourceTree": "d870ef5cad78d00c3b6350a5b2dcf41a5d67cefe",
+    "originalBaseSha": "ee8caa83e79b6b5802f8773689e802705c5154d3",
+    "runId": "38181812723",
+    "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38181812723",
+    "transportSha": "21b76def04dd12623306897fa933651f8f817063",
+    "receiptFile": "artifacts/landfall-device-lab/hosted-b6bc6c2205fc-1791758848826/run-38181812723/hosted-receipt.json",
+    "receiptSha256": "0f638837075dc3a8813c24199e2b607c4a1416169c413eb5c4137d99d8b15d61",
+    "artifactFiles": 6073,
+    "nativeObservationReuse": {
+      "artifactId": 11718599033,
+      "source": "artifacts/landfall-device-lab/hosted-b6bc6c2205fc-1791758848826/native-observation-11718599033",
+      "completedDownloadCertificate": "artifacts/landfall-device-lab/hosted-b6bc6c2205fc-1791758848826/native-download-complete.json",
+      "allCopiedNativeChecksumsMatch": true
+    },
+    "nativeBaseline": {
+      "passed": 29,
+      "failed": 0,
+      "skipped": 1,
+      "cleanup": {
+        "result": "PASS",
+        "ownedResources": ["513DFA7F-7714-4BBD-8F49-74F37E3708FF"],
+        "remainingResources": []
+      }
+    },
+    "geofence": {
+      "result": "FAIL",
+      "failedStep": {
+        "index": 4,
+        "action": "LIFECYCLE",
+        "state": "FAIL",
+        "reason": "LANDFALL_NATIVE_CLIENT_TIMEOUT",
+        "translation": {
+          "method": "OS_LIFECYCLE",
+          "limitation": "Simulator/emulator lifecycle does not prove physical-device OEM suspension policy."
+        }
+      },
+      "canonicalProgressionEvents": 0,
+      "cleanup": {
+        "result": "PASS",
+        "ownedResources": ["loopback-native-lab-server", "E4C77095-7EF0-4015-9F2C-5B51C3C6D862"],
+        "remainingResources": []
+      },
+      "actualXCTest": {
+        "version": 1,
+        "toolExit": "PASS",
+        "finalizationDeadlineMs": 240000,
+        "finalizationTimedOut": false,
+        "finalizationElapsedMs": 43497,
+        "testCounts": {
+          "result": "PASS",
+          "passed": 1,
+          "failed": 0,
+          "skipped": 0
+        }
+      },
+      "clientStages": [
+        {
+          "stage": "ENTRY",
+          "elapsedMs": 247549
+        },
+        {
+          "stage": "RESTORE_LEASE",
+          "elapsedMs": 247563
+        },
+        {
+          "stage": "LEASE_RESTORED",
+          "elapsedMs": 247638
+        },
+        {
+          "stage": "REGISTER_WORKER",
+          "elapsedMs": 247641
+        },
+        {
+          "stage": "WAITING_WORKER",
+          "elapsedMs": 247727
+        },
+        {
+          "stage": "WAITING_CONTROL",
+          "elapsedMs": 247818
+        },
+        {
+          "stage": "WORKER_CONTROLLED",
+          "elapsedMs": 247851
+        },
+        {
+          "stage": "SCENARIO_RECEIVED",
+          "elapsedMs": 248019
+        },
+        {
+          "stage": "PASSIVE_PERMISSION",
+          "elapsedMs": 248020
+        },
+        {
+          "stage": "PERMISSION_READ",
+          "elapsedMs": 248020
+        },
+        {
+          "stage": "READY_POST",
+          "elapsedMs": 248042
+        },
+        {
+          "stage": "CONTROL_STEP_RECEIVED",
+          "elapsedMs": 248173
+        },
+        {
+          "stage": "CONTROL_RESULT_PREPARED",
+          "elapsedMs": 253532
+        },
+        {
+          "stage": "CONTROL_STEP_RECEIVED",
+          "elapsedMs": 254482
+        },
+        {
+          "stage": "CONTROL_RESULT_PREPARED",
+          "elapsedMs": 254586
+        },
+        {
+          "stage": "LIFECYCLE_BACKGROUND",
+          "elapsedMs": 257224
+        }
+      ],
+      "delivery": {
+        "version": 1,
+        "state": "OBSERVED",
+        "delivery": {
+          "foregroundNotifications": 1,
+          "backgroundNotifications": 1,
+          "foregroundQueued": 1,
+          "backgroundQueued": 1,
+          "foregroundDelivered": 1,
+          "backgroundDelivered": 1
+        },
+        "unavailableReason": null
+      },
+      "cause": "UNESTABLISHED_COUNTERS_DO_NOT_ESTABLISH_FOREGROUND_EVENT_CHRONOLOGY"
+    },
+    "product": {
+      "result": "NOT_EXECUTED_NEXT_BUILD_NODE_HEAP_OOM",
+      "nativeTestExecuted": false,
+      "reason": "Production-build worker exhausted its approximately 2 GiB default Node heap before the browser/XCTest journey",
+      "databaseCleanup": {
+        "result": "PASS",
+        "scope": "owned-synthetic-SQLite",
+        "databaseRetained": false
+      },
+      "nextBuildBudget": "PREPARED_TASK_STEP_ONLY_4096_MIB_UNVERIFIED"
+    },
+    "transportCleanup": {
+      "result": "PASS",
+      "ownedResources": ["refs/heads/codex/landfall-lab-b6bc6c2205fc-1791758848826"],
+      "remainingResources": []
+    },
+    "recordedActivitiesInspection": {
+      "runId": "38184322782",
+      "sourceRunId": "38181812723",
+      "sourceCandidate": "b6bc6c2205fc39780c9e72be84e661ce88b69ad6",
+      "scope": "READ_EXISTING_XCTEST_ACTIVITIES_NO_BUILD_NO_SIMULATOR_NO_NEW_D3",
+      "status": "SUCCESS_HARVESTED",
+      "artifactFiles": 8,
+      "receiptFile": "artifacts/landfall-device-lab/hosted-b6bc6c2205fc-1791761220894/run-38184322782/hosted-receipt.json",
+      "receiptSha256": "a46fe197a846c15d0665aef566dd5a4c0dbaa59a0f85b09ca4c93ec9885b4ee2",
+      "cleanup": {
+        "result": "PASS",
+        "ownedResources": ["refs/heads/codex/landfall-lab-b6bc6c2205fc-1791761220894"],
+        "remainingResources": []
+      },
+      "appActivateUtc": "2026-10-11T23:10:43.637Z",
+      "waitRunningForegroundUtc": "2026-10-11T23:10:45.314Z",
+      "appTerminateUtc": "2026-10-11T23:11:20.539Z",
+      "nativeNotificationChronology": "NOT_ESTABLISHED_BY_AGGREGATE_COUNTERS",
+      "nextSourceRepair": {
+        "scope": "OWN_WEBVIEW_SCENE_ACTIVE_AND_BACKGROUND_NOTIFICATIONS_SHARE_IDEMPOTENT_TRANSITIONS_WITH_APPLICATION_NOTIFICATIONS",
+        "nativeCompilation": "UNVERIFIED_PENDING_NEW_SOURCE_D3",
+        "references": [
+          "https://developer.apple.com/documentation/uikit/uiscene/didactivatenotification",
+          "https://developer.apple.com/documentation/uikit/uiscene/activationstate-swift.enum/foregroundactive"
+        ]
+      }
+    },
+    "latestAcceptedBaseReconciliation": {
+      "baseSha": "6d13c357be93514c94e7f36db1a8c930265e65e2",
+      "changes": "Accepted Product Experience Engineering validation and Parallax A1 qualification; preserve all 488 protected contracts plus added native contract",
+      "finalCombinedAndExperienceQualification": "REQUIRED_AFTER_COHERENT_SOURCE"
+    },
+    "phaseAccepted": false
+  },
+  "appleOwningSceneAndNormalProductFollowup": {
+    "recordedAt": "2026-10-12T00:24:30.178Z",
+    "sourceSha": "12dd224ac75e00cc93ef32ec49e7dd7ff2263bf4",
+    "sourceTree": "f5ce0ea5636885d356face74fd8dfb8f38a934be",
+    "baseSha": "6d13c357be93514c94e7f36db1a8c930265e65e2",
+    "runId": "38185045363",
+    "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38185045363",
+    "transportSha": "bc77684bf35fee4783368226002755e771297563",
+    "receiptFile": "artifacts\\landfall-device-lab\\hosted-12dd224ac75e-1791761911598\\run-38185045363\\hosted-receipt.json",
+    "receiptSha256": "3633fde5fa3497db879bbf3a0a57a5dd7712a22e4d50dfb8e1e30ff5618aadaa",
+    "artifactFiles": 7514,
+    "nativeBaseline": {
+      "passed": 29,
+      "failed": 0,
+      "skipped": 1,
+      "cleanup": {
+        "result": "PASS",
+        "ownedResources": ["04E9971E-7620-4F70-B144-7CB8674B5103"],
+        "remainingResources": []
+      }
+    },
+    "geofence": {
+      "result": "FAIL",
+      "failedStep": {
+        "index": 4,
+        "action": "LIFECYCLE",
+        "state": "FAIL",
+        "reason": "LANDFALL_NATIVE_CLIENT_TIMEOUT",
+        "translation": {
+          "method": "OS_LIFECYCLE",
+          "limitation": "Simulator/emulator lifecycle does not prove physical-device OEM suspension policy."
+        }
+      },
+      "canonicalProgressionEvents": 0,
+      "cleanup": {
+        "result": "PASS",
+        "ownedResources": ["loopback-native-lab-server", "77E061BF-AEA1-47D1-8D85-A1354AEA5542"],
+        "remainingResources": []
+      },
+      "actualXCTest": {
+        "version": 1,
+        "toolExit": "PASS",
+        "finalizationDeadlineMs": 240000,
+        "finalizationTimedOut": false,
+        "finalizationElapsedMs": 24384,
+        "testCounts": {
+          "result": "PASS",
+          "passed": 1,
+          "failed": 0,
+          "skipped": 0
+        }
+      },
+      "delivery": {
+        "version": 1,
+        "state": "OBSERVED",
+        "delivery": {
+          "foregroundNotifications": 1,
+          "backgroundNotifications": 1,
+          "sceneForegroundNotifications": 1,
+          "sceneBackgroundNotifications": 1,
+          "foregroundQueued": 1,
+          "backgroundQueued": 1,
+          "foregroundDelivered": 1,
+          "backgroundDelivered": 1
+        },
+        "unavailableReason": null
+      },
+      "cause": "UNESTABLISHED_AGGREGATE_COUNTERS_DO_NOT_ESTABLISH_RETURN_ACTIVATION"
+    },
+    "product": {
+      "result": "FAIL_ACTUAL_XCTEST",
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "receiptFile": "artifacts\\landfall-device-lab\\hosted-12dd224ac75e-1791761911598\\run-38185045363\\artifacts\\sextant-ios-product-12dd224ac75e00cc93ef32ec49e7dd7ff2263bf4\\test-results\\sextant-native-apple-devic-6aa75-ion-and-background-fallback-chromium\\native-apple-product\\receipt.json",
+      "testFailures": [
+        {
+          "failureText": "failed: caught error: \"Error Domain=SextantProductUi Code=1 \"(null)\"\"",
+          "targetName": "LandfallCompanionUiTests",
+          "testIdentifier": 1,
+          "testIdentifierString": "NativeLifecycleTests/testOwnedProductDevices()",
+          "testIdentifierURL": "test://com.apple.xcode/LandfallCompanion/LandfallCompanionUiTests/NativeLifecycleTests/testOwnedProductDevices",
+          "testName": "testOwnedProductDevices()"
+        }
+      ],
+      "observedBoundary": "Entry link action did not reach the expected Email or Player name text field; original failure hierarchy still shows Player entry. Navigation cause unestablished.",
+      "canonicalProgressionDelta": 0,
+      "cleanup": {
+        "result": "PASS",
+        "remainingResources": []
+      },
+      "databaseCleanup": {
+        "result": "PASS",
+        "scope": "owned-synthetic-SQLite",
+        "databaseRetained": false
+      },
+      "buildHeapBudgetMiB": 4096
+    },
+    "transportCleanup": {
+      "result": "PASS",
+      "ownedResources": ["refs/heads/codex/landfall-lab-12dd224ac75e-1791761911598"],
+      "remainingResources": []
+    },
+    "physicalD4": false,
+    "phaseAccepted": false
+  },
+  "orderedAppleDiscriminator71": {
+    "candidateSha": "71b46a0beabad3e95e5380dba88016add5c4bd89",
+    "candidateTree": "36f0015d57849a8182b18dccf7b733325731b7ea",
+    "runId": 38189267999,
+    "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38189267999",
+    "result": "FAIL_HARVESTED",
+    "originalFiles": 7588,
+    "nativeBaseline": {
+      "passed": 29,
+      "failed": 0,
+      "skipped": 1
+    },
+    "product": {
+      "result": "FAIL",
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "canonicalProgressionDelta": 0,
+      "cleanup": {
+        "result": "PASS",
+        "remainingResources": []
+      }
+    },
+    "geofence": {
+      "result": "FAIL",
+      "orderedEvents": 19,
+      "afterBackground": "WILL_ENTER_WITHOUT_SCENE_ACTIVE_OR_FOREGROUND_DISPATCH",
+      "documentEpoch": 1,
+      "visibleInterruption": "MOTION_FITNESS_PERMISSION_PROMPT",
+      "trigger": "UNPROVEN_PENDING_ACTUAL_REPAIRED_EXECUTION"
+    },
+    "inspection": {
+      "runId": 38194847503,
+      "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38194847503",
+      "result": "SUCCESS_HARVESTED",
+      "originalFiles": 12,
+      "newNativeExecutions": 0,
+      "cleanup": {
+        "result": "PASS",
+        "ownedResources": ["refs/heads/codex/landfall-lab-71b46a0beaba-1791771115064"],
+        "remainingResources": []
+      }
+    },
+    "transportCleanup": {
+      "result": "PASS",
+      "ownedResources": ["refs/heads/codex/landfall-lab-71b46a0beaba-1791765957197"],
+      "remainingResources": []
+    },
+    "retainedEvidence": [
+      {
+        "path": "Development_Docs/Engineering/Sextant/evidence/71b46a0b/native-apple-lifecycle-trace.json",
+        "sha256": "ace73c29a71ac0e05f242f340bc26ec6db500f4c42aaf6d61556eb2a9c58e85d"
+      },
+      {
+        "path": "Development_Docs/Engineering/Sextant/evidence/71b46a0b/geofence-foreground-permission.png",
+        "sha256": "0102a7cd080e8f6f57e7cc8f5c80d5e5080d3a3662e6bf0ff93fd2841842ad0b"
+      },
+      {
+        "path": "Development_Docs/Engineering/Sextant/evidence/71b46a0b/geofence-foreground-hierarchy.txt",
+        "sha256": "342ca4a0e77f7c869863094b4d8597b759c00e12e23a81ba1f5f94f922917bac"
+      },
+      {
+        "path": "Development_Docs/Engineering/Sextant/evidence/71b46a0b/independent-failed-experience-review.json",
+        "sha256": "884c073108330b2f2a9cec1260591ea228fa2733c9d139c0a435a9cbe3fc06ac"
+      }
+    ],
+    "phaseAcceptance": false,
+    "physicalProof": false
+  },
+  "localExperience71": {
+    "sourceSha": "71b46a0beabad3e95e5380dba88016add5c4bd89",
+    "ordinarySignIn": "PASS",
+    "journeys": "THREE_FAILED_BEFORE_FIRST_ACTION",
+    "cause": "MISSING_VISIBLE_JOURNAL_OPENING_BEFORE_INERT_DEVICES_CONTINUITY",
+    "cleanup": "PASS",
+    "independentReview": "BLOCKED_INCOMPLETE_JOURNEY_EVIDENCE",
+    "required": "REPAIR_RECAPTURE_REVIEW_NOT_ACCEPTANCE"
+  },
+  "consumerReconciliation81": {
+    "acceptedBaseSha": "81fa477c5099b259e0d3bd8e8e0e6e52a7dc02bb",
+    "acceptedAssistantContract": "PRESERVED_EXACTLY",
+    "nativeConsumerContract": "sextant.phase4.native-context",
+    "fixtureContracts": 3,
+    "journeys": 4,
+    "devices": ["DESKTOP", "MOBILE"],
+    "motionModes": ["NORMAL", "REDUCED"],
+    "feedbackBudgetMs": 11000,
+    "creatorDraftProof": "EDIT_SAVE_ORDINARY_REOPEN_RESTORE_THEN_COMPARE_PINNED_PLAYER_CLUE",
+    "capture": "PENDING_ACTUAL_EXECUTION",
+    "independentReview": "PENDING_ACTUAL_RECAPTURE",
+    "phaseAcceptance": "NOT_CLAIMED"
+  },
+  "localExperience035": {
+    "sourceSha": "035fbd9dbaef5759a44d7d4f1c24ef1e50f5e6a1",
+    "sourceTree": "6ea11403e88c89920fa7a1007a1aa4ab643a6b01",
+    "baseSha": "81fa477c5099b259e0d3bd8e8e0e6e52a7dc02bb",
+    "build": "PASS",
+    "buildId": "kUd43vK73lqYsux3KnBEa",
+    "ordinarySignIn": "PASS",
+    "consumerJourneys": "THREE_FAILED_ACTUAL_JOURNEY",
+    "materialProgress": "DESKTOP_NORMAL_ACTUAL_DEVICES_AND_GUIDED_LENS_REACHED",
+    "cleanup": "PASS",
+    "packet": {
+      "path": "artifacts/sextant-failure-review-packet-035fbd9dbaef.json",
+      "sha256": "5772b0a42427875bbb5796d9c36e4bb8babd3ae77cb33fff4f8fd7839072e22e"
+    },
+    "review": {
+      "path": "artifacts/sextant-failure-independent-review-035fbd9dbaef.json",
+      "sha256": "3b06c5a95db8190e1ee586fc077489e2b999898ca5cba4a1fe2aca4d1f167736",
+      "verdict": "BLOCKED_CONFIRMED_READABILITY_DEFECT_AND_INCOMPLETE_JOURNEYS",
+      "dimensions": 17,
+      "artifactsVerified": 12
+    },
+    "confirmedFindings": ["SEXTANT-RR-001", "SEXTANT-RR-002", "SEXTANT-RR-003"],
+    "planner": {
+      "status": "PRODUCT_EXPERIENCE_UNREGISTERED_SURFACE",
+      "uncoveredConsumers": 141
+    },
+    "nativeProof": false,
+    "physicalProof": false,
+    "phaseAcceptance": false
+  },
+  "finalBoundedExperience820": {
+    "sourceSha": "820178bf043e1ffd3c366eaa5037d5d148653e51",
+    "sourceTree": "e5dfae89a2e4c66330e888b0298ac5ef628ca082",
+    "baseSha": "81fa477c5099b259e0d3bd8e8e0e6e52a7dc02bb",
+    "productionBuild": "PASS",
+    "buildId": "CjiqpAQjo6qitM5uDHdau",
+    "typeScript": "PASS",
+    "focusedTests": {
+      "tests": 54,
+      "files": 5,
+      "result": "PASS"
+    },
+    "D0D1": {
+      "scenarios": 53,
+      "result": "PASS",
+      "cleanup": "PASS_ALL_53",
+      "fingerprint": "c2bc73cb7daa8a7f1c416ca2ae88a6787e4a95356989fca301fcfe1aca237cdd"
+    },
+    "ordinarySignIn": "PASS",
+    "firstEntry": {
+      "device": "DESKTOP",
+      "motionMode": "NORMAL",
+      "milliseconds": 9136.7706,
+      "preparation": "ACTUAL_VISIBLE_FIRST_OPEN_NO_STATE_INJECTION"
+    },
+    "consumerJourneys": "THREE_FAILED_ACTUAL_JOURNEY",
+    "screenFallback": "OBSERVED_DESKTOP_NORMAL",
+    "runtimeAndSQLiteCleanup": "PASS",
+    "independentReview": "BLOCKED_WITH_EVIDENCE_AT_THIRD_ITERATION",
+    "repairDisposition": "BLOCK_WITH_EVIDENCE",
+    "reviewCycle": 3,
+    "confirmedFindings": [
+      {
+        "id": "SEXTANT-FINAL-001",
+        "classification": "CONFIRMED_PRODUCT_CONSUMER_READING_CONTINUITY_DEFECT"
+      },
+      {
+        "id": "SEXTANT-FINAL-002",
+        "classification": "CONFIRMED_FIXTURE_AND_JOURNEY_SELECTOR_MISMATCH"
+      },
+      {
+        "id": "SEXTANT-FINAL-003",
+        "classification": "CONFIRMED_FIXTURE_ROUTE_IDENTITY_MISMATCH_LATENT_OUTCOME_FAILURE"
+      },
+      {
+        "id": "SEXTANT-FINAL-004",
+        "classification": "PREVIOUS_CONFIRMED_READABILITY_DEFECT_RENDERED_REPAIR_UNVERIFIED"
+      },
+      {
+        "id": "SEXTANT-FINAL-005",
+        "classification": "UNOBSERVED_REQUIRED_COVERAGE_AND_CAPTURE_AMBIGUITY"
+      }
+    ],
+    "planner": {
+      "status": "PRODUCT_EXPERIENCE_UNREGISTERED_SURFACE",
+      "uncoveredConsumers": 141
+    },
+    "retainedEvidence": {
+      "root": "Development_Docs/Engineering/Sextant/evidence/820178bf",
+      "map": "Development_Docs/Engineering/Sextant/evidence/820178bf/retained-artifact-map.json",
+      "mappingSha256": "9e484086e5137db83180375ae17e3a92a69737713721ac62a7402c92143c3cda",
+      "review": "Development_Docs/Engineering/Sextant/evidence/820178bf/independent-review.json",
+      "reviewSha256": "9b48d309b4bbec2d6f533d7f5b38f972b5f948f864e1ad00607bdf482b36d84d",
+      "packet": "Development_Docs/Engineering/Sextant/evidence/820178bf/original-review-packet.json",
+      "originalPacketDigest": "5c3ffbbb03f35231bf522b99bf3c1a4e0a149db9e4e3010e162866d5f2c65ee1",
+      "assets": 12,
+      "allByteIdentical": true
+    },
+    "nativeDispatch": "PARENT_HOLD_NOT_AUTHORIZED_BY_PREPARATION",
+    "nativeProof": "NOT_EXECUTED_CURRENT_SOURCE",
+    "physicalProof": false,
+    "phaseAcceptance": false
+  }
+}

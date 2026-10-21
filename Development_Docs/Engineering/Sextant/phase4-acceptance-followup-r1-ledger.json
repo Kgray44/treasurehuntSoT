@@ -1,0 +1,494 @@
+{
+  "schemaVersion": 1,
+  "requestMarker": "sextant-phase4-acceptance-followup-20261012-r1",
+  "launchdeckRequestKey": "ld-59f568a50dab9ad8e1393fd9cb9691a7a292393a9a8105bee1cf7f20c8261497",
+  "profile": "BOUNDED_PRODUCT_PHASE_UNATTENDED_CONTINUATION",
+  "contextClassification": "LAUNCHDECK_PROJECT_TRIM_ADAPTATION_NOT_CANONICAL_PACKET_V2",
+  "ownerThread": "01a12c17-115a-7f92-b319-32f3666a5b2d",
+  "nativeProjectId": "fd21b701-3215-417a-a413-0a17e02badbb",
+  "ownerHost": "LIMITNOTFOUND",
+  "branch": "codex/sextant-phase4-take-it-afield",
+  "initialCandidateSha": "abed9b892aae271f52b0f99a428a2603002e8dea",
+  "initialCandidateTree": "6bddbf39fcc7d7a1a8fe521e6f5df4ef152ae9e8",
+  "protectedBaseSha": "85853cdbc167addb4e4f15a31265bbe8dfd3fdab",
+  "protectedBaseTree": "ef7c2996093a8af3ac3898a58db3c9dbe87ad03c",
+  "sourceBindings": [
+    {
+      "path": "AGENTS.md",
+      "commit": "85853cdbc167addb4e4f15a31265bbe8dfd3fdab",
+      "blob": "4b9e4081874d732a41cbd41c69e3b0bf346b25b7",
+      "confidence": "EXACT",
+      "staleness": "FRESH"
+    },
+    {
+      "path": ".agents/product-experience-workflow.md",
+      "commit": "85853cdbc167addb4e4f15a31265bbe8dfd3fdab",
+      "blob": "b71ce2d7f53c7cf11a31d9452f95d2b05e04cef7",
+      "confidence": "EXACT",
+      "staleness": "FRESH"
+    },
+    {
+      "path": ".agents/sextant-phase4.md",
+      "commit": "abed9b892aae271f52b0f99a428a2603002e8dea",
+      "blob": "c10a3e3d0e462849ea7867b1599c5afc1fcd9064",
+      "confidence": "EXACT",
+      "staleness": "FRESH"
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Sextant_Device_Context_and_Hardware_Capability_System_Governing_Document_v1.0.md",
+      "commit": "85853cdbc167addb4e4f15a31265bbe8dfd3fdab",
+      "blob": "a578cd284d90c98a9df9f08e6066b31994f1b320",
+      "confidence": "EXACT",
+      "staleness": "FRESH"
+    },
+    {
+      "path": "Development_Docs/Governing/Project_Sextant_Governing_Amendment_v1.1_Reach_Camera_and_Device_Gesture_Boundaries.md",
+      "commit": "85853cdbc167addb4e4f15a31265bbe8dfd3fdab",
+      "blob": "bda583591f6c46fd400eb9699c6a9090f991a902",
+      "confidence": "EXACT",
+      "staleness": "FRESH"
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/evidence/820178bf/independent-review.json",
+      "commit": "abed9b892aae271f52b0f99a428a2603002e8dea",
+      "blob": "9225fc5a7dd0242ef9e2d7bd9625d4301249447e",
+      "confidence": "EXACT",
+      "staleness": "FRESH"
+    },
+    {
+      "path": "testing/ownership.json",
+      "commit": "85853cdbc167addb4e4f15a31265bbe8dfd3fdab",
+      "blob": "ca2a481b4823ff2846c8342a1826b05d6bb75cf3",
+      "confidence": "EXACT",
+      "staleness": "FRESH"
+    },
+    {
+      "path": "testing/contracts.json",
+      "commit": "85853cdbc167addb4e4f15a31265bbe8dfd3fdab",
+      "blob": "7e28cf378028f1ceb287ff20ed8d9ee1793e9edc",
+      "confidence": "EXACT",
+      "staleness": "FRESH"
+    }
+  ],
+  "priorCampaigns": {
+    "sextant": {
+      "actualRepairRecaptureIterations": 3,
+      "maximum": 3,
+      "state": "EXHAUSTED_UNCHANGED",
+      "review": "Development_Docs/Engineering/Sextant/evidence/820178bf/independent-review.json"
+    },
+    "crossdeck": {
+      "actualIterations": 10,
+      "maximum": 3,
+      "state": "PRESERVED_NOT_RESET_BY_HANDOFF"
+    }
+  },
+  "followup": {
+    "authorizedMaximumActualIterations": 3,
+    "actualRepairRecaptureIterations": 2,
+    "preReviewRepairPasses": 2,
+    "stopEarlierWithoutMaterialProgress": true,
+    "events": [
+      {
+        "type": "SOURCE_RECONCILIATION",
+        "sourceSha": "9352dcdf29b63cce07833493a863108a3334b027",
+        "acceptedBaseSha": "85853cdbc167addb4e4f15a31265bbe8dfd3fdab",
+        "acceptedAssistantAndFloatingContracts": "PRESERVED_EXACTLY",
+        "newProductRepair": false,
+        "newRecapture": false
+      },
+      {
+        "type": "PROTECTED_HELPER_RECONCILIATION",
+        "sourceSha": "ac536fda03f12decd213aa012c440523492be275",
+        "acceptedBaseSha": "5e72620cef879685540bb968a9b836d1eb2fdec6",
+        "protectedRun": "38276081116",
+        "runConclusion": "SUCCESS",
+        "mergePr": 720,
+        "newProductRepair": false,
+        "newRecapture": false,
+        "duplicateHelperTests": false
+      },
+      {
+        "type": "COORDINATOR_TARGETED_BILATERAL_BOUNDARY",
+        "sourceThreadId": "01a130d8-1db8-76d1-860d-ddaa43fb202f",
+        "protectedBaseSha": "5e72620cef879685540bb968a9b836d1eb2fdec6",
+        "file": "src/app/play/[taleSlug]/session/[sessionId]/page.tsx",
+        "canonicalOwner": "Project Helm retained",
+        "sourceEdit": false,
+        "consumerAcknowledgment": "REQUEST_DELIVERED_TO_EXISTING_CROSSDECK_OWNER_PENDING_ACK"
+      },
+      {
+        "type": "READ_ONLY_PENDING_CROSSDECK_MERGE_PREFLIGHT",
+        "sourceSha": "27c33ad9ec15ecf02a79973cf7cdda17d66ca53c",
+        "pendingCrossdeckSha": "a1e8cb431ba7e7d063084af6e06f6a49e545cc65",
+        "status": "CONFLICTING_PROSPECTIVE_MERGE_NOT_APPLIED",
+        "checkoutChanged": false,
+        "newRepair": false,
+        "newRecapture": false,
+        "conflicts": [
+          "CHANGELOG.md",
+          "Development_Docs/Engineering/Repository_Operations/product-status/current-status.md",
+          "Development_Docs/Engineering/Repository_Operations/reference/feature-status.md",
+          "docs/product/features.md",
+          "docs/user/player-guide.md",
+          "src/components/crossdeck/CrossdeckDevices.test.tsx",
+          "src/components/crossdeck/CrossdeckDevices.tsx",
+          "src/components/player/journal/ChronicleJournalSession.tsx",
+          "src/components/player/parallax/ChronicleLens.module.css"
+        ],
+        "requestedBoundary": "Consume exact accepted Devices UI/test; retain additive Journal identity/accessibility landmarks and opening description; preserve bilateral Lens ink; preserve complete accepted Crossdeck contract and separately retain own consumer qualification",
+        "ownerAcknowledgment": "REQUEST_DELIVERED_PENDING"
+      },
+      {
+        "type": "CROSSDECK_CONDITIONAL_ADDITIVE_HANDOFF_AND_CONCRETE_CONTRACT_BLOCKER",
+        "ownerThread": "01a12d5e-eb9a-7a72-aecb-adfa3c59a89a",
+        "sourceCheckpoint": ".agents/crossdeck-refit-checkpoint.md",
+        "pendingCrossdeckSource": "a1e8cb431ba7e7d063084af6e06f6a49e545cc65",
+        "protectedAccepted": false,
+        "devicesUiBlob": "20f6e0bf439ff50f1bc4befe2bd438ef09f56b1f",
+        "devicesTestBlob": "a5810ae16ba63c70611f6434fff9026929eec459",
+        "blocker": "Own aria-labelVoyageJournal conflicts with two frozen exact unnamed-main selectors",
+        "disposition": "Keep accepted unnamed main and exact Voyage/edition attributes, update own selectors; preserve complete accepted Crossdeck contracts and a separate own qualification namespace",
+        "presentationSeams": "Only acknowledged opening-description/glyph additions and existing bilateral .object .objectKind ink selector",
+        "actualCompanionReturn": "/player/playthroughs/<encoded-voyage-id>/journal",
+        "compatibilityWrapper": "Separate consumer proof, not falsely inferred from companion return",
+        "sourceInstalled": false,
+        "newRepair": false,
+        "newRecapture": false
+      },
+      {
+        "type": "PASSWORD_ASSUMPTION_CORRECTION",
+        "sourceThreadId": "01a130d8-1db8-76d1-860d-ddaa43fb202f",
+        "sourceSha": "6f29b9945a4f41d32edd8d573108368580e60dab",
+        "proof": "Development_Docs/Engineering/Sextant/phase4-password-selector-correction-r1.json",
+        "earlierAssumption": "WITHDRAWN_NOT_ERASED",
+        "newHelperRepair": false,
+        "newHelperTests": false,
+        "newRecapture": false
+      },
+      {
+        "type": "APPROVED_DIAGNOSTICS_DEPENDENCY_ACK",
+        "sourceThreadId": "01a130d8-1db8-76d1-860d-ddaa43fb202f",
+        "diagnosticsRequest": "reach-capture-observability-predecessor-20261012-r1",
+        "scope": "Reach-only observability predecessor, no unsupported password-role blocker or patch",
+        "acceptedSourceInstalled": false,
+        "newTests": false,
+        "newBuild": false,
+        "newRecapture": false
+      },
+      {
+        "type": "DIAGNOSTICS_DEPENDENCY_METADATA_CORRECTION",
+        "sourceThreadId": "01a130d8-1db8-76d1-860d-ddaa43fb202f",
+        "sourceSha": "94be7ea75c5bda0bef58fa9352ad536b8ee5ed7b",
+        "scope": "Existing engineering ledger and active automation checkpoint only; preserve historical pointer and source/owner bindings",
+        "productFixtureContractHelperQualificationChanged": false,
+        "actualRepairRecaptureIterations": 2,
+        "preReviewRepairPasses": 2,
+        "recaptureRuns": 0,
+        "newRepair": false,
+        "newRecapture": false,
+        "acceptedSourceInstalled": false
+      },
+      {
+        "type": "ACCEPTED_MAIN_RECONCILIATION",
+        "acceptedBaseSha": "5117092984142ccdb96aeff5db90ea2e77a59357",
+        "acceptedPr": 716,
+        "sourceSha": "e9924fbe99324b9d787ad66a4fa6677e157837a9",
+        "priorAndAcceptedCompleteExperiences": "PRESERVED_EXACTLY",
+        "acceptedOwnerNonExperienceMetadataUpdated": ["reach.phase1.foundation"],
+        "helperDeltaFromViewportOnlyBase": false,
+        "diagnosticsInstalled": false,
+        "crossdeckRefitInstalled": false,
+        "newCapture": false,
+        "newProductRepair": false
+      }
+    ],
+    "iterations": [
+      {
+        "number": 1,
+        "state": "INITIAL_PREPARATION_CLOSED_WITH_TRUSTED_REFERENCE_BINDING_FAILURE",
+        "repairStartedAt": "2026-10-12T16:20:57.840Z",
+        "startingSource": "9352dcdf29b63cce07833493a863108a3334b027",
+        "findings": [
+          "SEXTANT-FINAL-001",
+          "SEXTANT-FINAL-002",
+          "SEXTANT-FINAL-003",
+          "SEXTANT-FINAL-004",
+          "SEXTANT-FINAL-005"
+        ],
+        "plannedScope": "Frozen R1 initial fixture/contracts repair; shared owner handoffs may be incorporated only as agreed before candidate freeze; no new post-capture finding repair in this pass",
+        "edits": [
+          {
+            "path": ".agents/scripts/sextant-experience-fixture.ts",
+            "finding": "SEXTANT-FINAL-003",
+            "repair": "Keep published snapshot, canonical draft writer and persisted Chronicle slug consistent; verify canonical saved result"
+          },
+          {
+            "path": "src/app/play/[taleSlug]/session/[sessionId]/page.tsx",
+            "finding": "SEXTANT-FINAL-001",
+            "repair": "Consume unchanged accepted authorizeTaleSessionPlayer exact-session identity/legacy classification; canonical owners, state/progression writers and Player route unchanged",
+            "bilateralContract": "Development_Docs/Engineering/Sextant/phase4-journal-route-boundary-r1.json",
+            "acknowledgment": {
+              "threadId": "01a12d5e-eb9a-7a72-aecb-adfa3c59a89a",
+              "turnId": "01a130ea-169c-7403-b7fa-89fa7274020a",
+              "messageId": "msg_07fccd7278727f07016acd0d47eb90819f8cb4206b05976dc5",
+              "statement": "Crossdeck agrees to the bounded consumer change: Sextant can use the existing authorized-player classification in the /play wrapper, while Helm retains the Journal state and progression ownership.",
+              "scope": "ONLY compatibility wrapper; no duplicate wrapper or service repair"
+            }
+          },
+          {
+            "path": ".agents/scripts/sextant-experience-fixture.ts",
+            "finding": "SEXTANT-FINAL-005",
+            "repair": "Bind the guarded synthetic ordinary persona to a public fixture-only credential; accepted static auth setup needs no arbitrary environment credential resolver",
+            "classification": "ADDITIONAL_COHERENT_INITIAL_PREPARATION_BEFORE_CANDIDATE_FREEZE_NOT_POST_CAPTURE_REPAIR"
+          },
+          {
+            "path": "testing/contracts.json",
+            "finding": "SEXTANT-FINAL-005",
+            "repair": "Declare ordinary own persona sign-in with existing accepted role matcher; register explicit Personal Harbor consumer journeys without claiming qualification",
+            "newContractId": "sextant.shared-consumers.personal-harbor",
+            "registeredJourneys": 11,
+            "qualification": "PENDING_CAPTURE_REVIEW"
+          },
+          {
+            "path": "testing/contracts.json",
+            "finding": "SEXTANT-FINAL-005",
+            "newContractId": "sextant.shared-consumers.shell-identity",
+            "repair": "Declare actual preference feedback/sign-out/anonymous gateway journey using existing controls and own fixture",
+            "qualification": "NOT_CAPTURED_NOT_ACCEPTED"
+          }
+        ],
+        "recaptureRuns": 0,
+        "focusedVerification": {
+          "path": "Development_Docs/Engineering/Sextant/phase4-followup-r1-fixture-verification.json",
+          "sourceSha": "ac536fda03f12decd213aa012c440523492be275",
+          "result": "PASS",
+          "cleanup": "PASS_EXACT_OWNED_DATABASE_REMOVED_PREVIOUS_PLAN_RESTORED"
+        },
+        "sharedConsumerDesign": {
+          "path": "Development_Docs/Engineering/Sextant/phase4-shared-consumer-design-r1.json",
+          "originalSurfaceObligations": 141,
+          "families": 13,
+          "registeredNewContracts": 2,
+          "registeredNewJourneys": 12,
+          "surfacesWithNewRelevantDeclaration": 22,
+          "remainingUnregisteredBaselineSurfaces": 118,
+          "capturedSurfaces": 0,
+          "acceptedSurfaces": 0,
+          "classification": "COMPLETE_OWNERSHIP_CONTRACT_FIXTURE_ENTRY_OUTCOME_RETURN_MAPPING_NOT_QUALIFICATION",
+          "proposedRemainingFamilyContracts": 11,
+          "passwordRoleBlocker": "REFUTED_BY_LOCKED_INSTALLED_1_56_1_SOURCE",
+          "currentProtectedBase": "5117092984142ccdb96aeff5db90ea2e77a59357",
+          "acceptedMainAdditionalDeclarationPaths": 1
+        },
+        "sharedJournalRegression": {
+          "path": "Development_Docs/Engineering/Sextant/phase4-followup-r1-journal-regression.json",
+          "result": "PASS",
+          "passed": 28,
+          "wrapperBlob": "37f3f1202402d5bc53e1a42b994b1c8d01c4af9f",
+          "qualification": "EXISTING_SHARED_COMPONENT_ONLY_RENDERED_ROUTE_PENDING"
+        },
+        "credentialVerification": {
+          "path": "Development_Docs/Engineering/Sextant/phase4-followup-r1-credential-verification.json",
+          "sourceSha": "99c60ff40201c65898e07edb2cad5d2e49eac259",
+          "result": "PASS",
+          "cleanup": "PASS_EXACT_OWNED_DATABASE_REMOVED_PREVIOUS_PLAN_RESTORED",
+          "ordinarySyntheticHashVerified": true,
+          "renderedSignIn": "NOT_CLAIMED"
+        },
+        "coherentInitialRepairAccounting": {
+          "candidateFrozen": false,
+          "sourceEdits": "Fixture slug, agreed canonical wrapper consumption, guarded synthetic credential, ordinary own persona sign-in declarations and two supported consumer contracts; all before first coherent candidate freeze/recapture",
+          "focusedChecks": [
+            "canonical writer slug at ac536fda",
+            "28 unchanged shared Journal regression checks for wrapper working tree",
+            "canonical writer slug and synthetic credential at99c60ff4"
+          ],
+          "postCaptureRepairs": 0,
+          "actualRecaptures": 0,
+          "newHelperRepairs": 0,
+          "newHelperTests": 0
+        },
+        "independentNextAction": "Validate and publish current ownership/contract/fixture/entry/outcome/return mapping and supported declarations; after actual protected handoffs, consume once, resolve named data/entry support gaps and freeze one coherent capture candidate"
+      },
+      {
+        "number": 2,
+        "state": "REFERENCE_BINDING_REPAIRED_AND_VERIFIED_FULL_PLAN_STILL_BLOCKED_BY_118_UNREGISTERED_SURFACES",
+        "startingSource": "e9924fbe99324b9d787ad66a4fa6677e157837a9",
+        "finding": "SEXTANT-FINAL-005",
+        "trigger": "PRODUCT_EXPERIENCE_ACCEPTED_REFERENCE_UNKNOWN in newly registered owned experience references",
+        "failureEvidence": "Development_Docs/Engineering/Sextant/phase4-current-coverage-diagnostic-r1.json",
+        "repair": "Use existing protected curated references for gate declarations; retain actual Personal Harbor accepted images only as supplemental design context; no protected curation or helper patch",
+        "edits": [
+          {
+            "path": "testing/contracts.json",
+            "scope": "Only new sextant.shared-consumers.* reference bindings"
+          }
+        ],
+        "recaptureRuns": 0,
+        "postCaptureRepairs": 0,
+        "verification": {
+          "path": "Development_Docs/Engineering/Sextant/phase4-reference-binding-verification-r1.json",
+          "sourceSha": "87a8bd6169c95bec1d0536ab5fd4645fa3adf614",
+          "result": "PASS_ALL_SELECTED_REFERENCES_RESOLVED_BEFORE_REMAINING_GAP_CHECK",
+          "remainingUnregistered": 118,
+          "fullPlanAccepted": false
+        }
+      }
+    ]
+  },
+  "ownership": {
+    "sextantOwned": [
+      ".agents/scripts/sextant-experience-fixture.ts",
+      "testing/contracts.json#sextant.phase4.native-context.experience",
+      "testing/contracts.json#sextant.phase3.field-context.experience",
+      "testing/contracts.json#crossdeck.phase2.continuity.experience (bilateral consumer qualification only)"
+    ],
+    "crossdeckOwned": ["src/crossdeck/service.ts", "src/components/crossdeck/CrossdeckDevices.tsx"],
+    "journalSharedPendingContract": [],
+    "reachOwned": [
+      "scripts/sounding-line/experience-browser.mjs",
+      "tests/sounding-line/experience-browser-fixtures.test.mjs"
+    ],
+    "lens": "PRESERVE_EXISTING_BILATERAL_INK_DELTA_NO_DUPLICATE_REPAIR",
+    "journalBoundaryProposal": "Development_Docs/Engineering/Sextant/phase4-journal-route-boundary-r1.json",
+    "sextantDelegatedWrapper": ["src/app/play/[taleSlug]/session/[sessionId]/page.tsx"]
+  },
+  "requiredFindings": [
+    "SEXTANT-FINAL-001",
+    "SEXTANT-FINAL-002",
+    "SEXTANT-FINAL-003",
+    "SEXTANT-FINAL-004",
+    "SEXTANT-FINAL-005"
+  ],
+  "successProof": [
+    "Complete desktop/mobile NORMAL/REDUCED visible consumer journeys and measured feedback",
+    "Role-scoped legitimate multi-device continuation and exact canonical Voyage identity",
+    "Actual instrument fallback and rendered Lens read/interaction/close/return",
+    "Actual Creator title edit/save/ordinary reopening/restoration and unchanged pinned Player clue",
+    "Fresh independent acceptance in separate supported context",
+    "Expanded affected shared-consumer contracts and exact-source ordinary Sounding Line qualification",
+    "New frozen native contract with one owner claim before registered scoped D2/D3 work"
+  ],
+  "dependencies": {
+    "reachHelper": "PROTECTED_ACCEPTED_5e72620c_CONSUMED",
+    "journalSharedContract": "FROZEN_COORDINATOR_BOUNDARY_AND_CROSSDECK_ACK_RECORDED_BEFORE_EDIT",
+    "crossdeckReconciliation": {
+      "requestMarker": "crossdeck-observability-accepted-retry-20261012-r1",
+      "ownerThread": "01a12d5e-eb9a-7a72-aecb-adfa3c59a89a",
+      "state": "CONDITIONAL_ONE_OWNER_RETRY_REFIT_NOT_ACCEPTED",
+      "cancelledCapture": "38277482404_NO_ARTIFACT",
+      "install": "PROHIBITED_UNTIL_ACTUAL_PROTECTED_ACCEPTANCE"
+    },
+    "reachSemanticSelectors": "REMOVED_UNPROVEN_PASSWORD_ROLE_BLOCKER_USE_ACCEPTED_HELPER_1_56_1",
+    "captureDiagnostics": {
+      "requestMarker": "reach-capture-observability-predecessor-20261012-r1",
+      "ownerThread": "01a12d61-295b-7271-a179-d5b1575f4a69",
+      "approval": "KG_APPROVED_2026_10_12_17_26_UTC",
+      "state": "PROTECTED_ACCEPTED_RECEIPT_VERIFIED_NOT_INSTALLED_PENDING_CROSSDECK_HANDOFF",
+      "scope": "Observability only; no password/row selector repair",
+      "files": ["scripts/sounding-line/browser-authority.mjs", "scripts/sounding-line/experience-browser.mjs"],
+      "historicalFilesPointer": {
+        "sourceSha": "94be7ea75c5bda0bef58fa9352ad536b8ee5ed7b",
+        "state": "ERRONEOUS_DIAGNOSTICS_POINTER_PRESERVED_AS_HISTORY",
+        "files": [
+          "scripts/sounding-line/experience-browser.mjs",
+          "tests/sounding-line/experience-browser-fixtures.test.mjs"
+        ]
+      },
+      "consistencyVerification": {
+        "pr": 723,
+        "file": "scripts/features/feature-catalog.test.ts",
+        "scope": "Separately KG-approved exact one-line catalog count consistency correction from 67 to 68; not an observability runtime file",
+        "state": "PROTECTED_ACCEPTED_WITH_PR723_NOT_INSTALLED"
+      },
+      "protectedReceipt": {
+        "receiptPath": "C:/Users/kkids/Documents/Codex/2026-10-11/goal-referenced-pasted-text-files-pasted/work/observability-prerequisite-20261012-r1/accepted-handoff.json",
+        "classification": "SOURCE_AND_REQUIRED_PROTECTED_CHECK_ACCEPTANCE_ONLY",
+        "pr": 723,
+        "prUrl": "https://github.com/Kgray44/treasurehuntSoT/pull/723",
+        "protectedBase": "5117092984142ccdb96aeff5db90ea2e77a59357",
+        "qualifiedCandidate": "353cf20229fb34e9cad5553d98a4f04e54798ffd",
+        "qualifiedAndLandedTree": "0fa1e78ee0a0eba90aaf112360a5f958bca6f5b0",
+        "landedCommit": "602f83efdb16b7ea75980f07fa3a3d976c496860",
+        "mergedAtUtc": "2026-10-12T20:03:22Z",
+        "requiredRun": 38301134402,
+        "requiredJob": 114984065592,
+        "requiredConclusion": "SUCCESS",
+        "requiredRunUrl": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38301134402",
+        "verification": "GitHub merged PR and exact-candidate successful required job read back; fetched landed tree and exact three-file delta; qualified/landed runtime blobs match",
+        "runtimeBlobs": {
+          "scripts/sounding-line/browser-authority.mjs": "295b67e1976fe128ceff2fde726d69b6cb25a2c1",
+          "scripts/sounding-line/experience-browser.mjs": "483b225c782f1aa44e1dcb62507c6b0b188ff04d"
+        },
+        "independentReviewSha256": "b4007563174d4cc94d4cacf0069acd51307e659868661621b4fccb84e822a008",
+        "ownerReportedLandedSmoke": "PASS_ONE_AUTHORITY_FAILURE_CLEANUP_TEST_AND_ONE_CATALOG_TEST_NOT_REPEATED_BY_SEXTANT",
+        "eventSchemaSha256Verified": "994117a3bb251b6d8b6109f05b4336b70f2012536148e5cf6bf412418cc13d52",
+        "diagnostics": "V1_STDERR_OBSERVATIONS_NOT_ACCEPTANCE_RECEIPTS_BEST_EFFORT_UNMATCHED_START_INCOMPLETE_EXIT_NOT_OBSERVED_PRESERVED",
+        "preservedFailedRun": 38289621059,
+        "preservedFailedConclusion": "FAILURE",
+        "preservedCrossdeckCancelledRun": 38277482404,
+        "crossdeckRetryOwner": "01a12d5e-eb9a-7a72-aecb-adfa3c59a89a",
+        "crossdeckFinalThirdReview": "UNUSED",
+        "sourceInstalled": false,
+        "newRepair": false,
+        "newRecapture": false
+      }
+    }
+  },
+  "goal": {
+    "nativePresent": true,
+    "status": "paused",
+    "resumeOperationExposed": false,
+    "newGoalCreated": false,
+    "capabilityGap": "EXISTING_UNFINISHED_GOAL_HAS_NO_EXPOSED_RESUME_OPERATION",
+    "manualExecution": "AUTHORIZED_CONTINUATION_NATIVE_GOAL_REMAINS_PAUSED_NO_RESUME_API",
+    "lastReadbackStatus": "paused"
+  },
+  "nativeDispatch": {
+    "stale035And820": "HELD_UNUSABLE",
+    "newSource": "REQUIRES_NEW_FROZEN_CONTRACT_AND_ONE_OWNER_CLAIM",
+    "repeatPassingRootProfileLostResponse": false
+  },
+  "physicalGate": {
+    "D4": "REQUIRED_FOR_FORMAL_PHASE4_ACCEPTANCE",
+    "accessSigning": "UNAVAILABLE_NO_BYPASS",
+    "mergeAuthorizedWithoutD4": false
+  },
+  "accounting": {
+    "actualFollowupUsage": null,
+    "confidence": "UNAVAILABLE",
+    "goalPausedCounters": "HISTORICAL_NOT_FOLLOWUP_USAGE"
+  },
+  "createdAt": "2026-10-12T16:17:07.816Z",
+  "launchdeckReceipt": {
+    "state": "uncertain",
+    "observedThreadId": "01a12c17-115a-7f92-b319-32f3666a5b2d",
+    "projectVerified": true,
+    "actualTitle": "Sextant Phase 4",
+    "taskKind": "codex",
+    "titleRepairAttempt": "NOT_PERFORMED",
+    "limitation": "Helper rejected recording existing title because it requires the complete generated phase-name title. Native existing identity/project/title independently read back; no new dispatch or rename. Stored existing ID to prevent duplication.",
+    "newThreadCreated": false
+  },
+  "coordinationLimitation": "Coordinator native send failed AbsolutePathBuf without base path even after independently verified durable host; failed sends not claimed delivered. Crossdeck and Reach received their scoped requests.",
+  "featureCatalogDecision": "NO_CHANGE_REQUIRED_ORDINARY_CORRECTIONS_AND_UNACCEPTED_PREPARATION",
+  "resumeTriggers": [
+    "Reach diagnostics protected receipt is verified; wait for actual protected-accepted Crossdeck handoff before consuming the combined dependencies",
+    "Actual protected-accepted Crossdeck refit plus frozen UI/test/contract interface; install once with agreed additive boundary",
+    "Complete remaining canonical domain synthetic data and supported natural-entry requirements before one coherent candidate freeze/capture",
+    "Fresh independent review only after actual final-source evidence; exact-source ordinary qualification thereafter",
+    "New frozen native contract and one owner claim; D4/signing/provider gates remain external"
+  ],
+  "currentDeclarationCoverage": {
+    "ownedNewContracts": 2,
+    "ownedNewJourneys": 12,
+    "ownedNewDeclaredPaths": 22,
+    "acceptedMainAdditionalDeclaredPaths": 1,
+    "currentUnregisteredPaths": 118,
+    "originalSurfaceObligations": 141,
+    "newCaptured": 0,
+    "newAccepted": 0
+  },
+  "nextIndependentAction": "After the remaining actual protected-accepted Crossdeck refit handoff, reconcile it with verified Reach diagnostics once under the recorded interfaces; implement named canonical domain fixture/entry gaps and complete remaining declarations before one coherent final-source capture/review candidate. No Crossdeck retry dispatch, speculative selector patch or test repetition."
+}

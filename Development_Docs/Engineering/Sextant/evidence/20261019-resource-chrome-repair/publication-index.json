@@ -1,0 +1,330 @@
+{
+  "schemaVersion": 1,
+  "classification": "ENGINEERING_EVIDENCE_ORIGINAL_BYTES_NOT_ACCEPTANCE",
+  "sourceSha": "ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25",
+  "runId": "39338716275",
+  "originalArtifacts": 50,
+  "publishedOriginalArtifacts": 50,
+  "retainedPrivate": [],
+  "reviewFinding": "INDEPENDENT_ALL_24_PNGS_CLEAR_NEUTRAL_CREW_AND_TOOLBAR_MORE_LAYERING_RESOLVED_DEVELOPMENT_ONLY",
+  "files": [
+    {
+      "path": "files/0001-browser-runtime.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/browser-diagnostics/880d7d19-48f7-4cb2-9629-e606eec045c3/27e3403b-cc24-4d90-b687-568f59a8187f/browser-runtime.json",
+      "bytes": 2174,
+      "sha256": "e4980a386c554b60d6bd1fdc961c94d4dc237f0411f0d09dc160709899be40c5"
+    },
+    {
+      "path": "files/0002-browser-suite-profile.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/browser-diagnostics/880d7d19-48f7-4cb2-9629-e606eec045c3/27e3403b-cc24-4d90-b687-568f59a8187f/browser-suite-profile.json",
+      "bytes": 552,
+      "sha256": "2dee5f0ef92c75432a5f2e455ce2c92e0f00d03cf46dfc074af0ea30d0741395"
+    },
+    {
+      "path": "files/0003-captain-chronicle-dashboard.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--0ce2a-d-Creator-draft-save-reopen-chromium/captain-chronicle-dashboard.png",
+      "bytes": 411297,
+      "sha256": "0274f8f6def2cdf89b22e5893fa8863244a9c0ecbbb595831f59b1d0174e63e6"
+    },
+    {
+      "path": "files/0004-captain-console.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--0ce2a-d-Creator-draft-save-reopen-chromium/captain-console.png",
+      "bytes": 193888,
+      "sha256": "dc7fd3d2f667a842088e2b52ad0bbe38bc8847fdb8926a295e8b04347c625fba"
+    },
+    {
+      "path": "files/0005-captain-muster.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--0ce2a-d-Creator-draft-save-reopen-chromium/captain-muster.png",
+      "bytes": 1606837,
+      "sha256": "532351a4f4d33d01b6eda17672f07213f0d7e28eb2e91d4fa98a2ca11693f7c6"
+    },
+    {
+      "path": "files/0006-captain-safe-preview.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--0ce2a-d-Creator-draft-save-reopen-chromium/captain-safe-preview.png",
+      "bytes": 538292,
+      "sha256": "06519cbd5e22cbd10466667b9063bed0e19bf88ac9b6f38e0cf7d2223f5b6753"
+    },
+    {
+      "path": "files/0007-creator-draft-reopened.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--0ce2a-d-Creator-draft-save-reopen-chromium/creator-draft-reopened.png",
+      "bytes": 152957,
+      "sha256": "2fc048d142816c4765daa767414e17599bf354c691e4c2d5f651e4e3953faf1a"
+    },
+    {
+      "path": "files/0008-creator-more-actions.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--0ce2a-d-Creator-draft-save-reopen-chromium/creator-more-actions.png",
+      "bytes": 162780,
+      "sha256": "38084466d301182e1e334641ba3067ca70c77c2ed5d81d1469c0ecc18b0eb229"
+    },
+    {
+      "path": "files/0009-resource-consumer-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--0ce2a-d-Creator-draft-save-reopen-chromium/resource-consumer-receipt.json",
+      "bytes": 1429,
+      "sha256": "6aed1eb676606bb0850cf66ba77c6f2a700951c5381eeae8fa0a0cc9d81e803c"
+    },
+    {
+      "path": "files/0010-video-1.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--0ce2a-d-Creator-draft-save-reopen-chromium/video-1.webm",
+      "bytes": 1474,
+      "sha256": "bf524fc0c599a0571a3ede8b10bf3a329628e97e646583528ba976c718a5e16b"
+    },
+    {
+      "path": "files/0011-video-2.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--0ce2a-d-Creator-draft-save-reopen-chromium/video-2.webm",
+      "bytes": 1405,
+      "sha256": "2737859c01c7881e70d14bd7e365076a410768eaf37ce65012da5c0b43100c9b"
+    },
+    {
+      "path": "files/0012-video-3.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--0ce2a-d-Creator-draft-save-reopen-chromium/video-3.webm",
+      "bytes": 1405,
+      "sha256": "503fad8ab5809ab14ef456b938b86c20c65e5ee149d08ea7d26b924a3e182e08"
+    },
+    {
+      "path": "files/0013-video-4.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--0ce2a-d-Creator-draft-save-reopen-chromium/video-4.webm",
+      "bytes": 1405,
+      "sha256": "cc0bdc007bfa0e371ae51d20393cd901e0f04be7e8f3177af24ab8845c2d5aaf"
+    },
+    {
+      "path": "files/0014-video.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--0ce2a-d-Creator-draft-save-reopen-chromium/video.webm",
+      "bytes": 2414881,
+      "sha256": "ceaa86f14b61af712845306e2d3bab0b7a5f968155ba357fba5a21f4cc554cd2"
+    },
+    {
+      "path": "files/0015-captain-chronicle-dashboard.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--6a328-d-Creator-draft-save-reopen-chromium/captain-chronicle-dashboard.png",
+      "bytes": 411371,
+      "sha256": "b26ab54d1be0f49085214fe28cc74c94cc49040a7e832af90e0249963bb14704"
+    },
+    {
+      "path": "files/0016-captain-console.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--6a328-d-Creator-draft-save-reopen-chromium/captain-console.png",
+      "bytes": 193979,
+      "sha256": "a7a73397c0989082b6b0fd7a14289c14f99d9a4f12424cbf2723eef5881c3d1f"
+    },
+    {
+      "path": "files/0017-captain-muster.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--6a328-d-Creator-draft-save-reopen-chromium/captain-muster.png",
+      "bytes": 1608876,
+      "sha256": "0a91b3fd3d55eb7b478b7ca8a8b3df6c21b435530b0712fd8b697b70df4380ba"
+    },
+    {
+      "path": "files/0018-captain-safe-preview.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--6a328-d-Creator-draft-save-reopen-chromium/captain-safe-preview.png",
+      "bytes": 538564,
+      "sha256": "b4ae607a3bf9979ab07e1ba365276eba520cc8d9c23bb47be4139fc93d6f0e68"
+    },
+    {
+      "path": "files/0019-creator-draft-reopened.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--6a328-d-Creator-draft-save-reopen-chromium/creator-draft-reopened.png",
+      "bytes": 152874,
+      "sha256": "029f9eebf06fd3113a23e93f3557afafeae57408050e70d1cef06d533a8102c7"
+    },
+    {
+      "path": "files/0020-creator-more-actions.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--6a328-d-Creator-draft-save-reopen-chromium/creator-more-actions.png",
+      "bytes": 161963,
+      "sha256": "7d9af8f021bc774751afdbb39c990dd4a2db4abfbc3a959f0e6723c4edc2f61e"
+    },
+    {
+      "path": "files/0021-resource-consumer-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--6a328-d-Creator-draft-save-reopen-chromium/resource-consumer-receipt.json",
+      "bytes": 1424,
+      "sha256": "343d17bb77f5c02c39785871bac39b2e8b06836a0173ac9c8a1cb168f558e9ac"
+    },
+    {
+      "path": "files/0022-video-1.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--6a328-d-Creator-draft-save-reopen-chromium/video-1.webm",
+      "bytes": 1405,
+      "sha256": "3705715e60de49acedbd00768d6b621bf78d7b75c15c5e64199e8b4f5d97b748"
+    },
+    {
+      "path": "files/0023-video-2.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--6a328-d-Creator-draft-save-reopen-chromium/video-2.webm",
+      "bytes": 1405,
+      "sha256": "b6f9c26ef74c49b1c01efebf596b61ea9374549c780d352cfc89e1878eb88f7d"
+    },
+    {
+      "path": "files/0024-video-3.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--6a328-d-Creator-draft-save-reopen-chromium/video-3.webm",
+      "bytes": 1405,
+      "sha256": "d97e4ab448844f077fdbfa64ad86927407fd4decb6e3ba7716c86f31cec93882"
+    },
+    {
+      "path": "files/0025-video-4.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--6a328-d-Creator-draft-save-reopen-chromium/video-4.webm",
+      "bytes": 1405,
+      "sha256": "47d929b77be2718bcdfd321e475cf2a82589fd06630154af320e46cdc098b256"
+    },
+    {
+      "path": "files/0026-video.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--6a328-d-Creator-draft-save-reopen-chromium/video.webm",
+      "bytes": 1465406,
+      "sha256": "df043baca470e10ba11efc0cd80b9e2fbeb7d48a624845692f7ac54b6e4559a1"
+    },
+    {
+      "path": "files/0027-captain-chronicle-dashboard.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--ceed1-d-Creator-draft-save-reopen-chromium/captain-chronicle-dashboard.png",
+      "bytes": 180569,
+      "sha256": "b90c79da844af40def19a61442a7eb17505e65a512649e6d7185d6632a62c3c3"
+    },
+    {
+      "path": "files/0028-captain-console.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--ceed1-d-Creator-draft-save-reopen-chromium/captain-console.png",
+      "bytes": 95726,
+      "sha256": "8795e06962f9c57c0519fe41c7180b018bc9b9fc2d08828e66e19be54067a767"
+    },
+    {
+      "path": "files/0029-captain-muster.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--ceed1-d-Creator-draft-save-reopen-chromium/captain-muster.png",
+      "bytes": 463935,
+      "sha256": "ae65c9b7c38dbd85b40609764917825dc34319a706808d48609b4eeb6e9cd2c1"
+    },
+    {
+      "path": "files/0030-captain-safe-preview.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--ceed1-d-Creator-draft-save-reopen-chromium/captain-safe-preview.png",
+      "bytes": 230978,
+      "sha256": "b7756209497d145708929796b9f8af7f8838dfa2874a0e94ae6958fcb46385a5"
+    },
+    {
+      "path": "files/0031-creator-draft-reopened.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--ceed1-d-Creator-draft-save-reopen-chromium/creator-draft-reopened.png",
+      "bytes": 86195,
+      "sha256": "a6d5a149630b9a8adef2f0d3b5917e832c0e4f93cee2e199e95edef814d69288"
+    },
+    {
+      "path": "files/0032-creator-more-actions.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--ceed1-d-Creator-draft-save-reopen-chromium/creator-more-actions.png",
+      "bytes": 93247,
+      "sha256": "19fe7a7ff6ed321ff05a619ca411bfd75566114be2554c59a1b9fed389621ae7"
+    },
+    {
+      "path": "files/0033-resource-consumer-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--ceed1-d-Creator-draft-save-reopen-chromium/resource-consumer-receipt.json",
+      "bytes": 1424,
+      "sha256": "0547b7a2bc66e09bf446174be13470ce88f2e215508eb5e4ab302b0eb19449ef"
+    },
+    {
+      "path": "files/0034-video-1.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--ceed1-d-Creator-draft-save-reopen-chromium/video-1.webm",
+      "bytes": 1194,
+      "sha256": "e0b27e383ddced091b840d2ca7dc525c9f4bf0710b84e494f070a665b68d6172"
+    },
+    {
+      "path": "files/0035-video-2.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--ceed1-d-Creator-draft-save-reopen-chromium/video-2.webm",
+      "bytes": 1194,
+      "sha256": "e73a39492ae7daf132bc11834622186ae535d8173d6f5272db1c3786b75d28e9"
+    },
+    {
+      "path": "files/0036-video-3.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--ceed1-d-Creator-draft-save-reopen-chromium/video-3.webm",
+      "bytes": 1194,
+      "sha256": "f58c56aa3698e9fb1245ca3a599ae467bc3f9028206d0644a4b9bc005fa23ed2"
+    },
+    {
+      "path": "files/0037-video-4.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--ceed1-d-Creator-draft-save-reopen-chromium/video-4.webm",
+      "bytes": 1341,
+      "sha256": "c426de0b71301bf3ad97b2232ddc1a474bbbd9881712f390be16da13b05a66a9"
+    },
+    {
+      "path": "files/0038-video.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--ceed1-d-Creator-draft-save-reopen-chromium/video.webm",
+      "bytes": 1440355,
+      "sha256": "655e3cd5a76e5fc31eeb3bdaca319d2d9000c45d2584494dfdc097c356d99ebf"
+    },
+    {
+      "path": "files/0039-captain-chronicle-dashboard.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--e10ef-d-Creator-draft-save-reopen-chromium/captain-chronicle-dashboard.png",
+      "bytes": 180558,
+      "sha256": "e36e39c1b2bdc70a7d088129b352442d4f96eddbb5eda0041a93312a6b27e4dd"
+    },
+    {
+      "path": "files/0040-captain-console.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--e10ef-d-Creator-draft-save-reopen-chromium/captain-console.png",
+      "bytes": 95910,
+      "sha256": "8700896e58176f3a2b032b8ec236cf34d6b9597fb4d2b2d008bd79713b4cbe41"
+    },
+    {
+      "path": "files/0041-captain-muster.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--e10ef-d-Creator-draft-save-reopen-chromium/captain-muster.png",
+      "bytes": 454164,
+      "sha256": "297f1d45c1cdc63e9b4b89da52818a86c98218c6ac390984016bfe0e731d1031"
+    },
+    {
+      "path": "files/0042-captain-safe-preview.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--e10ef-d-Creator-draft-save-reopen-chromium/captain-safe-preview.png",
+      "bytes": 233851,
+      "sha256": "868d79ab3149b059cafef8bbb5187abe921b5197ba3f6c343dadabd016521c17"
+    },
+    {
+      "path": "files/0043-creator-draft-reopened.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--e10ef-d-Creator-draft-save-reopen-chromium/creator-draft-reopened.png",
+      "bytes": 85863,
+      "sha256": "ced54fdb7cc8f004d93a553b038e00a35e5a595b5743bb087e3e764cf09117f4"
+    },
+    {
+      "path": "files/0044-creator-more-actions.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--e10ef-d-Creator-draft-save-reopen-chromium/creator-more-actions.png",
+      "bytes": 92732,
+      "sha256": "0a1afeddf0d3956919a65964d6b2b1bef8ef15f874d06a7e7487b51a316fe5be"
+    },
+    {
+      "path": "files/0045-resource-consumer-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--e10ef-d-Creator-draft-save-reopen-chromium/resource-consumer-receipt.json",
+      "bytes": 1426,
+      "sha256": "3998176c0d527af07b007fcad3bc85ca4ccf763085efb2ca9f547b875353f2f4"
+    },
+    {
+      "path": "files/0046-video-1.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--e10ef-d-Creator-draft-save-reopen-chromium/video-1.webm",
+      "bytes": 1488,
+      "sha256": "a2b6de486574821c5e7939af2851ea7b3ccf87eab6c40ea450a935b7bb19fcad"
+    },
+    {
+      "path": "files/0047-video-2.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--e10ef-d-Creator-draft-save-reopen-chromium/video-2.webm",
+      "bytes": 1194,
+      "sha256": "bc95166501e8ef8edd299faf4477831e27a2314669e22ca434bc96166033d43a"
+    },
+    {
+      "path": "files/0048-video-3.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--e10ef-d-Creator-draft-save-reopen-chromium/video-3.webm",
+      "bytes": 1194,
+      "sha256": "e175e79cc8f8fbc6ee117f80a4038669eead268a87858f94e1d6eabc4871a7a9"
+    },
+    {
+      "path": "files/0049-video-4.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--e10ef-d-Creator-draft-save-reopen-chromium/video-4.webm",
+      "bytes": 1341,
+      "sha256": "191c35112d053463fbb59d417981f4f04614b215ca11644ca324057bf6caec26"
+    },
+    {
+      "path": "files/0050-video.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/artifacts/landfall-browser-passing-results-ff7b5d0e4f9fe9e6bb5a1902ff0e1015dfe8ed25/artifacts/sounding-line/private-browser-failures/355ef381-47f8-4e28-9aee-49fd3adfda46/results/sextant-resource-journeys--e10ef-d-Creator-draft-save-reopen-chromium/video.webm",
+      "bytes": 3036045,
+      "sha256": "0b9bfe8d9cb5ce6aee30cbe36bdcfdabdf96a54a0e609ab9aa24c6df22d3bd04"
+    },
+    {
+      "path": "files/0051-hosted-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/run-39338716275/hosted-receipt.json",
+      "bytes": 19389,
+      "sha256": "f1034357acbc16af5980073b355b817e3f118e4ea2c2dc6c60cd05131c85b6cd"
+    },
+    {
+      "path": "files/0052-dispatch.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-ff7b5d0e4f9f-1792450783609/dispatch.json",
+      "bytes": 2032,
+      "sha256": "5bf01634a0a77d3d04fff326e4b848fc88a788d650f66af2b4a32f53ea82b709"
+    },
+    {
+      "path": "files/0053-resources-39338716275.log",
+      "sourcePath": "artifacts/sextant-phase4/resources-39338716275.log",
+      "bytes": 308938,
+      "sha256": "22a818431c9d8d224624bb429307e052cfa45fa70c78c67956039df2c5ebcad6"
+    }
+  ]
+}

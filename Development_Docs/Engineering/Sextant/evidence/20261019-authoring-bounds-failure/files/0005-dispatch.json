@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "candidateSha": "79a49bbe9c08d3dd9aead8aa2d74133bfa7c64fb",
+  "target": "sextant-authoring-resources",
+  "tier": "development",
+  "profiles": {
+    "android": [
+      {
+        "profile": "primary-phone",
+        "api": 36,
+        "device": "pixel_7",
+        "ram": "3072M",
+        "memory": 3072,
+        "lowRam": ""
+      }
+    ],
+    "apple": [
+      "primary-phone"
+    ]
+  },
+  "scenarios": {
+    "appleDevices": [],
+    "browser": [
+      "sextant-authoring-resource-journeys"
+    ],
+    "journal": [],
+    "background": [],
+    "radio": "uwb-native-peer-session,ble-native-generic-discovery,ble-native-ibeacon-discovery,ble-native-eddystone-uid-discovery",
+    "ios": "permission-denied-native,permission-revoked-mid-route,gps-perfect-walk,offline-native-canonical-reconcile,offline-lost-response-canonical-reconcile,offline-restart-canonical-reconcile,virtual-player-navigation,virtual-offline-canonical-reconcile,geofence-native-background-wake",
+    "android": "device-reboot,qr-native-camera-valid,permission-denied-native,permission-approximate-native,permission-revoked-mid-route,motion-walk,stationary,barometer-floor-change,orientation-turn,heading-turn,gps-perfect-walk,offline-native-canonical-reconcile,offline-lost-response-canonical-reconcile,offline-restart-canonical-reconcile,virtual-player-navigation,virtual-offline-canonical-reconcile,battery-normal,battery-low,battery-saver,charger-change",
+    "provider": "all"
+  },
+  "transportSha": "d51e3f0ae6ccb77aec08aa31c3e072191c2e61be",
+  "transportTree": "77797450c75c99b770775199c9d0bae287fdb1db",
+  "branch": "codex/landfall-lab-79a49bbe9c08-1792451421819",
+  "workflow": "landfall-device-lab.yml",
+  "createdAt": "2026-10-19T23:10:24.526Z",
+  "cleanup": "PASS",
+  "runId": "39339880666",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39339880666",
+  "harvested": "C:\\Users\\kkids\\.codex\\worktrees\\sextant-phase4-completion\\Codex_TreasureHunt\\artifacts\\landfall-device-lab\\hosted-79a49bbe9c08-1792451421819\\run-39339880666"
+}

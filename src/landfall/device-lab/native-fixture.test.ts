@@ -33,12 +33,14 @@ describe("published native restart fixture policy", () => {
   it("accepts the original observations across a bounded restart only under the published restart policy", () => {
     const before = JSON.stringify(request);
     expect(qualify("offline-restart-canonical-reconcile", 100000).outcome).toBe("CONFIRMED");
+    expect(qualify("offline-lost-response-canonical-reconcile", 100000).outcome).toBe("CONFIRMED");
     expect(JSON.stringify(request)).toBe(before);
     expect(() => qualify("gps-perfect-walk", 100000)).toThrow("LANDFALL_EVIDENCE_STALE");
   });
   it("rejects evidence after the authored restart window and preserves the product fixture", () => {
     const before = JSON.stringify(landfallFixture);
     expect(() => qualify("offline-restart-canonical-reconcile", 601001)).toThrow("LANDFALL_EVIDENCE_STALE");
+    expect(() => qualify("offline-lost-response-canonical-reconcile", 601001)).toThrow("LANDFALL_EVIDENCE_STALE");
     expect(() => qualify("unknown-untrusted-scenario", 31000)).toThrow("LANDFALL_EVIDENCE_STALE");
     expect(JSON.stringify(landfallFixture)).toBe(before);
   });

@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "candidateSha": "c518c1680993021279c3c9fc3af0414612d7a10a",
+  "target": "sextant-creator-entry",
+  "tier": "development",
+  "profiles": {
+    "android": [
+      {
+        "profile": "primary-phone",
+        "api": 36,
+        "device": "pixel_7",
+        "ram": "3072M",
+        "memory": 3072,
+        "lowRam": ""
+      }
+    ],
+    "apple": [
+      "primary-phone"
+    ]
+  },
+  "scenarios": {
+    "appleDevices": [],
+    "browser": [
+      "sextant-creator-entry-journeys"
+    ],
+    "journal": [],
+    "background": [],
+    "radio": "uwb-native-peer-session,ble-native-generic-discovery,ble-native-ibeacon-discovery,ble-native-eddystone-uid-discovery",
+    "ios": "permission-denied-native,permission-revoked-mid-route,gps-perfect-walk,offline-native-canonical-reconcile,offline-lost-response-canonical-reconcile,offline-restart-canonical-reconcile,virtual-player-navigation,virtual-offline-canonical-reconcile,geofence-native-background-wake",
+    "android": "device-reboot,qr-native-camera-valid,permission-denied-native,permission-approximate-native,permission-revoked-mid-route,motion-walk,stationary,barometer-floor-change,orientation-turn,heading-turn,gps-perfect-walk,offline-native-canonical-reconcile,offline-lost-response-canonical-reconcile,offline-restart-canonical-reconcile,virtual-player-navigation,virtual-offline-canonical-reconcile,battery-normal,battery-low,battery-saver,charger-change",
+    "provider": "all"
+  },
+  "transportSha": "ac706089bb42ed9ad0bb83a04dce782dd29ad597",
+  "transportTree": "b87a5651755123208609e6921e592a66c82d4f7c",
+  "branch": "codex/landfall-lab-c518c1680993-1792463516836",
+  "workflow": "landfall-device-lab.yml",
+  "createdAt": "2026-10-20T02:32:12.379Z",
+  "cleanup": "PASS",
+  "runId": "39359450077",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39359450077",
+  "harvested": "C:\\Users\\kkids\\.codex\\worktrees\\sextant-phase4-completion\\Codex_TreasureHunt\\artifacts\\landfall-device-lab\\hosted-c518c1680993-1792463516836\\run-39359450077"
+}

@@ -1,0 +1,714 @@
+{
+  "schemaVersion": 1,
+  "classification": "ENGINEERING_EVIDENCE_ORIGINAL_BYTES_NOT_ACCEPTANCE",
+  "sourceSha": "91269f5ccf0f8d46c377fe1c47a513be283164dc",
+  "runId": "39366698914",
+  "originalArtifacts": 114,
+  "publishedOriginalArtifacts": 114,
+  "retainedPrivate": [],
+  "reviewFinding": "FOUR_ACTUAL_REGISTER_VERIFY_PASSWORD_EMAIL_LIFECYCLE_AND_RETURN_JOURNEYS_PASS_INDEPENDENT_REVIEW_PENDING",
+  "files": [
+    {
+      "path": "files/0001-browser-runtime.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-91269f5ccf0f8d46c377fe1c47a513be283164dc/browser-diagnostics/505f5965-1f1c-4c50-b48e-347e96f6f849/ebbc91c8-fb2c-47c5-8db2-76264fff8537/browser-runtime.json",
+      "bytes": 2176,
+      "sha256": "5ac6a6d42bc92dc6502c090cdc5fbe1725873a8be9ccc1ed7b8fccc3ea3d56c2"
+    },
+    {
+      "path": "files/0002-browser-suite-profile.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-91269f5ccf0f8d46c377fe1c47a513be283164dc/browser-diagnostics/505f5965-1f1c-4c50-b48e-347e96f6f849/ebbc91c8-fb2c-47c5-8db2-76264fff8537/browser-suite-profile.json",
+      "bytes": 560,
+      "sha256": "125e20784f1ec51c0192c5518fca23521115f3d6e3c80fa8a964e54429621412"
+    },
+    {
+      "path": "files/0003-account-cancel-deletion-prepared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-0a91e-ry-and-reversible-lifecycle-chromium/account-cancel-deletion-prepared.png",
+      "bytes": 569062,
+      "sha256": "60efd98e89157a99c99f4e0b498b064ba9e110b5d4e5937e698a7d9c9e5d7643"
+    },
+    {
+      "path": "files/0004-account-deactivation-prepared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-0a91e-ry-and-reversible-lifecycle-chromium/account-deactivation-prepared.png",
+      "bytes": 400584,
+      "sha256": "43b7288c3ed2c5a994805b31399e624acc0dd0d6881699a22c6f4b8a6a302ca7"
+    },
+    {
+      "path": "files/0005-account-deletion-prepared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-0a91e-ry-and-reversible-lifecycle-chromium/account-deletion-prepared.png",
+      "bytes": 352172,
+      "sha256": "b740146adda75f5b3e9fd382c88a64001056efe91582df3a06499d625e7c06fa"
+    },
+    {
+      "path": "files/0006-account-email-change-confirmed.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-0a91e-ry-and-reversible-lifecycle-chromium/account-email-change-confirmed.png",
+      "bytes": 544165,
+      "sha256": "b30861c5fe8035cab9b06736a97d9ccf44632b8b37d4bfb7aca06fb68c5d4770"
+    },
+    {
+      "path": "files/0007-account-email-change-prepared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-0a91e-ry-and-reversible-lifecycle-chromium/account-email-change-prepared.png",
+      "bytes": 516409,
+      "sha256": "fa94d54c5f41719ea6543068950a8a49a642d90953c15bfb9936d37f79e22ae8"
+    },
+    {
+      "path": "files/0008-account-final-same-owner-return.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-0a91e-ry-and-reversible-lifecycle-chromium/account-final-same-owner-return.png",
+      "bytes": 474215,
+      "sha256": "cc7e5daeee21a66e3c6d556a3f6edeaa28932360e37396527c222772e82f3904"
+    },
+    {
+      "path": "files/0009-account-first-overview.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-0a91e-ry-and-reversible-lifecycle-chromium/account-first-overview.png",
+      "bytes": 474215,
+      "sha256": "cc7e5daeee21a66e3c6d556a3f6edeaa28932360e37396527c222772e82f3904"
+    },
+    {
+      "path": "files/0010-account-password-requested.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-0a91e-ry-and-reversible-lifecycle-chromium/account-password-requested.png",
+      "bytes": 534603,
+      "sha256": "14cbb94edbc241068185e78a7694936dda785743ca8c368166e9bd4b92c244be"
+    },
+    {
+      "path": "files/0011-account-reactivation-prepared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-0a91e-ry-and-reversible-lifecycle-chromium/account-reactivation-prepared.png",
+      "bytes": 544047,
+      "sha256": "31b4781dbd507540939b14326710e03addad8d323b2c21cd2a7c30be7551ef6c"
+    },
+    {
+      "path": "files/0012-account-recovery-journey-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-0a91e-ry-and-reversible-lifecycle-chromium/account-recovery-journey-receipt.json",
+      "bytes": 3052,
+      "sha256": "6b96fc7601de27e6a2d240b254553cef8bebac7bff17845585f8f6acb1f55b64"
+    },
+    {
+      "path": "files/0013-account-register-prepared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-0a91e-ry-and-reversible-lifecycle-chromium/account-register-prepared.png",
+      "bytes": 557072,
+      "sha256": "99c24dc994aa7eb7128c327baef214e59b3e19fb3c390e1e26803729a1b75799"
+    },
+    {
+      "path": "files/0014-account-reset-prepared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-0a91e-ry-and-reversible-lifecycle-chromium/account-reset-prepared.png",
+      "bytes": 515116,
+      "sha256": "adfbc5e5ce7c0e01cad94ac378a78ac8c33bbe6eb14384f72ab55746038b064a"
+    },
+    {
+      "path": "files/0015-account-verification-prepared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-0a91e-ry-and-reversible-lifecycle-chromium/account-verification-prepared.png",
+      "bytes": 544539,
+      "sha256": "273b2d494af20c470486d4defa8711b5f955e27828a4ed3ab1c72ef5121e0e48"
+    },
+    {
+      "path": "files/0016-account-verification-rejected.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-0a91e-ry-and-reversible-lifecycle-chromium/account-verification-rejected.png",
+      "bytes": 568183,
+      "sha256": "ff4ba2bf10d1700d87f70d51553ef6acf91209090f03190f8d3da9b814e9b213"
+    },
+    {
+      "path": "files/0017-video-1.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-0a91e-ry-and-reversible-lifecycle-chromium/video-1.webm",
+      "bytes": 1543,
+      "sha256": "b84bb1e98355dbf3ade94a926d01d6a46251fa2ec978a63270d31afad91011df"
+    },
+    {
+      "path": "files/0018-video-10.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-0a91e-ry-and-reversible-lifecycle-chromium/video-10.webm",
+      "bytes": 1474,
+      "sha256": "8912012fbb859e65d6e81cabc7f01bc697642b07a500e626b0bb912916a3096e"
+    },
+    {
+      "path": "files/0019-video-11.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-0a91e-ry-and-reversible-lifecycle-chromium/video-11.webm",
+      "bytes": 1543,
+      "sha256": "0d4c2e61d9f8230b9ea5f166bddbb025ee86eb4d1400b729ee9bbff168ce239d"
+    },
+    {
+      "path": "files/0020-video-12.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-0a91e-ry-and-reversible-lifecycle-chromium/video-12.webm",
+      "bytes": 1474,
+      "sha256": "47e08568ee0caf93b5cd7d3c8f7ec77d3adb83c35418afa51cbe9a230df41d4d"
+    },
+    {
+      "path": "files/0021-video-13.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-0a91e-ry-and-reversible-lifecycle-chromium/video-13.webm",
+      "bytes": 1612,
+      "sha256": "6373a4012ee5585c94f46f094751b211d7d2475e97e569fc4c30c89892754df2"
+    },
+    {
+      "path": "files/0022-video-2.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-0a91e-ry-and-reversible-lifecycle-chromium/video-2.webm",
+      "bytes": 1474,
+      "sha256": "f063724f4575a32c5d05df999c711c7b559bcc5307ee06bdb7fb3a7eb5c89b4f"
+    },
+    {
+      "path": "files/0023-video-3.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-0a91e-ry-and-reversible-lifecycle-chromium/video-3.webm",
+      "bytes": 1543,
+      "sha256": "fc93e8606536980e91a7a7bb09bb6ad14a62607cfaf61eeb73c900bf89ad5e47"
+    },
+    {
+      "path": "files/0024-video-4.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-0a91e-ry-and-reversible-lifecycle-chromium/video-4.webm",
+      "bytes": 1612,
+      "sha256": "7ef6d7accfc4ed0a0c5168c6e0c8a08bf5281b41aa738b67e77ff3e745c0a0ef"
+    },
+    {
+      "path": "files/0025-video-5.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-0a91e-ry-and-reversible-lifecycle-chromium/video-5.webm",
+      "bytes": 1474,
+      "sha256": "fdfa97493d41274e8d78786a20937e3a20733c91a6f846317007b7f8a0919409"
+    },
+    {
+      "path": "files/0026-video-6.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-0a91e-ry-and-reversible-lifecycle-chromium/video-6.webm",
+      "bytes": 1543,
+      "sha256": "9a9f2d10e163e9f683dfe566b87f55d005bd52442a5020b644b10d0959d239e6"
+    },
+    {
+      "path": "files/0027-video-7.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-0a91e-ry-and-reversible-lifecycle-chromium/video-7.webm",
+      "bytes": 1474,
+      "sha256": "c8d258c5a2e934b596d9de02235913ef6582245e6bb7571788507b54663a5e5d"
+    },
+    {
+      "path": "files/0028-video-8.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-0a91e-ry-and-reversible-lifecycle-chromium/video-8.webm",
+      "bytes": 1474,
+      "sha256": "389168331346f0777705852ba815de323a77dc9611d0e165420bcbf9dc6dfbc6"
+    },
+    {
+      "path": "files/0029-video-9.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-0a91e-ry-and-reversible-lifecycle-chromium/video-9.webm",
+      "bytes": 1612,
+      "sha256": "9d5716e4d21a5dee9b81ec104f57805c4a6abcca6fb3d0253556fffaef43f0ac"
+    },
+    {
+      "path": "files/0030-video.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-0a91e-ry-and-reversible-lifecycle-chromium/video.webm",
+      "bytes": 3216322,
+      "sha256": "1358245f030e67c99f019f63c2a7bcf26a05f81982a4fc70432e2c03e3124950"
+    },
+    {
+      "path": "files/0031-account-cancel-deletion-prepared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-53afa-ry-and-reversible-lifecycle-chromium/account-cancel-deletion-prepared.png",
+      "bytes": 569062,
+      "sha256": "60efd98e89157a99c99f4e0b498b064ba9e110b5d4e5937e698a7d9c9e5d7643"
+    },
+    {
+      "path": "files/0032-account-deactivation-prepared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-53afa-ry-and-reversible-lifecycle-chromium/account-deactivation-prepared.png",
+      "bytes": 400584,
+      "sha256": "43b7288c3ed2c5a994805b31399e624acc0dd0d6881699a22c6f4b8a6a302ca7"
+    },
+    {
+      "path": "files/0033-account-deletion-prepared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-53afa-ry-and-reversible-lifecycle-chromium/account-deletion-prepared.png",
+      "bytes": 352173,
+      "sha256": "c19feff4fe0b0b000b4c176f7a5fed649e29e0f03fe33d73c26de1b7dba4d952"
+    },
+    {
+      "path": "files/0034-account-email-change-confirmed.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-53afa-ry-and-reversible-lifecycle-chromium/account-email-change-confirmed.png",
+      "bytes": 544165,
+      "sha256": "b30861c5fe8035cab9b06736a97d9ccf44632b8b37d4bfb7aca06fb68c5d4770"
+    },
+    {
+      "path": "files/0035-account-email-change-prepared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-53afa-ry-and-reversible-lifecycle-chromium/account-email-change-prepared.png",
+      "bytes": 516409,
+      "sha256": "fa94d54c5f41719ea6543068950a8a49a642d90953c15bfb9936d37f79e22ae8"
+    },
+    {
+      "path": "files/0036-account-final-same-owner-return.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-53afa-ry-and-reversible-lifecycle-chromium/account-final-same-owner-return.png",
+      "bytes": 473647,
+      "sha256": "59233193ae0e7fa065e1d7e204fe1cbfc3067199d9b11967612a587ad55d3b7f"
+    },
+    {
+      "path": "files/0037-account-first-overview.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-53afa-ry-and-reversible-lifecycle-chromium/account-first-overview.png",
+      "bytes": 473647,
+      "sha256": "59233193ae0e7fa065e1d7e204fe1cbfc3067199d9b11967612a587ad55d3b7f"
+    },
+    {
+      "path": "files/0038-account-password-requested.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-53afa-ry-and-reversible-lifecycle-chromium/account-password-requested.png",
+      "bytes": 534282,
+      "sha256": "f0c40f13da69100b64a5ef6480c29455c2794f986ed9c6c0d73c65499dbd8b21"
+    },
+    {
+      "path": "files/0039-account-reactivation-prepared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-53afa-ry-and-reversible-lifecycle-chromium/account-reactivation-prepared.png",
+      "bytes": 544047,
+      "sha256": "31b4781dbd507540939b14326710e03addad8d323b2c21cd2a7c30be7551ef6c"
+    },
+    {
+      "path": "files/0040-account-recovery-journey-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-53afa-ry-and-reversible-lifecycle-chromium/account-recovery-journey-receipt.json",
+      "bytes": 3028,
+      "sha256": "4f13650515dbd236c88b0a933febe361213b66347bf0aa58185a5aa5df66369b"
+    },
+    {
+      "path": "files/0041-account-register-prepared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-53afa-ry-and-reversible-lifecycle-chromium/account-register-prepared.png",
+      "bytes": 557071,
+      "sha256": "9f27ee1af9db51729fef6f1e8fd8781dd6a33b28040f4502be29f1ca9eef74c9"
+    },
+    {
+      "path": "files/0042-account-reset-prepared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-53afa-ry-and-reversible-lifecycle-chromium/account-reset-prepared.png",
+      "bytes": 515116,
+      "sha256": "adfbc5e5ce7c0e01cad94ac378a78ac8c33bbe6eb14384f72ab55746038b064a"
+    },
+    {
+      "path": "files/0043-account-verification-prepared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-53afa-ry-and-reversible-lifecycle-chromium/account-verification-prepared.png",
+      "bytes": 544539,
+      "sha256": "273b2d494af20c470486d4defa8711b5f955e27828a4ed3ab1c72ef5121e0e48"
+    },
+    {
+      "path": "files/0044-account-verification-rejected.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-53afa-ry-and-reversible-lifecycle-chromium/account-verification-rejected.png",
+      "bytes": 568183,
+      "sha256": "5386054ba3d0db50d919ee216e32d702031caaa6386033a49f7c3f6015163111"
+    },
+    {
+      "path": "files/0045-video-1.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-53afa-ry-and-reversible-lifecycle-chromium/video-1.webm",
+      "bytes": 1474,
+      "sha256": "ab4116036b328da7087cbb20ca673d918f19059ec3ca92f676c5df819593e929"
+    },
+    {
+      "path": "files/0046-video-10.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-53afa-ry-and-reversible-lifecycle-chromium/video-10.webm",
+      "bytes": 1474,
+      "sha256": "6ae2b767d2b0ac2f7c871a3da72a10a8261315a1d1ce880c2b5752bc13f51bf8"
+    },
+    {
+      "path": "files/0047-video-11.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-53afa-ry-and-reversible-lifecycle-chromium/video-11.webm",
+      "bytes": 1543,
+      "sha256": "f8462e069292d3b4b20a9554cfd328fc6c9d86b8a28faca51a6faea5d61a6d8a"
+    },
+    {
+      "path": "files/0048-video-12.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-53afa-ry-and-reversible-lifecycle-chromium/video-12.webm",
+      "bytes": 1474,
+      "sha256": "685119138484218c601d386409f6338aa552232c1308da23947c4719340c741e"
+    },
+    {
+      "path": "files/0049-video-13.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-53afa-ry-and-reversible-lifecycle-chromium/video-13.webm",
+      "bytes": 1612,
+      "sha256": "e7cf9d6405d06968d156537eb82be4034a80c8e1ef0eda5acd1944215d0861d6"
+    },
+    {
+      "path": "files/0050-video-2.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-53afa-ry-and-reversible-lifecycle-chromium/video-2.webm",
+      "bytes": 1474,
+      "sha256": "183f747979ff3da60e8414f675edeaf6e56380cb72216279316122770e248ad8"
+    },
+    {
+      "path": "files/0051-video-3.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-53afa-ry-and-reversible-lifecycle-chromium/video-3.webm",
+      "bytes": 1474,
+      "sha256": "44550a4937eb89ef18e1487934fbceebd630aaab392fe121140ab681b0831511"
+    },
+    {
+      "path": "files/0052-video-4.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-53afa-ry-and-reversible-lifecycle-chromium/video-4.webm",
+      "bytes": 1612,
+      "sha256": "dcd4a1c6c67e977a5bb8cc27fe96ac73e140fbcf5ba29cf65c8442711deaf670"
+    },
+    {
+      "path": "files/0053-video-5.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-53afa-ry-and-reversible-lifecycle-chromium/video-5.webm",
+      "bytes": 1474,
+      "sha256": "9ee5594ac395e4910004b155f483f6c2e3b517ff011ce212bdd10192dccc38f4"
+    },
+    {
+      "path": "files/0054-video-6.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-53afa-ry-and-reversible-lifecycle-chromium/video-6.webm",
+      "bytes": 1474,
+      "sha256": "599786b668f0f2f2bbabffe25eb9febf962b72e32caf5dc82d4b3db0ee90f593"
+    },
+    {
+      "path": "files/0055-video-7.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-53afa-ry-and-reversible-lifecycle-chromium/video-7.webm",
+      "bytes": 1474,
+      "sha256": "314983cee7fc40ab86d23af0616c96cd5dcc005e853d55e448b4ab6208a5b2b1"
+    },
+    {
+      "path": "files/0056-video-8.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-53afa-ry-and-reversible-lifecycle-chromium/video-8.webm",
+      "bytes": 1474,
+      "sha256": "1efb16f8305e1c73c7e5a6c7dec00489f630b62d7d249696425c2dff7fd5a7fc"
+    },
+    {
+      "path": "files/0057-video-9.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-53afa-ry-and-reversible-lifecycle-chromium/video-9.webm",
+      "bytes": 1543,
+      "sha256": "12a5f95fe31773c82e795e30e78bd6190bcc8ca3319f8e165c2934673d13cf43"
+    },
+    {
+      "path": "files/0058-video.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-53afa-ry-and-reversible-lifecycle-chromium/video.webm",
+      "bytes": 2455034,
+      "sha256": "1a2eb51eb34eee195d8c5b0958edac070bb4e24689267c1eb09a209050b5d6f1"
+    },
+    {
+      "path": "files/0059-account-cancel-deletion-prepared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-64f5d-ry-and-reversible-lifecycle-chromium/account-cancel-deletion-prepared.png",
+      "bytes": 188316,
+      "sha256": "1a2a2b42c979387748ab9b85159ef0a18b5477d8b56def1227bb084dd93baefb"
+    },
+    {
+      "path": "files/0060-account-deactivation-prepared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-64f5d-ry-and-reversible-lifecycle-chromium/account-deactivation-prepared.png",
+      "bytes": 207110,
+      "sha256": "671fd49efe64fe8fc389d416993d293b948e6ec264de2e11a14bf74ee072b6af"
+    },
+    {
+      "path": "files/0061-account-deletion-prepared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-64f5d-ry-and-reversible-lifecycle-chromium/account-deletion-prepared.png",
+      "bytes": 187749,
+      "sha256": "d1fbac927ff3a3d0620ead3235d9be69cd286fe5cb503caf9be21121df63353c"
+    },
+    {
+      "path": "files/0062-account-email-change-confirmed.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-64f5d-ry-and-reversible-lifecycle-chromium/account-email-change-confirmed.png",
+      "bytes": 203791,
+      "sha256": "ea755ba8253d5e404f6f51d0f39d394235a9fc33d3c7be50f6d991185f948f7d"
+    },
+    {
+      "path": "files/0063-account-email-change-prepared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-64f5d-ry-and-reversible-lifecycle-chromium/account-email-change-prepared.png",
+      "bytes": 184798,
+      "sha256": "ba338ed9dccdf6d16514aa9cbac2f40ea9c929b91ed1df62bc901b141aba9f6f"
+    },
+    {
+      "path": "files/0064-account-final-same-owner-return.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-64f5d-ry-and-reversible-lifecycle-chromium/account-final-same-owner-return.png",
+      "bytes": 168317,
+      "sha256": "518318c121005bebe30a8703e98a374b3b116aea36764329d51bf123002d36ac"
+    },
+    {
+      "path": "files/0065-account-first-overview.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-64f5d-ry-and-reversible-lifecycle-chromium/account-first-overview.png",
+      "bytes": 168317,
+      "sha256": "518318c121005bebe30a8703e98a374b3b116aea36764329d51bf123002d36ac"
+    },
+    {
+      "path": "files/0066-account-password-requested.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-64f5d-ry-and-reversible-lifecycle-chromium/account-password-requested.png",
+      "bytes": 198197,
+      "sha256": "6adfe3b42e0295c26d02ed1250fed9387552b9b60e2c0907b6f71a5a59772e1b"
+    },
+    {
+      "path": "files/0067-account-reactivation-prepared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-64f5d-ry-and-reversible-lifecycle-chromium/account-reactivation-prepared.png",
+      "bytes": 195810,
+      "sha256": "f3eb776d22bc163cafe05d4a7e4a7e087c0991c4076018493b9599388b4874be"
+    },
+    {
+      "path": "files/0068-account-recovery-journey-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-64f5d-ry-and-reversible-lifecycle-chromium/account-recovery-journey-receipt.json",
+      "bytes": 3050,
+      "sha256": "0a4ef360978448cd2c17470b93d779974d378abe4700a4c48050a0e070af531f"
+    },
+    {
+      "path": "files/0069-account-register-prepared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-64f5d-ry-and-reversible-lifecycle-chromium/account-register-prepared.png",
+      "bytes": 199552,
+      "sha256": "1d4a2eb8aca3a56b4906abaa855a69136977e5418da4c9fd329562cf8af93d9f"
+    },
+    {
+      "path": "files/0070-account-reset-prepared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-64f5d-ry-and-reversible-lifecycle-chromium/account-reset-prepared.png",
+      "bytes": 182049,
+      "sha256": "569c08911d21993b469584bcc9dafde38f71f66840e676323a8c164d1d8ab320"
+    },
+    {
+      "path": "files/0071-account-verification-prepared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-64f5d-ry-and-reversible-lifecycle-chromium/account-verification-prepared.png",
+      "bytes": 195962,
+      "sha256": "b7fbc744ffc365a904c6eb9084a8c3eec94af51f1207aa0f53c6988860fbfa65"
+    },
+    {
+      "path": "files/0072-account-verification-rejected.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-64f5d-ry-and-reversible-lifecycle-chromium/account-verification-rejected.png",
+      "bytes": 203274,
+      "sha256": "80a5603c1ea8f2dc233926017e9d12f7f28a144ab998df9e08e9a244154d850e"
+    },
+    {
+      "path": "files/0073-video-1.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-64f5d-ry-and-reversible-lifecycle-chromium/video-1.webm",
+      "bytes": 1635,
+      "sha256": "3dd301bd75c388af516968f02bed42d55b9d032c3bfeef2baeb8ef212b46894b"
+    },
+    {
+      "path": "files/0074-video-10.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-64f5d-ry-and-reversible-lifecycle-chromium/video-10.webm",
+      "bytes": 1341,
+      "sha256": "b672bce8c6102ca717afac2f8ca1168152e45145f21bc87b1663f685e47244a5"
+    },
+    {
+      "path": "files/0075-video-11.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-64f5d-ry-and-reversible-lifecycle-chromium/video-11.webm",
+      "bytes": 1635,
+      "sha256": "a9a4275de5bc39a33f3ef52d57b1ce2c443d64a7c4e132ae8323659c871c8ba6"
+    },
+    {
+      "path": "files/0076-video-12.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-64f5d-ry-and-reversible-lifecycle-chromium/video-12.webm",
+      "bytes": 1341,
+      "sha256": "deec7be85d5e7727b72cc11924248dc1d0423e7a391e129ea37bb9c05844a2ad"
+    },
+    {
+      "path": "files/0077-video-13.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-64f5d-ry-and-reversible-lifecycle-chromium/video-13.webm",
+      "bytes": 1635,
+      "sha256": "42c631ecb7ebf3115a993e707bc33081adf03b29c1b42c74e7b5a11825110b42"
+    },
+    {
+      "path": "files/0078-video-2.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-64f5d-ry-and-reversible-lifecycle-chromium/video-2.webm",
+      "bytes": 1341,
+      "sha256": "c25a4b40c712eea8dc3e0e5dd7198e9a89fca0dd34c28b1ddd8c9d2efd26230e"
+    },
+    {
+      "path": "files/0079-video-3.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-64f5d-ry-and-reversible-lifecycle-chromium/video-3.webm",
+      "bytes": 1488,
+      "sha256": "16070142ad604a760648d9d8e8f89dbf1282dc28d61667803b0fe77ad322782b"
+    },
+    {
+      "path": "files/0080-video-4.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-64f5d-ry-and-reversible-lifecycle-chromium/video-4.webm",
+      "bytes": 1635,
+      "sha256": "290ea9608992c94fc9b5e68a2b98e64e321751ea25d69362093850c5b0a0477a"
+    },
+    {
+      "path": "files/0081-video-5.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-64f5d-ry-and-reversible-lifecycle-chromium/video-5.webm",
+      "bytes": 1341,
+      "sha256": "7e35268b625522ee4633adc77cf80f57df8a1832d6d4b58140915580076e512e"
+    },
+    {
+      "path": "files/0082-video-6.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-64f5d-ry-and-reversible-lifecycle-chromium/video-6.webm",
+      "bytes": 1341,
+      "sha256": "c3a661b31babe07c7439756a4a355720d58ac4c83a39a233e8917518b55fa91c"
+    },
+    {
+      "path": "files/0083-video-7.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-64f5d-ry-and-reversible-lifecycle-chromium/video-7.webm",
+      "bytes": 1341,
+      "sha256": "ac438e664d80f7b28f7fe9f0ac019828deba1cc989658487a1f85528276778ee"
+    },
+    {
+      "path": "files/0084-video-8.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-64f5d-ry-and-reversible-lifecycle-chromium/video-8.webm",
+      "bytes": 1341,
+      "sha256": "f2f1838b04be27c34332bcec1377427ddb9c46b9cce6f7ef663b334d3cff9a07"
+    },
+    {
+      "path": "files/0085-video-9.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-64f5d-ry-and-reversible-lifecycle-chromium/video-9.webm",
+      "bytes": 1488,
+      "sha256": "37d9e78e4f658cd01d254fab838aebbfe12fc03dbfbe0503fef402a5fb8d1bce"
+    },
+    {
+      "path": "files/0086-video.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-64f5d-ry-and-reversible-lifecycle-chromium/video.webm",
+      "bytes": 3312030,
+      "sha256": "45e114e10b1111b03df4167d0862be97efe14c44795987b4fc728618f3b6a8db"
+    },
+    {
+      "path": "files/0087-account-cancel-deletion-prepared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-97d10-ry-and-reversible-lifecycle-chromium/account-cancel-deletion-prepared.png",
+      "bytes": 188316,
+      "sha256": "1a2a2b42c979387748ab9b85159ef0a18b5477d8b56def1227bb084dd93baefb"
+    },
+    {
+      "path": "files/0088-account-deactivation-prepared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-97d10-ry-and-reversible-lifecycle-chromium/account-deactivation-prepared.png",
+      "bytes": 163056,
+      "sha256": "407367b735a092b8f2d7896d6232d01f0a2eda11650f3f127218f9edab9585a6"
+    },
+    {
+      "path": "files/0089-account-deletion-prepared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-97d10-ry-and-reversible-lifecycle-chromium/account-deletion-prepared.png",
+      "bytes": 187749,
+      "sha256": "d1fbac927ff3a3d0620ead3235d9be69cd286fe5cb503caf9be21121df63353c"
+    },
+    {
+      "path": "files/0090-account-email-change-confirmed.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-97d10-ry-and-reversible-lifecycle-chromium/account-email-change-confirmed.png",
+      "bytes": 203791,
+      "sha256": "ea755ba8253d5e404f6f51d0f39d394235a9fc33d3c7be50f6d991185f948f7d"
+    },
+    {
+      "path": "files/0091-account-email-change-prepared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-97d10-ry-and-reversible-lifecycle-chromium/account-email-change-prepared.png",
+      "bytes": 184798,
+      "sha256": "ba338ed9dccdf6d16514aa9cbac2f40ea9c929b91ed1df62bc901b141aba9f6f"
+    },
+    {
+      "path": "files/0092-account-final-same-owner-return.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-97d10-ry-and-reversible-lifecycle-chromium/account-final-same-owner-return.png",
+      "bytes": 168077,
+      "sha256": "a33dc977f72b5665d50578bab0ddeb3a8a0d4493d315ed19e9434ace3ccea8cf"
+    },
+    {
+      "path": "files/0093-account-first-overview.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-97d10-ry-and-reversible-lifecycle-chromium/account-first-overview.png",
+      "bytes": 168084,
+      "sha256": "68686b6917dbba9d9b4043bbc369faf142daceed0eddf8bf0055c486b259b11d"
+    },
+    {
+      "path": "files/0094-account-password-requested.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-97d10-ry-and-reversible-lifecycle-chromium/account-password-requested.png",
+      "bytes": 198189,
+      "sha256": "cc038f90dcf3ddb7fd2eb2f1f2a87b5a4b0ef1259c6ff07b146a764bd748ee21"
+    },
+    {
+      "path": "files/0095-account-reactivation-prepared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-97d10-ry-and-reversible-lifecycle-chromium/account-reactivation-prepared.png",
+      "bytes": 195810,
+      "sha256": "f3eb776d22bc163cafe05d4a7e4a7e087c0991c4076018493b9599388b4874be"
+    },
+    {
+      "path": "files/0096-account-recovery-journey-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-97d10-ry-and-reversible-lifecycle-chromium/account-recovery-journey-receipt.json",
+      "bytes": 3028,
+      "sha256": "d1ec732ffec4a531f6318be60a860aeb667fd9d00d76544e0c45df8a31fb1cec"
+    },
+    {
+      "path": "files/0097-account-register-prepared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-97d10-ry-and-reversible-lifecycle-chromium/account-register-prepared.png",
+      "bytes": 199552,
+      "sha256": "0b48db5300997d7565e82967e86b9c063d66a1a806812e7c7bf546810ace843f"
+    },
+    {
+      "path": "files/0098-account-reset-prepared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-97d10-ry-and-reversible-lifecycle-chromium/account-reset-prepared.png",
+      "bytes": 182049,
+      "sha256": "569c08911d21993b469584bcc9dafde38f71f66840e676323a8c164d1d8ab320"
+    },
+    {
+      "path": "files/0099-account-verification-prepared.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-97d10-ry-and-reversible-lifecycle-chromium/account-verification-prepared.png",
+      "bytes": 195962,
+      "sha256": "b7fbc744ffc365a904c6eb9084a8c3eec94af51f1207aa0f53c6988860fbfa65"
+    },
+    {
+      "path": "files/0100-account-verification-rejected.png",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-97d10-ry-and-reversible-lifecycle-chromium/account-verification-rejected.png",
+      "bytes": 203280,
+      "sha256": "6d9d96cb24c4730e98209b1a184b4bef90f95f92639285abe3c676023e0dbd8c"
+    },
+    {
+      "path": "files/0101-video-1.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-97d10-ry-and-reversible-lifecycle-chromium/video-1.webm",
+      "bytes": 1341,
+      "sha256": "08c1eacf06db48e03a4da77a18311d99ecf963ab51ef7a3e2c987a924ee082ea"
+    },
+    {
+      "path": "files/0102-video-10.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-97d10-ry-and-reversible-lifecycle-chromium/video-10.webm",
+      "bytes": 1341,
+      "sha256": "5bf38b555b205fd4098f3c5b9cf7da2c0bde1942fbd402eb799db3670c6e65b8"
+    },
+    {
+      "path": "files/0103-video-11.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-97d10-ry-and-reversible-lifecycle-chromium/video-11.webm",
+      "bytes": 1488,
+      "sha256": "6ba06b8ec9b342faa6a4f6fd27253f0d210ede9aaf93b32d1120324e0afa26c2"
+    },
+    {
+      "path": "files/0104-video-12.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-97d10-ry-and-reversible-lifecycle-chromium/video-12.webm",
+      "bytes": 1341,
+      "sha256": "d63bb014f7d030cb0e8efcf9343a4395824b0588388c1e1865eb9ff7e30c5981"
+    },
+    {
+      "path": "files/0105-video-13.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-97d10-ry-and-reversible-lifecycle-chromium/video-13.webm",
+      "bytes": 1488,
+      "sha256": "848d99d8cd91203478bb40c1db8370abb718b03ff85faf756f58bc3948a0570c"
+    },
+    {
+      "path": "files/0106-video-2.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-97d10-ry-and-reversible-lifecycle-chromium/video-2.webm",
+      "bytes": 1341,
+      "sha256": "a1163777e6dabd9acdbc8c398487803a8f05e764e171f9b2e17f21e2cff725e3"
+    },
+    {
+      "path": "files/0107-video-3.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-97d10-ry-and-reversible-lifecycle-chromium/video-3.webm",
+      "bytes": 1341,
+      "sha256": "6e7972ee150a66ffd51a698252cb376fe3529fa99ae1fa1f7209f67c28074154"
+    },
+    {
+      "path": "files/0108-video-4.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-97d10-ry-and-reversible-lifecycle-chromium/video-4.webm",
+      "bytes": 1488,
+      "sha256": "ea19a353b3b2e418e545a0ae529588bf3882677b357519023453504fe444ad62"
+    },
+    {
+      "path": "files/0109-video-5.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-97d10-ry-and-reversible-lifecycle-chromium/video-5.webm",
+      "bytes": 1341,
+      "sha256": "29f50135e92a0dae02f1ede9edd4f8e4b2046da2f382f3e9cf7b5ce0399c4f45"
+    },
+    {
+      "path": "files/0110-video-6.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-97d10-ry-and-reversible-lifecycle-chromium/video-6.webm",
+      "bytes": 1341,
+      "sha256": "d7f9f8830f54063374ce97c40f6a44fbd08517a0cefb6570a7a55f60d3064576"
+    },
+    {
+      "path": "files/0111-video-7.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-97d10-ry-and-reversible-lifecycle-chromium/video-7.webm",
+      "bytes": 1341,
+      "sha256": "1addbfee5c0e281ff4d43d05ef3ddeced8b4474d8b38a7e8051590f1f4d8c2ab"
+    },
+    {
+      "path": "files/0112-video-8.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-97d10-ry-and-reversible-lifecycle-chromium/video-8.webm",
+      "bytes": 1341,
+      "sha256": "71cdff9687f9349d4a1072d2fe0cd68a4880ea0b566fd5c964c86c5d95a190b3"
+    },
+    {
+      "path": "files/0113-video-9.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-97d10-ry-and-reversible-lifecycle-chromium/video-9.webm",
+      "bytes": 1488,
+      "sha256": "4dc2cea5927a3b30711264eb79422f2924b5bddff0329521fb7fdacdfbd757ca"
+    },
+    {
+      "path": "files/0114-video.webm",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/artifacts/landfall-browser-passing-results-91269f5ccf0f8d46c377fe1c47a513be283164dc/artifacts/sounding-line/private-browser-failures/c7aca9e6-ccf7-49a0-9aff-7ac5ce4b3d3c/results/sextant-account-recovery-j-97d10-ry-and-reversible-lifecycle-chromium/video.webm",
+      "bytes": 2428089,
+      "sha256": "4585c1e5ec89fcc86d38bf5dfe1bc13119c0371b6fcbc78fec08afd487fe09a7"
+    },
+    {
+      "path": "files/0115-hosted-receipt.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/run-39366698914/hosted-receipt.json",
+      "bytes": 44105,
+      "sha256": "8afcc964f0d65309619f8a3e38d6e5ba07570ea1e7f54061c2d0be6d753b22a2"
+    },
+    {
+      "path": "files/0116-dispatch.json",
+      "sourcePath": "artifacts/landfall-device-lab/hosted-91269f5ccf0f-1792468436626/dispatch.json",
+      "bytes": 2047,
+      "sha256": "7ac8b3eca265ebc03c1ed514362ffce4d22422aed366d95ce327c9888939dd9c"
+    },
+    {
+      "path": "files/0117-account-recovery-39366698914.log",
+      "sourcePath": "artifacts/sextant-phase4/account-recovery-39366698914.log",
+      "bytes": 380754,
+      "sha256": "54795bcd28577032e25c0b5269b24cf4e50ab5552cbf2c967e3e126e8c60ced1"
+    }
+  ]
+}

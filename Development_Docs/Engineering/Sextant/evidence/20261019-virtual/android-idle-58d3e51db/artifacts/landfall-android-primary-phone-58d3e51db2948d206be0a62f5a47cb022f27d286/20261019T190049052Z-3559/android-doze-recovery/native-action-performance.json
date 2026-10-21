@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "measurementClass": "OS_SCENARIO_ACTION_WALL_CLOCK",
+  "physicalTimingProven": false,
+  "measurements": [
+    {
+      "index": 0,
+      "action": "POWER",
+      "elapsedMs": 454.3408530000015,
+      "preliminaryBudgetMs": 120000,
+      "state": "PASS"
+    },
+    {
+      "index": 1,
+      "action": "LOCATION",
+      "elapsedMs": 4240.317681999999,
+      "preliminaryBudgetMs": 150000,
+      "state": "PASS"
+    },
+    {
+      "index": 2,
+      "action": "LIFECYCLE",
+      "elapsedMs": 135.89389999999912,
+      "preliminaryBudgetMs": 120000,
+      "state": "PASS"
+    },
+    {
+      "index": 3,
+      "action": "LIFECYCLE",
+      "elapsedMs": 1157.1717950000002,
+      "preliminaryBudgetMs": 120000,
+      "state": "PASS"
+    },
+    {
+      "index": 4,
+      "action": "ANDROID_IDLE",
+      "elapsedMs": 144.5998670000008,
+      "preliminaryBudgetMs": 120000,
+      "state": "PASS"
+    },
+    {
+      "index": 5,
+      "action": "ASSERT",
+      "elapsedMs": 0.008292000000437838,
+      "preliminaryBudgetMs": 120000,
+      "state": "PASS"
+    },
+    {
+      "index": 6,
+      "action": "ASSERT",
+      "elapsedMs": 6.329325000000608,
+      "preliminaryBudgetMs": 120000,
+      "state": "PASS"
+    },
+    {
+      "index": 7,
+      "action": "ANDROID_IDLE",
+      "elapsedMs": 68.16169500000069,
+      "preliminaryBudgetMs": 120000,
+      "state": "PASS"
+    },
+    {
+      "index": 8,
+      "action": "LIFECYCLE",
+      "elapsedMs": 919.9831259999992,
+      "preliminaryBudgetMs": 120000,
+      "state": "PASS"
+    },
+    {
+      "index": 9,
+      "action": "LOCATION",
+      "elapsedMs": 4176.737444000002,
+      "preliminaryBudgetMs": 150000,
+      "state": "PASS"
+    },
+    {
+      "index": 10,
+      "action": "ASSERT",
+      "elapsedMs": 0.008523000000423053,
+      "preliminaryBudgetMs": 120000,
+      "state": "PASS"
+    },
+    {
+      "index": 11,
+      "action": "ASSERT",
+      "elapsedMs": 3.2935270000016317,
+      "preliminaryBudgetMs": 120000,
+      "state": "PASS"
+    },
+    {
+      "index": 12,
+      "action": "ASSERT",
+      "elapsedMs": 1.7712749999991502,
+      "preliminaryBudgetMs": 120000,
+      "state": "PASS"
+    }
+  ]
+}

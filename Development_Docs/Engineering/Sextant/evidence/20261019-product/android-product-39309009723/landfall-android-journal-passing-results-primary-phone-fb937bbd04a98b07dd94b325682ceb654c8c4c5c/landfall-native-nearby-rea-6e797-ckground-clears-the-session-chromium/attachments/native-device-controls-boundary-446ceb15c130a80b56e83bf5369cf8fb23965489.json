@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "source": {
+    "sourceSha": "fb937bbd04a98b07dd94b325682ceb654c8c4c5c",
+    "sourceTree": "a52bc4d149c6f25b068e545a509120702c2d79a8",
+    "dirty": false,
+    "sourceFingerprint": "a80729d2c272a25f70519fd427d2d55d63b422453af73ba2a980904f621134d6"
+  },
+  "deviceProfile": "primary-phone",
+  "nativeBridge": "ACTUAL_ANDROID_WEBVIEW",
+  "passiveDiscovery": true,
+  "motionSupported": true,
+  "osSamplesObserved": 4,
+  "pausedAndFallback": true,
+  "physicalMotionProven": false,
+  "progressionWriter": false
+}

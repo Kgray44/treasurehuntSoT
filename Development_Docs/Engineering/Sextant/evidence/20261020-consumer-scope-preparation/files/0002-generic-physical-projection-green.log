@@ -1,0 +1,28 @@
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 C:/Users/kkids/.codex/worktrees/sextant-phase4-lab-completion/Codex_TreasureHunt
+
+·x
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/landfall/device-lab/sextant-consumer-fixture.test.ts > owned Sextant physical consumer fixture > withholds the approximate landmark and releases the separate generic fixture without changing the original map
+TypeError: Cannot read properties of undefined (reading '0')
+ ❯ src/landfall/device-lab/sextant-consumer-fixture.test.ts:63:39
+     61|     expect(released.runtimeDefinition.context!.landmarks[0].referenceA…
+     62|     expect(released.activeWaypointId).toBe("synthetic-generic-arrival"…
+     63|     expect(released.runtimeDefinition.maps[0].id).toBe("synthetic-gene…
+       |                                       ^
+     64|     expect(released.runtimeDefinition.waypoints[0].landmarkId).toBe(
+     65|       released.runtimeDefinition.context!.landmarks[0].id,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  02:28:21
+   Duration  1.04s (transform 98ms, setup 90ms, import 258ms, tests 12ms, environment 483ms)
+

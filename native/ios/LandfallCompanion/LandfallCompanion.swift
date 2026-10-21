@@ -12,8 +12,9 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
 
     let origin: URL?
     private let location = CLLocationManager()
-    private let motion = CMMotionManager()
-    private let altimeter = CMAltimeter()
+    private var sextantPosition:SextantPosition?
+    private var sextant: SextantSensors?
+    private let sextantHaptics = SextantHaptics()
     private var web: WKWebView?
     private var foreground = true
     private var acquiring = false
@@ -37,6 +38,14 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
     private let power = LandfallPower()
     private var requestedIntervalMs = 5000
     private var requestedPrecise = true
+    #if DEBUG
+    private var lifecycleDiagnostics:[String:Int]=[:]
+    private let lifecycleTraceInstance = UUID().uuidString
+    private let lifecycleTraceStart = ProcessInfo.processInfo.systemUptime
+    private var lifecycleTraceEvents:[[String:Any]]=[]
+    private var lifecycleTraceTruncated=false
+    private var lifecycleDocumentEpoch=0
+    #endif
 
     static func allowedOrigin(_ raw: String) -> URL? {
         guard let url = URL(string: raw), let parts = URLComponents(url: url, resolvingAgainstBaseURL: false), parts.scheme == "https", parts.host != nil, parts.user == nil, parts.password == nil, parts.query == nil, parts.fragment == nil, (parts.path.isEmpty || parts.path == "/") else { return nil }
@@ -60,13 +69,39 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         foreground = UIApplication.shared.applicationState != .background
         if let origin = origin { privateStore = LandfallPrivateStore(origin: origin.absoluteString) }
         location.delegate = self
+        sextantPosition=SextantPosition(source:CoreLocationSextantSource(location)){[weak self] value in self?.event(value)}
         UNUserNotificationCenter.current().delegate=self
-        observers.append(NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: .main) { [weak self] _ in self?.pause() })
-        observers.append(NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: .main) { [weak self] _ in
-            self?.foreground = true
-            if let self=self { for region in self.location.monitoredRegions where !self.hints.active(handle:region.identifier) {self.location.stopMonitoring(for:region)} }
-            self?.event(["type": "lifecycle", "state": "FOREGROUND", "pendingHints": self?.hints.read() ?? []])
+        observers.append(NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: .main) { [weak self] _ in
+            self?.recordLifecycleDelivery("backgroundNotifications")
+            self?.pause()
         })
+        observers.append(NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: .main) { [weak self] _ in
+            self?.recordLifecycleDelivery("foregroundNotifications")
+            self?.resumeForeground()
+        })
+        observers.append(NotificationCenter.default.addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] _ in
+            self?.recordLifecycleTrace("APPLICATION_WILL_ENTER_FOREGROUND")
+        })
+        observers.append(NotificationCenter.default.addObserver(forName: UIScene.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] notification in
+            self?.recordLifecycleTrace("SCENE_WILL_ENTER_FOREGROUND",notificationScene:notification.object as? UIWindowScene)
+        })
+        // SwiftUI owns a scene. Its activation must belong to this WebView;
+        // another window becoming active cannot resume this companion's leases.
+        observers.append(NotificationCenter.default.addObserver(forName: UIScene.didActivateNotification, object: nil, queue: .main) { [weak self] notification in
+            self?.recordLifecycleTrace("SCENE_ACTIVE",notificationScene:notification.object as? UIWindowScene)
+            guard let self=self,let scene=notification.object as? UIWindowScene,
+                  scene === self.web?.window?.windowScene,scene.activationState == .foregroundActive else {return}
+            self.recordLifecycleDelivery("sceneForegroundNotifications")
+            self.resumeForeground()
+        })
+        observers.append(NotificationCenter.default.addObserver(forName: UIScene.didEnterBackgroundNotification, object: nil, queue: .main) { [weak self] notification in
+            self?.recordLifecycleTrace("SCENE_BACKGROUND",notificationScene:notification.object as? UIWindowScene)
+            guard let self=self,let scene=notification.object as? UIWindowScene,
+                  scene === self.web?.window?.windowScene,scene.activationState == .background else {return}
+            self.recordLifecycleDelivery("sceneBackgroundNotifications")
+            self.pause()
+        })
+        sextant = SextantSensors { [weak self] event in self?.event(event) }
         hardware = LandfallHardware { [weak self] event in self?.event(event) }
         nearby = LandfallNearbyInteraction { [weak self] event in self?.event(event) }
         UIDevice.current.isBatteryMonitoringEnabled = true
@@ -75,7 +110,7 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
             observers.append(NotificationCenter.default.addObserver(forName: name, object: nil, queue: .main) { [weak self] _ in self?.powerChanged() })
         }
     }
-    deinit { for observer in observers { NotificationCenter.default.removeObserver(observer) }; location.stopUpdatingLocation(); location.stopUpdatingHeading(); motion.stopDeviceMotionUpdates(); altimeter.stopRelativeAltitudeUpdates() }
+    deinit { for observer in observers { NotificationCenter.default.removeObserver(observer) }; location.stopUpdatingLocation(); location.stopUpdatingHeading(); sextant?.stopAll("BACKGROUND"); sextantPosition?.stopAll("BACKGROUND"); sextantHaptics.stopAll() }
     func accepts(_ url: URL?) -> Bool {
         guard let url = url, let origin = origin else { return false }
         return url.scheme == origin.scheme && url.host == origin.host && (url.port ?? 443) == (origin.port ?? 443) && url.user == nil && url.password == nil
@@ -98,7 +133,19 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         }
         return view
     }
-    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) { decisionHandler(accepts(navigationAction.request.url) ? .allow : .cancel) }
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        let allowed=accepts(navigationAction.request.url)
+        recordLifecycleTrace(allowed ? "NAVIGATION_ALLOWED" : "NAVIGATION_CANCELLED")
+        decisionHandler(allowed ? .allow : .cancel)
+    }
+    func webView(_ webView:WKWebView,didStartProvisionalNavigation navigation:WKNavigation!) {recordLifecycleTrace("DOCUMENT_STARTED")}
+    func webView(_ webView:WKWebView,didCommit navigation:WKNavigation!) {
+        #if DEBUG
+        lifecycleDocumentEpoch=min(128,lifecycleDocumentEpoch+1)
+        #endif
+        recordLifecycleTrace("DOCUMENT_COMMITTED")
+    }
+    func webView(_ webView:WKWebView,didFinish navigation:WKNavigation!) {recordLifecycleTrace("DOCUMENT_FINISHED")}
     func userContentController(_ controller: WKUserContentController, didReceive message: WKScriptMessage, replyHandler: @escaping (Any?, String?) -> Void) {
         guard message.frameInfo.isMainFrame, accepts(message.frameInfo.request.url), let request = message.body as? [String: Any], request["version"] as? Int == 1,
               let operation = request["operation"] as? String, let id = request["id"] as? String, id.count <= 128,
@@ -146,9 +193,7 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
             guard foreground, !power.critical, payload["background"] as? Bool != true, (1000...60000).contains(interval), ["GRANTED", "APPROXIMATE"].contains(permission()) else { replyHandler(["accepted": false], nil); return }
             requestedIntervalMs = interval; requestedPrecise = payload["precise"] as? Bool == true
             stopLocation(); configureLocationPower(); locationThrottle.start(); systemLocationPaused = false; locationFailure = "NONE"
-            location.allowsBackgroundLocationUpdates = false
-            location.pausesLocationUpdatesAutomatically = true
-            acquiring = true; location.startUpdatingLocation(); replyHandler(["accepted": true], nil)
+            acquiring = sextantPosition?.startLegacy(interval:locationIntervalMs,precise:requestedPrecise) ?? false; replyHandler(["accepted": acquiring], nil)
         case "LOCATION_STOP": stopLocation(); replyHandler(["accepted": true], nil)
         case "BACKGROUND_PERMISSION":
             guard foreground, location.authorizationStatus == .authorizedWhenInUse || location.authorizationStatus == .authorizedAlways else { replyHandler(["state": "DENIED"], nil); return }
@@ -167,6 +212,35 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
             }
         case "GEOFENCE_CLEAR": clearGeofences(); replyHandler(["accepted": true], nil)
         case "POWER_STATE": replyHandler(power.snapshot(), nil)
+        case "SEXTANT_STATE":
+            var state=sextant?.snapshot(foreground:foreground && !power.critical) ?? ["version":1,"states":[:],"background":"FOREGROUND_ONLY"],states=state["states"] as? [String:Any] ?? [:]
+            for (key,value) in hardware?.capabilityStates(foreground:foreground && !power.critical) ?? [:]{states[key]=value}
+            states["sextant.nearby.uwb.range"]=SextantHardware.capabilityState(nearby?.state()["supported"] as? Bool == true ? "SUPPORTED":"UNSUPPORTED","NOT_REQUIRED",foreground && !power.critical)
+            states["sextant.lifecycle.background"]=SextantHardware.capabilityState("UNSUPPORTED","NOT_REQUIRED",foreground)
+            states[SextantPosition.capability]=sextantPosition?.snapshot(foreground:foreground && !power.critical)
+            if spatial != nil{states["sextant.media.camera"]=SextantHardware.capabilityState("SUPPORTED","GRANTED",foreground,true)}
+            state["states"]=states;state["hapticTier"]=sextantHaptics.tier;replyHandler(state,nil)
+        case "SEXTANT_START":
+            sextant?.setConstrained(power.constrained);sextantPosition?.setConstrained(power.constrained)
+            let position=(payload["capabilities"] as? [String]) == [SextantPosition.capability]
+            replyHandler(position ? sextantPosition?.start(payload,foreground:foreground && !power.critical) ?? ["accepted":false] : sextant?.start(payload,foreground:foreground && !power.critical) ?? ["accepted":false],nil)
+        case "SEXTANT_STOP": sextant?.stop(payload["leaseId"] as? String ?? "");sextantPosition?.stop(payload["leaseId"] as? String ?? "");replyHandler(["accepted":true],nil)
+        case "SEXTANT_UPDATE": replyHandler(["accepted":(sextant?.update(payload["leaseId"] as? String ?? "",interval:payload["intervalMs"] as? Int ?? 0) ?? false) || (sextantPosition?.update(payload["leaseId"] as? String ?? "",interval:payload["intervalMs"] as? Int ?? 0) ?? false)],nil)
+        case "SEXTANT_PERMISSION":
+            let capability=payload["capabilityId"] as? String ?? ""
+            guard foreground else{replyHandler(["state":"RESTRICTED"],nil);return}
+            if capability == SextantPosition.capability {
+                if location.authorizationStatus == .notDetermined {
+                    guard permissionReply == nil else{replyHandler(["state":"RESTRICTED"],nil);return}
+                    permissionReply={ [weak self] _,error in let state=self?.sextantPosition?.permission ?? "RESTRICTED";replyHandler(["state":state == "APPROXIMATE" ? "GRANTED":state],error)};location.requestWhenInUseAuthorization()
+                }else{let state=sextantPosition?.permission ?? "RESTRICTED";replyHandler(["state":state == "APPROXIMATE" ? "GRANTED":state],nil)}
+                return
+            }
+            if capability == "sextant.heading.estimate",location.authorizationStatus == .notDetermined {
+                guard permissionReply == nil else{replyHandler(["state":"RESTRICTED"],nil);return};permissionReply={ [weak self] _,error in replyHandler(["state":self?.sextant?.permission(capability) ?? "RESTRICTED"],error)};location.requestWhenInUseAuthorization()
+            }else if let sensors=sextant{sensors.requestPermission(capability){state in replyHandler(["state":state],nil)}}else{replyHandler(["state":"RESTRICTED"],nil)}
+        case "SEXTANT_HAPTIC": replyHandler(sextantHaptics.execute(payload,foreground:foreground,critical:power.critical),nil)
+        case "SEXTANT_HAPTIC_STOP": sextantHaptics.stop(payload["leaseId"] as? String ?? "");replyHandler(["accepted":true],nil)
         case "SENSORS_START": replyHandler(["accepted": startSensors()], nil)
         case "SENSORS_STOP": stopSensors(); replyHandler(["accepted": true], nil)
         case "BLE_START": replyHandler(["state": hardware?.startBle(foreground: foreground && !power.constrained, scanId: payload["scanId"] as? String ?? "") ?? "UNAVAILABLE"], nil)
@@ -179,7 +253,7 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         case "QR_SCAN": replyHandler(["state": hardware?.startQr(foreground: foreground && !power.constrained, scanId: payload["scanId"] as? String ?? "", presenter: web?.window?.rootViewController) ?? "UNAVAILABLE"], nil)
         case "INTERACTION_STOP": hardware?.stopInteractions(scanId: payload["scanId"] as? String ?? ""); replyHandler(["accepted": true], nil)
         case "CLEAR_PRIVATE_DATA":
-            stopLocation(); stopSensors(); hardware?.stop(); nearby?.stop()
+            stopLocation(); sextant?.stopAll("BACKGROUND"); sextantPosition?.stopAll("BACKGROUND"); sextantHaptics.stopAll(); stopSensors(); hardware?.stop(); nearby?.stop()
             clearGeofences(); privateStore?.clear()
             UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
             UNUserNotificationCenter.current().removeAllDeliveredNotifications()
@@ -196,16 +270,18 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
         }
     }
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        sextantPosition?.authorizationChanged()
         // A pending fix belongs to the previous precision/permission epoch.
         // In particular, never deliver a precise fix after an approximate grant.
         if acquiring { locationThrottle.start() }
         if manager.authorizationStatus != .notDetermined { permissionReply?(["state": permission()], nil); permissionReply = nil }
-        if !["GRANTED", "APPROXIMATE"].contains(permission()) { stopLocation(); clearGeofences() }
+        if !["GRANTED", "APPROXIMATE"].contains(permission()) { stopLocation(); sextantPosition?.stopAll("PERMISSION");clearGeofences() }
         else if manager.authorizationStatus != .authorizedAlways { clearGeofences() }
         event(["type": "permission", "state": permission()])
     }
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         locationCallbacks = min(100000,locationCallbacks + locations.count)
+        if foreground {for sample in locations.suffix(4){sextantPosition?.acceptLocation(sample)}}
         guard foreground, acquiring, ["GRANTED", "APPROXIMATE"].contains(permission()) else { return }
         for sample in locations.suffix(4) { locationThrottle.receive(sample) }
     }
@@ -317,35 +393,94 @@ final class LandfallCompanion: NSObject, ObservableObject, WKNavigationDelegate,
     }
     private func startSensors() -> Bool {
         guard foreground, !power.constrained else { return false }
-        stopSensors()
-        if CLLocationManager.headingAvailable() { location.headingFilter=10; location.startUpdatingHeading() }
-        if motion.isAccelerometerAvailable { motion.accelerometerUpdateInterval=0.25; motion.startAccelerometerUpdates(to: .main) { [weak self] sample, _ in if let value=sample?.acceleration { self?.sensor("ACCELEROMETER", [value.x*9.80665,value.y*9.80665,value.z*9.80665], accuracy: 1) } } }
-        if CMAltimeter.isRelativeAltitudeAvailable() { altimeter.startRelativeAltitudeUpdates(to: .main) { [weak self] sample, _ in if let sample=sample { self?.sensor("PRESSURE", [sample.pressure.doubleValue*10], accuracy: 1) } } }
-        return CLLocationManager.headingAvailable() || motion.isAccelerometerAvailable || CMAltimeter.isRelativeAltitudeAvailable()
+        return sextant?.startLegacy(foreground: foreground) ?? false
     }
-    func locationManager(_ manager: CLLocationManager, didUpdateHeading heading: CLHeading) { if heading.headingAccuracy>=0 { sensor("HEADING", [heading.magneticHeading], accuracy: heading.headingAccuracy) } }
-    private func sensor(_ kind: String, _ values: [Double], accuracy: Double) { guard foreground else { return }; event(["type": "sensor", "frame": ["id": UUID().uuidString, "observedAt": Int(Date().timeIntervalSince1970*1000), "kind": kind, "values": values, "accuracy": accuracy]]) }
-    private func stopLocation() { acquiring=false; locationThrottle.stop(); location.stopUpdatingLocation() }
+    private func stopLocation() { acquiring=false; locationThrottle.stop(); sextantPosition?.stopLegacy() }
     private func configureLocationPower() {
         locationIntervalMs = power.interval(requestedIntervalMs)
-        location.desiredAccuracy = requestedPrecise && !power.constrained && location.accuracyAuthorization == .fullAccuracy ? kCLLocationAccuracyBest : kCLLocationAccuracyHundredMeters
-        location.distanceFilter = locationIntervalMs >= 15000 ? 10 : kCLDistanceFilterNone
+        if acquiring {_ = sextantPosition?.startLegacy(interval:locationIntervalMs,precise:requestedPrecise && !power.constrained)}
     }
     private func powerChanged() {
         guard foreground else { return }
         if power.constrained { stopSensors() }
+        sextant?.setConstrained(power.constrained)
+        sextantPosition?.setConstrained(power.constrained)
+        if power.critical {sextantPosition?.stopAll("POWER")}
+        if power.critical { sextant?.stopAll("POWER") }
+        if power.critical { sextantHaptics.stopAll() }
         if power.constrained { hardware?.stopInteractions();hardware?.stopBle() }
         if power.critical { hardware?.stop(); nearby?.stop(); if acquiring { stopLocation(); event(["type":"error"]) } }
         else if acquiring { configureLocationPower() }
         event(["type":"power", "power":power.snapshot()])
     }
-    private func stopSensors() { location.stopUpdatingHeading(); motion.stopAccelerometerUpdates(); motion.stopDeviceMotionUpdates(); altimeter.stopRelativeAltitudeUpdates() }
-    private func pause() { spatial?.stop();spatial=nil; event(["type":"lifecycle","state":"BACKGROUND"]); foreground=false; stopLocation(); stopSensors(); hardware?.stop(); nearby?.stop() }
+    private func stopSensors() { sextant?.stopLegacy() }
+    private func resumeForeground() {
+        let observedActive:Bool
+        if let scene=web?.window?.windowScene {observedActive=scene.activationState == .foregroundActive}
+        else {observedActive=UIApplication.shared.applicationState == .active}
+        guard !foreground,observedActive else {recordLifecycleTrace("RESUME_REFUSED");return}
+        foreground=true
+        recordLifecycleTrace("RESUME_ACCEPTED")
+        for region in location.monitoredRegions where !hints.active(handle:region.identifier) {location.stopMonitoring(for:region)}
+        event(["type":"lifecycle","state":"FOREGROUND","pendingHints":hints.read()])
+    }
+    private func pause() { guard foreground else {return}; spatial?.stop();spatial=nil; event(["type":"lifecycle","state":"BACKGROUND"]); foreground=false; stopLocation(); sextant?.stopAll("BACKGROUND"); sextantPosition?.stopAll("BACKGROUND"); sextantHaptics.stopAll(); stopSensors(); hardware?.stop(); nearby?.stop() }
+    private func recordLifecycleDelivery(_ key:String) {
+        #if DEBUG
+        guard origin?.scheme == "http",origin?.host == "127.0.0.1",origin?.port != nil,
+              ["foregroundNotifications","backgroundNotifications","sceneForegroundNotifications","sceneBackgroundNotifications","foregroundQueued","backgroundQueued","foregroundDelivered","backgroundDelivered","foregroundFailed","backgroundFailed","foregroundRejected","backgroundRejected","contentProcessTerminations"].contains(key) else {return}
+        lifecycleDiagnostics[key]=min(128,(lifecycleDiagnostics[key] ?? 0)+1)
+        let events=["foregroundNotifications":"APPLICATION_ACTIVE","backgroundNotifications":"APPLICATION_BACKGROUND","foregroundQueued":"FOREGROUND_QUEUED","backgroundQueued":"BACKGROUND_QUEUED","foregroundRejected":"FOREGROUND_REJECTED","backgroundRejected":"BACKGROUND_REJECTED","contentProcessTerminations":"CONTENT_PROCESS_TERMINATED"]
+        if let event=events[key] {recordLifecycleTrace(event)}
+        let file=FileManager.default.urls(for:.applicationSupportDirectory,in:.userDomainMask)[0].appendingPathComponent("landfall-lifecycle-debug.json")
+        if let data=try? JSONSerialization.data(withJSONObject:lifecycleDiagnostics) {
+            try? FileManager.default.createDirectory(at:file.deletingLastPathComponent(),withIntermediateDirectories:true)
+            try? data.write(to:file,options:[.atomic,.completeFileProtectionUntilFirstUserAuthentication])
+        }
+        #endif
+    }
+    private func recordLifecycleTrace(_ event:String,notificationScene:UIWindowScene?=nil,dispatchDocumentEpoch:Int?=nil,javascriptDispatchResult:Bool?=nil) {
+        #if DEBUG
+        guard origin?.scheme == "http",origin?.host == "127.0.0.1",origin?.port != nil else {return}
+        if lifecycleTraceEvents.count < 64 {
+            let appState:String
+            switch UIApplication.shared.applicationState {case .active:appState="ACTIVE";case .inactive:appState="INACTIVE";case .background:appState="BACKGROUND";@unknown default:appState="UNKNOWN"}
+            let sceneState:String
+            if let scene=web?.window?.windowScene {
+                switch scene.activationState {case .unattached:sceneState="UNATTACHED";case .foregroundActive:sceneState="FOREGROUND_ACTIVE";case .foregroundInactive:sceneState="FOREGROUND_INACTIVE";case .background:sceneState="BACKGROUND";@unknown default:sceneState="UNKNOWN"}
+            } else {sceneState="UNAVAILABLE"}
+            var row:[String:Any]=["sequence":lifecycleTraceEvents.count+1,"elapsedMs":min(3600000,max(0,Int((ProcessInfo.processInfo.systemUptime-lifecycleTraceStart)*1000))),"event":event,"appState":appState,"owningSceneState":sceneState,"foreground":foreground,"documentEpoch":lifecycleDocumentEpoch]
+            if let scene=notificationScene {row["notificationSceneOwned"]=scene === web?.window?.windowScene}
+            if let epoch=dispatchDocumentEpoch {row["dispatchDocumentEpoch"]=epoch}
+            if let result=javascriptDispatchResult {row["javascriptDispatchResult"]=result}
+            lifecycleTraceEvents.append(row)
+        } else {lifecycleTraceTruncated=true}
+        let trace:[String:Any]=["version":1,"instance":lifecycleTraceInstance,"truncated":lifecycleTraceTruncated,"events":lifecycleTraceEvents]
+        let file=FileManager.default.urls(for:.applicationSupportDirectory,in:.userDomainMask)[0].appendingPathComponent("landfall-lifecycle-trace.json")
+        if let data=try? JSONSerialization.data(withJSONObject:trace) {
+            try? FileManager.default.createDirectory(at:file.deletingLastPathComponent(),withIntermediateDirectories:true)
+            try? data.write(to:file,options:[.atomic,.completeFileProtectionUntilFirstUserAuthentication])
+        }
+        #endif
+    }
+    func webViewWebContentProcessDidTerminate(_ webView:WKWebView) {recordLifecycleDelivery("contentProcessTerminations")}
     private func event(_ payload: [String: Any]) {
-        guard foreground, let web=web, accepts(web.url), JSONSerialization.isValidJSONObject(payload), let data=try? JSONSerialization.data(withJSONObject: payload, options: [.fragmentsAllowed]), let json=String(data: data, encoding: .utf8) else { return }
+        let lifecycle=payload["type"] as? String == "lifecycle" ? payload["state"] as? String : nil
+        let prefix=lifecycle == "FOREGROUND" ? "foreground" : lifecycle == "BACKGROUND" ? "background" : nil
+        guard foreground, let web=web, accepts(web.url), JSONSerialization.isValidJSONObject(payload), let data=try? JSONSerialization.data(withJSONObject: payload, options: [.fragmentsAllowed]), let json=String(data: data, encoding: .utf8) else { if let prefix=prefix {recordLifecycleDelivery(prefix+"Rejected")}; return }
+        if let prefix=prefix {recordLifecycleDelivery(prefix+"Queued")}
+        #if DEBUG
+        let dispatchEpoch=lifecycleDocumentEpoch
+        #else
+        let dispatchEpoch:Int?=nil
+        #endif
         DispatchQueue.main.async { [weak self] in
-            guard let self=self, self.accepts(web.url), self.foreground || payload["type"] as? String == "lifecycle" else { return }
-            web.evaluateJavaScript("window.dispatchEvent(new CustomEvent('landfall-native-event',{detail:\(json)}))", completionHandler: nil)
+            guard let self=self else {return}
+            guard self.accepts(web.url), self.foreground || payload["type"] as? String == "lifecycle" else {if prefix != nil {self.recordLifecycleTrace("DISPATCH_REFUSED",dispatchDocumentEpoch:dispatchEpoch)};return}
+            web.evaluateJavaScript("window.dispatchEvent(new CustomEvent('landfall-native-event',{detail:\(json)}))") { [weak self] value,error in
+                if let prefix=prefix {self?.recordLifecycleTrace(prefix == "foreground" ? (error == nil ? "FOREGROUND_DELIVERED" : "FOREGROUND_FAILED") : (error == nil ? "BACKGROUND_DELIVERED" : "BACKGROUND_FAILED"),dispatchDocumentEpoch:dispatchEpoch,javascriptDispatchResult:value as? Bool)}
+                if let prefix=prefix {self?.recordLifecycleDelivery(prefix+(error == nil ? "Delivered" : "Failed"))}
+            }
         }
     }
 }

@@ -1,0 +1,49 @@
+{
+  "version": 2,
+  "scenarioId": "sextant.web-nfc-malformed",
+  "scenarioVersion": 1,
+  "owningProject": "SEXTANT",
+  "scenarioFingerprint": "62055fc9db24fb687d6522e01b50490a99611c7122a704d642f5c8ed7d07e931",
+  "source": {
+    "sourceSha": "58d3e51db2948d206be0a62f5a47cb022f27d286",
+    "sourceTree": "57b9a21896631c1c6f9e80f0a87eaa84d476d330",
+    "sourceFingerprint": "d0aca965151cc6150b0231795132392b68dadc8fa75ba5118e83d4b53fafafe8",
+    "dirty": false
+  },
+  "baseSha": "f6af0b0e151f15f1a23808413ccee531b9827ca7",
+  "tier": "D1",
+  "profile": "browser-api-emulation",
+  "hostOs": "win32 10.0.26300",
+  "runtimeVersion": "v24.18.0",
+  "capabilitySnapshot": [
+    "device.nearby-hardware"
+  ],
+  "physicalOrVirtual": "VIRTUAL",
+  "startedAt": "2026-10-19T18:54:31.764Z",
+  "completedAt": "2026-10-19T18:54:31.765Z",
+  "assertions": [
+    {
+      "id": "sextant.phase3.web-nfc-malformed",
+      "state": "PASS"
+    }
+  ],
+  "evidenceClass": "BROWSER_EMULATION_PROVEN",
+  "unsupportedCapabilities": [],
+  "requiredFutureGates": [
+    "D4_REAL_DEVICE_REQUIRED_FOR_PHYSICAL_CLAIMS",
+    "D5_FIELD_REQUIRED_FOR_FIELD_CLAIMS",
+    "OWNER_ACCEPTANCE_REQUIRED"
+  ],
+  "artifacts": [],
+  "privacyClassification": "SYNTHETIC_OR_BOUNDED_TEST_EVIDENCE",
+  "cleanupReceipt": {
+    "result": "PASS",
+    "ownedResources": [
+      "synthetic-media-resources",
+      "emulated-radio-listeners",
+      "bounded-nearby-timers"
+    ],
+    "remainingResources": []
+  },
+  "passFailDisposition": "PASS"
+}

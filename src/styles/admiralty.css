@@ -401,6 +401,7 @@
 }
 .chartroom-identity {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
@@ -409,8 +410,11 @@
 }
 .chartroom-identity > div {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 0.8rem;
+  min-width: 0;
+  max-width: 100%;
 }
 .chartroom-identity h2 {
   margin: 0;
@@ -437,6 +441,19 @@
   min-height: 1.75rem;
   padding: 0.18rem 0.45rem;
   font-size: 0.66rem;
+}
+.chartroom-identity .chartroom-copy {
+  min-width: 0;
+}
+.chartroom-identity .chartroom-copy code {
+  min-width: 0;
+  max-width: 100%;
+  overflow: visible;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+.chartroom-identity .chartroom-copy button {
+  flex-shrink: 0;
 }
 
 .chartroom-table-wrap {
@@ -932,7 +949,11 @@
     grid-template-columns: 1fr auto;
   }
   .chartroom-operator {
-    display: none;
+    grid-column: 1 / -1;
+    order: 1;
+    min-width: 0;
+    text-align: left;
+    overflow-wrap: anywhere;
   }
   .chartroom-actions > a {
     display: none;

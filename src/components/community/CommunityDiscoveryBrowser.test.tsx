@@ -113,6 +113,26 @@ describe("CommunityDiscoveryBrowser", () => {
     await waitFor(() => expect(heading.closest("section")).toHaveFocus());
   });
 
+  it("clears a query submitted from the default URL without restoring its older drafts", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON.stringify({ items: [] }), { status: 200 })));
+    const view = render(<CommunityDiscoveryBrowser />);
+    const search = screen.getByRole("searchbox", { name: "Search public Community Harbor" });
+    fireEvent.change(search, { target: { value: "lost" } });
+    fireEvent.click(screen.getByLabelText("Free content only"));
+    fireEvent.submit(screen.getByRole("search"));
+    expect(push).toHaveBeenLastCalledWith("/community?q=lost", { scroll: false });
+    window.history.replaceState({}, "", "/community?q=lost");
+    view.rerender(<CommunityDiscoveryBrowser />);
+    expect(await screen.findByRole("heading", { name: "No public charts match these criteria" })).toBeInTheDocument();
+    fireEvent.click(screen.getAllByRole("button", { name: "Clear search and filters" })[0]);
+    expect(push).toHaveBeenLastCalledWith("/community", { scroll: false });
+    window.history.replaceState({}, "", "/community");
+    view.rerender(<CommunityDiscoveryBrowser />);
+    expect(search).toHaveValue("");
+    expect(screen.getByLabelText("Free content only")).not.toBeChecked();
+    expect(screen.queryByRole("heading", { name: "No public charts match these criteria" })).not.toBeInTheDocument();
+  });
+
   it("writes advanced and repeated filters as readable parameters", () => {
     window.history.replaceState({}, "", "/community?q=coast");
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON.stringify({ items: [] }), { status: 200 })));

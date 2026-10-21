@@ -9,9 +9,56 @@ import { observationSchema } from "./contracts";
 import type { LeaseEvent } from "./leases";
 afterEach(() => vi.useRealTimers());
 describe("capability/provider/observation boundaries", () => {
-  it("resolves all 34 versioned product definitions to Sextant-owned Wave 4 hardware and authoring semantics", () => {
+  it("cannot revive a lost consumer while unrelated cleanup holds the broker queue", async () => {
+    const f = sextantD0Fixture(),
+      events: LeaseEvent[] = [];
+    let available = true,
+      finish: (() => void) | undefined;
+    const discover = f.provider.discover.bind(f.provider);
+    f.provider.discover = (id) => ({ ...discover(id), support: available ? "SUPPORTED" : "UNSUPPORTED" });
+    const blocking = new SyntheticSextantProvider(
+      "blocking-cleanup",
+      f.capabilities,
+      ["sextant.motion.gravity"],
+      "synthetic.blocking-cleanup",
+    );
+    blocking.stop = () =>
+      new Promise<void>((resolve) => {
+        finish = resolve;
+      });
+    f.providers.register(blocking);
+    try {
+      await f.broker.acquire(f.request, (event) => events.push(event));
+      const other = await f.broker.acquire(
+        { ...f.request, capabilityId: "sextant.motion.gravity", frames: ["DEVICE"] },
+        () => {},
+      );
+      const pending = other.release();
+      await vi.waitFor(() => expect(finish).toBeDefined());
+      available = false;
+      const cleanup = f.broker.revalidateCapabilities();
+      expect(events).toEqual([{ type: "ENDED", reason: "CAPABILITY_UNAVAILABLE" }]);
+      // The original consumer has ended, even though its resource cleanup is
+      // still queued. A fast restored declaration must not revive that lease.
+      available = true;
+      f.setTime(2000);
+      f.provider.push({ ...f.sample, timestampMonotonic: 2000 });
+      expect(events.filter((e) => e.type === "OBSERVATION")).toEqual([]);
+      finish!();
+      await pending;
+      await cleanup;
+      expect(f.broker.diagnostics().activeLeases).toBe(0);
+      await f.broker.acquire(f.request, (event) => events.push(event));
+      f.provider.push({ ...f.sample, timestampMonotonic: 2000 });
+      expect(events.filter((e) => e.type === "OBSERVATION")).toHaveLength(1);
+    } finally {
+      finish?.();
+      await f.broker.dispose();
+    }
+  });
+  it("resolves all 36 versioned product definitions to Sextant-owned Wave 4 hardware and authoring semantics", () => {
     const r = new SextantCapabilityRegistry();
-    expect(r.list()).toHaveLength(34);
+    expect(r.list()).toHaveLength(36);
     expect(r.list().every((d) => d.owner === "SEXTANT" && d.version === 1)).toBe(true);
     expect(r.project().every((d) => !Object.hasOwn(d, "valueSchema"))).toBe(true);
     expect(() => r.get("spatial.anchor")).toThrow("SEXTANT_CAPABILITY_UNKNOWN");

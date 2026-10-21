@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/sextant-private-content-journeys.spec.ts"
+  ],
+  "status": "PASS",
+  "failureCategory": null,
+  "failureCode": null,
+  "diagnosticBinding": {
+    "version": 1,
+    "runId": "7b9f33e3-5569-43dc-ba25-cc09a0cabd64",
+    "scopeId": "669f6809-4e05-4362-a083-e95b79a98db6",
+    "baseSha": "e408f97695371eedc303754415d207fa61c671cb",
+    "candidateSha": "e408f97695371eedc303754415d207fa61c671cb",
+    "planDigest": "c5380028d54cfb3f411bbffbd4862567434c38f0c80529adaaf2bc9b0bfc7570"
+  }
+}

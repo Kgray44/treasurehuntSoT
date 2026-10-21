@@ -1,0 +1,16 @@
+[
+  {
+    "index": 1,
+    "injections": 4,
+    "elapsedMs": 4035,
+    "budgetMs": 120000,
+    "completed": true
+  },
+  {
+    "index": 2,
+    "injections": 2,
+    "elapsedMs": 2017,
+    "budgetMs": 120000,
+    "completed": true
+  }
+]

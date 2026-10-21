@@ -1,0 +1,235 @@
+{
+  "version": 1,
+  "scenarioId": "android-doze-recovery",
+  "scenarioVersion": 1,
+  "seed": 1729,
+  "sourceSha": "58d3e51db2948d206be0a62f5a47cb022f27d286",
+  "sourceTree": "57b9a21896631c1c6f9e80f0a87eaa84d476d330",
+  "sourceFingerprint": "ef7c769a36eae6d66ab5b2b154898188a167e59efaa421b4f70939c401ea6228",
+  "dirty": false,
+  "target": "android-emulator",
+  "hostPlatform": "linux",
+  "environment": "native-platform-and-origin-bound-webview",
+  "deviceProfile": "primary-phone",
+  "deviceConfiguration": {
+    "platform": "ANDROID",
+    "virtual": true,
+    "api": 36,
+    "model": "sdk_gphone64_x86_64",
+    "memoryKiB": 3048392,
+    "widthPixels": 1080,
+    "heightPixels": 2400,
+    "densityDpi": 420
+  },
+  "osVersion": "16",
+  "runtimeVersion": "Android API 36; null",
+  "providerVersions": {
+    "LOCATION": "landfall-contract-v1"
+  },
+  "publishedFixture": "landfall-device-lab-v1",
+  "fixtureHash": "54cc5a5adaf3d8ca5e715706a0a833be0be00df5872de62e0d461a6147db18a7",
+  "timing": "WALL_CLOCK",
+  "toleranceMs": 2000,
+  "startedAt": "2026-10-19T19:00:49.398Z",
+  "endedAt": "2026-10-19T19:01:12.034Z",
+  "evidenceClass": "EMULATOR_PROVEN",
+  "result": "PASS",
+  "steps": [
+    {
+      "index": 0,
+      "action": "POWER",
+      "state": "PASS",
+      "translation": {
+        "method": "OS_POWER_CONTROL",
+        "limitation": "Emulated OS constraints prove adaptation, not physical heat, battery endurance or OEM policy."
+      }
+    },
+    {
+      "index": 1,
+      "action": "LOCATION",
+      "state": "PASS",
+      "translation": {
+        "method": "OS_LOCATION_INJECTION",
+        "limitation": "Bounded repeated OS coordinate delivery within one step does not prove field GPS accuracy, multipath or sensor physics; injection counts are recorded separately."
+      }
+    },
+    {
+      "index": 2,
+      "action": "LIFECYCLE",
+      "state": "PASS",
+      "translation": {
+        "method": "OS_LIFECYCLE",
+        "limitation": "Simulator/emulator lifecycle does not prove physical-device OEM suspension policy."
+      }
+    },
+    {
+      "index": 3,
+      "action": "LIFECYCLE",
+      "state": "PASS",
+      "translation": {
+        "method": "OS_LIFECYCLE",
+        "limitation": "Simulator/emulator lifecycle does not prove physical-device OEM suspension policy."
+      }
+    },
+    {
+      "index": 4,
+      "action": "ANDROID_IDLE",
+      "state": "PASS",
+      "translation": {
+        "method": "OS_POWER_CONTROL",
+        "limitation": "Emulated OS constraints prove adaptation, not physical heat, battery endurance or OEM policy."
+      }
+    },
+    {
+      "index": 5,
+      "action": "ASSERT",
+      "state": "PASS",
+      "translation": {
+        "method": "SHARED_WEB_CONTRACT"
+      }
+    },
+    {
+      "index": 6,
+      "action": "ASSERT",
+      "state": "PASS",
+      "translation": {
+        "method": "REAL_CANONICAL_AUTHORITY"
+      }
+    },
+    {
+      "index": 7,
+      "action": "ANDROID_IDLE",
+      "state": "PASS",
+      "translation": {
+        "method": "OS_POWER_CONTROL",
+        "limitation": "Emulated OS constraints prove adaptation, not physical heat, battery endurance or OEM policy."
+      }
+    },
+    {
+      "index": 8,
+      "action": "LIFECYCLE",
+      "state": "PASS",
+      "translation": {
+        "method": "OS_LIFECYCLE",
+        "limitation": "Simulator/emulator lifecycle does not prove physical-device OEM suspension policy."
+      }
+    },
+    {
+      "index": 9,
+      "action": "LOCATION",
+      "state": "PASS",
+      "translation": {
+        "method": "OS_LOCATION_INJECTION",
+        "limitation": "Bounded repeated OS coordinate delivery within one step does not prove field GPS accuracy, multipath or sensor physics; injection counts are recorded separately."
+      }
+    },
+    {
+      "index": 10,
+      "action": "ASSERT",
+      "state": "PASS",
+      "translation": {
+        "method": "SHARED_WEB_CONTRACT"
+      }
+    },
+    {
+      "index": 11,
+      "action": "ASSERT",
+      "state": "PASS",
+      "translation": {
+        "method": "REAL_CANONICAL_AUTHORITY"
+      }
+    },
+    {
+      "index": 12,
+      "action": "ASSERT",
+      "state": "PASS",
+      "translation": {
+        "method": "REAL_CANONICAL_AUTHORITY"
+      }
+    }
+  ],
+  "canonicalProgressionEvents": 0,
+  "canonicalAuthority": "ONE_VOYAGE_REAL_SQLITE",
+  "authorityFixtureHash": "ed951b7086333d2ea7f685e316df0963adf3c62d7ebba845bb8e65d21a8d4223",
+  "artifacts": [
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T190049052Z-3559/android-doze-recovery/native-final.png",
+      "sha256": "a060db42299d3b9ea73b7638669336d1dcef9a2c26809a47e6233524b1441e90",
+      "kind": "SCREENSHOT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T190049052Z-3559/android-doze-recovery/native-action-performance.json",
+      "sha256": "07d8c247ca960b54360b6935e425a7da6dc823d67b40f963774e1699f94d58b1",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T190049052Z-3559/android-doze-recovery/native-guest-reboots.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T190049052Z-3559/android-doze-recovery/native-client-readiness.json",
+      "sha256": "34bb578116833e7e6a658d97b5cfc36eae5569f862c8e5f13b7b70f98cc8c9f3",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T190049052Z-3559/android-doze-recovery/native-apple-input-diagnostics.json",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T190049052Z-3559/android-doze-recovery/native-location-controls.json",
+      "sha256": "932c641c6a68a8c5febde99df4e290647ab5a0fe62dbfad4e22ec4e016d913b3",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T190049052Z-3559/android-doze-recovery/native-location-diagnostics.json",
+      "sha256": "0b1280e667e01f6033c5f9933b05ac9b8f2db161d4b9447552351cf064c1cfb2",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T190049052Z-3559/android-doze-recovery/native-startups.json",
+      "sha256": "7d318df060efbd0f1a890deffff8d1a8494394efe3b5dc6c0fa3e838054286c4",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T190049052Z-3559/android-doze-recovery/authority/receipt.json",
+      "sha256": "4d85b990fe83158a8a3798cb4163b2ef6f03aded363359ce0511e94b12b30904",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T190049052Z-3559/android-doze-recovery/authority-command-diagnostics.json",
+      "sha256": "ada1b8cf01b423a83bf34b6ad7a30ad1ff51d8dd92096d676476019908caf544",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T190049052Z-3559/android-doze-recovery/native-idle-controls.json",
+      "sha256": "639c11ec4c78fe591dded45ff45cf4b16c94c28f18c3ba6c7d92285e65df70c9",
+      "kind": "TEST_RESULT"
+    },
+    {
+      "path": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/20261019T190049052Z-3559/android-doze-recovery/native-steps.json",
+      "sha256": "590d873949e8a1b28d0c978ca65f43df7e6b1ca1ef1a586bad6efdc552b8f65c",
+      "kind": "TEST_RESULT"
+    }
+  ],
+  "externalRequirements": [
+    "REAL_DEVICE_REQUIRED:SUSPENSION",
+    "REAL_DEVICE_REQUIRED:OEM_PROCESS_POLICY",
+    "REAL_DEVICE_REQUIRED:BATTERY"
+  ],
+  "cleanup": {
+    "result": "PASS",
+    "ownedResources": [
+      "loopback-native-lab-server",
+      "native-app-process",
+      "native-app-private-data",
+      "owned-adb-reverse",
+      "android-power-fixture",
+      "android-battery-fixture",
+      "android-forced-idle",
+      "android-app-standby-baseline"
+    ],
+    "remainingResources": []
+  }
+}

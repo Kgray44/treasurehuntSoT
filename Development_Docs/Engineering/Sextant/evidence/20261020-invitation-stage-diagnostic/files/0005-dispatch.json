@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "candidateSha": "91cffab32aa551ed36a13aa2d5097f736b0abf2b",
+  "target": "sextant-invitation",
+  "tier": "development",
+  "profiles": {
+    "android": [
+      {
+        "profile": "primary-phone",
+        "api": 36,
+        "device": "pixel_7",
+        "ram": "3072M",
+        "memory": 3072,
+        "lowRam": ""
+      }
+    ],
+    "apple": [
+      "primary-phone"
+    ]
+  },
+  "scenarios": {
+    "appleDevices": [],
+    "browser": [
+      "sextant-invitation-journeys"
+    ],
+    "journal": [],
+    "background": [],
+    "radio": "uwb-native-peer-session,ble-native-generic-discovery,ble-native-ibeacon-discovery,ble-native-eddystone-uid-discovery",
+    "ios": "permission-denied-native,permission-revoked-mid-route,gps-perfect-walk,offline-native-canonical-reconcile,offline-lost-response-canonical-reconcile,offline-restart-canonical-reconcile,virtual-player-navigation,virtual-offline-canonical-reconcile,geofence-native-background-wake",
+    "android": "device-reboot,qr-native-camera-valid,permission-denied-native,permission-approximate-native,permission-revoked-mid-route,motion-walk,stationary,barometer-floor-change,orientation-turn,heading-turn,gps-perfect-walk,offline-native-canonical-reconcile,offline-lost-response-canonical-reconcile,offline-restart-canonical-reconcile,virtual-player-navigation,virtual-offline-canonical-reconcile,battery-normal,battery-low,battery-saver,charger-change",
+    "provider": "all"
+  },
+  "transportSha": "21cccb9f2b3d46ff5f521b490aa88f5d7d3502f4",
+  "transportTree": "1eac76651fd17b66fea632b9c5c666fdbd1c5e29",
+  "branch": "codex/landfall-lab-91cffab32aa5-1792475839878",
+  "workflow": "landfall-device-lab.yml",
+  "createdAt": "2026-10-20T05:57:22.690Z",
+  "cleanup": "PASS",
+  "runId": "39377658809",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/39377658809",
+  "harvested": "C:\\Users\\kkids\\.codex\\worktrees\\sextant-phase4-lab-completion\\Codex_TreasureHunt\\artifacts\\landfall-device-lab\\hosted-91cffab32aa5-1792475839878\\run-39377658809"
+}

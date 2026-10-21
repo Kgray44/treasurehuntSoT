@@ -1,0 +1,28 @@
+{
+  "observations": [
+    {
+      "mode": "DOZE",
+      "enabled": true,
+      "observed": true
+    },
+    {
+      "mode": "DOZE",
+      "enabled": false,
+      "observed": true
+    }
+  ],
+  "cleanup": {
+    "result": "PASS",
+    "ownedResources": [
+      "loopback-native-lab-server",
+      "native-app-process",
+      "native-app-private-data",
+      "owned-adb-reverse",
+      "android-power-fixture",
+      "android-battery-fixture",
+      "android-forced-idle",
+      "android-app-standby-baseline"
+    ],
+    "remainingResources": []
+  }
+}
