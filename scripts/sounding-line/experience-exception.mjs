@@ -1,5 +1,6 @@
 import { CURRENT_R24, assertR24Mode, validateR24Custody } from "./experience-current-r24.mjs";
 import { CURRENT_R25, assertR25Mode } from "./experience-current-r25.mjs";
+import { CURRENT_R26, assertR26Mode } from "./experience-current-r26.mjs";
 import {
   isReviewedEvidenceAdoption,
   historicalReviewedPlan,
@@ -324,6 +325,14 @@ function r3FamilyRelated(root, candidateSha) {
   }
 }
 export function selectTrustedExceptions(records) {
+  if (records.some((record) => record.version === 26)) {
+    if (records.length !== 26 || digest(records.slice(0, 25)) !== CURRENT_R26.previousRecordsDigest)
+      fail("R26_PREDECESSOR_REGISTRY_CHANGED");
+    selectTrustedExceptions(records.slice(0, 25));
+    const successor = records[25];
+    validateCurrentAdmissionRecord(successor, { legacyCurrentRecord: records[24] });
+    return [successor];
+  }
   if (records.some((record) => record.version === 25)) {
     if (records.length !== 25 || digest(records.slice(0, 24)) !== CURRENT_R25.previousRecordsDigest)
       fail("R25_PREDECESSOR_REGISTRY_CHANGED");
@@ -692,6 +701,7 @@ export const trustedExceptions = (root, baseSha) => {
       "ls-tree",
       baseSha,
       "--",
+      "scripts/sounding-line/experience-current-r26.mjs",
       "scripts/sounding-line/experience-current-r25.mjs",
       "scripts/sounding-line/experience-current-r24.mjs",
       "scripts/sounding-line/experience-current-r23.mjs",
@@ -711,6 +721,8 @@ export const trustedExceptions = (root, baseSha) => {
   );
   // The adapter at the requested base cannot reactivate an older grant by removal.
   // Historical bases without this protected adapter retain their exact readers.
+  if (sentinels.has("scripts/sounding-line/experience-current-r26.mjs"))
+    return [validateCurrentAdmissionRegistry(registry, undefined, { requiredVersion: 26 })];
   if (sentinels.has("scripts/sounding-line/experience-current-r25.mjs"))
     return [validateCurrentAdmissionRegistry(registry, undefined, { requiredVersion: 25 })];
   if (sentinels.has("scripts/sounding-line/experience-current-r24.mjs"))
@@ -1941,9 +1953,13 @@ async function campaignHistory({ root, record, plan, mode, run, request, now, pr
   const since = new Date(
     predecessor ? record.predecessor.campaignEpoch : record.ownerApproval.approvedAtUtcMinute,
   ).toISOString();
+  const executionFloor = Date.parse(
+    record.ownerApproval.executionNotBeforeUtc ?? record.ownerApproval.approvedAtUtcMinute,
+  );
   if (
-    Date.parse(run.createdAt) <
-    Date.parse(record.ownerApproval.executionNotBeforeUtc ?? record.ownerApproval.approvedAtUtcMinute)
+    !Number.isFinite(executionFloor) ||
+    Date.parse(run.createdAt) < executionFloor ||
+    (record.version === 26 && Date.parse(run.createdAt) > Date.parse(CURRENT_R26.ownerApproval.executionDeadlineUtc))
   )
     fail("HISTORY_EPOCH_INVALID");
   const range = encodeURIComponent(`${since}..${run.createdAt}`),
@@ -2109,8 +2125,8 @@ export async function validateCampaignHistoryInventory({
         fail("HISTORY_DRAFT_SKIP_UNVERIFIABLE");
       continue;
     }
-    if ([24, 25].includes(record.version) && item.id !== run.runId)
-      fail(record.version === 25 ? "R25_UNLISTED_CAMPAIGN_RUN" : "R24_UNLISTED_CAMPAIGN_RUN");
+    if ([24, 25, 26].includes(record.version) && item.id !== run.runId)
+      fail(`R${record.version}_UNLISTED_CAMPAIGN_RUN`);
     const earlier =
       Date.parse(item.created_at) < Date.parse(run.createdAt) ||
       (item.created_at === run.createdAt && item.id < run.runId);
@@ -2137,11 +2153,12 @@ export async function validateCampaignHistoryInventory({
   };
 }
 export async function reserveExceptionStage({ root, record, plan, mode, run, store, request, now }) {
-  if ([24, 25].includes(record?.version)) {
+  if ([24, 25, 26].includes(record?.version)) {
     if (!isReviewedEvidenceAdoption(plan) || record.id !== plan.exception.id)
-      fail(record.version === 25 ? "R25_RECORD_PLAN_CHANGED" : "R24_RECORD_PLAN_CHANGED");
+      fail(`R${record.version}_RECORD_PLAN_CHANGED`);
     assertR24Mode(plan, mode);
     assertR25Mode(plan, mode);
+    assertR26Mode(plan, mode);
   }
   if (isCurrentAdmissionRecord(record)) {
     if (!["capture", "review", "ordinary", "verify"].includes(mode)) fail("MODE_FORBIDDEN");
@@ -2924,6 +2941,7 @@ async function main() {
   assertOrdinaryOnlyMode({ exception: { id: record.id } }, mode);
   if (record.version === 24) assertR24Mode({ exception: { id: record.id, version: 24 } }, mode);
   if (record.version === 25) assertR25Mode({ exception: { id: record.id, version: 25 } }, mode);
+  if (record.version === 26) assertR26Mode({ exception: { id: record.id, version: 26 } }, mode);
   // Reserve before validation/downloads/setup can fail or be cancelled. The raw
   // source identity is an observation; it grants no admission until the complete
   // protected plan and all normal evidence gates subsequently validate it.
