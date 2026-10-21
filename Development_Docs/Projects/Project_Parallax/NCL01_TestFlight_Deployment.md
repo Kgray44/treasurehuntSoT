@@ -22,20 +22,18 @@ objects through its native AR camera. This is owner-reported physical display;
 exact build readback, measured tracking/alignment, Inspect and lifecycle behavior
 have not been verified.
 
-**Current gate:** the owner-approved original-artwork crop is prepared for private
-beta **0.1.0 (7)** at **https://ncl01.absoluterelativesystems.com**. Its signed
-upload, Apple processing and internal availability are pending. Build **0.1.0 (6)**
-remains technically available in the existing internal group, but the owner
-rejected its generative artwork/color changes; that image is no longer the
-official VoyageWright logo.
-[Run 39517035615 passed](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39517035615)
-against candidate `fbd3c7402cec3ae3d374b73c218968bc07daa06a`; its
-[readiness receipt](evidence/ncl01-testflight-20261019/internal-testflight-ready-build6-20261020.receipt.json)
+**Current gate:** private beta **0.1.0 (7)** is available in the existing internal
+TestFlight group at **https://ncl01.absoluterelativesystems.com**, using the
+owner-approved direct crop/resize of the original as the official logo/icon.
+[Run 39521997164 passed](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39521997164)
+against candidate `5c79701f027a7e035a1a486f96db182e24f25942`; its
+[readiness receipt](evidence/ncl01-testflight-20261019/internal-testflight-ready-build7-20261020.receipt.json)
 binds signed archive/export/upload, Apple `VALID` / `IN_BETA_TESTING`, the existing
 **NCL-01 Owner** group, 13 exported-IPA checks and credential cleanup. Both actual
-compiled icon resources were verified and visually inspected. That software proof
-is retained even though the owner subsequently rejected the build-6 artwork.
-Exact transport deletion with an expected-SHA lease and fresh absence proof passed.
+compiled icon resources were verified and visually inspected as the approved
+original dark brass compass, leaf and star. Exact transport deletion with an
+expected-SHA lease and fresh absence proof passed. Build 6's generative artwork/color changes were
+owner-rejected and are no longer official; its historical proof is preserved below.
 The public production preview passed
 normal TLS/auth/assets/Journal checks and repaired static-file delivery. Root
 visually confirmed styled, hydrated account sign-in after a normal reload.
@@ -44,14 +42,15 @@ exact-build installation/icon appearance/native sign-in and AR remain unverified
 native camera/model visibility remains owner-reported; authored appearance,
 all-three-object confirmation, Inspect, tracking/drift and alignment remain
 unverified or unaccepted. Full Scene/room registration is unfinished. Builds 2,
-3, 4, 5 and 6 are consumed; never upload them again.
+3, 4, 5, 6 and 7 are consumed; never upload them again.
 
 **Official artwork authority:** the owner approved the direct crop/resize of the
 original and explicitly designated it the actual official VoyageWright logo.
 The [saved official logo](../../../../native/ios/Branding/VoyageWright-Logo.official.png)
 and iOS app icon are the exact same opaque 1024-pixel PNG. The unchanged original
 and its 800-pixel crop are retained separately. This approved revision includes
-no generative editing or color adjustment. Build 7 distribution remains pending.
+no generative editing or color adjustment. Build 7 signed upload, Apple processing
+and internal availability passed.
 This revision is prepared on owned branch `codex/ncl01-testflight-icon-center`.
 
 The owner has now created the explicit identifier and app record. Their screenshots
@@ -241,9 +240,30 @@ in this revision. The original pivot estimate `(639.7635, 614.4448)` lies close
 to crop center `(639.5, 614.5)` before the standard resize; this is not a claim
 of zero mathematical error. Evidence is retained under
 [`app-icon-original-crop-20261020`](evidence/ncl01-testflight-20261019/app-icon-original-crop-20261020).
-Build **0.1.0 (7)** is prepared for signed upload and Apple processing; availability
-is pending. The original model, camera/AR implementation, account, stable HTTPS
-origin, local services and Scene are unchanged.
+The [independent original-crop review](evidence/ncl01-testflight-20261019/app-icon-original-crop-20261020/local-review.original.json)
+confirms exact crop pixels and fresh-resize pixel identity without AI/color
+operations. Its final 1024-pixel inner-edge pivot estimate is `(512.3862, 511.9119)`
+against `(511.5, 511.5)`; all recorded methods are within 0.90 pixel on each axis.
+The exact approved PNG is preserved without further positioning changes.
+
+Build **0.1.0 (7)** passed signed archive/export/upload and Apple processing against
+candidate `5c79701f027a7e035a1a486f96db182e24f25942`.
+Apple build `f01afddd-2c41-492d-beb7-d974d1d47206` is `VALID` /
+`IN_BETA_TESTING` in the existing **NCL-01 Owner** group, with
+`usesNonExemptEncryption=false`. The exported IPA is 5,580,705 bytes, SHA-256
+`06e75e85cd84718b9972e06637891f7519b5c75b7b63d2f6ad7a618ef9e0af55`.
+The [signed verification](evidence/ncl01-testflight-20261019/signed-39521997164/verification.json)
+binds the 13 exported-IPA checks and credential cleanup.
+The [compiled-icon verification](evidence/ncl01-testflight-20261019/signed-39521997164/compiled-icon-verification.json)
+records changed 120-pixel iPhone and 152-pixel iPad icons and `Assets.car` from
+build 6. Root visually inspected losslessly decoded viewing copies of both
+actual packaged icons and confirmed the approved original dark brass compass,
+leaf and star. Exact transport deletion with an expected-SHA lease and fresh
+absence proof passed. The signed verification manifest binds 18 retained evidence
+members. Exact-build
+phone installation/icon appearance and AR remain unverified. The original model,
+camera/AR implementation, account, stable HTTPS origin, local services and Scene
+are unchanged.
 
 The bundled privacy manifest declares app-local UserDefaults reason `CA92.1`
 and elapsed-time system-uptime reason `35F9.1`. It does not claim a complete
@@ -333,10 +353,10 @@ substitute for them.
 
 ## Processing, installation and physical acceptance
 
-The signed pipeline uploaded build 6, Apple processing reached `VALID`, and the
+The signed pipeline uploaded build 7, Apple processing reached `VALID`, and the
 processed build was assigned to **TestFlight → Internal Testing → NCL-01 Owner**.
 Fresh API checks confirm `IN_BETA_TESTING` and `usesNonExemptEncryption=false`.
-The existing account-holder group is reused; availability does not prove build 6
+The existing account-holder group is reused; availability does not prove build 7
 installation. The owner earlier
 reported native sign-in and original-model camera display. No duplicate
 invitation, external public testing group or App Store release was made. See Apple's
@@ -344,10 +364,9 @@ invitation, external public testing group or App Store release was made. See App
 and [internal testing](https://developer.apple.com/help/app-store-connect/test-a-beta-version/add-internal-testers)
 instructions.
 
-The corrected original-artwork update **0.1.0 (7)** is being prepared; it is not
-yet confirmed available. Once available, open TestFlight, select **VoyageWright
-Landfall**, confirm **0.1.0 (7)**, then tap **Update** and **Open**. Build 6's
-generative artwork is owner-rejected and superseded. A new invitation is not
+Open TestFlight, select **VoyageWright Landfall**, confirm **0.1.0 (7)**, then tap
+**Update** and **Open**. This build packages the exact approved original-artwork
+crop. A new invitation is not
 needed for the existing tester. Sign into the existing
 synthetic NCL account through the stable address. The unchanged values are in
 `D:\CodexTemp\ncl01-preview\VoyageWright-Sign-In.private.txt`, outside Git/chat.
@@ -368,10 +387,10 @@ static PBR objects; chest-lid and compass-needle articulation are unsupported.
 Record separate outcomes for (1) signed upload, (2) processed/internal-test
 availability, (3) exact-build TestFlight installation, (4) native camera/ARKit
 tracking and visible original models, (5) physical interaction/lifecycle behavior,
-and (6) owner acceptance. Build 6 upload/internal-test availability have retained
+and (6) owner acceptance. Build 7 upload/internal-test availability have retained
 software proof; installation, native sign-in and physical camera display are
 owner-reported for earlier trials, as is warning-free LAN Safari access. Cellular
-reachability on the stable hostname is owner-reported; exact build 6 connectivity
+reachability on the stable hostname is owner-reported; exact build 7 connectivity
 and physical behavior have not yet been confirmed.
 The later classroom report below confirms owner-reported native object visibility,
 with exact build readback, all three objects, measured tracking/alignment,

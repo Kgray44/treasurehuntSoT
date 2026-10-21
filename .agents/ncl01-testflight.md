@@ -255,9 +255,27 @@ Lanczos3 resize to1024. No generative edit, recoloring, affine translation or
 mirrored padding is part of this approved revision. Source-pixel pivot estimate
 (639.7635,614.4448) is near the crop center(639.5,614.5) before standard resize;
 do not claim mathematical zero error. New evidence is app-icon-original-crop-20261020.
-Build0.1.0(7) is prepared; signed upload/Apple processing/internal availability
-are pending. No new preview gate is required. AR/TLS/origin/account/Scene behavior
-is unchanged, and physical/full authored Scene acceptance remains open.
+Independent local-review.original.json proves exactcrop and freshresizepixel
+identity without AI/colorops. Final1024inner-edge pivotestimate512.3862,511.9119
+against511.5,511.5 has methoddependent residual<0.90px/axis; preserve the exact
+approved PNG rather than making more positioning changes. Do not reuse the
+historical build6 0.16px precision for the current original-artwork crop.
+Build0.1.0(7) is available in the existing NCL-01 Owner internal group.
+Run39521997164 SUCCESS binds candidate5c79701f027a7e035a1a486f96db182e24f25942,
+signed archive/export/upload and Applebuildf01afddd-2c41-492d-beb7-d974d1d47206
+VALID/IN_BETA_TESTING; usesNonExemptEncryption=false. All13 exportedIPAchecks and
+signingcleanup passed. IPA5580705B
+SHA06e75e85cd84718b9972e06637891f7519b5c75b7b63d2f6ad7a618ef9e0af55.
+Evidence is signed-39521997164/verification.json,
+compiled-icon-verification.json and internal-testflight-ready-build7-20261020.receipt.json.
+Both actual120/152 compiled icons and Assets.car changedfrom6; root visually
+reviewed losslessly decoded actual-resource copies and confirmed approved original
+darkbrasscompass/leaf/star. Exact transport40c4eb387d257050018a39683e3acb1e1925edc1
+deletion with expectedSHAlease and fresh absence proof passed. The signed
+verification manifest binds18 retained members.
+Build7 is consumed; never upload it again. No new preview gate is required.
+Actualphone7installation/iconappearance/AR are unverified. AR/TLS/origin/account/
+Scene behavior is unchanged, and physical/full authored Scene acceptance remains open.
 
 Success is the owner installing this exact beta through TestFlight, opening
 native ARKit camera placement, seeing the original interactive 3D chest and

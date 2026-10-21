@@ -17,8 +17,11 @@ last_reviewed: 2026-10-20
 - Corrected the official VoyageWright logo and iOS icon to the owner's approved
   direct crop/resize of the original dark brass compass. Both use the exact same
   1024-pixel PNG; the unchanged original and its 800-pixel crop are retained.
-  Build 0.1.0 (7) distribution is pending. No generative editing or color changes
-  are included; AR behavior is unchanged.
+  Build 0.1.0 (7) passed signed archive/export/upload and Apple processing and is
+  available in the existing internal TestFlight group. Both actual packaged icons
+  were verified and visually inspected. No generative editing or color changes
+  are included; AR behavior is unchanged. Exact-build phone installation and
+  appearance remain unverified.
 
 - Build 0.1.0 (6) used a generatively edited tighter compass. The owner later
   rejected its artwork/color changes; that revision is superseded and is no

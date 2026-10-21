@@ -10209,6 +10209,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/internal-testflight-ready-build7-20261020.receipt.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/observe-39364087090/dispatch.original.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -10606,6 +10612,72 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/signed-39517035615/verification.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/signed-39521997164/apple-readback.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/signed-39521997164/asc-upload.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/signed-39521997164/asc-validate.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/signed-39521997164/compiled-icon-verification.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/signed-39521997164/dispatch.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/signed-39521997164/github-run.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/signed-39521997164/ipa-metadata-verification.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/signed-39521997164/public-health.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/signed-39521997164/receipt.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/signed-39521997164/transport-cleanup.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/signed-39521997164/verification.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
