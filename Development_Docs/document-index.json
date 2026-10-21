@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-10-20",
+  "generated_at": "2026-10-21",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -6135,6 +6135,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Engineering/Sextant/phase4-resume-readiness-20261021.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Engineering/Sextant/phase4-shared-consumer-design-r1.json",
       "record_type": "engineering-record",
       "status": "current",
@@ -6196,6 +6202,12 @@
     },
     {
       "path": "Development_Docs/Engineering/Sextant/phase4-source-reconciliation-dashboard-20261019.json",
+      "record_type": "engineering-record",
+      "status": "current",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Engineering/Sextant/phase4-source-reconciliation-dependency-refresh-20261021.json",
       "record_type": "engineering-record",
       "status": "current",
       "canonical_for": null

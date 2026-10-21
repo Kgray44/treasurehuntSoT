@@ -6,7 +6,7 @@
   "status": "IN_PROGRESS",
   "initialCandidate": "5ff2739776513b8f8ed20c1cb661c164216d0eeb",
   "protectedBase": "f6af0b0e151f15f1a23808413ccee531b9827ca7",
-  "currentSoftwareCandidate": "91cffab32aa551ed36a13aa2d5097f736b0abf2b",
+  "currentSoftwareCandidate": "9a17be3a4b00f89703cf45377c54fbafc9914ccd",
   "pr": "https://github.com/Kgray44/treasurehuntSoT/pull/709",
   "independentSourceReview": {
     "reviewerContext": "/root/sextant_source_review",
@@ -5968,7 +5968,7 @@
     "evidence/20261020-entry-claimed-voyage-diagnostic/publication-index.json",
     "evidence/20261020-android-background-return/publication-index.json"
   ],
-  "currentProtectedBase": "c0b29d78f7b4c6137c9eb393a10dd9a2112e68ed",
+  "currentProtectedBase": "aaff919428ef9ab421579415ce3409949724760d",
   "canonicalHostDependencies": [
     {
       "owner": "SOUNDING_LINE_PROCESS_OWNERSHIP",
@@ -5994,5 +5994,15 @@
     "qualification": false,
     "sourceReview": "CLEAR_BOUNDED_SOURCE_ONLY_SEXTANT_SOURCE_REVIEW",
     "runtime": "PENDING_NEW_SOURCE_ONLY"
+  },
+  "dependencyRefresh20261021": {
+    "path": "phase4-resume-readiness-20261021.json",
+    "sourceReconciliation": "phase4-source-reconciliation-dependency-refresh-20261021.json",
+    "candidatePolicyPlanner": "BLOCKED_TRUSTED_OBLIGATION_CHANGED_CROSSDECK_ROLE_SETUP_PLAYER",
+    "affected": 182,
+    "unregistered": 6,
+    "heavyWorkHeld": true,
+    "crossdeckAcceptedButUnconsumed": true,
+    "qualification": false
   }
 }

@@ -1,0 +1,95 @@
+{
+  "classification": "SOURCE_READINESS_ONLY_NOT_ACCEPTANCE",
+  "observedAt": "2026-10-21T23:23:52.080Z",
+  "baseSha": "aaff919428ef9ab421579415ce3409949724760d",
+  "candidateSha": "9a17be3a4b00f89703cf45377c54fbafc9914ccd",
+  "inventory": {
+    "path": "Development_Docs/Engineering/Sextant/phase4-source-reconciliation-dependency-refresh-20261021.json",
+    "bytes": 74496,
+    "sha256": "ec9c31ee3124b671d4a7bf2d8d9210b52a27a354703d1f5a02b35367ea49958b"
+  },
+  "lastTurn": {
+    "status": "FAILED_MODEL_CAPACITY",
+    "error": "Selected model is at capacity. Please try a different model.",
+    "lastSourceCommittedAndPushed": true,
+    "announcedHostedTargetsDispatched": false
+  },
+  "storage": {
+    "cFreeBytes": 28538310656,
+    "dFreeBytes": 336707584,
+    "cFloorGiB": 30,
+    "heavyWorkHeld": true,
+    "cleanupOwnerConfirmationRequired": true,
+    "measuredAt": "2026-10-21T23:20:54Z"
+  },
+  "crossdeck": {
+    "pr": 721,
+    "status": "MERGED_IN_BASE_NOT_CONSUMED_BY_CANDIDATE",
+    "mergeSha": "aaff919428ef9ab421579415ce3409949724760d",
+    "contractsModifiedDifferentlyOnBothSides": ["crossdeck.phase2.continuity"]
+  },
+  "unhostedLegacyComponents": [
+    {
+      "path": "src/components/admiralty/AdmiraltyConsole.tsx",
+      "candidateBlob": "1c25acc56104f8d8a43202d472ce33c9309b9698",
+      "mainBlob": "1c25acc56104f8d8a43202d472ce33c9309b9698",
+      "productionImportFound": false,
+      "disposition": "ACCOUNTABLE_UNHOSTED_NO_REPLACEMENT_ROUTE_CREDIT"
+    },
+    {
+      "path": "src/components/captain/CaptainSessionControl.tsx",
+      "candidateBlob": "fc0ce2919d8e6fba4035b090d6ff83b73943dfdd",
+      "mainBlob": "fc0ce2919d8e6fba4035b090d6ff83b73943dfdd",
+      "productionImportFound": false,
+      "disposition": "ACCOUNTABLE_UNHOSTED_NO_REPLACEMENT_ROUTE_CREDIT"
+    },
+    {
+      "path": "src/components/gm/Quartermaster.tsx",
+      "candidateBlob": "a08b718af5e675681b5373532f29868d4fe4915f",
+      "mainBlob": "a08b718af5e675681b5373532f29868d4fe4915f",
+      "productionImportFound": false,
+      "disposition": "ACCOUNTABLE_UNHOSTED_NO_REPLACEMENT_ROUTE_CREDIT"
+    },
+    {
+      "path": "src/components/platform/StaffSignIn.tsx",
+      "candidateBlob": "d92dc4ec63d2fe0b936e02faf98b1cb868468a91",
+      "mainBlob": "d92dc4ec63d2fe0b936e02faf98b1cb868468a91",
+      "productionImportFound": false,
+      "disposition": "ACCOUNTABLE_UNHOSTED_NO_REPLACEMENT_ROUTE_CREDIT"
+    },
+    {
+      "path": "src/components/wayfarer/ChroniclePassport.tsx",
+      "candidateBlob": "5f15b0a7b79dcaf9d63da4c205f6c327bb7df63f",
+      "mainBlob": "5f15b0a7b79dcaf9d63da4c205f6c327bb7df63f",
+      "productionImportFound": false,
+      "disposition": "ACCOUNTABLE_UNHOSTED_NO_REPLACEMENT_ROUTE_CREDIT"
+    }
+  ],
+  "additionalUnregisteredSurface": "src/app/devices/companion/page.tsx",
+  "runtime": {
+    "newRuns": 0,
+    "lastConsumerSource": "91cffab32aa551ed36a13aa2d5097f736b0abf2b",
+    "invitationRun": "39377658809",
+    "landfallRun": "39377652511",
+    "entryRun": "39377646269",
+    "nativeBackgroundRetainedRun": "39377665326",
+    "darwinObservationRun": "39380061140",
+    "darwinTaskTerminationProved": false
+  },
+  "qualification": false,
+  "physicalAcceptance": false,
+  "documentationInventoryBase": "c0b29d78f7b4c6137c9eb393a10dd9a2112e68ed",
+  "documentationInventoryDisposition": "CANDIDATE_ACCEPTED_DEPENDENCY_BASE_PENDING_CURRENT_MAIN_RECONCILIATION",
+  "cacheOwnershipRelease": {
+    "ownerThread": "01a15554-f503-7760-9d95-aaa70a6936e9",
+    "disposition": "NO_ACTIVE_DEPENDENCY_OR_PLAN_TO_USE_BEFORE_REBUILDING",
+    "generatedChildrenOnly": [
+      "C:/Users/kkids/Documents/Codex/2026-10-10/task-3/sextant-p3/node_modules",
+      "C:/Users/kkids/Documents/Codex/2026-10-10/task-3/sextant-p3/.next",
+      "C:/Users/kkids/Documents/Codex/2026-10-10/task-3/sextant-p3-baseline/node_modules",
+      "C:/Users/kkids/Documents/Codex/2026-10-10/task-3/sextant-p3-baseline/.next"
+    ],
+    "preserve": ["SOURCE", "GIT_METADATA", "EVIDENCE"],
+    "deletionPerformedByThisTask": false
+  }
+}
