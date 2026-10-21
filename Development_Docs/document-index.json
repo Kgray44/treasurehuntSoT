@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-10-20",
+  "generated_at": "2026-10-21",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -9850,6 +9850,30 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/app-icon-centered-20261020/source-artwork-verification.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/app-icon-original-crop-20261020/crop-and-resize.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/app-icon-original-crop-20261020/local-review.original.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/app-icon-original-crop-20261020/manifest.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/app-icon-original-crop-20261020/source-artwork-verification.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

@@ -12,10 +12,13 @@ The NCL-01 native 3D candidate is still in validation. A supported candidate
 companion can load a released chest or compass, place it on a detected surface
 and inspect the actual object; unsupported scenes retain Guided View.
 
-Build **0.1.0 (6)** is available in internal TestFlight with the larger official
-dark brass compass app icon, its needle pivot centered, and the stable address
+The corrected official dark brass compass icon uses only a crop/resize of the
+original artwork. It is prepared for **0.1.0 (7)**; that update is not yet
+confirmed available. Build 6's altered artwork was rejected and superseded.
+The app continues to use the stable address
 [ncl01.absoluterelativesystems.com](https://ncl01.absoluterelativesystems.com).
-Choose **Update → Open** and use the same account. No new invitation or certificate
+When build 7 becomes available, choose **Update → Open** and use the same account.
+No new invitation or certificate
 profile is required. Changing Wi-Fi no longer itself requires another app build;
 the laptop must stay awake and online with its preview services running. The
 [deployment instructions](../../Development_Docs/Projects/Project_Parallax/NCL01_TestFlight_Deployment.md)
@@ -29,7 +32,7 @@ Voyages**. The owner reports objects appearing when looking around in an earlier
 native camera trial, following an initially empty view. The current layout uses
 manual floor alignment; its authored appearance/placement has not been accepted.
 Full room registration and authored Scene integration remain unfinished. Exact
-build 6 installation/native behavior, all three objects and tracking/interaction
+corrected-build installation/native behavior, all three objects and tracking/interaction
 quality are unverified. The [native engineering record](../../Development_Docs/Projects/Project_Parallax/NCL01_Native_Scene_Vertical_Slice.md)
 preserves the remaining acceptance gates.
 

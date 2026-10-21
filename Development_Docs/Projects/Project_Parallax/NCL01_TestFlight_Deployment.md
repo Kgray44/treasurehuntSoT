@@ -22,33 +22,36 @@ objects through its native AR camera. This is owner-reported physical display;
 exact build readback, measured tracking/alignment, Inspect and lifecycle behavior
 have not been verified.
 
-**Current gate:** private beta **0.1.0 (6)** is available in the existing internal
-TestFlight group for **https://ncl01.absoluterelativesystems.com**.
+**Current gate:** the owner-approved original-artwork crop is prepared for private
+beta **0.1.0 (7)** at **https://ncl01.absoluterelativesystems.com**. Its signed
+upload, Apple processing and internal availability are pending. Build **0.1.0 (6)**
+remains technically available in the existing internal group, but the owner
+rejected its generative artwork/color changes; that image is no longer the
+official VoyageWright logo.
 [Run 39517035615 passed](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39517035615)
 against candidate `fbd3c7402cec3ae3d374b73c218968bc07daa06a`; its
 [readiness receipt](evidence/ncl01-testflight-20261019/internal-testflight-ready-build6-20261020.receipt.json)
 binds signed archive/export/upload, Apple `VALID` / `IN_BETA_TESTING`, the existing
 **NCL-01 Owner** group, 13 exported-IPA checks and credential cleanup. Both actual
-compiled icon resources were verified and visually inspected: the owner-approved
-tighter official compass, leaf and star are intact, with the needle pivot centered.
+compiled icon resources were verified and visually inspected. That software proof
+is retained even though the owner subsequently rejected the build-6 artwork.
 Exact transport deletion with an expected-SHA lease and fresh absence proof passed.
 The public production preview passed
 normal TLS/auth/assets/Journal checks and repaired static-file delivery. Root
 visually confirmed styled, hydrated account sign-in after a normal reload.
 The owner reports cellular phone reachability, but corrected phone presentation,
-exact build 6 installation/icon appearance/native sign-in and AR remain unverified. Earlier
+exact-build installation/icon appearance/native sign-in and AR remain unverified. Earlier
 native camera/model visibility remains owner-reported; authored appearance,
 all-three-object confirmation, Inspect, tracking/drift and alignment remain
 unverified or unaccepted. Full Scene/room registration is unfinished. Builds 2,
 3, 4, 5 and 6 are consumed; never upload them again.
 
-**Approved icon revision:** the owner approved the tighter compass framing, then
-requested the needle pivot centered and authorized completion without another
-preview check. The [saved official logo](../../../../native/ios/Branding/VoyageWright-Logo.official.png)
-and 1024-pixel iOS icon are included in **0.1.0 (6)**. Independent image review
-confirms subpixel centering, with the compass, leaf and star retained. This is an
-edited revision; the owner's original remains unchanged. Build 6 upload,
-processing and internal availability have passed.
+**Official artwork authority:** the owner approved the direct crop/resize of the
+original and explicitly designated it the actual official VoyageWright logo.
+The [saved official logo](../../../../native/ios/Branding/VoyageWright-Logo.official.png)
+and iOS app icon are the exact same opaque 1024-pixel PNG. The unchanged original
+and its 800-pixel crop are retained separately. This approved revision includes
+no generative editing or color adjustment. Build 7 distribution remains pending.
 This revision is prepared on owned branch `codex/ncl01-testflight-icon-center`.
 
 The owner has now created the explicit identifier and app record. Their screenshots
@@ -183,20 +186,21 @@ retains the separate original and decoded resource identities;
 [signed verification](evidence/ncl01-testflight-20261019/signed-39463443972/verification.json)
 binds archive/export, Apple processing and credential/transport cleanup.
 
-The owner-approved subsequent revision makes the emblem larger and centers the
-needle pivot. Its reusable opaque 1254-square RGB official logo is
-[`native/ios/Branding/VoyageWright-Logo.official.png`](../../../../native/ios/Branding/VoyageWright-Logo.official.png),
-SHA-256 `59aa4f4054561fe83ede9e514d41abedbb35da90ded5d52fd89f398a1013d7d9`.
-The iOS catalog's opaque 1024-square RGB PNG is now
+The following build-6 artwork is **superseded: OWNER_REJECTED_ARTWORK**. The owner
+rejected its generative artwork/color changes and required crop/resize of the
+original only. At candidate `fbd3c7402cec3ae3d374b73c218968bc07daa06a`, the former
+1254-square RGB logo had SHA-256
+`59aa4f4054561fe83ede9e514d41abedbb35da90ded5d52fd89f398a1013d7d9`;
+the historical iOS catalog's opaque 1024-square RGB PNG had SHA-256
 `f85442a36f1697d47b3d1c8814f44100a72b564145e3960a295ba2233874219f`.
 The retained
 [`VoyageWright-Logo.centered-refinement.source.png`](../../../../native/ios/Branding/VoyageWright-Logo.centered-refinement.source.png)
 records the generated positional refinement separately from the byte-identical
 owner original. Generative image editing refined the framing/position; final
 mechanical packaging used sharp 0.35.5/libvips 8.18.7, mirrored 32-pixel background
-padding, bicubic subpixel translation and Lanczos3 resize. This is an edited logo
-revision rather than an unchanged-source resize or pure crop. The historical
-build-5 receipt above remains unchanged.
+padding, bicubic subpixel translation and Lanczos3 resize. This was an edited logo
+revision rather than an unchanged-source resize or pure crop. It is no longer
+official or accepted. The historical build-5 and build-6 receipts remain unchanged.
 
 The [independent center review](evidence/ncl01-testflight-20261019/app-icon-centered-20261020/final-center-review.original.json)
 measures the 1024-pixel icon pivot at `(511.6214, 511.5015)` against canvas center
@@ -215,12 +219,31 @@ retains the software distribution proof. All 13 exported-IPA checks passed.
 The [compiled-icon verification](evidence/ncl01-testflight-20261019/signed-39517035615/compiled-icon-verification.json)
 records that the actual 120-pixel iPhone icon, 152-pixel iPad icon and `Assets.car`
 changed from build 5. Root visually inspected losslessly decoded copies of both
-packaged icons and confirmed the larger centered compass, leaf and star.
+packaged icons and recorded the larger centered compass, leaf and star; that
+review did not prevent the later owner artwork rejection.
 Exact transport deletion with an expected-SHA lease and fresh absence proof passed.
 The signed verification manifest binds 18 retained evidence members; phone appearance
 is unverified.
 This cosmetic revision preserves the native camera/AR implementation, Scene,
 account, HTTPS origin and services. Website and Android icons are unchanged.
+
+The **current owner-approved official logo** is a direct crop/resize of the
+original: extract `(x=240, y=215, width=800, height=800)`, retain those original
+800-square pixels as
+[`VoyageWright-Logo.crop-source.png`](../../../../native/ios/Branding/VoyageWright-Logo.crop-source.png),
+then resize with sharp 0.35.5/libvips 8.18.7 Lanczos3 to opaque 1024-square RGB.
+The [official logo](../../../../native/ios/Branding/VoyageWright-Logo.official.png)
+and iOS `AppIcon.png` are the exact same approved PNG, SHA-256
+`4fd7beec45947a02d40c99159e19ee87f7c4fea6db32bf18db9224b23a1a1f73`.
+The 1254-square owner original remains unchanged at SHA-256 `71a2979a8a2ab6a43f3ec9fa1d7f14fb7147deda5887883f22a22a382cd240bc`.
+There is no generative edit, recoloring, affine translation or mirrored padding
+in this revision. The original pivot estimate `(639.7635, 614.4448)` lies close
+to crop center `(639.5, 614.5)` before the standard resize; this is not a claim
+of zero mathematical error. Evidence is retained under
+[`app-icon-original-crop-20261020`](evidence/ncl01-testflight-20261019/app-icon-original-crop-20261020).
+Build **0.1.0 (7)** is prepared for signed upload and Apple processing; availability
+is pending. The original model, camera/AR implementation, account, stable HTTPS
+origin, local services and Scene are unchanged.
 
 The bundled privacy manifest declares app-local UserDefaults reason `CA92.1`
 and elapsed-time system-uptime reason `35F9.1`. It does not claim a complete
@@ -321,9 +344,10 @@ invitation, external public testing group or App Store release was made. See App
 and [internal testing](https://developer.apple.com/help/app-store-connect/test-a-beta-version/add-internal-testers)
 instructions.
 
-Open TestFlight, select **VoyageWright Landfall** and
-confirm **0.1.0 (6)**, then tap **Update** and **Open**. The larger, centered official compass icon
-is packaged in this build. A new invitation is not
+The corrected original-artwork update **0.1.0 (7)** is being prepared; it is not
+yet confirmed available. Once available, open TestFlight, select **VoyageWright
+Landfall**, confirm **0.1.0 (7)**, then tap **Update** and **Open**. Build 6's
+generative artwork is owner-rejected and superseded. A new invitation is not
 needed for the existing tester. Sign into the existing
 synthetic NCL account through the stable address. The unchanged values are in
 `D:\CodexTemp\ncl01-preview\VoyageWright-Sign-In.private.txt`, outside Git/chat.

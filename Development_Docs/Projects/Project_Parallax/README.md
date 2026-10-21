@@ -62,14 +62,14 @@ Parallax does **not** own:
 
 - [NCL-01 TestFlight deployment](NCL01_TestFlight_Deployment.md) records the
   isolated signing path and owner-reported installation, native sign-in and
-  camera display of the original 3D models. Build 0.1.0 (6) is available in
-  internal TestFlight with the owner-approved larger, pivot-centered official
-  dark compass icon and the stable public HTTPS address. The reusable
+  camera display of the original 3D models. Build 0.1.0 (6) reached internal
+  TestFlight, but its generative artwork/color changes were owner-rejected.
+  The correction uses only a crop/resize of the original dark compass. The reusable
   [official logo](../../../../native/ios/Branding/VoyageWright-Logo.official.png)
-  and iOS icon are saved and independently reviewed. Signed archive/export/upload
-  and Apple processing passed; actual compiled icons were verified and visually
-  inspected. The original owner artwork and build-5 proof are
-  preserved.
+  and iOS icon use the exact same owner-approved 1024-pixel PNG, with the original
+  and its 800-pixel crop retained. Build 0.1.0 (7) upload/processing/internal
+  availability are pending; build 6 remains technically available. Historical
+  build-5/6 distribution proof and the rejected revision's evidence are preserved.
   The separate classroom
   Chronicle passed canonical publication, authenticated asset and accessible
   browser checks. The owner reports classroom objects visible when panning the
@@ -77,7 +77,7 @@ Parallax does **not** own:
   scene's appearance/placement. Exact phone build, all three objects, measured
   tracking/interactions and full room integration remain unverified or unfinished.
   Owner-approved Cloudflare publication, public TLS/auth/Journal/static checks
-  and desktop sign-in presentation pass. Exact build 6 phone behavior is unverified;
+  and desktop sign-in presentation pass. Exact corrected-build phone behavior is unverified;
   the owner reports cellular reachability. Existing routes/services are preserved.
   PR #741 is not merged.
 

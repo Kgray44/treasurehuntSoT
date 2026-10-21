@@ -208,12 +208,12 @@ Build5 is consumed; never upload it again. Owner exact-build installation/Home
 Screen appearance is still open. This cosmetic change does not alter AR behavior
 or require restarting the private preview; website/Android icons were not changed.
 
-The owner subsequently approved the tighter emblem preview, requested the needle
-pivot centered on the square and explicitly authorized proceeding without another
-user check. The current saved official logo is
-native/ios/Branding/VoyageWright-Logo.official.png, opaque1254RGB,
+The following build6 artwork is SUPERSEDED / OWNER_REJECTED_ARTWORK. After its
+upload the owner rejected the generative artwork/color changes and required only
+cropping/resizing the ORIGINAL. The earlier preview acceptance is superseded.
+At candidatefbd3c7402cec3ae3d374b73c218968bc07daa06a the former1254RGB logo was
 SHA59aa4f4054561fe83ede9e514d41abedbb35da90ded5d52fd89f398a1013d7d9.
-The1024RGB iOS AppIcon is
+The historical1024RGB iOS AppIcon was
 SHAf85442a36f1697d47b3d1c8814f44100a72b564145e3960a295ba2233874219f.
 The original owner source above is unchanged. Retain the distinct generated
 positional refinement at native/ios/Branding/VoyageWright-Logo.centered-refinement.source.png;
@@ -223,7 +223,8 @@ libvips8.18.7, mirrored32px background padding, bicubic translation and Lanczos3
 resize. The independent final-center-review.original.json in
 app-icon-centered-20261020 records multiple subpixel pivot measurements; preserve
 its method-dependent uncertainty rather than claiming zero mathematical error.
-Build0.1.0(6) is available in the same existing NCL-01 Owner internal group.
+Build0.1.0(6) reached the same existing NCL-01 Owner internal group and remains
+technically available until replaced; its artwork is no longer official or accepted.
 Run39517035615 SUCCESS binds candidatefbd3c7402cec3ae3d374b73c218968bc07daa06a,
 signed archive/export/upload, Applebuild3d3af465-cef2-4363-8ac8-0adea36fc9f0
 VALID/IN_BETA_TESTING and signing cleanup; usesNonExemptEncryption=false.
@@ -231,15 +232,32 @@ IPA5389779B SHA7c074fffbb1b4531865dfe1684a222fa064063782b480a2e7f693d4e2231aabd.
 Evidence is signed-39517035615/verification.json and
 internal-testflight-ready-build6-20261020.receipt.json. All13 exportedIPAchecks
 passed. Both actual120/152 compiled icons and Assets.car changed from5; root
-visually inspected losslessly decoded viewing copies and confirmed the larger
-centered official compass, leaf and star. compiled-icon-verification.json retains
+visually inspected losslessly decoded viewing copies and recorded the larger
+centered compass, leaf and star. That review did not prevent the later owner
+artwork rejection. compiled-icon-verification.json retains
 their separate identities. Exact transportb59a7915fb615ff2e1d85059448610b3aaa04830
 deletion with expectedSHAlease and fresh absence proof passed. The signed
 verification manifest binds18 retained members. Build6 is
 consumed; never upload it again. Exact-build phone installation/icon appearance/
-native behavior remain unverified; no further owner preview approval is required.
+native behavior remain unverified. Preserve the original build6 receipts and
+generated refinement as historical evidence, never as current official-artwork authority.
 This artwork-only revision changes no camera/AR,
 TLS, services, account, data or Scene behavior; website/Android icons are unchanged.
+
+The owner approved the direct-original crop and explicitly designated it the actual
+official VoyageWright logo, authorizing the release update. Current authority:
+native/ios/Branding/VoyageWright-Logo.official.png AND the1024RGB iOS AppIcon are
+the exact same PNG, SHA4fd7beec45947a02d40c99159e19ee87f7c4fea6db32bf18db9224b23a1a1f73.
+native/ios/Branding/VoyageWright-Logo.crop-source.png retains the800-square crop
+of the unchanged1254RGB owner original71a2979a8a2ab6a43f3ec9fa1d7f14fb7147deda5887883f22a22a382cd240bc.
+Extraction is x240,y215,width800,height800, then sharp0.35.5/libvips8.18.7
+Lanczos3 resize to1024. No generative edit, recoloring, affine translation or
+mirrored padding is part of this approved revision. Source-pixel pivot estimate
+(639.7635,614.4448) is near the crop center(639.5,614.5) before standard resize;
+do not claim mathematical zero error. New evidence is app-icon-original-crop-20261020.
+Build0.1.0(7) is prepared; signed upload/Apple processing/internal availability
+are pending. No new preview gate is required. AR/TLS/origin/account/Scene behavior
+is unchanged, and physical/full authored Scene acceptance remains open.
 
 Success is the owner installing this exact beta through TestFlight, opening
 native ARKit camera placement, seeing the original interactive 3D chest and

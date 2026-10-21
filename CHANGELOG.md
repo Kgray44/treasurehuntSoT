@@ -14,8 +14,15 @@ last_reviewed: 2026-10-20
 
 ### Engineering
 
-- Saved the owner-approved tighter compass as the official VoyageWright logo and
-  updated the iOS icon with its needle pivot centered to subpixel precision.
+- Corrected the official VoyageWright logo and iOS icon to the owner's approved
+  direct crop/resize of the original dark brass compass. Both use the exact same
+  1024-pixel PNG; the unchanged original and its 800-pixel crop are retained.
+  Build 0.1.0 (7) distribution is pending. No generative editing or color changes
+  are included; AR behavior is unchanged.
+
+- Build 0.1.0 (6) used a generatively edited tighter compass. The owner later
+  rejected its artwork/color changes; that revision is superseded and is no
+  longer the official logo or icon.
   The original owner artwork and build-5 receipts are retained alongside the
   edited revision's source and independent measurements. Build 0.1.0 (6)
   passed signed archive/export/upload and Apple processing and is available in
