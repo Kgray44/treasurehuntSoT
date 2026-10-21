@@ -1,3 +1,5 @@
+import "./experience-r24.test.mjs";
+import "./experience-selected-checkout.test.mjs";
 import { r23RegistryFixture } from "./experience-current-r23.test.mjs";
 import { CURRENT_R23 } from "../../scripts/sounding-line/experience-current-r23.mjs";
 import { R22_MEDIA_PROTOCOL } from "../../scripts/sounding-line/experience-media-first-r22-policy.mjs";
