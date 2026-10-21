@@ -45,6 +45,7 @@ import {
   artifactBytes,
   experienceDigest,
   validateExperienceArtifacts,
+  validateExperienceEvidence,
 } from "../../scripts/sounding-line/product-experience.mjs";
 import {
   CURRENT_ADMISSION_KIND,
@@ -418,6 +419,177 @@ async function staged(t) {
   const replay = await completedCapture({ root: f.root, plan: { ...f.plan, outputDirectory: workingDirectory } });
   return { ...f, workingDirectory, journalDirectory: `${publication}/fixture`, replay };
 }
+
+test("current automated replay validates all 32 generic plus 6 paired contexts in its runtime namespace", async (t) => {
+  const f = fixture(t);
+  // Inert source fixture: no registry, execution claim, provider or browser run.
+  f.plan.exception.currentSourceAdmission = { kind: CURRENT_ADMISSION_KIND };
+  for (const contract of f.plan.contracts) {
+    contract.experience.motion = { feedbackBudgetMs: 150, measurement: "SYNTHETIC_INPUT_TO_FEEDBACK" };
+    contract.experience.continuity = { checks: [{ id: "voyage" }] };
+    contract.experience.systems = ["synthetic-desktop", "synthetic-phone"];
+  }
+  f.plan.contractDigest = experienceDigest(f.plan.contracts);
+  const replay = await completedCapture({
+    root: f.root,
+    plan: { ...f.plan, outputDirectory: "artifacts/sounding-line/product-experience-replay" },
+  });
+  const evidence = replay.captured;
+  for (const journey of evidence.journeys) {
+    Object.assign(journey, {
+      entryPoint: "/fixture",
+      outcome: "Synthetic helper fixture only",
+      visibleActions: 1,
+      accessibility: { keyboard: true, focus: true, motionPreferenceVerified: true },
+      feedbackMs: 50,
+      measurement: "SYNTHETIC_INPUT_TO_FEEDBACK",
+      continuity: [{ id: "voyage", before: "d".repeat(64), atOutcomes: ["d".repeat(64)], after: "d".repeat(64) }],
+    });
+  }
+  const verify = (value = evidence) =>
+    validateExperienceEvidence({ root: f.root, plan: f.plan, evidence: value, automatedOnly: true });
+  assert.equal(evidence.journeys.length, 32);
+  assert.equal(evidence.pairedEvidence.browserContexts, 6);
+  assert.equal(verify().status, "PASS");
+  // The same descriptors cannot be submitted as committed publication evidence.
+  assert.throws(
+    () => validateCurrentPublicationArtifacts(evidence.artifacts),
+    /CURRENT_ARTIFACT_PATH_OR_CONTEXT_INVALID/u,
+  );
+  assert.throws(
+    () => validateCurrentCaptureIdentity(f.plan, evidence, evidence),
+    /CURRENT_ARTIFACT_PATH_OR_CONTEXT_INVALID/u,
+  );
+  const reject = (mutate, pattern) => {
+    const changed = structuredClone(evidence);
+    mutate(changed);
+    assert.throws(() => verify(changed), pattern);
+  };
+  const descriptorError = /CURRENT_ARTIFACT_PATH_OR_CONTEXT_INVALID/u;
+  for (const field of ["id", "sha256", "contractId", "state", "device", "role", "motionMode"])
+    reject((value) => {
+      delete value.artifacts[0][field];
+    }, descriptorError);
+  for (const invalid of [
+    "src/app/escaped.png",
+    "artifacts/sounding-line/product-experience-replay-other/escaped.png",
+    "artifacts/sounding-line/product-experience-replay/../escaped.png",
+    "artifacts/sounding-line/product-experience-replay/escaped.webm",
+  ])
+    reject((value) => {
+      value.artifacts[0].path = invalid;
+    }, descriptorError);
+  reject((value) => {
+    value.artifacts = [];
+  }, descriptorError);
+  reject((value) => {
+    value.artifacts = Array.from({ length: 4097 }, (_, index) => ({
+      ...value.artifacts[0],
+      id: `excess-${index}`,
+      path: `artifacts/sounding-line/product-experience-replay/excess-${index}.png`,
+    }));
+  }, descriptorError);
+  reject((value) => {
+    value.artifacts[1].id = value.artifacts[0].id;
+  }, descriptorError);
+  reject((value) => {
+    value.artifacts.push({ ...value.artifacts[0], id: "arbitrary-path-alias" });
+  }, descriptorError);
+  const paired = evidence.artifacts.find((item) => item.state?.startsWith("PAIRED_"));
+  for (const mutation of [
+    { sha256: "0".repeat(64) },
+    { contractId: paired.contractId },
+    { role: "CREATOR" },
+    { motionMode: "INVALID" },
+    { viewport: { width: 1, height: 1 } },
+    { id: "unbound-paired-alias" },
+  ])
+    reject((value) => {
+      const alias = value.artifacts.find((item) => item.path === paired.path && item.id !== paired.id);
+      Object.assign(alias, mutation);
+    }, descriptorError);
+  reject((value) => {
+    value.artifacts.push({ ...paired, id: "third-paired-alias" });
+  }, descriptorError);
+  reject((value) => {
+    value.exception.recordDigest = "0".repeat(64);
+  }, /EVIDENCE_BINDING_MISSING/u);
+  for (const field of ["baseSha", "sourceDigest", "contractDigest"])
+    reject((value) => {
+      value[field] = "0".repeat(value[field].length);
+    }, /EVIDENCE_SOURCE_MISMATCH/u);
+  reject((value) => {
+    value.artifacts[0].sha256 = "0".repeat(64);
+  }, /ARTIFACT_DIGEST_MISMATCH/u);
+  reject((value) => {
+    value.artifacts[0].origin = "SYNTHETIC";
+  }, /ARTIFACT_ORIGIN_INVALID/u);
+  reject((value) => {
+    value.journeys.shift();
+  }, /SEMANTIC_JOURNEY_FAILED/u);
+  reject((value) => {
+    value.journeys[0].accessibility.overflow = true;
+  }, /ACCESSIBILITY_OR_RESPONSIVE_DEFECT/u);
+  reject((value) => {
+    value.journeys[0].feedbackMs = 151;
+  }, /RESPONSIVENESS_FAILED/u);
+  reject((value) => {
+    value.journeys[0].continuity[0].after = "e".repeat(64);
+  }, /CROSS_PROJECT_JOURNEY_FAILED/u);
+  reject((value) => {
+    value.pairedEvidence.report = null;
+  }, /RECEIPT_MISSING/u);
+  reject((value) => {
+    value.pairedEvidence.report.sha256 = "0".repeat(64);
+  }, /RECEIPT_DIGEST_MISMATCH/u);
+  reject((value) => {
+    value.pairedEvidence.cases[0].witness.sha256 = "0".repeat(64);
+  }, /RECEIPT_DIGEST_MISMATCH/u);
+  reject((value) => {
+    value.pairedEvidence.cases[0].cleanup.contextsClosed = false;
+  }, /CLEANUP_REQUIRED/u);
+  const rewriteReceipt = (reference, mutate) => {
+    const bytes = artifactBytes({ root: f.root, file: reference.path });
+    const changed = JSON.parse(bytes);
+    mutate(changed);
+    const replacement = Buffer.from(json(changed));
+    writeFileSync(path.join(f.root, reference.path), replacement);
+    reference.sha256 = hash(replacement);
+    return () => writeFileSync(path.join(f.root, reference.path), bytes);
+  };
+  for (const [field, mutate, pattern] of [
+    [
+      "report",
+      (value) => {
+        value.stats.skipped = 1;
+      },
+      /THREE_SUCCESSFUL_CASES_REQUIRED/u,
+    ],
+    [
+      "runtime",
+      (value) => {
+        value.lifecycle.cleanup.portsReleased = false;
+      },
+      /TERMINAL_CLEANUP_REQUIRED/u,
+    ],
+    [
+      "runtime",
+      (value) => {
+        value.diagnosticBinding.candidateSha = "0".repeat(40);
+      },
+      /RUNTIME_BINDING_MISSING/u,
+    ],
+  ]) {
+    const changed = structuredClone(evidence);
+    const restore = rewriteReceipt(changed.pairedEvidence[field], mutate);
+    try {
+      assert.throws(() => verify(changed), pattern);
+    } finally {
+      restore();
+    }
+  }
+  assert.equal(verify().status, "PASS");
+});
 
 test("failed replay preserves every historical canonical byte and retains partial output only in its fresh namespace", async (t) => {
   const f = fixture(t),

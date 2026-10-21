@@ -1150,7 +1150,7 @@ export function validateCurrentAdmissionEvidence(plan, evidence, automatedOnly =
     return validateCurrentAdmissionEvidence(historicalReviewedPlan(plan), evidence, false);
   }
   need(same(evidence?.exception, plan.exception), "EVIDENCE_BINDING_MISSING");
-  validateCurrentPublicationArtifacts(evidence.artifacts);
+  validateCurrentArtifacts(evidence.artifacts, automatedOnly);
   if (automatedOnly) return;
   const a = plan.exception.currentSourceAdmission;
   need(
@@ -1201,6 +1201,9 @@ export function validateCurrentAdmissionEvidence(plan, evidence, automatedOnly =
   }
 }
 export function validateCurrentPublicationArtifacts(artifacts) {
+  validateCurrentArtifacts(artifacts, false);
+}
+function validateCurrentArtifacts(artifacts, automatedOnly) {
   need(
     Array.isArray(artifacts) &&
       artifacts.length > 0 &&
@@ -1211,7 +1214,8 @@ export function validateCurrentPublicationArtifacts(artifacts) {
           typeof artifact.id === "string" &&
           artifact.id.length > 0 &&
           safePath(artifact.path) &&
-          artifact.path.startsWith("Development_Docs/Testing/Product_Experience/evidence/") &&
+          (artifact.path.startsWith("Development_Docs/Testing/Product_Experience/evidence/") ||
+            (automatedOnly && artifact.path.startsWith("artifacts/sounding-line/product-experience-replay/"))) &&
           { screenshot: ".png", recording: ".webm", trace: ".zip" }[artifact.type] &&
           artifact.path.endsWith({ screenshot: ".png", recording: ".webm", trace: ".zip" }[artifact.type]) &&
           sha(artifact.sha256, 64) &&
