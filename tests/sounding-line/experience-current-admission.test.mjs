@@ -1,4 +1,6 @@
 import { record as r24RecordFixture } from "./experience-r24.test.mjs";
+import { record as r25RecordFixture } from "./experience-r25.test.mjs";
+import { CURRENT_R25, r25Adoption } from "../../scripts/sounding-line/experience-current-r25.mjs";
 import { CURRENT_R24, r24Adoption } from "../../scripts/sounding-line/experience-current-r24.mjs";
 import "./experience-selected-checkout.test.mjs";
 import { r23RegistryFixture } from "./experience-current-r23.test.mjs";
@@ -2079,73 +2081,80 @@ test("current finalizer checks current attestation, fresh browser, all groups an
   }
 });
 
-test("R24 finalizer and seal reject substituted retained artifacts or custody before any qualified create", async (t) => {
-  const record = r24RecordFixture();
-  const f = finalFixture(
-    t,
-    {
-      baseSha: CURRENT_R24.protectedBaseAncestorSha,
-      candidateSha: CURRENT_R24.protectedBaseAncestorSha,
-      sourceDigest: record.currentSourceAdmission.sourceDigest,
-    },
-    { record, browserTests: record.requiredTechnicalBrowserTests },
-  );
-  const attestation = f.decision.productExperience.trustedAttestation;
-  Object.assign(attestation, r24Adoption(f.plan), {
-    captureArtifactId: CURRENT_R24.retained.captureArtifactId,
-    reviewArtifactId: CURRENT_R24.retained.reviewArtifactId,
-  });
-  Object.assign(attestation.exceptionCustody, r24Adoption(f.plan), {
-    prepareReservation: CURRENT_R24.custody.find((pin) => pin.slot === "prepare").commit,
-    reviewSeal: CURRENT_R24.custody.find((pin) => pin.slot === "review12").commit,
-  });
-  assert.equal(validateCurrentAdmissionFinalDecision(f).status, "PASS");
-  f.decision.candidateTree = execFileSync("git", ["rev-parse", `${f.plan.candidateSha}^{tree}`], {
-    cwd: sourceRoot,
-    encoding: "utf8",
-  }).trim();
-  let creates = 0;
-  const store = {
-    read: async (slot) => {
-      assert.equal(slot, "qualify");
-      return {
-        binding: exceptionBinding(f.plan),
-        run: f.run,
-        candidateSha: f.plan.candidateSha,
-        candidateTree: f.decision.candidateTree,
-      };
-    },
-    create: async () => {
-      creates++;
-      throw Error("UNEXPECTED_QUALIFIED_CREATE");
-    },
-  };
-  for (const mutate of [
-    (a) => a.captureArtifactId++,
-    (a) => a.reviewArtifactId++,
-    (a) => {
-      a.exceptionCustody.prepareReservation = "a".repeat(40);
-    },
-    (a) => {
-      a.exceptionCustody.reviewSeal = "b".repeat(40);
-    },
-    (a) => {
-      delete a.exceptionCustody.reviewedEvidenceAdoption;
-    },
-    (a) => {
-      a.exceptionCustody.reviewedEvidenceAdoption.currentSourceDigest = "0".repeat(64);
-    },
-  ]) {
-    const decision = structuredClone(f.decision);
-    mutate(decision.productExperience.trustedAttestation);
-    assert.throws(() => validateCurrentAdmissionFinalDecision({ ...f, decision }), /R24_REVIEWED_ADOPTION_REQUIRED/u);
-    await assert.rejects(
-      sealExceptionQualification({ ...f, root: sourceRoot, decision, store }),
-      /R24_REVIEWED_ADOPTION_REQUIRED/u,
+for (const [metadata, makeRecord, adoption] of [
+  [CURRENT_R24, r24RecordFixture, r24Adoption],
+  [CURRENT_R25, r25RecordFixture, r25Adoption],
+])
+  test(`R${metadata.version} finalizer and seal reject substituted retained artifacts or custody before any qualified create`, async (t) => {
+    const record = makeRecord();
+    const f = finalFixture(
+      t,
+      {
+        baseSha: metadata.protectedBaseAncestorSha,
+        candidateSha: metadata.protectedBaseAncestorSha,
+        sourceDigest: record.currentSourceAdmission.sourceDigest,
+      },
+      { record, browserTests: record.requiredTechnicalBrowserTests },
     );
-    assert.equal(creates, 0);
-  }
-});
+    const attestation = f.decision.productExperience.trustedAttestation;
+    Object.assign(attestation, adoption(f.plan), {
+      captureArtifactId: CURRENT_R24.retained.captureArtifactId,
+      reviewArtifactId: CURRENT_R24.retained.reviewArtifactId,
+    });
+    Object.assign(attestation.exceptionCustody, adoption(f.plan), {
+      prepareReservation: CURRENT_R24.custody.find((pin) => pin.slot === "prepare").commit,
+      reviewSeal: CURRENT_R24.custody.find((pin) => pin.slot === "review12").commit,
+    });
+    assert.equal(validateCurrentAdmissionFinalDecision(f).status, "PASS");
+    f.decision.candidateTree = execFileSync("git", ["rev-parse", `${f.plan.candidateSha}^{tree}`], {
+      cwd: sourceRoot,
+      encoding: "utf8",
+    }).trim();
+    let creates = 0;
+    const store = {
+      read: async (slot) => {
+        assert.equal(slot, "qualify");
+        return {
+          binding: exceptionBinding(f.plan),
+          run: f.run,
+          candidateSha: f.plan.candidateSha,
+          candidateTree: f.decision.candidateTree,
+        };
+      },
+      create: async () => {
+        creates++;
+        throw Error("UNEXPECTED_QUALIFIED_CREATE");
+      },
+    };
+    for (const mutate of [
+      (a) => a.captureArtifactId++,
+      (a) => a.reviewArtifactId++,
+      (a) => {
+        a.exceptionCustody.prepareReservation = "a".repeat(40);
+      },
+      (a) => {
+        a.exceptionCustody.reviewSeal = "b".repeat(40);
+      },
+      (a) => {
+        delete a.exceptionCustody.reviewedEvidenceAdoption;
+      },
+      (a) => {
+        a.exceptionCustody.reviewedEvidenceAdoption.currentSourceDigest = "0".repeat(64);
+      },
+    ]) {
+      const decision = structuredClone(f.decision);
+      mutate(decision.productExperience.trustedAttestation);
+      assert.throws(
+        () => validateCurrentAdmissionFinalDecision({ ...f, decision }),
+        new RegExp(`R${metadata.version}_REVIEWED_ADOPTION_REQUIRED`, "u"),
+      );
+      await assert.rejects(
+        sealExceptionQualification({ ...f, root: sourceRoot, decision, store }),
+        new RegExp(`R${metadata.version}_REVIEWED_ADOPTION_REQUIRED`, "u"),
+      );
+      assert.equal(creates, 0);
+    }
+  });
 
 test("normal current seal requires its own reservation, real current cipher and complete canonical groups exactly once", async (t) => {
   const fixture = await loaderFixture(t),
