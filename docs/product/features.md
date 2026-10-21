@@ -3,8 +3,10 @@ title: Voyagewright features
 audience: product
 status: current
 canonical_for: product-features
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-15
 ---
+
+SC-01 adds a candidate Environment and Scene Manager with versioned shared geometry, independent Scene identities, explicit revision-impact review and a future immutable Chronicle reference contract. Focused tests and both production-browser journeys pass. Supporting independent reviews verify the two interaction repairs and disclosure semantics. Protected integration still requires the selected Crossdeck experience-design prerequisite and coordinated lossless compatibility with the parallel Studio overhaul. See the [implementation record](../../Development_Docs/Projects/Project_Parallax/SC_01_Environment_and_Scene_Manager.md).
 
 # Voyagewright features
 
