@@ -55,10 +55,14 @@
   background: #03101bd9;
 }
 .lens header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1.4rem 1.7rem;
+  background: #0c202b;
   border-bottom: 1px solid #d4af6928;
 }
 .lens header p {
@@ -118,11 +122,15 @@
   font-size: 1.4rem;
   margin: 0.5rem 0;
 }
-.objectKind {
+.lens .object h3,
+.lens .object p {
+  color: #2c2418;
+}
+.lens .object .objectKind {
   font-size: 0.7rem;
   letter-spacing: 0.13em;
   text-transform: uppercase;
-  color: #655034;
+  color: #5b472b;
 }
 .selected {
   border-color: #f2c46b;

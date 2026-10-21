@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "tool": "built-in image_gen.imagegen",
+  "intent": "Owner-requested tighter framing followed by downward whole-emblem alignment; retain original source and distinguish generated revisions",
+  "transparentBackground": false,
+  "edits": [
+    {
+      "inputSha256": "71a2979a8a2ab6a43f3ec9fa1d7f14fb7147deda5887883f22a22a382cd240bc",
+      "outputSha256": "e81e2bc5faf41285a8188409e0979bbcb49d5bc67614a738bbfe9459775ab25c",
+      "ownerResponse": "this is better! adjust the whole thing downward a tad on the background, so that the pivot point of the compass needle is at the exact center!",
+      "prompt": "Edit target: the attached official VoyageWright logo, 1254 by 1254 pixels. Perform a CROP AND UNIFORM ENLARGEMENT ONLY. Trim the excessive outer black textured background so the existing central brass compass mark fills about 88-90 percent of the square height. Desired framing corresponds approximately to the square crop left=220, top=210, right=1020, bottom=1010 of the original1254square. Center the complete artwork including all four circle points, the diagonal needle, curled leaf at lower right, and separate four-point star at upper right. Keep a small even safety margin around ALL these gold details. Preserve the existing actual logo design, original brass color, lighting, textured dark background, leaf folds, needle proportions, star geometry, surface engraving and shadows exactly. Do not redraw, reinterpret, beautify, recolor, or change any element. No text, no rounded corners, no extra elements, no transparency. Output a square image as a preview of this tighter crop."
+    },
+    {
+      "inputSha256": "e81e2bc5faf41285a8188409e0979bbcb49d5bc67614a738bbfe9459775ab25c",
+      "outputSha256": "cd3ffa3a3db274310bade32dfa6ae2d19e8a1a05208d67a1cadf56709167d19e",
+      "retainedOutput": "native/ios/Branding/VoyageWright-Logo.centered-refinement.source.png",
+      "ownerAuthorization": "And then go ahead! no more user checks needed.",
+      "prompt": "Edit ONLY the position of the existing official compass emblem on the same square textured dark background. Keep the existing larger scale and all original artwork, brass coloring, needle proportions, leaf folds, four-point star, engraved textures and shadows unchanged. The exact center of the circular black aperture inside the brass compass-needle pivot must coincide with the EXACT GEOMETRIC CENTER OF THE SQUARE CANVAS (50 percent width,50 percent height). In this1254 by1254 target image, the pivot aperture is approximately at x645,y599, so translate the ENTIRE GOLD EMBLEM as one rigid group approximately18pixelsLEFT and28pixelsDOWN. Move the ring, needle, star, curled leaf and all shadows together; do not move needle independently. Keep scale unchanged. Preserve the full emblem, all four outer ring points and separate star without clipping. Fill exposed outer margins seamlessly with the SAME dark textured background. No redesign, no new elements, no text, no transparency, no added frame or rounded corners. Output square image."
+    }
+  ],
+  "subsequentMechanicalAlignment": "packaging.original.json",
+  "generatedOutputIsNotClaimedToBeAnExactPixelCropOfOwnerOriginal": true
+}

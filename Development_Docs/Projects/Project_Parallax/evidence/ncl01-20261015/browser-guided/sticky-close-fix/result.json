@@ -1,0 +1,398 @@
+{
+  "schemaVersion": 1,
+  "status": "PASS",
+  "task": "NCL-01",
+  "scope": "TARGETED_STICKY_CLOSE_ACTUAL_AUTHENTICATED_BROWSER",
+  "sourceCheckpoint": "58efbb24af8e7ec36ce9573fa8924525e9a75804",
+  "previousCaptureCheckpoint": "019030c3a88eeec3c7b07c5a3cc008b92128e7cb",
+  "css": {
+    "path": "src/components/player/parallax/ChronicleLens.module.css",
+    "gitBlob": "98170e9545eddf1c1961c36123e55b207a1f1640",
+    "sha256": "dc8e8ea3df8bec0b6dbc9ea1b0d4b3091696fe85817b9040fbb27f2e429c32e5"
+  },
+  "unchangedJavaScript": [
+    {
+      "path": "src/components/player/parallax/ChronicleLens.tsx",
+      "gitBlob": "6eaf39e88efc1a16bce474c868ebe57ba3087632",
+      "unchangedFromPreviousCapture": true,
+      "sha256": "2dce5f5ef5b3595131864fe62c1e888f346648630cc8da52fa52a846252284fe"
+    },
+    {
+      "path": "src/parallax/runtime.ts",
+      "gitBlob": "04305efe7ad63a488c59a0d4bcca4f7be4c31aa9",
+      "unchangedFromPreviousCapture": true,
+      "sha256": "1a5416e2a8d192fe21d205922266ed606ec8148fa3ab77b03e0daeed9906b0b4"
+    },
+    {
+      "path": "src/parallax/native.ts",
+      "gitBlob": "7d14f56fac5a1eda29d03213de993155b46e9097",
+      "unchangedFromPreviousCapture": true,
+      "sha256": "10b11bfcb7547f63a7a2ae0e2427524013e06e351b2b343787d4883d2596c7e2"
+    },
+    {
+      "path": "src/parallax/scene-delivery.ts",
+      "gitBlob": "61fa2b1cb6c932192963fbd4eeeb4005667504d9",
+      "unchangedFromPreviousCapture": true,
+      "sha256": "f6fbb11b82935988e15004424251dce95c1b7a0cef750694e52fef4209e0bdb2"
+    }
+  ],
+  "transport": "LOOPBACK_HTTP_ACTUAL_APPLICATION",
+  "authentication": "TASK_PRIVATE_SESSION_FROM_PRIOR_ACTUAL_SIGN_IN_FORM",
+  "capturedAt": "2026-10-15T20:43:12.615Z",
+  "journeys": [
+    {
+      "viewport": "mobile",
+      "dimensions": {
+        "width": 390,
+        "height": 852
+      },
+      "measurementsAfterWheelScroll": {
+        "scrollTop": 510,
+        "scrollHeight": 1344,
+        "clientHeight": 834,
+        "maximumScroll": 510,
+        "headerPosition": "sticky",
+        "headerTop": "0px",
+        "headerBackground": "rgb(12, 32, 43)",
+        "headerRect": {
+          "x": 20,
+          "y": 9,
+          "width": 350,
+          "height": 102.390625,
+          "top": 9,
+          "right": 370,
+          "bottom": 111.390625,
+          "left": 20
+        },
+        "titleRect": {
+          "x": 36,
+          "y": 46.390625,
+          "width": 135.515625,
+          "height": 48,
+          "top": 46.390625,
+          "right": 171.515625,
+          "bottom": 94.390625,
+          "left": 36
+        },
+        "closeRect": {
+          "x": 171.515625,
+          "y": 36.890625,
+          "width": 182.484375,
+          "height": 45.59375,
+          "top": 36.890625,
+          "right": 354,
+          "bottom": 82.484375,
+          "left": 171.515625
+        },
+        "dialogRect": {
+          "x": 19,
+          "y": 8,
+          "width": 352,
+          "height": 836,
+          "top": 8,
+          "right": 371,
+          "bottom": 844,
+          "left": 19
+        },
+        "closeCenter": {
+          "x": 262.7578125,
+          "y": 59.6875
+        },
+        "closeHitTestable": true,
+        "titleHitTestable": true,
+        "titleVisibleWithinViewport": true,
+        "closeVisibleWithinViewport": true
+      },
+      "observation": {
+        "httpStatus": 200,
+        "receipt": {
+          "schemaVersion": 1,
+          "interactionId": "8179ae99-c7af-4e89-a299-d3487c89298c",
+          "idempotencyKey": "8179ae99-c7af-4e89-a299-d3487c89298c",
+          "instanceId": "instance:cmv9yxb8h000o25dotduo8sce:clue:spatial:cmv9yxc3u001i25do46ylmr89",
+          "sessionId": "cmv9yxc3u001i25do46ylmr89",
+          "chronicleVersionId": "cmv9yxbf0001d25doh10rwzol",
+          "blockId": "cmv9yxb8h000o25dotduo8sce:clue",
+          "actorId": "cmv9yxa80000225do9xxm9vxf",
+          "spatialDefinitionVersionId": "ncl01-original-model-scene:v1",
+          "versionChecksum": "3742976133f66aea45c4da97d628fc8b0bd951289aba2abe0712664b544cdf35",
+          "entityId": "ncl01-original-model-scene:chest",
+          "interactionType": "INSPECT",
+          "anchorId": "ncl01-original-model-scene:anchor",
+          "anchorVersion": 1,
+          "observedAt": "2026-10-15T20:43:16.054Z",
+          "mode": "GUIDED",
+          "providerId": "parallax.guided.v1",
+          "synthetic": false,
+          "authority": "NONAUTHORITATIVE"
+        },
+        "observationId": "cmva0a42t000b25hg91iwmecn",
+        "persistedReceiptExactMatch": true,
+        "responseBodyRead": false
+      },
+      "closeAction": "PAGE_MOUSE_CLICK_AT_MEASURED_CENTER_WITHOUT_LOCATOR_OR_SCROLL_INTO_VIEW",
+      "closeRestoresJournalFocus": true,
+      "reopened": {
+        "scrollTop": 0,
+        "heading": "The Compass and the Chest",
+        "closeVisible": true
+      },
+      "progressionUnchanged": true,
+      "pageErrors": []
+    },
+    {
+      "viewport": "desktop",
+      "dimensions": {
+        "width": 1440,
+        "height": 1000
+      },
+      "measurementsAfterWheelScroll": {
+        "scrollTop": 0,
+        "scrollHeight": 633,
+        "clientHeight": 633,
+        "maximumScroll": 0,
+        "headerPosition": "sticky",
+        "headerTop": "0px",
+        "headerBackground": "rgb(12, 32, 43)",
+        "headerRect": {
+          "x": 261,
+          "y": 183.703125,
+          "width": 918,
+          "height": 103.171875,
+          "top": 183.703125,
+          "right": 1179,
+          "bottom": 286.875,
+          "left": 261
+        },
+        "titleRect": {
+          "x": 288.1875,
+          "y": 227.484375,
+          "width": 390.875,
+          "height": 36,
+          "top": 227.484375,
+          "right": 679.0625,
+          "bottom": 263.484375,
+          "left": 288.1875
+        },
+        "closeRect": {
+          "x": 1106.703125,
+          "y": 211.984375,
+          "width": 45.109375,
+          "height": 45.59375,
+          "top": 211.984375,
+          "right": 1151.8125,
+          "bottom": 257.578125,
+          "left": 1106.703125
+        },
+        "dialogRect": {
+          "x": 260,
+          "y": 182.703125,
+          "width": 920,
+          "height": 634.59375,
+          "top": 182.703125,
+          "right": 1180,
+          "bottom": 817.296875,
+          "left": 260
+        },
+        "closeCenter": {
+          "x": 1129.2578125,
+          "y": 234.78125
+        },
+        "closeHitTestable": true,
+        "titleHitTestable": true,
+        "titleVisibleWithinViewport": true,
+        "closeVisibleWithinViewport": true
+      },
+      "observation": null,
+      "closeAction": "PAGE_MOUSE_CLICK_AT_MEASURED_CENTER_WITHOUT_LOCATOR_OR_SCROLL_INTO_VIEW",
+      "closeRestoresJournalFocus": true,
+      "reopened": {
+        "scrollTop": 0,
+        "heading": "The Compass and the Chest",
+        "closeVisible": true
+      },
+      "progressionUnchanged": true,
+      "pageErrors": []
+    },
+    {
+      "viewport": "desktop-compact",
+      "dimensions": {
+        "width": 1440,
+        "height": 640
+      },
+      "measurementsAfterWheelScroll": {
+        "scrollTop": 118,
+        "scrollHeight": 724,
+        "clientHeight": 606,
+        "maximumScroll": 118,
+        "headerPosition": "sticky",
+        "headerTop": "0px",
+        "headerBackground": "rgb(12, 32, 43)",
+        "headerRect": {
+          "x": 261,
+          "y": 17,
+          "width": 918,
+          "height": 103.171875,
+          "top": 17,
+          "right": 1179,
+          "bottom": 120.171875,
+          "left": 261
+        },
+        "titleRect": {
+          "x": 288.1875,
+          "y": 60.78125,
+          "width": 390.875,
+          "height": 36,
+          "top": 60.78125,
+          "right": 679.0625,
+          "bottom": 96.78125,
+          "left": 288.1875
+        },
+        "closeRect": {
+          "x": 1106.703125,
+          "y": 45.28125,
+          "width": 45.109375,
+          "height": 45.59375,
+          "top": 45.28125,
+          "right": 1151.8125,
+          "bottom": 90.875,
+          "left": 1106.703125
+        },
+        "dialogRect": {
+          "x": 260,
+          "y": 16,
+          "width": 920,
+          "height": 608,
+          "top": 16,
+          "right": 1180,
+          "bottom": 624,
+          "left": 260
+        },
+        "closeCenter": {
+          "x": 1129.2578125,
+          "y": 68.078125
+        },
+        "closeHitTestable": true,
+        "titleHitTestable": true,
+        "titleVisibleWithinViewport": true,
+        "closeVisibleWithinViewport": true
+      },
+      "observation": {
+        "httpStatus": 200,
+        "receipt": {
+          "schemaVersion": 1,
+          "interactionId": "4fe69e6d-a274-4178-9458-e0f1cf5f1123",
+          "idempotencyKey": "4fe69e6d-a274-4178-9458-e0f1cf5f1123",
+          "instanceId": "instance:cmv9yxb8h000o25dotduo8sce:clue:spatial:cmv9yxc3u001i25do46ylmr89",
+          "sessionId": "cmv9yxc3u001i25do46ylmr89",
+          "chronicleVersionId": "cmv9yxbf0001d25doh10rwzol",
+          "blockId": "cmv9yxb8h000o25dotduo8sce:clue",
+          "actorId": "cmv9yxa80000225do9xxm9vxf",
+          "spatialDefinitionVersionId": "ncl01-original-model-scene:v1",
+          "versionChecksum": "3742976133f66aea45c4da97d628fc8b0bd951289aba2abe0712664b544cdf35",
+          "entityId": "ncl01-original-model-scene:chest",
+          "interactionType": "INSPECT",
+          "anchorId": "ncl01-original-model-scene:anchor",
+          "anchorVersion": 1,
+          "observedAt": "2026-10-15T20:43:22.887Z",
+          "mode": "GUIDED",
+          "providerId": "parallax.guided.v1",
+          "synthetic": false,
+          "authority": "NONAUTHORITATIVE"
+        },
+        "observationId": "cmva0a9cl000h25hgqwyd93v1",
+        "persistedReceiptExactMatch": true,
+        "responseBodyRead": false
+      },
+      "closeAction": "PAGE_MOUSE_CLICK_AT_MEASURED_CENTER_WITHOUT_LOCATOR_OR_SCROLL_INTO_VIEW",
+      "closeRestoresJournalFocus": true,
+      "reopened": {
+        "scrollTop": 0,
+        "heading": "The Compass and the Chest",
+        "closeVisible": true
+      },
+      "progressionUnchanged": true,
+      "pageErrors": []
+    }
+  ],
+  "screenshots": [
+    "mobile-opened.png",
+    "mobile-deep-scrolled-sticky-close.png",
+    "mobile-journal-return.png",
+    "mobile-reopened.png",
+    "desktop-opened.png",
+    "desktop-deep-scrolled-sticky-close.png",
+    "desktop-journal-return.png",
+    "desktop-reopened.png",
+    "desktop-compact-opened.png",
+    "desktop-compact-deep-scrolled-sticky-close.png",
+    "desktop-compact-journal-return.png",
+    "desktop-compact-reopened.png"
+  ],
+  "limitations": [
+    "Mobile viewport emulation is supporting browser evidence, not a physical iPhone test",
+    "Guided View only; no browser AR, native rendering, physical qualification or formal owner acceptance claim",
+    "No TLS trust changes or ignored TLS validation used"
+  ],
+  "progression": {
+    "before": {
+      "session": {
+        "id": "cmv9yxc3u001i25do46ylmr89",
+        "status": "ACTIVE",
+        "publishedVersionId": "cmv9yxbf0001d25doh10rwzol",
+        "currentBlockId": "cmv9yxb8h000o25dotduo8sce:clue",
+        "currentSequence": 3,
+        "variables": "{}",
+        "inventory": "[]",
+        "completedAt": null
+      },
+      "events": [
+        {
+          "id": "cmv9yxc4s001s25dohxuu9wv4",
+          "sequence": 1,
+          "eventType": "sessionLaunched"
+        },
+        {
+          "id": "cmv9yxc4v001w25do4hqzwv1w",
+          "sequence": 2,
+          "eventType": "blockEntered"
+        },
+        {
+          "id": "cmv9yxc4x002025doumtt5y7u",
+          "sequence": 3,
+          "eventType": "verificationRequested"
+        }
+      ]
+    },
+    "after": {
+      "session": {
+        "id": "cmv9yxc3u001i25do46ylmr89",
+        "status": "ACTIVE",
+        "publishedVersionId": "cmv9yxbf0001d25doh10rwzol",
+        "currentBlockId": "cmv9yxb8h000o25dotduo8sce:clue",
+        "currentSequence": 3,
+        "variables": "{}",
+        "inventory": "[]",
+        "completedAt": null
+      },
+      "events": [
+        {
+          "id": "cmv9yxc4s001s25dohxuu9wv4",
+          "sequence": 1,
+          "eventType": "sessionLaunched"
+        },
+        {
+          "id": "cmv9yxc4v001w25do4hqzwv1w",
+          "sequence": 2,
+          "eventType": "blockEntered"
+        },
+        {
+          "id": "cmv9yxc4x002025doumtt5y7u",
+          "sequence": 3,
+          "eventType": "verificationRequested"
+        }
+      ]
+    },
+    "unchanged": true
+  }
+}

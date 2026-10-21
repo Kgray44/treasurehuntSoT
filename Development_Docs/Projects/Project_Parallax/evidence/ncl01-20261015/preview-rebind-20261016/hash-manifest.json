@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "documentClass": "MACHINE_ENGINEERING_EVIDENCE",
+  "evidenceClass": "LAN_REBIND_PUBLICATION_BYTE_HASH_MANIFEST",
+  "algorithm": "SHA-256",
+  "files": [
+    {
+      "path": "local-https-assets.json",
+      "bytes": 6343,
+      "sha256": "ba61bb5a194611458c00bfa5341723da7c23238c5fd0a801b760fbec66e0ad6d"
+    },
+    {
+      "path": "preview-restored.original.json",
+      "bytes": 1360,
+      "sha256": "9ea5a2736acf6e3fa6105edad5b31d2d01dedcc9ac991f697515ff78e9ad4859"
+    },
+    {
+      "path": "applied-selected.json",
+      "bytes": 958,
+      "sha256": "b985acda5be2db77a82f9a600228199e7f3bf3a37e7e57182f9e91fca607b846"
+    },
+    {
+      "path": "independent-source-review.json",
+      "bytes": 5507,
+      "sha256": "d7c0c7b9d4544d16ddc35304ad504f74876bc09f2363c196acd477be96b9e589"
+    },
+    {
+      "path": "service-observation.json",
+      "bytes": 1300,
+      "sha256": "27e0a921ffde29c18305d21c1ad53b429aa5b6fd440168e3599340f30c6a00fa"
+    },
+    {
+      "path": "receipt.json",
+      "bytes": 5599,
+      "sha256": "fbab02be9919cb66807cba81c7810e81cf7bbf2aece8e7b35c31d42b7296cadd"
+    }
+  ],
+  "originalsPreservedByteExact": [
+    "local-https-assets.json",
+    "preview-restored.original.json",
+    "independent-source-review.json"
+  ]
+}

@@ -12,3 +12,6 @@ Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r3-review-cancellatio
 Development_Docs/Programs/Sounding_Line/evidence/crossdeck-r4-recovery-20261015/*.original.raw.txt -text -whitespace
 
 /Development_Docs/Engineering/Repository_Operations/evidence/20261020-loopback-redirect/** -text -whitespace
+# Preserve exact NCL receipt/capture bytes and original emitted log whitespace.
+Development_Docs/Projects/Project_Parallax/evidence/ncl01-20261015/** -text -whitespace
+Development_Docs/Projects/Project_Parallax/evidence/ncl01-testflight-20261019/** -text -whitespace

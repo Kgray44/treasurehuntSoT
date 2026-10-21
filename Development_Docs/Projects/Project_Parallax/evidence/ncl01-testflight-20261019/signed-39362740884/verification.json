@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "kind": "SIGNED_ARCHIVE_AND_IPA_EXPORT_PASSED_APPLE_NFC_ENTITLEMENT_VALIDATION_REJECTED",
+  "runId": 39362740884,
+  "candidateSha": "c2aff376990900a356f802fd639e5cf6cdaf099e",
+  "transportSha": "575264b4caf12ad6d893ad13bc349cd3132346d2",
+  "deviceArchiveValidated": true,
+  "appTargetSigningSettingsValidated": true,
+  "appStoreExportSucceeded": true,
+  "ipaBytes": 1975051,
+  "ipaSha256": "c351c25b5ab4e48cfffc383f5b2707a84b10dceb70b9f7a83ab50a09744a1545",
+  "ipaRetainedInOwnedArtifactDirectory": true,
+  "credentialCleanup": "PASS",
+  "failureStage": "ASC_VALIDATE",
+  "error": "COMMAND_FAILED_ASC_VALIDATE",
+  "failedTool": "xcrun",
+  "failedExitCode": 1,
+  "appleValidationCodes": [
+    "90778"
+  ],
+  "appleValidationMessages": 2,
+  "uploadAccepted": false,
+  "appleProcessing": "NOT_STARTED",
+  "physicalInstallationProven": false,
+  "physicalARProven": false,
+  "privacyScan": "PASS_NO_PRIVATE_KEY_JWT_OR_RAW_KEY_BODY_FOUND",
+  "files": [
+    {
+      "path": "altool-help.original.log",
+      "bytes": 8183,
+      "sha256": "088129dcdb14c95951f4fa267c86bcf6b5341e40206321a883d0ee9e4d377752"
+    },
+    {
+      "path": "appstore-export.original.log",
+      "bytes": 373,
+      "sha256": "f98a124fd282ff46347131c448a47a833cf32218e1f749842a23170e9ea41eb9"
+    },
+    {
+      "path": "asc-validate.original.json",
+      "bytes": 615,
+      "sha256": "926a0fb47a6ede9a8481924aafc3e821e9731f52b9dd85b436ea0614db0685f0"
+    },
+    {
+      "path": "device-archive.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dispatch.original.json",
+      "bytes": 560,
+      "sha256": "b2054161a98174b106339b20cb8a7e54bd3ce2d7d39a32ddb2b0311e9ae97029"
+    },
+    {
+      "path": "github-run.original.json",
+      "bytes": 270,
+      "sha256": "9fe073d802e56281862a8c3eb7c28101d142416647b2f530d7131a15ab3f5d70"
+    },
+    {
+      "path": "project-generation.original.log",
+      "bytes": 195,
+      "sha256": "a54854f2c9443ced13a946a0750746b2629b98e378f2818801eeb1460fe24167"
+    },
+    {
+      "path": "receipt.original.json",
+      "bytes": 1085,
+      "sha256": "7fc6681278ac01cfe59e6d9e3fb8944dffc8cb8ce0c66c753867bc8175b04462"
+    },
+    {
+      "path": "transport-cleanup.original.json",
+      "bytes": 188,
+      "sha256": "029cd91cfd91db39e9e44a2f54de8ac9c033e5fdb01d23f209069926e9542fe9"
+    }
+  ]
+}

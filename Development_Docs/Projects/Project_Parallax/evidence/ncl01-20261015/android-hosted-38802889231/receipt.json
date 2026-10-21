@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "HOSTED_ANDROID_EXECUTION_FAILED",
+  "date": "2026-10-15",
+  "candidateSha": "adc0e2c87f07aca1fc136dbdf0114e2e575b12ec",
+  "sourceTree": "c50a26613ac1bcf41c69df7f54723dec863d73d2",
+  "sourceFingerprint": "e9e21e9f765da593ae10fd0f0abcb2cb3ec7721552f6b53fc057bbcc3a6f8cca",
+  "sourceUnchanged": true,
+  "transportSha": "bf9e592a4625d5e6a8570709596d13f4f3a84919",
+  "runId": "38802889231",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38802889231",
+  "conclusion": "failure",
+  "profile": {
+    "platform": "Android Emulator",
+    "api": 36,
+    "device": "pixel_7",
+    "ramMiB": 3072,
+    "graphics": "swiftshader_indirect",
+    "emulatorVersion": "37.2.12"
+  },
+  "appBuild": "PASS",
+  "instrumentationApkBuild": "PASS",
+  "appSha256": "4bdc0cbc41e58beabf2cd2fc177697d1c866cdd402025e5173424818cc62091f",
+  "testApkSha256": "22eb60b61d37033c030521a293a3788973a7e569ab6beea3f6b12c8051072ab0",
+  "nativeDriver": {
+    "result": "FAIL",
+    "failure": "NATIVE_INSTRUMENTATION_TOOL_FAILED",
+    "instrumentationExecuted": "UNKNOWN",
+    "instrumentationOutput": "NOT_EXPORTED",
+    "sceneRenderingOutput": "NOT_EXPORTED",
+    "sensorPerformanceOutput": "NOT_EXPORTED",
+    "cleanup": "FAIL",
+    "actualFailedCommand": "UNKNOWN_UNDER_ORIGINAL_COLLECTOR",
+    "emulatorBootReportedAt": "2026-10-15T20:39:23Z",
+    "driverStartedAt": "2026-10-15T20:39:25Z",
+    "driverFailedAt": "2026-10-15T20:40:48Z",
+    "finalObservation": "Emulator termination command could not connect to TCP port 5554",
+    "rootCause": "UNDETERMINED"
+  },
+  "scenarioReceipt": "NOT_PRODUCED",
+  "transportCleanup": "PASS",
+  "preservedRawEvidencePath": "artifacts/landfall-device-lab/hosted-adc0e2c87f07-1792096396090/run-38802889231",
+  "originalRunLogSha256": "2eeb7ff788c07465873c0ad14e8e6bb6310681f17008511190c4934785ba5c63",
+  "publishedRunLogLineStart": 1136,
+  "publishedRunLogLineEnd": 1149,
+  "publishedEvidence": [
+    {
+      "path": "native-receipt.original.json",
+      "bytes": 779,
+      "sha256": "e85d6637007f0e2dc585269c819a2e7ac55df50b14d771b61cf8920309facdfb"
+    },
+    {
+      "path": "hosted-receipt.original.json",
+      "bytes": 1162,
+      "sha256": "e648fd047d6cf828b659690beaf083e8d82e52408f19322c57f4f3fcd654a8d4"
+    },
+    {
+      "path": "native-driver.original.log",
+      "bytes": 2128,
+      "sha256": "781ec8e9c5c1a672ea7fe06f1fbc7f1e54bb87c8af7cc69fff8de015b5f6a565"
+    }
+  ],
+  "boundaries": {
+    "filamentExecutionProven": false,
+    "nativeRenderingProven": false,
+    "physicalWorldTrackingProven": false,
+    "performanceQualificationProven": false,
+    "ownerAcceptanceProven": false
+  },
+  "followup": "Preserve this failure; collect fixed stage-labelled diagnostics on a fresh exact-source run before inferring or repairing a renderer or emulator cause"
+}

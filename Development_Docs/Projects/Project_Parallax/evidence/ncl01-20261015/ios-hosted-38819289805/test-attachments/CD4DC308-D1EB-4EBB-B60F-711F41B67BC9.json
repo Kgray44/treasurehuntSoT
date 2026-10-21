@@ -1,0 +1,221 @@
+{
+  "assets" : [
+    {
+      "assetId" : "treasure-chest",
+      "authoredChildMatricesAndMaterialObjectsPreserved" : true,
+      "bottomCenterPivotPreserved" : true,
+      "emptyNontransparentPixels" : 0,
+      "entityScale" : 1.2,
+      "entityTranslationMeters" : [
+        0.23000000000000001,
+        0.17000000000000001,
+        -0.31
+      ],
+      "entityYawRadians" : 0.52359873056411743,
+      "geometryNodes" : 7,
+      "materialInstances" : 4,
+      "modelDetachedFromScene" : true,
+      "originalBoundsMeters" : [
+        -0.40000000596046448,
+        0,
+        -0.25,
+        0.40000000596046448,
+        0.61000001430511475,
+        0.25
+      ],
+      "removedNontransparentPixels" : 0,
+      "renderedNontransparentPixels" : 8301,
+      "sha256" : "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f",
+      "sourceWidthMeters" : 0.80000000000000004,
+      "testAnchorFrameTranslationMeters" : [
+        -0.13,
+        0.080000000000000002,
+        0.20999999999999999
+      ],
+      "testAnchorFrameYawRadians" : -0.26179936528205872,
+      "transformedBoundsMeters" : [
+        -0.46349567174911499,
+        0.17000000178813934,
+        -0.91547071933746338,
+        0.90001147985458374,
+        1.0850000381469727,
+        0.25104483962059021
+      ],
+      "widthNormalization" : 1.25
+    },
+    {
+      "assetId" : "brass-compass",
+      "authoredChildMatricesAndMaterialObjectsPreserved" : true,
+      "bottomCenterPivotPreserved" : true,
+      "emptyNontransparentPixels" : 0,
+      "entityScale" : 1.2,
+      "entityTranslationMeters" : [
+        0.23000000000000001,
+        0.17000000000000001,
+        -0.31
+      ],
+      "entityYawRadians" : 0.52359873056411743,
+      "geometryNodes" : 4,
+      "materialInstances" : 4,
+      "modelDetachedFromScene" : true,
+      "originalBoundsMeters" : [
+        -0.079999998211860657,
+        0,
+        -0.095000006258487701,
+        0.079999998211860657,
+        0.045000001788139343,
+        0.094999998807907104
+      ],
+      "removedNontransparentPixels" : 0,
+      "renderedNontransparentPixels" : 2509,
+      "sha256" : "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+      "sourceWidthMeters" : 0.16,
+      "testAnchorFrameTranslationMeters" : [
+        -0.13,
+        0.080000000000000002,
+        0.20999999999999999
+      ],
+      "testAnchorFrameYawRadians" : -0.26179936528205872,
+      "transformedBoundsMeters" : [
+        0.054826945066452026,
+        0.17000000178813934,
+        -0.49340862035751343,
+        0.40517303347587585,
+        0.23750001192092896,
+        -0.12659139931201935
+      ],
+      "widthNormalization" : 1.25
+    }
+  ],
+  "cleanup" : "SCENE_DETACHED_AND_FIXTURE_OWNERS_RELEASED",
+  "completedElapsedMs" : 2257.4184166667237,
+  "deadlineSeconds" : 20,
+  "evidenceClass" : "INSTRUMENTED_SCENEKIT_GLTF_RENDERING_ONLY",
+  "fixtureCreatesARSession" : false,
+  "fixtureUsesCamera" : false,
+  "frames" : [
+    {
+      "commandStatus" : "completed",
+      "gpuCallbackElapsedMs" : 218.29304166669772,
+      "height" : 256,
+      "measuredAndEncodedElapsedMs" : 226.89770833335388,
+      "name" : "treasure-chest-empty",
+      "nonblackVisiblePixels" : 0,
+      "nontransparentPixels" : 0,
+      "pixelFormat" : "BGRA8Unorm",
+      "pngSha256" : "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+      "renderElapsedMs" : 195.21612500000174,
+      "renderSystemUptime" : 915.0181497916667,
+      "transactionFlushed" : true,
+      "width" : 256
+    },
+    {
+      "commandStatus" : "completed",
+      "gpuCallbackElapsedMs" : 2195.8511666666709,
+      "height" : 256,
+      "measuredAndEncodedElapsedMs" : 2202.8799166666886,
+      "name" : "treasure-chest-populated",
+      "nonblackVisiblePixels" : 7714,
+      "nontransparentPixels" : 8301,
+      "pixelFormat" : "BGRA8Unorm",
+      "pngSha256" : "6e98d12823330be77e97490b28d5ffb7159799ba4987353c0ba06861fe7d6381",
+      "renderElapsedMs" : 273.82575000001452,
+      "renderSystemUptime" : 915.09675941666671,
+      "transactionFlushed" : true,
+      "width" : 256
+    },
+    {
+      "commandStatus" : "completed",
+      "gpuCallbackElapsedMs" : 2205.1666666667415,
+      "height" : 256,
+      "measuredAndEncodedElapsedMs" : 2210.9894583333016,
+      "name" : "treasure-chest-removed",
+      "nonblackVisiblePixels" : 0,
+      "nontransparentPixels" : 0,
+      "pixelFormat" : "BGRA8Unorm",
+      "pngSha256" : "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+      "renderElapsedMs" : 2203.1463333333932,
+      "renderSystemUptime" : 917.02608000000009,
+      "transactionFlushed" : true,
+      "width" : 256
+    },
+    {
+      "commandStatus" : "completed",
+      "gpuCallbackElapsedMs" : 2220.199291666745,
+      "height" : 256,
+      "measuredAndEncodedElapsedMs" : 2229.4562916666791,
+      "name" : "brass-compass-empty",
+      "nonblackVisiblePixels" : 0,
+      "nontransparentPixels" : 0,
+      "pixelFormat" : "BGRA8Unorm",
+      "pngSha256" : "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+      "renderElapsedMs" : 2218.143833333329,
+      "renderSystemUptime" : 917.04107750000003,
+      "transactionFlushed" : true,
+      "width" : 256
+    },
+    {
+      "commandStatus" : "completed",
+      "gpuCallbackElapsedMs" : 2237.5441249999994,
+      "height" : 256,
+      "measuredAndEncodedElapsedMs" : 2249.4790000000648,
+      "name" : "brass-compass-populated",
+      "nonblackVisiblePixels" : 2509,
+      "nontransparentPixels" : 2509,
+      "pixelFormat" : "BGRA8Unorm",
+      "pngSha256" : "591e56dfbcfa694f0e89410a394878eb3149c861aa6ed9920cc170f21487b432",
+      "renderElapsedMs" : 2232.0814583333686,
+      "renderSystemUptime" : 917.05501512500007,
+      "transactionFlushed" : true,
+      "width" : 256
+    },
+    {
+      "commandStatus" : "completed",
+      "gpuCallbackElapsedMs" : 2251.9661249999672,
+      "height" : 256,
+      "measuredAndEncodedElapsedMs" : 2257.0318333333717,
+      "name" : "brass-compass-removed",
+      "nonblackVisiblePixels" : 0,
+      "nontransparentPixels" : 0,
+      "pixelFormat" : "BGRA8Unorm",
+      "pngSha256" : "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+      "renderElapsedMs" : 2250.0266250000323,
+      "renderSystemUptime" : 917.07296029166673,
+      "transactionFlushed" : true,
+      "width" : 256
+    }
+  ],
+  "gpuDriverMemoryReleaseProven" : false,
+  "inFlightCommand" : false,
+  "metalPreflight" : {
+    "commandStatus" : "completed",
+    "completedElapsedMs" : 31.556166666632635,
+    "deviceAvailable" : true,
+    "deviceName" : "Apple iOS simulator GPU",
+    "expectedBGRA" : [
+      191,
+      128,
+      64,
+      255
+    ],
+    "readableCompletedTarget" : true,
+    "registryID" : "4294967690",
+    "sampleBGRA" : [
+      191,
+      128,
+      64,
+      255
+    ],
+    "storageMode" : "shared"
+  },
+  "phase" : "ALL_MODELS_CLEARED",
+  "physicalMaterialFidelityProven" : false,
+  "physicalTrackingProven" : false,
+  "productionActivateOrARAnchorPathExercised" : false,
+  "productionBoundary" : "Prototype clone\/sanitize, width normalization and entity root relative to a supplied anchor frame",
+  "result" : "PASS",
+  "sameColorTargetAcrossAllModelFrames" : true,
+  "schemaVersion" : 1,
+  "sealedElapsedMs" : 2257.9243333333352,
+  "testOwnedBoundary" : "Nonidentity rigid anchor frame, camera, lighting and offscreen Metal target"
+}

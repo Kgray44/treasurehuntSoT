@@ -3,12 +3,16 @@ title: Feature status reference
 audience: reference
 status: current
 canonical_for: feature-status
-last_reviewed: 2026-10-11
+last_reviewed: 2026-10-20
 ---
 
 The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.md) is an isolated synthetic implementation in qualification. It exercises accepted platform contracts; its combined physical/owner session remains pending and it does not promote later spatial phases.
 
 # Feature status
+
+NCL-01 is in implementation, with v1-compatible shared Scene delivery and native GLB loading under development. [Evidence and limitations](../../../Projects/Project_Parallax/NCL01_Native_Scene_Vertical_Slice.md) distinguish source/contract/build checks from browser integration, physical AR and owner acceptance. [The private beta deployment record](../../../Projects/Project_Parallax/NCL01_TestFlight_Deployment.md) records available internal TestFlight build 7 with the owner-approved direct-original crop as the official logo/icon, the stable Cloudflare origin and preserved classroom fixture. Build 6's generative artwork/color changes were owner-rejected and are no longer official. Normal public TLS/auth/assets/Journal/static delivery and desktop sign-in presentation pass. The owner reports cellular reachability and earlier objects visible when panning native AR, but authored appearance/placement is not accepted. Exact build-7 phone behavior, all three objects and measured tracking/interactions remain unverified; full Scene/room registration is unfinished. Feature Catalog promotion remains deferred.
+
+The saved official compass logo and iOS icon use the exact same approved 1024-pixel PNG, made only by cropping/resizing the unchanged original. Build 7 signed archive/export/upload, Apple processing/internal availability and actual compiled-icon verification/visual review passed; immutable build-6 proof and rejected artwork provenance remain preserved. This cosmetic correction changes no capability, AR behavior or acceptance status; no Feature Catalog fragment change is required.
 
 Parallax A1 is software-qualified on main through protected PR #710 at `ee8caa83`, after ordinary Sounding Line PASS and 118 landed smoke checks. Spatial Studio provides reviewed natural-language proposals, actual canvas preview, atomic saved Apply and ordinary history with adaptive ownership preserved. Admiralty supplies durable AI accounting and global policy; per-user controls use the existing People dossier. Five production-browser journeys pass, and six authorized live calls returned validated structured responses with settled usage. Catalog FT-B112 records availability with assistance disabled by default. The owner accepted the later revised presentation; finite model testing and physical quality retain their stated limits; see the [implementation record](../../../Projects/Project_Parallax/Parallax_A1_Implementation_and_Qualification.md).
 

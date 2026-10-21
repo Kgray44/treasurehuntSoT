@@ -1,0 +1,7 @@
+Native / Android / primary-phone	UNKNOWN STEP	2026-10-15T21:55:22.3577535Z [command]/usr/bin/sh -c \/usr/local/lib/android/sdk/emulator/emulator -port 5554 -avd test -no-window -gpu swangle -no-snapshot -noaudio -no-boot-anim -memory 3072  -camera-back imagefile:/home/runner/work/treasurehuntSoT/treasurehuntSoT/artifacts/landfall-device-lab/camera-qr.png -camera-front none &
+Native / Android / primary-phone	UNKNOWN STEP	2026-10-15T21:55:22.3671364Z INFO         | Android emulator version 37.2.12.0 (build_id 16428233) (CL:N/A)
+Native / Android / primary-phone	UNKNOWN STEP	2026-10-15T21:55:22.3671810Z INFO         | Graphics backend: gfxstream
+Native / Android / primary-phone	UNKNOWN STEP	2026-10-15T21:55:22.4035502Z INFO         | emuglConfig_init: vulkan_mode_selected:swiftshader gles_mode_selected:swangle
+Native / Android / primary-phone	UNKNOWN STEP	2026-10-15T21:55:23.5587156Z INFO         | Selecting Vulkan device: SwiftShader Device (Subzero), Version: 1.3.0
+Native / Android / primary-phone	UNKNOWN STEP	2026-10-15T21:55:23.5881333Z INFO         | Graphics Adapter Android Emulator OpenGL ES Translator (ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver-5.0.0))
+Native / Android / primary-phone	UNKNOWN STEP	2026-10-15T21:55:23.5882177Z INFO         | Graphics API Version OpenGL ES 3.0 (OpenGL ES 3.1.0 (ANGLE 2.1.17841 git hash: 5fa2e61da947))

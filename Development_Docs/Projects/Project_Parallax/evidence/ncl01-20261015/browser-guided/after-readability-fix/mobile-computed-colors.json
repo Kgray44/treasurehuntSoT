@@ -1,0 +1,60 @@
+{
+  "heading": {
+    "tag": "H3",
+    "class": "",
+    "color": "rgb(44, 36, 24)",
+    "backgroundColor": "rgba(0, 0, 0, 0)",
+    "backgroundImage": "none"
+  },
+  "body": {
+    "tag": "P",
+    "class": "",
+    "color": "rgb(44, 36, 24)",
+    "backgroundColor": "rgba(0, 0, 0, 0)",
+    "backgroundImage": "none"
+  },
+  "kind": {
+    "tag": "P",
+    "class": "ChronicleLens_objectKind___mB_d",
+    "color": "rgb(91, 71, 43)",
+    "backgroundColor": "rgba(0, 0, 0, 0)",
+    "backgroundImage": "none"
+  },
+  "ancestors": [
+    {
+      "tag": "ARTICLE",
+      "class": "ChronicleLens_object__eVRP5 ",
+      "color": "rgb(44, 36, 24)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "backgroundImage": "linear-gradient(130deg, rgb(237, 223, 186), rgb(214, 191, 145))"
+    },
+    {
+      "tag": "DIV",
+      "class": "ChronicleLens_objects__jQcB_",
+      "color": "rgb(238, 230, 213)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "backgroundImage": "none"
+    },
+    {
+      "tag": "DIV",
+      "class": "ChronicleLens_stage__GwMA5",
+      "color": "rgb(238, 230, 213)",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "backgroundImage": "radial-gradient(at 50% 0px, rgba(40, 83, 98, 0.5), rgba(0, 0, 0, 0) 65%), linear-gradient(150deg, rgb(19, 44, 55), rgb(12, 32, 43))"
+    }
+  ],
+  "contrast": {
+    "heading": [
+      11.558,
+      8.539
+    ],
+    "body": [
+      11.558,
+      8.539
+    ],
+    "kind": [
+      6.663,
+      4.922
+    ]
+  }
+}

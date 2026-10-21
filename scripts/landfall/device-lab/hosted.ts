@@ -5,6 +5,12 @@ import path from "node:path";
 import { labTool } from "./host";
 import { hostedDeviceLabProfiles, hostedDeviceLabScenarios } from "../../../src/landfall/device-lab/hosted-selection";
 import { androidDeviceLabProvisioning } from "../../../src/landfall/device-lab/device-profile";
+import {
+  androidGraphicsProbeBackend,
+  androidGraphicsProbeMetadata,
+  androidGraphicsProbeTemplate,
+  validateAndroidGraphicsProbeTransport,
+} from "./android-graphics-probe";
 
 const execute = promisify(execFile);
 /** Ephemeral CI transport only. It never mutates the checkout, default branch, or protected testing authority. */
@@ -15,6 +21,7 @@ export async function dispatchLandfallHostedLab(
   tier = "development",
   selectedScenarios?: string,
   selectedProfiles?: string,
+  graphicsBackend?: string,
 ) {
   if (!/^[a-f0-9]{40}$/.test(candidate)) throw new Error("LANDFALL_HOSTED_CANDIDATE_INVALID");
   if (
@@ -57,6 +64,7 @@ export async function dispatchLandfallHostedLab(
       ? selectedProfiles
       : undefined,
   );
+  const probeBackend = androidGraphicsProbeBackend(graphicsBackend, target, tier, selectedAndroid);
   if (
     target === "ios-presentation" &&
     (tier !== "closure" ||
@@ -79,7 +87,7 @@ export async function dispatchLandfallHostedLab(
     throw new Error("LANDFALL_HOSTED_RADIO_PROFILE_UNSUPPORTED");
   await labTool("git", ["cat-file", "-e", `${candidate}^{commit}`]);
   const template = await labTool("git", ["show", `${candidate}:.agents/landfall-device-lab-hosted.yml`]);
-  const workflow = template
+  const workflow = androidGraphicsProbeTemplate(template, probeBackend)
     .replaceAll("__CANDIDATE_SHA12__", candidate.slice(0, 12))
     .replaceAll("__CANDIDATE_SHA__", candidate)
     .replaceAll("__RUN_PROVIDERS__", String(target === "all" || target === "provider"))
@@ -145,6 +153,7 @@ export async function dispatchLandfallHostedLab(
     .replaceAll("__ANDROID_SCENARIOS__", scenarios.android)
     .replaceAll("__PROVIDER_SCENARIOS__", scenarios.provider)
     .replaceAll("__RADIO_SCENARIOS__", scenarios.radio);
+  const graphicsProbe = androidGraphicsProbeMetadata(probeBackend, selectedWorkflow);
   const runId = `${candidate.slice(0, 12)}-${Date.now()}`;
   const destination = path.join(root, "artifacts", "landfall-device-lab", `hosted-${runId}`);
   await mkdir(destination, { recursive: true });
@@ -160,6 +169,13 @@ export async function dispatchLandfallHostedLab(
     await git(["update-index", "--add", "--cacheinfo", `100644,${blob},.github/workflows/landfall-device-lab.yml`]);
     const tree = await git(["write-tree"]);
     const commit = await git(["commit-tree", tree, "-p", candidate, "-m", `Run Landfall Device Lab for ${candidate}`]);
+    if (graphicsProbe)
+      validateAndroidGraphicsProbeTransport(
+        graphicsProbe,
+        template,
+        selectedWorkflow,
+        (await git(["diff", "--name-only", candidate, commit])).split(/\r?\n/),
+      );
     const branch = `codex/landfall-lab-${runId}`;
     await labTool("git", ["push", "origin", `${commit}:refs/heads/${branch}`], 120000);
     const receipt = {
@@ -175,6 +191,7 @@ export async function dispatchLandfallHostedLab(
       workflow: "landfall-device-lab.yml",
       createdAt: new Date().toISOString(),
       cleanup: "PENDING",
+      ...(graphicsProbe ? { graphicsProbe } : {}),
     };
     await writeFile(path.join(destination, "dispatch.json"), JSON.stringify(receipt, null, 2));
     return receipt;
@@ -192,6 +209,7 @@ if (process.argv[1]?.endsWith("hosted.ts")) {
     process.argv[4] ?? "development",
     process.argv[5],
     process.argv[6],
+    process.argv[7],
   )
     .then((receipt) => process.stdout.write(`${JSON.stringify(receipt, null, 2)}\n`))
     .catch(() => {

@@ -1,0 +1,437 @@
+{
+  "schemaVersion": 1,
+  "documentClass": "machine-engineering-evidence",
+  "evidenceClass": "INDEPENDENT_REVIEW_OF_FAILED_IOS_AGGREGATE_WITH_OBSERVED_CATALOG_SUCCESS",
+  "reviewer": "independent-source-and-artifact-review",
+  "reviewedAtUtc": "2026-10-16T02:45:29.447919Z",
+  "result": "ACCEPTED_AS_TRUTHFUL_FAILURE_WITH_SUCCESSFUL_OBSERVED_COMPONENT_ASSERTIONS",
+  "candidateSha": "9314c749e426110ee38ed1da373a4e2361c6431a",
+  "transportSha": "5e9d42412f2798e07b89b523000fed5e94753825",
+  "runId": "38840109053",
+  "receipt": {
+    "path": "ios-hosted-38840109053.receipt.json",
+    "sha256": "67e634346a48d941057286d4cd2095d7c43a657af7cf9f7a9803135047c8a0da"
+  },
+  "publishedEvidenceValidation": {
+    "exactManifestPointer": "ios-hosted-38840109053.receipt.json#/publishedEvidence",
+    "entries": 19,
+    "bytes": 102504,
+    "allSha256AndLengthsVerified": true,
+    "normalizedManifestSha256": "8c01cd81f4dd92d875bedad8adf03a10e4942d8a0561cf1f1bcb4de6394bc588",
+    "manifestEncoding": "JSON UTF-8, entries sorted by path, sorted object keys, compact separators; path/sha256/bytes only",
+    "directCanonicalOriginalArtifactByteComparisons": 14,
+    "canonicalHarvestReceiptSha256": "e63d751ef3e15f9fca7786be0cf19b9f590c2935bafe06cf39663f09d9c9861c"
+  },
+  "sourceChecks": [
+    {
+      "path": "native/ios/LandfallCompanionTests/ParallaxModelRasterFixture.swift",
+      "candidateSha256": "d40db072a0fbcbc8580d24eda2ad622e5fd7b123de4cb483df816669dfb0d94e",
+      "currentPhysicalBytesEqualCandidate": true
+    },
+    {
+      "path": "native/ios/LandfallCompanionUiTests/NativeLifecycleTests.swift",
+      "candidateSha256": "54fb976b436e0326447029b64762ccbfa2a60a04dd8f665dc85a6131530c4f6e",
+      "currentPhysicalBytesEqualCandidate": true,
+      "unchangedFromAecAnd2f": true
+    },
+    {
+      "path": "native/ios/LandfallCompanionTests/ParallaxSceneDeliveryTests.swift",
+      "candidateSha256": "e8304659e0c0bbff44a69e5f54671d9a7980f279bc3cd3898d28d937cf691934",
+      "currentPhysicalBytesEqualCandidate": true,
+      "unchangedFromAecAnd2f": true
+    },
+    {
+      "path": "scripts/landfall/device-lab/apple-build.ts",
+      "candidateSha256": "df5defaf9e6d06b3b5009a14fbb7b2399f6f5eb464b2d51a44f31856614820f1",
+      "currentPhysicalBytesEqualCandidate": true,
+      "unchangedFromAecAnd2f": true
+    }
+  ],
+  "nativeResults": {
+    "passed": 23,
+    "failed": 1,
+    "skipped": 1,
+    "allFourNclMethods": "Success",
+    "catalogMethodDurationSeconds": 2.2073479890823364,
+    "catalogOriginalReportResult": "PASS",
+    "catalogPhase": "ALL_MODELS_CLEARED",
+    "aggregateRunConclusion": "failure",
+    "aggregateAcceptance": false
+  },
+  "observedCatalog": {
+    "sixOriginalPngsIndependentlyDecoded": true,
+    "bothPopulatedOriginalsViewedWithViewImage": true,
+    "visualObservations": [
+      "Chest: brown wood panels, dark bands and central gold latch.",
+      "Compass: gold rim, light marked dial and central directional needle."
+    ],
+    "frames": [
+      {
+        "name": "treasure-chest-empty",
+        "path": "ios-hosted-38840109053/test-attachments/136C180C-472A-4A87-961A-06778979C73F.png",
+        "pngSha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+        "rawRgbaSha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+        "rawBgraSha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+        "dimensions": [
+          256,
+          256
+        ],
+        "alphaGreaterThan16": 0,
+        "nonzeroAlpha": 0,
+        "nonblackVisiblePixels": 0,
+        "renderElapsedMs": 148.3370416666503,
+        "gpuCallbackElapsedMs": 158.4509583333329,
+        "measuredAndEncodedElapsedMs": 165.46699999992143
+      },
+      {
+        "name": "treasure-chest-populated",
+        "path": "ios-hosted-38840109053/test-attachments/7E1877CB-9E5A-407D-9BBE-79D74D87F9FE.png",
+        "pngSha256": "6e98d12823330be77e97490b28d5ffb7159799ba4987353c0ba06861fe7d6381",
+        "rawRgbaSha256": "b8b9ba5ec47a2a090c98d19f2fa1f374c3117d86eb2abdce9049d13add4494b7",
+        "rawBgraSha256": "eefdbb1d3acc19fee523afd83a919a0971a452ab94cc8af8c23ae8e0602839c7",
+        "dimensions": [
+          256,
+          256
+        ],
+        "alphaGreaterThan16": 8301,
+        "nonzeroAlpha": 8301,
+        "nonblackVisiblePixels": 7714,
+        "renderElapsedMs": 198.3612083332673,
+        "gpuCallbackElapsedMs": 1953.7737916666629,
+        "measuredAndEncodedElapsedMs": 1960.138041666596
+      },
+      {
+        "name": "treasure-chest-removed",
+        "path": "ios-hosted-38840109053/test-attachments/63A3267F-9EC5-4734-9F2D-09EC8954A95D.png",
+        "pngSha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+        "rawRgbaSha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+        "rawBgraSha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+        "dimensions": [
+          256,
+          256
+        ],
+        "alphaGreaterThan16": 0,
+        "nonzeroAlpha": 0,
+        "nonblackVisiblePixels": 0,
+        "renderElapsedMs": 2135.4487916665903,
+        "gpuCallbackElapsedMs": 2137.185208333335,
+        "measuredAndEncodedElapsedMs": 2142.3759166666514
+      },
+      {
+        "name": "brass-compass-empty",
+        "path": "ios-hosted-38840109053/test-attachments/BA0F2F2F-B25E-46A6-80E8-26EB53CBB44E.png",
+        "pngSha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+        "rawRgbaSha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+        "rawBgraSha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+        "dimensions": [
+          256,
+          256
+        ],
+        "alphaGreaterThan16": 0,
+        "nonzeroAlpha": 0,
+        "nonblackVisiblePixels": 0,
+        "renderElapsedMs": 2147.8305833333025,
+        "gpuCallbackElapsedMs": 2149.1501250000056,
+        "measuredAndEncodedElapsedMs": 2154.166625000016
+      },
+      {
+        "name": "brass-compass-populated",
+        "path": "ios-hosted-38840109053/test-attachments/83767E80-63AA-43C5-84C1-71210B30F97A.png",
+        "pngSha256": "591e56dfbcfa694f0e89410a394878eb3149c861aa6ed9920cc170f21487b432",
+        "rawRgbaSha256": "6e2d171d7382b05b31189b15bf556065f4b251efc5af30e53a07d0e5df38a834",
+        "rawBgraSha256": "3d1e44a0cc7561c3e7bb90421c2733deeb5cf2c69b517ad6232d9d8f5824cfcb",
+        "dimensions": [
+          256,
+          256
+        ],
+        "alphaGreaterThan16": 2509,
+        "nonzeroAlpha": 2509,
+        "nonblackVisiblePixels": 2509,
+        "renderElapsedMs": 2156.802583333274,
+        "gpuCallbackElapsedMs": 2160.8471249999184,
+        "measuredAndEncodedElapsedMs": 2166.1775000000034
+      },
+      {
+        "name": "brass-compass-removed",
+        "path": "ios-hosted-38840109053/test-attachments/C4AE731C-4852-4F23-A96C-0F1FDD3103B6.png",
+        "pngSha256": "a61fe5f6e82ac0afd8cf9d89181d9c166b5f72ebb26ce503ced729148bbbed4f",
+        "rawRgbaSha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+        "rawBgraSha256": "8a39d2abd3999ab73c34db2476849cddf303ce389b35826850f9a700589b4a90",
+        "dimensions": [
+          256,
+          256
+        ],
+        "alphaGreaterThan16": 0,
+        "nonzeroAlpha": 0,
+        "nonblackVisiblePixels": 0,
+        "renderElapsedMs": 2187.750875000006,
+        "gpuCallbackElapsedMs": 2189.2482083333107,
+        "measuredAndEncodedElapsedMs": 2194.309874999931
+      }
+    ],
+    "assets": [
+      {
+        "assetId": "treasure-chest",
+        "modelSha256": "2e31b5eed11242e583cfc99a5491ff2e4b10dec0d4fed5d90dffe1ccab122e6f",
+        "geometryNodes": 7,
+        "materialInstances": 4,
+        "originalBoundsMeters": [
+          -0.4000000059604645,
+          0,
+          -0.25,
+          0.4000000059604645,
+          0.6100000143051147,
+          0.25
+        ],
+        "sourceWidthMeters": 0.8,
+        "widthNormalization": 1.25,
+        "authoredMatricesMaterialsBottomPivotAndRelativeTransformAssertionsPassed": true,
+        "exactAuthoredEntityId": "fixture-model-treasure-chest",
+        "distinctFromAssetId": true,
+        "actualHit": {
+          "nodeName": "Node5",
+          "geometryIndex": 0,
+          "faceIndex": 791,
+          "worldCoordinates": [
+            0.36936575174331665,
+            0.28779321908950806,
+            -0.043347686529159546
+          ],
+          "projectedViewportCoordinates": [
+            127.5,
+            89.50001525878906,
+            0.9997244477272034
+          ],
+          "projectedReadbackCoordinates": [
+            127.5,
+            166.49998474121094
+          ]
+        },
+        "productionMapper": "ParallaxLocalRuntime.entityId(for:entities:)",
+        "neighborhoods": [
+          {
+            "kind": "opaque",
+            "rawPixelCenter": [
+              127.5,
+              166.5
+            ],
+            "fixedSceneKitQueryCenter": [
+              127.5,
+              89.5
+            ],
+            "samples": 49,
+            "alphaMinimum": 255,
+            "alphaMaximum": 255,
+            "removedAlphaMaximum": 0
+          },
+          {
+            "kind": "mirror",
+            "rawPixelCenter": [
+              127.5,
+              89.5
+            ],
+            "fixedSceneKitQueryCenter": [
+              127.5,
+              166.5
+            ],
+            "samples": 49,
+            "alphaMinimum": 0,
+            "alphaMaximum": 0,
+            "removedAlphaMaximum": 0
+          },
+          {
+            "kind": "background",
+            "rawPixelCenter": [
+              3.5,
+              3.5
+            ],
+            "fixedSceneKitQueryCenter": [
+              3.5,
+              252.5
+            ],
+            "samples": 49,
+            "alphaMinimum": 0,
+            "alphaMaximum": 0,
+            "removedAlphaMaximum": 0
+          }
+        ],
+        "allQueriesUseSameFixedConversion": true,
+        "projectedAndInverseErrorsBelow051Pixel": true,
+        "transparentMirrorAndBackgroundMiss": true,
+        "allRemovedQueriesMissWithRetainedRoot": true,
+        "selectedElapsedMs": 2135.2647499999193,
+        "removedQueriesElapsedMs": 2142.797666666638
+      },
+      {
+        "assetId": "brass-compass",
+        "modelSha256": "5af1158b1a7f2b3339c159fbdca8b9d3d29020eaa06d41848bf5c04c0a682ccb",
+        "geometryNodes": 4,
+        "materialInstances": 4,
+        "originalBoundsMeters": [
+          -0.07999999821186066,
+          0,
+          -0.0950000062584877,
+          0.07999999821186066,
+          0.04500000178813934,
+          0.0949999988079071
+        ],
+        "sourceWidthMeters": 0.16,
+        "widthNormalization": 1.25,
+        "authoredMatricesMaterialsBottomPivotAndRelativeTransformAssertionsPassed": true,
+        "exactAuthoredEntityId": "fixture-model-brass-compass",
+        "distinctFromAssetId": true,
+        "actualHit": {
+          "nodeName": "Node1",
+          "geometryIndex": 0,
+          "faceIndex": 327,
+          "worldCoordinates": [
+            0.2926762104034424,
+            0.19804233312606812,
+            -0.19216063618659973
+          ],
+          "projectedViewportCoordinates": [
+            127.49996185302734,
+            108.49998474121094,
+            0.9988577961921692
+          ],
+          "projectedReadbackCoordinates": [
+            127.49996185302734,
+            147.50001525878906
+          ]
+        },
+        "productionMapper": "ParallaxLocalRuntime.entityId(for:entities:)",
+        "neighborhoods": [
+          {
+            "kind": "opaque",
+            "rawPixelCenter": [
+              127.5,
+              147.5
+            ],
+            "fixedSceneKitQueryCenter": [
+              127.5,
+              108.5
+            ],
+            "samples": 49,
+            "alphaMinimum": 255,
+            "alphaMaximum": 255,
+            "removedAlphaMaximum": 0
+          },
+          {
+            "kind": "mirror",
+            "rawPixelCenter": [
+              127.5,
+              108.5
+            ],
+            "fixedSceneKitQueryCenter": [
+              127.5,
+              147.5
+            ],
+            "samples": 49,
+            "alphaMinimum": 0,
+            "alphaMaximum": 0,
+            "removedAlphaMaximum": 0
+          },
+          {
+            "kind": "background",
+            "rawPixelCenter": [
+              3.5,
+              3.5
+            ],
+            "fixedSceneKitQueryCenter": [
+              3.5,
+              252.5
+            ],
+            "samples": 49,
+            "alphaMinimum": 0,
+            "alphaMaximum": 0,
+            "removedAlphaMaximum": 0
+          }
+        ],
+        "allQueriesUseSameFixedConversion": true,
+        "projectedAndInverseErrorsBelow051Pixel": true,
+        "transparentMirrorAndBackgroundMiss": true,
+        "allRemovedQueriesMissWithRetainedRoot": true,
+        "selectedElapsedMs": 2187.663749999956,
+        "removedQueriesElapsedMs": 2194.6801666666715
+      }
+    ],
+    "singleDeadlineMs": 20000,
+    "allFrameRenderCallbackMeasurementTimesOrderedWithinDeadline": true,
+    "allFramesTransactionFlushed": true,
+    "sixRenderSystemTimesStrictlyIncreasing": true,
+    "oneColorTarget": true,
+    "completedElapsedMs": 2195.127124999999,
+    "sealedElapsedMs": 2195.8417916666804,
+    "fixtureCpuCleanup": "SCENE_DETACHED_AND_FIXTURE_OWNERS_RELEASED"
+  },
+  "soleFailure": {
+    "identifier": "NativeLifecycleTests/testUnconfiguredShellReturnsFromHome()",
+    "target": "LandfallCompanionUiTests",
+    "message": "LANDFALL_HOME_BACKGROUND_UNOBSERVED",
+    "sourcePath": "native/ios/LandfallCompanionUiTests/NativeLifecycleTests.swift",
+    "assertionLine": 20,
+    "backgroundPredicateLines": "10-12",
+    "predicate": "runningBackground OR runningBackgroundSuspended",
+    "existingWaitSeconds": 15,
+    "nativeCaseDurationSeconds": 54.14287197589874,
+    "sourceAndAssertionsUnchangedFromPriorAecAnd2f": true,
+    "diagnosis": "The UI test did not observe either accepted background state after Home within its existing wait. No environment, scheduling, app or coordinate root cause established."
+  },
+  "scenarioAndCleanup": {
+    "canonicalPermissionDeniedScenario": "NOT_RUN after failed companion-only step",
+    "canonicalProgressionEvents": null,
+    "buildSimulatorCleanup": "PASS",
+    "transportCleanup": "PASS"
+  },
+  "preservedPriorReceipts": [
+    {
+      "runId": "38798660744",
+      "receiptSha256": "b3e85e64efa168b7938640f5cf3dfabbba593800e189c9ecadc6325a89774d91",
+      "allDeclaredPublishedEntriesStillMatch": true
+    },
+    {
+      "runId": "38800480310",
+      "receiptSha256": "0407d80b1e654ccfd6f988b7f6233ee04e0b5fde0eddae59147524cf31a62f68",
+      "allDeclaredPublishedEntriesStillMatch": true
+    },
+    {
+      "runId": "38807972598",
+      "receiptSha256": "afe19bbab7ba2d8889c08fb0921cd9289e4f3cc66f25a5361e7412fe65fa8a7e",
+      "allDeclaredPublishedEntriesStillMatch": true
+    },
+    {
+      "runId": "38810163899",
+      "receiptSha256": "709f0d4f9f290f751c4bc1a7cf9d6f7be0e3eddb07146c18f3e61980ddbeb8f7",
+      "allDeclaredPublishedEntriesStillMatch": true
+    },
+    {
+      "runId": "38817044787",
+      "receiptSha256": "b1039897250b8fae8fc881f548c9212b3badc87ffe4854275512a310e6810935",
+      "allDeclaredPublishedEntriesStillMatch": true
+    },
+    {
+      "runId": "38819289805",
+      "receiptSha256": "4a154a41559cf476d3c0454beb14392ad267e785d9b539e1eaed87253b2df31d",
+      "allDeclaredPublishedEntriesStillMatch": true
+    },
+    {
+      "runId": "38838018116",
+      "receiptSha256": "cc0503fcff3334ed60147f2bc7231bb610b28bfeb26ffd56a182878a4bf3fea5",
+      "allDeclaredPublishedEntriesStillMatch": true
+    }
+  ],
+  "boundedNextActionAssessment": {
+    "sourceOrReceiptFindingBlockingOneUnchangedOrdinaryReplay": false,
+    "recommendation": "Root may perform one unchanged9314 ordinary development replay with all existing assertions, timeouts, backend/profile and required counts preserved. Keep this failed run intact. The replay is a fresh stability observation, not a repair or a general rerun-loop authorization.",
+    "replayDispatchedByReviewer": false
+  },
+  "proofLimits": [
+    "Successful observed camera-free simulator component assertions do not turn this overall23/1/1 run or unexecuted canonical scenario into accepted aggregate qualification.",
+    "The fixed mapping is demonstrated for this test-owned origin-zero256x256 offscreen viewport, not ARView touch coordinates or every renderer context.",
+    "No ARSession/physical world anchoring, tracking recovery, native Inspect gesture, owner acceptance, signing/phone reachability, driver memory release or performance/thermal proof.",
+    "Prior failed direct-mapping evidence remains unchanged; prior image identity does not substitute for this run attachment association."
+  ],
+  "actionablePublicationFindings": [],
+  "sourceOrOriginalsEditedByReviewer": false,
+  "authorityPromotion": false
+}

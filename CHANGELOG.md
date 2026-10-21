@@ -3,7 +3,7 @@ title: Changelog
 audience: product-engineering
 status: current
 canonical_for: repository-changelog
-last_reviewed: 2026-10-12
+last_reviewed: 2026-10-20
 ---
 
 # Changelog
@@ -16,12 +16,61 @@ last_reviewed: 2026-10-12
 
 - Reach review can continue at cumulative iteration four only through a source-bound policy installed on protected main for existing PR #766. The blocked third review, full product evidence and ordinary protected integration requirements remain intact. [Continuation and review gap](Development_Docs/Engineering/Reach_Product_Review_Continuation_20261017.md).
 - Ordinary verification starts completed-evidence intake without awaiting its own command module. A cold command regression checks that failures reach the canonical decision writer. [Startup behavior](Development_Docs/Engineering/Ordinary_Verifier_Cold_Startup_Repair.md) preserves the evidence and qualification requirements.
+- Corrected the official VoyageWright logo and iOS icon to the owner's approved
+  direct crop/resize of the original dark brass compass. Both use the exact same
+  1024-pixel PNG; the unchanged original and its 800-pixel crop are retained.
+  Build 0.1.0 (7) passed signed archive/export/upload and Apple processing and is
+  available in the existing internal TestFlight group. Both actual packaged icons
+  were verified and visually inspected. No generative editing or color changes
+  are included; AR behavior is unchanged. Exact-build phone installation and
+  appearance remain unverified.
+
+- Build 0.1.0 (6) used a generatively edited tighter compass. The owner later
+  rejected its artwork/color changes; that revision is superseded and is no
+  longer the official logo or icon.
+  The original owner artwork and build-5 receipts are retained alongside the
+  edited revision's source and independent measurements. Build 0.1.0 (6)
+  passed signed archive/export/upload and Apple processing and is available in
+  the existing internal TestFlight group. Both packaged icons were verified and
+  visually inspected. AR behavior is unchanged; exact-build
+  phone installation and appearance remain unverified.
+
+- Replaced the iOS companion app icon with the owner-supplied official dark brass
+  compass, preserving its full artwork and retaining the original source. Build 0.1.0 (5)
+  reached internal TestFlight at the same stable address. Both packaged
+  icon resources were verified and visually inspected; phone appearance remains
+  an owner check after updating.
+
+- Prepared an isolated NCL-01 iOS development-beta path with explicit app versions,
+  an existing-artwork app icon, required-reason privacy metadata and a separate
+  hosted archive/sign/export/upload workflow. [The deployment record](Development_Docs/Projects/Project_Parallax/NCL01_TestFlight_Deployment.md)
+  retains signed-build evidence and current NFC entitlement compatibility. Private
+  beta 0.1.0 (2) reached internal TestFlight. The owner reports installation,
+  native sign-in and camera display of the original models. Build 0.1.0 (3) was
+  uploaded for the classroom network; its separate
+  classroom Chronicle passed publication, authenticated assets and accessible
+  browser checks. The owner reports classroom objects appearing when panning the
+  native camera after an initially empty view, but authored appearance/placement
+  is not accepted. Exact phone build, all three objects and measured interactions
+  remain unverified; full authored Scene/room-registration integration is unfinished.
+  Build 0.1.0 (4) reached internal TestFlight using an owner-approved
+  stable Cloudflare address and isolated production runtime. Repaired CSS/JS
+  routing and cached errors; normal public TLS/auth/Journal/static checks and
+  desktop sign-in presentation pass. Exact build 4 phone behavior is unverified.
+
+- NCL-01 begins a native Scene candidate with negotiated v2 delivery, exact SC02 chest/compass assets, authorized integrity-checked loading and native object selection through the existing Chronicle observation path. [The implementation record](Development_Docs/Projects/Project_Parallax/NCL01_Native_Scene_Vertical_Slice.md) separates contract/build evidence from pending browser integration, physical devices and owner acceptance.
+
+- Candidate iOS builds explain local-network access for laptop-hosted clues and wait within the existing activation limit while permission is granted. HTTPS trust remains required.
+
 - Product Experience Engineering adds selective experience contracts and real-browser evidence to ordinary Sounding Line, with independent criticism, bounded repair, protected capture/review attestation and explicit spatial baseline debt. [Operations and proof](Development_Docs/Testing/Product_Experience/README.md) preserve product and owner acceptance authority.
 
 ### Corrected
 
 - Device connections has a primary page heading in both account states. Reach guidance and the pointing area expose meaningful semantic structure while preserving their controls and focus behavior. Full-page accessibility regressions retain all violation severities and distinguish incomplete checks from passes.
 - Reach setup requests remain operable by keyboard and touch during brief tracking changes. Activation checks current readiness and responds with polite guidance instead of losing the request; existing setup guards remain in force, and no automatic start is queued. The default return to device connections restores the page top so the laboratory entry stays clear of the header.
+- Account forms use POST for early native submission before JavaScript hydration, keeping entered passwords and codes out of submitted query strings. The normal client authentication flow is unchanged.
+- Guided Lens parchment cards retain dark, readable headings and clue text when embedded in the Player Journal. Its Close control stays visible while scrolling on a phone.
+
 - Reach refits hand interpretation, active-hand continuity, dropout-tolerant acquisition and the staged responsive laboratory. Relative movement has separate setup and held-out cursor checks; experimental absolute pointing retains independent raw accuracy gating. [The refit record](Development_Docs/Projects/Project_Reach/Recognition_Calibration_Experience_Refit_20261011.md) preserves rendered/software proof and remaining physical/owner gates.
 - Floating Spatial Assistant supports dragging its title and resizing from every edge and corner, with keyboard alternatives and account-scoped window preferences. The composer stays at the bottom; viewport changes keep the window reachable without editing the scene.
 

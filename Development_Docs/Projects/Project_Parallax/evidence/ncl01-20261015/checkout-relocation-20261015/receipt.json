@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "task": "NCL01",
+  "evidenceClass": "OWNED_CHECKOUT_PHYSICAL_RELOCATION_ONLY",
+  "frozenSourceCommit": "2b8809980e3c8d448a9de4739779cd6f5849d39a",
+  "copyAndAliasResult": "PASS",
+  "regularFileCount": 45817,
+  "regularFileBytes": 2877352915,
+  "directoryCount": 5534,
+  "registeredPath": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-ncl01\\Codex_TreasureHunt",
+  "physicalPath": "D:\\CodexWorktrees\\parallax-ncl01-physical-20261015\\Codex_TreasureHunt",
+  "artifactJunctionTarget": "D:\\CodexTemp\\ncl01-device-lab-evidence",
+  "fullManifestStorage": "D:\\CodexTemp\\ncl01-preview\\relocation-20261015",
+  "fullSourceManifestSha256": "2744cc43051be3a913802d05d341a44a6f8d16075424c8a2d959ba3c6f421da1",
+  "fullDestinationManifestSha256": "ea6b7d9975746e0f8fbd85339a068e9bb3ad251f8185df9045b7d3c503d07f97",
+  "gitSnapshotsByteIdentical": true,
+  "sharedGitObjectsMoved": false,
+  "privatePreviewStateMoved": false,
+  "destinationRootDacl": "Protected; current owner, SYSTEM and Administrators only; child files inherit these grants",
+  "initialSecurityCopyResult": "Robocopy emitted ERROR 5 before copying files despite exit code 0; original log retained. Destination DACL set explicitly before successful data copy.",
+  "previewRestored": true,
+  "previewRestorationChecksPassed": 5,
+  "privateTrustOrFirewallChanged": false,
+  "phoneReachabilityProven": false,
+  "duplicateCleanupStatus": "POLICY_BLOCKED",
+  "originalCBackupRetained": "C:\\Users\\kkids\\.codex\\worktrees\\parallax-ncl01\\Codex_TreasureHunt.relocation-original-20261015",
+  "duplicateCleanupActionExecuted": false,
+  "diskSpaceRecoveryClaimed": false,
+  "publishedEvidence": [
+    {
+      "path": "copy-verification.original.json",
+      "bytes": 818,
+      "sha256": "921eb2bc6bd94790c5171c825b6dfbf809e3030d288d4871c276508ee2031a17"
+    },
+    {
+      "path": "alias-verification.original.json",
+      "bytes": 508,
+      "sha256": "903620742fd663746be2dfab7f08b40c4dec1a879eedbe1e917392f2801b39d4"
+    },
+    {
+      "path": "git-before-alias.original.json",
+      "bytes": 1178,
+      "sha256": "90b0cc2f8b920308c2a6314f03bf8e50cf3105d4a14cb17358fac65b0aa7809a"
+    },
+    {
+      "path": "git-after-alias.original.json",
+      "bytes": 1178,
+      "sha256": "90b0cc2f8b920308c2a6314f03bf8e50cf3105d4a14cb17358fac65b0aa7809a"
+    },
+    {
+      "path": "preview-restored.original.json",
+      "bytes": 1365,
+      "sha256": "813b996bcd2d89b78193b10f8c21631253e71f72b7785d2894a05f75e615425f"
+    },
+    {
+      "path": "duplicate-cleanup.blocked.original.json",
+      "bytes": 483,
+      "sha256": "b456ae6247da3722faffa425d02ad20faea7dcd1f64dcd256e07fc7c785a7434"
+    },
+    {
+      "path": "robocopy-security-failure.original.log",
+      "bytes": 1332,
+      "sha256": "e93da1d69482afc800b6a5502bd107f73008157ec517f33ffaf5e4054f2c5a2a"
+    },
+    {
+      "path": "robocopy-data.original.log",
+      "bytes": 1247,
+      "sha256": "b7b4f6f6c2bf88dcc3550c3ffb58cd24170d2d2143cd513f47d9a5ba3176b017"
+    }
+  ]
+}

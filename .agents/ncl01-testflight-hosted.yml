@@ -1,0 +1,78 @@
+# Isolated source-bound beta transport. Published only on an owned temporary
+# branch; never an addition to protected main. No secrets reach unsigned builds.
+name: NCL-01 TestFlight __CANDIDATE_SHA__
+on:
+  push:
+    branches: ["codex/ncl01-testflight-*"]
+permissions:
+  contents: read
+concurrency:
+  group: ncl01-testflight-${{ github.ref_name }}
+  cancel-in-progress: false
+jobs:
+  unsigned:
+    if: __UNSIGNED__
+    runs-on: macos-26
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: __CANDIDATE_SHA__
+          persist-credentials: false
+          sparse-checkout: |
+            native/ios
+            scripts/landfall/testflight
+            tests/fixtures/parallax
+            public/parallax/sc02/models
+      - name: Install project generator
+        run: brew list xcodegen >/dev/null 2>&1 || brew install xcodegen
+      - name: Archive the real unsigned iOS application
+        run: python3 scripts/landfall/testflight/runner.py --mode unsigned --candidate __CANDIDATE_SHA__ --origin '__ORIGIN__' --version __VERSION__ --build __BUILD__
+      - name: Remove any interrupted owned signing state
+        if: always()
+        run: python3 scripts/landfall/testflight/runner.py --cleanup-owned
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: ncl01-unsigned-__CANDIDATE_SHA__
+          path: artifacts/ncl01-testflight/public
+          if-no-files-found: error
+          retention-days: 14
+  upload:
+    if: __UPLOAD__
+    environment: ncl01-testflight
+    runs-on: macos-26
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: __CANDIDATE_SHA__
+          persist-credentials: false
+          sparse-checkout: |
+            native/ios
+            scripts/landfall/testflight
+            tests/fixtures/parallax
+            public/parallax/sc02/models
+      - name: Install project generator
+        run: brew list xcodegen >/dev/null 2>&1 || brew install xcodegen
+      - name: Sign, export, upload and observe Apple processing
+        env:
+          NCL01_DISTRIBUTION_P12_BASE64: ${{ '__MODE__' == 'upload' && secrets.NCL01_DISTRIBUTION_P12_BASE64 || '' }}
+          NCL01_DISTRIBUTION_P12_PASSWORD: ${{ '__MODE__' == 'upload' && secrets.NCL01_DISTRIBUTION_P12_PASSWORD || '' }}
+          NCL01_APPSTORE_PROFILE_BASE64: ${{ '__MODE__' == 'upload' && secrets.NCL01_APPSTORE_PROFILE_BASE64 || '' }}
+          NCL01_ASC_PRIVATE_KEY_P8: ${{ secrets.NCL01_ASC_PRIVATE_KEY_P8 }}
+          NCL01_ASC_KEY_ID: ${{ vars.NCL01_ASC_KEY_ID }}
+          NCL01_ASC_ISSUER_ID: ${{ vars.NCL01_ASC_ISSUER_ID }}
+          NCL01_ASC_APP_ID: ${{ vars.NCL01_ASC_APP_ID }}
+          NCL01_INTERNAL_GROUP_ID: ${{ vars.NCL01_INTERNAL_GROUP_ID }}
+        run: python3 scripts/landfall/testflight/runner.py --mode __MODE__ --candidate __CANDIDATE_SHA__ --origin '__ORIGIN__' --version __VERSION__ --build __BUILD__
+      - name: Remove any interrupted owned signing state
+        if: always()
+        run: python3 scripts/landfall/testflight/runner.py --cleanup-owned
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: ncl01-testflight-__CANDIDATE_SHA__
+          path: artifacts/ncl01-testflight/public
+          if-no-files-found: error
+          retention-days: 14

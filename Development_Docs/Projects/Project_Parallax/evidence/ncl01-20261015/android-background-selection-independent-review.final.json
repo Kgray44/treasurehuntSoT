@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "documentClass": "MACHINE_ENGINEERING_EVIDENCE",
+  "evidenceClass": "SUPPORTING_INDEPENDENT_ANDROID_BACKGROUND_SELECTION_SOURCE_REVIEW",
+  "reviewerContext": "/root/ncl01_review",
+  "reviewedAtUtc": "2026-10-16T01:02:29.630Z",
+  "disposition": "ACCEPTED_WITH_NO_ACTIONABLE_SOURCE_FINDING",
+  "diffBaseSha": "2b8809980e3c8d448a9de4739779cd6f5849d39a",
+  "reviewedFiles": [
+    {
+      "path": "native/android/app/src/androidTest/java/com/voyagewright/landfall/ParallaxModelRenderingFixture.java",
+      "sha256": "8429ea7bc8926aecfeded432a6b39c997791088e921bb2f2a2f52bd33b976706"
+    },
+    {
+      "path": "src/landfall/device-lab/android-scene-rendering.ts",
+      "sha256": "9bfce34ada0db64d4383d94d1402d187d8892bb45d008f9f6891f97bdecd1b04"
+    },
+    {
+      "path": "src/landfall/device-lab/android-scene-rendering.test.ts",
+      "sha256": "d3719c8568b517d6a09be1dbd89c1e640d4bb00c5bfcdae2001ea5e2c7c888ae"
+    }
+  ],
+  "scope": "Only removal of union nonzero-alpha AABB proxy from fixture selector and independent PNG validator, plus regression coverage.",
+  "checked": {
+    "hitSelection": "Nearest-center candidate with all49 alpha values>=250.",
+    "backgroundSelection": "Farthest-center candidate with all49 alpha values exactly0; initialization and min/max update verified.",
+    "productionGpuContract": "Populated exact authored entity hit and background null miss; cleared null miss; callbacks remain mandatory.",
+    "independentValidator": "Original PNG and decoded RGBA hashes, dimensions, alpha>16 count and exact sampled neighborhoods remain enforced.",
+    "syntheticRegression": "Opposite opaque corners yield full-extent union AABB while transparent sample is accepted; opaque and alpha1 samples are rejected.",
+    "preserved": [
+      "Same 10-second shared readback/pick/PNG-publication deadline",
+      "Original geometry/material/bottom-pivot assertions",
+      "Original populated >32-pixel and cleared0 assertions",
+      "Model/Engine disposal checks",
+      "16 instrumentation method identities",
+      "Ordinary SWANGLE backend",
+      "Production renderer and collector acquisition paths unchanged"
+    ]
+  },
+  "diffWhitespaceCheck": "PASS",
+  "reviewOnly": true,
+  "localCompileOrTestReceiptDuplicated": false,
+  "freshRuntimeProof": "NOT_ESTABLISHED_BY_THIS_SOURCE_REVIEW",
+  "physicalTrackingProven": false,
+  "protectedQualificationProven": false,
+  "formalProductExperienceApproval": false,
+  "ownerAcceptance": "NOT_CLAIMED",
+  "sourceOrOriginalMutationsPerformedByReviewer": false
+}
