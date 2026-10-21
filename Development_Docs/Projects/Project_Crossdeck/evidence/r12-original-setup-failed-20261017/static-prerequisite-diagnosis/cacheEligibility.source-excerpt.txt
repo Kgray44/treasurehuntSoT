@@ -1,0 +1,64 @@
+async function binaryNeedsToBeDownloaded(job, nativePlatform, version) {
+  if (job.envVarPath && import_node_fs.default.existsSync(job.envVarPath)) {
+    return false;
+  }
+  const targetExists = await exists(job.targetFilePath);
+  const cachedFile = await getCachedBinaryPath({
+    ...job,
+    version
+  });
+  if (cachedFile) {
+    if (job.skipCacheIntegrityCheck === true) {
+      await (0, import_chunk_LONQL55G.overwriteFile)(cachedFile, job.targetFilePath);
+      return false;
+    }
+    const sha256FilePath = cachedFile + ".sha256";
+    if (await exists(sha256FilePath)) {
+      const sha256File = await import_node_fs.default.promises.readFile(sha256FilePath, "utf-8");
+      const sha256Cache = await (0, import_chunk_FKGWOTGU.getHash)(cachedFile);
+      if (sha256File === sha256Cache) {
+        if (!targetExists) {
+          debug(`copying ${cachedFile} to ${job.targetFilePath}`);
+          await import_node_fs.default.promises.utimes(cachedFile, /* @__PURE__ */ new Date(), /* @__PURE__ */ new Date());
+          await (0, import_chunk_LONQL55G.overwriteFile)(cachedFile, job.targetFilePath);
+        }
+        const targetSha256 = await (0, import_chunk_FKGWOTGU.getHash)(job.targetFilePath);
+        if (sha256File !== targetSha256) {
+          debug(`overwriting ${job.targetFilePath} with ${cachedFile} as hashes do not match`);
+          await (0, import_chunk_LONQL55G.overwriteFile)(cachedFile, job.targetFilePath);
+        }
+        return false;
+      } else {
+        return true;
+      }
+    } else if (process.env.PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING) {
+      debug(
+        `the checksum file ${sha256FilePath} is missing but this was ignored because the PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING environment variable is set`
+      );
+      if (targetExists) {
+        return false;
+      }
+      if (cachedFile) {
+        debug(`copying ${cachedFile} to ${job.targetFilePath}`);
+        await (0, import_chunk_LONQL55G.overwriteFile)(cachedFile, job.targetFilePath);
+        return false;
+      }
+      return true;
+    } else {
+      return true;
+    }
+  }
+  if (!targetExists) {
+    debug(`file ${job.targetFilePath} does not exist and must be downloaded`);
+    return true;
+  }
+  if (job.binaryTarget === nativePlatform) {
+    const currentVersion = await getVersion(job.targetFilePath, job.binaryName);
+    if (currentVersion?.includes(version) !== true) {
+      debug(`file ${job.targetFilePath} exists but its version is ${currentVersion} and we expect ${version}`);
+      return true;
+    }
+  }
+  return false;
+}
+

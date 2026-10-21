@@ -1,0 +1,10 @@
+Error: request to https://binaries.prisma.sh/all_commits/c2990dca591cba766e3b7ef5d9e8a84796e47ab7/debian-openssl-3.0.x/libquery_engine.so.node.sha256 failed, reason: 
+file:///workspace/crossdeck-cloud-integration/scripts/sounding-line/run-browser-suite.mjs:234
+  if (result.status !== 0) throw new Error(`SOUNDING_LINE_SUITE_PROFILE_COMMAND_FAILED:${profile.id}`);
+                                 ^
+
+Error: SOUNDING_LINE_SUITE_PROFILE_COMMAND_FAILED:generic
+    at run (file:///workspace/crossdeck-cloud-integration/scripts/sounding-line/run-browser-suite.mjs:234:34)
+    at file:///workspace/crossdeck-cloud-integration/scripts/sounding-line/run-browser-suite.mjs:92:3
+
+Node.js v24.19.0

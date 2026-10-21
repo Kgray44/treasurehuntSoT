@@ -1,0 +1,62 @@
+{
+  "sourceSha": "4b8c953f8578fdf87273e8d6c800cb191db7576f",
+  "baseSha": "81fa477c5099b259e0d3bd8e8e0e6e52a7dc02bb",
+  "sourceDigest": "773580b8317ba83cf9b83d8d268bbc7aad326eb25d08db532a4c384cd6207e88",
+  "contractDigest": "d9510ce225e97e1404d8aca9b6b90d6272ce6af4184683ac22eb60ceb7514deb",
+  "contractIds": [
+    "crossdeck.phase2.continuity",
+    "crossdeck.refit.companion",
+    "crossdeck.refit.published-lens",
+    "homeport.shell.crossdeck-access-recovery",
+    "homeport.shell.crossdeck-companion"
+  ],
+  "outputRoot": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\source-4b8c953f8578",
+  "buildOutput": ".next-crossdeck-4b8c953f8578",
+  "databaseUrl": "file:C:/Users/kkids/.codex/worktrees/crossdeck-experience-refit/Codex_TreasureHunt/artifacts/sounding-line/generic-4b8c953f8578/validation-isolated-20261012-070956405-126bc999780f6f79b7c910c056290736.db",
+  "authority": "LOCAL_DIAGNOSTIC_WITH_UNCHANGED_PROTECTED_CAPTURE_HELPER",
+  "ownerAcceptance": "NOT_CLAIMED",
+  "stages": [
+    {
+      "name": "bootstrap",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 4864
+    },
+    {
+      "name": "synthetic-persisted-seed",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 2060
+    },
+    {
+      "name": "legacy-migration",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 480
+    },
+    {
+      "name": "nonce-identity",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 327
+    },
+    {
+      "name": "production-build",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 50881
+    },
+    {
+      "name": "affected-browser-journeys",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 89160
+    },
+    {
+      "name": "canonical-experience-capture",
+      "status": "FAIL",
+      "exitCode": 1,
+      "elapsedMs": 81581
+    }
+  ]
+}

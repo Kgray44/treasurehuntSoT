@@ -1,0 +1,18 @@
+{
+  "classification": "Staged original-blob and frozen-product verification; no product execution",
+  "status": "PASS",
+  "baseSha": "f935ab3efd6eb5943cdea8a08f65c9cf55c45d95",
+  "stagedTree": "45ad546f23e0070c842589a95edd6c940532dbe5",
+  "recordId": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R5",
+  "recordDigest": "f7cc69e66e577c06cdd2f87ba10f99c98841c6172b08ca837e6a6a0da3cd3bd4",
+  "frozenTrees": 3,
+  "frozenBlobs": 5,
+  "immutableHistory": 128,
+  "r4OriginalFiles": 229,
+  "r4OriginalBytes": 435355489,
+  "earlierArchivesUnchanged": true,
+  "consumerAuthorityEdits": 0,
+  "productRepairs": 0,
+  "workflowDispatches": 0,
+  "ownerAcceptance": "NOT_CLAIMED"
+}

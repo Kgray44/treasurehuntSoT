@@ -1,0 +1,348 @@
+.companion {
+  width: min(100%, 72rem);
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: clamp(1rem, 3vw, 2.5rem);
+  color: var(--text-primary);
+  background: linear-gradient(165deg, var(--surface-default), var(--background-primary));
+  overflow-wrap: anywhere;
+}
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-default);
+}
+.identity {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  min-width: 0;
+}
+.mark {
+  display: grid;
+  place-items: center;
+  flex: 0 0 2.6rem;
+  height: 2.6rem;
+  border: 1px solid var(--border-emphasis);
+  border-radius: 50%;
+  color: var(--accent-primary);
+  font-size: 1.5rem;
+}
+.header h1 {
+  margin: 0;
+  color: var(--text-heading);
+  font-size: clamp(1.25rem, 3vw, 1.8rem);
+  line-height: 1.25;
+}
+.eyebrow {
+  margin: 0 0 0.35rem;
+  color: var(--accent-primary);
+  font-size: 0.75rem;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+}
+.returnLink,
+.primaryAction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-height: var(--control-height);
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-small);
+  color: var(--text-primary);
+  background: var(--surface-raised);
+  text-decoration: none;
+}
+.primaryAction {
+  border-color: var(--accent-primary);
+}
+.status {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  min-height: 3rem;
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+}
+.status button {
+  margin-left: auto;
+}
+.connected,
+.reconnecting {
+  width: 0.45rem;
+  height: 0.45rem;
+  flex: 0 0 0.45rem;
+  border-radius: 50%;
+  background: var(--state-success);
+}
+.reconnecting {
+  background: var(--state-warning);
+}
+.workspace {
+  padding: clamp(1rem, 2.5vw, 1.8rem);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-large);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-card);
+}
+.workspaceHeading h2 {
+  margin: 0;
+  font-size: clamp(1.5rem, 4vw, 2.1rem);
+  color: var(--text-heading);
+}
+.workspaceHeading > p:last-child {
+  margin: 0.5rem 0 1.1rem;
+  max-width: 42rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+.selector {
+  display: grid;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+.companion select {
+  width: 100%;
+  min-width: 0;
+  min-height: var(--control-height);
+  padding: 0.6rem;
+  border: 1px solid var(--border-emphasis);
+  border-radius: var(--radius-small);
+  background: var(--surface-overlay);
+  color: var(--text-primary);
+  font: inherit;
+}
+.companion button {
+  min-height: var(--control-height);
+  cursor: pointer;
+  font: inherit;
+}
+.companion button:disabled {
+  cursor: default;
+}
+.companion :focus-visible {
+  outline: 3px solid var(--focus-color);
+  outline-offset: 4px;
+}
+.content {
+  min-width: 0;
+}
+.empty,
+.lensSurface {
+  padding: clamp(1rem, 3vw, 2rem);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-medium);
+  background: var(--surface-overlay);
+}
+.empty h3,
+.lensSurface > h3 {
+  margin: 0 0 0.6rem;
+  color: var(--text-heading);
+}
+.empty > p,
+.lensSurface > p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.caption {
+  font-size: 0.85rem;
+}
+.readerControls {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+}
+.readerControls button {
+  min-width: var(--control-height);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-small);
+  background: var(--surface-overlay);
+  color: var(--text-primary);
+}
+.readerControls button[aria-pressed="true"] {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+.reader {
+  max-height: 70dvh;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: clamp(1rem, 3vw, 2rem);
+  border-radius: var(--radius-medium);
+  background: var(--surface-paper);
+  color: var(--text-ink);
+  line-height: 1.7;
+}
+.reader :global(.journal-leaf) {
+  width: auto;
+  height: auto;
+  min-height: 0;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
+}
+.reader :global(.journal-prose) {
+  font-size: inherit;
+}
+/* Companion passages must be legible as soon as the selected purpose renders. */
+.reader :global(.journal-block) {
+  font-size: inherit;
+  animation: none;
+}
+.reader :global(.journal-block) :is(h3, p, strong, blockquote, span, li, label) {
+  color: var(--text-ink);
+}
+.reader :global(.journal-block) :global(.eyebrow) {
+  color: var(--parchment-ink);
+}
+.reader :global(.journal-illustration) {
+  max-height: 22rem;
+}
+.reader img,
+.reader video {
+  max-width: 100%;
+}
+.reader :global(.folio),
+.reader :global(.paper-fibers),
+.reader :global(.margin-sketch) {
+  display: none;
+}
+.content :global(.landfall-journal-chart) {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.content :global(.landfall-journal-chart) > p {
+  margin: 0;
+}
+.content :global(.voyage-chart-section) {
+  min-width: 0;
+  padding: 0;
+}
+.content :global(.landfall-chart-compact) :global(.voyage-chart-section) {
+  min-height: 0;
+  height: auto;
+  border-radius: var(--radius-small);
+  box-shadow: none;
+}
+.content :global(.landfall-chart-details) {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-small);
+  background: var(--surface-overlay);
+  color: var(--text-primary);
+}
+.content :global(.landfall-chart-details) > summary {
+  min-height: var(--control-height);
+  padding: 0.65rem 0;
+  cursor: pointer;
+  font-weight: 600;
+}
+.content :global(.landfall-chart-details) > p {
+  margin: 0.5rem 0;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+.reader :global(.landfall-chart-details) :is(h3, p, strong, blockquote, span, li, label) {
+  color: var(--text-primary);
+}
+.content :global(.landfall-journal-chart) p {
+  line-height: 1.5;
+}
+.content :global(.landfall-journal-chart) button {
+  max-width: 100%;
+}
+.transfer {
+  margin-top: 1rem;
+}
+.transfer > section {
+  max-width: 100%;
+}
+.purposes {
+  margin-top: 1rem;
+  padding: 0.6rem 1rem;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-medium);
+  background: var(--surface-overlay);
+}
+.purposes summary,
+.morePurposes summary {
+  min-height: var(--control-height);
+  padding: 0.65rem 0;
+  cursor: pointer;
+  font-weight: 650;
+}
+.purposeGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
+  padding: 0.5rem 0;
+}
+.purposeGrid button {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.9rem;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-small);
+  text-align: left;
+  background: var(--surface-raised);
+  color: var(--text-primary);
+}
+.purposeGrid button[aria-pressed="true"] {
+  border-color: var(--accent-primary);
+  background: var(--surface-hover);
+}
+.purposeGrid button:disabled {
+  opacity: 0.7;
+}
+.purposeGrid span {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+.notice {
+  margin: 0.75rem 0;
+  padding: 0.75rem;
+  border-left: 2px solid var(--accent-primary);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+@media (max-width: 600px) {
+  .companion {
+    padding: 1rem;
+  }
+  .workspace {
+    padding: 1rem;
+    border-radius: var(--radius-medium);
+  }
+  .returnLink {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .purposeGrid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .companion *,
+  .companion *::before,
+  .companion *::after {
+    scroll-behavior: auto;
+    transition-duration: 0s;
+  }
+}

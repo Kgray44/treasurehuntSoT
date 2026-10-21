@@ -1,0 +1,227 @@
+{
+  "objective": "Read and inspect the actual published spatial clue while keeping the same Voyage",
+  "contract": {
+    "id": "crossdeck.refit.published-lens",
+    "name": "Crossdeck published spatial clue Player consumer",
+    "authority": "one-voyage",
+    "owners": ["spatial-pilot", "one-voyage", "project-crossdeck", "reach"],
+    "critical": true,
+    "experience": {
+      "persona": "An authorized Player receiving a Creator-published spatial clue in a persisted private Voyage",
+      "integrationOwner": "Parallax published-clue delivery with Crossdeck continuity",
+      "systems": ["project-crossdeck", "project-parallax", "one-voyage", "project-landfall", "player-journal"],
+      "sourcePaths": [
+        "src/components/player/parallax",
+        "src/components/player/journal",
+        "src/app/player/playthroughs/[playthroughId]/journal",
+        "src/app/play/[taleSlug]/session/[sessionId]",
+        "src/app/player/offline-landfall"
+      ],
+      "projectionPaths": [
+        "src/app/api/crossdeck",
+        "src/app/api/play/sessions",
+        "src/app/api/player/playthroughs",
+        "src/app/api/player/sessions"
+      ],
+      "devices": ["DESKTOP", "MOBILE"],
+      "roles": ["PLAYER"],
+      "accessibility": "Every named control is keyboard reachable with visible focus; reduced motion preserves the same task, hierarchy, purpose and safe return.",
+      "fallback": "Guided Lens preserves the released clue without camera permission; unavailable device purposes remain explained and disabled while Journal and safe return remain available.",
+      "references": [
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted task hierarchy and contextual navigation inform the new device composition; the companion still requires its own independent rendered review.",
+          "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
+        },
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted task hierarchy and contextual navigation inform the new device composition; the companion still requires its own independent rendered review.",
+          "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
+        }
+      ],
+      "homeportScreenIds": ["screen-page-player-playthroughs-playthroughid-journal"],
+      "browserTests": ["tests/e2e/crossdeck-experience-refit.spec.ts", "tests/e2e/crossdeck-refit-recovery.spec.ts"],
+      "fixtureProfile": "generic",
+      "recordingRequired": true,
+      "continuity": {
+        "objective": "Keep the same authorized Voyage and immutable edition through connection, purpose changes and return without inventing progression authority.",
+        "checks": [
+          {
+            "id": "same-voyage",
+            "role": "region",
+            "name": "Voyage context",
+            "attribute": "data-experience-voyage"
+          },
+          {
+            "id": "same-edition",
+            "role": "region",
+            "name": "Voyage context",
+            "attribute": "data-experience-version"
+          }
+        ]
+      },
+      "motion": {
+        "measurement": "Keyboard activation to the changed visible connection or canonical companion outcome",
+        "feedbackBudgetMs": 5000,
+        "justification": "Bound the isolated browser transition to useful visible feedback within five seconds, including authorized network projection and supported motion; this is no physical-device performance claim."
+      },
+      "limitations": [
+        "Canonical synthetic account/session setup proves authorization and persisted membership; it does not grant owner acceptance, camera/native spatial capability or real-phone proof.",
+        "Actual two-context pairing, handoff acknowledgement, revocation and restricted shared-display privacy remain covered by the dedicated browser specification; the single-context capture signs in and registers through the actual product UI.",
+        "This focused consumer contract delivers an already published synthetic Creator-authored clue. Creator Studio authoring and publication retain their existing qualification scope; no new authoring or native camera acceptance is claimed.",
+        "The existing generic seed owns only a deterministic synthetic account and persisted edition in a guarded nonce database; real sign-in, authorization and device registration establish each capture surface without injected cookies or tab storage.",
+        "The guarded persisted fixture represents an already-opened active Voyage. Every primary entry waits for visible Journal tools, and companion return proves the canonical returning Journal and its replay control rather than assuming a first-open dialog in each signed-in context.",
+        "The same synthetic canonical account owns its primary email, one verified secondary email and existing-style Player username. Six-contract captures retain all twenty desktop/mobile and normal/reduced contexts while respecting the unchanged six-per-login sign-in guard; no account/session injection or auth bypass is used."
+      ],
+      "objective": "Read and inspect the actual published spatial clue while keeping the same Voyage",
+      "visibleOutcome": "A released Creator-authored spatial moment opens its canonical Guided Lens, meaningful inspection and a direct return to the same published Voyage",
+      "entryPoint": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+      "states": ["JOURNAL_READY", "LENS_READY", "INSPECTED", "RETURNED"],
+      "navigation": "Open the active Journal, open its released Chronicle Lens, inspect the actual clue, then close Lens and return to the same Journal.",
+      "designTarget": "Preserve the published clue and readable Guided hierarchy, with truthful camera availability, keyboard inspection and an immediate contextual close/return.",
+      "roleSetup": {
+        "PLAYER": {
+          "entryPoint": "/sign-in?returnTo=%2Fplayer%2Fplaythroughs%2F00000000-0000-4000-8000-00000000cd11%2Fjournal",
+          "steps": [
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Email or Player name",
+              "value": "crossdeck-review@example.test"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Password",
+              "value": "Synthetic-Crossdeck-Review-2026!"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Sign in"
+            },
+            {
+              "action": "wait",
+              "role": "navigation",
+              "name": "Journal tools"
+            }
+          ],
+          "witness": {
+            "role": "region",
+            "name": "Voyage context",
+            "text": "Synthetic Crossdeck refit Voyage"
+          }
+        }
+      },
+      "journeys": [
+        {
+          "id": "published-clue-inspect-return",
+          "roles": ["PLAYER"],
+          "outcome": "The published spatial attachment reaches canonical Guided Lens, offers actual Inspect interaction and returns to the same authorized edition",
+          "steps": [
+            {
+              "action": "assert",
+              "role": "navigation",
+              "name": "Journal tools",
+              "text": "chapters",
+              "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+              "state": "JOURNAL_READY"
+            },
+            {
+              "action": "assert",
+              "role": "main",
+              "name": "",
+              "text": "Synthetic Crossdeck refit Voyage",
+              "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Open Chronicle Lens"
+            },
+            {
+              "action": "assert",
+              "kind": "outcome",
+              "role": "dialog",
+              "name": "A message between worlds",
+              "text": "The next bearing is written in the stars. Look for the northern light.",
+              "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+              "meaning": "The canonical published spatial attachment presents its actual released clue without substituting a role label or service result.",
+              "state": "LENS_READY",
+              "feedbackBoundary": true
+            },
+            {
+              "action": "assert",
+              "role": "dialog",
+              "name": "A message between worlds",
+              "text": "Guided View"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Inspect"
+            },
+            {
+              "action": "assert",
+              "kind": "outcome",
+              "role": "article",
+              "name": "A parchment note bearing the Captain’s next clue.",
+              "text": "You are inspecting The Captain’s note.",
+              "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+              "meaning": "Inspection changes the visible canonical entity state and records a meaningful Lens interaction independently from Voyage progression.",
+              "state": "INSPECTED",
+              "feedbackBoundary": true
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Close Chronicle Lens"
+            },
+            {
+              "action": "assert",
+              "role": "navigation",
+              "name": "Journal tools",
+              "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+              "absentRole": {
+                "role": "dialog",
+                "name": "A message between worlds"
+              },
+              "returnPath": true,
+              "state": "RETURNED"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "sourceDigest": "91769eb493df857300b454939e1e2004338e10b12991b8651a18dedc14ba3be0",
+  "artifacts": [],
+  "packetDigest": "5fb54eb68a40af1be5c44e73ec5ebe37853d8ff2b0acbd6245afbf30f415b152",
+  "instructions": "Inspect rendered images and recordings before source. Record concrete evidence for every dimension. Builder rationale is intentionally excluded. Return review JSON; do not infer owner acceptance.",
+  "reviewDimensions": [
+    "composition",
+    "hierarchy",
+    "typography",
+    "spacing",
+    "controls",
+    "contrast",
+    "consistency",
+    "states",
+    "responsive",
+    "keyboard",
+    "focus",
+    "feedback",
+    "motion",
+    "continuity",
+    "complexity",
+    "role-outcomes",
+    "fallbacks"
+  ],
+  "builderRationaleIncluded": false
+}

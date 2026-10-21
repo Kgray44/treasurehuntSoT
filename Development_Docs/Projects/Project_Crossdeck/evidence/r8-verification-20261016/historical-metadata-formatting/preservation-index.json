@@ -1,0 +1,31 @@
+{
+  "classification": "NONFROZEN_HISTORICAL_METADATA_PROJECTIONS_NORMAL_FORMATTING_WITH_UNCHANGED_JSON_SEMANTICS",
+  "archive": {
+    "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r8-verification-20261016/historical-metadata-formatting/original-records.zip",
+    "sha256": "d6dcb633e497d90c263504b45d89cb62d7d8cdc90a33df74519710b747a73a3a",
+    "bytes": 6586,
+    "entries": [
+      {
+        "name": "failed-capture-inventory.json",
+        "projectionPath": "Development_Docs/Projects/Project_Crossdeck/evidence/final-verification-20261015/failed-capture-inventory.json",
+        "bytes": 1637,
+        "sha256": "30d5fcf1dee8958b4c0ae454ef9772a229987126e20acc7a1f341f0f711184ed"
+      },
+      {
+        "name": "normal-reduced-server-diagnosis.json",
+        "projectionPath": "Development_Docs/Projects/Project_Crossdeck/evidence/final-verification-20261015/normal-reduced-server-diagnosis.json",
+        "bytes": 7309,
+        "sha256": "fd3d4c5642e71aca98533b6fa8be93f5a43ce3e0ad03e8b0f362dd7e949b840e"
+      },
+      {
+        "name": "preparation-failure.json",
+        "projectionPath": "Development_Docs/Projects/Project_Crossdeck/evidence/final-verification-20261015/preparation-failure.json",
+        "bytes": 8885,
+        "sha256": "92e08bad7251c36e2e1002fb643a96aa67c3672b9a5aa10beb97f5c2d3e1b967"
+      }
+    ]
+  },
+  "frozenHistoryMutated": false,
+  "sourceChanged": false,
+  "originalBytePreservation": "ZIP entries retain Windows CRLF bytes; no gitattributes change"
+}

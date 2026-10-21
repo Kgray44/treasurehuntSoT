@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [],
+  "status": "PASS",
+  "failureCategory": null,
+  "failureCode": null,
+  "diagnosticBinding": {
+    "version": 1,
+    "runId": "a6cc9b12-a824-456e-a229-1443b53b697c",
+    "scopeId": "f1b685f3-f6fb-4ead-9919-288a5a511cee",
+    "baseSha": "e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+    "candidateSha": "f5e0cddde5c626648bc264f93819836a49c04d33",
+    "planDigest": "af1c8716acf97301f629ee7b6d0154034ec8386081e6af8fb152dadbc3f4c61a"
+  }
+}

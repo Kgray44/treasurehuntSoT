@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "profile": "generic",
+  "browserTests": [
+    "tests/e2e/crossdeck-phase2.spec.ts",
+    "--grep",
+    "crossdeck\\.surface-handoff$",
+    "--workers",
+    "1",
+    "--retries",
+    "0",
+    "--repeat-each",
+    "1",
+    "--reporter",
+    "json"
+  ],
+  "status": "FAIL",
+  "failureCategory": "SUITE_FIXTURE_CONTRACT_UNSATISFIED",
+  "failureCode": "SOUNDING_LINE_SUITE_FIXTURE_CONTRACT_UNSATISFIED:generic",
+  "diagnosticBinding": {
+    "version": 1,
+    "runId": "f17b60a4-cec9-4043-b8e8-081c392fd005",
+    "scopeId": "ba2dae43-978a-4ded-9189-fa27d072b96b",
+    "baseSha": "e85ceda26a3770dfb2b01f2afd916e45761a5d9e",
+    "candidateSha": "53601e9e386bb4f1062719befc77b7778b9e4430",
+    "planDigest": "ab72a53f1d69000945838295420f642683328e6bf7817c4dc0554092c4f713a4"
+  }
+}

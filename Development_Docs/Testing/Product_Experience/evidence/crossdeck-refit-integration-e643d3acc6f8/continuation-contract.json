@@ -1,0 +1,30 @@
+{
+  "classification": "LAUNCHDECK_PROJECT_TRIM_ADAPTATION",
+  "requestKey": "crossdeck-mechanical-main-reconciliation-20261012-r1",
+  "profile": "integration",
+  "execution": "UNATTENDED_CONTINUATION",
+  "ownerThreadId": "01a12d5e-eb9a-7a72-aecb-adfa3c59a89a",
+  "host": "LIMITNOTFOUND",
+  "ownerDirectAuthorization": "apply proposed reconciliation and merge to main",
+  "ownedRoot": "C:\\Users\\kkids\\.codex\\worktrees\\crossdeck-experience-refit\\Codex_TreasureHunt",
+  "frozenCandidate": "76e24ae5024f982a691c1a4e0ebfafc3e9634902",
+  "protectedBase": "5e72620cef879685540bb968a9b836d1eb2fdec6",
+  "sourceDigest": "e643d3acc6f89afa9139ed2de1b1f8cdb196fc90b34008023a7f4960ce44e126",
+  "contractDigest": "1607c063fedcf905c0adac3a8dc1d8f17a32648ad773f40cc6f0fac9352265b1",
+  "helper": {
+    "pr": 720,
+    "acceptedRun": 38276081116,
+    "landed": "5e72620cef879685540bb968a9b836d1eb2fdec6"
+  },
+  "productPr": 721,
+  "captureRun": 38277482404,
+  "repairAttempts": 10,
+  "repairLimit": 3,
+  "reviewsCompleted": 2,
+  "finalThirdConsumed": false,
+  "furtherProductRepair": false,
+  "sharedJournalRepairOutsideScope": true,
+  "goalStatus": "paused",
+  "resumeOperationExposed": false,
+  "recordedUtc": "2026-10-12T16:28:13.257Z"
+}

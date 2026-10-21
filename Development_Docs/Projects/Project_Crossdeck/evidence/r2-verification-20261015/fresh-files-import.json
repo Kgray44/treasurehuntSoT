@@ -1,0 +1,53 @@
+{
+  "classification": "Original fresh capture file import; no independent acceptance inferred",
+  "artifactCount": 228,
+  "bytes": 456235294,
+  "originalPathsAndRecordsUnchanged": true,
+  "allCopiedFileHashesVerified": true,
+  "captureArtifactId": 11994349912,
+  "runId": 38777575631,
+  "reviewPackets": [
+    {
+      "contractId": "reach.phase1.foundation",
+      "path": "reach.phase1.foundation-review-packet.original.raw.txt",
+      "sha256": "bdeacbcca9083b4acc51be68aabd81841358ec334893be2deaab2ef6e7cf8826",
+      "bytes": 91340
+    },
+    {
+      "contractId": "crossdeck.refit.published-lens",
+      "path": "crossdeck.refit.published-lens-review-packet.original.raw.txt",
+      "sha256": "414dbda022955a29960559b8a454332502bd159a54f307cc1a9849d714d3fabb",
+      "bytes": 25745
+    },
+    {
+      "contractId": "crossdeck.phase2.continuity",
+      "path": "crossdeck.phase2.continuity-review-packet.original.raw.txt",
+      "sha256": "3d56a7dab21fa65287c8f7b0fe2c2de8155d45268195b09103a0c45207688a41",
+      "bytes": 23562
+    },
+    {
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "path": "homeport.shell.crossdeck-access-recovery-review-packet.original.raw.txt",
+      "sha256": "b5965daef0b3f2325704b35573a56a3339d954e6b1b3fc474446ae0b9d58ee7b",
+      "bytes": 23274
+    },
+    {
+      "contractId": "homeport.shell.crossdeck-companion",
+      "path": "homeport.shell.crossdeck-companion-review-packet.original.raw.txt",
+      "sha256": "02412dae7ac2f4aebcb96d785801c0e2616c5a7933d123cc4db5bdac6f525b43",
+      "bytes": 17176
+    },
+    {
+      "contractId": "homeport.shell.crossdeck-companion-mobile",
+      "path": "homeport.shell.crossdeck-companion-mobile-review-packet.original.raw.txt",
+      "sha256": "21a883c054b456e9f4b94de2e4266c04050039b6e29df60c2075d3f05caa347d",
+      "bytes": 17372
+    },
+    {
+      "contractId": "crossdeck.refit.companion",
+      "path": "crossdeck.refit.companion-review-packet.original.raw.txt",
+      "sha256": "3ba16d9599c27c88a4bd36ef2fd440f79ebe611afcd143864bdd4be38f11adbb",
+      "bytes": 32722
+    }
+  ]
+}
