@@ -1,0 +1,754 @@
+{
+  "classification": "SOURCE_BOUND_R26_FINITE_SUCCESSOR_NOT_CONSUMER_ACCEPTANCE",
+  "ownerApproval": {
+    "actor": "Kgray44",
+    "approvedAtUtc": null,
+    "approvedAtUtcMinute": null,
+    "humanMessageId": "01a15f7b-798a-7921-b7f6-89f7b4a3ed13",
+    "relayThreadId": "01a15eae-a6a5-71c2-9713-dfbac9002ebb",
+    "basis": "DIRECT_OWNER_NATIVE_QUESTION_REPLY_TIMESTAMP_UNAVAILABLE",
+    "questionCallId": "call_4e54a51caf2d4b1a9ed4ae4fddf4706c",
+    "questionItem": 0,
+    "selectedAnswer": "Authorize one R26 attempt (Recommended)",
+    "directiveSha256": "e662fbfa020c0eafded4e9b04d6ad51b89445357cd5dab2d57a5438582a028bd",
+    "authorizationObservedAtUtc": "2026-10-21T17:24:50Z",
+    "executionNotBeforeUtc": "2026-10-21T17:24:50Z",
+    "executionDeadlineUtc": "2026-10-22T03:59:59Z"
+  },
+  "caps": {
+    "capture": 0,
+    "review": 0,
+    "ordinary": 1,
+    "technical": 1,
+    "replay": 1
+  },
+  "failedOrdinary": {
+    "kind": "CONSUMED_R25_ORDINARY_REPLAY_VALIDATION_FAILURE_1",
+    "campaignEpoch": "2026-10-15T13:54Z",
+    "id": "PE-X-CROSSDECK-CURRENT-VERIFY-20261021-R25",
+    "recordDigest": "129cf06c315638aa028068bf79abdddc53692bfc2529fba2eb615ce467d46d5d",
+    "runId": 39622005087,
+    "runAttempt": 1,
+    "conclusion": "failure",
+    "candidateSha": "8dd97d7a63989cc7ee0fde7e8e178b515e2d8a94",
+    "candidateTree": "047cbffac8ca0edff667b97033a79c42a845443f",
+    "baseSha": "185f5fd368ec16a77cb5fe92e7813d7ca4ac6418",
+    "sourceDigest": "1ac6e3973470befddd4fb21e7c826798146e2f3ba4505731643d915f449e30fa",
+    "contractDigest": "38acd7ca5fe745298cd50f83ae7ecdb9a9a2c0aaefccfd6889a818f7285ee2a7",
+    "qualifyCommit": "ab55b3704e07c49e44ed148cadd6dae93350e3d9",
+    "qualifyPayloadDigest": "8ac4d6dc390dc04789fa9f61ca6d8810389a9cb4d3e133643297843008af4469",
+    "qualifyPayloadRawSha256": "8ac4d6dc390dc04789fa9f61ca6d8810389a9cb4d3e133643297843008af4469",
+    "qualifiedAbsent": true,
+    "jobs": [
+      {
+        "id": 119297649609,
+        "name": "Sounding Line / Finite campaign custody",
+        "conclusion": "success"
+      },
+      {
+        "id": 119303680037,
+        "name": "Sounding Line / Focused verification",
+        "conclusion": "failure"
+      },
+      {
+        "id": 119303683469,
+        "name": "Sounding Line / Experience preparation (no mainline decision)",
+        "conclusion": "skipped"
+      },
+      {
+        "id": 119336396037,
+        "name": "Sounding Line / Mainline Decision",
+        "conclusion": "failure"
+      }
+    ],
+    "artifact": {
+      "id": 12360960157,
+      "name": "sounding-line-completed-evidence-39622005087-1",
+      "bytes": 3212033,
+      "sha256": "464e76c4b8b8fe3584ec806f2c55f2d8682444c50094482208cb94d5cf0937b2",
+      "runId": 39622005087
+    },
+    "artifacts": [
+      {
+        "id": 12359767656,
+        "name": "sounding-line-ordinary-8dd97d7a63989cc7ee0fde7e8e178b515e2d8a94",
+        "bytes": 890481,
+        "sha256": "08313e94bd38b48c0a7582fc6ec0674a19832ab08c85c6799c906fe90f588057",
+        "runId": 39622005087
+      },
+      {
+        "id": 12359962411,
+        "name": "sounding-line-current-admission-observation-8dd97d7a63989cc7ee0fde7e8e178b515e2d8a94",
+        "bytes": 7316,
+        "sha256": "faec80ee082795bcc065dd9bccfb5fe1e370f0d9a3ad49df7313841a721ec5fb",
+        "runId": 39622005087
+      },
+      {
+        "id": 12360960157,
+        "name": "sounding-line-completed-evidence-39622005087-1",
+        "bytes": 3212033,
+        "sha256": "464e76c4b8b8fe3584ec806f2c55f2d8682444c50094482208cb94d5cf0937b2",
+        "runId": 39622005087
+      }
+    ],
+    "completedWholeObligations": 8,
+    "requiredWholeObligations": 8,
+    "technicalBrowser": {
+      "passed": 50,
+      "planned": 50,
+      "wholeObligationPassed": true,
+      "wholeRunAccepted": false
+    },
+    "wholeRunAccepted": false,
+    "providerJobLimitMinutes": 90
+  },
+  "precommandRecovery": {
+    "kind": "CROSSDECK_ONLY_FINAL_CHECK_JOB_CEILING_90_1",
+    "scope": "PR_721_AUTHORIZED_FINITE_ORDINARY_ONLY",
+    "priorJobLimitMinutes": 45,
+    "jobLimitMinutes": 90,
+    "otherPullRequestsJobLimitMinutes": 45,
+    "jobLimitChanged": true,
+    "semanticGraphEngineChanged": false,
+    "completedEvidenceReaderChanged": false,
+    "liveAdmission": "FRESH_UNCHANGED",
+    "completedEvidence": "NORMAL_EXACT_FINGERPRINT_AND_AUTHENTICATED_PRODUCER_ONLY",
+    "partialBrowserCredit": false
+  },
+  "replayPathRecovery": {
+    "kind": "ACCEPTED_AUTOMATED_REPLAY_ROOT_SPLIT_1",
+    "pullRequest": 784,
+    "reviewedHead": "0e6a2e1241512bba5f4b2060a2c77288677ead68",
+    "acceptedMain": "d699de9568ea355a363223dd88f747536b450688",
+    "tree": "a5c36fe4bf1e92ca6c979f4d91c564ff4ebf3bff",
+    "qualificationRunId": 39637715096,
+    "providerBudgetChanged": false,
+    "technicalReuse": "NORMAL_COMPLETE_FINGERPRINT_AND_AUTHENTICATED_PRODUCER_ONLY",
+    "newCaptureOrReview": false
+  },
+  "historicalRuns": [
+    {
+      "id": 38760343298,
+      "runAttempt": 1,
+      "workflowId": 341545080,
+      "event": "workflow_dispatch",
+      "headSha": "9983c900875ffa116e7945318823e93e6e94348b",
+      "headBranch": "main",
+      "actor": "Kgray44",
+      "triggeringActor": "Kgray44",
+      "repository": "Kgray44/treasurehuntSoT",
+      "status": "completed",
+      "conclusion": "failure",
+      "createdAt": "2026-10-15T15:26:30Z",
+      "displayTitle": "Sounding Line finite 1 capture 721 f000118d1cddeb5f0e6f79c59c9ef076862de93a active",
+      "checkSuiteId": 105039245158
+    },
+    {
+      "id": 38777575631,
+      "runAttempt": 1,
+      "workflowId": 341545080,
+      "event": "workflow_dispatch",
+      "headSha": "aaef39a57d2c89ca57136dce327d337c5cb0ef7f",
+      "headBranch": "main",
+      "actor": "Kgray44",
+      "triggeringActor": "Kgray44",
+      "repository": "Kgray44/treasurehuntSoT",
+      "status": "completed",
+      "conclusion": "success",
+      "createdAt": "2026-10-15T17:28:06Z",
+      "displayTitle": "Sounding Line finite 1 capture 721 bb69eed0cc930018bb4fe9e9f662a60ffa94dc11 active",
+      "checkSuiteId": 105087849774
+    },
+    {
+      "id": 38798375927,
+      "runAttempt": 1,
+      "workflowId": 341545080,
+      "event": "workflow_dispatch",
+      "headSha": "73ed4b380c764c32ee35f40e4dad7dfddbbb7e58",
+      "headBranch": "main",
+      "actor": "Kgray44",
+      "triggeringActor": "Kgray44",
+      "repository": "Kgray44/treasurehuntSoT",
+      "status": "completed",
+      "conclusion": "success",
+      "createdAt": "2026-10-15T19:59:57Z",
+      "displayTitle": "Sounding Line finite 1 capture 721 63c64e8dc6f894087a7f6f7b45caff55f8317c9a active",
+      "checkSuiteId": 105146457550
+    },
+    {
+      "id": 38805213385,
+      "runAttempt": 1,
+      "workflowId": 341545080,
+      "event": "workflow_dispatch",
+      "headSha": "73ed4b380c764c32ee35f40e4dad7dfddbbb7e58",
+      "headBranch": "main",
+      "actor": "Kgray44",
+      "triggeringActor": "Kgray44",
+      "repository": "Kgray44/treasurehuntSoT",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "createdAt": "2026-10-15T20:50:42Z",
+      "displayTitle": "Sounding Line finite 1 review 721 63c64e8dc6f894087a7f6f7b45caff55f8317c9a active",
+      "checkSuiteId": 105165450956
+    },
+    {
+      "id": 38814444774,
+      "runAttempt": 1,
+      "workflowId": 341545080,
+      "event": "workflow_dispatch",
+      "headSha": "a2495fd14efd5ade67832e18fd260f32da98b3b2",
+      "headBranch": "main",
+      "actor": "Kgray44",
+      "triggeringActor": "Kgray44",
+      "repository": "Kgray44/treasurehuntSoT",
+      "status": "completed",
+      "conclusion": "success",
+      "createdAt": "2026-10-15T22:03:31Z",
+      "displayTitle": "Sounding Line finite 1 capture 721 19687c12e20ef69e6519903b14e56a145df2d7e7 active",
+      "checkSuiteId": 105190580432
+    },
+    {
+      "id": 38820570426,
+      "runAttempt": 1,
+      "workflowId": 341545080,
+      "event": "workflow_dispatch",
+      "headSha": "a2495fd14efd5ade67832e18fd260f32da98b3b2",
+      "headBranch": "main",
+      "actor": "Kgray44",
+      "triggeringActor": "Kgray44",
+      "repository": "Kgray44/treasurehuntSoT",
+      "status": "completed",
+      "conclusion": "success",
+      "createdAt": "2026-10-15T22:57:40Z",
+      "displayTitle": "Sounding Line finite 1 review 721 19687c12e20ef69e6519903b14e56a145df2d7e7 active",
+      "checkSuiteId": 105206882483
+    },
+    {
+      "id": 38822426167,
+      "runAttempt": 1,
+      "workflowId": 341545080,
+      "event": "pull_request_target",
+      "headSha": "87bb29391ee747d9738cc7f259c47f4343a7da89",
+      "headBranch": "codex/crossdeck-experience-refit",
+      "actor": "Kgray44",
+      "triggeringActor": "Kgray44",
+      "repository": "Kgray44/treasurehuntSoT",
+      "status": "completed",
+      "conclusion": "failure",
+      "createdAt": "2026-10-15T23:14:59Z",
+      "displayTitle": "Sounding Line finite 1 ordinary 721 87bb29391ee747d9738cc7f259c47f4343a7da89 active",
+      "checkSuiteId": 105211751426
+    },
+    {
+      "id": 38840988544,
+      "runAttempt": 1,
+      "workflowId": 341545080,
+      "event": "workflow_dispatch",
+      "headSha": "f935ab3efd6eb5943cdea8a08f65c9cf55c45d95",
+      "headBranch": "main",
+      "actor": "Kgray44",
+      "triggeringActor": "Kgray44",
+      "repository": "Kgray44/treasurehuntSoT",
+      "status": "completed",
+      "conclusion": "success",
+      "createdAt": "2026-10-16T02:32:52Z",
+      "displayTitle": "Sounding Line finite 1 capture 721 6dcabd5401b22e606e13a2b92202d15f8e3176e1 active",
+      "checkSuiteId": 105260317202
+    },
+    {
+      "id": 38880737676,
+      "runAttempt": 1,
+      "workflowId": 341545080,
+      "event": "workflow_dispatch",
+      "headSha": "ce862a4a349b92faa11beaef50555abcb1a35be8",
+      "headBranch": "main",
+      "actor": "Kgray44",
+      "triggeringActor": "Kgray44",
+      "repository": "Kgray44/treasurehuntSoT",
+      "status": "completed",
+      "conclusion": "failure",
+      "createdAt": "2026-10-16T09:28:52Z",
+      "displayTitle": "Sounding Line finite 1 capture 721 0dd0847458dedaab3b5b1d0f5b4b73fe78aaa087 active",
+      "checkSuiteId": 105366747913
+    },
+    {
+      "id": 38902634861,
+      "runAttempt": 1,
+      "workflowId": 341545080,
+      "event": "workflow_dispatch",
+      "headSha": "151417a772c1bcde4e5c7f256302b803d25d40da",
+      "headBranch": "main",
+      "actor": "Kgray44",
+      "triggeringActor": "Kgray44",
+      "repository": "Kgray44/treasurehuntSoT",
+      "status": "completed",
+      "conclusion": "success",
+      "createdAt": "2026-10-16T12:44:16Z",
+      "displayTitle": "Sounding Line finite 1 capture 721 3415165ed9c4c11f2512d99aea0947f62696146a active",
+      "checkSuiteId": 105427045021
+    },
+    {
+      "id": 38913515007,
+      "runAttempt": 1,
+      "workflowId": 341545080,
+      "event": "workflow_dispatch",
+      "headSha": "151417a772c1bcde4e5c7f256302b803d25d40da",
+      "headBranch": "main",
+      "actor": "Kgray44",
+      "triggeringActor": "Kgray44",
+      "repository": "Kgray44/treasurehuntSoT",
+      "status": "completed",
+      "conclusion": "success",
+      "createdAt": "2026-10-16T14:09:37Z",
+      "displayTitle": "Sounding Line finite 1 review 721 3415165ed9c4c11f2512d99aea0947f62696146a active",
+      "checkSuiteId": 105457870617
+    },
+    {
+      "id": 38929134845,
+      "runAttempt": 1,
+      "workflowId": 341545080,
+      "event": "pull_request_target",
+      "headSha": "0c9d4c0741c016d83a40abd176cd6b2bb8bf8f5b",
+      "headBranch": "codex/crossdeck-experience-refit",
+      "actor": "Kgray44",
+      "triggeringActor": "Kgray44",
+      "repository": "Kgray44/treasurehuntSoT",
+      "status": "completed",
+      "conclusion": "failure",
+      "createdAt": "2026-10-16T16:05:14Z",
+      "displayTitle": "Sounding Line finite 1 ordinary 721 0c9d4c0741c016d83a40abd176cd6b2bb8bf8f5b active",
+      "checkSuiteId": 105501865027
+    },
+    {
+      "id": 38948434772,
+      "runAttempt": 1,
+      "workflowId": 341545080,
+      "event": "pull_request_target",
+      "headSha": "7241f5a8a5965d67882a0b205601eba3087ddef5",
+      "headBranch": "codex/crossdeck-experience-refit",
+      "actor": "Kgray44",
+      "triggeringActor": "Kgray44",
+      "repository": "Kgray44/treasurehuntSoT",
+      "status": "completed",
+      "conclusion": "failure",
+      "createdAt": "2026-10-16T18:34:52Z",
+      "displayTitle": "Sounding Line finite 1 ordinary 721 7241f5a8a5965d67882a0b205601eba3087ddef5 active",
+      "checkSuiteId": 105555895404
+    },
+    {
+      "id": 38968131415,
+      "runAttempt": 1,
+      "workflowId": 341545080,
+      "event": "pull_request_target",
+      "headSha": "c9dc54c16bccc93f26bebfb531f1c2471b9fc4d4",
+      "headBranch": "codex/crossdeck-experience-refit",
+      "actor": "Kgray44",
+      "triggeringActor": "Kgray44",
+      "repository": "Kgray44/treasurehuntSoT",
+      "status": "completed",
+      "conclusion": "failure",
+      "createdAt": "2026-10-16T21:15:45Z",
+      "displayTitle": "Sounding Line finite 1 ordinary 721 c9dc54c16bccc93f26bebfb531f1c2471b9fc4d4 active",
+      "checkSuiteId": 105610754266
+    },
+    {
+      "id": 38986106986,
+      "runAttempt": 1,
+      "workflowId": 341545080,
+      "event": "pull_request_target",
+      "headSha": "53601e9e386bb4f1062719befc77b7778b9e4430",
+      "headBranch": "codex/crossdeck-experience-refit",
+      "actor": "Kgray44",
+      "triggeringActor": "Kgray44",
+      "repository": "Kgray44/treasurehuntSoT",
+      "status": "completed",
+      "conclusion": "failure",
+      "createdAt": "2026-10-17T00:22:57Z",
+      "displayTitle": "Sounding Line finite 1 ordinary 721 53601e9e386bb4f1062719befc77b7778b9e4430 active",
+      "checkSuiteId": 105658288657
+    },
+    {
+      "id": 39004965102,
+      "runAttempt": 1,
+      "workflowId": 341545080,
+      "event": "pull_request_target",
+      "headSha": "7681d297f281ab03f30b4224b8288b7c942024c6",
+      "headBranch": "codex/crossdeck-experience-refit",
+      "actor": "Kgray44",
+      "triggeringActor": "Kgray44",
+      "repository": "Kgray44/treasurehuntSoT",
+      "status": "completed",
+      "conclusion": "failure",
+      "createdAt": "2026-10-17T05:05:11Z",
+      "displayTitle": "Sounding Line finite 1 ordinary 721 7681d297f281ab03f30b4224b8288b7c942024c6 active",
+      "checkSuiteId": 105707932574
+    },
+    {
+      "id": 39037804106,
+      "runAttempt": 1,
+      "workflowId": 341545080,
+      "event": "pull_request_target",
+      "headSha": "43b5f4d55b6ac751ed9b2e05d4e4cace38544c4f",
+      "headBranch": "codex/crossdeck-experience-refit",
+      "actor": "Kgray44",
+      "triggeringActor": "Kgray44",
+      "repository": "Kgray44/treasurehuntSoT",
+      "status": "completed",
+      "conclusion": "failure",
+      "createdAt": "2026-10-17T13:44:27Z",
+      "displayTitle": "Sounding Line finite 1 ordinary 721 43b5f4d55b6ac751ed9b2e05d4e4cace38544c4f active",
+      "checkSuiteId": 105794805636
+    },
+    {
+      "id": 39115910670,
+      "runAttempt": 1,
+      "workflowId": 341545080,
+      "event": "workflow_dispatch",
+      "headSha": "42fe81b8353f77af0655015f0d105340630bce42",
+      "headBranch": "main",
+      "actor": "Kgray44",
+      "triggeringActor": "Kgray44",
+      "repository": "Kgray44/treasurehuntSoT",
+      "status": "completed",
+      "conclusion": "failure",
+      "createdAt": "2026-10-18T09:35:09Z",
+      "displayTitle": "Sounding Line finite 1 capture 721 fd09a072f0211ff1642f67a43bc9d7e0d3ddb62c active",
+      "checkSuiteId": 106001089218
+    },
+    {
+      "id": 39125943388,
+      "runAttempt": 1,
+      "workflowId": 341545080,
+      "event": "workflow_dispatch",
+      "headSha": "ea0918e0eb176507fe7cf8a41490ada9c51d0852",
+      "headBranch": "main",
+      "actor": "Kgray44",
+      "triggeringActor": "Kgray44",
+      "repository": "Kgray44/treasurehuntSoT",
+      "status": "completed",
+      "conclusion": "failure",
+      "createdAt": "2026-10-18T12:06:47Z",
+      "displayTitle": "Sounding Line finite 1 capture 721 b1f06c10d3f2709cda366c266137fc38f4eb1df4 active",
+      "checkSuiteId": 106027485075
+    },
+    {
+      "id": 39167709214,
+      "runAttempt": 1,
+      "workflowId": 341545080,
+      "event": "workflow_dispatch",
+      "headSha": "70cebee31f9717892956279816910ed767a8503a",
+      "headBranch": "main",
+      "actor": "Kgray44",
+      "triggeringActor": "Kgray44",
+      "repository": "Kgray44/treasurehuntSoT",
+      "status": "completed",
+      "conclusion": "success",
+      "createdAt": "2026-10-18T21:24:37Z",
+      "displayTitle": "Sounding Line finite 1 capture 721 3aabd9b029ed6378372b73992bae3ac68561ea72 active",
+      "checkSuiteId": 106137649027
+    },
+    {
+      "id": 39192951399,
+      "runAttempt": 1,
+      "workflowId": 341545080,
+      "event": "workflow_dispatch",
+      "headSha": "77238d30791395385d40ac70348a49f5ba3b374a",
+      "headBranch": "main",
+      "actor": "Kgray44",
+      "triggeringActor": "Kgray44",
+      "repository": "Kgray44/treasurehuntSoT",
+      "status": "completed",
+      "conclusion": "failure",
+      "createdAt": "2026-10-19T03:04:49Z",
+      "displayTitle": "Sounding Line finite 1 capture 721 92320687dad4a246124af2e7064918cd349b738c active",
+      "checkSuiteId": 106203566062
+    },
+    {
+      "id": 39288538561,
+      "runAttempt": 1,
+      "workflowId": 341545080,
+      "event": "workflow_dispatch",
+      "headSha": "f6af0b0e151f15f1a23808413ccee531b9827ca7",
+      "headBranch": "main",
+      "actor": "Kgray44",
+      "triggeringActor": "Kgray44",
+      "repository": "Kgray44/treasurehuntSoT",
+      "status": "completed",
+      "conclusion": "success",
+      "createdAt": "2026-10-19T16:48:02Z",
+      "displayTitle": "Sounding Line finite 1 capture 721 b55f5a32b7a6c42ba309db756f944e50145de123 active",
+      "checkSuiteId": 106464813521
+    },
+    {
+      "id": 39318749317,
+      "runAttempt": 1,
+      "workflowId": 341545080,
+      "event": "workflow_dispatch",
+      "headSha": "40491dd68ace88ee033b53fd264ddbfe303c6d28",
+      "headBranch": "main",
+      "actor": "Kgray44",
+      "triggeringActor": "Kgray44",
+      "repository": "Kgray44/treasurehuntSoT",
+      "status": "completed",
+      "conclusion": "success",
+      "createdAt": "2026-10-19T20:22:22Z",
+      "displayTitle": "Sounding Line finite 1 capture 721 eb40c12559604214210977e8bc498f22fea059ce active",
+      "checkSuiteId": 106549447675
+    },
+    {
+      "id": 39453809903,
+      "runAttempt": 1,
+      "workflowId": 341545080,
+      "event": "workflow_dispatch",
+      "headSha": "974f78267186ae038736d0addac6359cff5298ea",
+      "headBranch": "main",
+      "actor": "Kgray44",
+      "triggeringActor": "Kgray44",
+      "repository": "Kgray44/treasurehuntSoT",
+      "status": "completed",
+      "conclusion": "success",
+      "createdAt": "2026-10-20T16:01:54Z",
+      "displayTitle": "Sounding Line finite 1 capture 721 58436ab51dcf8696609fe4a172b8aed2eca33efc active",
+      "checkSuiteId": 106914631074
+    },
+    {
+      "id": 39489881363,
+      "runAttempt": 1,
+      "workflowId": 341545080,
+      "event": "workflow_dispatch",
+      "headSha": "bfea71aad2c7fafdec0590ba1ac09ee3399e08d5",
+      "headBranch": "main",
+      "actor": "Kgray44",
+      "triggeringActor": "Kgray44",
+      "repository": "Kgray44/treasurehuntSoT",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "createdAt": "2026-10-20T20:11:40Z",
+      "displayTitle": "Sounding Line finite 1 capture 721 4b2ba61983faf29a3b6f41e24509f2aae023be6f active",
+      "checkSuiteId": 107016875225
+    },
+    {
+      "id": 39520615298,
+      "runAttempt": 1,
+      "workflowId": 341545080,
+      "event": "workflow_dispatch",
+      "headSha": "e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+      "headBranch": "main",
+      "actor": "Kgray44",
+      "triggeringActor": "Kgray44",
+      "repository": "Kgray44/treasurehuntSoT",
+      "status": "completed",
+      "conclusion": "success",
+      "createdAt": "2026-10-21T00:19:27Z",
+      "displayTitle": "Sounding Line finite 1 capture 721 f5e0cddde5c626648bc264f93819836a49c04d33 active",
+      "checkSuiteId": 107099925850
+    },
+    {
+      "id": 39551039268,
+      "runAttempt": 1,
+      "workflowId": 341545080,
+      "event": "workflow_dispatch",
+      "headSha": "e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab",
+      "headBranch": "main",
+      "actor": "Kgray44",
+      "triggeringActor": "Kgray44",
+      "repository": "Kgray44/treasurehuntSoT",
+      "status": "completed",
+      "conclusion": "success",
+      "createdAt": "2026-10-21T05:42:06Z",
+      "displayTitle": "Sounding Line finite 1 review 721 f5e0cddde5c626648bc264f93819836a49c04d33 active",
+      "checkSuiteId": 107180468650
+    },
+    {
+      "id": 39553886766,
+      "runAttempt": 1,
+      "workflowId": 341545080,
+      "event": "pull_request_target",
+      "headSha": "80e350d8c59f6b132b573cc2b8158c5f7ae11a82",
+      "headBranch": "codex/crossdeck-experience-refit",
+      "actor": "Kgray44",
+      "triggeringActor": "Kgray44",
+      "repository": "Kgray44/treasurehuntSoT",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "createdAt": "2026-10-21T06:11:18Z",
+      "displayTitle": "Sounding Line finite 1 ordinary 721 80e350d8c59f6b132b573cc2b8158c5f7ae11a82 active",
+      "checkSuiteId": 107188087861
+    },
+    {
+      "id": 39580199268,
+      "runAttempt": 1,
+      "workflowId": 341545080,
+      "event": "pull_request_target",
+      "headSha": "245e5128afa00e6c888818a698ebd37717d81a3d",
+      "headBranch": "codex/crossdeck-experience-refit",
+      "actor": "Kgray44",
+      "triggeringActor": "Kgray44",
+      "repository": "Kgray44/treasurehuntSoT",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "createdAt": "2026-10-21T09:51:34Z",
+      "displayTitle": "Sounding Line finite 1 ordinary 721 245e5128afa00e6c888818a698ebd37717d81a3d active",
+      "checkSuiteId": 107259298520
+    },
+    {
+      "id": 39622005087,
+      "runAttempt": 1,
+      "workflowId": 341545080,
+      "event": "pull_request_target",
+      "headSha": "8dd97d7a63989cc7ee0fde7e8e178b515e2d8a94",
+      "headBranch": "codex/crossdeck-experience-refit",
+      "actor": "Kgray44",
+      "triggeringActor": "Kgray44",
+      "repository": "Kgray44/treasurehuntSoT",
+      "status": "completed",
+      "conclusion": "failure",
+      "createdAt": "2026-10-21T15:01:17Z",
+      "displayTitle": "Sounding Line finite 1 ordinary 721 8dd97d7a63989cc7ee0fde7e8e178b515e2d8a94 active",
+      "checkSuiteId": 107376075410
+    }
+  ],
+  "cumulativeHistory": {
+    "legacyRepairRecaptureAttempts": 11,
+    "completedPreparationAttempts": 27,
+    "currentPreparationOrdinal": 28,
+    "completedIndependentReviews": 12
+  },
+  "expiry": "2026-10-22T23:59:59Z",
+  "requiredReviewIterations": 16,
+  "retainedReviewOrdinal": 12,
+  "priorRegistryRawSha256": "6e1884e179832900b1962d8f05bd6311b847e6ab836004e775b4f879f332f7c0",
+  "priorRegistryDigest": "61483d5b624c57b89ab2eeaea5402351ae42eb88e2729568c41edc2c901a6245",
+  "preservedRecords": [
+    {
+      "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015",
+      "version": 1,
+      "sha256": "bf11c0852ca133e6446216d1268c091d2fb4a7c2535523a5921253883ec050b0"
+    },
+    {
+      "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R2",
+      "version": 2,
+      "sha256": "857a5b7f19442cdc7b6ab522ac2382d2f20143b21fb9b5c67b271140b4313fe8"
+    },
+    {
+      "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R3",
+      "version": 3,
+      "sha256": "c05352f82f8e00f0911c8a24f5081185f839c190b475074fcc2c89e305395df9"
+    },
+    {
+      "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R4",
+      "version": 4,
+      "sha256": "3b4e21f9b75689a7e88f0e4ea7ba450b46d71fd9b6fe9a9852ac9836f212434d"
+    },
+    {
+      "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R5",
+      "version": 5,
+      "sha256": "f7cc69e66e577c06cdd2f87ba10f99c98841c6172b08ca837e6a6a0da3cd3bd4"
+    },
+    {
+      "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R6",
+      "version": 6,
+      "sha256": "11b5fef74f3944ea6cb95b6afdb29c8ec125deda1e3a8a1ebbdc83014b70e787"
+    },
+    {
+      "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R7",
+      "version": 7,
+      "sha256": "5073e5c04e60985cfd1f0fcce1f3f9a11fdffe5bb2d29cf269aa3a6356e6e851"
+    },
+    {
+      "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R8",
+      "version": 8,
+      "sha256": "ecbd09233751b59bd4d5b5d29ec505789944f8a87f4627feaf559461dfde7e37"
+    },
+    {
+      "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R9",
+      "version": 9,
+      "sha256": "98eb3896230f55de1b9c07383c0def7200a2a3d22c95039e79a23ec174746e2b"
+    },
+    {
+      "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R10",
+      "version": 10,
+      "sha256": "5c5bd94f499b0eef58d30bef254e7ea8a5a4933d6b6c294b70884510494b28d0"
+    },
+    {
+      "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R11",
+      "version": 11,
+      "sha256": "6304b4a65189531815b18fd8cb1e2afa12cdb2602a2b972d807a07d58d225b12"
+    },
+    {
+      "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R12",
+      "version": 12,
+      "sha256": "9d140072d1cd31a363bf667380b1298eb1b8a9ef0489eb0be564922f85f5239c"
+    },
+    {
+      "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R13",
+      "version": 13,
+      "sha256": "a6689ebab490ed81f313cf4bc5e2e597181c012ad43645120698b2faef097359"
+    },
+    {
+      "id": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R14",
+      "version": 14,
+      "sha256": "bea95bd1cebc6118910abef360107e3ea7a5220f99e506238eff8ea0e59df670"
+    },
+    {
+      "id": "PE-X-CROSSDECK-CURRENT-VERIFY-20261018-R15",
+      "version": 15,
+      "sha256": "4ee41dedcad219fcbb270299872fc8fa6cbb7ee65c5ae3180984bb4e8d88d8f2"
+    },
+    {
+      "id": "PE-X-CROSSDECK-CURRENT-VERIFY-20261018-R16",
+      "version": 16,
+      "sha256": "49234c32a1c2ff0125cc8f9618c19df2029843a9a934fc3d9126f9592f5eb148"
+    },
+    {
+      "id": "PE-X-CROSSDECK-CURRENT-VERIFY-20261018-R17",
+      "version": 17,
+      "sha256": "b5d04f6608f9b70f1f72ffa4dc399b5ee789c59556f2c39633f9523b5e9e6401"
+    },
+    {
+      "id": "PE-X-CROSSDECK-CURRENT-VERIFY-20261018-R18",
+      "version": 18,
+      "sha256": "2c808b9bbbe5658edcd4dbc381499e035df1d949a996246482228f857f1b2cf9"
+    },
+    {
+      "id": "PE-X-CROSSDECK-CURRENT-VERIFY-20261019-R19",
+      "version": 19,
+      "sha256": "b7e78299dc6eadce6081802656b4d584eed9837df5b35a18c0dc0dbe8c789a5b"
+    },
+    {
+      "id": "PE-X-CROSSDECK-CURRENT-VERIFY-20261019-R20",
+      "version": 20,
+      "sha256": "2241f1c4856c4f31df3c604ffdb2f7a10f62d24f99883380c7b1bbfc99f18b39"
+    },
+    {
+      "id": "PE-X-CROSSDECK-CURRENT-VERIFY-20261020-R21",
+      "version": 21,
+      "sha256": "717a3a70ac9df872b0be69e42d19a0c2d9b132afaacd036ac3bf4cc319eb10e6"
+    },
+    {
+      "id": "PE-X-CROSSDECK-CURRENT-VERIFY-20261020-R22",
+      "version": 22,
+      "sha256": "509a500878112bf2072e3d76529faad7d24261c8e8c1d60e3b0a6991a75503af"
+    },
+    {
+      "id": "PE-X-CROSSDECK-CURRENT-VERIFY-20261020-R23",
+      "version": 23,
+      "sha256": "02391f9e6ee41b656e228a1b38ff3ee7e29065f4ae8e2a585f5eb23aabda751d"
+    },
+    {
+      "id": "PE-X-CROSSDECK-CURRENT-VERIFY-20261021-R24",
+      "version": 24,
+      "sha256": "8fca6e99f20e08ae05a50a916b74d70a77ff7805b723194651344aa2ecb08e66"
+    },
+    {
+      "id": "PE-X-CROSSDECK-CURRENT-VERIFY-20261021-R25",
+      "version": 25,
+      "sha256": "129cf06c315638aa028068bf79abdddc53692bfc2529fba2eb615ce467d46d5d"
+    }
+  ],
+  "preservedImmutablePins": 1360,
+  "originalCampaignEpoch": "2026-10-15T13:54Z",
+  "preparationIncrement": false,
+  "wholeRunCheckpointPromotion": false,
+  "consumerDispatch": false
+}
