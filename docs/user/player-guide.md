@@ -27,19 +27,21 @@ are the same. The separate October 21 completion candidate is in qualification
 and has not replaced that installed beta.
 
 In that candidate, the native Lens explains model preparation, surface search
-and limited tracking. Tap a visible object, then choose **Inspect selected
+and limited tracking. Tap a visible object, or aim at it and choose **Select
+object at center**, then choose **Inspect selected
 object** to open the result in the Player. The Player records an authorized
 observation before showing accepted inspection; a connection or access failure
 stays visible and does not advance the Voyage. **Return to Guided View** remains
 available while the camera is preparing or waiting. These changes still require
-current-source native and physical acceptance; see the
+physical acceptance and protected integration; current software results are in the
 [completion ledger](../../Development_Docs/Projects/Project_Parallax/NCL01_Full_Completion_20261021.md).
 
 Find **The Classroom Compass Trail — NCL01** under **My Chronicle Library → Active
 Voyages**. The owner reports objects appearing when looking around in an earlier
 native camera trial, following an initially empty view. The current layout uses
 manual floor alignment; its authored appearance/placement has not been accepted.
-Full room registration and authored Scene integration remain unfinished. Exact
+Automatic room registration belongs to later spatial-fidelity work. NCL-01
+preserves the authored relative layout at the selected local surface origin. Exact
 build-7 installation/native behavior, all three objects and tracking/interaction
 quality are unverified. The [native engineering record](../../Development_Docs/Projects/Project_Parallax/NCL01_Native_Scene_Vertical_Slice.md)
 preserves the remaining acceptance gates.

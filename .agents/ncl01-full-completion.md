@@ -15,8 +15,11 @@ experience, security and physical acceptance requirements. No owner questions.
 
 Initial protected baseline: `e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab`.
 Reconciled protected main: `e1a86f98e56d68e8e87e3704d17439489ff1a170`
-in assembly `9abd26ba892f7715d32601e4d12058eae1acfb4e`; native/product
-implementation remains byte-identical to tested checkpoint `26da4135d851`.
+in assembly `9abd26ba892f7715d32601e4d12058eae1acfb4e`. Frozen implementation
+`a86c3636c3bf823f7776ce0fc904fd2e6329c4b3`, tree
+`982f254e7e54ac28e08aac93a75db427496a4d90`, adds accessible real-mesh center
+selection and current native qualification. Production browser/canonical source
+is byte-identical to focused-browser checkpoint `26da4135d851`.
 Task branch: `codex/ncl01-full-completion`. Assembly `a8d862680a` merges the
 complete `cd597b1274bddad70118b77dd65b13969dd55a8d` TestFlight descendant,
 including original PR741 `76d1787e1340e396bc95747293d43e57130b00ed`, into main.
@@ -39,7 +42,11 @@ shared owner owns Parallax contracts/assets/Lens and bounded browser adapters.
 Only the shared owner changes shared delivery semantics. Root integrates/tests.
 
 All mutable resources belong to this C:-hosted managed worktree or exact task
-temporary roots. D: is full: read retained tools/evidence only. Preserve all live
+temporary roots. D: is full: retain its existing files; place new runtime
+ownership, logs and temporary state on C:. A creation-bound restart of only the
+same task's hung Next process may retain the identical D:-hosted build/database
+and normal application behavior; it does not prove storage or account health.
+Preserve all live
 laptop preview/tunnel services, private accounts, classroom Chronicle/media and
 other projects. Use disposable synthetic accounts/databases. No private keys,
 tokens, cookies, room photographs or reconstructed media in Git/logs/receipts.

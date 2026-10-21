@@ -3,10 +3,19 @@ title: NCL-01 first physical iPhone TestFlight deployment
 audience: engineering-owner
 status: internal-beta-available-physical-validation-open
 canonical_for: ncl01-testflight-deployment-record
-last_reviewed: 2026-10-20
+last_reviewed: 2026-10-21
 ---
 
 # NCL-01 TestFlight deployment
+
+The [October 21 completion ledger](NCL01_Full_Completion_20261021.md) records
+the later reconciled implementation and its current qualification. Internal
+TestFlight **0.1.0 (7)** remains the distributed beta; it does not contain the
+new canonical Inspect/accessibility corrections. The later unsigned Release
+archive is build-only evidence, with no signing, upload, Apple processing or
+new installation. Original distribution, artwork and failed receipts below are
+preserved. Current laptop preview health and process ownership are tracked in
+that ledger separately from the original beta readiness result.
 
 The owner requests a private development beta of the existing native companion.
 This record is engineering preparation, not a release approval or physical

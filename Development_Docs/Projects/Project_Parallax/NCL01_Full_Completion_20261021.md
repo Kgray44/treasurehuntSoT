@@ -176,3 +176,66 @@ against protected `e1a86f98` reproduces the same exact required-design gate.
 Crossdeck's R24 infrastructure adoption grants this task no consumer allowance.
 Protected integration also remains held while the Crossdeck owner completes its
 own recovery/qualification; this task does not advance main.
+
+### Current implementation checkpoint a86c3636
+
+Frozen implementation `a86c3636c3bf823f7776ce0fc904fd2e6329c4b3`, tree
+`982f254e7e54ac28e08aac93a75db427496a4d90`, contains the accessible center
+selection controls on both native platforms, strict native input diagnostics,
+creation-bound late Android connection cleanup and current iOS viewport fixtures.
+The [current software receipt](evidence/ncl01-full-completion-20261021/software-a86c3636.json)
+records 495 passing tests across 39 files, clean identical before/after source
+fingerprints, successful TypeScript and focused ESLint checks. The
+[source comparison](evidence/ncl01-full-completion-20261021/a86c3636-source-equivalence.json)
+binds reuse of Linux production-build/D1 evidence to byte-identical browser,
+canonical service, fixture, lock, Prisma and public source. It does not reuse old
+native evidence for changed native code.
+
+Android run [39613042290](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39613042290)
+passed all 16 native instrumentation methods in 106.343 seconds, then the actual
+native mesh-to-Player/SQLite journey and permission-denied scenario. Independent
+revalidation checked the original manifest, four decoded raster/clear PNGs,
+both original GLBs' real accessibility operations and three joined screenshots.
+The joined camera-free input was correctly marked SIMULATED: canonical handling
+rejected it, the native overlay disappeared, the Player showed the rejection,
+the same Voyage returned and no observation/progression row was created.
+Worker, native, owned Android connection and database cleanup passed. This proves
+the software join, not accepted physical Inspect or Android tracking.
+
+The [current unsigned iOS archive](evidence/ncl01-full-completion-20261021/ios-unsigned-archive-a86c3636.json)
+passed on Xcode 26.6 / SDK 26.5 in run 39612997940. The actual Release archive
+validated bundle, origin, permissions, privacy metadata and version. Upload was
+skipped and Apple processing never started. Beta 0.1.0 (7) is unchanged; archive
+build metadata 8 is not a new distributed build. Independent compiled-icon
+pixels and binary scans are unavailable because the executable was not retained
+as a downloadable artifact.
+
+The [current readiness review](evidence/ncl01-full-completion-20261021/integration-readiness-a86c3636.json)
+refreshes main and PR721/781 and reproduces the same required Crossdeck design
+gate at the frozen implementation. No ordinary mainline decision or landed
+verification exists. Duplicate delayed transport jobs were cancelled before
+runner allocation; they provide no test evidence and do not establish an
+authentication root cause.
+
+The [a86 iOS failure review](evidence/ncl01-full-completion-20261021/ios-39613376449.json)
+preserves run 39613376449: 28 passed, one failed and one driver-only case was
+intentionally skipped. All seven current viewport phases and the actual
+production mesh/accessibility and atomic graph assertions passed within the
+same five-second setup deadline. Original compass/chest raster proof passed
+with 8,301/2,509 populated pixels, zero empty/removed pixels and the unchanged
+20-second raster bound. The sole failure was the real fixed Return button's
+large-text title clipping: height 64.6667 versus required 83.3333. A required
+vertical compression priority makes the scrolling panel yield before that exit;
+the existing containment, minimum-target and actual title-height assertions stay
+unchanged. This correction still needs fresh native validation.
+
+That run's separate joined journey also failed. The app launched and quiesced,
+but the host observed no web-client-ready marker or completed action before its
+original readiness deadline. The default stage label did not distinguish iOS
+phases, and the old `/lab/os/ready` handler did not record receipt; driver
+OS-readiness is therefore unknown. The incomplete result bundle and raw logs
+remain private. Both cleanups passed. Added fixed-route counters, separate OS
+readiness observation, granular iOS stages and private bounded tool-output
+retention discriminate driver startup from page/bundle/Scene/JavaScript startup
+without changing any timeout or acceptance gate. Retention failure cannot skip
+independent resource cleanup.

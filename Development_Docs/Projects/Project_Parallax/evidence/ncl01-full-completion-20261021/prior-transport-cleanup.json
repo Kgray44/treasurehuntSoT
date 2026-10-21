@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "role": "DEVELOPMENT_ONLY",
+  "qualification": false,
+  "result": "PASS",
+  "entries": [
+    {
+      "runId": "39554652785",
+      "candidate": "42a970b40ec8c50fd828a2c9cf8977d64939ebcf",
+      "transport": "17842aaa7ea06fe35516ab6b1c16c4a8477b4fec",
+      "branch": "codex/landfall-lab-42a970b40ec8-1792563536444",
+      "conclusion": "failure",
+      "result": "PASS",
+      "remoteRefAbsent": true,
+      "scope": "EXACT_TASK_OWNED_TEMPORARY_GIT_REF_ONLY"
+    },
+    {
+      "runId": "39607854995",
+      "candidate": "26da4135d851ee67a0c685a0726486739612d1e2",
+      "transport": "5affcae64cd5b3c751b0d266c4b938ee037ed361",
+      "branch": "codex/landfall-lab-26da4135d851-1792589102064",
+      "conclusion": "failure",
+      "result": "PASS",
+      "remoteRefAbsent": true,
+      "scope": "EXACT_TASK_OWNED_TEMPORARY_GIT_REF_ONLY"
+    },
+    {
+      "runId": "39608114180",
+      "candidate": "26da4135d851ee67a0c685a0726486739612d1e2",
+      "transport": "333034a159a41b996f59b77b1de5c08cd2a5935e",
+      "branch": "codex/ncl01-testflight-unsigned-26da4135d851-1792589177323",
+      "conclusion": "success",
+      "result": "PASS",
+      "remoteRefAbsent": true,
+      "scope": "EXACT_TASK_OWNED_TEMPORARY_GIT_REF_ONLY"
+    }
+  ],
+  "historicalEvidencePreserved": true,
+  "limits": ["Branch cleanup is not app, physical-device, signing or mainline acceptance."]
+}

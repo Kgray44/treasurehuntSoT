@@ -68,6 +68,27 @@ async function main() {
   let ready = false,
     failed = false,
     stopped = false;
+  let iosOsReady = false;
+  const iosRequests = { player: 0, clientScript: 0, scene: 0, clientReady: 0, clientFailed: 0, osReady: 0, osNext: 0 };
+  let iosDriverState = "NOT_STARTED";
+  let iosDriverOutputRetained = false;
+  let iosDriverOutputFiles = 0;
+  const retainIosDriverOutput = async (state: string, output: { stdout?: unknown; stderr?: unknown }) => {
+    iosDriverState = state;
+    try {
+      for (const key of ["stdout", "stderr"] as const) {
+        const value = output[key];
+        if (typeof value !== "string" || Buffer.byteLength(value) > 8 * 1024 * 1024) continue;
+        // Original tool output can contain Simulator identifiers. It stays in
+        // the private task artifact, never in console or a public receipt.
+        await writeFile(path.join(destination, `ios-driver.${key}.private.original.log`), value, { flag: "wx" });
+        iosDriverOutputFiles++;
+      }
+      iosDriverOutputRetained = iosDriverOutputFiles > 0;
+    } catch {
+      iosDriverOutputRetained = false;
+    }
+  };
   let current: { index: number; action: z.infer<typeof actionSchema> } | null = null;
   let cleanup = false;
   let executionStage = "PREPARE_OWNED_LAB";
@@ -141,6 +162,18 @@ async function main() {
     server = createServer(async (request, response) => {
       response.setHeader("Cache-Control", "no-store");
       const route = request.url?.split("?")[0];
+      if (!android) {
+        if (request.method === "GET") {
+          if (["/player", "/player/", "/"].includes(route ?? "")) iosRequests.player++;
+          else if (route === "/lab/client.js") iosRequests.clientScript++;
+          else if (route === "/lab/scene") iosRequests.scene++;
+          else if (route === "/lab/os/next") iosRequests.osNext++;
+        } else if (request.method === "POST") {
+          if (route === "/lab/client-ready") iosRequests.clientReady++;
+          else if (route === "/lab/client-failed") iosRequests.clientFailed++;
+          else if (route === "/lab/os/ready") iosRequests.osReady++;
+        }
+      }
       try {
         if (request.method === "GET") {
           if (["/player", "/player/", "/"].includes(route ?? "")) {
@@ -208,6 +241,7 @@ async function main() {
             return;
           }
           if (route === "/lab/os/ready") {
+            if (!android) iosOsReady = true;
             response.end("{}");
             return;
           }
@@ -478,6 +512,7 @@ async function main() {
       await capture("same-voyage-return.png");
       assert.deepEqual(await deviceLabSourceIdentity(), source, "PARALLAX_NATIVE_LAB_SOURCE_CHANGED");
     } else {
+      executionStage = "IOS_SELECT_RUNTIME";
       const runtime = host.apple.runtimes
         .filter((item) => item.id.includes("iOS"))
         .find(
@@ -490,6 +525,7 @@ async function main() {
         (item) => item.available && item.runtime === runtime.id && item.name.includes("iPhone"),
       );
       assert.ok(template);
+      executionStage = "IOS_CREATE_DEVICE";
       device = (
         await labTool("xcrun", [
           "simctl",
@@ -500,8 +536,11 @@ async function main() {
         ])
       ).trim();
       assert.match(device, /^[A-F0-9-]{36}$/i);
+      executionStage = "IOS_BOOT_DEVICE";
       await labTool("xcrun", ["simctl", "boot", device]);
       await labTool("xcrun", ["simctl", "bootstatus", device, "-b"], 180000);
+      executionStage = "IOS_LAUNCH_DRIVER";
+      iosDriverState = "RUNNING";
       runner = labTool(
         "xcodebuild",
         [
@@ -525,18 +564,28 @@ async function main() {
         ],
         480000,
         abort.signal,
-      ).catch((error) => {
-        failed = true;
-        throw error;
-      });
+      )
+        .then(async (stdout) => {
+          await retainIosDriverOutput("COMPLETED", { stdout });
+          return stdout;
+        })
+        .catch(async (error: unknown) => {
+          failed = true;
+          const output = error && typeof error === "object" ? (error as Record<string, unknown>) : {};
+          await retainIosDriverOutput("REJECTED", { stdout: output.stdout, stderr: output.stderr });
+          throw error;
+        });
       // Attach a rejection handler immediately while independent host observations run.
       void runner.catch(() => undefined);
+      executionStage = "IOS_WAIT_CLIENT_READY";
       await wait(() => ready, 180000);
       for (const [index, action] of actions.entries()) {
+        executionStage = `IOS_ACTION_${action.operation}`;
         current = { index, action };
         await wait(() => results.has(index), 45000);
         assert.equal(results.get(index), "PASS");
       }
+      executionStage = "IOS_VERIFY_CANONICAL_REJECTION";
       await wait(() => evidence.some((item) => item.interactionType === "INSPECT"), 15000);
       assert.ok(
         evidence.every(
@@ -601,6 +650,7 @@ async function main() {
           code: error instanceof Error && /^[A-Z0-9_]+$/.test(error.message) ? error.message : "NATIVE_LAB_FAILURE",
           clientReady: ready,
           clientFailed: failed,
+          iosDiagnostics: !android ? { osReady: iosOsReady, requests: iosRequests, driverState: iosDriverState } : null,
           completedActions: [...results],
           privateHierarchy: hierarchyBytes
             ? {
@@ -621,6 +671,32 @@ async function main() {
     stopped = true;
     abort.abort();
     await runner?.catch(() => undefined);
+    const iosDiagnosticRetention =
+      !android && !preflight
+        ? writeFile(
+            path.join(destination, "ios-driver-diagnostics.json"),
+            JSON.stringify(
+              {
+                role: "DEVELOPMENT_ONLY",
+                qualification: false,
+                osReady: iosOsReady,
+                clientReady: ready,
+                clientFailurePostObserved: iosRequests.clientFailed > 0,
+                requests: iosRequests,
+                driverState: iosDriverState,
+                privateOutputRetained: iosDriverOutputRetained,
+                privateOutputFiles: iosDriverOutputFiles,
+                limits: [
+                  "Route counts are observations only; they cannot satisfy readiness, native input or canonical acceptance.",
+                ],
+              },
+              null,
+              2,
+            ),
+          )
+        : Promise.resolve();
+    // Retention failure must not prevent any independently owned cleanup.
+    void iosDiagnosticRetention.catch(() => undefined);
     let simulatorRemoved = !device,
       androidReleased = !androidSerial,
       androidConnectionsClosed = androidDevices.length === 0,
@@ -692,6 +768,7 @@ async function main() {
         assert.ok(androidReleased, "PARALLAX_ANDROID_LAB_CLEANUP_FAILED");
       })(),
       connectionCleanup,
+      iosDiagnosticRetention,
     ]);
     cleanup =
       outcomes.every((outcome) => outcome.status === "fulfilled") &&

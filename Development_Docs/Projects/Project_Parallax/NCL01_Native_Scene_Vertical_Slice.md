@@ -3,7 +3,7 @@ title: NCL-01 native Scene vertical slice
 audience: engineering
 status: implementation-in-progress
 canonical_for: parallax-ncl01-native-scene-evidence
-last_reviewed: 2026-10-15
+last_reviewed: 2026-10-21
 ---
 
 # NCL-01 native Scene vertical slice
@@ -11,6 +11,14 @@ last_reviewed: 2026-10-15
 NCL-01 extends the existing Landfall companions with one canonical Parallax
 Scene delivery and original SC02 3D assets. This record is engineering evidence;
 it does not grant protected integration, physical qualification or owner acceptance.
+
+The [October 21 completion ledger](NCL01_Full_Completion_20261021.md) supersedes
+the current implementation/status summary below while retaining its historical
+source and receipts. It reconciles protected main with all TestFlight descendants,
+native canonical Inspect handling, accessible selection, stricter visibility and
+lifecycle guards, current native verification and the original ten acceptance
+items. The old failed receipts remain unchanged; no Simulator/emulator result
+grants physical or protected-main acceptance.
 
 Protected source baseline is `73ed4b380c764c32ee35f40e4dad7dfddbbb7e58`.
 The owned implementation branch is `codex/parallax-ncl01`.

@@ -3,7 +3,7 @@ title: Project Parallax engineering home
 audience: product-engineering
 status: phase-3-software-qualified-mainline
 canonical_for: project-parallax-engineering-home
-last_reviewed: 2026-10-20
+last_reviewed: 2026-10-21
 ---
 
 # Project Parallax
@@ -21,7 +21,8 @@ Its governing promise is simple even though the machinery behind it is emphatica
 - [NCL-01 full completion working ledger](NCL01_Full_Completion_20261021.md) binds
   the current-main/TestFlight reconciliation, original ten requirements and
   outstanding native, browser, physical and protected acceptance gates. The
-  October 21 implementation continues autonomously; it grants no acceptance.
+  October 21 record separates current software proof from integration, physical
+  and owner acceptance. It grants no acceptance itself.
 
 - [A1 local OpenAI configuration](Parallax_A1_Local_OpenAI_Configuration.md) describes the shared Windows user credential, safe diagnostics and account-dossier quota controls.
 - [A1 Assistant presentation review](Parallax_A1_Presentation_Review.md) records the initial source-bound production-browser package. [Owner visual refinements](Parallax_A1_Visual_Refinements.md) records the revised package and its explicit owner presentation acceptance.
