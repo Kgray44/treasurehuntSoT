@@ -32,6 +32,19 @@ Use one selected primary-phone closure run with `permission-denied-native` to
 exercise companion tests, joined native input and independent presentation.
 The permission scenario concerns location, not camera. Observe the actual Intel
 environment and full suites; prior ARM graphics cannot qualify Intel execution.
+Assembly `539206b304a0f125e09f882323ea7d31837fd366` consumes protected main
+`185f5fd368ec16a77cb5fe92e7813d7ca4ac6418` (R25 infrastructure only). PR721
+is still open/non-draft at `8dd97d7a63989cc7ee0fde7e8e178b515e2d8a94`;
+the read-only experience plan remains design-blocked, not ordinarily accepted.
+Intel run 39625033481 at 79df8c58 passed primary 29/0/1 and actual Metal
+raster/layout/mesh guards. Its join failed before driver start while booting
+first-enumerated iOS26.2; reuse the companion's latest-supported/minimum-floor
+policy without raising its bound. Presentation first bundle passed30/0/1,
+separate real Reduced Motion failed with blank/no-Window app. Preserve that
+unexplained direct Settings-launch failure. One Home-screen entry and granular
+presentation diagnostics require fresh proof under the original ten seconds.
+Collector repair strictly joins30+1 with no failed/extra-skipped components.
+Shipping native source/archive remains a523; no new beta is implied.
 Task branch: `codex/ncl01-full-completion`. Assembly `a8d862680a` merges the
 complete `cd597b1274bddad70118b77dd65b13969dd55a8d` TestFlight descendant,
 including original PR741 `76d1787e1340e396bc95747293d43e57130b00ed`, into main.

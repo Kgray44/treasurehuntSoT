@@ -126,9 +126,18 @@ final class NativeLifecycleTests: XCTestCase {
         if !wasEnabled {toggle.coordinate(withNormalizedOffset:CGVector(dx:0.9,dy:0.5)).tap()}
         let enabled=NSPredicate {_,_ in toggle.value as? String == "1"}
         guard XCTWaiter.wait(for:[XCTNSPredicateExpectation(predicate:enabled,object:toggle)],timeout:10) == .completed else {XCTFail("LANDFALL_REDUCED_MOTION_NOT_ENABLED");return}
+        // Use the ordinary Home-screen entry after changing the real system
+        // setting. The retained direct Settings-to-app launch showed no Window;
+        // this is one explicit foreground path, never a relaunch after failure.
+        XCUIDevice.shared.press(.home)
         let app=XCUIApplication();app.launch()
         let shell=app.staticTexts.containing(NSPredicate(format:"label CONTAINS %@","Landfall companion is not configured")).firstMatch
-        XCTAssertTrue(shell.waitForExistence(timeout:10) && shell.isHittable,"LANDFALL_REDUCED_MOTION_FALLBACK_UNREADABLE")
+        let readable=NSPredicate {_,_ in app.state == .runningForeground && shell.exists && shell.isHittable}
+        let observed=XCTWaiter.wait(for:[XCTNSPredicateExpectation(predicate:readable,object:app)],timeout:10) == .completed
+        let state=XCTAttachment(data:try JSONSerialization.data(withJSONObject:["foregroundObserved":app.state == .runningForeground,"windowCount":app.windows.count,"readableFallback":observed]),uniformTypeIdentifier:"public.json")
+        state.name="Owned reduced-motion foreground presentation";state.lifetime = .keepAlways;add(state)
+        let hierarchy=XCTAttachment(string:app.debugDescription);hierarchy.name="Owned reduced-motion actual hierarchy";hierarchy.lifetime = .keepAlways;add(hierarchy)
+        XCTAssertTrue(observed,"LANDFALL_REDUCED_MOTION_FALLBACK_UNREADABLE")
         let attachment=XCTAttachment(screenshot:app.screenshot());attachment.name="Owned reduced-motion fallback";attachment.lifetime = .keepAlways;add(attachment);app.terminate()
         settings.activate()
         if !wasEnabled && toggle.waitForExistence(timeout:10) && toggle.value as? String == "1" {toggle.coordinate(withNormalizedOffset:CGVector(dx:0.9,dy:0.5)).tap()}

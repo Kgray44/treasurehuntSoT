@@ -10281,6 +10281,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/completed-transports-through-a523-cleanup.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/integration-readiness-a86c3636.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -10305,6 +10311,12 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/ios-39625033481.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/ios-repair-preflight.json",
       "record_type": "program-record",
       "status": "preserved",
@@ -10312,6 +10324,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/ios-runner-preflight.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/ios-runtime-motion-repair-preflight.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
@@ -10390,6 +10408,12 @@
     },
     {
       "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/software.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Parallax/evidence/ncl01-full-completion-20261021/source-reuse-review-539206b3.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

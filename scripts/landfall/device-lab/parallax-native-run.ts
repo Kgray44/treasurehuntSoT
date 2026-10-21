@@ -1,6 +1,6 @@
 import { createServer } from "node:http";
 import { createHash, randomBytes } from "node:crypto";
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, writeFile, readFile } from "node:fs/promises";
 import path from "node:path";
 import assert from "node:assert/strict";
 import { build } from "esbuild";
@@ -13,6 +13,11 @@ import { boundedAndroidDriver } from "./android-driver";
 import { nativeLensControl, nativeLensPlayerVisible } from "../../../src/landfall/device-lab/native-lens-control";
 import { syntheticSpatialMoment } from "../../../src/parallax/fixtures";
 import { materializeSpatialVersion } from "../../../src/parallax/publication";
+import {
+  appleMinimumIosFromProject,
+  appleRuntimeSelectionPolicy,
+  selectLatestSupportedAppleRuntime,
+} from "../../../src/device-lab/apple-runtime";
 
 // Development scenario inside the shared Device Lab. It uses its existing
 // owned SQLite authority and XCTest driver, never an NCL release authority.
@@ -73,6 +78,7 @@ async function main() {
   let iosDriverState = "NOT_STARTED";
   let iosDriverOutputRetained = false;
   let iosDriverOutputFiles = 0;
+  let iosRuntimeSelection: { runtime: string; minimumIOS: string; policy: string } | undefined;
   const retainIosDriverOutput = async (state: string, output: { stdout?: unknown; stderr?: unknown }) => {
     iosDriverState = state;
     try {
@@ -513,14 +519,11 @@ async function main() {
       assert.deepEqual(await deviceLabSourceIdentity(), source, "PARALLAX_NATIVE_LAB_SOURCE_CHANGED");
     } else {
       executionStage = "IOS_SELECT_RUNTIME";
-      const runtime = host.apple.runtimes
-        .filter((item) => item.id.includes("iOS"))
-        .find(
-          (item) =>
-            item.available &&
-            host.apple.devices.some((d) => d.available && d.runtime === item.id && d.name.includes("iPhone")),
-        );
-      assert.ok(runtime);
+      const minimumIOS = appleMinimumIosFromProject(
+        await readFile(path.join(root, "native", "ios", "project.yml"), "utf8"),
+      );
+      const runtime = selectLatestSupportedAppleRuntime(host.apple, minimumIOS);
+      iosRuntimeSelection = { runtime: runtime.id, minimumIOS, policy: appleRuntimeSelectionPolicy };
       const template = host.apple.devices.find(
         (item) => item.available && item.runtime === runtime.id && item.name.includes("iPhone"),
       );
@@ -650,7 +653,14 @@ async function main() {
           code: error instanceof Error && /^[A-Z0-9_]+$/.test(error.message) ? error.message : "NATIVE_LAB_FAILURE",
           clientReady: ready,
           clientFailed: failed,
-          iosDiagnostics: !android ? { osReady: iosOsReady, requests: iosRequests, driverState: iosDriverState } : null,
+          iosDiagnostics: !android
+            ? {
+                osReady: iosOsReady,
+                requests: iosRequests,
+                driverState: iosDriverState,
+                runtimeSelection: iosRuntimeSelection ?? null,
+              }
+            : null,
           completedActions: [...results],
           privateHierarchy: hierarchyBytes
             ? {
@@ -684,6 +694,7 @@ async function main() {
                 clientFailurePostObserved: iosRequests.clientFailed > 0,
                 requests: iosRequests,
                 driverState: iosDriverState,
+                runtimeSelection: iosRuntimeSelection ?? null,
                 privateOutputRetained: iosDriverOutputRetained,
                 privateOutputFiles: iosDriverOutputFiles,
                 limits: [

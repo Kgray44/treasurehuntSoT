@@ -3,6 +3,12 @@ import { createHash } from "node:crypto";
 import path from "node:path";
 import { discoverDeviceLabHost, labTool } from "./host";
 import { deviceLabProfileSchema, selectAppleLabDevice } from "../../../src/landfall/device-lab/device-profile";
+import {
+  appleMinimumIosFromProject,
+  appleRuntimeSelectionPolicy,
+  selectLatestSupportedAppleRuntime,
+} from "../../../src/device-lab/apple-runtime";
+import { combineApplePresentationSummaries } from "../../../src/landfall/device-lab/apple-test-summary";
 
 let executionStage = "DISCOVERY";
 let failureStage: string | null = null;
@@ -43,34 +49,17 @@ async function main() {
     host = await discoverDeviceLabHost();
   }
   await writeFile(path.join(destination, "capabilities.json"), JSON.stringify(host, null, 2));
-  const minimumIOS = (await readFile(path.join(root, "native", "ios", "project.yml"), "utf8")).match(
-    /^\s+iOS:\s*"([0-9.]+)"/m,
-  )?.[1];
-  if (!minimumIOS) throw new Error("LANDFALL_APPLE_DEPLOYMENT_TARGET_UNAVAILABLE");
-  const versionScore = (value: string) =>
-    value
-      .split(/[.-]/)
-      .map(Number)
-      .reduce((total, part, index) => total + part * (index === 0 ? 1000000 : index === 1 ? 1000 : 1), 0);
-  const runtime = host.apple.runtimes
-    .filter((item) => {
-      const version = item.id.match(/\.iOS-([0-9-]+)$/)?.[1];
-      return (
-        item.available &&
-        version !== undefined &&
-        versionScore(version) >= versionScore(minimumIOS) &&
-        host.apple.devices.some((device) => device.available && device.runtime === item.id)
-      );
-    })
-    .sort((a, b) => b.id.localeCompare(a.id, undefined, { numeric: true }))[0];
-  if (!runtime) throw new Error("LANDFALL_APPLE_RUNTIME_UNAVAILABLE");
+  const minimumIOS = appleMinimumIosFromProject(
+    await readFile(path.join(root, "native", "ios", "project.yml"), "utf8"),
+  );
+  const runtime = selectLatestSupportedAppleRuntime(host.apple, minimumIOS);
   await writeFile(
     path.join(destination, "runtime-selection.json"),
     JSON.stringify(
       {
         runtime: runtime.id,
         minimumIOS,
-        policy: "PREINSTALLED_LATEST_SUPPORTED",
+        policy: appleRuntimeSelectionPolicy,
       },
       null,
       2,
@@ -225,7 +214,7 @@ async function main() {
       resultPath,
     ]);
     await writeFile(path.join(destination, "native-test-summary.json"), testSummary);
-    const nativeTests = JSON.parse(testSummary);
+    let nativeTests = JSON.parse(testSummary);
     // Export the first bundle before the independent Motion test so a later
     // failure preserves actual XXXL screenshots as well as the raw xcresult.
     await labTool("xcrun", [
@@ -283,26 +272,7 @@ async function main() {
       ]);
       await writeFile(path.join(destination, "reduced-motion-test-summary.json"), motionSummary);
       const motionTests = JSON.parse(motionSummary);
-      if (
-        nativeTests.passedTests !== 25 ||
-        nativeTests.failedTests !== 0 ||
-        motionTests.passedTests !== 1 ||
-        motionTests.failedTests !== 0 ||
-        motionTests.skippedTests !== 0
-      )
-        throw new Error("LANDFALL_APPLE_PRESENTATION_COMPONENT_TESTS_REQUIRED");
-      nativeTests.passedTests += motionTests.passedTests;
-      nativeTests.failedTests += motionTests.failedTests;
-      nativeTests.skippedTests += motionTests.skippedTests;
-      nativeTests.totalTestCount += motionTests.totalTestCount;
-      nativeTests.finishTime = motionTests.finishTime;
-      // Per-device and per-plan breakdowns belong to their original bundle;
-      // retaining the first breakdown here would misstate aggregate counts.
-      delete nativeTests.devicesAndConfigurations;
-      delete nativeTests.testResults;
-      delete nativeTests.statistics;
-      delete nativeTests.topInsights;
-      nativeTests.componentSummaries = ["native-test-summary.json", "reduced-motion-test-summary.json"];
+      nativeTests = combineApplePresentationSummaries(nativeTests, motionTests);
     }
     await writeFile(path.join(destination, "test-summary.json"), JSON.stringify(nativeTests, null, 2));
     // The only expected package-build skip is the canonical scenario driver,
