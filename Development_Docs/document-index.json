@@ -3255,6 +3255,18 @@
       "canonical_for": null
     },
     {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-ordinary-recovery-20261021-r24/causal-disposition.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-ordinary-recovery-20261021-r24/historical-ledger.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
       "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-pre-source-byte-gate-20261020-r22/causal-disposition.md",
       "record_type": "program-record",
       "status": "preserved",

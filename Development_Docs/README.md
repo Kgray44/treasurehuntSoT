@@ -3,7 +3,7 @@ title: Engineering records
 audience: engineering
 status: current
 canonical_for: engineering-records-index
-last_reviewed: 2026-09-21
+last_reviewed: 2026-10-21
 ---
 
 # Engineering records
@@ -32,6 +32,10 @@ Use [INDEX.md](INDEX.md) for the current taxonomy and [document-index.json](docu
 ## Governing documents
 
 The [Governing](Governing/) and [Governance](Governance/) directories hold repository-wide and project authority. The [Project Landfall v1.0 governing document](Projects/Project_Landfall/Project_Landfall_Governing_Document_v1.0.pdf) is Landfall's foundational baseline. The [v1.1 Worldspaces and Virtual Navigation amendment](Governing/Project_Landfall_Governing_Amendment_v1.1_Worldspaces_and_Virtual_Navigation.pdf) adds physical and virtual Worldspaces but does not replace v1.0 or weaken its zero-infrastructure physical-world rule.
+
+## Sounding Line maintenance evidence
+
+The [R24 ordinary recovery disposition](Programs/Sounding_Line/evidence/crossdeck-ordinary-recovery-20261021-r24/causal-disposition.md) preserves cancelled checkout and retained-review identities. It is not consumer acceptance.
 
 ## Repository operations
 
