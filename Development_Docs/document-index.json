@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_at": "2026-10-20",
+  "generated_at": "2026-10-21",
   "records": [
     {
       "path": "Development_Docs/Architecture_Decisions/0001-use-nextjs-app-router.md",
@@ -3250,6 +3250,18 @@
     },
     {
       "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-media-first-successor-20261020-r21/historical-ledger.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-ordinary-recovery-20261021-r24/causal-disposition.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-ordinary-recovery-20261021-r24/historical-ledger.json",
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null

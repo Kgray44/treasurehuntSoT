@@ -1,3 +1,6 @@
+import { record as r24RecordFixture } from "./experience-r24.test.mjs";
+import { CURRENT_R24, r24Adoption } from "../../scripts/sounding-line/experience-current-r24.mjs";
+import "./experience-selected-checkout.test.mjs";
 import { r23RegistryFixture } from "./experience-current-r23.test.mjs";
 import { CURRENT_R23 } from "../../scripts/sounding-line/experience-current-r23.mjs";
 import { R22_MEDIA_PROTOCOL } from "../../scripts/sounding-line/experience-media-first-r22-policy.mjs";
@@ -1904,7 +1907,10 @@ function finalFixture(t, identity = {}, options = {}) {
     baseSha: sha(30),
     candidateSha: sha(31),
     ...identity,
-    selected: { unitTests: options.unitTests ?? ["src/fixture.test.ts"], browserTests: browsers },
+    selected: {
+      unitTests: options.unitTests ?? ["src/fixture.test.ts"],
+      browserTests: options.browserTests ?? browsers,
+    },
     safetyPaths: options.safetyPaths ?? ["prisma/seed.ts"],
     lintPaths: ["prisma/seed.ts"],
     databaseUrl: "file:./fixture.sqlite",
@@ -1921,7 +1927,7 @@ function finalFixture(t, identity = {}, options = {}) {
     decision: "PASS",
     baseSha: plan.baseSha,
     candidateSha: plan.candidateSha,
-    selected: { browserTests: browsers },
+    selected: { browserTests: ordinary.selected.browserTests },
     productExperience: {
       ...plan,
       trustedAttestation: {
@@ -2070,6 +2076,74 @@ test("current finalizer checks current attestation, fresh browser, all groups an
     const decision = structuredClone(f.decision);
     mutate(decision);
     assert.throws(() => validateCurrentAdmissionFinalDecision({ ...f, decision }), /CURRENT_ADMISSION_/u);
+  }
+});
+
+test("R24 finalizer and seal reject substituted retained artifacts or custody before any qualified create", async (t) => {
+  const record = r24RecordFixture();
+  const f = finalFixture(
+    t,
+    {
+      baseSha: CURRENT_R24.protectedBaseAncestorSha,
+      candidateSha: CURRENT_R24.protectedBaseAncestorSha,
+      sourceDigest: record.currentSourceAdmission.sourceDigest,
+    },
+    { record, browserTests: record.requiredTechnicalBrowserTests },
+  );
+  const attestation = f.decision.productExperience.trustedAttestation;
+  Object.assign(attestation, r24Adoption(f.plan), {
+    captureArtifactId: CURRENT_R24.retained.captureArtifactId,
+    reviewArtifactId: CURRENT_R24.retained.reviewArtifactId,
+  });
+  Object.assign(attestation.exceptionCustody, r24Adoption(f.plan), {
+    prepareReservation: CURRENT_R24.custody.find((pin) => pin.slot === "prepare").commit,
+    reviewSeal: CURRENT_R24.custody.find((pin) => pin.slot === "review12").commit,
+  });
+  assert.equal(validateCurrentAdmissionFinalDecision(f).status, "PASS");
+  f.decision.candidateTree = execFileSync("git", ["rev-parse", `${f.plan.candidateSha}^{tree}`], {
+    cwd: sourceRoot,
+    encoding: "utf8",
+  }).trim();
+  let creates = 0;
+  const store = {
+    read: async (slot) => {
+      assert.equal(slot, "qualify");
+      return {
+        binding: exceptionBinding(f.plan),
+        run: f.run,
+        candidateSha: f.plan.candidateSha,
+        candidateTree: f.decision.candidateTree,
+      };
+    },
+    create: async () => {
+      creates++;
+      throw Error("UNEXPECTED_QUALIFIED_CREATE");
+    },
+  };
+  for (const mutate of [
+    (a) => a.captureArtifactId++,
+    (a) => a.reviewArtifactId++,
+    (a) => {
+      a.exceptionCustody.prepareReservation = "a".repeat(40);
+    },
+    (a) => {
+      a.exceptionCustody.reviewSeal = "b".repeat(40);
+    },
+    (a) => {
+      delete a.exceptionCustody.reviewedEvidenceAdoption;
+    },
+    (a) => {
+      a.exceptionCustody.reviewedEvidenceAdoption.currentSourceDigest = "0".repeat(64);
+    },
+  ]) {
+    const decision = structuredClone(f.decision);
+    mutate(decision.productExperience.trustedAttestation);
+    assert.throws(() => validateCurrentAdmissionFinalDecision({ ...f, decision }), /R24_REVIEWED_ADOPTION_REQUIRED/u);
+    await assert.rejects(
+      sealExceptionQualification({ ...f, root: sourceRoot, decision, store }),
+      /R24_REVIEWED_ADOPTION_REQUIRED/u,
+    );
+    assert.equal(creates, 0);
   }
 });
 
