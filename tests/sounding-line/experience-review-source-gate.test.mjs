@@ -7,7 +7,7 @@ import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync, existsSync
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { mediaFirstFixture } from "./experience-media-first-r21.test.mjs";
-import { R22_ID, R22_MEDIA_PROTOCOL } from "../../scripts/sounding-line/experience-media-first-r22-policy.mjs";
+import { R22_ID, R23_ID, R22_MEDIA_PROTOCOL } from "../../scripts/sounding-line/experience-media-first-r22-policy.mjs";
 import { mediaFirstDigest } from "../../scripts/sounding-line/experience-media-first-shared.mjs";
 import {
   SOURCE_GATE_VALIDATOR_PATHS,
@@ -16,7 +16,7 @@ import {
   validatePreSourceCaptureBinding,
 } from "../../scripts/sounding-line/experience-review-source-gate.mjs";
 
-function fixture(t) {
+function fixture(t, generation = 22) {
   const f = mediaFirstFixture(),
     root = mkdtempSync(path.join(tmpdir(), "r22-source-gate-"));
   assert(root.startsWith(path.resolve(tmpdir()) + path.sep));
@@ -35,15 +35,23 @@ function fixture(t) {
   git("add", ".");
   git("commit", "-qm", "inert base for source release tests");
   Object.assign(f.plan, { baseSha: git("rev-parse", "HEAD"), candidateSha: "a".repeat(40) });
-  Object.assign(f.plan.exception, { id: R22_ID, version: 22, independentReviewOrdinal: 12 });
+  assert([22, 23].includes(generation));
+  Object.assign(f.plan.exception, {
+    id: generation === 23 ? R23_ID : R22_ID,
+    version: generation,
+    independentReviewOrdinal: 12,
+  });
   f.plan.exception.currentSourceAdmission.reviewProtocol = structuredClone(R22_MEDIA_PROTOCOL);
   f.evidence.mediaFirstReview.kind = R22_MEDIA_PROTOCOL.kind;
-  f.evidence.mediaFirstReview.criticCreation.createdAtUtc = "2026-10-20T18:25:00Z";
+  f.evidence.mediaFirstReview.criticCreation.createdAtUtc =
+    generation === 23 ? "2026-10-20T23:20:00Z" : "2026-10-20T18:25:00Z";
   f.first.criticCreation = structuredClone(f.evidence.mediaFirstReview.criticCreation);
-  f.first.mediaInspectionStartedAt = "2026-10-20T18:26:00Z";
-  f.first.observationsFrozenAt = "2026-10-20T18:28:00Z";
-  f.evidence.mediaFirstReview.sourceInspectionStartedAt = "2026-10-20T18:30:00Z";
-  f.evidence.mediaFirstReview.canonicalJudgmentsCompletedAt = "2026-10-20T18:31:00Z";
+  f.first.mediaInspectionStartedAt = generation === 23 ? "2026-10-20T23:21:00Z" : "2026-10-20T18:26:00Z";
+  f.first.observationsFrozenAt = generation === 23 ? "2026-10-20T23:23:00Z" : "2026-10-20T18:28:00Z";
+  f.evidence.mediaFirstReview.sourceInspectionStartedAt =
+    generation === 23 ? "2026-10-20T23:25:00Z" : "2026-10-20T18:30:00Z";
+  f.evidence.mediaFirstReview.canonicalJudgmentsCompletedAt =
+    generation === 23 ? "2026-10-20T23:26:00Z" : "2026-10-20T18:31:00Z";
   f.seal();
   const originalPath = path.join(root, "observations.original.json"),
     packetPath = path.join(root, "custodian-source.txt");
@@ -73,7 +81,7 @@ function fixture(t) {
       captureArtifactId: f.evidence.captureArtifactId,
       sourcePacketPath: packetPath,
       outputDirectory,
-      now: () => new Date("2026-10-20T18:29:00Z"),
+      now: () => new Date(generation === 23 ? "2026-10-20T23:24:00Z" : "2026-10-20T18:29:00Z"),
       loadCapture: async () => ({ capture, prepare }),
       readSourcePacket: (filename) => {
         sourceReads++;

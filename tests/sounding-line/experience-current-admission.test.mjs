@@ -1,10 +1,15 @@
+import { r23RegistryFixture } from "./experience-current-r23.test.mjs";
+import { CURRENT_R23 } from "../../scripts/sounding-line/experience-current-r23.mjs";
 import { R22_MEDIA_PROTOCOL } from "../../scripts/sounding-line/experience-media-first-r22-policy.mjs";
 import {
   stageMediaFirstSource,
   SOURCE_GATE_VALIDATOR_PATHS,
 } from "../../scripts/sounding-line/experience-review-source-gate.mjs";
 import { mediaFirstDigest } from "../../scripts/sounding-line/experience-media-first-shared.mjs";
-import { validateR22MediaFirstReview } from "../../scripts/sounding-line/experience-media-first-r22.mjs";
+import {
+  validateR22MediaFirstReview,
+  validateR23MediaFirstReview,
+} from "../../scripts/sounding-line/experience-media-first-r22.mjs";
 import { r22RegistryFixture } from "./experience-current-r22.test.mjs";
 import "./experience-review-source-gate.test.mjs";
 // Inert source/HTTP fixtures only. None of these records is installed or grants a run.
@@ -1591,7 +1596,14 @@ function zip(files) {
   return Buffer.concat([...locals, directory, end]);
 }
 async function loaderFixture(t, generation21 = false) {
-  const successor = generation21 === 22 ? r22RegistryFixture(t) : generation21 ? r21RegistryFixture(t) : null;
+  const successor =
+    generation21 === 23
+      ? r23RegistryFixture(t)
+      : [22, 23].includes(generation21)
+        ? r22RegistryFixture(t)
+        : generation21
+          ? r21RegistryFixture(t)
+          : null;
   const record = successor?.record ?? fixtureRecord(t),
     root = mkdtempSync(path.join(tmpdir(), "current-admission-http-only-"));
   t.after(() => rmSync(root, { recursive: true, force: true }));
@@ -1602,11 +1614,14 @@ async function loaderFixture(t, generation21 = false) {
   git("config", "user.email", "fixture@example.invalid");
   git("remote", "add", "origin", "https://github.com/Kgray44/treasurehuntSoT.git");
   mkdirSync(path.join(root, "testing"));
-  if (generation21 === 22) {
+  if ([22, 23].includes(generation21)) {
     mkdirSync(path.join(root, "scripts/sounding-line"), { recursive: true });
     for (const filename of SOURCE_GATE_VALIDATOR_PATHS)
       writeFileSync(path.join(root, filename), readFileSync(path.join(sourceRoot, filename)));
-    writeFileSync(path.join(root, "scripts/sounding-line/experience-current-r22.mjs"), "// fixed R22 fixture marker\n");
+    writeFileSync(
+      path.join(root, `scripts/sounding-line/experience-current-r${generation21}.mjs`),
+      "// fixed successor fixture marker\n",
+    );
   }
   const registry = successor?.registry ?? structuredClone(historicalRegistry);
   if (!successor) registry.exceptions.push(record);
@@ -1650,14 +1665,17 @@ async function loaderFixture(t, generation21 = false) {
         motionMode: "REDUCED",
       });
     }
-    if (generation21 === 22) {
+    if ([22, 23].includes(generation21)) {
       media.evidence.mediaFirstReview.kind = R22_MEDIA_PROTOCOL.kind;
-      media.evidence.mediaFirstReview.criticCreation.createdAtUtc = "2026-10-20T18:25:00Z";
+      media.evidence.mediaFirstReview.criticCreation.createdAtUtc =
+        generation21 === 23 ? "2026-10-20T23:20:00Z" : "2026-10-20T18:25:00Z";
       media.first.criticCreation = structuredClone(media.evidence.mediaFirstReview.criticCreation);
-      media.first.mediaInspectionStartedAt = "2026-10-20T18:26:00Z";
-      media.first.observationsFrozenAt = "2026-10-20T18:28:00Z";
-      media.evidence.mediaFirstReview.sourceInspectionStartedAt = "2026-10-20T18:30:00Z";
-      media.evidence.mediaFirstReview.canonicalJudgmentsCompletedAt = "2026-10-20T18:31:00Z";
+      media.first.mediaInspectionStartedAt = generation21 === 23 ? "2026-10-20T23:21:00Z" : "2026-10-20T18:26:00Z";
+      media.first.observationsFrozenAt = generation21 === 23 ? "2026-10-20T23:23:00Z" : "2026-10-20T18:28:00Z";
+      media.evidence.mediaFirstReview.sourceInspectionStartedAt =
+        generation21 === 23 ? "2026-10-20T23:25:00Z" : "2026-10-20T18:30:00Z";
+      media.evidence.mediaFirstReview.canonicalJudgmentsCompletedAt =
+        generation21 === 23 ? "2026-10-20T23:26:00Z" : "2026-10-20T18:31:00Z";
     }
     media.seal();
     Object.assign(evidence, media.evidence, { pairedEvidence: { cases: [] } });
@@ -1668,7 +1686,7 @@ async function loaderFixture(t, generation21 = false) {
     run: { runId: 601, headSha: plan.baseSha, headBranch: "main", event: "workflow_dispatch", actor: "Kgray44" },
   };
   const capture = { ...evidence, exceptionPreparationReservation: sha(701) };
-  if (generation21 === 22) {
+  if ([22, 23].includes(generation21)) {
     delete capture.mediaFirstReview;
     delete capture.captureArtifactId;
     delete capture.reviewArtifactId;
@@ -1693,7 +1711,7 @@ async function loaderFixture(t, generation21 = false) {
       captureArtifactId: 1001,
       sourcePacketPath: packet,
       outputDirectory: path.join(root, "gated-source"),
-      now: () => new Date("2026-10-20T18:29:00Z"),
+      now: () => new Date(generation21 === 23 ? "2026-10-20T23:24:00Z" : "2026-10-20T18:29:00Z"),
       loadCapture: async () => ({
         capture: { ...capture, trustedArtifact },
         prepare: { ...reservation, commitSha: sha(701) },
@@ -1712,7 +1730,7 @@ async function loaderFixture(t, generation21 = false) {
         nativeMessageId: "synthetic-native-disclosure-only",
         sourcePacketSha256: staged.sourcePacketStage.packet.sha256,
         startedAtUtc: evidence.mediaFirstReview.sourceInspectionStartedAt,
-        completedAtUtc: "2026-10-20T18:30:01Z",
+        completedAtUtc: generation21 === 23 ? "2026-10-20T23:25:01Z" : "2026-10-20T18:30:01Z",
       },
     });
   }
@@ -2304,4 +2322,76 @@ test("R22 real capture attestation rejects a relabeled index or validator even w
   protocol.sourceDisclosure.preSourceAdmissionDigest = mediaFirstDigest(protocol.preSourceAdmission);
   protocol.sourceDisclosure.sourcePacketStageDigest = mediaFirstDigest(protocol.sourcePacketStage);
   await assert.rejects(f.verify(), /PINNED_VALIDATOR_CHANGED/u);
+});
+
+test("R23 authenticated report and immutable seal bind shared pre-source PASS/stage/native disclosure", async (t) => {
+  const f = await loaderFixture(t, 23),
+    protocol = f.evidence.mediaFirstReview;
+  validateR23MediaFirstReview(f.plan, f.evidence);
+  const identity = sealedReviewIdentity(f.plan, f.evidence);
+  for (const key of [
+    "mediaFirstReviewDigest",
+    "preSourceAdmissionDigest",
+    "sourcePacketStageDigest",
+    "sourceDisclosureDigest",
+  ])
+    assert.equal(f.review[key], identity[key]);
+  assert.equal((await f.verify()).status, "PASS");
+  const frozenJudgments = hash(f.evidence.reviews),
+    frozenMedia = hash(f.evidence.artifacts);
+  f.media.first.contractObservations[0].dimensions.hierarchy.observation +=
+    " A different independently valid observation.";
+  f.media.seal();
+  protocol.preSourceAdmission.firstPass = {
+    bytes: protocol.frozenFirstPass.bytes,
+    sha256: protocol.frozenFirstPass.sha256,
+  };
+  protocol.sourcePacketStage.preSourceAdmissionDigest = mediaFirstDigest(protocol.preSourceAdmission);
+  protocol.sourceDisclosure.preSourceAdmissionDigest = mediaFirstDigest(protocol.preSourceAdmission);
+  protocol.sourceDisclosure.sourcePacketStageDigest = mediaFirstDigest(protocol.sourcePacketStage);
+  validateR23MediaFirstReview(f.plan, f.evidence);
+  assert.equal(hash(f.evidence.reviews), frozenJudgments);
+  assert.equal(hash(f.evidence.artifacts), frozenMedia);
+  await assert.rejects(f.verify(), /TRUSTED_CAPTURE_OR_REVIEW_MISMATCH/u);
+  const replacement = createReviewSubmission({
+    baseSha: f.plan.baseSha,
+    plan: f.plan,
+    evidence: f.evidence,
+    exceptionFields: {
+      exception: f.plan.exception,
+      exceptionPreparationReservation: f.review.exceptionPreparationReservation,
+      exceptionReviewSeal: f.review.exceptionReviewSeal,
+    },
+    submittedBy: "Kgray44",
+  });
+  f.archives[1002] = zip({ "review.json": replacement });
+  f.responses.get("actions/artifacts/1002").digest = `sha256:${bytesHash(f.archives[1002])}`;
+  await assert.rejects(f.verify(), /SEALED_EVIDENCE_MISMATCH/u);
+});
+
+test("R23 real capture attestation rejects a relabeled index or validator even with self-rehashed receipts", async (t) => {
+  const f = await loaderFixture(t, 23),
+    protocol = f.evidence.mediaFirstReview;
+  const admission = structuredClone(protocol.preSourceAdmission);
+  protocol.preSourceAdmission.capture.indexDigest = "0".repeat(64);
+  protocol.sourcePacketStage.preSourceAdmissionDigest = mediaFirstDigest(protocol.preSourceAdmission);
+  protocol.sourceDisclosure.preSourceAdmissionDigest = mediaFirstDigest(protocol.preSourceAdmission);
+  protocol.sourceDisclosure.sourcePacketStageDigest = mediaFirstDigest(protocol.sourcePacketStage);
+  await assert.rejects(f.verify(), /CURRENT_CAPTURE_INDEX_CHANGED/u);
+  protocol.preSourceAdmission = admission;
+  protocol.preSourceAdmission.validator[0].blob = "0".repeat(40);
+  protocol.sourcePacketStage.preSourceAdmissionDigest = mediaFirstDigest(protocol.preSourceAdmission);
+  protocol.sourceDisclosure.preSourceAdmissionDigest = mediaFirstDigest(protocol.preSourceAdmission);
+  protocol.sourceDisclosure.sourcePacketStageDigest = mediaFirstDigest(protocol.sourcePacketStage);
+  await assert.rejects(f.verify(), /PINNED_VALIDATOR_CHANGED/u);
+});
+
+test("R23 authenticated attestation cannot borrow the preceding R22 record receipt", async (t) => {
+  const f = await loaderFixture(t, 23),
+    protocol = f.evidence.mediaFirstReview;
+  protocol.preSourceAdmission.binding.recordDigest = CURRENT_R23.previousRecordDigest;
+  protocol.sourcePacketStage.preSourceAdmissionDigest = mediaFirstDigest(protocol.preSourceAdmission);
+  protocol.sourceDisclosure.preSourceAdmissionDigest = mediaFirstDigest(protocol.preSourceAdmission);
+  protocol.sourceDisclosure.sourcePacketStageDigest = mediaFirstDigest(protocol.sourcePacketStage);
+  await assert.rejects(f.verify(), /PASS_RECEIPT_REQUIRED/u);
 });
