@@ -23,6 +23,15 @@ completion work. Bundle, team, internal group, signing configuration and
 `https://ncl01.absoluterelativesystems.com` are preserved. Enrollment, App ID,
 certificates and initial installation are already complete; do not repeat them.
 
+The completion candidate adds a bounded Release proof inside the existing
+archive runner: pin approved artwork/catalog input, scan only the known
+DEBUG-only camera-free enablement in the actual Mach-O, and retain decoded
+compiled-icon pixels for independent review. Do not label that limited scan
+as absence of all fixture code/metadata, or icon capture as artwork acceptance.
+Use one unsigned archive after verifier preflight; no new beta, signing identity,
+external group, App Store review or Cloudflare change is implied. Existing
+private archive/signing cleanup remains mandatory.
+
 The preserved web preview still runs `47ff42e4`, independently of the new
 completion candidate. Use the current C:-owned procedures in
 [preview operations](ncl01-local-preview.md). Old D: whole-stack process records

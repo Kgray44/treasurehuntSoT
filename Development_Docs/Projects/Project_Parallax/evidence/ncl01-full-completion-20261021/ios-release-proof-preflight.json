@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "LOCAL_HOST_TESTS_RELEASE_ARCHIVE_VERIFIER_ONLY",
+  "result": "PASS",
+  "baseHead": "b4cea94abc64fc6e02dfa5f241242eda3888d4b3",
+  "sourceNotYetCommitted": true,
+  "files": [
+    {
+      "path": "scripts/landfall/testflight/runner.py",
+      "byteLength": 30793,
+      "sha256": "97467fc7cf7f25c5f84cfa38aac2bc6096260c1daf48b31ed5d9b0b9d823a4a4",
+      "gitBlobSha1": "a2a5ff23eb3d7cc7ba816ac121735cab1aa4988b",
+      "workingTreeWindowsBytesSha256": "97467fc7cf7f25c5f84cfa38aac2bc6096260c1daf48b31ed5d9b0b9d823a4a4"
+    },
+    {
+      "path": "scripts/landfall/testflight/release_proof.py",
+      "byteLength": 10642,
+      "sha256": "ea5211be5c92cccfa59e8a5fcfde67760daa981c960ee776e18a0c35771228d7",
+      "gitBlobSha1": "d7a470dffdee35c624da532bbed59fef63be60ac",
+      "workingTreeWindowsBytesSha256": "ea5211be5c92cccfa59e8a5fcfde67760daa981c960ee776e18a0c35771228d7"
+    },
+    {
+      "path": "scripts/landfall/testflight/test_release_proof.py",
+      "byteLength": 8136,
+      "sha256": "fe74e2bae5d6678de890549700daa05dc198a0bc5f5b077af5034da3c25d760a",
+      "gitBlobSha1": "603f858ed1b369781e56748d860677582a284fd2",
+      "workingTreeWindowsBytesSha256": "fe74e2bae5d6678de890549700daa05dc198a0bc5f5b077af5034da3c25d760a"
+    }
+  ],
+  "tests": 16,
+  "newProofTests": 9,
+  "existingSigningTests": 7,
+  "command": "python -m unittest discover -s scripts/landfall/testflight -p test_*.py -v",
+  "python": "Python3.12.10",
+  "diffCheck": "PASS",
+  "originalLogSha256": "1baa79f7eef979d475bc636a517d77378cc07e4874ffbe8ee1f924800c8cecfe",
+  "supersedesVerificationSha256": "83255020a15f468fcd726323fa313fb79472f48194722b3a95c42a354746ead7",
+  "supersededEvidencePreserved": true,
+  "peerReview": "NO_BLOCKING_FINDING",
+  "claimScopeClarified": "proofExportsArchiveExecutableOrSigningMaterial:false",
+  "approvedIconSha256": "4fd7beec45947a02d40c99159e19ee87f7c4fea6db32bf18db9224b23a1a1f73",
+  "nativeSourceChanged": false,
+  "signingOrCleanupPolicyChanged": false,
+  "newArchiveOrUploadPerformed": false,
+  "actualMacReleaseProofStillRequired": true,
+  "at": "2026-10-21T16:18:42.3105599Z",
+  "previousPreflightSha256": "6d0802f4ab08f602fa7000f7634958b9b74bba35219918dd9f3c70cc02fac9a8",
+  "gitBlobPurpose": "Repository Git blob identities bind committed source across checkout line-ending differences; Windows byte SHA256 values remain the original working-file observations.",
+  "editOwnershipReleased": true
+}

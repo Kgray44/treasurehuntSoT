@@ -22,6 +22,8 @@ import urllib.parse
 import urllib.request
 import zipfile
 
+from release_proof import ReleaseProofError, verify_release_app
+
 TEAM = "X2JZ9N65V2"
 BUNDLE = "com.voyagewright.landfall"
 SECRET_NAMES = (
@@ -336,6 +338,13 @@ class Runner:
         plistlib.loads((gltf / "PrivacyInfo.xcprivacy").read_bytes())
         self.receipt["deviceArchiveValidated"] = True
         self.receipt["appExecutableSha256"] = hashlib.sha256((app / info["CFBundleExecutable"]).read_bytes()).hexdigest()
+        self.stage = "RELEASE_BINARY_AND_ICON_PROOF"
+        try:
+            self.receipt["releaseProof"] = verify_release_app(
+                self.root, app, info["CFBundleExecutable"], self.args.candidate, self.public)
+        except ReleaseProofError as error:
+            raise Failure(str(error)) from error
+        self.stage = "ARCHIVE_VALIDATION"
         if self.args.mode == "upload":
             self.run(["codesign", "--verify", "--deep", "--strict", str(app)])
             signed = plistlib.loads(self.run(["codesign", "-d", "--entitlements", ":-", str(app)]))

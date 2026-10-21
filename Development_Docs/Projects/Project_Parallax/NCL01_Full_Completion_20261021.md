@@ -415,6 +415,28 @@ components. An independent reviewer inspected the actual presentation images
 and these repairs; fresh execution is required. Neither correction changes
 shipping native/app source, existing beta, model bytes, timeouts or TLS policy.
 
+### Release artifact proof preparation
+
+The existing unsigned archives validated metadata and recorded the executable
+hash, but did not retain actual compiled-icon pixels or scan the Release
+executable's debug-only enablement. The existing TestFlight runner now performs
+a bounded proof before cleanup: the approved official/prepared source hash and
+catalog filename mapping must match; the known camera-free launch switch must
+be absent in UTF-8/UTF-16LE/UTF-16BE; actual 120/152-pixel compiled icons are
+decoded losslessly and retained with pixel hashes and viewing copies. This is
+not an assertion that every fixture-related protocol label is absent, or an
+automatic cross-resolution artwork comparison. Independent visual review of
+the actual compiled icons remains required. The proof exports no archive,
+executable or signing material; existing upload behavior is otherwise unchanged.
+
+The [focused verifier preflight](evidence/ncl01-full-completion-20261021/ios-release-proof-preflight.json)
+records 16 passing host tests (nine new, seven existing signing boundaries),
+exact Git blobs and byte hashes, malformed-image/entrypoint/catalog negatives,
+and an independent source review. Native shipping source, signing, cleanup,
+retention, upload policy and beta 7 are unchanged. A fresh unsigned Mac archive
+must execute this new proof; archive-only metadata 8 consumes no Apple build
+number. It cannot be substituted for a signed installation or physical AR.
+
 ## Original ten requirements: current disposition
 
 This matrix describes the bounded original-model milestone at frozen repair
