@@ -1,7 +1,7 @@
 ---
 title: Parallax protected integration after Crossdeck landing
 audience: product-engineering
-status: reconciled-focused-verification-pending
+status: local-software-pass-browser-preparation-blocked
 canonical_for: parallax-protected-integration-20261021
 last_reviewed: 2026-10-21
 ---
@@ -75,10 +75,37 @@ retains exact ownership and dispositions:
 
 ## Verification and custody
 
-Fresh focused unit, whole-project TypeScript, production build, affected browser
-and governed Product Experience verification remain pending at this checkpoint.
-No ordinary protected qualification has been started. The source will be frozen
-before capture; each new receipt retains its actual producer identity.
+Exact source `871431cd0827d42551c8a8b9d2d7fde5e16c1f77` passes 215 unique
+local assertions across 22 test files: 145 component/runtime cases and 70
+Crossdeck service, transport and fixture cases. Whole-project TypeScript passes
+with no diagnostics. The isolated SQLite bootstrap, synthetic fixture setup,
+legacy companion migration and production build all exit zero; every supervised
+child has a passing Windows job cleanup receipt. Next compiled in 36 seconds,
+completed its TypeScript phase in 72 seconds and generated 162 static pages.
+These results retain their actual producing source in the
+[current local checkpoint](evidence/protected-integration-20261021/checks-871431/checkpoint.json).
+
+The whole browser preparation nevertheless failed after the successful build,
+before issuing a reusable manifest or running any browser case. Its immutable
+build guard rejects three Next-generated absolute Windows directory junctions
+for Prisma, pino and sharp. Read-only inspection confirms every resolved target
+is exactly inside this checkout's own `node_modules`. The original
+`DEVELOPMENT_BUILD_LINK_OUTSIDE_DEPENDENCIES` receipt and compiled build remain
+preserved; no guard was bypassed. A possible later Windows link-copy issue is
+unproven and is not counted as an observed failure.
+
+The separate non-consuming experience planner also failed before producing a
+plan: its complete candidate blob batch is 172,504,656 bytes, exceeding the
+existing 128 MiB subprocess bound. The accepted base batch is 90,593,533 bytes.
+The original `ENOBUFS` stderr, empty stdout and size diagnosis are retained.
+Metadata Git reads did execute; no capture, authenticated review or protected
+qualification ran. Both transport diagnoses are coordinated with the existing
+verification maintenance owner. Evidence paths, source selection, limits and
+external-link rejection remain unchanged.
+
+Fresh affected browser and governed Product Experience verification remain
+pending. The installed maintenance source must be reconciled before freezing
+the final candidate for capture; no ordinary protected qualification has started.
 
 The [evidence intake](evidence/protected-integration-20261021/README.md) binds
 original readbacks, contract/source analysis, actual conflict resolution and
@@ -92,7 +119,19 @@ free-space deltas are receipts, not exact allocation attribution. Automatic
 approval review rejected cleanup before execution, including after direct cache
 approval. This task performed no deletion. Actual checkout completed with about
 30.71 GiB free; production build/browser outputs require separately measured
-headroom.
+headroom. A separate owner subsequently removed eight independently approved
+old cache directories. This task independently observed C: restored above the
+30 GiB reserve and D: temporary capacity restored; D: capacity is not cleanup
+credit. The new build's measured headroom preflight passed, and C: remained about
+32.07 GiB after the failed preparation. Unit/typecheck temporary state and reports
+are on D:. The new preparation and its prior build remain in this owned C:
+checkout/parent; their failure originals have not been removed or rebound.
+
+The [validation intake](evidence/protected-integration-20261021/validation-intake-871431.json)
+hash-verifies 37 exact copied originals, including the earlier missing-filename
+preflight that stopped before Vitest with zero cases. The original running
+checkpoint and paused-path selection retain their historical statuses; the
+current checkpoint records the completed results and remaining blockers.
 
 Physical iPhone alignment and browser tracker reliability remain unqualified.
 Plane prototypes return no admitted planes/hit tests. The unchanged root's 30

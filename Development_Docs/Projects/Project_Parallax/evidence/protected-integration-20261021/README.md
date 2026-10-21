@@ -1,7 +1,7 @@
 ---
 title: Parallax accepted-main reconciliation evidence
 audience: product-engineering
-status: focused-verification-pending
+status: local-software-pass-browser-preparation-blocked
 canonical_for: parallax-protected-integration-evidence-20261021
 last_reviewed: 2026-10-21
 ---
@@ -28,6 +28,16 @@ producing source. Fresh protected qualification is pending.
   file hashes remained unchanged. This task executed no deletion.
 - [Artifact intake](artifact-intake.json) preserves exact copied bytes, including
   original pre-reconciliation human status snapshots as engineering raw text.
+- [Current local checkpoint](checks-871431/checkpoint.json) records 215 unique
+  passing assertions, whole-project TypeScript, isolated SQLite/setup and a
+  successful production build on exact source `871431cd0827d42551c8a8b9d2d7fde5e16c1f77`.
+  Whole browser preparation failed at Windows junction admission, with zero
+  browser cases. The separate non-consuming planner failed with `ENOBUFS` before
+  emitting a plan. Neither attempt produced protected acceptance.
+- [Validation intake](validation-intake-871431.json) verifies 37 original copies
+  under `checks-871431`, including failed/empty outputs, complete redacted setup
+  logs and their actual source identities. The earlier running checkpoint and
+  paused selection remain historical; `checkpoint.json` is the current result.
 
 Phone alignment, unavailable plane detection, browser tracker resets, native
 installation, physical AR, live-provider and owner acceptance remain unqualified.

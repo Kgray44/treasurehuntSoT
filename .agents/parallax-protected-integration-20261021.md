@@ -30,8 +30,16 @@ use governed capture, separate review, authenticated submission and ordinary
 Sounding Line before protected merge. Preserve physical/device, native delivery,
 provider and owner acceptance boundaries. No new phase or unrelated maintenance.
 
-Keep mutable databases, ports and browsers task-owned and synthetic. D: is full;
-maintain the 30 GiB C: reserve and measure build/browser headroom separately.
+Keep mutable databases, ports and browsers task-owned and synthetic. D: temporary
+capacity has been restored; maintain the 30 GiB C: reserve and measure each
+build/browser allocation separately. Preserve the source-bound 215 local test,
+TypeScript, SQLite/setup and production-build passes on `871431cd0827d42551c8a8b9d2d7fde5e16c1f77`.
+Whole browser preparation failed on generated Windows junction admission before
+any browser case; the non-consuming experience planner separately failed on its
+complete blob-batch buffer. Both originals and compiled builds remain. Coordinate
+their installed repairs with the existing maintenance owner; do not bypass guards,
+filter evidence, inflate limits or start a competing infrastructure lane. Reconcile
+the accepted repair source once before final capture/qualification freeze.
 Automatic cleanup rejections are retained; lossless owned-file compression was
 used and this task executed no deletion. Do not retry optional cleanup when it
 is unnecessary. No real private photos or paid inference are authorized.
