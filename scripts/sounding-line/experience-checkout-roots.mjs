@@ -8,11 +8,14 @@ export const EXPERIENCE_CHECKOUT_ROOTS = Object.freeze([
   "bece6a2296cf1624f2d9df1acc78055d8d8b9e6f", // R23 capture
   "de8730254d8a9be2059ab41a5ab01c02ad97db2e", // R23 review-submit
   "39b313d1e02d134fce6ef7cfce98cfdc1ed5e889", // R23 review12
+  "55d8b2c505e30a5736df6c326ee2ab313e32d4a2", // Spent R24 qualify
 ]);
 
 // Accepted e0056ff3 typed policy inventory. Historical byte reads are selected
 // by the actual sourceSnapshot predicate, exact metadata reads and typed pins.
 export const EXPERIENCE_READER_REVISIONS = Object.freeze([
+  "e1a86f98e56d68e8e87e3704d17439489ff1a170", // Accepted R24 registry/source
+  "245e5128afa00e6c888818a698ebd37717d81a3d", // Frozen R24 consumer source
   "005bbd181872629bb2b5a941fac6ddd43dfa16b7",
   "0152b8c8824d06d57dab458c83c76751a8fd9b08",
   "0c9d4c0741c016d83a40abd176cd6b2bb8bf8f5b",

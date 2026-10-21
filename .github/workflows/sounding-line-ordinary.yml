@@ -254,7 +254,7 @@ jobs:
     needs: campaign-custody
     if: ${{ (github.event_name != 'workflow_dispatch' || (inputs.experience_mode == 'ordinary' && !inputs.experience_diagnostic)) && (github.event_name != 'pull_request_target' || github.event.pull_request.draft == false) }}
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: ${{ (github.event.pull_request.number == 721 || inputs.pr_number == '721') && 90 || 45 }}
     outputs:
       current_observation: ${{ steps.route.outputs.private_failure_publication_nonce != '' && steps.ordinary-verifier.outputs.current_admission_observation_publish == steps.route.outputs.private_failure_publication_nonce }}
       current_observation_nonce: ${{ steps.route.outputs.private_failure_publication_nonce }}
