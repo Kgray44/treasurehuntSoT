@@ -12,6 +12,12 @@ This engineering record binds the October 21 unattended completion mission to
 the original ten-item contract. It grants no product, physical or protected-main
 acceptance. The unattended execution preserves the external acceptance boundaries.
 
+The [post-Crossdeck integration record](NCL01_Post_Crossdeck_Integration_20261021.md)
+continues this dated checkpoint after accepted merge `aaff9194`. Statements below
+about unmerged PR721 or missing continuity design retain their historical,
+source-bound meaning; the integration record supersedes them for current source.
+Native evidence and physical acceptance boundaries remain intact.
+
 The current coherent software checkpoint is `98a127e0`, based on protected main
 `d699de95`. Both companions have original-model rendering and joined native
 input/Player-return development proof. The independent full iOS presentation

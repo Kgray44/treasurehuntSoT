@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "reviewType": "INDEPENDENT_EXACT_COMMIT_AUTHORITY_MAINTENANCE_REVIEW",
+  "status": "APPROVED",
+  "reviewedAtUtc": "2026-10-16T06:45:19.446Z",
+  "repository": "D:\\CodexRepos\\treasurehunt-sounding-line-maintenance-20261015",
+  "reviewedCommit": "1f892577e4712d1f0277c3a2c5de1731f734ce1a",
+  "reviewedTree": "bb94e3ffb40ba057dd95d1d230f94a546b596110",
+  "baseCommit": "0abaf7fd37b6ee8185d522dcba2d1bf7133a1c09",
+  "baseTree": "0bbaa44d314e7bdf54c58ce8e8110348b58fa3c9",
+  "workingTreeClean": true,
+  "blockingFindings": [],
+  "sourceBindings": [
+    {
+      "path": "Development_Docs/Programs/Sounding_Line/Project_Sounding_Line_Crossdeck_R6_Paired_Evidence_20261016.md",
+      "sha256": "45a09727c8b2108db3ffe6011a76f7fcef1a037b9ba5b16b3703d16fbdca7ca9"
+    },
+    {
+      "path": "scripts/sounding-line/experience-paired.mjs",
+      "sha256": "a2b4c4b0021983f2eb8a8b659f10769a7f79682c8655a5a5748e0d28b69f3d7e"
+    },
+    {
+      "path": "tests/sounding-line/experience-paired.test.mjs",
+      "sha256": "4e20801ec01dfe8e2ebe9612c8c37cdecca65efa8b53ed1c39c2c553bcc1b2e7"
+    }
+  ],
+  "deltaManifestSha256": "7d5313c139e451d3cfd92baaaa6ba81c83ed1ca6c0b28521046760025e77c6e7",
+  "unchangedBoundaries": [
+    {
+      "path": "testing/product-experience-exceptions.json",
+      "sha256": "bbe470f652192710e27e6674916c817e9497756c56016cda7cf790ebb3b555d1",
+      "unchangedFromBase": true
+    },
+    {
+      "path": ".github/workflows/sounding-line-ordinary.yml",
+      "sha256": "18f3b7f475d1fd03851559c1eb52591247ab74bb5d37cba1cf914e90e8dc57b4",
+      "unchangedFromBase": true
+    },
+    {
+      "path": "scripts/sounding-line/experience-exception.mjs",
+      "sha256": "90a3b460328d5ef6675db69f43ebdfdbeb930126b8ce8ee2b796d5eeb3c5bef5",
+      "unchangedFromBase": true
+    },
+    {
+      "path": "scripts/sounding-line/experience-r6.mjs",
+      "sha256": "a7dbb481d6e78956ffa34490cb373794e57930716ecb26216c7ddd9847567a0b",
+      "unchangedFromBase": true
+    },
+    {
+      "path": "scripts/sounding-line/experience-r6-local-proof.mjs",
+      "sha256": "ea9ae36b2b4506318d942f96de213c1d14a9f049e67a7d35f4b2674eae4ec0c1",
+      "unchangedFromBase": true
+    },
+    {
+      "path": "scripts/sounding-line/experience-attestation.mjs",
+      "sha256": "fa09f07edafa97c058e618d3df0f8c3dea33047c1fccf088a060f8b1fdc9779a",
+      "unchangedFromBase": true
+    },
+    {
+      "path": "scripts/sounding-line/product-experience.mjs",
+      "sha256": "66129bb57ba6b5e6cfcfb19c8a03e1449bb3ee205f41ba29cce830d42acb21ac",
+      "unchangedFromBase": true
+    }
+  ],
+  "runtimeDelta": {
+    "file": "scripts/sounding-line/experience-paired.mjs",
+    "lines": "315-317",
+    "operation": "Add exactly three literal publication path entries",
+    "allowedPaths": [
+      "Development_Docs/Features/catalog/crossdeck.json",
+      "CHANGELOG.md",
+      ".agents/crossdeck-refit-checkpoint.md"
+    ],
+    "neighborPathsRemainDenied": true,
+    "executedTupleAncestrySourceBaseContractRecordChecksUnchanged": true,
+    "newExecutionGrantOrAcceptancePermission": false
+  },
+  "authority": {
+    "recordDigest": "11b5fef74f3944ea6cb95b6afdb29c8ec125deda1e3a8a1ebbdc83014b70e787",
+    "immutableHistoryEntries": 405,
+    "expiry": "2026-10-22T23:59:59Z",
+    "grantBudgetsCountsPredecessorsPinsWorkflowPermissionsUnchanged": true,
+    "permissionProvenance": "Existing direct owner standing authorization reported and verified by delegating coordinator; no new native readback claimed by this reviewer."
+  },
+  "featureGovernance": {
+    "read": "Development_Docs/Features/README.md",
+    "conclusion": "This code permits later publication of the owning fragment; it does not promote a catalog entry, complete acceptance, or approve future metadata content. Feature Catalog changes remain governed by completed local/mainline acceptance and the required integration evidence. Changelog and checkpoint must describe proved outcomes."
+  },
+  "independentValidation": [
+    {
+      "command": "node --test --test-name-pattern=\"evidence publication permits exact closure metadata\" tests/sounding-line/experience-paired.test.mjs",
+      "result": "PASS",
+      "tests": 1,
+      "pass": 1,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "durationMs": 10616.8175,
+      "environment": "D-only artifacts/r6-review-temp and artifacts/r5-npm-cache",
+      "coverage": "Each of three paths allowed; fifteen neighboring/runtime/test/config/contract/grant/workflow paths rejected independently from clean publication baseline; base/source/contract/record mismatch, executed tree mutation and nonancestor rejected",
+      "scope": "Synthetic files and temporary Git repositories only; no product/browser/custody execution"
+    }
+  ],
+  "observedImplementationOwnerValidation": [
+    {
+      "path": "artifacts/r6-metadata-publication-before.log",
+      "sha256": "01998a09683342e68b8776dc03994543334190fe704f2ea0a9f5dd657d8d0e78",
+      "bytes": 1218,
+      "result": "EXPECTED_RED_REPRODUCTION",
+      "failure": "PRODUCT_EXPERIENCE_PAIRED_EXECUTED_SOURCE_CHANGED"
+    },
+    {
+      "path": "artifacts/r6-metadata-focused.log",
+      "sha256": "0af9966d2bc1c0c8ce368b1873c45766a58d2f93125455ebbcdb6a3dc921df9c",
+      "bytes": 1191,
+      "result": "PASS",
+      "tests": 9,
+      "durationMs": 23227.9947
+    }
+  ],
+  "fullSuiteBoundary": {
+    "previousLocalBaseline": "217 PASS before this exact three-line publication correction",
+    "freshLocalFullSuiteClaimed": false,
+    "pending": "Existing unchanged protected Linux qualification must validate exact new candidate, including required full217 regressions and13 rendered fixtures; not performed by this reviewer."
+  },
+  "approvalScope": "Approve only this exact-source publication maintenance correction for the existing protected qualification path. No consumer file changes, execution, budget refund, extra capture/review/ordinary slot, catalog promotion, product acceptance, protected merge, or workflow permission change is granted by this receipt.",
+  "oldReceiptsPreserved": true,
+  "sourceEditsByReviewer": false,
+  "consumerOrWorkflowExecutionByReviewer": false,
+  "featureCatalog": "NO CHANGE REQUIRED"
+}

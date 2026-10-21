@@ -1,0 +1,50 @@
+{
+  "classification": "Engineering current protected-policy preflight; not a review or acceptance",
+  "candidateSha": "ea6b9dee8bba1da6a6a66b2ddf74bdbb0763e19a",
+  "baseSha": "4baa39af82b78b50a46f590bc2acc2ff0b7597aa",
+  "sourceDigest": "82300d8c18bb92d1b498fc4d14d8eb923e8e02c502ce983fcdf97ad7d1eb0b2d",
+  "contractDigest": "8c8d5ddbc67e23f784e4465067973e2eb9d5f3d8d95bf44c646de4079cdb306d",
+  "contexts": 32,
+  "ruleBlob": "0ab7b07a289cf8db74288c0499e91ad4db080e3d",
+  "ruleUnchangedFromProtectedMain": true,
+  "historicalRepairRecaptureAttempts": 11,
+  "repairLimit": 3,
+  "independentReviewsCompleted": 2,
+  "finalThirdReview": "UNUSED",
+  "currentProbe": {
+    "purpose": "Conservative application while consumer replay remains unperformed; does not convert infrastructure qualification into consumer closure",
+    "input": {
+      "findingId": "CROSSDECK-CAPTURE-LIFECYCLE-01",
+      "classification": "CAPTURE_LIFECYCLE_BLOCKER",
+      "disposition": "CONSUMER_REPLAY_PENDING",
+      "iterations": 11
+    },
+    "result": {
+      "action": "BLOCK_WITH_EVIDENCE",
+      "blockingIds": ["CROSSDECK-CAPTURE-LIFECYCLE-01"],
+      "preserveRequirements": true
+    }
+  },
+  "boundaryProbe": {
+    "purpose": "Conditional no-blocking-findings branch only; this synthetic empty set is not a finding-resolution claim",
+    "input": {
+      "findings": [],
+      "iterations": 11
+    },
+    "result": {
+      "action": "VERIFY_FINAL_EVIDENCE",
+      "blockingIds": []
+    }
+  },
+  "validationConstraint": {
+    "file": "scripts/sounding-line/product-experience.mjs",
+    "lines": [819, 824],
+    "condition": "review.iterations must be an integer from1through3 and review.status ACCEPTED",
+    "honestAggregateIterations": 11,
+    "staticConflict": true,
+    "fullValidatorInvoked": false,
+    "actualRemoteOrAuthenticatedRejection": false
+  },
+  "requiredDistinctDecision": "No further repair loop is allowed with unresolved findings. A source-bound verification-only continuation after the qualified infrastructure fix must explicitly authorize any fresh capture, preserve11/3, and establish a conforming truthful review submission under the current1..3 cap. Generic merge approval does not supply that missing representation. No waiver, reset, review-count substitution, validator change or bypass is implemented.",
+  "recordedUtc": "2026-10-15T04:32:10.409Z"
+}

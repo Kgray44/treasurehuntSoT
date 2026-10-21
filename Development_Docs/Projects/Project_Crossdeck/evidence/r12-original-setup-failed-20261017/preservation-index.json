@@ -1,0 +1,499 @@
+{
+  "version": 1,
+  "classification": "FAILURE_ONLY_EXACT_BYTES_PRESERVATION_INDEX_NOT_EXECUTION_AUTHORITY",
+  "canonicalFor": "crossdeck-r12-original-setup-failed-20261017",
+  "createdBy": "/root/qualification_audit",
+  "publicationBaseSha": "d30efd8b92f7f3354def9e9262f222e58b040e74",
+  "exceptionId": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R12",
+  "sourceTuple": {
+    "baseSha": "e85ceda26a3770dfb2b01f2afd916e45761a5d9e",
+    "candidateSha": "53601e9e386bb4f1062719befc77b7778b9e4430",
+    "candidateTree": "85e9accc1d273d0f649119380d775df41e6dcf0a",
+    "sourceDigest": "3e69c2306442758edca417fdb478f1a61e009f1cbc82d584bcad6e760257df0f",
+    "contractDigest": "33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274",
+    "recordDigest": "9d140072d1cd31a363bf667380b1298eb1b8a9ef0489eb0be564922f85f5239c"
+  },
+  "accounting": {
+    "originalEntryInvocations": 1,
+    "originalCaseExecutions": 0,
+    "originalStatus": "FAIL",
+    "originalOutcome": "EXECUTION_UNKNOWN",
+    "originalEntrySpent": true,
+    "correctedEntryStarted": false,
+    "ordinary6Started": false,
+    "productCaptures": 0,
+    "productReviews": 0,
+    "productProviderCalls": 0
+  },
+  "absentOriginalOutputs": [
+    "PLAYWRIGHT_JSON_REPORT",
+    "BROWSER_RUNTIME_RECEIPT",
+    "DEVICE_LAB_RECEIPT",
+    "TECHNICAL_SCREENSHOT_OR_OTHER_MEDIA"
+  ],
+  "provenance": "Every copied file retains exact bytes and is explicitly classified. Original indexes/receipts retain their original paths. Official checksum response bodies are not cache sidecar bytes. Source excerpts retain their disclosed presentation newline. Equivalent Node probes do not invoke private bundled Prisma fetch or prove its original hidden subcause. Static review is not actual dependency/preflight/product readiness. No engine, setup, app, database, browser, product journey or custody action was performed to assemble this publication.",
+  "selfExcluded": true,
+  "indexedFiles": 51,
+  "totalIndexedBytes": 507991,
+  "files": [
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/Disposition.proposed.md",
+      "mode": "100644",
+      "blob": "8b4c6042d80c43d9f67ea86efa51ef99aa5591cd",
+      "bytes": 6686,
+      "sha256": "ecd27400231b5909036c98732473063cfdd2e3c10a664a9722ffabc6f5cd0366",
+      "classification": "AUTHOR_ENGINEERING_FAILURE_DISPOSITION_FORMATTED_NOT_EXECUTION_AUTHORITY",
+      "sourcePath": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/absence-and-accounting.observation.json",
+      "mode": "100644",
+      "blob": "d8e6043e8234ff3a06423be183e4de1d4221822a",
+      "bytes": 2390,
+      "sha256": "3fd2c20c00316d638835be53cb1cb0950f64b07a4ed154537f5a3288047f0861",
+      "classification": "DERIVED_AUTHOR_ACCOUNTING_AND_ABSENCE_OBSERVATION_NOT_QUALIFICATION",
+      "sourcePath": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/canonical-original-receipt.json",
+      "mode": "100644",
+      "blob": "ee5c4699048f1819c2cb99b03492d38773d7b4d4",
+      "bytes": 2727,
+      "sha256": "521f8d93eb65ddccc8149e4aff8f95e4e7df7590b649d406e345f61df9d9a34d",
+      "classification": "EXACT_LOCAL_OPERATOR_CANONICAL_RECEIPT_COPY_NOT_QUALIFICATION",
+      "sourcePath": "/workspace/crossdeck-r12-original-proof/artifacts/sounding-line/r12-focused-original-receipt.json"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/checksum-fetch-environment-probe/checksum-node-get-probe.mjs",
+      "mode": "100644",
+      "blob": "c2838fad4ca0584181c0e1f48117e7308e75a3b5",
+      "bytes": 3073,
+      "sha256": "0806d213e9c2f23de24c49813053aa28468fc32e17d8238646fb3987a2fb4be8",
+      "classification": "EXACT_READ_ONLY_PROBE_SCRIPT_COPY_NOT_PRODUCT_SOURCE_OR_EXECUTION_AUTHORITY",
+      "sourcePath": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/checksum-node-get-probe.mjs"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/checksum-fetch-environment-probe/node-get-environment-probe.receipt.json",
+      "mode": "100644",
+      "blob": "22702e25eedc723a01ea014d8c33ae8ba9109ad6",
+      "bytes": 7192,
+      "sha256": "a5b24239a7d187c043404fce1180c817daff03d9649582851503306655f4d919",
+      "classification": "AUTHOR_ASSEMBLED_EQUIVALENT_NODE_HTTPS_PROBE_RECORD_NOT_ORIGINAL_SUBCAUSE_PROOF",
+      "sourcePath": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/node-get-environment-probe.receipt.json"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/checksum-fetch-environment-probe/ordinary-configured-proxy-and-trust.stderr.log",
+      "mode": "100644",
+      "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "classification": "EXACT_EQUIVALENT_NODE_HTTPS_PROBE_STDERR_COPY",
+      "sourcePath": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/ordinary-configured-proxy-and-trust.stderr.log"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/checksum-fetch-environment-probe/ordinary-configured-proxy-and-trust.stdout.json",
+      "mode": "100644",
+      "blob": "023dcf7c1e45770e00f26cd17815cdb331855bbd",
+      "bytes": 1171,
+      "sha256": "2700f39b946ca5c5dbde63b1dda8d28c29d2110b1850fdf2585ff68b78b53e0b",
+      "classification": "EXACT_EQUIVALENT_NODE_HTTPS_PROBE_STDOUT_COPY_NOT_BUNDLED_PRISMA_FETCH",
+      "sourcePath": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/ordinary-configured-proxy-and-trust.stdout.json"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/checksum-fetch-environment-probe/ordinary-configured-trust-probe.receipt.json",
+      "mode": "100644",
+      "blob": "6dd380f3d0d0dc6482c05757bd41e9e3cfbb3052",
+      "bytes": 2384,
+      "sha256": "3c4edd10c4c79fef0ee6bfe1817ed0d90216d809c3cb5c8290e445e7237a7b44",
+      "classification": "AUTHOR_ASSEMBLED_EQUIVALENT_NODE_HTTPS_PROBE_RECORD_NOT_ORIGINAL_SUBCAUSE_PROOF",
+      "sourcePath": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/ordinary-configured-trust-probe.receipt.json"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/checksum-fetch-environment-probe/ordinary-supported-proxy-context.stderr.log",
+      "mode": "100644",
+      "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "classification": "EXACT_EQUIVALENT_NODE_HTTPS_PROBE_STDERR_COPY",
+      "sourcePath": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/ordinary-supported-proxy-context.stderr.log"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/checksum-fetch-environment-probe/ordinary-supported-proxy-context.stdout.json",
+      "mode": "100644",
+      "blob": "7f8dc4e70020b884d876521cbd11150ccb868743",
+      "bytes": 1333,
+      "sha256": "b16062927d958ae3391f8ba08752c970fc3ffd02666bf71a07c6f6d420403955",
+      "classification": "EXACT_EQUIVALENT_NODE_HTTPS_PROBE_STDOUT_COPY_NOT_BUNDLED_PRISMA_FETCH",
+      "sourcePath": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/ordinary-supported-proxy-context.stdout.json"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/checksum-fetch-environment-probe/sanitized-profile-equivalent.stderr.log",
+      "mode": "100644",
+      "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "classification": "EXACT_EQUIVALENT_NODE_HTTPS_PROBE_STDERR_COPY",
+      "sourcePath": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/sanitized-profile-equivalent.stderr.log"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/checksum-fetch-environment-probe/sanitized-profile-equivalent.stdout.json",
+      "mode": "100644",
+      "blob": "3fec9d13c5fd47ed7e8843e59f7ef14590fd0329",
+      "bytes": 2920,
+      "sha256": "0c40b42e3be050b4e35f84e90bc44c939d1c53cd76d8208025359803db88dbc7",
+      "classification": "EXACT_EQUIVALENT_NODE_HTTPS_PROBE_STDOUT_COPY_NOT_BUNDLED_PRISMA_FETCH",
+      "sourcePath": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/sanitized-profile-equivalent.stdout.json"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/entry/original.entry.stderr.log",
+      "mode": "100644",
+      "blob": "8603c6f3b7c8419b3dcd43a973e46b677cffebe6",
+      "bytes": 689,
+      "sha256": "4b67e4f6fb095764f7ac309803c314178ebbd4443ee97ff552b7611b09bc7211",
+      "classification": "EXACT_LOCAL_PROCESS_STDOUT_OR_STDERR_COPY",
+      "sourcePath": "/workspace/crossdeck-cloud-receipts/r12-original.entry.stderr.log"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/entry/original.entry.stdout.log",
+      "mode": "100644",
+      "blob": "e4fa50fd316e4350e176b766cc97e11418bfdae9",
+      "bytes": 2781,
+      "sha256": "3fcfe20b7fc895851633cc8f9743fe1eff5dc5b5960f80c6de36642a2e427e39",
+      "classification": "EXACT_LOCAL_PROCESS_STDOUT_OR_STDERR_COPY",
+      "sourcePath": "/workspace/crossdeck-cloud-receipts/r12-original.entry.stdout.log"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/entry/original.entry.terminal.json",
+      "mode": "100644",
+      "blob": "181256d2349f2eb96d2f910b6672d88a8bef9d70",
+      "bytes": 692,
+      "sha256": "25140c271c8f8925d5dd7ca31e0deccd6b8648fc604bfa0b7b9f33aa2072b4f2",
+      "classification": "AUTHOR_ASSEMBLED_EXTERNAL_TERMINAL_RECORD_BINDING_EXACT_STDOUT_STDERR",
+      "sourcePath": "/workspace/crossdeck-cloud-receipts/r12-original.entry.terminal.json"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/independent-preservation-audit/assessment.json",
+      "mode": "100644",
+      "blob": "3513333ce4cc66e8e26c98dc0a9e9cdaab9bbad6",
+      "bytes": 3802,
+      "sha256": "7f3b58f62a4fb6a07f4c4217d3f7589a328902d84d6cb7c73aed73e3e386fbaf",
+      "classification": "INDEPENDENT_PRESERVATION_AND_SOURCE_REVIEW_NOT_PRODUCT_REVIEW",
+      "sourcePath": "/workspace/crossdeck-cloud-receipts/r12-original-preservation-audit-20261017/assessment.json"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/independent-preservation-audit/preservation-index.json",
+      "mode": "100644",
+      "blob": "9a8a2f0e544e547e27f33e7f37543ebd63ed25a4",
+      "bytes": 5727,
+      "sha256": "1f8fc1748c267ca8e75b10861bec73f17ce9f8aaffa8dadb6a4bae0f253c3ccd",
+      "classification": "EXACT_INDEPENDENT_PRESERVATION_INDEX_COPY_LOCAL_ABSOLUTE_PATHS_RETAINED",
+      "sourcePath": "/workspace/crossdeck-cloud-receipts/r12-original-preservation-audit-20261017/preservation-index.json"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/original-common-git-markers/crossdeck-r12-focused-original-launch.json",
+      "mode": "100644",
+      "blob": "37ab0a5820604ed2567db60c5128d87e5e1eadcc",
+      "bytes": 439,
+      "sha256": "86ec9038392837f4dca639a4b0d6f5e0d58b267b894bdf796013d18cf795c238",
+      "classification": "EXACT_COMMON_GIT_OPERATOR_MARKER_COPY_NOT_AUTHENTICATED_CUSTODY",
+      "sourcePath": "/workspace/crossdeck-cloud-source/.git/sounding-line/crossdeck-r12-focused-original-launch.json"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/original-common-git-markers/crossdeck-r12-focused-original.json",
+      "mode": "100644",
+      "blob": "c3ad2418900157e36f41dcfde07f93fec9441008",
+      "bytes": 1063,
+      "sha256": "6fdb259876c45b0ea3c9c23ceff177dbb1fa9f00c58b7bf5721bb35ce2e0a803",
+      "classification": "EXACT_COMMON_GIT_OPERATOR_MARKER_COPY_NOT_AUTHENTICATED_CUSTODY",
+      "sourcePath": "/workspace/crossdeck-cloud-source/.git/sounding-line/crossdeck-r12-focused-original.json"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/original-focused-publication/browser-suite-profile.json",
+      "mode": "100644",
+      "blob": "2cefae5cc8fab07e925aec3a8752ed147a4649a8",
+      "bytes": 791,
+      "sha256": "6d906c2d0320c4727f257b8a7e93f6c9fea893006cc50ad20d22e9608cc34bff",
+      "classification": "EXACT_SUITE_PROFILE_SETUP_FAILURE_RECEIPT_COPY_NOT_BROWSER_EXECUTION",
+      "sourcePath": "/workspace/crossdeck-r12-original-proof/Development_Docs/Projects/Project_Crossdeck/evidence/r12-verification-20261017/focused-technical/original/browser-suite-profile.json"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/original-focused-publication/launch-marker.json",
+      "mode": "100644",
+      "blob": "37ab0a5820604ed2567db60c5128d87e5e1eadcc",
+      "bytes": 439,
+      "sha256": "86ec9038392837f4dca639a4b0d6f5e0d58b267b894bdf796013d18cf795c238",
+      "classification": "EXACT_ORIGINAL_LOCAL_OPERATOR_PUBLICATION_COPY_NOT_QUALIFICATION",
+      "sourcePath": "/workspace/crossdeck-r12-original-proof/Development_Docs/Projects/Project_Crossdeck/evidence/r12-verification-20261017/focused-technical/original/launch-marker.json"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/original-focused-publication/marker.json",
+      "mode": "100644",
+      "blob": "c3ad2418900157e36f41dcfde07f93fec9441008",
+      "bytes": 1063,
+      "sha256": "6fdb259876c45b0ea3c9c23ceff177dbb1fa9f00c58b7bf5721bb35ce2e0a803",
+      "classification": "EXACT_ORIGINAL_LOCAL_OPERATOR_PUBLICATION_COPY_NOT_QUALIFICATION",
+      "sourcePath": "/workspace/crossdeck-r12-original-proof/Development_Docs/Projects/Project_Crossdeck/evidence/r12-verification-20261017/focused-technical/original/marker.json"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/original-focused-publication/preservation-index.json",
+      "mode": "100644",
+      "blob": "67b602a5165d47aa30d58f3fec66505eb8bf5178",
+      "bytes": 1246,
+      "sha256": "119ff2628fe9d5da5af50241645e90ffa0052406f2b95afdc524872a0d6a2336",
+      "classification": "EXACT_ORIGINAL_PUBLICATION_INDEX_COPY_ORIGINAL_PATHS_RETAINED",
+      "sourcePath": "/workspace/crossdeck-r12-original-proof/Development_Docs/Projects/Project_Crossdeck/evidence/r12-verification-20261017/focused-technical/original/preservation-index.json"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/original-focused-publication/receipt.json",
+      "mode": "100644",
+      "blob": "ee5c4699048f1819c2cb99b03492d38773d7b4d4",
+      "bytes": 2727,
+      "sha256": "521f8d93eb65ddccc8149e4aff8f95e4e7df7590b649d406e345f61df9d9a34d",
+      "classification": "EXACT_ORIGINAL_LOCAL_OPERATOR_PUBLICATION_COPY_NOT_QUALIFICATION",
+      "sourcePath": "/workspace/crossdeck-r12-original-proof/Development_Docs/Projects/Project_Crossdeck/evidence/r12-verification-20261017/focused-technical/original/receipt.json"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/original-focused-publication/source-manifest.json",
+      "mode": "100644",
+      "blob": "791b5f7919a71d001bee2bf0abf8bf61fd308f0b",
+      "bytes": 409786,
+      "sha256": "c761bc1062745a4465f78b79125ee858b27130f4131f89b88d4eeee778635027",
+      "classification": "EXACT_OPERATOR_ADMISSION_AND_WORKING_SOURCE_MANIFEST_COPY",
+      "sourcePath": "/workspace/crossdeck-r12-original-proof/Development_Docs/Projects/Project_Crossdeck/evidence/r12-verification-20261017/focused-technical/original/source-manifest.json"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/postfailure-custody.observation.json",
+      "mode": "100644",
+      "blob": "87536980cd9f179c6416d4a4a27557a06179a4cf",
+      "bytes": 790,
+      "sha256": "13618cd09a265e7e16494c8eab9c416b60072c94dbc0ec6c0458c2112f6aa600",
+      "classification": "AUTHOR_ASSEMBLED_GET_ONLY_REMOTE_CUSTODY_OBSERVATION_NOT_RAW_HTTP",
+      "sourcePath": "/workspace/crossdeck-cloud-receipts/r12-postfailure-custody.observation.json"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/prior-read-only-admission-failures/r12-corrected.check.json",
+      "mode": "100644",
+      "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "classification": "EXACT_EMPTY_STDOUT_FROM_FAILED_READ_ONLY_ADMISSION",
+      "sourcePath": "/workspace/crossdeck-cloud-receipts/r12-corrected.check.json"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/prior-read-only-admission-failures/r12-corrected.check.stderr.log",
+      "mode": "100644",
+      "blob": "c88a6d16a1f57e8f18a89ffe0f407282ecbd5ca8",
+      "bytes": 1755,
+      "sha256": "c431cc8eb03136eb57c16008d89c8f5565b733afc22381aec7f6d57d365ecc8f",
+      "classification": "EXACT_PREVIOUS_READ_ONLY_ADMISSION_HTTP401_DIAGNOSTIC_OUTPUT_COPY",
+      "sourcePath": "/workspace/crossdeck-cloud-receipts/r12-corrected.check.stderr.log"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/prior-read-only-admission-failures/r12-original.check.json",
+      "mode": "100644",
+      "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "classification": "EXACT_EMPTY_STDOUT_FROM_FAILED_READ_ONLY_ADMISSION",
+      "sourcePath": "/workspace/crossdeck-cloud-receipts/r12-original.check.json"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/prior-read-only-admission-failures/r12-original.check.stderr.log",
+      "mode": "100644",
+      "blob": "322a28ae3db856cbe89efa416dd29a929dc47213",
+      "bytes": 1734,
+      "sha256": "18c3142177fca11f2a82e68fe5d189acfdb5e88211ad996000d056c6acfecc9b",
+      "classification": "EXACT_PREVIOUS_READ_ONLY_ADMISSION_HTTP401_DIAGNOSTIC_OUTPUT_COPY",
+      "sourcePath": "/workspace/crossdeck-cloud-receipts/r12-original.check.stderr.log"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/prior-read-only-admission-failures/refreshed/original.check.json",
+      "mode": "100644",
+      "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "classification": "EXACT_EMPTY_STDOUT_FROM_FAILED_READ_ONLY_ADMISSION",
+      "sourcePath": "/workspace/crossdeck-cloud-receipts/r12-admission-refreshed/original.check.json"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/prior-read-only-admission-failures/refreshed/original.stderr.log",
+      "mode": "100644",
+      "blob": "d21452e75f3ceeff2ee856ad889b31dadc1b5a0b",
+      "bytes": 1154,
+      "sha256": "7ba06746ccab0cbb097d54a6856dbb135ff6d25fd9a70b23c848d8e6fb7f92d3",
+      "classification": "EXACT_PREVIOUS_READ_ONLY_ADMISSION_HTTP401_DIAGNOSTIC_OUTPUT_COPY",
+      "sourcePath": "/workspace/crossdeck-cloud-receipts/r12-admission-refreshed/original.stderr.log"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/prior-read-only-admission-failures/refreshed/original.terminal.json",
+      "mode": "100644",
+      "blob": "6843afba841e260dcbb25695096881b71c38f47a",
+      "bytes": 590,
+      "sha256": "33a60f05cdd251e4fa8fe969308d730d8aba0d093af2e37f5f24fc5718bf2e0c",
+      "classification": "AUTHOR_ASSEMBLED_PREVIOUS_READ_ONLY_ADMISSION_TERMINAL_RECORD",
+      "sourcePath": "/workspace/crossdeck-cloud-receipts/r12-admission-refreshed/original.terminal.json"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/read-only-admission/r12-corrected-held-context.check.json",
+      "mode": "100644",
+      "blob": "af0c7f839de78d74752b004dd6281467eb8a98e0",
+      "bytes": 868,
+      "sha256": "318f3862ca1351cdbd361057d3d56a86864cfcf3ace58942c09090edf6e73028",
+      "classification": "EXACT_READ_ONLY_ADMISSION_OUTPUT_COPY_EXECUTIONS_ZERO",
+      "sourcePath": "/workspace/crossdeck-cloud-receipts/r12-corrected-held-context.check.json"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/read-only-admission/r12-corrected-held-context.stderr.log",
+      "mode": "100644",
+      "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "classification": "EXACT_READ_ONLY_ADMISSION_EMPTY_STDERR_COPY",
+      "sourcePath": "/workspace/crossdeck-cloud-receipts/r12-corrected-held-context.stderr.log"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/read-only-admission/r12-original-held-context.check.json",
+      "mode": "100644",
+      "blob": "1bade74479a967b127429a03c29f9b9600a91b63",
+      "bytes": 867,
+      "sha256": "2cd0308cb83064344308cd0086d2cc4bf80ef387f5a7c18be03d78b849be7f69",
+      "classification": "EXACT_READ_ONLY_ADMISSION_OUTPUT_COPY_EXECUTIONS_ZERO",
+      "sourcePath": "/workspace/crossdeck-cloud-receipts/r12-original-held-context.check.json"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/read-only-admission/r12-original-held-context.stderr.log",
+      "mode": "100644",
+      "blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "classification": "EXACT_READ_ONLY_ADMISSION_EMPTY_STDERR_COPY",
+      "sourcePath": "/workspace/crossdeck-cloud-receipts/r12-original-held-context.stderr.log"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/static-prerequisite-diagnosis/cacheEligibility.source-excerpt.txt",
+      "mode": "100644",
+      "blob": "eef0ec1934ab131cdf5de4381332e71936388a78",
+      "bytes": 2548,
+      "sha256": "b89728b1f83c8c10f27281cd84640b20ff352d595f06f7bb9aca8480f263e0ab",
+      "classification": "DERIVED_INSTALLED_PACKAGE_SOURCE_EXCERPT_WITH_PRESENTATION_NEWLINE",
+      "sourcePath": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/cacheEligibility.source-excerpt.txt"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/static-prerequisite-diagnosis/cacheLogicalName.source-excerpt.txt",
+      "mode": "100644",
+      "blob": "ca3d05b0d0cd9dbd95eec406d5fa165a458597fa",
+      "bytes": 536,
+      "sha256": "3f076eaaa0693a4c2d23e3cc277213d5ce666ea649729b42ddc046d5d4c36d93",
+      "classification": "DERIVED_INSTALLED_PACKAGE_SOURCE_EXCERPT_WITH_PRESENTATION_NEWLINE",
+      "sourcePath": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/cacheLogicalName.source-excerpt.txt"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/static-prerequisite-diagnosis/cacheRoot.source-excerpt.txt",
+      "mode": "100644",
+      "blob": "0b699fe0e376a5640617000b7b21a1ef82d89ee3",
+      "bytes": 1259,
+      "sha256": "9451ae69ce1b5535966b4d2597e6d4239da425cce7fdb41b127bb2ca016728af",
+      "classification": "DERIVED_INSTALLED_PACKAGE_SOURCE_EXCERPT_WITH_PRESENTATION_NEWLINE",
+      "sourcePath": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/cacheRoot.source-excerpt.txt"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/static-prerequisite-diagnosis/cacheSidecarWriter.source-excerpt.txt",
+      "mode": "100644",
+      "blob": "18f98a22697c664db820be26cd8b7e7b3e8ca2ff",
+      "bytes": 869,
+      "sha256": "86dd352530adb2650147a7016d527da8b22156ddf38b9234a7247a4878b1a275",
+      "classification": "DERIVED_INSTALLED_PACKAGE_SOURCE_EXCERPT_WITH_PRESENTATION_NEWLINE",
+      "sourcePath": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/cacheSidecarWriter.source-excerpt.txt"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/static-prerequisite-diagnosis/checksumFetch.source-excerpt.txt",
+      "mode": "100644",
+      "blob": "a0ade7f3501b158a88901feadcdacce071b672f4",
+      "bytes": 1242,
+      "sha256": "496c070c303f676dc40e74ca68a8090b1fbb2835c5dcb414027015e20bd6e7a1",
+      "classification": "DERIVED_INSTALLED_PACKAGE_SOURCE_EXCERPT_WITH_PRESENTATION_NEWLINE",
+      "sourcePath": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/checksumFetch.source-excerpt.txt"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/static-prerequisite-diagnosis/generationCommand.source-excerpt.txt",
+      "mode": "100644",
+      "blob": "7dab89d7c18dfefcd9e9ee006de31f874a6fb96b",
+      "bytes": 391,
+      "sha256": "4670b200d04a92d5914c926318520ccba33ac39bd0ce50cdc1aef0f13a268c2d",
+      "classification": "DERIVED_INSTALLED_PACKAGE_SOURCE_EXCERPT_WITH_PRESENTATION_NEWLINE",
+      "sourcePath": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/generationCommand.source-excerpt.txt"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/static-prerequisite-diagnosis/generatorTarget.source-excerpt.txt",
+      "mode": "100644",
+      "blob": "5c591d43cb88c7093789e98419ff5fdc1292b684",
+      "bytes": 2009,
+      "sha256": "21dd2c26bc53e4c449e6629143a9fbd0da250e81b63f225063626ff672abce5c",
+      "classification": "DERIVED_INSTALLED_PACKAGE_SOURCE_EXCERPT_WITH_PRESENTATION_NEWLINE",
+      "sourcePath": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/generatorTarget.source-excerpt.txt"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/static-prerequisite-diagnosis/independent-review.receipt.json",
+      "mode": "100644",
+      "blob": "4d23b6a6f9f6b36d5b3de912ecd91ff33d4d653d",
+      "bytes": 14258,
+      "sha256": "91221687b65c2c3592e46e983e96f8a872951765ba3725c6a578c33d5cc5d7cf",
+      "classification": "INDEPENDENT_STATIC_PREREQUISITE_REVIEW_ACTUAL_READINESS_NOT_ESTABLISHED",
+      "sourcePath": "/workspace/crossdeck-cloud-receipts/r12-prisma-prerequisites.independent-static-review.json"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/static-prerequisite-diagnosis/libquery_engine.so.node.gz.sha256",
+      "mode": "100644",
+      "blob": "aa68c22c1009e7920cf56b91e988f02543aab0f7",
+      "bytes": 116,
+      "sha256": "bd759e3c7e9c0c585685fc819c70cba3731911dd744574d330423e67ab90529d",
+      "classification": "EXACT_DOWNLOADED_OFFICIAL_CHECKSUM_RESPONSE_BODY_NOT_CACHE_SIDECAR",
+      "sourcePath": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/libquery_engine.so.node.gz.sha256"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/static-prerequisite-diagnosis/libquery_engine.so.node.sha256",
+      "mode": "100644",
+      "blob": "46a4d95044eaf9b60690c4c77fbde558b3577b23",
+      "bytes": 113,
+      "sha256": "95e49796dfbbcc4ba9885791817583a544f551f12240469002f5d0ad853b3069",
+      "classification": "EXACT_DOWNLOADED_OFFICIAL_CHECKSUM_RESPONSE_BODY_NOT_CACHE_SIDECAR",
+      "sourcePath": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/libquery_engine.so.node.sha256"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/static-prerequisite-diagnosis/official-checksums.receipt.json",
+      "mode": "100644",
+      "blob": "a7255c22fca8122d339093d1aca7427e4ff699bd",
+      "bytes": 4433,
+      "sha256": "813fee40f10af674532b39415139fcfec3be4d79b60ca89431646e57cacc6c75",
+      "classification": "AUTHOR_ASSEMBLED_OFFICIAL_CHECKSUM_DOWNLOAD_AND_BINARY_COMPARISON_RECORD",
+      "sourcePath": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/official-checksums.receipt.json"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/static-prerequisite-diagnosis/schema-engine.gz.sha256",
+      "mode": "100644",
+      "blob": "8a34695668a617e70159b77ec01f1b9d3c7b2f87",
+      "bytes": 106,
+      "sha256": "1c8c182bf52980282c38d1977bf854feb4eb295b758013169e39aa5891b37001",
+      "classification": "EXACT_DOWNLOADED_OFFICIAL_CHECKSUM_RESPONSE_BODY_NOT_CACHE_SIDECAR",
+      "sourcePath": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/schema-engine.gz.sha256"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/static-prerequisite-diagnosis/schema-engine.sha256",
+      "mode": "100644",
+      "blob": "da5800f35e0172c69230bca0b9e0a89a2c1057d9",
+      "bytes": 103,
+      "sha256": "f58bc06d0cf7e8af6610a0c0eefd8f82ad2ea53cc9194f7e503f7161d7b0dcd1",
+      "classification": "EXACT_DOWNLOADED_OFFICIAL_CHECKSUM_RESPONSE_BODY_NOT_CACHE_SIDECAR",
+      "sourcePath": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/schema-engine.sha256"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r12-original-setup-failed-20261017/static-prerequisite-diagnosis/static-diagnosis.receipt.json",
+      "mode": "100644",
+      "blob": "789c949b51fa8614b9c388ff4a1d5932065dee0b",
+      "bytes": 11129,
+      "sha256": "6cc8e69038a2b0d72e596d62ffe72681018b76ccac05c149b456cf7c88d52191",
+      "classification": "AUTHOR_STATIC_PACKAGE_TARGET_AND_CACHE_DIAGNOSIS_NO_RUNTIME_EXECUTION",
+      "sourcePath": "/tmp/crossdeck-prisma-checksum-diagnosis-20261017/static-diagnosis.receipt.json"
+    }
+  ]
+}

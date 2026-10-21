@@ -13,15 +13,20 @@ The [Spatial Chronicle Pilot](../../../Projects/Spatial_Chronicle_Pilot/README.m
 The [NCL-01 completion candidate](../../../Projects/Project_Parallax/NCL01_Full_Completion_20261021.md)
 adds native canonical-outcome presentation and recovery corrections to the
 reconciled implementation. Shared, Android, iOS native/joined and unsigned Release
-development checks pass within their recorded scopes. Independent iOS presentation
-passes 31/0/1 on the supported ARM profile; partial failures remain preserved.
-The missing accepted Crossdeck experience design,
-live browser-provider integration and physical
-acceptance prevent feature promotion. Internal beta 7 remains the deployed build.
+development checks at pre-integration checkpoint `347a401c` pass within their recorded
+scopes. Independent iOS presentation passes 31/0/1 on the supported ARM profile;
+partial failures remain preserved.
+Crossdeck [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) has landed
+at `aaff9194`, making its accepted continuity interface available. Fresh combined
+NCL integration qualification, admitted live browser-provider capability and
+physical acceptance remain open; no NCL feature promotion follows from the
+dependency merge alone. Internal beta 7 remains the deployed build.
 
 NCL-01's bounded v1-compatible Scene delivery, original GLB loading, native rendering and canonical Inspect paths are implemented and development-tested. The candidate remains unaccepted. [Evidence and limitations](../../../Projects/Project_Parallax/NCL01_Full_Completion_20261021.md) distinguish source, build, rendered-pixel and joined-input proof from browser integration, physical AR and owner acceptance. [The private beta deployment record](../../../Projects/Project_Parallax/NCL01_TestFlight_Deployment.md) records available internal TestFlight build 7 with the owner-approved direct-original crop as the official logo/icon, the stable Cloudflare origin and preserved classroom fixture. Build 6's generative artwork/color changes were owner-rejected and are no longer official. The original beta readiness receipt passed public TLS/auth/assets/Journal/static delivery and desktop sign-in presentation; current preview health is tracked separately in the completion ledger. The owner reports cellular reachability and earlier objects visible when panning native AR, but authored appearance/placement is not accepted. Exact build-7 phone behavior, all three objects and measured tracking/interactions remain unverified. Bounded relative-layout placement is distinct from later automatic room registration. Feature Catalog promotion remains deferred.
 
 The saved official compass logo and iOS icon use the exact same approved 1024-pixel PNG, made only by cropping/resizing the unchanged original. Build 7 signed archive/export/upload, Apple processing/internal availability and actual compiled-icon verification/visual review passed; immutable build-6 proof and rejected artwork provenance remain preserved. This cosmetic correction changes no capability, AR behavior or acceptance status; no Feature Catalog fragment change is required.
+
+The Crossdeck refit is integrated on protected main through [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) at `aaff9194`, after [pre-merge Sounding Line PASS](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39656414105). It connects a phone from the active Chronicle and provides browser Guided Lens, Voyage Chart, Journal, released artifact and restricted crew views. Contextual pairing, acknowledged handoff, continuation and recovery retain the authorized Voyage. The [R11 source record](../../../Projects/Project_Crossdeck/Spatial_Experience_Refit_R11_Verification_20261017.md), original 38-context capture and seven-contract/119-judgment independent review remain historical source-bound evidence. [Ordinary5](../../../Projects/Project_Crossdeck/Ordinary5_Disposition_20261017.md) and [R14 ordinary7](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39037804106) remain consumed failures. Fresh combined NCL integration qualification is pending. Unsupported companion purposes explain their limits; admitted browser metric-spatial capability, physical/native, field, assistive-technology and owner acceptance remain separate.
 
 Parallax A1 is software-qualified on main through protected PR #710 at `ee8caa83`, after ordinary Sounding Line PASS and 118 landed smoke checks. Spatial Studio provides reviewed natural-language proposals, actual canvas preview, atomic saved Apply and ordinary history with adaptive ownership preserved. Admiralty supplies durable AI accounting and global policy; per-user controls use the existing People dossier. Five production-browser journeys pass, and six authorized live calls returned validated structured responses with settled usage. Catalog FT-B112 records availability with assistance disabled by default. The owner accepted the later revised presentation; finite model testing and physical quality retain their stated limits; see the [implementation record](../../../Projects/Project_Parallax/Parallax_A1_Implementation_and_Qualification.md).
 

@@ -1,0 +1,33 @@
+{
+  "classification": "Evidence-only orphan; frozen candidate remains product/source authority",
+  "status": "PREPARED_NOT_PUSHED",
+  "ref": "refs/notes/codex/crossdeck-review5-evidence-38814444774",
+  "commit": "9f59705ad7525936d19dd63a86b5f9fe58cd7810",
+  "tree": "bbd194d225cde0ddd7eba592ac6b531a45eec897",
+  "files": 229,
+  "captureArtifactId": 12009949926,
+  "baseSha": "a2495fd14efd5ade67832e18fd260f32da98b3b2",
+  "candidateSha": "19687c12e20ef69e6519903b14e56a145df2d7e7",
+  "sourceDigest": "4446bc23b1393a4d762a007a21b62d96980a8b9949e4f7741ae51617d07319b5",
+  "contractDigest": "4ee636786ea5b2fedd375c3567441f151caa668d98934b01e98161c4c88c44ec",
+  "reviewerFinalReportSha256": "b1ba52860eef74bed952fb31b2e5c998edb519a26fe907b72c8e6defe2c7088e",
+  "artifactsDigest": "2fdccc7496971f4ffa77afa2e7e25cb657c59dd6d768d0241091e010cd8b66c5",
+  "journeysDigest": "55788fb1802475349abf52f9d20298bb2862b4e6267a1bef7646f6d0a68ab490",
+  "reviewsDigest": "bedc5cb39465463ec930fff665364dda9e014e55bbb0e2860e281c822cbbb482",
+  "validation": {
+    "status": "PASS",
+    "contractIds": [
+      "crossdeck.phase2.continuity",
+      "crossdeck.refit.companion",
+      "crossdeck.refit.published-lens",
+      "homeport.shell.crossdeck-access-recovery",
+      "homeport.shell.crossdeck-companion",
+      "homeport.shell.crossdeck-companion-mobile",
+      "reach.phase1.foundation"
+    ],
+    "sourceDigest": "4446bc23b1393a4d762a007a21b62d96980a8b9949e4f7741ae51617d07319b5",
+    "independence": "SEPARATE_CONTEXT_RECORDED",
+    "ownerAcceptance": "NOT_CLAIMED"
+  },
+  "ownerAcceptance": "NOT_CLAIMED"
+}

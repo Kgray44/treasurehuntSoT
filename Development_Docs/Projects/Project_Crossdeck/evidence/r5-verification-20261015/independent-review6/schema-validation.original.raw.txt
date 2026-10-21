@@ -1,0 +1,59 @@
+{
+  "structural": [
+    {
+      "contractId": "crossdeck.phase2.continuity",
+      "status": "STRUCTURALLY_VALID",
+      "dimensions": 17,
+      "packetDigest": "661328b6bc83295499574ac4e07e0bc5237a99b33e9d06fb304c17baf95399ba",
+      "reviewVerdict": "BLOCKED"
+    },
+    {
+      "contractId": "crossdeck.refit.companion",
+      "status": "STRUCTURALLY_VALID",
+      "dimensions": 17,
+      "packetDigest": "f7479e74349fd7bb292b1585befb3ada25ff23874e1e96e1b81971535dfaf165",
+      "reviewVerdict": "BLOCKED"
+    },
+    {
+      "contractId": "crossdeck.refit.published-lens",
+      "status": "STRUCTURALLY_VALID",
+      "dimensions": 17,
+      "packetDigest": "c507753ee276ca6a958093819ec1ed86807719c6d3cdb2b64c835cc2309318f2",
+      "reviewVerdict": "ACCEPTED"
+    },
+    {
+      "contractId": "homeport.shell.crossdeck-access-recovery",
+      "status": "STRUCTURALLY_VALID",
+      "dimensions": 17,
+      "packetDigest": "6416ab5f29f27a282841f5f2b64e21d4a8ef4fa375eb75ff96ff86fe3fe75225",
+      "reviewVerdict": "ACCEPTED"
+    },
+    {
+      "contractId": "homeport.shell.crossdeck-companion",
+      "status": "STRUCTURALLY_VALID",
+      "dimensions": 17,
+      "packetDigest": "1b56c9049deb2ca75657740da37cdaef2433f89fa3cd40c019bcb4077915282c",
+      "reviewVerdict": "ACCEPTED"
+    },
+    {
+      "contractId": "homeport.shell.crossdeck-companion-mobile",
+      "status": "STRUCTURALLY_VALID",
+      "dimensions": 17,
+      "packetDigest": "e36d749422127674152ab56447949f94c3ff45c0838148be1f292b7ecdbb8d98",
+      "reviewVerdict": "ACCEPTED"
+    },
+    {
+      "contractId": "reach.phase1.foundation",
+      "status": "STRUCTURALLY_VALID",
+      "dimensions": 17,
+      "packetDigest": "c8d28877ce9708e955128764715978bfaa012cb4736e2943afc5e2ee82ba62aa",
+      "reviewVerdict": "ACCEPTED"
+    }
+  ],
+  "canonical": {
+    "status": "REJECTED_AS_EXPECTED_FOR_BLOCKED_REVIEW",
+    "message": "PRODUCT_EXPERIENCE_EXCEPTION_NEW_BLOCKING_FINDING"
+  },
+  "verdict": "BLOCKED",
+  "acceptanceNotClaimed": true
+}

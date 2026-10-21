@@ -1,0 +1,95 @@
+{
+  "classification": "READ_ONLY_PAIRED_PREFLIGHT_PLAN_NO_EXECUTION",
+  "status": "PASS",
+  "baseSha": "151417a772c1bcde4e5c7f256302b803d25d40da",
+  "candidateSha": "be3319fa61526405ffa618bd65bcacb62d9346ca",
+  "candidateTree": "23226441d72effe8223d310274461562183b5cca",
+  "sourceDigest": "6d8ebc54902e7bce42a73c1e92d2ad6bc3465f94a1632c04559112bd3afee0ba",
+  "contractDigest": "33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274",
+  "recordDigest": "ecbd09233751b59bd4d5b5d29ec505789944f8a87f4627feaf559461dfde7e37",
+  "contractIds": [
+    "crossdeck.phase2.continuity",
+    "crossdeck.refit.companion",
+    "crossdeck.refit.published-lens",
+    "homeport.shell.crossdeck-access-recovery",
+    "homeport.shell.crossdeck-companion",
+    "homeport.shell.crossdeck-companion-mobile",
+    "reach.phase1.foundation"
+  ],
+  "genericContextsPerFullPass": 32,
+  "pairedCases": [
+    {
+      "id": "crossdeck-pair-normal",
+      "spec": "tests/e2e/crossdeck-experience-refit.spec.ts",
+      "title": "complete multi-device experience · no-preference",
+      "directory": "refit-no-preference",
+      "motionMode": "NORMAL",
+      "outcomes": [
+        "JOIN_AUTHORIZED",
+        "DELIVERY_ACKNOWLEDGED",
+        "RECOVERY",
+        "CONTINUATION_ACTIVATED"
+      ]
+    },
+    {
+      "id": "crossdeck-pair-reduced",
+      "spec": "tests/e2e/crossdeck-experience-refit.spec.ts",
+      "title": "complete multi-device experience · reduce",
+      "directory": "refit-reduce",
+      "motionMode": "REDUCED",
+      "outcomes": [
+        "JOIN_AUTHORIZED",
+        "DELIVERY_ACKNOWLEDGED",
+        "RECOVERY",
+        "CONTINUATION_ACTIVATED"
+      ]
+    },
+    {
+      "id": "crossdeck-pair-adverse",
+      "spec": "tests/e2e/crossdeck-refit-recovery.spec.ts",
+      "title": "recover pairing and transfers while preserving shared-screen privacy",
+      "directory": "refit-recovery",
+      "motionMode": "NORMAL",
+      "outcomes": [
+        "JOIN_AUTHORIZED",
+        "PAIRING_EXPIRED_REFUSED",
+        "PRIVATE_SEND_CONFIRMED_CANCELLED_DECLINED",
+        "CREW_PRIVATE_SEPARATION",
+        "REVOKED_PRIVATE_VIEW_CLEARED",
+        "DELIVERY_ACKNOWLEDGED"
+      ]
+    }
+  ],
+  "pairedContextsPerPass": 6,
+  "fullPassContexts": 38,
+  "technicalBrowserTests": [
+    "tests/e2e/crossdeck-experience-refit.spec.ts",
+    "tests/e2e/crossdeck-phase1.spec.ts",
+    "tests/e2e/crossdeck-phase2.spec.ts",
+    "tests/e2e/crossdeck-refit-recovery.spec.ts",
+    "tests/e2e/homeport-phase2.spec.ts",
+    "tests/e2e/reach-laboratory.spec.ts"
+  ],
+  "storage": {
+    "cFreeBytes": 48431382528,
+    "dFreeBytes": 72158289920,
+    "locations": {
+      "root": "D:\\CodexWorktrees\\crossdeck-consumer-721-final-20261015",
+      "commonGit": "D:\\CodexWorktrees\\crossdeck-consumer-721-final-20261015\\.git",
+      "dependencies": "D:\\CodexWorktrees\\crossdeck-consumer-721-final-20261015\\node_modules",
+      "temp": "D:/Codex_Task_Artifacts/Crossdeck_Refit_01a12d5e_20261012/r8-readiness-20261016/temp",
+      "tmp": "D:/Codex_Task_Artifacts/Crossdeck_Refit_01a12d5e_20261012/r8-readiness-20261016/temp",
+      "cache": "D:/CodexDependencies/crossdeck-r4-npm-cache",
+      "output": "D:\\CodexWorktrees\\crossdeck-consumer-721-final-20261015\\Development_Docs\\Projects\\Project_Crossdeck\\evidence\\r8-verification-20261016\\paired-local-execution"
+    }
+  },
+  "history": {
+    "status": "PASS",
+    "observedRuns": 125,
+    "preservedPredecessorRuns": 9,
+    "throughUtc": "2026-10-16T12:21:58.166Z",
+    "custodyWrites": 0
+  },
+  "custodyWrites": 0,
+  "executions": 0
+}

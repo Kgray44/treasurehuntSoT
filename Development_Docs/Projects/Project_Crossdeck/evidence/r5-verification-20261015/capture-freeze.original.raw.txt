@@ -1,0 +1,35 @@
+{
+  "classification": "Read-only candidate plan and freeze; no workflow invocation or custody write",
+  "status": "PASS",
+  "baseSha": "f935ab3efd6eb5943cdea8a08f65c9cf55c45d95",
+  "candidateSha": "6dcabd5401b22e606e13a2b92202d15f8e3176e1",
+  "candidateTree": "45ad546f23e0070c842589a95edd6c940532dbe5",
+  "sourceDigest": "36990c15e7d48386b4b213b103f91dc8e608e8b3638c50e878e002d50451ff4e",
+  "contractDigest": "4ee636786ea5b2fedd375c3567441f151caa668d98934b01e98161c4c88c44ec",
+  "recordId": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R5",
+  "recordDigest": "f7cc69e66e577c06cdd2f87ba10f99c98841c6172b08ca837e6a6a0da3cd3bd4",
+  "frozenTrees": 3,
+  "frozenBlobs": 5,
+  "immutableHistory": 128,
+  "contractIds": [
+    "crossdeck.phase2.continuity",
+    "crossdeck.refit.companion",
+    "crossdeck.refit.published-lens",
+    "homeport.shell.crossdeck-access-recovery",
+    "homeport.shell.crossdeck-companion",
+    "homeport.shell.crossdeck-companion-mobile",
+    "reach.phase1.foundation"
+  ],
+  "technicalSuites": [
+    "tests/e2e/crossdeck-experience-refit.spec.ts",
+    "tests/e2e/crossdeck-phase1.spec.ts",
+    "tests/e2e/crossdeck-phase2.spec.ts",
+    "tests/e2e/crossdeck-refit-recovery.spec.ts",
+    "tests/e2e/homeport-phase2.spec.ts",
+    "tests/e2e/reach-laboratory.spec.ts"
+  ],
+  "unitTestFiles": 215,
+  "workflowDispatches": 0,
+  "custodyWrites": 0,
+  "ownerAcceptance": "NOT_CLAIMED"
+}

@@ -1,0 +1,568 @@
+{
+  "version": 1,
+  "finalized": true,
+  "verdict": "BLOCKED",
+  "reviewerContext": "/root/final_product_review_6",
+  "builderContext": "/root",
+  "independence": "SEPARATE_CONTEXT",
+  "independentReviewOrdinal": 6,
+  "iterations": 11,
+  "legacyIterationMeaning": "Preserved prior repair count, not new cycles",
+  "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+  "identity": {
+    "baseSha": "f935ab3efd6eb5943cdea8a08f65c9cf55c45d95",
+    "candidateSha": "6dcabd5401b22e606e13a2b92202d15f8e3176e1",
+    "candidateTree": "45ad546f23e0070c842589a95edd6c940532dbe5",
+    "sourceDigest": "36990c15e7d48386b4b213b103f91dc8e608e8b3638c50e878e002d50451ff4e",
+    "contractDigest": "4ee636786ea5b2fedd375c3567441f151caa668d98934b01e98161c4c88c44ec",
+    "r5Digest": "f7cc69e66e577c06cdd2f87ba10f99c98841c6172b08ca837e6a6a0da3cd3bd4",
+    "captureRunId": 38840988544,
+    "captureAttempt": 1,
+    "captureWholeConclusion": "SUCCESS",
+    "captureArtifactId": 12021599252,
+    "captureArtifactSha256": "53ec81bd7ddc6a3264bb4066681e4ee3d12bea8684a43bdadfafd512fa79c762",
+    "actualPreparationSha": "1aa1ade9330b83b9d789a3b15b1e1d4ac7a15446",
+    "installedCaptureProvenance": "PASS supplied by coordinator; origin/automated replay only"
+  },
+  "chronology": [
+    {
+      "stage": "BOUNDARY_AND_SCHEMA",
+      "activity": "Read fresh contract/packet metadata and framework workflow/schema. Did not read historical reviews/findings, builder rationale or historical checkpoint. One initial over-broad plan read exposed historical path/authority metadata; no prior review file or substantive verdict was opened or imported."
+    },
+    {
+      "stage": "FRESH_RENDERED_EXPERIENCE",
+      "activity": "Inspected every screenshot through18 diagnostic overview sheets, selected originals at useful resolution, four original accepted references, every full chronological recording through2fps contact sheets and six8fps windows; parsed and compared all32 original trace streams."
+    },
+    {
+      "stage": "INITIAL_JUDGMENTS_RECORDED",
+      "at": "2026-10-16T03:11:00Z",
+      "artifact": "initial-experience-judgments.json",
+      "productImplementationSourceRead": false
+    },
+    {
+      "stage": "BOUNDED_SOURCE_ONLY",
+      "activity": "After recording experience judgments, inspected only named source/test snippets for missing multi-context outcomes, pending/completed receipt semantics, purpose availability and continuation boundary. Exact candidate match verified."
+    },
+    {
+      "stage": "FINAL_REVIEW",
+      "activity": "Authored seven substantive canonical reviews and119 judgments. Preserved two EVIDENCE_INSUFFICIENT blockers; no new execution, repair, capture or review cycle."
+    }
+  ],
+  "coverage": {
+    "contracts": 7,
+    "dimensionJudgments": 119,
+    "acceptedContracts": 5,
+    "blockedContracts": 2,
+    "acceptedDimensionJudgments": 109,
+    "blockedDimensionJudgments": 10,
+    "findings": 2,
+    "blockingEvidenceFindings": 2,
+    "demonstratedProductDefects": 0,
+    "screenshots": 164,
+    "recordings": 32,
+    "traceZips": 32,
+    "acceptedReferences": 4,
+    "wholeRecording2fpsFrames": 1062,
+    "wholeRecordingContactSheets": 40,
+    "denseWindows": 6,
+    "dense8fpsFrames": 98
+  },
+  "originalEvidenceIntegrity": {
+    "verifiedArtifactHashes": 228,
+    "allMatchManifest": true,
+    "originalFilesMutated": false,
+    "originalRoot": "D:\\CrossdeckR5Capture-38840988544",
+    "packetCount": 7,
+    "referenceCount": 4,
+    "authority": "Original media, ZIPs, manifest and packet digests; derivatives diagnostic only",
+    "postReviewHashesMatch": true
+  },
+  "coverageDetails": {
+    "screenshots": "All164 original screenshots represented across18 inspected diagnostic overviews; nine selected originals inspected directly for text, focus, mobile overlap and scrolled content.",
+    "recordings": [
+      {
+        "evidenceId": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-recording",
+        "sha256": "db66450b4d44f853dcfbaeb759387902f9fe0909db2c075221acecaffa92a074",
+        "index": 1,
+        "sampling": "Entire recording decoded to chronological 2fps via output CFR (-r 2); contact images scale320 diagnostic only",
+        "sampledFrames": 91,
+        "sampledThroughSeconds": 45.0,
+        "contactSheets": [
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-01-01.jpg",
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-01-02.jpg"
+        ],
+        "ffmpegExit": 0
+      },
+      {
+        "evidenceId": "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-recording",
+        "sha256": "ddb32f9914eca2990c66be1c9edd317b543cc0da9ed4dc0781d0b288270278ec",
+        "index": 2,
+        "sampling": "Entire recording decoded to chronological 2fps via output CFR (-r 2); contact images scale320 diagnostic only",
+        "sampledFrames": 90,
+        "sampledThroughSeconds": 44.5,
+        "contactSheets": [
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-02-01.jpg",
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-02-02.jpg"
+        ],
+        "ffmpegExit": 0
+      },
+      {
+        "evidenceId": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-recording",
+        "sha256": "224137f1c82ca0ae948ef41dcb8ba2a9655e1d45371906a3ce011e7047632f37",
+        "index": 3,
+        "sampling": "Entire recording decoded to chronological 2fps via output CFR (-r 2); contact images scale320 diagnostic only",
+        "sampledFrames": 56,
+        "sampledThroughSeconds": 27.5,
+        "contactSheets": [
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-03-01.jpg",
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-03-02.jpg"
+        ],
+        "ffmpegExit": 0
+      },
+      {
+        "evidenceId": "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-recording",
+        "sha256": "a53654bcb7535c8df51e662dd3399d313836582e50eb7bf75d96d53357b24350",
+        "index": 4,
+        "sampling": "Entire recording decoded to chronological 2fps via output CFR (-r 2); contact images scale320 diagnostic only",
+        "sampledFrames": 55,
+        "sampledThroughSeconds": 27.0,
+        "contactSheets": [
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-04-01.jpg",
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-04-02.jpg"
+        ],
+        "ffmpegExit": 0
+      },
+      {
+        "evidenceId": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-NORMAL-recording",
+        "sha256": "74a3c1f07d9aa765bb576d2aaf26e6e1d0df0e49c6917d7b897bd58dcf02d4ba",
+        "index": 5,
+        "sampling": "Entire recording decoded to chronological 2fps via output CFR (-r 2); contact images scale320 diagnostic only",
+        "sampledFrames": 16,
+        "sampledThroughSeconds": 7.5,
+        "contactSheets": [
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-05-01.jpg"
+        ],
+        "ffmpegExit": 0
+      },
+      {
+        "evidenceId": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-DESKTOP-ANONYMOUS-REDUCED-recording",
+        "sha256": "34e1120adcfa9c09f4780990788f2aaefce82006dfb50029109fba7e2d0f4e75",
+        "index": 6,
+        "sampling": "Entire recording decoded to chronological 2fps via output CFR (-r 2); contact images scale320 diagnostic only",
+        "sampledFrames": 17,
+        "sampledThroughSeconds": 8.0,
+        "contactSheets": [
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-06-01.jpg"
+        ],
+        "ffmpegExit": 0
+      },
+      {
+        "evidenceId": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-recording",
+        "sha256": "68cd16b5aa824dcc54a3e9ffd6f889f24b5fbfec20c211c8cdde9da57bd53dde",
+        "index": 7,
+        "sampling": "Entire recording decoded to chronological 2fps via output CFR (-r 2); contact images scale320 diagnostic only",
+        "sampledFrames": 88,
+        "sampledThroughSeconds": 43.5,
+        "contactSheets": [
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-07-01.jpg",
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-07-02.jpg"
+        ],
+        "ffmpegExit": 0
+      },
+      {
+        "evidenceId": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-REDUCED-recording",
+        "sha256": "2fabda7244f7b2cafe59c4349f9598e452261cdef9b989a21527185c270c0223",
+        "index": 8,
+        "sampling": "Entire recording decoded to chronological 2fps via output CFR (-r 2); contact images scale320 diagnostic only",
+        "sampledFrames": 84,
+        "sampledThroughSeconds": 41.5,
+        "contactSheets": [
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-08-01.jpg",
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-08-02.jpg"
+        ],
+        "ffmpegExit": 0
+      },
+      {
+        "evidenceId": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-NORMAL-recording",
+        "sha256": "c2d3467fbb1cbfe1d79436ffa426077e0f8cba25eb81f0acb9618cf83723dafc",
+        "index": 9,
+        "sampling": "Entire recording decoded to chronological 2fps via output CFR (-r 2); contact images scale320 diagnostic only",
+        "sampledFrames": 54,
+        "sampledThroughSeconds": 26.5,
+        "contactSheets": [
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-09-01.jpg",
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-09-02.jpg"
+        ],
+        "ffmpegExit": 0
+      },
+      {
+        "evidenceId": "reach.phase1.foundation-relative-movement-and-check-MOBILE-ANONYMOUS-REDUCED-recording",
+        "sha256": "df857ad406e8029874152bea86fae812753e28311c1f29246a247ae8f017e07f",
+        "index": 10,
+        "sampling": "Entire recording decoded to chronological 2fps via output CFR (-r 2); contact images scale320 diagnostic only",
+        "sampledFrames": 52,
+        "sampledThroughSeconds": 25.5,
+        "contactSheets": [
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-10-01.jpg",
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-10-02.jpg"
+        ],
+        "ffmpegExit": 0
+      },
+      {
+        "evidenceId": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-NORMAL-recording",
+        "sha256": "a7b8717cca3079f0447538129dde006d97f3de807d8fa2a2090c6f3412f0dd84",
+        "index": 11,
+        "sampling": "Entire recording decoded to chronological 2fps via output CFR (-r 2); contact images scale320 diagnostic only",
+        "sampledFrames": 17,
+        "sampledThroughSeconds": 8.0,
+        "contactSheets": [
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-11-01.jpg"
+        ],
+        "ffmpegExit": 0
+      },
+      {
+        "evidenceId": "reach.phase1.foundation-camera-unavailability-and-conventional-recovery-MOBILE-ANONYMOUS-REDUCED-recording",
+        "sha256": "f45232f93441a34ef031565bbfebea19294bc2f41982761cea2d73e749ae4275",
+        "index": 12,
+        "sampling": "Entire recording decoded to chronological 2fps via output CFR (-r 2); contact images scale320 diagnostic only",
+        "sampledFrames": 16,
+        "sampledThroughSeconds": 7.5,
+        "contactSheets": [
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-12-01.jpg"
+        ],
+        "ffmpegExit": 0
+      },
+      {
+        "evidenceId": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-recording",
+        "sha256": "4465f73641cd9e07f145553e3b10f4316506513621fac565d80c436d74491bcb",
+        "index": 13,
+        "sampling": "Entire recording decoded to chronological 2fps via output CFR (-r 2); contact images scale320 diagnostic only",
+        "sampledFrames": 27,
+        "sampledThroughSeconds": 13.0,
+        "contactSheets": [
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-13-01.jpg"
+        ],
+        "ffmpegExit": 0
+      },
+      {
+        "evidenceId": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-recording",
+        "sha256": "1a6e1b5cd6cedef64bfe06547e8d175c46bdf4ead68d54ead048ad5965de161f",
+        "index": 14,
+        "sampling": "Entire recording decoded to chronological 2fps via output CFR (-r 2); contact images scale320 diagnostic only",
+        "sampledFrames": 21,
+        "sampledThroughSeconds": 10.0,
+        "contactSheets": [
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-14-01.jpg"
+        ],
+        "ffmpegExit": 0
+      },
+      {
+        "evidenceId": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-recording",
+        "sha256": "9b9da697437989bc7f9d32c8529c3eac2009410adf098ab43c7405cf2a493d1d",
+        "index": 15,
+        "sampling": "Entire recording decoded to chronological 2fps via output CFR (-r 2); contact images scale320 diagnostic only",
+        "sampledFrames": 25,
+        "sampledThroughSeconds": 12.0,
+        "contactSheets": [
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-15-01.jpg"
+        ],
+        "ffmpegExit": 0
+      },
+      {
+        "evidenceId": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-recording",
+        "sha256": "127ab258ed1bbef19aef26a7446213478320fdcfd5db80df0282c79dc74d3998",
+        "index": 16,
+        "sampling": "Entire recording decoded to chronological 2fps via output CFR (-r 2); contact images scale320 diagnostic only",
+        "sampledFrames": 17,
+        "sampledThroughSeconds": 8.0,
+        "contactSheets": [
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-16-01.jpg"
+        ],
+        "ffmpegExit": 0
+      },
+      {
+        "evidenceId": "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-recording",
+        "sha256": "de6d5d47f8adb78cd0f682aed7c388f31441e5bdb08485f716ef14f75890eac4",
+        "index": 17,
+        "sampling": "Entire recording decoded to chronological 2fps via output CFR (-r 2); contact images scale320 diagnostic only",
+        "sampledFrames": 24,
+        "sampledThroughSeconds": 11.5,
+        "contactSheets": [
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-17-01.jpg"
+        ],
+        "ffmpegExit": 0
+      },
+      {
+        "evidenceId": "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-recording",
+        "sha256": "a6c77502c345a005d12221c4e73103a56182122100c5764e02ece24e6985c52a",
+        "index": 18,
+        "sampling": "Entire recording decoded to chronological 2fps via output CFR (-r 2); contact images scale320 diagnostic only",
+        "sampledFrames": 20,
+        "sampledThroughSeconds": 9.5,
+        "contactSheets": [
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-18-01.jpg"
+        ],
+        "ffmpegExit": 0
+      },
+      {
+        "evidenceId": "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-recording",
+        "sha256": "c15a1b4fe758d6b168092979337d23fe6620a5eb7b60227b1749822bd5f5d1f2",
+        "index": 19,
+        "sampling": "Entire recording decoded to chronological 2fps via output CFR (-r 2); contact images scale320 diagnostic only",
+        "sampledFrames": 24,
+        "sampledThroughSeconds": 11.5,
+        "contactSheets": [
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-19-01.jpg"
+        ],
+        "ffmpegExit": 0
+      },
+      {
+        "evidenceId": "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-recording",
+        "sha256": "7c031849aaa877dde19b1a3da5ed0711701a5f7467ee1e1ac2988f48bf8dd0dd",
+        "index": 20,
+        "sampling": "Entire recording decoded to chronological 2fps via output CFR (-r 2); contact images scale320 diagnostic only",
+        "sampledFrames": 16,
+        "sampledThroughSeconds": 7.5,
+        "contactSheets": [
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-20-01.jpg"
+        ],
+        "ffmpegExit": 0
+      },
+      {
+        "evidenceId": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-recording",
+        "sha256": "153cf0307a57239d592ea3084393b0a87052348f455d67ffd9ac868a6006f1b6",
+        "index": 21,
+        "sampling": "Entire recording decoded to chronological 2fps via output CFR (-r 2); contact images scale320 diagnostic only",
+        "sampledFrames": 14,
+        "sampledThroughSeconds": 6.5,
+        "contactSheets": [
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-21-01.jpg"
+        ],
+        "ffmpegExit": 0
+      },
+      {
+        "evidenceId": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-recording",
+        "sha256": "77f40adf3cedb078122be3eb685e2aa7aeaf5e66e47cf07363f8f5c87572a3f2",
+        "index": 22,
+        "sampling": "Entire recording decoded to chronological 2fps via output CFR (-r 2); contact images scale320 diagnostic only",
+        "sampledFrames": 13,
+        "sampledThroughSeconds": 6.0,
+        "contactSheets": [
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-22-01.jpg"
+        ],
+        "ffmpegExit": 0
+      },
+      {
+        "evidenceId": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-recording",
+        "sha256": "e5aaf09b527c4018eba88024860c78c96cdcb9bdf4b209217c9d4ec64ef2f150",
+        "index": 23,
+        "sampling": "Entire recording decoded to chronological 2fps via output CFR (-r 2); contact images scale320 diagnostic only",
+        "sampledFrames": 14,
+        "sampledThroughSeconds": 6.5,
+        "contactSheets": [
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-23-01.jpg"
+        ],
+        "ffmpegExit": 0
+      },
+      {
+        "evidenceId": "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-recording",
+        "sha256": "cba7781b4b60d1498f5234d1bd2a23c289a8d9c225329ae469f29111d06a67da",
+        "index": 24,
+        "sampling": "Entire recording decoded to chronological 2fps via output CFR (-r 2); contact images scale320 diagnostic only",
+        "sampledFrames": 12,
+        "sampledThroughSeconds": 5.5,
+        "contactSheets": [
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-24-01.jpg"
+        ],
+        "ffmpegExit": 0
+      },
+      {
+        "evidenceId": "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-recording",
+        "sha256": "98689fc186abc0316c0af80e8fce44da8d6866cb432510ce15cf780b37432ea8",
+        "index": 25,
+        "sampling": "Entire recording decoded to chronological 2fps via output CFR (-r 2); contact images scale320 diagnostic only",
+        "sampledFrames": 23,
+        "sampledThroughSeconds": 11.0,
+        "contactSheets": [
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-25-01.jpg"
+        ],
+        "ffmpegExit": 0
+      },
+      {
+        "evidenceId": "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-recording",
+        "sha256": "a5da345cc1ec710a7cfc00069a718766387a673525ae50ee816a4ccae74e6368",
+        "index": 26,
+        "sampling": "Entire recording decoded to chronological 2fps via output CFR (-r 2); contact images scale320 diagnostic only",
+        "sampledFrames": 20,
+        "sampledThroughSeconds": 9.5,
+        "contactSheets": [
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-26-01.jpg"
+        ],
+        "ffmpegExit": 0
+      },
+      {
+        "evidenceId": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-recording",
+        "sha256": "8e04023ea815f86650b108d6707b15363b3bf6a28e92d744e457538b82f7e5a3",
+        "index": 27,
+        "sampling": "Entire recording decoded to chronological 2fps via output CFR (-r 2); contact images scale320 diagnostic only",
+        "sampledFrames": 23,
+        "sampledThroughSeconds": 11.0,
+        "contactSheets": [
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-27-01.jpg"
+        ],
+        "ffmpegExit": 0
+      },
+      {
+        "evidenceId": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-recording",
+        "sha256": "2f6ada8f995471f7bc82dea8d7c5bccdd6e288d890c01ce3c8bbea68befe2f3b",
+        "index": 28,
+        "sampling": "Entire recording decoded to chronological 2fps via output CFR (-r 2); contact images scale320 diagnostic only",
+        "sampledFrames": 18,
+        "sampledThroughSeconds": 8.5,
+        "contactSheets": [
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-28-01.jpg"
+        ],
+        "ffmpegExit": 0
+      },
+      {
+        "evidenceId": "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-recording",
+        "sha256": "3cbc5c6eaead12aa30746ef9862a41b1942731ffa6b953aa6608f92333756d9e",
+        "index": 29,
+        "sampling": "Entire recording decoded to chronological 2fps via output CFR (-r 2); contact images scale320 diagnostic only",
+        "sampledFrames": 29,
+        "sampledThroughSeconds": 14.0,
+        "contactSheets": [
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-29-01.jpg"
+        ],
+        "ffmpegExit": 0
+      },
+      {
+        "evidenceId": "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-recording",
+        "sha256": "3b71a374d65b15fc0258c57998e159661da4754f2c1ac4fb1e85124249ffc687",
+        "index": 30,
+        "sampling": "Entire recording decoded to chronological 2fps via output CFR (-r 2); contact images scale320 diagnostic only",
+        "sampledFrames": 30,
+        "sampledThroughSeconds": 14.5,
+        "contactSheets": [
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-30-01.jpg"
+        ],
+        "ffmpegExit": 0
+      },
+      {
+        "evidenceId": "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-recording",
+        "sha256": "120aecd1e5eb15fd29d5687647cf5d7e14841b893e347a0e3527c88ef30957f0",
+        "index": 31,
+        "sampling": "Entire recording decoded to chronological 2fps via output CFR (-r 2); contact images scale320 diagnostic only",
+        "sampledFrames": 28,
+        "sampledThroughSeconds": 13.5,
+        "contactSheets": [
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-31-01.jpg"
+        ],
+        "ffmpegExit": 0
+      },
+      {
+        "evidenceId": "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-recording",
+        "sha256": "64c75aed8ae151f770cdc5df5a55007eafeb2fbc00657b123952cea5aed24ebd",
+        "index": 32,
+        "sampling": "Entire recording decoded to chronological 2fps via output CFR (-r 2); contact images scale320 diagnostic only",
+        "sampledFrames": 28,
+        "sampledThroughSeconds": 13.5,
+        "contactSheets": [
+          "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\video-32-01.jpg"
+        ],
+        "ffmpegExit": 0
+      }
+    ],
+    "denseWindows": [
+      {
+        "evidenceId": "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-recording",
+        "startSeconds": 6,
+        "durationSeconds": 2,
+        "fps": 8,
+        "frames": 16,
+        "path": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\dense-pause-resume.jpg",
+        "purpose": "pause-resume"
+      },
+      {
+        "evidenceId": "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-recording",
+        "startSeconds": 10.5,
+        "durationSeconds": 2.5,
+        "fps": 8,
+        "frames": 18,
+        "path": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\dense-lens-close-settled-page.jpg",
+        "purpose": "lens-close-settled-page"
+      },
+      {
+        "evidenceId": "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-recording",
+        "startSeconds": 8.5,
+        "durationSeconds": 2,
+        "fps": 8,
+        "frames": 16,
+        "path": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\dense-inspect-close.jpg",
+        "purpose": "inspect-close"
+      },
+      {
+        "evidenceId": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-recording",
+        "startSeconds": 7,
+        "durationSeconds": 2,
+        "fps": 8,
+        "frames": 16,
+        "path": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\dense-normal-return.jpg",
+        "purpose": "normal-return"
+      },
+      {
+        "evidenceId": "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-recording",
+        "startSeconds": 6,
+        "durationSeconds": 2,
+        "fps": 8,
+        "frames": 16,
+        "path": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\dense-reduced-return.jpg",
+        "purpose": "reduced-return"
+      },
+      {
+        "evidenceId": "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-recording",
+        "startSeconds": 3.5,
+        "durationSeconds": 2,
+        "fps": 8,
+        "frames": 16,
+        "path": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6\\dense-purpose-focus.jpg",
+        "purpose": "purpose-focus"
+      }
+    ],
+    "traces": "All32 original ZIP streams parsed; compact action/assertion summary retains original IDs and SHA256. No DOM/resource dump published.",
+    "references": "All four original accepted Homeport gateway/authentication images inspected before implementation source."
+  },
+  "scopeAndLimits": [
+    "Fresh single-context registration/purpose evidence does not prove second-screen challenge claiming, meaningful handoff receipt/completion, refusal/interruption recovery or privacy/revocation outcomes.",
+    "Mobile Continue Voyage has exactly two trial:true actions and zero actual activations; no Voyage complete outcome is proved.",
+    "Dedicated exact-candidate technical suites remain unexecuted at this review; future qualification is not current proof.",
+    "No mail delivery, live OAuth/provider, physical phone, native spatial/camera, real-person pointing, assistive-technology or owner acceptance.",
+    "2fps whole-recording and8fps bounded diagnostics support chronological software observation; they are not high-frame-rate performance measurement."
+  ],
+  "storage": {
+    "allWritesUnder": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\independent-review6",
+    "tempPolicy": "Dot-sourced use-owned-temp.ps1 before each shell/Python command; TEMP/TMP/TMPDIR D, npm cache D, PYTHONDONTWRITEBYTECODE=1. Native C binaries read/execute inputs only.",
+    "diagnosticAttempts": "Two task-owned parser processes were stopped after excessive intermediate memory; final compact parsing succeeded. First ffmpeg fps filter was unavailable; existing ffmpeg output CFR -r2 produced complete chronological diagnostics. No installs or source changes."
+  },
+  "ownerAcceptance": "NOT_CLAIMED",
+  "physicalAcceptance": "NOT_CLAIMED",
+  "nativeAcceptance": "NOT_CLAIMED",
+  "repairDisposition": "BLOCK_WITH_EVIDENCE",
+  "finiteScope": "R5 review6 spent by this review. No product repair or review7 authorized.",
+  "documentationClassification": "ENGINEERING_EVIDENCE (JSON and diagnostics) under external D task artifacts; repository human documentation and product source unchanged.",
+  "featureCatalogDecision": "NO CHANGE REQUIRED: independent read-only experience review adds no completed capability.",
+  "finalizedAt": "2026-10-16T03:20:24.460978+00:00",
+  "canonicalValidation": {
+    "status": "REJECTED_AS_EXPECTED_FOR_BLOCKED_REVIEW",
+    "message": "PRODUCT_EXPERIENCE_EXCEPTION_NEW_BLOCKING_FINDING"
+  },
+  "structuralValidation": {
+    "status": "PASS",
+    "reviews": 7,
+    "dimensions": 119,
+    "packetDigestsMatched": 7,
+    "originalEvidenceReferencesValid": true
+  },
+  "initialJudgmentsPersistedAt": "2026-10-16T03:11:46.313424+00:00",
+  "finalizationPolicy": "Final immutable files are listed in final-publication-index.json. After index generation the reviewer performs no further writes to any final file."
+}

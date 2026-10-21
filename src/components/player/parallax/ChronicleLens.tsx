@@ -8,6 +8,7 @@ import { NativeSpatialAdapter } from "@/parallax/native";
 import { landfallNativeHost } from "@/landfall/native-bridge";
 import styles from "./ChronicleLens.module.css";
 import { fieldConsentDisclosure, type FieldMetadata } from "@/parallax/field-contracts";
+import { VoyageContext, type VoyageContextData } from "@/components/crossdeck/VoyageContext";
 
 class LensAccessError extends Error {}
 type LoadedBinding = {
@@ -66,29 +67,44 @@ function LensMark() {
   );
 }
 
-const context = createContext<{ sessionId: string; csrfToken: string } | null>(null);
+const context = createContext<{
+  sessionId: string;
+  csrfToken: string;
+  voyageContext?: VoyageContextData;
+  onLensPresentationChange?: (open: boolean) => void;
+} | null>(null);
 export function ParallaxJournalProvider({
   sessionId,
   csrfToken,
   children,
+  voyageContext,
+  onLensPresentationChange,
 }: {
   sessionId: string;
   csrfToken: string;
   children: ReactNode;
+  voyageContext?: VoyageContextData;
+  onLensPresentationChange?: (open: boolean) => void;
 }) {
-  return <context.Provider value={{ sessionId, csrfToken }}>{children}</context.Provider>;
+  return (
+    <context.Provider value={{ sessionId, csrfToken, voyageContext, onLensPresentationChange }}>
+      {children}
+    </context.Provider>
+  );
 }
 export function ChronicleLensEntry({
   moment,
   blockId,
   replayOnly,
+  initiallyOpen = false,
 }: {
   moment: SpatialMoment;
   blockId: string;
   replayOnly: boolean;
+  initiallyOpen?: boolean;
 }) {
   const voyage = useContext(context);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(initiallyOpen);
   return (
     <div className={styles.entry}>
       <span aria-hidden="true" className={styles.mark}>
@@ -112,6 +128,8 @@ export function ChronicleLensEntry({
             runId: voyage?.sessionId ?? "preview-run",
           }}
           replayOnly={replayOnly || !voyage}
+          voyageContext={voyage?.voyageContext?.voyageId === voyage?.sessionId ? voyage?.voyageContext : undefined}
+          onPresentationChange={voyage?.onLensPresentationChange}
           loadBinding={
             voyage
               ? async () => {
@@ -178,6 +196,8 @@ export type ChronicleLensProps = {
   record?: (receipt: unknown) => Promise<void>;
   onClose: () => void;
   field?: (body: unknown) => Promise<{ observationId?: string; withdrawn?: boolean }>;
+  voyageContext?: VoyageContextData;
+  onPresentationChange?: (open: boolean) => void;
 };
 
 /** Explicit existing Device Lab bundle injection. Ordinary Player callers cannot
@@ -203,6 +223,8 @@ export function ChronicleLens({
   record,
   onClose,
   field,
+  voyageContext,
+  onPresentationChange,
 }: ChronicleLensProps) {
   const createLabAdapter = useContext(deviceLabContext);
   const dialog = useRef<HTMLDialogElement>(null),
@@ -212,6 +234,7 @@ export function ChronicleLens({
     [busy, setBusy] = useState(false),
     [observed, setObserved] = useState(false),
     [activeMoment, setActiveMoment] = useState(moment);
+  const [activeBinding, setActiveBinding] = useState<InstanceBinding | null>(null);
   const native = useRef<ChronicleLensAdapter | null>(null),
     nativeInteraction = useRef<SpatialSelection | null>(null);
   const lifecycle = useRef(0),
@@ -255,6 +278,7 @@ export function ChronicleLens({
     const previous = document.activeElement as HTMLElement | null;
     const view = dialog.current;
     view?.showModal();
+    onPresentationChange?.(true);
     async function initialize() {
       try {
         // Reset the previous opening at the asynchronous session boundary.
@@ -263,6 +287,7 @@ export function ChronicleLens({
         setAccessLost(false);
         setBusy(false);
         setState(null);
+        setActiveBinding(null);
         setPending(null);
         setObserved(false);
         setError(null);
@@ -270,6 +295,7 @@ export function ChronicleLens({
         const bound = loadBinding ? await loadBinding() : { moment, binding, replayOnly, fieldObservationId: null };
         if (!active || generation !== lifecycle.current) return;
         pinned.current = bound;
+        setActiveBinding(bound.binding);
         replayRef.current = bound.replayOnly;
         setReplay(bound.replayOnly);
         setActiveMoment(bound.moment);
@@ -360,6 +386,7 @@ export function ChronicleLens({
       void runtime.current?.close().catch(() => undefined);
       runtime.current = null;
       view?.close();
+      onPresentationChange?.(false);
       previous?.focus();
     };
     // A Lens opening binds one immutable passage until it closes.
@@ -530,6 +557,10 @@ export function ChronicleLens({
         <div>
           <p>Chronicle Lens</p>
           <h2 id="chronicle-lens-title">{activeMoment.version.title}</h2>
+          {!accessLost &&
+            activeBinding &&
+            voyageContext?.voyageId === activeBinding.sessionId &&
+            voyageContext.versionId === activeBinding.chronicleVersionId && <VoyageContext voyage={voyageContext} />}
         </div>
         <button type="button" onClick={closeLens} aria-label="Close Chronicle Lens">
           ×

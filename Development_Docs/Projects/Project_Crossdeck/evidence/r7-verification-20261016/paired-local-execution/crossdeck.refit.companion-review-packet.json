@@ -1,0 +1,2083 @@
+{
+  "objective": "Use my connected screen as a meaningful Lens, Chart, Journal or artifact companion for the same Chronicle",
+  "contract": {
+    "id": "crossdeck.refit.companion",
+    "name": "Crossdeck canonical companion Lens, Chart, Journal, artifact and return experience",
+    "authority": "project-crossdeck",
+    "owners": ["project-crossdeck", "project-parallax", "landfall", "player-journal"],
+    "critical": true,
+    "experience": {
+      "pairedEvidence": {
+        "version": 1,
+        "caseIds": ["crossdeck-pair-normal", "crossdeck-pair-reduced", "crossdeck-pair-adverse"]
+      },
+      "persona": "An authorized Player continuing a persisted private synthetic Voyage across personal screens",
+      "integrationOwner": "Crossdeck experience refit integration",
+      "systems": ["project-crossdeck", "project-parallax", "one-voyage", "project-landfall", "player-journal"],
+      "sourcePaths": [
+        "src/crossdeck",
+        "src/components/crossdeck",
+        "src/components/player/journal/ChronicleJournalSession.tsx",
+        "src/app/devices",
+        "src/app/account/devices",
+        "src/components/player/journal",
+        "src/app/player/playthroughs/[playthroughId]/journal",
+        "src/app/play/[taleSlug]/session/[sessionId]",
+        "src/app/player/offline-landfall",
+        "src/styles/chronicle.css"
+      ],
+      "projectionPaths": [
+        "src/app/api/crossdeck",
+        "src/app/api/play/sessions",
+        "src/app/api/player/playthroughs",
+        "src/app/api/player/sessions"
+      ],
+      "devices": ["DESKTOP", "MOBILE"],
+      "roles": ["PLAYER"],
+      "accessibility": "Every named control is keyboard reachable with visible focus; reduced motion preserves the same task, hierarchy, purpose and safe return.",
+      "fallback": "Guided Lens preserves the released clue without camera permission; unavailable device purposes remain explained and disabled while Journal and safe return remain available.",
+      "references": [
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-001-root-standard-desktop.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted task hierarchy and contextual navigation inform the new device composition; the companion still requires its own independent rendered review.",
+          "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
+        },
+        {
+          "family": "Gateway / public entry",
+          "path": "Development_Docs/Projects/Project_Homeport/evidence/phase6/HP-P6-EV-002-root-modern-mobile.png",
+          "sourceSha": "e02ee0dae0469a2ba573beaf409c0b34e8668d09",
+          "maturity": "ACCEPTED_HOMEPORT_VISUAL_REFERENCE",
+          "reason": "Accepted task hierarchy and contextual navigation inform the new device composition; the companion still requires its own independent rendered review.",
+          "preserve": "Readable hierarchy, bounded controls, clear destinations and an equivalent constrained/mobile return."
+        }
+      ],
+      "homeportScreenIds": ["screen-page-player-playthroughs-playthroughid-journal"],
+      "browserTests": ["tests/e2e/crossdeck-experience-refit.spec.ts", "tests/e2e/crossdeck-refit-recovery.spec.ts"],
+      "fixtureProfile": "generic",
+      "recordingRequired": true,
+      "continuity": {
+        "objective": "Keep the same authorized Voyage and immutable edition through connection, purpose changes and return without inventing progression authority.",
+        "checks": [
+          {
+            "id": "same-voyage",
+            "role": "region",
+            "name": "Voyage context",
+            "attribute": "data-experience-voyage"
+          },
+          {
+            "id": "same-edition",
+            "role": "region",
+            "name": "Voyage context",
+            "attribute": "data-experience-version"
+          }
+        ]
+      },
+      "motion": {
+        "measurement": "Keyboard activation to the changed visible connection or canonical companion outcome",
+        "feedbackBudgetMs": 5000,
+        "justification": "Bound the isolated browser transition to useful visible feedback within five seconds, including authorized network projection and supported motion; this is no physical-device performance claim."
+      },
+      "limitations": [
+        "Canonical synthetic account/session setup proves authorization and persisted membership; it does not grant owner acceptance, camera/native spatial capability or real-phone proof.",
+        "Actual two-context pairing, handoff acknowledgement, revocation and restricted shared-display privacy remain covered by the dedicated browser specification; the single-context capture signs in and registers through the actual product UI.",
+        "The existing generic seed owns only a deterministic synthetic account and persisted edition in a guarded nonce database; real sign-in, authorization and device registration establish each capture surface without injected cookies or tab storage.",
+        "The guarded persisted fixture represents an already-opened active Voyage. Every primary entry waits for visible Journal tools, and companion return proves the canonical returning Journal and its replay control rather than assuming a first-open dialog in each signed-in context.",
+        "The same synthetic canonical account owns its primary email, one verified secondary email and existing-style Player username. Six-contract captures retain all twenty desktop/mobile and normal/reduced contexts while respecting the unchanged six-per-login sign-in guard; no account/session injection or auth bypass is used."
+      ],
+      "objective": "Use my connected screen as a meaningful Lens, Chart, Journal or artifact companion for the same Chronicle",
+      "visibleOutcome": "Changing companion purpose opens the canonical released clue, actual Voyage chart, readable full passage or released artifact and returns to the same immutable Chronicle",
+      "entryPoint": "/devices/companion?voyage=00000000-0000-4000-8000-00000000cd11",
+      "states": ["JOURNAL_READY", "LENS_READY", "CHART_READY", "ARTIFACT_READY", "JOURNAL_RESTORED", "RETURNED"],
+      "navigation": "Begin on the authorized paired companion; Change companion purpose reaches Lens, Chart, Journal and Artifact viewer; Return to Chronicle opens the original Journal.",
+      "designTarget": "Give each purpose its own full readable workspace beneath one Chronicle identity and connection status; make purpose change secondary and the return persistent, with camera-free meaningful Lens and actual map objectives.",
+      "roleSetup": {
+        "PLAYER": {
+          "entryPoint": "/sign-in?returnTo=%2Faccount%2Fdevices%3Fvoyage%3D00000000-0000-4000-8000-00000000cd11",
+          "steps": [
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Email or Player name",
+              "value": "crossdeck-review+companion@example.test"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Password",
+              "value": "Synthetic-Crossdeck-Review-2026!"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Sign in"
+            },
+            {
+              "action": "fill",
+              "role": "textbox",
+              "name": "Device name",
+              "value": "Phone"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Use this device"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Open on this device"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Change companion purpose"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Journal companion"
+            }
+          ],
+          "witness": {
+            "role": "region",
+            "name": "Journal companion",
+            "text": "The harbour falls quiet behind you."
+          }
+        }
+      },
+      "journeys": [
+        {
+          "id": "companion-purpose-return",
+          "roles": ["PLAYER"],
+          "outcome": "A Player experiences released Lens content, the actual current Chart and complete Journal/artifact content before safely returning to the same Chronicle",
+          "steps": [
+            {
+              "action": "assert",
+              "role": "region",
+              "name": "Journal companion",
+              "text": "The harbour falls quiet behind you.",
+              "state": "JOURNAL_READY"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Change companion purpose"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Chronicle Lens"
+            },
+            {
+              "action": "assert",
+              "role": "dialog",
+              "name": "A message between worlds",
+              "kind": "outcome",
+              "text": "The next bearing is written in the stars. Look for the northern light.",
+              "path": "/devices/companion",
+              "meaning": "Purpose selection opens the canonical guided spatial moment and its released clue, rather than retaining a role label.",
+              "state": "LENS_READY",
+              "feedbackBoundary": true
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Close Chronicle Lens"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Change companion purpose"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Voyage Chart"
+            },
+            {
+              "action": "assert",
+              "role": "region",
+              "name": "Chart companion",
+              "kind": "outcome",
+              "text": "Current objective: Secret Isle",
+              "path": "/devices/companion",
+              "meaning": "The Chart purpose renders the canonical released virtual map and its current authored objective for this Voyage.",
+              "state": "CHART_READY",
+              "feedbackBoundary": true
+            },
+            {
+              "action": "assert",
+              "role": "region",
+              "name": "Voyage Chart"
+            },
+            {
+              "action": "assert",
+              "role": "img",
+              "name": "Virtual Landfall chart"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Change companion purpose"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "More purposes"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Artifact viewer"
+            },
+            {
+              "action": "assert",
+              "role": "region",
+              "name": "Artifact viewer",
+              "kind": "outcome",
+              "text": "A small compass worn smooth by a hundred voyages.",
+              "path": "/devices/companion",
+              "meaning": "The artifact purpose renders the actual released keepsake and its readable description for the same immutable edition.",
+              "state": "ARTIFACT_READY",
+              "feedbackBoundary": true
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Change companion purpose"
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Journal companion"
+            },
+            {
+              "action": "assert",
+              "role": "region",
+              "name": "Journal companion",
+              "kind": "outcome",
+              "text": "The harbour falls quiet behind you.",
+              "path": "/devices/companion",
+              "meaning": "Returning to Journal restores full readable released passage content while the primary screen keeps its reading state.",
+              "state": "JOURNAL_RESTORED",
+              "feedbackBoundary": true
+            },
+            {
+              "action": "click",
+              "role": "button",
+              "name": "Use larger reading size"
+            },
+            {
+              "action": "click",
+              "role": "link",
+              "name": "Return to Chronicle"
+            },
+            {
+              "action": "assert",
+              "role": "button",
+              "name": "Replay full opening"
+            },
+            {
+              "action": "assert",
+              "role": "navigation",
+              "name": "Journal tools",
+              "path": "/player/playthroughs/00000000-0000-4000-8000-00000000cd11/journal",
+              "returnPath": true,
+              "state": "RETURNED"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "sourceDigest": "91769eb493df857300b454939e1e2004338e10b12991b8651a18dedc14ba3be0",
+  "artifacts": [
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-normal-DESKTOP-screenshot-01-chronicle.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/01-chronicle.png",
+      "sha256": "d4c7ddf72e42b777791d988a193253471088120c3856a373695de6b6b6f7c8ba",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-normal",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-normal-DESKTOP-screenshot-02-connect-in-chronicle.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/02-connect-in-chronicle.png",
+      "sha256": "adb2567513a17040448f7045294e1cf5871bea40a58dec48541c87cd0db3dd84",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-normal",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-normal-DESKTOP-screenshot-04-phone-connected.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/04-phone-connected.png",
+      "sha256": "7f9ac853103f4b419259c4acb6adee584720e6e9363d621b9f9fe4fafa19005a",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-normal",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-normal-DESKTOP-screenshot-09-transfer-pending.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/09-transfer-pending.png",
+      "sha256": "9037a48dc0d902039b57ea72d5b4b9b7ba08fdfa09f0882a7a8a8cee01e8b256",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-normal",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-normal-DESKTOP-screenshot-10-delivery-acknowledged.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/10-delivery-acknowledged.png",
+      "sha256": "48ee28f03d22607be81840e5cda210e7421c97ddbb3d81043c603835d7cbb531",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-normal",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-normal-DESKTOP-screenshot-13-recovered-chart.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/13-recovered-chart.png",
+      "sha256": "4231c4e882981b3b881409aac7f3fb210e65343c203ef8e1d037bc6ac8f6f10c",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-normal",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-normal-DESKTOP-screenshot-14-medium-chronicle.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/14-medium-chronicle.png",
+      "sha256": "a19b499e1c0c4c43add868d119694ec70e19bbcba58a059d41bec6c29b9902c2",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-normal",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 820,
+        "height": 1180
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-normal-DESKTOP-recording-2922179fe81cae5ee544b1d6399ad5f8.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/2922179fe81cae5ee544b1d6399ad5f8.webm",
+      "sha256": "b4250155c6b7d8a46c3e4a34d41a844d24a962f2d82ecbe184e4b39c0fb8a925",
+      "type": "recording",
+      "contractId": "crossdeck.refit.companion",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-normal",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-normal-DESKTOP-trace-desktop-trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/desktop-trace.zip",
+      "sha256": "2851728a3b751d36ddd212285ea26b5dd7255d3d18fcfd8ae24d2981620fcb6e",
+      "type": "trace",
+      "contractId": "crossdeck.refit.companion",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-normal",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-03-phone-sign-in.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/03-phone-sign-in.png",
+      "sha256": "33f761d2be8a5cf2338a9d4ab5c11146f75568d2a583c880dbd4213796bfc402",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-normal",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-04-journal-companion.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/04-journal-companion.png",
+      "sha256": "94e2be19ae554963bf0baa19bfbc529e854dc7c95e0875b5c012a9b1ec17358a",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-normal",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-05-real-chronicle-lens.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/05-real-chronicle-lens.png",
+      "sha256": "489febeeec14130b91574455e36cdb4ab03623a5cd974bb101de93709755f676",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-normal",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-06-dedicated-chart.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/06-dedicated-chart.png",
+      "sha256": "059d64d038c12d0ab4039d9caeb4a26e9d8172ffe16b39644775f24c308235d3",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-normal",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-07-artifact.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/07-artifact.png",
+      "sha256": "fe88aa77d0762b0fa96db50449118c268700d82373eb2787d0a71c9633617765",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-normal",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-08-letter.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/08-letter.png",
+      "sha256": "011a5fe67254780798f5983e3604c27c2a4974dd4ff20cd30bc6a7f05c6b360e",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-normal",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-09-receive-offer.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/09-receive-offer.png",
+      "sha256": "fcc2c1394c5faaf00415ad92957f16264b723f82550f62d867d97d8d6c1c388a",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-normal",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-10-chart-received.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/10-chart-received.png",
+      "sha256": "7a5c747cfe181207ec9d9d70d4c23090c1cdc694078fe32b528a1964decd4a13",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-normal",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-11-offline.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/11-offline.png",
+      "sha256": "e1a848646d7f564d0b48117d23480eac4c6834a115a1c9e331ff1fe433837ab7",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-normal",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-12-reconnected.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/12-reconnected.png",
+      "sha256": "7a5c747cfe181207ec9d9d70d4c23090c1cdc694078fe32b528a1964decd4a13",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-normal",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-15-phone-landscape.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/15-phone-landscape.png",
+      "sha256": "79d56485b839af2759113d0df400f0f86bb108e600dd5ecb600c69c9f52145b9",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-normal",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-16-return-to-chronicle.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/16-return-to-chronicle.png",
+      "sha256": "edda31ecb9c617252344950a20887f1ca99981c3e50544d7bfcf2cfe900ee7f8",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-normal",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-16-voyage-continued.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/16-voyage-continued.png",
+      "sha256": "8cb500385413a45cfb7753f955f4f7c44beff7b6ede323bfb0380fcceb598db9",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-normal",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-17-access-ended.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/17-access-ended.png",
+      "sha256": "3cd30794ef087abdb26f13dfe4bc71b10c7ebee0615f442a928c76fcaba5b97f",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-normal",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-recording-686e5630b65f40af2fee3752c9d85fe8.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/686e5630b65f40af2fee3752c9d85fe8.webm",
+      "sha256": "d26bd0898eb8ea9b2a9007d3ce71390572ee5f1c51ad44ac8cf2d2c3546d9250",
+      "type": "recording",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-normal",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-trace-phone-trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/phone-trace.zip",
+      "sha256": "957ead9ebc6f47fa98509214b3c28594a03ceec3c0848cb696dac1e2bf7a5735",
+      "type": "trace",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-normal",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-reduced-DESKTOP-screenshot-01-chronicle.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-reduce/01-chronicle.png",
+      "sha256": "659b6191bc5ed2b8e73cd33ba313cc84c9a92c53c709546b04bbfc3d2f6d9c4b",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "REDUCED",
+      "state": "PAIRED_crossdeck-pair-reduced",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-reduced-DESKTOP-screenshot-02-connect-in-chronicle.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-reduce/02-connect-in-chronicle.png",
+      "sha256": "97150b068e4e945cbde601b1083761a41af611c8d0fced37cc47b9a2042dfaa3",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "REDUCED",
+      "state": "PAIRED_crossdeck-pair-reduced",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-reduced-DESKTOP-screenshot-04-phone-connected.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-reduce/04-phone-connected.png",
+      "sha256": "34f8aa53d0966daac5df59f9c9882d1c350f44131477c03c2432cffcef2ffeaa",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "REDUCED",
+      "state": "PAIRED_crossdeck-pair-reduced",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-reduced-DESKTOP-screenshot-09-transfer-pending.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-reduce/09-transfer-pending.png",
+      "sha256": "6a7de1654472d2eceb6a8ea5716e5ad99e91ba3c739aab518b6ff91193bd1847",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "REDUCED",
+      "state": "PAIRED_crossdeck-pair-reduced",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-reduced-DESKTOP-screenshot-10-delivery-acknowledged.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-reduce/10-delivery-acknowledged.png",
+      "sha256": "9f01e9a03bd9f45be2455f0bf253f42aa798f3981c918871409e128c02fba2c1",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "REDUCED",
+      "state": "PAIRED_crossdeck-pair-reduced",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-reduced-DESKTOP-screenshot-13-recovered-chart.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-reduce/13-recovered-chart.png",
+      "sha256": "f655c1054acbd2a1014eaee6ded303ccf1356d943ef5b27646d9238d99ba06a1",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "REDUCED",
+      "state": "PAIRED_crossdeck-pair-reduced",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-reduced-DESKTOP-screenshot-14-medium-chronicle.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-reduce/14-medium-chronicle.png",
+      "sha256": "b438259f4cc5e63ac4eb7717db72220614fb8c796294ac682a708dda05a6f27e",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "REDUCED",
+      "state": "PAIRED_crossdeck-pair-reduced",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 820,
+        "height": 1180
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-reduced-DESKTOP-recording-20e4e69ce1e06ecfe290defa7ca3f725.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-reduce/20e4e69ce1e06ecfe290defa7ca3f725.webm",
+      "sha256": "236a1a686aeae17571a7069dccbcf2f7dfc810d83cdb6e2f954d2734089b678e",
+      "type": "recording",
+      "contractId": "crossdeck.refit.companion",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "REDUCED",
+      "state": "PAIRED_crossdeck-pair-reduced",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-reduced-DESKTOP-trace-desktop-trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-reduce/desktop-trace.zip",
+      "sha256": "92b06c75b3859779ba305cdb3a1c2d74b02ba47eae8640b255c65fb01507f167",
+      "type": "trace",
+      "contractId": "crossdeck.refit.companion",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "REDUCED",
+      "state": "PAIRED_crossdeck-pair-reduced",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-03-phone-sign-in.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-reduce/03-phone-sign-in.png",
+      "sha256": "33f761d2be8a5cf2338a9d4ab5c11146f75568d2a583c880dbd4213796bfc402",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED",
+      "state": "PAIRED_crossdeck-pair-reduced",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-04-journal-companion.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-reduce/04-journal-companion.png",
+      "sha256": "94e2be19ae554963bf0baa19bfbc529e854dc7c95e0875b5c012a9b1ec17358a",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED",
+      "state": "PAIRED_crossdeck-pair-reduced",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-05-real-chronicle-lens.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-reduce/05-real-chronicle-lens.png",
+      "sha256": "33342d0a38e63a2a12be6a51ae44e415aba1774757a750d90f77aeef7b5a16bf",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED",
+      "state": "PAIRED_crossdeck-pair-reduced",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-06-dedicated-chart.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-reduce/06-dedicated-chart.png",
+      "sha256": "53af78e86afe0679b74777f37f747ea83fbe87d1b720ca5fd97b0f3cff9cf882",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED",
+      "state": "PAIRED_crossdeck-pair-reduced",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-07-artifact.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-reduce/07-artifact.png",
+      "sha256": "39b57ec704f2f9da51b2f29318a845c2cc4b8f77a2f1df374eadc4c626d6668b",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED",
+      "state": "PAIRED_crossdeck-pair-reduced",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-08-letter.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-reduce/08-letter.png",
+      "sha256": "10a18f415b589c2eb600bededd7ec48cd23465e064784558dffbea7db31aaabc",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED",
+      "state": "PAIRED_crossdeck-pair-reduced",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-09-receive-offer.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-reduce/09-receive-offer.png",
+      "sha256": "be32f16284ba2e5ff80baa3e2ff32d7325346e28bdb6396647eed4e8151acd0c",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED",
+      "state": "PAIRED_crossdeck-pair-reduced",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-10-chart-received.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-reduce/10-chart-received.png",
+      "sha256": "7a5c747cfe181207ec9d9d70d4c23090c1cdc694078fe32b528a1964decd4a13",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED",
+      "state": "PAIRED_crossdeck-pair-reduced",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-11-offline.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-reduce/11-offline.png",
+      "sha256": "fe1b7f078e89fa3427d865ec00b74f3407c09f9aef57244c1b6640d8a4dfed2d",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED",
+      "state": "PAIRED_crossdeck-pair-reduced",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-12-reconnected.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-reduce/12-reconnected.png",
+      "sha256": "716d9566bcf83678234d68bf285735046ba1881f54a11a93d4487090b2bc7c75",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED",
+      "state": "PAIRED_crossdeck-pair-reduced",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-15-phone-landscape.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-reduce/15-phone-landscape.png",
+      "sha256": "e94443bb3028e840d7ccb59a3d48f20828578ccaef8664b37ba3bb8c4efd3194",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED",
+      "state": "PAIRED_crossdeck-pair-reduced",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-16-return-to-chronicle.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-reduce/16-return-to-chronicle.png",
+      "sha256": "6bc35067f7ff0efca23f9dacf0d4a69cd7172cda1be26e2fd06a62d84aaf06b2",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED",
+      "state": "PAIRED_crossdeck-pair-reduced",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-16-voyage-continued.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-reduce/16-voyage-continued.png",
+      "sha256": "cf15d991af63b58ba803700b794d07994954c165348e3ffa262f2b049c9bd448",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED",
+      "state": "PAIRED_crossdeck-pair-reduced",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-17-access-ended.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-reduce/17-access-ended.png",
+      "sha256": "8b49a3612792f782239977aa66ecec849afef2c4e66dfc14547b1170364edc86",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED",
+      "state": "PAIRED_crossdeck-pair-reduced",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-recording-92764fd5ab0c2e41e4c69e88463ea86e.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-reduce/92764fd5ab0c2e41e4c69e88463ea86e.webm",
+      "sha256": "f1a36e40e7f904d04fe49540851eaaf3c8bcd1d4f400a4dcead8111bd750826d",
+      "type": "recording",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED",
+      "state": "PAIRED_crossdeck-pair-reduced",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-trace-phone-trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-reduce/phone-trace.zip",
+      "sha256": "0fbc329a05e408ffd5affff59cdb881d3f4a3585d6ffc3bc96b60d484e0b4cd5",
+      "type": "trace",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "REDUCED",
+      "state": "PAIRED_crossdeck-pair-reduced",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-adverse-DESKTOP-screenshot-01-pairing-before-cancel.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-recovery/01-pairing-before-cancel.png",
+      "sha256": "26092b527d531d796cca14212b321e463a4eb17f823e84232d581a68ae65cadc",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-adverse",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-adverse-DESKTOP-screenshot-02-phone-connected.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-recovery/02-phone-connected.png",
+      "sha256": "74e59f47d286e9afef6f29048c96f084ec6ee2e1514922c043bbcae8ac8a5a83",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-adverse",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-adverse-DESKTOP-screenshot-06-declined-transfer.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-recovery/06-declined-transfer.png",
+      "sha256": "55ea9dd78dc5109dbc98bc1b1d160808396a0a35d142a54faeccf7d62496fbbb",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-adverse",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-adverse-DESKTOP-screenshot-08-send-authorized-crew-chart.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-recovery/08-send-authorized-crew-chart.png",
+      "sha256": "fb3a27562d3b952104d2795f44e4239bc9a8d9e1db076d77d821fa80eee5861a",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-adverse",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-adverse-DESKTOP-screenshot-08-crew-transfer-pending.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-recovery/08-crew-transfer-pending.png",
+      "sha256": "da9c3176e00e09ac00242e54a83e4b5e2fae3f4dca0fb54d5fc8885c6cce3a8e",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-adverse",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-adverse-DESKTOP-screenshot-09-crew-delivery-acknowledged.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-recovery/09-crew-delivery-acknowledged.png",
+      "sha256": "19ec47e8728ebf01b99adb2f0b646e9c1ba3cb6ab5ff4619019e685d73044285",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-adverse",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-adverse-DESKTOP-recording-e927d6e75a81e4d836a71752ec3ab824.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-recovery/e927d6e75a81e4d836a71752ec3ab824.webm",
+      "sha256": "6f7735fa95b70e6295071297f2aad8753557643c0dcdbae417aeeff0be353a65",
+      "type": "recording",
+      "contractId": "crossdeck.refit.companion",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-adverse",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-adverse-DESKTOP-trace-desktop-trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-recovery/desktop-trace.zip",
+      "sha256": "be6142f78581b164206cbbf62914bec89c2d5c1e502d8ca9df095b635f94bf2d",
+      "type": "trace",
+      "contractId": "crossdeck.refit.companion",
+      "device": "DESKTOP",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-adverse",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-02-expired-code-refused.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-recovery/02-expired-code-refused.png",
+      "sha256": "dc673feb88760feb24af66b7266c821fa89a3829c8d7f2fa1ac3f1bb81f6a7fe",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-adverse",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-02-paired-phone.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-recovery/02-paired-phone.png",
+      "sha256": "7d98acb8394818c5c108f7822e8a7be2c72bfbd4b6ff1452253a77523117a9f6",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-adverse",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-03-unavailable-purposes.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-recovery/03-unavailable-purposes.png",
+      "sha256": "2d5495e730e400b3cb788763746ff87cf77019d6717252d0f96849d1593391d4",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-adverse",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-04-private-note-confirmation.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-recovery/04-private-note-confirmation.png",
+      "sha256": "41794dd9a09bfb254f0c15724cb74341079a112b8a69f4714d7c7220cc1cc9a7",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-adverse",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-05-canceled-transfer.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-recovery/05-canceled-transfer.png",
+      "sha256": "01494c7186d24a05ab913da868b5692fd7cce7e91817bb2c54b9397f9f5b9af8",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-adverse",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-07-shared-empty-state.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-recovery/07-shared-empty-state.png",
+      "sha256": "0bbdc55d1648c72a8534d9348fa61db0ff54692863213a8e4fd5872f1ab24a53",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-adverse",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-08-crew-receive-pending.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-recovery/08-crew-receive-pending.png",
+      "sha256": "4c4d1c0bdc051f22f30d701be49b46b5de3a08f2d9f9b6114eb55d1f9d0fe720",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-adverse",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-09-restricted-crew-chart-received.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-recovery/09-restricted-crew-chart-received.png",
+      "sha256": "76f33b3eb2eabef54d6610f7228f37414d18e155e790f05e7af867dee3be3df1",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-adverse",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-10-authorized-personal-return.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-recovery/10-authorized-personal-return.png",
+      "sha256": "adad59aed299447b4b58fe946ccce9587d9ac2b8789555708c7995537c716ccd",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-adverse",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-11-current-surface-revoked.png",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-recovery/11-current-surface-revoked.png",
+      "sha256": "c2a8ccb04b0238df8095f02b2934066b4c2dc7193ae614517d9725922bb85cdd",
+      "type": "screenshot",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-adverse",
+      "origin": "ACTUAL_APPLICATION",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-recording-de78683f46c23ab878eb575120b9cd98.webm",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-recovery/de78683f46c23ab878eb575120b9cd98.webm",
+      "sha256": "69dcf4207d7e7fd572666a7bea41991d0b495e5797a96c47ae0b16ceeb28c4f0",
+      "type": "recording",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-adverse",
+      "origin": "ACTUAL_APPLICATION"
+    },
+    {
+      "id": "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-trace-phone-trace.zip",
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-recovery/phone-trace.zip",
+      "sha256": "a8c401b0c4a7ce67b5d8eebfa838ecf027ab50782b446ccfb8a1e287aad8d1c6",
+      "type": "trace",
+      "contractId": "crossdeck.refit.companion",
+      "device": "MOBILE",
+      "role": "PLAYER",
+      "motionMode": "NORMAL",
+      "state": "PAIRED_crossdeck-pair-adverse",
+      "origin": "ACTUAL_APPLICATION"
+    }
+  ],
+  "pairedEvidence": {
+    "version": 1,
+    "binding": {
+      "baseSha": "ce862a4a349b92faa11beaef50555abcb1a35be8",
+      "candidateSha": "e76ed8059790f8173ca0d44eded9997dfe800c4b",
+      "candidateTree": "0b9374096428c36ab1de2f3ef7a52a295628cac8",
+      "sourceDigest": "91769eb493df857300b454939e1e2004338e10b12991b8651a18dedc14ba3be0",
+      "contractDigest": "33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274",
+      "recordDigest": "5073e5c04e60985cfd1f0fcce1f3f9a11fdffe5bb2d29cf269aa3a6356e6e851",
+      "databaseSha256": "ad867a3bf8da43cdc0860df11536ec17aa61d80fded95b67973428796341f0ba"
+    },
+    "browserContexts": 6,
+    "report": {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/playwright-report.json",
+      "sha256": "0666615530543a7233459d3be74e68c532ea9e4684295c0c2c273e01c9c13d52"
+    },
+    "cases": [
+      {
+        "version": 1,
+        "status": "PASS",
+        "caseId": "crossdeck-pair-normal",
+        "binding": {
+          "baseSha": "ce862a4a349b92faa11beaef50555abcb1a35be8",
+          "candidateSha": "e76ed8059790f8173ca0d44eded9997dfe800c4b",
+          "candidateTree": "0b9374096428c36ab1de2f3ef7a52a295628cac8",
+          "sourceDigest": "91769eb493df857300b454939e1e2004338e10b12991b8651a18dedc14ba3be0",
+          "contractDigest": "33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274",
+          "recordDigest": "5073e5c04e60985cfd1f0fcce1f3f9a11fdffe5bb2d29cf269aa3a6356e6e851",
+          "databaseSha256": "ad867a3bf8da43cdc0860df11536ec17aa61d80fded95b67973428796341f0ba"
+        },
+        "contexts": {
+          "DESKTOP": {
+            "voyageId": "cmvar1i7o000a25d8jovoiey9",
+            "editionId": "cmvar1i7i000825d8kxcx0vhc",
+            "surfaceId": "8405c79e-ddd1-47fd-ba7a-0ff3fa7effee",
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "reducedMotion": false
+          },
+          "MOBILE": {
+            "voyageId": "cmvar1i7o000a25d8jovoiey9",
+            "editionId": "cmvar1i7i000825d8kxcx0vhc",
+            "surfaceId": "55029b2d-460e-467b-a793-cf70fe2f9acb",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "reducedMotion": false
+          }
+        },
+        "fixture": {
+          "voyageId": "cmvar1i7o000a25d8jovoiey9",
+          "editionId": "cmvar1i7i000825d8kxcx0vhc",
+          "databaseSha256": "ad867a3bf8da43cdc0860df11536ec17aa61d80fded95b67973428796341f0ba"
+        },
+        "outcomes": {
+          "JOIN_AUTHORIZED": true,
+          "DELIVERY_ACKNOWLEDGED": true,
+          "CONTINUATION_ACTIVATED": true,
+          "RECOVERY": true
+        },
+        "cleanup": {
+          "tracesStopped": true,
+          "contextsClosed": true,
+          "videosFlushed": true,
+          "fixtureRemoved": true
+        },
+        "media": {
+          "DESKTOP": {
+            "screenshots": [
+              "01-chronicle.png",
+              "02-connect-in-chronicle.png",
+              "04-phone-connected.png",
+              "09-transfer-pending.png",
+              "10-delivery-acknowledged.png",
+              "13-recovered-chart.png",
+              "14-medium-chronicle.png"
+            ],
+            "screenshotViewports": {
+              "01-chronicle.png": {
+                "width": 1440,
+                "height": 1000
+              },
+              "02-connect-in-chronicle.png": {
+                "width": 1440,
+                "height": 1000
+              },
+              "04-phone-connected.png": {
+                "width": 1440,
+                "height": 1000
+              },
+              "09-transfer-pending.png": {
+                "width": 1440,
+                "height": 1000
+              },
+              "10-delivery-acknowledged.png": {
+                "width": 1440,
+                "height": 1000
+              },
+              "13-recovered-chart.png": {
+                "width": 1440,
+                "height": 1000
+              },
+              "14-medium-chronicle.png": {
+                "width": 820,
+                "height": 1180
+              }
+            },
+            "recording": "2922179fe81cae5ee544b1d6399ad5f8.webm",
+            "trace": "desktop-trace.zip"
+          },
+          "MOBILE": {
+            "screenshots": [
+              "03-phone-sign-in.png",
+              "04-journal-companion.png",
+              "05-real-chronicle-lens.png",
+              "06-dedicated-chart.png",
+              "07-artifact.png",
+              "08-letter.png",
+              "09-receive-offer.png",
+              "10-chart-received.png",
+              "11-offline.png",
+              "12-reconnected.png",
+              "15-phone-landscape.png",
+              "16-return-to-chronicle.png",
+              "16-voyage-continued.png",
+              "17-access-ended.png"
+            ],
+            "screenshotViewports": {
+              "03-phone-sign-in.png": {
+                "width": 390,
+                "height": 844
+              },
+              "04-journal-companion.png": {
+                "width": 390,
+                "height": 844
+              },
+              "05-real-chronicle-lens.png": {
+                "width": 390,
+                "height": 844
+              },
+              "06-dedicated-chart.png": {
+                "width": 390,
+                "height": 844
+              },
+              "07-artifact.png": {
+                "width": 390,
+                "height": 844
+              },
+              "08-letter.png": {
+                "width": 390,
+                "height": 844
+              },
+              "09-receive-offer.png": {
+                "width": 390,
+                "height": 844
+              },
+              "10-chart-received.png": {
+                "width": 390,
+                "height": 844
+              },
+              "11-offline.png": {
+                "width": 390,
+                "height": 844
+              },
+              "12-reconnected.png": {
+                "width": 390,
+                "height": 844
+              },
+              "15-phone-landscape.png": {
+                "width": 844,
+                "height": 390
+              },
+              "16-return-to-chronicle.png": {
+                "width": 390,
+                "height": 844
+              },
+              "16-voyage-continued.png": {
+                "width": 390,
+                "height": 844
+              },
+              "17-access-ended.png": {
+                "width": 390,
+                "height": 844
+              }
+            },
+            "recording": "686e5630b65f40af2fee3752c9d85fe8.webm",
+            "trace": "phone-trace.zip"
+          }
+        },
+        "witness": {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-no-preference/paired-witness.json",
+          "sha256": "f94a49d53119c340b136b0f14c572ee34864292ece701935ab572132b5373da2"
+        },
+        "artifactIds": [
+          "crossdeck.phase2.continuity-crossdeck-pair-normal-DESKTOP-screenshot-01-chronicle.png",
+          "crossdeck.refit.companion-crossdeck-pair-normal-DESKTOP-screenshot-01-chronicle.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-normal-DESKTOP-screenshot-02-connect-in-chronicle.png",
+          "crossdeck.refit.companion-crossdeck-pair-normal-DESKTOP-screenshot-02-connect-in-chronicle.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-normal-DESKTOP-screenshot-04-phone-connected.png",
+          "crossdeck.refit.companion-crossdeck-pair-normal-DESKTOP-screenshot-04-phone-connected.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-normal-DESKTOP-screenshot-09-transfer-pending.png",
+          "crossdeck.refit.companion-crossdeck-pair-normal-DESKTOP-screenshot-09-transfer-pending.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-normal-DESKTOP-screenshot-10-delivery-acknowledged.png",
+          "crossdeck.refit.companion-crossdeck-pair-normal-DESKTOP-screenshot-10-delivery-acknowledged.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-normal-DESKTOP-screenshot-13-recovered-chart.png",
+          "crossdeck.refit.companion-crossdeck-pair-normal-DESKTOP-screenshot-13-recovered-chart.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-normal-DESKTOP-screenshot-14-medium-chronicle.png",
+          "crossdeck.refit.companion-crossdeck-pair-normal-DESKTOP-screenshot-14-medium-chronicle.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-normal-DESKTOP-recording-2922179fe81cae5ee544b1d6399ad5f8.webm",
+          "crossdeck.refit.companion-crossdeck-pair-normal-DESKTOP-recording-2922179fe81cae5ee544b1d6399ad5f8.webm",
+          "crossdeck.phase2.continuity-crossdeck-pair-normal-DESKTOP-trace-desktop-trace.zip",
+          "crossdeck.refit.companion-crossdeck-pair-normal-DESKTOP-trace-desktop-trace.zip",
+          "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-03-phone-sign-in.png",
+          "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-03-phone-sign-in.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-04-journal-companion.png",
+          "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-04-journal-companion.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-05-real-chronicle-lens.png",
+          "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-05-real-chronicle-lens.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-06-dedicated-chart.png",
+          "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-06-dedicated-chart.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-07-artifact.png",
+          "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-07-artifact.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-08-letter.png",
+          "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-08-letter.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-09-receive-offer.png",
+          "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-09-receive-offer.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-10-chart-received.png",
+          "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-10-chart-received.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-11-offline.png",
+          "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-11-offline.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-12-reconnected.png",
+          "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-12-reconnected.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-15-phone-landscape.png",
+          "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-15-phone-landscape.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-16-return-to-chronicle.png",
+          "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-16-return-to-chronicle.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-16-voyage-continued.png",
+          "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-16-voyage-continued.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-screenshot-17-access-ended.png",
+          "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-screenshot-17-access-ended.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-recording-686e5630b65f40af2fee3752c9d85fe8.webm",
+          "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-recording-686e5630b65f40af2fee3752c9d85fe8.webm",
+          "crossdeck.phase2.continuity-crossdeck-pair-normal-MOBILE-trace-phone-trace.zip",
+          "crossdeck.refit.companion-crossdeck-pair-normal-MOBILE-trace-phone-trace.zip"
+        ]
+      },
+      {
+        "version": 1,
+        "status": "PASS",
+        "caseId": "crossdeck-pair-reduced",
+        "binding": {
+          "baseSha": "ce862a4a349b92faa11beaef50555abcb1a35be8",
+          "candidateSha": "e76ed8059790f8173ca0d44eded9997dfe800c4b",
+          "candidateTree": "0b9374096428c36ab1de2f3ef7a52a295628cac8",
+          "sourceDigest": "91769eb493df857300b454939e1e2004338e10b12991b8651a18dedc14ba3be0",
+          "contractDigest": "33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274",
+          "recordDigest": "5073e5c04e60985cfd1f0fcce1f3f9a11fdffe5bb2d29cf269aa3a6356e6e851",
+          "databaseSha256": "ad867a3bf8da43cdc0860df11536ec17aa61d80fded95b67973428796341f0ba"
+        },
+        "contexts": {
+          "DESKTOP": {
+            "voyageId": "cmvar28ee000x25d8gyimwnt6",
+            "editionId": "cmvar28eb000v25d8lf9fa7d5",
+            "surfaceId": "4ce8c593-1899-41c3-a08b-59b6a5bb4706",
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "reducedMotion": true
+          },
+          "MOBILE": {
+            "voyageId": "cmvar28ee000x25d8gyimwnt6",
+            "editionId": "cmvar28eb000v25d8lf9fa7d5",
+            "surfaceId": "b7b4a984-c234-45ee-90fb-81e4e0e1e582",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "reducedMotion": true
+          }
+        },
+        "fixture": {
+          "voyageId": "cmvar28ee000x25d8gyimwnt6",
+          "editionId": "cmvar28eb000v25d8lf9fa7d5",
+          "databaseSha256": "ad867a3bf8da43cdc0860df11536ec17aa61d80fded95b67973428796341f0ba"
+        },
+        "outcomes": {
+          "JOIN_AUTHORIZED": true,
+          "DELIVERY_ACKNOWLEDGED": true,
+          "CONTINUATION_ACTIVATED": true,
+          "RECOVERY": true
+        },
+        "cleanup": {
+          "tracesStopped": true,
+          "contextsClosed": true,
+          "videosFlushed": true,
+          "fixtureRemoved": true
+        },
+        "media": {
+          "DESKTOP": {
+            "screenshots": [
+              "01-chronicle.png",
+              "02-connect-in-chronicle.png",
+              "04-phone-connected.png",
+              "09-transfer-pending.png",
+              "10-delivery-acknowledged.png",
+              "13-recovered-chart.png",
+              "14-medium-chronicle.png"
+            ],
+            "screenshotViewports": {
+              "01-chronicle.png": {
+                "width": 1440,
+                "height": 1000
+              },
+              "02-connect-in-chronicle.png": {
+                "width": 1440,
+                "height": 1000
+              },
+              "04-phone-connected.png": {
+                "width": 1440,
+                "height": 1000
+              },
+              "09-transfer-pending.png": {
+                "width": 1440,
+                "height": 1000
+              },
+              "10-delivery-acknowledged.png": {
+                "width": 1440,
+                "height": 1000
+              },
+              "13-recovered-chart.png": {
+                "width": 1440,
+                "height": 1000
+              },
+              "14-medium-chronicle.png": {
+                "width": 820,
+                "height": 1180
+              }
+            },
+            "recording": "20e4e69ce1e06ecfe290defa7ca3f725.webm",
+            "trace": "desktop-trace.zip"
+          },
+          "MOBILE": {
+            "screenshots": [
+              "03-phone-sign-in.png",
+              "04-journal-companion.png",
+              "05-real-chronicle-lens.png",
+              "06-dedicated-chart.png",
+              "07-artifact.png",
+              "08-letter.png",
+              "09-receive-offer.png",
+              "10-chart-received.png",
+              "11-offline.png",
+              "12-reconnected.png",
+              "15-phone-landscape.png",
+              "16-return-to-chronicle.png",
+              "16-voyage-continued.png",
+              "17-access-ended.png"
+            ],
+            "screenshotViewports": {
+              "03-phone-sign-in.png": {
+                "width": 390,
+                "height": 844
+              },
+              "04-journal-companion.png": {
+                "width": 390,
+                "height": 844
+              },
+              "05-real-chronicle-lens.png": {
+                "width": 390,
+                "height": 844
+              },
+              "06-dedicated-chart.png": {
+                "width": 390,
+                "height": 844
+              },
+              "07-artifact.png": {
+                "width": 390,
+                "height": 844
+              },
+              "08-letter.png": {
+                "width": 390,
+                "height": 844
+              },
+              "09-receive-offer.png": {
+                "width": 390,
+                "height": 844
+              },
+              "10-chart-received.png": {
+                "width": 390,
+                "height": 844
+              },
+              "11-offline.png": {
+                "width": 390,
+                "height": 844
+              },
+              "12-reconnected.png": {
+                "width": 390,
+                "height": 844
+              },
+              "15-phone-landscape.png": {
+                "width": 844,
+                "height": 390
+              },
+              "16-return-to-chronicle.png": {
+                "width": 390,
+                "height": 844
+              },
+              "16-voyage-continued.png": {
+                "width": 390,
+                "height": 844
+              },
+              "17-access-ended.png": {
+                "width": 390,
+                "height": 844
+              }
+            },
+            "recording": "92764fd5ab0c2e41e4c69e88463ea86e.webm",
+            "trace": "phone-trace.zip"
+          }
+        },
+        "witness": {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-reduce/paired-witness.json",
+          "sha256": "6a9d15643c6d424d33be039af70b004af1831ed85863629914bfff1582aa049b"
+        },
+        "artifactIds": [
+          "crossdeck.phase2.continuity-crossdeck-pair-reduced-DESKTOP-screenshot-01-chronicle.png",
+          "crossdeck.refit.companion-crossdeck-pair-reduced-DESKTOP-screenshot-01-chronicle.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-reduced-DESKTOP-screenshot-02-connect-in-chronicle.png",
+          "crossdeck.refit.companion-crossdeck-pair-reduced-DESKTOP-screenshot-02-connect-in-chronicle.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-reduced-DESKTOP-screenshot-04-phone-connected.png",
+          "crossdeck.refit.companion-crossdeck-pair-reduced-DESKTOP-screenshot-04-phone-connected.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-reduced-DESKTOP-screenshot-09-transfer-pending.png",
+          "crossdeck.refit.companion-crossdeck-pair-reduced-DESKTOP-screenshot-09-transfer-pending.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-reduced-DESKTOP-screenshot-10-delivery-acknowledged.png",
+          "crossdeck.refit.companion-crossdeck-pair-reduced-DESKTOP-screenshot-10-delivery-acknowledged.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-reduced-DESKTOP-screenshot-13-recovered-chart.png",
+          "crossdeck.refit.companion-crossdeck-pair-reduced-DESKTOP-screenshot-13-recovered-chart.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-reduced-DESKTOP-screenshot-14-medium-chronicle.png",
+          "crossdeck.refit.companion-crossdeck-pair-reduced-DESKTOP-screenshot-14-medium-chronicle.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-reduced-DESKTOP-recording-20e4e69ce1e06ecfe290defa7ca3f725.webm",
+          "crossdeck.refit.companion-crossdeck-pair-reduced-DESKTOP-recording-20e4e69ce1e06ecfe290defa7ca3f725.webm",
+          "crossdeck.phase2.continuity-crossdeck-pair-reduced-DESKTOP-trace-desktop-trace.zip",
+          "crossdeck.refit.companion-crossdeck-pair-reduced-DESKTOP-trace-desktop-trace.zip",
+          "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-03-phone-sign-in.png",
+          "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-03-phone-sign-in.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-04-journal-companion.png",
+          "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-04-journal-companion.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-05-real-chronicle-lens.png",
+          "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-05-real-chronicle-lens.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-06-dedicated-chart.png",
+          "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-06-dedicated-chart.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-07-artifact.png",
+          "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-07-artifact.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-08-letter.png",
+          "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-08-letter.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-09-receive-offer.png",
+          "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-09-receive-offer.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-10-chart-received.png",
+          "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-10-chart-received.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-11-offline.png",
+          "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-11-offline.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-12-reconnected.png",
+          "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-12-reconnected.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-15-phone-landscape.png",
+          "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-15-phone-landscape.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-16-return-to-chronicle.png",
+          "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-16-return-to-chronicle.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-16-voyage-continued.png",
+          "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-16-voyage-continued.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-screenshot-17-access-ended.png",
+          "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-screenshot-17-access-ended.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-recording-92764fd5ab0c2e41e4c69e88463ea86e.webm",
+          "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-recording-92764fd5ab0c2e41e4c69e88463ea86e.webm",
+          "crossdeck.phase2.continuity-crossdeck-pair-reduced-MOBILE-trace-phone-trace.zip",
+          "crossdeck.refit.companion-crossdeck-pair-reduced-MOBILE-trace-phone-trace.zip"
+        ]
+      },
+      {
+        "version": 1,
+        "status": "PASS",
+        "caseId": "crossdeck-pair-adverse",
+        "binding": {
+          "baseSha": "ce862a4a349b92faa11beaef50555abcb1a35be8",
+          "candidateSha": "e76ed8059790f8173ca0d44eded9997dfe800c4b",
+          "candidateTree": "0b9374096428c36ab1de2f3ef7a52a295628cac8",
+          "sourceDigest": "91769eb493df857300b454939e1e2004338e10b12991b8651a18dedc14ba3be0",
+          "contractDigest": "33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274",
+          "recordDigest": "5073e5c04e60985cfd1f0fcce1f3f9a11fdffe5bb2d29cf269aa3a6356e6e851",
+          "databaseSha256": "ad867a3bf8da43cdc0860df11536ec17aa61d80fded95b67973428796341f0ba"
+        },
+        "contexts": {
+          "DESKTOP": {
+            "voyageId": "cmvar2ti8001k25d81vf1wqw7",
+            "editionId": "cmvar2ti4001i25d897t6x1zl",
+            "surfaceId": "04232007-3561-4994-96d5-b02d18ff3040",
+            "viewport": {
+              "width": 1440,
+              "height": 1000
+            },
+            "reducedMotion": false
+          },
+          "MOBILE": {
+            "voyageId": "cmvar2ti8001k25d81vf1wqw7",
+            "editionId": "cmvar2ti4001i25d897t6x1zl",
+            "surfaceId": "aa6832d3-8513-4159-a66f-48af9c3b55f6",
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "reducedMotion": false
+          }
+        },
+        "fixture": {
+          "voyageId": "cmvar2ti8001k25d81vf1wqw7",
+          "editionId": "cmvar2ti4001i25d897t6x1zl",
+          "databaseSha256": "ad867a3bf8da43cdc0860df11536ec17aa61d80fded95b67973428796341f0ba"
+        },
+        "outcomes": {
+          "PAIRING_EXPIRED_REFUSED": true,
+          "JOIN_AUTHORIZED": true,
+          "PRIVATE_SEND_CONFIRMED_CANCELLED_DECLINED": true,
+          "DELIVERY_ACKNOWLEDGED": true,
+          "CREW_PRIVATE_SEPARATION": true,
+          "REVOKED_PRIVATE_VIEW_CLEARED": true
+        },
+        "cleanup": {
+          "tracesStopped": true,
+          "contextsClosed": true,
+          "videosFlushed": true,
+          "fixtureRemoved": true
+        },
+        "media": {
+          "DESKTOP": {
+            "screenshots": [
+              "01-pairing-before-cancel.png",
+              "02-phone-connected.png",
+              "06-declined-transfer.png",
+              "08-send-authorized-crew-chart.png",
+              "08-crew-transfer-pending.png",
+              "09-crew-delivery-acknowledged.png"
+            ],
+            "screenshotViewports": {
+              "01-pairing-before-cancel.png": {
+                "width": 1440,
+                "height": 1000
+              },
+              "02-phone-connected.png": {
+                "width": 1440,
+                "height": 1000
+              },
+              "06-declined-transfer.png": {
+                "width": 1440,
+                "height": 1000
+              },
+              "08-send-authorized-crew-chart.png": {
+                "width": 1440,
+                "height": 1000
+              },
+              "08-crew-transfer-pending.png": {
+                "width": 1440,
+                "height": 1000
+              },
+              "09-crew-delivery-acknowledged.png": {
+                "width": 1440,
+                "height": 1000
+              }
+            },
+            "recording": "e927d6e75a81e4d836a71752ec3ab824.webm",
+            "trace": "desktop-trace.zip"
+          },
+          "MOBILE": {
+            "screenshots": [
+              "02-expired-code-refused.png",
+              "02-paired-phone.png",
+              "03-unavailable-purposes.png",
+              "04-private-note-confirmation.png",
+              "05-canceled-transfer.png",
+              "07-shared-empty-state.png",
+              "08-crew-receive-pending.png",
+              "09-restricted-crew-chart-received.png",
+              "10-authorized-personal-return.png",
+              "11-current-surface-revoked.png"
+            ],
+            "screenshotViewports": {
+              "02-expired-code-refused.png": {
+                "width": 390,
+                "height": 844
+              },
+              "02-paired-phone.png": {
+                "width": 390,
+                "height": 844
+              },
+              "03-unavailable-purposes.png": {
+                "width": 390,
+                "height": 844
+              },
+              "04-private-note-confirmation.png": {
+                "width": 390,
+                "height": 844
+              },
+              "05-canceled-transfer.png": {
+                "width": 390,
+                "height": 844
+              },
+              "07-shared-empty-state.png": {
+                "width": 390,
+                "height": 844
+              },
+              "08-crew-receive-pending.png": {
+                "width": 390,
+                "height": 844
+              },
+              "09-restricted-crew-chart-received.png": {
+                "width": 390,
+                "height": 844
+              },
+              "10-authorized-personal-return.png": {
+                "width": 390,
+                "height": 844
+              },
+              "11-current-surface-revoked.png": {
+                "width": 390,
+                "height": 844
+              }
+            },
+            "recording": "de78683f46c23ab878eb575120b9cd98.webm",
+            "trace": "phone-trace.zip"
+          }
+        },
+        "witness": {
+          "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/refit-recovery/paired-witness.json",
+          "sha256": "9828277fc28e326d10a766239bf0c016f85bb0fb5a9400946e2b5761b4fb9a2d"
+        },
+        "artifactIds": [
+          "crossdeck.phase2.continuity-crossdeck-pair-adverse-DESKTOP-screenshot-01-pairing-before-cancel.png",
+          "crossdeck.refit.companion-crossdeck-pair-adverse-DESKTOP-screenshot-01-pairing-before-cancel.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-adverse-DESKTOP-screenshot-02-phone-connected.png",
+          "crossdeck.refit.companion-crossdeck-pair-adverse-DESKTOP-screenshot-02-phone-connected.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-adverse-DESKTOP-screenshot-06-declined-transfer.png",
+          "crossdeck.refit.companion-crossdeck-pair-adverse-DESKTOP-screenshot-06-declined-transfer.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-adverse-DESKTOP-screenshot-08-send-authorized-crew-chart.png",
+          "crossdeck.refit.companion-crossdeck-pair-adverse-DESKTOP-screenshot-08-send-authorized-crew-chart.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-adverse-DESKTOP-screenshot-08-crew-transfer-pending.png",
+          "crossdeck.refit.companion-crossdeck-pair-adverse-DESKTOP-screenshot-08-crew-transfer-pending.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-adverse-DESKTOP-screenshot-09-crew-delivery-acknowledged.png",
+          "crossdeck.refit.companion-crossdeck-pair-adverse-DESKTOP-screenshot-09-crew-delivery-acknowledged.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-adverse-DESKTOP-recording-e927d6e75a81e4d836a71752ec3ab824.webm",
+          "crossdeck.refit.companion-crossdeck-pair-adverse-DESKTOP-recording-e927d6e75a81e4d836a71752ec3ab824.webm",
+          "crossdeck.phase2.continuity-crossdeck-pair-adverse-DESKTOP-trace-desktop-trace.zip",
+          "crossdeck.refit.companion-crossdeck-pair-adverse-DESKTOP-trace-desktop-trace.zip",
+          "crossdeck.phase2.continuity-crossdeck-pair-adverse-MOBILE-screenshot-02-expired-code-refused.png",
+          "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-02-expired-code-refused.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-adverse-MOBILE-screenshot-02-paired-phone.png",
+          "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-02-paired-phone.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-adverse-MOBILE-screenshot-03-unavailable-purposes.png",
+          "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-03-unavailable-purposes.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-adverse-MOBILE-screenshot-04-private-note-confirmation.png",
+          "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-04-private-note-confirmation.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-adverse-MOBILE-screenshot-05-canceled-transfer.png",
+          "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-05-canceled-transfer.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-adverse-MOBILE-screenshot-07-shared-empty-state.png",
+          "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-07-shared-empty-state.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-adverse-MOBILE-screenshot-08-crew-receive-pending.png",
+          "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-08-crew-receive-pending.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-adverse-MOBILE-screenshot-09-restricted-crew-chart-received.png",
+          "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-09-restricted-crew-chart-received.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-adverse-MOBILE-screenshot-10-authorized-personal-return.png",
+          "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-10-authorized-personal-return.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-adverse-MOBILE-screenshot-11-current-surface-revoked.png",
+          "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-screenshot-11-current-surface-revoked.png",
+          "crossdeck.phase2.continuity-crossdeck-pair-adverse-MOBILE-recording-de78683f46c23ab878eb575120b9cd98.webm",
+          "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-recording-de78683f46c23ab878eb575120b9cd98.webm",
+          "crossdeck.phase2.continuity-crossdeck-pair-adverse-MOBILE-trace-phone-trace.zip",
+          "crossdeck.refit.companion-crossdeck-pair-adverse-MOBILE-trace-phone-trace.zip"
+        ]
+      }
+    ],
+    "runtime": {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/runtime.original.json",
+      "sha256": "86babfca6ad686e3256d122f0842cccd70dcb20e11dc770d174b77b9f20ed0a1"
+    },
+    "profile": {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r7-verification-20261016/paired-local-execution/generic/paired/profile.original.json",
+      "sha256": "45c66193bfd41266ab2ffd01e851fce79f3d51555d1b20b41f2e8fbd1d337d40"
+    }
+  },
+  "packetDigest": "62352ead11d33fce3c394bc1adf3ee6c2b9f65406cd56a4c61a80b051ca0e8c1",
+  "instructions": "Inspect rendered images and recordings before source. Record concrete evidence for every dimension. Builder rationale is intentionally excluded. Return review JSON; do not infer owner acceptance.",
+  "reviewDimensions": [
+    "composition",
+    "hierarchy",
+    "typography",
+    "spacing",
+    "controls",
+    "contrast",
+    "consistency",
+    "states",
+    "responsive",
+    "keyboard",
+    "focus",
+    "feedback",
+    "motion",
+    "continuity",
+    "complexity",
+    "role-outcomes",
+    "fallbacks"
+  ],
+  "builderRationaleIncluded": false
+}

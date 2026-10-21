@@ -19,13 +19,14 @@ last_reviewed: 2026-10-21
   preserves eligible mesh selection across redraws, adds accessible native
   loading/tracking guidance and rejects stale or revoked Scene interactions.
   Source-bound shared, Android, iOS native/joined and unsigned Release development
-  checks pass within the scopes recorded in the
+  checks at the pre-integration checkpoint retain the scopes recorded in the
   [completion ledger](Development_Docs/Projects/Project_Parallax/NCL01_Full_Completion_20261021.md).
   Independent iOS presentation passes 31/0/1 on the supported ARM profile;
   failed and cancelled historical runs remain preserved without causal closure.
-  Physical acceptance, accepted browser/Crossdeck integration and protected
-  mainline acceptance remain separate gates. Existing beta 7 and its artwork
-  are preserved.
+  Crossdeck PR #721 has landed at `aaff9194`; fresh combined NCL integration
+  qualification remains pending. Admitted browser metric-spatial capability,
+  physical and protected-main acceptance remain separate gates. Existing beta 7
+  and its artwork are preserved.
 
 - Reach review can continue at cumulative iteration four only through a source-bound policy installed on protected main for existing PR #766. The blocked third review, full product evidence and ordinary protected integration requirements remain intact. [Continuation and review gap](Development_Docs/Engineering/Reach_Product_Review_Continuation_20261017.md).
 - Ordinary verification starts completed-evidence intake without awaiting its own command module. A cold command regression checks that failures reach the canonical decision writer. [Startup behavior](Development_Docs/Engineering/Ordinary_Verifier_Cold_Startup_Repair.md) preserves the evidence and qualification requirements.
@@ -79,6 +80,8 @@ last_reviewed: 2026-10-21
 
 ### Corrected
 
+- Crossdeck refit is integrated through [PR #721](https://github.com/Kgray44/treasurehuntSoT/pull/721) at `aaff9194`, after [pre-merge Sounding Line PASS](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39656414105). Contextual QR/code connection, supported companion purposes, browser Guided Lens/Chart/Journal/artifact/crew views, acknowledged handoff and recovery preserve the authorized Voyage. The [R11 source record](Development_Docs/Projects/Project_Crossdeck/Spatial_Experience_Refit_R11_Verification_20261017.md), original seven-contract/119-judgment review and historical capture remain source-bound. [Ordinary5](Development_Docs/Projects/Project_Crossdeck/Ordinary5_Disposition_20261017.md), [R14 ordinary7](https://github.com/Kgray44/treasurehuntSoT/actions/runs/39037804106) and [ordinary4](Development_Docs/Projects/Project_Crossdeck/Ordinary4_Disposition_20261016.md) remain consumed failures. Fresh combined NCL integration qualification is pending; browser-provider, physical/native and owner acceptance remain separate.
+
 - Device connections has a primary page heading in both account states. Reach guidance and the pointing area expose meaningful semantic structure while preserving their controls and focus behavior. Full-page accessibility regressions retain all violation severities and distinguish incomplete checks from passes.
 - Reach setup requests remain operable by keyboard and touch during brief tracking changes. Activation checks current readiness and responds with polite guidance instead of losing the request; existing setup guards remain in force, and no automatic start is queued. The default return to device connections restores the page top so the laboratory entry stays clear of the header.
 - Account forms use POST for early native submission before JavaScript hydration, keeping entered passwords and codes out of submitted query strings. The normal client authentication flow is unchanged.
@@ -109,7 +112,7 @@ last_reviewed: 2026-10-21
 
 - Parallax A1 integrates reviewed Spatial Assistant proposals, bounded private follow-up context, shared Windows server credential support and durable Admiralty AI controls through protected PR #710 at `ee8caa83`. Per-user policy uses the existing People dossier. Real canvas preview, atomic saved Apply and ordinary history preserve adaptive ownership; the unmetered legacy network path is retired. Ordinary Sounding Line, five production-browser journeys, six bounded live calls and 118 landed smoke checks pass their recorded software boundaries. Assistance remains disabled by default, and owner visual/full-corpus/physical acceptance remain separate; see the [implementation record](Development_Docs/Projects/Project_Parallax/Parallax_A1_Implementation_and_Qualification.md).
 
-- Added the gated synthetic Lost Navigator’s Chart pilot: canonical spatial publication and fictional Living Chart, replay-preserving Voyage provisioning, optional Sextant compass, real Crossdeck controls and one Reach/Pilot owner feedback session. Software qualification and owner/physical acceptance remain separate; see the [pilot record](Development_Docs/Projects/Spatial_Chronicle_Pilot/README.md).
+- Added the gated synthetic Lost NavigatorÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢s Chart pilot: canonical spatial publication and fictional Living Chart, replay-preserving Voyage provisioning, optional Sextant compass, real Crossdeck controls and one Reach/Pilot owner feedback session. Software qualification and owner/physical acceptance remain separate; see the [pilot record](Development_Docs/Projects/Spatial_Chronicle_Pilot/README.md).
 - Sextant Phase 3 local candidate adds calibrated field semantics, relative pressure/step context, media capability lifecycle, optional bounded BLE/NFC, authenticated peer/ranging contracts, safe magnetic reference controls and Drydock requirements. The [implementation receipt](Development_Docs/Engineering/Sextant/Project_Sextant_Phase_3_Implementation_Receipt.md) distinguishes D0/D1 software proof from native/physical/owner and protected-mainline gates.
 - Crossdeck Phase 2 candidate adds durable presentation synchronization, explicit
   manual Send to and destination acknowledgement, focus/custody and companion

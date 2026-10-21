@@ -9,11 +9,14 @@ export const EXPERIENCE_CHECKOUT_ROOTS = Object.freeze([
   "de8730254d8a9be2059ab41a5ab01c02ad97db2e", // R23 review-submit
   "39b313d1e02d134fce6ef7cfce98cfdc1ed5e889", // R23 review12
   "55d8b2c505e30a5736df6c326ee2ab313e32d4a2", // Spent R24 qualify
+  "ab55b3704e07c49e44ed148cadd6dae93350e3d9", // Spent R25 qualify
 ]);
 
 // Accepted e0056ff3 typed policy inventory. Historical byte reads are selected
 // by the actual sourceSnapshot predicate, exact metadata reads and typed pins.
 export const EXPERIENCE_READER_REVISIONS = Object.freeze([
+  "185f5fd368ec16a77cb5fe92e7813d7ca4ac6418", // Actual R25 registry/source
+  "8dd97d7a63989cc7ee0fde7e8e178b515e2d8a94", // Frozen spent R25 consumer source
   "e1a86f98e56d68e8e87e3704d17439489ff1a170", // Accepted R24 registry/source
   "245e5128afa00e6c888818a698ebd37717d81a3d", // Frozen R24 consumer source
   "005bbd181872629bb2b5a941fac6ddd43dfa16b7",
@@ -105,6 +108,10 @@ export const EXPERIENCE_READER_REVISIONS = Object.freeze([
 ]);
 export const EXPERIENCE_READER_OBJECTS = Object.freeze(
   [
+    { sha: "185f5fd368ec16a77cb5fe92e7813d7ca4ac6418", type: "commit" },
+    { sha: "8dd97d7a63989cc7ee0fde7e8e178b515e2d8a94", type: "commit" },
+    { sha: "ab55b3704e07c49e44ed148cadd6dae93350e3d9", type: "commit" },
+    { sha: "67371bc7bba9697c738373266416447b8da3c8ac", type: "blob" }, // Original R25 reservation
     {
       sha: "005bbd181872629bb2b5a941fac6ddd43dfa16b7",
       type: "commit",

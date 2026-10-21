@@ -1,0 +1,22 @@
+async function getCachedBinaryPath({
+  version,
+  binaryTarget,
+  binaryName
+}) {
+  const cacheDir = await (0, import_chunk_LONQL55G.getCacheDir)(channel, version, binaryTarget);
+  if (!cacheDir) {
+    return null;
+  }
+  const cachedTargetPath = import_node_path.default.join(cacheDir, binaryName);
+  if (!import_node_fs.default.existsSync(cachedTargetPath)) {
+    return null;
+  }
+  if (version !== "latest") {
+    return cachedTargetPath;
+  }
+  if (await exists(cachedTargetPath)) {
+    return cachedTargetPath;
+  }
+  return null;
+}
+

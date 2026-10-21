@@ -1,0 +1,222 @@
+{
+  "version": 1,
+  "classification": "OPERATOR_LOCAL_ONE_USE_TECHNICAL_DIAGNOSTIC_NOT_AUTHENTICATED_CUSTODY",
+  "exceptionId": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R13",
+  "stage": "corrected",
+  "status": "PASS",
+  "baseSha": "24fb189a90435ccb6021b63fd6953603ae090bc0",
+  "candidateSha": "3037e3f6c2ae517e160cf5982f8a03b87672bdf3",
+  "candidateTree": "4bdad60f1c08e7bbac7b3606b1dbfa5126c00a9c",
+  "sourceDigest": "a63073cbf3850900c91a25979467bb68f3930812e23af3f6daab00b21ab5d17a",
+  "contractDigest": "33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274",
+  "recordDigest": "a6689ebab490ed81f313cf4bc5e2e597181c012ad43645120698b2faef097359",
+  "spec": "tests/e2e/crossdeck-phase2.spec.ts",
+  "title": "crossdeck.surface-handoff",
+  "invocations": 1,
+  "caseExecutions": 1,
+  "retries": 0,
+  "repeatEachIndex": 0,
+  "additionalRepeats": 0,
+  "productCaptures": 0,
+  "productReviews": 0,
+  "providerCalls": 0,
+  "files": {
+    "sourceManifest": {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/source-manifest.json",
+      "sha256": "4ebbc6fadc7f0cb93bcd77385861354bce7e7e26729e50a597a6bd4457691d2d"
+    },
+    "report": {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/browser-report.json",
+      "sha256": "5bb85a93c1e47d0e0149cefd747272ec681fc5583c4dec575df89a994d9fb22f"
+    },
+    "runtimeReceipt": {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/browser-runtime.json",
+      "sha256": "e9a80178fc7ca02d1e6893ddbbb4c373e2889aeafe1131bcfe140fd9dc63346c"
+    },
+    "profileReceipt": {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/browser-suite-profile.json",
+      "sha256": "f106bcde72f6d96e725600fd0ffa4a2792cfbfaf7869f7c2f321c62f23e36051"
+    },
+    "deviceLabReceipt": {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/device-lab.json",
+      "sha256": "d891b6a1f98dd6f7ca819e7def4f1b2f89a14715fddbefca43af67348f35082e"
+    },
+    "marker": {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/marker.json",
+      "sha256": "3c99b1cdc7981d7e0a49082158755d5239368f133785faf57ce8c1e39a7faa07"
+    },
+    "launchMarker": {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/launch-marker.json",
+      "sha256": "02c67e009da91d57ea9122a093790e8ecf3320bdc73344fec1eab7541f0d597c"
+    }
+  },
+  "media": [
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/screenshot.png",
+      "sha256": "cb9278eeaea5bcd83a9dbba8f1f8ee1abc0a1bed4ac61c6216e70fc75c0142d3",
+      "kind": "SCREENSHOT"
+    }
+  ],
+  "outcome": "CORRECTION_PASS",
+  "startedAt": "2026-10-17T04:41:57.420Z",
+  "limitation": "Operator common-Git accounting is not authenticated global execution custody. Preserve both stage markers and all partial output. No reset, retry or raw-launch bypass.",
+  "execution": {
+    "exitCode": 0,
+    "cancelled": false,
+    "cleanup": {
+      "status": "PASS",
+      "directExitObserved": true,
+      "exitCode": 0,
+      "signal": null,
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": false,
+      "payloadExitCode": 0,
+      "elapsedMs": 7,
+      "ownership": "LINUX_SUBREAPER_AND_PIDFD"
+    }
+  },
+  "resultStatus": "passed",
+  "completedAt": "2026-10-17T04:43:21.744Z",
+  "readiness": {
+    "version": 1,
+    "publication": true,
+    "classification": "FINITE_INFRASTRUCTURE_READINESS_NO_PRODUCT_JOURNEYS",
+    "policyDigest": "c3eca238565d710cd2392818a0409b2ab7ae998e28d322c600500d18a04cf9d2",
+    "stage": "corrected",
+    "attempt": 1,
+    "receiptSha256": "c3a70ab29e2f43ad1f89552f9637c86b01d7f6786bf50ee5a1e93e69104b5a9a",
+    "proofRoot": "/workspace/crossdeck-cloud-repair",
+    "databaseUrl": "file:/workspace/crossdeck-cloud-repair/artifacts/sounding-line/generic-3037e3f6c2ae/validation-isolated-20261017-042637539-56c5a1462ef440128edf139d23a9fda6.db",
+    "binding": {
+      "version": 1,
+      "exceptionId": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R13",
+      "recordDigest": "a6689ebab490ed81f313cf4bc5e2e597181c012ad43645120698b2faef097359",
+      "baseSha": "24fb189a90435ccb6021b63fd6953603ae090bc0",
+      "candidateSha": "3037e3f6c2ae517e160cf5982f8a03b87672bdf3",
+      "candidateTree": "4bdad60f1c08e7bbac7b3606b1dbfa5126c00a9c",
+      "sourceDigest": "a63073cbf3850900c91a25979467bb68f3930812e23af3f6daab00b21ab5d17a",
+      "contractDigest": "33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274",
+      "sourceManifestSha256": "9078f192a0480cb7898513c9e6c724d8694a3cba91d0c0b31e7005aafb0181d2",
+      "environmentDigest": "f2c53a7e67ec5d127393ceed487510edab2a3a225b1bf83dcddd74ee24f58a9c",
+      "stage": "corrected",
+      "manifestSha256": "929d1963b17a78306df6d4822ed51dca8578061ef2b6d9c3ce9db195f3d9d624",
+      "attempt": 1,
+      "lease": "c529efa2-ee2f-46ad-99e3-5adcd35d5988"
+    },
+    "attempts": [
+      {
+        "attempt": 1,
+        "binding": {
+          "version": 1,
+          "exceptionId": "PE-X-CROSSDECK-FINAL-VERIFY-20261015-R13",
+          "recordDigest": "a6689ebab490ed81f313cf4bc5e2e597181c012ad43645120698b2faef097359",
+          "baseSha": "24fb189a90435ccb6021b63fd6953603ae090bc0",
+          "candidateSha": "3037e3f6c2ae517e160cf5982f8a03b87672bdf3",
+          "candidateTree": "4bdad60f1c08e7bbac7b3606b1dbfa5126c00a9c",
+          "sourceDigest": "a63073cbf3850900c91a25979467bb68f3930812e23af3f6daab00b21ab5d17a",
+          "contractDigest": "33b7621269fa18417c20713ccc185783861ef043e38a527f727df7e1047c7274",
+          "sourceManifestSha256": "9078f192a0480cb7898513c9e6c724d8694a3cba91d0c0b31e7005aafb0181d2",
+          "environmentDigest": "f2c53a7e67ec5d127393ceed487510edab2a3a225b1bf83dcddd74ee24f58a9c",
+          "stage": "corrected",
+          "manifestSha256": "929d1963b17a78306df6d4822ed51dca8578061ef2b6d9c3ce9db195f3d9d624",
+          "attempt": 1,
+          "lease": "c529efa2-ee2f-46ad-99e3-5adcd35d5988"
+        },
+        "status": "PASS",
+        "files": {
+          "marker": {
+            "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/dependency-readiness/attempt-1/marker.json",
+            "sha256": "67613069c1f2506c3e73013aed4c43ca9e4886b178a46b91962191041cef35b8"
+          },
+          "launch": {
+            "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/dependency-readiness/attempt-1/launch.json",
+            "sha256": "bf40366215fb5ff988adeb6dc77af89e376ff73439029cc388fb42457642a8e0"
+          },
+          "receipt": {
+            "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/dependency-readiness/attempt-1/receipt.json",
+            "sha256": "c3a70ab29e2f43ad1f89552f9637c86b01d7f6786bf50ee5a1e93e69104b5a9a"
+          },
+          "contextSeal": {
+            "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/dependency-readiness/attempt-1/contextSeal.json",
+            "sha256": "b23d9eaeaa64ac79ce433248bb98aaa4507d33a1e6e48ba2645db2db6d1a6c35"
+          },
+          "nativeReceipt": {
+            "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/dependency-readiness/attempt-1/nativeReceipt.json",
+            "sha256": "88715048e9577cec7c12c3163ec7738562f4323b3754d75563ea8e85c679bbbe"
+          },
+          "browserReceipt": {
+            "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/dependency-readiness/attempt-1/browserReceipt.json",
+            "sha256": "a38f5838542a76604ea2fb406faf1ea6f143ddccdcda8ead2c8f39da64ac9886"
+          },
+          "setupReceipt": {
+            "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/dependency-readiness/attempt-1/setupReceipt.json",
+            "sha256": "9b9a552b1d9a3272c59995523fdce3cc75b01281e1c90eaf09fd62c3e6b44e81"
+          },
+          "dependencyManifest": {
+            "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/dependency-readiness/attempt-1/dependencyManifest.json",
+            "sha256": "b657e1150422cf811d895d9fa7bebb1d3984308d1152a70141824a3d7f0f628a"
+          },
+          "stdout": {
+            "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/dependency-readiness/attempt-1/stdout.txt",
+            "sha256": "76858255c4ddfad37788e487482bbb9e83d374961a646b246eef55c709082390"
+          },
+          "stderr": {
+            "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/dependency-readiness/attempt-1/stderr.txt",
+            "sha256": "170649756853ed687386c8fe5c3508ef573c375f81390945792a28551276fe11"
+          }
+        }
+      }
+    ],
+    "index": {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/dependency-readiness/readiness-index.json",
+      "sha256": "6da7891da989b5c0239ff13d9dd5695d035d7253d33992dac9f2aceaf1f9cfc6"
+    },
+    "files": [
+      {
+        "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/dependency-readiness/attempt-1/browserReceipt.json",
+        "sha256": "a38f5838542a76604ea2fb406faf1ea6f143ddccdcda8ead2c8f39da64ac9886"
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/dependency-readiness/attempt-1/contextSeal.json",
+        "sha256": "b23d9eaeaa64ac79ce433248bb98aaa4507d33a1e6e48ba2645db2db6d1a6c35"
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/dependency-readiness/attempt-1/dependencyManifest.json",
+        "sha256": "b657e1150422cf811d895d9fa7bebb1d3984308d1152a70141824a3d7f0f628a"
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/dependency-readiness/attempt-1/launch.json",
+        "sha256": "bf40366215fb5ff988adeb6dc77af89e376ff73439029cc388fb42457642a8e0"
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/dependency-readiness/attempt-1/marker.json",
+        "sha256": "67613069c1f2506c3e73013aed4c43ca9e4886b178a46b91962191041cef35b8"
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/dependency-readiness/attempt-1/nativeReceipt.json",
+        "sha256": "88715048e9577cec7c12c3163ec7738562f4323b3754d75563ea8e85c679bbbe"
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/dependency-readiness/attempt-1/receipt.json",
+        "sha256": "c3a70ab29e2f43ad1f89552f9637c86b01d7f6786bf50ee5a1e93e69104b5a9a"
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/dependency-readiness/attempt-1/setupReceipt.json",
+        "sha256": "9b9a552b1d9a3272c59995523fdce3cc75b01281e1c90eaf09fd62c3e6b44e81"
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/dependency-readiness/attempt-1/stderr.txt",
+        "sha256": "170649756853ed687386c8fe5c3508ef573c375f81390945792a28551276fe11"
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/dependency-readiness/attempt-1/stdout.txt",
+        "sha256": "76858255c4ddfad37788e487482bbb9e83d374961a646b246eef55c709082390"
+      },
+      {
+        "path": "Development_Docs/Projects/Project_Crossdeck/evidence/r13-verification-20261017/focused-technical/corrected/dependency-readiness/readiness-index.json",
+        "sha256": "6da7891da989b5c0239ff13d9dd5695d035d7253d33992dac9f2aceaf1f9cfc6"
+      }
+    ]
+  }
+}

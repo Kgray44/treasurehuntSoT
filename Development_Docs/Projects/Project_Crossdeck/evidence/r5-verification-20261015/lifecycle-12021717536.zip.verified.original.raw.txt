@@ -1,0 +1,15 @@
+{
+  "classification": "IMMUTABLE_HOSTED_ARTIFACT_DOWNLOAD_NOT_RECAPTURE",
+  "artifactId": 12021717536,
+  "expectedBytes": 46115,
+  "expectedDigest": "sha256:1c163c73eb1484e8fba3d97f6a8f5451b610166ed9981725f0f1b63e42c89979",
+  "status": "COMPLETE_SERVER_SHA256_VERIFIED",
+  "startedAt": "2026-10-16T02:53:18.287Z",
+  "resumedFromBytes": 0,
+  "digest": "sha256:1c163c73eb1484e8fba3d97f6a8f5451b610166ed9981725f0f1b63e42c89979",
+  "serverDigestMatched": true,
+  "runId": 38840988544,
+  "file": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r5-retry\\lifecycle-12021717536.zip",
+  "bytes": 46115,
+  "completedAt": "2026-10-16T02:53:19.247Z"
+}

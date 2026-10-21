@@ -1,0 +1,72 @@
+{
+  "classification": "ENGINEERING_EVIDENCE_CONSUMED_ORDINARY4_EXACT_ORIGINALS_AND_UNCHANGED_OBSERVATIONS",
+  "runId": 38968131415,
+  "candidateSha": "c9dc54c16bccc93f26bebfb531f1c2471b9fc4d4",
+  "candidateTree": "1df0408c983b95f9fe7ee5e23b3a46c23cf2acd7",
+  "sourceDigest": "6f065402d448c4330a2f70f4048551de9fc89c37e0c95eae70bcb7553f269b10",
+  "decisionArtifactId": 12076937018,
+  "decisionArtifactServerDigest": "sha256:1e5a1d2099eee71f9a1714296097b352379340be6202ce9ac05fddd532c2024c",
+  "qualificationReservation": "e414624dd6b3901b360729ae024cd181fd42396f",
+  "qualifyPayloadDigest": "147f76e9447c1812a2998caa4d1a4a9186af60baabf5964571640b78ce8ade48",
+  "qualifiedSeal": null,
+  "entries": [
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary4-failed-20261016/run.original.raw.txt",
+      "mode": "100644",
+      "gitBlob": "341fcecc55934936e171a28f2c7db8128d9f5329",
+      "sha256": "eb0a708038a24ae85dc028f89bc161b65bdbdcb8eb371e9ea5a985a05766cec0",
+      "bytes": 13202,
+      "classification": "ORIGINAL_SERVER_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary4-failed-20261016/jobs.original.raw.txt",
+      "mode": "100644",
+      "gitBlob": "dadb231947ab03397f0cccc6c31fcbfeee1a39e5",
+      "sha256": "e5a50deba016dbdee848ade08df640807a17aa9d8b4b157293061d1822ac2b88",
+      "bytes": 11921,
+      "classification": "ORIGINAL_SERVER_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary4-failed-20261016/artifacts.original.raw.txt",
+      "mode": "100644",
+      "gitBlob": "d899407216df97df57f987c3619fe5e3fb2c8d62",
+      "sha256": "de7e0ff936947ab6a370f018f141003d27319e64cefcef3e53b84ae73197e5ea",
+      "bytes": 797,
+      "classification": "ORIGINAL_SERVER_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary4-failed-20261016/protected-run.original.log",
+      "mode": "100644",
+      "gitBlob": "0511067310d91e3f46d20c9336d0511b37abb5b1",
+      "sha256": "ea42918c5ba2d217a08142e7a3586bee65bf33a1ff2594dedcac5b12761ebc41",
+      "bytes": 3377290,
+      "classification": "ORIGINAL_SERVER_OUTPUT"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary4-failed-20261016/decision-12076937018.original.zip",
+      "mode": "100644",
+      "gitBlob": "3f6fa9f939fa10a63b1befd79b69a33bf1272a6a",
+      "sha256": "1e5a1d2099eee71f9a1714296097b352379340be6202ce9ac05fddd532c2024c",
+      "bytes": 120912,
+      "classification": "ORIGINAL_SERVER_ARCHIVE"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary4-failed-20261016/hosted-source-boundary.observation.original.raw.txt",
+      "mode": "100644",
+      "gitBlob": "df2b737e9f7b599ef3db9caadb4e1175035ccc35",
+      "sha256": "1b7302443bb4d0eedfa40b4b701a240e410b9efd7e63fb3b423a3546a12387ca",
+      "bytes": 2396,
+      "classification": "UNCHANGED_AUTHOR_CREATED_SOURCE_AND_HOSTED_OBSERVATION_EXACT_CAUSE_UNVERIFIED"
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Crossdeck/evidence/ordinary4-failed-20261016/consumed-custody.observation.original.raw.txt",
+      "mode": "100644",
+      "gitBlob": "f349cb7eb9eba28e1d658dedc86c96d4a93d5902",
+      "sha256": "dc6e5ec2870879468a97af5e90d12a0b6beabddd48609823c74ac59e724a9c9c",
+      "bytes": 23401,
+      "classification": "UNCHANGED_NORMALIZED_GET_ONLY_CUSTODY_OBSERVATION_NOT_RAW_HTTP"
+    }
+  ],
+  "originalCaptureReviewUnchanged": true,
+  "exactFailureCause": "UNVERIFIED_AT_PUBLICATION"
+}

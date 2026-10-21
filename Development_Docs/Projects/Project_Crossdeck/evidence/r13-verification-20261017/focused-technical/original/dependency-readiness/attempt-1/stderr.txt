@@ -1,0 +1,284 @@
+Turbopack build encountered 8 warnings:
+./src/community/operations.ts:46:22
+Warning: Dynamic filesystem access causes tracing of the whole project
+  [90m44 |[0m   [36mif[0m (!value || !path.isAbsolute(value)) [36mreturn[0m [36mnull[0m;
+  [90m45 |[0m   [36mconst[0m root = path.resolve(value);
+[33m[1m>[0m [90m46 |[0m   [36mconst[0m repository = path.resolve(process.cwd());
+  [90m   |[0m                      [33m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m47 |[0m   [36mreturn[0m root === repository || root.startsWith([32m`[0m${repository[32m}[0m${path.sep[32m}`[0m) ? [36mnull[0m : root;
+  [90m48 |[0m }
+  [90m49 |[0m
+
+Static analysis determined that this filesystem access causes the whole project to be traced and included in the output.
+This is usually unintentional and leads to all source files (including the public folder) to be deployed as part of the server code.
+This can slow down deployments or lead to failures when size limits are exceeded.
+To resolve this, you can
+- make sure the path is statically scoped to some subfolder, for example path.join(process.cwd(), 'data', bar), or
+- only use them in development, or
+- opt out by adding an ignore comment to the highlighted call: path.resolve(/*turbopackIgnore: true*/ ...), or
+- remove them.
+
+Import traces:
+  #1 [Server Component]:
+    ./src/community/operations.ts
+    ./src/app/community/moderation/page.tsx
+
+  #2 [App Route]:
+    ./src/community/operations.ts
+    ./src/private-content/service.ts
+    ./src/app/api/studio/private-content/export/route.ts
+
+  #3 [App Route]:
+    ./src/community/operations.ts
+    ./src/admiralty/projections.ts
+    ./src/app/api/admin/overview/route.ts
+
+
+./src/community/operations.ts:258:22
+Warning: Dynamic filesystem access causes tracing of the whole project
+  [90m256 |[0m     [36mthrow[0m [36mnew[0m [33mCommunityError[0m([32m"COMMUNITY_BACKUP_NOT_CONFIGURED"[0m, [32m"An isolated backup targe...[0m
+  [90m257 |[0m   [36mconst[0m root = path.resolve(value);
+[33m[1m>[0m [90m258 |[0m   [36mconst[0m repository = path.resolve(process.cwd());
+  [90m    |[0m                      [33m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m259 |[0m   [36mif[0m (root === repository || root.startsWith([32m`[0m${repository[32m}[0m${path.sep[32m}`[0m))
+  [90m260 |[0m     [36mthrow[0m [36mnew[0m [33mCommunityError[0m([32m"COMMUNITY_BACKUP_TARGET_UNSAFE"[0m, [32m"Backup target must be out...[0m
+  [90m261 |[0m   [36mreturn[0m root;
+
+Static analysis determined that this filesystem access causes the whole project to be traced and included in the output.
+This is usually unintentional and leads to all source files (including the public folder) to be deployed as part of the server code.
+This can slow down deployments or lead to failures when size limits are exceeded.
+To resolve this, you can
+- make sure the path is statically scoped to some subfolder, for example path.join(process.cwd(), 'data', bar), or
+- only use them in development, or
+- opt out by adding an ignore comment to the highlighted call: path.resolve(/*turbopackIgnore: true*/ ...), or
+- remove them.
+
+Import traces:
+  #1 [Server Component]:
+    ./src/community/operations.ts
+    ./src/app/community/moderation/page.tsx
+
+  #2 [App Route]:
+    ./src/community/operations.ts
+    ./src/private-content/service.ts
+    ./src/app/api/studio/private-content/export/route.ts
+
+  #3 [App Route]:
+    ./src/community/operations.ts
+    ./src/admiralty/projections.ts
+    ./src/app/api/admin/overview/route.ts
+
+
+./src/community/operations.ts:269:22
+Warning: Dynamic filesystem access causes tracing of the whole project
+  [90m267 |[0m     [36mthrow[0m [36mnew[0m [33mCommunityError[0m([32m"COMMUNITY_RESTORE_NOT_CONFIGURED"[0m, [32m"An isolated restore tar...[0m
+  [90m268 |[0m   [36mconst[0m root = path.resolve(value);
+[33m[1m>[0m [90m269 |[0m   [36mconst[0m repository = path.resolve(process.cwd());
+  [90m    |[0m                      [33m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m270 |[0m   [36mif[0m (root === repository || root.startsWith([32m`[0m${repository[32m}[0m${path.sep[32m}`[0m))
+  [90m271 |[0m     [36mthrow[0m [36mnew[0m [33mCommunityError[0m([32m"COMMUNITY_RESTORE_TARGET_UNSAFE"[0m, [32m"Restore target must be o...[0m
+  [90m272 |[0m   [36mif[0m (root === backupRoot())
+
+Static analysis determined that this filesystem access causes the whole project to be traced and included in the output.
+This is usually unintentional and leads to all source files (including the public folder) to be deployed as part of the server code.
+This can slow down deployments or lead to failures when size limits are exceeded.
+To resolve this, you can
+- make sure the path is statically scoped to some subfolder, for example path.join(process.cwd(), 'data', bar), or
+- only use them in development, or
+- opt out by adding an ignore comment to the highlighted call: path.resolve(/*turbopackIgnore: true*/ ...), or
+- remove them.
+
+Import traces:
+  #1 [Server Component]:
+    ./src/community/operations.ts
+    ./src/app/community/moderation/page.tsx
+
+  #2 [App Route]:
+    ./src/community/operations.ts
+    ./src/private-content/service.ts
+    ./src/app/api/studio/private-content/export/route.ts
+
+  #3 [App Route]:
+    ./src/community/operations.ts
+    ./src/admiralty/projections.ts
+    ./src/app/api/admin/overview/route.ts
+
+
+./src/community/sealed-hold-public-media.ts:58:22
+Warning: Dynamic filesystem access causes tracing of the whole project
+  [90m56 |[0m   [36mif[0m (!value || !path.isAbsolute(value)) [36mreturn[0m [36mnull[0m;
+  [90m57 |[0m   [36mconst[0m root = path.resolve(value);
+[33m[1m>[0m [90m58 |[0m   [36mconst[0m repository = path.resolve(process.cwd());
+  [90m   |[0m                      [33m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m59 |[0m   [36mif[0m (root === repository || root.startsWith([32m`[0m${repository[32m}[0m${path.sep[32m}`[0m)) [36mreturn[0m [36mnull[0m;
+  [90m60 |[0m   [36mreturn[0m root;
+  [90m61 |[0m }
+
+Static analysis determined that this filesystem access causes the whole project to be traced and included in the output.
+This is usually unintentional and leads to all source files (including the public folder) to be deployed as part of the server code.
+This can slow down deployments or lead to failures when size limits are exceeded.
+To resolve this, you can
+- make sure the path is statically scoped to some subfolder, for example path.join(process.cwd(), 'data', bar), or
+- only use them in development, or
+- opt out by adding an ignore comment to the highlighted call: path.resolve(/*turbopackIgnore: true*/ ...), or
+- remove them.
+
+Import traces:
+  #1 [App Route]:
+    ./src/community/sealed-hold-public-media.ts
+    ./src/app/api/community/voyage-logs/media/route.ts
+
+  #2 [App Route]:
+    ./src/community/sealed-hold-public-media.ts
+    ./src/private-content/service.ts
+    ./src/app/api/studio/private-content/export/route.ts
+
+
+./src/community/worker-runtime.ts:37:23
+Warning: Dynamic filesystem access causes tracing of the whole project
+  [90m35 |[0m   [36mif[0m (!file) [36mreturn[0m [36mnull[0m;
+  [90m36 |[0m   [36mtry[0m {
+[33m[1m>[0m [90m37 |[0m     [36mconst[0m raw = [36mawait[0m readFile(file, [32m"utf8"[0m);
+  [90m   |[0m                       [33m[1m^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m38 |[0m     [36mif[0m ([33mBuffer[0m.byteLength(raw, [32m"utf8"[0m) > maxStateBytes) [36mreturn[0m [36mnull[0m;
+  [90m39 |[0m     [36mconst[0m candidate = [33mJSON[0m.parse(raw) [36mas[0m [33mRecord[0m<string, unknown>;
+  [90m40 |[0m     [36mconst[0m state = [36mtypeof[0m candidate.state === [32m"string"[0m ? candidate.state : [32m""[0m;
+
+Static analysis determined that this filesystem access causes the whole project to be traced and included in the output.
+This is usually unintentional and leads to all source files (including the public folder) to be deployed as part of the server code.
+This can slow down deployments or lead to failures when size limits are exceeded.
+To resolve this, you can
+- make sure the path is statically scoped to some subfolder, for example path.join(process.cwd(), 'data', bar), or
+- only use them in development, or
+- opt out by adding an ignore comment to the highlighted call: fs.readFile(/*turbopackIgnore: true*/ ...), or
+- remove them.
+
+Import traces:
+  #1 [App Route]:
+    ./src/community/worker-runtime.ts
+    ./src/private-content/service.ts
+    ./src/app/api/studio/private-content/export/route.ts
+
+  #2 [Server Component]:
+    ./src/community/worker-runtime.ts
+    ./src/community/operations.ts
+    ./src/app/community/moderation/page.tsx
+
+  #3 [App Route]:
+    ./src/community/worker-runtime.ts
+    ./src/community/operations.ts
+    ./src/admiralty/projections.ts
+    ./src/app/api/admin/overview/route.ts
+
+
+./src/private-content/provider-storage.ts:35:22
+Warning: Dynamic filesystem access causes tracing of the whole project
+  [90m33 |[0m     );
+  [90m34 |[0m   [36mconst[0m root = path.resolve(value);
+[33m[1m>[0m [90m35 |[0m   [36mconst[0m repository = path.resolve(process.cwd());
+  [90m   |[0m                      [33m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m36 |[0m   [36mif[0m (
+  [90m37 |[0m     [repository, path.join(repository, [32m"public"[0m), path.join(repository, [32m".next"[0m), path.joi...
+  [90m38 |[0m       (forbidden) => isWithin(forbidden, root) || isWithin(root, forbidden),
+
+Static analysis determined that this filesystem access causes the whole project to be traced and included in the output.
+This is usually unintentional and leads to all source files (including the public folder) to be deployed as part of the server code.
+This can slow down deployments or lead to failures when size limits are exceeded.
+To resolve this, you can
+- make sure the path is statically scoped to some subfolder, for example path.join(process.cwd(), 'data', bar), or
+- only use them in development, or
+- opt out by adding an ignore comment to the highlighted call: path.resolve(/*turbopackIgnore: true*/ ...), or
+- remove them.
+
+Import traces:
+  #1 [App Route]:
+    ./src/private-content/provider-storage.ts
+    ./src/private-content/service.ts
+    ./src/app/api/studio/private-content/export/route.ts
+
+  #2 [App Route]:
+    ./src/private-content/provider-storage.ts
+    ./src/private-content/uploads.ts
+    ./src/app/api/studio/private-content/uploads/[uploadId]/parts/[partNumber]/route.ts
+
+  #3 [Server Component]:
+    ./src/private-content/provider-storage.ts
+    ./src/private-content/providers.ts
+    ./src/admiralty/ports/operations-admin-read.ts
+    ./src/app/admin/configuration/page.tsx
+
+
+./src/private-content/service.ts:576:22
+Warning: Dynamic filesystem access causes tracing of the whole project
+  [90m574 |[0m [36mfunction[0m assertPrivateOutputPath(outputPath: string) {
+  [90m575 |[0m   [36mconst[0m destination = path.resolve(outputPath);
+[33m[1m>[0m [90m576 |[0m   [36mconst[0m repository = path.resolve(process.cwd());
+  [90m    |[0m                      [33m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m577 |[0m   [36mif[0m (!path.isAbsolute(outputPath) || isWithin(repository, destination))
+  [90m578 |[0m     [36mthrow[0m privateFailure(
+  [90m579 |[0m       [32m"PRIVATE_CONTENT_CONFIGURATION_INVALID"[0m,
+
+Static analysis determined that this filesystem access causes the whole project to be traced and included in the output.
+This is usually unintentional and leads to all source files (including the public folder) to be deployed as part of the server code.
+This can slow down deployments or lead to failures when size limits are exceeded.
+To resolve this, you can
+- make sure the path is statically scoped to some subfolder, for example path.join(process.cwd(), 'data', bar), or
+- only use them in development, or
+- opt out by adding an ignore comment to the highlighted call: path.resolve(/*turbopackIgnore: true*/ ...), or
+- remove them.
+
+Import traces:
+  #1 [App Route]:
+    ./src/private-content/service.ts
+    ./src/app/api/studio/private-content/inspect/route.ts
+
+  #2 [App Route]:
+    ./src/private-content/service.ts
+    ./src/private-content/service.ts
+    ./src/app/api/studio/private-content/export/route.ts
+
+
+./src/private-content/storage.ts:21:22
+Warning: Dynamic filesystem access causes tracing of the whole project
+  [90m19 |[0m     [36mthrow[0m privateFailure([32m"PRIVATE_CONTENT_CONFIGURATION_INVALID"[0m, [32m`[0m${label[32m} is not configu...[0m
+  [90m20 |[0m   [36mconst[0m resolved = path.resolve(value);
+[33m[1m>[0m [90m21 |[0m   [36mconst[0m repository = path.resolve(process.cwd());
+  [90m   |[0m                      [33m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [90m22 |[0m   [36mconst[0m forbidden = [
+  [90m23 |[0m     repository,
+  [90m24 |[0m     path.join(repository, [32m"public"[0m),
+
+Static analysis determined that this filesystem access causes the whole project to be traced and included in the output.
+This is usually unintentional and leads to all source files (including the public folder) to be deployed as part of the server code.
+This can slow down deployments or lead to failures when size limits are exceeded.
+To resolve this, you can
+- make sure the path is statically scoped to some subfolder, for example path.join(process.cwd(), 'data', bar), or
+- only use them in development, or
+- opt out by adding an ignore comment to the highlighted call: path.resolve(/*turbopackIgnore: true*/ ...), or
+- remove them.
+
+Import traces:
+  #1 [App Route]:
+    ./src/private-content/storage.ts
+    ./src/private-content/service.ts
+    ./src/app/api/studio/private-content/export/route.ts
+
+  #2 [App Route]:
+    ./src/private-content/storage.ts
+    ./src/private-content/service.ts
+    ./src/app/api/studio/private-content/inspect/route.ts
+
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+Error: PRODUCT_EXPERIENCE_DEPENDENCY_READINESS_REGULAR_FILE_REQUIRED
+    at fail (file:///workspace/crossdeck-cloud-integration/scripts/sounding-line/experience-dependency-readiness.mjs:66:9)
+    at bytes (file:///workspace/crossdeck-cloud-integration/scripts/sounding-line/experience-dependency-readiness.mjs:100:34)
+    at publicFile (file:///workspace/crossdeck-cloud-integration/scripts/sounding-line/experience-dependency-readiness.mjs:442:37)
+    at systemLibraryMetadata (file:///workspace/crossdeck-cloud-integration/scripts/sounding-line/experience-dependency-readiness.mjs:591:48)
+    at runBrowserDependencyProbe (file:///workspace/crossdeck-cloud-integration/scripts/sounding-line/experience-dependency-readiness.mjs:696:15)
+    at file:///workspace/crossdeck-cloud-integration/scripts/sounding-line/run-browser-suite.mjs:134:11
+
+Node.js v24.19.0

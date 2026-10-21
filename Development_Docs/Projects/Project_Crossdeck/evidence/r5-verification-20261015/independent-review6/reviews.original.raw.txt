@@ -1,0 +1,1275 @@
+[
+  {
+    "contractId": "crossdeck.phase2.continuity",
+    "status": "BLOCKED",
+    "builderContext": "/root",
+    "reviewerContext": "/root/final_product_review_6",
+    "independence": "SEPARATE_CONTEXT",
+    "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+    "independentReviewOrdinal": 6,
+    "iterations": 11,
+    "packetDigest": "661328b6bc83295499574ac4e07e0bc5237a99b33e9d06fb304c17baf95399ba",
+    "dimensions": {
+      "composition": {
+        "status": "ACCEPTED",
+        "observation": "The readable Journal retains its book and current objective behind a bounded phone-joining dialog. The modal groups Voyage identity, QR instructions and a safe dismissal within the Homeport visual family.",
+        "evidenceIds": [
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-CONNECT_READY-3",
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-CONNECT_READY-3"
+        ]
+      },
+      "hierarchy": {
+        "status": "ACCEPTED",
+        "observation": "Bring your phone aboard is the clear task heading; the QR and same-account instruction lead, optional code details follow, and continuing the Chronicle remains a secondary exit.",
+        "evidenceIds": [
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-CONNECT_READY-3",
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-CONNECT_READY-3"
+        ]
+      },
+      "typography": {
+        "status": "ACCEPTED",
+        "observation": "Serif task headings and plain account instructions remain legible on the original desktop and 390px mobile captures. The bold Voyage name makes the destination understandable before connection.",
+        "evidenceIds": [
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-CONNECT_READY-3",
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-CONNECT_READY-3"
+        ]
+      },
+      "spacing": {
+        "status": "ACCEPTED",
+        "observation": "QR, expiry and explanatory copy have deliberate separation. On mobile the long device list scrolls within the dialog while the top close control remains visible; keyboard dismissal reaches the return action.",
+        "evidenceIds": [
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-CONNECT_READY-3",
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-CONNECT_READY-3"
+        ]
+      },
+      "controls": {
+        "status": "ACCEPTED",
+        "observation": "Connect another device and Continue the Chronicle are actually activated by Enter. The dialog exposes a code alternative and close control, but the fresh traces do not activate a pairing claim.",
+        "evidenceIds": [
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-CONNECT_READY-3",
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-CONNECT_READY-3"
+        ]
+      },
+      "contrast": {
+        "status": "ACCEPTED",
+        "observation": "Pale text on deep sea green, a high-contrast black-and-white QR and brass focus outlines distinguish content and active controls. No required guidance relies on color alone.",
+        "evidenceIds": [
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-CONNECT_READY-3",
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-CONNECT_READY-3"
+        ]
+      },
+      "consistency": {
+        "status": "ACCEPTED",
+        "observation": "The brass accents, serif heading and dark bounded panels preserve the accepted desktop/mobile Homeport reference family while adapting the composition to a private contextual task.",
+        "evidenceIds": [
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-CONNECT_READY-3",
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-CONNECT_READY-3"
+        ]
+      },
+      "states": {
+        "status": "BLOCKED",
+        "observation": "Fresh states show a current QR ready to join and return to the Journal. They omit a second-screen claim, Phone connected, expired/refused joining and revoked private-view recovery; those material outcomes remain unproved.",
+        "evidenceIds": [
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-CONNECT_READY-3",
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-RETURNED-5"
+        ]
+      },
+      "responsive": {
+        "status": "ACCEPTED",
+        "observation": "Desktop and constrained mobile keep the same task, same-account instruction and route. Mobile stacks the QR and device list instead of shrinking the desktop columns; physical scanning and touch are not established.",
+        "evidenceIds": [
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-CONNECT_READY-3",
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-RETURNED-5"
+        ]
+      },
+      "keyboard": {
+        "status": "ACCEPTED",
+        "observation": "Both motion modes have actual keyboard activations of the contextual opener and return. The trace retains Tab traversal and Enter calls; keyboard entry of the joining code is absent.",
+        "evidenceIds": [
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-trace",
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-trace",
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-trace",
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-trace"
+        ]
+      },
+      "focus": {
+        "status": "ACCEPTED",
+        "observation": "The dialog starts with a conspicuous brass focus ring on its close control and restores the ring to Connect another device after dismissal. No focus trap is evident in the demonstrated return.",
+        "evidenceIds": [
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-RETURNED-5",
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-RETURNED-5",
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-trace",
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-trace"
+        ]
+      },
+      "feedback": {
+        "status": "BLOCKED",
+        "observation": "The QR becomes visible within the recorded 365-589ms feedback observations, and preparation text is honest. No rendered Phone connected or receiver completion state supports a claim that joining finished.",
+        "evidenceIds": [
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-trace",
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-trace",
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-trace",
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-trace"
+        ]
+      },
+      "motion": {
+        "status": "ACCEPTED",
+        "observation": "Full recordings show the modal transition and useful return in normal and reduced motion. Reduced motion preserves the same QR task and controls; the measured UI budget excludes physical phone scanning.",
+        "evidenceIds": [
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-trace",
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-trace",
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-trace",
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-trace"
+        ]
+      },
+      "continuity": {
+        "status": "BLOCKED",
+        "observation": "The same named Voyage and hashed Voyage/edition witnesses persist through modal open and close. This proves contextual retention in one authorized browser, not authorization continuity across a newly paired second screen.",
+        "evidenceIds": [
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-trace",
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-trace",
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-trace",
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-trace"
+        ]
+      },
+      "complexity": {
+        "status": "ACCEPTED",
+        "observation": "The primary instruction is a familiar camera scan with a same-account requirement, and the code alternative stays secondary. No persisted role enums or technical surface identifiers dominate the task.",
+        "evidenceIds": [
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-CONNECT_READY-3",
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-CONNECT_READY-3"
+        ]
+      },
+      "role-outcomes": {
+        "status": "BLOCKED",
+        "observation": "The Player can discover contextual phone connection and resume reading. The explicit objective of pairing/joining the same authorized Voyage is not completed in any fresh recording or trace, so full connection acceptance is blocked.",
+        "evidenceIds": [
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-trace",
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-trace",
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-trace",
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-trace"
+        ]
+      },
+      "fallbacks": {
+        "status": "BLOCKED",
+        "observation": "A safe return and visible code alternative are present. No fresh rendered expired-code, cancellation recovery, revocation or restricted-screen privacy result demonstrates the required adverse connection outcomes.",
+        "evidenceIds": [
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-trace",
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-trace",
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-trace",
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-trace"
+        ]
+      }
+    },
+    "findings": [
+      {
+        "id": "PE-R6-CROSSDECK-CONNECTION-EVIDENCE-01",
+        "classification": "EVIDENCE_INSUFFICIENT",
+        "contractId": "crossdeck.phase2.continuity",
+        "disposition": "BLOCK_WITH_EVIDENCE",
+        "observation": "All four fresh contextual-connect traces activate Connect another device and Continue the Chronicle only. They show a current QR and same-account instructions but no second-screen Join the Chronicle claim, Phone connected result, or rendered expired/refused/revoked/private-screen recovery. Self-registering the current screen in other capture setups does not prove that a phone joined this challenge. These are material missing outcomes of the explicitly required complete human objective. Future dedicated suites and source code cannot substitute for current rendered execution evidence.",
+        "evidenceIds": [
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-trace",
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-trace",
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-trace",
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-trace",
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-NORMAL-CONNECT_READY-3",
+          "crossdeck.phase2.continuity-contextual-connect-return-DESKTOP-PLAYER-REDUCED-CONNECT_READY-3",
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-NORMAL-CONNECT_READY-3",
+          "crossdeck.phase2.continuity-contextual-connect-return-MOBILE-PLAYER-REDUCED-CONNECT_READY-3"
+        ],
+        "requiredOutcome": "Fresh source-bound evidence of an authorized second screen claiming the contextual challenge, both screens confirming the same Voyage/edition, plus safe adverse joining/access/privacy recovery.",
+        "repairOwner": "Crossdeck experience refit integration",
+        "repairPath": "Existing tests/e2e/crossdeck-experience-refit.spec.ts and tests/e2e/crossdeck-refit-recovery.spec.ts; no execution or repair authorized by this review.",
+        "scopeLimit": "Evidence gap, not a demonstrated implementation defect. Finite R5 allows no new replay, repair or review7; preserve BLOCKED and require new explicit authority for any future evidence work."
+      }
+    ],
+    "acceptanceScope": "Rendered software journey only; complete human objective remains blocked by unresolved evidence findings where specified. Owner, physical and native acceptance NOT_CLAIMED."
+  },
+  {
+    "contractId": "crossdeck.refit.companion",
+    "status": "BLOCKED",
+    "builderContext": "/root",
+    "reviewerContext": "/root/final_product_review_6",
+    "independence": "SEPARATE_CONTEXT",
+    "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+    "independentReviewOrdinal": 6,
+    "iterations": 11,
+    "packetDigest": "f7479e74349fd7bb292b1585befb3ada25ff23874e1e96e1b81971535dfaf165",
+    "dimensions": {
+      "composition": {
+        "status": "ACCEPTED",
+        "observation": "One Voyage header and status sit above a large purpose workspace. Journal prose, the Guided Lens dialog, authored Chart geometry and the compass artifact are visibly distinct content destinations.",
+        "evidenceIds": [
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+          "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-LENS_READY-3"
+        ]
+      },
+      "hierarchy": {
+        "status": "ACCEPTED",
+        "observation": "Purpose headings lead each workspace; content occupies the main area, with reading controls grouped above it and purpose switching secondary below. Return to Chronicle retains a clear contextual place.",
+        "evidenceIds": [
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+          "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-LENS_READY-3"
+        ]
+      },
+      "typography": {
+        "status": "ACCEPTED",
+        "observation": "The Journal passage and compass description are readable at original resolution. The serif content titles and restrained brass eyebrow labels differentiate story content from connection and purpose controls.",
+        "evidenceIds": [
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+          "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-LENS_READY-3"
+        ]
+      },
+      "spacing": {
+        "status": "ACCEPTED",
+        "observation": "The companion panels give prose and artifact content breathing room, and the map has a dedicated stage. Mobile uses vertical scrolling without squeezing the actual passage into a small desktop card.",
+        "evidenceIds": [
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+          "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-LENS_READY-3"
+        ]
+      },
+      "controls": {
+        "status": "ACCEPTED",
+        "observation": "Twelve journey actions actually switch Lens, Chart, artifact and Journal, enlarge reading size and return. Send to another screen is visible but never activated in the fresh evidence.",
+        "evidenceIds": [
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+          "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-LENS_READY-3"
+        ]
+      },
+      "contrast": {
+        "status": "ACCEPTED",
+        "observation": "Cream story content has dark text, while teal controls and brass focus outlines remain distinct on the dark shell. The connection status includes words as well as its colored indicator.",
+        "evidenceIds": [
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+          "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-LENS_READY-3"
+        ]
+      },
+      "consistency": {
+        "status": "ACCEPTED",
+        "observation": "All purposes use the same identity, shell, type family and return vocabulary as the accepted Homeport references. Their content differs meaningfully instead of displaying only a changed role label.",
+        "evidenceIds": [
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+          "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-LENS_READY-3"
+        ]
+      },
+      "states": {
+        "status": "BLOCKED",
+        "observation": "Loading and local purpose-ready states appear honestly, but no send offer, receiver panel, pending receipt, acknowledged completion, decline or offline/revoked transfer recovery is rendered in the fresh material.",
+        "evidenceIds": [
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-CHART_READY-7",
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-ARTIFACT_READY-13",
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-JOURNAL_RESTORED-16"
+        ]
+      },
+      "responsive": {
+        "status": "ACCEPTED",
+        "observation": "Desktop gives content a broad reading panel; mobile stacks actual passage, map and artifact content with the same controls. The evidence is browser viewport coverage, not a real-phone touch acceptance claim.",
+        "evidenceIds": [
+          "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-LENS_READY-3",
+          "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-CHART_READY-7"
+        ]
+      },
+      "keyboard": {
+        "status": "ACCEPTED",
+        "observation": "Tab traversal and actual Enter activations reach the purpose disclosure, each named purpose, larger reading size and return in both motion modes. The transfer workflow has no actual keyboard send/receive evidence.",
+        "evidenceIds": [
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-trace",
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-trace",
+          "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-trace",
+          "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-trace"
+        ]
+      },
+      "focus": {
+        "status": "ACCEPTED",
+        "observation": "Purpose changes put a strong visible ring around the new purpose heading; Lens starts at its close button and returns to the opener. Dense frames show focus moving with the visible content change.",
+        "evidenceIds": [
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-RETURNED-20",
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-RETURNED-20",
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-trace",
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-trace"
+        ]
+      },
+      "feedback": {
+        "status": "BLOCKED",
+        "observation": "Local purpose changes produce useful content within 126-196ms feedback observations. Meaningful delivery feedback remains unproved: no fresh action renders offered, arrived-but-unopened or open-on-other-device receipts.",
+        "evidenceIds": [
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-trace",
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-trace",
+          "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-trace",
+          "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-trace"
+        ]
+      },
+      "motion": {
+        "status": "ACCEPTED",
+        "observation": "Normal and reduced recordings preserve the same released clue, chart, artifact and readable passage. The bounded software feedback observations pass; no physical camera, native placement or device latency is inferred.",
+        "evidenceIds": [
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-trace",
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-trace",
+          "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-trace",
+          "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-trace"
+        ]
+      },
+      "continuity": {
+        "status": "BLOCKED",
+        "observation": "The same Voyage/edition witnesses survive the complete local purpose cycle and return. No newly joined receiver or transferred content is observed, so the cross-screen delivery part of continuity remains unproved.",
+        "evidenceIds": [
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-trace",
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-trace",
+          "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-trace",
+          "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-trace"
+        ]
+      },
+      "complexity": {
+        "status": "ACCEPTED",
+        "observation": "Common purposes are named in plain terms, with artifact under More purposes. The Player sees useful content before specialized choices. The handoff workflow complexity cannot be judged from an unopened send control.",
+        "evidenceIds": [
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+          "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-LENS_READY-3"
+        ]
+      },
+      "role-outcomes": {
+        "status": "BLOCKED",
+        "observation": "The roles deliver an actual released clue, current Chart, full Journal passage and artifact description. The required meaningful send/receive and honest pending/completion journey is absent, blocking complete multi-screen outcome acceptance.",
+        "evidenceIds": [
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-trace",
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-trace",
+          "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-trace",
+          "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-trace"
+        ]
+      },
+      "fallbacks": {
+        "status": "BLOCKED",
+        "observation": "Guided Lens is useful without camera permission, and the virtual Chart explicitly keeps arrival authority conventional. Transfer refusal, interrupted receipt, access revocation and restricted-display fallbacks lack fresh rendered proof.",
+        "evidenceIds": [
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-trace",
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-trace",
+          "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-trace",
+          "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-trace"
+        ]
+      }
+    },
+    "findings": [
+      {
+        "id": "PE-R6-CROSSDECK-TRANSFER-EVIDENCE-01",
+        "classification": "EVIDENCE_INSUFFICIENT",
+        "contractId": "crossdeck.refit.companion",
+        "disposition": "BLOCK_WITH_EVIDENCE",
+        "observation": "The four fresh purpose-cycle traces genuinely open Lens, Chart, artifact and Journal content and return, but none activates Send to another screen, Send view or Receive. No recording shows a meaningful received item, an offered/pending/arrived-but-unopened receipt, acknowledged opening, decline/cancel, interrupted receipt recovery or restricted-display/private-view revocation. Therefore the required send/receive journey and honest pending-versus-complete interaction cannot receive complete experience acceptance. Source-defined receipt branches and future unexecuted suites are not observed outcomes.",
+        "evidenceIds": [
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-trace",
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-REDUCED-trace",
+          "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-trace",
+          "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-REDUCED-trace",
+          "crossdeck.refit.companion-companion-purpose-return-DESKTOP-PLAYER-NORMAL-ARTIFACT_READY-13",
+          "crossdeck.refit.companion-companion-purpose-return-MOBILE-PLAYER-NORMAL-ARTIFACT_READY-13"
+        ],
+        "requiredOutcome": "Fresh source-bound sender and receiver interaction evidence for meaningful content and honest offer/pending/acknowledged completion, together with safe refusal/interruption/recovery/privacy outcomes.",
+        "repairOwner": "Crossdeck experience refit integration",
+        "repairPath": "Existing tests/e2e/crossdeck-experience-refit.spec.ts and tests/e2e/crossdeck-refit-recovery.spec.ts; no execution or repair authorized by this review.",
+        "scopeLimit": "Evidence gap, not a demonstrated implementation defect. Finite R5 allows no new replay, repair or review7; preserve BLOCKED and require new explicit authority for any future evidence work."
+      }
+    ],
+    "acceptanceScope": "Rendered software journey only; complete human objective remains blocked by unresolved evidence findings where specified. Owner, physical and native acceptance NOT_CLAIMED."
+  },
+  {
+    "contractId": "crossdeck.refit.published-lens",
+    "status": "ACCEPTED",
+    "builderContext": "/root",
+    "reviewerContext": "/root/final_product_review_6",
+    "independence": "SEPARATE_CONTEXT",
+    "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+    "independentReviewOrdinal": 6,
+    "iterations": 11,
+    "packetDigest": "c507753ee276ca6a958093819ec1ed86807719c6d3cdb2b64c835cc2309318f2",
+    "dimensions": {
+      "composition": {
+        "status": "ACCEPTED",
+        "observation": "A bounded Lens dialog centers the released note over the existing Chronicle, preserving visible Voyage identity and leaving one obvious close control at the top.",
+        "evidenceIds": [
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-LENS_READY-3"
+        ]
+      },
+      "hierarchy": {
+        "status": "ACCEPTED",
+        "observation": "The spatial moment title, Guided View explanation, note title and actual clue form a clear reading order. The note is primary; Choose, Inspect and placement remain grouped actions beneath it.",
+        "evidenceIds": [
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-LENS_READY-3"
+        ]
+      },
+      "typography": {
+        "status": "ACCEPTED",
+        "observation": "The Captain\u2019s note and northern-light clue are readable on both original viewport sizes. Story serif titles and plain supporting text preserve the established product typography.",
+        "evidenceIds": [
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-LENS_READY-3"
+        ]
+      },
+      "spacing": {
+        "status": "ACCEPTED",
+        "observation": "The clue has comfortable padding and Inspect feedback expands within the note card. The mobile dialog fits the required content with a reachable close control and no clipped clue text.",
+        "evidenceIds": [
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-LENS_READY-3"
+        ]
+      },
+      "controls": {
+        "status": "ACCEPTED",
+        "observation": "Open Chronicle Lens, Inspect and Close Chronicle Lens are actual Enter activations, and Inspect adds the specific note description. Choose and Place are visible but are not claimed as activated by this journey.",
+        "evidenceIds": [
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-LENS_READY-3"
+        ]
+      },
+      "contrast": {
+        "status": "ACCEPTED",
+        "observation": "Dark text on parchment makes the clue clear; the dialog chrome and brass focus ring remain visible over a subdued backdrop. The selected note also receives a distinct border.",
+        "evidenceIds": [
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-LENS_READY-3"
+        ]
+      },
+      "consistency": {
+        "status": "ACCEPTED",
+        "observation": "The dialog retains Homeport\u2019s brass, parchment and sea-green vocabulary, with the same Voyage name as the Journal. It feels like an instrument within the Chronicle rather than a separate account product.",
+        "evidenceIds": [
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-LENS_READY-3"
+        ]
+      },
+      "states": {
+        "status": "ACCEPTED",
+        "observation": "JOURNAL_READY, LENS_READY, INSPECTED and RETURNED are captured in every required viewport/motion combination. Inspect adds meaningful content and feedback; closing removes the dialog and restores the underlying tools.",
+        "evidenceIds": [
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-INSPECTED-6",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-RETURNED-8"
+        ]
+      },
+      "responsive": {
+        "status": "ACCEPTED",
+        "observation": "The desktop dialog uses a broad horizontal note card while mobile stacks readable actions. The returned desktop view is scrolled to the lower book and opener; that viewport crop is not proof of deleted prose.",
+        "evidenceIds": [
+          "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-LENS_READY-3",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-INSPECTED-6"
+        ]
+      },
+      "keyboard": {
+        "status": "ACCEPTED",
+        "observation": "Both motion modes use real keyboard activation to open, inspect and close. Trace Tab traversal supports reachability and original screenshots show visible focus; assistive-technology behavior is not separately claimed.",
+        "evidenceIds": [
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-trace",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-trace",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-trace",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-trace"
+        ]
+      },
+      "focus": {
+        "status": "ACCEPTED",
+        "observation": "Focus is visible on the dialog close button on entry and returns to Open Chronicle Lens after closing. Inspect moves the active emphasis to the note without stranding the keyboard user.",
+        "evidenceIds": [
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-RETURNED-8",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-RETURNED-8",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-trace",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-trace"
+        ]
+      },
+      "feedback": {
+        "status": "ACCEPTED",
+        "observation": "Inspect displays the specific parchment-note description and Interaction recorded feedback, rather than a generic success toast. This proves the visible interaction outcome and does not independently prove backend persistence.",
+        "evidenceIds": [
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-trace",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-trace",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-trace",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-trace"
+        ]
+      },
+      "motion": {
+        "status": "ACCEPTED",
+        "observation": "The useful clue appears within 144-444ms recorded feedback observations, and both motion modes retain the same task. The normal book opening can fall back visibly; cinematic smoothness and native placement are not claimed.",
+        "evidenceIds": [
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-trace",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-trace",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-trace",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-trace"
+        ]
+      },
+      "continuity": {
+        "status": "ACCEPTED",
+        "observation": "The actual synthetic published clue stays tied to the same named Voyage and edition before and after inspection. Closing returns to the original authorized Journal route and current objective.",
+        "evidenceIds": [
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-trace",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-trace",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-trace",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-trace"
+        ]
+      },
+      "complexity": {
+        "status": "ACCEPTED",
+        "observation": "Guided View explains why the note can be read here without a camera, then exposes a small action group. The user does not need to understand an asset identifier or provider state.",
+        "evidenceIds": [
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-JOURNAL_READY-0",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-LENS_READY-3",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-LENS_READY-3"
+        ]
+      },
+      "role-outcomes": {
+        "status": "ACCEPTED",
+        "observation": "The Player actually reads the published northern-light clue, inspects the Captain\u2019s note and returns. This is a fulfilled camera-free clue outcome, distinct from real spatial camera or physical-world acceptance.",
+        "evidenceIds": [
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-trace",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-trace",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-trace",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-trace"
+        ]
+      },
+      "fallbacks": {
+        "status": "ACCEPTED",
+        "observation": "Guided View preserves the clue without requesting camera permission, explicitly saying its meaning is the same in every view. The demonstrated fallback is useful content rather than an unavailable-role label.",
+        "evidenceIds": [
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-NORMAL-trace",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-DESKTOP-PLAYER-REDUCED-trace",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-NORMAL-trace",
+          "crossdeck.refit.published-lens-published-clue-inspect-return-MOBILE-PLAYER-REDUCED-trace"
+        ]
+      }
+    },
+    "findings": [],
+    "acceptanceScope": "Rendered software journey only; complete human objective remains blocked by unresolved evidence findings where specified. Owner, physical and native acceptance NOT_CLAIMED."
+  },
+  {
+    "contractId": "homeport.shell.crossdeck-access-recovery",
+    "status": "ACCEPTED",
+    "builderContext": "/root",
+    "reviewerContext": "/root/final_product_review_6",
+    "independence": "SEPARATE_CONTEXT",
+    "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+    "independentReviewOrdinal": 6,
+    "iterations": 11,
+    "packetDigest": "6416ab5f29f27a282841f5f2b64e21d4a8ef4fa375eb75ff96ff86fe3fe75225",
+    "dimensions": {
+      "composition": {
+        "status": "ACCEPTED",
+        "observation": "Account entry and recovery use a bounded parchment task card within the dark shell, closely matching the two accepted authentication references. The header retains an obvious safe return.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-PLAYER_ENTRY_READY-0",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-PLAYER_ENTRY_READY-0",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-SIGN_IN_READY-4",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-SIGN_IN_READY-4"
+        ]
+      },
+      "hierarchy": {
+        "status": "ACCEPTED",
+        "observation": "The Player entry leads with Open your Chronicle Library, then account/invitation choice and the primary sign-in action. Canonical sign-in leads with grouped credentials; recovery leads with its email task.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-PLAYER_ENTRY_READY-0",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-PLAYER_ENTRY_READY-0",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-SIGN_IN_READY-4",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-SIGN_IN_READY-4"
+        ]
+      },
+      "typography": {
+        "status": "ACCEPTED",
+        "observation": "Large serif task headings, dark field labels and plain supporting text are legible in both original sizes. The current labels improve readability over the pale eyebrow treatment in the accepted reference.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-PLAYER_ENTRY_READY-0",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-PLAYER_ENTRY_READY-0",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-SIGN_IN_READY-4",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-SIGN_IN_READY-4"
+        ]
+      },
+      "spacing": {
+        "status": "ACCEPTED",
+        "observation": "Fields and the brass submit button are grouped, while provider explanations form a separate section. On mobile recovery links require vertical traversal, but the recorded keyboard path reaches them without clipping.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-PLAYER_ENTRY_READY-0",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-PLAYER_ENTRY_READY-0",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-SIGN_IN_READY-4",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-SIGN_IN_READY-4"
+        ]
+      },
+      "controls": {
+        "status": "ACCEPTED",
+        "observation": "Actual Enter activations traverse Player entry, canonical sign-in, Forgot Password, Return to Sign In and the safe previous page. Reset submission and external identity-provider sign-in are not claimed.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-PLAYER_ENTRY_READY-0",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-PLAYER_ENTRY_READY-0",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-SIGN_IN_READY-4",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-SIGN_IN_READY-4"
+        ]
+      },
+      "contrast": {
+        "status": "ACCEPTED",
+        "observation": "Dark text on pale parchment keeps form labels and instructions readable, with visible teal focus outlines. The provider-unavailable text is explicit and does not rely on a disabled color alone.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-PLAYER_ENTRY_READY-0",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-PLAYER_ENTRY_READY-0",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-SIGN_IN_READY-4",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-SIGN_IN_READY-4"
+        ]
+      },
+      "consistency": {
+        "status": "ACCEPTED",
+        "observation": "The account pages preserve the accepted authentication card, serif heading, brass action and Safe return shell. They use the canonical single-account vocabulary across Player, Captain and Creator.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-PLAYER_ENTRY_READY-0",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-PLAYER_ENTRY_READY-0",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-SIGN_IN_READY-4",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-SIGN_IN_READY-4"
+        ]
+      },
+      "states": {
+        "status": "ACCEPTED",
+        "observation": "The evidence includes empty credentials, the recovery email form, unavailable providers and the signed-out phone-connection return. These prove navigation and explanatory states, not a sent email or restored authenticated session.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-PLAYER_ENTRY_READY-0",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-SIGN_IN_READY-4",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-RECOVERY_READY-6",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-10"
+        ]
+      },
+      "responsive": {
+        "status": "ACCEPTED",
+        "observation": "Desktop centers a narrow task card; mobile keeps full-width readable fields and actions in a vertical flow. No horizontal overflow is reported in the four fresh journey observations.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-PLAYER_ENTRY_READY-0",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-SIGN_IN_READY-4",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-RECOVERY_READY-6"
+        ]
+      },
+      "keyboard": {
+        "status": "ACCEPTED",
+        "observation": "The entire recovery navigation path is actually operated with keyboard Enter in normal and reduced motion. Trace Tab movement reaches the links even where the mobile page must scroll.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-trace",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-trace"
+        ]
+      },
+      "focus": {
+        "status": "ACCEPTED",
+        "observation": "Navigation places a visible ring on the Sign in and Forgot password headings and then on the returned connection heading. The demonstrated path restores a usable task instead of losing focus in the account shell.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-10",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-10",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-trace"
+        ]
+      },
+      "feedback": {
+        "status": "ACCEPTED",
+        "observation": "Route feedback is visibly prompt, with 92-276ms recorded observations. Provider options clearly say unavailable and recommend credentials; the presence of the reset form is not described as reset completion.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-trace",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-trace"
+        ]
+      },
+      "motion": {
+        "status": "ACCEPTED",
+        "observation": "Normal and reduced recordings preserve the same readable task and return. Reduced motion does not remove any recovery action; software timing evidence does not establish mail-delivery performance.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-trace",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-trace"
+        ]
+      },
+      "continuity": {
+        "status": "ACCEPTED",
+        "observation": "The return intent survives entry, account sign-in and recovery, ending on the phone-connection route. The anonymous page exposes no released private Voyage content and makes the same-account requirement clear.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-trace",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-trace"
+        ]
+      },
+      "complexity": {
+        "status": "ACCEPTED",
+        "observation": "One canonical account task avoids a parallel Player identity form. Provider explanations add page length but remain secondary to credentials and the clear recovery links.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-PLAYER_ENTRY_READY-0",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-PLAYER_ENTRY_READY-0",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-SIGN_IN_READY-4",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-SIGN_IN_READY-4"
+        ]
+      },
+      "role-outcomes": {
+        "status": "ACCEPTED",
+        "observation": "The signed-out Player can reach the canonical recovery task and safely resume the connection entry. No claim is made that an account was recovered, authenticated or paired by this anonymous journey.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-trace",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-trace"
+        ]
+      },
+      "fallbacks": {
+        "status": "ACCEPTED",
+        "observation": "Unavailable OAuth choices have truthful explanations while email/password and password recovery remain usable. The return shows conventional sign-in guidance rather than leaking private companion content.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-NORMAL-trace",
+          "homeport.shell.crossdeck-access-recovery-player-entry-account-recovery-MOBILE-ANONYMOUS-REDUCED-trace"
+        ]
+      }
+    },
+    "findings": [],
+    "acceptanceScope": "Rendered software journey only; complete human objective remains blocked by unresolved evidence findings where specified. Owner, physical and native acceptance NOT_CLAIMED."
+  },
+  {
+    "contractId": "homeport.shell.crossdeck-companion",
+    "status": "ACCEPTED",
+    "builderContext": "/root",
+    "reviewerContext": "/root/final_product_review_6",
+    "independence": "SEPARATE_CONTEXT",
+    "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+    "independentReviewOrdinal": 6,
+    "iterations": 11,
+    "packetDigest": "1b56c9049deb2ca75657740da37cdaef2433f89fa3cd40c019bcb4077915282c",
+    "dimensions": {
+      "composition": {
+        "status": "ACCEPTED",
+        "observation": "The desktop companion places its reading panel beneath a contextual exit, then changes to the familiar Library and back to the Journal book. The product identity remains visually coherent across all three.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-COMPANION_READY-0",
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-LIBRARY_READY-3"
+        ]
+      },
+      "hierarchy": {
+        "status": "ACCEPTED",
+        "observation": "Exit to My Voyages is visible above the companion task; the Library gives the active Voyage a recognizable card and Continue Adventure action. The returned Journal leads with its active objective.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-COMPANION_READY-0",
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-LIBRARY_READY-3"
+        ]
+      },
+      "typography": {
+        "status": "ACCEPTED",
+        "observation": "Serif Voyage and Library headings, plain navigation labels and readable parchment passage text match the accepted Homeport family. The synthetic Voyage remains identifiable through the route changes.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-COMPANION_READY-0",
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-LIBRARY_READY-3"
+        ]
+      },
+      "spacing": {
+        "status": "ACCEPTED",
+        "observation": "The desktop reading panel is bounded with generous margins, while Library filters and the active record occupy a clear vertical flow. Return preserves the wider book composition and its objective strip.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-COMPANION_READY-0",
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-LIBRARY_READY-3"
+        ]
+      },
+      "controls": {
+        "status": "ACCEPTED",
+        "observation": "Exit to My Voyages and Continue Adventure are actual keyboard activations. They open the canonical Library and original Journal, rather than only setting a role label or replacing the task with generic account UI.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-COMPANION_READY-0",
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-LIBRARY_READY-3"
+        ]
+      },
+      "contrast": {
+        "status": "ACCEPTED",
+        "observation": "Pale headings on dark teal, cream reading pages and brass actions remain distinguishable. The active record and server-confirmed status include text, and keyboard focus has a strong outline.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-COMPANION_READY-0",
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-LIBRARY_READY-3"
+        ]
+      },
+      "consistency": {
+        "status": "ACCEPTED",
+        "observation": "The companion, Library and Journal retain the same Homeport mark, colors and type family. Global navigation appears in the Library and gives way to contextual navigation in the immersive companion.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-COMPANION_READY-0",
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-LIBRARY_READY-3"
+        ]
+      },
+      "states": {
+        "status": "ACCEPTED",
+        "observation": "COMPANION_READY, LIBRARY_READY and RETURNED appear in both motion modes, with brief useful loading/opening feedback. The settled return includes the Journal tools and original active objective.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-COMPANION_READY-0",
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-LIBRARY_READY-3",
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-RETURNED-7"
+        ]
+      },
+      "responsive": {
+        "status": "ACCEPTED",
+        "observation": "This desktop contract demonstrates its declared desktop viewport. Its corresponding constrained consumer is reviewed separately in the mobile contract; no unobserved intermediate breakpoint or real-device claim is inferred.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-COMPANION_READY-0",
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-LIBRARY_READY-3",
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-RETURNED-7"
+        ]
+      },
+      "keyboard": {
+        "status": "ACCEPTED",
+        "observation": "The two named exit/re-entry actions are reached through Tab and actually activated with Enter. The trace distinguishes these real navigations from simple visibility assertions.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-trace",
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-trace"
+        ]
+      },
+      "focus": {
+        "status": "ACCEPTED",
+        "observation": "The Library heading receives a clear focus outline after exit, and the re-entry settles into the Journal. The exit path does not trap the Player in the immersive companion.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-RETURNED-7",
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-RETURNED-7",
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-trace",
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-trace"
+        ]
+      },
+      "feedback": {
+        "status": "ACCEPTED",
+        "observation": "The Library visibly confirms the server-backed collection and same active Voyage, then the Journal shows opening feedback. The observed exit feedback is 165-171ms, without claiming an untested progression action.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-trace",
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-trace"
+        ]
+      },
+      "motion": {
+        "status": "ACCEPTED",
+        "observation": "Normal motion opens the book and can visibly fall back to a readable Journal; reduced motion reaches the same useful content sooner. Neither mode depends on watching a ceremony before the required return is usable.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-trace",
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-trace"
+        ]
+      },
+      "continuity": {
+        "status": "ACCEPTED",
+        "observation": "The authenticated person witness and exact final Voyage path persist through the Library. The original named adventure and active passage are visible after re-entry; physical cross-device continuity is outside this route proof.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-trace",
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-trace"
+        ]
+      },
+      "complexity": {
+        "status": "ACCEPTED",
+        "observation": "The Player exits through one plain contextual link and returns through the active adventure card. Unrelated global tools do not occupy the companion reading task.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-COMPANION_READY-0",
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-LIBRARY_READY-3"
+        ]
+      },
+      "role-outcomes": {
+        "status": "ACCEPTED",
+        "observation": "The authorized Player actually leaves the companion, finds the same active adventure and returns to its Journal. This satisfies the declared contextual navigation outcome while broader transfer proof remains separate and blocked.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-trace",
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-trace"
+        ]
+      },
+      "fallbacks": {
+        "status": "ACCEPTED",
+        "observation": "Loading/opening feedback retains recognizable identity and conventional navigation. The review claims a safe route return, not expired-session, mail-provider or cross-screen revocation recovery.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-NORMAL-trace",
+          "homeport.shell.crossdeck-companion-companion-context-exit-return-DESKTOP-PLAYER-REDUCED-trace"
+        ]
+      }
+    },
+    "findings": [],
+    "acceptanceScope": "Rendered software journey only; complete human objective remains blocked by unresolved evidence findings where specified. Owner, physical and native acceptance NOT_CLAIMED."
+  },
+  {
+    "contractId": "homeport.shell.crossdeck-companion-mobile",
+    "status": "ACCEPTED",
+    "builderContext": "/root",
+    "reviewerContext": "/root/final_product_review_6",
+    "independence": "SEPARATE_CONTEXT",
+    "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+    "independentReviewOrdinal": 6,
+    "iterations": 11,
+    "packetDigest": "e36d749422127674152ab56447949f94c3ff45c0838148be1f292b7ecdbb8d98",
+    "dimensions": {
+      "composition": {
+        "status": "ACCEPTED",
+        "observation": "The mobile companion stacks identity, safe return and readable Journal content. The Library retains the active record, and the Journal return frames the book between a fixed header and a prominent bottom objective.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-COMPANION_READY-0",
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-LIBRARY_READY-3"
+        ]
+      },
+      "hierarchy": {
+        "status": "ACCEPTED",
+        "observation": "The contextual exit and Return to Chronicle are understandable. Library headings and its active Voyage establish place; the returned current-objective strip makes Continue Voyage the strongest next action.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-COMPANION_READY-0",
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-LIBRARY_READY-3"
+        ]
+      },
+      "typography": {
+        "status": "ACCEPTED",
+        "observation": "The original 390px captures show readable prose and clear serif headings. Long Voyage names wrap instead of forcing horizontal overflow; the small account badge can move to its own header row.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-COMPANION_READY-0",
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-LIBRARY_READY-3"
+        ]
+      },
+      "spacing": {
+        "status": "ACCEPTED",
+        "observation": "The vertical layout preserves content padding and full-width primary actions. The book pager and Journal tabs share a crowded lower band; the fresh hit-test/trial evidence specifically supports the primary Continue control.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-COMPANION_READY-0",
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-LIBRARY_READY-3"
+        ]
+      },
+      "controls": {
+        "status": "ACCEPTED",
+        "observation": "Exit and Continue Adventure are actually activated and return to the same Journal. Continue Voyage passes viewport-hit and trial-click checks only; no non-trial activation or Voyage complete outcome is claimed.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-COMPANION_READY-0",
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-LIBRARY_READY-3"
+        ]
+      },
+      "contrast": {
+        "status": "ACCEPTED",
+        "observation": "Parchment text panels, dark controls and the brass Continue action remain clear at constrained width. Focus outlines stand apart from both story content and the fixed navigation elements.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-COMPANION_READY-0",
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-LIBRARY_READY-3"
+        ]
+      },
+      "consistency": {
+        "status": "ACCEPTED",
+        "observation": "The mobile route retains the accepted Homeport mark, account witness, brass/sea-green palette and contextual exit language. Its stacked layout preserves the same task identity as the desktop consumer.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-COMPANION_READY-0",
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-LIBRARY_READY-3"
+        ]
+      },
+      "states": {
+        "status": "ACCEPTED",
+        "observation": "Companion, Library and returned Journal are rendered in normal and reduced motion, with recognizable loading/opening feedback. Return is demonstrated; a later progression-complete state is absent and explicitly unclaimed.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-COMPANION_READY-0",
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-LIBRARY_READY-3",
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-7"
+        ]
+      },
+      "responsive": {
+        "status": "ACCEPTED",
+        "observation": "All required mobile screenshots fit the declared viewport without horizontal overflow. Actual touch gestures, phone browser chrome, landscape behavior and a physical handset remain outside this capture.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-COMPANION_READY-0",
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-LIBRARY_READY-3",
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-7"
+        ]
+      },
+      "keyboard": {
+        "status": "ACCEPTED",
+        "observation": "Tab and Enter actually perform exit and re-entry in both motion modes. Continue Voyage is reachable and trial-actionable, but the trace contains no Enter or non-trial click that advances this Voyage.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-trace",
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-trace"
+        ]
+      },
+      "focus": {
+        "status": "ACCEPTED",
+        "observation": "A strong outline marks the Library heading on arrival. The returned Continue button remains visible and passes actionability after scrolling; this proves usable placement rather than progression success.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-RETURNED-7",
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-RETURNED-7",
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-trace",
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-trace"
+        ]
+      },
+      "feedback": {
+        "status": "ACCEPTED",
+        "observation": "The active Voyage and its Journal tools visibly return, with 126-154ms exit feedback observations. Connection-restored/interrupted messages remain qualified; no success message is inferred for a trial-only Continue call.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-trace",
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-trace"
+        ]
+      },
+      "motion": {
+        "status": "ACCEPTED",
+        "observation": "Normal recording shows the book ceremony resolving into a readable passage; reduced motion preserves return and the same objective/action. Dense windows show controls remaining recognizable through both transitions.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-trace",
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-trace"
+        ]
+      },
+      "continuity": {
+        "status": "ACCEPTED",
+        "observation": "The person witness and exact authorized Voyage route are retained across companion, Library and Journal. The returned Follow the lanterns objective persists; progression to Voyage complete is not established by these traces.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-trace",
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-trace"
+        ]
+      },
+      "complexity": {
+        "status": "ACCEPTED",
+        "observation": "A plain contextual exit and one active-adventure return avoid a mobile account detour. The fixed objective offers a clear next step despite the dense book-tool area.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-COMPANION_READY-0",
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-LIBRARY_READY-3"
+        ]
+      },
+      "role-outcomes": {
+        "status": "ACCEPTED",
+        "observation": "The Player actually returns to the same active adventure, and the primary continuation control is unobscured/actionable. This accepts the declared route-return outcome; actual progression activation remains a separate unproved technical boundary.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-trace",
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-trace"
+        ]
+      },
+      "fallbacks": {
+        "status": "ACCEPTED",
+        "observation": "Conventional navigation remains available during loading and after the return. The readable Journal survives a failed normal opening; no physical-device, native spatial or owner acceptance is claimed.",
+        "evidenceIds": [
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-NORMAL-trace",
+          "homeport.shell.crossdeck-companion-mobile-companion-context-exit-return-MOBILE-PLAYER-REDUCED-trace"
+        ]
+      }
+    },
+    "findings": [],
+    "acceptanceScope": "Rendered software journey only; complete human objective remains blocked by unresolved evidence findings where specified. Owner, physical and native acceptance NOT_CLAIMED."
+  },
+  {
+    "contractId": "reach.phase1.foundation",
+    "status": "ACCEPTED",
+    "builderContext": "/root",
+    "reviewerContext": "/root/final_product_review_6",
+    "independence": "SEPARATE_CONTEXT",
+    "sourceInspectionOrder": "EXPERIENCE_BEFORE_SOURCE",
+    "independentReviewOrdinal": 6,
+    "iterations": 11,
+    "packetDigest": "c8d28877ce9708e955128764715978bfaa012cb4736e2943afc5e2ee82ba62aa",
+    "dimensions": {
+      "composition": {
+        "status": "ACCEPTED",
+        "observation": "A continuous instrument workspace separates camera/hand preview, target stage and contextual guidance. Desktop uses adjacent work areas; mobile elevates the calibration target while preserving the same staged task.",
+        "evidenceIds": [
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1",
+          "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1",
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3",
+          "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3"
+        ]
+      },
+      "hierarchy": {
+        "status": "ACCEPTED",
+        "observation": "Prepare, Calibrate, Check and Explore establish a clear sequence. Training completion explicitly leads to an independent check, with results and playground following only after their distinct visible stages.",
+        "evidenceIds": [
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1",
+          "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1",
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3",
+          "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3"
+        ]
+      },
+      "typography": {
+        "status": "ACCEPTED",
+        "observation": "Readable serif task headings and plain status instructions distinguish guidance from compact diagnostic labels. Original mobile Pause/Resume captures keep the actionable message and controls legible.",
+        "evidenceIds": [
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1",
+          "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1",
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3",
+          "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3"
+        ]
+      },
+      "spacing": {
+        "status": "ACCEPTED",
+        "observation": "The target stage has a clear boundary and controls are grouped directly beneath it on mobile. Diagnostics stay in a disclosure so they do not crowd the primary calibration instruction.",
+        "evidenceIds": [
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1",
+          "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1",
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3",
+          "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3"
+        ]
+      },
+      "controls": {
+        "status": "ACCEPTED",
+        "observation": "Real keyboard actions operate demo entry, nine-point training, pause/resume, five new checks, relative setup, practice and return. The camera failure exposes Retry live camera and a useful demo instead of trapping setup.",
+        "evidenceIds": [
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1",
+          "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1",
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3",
+          "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3"
+        ]
+      },
+      "contrast": {
+        "status": "ACCEPTED",
+        "observation": "Brass targets, teal pointers, written readiness messages and a bounded stage distinguish tasks without relying solely on hue. The results include explicit check text and a visible confirmation mark.",
+        "evidenceIds": [
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1",
+          "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1",
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3",
+          "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3"
+        ]
+      },
+      "consistency": {
+        "status": "ACCEPTED",
+        "observation": "The laboratory keeps the Homeport shell, brass accents and serif hierarchy while using a restrained instrument stage. It remains recognizably within Voyagewright rather than presenting a parallel product identity.",
+        "evidenceIds": [
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1",
+          "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1",
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3",
+          "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3"
+        ]
+      },
+      "states": {
+        "status": "ACCEPTED",
+        "observation": "Every declared state is present across required devices and modes, including pause, independent fit/check/results, relative control, multiple hands, ineligible detection and camera unavailability. Demo and experimental limits remain visible.",
+        "evidenceIds": [
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1",
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3",
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRAINING-7",
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-PAUSED-9",
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-FIT_READY-28"
+        ]
+      },
+      "responsive": {
+        "status": "ACCEPTED",
+        "observation": "The 390px layout stacks guidance and preview and puts the target stage first during calibration. No horizontal overflow is reported; the evidence remains browser viewport behavior rather than webcam ergonomics.",
+        "evidenceIds": [
+          "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-WELCOME-1",
+          "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-TRACKING-3",
+          "reach.phase1.foundation-absolute-calibration-and-recovery-MOBILE-ANONYMOUS-NORMAL-TRAINING-7"
+        ]
+      },
+      "keyboard": {
+        "status": "ACCEPTED",
+        "observation": "Actual Tab/Enter operation completes the nine and five targets, pauses/resumes, opens practice and returns. Arrow-key operations change pointing mode and tracking-condition selection; no gesture-only dependency blocks the demo.",
+        "evidenceIds": [
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+          "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-trace",
+          "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-trace"
+        ]
+      },
+      "focus": {
+        "status": "ACCEPTED",
+        "observation": "Pause changes to Resume in the same position with a conspicuous brass ring. The target stage also receives visible emphasis, and keyboard return reaches the device-connections heading.",
+        "evidenceIds": [
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-RETURNED-57",
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-RETURNED-57",
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-trace"
+        ]
+      },
+      "feedback": {
+        "status": "ACCEPTED",
+        "observation": "Target counts and hold progress distinguish saved points from transient collection. Training completion requires five fresh check points, and the camera failure explains its condition with retry/demo; observed feedback is 834-871ms.",
+        "evidenceIds": [
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+          "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-trace",
+          "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-trace"
+        ]
+      },
+      "motion": {
+        "status": "ACCEPTED",
+        "observation": "Normal and reduced recordings retain all stage meanings, target counts and controls. Pointer/target movement supports the demo without asserting physical precision or high-frame-rate smoothness from contact sheets.",
+        "evidenceIds": [
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+          "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-trace",
+          "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-trace"
+        ]
+      },
+      "continuity": {
+        "status": "ACCEPTED",
+        "observation": "The laboratory enters from the actual device-connections link and returns to it through the visible control. The same Voyagewright home-origin witness is retained, with no pairing or progression authority attributed to Reach.",
+        "evidenceIds": [
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+          "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-trace",
+          "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-trace"
+        ]
+      },
+      "complexity": {
+        "status": "ACCEPTED",
+        "observation": "Primary preparation and calibration guidance remain short while diagnostics are optional. Relative movement is visibly recommended and absolute pointing experimental, so a user can choose a useful conventional demonstration.",
+        "evidenceIds": [
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1",
+          "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-WELCOME-1",
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3",
+          "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-TRACKING-3"
+        ]
+      },
+      "role-outcomes": {
+        "status": "ACCEPTED",
+        "observation": "The disclosed simulated hand completes separate training and independent checks and reaches practice. Detection, readiness and pointing eligibility remain distinct; real-person camera accuracy and physical acceptance are not inferred.",
+        "evidenceIds": [
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+          "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-trace",
+          "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-trace"
+        ]
+      },
+      "fallbacks": {
+        "status": "ACCEPTED",
+        "observation": "An unavailable camera yields plain-language retry and the guided demo, which actually reaches useful tracking and returns. Local privacy text and the no-domain-activation limit remain visible throughout the laboratory.",
+        "evidenceIds": [
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-NORMAL-trace",
+          "reach.phase1.foundation-absolute-calibration-and-recovery-DESKTOP-ANONYMOUS-REDUCED-trace",
+          "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-NORMAL-trace",
+          "reach.phase1.foundation-relative-movement-and-check-DESKTOP-ANONYMOUS-REDUCED-trace"
+        ]
+      }
+    },
+    "findings": [],
+    "acceptanceScope": "Rendered software journey only; complete human objective remains blocked by unresolved evidence findings where specified. Owner, physical and native acceptance NOT_CLAIMED."
+  }
+]

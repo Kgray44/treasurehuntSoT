@@ -1,0 +1,13 @@
+{
+  "status": "FINAL",
+  "reviewsPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r3-73ed\\independent-review4\\reviews.json",
+  "receiptPath": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r3-73ed\\independent-review4\\review-receipt.json",
+  "reviewsSha256": "e41f4fb7b4507421c877edeeac2703569d5f664db0bc3d21e509aa6f4601f13c",
+  "receiptSha256": "5cd594884f218c52705ccd888bd28179f8245430ed950f9c1622a8a19e14b691",
+  "reviewCount": 7,
+  "judgmentCount": 119,
+  "verdict": "ACCEPTED",
+  "currentUnresolvedCount": 0,
+  "finalityConfirmed": true,
+  "finalityConfirmedAtUtc": "2026-10-15T20:46:57.519823+00:00"
+}

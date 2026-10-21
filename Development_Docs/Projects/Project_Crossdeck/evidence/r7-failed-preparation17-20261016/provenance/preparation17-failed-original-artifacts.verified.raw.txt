@@ -1,0 +1,46 @@
+{
+  "classification": "CONSUMED_FAILED_PREPARATION17_ORIGINAL_PARTIAL_ARTIFACT_ARCHIVES_NOT_ACCEPTANCE",
+  "status": "FAIL",
+  "noFreshCompleteCaptureClaim": true,
+  "runId": 38880737676,
+  "baseSha": "ce862a4a349b92faa11beaef50555abcb1a35be8",
+  "candidateSha": "0dd0847458dedaab3b5b1d0f5b4b73fe78aaa087",
+  "url": "https://github.com/Kgray44/treasurehuntSoT/actions/runs/38880737676",
+  "runAttempt": 1,
+  "artifacts": [
+    {
+      "kind": "capture",
+      "artifactId": 12037519792,
+      "name": "product-experience-capture-91769eb493df8573",
+      "sizeInBytes": 1388686658,
+      "serverDigest": "sha256:2647f25006cea85efd5f127d31dec7e96968a259436c6c15ff6daa12ff4a88ee",
+      "verifiedDownloadedDigest": "sha256:2647f25006cea85efd5f127d31dec7e96968a259436c6c15ff6daa12ff4a88ee",
+      "zip": "D:/Codex_Task_Artifacts/Crossdeck_Refit_01a12d5e_20261012/r7-continuation-20261016/preparation17-capture-12037519792.original.zip",
+      "destination": "D:/Codex_Task_Artifacts/Crossdeck_Refit_01a12d5e_20261012/r7-continuation-20261016/preparation17-capture-12037519792.original-extracted",
+      "extraction": {
+        "status": "EXTRACTED_ORIGINAL_ARCHIVE",
+        "destination": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r7-continuation-20261016\\preparation17-capture-12037519792.original-extracted",
+        "entries": 1636,
+        "uncompressedBytes": 1415910973
+      }
+    },
+    {
+      "kind": "lifecycle",
+      "artifactId": 12038770189,
+      "name": "product-experience-lifecycle-0dd0847458dedaab3b5b1d0f5b4b73fe78aaa087-38880737676",
+      "sizeInBytes": 49279,
+      "serverDigest": "sha256:7dbd634e95d42b7f6d5257cbc02a4346464e6de0027438de58d5d37488a3b8b7",
+      "verifiedDownloadedDigest": "sha256:7dbd634e95d42b7f6d5257cbc02a4346464e6de0027438de58d5d37488a3b8b7",
+      "zip": "D:/Codex_Task_Artifacts/Crossdeck_Refit_01a12d5e_20261012/r7-continuation-20261016/preparation17-lifecycle-12038770189.original.zip",
+      "destination": "D:/Codex_Task_Artifacts/Crossdeck_Refit_01a12d5e_20261012/r7-continuation-20261016/preparation17-lifecycle-12038770189.original-extracted",
+      "extraction": {
+        "status": "EXTRACTED_ORIGINAL_ARCHIVE",
+        "destination": "D:\\Codex_Task_Artifacts\\Crossdeck_Refit_01a12d5e_20261012\\r7-continuation-20261016\\preparation17-lifecycle-12038770189.original-extracted",
+        "entries": 1,
+        "uncompressedBytes": 631142
+      }
+    }
+  ],
+  "ownerAcceptance": "NOT_CLAIMED",
+  "verifiedAt": "2026-10-16T09:57:23.886Z"
+}

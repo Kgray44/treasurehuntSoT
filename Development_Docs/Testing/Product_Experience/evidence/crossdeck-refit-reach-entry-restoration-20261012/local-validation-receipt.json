@@ -1,0 +1,66 @@
+{
+  "classification": "Engineering focused correction regression",
+  "candidateSha": "00811a589e0a40df544c84216378cdac63486d93",
+  "baseSha": "602f83efdb16b7ea75980f07fa3a3d976c496860",
+  "sourceDigest": "c0a0b8197fc9463ddb0205816385b26e4ed95029017230fe60638b445b776f35",
+  "contractDigest": "8c8d5ddbc67e23f784e4465067973e2eb9d5f3d8d95bf44c646de4079cdb306d",
+  "stages": [
+    {
+      "name": "bootstrap",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 4266
+    },
+    {
+      "name": "synthetic-persisted-seed",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 4017
+    },
+    {
+      "name": "legacy-migration",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 657
+    },
+    {
+      "name": "nonce-identity",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 141
+    },
+    {
+      "name": "production-build",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 142371
+    },
+    {
+      "name": "focused-reach-public-entry",
+      "status": "PASS",
+      "exitCode": 0,
+      "elapsedMs": 16986
+    }
+  ],
+  "regression": "Existing tests/e2e/reach-laboratory.spec.ts viewport changes invalidate the fit and preserve camera availability; safe return excludes external URLs. Starts from /devices/pair and clicks the restored public link.",
+  "productionBuildMs": 142371,
+  "focusedRegressionMs": 16986,
+  "originalByteFiles": [
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-reach-entry-restoration-20261012/stage-receipt.original.raw.txt",
+      "sha256": "103a741da553f060f6a4ba7cca9b64e75754a0b8ddc6c5e8e20f07f69a5eff45",
+      "bytes": 1797,
+      "originalPath": "D:/Codex_Task_Artifacts/Crossdeck_Refit_01a12d5e_20261012/source-00811a589e0a/stage-receipt.json"
+    },
+    {
+      "path": "Development_Docs/Testing/Product_Experience/evidence/crossdeck-refit-reach-entry-restoration-20261012/local-focused-stage.original.log",
+      "sha256": "04f08277c2e2494caa7537822860d0d2b53dfb496db2a94936ffc83d40354407",
+      "bytes": 37983,
+      "originalPath": "D:/Codex_Task_Artifacts/Crossdeck_Refit_01a12d5e_20261012/reach-entry-correction-00811a58-stage.log"
+    }
+  ],
+  "authority": "LOCAL_SYNTHETIC_PRODUCT_PROOF",
+  "freshTrustedCapture": "PENDING",
+  "independentFinalThirdReview": "UNUSED",
+  "ownerAcceptance": "NOT_CLAIMED"
+}

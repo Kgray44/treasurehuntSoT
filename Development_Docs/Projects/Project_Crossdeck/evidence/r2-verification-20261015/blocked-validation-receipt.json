@@ -1,0 +1,15 @@
+{
+  "status": "EXPECTED_BLOCK",
+  "classification": "Offline protected evidence validation rejects final unresolved product finding; not a qualification run",
+  "error": "PRODUCT_EXPERIENCE_EXCEPTION_NEW_BLOCKING_FINDING",
+  "captureArtifactId": 11994349912,
+  "reviewerContext": "/root/final_product_review_3",
+  "independentReviewOrdinal": 3,
+  "legacyIterations": 11,
+  "sourceDigest": "ad23861f9609e2ff3d98c95db78a030f9cb85ca491a7f2b99d42a05ed5f41dd8",
+  "artifactsDigest": "e013ed31273940d7e8416c5fc51b5eb94367763d0dcd15e599fefc7ab1296f1d",
+  "journeysDigest": "ef574199abe616f9b683e8809910878f31330fc642771bbd0d7faa86e15a8438",
+  "reviewsDigest": "e325cf250626a528f38037a5f7e9e08a2baeda3d9958f24bf0148c45cfc01896",
+  "newWorkflowDispatches": 0,
+  "ownerAcceptance": "NOT_CLAIMED"
+}

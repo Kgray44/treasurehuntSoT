@@ -9,6 +9,7 @@ last_reviewed: 2026-10-21
 # Repository automation guidance
 
 - [NCL-01 owned native Scene implementation context](parallax-ncl01.md)
+- [NCL-01 post-Crossdeck completion context](ncl01-full-completion.md)
 - [NCL-01 owned laptop preview operations](ncl01-local-preview.md)
 - [NCL-01 isolated TestFlight deployment](ncl01-testflight.md)
 
@@ -19,10 +20,12 @@ not authorize restarting a completed phase.
 
 - [Focused development and final verification](testing-workflow.md)
 - [Automatic Product Experience Engineering workflow](product-experience-workflow.md)
+- [Crossdeck refit publication checkpoint](crossdeck-refit-checkpoint.md)
 - [Sounding Line capture lifecycle repair context](capture-lifecycle-repair.md)
 - [Sounding Line browser receipt diagnostic context](browser-receipt-diagnostics.md)
 - [Sounding Line replay failure diagnostic repair](replay-failure-diagnostics.md)
 - [Current replay artifact folder correction](replay-artifact-root-repair.md)
+- [Crossdeck R26 finite replay-folder successor](crossdeck-r26-replay-path-successor.md)
 - [Replay admission Git failure observations](replay-admission-git-diagnostics.md)
 - [Crossdeck ordinary6 finite hosted source diagnostic](crossdeck-ordinary6-source-diagnostic.md)
 - [Crossdeck ordinary6 finite posttechnical diagnostic](crossdeck-ordinary6-posttechnical-diagnostic.md)

@@ -1,0 +1,21 @@
+{
+  "motion": "no-preference",
+  "timings": {
+    "connectToQRMs": 266,
+    "claimToCompanionMs": 938,
+    "sendToVisibleOfferMs": 499,
+    "acceptToRenderedAcknowledgedMs": 429
+  },
+  "recordings": {
+    "desktop": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/candidate/artifacts/sounding-line/product-experience-capture-staging/capture-TuABKr/raw/generic/paired/refit-no-preference/0f6e388183ed450c5395cd9fcc042dfa.webm",
+    "phone": "/home/runner/work/treasurehuntSoT/treasurehuntSoT/candidate/artifacts/sounding-line/product-experience-capture-staging/capture-TuABKr/raw/generic/paired/refit-no-preference/2bcdcd2cbb5f3552468dbc9e49bb79b6.webm"
+  },
+  "hardware": "CHROMIUM_EMULATION",
+  "personAndMembershipUnchanged": true,
+  "continuation": {
+    "beforeSequence": 4,
+    "afterSequence": 7,
+    "nextBlockId": "next-15e34189-0725-4b74-92ce-c31e29210d04"
+  },
+  "ownerAcceptance": "NOT_CLAIMED"
+}

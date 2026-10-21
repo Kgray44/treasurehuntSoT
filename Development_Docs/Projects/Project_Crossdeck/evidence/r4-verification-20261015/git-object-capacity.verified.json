@@ -1,0 +1,12 @@
+{
+  "classification": "Pre-publication Git object capacity check",
+  "checkedAt": "2026-10-15T22:49:49.467Z",
+  "gitObjectWriteDirectory": "D:/CodexWorktrees/crossdeck-consumer-721-final-20261015/.git/objects",
+  "existingCObjectStore": "READ_ONLY_ALTERNATE",
+  "selectedMediaBytes": 435008411,
+  "cFreeBytesObserved": 621412352,
+  "dFreeBytesObserved": 199357427712,
+  "requiredMediaOmitted": 0,
+  "sharedGitMoves": 0,
+  "status": "PASS_OWNED_D_OBJECT_STORAGE"
+}
