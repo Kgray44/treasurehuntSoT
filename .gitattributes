@@ -23,3 +23,6 @@ Development_Docs/Projects/Project_Reach/evidence/causal-point-tracker-20261020/*
 
 # Preserve reviewed Reach dedicated hand model diagnostic evidence bytes.
 Development_Docs/Projects/Project_Reach/evidence/hand-model-diagnostic-20261020/*.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Preserve reviewed Reach automatic recovery experiment evidence bytes.
+Development_Docs/Projects/Project_Reach/evidence/automatic-recovery-20261021/aggregate.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

@@ -1,0 +1,317 @@
+{
+  "classification": "DEVELOPMENT_RESEARCH_AND_UNINTEGRATED_PROTOTYPE_NOT_TRACKING_OR_PHYSICAL_ACCEPTANCE",
+  "qualification": false,
+  "applicationSource": "62ebde00a7dd9c623a20b46e20d6f4e9d63dfe99",
+  "startingDevelopmentPublication": "848f26a36a7189ca24b22b0beb9a6611bbaa8218",
+  "proposal": {
+    "implemented": true,
+    "integrated": false,
+    "authority": "UNVERIFIED",
+    "tests": {
+      "files": 1,
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0
+    },
+    "strictFocusedTypeScript": "PASS",
+    "scopedESLint": {
+      "errors": 0,
+      "warnings": 0
+    },
+    "sourceSha256": "83ac2bcd042c2352c906e4dd1c583e256f923ab1de5374bef700648ceb743860",
+    "testSha256": "6600c67a6b8ae6af531901b10e105d4f8b64d55738633004f950cc0f42f551a9",
+    "independentReviewSha256": "dc9686e858de19d0d076e5700a668ae43ca5e7e8c020a07550d2f6f826bb3ab4"
+  },
+  "historicalMaterialBank": {
+    "decision": "STOP_NO_RETUNE_NO_INTEGRATION",
+    "recordedFrames": 1336,
+    "analyticControls": {
+      "failed": 0,
+      "passed": 11,
+      "skipped": 0,
+      "scope": "Analytic development controls; old-view proof mechanism exercised, not physical correctness or recording recovery proof"
+    },
+    "perPrompt": [
+      {
+        "prompt": "CENTER",
+        "packets": 109,
+        "baselinePositions": 78,
+        "candidatePositions": 78,
+        "baselineReady": 63,
+        "candidateReady": 63,
+        "baselineLogicalChanges": 0,
+        "candidateLogicalChanges": 0
+      },
+      {
+        "prompt": "BOTTOM",
+        "packets": 145,
+        "baselinePositions": 60,
+        "candidatePositions": 60,
+        "baselineReady": 45,
+        "candidateReady": 45,
+        "baselineLogicalChanges": 0,
+        "candidateLogicalChanges": 0
+      },
+      {
+        "prompt": "TOP",
+        "packets": 107,
+        "baselinePositions": 70,
+        "candidatePositions": 70,
+        "baselineReady": 64,
+        "candidateReady": 64,
+        "baselineLogicalChanges": 1,
+        "candidateLogicalChanges": 1
+      },
+      {
+        "prompt": "LEFT",
+        "packets": 90,
+        "baselinePositions": 87,
+        "candidatePositions": 87,
+        "baselineReady": 84,
+        "candidateReady": 84,
+        "baselineLogicalChanges": 0,
+        "candidateLogicalChanges": 0
+      },
+      {
+        "prompt": "RIGHT",
+        "packets": 89,
+        "baselinePositions": 13,
+        "candidatePositions": 13,
+        "baselineReady": 13,
+        "candidateReady": 13,
+        "baselineLogicalChanges": 0,
+        "candidateLogicalChanges": 0
+      },
+      {
+        "prompt": "TOP_LEFT",
+        "packets": 73,
+        "baselinePositions": 26,
+        "candidatePositions": 26,
+        "baselineReady": 20,
+        "candidateReady": 20,
+        "baselineLogicalChanges": 1,
+        "candidateLogicalChanges": 1
+      },
+      {
+        "prompt": "TOP_RIGHT",
+        "packets": 74,
+        "baselinePositions": 46,
+        "candidatePositions": 46,
+        "baselineReady": 37,
+        "candidateReady": 37,
+        "baselineLogicalChanges": 1,
+        "candidateLogicalChanges": 1
+      },
+      {
+        "prompt": "BOTTOM_LEFT",
+        "packets": 71,
+        "baselinePositions": 36,
+        "candidatePositions": 36,
+        "baselineReady": 27,
+        "candidateReady": 27,
+        "baselineLogicalChanges": 1,
+        "candidateLogicalChanges": 1
+      },
+      {
+        "prompt": "BOTTOM_RIGHT",
+        "packets": 71,
+        "baselinePositions": 13,
+        "candidatePositions": 13,
+        "baselineReady": 12,
+        "candidateReady": 12,
+        "baselineLogicalChanges": 0,
+        "candidateLogicalChanges": 0
+      },
+      {
+        "prompt": "RELAXED",
+        "packets": 109,
+        "baselinePositions": 41,
+        "candidatePositions": 41,
+        "baselineReady": 32,
+        "candidateReady": 32,
+        "baselineLogicalChanges": 0,
+        "candidateLogicalChanges": 0
+      },
+      {
+        "prompt": "SWEEP",
+        "packets": 180,
+        "baselinePositions": 11,
+        "candidatePositions": 11,
+        "baselineReady": 3,
+        "candidateReady": 3,
+        "baselineLogicalChanges": 1,
+        "candidateLogicalChanges": 1
+      },
+      {
+        "prompt": "OPEN_PALM",
+        "packets": 91,
+        "baselinePositions": 0,
+        "candidatePositions": 0,
+        "baselineReady": 0,
+        "candidateReady": 0,
+        "baselineLogicalChanges": 0,
+        "candidateLogicalChanges": 0
+      },
+      {
+        "prompt": "HIDE",
+        "packets": 18,
+        "baselinePositions": 0,
+        "candidatePositions": 0,
+        "baselineReady": 0,
+        "candidateReady": 0,
+        "baselineLogicalChanges": 0,
+        "candidateLogicalChanges": 0
+      },
+      {
+        "prompt": "RECOVER",
+        "packets": 109,
+        "baselinePositions": 23,
+        "candidatePositions": 23,
+        "baselineReady": 16,
+        "candidateReady": 16,
+        "baselineLogicalChanges": 0,
+        "candidateLogicalChanges": 0
+      }
+    ],
+    "paired": {
+      "positionAvailabilityGains": 0,
+      "positionAvailabilityLosses": 0,
+      "measuredPositionDifferences": 0
+    },
+    "baseline": {
+      "measuredPositions": 504,
+      "readinessEligible": 416,
+      "logicalIdChanges": 7,
+      "interpretationCpuMs": {
+        "n": 1336,
+        "median": 1.0295000000000982,
+        "p95": 2.2041000000000395,
+        "maximum": 10.24369999999999,
+        "total": 1438.955499999999
+      }
+    },
+    "candidate": {
+      "measuredPositions": 504,
+      "readinessEligible": 416,
+      "logicalIdChanges": 7,
+      "interpretationCpuMs": {
+        "n": 1336,
+        "median": 1.0781000000001768,
+        "p95": 2.2065999999999804,
+        "maximum": 20.312600000000202,
+        "total": 1497.0224999999973
+      }
+    },
+    "pins": {
+      "protocolSha256": "6b57a6d49d9faf5ea985688f6c99da303c976bce34f767cd7f32777efdbf9211",
+      "ownedReceiptSha256": "aa928be819104b1ff0efd533ca2ec7aa6624f1d58ee503af8a3ac5183ad4a99e",
+      "candidateBundleSha256": "95f04cb56ea8d71be9ee26b471ffffaabcc0d66831b52eaf1827625da0e4caac",
+      "comparisonSha256": "6f6a9b054c2f13b56bc3981638d3968a6fcfc276b9abb3728c47d296b3f49996",
+      "candidateSourceSha256": "072fa9ae9f83d586e6c2e9bbe9ded7307e6eb3784d98ff97b8c98f226b4bc3ae"
+    },
+    "decisionSha256": "c1dd746c4585e0b0b4f9e37e0eb6c876ce1025c4e73a5a84169bb92c4d1e4238",
+    "recordedBankTransitionCounts": "UNAVAILABLE"
+  },
+  "pairedRgbMaterialScreen": {
+    "tier": "MATERIAL_OBSERVABILITY_ONLY_NO_TRACKER_OR_AUTHORITY_CALLS",
+    "metadataFrames": 1336,
+    "rightMetadataFrames": 89,
+    "otherPromptUncomputed": 1247,
+    "preReferenceRightUncomputed": 11,
+    "referenceOnly": 1,
+    "laterRightCompared": 77,
+    "imagesDecoded": 78,
+    "analyticControlsPassed": 3,
+    "initialFailedAnalyticFixturePreserved": true,
+    "initialFailure": "REFERENCE_GRAY_UNSUITABLE_SYNTHETIC_FIXTURE",
+    "pairedGrayEqualsOldCachedGray": false,
+    "modes": {
+      "GRAY": {
+        "computedFrames": 77,
+        "materialSupportFrames": 0,
+        "sameSourceMaterialFrames": 0,
+        "sameSourceRecordedFreshWithinFrozenLifetime": 0,
+        "matureWithinFrozenRecoveryFrames": 0,
+        "maximumProbationFrames": 0,
+        "currentModelUnavailableFrames": 0,
+        "firstRegionOutcomes": {
+          "MCP": {
+            "MODEL_INNOVATION": 3,
+            "UNIQUENESS": 74
+          },
+          "PIP": {
+            "CORRELATION": 51,
+            "MATERIAL_ROUNDTRIP": 3,
+            "MODEL_INNOVATION": 15,
+            "REVERSE_OR_CLOSURE": 5,
+            "UNIQUENESS": 3
+          },
+          "DIP": {
+            "CORRELATION": 74,
+            "MODEL_INNOVATION": 1,
+            "UNIQUENESS": 2
+          }
+        }
+      },
+      "RGB": {
+        "computedFrames": 77,
+        "materialSupportFrames": 0,
+        "sameSourceMaterialFrames": 0,
+        "sameSourceRecordedFreshWithinFrozenLifetime": 0,
+        "matureWithinFrozenRecoveryFrames": 0,
+        "maximumProbationFrames": 0,
+        "currentModelUnavailableFrames": 0,
+        "firstRegionOutcomes": {
+          "MCP": {
+            "MODEL_INNOVATION": 3,
+            "REVERSE_OR_CLOSURE": 1,
+            "UNIQUENESS": 73
+          },
+          "PIP": {
+            "CORRELATION": 51,
+            "MATERIAL_ROUNDTRIP": 3,
+            "MODEL_INNOVATION": 15,
+            "REVERSE_OR_CLOSURE": 5,
+            "UNIQUENESS": 3
+          },
+          "DIP": {
+            "CORRELATION": 74,
+            "MODEL_INNOVATION": 1,
+            "UNIQUENESS": 2
+          }
+        }
+      }
+    },
+    "paired": {
+      "rgbMaterialGains": 0,
+      "rgbMaterialLosses": 0
+    },
+    "processingWallMs": 1000.0,
+    "modelOrTrackingCalls": 0,
+    "recordedFreshnessIsLiveLatencyProof": false,
+    "controlsSha256": "c6245e070f56c78b6824abb6b3793f0189fd26030403c595d2fd17b03315f021",
+    "sourceFreezeSha256": "1404cb3ca258c5683dfa88a5e2a5ff8792282d047ab032f2819750e803421155",
+    "resultSha256": "3048cdec4ec791d41a5b761623960289a9a92f8afc528fb68a5f8f6ceec7837e",
+    "ownedReceiptSha256": "6a977bb628c1d9e23b6613c3756554a906c068dab43249a3a6f60b1f24e8d275",
+    "cleanup": {
+      "treeReaped": true,
+      "streamsClosed": true
+    },
+    "limits": "Current NN centers and matched patches are unverified observations. No correct-digit, position, recovery, calibration, live latency or physical gain is inferred."
+  },
+  "retainedBroadMotionBrowser": {
+    "scope": "HISTORICAL_NOT_RERUN",
+    "passed": 11,
+    "total": 12,
+    "selectedIdentityAssertion": "FAILED_UNCHANGED"
+  },
+  "newCalibrationJourneys": 0,
+  "physicalAcceptance": "OPEN",
+  "preview": {
+    "servedSource": "2d03e6678c7af0d08775c67ea9afffa79e2f9ac2",
+    "buildId": "5J0hYQ9auzWPtxEPVBQl2",
+    "experimentalVariantServed": false,
+    "cameraEnabled": false
+  },
+  "featureCatalog": "NO CHANGE REQUIRED"
+}

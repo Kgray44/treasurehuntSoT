@@ -3,7 +3,7 @@ title: Project Reach engineering home
 audience: product-engineering
 status: integrated-foundation-preview
 canonical_for: project-reach-engineering-home
-last_reviewed: 2026-10-20
+last_reviewed: 2026-10-21
 ---
 
 # Project Reach engineering home
@@ -11,6 +11,8 @@ last_reviewed: 2026-10-20
 Reach is Voyagewright's reusable browser-first spatial interaction and intent system. Phase 1's browser hand laboratory, observation/coordinate foundation and independent calibration workflow are integrated as a foundation preview through [PR #697](https://github.com/Kgray44/treasurehuntSoT/pull/697), main commit `7284b0dfaa31037d074d27df0f27b968f3977000`, after the [required Mainline Decision](https://github.com/Kgray44/treasurehuntSoT/actions/runs/38113725340) passed. Landed source/asset verification passed. Physical webcam and held-out calibration, accuracy, jitter, exposure-to-visible latency, ergonomics and owner acceptance remain open; full Phase 1 is not accepted. See the [implementation and validation record](Project_Reach_Phase_1_Implementation_and_Validation_Record.md). Later-phase target acquisition, selection, manipulation and owner integrations are not implemented by this phase.
 
 ## Effective governing sources
+
+The [automatic recovery continuation](Phase_1_Automatic_Recovery_20261021.md) prototypes an explicitly unverified current-frame proposal boundary and rejects a historical multi-region reference bank after a matched 1,336-frame comparison produces no gain: 504 positions, 416 ready observations, seven logical replacements and RIGHT 13/89 remain unchanged. The proposal is not integrated into tracking. The previous verified preview is restored with its camera off; correct RIGHT reacquisition, mixed-motion continuity, calibration reliability and physical acceptance remain unresolved.
 
 The [dedicated hand model diagnostic](Phase_1_Hand_Model_Diagnostic_20261020.md) finds a BOTTOM-RIGHT raw localization signal: coarse positive development circle compatibility changes from 0/9 to 8/9, while RIGHT remains 11/11, SWEEP 4/5 and LEFT falls from 6/6 to 5/6. All 1,336 sources and 48 references remain. Actual offline CPU core median/P95 are 81.2662/120.1046 ms, with 17 frames over 150 ms. These XY-only proposals have no selected-identity or measurement authority; no production candidate is nominated and Phase 1 remains incomplete.
 
