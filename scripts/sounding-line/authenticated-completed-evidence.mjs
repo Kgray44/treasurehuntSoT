@@ -8,15 +8,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { inflateRawSync } from "node:zlib";
 import { canonicalJson, createEvidenceFingerprint, digest, verifyReceipt } from "./evidence.mjs";
-import { withVerificationStage } from "./verification-diagnostics.mjs";
 // CLI startup awaits intake, so a deferred import would wait on that same startup.
-import {
-  buildEvidenceObligations,
-  completedEvidenceEnvironmentClass,
-  preparedGraphContext,
-  preparedGraphObjects,
-  currentGraphContext,
-} from "./ordinary.mjs";
+import { buildEvidenceObligations, completedEvidenceEnvironmentClass } from "./ordinary.mjs";
 
 const REPOSITORY = "Kgray44/treasurehuntSoT";
 const WORKFLOW = ".github/workflows/sounding-line-ordinary.yml";
@@ -52,14 +45,13 @@ const requireValue = (condition, code) => {
 };
 const exactKeys = (value, names) => object(value) && equal(Object.keys(value).sort(), [...names].sort());
 
-function git(root, args, binary = false, input) {
+function git(root, args, binary = false) {
   const env = Object.fromEntries(Object.entries(process.env).filter(([name]) => !name.startsWith("GIT_")));
   return execFileSync("git", ["-c", "core.fsmonitor=false", ...args], {
     cwd: root,
     env: { ...env, GIT_OPTIONAL_LOCKS: "0", GIT_NO_LAZY_FETCH: "1" },
     encoding: binary ? undefined : "utf8",
-    stdio: [input === undefined ? "ignore" : "pipe", "pipe", "ignore"],
-    input,
+    stdio: ["ignore", "pipe", "ignore"],
     maxBuffer: LIMITS.metadata,
   });
 }
@@ -733,9 +725,7 @@ export async function authenticateCompletedEvidence({ root, plan, producers, req
     completedEvidenceEnvironmentClass(plan) === "github-actions-nonbrowser-controlled",
     "PRODUCER_ENVIRONMENT_UNAUTHENTICATED",
   );
-  const obligations = await withVerificationStage("FINGERPRINT_GRAPH", () =>
-    buildEvidenceObligations(currentRoot, plan),
-  );
+  const obligations = await buildEvidenceObligations(currentRoot, plan);
   const current = new Map(obligations.map((obligation) => [obligation.id, clone(obligation)]));
   requireValue(current.size === obligations.length, "CURRENT_OBLIGATION_DUPLICATE");
   const api = request ?? authenticatedTransport();
@@ -795,50 +785,8 @@ export async function authenticateCompletedEvidence({ root, plan, producers, req
     rejections: Object.freeze(rejections.map(Object.freeze)),
     qualification: false,
   });
-  proofs.set(token, {
-    root: currentRoot,
-    candidateSha: plan.candidateSha,
-    current,
-    receipts,
-    provenance,
-    preparationContext: preparedGraphContext(obligations),
-    preparationObjects: preparedGraphObjects(obligations),
-  });
+  proofs.set(token, { root: currentRoot, candidateSha: plan.candidateSha, current, receipts, provenance });
   return token;
-}
-
-// Prepared inputs save a second graph walk; this grants no receipt, lease or
-// qualification. Only this module's nonserializable parent token can carry it.
-export async function authenticatedPreparedObligations(token, { root, plan } = {}) {
-  const proof = object(token) ? proofs.get(token) : undefined;
-  if (!proof || !object(plan) || typeof root !== "string") return null;
-  const currentRoot = await realpath(root);
-  if (
-    currentRoot !== proof.root ||
-    plan.candidateSha !== proof.candidateSha ||
-    !proof.preparationContext ||
-    git(currentRoot, ["rev-parse", "HEAD"]).trim() !== proof.candidateSha
-  )
-    return null;
-  if ((await currentGraphContext(currentRoot, plan)) !== proof.preparationContext) return null;
-  requireValue(Array.isArray(proof.preparationObjects), "PREPARED_SOURCE_OBJECTS_UNAVAILABLE");
-  if (proof.preparationObjects.length) {
-    let rows;
-    try {
-      rows = git(currentRoot, ["cat-file", "--batch-check"], false, proof.preparationObjects.join("\n") + "\n")
-        .trim()
-        .split(/\r?\n/u);
-    } catch {
-      throw new Error("SOUNDING_LINE_COMPLETED_EVIDENCE_PREPARED_SOURCE_OBJECTS_UNAVAILABLE");
-    }
-    requireValue(
-      rows.length === proof.preparationObjects.length &&
-        rows.every((row, index) => new RegExp(`^${proof.preparationObjects[index]} blob [0-9]+$`, "u").test(row)),
-      "PREPARED_SOURCE_OBJECTS_UNAVAILABLE",
-    );
-  }
-  git(currentRoot, ["diff", "--no-ext-diff", "--no-textconv", "--exit-code", "HEAD", "--"]);
-  return [...proof.current.values()].map(clone);
 }
 
 export function authenticatedCompletedReceipt(token, { root, candidateSha, obligationId, fingerprint } = {}) {

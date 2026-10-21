@@ -13,7 +13,6 @@ import { verifyExceptionAttestation } from "./experience-exception.mjs";
 import { r8FormatEvidencePlan, validateR8FormatEvidenceIdentity } from "./experience-r8-format.mjs";
 import { isCurrentAdmissionPlan, validateCurrentCaptureIdentity } from "./experience-current-admission.mjs";
 import { mediaFirstReviewProvenanceBinding } from "./experience-media-first-binding.mjs";
-import { withVerificationStage } from "./verification-diagnostics.mjs";
 
 const fail = (code) => {
   throw new Error(`PRODUCT_EXPERIENCE_${code}`);
@@ -136,24 +135,20 @@ export async function verifyTrustedExperienceAttestation({
   }
   validateR8FormatEvidenceIdentity(plan, evidence);
   plan = r8FormatEvidencePlan(plan);
-  const capture = await withVerificationStage("CAPTURE_ARTIFACT", () =>
-    loadArtifact({
-      root,
-      plan,
-      artifactId: evidence.captureArtifactId,
-      kind: "capture",
-      policy: plan.attestationPolicy,
-    }),
-  );
-  const review = await withVerificationStage("REVIEW_ARTIFACT", () =>
-    loadArtifact({
-      root,
-      plan,
-      artifactId: evidence.reviewArtifactId,
-      kind: "review",
-      policy: plan.attestationPolicy,
-    }),
-  );
+  const capture = await loadArtifact({
+    root,
+    plan,
+    artifactId: evidence.captureArtifactId,
+    kind: "capture",
+    policy: plan.attestationPolicy,
+  });
+  const review = await loadArtifact({
+    root,
+    plan,
+    artifactId: evidence.reviewArtifactId,
+    kind: "review",
+    policy: plan.attestationPolicy,
+  });
   validateCurrentCaptureIdentity(isReviewedEvidenceAdoption(currentPlan) ? plan : currentPlan, capture, evidence);
   validatePreSourceCaptureBinding(
     isReviewedEvidenceAdoption(currentPlan) ? plan : currentPlan,
@@ -185,16 +180,14 @@ export async function verifyTrustedExperienceAttestation({
     ).some(([key, value]) => review[key] !== value)
   )
     fail("TRUSTED_CAPTURE_OR_REVIEW_MISMATCH");
-  const exceptionCustody = await withVerificationStage("ATTESTATION_CUSTODY", () =>
-    verifyExceptionAttestation({
-      root,
-      plan: currentPlan,
-      evidence,
-      capture,
-      review,
-      request: custodyRequest,
-    }),
-  );
+  const exceptionCustody = await verifyExceptionAttestation({
+    root,
+    plan: currentPlan,
+    evidence,
+    capture,
+    review,
+    request: custodyRequest,
+  });
   return {
     status: "PASS",
     ...reviewedEvidenceAdoption(currentPlan),

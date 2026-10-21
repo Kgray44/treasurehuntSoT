@@ -46,7 +46,7 @@ not authorize restarting a completed phase.
 - [Crossdeck R22 actual-byte pre-source admission recovery](crossdeck-r22-pre-source-byte-gate.md)
 - [Crossdeck R23 exact-authority checkout recovery](crossdeck-r23-checkout-recovery.md)
 - [Crossdeck R24 ordinary checkout and retained review recovery](crossdeck-r24-ordinary-recovery.md)
-- [Crossdeck R25 finite pre-command recovery](crossdeck-r25-precommand-recovery.md)
+- [Crossdeck R25 finite ordinary budget recovery](crossdeck-r25-precommand-recovery.md)
 - [Parallax A1 owned task contract](parallax-a1-task-contract.md)
 - [Parallax A1 agreed Studio interface](parallax-a1-studio-interface.md)
 - [Sextant Phase 3 owned implementation context](sextant-phase3.md)

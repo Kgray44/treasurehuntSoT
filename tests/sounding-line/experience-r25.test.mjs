@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from "node:fs";
+import { mkdtempSync, mkdirSync, readFileSync, writeFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -105,7 +105,7 @@ test("R25 preserves the entire spent R24 admission and gives only one new finite
   assert.equal(value.predecessor.completedWholeObligations, 6);
   assert.equal(value.predecessor.partialBrowser.wholeObligationPassed, false);
 });
-test("R25 rejects resets, historical substitutions, budget-only recovery and unreviewed overlays", () => {
+test("R25 rejects resets, historical substitutions, changed budgets and unreviewed overlays", () => {
   for (const mutate of [
     (value) => value.immutableHistory.pop(),
     (value) => value.contractIds.pop(),
@@ -118,7 +118,7 @@ test("R25 rejects resets, historical substitutions, budget-only recovery and unr
     (value) => (value.currentSourceAdmission.retainedAdmission.exception.recordDigest = "0".repeat(64)),
     (value) => (value.currentSourceAdmission.retainedEvidence.sourceDigest = "0".repeat(64)),
     (value) => (value.currentSourceAdmission.sourceDigest = r.failedOrdinary.sourceDigest),
-    (value) => (value.currentSourceAdmission.precommandRecovery = { ...r.precommandRecovery, jobLimitMinutes: 46 }),
+    (value) => (value.currentSourceAdmission.precommandRecovery = { ...r.precommandRecovery, jobLimitMinutes: 91 }),
     (value) => (value.currentSourceAdmission.admitPartialBrowser = true),
     (value) => value.currentSourceAdmission.publicationFiles.push("new-evidence.json"),
     (value) => (value.currentSourceAdmission.protectedOverlay[0].path = "src/product.ts"),
@@ -141,6 +141,29 @@ test("R25 retains the original campaign epoch required by the full history entry
   const value = record();
   assert.equal(value.predecessor.campaignEpoch, old.predecessor.campaignEpoch);
   assert.equal(new Date(value.predecessor.campaignEpoch).toISOString(), "2026-10-15T13:54:00.000Z");
+});
+
+test("R25 extends only the authorized Crossdeck final-check ceiling to 90 minutes", () => {
+  const workflow = readFileSync(new URL("../../.github/workflows/sounding-line-ordinary.yml", import.meta.url), "utf8");
+  const jobs = workflow.split(/\n  (?=[a-z][a-z-]*:\n)/u);
+  const final = jobs.find((job) => job.startsWith("final-check:\n"));
+  assert(final);
+  assert.equal(
+    final.match(/\n    timeout-minutes: ([^\n]+)/u)?.[1],
+    "${{ (github.event.pull_request.number == 721 || inputs.pr_number == '721') && 90 || 45 }}",
+  );
+  assert.equal(jobs.filter((job) => job.includes("&& 90 || 45")).length, 1);
+  assert.equal(record().currentSourceAdmission.precommandRecovery.jobLimitMinutes, 90);
+  assert.equal(record().currentSourceAdmission.precommandRecovery.otherPullRequestsJobLimitMinutes, 45);
+  for (const file of [
+    "scripts/sounding-line/ordinary.mjs",
+    "scripts/sounding-line/authenticated-completed-evidence.mjs",
+    "scripts/sounding-line/verification-diagnostics.mjs",
+  ])
+    assert.equal(
+      readFileSync(new URL("../../" + file, import.meta.url), "utf8"),
+      git("show", `${r.protectedBaseAncestorSha}:${file}`),
+    );
 });
 
 test("installed R25 reader denies missing, retired, invalid and expired rows without falling back", (t) => {

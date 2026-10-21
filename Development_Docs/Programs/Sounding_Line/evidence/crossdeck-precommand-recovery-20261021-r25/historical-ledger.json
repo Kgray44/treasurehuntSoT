@@ -2,11 +2,12 @@
   "classification": "ENGINEERING_EVIDENCE_FINITE_SUCCESSOR_NO_CONSUMER_EXECUTION",
   "ownerApproval": {
     "actor": "Kgray44",
-    "approvedAtUtc": "2026-10-21T04:49:39Z",
-    "approvedAtUtcMinute": "2026-10-21T04:49Z",
-    "humanMessageId": "Sentinel_b7d389c6666481918954113259643d10",
-    "relayThreadId": "01a13dd0-e3e1-7409-ab2a-b078e08ff0e1",
-    "basis": "PARENT_VERIFIED_DIRECT_HUMAN_RELAY_NATIVE_BODY_NOT_REREAD"
+    "approvedAtUtc": "2026-10-21T13:37:52Z",
+    "approvedAtUtcMinute": "2026-10-21T13:37Z",
+    "humanMessageId": "01a15eae-bf8c-7e22-b519-bffbd9f6cb50",
+    "relayThreadId": "01a15eae-a6a5-71c2-9713-dfbac9002ebb",
+    "basis": "DIRECT_OWNER_FILE_BOUND_TO_NATIVE_USER_REFERENCE_TIME_IS_TURN_START",
+    "directiveSha256": "cf078e0c476d2eca96201dc8035f818845a69fcb50baa23311cf956057c360a4"
   },
   "caps": {
     "capture": 0,
@@ -74,14 +75,15 @@
     "providerJobLimitMinutes": 45
   },
   "precommandRecovery": {
-    "kind": "IMMUTABLE_SNAPSHOT_READ_DEDUP_AND_OPAQUE_PREPARED_GRAPH_1",
-    "successfulBlobCache": "PER_SEMANTIC_SNAPSHOT_IMMUTABLE_BLOB_ONLY",
-    "failedReadsCached": false,
-    "preparedGraph": "PARENT_TOKEN_ROOT_PLAN_SOURCE_TOOLCHAIN_ENVIRONMENT_AND_CLEAN_HEAD_BOUND",
+    "kind": "CROSSDECK_ONLY_FINAL_CHECK_JOB_CEILING_90_1",
+    "scope": "PR_721_AUTHORIZED_FINITE_ORDINARY_ONLY",
+    "priorJobLimitMinutes": 45,
+    "jobLimitMinutes": 90,
+    "otherPullRequestsJobLimitMinutes": 45,
+    "jobLimitChanged": true,
+    "semanticGraphEngineChanged": false,
+    "completedEvidenceReaderChanged": false,
     "liveAdmission": "FRESH_UNCHANGED",
-    "progress": "IMMEDIATE_FIXED_STAGE_START_END_MAX_256",
-    "jobLimitMinutes": 45,
-    "jobLimitChanged": false,
     "completedEvidence": "NORMAL_EXACT_FINGERPRINT_AND_AUTHENTICATED_PRODUCER_ONLY",
     "partialBrowserCredit": false
   },

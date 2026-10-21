@@ -35,72 +35,10 @@ import {
   observeVerificationFailure,
   verificationFailureObservation,
   withVerificationStage,
-  withVerificationProgressScope,
 } from "../../scripts/sounding-line/verification-diagnostics.mjs";
 
 const sourceRoot = fileURLToPath(new URL("../../", import.meta.url));
 const identity = { baseSha: "a".repeat(40), candidateSha: "b".repeat(40), planDigest: "c".repeat(64) };
-test("pre-command progress survives failure without exposing raw details or replacing the error", async () => {
-  const events = [];
-  const original = new Error("private credential, path and provider body must never be emitted");
-  let rejectStage;
-  const pending = withVerificationProgressScope(
-    () =>
-      withVerificationStage(
-        "CAPTURE_ARTIFACT",
-        () =>
-          new Promise((_resolve, reject) => {
-            rejectStage = reject;
-          }),
-      ),
-    (entry) => events.push(entry),
-  );
-  assert.equal(events.length, 1);
-  assert.equal(events[0].event, "START");
-  rejectStage(original);
-  await assert.rejects(pending, (error) => error === original);
-  assert.equal(events.length, 2);
-  assert.equal(events[1].event, "END");
-  assert.equal(events[1].status, "FAIL");
-  assert(events[1].durationMs >= 0);
-  assert(!JSON.stringify(events).includes("private"));
-  assert.equal(verificationFailureObservation(original).stage, "CAPTURE_ARTIFACT");
-  await assert.rejects(
-    withVerificationProgressScope(
-      () =>
-        withVerificationStage("CLASSIFICATION", () => {
-          throw original;
-        }),
-      () => {
-        throw new Error("owned observation sink failure");
-      },
-    ),
-    (error) => error === original,
-  );
-});
-
-test("pre-command progress is bounded and scoped across concurrent invocations", async () => {
-  const left = [],
-    right = [];
-  await Promise.all([
-    withVerificationProgressScope(
-      async () => {
-        for (let index = 0; index < 140; index++)
-          await withVerificationStage("private/path?credential", () => Promise.resolve());
-      },
-      (entry) => left.push(entry),
-    ),
-    withVerificationProgressScope(
-      () => withVerificationStage("COMPLETED_EVIDENCE_INTAKE", () => Promise.resolve()),
-      (entry) => right.push(entry),
-    ),
-  ]);
-  assert.equal(left.length, 256);
-  assert(left.every((entry) => entry.stage === "UNCLASSIFIED"));
-  assert(!JSON.stringify(left).includes("credential"));
-  assert.equal(right.length, 2);
-  assert(right.every((entry) => entry.stage === "COMPLETED_EVIDENCE_INTAKE" && entry.sequence === 1));
-});
 function syntheticEnvironment(overrides) {
   const environment = { ...process.env, SOUNDING_LINE_PR_NUMBER: "0" };
   // A synthetic repository cannot borrow the enclosing campaign's execution
