@@ -1,6 +1,8 @@
 import { record as r24RecordFixture } from "./experience-r24.test.mjs";
 import { record as r25RecordFixture } from "./experience-r25.test.mjs";
 import { CURRENT_R25, r25Adoption } from "../../scripts/sounding-line/experience-current-r25.mjs";
+import { record as r26RecordFixture } from "./experience-r26.test.mjs";
+import { CURRENT_R26, r26Adoption } from "../../scripts/sounding-line/experience-current-r26.mjs";
 import { CURRENT_R24, r24Adoption } from "../../scripts/sounding-line/experience-current-r24.mjs";
 import "./experience-selected-checkout.test.mjs";
 import { r23RegistryFixture } from "./experience-current-r23.test.mjs";
@@ -2084,6 +2086,7 @@ test("current finalizer checks current attestation, fresh browser, all groups an
 for (const [metadata, makeRecord, adoption] of [
   [CURRENT_R24, r24RecordFixture, r24Adoption],
   [CURRENT_R25, r25RecordFixture, r25Adoption],
+  [CURRENT_R26, r26RecordFixture, r26Adoption],
 ])
   test(`R${metadata.version} finalizer and seal reject substituted retained artifacts or custody before any qualified create`, async (t) => {
     const record = makeRecord();
