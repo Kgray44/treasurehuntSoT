@@ -1,0 +1,360 @@
+{
+  "classification": "ALLOWLIST_NUMERIC_CORRESPONDENCE_CONTINUATION_NO_INTEGRATED_RECOVERY_GAIN",
+  "qualification": false,
+  "startingDevelopmentPublication": "6b31896d561fe96e6f75b9975b03d96515260911",
+  "applicationSource": "62ebde00a7dd9c623a20b46e20d6f4e9d63dfe99",
+  "preservedEarlierAggregateSha256": "3870876e2fc86d8094e65a8914b89d9f8ece958062de9c43bd495948a7444229",
+  "retainedApplication": {
+    "observations": 1336,
+    "measuredPositions": 504,
+    "ready": 416,
+    "logicalReplacements": 7,
+    "RIGHTPositions": 13,
+    "RIGHTObservations": 89,
+    "newMatchedApplicationRun": false,
+    "retainedBroadMotionBrowser": "11/12; original generation assertion failed; not rerun"
+  },
+  "denseDISMaterial": {
+    "classification": "COMPLETE_FIXED_DIS_MATERIAL_SCREEN_NEGATIVE_NOT_TRACKING_GAIN",
+    "qualification": false,
+    "sourceFreezeSha256": "d675f8062f56b11075fc4f8d11bff48f7d98c3e4eed944159ff981fe5b474de3",
+    "controlsSha256": "f7c8c12184de29df2994dc1895ed32ed2e426d2cf2e6d87f42b7d3f838357087",
+    "resultSha256": "98fa0f5594a4c5bcd08682c1c339c3f284bffdf76eda67d3411c4b04f8d0b3eb",
+    "ownedReceiptSha256": "9855d43c70987e89ddd95bd458b299b855659b9fbd085543424fd5f61d273bcd",
+    "screenComplete": true,
+    "counts": {
+      "allMetadata": 1336,
+      "otherPromptUncomputed": 1247,
+      "RIGHTMetadata": 89,
+      "preReferenceUncomputed": 11,
+      "referenceOnly": 1,
+      "computedHops": 1,
+      "postDistalLossUncomputed": 76,
+      "grayPlanesRead": 2,
+      "flowAttempts": 2,
+      "flowCompleted": 2
+    },
+    "materialCoverageFrames": 0,
+    "reproofEligibleFrames": 0,
+    "mature3Frames120ms": 0,
+    "computedContext": {
+      "sameRecordedSource": true,
+      "historicallyFresh": true,
+      "referenceAgeMs": 66.39990234375,
+      "captureGapMs": 66.39990234375
+    },
+    "firstHopRegions": {
+      "5": {
+        "computed": 1,
+        "passed": 0,
+        "firstRefusal": "FORWARD_UNIQUENESS",
+        "forwardCorrelation": 0.9919133876527909,
+        "strongestRival": 0.9671577292398198,
+        "separation": 0.024755658412971115,
+        "centerStepPixels": 7.9145699572505634,
+        "reverseWitnessReached": false,
+        "closureWitnessReached": false
+      },
+      "6": {
+        "computed": 1,
+        "passed": 0,
+        "firstRefusal": "FORWARD_UNIQUENESS",
+        "forwardCorrelation": 0.9902288702525215,
+        "strongestRival": 0.9702753315684134,
+        "separation": 0.019953538684108096,
+        "centerStepPixels": 8.527775610367636,
+        "reverseWitnessReached": false,
+        "closureWitnessReached": false
+      },
+      "7": {
+        "computed": 1,
+        "passed": 0,
+        "firstRefusal": "FORWARD_UNIQUENESS",
+        "forwardCorrelation": 0.9875991441264763,
+        "strongestRival": 0.9670539826104321,
+        "separation": 0.02054516151604424,
+        "centerStepPixels": 9.703611416292745,
+        "reverseWitnessReached": false,
+        "closureWitnessReached": false
+      },
+      "8": {
+        "computed": 1,
+        "passed": 0,
+        "firstRefusal": "FORWARD_UNIQUENESS",
+        "forwardCorrelation": 0.9905235299242615,
+        "strongestRival": 0.9776238246606372,
+        "separation": 0.012899705263624273,
+        "centerStepPixels": 9.788793415746492,
+        "reverseWitnessReached": false,
+        "closureWitnessReached": false
+      }
+    },
+    "cost": {
+      "forwardDISMs": 12.799200019799173,
+      "reverseDISMs": 12.328799988608807,
+      "witnessAndEligibilityMs": 33.539900032337755,
+      "screenProcessingWallMs": 218.99999998277053,
+      "ownedLaunchThroughCleanupPostPinWallMs": 4663.0,
+      "scope": "Screen wall includes whole cached-gray integrity hash and binaryplane reads plus native/witness work; excludes runtimeimport, sourcepin checks, serialization/persistence and ownercleanup. Nativecall measurements alone are not pipeline/browser150ms acceptance."
+    },
+    "cleanup": {
+      "status": "PASS",
+      "directExitObserved": true,
+      "exitCode": 0,
+      "signal": null,
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": true,
+      "payloadExitCode": 0,
+      "elapsedMs": 7,
+      "ownership": "WINDOWS_JOB_OBJECT"
+    },
+    "pinsUnchanged": true,
+    "directoryBudgetPass": true,
+    "limits": [
+      "All queried first-hop forward correlations passed0.75, but all unchanged uniqueness gaps failed0.035. This fixed arm stops, with no retune/reseed/retry.",
+      "The reverse dense field was computed, but reverse material appearance and closure were not reached; null fields are not reverse failures or passes.",
+      "Only one recordedhop was evaluated; the76post-loss rows are explicitly uncomputed, not negatives.",
+      "The source/capture/model context was historically eligible before material, but failed image witnesses cannot establish reproof eligibility or maturity. NN alignment on dead links is not an independent NN error measurement.",
+      "No positions, identity clocks, templates or application gates were changed. Dense-correspondence failure here is not proof every optical-flow method fails.",
+      "Rawtip8 remains diagnostic; private candidatecoordinates and sourceIDs are omitted from this aggregate."
+    ]
+  },
+  "pairedLearnedRGB": {
+    "classification": "ALLOWLIST_RAW_TIER1_CIRCLE_AND_SEPARATE_COMPONENT_TIMING_DEVELOPMENT_DIAGNOSTIC",
+    "qualification": false,
+    "provenance": {
+      "scorerSourceSha256": "ce77baf0c4811dcf96b8adb200d23baaa82b7f4656e0eb3721c98cd3edb274eb",
+      "evaluationPlanSha256": "ac29aee48c917b6a7be915213b62062e68f74c9cb31b7625935c61b43362b6a9",
+      "probeFreezeSha256": "623c2d61c38e3ebee90fa3d13631e240f4bacc6fa2c5ae86d219ce2d9a27df17",
+      "resultsSha256": "cc0671014e6a19f8a6e1b08b82360940cbca4d5e52e0dbec641b9aa7506c36bb",
+      "finalSha256": "941079051d8b08101ad3179beeff8a0721bd599ac8069c254642c81be970baa2",
+      "ownedSha256": "c799b5edbca857a333c0f1837c6b4c3271c24e0e332775a012e4bd516b6ad025",
+      "scoreSha256": "ec21000b2c39cd089ef7dc67caac7ac38e243a6bfbfc3a2e7b22a7f17b121301"
+    },
+    "denominators": {
+      "metadataRows": 1336,
+      "RIGHTRows": 89,
+      "computedIncludingSeed": 78,
+      "seed": 1,
+      "postseedComputed": 77,
+      "preseedRIGHTUncomputed": 11,
+      "otherPromptUncomputed": 1247,
+      "referenceRows": 48,
+      "positiveReferences": 31,
+      "positiveBeforeSeedUncomputed": 6,
+      "positivePostseedCohort": 25,
+      "positiveRIGHTComputed": 11,
+      "positivePostseedOtherPromptsUncomputed": 14,
+      "allRIGHTReferenceRows": 12,
+      "contraryOverlapUncomputed": 5
+    },
+    "positiveTotals": {
+      "RGB": {
+        "positiveDenominator": 31,
+        "computedPositive": 11,
+        "UNCOMPUTED_BEFORE_SEED": 6,
+        "OUTSIDE_RIGHT_UNCOMPUTED": 14,
+        "rawCircleHit": 2,
+        "rawCircleMiss": 9,
+        "visibleCircleHit": 0,
+        "visibleInBoundsCircleHit": 0,
+        "outOfBounds": 0,
+        "modelInvisible": 11
+      },
+      "GRAY_FROM_SAME_RGB": {
+        "positiveDenominator": 31,
+        "computedPositive": 11,
+        "UNCOMPUTED_BEFORE_SEED": 6,
+        "OUTSIDE_RIGHT_UNCOMPUTED": 14,
+        "rawCircleHit": 0,
+        "rawCircleMiss": 11,
+        "visibleCircleHit": 0,
+        "visibleInBoundsCircleHit": 0,
+        "outOfBounds": 0,
+        "modelInvisible": 11
+      }
+    },
+    "pairedPositive": {
+      "rawCircle": {
+        "OUTSIDE_RIGHT_UNCOMPUTED": 14,
+        "BOTH_MISS": 9,
+        "UNCOMPUTED_BEFORE_SEED": 6,
+        "RGB_ONLY_HIT": 2
+      },
+      "visibleInBoundsCircle": {
+        "OUTSIDE_RIGHT_UNCOMPUTED": 14,
+        "BOTH_MISS": 11,
+        "UNCOMPUTED_BEFORE_SEED": 6
+      },
+      "distanceBounds": {
+        "OUTSIDE_RIGHT_UNCOMPUTED": 14,
+        "RGB_STRICTLY_CLOSER_BOUNDS": 10,
+        "UNCOMPUTED_BEFORE_SEED": 6,
+        "OVERLAPPING_UNCERTAINTY": 1
+      }
+    },
+    "tip8Visibility": {
+      "GRAY_FROM_SAME_RGB": {
+        "postseedOnly": {
+          "computed": 77,
+          "rawFinite": 77,
+          "visible": 2,
+          "inBounds": 77,
+          "visibleInBounds": 2,
+          "modelInvisible": 75,
+          "outOfBounds": 0
+        },
+        "includingSeed": {
+          "computed": 78,
+          "rawFinite": 78,
+          "visible": 3,
+          "inBounds": 78,
+          "visibleInBounds": 3,
+          "modelInvisible": 75,
+          "outOfBounds": 0
+        }
+      },
+      "RGB": {
+        "postseedOnly": {
+          "computed": 77,
+          "rawFinite": 77,
+          "visible": 2,
+          "inBounds": 77,
+          "visibleInBounds": 2,
+          "modelInvisible": 75,
+          "outOfBounds": 0
+        },
+        "includingSeed": {
+          "computed": 78,
+          "rawFinite": 78,
+          "visible": 3,
+          "inBounds": 78,
+          "visibleInBounds": 3,
+          "modelInvisible": 75,
+          "outOfBounds": 0
+        }
+      }
+    },
+    "componentTiming": {
+      "quantiles": "Conventionalmedian (mean of2middle for even n);P95nearest-rank ceil(.95*n). All78includingseed; no excluded costs.",
+      "arms": {
+        "RGB": {
+          "prepareMs": {
+            "count": 78,
+            "missing": 0,
+            "minMs": 0.3953,
+            "medianMs": 0.59405,
+            "p95Ms": 0.9277,
+            "maxMs": 1.4225,
+            "totalMs": 48.0892,
+            "countGreaterThan150Ms": 0
+          },
+          "referenceFeatureMs": {
+            "count": 1,
+            "missing": 0,
+            "minMs": 240.0893,
+            "medianMs": 240.0893,
+            "p95Ms": 240.0893,
+            "maxMs": 240.0893,
+            "totalMs": 240.0893,
+            "countGreaterThan150Ms": 1
+          },
+          "nativeInferenceMs": {
+            "count": 78,
+            "missing": 0,
+            "minMs": 284.5972,
+            "medianMs": 323.47785,
+            "p95Ms": 378.0092,
+            "maxMs": 462.5382,
+            "totalMs": 25472.806599999993,
+            "countGreaterThan150Ms": 78
+          },
+          "crossStateGuardMs": {
+            "count": 78,
+            "missing": 0,
+            "minMs": 0.0027,
+            "medianMs": 4.5777,
+            "p95Ms": 5.684200000000001,
+            "maxMs": 6.3401,
+            "totalMs": 371.0714000000002,
+            "countGreaterThan150Ms": 0
+          }
+        },
+        "GRAY_FROM_SAME_RGB": {
+          "prepareMs": {
+            "count": 78,
+            "missing": 0,
+            "minMs": 0.7226,
+            "medianMs": 0.96885,
+            "p95Ms": 1.3366,
+            "maxMs": 2.4738,
+            "totalMs": 81.51180000000001,
+            "countGreaterThan150Ms": 0
+          },
+          "referenceFeatureMs": {
+            "count": 1,
+            "missing": 0,
+            "minMs": 227.1942,
+            "medianMs": 227.1942,
+            "p95Ms": 227.1942,
+            "maxMs": 227.1942,
+            "totalMs": 227.1942,
+            "countGreaterThan150Ms": 1
+          },
+          "nativeInferenceMs": {
+            "count": 78,
+            "missing": 0,
+            "minMs": 283.613,
+            "medianMs": 323.88514999999995,
+            "p95Ms": 367.7854,
+            "maxMs": 389.1157,
+            "totalMs": 25500.732099999997,
+            "countGreaterThan150Ms": 78
+          },
+          "crossStateGuardMs": {
+            "count": 78,
+            "missing": 0,
+            "minMs": 4.1841,
+            "medianMs": 4.6394,
+            "p95Ms": 5.6204,
+            "maxMs": 5.9813,
+            "totalMs": 372.8585999999999,
+            "countGreaterThan150Ms": 0
+          }
+        }
+      },
+      "sharedDecodeAndRGBGrayPrepare": {
+        "count": 78,
+        "missing": 0,
+        "minMs": 2.0575,
+        "medianMs": 2.3973500000000003,
+        "p95Ms": 3.1928,
+        "maxMs": 3.7019,
+        "totalMs": 196.5831,
+        "countGreaterThan150Ms": 0
+      },
+      "scope": "nativeInference includes current feature grids and trajectory estimation;referenceFeature separately atseed;prepare normalization/resize separate;crossStateGuard hashes separate;shareddecode+RGBgrayprepare excludes PNGread/hash."
+    },
+    "payloadElapsedMs": 57471.2314,
+    "ownedCleanup": {
+      "status": "PASS",
+      "treeReaped": true,
+      "streamsClosed": true,
+      "escalated": true
+    },
+    "limits": [
+      "RawTier1 exposedAIdevelopmentcircle estimates; notphysicalgroundtruth/selectedidentity/materialproof/Reachacceptedpositions/recovery/calibration.",
+      "11computedRIGHTpositivecircle denominator only;14otherpostseed+6preseedpositive refs retaineduncomputed. No acceptedgain comparison versus504.",
+      "RGB andgrayfromsameRGB are current pairedplanes, notoriginalcachedgray TAPIRresult; no winnerfusion/labelselection.",
+      "Modelvisible>.5 is a learned diagnostic, not authority; rawfinite/invisible/outofbounds distinctions retained.",
+      "Percomponent sums are sampletotals, not end-to-end latency; do notsum overlapping scopes or infer productionthroughput/freshness. Payloadincludes setup+IO; nativeCPUdoesnot establishbrowser/live150ms/capture-to-displaycost.",
+      "Arithmetic extraction is separatefromproducer computation but sameauthoras scorer; independentnumericreview remains separate."
+    ]
+  },
+  "decision": "REJECT_BOTH_FIXED_ROUTES_NO_RETUNE_NO_INTEGRATION",
+  "productionRuntimeOrProviderOrAssetChanges": false,
+  "newCalibrationJourneys": 0,
+  "physicalAcceptance": "OPEN",
+  "featureCatalog": "NO CHANGE REQUIRED"
+}

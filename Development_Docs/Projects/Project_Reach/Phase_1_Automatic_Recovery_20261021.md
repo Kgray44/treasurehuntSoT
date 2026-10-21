@@ -10,9 +10,13 @@ last_reviewed: 2026-10-21
 
 **NO INTEGRATED RECOVERY GAIN; PHASE 1 NOT READY.** This continuation prioritizes automatic recovery with the existing MediaPipe observations. One private historical anatomical-material view bank passes its development controls but makes no change on the complete original recording. It is rejected without retuning. The application retains 504 measured positions, 416 readiness-eligible observations and seven logical identity replacements across 1,336 chronological observations. RIGHT remains 13/89.
 
+Subsequent fixed screens also fail to justify integration. Dense consecutive-image flow cannot uniquely distinguish the selected material at its first hop. A separate paired learned RGB tracker improves raw RIGHT circle compatibility from 0/11 to 2/11, but both arms mark all 11 positive references invisible and every native inference exceeds 150 ms. This limited raw localization gain does not fix automatic recovery. The original mixed-motion failure and all calibration acceptance requirements remain open.
+
 The starting development publication is `848f26a36a7189ca24b22b0beb9a6611bbaa8218` on existing draft [PR #769](https://github.com/Kgray44/treasurehuntSoT/pull/769). Current remote main is `e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab`; newer main changes do not modify the inspected Reach/Watchglass/Sextant/provider paths. The existing owned branch continues without merging unrelated work. The canonical tracker and accepted tracking path remain unchanged in this experiment. There is no new model, mandatory auxiliary provider, manual same-finger confirmation, preview recovery claim or Phase 2 work. The tested proposal contract is a partial implementation; the perception mission remains incomplete.
 
-One [allowlisted numeric aggregate](evidence/automatic-recovery-20261021/aggregate.json) contains the complete bank comparison, separate proposal-contract evidence and the RGB disposition. Private recordings, coordinates, source identities and landmarks remain outside the publication.
+The proposal and initial bank/RGB-material evidence are published at `6b31896d561fe96e6f75b9975b03d96515260911`. The subsequent correspondence publication changes engineering documentation, navigation and allowlisted evidence only. Application source, providers, model assets, algorithm/calibration bindings and existing test expectations remain unchanged. The learned research screen reuses the already retained checkpoint; it installs no runtime or model into the application.
+
+The original [allowlisted numeric aggregate](evidence/automatic-recovery-20261021/aggregate.json) contains the complete bank comparison, separate proposal-contract evidence and the RGB material disposition. Its published bytes are preserved. A separate [correspondence continuation aggregate](evidence/automatic-recovery-20261021/correspondence-continuation.json) records the subsequent fixed screens. Both are engineering evidence under `Development_Docs`; this report and the engineering home retain their current human-document frontmatter. Private recordings, coordinates, source identities and landmarks remain outside the publication.
 
 ## Failure and ownership
 
@@ -117,6 +121,86 @@ An initial analytic uniqueness fixture fails before any recording is decoded: it
 | Successful analytic controls   | `c6245e070f56c78b6824abb6b3793f0189fd26030403c595d2fd17b03315f021` |
 | Complete RIGHT material result | `3048cdec4ec791d41a5b761623960289a9a92f8afc528fb68a5f8f6ceec7837e` |
 | Owned screen receipt           | `6a977bb628c1d9e23b6613c3756554a906c068dab43249a3a6f60b1f24e8d275` |
+
+## Dense consecutive-image material correspondence: rejected
+
+This distinct hypothesis uses OpenCV DIS dense inverse-search flow between consecutive original cached grayscale images, rather than searching a fixed old patch around neural joints. The fixed MEDIUM preset uses eight-pixel patches, stride three, finest scale one, 25 gradient iterations and five variational iterations, with mean normalization and spatial propagation enabled. Forward and reverse fields are independently computed without a neural or previous-flow initialization. The recorded run uses one CPU thread with OpenCL off. No package, model or dependency tree is installed or copied.
+
+Each MCP/PIP/DIP region starts with its original 225 sample locations. The candidate advects and retains those actual material locations; it never replaces them with a newly centered neighborhood. A separate raw-tip query is diagnostic and has no registered anatomical-tip authority. Every region retains correlation 0.75, uniqueness gap 0.035, grayscale quality, bounded motion, reverse appearance and center/90th-percentile closure guards. Distal support plus a spatially separated proximal region is mandatory. A failed image witness permanently kills that material chain; current neural output can veto eligibility but cannot reseed it. Historical capture/source checks and a frozen recovery lifetime cannot be renewed by a match.
+
+Before recording execution, four fixed generated control groups pass: small articulated motion, occluded-distal/background rejection, periodic-rival ambiguity and distinct-material crossing, and source/freshness/lifetime/context rejection. A wrong-neural-proposal control retains passing material evidence but blocks eligibility. These controls do not establish rejection of arbitrary cloned material. A separate known rotation/shear field checks that the actual material grid is transported rather than recentered; it is not a native DIS rotation result. Independent source review catches and corrects the recentering error in an unexecuted draft before the final source freeze. The preserved controls decode no recording images and invoke no neural model or application tracker.
+
+The single original RIGHT screen stops after its first consecutive-image hop, before the original coordinate-conflict observation. Both dense fields are computed, but all four regions first fail forward uniqueness:
+
+| Region              | Forward correlation | Strongest rival |      Gap |
+| ------------------- | ------------------: | --------------: | -------: |
+| MCP                 |            0.991913 |        0.967158 | 0.024756 |
+| PIP                 |            0.990229 |        0.970275 | 0.019954 |
+| DIP                 |            0.987599 |        0.967054 | 0.020545 |
+| Raw tip, diagnostic |            0.990524 |        0.977624 | 0.012900 |
+
+All correlations pass, but every gap is below the unchanged 0.035 requirement. Reverse material appearance and closure are never reached; their null values are neither failures nor passes. The result does not establish that the dense displacement vector is wrong. It establishes that this fixed route cannot supply the required unique material witness. Material coverage, source/freshness/lifetime-eligible reproof and three-frame/120 ms maturation are all zero. No recording rerun, threshold adjustment or production integration follows.
+
+All 1,336 metadata entries remain: 1,247 other-prompt entries are explicitly uncomputed. The 89 RIGHT rows contain 11 before the reference, one reference-only row, one computed hop and 76 rows explicitly uncomputed after distal loss. Only two cached grayscale planes are read. The uncomputed rows are not failed matches. The one computed hop has historically fresh, same-source context with a 66.3999 ms capture gap and reference age; those facts do not rescue failed material evidence.
+
+Forward/reverse native DIS cost 12.7992/12.3288 ms, and witness/eligibility work costs 33.5399 ms. The screen wall interval is 219 ms including the complete cached-gray integrity hash and plane I/O, while owned launch through cleanup and post-pin checks is 4.663 seconds. These nested offline measurements are not a live latency result. All 31 frozen inputs remain unchanged; process-tree and stream cleanup pass with escalation recorded. The private directory occupies about 0.5 MB within its 5 MiB ceiling.
+
+The inspected [OpenCV 4.12 source](https://github.com/opencv/opencv/blob/49486f61fb25722cbcf586b7f4320921d46fb38e/modules/video/src/dis_flow.cpp) supplies the native algorithm. Its pinned [JavaScript export configuration](https://github.com/opencv/opencv/blob/49486f61fb25722cbcf586b7f4320921d46fb38e/platforms/js/opencv_js.config.py) does not expose DIS, so a useful native result would still need a browser binding/build and actual resource qualification. No browser port is attempted after this negative screen.
+
+An independent conceptual review also rejects using the same reverse field to remove raw appearance rivals. Under constant translation, a rival offset returns to the old location plus that offset, so a closure filter can discard every rival even on repeated texture. Forward/reverse regularization can then manufacture apparent uniqueness. Reverse motion remains an additional veto or diagnostic, not permission to erase the ambiguity that stopped this screen. No successor implementation or recording computation is performed.
+
+| Private immutable artifact     | SHA-256                                                            |
+| ------------------------------ | ------------------------------------------------------------------ |
+| Fixed source freeze            | `d675f8062f56b11075fc4f8d11bff48f7d98c3e4eed944159ff981fe5b474de3` |
+| Four successful control groups | `f7c8c12184de29df2994dc1895ed32ed2e426d2cf2e6d87f42b7d3f838357087` |
+| Complete fixed screen          | `98fa0f5594a4c5bcd08682c1c339c3f284bffdf76eda67d3411c4b04f8d0b3eb` |
+| Owned screen receipt           | `9855d43c70987e89ddd95bd458b299b855659b9fbd085543424fd5f61d273bcd` |
+
+## Learned RGB causal correspondence: limited raw gain, rejected for integration
+
+The earlier [causal point-tracker experiment](Phase_1_Causal_Point_Tracker_20261020.md) fed repeated grayscale channels to BootsTAPIR. This fixed input-representation hypothesis tests true RGB against gray derived from the exact same decoded PNG exposures. It is separate from the preceding RGB-NCC material experiment. Both arms undo the saved native mirror, convert BGR to RGB and resize identically to 320 by 240; gray uses the same integer channel weights and is repeated into three channels. Both then use the unchanged upstream 256-square bilinear normalization and half-center query codec. These PNG-derived planes are not asserted equivalent to the earlier cached browser gray, so the earlier grayscale score is not a same-input comparator.
+
+The model, causal flags, four refinements, checkpoint and CPU runtime remain fixed. Each arm extracts its own reference features and owns its own causal state; every prediction sees only the current frame and its own preceding state. The shared evaluation model and immutable query features remain unchanged, with cross-arm state/feature byte and storage checks during the run. Original software MCP/PIP/DIP queries and one raw-tip query are reused without reseeding; they are not independent physical labels or exact material registration on the new PNG cohort. Only the raw-tip query is scored as a fingertip. No current neural proposal, circle annotation or future frame teaches either arm.
+
+Six generated controls pass before the recording run, covering actual combined-runtime/checkpoint loading, lossless PNG decoding, channel/mirror/resize behavior, integer gray conversion, normalized input distinction, half-center coordinate inversion and separately allocated causal states. They perform zero recording decodes or trajectory predictions. The original Torch/NumPy runtime and the already retained OpenCV decoder are reused with C-owned writable caches; no package installation or dependency copy occurs. Four Torch CPU threads, one interop thread and one OpenCV thread are used, with OpenCL off and no CUDA. The 218,887,028-byte checkpoint has SHA-256 `87c1e752cf5ce56e3e2f7da460aeb4d40fc826d04ef2939bade86a5c7495377f`.
+
+One frozen recorded run completes 156 serial predictions, 78 per arm including the seed, on 78 shared PNG decodes. All 1,336 metadata rows remain. RIGHT's 89 rows contain 11 pre-reference uncomputed rows, one seed and 77 later predictions; 1,247 other-prompt rows are explicitly uncomputed. RGB always runs first, so this is not a counterbalanced performance comparison. Every completed arm has finite, in-bounds raw-tip output, but each has only two model-visible predictions among the 77 later frames; the seed adds one model-visible result.
+
+The scoring plan and original reference cohort are frozen before predictions. All 48 exposed AI development references remain, with 31 positive circles: 11 computed RIGHT positives, six pre-seed positives and 14 other-prompt post-seed positives left uncomputed. The last two groups are neither hits nor misses. No hidden controls or new annotations are consulted. The 11 RIGHT circles yield:
+
+| Raw-tip result on the same 11 circles | Paired gray | RGB |
+| ------------------------------------- | ----------: | --: |
+| Raw circle-compatible proposals       |           0 |   2 |
+| Raw proposals outside circle          |          11 |   9 |
+| Model-visible circle hits             |           0 |   0 |
+| Visible and in-bounds circle hits     |           0 |   0 |
+| Model-invisible proposals             |          11 |  11 |
+| Out-of-bounds proposals               |           0 |   0 |
+
+There are two RGB-only raw hits, zero gray-only raw hits and nine shared misses. Conservative distance intervals derived from the existing uncertain circles place RGB strictly closer on ten references, with one overlapping interval. That is limited Tier 1 evidence that color helps this fixed learned representation; it is neither calibrated endpoint accuracy nor selected-finger correspondence. Both arms supply zero model-visible circle hits. The five contrary-posture references are outside the computed cohort, so this run establishes no false-positive rate. It calls no application tracker, recovery promotion or calibration owner.
+
+| CPU cost, all 78 predictions including seed | Paired gray |         RGB |
+| ------------------------------------------- | ----------: | ----------: |
+| Native inference median, ms                 |    323.8852 |    323.4779 |
+| Native inference P95, ms                    |    367.7854 |    378.0092 |
+| Native inference maximum, ms                |    389.1157 |    462.5382 |
+| Native inference total, ms                  | 25,500.7321 | 25,472.8066 |
+| Native intervals above 150 ms               |       78/78 |       78/78 |
+| One-time reference features, ms             |    227.1942 |    240.0893 |
+
+Medians use the mean of the middle pair; P95 uses nearest rank. Native inference includes current feature extraction and trajectory estimation. Per-arm normalization/resize totals 81.5118/48.0892 ms for gray/RGB; cross-state hashing totals 372.8586/371.0714 ms. Shared decoding and RGB/gray preparation totals 196.5831 ms. The complete child interval is 57.4712 seconds, including runtime/model loading, integrity checks, I/O, inference, guard checks and output work; parent preflight/postflight pin hashing and cleanup are separate. These instrumented offline costs are not camera-to-display latency, browser performance or an implied production frame rate. The shortest native call in either arm is already above 283 ms, so neither CPU route can satisfy the existing 150 ms pixel-age requirement.
+
+The fixed screen is rejected for integration without model, threshold, backend, resolution or thread retuning. Its raw improvement does not justify a GPU installation, browser conversion or source-identity promotion. All inherited runtime and direct pins remain unchanged. Owned process-tree and stream cleanup pass with escalation recorded. Combined control/screen data occupy 663,037 bytes; the private directory is below 0.8 MB before the final owner receipt, within its 5 MiB ceiling. A separate stdlib-only frozen scorer verifies every metadata join, the four-query coordinate codec, unchanged visibility threshold and all reference exclusions. Independent arithmetic review remains separate from the scorer's author.
+
+| Private immutable artifact  | SHA-256                                                            |
+| --------------------------- | ------------------------------------------------------------------ |
+| Frozen paired source        | `623c2d61c38e3ebee90fa3d13631e240f4bacc6fa2c5ae86d219ce2d9a27df17` |
+| Independent source review   | `37a40f242f37a5e2811e87f55ac7270bd7b2e5c29366935390ed7bfa26e72787` |
+| Six successful controls     | `3f0b0538cb00889836382fa77adb5b6e82bc5315819349fb457e2fbe03b2b38e` |
+| Complete paired predictions | `cc0671014e6a19f8a6e1b08b82360940cbca4d5e52e0dbec641b9aa7506c36bb` |
+| Owned screen receipt        | `c799b5edbca857a333c0f1837c6b4c3271c24e0e332775a012e4bd516b6ad025` |
+| Prospective evaluation plan | `ac29aee48c917b6a7be915213b62062e68f74c9cb31b7625935c61b43362b6a9` |
+| Complete reference scores   | `ec21000b2c39cd089ef7dc67caac7ac38e243a6bfbfc3a2e7b22a7f17b121301` |
 
 ## Remaining blocker and morning physical trial
 
