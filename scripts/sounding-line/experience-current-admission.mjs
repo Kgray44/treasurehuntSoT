@@ -1,14 +1,17 @@
 import {
   CURRENT_R24,
-  isR24,
   validateR24Record,
   validateR24Registry,
   bindR24,
-  r24HistoricalPlan,
-  validateR24ReviewedIdentity,
-  r24Adoption,
   validateR24Predecessors,
 } from "./experience-current-r24.mjs";
+import { validateR25Record, validateR25Registry, bindR25, validateR25Predecessors } from "./experience-current-r25.mjs";
+import {
+  isReviewedEvidenceAdoption,
+  historicalReviewedPlan,
+  validateReviewedIdentity,
+  reviewedEvidenceAdoption,
+} from "./experience-reviewed-adoption.mjs";
 import {
   CURRENT_R23,
   R23_BASE_ADOPTION,
@@ -132,6 +135,7 @@ export const isCurrentAdmissionPlan = (plan) =>
   plan?.exception?.currentSourceAdmission?.kind === CURRENT_ADMISSION_KIND;
 
 export function validateCurrentAdmissionRecord(record, { now = new Date(), legacyRecord, legacyCurrentRecord } = {}) {
+  if (record?.version === 25) return validateR25Record(record, { now, legacyCurrentRecord });
   if (record?.version === 24) return validateR24Record(record, { now, legacyCurrentRecord });
   const a = record?.currentSourceAdmission;
   const successor16 = record?.version === CURRENT_R16.version;
@@ -587,6 +591,11 @@ export function validateCurrentAdmissionRecord(record, { now = new Date(), legac
 
 export function validateCurrentAdmissionRegistry(registry, now, { requiredVersion } = {}) {
   if (
+    requiredVersion === 25 ||
+    (requiredVersion === undefined && registry?.exceptions?.some((record) => record.version === 25))
+  )
+    return validateR25Registry(registry, now);
+  if (
     requiredVersion === 24 ||
     (requiredVersion === undefined && registry?.exceptions?.some((record) => record.version === 24))
   )
@@ -760,6 +769,7 @@ export function currentAdmissionBinding(record) {
   };
 }
 export function bindCurrentAdmission({ root, record, plan, baseSha, candidateSha }) {
+  if (record?.version === 25) return bindR25({ root, record, plan, baseSha, candidateSha });
   if (record?.version === 24) return bindR24({ root, record, plan, baseSha, candidateSha });
   validateCurrentAdmissionRecord(record);
   const a = record.currentSourceAdmission;
@@ -1135,9 +1145,9 @@ export function validateCurrentAdmissionOverlay({
 
 export function validateCurrentAdmissionEvidence(plan, evidence, automatedOnly = false) {
   if (!isCurrentAdmissionPlan(plan)) return;
-  if (isR24(plan) && !automatedOnly) {
-    validateR24ReviewedIdentity(plan, evidence);
-    return validateCurrentAdmissionEvidence(r24HistoricalPlan(plan), evidence, false);
+  if (isReviewedEvidenceAdoption(plan) && !automatedOnly) {
+    validateReviewedIdentity(plan, evidence);
+    return validateCurrentAdmissionEvidence(historicalReviewedPlan(plan), evidence, false);
   }
   need(same(evidence?.exception, plan.exception), "EVIDENCE_BINDING_MISSING");
   validateCurrentPublicationArtifacts(evidence.artifacts);
@@ -1677,6 +1687,7 @@ export async function validateCurrentR22FailedPreparation({ record, request, sto
 }
 
 export async function validateCurrentAdmissionPredecessors({ record, request, storeFor }) {
+  if (record?.version === 25) return validateR25Predecessors({ record, request, storeFor });
   if (record?.version === 24) return validateR24Predecessors({ record, request, storeFor });
   validateCurrentAdmissionRecord(record);
   const successor = [16, 17, 18, 19, 20, 21, 22, 23].includes(record.version);
@@ -1826,16 +1837,19 @@ export function validateCurrentAdmissionFinalDecision({
       attestation.exceptionCustody?.reviewSeal,
     "FINAL_CURRENT_ATTESTATION_CHANGED",
   );
-  if (record.version === 24)
+  if ([24, 25].includes(record.version))
     need(
-      same(attestation.reviewedEvidenceAdoption, r24Adoption(plan).reviewedEvidenceAdoption) &&
+      same(attestation.reviewedEvidenceAdoption, reviewedEvidenceAdoption(plan).reviewedEvidenceAdoption) &&
         attestation.captureArtifactId === CURRENT_R24.retained.captureArtifactId &&
         attestation.reviewArtifactId === CURRENT_R24.retained.reviewArtifactId &&
         attestation.exceptionCustody.prepareReservation ===
           CURRENT_R24.custody.find((pin) => pin.slot === "prepare").commit &&
         attestation.exceptionCustody.reviewSeal === CURRENT_R24.custody.find((pin) => pin.slot === "review12").commit &&
-        same(attestation.exceptionCustody.reviewedEvidenceAdoption, r24Adoption(plan).reviewedEvidenceAdoption),
-      "R24_REVIEWED_ADOPTION_REQUIRED",
+        same(
+          attestation.exceptionCustody.reviewedEvidenceAdoption,
+          reviewedEvidenceAdoption(plan).reviewedEvidenceAdoption,
+        ),
+      record.version === 25 ? "R25_REVIEWED_ADOPTION_REQUIRED" : "R24_REVIEWED_ADOPTION_REQUIRED",
     );
   const observation = decision.currentAdmissionObservation;
   need(
