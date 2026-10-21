@@ -1,4 +1,9 @@
-import { isR24, r24HistoricalPlan, validateR24ReviewedIdentity, r24Adoption } from "./experience-current-r24.mjs";
+import {
+  isReviewedEvidenceAdoption,
+  historicalReviewedPlan,
+  validateReviewedIdentity,
+  reviewedEvidenceAdoption,
+} from "./experience-reviewed-adoption.mjs";
 import { REVIEW_DIMENSIONS } from "./experience-review-dimensions.mjs";
 import { inheritSourceFailure, sourceDiagnosticGit } from "./source-diagnostics.mjs";
 import { createHash } from "node:crypto";
@@ -759,9 +764,9 @@ export function validateExperienceEvidence({
 }) {
   const currentPlan = plan;
   if (!automatedOnly) {
-    if (isR24(plan)) {
-      validateR24ReviewedIdentity(plan, evidence);
-      plan = r24HistoricalPlan(plan);
+    if (isReviewedEvidenceAdoption(plan)) {
+      validateReviewedIdentity(plan, evidence);
+      plan = historicalReviewedPlan(plan);
     }
     validateR8FormatEvidenceIdentity(plan, evidence ?? {});
     plan = r8FormatEvidencePlan(plan);
@@ -930,7 +935,7 @@ export function validateExperienceEvidence({
         fail("FINDING_INVALID", contract.id);
       if (finding.disposition === R20_DEFERRED_DISPOSITION) {
         validateScopedR20Finding({
-          plan: isR24(currentPlan) ? r24HistoricalPlan(currentPlan) : currentPlan,
+          plan: isReviewedEvidenceAdoption(currentPlan) ? historicalReviewedPlan(currentPlan) : currentPlan,
           finding,
           contractId: contract.id,
           artifacts: evidence.artifacts,
@@ -1009,7 +1014,7 @@ export function validateExperienceEvidence({
     status: "PASS",
     contractIds: plan.contractIds,
     sourceDigest: currentPlan.sourceDigest,
-    ...(!automatedOnly ? r24Adoption(currentPlan) : {}),
+    ...(!automatedOnly ? reviewedEvidenceAdoption(currentPlan) : {}),
     ...(currentPlan.exception?.nonExecutingReconciliation
       ? {
           reviewedBaseSha: plan.baseSha,
