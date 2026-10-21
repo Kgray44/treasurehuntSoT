@@ -11197,6 +11197,24 @@
       "record_type": "program-record",
       "status": "preserved",
       "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/evidence/session-epochs-20261021/aggregate.json",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/Phase_1_Session_Epoch_Architecture_20261021.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
+    },
+    {
+      "path": "Development_Docs/Projects/Project_Reach/Session_Epoch_Binding_Amendment_Proposal_20261021.md",
+      "record_type": "program-record",
+      "status": "preserved",
+      "canonical_for": null
     }
   ]
 }

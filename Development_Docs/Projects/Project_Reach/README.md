@@ -12,6 +12,8 @@ Reach is Voyagewright's reusable browser-first spatial interaction and intent sy
 
 ## Effective governing sources
 
+The [session and calibration epoch investigation](Phase_1_Session_Epoch_Architecture_20261021.md) establishes conditional relative-mapping invariance and prototypes separate session, local tracking and numerical compatibility permissions. Its 42-case research suite retains two copied-terminal perception failures (40 pass); no safe automatic calibration continuation or target-progress reuse is demonstrated. The [binding amendment proposal](Session_Epoch_Binding_Amendment_Proposal_20261021.md) remains unapproved, and the current prototype is ineligible for integration. Production tracking and the retained preview source remain unchanged.
+
 The [moving-search safety investigation](Phase_1_Moving_Search_Safety_20261021.md) demonstrates an analytic recovery path through new material-to-anatomy association, then rejects it after a corrected adversarial control accepts a transplanted terminal patch. Eight other controls pass; the original recording, mixed-motion and calibration failures remain unresolved. The canonical tracker and retained preview are unchanged.
 
 The [automatic recovery continuation](Phase_1_Automatic_Recovery_20261021.md) prototypes an explicitly unverified current-frame proposal boundary and rejects a historical multi-region reference bank after a matched 1,336-frame comparison produces no gain: 504 positions, 416 ready observations, seven logical replacements and RIGHT 13/89 remain unchanged. The proposal is not integrated into tracking. The previous verified preview is restored with its camera off; correct RIGHT reacquisition, mixed-motion continuity, calibration reliability and physical acceptance remain unresolved.

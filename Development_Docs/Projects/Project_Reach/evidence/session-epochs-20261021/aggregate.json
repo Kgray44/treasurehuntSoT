@@ -1,0 +1,199 @@
+{
+  "schemaVersion": 1,
+  "scope": "GENERATED_SESSION_EPOCH_RESEARCH_ONLY",
+  "qualification": false,
+  "decision": "RESEARCH_ONLY_NO_PRODUCTION_INTEGRATION",
+  "sourceBaseCommit": "0b367b02f3852371fe82e43a1e6a5fcc36283716",
+  "inspectedMainCommit": "aaff919428ef9ab421579415ce3409949724760d",
+  "runs": {
+    "originalFrozenRun": {
+      "tests": 42,
+      "passed": 40,
+      "failed": 2,
+      "suitePass": false,
+      "exitCode": 1,
+      "lifecyclePass": true,
+      "treeReaped": true,
+      "streamsClosed": true,
+      "cleanupEscalated": true,
+      "pinsUnchanged": true,
+      "canonicalUnchanged": true
+    },
+    "relocatedPublicRun": {
+      "tests": 42,
+      "passed": 40,
+      "failed": 2,
+      "pending": 0,
+      "todo": 0,
+      "suitePass": false,
+      "exitCode": 1,
+      "lifecyclePass": true,
+      "treeReaped": true,
+      "streamsClosed": true,
+      "cleanupEscalated": true,
+      "pinsUnchanged": true,
+      "vitestClosed": true
+    },
+    "finalFormattingVerificationRun": {
+      "tests": 42,
+      "passed": 40,
+      "failed": 2,
+      "pending": 0,
+      "todo": 0,
+      "suitePass": false,
+      "exitCode": 1,
+      "lifecyclePass": true,
+      "treeReaped": true,
+      "streamsClosed": true,
+      "cleanupEscalated": true,
+      "pinsUnchanged": true,
+      "vitestClosed": true
+    },
+    "executions": 3,
+    "distinctResearchCases": 42,
+    "interpretation": "These are repeat executions of the same 42 cases, not 126 independent cases. A diagnostic assertion message preceded relocation; the final verification binds import-only formatting. All three suites remain FAIL.",
+    "subsetsPerRun": {
+      "sessionController": { "tests": 20, "passed": 20 },
+      "numericalCompatibility": { "tests": 18, "passed": 18 },
+      "canonicalPerceptionAndBinding": { "tests": 4, "passed": 2, "failed": 2 },
+      "passingPerceptionChecks": [
+        "True-terminal uninterrupted and cold acquisition with actual readiness",
+        "Validated old calibration refuses actual replacement bindings"
+      ]
+    }
+  },
+  "copiedTerminalFalsifier": {
+    "evidence": "Generated overlapping transplanted-terminal fixture; not a physical wrong-finger or detached-silhouette measurement.",
+    "uninterrupted": {
+      "returnFrames": 9,
+      "publishedPoints": 4,
+      "readyFrames": 0,
+      "publishedWithOriginalLogicalIdentity": 4,
+      "publishedWithNewLogicalIdentity": 0
+    },
+    "coldReset": {
+      "returnFrames": 9,
+      "publishedPoints": 7,
+      "readyFrames": 2,
+      "firstPublishedAtReturnFrameCount": 3,
+      "generatedCaptureIntervalToFirstPointMs": 133,
+      "firstReadyAtReturnFrameCount": 8,
+      "generatedCaptureIntervalToFirstReadyMs": 466
+    },
+    "limits": [
+      "Both null-output falsifier assertions failed and remain failed.",
+      "The uninterrupted path also publishes the unsupported terminal while retaining the original logical identity; reset is not established as the sole cause.",
+      "Generated capture intervals are not measured inference, wall-clock or capture-to-display latency.",
+      "Local TRACKING or READY does not establish physical selected-index correctness."
+    ]
+  },
+  "numericalCompatibility": {
+    "kind": "FROZEN_RELATIVE_MAPPING_NUMERICAL_PROPOSAL_ONLY",
+    "freshSamplesPerCompleteCheck": 80,
+    "distinctTargets": 5,
+    "samplesPerTarget": 16,
+    "generatedEvidenceMsPerTarget": 750,
+    "generatedPixelAgeAtCollectionMs": 5,
+    "minimumSamplesPerTarget": 15,
+    "minimumEvidenceMsPerTarget": 600,
+    "rawP95LimitDiagonalFraction": 0.03,
+    "p95RankAmong80Samples": 76,
+    "analyticalIdealP95DiagonalFractions": {
+      "equivalentCoordinates": 0,
+      "biasedCoordinates": 0.064,
+      "scaledCoordinates": 0.05,
+      "rotatedCoordinates": 0.4
+    },
+    "expectationScope": "Ideal source-equation arithmetic for the fixed generated fixture, not logged execution P95 values. The run records acceptance of equivalent coordinates and rejection of the three changed-coordinate fixtures; floating-point residuals were not exported.",
+    "preservedFences": [
+      "Frozen coefficients, original expiry and old feature bounds",
+      "Exact non-track source, geometry and native-dimension binding",
+      "Fresh canonical groups under the new explicit epoch and capture cutoff",
+      "No old/new sample pooling, transform fitting, absolute-map transfer or returned Calibration",
+      "Replacement binding cannot use the validated old fit through the canonical calibrated-point API"
+    ],
+    "proofLimit": "Five finite checks support only sampled numerical compatibility. They do not prove uniform coordinate equivalence, producer authenticity, physical identity or permission to adopt a calibration."
+  },
+  "typeChecks": {
+    "initialPreflight": { "pass": false, "diagnostics": 4, "preserved": true },
+    "annotationAndIntentionalInvalidFixtureCastSuccessor": { "pass": true },
+    "relocatedPublicSource": { "pass": true },
+    "trackingLogicChangedByTypeFixes": false
+  },
+  "controllerCost": {
+    "kind": "NODE_GENERATED_CONTROLLER_BATCH_MEANS",
+    "measuredControllerSourceSha256": "805d7d06c3486d325b6596222e505da8d78f5557156e378f5944938c0cfe0c6d",
+    "warmupObservations": 2000,
+    "measuredObservations": 30000,
+    "batches": 30,
+    "observationsPerBatch": 1000,
+    "medianBatchMeanMsPerObservation": 0.0019678999999998724,
+    "p95BatchMeanMsPerObservation": 0.002710299999999961,
+    "maximumBatchMeanMsPerObservation": 0.0031026999999999136,
+    "wholeProcessRetainedHeapDeltaBytes": -39128,
+    "gcAvailable": true,
+    "sourceUnchanged": true,
+    "actionsPermitted": false,
+    "measurementScope": "Generated packet/snapshot allocation, provenance/readiness checks and controller transition. Median is the lower middle of 30 sorted batch means; P95 is their nearest rank. Not per-frame tail latency, inference, NCC, camera, browser or capture-to-display cost. Whole-process heap delta is not an object-size bound.",
+    "portableSuccessor": "Path/output resolution and formatting only; unexecuted. The retained private script produced this measurement."
+  },
+  "boundsAndNonClaims": {
+    "researchOutputLimitBytes": 33554432,
+    "innerDeadlineMs": 45000,
+    "ownerDeadlineMs": 60000,
+    "perLogLimitBytes": 65536,
+    "productionIntegration": false,
+    "approvedBindingAmendment": false,
+    "canonicalPerceptionChanges": 0,
+    "methodRetuning": false,
+    "recordingReplays": 0,
+    "neuralInferenceRuns": 0,
+    "cameraOrBrowserRuns": 0,
+    "hiddenControlRuns": 0,
+    "physicalAcceptance": false,
+    "interactionAuthorityGranted": false
+  },
+  "provenance": {
+    "relocation": "Original five frozen sources were retained byte-for-byte. Before relocation, the perception experiment received only an assertion-message diagnostic. Relocation changed canonical imports and research registration; experiments are explicitly invoked and outside the default unit-test glob.",
+    "finalFormatting": "Only one calibration import's line wrapping and trailing comma changed after relocation. The pre-format source and earlier receipts remain retained; the final formatted source received one verification execution with unchanged assertions.",
+    "prePublicationImportFormattingControllerSha256": "805d7d06c3486d325b6596222e505da8d78f5557156e378f5944938c0cfe0c6d",
+    "originalFrozenSourceSha256": {
+      "calibration-epoch-compatibility.ts": "90598d478ec96fd7c6ed8b7275f176b4b90df9cfb365efe01c93d96b78026273",
+      "calibration-epoch-compatibility.test.ts": "248cf80b27bdadef2ee6a5ea983e7ed12638dfd3eba2f2646b0529c12edda76c",
+      "pointing-session-epoch.ts": "05c7a369a7f60dc75d2b92e99cb083c57e365986e7b535bafe65481e717c39f5",
+      "pointing-session-epoch.test.ts": "3373948e4bf37fd762d3db99ec1caaa2ef5438e4cb96106875d282703f254ad2",
+      "session-epoch-perception.test.ts": "bb62f35fe9cb463a22702e8d9c5a7b5dedc5fb297caafa5c067de258d857e6ad"
+    },
+    "publicSourceSha256": {
+      "scripts/reach/research/session-epochs-20261021/calibration-epoch-compatibility.ts": "66c20404f13f9f636f8d76b7acc5113815bc5e0c0f299bcdeb54a3028dd115fb",
+      "scripts/reach/research/session-epochs-20261021/calibration-epoch-compatibility.experiment.ts": "ad54da9ae93be09718dc2729aa3b4c729f50a50fb27d6ec8163fb3dd0975f96f",
+      "scripts/reach/research/session-epochs-20261021/pointing-session-epoch.ts": "8f059d19b0ae1de4e3b5998c1d5b0328a625c9f7e60fa33e7bf5b736f543639f",
+      "scripts/reach/research/session-epochs-20261021/pointing-session-epoch.experiment.ts": "c4ef13fed0e7125eeb68a45a897d71be9f59fae89cfd75e8d8157727b2547754",
+      "scripts/reach/research/session-epochs-20261021/session-epoch-perception.experiment.ts": "89dc34873c449c71fcbd933cac338f7d9b167b000a26b8bf853308d5db8efa99",
+      "scripts/reach/research/session-epochs-20261021/run-research.mjs": "252228ae16dfe3e83cdae18524a7314e891c349cf89159c0c205c100057505b4",
+      "scripts/reach/research/session-epochs-20261021/benchmark-transitions.mjs": "a16dda4e03ab4fe8e583f2b759738fd298943bbe69cf8a710030d53f80207d63"
+    },
+    "receiptSha256": {
+      "originalSourceFreeze": "ec72e38c4b6e22f876e79f31ec7b7f26fac9770f9b47d7e50380d0c04c76de31",
+      "originalSourceRetention": "1066b2dbf467e0752416e84d2f1e5436604e1f5535027d30e56461462d1e5101",
+      "originalTestResult": "3640289b8c394b2fba57d068d2c30ce8fdc85c3365d0621647304126e685e307",
+      "originalExecution": "44718caf944aa592fc1989503dc3f2458a714c629f0cea6c028d5013db091f1a",
+      "originalOwnedLifecycle": "2bf23135fba63fbca8d794f005a3e4d1fbd265e5e1784ce4e9956a8fac662a0e",
+      "diagnosticSuccessorSource": "4126a93487fa62b7309650cf97b456d118e786c63cfbd2f50bd4d8d4a0e98f34",
+      "relocationProof": "ae6f20193fa24b8c368fc0186ac50162432af61dc2ee872bc0b96e55aec36507",
+      "initialTypePreflight": "26f68a0f363029163b3ce4d77e07429216261c32d4290be9b342c051bcea5adf",
+      "correctedTypePreflight": "fe2be473e582f9f8c786305868cb93d5676c6ab26776e8c3ea1c5061e3b8fc53",
+      "relocatedTypePreflight": "7a1bf904855822e8e0cd317e4386fcb41e7559704d88b6b23f11280fcbf9a8af",
+      "relocatedTestResult": "515828913cf2518e85d64a5881f54d0bbb0ec524716d51a7f7adc8e9b02d878c",
+      "relocatedExecution": "978df15e52fe204dda58ce85aae8d5895dde101ddc74446a4a5bd37af2a2ef0d",
+      "relocatedOwnedLifecycle": "cc753b6efea8c98c5c1e2ea0dadb6d1c2b85a45ec11e6955a0c3b2ba753e8249",
+      "relocatedSourcePins": "1b22e71265d0e5a39dbc6ade9edd3b493664b0a4ae5afeb6e99b5317fa23ea0e",
+      "finalFormattingTestResult": "c75e6070283175dfb006a4e8d14b609061c43a1a5e1627a17abd93a7072be65d",
+      "finalFormattingExecution": "f90fbedd5b0139dd3096b9765ad6d80e97aef6b7757ea94dd2341ae6fedce3ef",
+      "finalFormattingOwnedLifecycle": "1b933adc2facefc2ffbc8b73431ce3d56b6843ce900ccc1ef7eb2a9e31eeee1a",
+      "finalFormattingSourcePins": "5b531eace18529f47f5c5e351dcfd7db5ecad9ac264c73165b70723f6e14e300",
+      "measuredPrivateBenchmarkSource": "03f211636bc41757dd18f538a908c71786057cc49dfbee74014b56d8177ea3fc",
+      "controllerCostResult": "be6c1cee31681f53464db71062dfa509156b67fbad8fbd6eb7260a52e96d9ae1"
+    }
+  }
+}
