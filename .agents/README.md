@@ -3,7 +3,7 @@ title: Repository automation guidance
 audience: automation
 status: current
 canonical_for: repository-automation-guidance
-last_reviewed: 2026-10-17
+last_reviewed: 2026-10-21
 ---
 
 # Repository automation guidance
@@ -45,6 +45,7 @@ not authorize restarting a completed phase.
 - [Crossdeck R21 fresh capture and media-first review successor](crossdeck-r21-media-first-successor.md)
 - [Crossdeck R22 actual-byte pre-source admission recovery](crossdeck-r22-pre-source-byte-gate.md)
 - [Crossdeck R23 exact-authority checkout recovery](crossdeck-r23-checkout-recovery.md)
+- [Crossdeck R24 ordinary checkout and retained review recovery](crossdeck-r24-ordinary-recovery.md)
 - [Parallax A1 owned task contract](parallax-a1-task-contract.md)
 - [Parallax A1 agreed Studio interface](parallax-a1-studio-interface.md)
 - [Sextant Phase 3 owned implementation context](sextant-phase3.md)

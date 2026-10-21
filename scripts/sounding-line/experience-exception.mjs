@@ -1,3 +1,12 @@
+import {
+  CURRENT_R24,
+  isR24,
+  assertR24Mode,
+  r24HistoricalPlan,
+  validateR24Custody,
+  validateR24ReviewedIdentity,
+  r24Adoption,
+} from "./experience-current-r24.mjs";
 import { CURRENT_R23 } from "./experience-current-r23.mjs";
 import { CURRENT_R22 } from "./experience-current-r22.mjs";
 import { validatePreSourceCaptureBinding } from "./experience-review-source-gate.mjs";
@@ -316,6 +325,14 @@ function r3FamilyRelated(root, candidateSha) {
   }
 }
 export function selectTrustedExceptions(records) {
+  if (records.some((record) => record.version === 24)) {
+    if (records.length !== 24 || digest(records.slice(0, 23)) !== CURRENT_R24.previousRecordsDigest)
+      fail("R24_PREDECESSOR_REGISTRY_CHANGED");
+    selectTrustedExceptions(records.slice(0, 23));
+    const successor = records[23];
+    validateCurrentAdmissionRecord(successor, { legacyCurrentRecord: records[22] });
+    return [successor];
+  }
   if (records.some((record) => isCurrentAdmissionRecord(record) && record.version === 23)) {
     if (records.length !== 23 || digest(records.slice(0, 22)) !== CURRENT_R23.previousRecordsDigest)
       fail("CURRENT_R23_PREDECESSOR_REGISTRY_CHANGED");
@@ -668,6 +685,7 @@ export const trustedExceptions = (root, baseSha) => {
       "ls-tree",
       baseSha,
       "--",
+      "scripts/sounding-line/experience-current-r24.mjs",
       "scripts/sounding-line/experience-current-r23.mjs",
       "scripts/sounding-line/experience-current-r22.mjs",
       "scripts/sounding-line/experience-current-r21.mjs",
@@ -685,6 +703,8 @@ export const trustedExceptions = (root, baseSha) => {
   );
   // The adapter at the requested base cannot reactivate an older grant by removal.
   // Historical bases without this protected adapter retain their exact readers.
+  if (sentinels.has("scripts/sounding-line/experience-current-r24.mjs"))
+    return [validateCurrentAdmissionRegistry(registry, undefined, { requiredVersion: 24 })];
   if (sentinels.has("scripts/sounding-line/experience-current-r23.mjs"))
     validateCurrentAdmissionRegistry(registry, undefined, { requiredVersion: 23 });
   else if (sentinels.has("scripts/sounding-line/experience-current-r22.mjs"))
@@ -1152,6 +1172,25 @@ export function exceptionStore({ record, request }) {
 // Explicit historical evidence view. It cannot read an old qualification slot
 // or create any reservation, and is never a fallback for the current namespace.
 export function historicalExceptionContext({ root, plan, request }) {
+  if (isR24(plan)) {
+    const historical = r24HistoricalPlan(plan),
+      record = exceptionRecords(root, plan.baseSha).find((value) => value.id === historical.exception.id);
+    if (!record || digest(record) !== CURRENT_R24.previousRecordDigest) fail("R24_HISTORICAL_RECORD_CHANGED");
+    const original = exceptionStore({ record, request });
+    return {
+      record,
+      plan: historical,
+      store: {
+        read(slot) {
+          if (!CURRENT_R24.custody.some((pin) => pin.slot === slot)) fail("R24_HISTORICAL_SLOT_FORBIDDEN");
+          return original.read(slot);
+        },
+        create() {
+          fail("R24_HISTORICAL_WRITE_FORBIDDEN");
+        },
+      },
+    };
+  }
   if (!ordinaryOnly(plan.exception?.id)) {
     const record = trustedExceptions(root, plan.baseSha).find((value) => value.id === plan.exception?.id);
     return { record, plan, store: exceptionStore({ record, request }) };
@@ -1175,6 +1214,10 @@ export function historicalExceptionContext({ root, plan, request }) {
   };
 }
 async function validateHistoricalExceptionCustody({ root, plan, request }) {
+  if (isR24(plan)) {
+    const context = historicalExceptionContext({ root, plan, request });
+    return validateR24Custody(context);
+  }
   if (!plan.exception?.nonExecutingReconciliation) return;
   if (ordinaryOnly(plan.exception?.id)) {
     const context = historicalExceptionContext({ root, plan, request });
@@ -1977,6 +2020,20 @@ async function campaignHistory({ root, record, plan, mode, run, request, now, pr
       return false;
     }
   }
+  return validateCampaignHistoryInventory({ record, mode, run, request, preflight, predecessors, all, recognized });
+}
+// This read-only inventory result grants no reservation. Production always
+// authenticates all predecessors and fetches a complete inventory above.
+export async function validateCampaignHistoryInventory({
+  record,
+  mode,
+  run,
+  request,
+  preflight,
+  predecessors,
+  all,
+  recognized,
+}) {
   for (const item of all.values()) {
     if (predecessors.some((p) => item.id === p.id)) {
       if (ordinaryOnly(record.id) || isCurrentAdmissionRecord(record)) {
@@ -2042,6 +2099,7 @@ async function campaignHistory({ root, record, plan, mode, run, request, now, pr
         fail("HISTORY_DRAFT_SKIP_UNVERIFIABLE");
       continue;
     }
+    if (record.version === 24 && item.id !== run.runId) fail("R24_UNLISTED_CAMPAIGN_RUN");
     const earlier =
       Date.parse(item.created_at) < Date.parse(run.createdAt) ||
       (item.created_at === run.createdAt && item.id < run.runId);
@@ -2068,6 +2126,10 @@ async function campaignHistory({ root, record, plan, mode, run, request, now, pr
   };
 }
 export async function reserveExceptionStage({ root, record, plan, mode, run, store, request, now }) {
+  if (record?.version === 24) {
+    if (!isR24(plan) || record.id !== plan.exception.id) fail("R24_RECORD_PLAN_CHANGED");
+    assertR24Mode(plan, mode);
+  }
   if (isCurrentAdmissionRecord(record)) {
     if (!["capture", "review", "ordinary", "verify"].includes(mode)) fail("MODE_FORBIDDEN");
     if (mode !== "verify") assertCurrentAdmissionCap(record, mode);
@@ -2232,6 +2294,11 @@ export async function verifyExceptionAttestation({
   const currentRecord = trustedExceptions(root, plan.baseSha).find((value) => value.id === plan.exception.id);
   const api = request ?? createRequest(currentRecord.repository);
   const context = historicalExceptionContext({ root, plan, request: api });
+  if (isR24(plan)) {
+    validateR24ReviewedIdentity(plan, evidence);
+    await validateHistoricalExceptionCustody({ root, plan, request: api });
+    plan = context.plan;
+  }
   if (plan.exception.nonExecutingReconciliation) {
     await validateHistoricalExceptionCustody({ root, plan, request: api });
     plan = r8FormatEvidencePlan(plan);
@@ -2261,6 +2328,7 @@ export async function verifyExceptionAttestation({
   return {
     prepareReservation: prepare.commitSha,
     reviewSeal: sealed.commitSha,
+    ...r24Adoption(actualPlan),
     ...(actualPlan.exception.nonExecutingReconciliation
       ? { nonExecutingReconciliation: actualPlan.exception.nonExecutingReconciliation }
       : {}),
@@ -2437,6 +2505,13 @@ export async function assertExceptionExecution({
     return value;
   });
   withReplayAdmissionSubstage("EXECUTOR_CONTEXT", () => {
+    if (
+      isR24(actual) &&
+      (environment.SOUNDING_LINE_EXCEPTION_PHASE !== "qualify" ||
+        plan.localProof ||
+        Object.keys(environment).some((key) => /^SOUNDING_LINE_R[0-9]+_LOCAL_LEASE$/u.test(key) && environment[key]))
+    )
+      fail("R24_CURRENT_QUALIFICATION_REQUIRED");
     if (
       actual.exception.nonExecutingReconciliation &&
       (environment.SOUNDING_LINE_EXCEPTION_PHASE !== "qualify" ||
@@ -2834,6 +2909,7 @@ async function main() {
   const mode = event.inputs?.experience_mode ?? "ordinary";
   if (!["ordinary", "capture", "review", "verify"].includes(mode)) fail("MODE_FORBIDDEN");
   assertOrdinaryOnlyMode({ exception: { id: record.id } }, mode);
+  if (record.version === 24) assertR24Mode({ exception: { id: record.id, version: 24 } }, mode);
   // Reserve before validation/downloads/setup can fail or be cancelled. The raw
   // source identity is an observation; it grants no admission until the complete
   // protected plan and all normal evidence gates subsequently validate it.
