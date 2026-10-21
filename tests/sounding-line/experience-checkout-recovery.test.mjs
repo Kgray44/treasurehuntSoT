@@ -16,7 +16,10 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 const root = fileURLToPath(new URL("../..", import.meta.url));
 const workflowPath = ".github/workflows/sounding-line-ordinary.yml";
-const current = readFileSync(path.join(root, workflowPath), "utf8").replace(/\r\n/gu, "\n");
+const current = execFileSync("git", ["show", `e0056ff3bdc4cb8b69fb6aa66a6dba831e25cdab:${workflowPath}`], {
+  cwd: root,
+  encoding: "utf8",
+}).replace(/\r\n/gu, "\n");
 const previous = execFileSync("git", ["show", `bfea71aad2c7fafdec0590ba1ac09ee3399e08d5:${workflowPath}`], {
   cwd: root,
   encoding: "utf8",
