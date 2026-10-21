@@ -31,11 +31,19 @@ import { verifyTrustedExperienceAttestation } from "./experience-attestation.mjs
 import { revisionJson } from "./product-experience.mjs";
 import { assertExceptionExecution, markExceptionTechnicalComplete } from "./experience-exception.mjs";
 import { BROWSER_DIAGNOSTIC_CONTEXT, createBrowserDiagnosticSession } from "./browser-diagnostics.mjs";
-import { withVerificationStage, verificationFailureObservation } from "./verification-diagnostics.mjs";
+import {
+  withVerificationStage,
+  withVerificationProgressScope,
+  verificationFailureObservation,
+} from "./verification-diagnostics.mjs";
 import { withSourceDiagnosticCapture } from "./source-diagnostics.mjs";
 import { createR14Observation } from "./experience-r14-observability.mjs";
 import { createCurrentAdmissionObservation } from "./experience-current-observability.mjs";
-import { authenticateCompletedEvidence, authenticatedCompletedReceipt } from "./authenticated-completed-evidence.mjs";
+import {
+  authenticateCompletedEvidence,
+  authenticatedCompletedReceipt,
+  authenticatedPreparedObligations,
+} from "./authenticated-completed-evidence.mjs";
 
 const sha = /^[a-f0-9]{40}$/u;
 const protectedBrowserScripts = new Map([
@@ -548,7 +556,11 @@ function staticSourceClosure(snapshot, seeds) {
     if (!/\.(?:[cm]?[jt]sx?|json|css)$/u.test(file)) continue;
     let contents;
     try {
-      contents = git(snapshot.root, ["show", `${snapshot.candidateSha}:${file}`]);
+      if (snapshot.contentsByBlob.has(entry.blob)) contents = snapshot.contentsByBlob.get(entry.blob);
+      else {
+        contents = git(snapshot.root, ["show", `${snapshot.candidateSha}:${file}`]);
+        snapshot.contentsByBlob.set(entry.blob, contents);
+      }
     } catch {
       unknown = true;
       continue;
@@ -691,8 +703,7 @@ function evidenceClosure(snapshot, group, plan) {
   return { entries, unknown: unknown || config.unknown };
 }
 
-async function semanticSnapshot(root, candidateSha) {
-  const entries = trackedEntries(root, candidateSha);
+async function semanticContext(root, candidateSha) {
   const modulePath = fileURLToPath(import.meta.url);
   const evidencePath = path.join(path.dirname(modulePath), "evidence.mjs");
   const [
@@ -717,10 +728,6 @@ async function semanticSnapshot(root, candidateSha) {
     readFile(path.join(path.dirname(modulePath), "experience-r9.mjs"), "utf8"),
   ]);
   return {
-    root,
-    candidateSha,
-    entries,
-    byPath: new Map(entries.map((entry) => [entry.path, entry])),
     // Pure unit execution uses the actual verifier/evidence semantic engine.
     // Campaign admission/review/custody is recomputed separately for every plan;
     // unrelated exception-registry rows are not unit execution dependencies.
@@ -738,7 +745,51 @@ async function semanticSnapshot(root, candidateSha) {
       version: EVIDENCE_VERSION,
     }),
     environmentClass: process.env.GITHUB_ACTIONS === "true" ? "github-actions" : "local",
+    toolchainIdentity: evidenceDigest({
+      node: process.version,
+      platform: process.platform,
+      architecture: process.arch,
+    }),
   };
+}
+
+async function semanticSnapshot(root, candidateSha) {
+  const entries = trackedEntries(root, candidateSha);
+  return {
+    root,
+    candidateSha,
+    entries,
+    byPath: new Map(entries.map((entry) => [entry.path, entry])),
+    contentsByBlob: new Map(),
+    ...(await semanticContext(root, candidateSha)),
+  };
+}
+
+const preparedGraphContexts = new WeakMap();
+const preparedGraphReadObjects = new WeakMap();
+function preparationIdentity(root, plan, context) {
+  return evidenceDigest({
+    root: realpathSync(root),
+    baseSha: plan.baseSha,
+    candidateSha: plan.candidateSha,
+    planDigest: evidenceDigest(plan),
+    unitEvidencePolicyIdentity: context.unitEvidencePolicyIdentity,
+    authorityIdentity: context.authorityIdentity,
+    environmentClass: context.environmentClass,
+    completedEvidenceEnvironmentClass: completedEvidenceEnvironmentClass(plan),
+    toolchainIdentity: context.toolchainIdentity,
+    executable: process.execPath,
+  });
+}
+export function preparedGraphContext(obligations) {
+  return preparedGraphContexts.get(obligations) ?? null;
+}
+export function preparedGraphObjects(obligations) {
+  const objects = preparedGraphReadObjects.get(obligations);
+  return objects ? [...objects] : null;
+}
+export async function currentGraphContext(root, plan) {
+  return preparationIdentity(root, plan, await semanticContext(root, plan.candidateSha));
 }
 
 function packageLockDigest(snapshot) {
@@ -753,7 +804,7 @@ function browserIdentity(snapshot) {
 
 export async function buildEvidenceObligations(root, plan) {
   const snapshot = await semanticSnapshot(root, plan.candidateSha);
-  return verificationObligationGroups(plan).map((group) => {
+  const obligations = verificationObligationGroups(plan).map((group) => {
     const runtimeSetup = requiresCurrentSetupOutput(group);
     const browserEvidence = isBrowserEvidenceObligation(group);
     const currentPolicy = requiresCurrentPolicyVerification(group);
@@ -787,11 +838,7 @@ export async function buildEvidenceObligations(root, plan) {
       fixtureDigest: fixturePaths.length ? digestFileEntries(fixtures.entries) : null,
       schemaDigest: schema.length ? digestFileEntries(schema) : null,
       packageLockDigest: packageLockDigest(snapshot),
-      toolchainIdentity: evidenceDigest({
-        node: process.version,
-        platform: process.platform,
-        architecture: process.arch,
-      }),
+      toolchainIdentity: snapshot.toolchainIdentity,
       browserIdentity: browserEvidence ? browserIdentity(snapshot) : null,
       environmentClass: snapshot.environmentClass,
       soundingLinePolicyDigest:
@@ -816,6 +863,9 @@ export async function buildEvidenceObligations(root, plan) {
             : {}),
     };
   });
+  preparedGraphContexts.set(obligations, preparationIdentity(root, plan, snapshot));
+  preparedGraphReadObjects.set(obligations, [...snapshot.contentsByBlob.keys()]);
+  return obligations;
 }
 
 // This memory accepts whole PASS observations from this parent or the opaque
@@ -1001,8 +1051,12 @@ export async function runReconciledVerification(
 ) {
   if (git(root, ["rev-parse", "HEAD"]) !== plan.candidateSha)
     throw new Error("SOUNDING_LINE_COMPLETED_EVIDENCE_HEAD_CHANGED");
+  const prepared = await withVerificationStage("PREPARED_GRAPH_CHECK", () =>
+    authenticatedPreparedObligations(authenticatedEvidence, { root, plan }),
+  );
   git(root, ["diff", "--exit-code", "HEAD", "--"]);
-  const obligations = await buildEvidenceObligations(root, plan);
+  const obligations =
+    prepared ?? (await withVerificationStage("FINGERPRINT_GRAPH", () => buildEvidenceObligations(root, plan)));
   const store = new FileEvidenceStore(path.join(root, "artifacts", "sounding-line", "evidence-store"));
   const observedRoot = path.join(root, "artifacts", "sounding-line", "parent-observed-evidence");
   await mkdir(observedRoot, { recursive: true });
@@ -1477,7 +1531,9 @@ export async function buildPlan({
         throw new Error(`PRODUCT_EXPERIENCE_BROWSER_TEST_MISSING:${browserTest}`);
     selection.browserTests = [...new Set([...selection.browserTests, ...productExperience.browserTests])].sort();
     if (experienceEvidenceRequired) {
-      verifyProductExperience(root, candidateSha, productExperience);
+      await withVerificationStage("REVIEWED_MEDIA", () =>
+        verifyProductExperience(root, candidateSha, productExperience),
+      );
       productExperience.trustedAttestation = await verifyTrustedExperienceAttestation({
         root,
         plan: productExperience,
@@ -1799,7 +1855,9 @@ async function main() {
     if (completedEvidenceEnvironmentClass(plan) === "github-actions-nonbrowser-controlled") {
       const intakeStartedAt = Date.now();
       try {
-        authenticatedEvidence = await authenticateCompletedEvidence({ root, plan });
+        authenticatedEvidence = await withVerificationStage("COMPLETED_EVIDENCE_INTAKE", () =>
+          authenticateCompletedEvidence({ root, plan }),
+        );
         result.completedEvidenceIntake = {
           status: authenticatedEvidence.admitted ? "AUTHENTICATED_ELIGIBLE_RECEIPTS" : "NO_ELIGIBLE_RECEIPTS_FRESH",
           admitted: authenticatedEvidence.admitted,
@@ -1892,4 +1950,5 @@ async function main() {
   if (result.decision !== "PASS") process.exitCode = 1;
 }
 
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) await main();
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url))
+  await withVerificationProgressScope(main);
