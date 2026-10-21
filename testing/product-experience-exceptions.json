@@ -142408,6 +142408,7 @@
       "custody": { "namespace": "sounding-line-exceptions/PE-X-CROSSDECK-CURRENT-VERIFY-20261021-R25" },
       "predecessor": {
         "kind": "CONSUMED_R24_ORDINARY_JOB_LIMIT_1",
+        "campaignEpoch": "2026-10-15T13:54Z",
         "id": "PE-X-CROSSDECK-CURRENT-VERIFY-20261021-R24",
         "recordDigest": "8fca6e99f20e08ae05a50a916b74d70a77ff7805b723194651344aa2ecb08e66",
         "runId": 39580199268,
@@ -149215,7 +149216,7 @@
         "kind": "CROSSDECK_CURRENT_SOURCE_ADMISSION_1",
         "protectedBaseAncestorSha": "e1a86f98e56d68e8e87e3704d17439489ff1a170",
         "preservationRevision": "43b5f4d55b6ac751ed9b2e05d4e4cace38544c4f",
-        "sourceDigest": "938386318293c49c530048c62aa6d0efbf7aa8ec3a3691b3d4fbb7750c3b4aa0",
+        "sourceDigest": "8ff06638557d481e2b7cbf4a7d805032b89dbad6f683c4bf3421edb0b795b3a9",
         "contextCount": 38,
         "pairedBrowserContexts": 6,
         "requiredObligationIds": [
@@ -149265,11 +149266,11 @@
         },
         "historyLedger": {
           "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-precommand-recovery-20261021-r25/historical-ledger.json",
-          "sha256": "c672ec00126fffcdc1a148aab2a04f8f6a385f71033d4f3120108b0348fd9f36"
+          "sha256": "504f0d982bf32bab4563fed3d4f5ff8b05d90e7a374813e24da4840934a16912"
         },
         "disposition": {
           "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-precommand-recovery-20261021-r25/causal-disposition.md",
-          "sha256": "9cbbad393b2502fb699470f19f74d793a181525bd9ce3d3748ba905a89720366"
+          "sha256": "f6e4871fcd767abfd6f7befded353f0d7d66b9440ddfa13032e405a8257fb0c1"
         },
         "protectedOverlay": [
           {
@@ -149304,18 +149305,18 @@
             "oldMode": null,
             "oldBlob": null,
             "newMode": "100644",
-            "newBlob": "cc14fbb31e3e275b34d7c11f6f2e7d31155b179a",
+            "newBlob": "74dcda9aca976b0705594f00862c869560d4a299",
             "candidateMode": "100644",
-            "candidateBlob": "cc14fbb31e3e275b34d7c11f6f2e7d31155b179a"
+            "candidateBlob": "74dcda9aca976b0705594f00862c869560d4a299"
           },
           {
             "path": "Development_Docs/Programs/Sounding_Line/evidence/crossdeck-precommand-recovery-20261021-r25/historical-ledger.json",
             "oldMode": null,
             "oldBlob": null,
             "newMode": "100644",
-            "newBlob": "d13579fa827909c755e1d7f1d3c69f5bb9a97ac8",
+            "newBlob": "64cf63d2a7ae82359526d01951216dccbd931afd",
             "candidateMode": "100644",
-            "candidateBlob": "d13579fa827909c755e1d7f1d3c69f5bb9a97ac8"
+            "candidateBlob": "64cf63d2a7ae82359526d01951216dccbd931afd"
           },
           {
             "path": "Development_Docs/document-index.json",
@@ -149367,9 +149368,9 @@
             "oldMode": null,
             "oldBlob": null,
             "newMode": "100644",
-            "newBlob": "5460ac602d68864ed4e6c4bea281a099f2162623",
+            "newBlob": "98a8b8bf11fcd6a236527775a0b09064d6d1b4c2",
             "candidateMode": "100644",
-            "candidateBlob": "5460ac602d68864ed4e6c4bea281a099f2162623"
+            "candidateBlob": "98a8b8bf11fcd6a236527775a0b09064d6d1b4c2"
           },
           {
             "path": "scripts/sounding-line/experience-exception.mjs",
@@ -149457,9 +149458,9 @@
             "oldMode": null,
             "oldBlob": null,
             "newMode": "100644",
-            "newBlob": "85c1a0701c9537283e0e5e2b077bc801dd727fa3",
+            "newBlob": "8a532393f115e692be11afe82819ab08c3579ba7",
             "candidateMode": "100644",
-            "candidateBlob": "85c1a0701c9537283e0e5e2b077bc801dd727fa3"
+            "candidateBlob": "8a532393f115e692be11afe82819ab08c3579ba7"
           },
           {
             "path": "tests/sounding-line/ordinary.test.mjs",

@@ -83,3 +83,12 @@ qualifier payload, jobs and sole completed-evidence artifact are checked as a
 separate predecessor. Current execution, replay and qualification use current
 R25 source identities. Infrastructure installation alone is not consumer or
 Parallax acceptance.
+
+The draft maintenance candidate c88d4a4 omitted the predecessor's campaign epoch.
+The full history entry point would reject its undefined start date before listing
+workflow history. Its protected run 39608371065 was cancelled by maintenance
+before qualification finished, and the PR returned to draft. The correction
+retains the original 2026-10-15T13:54Z epoch. It does not move the history window
+to a newer approval date or excuse any intervening campaign run. The cancelled
+maintenance run and its earlier source review remain preserved; they do not
+qualify the corrected source.

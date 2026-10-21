@@ -17,6 +17,7 @@
   },
   "failedOrdinary": {
     "kind": "CONSUMED_R24_ORDINARY_JOB_LIMIT_1",
+    "campaignEpoch": "2026-10-15T13:54Z",
     "id": "PE-X-CROSSDECK-CURRENT-VERIFY-20261021-R24",
     "recordDigest": "8fca6e99f20e08ae05a50a916b74d70a77ff7805b723194651344aa2ecb08e66",
     "runId": 39580199268,

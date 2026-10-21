@@ -124,12 +124,23 @@ test("R25 rejects resets, historical substitutions, budget-only recovery and unr
     (value) => (value.currentSourceAdmission.protectedOverlay[0].path = "src/product.ts"),
     (value) => (value.predecessor = { ...r.failedOrdinary, conclusion: "success" }),
     (value) => (value.predecessor = { ...r.failedOrdinary, qualifyCommit: "a".repeat(40) }),
+    (value) => {
+      const { campaignEpoch, ...withoutEpoch } = value.predecessor;
+      assert.equal(campaignEpoch, "2026-10-15T13:54Z");
+      value.predecessor = withoutEpoch;
+    },
     (value) => (value.ownerApproval = { ...r.ownerApproval, humanMessageId: "foreign" }),
   ]) {
     const value = record();
     mutate(value);
     assert.throws(() => validateR25Record(value), /PRODUCT_EXPERIENCE_EXCEPTION_/u);
   }
+});
+
+test("R25 retains the original campaign epoch required by the full history entry point", () => {
+  const value = record();
+  assert.equal(value.predecessor.campaignEpoch, old.predecessor.campaignEpoch);
+  assert.equal(new Date(value.predecessor.campaignEpoch).toISOString(), "2026-10-15T13:54:00.000Z");
 });
 
 test("installed R25 reader denies missing, retired, invalid and expired rows without falling back", (t) => {
